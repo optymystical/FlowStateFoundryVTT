@@ -1,0 +1,169 @@
+<div class="fs-wizard-wrap">
+  <nav class="fs-wizard-steps">
+    {{#each steps}}
+    <a class="fs-wizard-step {{#if active}}active{{/if}} {{#if done}}done{{/if}}" data-action="goto" data-step="{{index}}">
+      <span class="fs-step-num">{{#if done}}<i class="fa-solid fa-check"></i>{{else}}{{num}}{{/if}}</span> {{label}}
+    </a>
+    {{/each}}
+  </nav>
+
+  <div class="fs-wizard-body">
+    {{#if is_identity}}
+    <h2>Who are you?</h2>
+    <div class="fs-wizard-identity">
+      <img class="fs-portrait" src="{{img}}" alt="">
+      <div class="fs-field-stack">
+        <label>Name <input type="text" name="name" value="{{name}}" placeholder="Character name" autofocus></label>
+        <label>Portrait
+          <span class="fs-inline-row">
+            <input type="text" name="img" value="{{img}}">
+            {{#if canBrowse}}<button type="button" class="fs-inline" data-action="pickImage"><i class="fa-solid fa-folder-open"></i></button>{{/if}}
+          </span>
+        </label>
+        <p class="hint">Ancestry, Background, and Culture will be chosen here once the A.B.C. rules are ready. For now they're flavor only.</p>
+      </div>
+    </div>
+    {{/if}}
+
+    {{#if is_stats}}
+    <h2>Stats</h2>
+    <p class="fs-budget {{#if overspent}}fs-over{{/if}}">
+      <strong>{{remaining}}</strong> of {{rules.statPoints}} stat points left.
+      {{#if remaining}}{{#unless overspent}}<span class="hint">Unspent points stay banked for later.</span>{{/unless}}{{/if}}
+    </p>
+    <div class="fs-stats">
+      {{#each statGroups}}
+      <div class="fs-stat-group">
+        <h3>{{name}}</h3>
+        {{#each stats}}
+        <div class="fs-wizard-stat">
+          <label>{{label}}</label>
+          <input type="number" name="stats.{{key}}" value="{{value}}" min="0" step="1">
+          <span class="fs-sub" data-tooltip="With the Stat Bonus from {{@root.preview.skillPoints}} Skill Points">{{effective}} · d{{die}}</span>
+        </div>
+        {{/each}}
+      </div>
+      {{/each}}
+    </div>
+    <div class="fs-facts fs-wizard-preview">
+      <span><strong>HP</strong> {{preview.hp}}</span>
+      <span><strong>Pain Threshold</strong> {{preview.pain}}</span>
+      <span><strong>Energy</strong> {{preview.energy}}</span>
+      <span><strong>Move</strong> {{preview.move}} ft</span>
+      <span><strong>Attack</strong> d{{preview.attackDie}}</span>
+      <span><strong>Dodge</strong> 2d{{preview.dodgeDie}}</span>
+      <span><strong>Skill Points</strong> {{preview.skillPoints}}</span>
+    </div>
+    {{/if}}
+
+    {{#if is_skills}}
+    <h2>Skill Trees</h2>
+    <p class="fs-budget {{#unless remainingSP}}{{/unless}}"><strong>{{remainingSP}}</strong> of {{skillPoints}} Skill Points left.
+      <span class="hint">Tier N costs N. Unspent points stay banked for later.</span></p>
+    <div class="fs-skill-pickers">
+      <label>Archetype
+        <select name="skillArch">{{#each archetypes}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}{{#if placeholder}} (coming soon){{/if}}</option>{{/each}}</select>
+      </label>
+    </div>
+    {{#if archPlaceholder}}<p class="hint">{{archPlaceholder}}</p>{{else}}
+    <ul class="fs-wizard-trees">
+      {{#each treeRows}}
+      <li class="fs-wizard-tree {{#if tier}}fs-picked{{/if}}">
+        <div class="fs-wizard-tree-head">
+          <a class="fs-wizard-tree-name" data-action="treeToggle" data-tree="{{id}}"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{name}}</a>
+          <span class="fs-tier-badge">Tier {{tier}}/5</span>
+          <button type="button" class="fs-inline" data-action="treeDown" data-tree="{{id}}" data-tooltip="{{lowerTip}}" {{#unless canLower}}disabled{{/unless}}><i class="fa-solid fa-minus"></i></button>
+          <button type="button" class="fs-inline" data-action="treeUp" data-tree="{{id}}" data-tooltip="{{#if nextCost}}Tier {{nextCost}} costs {{nextCost}} SP{{else}}Maxed{{/if}}" {{#unless canRaise}}disabled{{/unless}}><i class="fa-solid fa-plus"></i>{{#if nextCost}} {{nextCost}}{{/if}}</button>
+        </div>
+        {{#if open}}
+        <ul class="fs-wizard-tree-tiers">
+          {{#each tiers}}<li class="{{#if owned}}fs-owned{{/if}}"><strong>T{{tier}}</strong> {{#if names}}{{names}}{{else}}{{summary}}{{/if}}</li>{{/each}}
+        </ul>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+    {{#if lockedTrees}}<p class="hint">{{lockedTrees}} more tree(s) open up as you raise {{theoryName}}.</p>{{/if}}
+    {{/if}}
+    <p class="hint">Full ability text is on your sheet's Skills tab. You can keep spending banked points there later.</p>
+    {{/if}}
+
+    {{#if is_equipment}}
+    <h2>Starting Equipment</h2>
+    <p class="fs-budget">Pick up to <strong>{{rules.items}}</strong> items (<strong>{{slotsLeft}}</strong> left), {{rarityLabel}} or lower, Grade {{rules.grade}}. At most one armor. Each Affix is one pick and goes on a picked Foci or Shroud. Unarmed comes free; each ranged weapon comes with 20 ammunition.</p>
+    {{#each items}}
+    <div class="fs-wizard-item">
+      <header>
+        <strong>{{name}}</strong>
+        <button type="button" class="fs-inline" data-action="removeItem" data-index="{{index}}" data-tooltip="Remove"><i class="fa-solid fa-xmark"></i></button>
+      </header>
+      <div class="fs-builder">
+        {{#if magic}}
+        <div class="fs-field"><label>{{#if foci}}Foci{{else}}Shroud{{/if}} type</label><select name="items.{{index}}.{{#if foci}}fociType{{else}}shroudType{{/if}}">
+          {{#each typeChoices}}<optgroup label="{{label}}">{{selectOptions options selected=../selected}}</optgroup>{{/each}}</select></div>
+        {{else if affixSlot}}
+        <div class="fs-field"><label>Affix</label><select name="items.{{index}}.affix">{{selectOptions affixChoices selected=affix}}</select></div>
+        <div class="fs-field"><label>Put it on</label><select name="items.{{index}}.target"><option value="">— Pick a Foci or Shroud —</option>{{selectOptions targetChoices selected=target}}</select></div>
+        {{else}}
+        {{#unless armor}}
+        <div class="fs-field"><label>Type</label><select name="items.{{index}}.type">{{selectOptions @root.weaponTypes selected=type}}</select></div>
+        {{/unless}}
+        <div class="fs-field"><label>Weight</label><select name="items.{{index}}.weight">{{selectOptions weights selected=weight}}</select></div>
+        <div class="fs-field"><label>Material</label><select name="items.{{index}}.material">{{selectOptions materials selected=material}}</select></div>
+        {{#if extraChoices.length}}
+        <div class="fs-field"><label>Extra types <small>(Weapon Master)</small></label>
+          <div class="fs-checks-row">{{#each extraChoices}}<label><input type="checkbox" name="items.{{../index}}.extra.{{key}}" {{checked on}}> {{label}}</label>{{/each}}</div></div>
+        {{/if}}
+        {{/if}}
+      </div>
+      <div class="fs-sub">{{summary}}</div>
+      {{#if tags.length}}<div class="fs-tags">{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}">{{label}}</span>{{/each}}</div>{{/if}}
+      {{#if effect}}<div class="fs-sub fs-wizard-effect">{{effect}}</div>{{/if}}
+    </div>
+    {{else}}
+    <p class="hint">No items picked yet.</p>
+    {{/each}}
+    <div class="fs-inline-row">
+      <button type="button" data-action="addItem" data-kind="weapon" {{#unless canAddWeapon}}disabled{{/unless}}><i class="fa-solid fa-khanda"></i> Add weapon</button>
+      <button type="button" data-action="addItem" data-kind="armor" {{#unless canAddArmor}}disabled{{/unless}}><i class="fa-solid fa-shirt"></i> Add armor</button>
+      <button type="button" data-action="addItem" data-kind="foci" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-wand-sparkles"></i> Add Foci</button>
+      <button type="button" data-action="addItem" data-kind="shroud" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-ghost"></i> Add Shroud</button>
+      <button type="button" data-action="addItem" data-kind="affix" {{#unless canAddAffix}}disabled{{/unless}} data-tooltip="Needs a picked Foci or Shroud with a free Affix slot"><i class="fa-solid fa-gem"></i> Add Affix</button>
+    </div>
+    {{/if}}
+
+    {{#if is_review}}
+    <h2>Review</h2>
+    <div class="fs-wizard-identity">
+      <img class="fs-portrait" src="{{img}}" alt="">
+      <div>
+        <h3>{{#if name}}{{name}}{{else}}<em>Unnamed</em>{{/if}}</h3>
+        <div class="fs-facts">
+          <span><strong>HP</strong> {{preview.hp}}</span><span><strong>Energy</strong> {{preview.energy}}</span>
+          <span><strong>Skill Points</strong> {{preview.skillPoints}}</span><span><strong>Banked stat points</strong> {{remaining}}</span>
+        </div>
+      </div>
+    </div>
+    <h3>Stats</h3>
+    <div class="fs-facts">{{#each statGroups}}{{#each stats}}<span><strong>{{label}}</strong> {{value}}</span>{{/each}}{{/each}}</div>
+    <h3>Skill Trees</h3>
+    <div class="fs-facts">{{#each pickedTrees}}<span>{{this}}</span>{{else}}<span>None yet ({{remainingSP}} SP banked)</span>{{/each}}</div>
+    <h3>Equipment</h3>
+    <ul class="fs-list">{{#each items}}<li>{{name}} — {{summary}}</li>{{else}}<li>Unarmed only</li>{{/each}}</ul>
+    {{#if errors.length}}
+    <div class="fs-wizard-errors"><strong>Fix these first:</strong><ul>{{#each errors}}<li>{{this}}</li>{{/each}}</ul></div>
+    {{else}}
+    <p class="hint">Once created, your sheet is locked. Stats, Skill Points, and equipment change only through the GM (you can spend granted stat points yourself).</p>
+    {{/if}}
+    {{/if}}
+  </div>
+
+  <footer class="fs-wizard-footer">
+    <button type="button" data-action="back" {{#if isFirst}}disabled{{/if}}><i class="fa-solid fa-arrow-left"></i> Back</button>
+    {{#if isLast}}
+    <button type="button" class="fs-primary" data-action="finish" {{#unless ready}}disabled{{/unless}}><i class="fa-solid fa-check"></i> Create character</button>
+    {{else}}
+    <button type="button" class="fs-primary" data-action="next">Next <i class="fa-solid fa-arrow-right"></i></button>
+    {{/if}}
+  </footer>
+</div>

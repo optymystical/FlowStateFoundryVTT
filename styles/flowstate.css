@@ -1,0 +1,281 @@
+/* The window content hosts one part; that part is the scroll container. */
+.flowstate.sheet .window-content { padding: 0; display: flex; flex-direction: column; overflow: hidden; }
+.flowstate .fs-sheet { display: flex; flex-direction: column; gap: 10px; padding: 10px; flex: 1; min-height: 0; overflow-y: auto; }
+.flowstate .fs-sheet > * { flex-shrink: 0; }
+.flowstate h3 { margin: 0 0 6px; border-bottom: 1px solid var(--color-border, #999); font-size: 1em; }
+.flowstate h3 small { font-weight: normal; opacity: .7; }
+.flowstate .hint { font-size: .85em; opacity: .7; margin: 4px 0; }
+.flowstate input[type="number"] { width: 4.5em; text-align: center; }
+
+.flowstate .fs-header { display: flex; gap: 10px; align-items: center; }
+.flowstate .fs-portrait { width: 88px; height: 88px; object-fit: cover; border: none; cursor: pointer; }
+.flowstate .fs-portrait.fs-small { width: 56px; height: 56px; }
+.flowstate .fs-header-main { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.flowstate .fs-name { font-size: 1.6em; height: auto; }
+.flowstate .fs-header-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.flowstate .fs-pill { padding: 2px 8px; border-radius: 999px; background: rgba(0,0,0,.12); font-size: .9em; }
+
+.flowstate .fs-resources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.flowstate .fs-res { border: 1px solid var(--color-border, #999); border-radius: 6px; padding: 6px; text-align: center; }
+.flowstate .fs-res-label { font-weight: bold; text-transform: uppercase; font-size: .8em; letter-spacing: .05em; }
+.flowstate .fs-res-values { margin: 4px 0; }
+.flowstate .fs-res-sub { font-size: .8em; opacity: .75; }
+.flowstate .fs-warn { color: #c0392b; font-weight: bold; font-size: .85em; margin: 4px 0; }
+
+.flowstate .fs-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.flowstate .fs-stat-group { padding: 6px 10px; }
+.flowstate .fs-stat-group:first-child { padding-left: 0; }
+.flowstate .fs-stat-group:last-child { padding-right: 0; }
+.flowstate .fs-stat-group + .fs-stat-group { border-left: 2px solid var(--color-border, #999); }
+.flowstate .fs-stat-group h3 { text-align: center; text-transform: uppercase; letter-spacing: .08em; }
+.flowstate .fs-optional { padding-top: 6px; border-top: 1px dashed var(--color-border, #999); opacity: .9; }
+
+/* Martial equipment tables */
+.flowstate .fs-table { width: 100%; border-collapse: collapse; margin: 0 0 10px; font-size: .92em; }
+.flowstate .fs-table th { text-align: left; font-size: .8em; text-transform: uppercase; opacity: .7; border-bottom: 1px solid var(--color-border, #999); padding: 2px 4px; }
+.flowstate .fs-table td { padding: 3px 4px; vertical-align: middle; border-bottom: 1px solid rgba(0,0,0,.08); }
+.flowstate .fs-table tr.fs-dim td:not(:first-child) { opacity: .55; }
+.flowstate .fs-sub { font-size: .8em; opacity: .75; }
+.flowstate .fs-item-link { cursor: pointer; font-weight: 600; }
+.flowstate .fs-row-actions { white-space: nowrap; text-align: right; }
+.flowstate .fs-row-actions button, .flowstate .fs-toggle { width: auto; height: 24px; line-height: 22px; padding: 0 6px; margin: 0 1px; display: inline-block; }
+.flowstate .fs-toggle { opacity: .45; }
+.flowstate .fs-toggle.on { opacity: 1; background: rgba(224, 165, 38, .3); }
+.flowstate .fs-warnbtn { background: rgba(192, 57, 43, .25); }
+
+/* Weapon / armor builder sheets */
+.flowstate .fs-subtitle { opacity: .75; }
+.flowstate .fs-builder { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+.flowstate .fs-field { display: flex; flex-direction: column; gap: 2px; }
+.flowstate .fs-field label { font-size: .85em; font-weight: 600; }
+.flowstate .fs-checks-row { flex-direction: row; gap: 12px; align-items: center; grid-column: 1 / -1; }
+.flowstate .fs-checks-row label { font-weight: normal; }
+.flowstate .fs-kv { display: grid; grid-template-columns: 8em 1fr; gap: 3px 10px; align-items: center; }
+.flowstate .fs-kv > span:nth-child(odd) { font-weight: 600; opacity: .8; }
+.flowstate .fs-wear { width: 4em; }
+.flowstate .fs-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+.flowstate .fs-tag { display: inline-block; padding: 0 6px; border-radius: 999px; font-size: .8em; line-height: 1.6;
+  background: rgba(224, 165, 38, .18); border: 1px solid rgba(224, 165, 38, .5); cursor: help; }
+.flowstate .fs-material p { margin: 0; line-height: 1.4; }
+.flowstate .fs-material h3 small { font-weight: normal; opacity: .75; margin-left: 4px; }
+
+.flowstate-card .fs-followups { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+
+/* AP/RP pips in the combat tracker */
+.fs-tracker-points { display: flex; gap: 10px; font-size: 11px; line-height: 1; margin-top: 2px; }
+.fs-tracker-points .fs-points { display: inline-flex; align-items: center; gap: 2px; cursor: pointer; }
+.fs-tracker-points b { margin-right: 3px; font-weight: 600; opacity: .8; }
+.fs-pip { width: 7px; height: 7px; border-radius: 50%; border: 1px solid currentColor; opacity: .45; }
+.fs-pip.full { opacity: 1; }
+.fs-pip.ap.full { background: #e0a526; border-color: #e0a526; }
+.fs-pip.rp.full { background: #4a90d9; border-color: #4a90d9; }
+.flowstate .fs-stat { display: grid; grid-template-columns: 1fr auto 2.5em 4em; gap: 4px; align-items: center; margin-bottom: 4px; }
+.flowstate .fs-eff { font-weight: bold; text-align: center; }
+.flowstate .fs-roll-btn { padding: 0 4px; line-height: 24px; font-weight: bold; }
+
+.flowstate .fs-combat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.flowstate .fs-res-btn { margin-top: 4px; height: auto; line-height: 1.4; padding: 2px 6px; font-size: .85em; width: 100%; }
+.flowstate .fs-res-btn small { opacity: .7; }
+.flowstate .fs-combat-grid button { display: flex; flex-direction: column; align-items: center; line-height: 1.2; padding: 6px; height: auto; }
+.flowstate .fs-combat-grid small { opacity: .7; }
+.flowstate .fs-facts { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; font-size: .9em; align-items: center; }
+
+.flowstate .fs-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.flowstate .fs-cond { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.flowstate .fs-cond label { flex: 1; }
+.flowstate .fs-cond button { flex: 0 0 28px; height: 26px; padding: 0; }
+.flowstate .fs-check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 8px; }
+
+.flowstate .fs-items { list-style: none; margin: 0; padding: 0; }
+.flowstate .fs-items li { display: flex; align-items: center; gap: 6px; padding: 2px 0; }
+.flowstate .fs-items img { width: 24px; height: 24px; border: none; }
+.flowstate .fs-item-name { flex: 1; }
+.flowstate .fs-inline { width: auto; flex: 0 0 auto; height: 22px; line-height: 20px; padding: 0 6px; }
+.flowstate textarea { width: 100%; resize: vertical; }
+
+/* Dialog */
+.flowstate-dialog .form-group { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.flowstate-dialog .form-group label { flex: 1; }
+.flowstate-dialog .form-group input[type="text"], .flowstate-dialog .form-group select { flex: 1; }
+.flowstate-dialog .hint { font-size: .85em; opacity: .7; }
+
+/* Chat cards */
+.flowstate-card .fs-card-title { font-weight: bold; font-size: 1.1em; margin-bottom: 4px; }
+.flowstate-card .fs-roll-label { display: block; font-size: .85em; opacity: .8; margin-top: 4px; }
+.flowstate-card .fs-result { margin: 4px 0; }
+.flowstate-card .fs-notes { font-size: .8em; opacity: .75; }
+.flowstate-card .fs-target { border-top: 1px solid rgba(0,0,0,.2); margin-top: 6px; padding-top: 4px; }
+.flowstate-card .fs-target h4 { margin: 0; }
+.flowstate-card .fs-outcome { font-weight: bold; text-align: center; margin: 4px 0; padding: 2px; border-radius: 4px; }
+.flowstate-card .fs-hit { background: rgba(46, 204, 113, .25); }
+.flowstate-card .fs-crit { background: rgba(241, 196, 15, .35); }
+.flowstate-card .fs-miss { background: rgba(192, 57, 43, .2); }
+.flowstate-card .fs-list { margin: 0; padding-left: 18px; }
+.flowstate-card .fs-apply { margin-top: 4px; }
+.flowstate .fs-toggle[disabled] { opacity: .2; cursor: not-allowed; }
+.flowstate .fs-hands { font-weight: normal; opacity: .7; margin-left: 4px; }
+.flowstate .fs-tag-label { font-size: .75em; font-weight: 700; opacity: .6; margin-right: 2px; align-self: center; }
+.flowstate td > .fs-tags + .fs-tags { margin-top: 2px; }
+
+/* Weapons / Armor block: strong rules above, between, and below */
+.flowstate .fs-martial { border-top: 3px double var(--color-border, #999); border-bottom: 3px double var(--color-border, #999); padding: 8px 0 4px; }
+.flowstate .fs-martial .fs-block-title { border-bottom: 2px solid var(--color-border, #999); font-size: 1.1em; text-transform: uppercase; letter-spacing: .06em; padding-bottom: 2px; }
+.flowstate .fs-martial .fs-block-split { margin-top: 12px; padding-top: 10px; border-top: 2px solid var(--color-border, #999); }
+.flowstate .fs-martial .fs-block-title small { text-transform: none; letter-spacing: 0; }
+
+/* Attack exchange */
+/* Chat card buttons: wrap onto extra rows instead of squeezing, and let long labels wrap inside the button. */
+.flowstate-card .fs-exchange-buttons,
+.flowstate-card .fs-riposte-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5em, 1fr)); gap: 4px; margin-top: 6px; }
+.flowstate-card button, .chat-message .message-content .flowstate-card button { white-space: normal; overflow-wrap: anywhere; height: auto; min-height: 28px; line-height: 1.25; padding: 3px 6px; }
+.flowstate-card button i { margin-right: 2px; }
+.flowstate .fs-tier-state { display: flex; gap: 4px; align-items: center; }
+.flowstate-card .fs-waiting { font-style: italic; opacity: .7; text-align: center; width: 100%; padding: 2px 0; }
+
+/* ---- Actor sheet tabs ---- */
+.flowstate.actor .fs-sheet-header { padding: 10px 10px 0; flex-shrink: 0; }
+.flowstate.actor nav.tabs { flex-shrink: 0; margin: 8px 10px 0; border-bottom: 2px solid var(--color-border, #999); display: flex; gap: 2px; }
+.flowstate.actor nav.tabs > [data-tab] { padding: 4px 12px; border-radius: 6px 6px 0 0; font-weight: 600; opacity: .7; }
+.flowstate.actor nav.tabs > [data-tab].active { opacity: 1; background: rgba(224, 165, 38, .22); }
+.flowstate.actor .fs-tab { display: none; }
+.flowstate.actor .fs-tab.active { display: flex; flex-direction: column; gap: 10px; padding: 10px; flex: 1; min-height: 0; overflow-y: auto; }
+.flowstate.actor .fs-tab.active > * { flex-shrink: 0; }
+
+/* ---- Action List ---- */
+.flowstate .fs-action-list { list-style: none; margin: 0 0 6px; padding: 0; }
+.flowstate .fs-action { display: grid; grid-template-columns: 32px 1fr 1.2fr minmax(7em, max-content); align-items: center; gap: 8px; padding: 3px 0; border-bottom: 1px solid rgba(0,0,0,.08); }
+.flowstate .fs-action-btn { width: 30px; height: 26px; padding: 0; line-height: 24px; text-align: center; }
+.flowstate .fs-action-info { display: inline-block; opacity: .5; }
+.flowstate .fs-action-name { font-weight: 600; }
+.flowstate .fs-action-detail { font-size: .85em; opacity: .75; }
+.flowstate .fs-action-cost { font-size: .85em; text-align: right; font-weight: 600; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px; }
+.flowstate .fs-action.fs-dim { opacity: .5; }
+
+/* ---- Collapsible sections ---- */
+.flowstate details.fs-collapse { margin-bottom: 8px; }
+.flowstate details.fs-collapse > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px; user-select: none; }
+.flowstate details.fs-collapse > summary::-webkit-details-marker { display: none; }
+.flowstate details.fs-collapse > summary .fs-caret { font-size: .8em; transition: transform .15s ease; }
+.flowstate details.fs-collapse:not([open]) > summary .fs-caret { transform: rotate(-90deg); }
+.flowstate details.fs-collapse > summary button { margin-left: 4px; }
+.flowstate details.fs-collapse > summary .fs-hands { margin-left: 2px; }
+.flowstate .fs-pill.fs-move { background: rgba(224, 165, 38, .22); font-weight: 600; }
+.flowstate .fs-body .fs-cond { max-width: 260px; }
+
+/* ---- Progression & locks ---- */
+.flowstate .fs-creation { background: rgba(46, 204, 113, .25); }
+.flowstate .fs-finalize { font-weight: 600; }
+.flowstate .fs-points-banner { padding: 6px 10px; border-radius: 6px; background: rgba(46, 204, 113, .2); border: 1px solid rgba(46, 204, 113, .5); }
+.flowstate .fs-stat { grid-template-columns: 1fr auto auto 2.5em 4em; }
+.flowstate .fs-spend { width: 22px; height: 22px; line-height: 20px; padding: 0; font-weight: 700; }
+.flowstate .fs-locked { margin: 0; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,.08); font-size: .9em; opacity: .85; }
+.fs-forge-btn { flex: 0 0 100%; margin-top: 4px; }
+
+/* ---- New Character wizard ---- */
+.fs-new-character { flex: 0 0 100%; margin-bottom: 4px; font-weight: 600; }
+.flowstate.fs-wizard .window-content { padding: 0; display: flex; flex-direction: column; overflow: hidden; }
+.flowstate .fs-wizard-wrap { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.flowstate .fs-wizard-steps { display: flex; gap: 4px; padding: 8px 10px; border-bottom: 2px solid var(--color-border, #999); flex-shrink: 0; flex-wrap: wrap; }
+.flowstate .fs-wizard-step { padding: 3px 10px; border-radius: 999px; cursor: pointer; opacity: .6; font-weight: 600; }
+.flowstate .fs-wizard-step.active { opacity: 1; background: rgba(224, 165, 38, .25); }
+.flowstate .fs-wizard-step.done { opacity: .85; }
+.flowstate .fs-step-num { display: inline-block; min-width: 1.2em; text-align: center; }
+.flowstate .fs-wizard-body { flex: 1; min-height: 0; overflow-y: auto; padding: 10px 14px; display: flex; flex-direction: column; gap: 10px; }
+.flowstate .fs-wizard-body h2 { margin: 0; border: none; }
+.flowstate .fs-wizard-identity { display: flex; gap: 12px; align-items: flex-start; }
+.flowstate .fs-field-stack { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.flowstate .fs-field-stack label { display: flex; flex-direction: column; gap: 2px; font-weight: 600; }
+.flowstate .fs-inline-row { display: flex; gap: 6px; align-items: center; }
+.flowstate .fs-inline-row input { flex: 1; }
+.flowstate .fs-budget { margin: 0; padding: 6px 10px; border-radius: 6px; background: rgba(46, 204, 113, .15); }
+.flowstate .fs-budget.fs-over { background: rgba(192, 57, 43, .2); }
+.flowstate .fs-wizard-stat { display: grid; grid-template-columns: 1fr 4.5em 4.5em; gap: 4px; align-items: center; margin-bottom: 4px; }
+.flowstate .fs-wizard-item { border: 1px solid var(--color-border, #999); border-radius: 6px; padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; }
+.flowstate .fs-wizard-item header { display: flex; justify-content: space-between; align-items: center; }
+.flowstate .fs-wizard-effect { font-style: italic; }
+.flowstate .fs-wizard-errors { padding: 6px 10px; border-radius: 6px; background: rgba(192, 57, 43, .18); }
+.flowstate .fs-wizard-errors ul { margin: 4px 0 0; padding-left: 18px; }
+.flowstate .fs-wizard-footer { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-top: 2px solid var(--color-border, #999); flex-shrink: 0; }
+.flowstate .fs-wizard-footer button { flex: 0 0 auto; width: auto; padding: 0 14px; }
+.flowstate .fs-primary { font-weight: 700; background: rgba(224, 165, 38, .3); }
+
+/* ---- Skills tab ---- */
+.flowstate .fs-skill-points { display: flex; gap: 16px; padding: 6px 10px; border-radius: 6px; background: rgba(0,0,0,.06); }
+.flowstate .fs-skill-points .fs-has-points { color: #1e8449; font-weight: 700; }
+.flowstate .fs-skill-pickers { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; }
+.flowstate .fs-skill-pickers label { display: flex; flex-direction: column; gap: 2px; font-weight: 600; font-size: .9em; }
+.flowstate .fs-tree { display: flex; flex-direction: column; }
+.flowstate .fs-tier { border-left: 4px solid var(--color-border, #999); padding: 6px 0 8px 10px; }
+.flowstate .fs-tier + .fs-tier { border-top: 1px solid var(--color-border, #999); }
+.flowstate .fs-tier-owned { border-left-color: #2e9d5b; }
+.flowstate .fs-tier-next { border-left-color: #e0a526; background: rgba(224, 165, 38, .08); }
+.flowstate .fs-tier-locked { opacity: .6; }
+.flowstate .fs-tier-head { display: grid; grid-template-columns: 4.5em 1fr auto; gap: 8px; align-items: center; }
+.flowstate .fs-tier-num { font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.flowstate .fs-tier-summary { font-size: .88em; opacity: .85; }
+.flowstate .fs-tier-state { display: flex; gap: 4px; align-items: center; white-space: nowrap; }
+.flowstate .fs-tier-badge { font-size: .85em; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: rgba(46, 157, 91, .2); }
+.flowstate .fs-tier-badge.fs-muted { background: rgba(0,0,0,.08); }
+.flowstate .fs-unlock { width: auto; height: 26px; line-height: 24px; padding: 0 10px; font-weight: 700; background: rgba(224, 165, 38, .3); }
+.flowstate .fs-tier-entries { margin: 6px 0 0; padding-left: 18px; }
+.flowstate .fs-tier-entries > li { margin-bottom: 4px; line-height: 1.35; }
+.flowstate .fs-tier-entries ul { margin: 2px 0; padding-left: 16px; font-size: .95em; }
+
+/* Skills tab: automated tier badge, GM Skill Points field */
+.flowstate .fs-tier-badge.fs-auto { background: rgba(60, 130, 90, 0.18); color: #2f6b47; cursor: help; }
+.flowstate .fs-skill-points input[type="number"] { width: 4em; margin-left: 4px; }
+
+/* Energy cost badges (skill text and Action List): solid, high-contrast pills */
+.flowstate .fs-energy { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px;
+  font-size: .9em; font-weight: 700; line-height: 1.4; white-space: nowrap; vertical-align: baseline;
+  background: #f5b301; color: #1e1400; border: 1px solid #b07c00; box-shadow: 0 1px 0 rgba(0,0,0,.15); cursor: help; }
+.flowstate .fs-energy i { color: #1e1400; }
+.flowstate .fs-energy-value { font-weight: 800; background: #1e1400; color: #ffd24d; padding: 0 6px; border-radius: 999px; margin-left: 2px; }
+.flowstate .fs-tier-entries li > .fs-energy { margin-right: 4px; }
+
+/* Misc tab: Active Effects list */
+.flowstate .fs-effects { margin-top: 10px; }
+.flowstate .fs-effect-list { list-style: none; margin: 0; padding: 0; }
+.flowstate .fs-effect { display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,.08); }
+.flowstate .fs-effect img { width: 28px; height: 28px; border: none; }
+.flowstate .fs-effect-text { display: flex; flex-direction: column; }
+.flowstate .fs-effect-text span { font-size: .85em; opacity: .8; }
+
+/* Inline energy mark in dialogs */
+.flowstate-dialog .fs-energy-inline, .fs-energy-inline { display: inline-block; padding: 0 6px; border-radius: 999px; font-weight: 700;
+  background: #f5b301; color: #1e1400; border: 1px solid #b07c00; font-size: .9em; }
+
+/* Damage outcome folded into the damage card */
+.flowstate-card .fs-damage-taken { border-top: 1px solid rgba(0,0,0,.2); margin-top: 6px; padding-top: 4px; font-weight: bold; }
+
+/* Brawling rows (Shatter, Redirect, Combo / Flow Like Water) */
+.flowstate-card .fs-brawl-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5em, 1fr)); gap: 4px; margin-top: 6px; }
+
+/* Chat cards waiting on a choice: attacker (default red) / defender (default blue), colors set per client in settings */
+:root { --fs-attacker-color: #c0392b; --fs-defender-color: #2e6fd1; }
+/* Tint with an inset shadow so Foundry's own message background (texture/colour) stays underneath. */
+.fs-choice-attacker { border-left: 5px solid var(--fs-attacker-color); box-shadow: inset 0 0 0 1000px color-mix(in srgb, var(--fs-attacker-color) 14%, transparent); }
+.fs-choice-defender { border-left: 5px solid var(--fs-defender-color); box-shadow: inset 0 0 0 1000px color-mix(in srgb, var(--fs-defender-color) 14%, transparent); }
+.fs-choice-both { border-left: 5px solid var(--fs-attacker-color); border-right: 5px solid var(--fs-defender-color);
+  box-shadow: inset 0 0 0 1000px color-mix(in srgb, color-mix(in srgb, var(--fs-attacker-color) 50%, var(--fs-defender-color)) 12%, transparent); }
+
+/* Wizard: starting skill trees */
+.fs-wizard .fs-wizard-trees { list-style: none; margin: 6px 0; padding: 0; }
+.fs-wizard .fs-wizard-tree { border-bottom: 1px solid rgba(0,0,0,.1); padding: 4px 0; }
+.fs-wizard .fs-wizard-tree.fs-picked .fs-wizard-tree-name { font-weight: 700; }
+.fs-wizard .fs-wizard-tree-head { display: grid; grid-template-columns: 1fr auto auto auto; gap: 6px; align-items: center; }
+.fs-wizard .fs-wizard-tree-name { cursor: pointer; }
+.fs-wizard .fs-wizard-tree-tiers { margin: 4px 0 2px 18px; padding: 0; list-style: none; font-size: .9em; }
+.fs-wizard .fs-wizard-tree-tiers li { opacity: .75; }
+.fs-wizard .fs-wizard-tree-tiers li.fs-owned { opacity: 1; }
+
+/* Token Action HUD: rows the Action List shows greyed out. */
+.tah-action-button.fs-tah-disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Magic equipment: Affix descriptions under each slot. */
+.flowstate .fs-affix-text { margin: 0 0 6px; font-size: 0.85em; opacity: 0.85; }
+.flowstate .fs-affixes h3 small { font-weight: normal; opacity: 0.7; }
+
+/* Collapsed "Ally help" row on attack cards. */
+.flowstate-card .fs-ally-row { margin-top: 4px; }
+.flowstate-card .fs-ally-row .fs-ally-help { width: 100%; }

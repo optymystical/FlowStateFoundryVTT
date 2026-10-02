@@ -1,0 +1,49 @@
+<section class="tab fs-tab {{tab.cssClass}}" data-tab="main" data-group="primary">
+  <section class="fs-resources">
+    <div class="fs-res fs-hp">
+      <span class="fs-res-label">HP</span>
+      <div class="fs-res-values"><input type="number" name="system.hp.value" value="{{system.hp.value}}" {{#unless editable}}disabled{{/unless}}> / {{system.hp.max}}</div>
+      <div class="fs-res-sub">Pain Threshold {{system.hp.pain}}{{#if system.hp.overkill}} · Overkill {{system.hp.overkill}}{{/if}}</div>
+      {{#if hpState}}<div class="fs-warn">{{hpState}}</div>{{/if}}
+    </div>
+    <div class="fs-res">
+      <span class="fs-res-label">Max HP lost</span>
+      <div class="fs-res-values"><input type="number" name="system.hp.lost" value="{{system.hp.lost}}" {{#unless editable}}disabled{{/unless}}></div>
+      <div class="fs-res-sub">Rest heals {{d.restHeal}}</div>
+    </div>
+    <div class="fs-res">
+      <span class="fs-res-label">Energy</span>
+      <div class="fs-res-values"><input type="number" name="system.energy.value" value="{{system.energy.value}}" {{#unless editable}}disabled{{/unless}}> / {{system.energy.max}}</div>
+      <button type="button" class="fs-res-btn" data-action="recoverEnergy" data-tooltip="Spend 1 AP to recover {{d.energyRecover}} Energy"><i class="fa-solid fa-bolt"></i> Recover +{{d.energyRecover}} <small>1 AP</small></button>
+    </div>
+  </section>
+
+  {{#if canSpendStats}}
+  <div class="fs-points-banner"><i class="fa-solid fa-gift"></i> {{statPointsLabel}} to spend. Use the <strong>+</strong> buttons (outside combat).</div>
+  {{/if}}
+  <section class="fs-stats">
+    {{#each statGroups}}
+    <div class="fs-stat-group">
+      <h3>{{name}}</h3>
+      {{#each stats}}
+      <div class="fs-stat">
+        <label for="fs-{{key}}">{{label}}</label>
+        <input id="fs-{{key}}" type="number" name="system.stats.{{key}}" value="{{base}}" data-tooltip="Invested points" {{#unless @root.buildOpen}}disabled{{/unless}}>
+        {{#if @root.canSpendStats}}<button type="button" class="fs-spend" data-action="spendStat" data-stat="{{key}}" data-tooltip="Spend 1 stat point on {{label}}">+</button>{{else}}<span></span>{{/if}}
+        <span class="fs-eff" data-tooltip="With Stat Bonus">{{value}}</span>
+        <button type="button" class="fs-roll-btn" data-action="rollStat" data-stat="{{key}}" data-tooltip="Stat check · Min {{min}}">d{{die}}</button>
+      </div>
+      {{/each}}
+    </div>
+    {{/each}}
+  </section>
+
+  <section class="fs-summary">
+    <div class="fs-facts">
+      <span data-tooltip="Every stat +1 per 5 skill points"><strong>Stat Bonus</strong> +{{d.bonus}}</span>
+      <span><strong>Total stats</strong> {{d.totalStats}}</span>
+      <span><strong>Attack</strong> d{{d.attackDie}}</span>
+      <span><strong>Dodge</strong> 2d{{d.dodgeDie}}</span>
+    </div>
+  </section>
+</section>

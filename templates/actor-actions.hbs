@@ -1,0 +1,19 @@
+<section class="tab fs-tab {{tab.cssClass}}" data-tab="actions" data-group="primary">
+  {{#each actionGroups}}
+  <details class="fs-collapse fs-action-group" data-section="{{key}}" {{#if open}}open{{/if}}>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> {{name}}</summary>
+    <ul class="fs-action-list">
+      {{#each actions}}
+      <li class="fs-action {{#if disabled}}fs-dim{{/if}}" {{#if itemId}}data-item-id="{{itemId}}"{{/if}} {{#if tooltip}}data-tooltip="{{tooltip}}"{{/if}}>
+        {{#if action}}
+        <button type="button" class="fs-action-btn" data-action="{{action}}" {{#if stat}}data-stat="{{stat}}"{{/if}} {{#if rollLabel}}data-label="{{rollLabel}}"{{/if}} {{#if condition}}data-condition="{{condition}}"{{/if}} {{#if op}}data-op="{{op}}"{{/if}} {{#if grapple}}data-grapple="true"{{/if}} {{#if disabled}}disabled{{/if}}><i class="{{icon}}"></i></button>
+        {{else}}<span class="fs-action-btn fs-action-info"><i class="{{icon}}"></i></span>{{/if}}
+        <span class="fs-action-name">{{label}}</span>
+        <span class="fs-action-detail">{{detail}}</span>
+        <span class="fs-action-cost">{{cost}}{{#if energy}} <span class="fs-energy" data-tooltip="{{energyTip}} · free outside combat"><i class="fa-solid fa-bolt"></i> {{energy}}</span>{{/if}}</span>
+      </li>
+      {{/each}}
+    </ul>
+  </details>
+  {{/each}}
+</section>

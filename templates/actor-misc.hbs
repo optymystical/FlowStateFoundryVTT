@@ -1,0 +1,62 @@
+<section class="tab fs-tab {{tab.cssClass}}" data-tab="misc" data-group="primary">
+  <section class="fs-body">
+    <h3>Body</h3>
+    <div class="fs-cond"><label>Size</label>
+      {{#if sizeEditable}}<select name="system.size">{{selectOptions sizeChoices selected=system.size}}</select>
+      {{else}}<span class="fs-size-fixed" data-tooltip="Set by Ancestry (not yet in the system)">Size {{system.size}}</span>{{/if}}</div>
+    <div class="fs-facts">
+      <span><strong>Max move</strong> {{d.size.maxMove}} ft/AP</span>
+      <span><strong>Melee range</strong> {{d.size.melee}} ft</span>
+    </div>
+    {{#if showOptional}}
+    <div class="fs-facts fs-optional">
+      <span><strong>Space</strong> {{d.size.space}}</span>
+      <span><strong>Rations/day</strong> {{d.size.rations}}</span>
+      <span><strong>Terminal velocity</strong> {{d.size.terminal}} rd</span>
+      <label><strong>Lift</strong> <input type="number" name="system.lift" value="{{system.lift}}" {{#unless editable}}disabled{{/unless}}></label>
+      <label><input type="checkbox" name="system.magical" {{checked system.magical}} {{#unless editable}}disabled{{/unless}}> Fully Magical</label>
+      <label><input type="checkbox" name="system.supernatural" {{checked system.supernatural}} {{#unless editable}}disabled{{/unless}}> Supernatural</label>
+    </div>
+    {{/if}}
+  </section>
+
+  <div class="fs-two-col">
+    <section class="fs-conditions">
+      <h3>Conditions</h3>
+      <div class="fs-cond"><label>Ignite</label><input type="number" name="system.conditions.ignite" value="{{system.conditions.ignite}}" {{#unless editable}}disabled{{/unless}}>
+        <button type="button" data-action="clearCondition" data-condition="ignite" data-tooltip="Put out (2 AP)"><i class="fa-solid fa-fire-extinguisher"></i></button></div>
+      <div class="fs-cond"><label>Stain</label><input type="number" name="system.conditions.stain" value="{{system.conditions.stain}}" {{#unless editable}}disabled{{/unless}}>
+        <button type="button" data-action="clearCondition" data-condition="stain" data-tooltip="Remove (3 AP)"><i class="fa-solid fa-hand-sparkles"></i></button></div>
+      <div class="fs-cond"><label>Slow</label><input type="number" name="system.conditions.slow" value="{{system.conditions.slow}}" {{#unless editable}}disabled{{/unless}}></div>
+      <div class="fs-cond"><label>Haste</label><input type="number" name="system.conditions.haste" value="{{system.conditions.haste}}" {{#unless editable}}disabled{{/unless}}></div>
+      <p class="hint">Ignite/Stain tick and Slow/Haste decay by {{system.hp.pain}}÷2 at end of turn.</p>
+      <div class="fs-cond"><label>Days without rest</label><input type="number" name="system.daysWithoutRest" value="{{system.daysWithoutRest}}" {{#unless editable}}disabled{{/unless}}></div>
+      {{#if system.exhausted}}<div class="fs-warn">Disadvantage on all rolls</div>{{/if}}
+      <button type="button" data-action="rest"><i class="fa-solid fa-bed"></i> 8 Hour Rest</button>
+    </section>
+
+    <section class="fs-senses">
+      <h3>Senses</h3>
+      <div class="fs-cond"><label>Sight</label><select name="system.senses.sight" {{#unless editable}}disabled{{/unless}}>{{selectOptions senseChoices selected=system.senses.sight}}</select></div>
+      <div class="fs-cond"><label>Hearing</label><select name="system.senses.hearing" {{#unless editable}}disabled{{/unless}}>{{selectOptions senseChoices selected=system.senses.hearing}}</select></div>
+      <div class="fs-cond"><label>Smell</label><select name="system.senses.smell" {{#unless editable}}disabled{{/unless}}>{{selectOptions senseChoices selected=system.senses.smell}}</select></div>
+    </section>
+  </div>
+
+  <section class="fs-effects">
+    <h3>Active Effects</h3>
+    {{#if activeEffects.length}}
+    <ul class="fs-effect-list">
+      {{#each activeEffects}}
+      <li class="fs-effect">
+        <img src="{{img}}" alt="">
+        <div class="fs-effect-text"><strong>{{name}}</strong>{{#if detail}}<span>{{detail}}</span>{{/if}}</div>
+        {{#if ../isGM}}<button type="button" class="fs-inline" data-action="endEffect" data-status="{{status}}" data-effect-id="{{effectId}}" data-release="{{release}}" {{#if markedBy}}data-marked="1"{{/if}} {{#if parryKey}}data-parry-key="{{parryKey}}"{{/if}} {{#if shroudOn}}data-shroud-on="1"{{/if}} data-tooltip="GM: end this now"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="hint">Nothing is affecting this character right now. Statuses like Psych Up, Calm Down, Grappled, and Prone show up here while they apply.</p>
+    {{/if}}
+  </section>
+</section>

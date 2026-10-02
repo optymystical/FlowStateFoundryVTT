@@ -1,0 +1,71 @@
+<div class="fs-sheet">
+  <header class="fs-header">
+    <img class="fs-portrait fs-small" src="{{item.img}}" alt="{{item.name}}" data-action="editImage" data-edit="img">
+    <div class="fs-header-main">
+      <input class="fs-name" type="text" name="name" value="{{item.name}}" {{#unless nameEditable}}disabled{{/unless}}>
+      {{#if p.valid}}<div class="fs-subtitle">Foci · {{p.label}}</div>{{/if}}
+    </div>
+  </header>
+
+  {{#if lockedNote}}<p class="fs-locked"><i class="fa-solid fa-lock"></i> {{lockedNote}}</p>{{/if}}
+  <section class="fs-builder">
+    <div class="fs-field"><label>Type</label>
+      <select name="system.fociType" {{#unless editable}}disabled{{/unless}}>
+        {{#each typeGroups}}<optgroup label="{{label}}">{{selectOptions options selected=../system.fociType}}</optgroup>{{/each}}
+      </select></div>
+    <div class="fs-field"><label>Grade</label>
+      <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
+    <div class="fs-field fs-checks-row">
+      <label><input type="checkbox" name="system.attuned" {{checked system.attuned}} {{#unless stateEditable}}disabled{{/unless}}> Attuned</label>
+      <label><input type="checkbox" name="system.equipped" {{checked system.equipped}} {{#unless stateEditable}}disabled{{/unless}}> Held</label>
+      <label><input type="checkbox" name="system.twoHanded" {{checked system.twoHanded}} {{#unless stateEditable}}disabled{{/unless}}> Two hands</label>
+    </div>
+  </section>
+
+  {{#if p.valid}}
+  <section class="fs-profile">
+    <h3>Profile {{#unless owned}}<small>(previewed at the Grade cap)</small>{{/unless}}</h3>
+    <div class="fs-kv">
+      <span>Casting form</span><span>{{p.formLabel}} — {{p.formText}}</span>
+      <span>Scaling</span><span>{{scalingLabel}} {{p.scaling}} (Grade {{p.grade}} caps it at {{cap}})</span>
+      <span>Cast AP</span><span>{{p.castAP}}</span>
+      <span>Threshold Reduction</span><span>{{#if trLabel}}{{trLabel}}{{else}}—{{/if}}</span>
+      <span>Durability</span><span>{{system.durability.value}} / {{system.durability.max}} <small>(wear <input type="number" name="system.wear" value="{{system.wear}}" min="0" {{#unless editable}}disabled{{/unless}}>)</small></span>
+      <span>Limit</span><span>{{p.limit}}</span>
+      <span>Hands</span><span>{{#if p.twoHandCast}}Two hands to cast{{else}}One hand (a held item){{/if}}</span>
+    </div>
+    <p class="hint">Attuning takes an hour (not in combat); only one Foci can be attuned at a time. Affixes and passives only work while attuned, for spells cast through it.</p>
+  </section>
+
+  {{#if p.effect}}
+  <section class="fs-material"><h3>Effect</h3><p>{{p.effect}}</p></section>
+  {{/if}}
+  {{#if isRing}}
+  <div class="fs-field"><label>Chosen Core spell (Ring)</label><input type="text" name="system.chosenSpell" value="{{system.chosenSpell}}" {{#unless stateEditable}}disabled{{/unless}}></div>
+  {{/if}}
+
+  <section class="fs-affixes">
+    <h3>Affixes <small>{{p.affixes.length}} / {{p.affixSlots}}{{#if p.affixPlus}} · effects doubled (+){{/if}}</small></h3>
+    {{#each slots}}
+    <div class="fs-field"><label>Slot {{n}}</label>
+      <select data-affix-slot="{{n}}" {{#unless ../editable}}disabled{{/unless}}>
+        <option value="">— None —</option>
+        {{#each ../affixChoices}}<optgroup label="{{label}}">{{selectOptions options selected=../value}}</optgroup>{{/each}}
+      </select></div>
+    {{#if info}}<p class="fs-affix-text"><strong>{{info.label}}:</strong> {{info.foci}}</p>{{/if}}
+    {{else}}
+    <p class="hint">This Foci type can't hold Affixes.</p>
+    {{/each}}
+    {{#if hasTourmaline}}
+    <div class="fs-field"><label>Tourmaline element</label><select name="system.element" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions elements selected=system.element}}</select></div>
+    {{/if}}
+  </section>
+  {{else}}
+  <div class="fs-warn">{{p.error}}</div>
+  {{/if}}
+
+  <section>
+    <h3>Notes</h3>
+    <textarea name="system.description" rows="4" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+  </section>
+</div>

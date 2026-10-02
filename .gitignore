@@ -1,0 +1,5 @@
+node_modules/
+dev/node_modules/
+dev/tests/.tm-harness.mjs
+.DS_Store
+Thumbs.db

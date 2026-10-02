@@ -1,0 +1,130 @@
+<section class="tab fs-tab {{tab.cssClass}}" data-tab="equipment" data-group="primary">
+  <details class="fs-collapse" data-section="weapons" {{#if open.weapons}}open{{/if}}>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Weapons <small class="fs-hands">{{handsLabel}}</small> {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="weapon" data-tooltip="New weapon"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
+    <table class="fs-table">
+      <thead><tr><th></th><th>Weapon</th><th>Damage</th><th>AP</th><th>Tags</th><th>Dur.</th><th></th></tr></thead>
+      <tbody>
+      {{#each weapons}}
+      <tr data-item-id="{{id}}" class="{{#unless system.held}}fs-dim{{/unless}}">
+        <td>
+          {{#if unarmed}}
+          <button type="button" class="fs-toggle {{#if system.equipped}}on{{/if}}" data-action="toggleField" data-field="equipped" {{#if fist1Blocked}}disabled data-tooltip="No free hand"{{else}}data-tooltip="First hand {{#if system.equipped}}raised{{else}}free{{/if}}"{{/if}}><i class="fa-solid fa-hand-fist"></i></button>
+          {{else}}
+          <button type="button" class="fs-toggle {{#if system.equipped}}on{{/if}}" data-action="toggleField" data-field="equipped" data-tooltip="{{equipTip}}"><i class="fa-solid fa-hand-fist"></i></button>
+          {{/if}}
+        </td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if unarmed}}Light or Heavy, chosen per attack{{#if grappling}} · <span class="fs-warn">{{grappling}}</span>{{/if}}{{else}}{{#if profile.valid}}{{profile.label}}{{#if typesText}} · <span data-tooltip="Multi-type (Weapon Master)">{{typesText}}</span>{{/if}} · G{{system.grade}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}{{/if}}</div></td>
+        <td>{{formula}}<div class="fs-sub">{{damageType}}</div></td>
+        <td>{{ap}}{{#if roundsText}}<div class="fs-sub">{{roundsText}}</div>{{/if}}</td>
+        <td>{{#each tagGroups}}<div class="fs-tags">{{#if label}}<span class="fs-tag-label">{{label}}</span>{{/if}}{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}">{{label}}</span>{{/each}}</div>{{/each}}</td>
+        <td>{{#unless unarmed}}{{system.durability.value}}/{{system.durability.max}}{{/unless}}</td>
+        <td class="fs-row-actions">
+          {{#if unarmed}}
+          <button type="button" class="fs-toggle {{#if system.secondHand}}on{{/if}}" data-action="toggleField" data-field="secondHand" {{#if fist2Blocked}}disabled data-tooltip="No free hand"{{else}}data-tooltip="Second hand {{#if system.secondHand}}raised{{else}}free{{/if}}"{{/if}}><i class="fa-solid fa-hand-fist"></i></button>
+          {{else}}{{#if canTwoHand}}<button type="button" class="fs-toggle {{#if system.twoHanded}}on{{/if}}" data-action="toggleField" data-field="twoHanded" {{#if twoHandBlocked}}disabled data-tooltip="Another weapon is held"{{else}}data-tooltip="Two-handed (doubles damage, Cleave, Pierce; +5× Knockback)"{{/if}}>2H</button>{{/if}}{{/if}}
+          {{#if needsReload}}
+          <button type="button" class="fs-warnbtn" data-action="reload" data-tooltip="Reload ({{profile.reloadRP}} RP)"><i class="fa-solid fa-rotate"></i></button>
+          {{else}}{{#if system.held}}
+          <button type="button" data-action="weaponAttack" data-tooltip="Attack"><i class="fa-solid fa-khanda"></i></button>
+          {{/if}}{{/if}}
+          {{#unless unarmed}}{{#if ../editable}}<button type="button" data-action="deleteItem" data-tooltip="Drop or delete"><i class="fa-solid fa-trash"></i></button>{{/if}}{{/unless}}
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="7" class="hint">No weapons yet.</td></tr>
+      {{/each}}
+      </tbody>
+    </table>
+
+  </details>
+  <details class="fs-collapse" data-section="armor" {{#if open.armor}}open{{/if}}>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Armor {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="armor" data-tooltip="New armor"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
+    <table class="fs-table">
+      <thead><tr><th></th><th>Armor</th><th>Limit</th><th>Dur.</th><th>Stealth / Move</th><th></th></tr></thead>
+      <tbody>
+      {{#each armor}}
+      <tr data-item-id="{{id}}" class="{{#unless system.equipped}}fs-dim{{/unless}}">
+        <td><button type="button" class="fs-toggle {{#if system.equipped}}on{{/if}}" data-action="toggleField" data-field="equipped" data-tooltip="{{#if system.equipped}}Worn{{else}}Not worn{{/if}}"><i class="fa-solid fa-shirt"></i></button></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · G{{system.grade}} · ×{{profile.mult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
+        <td>{{profile.limit}}</td>
+        <td>{{system.durability.value}}/{{system.durability.max}}{{#if system.broken}} <span class="fs-warn">broken</span>{{/if}}</td>
+        <td class="fs-sub">{{#if profile.valid}}{{#if profile.stealthDis}}Dis ×{{profile.stealthDis}}{{else}}—{{/if}} / {{profile.moveAP}} AP{{/if}}</td>
+        <td class="fs-row-actions">
+          {{#if @root.isGM}}{{#if system.wear}}<button type="button" data-action="repair" data-tooltip="Repair to full"><i class="fa-solid fa-hammer"></i></button>{{/if}}{{/if}}
+          {{#if ../editable}}<button type="button" data-action="deleteItem" data-tooltip="Drop or delete"><i class="fa-solid fa-trash"></i></button>{{/if}}
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="6" class="hint">No armor yet. Only one can be worn at a time.</td></tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </details>
+  <details class="fs-collapse" data-section="foci" {{#if open.foci}}open{{/if}}>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Foci {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="foci" data-tooltip="New Foci"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
+    <table class="fs-table">
+      <thead><tr><th></th><th>Foci</th><th>Cast</th><th>TR</th><th>Affixes</th><th>Dur.</th><th></th></tr></thead>
+      <tbody>
+      {{#each foci}}
+      <tr data-item-id="{{id}}" class="{{#unless system.attuned}}fs-dim{{/unless}}">
+        <td>
+          <button type="button" class="fs-toggle {{#if system.attuned}}on{{/if}}" data-action="toggleField" data-field="attuned" data-tooltip="{{#if system.attuned}}Attuned (click to unattune){{else}}Attune (1 hour, not in combat; one Foci at a time){{/if}}"><i class="fa-solid fa-link"></i></button>
+          <button type="button" class="fs-toggle {{#if system.equipped}}on{{/if}}" data-action="toggleField" data-field="equipped" data-tooltip="{{holdTip}}"><i class="fa-solid fa-hand"></i></button>
+        </td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · G{{system.grade}} · {{statLabel}} {{profile.scaling}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
+        <td>{{profile.castAP}} AP</td>
+        <td>{{trText}}</td>
+        <td class="fs-sub">{{#if affixText}}{{affixText}}{{else}}—{{/if}}{{#if profile.affixPlus}} (+){{/if}}</td>
+        <td>{{system.durability.value}}/{{system.durability.max}}{{#if system.broken}} <span class="fs-warn">broken</span>{{/if}}</td>
+        <td class="fs-row-actions">
+          <button type="button" class="fs-toggle {{#if system.twoHanded}}on{{/if}}" data-action="toggleField" data-field="twoHanded" {{#if twoHandBlocked}}disabled data-tooltip="Another item is held"{{else}}data-tooltip="Held in two hands{{#if profile.twoHandCast}} (needed to cast with it){{/if}}"{{/if}}>2H</button>
+          {{#if @root.isGM}}{{#if system.wear}}<button type="button" data-action="repair" data-tooltip="Repair to full"><i class="fa-solid fa-hammer"></i></button>{{/if}}{{/if}}
+          {{#if ../editable}}<button type="button" data-action="deleteItem" data-tooltip="Drop or delete"><i class="fa-solid fa-trash"></i></button>{{/if}}
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="7" class="hint">No Foci yet. Attune to one (1 hour) and hold it to cast through it.</td></tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </details>
+  <details class="fs-collapse" data-section="shrouds" {{#if open.shrouds}}open{{/if}}>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Shrouds {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="shroud" data-tooltip="New Shroud"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
+    <table class="fs-table">
+      <thead><tr><th></th><th>Shroud</th><th>Limit</th><th>Dur.</th><th>Affixes</th><th></th></tr></thead>
+      <tbody>
+      {{#each shrouds}}
+      <tr data-item-id="{{id}}" class="{{#unless system.attuned}}fs-dim{{/unless}}">
+        <td><button type="button" class="fs-toggle {{#if system.attuned}}on{{/if}}" data-action="toggleField" data-field="attuned" data-tooltip="{{#if system.attuned}}Melded (click to unattune){{else}}Attune (1 hour, not in combat; one Shroud at a time){{/if}}"><i class="fa-solid fa-link"></i></button></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · G{{system.grade}} · ×{{profile.mult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
+        <td>{{profile.limit}}</td>
+        <td>{{system.durability.value}}/{{system.durability.max}}</td>
+        <td class="fs-sub">{{#if affixText}}{{affixText}}{{else}}—{{/if}}{{#if profile.affixPlus}} (+){{/if}}</td>
+        <td class="fs-row-actions">
+          {{#if @root.isGM}}{{#if system.wear}}<button type="button" data-action="repair" data-tooltip="Restore to full"><i class="fa-solid fa-hammer"></i></button>{{/if}}{{/if}}
+          {{#if ../editable}}<button type="button" data-action="deleteItem" data-tooltip="Drop or delete"><i class="fa-solid fa-trash"></i></button>{{/if}}
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="6" class="hint">No Shrouds yet. One can be attuned (melded) at a time; it soaks before armor.</td></tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </details>
+  <details class="fs-collapse" data-section="misc" {{#if open.misc}}open{{/if}}>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Misc Items {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="gear" data-tooltip="New item"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
+    <ul class="fs-items">
+      {{#each gear}}
+      <li data-item-id="{{id}}">
+        <img src="{{img}}" alt="">
+        <span class="fs-item-name">{{name}}</span>
+        <span class="fs-item-qty">×{{system.quantity}}</span>{{#if ammoNote}}<span class="fs-sub">{{ammoNote}}</span>{{/if}}
+        <button type="button" class="fs-inline" data-action="editItem"><i class="fa-solid fa-pen"></i></button>
+        {{#if ../editable}}<button type="button" class="fs-inline" data-action="deleteItem"><i class="fa-solid fa-trash"></i></button>{{/if}}
+      </li>
+      {{else}}
+      <li class="hint">No misc items yet.</li>
+      {{/each}}
+    </ul>
+  </details>
+</section>

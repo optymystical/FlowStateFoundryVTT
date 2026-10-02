@@ -1,0 +1,58 @@
+<section class="tab fs-tab {{tab.cssClass}}" data-tab="skills" data-group="primary">
+  <div class="fs-skill-points">
+    {{#if skillView.gmPoints}}<label data-tooltip="GM: total Skill Points (spent + unspent)"><strong>Skill Points</strong> <input type="number" name="system.skillPoints" value="{{system.skillPoints}}" min="0" step="1"></label>
+    {{else}}<span><strong>Skill Points</strong> {{skillView.points.total}}</span>{{/if}}
+    <span><strong>Spent</strong> {{skillView.points.spent}}</span>
+    <span class="{{#if skillView.points.unspent}}fs-has-points{{/if}}"><strong>Unspent</strong> {{skillView.points.unspent}}</span>
+  </div>
+
+  <div class="fs-skill-pickers">
+    <label>Archetype
+      <select class="fs-skill-arch">
+        {{#each skillView.archetypes}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}{{#if placeholder}} (coming soon){{/if}}</option>{{/each}}
+      </select>
+    </label>
+    {{#unless skillView.placeholder}}
+    <label>Skill tree
+      <select class="fs-skill-tree">
+        {{#each skillView.trees}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    {{/unless}}
+  </div>
+
+  {{#if skillView.placeholder}}
+  <p class="hint">{{skillView.placeholder}}</p>
+  {{else}}
+  {{#if skillView.lockedNote}}<p class="hint">{{skillView.lockedNote}}</p>{{/if}}
+  {{#if skillView.weaponNote}}<p class="hint fs-weapon-note"><i class="fa-solid fa-khanda"></i> {{skillView.weaponNote}}</p>{{/if}}
+
+  {{#with skillView.tree}}
+  <div class="fs-tree">
+    {{#each tiers}}
+    <section class="fs-tier {{#if owned}}fs-tier-owned{{/if}} {{#if isNext}}fs-tier-next{{/if}} {{#if locked}}fs-tier-locked{{/if}}">
+      <header class="fs-tier-head">
+        <span class="fs-tier-num">Tier {{tier}}</span>
+        <span class="fs-tier-summary">{{summary}}</span>
+        <span class="fs-tier-state">
+          {{#if automated}}<span class="fs-tier-badge fs-auto" data-tooltip="{{automated}}"><i class="fa-solid fa-wand-magic-sparkles"></i> {{automatedLabel}}</span>{{/if}}
+          {{#if free}}<span class="fs-tier-badge">Free</span>
+          {{else if owned}}<span class="fs-tier-badge"><i class="fa-solid fa-check"></i> Unlocked</span>
+            {{#if canLower}}<button type="button" class="fs-inline" data-action="lowerTier" data-tree="{{../id}}" data-tooltip="GM: remove this tier (refunds {{cost}} SP)"><i class="fa-solid fa-rotate-left"></i></button>{{/if}}
+          {{else if isNext}}<button type="button" class="fs-unlock" data-action="unlockTier" data-tree="{{../id}}" data-tooltip="{{reason}}" {{#unless canUnlock}}disabled{{/unless}}><i class="fa-solid fa-lock-open"></i> Unlock · {{cost}} SP</button>
+          {{else}}<span class="fs-tier-badge fs-muted" data-tooltip="{{reason}}"><i class="fa-solid fa-lock"></i> {{cost}} SP</span>{{/if}}
+        </span>
+      </header>
+      <ul class="fs-tier-entries">
+        {{#each entries}}
+        <li>{{#if name}}<strong>{{name}}:</strong> {{/if}}{{#if energy}}<span class="fs-energy" data-tooltip="{{energy.tip}}"><i class="fa-solid fa-bolt"></i> {{energy.formula}}{{#if energy.value}} <span class="fs-energy-value">{{energy.value}}</span>{{/if}}</span> {{/if}}{{text}}
+          {{#if sub}}<ul>{{#each sub}}<li>{{this}}</li>{{/each}}</ul>{{/if}}
+        </li>
+        {{/each}}
+      </ul>
+    </section>
+    {{/each}}
+  </div>
+  {{/with}}
+  {{/if}}
+</section>

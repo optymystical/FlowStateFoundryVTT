@@ -1,0 +1,422 @@
+# Flow State — Foundry VTT system (v0.18.0, core rules + Martial equipment + skill trees)
+
+Ports the core rules from "Flow State - Rules" into Foundry VTT (v13 and later; built for v14). Includes Martial weapons and armor from "Flow State - Equipment". Mental (Icons/Forms) and Magic (Foci, Shrouds, Affixes) aren't ported yet, and no skill trees are.
+
+## Install
+1. Unzip so that the folder `flowstate/` sits in `{Foundry User Data}/Data/systems/`.
+2. Restart Foundry, create a world, and pick **Flow State** as the system.
+
+## What's automated
+| Rule | Where |
+|---|---|
+| Stat Bonus (+1 per 5 SP, applied everywhere), stat check d(2×stat), Stat Minimum floor (on by default outside combat) | Stat buttons |
+| Attack d(SP) vs dodge 2d(SP/2); ties hit; crit at ≥ 2× dodge. With targets, it runs as a step-by-step exchange in chat (see below) | Attack buttons |
+| Advantage/Disadvantage stacks: one extra die per stack, keep the best or worst (dodge keeps 2) | Every roll dialog |
+| Strengthened/Weakened: additive +50% or multiplicative ×0.5, rounded down; crit +2; size modifier on physical attacks; Arcane Weakened vs non-magical targets | Attack damage |
+| Sneak attack: half stealth (Adv on the attack, Dis on the dodge) and full stealth (no dodge; crit at ≥ dodge die, double crit at ≥ 2×) | Attack dialog |
+| Prone: Dis on dodge, Adv on melee attacks against the prone creature | Automatic from the Prone status |
+| Push: 5×Str force, run through Force resolution (Lift, then ½ Max HP, then ÷10) | Attack dialog option |
+| HP (Con+Will+Build)×(Size×3), Max HP lost, Pain Threshold, Overkill, dead and unconscious statuses | Automatic |
+| Energy 5×SP; Recover Energy (1 AP, +1/10 max, blocked by Fear) | Sheet |
+| AP/RP refill at turn start and at combat start; unused AP expires at turn end; AP is spent in combat for attacks (2), Recover Energy (1), putting out Ignite (2), removing Stain (3) | Combat tracker (AP/RP pips per combatant: click to spend, right-click to restore) |
+| Ignite (Heat) and Stain (Acid) damage at end of turn; Cold damage clears Ignite | Combat tracker |
+| Slow/Haste cancel each other; ±1/±2 AP movement cost at ½ or full Pain Threshold; decay by ½ Pain Threshold at end of turn | Automatic |
+| Movement speed: linear up to the size cap, nearest 5 ft, minimum 10 ft; movement AP cost from prone, crouching, stealth, and tempo | Sheet |
+| Rest: heals Con+Will+Build minimums; days without rest gives Dis on all rolls | Sheet |
+| d100 checks: Stealth, Perception (Spot), Persuasion, Deception, Counter Roll, Initiative | Sheet and combat tracker |
+
+## Progression and GM control
+- **New Character wizard:** everyone sees a **New Character** button at the top of the Actors tab. It walks through these steps:
+  1. Identity (name and portrait).
+  2. Stats, with a live preview of HP, Energy, move, and dice. Unspent points are banked.
+  3. Skill Trees: spend the starting Skill Points (a third of the stat points). Pick an Archetype, then use + / − on each tree (tier N costs N). Only trees your Theory tier has opened are listed. A Theory can't be lowered below what your other trees need, and clicking a tree name shows what each tier grants. Leftover points are banked. The GM re-checks the budget and Theory requirements.
+  4. Starting Equipment, within the world budget: picks, rarity limit, Grade, and at most one armor. Unarmed is free.
+  5. Review.
+
+  The GM's client re-checks the choices, then creates the character owned by that player. It also becomes their assigned character if they don't have one, and the sheet opens for them. A GM must be connected. The budgets are world settings: starting stat points (90), equipment picks (3), rarity limit (Uncommon), and Grade (10).
+- **Size:** characters are always Size 3, and nobody (not even the GM) can change it. Size will come from Ancestry once that system exists. The GM can still set NPC sizes on the Misc tab.
+- **Sheets are always locked for players:** stats, Skill Points, and size are read-only. Items can't be created, modified (type, material, Grade, description, image), repaired, or deleted. The GM can always edit everything. Players can rename their own items, and can still move items (pick up, drop, throw), equip, stow, draw, swap, toggle 2H, and reload. Combat still wears armor down.
+- **Granting points (GM):**
+  - Right-click a character in the Actors sidebar and choose **Grant Points**, or type `/grant <stat points> [skill points]` in chat to grant to every player character. `/grant` on its own opens the dialog.
+  - If Skill Points are left blank, they follow the rules' **3:1 ratio**: every 3 stat points granted gives 1 Skill Point, and remainders carry over to the next grant.
+  - Grants are announced in chat.
+- **Spending stat points (players):** granted stat points show in a banner on the Main tab. Players spend them with the **+** buttons beside each stat, **outside combat only**.
+- **The Forge (GM):** use the **Forge** button in the Items sidebar to build a new weapon, armor, or misc item (it's placed in a "Forge" folder). Then drag it onto a character sheet to give it to them.
+
+Note: Foundry's server only checks who owns a document, not which fields change. These locks guard the interface and normal play. They aren't anti-cheat against someone using the browser console.
+
+## Skill trees
+The **Skills** tab has two dropdowns. The first picks the Archetype (Martial, Magic, and placeholders for Mental and Generic). The second picks a tree within it and shows your current tier (e.g. "Brawling Methods — Tier 3/5"). The tree dropdown only lists trees you have access to: at first that's just the Theory, and each Theory tier makes that tier's group of trees available.
+
+The selected tree is shown tier by tier, with a divider between tiers. Owned tiers are marked, the next tier has an **Unlock** button (hover it to see the Skill Point cost, or why it's blocked), and later tiers are locked. Tier N costs N Skill Points, and Theory Tier 0 is free. Players can spend Skill Points themselves, outside combat. An "Are you sure?" dialog shows the cost, what the tier grants, and the points left over (Cancel is the default). The GM can undo the top tier (refunding its points). Total, spent, and unspent Skill Points are shown at the top of the Skills tab (the GM can edit the total there), and unspent points stay banked. Tiers whose rules are automated carry an **Automated** badge (hover for where to find them); passive tiers carry a **Passive** badge.
+
+Tree text is generated from "Flow State - Martial Stage 1" and "Flow State - Magic Stage 1" by `tools/build_trees.py` (kept outside the system folder). Re-run it after editing those docs. Automation is being added tree by tree. Martial Theory is done (below); the other trees are text for now.
+
+Abilities with an Energy cost show a gold ⚡ badge in place of the "Cost:" sentence. The badge gives the formula (e.g. "½ × Scaling Stat min") and this character's actual cost, per held weapon when it depends on the weapon. Hover it for the doc's wording. The Action List shows scaled costs as ⚡ badges for the actions it lists (e.g. Psych Up, Calm Down). Energy is free outside combat.
+
+## Lowering a Theory
+When the GM lowers a Theory tier, any trees that need the higher tier are listed in a confirmation. On accept, those trees drop to 0 and their Skill Points return to the unspent pool.
+
+## Martial Theory (automated)
+- **Tier 0 — Attack:** weapon attacks from the Action List or Equipment tab.
+- **Grapples use a hand:** each Unarmed grapple holds one fist. With both fists up you're limited to one (no other-fist Fast follow-up); with one fist up you can't attack Unarmed until you let go. Grapples end when the grappler falls unconscious or dies.
+- **Unarmed follow-ups** (Fast, Solitary, Combo, Riposte) can grapple too, when every target is small enough.
+- **Grapple first:** a Light grapple that opens the chain with both fists up still gets the other fist's Fast follow-up, for that attack only; after that the grappling hand is busy. A Heavy grapple only offers its Solitary follow-up.
+- **Tier 0 — Grappling:** the Unarmed attack dialog has a **Grapple** checkbox (the Action List's **Grapple** row pre-ticks it). Light: no damage, grapples on a hit. Heavy: damage plus the grapple. It only works on creatures your size or smaller. A grappled creature gets the Grappled status, and its movement pill reads "Grappled — can't move".
+  - **Break Free** (Action List, 2 AP) is an attack roll against the grappler's dodge. On a hit the grapple ends.
+  - **Release grapple** (free) lets go.
+- **Tier 0 — Throw:** throwing a held weapon costs 2 AP. **Throw grappled creature** (2 AP) imparts Force = 10 × Str. With one target, it's an attack roll against that target, and range is how far the Force carries the creature. On a hit, both take Force collision damage (3 × the feet left untraveled), capped at the thrown creature's current HP. With no target, you pick one of 8 directions and it's thrown and released. The thrown token moves on the map: on a hit it lands beside the target, on a miss it flies past the full distance, and in open ground it flies the full distance. A wall stops it early, and it takes Force damage for the feet it didn't travel (capped at its HP). Moving someone else's token goes through the GM.
+- **Tier 1 — Parry:** a stance. During your turn, the Action List's **Parry** group turns it on for a held weapon (Energy = its Scaling Stat, capped by Grade; free outside combat). Until the start of your next turn, that weapon's Limit and Durability apply to every incoming melee or ranged attack (not Area), before armor. You still dodge as normal. Several parrying weapons all apply. The attack card notes what's guarding the target.
+- **Tier 1 — Riposte:** when a hit is fully stopped by your Parry (no direct damage), the damage card offers **Riposte** with the parrying weapon (RP = its attack AP), or **No riposte**. The attacker's follow-ups wait for that choice. A negating Perfect Parry/Block offers it on the defense card.
+- **Tier 2/3 — Psych Up / Calm Down:** these are Action List buttons. Each can be used once per turn on your own turn in combat, for Energy = half your Skill Points. Psych Up gives you Advantage on your attack rolls, and attacks against you also get Advantage. Calm Down gives you Advantage on your dodge rolls and Disadvantage on your attack rolls. Both show as token statuses and end at the start of your next turn (or when combat ends).
+- Attack cards list where each roll's Advantage/Disadvantage came from, e.g. "1× Advantage (Orc Psyched Up +1)".
+- **Improvised weapons:** "Improvised" is a melee weapon type in the Forge. It has no material, just Light/Heavy (2/3 AP, Dex/Str) and a Grade. Damage is 1d6 per Grade, capped by the Scaling Stat like other weapons (one die per 10). It has no tags or effects. It can be thrown (Average, 100 ft). It has no Limit or Durability, so it can't Parry and never breaks. New characters can't pick it as starting equipment.
+- **Tier 4 Improvise:** when a character reaches it, any improvised weapons they carry are removed (with a chat note), and improvised weapons can't be added to or picked up by them afterwards. They use real weapons instead; the GM forges the closest type.
+- **Tier 5 Weapon Master:** multi-type weapons (a weapon with extra types, set on its sheet by the GM) can attack as any of their types: the attack popup first asks which type, and its follow-ups keep it. While held, the abilities of all its types work. Without T5 a multi-type weapon is just its main type.
+
+## Medium Armor (automated)
+Medium Armor abilities need the tier and worn Medium armor (its real weight). Energy uses your CON min.
+- **T1 Limber:** after your attack hits, or your dodge or parry roll succeeds, in combat, the defense card shows **Limber** for you (Energy = ¼ CON min). Your next attack, dodge, or parry roll before your next turn has Advantage, then it's used up. It doesn't stack.
+- **T2 Brace:** a Parry on your worn Medium armor, from the Action List's Parry group (Energy = CON, capped by armor Grade × 10; free with Versatility). Until your next turn, incoming damage is reduced by your Constitution before any Limit. Armor isn't a weapon, so there's no Riposte with it.
+- **T3 Careful Steps:** (Medium Armor rows only appear while Medium armor is worn; Mark and Eviscerate only while a fitting weapon is held.) an Action List toggle (Medium Armor group) that removes your Medium armor's stealth penalty. Toggle it any time. While it's on, each of your turns in combat automatically costs 2 AP at the start of the turn; if you can't pay (or aren't wearing Medium armor) it lapses for that turn but stays on. Switching it on mid-combat: on your own turn you pay the 2 AP right away; on someone else's turn it takes effect (and is paid for) at the start of your next turn. Free outside combat. Taking the armor off ends it, with a warning.
+- **T4 Shift:** a button on incoming attack cards (Energy = ½ CON min). Choose Advantage on your dodge, or Disadvantage on the attack (it's re-rolled with the attacker's original modifiers minus one; stacks with Close Quarters). Then respond as usual.
+- **T5 Versatility:** an Action List entry. A standing pick of Shift, Brace, or Limber that costs no Energy while you wear Medium armor. It stays set; change it freely outside combat, or once per turn on your own turn in combat (the GM can change it any time).
+
+## Rapid Weapons (automated)
+Rapid abilities work with Rapid weapons (any of a multi-type weapon's types under Weapon Master). Energy uses the weapon's Grade-capped Scaling Stat min.
+- **T1 Quickload:** attacking with an empty Rapid weapon offers Quickload. It spends that attack's AP to reload instantly, with no attack.
+- **T2 Spin Down:** a checkbox in the attack dialog when you use Pepper (Energy = Scaling Stat min). It doubles the shots at the same target, with the same Disadvantage.
+- **T3 Mark:** an Action List entry (Rapid Weapons group) that marks your one targeted creature within your Rapid weapon's range until the start of your next turn (Energy = Scaling Stat min). When that creature attacks, uses a system action (stances, reloading, Recover Energy, posture, picking up), or moves, the Mark is used up. You get a **Mark** card to shoot it with a held Rapid weapon (RP = the weapon's attack AP; Fast follow-ups allowed). The GM can clear a Mark from Active Effects.
+- **T4 Lead Blindness:** dodges, parries, and other rolled reactions against your Rapid attacks have Disadvantage. So does the attack that triggers your Mark.
+- **T5 Speedloader:** offered next to Quickload (Energy = ¼ Scaling Stat min). You reload and fire as normal, and that Pepper attack has one less Disadvantage.
+
+## Swift Weapons (automated)
+Swift abilities work with Swift weapons (any of a multi-type weapon's types under Weapon Master). Energy uses the weapon's Grade-capped Scaling Stat min.
+- **T1 Cut Back:** after you dodge an attack while holding a Swift weapon, the defense card shows **Cut Back**: a Riposte with it (RP = its attack AP, no Energy). It can take Fast/Fast+ follow-ups.
+- **T2 Quick Strike:** a checkbox in a Swift weapon's attack dialog (Energy = ½ Scaling Stat min). The attack gets Advantage, and so does its Fast follow-up if that's also a Swift weapon (free).
+- **T3 Blade Flurry:** when both attacks of a Fast Swift set land on the same single target (after all responses and damage), a **Blade Flurry** card offers another attack with any held Swift weapon (RP = its attack AP, Energy = Scaling Stat min). That attack can start a new Fast set, so Blade Flurry can chain.
+- **T4 Eviscerate:** an Action List entry (Swift Weapons group), available on your turn once your Swift attacks have dealt HP damage this turn (Energy = 2 × your best held Swift weapon's Scaling Stat min). It repeats every hit of Swift HP damage from this turn, bypassing armor. Once per turn.
+- **T5 Delta:** at the end of your turn, if 12 or more Swift attacks landed this turn, you regain 6 RP (up to 6). A chat card notes it.
+
+## Balanced Weapons (automated)
+Balanced abilities work with Balanced weapons (any of a multi-type weapon's types under Weapon Master). Energy uses the weapon's Grade-capped Scaling Stat min, and is free outside combat.
+- **T1 Slip Off:** passive. While a Balanced weapon is Parrying, incoming attacks are also Weakened.
+- **T2 Spin Cycle:** an option in the attack dialog (Energy = Scaling Stat min). The strike becomes an Area attack on every targeted creature in melee range. It isn't Weakened and can't be Parried.
+- **T3 Slice (Light) / Slam (Heavy):** a choice in the attack dialog (Energy = Scaling Stat min).
+  - **Slice** gives Pierce (ignore ¼ Scaling Stat of Limit), or on a hit makes the target's movement cost +1 AP until the start of your next turn (Sliced status; Unfettered ignores it).
+  - **Slam** gives Knockback (5 × Scaling Stat Force) or Bash (see Targeting, Bash, and Force below).
+  - An effect the weapon already has doesn't stack.
+- **T4 Deflect:** when a parrying Balanced weapon takes all of an attack's damage, the damage card shows **Deflect (1 RP)**. It sends the attack back at the attacker using their own attack (same damage, type, and effects), rolled with your attack die.
+- **T5 One with your Weapon:** Slice and Slam get a "Both" choice for double Energy.
+
+## Brawling Methods (automated)
+Brawling abilities use Unarmed attacks (a raised fist). "(Light)" and "(Heavy)" mean the Light or Heavy Unarmed attack. DEX/STR costs use the full stat, since Unarmed has no Grade cap. Energy is free outside combat.
+- **T1 Twin Fang (Light):** an option in the Unarmed attack dialog (Energy = DEX min). The Light attack gets your choice of Advantage or Strengthened. Its Fast follow-up with the other fist picks its own bonus for free.
+- **T1 Jab (Heavy):** a checkbox on the Heavy Unarmed Solitary follow-up only (Energy = STR min). It gives that follow-up Advantage and Strengthened.
+- **T2 Dip / Shatter:** Parry on a free hand, from the Action List's Parry group, one hand at a time (turning one on ends the other).
+  - **Dip** (Energy = DEX): until your next turn, incoming melee/ranged damage is reduced by your Dexterity. If a hit is reduced to 0, the damage card offers **Dip: move (1 RP)**.
+  - **Shatter** (Energy = STR): until your next turn, each incoming attack takes your Heavy Unarmed damage for free (no attack roll; Solitary doesn't apply), plus its Cleave as object damage, before the attack's damage. Melee: it lands on the incoming weapon (on the attacker if it's Unarmed or weaponless), even if the attack misses; if it breaks the weapon, the attack deals no damage. Ranged and other projectiles (magic ones too): the projectile takes it and the attack's damage is lowered by that much.
+  - A Dip/Shatter hand that leaves you with no direct damage can Riposte (RP = 2 Light / 3 Heavy).
+- **T3 Dragon Lash (Heavy):** a "Heavy technique" choice in the attack dialog (Energy = 2 × STR min). It's Strengthened with 2× Knockback, or Strengthened twice with 4× Knockback against a prone target.
+- **T3 Combo (Light):** when both hits of a Fast Unarmed set land on the same single target (after all responses and damage), a **Brawling** card offers Combo (Energy = 2 × DEX min). It's a free Light Unarmed attack with Advantage that can't chain into another Fast attack.
+- **T4 Kick Out (Heavy):** a "Heavy technique" choice (Energy = STR min). On a hit, the target is knocked prone if they're no more than one size larger. It can't be combined with Dragon Lash (both replace the attack).
+- **T4 Redirect (Light):** after you dodge a melee attack, or when a Parry leaves you with no damage from one (on the damage card), with a fist raised: **Redirect** (Energy = DEX min). Target any creature (other than you and the attacker). If it isn't next to you, it's force-moved to the nearest free space next to you, within the attacker's reach when possible. The attack is re-rolled against it with Advantage and the same options, at no cost to the attacker.
+- **T5 Flow Like Water:** on the Brawling card when every hit of a Fast or Solitary Unarmed set lands (Energy = 2 × the new attack's stat min). It's a free attack of the opposite type (Fast set → Heavy, Solitary set → Light). It can take Fast/Solitary follow-ups, but those sets can't Flow again. Combo comes first if both are used.
+
+## Bladed Weapons (automated)
+Bladed abilities work with Bladed weapons (any of a multi-type weapon's types once the character has Weapon Master, Martial Theory T5). "(Light)" and "(Heavy)" abilities need a weapon of that weight. Energy is free outside combat. Bladed abilities aren't in the Action List, since they're attack options, reactions, or passives. Their Energy costs show in the Skills tab and in the dialogs and buttons where they're used.
+- **T1 Whirlwind (Light):** an option in the attack dialog of a Light Bladed weapon with Fast (Energy = Scaling Stat min). That attack and its Fast follow-up become Area attacks on every targeted creature in melee range. They aren't Weakened (that part of the Area rule is magic-only), but as Area attacks they can't be Parried. The follow-up is already paid for.
+- **T1 Remise (Heavy):** an option on a Solitary follow-up once the first attack in the chain has hit (Energy = Scaling Stat min). It adds Advantage and Strengthened. It's blocked while the first attack is unresolved or missed. On untargeted attacks it's allowed and left to you.
+- **T2 Close Quarters:** a button on melee attack cards against a character holding a Bladed weapon (Energy = ½ Scaling Stat min). The attack is re-rolled at double Disadvantage from the attacker's original modifiers. The card then shows the new total, and you respond (Dodge or Take the hit) against it.
+- **T3 Blender (Light):** Light Bladed weapons count as Fast+, so follow-ups with them have no Disadvantage. Whirlwind gains a "Whirlwind + Blender" choice (2× Energy): the attacks gain Cleave (object damage) unless they already have it.
+- **T4 Titan Weapon (Heavy):** two-handed Heavy Bladed attacks offer a Solitary follow-up, with Disadvantage.
+- **T5 Perfect Riposte:** whenever you Riposte with a Bladed weapon, a **Perfect Riposte** button sits next to it (same RP, plus Energy = 2 × Scaling Stat min). It has Advantage and is Strengthened, and so is its Fast or Solitary follow-up.
+- **Ripostes now offer follow-ups:** a Riposte is an RP attack, so Fast and Solitary follow-ups trigger from it like any other attack (needed for Perfect Riposte).
+
+## Start-of-turn card
+At the start of your turn a card lists the start-of-turn abilities you can use right then: Maintain Berserk / Berserk, Proper Stance, and Quicken. The buttons work for that turn only.
+
+## Strength Methods (automated)
+- **T1 Intimidate:** a Persuasion or Deception roll with exactly one creature targeted notes when their counter roll has Disadvantage. Your Strength must beat theirs, doubled per size they're larger (halved per size smaller).
+- **T2 Heave!:** an option on any Heavy attack (STR stat Energy): Strengthened, plus Bash (Bash+ if the attack already had Bash).
+- **T3 Crunch Time:** an option (STR min) in the Knockback/Push/Launch dialog and when throwing a grappled creature. The Force is matched against current HP instead of max HP.
+- **T4 Ho!:** an option when throwing a Heavy weapon that isn't a Good throw (STR min per step). Average becomes Good; Bad becomes Average, or Good if used twice. Gray Iron and Gray Steel limits still apply.
+- **T5 Unstoppable:** an Action List entry (2 × STR min) that adds a status until your next turn. Resisting conditions isn't automated yet, so the GM applies its effect.
+
+## Striker Weapons (automated)
+- **T1 Rend:** an attack option (½ Scaling Stat min). Damage to objects is Strengthened after their Limit is taken off: the armor, a parrying weapon, or an item you aimed at. The doc's example works out: 30 damage against Limit 15 → 15 through, 22 to the object.
+- **T2 Berserk:** Light Striker weapons get Fast and Heavy ones get Solitary (Scaling Stat min of your best held Striker weapon). It's offered on the **start-of-turn card** and in the Action List during your turn. When it would end, the start-of-turn card offers **Maintain Berserk** for the same cost.
+- **T3 Shred:** Rend is Strengthened twice when the attack has one target.
+- **T4 Seeing Red:** an Action List entry while Berserk: Fast+ / Solitary+, and Disadvantage on your dodge, stat, and d100 rolls. Maintaining Berserk keeps it.
+- **T5 Blood and Iron:** Striker Cleave left over after the objects' Limits hits the creature (it isn't counted twice). Rend stays object-only.
+
+## Defender Weapons (automated)
+- **T1 Block:** your held Defender weapons always Parry, for free (no Action List step). Anyone with a Defender weapon and the target within that weapon's reach gets a free **Block for <name>** button on the attack card: their shield's Limit applies to that hit.
+- **T2 Shield Toss:** in Throw mode, costing ½ Scaling Stat min plus 2 AP or 2 RP (your choice). There are two modes:
+  - **Damage:** the throw is Strengthened and comes back to you on a hit.
+  - **Guard:** no damage. On a hit, the shield automatically Blocks the next blockable attack against that creature (from any range, no click needed), then returns. The attack card shows it under "guarding".
+  On a miss, the shield lands by the target.
+  - **As a reaction:** when an ally in your throw range (but outside your melee reach) is attacked, their attack card shows **Shield Toss to guard <name>** (2 RP + ½ Scaling Stat min). The shield is tossed to them and Blocks that attack (or Perfect Blocks, at T5).
+- **T3 Sword and Board:** an option when attacking with another weapon while holding a Defender weapon (Scaling Stat min). The shield attack is posted first. If it hits, the target's dodge against the main attack has Disadvantage, and they have to answer the shield first.
+- **T4 Bounce:** after a Shield Toss hits, a **Bounce** button sends it at a newly targeted creature within throw range of the last one. Each bounce adds another Disadvantage.
+- **T5 Perfect Block:** an optional roll on the attack card (yours, or with Block for an ally). A success negates the attack; a miss means that shield doesn't apply to the hit, and the defender still dodges.
+
+## Weighted Weapons (automated)
+- **T1 Controlled Swing (Light):** Advantage or Solitary. **Wild Swing (Heavy):** Disadvantage, plus Bash+, two Strengthened, or Bash + Strengthened. Each costs Scaling Stat min.
+- **T2 Spin:** an Area attack on every target in melee range.
+- **T3 Wide Arc:** tick **Strafing** in the dialog to get Farstrike.
+- **T4 Smash:** adds another 5 × Scaling Stat to the Knockback Force.
+- **T5 Crunch:** when every target is prone, the swing gives both effects (Wild Swing: Bash+ and two Strengthened).
+
+## Assault Weapons (automated)
+- **T1 Quickload:** works like Rapid's Quickload, for Assault weapons.
+- **T2 Take Aim:** Advantage or Strengthened (Scaling Stat min).
+- **T3 Distracting Fire:** a button on Area attack cards when you hold an Assault weapon with the attacker in range (½ Scaling Stat min). Your attack roll is made against the incoming roll. On a hit, the attack is re-rolled with Disadvantage and Weakened. It doesn't damage the attacker.
+- **T4 Cool Breath:** if you haven't moved this turn, Take Aim can be free, but you then can't move for the rest of the turn.
+- **T5 Proper Stance:** an Action List entry on your turn (2 × Scaling Stat min). Assault weapons get Solitary+ until your next turn, and swapping weapons ends it.
+
+## Heavy Armor (automated; Titanic Armor shares the pieces)
+- **T1 Brace:** works like Medium's Brace (a Parry on Heavy armor, Energy = CON capped by armor Grade × 10).
+- **T2 Trudge:** an Action List entry (¼ CON min) that makes your next move use a 1 AP base (Titanic: T4, ½ CON min).
+- **T3 Bodyslam:** an Action List entry (3 AP, CON min). It attacks one target in personal melee range for armor Limit + CON min Physical damage (Titanic: T2, with Disadvantage).
+- **T4 Harden:** when turning Brace on, pay CON min more and incoming attacks are also Weakened (before the reduction).
+- **T5 Launch:** a Bodyslam option. On a hit it applies 10× the damage as Force instead of damage.
+
+## Dexterity Methods (automated)
+- **T1 Fast Lips:** a Persuasion or Deception roll with one creature targeted gets Advantage when your Dexterity beats theirs. Each size smaller they are doubles what you need; each size larger halves it.
+- **T2 Shank:** an option on any Light attack (2 × DEX min) with three picks:
+  - Pierce: a second pick, or a weapon that already has Pierce, makes it Pierce+.
+  - Cleave: upgrades the same way to Cleave+.
+  - Disadvantage on their dodge: each pick adds one.
+  - Advantage on the attack: each pick adds one.
+- **T3 Quick Change:** swapping weapons costs 1 RP instead of 1 AP, so it works off-turn.
+- **T4 Spot Weakness:** an Action List entry (1 AP, ½ DEX min) with one target. It whispers you their armor and its stats.
+- **T5 Pinpoint Accuracy:** a Light-attack option (¼ DEX min). It removes the Disadvantage from Pepper shots, or from a Fast/Solitary follow-up.
+
+## Reach Weapons (automated)
+- **T1 Palisade:** when a creature of another disposition moves into your Reach weapon's range, a card lets you strike it (RP = attack AP). On a hit, the creature is stopped on its path just outside your reach.
+- **T2 Thrust:** Light attacks get Cleave, Heavy attacks get Cleave+.
+- **T3 Wall:** the same strike with no RP (½ Scaling Stat min).
+- **T4 Twist:** a damage-card button after direct damage. It adds your Pierce value as direct damage.
+- **T5 Impale:** a damage-card button when the direct damage (Twist included) beats the target's HP Regen (CON + WILL + BUILD mins). The target is grappled on your weapon, and that weapon can't attack until they're released.
+
+## Circular Weapons (automated)
+- **T1 What Goes Around:** a Throw-mode option. The weapon stays in hand, and a return attack joins the follow-ups (it's tracked separately from Fast/Solitary).
+- **T2 Pierce Through / Cut Through:** Light attacks get Advantage or Pierce+; Heavy attacks get Strengthened or Cleave+.
+- **T3 Let it Rip!:** on a hit, the same damage is applied a second time.
+- **T4 Shadow Wings:** a Thrown attack while you have the Stealthing status gets both effects of Pierce Through / Cut Through.
+- **T5 Vector Assault:** the return attack is made from half stealth.
+
+## Blast Weapons (automated)
+- **T1 Point Blank:** dodging your Blast attack from within your personal melee range has Disadvantage.
+- **T2 Cone Shot:** an Area option. The range becomes half the weapon's range with no radius (you target what's in the cone).
+- **T3 Rip and Tear:** dealing damage with a Blast weapon reloads it.
+- **T4 Punch:** Light attacks get Knockback, Heavy attacks get Knockback+.
+- **T5 Execute:** two Strengthened, offered when every target is prone.
+
+## Light Armor (automated; Unarmored shares Dash and Leap)
+- **T1 Shift:** works like Medium's Shift, for ¼ CON min.
+- **T2 Dash:** an Action List entry (1 RP, plus any movement slow; ½ CON min). It gives you one free move, even off-turn.
+- **T3 Leap:** an Action List entry (1 AP, plus any slow; ½ CON min) that posts your jump distances.
+- **T4 Evade:** Shift can be used twice against the same attack.
+- **T5 Breathing Room:** your first Shift, Dash, and Leap each round are free.
+
+## Constitution Methods (automated)
+- **T1 One With Body:** information only.
+- **T2 Taunt:** an Action List entry (2 RP, CON min) against one creature within 100 ft. Your Persuasion/Deception d100 is rolled against their d100; a higher roll wins. A Taunted creature's attack cards note when they attack someone else. They repeat the check automatically at the end of their turn, or with **Shake off Taunt** (2 AP/RP), and each repeat gives you another Disadvantage. It ends at the start of your next turn.
+- **T3 Pure Body:** not automated; the GM applies it.
+- **T4 Pull Aggro:** a Taunt (CON stat) against every targeted creature within 30 ft.
+- **T5 Imposing Presence:** attacks from within your personal melee range that are already Weakened get another Weakened.
+
+## Curved Weapons (automated)
+- **T1 Disarm:** pick one of the target's held weapons, or their grapple. The attack is Weakened; on a hit they drop it (or let go).
+- **T2 Perfect Parry:** while a Curved weapon is Parrying, an optional roll on the attack card, with Advantage. A success negates the attack; a miss means that weapon doesn't apply to the hit, and you still dodge.
+- **T3 Momentum:** after a Curved hit, buttons add +1 Advantage or +1 Strengthened to your later Curved attacks on that target. It's applied automatically and ends at the start of your next turn.
+- **T4 Sheath Weapon:** an Action List entry at the end of your turn. It repeats this turn's direct Curved damage doubled, and armor applies.
+- **T5 Omnislash:** with 4+ Momentum on the target, the attack hits automatically as a Double Crit (4 Strengthened) and spends the Momentum.
+
+## Longshot Weapons (automated)
+- **T1 Prepared Shot:** Advantage plus your pick of Cleave+, Pierce+, or Strengthened.
+- **T2 Like Shooting Fish:** on a hit, the target moves as if in rough terrain until your next turn.
+- **T3 Snipe Hunt:** each Advantage on the attack becomes a Disadvantage on their dodge (counted per target, after every modifier).
+- **T4 In a Barrel:** Advantage against a target that is prone, crouching, grappled, Locked Down, Slowed, slowed by armor, or under Like Shooting Fish.
+- **T5 Headshot:** a Prepared Shot choice (Scaling Stat Energy) that gives all three.
+
+## Titanic Armor (automated)
+- **Giga Brace** (T1) reduces incoming damage by 2 × CON. Bodyslam (T2, with Disadvantage), Harden (T3, + ½ CON min), and Trudge (T4, ½ CON min) share Heavy Armor's automation.
+- **T5 Chunky:** Pierce is halved against your worn Titanic armor.
+
+## Grappling Methods (automated)
+- **T1 Lock Down:** an Action List entry (the target's STR stat). The target is prone, can't move or get up, and their first successful escape only removes the Lock Down.
+- **T2 Disrupt:** an Action List entry (the target's STR min). The grappled creature's next roll of any kind has Disadvantage.
+- **T3 Big Hands:** you can grapple up to one size larger, and grapple attacks have Advantage.
+- **T4 Stunlock:** Disrupt is free on a creature you've Locked Down, and then applies to all of their rolls.
+- **T5 Slam:** an Action List entry, used as a Light (2 AP) or Heavy (3 AP) weapon, whichever the creature's body is closer to. Swing a grappled creature at a target: Force 10 × Str at 0 ft, and both take the Force damage (capped at the held creature's HP).
+
+## Thrasher Weapons (automated)
+- **T1 Grapple:** no damage; on a hit the weapon holds them and can't attack until they're released.
+- **T2 Windup:** any number of uses, +1 Advantage each. **T4 Whirlygig:** every two add +1 Strengthened.
+- **T3 Overshield Strike:** ignores every Parry-type effect: parrying and Blocking weapons, Brace, Dip, Shatter, Slip Off, Harden, and the Perfect rolls.
+- **T5 Get Over Here!:** on a hit the target is grappled, pulled next to you, and knocked prone (Locked Down if you have Grappling T1). The attack still deals damage.
+
+## Unarmored (automated)
+- **T1 Dash:** an Action List entry (¼ CON min, 1 RP). It also appears on attack cards against you for just the Energy: the attack is re-rolled with Disadvantage, and once it hits or misses the defense card offers **Dash: move** for 1 RP (+ slows).
+- **T2 Leap:** works like Light Armor's Leap (¼ CON min).
+- **T3 Speedy:** Dash costs no Energy, so the reaction applies itself: every attack against you (that you can react to) is rolled with Disadvantage from the start, and its defense card offers the 1 RP move.
+- **T4 Quicken:** an Action List entry that doubles your movement speed until your next turn. Putting armor on ends it.
+- **T5 Unfettered:** Advantage on every dodge while unarmored, and physical movement slows don't affect you (Like Shooting Fish). Slow condition stacks don't record their source, so they still apply.
+
+## Character sheet
+New actors (not dropped-item piles) get HP and Energy token bars, always shown to the token's owners. All new actors' tokens (piles included) have artwork rotation locked.
+
+The header shows the name, portrait, and movement (speed and AP per move). Below it are five tabs:
+- **Main:** HP, Energy (with Recover), stats and stat checks, and a summary line (Stat Bonus, total stats, attack die, dodge dice).
+- **Action List:** only things you can click to activate (passives, reactions such as Parry, and info-only rows are left out). It covers everything the character can do right now, with costs, as one list of clickable rows. It includes each held weapon's attack (or Reload when needed), Crouch, Go Prone, Get Up, and Recover Energy under Combat, the Martial Theory actions (Grapple, Break Free, Release, Throw grappled creature, Psych Up, Calm Down), and every check. Putting out Ignite, removing Stain, and Rest are on the Misc tab. The checks include a plain **Attack roll** (your attack die) and **Dodge roll** (your dodge dice), which cost no AP and don't resolve against anyone. Rows that don't apply right now are greyed out. The same actions still work from their own places on the other tabs.
+- **Equipment:** Weapons, Armor, and Misc Items.
+- **Misc:** Size (with max move and melee range, plus the optional fields when enabled), conditions and Rest, and senses. At the bottom is **Active Effects**, which lists every status on the character (Psych Up, Calm Down, Grappled with who's holding them, Prone, and so on), any other Active Effects, and who the character is grappling. It's empty when nothing applies. The GM gets an ✕ on each row to end it now; ending a grapple releases both sides.
+- **Notes:** free-form notes.
+
+Action List groups and the Weapons / Armor / Misc Items sections can be collapsed by clicking their headers. The Checks group starts collapsed. Each actor's sheet remembers what's collapsed until Foundry is reloaded.
+
+## Targeted attacks (the chat exchange)
+1. **Attack:** target one or more tokens and attack. AP is spent, and an attack card posts your attack roll against each target.
+2. **Defend:** each target's owner (the GM for NPCs) clicks **Dodge** (a dialog for Adv/Dis; prone, exhaustion, and half stealth apply automatically) or **Take the hit** (auto-hit, can't crit). Other players see "Waiting for…".
+3. **Damage:** on a hit, the attacker clicks **Roll damage** and can add extra Strengthened/Weakened. The card lists the stacks that are already included. The damage is **applied automatically** with armor soak, and what it did (HP lost, Parry and armor soak, anything broken) is listed on the damage card itself rather than on a separate "takes damage" card. Grapple-throw collisions and wall hits list it on their own card the same way. If a player hits an NPC they don't own, the GM's client applies it, so a GM must be connected.
+
+In full stealth, targets can't react, so each one resolves immediately (crit at ≥ dodge die, double crit at ≥ 2×). A Push shows its force and distance on the defense card.
+
+**Range:** targeted attacks are blocked if any target is out of range. The limit depends on the attack: melee uses your size's reach (× Farstrike), a throw uses its throw range, and a ranged attack uses the chosen band (1×, 2×, or 4×). An Area attack's range extends to its radius. Distance is measured between the closest squares each token occupies, so large creatures work. You can turn this off with the world setting **Enforce attack range**.
+
+**Follow-ups:** each attack card allows one follow-up, either Fast or Solitary. After one is used, the buttons change to "Follow-up used". Disadvantage is applied automatically (none for Fast+ or Solitary+), and the follow-up costs no AP or RP.
+
+**Thrown weapons:** throwing a weapon removes it from your inventory. It lands on the map as a **Dropped Items** pile in the space beside the target, on the side facing you, whether the throw hits or misses. With no target, it lands beside you. To get it back, select your token, open the pile (double-click it), and click **Take**. You must be within reach. In combat, picking something up costs **1 AP** and can only be done on your turn; out of combat, it's free. For weapons, a dialog asks whether to keep it stowed or **equip it right away at no extra AP**. If your hands are full, you choose which held weapon to put away (or which fist to lower) to make room. An empty pile removes itself. Piles are kept in a "Dropped Items" folder in the Actors sidebar. Creating and removing piles runs through the GM's client, so a GM must be connected.
+
+**Equipment in combat:** a confirmation dialog appears before any equip change that costs AP/RP, so clicks never spend points by accident.
+- **Drawing a weapon into an empty hand costs 1 RP**, on or off your turn. A raised fist counts as an empty hand and is lowered automatically.
+- **Swapping costs 1 AP** and can only be done on your turn. That means putting a held weapon away to draw another when your hands are full. The dialog asks which weapon to put away. Out of combat, swapping is free, but it still asks.
+- **Stowing a held weapon costs 1 AP** (on your turn). The dialog also offers **Drop (free)**, which puts the weapon on the ground beside you as a pickup-able pile. Off your turn, only Drop is offered. Out of combat, stowing is free.
+- Raising or lowering fists and toggling 2H are free. Putting a weapon away as part of a swap or a pickup is included in that action's cost.
+
+**Delete button:** on any item, it asks whether to **Drop** it on the ground beside your token or **Delete** it permanently. Worn armor can't be dropped mid-combat; take it off first. Light armor takes your whole turn (all 6 AP) to put on or remove, and only on your turn. Medium, Heavy, and Titanic armor can't be changed in combat (they take a minute or longer). Swapping one armor for another isn't allowed mid-combat. Attacks with no target still resolve on one card as before. Used buttons disappear from every client once each step is answered.
+
+### Follow-ups (Fast / Solitary)
+Follow-up buttons aren't on the attack card any more; the card just says a follow-up is available. Once the exchange is fully resolved, the follow-up buttons are posted on their own **Follow-up** card at the bottom of the chat. Resolved means every target has responded, every hit that deals damage has rolled it, and every Riposte offer (on a damage card, or a negating Perfect Parry/Block) has been answered: the defender ripostes (and that Riposte's own exchange finishes) or clicks **No riposte**. Untargeted attacks post their follow-up card straight away. The card is posted once, by the active GM's client (or by the attack's author when no GM is connected). Still only one follow-up per attack.
+
+### Turns, unconsciousness, and stealth
+- **Movement is turn-locked:** during a started combat, players can only move a combatant's token on that combatant's turn. The GM can always move tokens, system moves (thrown creatures) go through, and tokens not in the combat move freely.
+- **Unconscious or dead:** the character is knocked prone and can't act. That means no attacks, follow-ups, stances, Break Free, throws, Recover Energy, reloading, picking up, or moving. Attacks against them resolve immediately as if from full stealth: they auto-hit, crit on ≥ their dodge die size, and there are no Dodge or Parry buttons. Prone still gives melee attackers Advantage. Waking up leaves them prone until they stand.
+- **No Stealth dropdown in attack dialogs.** Full stealth now only comes from automatic sources (a helpless target). Stealth via the Stealthing status can be wired in later.
+
+### Posture, targeting, Bash, and Force
+- **Crouch / Go Prone / Get Up** (Action List → Combat; only the ones you can switch to are shown). Crouching is free. Going prone costs 1 AP. Getting up costs 1 AP from prone and is free from a crouch. In combat these only work on your own turn, and unconscious characters can't change posture.
+- **Aiming at equipped items:** with exactly one creature targeted, the weapon attack dialog has a **Target** choice. It defaults to the creature, with options for its held weapons and worn armor. It uses the creature's dodge roll as normal. On a hit, the item is the target, so its Limit doesn't apply and it loses Durability equal to the damage (broken at 0, destroyed at −max). The creature takes no HP damage and there's no Knockback. Area, Spin Cycle, Whirlwind, and grapples always target the creature.
+- **Bash:** when attacking a creature, the first object in the way (a parrying weapon, otherwise worn armor) is broken through if its effective Limit is at most the Bash value (¼ of the Grade-capped Scaling Stat). Its Limit is ignored and added to the damage. Otherwise Bash has no effect (noted on the card). Once per attack.
+- **Knockback and Push:** after the damage card (or the Push result), a **Knockback / Push (N ft)** button appears for the attacker when the Force can move the target (Force − Lift − ½ Max HP, ÷10). Choose straight away from the attacker, one of 8 directions, or **Down**.
+  - **Sideways:** the token is moved, and walls stop it with Force damage for the feet left untraveled.
+  - **Down:** it's driven into the ground, taking Force damage for the full distance (3 × feet, capped at its HP), and knocked prone.
+  - Grapple throws with no target also offer **Down**.
+  - **Into a creature:** target that creature first, then pick **Into <name>**. It's a ranged attack roll against them (their dodge, no Parry), and they must be within the distance the Force carries the pushed creature. On a hit, both take Force collision damage (3 × the feet left untraveled, capped at the pushed creature's HP), and the pushed creature lands beside them. On a miss, it flies past the full distance.
+  - **No target declared:** the pushed creature passes through anyone in its path unharmed. Only walls stop it.
+
+## Martial equipment
+Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it from dropdowns: Type, Weight, Material, and Grade. The rest is filled in automatically.
+
+**Weapons:** damage dice are floor(capped stat ÷ 10) and can be 0. The stat is Dex for Light and Str for Heavy, and the cap is Grade × 10. Light costs 2 AP to attack and Heavy costs 3. Cleave is object-only damage: it hits a parrying weapon, armor, or an aimed-at item first and uses up its Limit, so the normal damage gets through (Striker weapons with Blood and Iron also send what's left of it into the creature). Two-handed doubles damage, Cleave, and Pierce, and adds 5× Scaling Stat to Knockback. Knockback Force is additive: 5 × Scaling Stat base, +5× for Knockback+, +5× two-handed, +5× Smash (Dragon Lash multiplies the total). Weapon tags (Knockback, Cleave, Pierce, Bash) ignore Strengthened/Weakened. Material effects apply: Strengthened/Weakened, damage type (Scarletite deals heat, and so on), Arcane vs magic, vs Supernatural, and Orichalcum's crit bonus. Durability and Limit are material × Grade, and Broad multiplies them. The attack dialog adapts to the weapon: throwing (range and Adv/Dis by throw type, with Gray Iron and Gray Steel caps), ranged range bands (2× range with Dis; 4× range with 2× Dis and 6 AP), Area (Weakened), and Pepper (extra shots add Dis, and each shot deals damage on hit). Ranged weapons must be reloaded after firing, which costs RP. After an attack, the chat card offers Solitary follow-ups (one-handed, same weapon) and Fast follow-ups (a different held Fast weapon, only after an attack that is itself Fast: a Fast weapon or a Light Unarmed strike). Follow-ups are free and don't chain. On a hit, the card shows Knockback force and distance.
+
+**Armor:** Durability and Limit are material × floor(capped Con ÷ 10), with a minimum of ×1. Only one armor can be worn at a time (wearing another takes the first off). Held weapons can occupy at most two hands, and a two-handed weapon uses both. Unarmed is Light 1d10 (Fast, Pierce) / Heavy 1d12 (Knockback, Solitary, Cleave). Every actor starts with an **Unarmed** weapon that has one toggle per fist, and each raised fist takes a hand. Picking up a weapon lowers fists automatically to make room. The sheet disables toggles when there isn't room. A weapon must be held to attack with it. Unarmed has no Grade cap, and you choose Light or Heavy on each attack. With both fists raised, a Light Unarmed attack can take a Fast follow-up with the other fist. When damage is applied, armor soaks first, up to its Limit. That Limit is adjusted for damage type (armor blocks Physical and Elemental by default; material focus gives 1/3 or 1/10 effectiveness), then reduced by the attacker's Pierce. The soaked amount comes off the armor's Durability; Mithrite, Adamantine, and Orichalcum take half that Durability loss. Ignite and Stain ticks are also soaked. Armor penalties apply automatically: Stealth Disadvantage (Titanic auto-fails), base movement AP, and Gray Iron/Gray Steel shifts, including Disadvantage on physical rolls and Weakened physical attacks.
+
+**Not yet automated:** repair costs, and rarity/cost.
+
+## Judgment calls (confirm or correct)
+- **Two-handed doubles the total damage** (dice plus Cleave, then ×2). It doesn't double the number of dice.
+- **Weapon and tag scaling use the capped stat** (Grade × 10). That covers Cleave's Stat Min, Pierce, and Knockback.
+- **"Physical rolls"** (Gray Iron and Gray Steel penalties) means Str, Dex, and Con checks, attack rolls, and dodge rolls (designer ruling).
+- **Ignite and Stain ticks are soaked by armor.** The rules say this about Ignite; Stain is treated the same way.
+- **Taking the hit without dodging** counts as a hit that can't crit (designer ruling; Parry-style forced hits will use the same path).
+- **Energy outside combat:** Energy use is free and Energy is always full (designer ruling). It refills when combat ends, when you leave combat, and whenever the max changes. Recover Energy only matters in combat.
+- **Perfect Parry/Block rolls use your attack roll modifiers** (stances, exhaustion, armor penalty).
+- **Grapple throws and Break Free can't crit** (a crit counts as a plain hit). Neither can be Parried.
+- **Blender and Titan Weapon grant the tag** (Fast+ / Solitary+) even when the weapon (or its chosen type) doesn't have it.
+- **Whirlwind + Blender is a separate choice**, so you only pay double Energy when you want the Cleave.
+- **A Fast Unarmed set** is any Unarmed attack plus its other-fist Fast follow-up.
+- **Eviscerate repeats HP damage** (what got past armor) from Swift damage cards this turn, using each hit's damage type.
+- **Delta caps RP at 6.**
+- **Mark can't pause the Marked creature's action**: the Mark card appears as they act. Their attack still goes ahead (with Lead Blindness's Disadvantage), and you shoot right after.
+- **Careful Steps' 2 AP** is taken at the start of each of your turns (after AP refills).
+- **Limber** is offered to whoever succeeded: the attacker when the attack hits, the defender when a dodge or a Perfect Parry/Block roll succeeds.
+- **Grapple throw distance** to the target is measured from the thrower's token.
+- **Force collision damage from a grapple throw** goes through armor like Physical damage.
+- **Size 2 and 4 movement ratios** use the doc's literal 33% and 67%.
+- **There's no surprise round (round 0)**. Everyone gets full RP when combat starts.
+- **Heave! and Wild Swing's Bash** use the normal Bash formula (Limit ≤ ¼ Scaling Stat); Bash+ is ½.
+- **Blocking for someone else** is free and doesn't offer the blocker a Riposte (they weren't the one attacked). A Shield Toss guard lasts until the next blockable attack against that creature, which it Blocks automatically.
+- **Shield Toss's "can do the following"** is read as: it always returns on a hit and is Strengthened, *or* you pick the guard mode instead of damage.
+- **Launch is chosen before the Bodyslam roll**, so the card doesn't need both a damage and a Launch button.
+- **Berserk needs a held Striker weapon** to price its cost.
+- **Seeing Red's Disadvantage** applies to dodges, stat checks, and d100 checks. Parry and Block are attack rolls, so they're unaffected.
+- **Crunch Time** is a choice in the Force dialog, since it's paid when the Force is applied.
+- **Shank's repeated Pierce/Cleave**: a first pick on a weapon that already has the tag upgrades it to "+", matching the doc.
+- **Pinpoint Accuracy on Pepper** removes all of the Pepper Disadvantage (the "base penalty").
+- **Let it Rip!** applies the same final damage again as a second hit (armor soaks each).
+- **Dash "not under attack"** isn't checked for Light Armor.
+- **Taunt's contest** is your d100 against their d100, higher wins, and ties go to the target. "Compelled to attack you" is noted on their attack cards, not enforced.
+- **Disarm with several held items:** you pick which one they drop.
+- **Momentum is stored per attacker and target** and ends at the start of the attacker's next turn.
+- **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
+- **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
+- **Thrasher/Impale grapples don't stop the target moving** beyond the weapon's range; the GM handles that.
+
+## Not yet automated
+Attacking objects (Body/Limit/Durability), the optional Ignite spread, falling and Gravity Force, Flight stabilizing, cover, and the senses table. The math helpers for Force and Terminal Velocity are in `module/rules.mjs`, ready to wire up.
+
+## Code map
+- `module/rules.mjs`: all rules math as pure functions. Unit-tested against the Rules doc examples.
+- `module/martial.mjs`: Martial weapon and armor tables and scaling, as pure functions. Unit-tested.
+- `module/data.mjs`: actor and item data models, and the derived values.
+- `module/actions.mjs`: rolls, the attack flow, chat cards, and damage.
+- `module/sheets.mjs` and `templates/`: the ApplicationV2 sheets.
+- `module/flowstate.mjs`: init, the Actor and Combat subclasses, statuses, and chat buttons.
+
+Flow State © 2019 by Christopher Caplinger, CC BY 4.0.
+
+## Settings
+- **Attacker / Defender choice color** (per player, defaults red / blue): chat cards still waiting on someone are tinted. The attacker's pending choices (Roll damage, Follow-up, Knockback/Push, Combo / Flow Like Water) use one color, and the defender's (Dodge/Parry/etc., Riposte, Redirect, Deflect) use the other. A card waiting on both gets a split border. Once the choice is made (or passed), the tint goes away. Optional choices (Follow-ups, Knockback, Deflect) keep their tint until used.
+- **Custom Strengthened/Weakened** (default off): shows the extra Strengthened (+) / Weakened (−) fields in weapon attack, custom attack, and manual damage dialogs. Automatic sources (materials, size, crits, Parry, armor, Area, supernatural and Arcane) apply either way. When it's off and Roll damage automatically is also off, the Roll damage button rolls straight away.
+- **Custom Advantage/Disadvantage** (default off): shows the "Advantage (+) / Disadvantage (−) stacks" field in roll, attack, dodge, and parry dialogs so extra stacks can be added by hand. Automatic sources (Psych Up, Calm Down, prone, armor, range bands, follow-ups, exhaustion) apply either way. When it's off, plain rolls (Dodge, Attack roll, d100 checks, dodging an incoming attack) roll immediately with no dialog.
+- **Roll damage automatically** (default on): when an attack hits, its damage is rolled and applied right away with no Roll damage button. Turn it off to get the button back (the extra Strengthened/Weakened field appears there when Custom Strengthened/Weakened is on).
+- **Show optional sheet fields** (world setting, off by default): adds Space, Rations/day, Terminal Velocity, Lift, and Fully Magical to the sheet. Lift and Fully Magical still affect the automation when this is off.
+
+## Optional modules
+
+- **Carousel Combat Tracker:** works as is (all Flow State turn logic lives in the Combat document, not the tracker UI). Portraits default to HP, Energy, AP, and RP (change them in its Attributes settings; a world that already saved its own list keeps it). With "Display descriptions" on, the line under each name shows the worn armor and held weapons. The AP/RP pips only exist in the default sidebar tracker.
+- **Token Action HUD:** install **Token Action HUD Core** (it brings socketlib). Flow State registers itself with Core, so no separate system module is needed. The HUD mirrors the Action List: the same rows, costs (and Energy), greyed-out rows, and clicks run the same code as the sheet. Tabs: Combat (attacks, posture, Recover Energy, Parry, Martial Theory), Movement (Dash/Leap/Quicken, armor movement, Medium Armor), Methods, Weapon Trees, and Checks. Reactions to an incoming attack stay on the chat cards.
+
+## Magic Equipment (automated)
+
+Foci and Shrouds have their own sections on the Equipment tab, under Armor, and are made in the Forge (or with + while the build is open). Both use the Affix pick-list on their sheet: one slot per Affix the type allows (a "+" type doubles Affix effects). Affixes are GM-set, like a weapon's material.
+
+- **Attuning** (the link toggle) takes an hour, so it can't be done in combat. Only one Foci and one Shroud can be attuned; attuning another unattunes the old one. Items dropped or handed over are unattuned.
+- **Foci:** Durability and Limit are base × Grade. The sheet shows the casting form (Igniter: Grasp, 2 AP, 1 TR · Channeler: Reach, 3 AP, 2 TR · Multi: the lesser stat, Raw Casting AP/TR), the Grade-capped scaling stat, and the type's effect. A held Foci uses a hand like a weapon (drawing, swapping, and fists work the same; 2H toggle for Staff/Tome). Foci can be aimed at like held weapons; Zircon gives those attacks Disadvantage and Weakens the damage. Spell-side effects (TR, Power, Wand/Staff/Chime and the Foci Affixes) come with the spell automation.
+- **Shrouds:** Durability and Limit are base × floor(Build capped at Grade × 10 ÷ 10), at least ×1. The melded Shroud soaks Physical, Elemental, and Magical (Arcane) damage after a parrying weapon and **before armor** (Cleave hits it first, Pierce lowers its Limit). At the start of your turn it recovers Durability equal to its Limit.
+  - **Cinder** ×3 against damage types you've taken since your turn started · **Cistern** ×3 at full Energy, ×2 above half · **Ember** ×3 at or below half HP, ×2 below full · **Carapace** +base Limit per hit, reset at your turn start (before recovery).
+  - **Aegis / Lattice:** fixed Durability that refills each turn; a hit up to the Limit is negated for 1 Durability, a bigger one isn't blocked.
+  - **Ward** (Action List, 2 RP): placed on your target within 100 ft (or yourself) until your next turn, Durability refilled; it only protects where it's placed. **Bond** (3 RP): also protects your target; ends at 0 Durability (the 1000 ft limit is up to the GM). Shown in Active Effects; the GM can end it there.
+  - **Riposte:** after the Shroud absorbs a hit, the damage card offers a 1 RP ranged attack that deals what it took. **Retort:** after a hit it can block, the defense card offers 1 RP to give the damage a Weakened (auto damage waits for it).
+- **Shroud Affixes:** Quartz (an ally within your melee range gets an "extend Shroud" button on the attack card), Agate/Jasper/Obsidian (first Magical/Physical/Elemental hit since recovery loses Build), Hematite (Action List: refill for ½ Skill Points in HP), Garnet/Topaz (turn start: shed Ignite/Slow = Build min), Tourmaline (chosen element Weakened on the Shroud), Zircon (undamaged: ignore Slow stacks and rough terrain from Like Shooting Fish), Emerald (a "Lush biome" checkbox: ×2 Limit there, ½ elsewhere), Ruby/Sapphire (free melee attack button: Ignite/Slow equal to what the Shroud took), Black Opal (attacks from within your melee range have Disadvantage), Diamond (a source that already hit it this turn is Weakened), Alexandrite (same damage type as last time is Weakened), Painite (no Pierce), Musgravite (Force against you − Build), Colored Diamond (pick the declared source on the Shroud; reminded each turn). Moonstone and Taaffeite are reference only for now. "Scaling Stat" for Shroud Affixes is your Build, capped by the Shroud's Grade. Source types are weapon types (Unarmed included) or, for anything else, the damage type; spell schools join them with the spells.
+
+- **Forced re-rolls** (Dash, Shift, Close Quarters, Distracting Fire) only ever lower an incoming attack: if the re-roll comes out higher, the current result stands.
+
+- **Ally help:** on an attack card, everything allies can do for a target (Block, Shield Toss, Perfect Block, Quartz) is one **Ally help** button. Only players who own one of those allies see it; it opens a popup listing their characters' options. Who's helping shows under it.
+
+## Table rules (October update)
+
+- **Distance is measured between token borders.** Two tokens that touch (side or corner) are 0 ft apart, so melee range counts out from the edge of each token (a Size 3 creature's 5 ft reaches one square past adjacent). This applies to melee reach, ranges, Block range, and everything else that measures between creatures.
+- **Token size follows creature Size:** Size 1 = ¼ square, 2 = ½, 3 = 1, 4 = 2×2, 5 = 4×4. Set when the actor is made and whenever its Size changes.
+- **Downed creatures leave initiative:** going unconscious or dying removes them from the combat tracker (the GM re-adds them if they're revived), and any grapples they held end.
+- **Energy each turn:** at the start of each of your turns you regain Energy equal to 2 AP of Recover Energy, on top of the AP/RP refresh.
+- **Objects can't soak more than their Durability:** armor, Shrouds, and parrying weapons absorb at most what Durability they have left (40 damage into Limit 40 with 20 Durability lets 20 through) and stop blocking at 0. Only an object targeted directly can go negative.
+- **Shield Toss as a Block** (from Ally help) posts one card: the Block, with the toss and its cost noted on it.
+- **Ammunition:** a Misc item with an "Ammunition for" weapon type (Rapid, Assault, Blast, Longshot). A character can carry at most 100 of each type. Each ranged weapon has **Shots per reload** (GM-set, default 1): reloading loads up to that many shots and uses that much ammunition of its type (or what's left), and each attack uses one loaded shot. The sheet shows loaded shots and the Action List shows ammo left. Turn **Require ammunition** off in the settings for free reloads.
+- **Weapon Master (Martial Theory T5)** is now multi-type weapons: the GM ticks **Extra types** on a weapon's sheet. With T5 the attack popup first asks which type to attack as (its follow-ups keep that type) and all of the weapon's types count for tree abilities while it's held; without T5 it's just its main type. A multi-type weapon's ranged type uses that type's ammunition. Starting weapons can only be multi-type when the **Multi-type starting weapons** setting is on.
+
+- **Starting equipment** (New Character wizard): 4 picks by default (the "Starting equipment picks" setting). Picks can be weapons, armor (at most one), Foci, Shrouds, and Affixes; each Affix is one pick and goes on a picked Foci or Shroud with a free slot (within the rarity cap). The first Foci and first Shroud start attuned. Each starting ranged weapon brings 20 ammunition of its type (two Rapid weapons → 40 Rapid ammunition, up to 100 per type).

@@ -1,0 +1,16 @@
+{
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "npc": "NPC",
+      "pile": "Dropped Items"
+    },
+    "Item": {
+      "gear": "Gear",
+      "weapon": "Weapon",
+      "armor": "Armor",
+      "foci": "Foci",
+      "shroud": "Shroud"
+    }
+  }
+}

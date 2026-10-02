@@ -1,0 +1,82 @@
+{
+  "id": "flowstate",
+  "title": "Flow State",
+  "description": "Core rules and Martial equipment for Flow State, a Setting Universal, Digital Only, Open Ended TTRPG. Mental and Magic archetypes not yet included. Flow State © 2019 by Christopher Caplinger, CC BY 4.0.",
+  "version": "0.21.1",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "Christopher Caplinger"
+    }
+  ],
+  "esmodules": [
+    "module/flowstate.mjs"
+  ],
+  "styles": [
+    "styles/flowstate.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {
+        "htmlFields": [
+          "biography"
+        ]
+      },
+      "npc": {
+        "htmlFields": [
+          "biography"
+        ]
+      },
+      "pile": {
+        "htmlFields": [
+          "description"
+        ]
+      }
+    },
+    "Item": {
+      "gear": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "weapon": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "armor": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "foci": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "shroud": {
+        "htmlFields": [
+          "description"
+        ]
+      }
+    }
+  },
+  "initiative": "1d100",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
+  "primaryTokenAttribute": "hp",
+  "secondaryTokenAttribute": "energy",
+  "socket": true
+}

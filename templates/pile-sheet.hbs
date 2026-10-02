@@ -1,0 +1,22 @@
+<div class="fs-sheet">
+  <header class="fs-header">
+    <img class="fs-portrait fs-small" src="{{actor.img}}" alt="{{actor.name}}">
+    <div class="fs-header-main">
+      <div class="fs-name">{{actor.name}}</div>
+      <div class="fs-subtitle">Dropped on the ground</div>
+    </div>
+  </header>
+  <p class="hint">Select your token, then take an item. You need to be within reach. In combat it costs 1 AP on your turn; weapons can be equipped as you pick them up at no extra cost.</p>
+  <ul class="fs-items">
+    {{#each items}}
+    <li data-item-id="{{id}}">
+      <img src="{{img}}" alt="">
+      <a class="fs-item-name fs-item-link" data-action="editItem">{{name}}</a>
+      <span class="fs-sub">{{summary}}</span>
+      <button type="button" class="fs-inline" data-action="take"><i class="fa-solid fa-hand"></i> Take</button>
+    </li>
+    {{else}}
+    <li class="hint">Nothing left here.</li>
+    {{/each}}
+  </ul>
+</div>

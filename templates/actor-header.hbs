@@ -1,0 +1,11 @@
+<div class="fs-sheet-header">
+  <header class="fs-header">
+    <img class="fs-portrait" src="{{actor.img}}" alt="{{actor.name}}" data-action="editImage" data-edit="img">
+    <div class="fs-header-main">
+      <input class="fs-name" type="text" name="name" value="{{actor.name}}" placeholder="Name" {{#unless editable}}disabled{{/unless}}>
+      <div class="fs-header-row">
+        <span class="fs-pill fs-move" data-tooltip="Movement speed and AP per move (armor, posture, and Slow/Haste included)"><i class="fa-solid fa-shoe-prints"></i> {{system.movement.speed}} ft · {{moveNote}}</span>
+      </div>
+    </div>
+  </header>
+</div>

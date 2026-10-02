@@ -1,0 +1,52 @@
+<div class="fs-sheet">
+  <header class="fs-header">
+    <img class="fs-portrait fs-small" src="{{item.img}}" alt="{{item.name}}" data-action="editImage" data-edit="img">
+    <div class="fs-header-main">
+      <input class="fs-name" type="text" name="name" value="{{item.name}}" {{#unless nameEditable}}disabled{{/unless}}>
+      {{#if p.valid}}<div class="fs-subtitle">{{p.label}}{{#if rarity}} · {{rarity}}{{/if}}</div>{{/if}}
+    </div>
+  </header>
+
+  {{#if lockedNote}}<p class="fs-locked"><i class="fa-solid fa-lock"></i> {{lockedNote}}</p>{{/if}}
+  <section class="fs-builder">
+    <div class="fs-field"><label>Weight</label>
+      <select name="system.weight" {{#unless editable}}disabled{{/unless}}>{{selectOptions weights selected=system.weight}}</select></div>
+    <div class="fs-field"><label>Material</label>
+      <select name="system.material" {{#unless editable}}disabled{{/unless}}>{{selectOptions materials selected=system.material}}</select></div>
+    <div class="fs-field"><label>Grade</label>
+      <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
+    <div class="fs-field fs-checks-row">
+      <label><input type="checkbox" name="system.equipped" {{checked system.equipped}} {{#unless stateEditable}}disabled{{/unless}}> Worn</label>
+    </div>
+  </section>
+
+  {{#if p.valid}}
+  <section class="fs-profile">
+    <h3>Profile {{#unless owned}}<small>(previewed at the Grade cap)</small>{{/unless}}</h3>
+    <div class="fs-kv">
+      <span>Scaling</span><span>×{{p.mult}} (Constitution, Grade {{p.grade}})</span>
+      <span>Durability</span><span><input type="number" class="fs-wear" value="{{system.durability.value}}" disabled> / {{system.durability.max}} <small>(wear <input type="number" name="system.wear" value="{{system.wear}}" min="0" {{#unless editable}}disabled{{/unless}}>)</small></span>
+      <span>Limit</span><span>{{p.limit}}</span>
+      <span>Stealth</span><span>{{stealth}}</span>
+      <span>Movement</span><span>{{p.moveAP}} AP per move</span>
+      {{#if p.physicalDis}}<span>Physical rolls</span><span>Disadvantage{{#if p.physicalWeakened}}; physical attacks Weakened{{/if}}</span>{{/if}}
+      <span>Don/doff</span><span>{{p.don}}</span>
+    </div>
+    <p class="hint">Blocks Physical and Elemental damage unless the material says otherwise. Soaks automatically when damage is applied.</p>
+  </section>
+  {{else}}
+  <div class="fs-warn">{{p.error}}</div>
+  {{/if}}
+
+  {{#if p.valid}}
+  <section class="fs-material">
+    <h3>Material Effect <small>{{materialName}}{{#if rarity}} · {{rarity}}{{/if}}</small></h3>
+    {{#if p.effect}}<p>{{p.effect}}</p>{{else}}<p class="hint">No special effect.</p>{{/if}}
+  </section>
+  {{/if}}
+
+  <section>
+    <h3>Notes</h3>
+    <textarea name="system.description" rows="5" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+  </section>
+</div>

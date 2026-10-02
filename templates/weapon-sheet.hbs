@@ -1,0 +1,83 @@
+<div class="fs-sheet">
+  <header class="fs-header">
+    <img class="fs-portrait fs-small" src="{{item.img}}" alt="{{item.name}}" data-action="editImage" data-edit="img">
+    <div class="fs-header-main">
+      <input class="fs-name" type="text" name="name" value="{{item.name}}" {{#unless nameEditable}}disabled{{/unless}}>
+      {{#if p.valid}}<div class="fs-subtitle">{{p.label}}{{#if rarity}} · {{rarity}}{{/if}}</div>{{/if}}
+    </div>
+  </header>
+
+  {{#if lockedNote}}<p class="fs-locked"><i class="fa-solid fa-lock"></i> {{lockedNote}}</p>{{/if}}
+  <section class="fs-builder">
+    <div class="fs-field"><label>Type</label>
+      <select name="system.weaponType" {{#unless editable}}disabled{{/unless}}>
+        <optgroup label="Melee">{{selectOptions meleeTypes selected=system.weaponType}}</optgroup>
+        <optgroup label="Ranged">{{selectOptions rangedTypes selected=system.weaponType}}</optgroup>
+      </select></div>
+    <div class="fs-field"><label>{{#if unarmed}}Default attack weight{{else}}Weight{{/if}}</label>
+      <select name="system.weight" {{#unless editable}}disabled{{/unless}}>{{selectOptions weights selected=system.weight}}</select></div>
+    {{#unless unarmed}}{{#unless improvised}}
+    <div class="fs-field"><label>Material</label>
+      <select name="system.material" {{#unless editable}}disabled{{/unless}}>{{selectOptions materials selected=system.material}}</select></div>
+    {{/unless}}{{/unless}}
+    {{#if extraTypeChoices.length}}
+    <div class="fs-field fs-extra-types"><label>Extra types <small>(multi-type: Weapon Master, Martial Theory T5)</small></label>
+      <div class="fs-checks-row">{{#each extraTypeChoices}}<label><input type="checkbox" data-extra-type="{{key}}" {{checked on}} {{#unless ../editable}}disabled{{/unless}}> {{label}}</label>{{/each}}</div></div>
+    {{/if}}
+    {{#unless unarmed}}
+    <div class="fs-field"><label>Grade</label>
+      <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
+    {{/unless}}
+    <div class="fs-field fs-checks-row">
+      {{#if unarmed}}
+      <label><input type="checkbox" name="system.equipped" {{checked system.equipped}} {{#unless stateEditable}}disabled{{/unless}}> First hand</label>
+      <label><input type="checkbox" name="system.secondHand" {{checked system.secondHand}} {{#unless stateEditable}}disabled{{/unless}}> Second hand</label>
+      {{else}}
+      <label><input type="checkbox" name="system.twoHanded" {{checked system.twoHanded}} {{#unless stateEditable}}disabled{{/unless}}> Two-handed</label>
+      <label><input type="checkbox" name="system.equipped" {{checked system.equipped}} {{#unless stateEditable}}disabled{{/unless}}> Held</label>
+      {{/if}}
+      {{#if hasAmmo}}<label>Shots per reload <input type="number" name="system.magazine" value="{{system.magazine}}" min="1" style="width:4em" {{#unless editable}}disabled{{/unless}}></label>
+      <span class="fs-sub">{{system.rounds}}/{{system.magazine}} loaded</span>{{/if}}
+    </div>
+  </section>
+
+  {{#if p.valid}}
+  <section class="fs-profile">
+    <h3>Profile {{#unless owned}}<small>(previewed at {{p.stat}} {{scalingLabel}})</small>{{/unless}}</h3>
+    <div class="fs-kv">
+      <span>Damage</span><strong>{{p.display}} {{damageType}}</strong>
+      <span>Scaling</span><span>{{#if unarmed}}{{scalingLabel}} {{p.stat}} (no Grade cap){{else}}{{scalingLabel}} {{p.stat}} → {{p.capped}} counts (Grade {{p.grade}}){{/if}}</span>
+      <span>Attack cost</span><span>{{p.ap}} AP</span>
+      <span>Tags</span><span class="fs-tags">{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}">{{label}}</span>{{/each}}</span>
+      {{#if p.cleave}}<span>Cleave</span><span>+{{p.cleave}} damage</span>{{/if}}
+      {{#if p.pierce}}<span>Pierce</span><span>ignores {{p.pierce}} Limit</span>{{/if}}
+      {{#if p.knockback}}<span>Knockback</span><span>up to {{p.knockback}} Force</span>{{/if}}
+      {{#if p.ranged}}
+        <span>Range</span><span>{{p.range}} ft (2× with Dis, 4× with 2× Dis at 6 AP)</span>
+        <span>Reload</span><span>{{p.reloadRP}} RP</span>
+      {{else}}
+        {{#if throwLabel}}<span>Throw</span><span>{{throwLabel}}</span>{{/if}}
+        <span>Melee range</span><span>{{farstrikeLabel}}</span>
+      {{/if}}
+      {{#unless p.unarmed}}{{#unless p.improvised}}
+      <span>Durability</span><span><input type="number" class="fs-wear" value="{{system.durability.value}}" disabled> / {{system.durability.max}} <small>(wear <input type="number" name="system.wear" value="{{system.wear}}" min="0" {{#unless editable}}disabled{{/unless}}>)</small></span>
+      <span>Limit</span><span>{{p.limit}}</span>
+      {{/unless}}{{/unless}}
+    </div>
+  </section>
+  {{else}}
+  <div class="fs-warn">{{p.error}}</div>
+  {{/if}}
+
+  {{#if p.valid}}
+  <section class="fs-material">
+    <h3>Material Effect <small>{{materialName}}{{#if rarity}} · {{rarity}}{{/if}}</small></h3>
+    {{#if p.effect}}<p>{{p.effect}}</p>{{else}}<p class="hint">No special effect.</p>{{/if}}
+  </section>
+  {{/if}}
+
+  <section>
+    <h3>Notes</h3>
+    <textarea name="system.description" rows="5" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+  </section>
+</div>

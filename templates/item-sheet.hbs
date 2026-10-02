@@ -1,0 +1,12 @@
+<div class="fs-sheet">
+  {{#if lockedNote}}<p class="fs-locked"><i class="fa-solid fa-lock"></i> {{lockedNote}}</p>{{/if}}
+  <header class="fs-header">
+    <img class="fs-portrait fs-small" src="{{item.img}}" alt="{{item.name}}" data-action="editImage" data-edit="img">
+    <div class="fs-header-main">
+      <input class="fs-name" type="text" name="name" value="{{item.name}}" {{#unless nameEditable}}disabled{{/unless}}>
+      <label>Quantity <input type="number" name="system.quantity" value="{{system.quantity}}" {{#unless editable}}disabled{{/unless}}></label>
+      {{#if isGear}}<label>Ammunition for <select name="system.ammoType" {{#unless editable}}disabled{{/unless}}><option value="">— Not ammunition —</option>{{selectOptions ammoTypes selected=system.ammoType}}</select></label>{{/if}}
+    </div>
+  </header>
+  <textarea name="system.description" rows="10" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+</div>

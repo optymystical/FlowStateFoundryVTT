@@ -25,7 +25,7 @@
           {{#if needsReload}}
           <button type="button" class="fs-warnbtn" data-action="reload" data-tooltip="Reload ({{profile.reloadRP}} RP)"><i class="fa-solid fa-rotate"></i></button>
           {{else}}{{#if canReload}}
-          <button type="button" data-action="reload" data-tooltip="Reload: adds {{system.magazine}} shots, loaded shots are kept ({{profile.reloadRP}} RP)"><i class="fa-solid fa-rotate"></i></button>
+          <button type="button" data-action="reload" data-tooltip="Reload: tops up to {{system.magazine}} using only the ammo needed ({{profile.reloadRP}} RP)"><i class="fa-solid fa-rotate"></i></button>
           {{/if}}{{#if system.held}}
           <button type="button" data-action="weaponAttack" data-tooltip="Attack"><i class="fa-solid fa-khanda"></i></button>
           {{/if}}{{/if}}

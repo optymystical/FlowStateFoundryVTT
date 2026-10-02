@@ -373,6 +373,7 @@ function decorateExchange(message, html) {
         if (game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.shroudCounterOf === `${message.id}:${b.dataset.kind}`)) b.replaceWith(Object.assign(document.createElement("div"), { className: "fs-waiting", textContent: "Used." }));
       }
     }
+    if (row.classList.contains("fs-reflect-row") && game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.shroudCounterOf === `${message.id}:reflect:${row.dataset.owner}`)) row.innerHTML = `<div class="fs-waiting">Reflected.</div>`;
     if (row.classList.contains("fs-bounce-row") && game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.bounceOf === message.id)) row.innerHTML = `<div class="fs-waiting">Bounced.</div>`;
     if (row.classList.contains("fs-turn-start-row")) {
       const sc = message.getFlag("flowstate", "startCard");
@@ -410,7 +411,7 @@ Hooks.on("createChatMessage", message => {
     ?? message.getFlag("flowstate", "distract")?.attackMessage ?? message.getFlag("flowstate", "reachOf") ?? message.getFlag("flowstate", "momentumOf")
     ?? message.getFlag("flowstate", "dash")?.attackMessage ?? message.getFlag("flowstate", "blockFor")?.attackMessage
     ?? message.getFlag("flowstate", "perfect")?.attackMessage ?? message.getFlag("flowstate", "dipOf") ?? message.getFlag("flowstate", "dashMoveOf")
-    ?? message.getFlag("flowstate", "riposteDeclined") ?? message.getFlag("flowstate", "quartzFor")?.attackMessage ?? message.getFlag("flowstate", "retortOf") ?? message.getFlag("flowstate", "limberOf")
+    ?? message.getFlag("flowstate", "riposteDeclined") ?? message.getFlag("flowstate", "quartzFor")?.attackMessage ?? message.getFlag("flowstate", "adjustFor")?.attackMessage ?? message.getFlag("flowstate", "retortOf") ?? message.getFlag("flowstate", "limberOf")
     ?? message.getFlag("flowstate", "followupCard")
     ?? message.getFlag("flowstate", "followupOf");
   const target = ref && game.messages.get(String(ref).split(":")[0]);
@@ -980,6 +981,9 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   }
   for (const btn of html.querySelectorAll(".fs-shroud-counter")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.shroudCounter(message, btn.dataset.kind, Number(btn.dataset.amount)); });
+  }
+  for (const btn of html.querySelectorAll(".fs-reflect-counter")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.reflectCounter(message, btn.dataset.caster, Number(btn.dataset.amount)); });
   }
   for (const btn of html.querySelectorAll(".fs-dash-move")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.dashMove(message); });

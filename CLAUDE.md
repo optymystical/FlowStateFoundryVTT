@@ -26,8 +26,10 @@ the stable versions. When the user says "I updated the doc", diff the live doc a
 the changes, implement them, then refresh the snapshot.
 
 Status: all Martial trees (Theory + every weapon/armor/method tree, T0–T5) are automated. Magic: Foci, Shrouds and
-Affixes are in (Shroud side fully automated; Foci effects wait on spells). Spells/casting, Mental, and Ancestries
-are not yet implemented.
+Affixes are in (Shroud side fully automated; Foci effects wait on spells). Magic spells: the casting framework and
+the whole Magic T1 group (Magic Theory, Slashing, Piercing, Crushing, Protection Arcana, Gravity) are automated; "tier"
+in Magic means the group of trees a Magic Theory tier unlocks, so T2 = Reach Arcana, Heat, Cold, Radiation, Acid.
+Mental and Ancestries are not yet implemented.
 
 ## Layout
 

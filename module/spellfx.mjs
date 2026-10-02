@@ -45,7 +45,7 @@ export const profileFor = coreIds => PROFILES[profileKey(coreIds)] ?? null;
  * @param ctx      { living, direct, crit, lowDodge }  facts about the target and the roll
  * @returns { n, sides, type, extraStacks, notes[] } or null if the spell deals no damage
  */
-export function damageDice(profile, power, ctx = {}) {
+export function damageDice(profile, power, ctx = {}, mods = {}) {
   if (!profile.damage) return null;
   let { n, sides } = profile.damage;
   n *= Math.max(1, power);
@@ -55,6 +55,10 @@ export function damageDice(profile, power, ctx = {}) {
   if (profile.critStack && ctx.crit) { extraStacks += profile.critStack; notes.push(`+${profile.critStack} Strengthened (crit)`); }
   if (profile.directStack && ctx.direct) { extraStacks += profile.directStack; notes.push(`+${profile.directStack} Strengthened (direct damage)`); }
   if (profile.tripleLowDodge && ctx.crit && ctx.lowDodge) { n *= 3; notes.push("Crit against a low dodge: three times the dice"); }
+  // Crush (Crushing T2): a dodge of a third of their normal maximum or less Strengthens the damage.
+  if (mods.crush && ctx.lowDodge) { extraStacks += 1; notes.push("Crush: +1 Strengthened (low dodge)"); }
+  // Telegraph (Crushing T5): a dodge roll within range of your guess doubles the damage dice.
+  if (mods.telegraph && ctx.telegraphHit) { n *= 2; notes.push(`Telegraph: the dodge landed within ${ctx.telegraphRange} of your guess (${ctx.telegraphGuess}): twice the dice`); }
   return { n, sides, type: profile.damage.type, extraStacks, notes };
 }
 
@@ -84,8 +88,23 @@ export const penalizedDie = (die, penalty) => Math.max(1, die - Math.max(0, pena
 export const AUTOMATED_MODS = new Set([
   "magic-theory:pinpoint", "magic-theory:react",
   "magic-slashing:bleed", "magic-slashing:gash", "magic-slashing:cleave", "magic-slashing:chop",
-  "magic-piercing:exploit", "magic-piercing:pierce", "magic-piercing:setup", "magic-piercing:weakpoint"
+  "magic-piercing:exploit", "magic-piercing:pierce", "magic-piercing:setup", "magic-piercing:weakpoint",
+  "magic-crushing:crush", "magic-crushing:bash", "magic-crushing:beatdown", "magic-crushing:telegraph",
+  "magic-gravity:burden", "magic-gravity:lighten", "magic-gravity:personal-repulsion", "magic-gravity:personal-well", "magic-gravity:hold", "magic-gravity:gravity-field",
+  "magic-protection-arcana:reflect", "magic-protection-arcana:adjust", "magic-protection-arcana:dampen",
+  "magic-theory:empower", "magic-theory:snipe", "magic-theory:duplicate"
 ]);
+
+/** Gravity's Replacement Mods: when one replaces the base effect, Force (the Gravity part of the spell) is dropped. */
+export const GRAVITY_REPLACEMENTS = ["burden", "lighten", "personal repulsion", "personal well", "hold"];
+/** The spell's profile after Replacement Mods: a replaced Force is gone (its Combo partner's part stays). */
+export function applyReplacements(profile, replaced = {}) {
+  if (!profile) return profile;
+  if (GRAVITY_REPLACEMENTS.some(n => replaced[n])) return { ...profile, force: null };
+  return profile;
+}
+/** A Replacement Mod that replaces the base effect is doubled in power. */
+export const replaceFactor = (replaced, name) => (replaced?.[name] ? 2 : 1);
 
 /** { bleed: 1, exploit: 2, … } from the applied Mods (lowercase names, stack counts). */
 export function modCounts(applied) {

@@ -4,7 +4,7 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance } from "./actions.mjs";
+import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import { STATS } from "./rules.mjs";
 import { tierOf } from "./skills.mjs";
@@ -23,7 +23,7 @@ function freeHand(actor) {
 }
 
 /** Everything planCast() needs from an actor. */
-export function castContext(actor) {
+export function castContext(actor, weave = null) {
   const eff = actor.system.derived?.effective ?? {};
   const foci = actor.items.filter(i => i.type === "foci" && i.system.equipped).map(i => ({
     id: i.id, name: i.name, profile: i.system.profile, attuned: !!i.system.attuned, broken: !!i.system.broken, twoHanded: !!i.system.twoHanded
@@ -33,12 +33,16 @@ export function castContext(actor) {
   const rituals = Array.from(actor.effects ?? []).filter(e => !e.disabled && e.flags?.flowstate?.ritual?.freeCasts > 0)
     .map(e => ({ id: e.id, name: e.name, cores: e.flags.flowstate.ritual.cores, mods: e.flags.flowstate.ritual.mods, freeCasts: e.flags.flowstate.ritual.freeCasts }));
   const options = spells.castingOptions({ reach: eff.reach?.value ?? 0, grasp: eff.grasp?.value ?? 0, freeHand: freeHand(actor), foci });
-  return { inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals };
+  const theory = tierOf(actor.system.trees ?? {}, "magic-theory");
+  // Weaving: only options whose normal AP equals the attack's can be woven; Webmaster (T5) keeps TR.
+  if (weave) for (const o of options) if (o.ok && !o.ap.includes(weave.ap)) { o.ok = false; o.reason = `Takes ${o.ap.join("/")} AP; the attack you're weaving with costs ${weave.ap}.`; }
+  return { inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals,
+    weave: weave ? { ap: weave.ap, keepTR: theory >= 5 } : null };
 }
 
 /** Can this actor cast at all? (Knows a Core Spell and meets some casting requirement.) */
-export function castSummary(actor) {
-  const ctx = castContext(actor);
+export function castSummary(actor, weave = null) {
+  const ctx = castContext(actor, weave);
   const known = spells.knownSpells(ctx.trees);
   return { ctx, known, any: known.cores.length > 0, usable: ctx.options.some(o => o.ok) };
 }
@@ -59,9 +63,12 @@ function modRow(m, mods, v) {
   const extra = m.replicate
     ? `<select name="rep:${m.id}">${mods.filter(o => !o.replicate).map(o => `<option value="${o.id}" ${v[`rep:${m.id}`] === o.id ? "selected" : ""}>${esc(o.name)}</option>`).join("")}</select>`
     : m.min !== m.max ? `<input type="number" name="modT:${m.id}" value="${v[`modT:${m.id}`] ?? m.min}" min="${m.min}" max="${m.max}" step="1" data-tooltip="Threshold for this Mod">` : "";
+  const replaceBox = m.replacement ? `<label class="fs-cast-sub" data-tooltip="Replace the spell's base effect with this one (doubled in power), instead of adding it on"><input type="checkbox" name="replace:${m.id}" ${v[`replace:${m.id}`] ? "checked" : ""}> replace base effect (×2)</label>` : "";
+  const damp = m.name === "Dampen" ? [0, 1, 2].map(i => `<select name="dampen:${i}" data-tooltip="Archetype for stack ${i + 1}">${["martial", "mental", "magic"].map(a => `<option value="${a}" ${(v[`dampen:${i}`] ?? ["martial", "mental", "magic"][i]) === a ? "selected" : ""}>${a}</option>`).join("")}</select>`).join("") : "";
+  const guess = m.name === "Telegraph" ? `<input type="number" name="telegraph" value="${v.telegraph ?? ""}" placeholder="dodge guess" data-tooltip="Predict their dodge roll before the attack">` : "";
   const manual = fx.AUTOMATED_MODS.has(m.id) ? "" : ` · <em data-tooltip="Costs Threshold, but its effect isn't automated yet: the GM resolves it from the card">not automated</em>`;
   const hint = m.name === "Exploit" ? " · each stack needs an Advantage on the attack, or it is refunded" : "";
-  return `<label class="fs-cast-mod" data-tooltip="${esc(m.text)}">${control} <strong>${esc(m.name)}</strong> <small>${thr} Threshold${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}</label>`;
+  return `<label class="fs-cast-mod" data-tooltip="${esc(m.text)}">${control} <strong>${esc(m.name)}</strong> <small>${thr} Threshold${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}${replaceBox}${damp}${guess}</label>`;
 }
 
 /** The Universal / Core 1 / Core 2 Mod tabs for the chosen Cores. */
@@ -196,9 +203,9 @@ export function castCardHTML(actor, plan) {
 }
 
 /** Cast a spell: dialog → check → spend → post. Returns the plan, or null if nothing was cast. */
-export async function castSpell(actor, preset = null) {
+export async function castSpell(actor, preset = null, { weave = null } = {}) {
   if (helpless(actor)) { ui.notifications.warn(`${actor.name} is ${actor.statuses.has("dead") ? "dead" : "unconscious"} and can't cast.`); return null; }
-  const { ctx, known } = castSummary(actor);
+  const { ctx, known } = castSummary(actor, weave);
   if (!known.cores.length) { ui.notifications.warn(`${actor.name} doesn't know any Core Spells yet (unlock a Magic school).`); return null; }
   if (!ctx.options.some(o => o.ok)) { ui.notifications.warn(`${actor.name} can't cast right now: ${ctx.options.map(o => `${o.label}: ${o.reason}`).join(" · ")}`); return null; }
   const values = preset ?? await castDialog(actor, ctx);
@@ -208,16 +215,20 @@ export async function castSpell(actor, preset = null) {
 
   const inCombat = inActiveCombat(actor);
   if (plan.ritual && inCombat) { ui.notifications.warn("Rituals take hours and can't be cast in combat."); return null; }
-  if (inCombat && !plan.usesRP && game.combat.combatant?.actor?.uuid !== actor.uuid) {
+  if (inCombat && !plan.usesRP && !weave && game.combat.combatant?.actor?.uuid !== actor.uuid) {
     ui.notifications.warn("You can only cast with AP on your own turn (the React Mod casts with RP instead).");
     return null;
   }
   // Check everything before spending anything.
   const ids = plan.cores.map(c => c.id);
   const profile = fx.profileFor(ids);
-  const targets = [...(game.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
+  const mods = fx.modCounts(plan.applied);
+  const targets = weave ? weave.targetActors.map(a => ({ actor: a })) : [...(game.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
   const meleeRange = !!targets[0]?.actor && inMeleeRange(actor, targets[0].actor);
-  if (!plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, plan.attack === "Targeted" ? 100 : 200, `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack})`)) return null;
+  if (weave?.melee && !meleeRange) { ui.notifications.warn("A woven spell must be the same kind of attack: the target has to be within your personal melee range for a melee attack."); return null; }
+  // Snipe (Magic Theory T4) doubles the range; past the normal range the initial attack roll has Disadvantage.
+  const normalRange = plan.attack === "Targeted" ? 100 : 200;
+  if (!weave && !plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, normalRange * (mods.snipe ? 2 : 1), `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack}${mods.snipe ? ", Snipe" : ""})`)) return null;
   const key = plan.usesRP ? "rp" : "ap";
   if (inCombat && plan.ap && actor.system[key].value < plan.ap) { ui.notifications.warn(`${actor.name} needs ${plan.ap} ${key.toUpperCase()} to cast this but has ${actor.system[key].value}.`); return null; }
   if (inCombat && plan.energy && actor.system.energy.value < plan.energy) { ui.notifications.warn(`${actor.name} needs ${plan.energy} Energy to cast this but has ${actor.system.energy.value}.`); return null; }
@@ -252,7 +263,7 @@ export async function castSpell(actor, preset = null) {
     flags: { flowstate: { spell: { caster: actor.uuid, cores: ids, mods: plan.applied.map(a => a.mod.id), power: plan.power, threshold: plan.threshold, energy: plan.energy, ritual: plan.ritual, attack: plan.attack } } }
   });
   // Automated spells go on to the attack exchange (Rituals of attack spells just store their free casts).
-  if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values);
+  if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave });
   return plan;
 }
 
@@ -264,14 +275,22 @@ function inMeleeRange(actor, other) {
 }
 
 /** Make the spell's attack: Pinpoint and melee range give Advantage, Targeted spells attack from half stealth. */
-async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee, ctx, values) {
+async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee, ctx, values, { normalRange = 200, weave = null } = {}) {
   let targetActors = targets.map(t => t.actor);
   if (!targetActors.length && profile.shield) targetActors = [actor];     // a Shield with no target goes on yourself
-  if (targetActors.length > 1) { ui.notifications.info(`${profile.name} has a single target: using ${targetActors[0].name}.`); targetActors = targetActors.slice(0, 1); }
+  const area = plan.applied.some(a => a.mod.name === "Gravity Field");
+  if (targetActors.length > 1 && !area) { ui.notifications.info(`${profile.name} has a single target: using ${targetActors[0].name}.`); targetActors = targetActors.slice(0, 1); }
   const pinpoint = plan.applied.some(a => a.mod.name === "Pinpoint");
-  const notes = [pinpoint ? "Pinpoint: Advantage" : "", melee ? "Cast in melee range: Advantage" : ""].filter(Boolean);
+  const mods0 = fx.modCounts(plan.applied);
+  // Snipe: Disadvantage on the initial attack roll when the target is in the extra range.
+  let farNet = 0;
+  const srcTok = attackerToken(actor), dstTok = targetActors[0]?.getActiveTokens?.()[0];
+  if (mods0.snipe && !melee && srcTok && dstTok && globalThis.canvas?.grid && tokenDistance(srcTok, dstTok) > normalRange) farNet = -1;
+  const notes = [pinpoint ? "Pinpoint: Advantage" : "", melee ? "Cast in melee range: Advantage" : "", farNet ? "Snipe: target is in the extra range (Disadvantage)" : "", weave ? "Woven into an attack: no AP/RP, no TR" : ""].filter(Boolean);
   const dice = profile.damage ? fx.damageDice(profile, plan.power) : null;
-  const mods = fx.modCounts(plan.applied);
+  const mods = mods0;
+  const replaced = Object.fromEntries(plan.applied.filter(a => a.replace).map(a => [a.mod.name.toLowerCase(), true]));
+  const dampen = plan.applied.filter(a => a.mod.name === "Dampen").map(a => a.archetype);
   // Exploit: how much Energy comes back if some stacks have no Advantage to consume (worked out against the real attack roll).
   let exploit = null;
   const exploitMod = plan.applied.find(a => a.mod.name === "Exploit")?.mod;
@@ -284,10 +303,43 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund };
   } else if (mods.exploit) exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund: [] };
   const pierce = mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0;
-  return performAttack(actor, {
-    label: profile.name, net: (pinpoint ? 1 : 0) + (melee ? 1 : 0), stealth: plan.attack === "Targeted" ? "half" : "none", melee, push: false,
-    damage: dice ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, knockback: 0,
-    notes: [...notes, pierce ? `Pierce ${pierce} (ignores that much Limit)` : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
-    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit }
-  });
+  // Bash (Crushing T3): Bash 10 × Power per stack (an object with that much Limit or less is ignored for extra damage).
+  const bash = mods.bash ? mods.bash * 10 * plan.power : 0;
+  const attackOpts = {
+    label: profile.name, net: (pinpoint ? 1 : 0) + (melee ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
+    damage: dice ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0,
+    notes: [...notes, pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
+    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null }
+  };
+  const first = await performAttack(actor, attackOpts);
+  // Duplicate (Magic Theory T5): cast once more for free, at any valid target.
+  if (mods.duplicate) {
+    const picked = await pickDuplicateTarget(actor, targetActors, values?.dupTarget);
+    if (picked?.length) await performAttack(actor, { ...attackOpts, targetActors: picked, area: false, notes: [...attackOpts.notes, "Duplicate: the free second cast"], spell: { ...attackOpts.spell, exploit: null, telegraph: null, ritualOf: null } });
+  }
+  return first;
 }
+
+/** Who gets the free second cast of a Duplicate? The same target by default, or anyone else on the scene. */
+async function pickDuplicateTarget(actor, current, preset) {
+  const others = (globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(a => a && a.type !== "pile" && !current.some(c => c.uuid === a.uuid));
+  if (preset) { const a = [...current, ...others].find(x => x.uuid === preset); return a ? [a] : current; }
+  if (!others.length) return current.slice(0, 1);
+  const choices = [...current.slice(0, 1), ...others];
+  const out = await DialogV2().prompt({
+    window: { title: "Duplicate: second target" },
+    content: `<div class="fs-field"><label>Cast again at</label><select name="t">${choices.map(a => `<option value="${a.uuid}">${esc(a.name)}</option>`).join("")}</select></div>`,
+    ok: { label: "Cast", callback: (event, button) => valuesFromForm(button.form) }, rejectClose: false
+  });
+  const a = choices.find(x => x.uuid === out?.t);
+  return a ? [a] : current.slice(0, 1);
+}
+
+/* Weaving (Magic Theory T3): the attack dialog offers a free spell alongside a non-Magical attack of the same AP cost. */
+export async function weaveSpell(actor, { ap, melee, targetActors }) {
+  return castSpell(actor, null, { weave: { ap, melee: !!melee, targetActors } });
+}
+setWeaveHook({
+  eligible: actor => tierOf(actor.system.trees ?? {}, "magic-theory") >= 3 && castSummary(actor).any,
+  run: weaveSpell
+});

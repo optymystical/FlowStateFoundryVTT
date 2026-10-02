@@ -27,3 +27,7 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 ## Built (v0.25.0): Slashing/Piercing Mods and dialog polish
 - Automated Mods are listed in `spellfx.AUTOMATED_MODS`; the rest are tagged "not automated" and listed on the card for the GM.
 - Judgment calls: Bleed/Gash repeats go straight to HP (no soak) and keep Chop's Max HP loss; Gash triggers on any token position change except system moves; Exploit refunds unused stacks' Energy when the attack is rolled (not capped in the dialog); Setup's Advantage applies to any attack roll at that target and is stored as an actor flag; Pierce stacks add (10 × Power each); Cleave is flat damage before Strengthened/Weakened.
+
+## Built (v0.26.0): the whole Magic T1 group
+- "Tier" = the group of trees a Magic Theory tier unlocks. T1 = Magic Theory, Slashing, Piercing, Crushing, Protection Arcana, Gravity, all their tiers.
+- Judgment calls: Replacement Mods have a "replace base effect (×2)" box (replacing drops Force, the Gravity part, and keeps a Combo partner's part); Hold's break-free is an attack-die roll against the held minimum; Reflect is a counter button, not automatic; Adjust = a per-Shield absorb-order setting plus an ally-help extension within 10 ft; Weaving only offers casting options whose normal AP equals the attack's; Duplicate asks for the second target; Emplace and the Gravity Field Ritual stay GM-resolved.

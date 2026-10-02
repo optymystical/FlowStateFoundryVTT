@@ -352,6 +352,13 @@ export function weaponRows(actor) {
   });
 }
 
+const SHIELD_ORDERS = [
+  { key: "default", label: "after parrying weapons, before the Shroud" }, { key: "afterShroud", label: "after the Shroud, before armor" },
+  { key: "last", label: "after armor (last)" }, { key: "first", label: "before everything" }
+];
+const shieldOrderRows = actor => actions.spellEffects(actor, "shield").filter(e => e.flags.flowstate.spellEffect.adjust)
+  .map(e => ({ id: e.id, name: e.name, label: SHIELD_ORDERS.find(o => o.key === (e.flags.flowstate.spellEffect.order ?? "default"))?.label }));
+
 /** { coreId: name } for a select: the Core Spells this character knows (all of them when there is no owner). */
 function coreChoices(trees) {
   const cores = trees ? spells.knownSpells(trees).cores : spells.CATALOG.filter(s => s.kind === "core");
@@ -678,6 +685,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       dodge: FlowStateActorSheet.onDodge,
       recoverEnergy: FlowStateActorSheet.onRecoverEnergy,
       cast: FlowStateActorSheet.onCast,
+      cycleShieldOrder: FlowStateActorSheet.onCycleShieldOrder,
       posture: FlowStateActorSheet.onPosture,
       rest: FlowStateActorSheet.onRest,
       clearCondition: FlowStateActorSheet.onClearCondition,
@@ -779,6 +787,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       open,
       editable: this.isEditable,
       isGM: game.user.isGM,
+      shieldRows: shieldOrderRows(actor),
       showFocus: skills.tierOf(sys.trees, "magic-theory") >= 2,
       focusChoices: coreChoices(sys.trees),
       focusEditable: this.isEditable && !actions.inActiveCombat(actor),
@@ -888,6 +897,13 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   static onDodge() { return actions.rollDodge(this.document); }
   static onRecoverEnergy() { return actions.recoverEnergy(this.document); }
   static onCast() { return casting.castSpell(this.document); }
+  /** Adjust (Protection Arcana T3): the holder chooses where their Shield sits in the order damage is absorbed. */
+  static async onCycleShieldOrder(event, target) {
+    const e = this.document.effects.get(target.dataset.effectId);
+    if (!e) return;
+    const i = SHIELD_ORDERS.findIndex(o => o.key === (e.flags.flowstate.spellEffect.order ?? "default"));
+    await e.update({ "flags.flowstate.spellEffect.order": SHIELD_ORDERS[(i + 1) % SHIELD_ORDERS.length].key });
+  }
   static onPosture(event, target) { return actions.setPosture(this.document, target.dataset.op); }
   static onRest() { return actions.rest(this.document); }
   static onClearCondition(event, target) { return actions.clearCondition(this.document, target.dataset.condition); }

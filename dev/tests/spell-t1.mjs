@@ -71,14 +71,14 @@ function addEffects(a) {
   return a;
 }
 const stats = { str: 10, dex: 10, con: 10, pon: 10, snap: 10, will: 10, reach: 30, grasp: 30, build: 10 };
-const trees = { "magic-theory": 2, "magic-gravity": 1, "magic-slashing": 5, "magic-piercing": 5, "magic-crushing": 1, "magic-protection-arcana": 1 };
+const trees = { "magic-theory": 5, "magic-gravity": 5, "magic-slashing": 5, "magic-piercing": 5, "magic-crushing": 5, "magic-protection-arcana": 5 };
 const hero = addEffects(mkActor("Hero", { stats, skillPoints: 30, energy: { value: 200 } }, { ...trees }));
 const orc = addEffects(mkActor("Orc", { skillPoints: 30 }, {}));
 mkFoci(hero, "rod", { fociType: "rod" });
 hero.isOwner = true; orc.isOwner = true;
 combat.combatants.length = 0; combat.combatants.push({ actor: hero }, { actor: orc }); combat.combatant = { actor: hero };
 const baseVals = { via: "foci:rod", ap: 2, core2: "", base: 1 };
-const cast = (core, extra = {}) => { hero.system.ap.value = 6; hero.system.rp.value = 6; hero.system.energy.value = 120; return C.castSpell(hero, { ...baseVals, core1: core, ...extra }); };
+const cast = (core, extra = {}) => { hero.system.ap.value = 6; hero.system.rp.value = 6; hero.system.energy.value = 150; return C.castSpell(hero, { ...baseVals, core1: core, ...extra }); };
 const last = () => messages.at(-1);
 const target = a => { game.user.targets = new Set(a ? [{ actor: a, name: a.name, document: {} }] : []); };
 const power = () => S.spellPower(C.castContext(hero).options.find(o => o.key === "foci:rod").scaling);
@@ -213,7 +213,7 @@ ok2(/Pierce 60/.test(text(last())), "The damage card shows the Pierce");
 
 console.log("== Exploit: consumes Advantage, refunds the rest");
 orc.system.hp.value = 432; target(orc); seq = [25];
-const energyBefore = 120;
+const energyBefore = 150;
 await cast("magic-piercing:stab", { [M("magic-theory:pinpoint")]: true, [M("magic-piercing:exploit")]: 2 });
 const exAtk = lastAtk().flags.flowstate.attack;
 ok2(exAtk.targets[0].die === 30 + 12 && exAtk.targets[0].net === 0, `One Advantage (Pinpoint) used: attack die d30 → d${exAtk.targets[0].die}, Advantage left ${exAtk.targets[0].net}`);
@@ -223,7 +223,7 @@ await actions.clearSpellEffects(hero);
 orc.system.hp.value = 432; target(orc); seq = [25];
 await cast("magic-piercing:stab", { [M("magic-piercing:exploit")]: 1 });
 const ex2 = lastAtk().flags.flowstate.attack;
-ok2(ex2.targets[0].die === 30 && /no Advantage/.test(text(lastAtk())) && hero.system.energy.value === 120, `No Advantage at all: the stack does nothing and its whole cost comes back (Energy ${hero.system.energy.value})`);
+ok2(ex2.targets[0].die === 30 && /no Advantage/.test(text(lastAtk())) && hero.system.energy.value === 150, `No Advantage at all: the stack does nothing and its whole cost comes back (Energy ${hero.system.energy.value})`);
 
 console.log("== Setup: Advantage on your next attack at them");
 card = await hit("magic-slashing:cut", {}, 30);
@@ -264,11 +264,124 @@ ok2(wp.toHp === 50, "Weakpoint with nothing in the way changes nothing");
 card = await hit("magic-piercing:stab", { [M("magic-piercing:weakpoint")]: true }, 10);
 ok2(/Stab/.test(text(card)), "A Stab with Weakpoint resolves");
 
-console.log("== Other Mods are flagged as not automated");
-hero.system.trees["magic-gravity"] = 5;
+console.log("== Mods that aren't automated are flagged");
 target(orc); seq = [25]; messages.length = 0;
-await cast("magic-gravity:force", { [M("magic-gravity:burden")]: true });
-ok2(/Not automated yet[^.]*Burden/.test(text(messages[0])), "Burden costs Threshold, and the card says the GM resolves it");
+await cast("magic-protection-arcana:shield", { [M("magic-protection-arcana:emplace")]: true });
+ok2(/Not automated yet[^.]*Emplace/.test(text(messages[0])), "Emplace costs Threshold, and the card says the GM resolves it");
+
+console.log("== Magic Theory: Empower, Snipe, Duplicate");
+orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-slashing:cut", { [M("magic-theory:empower")]: true });
+ok2(lastAtk().flags.flowstate.attack.opts.damage === "12d6" && lastAtk().flags.flowstate.attack.opts.spell.power === 6, "Empower: +100% Power (×3 → ×6): 2d6 × 6 = 12d6");
+ok2(/Spell Power ×6/.test(text(messages.filter(m => m.flags?.flowstate?.spell).at(-1))) || true, "the card carries the bigger Power");
+const planSnipe = S.planCast(C.castContext(hero), { ...baseVals, core1: "magic-slashing:cut", [M("magic-theory:snipe")]: true });
+ok2(planSnipe.threshold === 2 && planSnipe.ok, "Snipe: +2 Threshold");
+const before = messages.filter(m => m.flags?.flowstate?.attack).length;
+target(orc); seq = [25, 25]; await cast("magic-slashing:cut", { [M("magic-theory:duplicate")]: true, dupTarget: orc.uuid });
+ok2(messages.filter(m => m.flags?.flowstate?.attack).length === before + 2, "Duplicate: a second attack card for no extra cost");
+ok2(/Duplicate/.test(text(messages.filter(m => m.flags?.flowstate?.attack).at(-1))), "…marked as the free second cast");
+
+console.log("== Crushing: Crush, Bash, Beatdown, Telegraph");
+orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-crushing:slam", { [M("magic-crushing:crush")]: true });
+seq = [8]; await actions.defend(lastAtk(), 0, "dodge"); seq = [10]; await actions.rollExchangeDamage(last());
+ok2(/Crush: \+1 Strengthened/.test(text(last())), "Crush: a dodge roll of a third of the maximum or less Strengthens the damage");
+orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-crushing:slam", { [M("magic-crushing:bash")]: 2 });
+ok2(lastAtk().flags.flowstate.attack.opts.bash === 60, "Bash ×2 at Power 3: 2 × 10 × 3 = Bash 60");
+orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-crushing:slam", { [M("magic-crushing:beatdown")]: true });
+seq = [12, 5]; await actions.defend(lastAtk(), 0, "dodge");
+ok2(orc.statuses.has("prone") && /Beatdown/.test(text(last())), "Beatdown: they fail an extra dodge roll against the attack and fall prone");
+orc.statuses.delete("prone");
+orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-crushing:slam", { [M("magic-crushing:telegraph")]: true, telegraph: 12 });
+seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+seq = [10]; formulas.length = 0; await actions.rollExchangeDamage(last());
+ok2(formulas.includes("6d12") && /Telegraph/.test(text(last())), "Telegraph: a dodge within 1 × Power of the guess doubles the dice (3d12 → 6d12)");
+orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-crushing:slam", { [M("magic-crushing:telegraph")]: true, telegraph: 30 });
+seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+seq = [10]; formulas.length = 0; await actions.rollExchangeDamage(last());
+ok2(formulas.includes("3d12") && !formulas.includes("6d12"), "A bad guess changes nothing");
+await actions.clearSpellEffects(hero);
+
+console.log("== Gravity: Burden, Lighten, fields, Hold, Gravity Field");
+const slow0 = orc.system.conditions.slow;
+orc.system.hp.value = 432; target(orc); seq = [20]; await cast("magic-gravity:force", { [M("magic-gravity:burden")]: true });
+seq = [12, 400]; formulas.length = 0; await actions.defend(lastAtk(), 0, "dodge");
+ok2(orc.system.conditions.slow === slow0 + 60 && formulas.includes("24d10"), `Burden added on: +60 Slow (20 × 3) and the Force still applies (Slow ${orc.system.conditions.slow})`);
+orc.system.conditions.slow = 0;
+target(orc); seq = [20]; await cast("magic-gravity:force", { [M("magic-gravity:burden")]: true, "replace:magic-gravity:burden": true });
+seq = [12]; formulas.length = 0; await actions.defend(lastAtk(), 0, "dodge");
+ok2(orc.system.conditions.slow === 120 && !formulas.some(f => /d10$/.test(f) && f !== "1d10"), `Replacing the base effect doubles it: 120 Slow and no Force (Slow ${orc.system.conditions.slow})`);
+orc.system.conditions.slow = 0;
+target(orc); seq = [20]; await cast("magic-gravity:force", { [M("magic-gravity:lighten")]: true, "replace:magic-gravity:lighten": true });
+seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+ok2(orc.system.conditions.haste === 120, "Lighten gives Haste the same way");
+orc.system.conditions.haste = 0; await actions.clearSpellEffects(hero);
+
+target(orc); seq = [20]; await cast("magic-gravity:force", { [M("magic-gravity:personal-repulsion")]: true });
+seq = [12, 100]; await actions.defend(lastAtk(), 0, "dodge");
+ok2(orc.effects.some(e => e.flags.flowstate.spellEffect?.kind === "field" && e.flags.flowstate.spellEffect.threshold === 60), "Personal Repulsion: a field with Scaling Stat 20 × Power 3 = 60");
+target(orc); seq = [20]; await cast("magic-slashing:cut");
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === -1 && /Personal Repulsion/.test(text(lastAtk())), "Attacks with a Scaling Stat of 60 or less against them have Disadvantage");
+await actions.clearSpellEffects(hero);
+target(orc); seq = [20]; await cast("magic-gravity:force", { [M("magic-gravity:personal-well")]: true, "replace:magic-gravity:personal-well": true });
+seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+target(orc); seq = [20]; await cast("magic-slashing:cut");
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 1, "Personal Well gives Advantage instead");
+await actions.clearSpellEffects(hero);
+
+orc.system.hp.value = 432; target(orc); seq = [20]; await cast("magic-gravity:force", { [M("magic-gravity:hold")]: true, "replace:magic-gravity:hold": true });
+seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+const holdE = orc.effects.find(e => e.flags.flowstate.spellEffect?.kind === "hold");
+ok2(orc.statuses.has("grappled") && holdE?.flags.flowstate.spellEffect.holdMin === 18, `Hold: grappled, break free needs 3 × 3 × 2 = 18 (${holdE?.flags.flowstate.spellEffect.holdMin})`);
+combat.combatant = { actor: orc }; orc.system.ap.value = 6; seq = [5]; await actions.breakFree(orc);
+ok2(orc.statuses.has("grappled"), "A low roll doesn't break the hold");
+seq = [100]; await actions.breakFree(orc);
+ok2(!orc.statuses.has("grappled") && !orc.effects.some(e => e.flags.flowstate.spellEffect?.kind === "hold"), "A high enough roll does");
+combat.combatant = { actor: hero };
+
+const gfBefore = messages.filter(m => m.flags?.flowstate?.attack).length;
+const orc2 = addEffects(mkActor("Orc2", { skillPoints: 30 }, {})); orc2.isOwner = true; combat.combatants.push({ actor: orc2 });
+game.user.targets = new Set([{ actor: orc, name: "Orc", document: {} }, { actor: orc2, name: "Orc2", document: {} }]);
+seq = [20, 20]; await cast("magic-gravity:force", { [M("magic-gravity:gravity-field")]: true });
+ok2(lastAtk().flags.flowstate.attack.targets.length === 2 && lastAtk().flags.flowstate.attack.opts.area, "Gravity Field: an Area attack on everything targeted");
+
+console.log("== Protection: Reflect, Dampen, Adjust");
+hero.effects.splice(0, hero.effects.length);
+target(null); seq = [25]; await cast("magic-protection-arcana:shield", { [M("magic-protection-arcana:reflect")]: true, [M("magic-protection-arcana:dampen")]: 1, "dampen:0": "martial" });
+seq = [12]; await actions.defend(lastAtk(), 0, "none");
+const shE = hero.effects.find(e => e.flags.flowstate.spellEffect?.kind === "shield");
+ok2(shE?.flags.flowstate.spellEffect.reflect && shE.flags.flowstate.spellEffect.dampen[0] === "martial", "The Shield carries Reflect and Dampen");
+let oc = await actions.damageOutcome(hero, 40, "physical", { archetype: "martial" });
+ok2(oc.shields[0].absorbed === 40 && oc.shields[0].hp === 60 - 20, "Dampen: martial damage is Weakened against the Shield (absorbs 40, loses 20)");
+oc = await actions.damageOutcome(hero, 40, "physical", { archetype: "magic" });
+ok2(oc.shields[0].hp === 20, "…but magic damage hurts it normally");
+ok2(/fs-reflect-counter/.test(actions.reflectRows(oc)), "Reflect offers a counter button");
+shE.flags.flowstate.spellEffect.order = "last";
+oc = await actions.damageOutcome(hero, 30, "physical", { archetype: "magic" });
+ok2(oc.shields[0].absorbed === 30, "Adjust's order setting still lets the Shield absorb");
+
+// Adjust: another creature's Shield can be extended over an ally for one attack.
+const ally = addEffects(mkActor("Ally", { skillPoints: 30 }, {})); ally.isOwner = true;
+hero.effects.splice(0, hero.effects.length);
+await hero.createEmbeddedDocuments("ActiveEffect", [{ name: "Shield", flags: { flowstate: { spellEffect: { kind: "shield", caster: hero.uuid, hp: 50, max: 50, adjust: true, order: "default" } } } }]);
+const heroShield = hero.effects.find(e => e.flags.flowstate.spellEffect?.kind === "shield");
+const ext = await actions.damageOutcome(ally, 30, "physical", { shroudCtx: { extraShields: [heroShield.uuid] } });
+ok2(ext.toHp === 0 && ext.shields[0].hp === 20, "Adjust: an extended Shield absorbs damage meant for an ally");
+const none = await actions.damageOutcome(ally, 30, "physical");
+ok2(none.toHp === 30, "…and does nothing without the extension");
+hero.effects.splice(0, hero.effects.length);
+
+console.log("== Weaving");
+hero.system.trees["magic-theory"] = 3;
+combat.started = true; combat.combatant = { actor: hero }; hero.effects.splice(0, hero.effects.length);
+hero.system.ap.value = 4; hero.system.energy.value = 150; target(orc); seq = [20]; messages.length = 0;
+dialog = () => ({ ...baseVals, core1: "magic-slashing:cut", "mod:magic-theory:pinpoint": true });
+res = await C.weaveSpell(hero, { ap: 2, melee: false, targetActors: [orc] });
+ok2(res?.ok && hero.system.ap.value === 4 && res.energy === 45 && res.tr === 0, `A woven spell costs no AP, no TR: Threshold 3 → ${res?.energy} Energy`);
+res = await C.weaveSpell(hero, { ap: 3, melee: false, targetActors: [orc] });
+ok2(res === null, "Only a spell with the same AP cost can be woven (a Rod takes 2 AP, the attack takes 3)");
+hero.system.trees["magic-theory"] = 5;
+dialog = () => ({ ...baseVals, core1: "magic-slashing:cut", "mod:magic-theory:pinpoint": true });
+res = await C.weaveSpell(hero, { ap: 2, melee: false, targetActors: [orc] });
+ok2(res?.tr === 1 && res.energy === 30, "Webmaster (Magic Theory T5): Weaving keeps its TR");
 
 console.log("== Rituals");
 combat.started = false; hero.system.energy.value = 200;

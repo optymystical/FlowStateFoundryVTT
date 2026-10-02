@@ -4665,11 +4665,11 @@ export async function reloadWeapon(actor, item) {
   if (cantAct(actor, "reload")) return;
   await triggerMark(actor, `reloads`);
   const p = item.system.profile;
-  if (!p?.ranged || (item.system.rounds ?? 0) >= (item.system.magazine ?? 1)) return ui.notifications.info(`${item.name} is fully loaded.`);
+  if (!p?.ranged) return ui.notifications.info(`${item.name} doesn't need reloading.`);
   if (ammoRequired() && !item.system.natural && !ammoCount(actor, item.system.ammoType)) return ui.notifications.warn(`${actor.name} has no ${ammoLabel(item.system.ammoType)} for ${item.name}.`);
   if (!(await spendPoints(actor, "rp", p.reloadRP, `reloading ${item.name}`))) return;
   const n = await loadWeapon(actor, item);
-  if (n) ui.notifications.info(`${item.name}: loaded ${n} (${item.system.rounds}/${item.system.magazine}).`);
+  if (n) ui.notifications.info(`${item.name}: loaded ${n} (${item.system.rounds} shots now loaded).`);
 }
 
 /* ---- Ammunition ---- */
@@ -4685,13 +4685,12 @@ export const ammoStacks = (actor, type) => (actor?.items ?? []).filter(i => i.ty
 export const ammoCount = (actor, type) => ammoStacks(actor, type).reduce((n, i) => n + (i.system.quantity ?? 0), 0);
 
 /**
- * Reload a ranged weapon up to its magazine (X shots per reload), using that much ammunition of its type
- * (or what's left). Returns the shots loaded (0 = nothing to load).
+ * Reload a ranged weapon: add X shots (its shots per reload), using that much ammunition of its type (or what's left).
+ * It can be done any time, and shots still loaded are kept (the total can go past X). Returns the shots loaded (0 = nothing to load).
  */
 export async function loadWeapon(actor, item) {
   const w = item.system;
-  const need = Math.max(0, (w.magazine ?? 1) - (w.rounds ?? 0));
-  if (!need) return 0;
+  const need = Math.max(1, w.magazine ?? 1);
   let take = need;
   if (ammoRequired() && !w.natural) {
     take = Math.min(need, ammoCount(actor, w.ammoType));

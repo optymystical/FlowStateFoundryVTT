@@ -164,6 +164,9 @@ ok2(formulas.includes("3d10") && orc.system.hp.value < hpPrimary, `Lightning Rod
 globalThis.canvas = null;
 reset(); reset2(); card = await hit("magic-radiation:crackle", { [M("magic-radiation:electrify")]: true }, [20]);
 ok2(orc.system.hp.value === 432 - 30, `Electrify: the first damage to them this turn is Strengthened (HP lost ${432 - orc.system.hp.value})`);
+reset(); reset2(); card = await hit("magic-heat:flame", {}, [20]);                    // Flame damage doesn't count for Electrify
+reset(); keepFlags = true; card = await hit("magic-radiation:crackle", { [M("magic-radiation:electrify")]: true }, [20]); keepFlags = false;
+ok2(orc.system.hp.value === 432 - 30, "Electrify only counts damage Crackle (or its Combos) did: earlier Flame damage doesn't use it up");
 reset(); keepFlags = true; card = await hit("magic-radiation:crackle", { [M("magic-radiation:electrify")]: true }, [20]); keepFlags = false;   // second time this turn: no bonus
 ok2(orc.system.hp.value === 432 - 20, "…but not the second time");
 const cp = FX.damageDice(FX.profileFor(["magic-radiation:crackle"]), 3, { chainHitsBefore: 5 }, { charge: 1 });

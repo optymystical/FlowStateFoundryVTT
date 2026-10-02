@@ -159,6 +159,16 @@ hero.system.hp.value = 432;
 await actions.applyDamage(hero, 100, "physical", { silent: true });
 ok2(!hero.effects.some(e => e.flags.flowstate.spellEffect?.kind === "shield") && hero.system.hp.value === 392, "A broken Shield ends and the rest hits HP");
 
+hero.effects.splice(0, hero.effects.length);
+await hero.createEmbeddedDocuments("ActiveEffect", [{ name: "Shield", flags: { flowstate: { spellEffect: { kind: "shield", caster: hero.uuid, hp: 60, max: 60 } } } }]);
+let so = await actions.damageOutcome(hero, 100, "physical", { pierce: 20 });
+ok2(so.shields[0].absorbed === 40 && so.toHp === 60, "A Shield is an object with Limit = its health: Pierce 20 cuts what it absorbs to 40");
+so = await actions.damageOutcome(hero, 100, "physical", { halfLimit: true });
+ok2(so.shields[0].absorbed === 30, "Weakpoint halves it");
+so = await actions.damageOutcome(hero, 100, "physical", { bash: 60 });
+ok2(so.shields[0].absorbed === 0 && so.toHp === 160, "Bash breaks through a Shield whose Limit is at or under it (and adds its Limit as damage)");
+hero.effects.splice(0, hero.effects.length);
+
 console.log("== Combo Force + Cut: direct damage applies Force");
 orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-gravity:force", { core2: "magic-slashing:cut" });
 const atkG = messages.filter(m => m.flags?.flowstate?.attack).at(-1);

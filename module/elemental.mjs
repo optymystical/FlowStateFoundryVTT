@@ -228,7 +228,8 @@ export async function afterDamage(ctx) {
   }
   // Per-turn counters (Cook, Electrify) and Heat + Crackle's static.
   if (type === "heat") await bump(attacker, "heatDealt", target.uuid);
-  await bump(attacker, "hitBy", target.uuid);
+  // Electrify counts only damage that Crackle (or a Combo with it) does.
+  if (sp.cores.includes("magic-radiation:crackle")) await bump(attacker, "crackleHit", target.uuid);
   if (type === "heat" || type === "radiation") await staticOthers(attacker, target, html);
   return { html: html.join(""), rolls, kb, chain };
 }

@@ -39,3 +39,6 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 ## Built (v0.29.0): the whole Magic T2 group
 - `elemental.mjs` + `spellfx.mjs` profiles (effect grammar: stack / energy / extra / force / chain / dodgeDis / scorch, with `when` conditions), Stain variants and armor-held stacks in `rules.mjs`/`data.mjs`/`actions.mjs` (`giveStacks`, `endOfTurn`, `clearCondition`), held melee spells, Multicast/Lob/Explode/Mold in `casting.mjs`. Tests: `stains.mjs`, `spell-t2.mjs`.
 - Judgment calls: "that many" = the final damage (after Strengthened, before soak); stacks go on armor when armor absorbed the damage and none reached HP, and on armor first for no-damage spells; Flare sets are applied as separate instances (the card figures each independently); Electrify counts any damage you dealt that target this turn; Charge counts targets hit before this one; Lightning Rod and Charge only matter inside a chain; Discharge is a confirm prompt; chains are button-driven (you pick the next target); Mold's half-cover is GM-adjudicated (no cover system); Emplace is an object with Limit = health ÷ 5.
+
+## Rulings (v0.29.1)
+- A spell object with no stated Limit has Limit = its health (Shield and Emplace). Electrify only counts damage Crackle or its Combos did. Mold's half-cover: revisit when a cover effect is designed.

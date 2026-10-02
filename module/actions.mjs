@@ -3420,7 +3420,7 @@ async function spellDamageFacts(profile, o, attacker, target, defense, dmgOpts) 
   const telegraphHit = !!tg && defense.dodge != null && Math.abs(defense.dodge - tg.guess) <= telegraphRange;
   return { living, direct, crit: !!defense.result?.crit, lowDodge, telegraphHit, telegraphRange, telegraphGuess: tg?.guess,
     cookCount: elem?.countFor(attacker, "heatDealt", target.uuid) ?? 0, energyZeroBefore: (target.system.energy?.value ?? 0) <= 0,
-    firstDamage: (elem?.countFor(attacker, "hitBy", target.uuid) ?? 0) === 0, chainHitsBefore: Math.max(0, (sp.chain?.affected?.length ?? 1) - 1) };
+    firstDamage: (elem?.countFor(attacker, "crackleHit", target.uuid) ?? 0) === 0, chainHitsBefore: Math.max(0, (sp.chain?.affected?.length ?? 1) - 1) };
 }
 
 /** Knockback / Push buttons: the Force info is stored on the card that offers them. */
@@ -4661,26 +4661,29 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     return loss;
   };
   const shields = [];
+  // Spell Shields are objects too: Limit = their health (a spell with no stated Limit), absorbing up to that and their remaining health,
+  // so Pierce, Bash, Cleave, Weakpoint and Melt apply. Dampen makes damage from an Archetype Weakened against them (they lose half the health).
   const absorbWith = pos => {
     const extraShields = (shroudCtx?.extraShields ?? []).map(u => syncUuid(u)).filter(Boolean);
     for (const e of [...spellEffects(actor, "shield"), ...extraShields]) {
       const f = e.flags.flowstate.spellEffect;
       if (((e.parent?.uuid === actor.uuid ? f.order : "default") ?? "default") !== pos || shields.some(x => x.effect === e)) continue;
       const hp = Number(f.hp) || 0;
-      const factor = (f.dampen ?? []).includes(archetype) ? 0.5 : 1;
-      const absorbed = Math.min(remaining, Math.floor(hp / factor));
-      if (!absorbed) continue;
-      const loss = Math.floor(absorbed * factor);
-      remaining -= absorbed;
-      shields.push({ effect: e, hp: hp - loss, absorbed, reflect: !!f.reflect, caster: f.caster });
-      lines.push(`Shield absorbed ${absorbed}${factor < 1 ? ` (Dampened: −${loss} health)` : ""} (${hp - loss} health left${hp - loss <= 0 ? ", it breaks" : ""})`);
+      if (hp <= 0) continue;
+      const damped = (f.dampen ?? []).includes(archetype);
+      const obj = { name: "Shield", system: { profile: { valid: true, limit: Number(f.max) || hp, focus: { key: "magical", factor: 1 }, selfWeakened: damped ? 1 : 0 }, durability: { value: hp } } };
+      if (tryBash(obj, obj.system.profile, hp, pierce)) { shields.push({ effect: e, hp, absorbed: 0, reflect: !!f.reflect, caster: f.caster }); continue; }
+      const before = remaining;
+      const loss = soakObject(obj, pierce, damped ? " (Dampened)" : "");
+      if (!loss && remaining === before) continue;
+      shields.push({ effect: e, hp: hp - loss, absorbed: before - remaining, reflect: !!f.reflect, caster: f.caster });
     }
   };
   // Emplace barriers (Protection Arcana T4) between the attacker and the target are objects: they absorb first, up to their Limit
   // per attack and their remaining health, so Pierce, Bash, Cleave, Weakpoint and Rend all apply to them.
   const barriers = [];
   for (const b of shroudCtx?.barriers ?? []) {
-    const obj = { name: "Emplace barrier", system: { profile: { valid: true, limit: b.limit ?? Math.ceil(b.hp / 5), focus: { key: "magical", factor: 1 } }, durability: { value: b.hp } } };
+    const obj = { name: "Emplace barrier", system: { profile: { valid: true, limit: b.limit ?? b.hp, focus: { key: "magical", factor: 1 } }, durability: { value: b.hp } } };
     if (tryBash(obj, obj.system.profile, b.hp, pierce)) { barriers.push({ ...b, absorbed: 0 }); continue; }
     const before = remaining;
     const loss = soakObject(obj, pierce, "");

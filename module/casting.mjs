@@ -257,7 +257,7 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
     const aim = [...(game.user?.targets ?? [])][0];
     const originTok = rangedPlusArea ? (aim?.object ?? aim) : null;
     placed = await areas.placeArea(actor, { title: emplace ? "Emplace" : "Gravity Field", scale: (mods.snipe ? 2 : 1) * agate, aim, origin: originTok?.center ? originTok : null,
-      facing: emplace, flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power, limit: Math.floor(20 * plan.power / 5) } : {}) } });
+      facing: emplace, flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power, limit: 20 * plan.power } : {}) } });
     if (placed === null) return null;                                    // cancelled: nothing is spent
     if (placed && !emplace) targets = placed.actors.map(a => ({ actor: a }));
     // Mold (Reach Arcana T3): you choose who in the area is attacked.
@@ -449,7 +449,7 @@ setWeaveHook({
 /** Chat card for a placed Emplace barrier. */
 async function emplaceCard(actor, { health, shapeLabel, templateId, sceneId, walls }) {
   return post(actor, { title: `${esc(actor.name)} — Emplace`, body: `<div class="fs-result"><i class="fa-solid fa-shield"></i> A one-way barrier (${esc(shapeLabel)}) with <strong>${health} health</strong> is in place.${templateId ? " Its template is on the scene." : ""}</div>
-    <div class="fs-notes">It's an object: it blocks attacks coming from the far side of it from you (anything on your side passes), absorbing up to its Limit of each attack (health ÷ 5) and its remaining health, before parries, Shields or armor. Pierce, Bash, Cleave and Weakpoint work on it. It blocks movement through it too, from the same side. It lasts until the start of your next turn.</div>
+    <div class="fs-notes">It's an object: it blocks attacks coming from the far side of it from you (anything on your side passes), absorbing up to its Limit (equal to its health) of each attack and its remaining health, before parries, Shields or armor. Pierce, Bash, Cleave and Weakpoint work on it. It blocks movement through it too, from the same side. It lasts until the start of your next turn.</div>
     ${walls ? `<div class="fs-brawl-row" data-role="attacker" data-owner="${actor.uuid}"><button type="button" class="fs-flip-wall" data-scene="${sceneId}" data-template="${templateId}" data-tooltip="If the wall's arrow points the wrong way, flip which side it blocks"><i class="fa-solid fa-arrows-left-right"></i> Flip facing</button></div>` : ""}` });
 }
 

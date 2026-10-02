@@ -7,6 +7,7 @@ import * as spells from "./spells.mjs";
 import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
+import "./elemental.mjs";
 import { STATS } from "./rules.mjs";
 import { tierOf } from "./skills.mjs";
 
@@ -254,6 +255,11 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
       facing: emplace, flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power } : {}) } });
     if (placed === null) return null;                                    // cancelled: nothing is spent
     if (placed && !emplace) targets = placed.actors.map(a => ({ actor: a }));
+  }
+  // Frost + Crackle only works on creatures with no Energy left.
+  if (profile?.needsEnergyZero) {
+    const rich = targets.map(t => t.actor).filter(a => (a?.system?.energy?.value ?? 0) > 0);
+    if (rich.length) { ui.notifications.warn(`${plan.cores.map(c => c.name).join(" + ")} can only target creatures with zero Energy remaining (${rich.map(a => a.name).join(", ")} ${rich.length === 1 ? "has" : "have"} some).`); return null; }
   }
   const key = plan.usesRP ? "rp" : "ap";
   if (inCombat && plan.ap && actor.system[key].value < plan.ap) { ui.notifications.warn(`${actor.name} needs ${plan.ap} ${key.toUpperCase()} to cast this but has ${actor.system[key].value}.`); return null; }

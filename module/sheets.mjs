@@ -1,4 +1,4 @@
-import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES } from "./rules.mjs";
+import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS } from "./rules.mjs";
 import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, TAGS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
 } from "./martial.mjs";
@@ -788,6 +788,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       editable: this.isEditable,
       isGM: game.user.isGM,
       shieldRows: shieldOrderRows(actor),
+      armorConditions: Object.entries(sys.armor?.system.conditions ?? {}).filter(([, v]) => v > 0).map(([k, v]) => `${v} ${k === "ignite" ? "Ignite" : STAIN_VARIANTS[k]?.label ?? k}`).join(" · "),
       showFocus: skills.tierOf(sys.trees, "magic-theory") >= 2,
       focusChoices: coreChoices(sys.trees),
       focusEditable: this.isEditable && !actions.inActiveCombat(actor),

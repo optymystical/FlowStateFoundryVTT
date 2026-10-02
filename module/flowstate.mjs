@@ -126,7 +126,9 @@ class FlowStateCombat extends Combat {
       // Poison, Charm and Hex (Tier 3): the victim's checks, and the caster's Ingrained Charms.
       await actions.afflictTurnStart(combatant.actor);
       await actions.arcanaTurnStart(combatant.actor);
+      await actions.arcanaAntimagicTurn(combatant.actor);
       await fociEngine.deckTurnStart(combatant.actor);
+      await conjure.autonomyTurn(combatant.actor);
       await combatant.actor.setFlag?.("flowstate", "turnStartedAt", Date.now());
       // Tier 4: Reform, then the caster's temporary Summons, Animations and Made objects end.
       await conjure.turnStart(combatant.actor);
@@ -520,6 +522,7 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
   // Gash (Slashing T3): voluntarily moving reopens the wound.
   if (actor && !options?.flowstateThrow && actions.spellEffects(actor, "gash").length) actions.triggerGash(actor);
   if (actor && !options?.flowstateThrow) actions.hexMove(actor);
+  if (actor && !options?.flowstateThrow) actions.arcanaCheckEntry(token, changes);
   // Rapid T3 Mark: a Marked creature moving lets the marker shoot.
   if (actor?.getFlag("flowstate", "markedBy")) actions.triggerMark(actor, "moves");
   // Reach T1 Palisade: moving into a Reach wielder's range lets them strike (the palisading token is moved back on a hit).
@@ -1444,4 +1447,22 @@ Hooks.on("preUpdateItem", (item, changes) => {
     ui.notifications.warn(`${actor.name} can carry at most ${actions.AMMO_MAX} ${actions.ammoLabel(type)} (${have} in other stacks).`);
     return false;
   }
+});
+
+
+/* -------------------------------------------- */
+/*  Scene setting: Lush biome (Emerald Affix)   */
+/* -------------------------------------------- */
+
+Hooks.on("renderSceneConfig", (app, html) => {
+  try {
+    const el = html instanceof HTMLElement ? html : html?.[0];
+    if (!el || el.querySelector('[name="flags.flowstate.lush"]')) return;
+    const scene = app.document ?? app.object;
+    const group = document.createElement("div");
+    group.className = "form-group";
+    group.innerHTML = `<label>Lush biome (Flow State)</label><div class="form-fields"><input type="checkbox" name="flags.flowstate.lush" ${scene?.getFlag?.("flowstate", "lush") ? "checked" : ""}></div><p class="hint">Emerald Affixes treat this scene as a Lush biome.</p>`;
+    const tab = el.querySelector('.tab[data-tab="basic"]') ?? el.querySelector(".tab") ?? el.querySelector("form");
+    tab?.appendChild(group);
+  } catch (err) { console.warn("flowstate | Lush biome setting not added", err); }
 });

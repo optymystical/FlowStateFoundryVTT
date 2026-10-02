@@ -1352,7 +1352,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider"];
+  "breakFree", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -3255,6 +3255,8 @@ let arc = null;
 export const registerArcana = h => { arc = h; };
 export const arcanaTurnStart = actor => arc?.turnStart(actor);
 export const arcanaAct = (message, i) => arc?.act(message, i);
+export const arcanaCheckEntry = (token, changes) => arc?.checkEntry(token, changes);
+export const arcanaAntimagicTurn = actor => arc?.antimagicTurn(actor);
 /** Tier 4 (Summons, Animations, Made objects) lives in conjure.mjs: riders on a creation's attacks. */
 let conj = null;
 export const registerConjure = h => { conj = h; };
@@ -3292,7 +3294,7 @@ function mergeOutcomes(list) {
   return { ...first, toHp: list.reduce((n, x) => n + x.toHp, 0), armorLoss: list.reduce((n, x) => n + (x.armorLoss ?? 0), 0), weaponLoss: list.reduce((n, x) => n + (x.weaponLoss ?? 0), 0),
     afterWeapon: list.reduce((n, x) => n + (x.afterWeapon ?? 0), 0), shroudTook: list.reduce((n, x) => n + (x.shroudTook ?? 0), 0),
     lines: [`<strong>${list.reduce((n, x) => n + x.toHp, 0)}</strong> damage to HP across ${list.length} separate instances`, ...list.flatMap((x, i) => x.lines.slice(1).map(l => `(${i + 1}) ${l}`))],
-    weapons: list.flatMap(x => x.weapons ?? []), shields: list.flatMap(x => x.shields ?? []), barriers: list.flatMap(x => x.barriers ?? []), shrouds: list.flatMap(x => x.shrouds ?? []) };
+    weapons: list.flatMap(x => x.weapons ?? []), reactive: list.flatMap(x => x.reactive ?? []), shields: list.flatMap(x => x.shields ?? []), barriers: list.flatMap(x => x.barriers ?? []), shrouds: list.flatMap(x => x.shrouds ?? []) };
 }
 
 /** A cast's automated profile after Replacement Mods (or null when the GM resolves it). */
@@ -3385,7 +3387,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
     // Layered (Build Arcana T1): a Shield isn't default Spell health, so it gains your Build per Layered.
     const hp = fx.shieldHealth(profile, sp.power) + (m.layered ?? 0) * Math.max(0, attacker.system?.derived?.effective?.build?.value ?? 0);
     await putSpellEffect(target, { kind: "shield", caster, name: `Shield (${esc(attacker.name)})`, hp, max: hp, ritualOf,
-      reflect: !!m.reflect, adjust: !!m.adjust, dampen: sp.dampen ?? [], order: "default", reform: !!m.reform, reformMark: hp,
+      reflect: !!m.reflect, adjust: !!m.adjust, dampen: sp.dampen ?? [], order: "default", reactive: !!m.reactive, reform: !!m.reform, reformMark: hp,
       description: `Absorbs the next ${hp} damage. ${ritualOf ? "Lasts until the ritual ends or the Shield breaks." : "Until the start of the caster's next turn."}` });
     html.push(`<div class="fs-result"><i class="fa-solid fa-shield"></i> ${esc(target.name)} is protected by a Shield with <strong>${hp} health</strong>${ritualOf ? " (until the ritual ends or it breaks)" : " until the start of your next turn"}.</div>`);
   }
@@ -4369,6 +4371,8 @@ function targetStacks(attacker, o, target, result, extra = 0, ctx = {}) {
   // Slip Off (Balanced T1) and Harden (Heavy T4 / Titanic T3) Weaken attacks against an active Parry/Brace.
   for (const w of ctx.weaken ?? []) { stacks -= 1; parts.push(`−1 ${w}`); }
   if (ctx.distracted) { stacks -= 1; parts.push("−1 Distracting Fire"); }
+  // Harden (Geomancy T5): a hardened creation's weapon deals Strengthened damage.
+  if (o.itemUuid && syncUuid(o.itemUuid)?.flags?.flowstate?.made?.harden?.strong) { stacks += 1; parts.push("+1 Harden"); }
   if (o.spell && foci) { const fs = foci.damageStacks({ attacker, o, type }); if (fs.stacks) { stacks += fs.stacks; parts.push(...fs.parts); } }
   if (o.spell && arc?.magicFails(attacker)) { stacks -= 1; parts.push("−1 Illusion (their Magic has failed them)"); }
   const charmed = aff?.charmWeakened(attacker) ?? 0;
@@ -4751,6 +4755,14 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     return loss;
   };
   const shields = [];
+  // Reactive (Build Arcana T2): the caster may spend 1 RP to give a damage instance that hits their Spell a stack of Weakened (automatic, unless they turn it off).
+  const reactive = [];
+  const reactiveFor = casterUuid => {
+    const c = casterUuid ? syncUuid(casterUuid) : null;
+    if (!c || c.getFlag?.("flowstate", "reactiveOff") || (c.system?.rp?.value ?? 0) - reactive.filter(u => u === c.uuid).length < 1) return null;
+    return c;
+  };
+  const weaken = (c, what) => { remaining = Math.floor(applyStacks(remaining, -1)); reactive.push(c.uuid); lines.push(`Reactive: ${c.name} spends 1 RP, so the damage to ${what} is Weakened`); };
   // Spell Shields are objects too: Limit = their health (a spell with no stated Limit), absorbing up to that and their remaining health,
   // so Pierce, Bash, Cleave, Weakpoint and Melt apply. Dampen makes damage from an Archetype Weakened against them (they lose half the health).
   const absorbWith = pos => {
@@ -4763,6 +4775,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
       const damped = (f.dampen ?? []).includes(archetype);
       const obj = { name: "Shield", system: { profile: { valid: true, limit: Number(f.max) || hp, focus: { key: "magical", factor: 1 }, selfWeakened: damped ? 1 : 0 }, durability: { value: hp } } };
       if (tryBash(obj, obj.system.profile, hp, pierce)) { shields.push({ effect: e, hp, absorbed: 0, reflect: !!f.reflect, caster: f.caster }); continue; }
+      if (f.reactive) { const rc = reactiveFor(f.caster); if (rc) weaken(rc, "the Shield"); }
       const before = remaining;
       const loss = soakObject(obj, pierce, damped ? " (Dampened)" : "");
       if (!loss && remaining === before) continue;
@@ -4775,6 +4788,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   for (const b of shroudCtx?.barriers ?? []) {
     const obj = { name: "Emplace barrier", system: { profile: { valid: true, limit: b.limit ?? b.hp, focus: { key: "magical", factor: 1 } }, durability: { value: b.hp } } };
     if (tryBash(obj, obj.system.profile, b.hp, pierce)) { barriers.push({ ...b, absorbed: 0 }); continue; }
+    if (b.reactive) { const rc = reactiveFor(b.caster); if (rc) weaken(rc, "the barrier"); }
     const before = remaining;
     const loss = soakObject(obj, pierce, "");
     if (!loss && remaining === before) continue;
@@ -4822,7 +4836,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   if (rend && (weapons.length || armorLoss)) lines.push("Rend: damage to objects Strengthened");
   lines.unshift(`<strong>${toHp}</strong> damage to HP`);
   return { toHp, lines, weapon: weapons[0]?.item ?? null, weaponLoss: weapons[0]?.loss ?? 0, weapons, armor: armorLoss ? armor : null, armorLoss,
-    afterWeapon, parried: uuids.length > 0, shields, barriers, shrouds, shroudTook: shrouds.reduce((n, x) => n + (x.absorbed ?? 0), 0) };
+    afterWeapon, parried: uuids.length > 0, shields, barriers, reactive, shrouds, shroudTook: shrouds.reduce((n, x) => n + (x.absorbed ?? 0), 0) };
 }
 
 /** "Orc takes 12 Physical" block for a card: the outcome lines as a list. */
@@ -4839,6 +4853,17 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
   cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
+  // Reactive: a Summon or Animation of a caster with the Mod gets a Weakened stack on each instance (1 RP).
+  const smr = actor.flags?.flowstate?.summon;
+  if (smr?.reactive && amount > 0) {
+    const c = syncUuid(smr.owner);
+    if (c && !c.getFlag?.("flowstate", "reactiveOff") && (c.system?.rp?.value ?? 0) >= 1) {
+      amount = Math.floor(applyStacks(amount, -1));
+      const data = { "system.rp.value": c.system.rp.value - 1 };
+      if (c.isOwner) await c.update(data); else await requestGM("updateActor", { uuid: c.uuid, data });
+      await post(actor, { title: `${esc(actor.name)} — Reactive`, body: `<div class="fs-result">${esc(c.name)} spends 1 RP: the damage is Weakened (${amount}).</div>` });
+    }
+  }
   const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor });
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.
   for (const { item, update } of out.shrouds ?? []) {
@@ -4849,7 +4874,17 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   // Emplace barriers lose the health they absorbed.
   for (const b of out.barriers ?? []) { if (game.user.isGM) await areas.setBarrierHealth(b.sceneId, b.id, b.hp); else await requestGM("barrier", { sceneId: b.sceneId, id: b.id, hp: b.hp }); }
   // Spell Shields lose the health they absorbed (and end when it runs out).
-  for (const { effect, hp } of out.shields ?? []) {
+  for (const { effect, hp: hp0 } of out.shields ?? []) {
+    let hp = hp0;
+    // Taaffeite (Shroud): a Ritual Shield that would be destroyed stays at 1 health if the caster's Shroud gives up all its Durability.
+    const sf = effect.flags?.flowstate;
+    const tshroud = hp <= 0 && sf?.ritualOf ? syncUuid(sf.spellEffect?.caster)?.system?.shroud : null;
+    if (tshroud && hasAffix(tshroud, "taaffeite") && tshroud.system.durability.value > 0) {
+      const upd = { "system.wear": tshroud.system.durability.max };
+      if (tshroud.isOwner !== false) await tshroud.update(upd, { flowstateSystem: true }); else await requestGM("updateItem", { uuid: tshroud.uuid, data: upd });
+      hp = 1;
+      await post(actor, { title: `${esc(actor.name)} — Taaffeite`, body: `<div class="fs-result">The Ritual Shield would have been destroyed: ${esc(tshroud.name)} gives up all its Durability to keep it at 1 health.</div>` });
+    }
     if (hp <= 0) await changeEffect(effect, null);
     else await changeEffect(effect, { "flags.flowstate.spellEffect.hp": hp, description: `Absorbs the next ${hp} damage.` });
   }
@@ -4862,6 +4897,13 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   for (const { item, loss } of out.weapons ?? []) {
     if (item.isOwner === false) await requestGM("wearItem", { uuid: item.uuid, amount: loss });
     else await item.update({ "system.wear": item.system.wear + loss }, { flowstateSystem: true });
+  }
+  // Reactive: the RP the casters spent.
+  for (const [u, n] of Object.entries((out.reactive ?? []).reduce((m, x) => ({ ...m, [x]: (m[x] ?? 0) + 1 }), {}))) {
+    const c = syncUuid(u);
+    if (!c) continue;
+    const data = { "system.rp.value": Math.max(0, c.system.rp.value - n) };
+    if (c.isOwner) await c.update(data); else await requestGM("updateActor", { uuid: c.uuid, data });
   }
   const update = { "system.hp.value": actor.system.hp.value - out.toHp };
   // Chop (Slashing T5): direct damage is Max HP loss instead of lost HP.
@@ -5270,6 +5312,8 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
   // Limit: Cinder triples against types already taken this turn; Painite can't be ignored (no Pierce).
   let L = P.limit;
   if (sh.system.shroudType === "cinder" && (sh.parent?.getFlag?.("flowstate", "takenTypes") ?? []).includes(type)) L = P.baseLimit * 3;
+  // Emerald: doubled in a Lush biome, halved anywhere else.
+  if (hasAffix(sh, "emerald")) L = sh.system.lush || sceneLush() ? L * 2 : Math.floor(L / 2);
   if (!hasAffix(sh, "painite")) L = Math.max(0, L - Math.max(0, pierce));
   if (halfLimit) L = Math.floor(L / 2);
   // It can't absorb more than its remaining Durability (Tourmaline / Rend change how fast that runs out).
@@ -5304,6 +5348,9 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
   }
   return { remaining, cleaveLeft, lines, loss, absorbed, update: Object.keys(update).length ? update : null };
 }
+
+/** Is the current scene a Lush biome? (A scene setting; Emerald also has its own checkbox on the item.) */
+export const sceneLush = () => !!globalThis.canvas?.scene?.getFlag?.("flowstate", "lush");
 
 /** Musgravite (Shroud): Force against you is reduced by your Scaling Stat. */
 export function musgraviteNegate(actor) {

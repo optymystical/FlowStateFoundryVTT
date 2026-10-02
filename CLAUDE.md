@@ -30,8 +30,7 @@ Affixes are in (Shroud side and Foci side, including Deck Foci). Magic spells: t
 all five Magic groups (T1: Magic Theory, Slashing, Piercing, Crushing, Protection Arcana, Gravity; T2: Reach Arcana, Heat,
 Cold, Radiation, Acid; T3: Grasp Arcana, Venomancy, Charm, Witchery; T4: Build Arcana, Summoning, Creation, Animation; T5:
 Restoration Arcana, Geomancy, Illusion, Arcanomancy, with all their Combos) are automated; "tier" in Magic means the group of
-trees a Magic Theory tier unlocks. Not automated: Absorb, Amplify, Rip (they act on other casters' Spells), Reactive, Sense
-Swap, Limited Autonomy.
+trees a Magic Theory tier unlocks. Only terrain effects (Muddy/Harden) and Mixed Animations are left to the GM.
 Mental and Ancestries are not yet implemented.
 
 ## Layout

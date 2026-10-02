@@ -86,3 +86,13 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 - `castSpell` wraps the resolution in `run(plan)` so a Foci can run it twice; Gauntlet's first run uses the higher Scaling Stat.
 - Tests: `dev/tests/foci-effects.mjs`.
 
+## Built (v0.34.0): the last gaps
+
+- Spells as targets: `arcana.listSpells()` (effects, Emplace templates, Summon actors) → `damageSpell` / `amplifySpell` / `ripSpell`; `casting.castSpell` calls `arcana.promptSpell` before payment and `resolveStrike` after. Spell health defaults to the caster's Scaling Stat.
+- Blast Ritual: the template gets `spell: "antimagic"` flags (`tplFlags` GM action); `arcana.antimagicTurn` (turn start) and `arcana.checkEntry` (called from `preUpdateToken`) deal Strike's damage to magical tokens. `checkEntry` also offers Aura entrants an attack (the `aura` effect on the caster stores the attack options).
+- Reactive: `damageOutcome` weakens damage that hits a Reactive Shield / barrier and returns `reactive` caster uuids; `applyDamage` spends the RP (and handles Summons first). Taaffeite (Shroud) is in the shield loop of `applyDamage`.
+- Sense Swap: caster flag `senseSwap` → `conjure.senseSwapToken` is the `origin` for range and melee in `castSpell`. Limited Autonomy: summon flag `command`, announced by `conjure.autonomyTurn`.
+- Muddy: `muddy` effects read by `afflictions.penaltyStacks`; Harden: `made.harden` flags (strong in `targetStacks`, armor via `selfWeakened` in the item data models). Phantom Pain and Painless are read in `prepareDerivedData`. Emerald: `sceneLush()` (scene flag set from a Scene Configuration checkbox).
+- Animated weapons: `conjure.act("weapon")` builds a proxy item (caster's stats, held) for `rollWeaponAttack`.
+- Tests: `dev/tests/spell-gaps.mjs`.
+

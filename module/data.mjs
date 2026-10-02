@@ -84,7 +84,9 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     const penalty = key => Math.max(0, ...effects.map(e => Number(e.flags?.flowstate?.spellEffect?.[key]) || 0));
     // Painless (Restoration Arcana T2) lowers the Pain Threshold.
     const painDown = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.painDown) || 0), 0);
-    if (painDown) { d.pain = Math.max(0, d.pain - painDown); this.hp.pain = d.pain; this.hp.destroyed = this.hp.destroyed; }
+    // Phantom Pain (Illusion T2): illusion damage from a Mirage only raises the Pain Threshold (gone when no Mirage affects them).
+    const phantom = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.phantomTotal) || 0), 0);
+    if (painDown || phantom) { d.pain = Math.max(0, d.pain - painDown + phantom); this.hp.pain = d.pain; }
     d.dodgeDie = penalizedDie(d.dodgeDie, penalty("dodgeDie"));
     d.attackDie = penalizedDie(d.attackDie, penalty("attackDie"));
     // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).
@@ -197,6 +199,7 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
   computeProfile(stats) {
     const { weaponType: type, weight, material, grade, twoHanded } = this;
     this.profile = weaponProfile({ type, weight, material, grade, twoHanded }, stats);
+    if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);
     this._stats = stats;
     // All of this weapon's types: the main one first, then any extra (Unarmed/Improvised can't be multi-type).
     const extra = type === "unarmed" || type === "improvised" ? []
@@ -242,6 +245,7 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
   computeProfile(con) {
     const { weight, material, grade } = this;
     this.profile = armorProfile({ weight, material, grade }, con);
+    if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);   // Harden: damage to it is Weakened
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
     this.broken = this.profile.valid && max - this.wear <= 0;
@@ -263,6 +267,7 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
       chosenSpell: new f.StringField({ initial: "" }),    // Ring
       lush: new f.BooleanField({ initial: false }),       // Emerald: in a Lush biome
       declared: new f.StringField({ initial: "" }),     // Colored Diamond: the Core Spell declared this turn
+      opalRange: new f.StringField({ initial: "targeted" }), // Black Opal (+): which range gets +50%
       description: new f.HTMLField({ initial: "" })
     };
   }

@@ -304,10 +304,11 @@ export const AUTOMATED_MODS = new Set([
   "magic-venomancy:prolong", "magic-venomancy:lethality", "magic-venomancy:potency", "magic-venomancy:virality",
   "magic-charm:ingrained", "magic-charm:convince", "magic-charm:cloud", "magic-charm:propagandize",
   "magic-witchery:linger", "magic-witchery:fester", "magic-witchery:unravel", "magic-witchery:consume",
-  "magic-build-arcana:layered", "magic-build-arcana:reform", "magic-build-arcana:projection",
-  "magic-summoning:arm", "magic-summoning:skin", "magic-creation:armory", "magic-creation:make-mk2", "magic-creation:make-mk3", "magic-creation:complexity",
+  "magic-build-arcana:layered", "magic-build-arcana:reactive", "magic-build-arcana:reform", "magic-build-arcana:projection",
+  "magic-summoning:arm", "magic-summoning:skin", "magic-summoning:sense-swap", "magic-summoning:limited-autonomy", "magic-creation:armory", "magic-creation:make-mk2", "magic-creation:make-mk3", "magic-creation:complexity",
   "magic-animation:weapon-foci", "magic-animation:armor-shroud", "magic-animation:expanded-animation", "magic-animation:mixed-animations",
   "magic-restoration-arcana:painless", "magic-restoration-arcana:regenerate", "magic-restoration-arcana:delay", "magic-restoration-arcana:resuscitate",
+  "magic-arcanomancy:absorb", "magic-arcanomancy:amplify", "magic-arcanomancy:rip",
   "magic-geomancy:mend", "magic-geomancy:toss", "magic-geomancy:tier-up", "magic-geomancy:muddy", "magic-geomancy:harden", "magic-geomancy:tier-up-again",
   "magic-illusion:phantom-pain", "magic-illusion:fidelity", "magic-illusion:pervasive", "magic-illusion:reshape", "magic-illusion:aura", "magic-arcanomancy:blast"
 ]);

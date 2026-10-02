@@ -74,7 +74,7 @@ const checkLine = (who, c) => `<div class="fs-notes">${esc(who.name)}: ${c.label
 function penaltyStacks(actor, type) {
   let best = 0;
   for (const e of spellEffects(actor, "charm")) { const d = data(e); if (d.rollType === type && !d.pending) best = Math.max(best, d.amount ?? 1); }
-  for (const e of [...spellEffects(actor, "hex"), ...spellEffects(actor, "charm"), ...spellEffects(actor, "mirage")]) { const p = data(e).penalty; if (p?.roll === type) best = Math.max(best, p.amount ?? 1); }
+  for (const e of [...spellEffects(actor, "hex"), ...spellEffects(actor, "charm"), ...spellEffects(actor, "mirage"), ...spellEffects(actor, "muddy")]) { const p = data(e).penalty; if (p?.roll === type) best = Math.max(best, p.amount ?? 1); }
   return best;
 }
 /** Disadvantage stacks (negative) on a roll type: everything but damage, which is Weakened instead. */

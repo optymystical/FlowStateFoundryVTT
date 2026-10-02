@@ -7,7 +7,7 @@ import * as R from "./conjure-rules.mjs";
 import * as fx from "./spellfx.mjs";
 import * as A from "./afflictions.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, ARMOR_WEIGHTS, WEIGHTS, RARITIES } from "./martial.mjs";
-import { post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, registerConjure, spendPoints, changeEffect, spellEffects } from "./actions.mjs";
+import { setActorFlag, post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, rollWeaponAttack, registerConjure, spendPoints, changeEffect, spellEffects } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 
@@ -212,6 +212,8 @@ function dialogHTML(ctx, spec) {
   if (cj.kind === "make") for (let i = 0; i < 1 + ctx.armory; i++) out.push(itemRowHTML(i, spec, ctx.rarities, ctx.complexity));
   if (cj.make && cj.kind !== "make") out.push(itemRowHTML(0, { items: spec.items }, ctx.rarities, ctx.complexity));
   if (cj.kind === "make") out.push(field("Goes to", select("recipient", [["self", "Your own inventory"], ["target", "Your target's inventory (attack roll; a miss drops it beside them)"], ["drop", "On an empty tile in range"]], spec.recipient ?? "self")));
+  if (ctx.mods.harden && cj.geo) out.push(field("Harden: its natural/made equipment", select("harden", [["strong", "Its damage is Strengthened"], ["armor", "Damage to it is Weakened"], ["all", "Both"]], spec.harden ?? "strong")));
+  if (ctx.mods["limited autonomy"] && (cj.kind === "summon" || cj.kind === "animate")) out.push(field("Limited Autonomy: its command (one short sentence)", `<input type="text" name="command" value="${esc(spec.command ?? "")}">`));
   out.push(field("Name", `<input type="text" name="name" value="${esc(spec.name ?? "")}">`));
   return out.join("");
 }
@@ -219,7 +221,7 @@ function dialogHTML(ctx, spec) {
 /** The form's values as a spec. */
 function parse(ctx, v) {
   const cj = ctx.cj;
-  const spec = { name: v.name || "", size: Number(v.size) || 1, str: v.str, dex: v.dex, con: v.con, skill: v.skill, material: v.material, body: v.body, recipient: v.recipient || "self", arms: [], items: [] };
+  const spec = { name: v.name || "", size: Number(v.size) || 1, str: v.str, dex: v.dex, con: v.con, skill: v.skill, material: v.material, body: v.body, recipient: v.recipient || "self", command: v.command || "", harden: v.harden || "strong", arms: [], items: [] };
   for (let i = 0; i < ctx.arms.length; i++) spec.arms.push({ type: v[`arm${i}type`] || "bladed", weight: v[`arm${i}weight`] || "light" });
   const n = cj.kind === "make" ? 1 + ctx.armory : cj.make ? 1 : 0;
   for (let i = 0; i < n; i++) spec.items.push({ kind: v[`i${i}kind`] || "weapon", type: v[`i${i}type`] || "bladed", weight: v[`i${i}weight`] || "light", material: v[`i${i}material`], name: v[`i${i}name`] || "",
@@ -301,6 +303,13 @@ function geoRanged(actor, ritualOf, scaling) {
     system: { weaponType: "rapid", weight: "light", material: "hardwood", grade: Math.max(1, Math.floor((scaling || 0) / 10)), equipped: true, natural: true, returning: true, rounds: 99, magazine: 99 } };
 }
 
+/** Harden (Geomancy T5) on a Geomancy Combo's creation: its equipment's damage is Strengthened and/or damage to it Weakened. */
+function hardenItems(items, mods, spec, cj) {
+  if (!mods.harden || !cj.geo) return;
+  const c = spec.harden || "strong";
+  for (const i of items) { i.flags ??= {}; i.flags.flowstate ??= {}; i.flags.flowstate.made ??= {}; i.flags.flowstate.made.harden = { strong: c === "strong" || c === "all", armor: c === "armor" || c === "all" }; }
+}
+
 /** Form: a Summon. */
 async function makeSummon({ actor, plan, profile, spec, mods, ritualOf, targets, values }) {
   const cj = profile.conjure;
@@ -326,7 +335,8 @@ async function makeSummon({ actor, plan, profile, spec, mods, ritualOf, targets,
     items.push({ name: `Natural ${cap(a.weight)} Armor`, type: "armor", flags: madeFlag(actor, ritualOf), system: { ...a, equipped: true, natural: true } });
   }
   if (cj.make && spec.items?.[0]) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true }));
-  const sm = { owner: actor.uuid, ritualOf: ritualOf ?? null, kind: "summon", hp, energy, attackDie: actor.system.derived.attackDie, dodgeDie: actor.system.derived.dodgeDie, ap: 6, rp: 6, reform: !!mods.reform, reformMark: hp, fear: !!cj.fear,
+  hardenItems(items, mods, spec, cj);
+  const sm = { owner: actor.uuid, ritualOf: ritualOf ?? null, kind: "summon", hp, energy, attackDie: actor.system.derived.attackDie, dodgeDie: actor.system.derived.dodgeDie, ap: 6, rp: 6, reform: !!mods.reform, reactive: !!mods.reactive, reformMark: hp, fear: !!cj.fear, senseSwap: !!mods["sense swap"], command: mods["limited autonomy"] ? spec.command || "" : "",
     rider: riderOf(cj, values, level) };
   const name = spec.name || `${actor.name}'s Summon`;
   const id = await spawn({ actor, name, system: { stats: { str: f.stats.str, dex: f.stats.dex, con: f.stats.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f.skillPoints, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets, tile: spec.tile });
@@ -335,7 +345,7 @@ async function makeSummon({ actor, plan, profile, spec, mods, ritualOf, targets,
     `${f.skillPoints ? `${f.skillPoints} skill point${f.skillPoints === 1 ? "" : "s"} to spend on Martial trees (it already knows yours) · ` : ""}it uses your attack and dodge dice`,
     ...items.map(i => `${i.name}${i.system.twoHanded ? " (two-handed)" : ""}: natural, can't be dropped${i.type === "weapon" ? " or thrown" : ""}`),
     ...(sm.rider ? [`Its attacks carry ${fx.profileFor([sm.rider.core])?.name ?? sm.rider.core} (level ${level})`] : [])];
-  const notes = [mods["sense swap"] ? "Sense Swap: spend 2 RP to swap senses with it (you resolve it at the table)." : "", mods["limited autonomy"] ? "Limited Autonomy: it follows a simple command by itself (you resolve it at the table)." : "",
+  const notes = [mods["sense swap"] ? "Sense Swap: spend 2 RP from the Action List to swap senses with it (spells are then cast from its position)." : "", mods["limited autonomy"] ? `Limited Autonomy: on its turn it follows its command by itself${spec.command ? ` ("${spec.command}")` : ""}.` : "",
     "It shares your turn order and acts right after your turn; it's Mindless and uses your senses."].filter(Boolean);
   await post(actor, { title: `${esc(actor.name)} — Summon`, body: `<div class="fs-result"><i class="fa-solid fa-ghost"></i> ${esc(name)} appears${ritualOf ? " (until the Ritual ends)" : " until the start of your next turn"}.</div><ul class="fs-list">${lines.map(l => `<li>${esc(l)}</li>`).join("")}</ul><div class="fs-notes">${esc(notes.join(" "))}</div>` });
   return id;
@@ -358,10 +368,11 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
   const level = R.riderLevel(f ? f.stats.str + f.stats.dex : points);
   const cat = R.ANIM_CATEGORIES[mat.category];
   const sm = { owner: actor.uuid, ritualOf: ritualOf ?? null, kind: "animation", material: mat.name, category: mat.category, hp, energy, attackDie: actor.system.derived.attackDie, dodgeDie: actor.system.derived.dodgeDie,
-    speed: st.speed, physical: st.physical, ap: st.ap, rp: st.rp, reform: !!mods.reform, reformMark: hp, fear: !!cj.fear, rider: riderOf(cj, values, level) };
+    speed: st.speed, physical: st.physical, ap: st.ap, rp: st.rp, reform: !!mods.reform, reactive: !!mods.reactive, senseSwap: !!mods["sense swap"], command: mods["limited autonomy"] ? spec.command || "" : "", reformMark: hp, fear: !!cj.fear, rider: riderOf(cj, values, level) };
   const items = [];
   if (cj.geo) items.push(geoRanged(actor, ritualOf, Math.max(st.str, st.dex)));
   if (cj.make && spec.items?.[0] && !cj.instant) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true }));
+  hardenItems(items, mods, spec, cj);
   const name = spec.name || `${mat.name} Animation`;
   const id = await spawn({ actor, name, system: { stats: { str: st.str, dex: st.dex, con: st.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f?.skillPoints ?? 0, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets, tile: spec.tile });
   await post(actor, { title: `${esc(actor.name)} — Animate`, body: `<div class="fs-result"><i class="fa-solid fa-hill-rockslide"></i> ${esc(name)} (${esc(mat.name)}, ${cat.label}) rises${ritualOf ? " (until the Ritual ends)" : " until the start of your next turn"}.</div>
@@ -381,6 +392,7 @@ async function makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets
     if (cj.geo && d.type === "weapon") { d.system.returning = true; d.system.rounds = 99; d.system.magazine = 99; }   // reloads itself; returns when thrown
     return d;
   });
+  hardenItems(items, mods, spec, cj);
   const target = targets?.[0]?.actor ?? null;
   // Into a target's inventory takes a hit: a Targeted attack roll; a miss leaves it on the floor beside them (see makeHit / makeMiss).
   if (spec.recipient === "target" && target && target.uuid !== actor.uuid) {
@@ -404,6 +416,31 @@ async function makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets
   await post(actor, { title: `${esc(actor.name)} — Make`, body: `<div class="fs-result"><i class="fa-solid fa-wand-magic-sparkles"></i> ${esc(actor.name)} makes ${items.map(i => `<strong>${esc(i.name)}</strong>`).join(", ")} ${where}${ritualOf ? " (until the Ritual ends)" : ", until the start of their next turn"}.</div>
     <div class="fs-notes">Archetypal equipment is Grade 2. Non-Archetypal objects are just a note: a Body of 10 of a single material (a cubic foot per Body).${rider ? ` Attacks with it carry ${fx.profileFor([cj.rider])?.name ?? cj.rider}.` : ""}</div>` });
   return items.length;
+}
+
+/** Limited Autonomy: at the start of its turn a creation announces the command it follows. */
+export async function autonomyTurn(actor) {
+  const sm = summonOf(actor);
+  if (!sm?.command) return;
+  await post(actor, { title: `${esc(actor.name)} — Limited Autonomy`, body: `<div class="fs-result">${esc(actor.name)} acts on its own, following its command: <strong>${esc(sm.command)}</strong>. Its senses are as good as yours; it carries the command out until it can't (or it or you are destroyed).</div>` });
+}
+
+/** Sense Swap (Summoning T4): swap senses with a Summon for 2 RP (again to swap back). Spells are cast from its position meanwhile. */
+export async function toggleSenseSwap(caster) {
+  const cur = caster.getFlag?.("flowstate", "senseSwap");
+  if (!(await spendPoints(caster, "rp", 2, "Sense Swap"))) return;
+  if (cur) { await caster.unsetFlag("flowstate", "senseSwap"); return post(caster, { title: `${esc(caster.name)} — Sense Swap`, body: `<div class="fs-result">${esc(caster.name)} swaps their senses back.</div>` }); }
+  const mine = allActors().filter(a => summonOf(a)?.owner === caster.uuid && summonOf(a).senseSwap);
+  const target = mine[0];
+  if (!target) return ui.notifications.warn("You have no Summon with Sense Swap.");
+  await setActorFlag(caster, "senseSwap", target.uuid);
+  await post(caster, { title: `${esc(caster.name)} — Sense Swap`, body: `<div class="fs-result">${esc(caster.name)} sees through ${esc(target.name)}: your body is limited by whatever senses it has, and spells you cast are cast from its position (still using your Energy and AP/RP).</div>` });
+}
+/** The token spells are cast from while Sense Swap is active (null otherwise). */
+export function senseSwapToken(caster) {
+  const u = caster.getFlag?.("flowstate", "senseSwap");
+  const a = u ? globalThis.fromUuidSync?.(u) : null;
+  return a?.getActiveTokens?.()[0] ?? null;
 }
 
 /** A Make's attack hit: the items go into the target's inventory. */
@@ -431,6 +468,7 @@ async function animateEquipment({ actor, plan, mods, targets, ritualOf }) {
   if (!picks.length) { ui.notifications.warn(`${tgt.name} has no ${armor ? "armor or Shroud" : "weapon or Foci"} of Grade 2 or lower to animate.`); return 0; }
   const item = picks[0];
   const acts = [];
+  if (!armor && item.type === "weapon") acts.push({ act: "weapon", caster: actor.uuid, item: item.uuid, name: item.name });
   if (armor) {
     const grade = item.system.grade ?? 1;
     const mult = item.type === "armor" ? { light: 0.5, medium: 1, heavy: 2, titanic: 4 }[item.system.weight] ?? 1 : 1;
@@ -438,7 +476,7 @@ async function animateEquipment({ actor, plan, mods, targets, ritualOf }) {
     acts.push({ act: "suffocate", wearer: tgt.uuid, caster: actor.uuid, dice, name: item.name }, { act: "mould", wearer: tgt.uuid, caster: actor.uuid, dice, name: item.name });
   }
   await putSpellEffect(tgt, { kind: "animatedEquip", caster: actor.uuid, ritualOf, name: `Animated: ${item.name}`, item: item.uuid, description: `${item.name} is animated under ${actor.name}'s control until the start of their next turn.` });
-  const rows = acts.map((a, i) => `<div class="fs-brawl-row" data-role="attacker" data-owner="${actor.uuid}"><button type="button" class="fs-conjure-act" data-i="${i}"><i class="fa-solid fa-hand-fist"></i> ${a.act === "suffocate" ? `Suffocate ${esc(tgt.name)}` : "Mould it into a strike"} (${a.dice}d12 physical, 2 AP/RP)</button></div>`).join("");
+  const rows = acts.map((a, i) => `<div class="fs-brawl-row" data-role="attacker" data-owner="${actor.uuid}"><button type="button" class="fs-conjure-act" data-i="${i}"><i class="fa-solid fa-hand-fist"></i> ${a.act === "weapon" ? `Attack with ${esc(a.name)}` : a.act === "suffocate" ? `Suffocate ${esc(tgt.name)}` : "Mould it into a strike"} ${a.act === "weapon" ? "" : ` (${a.dice}d12 physical, 2 AP/RP)`}</button></div>`).join("");
   await post(actor, { title: `${esc(actor.name)} — Animate ${armor ? "Armor/Shroud" : "Weapon/Foci"}`, body: `<div class="fs-result">${esc(item.name)} is animated under ${esc(actor.name)}'s control until the start of ${ritualOf ? "the Ritual's end" : "their next turn"}.</div>
     <div class="fs-notes">${armor ? "Spend 2 AP or RP (also as a reaction) to suffocate its wearer (melee attack roll with Advantage) or mould it into a strike on someone in melee range of it (melee attack roll)." : `Spend AP or RP equal to its attack cost to move it up to ${plan.scaling ? Math.min(plan.scaling, 999) : "your Scaling Stat min"} ft and attack with it as if you held it (Foci: cast through it). You resolve the attacks at the table.`}</div>${rows}`,
     flags: { flowstate: { conjure: { acts } } } });
@@ -449,8 +487,19 @@ async function animateEquipment({ actor, plan, mods, targets, ritualOf }) {
 export async function act(message, i = 0) {
   const x = message.getFlag("flowstate", "conjure")?.acts?.[Number(i)];
   if (!x) return;
-  const caster = await fromUuid(x.caster), wearer = await fromUuid(x.wearer);
+  const caster = await fromUuid(x.caster), wearer = x.wearer ? await fromUuid(x.wearer) : null;
   if (!caster?.isOwner) return ui.notifications.warn("Only the caster can do that.");
+  if (x.act === "weapon") {
+    // The animated weapon attacks as if you held it: its profile uses your stats and it counts as held.
+    const real = await fromUuid(x.item);
+    if (!real) return ui.notifications.info("The weapon is gone.");
+    const sys = Object.create(real.system);
+    const eff = caster.system.derived.effective;
+    sys.computeProfile({ str: eff.str.value, dex: eff.dex.value });
+    sys.held = true;
+    const proxy = Object.create(real, { system: { value: sys } });
+    return rollWeaponAttack(caster, proxy);
+  }
   if (!(await spendPoints(caster, "ap", 2, `animated ${x.name}`))) return;
   const targets = x.act === "suffocate" ? [wearer] : undefined;
   return performAttack(caster, { label: `${x.act === "suffocate" ? "Suffocate" : "Mould"}: ${x.name}`, net: x.act === "suffocate" ? 1 : 0, stealth: "none", melee: true, area: false, push: false, damage: `${x.dice}d12`, type: "physical",
@@ -538,6 +587,14 @@ export async function riderAfter({ attacker, target, o, outcome, defense }) {
     if (made?.fear) fear = true;
   }
   if (o.rider && !r) r = o.rider;                       // a Geomancy Combo's Charged material
+  // Muddy (Geomancy T4): the material fouls what it hits: Disadvantage on their rolls with it and/or Weakened damage, until the caster's next turn.
+  if (o.muddy && target.type !== "pile") {
+    const c = o.muddy.choice, mud = [];
+    if (c === "dis" || c === "all") mud.push({ roll: "attack", text: "Disadvantage on their attack rolls" });
+    if (c === "weak" || c === "all") mud.push({ roll: "damage", text: "Weakened damage" });
+    for (const m of mud) await putSpellEffect(target, { kind: "muddy", stack: true, caster: o.muddy.caster, name: `Muddy: ${m.text}`, penalty: { roll: m.roll, amount: 1 }, description: `${m.text} until the start of the caster's next turn.` });
+    if (mud.length) await post(attacker, { title: `${esc(attacker.name)} — Muddy`, body: `<div class="fs-result">${esc(target.name)} is fouled: ${mud.map(m => m.text).join(", ")} until your next turn.</div>` });
+  }
   // Illusion Combos: whoever is hit makes a coin flip or is afraid until their turn ends (success: immune while it lasts).
   if (fear && (outcome?.toHp ?? 0) >= 0 && target.type !== "pile") {
     const flip = await roll("1d2");

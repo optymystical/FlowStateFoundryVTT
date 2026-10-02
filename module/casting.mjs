@@ -50,6 +50,7 @@ export function castContext(actor, weave = null) {
   // Weaving: only options whose normal AP equals the attack's can be woven; Webmaster (T5) keeps TR.
   if (weave) for (const o of options) if (o.ok && !o.ap.includes(weave.ap)) { o.ok = false; o.reason = `Takes ${o.ap.join("/")} AP; the attack you're weaving with costs ${weave.ap}.`; }
   return { fociState: fociFx.castState(actor), targetsAlly, hematiteFoci: working.filter(i => i.system.profile.affixes.includes("hematite")).map(i => i.id),
+    moonstoneFoci: working.filter(i => i.system.profile.affixes.includes("moonstone")).map(i => i.id),
     taaffeiteFoci: working.filter(i => i.system.profile.affixes.includes("taaffeite")).map(i => i.id),
     inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals,
     weave: weave ? { ap: weave.ap, keepTR: theory >= 5 } : null };
@@ -126,6 +127,12 @@ export function afflictHTML(v) {
   }
   // Illusion: the sense a Mirage dulls, and Fidelity's tangible affliction.
   if (profile?.arcana?.kind === "mirage" && !profile.arcana.chart) out.push(`<div class="fs-field"><label>Mirage: sense</label>${sel("sense", { sight: "Sight", sound: "Sound", smell: "Smell", other: "Another sense" }, v.sense || "sight")}</div>`);
+  // Strike: aim it at a Spell (Absorb refunds Energy; Amplify and Rip need one).
+  if (profile?.strike && ids.length === 1) {
+    const list = globalThis.game ? arcana.listSpells() : [];
+    out.push(`<div class="fs-field"><label>Strike a Spell</label><select name="strikeSpell"><option value="">— a creature (normal Strike) —</option>${list.map(x => `<option value="${esc(x.id)}" ${v.strikeSpell === x.id ? "selected" : ""}>${esc(x.label)} (${x.hp} health, Power ${x.power})</option>`).join("")}</select></div>`);
+    if (v["mod:magic-arcanomancy:rip"]) out.push(`<div class="fs-field"><label>Rip: then</label>${sel("ripMode", { dissipate: "Dissipate it", redirect: "Redirect it" }, v.ripMode || "dissipate")}</div>`);
+  }
   if (profile?.arcana?.kind === "mirage" && v["mod:magic-illusion:fidelity"]) {
     out.push(`<div class="fs-field"><label>Fidelity: it makes them</label>${sel("fidelityKind", { fear: "Afraid (no Energy regain)", dis: "Disadvantaged on a roll type" }, v.fidelityKind || "fear")}</div>`);
     if (v.fidelityKind === "dis") out.push(`<div class="fs-field"><label>…rolls of</label>${sel("fidelityRoll", fx.ROLL_TYPES, v.fidelityRoll || "attack")}</div>`);
@@ -173,6 +180,7 @@ function dialogHTML(ctx, v) {
     <div class="fs-cast-mods">${modsHTML(ctx, v, theory)}</div>
     ${(() => { const only = v.core1 && !v.core2 ? fx.profileFor([v.core1]) : null; return only?.hold ? `<label class="fs-cast-mod"><input type="checkbox" name="hold" ${v.hold ? "checked" : ""}> <strong>Hold it</strong> <small>in melee: no damage, but it stays available to use again for the same AP until your next turn</small></label>` : ""; })()}
     ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
+    ${ctx.moonstoneFoci?.length ? `<label class="fs-cast-mod"><input type="checkbox" name="dark" ${v.dark ? "checked" : ""}> <strong>Moonstone</strong> <small>you're in darkness or dim light</small></label>` : ""}
     ${ctx.hematiteFoci?.length ? `<label class="fs-cast-mod"><input type="checkbox" name="hematite" ${v.hematite ? "checked" : ""}> <strong>Hematite</strong> <small>double the Power by spending Health equal to it</small></label>` : ""}
     ${theory >= 2 && !ctx.inCombat ? `<label class="fs-cast-mod"><input type="checkbox" name="ritual" ${v.ritual ? "checked" : ""}> <strong>Ritual</strong> <small>takes hours instead of AP, and lowers your max Energy while it lasts (out of combat)</small></label>` : ""}
     <div class="fs-cast-preview">${previewHTML(spells.planCast(ctx, v), ctx)}</div>
@@ -292,15 +300,19 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
     origin = who?.getActiveTokens?.()[0] ?? null;
     if (globalThis.canvas?.tokens?.placeables?.length && !origin) return null;
   }
+  // Sense Swap (Summoning T4): spells are cast from the swapped Summon's position.
+  if (!origin && !weave) origin = conjure.senseSwapToken(actor);
   const meleeRange = !!targets[0]?.actor && inMeleeRange(actor, targets[0].actor, origin);
   if (weave?.melee && !meleeRange) { ui.notifications.warn("A woven spell must be the same kind of attack: the target has to be within your personal melee range for a melee attack."); return null; }
   // Snipe (Magic Theory T4) doubles the range; past the normal range the initial attack roll has Disadvantage.
-  const ffx = fociFx.fociFx(actor, plan);
+  const ffx = fociFx.fociFx(actor, plan, !!values.dark);
   plan.fociFx = ffx;
   let normalRange = plan.attack === "Targeted" ? 100 : 200;
   // Foci Affixes: Black Opal swaps the Targeted and Ranged ranges; Quartz adds 50% to Ranged spells.
   if (ffx?.affixes.includes("blackOpal")) normalRange = plan.attack === "Targeted" ? 200 : plan.attack === "Ranged" ? 100 : normalRange;
   if (ffx?.affixes.includes("quartz") && plan.attack === "Ranged") normalRange *= 1.5;
+  // Black Opal (+): one of the two ranges is also 50% longer.
+  if (ffx?.affixes.includes("blackOpal") && ffx.plus && ffx.opalRange === plan.attack?.toLowerCase()) normalRange *= 1.5;
   if (!weave && !fire && !mods.aura && !plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, normalRange * (mods.snipe ? 2 : 1), `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack}${mods.snipe ? ", Snipe" : ""})`, null, origin)) return null;
   // Area spells (Gravity Field) and Emplace: choose a shape and place it before anything is spent; everything it touches is targeted.
   const emplace = !!mods.emplace && !!profile?.shield;
@@ -316,7 +328,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
     const originTok = rangedPlusArea ? (aim?.object ?? aim) : null;
     const layered = (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0);
     placed = await areas.placeArea(actor, { title: emplace ? "Emplace" : mods.blast && !mods["gravity field"] ? "Blast" : "Gravity Field", scale: (mods.snipe ? 2 : 1) * agate, aim, origin: originTok?.center ? originTok : null,
-      facing: emplace, flags: { spell: emplace ? "emplace" : mods.blast && !mods["gravity field"] ? "blast" : "gravity field", ...(emplace ? { health: 20 * plan.power + layered, limit: 20 * plan.power + layered } : {}) } });
+      facing: emplace, flags: { spell: emplace ? "emplace" : mods.blast && !mods["gravity field"] ? "blast" : "gravity field", ...(emplace ? { health: 20 * plan.power + layered, limit: 20 * plan.power + layered, reactive: !!mods.reactive, casterUuid: actor.uuid } : {}) } });
     if (placed === null) return null;                                    // cancelled: nothing is spent
     if (placed && !emplace) targets = placed.actors.map(a => ({ actor: a }));
     // Mold (Reach Arcana T3): you choose who in the area is attacked.
@@ -335,6 +347,10 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const conjureCast = !!profile?.conjure;
   let cjSpec = null;
   if (conjureCast && !plan.ritual) { cjSpec = fire && values.conj ? values.conj : await conjure.prompt({ actor, plan, profile, mods, values, targets }); if (!cjSpec) return null; }
+  // Strike aimed at a Spell (Absorb, Amplify, Rip).
+  const strikeSpell = !!profile?.strike && plan.cores.length === 1;
+  let strikeSpec = null;
+  if (strikeSpell && (values.strikeSpell || mods.amplify || mods.rip) && !plan.ritual) { strikeSpec = await arcana.promptSpell({ actor, plan, mods, values }); if (!strikeSpec) return null; }
   // Tier 5: Restore and Shift ask what they need before anything is spent; a Mirage is an attack and goes on to the exchange.
   const arcanaCast = !!profile?.arcana && profile.arcana.kind !== "mirage";
   let arcSpec = null;
@@ -353,7 +369,8 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   let ritualOf = null;
   if (plan.ritual && !fire) {
     const heldRitual = !!profile?.hold && plan.cores.length === 1;
-    const stored = !profile?.shield && !!profile && !heldRitual;
+    const antiMagic = !!mods.blast && !!profile?.strike && !!placed?.templateId;
+    const stored = !profile?.shield && !!profile && !heldRitual && !antiMagic;
     const t3 = !!profile?.afflict || !!profile?.conjure || ["restore", "mirage"].includes(profile?.arcana?.kind);
     const made = await actor.createEmbeddedDocuments?.("ActiveEffect", [{
       name: `Ritual: ${plan.cores.map(c => c.name).join(" + ")}`, img: "icons/magic/symbols/runes-star-orange.webp", origin: actor.uuid,
@@ -361,6 +378,8 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
       flags: { flowstate: { ritual: { cores: ids, mods: plan.applied.filter(a => !a.free).map(a => a.mod.id), energyLost: plan.ritualLoss, power: plan.power, ...(stored ? { freeCasts: t3 ? 1 : 2, t3 } : {}) } } }
     }]);
     ritualOf = made?.[0]?.uuid ?? null;
+    // Blast Ritual: an anti-magic field that hurts everything magical that enters it and at the start of your turn, until the Ritual ends.
+    if (antiMagic) { await requestGM("tplFlags", { sceneId: placed.sceneId, id: placed.templateId, flags: { spell: "antimagic", ritualOf, casterUuid: actor.uuid, power: plan.power } }); plan.note = "Ritual complete: the area is an anti-magic field. Magical creatures and creations take Strike's arcane damage when they enter it and at the start of your turn, until the Ritual ends."; }
     // Ritual Flame/Frost/Crackle/Glob: the spell stays held until the Ritual ends.
     if (heldRitual) await areasHeld(actor, { ...plan, ap: plan.option.ap.length === 1 ? plan.option.ap[0] : 2 }, profile, ids, fx.modCounts(plan.applied), ritualOf);
     plan.note = heldRitual ? `Ritual complete: the ${profile.name.toLowerCase()} stays held until the Ritual ends (use it from the Action List for AP only).` : stored ? (t3 ? "Ritual complete: one free cast is ready (cast it again with the Ritual selected); on a hit its effect lasts until the Ritual ends." : "Ritual complete: two free casts of this spell are ready (cast it again with the Ritual selected).") : profile ? "" : "";
@@ -404,6 +423,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
     if (placed?.tpl) await requestGM("createWalls", { sceneId: placed.sceneId, walls: areas.wallData(placed.tpl, placed.front, placed.grid, { barrierOf: placed.templateId, areaOf: actor.uuid }) });
     await emplaceCard(actor, { health: 20 * plan.power + (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0), shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId, sceneId: placed?.sceneId, walls: !!placed?.tpl });
   }
+  else if (strikeSpec && Object.keys(strikeSpec).length) { await arcana.resolveStrike({ actor, plan, profile, mods, spec: strikeSpec, ritualOf }); }
   else if (conjureCast) { if (!plan.ritual) await conjure.resolve({ actor, plan, profile, spec: cjSpec, mods, ritualOf, targets, values }); }
   else if (arcanaCast) { if (!plan.ritual) await arcana.resolve({ actor, plan, profile, spec: arcSpec, mods, ritualOf, targets }); }
   else if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave, primary, rangedPlusArea });
@@ -471,7 +491,7 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
     damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin : 0,
     notes: [...notes, plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
-    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
+    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area && !mods.absorb, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
       ...(plan.fociFx ? { fociFx: plan.fociFx } : {}),
       ...(profile.arcana?.kind === "mirage" ? { ritualFree: plan.t3Free ?? null, arcana: { sense: values?.sense, fidelity: values?.fidelityKind, fidelityRoll: values?.fidelityRoll } } : {}),
       ...(profile.afflict ? { ritualFree: plan.t3Free ?? null, afflict: { charmRoll: values?.charmRoll, hexDie: values?.hexDie, hex: { trigger: values?.hexTrigger, roll: values?.hexRoll, outcome: values?.hexOutcome, detail: values?.hexDetail } } } : {}) }
@@ -484,6 +504,12 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     first = await performAttack(actor, { ...attackOpts, area: false, targetActors: p, notes: [...attackOpts.notes, "Ranged part (primary target)"], spell: { ...attackOpts.spell, singleRoll: false } });
     await performAttack(actor, { ...attackOpts, area: true, notes: [...attackOpts.notes, "Area part"], spell: { ...attackOpts.spell, singleRoll: true, exploit: null } });
   } else first = await performAttack(actor, attackOpts);
+  // Aura (Illusion T5): remember it, so creatures that walk in later can be checked (everyone checked now is covered).
+  if (mods.aura && profile.arcana?.kind === "mirage") {
+    const { targetActors: _t, ...opts } = attackOpts;
+    await applySpellEffect(actor, { kind: "aura", caster: actor.uuid, name: "Aura", ritualOf, opts: JSON.parse(JSON.stringify(opts)), affected: [...targetActors.map(a => a.uuid), actor.uuid], expiresAt: globalThis.game?.time?.worldTime !== undefined ? globalThis.game.time.worldTime + 60 : null,
+      description: "A Mirage aura around you for a minute: creatures that come within 50 ft get the attack roll." });
+  }
   // Duplicate (Magic Theory T5): cast once more for free, at any valid target.
   if (mods.duplicate) {
     const picked = await pickDuplicateTarget(actor, targetActors, values?.dupTarget);

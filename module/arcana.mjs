@@ -6,8 +6,10 @@
 import * as fx from "./spellfx.mjs";
 import { COMBO_ILLUSION } from "./combos.mjs";
 import {
-  post, requestGM, putSpellEffect, spellEffects, performAttack, changeEffect, registerArcana, attackerToken, tokenDistance, setActorFlag, pickSceneTarget, spendPoints
+  post, requestGM, putSpellEffect, spellEffects, performAttack, changeEffect, registerArcana, attackerToken, tokenDistance, setActorFlag, pickSceneTarget, spendPoints,
+  requestDamage, GM_ACTIONS, damageOutcome
 } from "./actions.mjs";
+import * as areas from "./areas.mjs";
 import { secret } from "./afflictions.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 
@@ -167,9 +169,9 @@ async function shift({ actor, plan, profile, spec, mods, targets }) {
     ${notes.length ? `<ul class="fs-list">${notes.map(l => `<li>${esc(l)}</li>`).join("")}</ul>` : ""}<div class="fs-notes">One piece must stay put; it must be Powder, Liquid or Soft material. 1 Body is about a cubic foot.</div>` });
   if (target) {
     const rider = a.rider ? { core: a.rider, level, charmRoll: null, hex: null, arcane: !!a.arcane } : null;
-    await performAttack(actor, { label: mods.toss ? "Toss" : "Shift", net: mods.toss ? 0 : 1, stealth: a.stealth ? "half" : "none", melee: !mods.toss, area: false, push: false, damage: `${n}d${sides}`, type, stacks: 0, physical: false,
+    await performAttack(actor, { label: mods.toss ? "Toss" : "Shift", net: mods.toss ? 0 : 1, stealth: a.stealth ? "half" : "none", melee: !mods.toss, area: false, push: false, damage: `${n}d${sides}`, type, stacks: mods.harden && !["armor", "terrain"].includes(spec.harden) ? 1 : 0, physical: false,
       shots: 1, critStacks: 0, pierce: 0, bash: 0, knockback: 0, notes: [mods.toss ? "Toss: ranged attack roll" : "Shift: melee attack roll with Advantage", `${n}d${sides} ${DAMAGE_TYPES[type] ?? type} (half the Body, rounded down)`],
-      followups: [], targetActors: [target], ...(rider ? { rider } : {}) });
+      followups: [], targetActors: [target], ...(rider ? { rider } : {}), ...(spec.muddy && mods.muddy ? { muddy: { choice: spec.muddy, caster: actor.uuid, power: plan.power } } : {}) });
   }
   return true;
 }
@@ -284,6 +286,7 @@ export async function act(message, i = 0) {
   if (!x) return;
   const target = await fromUuid(x.target), caster = await fromUuid(x.caster);
   if (!target || !caster?.isOwner) return ui.notifications.warn("Only the caster (or the GM) can do that.");
+  if (x.act === "aura") return auraAttack(caster, target);
   const e = liveMirage(target, x.caster);
   if (!e) return ui.notifications.info("That Mirage is over.");
   const d = data(e);
@@ -312,4 +315,213 @@ export function auraTargets(actor) {
   return out;
 }
 
-registerArcana({ mirageHit, magicFails, turnStart, act, lossSince });
+
+
+/* -------------------------------------------- */
+/*  Spells as targets: Strike, Absorb, Amplify, Rip */
+/* -------------------------------------------- */
+
+const SPELLISH = new Set(["shield", "poison", "coat", "charm", "hex", "mirage", "dodgeDie", "attackDie", "dodgeDis", "field", "hold", "brand", "freeze", "scorch", "painless", "magicDis", "delayed", "held", "heatRad", "bleed", "gash", "muddy", "aura"]);
+const allActors = () => {
+  const seen = new Set(), out = [];
+  for (const a of globalThis.game?.actors ?? []) if (!seen.has(a.uuid)) { seen.add(a.uuid); out.push(a); }
+  for (const t of globalThis.canvas?.tokens?.placeables ?? []) { const a = t.actor; if (a && !seen.has(a.uuid)) { seen.add(a.uuid); out.push(a); } }
+  return out;
+};
+/** A caster's Scaling Stat (the lesser of Reach and Grasp): the health of a Spell that doesn't state its own, and its Power. */
+const casterScaling = c => Math.min(c?.system?.derived?.effective?.reach?.value ?? 0, c?.system?.derived?.effective?.grasp?.value ?? 0);
+const spellPowerOf = c => Math.max(1, Math.floor(casterScaling(c) / 10));
+
+/** Every Spell on the scene: effects, Emplace barriers, Summons and Animations. Each: { id, label, kind, caster, hp, power, ritualOf, amplified }. */
+export function listSpells() {
+  const out = [];
+  for (const a of allActors()) {
+    const sm = a.flags?.flowstate?.summon;
+    if (sm) out.push({ id: `summon:${a.uuid}`, kind: "summon", label: `${a.name} (${sm.kind ?? "summon"})`, caster: sm.owner, hp: a.system.hp.value, power: spellPowerOf(globalThis.fromUuidSync?.(sm.owner)), ritualOf: sm.ritualOf, amplified: !!sm.amplified });
+    for (const e of a.effects ?? []) {
+      const d = data(e);
+      if (e.disabled || !d.caster || !SPELLISH.has(d.kind)) continue;
+      const caster = globalThis.fromUuidSync?.(d.caster);
+      out.push({ id: `effect:${e.uuid}`, kind: "effect", label: `${e.name} on ${a.name}`, caster: d.caster, hp: d.kind === "shield" ? Number(d.hp) || 0 : d.spellHp ?? casterScaling(caster), power: d.power ?? spellPowerOf(caster), ritualOf: e.flags?.flowstate?.ritualOf ?? null, amplified: !!d.amplified, effect: e });
+    }
+  }
+  for (const t of globalThis.canvas?.scene?.templates ?? []) {
+    const f = t.flags?.flowstate;
+    if (f?.spell !== "emplace" || !(f.health > 0)) continue;
+    const caster = globalThis.fromUuidSync?.(f.casterUuid ?? f.areaOf);
+    out.push({ id: `barrier:${globalThis.canvas.scene.id}:${t.id}`, kind: "barrier", label: "Emplace barrier", caster: f.casterUuid ?? f.areaOf, hp: f.health, power: spellPowerOf(caster), ritualOf: f.ritualOf ?? null, amplified: !!f.amplified, sceneId: globalThis.canvas.scene.id, tplId: t.id, tpl: t });
+  }
+  return out;
+}
+export const findSpell = id => listSpells().find(x => x.id === id) ?? null;
+
+/** Damage a Spell; it's destroyed at 0. Returns { destroyed, left }. */
+async function damageSpell(entry, amount) {
+  const left = Math.max(0, entry.hp - amount);
+  if (entry.kind === "summon") {
+    const a = await fromUuid(entry.id.slice(7));
+    await requestDamage(a, amount, "arcane", 0, null, { silent: true, bypass: true });
+  } else if (entry.kind === "barrier") {
+    await requestGM("barrier", { sceneId: entry.sceneId, id: entry.tplId, hp: left });
+  } else if (left <= 0) await changeEffect(entry.effect, null);
+  else if (data(entry.effect).kind === "shield") await changeEffect(entry.effect, { "flags.flowstate.spellEffect.hp": left, description: `Absorbs the next ${left} damage.` });
+  else await changeEffect(entry.effect, { "flags.flowstate.spellEffect.spellHp": left });
+  return { destroyed: left <= 0, left };
+}
+async function destroySpell(entry) {
+  if (entry.kind === "summon") return requestGM("deleteCreation", { actorId: (await fromUuid(entry.id.slice(7))).id });
+  if (entry.kind === "barrier") return requestGM("barrier", { sceneId: entry.sceneId, id: entry.tplId, hp: 0 });
+  return changeEffect(entry.effect, null);
+}
+
+/** Amplify (Arcanomancy T4): +10 Power to a non-Ritual Spell, once. Only effects that scale with Power change. */
+async function amplifySpell(entry) {
+  if (entry.ritualOf) return "Amplify only works on non-Ritual Spells.";
+  if (entry.amplified) return "That Spell has already been amplified.";
+  if (entry.kind === "barrier") {
+    await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 200, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 200, amplified: true } });
+    return `The barrier gains 200 health (20 × 10 Power).`;
+  }
+  if (entry.kind === "summon") return "A Summon's stats don't scale with Power: nothing changes.";
+  const d = data(entry.effect), p = Math.max(1, d.power ?? 1);
+  const upd = { "flags.flowstate.spellEffect.amplified": true };
+  let msg;
+  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 200; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 200; msg = "The Shield gains 200 health (20 × 10 Power)."; }
+  else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + 10)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + 10; msg = `Its dice go from ${d.n} to ${n}.`; }
+  else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 100; upd["flags.flowstate.spellEffect.power"] = d.power + 100; msg = "The Mirage gains 100 Power."; }
+  else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 30; msg = "Pain Threshold drops 30 more."; }
+  else return "That Spell has no Power-scaled number to amplify: nothing changes.";
+  await changeEffect(entry.effect, upd);
+  return msg;
+}
+
+/** Rip (Arcanomancy T5): take control of a Spell with 5 or less Power, then redirect it or dissipate it. */
+async function ripSpell(entry, caster, mode, newTarget, ritualOf) {
+  if (entry.power > 5) return `That Spell has ${entry.power} Power: Rip needs 5 or less.`;
+  if (mode !== "redirect" || !newTarget || entry.kind === "barrier") { await destroySpell(entry); return `${entry.label} dissipates.`; }
+  if (entry.kind === "summon") {
+    await requestGM("takeControl", { actor: entry.id.slice(7), caster: caster.uuid });
+    return `${caster.name} takes control of ${entry.label}.`;
+  }
+  const e = entry.effect, d = { ...data(e) };
+  await changeEffect(e, null);
+  await putSpellEffect(newTarget, { ...d, caster: caster.uuid, ritualOf: ritualOf ?? e.flags?.flowstate?.ritualOf ?? null, name: e.name, description: e.description });
+  return `${e.name} is redirected to ${newTarget.name} (under ${caster.name}'s control).`;
+}
+
+GM_ACTIONS.tplFlags = async ({ sceneId, id, flags }) => {
+  const d = globalThis.game.scenes.get(sceneId)?.templates?.get(id);
+  if (d) await d.update(Object.fromEntries(Object.entries(flags).map(([k, v]) => [`flags.flowstate.${k}`, v])));
+};
+GM_ACTIONS.takeControl = async ({ actor, caster }) => {
+  const a = await fromUuid(actor), c = await fromUuid(caster);
+  if (!a || !c) return;
+  const ownership = { ...(a.ownership ?? {}) };
+  for (const [uid, lvl] of Object.entries(c.ownership ?? {})) if (uid !== "default" && lvl >= 3) ownership[uid] = 3;
+  await a.update({ ownership, "flags.flowstate.summon.owner": c.uuid });
+};
+
+/** Before payment: which Spell a Strike goes for (needed by Amplify and Rip), and Rip's choices. Returns a spec, or null if the cast can't happen. */
+export async function promptSpell({ actor, plan, mods, values }) {
+  const need = mods.amplify || mods.rip;
+  const id = values.strikeSpell;
+  if (!id) { if (need) { ui.notifications.warn("Pick the Spell to target."); return null; } return {}; }
+  const entry = findSpell(id);
+  if (!entry) { ui.notifications.warn("That Spell is gone."); return null; }
+  if (mods.amplify && entry.ritualOf) { ui.notifications.warn("Amplify only works on non-Ritual Spells."); return null; }
+  if (mods.amplify && entry.amplified) { ui.notifications.warn("That Spell has already been amplified."); return null; }
+  if (mods.rip && entry.power > 5) { ui.notifications.warn(`That Spell has ${entry.power} Power: Rip needs 5 or less.`); return null; }
+  const spec = { id };
+  if (mods.rip) {
+    spec.mode = values.ripMode === "redirect" ? "redirect" : "dissipate";
+    if (spec.mode === "redirect") {
+      const t = values.ripTarget ? await fromUuid(values.ripTarget) : await pickSceneTarget(actor, { title: "Rip: redirect it to", exclude: [] });
+      if (!t) return null;
+      spec.target = t.uuid;
+    }
+  }
+  return spec;
+}
+
+/** After payment: a Strike aimed at a Spell. */
+export async function resolveStrike({ actor, plan, profile, mods, spec, ritualOf }) {
+  const entry = findSpell(spec.id);
+  if (!entry) return post(actor, { title: `${esc(actor.name)} — Strike`, body: `<div class="fs-result">The Spell is already gone.</div>` });
+  let body;
+  if (mods.amplify) body = await amplifySpell(entry);
+  else if (mods.rip) body = await ripSpell(entry, actor, spec.mode, spec.target ? await fromUuid(spec.target) : null, plan.freeFrom ? (Array.from(actor.effects).find(e => e.id === plan.freeFrom)?.uuid ?? null) : null);
+  else {
+    const dmg = await roll(`${profile.damage.n * Math.max(1, plan.power)}d${profile.damage.sides}`);
+    const res = await damageSpell(entry, dmg.total);
+    body = `Strike hits ${entry.label} for ${dmg.total} arcane (${entry.hp} health → ${res.left}).${res.destroyed ? " <strong>It is destroyed.</strong>" : ""}`;
+    if (res.destroyed && mods.absorb) {
+      const gain = entry.power, maxE = actor.system.energy.max, haveE = actor.system.energy.value;
+      const upd = { "system.energy.value": Math.min(maxE, haveE + gain) };
+      if (actor.isOwner) await actor.update(upd); else await requestGM("updateActor", { uuid: actor.uuid, data: upd });
+      body += ` Absorb: ${esc(actor.name)} regains <strong>${gain} Energy</strong>.`;
+    }
+  }
+  await post(actor, { title: `${esc(actor.name)} — Strike a Spell`, body: `<div class="fs-result"><i class="fa-solid fa-burst"></i> ${body}</div>` });
+}
+
+/* -------------------------------------------- */
+/*  Anti-Magic field (Blast Ritual) and Aura entrants */
+/* -------------------------------------------- */
+
+const isMagical = a => !!(a && (a.system?.magical || a.flags?.flowstate?.summon));
+const antimagic = () => Array.from(globalThis.canvas?.scene?.templates ?? []).filter(t => t.flags?.flowstate?.spell === "antimagic");
+async function antimagicDamage(actor, power, casterName) {
+  const p = fx.PROFILES["magic-arcanomancy:strike"].damage;
+  const r = await roll(`${p.n * Math.max(1, power)}d${p.sides}`);
+  await requestDamage(actor, r.total, "arcane", 0, null, { silent: true, archetype: "magic" });
+  await post(actor, { title: `${esc(actor.name)} — Anti-Magic field`, rolls: [r], body: `<div class="fs-result">${esc(casterName)}'s anti-magic field deals ${r.total} arcane damage to ${esc(actor.name)}.</div>` });
+}
+/** Start of the caster's turn: the field hurts every magical thing inside it. */
+export async function antimagicTurn(caster) {
+  const grid = globalThis.canvas?.grid;
+  if (!grid) return;
+  for (const t of antimagic().filter(x => x.flags.flowstate.casterUuid === caster.uuid)) {
+    const tpl = { t: t.t, x: t.x, y: t.y, direction: t.direction, distance: t.distance, angle: t.angle, width: t.width };
+    const inside = areas.tokensInArea(tpl, globalThis.canvas.tokens.placeables.filter(k => isMagical(k.actor)), { size: grid.size, distance: grid.distance });
+    for (const tok of inside) await antimagicDamage(tok.actor, t.flags.flowstate.power ?? 1, caster.name);
+  }
+}
+
+/** A token is about to move: damage for entering an anti-magic field; Aura entrants get offered an attack roll. */
+export async function checkEntry(token, changes) {
+  const canvas = globalThis.canvas;
+  if (!canvas?.scene || !canvas.grid || !("x" in changes || "y" in changes)) return;
+  const grid = { size: canvas.grid.size, distance: canvas.grid.distance };
+  const at = (x, y) => ({ document: { x, y, width: token.width, height: token.height } });
+  const before = at(token.x, token.y), after = at(changes.x ?? token.x, changes.y ?? token.y);
+  const actor = token.actor;
+  if (!actor) return;
+  if (isMagical(actor)) for (const t of antimagic()) {
+    const tpl = { t: t.t, x: t.x, y: t.y, direction: t.direction, distance: t.distance, angle: t.angle, width: t.width };
+    if (areas.tokensInArea(tpl, [after], grid).length && !areas.tokensInArea(tpl, [before], grid).length) await antimagicDamage(actor, t.flags.flowstate.power ?? 1, (await fromUuid(t.flags.flowstate.casterUuid))?.name ?? "a caster");
+  }
+  const centre = p => ({ x: p.document.x + p.document.width * grid.size / 2, y: p.document.y + p.document.height * grid.size / 2 });
+  for (const a of allActors()) for (const e of spellEffects(a, "aura")) {
+    const d = data(e);
+    if (d.expiresAt != null && globalThis.game?.time?.worldTime >= d.expiresAt) continue;
+    if ((d.affected ?? []).includes(actor.uuid) || actor.uuid === a.uuid) continue;
+    const src = attackerToken(a);
+    if (!src) continue;
+    const dist = p => canvas.grid.measurePath([src.center, centre(p)]).distance;
+    if (dist(after) <= 50 && dist(before) > 50) {
+      await secret(actor, a, { title: `${esc(a.name)} — Aura`, body: `<div class="fs-result">${esc(actor.name)} enters the aura: make the attack roll against them.</div>`, flags: { flowstate: { arcana: { acts: [{ act: "aura", target: actor.uuid, caster: a.uuid }] } } },
+        });
+    }
+  }
+}
+
+/** The caster makes the aura's attack roll against someone who walked in. */
+async function auraAttack(caster, target) {
+  const e = spellEffects(caster, "aura")[0];
+  if (!e) return ui.notifications.info("The aura is over.");
+  const d = data(e);
+  await changeEffect(e, { "flags.flowstate.spellEffect.affected": [...(d.affected ?? []), target.uuid] });
+  return performAttack(caster, { ...d.opts, area: false, targetActors: [target], spell: { ...d.opts.spell, singleRoll: false }, notes: [...(d.opts.notes ?? []), "Aura: they walked in"] });
+}
+
+registerArcana({ mirageHit, magicFails, turnStart, act, lossSince, antimagicTurn, checkEntry });

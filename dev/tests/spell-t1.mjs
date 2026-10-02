@@ -277,6 +277,7 @@ ok2(/Stab/.test(text(card)), "A Stab with Weakpoint resolves");
 console.log("== Mods that aren't automated are flagged");
 hero.system.trees["magic-arcanomancy"] = 3;
 target(orc); seq = [25]; messages.length = 0;
+FX.AUTOMATED_MODS.delete("magic-arcanomancy:absorb");   // every Mod is automated now: pretend this one isn't
 await cast("magic-arcanomancy:strike", { [M("magic-arcanomancy:absorb")]: true });
 ok2(/Not automated yet[^.]*Absorb/.test(text(messages[0])), "A Mod from a later group costs Threshold, and the card says the GM resolves it");
 delete hero.system.trees["magic-grasp-arcana"];

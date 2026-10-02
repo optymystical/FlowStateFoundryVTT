@@ -53,6 +53,7 @@ export function activeEffectRows(actor) {
       const name = by ? globalThis.fromUuidSync?.(by)?.name : null;
       detail = `${name ? `By ${name}. ` : ""}Can't move. Break Free (2 AP) from the Action List.`;
     }
+    if (!id && (effect.flags?.flowstate?.spellEffect || effect.flags?.flowstate?.ritual)) detail = String(effect.description ?? "").replace(/<[^>]+>/g, "");
     rows.push({
       key: id ?? effect.id, status: id ?? "", effectId: effect.id,
       name: globalThis.game?.i18n?.localize?.(cfg?.name ?? effect.name) ?? cfg?.name ?? effect.name, img: cfg?.img ?? effect.img, detail

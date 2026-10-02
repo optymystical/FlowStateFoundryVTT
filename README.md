@@ -277,6 +277,17 @@ The **Cast Spell** row in the Action List (a **Magic** group) opens the cast dia
 - **Rituals** (Magic Theory T2) are a checkbox in the dialog, out of combat only: no AP or Energy is spent, and an Active Effect lowers max Energy by half the (TR-ignoring) Energy cost until it ends. Ending that effect ends the Ritual.
 - The cast card states the cost and the spell text. Spell effects (attack roll, damage and so on) are automated school by school and tier by tier; until a spell is, the GM resolves it from the card.
 
+## Tier 1 spells (automated)
+Casting a Tier 1 spell goes straight on to the normal attack exchange (attack card → Dodge or Take the hit → damage), so armor, Shrouds, Parry and the rest apply. Select one target first (a Shield with no target goes on yourself). Spell Power multiplies every bolded number (dice count, health, Force, die-size changes). **Pinpoint** and casting at a target in your personal melee range give the attack Advantage, and Targeted spells attack from half stealth. Ranged spells reach 200 ft, Targeted 100 ft.
+- **Shield** (Targeted): on a hit the target gets a Shield with 20 × Spell Power health, until the start of your next turn. It absorbs damage of any type before Shrouds and armor, with no Limit, and ends when it runs out. It shows under Active Effects.
+- **Force** (Ranged): on a hit it rolls 8d10 × Spell Power Force and offers the usual Push button (you pick the direction). If the push would pull the target out of an incoming attack's way, the GM gives that attack Disadvantage.
+- **Cut** (Ranged): 2d6 × Power physical. If the target is living and the spell would deal direct damage, the dice are d10 instead. "Would deal direct damage" means the d6 dice at their largest would get past every Shield, Shroud, Parry and armor in the way. "Living" means not marked Fully Magical.
+- **Stab** (Ranged): 1d10 × Power physical, with an extra Strengthened stack on a crit.
+- **Slam** (Ranged): 1d12 × Power physical, and the target's dodge dice shrink by 2 × Power sizes until the start of your next turn (it doesn't stack).
+- **Combos:** Force + Cut (4d6, then 8d10 Force if the damage was direct), Force + Stab (2d10, and 20d10 Force on a crit), Force + Slam (2d12, 8d10 Force, and the dodge penalty), Cut + Stab (3d6, +1 Strengthened for direct damage and +1 for a crit), Cut + Slam (2d12, and the target's attack dice shrink by 5 × Power if the damage was direct), Stab + Slam (2d12, with three times the dice on a crit against a dodge roll of a third or less of their normal maximum). All dice counts, Force and die-size changes are multiplied by Spell Power.
+- **Rituals:** a Shield Ritual puts the Shield up until the Ritual ends or the Shield breaks. A Ritual of Force, Cut, Stab or Slam stores two free casts: cast it again with the Ritual chosen in the dialog, which costs AP/RP but no Energy, and the Ritual ends after the second.
+- **Spell effects** end at the start of the caster's next turn (and when combat ends). Rituals' effects end with the Ritual. Spell effects from the same caster of the same kind replace each other.
+
 ## Character sheet
 New actors (not dropped-item piles) get HP and Energy token bars, always shown to the token's owners. All new actors' tokens (piles included) have artwork rotation locked.
 

@@ -81,7 +81,7 @@ const fm = bt(["magic-summoning:form", "magic-creation:make"]);
 ok2(fm.min === 2 && fm.max === 6, "Form + Make = 2-6");
 ok2(bt(["magic-arcanomancy:strike", "magic-geomancy:shift"]).min === 1, "Arcanomancy adds nothing (Shift 1)");
 ok2(bt(["magic-arcanomancy:strike", "magic-illusion:mirage"]).min === 2, "Arcanomancy + Mirage = 2");
-ok2(bt(["magic-creation:make", "magic-illusion:mirage"]).min === 2, "Creation + Illusion = 2 (as listed)");
+ok2(bt(["magic-creation:make", "magic-illusion:mirage"]).min === 3, "Creation + Illusion = 3 (the sum)");
 ok2(bt(["magic-geomancy:shift", "magic-illusion:mirage"]).min === 3, "Geomancy + Illusion = 3");
 
 console.log("== Cost math");
@@ -154,7 +154,7 @@ const v0 = { via: "foci:rod2", ap: 2, core1: "magic-gravity:force", core2: "", b
 messages.length = 0;
 let res = await C.castSpell(B, v0);
 ok2(res && B.system.ap.value === 4 && B.system.energy.value === 50, `Cast spends 2 AP and 30 Energy (AP ${B.system.ap.value}, Energy ${B.system.energy.value})`);
-ok2(messages.length === 1 && /Force/.test(text(messages[0])) && /30 Energy/.test(text(messages[0])), "Cast card posted with the cost");
+ok2(messages.length >= 1 && /Force/.test(text(messages[0])) && /30 Energy/.test(text(messages[0])), "Cast card posted with the cost");
 ok2(messages[0].flags.flowstate.spell.power === 3, "Card flag carries Spell Power");
 B.system.ap.value = 1;
 res = await C.castSpell(B, v0);

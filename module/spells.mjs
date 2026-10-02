@@ -60,7 +60,7 @@ export function applicableMods(state, coreIds) {
 
 /**
  * Base Threshold range for one or two Cores. A Combo is the sum of both Cores' Thresholds, except that
- * Arcanomancy adds nothing ("for no added threshold"), and Creation + Illusion is listed as 2 in the Combo list.
+ * Arcanomancy adds nothing ("for no added threshold").
  */
 export function baseThreshold(coreIds) {
   const cores = coreIds.map(spellById).filter(Boolean);
@@ -75,8 +75,6 @@ export function baseThreshold(coreIds) {
     const other = cores.find(c => c !== arcane);
     return { ok: true, min: other.min, max: other.max, combo: true };
   }
-  const pair = cores.map(c => c.treeId.replace("magic-", "")).sort().join("+");
-  if (pair === "creation+illusion") return { ok: true, min: 2, max: 2, combo: true };
   return { ok: true, min: a.min + b.min, max: a.max + b.max, combo: true };
 }
 
@@ -152,6 +150,7 @@ const modKey = m => m.name.toLowerCase();
  *   focused              the Focused Spell's Core id (Magic Theory T2)
  *   ring                 { [fociId]: coreId } chosen Core for each Ring
  *   extraTR              TR from other sources
+ *   rituals              [{ id, cores, mods, freeCasts }]  active Rituals with free casts left
  * @param {object} v  dialog values: via, ap, core1, core2, base, "mod:<id>" (boolean or stack count), "modT:<id>" (Threshold per use),
  *                    "rep:<id>" (the Mod Replicate copies), connection, ritual
  */
@@ -198,6 +197,16 @@ export function planCast(ctx, v) {
     if (free) applied.push({ mod: free, threshold: 0, free: true });
   }
 
+  // Free cast from an active Ritual (same Core(s) and Mods): costs AP/RP but no Energy.
+  let freeFrom = null;
+  if (v.useRitual) {
+    const r = (ctx.rituals ?? []).find(x => x.id === v.useRitual && x.freeCasts > 0);
+    const same = (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
+    if (!r) errors.push("That Ritual has no free casts left.");
+    else if (!same(r.cores, coreIds) || !same(r.mods, applied.filter(a => !a.free).map(a => a.mod.id))) errors.push("That Ritual is for a different spell (same Core(s) and Mods needed).");
+    else freeFrom = r.id;
+  }
+
   // Ritual Casting (Magic Theory T2).
   const ritual = !!v.ritual && theory >= 2;
   if (v.ritual && theory < 2) errors.push("Ritual Casting needs Magic Theory Tier 2.");
@@ -222,7 +231,7 @@ export function planCast(ctx, v) {
   return {
     ok: errors.length === 0, errors, option, cores, combo: cores.length === 2, base, applied, free, focusedCast, ritual, react,
     ap, usesRP: react && !ritual, tr, trParts, ...cost,
-    energy: ritual ? 0 : cost.energy,
+    energy: ritual || freeFrom ? 0 : cost.energy, freeFrom,
     ritualHours: ritual ? cost.gross : 0,
     ritualLoss: ritual ? Math.floor(grossEnergy / 2) : 0,
     power: option ? spellPower(option.scaling) : 0, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,

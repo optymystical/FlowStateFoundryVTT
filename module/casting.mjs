@@ -4,7 +4,8 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { post, inActiveCombat, helpless, spendPoints, spendEnergy } from "./actions.mjs";
+import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance } from "./actions.mjs";
+import * as fx from "./spellfx.mjs";
 import { STATS } from "./rules.mjs";
 import { tierOf } from "./skills.mjs";
 
@@ -29,8 +30,10 @@ export function castContext(actor) {
   }));
   const ring = {};
   for (const i of actor.items) if (i.type === "foci" && i.system.fociType === "ring" && i.system.chosenSpell) ring[i.id] = i.system.chosenSpell;
+  const rituals = Array.from(actor.effects ?? []).filter(e => !e.disabled && e.flags?.flowstate?.ritual?.freeCasts > 0)
+    .map(e => ({ id: e.id, name: e.name, cores: e.flags.flowstate.ritual.cores, mods: e.flags.flowstate.ritual.mods, freeCasts: e.flags.flowstate.ritual.freeCasts }));
   const options = spells.castingOptions({ reach: eff.reach?.value ?? 0, grasp: eff.grasp?.value ?? 0, freeHand: freeHand(actor), foci });
-  return { trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0 };
+  return { trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals };
 }
 
 /** Can this actor cast at all? (Knows a Core Spell and meets some casting requirement.) */
@@ -107,6 +110,7 @@ function dialogHTML(ctx, v) {
     <div class="fs-field"><label>Second Core (Combo)</label>${coreSelect("core2", known.cores.filter(c => c.id !== v.core1), v.core2, true)}</div>
     <div class="fs-field fs-cast-base" ${bt.ok && bt.max > bt.min ? "" : "hidden"}><label>Core Threshold</label><input type="number" name="base" value="${v.base ?? bt.min}" min="${bt.min}" max="${bt.max}" step="1"></div>
     <div class="fs-cast-mods">${modsHTML(ctx, v, theory)}</div>
+    ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
     ${theory >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="ritual" ${v.ritual ? "checked" : ""}> <strong>Ritual</strong> <small>takes hours instead of AP, and lowers your max Energy while it lasts (out of combat)</small></label>` : ""}
     <div class="fs-cast-preview">${previewHTML(spells.planCast(ctx, v), ctx)}</div>
   </div>`;
@@ -177,7 +181,7 @@ export function castCardHTML(actor, plan) {
       <li>Spell Power ×${plan.power} (${STATS[plan.scalingStat]?.label ?? plan.scalingStat} ${plan.scaling}) · ${esc(plan.attack ?? "")}</li>
     </ul>
     <ul class="fs-list">${effects}${mods}</ul>
-    <p class="hint">Spell effects aren't automated yet: scale the effect by Spell Power ×${plan.power} and resolve it at the table (attack roll, damage, and effects).</p>`;
+    ${plan.note ? `<p class="hint">${plan.note}</p>` : ""}`;
 }
 
 /** Cast a spell: dialog → check → spend → post. Returns the plan, or null if nothing was cast. */
@@ -198,22 +202,65 @@ export async function castSpell(actor, preset = null) {
     return null;
   }
   // Check everything before spending anything.
+  const ids = plan.cores.map(c => c.id);
+  const profile = fx.profileFor(ids);
+  const targets = [...(game.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
+  const meleeRange = !!targets[0]?.actor && inMeleeRange(actor, targets[0].actor);
+  if (!plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, plan.attack === "Targeted" ? 100 : 200, `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack})`)) return null;
   const key = plan.usesRP ? "rp" : "ap";
   if (inCombat && plan.ap && actor.system[key].value < plan.ap) { ui.notifications.warn(`${actor.name} needs ${plan.ap} ${key.toUpperCase()} to cast this but has ${actor.system[key].value}.`); return null; }
   if (inCombat && plan.energy && actor.system.energy.value < plan.energy) { ui.notifications.warn(`${actor.name} needs ${plan.energy} Energy to cast this but has ${actor.system.energy.value}.`); return null; }
   if (!(await spendPoints(actor, key, plan.ap, "casting"))) return null;
   if (!(await spendEnergy(actor, plan.energy, "casting"))) return null;
 
-  if (plan.ritual) await actor.createEmbeddedDocuments?.("ActiveEffect", [{
-    name: `Ritual: ${plan.cores.map(c => c.name).join(" + ")}`, img: "icons/magic/symbols/runes-star-orange.webp", origin: actor.uuid,
-    description: `Max Energy −${plan.ritualLoss} while the ritual lasts. Ending this effect ends the ritual's spell effects.`,
-    flags: { flowstate: { ritual: { cores: plan.cores.map(c => c.id), mods: plan.applied.map(a => a.mod.id), energyLost: plan.ritualLoss, power: plan.power } } }
-  }]);
+  // A Ritual: Shield lasts until the Ritual ends; the attack spells store two free casts. Free casts used up end the Ritual.
+  let ritualOf = null;
+  if (plan.ritual) {
+    const stored = !profile?.shield && !!profile;
+    const made = await actor.createEmbeddedDocuments?.("ActiveEffect", [{
+      name: `Ritual: ${plan.cores.map(c => c.name).join(" + ")}`, img: "icons/magic/symbols/runes-star-orange.webp", origin: actor.uuid,
+      description: `Max Energy −${plan.ritualLoss} while the ritual lasts.${stored ? " Two free casts of this spell (AP/RP still needed); the Ritual ends after the second." : " Ending this effect ends the ritual's spell effects."}`,
+      flags: { flowstate: { ritual: { cores: ids, mods: plan.applied.filter(a => !a.free).map(a => a.mod.id), energyLost: plan.ritualLoss, power: plan.power, ...(stored ? { freeCasts: 2 } : {}) } } }
+    }]);
+    ritualOf = made?.[0]?.uuid ?? null;
+    plan.note = stored ? "Ritual complete: two free casts of this spell are ready (cast it again with the Ritual selected)." : profile ? "" : "";
+  } else if (plan.freeFrom) {
+    const r = actor.effects.get?.(plan.freeFrom) ?? Array.from(actor.effects).find(e => e.id === plan.freeFrom);
+    const left = (r?.flags?.flowstate?.ritual?.freeCasts ?? 1) - 1;
+    if (left <= 0) await r?.delete();
+    else await r?.update({ "flags.flowstate.ritual.freeCasts": left });
+    plan.note = left <= 0 ? "That was the Ritual's last free cast: the Ritual ends." : `${left} free cast${left === 1 ? "" : "s"} left on the Ritual.`;
+  }
+  if (!plan.note && !profile) plan.note = `Spell effects for this spell aren't automated yet: scale the effect by Spell Power ×${plan.power} and resolve it at the table (attack roll, damage, and effects).`;
 
   await post(actor, {
     title: `${esc(actor.name)} casts ${esc(plan.cores.map(c => c.name).join(" + "))}`,
     body: castCardHTML(actor, plan),
-    flags: { flowstate: { spell: { caster: actor.uuid, cores: plan.cores.map(c => c.id), mods: plan.applied.map(a => a.mod.id), power: plan.power, threshold: plan.threshold, energy: plan.energy, ritual: plan.ritual, attack: plan.attack } } }
+    flags: { flowstate: { spell: { caster: actor.uuid, cores: ids, mods: plan.applied.map(a => a.mod.id), power: plan.power, threshold: plan.threshold, energy: plan.energy, ritual: plan.ritual, attack: plan.attack } } }
   });
+  // Automated spells go on to the attack exchange (Rituals of attack spells just store their free casts).
+  if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange);
   return plan;
+}
+
+/** Is the target within the caster's personal melee range? (False without tokens.) */
+function inMeleeRange(actor, other) {
+  const a = attackerToken(actor), b = other.getActiveTokens?.()[0];
+  if (!a || !b || !globalThis.canvas?.grid) return false;
+  return tokenDistance(a, b) <= (actor.system.derived?.size?.melee ?? 5);
+}
+
+/** Make the spell's attack: Pinpoint and melee range give Advantage, Targeted spells attack from half stealth. */
+async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee) {
+  let targetActors = targets.map(t => t.actor);
+  if (!targetActors.length && profile.shield) targetActors = [actor];     // a Shield with no target goes on yourself
+  if (targetActors.length > 1) { ui.notifications.info(`${profile.name} has a single target: using ${targetActors[0].name}.`); targetActors = targetActors.slice(0, 1); }
+  const pinpoint = plan.applied.some(a => a.mod.name === "Pinpoint");
+  const notes = [pinpoint ? "Pinpoint: Advantage" : "", melee ? "Cast in melee range: Advantage" : ""].filter(Boolean);
+  const dice = profile.damage ? fx.damageDice(profile, plan.power) : null;
+  return performAttack(actor, {
+    label: profile.name, net: (pinpoint ? 1 : 0) + (melee ? 1 : 0), stealth: plan.attack === "Targeted" ? "half" : "none", melee, push: false,
+    damage: dice ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce: 0, knockback: 0,
+    notes, followups: [], ...(targetActors.length ? { targetActors } : {}), spell: { cores: ids, power: plan.power, ritualOf }
+  });
 }

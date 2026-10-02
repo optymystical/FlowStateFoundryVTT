@@ -110,6 +110,8 @@ class FlowStateCombat extends Combat {
       await actions.mediumTurnStart(combatant.actor);
       await actions.clearMarks(combatant.actor);
       await actions.treesTurnStart(combatant.actor);
+      // Spell effects this creature put on others end now (Shield, Slam's dodge penalty); Rituals' last until the Ritual ends.
+      await actions.clearSpellEffects(combatant.actor);
     }
   }
 
@@ -713,6 +715,7 @@ Hooks.on("renderItemDirectory", (app, html) => {
 Hooks.on("deleteCombat", combat => {
   if (!game.user.isActiveGM) return;
   for (const c of combat.combatants) setTimeout(() => {
+    actions.clearSpellEffects(c.actor);
     actions.refillEnergy(c.actor); actions.clearStances(c.actor);
     if (c.actor?.getFlag("flowstate", "carefulLapsed")) c.actor.unsetFlag("flowstate", "carefulLapsed"); // Careful Steps is free again
   }, 0);

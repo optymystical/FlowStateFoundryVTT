@@ -17,5 +17,9 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 
 ## Built so far (v0.23.0): casting framework
 - `spells.mjs` / `casting.mjs`, tests in `dev/tests/spells-test.mjs`.
-- Judgment calls to confirm: Combo Threshold = sum of the Cores (matches every entry in the Combo Spell List except Creation + Illusion, listed as 2 where the sum is 3, which is implemented as listed); Arcanomancy adds nothing; Rituals cost no AP or Energy to cast and lower max Energy by half the TR-ignoring Energy cost; Raw Casting needs a free hand with fists not counting.
+- Judgment calls to confirm: Combo Threshold = sum of the Cores (matches every entry in the Combo Spell List with the user's confirmation that the listed Creation + Illusion = 2 is a typo for 3); Arcanomancy adds nothing; Rituals cost no AP or Energy to cast and lower max Energy by half the TR-ignoring Energy cost; Raw Casting needs a free hand with fists not counting.
 - Next: Tier 1 spells (Core Spells + Pinpoint/React are in; the attack roll, damage and effects for Shield, Force, Cut, Stab, Slam are not).
+
+## Built (v0.24.0): Tier 1 spells
+- `spellfx.mjs` holds the Tier 1 profiles; hooks in `actions.mjs` (`spellHit`, `spellForce`, `spellDamageFacts`, Shield soak in `damageOutcome`, `applySpellEffect`/`clearSpellEffects`), `data.mjs` (die-size penalties), `casting.mjs` (`resolveSpell`, Ritual free casts). Test: `dev/tests/spell-t1.mjs`.
+- Judgment calls: "direct damage" for pre-roll conditions = the spell's base dice at their largest would reach HP through every soak; Shield soaks after parrying weapons and before Shrouds, no Limit; "living" = not marked Fully Magical; die-size penalties are bolded in the doc so they scale with Spell Power; Ritual attack spells store two free casts (cast does not fire).

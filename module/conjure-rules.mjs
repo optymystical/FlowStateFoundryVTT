@@ -5,13 +5,12 @@
 
 /** Form / Animate: the point pool is 5 × a multiplier (the Core's Threshold; a Combo's extra baseline Threshold doesn't multiply). */
 export const POINTS_PER_THRESHOLD = 5;
-/** A Summon's point pool per Threshold multiplier: 40 points to split between Body and Skill (house rule; the Animation pool stays 5). */
-export const FORM_POINTS = 40;
+
 
 /** The multiplier a cast's base Threshold gives: the whole Threshold for a single Core, one less for a Combo (the partner's baseline). */
 export const conjureMultiplier = (base, combo) => Math.max(1, Math.floor(base) - (combo ? 1 : 0));
 export const formPool = mult => POINTS_PER_THRESHOLD * Math.max(1, mult);
-export const summonPool = mult => FORM_POINTS * Math.max(1, mult);
+export const summonPool = mult => formPool(mult);
 
 /**
  * Form: spend the pool on Body (1 point = 1 Str, Dex or Con, each at least 1) and Skill (2 points = 1 skill point).

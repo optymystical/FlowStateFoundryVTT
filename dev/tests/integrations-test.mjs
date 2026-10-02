@@ -34,7 +34,7 @@ const [name, mod] = called.find(c => c[0] === "tokenActionHudSystemReady") ?? []
 ok(name && mod.api.requiredCoreModuleVersion === "2", "TAH: system registered with Core");
 const sm = new mod.api.SystemManager();
 const defs = await sm.registerDefaults();
-ok(defs.layout.length === 5 && defs.groups.some(g => g.id === "act-parry") && defs.layout[0].groups[0].nestId === "combat_act-combat", "TAH: default layout and groups");
+ok(defs.layout.length === 6 && defs.groups.some(g => g.id === "act-parry") && defs.groups.some(g => g.id === "act-magic") && defs.layout[0].groups[0].nestId === "combat_act-combat", "TAH: default layout and groups");
 const ah = sm.getActionHandler(); ah.actor = actor;
 await ah.buildSystemActions();
 const combat = ah.added.find(([id]) => id === "act-combat")?.[1] ?? [];
@@ -53,4 +53,13 @@ actor.statuses.delete("unconscious"); called2 = null;
 const { runActionRow } = await import("../../module/sheets.mjs");
 await runActionRow(actor, { action: "martial", op: "release" });
 ok(/isn't grappling/.test(called2 ?? ""), `TAH: martial op dispatch (${called2})`);
+// Every Action List group in sheets.mjs must have a home in the HUD layout (so nothing in the list is missing from the HUD).
+{
+  const { readFileSync } = await import("node:fs");
+  const { TAH_LAYOUT } = await import("../../module/integrations.mjs");
+  const keys = [...readFileSync(new URL("../../module/sheets.mjs", import.meta.url), "utf8").matchAll(/key: "(act-[a-z-]+)"/g)].map(m => m[1]);
+  const placed = new Set(TAH_LAYOUT.flatMap(t => t.groups.map(g => g[0])));
+  const missing = [...new Set(keys)].filter(k => !placed.has(k));
+  ok(missing.length === 0, `TAH: every Action List group is in the HUD layout (missing: ${missing.join(", ") || "none"})`);
+}
 process.exit(fails ? 1 : 0);

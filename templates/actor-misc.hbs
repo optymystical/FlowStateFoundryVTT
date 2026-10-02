@@ -43,6 +43,13 @@
     </section>
   </div>
 
+  {{#if shieldRows.length}}
+  <section class="fs-spellcasting">
+    <h3>Shield order (Adjust)</h3>
+    {{#each shieldRows}}<div class="fs-cond"><label>{{name}}</label><button type="button" data-action="cycleShieldOrder" data-effect-id="{{id}}" data-tooltip="Click to change where this Shield sits: it absorbs damage {{label}}">Absorbs {{label}}</button></div>{{/each}}
+  </section>
+  {{/if}}
+
   {{#if showFocus}}
   <section class="fs-spellcasting">
     <h3>Spellcasting</h3>

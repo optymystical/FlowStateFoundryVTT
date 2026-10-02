@@ -96,7 +96,8 @@ Swift abilities work with Swift weapons (any of a multi-type weapon's types unde
 - **T2 Quick Strike:** a checkbox in a Swift weapon's attack dialog (Energy = ½ Scaling Stat min). The attack gets Advantage, and so does its Fast follow-up if that's also a Swift weapon (free).
 - **T3 Blade Flurry:** when both attacks of a Fast Swift set land on the same single target (after all responses and damage), a **Blade Flurry** card offers another attack with any held Swift weapon (RP = its attack AP, Energy = Scaling Stat min). That attack can start a new Fast set, so Blade Flurry can chain.
 - **T4 Eviscerate:** an Action List entry (Swift Weapons group), available on your turn once your Swift attacks have dealt HP damage this turn (Energy = 2 × your best held Swift weapon's Scaling Stat min). It repeats every hit of Swift HP damage from this turn, bypassing armor. Once per turn.
-- **T5 Delta:** at the end of your turn, if 12 or more Swift attacks landed this turn, you regain 6 RP (up to 6). A chat card notes it.
+- **T5 Delta:** at the end of your turn, if 12 or more Light Swift attacks landed this turn, you regain 6 RP (up to 6). A chat card notes it.
+- **T5 Omega:** Heavy Swift weapon attacks let Strengthened/Weakened change their Pierce value (the damage card notes the new Pierce).
 
 ## Balanced Weapons (automated)
 Balanced abilities work with Balanced weapons (any of a multi-type weapon's types under Weapon Master). Energy uses the weapon's Grade-capped Scaling Stat min, and is free outside combat.
@@ -232,7 +233,7 @@ At the start of your turn a card lists the start-of-turn abilities you can use r
 - **T1 Disarm:** pick one of the target's held weapons, or their grapple. The attack is Weakened; on a hit they drop it (or let go).
 - **T2 Perfect Parry:** while a Curved weapon is Parrying, an optional roll on the attack card, with Advantage. A success negates the attack; a miss means that weapon doesn't apply to the hit, and you still dodge.
 - **T3 Momentum:** after a Curved hit, buttons add +1 Advantage or +1 Strengthened to your later Curved attacks on that target. It's applied automatically and ends at the start of your next turn.
-- **T4 Sheath Weapon:** an Action List entry at the end of your turn. It repeats this turn's direct Curved damage doubled, and armor applies.
+- **T4 Sheath Weapon:** an Action List entry at the end of your turn. It repeats this turn's direct Curved damage as normal damage, and armor applies.
 - **T5 Omnislash:** with 4+ Momentum on the target, the attack hits automatically as a Double Crit (4 Strengthened) and spends the Momentum.
 
 ## Longshot Weapons (automated)
@@ -286,6 +287,25 @@ Casting a Tier 1 spell goes straight on to the normal attack exchange (attack ca
 - **Slam** (Ranged): 1d12 × Power physical, and the target's dodge dice shrink by 2 × Power sizes until the start of your next turn (it doesn't stack).
 - **Combos:** Force + Cut (4d6, then 8d10 Force if the damage was direct), Force + Stab (2d10, and 20d10 Force on a crit), Force + Slam (2d12, 8d10 Force, and the dodge penalty), Cut + Stab (3d6, +1 Strengthened for direct damage and +1 for a crit), Cut + Slam (2d12, and the target's attack dice shrink by 5 × Power if the damage was direct), Stab + Slam (2d12, with three times the dice on a crit against a dodge roll of a third or less of their normal maximum). All dice counts, Force and die-size changes are multiplied by Spell Power.
 - **Rituals:** a Shield Ritual puts the Shield up until the Ritual ends or the Shield breaks. A Ritual of Force, Cut, Stab or Slam stores two free casts: cast it again with the Ritual chosen in the dialog, which costs AP/RP but no Energy, and the Ritual ends after the second.
+- **Slashing and Piercing Mods (automated):**
+  - **Bleed** (2): direct damage is dealt again, straight to HP as physical, at the start of the victim's next turn (it lasts past your own turn start until then).
+  - **Gash** (3): direct damage is repeated straight to HP every time the victim voluntarily moves (a token move), until the start of your next turn.
+  - **Cleave** (4): adds your Scaling Stat min to the damage (before Strengthened/Weakened).
+  - **Chop** (5): direct damage is Max HP loss instead (Bleed and Gash repeats too).
+  - **Exploit** (2, stackable): each stack consumes one Advantage on the attack roll for +4 die size (× Spell Power). Stacks with no Advantage to consume are refunded: their Energy comes straight back when the attack is rolled, and the card says so.
+  - **Pierce** (3, stackable): Pierce 10 × Spell Power per stack (ignores that much Limit of objects).
+  - **Setup** (4, stackable): after direct damage, you get that many Advantage on your next attack roll at that target before your next turn.
+  - **Weakpoint** (5): objects (parrying weapons, Shrouds, armor) only apply half their Limit to the spell's damage.
+- **Crushing Mods:** **Crush** (a dodge roll of a third of their normal maximum or less Strengthens the damage), **Bash** (Bash 10 × Power per stack), **Beatdown** (they roll an extra dodge against your attack roll and fall prone if it's lower), **Telegraph** (enter a dodge-roll guess in the dialog; a dodge within 1 × Power of it doubles the dice).
+- **Gravity Mods:** **Burden** and **Lighten** add 20 × Power Slow / Haste stacks. A **Replacement** Mod has a "replace base effect (×2)" box: ticked, it drops Force (the Gravity part of the spell) and doubles itself; unticked, it adds on. **Personal Repulsion / Well** put a field on the target (Scaling Stat 20 × Power, doubled if replacing): attacks at or under it against them have Disadvantage / Advantage until your next turn. **Hold** grapples the target magically; breaking free needs an attack-die roll of 3 × Power (×2 replacing, halved per size above 3, doubled per size below) or more, and it ends at your next turn. If the target is already grappled it takes 2d12 × Power instead. **Gravity Field** makes it an Area spell (see below).
+- **Protection Mods:** **Reflect** adds a "Reflect" button to damage cards when the Shield absorbed damage (a Ranged attack roll for that damage back at the attacker). **Dampen** (pick an Archetype per stack): damage from it loses the Shield only half the health. **Adjust:** on the Misc tab the Shield's holder cycles where it sits in the order damage is absorbed, and a creature within 10 ft with an Adjust Shield can extend it over an ally from the Ally help button before they respond. **Emplace** puts a one-way barrier on the scene (see below).
+- **Magic Theory Mods:** **Empower** adds +100% Power (the cast card shows the bigger Power). **Snipe** doubles the range (a target past the normal range gives the attack Disadvantage). **Duplicate** casts the spell again for free at the same target or any other creature on the scene (a popup asks). **Weaving:** a "Weave a spell" checkbox appears in a weapon's attack dialog; the cast dialog then only offers ways to cast whose normal AP equals the attack's, at the same target (a melee attack needs the target in your melee range). It costs no AP/RP and no TR, but still Energy. Webmaster (T5) lets it keep its TR.
+- **Area spells** (Gravity Field) and **Emplace** ask which Area first: a 10 ft radius, a 20 ft 90° cone, or a 30 ft × 5 ft line (Snipe doubles the size, an attuned Agate adds 50%). A Measured Template is dropped on your token (pointing at your first target); drag it into place with the Templates tool, rotate it, and press **Confirm**. Every token it touches is targeted and defends against your single attack roll. Cancelling the placement spends nothing. With no scene open, the spell uses your current targets instead. The template lasts until the start of your next turn.
+- **Emplace** builds a real barrier (20 × Power health, until your next turn). After you place the template, a **line** asks which way it faces (a compass direction, or "away from me", the default): it blocks things coming from that side. It creates real one-way **Walls** on the scene (movement only: they don't block sight, light or sound), so tokens can't move through from the blocked side. Damage from an attack that starts on the blocked side and passes through is absorbed automatically, up to the barrier's health, before parries, Shields and armor; at 0 the barrier and its Walls vanish. Attacks and movement from the protected side pass through. A **radius** or **cone** is a dome (a ring of Walls blocking from outside). The Emplace card has a **Flip facing** button in case the wall's arrow points the wrong way (Foundry's left/right wall convention couldn't be tested here, so check the first one). Walls and template go at the start of your next turn.
+- Only one **Replacement** Mod can replace the base effect at a time: once one's "replace" box is ticked, the others' boxes disappear (they can still be added on without replacing).
+- **Reflect** checks that the attacker is within 200 ft of the Shielded creature.
+- **Mods that aren't automated yet** are tagged "not automated" in the dialog. They still cost Threshold and the card lists them, and the GM resolves them from the Mod's text.
+- **Dialog:** the chosen Core's effect (or the Combo's, with two Cores) shows under the Core picks and above the Mod tabs. A Combo's card shows only the Combo effect. The Ritual option isn't offered in combat.
 - **Spell effects** end at the start of the caster's next turn (and when combat ends). Rituals' effects end with the Ritual. Spell effects from the same caster of the same kind replace each other.
 
 ## Character sheet
@@ -363,6 +383,7 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **A Fast Unarmed set** is any Unarmed attack plus its other-fist Fast follow-up.
 - **Eviscerate repeats HP damage** (what got past armor) from Swift damage cards this turn, using each hit's damage type.
 - **Delta caps RP at 6.**
+- **Omega** changes the Pierce shown on the damage card when Strengthened/Weakened applies to a Heavy Swift attack.
 - **Mark can't pause the Marked creature's action**: the Mark card appears as they act. Their attack still goes ahead (with Lead Blindness's Disadvantage), and you shoot right after.
 - **Careful Steps' 2 AP** is taken at the start of each of your turns (after AP refills).
 - **Limber** is offered to whoever succeeded: the attacker when the attack hits, the defender when a dodge or a Perfect Parry/Block roll succeeds.

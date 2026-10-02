@@ -2,6 +2,7 @@ import * as rules from "./rules.mjs";
 import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStatePileData } from "./data.mjs";
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
+import * as areas from "./areas.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
@@ -112,6 +113,9 @@ class FlowStateCombat extends Combat {
       await actions.treesTurnStart(combatant.actor);
       // Spell effects this creature put on others end now (Shield, Slam's dodge penalty); Rituals' last until the Ritual ends.
       await actions.clearSpellEffects(combatant.actor);
+      await areas.clearAreas(combatant.actor);
+      // Bleed (Slashing T2) hits at the start of the victim's turn.
+      await actions.bleedTurnStart(combatant.actor);
     }
   }
 
@@ -371,6 +375,7 @@ function decorateExchange(message, html) {
         if (game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.shroudCounterOf === `${message.id}:${b.dataset.kind}`)) b.replaceWith(Object.assign(document.createElement("div"), { className: "fs-waiting", textContent: "Used." }));
       }
     }
+    if (row.classList.contains("fs-reflect-row") && game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.shroudCounterOf === `${message.id}:reflect:${row.dataset.owner}`)) row.innerHTML = `<div class="fs-waiting">Reflected.</div>`;
     if (row.classList.contains("fs-bounce-row") && game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.bounceOf === message.id)) row.innerHTML = `<div class="fs-waiting">Bounced.</div>`;
     if (row.classList.contains("fs-turn-start-row")) {
       const sc = message.getFlag("flowstate", "startCard");
@@ -408,7 +413,7 @@ Hooks.on("createChatMessage", message => {
     ?? message.getFlag("flowstate", "distract")?.attackMessage ?? message.getFlag("flowstate", "reachOf") ?? message.getFlag("flowstate", "momentumOf")
     ?? message.getFlag("flowstate", "dash")?.attackMessage ?? message.getFlag("flowstate", "blockFor")?.attackMessage
     ?? message.getFlag("flowstate", "perfect")?.attackMessage ?? message.getFlag("flowstate", "dipOf") ?? message.getFlag("flowstate", "dashMoveOf")
-    ?? message.getFlag("flowstate", "riposteDeclined") ?? message.getFlag("flowstate", "quartzFor")?.attackMessage ?? message.getFlag("flowstate", "retortOf") ?? message.getFlag("flowstate", "limberOf")
+    ?? message.getFlag("flowstate", "riposteDeclined") ?? message.getFlag("flowstate", "quartzFor")?.attackMessage ?? message.getFlag("flowstate", "adjustFor")?.attackMessage ?? message.getFlag("flowstate", "retortOf") ?? message.getFlag("flowstate", "limberOf")
     ?? message.getFlag("flowstate", "followupCard")
     ?? message.getFlag("flowstate", "followupOf");
   const target = ref && game.messages.get(String(ref).split(":")[0]);
@@ -495,6 +500,8 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
       if (actor.getFlag("flowstate", "trudge")) actor.unsetFlag("flowstate", "trudge");
     }, 0);
   }
+  // Gash (Slashing T3): voluntarily moving reopens the wound.
+  if (actor && !options?.flowstateThrow && actions.spellEffects(actor, "gash").length) actions.triggerGash(actor);
   // Rapid T3 Mark: a Marked creature moving lets the marker shoot.
   if (actor?.getFlag("flowstate", "markedBy")) actions.triggerMark(actor, "moves");
   // Reach T1 Palisade: moving into a Reach wielder's range lets them strike (the palisading token is moved back on a hit).
@@ -715,7 +722,8 @@ Hooks.on("renderItemDirectory", (app, html) => {
 Hooks.on("deleteCombat", combat => {
   if (!game.user.isActiveGM) return;
   for (const c of combat.combatants) setTimeout(() => {
-    actions.clearSpellEffects(c.actor);
+    actions.clearSpellEffects(c.actor, { all: true });
+    areas.clearAreas(c.actor, { all: true });
     actions.refillEnergy(c.actor); actions.clearStances(c.actor);
     if (c.actor?.getFlag("flowstate", "carefulLapsed")) c.actor.unsetFlag("flowstate", "carefulLapsed"); // Careful Steps is free again
   }, 0);
@@ -976,6 +984,12 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   }
   for (const btn of html.querySelectorAll(".fs-shroud-counter")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.shroudCounter(message, btn.dataset.kind, Number(btn.dataset.amount)); });
+  }
+  for (const btn of html.querySelectorAll(".fs-flip-wall")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.requestGM("flipBarrier", { sceneId: btn.dataset.scene, templateId: btn.dataset.template }); });
+  }
+  for (const btn of html.querySelectorAll(".fs-reflect-counter")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.reflectCounter(message, btn.dataset.caster, Number(btn.dataset.amount)); });
   }
   for (const btn of html.querySelectorAll(".fs-dash-move")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.dashMove(message); });

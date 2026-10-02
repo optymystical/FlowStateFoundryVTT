@@ -184,7 +184,20 @@ combat.combatant = { actor: B }; B.system.ap.value = 6; B.system.energy.value = 
 res = await C.castSpell(B);
 ok2(res?.ok && /name="core1"/.test(html) && /Universal/.test(html) && /Pinpoint/.test(html), "Dialog lists Cores and Universal Mods");
 ok2(/Burden/.test(html) === false, "Mods for Cores you haven't picked (Gravity T2 needs tier 2) are absent");
-ok2(/name="ritual"/.test(html), "Ritual option shows from Magic Theory T2");
+ok2(!/name="ritual"/.test(html), "Ritual option is hidden in combat");
+ok2(/fs-cast-effect/.test(html) && /Force<\/strong>:/.test(html), "The Core's effect shows under the Core picks");
+ok2(html.indexOf("fs-cast-effect") < html.indexOf("fs-cast-mods"), "…and above the Mod tabs");
+combat.started = false; html = "";
+await C.castSpell(B);
+ok2(/name="ritual"/.test(html), "Ritual option shows out of combat (Magic Theory T2)");
+combat.started = true;
+const eff = S.effectText(["magic-gravity:force", "magic-slashing:cut"]);
+ok2(/Combo Spell/.test(eff.title) && /4d6 physical/.test(eff.text), "Two Cores show the Combo's effect");
+const effG = S.effectText(["magic-summoning:form", "magic-gravity:force"]);
+ok2(/Added effect \(Gravity\)/.test(effG.text), "An Any + Summoning combo adds the other school's line");
+B.system.trees["magic-slashing"] = 1; dialog = () => ({ ...v0, core2: "magic-slashing:cut" }); messages.length = 0; B.system.ap.value = 6; B.system.energy.value = 80;
+await C.castSpell(B);
+ok2(!/Cut:/.test(text(messages[0])) && /Combo Spell/.test(text(messages[0])), "A Combo's card shows only the Combo effect, not each Core");
 
 console.log(fails ? `\n${fails} FAILED` : "\nAll spell framework checks passed");
 if (fails) process.exit(1);

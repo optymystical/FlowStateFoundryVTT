@@ -5,6 +5,7 @@
  * - Casting options: Igniter Foci (Grasp, 2 AP, 1 TR), Channeler Foci (Reach, 3 AP, 2 TR), Raw Casting (lesser of Reach/Grasp, 1/2/3 AP = 1/2/3 TR).
  */
 import { TREES } from "./trees.mjs";
+import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combos.mjs";
 import { tierOf, isAvailable, treeById } from "./skills.mjs";
 
 export const MIN_CAST_STAT = 10;
@@ -194,7 +195,21 @@ export function planCast(ctx, v) {
   let free = null;
   if (focusedCast && theory >= 4 && v.connection && CONNECTION_MODS.includes(v.connection)) {
     free = knownSpells(ctx.trees).mods.find(m => m.treeId === "magic-theory" && modKey(m) === v.connection) ?? null;
-    if (free) applied.push({ mod: free, threshold: 0, free: true });
+    // A Mod can only be applied once per cast: a Connection copy of one you already took does nothing.
+    if (free && !applied.some(a => a.mod.id === free.id)) applied.push({ mod: free, threshold: 0, free: true });
+    else free = null;
+  }
+
+  // Replacement Mods can replace the spell's base effect (doubled) or just add on. Dampen picks an Archetype per stack.
+  for (const a of applied) if (a.mod.replacement) a.replace = !!v[`replace:${a.mod.id}`];
+  if (applied.filter(a => a.replace).length > 1) errors.push("Only one Replacement Mod can replace the spell's base effect.");
+  const archetypes = new Set();
+  let dampenN = 0;
+  for (const a of applied.filter(x => x.mod.name === "Dampen")) {
+    a.archetype = ["martial", "mental", "magic"].includes(v[`dampen:${dampenN}`]) ? v[`dampen:${dampenN}`] : ["martial", "mental", "magic"][dampenN] ?? "martial";
+    if (archetypes.has(a.archetype)) errors.push("Each Dampen stack needs a different Archetype.");
+    archetypes.add(a.archetype);
+    dampenN++;
   }
 
   // Free cast from an active Ritual (same Core(s) and Mods): costs AP/RP but no Energy.
@@ -212,17 +227,24 @@ export function planCast(ctx, v) {
   if (v.ritual && theory < 2) errors.push("Ritual Casting needs Magic Theory Tier 2.");
 
   const react = applied.some(a => !a.free && a.mod.treeId === "magic-theory" && modKey(a.mod) === "react");
-  const ap = ritual ? 0 : option ? (option.ap.length > 1 ? Math.min(3, Math.max(1, Math.round(Number(v.ap) || option.ap[0]))) : option.ap[0]) : 0;
+  const weave = ctx.weave ?? null;
+  if (weave && option && !option.ap.includes(weave.ap)) errors.push(`${option.label} takes ${option.ap.join("/")} AP; the attack you're weaving with costs ${weave.ap}.`);
+  if (weave && ritual) errors.push("A Ritual can't be woven.");
+  const ap = weave ? 0 : ritual ? 0 : option ? (option.ap.length > 1 ? Math.min(3, Math.max(1, Math.round(Number(v.ap) || option.ap[0]))) : option.ap[0]) : 0;
   const trParts = [];
   if (option) {
-    const form = option.trByAp ? option.trByAp[ap] ?? 0 : option.tr ?? 0;
+    // Weaving still costs Energy but gets no TR (Webmaster, Magic Theory T5, lifts that); a woven spell's AP is the attack's.
+    const apForTR = weave ? weave.ap : ap;
+    const form = weave && !weave.keepTR ? 0 : option.trByAp ? option.trByAp[apForTR] ?? 0 : option.tr ?? 0;
     trParts.push({ label: option.form === "raw" ? "Raw Casting" : option.form === "igniter" ? "Igniter" : "Channeler", value: form });
   }
-  if (focusedCast) trParts.push({ label: "Focus", value: 1 });
-  if (option?.fociId && ctx.ring?.[option.fociId] && cores.some(c => c.id === ctx.ring[option.fociId])) trParts.push({ label: "Ring", value: 1 });
-  if (ctx.extraTR) trParts.push({ label: "Other", value: ctx.extraTR });
+  if (focusedCast && !(weave && !weave.keepTR)) trParts.push({ label: "Focus", value: 1 });
+  if (!(weave && !weave.keepTR) && option?.fociId && ctx.ring?.[option.fociId] && cores.some(c => c.id === ctx.ring[option.fociId])) trParts.push({ label: "Ring", value: 1 });
+  if (ctx.extraTR && !(weave && !weave.keepTR)) trParts.push({ label: "Other", value: ctx.extraTR });
   const tr = trParts.reduce((n, p) => n + p.value, 0);
 
+  // Empower: +100% Power to the bolded effects (Power bonuses are additive).
+  const empower = applied.filter(a => a.mod.name === "Empower" || (a.replicates && spellById(a.replicates)?.name === "Empower")).length;
   const cost = castCost({ base, mods: applied, tr, skillPoints: ctx.skillPoints });
   const grossEnergy = Math.floor(cost.gross * ctx.skillPoints / 2);
   // A Combo is Targeted if either Core is (Arcanomancy keeps the other Core's type).
@@ -234,7 +256,36 @@ export function planCast(ctx, v) {
     energy: ritual || freeFrom ? 0 : cost.energy, freeFrom,
     ritualHours: ritual ? cost.gross : 0,
     ritualLoss: ritual ? Math.floor(grossEnergy / 2) : 0,
-    power: option ? spellPower(option.scaling) : 0, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
+    spellPower: option ? spellPower(option.scaling) : 0,
+    power: option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
     attack
   };
+}
+
+/** A spell's text without its "N Threshold, Core Spell, Ranged." header. */
+export const stripHeader = text => String(text).replace(/^(?:X\+1|\d+(?:-\d+)?) Threshold, [^.]*\.\s*/, "");
+
+const schoolSlug = c => c.treeId.replace("magic-", "");
+
+/**
+ * The effect text to show for the chosen Core(s): the Core's own text for one, or the Combo Spell List entry for two
+ * (an "Any T1/T2/T3 + …" combo adds the other school's line from its chart). Returns { title, text } or null.
+ */
+export function effectText(coreIds) {
+  const cores = coreIds.map(spellById).filter(Boolean);
+  if (cores.length === 1) return { title: cores[0].name, text: stripHeader(cores[0].text) };
+  if (cores.length !== 2) return null;
+  const [a, b] = cores.map(schoolSlug);
+  const title = `${cores[0].name} + ${cores[1].name} (Combo Spell)`;
+  const listed = COMBO_PAIRS[[a, b].sort().join("+")];
+  if (listed) return { title, text: listed.text };
+  for (const [special, other] of [[a, b], [b, a]]) {
+    const g = COMBO_GENERIC[special];
+    if (!g) continue;
+    if (special === "arcanomancy") return { title, text: g.text };
+    const chart = special === "illusion" ? COMBO_ILLUSION : COMBO_BONUS;
+    const line = chart[other === "witchery" ? "hex" : other];
+    return { title, text: `${g.text}${line ? ` Added effect (${other[0].toUpperCase()}${other.slice(1)}): ${line}` : ""}` };
+  }
+  return { title, text: "See the Combo Spell List for this Combo's effect." };
 }

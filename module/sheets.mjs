@@ -759,6 +759,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       open,
       editable: this.isEditable,
       isGM: game.user.isGM,
+      inCombat: actions.inActiveCombat(actor),
       creation: sys.creation,
       buildOpen: this.isEditable && (game.user.isGM || sys.creation),
       // Characters are always Size 3 until Ancestry exists; the GM can set NPC sizes.

@@ -15,7 +15,7 @@
 .flowstate .fs-header-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .flowstate .fs-pill { padding: 2px 8px; border-radius: 999px; background: rgba(0,0,0,.12); font-size: .9em; }
 
-.flowstate .fs-resources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.flowstate .fs-resources { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
 .flowstate .fs-res { border: 1px solid var(--color-border, #999); border-radius: 6px; padding: 6px; text-align: center; }
 .flowstate .fs-res-label { font-weight: bold; text-transform: uppercase; font-size: .8em; letter-spacing: .05em; }
 .flowstate .fs-res-values { margin: 4px 0; }
@@ -279,3 +279,10 @@
 /* Collapsed "Ally help" row on attack cards. */
 .flowstate-card .fs-ally-row { margin-top: 4px; }
 .flowstate-card .fs-ally-row .fs-ally-help { width: 100%; }
+
+/* Energy and AP/RP above the tabs */
+.flowstate .fs-vitals { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.flowstate .fs-vital { flex: 1; display: flex; align-items: center; gap: 8px; border: 1px solid var(--color-border, #999); border-radius: 6px; padding: 4px 8px; }
+.flowstate .fs-vital .fs-res-values { margin: 0; }
+.flowstate .fs-vital .fs-res-btn { margin: 0 0 0 auto; width: auto; }
+.flowstate .fs-vital-points { flex: 0 0 auto; }

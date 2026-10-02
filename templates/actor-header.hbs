@@ -8,4 +8,19 @@
       </div>
     </div>
   </header>
+  <div class="fs-vitals">
+    <div class="fs-vital">
+      <span class="fs-res-label"><i class="fa-solid fa-bolt"></i> Energy</span>
+      <span class="fs-res-values"><input type="number" name="system.energy.value" value="{{system.energy.value}}" {{#unless editable}}disabled{{/unless}}> / {{system.energy.max}}</span>
+      <button type="button" class="fs-res-btn" data-action="recoverEnergy" data-tooltip="Spend 1 AP to recover {{d.energyRecover}} Energy"><i class="fa-solid fa-bolt"></i> Recover +{{d.energyRecover}} <small>1 AP</small></button>
+    </div>
+    {{#if inCombat}}
+    <div class="fs-vital fs-vital-points" data-tooltip="Action and Reaction Points (only the GM can edit these here)">
+      <span class="fs-res-label">AP</span>
+      <span class="fs-res-values">{{#if isGM}}<input type="number" name="system.ap.value" value="{{system.ap.value}}" min="0" max="6">{{else}}<b>{{system.ap.value}}</b>{{/if}} / {{system.ap.max}}</span>
+      <span class="fs-res-label">RP</span>
+      <span class="fs-res-values">{{#if isGM}}<input type="number" name="system.rp.value" value="{{system.rp.value}}" min="0" max="6">{{else}}<b>{{system.rp.value}}</b>{{/if}} / {{system.rp.max}}</span>
+    </div>
+    {{/if}}
+  </div>
 </div>

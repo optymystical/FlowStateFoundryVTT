@@ -17,7 +17,7 @@ export as markdown) whenever a rule matters; snapshots in `dev/docs/` go stale.
 | Flow State - Rules | authoritative | `101-TbMt8Ttc2GOZdZfkNGrY_KWppPtIzOUui4mEWU0A` |
 | Flow State - Martial Stage 1 | authoritative | `1w5x2zNdUCZMatirMQ-qsNga7XijfzEuzQ7Ad_UgiWbw` |
 | Flow State - Equipment | authoritative (Mental Equipment section in flux) | `1bjinhIrPGJr0Ss4M9fjlCRSZrteX5r9yjsSuhYkMuag` |
-| Flow State - Magic Stage 1 (+ linked Combo Spell List) | authoritative | `10yfXGyX5-dTUYCJzsGw1DOTd7qpGaeD5ZlNF7mMbWU8` |
+| Flow State - Magic Stage 1 (+ linked Combo Spell List) | authoritative | `10yfXGyX5-dTUYCJzsGw1DOTd7qpGaeD5ZlNF7mMbWI8` |
 | Mental Rework Test Ground | in-dev (Mental Stage 1 holds the old system) | `1vyo3biYzh4smTOMmNM5OK7uqLXxKlrse6M-zHbnC0YI` |
 
 If an ID read fails, search by exact title. "[Discipline] Rework Test Ground" docs are scratchpads; "Stage 1" docs are

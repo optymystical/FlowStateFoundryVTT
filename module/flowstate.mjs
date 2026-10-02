@@ -5,6 +5,7 @@ import * as actions from "./actions.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
+import "./arcana.mjs";
 import * as conjure from "./conjure.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
@@ -83,6 +84,7 @@ class FlowStateActor extends Actor {
     if (foundry.utils.hasProperty(changed, "system")) {
       const dead = sys.hp.value <= 0;
       const unconscious = !dead && sys.hp.value < sys.hp.pain;
+      if (dead && !this.statuses.has("dead")) await this.setFlag("flowstate", "diedAt", Date.now());          // Resuscitate only reaches the recently dead
       if (dead !== this.statuses.has("dead")) await this.toggleStatusEffect("dead", { active: dead, overlay: true });
       if (unconscious !== this.statuses.has("unconscious")) await this.toggleStatusEffect("unconscious", { active: unconscious });
       // Falling unconscious (or dying) knocks you prone. Waking up leaves you prone until you stand.
@@ -122,6 +124,8 @@ class FlowStateCombat extends Combat {
       await actions.bleedTurnStart(combatant.actor);
       // Poison, Charm and Hex (Tier 3): the victim's checks, and the caster's Ingrained Charms.
       await actions.afflictTurnStart(combatant.actor);
+      await actions.arcanaTurnStart(combatant.actor);
+      await combatant.actor.setFlag?.("flowstate", "turnStartedAt", Date.now());
       // Tier 4: Reform, then the caster's temporary Summons, Animations and Made objects end.
       await conjure.turnStart(combatant.actor);
       await actions.afflictCasterTurn(combatant.actor);
@@ -1005,6 +1009,9 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   }
   for (const btn of html.querySelectorAll(".fs-chain")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.chainNext(message); });
+  }
+  for (const btn of html.querySelectorAll(".fs-arcana-act")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.arcanaAct(message, Number(btn.dataset.i)); });
   }
   for (const btn of html.querySelectorAll(".fs-conjure-act")) {
     btn.addEventListener("click", event => { event.preventDefault(); conjure.act(message, Number(btn.dataset.i)); });

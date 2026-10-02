@@ -252,11 +252,12 @@ export function planCast(ctx, v) {
   const tr = trParts.reduce((n, p) => n + p.value, 0);
 
   // Empower: +100% Power to the bolded effects (Power bonuses are additive).
-  const empower = applied.filter(a => a.mod.name === "Empower" || (a.replicates && spellById(a.replicates)?.name === "Empower")).length;
+  // Delay (Restoration Arcana T4) also gives +100% Power.
+  const empower = applied.filter(a => ["Empower", "Delay"].includes(a.mod.name) || (a.replicates && ["Empower", "Delay"].includes(spellById(a.replicates)?.name))).length;
   const cost = castCost({ base, mods: applied, tr, skillPoints: ctx.skillPoints });
   const grossEnergy = Math.floor(cost.gross * ctx.skillPoints / 2);
   // Lob needs an Area spell and Explode a Ranged one; Mold and the rest apply anywhere.
-  const areaSpell = applied.some(a => a.mod.name === "Gravity Field") || (applied.some(a => a.mod.name === "Emplace") && cores.some(c => c.id === "magic-protection-arcana:shield"));
+  const areaSpell = applied.some(a => a.mod.name === "Gravity Field" || a.mod.name === "Blast") || (applied.some(a => a.mod.name === "Emplace") && cores.some(c => c.id === "magic-protection-arcana:shield"));
   const hasMod = n => applied.some(a => !a.free && a.mod.name === n);
   if (hasMod("Lob") && !areaSpell) errors.push("Lob can only be added to a spell whose attack type is Area (Gravity Field, Emplace).");
   // A Combo is Targeted if either Core is (Arcanomancy keeps the other Core's type).

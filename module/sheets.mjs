@@ -630,6 +630,8 @@ function actionGroups(actor, weapons, stats) {
     const myTurn = !actions.inActiveCombat(actor) || globalThis.game?.combat?.combatant?.actor?.uuid === actor.uuid;
     magicRows.push({ label: `Use ${e.name.toLowerCase()}`, detail: "Melee, no damage, AP only · until your next turn", cost: `${h.ap} AP`, action: "useHeld", itemId: e.id, icon: "fa-solid fa-hand-holding-fire", disabled: !myTurn, tooltip: myTurn ? "" : "Only on your turn" });
   }
+  // Delayed spells (Restoration Arcana T4) waiting for their trigger.
+  for (const e of actions.spellEffects(actor, "delayed")) magicRows.push({ label: `Trigger: ${e.name.replace(/^Delayed /, "")}`, detail: `Waiting for: ${e.flags.flowstate.spellEffect.trigger}`, cost: "Free (already paid)", action: "fireDelayed", itemId: e.id, icon: "fa-solid fa-hourglass-end" });
   // Grasp Arcana: Spirit Sense (T2) and Foci Master (T4).
   const grasp = ab.treeTier(actor, "magic-grasp-arcana");
   if (grasp >= 2) magicRows.push({ label: "Spirit Sense", detail: `Spot check for magical energy within ${grasp >= 4 ? 100 : 10} ft`, cost: "Check", action: "spiritSense", icon: "fa-solid fa-eye" });
@@ -698,6 +700,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       spiritSense: FlowStateActorSheet.onSpiritSense,
       swapFoci: FlowStateActorSheet.onSwapFoci,
       swapShroud: FlowStateActorSheet.onSwapShroud,
+      fireDelayed: FlowStateActorSheet.onFireDelayed,
       useHeld: FlowStateActorSheet.onUseHeld,
       cycleShieldOrder: FlowStateActorSheet.onCycleShieldOrder,
       posture: FlowStateActorSheet.onPosture,
@@ -915,6 +918,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   static onSpiritSense() { return casting.spiritSense(this.document); }
   static onSwapFoci() { return casting.swapFoci(this.document); }
   static onSwapShroud() { return casting.swapShroud(this.document); }
+  static onFireDelayed(event, target) { return casting.fireDelayed(this.document, target.dataset.itemId ?? target.closest?.("[data-item-id]")?.dataset.itemId); }
   static onUseHeld(event, target) { return casting.useHeldSpell(this.document, target.dataset.itemId ?? target.closest?.("[data-item-id]")?.dataset.itemId); }
   /** Adjust (Protection Arcana T3): the holder chooses where their Shield sits in the order damage is absorbed. */
   static async onCycleShieldOrder(event, target) {

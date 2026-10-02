@@ -49,8 +49,14 @@ export async function secret(actor, caster, { title, body, rolls = [], flags = {
  * A stat check against a fixed requirement. `stats` is one key or several (their die sizes are added: Poison + Charm's combined check).
  * `dis` is extra Disadvantage stacks (Cloud, Potency, Unravel). Returns { roll, total, passed, die, label }.
  */
-export async function check(actor, stats, req, { dis = 0 } = {}) {
+export async function check(actor, stats, req, { dis = 0, contest = null } = {}) {
   const keys = [].concat(stats);
+  // Arcanomancy Combos: the check is contested, caster against target, instead of a fixed number.
+  if (contest) {
+    const ce = contest.system.derived.effective;
+    const cr = await roll(poolFormula(1, Math.max(1, keys.reduce((n, k) => n + (ce[k]?.die ?? 0), 0)), 0));
+    req = cr.total;
+  }
   const eff = actor.system.derived.effective;
   const die = keys.reduce((n, k) => n + (eff[k]?.die ?? 0), 0);
   const spirit = keys.some(k => ["reach", "grasp", "build"].includes(k));
@@ -68,7 +74,7 @@ const checkLine = (who, c) => `<div class="fs-notes">${esc(who.name)}: ${c.label
 function penaltyStacks(actor, type) {
   let best = 0;
   for (const e of spellEffects(actor, "charm")) { const d = data(e); if (d.rollType === type && !d.pending) best = Math.max(best, d.amount ?? 1); }
-  for (const e of [...spellEffects(actor, "hex"), ...spellEffects(actor, "charm")]) { const p = data(e).penalty; if (p?.roll === type) best = Math.max(best, p.amount ?? 1); }
+  for (const e of [...spellEffects(actor, "hex"), ...spellEffects(actor, "charm"), ...spellEffects(actor, "mirage")]) { const p = data(e).penalty; if (p?.roll === type) best = Math.max(best, p.amount ?? 1); }
   return best;
 }
 /** Disadvantage stacks (negative) on a roll type: everything but damage, which is Weakened instead. */
@@ -114,13 +120,13 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
   if (a.kind === "charm") {
     if (a.combo) {
       await putSpellEffect(target, { kind: "charm", stack: true, onTargetTurn: true, pending: true, caster: attacker.uuid, ritualOf, name: `${profile.name}`, combo: a.combo, power,
-        ingrained: !!m.ingrained, req: 3, cloud: !!m.cloud, critStacks: a.combo.critStrength ? base.crit : 0,
+        ingrained: !!m.ingrained, req: 3, cloud: !!m.cloud, contested: !!a.contested, critStacks: a.combo.critStrength ? base.crit : 0,
         description: `At the start of their next turn they roll a Willpower check (3 or higher); on a failure they hurt themselves (${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}).` });
       out.html = `<div class="fs-notes">${esc(profile.name)} hit. The result goes to the caster and the GM.</div>`;
       await secret(target, attacker, { title: `${esc(attacker.name)} — ${esc(profile.name)}`, body: `<div class="fs-result">${esc(target.name)} makes a Willpower check (3 or higher) at the start of their next turn; on a failure they hurt themselves for ${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}.</div>` });
       return out;
     }
-    const r = await charmCheck(attacker, target, { dis: m.cloud ? 1 : 0 });
+    const r = await charmCheck(attacker, target, { dis: m.cloud ? 1 : 0, contest: a.contested ? attacker : null });
     out.rolls.push(r.roll);
     out.html = `<div class="fs-notes">Charm hit. The result goes to the caster and the GM.</div>`;
     if (r.passed) {
@@ -153,9 +159,9 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
 }
 
 /** Charm's Willpower check (3 or higher). */
-const charmCheck = (attacker, target, { dis = 0, req = 3 } = {}) => check(target, "will", req, { dis });
+const charmCheck = (attacker, target, { dis = 0, req = 3, contest = null } = {}) => check(target, "will", req, { dis, contest });
 /** A combined check (die sizes added), 5 or higher: Venomancy + Charm, Venomancy + Witchery, Charm + Witchery. */
-const combinedCheck = (attacker, target, a, { dis = 0 } = {}) => check(target, a.combined, a.req, { dis });
+const combinedCheck = (attacker, target, a, { dis = 0 } = {}) => check(target, a.combined, a.req, { dis, contest: a.contested ? attacker : null });
 
 /** Put a Charm on a creature (replacing one of the same caster and roll type; doubled by Propagandize). */
 export async function placeCharm(caster, target, { rollType, ritualOf = null, ingrained = false, propagandize = false, dot = null, turnsLeft = 0 }) {
@@ -184,7 +190,7 @@ function poisonData(a, sp, base, ch = {}) {
     bypassArmor: !!a.bypassArmor, force: !!a.force, livingDie: a.livingDie ?? 0, halfStrength: !!a.halfStrength, dodgeDie: a.dodgeDie ? a.dodgeDie * p : 0,
     ignite: !!a.ignite, stain: !!a.stain, energy: !!a.energy, arc: !!a.arc,
     prolong: m.prolong ?? 0, lethality: m.lethality ?? 0, potency: !!m.potency, virality: !!m.virality,
-    combined: a.combined ?? null, comboReq: a.req ?? 0, charmRoll: ch.charmRoll || "attack", hex: ch.hex ?? null, hexDie: ch.hexDie ?? null,
+    combined: a.combined ?? null, comboReq: a.req ?? 0, contested: !!a.contested, charmRoll: ch.charmRoll || "attack", hex: ch.hex ?? null, hexDie: ch.hexDie ?? null,
     power: p, procs: 0, checks: 0
   };
 }
@@ -199,7 +205,7 @@ export async function applyPoison(victim, d, caster, { fromSpread = false } = {}
 
 /** Venomancy + Charm / Venomancy + Witchery, once the coating has passed: the combined check. */
 async function applyVenomCombo(victim, d, caster) {
-  const c = await check(victim, d.combined, d.comboReq, { dis: d.potency ? 1 : 0 });
+  const c = await check(victim, d.combined, d.comboReq, { dis: d.potency ? 1 : 0, contest: d.contested ? caster : null });
   const title = d.kind === "venomCharm" ? "Poison + Charm" : "Poison + Hex";
   if (c.passed) return secret(victim, caster, { title: `${esc(title)} — ${esc(victim.name)}`, rolls: [c.roll], body: `${checkLine(victim, c)}<div class="fs-result">${esc(victim.name)} resists.</div>` });
   let body = checkLine(victim, c);
@@ -221,7 +227,7 @@ async function poisonTick(actor, e) {
   const d = data(e);
   const caster = await fromUuid(d.caster);
   const req = d.req ?? 3;
-  const c = await check(actor, "con", req, { dis: d.potency && !d.checks ? 1 : 0 });
+  const c = await check(actor, "con", req, { dis: d.potency && !d.checks ? 1 : 0, contest: d.contested ? caster : null });
   const html = [checkLine(actor, c)];
   const rolls = [c.roll];
   let push = null, acts = [];
@@ -288,7 +294,7 @@ export function hexData(a, sp, base, ch, profile, extra = {}) {
   for (const [k, v] of Object.entries(a.extra ?? {})) scaled[k] = Array.isArray(v) ? [v[0] * p, v[1]] : v;
   return { ...hexBase(base.caster, p, base.ritualOf), trigger, roll: hx.roll || "attack", outcome: hx.outcome || "fail", detail: hx.detail || "",
     n: a.dice[0] * p, sides: a.dice[1], type: a.type, linger: m.linger ?? 0, fester: m.fester ?? 0, unravel: !!m.unravel, consume: !!m.consume,
-    extra: Object.keys(scaled).length ? scaled : null, hexDie: ch.hexDie || "dodge", procs: 0, checks: 0, triggers: 0, ...extra };
+    extra: Object.keys(scaled).length ? scaled : null, hexDie: ch.hexDie || "dodge", contested: !!a.contested, procs: 0, checks: 0, triggers: 0, ...extra };
 }
 
 /** The Active Effect data for a Hex (a minute, or until it has triggered enough times; Rituals are permanent). */
@@ -337,7 +343,7 @@ async function fireHex(actor, e) {
   const rolls = [];
   let failed = true, ch = null;
   if (!d.noCheck) {
-    ch = await check(actor, "build", 3, { dis: d.unravel && !d.checks ? 1 : 0 });
+    ch = await check(actor, "build", 3, { dis: d.unravel && !d.checks ? 1 : 0, contest: d.contested ? caster : null });
     rolls.push(ch.roll);
     failed = !ch.passed;
     html.push(checkLine(actor, ch));
@@ -425,7 +431,7 @@ async function dotTick(actor, e) {
 async function comboCheck(actor, e, req = 3) {
   const d = data(e);
   const caster = await fromUuid(d.caster);
-  const c = await check(actor, "will", req, { dis: d.cloud && !d.checked ? 1 : 0 });
+  const c = await check(actor, "will", req, { dis: d.cloud && !d.checked ? 1 : 0, contest: d.contested && !d.checked ? caster : null });
   const html = [checkLine(actor, c)];
   const rolls = [c.roll];
   let push = null;

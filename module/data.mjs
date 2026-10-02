@@ -82,6 +82,9 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     const effects = Array.from(this.parent?.effects ?? []).filter(e => !e.disabled);
     // Spell effects that shrink dice (Slam: dodge dice, Cut + Slam: attack dice). The worst one applies; they don't stack.
     const penalty = key => Math.max(0, ...effects.map(e => Number(e.flags?.flowstate?.spellEffect?.[key]) || 0));
+    // Painless (Restoration Arcana T2) lowers the Pain Threshold.
+    const painDown = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.painDown) || 0), 0);
+    if (painDown) { d.pain = Math.max(0, d.pain - painDown); this.hp.pain = d.pain; this.hp.destroyed = this.hp.destroyed; }
     d.dodgeDie = penalizedDie(d.dodgeDie, penalty("dodgeDie"));
     d.attackDie = penalizedDie(d.attackDie, penalty("attackDie"));
     // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).

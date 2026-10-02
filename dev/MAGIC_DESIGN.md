@@ -70,3 +70,12 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 - Unravel: `magicDisNet` in spell attack rolls and Reach/Grasp/Build checks.
 - Tests: `dev/tests/spell-t4.mjs`.
 
+## Built (v0.32.0): Tier 5 (Restoration Arcana, Geomancy, Illusion, Arcanomancy)
+
+- `module/arcana.mjs` (registered as `registerArcana`): `prompt` (before payment) / `resolve` for Restore and Shift, Mirage through the attack exchange (`mirageHit` from `spellHit`), `turnStart` decay, `act` buttons (`fs-arcana-act`, flags `arcana.acts`). Profiles: `PROFILES[...].arcana` (`restore`, `shift` with `rider`/`arcane`/`stealth`, `mirage` with `chart`); Strike is a plain damage profile (`strike: true`); `arcanize()` builds every Arcanomancy + Core profile (damage → arcane, `arcano`, `afflict.contested`).
+- Restore history: `applyDamage` appends to the actor flag `lossLog`; `_onStartTurn` sets `turnStartedAt`; death sets `diedAt`. Painless is a `painDown` effect read in `prepareDerivedData`.
+- Delay: `castSpell` stores `values` + target uuids in a `delayed` effect and `fireDelayed` re-runs the cast with `{ fire }` (no payment, no range check).
+- Contested checks: `afflictions.check(..., { contest })`. Fear: `fearTimed` effect removed in `endOfTurn`.
+- Geomancy Combos with Summoning / Creation / Animation set `geo` (returning natural weapons, ranged strike); Illusion Combos set `fear` (coin flip in `riderAfter`).
+- Tests: `dev/tests/spell-t5.mjs`.
+

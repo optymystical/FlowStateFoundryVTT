@@ -1119,6 +1119,7 @@ function landingPosition(near, from) {
  */
 export async function dropItem(actor, item, nearToken = null, { thrown = true } = {}) {
   // Natural weapons and armor are part of a Summon or Animation: never dropped. One that returns comes straight back after a throw.
+  if (item.system?.returning && thrown && !item.system.natural) return false;            // returns to its user when thrown (Geomancy Combos)
   if (item.system?.natural) {
     if (!thrown) ui.notifications.warn(`${item.name} is natural: it can't be dropped.`);
     return false;
@@ -1351,7 +1352,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega"];
+  "breakFree", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -1487,6 +1488,7 @@ async function startExchange(actor, opts, targets) {
     // Foresight (Grasp Arcana T1): Advantage if the target has Disadvantage on their dodge. Convince (Charm T3): Advantage on a target already Charmed by you.
     const sm = opts.spell?.mods ?? {};
     if (sm.foresight && dodgeNetKnown(target) < 0) { atkNet += 1; spellNotes.push("Foresight: Advantage (they have Disadvantage on dodge rolls)"); }
+    if (opts.spell && fx.profileFor(opts.spell.cores)?.strike && target.system.magical) { atkNet += 1; spellNotes.push("Strike: Advantage against a fully magical target"); }
     if (sm.convince && aff?.charmedBy(target, actor.uuid)) { atkNet += 1; spellNotes.push("Convince: Advantage (already Charmed by you)"); }
     // Sticky (Acid T4): Advantage against a target with Stain stacks equal to or above their Pain Threshold.
     if (opts.spell?.mods?.sticky && stainTotal(target.system.conditions ?? {}) >= (target.system.hp?.pain ?? Infinity)) { atkNet += 1; spellNotes.push("Sticky: Advantage (Stained)"); }
@@ -3244,6 +3246,11 @@ const barriersFor = (attacker, target) => (globalThis.canvas?.scene ? areas.barr
 let elem = null;
 export const registerElemental = h => { elem = h; };
 export const chainNext = (message, preset) => elem?.chainNext(message, preset);
+/** Tier 5 (Restoration, Geomancy, Illusion) lives in arcana.mjs, which registers its hooks here. */
+let arc = null;
+export const registerArcana = h => { arc = h; };
+export const arcanaTurnStart = actor => arc?.turnStart(actor);
+export const arcanaAct = (message, i) => arc?.act(message, i);
 /** Tier 4 (Summons, Animations, Made objects) lives in conjure.mjs: riders on a creation's attacks. */
 let conj = null;
 export const registerConjure = h => { conj = h; };
@@ -3255,7 +3262,7 @@ const charmNet = (actor, type) => aff?.charmNet(actor, type) ?? 0;
 /** A Hex that triggers on a roll the creature just made. */
 const hexRoll = (actor, type) => aff?.hexTrigger(actor, "roll", { roll: type });
 /** Unravel (Witchery T4): Disadvantage on all Magic related checks (spell attack rolls and Reach / Grasp / Build checks) until the caster's next turn. */
-export const magicDisNet = actor => (spellEffects(actor, "magicDis").length ? -1 : 0);
+export const magicDisNet = actor => (spellEffects(actor, "magicDis").length || arc?.magicFails(actor) ? -1 : 0);
 export const afflictTurnStart = actor => aff?.turnStart(actor);
 export const afflictCasterTurn = actor => aff?.casterTurn(actor);
 export const hexMove = actor => (inActiveCombat(actor) ? aff?.hexTrigger(actor, "move") : null);
@@ -3441,6 +3448,8 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
     chain = eh.chain ?? null;
   }
   if (conj && sp.makeAct) html.push(await conj.makeHit({ attacker, target, sp }));
+  // Tier 5: a Mirage takes hold.
+  if (arc && profile?.arcana?.kind === "mirage") { const mh = await arc.mirageHit({ attacker, target, o, result, profile }); if (mh.html) html.push(mh.html); rolls.push(...mh.rolls); }
   // Tier 3: Poison, Charm and Hex.
   if (aff && profile?.afflict) {
     const ah = await aff.onHit({ attacker, target, o, result, entry, profile, dodgeTotal });
@@ -4355,6 +4364,7 @@ function targetStacks(attacker, o, target, result, extra = 0, ctx = {}) {
   // Slip Off (Balanced T1) and Harden (Heavy T4 / Titanic T3) Weaken attacks against an active Parry/Brace.
   for (const w of ctx.weaken ?? []) { stacks -= 1; parts.push(`−1 ${w}`); }
   if (ctx.distracted) { stacks -= 1; parts.push("−1 Distracting Fire"); }
+  if (o.spell && arc?.magicFails(attacker)) { stacks -= 1; parts.push("−1 Illusion (their Magic has failed them)"); }
   const charmed = aff?.charmWeakened(attacker) ?? 0;
   if (charmed) { stacks -= charmed; parts.push(`−${charmed} Charm/Hex (damage rolls)`); }
   if (ctx.retort) { stacks -= 1; parts.push("−1 Retort (Shroud)"); }
@@ -4860,6 +4870,8 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   // Brand (Heat T3): heat damage that isn't from the Brand adds the Brand's damage.
   const brand = amount > 0 && elem ? elem.brandExtra(actor, type, brandBy) : 0;
   if (brand) { await post(actor, { title: `${esc(actor.name)} — Brand`, body: `<div class="fs-result">The Brand burns: ${brand} more heat damage.</div>` }); await applyDamage(actor, brand, "heat", { silent: true, brandBy: true }); }
+  // Restoration: remember when HP was lost (Restore only heals health lost since the caster's last turn).
+  if (out.toHp > 0 && actor.setFlag) await actor.setFlag("flowstate", "lossLog", [...(actor.getFlag("flowstate", "lossLog") ?? []).slice(-24), { at: Date.now(), n: out.toHp }]);
   // Hex (Witchery): damage from a source that isn't a Hex triggers a Harm Hex.
   if (aff && !fromHex && amount > 0 && out.toHp > 0) await aff.hexTrigger(actor, "harm");
   return out;
@@ -5134,6 +5146,8 @@ export async function electricTransfer(message, preset = null) {
 
 /** Ch8/Ch9 end-of-turn processing: AP expires, Ignite/Stain damage, Slow/Haste decay. */
 export async function endOfTurn(actor) {
+  // Fear from an Illusion Combo's creation ends when the afraid creature's turn ends.
+  for (const e of spellEffects(actor, "fearTimed")) { await changeEffect(e, null); if (actor.statuses?.has("fear")) await setStatus(actor, "fear", false); }
   const sys = actor.system;
   const { slow, haste } = sys.conditions;
   const decay = Math.floor(sys.hp.pain / 2);

@@ -156,7 +156,7 @@ function itemRowHTML(i, spec, rarities, complexity) {
  */
 export async function prompt({ actor, plan, profile, mods, values, targets }) {
   const cj = profile.conjure;
-  const mult = R.conjureMultiplier(plan.base, plan.combo);
+  const mult = R.conjureMultiplier(plan.base, plan.combo, cj.fear ? 2 : 1);   // Illusion's extra baseline is 2
   const ctx = describe({ actor, plan, profile, mods, mult });
   let spec = values?.conj ?? null;
   if (!spec) {
@@ -281,7 +281,7 @@ export function itemData(it, { actor, ritualOf = null, extraFlags = {}, equipped
 const martialTrees = actor => Object.fromEntries(Object.entries(actor.system?.trees ?? {}).filter(([k, v]) => k.startsWith("martial-") && v > 0));
 
 /** Riders: what a Combo with a Tier 1/2/3 Core adds to the creation's attacks. */
-const riderOf = (cj, values, level) => (cj.rider ? { core: cj.rider, level, charmRoll: values?.charmRoll ?? null, hex: values?.hexTrigger ? { trigger: values.hexTrigger, roll: values.hexRoll, outcome: values.hexOutcome, detail: values.hexDetail } : null, hexDie: values?.hexDie ?? null } : null);
+const riderOf = (cj, values, level) => (cj.rider ? { core: cj.rider, level, arcane: !!cj.arcane, charmRoll: values?.charmRoll ?? null, hex: values?.hexTrigger ? { trigger: values.hexTrigger, roll: values.hexRoll, outcome: values.hexOutcome, detail: values.hexDetail } : null, hexDie: values?.hexDie ?? null } : null);
 
 async function creatingCombatInit(actor) {
   const c = globalThis.game.combat;
@@ -293,6 +293,12 @@ async function spawn({ actor, name, system, flags, items, targets, tile }) {
   const at = placement(actor, targets, tile);
   const payload = { sceneId: at?.sceneId, x: at?.x ?? 0, y: at?.y ?? 0, data: { name, img: "icons/svg/mystery-man.svg", system, flags }, items, owners: ownerIds(actor), initiative: await creatingCombatInit(actor) };
   return requestGM("createCreation", payload);
+}
+
+/** Geomancy Combos: a natural ranged strike (100 ft; no reloading). */
+function geoRanged(actor, ritualOf, scaling) {
+  return { name: "Natural Ranged Strike", type: "weapon", flags: madeFlag(actor, ritualOf),
+    system: { weaponType: "rapid", weight: "light", material: "hardwood", grade: Math.max(1, Math.floor((scaling || 0) / 10)), equipped: true, natural: true, returning: true, rounds: 99, magazine: 99 } };
 }
 
 /** Form: a Summon. */
@@ -311,14 +317,16 @@ async function makeSummon({ actor, plan, profile, spec, mods, ritualOf, targets,
   for (const [i, t] of ctx.arms.entries()) {
     const w = R.naturalWeapon({ weaponType: spec.arms[i].type, weight: spec.arms[i].weight, scaling });
     items.push({ name: `Natural ${WEAPON_TYPES[w.weaponType]?.label ?? w.weaponType} (${cap(w.weight)})`, type: "weapon", flags: madeFlag(actor, ritualOf),
-      system: { ...w, equipped: true, natural: true, twoHanded: t === 2, rounds: 1, magazine: 1 } });
+      system: { ...w, equipped: true, natural: true, returning: !!cj.geo, twoHanded: t === 2, rounds: 1, magazine: 1 } });
   }
+  // Summoning + Geomancy: a natural ranged variant of its unarmed attack (100 ft, never needs reloading); melee natural weapons return when thrown.
+  if (cj.geo) items.push(geoRanged(actor, ritualOf, scaling));
   if (ctx.skin) {
     const a = R.naturalArmor({ threshold: ctx.skin, con: f.stats.con });
     items.push({ name: `Natural ${cap(a.weight)} Armor`, type: "armor", flags: madeFlag(actor, ritualOf), system: { ...a, equipped: true, natural: true } });
   }
   if (cj.make && spec.items?.[0]) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true }));
-  const sm = { owner: actor.uuid, ritualOf: ritualOf ?? null, kind: "summon", hp, energy, attackDie: actor.system.derived.attackDie, dodgeDie: actor.system.derived.dodgeDie, ap: 6, rp: 6, reform: !!mods.reform, reformMark: hp,
+  const sm = { owner: actor.uuid, ritualOf: ritualOf ?? null, kind: "summon", hp, energy, attackDie: actor.system.derived.attackDie, dodgeDie: actor.system.derived.dodgeDie, ap: 6, rp: 6, reform: !!mods.reform, reformMark: hp, fear: !!cj.fear,
     rider: riderOf(cj, values, level) };
   const name = spec.name || `${actor.name}'s Summon`;
   const id = await spawn({ actor, name, system: { stats: { str: f.stats.str, dex: f.stats.dex, con: f.stats.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f.skillPoints, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets, tile: spec.tile });
@@ -350,8 +358,9 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
   const level = R.riderLevel(f ? f.stats.str + f.stats.dex : points);
   const cat = R.ANIM_CATEGORIES[mat.category];
   const sm = { owner: actor.uuid, ritualOf: ritualOf ?? null, kind: "animation", material: mat.name, category: mat.category, hp, energy, attackDie: actor.system.derived.attackDie, dodgeDie: actor.system.derived.dodgeDie,
-    speed: st.speed, physical: st.physical, ap: st.ap, rp: st.rp, reform: !!mods.reform, reformMark: hp, rider: riderOf(cj, values, level) };
+    speed: st.speed, physical: st.physical, ap: st.ap, rp: st.rp, reform: !!mods.reform, reformMark: hp, fear: !!cj.fear, rider: riderOf(cj, values, level) };
   const items = [];
+  if (cj.geo) items.push(geoRanged(actor, ritualOf, Math.max(st.str, st.dex)));
   if (cj.make && spec.items?.[0] && !cj.instant) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true }));
   const name = spec.name || `${mat.name} Animation`;
   const id = await spawn({ actor, name, system: { stats: { str: st.str, dex: st.dex, con: st.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f?.skillPoints ?? 0, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets, tile: spec.tile });
@@ -366,7 +375,12 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
 async function makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets, values }) {
   const cj = profile.conjure;
   const rider = cj.rider ? { core: cj.rider, level: 1, charmRoll: values?.charmRoll ?? null, hex: values?.hexTrigger ? { trigger: values.hexTrigger, roll: values.hexRoll, outcome: values.hexOutcome, detail: values.hexDetail } : null } : null;
-  const items = (spec.items ?? []).map(it => itemData(it, { actor, ritualOf, extraFlags: rider && it.kind !== "object" ? { rider: { ...rider, level: R.riderLevel(2, 4) } } : {} }));
+  const flagsFor = it => ({ ...(rider && it.kind !== "object" ? { rider: { ...rider, level: R.riderLevel(2, 4), arcane: !!cj.arcane } } : {}), ...(cj.fear && it.kind !== "object" ? { fear: true } : {}) });
+  const items = (spec.items ?? []).map(it => {
+    const d = itemData(it, { actor, ritualOf, extraFlags: flagsFor(it) });
+    if (cj.geo && d.type === "weapon") { d.system.returning = true; d.system.rounds = 99; d.system.magazine = 99; }   // reloads itself; returns when thrown
+    return d;
+  });
   const target = targets?.[0]?.actor ?? null;
   // Into a target's inventory takes a hit: a Targeted attack roll; a miss leaves it on the floor beside them (see makeHit / makeMiss).
   if (spec.recipient === "target" && target && target.uuid !== actor.uuid) {
@@ -516,11 +530,23 @@ async function reform(caster) {
 
 /** After a creation's weapon attack dealt its damage: the Combo Core's extra effect. */
 export async function riderAfter({ attacker, target, o, outcome, defense }) {
-  let r = summonOf(attacker)?.rider ?? null, ritualOf = summonOf(attacker)?.ritualOf ?? null, ownerUuid = summonOf(attacker)?.owner ?? attacker.uuid;
-  if (!r && o.itemUuid) {
+  let r = summonOf(attacker)?.rider ?? null, ritualOf = summonOf(attacker)?.ritualOf ?? null, ownerUuid = summonOf(attacker)?.owner ?? attacker.uuid, fear = !!summonOf(attacker)?.fear;
+  if (o.itemUuid) {
     const item = await fromUuid(o.itemUuid);
     const made = item?.flags?.flowstate?.made;
-    if (made?.rider) { r = made.rider; ritualOf = made.ritualOf; ownerUuid = made.caster; }
+    if (made?.rider && !r) { r = made.rider; ritualOf = made.ritualOf; ownerUuid = made.caster; }
+    if (made?.fear) fear = true;
+  }
+  if (o.rider && !r) r = o.rider;                       // a Geomancy Combo's Charged material
+  // Illusion Combos: whoever is hit makes a coin flip or is afraid until their turn ends (success: immune while it lasts).
+  if (fear && (outcome?.toHp ?? 0) >= 0 && target.type !== "pile") {
+    const flip = await roll("1d2");
+    const scared = flip.total === 1;
+    if (scared) {
+      await requestGM("setStatus", { target: target.uuid, status: "fear", active: true });
+      await putSpellEffect(target, { kind: "fearTimed", caster: ownerUuid, name: "Afraid (until their turn ends)", onTargetTurn: true, description: "Afraid: can't gain Energy. Ends when their turn ends." });
+    }
+    await post(attacker, { title: `${esc(attacker.name)} — Fear`, rolls: [flip], body: `<div class="fs-result">${esc(target.name)} flips a coin: ${scared ? "<strong>afraid</strong> until their turn ends" : "unafraid (immune while it lasts)"}.</div>` });
   }
   if (!r) return;
   const rd = R.RIDERS[r.core];
@@ -537,9 +563,10 @@ export async function riderAfter({ attacker, target, o, outcome, defense }) {
     const dmg = await roll(`${rd.dice[0] * level}d${sides}`);
     rolls.push(dmg);
     const total = applyStacks(dmg.total, rd.critStack && defense?.result?.crit ? rd.critStack : 0);
-    const out = await damageOutcome(target, total, rd.type, { archetype: "magic" });
-    await requestDamage(target, total, rd.type, 0, null, { silent: true, archetype: "magic" });
-    html.push(`<div class="fs-result">${esc(profileName)}: ${rd.dice[0] * level}d${sides} = ${dmg.total}${total !== dmg.total ? ` (Strengthened → ${total})` : ""} additional ${DAMAGE_TYPES[rd.type] ?? rd.type}.</div><ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
+    const dtype = r.arcane ? "arcane" : rd.type;
+    const out = await damageOutcome(target, total, dtype, { archetype: "magic" });
+    await requestDamage(target, total, dtype, 0, null, { silent: true, archetype: "magic" });
+    html.push(`<div class="fs-result">${esc(profileName)}: ${rd.dice[0] * level}d${sides} = ${dmg.total}${total !== dmg.total ? ` (Strengthened → ${total})` : ""} additional ${DAMAGE_TYPES[dtype] ?? dtype}.</div><ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
     if (rd.ignite) { const l = await giveStacks(target, "ignite", total, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
     if (rd.stain) { const l = await giveStacks(target, "stain", total, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
     if (rd.energy) { const e = await removeEnergy(target, total); html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${e.removed} Energy</strong> (${e.remaining} left).</div>`); }
@@ -548,7 +575,7 @@ export async function riderAfter({ attacker, target, o, outcome, defense }) {
       await putSpellEffect(target, { kind: "dodgeDie", caster: ownerUuid, name: `Dodge −${amt} die size`, dodgeDie: amt, ritualOf, description: `Dodge dice are ${amt} sizes smaller until the start of the caster's next turn (doesn't stack).` });
       html.push(`<div class="fs-notes">${esc(target.name)}'s dodge dice suffer <strong>−${amt} die size</strong> until the start of your next turn.</div>`);
     }
-    if (rd.chain) acts.push({ act: "arc", from: target.uuid, attacker: attacker.uuid, n: rd.dice[0] * level, sides, type: rd.type, stacks: 0, label: "Chain" });
+    if (rd.chain) acts.push({ act: "arc", from: target.uuid, attacker: attacker.uuid, n: rd.dice[0] * level, sides, type: dtype, stacks: 0, label: "Chain" });
   }
   if (rd.force) {
     const f = await spellForce(attacker, target, { stacks: 0 }, { critStacks: 0 }, { n: rd.force[0] * level, sides: rd.force[1] }, "Force");

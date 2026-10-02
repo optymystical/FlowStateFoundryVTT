@@ -144,6 +144,56 @@ for (const core of ["magic-gravity:force", "magic-slashing:cut", "magic-piercing
     PROFILES[profileKey([core, t4])] = { name: `${short} + ${label}`, conjure: { kind, rider: core } };
 }
 
+/**
+ * Tier 5 (Restoration, Geomancy, Illusion, Arcanomancy). `arcana` says what the cast does (see arcana.mjs):
+ *   restore { heal }   shift { body, rider?, arcane?, stealth? }   mirage { power, chart? }
+ * Strike is an ordinary damage Core (2d12 arcane, Advantage against fully magical targets). Arcanomancy + any Tier 1–4 Core is that Core with every
+ * damage type changed to Arcane (and contested checks for Poison, Charm and Hex).
+ */
+const RS = "magic-restoration-arcana:restore", SF = "magic-geomancy:shift", MR = "magic-illusion:mirage", ST = "magic-arcanomancy:strike";
+const T123 = ["magic-gravity:force", "magic-slashing:cut", "magic-piercing:stab", "magic-crushing:slam", "magic-heat:flame", "magic-cold:frost", "magic-radiation:crackle", "magic-acid:glob",
+  "magic-venomancy:poison", "magic-charm:charm", "magic-witchery:hex"];
+Object.assign(PROFILES, {
+  [RS]: { name: "Restore", arcana: { kind: "restore", heal: 2 } },
+  [SF]: { name: "Shift", arcana: { kind: "shift", body: 6 } },
+  [MR]: { name: "Mirage", arcana: { kind: "mirage", power: 10 } },
+  [ST]: { name: "Strike", damage: dmg(2, 12, "arcane"), strike: true },
+  [profileKey([SF, MR])]: { name: "Shift + Mirage", arcana: { kind: "shift", body: 6, stealth: true } },
+  [profileKey([SF, ST])]: { name: "Shift + Strike", arcana: { kind: "shift", body: 6, arcane: true } },
+  [profileKey([MR, ST])]: { name: "Mirage + Strike", arcana: { kind: "mirage", power: 10, chart: ST } },
+  [profileKey([SU, SF])]: { name: "Form + Shift", conjure: { kind: "summon", geo: true } },
+  [profileKey([MK, SF])]: { name: "Make + Shift", conjure: { kind: "make", geo: true } },
+  [profileKey([AN, SF])]: { name: "Animate + Shift", conjure: { kind: "animate", geo: true } },
+  [profileKey([SU, MR])]: { name: "Form + Mirage", conjure: { kind: "summon", fear: true } },
+  [profileKey([MK, MR])]: { name: "Make + Mirage", conjure: { kind: "make", fear: true } },
+  [profileKey([AN, MR])]: { name: "Animate + Mirage", conjure: { kind: "animate", fear: true } }
+});
+for (const core of T123) {
+  const short = core.split(":")[1][0].toUpperCase() + core.split(":")[1].slice(1);
+  PROFILES[profileKey([core, SF])] = { name: `${short} + Shift`, arcana: { kind: "shift", body: 6, rider: core } };
+  PROFILES[profileKey([core, MR])] = { name: `${short} + Mirage`, arcana: { kind: "mirage", power: 10, chart: core } };
+}
+/** The Arcanomancy version of a profile: all its damage is Arcane. */
+export function arcanize(profile) {
+  const p = structuredClone(profile);
+  p.name = `${profile.name} + Strike`;
+  p.arcano = true;
+  if (p.damage) p.damage.type = "arcane";
+  for (const e of p.effects ?? []) if (e.extra) e.extra.type = "arcane";
+  if (p.afflict) { if (p.afflict.type && p.afflict.type !== "health") p.afflict.type = "arcane"; if (p.afflict.combo?.type) p.afflict.combo.type = "arcane"; p.afflict.contested = true; }
+  if (p.conjure) p.conjure.arcane = true;
+  return p;
+}
+for (const [key, prof] of Object.entries({ ...PROFILES })) {
+  if (key.includes("+") || key === ST || !prof) continue;
+  if (key.startsWith("magic-restoration") || key.startsWith("magic-geomancy") || key.startsWith("magic-illusion")) continue;
+  PROFILES[profileKey([key, ST])] = arcanize(prof);
+}
+
+/** Tier 5 numbers: Restore heals 2 × Power; Shift moves 6 × Power Body. */
+export const restoreAmount = (heal, power) => heal * Math.max(1, power);
+export const shiftBody = (body, power) => body * Math.max(1, power);
+
 /** Roll types a Charm / Hex can be tied to. */
 export const ROLL_TYPES = { attack: "Attack", damage: "Damage", dodge: "Dodge", stat: "Stat check", noncombat: "Non-combat (d100)" };
 
@@ -256,7 +306,10 @@ export const AUTOMATED_MODS = new Set([
   "magic-witchery:linger", "magic-witchery:fester", "magic-witchery:unravel", "magic-witchery:consume",
   "magic-build-arcana:layered", "magic-build-arcana:reform", "magic-build-arcana:projection",
   "magic-summoning:arm", "magic-summoning:skin", "magic-creation:armory", "magic-creation:make-mk2", "magic-creation:make-mk3", "magic-creation:complexity",
-  "magic-animation:weapon-foci", "magic-animation:armor-shroud", "magic-animation:expanded-animation", "magic-animation:mixed-animations"
+  "magic-animation:weapon-foci", "magic-animation:armor-shroud", "magic-animation:expanded-animation", "magic-animation:mixed-animations",
+  "magic-restoration-arcana:painless", "magic-restoration-arcana:regenerate", "magic-restoration-arcana:delay", "magic-restoration-arcana:resuscitate",
+  "magic-geomancy:mend", "magic-geomancy:toss", "magic-geomancy:tier-up", "magic-geomancy:muddy", "magic-geomancy:harden", "magic-geomancy:tier-up-again",
+  "magic-illusion:phantom-pain", "magic-illusion:fidelity", "magic-illusion:pervasive", "magic-illusion:reshape", "magic-illusion:aura", "magic-arcanomancy:blast"
 ]);
 
 /** Gravity's Replacement Mods: when one replaces the base effect, Force (the Gravity part of the spell) is dropped. */

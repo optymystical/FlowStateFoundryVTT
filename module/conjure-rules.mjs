@@ -8,7 +8,7 @@ export const POINTS_PER_THRESHOLD = 5;
 
 
 /** The multiplier a cast's base Threshold gives: the whole Threshold for a single Core, one less for a Combo (the partner's baseline). */
-export const conjureMultiplier = (base, combo) => Math.max(1, Math.floor(base) - (combo ? 1 : 0));
+export const conjureMultiplier = (base, combo, extra = 1) => Math.max(1, Math.floor(base) - (combo ? extra : 0));
 export const formPool = mult => POINTS_PER_THRESHOLD * Math.max(1, mult);
 export const summonPool = mult => formPool(mult);
 

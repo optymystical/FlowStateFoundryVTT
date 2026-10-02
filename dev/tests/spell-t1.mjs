@@ -87,7 +87,7 @@ const dodgeDie0 = orc.system.derived.dodgeDie;
 console.log("== Profiles");
 ok2(power() === 3, "Rod at Grade 3 gives Spell Power 3");
 ok2(FX.profileFor(["magic-gravity:force", "magic-slashing:cut"]).force.n === 8 && FX.profileFor(["magic-slashing:cut", "magic-gravity:force"]).name === "Force + Cut", "Combos are order-independent");
-ok2(FX.profileFor(["magic-restoration-arcana:restore"]) === null, "Spells from later groups aren't automated yet");
+ok2(FX.profileFor(["magic-nonexistent:core"]) === null, "Spells from later groups aren't automated yet");
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, { living: true, direct: true }).sides === 10, "Cut: d6 → d10 on a living target with direct damage");
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, { living: true, direct: false }).sides === 6, "Cut: stays d6 without direct damage");
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, {}).n === 6, "Cut: 2d6 × Spell Power 3 = 6 dice");
@@ -275,10 +275,10 @@ card = await hit("magic-piercing:stab", { [M("magic-piercing:weakpoint")]: true 
 ok2(/Stab/.test(text(card)), "A Stab with Weakpoint resolves");
 
 console.log("== Mods that aren't automated are flagged");
-hero.system.trees["magic-restoration-arcana"] = 4;
+hero.system.trees["magic-arcanomancy"] = 3;
 target(orc); seq = [25]; messages.length = 0;
-await cast("magic-slashing:cut", { [M("magic-restoration-arcana:delay")]: true });
-ok2(/Not automated yet[^.]*Delay/.test(text(messages[0])), "A Mod from a later group costs Threshold, and the card says the GM resolves it");
+await cast("magic-arcanomancy:strike", { [M("magic-arcanomancy:absorb")]: true });
+ok2(/Not automated yet[^.]*Absorb/.test(text(messages[0])), "A Mod from a later group costs Threshold, and the card says the GM resolves it");
 delete hero.system.trees["magic-grasp-arcana"];
 
 console.log("== Emplace and one Replacement at a time");

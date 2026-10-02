@@ -3,6 +3,8 @@ import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, TAGS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
 } from "./martial.mjs";
 import * as actions from "./actions.mjs";
+import * as casting from "./casting.mjs";
+import * as spells from "./spells.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_RARITIES, ELEMENTS, sourceTypeChoices } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
@@ -51,6 +53,7 @@ export function activeEffectRows(actor) {
       const name = by ? globalThis.fromUuidSync?.(by)?.name : null;
       detail = `${name ? `By ${name}. ` : ""}Can't move. Break Free (2 AP) from the Action List.`;
     }
+    if (!id && (effect.flags?.flowstate?.spellEffect || effect.flags?.flowstate?.ritual)) detail = String(effect.description ?? "").replace(/<[^>]+>/g, "");
     rows.push({
       key: id ?? effect.id, status: id ?? "", effectId: effect.id,
       name: globalThis.game?.i18n?.localize?.(cfg?.name ?? effect.name) ?? cfg?.name ?? effect.name, img: cfg?.img ?? effect.img, detail
@@ -349,6 +352,12 @@ export function weaponRows(actor) {
   });
 }
 
+/** { coreId: name } for a select: the Core Spells this character knows (all of them when there is no owner). */
+function coreChoices(trees) {
+  const cores = trees ? spells.knownSpells(trees).cores : spells.CATALOG.filter(s => s.kind === "core");
+  return { "": "— none —", ...Object.fromEntries(cores.map(c => [c.id, c.name])) };
+}
+
 /** Collapsed sections per actor (by UUID), kept for the session so re-renders don't reopen them. */
 const collapsedSections = new Map();
 
@@ -607,8 +616,18 @@ function actionGroups(actor, weapons, stats) {
       action: "martial", op: "hematite", icon: "fa-solid fa-droplet" });
   }
 
+  // Magic: casting a spell (the dialog picks the Core Spell(s), Mods, and how to cast).
+  const magicRows = [];
+  const cs = casting.castSummary(actor);
+  if (cs.any) {
+    const why = cs.usable ? "" : cs.ctx.options.map(o => `${o.label}: ${o.reason}`).join(" · ");
+    magicRows.push({ label: "Cast Spell", detail: cs.usable ? `${cs.known.cores.map(c => c.name).join(", ")}` : why,
+      cost: "AP/RP + Energy", action: "cast", icon: "fa-solid fa-wand-sparkles", disabled: !cs.usable, tooltip: why });
+  }
+
   return [
     { key: "act-combat", name: "Combat", actions: combat },
+    ...(magicRows.length ? [{ key: "act-magic", name: "Magic", actions: magicRows }] : []),
     ...(shroudRows.length ? [{ key: "act-shroud", name: "Shroud", actions: shroudRows }] : []),
     ...(parryRows.length ? [{ key: "act-parry", name: "Parry", actions: parryRows }] : []),
     ...(armorRows.length ? [{ key: "act-heavy", name: armorName, actions: armorRows }] : []),
@@ -658,6 +677,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       attack: FlowStateActorSheet.onAttack,
       dodge: FlowStateActorSheet.onDodge,
       recoverEnergy: FlowStateActorSheet.onRecoverEnergy,
+      cast: FlowStateActorSheet.onCast,
       posture: FlowStateActorSheet.onPosture,
       rest: FlowStateActorSheet.onRest,
       clearCondition: FlowStateActorSheet.onClearCondition,
@@ -759,6 +779,10 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       open,
       editable: this.isEditable,
       isGM: game.user.isGM,
+      showFocus: skills.tierOf(sys.trees, "magic-theory") >= 2,
+      focusChoices: coreChoices(sys.trees),
+      focusEditable: this.isEditable && !actions.inActiveCombat(actor),
+      inCombat: actions.inActiveCombat(actor),
       creation: sys.creation,
       buildOpen: this.isEditable && (game.user.isGM || sys.creation),
       // Characters are always Size 3 until Ancestry exists; the GM can set NPC sizes.
@@ -863,6 +887,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   static onAttack() { return actions.rollAttackCheck(this.document); }
   static onDodge() { return actions.rollDodge(this.document); }
   static onRecoverEnergy() { return actions.recoverEnergy(this.document); }
+  static onCast() { return casting.castSpell(this.document); }
   static onPosture(event, target) { return actions.setPosture(this.document, target.dataset.op); }
   static onRest() { return actions.rest(this.document); }
   static onClearCondition(event, target) { return actions.clearCondition(this.document, target.dataset.condition); }
@@ -1092,6 +1117,7 @@ export class FlowStateFociSheet extends FlowStateItemSheet {
       scalingLabel: p.valid ? (p.form === "multi" ? `Lesser of Reach and Grasp (${statLabel(p.scalingStat)})` : statLabel(p.scalingStat)) : "",
       trLabel: p.valid ? (p.tr === null || p.tr === undefined ? "1 / 2 / 3 (Raw Casting)" : String(p.tr)) : "",
       isRing: sys.fociType === "ring",
+      spellChoices: coreChoices(this.document.actor?.system?.trees),
       owned: !!this.document.actor,
       ...(p.valid ? affixContext(sys, p) : {})
     });

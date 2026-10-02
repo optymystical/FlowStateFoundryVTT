@@ -2,6 +2,7 @@ import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost } fro
 import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, fociProfile, shroudProfile } from "./magic.mjs";
+import { penalizedDie } from "./spellfx.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
@@ -46,6 +47,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         hearing: sense("primary"),
         smell: sense("secondary")
       }),
+      focusedSpell: new f.StringField({ initial: "" }),    // Magic Theory T2: the Focused Spell's Core id
       biography: new f.HTMLField({ initial: "" })
     };
   }
@@ -64,7 +66,14 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     this.hp.pain = d.pain;
     this.hp.overkill = Math.max(0, -this.hp.value);
     this.hp.destroyed = this.hp.overkill >= d.hpMax && d.hpMax > 0 && this.hp.value < 0;
-    this.energy.max = d.energyMax;
+    const effects = Array.from(this.parent?.effects ?? []).filter(e => !e.disabled);
+    // Spell effects that shrink dice (Slam: dodge dice, Cut + Slam: attack dice). The worst one applies; they don't stack.
+    const penalty = key => Math.max(0, ...effects.map(e => Number(e.flags?.flowstate?.spellEffect?.[key]) || 0));
+    d.dodgeDie = penalizedDie(d.dodgeDie, penalty("dodgeDie"));
+    d.attackDie = penalizedDie(d.attackDie, penalty("attackDie"));
+    // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).
+    this.ritualLoss = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.ritual?.energyLost) || 0), 0);
+    this.energy.max = Math.max(0, d.energyMax - this.ritualLoss);
     this.ap.max = 6;
     this.rp.max = 6;
 

@@ -43,6 +43,14 @@
     </section>
   </div>
 
+  {{#if showFocus}}
+  <section class="fs-spellcasting">
+    <h3>Spellcasting</h3>
+    <div class="fs-cond"><label data-tooltip="It gains 1 additional TR whenever you cast it, including any Combo it is part of. You can change it whenever you rest.">Focused Spell</label>
+      <select name="system.focusedSpell" {{#unless focusEditable}}disabled{{/unless}}>{{selectOptions focusChoices selected=system.focusedSpell}}</select></div>
+  </section>
+  {{/if}}
+
   <section class="fs-effects">
     <h3>Active Effects</h3>
     {{#if activeEffects.length}}

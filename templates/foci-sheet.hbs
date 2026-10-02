@@ -41,7 +41,7 @@
   <section class="fs-material"><h3>Effect</h3><p>{{p.effect}}</p></section>
   {{/if}}
   {{#if isRing}}
-  <div class="fs-field"><label>Chosen Core spell (Ring)</label><input type="text" name="system.chosenSpell" value="{{system.chosenSpell}}" {{#unless stateEditable}}disabled{{/unless}}></div>
+  <div class="fs-field"><label>Chosen Core spell (Ring)</label><select name="system.chosenSpell" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions spellChoices selected=system.chosenSpell}}</select></div>
   {{/if}}
 
   <section class="fs-affixes">

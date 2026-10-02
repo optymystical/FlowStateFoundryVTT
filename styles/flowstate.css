@@ -15,7 +15,7 @@
 .flowstate .fs-header-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .flowstate .fs-pill { padding: 2px 8px; border-radius: 999px; background: rgba(0,0,0,.12); font-size: .9em; }
 
-.flowstate .fs-resources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.flowstate .fs-resources { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
 .flowstate .fs-res { border: 1px solid var(--color-border, #999); border-radius: 6px; padding: 6px; text-align: center; }
 .flowstate .fs-res-label { font-weight: bold; text-transform: uppercase; font-size: .8em; letter-spacing: .05em; }
 .flowstate .fs-res-values { margin: 4px 0; }
@@ -279,3 +279,24 @@
 /* Collapsed "Ally help" row on attack cards. */
 .flowstate-card .fs-ally-row { margin-top: 4px; }
 .flowstate-card .fs-ally-row .fs-ally-help { width: 100%; }
+
+/* Energy and AP/RP above the tabs */
+.flowstate .fs-vitals { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.flowstate .fs-vital { flex: 1; display: flex; align-items: center; gap: 8px; border: 1px solid var(--color-border, #999); border-radius: 6px; padding: 4px 8px; }
+.flowstate .fs-vital .fs-res-values { margin: 0; }
+.flowstate .fs-vital .fs-res-btn { margin: 0 0 0 auto; width: auto; }
+.flowstate .fs-vital-points { flex: 0 0 auto; }
+
+/* Cast Spell dialog */
+.flowstate-dialog .fs-cast, .fs-cast { display: flex; flex-direction: column; gap: 6px; }
+.fs-cast .fs-field { display: flex; align-items: center; gap: 8px; }
+.fs-cast .fs-field label { flex: 0 0 9em; }
+.fs-cast .fs-field select, .fs-cast .fs-field input { flex: 1; }
+.fs-cast-tabs { display: flex; gap: 4px; }
+.fs-cast-tab { flex: 1; }
+.fs-cast-tab.active { font-weight: bold; box-shadow: inset 0 -2px 0 var(--color-border-highlight, #c9593f); }
+.fs-cast-panel { display: flex; flex-direction: column; gap: 3px; max-height: 14em; overflow-y: auto; padding: 4px; border: 1px solid var(--color-border, #999); border-radius: 4px; }
+.fs-cast-mod { display: flex; align-items: center; gap: 6px; }
+.fs-cast-mod small { opacity: .7; }
+.fs-cast-mod input[type="number"] { width: 3.5em; }
+.fs-cast-preview { border-top: 1px solid var(--color-border, #999); padding-top: 4px; }

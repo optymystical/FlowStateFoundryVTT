@@ -1,4 +1,4 @@
-# Flow State — Foundry VTT system (v0.18.0, core rules + Martial equipment + skill trees)
+# Flow State — Foundry VTT system (v0.23.0, core rules + Martial equipment + skill trees)
 
 Ports the core rules from "Flow State - Rules" into Foundry VTT (v13 and later; built for v14). Includes Martial weapons and armor from "Flow State - Equipment". Mental (Icons/Forms) and Magic (Foci, Shrouds, Affixes) aren't ported yet, and no skill trees are.
 
@@ -266,11 +266,33 @@ At the start of your turn a card lists the start-of-turn abilities you can use r
 - **T4 Quicken:** an Action List entry that doubles your movement speed until your next turn. Putting armor on ends it.
 - **T5 Unfettered:** Advantage on every dodge while unarmored, and physical movement slows don't affect you (Like Shooting Fish). Slow condition stacks don't record their source, so they still apply.
 
+## Casting (Magic framework)
+The **Cast Spell** row in the Action List (a **Magic** group) opens the cast dialog. It needs at least one Core Spell (a Magic school at Tier 1 or more, with Magic Theory high enough) and a way to cast.
+- **Cast through:** a held, attuned Foci (Igniter: Grasp, 2 AP, 1 TR; Channeler: Reach, 3 AP, 2 TR), or **Raw Casting** with a free hand or a Multi Foci (the lesser of Reach and Grasp, no Grade cap; pick 1, 2 or 3 AP for 1, 2 or 3 TR). You need at least 10 in the casting stat(s), otherwise that option is greyed out with the reason. Deck Foci (Chime, Cards) and the Foci passives (Wand, Staff, Scepter, Gauntlet and so on) are not automated yet.
+- **Cores and Mods:** pick one Core Spell, or two different ones for a Combo. Three tabs hold the Mods: Universal (always), and one per chosen Core (greyed when unused). Only Mods you know and that apply are listed. Stackable Mods take a count, and Mods with a Threshold range take a value. Replicate asks which Mod it copies (that Mod's Threshold + 1).
+- **Threshold and Energy:** Core(s) + Mods, minus TR (Foci/Raw, Focused Spell +1, Ring's chosen Core +1), never below 0. Energy is **floor(Threshold × Skill Points ÷ 2)**. A Combo's Threshold is the sum of its Cores, except Arcanomancy adds nothing. A live preview shows everything before you cast.
+- **Paying:** AP (or RP with the React Mod, which also lets you cast off your turn) and Energy are checked first, then spent together. Outside combat everything is free.
+- **Spell Power:** 1 per 10 points of the Scaling Stat (Grade-capped through a Foci).
+- **Focused Spell** (Magic Theory T2) is picked on the Misc tab out of combat. **Connection** (T4) appears in the dialog when the Focused Spell is part of the cast.
+- **Rituals** (Magic Theory T2) are a checkbox in the dialog, out of combat only: no AP or Energy is spent, and an Active Effect lowers max Energy by half the (TR-ignoring) Energy cost until it ends. Ending that effect ends the Ritual.
+- The cast card states the cost and the spell text. Spell effects (attack roll, damage and so on) are automated school by school and tier by tier; until a spell is, the GM resolves it from the card.
+
+## Tier 1 spells (automated)
+Casting a Tier 1 spell goes straight on to the normal attack exchange (attack card → Dodge or Take the hit → damage), so armor, Shrouds, Parry and the rest apply. Select one target first (a Shield with no target goes on yourself). Spell Power multiplies every bolded number (dice count, health, Force, die-size changes). **Pinpoint** and casting at a target in your personal melee range give the attack Advantage, and Targeted spells attack from half stealth. Ranged spells reach 200 ft, Targeted 100 ft.
+- **Shield** (Targeted): on a hit the target gets a Shield with 20 × Spell Power health, until the start of your next turn. It absorbs damage of any type before Shrouds and armor, with no Limit, and ends when it runs out. It shows under Active Effects.
+- **Force** (Ranged): on a hit it rolls 8d10 × Spell Power Force and offers the usual Push button (you pick the direction). If the push would pull the target out of an incoming attack's way, the GM gives that attack Disadvantage.
+- **Cut** (Ranged): 2d6 × Power physical. If the target is living and the spell would deal direct damage, the dice are d10 instead. "Would deal direct damage" means the d6 dice at their largest would get past every Shield, Shroud, Parry and armor in the way. "Living" means not marked Fully Magical.
+- **Stab** (Ranged): 1d10 × Power physical, with an extra Strengthened stack on a crit.
+- **Slam** (Ranged): 1d12 × Power physical, and the target's dodge dice shrink by 2 × Power sizes until the start of your next turn (it doesn't stack).
+- **Combos:** Force + Cut (4d6, then 8d10 Force if the damage was direct), Force + Stab (2d10, and 20d10 Force on a crit), Force + Slam (2d12, 8d10 Force, and the dodge penalty), Cut + Stab (3d6, +1 Strengthened for direct damage and +1 for a crit), Cut + Slam (2d12, and the target's attack dice shrink by 5 × Power if the damage was direct), Stab + Slam (2d12, with three times the dice on a crit against a dodge roll of a third or less of their normal maximum). All dice counts, Force and die-size changes are multiplied by Spell Power.
+- **Rituals:** a Shield Ritual puts the Shield up until the Ritual ends or the Shield breaks. A Ritual of Force, Cut, Stab or Slam stores two free casts: cast it again with the Ritual chosen in the dialog, which costs AP/RP but no Energy, and the Ritual ends after the second.
+- **Spell effects** end at the start of the caster's next turn (and when combat ends). Rituals' effects end with the Ritual. Spell effects from the same caster of the same kind replace each other.
+
 ## Character sheet
 New actors (not dropped-item piles) get HP and Energy token bars, always shown to the token's owners. All new actors' tokens (piles included) have artwork rotation locked.
 
-The header shows the name, portrait, and movement (speed and AP per move). Below it are five tabs:
-- **Main:** HP, Energy (with Recover), stats and stat checks, and a summary line (Stat Bonus, total stats, attack die, dodge dice).
+The header shows the name, portrait, and movement (speed and AP per move). Under it is a vitals row with **Energy** (editable, with Recover) and, only while the character is in an active combat, an **AP / RP** readout. Only the GM can edit AP/RP there; players spend them through actions or the combat tracker as before. Below the header are the tabs:
+- **Main:** HP, stats and stat checks, and a summary line (Stat Bonus, total stats, attack die, dodge dice).
 - **Action List:** only things you can click to activate (passives, reactions such as Parry, and info-only rows are left out). It covers everything the character can do right now, with costs, as one list of clickable rows. It includes each held weapon's attack (or Reload when needed), Crouch, Go Prone, Get Up, and Recover Energy under Combat, the Martial Theory actions (Grapple, Break Free, Release, Throw grappled creature, Psych Up, Calm Down), and every check. Putting out Ignite, removing Stain, and Rest are on the Misc tab. The checks include a plain **Attack roll** (your attack die) and **Dodge roll** (your dodge dice), which cost no AP and don't resolve against anyone. Rows that don't apply right now are greyed out. The same actions still work from their own places on the other tabs.
 - **Equipment:** Weapons, Armor, and Misc Items.
 - **Misc:** Size (with max move and melee range, plus the optional fields when enabled), conditions and Rest, and senses. At the bottom is **Active Effects**, which lists every status on the character (Psych Up, Calm Down, Grappled with who's holding them, Prone, and so on), any other Active Effects, and who the character is grappling. It's empty when nothing applies. The GM gets an ✕ on each row to end it now; ending a grapple releases both sides.

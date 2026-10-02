@@ -17,7 +17,8 @@ export as markdown) whenever a rule matters; snapshots in `dev/docs/` go stale.
 | Flow State - Rules | authoritative | `101-TbMt8Ttc2GOZdZfkNGrY_KWppPtIzOUui4mEWU0A` |
 | Flow State - Martial Stage 1 | authoritative | `1w5x2zNdUCZMatirMQ-qsNga7XijfzEuzQ7Ad_UgiWbw` |
 | Flow State - Equipment | authoritative (Mental Equipment section in flux) | `1bjinhIrPGJr0Ss4M9fjlCRSZrteX5r9yjsSuhYkMuag` |
-| Flow State - Magic Stage 1 (+ linked Combo Spell List) | authoritative | `10yfXGyX5-dTUYCJzsGw1DOTd7qpGaeD5ZlNF7mMbWU8` |
+| Flow State - Magic Stage 1 | authoritative | `10yfXGyX5-dTUYCJzsGw1DOTd7qpGaeD5ZlNF7mMbWI8` |
+| Combo Spell List (linked from Magic Theory) | authoritative | `1lyNQtEPZWuIpjxqvD3BIa_ZPFD25iTxi3YMp78hVAGY` |
 | Mental Rework Test Ground | in-dev (Mental Stage 1 holds the old system) | `1vyo3biYzh4smTOMmNM5OK7uqLXxKlrse6M-zHbnC0YI` |
 
 If an ID read fails, search by exact title. "[Discipline] Rework Test Ground" docs are scratchpads; "Stage 1" docs are
@@ -39,6 +40,8 @@ are not yet implemented.
 - `module/abilities.mjs` — pure helpers: "can this actor use tree X tier N with this item", Energy cost tables.
 - `module/martial.mjs` — weapon/armor tables, materials, tags, `weaponProfile`/`armorProfile`, Limit math.
 - `module/magic.mjs` — Foci/Shroud/Affix tables and profiles.
+- `module/spells.mjs` — pure spell framework: the Core/Mod catalog (parsed from `trees.mjs`), known spells, Combo Threshold, casting options, `planCast`, Threshold/Energy math.
+- `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
 - `module/data.mjs` — TypeDataModels (actor, weapon, armor, foci, shroud, gear, pile) and derived data.
 - `module/rules.mjs` — core rules math (stats, sizes, stacks, rolls, Force). `skills.mjs` + `trees.mjs` — skill trees
   (`trees.mjs` is GENERATED from the docs; don't hand-edit).

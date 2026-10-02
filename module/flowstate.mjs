@@ -110,6 +110,8 @@ class FlowStateCombat extends Combat {
       await actions.mediumTurnStart(combatant.actor);
       await actions.clearMarks(combatant.actor);
       await actions.treesTurnStart(combatant.actor);
+      // Spell effects this creature put on others end now (Shield, Slam's dodge penalty); Rituals' last until the Ritual ends.
+      await actions.clearSpellEffects(combatant.actor);
     }
   }
 
@@ -713,6 +715,7 @@ Hooks.on("renderItemDirectory", (app, html) => {
 Hooks.on("deleteCombat", combat => {
   if (!game.user.isActiveGM) return;
   for (const c of combat.combatants) setTimeout(() => {
+    actions.clearSpellEffects(c.actor);
     actions.refillEnergy(c.actor); actions.clearStances(c.actor);
     if (c.actor?.getFlag("flowstate", "carefulLapsed")) c.actor.unsetFlag("flowstate", "carefulLapsed"); // Careful Steps is free again
   }, 0);
@@ -1324,6 +1327,26 @@ Hooks.on("createActiveEffect", async effect => {
     content: `<div class="flowstate-card"><header class="fs-card-title">Grapple released</header><div class="fs-notes">${foundry.utils.escapeHTML(actor.name)} is ${effect.statuses.has("dead") ? "dead" : "unconscious"}: ${victims.map(v => foundry.utils.escapeHTML(v.name)).join(", ")} ${victims.length === 1 ? "is" : "are"} no longer grappled.</div></div>` });
 });
 
+
+/* -------------------------------------------- */
+/*  Rituals: max Energy loss and dependent effects */
+/* -------------------------------------------- */
+
+/** A Ritual is an Active Effect on the caster that lowers max Energy. When it ends, the spell effects tied to it end too. */
+Hooks.on("deleteActiveEffect", async effect => {
+  if (!game.user.isActiveGM || !effect.flags?.flowstate?.ritual) return;
+  const actor = effect.parent;
+  if (actor instanceof Actor) setTimeout(() => actions.refillEnergy(actor), 0);
+  const tied = [];
+  for (const a of game.actors) for (const e of a.effects) if (e.flags?.flowstate?.ritualOf === effect.uuid) tied.push(e);
+  for (const t of canvas?.tokens?.placeables ?? []) if (!t.document.actorLink) for (const e of t.actor?.effects ?? []) if (e.flags?.flowstate?.ritualOf === effect.uuid) tied.push(e);
+  for (const e of tied) await e.delete();
+});
+Hooks.on("createActiveEffect", effect => {
+  if (!game.user.isActiveGM || !effect.flags?.flowstate?.ritual || !(effect.parent instanceof Actor)) return;
+  const actor = effect.parent;
+  setTimeout(() => { const { value, max } = actor.system.energy; if (value > max) actor.update({ "system.energy.value": max }); }, 0);
+});
 
 /* -------------------------------------------- */
 /*  Token size follows creature Size            */

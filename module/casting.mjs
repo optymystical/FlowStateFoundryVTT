@@ -4,11 +4,12 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100 } from "./actions.mjs";
+import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
+import * as conjure from "./conjure.mjs";
 import { STATS } from "./rules.mjs";
 import { tierOf } from "./skills.mjs";
 
@@ -262,11 +263,18 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
   const profile = fx.profileFor(ids);
   const mods = fx.modCounts(plan.applied);
   let targets = weave ? weave.targetActors.map(a => ({ actor: a })) : [...(game.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
-  const meleeRange = !!targets[0]?.actor && inMeleeRange(actor, targets[0].actor);
+  // Projection (Build Arcana T5): the spell is cast from the position of a creature within 100 ft of you (willing, or hit by a Targeted attack roll: you resolve that).
+  let origin = null;
+  if (mods.projection && !weave) {
+    const who = await pickSceneTarget(actor, { title: "Projection: cast from", within: 100, anchors: [attackerToken(actor)], exclude: [] });
+    origin = who?.getActiveTokens?.()[0] ?? null;
+    if (globalThis.canvas?.tokens?.placeables?.length && !origin) return null;
+  }
+  const meleeRange = !!targets[0]?.actor && inMeleeRange(actor, targets[0].actor, origin);
   if (weave?.melee && !meleeRange) { ui.notifications.warn("A woven spell must be the same kind of attack: the target has to be within your personal melee range for a melee attack."); return null; }
   // Snipe (Magic Theory T4) doubles the range; past the normal range the initial attack roll has Disadvantage.
   const normalRange = plan.attack === "Targeted" ? 100 : 200;
-  if (!weave && !plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, normalRange * (mods.snipe ? 2 : 1), `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack}${mods.snipe ? ", Snipe" : ""})`)) return null;
+  if (!weave && !plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, normalRange * (mods.snipe ? 2 : 1), `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack}${mods.snipe ? ", Snipe" : ""})`, null, origin)) return null;
   // Area spells (Gravity Field) and Emplace: choose a shape and place it before anything is spent; everything it touches is targeted.
   const emplace = !!mods.emplace && !!profile?.shield;
   // Lob / Explode: a Ranged hit on the primary target, then an Area version where it lands.
@@ -279,8 +287,9 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
     const agate = fociItem?.system?.attuned && fociItem.system.profile?.affixes?.includes("agate") ? (fociItem.system.profile.affixPlus ? 2 : 1.5) : 1;
     const aim = [...(game.user?.targets ?? [])][0];
     const originTok = rangedPlusArea ? (aim?.object ?? aim) : null;
+    const layered = (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0);
     placed = await areas.placeArea(actor, { title: emplace ? "Emplace" : "Gravity Field", scale: (mods.snipe ? 2 : 1) * agate, aim, origin: originTok?.center ? originTok : null,
-      facing: emplace, flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power, limit: 20 * plan.power } : {}) } });
+      facing: emplace, flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power + layered, limit: 20 * plan.power + layered } : {}) } });
     if (placed === null) return null;                                    // cancelled: nothing is spent
     if (placed && !emplace) targets = placed.actors.map(a => ({ actor: a }));
     // Mold (Reach Arcana T3): you choose who in the area is attacked.
@@ -295,6 +304,10 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
     const rich = targets.map(t => t.actor).filter(a => (a?.system?.energy?.value ?? 0) > 0);
     if (rich.length) { ui.notifications.warn(`${plan.cores.map(c => c.name).join(" + ")} can only target creatures with zero Energy remaining (${rich.map(a => a.name).join(", ")} ${rich.length === 1 ? "has" : "have"} some).`); return null; }
   }
+  // Tier 4: Form, Make and Animate ask what they create before anything is spent.
+  const conjureCast = !!profile?.conjure;
+  let cjSpec = null;
+  if (conjureCast && !plan.ritual) { cjSpec = await conjure.prompt({ actor, plan, profile, mods, values, targets }); if (!cjSpec) return null; }
   const key = plan.usesRP ? "rp" : "ap";
   if (inCombat && plan.ap && actor.system[key].value < plan.ap) { ui.notifications.warn(`${actor.name} needs ${plan.ap} ${key.toUpperCase()} to cast this but has ${actor.system[key].value}.`); return null; }
   if (inCombat && plan.energy && actor.system.energy.value < plan.energy) { ui.notifications.warn(`${actor.name} needs ${plan.energy} Energy to cast this but has ${actor.system.energy.value}.`); return null; }
@@ -306,7 +319,7 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
   if (plan.ritual) {
     const heldRitual = !!profile?.hold && plan.cores.length === 1;
     const stored = !profile?.shield && !!profile && !heldRitual;
-    const t3 = !!profile?.afflict;
+    const t3 = !!profile?.afflict || !!profile?.conjure;
     const made = await actor.createEmbeddedDocuments?.("ActiveEffect", [{
       name: `Ritual: ${plan.cores.map(c => c.name).join(" + ")}`, img: "icons/magic/symbols/runes-star-orange.webp", origin: actor.uuid,
       description: `Max Energy −${plan.ritualLoss} while the ritual lasts.${stored ? (t3 ? " One free cast of this spell (AP/RP still needed): on a hit its effect lasts until the Ritual ends, and a miss leaves the free cast." : " Two free casts of this spell (AP/RP still needed); the Ritual ends after the second.") : " Ending this effect ends the ritual's spell effects."}`,
@@ -342,15 +355,16 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
   if (emplace) {
     // The barrier is a real one-way Wall (movement only), made through the GM; its template holds the health.
     if (placed?.tpl) await requestGM("createWalls", { sceneId: placed.sceneId, walls: areas.wallData(placed.tpl, placed.front, placed.grid, { barrierOf: placed.templateId, areaOf: actor.uuid }) });
-    await emplaceCard(actor, { health: 20 * plan.power, shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId, sceneId: placed?.sceneId, walls: !!placed?.tpl });
+    await emplaceCard(actor, { health: 20 * plan.power + (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0), shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId, sceneId: placed?.sceneId, walls: !!placed?.tpl });
   }
+  else if (conjureCast) { if (!plan.ritual) await conjure.resolve({ actor, plan, profile, spec: cjSpec, mods, ritualOf, targets, values }); }
   else if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave, primary, rangedPlusArea });
   return plan;
 }
 
 /** Is the target within the caster's personal melee range? (False without tokens.) */
-function inMeleeRange(actor, other) {
-  const a = attackerToken(actor), b = other.getActiveTokens?.()[0];
+function inMeleeRange(actor, other, from = null) {
+  const a = from ?? attackerToken(actor), b = other.getActiveTokens?.()[0];
   if (!a || !b || !globalThis.canvas?.grid) return false;
   return tokenDistance(a, b) <= (actor.system.derived?.size?.melee ?? 5);
 }
@@ -526,20 +540,23 @@ export async function spiritSense(actor) {
   await post(actor, { title: `${esc(actor.name)} — Spirit Sense`, body: `<div class="fs-notes">${primary ? "Primary" : "Secondary"} Spirit Sense: on a success you sense the direction and amount of magical energy within <strong>${range} ft</strong> (for creatures, their total Spirit), regardless of obstacles, but not their exact location.${primary ? " You auto succeed on targets within melee range and are immune to a Targeted attack roll's stealth bonus." : ""} The GM decides the check's difficulty. (Heightened Spirit Sense, if you have it: 1000 ft and exact compositions.)</div>` });
 }
 
-/** Foci Master (Grasp Arcana T4): swap your attuned Foci for another one on your person for 2 AP (no hour of attuning). */
-export async function swapFoci(actor) {
-  if (tierOf(actor.system.trees ?? {}, "magic-grasp-arcana") < 4) return;
+/** Foci Master (Grasp Arcana T4) / Shroud Master (Build Arcana T4): swap your attuned Foci / Shroud for another on your person for 2 AP (no hour of attuning). */
+async function swapAttuned(actor, type) {
+  const tree = type === "foci" ? "magic-grasp-arcana" : "magic-build-arcana", label = type === "foci" ? "Foci Master" : "Shroud Master";
+  if (tierOf(actor.system.trees ?? {}, tree) < 4) return;
   if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
-  const others = actor.items.filter(i => i.type === "foci" && !i.system.attuned);
-  if (!others.length) return ui.notifications.info(`${actor.name} has no other Foci to swap to.`);
+  const others = actor.items.filter(i => i.type === type && !i.system.attuned);
+  if (!others.length) return ui.notifications.info(`${actor.name} has no other ${type === "foci" ? "Foci" : "Shroud"} to swap to.`);
   const out = await DialogV2().prompt({
-    window: { title: "Foci Master: swap Foci" },
+    window: { title: `${label}: swap` },
     content: `<div class="fs-field"><label>Attune to</label><select name="f">${others.map(i => `<option value="${i.id}">${esc(i.name)}</option>`).join("")}</select></div>`,
     ok: { label: "Swap (2 AP)", callback: (event, button) => button.form.elements.f.value }, rejectClose: false
   });
   const next = out ? actor.items.get(out) : null;
   if (!next) return;
-  if (!(await spendPoints(actor, "ap", 2, "Foci Master"))) return;
+  if (!(await spendPoints(actor, "ap", 2, label))) return;
   await next.update({ "system.attuned": true }, { flowstateFociMaster: true });
-  await post(actor, { title: `${esc(actor.name)} — Foci Master`, body: `<div class="fs-result">${esc(actor.name)} swaps their attuned Foci to <strong>${esc(next.name)}</strong> (2 AP).</div>` });
+  await post(actor, { title: `${esc(actor.name)} — ${label}`, body: `<div class="fs-result">${esc(actor.name)} swaps their attuned ${type === "foci" ? "Foci" : "Shroud"} to <strong>${esc(next.name)}</strong> (2 AP).</div>` });
 }
+export const swapFoci = actor => swapAttuned(actor, "foci");
+export const swapShroud = actor => swapAttuned(actor, "shroud");

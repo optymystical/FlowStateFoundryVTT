@@ -239,7 +239,7 @@ export async function rollStatCheck(actor, key) {
   if (!opts) return;
 
   const armorDis = PHYSICAL_STATS.has(key) ? actor.system.penalties.physicalDis : 0;
-  const net = opts.net + exhaustionNet(actor) - armorDis + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat");
+  const net = opts.net + exhaustionNet(actor) - armorDis + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0);
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, stat.die, net));
   const floored = opts.applyMin && roll.total < stat.min;
@@ -357,10 +357,10 @@ export function tokenDistance(a, b) {
  * Every targeted token must be within `maxRange` ft of the attacker.
  * Returns true if the attack may proceed. Skipped when range enforcement is off or the attacker has no token.
  */
-export function checkRange(actor, maxRange, what, tokens = null) {
+export function checkRange(actor, maxRange, what, tokens = null, from = null) {
   if (!game.settings.get("flowstate", "enforceRange")) return true;
   const targets = (tokens ?? [...game.user.targets]).filter(t => t.actor?.type !== "pile");
-  const source = attackerToken(actor);
+  const source = from ?? attackerToken(actor);
   if (!targets.length || !source || !canvas?.grid) return true;
   const out = targets
     .map(t => ({ name: t.name, dist: Math.round(tokenDistance(source, t) * 10) / 10 }))
@@ -416,8 +416,10 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     if (!pick) return;
     attackType = typeChoices.includes(pick.type) ? pick.type : typeChoices[0];
   }
-  const base = w.profileFor ? w.profileFor(attackType) : w.profile;
+  let base = w.profileFor ? w.profileFor(attackType) : w.profile;
   if (!base?.valid) return ui.notifications.warn(`${item.name}: ${base?.error ?? "invalid weapon"}`);
+  // A natural weapon can't be thrown unless it returns (Geomancy Combos).
+  if (w.natural && !w.returning && base.throwType) base = { ...base, throwType: null };
   // A grapple needs a free hand to maintain: each Unarmed grapple occupies a fist.
   if (unarmed && ab.freeFists(actor) < 1) {
     return ui.notifications.warn(`${actor.name}'s free hand is holding ${ab.handGrapples(actor).map(a => a.name).join(", ")} in a grapple; let go to attack Unarmed.`);
@@ -428,8 +430,8 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   // Rapid T1 Quickload / T5 Speedloader: attacking while out of ammo can reload instead (or reload and fire).
   let speedloaded = false;
   if (base.ranged && !w.loaded) {
-    if (followup || !(ab.rapid(actor, item, 1) || ab.assault(actor, item, 1))) return ui.notifications.warn(`${item.name} needs to be reloaded (${base.reloadRP} RP${ammoRequired() ? `; ${ammoCount(actor, w.ammoType)} ${ammoLabel(w.ammoType)} left` : ""}).`);
-    if (!ammoCount(actor, w.ammoType) && ammoRequired()) return ui.notifications.warn(`${actor.name} has no ${ammoLabel(w.ammoType)} for ${item.name}.`);
+    if (followup || !(ab.rapid(actor, item, 1) || ab.assault(actor, item, 1))) return ui.notifications.warn(`${item.name} needs to be reloaded (${base.reloadRP} RP${ammoRequired() && !w.natural ? `; ${ammoCount(actor, w.ammoType)} ${ammoLabel(w.ammoType)} left` : ""}).`);
+    if (!ammoCount(actor, w.ammoType) && ammoRequired() && !w.natural) return ui.notifications.warn(`${actor.name} has no ${ammoLabel(w.ammoType)} for ${item.name}.`);
     const r = await quickload(actor, item);
     if (r !== "speed") return;
     speedloaded = true;
@@ -1116,6 +1118,11 @@ function landingPosition(near, from) {
  * (or beside the actor's own token). If there's no token on the scene, the item just stays unequipped.
  */
 export async function dropItem(actor, item, nearToken = null, { thrown = true } = {}) {
+  // Natural weapons and armor are part of a Summon or Animation: never dropped. One that returns comes straight back after a throw.
+  if (item.system?.natural) {
+    if (!thrown) ui.notifications.warn(`${item.name} is natural: it can't be dropped.`);
+    return false;
+  }
   const source = attackerToken(actor);
   const anchor = nearToken ?? source;
   if (!anchor || !canvas?.scene) {
@@ -1463,7 +1470,7 @@ async function startExchange(actor, opts, targets) {
     // Psych Up: attacks against you have Advantage.
     // In a Barrel (Longshot T4): Advantage against a target with any movement penalty.
     const barrel = opts.inABarrel && movementPenalized(target) ? 1 : 0;
-    let atkNet = baseNet + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts) + charmNet(actor, "attack")
+    let atkNet = baseNet + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts) + charmNet(actor, "attack") + (opts.spell ? magicDisNet(actor) : 0)
       - (autoDash(target, opts) ? 1 : 0);
     const spellNotes = [];
     // Personal Repulsion / Personal Well (Gravity T3): attacks with a small Scaling Stat get Disadvantage / Advantage.
@@ -3237,6 +3244,9 @@ const barriersFor = (attacker, target) => (globalThis.canvas?.scene ? areas.barr
 let elem = null;
 export const registerElemental = h => { elem = h; };
 export const chainNext = (message, preset) => elem?.chainNext(message, preset);
+/** Tier 4 (Summons, Animations, Made objects) lives in conjure.mjs: riders on a creation's attacks. */
+let conj = null;
+export const registerConjure = h => { conj = h; };
 /** Tier 3 (Poison, Charm, Hex) lives in afflictions.mjs, which registers its hooks here. */
 let aff = null;
 export const registerAfflictions = h => { aff = h; };
@@ -3244,6 +3254,8 @@ export const registerAfflictions = h => { aff = h; };
 const charmNet = (actor, type) => aff?.charmNet(actor, type) ?? 0;
 /** A Hex that triggers on a roll the creature just made. */
 const hexRoll = (actor, type) => aff?.hexTrigger(actor, "roll", { roll: type });
+/** Unravel (Witchery T4): Disadvantage on all Magic related checks (spell attack rolls and Reach / Grasp / Build checks) until the caster's next turn. */
+export const magicDisNet = actor => (spellEffects(actor, "magicDis").length ? -1 : 0);
 export const afflictTurnStart = actor => aff?.turnStart(actor);
 export const afflictCasterTurn = actor => aff?.casterTurn(actor);
 export const hexMove = actor => (inActiveCombat(actor) ? aff?.hexTrigger(actor, "move") : null);
@@ -3358,10 +3370,11 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   const caster = attacker.uuid;
   const ritualOf = sp.ritualOf ?? null;
   if (profile.shield) {
-    const hp = fx.shieldHealth(profile, sp.power);
     const m = sp.mods ?? {};
+    // Layered (Build Arcana T1): a Shield isn't default Spell health, so it gains your Build per Layered.
+    const hp = fx.shieldHealth(profile, sp.power) + (m.layered ?? 0) * Math.max(0, attacker.system?.derived?.effective?.build?.value ?? 0);
     await putSpellEffect(target, { kind: "shield", caster, name: `Shield (${esc(attacker.name)})`, hp, max: hp, ritualOf,
-      reflect: !!m.reflect, adjust: !!m.adjust, dampen: sp.dampen ?? [], order: "default",
+      reflect: !!m.reflect, adjust: !!m.adjust, dampen: sp.dampen ?? [], order: "default", reform: !!m.reform, reformMark: hp,
       description: `Absorbs the next ${hp} damage. ${ritualOf ? "Lasts until the ritual ends or the Shield breaks." : "Until the start of the caster's next turn."}` });
     html.push(`<div class="fs-result"><i class="fa-solid fa-shield"></i> ${esc(target.name)} is protected by a Shield with <strong>${hp} health</strong>${ritualOf ? " (until the ritual ends or it breaks)" : " until the start of your next turn"}.</div>`);
   }
@@ -4570,6 +4583,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (instances) for (const amt of instances) await requestDamage(target, amt, type, pierceNow, null, { silent: true, ...dmgOpts });
   else await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts });
   if (ripHTML) await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts });
+  // A Summon's or Animation's attacks carry the Core they were Combo'd with (Any T1/T2/T3 + Summoning / Animation).
+  if (conj && !o.spell) await conj.riderAfter({ attacker, target, o, outcome, defense });
 }
 
 /** Twist (Reach T4) and Impale (Reach T5) from a damage card. */
@@ -4620,7 +4635,7 @@ export async function reloadWeapon(actor, item) {
   await triggerMark(actor, `reloads`);
   const p = item.system.profile;
   if (!p?.ranged || (item.system.rounds ?? 0) >= (item.system.magazine ?? 1)) return ui.notifications.info(`${item.name} is fully loaded.`);
-  if (ammoRequired() && !ammoCount(actor, item.system.ammoType)) return ui.notifications.warn(`${actor.name} has no ${ammoLabel(item.system.ammoType)} for ${item.name}.`);
+  if (ammoRequired() && !item.system.natural && !ammoCount(actor, item.system.ammoType)) return ui.notifications.warn(`${actor.name} has no ${ammoLabel(item.system.ammoType)} for ${item.name}.`);
   if (!(await spendPoints(actor, "rp", p.reloadRP, `reloading ${item.name}`))) return;
   const n = await loadWeapon(actor, item);
   if (n) ui.notifications.info(`${item.name}: loaded ${n} (${item.system.rounds}/${item.system.magazine}).`);
@@ -4647,7 +4662,7 @@ export async function loadWeapon(actor, item) {
   const need = Math.max(0, (w.magazine ?? 1) - (w.rounds ?? 0));
   if (!need) return 0;
   let take = need;
-  if (ammoRequired()) {
+  if (ammoRequired() && !w.natural) {
     take = Math.min(need, ammoCount(actor, w.ammoType));
     if (!take) { ui.notifications.warn(`${actor.name} has no ${ammoLabel(w.ammoType)} for ${item.name}.`); return 0; }
     let left = take;
@@ -5014,9 +5029,21 @@ export async function recoverEnergy(actor) {
   const { value, max } = actor.system.energy;
   if (value >= max) return ui.notifications.info(`${actor.name} is already at full Energy.`);
   if (!(await spendAP(actor, 1, "recovering Energy"))) return;
-  const gain = await energyRestoreAdjust(actor, Math.min(actor.system.derived.energyRecover, max - value));
+  let gain = await energyRestoreAdjust(actor, Math.min(actor.system.derived.energyRecover, max - value));
+  // Seep (Build Arcana T3): forgo half of the Energy to make your Shroud recover once.
+  let seep = "";
+  const sh = actor.system.shroud;
+  if (ab.treeTier(actor, "magic-build-arcana") >= 3 && sh?.system?.wear > 0 && gain > 1) {
+    const forgo = Math.floor(gain / 2);
+    const yes = await DialogV2().confirm({ window: { title: "Seep" }, rejectClose: false, content: `<p>Forgo <strong>${forgo}</strong> of the ${gain} Energy to make ${esc(sh.name)} recover once?</p>` });
+    if (yes) {
+      const P = sh.system.profile;
+      const recover = P.fixedDur ? sh.system.wear : Math.min(sh.system.wear, sh.system.shroudType === "cistern" || sh.system.shroudType === "ember" ? P.limit : P.baseLimit);
+      if (recover > 0) { await sh.update({ "system.wear": sh.system.wear - recover }, { flowstateSystem: true }); gain -= forgo; seep = ` · Seep: ${esc(sh.name)} recovers ${recover} Durability (−${forgo} Energy)`; }
+    }
+  }
   await actor.update({ "system.energy.value": value + gain });
-  await post(actor, { title: "Recover Energy", body: `<div class="fs-result">+${gain} Energy (${value + gain}/${max})</div>` });
+  await post(actor, { title: "Recover Energy", body: `<div class="fs-result">+${gain} Energy (${value + gain}/${max})${seep}</div>` });
 }
 
 /** Ch8 8-hour rest: regain Con+Will+Build minimums; clears days without rest. Max HP lost is not healed. */

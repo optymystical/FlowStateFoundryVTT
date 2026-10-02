@@ -634,6 +634,7 @@ function actionGroups(actor, weapons, stats) {
   const grasp = ab.treeTier(actor, "magic-grasp-arcana");
   if (grasp >= 2) magicRows.push({ label: "Spirit Sense", detail: `Spot check for magical energy within ${grasp >= 4 ? 100 : 10} ft`, cost: "Check", action: "spiritSense", icon: "fa-solid fa-eye" });
   if (grasp >= 4 && actor.items.some(i => i.type === "foci" && !i.system.attuned)) magicRows.push({ label: "Foci Master: swap Foci", detail: "Attune to another Foci you carry (no hour needed)", cost: "2 AP", action: "swapFoci", icon: "fa-solid fa-arrows-rotate" });
+  if (ab.treeTier(actor, "magic-build-arcana") >= 4 && actor.items.some(i => i.type === "shroud" && !i.system.attuned)) magicRows.push({ label: "Shroud Master: swap Shroud", detail: "Attune to another Shroud you carry (no hour needed)", cost: "2 AP", action: "swapShroud", icon: "fa-solid fa-arrows-rotate" });
   const cs = casting.castSummary(actor);
   if (cs.any) {
     const why = cs.usable ? "" : cs.ctx.options.map(o => `${o.label}: ${o.reason}`).join(" · ");
@@ -696,6 +697,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       cast: FlowStateActorSheet.onCast,
       spiritSense: FlowStateActorSheet.onSpiritSense,
       swapFoci: FlowStateActorSheet.onSwapFoci,
+      swapShroud: FlowStateActorSheet.onSwapShroud,
       useHeld: FlowStateActorSheet.onUseHeld,
       cycleShieldOrder: FlowStateActorSheet.onCycleShieldOrder,
       posture: FlowStateActorSheet.onPosture,
@@ -912,6 +914,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   static onCast() { return casting.castSpell(this.document); }
   static onSpiritSense() { return casting.spiritSense(this.document); }
   static onSwapFoci() { return casting.swapFoci(this.document); }
+  static onSwapShroud() { return casting.swapShroud(this.document); }
   static onUseHeld(event, target) { return casting.useHeldSpell(this.document, target.dataset.itemId ?? target.closest?.("[data-item-id]")?.dataset.itemId); }
   /** Adjust (Protection Arcana T3): the holder chooses where their Shield sits in the order damage is absorbed. */
   static async onCycleShieldOrder(event, target) {

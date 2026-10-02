@@ -36,6 +36,8 @@
       <label><input type="checkbox" name="system.twoHanded" {{checked system.twoHanded}} {{#unless stateEditable}}disabled{{/unless}}> Two-handed</label>
       <label><input type="checkbox" name="system.equipped" {{checked system.equipped}} {{#unless stateEditable}}disabled{{/unless}}> Held</label>
       {{/if}}
+      {{#unless unarmed}}<label data-tooltip="A natural weapon (a Summon's, an Animation's, a body part): it can't be dropped or thrown unless it returns"><input type="checkbox" name="system.natural" {{checked system.natural}} {{#unless editable}}disabled{{/unless}}> Natural</label>
+      {{#if system.natural}}<label data-tooltip="A natural melee weapon that comes back when thrown (Geomancy Combos)"><input type="checkbox" name="system.returning" {{checked system.returning}} {{#unless editable}}disabled{{/unless}}> Returns when thrown</label>{{/if}}{{/unless}}
       {{#if hasAmmo}}<label>Shots per reload <input type="number" name="system.magazine" value="{{system.magazine}}" min="1" style="width:4em" {{#unless editable}}disabled{{/unless}}></label>
       <span class="fs-sub">{{system.rounds}}/{{system.magazine}} loaded</span>{{/if}}
     </div>

@@ -12,7 +12,7 @@
 import * as fx from "./spellfx.mjs";
 import {
   post, requestGM, requestDamage, damageOutcome, putSpellEffect, spellEffects, spellForce, giveStacks, pickSceneTarget, performAttack, attackerToken,
-  tokenDistance, changeEffect, knockbackRow, exhaustionNet, registerAfflictions, setActorFlag
+  tokenDistance, changeEffect, knockbackRow, exhaustionNet, magicDisNet, registerAfflictions, setActorFlag
 } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES, STATS } from "./rules.mjs";
@@ -38,7 +38,7 @@ const effectsFrom = (kind, casterUuid) => allActors().flatMap(a => spellEffects(
 /* -------------------------------------------- */
 
 /** A card only the caster and the GM see (Charm and Hex don't alert their target). */
-async function secret(actor, caster, { title, body, rolls = [], flags = {} }) {
+export async function secret(actor, caster, { title, body, rolls = [], flags = {} }) {
   const game = globalThis.game;
   const ids = (game.users ?? []).filter(u => u.isGM || caster?.testUserPermission?.(u, "OWNER")).map(u => u.id);
   const content = `<div class="flowstate-card"><header class="fs-card-title">${title}</header>${body}</div>`;
@@ -53,7 +53,8 @@ export async function check(actor, stats, req, { dis = 0 } = {}) {
   const keys = [].concat(stats);
   const eff = actor.system.derived.effective;
   const die = keys.reduce((n, k) => n + (eff[k]?.die ?? 0), 0);
-  const net = -dis + exhaustionNet(actor) + charmNet(actor, "stat");
+  const spirit = keys.some(k => ["reach", "grasp", "build"].includes(k));
+  const net = -dis + exhaustionNet(actor) + charmNet(actor, "stat") + (spirit ? magicDisNet(actor) : 0);
   const r = await roll(poolFormula(1, Math.max(1, die), net));
   return { roll: r, total: r.total, passed: r.total >= req, die, req, net, label: keys.map(k => STATS[k]?.label ?? k).join(" + ") };
 }
@@ -157,7 +158,7 @@ const charmCheck = (attacker, target, { dis = 0, req = 3 } = {}) => check(target
 const combinedCheck = (attacker, target, a, { dis = 0 } = {}) => check(target, a.combined, a.req, { dis });
 
 /** Put a Charm on a creature (replacing one of the same caster and roll type; doubled by Propagandize). */
-async function placeCharm(caster, target, { rollType, ritualOf = null, ingrained = false, propagandize = false, dot = null, turnsLeft = 0 }) {
+export async function placeCharm(caster, target, { rollType, ritualOf = null, ingrained = false, propagandize = false, dot = null, turnsLeft = 0 }) {
   const mine = spellEffects(target, "charm").filter(e => data(e).caster === caster.uuid && !data(e).pending);
   const same = mine.find(e => data(e).rollType === rollType);
   if (same && turnsLeft) { await changeEffect(same, { "flags.flowstate.spellEffect.turnsLeft": (data(same).turnsLeft ?? 1) + 1 }); return `<div class="fs-result">${esc(target.name)}'s Charm lasts one more turn of yours.</div>`; }
@@ -278,9 +279,9 @@ async function forceRoll(caster, target, fd) {
 /*  Hex                                         */
 /* -------------------------------------------- */
 
-const hexBase = (caster, power, ritualOf) => ({ caster, power, ritualOf: ritualOf ?? null, ritual: !!ritualOf, hid: foundry.utils.randomID?.() ?? String(Math.random()).slice(2) });
+export const hexBase = (caster, power, ritualOf) => ({ caster, power, ritualOf: ritualOf ?? null, ritual: !!ritualOf, hid: foundry.utils.randomID?.() ?? String(Math.random()).slice(2) });
 
-function hexData(a, sp, base, ch, profile, extra = {}) {
+export function hexData(a, sp, base, ch, profile, extra = {}) {
   const m = sp.mods ?? {}, p = base.power, hx = ch.hex ?? {};
   const trigger = hx.trigger && fx.HEX_TRIGGERS[hx.trigger] ? hx.trigger : "harm";
   const scaled = {};
@@ -291,7 +292,7 @@ function hexData(a, sp, base, ch, profile, extra = {}) {
 }
 
 /** The Active Effect data for a Hex (a minute, or until it has triggered enough times; Rituals are permanent). */
-function hexEffect(h, profile) {
+export function hexEffect(h, profile) {
   const w = globalThis.game?.time?.worldTime;
   const left = h.ritual || h.repeat ? Infinity : 1 + (h.linger ?? 0);
   const trig = fx.HEX_TRIGGERS[h.trigger]?.label ?? h.trigger;
@@ -300,14 +301,14 @@ function hexEffect(h, profile) {
     description: `Triggers on: ${trig}${h.trigger === "roll" || h.trigger === "failsuccess" ? ` (${fx.ROLL_TYPES[h.roll] ?? h.roll}${h.trigger === "failsuccess" ? `, ${h.outcome}` : ""})` : ""}${h.detail ? ` — ${h.detail}` : ""}. ${h.noCheck ? "" : "Build check (3 or higher), "}${h.type === "health" ? `${dice(h.n, h.sides)} health` : `${dice(h.n, h.sides)} ${typeLabel(h.type)}`}.` };
 }
 const hexTriggerText = h => `${fx.HEX_TRIGGERS[h.trigger]?.label ?? h.trigger}${h.trigger === "roll" || h.trigger === "failsuccess" ? ` (${fx.ROLL_TYPES[h.roll] ?? h.roll}${h.trigger === "failsuccess" ? `, ${h.outcome}` : ""})` : ""}${h.detail ? ` — ${esc(h.detail)}` : ""}`;
-function hexCard(target, h) {
+export function hexCard(target, h) {
   const manual = h.trigger === "act" || h.trigger === "word" || (h.trigger === "failsuccess" && (h.roll === "stat" || h.roll === "noncombat"));
   return `<div class="fs-result"><i class="fa-solid fa-hat-wizard"></i> ${esc(target.name)} carries a Hex. Trigger: <strong>${hexTriggerText(h)}</strong>.</div>
     <div class="fs-notes">${h.noCheck ? "" : "Build check (3 or higher), then "}${dice(h.n, h.sides)} ${typeLabel(h.type)} (${fx.HEX_TRIGGERS[h.trigger].stacks > 0 ? `Strengthened ×${fx.HEX_TRIGGERS[h.trigger].stacks}` : fx.HEX_TRIGGERS[h.trigger].stacks < 0 ? `Weakened ×${-fx.HEX_TRIGGERS[h.trigger].stacks}` : "no stacks"}). ${h.ritual ? "Permanent until the ritual ends." : h.repeat ? "Lasts until the start of your next turn." : `Lasts a minute or ${h.linger ? `${1 + h.linger} triggers` : "until it triggers"}.`}
     ${manual ? "This trigger can't be detected automatically: click the button below when it happens." : "It triggers automatically."}</div>
     ${manual ? actRow({ uuid: h.caster }, 0, "hex", "Trigger the Hex", "fa-solid fa-bolt", "The trigger just happened") : ""}`;
 }
-const hexFlags = (target, h) => ({ flowstate: { afflict: { acts: [{ act: "hex", target: target.uuid, hid: h.hid, caster: h.caster }] } } });
+export const hexFlags = (target, h) => ({ flowstate: { afflict: { acts: [{ act: "hex", target: target.uuid, hid: h.hid, caster: h.caster }] } } });
 
 /** A Hex's trigger happened to this creature. kind: harm | move | roll | failsuccess | manual. */
 const firing = new Set();
@@ -486,7 +487,7 @@ const ACT_LABELS = { pass: "Pass the Poison", spread: "Virality: spread it", arc
 function actRow(owner, i, act, label, icon, tip) {
   return `<div class="fs-brawl-row fs-afflict-row" data-role="attacker" data-owner="${owner.uuid}"><button type="button" class="fs-afflict-act" data-i="${i}" data-tooltip="${esc(tip ?? "")}"><i class="${icon}"></i> ${esc(label)}</button></div>`;
 }
-function actButton(x, i) {
+export function actButton(x, i) {
   const ally = x.ally;
   const label = x.act === "arc" ? `${x.label}${ally ? "" : ""} (${dice(x.n, x.sides)} ${typeLabel(x.type)})` : ACT_LABELS[x.act] ?? x.act;
   const tips = { arc: "Make a Ranged attack roll at a target within 100 ft of the afflicted; on a hit the damage repeats", spread: "Make an attack roll at a target within 100 ft of them and you; on a hit the Poison duplicates onto it",

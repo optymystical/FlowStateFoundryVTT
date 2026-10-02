@@ -124,6 +124,26 @@ Object.assign(PROFILES, {
   [profileKey([CM, HX])]: { name: "Charm + Hex", afflict: { kind: "charmHex", dice: [1, 8], type: "arcane", combined: ["will", "build"], req: 5 } }
 });
 
+/**
+ * Tier 4 (Summoning, Creation, Animation) profiles. `conjure` says what the cast makes (see conjure.mjs): a Summon, a Made object, an Animation.
+ * Combos with a Tier 1/2/3 Core add that Core's effect to the creation's attacks (`rider`); the pure Tier 4 Combos mix the rules.
+ */
+const SU = "magic-summoning:form", MK = "magic-creation:make", AN = "magic-animation:animate";
+Object.assign(PROFILES, {
+  [SU]: { name: "Form", conjure: { kind: "summon" } },
+  [MK]: { name: "Make", conjure: { kind: "make" } },
+  [AN]: { name: "Animate", conjure: { kind: "animate" } },
+  [profileKey([SU, MK])]: { name: "Form + Make", conjure: { kind: "summon", make: true } },
+  [profileKey([SU, AN])]: { name: "Form + Animate", conjure: { kind: "animate", summonStats: true } },
+  [profileKey([MK, AN])]: { name: "Make + Animate", conjure: { kind: "animate", instant: true } }
+});
+for (const core of ["magic-gravity:force", "magic-slashing:cut", "magic-piercing:stab", "magic-crushing:slam", "magic-heat:flame", "magic-cold:frost", "magic-radiation:crackle", "magic-acid:glob",
+  "magic-venomancy:poison", "magic-charm:charm", "magic-witchery:hex"]) {
+  const short = core.split(":")[1][0].toUpperCase() + core.split(":")[1].slice(1);
+  for (const [t4, kind, label] of [[SU, "summon", "Form"], [MK, "make", "Make"], [AN, "animate", "Animate"]])
+    PROFILES[profileKey([core, t4])] = { name: `${short} + ${label}`, conjure: { kind, rider: core } };
+}
+
 /** Roll types a Charm / Hex can be tied to. */
 export const ROLL_TYPES = { attack: "Attack", damage: "Damage", dodge: "Dodge", stat: "Stat check", noncombat: "Non-combat (d100)" };
 
@@ -156,8 +176,8 @@ export function poisonEnds({ passed, procs, prolong = 0, ritual = false }) {
 export const charmAmount = (propagandize, otherCharms) => (propagandize && otherCharms >= 2 ? 2 : 1);
 /** The effect the dialog's Charm/Hex choices need for this Core pair: { charm, hex, hexDie }. */
 export function afflictNeeds(profile) {
-  const k = profile?.afflict?.kind;
-  return { charm: k === "charm" && !profile.afflict.combo || k === "venomCharm", hex: k === "hex" || k === "venomHex" || k === "charmHex", hexDie: !!profile?.afflict?.extra?.dieDown };
+  const k = profile?.afflict?.kind, rider = profile?.conjure?.rider;
+  return { charm: (k === "charm" && !profile.afflict.combo) || k === "venomCharm" || rider === "magic-charm:charm", hex: k === "hex" || k === "venomHex" || k === "charmHex" || rider === "magic-witchery:hex", hexDie: !!profile?.afflict?.extra?.dieDown };
 }
 
 /** The automated profile for these Cores, or null (the GM resolves it from the card). */
@@ -233,7 +253,10 @@ export const AUTOMATED_MODS = new Set([
   "magic-grasp-arcana:foresight", "magic-grasp-arcana:replicate", "magic-grasp-arcana:instant-ritual",
   "magic-venomancy:prolong", "magic-venomancy:lethality", "magic-venomancy:potency", "magic-venomancy:virality",
   "magic-charm:ingrained", "magic-charm:convince", "magic-charm:cloud", "magic-charm:propagandize",
-  "magic-witchery:linger", "magic-witchery:fester", "magic-witchery:unravel", "magic-witchery:consume"
+  "magic-witchery:linger", "magic-witchery:fester", "magic-witchery:unravel", "magic-witchery:consume",
+  "magic-build-arcana:layered", "magic-build-arcana:reform", "magic-build-arcana:projection",
+  "magic-summoning:arm", "magic-summoning:skin", "magic-creation:armory", "magic-creation:make-mk2", "magic-creation:make-mk3", "magic-creation:complexity",
+  "magic-animation:weapon-foci", "magic-animation:armor-shroud", "magic-animation:expanded-animation", "magic-animation:mixed-animations"
 ]);
 
 /** Gravity's Replacement Mods: when one replaces the base effect, Force (the Gravity part of the spell) is dropped. */

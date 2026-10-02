@@ -59,3 +59,14 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 - Instant Ritual is a `planCast` flag (`instantRitual`); Foci Master bypasses the in-combat attuning refusal with the `flowstateFociMaster` update option.
 - Tests: `dev/tests/spell-t3.mjs`.
 
+## Built (v0.31.0): Tier 4 (Build Arcana, Summoning, Creation, Animation) and Unravel
+
+- `module/conjure.mjs` is the engine (casting.mjs asks `conjure.prompt` before payment and calls `conjure.resolve` after); `module/conjure-rules.mjs` is the pure math (pool, health, sizes, materials, riders). Profiles: `PROFILES[...].conjure` (`kind` summon/make/animate; `rider` for Any T1/T2/T3 + T4; `make`, `summonStats`, `instant` for the pure Combos).
+- Summons/Animations are NPC actors created through `GM_ACTIONS.createCreation` (also `deleteCreation`, `giveItems`, `deleteMade`). Their numbers live in the actor flag `flowstate.summon` (`hp`, `energy`, `attackDie`, `dodgeDie`, `speed`, `physical`, `ap`, `rp`, `owner`, `ritualOf`, `rider`), which `FlowStateActorData.prepareDerivedData` applies. Made items carry `flags.flowstate.made { caster, ritualOf, rider? }`.
+- Ending: `conjure.turnStart` (Reform, then temporary creations) from `_onStartTurn`; `clearAll` on combat end; `endRitual` from the Ritual-effect delete hook. A Tier 4 Ritual stores one free cast (`ritual.t3`), spent by `resolve`.
+- Natural items: `natural` / `returning` fields; `dropItem` refuses them; the weapon dialog hides Throw for natural, non-returning weapons; natural weapons skip ammunition.
+- `riderAfter` (registered as `registerConjure`) runs after a non-spell attack's damage: the Combo Core's extra damage/effects for a Summon, Animation, or Made item.
+- Projection passes an `origin` token to range and melee checks; Seep is in `recoverEnergy`; Foci Master / Shroud Master share `swapAttuned`.
+- Unravel: `magicDisNet` in spell attack rolls and Reach/Grasp/Build checks.
+- Tests: `dev/tests/spell-t4.mjs`.
+

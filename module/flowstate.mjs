@@ -5,6 +5,7 @@ import * as actions from "./actions.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
+import * as conjure from "./conjure.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
@@ -94,7 +95,7 @@ class FlowStateCombat extends Combat {
   /** Round 1: every combatant gets their full AP and RP. */
   async startCombat() {
     for (const c of this.combatants) {
-      if (c.actor?.isOwner) await c.actor.update({ "system.ap.value": 6, "system.rp.value": 6 });
+      if (c.actor?.isOwner) await c.actor.update({ "system.ap.value": c.actor.system.ap?.max ?? 6, "system.rp.value": c.actor.system.rp?.max ?? 6 });
     }
     return super.startCombat();
   }
@@ -107,7 +108,7 @@ class FlowStateCombat extends Combat {
       const a = combatant.actor, e = a.system.energy;
       let regain = 2 * (a.system.derived?.energyRecover ?? 0);
       if (regain) regain = await actions.energyRestoreAdjust(a, regain);                 // Freeze (Cold T4)
-      await a.update({ "system.ap.value": 6, "system.rp.value": 6, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
+      await a.update({ "system.ap.value": a.system.ap?.max ?? 6, "system.rp.value": a.system.rp?.max ?? 6, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
       // Psych Up / Calm Down last until the start of your next turn.
       await actions.clearStances(combatant.actor);
       // Medium Armor (Limber, Versatility, Careful Steps) and Rapid Marks.
@@ -121,6 +122,8 @@ class FlowStateCombat extends Combat {
       await actions.bleedTurnStart(combatant.actor);
       // Poison, Charm and Hex (Tier 3): the victim's checks, and the caster's Ingrained Charms.
       await actions.afflictTurnStart(combatant.actor);
+      // Tier 4: Reform, then the caster's temporary Summons, Animations and Made objects end.
+      await conjure.turnStart(combatant.actor);
       await actions.afflictCasterTurn(combatant.actor);
     }
   }
@@ -733,6 +736,7 @@ Hooks.on("deleteCombat", combat => {
   for (const c of combat.combatants) setTimeout(() => {
     actions.clearSpellEffects(c.actor, { all: true });
     areas.clearAreas(c.actor, { all: true });
+    conjure.clearAll(c.actor);
     actions.refillEnergy(c.actor); actions.clearStances(c.actor);
     if (c.actor?.getFlag("flowstate", "carefulLapsed")) c.actor.unsetFlag("flowstate", "carefulLapsed"); // Careful Steps is free again
   }, 0);
@@ -1001,6 +1005,9 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   }
   for (const btn of html.querySelectorAll(".fs-chain")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.chainNext(message); });
+  }
+  for (const btn of html.querySelectorAll(".fs-conjure-act")) {
+    btn.addEventListener("click", event => { event.preventDefault(); conjure.act(message, Number(btn.dataset.i)); });
   }
   for (const btn of html.querySelectorAll(".fs-afflict-act")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.afflictAct(message, Number(btn.dataset.i)); });
@@ -1378,6 +1385,7 @@ Hooks.on("deleteActiveEffect", async effect => {
   for (const a of game.actors) for (const e of a.effects) if (e.flags?.flowstate?.ritualOf === effect.uuid) tied.push(e);
   for (const t of canvas?.tokens?.placeables ?? []) if (!t.document.actorLink) for (const e of t.actor?.effects ?? []) if (e.flags?.flowstate?.ritualOf === effect.uuid) tied.push(e);
   for (const e of tied) await e.delete();
+  await conjure.endRitual(effect.uuid);
 });
 Hooks.on("createActiveEffect", effect => {
   if (!game.user.isActiveGM || !effect.flags?.flowstate?.ritual || !(effect.parent instanceof Actor)) return;

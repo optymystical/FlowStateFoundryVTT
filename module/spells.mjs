@@ -79,6 +79,8 @@ export function baseThreshold(coreIds) {
     const other = cores.find(c => c !== arcane);
     return { ok: true, min: other.min, max: other.max, combo: true };
   }
+  // Summoning + Animation is listed as 2-6 (one extra baseline Threshold), not the sum of both ranges.
+  if (new Set(cores.map(c => c.treeId)).size === 2 && cores.every(c => c.treeId === "magic-summoning" || c.treeId === "magic-animation")) return { ok: true, min: 2, max: 6, combo: true };
   return { ok: true, min: a.min + b.min, max: a.max + b.max, combo: true };
 }
 

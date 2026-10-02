@@ -985,6 +985,9 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   for (const btn of html.querySelectorAll(".fs-shroud-counter")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.shroudCounter(message, btn.dataset.kind, Number(btn.dataset.amount)); });
   }
+  for (const btn of html.querySelectorAll(".fs-flip-wall")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.requestGM("flipBarrier", { sceneId: btn.dataset.scene, templateId: btn.dataset.template }); });
+  }
   for (const btn of html.querySelectorAll(".fs-reflect-counter")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.reflectCounter(message, btn.dataset.caster, Number(btn.dataset.amount)); });
   }

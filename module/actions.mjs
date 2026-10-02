@@ -1197,6 +1197,8 @@ export const GM_ACTIONS = {
     if (item) await item.update({ "system.wear": item.system.wear + amount }, { flowstateSystem: true });
   },
   async barrier({ sceneId, id, hp }) { await areas.setBarrierHealth(sceneId, id, hp); },
+  async createWalls({ sceneId, walls }) { await areas.createBarrierWalls(sceneId, walls); },
+  async flipBarrier({ sceneId, templateId }) { await areas.flipBarrier(sceneId, templateId); },
   async changeEffect({ uuid, data }) {
     const e = await fromUuid(uuid);
     if (e) await (data ? e.update(data) : e.delete());

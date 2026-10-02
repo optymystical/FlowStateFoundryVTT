@@ -4,7 +4,7 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook } from "./actions.mjs";
+import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import { STATS } from "./rules.mjs";
@@ -251,7 +251,7 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
     const agate = fociItem?.system?.attuned && fociItem.system.profile?.affixes?.includes("agate") ? (fociItem.system.profile.affixPlus ? 2 : 1.5) : 1;
     const aim = [...(game.user?.targets ?? [])][0];
     placed = await areas.placeArea(actor, { title: emplace ? "Emplace" : "Gravity Field", scale: (mods.snipe ? 2 : 1) * agate, aim,
-      flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power } : {}) } });
+      facing: emplace, flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power } : {}) } });
     if (placed === null) return null;                                    // cancelled: nothing is spent
     if (placed && !emplace) targets = placed.actors.map(a => ({ actor: a }));
   }
@@ -289,7 +289,11 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
     flags: { flowstate: { spell: { caster: actor.uuid, cores: ids, mods: plan.applied.map(a => a.mod.id), power: plan.power, threshold: plan.threshold, energy: plan.energy, ritual: plan.ritual, attack: plan.attack } } }
   });
   // Automated spells go on to the attack exchange (Rituals of attack spells just store their free casts).
-  if (emplace) await emplaceCard(actor, { health: 20 * plan.power, shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId });
+  if (emplace) {
+    // The barrier is a real one-way Wall (movement only), made through the GM; its template holds the health.
+    if (placed?.tpl) await requestGM("createWalls", { sceneId: placed.sceneId, walls: areas.wallData(placed.tpl, placed.front, placed.grid, { barrierOf: placed.templateId, areaOf: actor.uuid }) });
+    await emplaceCard(actor, { health: 20 * plan.power, shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId, sceneId: placed?.sceneId, walls: !!placed?.tpl });
+  }
   else if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave });
   return plan;
 }
@@ -372,7 +376,8 @@ setWeaveHook({
 });
 
 /** Chat card for a placed Emplace barrier. */
-async function emplaceCard(actor, { health, shapeLabel, templateId }) {
+async function emplaceCard(actor, { health, shapeLabel, templateId, sceneId, walls }) {
   return post(actor, { title: `${esc(actor.name)} — Emplace`, body: `<div class="fs-result"><i class="fa-solid fa-shield"></i> A one-way barrier (${esc(shapeLabel)}) with <strong>${health} health</strong> is in place.${templateId ? " Its template is on the scene." : ""}</div>
-    <div class="fs-notes">It blocks attacks coming from the far side of it from you (anything on your side passes), absorbing their damage up to its health before parries, Shields or armor. It blocks movement through it too, which the GM enforces. It lasts until the start of your next turn.</div>` });
+    <div class="fs-notes">It blocks attacks coming from the far side of it from you (anything on your side passes), absorbing their damage up to its health before parries, Shields or armor. It blocks movement through it too, from the same side. It lasts until the start of your next turn.</div>
+    ${walls ? `<div class="fs-brawl-row" data-role="attacker" data-owner="${actor.uuid}"><button type="button" class="fs-flip-wall" data-scene="${sceneId}" data-template="${templateId}" data-tooltip="If the wall's arrow points the wrong way, flip which side it blocks"><i class="fa-solid fa-arrows-left-right"></i> Flip facing</button></div>` : ""}` });
 }

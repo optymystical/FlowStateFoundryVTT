@@ -21,14 +21,14 @@ export const FOCI_TYPES = {
   wand: fo("Wand", "igniter", 30, 6, 1, false, "Every other spell cast with this Foci grants it 1 additional TR until the start of your next turn. Has 0 TR baseline.", { tr: 0 }),
   staff: fo("Staff", "igniter", 30, 6, 1, false, "Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was a different Core Spell.", { twoHandCast: true }),
   scepter: fo("Scepter", "igniter", 60, 12, 1, false, "Spells cast with this Foci have 1 additional TR when targeting an ally."),
-  chime: fo("Chime", "igniter", 10, 2, 0, false, DECK(7, 2, 4)),
+  chime: fo("Chime", "igniter", 10, 2, 0, false, DECK(7, 2, 4), { deck: true }),
   // Channelers
   scroll: fo("Scroll", "channeler", 20, 4, 3, false),
   orb: fo("Orb", "channeler", 40, 8, 1, true),
   lens: fo("Lens", "channeler", 30, 6, 1, false, "Every spell cast with this Foci removes 1 TR from it until the start of your next turn. Has 4 TR baseline.", { tr: 4 }),
   tome: fo("Tome", "channeler", 30, 6, 1, false, "Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was the same Core Spell.", { twoHandCast: true }),
   tablet: fo("Tablet", "channeler", 60, 12, 1, false, "Spells cast with this Foci have 2 additional TR when targeting an ally."),
-  cards: fo("Cards", "channeler", 10, 2, 0, false, DECK(5, 3, 6)),
+  cards: fo("Cards", "channeler", 10, 2, 0, false, DECK(5, 3, 6), { deck: true }),
   // Multi
   glove: fo("Glove", "multi", 40, 8, 3, false),
   band: fo("Band", "multi", 60, 12, 1, true),
@@ -104,7 +104,7 @@ export function fociProfile(sys, stats = {}) {
     durability: t.dur * grade,
     limit: t.limit * grade,
     affixSlots: t.affixes, affixPlus: t.plus, affixes,
-    twoHandCast: !!t.twoHandCast,
+    twoHandCast: !!t.twoHandCast, deck: !!t.deck,
     effect: t.effect,
     // Foci only block what they would as an object (Physical and Elemental), when something targets or hits through them.
     focus: null, selfWeakened: affixes.includes("zircon") ? (t.plus ? 2 : 1) : 0

@@ -46,6 +46,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         hearing: sense("primary"),
         smell: sense("secondary")
       }),
+      focusedSpell: new f.StringField({ initial: "" }),    // Magic Theory T2: the Focused Spell's Core id
       biography: new f.HTMLField({ initial: "" })
     };
   }
@@ -64,7 +65,10 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     this.hp.pain = d.pain;
     this.hp.overkill = Math.max(0, -this.hp.value);
     this.hp.destroyed = this.hp.overkill >= d.hpMax && d.hpMax > 0 && this.hp.value < 0;
-    this.energy.max = d.energyMax;
+    // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).
+    const rituals = Array.from(this.parent?.effects ?? []).filter(e => !e.disabled);
+    this.ritualLoss = rituals.reduce((n, e) => n + (Number(e.flags?.flowstate?.ritual?.energyLost) || 0), 0);
+    this.energy.max = Math.max(0, d.energyMax - this.ritualLoss);
     this.ap.max = 6;
     this.rp.max = 6;
 

@@ -14,3 +14,8 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 - Rituals: an option on cast; applies a Max Energy loss Active Effect. When that effect ends, the spell effect ends too.
 - Weaving: checkbox in the attack dialog, only offered when a non-Magical attack has the same AP/RP cost.
 - GM-adjudicated spells: chat card states the expected effect and applies Active Effects to targets as needed.
+
+## Built so far (v0.23.0): casting framework
+- `spells.mjs` / `casting.mjs`, tests in `dev/tests/spells-test.mjs`.
+- Judgment calls to confirm: Combo Threshold = sum of the Cores (matches every entry in the Combo Spell List except Creation + Illusion, listed as 2 where the sum is 3, which is implemented as listed); Arcanomancy adds nothing; Rituals cost no AP or Energy to cast and lower max Energy by half the TR-ignoring Energy cost; Raw Casting needs a free hand with fists not counting.
+- Next: Tier 1 spells (Core Spells + Pinpoint/React are in; the attack roll, damage and effects for Shield, Force, Cut, Stab, Slam are not).

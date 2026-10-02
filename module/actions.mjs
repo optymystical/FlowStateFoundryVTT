@@ -151,7 +151,7 @@ export function damageLine(totals, net, type, shots) {
     <div class="fs-notes">${stackLabel(net)}</div>` };
 }
 
-async function post(actor, { title, body, rolls = [], flags = {} }) {
+export async function post(actor, { title, body, rolls = [], flags = {} }) {
   const content = `<div class="flowstate-card"><header class="fs-card-title">${title}</header>${body}</div>`;
   return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content, rolls, flags });
 }

@@ -159,6 +159,17 @@ hero.system.hp.value = 432;
 await actions.applyDamage(hero, 100, "physical", { silent: true });
 ok2(!hero.effects.some(e => e.flags.flowstate.spellEffect?.kind === "shield") && hero.system.hp.value === 392, "A broken Shield ends and the rest hits HP");
 
+
+console.log("== Shield: doesn't stack with itself");
+for (const [have, label] of [[100, "a stronger standing Shield stays and the new one adds nothing"], [10, "a weaker standing Shield is replaced"]]) {
+  hero.effects.splice(0, hero.effects.length);
+  await hero.createEmbeddedDocuments("ActiveEffect", [{ name: "Shield", flags: { flowstate: { spellEffect: { kind: "shield", caster: "Actor.Ally", hp: have, max: have } } } }]);
+  target(null); seq = [25]; await cast("magic-protection-arcana:shield");
+  const atk = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
+  seq = [12]; await actions.defend(atk, 0, "none");
+  const shields = hero.effects.filter(e => e.flags.flowstate.spellEffect?.kind === "shield");
+  ok2(shields.length === 1 && shields[0].flags.flowstate.spellEffect.hp === Math.max(have, 60), label);
+}
 hero.effects.splice(0, hero.effects.length);
 await hero.createEmbeddedDocuments("ActiveEffect", [{ name: "Shield", flags: { flowstate: { spellEffect: { kind: "shield", caster: hero.uuid, hp: 60, max: 60 } } } }]);
 let so = await actions.damageOutcome(hero, 100, "physical", { pierce: 20 });

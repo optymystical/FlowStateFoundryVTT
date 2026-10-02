@@ -95,4 +95,4 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 - Muddy: `muddy` effects read by `afflictions.penaltyStacks`; Harden: `made.harden` flags (strong in `targetStacks`, armor via `selfWeakened` in the item data models). Phantom Pain and Painless are read in `prepareDerivedData`. Emerald: `sceneLush()` (scene flag set from a Scene Configuration checkbox).
 - Animated weapons: `conjure.act("weapon")` builds a proxy item (caster's stats, held) for `rollWeaponAttack`.
 - Tests: `dev/tests/spell-gaps.mjs`.
-
+- v0.34.1: the doc now says Shield doesn't stack with itself (Limit = its health, already how it worked). A target keeps one Shield from any caster, the one with more health left (`replaceAll` in `applySpellEffect`).

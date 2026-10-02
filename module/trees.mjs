@@ -1833,7 +1833,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Shield",
-      "text": "1 Threshold, Core Spell, Targeted, Uncombinable. This Spell can be used to project a shield of energy on a target within range until the start of your next turn. The shield has a total of 20 health which it uses to absorb damage that would attempt to harm the target or anything the target is wearing/holding. Ritual: Lasts until the ritual ends or the shield breaks."
+      "text": "1 Threshold, Core Spell, Targeted, Uncombinable. This Spell can be used to project a shield of energy on a target within range until the start of your next turn. The shield has a total of 20 health which it uses to absorb damage that would attempt to harm the target or anything the target is wearing/holding. Does not stack with itself, treat the Limit of this shield as being equal to its health. Ritual: Lasts until the ritual ends or the shield breaks."
      }
     ]
    },

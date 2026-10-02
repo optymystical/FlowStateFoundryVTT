@@ -3317,8 +3317,8 @@ export const spellEffects = (actor, kind) => Array.from(actor?.effects ?? []).fi
  * `effect`: { kind, caster, name, description, ritualOf?, ...values (hp, dodgeDie, attackDie) }
  */
 export async function applySpellEffect(actor, effect) {
-  const { name, description, ...fxData } = effect;
-  if (!effect.stack) for (const old of spellEffects(actor, effect.kind)) if (old.flags.flowstate.spellEffect.caster === effect.caster) await old.delete();
+  const { name, description, replaceAll, ...fxData } = effect;
+  if (!effect.stack) for (const old of spellEffects(actor, effect.kind)) if (replaceAll || old.flags.flowstate.spellEffect.caster === effect.caster) await old.delete();
   const data = { name, img: SPELL_ICONS[effect.kind] ?? "icons/magic/symbols/runes-star-orange.webp", origin: effect.caster, description: description ?? "",
     flags: { flowstate: { spellEffect: fxData, ...(effect.ritualOf ? { ritualOf: effect.ritualOf } : {}) } } };
   return actor.createEmbeddedDocuments("ActiveEffect", [data]);
@@ -3386,10 +3386,17 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
     const m = sp.mods ?? {};
     // Layered (Build Arcana T1): a Shield isn't default Spell health, so it gains your Build per Layered.
     const hp = fx.shieldHealth(profile, sp.power) + (m.layered ?? 0) * Math.max(0, attacker.system?.derived?.effective?.build?.value ?? 0);
-    await putSpellEffect(target, { kind: "shield", caster, name: `Shield (${esc(attacker.name)})`, hp, max: hp, ritualOf,
+    // A Shield doesn't stack with itself: a target keeps one Shield (from any caster), the one with more health left; a weaker new one is wasted.
+    const standing = spellEffects(target, "shield");
+    const best = standing.reduce((m, e) => Math.max(m, Number(e.flags.flowstate.spellEffect.hp) || 0), 0);
+    if (standing.length && best >= hp) {
+      html.push(`<div class="fs-result"><i class="fa-solid fa-shield"></i> ${esc(target.name)} already has a Shield with ${best} health; Shields don't stack, so this one adds nothing.</div>`);
+    } else {
+    await putSpellEffect(target, { kind: "shield", caster, name: `Shield (${esc(attacker.name)})`, hp, max: hp, ritualOf, replaceAll: true,
       reflect: !!m.reflect, adjust: !!m.adjust, dampen: sp.dampen ?? [], order: "default", reactive: !!m.reactive, reform: !!m.reform, reformMark: hp,
       description: `Absorbs the next ${hp} damage. ${ritualOf ? "Lasts until the ritual ends or the Shield breaks." : "Until the start of the caster's next turn."}` });
     html.push(`<div class="fs-result"><i class="fa-solid fa-shield"></i> ${esc(target.name)} is protected by a Shield with <strong>${hp} health</strong>${ritualOf ? " (until the ritual ends or it breaks)" : " until the start of your next turn"}.</div>`);
+    }
   }
   const pen = fx.diePenalties(profile, sp.power, { direct: false });
   if (pen.dodge) {

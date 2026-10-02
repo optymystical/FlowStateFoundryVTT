@@ -82,6 +82,7 @@ Mental and Ancestries are not yet implemented.
   (generates `module/combos.mjs`; don't hand-edit).
 - Keep Foundry globals out of `abilities.mjs`, `martial.mjs`, `magic.mjs`, `rules.mjs`, `creation.mjs` (they're unit-tested).
 - Commit with clear messages; the user may test from `main`.
+- The user has granted standing permission to open pull requests for this project (done through the GitHub MCP tools, not the `gh` CLI). Open a PR when a branch has no open one; pushing to a branch with an open PR just updates it.
 
 ## Settled rulings (don't re-ask)
 

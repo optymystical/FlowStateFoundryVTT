@@ -5,6 +5,7 @@
  * - Casting options: Igniter Foci (Grasp, 2 AP, 1 TR), Channeler Foci (Reach, 3 AP, 2 TR), Raw Casting (lesser of Reach/Grasp, 1/2/3 AP = 1/2/3 TR).
  */
 import { TREES } from "./trees.mjs";
+import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combos.mjs";
 import { tierOf, isAvailable, treeById } from "./skills.mjs";
 
 export const MIN_CAST_STAT = 10;
@@ -237,4 +238,32 @@ export function planCast(ctx, v) {
     power: option ? spellPower(option.scaling) : 0, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
     attack
   };
+}
+
+/** A spell's text without its "N Threshold, Core Spell, Ranged." header. */
+export const stripHeader = text => String(text).replace(/^(?:X\+1|\d+(?:-\d+)?) Threshold, [^.]*\.\s*/, "");
+
+const schoolSlug = c => c.treeId.replace("magic-", "");
+
+/**
+ * The effect text to show for the chosen Core(s): the Core's own text for one, or the Combo Spell List entry for two
+ * (an "Any T1/T2/T3 + …" combo adds the other school's line from its chart). Returns { title, text } or null.
+ */
+export function effectText(coreIds) {
+  const cores = coreIds.map(spellById).filter(Boolean);
+  if (cores.length === 1) return { title: cores[0].name, text: stripHeader(cores[0].text) };
+  if (cores.length !== 2) return null;
+  const [a, b] = cores.map(schoolSlug);
+  const title = `${cores[0].name} + ${cores[1].name} (Combo Spell)`;
+  const listed = COMBO_PAIRS[[a, b].sort().join("+")];
+  if (listed) return { title, text: listed.text };
+  for (const [special, other] of [[a, b], [b, a]]) {
+    const g = COMBO_GENERIC[special];
+    if (!g) continue;
+    if (special === "arcanomancy") return { title, text: g.text };
+    const chart = special === "illusion" ? COMBO_ILLUSION : COMBO_BONUS;
+    const line = chart[other === "witchery" ? "hex" : other];
+    return { title, text: `${g.text}${line ? ` Added effect (${other[0].toUpperCase()}${other.slice(1)}): ${line}` : ""}` };
+  }
+  return { title, text: "See the Combo Spell List for this Combo's effect." };
 }

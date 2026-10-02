@@ -112,6 +112,8 @@ class FlowStateCombat extends Combat {
       await actions.treesTurnStart(combatant.actor);
       // Spell effects this creature put on others end now (Shield, Slam's dodge penalty); Rituals' last until the Ritual ends.
       await actions.clearSpellEffects(combatant.actor);
+      // Bleed (Slashing T2) hits at the start of the victim's turn.
+      await actions.bleedTurnStart(combatant.actor);
     }
   }
 
@@ -495,6 +497,8 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
       if (actor.getFlag("flowstate", "trudge")) actor.unsetFlag("flowstate", "trudge");
     }, 0);
   }
+  // Gash (Slashing T3): voluntarily moving reopens the wound.
+  if (actor && !options?.flowstateThrow && actions.spellEffects(actor, "gash").length) actions.triggerGash(actor);
   // Rapid T3 Mark: a Marked creature moving lets the marker shoot.
   if (actor?.getFlag("flowstate", "markedBy")) actions.triggerMark(actor, "moves");
   // Reach T1 Palisade: moving into a Reach wielder's range lets them strike (the palisading token is moved back on a hit).
@@ -715,7 +719,7 @@ Hooks.on("renderItemDirectory", (app, html) => {
 Hooks.on("deleteCombat", combat => {
   if (!game.user.isActiveGM) return;
   for (const c of combat.combatants) setTimeout(() => {
-    actions.clearSpellEffects(c.actor);
+    actions.clearSpellEffects(c.actor, { all: true });
     actions.refillEnergy(c.actor); actions.clearStances(c.actor);
     if (c.actor?.getFlag("flowstate", "carefulLapsed")) c.actor.unsetFlag("flowstate", "carefulLapsed"); // Careful Steps is free again
   }, 0);

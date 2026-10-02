@@ -23,3 +23,7 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 ## Built (v0.24.0): Tier 1 spells
 - `spellfx.mjs` holds the Tier 1 profiles; hooks in `actions.mjs` (`spellHit`, `spellForce`, `spellDamageFacts`, Shield soak in `damageOutcome`, `applySpellEffect`/`clearSpellEffects`), `data.mjs` (die-size penalties), `casting.mjs` (`resolveSpell`, Ritual free casts). Test: `dev/tests/spell-t1.mjs`.
 - Judgment calls: "direct damage" for pre-roll conditions = the spell's base dice at their largest would reach HP through every soak; Shield soaks after parrying weapons and before Shrouds, no Limit; "living" = not marked Fully Magical; die-size penalties are bolded in the doc so they scale with Spell Power; Ritual attack spells store two free casts (cast does not fire).
+
+## Built (v0.25.0): Slashing/Piercing Mods and dialog polish
+- Automated Mods are listed in `spellfx.AUTOMATED_MODS`; the rest are tagged "not automated" and listed on the card for the GM.
+- Judgment calls: Bleed/Gash repeats go straight to HP (no soak) and keep Chop's Max HP loss; Gash triggers on any token position change except system moves; Exploit refunds unused stacks' Energy when the attack is rolled (not capped in the dialog); Setup's Advantage applies to any attack roll at that target and is stored as an actor flag; Pierce stacks add (10 × Power each); Cleave is flat damage before Strengthened/Weakened.

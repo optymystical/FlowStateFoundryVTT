@@ -79,3 +79,22 @@ export const shieldHealth = (profile, power) => (profile.shield ?? 0) * Math.max
 
 /** A die size after the worst active penalty (they don't stack), never below 1. */
 export const penalizedDie = (die, penalty) => Math.max(1, die - Math.max(0, penalty));
+
+/** Spell Mods whose effects are automated (everything else only costs Threshold, and the card tells the GM to resolve it). */
+export const AUTOMATED_MODS = new Set([
+  "magic-theory:pinpoint", "magic-theory:react",
+  "magic-slashing:bleed", "magic-slashing:gash", "magic-slashing:cleave", "magic-slashing:chop",
+  "magic-piercing:exploit", "magic-piercing:pierce", "magic-piercing:setup", "magic-piercing:weakpoint"
+]);
+
+/** { bleed: 1, exploit: 2, … } from the applied Mods (lowercase names, stack counts). */
+export function modCounts(applied) {
+  const out = {};
+  for (const a of applied) { const k = a.mod.name.toLowerCase(); out[k] = (out[k] ?? 0) + 1; }
+  return out;
+}
+
+/** Pierce value from the Pierce Mod: 10 per stack, scaled by Spell Power. */
+export const piercePerStack = power => 10 * Math.max(1, power);
+/** Exploit: each consumed Advantage gives +4 die size to the attack roll, scaled by Spell Power. */
+export const exploitDie = power => 4 * Math.max(1, power);

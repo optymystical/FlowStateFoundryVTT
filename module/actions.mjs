@@ -1,6 +1,6 @@
 import {
   STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth,
-  resolveForce, pushForce, forceDamage
+  resolveForce, pushForce, forceDamage, statMin
 } from "./rules.mjs";
 import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, soak, weaponProfile, effectiveLimit, DAMAGE_CATEGORY } from "./martial.mjs";
 import { AFFIXES, shroudBlocks } from "./magic.mjs";
@@ -1063,6 +1063,8 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     aimName: opts.aim && !opts.area && !whirl && !spin && !grapple ? aimables.find(i => i.uuid === opts.aim)?.name ?? null : null,
     area: !!opts.area || !!whirl || spin, grapple, grappleOnly: grapple && p.scalingStat !== "str",
     swift: !unarmed && ab.isSwiftAttack(actor, item), turnKey: turnKey(),
+    swiftLight: !unarmed && ab.isSwiftAttack(actor, item) && item.system.weight === "light",
+    omega: !unarmed && ab.isSwiftAttack(actor, item) && item.system.weight === "heavy" && ab.treeTier(actor, ab.SWIFT) >= 5,
     leadBlind: !unarmed && ab.rapid(actor, item, 4),
     itemUuid: unarmed ? null : item.uuid, unarmedWeight: unarmed ? (heavyAtk ? "heavy" : "light") : null, attackType: unarmed ? "unarmed" : attackType,
     setKind: followup?.kind ?? null, flowChain: !!(followup?.kind === "flow" || followup?.flowChain), dragonLash, kickOut,
@@ -1162,9 +1164,9 @@ async function pileFolder() {
 }
 
 export const GM_ACTIONS = {
-  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx }) {
+  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss }) {
     const actor = await fromUuid(target);
-    if (actor) await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx });
+    if (actor) await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss });
   },
   async updateActor({ uuid, data }) {
     const actor = await fromUuid(uuid);
@@ -1327,7 +1329,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell"];
+  "breakFree", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -1445,11 +1447,32 @@ async function startExchange(actor, opts, targets) {
     // Psych Up: attacks against you have Advantage.
     // In a Barrel (Longshot T4): Advantage against a target with any movement penalty.
     const barrel = opts.inABarrel && movementPenalized(target) ? 1 : 0;
-    const atkNet = baseNet + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts)
+    let atkNet = baseNet + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts)
       - (autoDash(target, opts) ? 1 : 0);
-    const atk = await evaluate(poolFormula(1, d.attackDie, atkNet));
+    const spellNotes = [];
+    // Setup (Piercing T4): Advantage on your next attack roll at the target the spell damaged.
+    const setup = actor.getFlag?.("flowstate", "setup");
+    if (setup?.target === target.uuid && setup.count > 0) {
+      atkNet += setup.count; spellNotes.push(`Setup: +${setup.count} Advantage`);
+      await setActorFlag(actor, "setup", null);
+    }
+    // Exploit (Piercing T2): each stack consumes one Advantage for +4 die size (× Spell Power); stacks with no Advantage left are refunded.
+    let atkDie = d.attackDie;
+    const ex = opts.spell?.exploit;
+    if (ex?.stacks) {
+      const used = Math.min(ex.stacks, Math.max(0, atkNet));
+      const unused = ex.stacks - used;
+      atkNet -= used; atkDie += used * ex.die;
+      spellNotes.push(`Exploit: ${used} Advantage consumed for +${used * ex.die} die size (d${atkDie})`);
+      if (unused) {
+        const back = ex.refund?.[unused] ?? 0;
+        await refundEnergy(actor, back);
+        spellNotes.push(`${unused} Exploit stack${unused === 1 ? "" : "s"} had no Advantage to use${back ? `: ${back} Energy refunded` : ""}`);
+      }
+    }
+    const atk = await evaluate(poolFormula(1, atkDie, atkNet));
     rolls.push(atk);
-    entries.push({ uuid: target.uuid, name: target.name, total: atk.total, net: atkNet, die: d.attackDie, snipe: opts.snipe ? Math.max(0, atkNet) : 0,
+    entries.push({ uuid: target.uuid, name: target.name, total: atk.total, net: atkNet, die: atkDie, snipe: opts.snipe ? Math.max(0, atkNet) : 0,
       autoDash: autoDash(target, opts) });
     // Parry is a stance now (turned on during your turn); here only the optional rolls remain.
     // Overshield Strike (Thrasher T3): no Parry-type effects at all.
@@ -1491,8 +1514,9 @@ async function startExchange(actor, opts, targets) {
         <div class="fs-ally-status"></div></div>` : "";
     sections.push(`<section class="fs-target" data-index="${index}">
       <h4>vs ${esc(target.name)}${opts.aimName ? `'s ${esc(opts.aimName)}` : ""}</h4>
-      ${await rollBlock(atk, `Attack (d${d.attackDie})`)}
+      ${await rollBlock(atk, `Attack (d${atkDie})`)}
       ${netNote(atkNet, attackNetParts(actor, opts, target))}
+      ${spellNotes.map(n => `<div class="fs-notes">${esc(n)}</div>`).join("")}
       ${guardNote}
       <div class="fs-status" data-index="${index}"></div>
       ${react}${allyRow}
@@ -2085,17 +2109,17 @@ export function swiftDamageThisTurn(actor) {
   }).map(m => m.getFlag("flowstate", "damage"));
 }
 
-/** Delta (Swift T5): count Swift attacks by this actor that landed during the given turn. */
+/** Delta (Swift T5): count Light Swift attacks by this actor that landed during the given turn. */
 export function swiftHitsInTurn(actor, key) {
   return game.messages.filter(m => {
     const d = m.getFlag("flowstate", "defense");
     if (!d?.result?.hit || d.attacker !== actor.uuid) return false;
     const o = game.messages.get(d.attackMessage)?.getFlag("flowstate", "attack")?.opts;
-    return o?.swift && o.turnKey === key;
+    return o?.swiftLight && o.turnKey === key;
   }).length;
 }
 
-/** Delta (Swift T5): at the end of your turn, if 12+ Swift attacks landed, regain 6 RP (up to 6). Runs on the GM. */
+/** Delta (Swift T5): at the end of your turn, if 12+ Light Swift attacks landed, regain 6 RP (up to 6). Runs on the GM. */
 export async function delta(actor, key) {
   if (!actor?.isOwner || ab.treeTier(actor, ab.SWIFT) < 5) return;
   const hits = swiftHitsInTurn(actor, key);
@@ -2103,7 +2127,7 @@ export async function delta(actor, key) {
   const before = actor.system.rp.value;
   const after = Math.min(6, before + 6);
   if (after > before) await actor.update({ "system.rp.value": after });
-  await post(actor, { title: `${esc(actor.name)} — Delta`, body: `<div class="fs-result">${hits} Swift attacks landed this turn: RP ${before} → ${after}.</div>` });
+  await post(actor, { title: `${esc(actor.name)} — Delta`, body: `<div class="fs-result">${hits} Light Swift attacks landed this turn: RP ${before} → ${after}.</div>` });
 }
 
 /* ---- Rapid Weapons ---- */
@@ -2711,7 +2735,7 @@ export async function sheathWeapon(actor) {
   const cost = ab.CURVED_COST.sheath(weapon);
   const hits = curvedDamageThisTurn(actor);
   const ok = await DialogV2().confirm({ window: { title: "Sheath Weapon" }, rejectClose: false,
-    content: `<p>Repeat ${hits.length} hit${hits.length === 1 ? "" : "s"} of Curved damage (${hits.reduce((n, h) => n + h.toHp, 0)} direct) as twice as much normal damage, for <strong>${cost} Energy</strong>?</p>` });
+    content: `<p>Repeat ${hits.length} hit${hits.length === 1 ? "" : "s"} of Curved damage (${hits.reduce((n, h) => n + h.toHp, 0)} direct) as normal damage, for <strong>${cost} Energy</strong>?</p>` });
   if (!ok || sheathBlocked(actor)) return;
   if (!(await spendEnergy(actor, cost, "Sheath Weapon"))) return;
   await actor.setFlag("flowstate", "sheathUsed", turnKey());
@@ -2719,11 +2743,11 @@ export async function sheathWeapon(actor) {
   for (const h of hits) {
     const target = await fromUuid(h.target);
     if (!target) continue;
-    const amount = 2 * h.toHp;
+    const amount = h.toHp;
     body += damageOutcomeHTML(target, amount, h.type, await damageOutcome(target, amount, h.type));
     await requestDamage(target, amount, h.type, 0, null, { silent: true });
   }
-  await post(actor, { title: `${esc(actor.name)} — Sheath Weapon`, body: `<div class="fs-notes">${cost} Energy · this turn's direct Curved damage, doubled (armor applies)</div>${body}` });
+  await post(actor, { title: `${esc(actor.name)} — Sheath Weapon`, body: `<div class="fs-notes">${cost} Energy · this turn's direct Curved damage, repeated (armor applies)</div>${body}` });
 }
 
 /* ---- Grappling Methods ---- */
@@ -3130,7 +3154,7 @@ export const spellEffects = (actor, kind) => Array.from(actor?.effects ?? []).fi
  */
 export async function applySpellEffect(actor, effect) {
   const { name, description, ...fxData } = effect;
-  for (const old of spellEffects(actor, effect.kind)) if (old.flags.flowstate.spellEffect.caster === effect.caster) await old.delete();
+  if (!effect.stack) for (const old of spellEffects(actor, effect.kind)) if (old.flags.flowstate.spellEffect.caster === effect.caster) await old.delete();
   const data = { name, img: SPELL_ICONS[effect.kind] ?? "icons/magic/symbols/runes-star-orange.webp", origin: effect.caster, description: description ?? "",
     flags: { flowstate: { spellEffect: fxData, ...(effect.ritualOf ? { ritualOf: effect.ritualOf } : {}) } } };
   return actor.createEmbeddedDocuments("ActiveEffect", [data]);
@@ -3142,12 +3166,34 @@ export async function putSpellEffect(target, effect) {
 }
 
 /** End every spell effect this caster put on others (until the start of their next turn). Rituals' effects end with the Ritual instead. */
-export async function clearSpellEffects(caster) {
-  const mine = e => e.flags?.flowstate?.spellEffect?.caster === caster.uuid && !e.flags?.flowstate?.ritualOf;
+export async function clearSpellEffects(caster, { all = false } = {}) {
+  // Bleed waits for its victim's next turn (that always comes before the caster's), unless combat is ending.
+  const mine = e => e.flags?.flowstate?.spellEffect?.caster === caster.uuid && !e.flags?.flowstate?.ritualOf
+    && (all || !e.flags.flowstate.spellEffect.onTargetTurn);
   const docs = [];
   for (const a of game.actors ?? []) for (const e of a.effects ?? []) if (mine(e)) docs.push(e);
   for (const t of globalThis.canvas?.tokens?.placeables ?? []) if (!t.document.actorLink) for (const e of t.actor?.effects ?? []) if (mine(e)) docs.push(e);
   for (const e of docs) await e.delete();
+  if (!all && caster.getFlag?.("flowstate", "setup")) await caster.unsetFlag("flowstate", "setup");
+}
+
+/** Bleed (Slashing T2): at the start of the victim's turn each Bleed repeats its direct physical damage, then ends. */
+export async function bleedTurnStart(actor) {
+  for (const e of spellEffects(actor, "bleed")) {
+    const { amount, dmgType, chop } = e.flags.flowstate.spellEffect;
+    await e.delete();
+    await post(actor, { title: `${esc(actor.name)} — Bleed`, body: `<div class="fs-result">Bleed: ${amount} direct ${DAMAGE_TYPES[dmgType] ?? dmgType} damage${chop ? " (Max HP loss)" : ""}.</div>` });
+    await requestDamage(actor, amount, dmgType, 0, null, { silent: true, bypass: true, maxHpLoss: !!chop });
+  }
+}
+
+/** Gash (Slashing T3): the victim spent AP/RP to voluntarily move, so each Gash on them repeats its damage. */
+export async function triggerGash(actor) {
+  for (const e of spellEffects(actor, "gash")) {
+    const { amount, dmgType, chop } = e.flags.flowstate.spellEffect;
+    await post(actor, { title: `${esc(actor.name)} — Gash`, body: `<div class="fs-result">${esc(actor.name)} moves and the Gash opens: ${amount} ${DAMAGE_TYPES[dmgType] ?? dmgType} damage${chop ? " (Max HP loss)" : ""}.</div>` });
+    await requestDamage(actor, amount, dmgType, 0, null, { silent: true, bypass: true, maxHpLoss: !!chop });
+  }
 }
 
 /** Would this spell damage (at its largest) get past everything in the way and reach the target's HP? ("direct damage") */
@@ -4098,7 +4144,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const profile = o.spell ? fx.profileFor(o.spell.cores) : null;
   let spellPlan = null;
   if (profile?.damage) {
-    const facts = await spellDamageFacts(profile, o, target, defense, { pierce: o.pierce ?? 0, parryItems: guard.items, bash: o.bash || 0,
+    const facts = await spellDamageFacts(profile, o, target, defense, { pierce: o.pierce ?? 0, halfLimit: !!o.spell?.mods?.weakpoint, parryItems: guard.items, bash: o.bash || 0,
       shroudCtx: { source: sourceOf(o), extra: findQuartz(defense.attackMessage, defense.index) } });
     spellPlan = fx.damageDice(profile, o.spell.power, facts);
   }
@@ -4114,9 +4160,14 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const base = await rollBaseDamage(formula, shots);
   if (!base) return;
   const { stacks, parts, type } = targetStacks(attacker, o, target, defense.result, (opts.extra ?? 0) + (spellPlan?.extraStacks ?? 0), ctx);
-  const line = damageLine(base.totals, stacks, type, shots);
+  // Cleave (Slashing T4): the spell's damage is increased by your Scaling Stat min.
+  const flat = o.spell?.mods?.cleave ? statMin(o.spell.scaling ?? 0) : 0;
+  const line = damageLine(flat ? base.totals.map(t => t + flat) : base.totals, stacks, type, shots);
+  // Omega (Swift T5): Heavy Swift attacks let Strengthened/Weakened change their Pierce value too.
+  const pierceNow = o.omega && o.pierce ? applyStacks(o.pierce, stacks) : (o.pierce ?? 0);
 
   let extraHTML = spellPlan?.notes.length ? `<div class="fs-notes">${spellPlan.notes.map(esc).join(" · ")}</div>` : "";
+  if (flat) extraHTML += `<div class="fs-notes">Cleave: +${flat} damage (Scaling Stat min)</div>`;
   let kb = null;
   if (o.knockback && !o.aimItem) {
     const lash = o.dragonLash ? (target.statuses?.has("prone") ? 4 : 2) : 1;
@@ -4127,7 +4178,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     extraHTML += `<div class="fs-notes">Knockback: up to ${force} Force → ${feet} ft${crunchFeet > feet ? ` (${crunchFeet} ft with Crunch Time)` : ""}${lash > 1 ? ` (Dragon Lash ×${lash})` : ""}</div>`;
     if (Math.max(feet, crunchFeet) > 0) kb = { attacker: attacker.uuid, target: target.uuid, force, feet, label: "Knockback" };
   }
-  if (o.pierce) extraHTML += `<div class="fs-notes">Pierce ${o.pierce}: ignores that much armor Limit</div>`;
+  if (pierceNow) extraHTML += `<div class="fs-notes">Pierce ${pierceNow}${pierceNow !== o.pierce ? ` (${o.pierce} with Omega: ${stackLabel(stacks)})` : ""}: ignores that much armor Limit</div>`;
 
   // Aimed at an equipped item: the item is the target, so its Limit doesn't apply and it loses Durability instead.
   if (o.aimItem) {
@@ -4184,7 +4235,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (cleave) extraHTML += `<div class="fs-notes">Cleave ${cleave}: object damage, hits Limits first${o.striker ? "; what gets past them hits the creature (Blood and Iron)" : ""}</div>`;
 
   // The outcome (soak, HP lost) goes on this card; the owner (or GM) applies it without a separate card.
-  const dmgOpts = { pierce: o.pierce ?? 0, parryItems: guard.items, bash: o.bash || 0, rend: o.rend ?? null, cleave, cleaveToCreature: !!o.striker,
+  const dmgOpts = { pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, parryItems: guard.items, bash: o.bash || 0, rend: o.rend ?? null, cleave, cleaveToCreature: !!o.striker,
     shroudCtx: { source: sourceOf(o), extra: findQuartz(defense.attackMessage, defense.index) } };
   const outcome = await damageOutcome(target, incoming, type, dmgOpts);
   // Spell riders that need the damage to have got through to HP (direct damage): Force, attack-die penalties.
@@ -4195,6 +4246,22 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
       const f = await spellForce(attacker, target, o, defense.result, fx.forceDice(profile, o.spell.power, { direct }), "Force");
       spellHTML += f.html; spellRolls.push(...f.rolls); kb = f.push;
     }
+    const m = o.spell.mods ?? {};
+    if (direct && m.bleed) {
+      await putSpellEffect(target, { kind: "bleed", stack: true, onTargetTurn: true, caster: attacker.uuid, name: `Bleed (${outcome.toHp})`, amount: outcome.toHp, dmgType: "physical", chop: !!m.chop,
+        description: `Takes ${outcome.toHp} direct physical damage${m.chop ? " as Max HP loss" : ""} at the start of their next turn.` });
+      spellHTML += `<div class="fs-notes">Bleed: ${esc(target.name)} takes ${outcome.toHp} direct physical damage again at the start of their next turn.</div>`;
+    }
+    if (direct && m.gash) {
+      await putSpellEffect(target, { kind: "gash", stack: true, caster: attacker.uuid, name: `Gash (${outcome.toHp})`, amount: outcome.toHp, dmgType: type, chop: !!m.chop,
+        description: `Takes ${outcome.toHp} damage${m.chop ? " as Max HP loss" : ""} every time they spend AP or RP to voluntarily move, until the start of the caster's next turn.` });
+      spellHTML += `<div class="fs-notes">Gash: ${esc(target.name)} takes ${outcome.toHp} damage again each time they voluntarily move, until the start of your next turn.</div>`;
+    }
+    if (direct && m.setup) {
+      await setActorFlag(attacker, "setup", { target: target.uuid, count: m.setup });
+      spellHTML += `<div class="fs-notes">Setup: ${m.setup} Advantage on your next attack roll at ${esc(target.name)} before your next turn.</div>`;
+    }
+    if (outcome.toHp > 0 && m.chop) spellHTML += `<div class="fs-notes">Chop: the ${outcome.toHp} direct damage is Max HP loss instead.</div>`;
     const pen = fx.diePenalties(profile, o.spell.power, { direct });
     if (pen.attack) {
       await putSpellEffect(target, { kind: "attackDie", caster: attacker.uuid, name: `Attack −${pen.attack} die size`, attackDie: pen.attack, ritualOf: o.spell.ritualOf ?? null,
@@ -4249,8 +4316,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
       attacker: attacker.uuid, target: target.uuid, toHp: outcome.toHp, type, riposte: riposteItems.length > 0 }, knockback: kb,
       deflect: canDeflect ? { defender: target.uuid, attacker: attacker.uuid, attackMessage: defense.attackMessage } : null } }
   });
-  await requestDamage(target, incoming, type, o.pierce ?? 0, null, { silent: true, ...dmgOpts });
-  if (ripHTML) await requestDamage(target, incoming, type, o.pierce ?? 0, null, { silent: true, ...dmgOpts });
+  await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts });
+  if (ripHTML) await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts });
 }
 
 /** Twist (Reach T4) and Impale (Reach T5) from a damage card. */
@@ -4289,8 +4356,8 @@ export async function reachFinisher(damageMessage, kind) {
 
 /** Apply damage directly if we own the target; otherwise ask the active GM to do it. */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
-  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null } = {}) {
-  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx };
+  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false } = {}) {
+  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss };
   if (target.isOwner) return applyDamage(target, amount, type, o);
   return requestGM("applyDamage", { target: target.uuid, amount, type, ...o });
 }
@@ -4357,7 +4424,7 @@ export async function loadWeapon(actor, item) {
  * Every client has the data, so the rolling client can show the result on its damage card while the owner applies it.
  */
 export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false } = {}) {
   if (bypass) return { toHp: Math.max(0, amount), lines: [`<strong>${Math.max(0, amount)}</strong> damage to HP (bypasses armor)`], weapon: null, weaponLoss: 0, weapons: [], armor: null, armorLoss: 0, afterWeapon: amount, parried: false, shrouds: [], shroudTook: 0 };
   const lines = [];
   let remaining = Math.max(0, amount);
@@ -4381,7 +4448,9 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     if (!profile?.valid || durability <= 0) return 0;
     // An object can't absorb more than its remaining Durability (it doesn't go negative unless targeted directly).
     const lossFactor = (profile.selfWeakened ? Math.pow(0.5, profile.selfWeakened) : 1) * (rend ? stackMultiplier(rend.stacks) : 1);
-    const L = Math.min(effectiveLimit(profile, type, objPierce), Math.floor(durability / lossFactor));
+    // Weakpoint (Piercing T5): only half the object's Limit applies to this spell's damage.
+    const baseLimit = effectiveLimit(profile, type, objPierce);
+    const L = Math.min(halfLimit ? Math.floor(baseLimit / 2) : baseLimit, Math.floor(durability / lossFactor));
     const cAbs = Math.min(cleaveLeft, L);
     const rAbs = Math.min(remaining, L - cAbs);
     cleaveLeft -= cAbs; remaining -= rAbs;
@@ -4418,7 +4487,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   // Magic Shrouds soak next (before armor): the creature's own melded Shroud, Wards/Bonds placed on it, Quartz extensions.
   const shrouds = [];
   for (const sh of shroudsFor(actor, shroudCtx?.extra ?? [])) {
-    const r = shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce, rend, source: shroudCtx?.source ?? null });
+    const r = shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce, rend, source: shroudCtx?.source ?? null, halfLimit });
     remaining = r.remaining; cleaveLeft = r.cleaveLeft;
     lines.push(...r.lines);
     if (r.update) shrouds.push({ item: sh, loss: r.loss, absorbed: r.absorbed, update: r.update });
@@ -4456,9 +4525,9 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
  * @param {boolean} silent  don't post a card (the caller already shows the outcome on its own card)
  */
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
-  const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx });
+  const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit });
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.
   for (const { item, update } of out.shrouds ?? []) {
     if (item.isOwner === false) await requestGM("updateItem", { uuid: item.uuid, data: update });
@@ -4481,6 +4550,11 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
     else await item.update({ "system.wear": item.system.wear + loss }, { flowstateSystem: true });
   }
   const update = { "system.hp.value": actor.system.hp.value - out.toHp };
+  // Chop (Slashing T5): direct damage is Max HP loss instead of lost HP.
+  if (maxHpLoss && out.toHp > 0) {
+    update["system.hp.value"] = Math.min(actor.system.hp.value, actor.system.hp.max - out.toHp);
+    update["system.hp.lost"] = (actor.system.hp.lost ?? 0) + out.toHp;
+  }
   if (type === "cold" && actor.system.conditions.ignite > 0) update["system.conditions.ignite"] = 0;
   await actor.update(update);
   if (out.armor && out.armorLoss) await out.armor.update({ "system.wear": out.armor.system.wear + out.armorLoss }, { flowstateSystem: true });
@@ -4501,6 +4575,13 @@ export async function spendEnergy(actor, cost, what = "that") {
   }
   await actor.update({ "system.energy.value": have - cost });
   return true;
+}
+
+/** Give Energy back (in combat), up to the maximum. */
+export async function refundEnergy(actor, amount) {
+  if (!amount || !inActiveCombat(actor)) return;
+  const e = actor.system.energy;
+  await actor.update({ "system.energy.value": Math.min(e.max, e.value + amount) });
 }
 
 /** Outside combat, Energy is always full. */
@@ -4723,7 +4804,7 @@ const hasAffix = (sh, k) => !!sh?.system?.profile?.affixes?.includes(k);
  * One Shroud's soak (no changes made; returns the update to apply).
  * Order: Agate/Jasper/Obsidian negation → Diamond/Alexandrite/Colored Diamond Weakened → Limit (Cleave first, then damage).
  */
-export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null }) {
+export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null, halfLimit = false }) {
   const P = sh.system.profile;
   const lines = [];
   const update = {};
@@ -4759,6 +4840,7 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
   let L = P.limit;
   if (sh.system.shroudType === "cinder" && (sh.parent?.getFlag?.("flowstate", "takenTypes") ?? []).includes(type)) L = P.baseLimit * 3;
   if (!hasAffix(sh, "painite")) L = Math.max(0, L - Math.max(0, pierce));
+  if (halfLimit) L = Math.floor(L / 2);
   // It can't absorb more than its remaining Durability (Tourmaline / Rend change how fast that runs out).
   const durLeft = sh.system.durability.value;
   if (!P.negator) {

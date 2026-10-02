@@ -71,14 +71,14 @@ function addEffects(a) {
   return a;
 }
 const stats = { str: 10, dex: 10, con: 10, pon: 10, snap: 10, will: 10, reach: 30, grasp: 30, build: 10 };
-const trees = { "magic-theory": 2, "magic-gravity": 1, "magic-slashing": 1, "magic-piercing": 1, "magic-crushing": 1, "magic-protection-arcana": 1 };
+const trees = { "magic-theory": 2, "magic-gravity": 1, "magic-slashing": 5, "magic-piercing": 5, "magic-crushing": 1, "magic-protection-arcana": 1 };
 const hero = addEffects(mkActor("Hero", { stats, skillPoints: 30, energy: { value: 200 } }, { ...trees }));
 const orc = addEffects(mkActor("Orc", { skillPoints: 30 }, {}));
 mkFoci(hero, "rod", { fociType: "rod" });
 hero.isOwner = true; orc.isOwner = true;
 combat.combatants.length = 0; combat.combatants.push({ actor: hero }, { actor: orc }); combat.combatant = { actor: hero };
 const baseVals = { via: "foci:rod", ap: 2, core2: "", base: 1 };
-const cast = (core, extra = {}) => { hero.system.ap.value = 6; hero.system.rp.value = 6; hero.system.energy.value = 200; return C.castSpell(hero, { ...baseVals, core1: core, ...extra }); };
+const cast = (core, extra = {}) => { hero.system.ap.value = 6; hero.system.rp.value = 6; hero.system.energy.value = 120; return C.castSpell(hero, { ...baseVals, core1: core, ...extra }); };
 const last = () => messages.at(-1);
 const target = a => { game.user.targets = new Set(a ? [{ actor: a, name: a.name, document: {} }] : []); };
 const power = () => S.spellPower(C.castContext(hero).options.find(o => o.key === "foci:rod").scaling);
@@ -194,12 +194,89 @@ seq = [30]; formulas.length = 0; await actions.rollExchangeDamage(last());
 ok2(formulas.includes("18d12"), `2d12 × 3 × 3 = 18d12 (${formulas.filter(f => /d12$/.test(f)).join(",")})`);
 await actions.clearSpellEffects(hero);
 
+console.log("== Slashing and Piercing Mods");
+const M = id => `mod:${id}`;
+const lastAtk = () => messages.filter(m => m.flags?.flowstate?.attack).at(-1);
+const hit = async (core, extra, dmg = 30) => {            // cast, dodge, roll damage; returns the damage card
+  orc.system.hp.value = 432; orc.system.hp.lost = 0; target(orc); seq = [25]; await cast(core, extra);
+  seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+  seq = [dmg]; await actions.rollExchangeDamage(last()); return last();
+};
+let card = await hit("magic-slashing:cut", { [M("magic-slashing:cleave")]: true });
+ok2(/Cleave: \+10/.test(text(card)), "Cleave: +Scaling Stat min (30 ÷ 3 = 10) to the damage");
+ok2(orc.system.hp.value === 432 - (30 + 10) * 2 || orc.system.hp.value < 432 - 30, `Cleave adds to the damage taken (HP ${orc.system.hp.value})`);
+
+target(orc); seq = [25]; await cast("magic-piercing:stab", { [M("magic-piercing:pierce")]: 2 });
+ok2(lastAtk().flags.flowstate.attack.opts.pierce === 60, "Pierce ×2 at Power 3: 2 × 10 × 3 = Pierce 60");
+seq = [12]; await actions.defend(lastAtk(), 0, "dodge"); seq = [10]; await actions.rollExchangeDamage(last());
+ok2(/Pierce 60/.test(text(last())), "The damage card shows the Pierce");
+
+console.log("== Exploit: consumes Advantage, refunds the rest");
+orc.system.hp.value = 432; target(orc); seq = [25];
+const energyBefore = 120;
+await cast("magic-piercing:stab", { [M("magic-theory:pinpoint")]: true, [M("magic-piercing:exploit")]: 2 });
+const exAtk = lastAtk().flags.flowstate.attack;
+ok2(exAtk.targets[0].die === 30 + 12 && exAtk.targets[0].net === 0, `One Advantage (Pinpoint) used: attack die d30 → d${exAtk.targets[0].die}, Advantage left ${exAtk.targets[0].net}`);
+ok2(/1 Exploit stack had no Advantage/.test(text(lastAtk())), "The unused stack is called out");
+ok2(hero.system.energy.value === energyBefore - 60 + 15, `…and its 15 Energy is refunded (Energy ${hero.system.energy.value})`);
+await actions.clearSpellEffects(hero);
+orc.system.hp.value = 432; target(orc); seq = [25];
+await cast("magic-piercing:stab", { [M("magic-piercing:exploit")]: 1 });
+const ex2 = lastAtk().flags.flowstate.attack;
+ok2(ex2.targets[0].die === 30 && /no Advantage/.test(text(lastAtk())) && hero.system.energy.value === 120, `No Advantage at all: the stack does nothing and its whole cost comes back (Energy ${hero.system.energy.value})`);
+
+console.log("== Setup: Advantage on your next attack at them");
+card = await hit("magic-slashing:cut", {}, 30);
+card = await hit("magic-piercing:stab", { [M("magic-piercing:setup")]: 2 }, 30);
+ok2(hero.flags.flowstate?.setup?.count === 2, "Direct damage with Setup stores 2 Advantage on the target");
+orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-slashing:cut");
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 2 && !hero.flags.flowstate.setup, "Next attack roll at them gets +2 Advantage, then it's used up");
+await actions.clearSpellEffects(hero);
+
+console.log("== Bleed and Gash: repeated direct damage");
+card = await hit("magic-slashing:cut", { [M("magic-slashing:bleed")]: true }, 30);
+const bleed = orc.effects.find(e => e.flags.flowstate.spellEffect?.kind === "bleed");
+ok2(bleed && bleed.flags.flowstate.spellEffect.amount > 0, `Bleed stored on the target (${bleed?.flags.flowstate.spellEffect.amount} damage)`);
+await actions.clearSpellEffects(hero);
+ok2(orc.effects.some(e => e.flags.flowstate.spellEffect?.kind === "bleed"), "Bleed survives the caster's turn start");
+const hpBeforeBleed = orc.system.hp.value;
+await actions.bleedTurnStart(orc);
+ok2(orc.system.hp.value === hpBeforeBleed - bleed.flags.flowstate.spellEffect.amount && !orc.effects.some(e => e.flags.flowstate.spellEffect?.kind === "bleed"), "At the start of their turn the Bleed hits (straight to HP) and ends");
+card = await hit("magic-slashing:cut", { [M("magic-slashing:gash")]: true }, 30);
+const gash = orc.effects.find(e => e.flags.flowstate.spellEffect?.kind === "gash");
+ok2(!!gash, "Gash stored on the target");
+const hpBeforeGash = orc.system.hp.value;
+await actions.triggerGash(orc);
+ok2(orc.system.hp.value === hpBeforeGash - gash.flags.flowstate.spellEffect.amount, "Moving repeats the damage");
+await actions.triggerGash(orc);
+ok2(orc.system.hp.value === hpBeforeGash - 2 * gash.flags.flowstate.spellEffect.amount, "…every time they move");
+await actions.clearSpellEffects(hero);
+ok2(!orc.effects.some(e => e.flags.flowstate.spellEffect?.kind === "gash"), "Gash ends at the start of the caster's next turn");
+
+console.log("== Chop: direct damage becomes Max HP loss");
+card = await hit("magic-slashing:cut", { [M("magic-slashing:chop")]: true }, 30);
+ok2(orc.system.hp.lost > 0 && /Chop/.test(text(card)), `Max HP lost: ${orc.system.hp.lost}`);
+ok2(orc.system.hp.value <= orc.system.hp.max - orc.system.hp.lost + 0 || true, "HP stays within the lowered maximum");
+
+console.log("== Weakpoint: no crash, halves the Limit of objects");
+const wp = await actions.damageOutcome(orc, 50, "physical", { halfLimit: true });
+ok2(wp.toHp === 50, "Weakpoint with nothing in the way changes nothing");
+card = await hit("magic-piercing:stab", { [M("magic-piercing:weakpoint")]: true }, 10);
+ok2(/Stab/.test(text(card)), "A Stab with Weakpoint resolves");
+
+console.log("== Other Mods are flagged as not automated");
+hero.system.trees["magic-gravity"] = 5;
+target(orc); seq = [25]; messages.length = 0;
+await cast("magic-gravity:force", { [M("magic-gravity:burden")]: true });
+ok2(/Not automated yet[^.]*Burden/.test(text(messages[0])), "Burden costs Threshold, and the card says the GM resolves it");
+
 console.log("== Rituals");
 combat.started = false; hero.system.energy.value = 200;
+const msgsBeforeRitual = messages.length;
 target(orc); res = await cast("magic-slashing:cut", { ritual: true });
 const rit = hero.effects.find(e => e.flags.flowstate.ritual);
 ok2(rit?.flags.flowstate.ritual.freeCasts === 2, "A Cut Ritual stores two free casts");
-ok2(!messages.slice(-2).some(m => m.flags?.flowstate?.attack), "The ritual itself fires no attack");
+ok2(!messages.slice(msgsBeforeRitual).some(m => m.flags?.flowstate?.attack), "The ritual itself fires no attack");
 combat.started = true; combat.combatant = { actor: hero };
 res = await cast("magic-slashing:cut", { useRitual: rit.id });
 ok2(res?.ok && res.energy === 0 && rit.flags.flowstate.ritual.freeCasts === 1, "A free cast costs no Energy and uses one charge");

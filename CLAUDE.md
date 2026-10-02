@@ -41,6 +41,7 @@ are not yet implemented.
 - `module/martial.mjs` — weapon/armor tables, materials, tags, `weaponProfile`/`armorProfile`, Limit math.
 - `module/magic.mjs` — Foci/Shroud/Affix tables and profiles.
 - `module/spells.mjs` — pure spell framework: the Core/Mod catalog (parsed from `trees.mjs`), known spells, Combo Threshold, casting options, `planCast`, Threshold/Energy math.
+- `module/spellfx.mjs` — what each automated Core/Combo/Mod does (Tier 1 spells, Slashing/Piercing Mods); hooks live in `actions.mjs` (`spellHit`, `spellForce`, Shield soak, Bleed/Gash) and `casting.mjs` (`resolveSpell`).
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
 - `module/data.mjs` — TypeDataModels (actor, weapon, armor, foci, shroud, gear, pile) and derived data.
 - `module/rules.mjs` — core rules math (stats, sizes, stacks, rolls, Force). `skills.mjs` + `trees.mjs` — skill trees
@@ -72,7 +73,8 @@ are not yet implemented.
 - `node --check module/<file>.mjs` catches syntax errors fast.
 - Bump `system.json` `version` (patch for fixes, minor for features) and add a README note with each change.
 - Regenerate skill trees after Martial/Magic doc changes: export the docs to `dev/docs/martial.md` and `magic.md`,
-  then `cd dev && npm run trees`.
+  then `cd dev && npm run trees`. After Combo Spell List changes: export it to `dev/docs/combos.md`, then `npm run combos`
+  (generates `module/combos.mjs`; don't hand-edit).
 - Keep Foundry globals out of `abilities.mjs`, `martial.mjs`, `magic.mjs`, `rules.mjs`, `creation.mjs` (they're unit-tested).
 - Commit with clear messages; the user may test from `main`.
 

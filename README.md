@@ -96,7 +96,8 @@ Swift abilities work with Swift weapons (any of a multi-type weapon's types unde
 - **T2 Quick Strike:** a checkbox in a Swift weapon's attack dialog (Energy = ½ Scaling Stat min). The attack gets Advantage, and so does its Fast follow-up if that's also a Swift weapon (free).
 - **T3 Blade Flurry:** when both attacks of a Fast Swift set land on the same single target (after all responses and damage), a **Blade Flurry** card offers another attack with any held Swift weapon (RP = its attack AP, Energy = Scaling Stat min). That attack can start a new Fast set, so Blade Flurry can chain.
 - **T4 Eviscerate:** an Action List entry (Swift Weapons group), available on your turn once your Swift attacks have dealt HP damage this turn (Energy = 2 × your best held Swift weapon's Scaling Stat min). It repeats every hit of Swift HP damage from this turn, bypassing armor. Once per turn.
-- **T5 Delta:** at the end of your turn, if 12 or more Swift attacks landed this turn, you regain 6 RP (up to 6). A chat card notes it.
+- **T5 Delta:** at the end of your turn, if 12 or more Light Swift attacks landed this turn, you regain 6 RP (up to 6). A chat card notes it.
+- **T5 Omega:** Heavy Swift weapon attacks let Strengthened/Weakened change their Pierce value (the damage card notes the new Pierce).
 
 ## Balanced Weapons (automated)
 Balanced abilities work with Balanced weapons (any of a multi-type weapon's types under Weapon Master). Energy uses the weapon's Grade-capped Scaling Stat min, and is free outside combat.
@@ -232,7 +233,7 @@ At the start of your turn a card lists the start-of-turn abilities you can use r
 - **T1 Disarm:** pick one of the target's held weapons, or their grapple. The attack is Weakened; on a hit they drop it (or let go).
 - **T2 Perfect Parry:** while a Curved weapon is Parrying, an optional roll on the attack card, with Advantage. A success negates the attack; a miss means that weapon doesn't apply to the hit, and you still dodge.
 - **T3 Momentum:** after a Curved hit, buttons add +1 Advantage or +1 Strengthened to your later Curved attacks on that target. It's applied automatically and ends at the start of your next turn.
-- **T4 Sheath Weapon:** an Action List entry at the end of your turn. It repeats this turn's direct Curved damage doubled, and armor applies.
+- **T4 Sheath Weapon:** an Action List entry at the end of your turn. It repeats this turn's direct Curved damage as normal damage, and armor applies.
 - **T5 Omnislash:** with 4+ Momentum on the target, the attack hits automatically as a Double Crit (4 Strengthened) and spends the Momentum.
 
 ## Longshot Weapons (automated)
@@ -286,6 +287,17 @@ Casting a Tier 1 spell goes straight on to the normal attack exchange (attack ca
 - **Slam** (Ranged): 1d12 × Power physical, and the target's dodge dice shrink by 2 × Power sizes until the start of your next turn (it doesn't stack).
 - **Combos:** Force + Cut (4d6, then 8d10 Force if the damage was direct), Force + Stab (2d10, and 20d10 Force on a crit), Force + Slam (2d12, 8d10 Force, and the dodge penalty), Cut + Stab (3d6, +1 Strengthened for direct damage and +1 for a crit), Cut + Slam (2d12, and the target's attack dice shrink by 5 × Power if the damage was direct), Stab + Slam (2d12, with three times the dice on a crit against a dodge roll of a third or less of their normal maximum). All dice counts, Force and die-size changes are multiplied by Spell Power.
 - **Rituals:** a Shield Ritual puts the Shield up until the Ritual ends or the Shield breaks. A Ritual of Force, Cut, Stab or Slam stores two free casts: cast it again with the Ritual chosen in the dialog, which costs AP/RP but no Energy, and the Ritual ends after the second.
+- **Slashing and Piercing Mods (automated):**
+  - **Bleed** (2): direct damage is dealt again, straight to HP as physical, at the start of the victim's next turn (it lasts past your own turn start until then).
+  - **Gash** (3): direct damage is repeated straight to HP every time the victim voluntarily moves (a token move), until the start of your next turn.
+  - **Cleave** (4): adds your Scaling Stat min to the damage (before Strengthened/Weakened).
+  - **Chop** (5): direct damage is Max HP loss instead (Bleed and Gash repeats too).
+  - **Exploit** (2, stackable): each stack consumes one Advantage on the attack roll for +4 die size (× Spell Power). Stacks with no Advantage to consume are refunded: their Energy comes straight back when the attack is rolled, and the card says so.
+  - **Pierce** (3, stackable): Pierce 10 × Spell Power per stack (ignores that much Limit of objects).
+  - **Setup** (4, stackable): after direct damage, you get that many Advantage on your next attack roll at that target before your next turn.
+  - **Weakpoint** (5): objects (parrying weapons, Shrouds, armor) only apply half their Limit to the spell's damage.
+- **Mods that aren't automated yet** are tagged "not automated" in the dialog. They still cost Threshold and the card lists them, and the GM resolves them from the Mod's text.
+- **Dialog:** the chosen Core's effect (or the Combo's, with two Cores) shows under the Core picks and above the Mod tabs. A Combo's card shows only the Combo effect. The Ritual option isn't offered in combat.
 - **Spell effects** end at the start of the caster's next turn (and when combat ends). Rituals' effects end with the Ritual. Spell effects from the same caster of the same kind replace each other.
 
 ## Character sheet
@@ -363,6 +375,7 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **A Fast Unarmed set** is any Unarmed attack plus its other-fist Fast follow-up.
 - **Eviscerate repeats HP damage** (what got past armor) from Swift damage cards this turn, using each hit's damage type.
 - **Delta caps RP at 6.**
+- **Omega** changes the Pierce shown on the damage card when Strengthened/Weakened applies to a Heavy Swift attack.
 - **Mark can't pause the Marked creature's action**: the Mark card appears as they act. Their attack still goes ahead (with Lead Blindness's Disadvantage), and you shoot right after.
 - **Careful Steps' 2 AP** is taken at the start of each of your turns (after AP refills).
 - **Limber** is offered to whoever succeeded: the attacker when the attack hits, the defender when a dodge or a Perfect Parry/Block roll succeeds.

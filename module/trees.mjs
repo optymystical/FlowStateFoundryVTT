@@ -361,7 +361,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Delta",
-      "text": "When you end your turn having landed at least 12 Swift Weapon attacks, you regain 6 RP."
+      "text": "When you end your turn having landed at least 12 Light Swift Weapon attacks, you regain 6 RP."
+     },
+     {
+      "name": "Omega",
+      "text": "Your Heavy Swift Weapon attacks now allow Strengthened to affect their Pierce value."
      }
     ]
    }
@@ -1329,7 +1333,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Sheath Weapon",
-      "text": "Cost: Energy equal to double your Scaling Stat min. At the end of your turn, you can use this ability if you have dealt direct damage with a Curved Weapon this turn. Immediately repeat all direct damage you dealt to targets during your turn back to them as twice as much normal damage. This damage does not ignore armor."
+      "text": "Cost: Energy equal to double your Scaling Stat min. At the end of your turn, you can use this ability if you have dealt direct damage with a Curved Weapon this turn. Immediately repeat all direct damage you dealt to targets during your turn back to them. This damage does not ignore armor."
      }
     ]
    },

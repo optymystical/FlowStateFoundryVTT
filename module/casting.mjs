@@ -33,7 +33,7 @@ export function castContext(actor) {
   const rituals = Array.from(actor.effects ?? []).filter(e => !e.disabled && e.flags?.flowstate?.ritual?.freeCasts > 0)
     .map(e => ({ id: e.id, name: e.name, cores: e.flags.flowstate.ritual.cores, mods: e.flags.flowstate.ritual.mods, freeCasts: e.flags.flowstate.ritual.freeCasts }));
   const options = spells.castingOptions({ reach: eff.reach?.value ?? 0, grasp: eff.grasp?.value ?? 0, freeHand: freeHand(actor), foci });
-  return { trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals };
+  return { inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals };
 }
 
 /** Can this actor cast at all? (Knows a Core Spell and meets some casting requirement.) */
@@ -59,7 +59,9 @@ function modRow(m, mods, v) {
   const extra = m.replicate
     ? `<select name="rep:${m.id}">${mods.filter(o => !o.replicate).map(o => `<option value="${o.id}" ${v[`rep:${m.id}`] === o.id ? "selected" : ""}>${esc(o.name)}</option>`).join("")}</select>`
     : m.min !== m.max ? `<input type="number" name="modT:${m.id}" value="${v[`modT:${m.id}`] ?? m.min}" min="${m.min}" max="${m.max}" step="1" data-tooltip="Threshold for this Mod">` : "";
-  return `<label class="fs-cast-mod" data-tooltip="${esc(m.text)}">${control} <strong>${esc(m.name)}</strong> <small>${thr} Threshold${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}</small> ${extra}</label>`;
+  const manual = fx.AUTOMATED_MODS.has(m.id) ? "" : ` · <em data-tooltip="Costs Threshold, but its effect isn't automated yet: the GM resolves it from the card">not automated</em>`;
+  const hint = m.name === "Exploit" ? " · each stack needs an Advantage on the attack, or it is refunded" : "";
+  return `<label class="fs-cast-mod" data-tooltip="${esc(m.text)}">${control} <strong>${esc(m.name)}</strong> <small>${thr} Threshold${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}</label>`;
 }
 
 /** The Universal / Core 1 / Core 2 Mod tabs for the chosen Cores. */
@@ -75,6 +77,12 @@ function modsHTML(ctx, v, theory) {
   return `<div class="fs-cast-tabs">${tab("universal", "Universal", false)}${tab("core1", c1 ? `${c1.name} Mods` : "Core 1 Mods", !c1)}${tab("core2", c2 ? `${c2.name} Mods` : "Core 2 Mods", !c2)}</div>
     ${panel("universal", universal, "No Universal Mods yet.")}${panel("core1", c1 ? own(c1.id) : [], "No Mods for this Core yet.")}${panel("core2", c2 ? own(c2.id) : [], "No Mods for this Core yet.")}
     ${focusedHere ? `<div class="fs-field"><label>Connection (free on your Focused Spell)</label><select name="connection"><option value="">None</option>${spells.CONNECTION_MODS.map(k => `<option value="${k}" ${v.connection === k ? "selected" : ""}>${k[0].toUpperCase() + k.slice(1)}</option>`).join("")}</select></div>` : ""}`;
+}
+
+/** The chosen Core's effect, or the Combo's when two are picked. */
+function effectHTML(v) {
+  const e = spells.effectText([v.core1, v.core2].filter(Boolean));
+  return e ? `<strong>${esc(e.title)}</strong>: ${esc(e.text)}` : "";
 }
 
 function previewHTML(plan, ctx) {
@@ -109,9 +117,10 @@ function dialogHTML(ctx, v) {
     <div class="fs-field"><label>Core Spell</label>${coreSelect("core1", known.cores, v.core1, false)}</div>
     <div class="fs-field"><label>Second Core (Combo)</label>${coreSelect("core2", known.cores.filter(c => c.id !== v.core1), v.core2, true)}</div>
     <div class="fs-field fs-cast-base" ${bt.ok && bt.max > bt.min ? "" : "hidden"}><label>Core Threshold</label><input type="number" name="base" value="${v.base ?? bt.min}" min="${bt.min}" max="${bt.max}" step="1"></div>
+    <div class="fs-cast-effect">${effectHTML(v)}</div>
     <div class="fs-cast-mods">${modsHTML(ctx, v, theory)}</div>
     ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
-    ${theory >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="ritual" ${v.ritual ? "checked" : ""}> <strong>Ritual</strong> <small>takes hours instead of AP, and lowers your max Energy while it lasts (out of combat)</small></label>` : ""}
+    ${theory >= 2 && !ctx.inCombat ? `<label class="fs-cast-mod"><input type="checkbox" name="ritual" ${v.ritual ? "checked" : ""}> <strong>Ritual</strong> <small>takes hours instead of AP, and lowers your max Energy while it lasts (out of combat)</small></label>` : ""}
     <div class="fs-cast-preview">${previewHTML(spells.planCast(ctx, v), ctx)}</div>
   </div>`;
 }
@@ -139,6 +148,7 @@ async function castDialog(actor, ctx) {
         if (changed === "core1" || changed === "core2") { v.base = spells.baseThreshold([v.core1, v.core2].filter(Boolean)).min; }
         if (rebuild) {
           const bt = spells.baseThreshold([v.core1, v.core2].filter(Boolean));
+          form.querySelector(".fs-cast-effect").innerHTML = effectHTML(v);
           form.querySelector(".fs-cast-mods").innerHTML = modsHTML(ctx, v, tierOf(ctx.trees, "magic-theory"));
           const baseField = form.querySelector(".fs-cast-base");
           baseField.hidden = !(bt.ok && bt.max > bt.min);
@@ -165,14 +175,15 @@ async function castDialog(actor, ctx) {
 /*  Casting                                     */
 /* -------------------------------------------- */
 
-const stripHeader = text => String(text).replace(/^(?:X\+1|\d+(?:-\d+)?) Threshold, [^.]*\.\s*/, "");
+const stripHeader = spells.stripHeader;
 
 /** Cast card: the cost breakdown and the effect text for the GM to resolve (until the spell is automated). */
 export function castCardHTML(actor, plan) {
   const names = plan.cores.map(c => c.name).join(" + ");
   const via = esc(plan.option.label);
   const parts = [`${plan.base}`, ...plan.applied.filter(a => a.threshold).map(a => `${esc(a.mod.name)} ${a.threshold}`)].join(" + ");
-  const effects = plan.cores.map(c => `<li><strong>${esc(c.name)}:</strong> ${esc(stripHeader(c.text))}</li>`).join("");
+  const eff = spells.effectText(plan.cores.map(c => c.id));
+  const effects = eff ? `<li><strong>${esc(plan.combo ? eff.title : plan.cores[0].name)}:</strong> ${esc(eff.text)}</li>` : "";
   const mods = plan.applied.map(a => `<li><strong>${esc(a.mod.name)}${a.free ? " (Connection)" : ""}${a.replicates ? ` (copies ${esc(spells.spellById(a.replicates)?.name ?? "")})` : ""}:</strong> ${esc(stripHeader(a.mod.text))}</li>`).join("");
   return `<div class="fs-result"><strong>${esc(actor.name)}</strong> casts <strong>${esc(names)}</strong>${plan.combo ? " (Combo Spell)" : ""}${plan.ritual ? " as a <em>Ritual</em>" : ""}.</div>
     <ul class="fs-list">
@@ -231,6 +242,8 @@ export async function castSpell(actor, preset = null) {
     else await r?.update({ "flags.flowstate.ritual.freeCasts": left });
     plan.note = left <= 0 ? "That was the Ritual's last free cast: the Ritual ends." : `${left} free cast${left === 1 ? "" : "s"} left on the Ritual.`;
   }
+  const manual = plan.applied.filter(a => !a.free && !fx.AUTOMATED_MODS.has(a.mod.id)).map(a => a.mod.name);
+  if (manual.length && profile) plan.note = `${plan.note ? `${plan.note} ` : ""}Not automated yet (the GM resolves it from the text above): ${[...new Set(manual)].join(", ")}.`;
   if (!plan.note && !profile) plan.note = `Spell effects for this spell aren't automated yet: scale the effect by Spell Power ×${plan.power} and resolve it at the table (attack roll, damage, and effects).`;
 
   await post(actor, {
@@ -239,7 +252,7 @@ export async function castSpell(actor, preset = null) {
     flags: { flowstate: { spell: { caster: actor.uuid, cores: ids, mods: plan.applied.map(a => a.mod.id), power: plan.power, threshold: plan.threshold, energy: plan.energy, ritual: plan.ritual, attack: plan.attack } } }
   });
   // Automated spells go on to the attack exchange (Rituals of attack spells just store their free casts).
-  if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange);
+  if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values);
   return plan;
 }
 
@@ -251,16 +264,30 @@ function inMeleeRange(actor, other) {
 }
 
 /** Make the spell's attack: Pinpoint and melee range give Advantage, Targeted spells attack from half stealth. */
-async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee) {
+async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee, ctx, values) {
   let targetActors = targets.map(t => t.actor);
   if (!targetActors.length && profile.shield) targetActors = [actor];     // a Shield with no target goes on yourself
   if (targetActors.length > 1) { ui.notifications.info(`${profile.name} has a single target: using ${targetActors[0].name}.`); targetActors = targetActors.slice(0, 1); }
   const pinpoint = plan.applied.some(a => a.mod.name === "Pinpoint");
   const notes = [pinpoint ? "Pinpoint: Advantage" : "", melee ? "Cast in melee range: Advantage" : ""].filter(Boolean);
   const dice = profile.damage ? fx.damageDice(profile, plan.power) : null;
+  const mods = fx.modCounts(plan.applied);
+  // Exploit: how much Energy comes back if some stacks have no Advantage to consume (worked out against the real attack roll).
+  let exploit = null;
+  const exploitMod = plan.applied.find(a => a.mod.name === "Exploit")?.mod;
+  if (mods.exploit && exploitMod && !plan.freeFrom) {
+    const refund = [0];
+    for (let unused = 1; unused <= mods.exploit; unused++) {
+      const fewer = spells.planCast(ctx, { ...values, [`mod:${exploitMod.id}`]: mods.exploit - unused });
+      refund[unused] = Math.max(0, plan.energy - fewer.energy);
+    }
+    exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund };
+  } else if (mods.exploit) exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund: [] };
+  const pierce = mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0;
   return performAttack(actor, {
     label: profile.name, net: (pinpoint ? 1 : 0) + (melee ? 1 : 0), stealth: plan.attack === "Targeted" ? "half" : "none", melee, push: false,
-    damage: dice ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce: 0, knockback: 0,
-    notes, followups: [], ...(targetActors.length ? { targetActors } : {}), spell: { cores: ids, power: plan.power, ritualOf }
+    damage: dice ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, knockback: 0,
+    notes: [...notes, pierce ? `Pierce ${pierce} (ignores that much Limit)` : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
+    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit }
   });
 }

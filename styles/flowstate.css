@@ -300,3 +300,4 @@
 .fs-cast-mod small { opacity: .7; }
 .fs-cast-mod input[type="number"] { width: 3.5em; }
 .fs-cast-preview { border-top: 1px solid var(--color-border, #999); padding-top: 4px; }
+.fs-cast-effect { font-size: .9em; padding: 4px 6px; border-left: 3px solid var(--color-border-highlight, #c9593f); background: rgba(0,0,0,.06); }

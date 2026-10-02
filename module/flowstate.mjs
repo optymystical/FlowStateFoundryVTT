@@ -6,6 +6,7 @@ import * as areas from "./areas.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
 import "./arcana.mjs";
+import * as fociEngine from "./foci.mjs";
 import * as conjure from "./conjure.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
@@ -125,6 +126,7 @@ class FlowStateCombat extends Combat {
       // Poison, Charm and Hex (Tier 3): the victim's checks, and the caster's Ingrained Charms.
       await actions.afflictTurnStart(combatant.actor);
       await actions.arcanaTurnStart(combatant.actor);
+      await fociEngine.deckTurnStart(combatant.actor);
       await combatant.actor.setFlag?.("flowstate", "turnStartedAt", Date.now());
       // Tier 4: Reform, then the caster's temporary Summons, Animations and Made objects end.
       await conjure.turnStart(combatant.actor);

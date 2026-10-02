@@ -1488,6 +1488,7 @@ async function startExchange(actor, opts, targets) {
     // Foresight (Grasp Arcana T1): Advantage if the target has Disadvantage on their dodge. Convince (Charm T3): Advantage on a target already Charmed by you.
     const sm = opts.spell?.mods ?? {};
     if (sm.foresight && dodgeNetKnown(target) < 0) { atkNet += 1; spellNotes.push("Foresight: Advantage (they have Disadvantage on dodge rolls)"); }
+    if (foci && opts.spell?.fociFx) { const fa = foci.attackNet({ attacker: actor, target, o: opts }); if (fa.net) { atkNet += fa.net; spellNotes.push(...fa.notes); } else spellNotes.push(...fa.notes); }
     if (opts.spell && fx.profileFor(opts.spell.cores)?.strike && target.system.magical) { atkNet += 1; spellNotes.push("Strike: Advantage against a fully magical target"); }
     if (sm.convince && aff?.charmedBy(target, actor.uuid)) { atkNet += 1; spellNotes.push("Convince: Advantage (already Charmed by you)"); }
     // Sticky (Acid T4): Advantage against a target with Stain stacks equal to or above their Pain Threshold.
@@ -3246,6 +3247,9 @@ const barriersFor = (attacker, target) => (globalThis.canvas?.scene ? areas.barr
 let elem = null;
 export const registerElemental = h => { elem = h; };
 export const chainNext = (message, preset) => elem?.chainNext(message, preset);
+/** Foci effects (Affixes, Deck Foci) live in foci.mjs, which registers its hooks here. */
+let foci = null;
+export const registerFoci = h => { foci = h; };
 /** Tier 5 (Restoration, Geomancy, Illusion) lives in arcana.mjs, which registers its hooks here. */
 let arc = null;
 export const registerArcana = h => { arc = h; };
@@ -3448,6 +3452,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
     chain = eh.chain ?? null;
   }
   if (conj && sp.makeAct) html.push(await conj.makeHit({ attacker, target, sp }));
+  if (foci && sp.fociFx) { const fh = await foci.afterHit({ attacker, target, o }); if (fh) html.push(fh); }
   // Tier 5: a Mirage takes hold.
   if (arc && profile?.arcana?.kind === "mirage") { const mh = await arc.mirageHit({ attacker, target, o, result, profile }); if (mh.html) html.push(mh.html); rolls.push(...mh.rolls); }
   // Tier 3: Poison, Charm and Hex.
@@ -3465,7 +3470,7 @@ export async function spellForce(attacker, target, o, result, fd, label) {
   const roll = await evaluate(`${fd.n}d${fd.sides}`);
   const stacks = (o.stacks ?? 0) + (result.critStacks ?? 0);
   const force = applyStacks(roll.total, stacks);
-  const feet = forceFeet(force, target, false);
+  const feet = forceFeet(force, target, !!o.spell?.fociFx?.affixes?.includes("musgravite"));          // Musgravite: against current health
   const html = `<div class="fs-result">${label}: ${fd.n}d${fd.sides} = ${roll.total}${stacks ? ` ${stackLabel(stacks)} → ${force}` : ""} Force → up to <strong>${feet} ft</strong></div>`;
   return { html, rolls: [roll], push: feet > 0 ? { attacker: attacker.uuid, target: target.uuid, force, feet, label } : null };
 }
@@ -4364,6 +4369,7 @@ function targetStacks(attacker, o, target, result, extra = 0, ctx = {}) {
   // Slip Off (Balanced T1) and Harden (Heavy T4 / Titanic T3) Weaken attacks against an active Parry/Brace.
   for (const w of ctx.weaken ?? []) { stacks -= 1; parts.push(`−1 ${w}`); }
   if (ctx.distracted) { stacks -= 1; parts.push("−1 Distracting Fire"); }
+  if (o.spell && foci) { const fs = foci.damageStacks({ attacker, o, type }); if (fs.stacks) { stacks += fs.stacks; parts.push(...fs.parts); } }
   if (o.spell && arc?.magicFails(attacker)) { stacks -= 1; parts.push("−1 Illusion (their Magic has failed them)"); }
   const charmed = aff?.charmWeakened(attacker) ?? 0;
   if (charmed) { stacks -= charmed; parts.push(`−${charmed} Charm/Hex (damage rolls)`); }
@@ -4598,6 +4604,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (ripHTML) await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts });
   // A Summon's or Animation's attacks carry the Core they were Combo'd with (Any T1/T2/T3 + Summoning / Animation).
   if (conj && !o.spell) await conj.riderAfter({ attacker, target, o, outcome, defense });
+  if (foci && o.spell?.fociFx) await foci.afterDamage({ attacker, o, type });
 }
 
 /** Twist (Reach T4) and Impale (Reach T5) from a damage card. */

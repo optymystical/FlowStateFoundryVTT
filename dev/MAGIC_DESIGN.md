@@ -79,3 +79,10 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 - Geomancy Combos with Summoning / Creation / Animation set `geo` (returning natural weapons, ranged strike); Illusion Combos set `fear` (coin flip in `riderAfter`).
 - Tests: `dev/tests/spell-t5.mjs`.
 
+## Built (v0.33.0): Foci passives, Foci Affixes, Deck Foci
+
+- `module/foci.mjs` (registered as `registerFoci`): per-turn Foci state (`fociState` flag: casts and last Core per Foci), the Affix hooks (`attackNet`, `damageStacks`, `afterDamage`, `afterHit` on `spell.fociFx`, the plain data a cast carries on its attack card), and the deck (`deck` actor flag: draw / hand / discard).
+- Pure maths: `magic.mjs` `fociTR` (Wand, Lens, Scepter, Tablet) and `castsTwice` (Staff, Tome, Gauntlet); `spells.planCast` applies them (`ctx.fociState`, `ctx.targetsAlly`), the Deck TR and hand check, Hematite and Taaffeite.
+- `castSpell` wraps the resolution in `run(plan)` so a Foci can run it twice; Gauntlet's first run uses the higher Scaling Stat.
+- Tests: `dev/tests/foci-effects.mjs`.
+

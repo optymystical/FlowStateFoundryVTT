@@ -11,6 +11,8 @@ import "./elemental.mjs";
 import "./afflictions.mjs";
 import * as conjure from "./conjure.mjs";
 import * as arcana from "./arcana.mjs";
+import * as fociFx from "./foci.mjs";
+import { castsTwice } from "./magic.mjs";
 import { STATS } from "./rules.mjs";
 import { tierOf } from "./skills.mjs";
 
@@ -31,8 +33,14 @@ function freeHand(actor) {
 export function castContext(actor, weave = null) {
   const eff = actor.system.derived?.effective ?? {};
   const foci = actor.items.filter(i => i.type === "foci" && i.system.equipped).map(i => ({
-    id: i.id, name: i.name, profile: i.system.profile, attuned: !!i.system.attuned, broken: !!i.system.broken, twoHanded: !!i.system.twoHanded
+    id: i.id, name: i.name, profile: i.system.profile, attuned: !!i.system.attuned, broken: !!i.system.broken, twoHanded: !!i.system.twoHanded,
+    hand: i.system.profile?.deck ? fociFx.handOf(actor) : undefined
   }));
+  const working = actor.items.filter(i => i.type === "foci" && i.system.attuned && !i.system.broken && i.system.profile?.valid);
+  // Allies: every target is you or shares your token's disposition (Scepter and Tablet).
+  const mine = globalThis.canvas ? attackerToken(actor)?.document?.disposition : undefined;
+  const tgts = [...(globalThis.game?.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
+  const targetsAlly = tgts.length > 0 && tgts.every(t => t.actor.uuid === actor.uuid || (mine !== undefined && t.document?.disposition === mine));
   const ring = {};
   for (const i of actor.items) if (i.type === "foci" && i.system.fociType === "ring" && i.system.chosenSpell) ring[i.id] = i.system.chosenSpell;
   const rituals = Array.from(actor.effects ?? []).filter(e => !e.disabled && e.flags?.flowstate?.ritual?.freeCasts > 0)
@@ -41,7 +49,9 @@ export function castContext(actor, weave = null) {
   const theory = tierOf(actor.system.trees ?? {}, "magic-theory");
   // Weaving: only options whose normal AP equals the attack's can be woven; Webmaster (T5) keeps TR.
   if (weave) for (const o of options) if (o.ok && !o.ap.includes(weave.ap)) { o.ok = false; o.reason = `Takes ${o.ap.join("/")} AP; the attack you're weaving with costs ${weave.ap}.`; }
-  return { inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals,
+  return { fociState: fociFx.castState(actor), targetsAlly, hematiteFoci: working.filter(i => i.system.profile.affixes.includes("hematite")).map(i => i.id),
+    taaffeiteFoci: working.filter(i => i.system.profile.affixes.includes("taaffeite")).map(i => i.id),
+    inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals,
     weave: weave ? { ap: weave.ap, keepTR: theory >= 5 } : null };
 }
 
@@ -163,6 +173,7 @@ function dialogHTML(ctx, v) {
     <div class="fs-cast-mods">${modsHTML(ctx, v, theory)}</div>
     ${(() => { const only = v.core1 && !v.core2 ? fx.profileFor([v.core1]) : null; return only?.hold ? `<label class="fs-cast-mod"><input type="checkbox" name="hold" ${v.hold ? "checked" : ""}> <strong>Hold it</strong> <small>in melee: no damage, but it stays available to use again for the same AP until your next turn</small></label>` : ""; })()}
     ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
+    ${ctx.hematiteFoci?.length ? `<label class="fs-cast-mod"><input type="checkbox" name="hematite" ${v.hematite ? "checked" : ""}> <strong>Hematite</strong> <small>double the Power by spending Health equal to it</small></label>` : ""}
     ${theory >= 2 && !ctx.inCombat ? `<label class="fs-cast-mod"><input type="checkbox" name="ritual" ${v.ritual ? "checked" : ""}> <strong>Ritual</strong> <small>takes hours instead of AP, and lowers your max Energy while it lasts (out of combat)</small></label>` : ""}
     <div class="fs-cast-preview">${previewHTML(spells.planCast(ctx, v), ctx)}</div>
   </div>`;
@@ -284,7 +295,12 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const meleeRange = !!targets[0]?.actor && inMeleeRange(actor, targets[0].actor, origin);
   if (weave?.melee && !meleeRange) { ui.notifications.warn("A woven spell must be the same kind of attack: the target has to be within your personal melee range for a melee attack."); return null; }
   // Snipe (Magic Theory T4) doubles the range; past the normal range the initial attack roll has Disadvantage.
-  const normalRange = plan.attack === "Targeted" ? 100 : 200;
+  const ffx = fociFx.fociFx(actor, plan);
+  plan.fociFx = ffx;
+  let normalRange = plan.attack === "Targeted" ? 100 : 200;
+  // Foci Affixes: Black Opal swaps the Targeted and Ranged ranges; Quartz adds 50% to Ranged spells.
+  if (ffx?.affixes.includes("blackOpal")) normalRange = plan.attack === "Targeted" ? 200 : plan.attack === "Ranged" ? 100 : normalRange;
+  if (ffx?.affixes.includes("quartz") && plan.attack === "Ranged") normalRange *= 1.5;
   if (!weave && !fire && !mods.aura && !plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, normalRange * (mods.snipe ? 2 : 1), `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack}${mods.snipe ? ", Snipe" : ""})`, null, origin)) return null;
   // Area spells (Gravity Field) and Emplace: choose a shape and place it before anything is spent; everything it touches is targeted.
   const emplace = !!mods.emplace && !!profile?.shield;
@@ -329,6 +345,8 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
     if (inCombat && plan.energy && actor.system.energy.value < plan.energy) { ui.notifications.warn(`${actor.name} needs ${plan.energy} Energy to cast this but has ${actor.system.energy.value}.`); return null; }
     if (!(await spendPoints(actor, key, plan.ap, "casting"))) return null;
     if (!(await spendEnergy(actor, plan.energy, "casting"))) return null;
+    // Hematite (Foci Affix): the doubled Power costs Health equal to the Power.
+    if (plan.hematite && plan.hematiteCost) await actor.update({ "system.hp.value": actor.system.hp.value - plan.hematiteCost });
   }
 
   // A Ritual: Shield lasts until the Ritual ends; the attack spells store two free casts. Free casts used up end the Ritual.
@@ -361,6 +379,9 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   }
   const manual = plan.applied.filter(a => !a.free && !fx.AUTOMATED_MODS.has(a.mod.id)).map(a => a.mod.name);
   if (manual.length && profile) plan.note = `${plan.note ? `${plan.note} ` : ""}Not automated yet (the GM resolves it from the text above): ${[...new Set(manual)].join(", ")}.`;
+  const fnotes = fociFx.castNotes(ffx, plan);
+  if (plan.hematite) fnotes.push(`Hematite: Power doubled, ${plan.hematiteCost} Health spent.`);
+  if (fnotes.length) plan.note = `${plan.note ? `${plan.note} ` : ""}${fnotes.join(" ")}`;
   if (!plan.note && !profile) plan.note = `Spell effects for this spell aren't automated yet: scale the effect by Spell Power ×${plan.power} and resolve it at the table (attack roll, damage, and effects).`;
 
   await post(actor, {
@@ -377,6 +398,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
     return plan;
   }
   // Automated spells go on to the attack exchange (Rituals of attack spells just store their free casts).
+  const run = async plan => {
   if (emplace) {
     // The barrier is a real one-way Wall (movement only), made through the GM; its template holds the health.
     if (placed?.tpl) await requestGM("createWalls", { sceneId: placed.sceneId, walls: areas.wallData(placed.tpl, placed.front, placed.grid, { barrierOf: placed.templateId, areaOf: actor.uuid }) });
@@ -385,6 +407,24 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   else if (conjureCast) { if (!plan.ritual) await conjure.resolve({ actor, plan, profile, spec: cjSpec, mods, ritualOf, targets, values }); }
   else if (arcanaCast) { if (!plan.ritual) await arcana.resolve({ actor, plan, profile, spec: arcSpec, mods, ritualOf, targets }); }
   else if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave, primary, rangedPlusArea });
+  };
+  // Foci that cast twice: Staff (after a different Core), Tome (after the same Core), Gauntlet (always, with the higher then the lower Scaling Stat).
+  const coreKey = [...ids].sort().join("+");
+  const state = fociFx.castState(actor)[plan.option?.fociId] ?? {};
+  const type = plan.option?.fociType;
+  const twice = !!type && !plan.ritual && !plan.freeFrom && !fire && castsTwice(type, state.last, coreKey);
+  if (type === "gauntlet" && twice) {
+    const hi = plan.option.scalingHigh ?? plan.scaling;
+    await run({ ...plan, scaling: hi, power: spells.spellPower(hi) * (1 + (plan.empower ?? 0) + (plan.hematite ? 1 : 0)) });
+    await post(actor, { title: `${esc(actor.name)} — Gauntlet`, body: `<div class="fs-result">The Gauntlet duplicates it, using your lower Scaling Stat (${plan.scaling}).</div>` });
+    await run(plan);
+  } else {
+    await run(plan);
+    if (twice) { await post(actor, { title: `${esc(actor.name)} — ${type === "staff" ? "Staff" : "Tome"}`, body: `<div class="fs-result">The ${type === "staff" ? "Staff" : "Tome"} casts it twice.</div>` }); await run(plan); }
+  }
+  if (plan.option?.fociId && !fire && !plan.ritual) await fociFx.recordCast(actor, plan.option.fociId, coreKey);
+  // Deck Foci: the cards played are discarded.
+  if (plan.option?.deck && !fire && !plan.ritual) await fociFx.playCards(actor, ids);
   return plan;
 }
 
@@ -429,9 +469,10 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
   const bash = mods.bash ? mods.bash * 10 * plan.power : 0;
   const attackOpts = {
     label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
-    damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0,
+    damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin : 0,
     notes: [...notes, plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
     spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
+      ...(plan.fociFx ? { fociFx: plan.fociFx } : {}),
       ...(profile.arcana?.kind === "mirage" ? { ritualFree: plan.t3Free ?? null, arcana: { sense: values?.sense, fidelity: values?.fidelityKind, fidelityRoll: values?.fidelityRoll } } : {}),
       ...(profile.afflict ? { ritualFree: plan.t3Free ?? null, afflict: { charmRoll: values?.charmRoll, hexDie: values?.hexDie, hex: { trigger: values?.hexTrigger, roll: values?.hexRoll, outcome: values?.hexOutcome, detail: values?.hexDetail } } } : {}) }
   };

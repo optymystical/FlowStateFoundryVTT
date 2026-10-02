@@ -261,6 +261,8 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
       affixes: new f.ArrayField(new f.StringField()),
       element: new f.StringField({ initial: "heat" }),    // Tourmaline
       chosenSpell: new f.StringField({ initial: "" }),    // Ring
+      lush: new f.BooleanField({ initial: false }),       // Emerald: in a Lush biome
+      declared: new f.StringField({ initial: "" }),     // Colored Diamond: the Core Spell declared this turn
       description: new f.HTMLField({ initial: "" })
     };
   }

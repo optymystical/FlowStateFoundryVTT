@@ -77,7 +77,7 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
   try { globalThis.canvas.templates?.activate?.(); } catch (err) { /* layer switch is a convenience only */ }
   const ok = await DialogV2.confirm({
     window: { title: `${title}: place the area` },
-    content: `<p>Drag the template into place (move it with the Templates tool; rotate it with the mouse wheel or by dragging its handle), then press <strong>Confirm</strong>. Everything it touches is targeted.</p>`,
+    content: `<p>Drag the template into place (move it with the Templates tool; rotate it with Ctrl + the middle mouse wheel, or by dragging its handle), then press <strong>Confirm</strong>. Everything it touches is targeted.</p>`,
     yes: { label: "Confirm" }, no: { label: "Cancel" }, rejectClose: false
   });
   const placed = scene.templates?.get?.(doc?.id) ?? doc;

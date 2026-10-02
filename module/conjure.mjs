@@ -29,13 +29,51 @@ function allActors() {
 const summonOf = a => a?.flags?.flowstate?.summon ?? null;
 
 /** Where a creation appears: one square beside the targeted creature (or the caster), or null with no scene. */
-function placement(actor, targets) {
+function placement(actor, targets, tile = null) {
+  if (tile) return tile;
   const tgt = targets?.[0]?.actor?.getActiveTokens?.()[0] ?? null;
   const anchor = tgt ?? attackerToken(actor);
   const canvas = globalThis.canvas;
   if (!anchor || !canvas?.grid || !canvas.scene) return null;
   const gs = canvas.grid.size, d = anchor.document;
   return { sceneId: canvas.scene.id, x: d.x + (d.width ?? 1) * gs, y: d.y };
+}
+
+/**
+ * Pick an empty tile within range on the scene: click it (right-click or Esc cancels). Returns { sceneId, x, y } (top-left), null if cancelled,
+ * or undefined when there's no scene to click on. `squares` is the footprint (a size 4 Summon takes 2 × 2).
+ */
+export function pickTile(actor, { range = 100, squares = 1, title = "Pick a tile" } = {}) {
+  const canvas = globalThis.canvas, src = attackerToken(actor);
+  if (!canvas?.grid || !canvas.scene || !src || !canvas.stage?.on) return Promise.resolve(undefined);
+  const gs = canvas.grid.size, n = Math.max(1, Math.ceil(squares));
+  const problem = pt => {
+    const cx = pt.x + gs * n / 2, cy = pt.y + gs * n / 2;
+    const d = canvas.grid.measurePath([src.center, { x: cx, y: cy }]).distance - ((src.document.width ?? 1) + n) / 2 * canvas.grid.distance;
+    if (d > range) return `That tile is ${Math.round(d)} ft away (range ${range} ft).`;
+    for (const t of canvas.tokens.placeables) {
+      const w = (t.document.width ?? 1) * gs, h = (t.document.height ?? 1) * gs;
+      if (t.document.x < pt.x + n * gs && pt.x < t.document.x + w && t.document.y < pt.y + n * gs && pt.y < t.document.y + h) return "That tile isn't empty.";
+    }
+    return "";
+  };
+  return new Promise(resolve => {
+    ui.notifications.info(`${title}: click an empty tile within ${range} ft (right-click or Esc to cancel).`);
+    const stage = canvas.stage;
+    const done = v => { stage.off("pointerdown", onDown); window.removeEventListener("keydown", onKey); resolve(v); };
+    const onKey = e => { if (e.key === "Escape") done(null); };
+    const onDown = ev => {
+      if (ev.button === 2) return done(null);
+      if (ev.button !== 0) return;
+      const local = ev.getLocalPosition ? ev.getLocalPosition(stage) : ev.data.getLocalPosition(stage);
+      const pt = canvas.grid.getTopLeftPoint(local);
+      const bad = problem(pt);
+      if (bad) return ui.notifications.warn(bad);
+      done({ sceneId: canvas.scene.id, x: pt.x, y: pt.y });
+    };
+    stage.on("pointerdown", onDown);
+    window.addEventListener("keydown", onKey);
+  });
 }
 
 /** Users (other than GMs) who own the caster: they own what it makes. */
@@ -129,6 +167,15 @@ export async function prompt({ actor, plan, profile, mods, values, targets }) {
   }
   const check = validate(ctx, spec);
   if (!check.ok) { ui.notifications.warn(check.errors.join(" ")); return null; }
+  // Summons and Animations appear on an empty tile in range you click; so do Made objects left on the ground.
+  const needsTile = cj.kind === "summon" || cj.kind === "animate" ? !ctx.equipment : spec.recipient === "drop";
+  if (needsTile && spec.tile === undefined) {
+    const size = cj.kind === "summon" ? R.formSize(spec.size, ctx.gross) : cj.kind === "animate" ? R.animationSize(cj.instant ? ctx.pool : Number(spec.body) || ctx.bodyMin) : 1;
+    const squares = { 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 }[size] ?? 1;
+    const tile = await pickTile(actor, { range: 100 * (mods.snipe ? 2 : 1), squares, title: profile.name });
+    if (tile === null) return null;
+    spec.tile = tile ?? null;
+  }
   return { ...spec, mult, ctx: undefined };
 }
 
@@ -141,7 +188,7 @@ export function describe({ actor, plan, profile, mods, mult }) {
   const expanded = !!mods["expanded animation"];
   const rarities = R.makeRarities({ mk2: !!mods["make mk2"], mk3: !!mods["make mk3"] });
   return { cj, actor, mult, gross: plan.gross ?? plan.threshold, mods, arms, skin: skin?.threshold ?? 0, expanded, rarities, complexity: mods.complexity ?? 0,
-    armory: mods.armory ?? 0, pool: cj.instant ? 10 * mult : R.formPool(mult), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
+    armory: mods.armory ?? 0, pool: cj.instant ? 10 * mult : (cj.kind === "summon" || cj.summonStats) ? R.summonPool(mult) : R.formPool(mult), bodyMin: cj.instant ? 10 * mult : R.formPool(mult), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
     equipment: !!(mods["weapon/foci"] || mods["armor/shroud"]), combo: plan.combo };
 }
 
@@ -157,14 +204,14 @@ function dialogHTML(ctx, spec) {
   if (cj.kind === "animate") {
     const opts = R.ANIM_MATERIALS.filter(m => R.animationAllowed(m.category, ctx.expanded)).map(m => [m.name, `${m.name} — ${R.ANIM_CATEGORIES[m.category].label} (${RARITIES[m.rarity]})`]);
     out.push(field("Material", select("material", opts, spec.material ?? opts[0]?.[0])));
-    if (!cj.instant) out.push(field(`Body of material (at least ${ctx.pool})`, `<input type="number" name="body" value="${spec.body ?? ctx.pool}" min="${ctx.pool}">`));
+    if (!cj.instant) out.push(field(`Body of material (at least ${ctx.bodyMin})`, `<input type="number" name="body" value="${spec.body ?? ctx.bodyMin}" min="${ctx.bodyMin}">`));
   }
   if (cj.kind === "summon") for (const [i, t] of ctx.arms.entries()) {
     out.push(`<fieldset><legend>Arm ${i + 1} (${t === 2 ? "both arms, one weapon" : "one arm"})</legend>${field("Weapon type", select(`arm${i}type`, WEAPON_CHOICES, spec.arms?.[i]?.type ?? "bladed"))}${field("Weight", select(`arm${i}weight`, [["light", "Light"], ["heavy", "Heavy"]], spec.arms?.[i]?.weight ?? "light"))}</fieldset>`);
   }
   if (cj.kind === "make") for (let i = 0; i < 1 + ctx.armory; i++) out.push(itemRowHTML(i, spec, ctx.rarities, ctx.complexity));
   if (cj.make && cj.kind !== "make") out.push(itemRowHTML(0, { items: spec.items }, ctx.rarities, ctx.complexity));
-  if (cj.kind === "make") out.push(field("Goes to", select("recipient", [["self", "Your hand"], ["target", "Your target's hand (willing)"], ["drop", "Dropped by the target / you"]], spec.recipient ?? "self")));
+  if (cj.kind === "make") out.push(field("Goes to", select("recipient", [["self", "Your own inventory"], ["target", "Your target's inventory (attack roll; a miss drops it beside them)"], ["drop", "On an empty tile in range"]], spec.recipient ?? "self")));
   out.push(field("Name", `<input type="text" name="name" value="${esc(spec.name ?? "")}">`));
   return out.join("");
 }
@@ -194,7 +241,7 @@ export function validate(ctx, spec) {
     const m = R.animMaterial(spec.material);
     if (!m) errors.push("Pick a material.");
     else if (!R.animationAllowed(m.category, ctx.expanded)) errors.push(`${m.name} is a ${R.ANIM_CATEGORIES[m.category].label} material: Animate needs Expanded Animation for it.`);
-    if (!cj.instant && (Number(spec.body) || 0) < ctx.pool) errors.push(`The pile must be at least ${ctx.pool} Body.`);
+    if (!cj.instant && (Number(spec.body) || 0) < ctx.bodyMin) errors.push(`The pile must be at least ${ctx.bodyMin} Body.`);
   }
   if (cj.make || cj.kind === "make") {
     const items = spec.items ?? [];
@@ -242,8 +289,8 @@ async function creatingCombatInit(actor) {
   return mine ? (Number(mine.initiative) || 0) - 0.01 : null;
 }
 
-async function spawn({ actor, name, system, flags, items, targets }) {
-  const at = placement(actor, targets);
+async function spawn({ actor, name, system, flags, items, targets, tile }) {
+  const at = placement(actor, targets, tile);
   const payload = { sceneId: at?.sceneId, x: at?.x ?? 0, y: at?.y ?? 0, data: { name, img: "icons/svg/mystery-man.svg", system, flags }, items, owners: ownerIds(actor), initiative: await creatingCombatInit(actor) };
   return requestGM("createCreation", payload);
 }
@@ -274,7 +321,7 @@ async function makeSummon({ actor, plan, profile, spec, mods, ritualOf, targets,
   const sm = { owner: actor.uuid, ritualOf: ritualOf ?? null, kind: "summon", hp, energy, attackDie: actor.system.derived.attackDie, dodgeDie: actor.system.derived.dodgeDie, ap: 6, rp: 6, reform: !!mods.reform, reformMark: hp,
     rider: riderOf(cj, values, level) };
   const name = spec.name || `${actor.name}'s Summon`;
-  const id = await spawn({ actor, name, system: { stats: { str: f.stats.str, dex: f.stats.dex, con: f.stats.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f.skillPoints, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets });
+  const id = await spawn({ actor, name, system: { stats: { str: f.stats.str, dex: f.stats.dex, con: f.stats.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f.skillPoints, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets, tile: spec.tile });
   const lines = [`Strength ${f.stats.str}, Dexterity ${f.stats.dex}, Constitution ${f.stats.con} · Size ${size}`,
     `${hp} health${layered ? ` (Layered +${layered})` : ""} (no regeneration or Pain Threshold) · ${energy} Energy (its own, for Martial skills)`,
     `${f.skillPoints ? `${f.skillPoints} skill point${f.skillPoints === 1 ? "" : "s"} to spend on Martial trees (it already knows yours) · ` : ""}it uses your attack and dodge dice`,
@@ -291,10 +338,10 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
   const cj = profile.conjure;
   const ctx = describe({ actor, plan, profile, mods, mult: spec.mult });
   const mat = R.animMaterial(spec.material);
-  const points = ctx.pool;
+  const points = cj.summonStats ? ctx.bodyMin : ctx.pool;
   const body = cj.instant ? points : Number(spec.body) || points;
   const size = R.animationSize(body);
-  const f = cj.summonStats ? R.formStats(spec, points) : null;
+  const f = cj.summonStats ? R.formStats(spec, ctx.pool) : null;
   const st = R.animationStats({ points, category: mat.category, size, stats: f?.stats ?? null });
   const eff = actor.system.derived.effective;
   const layered = (mods.layered ?? 0) * R.layeredBonus(eff.build.value, false);
@@ -307,7 +354,7 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
   const items = [];
   if (cj.make && spec.items?.[0] && !cj.instant) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true }));
   const name = spec.name || `${mat.name} Animation`;
-  const id = await spawn({ actor, name, system: { stats: { str: st.str, dex: st.dex, con: st.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f?.skillPoints ?? 0, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets });
+  const id = await spawn({ actor, name, system: { stats: { str: st.str, dex: st.dex, con: st.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f?.skillPoints ?? 0, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets, tile: spec.tile });
   await post(actor, { title: `${esc(actor.name)} — Animate`, body: `<div class="fs-result"><i class="fa-solid fa-hill-rockslide"></i> ${esc(name)} (${esc(mat.name)}, ${cat.label}) rises${ritualOf ? " (until the Ritual ends)" : " until the start of your next turn"}.</div>
     <ul class="fs-list"><li>${points} points (Str, Dex, Con ${st.str}/${st.dex}/${st.con}) · Size ${size} (${body} Body) · ${hp} health${layered ? ` (Layered +${layered})` : ""} · ${st.speed} ft per AP · ${st.ap} AP / ${st.rp} RP</li>
     <li>Physical attacks ${st.physical > 0 ? "Strengthened" : st.physical === -1 ? "Weakened" : st.physical < -1 ? "doubly Weakened" : "normal"}</li><li>${esc(cat.text)}</li></ul>
@@ -321,20 +368,44 @@ async function makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets
   const rider = cj.rider ? { core: cj.rider, level: 1, charmRoll: values?.charmRoll ?? null, hex: values?.hexTrigger ? { trigger: values.hexTrigger, roll: values.hexRoll, outcome: values.hexOutcome, detail: values.hexDetail } : null } : null;
   const items = (spec.items ?? []).map(it => itemData(it, { actor, ritualOf, extraFlags: rider && it.kind !== "object" ? { rider: { ...rider, level: R.riderLevel(2, 4) } } : {} }));
   const target = targets?.[0]?.actor ?? null;
-  const to = spec.recipient === "target" && target ? target : spec.recipient === "self" ? actor : null;
+  // Into a target's inventory takes a hit: a Targeted attack roll; a miss leaves it on the floor beside them (see makeHit / makeMiss).
+  if (spec.recipient === "target" && target && target.uuid !== actor.uuid) {
+    const spell = { cores: plan.cores.map(c => c.id), power: plan.power, ritualOf, scaling: plan.scaling, mods: {}, exploit: null, replaced: {}, dampen: [], singleRoll: false, telegraph: null, hold: false, holdRoll: 0,
+      makeAct: { items, caster: actor.uuid, ritualOf } };
+    await performAttack(actor, { label: "Make", net: 0, stealth: "half", melee: false, area: false, push: false, damage: "", type: "arcane", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce: 0, bash: 0, knockback: 0,
+      notes: [`${items.map(i => i.name).join(", ")}: into ${target.name}'s inventory on a hit, on the floor beside them on a miss`], followups: [], targetActors: [target], spell });
+    return items.length;
+  }
+  const to = spec.recipient === "self" ? actor : null;
   let where;
   if (to) {
     if (to.isOwner) await to.createEmbeddedDocuments("Item", items, { flowstateAuto: true });
     else await requestGM("giveItems", { actor: to.uuid, items });
     where = `into ${to.uuid === actor.uuid ? "their own" : `${esc(to.name)}'s`} hand${items.length === 1 ? "" : "s"}`;
   } else {
-    const at = placement(actor, targets);
+    const at = placement(actor, targets, spec.tile);
     if (at) { let k = 0; for (const it of items) await requestGM("createPile", { sceneId: at.sceneId, x: at.x, y: at.y + k++ * (globalThis.canvas?.grid?.size ?? 100), item: it }); where = "on the ground"; }
     else { await actor.createEmbeddedDocuments?.("Item", items, { flowstateAuto: true }); where = "into their inventory (no scene to drop them on)"; }
   }
   await post(actor, { title: `${esc(actor.name)} — Make`, body: `<div class="fs-result"><i class="fa-solid fa-wand-magic-sparkles"></i> ${esc(actor.name)} makes ${items.map(i => `<strong>${esc(i.name)}</strong>`).join(", ")} ${where}${ritualOf ? " (until the Ritual ends)" : ", until the start of their next turn"}.</div>
     <div class="fs-notes">Archetypal equipment is Grade 2. Non-Archetypal objects are just a note: a Body of 10 of a single material (a cubic foot per Body).${rider ? ` Attacks with it carry ${fx.profileFor([cj.rider])?.name ?? cj.rider}.` : ""}</div>` });
   return items.length;
+}
+
+/** A Make's attack hit: the items go into the target's inventory. */
+export async function makeHit({ attacker, target, sp }) {
+  const m = sp.makeAct;
+  if (target.isOwner) await target.createEmbeddedDocuments("Item", m.items, { flowstateAuto: true });
+  else await requestGM("giveItems", { actor: target.uuid, items: m.items });
+  return `<div class="fs-result"><i class="fa-solid fa-wand-magic-sparkles"></i> ${m.items.map(i => `<strong>${esc(i.name)}</strong>`).join(", ")} ${m.items.length === 1 ? "appears" : "appear"} in ${esc(target.name)}'s inventory${m.ritualOf ? " (until the Ritual ends)" : " until the start of your next turn"}.</div>`;
+}
+/** A Make's attack missed: the items land on the floor beside the target. */
+export async function makeMiss({ attacker, target, sp }) {
+  const m = sp.makeAct;
+  const at = placement(attacker, [{ actor: target }]);
+  if (at) { let k = 0; for (const it of m.items) await requestGM("createPile", { sceneId: at.sceneId, x: at.x, y: at.y + k++ * (globalThis.canvas?.grid?.size ?? 100), item: it }); }
+  else await attacker.createEmbeddedDocuments?.("Item", m.items, { flowstateAuto: true });
+  await post(attacker, { title: `${esc(attacker.name)} — Make`, body: `<div class="fs-result">It missed: ${m.items.map(i => `<strong>${esc(i.name)}</strong>`).join(", ")} ${at ? `land${m.items.length === 1 ? "s" : ""} on the floor beside ${esc(target.name)}` : "go into your inventory (no scene)"}.</div>` });
 }
 
 /** Animate Weapon/Foci and Animate Armor/Shroud (the Replacement Mods): a card of what the animated equipment can do. */
@@ -505,4 +576,4 @@ export async function riderAfter({ attacker, target, o, outcome, defense }) {
     flags: { flowstate: { afflict: { acts }, ...(push ? { knockback: push } : {}) } } });
 }
 
-registerConjure({ riderAfter });
+registerConjure({ riderAfter, makeHit, makeMiss });

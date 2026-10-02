@@ -130,7 +130,7 @@ const formVals = (conj, extra = {}) => ({ base: 3, conj, ...extra });
 const body = (str = 5, dex = 5, con = 5, more = {}) => ({ size: 1, str, dex, con, skill: 0, arms: [], items: [], ...more });
 
 console.log("== Rules math");
-ok2(R.formPool(3) === 15 && R.conjureMultiplier(4, true) === 3 && R.conjureMultiplier(3, false) === 3, "Form: 5 points × the Threshold multiplier (a Combo's extra baseline doesn't multiply)");
+ok2(R.summonPool(3) === 120 && R.summonPool(1) === 40 && R.formPool(3) === 15 && R.conjureMultiplier(4, true) === 3 && R.conjureMultiplier(3, false) === 3, "Form: 5 points × the Threshold multiplier (a Combo's extra baseline doesn't multiply)");
 ok2(R.formStats({ str: 5, dex: 5, con: 5 }, 15).ok && !R.formStats({ str: 0, dex: 5, con: 5 }, 15).ok && !R.formStats({ str: 8, dex: 5, con: 5 }, 15).ok && R.formStats({ str: 3, dex: 3, con: 3, skill: 3 }, 15).ok, "Body points need at least 1 in each stat; Skill costs 2 each; no overspending");
 ok2(R.formSize(3, 4) === 2 && R.formSize(3, 5) === 3 && R.formSize(4, 10) === 4 && R.formSize(1, 1) === 1, "Summon size: 1–2, 3 at Threshold 5, 4 at 10");
 ok2(R.summonHealth(5, 2) === 30 && R.summonEnergy(5) === 25, "Health 3 × Con × size; Energy 5 × Con");
@@ -151,8 +151,10 @@ ok2(sm.system.stats.str === 5 && sm.system.trees["martial-bladed"] === 2, "Stats
 ok2(hero.system.energy.value < eBefore, `It cost Energy (${eBefore} → ${hero.system.energy.value})`);
 await J.turnStart(hero);
 ok2(summons().length === 0, "At the start of your next turn it's gone");
-clean4(); plan = await cast("magic-summoning:form", formVals(body(8, 8, 8)));
-ok2(!plan && summons().length === 0, "Overspending points is refused (nothing is cast or spent)");
+clean4(); plan = await cast("magic-summoning:form", formVals(body(50, 50, 50)));
+ok2(!plan && summons().length === 0, "Overspending the 120 points (40 × the multiplier) is refused (nothing is cast or spent)");
+clean4(); plan = await cast("magic-summoning:form", { base: 1, conj: body(10, 10, 20) });
+ok2(summons()[0]?.system.hp.max === 60 && summons()[0].system.stats.con === 20, "Form: 40 points to split as you like (10 / 10 / 20 → health 3 × 20)");
 plan = await cast("magic-summoning:form", formVals(body(5, 5, 5, { size: 3 })));
 ok2(!plan, "Size 3 needs a Threshold of at least 5");
 clean4(); plan = await cast("magic-summoning:form", { base: 5, conj: body(10, 10, 5, { size: 3 }) });
@@ -207,8 +209,13 @@ clean4(); plan = await cast("magic-creation:make", { base: 1, [M("magic-creation
 ok2(made(hero).length === 2 && made(hero).some(i => i.type === "armor"), "Armory: an additional object");
 clean4(); plan = await cast("magic-creation:make", { base: 1, [M("magic-creation:complexity")]: 1, conj: { recipient: "self", items: [{ kind: "weapon", type: "bladed", weight: "light", material: "hardwood", extra: ["swift"] }] } });
 ok2(made(hero)[0]?.system.extraTypes.includes("swift"), "Complexity: one additional weapon type");
-clean4(); target(orc); plan = await cast("magic-creation:make", { base: 1, conj: { ...wvals(), recipient: "target" } });
-ok2(made(orc).length === 1 && made(hero).length === 0, "Made for a willing target: it goes into their hands");
+clean4(); target(orc); seq = [20]; plan = await cast("magic-creation:make", { base: 1, conj: { ...wvals(), recipient: "target" } });
+ok2(made(orc).length === 0 && lastAtk(), "Made for a target: an attack roll first");
+seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+ok2(made(orc).length === 1 && made(hero).length === 0, "…on a hit it goes into their inventory");
+clean4(); target(orc); seq = [1]; plan = await cast("magic-creation:make", { base: 1, conj: { ...wvals(), recipient: "target" } });
+seq = [30]; await actions.defend(lastAtk(), 0, "dodge");
+ok2(made(orc).length === 0 && made(hero).length === 1 && messages.some(m => /missed/.test(text(m))), "…on a miss it lands beside them (here, with no scene, in your inventory)");
 clean4(); target(null); plan = await cast("magic-creation:make", { base: 1, conj: { recipient: "self", items: [{ kind: "object", name: "A cube of clay" }] } });
 ok2(made(hero)[0]?.type === "gear", "A non-Archetypal object is a plain misc item");
 

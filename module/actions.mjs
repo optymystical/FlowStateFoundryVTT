@@ -3440,6 +3440,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
     rolls.push(...eh.rolls);
     chain = eh.chain ?? null;
   }
+  if (conj && sp.makeAct) html.push(await conj.makeHit({ attacker, target, sp }));
   // Tier 3: Poison, Charm and Hex.
   if (aff && profile?.afflict) {
     const ah = await aff.onHit({ attacker, target, o, result, entry, profile, dodgeTotal });
@@ -4286,6 +4287,8 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   }
   // Hexes (Witchery) that trigger on the attack roll or the dodge/parry: Roll and Fail/Success.
   if (aff) await aff.afterDefense({ attacker, target, result, dodgeRoll });
+  // A Make aimed at a creature that missed: it lands on the floor beside them.
+  if (conj && o.spell?.makeAct && !result.hit) await conj.makeMiss({ attacker, target, sp: o.spell });
   // Spells: Force, shields, and die-size penalties that don't wait for damage.
   let spellRolls = [], defenseChain = null;
   if (result.hit && o.spell) {

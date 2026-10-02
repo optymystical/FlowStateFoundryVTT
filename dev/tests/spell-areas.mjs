@@ -72,6 +72,28 @@ ok(oc.barriers[0].absorbed === 8 && oc.barriers[0].hp === 0 && oc.toHp === 42, "
 oc = await actions.damageOutcome(dummy(), 50, "arcane", bar(100, 20));
 ok(oc.barriers[0].absorbed === 20, "A magical object blocks Arcane damage too");
 
+console.log("== Thrown through an Emplace barrier (Force Damage)");
+const flightWall = { t: "ray", x: 500, y: -500, direction: 90, distance: 30, angle: 0, width: 5 };
+const bwest = { x: -1, y: 0 };
+const mkBar = hp => ({ id: "b1", tpl: flightWall, caster: { x: 0, y: 0 }, front: bwest, hp });
+const fly = (o = {}) => A.planFlight({ start: { x: 0, y: 0 }, dir: { x: 1, y: 0 }, feet: 40, barriers: [mkBar(30)], grid, creatureHp: 432, ...o });
+let pf = fly();
+ok(pf.events.length === 1 && pf.events[0].kind === "barrier" && Math.abs(pf.events[0].untraveled - 17.5) < 1e-6, "It hits the barrier 22.5 ft in, with 17.5 ft untraveled");
+ok(pf.events[0].creature === 30 && pf.events[0].barrier === 30 && pf.events[0].broke, "A weak barrier (30 health): each takes 30 (all it has) and it breaks");
+ok(pf.end.x > 500 && Math.abs(pf.traveled - 30) < 1e-6, `…and the creature keeps going with the leftover (17.5 − 30 ÷ 3 = 7.5 ft): it travels ${pf.traveled} ft in all`);
+pf = fly({ barriers: [mkBar(200)] });
+ok(pf.events[0].creature === 52.5 && pf.events[0].barrier === 52.5 && !pf.events[0].broke && pf.events[0].left === 147.5 && pf.end.x < 450, "A strong barrier (200 health) holds: 3 × 17.5 = 52.5 Force each, and the creature stops in front of it");
+pf = fly({ creatureHp: 20 });
+ok(pf.events[0].creature === 20 && pf.events[0].barrier === 20 && !pf.events[0].broke, "Each side only takes what the other has left to give (a creature with 20 HP deals 20)");
+pf = fly({ start: { x: 800, y: 0 }, dir: { x: -1, y: 0 } });
+ok(pf.events.length === 0 && Math.abs(pf.traveled - 40) < 1e-6, "From the protected side the barrier lets it through");
+pf = fly({ wallAt: () => ({ x: 200, y: 0 }) });
+ok(pf.events[0].kind === "wall" && pf.events[0].creature === 90 && pf.events[0].untraveled === 30, "A real wall before the barrier stops it first (30 ft untraveled × 3)");
+pf = fly({ wallAt: () => ({ x: 450, y: 0 }) });
+ok(pf.events[0].kind === "barrier", "The barrier's own Wall doesn't count twice: the barrier collision wins a tie");
+pf = A.planFlight({ start: { x: 0, y: 0 }, dir: { x: 1, y: 0 }, feet: 80, barriers: [mkBar(30), { ...mkBar(20), id: "b2", tpl: { ...flightWall, x: 700 } }], grid, creatureHp: 432 });
+ok(pf.events.filter(e => e.kind === "barrier").length === 2 && pf.events.every(e => e.kind !== "barrier" || e.broke), "A creature with enough Force can break through two barriers in a row");
+
 console.log("== Adjust: a Shield holder within 10 ft can extend it");
 const mk = (name, x, y, shield) => {
   const a = { name, uuid: "Actor." + name, type: "character", statuses: new Set(), effects: [], system: {}, isOwner: true };

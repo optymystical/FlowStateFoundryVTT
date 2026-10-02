@@ -3161,9 +3161,20 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
     }
     return `<div class="fs-notes">${esc(thrown.name)} misses ${esc(target.name)}${released}, flying past (through anyone else in the way).</div>${await flightHTML(thrown, flight, feet)}`;
   }
+  // An Emplace barrier between the thrown creature and its target is struck first: it holds (the creature stops short) or breaks
+  // (the creature carries on, with the distance the barrier used up taken off).
+  let reach = feet, barrierHTML = "";
+  if (from && to && !slam && globalThis.canvas?.grid && areas.emplaceBarriers().some(b => areas.barrierBlocks(b.tpl, b.caster, from.center, to.center, { size: canvas.grid.size, distance: canvas.grid.distance }, b.front))) {
+    const dx = to.center.x - from.center.x, dy = to.center.y - from.center.y, len = Math.hypot(dx, dy) || 1;
+    const flight = await flyThrown(thrown, { x: dx / len, y: dy / len }, feet);
+    barrierHTML = await flightHTML(thrown, flight, feet);
+    const bars = (flight.events ?? []).filter(e => e.kind === "barrier");
+    if (!bars.length || bars.some(e => !e.broke) || flight.wall) return `<div class="fs-notes">${esc(thrown.name)} is stopped before reaching ${esc(target.name)}${released}.</div>${barrierHTML}`;
+    reach = feet - bars.reduce((n, e) => n + e.creature / 3, 0);
+  }
   // Slam (Grappling T5): the target is a "wall" 0 ft away.
   const dist = slam ? 0 : from && to && globalThis.canvas?.grid ? Math.round(tokenDistance(from, to)) : 0;
-  const untraveled = Math.max(0, feet - dist);
+  const untraveled = Math.max(0, reach - dist);
   const raw = forceDamage(untraveled);
   const damage = Math.min(raw, Math.max(0, thrown.system.hp.value));
   // It lands beside the target, on the side it came from.
@@ -3176,7 +3187,7 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
       await requestDamage(who, damage, "physical", 0, null, { silent: true });
     }
   }
-  return `<div class="fs-result"><strong>${esc(thrown.name)} collides with ${esc(target.name)}</strong> — ${damage} Force damage to each.</div>${taken}
+  return `${barrierHTML}<div class="fs-result"><strong>${esc(thrown.name)} collides with ${esc(target.name)}</strong> — ${damage} Force damage to each.</div>${taken}
     <div class="fs-notes">Force ${force} → ${feet} ft, ${dist} ft to the target, ${untraveled} ft untraveled × 3 = ${raw}${damage < raw ? ` (capped at ${esc(thrown.name)}'s HP)` : ""}.${release ? ` ${esc(thrown.name)} is released.` : ""}</div>`;
 }
 
@@ -3535,30 +3546,37 @@ async function flyThrown(thrown, dir, feet) {
   if (!tok || !dims || !feet) return { moved: false, traveled: feet, wall: false, damage: 0 };
   const ppf = dims.size / dims.distance;
   const start = tok.center;
-  let end = { x: start.x + dir.x * feet * ppf, y: start.y + dir.y * feet * ppf };
-  let traveled = feet, wall = false, damage = 0;
-  const hit = wallHit(start, end);
-  if (hit && Math.hypot(hit.x - start.x, hit.y - start.y) < feet * ppf) {
-    wall = true;
-    traveled = Math.max(0, Math.floor(Math.hypot(hit.x - start.x, hit.y - start.y) / ppf));
-    const back = dims.size / 2;   // stop just short of the wall
-    end = { x: hit.x - dir.x * back, y: hit.y - dir.y * back };
-    damage = Math.min(forceDamage(feet - traveled), Math.max(0, thrown.system.hp.value));
+  // Emplace barriers are objects: a creature thrown through one damages it and itself (3 × the untraveled feet each, capped by what the
+  // other has left), is stopped by it if it holds, and carries on with the leftover distance if it breaks.
+  const plan = areas.planFlight({ start, dir, feet, barriers: areas.emplaceBarriers(), grid: { size: dims.size, distance: dims.distance },
+    creatureHp: Math.max(0, thrown.system.hp.value), wallAt: (a, b) => { const h = wallHit(a, b); return h ? { x: h.x, y: h.y } : null; } });
+  let damage = 0, wall = false, taken = "";
+  const notes = [];
+  for (const ev of plan.events) {
+    if (ev.creature > 0) {
+      taken += damageOutcomeHTML(thrown, ev.creature, "physical", await damageOutcome(thrown, ev.creature, "physical"));
+      await requestDamage(thrown, ev.creature, "physical", 0, null, { silent: true });
+      damage += ev.creature;
+    }
+    if (ev.kind === "wall") wall = true;
+    else {
+      const b = areas.emplaceBarriers().find(x => x.id === ev.id);
+      if (b) { const left = Math.max(0, ev.left); if (game.user.isGM) await areas.setBarrierHealth(b.sceneId, b.id, left); else await requestGM("barrier", { sceneId: b.sceneId, id: b.id, hp: left }); }
+      notes.push(`${esc(thrown.name)} slams into an Emplace barrier after ${Math.floor(ev.ft)} ft: ${Math.floor(ev.untraveled)} ft untraveled × 3 = ${3 * Math.floor(ev.untraveled)} Force. It takes <strong>${ev.creature}</strong> and the barrier takes <strong>${ev.barrier}</strong> (${ev.broke ? "it breaks" : `${ev.left} health left`})${ev.broke ? " and they fly on" : " and they stop"}.`);
+    }
   }
   const w = (tok.document.width ?? 1) * dims.size, h = (tok.document.height ?? 1) * dims.size;
-  await moveTokenTopLeft(tok, { x: end.x - w / 2, y: end.y - h / 2 });
-  let taken = "";
-  if (damage > 0) {
-    taken = damageOutcomeHTML(thrown, damage, "physical", await damageOutcome(thrown, damage, "physical"));
-    await requestDamage(thrown, damage, "physical", 0, null, { silent: true });
-  }
-  return { moved: true, traveled, wall, damage, taken };
+  await moveTokenTopLeft(tok, { x: plan.end.x - w / 2, y: plan.end.y - h / 2 });
+  const wallEv = plan.events.find(e => e.kind === "wall");
+  return { moved: true, traveled: Math.floor(plan.traveled), wall, damage: wallEv ? wallEv.creature : 0, untraveledAtWall: wallEv?.untraveled, taken, notes, totalDamage: damage, events: plan.events };
 }
 
 function flightHTML(thrown, flight, feet) {
   if (!flight?.moved) return `<div class="fs-notes">Flies up to ${feet} ft (no token on this scene to move).</div>`;
-  if (!flight.wall) return `<div class="fs-notes">${esc(thrown.name)} flies ${feet} ft.</div>`;
-  return `<div class="fs-result">${esc(thrown.name)} hits a wall after ${flight.traveled} ft — <strong>${flight.damage}</strong> Force damage (${feet - flight.traveled} ft untraveled × 3${flight.damage < forceDamage(feet - flight.traveled) ? ", capped at its HP" : ""}).</div>${flight.taken ?? ""}`;
+  const notes = (flight.notes ?? []).map(n => `<div class="fs-result">${n}</div>`).join("");
+  if (!flight.wall) return `${notes || `<div class="fs-notes">${esc(thrown.name)} flies ${feet} ft.</div>`}${flight.taken ?? ""}`;
+  const left = flight.untraveledAtWall ?? feet - flight.traveled;
+  return `${notes}<div class="fs-result">${esc(thrown.name)} hits a wall after ${flight.traveled} ft — <strong>${flight.damage}</strong> Force damage (${Math.floor(left)} ft untraveled × 3${flight.damage < forceDamage(left) ? ", capped at its HP" : ""}).</div>${flight.taken ?? ""}`;
 }
 
 /* ---- Martial Theory T2/T3: Psych Up & Calm Down ---- */

@@ -42,3 +42,8 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 
 ## Rulings (v0.29.1)
 - A spell object with no stated Limit has Limit = its health (Shield and Emplace). Electrify only counts damage Crackle or its Combos did. Mold's half-cover: revisit when a cover effect is designed.
+
+## Built (v0.29.2): Flight through Emplace barriers
+
+- `areas.planFlight` (pure) plans a thrown creature's path through barriers and ordinary walls: 3 × untraveled feet to both sides, each capped by what the other has left; a surviving barrier stops the creature, a broken one lets it continue with `untraveled − barrierHP ÷ 3` feet. `actions.flyThrown` applies it (creature damage via `damageOutcome`, barrier health via `setBarrierHealth` / GM relay). A barrier between a thrower and the aimed target stops or slows the throw before the collision.
+- Judgment calls: Force damage to a barrier ignores its Limit (it is Force, not an attack); an ordinary wall earlier on the path (more than 1.25 ft sooner) wins over a barrier, a tie goes to the barrier; barriers are sampled a quarter square at a time. Untested in real Foundry (token movement and Wall collision).

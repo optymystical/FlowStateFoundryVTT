@@ -4,8 +4,6 @@
  *  - The geometry is pure (unit-tested). Placement drops a Measured Template on the scene that the caster drags into position,
  *    then confirms; with no scene (or no canvas) the caller falls back to the current targets.
  */
-import { post } from "./actions.mjs";
-
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 
 export const AREA_SHAPES = {
@@ -74,7 +72,7 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
   const x = src?.center?.x ?? 0, y = src?.center?.y ?? 0;
   const direction = aim && src ? (Math.atan2(aim.center.y - y, aim.center.x - x) * 180) / Math.PI : 0;
   const data = { ...areaTemplate(pick, { x, y, direction, scale }), fillColor: game.user.color?.css ?? "#a050ff", borderColor: "#a050ff",
-    flags: { flowstate: { areaOf: actor.uuid, ...flags } } };
+    flags: { flowstate: { areaOf: actor.uuid, casterX: x, casterY: y, ...flags } } };
   const [doc] = await scene.createEmbeddedDocuments("MeasuredTemplate", [data]);
   try { globalThis.canvas.templates?.activate?.(); } catch (err) { /* layer switch is a convenience only */ }
   const ok = await DialogV2.confirm({
@@ -97,8 +95,60 @@ export async function clearAreas(caster, { all = false } = {}) {
   for (const t of mine) await t.delete();
 }
 
-/** Chat card for a placed Emplace barrier. */
-export async function emplaceCard(actor, { health, shapeLabel, templateId }) {
-  return post(actor, { title: `${esc(actor.name)} — Emplace`, body: `<div class="fs-result"><i class="fa-solid fa-shield"></i> A one-way barrier (${esc(shapeLabel)}) with <strong>${health} health</strong> is in place.${templateId ? " Its template is on the scene." : ""}</div>
-    <div class="fs-notes">It blocks movement through it in the direction you chose, and it absorbs damage aimed through it up to its health. It lasts until the start of your next turn. The GM tracks its health and which way it faces.</div>` });
+/* -------------------------------------------- */
+/*  Emplace barriers                            */
+/* -------------------------------------------- */
+
+/** Samples along a segment (a quarter square apart): is any of it inside the area? */
+export function segmentTouchesArea(tpl, a, b, grid = { size: 100, distance: 5 }) {
+  const len = Math.hypot(b.x - a.x, b.y - a.y);
+  const steps = Math.max(1, Math.ceil(len / (grid.size / 4)));
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    if (pointInArea(tpl, a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, grid)) return true;
+  }
+  return false;
+}
+
+/** Which side of a barrier a point is on: a line has a left and a right; a radius or cone has an inside and an outside. */
+export function barrierSide(tpl, p) {
+  if (tpl.t === "ray") {
+    const rad = (tpl.direction * Math.PI) / 180;
+    return Math.sign(-(p.x - tpl.x) * Math.sin(rad) + (p.y - tpl.y) * Math.cos(rad)) || 1;
+  }
+  return pointInArea(tpl, p.x, p.y) ? 1 : -1;
+}
+
+/**
+ * Does an Emplace barrier stop an attack from `attacker` at `target`? It's one-way: it protects the side the caster stood on,
+ * so it only blocks attacks that start on the other side and pass through it. Pure.
+ */
+export function barrierBlocks(tpl, caster, attacker, target, grid = { size: 100, distance: 5 }) {
+  if (!segmentTouchesArea(tpl, attacker, target, grid)) return false;
+  const protectedSide = barrierSide(tpl, caster);
+  if (barrierSide(tpl, attacker) === protectedSide) return false;       // same side as the caster: it lets them through
+  return true;
+}
+
+/** Emplace barriers on the scene that stand between an attacker's and a target's tokens: [{ id, sceneId, hp }]. */
+export function barriersBetween(attackerToken, targetToken) {
+  const scene = globalThis.canvas?.scene, grid = globalThis.canvas?.grid;
+  if (!scene || !grid || !attackerToken || !targetToken) return [];
+  const g = { size: grid.size, distance: grid.distance };
+  const a = attackerToken.center, t = targetToken.center;
+  const out = [];
+  for (const d of scene.templates ?? []) {
+    const f = d.flags?.flowstate;
+    if (f?.spell !== "emplace" || !(f.health > 0)) continue;
+    const tpl = { t: d.t, x: d.x, y: d.y, direction: d.direction, distance: d.distance, angle: d.angle, width: d.width };
+    if (barrierBlocks(tpl, { x: f.casterX ?? d.x, y: f.casterY ?? d.y }, a, t, g)) out.push({ id: d.id, sceneId: scene.id, hp: f.health });
+  }
+  return out;
+}
+
+/** Set a barrier's remaining health (or remove it at 0). The scene's templates belong to whoever placed them, so the GM does this. */
+export async function setBarrierHealth(sceneId, id, hp) {
+  const d = globalThis.game?.scenes?.get?.(sceneId)?.templates?.get?.(id);
+  if (!d) return;
+  if (hp <= 0) await d.delete(); else await d.update({ "flags.flowstate.health": hp });
 }

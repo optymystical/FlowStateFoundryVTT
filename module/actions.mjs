@@ -7,6 +7,7 @@ import { AFFIXES, shroudBlocks } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
 import * as fx from "./spellfx.mjs";
+import * as areas from "./areas.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
@@ -1195,6 +1196,7 @@ export const GM_ACTIONS = {
     const item = await fromUuid(uuid);
     if (item) await item.update({ "system.wear": item.system.wear + amount }, { flowstateSystem: true });
   },
+  async barrier({ sceneId, id, hp }) { await areas.setBarrierHealth(sceneId, id, hp); },
   async changeEffect({ uuid, data }) {
     const e = await fromUuid(uuid);
     if (e) await (data ? e.update(data) : e.delete());
@@ -3205,6 +3207,9 @@ function forceFeet(force, target, crunch = false) {
 
 const SPELL_ICONS = { shield: "icons/magic/defensive/shield-barrier-blue.webp", dodgeDie: "icons/skills/wounds/injury-pain-body-orange.webp", attackDie: "icons/skills/wounds/injury-pain-body-orange.webp" };
 
+/** Emplace barriers between an attacker and a target (none without a scene). */
+const barriersFor = (attacker, target) => (globalThis.canvas?.scene ? areas.barriersBetween(attackerToken(attacker), target.getActiveTokens?.()[0]) : []);
+
 /** Weaving (Magic Theory T3): casting.mjs registers this so the weapon attack dialog can offer a spell. */
 let weaveHook = null;
 export const setWeaveHook = hook => { weaveHook = hook; };
@@ -4280,7 +4285,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   let spellPlan = null;
   if (profile?.damage) {
     const facts = await spellDamageFacts(profile, o, target, defense, { pierce: o.pierce ?? 0, halfLimit: !!o.spell?.mods?.weakpoint, parryItems: guard.items, bash: o.bash || 0,
-      shroudCtx: { source: sourceOf(o), extra: findQuartz(defense.attackMessage, defense.index) } });
+      shroudCtx: { source: sourceOf(o), extra: findQuartz(defense.attackMessage, defense.index), barriers: barriersFor(attacker, target) } });
     spellPlan = fx.damageDice(profile, o.spell.power, facts, o.spell.mods ?? {});
   }
   const formula = spellPlan ? `${spellPlan.n}d${spellPlan.sides}` : o.damage;
@@ -4371,7 +4376,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
 
   // The outcome (soak, HP lost) goes on this card; the owner (or GM) applies it without a separate card.
   const dmgOpts = { pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: o.bash || 0, rend: o.rend ?? null, cleave, cleaveToCreature: !!o.striker,
-    shroudCtx: { source: sourceOf(o), extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index) } };
+    shroudCtx: { source: sourceOf(o), extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
+      barriers: barriersFor(attacker, target) } };
   const outcome = await damageOutcome(target, incoming, type, dmgOpts);
   // Spell riders that need the damage to have got through to HP (direct damage): Force, attack-die penalties.
   let spellHTML = "", spellRolls = [];
@@ -4614,6 +4620,15 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
       lines.push(`Shield absorbed ${absorbed}${factor < 1 ? ` (Dampened: −${loss} health)` : ""} (${hp - loss} health left${hp - loss <= 0 ? ", it breaks" : ""})`);
     }
   };
+  // Emplace barriers (Protection Arcana T4) between the attacker and the target absorb first.
+  const barriers = [];
+  for (const b of shroudCtx?.barriers ?? []) {
+    const absorbed = Math.min(remaining, b.hp);
+    if (!absorbed) continue;
+    remaining -= absorbed;
+    barriers.push({ ...b, absorbed, hp: b.hp - absorbed });
+    lines.push(`Emplace barrier absorbed ${absorbed} (${b.hp - absorbed} health left${b.hp - absorbed <= 0 ? ", it breaks" : ""})`);
+  }
   absorbWith("first");
   // Parrying weapons (Martial Theory T1 Parry, Defender Block) soak first, in order.
   const uuids = [...new Set([...(parryItems ?? []), ...(parryItem ? [parryItem] : [])])];
@@ -4656,7 +4671,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   if (rend && (weapons.length || armorLoss)) lines.push("Rend: damage to objects Strengthened");
   lines.unshift(`<strong>${toHp}</strong> damage to HP`);
   return { toHp, lines, weapon: weapons[0]?.item ?? null, weaponLoss: weapons[0]?.loss ?? 0, weapons, armor: armorLoss ? armor : null, armorLoss,
-    afterWeapon, parried: uuids.length > 0, shields, shrouds, shroudTook: shrouds.reduce((n, x) => n + (x.absorbed ?? 0), 0) };
+    afterWeapon, parried: uuids.length > 0, shields, barriers, shrouds, shroudTook: shrouds.reduce((n, x) => n + (x.absorbed ?? 0), 0) };
 }
 
 /** "Orc takes 12 Physical" block for a card: the outcome lines as a list. */
@@ -4680,6 +4695,8 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
     else await item.update(update, { flowstateSystem: true });
     if (item.system.shroudType === "bond" && item.system.durability.max - (update["system.wear"] ?? item.system.wear) <= 0) await endShroudPlacement(item.parent, item);
   }
+  // Emplace barriers lose the health they absorbed.
+  for (const b of out.barriers ?? []) { if (game.user.isGM) await areas.setBarrierHealth(b.sceneId, b.id, b.hp); else await requestGM("barrier", { sceneId: b.sceneId, id: b.id, hp: b.hp }); }
   // Spell Shields lose the health they absorbed (and end when it runs out).
   for (const { effect, hp } of out.shields ?? []) {
     if (hp <= 0) await changeEffect(effect, null);

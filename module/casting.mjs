@@ -289,7 +289,7 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
     flags: { flowstate: { spell: { caster: actor.uuid, cores: ids, mods: plan.applied.map(a => a.mod.id), power: plan.power, threshold: plan.threshold, energy: plan.energy, ritual: plan.ritual, attack: plan.attack } } }
   });
   // Automated spells go on to the attack exchange (Rituals of attack spells just store their free casts).
-  if (emplace) await areas.emplaceCard(actor, { health: 20 * plan.power, shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId });
+  if (emplace) await emplaceCard(actor, { health: 20 * plan.power, shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId });
   else if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave });
   return plan;
 }
@@ -370,3 +370,9 @@ setWeaveHook({
   eligible: actor => tierOf(actor.system.trees ?? {}, "magic-theory") >= 3 && castSummary(actor).any,
   run: weaveSpell
 });
+
+/** Chat card for a placed Emplace barrier. */
+async function emplaceCard(actor, { health, shapeLabel, templateId }) {
+  return post(actor, { title: `${esc(actor.name)} — Emplace`, body: `<div class="fs-result"><i class="fa-solid fa-shield"></i> A one-way barrier (${esc(shapeLabel)}) with <strong>${health} health</strong> is in place.${templateId ? " Its template is on the scene." : ""}</div>
+    <div class="fs-notes">It blocks attacks coming from the far side of it from you (anything on your side passes), absorbing their damage up to its health before parries, Shields or armor. It blocks movement through it too, which the GM enforces. It lasts until the start of your next turn.</div>` });
+}

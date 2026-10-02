@@ -29,6 +29,19 @@ const tok = (x, y) => ({ document: { x, y, width: 1, height: 1 } });
 const hit = A.tokensInArea(T("radius"), [tok(0, 0), tok(150, 0), tok(900, 900)], grid);
 ok(hit.length === 2, "tokensInArea: tokens touching the circle count, far ones don't");
 
+console.log("== Emplace barrier");
+const wall = { t: "ray", x: 500, y: -500, direction: 90, distance: 30, angle: 0, width: 5 };   // a vertical line, x = 500, from y = -500 to 100
+const caster = { x: 300, y: 0 };
+ok(A.barrierBlocks(wall, caster, { x: 800, y: 0 }, { x: 300, y: 0 }, grid), "An attack from the far side through the barrier is blocked");
+ok(!A.barrierBlocks(wall, caster, { x: 200, y: 0 }, { x: 400, y: 0 }, grid), "An attack from the caster's side isn't");
+ok(!A.barrierBlocks(wall, caster, { x: 900, y: 0 }, { x: 700, y: 0 }, grid), "Nor is one that never crosses it");
+ok(!A.barrierBlocks(wall, caster, { x: 800, y: 400 }, { x: 300, y: 400 }, grid), "Nor one that passes beyond its end (y = 400)");
+ok(A.barrierBlocks(wall, caster, { x: 300, y: 0 }, { x: 800, y: 0 }, { size: 100, distance: 5 }) === false, "One-way: it doesn't stop attacks that start on the caster's side, even toward the far side");
+const dome = { t: "circle", x: 500, y: 500, direction: 0, distance: 10, angle: 360, width: 0 };
+ok(A.barrierBlocks(dome, { x: 500, y: 500 }, { x: 1200, y: 500 }, { x: 500, y: 500 }, grid) && !A.barrierBlocks(dome, { x: 500, y: 500 }, { x: 550, y: 500 }, { x: 500, y: 450 }, grid), "A radius works as a dome: it blocks attacks from outside at those inside");
+const oc = await actions.damageOutcome({ name: "T", uuid: "A.T", effects: [], items: [], statuses: new Set(), system: { armor: null, derived: { size: {} } }, getFlag: () => null, getActiveTokens: () => [] }, 50, "physical", { shroudCtx: { barriers: [{ id: "t1", sceneId: "s", hp: 30 }] } });
+ok(oc.toHp === 20 && oc.barriers[0].hp === 0 && oc.barriers[0].absorbed === 30, "The barrier absorbs up to its health (30 of 50), the rest gets through");
+
 console.log("== Adjust: a Shield holder within 10 ft can extend it");
 const mk = (name, x, y, shield) => {
   const a = { name, uuid: "Actor." + name, type: "character", statuses: new Set(), effects: [], system: {}, isOwner: true };

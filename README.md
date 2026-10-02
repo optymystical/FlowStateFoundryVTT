@@ -488,6 +488,8 @@ Flow State © 2019 by Christopher Caplinger, CC BY 4.0.
 
 ## Foci effects (automated)
 Everything a Foci does works while it's attuned and unbroken, for spells cast through it.
+Everywhere a Foci is listed, its type shows with it: a type tag on the Equipment tab, "Igniter · Rod" style labels in the Cast Spell dialog, the Foci Master swap list and the cast and Deck cards.
+
 - **Threshold Reduction passives:** **Wand** (0 TR baseline, +1 TR for every second spell cast with it this turn), **Lens** (4 TR baseline, each spell cast with it removes 1 this turn), **Scepter** (+1 TR when every target is an ally) and **Tablet** (+2). "Ally" means you or a creature whose token has the same disposition as yours. The Foci's casts are counted per turn (out of combat the count resets each time).
 - **Casting twice:** **Staff** (needs two hands): a spell cast with AP/RP casts twice if the last Core cast this turn was a different one. **Tome** (two hands): twice if it was the same Core. **Gauntlet**: every AP/RP cast is duplicated, the first using your higher Scaling Stat (Grade-capped) and the second the lower; the second cast is free. A Ritual's free cast is never doubled.
 - **Deck Foci (Chime, Cards):** they can't cast normally. You build a deck of three copies of every Core Spell you know. At the start of your turn your hand and discard are shuffled back in and you draw a new hand (Chime 7, Cards 5). The Action List has **Deck: draw a card** (1/10 of max Energy) and **Deck: mulligan** (2/10, redraw the whole hand). The Cast Spell dialog lets you cast a card in your hand as a Core spell (Chime 2 TR, Cards 3 TR) or two cards combined as a Combo (4 / 6 TR), through the Foci's usual AP; played cards are discarded. The spell's Cores must be in your hand.

@@ -96,7 +96,7 @@ export function fociProfile(sys, stats = {}) {
   const affixes = affixList(sys.affixes, t.affixes);
   return {
     valid: true,
-    label: `${form.label} · ${t.label}`,
+    label: `${form.label} · ${t.label}`, typeLabel: t.label,
     form: t.form, formLabel: form.label, formText: form.text,
     grade, scalingStat, scaling,
     castAP: form.ap,

@@ -87,7 +87,7 @@ const dodgeDie0 = orc.system.derived.dodgeDie;
 console.log("== Profiles");
 ok2(power() === 3, "Rod at Grade 3 gives Spell Power 3");
 ok2(FX.profileFor(["magic-gravity:force", "magic-slashing:cut"]).force.n === 8 && FX.profileFor(["magic-slashing:cut", "magic-gravity:force"]).name === "Force + Cut", "Combos are order-independent");
-ok2(FX.profileFor(["magic-venomancy:poison"]) === null, "Spells from later groups aren't automated yet");
+ok2(FX.profileFor(["magic-nonexistent:core"]) === null, "Spells from later groups aren't automated yet");
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, { living: true, direct: true }).sides === 10, "Cut: d6 → d10 on a living target with direct damage");
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, { living: true, direct: false }).sides === 6, "Cut: stays d6 without direct damage");
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, {}).n === 6, "Cut: 2d6 × Spell Power 3 = 6 dice");
@@ -159,6 +159,17 @@ hero.system.hp.value = 432;
 await actions.applyDamage(hero, 100, "physical", { silent: true });
 ok2(!hero.effects.some(e => e.flags.flowstate.spellEffect?.kind === "shield") && hero.system.hp.value === 392, "A broken Shield ends and the rest hits HP");
 
+
+console.log("== Shield: doesn't stack with itself");
+for (const [have, label] of [[100, "a stronger standing Shield stays and the new one adds nothing"], [10, "a weaker standing Shield is replaced"]]) {
+  hero.effects.splice(0, hero.effects.length);
+  await hero.createEmbeddedDocuments("ActiveEffect", [{ name: "Shield", flags: { flowstate: { spellEffect: { kind: "shield", caster: "Actor.Ally", hp: have, max: have } } } }]);
+  target(null); seq = [25]; await cast("magic-protection-arcana:shield");
+  const atk = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
+  seq = [12]; await actions.defend(atk, 0, "none");
+  const shields = hero.effects.filter(e => e.flags.flowstate.spellEffect?.kind === "shield");
+  ok2(shields.length === 1 && shields[0].flags.flowstate.spellEffect.hp === Math.max(have, 60), label);
+}
 hero.effects.splice(0, hero.effects.length);
 await hero.createEmbeddedDocuments("ActiveEffect", [{ name: "Shield", flags: { flowstate: { spellEffect: { kind: "shield", caster: hero.uuid, hp: 60, max: 60 } } } }]);
 let so = await actions.damageOutcome(hero, 100, "physical", { pierce: 20 });
@@ -275,10 +286,11 @@ card = await hit("magic-piercing:stab", { [M("magic-piercing:weakpoint")]: true 
 ok2(/Stab/.test(text(card)), "A Stab with Weakpoint resolves");
 
 console.log("== Mods that aren't automated are flagged");
-hero.system.trees["magic-grasp-arcana"] = 1;
+hero.system.trees["magic-arcanomancy"] = 3;
 target(orc); seq = [25]; messages.length = 0;
-await cast("magic-slashing:cut", { [M("magic-grasp-arcana:foresight")]: true });
-ok2(/Not automated yet[^.]*Foresight/.test(text(messages[0])), "A Mod from a later group costs Threshold, and the card says the GM resolves it");
+FX.AUTOMATED_MODS.delete("magic-arcanomancy:absorb");   // every Mod is automated now: pretend this one isn't
+await cast("magic-arcanomancy:strike", { [M("magic-arcanomancy:absorb")]: true });
+ok2(/Not automated yet[^.]*Absorb/.test(text(messages[0])), "A Mod from a later group costs Threshold, and the card says the GM resolves it");
 delete hero.system.trees["magic-grasp-arcana"];
 
 console.log("== Emplace and one Replacement at a time");

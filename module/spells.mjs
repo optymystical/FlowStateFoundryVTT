@@ -7,6 +7,7 @@
 import { TREES } from "./trees.mjs";
 import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combos.mjs";
 import { tierOf, isAvailable, treeById } from "./skills.mjs";
+import { fociTR } from "./magic.mjs";
 
 export const MIN_CAST_STAT = 10;
 const SPELL_RE = /^(X\+1|\d+(?:-\d+)?) Threshold, ([^.]*)\.\s*(.*)$/s;
@@ -79,6 +80,8 @@ export function baseThreshold(coreIds) {
     const other = cores.find(c => c !== arcane);
     return { ok: true, min: other.min, max: other.max, combo: true };
   }
+  // Summoning + Animation is listed as 2-6 (one extra baseline Threshold), not the sum of both ranges.
+  if (new Set(cores.map(c => c.treeId)).size === 2 && cores.every(c => c.treeId === "magic-summoning" || c.treeId === "magic-animation")) return { ok: true, min: 2, max: 6, combo: true };
   return { ok: true, min: a.min + b.min, max: a.max + b.max, combo: true };
 }
 
@@ -106,16 +109,16 @@ export function castingOptions(ctx) {
     let reason = "";
     if (!f.attuned) reason = "Not attuned.";
     else if (f.broken) reason = "Broken.";
-    else if (p.deck) reason = "Deck Foci aren't automated yet.";
+    else if (p.deck && !(f.hand?.length)) reason = "No cards in hand (draw some, or wait for your next turn).";
     else if (p.twoHandCast && !f.twoHanded) reason = "Needs two hands to cast with.";
     if (p.form === "multi") {
-      raw(`foci:${f.id}`, `${f.name} (Multi, Raw Casting)`, { fociId: f.id, scaling: p.scaling, scalingStat: p.scalingStat, reason });
+      raw(`foci:${f.id}`, `${f.name} (Multi, Raw Casting)`, { fociId: f.id, fociType: p.type, scaling: p.scaling, scalingHigh: p.scalingHigh, scalingStat: p.scalingStat, reason });
       continue;
     }
     const stat = p.form === "igniter" ? grasp : reach;
     const ok = !reason && stat >= MIN_CAST_STAT;
     out.push({
-      key: `foci:${f.id}`, label: `${f.name} (${p.formLabel})`, form: p.form, fociId: f.id,
+      key: `foci:${f.id}`, label: `${f.name} (${p.formLabel}${p.deck ? ", Deck" : ""})`, form: p.form, fociId: f.id, fociType: p.type, deck: p.deck ? { tr: p.deckTR, hand: f.hand ?? [] } : null,
       ap: [Number(p.castAP)], tr: p.tr, scaling: p.scaling, scalingStat: p.scalingStat, ok,
       reason: reason || (ok ? "" : `Needs at least ${MIN_CAST_STAT} ${p.form === "igniter" ? "Grasp" : "Reach"}.`)
     });
@@ -190,6 +193,7 @@ export function planCast(ctx, v) {
       if (!target) { errors.push("Replicate needs another applied Mod to copy."); a.threshold = 0; continue; }
       a.threshold = target.threshold + 1;
       a.replicates = target.mod.id;
+      a.replicatesName = target.mod.name;
     }
   }
 
@@ -226,20 +230,33 @@ export function planCast(ctx, v) {
   }
 
   // Ritual Casting (Magic Theory T2).
-  const ritual = !!v.ritual && theory >= 2;
-  if (v.ritual && theory < 2) errors.push("Ritual Casting needs Magic Theory Tier 2.");
+  // Instant Ritual (Grasp Arcana T5): the Spell is a Ritual without the hours (it still costs its AP/RP to cast, and the Mod's Threshold counts toward the lost max Energy).
+  const instant = applied.some(a => !a.free && a.mod.name === "Instant Ritual");
+  const ritual = (!!v.ritual || instant) && theory >= 2;
+  if ((v.ritual || instant) && theory < 2) errors.push("Ritual Casting needs Magic Theory Tier 2.");
 
   const react = applied.some(a => !a.free && a.mod.treeId === "magic-theory" && modKey(a.mod) === "react");
   const weave = ctx.weave ?? null;
   if (weave && option && !option.ap.includes(weave.ap)) errors.push(`${option.label} takes ${option.ap.join("/")} AP; the attack you're weaving with costs ${weave.ap}.`);
   if (weave && ritual) errors.push("A Ritual can't be woven.");
-  const ap = weave ? 0 : ritual ? 0 : option ? (option.ap.length > 1 ? Math.min(3, Math.max(1, Math.round(Number(v.ap) || option.ap[0]))) : option.ap[0]) : 0;
+  const ap = weave ? 0 : ritual && !instant ? 0 : option ? (option.ap.length > 1 ? Math.min(3, Math.max(1, Math.round(Number(v.ap) || option.ap[0]))) : option.ap[0]) : 0;
   const trParts = [];
   if (option) {
     // Weaving still costs Energy but gets no TR (Webmaster, Magic Theory T5, lifts that); a woven spell's AP is the attack's.
     const apForTR = weave ? weave.ap : ap;
-    const form = weave && !weave.keepTR ? 0 : option.trByAp ? option.trByAp[apForTR] ?? 0 : option.tr ?? 0;
-    trParts.push({ label: option.form === "raw" ? "Raw Casting" : option.form === "igniter" ? "Igniter" : "Channeler", value: form });
+    let form = weave && !weave.keepTR ? 0 : option.trByAp ? option.trByAp[apForTR] ?? 0 : option.tr ?? 0;
+    let label = option.form === "raw" ? "Raw Casting" : option.form === "igniter" ? "Igniter" : "Channeler";
+    // Deck Foci: a card cast as a Core has the Foci's Core TR, two cards combined its Combo TR (and they must be in your hand).
+    if (option.deck) {
+      form = cores.length === 2 ? option.deck.tr[1] : option.deck.tr[0];
+      label = `Deck (${cores.length === 2 ? "Combo" : "Core"})`;
+      const hand = [...option.deck.hand];
+      for (const id of coreIds) { const i = hand.indexOf(id); if (i < 0) { errors.push(`${spellById(id)?.name ?? id} isn't in your hand.`); break; } hand.splice(i, 1); }
+    }
+    // Foci passives: Wand, Lens, Scepter, Tablet.
+    const own = !(weave && !weave.keepTR) && option.fociType ? fociTR(option.fociType, form, { casts: ctx.fociState?.[option.fociId]?.casts ?? 0, allies: !!ctx.targetsAlly }) : null;
+    if (own) { form = own.tr; label = own.label; }
+    trParts.push({ label, value: form });
   }
   if (focusedCast && !(weave && !weave.keepTR)) trParts.push({ label: "Focus", value: 1 });
   if (!(weave && !weave.keepTR) && option?.fociId && ctx.ring?.[option.fociId] && cores.some(c => c.id === ctx.ring[option.fociId])) trParts.push({ label: "Ring", value: 1 });
@@ -247,11 +264,15 @@ export function planCast(ctx, v) {
   const tr = trParts.reduce((n, p) => n + p.value, 0);
 
   // Empower: +100% Power to the bolded effects (Power bonuses are additive).
-  const empower = applied.filter(a => a.mod.name === "Empower" || (a.replicates && spellById(a.replicates)?.name === "Empower")).length;
+  // Hematite (Foci Affix): double the Power by spending Health equal to it. Taaffeite: Rituals take half as much Energy.
+  const hematite = !!v.hematite && !!option?.fociId && (ctx.hematiteFoci ?? []).includes(option.fociId);
+  const taaffeite = !!option?.fociId && (ctx.taaffeiteFoci ?? []).includes(option.fociId);
+  // Delay (Restoration Arcana T4) also gives +100% Power.
+  const empower = applied.filter(a => ["Empower", "Delay"].includes(a.mod.name) || (a.replicates && ["Empower", "Delay"].includes(spellById(a.replicates)?.name))).length;
   const cost = castCost({ base, mods: applied, tr, skillPoints: ctx.skillPoints });
   const grossEnergy = Math.floor(cost.gross * ctx.skillPoints / 2);
   // Lob needs an Area spell and Explode a Ranged one; Mold and the rest apply anywhere.
-  const areaSpell = applied.some(a => a.mod.name === "Gravity Field") || (applied.some(a => a.mod.name === "Emplace") && cores.some(c => c.id === "magic-protection-arcana:shield"));
+  const areaSpell = applied.some(a => a.mod.name === "Gravity Field" || a.mod.name === "Blast") || (applied.some(a => a.mod.name === "Emplace") && cores.some(c => c.id === "magic-protection-arcana:shield"));
   const hasMod = n => applied.some(a => !a.free && a.mod.name === n);
   if (hasMod("Lob") && !areaSpell) errors.push("Lob can only be added to a spell whose attack type is Area (Gravity Field, Emplace).");
   // A Combo is Targeted if either Core is (Arcanomancy keeps the other Core's type).
@@ -260,12 +281,12 @@ export function planCast(ctx, v) {
   if (hasMod("Explode") && attack !== "Ranged") errors.push("Explode can only be added to a Ranged spell.");
   return {
     ok: errors.length === 0, errors, option, cores, combo: cores.length === 2, base, applied, areaSpell, free, focusedCast, ritual, react,
-    ap, usesRP: react && !ritual, tr, trParts, ...cost,
+    ap, usesRP: react && (!ritual || instant), instantRitual: instant && ritual, tr, trParts, ...cost,
     energy: ritual || freeFrom ? 0 : cost.energy, freeFrom,
-    ritualHours: ritual ? cost.gross : 0,
-    ritualLoss: ritual ? Math.floor(grossEnergy / 2) : 0,
+    ritualHours: ritual && !instant ? cost.gross : 0,
+    ritualLoss: ritual ? Math.floor(grossEnergy / 2 / (taaffeite ? 2 : 1)) : 0,
     spellPower: option ? spellPower(option.scaling) : 0,
-    power: option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
+    power: option ? spellPower(option.scaling) * (1 + empower + (hematite ? 1 : 0)) : 0, hematite, hematiteCost: hematite && option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
     attack
   };
 }

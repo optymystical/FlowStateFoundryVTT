@@ -59,6 +59,15 @@
     {{#if hasTourmaline}}
     <div class="fs-field"><label>Tourmaline element</label><select name="system.element" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions elements selected=system.element}}</select></div>
     {{/if}}
+    {{#if hasColored}}
+    <div class="fs-field"><label>Colored Diamond spell (declare each turn)</label><select name="system.declared" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions spellChoices selected=system.declared}}</select></div>
+    {{/if}}
+    {{#if hasOpal}}
+    <div class="fs-field"><label>Black Opal: range that gets +50%</label><select name="system.opalRange" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions opalChoices selected=system.opalRange}}</select></div>
+    {{/if}}
+    {{#if hasEmerald}}
+    <div class="fs-field fs-checks-row"><label><input type="checkbox" name="system.lush" {{checked system.lush}} {{#unless stateEditable}}disabled{{/unless}}> In a Lush biome (Emerald)</label></div>
+    {{/if}}
   </section>
   {{else}}
   <div class="fs-warn">{{p.error}}</div>

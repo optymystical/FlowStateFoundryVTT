@@ -21,14 +21,14 @@ export const FOCI_TYPES = {
   wand: fo("Wand", "igniter", 30, 6, 1, false, "Every other spell cast with this Foci grants it 1 additional TR until the start of your next turn. Has 0 TR baseline.", { tr: 0 }),
   staff: fo("Staff", "igniter", 30, 6, 1, false, "Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was a different Core Spell.", { twoHandCast: true }),
   scepter: fo("Scepter", "igniter", 60, 12, 1, false, "Spells cast with this Foci have 1 additional TR when targeting an ally."),
-  chime: fo("Chime", "igniter", 10, 2, 0, false, DECK(7, 2, 4), { deck: true }),
+  chime: fo("Chime", "igniter", 10, 2, 0, false, DECK(7, 2, 4), { deck: true, draw: 7, deckTR: [2, 4] }),
   // Channelers
   scroll: fo("Scroll", "channeler", 20, 4, 3, false),
   orb: fo("Orb", "channeler", 40, 8, 1, true),
   lens: fo("Lens", "channeler", 30, 6, 1, false, "Every spell cast with this Foci removes 1 TR from it until the start of your next turn. Has 4 TR baseline.", { tr: 4 }),
   tome: fo("Tome", "channeler", 30, 6, 1, false, "Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was the same Core Spell.", { twoHandCast: true }),
   tablet: fo("Tablet", "channeler", 60, 12, 1, false, "Spells cast with this Foci have 2 additional TR when targeting an ally."),
-  cards: fo("Cards", "channeler", 10, 2, 0, false, DECK(5, 3, 6), { deck: true }),
+  cards: fo("Cards", "channeler", 10, 2, 0, false, DECK(5, 3, 6), { deck: true, draw: 5, deckTR: [3, 6] }),
   // Multi
   glove: fo("Glove", "multi", 40, 8, 3, false),
   band: fo("Band", "multi", 60, 12, 1, true),
@@ -104,7 +104,9 @@ export function fociProfile(sys, stats = {}) {
     durability: t.dur * grade,
     limit: t.limit * grade,
     affixSlots: t.affixes, affixPlus: t.plus, affixes,
-    twoHandCast: !!t.twoHandCast, deck: !!t.deck,
+    twoHandCast: !!t.twoHandCast, deck: !!t.deck, deckTR: t.deckTR ?? null, deckDraw: t.draw ?? 0, type: sys.fociType,
+    // Gauntlet: the first cast uses the higher of Reach and Grasp, the second the lower.
+    scalingHigh: Math.max(reach, grasp), scalingLow: Math.min(reach, grasp),
     effect: t.effect,
     // Foci only block what they would as an object (Physical and Elemental), when something targets or hits through them.
     focus: null, selfWeakened: affixes.includes("zircon") ? (t.plus ? 2 : 1) : 0
@@ -145,4 +147,30 @@ export function sourceTypeChoices(WEAPON_TYPES, DAMAGE_TYPES) {
   for (const [k, v] of Object.entries(WEAPON_TYPES)) if (k !== "improvised") out[`weapon:${k}`] = k === "unarmed" ? "Unarmed attacks" : `${v.label} Weapons`;
   for (const [k, v] of Object.entries(DAMAGE_TYPES)) out[`type:${k}`] = `${v} damage (non-weapon)`;
   return out;
+}
+
+/* ---- Foci passives (pure) ---- */
+
+/**
+ * Threshold Reduction changes from a Foci's own effect. `state` = { casts } this turn with this Foci; `allies` = every target is an ally.
+ * Wand: every other spell grants +1 TR (0 baseline). Lens: each spell removes 1 TR (4 baseline). Scepter / Tablet: +1 / +2 TR targeting an ally.
+ * Returns the TR the Foci gives (replacing its listed baseline) and a label.
+ */
+export function fociTR(type, base, { casts = 0, allies = false } = {}) {
+  switch (type) {
+    case "wand": return { tr: (base ?? 0) + Math.floor(casts / 2), label: "Wand" };
+    case "lens": return { tr: Math.max(0, (base ?? 4) - casts), label: "Lens" };
+    case "scepter": return { tr: (base ?? 1) + (allies ? 1 : 0), label: "Scepter" };
+    case "tablet": return { tr: (base ?? 2) + (allies ? 2 : 0), label: "Tablet" };
+    default: return null;
+  }
+}
+
+/** Does a Staff / Tome cast twice? Staff: the last Core cast this turn was different; Tome: it was the same. Gauntlet always duplicates. */
+export function castsTwice(type, lastKey, key) {
+  if (type === "gauntlet") return true;
+  if (!lastKey) return false;
+  if (type === "staff") return lastKey !== key;
+  if (type === "tome") return lastKey === key;
+  return false;
 }

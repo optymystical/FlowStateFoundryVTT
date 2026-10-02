@@ -47,3 +47,52 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 
 - `areas.planFlight` (pure) plans a thrown creature's path through barriers and ordinary walls: 3 × untraveled feet to both sides, each capped by what the other has left; a surviving barrier stops the creature, a broken one lets it continue with `untraveled − barrierHP ÷ 3` feet. `actions.flyThrown` applies it (creature damage via `damageOutcome`, barrier health via `setBarrierHealth` / GM relay). A barrier between a thrower and the aimed target stops or slows the throw before the collision.
 - Judgment calls: Force damage to a barrier ignores its Limit (it is Force, not an attack); an ordinary wall earlier on the path (more than 1.25 ft sooner) wins over a barrier, a tie goes to the barrier; barriers are sampled a quarter square at a time. Untested in real Foundry (token movement and Wall collision).
+
+## Built (v0.30.0): Tier 3 (Grasp Arcana, Venomancy, Charm, Witchery)
+
+- `module/afflictions.mjs` is the Tier 3 engine, registered into `actions.mjs` as `registerAfflictions` (`onHit`, `charmNet`, `charmWeakened`, `charmedBy`, `hexTrigger`, `afterDefense`, `turnStart`, `casterTurn`, `act`). Data is `PROFILES[...].afflict` in `spellfx.mjs` (kinds `poison`, `charm`, `hex`, `venomCharm`, `venomHex`, `charmHex`).
+- Effects are Active Effects with `spellEffect.kind` of `coat`, `poison`, `charm`, `hex`. Poison/Hex/pending Charms are `onTargetTurn` (they survive the caster's turn); Ingrained Charms too. `turnsLeft` lets `clearSpellEffects` keep a Combo effect an extra caster turn.
+- Rolls: `charmNet(actor, type)` is added to the system's own rolls (attack, parry, dodge, stat check, d100); Weakened damage goes through `targetStacks`. Hex triggers: Harm in `applyDamage` (damage flagged `fromHex` never triggers), Move in `preUpdateToken`, Roll in each roll function / the damage roll, attack/dodge Fail/Success in `afterDefense`. Manual triggers are buttons (`act: "hex"`).
+- Buttons on our own cards read `flags.flowstate.afflict.acts[i]` (`pass`, `spread`, `arc`, `respread`, `hex`) and call `afflictions.act`. Spread / respread go through `performAttack` with a spell whose `act` field says what to do when it hits.
+- `damageOutcome` / `applyDamage` / `requestDamage` got `ignoreArmor` (Venomancy Combos) and `fromHex`.
+- Rituals: a Tier 3 Core's Ritual stores one free cast (`ritual.t3`); the free cast carries `ritualOf` and is spent on a hit (`spendRitual`).
+- Instant Ritual is a `planCast` flag (`instantRitual`); Foci Master bypasses the in-combat attuning refusal with the `flowstateFociMaster` update option.
+- Tests: `dev/tests/spell-t3.mjs`.
+
+## Built (v0.31.0): Tier 4 (Build Arcana, Summoning, Creation, Animation) and Unravel
+
+- `module/conjure.mjs` is the engine (casting.mjs asks `conjure.prompt` before payment and calls `conjure.resolve` after); `module/conjure-rules.mjs` is the pure math (pool, health, sizes, materials, riders). Profiles: `PROFILES[...].conjure` (`kind` summon/make/animate; `rider` for Any T1/T2/T3 + T4; `make`, `summonStats`, `instant` for the pure Combos).
+- Summons/Animations are NPC actors created through `GM_ACTIONS.createCreation` (also `deleteCreation`, `giveItems`, `deleteMade`). Their numbers live in the actor flag `flowstate.summon` (`hp`, `energy`, `attackDie`, `dodgeDie`, `speed`, `physical`, `ap`, `rp`, `owner`, `ritualOf`, `rider`), which `FlowStateActorData.prepareDerivedData` applies. Made items carry `flags.flowstate.made { caster, ritualOf, rider? }`.
+- Ending: `conjure.turnStart` (Reform, then temporary creations) from `_onStartTurn`; `clearAll` on combat end; `endRitual` from the Ritual-effect delete hook. A Tier 4 Ritual stores one free cast (`ritual.t3`), spent by `resolve`.
+- Natural items: `natural` / `returning` fields; `dropItem` refuses them; the weapon dialog hides Throw for natural, non-returning weapons; natural weapons skip ammunition.
+- `riderAfter` (registered as `registerConjure`) runs after a non-spell attack's damage: the Combo Core's extra damage/effects for a Summon, Animation, or Made item.
+- Projection passes an `origin` token to range and melee checks; Seep is in `recoverEnergy`; Foci Master / Shroud Master share `swapAttuned`.
+- Unravel: `magicDisNet` in spell attack rolls and Reach/Grasp/Build checks.
+- Tests: `dev/tests/spell-t4.mjs`.
+
+## Built (v0.32.0): Tier 5 (Restoration Arcana, Geomancy, Illusion, Arcanomancy)
+
+- `module/arcana.mjs` (registered as `registerArcana`): `prompt` (before payment) / `resolve` for Restore and Shift, Mirage through the attack exchange (`mirageHit` from `spellHit`), `turnStart` decay, `act` buttons (`fs-arcana-act`, flags `arcana.acts`). Profiles: `PROFILES[...].arcana` (`restore`, `shift` with `rider`/`arcane`/`stealth`, `mirage` with `chart`); Strike is a plain damage profile (`strike: true`); `arcanize()` builds every Arcanomancy + Core profile (damage → arcane, `arcano`, `afflict.contested`).
+- Restore history: `applyDamage` appends to the actor flag `lossLog`; `_onStartTurn` sets `turnStartedAt`; death sets `diedAt`. Painless is a `painDown` effect read in `prepareDerivedData`.
+- Delay: `castSpell` stores `values` + target uuids in a `delayed` effect and `fireDelayed` re-runs the cast with `{ fire }` (no payment, no range check).
+- Contested checks: `afflictions.check(..., { contest })`. Fear: `fearTimed` effect removed in `endOfTurn`.
+- Geomancy Combos with Summoning / Creation / Animation set `geo` (returning natural weapons, ranged strike); Illusion Combos set `fear` (coin flip in `riderAfter`).
+- Tests: `dev/tests/spell-t5.mjs`.
+
+## Built (v0.33.0): Foci passives, Foci Affixes, Deck Foci
+
+- `module/foci.mjs` (registered as `registerFoci`): per-turn Foci state (`fociState` flag: casts and last Core per Foci), the Affix hooks (`attackNet`, `damageStacks`, `afterDamage`, `afterHit` on `spell.fociFx`, the plain data a cast carries on its attack card), and the deck (`deck` actor flag: draw / hand / discard).
+- Pure maths: `magic.mjs` `fociTR` (Wand, Lens, Scepter, Tablet) and `castsTwice` (Staff, Tome, Gauntlet); `spells.planCast` applies them (`ctx.fociState`, `ctx.targetsAlly`), the Deck TR and hand check, Hematite and Taaffeite.
+- `castSpell` wraps the resolution in `run(plan)` so a Foci can run it twice; Gauntlet's first run uses the higher Scaling Stat.
+- Tests: `dev/tests/foci-effects.mjs`.
+
+## Built (v0.34.0): the last gaps
+
+- Spells as targets: `arcana.listSpells()` (effects, Emplace templates, Summon actors) → `damageSpell` / `amplifySpell` / `ripSpell`; `casting.castSpell` calls `arcana.promptSpell` before payment and `resolveStrike` after. Spell health defaults to the caster's Scaling Stat.
+- Blast Ritual: the template gets `spell: "antimagic"` flags (`tplFlags` GM action); `arcana.antimagicTurn` (turn start) and `arcana.checkEntry` (called from `preUpdateToken`) deal Strike's damage to magical tokens. `checkEntry` also offers Aura entrants an attack (the `aura` effect on the caster stores the attack options).
+- Reactive: `damageOutcome` weakens damage that hits a Reactive Shield / barrier and returns `reactive` caster uuids; `applyDamage` spends the RP (and handles Summons first). Taaffeite (Shroud) is in the shield loop of `applyDamage`.
+- Sense Swap: caster flag `senseSwap` → `conjure.senseSwapToken` is the `origin` for range and melee in `castSpell`. Limited Autonomy: summon flag `command`, announced by `conjure.autonomyTurn`.
+- Muddy: `muddy` effects read by `afflictions.penaltyStacks`; Harden: `made.harden` flags (strong in `targetStacks`, armor via `selfWeakened` in the item data models). Phantom Pain and Painless are read in `prepareDerivedData`. Emerald: `sceneLush()` (scene flag set from a Scene Configuration checkbox).
+- Animated weapons: `conjure.act("weapon")` builds a proxy item (caster's stats, held) for `rollWeaponAttack`.
+- Tests: `dev/tests/spell-gaps.mjs`.
+- v0.34.1: the doc now says Shield doesn't stack with itself (Limit = its health, already how it worked). A target keeps one Shield from any caster, the one with more health left (`replaceAll` in `applySpellEffect`).

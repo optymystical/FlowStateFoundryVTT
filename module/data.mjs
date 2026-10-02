@@ -60,6 +60,18 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       size: this.size,
       hpLost: this.hp.lost
     });
+    // Summons and Animations (Tier 4 Magic) have their own health, Energy, dice, speed and physical-attack stacks, set when they're made.
+    const sm = this.parent?.flags?.flowstate?.summon;
+    if (sm) {
+      d.hpMax = sm.hp - Math.max(0, this.hp.lost);
+      d.pain = d.hpMax;
+      d.energyMax = sm.energy ?? 0;
+      d.energyRecover = 0;
+      if (sm.attackDie) d.attackDie = sm.attackDie;
+      if (sm.dodgeDie) d.dodgeDie = sm.dodgeDie;
+      if (sm.speed) d.move = sm.speed;
+      if (sm.physical) d.size = { ...d.size, physical: (d.size?.physical ?? 0) + sm.physical };
+    }
     Object.assign(this, { derived: d });
     const spent = spentPoints(this.trees);
     this.skills = { total: this.skillPoints, spent, unspent: this.skillPoints - spent };
@@ -70,13 +82,18 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     const effects = Array.from(this.parent?.effects ?? []).filter(e => !e.disabled);
     // Spell effects that shrink dice (Slam: dodge dice, Cut + Slam: attack dice). The worst one applies; they don't stack.
     const penalty = key => Math.max(0, ...effects.map(e => Number(e.flags?.flowstate?.spellEffect?.[key]) || 0));
+    // Painless (Restoration Arcana T2) lowers the Pain Threshold.
+    const painDown = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.painDown) || 0), 0);
+    // Phantom Pain (Illusion T2): illusion damage from a Mirage only raises the Pain Threshold (gone when no Mirage affects them).
+    const phantom = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.phantomTotal) || 0), 0);
+    if (painDown || phantom) { d.pain = Math.max(0, d.pain - painDown + phantom); this.hp.pain = d.pain; }
     d.dodgeDie = penalizedDie(d.dodgeDie, penalty("dodgeDie"));
     d.attackDie = penalizedDie(d.attackDie, penalty("attackDie"));
     // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).
     this.ritualLoss = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.ritual?.energyLost) || 0), 0);
     this.energy.max = Math.max(0, d.energyMax - this.ritualLoss);
-    this.ap.max = 6;
-    this.rp.max = 6;
+    this.ap.max = sm?.ap ?? 6;
+    this.rp.max = sm?.rp ?? 6;
 
     // Martial equipment scales off this actor's effective stats.
     const eff = d.effective;
@@ -161,6 +178,8 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
       twoHanded: new f.BooleanField({ initial: false }),
       equipped: new f.BooleanField({ initial: false }),
       secondHand: new f.BooleanField({ initial: false }), // Unarmed only: the other fist is up too
+      natural: new f.BooleanField({ initial: false }),    // a natural weapon (Summoning Arm, ...): can't be dropped or thrown
+      returning: new f.BooleanField({ initial: false }),  // a natural weapon that returns when thrown (Geomancy Combos)
       // Ranged: shots per reload (X, uses X ammunition) and shots currently loaded.
       magazine: int(1, { min: 1 }),
       rounds: int(1, { min: 0 }),
@@ -180,6 +199,7 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
   computeProfile(stats) {
     const { weaponType: type, weight, material, grade, twoHanded } = this;
     this.profile = weaponProfile({ type, weight, material, grade, twoHanded }, stats);
+    if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);
     this._stats = stats;
     // All of this weapon's types: the main one first, then any extra (Unarmed/Improvised can't be multi-type).
     const extra = type === "unarmed" || type === "improvised" ? []
@@ -209,6 +229,7 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
       material: new f.StringField({ required: true, initial: "cloth" }),
       grade: int(1, { min: 1 }),
       equipped: new f.BooleanField({ initial: false }),
+      natural: new f.BooleanField({ initial: false }),    // natural armor (Summoning Skin): can't be dropped
       wear: int(0, { min: 0 }),
       // Ignite and Stain stacks "on whatever is damaged" can land on the armor itself.
       conditions: new f.SchemaField({ ignite: int(0, { min: 0 }), stain: int(0, { min: 0 }), solid: int(0, { min: 0 }), searing: int(0, { min: 0 }), frozen: int(0, { min: 0 }), electric: int(0, { min: 0 }) }),
@@ -224,6 +245,7 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
   computeProfile(con) {
     const { weight, material, grade } = this;
     this.profile = armorProfile({ weight, material, grade }, con);
+    if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);   // Harden: damage to it is Weakened
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
     this.broken = this.profile.valid && max - this.wear <= 0;
@@ -243,6 +265,9 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
       affixes: new f.ArrayField(new f.StringField()),
       element: new f.StringField({ initial: "heat" }),    // Tourmaline
       chosenSpell: new f.StringField({ initial: "" }),    // Ring
+      lush: new f.BooleanField({ initial: false }),       // Emerald: in a Lush biome
+      declared: new f.StringField({ initial: "" }),     // Colored Diamond: the Core Spell declared this turn
+      opalRange: new f.StringField({ initial: "targeted" }), // Black Opal (+): which range gets +50%
       description: new f.HTMLField({ initial: "" })
     };
   }

@@ -4,6 +4,10 @@ import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
+import "./afflictions.mjs";
+import "./arcana.mjs";
+import * as fociEngine from "./foci.mjs";
+import * as conjure from "./conjure.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
@@ -81,6 +85,7 @@ class FlowStateActor extends Actor {
     if (foundry.utils.hasProperty(changed, "system")) {
       const dead = sys.hp.value <= 0;
       const unconscious = !dead && sys.hp.value < sys.hp.pain;
+      if (dead && !this.statuses.has("dead")) await this.setFlag("flowstate", "diedAt", Date.now());          // Resuscitate only reaches the recently dead
       if (dead !== this.statuses.has("dead")) await this.toggleStatusEffect("dead", { active: dead, overlay: true });
       if (unconscious !== this.statuses.has("unconscious")) await this.toggleStatusEffect("unconscious", { active: unconscious });
       // Falling unconscious (or dying) knocks you prone. Waking up leaves you prone until you stand.
@@ -93,7 +98,7 @@ class FlowStateCombat extends Combat {
   /** Round 1: every combatant gets their full AP and RP. */
   async startCombat() {
     for (const c of this.combatants) {
-      if (c.actor?.isOwner) await c.actor.update({ "system.ap.value": 6, "system.rp.value": 6 });
+      if (c.actor?.isOwner) await c.actor.update({ "system.ap.value": c.actor.system.ap?.max ?? 6, "system.rp.value": c.actor.system.rp?.max ?? 6 });
     }
     return super.startCombat();
   }
@@ -106,7 +111,7 @@ class FlowStateCombat extends Combat {
       const a = combatant.actor, e = a.system.energy;
       let regain = 2 * (a.system.derived?.energyRecover ?? 0);
       if (regain) regain = await actions.energyRestoreAdjust(a, regain);                 // Freeze (Cold T4)
-      await a.update({ "system.ap.value": 6, "system.rp.value": 6, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
+      await a.update({ "system.ap.value": a.system.ap?.max ?? 6, "system.rp.value": a.system.rp?.max ?? 6, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
       // Psych Up / Calm Down last until the start of your next turn.
       await actions.clearStances(combatant.actor);
       // Medium Armor (Limber, Versatility, Careful Steps) and Rapid Marks.
@@ -118,6 +123,16 @@ class FlowStateCombat extends Combat {
       await areas.clearAreas(combatant.actor);
       // Bleed (Slashing T2) hits at the start of the victim's turn.
       await actions.bleedTurnStart(combatant.actor);
+      // Poison, Charm and Hex (Tier 3): the victim's checks, and the caster's Ingrained Charms.
+      await actions.afflictTurnStart(combatant.actor);
+      await actions.arcanaTurnStart(combatant.actor);
+      await actions.arcanaAntimagicTurn(combatant.actor);
+      await fociEngine.deckTurnStart(combatant.actor);
+      await conjure.autonomyTurn(combatant.actor);
+      await combatant.actor.setFlag?.("flowstate", "turnStartedAt", Date.now());
+      // Tier 4: Reform, then the caster's temporary Summons, Animations and Made objects end.
+      await conjure.turnStart(combatant.actor);
+      await actions.afflictCasterTurn(combatant.actor);
     }
   }
 
@@ -506,6 +521,8 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
   }
   // Gash (Slashing T3): voluntarily moving reopens the wound.
   if (actor && !options?.flowstateThrow && actions.spellEffects(actor, "gash").length) actions.triggerGash(actor);
+  if (actor && !options?.flowstateThrow) actions.hexMove(actor);
+  if (actor && !options?.flowstateThrow) actions.arcanaCheckEntry(token, changes);
   // Rapid T3 Mark: a Marked creature moving lets the marker shoot.
   if (actor?.getFlag("flowstate", "markedBy")) actions.triggerMark(actor, "moves");
   // Reach T1 Palisade: moving into a Reach wielder's range lets them strike (the palisading token is moved back on a hit).
@@ -728,6 +745,7 @@ Hooks.on("deleteCombat", combat => {
   for (const c of combat.combatants) setTimeout(() => {
     actions.clearSpellEffects(c.actor, { all: true });
     areas.clearAreas(c.actor, { all: true });
+    conjure.clearAll(c.actor);
     actions.refillEnergy(c.actor); actions.clearStances(c.actor);
     if (c.actor?.getFlag("flowstate", "carefulLapsed")) c.actor.unsetFlag("flowstate", "carefulLapsed"); // Careful Steps is free again
   }, 0);
@@ -997,6 +1015,15 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   for (const btn of html.querySelectorAll(".fs-chain")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.chainNext(message); });
   }
+  for (const btn of html.querySelectorAll(".fs-arcana-act")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.arcanaAct(message, Number(btn.dataset.i)); });
+  }
+  for (const btn of html.querySelectorAll(".fs-conjure-act")) {
+    btn.addEventListener("click", event => { event.preventDefault(); conjure.act(message, Number(btn.dataset.i)); });
+  }
+  for (const btn of html.querySelectorAll(".fs-afflict-act")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.afflictAct(message, Number(btn.dataset.i)); });
+  }
   for (const btn of html.querySelectorAll(".fs-electric-transfer")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.electricTransfer(message); });
   }
@@ -1144,7 +1171,7 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
   if (item.type === "foci" || item.type === "shroud") {
     const attune = changed(changes, "system.attuned");
     if (attune !== undefined && attune !== item.system.attuned) {
-      if (attune && inCombat) return refuse(item, `Attuning to ${item.name} takes an hour, so it can't be done in combat.`);
+      if (attune && inCombat && !options?.flowstateFociMaster) return refuse(item, `Attuning to ${item.name} takes an hour, so it can't be done in combat.`);
       if (attune) {
         const others = actor.items.filter(i => i.type === item.type && i.id !== item.id && i.system.attuned);
         if (others.length) actor.updateEmbeddedDocuments("Item", others.map(i => ({ _id: i.id, "system.attuned": false })), { flowstateAuto: true });
@@ -1370,6 +1397,7 @@ Hooks.on("deleteActiveEffect", async effect => {
   for (const a of game.actors) for (const e of a.effects) if (e.flags?.flowstate?.ritualOf === effect.uuid) tied.push(e);
   for (const t of canvas?.tokens?.placeables ?? []) if (!t.document.actorLink) for (const e of t.actor?.effects ?? []) if (e.flags?.flowstate?.ritualOf === effect.uuid) tied.push(e);
   for (const e of tied) await e.delete();
+  await conjure.endRitual(effect.uuid);
 });
 Hooks.on("createActiveEffect", effect => {
   if (!game.user.isActiveGM || !effect.flags?.flowstate?.ritual || !(effect.parent instanceof Actor)) return;
@@ -1419,4 +1447,22 @@ Hooks.on("preUpdateItem", (item, changes) => {
     ui.notifications.warn(`${actor.name} can carry at most ${actions.AMMO_MAX} ${actions.ammoLabel(type)} (${have} in other stacks).`);
     return false;
   }
+});
+
+
+/* -------------------------------------------- */
+/*  Scene setting: Lush biome (Emerald Affix)   */
+/* -------------------------------------------- */
+
+Hooks.on("renderSceneConfig", (app, html) => {
+  try {
+    const el = html instanceof HTMLElement ? html : html?.[0];
+    if (!el || el.querySelector('[name="flags.flowstate.lush"]')) return;
+    const scene = app.document ?? app.object;
+    const group = document.createElement("div");
+    group.className = "form-group";
+    group.innerHTML = `<label>Lush biome (Flow State)</label><div class="form-fields"><input type="checkbox" name="flags.flowstate.lush" ${scene?.getFlag?.("flowstate", "lush") ? "checked" : ""}></div><p class="hint">Emerald Affixes treat this scene as a Lush biome.</p>`;
+    const tab = el.querySelector('.tab[data-tab="basic"]') ?? el.querySelector(".tab") ?? el.querySelector("form");
+    tab?.appendChild(group);
+  } catch (err) { console.warn("flowstate | Lush biome setting not added", err); }
 });

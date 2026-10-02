@@ -17,6 +17,7 @@
       <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
     <div class="fs-field fs-checks-row">
       <label><input type="checkbox" name="system.equipped" {{checked system.equipped}} {{#unless stateEditable}}disabled{{/unless}}> Worn</label>
+      <label data-tooltip="Natural armor (a Summon's skin): it can't be dropped"><input type="checkbox" name="system.natural" {{checked system.natural}} {{#unless editable}}disabled{{/unless}}> Natural</label>
     </div>
   </section>
 

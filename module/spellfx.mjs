@@ -80,6 +80,156 @@ Object.assign(PROFILES, {
   [profileKey([CK, GL])]: { name: "Crackle + Glob", effects: [{ at: "hit", stack: { kind: "electric", dice: [3, 12], where: "first" } }] }
 });
 
+/**
+ * Tier 3 (Venomancy, Charm, Witchery) profiles. They deal no damage on the hit itself; `afflict` describes what lingers on the target
+ * (see afflictions.mjs). Dice counts scale with Spell Power.
+ *   poison  { dice, type: "health" or a damage type, bypassArmor, force, livingDie, halfStrength, dodgeDie, ignite|stain|energy: true, arc: true }
+ *   charm   { combo?: { dice, type, force, ignite|stain|energy, nextRoll, zap, critStrength } }
+ *   hex     { dice: [1, 12], extra?: { force|ignite|stain|energy: [n, sides], dieDown: true, arcs: 2 } }
+ *   venomCharm / venomHex / charmHex   the pure Tier 3 Combos: a combined check, then a lingering damage-over-time effect
+ */
+const PO = "magic-venomancy:poison", CM = "magic-charm:charm", HX = "magic-witchery:hex";
+Object.assign(PROFILES, {
+  [PO]: { name: "Poison", afflict: { kind: "poison", dice: [3, 6], type: "health" } },
+  [CM]: { name: "Charm", afflict: { kind: "charm" } },
+  [HX]: { name: "Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane" } },
+  // Tier 1/2 + Venomancy: Poison's health loss becomes damage that ignores armor (but not Shrouds).
+  [profileKey([G, PO])]: { name: "Force + Poison", afflict: { kind: "poison", dice: [24, 10], type: "force", force: true } },
+  [profileKey([SL, PO])]: { name: "Cut + Poison", afflict: { kind: "poison", dice: [6, 6], type: "physical", bypassArmor: true, livingDie: 4 } },
+  [profileKey([PI, PO])]: { name: "Stab + Poison", afflict: { kind: "poison", dice: [3, 10], type: "physical", bypassArmor: true, halfStrength: true } },
+  [profileKey([CR, PO])]: { name: "Slam + Poison", afflict: { kind: "poison", dice: [3, 12], type: "physical", bypassArmor: true, dodgeDie: 3 } },
+  [profileKey([FL, PO])]: { name: "Flame + Poison", afflict: { kind: "poison", dice: [3, 12], type: "heat", bypassArmor: true, ignite: true } },
+  [profileKey([FR, PO])]: { name: "Frost + Poison", afflict: { kind: "poison", dice: [3, 8], type: "cold", bypassArmor: true, energy: true } },
+  [profileKey([CK, PO])]: { name: "Crackle + Poison", afflict: { kind: "poison", dice: [3, 12], type: "radiation", bypassArmor: true, arc: true } },
+  [profileKey([GL, PO])]: { name: "Glob + Poison", afflict: { kind: "poison", dice: [3, 8], type: "acid", bypassArmor: true, stain: true } },
+  // + Charm: the failed Willpower check (at the start of their next turn) makes them hurt themselves.
+  [profileKey([G, CM])]: { name: "Force + Charm", afflict: { kind: "charm", combo: { dice: [28, 10], type: "force", force: true } } },
+  [profileKey([SL, CM])]: { name: "Cut + Charm", afflict: { kind: "charm", combo: { dice: [8, 6], type: "physical" } } },
+  [profileKey([PI, CM])]: { name: "Stab + Charm", afflict: { kind: "charm", combo: { dice: [4, 10], type: "physical", critStrength: true } } },
+  [profileKey([CR, CM])]: { name: "Slam + Charm", afflict: { kind: "charm", combo: { dice: [4, 12], type: "physical", nextRoll: true } } },
+  [profileKey([FL, CM])]: { name: "Flame + Charm", afflict: { kind: "charm", combo: { dice: [4, 12], type: "heat", ignite: true } } },
+  [profileKey([FR, CM])]: { name: "Frost + Charm", afflict: { kind: "charm", combo: { dice: [4, 8], type: "cold", energy: true } } },
+  [profileKey([CK, CM])]: { name: "Crackle + Charm", afflict: { kind: "charm", combo: { dice: [4, 12], type: "radiation", zap: true } } },
+  [profileKey([GL, CM])]: { name: "Glob + Charm", afflict: { kind: "charm", combo: { dice: [4, 8], type: "acid", stain: true } } },
+  // + Witchery: Hex does something extra whenever it procs.
+  [profileKey([G, HX])]: { name: "Force + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { force: [20, 10] } } },
+  [profileKey([CR, HX])]: { name: "Slam + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { dieDown: true } } },
+  [profileKey([FL, HX])]: { name: "Flame + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { ignite: [4, 12] } } },
+  [profileKey([FR, HX])]: { name: "Frost + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { energy: [4, 8] } } },
+  [profileKey([CK, HX])]: { name: "Crackle + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { arcs: 2 } } },
+  [profileKey([GL, HX])]: { name: "Glob + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { stain: [4, 8] } } },
+  // Pure Tier 3
+  [profileKey([PO, CM])]: { name: "Poison + Charm", afflict: { kind: "venomCharm", dice: [2, 6], type: "health", combined: ["con", "will"], req: 5 } },
+  [profileKey([PO, HX])]: { name: "Poison + Hex", afflict: { kind: "venomHex", dice: [1, 10], type: "health", combined: ["con", "build"], req: 5 } },
+  [profileKey([CM, HX])]: { name: "Charm + Hex", afflict: { kind: "charmHex", dice: [1, 8], type: "arcane", combined: ["will", "build"], req: 5 } }
+});
+
+/**
+ * Tier 4 (Summoning, Creation, Animation) profiles. `conjure` says what the cast makes (see conjure.mjs): a Summon, a Made object, an Animation.
+ * Combos with a Tier 1/2/3 Core add that Core's effect to the creation's attacks (`rider`); the pure Tier 4 Combos mix the rules.
+ */
+const SU = "magic-summoning:form", MK = "magic-creation:make", AN = "magic-animation:animate";
+Object.assign(PROFILES, {
+  [SU]: { name: "Form", conjure: { kind: "summon" } },
+  [MK]: { name: "Make", conjure: { kind: "make" } },
+  [AN]: { name: "Animate", conjure: { kind: "animate" } },
+  [profileKey([SU, MK])]: { name: "Form + Make", conjure: { kind: "summon", make: true } },
+  [profileKey([SU, AN])]: { name: "Form + Animate", conjure: { kind: "animate", summonStats: true } },
+  [profileKey([MK, AN])]: { name: "Make + Animate", conjure: { kind: "animate", instant: true } }
+});
+for (const core of ["magic-gravity:force", "magic-slashing:cut", "magic-piercing:stab", "magic-crushing:slam", "magic-heat:flame", "magic-cold:frost", "magic-radiation:crackle", "magic-acid:glob",
+  "magic-venomancy:poison", "magic-charm:charm", "magic-witchery:hex"]) {
+  const short = core.split(":")[1][0].toUpperCase() + core.split(":")[1].slice(1);
+  for (const [t4, kind, label] of [[SU, "summon", "Form"], [MK, "make", "Make"], [AN, "animate", "Animate"]])
+    PROFILES[profileKey([core, t4])] = { name: `${short} + ${label}`, conjure: { kind, rider: core } };
+}
+
+/**
+ * Tier 5 (Restoration, Geomancy, Illusion, Arcanomancy). `arcana` says what the cast does (see arcana.mjs):
+ *   restore { heal }   shift { body, rider?, arcane?, stealth? }   mirage { power, chart? }
+ * Strike is an ordinary damage Core (2d12 arcane, Advantage against fully magical targets). Arcanomancy + any Tier 1–4 Core is that Core with every
+ * damage type changed to Arcane (and contested checks for Poison, Charm and Hex).
+ */
+const RS = "magic-restoration-arcana:restore", SF = "magic-geomancy:shift", MR = "magic-illusion:mirage", ST = "magic-arcanomancy:strike";
+const T123 = ["magic-gravity:force", "magic-slashing:cut", "magic-piercing:stab", "magic-crushing:slam", "magic-heat:flame", "magic-cold:frost", "magic-radiation:crackle", "magic-acid:glob",
+  "magic-venomancy:poison", "magic-charm:charm", "magic-witchery:hex"];
+Object.assign(PROFILES, {
+  [RS]: { name: "Restore", arcana: { kind: "restore", heal: 2 } },
+  [SF]: { name: "Shift", arcana: { kind: "shift", body: 6 } },
+  [MR]: { name: "Mirage", arcana: { kind: "mirage", power: 10 } },
+  [ST]: { name: "Strike", damage: dmg(2, 12, "arcane"), strike: true },
+  [profileKey([SF, MR])]: { name: "Shift + Mirage", arcana: { kind: "shift", body: 6, stealth: true } },
+  [profileKey([SF, ST])]: { name: "Shift + Strike", arcana: { kind: "shift", body: 6, arcane: true } },
+  [profileKey([MR, ST])]: { name: "Mirage + Strike", arcana: { kind: "mirage", power: 10, chart: ST } },
+  [profileKey([SU, SF])]: { name: "Form + Shift", conjure: { kind: "summon", geo: true } },
+  [profileKey([MK, SF])]: { name: "Make + Shift", conjure: { kind: "make", geo: true } },
+  [profileKey([AN, SF])]: { name: "Animate + Shift", conjure: { kind: "animate", geo: true } },
+  [profileKey([SU, MR])]: { name: "Form + Mirage", conjure: { kind: "summon", fear: true } },
+  [profileKey([MK, MR])]: { name: "Make + Mirage", conjure: { kind: "make", fear: true } },
+  [profileKey([AN, MR])]: { name: "Animate + Mirage", conjure: { kind: "animate", fear: true } }
+});
+for (const core of T123) {
+  const short = core.split(":")[1][0].toUpperCase() + core.split(":")[1].slice(1);
+  PROFILES[profileKey([core, SF])] = { name: `${short} + Shift`, arcana: { kind: "shift", body: 6, rider: core } };
+  PROFILES[profileKey([core, MR])] = { name: `${short} + Mirage`, arcana: { kind: "mirage", power: 10, chart: core } };
+}
+/** The Arcanomancy version of a profile: all its damage is Arcane. */
+export function arcanize(profile) {
+  const p = structuredClone(profile);
+  p.name = `${profile.name} + Strike`;
+  p.arcano = true;
+  if (p.damage) p.damage.type = "arcane";
+  for (const e of p.effects ?? []) if (e.extra) e.extra.type = "arcane";
+  if (p.afflict) { if (p.afflict.type && p.afflict.type !== "health") p.afflict.type = "arcane"; if (p.afflict.combo?.type) p.afflict.combo.type = "arcane"; p.afflict.contested = true; }
+  if (p.conjure) p.conjure.arcane = true;
+  return p;
+}
+for (const [key, prof] of Object.entries({ ...PROFILES })) {
+  if (key.includes("+") || key === ST || !prof) continue;
+  if (key.startsWith("magic-restoration") || key.startsWith("magic-geomancy") || key.startsWith("magic-illusion")) continue;
+  PROFILES[profileKey([key, ST])] = arcanize(prof);
+}
+
+/** Tier 5 numbers: Restore heals 2 × Power; Shift moves 6 × Power Body. */
+export const restoreAmount = (heal, power) => heal * Math.max(1, power);
+export const shiftBody = (body, power) => body * Math.max(1, power);
+
+/** Roll types a Charm / Hex can be tied to. */
+export const ROLL_TYPES = { attack: "Attack", damage: "Damage", dodge: "Dodge", stat: "Stat check", noncombat: "Non-combat (d100)" };
+
+/** Hex triggers and the Strengthened (+) / Weakened (−) stacks they put on the Hex's damage. */
+export const HEX_TRIGGERS = {
+  harm: { label: "Harm: takes damage from a non-Hex source", stacks: -2 },
+  move: { label: "Move: spends AP to move", stacks: -1 },
+  failsuccess: { label: "Fail/Success: fails or succeeds on a roll", stacks: 0 },
+  roll: { label: "Roll: makes a specified roll", stacks: 1 },
+  act: { label: "Act: performs a declared action", stacks: 2 },
+  word: { label: "Word/Condition: speaks a word or enters a condition", stacks: 3 }
+};
+
+/** Poison's die size after `procs` applications: each Lethality adds 50% of the base size (rounded down) per application. */
+export const poisonSides = (base, lethality = 0, procs = 0) => base + Math.floor(base * 0.5) * Math.max(0, lethality) * Math.max(0, procs);
+/** Hex's die size after `procs` triggers: Fester adds 6 each time. */
+export const hexSides = (base, fester = 0, procs = 0) => base + 6 * Math.max(0, fester) * Math.max(0, procs);
+/** Charm's check requirement after `times` Ingrained repeats (halved and rounded down each time). */
+export const charmRequirement = (req, times = 0) => { let r = req; for (let i = 0; i < times; i++) r = Math.floor(r / 2); return r; };
+/** Is a check roll "half or lower" / "less than half" of what was needed? */
+export const halfOrLower = (roll, req) => roll * 2 <= req;
+export const lessThanHalf = (roll, req) => roll * 2 < req;
+/** How many Poison applications a Prolong'd Poison has before it ends (a failed check each), and when it ends. Ritual Poison ends only on a pass. */
+export function poisonEnds({ passed, procs, prolong = 0, ritual = false }) {
+  if (ritual) return passed;
+  if (!prolong) return true;
+  return passed || procs >= 1 + prolong;
+}
+/** Propagandize doubles a Charm that has two other Charms of yours on the target. */
+export const charmAmount = (propagandize, otherCharms) => (propagandize && otherCharms >= 2 ? 2 : 1);
+/** The effect the dialog's Charm/Hex choices need for this Core pair: { charm, hex, hexDie }. */
+export function afflictNeeds(profile) {
+  const k = profile?.afflict?.kind, rider = profile?.conjure?.rider;
+  return { charm: (k === "charm" && !profile.afflict.combo) || k === "venomCharm" || rider === "magic-charm:charm", hex: k === "hex" || k === "venomHex" || k === "charmHex" || rider === "magic-witchery:hex", hexDie: !!profile?.afflict?.extra?.dieDown };
+}
+
 /** The automated profile for these Cores, or null (the GM resolves it from the card). */
 export const profileFor = coreIds => PROFILES[profileKey(coreIds)] ?? null;
 
@@ -149,7 +299,18 @@ export const AUTOMATED_MODS = new Set([
   "magic-heat:ignition", "magic-heat:brand", "magic-heat:flare", "magic-heat:cook",
   "magic-cold:frostbite", "magic-cold:chill", "magic-cold:freeze", "magic-cold:shatter",
   "magic-radiation:electrify", "magic-radiation:lightning-rod", "magic-radiation:charge", "magic-radiation:discharge",
-  "magic-acid:melt", "magic-acid:solidify", "magic-acid:sticky", "magic-acid:catalyst"
+  "magic-acid:melt", "magic-acid:solidify", "magic-acid:sticky", "magic-acid:catalyst",
+  "magic-grasp-arcana:foresight", "magic-grasp-arcana:replicate", "magic-grasp-arcana:instant-ritual",
+  "magic-venomancy:prolong", "magic-venomancy:lethality", "magic-venomancy:potency", "magic-venomancy:virality",
+  "magic-charm:ingrained", "magic-charm:convince", "magic-charm:cloud", "magic-charm:propagandize",
+  "magic-witchery:linger", "magic-witchery:fester", "magic-witchery:unravel", "magic-witchery:consume",
+  "magic-build-arcana:layered", "magic-build-arcana:reactive", "magic-build-arcana:reform", "magic-build-arcana:projection",
+  "magic-summoning:arm", "magic-summoning:skin", "magic-summoning:sense-swap", "magic-summoning:limited-autonomy", "magic-creation:armory", "magic-creation:make-mk2", "magic-creation:make-mk3", "magic-creation:complexity",
+  "magic-animation:weapon-foci", "magic-animation:armor-shroud", "magic-animation:expanded-animation", "magic-animation:mixed-animations",
+  "magic-restoration-arcana:painless", "magic-restoration-arcana:regenerate", "magic-restoration-arcana:delay", "magic-restoration-arcana:resuscitate",
+  "magic-arcanomancy:absorb", "magic-arcanomancy:amplify", "magic-arcanomancy:rip",
+  "magic-geomancy:mend", "magic-geomancy:toss", "magic-geomancy:tier-up", "magic-geomancy:muddy", "magic-geomancy:harden", "magic-geomancy:tier-up-again",
+  "magic-illusion:phantom-pain", "magic-illusion:fidelity", "magic-illusion:pervasive", "magic-illusion:reshape", "magic-illusion:aura", "magic-arcanomancy:blast"
 ]);
 
 /** Gravity's Replacement Mods: when one replaces the base effect, Force (the Gravity part of the spell) is dropped. */
@@ -166,7 +327,7 @@ export const replaceFactor = (replaced, name) => (replaced?.[name] ? 2 : 1);
 /** { bleed: 1, exploit: 2, … } from the applied Mods (lowercase names, stack counts). */
 export function modCounts(applied) {
   const out = {};
-  for (const a of applied) { const k = a.mod.name.toLowerCase(); out[k] = (out[k] ?? 0) + 1; }
+  for (const a of applied) { const k = (a.replicatesName ?? a.mod.name).toLowerCase(); out[k] = (out[k] ?? 0) + 1; }
   return out;
 }
 

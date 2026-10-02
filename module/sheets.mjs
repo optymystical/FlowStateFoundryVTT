@@ -4,6 +4,11 @@ import {
 } from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import * as casting from "./casting.mjs";
+import * as fociEngine from "./foci.mjs";
+import * as conjureEngine from "./conjure.mjs";
+
+/** Does this actor have a Summon with Sense Swap? */
+const conjureHasSenseSwap = actor => (globalThis.game?.actors ?? []).some(a => a.flags?.flowstate?.summon?.owner === actor.uuid && a.flags.flowstate.summon.senseSwap);
 import * as spells from "./spells.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_RARITIES, ELEMENTS, sourceTypeChoices } from "./magic.mjs";
 import * as skills from "./skills.mjs";
@@ -630,6 +635,23 @@ function actionGroups(actor, weapons, stats) {
     const myTurn = !actions.inActiveCombat(actor) || globalThis.game?.combat?.combatant?.actor?.uuid === actor.uuid;
     magicRows.push({ label: `Use ${e.name.toLowerCase()}`, detail: "Melee, no damage, AP only · until your next turn", cost: `${h.ap} AP`, action: "useHeld", itemId: e.id, icon: "fa-solid fa-hand-holding-fire", disabled: !myTurn, tooltip: myTurn ? "" : "Only on your turn" });
   }
+  // Summoning: Sense Swap; Build Arcana: Reactive on/off.
+  if (conjureHasSenseSwap(actor)) magicRows.push({ label: actor.getFlag?.("flowstate", "senseSwap") ? "Sense Swap: swap back" : "Sense Swap", detail: "Swap senses with your Summon: spells are cast from its position", cost: "2 RP", action: "senseSwap", icon: "fa-solid fa-eye" });
+  if (ab.treeTier(actor, "magic-build-arcana") >= 2) magicRows.push({ label: actor.getFlag?.("flowstate", "reactiveOff") ? "Reactive: turn on" : "Reactive: turn off", detail: "Spend 1 RP to Weaken each damage instance that hits your Spells (automatic while on)", cost: "Free", action: "toggleReactive", icon: "fa-solid fa-shield-halved" });
+  // Deck Foci (Chime, Cards): draw a card, or mulligan your hand.
+  if (fociEngine.deckFoci(actor)) {
+    const hand = fociEngine.handOf(actor).map(id => spells.spellById(id)?.name ?? id);
+    const tenth = Math.floor((actor.system.energy?.max ?? 0) / 10);
+    magicRows.push({ label: "Deck: draw a card", detail: `Hand: ${hand.join(", ") || "(empty)"}`, cost: `⚡ ${tenth}`, action: "deckDraw", icon: "fa-solid fa-clone" });
+    magicRows.push({ label: "Deck: mulligan", detail: "Discard your whole hand and draw that many cards", cost: `⚡ ${2 * tenth}`, action: "deckMulligan", icon: "fa-solid fa-shuffle", disabled: !hand.length });
+  }
+  // Delayed spells (Restoration Arcana T4) waiting for their trigger.
+  for (const e of actions.spellEffects(actor, "delayed")) magicRows.push({ label: `Trigger: ${e.name.replace(/^Delayed /, "")}`, detail: `Waiting for: ${e.flags.flowstate.spellEffect.trigger}`, cost: "Free (already paid)", action: "fireDelayed", itemId: e.id, icon: "fa-solid fa-hourglass-end" });
+  // Grasp Arcana: Spirit Sense (T2) and Foci Master (T4).
+  const grasp = ab.treeTier(actor, "magic-grasp-arcana");
+  if (grasp >= 2) magicRows.push({ label: "Spirit Sense", detail: `Spot check for magical energy within ${grasp >= 4 ? 100 : 10} ft`, cost: "Check", action: "spiritSense", icon: "fa-solid fa-eye" });
+  if (grasp >= 4 && actor.items.some(i => i.type === "foci" && !i.system.attuned)) magicRows.push({ label: "Foci Master: swap Foci", detail: "Attune to another Foci you carry (no hour needed)", cost: "2 AP", action: "swapFoci", icon: "fa-solid fa-arrows-rotate" });
+  if (ab.treeTier(actor, "magic-build-arcana") >= 4 && actor.items.some(i => i.type === "shroud" && !i.system.attuned)) magicRows.push({ label: "Shroud Master: swap Shroud", detail: "Attune to another Shroud you carry (no hour needed)", cost: "2 AP", action: "swapShroud", icon: "fa-solid fa-arrows-rotate" });
   const cs = casting.castSummary(actor);
   if (cs.any) {
     const why = cs.usable ? "" : cs.ctx.options.map(o => `${o.label}: ${o.reason}`).join(" · ");
@@ -690,6 +712,14 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       dodge: FlowStateActorSheet.onDodge,
       recoverEnergy: FlowStateActorSheet.onRecoverEnergy,
       cast: FlowStateActorSheet.onCast,
+      spiritSense: FlowStateActorSheet.onSpiritSense,
+      swapFoci: FlowStateActorSheet.onSwapFoci,
+      swapShroud: FlowStateActorSheet.onSwapShroud,
+      fireDelayed: FlowStateActorSheet.onFireDelayed,
+      deckDraw: FlowStateActorSheet.onDeckDraw,
+      senseSwap: FlowStateActorSheet.onSenseSwap,
+      toggleReactive: FlowStateActorSheet.onToggleReactive,
+      deckMulligan: FlowStateActorSheet.onDeckMulligan,
       useHeld: FlowStateActorSheet.onUseHeld,
       cycleShieldOrder: FlowStateActorSheet.onCycleShieldOrder,
       posture: FlowStateActorSheet.onPosture,
@@ -904,6 +934,14 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   static onDodge() { return actions.rollDodge(this.document); }
   static onRecoverEnergy() { return actions.recoverEnergy(this.document); }
   static onCast() { return casting.castSpell(this.document); }
+  static onSpiritSense() { return casting.spiritSense(this.document); }
+  static onSwapFoci() { return casting.swapFoci(this.document); }
+  static onSenseSwap() { return conjureEngine.toggleSenseSwap(this.document); }
+  static async onToggleReactive() { const a = this.document; return a.getFlag("flowstate", "reactiveOff") ? a.unsetFlag("flowstate", "reactiveOff") : a.setFlag("flowstate", "reactiveOff", true); }
+  static onDeckDraw() { return fociEngine.drawCard(this.document); }
+  static onDeckMulligan() { return fociEngine.mulligan(this.document); }
+  static onSwapShroud() { return casting.swapShroud(this.document); }
+  static onFireDelayed(event, target) { return casting.fireDelayed(this.document, target.dataset.itemId ?? target.closest?.("[data-item-id]")?.dataset.itemId); }
   static onUseHeld(event, target) { return casting.useHeldSpell(this.document, target.dataset.itemId ?? target.closest?.("[data-item-id]")?.dataset.itemId); }
   /** Adjust (Protection Arcana T3): the holder chooses where their Shield sits in the order damage is absorbed. */
   static async onCycleShieldOrder(event, target) {
@@ -1141,6 +1179,7 @@ export class FlowStateFociSheet extends FlowStateItemSheet {
       scalingLabel: p.valid ? (p.form === "multi" ? `Lesser of Reach and Grasp (${statLabel(p.scalingStat)})` : statLabel(p.scalingStat)) : "",
       trLabel: p.valid ? (p.tr === null || p.tr === undefined ? "1 / 2 / 3 (Raw Casting)" : String(p.tr)) : "",
       isRing: sys.fociType === "ring",
+      hasOpal: p.valid && p.affixes?.includes("blackOpal") && p.affixPlus, opalChoices: { targeted: "Targeted", ranged: "Ranged" }, hasEmerald: p.valid && p.affixes?.includes("emerald"), hasColored: p.valid && p.affixes?.includes("coloredDiamond"),
       spellChoices: coreChoices(this.document.actor?.system?.trees),
       owned: !!this.document.actor,
       ...(p.valid ? affixContext(sys, p) : {})

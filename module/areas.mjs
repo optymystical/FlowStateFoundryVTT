@@ -224,7 +224,7 @@ export function barriersBetween(attackerToken, targetToken) {
     const f = d.flags?.flowstate;
     if (f?.spell !== "emplace" || !(f.health > 0)) continue;
     const tpl = { t: d.t, x: d.x, y: d.y, direction: d.direction, distance: d.distance, angle: d.angle, width: d.width };
-    if (barrierBlocks(tpl, { x: f.casterX ?? d.x, y: f.casterY ?? d.y }, a, t, g, f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null)) out.push({ id: d.id, sceneId: scene.id, hp: f.health, limit: f.limit ?? f.health });
+    if (barrierBlocks(tpl, { x: f.casterX ?? d.x, y: f.casterY ?? d.y }, a, t, g, f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null)) out.push({ id: d.id, sceneId: scene.id, hp: f.health, limit: f.limit ?? f.health, reactive: !!f.reactive, caster: f.casterUuid ?? null });
   }
   return out;
 }

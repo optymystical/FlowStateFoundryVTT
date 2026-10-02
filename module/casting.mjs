@@ -6,6 +6,7 @@
 import * as spells from "./spells.mjs";
 import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
+import * as areas from "./areas.mjs";
 import { STATS } from "./rules.mjs";
 import { tierOf } from "./skills.mjs";
 
@@ -63,7 +64,9 @@ function modRow(m, mods, v) {
   const extra = m.replicate
     ? `<select name="rep:${m.id}">${mods.filter(o => !o.replicate).map(o => `<option value="${o.id}" ${v[`rep:${m.id}`] === o.id ? "selected" : ""}>${esc(o.name)}</option>`).join("")}</select>`
     : m.min !== m.max ? `<input type="number" name="modT:${m.id}" value="${v[`modT:${m.id}`] ?? m.min}" min="${m.min}" max="${m.max}" step="1" data-tooltip="Threshold for this Mod">` : "";
-  const replaceBox = m.replacement ? `<label class="fs-cast-sub" data-tooltip="Replace the spell's base effect with this one (doubled in power), instead of adding it on"><input type="checkbox" name="replace:${m.id}" ${v[`replace:${m.id}`] ? "checked" : ""}> replace base effect (×2)</label>` : "";
+  // Only one Replacement Mod can replace the base effect: once one is ticked, the others lose their box.
+  const replaceTicked = mods.some(o => o.replacement && v[`replace:${o.id}`]);
+  const replaceBox = m.replacement && (!replaceTicked || v[`replace:${m.id}`]) ? `<label class="fs-cast-sub" data-tooltip="Replace the spell's base effect with this one (doubled in power), instead of adding it on"><input type="checkbox" name="replace:${m.id}" ${v[`replace:${m.id}`] ? "checked" : ""}> replace base effect (×2)</label>` : "";
   const damp = m.name === "Dampen" ? [0, 1, 2].map(i => `<select name="dampen:${i}" data-tooltip="Archetype for stack ${i + 1}">${["martial", "mental", "magic"].map(a => `<option value="${a}" ${(v[`dampen:${i}`] ?? ["martial", "mental", "magic"][i]) === a ? "selected" : ""}>${a}</option>`).join("")}</select>`).join("") : "";
   const guess = m.name === "Telegraph" ? `<input type="number" name="telegraph" value="${v.telegraph ?? ""}" placeholder="dodge guess" data-tooltip="Predict their dodge roll before the attack">` : "";
   const manual = fx.AUTOMATED_MODS.has(m.id) ? "" : ` · <em data-tooltip="Costs Threshold, but its effect isn't automated yet: the GM resolves it from the card">not automated</em>`;
@@ -72,7 +75,7 @@ function modRow(m, mods, v) {
 }
 
 /** The Universal / Core 1 / Core 2 Mod tabs for the chosen Cores. */
-function modsHTML(ctx, v, theory) {
+export function modsHTML(ctx, v, theory) {
   const coreIds = [v.core1, v.core2].filter(Boolean);
   const all = spells.applicableMods(ctx.trees, coreIds);
   const universal = all.filter(m => m.universal);
@@ -168,7 +171,17 @@ async function castDialog(actor, ctx) {
         const ok = el.querySelector('button[data-action="ok"]');
         if (ok) ok.disabled = !plan.ok;
       };
-      form.addEventListener("change", e => refresh(["core1", "core2"].includes(e.target?.name), e.target?.name));
+      const activeTab = () => form.querySelector(".fs-cast-tab.active")?.dataset.tab ?? "universal";
+      form.addEventListener("change", e => {
+        const name = e.target?.name ?? "";
+        if (name.startsWith("replace:")) {                       // the other Replacement boxes appear or vanish
+          const tab = activeTab();
+          v = valuesFromForm(form);
+          form.querySelector(".fs-cast-mods").innerHTML = modsHTML(ctx, v, tierOf(ctx.trees, "magic-theory"));
+          showTab(tab);
+          refresh(false);
+        } else refresh(["core1", "core2"].includes(name), name);
+      });
       form.addEventListener("click", e => { const t = e.target?.closest?.(".fs-cast-tab"); if (t && !t.disabled) showTab(t.dataset.tab); });
       showTab("universal");
       refresh(false);
@@ -223,12 +236,25 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
   const ids = plan.cores.map(c => c.id);
   const profile = fx.profileFor(ids);
   const mods = fx.modCounts(plan.applied);
-  const targets = weave ? weave.targetActors.map(a => ({ actor: a })) : [...(game.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
+  let targets = weave ? weave.targetActors.map(a => ({ actor: a })) : [...(game.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
   const meleeRange = !!targets[0]?.actor && inMeleeRange(actor, targets[0].actor);
   if (weave?.melee && !meleeRange) { ui.notifications.warn("A woven spell must be the same kind of attack: the target has to be within your personal melee range for a melee attack."); return null; }
   // Snipe (Magic Theory T4) doubles the range; past the normal range the initial attack roll has Disadvantage.
   const normalRange = plan.attack === "Targeted" ? 100 : 200;
   if (!weave && !plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, normalRange * (mods.snipe ? 2 : 1), `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack}${mods.snipe ? ", Snipe" : ""})`)) return null;
+  // Area spells (Gravity Field) and Emplace: choose a shape and place it before anything is spent; everything it touches is targeted.
+  const emplace = !!mods.emplace && !!profile?.shield;
+  const areaSpell = !weave && (!!mods["gravity field"] || emplace);
+  let placed;
+  if (areaSpell) {
+    const fociItem = plan.option?.fociId ? actor.items.get?.(plan.option.fociId) ?? actor.items.find(i => i.id === plan.option.fociId) : null;
+    const agate = fociItem?.system?.attuned && fociItem.system.profile?.affixes?.includes("agate") ? (fociItem.system.profile.affixPlus ? 2 : 1.5) : 1;
+    const aim = [...(game.user?.targets ?? [])][0];
+    placed = await areas.placeArea(actor, { title: emplace ? "Emplace" : "Gravity Field", scale: (mods.snipe ? 2 : 1) * agate, aim,
+      flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power } : {}) } });
+    if (placed === null) return null;                                    // cancelled: nothing is spent
+    if (placed && !emplace) targets = placed.actors.map(a => ({ actor: a }));
+  }
   const key = plan.usesRP ? "rp" : "ap";
   if (inCombat && plan.ap && actor.system[key].value < plan.ap) { ui.notifications.warn(`${actor.name} needs ${plan.ap} ${key.toUpperCase()} to cast this but has ${actor.system[key].value}.`); return null; }
   if (inCombat && plan.energy && actor.system.energy.value < plan.energy) { ui.notifications.warn(`${actor.name} needs ${plan.energy} Energy to cast this but has ${actor.system.energy.value}.`); return null; }
@@ -263,7 +289,8 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
     flags: { flowstate: { spell: { caster: actor.uuid, cores: ids, mods: plan.applied.map(a => a.mod.id), power: plan.power, threshold: plan.threshold, energy: plan.energy, ritual: plan.ritual, attack: plan.attack } } }
   });
   // Automated spells go on to the attack exchange (Rituals of attack spells just store their free casts).
-  if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave });
+  if (emplace) await areas.emplaceCard(actor, { health: 20 * plan.power, shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId });
+  else if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave });
   return plan;
 }
 
@@ -309,7 +336,7 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     label: profile.name, net: (pinpoint ? 1 : 0) + (melee ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
     damage: dice ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0,
     notes: [...notes, pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
-    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null }
+    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null }
   };
   const first = await performAttack(actor, attackOpts);
   // Duplicate (Magic Theory T5): cast once more for free, at any valid target.

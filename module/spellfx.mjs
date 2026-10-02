@@ -91,7 +91,7 @@ export const AUTOMATED_MODS = new Set([
   "magic-piercing:exploit", "magic-piercing:pierce", "magic-piercing:setup", "magic-piercing:weakpoint",
   "magic-crushing:crush", "magic-crushing:bash", "magic-crushing:beatdown", "magic-crushing:telegraph",
   "magic-gravity:burden", "magic-gravity:lighten", "magic-gravity:personal-repulsion", "magic-gravity:personal-well", "magic-gravity:hold", "magic-gravity:gravity-field",
-  "magic-protection-arcana:reflect", "magic-protection-arcana:adjust", "magic-protection-arcana:dampen",
+  "magic-protection-arcana:reflect", "magic-protection-arcana:adjust", "magic-protection-arcana:dampen", "magic-protection-arcana:emplace",
   "magic-theory:empower", "magic-theory:snipe", "magic-theory:duplicate"
 ]);
 

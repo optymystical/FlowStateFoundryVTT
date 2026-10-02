@@ -31,3 +31,7 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 ## Built (v0.26.0): the whole Magic T1 group
 - "Tier" = the group of trees a Magic Theory tier unlocks. T1 = Magic Theory, Slashing, Piercing, Crushing, Protection Arcana, Gravity, all their tiers.
 - Judgment calls: Replacement Mods have a "replace base effect (×2)" box (replacing drops Force, the Gravity part, and keeps a Combo partner's part); Hold's break-free is an attack-die roll against the held minimum; Reflect is a counter button, not automatic; Adjust = a per-Shield absorb-order setting plus an ally-help extension within 10 ft; Weaving only offers casting options whose normal AP equals the attack's; Duplicate asks for the second target; Emplace and the Gravity Field Ritual stay GM-resolved.
+
+## Built (v0.27.0): Area placement, Emplace, polish
+- Area spells choose a shape, drop a Measured Template on the caster, and the caster drags it into place and confirms (a modeless dialog, so the Templates tool stays usable). Placement happens before payment; cancelling spends nothing. Placement is the one part not covered by tests (no Foundry canvas here): the geometry and fallbacks are.
+- One Replacement Mod at a time (other boxes hidden). Reflect has a 200 ft check. Emplace leaves a template as the barrier; the GM tracks health/facing.

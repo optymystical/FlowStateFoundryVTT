@@ -202,6 +202,7 @@ export function planCast(ctx, v) {
 
   // Replacement Mods can replace the spell's base effect (doubled) or just add on. Dampen picks an Archetype per stack.
   for (const a of applied) if (a.mod.replacement) a.replace = !!v[`replace:${a.mod.id}`];
+  if (applied.filter(a => a.replace).length > 1) errors.push("Only one Replacement Mod can replace the spell's base effect.");
   const archetypes = new Set();
   let dampenN = 0;
   for (const a of applied.filter(x => x.mod.name === "Dampen")) {

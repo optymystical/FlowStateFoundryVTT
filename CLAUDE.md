@@ -44,6 +44,7 @@ Mental and Ancestries are not yet implemented.
 - `module/magic.mjs` — Foci/Shroud/Affix tables and profiles.
 - `module/spells.mjs` — pure spell framework: the Core/Mod catalog (parsed from `trees.mjs`), known spells, Combo Threshold, casting options, `planCast`, Threshold/Energy math.
 - `module/spellfx.mjs` — what each automated Core/Combo/Mod does (Tier 1 spells, Slashing/Piercing Mods); hooks live in `actions.mjs` (`spellHit`, `spellForce`, Shield soak, Bleed/Gash) and `casting.mjs` (`resolveSpell`).
+- `module/areas.mjs` — Area spells: shapes, pure geometry, template placement, Emplace card.
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
 - `module/data.mjs` — TypeDataModels (actor, weapon, armor, foci, shroud, gear, pile) and derived data.
 - `module/rules.mjs` — core rules math (stats, sizes, stacks, rolls, Force). `skills.mjs` + `trees.mjs` — skill trees

@@ -2,6 +2,7 @@ import * as rules from "./rules.mjs";
 import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStatePileData } from "./data.mjs";
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
+import * as areas from "./areas.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
@@ -112,6 +113,7 @@ class FlowStateCombat extends Combat {
       await actions.treesTurnStart(combatant.actor);
       // Spell effects this creature put on others end now (Shield, Slam's dodge penalty); Rituals' last until the Ritual ends.
       await actions.clearSpellEffects(combatant.actor);
+      await areas.clearAreas(combatant.actor);
       // Bleed (Slashing T2) hits at the start of the victim's turn.
       await actions.bleedTurnStart(combatant.actor);
     }
@@ -721,6 +723,7 @@ Hooks.on("deleteCombat", combat => {
   if (!game.user.isActiveGM) return;
   for (const c of combat.combatants) setTimeout(() => {
     actions.clearSpellEffects(c.actor, { all: true });
+    areas.clearAreas(c.actor, { all: true });
     actions.refillEnergy(c.actor); actions.clearStances(c.actor);
     if (c.actor?.getFlag("flowstate", "carefulLapsed")) c.actor.unsetFlag("flowstate", "carefulLapsed"); // Careful Steps is free again
   }, 0);

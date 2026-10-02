@@ -265,9 +265,25 @@ card = await hit("magic-piercing:stab", { [M("magic-piercing:weakpoint")]: true 
 ok2(/Stab/.test(text(card)), "A Stab with Weakpoint resolves");
 
 console.log("== Mods that aren't automated are flagged");
+hero.system.trees["magic-reach-arcana"] = 1;
 target(orc); seq = [25]; messages.length = 0;
+await cast("magic-slashing:cut", { [M("magic-reach-arcana:multicast")]: true });
+ok2(/Not automated yet[^.]*Multicast/.test(text(messages[0])), "A Mod from a later group costs Threshold, and the card says the GM resolves it");
+delete hero.system.trees["magic-reach-arcana"];
+
+console.log("== Emplace and one Replacement at a time");
+target(null); seq = []; messages.length = 0;
 await cast("magic-protection-arcana:shield", { [M("magic-protection-arcana:emplace")]: true });
-ok2(/Not automated yet[^.]*Emplace/.test(text(messages[0])), "Emplace costs Threshold, and the card says the GM resolves it");
+ok2(/one-way barrier/.test(text(messages.at(-1))) && /60 health/.test(text(messages.at(-1))), "Emplace puts up a one-way barrier card (20 × Power health)");
+const twoRep = S.planCast(C.castContext(hero), { ...baseVals, core1: "magic-gravity:force", [M("magic-gravity:burden")]: true, [M("magic-gravity:lighten")]: true, "replace:magic-gravity:burden": true, "replace:magic-gravity:lighten": true });
+ok2(!twoRep.ok && /Only one Replacement/.test(twoRep.errors.join(" ")), "Two Replacement Mods can't both replace the base effect");
+let dlgHtml = "";
+dialog = c => { dlgHtml = c; return { ...baseVals, core1: "magic-gravity:force", [M("magic-gravity:burden")]: true, [M("magic-gravity:lighten")]: true, "replace:magic-gravity:burden": true }; };
+hero.system.ap.value = 6; hero.system.energy.value = 150; target(null); await C.castSpell(hero);
+const fresh = C.modsHTML(C.castContext(hero), { core1: "magic-gravity:force" }, 5);
+ok2((fresh.match(/name="replace:/g) ?? []).length === 5, "The dialog offers a replace box on each Gravity Replacement Mod to start with");
+const ticked = C.modsHTML(C.castContext(hero), { core1: "magic-gravity:force", "replace:magic-gravity:burden": true }, 5);
+ok2((ticked.match(/name="replace:/g) ?? []).length === 1 && /replace:magic-gravity:burden/.test(ticked), "Once one is ticked, the other replace boxes are gone");
 
 console.log("== Magic Theory: Empower, Snipe, Duplicate");
 orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-slashing:cut", { [M("magic-theory:empower")]: true });
@@ -340,7 +356,8 @@ combat.combatant = { actor: hero };
 const gfBefore = messages.filter(m => m.flags?.flowstate?.attack).length;
 const orc2 = addEffects(mkActor("Orc2", { skillPoints: 30 }, {})); orc2.isOwner = true; combat.combatants.push({ actor: orc2 });
 game.user.targets = new Set([{ actor: orc, name: "Orc", document: {} }, { actor: orc2, name: "Orc2", document: {} }]);
-seq = [20, 20]; await cast("magic-gravity:force", { [M("magic-gravity:gravity-field")]: true });
+seq = [20, 20]; formulas.length = 0; await cast("magic-gravity:force", { [M("magic-gravity:gravity-field")]: true });
+ok2(formulas.filter(f => /d30/.test(f)).length === 1, "Gravity Field makes a single attack roll for the whole area");
 ok2(lastAtk().flags.flowstate.attack.targets.length === 2 && lastAtk().flags.flowstate.attack.opts.area, "Gravity Field: an Area attack on everything targeted");
 
 console.log("== Protection: Reflect, Dampen, Adjust");

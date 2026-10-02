@@ -1449,6 +1449,7 @@ async function startExchange(actor, opts, targets) {
   const entries = [];
   const sections = [];
 
+  let sharedRoll = null;
   for (const [index, target] of targets.entries()) {
     const prone = target.statuses.has("prone");
     // Psych Up: attacks against you have Advantage.
@@ -1482,8 +1483,11 @@ async function startExchange(actor, opts, targets) {
         spellNotes.push(`${unused} Exploit stack${unused === 1 ? "" : "s"} had no Advantage to use${back ? `: ${back} Energy refunded` : ""}`);
       }
     }
-    const atk = await evaluate(poolFormula(1, atkDie, atkNet));
-    rolls.push(atk);
+    // An Area spell makes one attack roll that every target in the area defends against.
+    const shared = opts.spell?.singleRoll && sharedRoll;
+    const atk = shared || await evaluate(poolFormula(1, atkDie, atkNet));
+    if (!shared) rolls.push(atk);
+    if (opts.spell?.singleRoll) { sharedRoll = atk; if (shared) spellNotes.push("Area spell: the single attack roll above"); }
     entries.push({ uuid: target.uuid, name: target.name, total: atk.total, net: atkNet, die: atkDie, snipe: opts.snipe ? Math.max(0, atkNet) : 0,
       autoDash: autoDash(target, opts) });
     // Parry is a stance now (turned on during your turn); here only the optional rolls remain.
@@ -5193,6 +5197,10 @@ export async function reflectCounter(damageMessage, casterUuid, amount) {
   const caster = await fromUuid(casterUuid), foe = await fromUuid(d.attacker);
   if (!caster?.isOwner) return ui.notifications.warn("You don't control that character.");
   if (!foe) return;
+  // The attacker has to be within 200 ft of the Shield (the creature wearing it).
+  const holder = await fromUuid(d.target);
+  const hTok = holder?.getActiveTokens?.()[0], fTok = foe.getActiveTokens?.()[0];
+  if (hTok && fTok && globalThis.canvas?.grid && tokenDistance(hTok, fTok) > 200) return ui.notifications.warn(`${foe.name} is more than 200 ft from the Shield.`);
   return performAttack(caster, {
     label: "Reflect", net: 0, melee: false, push: false, damage: String(amount), type: d.type ?? "physical", stacks: 0, physical: false, shots: 1,
     notes: [`The damage the Shield took (${amount}) goes back at ${foe.name}`], followups: [], targetActors: [foe], shroudCounterOf: key

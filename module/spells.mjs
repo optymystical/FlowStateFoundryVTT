@@ -49,7 +49,10 @@ export const spellById = id => CATALOG.find(s => s.id === id) ?? null;
 /** The Core Spells and Mods a character knows (tree unlocked and tier reached). */
 export function knownSpells(state = {}) {
   const known = CATALOG.filter(s => isAvailable(state, treeById(s.treeId)) && tierOf(state, s.treeId) >= s.tier);
-  return { cores: known.filter(s => s.kind === "core"), mods: known.filter(s => s.kind === "mod") };
+  // Minigun (Reach Arcana T5): Multicast gains Stacking.
+  const minigun = tierOf(state, "magic-reach-arcana") >= 5;
+  const mods = known.filter(s => s.kind === "mod").map(m => (minigun && m.id === "magic-reach-arcana:multicast" ? { ...m, stackable: true } : m));
+  return { cores: known.filter(s => s.kind === "core"), mods };
 }
 
 /** Mods that can be applied to a cast with these Cores: every Universal Mod plus the chosen schools' own. */
@@ -247,11 +250,16 @@ export function planCast(ctx, v) {
   const empower = applied.filter(a => a.mod.name === "Empower" || (a.replicates && spellById(a.replicates)?.name === "Empower")).length;
   const cost = castCost({ base, mods: applied, tr, skillPoints: ctx.skillPoints });
   const grossEnergy = Math.floor(cost.gross * ctx.skillPoints / 2);
+  // Lob needs an Area spell and Explode a Ranged one; Mold and the rest apply anywhere.
+  const areaSpell = applied.some(a => a.mod.name === "Gravity Field") || (applied.some(a => a.mod.name === "Emplace") && cores.some(c => c.id === "magic-protection-arcana:shield"));
+  const hasMod = n => applied.some(a => !a.free && a.mod.name === n);
+  if (hasMod("Lob") && !areaSpell) errors.push("Lob can only be added to a spell whose attack type is Area (Gravity Field, Emplace).");
   // A Combo is Targeted if either Core is (Arcanomancy keeps the other Core's type).
   const attack = !bt.ok ? null : cores.length === 1 ? cores[0].attack
     : cores.filter(c => c.treeId !== "magic-arcanomancy").some(c => c.attack === "Targeted") ? "Targeted" : "Ranged";
+  if (hasMod("Explode") && attack !== "Ranged") errors.push("Explode can only be added to a Ranged spell.");
   return {
-    ok: errors.length === 0, errors, option, cores, combo: cores.length === 2, base, applied, free, focusedCast, ritual, react,
+    ok: errors.length === 0, errors, option, cores, combo: cores.length === 2, base, applied, areaSpell, free, focusedCast, ritual, react,
     ap, usesRP: react && !ritual, tr, trParts, ...cost,
     energy: ritual || freeFrom ? 0 : cost.energy, freeFrom,
     ritualHours: ritual ? cost.gross : 0,

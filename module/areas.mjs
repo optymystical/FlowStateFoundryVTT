@@ -37,7 +37,7 @@ export function pointInArea(tpl, px, py, grid = { size: 100, distance: 5 }) {
   // ray: a rectangle along the direction
   const along = dx * Math.cos(rad) + dy * Math.sin(rad);
   const across = Math.abs(-dx * Math.sin(rad) + dy * Math.cos(rad));
-  return along >= 0 && along <= reach && across <= ((tpl.width || 5) * ft) / 2;
+  return along >= -1e-6 && along <= reach + 1e-6 && across <= ((tpl.width || 5) * ft) / 2 + 1e-6;
 }
 
 /** Tokens (anything with document x/y/width/height, in grid squares) touched by the area: any corner, edge midpoint or the centre inside it. */
@@ -55,7 +55,7 @@ export function tokensInArea(tpl, tokens, grid = { size: 100, distance: 5 }) {
  * Let the caster choose a shape, drop the template, drag it into place, and confirm. Returns
  * { actors, shape, templateId } (actors may include the caster), or null if cancelled, or undefined when there's no scene to place on.
  */
-export async function placeArea(actor, { title = "Area", scale = 1, aim = null, flags = {}, facing = false } = {}) {
+export async function placeArea(actor, { title = "Area", scale = 1, aim = null, flags = {}, facing = false, origin = null } = {}) {
   const scene = globalThis.canvas?.scene;
   const grid = globalThis.canvas?.grid;
   if (!scene || !grid) return undefined;
@@ -69,15 +69,16 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
   if (!pick) return null;
   // Start on the caster, pointing at the first target if there is one.
   const src = globalThis.canvas.tokens?.controlled?.find(t => t.actor?.uuid === actor.uuid) ?? actor.getActiveTokens?.()[0];
-  const x = src?.center?.x ?? 0, y = src?.center?.y ?? 0;
-  const direction = aim && src ? (Math.atan2(aim.center.y - y, aim.center.x - x) * 180) / Math.PI : 0;
+  // Lob / Explode: the area starts where the ranged part lands (the `origin` token), not on the caster.
+  const x = (origin ?? src)?.center?.x ?? 0, y = (origin ?? src)?.center?.y ?? 0;
+  const direction = aim && src && !origin ? (Math.atan2(aim.center.y - y, aim.center.x - x) * 180) / Math.PI : src && origin ? (Math.atan2(origin.center.y - src.center.y, origin.center.x - src.center.x) * 180) / Math.PI : 0;
   const data = { ...areaTemplate(pick, { x, y, direction, scale }), fillColor: game.user.color?.css ?? "#a050ff", borderColor: "#a050ff",
     flags: { flowstate: { areaOf: actor.uuid, casterX: x, casterY: y, ...flags } } };
   const [doc] = await scene.createEmbeddedDocuments("MeasuredTemplate", [data]);
   try { globalThis.canvas.templates?.activate?.(); } catch (err) { /* layer switch is a convenience only */ }
   const ok = await DialogV2.confirm({
     window: { title: `${title}: place the area` },
-    content: `<p>Drag the template into place (move it with the Templates tool; rotate it with the mouse wheel or by dragging its handle), then press <strong>Confirm</strong>. Everything it touches is targeted.</p>`,
+    content: `<p>Drag the template into place (move it with the Templates tool; rotate it with Ctrl + the middle mouse wheel, or by dragging its handle), then press <strong>Confirm</strong>. Everything it touches is targeted.</p>`,
     yes: { label: "Confirm" }, no: { label: "Cancel" }, rejectClose: false
   });
   const placed = scene.templates?.get?.(doc?.id) ?? doc;
@@ -223,7 +224,7 @@ export function barriersBetween(attackerToken, targetToken) {
     const f = d.flags?.flowstate;
     if (f?.spell !== "emplace" || !(f.health > 0)) continue;
     const tpl = { t: d.t, x: d.x, y: d.y, direction: d.direction, distance: d.distance, angle: d.angle, width: d.width };
-    if (barrierBlocks(tpl, { x: f.casterX ?? d.x, y: f.casterY ?? d.y }, a, t, g, f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null)) out.push({ id: d.id, sceneId: scene.id, hp: f.health });
+    if (barrierBlocks(tpl, { x: f.casterX ?? d.x, y: f.casterY ?? d.y }, a, t, g, f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null)) out.push({ id: d.id, sceneId: scene.id, hp: f.health, limit: f.limit ?? f.health });
   }
   return out;
 }
@@ -255,4 +256,78 @@ export async function flipBarrier(sceneId, templateId) {
   if (f.frontX !== undefined) await d.update({ "flags.flowstate.frontX": -f.frontX, "flags.flowstate.frontY": -f.frontY });
   const walls = scene.walls.filter(w => w.flags?.flowstate?.barrierOf === templateId);
   if (walls.length) await scene.updateEmbeddedDocuments("Wall", walls.map(w => ({ _id: w.id, dir: w.dir ? 3 - w.dir : w.dir })));
+}
+
+/* -------------------------------------------- */
+/*  Thrown creatures and barriers (Force Damage) */
+/* -------------------------------------------- */
+
+/**
+ * Plan a creature's flight (Force) along a unit direction through Emplace barriers and ordinary walls. Pure.
+ * A creature that hits a barrier takes 3 × the untraveled feet as Force damage and the barrier takes the same; each side only takes
+ * what the other has left to give. A barrier that survives stops it. One that breaks lets it carry on with the leftover distance
+ * (the feet the broken barrier "used up" are its remaining health ÷ 3).
+ * @param p.start,p.dir,p.feet   centre point (px), unit direction, distance (ft)
+ * @param p.barriers  [{ id, tpl, caster, front, hp }]  (only ones that block this direction are hit)
+ * @param p.wallAt    (a, b) => { x, y } | null   the first ordinary wall on the way (the Emplace walls are ignored by distance)
+ * @param p.creatureHp  HP the creature can still lose
+ * @returns { end, traveled, events: [{ kind: "barrier"|"wall", id?, untraveled, creature, barrier?, broke?, ft }] }
+ */
+export function planFlight({ start, dir, feet, barriers = [], wallAt = () => null, grid = { size: 100, distance: 5 }, creatureHp = Infinity }) {
+  const ppf = grid.size / grid.distance;
+  const events = [];
+  const done = new Set();
+  let pos = { ...start }, remaining = feet, traveled = 0, hp = creatureHp;
+  const stopShort = (p, ftBack) => ({ x: p.x - dir.x * ftBack * ppf, y: p.y - dir.y * ftBack * ppf });
+  for (let guard = 0; guard < 10 && remaining > 0; guard++) {
+    const end = { x: pos.x + dir.x * remaining * ppf, y: pos.y + dir.y * remaining * ppf };
+    // The nearest barrier on the path (sampled a quarter square at a time).
+    let hit = null;
+    for (const b of barriers) {
+      if (done.has(b.id)) continue;
+      if (!barrierBlocks(b.tpl, b.caster, pos, end, grid, b.front)) continue;
+      const steps = Math.max(1, Math.ceil(remaining * ppf / (grid.size / 4)));
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps, q = { x: pos.x + (end.x - pos.x) * t, y: pos.y + (end.y - pos.y) * t };
+        if (pointInArea(b.tpl, q.x, q.y, grid)) { const d = t * remaining; if (!hit || d < hit.d) hit = { b, d, q }; break; }
+      }
+    }
+    const w = wallAt(pos, end);
+    const wd = w ? Math.hypot(w.x - pos.x, w.y - pos.y) / ppf : null;
+    if (!hit && wd === null) { pos = end; traveled += remaining; remaining = 0; break; }
+    if (wd !== null && (!hit || wd < hit.d - 1.25)) {                      // an ordinary wall stops it first
+      const untraveled = remaining - wd;
+      events.push({ kind: "wall", untraveled, creature: Math.min(3 * Math.max(0, untraveled), Math.max(0, hp)), ft: wd });
+      pos = stopShort(w, grid.distance / 2); traveled += wd; remaining = 0; break;
+    }
+    const U = remaining - hit.d, D = 3 * Math.max(0, U);
+    const creature = Math.min(D, hit.b.hp, Math.max(0, hp));                // it takes what the barrier can give, and no more than it has
+    const barrier = Math.min(D, Math.max(0, hp));                            // the barrier takes what the creature can give
+    const broke = barrier >= hit.b.hp;
+    events.push({ kind: "barrier", id: hit.b.id, untraveled: U, creature, barrier: Math.min(barrier, hit.b.hp), broke, ft: hit.d, left: hit.b.hp - Math.min(barrier, hit.b.hp) });
+    done.add(hit.b.id);
+    hp -= creature;
+    traveled += hit.d;
+    if (!broke) { pos = stopShort(hit.q, grid.distance / 2); remaining = 0; break; }
+    // Broke through: carry on with the distance the barrier didn't use up.
+    remaining = Math.max(0, U - hit.b.hp / 3);
+    pos = { x: hit.q.x + dir.x * (grid.size / 4), y: hit.q.y + dir.y * (grid.size / 4) };
+  }
+  if (remaining > 0 && !events.length) traveled += remaining;
+  return { end: pos, traveled, events };
+}
+
+/** Every standing Emplace barrier on the scene, in the shape planFlight wants. */
+export function emplaceBarriers() {
+  const scene = globalThis.canvas?.scene;
+  if (!scene) return [];
+  const out = [];
+  for (const d of scene.templates ?? []) {
+    const f = d.flags?.flowstate;
+    if (f?.spell !== "emplace" || !(f.health > 0)) continue;
+    out.push({ id: d.id, sceneId: scene.id, hp: f.health, caster: { x: f.casterX ?? d.x, y: f.casterY ?? d.y },
+      front: f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null,
+      tpl: { t: d.t, x: d.x, y: d.y, direction: d.direction, distance: d.distance, angle: d.angle, width: d.width } });
+  }
+  return out;
 }

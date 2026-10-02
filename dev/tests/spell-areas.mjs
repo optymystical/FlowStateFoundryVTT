@@ -55,8 +55,44 @@ const domeSegs = A.wallSegments({ t: "circle", x: 0, y: 0, distance: 10, directi
 ok(domeSegs.every(sg => { const mx = (sg.c[0] + sg.c[2]) / 2, my = (sg.c[1] + sg.c[3]) / 2; return mx * sg.front.x + my * sg.front.y > 0; }), "Every dome segment faces outward");
 const dome = { t: "circle", x: 500, y: 500, direction: 0, distance: 10, angle: 360, width: 0 };
 ok(A.barrierBlocks(dome, { x: 500, y: 500 }, { x: 1200, y: 500 }, { x: 500, y: 500 }, grid) && !A.barrierBlocks(dome, { x: 500, y: 500 }, { x: 550, y: 500 }, { x: 500, y: 450 }, grid), "A radius works as a dome: it blocks attacks from outside at those inside");
-const oc = await actions.damageOutcome({ name: "T", uuid: "A.T", effects: [], items: [], statuses: new Set(), system: { armor: null, derived: { size: {} } }, getFlag: () => null, getActiveTokens: () => [] }, 50, "physical", { shroudCtx: { barriers: [{ id: "t1", sceneId: "s", hp: 30 }] } });
-ok(oc.toHp === 20 && oc.barriers[0].hp === 0 && oc.barriers[0].absorbed === 30, "The barrier absorbs up to its health (30 of 50), the rest gets through");
+const dummy = () => ({ name: "T", uuid: "A.T", effects: [], items: [], statuses: new Set(), system: { armor: null, derived: { size: {} } }, getFlag: () => null, getActiveTokens: () => [] });
+const bar = (hp, limit) => ({ shroudCtx: { barriers: [{ id: "t1", sceneId: "s", hp, limit }] } });
+let oc = await actions.damageOutcome(dummy(), 50, "physical", bar(100, 20));
+ok(oc.toHp === 30 && oc.barriers[0].absorbed === 20 && oc.barriers[0].hp === 80, "The barrier is an object: it absorbs up to its Limit (20) of each attack");
+oc = await actions.damageOutcome(dummy(), 50, "physical", { pierce: 10, ...bar(100, 20) });
+ok(oc.barriers[0].absorbed === 10 && oc.toHp === 40, "Pierce ignores part of its Limit");
+oc = await actions.damageOutcome(dummy(), 50, "physical", { halfLimit: true, ...bar(100, 20) });
+ok(oc.barriers[0].absorbed === 10, "Weakpoint halves its Limit");
+oc = await actions.damageOutcome(dummy(), 50, "physical", { bash: 25, ...bar(100, 20) });
+ok(oc.barriers[0].absorbed === 0 && oc.toHp === 50 + 20, "Bash breaks through a barrier with a Limit at or under it (and adds the Limit as damage)");
+oc = await actions.damageOutcome(dummy(), 50, "physical", { cleave: 15, ...bar(100, 20) });
+ok(oc.barriers[0].hp === 80 && oc.toHp === 45, "Cleave uses up its Limit first (15), then normal damage takes the rest (5): 20 off its health, 45 gets through");
+oc = await actions.damageOutcome(dummy(), 50, "physical", bar(8, 20));
+ok(oc.barriers[0].absorbed === 8 && oc.barriers[0].hp === 0 && oc.toHp === 42, "It can't absorb more than its remaining health, and breaks");
+oc = await actions.damageOutcome(dummy(), 50, "arcane", bar(100, 20));
+ok(oc.barriers[0].absorbed === 20, "A magical object blocks Arcane damage too");
+
+console.log("== Thrown through an Emplace barrier (Force Damage)");
+const flightWall = { t: "ray", x: 500, y: -500, direction: 90, distance: 30, angle: 0, width: 5 };
+const bwest = { x: -1, y: 0 };
+const mkBar = hp => ({ id: "b1", tpl: flightWall, caster: { x: 0, y: 0 }, front: bwest, hp });
+const fly = (o = {}) => A.planFlight({ start: { x: 0, y: 0 }, dir: { x: 1, y: 0 }, feet: 40, barriers: [mkBar(30)], grid, creatureHp: 432, ...o });
+let pf = fly();
+ok(pf.events.length === 1 && pf.events[0].kind === "barrier" && Math.abs(pf.events[0].untraveled - 17.5) < 1e-6, "It hits the barrier 22.5 ft in, with 17.5 ft untraveled");
+ok(pf.events[0].creature === 30 && pf.events[0].barrier === 30 && pf.events[0].broke, "A weak barrier (30 health): each takes 30 (all it has) and it breaks");
+ok(pf.end.x > 500 && Math.abs(pf.traveled - 30) < 1e-6, `…and the creature keeps going with the leftover (17.5 − 30 ÷ 3 = 7.5 ft): it travels ${pf.traveled} ft in all`);
+pf = fly({ barriers: [mkBar(200)] });
+ok(pf.events[0].creature === 52.5 && pf.events[0].barrier === 52.5 && !pf.events[0].broke && pf.events[0].left === 147.5 && pf.end.x < 450, "A strong barrier (200 health) holds: 3 × 17.5 = 52.5 Force each, and the creature stops in front of it");
+pf = fly({ creatureHp: 20 });
+ok(pf.events[0].creature === 20 && pf.events[0].barrier === 20 && !pf.events[0].broke, "Each side only takes what the other has left to give (a creature with 20 HP deals 20)");
+pf = fly({ start: { x: 800, y: 0 }, dir: { x: -1, y: 0 } });
+ok(pf.events.length === 0 && Math.abs(pf.traveled - 40) < 1e-6, "From the protected side the barrier lets it through");
+pf = fly({ wallAt: () => ({ x: 200, y: 0 }) });
+ok(pf.events[0].kind === "wall" && pf.events[0].creature === 90 && pf.events[0].untraveled === 30, "A real wall before the barrier stops it first (30 ft untraveled × 3)");
+pf = fly({ wallAt: () => ({ x: 450, y: 0 }) });
+ok(pf.events[0].kind === "barrier", "The barrier's own Wall doesn't count twice: the barrier collision wins a tie");
+pf = A.planFlight({ start: { x: 0, y: 0 }, dir: { x: 1, y: 0 }, feet: 80, barriers: [mkBar(30), { ...mkBar(20), id: "b2", tpl: { ...flightWall, x: 700 } }], grid, creatureHp: 432 });
+ok(pf.events.filter(e => e.kind === "barrier").length === 2 && pf.events.every(e => e.kind !== "barrier" || e.broke), "A creature with enough Force can break through two barriers in a row");
 
 console.log("== Adjust: a Shield holder within 10 ft can extend it");
 const mk = (name, x, y, shield) => {

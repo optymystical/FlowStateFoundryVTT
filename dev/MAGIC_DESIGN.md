@@ -35,3 +35,15 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 ## Built (v0.27.0): Area placement, Emplace, polish
 - Area spells choose a shape, drop a Measured Template on the caster, and the caster drags it into place and confirms (a modeless dialog, so the Templates tool stays usable). Placement happens before payment; cancelling spends nothing. Placement is the one part not covered by tests (no Foundry canvas here): the geometry and fallbacks are.
 - One Replacement Mod at a time (other boxes hidden). Reflect has a 200 ft check. Emplace leaves a template as the barrier; the GM tracks health/facing.
+
+## Built (v0.29.0): the whole Magic T2 group
+- `elemental.mjs` + `spellfx.mjs` profiles (effect grammar: stack / energy / extra / force / chain / dodgeDis / scorch, with `when` conditions), Stain variants and armor-held stacks in `rules.mjs`/`data.mjs`/`actions.mjs` (`giveStacks`, `endOfTurn`, `clearCondition`), held melee spells, Multicast/Lob/Explode/Mold in `casting.mjs`. Tests: `stains.mjs`, `spell-t2.mjs`.
+- Judgment calls: "that many" = the final damage (after Strengthened, before soak); stacks go on armor when armor absorbed the damage and none reached HP, and on armor first for no-damage spells; Flare sets are applied as separate instances (the card figures each independently); Electrify counts any damage you dealt that target this turn; Charge counts targets hit before this one; Lightning Rod and Charge only matter inside a chain; Discharge is a confirm prompt; chains are button-driven (you pick the next target); Mold's half-cover is GM-adjudicated (no cover system); Emplace is an object with Limit = health ÷ 5.
+
+## Rulings (v0.29.1)
+- A spell object with no stated Limit has Limit = its health (Shield and Emplace). Electrify only counts damage Crackle or its Combos did. Mold's half-cover: revisit when a cover effect is designed.
+
+## Built (v0.29.2): Flight through Emplace barriers
+
+- `areas.planFlight` (pure) plans a thrown creature's path through barriers and ordinary walls: 3 × untraveled feet to both sides, each capped by what the other has left; a surviving barrier stops the creature, a broken one lets it continue with `untraveled − barrierHP ÷ 3` feet. `actions.flyThrown` applies it (creature damage via `damageOutcome`, barrier health via `setBarrierHealth` / GM relay). A barrier between a thrower and the aimed target stops or slows the throw before the collision.
+- Judgment calls: Force damage to a barrier ignores its Limit (it is Force, not an attack); an ordinary wall earlier on the path (more than 1.25 ft sooner) wins over a barrier, a tie goes to the barrier; barriers are sampled a quarter square at a time. Untested in real Foundry (token movement and Wall collision).

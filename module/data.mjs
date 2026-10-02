@@ -36,7 +36,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         ignite: int(0, { min: 0 }),
         stain: int(0, { min: 0 }),
         slow: int(0, { min: 0 }),
-        haste: int(0, { min: 0 })
+        haste: int(0, { min: 0 }),
+        solid: int(0, { min: 0 }), searing: int(0, { min: 0 }), frozen: int(0, { min: 0 }), electric: int(0, { min: 0 })   // Stain variants (Magic)
       }),
       lift: int(0, { min: 0 }),
       magical: new f.BooleanField({ initial: false }),      // fully Magical: not Weakened by Arcane
@@ -209,6 +210,8 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
       grade: int(1, { min: 1 }),
       equipped: new f.BooleanField({ initial: false }),
       wear: int(0, { min: 0 }),
+      // Ignite and Stain stacks "on whatever is damaged" can land on the armor itself.
+      conditions: new f.SchemaField({ ignite: int(0, { min: 0 }), stain: int(0, { min: 0 }), solid: int(0, { min: 0 }), searing: int(0, { min: 0 }), frozen: int(0, { min: 0 }), electric: int(0, { min: 0 }) }),
       description: new f.HTMLField({ initial: "" })
     };
   }

@@ -187,3 +187,52 @@ export function deriveCharacter({ stats, skillPoints, size, hpLost = 0 }) {
     size: SIZES[clampSize(size)]
   };
 }
+
+/* -------------------------------------------- */
+/*  Ignite and the Stain variants               */
+/* -------------------------------------------- */
+
+/** Stain variants: normal, Solid (6 AP to remove, separately), Searing (Ignite + Stain), Frozen (6 AP, drains Energy), Electric (can't be removed). */
+export const STAIN_VARIANTS = {
+  stain: { label: "Stain", ap: 3 }, solid: { label: "Solid Stain", ap: 6 }, searing: { label: "Searing Stain", ap: 3 },
+  frozen: { label: "Frozen Stain", ap: 6 }, electric: { label: "Electric Stain", ap: null }
+};
+const SPECIAL_STAINS = ["searing", "frozen", "electric"];
+export const CONDITION_KEYS = ["ignite", ...Object.keys(STAIN_VARIANTS)];
+
+/** Ignite counts Searing Stains too ("both Ignite and Stain stacks for all purposes"). */
+export const igniteTotal = c => (c?.ignite ?? 0) + (c?.searing ?? 0);
+/** Every kind of Stain stack. */
+export const stainTotal = c => Object.keys(STAIN_VARIANTS).reduce((n, k) => n + (c?.[k] ?? 0), 0);
+
+/**
+ * The conditions after adding stacks (a flat { key: value } update). Searing, Frozen and Electric Stains override the other Stain types.
+ * `c` = current { ignite, stain, solid, searing, frozen, electric }.
+ */
+export function addStacks(c, kind, n) {
+  const out = {};
+  const amount = Math.max(0, Math.floor(n));
+  if (!amount) return out;
+  if (kind === "ignite") return { ignite: (c?.ignite ?? 0) + amount };
+  if (SPECIAL_STAINS.includes(kind)) {
+    for (const k of Object.keys(STAIN_VARIANTS)) out[k] = k === kind ? (c?.[k] ?? 0) + amount : 0;
+    return out;
+  }
+  return { [kind]: (c?.[kind] ?? 0) + amount };
+}
+
+/** Freeze every Stain the creature has into Frozen Stains (Cold + Acid), adding `extra` new stacks. */
+export function freezeStains(c, extra = 0) {
+  const total = stainTotal(c) + Math.max(0, Math.floor(extra));
+  return Object.fromEntries(Object.keys(STAIN_VARIANTS).map(k => [k, k === "frozen" ? total : 0]));
+}
+
+/** Damage and Energy loss from a set of conditions at the end of the creature's turn. */
+export function tickAmounts(c) {
+  return {
+    heat: (c?.ignite ?? 0) + (c?.searing ?? 0),
+    acid: (c?.stain ?? 0) + (c?.solid ?? 0) + (c?.searing ?? 0) + (c?.frozen ?? 0),
+    radiation: c?.electric ?? 0,
+    energy: c?.frozen ?? 0
+  };
+}

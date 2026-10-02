@@ -3,6 +3,7 @@ import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateAr
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import * as areas from "./areas.mjs";
+import "./elemental.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
@@ -103,7 +104,8 @@ class FlowStateCombat extends Combat {
     if (combatant.actor) {
       // AP/RP refresh, and Energy regained equal to 2 AP of Recover Energy.
       const a = combatant.actor, e = a.system.energy;
-      const regain = 2 * (a.system.derived?.energyRecover ?? 0);
+      let regain = 2 * (a.system.derived?.energyRecover ?? 0);
+      if (regain) regain = await actions.energyRestoreAdjust(a, regain);                 // Freeze (Cold T4)
       await a.update({ "system.ap.value": 6, "system.rp.value": 6, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
       // Psych Up / Calm Down last until the start of your next turn.
       await actions.clearStances(combatant.actor);
@@ -376,6 +378,8 @@ function decorateExchange(message, html) {
       }
     }
     if (row.classList.contains("fs-reflect-row") && game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.shroudCounterOf === `${message.id}:reflect:${row.dataset.owner}`)) row.innerHTML = `<div class="fs-waiting">Reflected.</div>`;
+    if (row.classList.contains("fs-chain-row") && game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.shroudCounterOf === `${message.id}:chain`)) row.innerHTML = `<div class="fs-waiting">Chained.</div>`;
+    if (row.classList.contains("fs-electric-row") && game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.shroudCounterOf === `${message.id}:electric`)) row.innerHTML = `<div class="fs-waiting">Tried.</div>`;
     if (row.classList.contains("fs-bounce-row") && game.messages.find(m => m.getFlag("flowstate", "attack")?.opts?.bounceOf === message.id)) row.innerHTML = `<div class="fs-waiting">Bounced.</div>`;
     if (row.classList.contains("fs-turn-start-row")) {
       const sc = message.getFlag("flowstate", "startCard");
@@ -984,6 +988,17 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   }
   for (const btn of html.querySelectorAll(".fs-shroud-counter")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.shroudCounter(message, btn.dataset.kind, Number(btn.dataset.amount)); });
+  }
+  for (const btn of html.querySelectorAll(".fs-multicast")) {
+    const mc = message.getFlag("flowstate", "multicast");
+    if (mc && mc.remaining <= 0) { btn.replaceWith(Object.assign(document.createElement("div"), { className: "fs-waiting", textContent: "Multicast used up." })); continue; }
+    btn.addEventListener("click", event => { event.preventDefault(); import("./casting.mjs").then(c => c.multicast(message)); });
+  }
+  for (const btn of html.querySelectorAll(".fs-chain")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.chainNext(message); });
+  }
+  for (const btn of html.querySelectorAll(".fs-electric-transfer")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.electricTransfer(message); });
   }
   for (const btn of html.querySelectorAll(".fs-flip-wall")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.requestGM("flipBarrier", { sceneId: btn.dataset.scene, templateId: btn.dataset.template }); });

@@ -322,7 +322,7 @@ export function weaponRows(actor) {
       damageType: p.valid ? DAMAGE_TYPES[p.damageType] : "",
       needsReload: p.valid && p.ranged && !i.system.loaded,
       canReload: p.valid && p.ranged,
-      roundsText: p.valid && p.ranged ? `${i.system.rounds ?? 0} loaded · +${i.system.magazine ?? 1} per reload` : "",
+      roundsText: p.valid && p.ranged ? `${i.system.rounds ?? 0}/${i.system.magazine ?? 1} loaded` : "",
       typesText: (i.system.types?.length ?? 0) > 1 ? i.system.types.map(k => WEAPON_TYPES[k]?.label ?? k).join("/") : "",
       canTwoHand: p.valid && !fist
     };
@@ -398,7 +398,7 @@ function actionGroups(actor, weapons, stats) {
       detail: `${w.formula} ${w.damageType}${w.unarmed ? " (Light / Heavy)" : ""}`,
       cost: w.unarmed ? "2 / 3 AP" : `${w.profile.ap} AP`
     });
-    if (w.canReload) combat.push({ label: `Reload ${w.name}`, detail: `Adds ${w.system.magazine ?? 1} shots (${w.system.rounds ?? 0} loaded, kept)${actions.ammoRequired() ? ` · ${actions.ammoCount(actor, w.system.ammoType)} ${actions.ammoLabel(w.system.ammoType)} left` : ""}`,
+    if (w.canReload) combat.push({ label: `Reload ${w.name}`, detail: `Tops up to ${w.system.magazine ?? 1} (${w.system.rounds ?? 0} loaded)${actions.ammoRequired() ? ` · ${actions.ammoCount(actor, w.system.ammoType)} ${actions.ammoLabel(w.system.ammoType)} left` : ""}`,
       cost: `${w.profile.reloadRP} RP`, action: "reload", itemId: w.id, icon: "fa-solid fa-rotate" });
   }
   combat.push(

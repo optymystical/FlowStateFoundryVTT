@@ -64,11 +64,11 @@ await actions.reloadWeapon(shooter, gun);
 ok2(gun.system.rounds === 2 && box.system.quantity === 0 && shooter.system.rp.value === 5, "reload loads what's left (2 of 3) from matching ammo only");
 box.system.quantity = 10; refill(shooter);
 await actions.reloadWeapon(shooter, gun);
-ok2(gun.system.rounds === 5 && box.system.quantity === 7, "reload any time: adds a full 3 shots and keeps the 2 still loaded (5)");
+ok2(gun.system.rounds === 3 && box.system.quantity === 9, "reload any time: a partly loaded weapon only takes what it needs (1 ammo for the missing shot), never past its maximum (3)");
 game.user.targets = new Set([{ actor: foe }]); dialog = () => ({ net: 0, stacks: 0, mode: "r1" }); seq = [20];
 await actions.rollWeaponAttack(shooter, gun);
-ok2(gun.system.rounds === 4 && gun.system.loaded, "each attack uses one loaded shot");
-ok2(actions.ammoCount(shooter, "assault") === 7 && actions.ammoCount(shooter, "longshot") === 50, "ammo counted per type");
+ok2(gun.system.rounds === 2 && gun.system.loaded, "each attack uses one loaded shot");
+ok2(actions.ammoCount(shooter, "assault") === 9 && actions.ammoCount(shooter, "longshot") === 50, "ammo counted per type");
 
 console.log("== Multi-type attack");
 const gb = mkWeapon(shooter, "Gunblade", { weaponType: "bladed", extraTypes: ["assault"], weight: "light", material: "hardwood", grade: 3, rounds: 1, magazine: 1, equipped: true });

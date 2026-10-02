@@ -129,7 +129,7 @@ export function movementPenalized(actor) {
 }
 
 /** Exhaustion (Ch7 Rest) adds a Disadvantage stack. */
-const exhaustionNet = actor => (actor.system.exhausted ? -1 : 0);
+export const exhaustionNet = actor => (actor.system.exhausted ? -1 : 0);
 
 function netLabel(net) {
   if (net > 0) return `${net}× Advantage`;
@@ -239,7 +239,7 @@ export async function rollStatCheck(actor, key) {
   if (!opts) return;
 
   const armorDis = PHYSICAL_STATS.has(key) ? actor.system.penalties.physicalDis : 0;
-  const net = opts.net + exhaustionNet(actor) - armorDis + seeingRedNet(actor) + disruptNet(actor);
+  const net = opts.net + exhaustionNet(actor) - armorDis + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat");
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, stat.die, net));
   const floored = opts.applyMin && roll.total < stat.min;
@@ -253,6 +253,7 @@ export async function rollStatCheck(actor, key) {
       <div class="fs-result">Result: <strong>${result}</strong></div>
       ${notes ? `<div class="fs-notes">${notes}</div>` : ""}`
   });
+  await hexRoll(actor, "stat");
 }
 
 /** Ch7 Non Stat Checks: d100 (Stealth, Perception, Persuasion, Deception, counter rolls). */
@@ -279,7 +280,7 @@ export async function rollD100(actor, label, { apCost = 0 } = {}) {
       }
     }
   }
-  const net = opts.net + exhaustionNet(actor) - stealthDis + seeingRedNet(actor) + socialNet + disruptNet(actor);
+  const net = opts.net + exhaustionNet(actor) - stealthDis + seeingRedNet(actor) + socialNet + disruptNet(actor) + charmNet(actor, "noncombat");
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, 100, net));
   const notes = [netLabel(net), stealthDis ? "armor penalty" : "", seeingRedNet(actor) ? "Seeing Red" : "", ...social].filter(Boolean).join(" · ");
@@ -288,13 +289,14 @@ export async function rollD100(actor, label, { apCost = 0 } = {}) {
     rolls: [roll],
     body: `${await rollBlock(roll, "Roll")}${notes ? `<div class="fs-notes">${notes}</div>` : ""}`
   });
+  await hexRoll(actor, "noncombat");
 }
 
 /** Ch8 Attack roll as a plain check: d(SP), no AP, no target resolution. */
 export async function rollAttackCheck(actor) {
   const opts = await optionsDialog("Attack Roll", netField(), "Roll", { skipIfEmpty: true });
   if (!opts) return;
-  const net = opts.net + exhaustionNet(actor) - actor.system.penalties.physicalDis + attackStanceNet(actor) + limberNet(actor);
+  const net = opts.net + exhaustionNet(actor) - actor.system.penalties.physicalDis + attackStanceNet(actor) + limberNet(actor) + charmNet(actor, "attack");
   await consumeLimber(actor);
   const size = actor.system.derived.attackDie;
   const roll = await evaluate(poolFormula(1, size, net));
@@ -303,13 +305,14 @@ export async function rollAttackCheck(actor) {
     rolls: [roll],
     body: `${await rollBlock(roll, "Attack")}${net ? `<div class="fs-notes">${netLabel(net)}</div>` : ""}`
   });
+  await hexRoll(actor, "attack");
 }
 
 /** Ch8 Dodge: 2d(SP/2); Advantage adds a die and keeps the best two. */
 export async function rollDodge(actor) {
   const opts = await optionsDialog("Dodge", netField(), "Roll", { skipIfEmpty: true });
   if (!opts) return;
-  const net = opts.net + exhaustionNet(actor) + (actor.statuses.has("prone") ? -1 : 0) - actor.system.penalties.physicalDis + (calmed(actor) ? 1 : 0) + limberNet(actor) + seeingRedNet(actor) + unfetteredNet(actor) + disruptNet(actor) + dodgeDisNet(actor);
+  const net = opts.net + exhaustionNet(actor) + (actor.statuses.has("prone") ? -1 : 0) - actor.system.penalties.physicalDis + (calmed(actor) ? 1 : 0) + limberNet(actor) + seeingRedNet(actor) + unfetteredNet(actor) + disruptNet(actor) + dodgeDisNet(actor) + charmNet(actor, "dodge");
   await consumeLimber(actor); await consumeDisrupt(actor);
   const size = actor.system.derived.dodgeDie;
   const roll = await evaluate(poolFormula(2, size, net));
@@ -318,6 +321,7 @@ export async function rollDodge(actor) {
     rolls: [roll],
     body: `${await rollBlock(roll, "Dodge")}${net ? `<div class="fs-notes">${netLabel(net)}</div>` : ""}`
   });
+  await hexRoll(actor, "dodge");
 }
 
 /* -------------------------------------------- */
@@ -1168,9 +1172,9 @@ async function pileFolder() {
 }
 
 export const GM_ACTIONS = {
-  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy }) {
+  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex }) {
     const actor = await fromUuid(target);
-    if (actor) await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy });
+    if (actor) await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex });
   },
   async updateActor({ uuid, data }) {
     const actor = await fromUuid(uuid);
@@ -1459,7 +1463,7 @@ async function startExchange(actor, opts, targets) {
     // Psych Up: attacks against you have Advantage.
     // In a Barrel (Longshot T4): Advantage against a target with any movement penalty.
     const barrel = opts.inABarrel && movementPenalized(target) ? 1 : 0;
-    let atkNet = baseNet + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts)
+    let atkNet = baseNet + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts) + charmNet(actor, "attack")
       - (autoDash(target, opts) ? 1 : 0);
     const spellNotes = [];
     // Personal Repulsion / Personal Well (Gravity T3): attacks with a small Scaling Stat get Disadvantage / Advantage.
@@ -1473,6 +1477,10 @@ async function startExchange(actor, opts, targets) {
       atkNet += setup.count; spellNotes.push(`Setup: +${setup.count} Advantage`);
       await setActorFlag(actor, "setup", null);
     }
+    // Foresight (Grasp Arcana T1): Advantage if the target has Disadvantage on their dodge. Convince (Charm T3): Advantage on a target already Charmed by you.
+    const sm = opts.spell?.mods ?? {};
+    if (sm.foresight && dodgeNetKnown(target) < 0) { atkNet += 1; spellNotes.push("Foresight: Advantage (they have Disadvantage on dodge rolls)"); }
+    if (sm.convince && aff?.charmedBy(target, actor.uuid)) { atkNet += 1; spellNotes.push("Convince: Advantage (already Charmed by you)"); }
     // Sticky (Acid T4): Advantage against a target with Stain stacks equal to or above their Pain Threshold.
     if (opts.spell?.mods?.sticky && stainTotal(target.system.conditions ?? {}) >= (target.system.hp?.pain ?? Infinity)) { atkNet += 1; spellNotes.push("Sticky: Advantage (Stained)"); }
     // Exploit (Piercing T2): each stack consumes one Advantage for +4 die size (× Spell Power); stacks with no Advantage left are refunded.
@@ -1744,11 +1752,11 @@ export async function defend(message, index, choice) {
   const armorDis = t.penalties.physicalDis;
   const shiftAdv = findShifts(message.id, index).filter(f => f.mode === "adv").length;
   const net = opts.net + (o.stealth === "half" ? -1 : 0) + (prone ? -1 : 0) + (t.exhausted ? -1 : 0) - armorDis + (calmed(target) ? 1 : 0)
-    + limberNet(target) + shiftAdv + leadBlindNet(o) + boardNet + seeingRedNet(target) + (o.dodgeNet ?? 0) + pointBlankNet - (entry.snipe ?? 0) + disruptNet(target) + unfetteredNet(target) + dodgeDisNet(target);
+    + limberNet(target) + shiftAdv + leadBlindNet(o) + boardNet + seeingRedNet(target) + (o.dodgeNet ?? 0) + pointBlankNet - (entry.snipe ?? 0) + disruptNet(target) + unfetteredNet(target) + dodgeDisNet(target) + charmNet(target, "dodge");
   const reasons = [netLabel(net), o.stealth === "half" ? "attacker in half stealth" : "", prone ? "prone" : "", t.exhausted ? "exhausted" : "", armorDis ? "armor penalty" : "",
     calmed(target) ? "Calm Down" : "", limberNet(target) ? "Limber" : "", shiftAdv ? "Shift" : "", o.leadBlind ? "Lead Blindness" : "",
     boardNet ? "Sword and Board" : "", seeingRedNet(target) ? "Seeing Red" : "", o.dodgeNet ? "Shank" : "", pointBlankNet ? "Point Blank" : "", entry.snipe ? `Snipe Hunt (−${entry.snipe})` : "",
-    disruptNet(target) ? "Disrupted" : "", unfetteredNet(target) ? "Unfettered" : "", dodgeDisNet(target) ? "spell: dodge Disadvantage" : ""].filter(Boolean);
+    disruptNet(target) ? "Disrupted" : "", unfetteredNet(target) ? "Unfettered" : "", dodgeDisNet(target) ? "spell: dodge Disadvantage" : "", charmNet(target, "dodge") ? "Charm/Hex: dodge Disadvantage" : ""].filter(Boolean);
   await consumeDisrupt(target);
   await consumeLimber(target);
   const dodge = await evaluate(poolFormula(2, t.derived.dodgeDie, net));
@@ -1874,7 +1882,7 @@ async function perfectRoll(message, index, target, entry, o, { kind, blocker = n
   const item = items.find(i => i.id === opts.item) ?? items[0];
   if (findPerfectFails(message.id, index).includes(item.uuid)) return ui.notifications.info(`${item.name} already missed its ${label}.`);
   const w = who.system;
-  const net = opts.net + (kind === "perfectParry" ? 1 : 0) + exhaustionNet(who) - w.penalties.physicalDis + attackStanceNet(who) + limberNet(who) + leadBlindNet(o) + disruptNet(who);
+  const net = opts.net + (kind === "perfectParry" ? 1 : 0) + exhaustionNet(who) - w.penalties.physicalDis + attackStanceNet(who) + limberNet(who) + leadBlindNet(o) + disruptNet(who) + charmNet(who, "attack");
   await consumeLimber(who); await consumeDisrupt(who);
   const roll = await evaluate(poolFormula(1, w.derived.attackDie, net));
   const success = roll.total >= entry.total;
@@ -3229,14 +3237,28 @@ const barriersFor = (attacker, target) => (globalThis.canvas?.scene ? areas.barr
 let elem = null;
 export const registerElemental = h => { elem = h; };
 export const chainNext = (message, preset) => elem?.chainNext(message, preset);
+/** Tier 3 (Poison, Charm, Hex) lives in afflictions.mjs, which registers its hooks here. */
+let aff = null;
+export const registerAfflictions = h => { aff = h; };
+/** Disadvantage stacks (as a negative number) a Charm or Hex puts on this creature's roll of a type (attack, dodge, stat, noncombat). */
+const charmNet = (actor, type) => aff?.charmNet(actor, type) ?? 0;
+/** A Hex that triggers on a roll the creature just made. */
+const hexRoll = (actor, type) => aff?.hexTrigger(actor, "roll", { roll: type });
+export const afflictTurnStart = actor => aff?.turnStart(actor);
+export const afflictCasterTurn = actor => aff?.casterTurn(actor);
+export const hexMove = actor => (inActiveCombat(actor) ? aff?.hexTrigger(actor, "move") : null);
+export const afflictAct = (message, i) => aff?.act(message, i);
 const dodgeDisNet = actor => (spellEffects(actor, "dodgeDis").length ? -1 : 0);
+/** The Advantage/Disadvantage this creature's dodge rolls are known to carry (for Foresight). */
+const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.has("prone") ? -1 : 0) - (actor.system?.penalties?.physicalDis ?? 0) + seeingRedNet(actor) + disruptNet(actor)
+  + dodgeDisNet(actor) + charmNet(actor, "dodge") + unfetteredNet(actor) + limberNet(actor) + (calmed(actor) ? 1 : 0);
 
 /** Weaving (Magic Theory T3): casting.mjs registers this so the weapon attack dialog can offer a spell. */
 let weaveHook = null;
 export const setWeaveHook = hook => { weaveHook = hook; };
 
 /** Update or delete an Active Effect that may belong to someone else (through the GM). */
-async function changeEffect(effect, data) {
+export async function changeEffect(effect, data) {
   if (effect.isOwner !== false && effect.parent?.isOwner !== false) return data ? effect.update(data) : effect.delete();
   return requestGM("changeEffect", { uuid: effect.uuid, data });
 }
@@ -3291,6 +3313,9 @@ export async function clearSpellEffects(caster, { all = false } = {}) {
   for (const a of game.actors ?? []) for (const e of a.effects ?? []) if (mine(e)) docs.push(e);
   for (const t of globalThis.canvas?.tokens?.placeables ?? []) if (!t.document.actorLink) for (const e of t.actor?.effects ?? []) if (mine(e)) docs.push(e);
   for (const e of docs) {
+    // A Combo's lingering effect (Poison + Charm / Hex) can last extra turns of the caster's.
+    const left = e.flags.flowstate.spellEffect.turnsLeft;
+    if (!all && left > 1) { await e.update({ "flags.flowstate.spellEffect.turnsLeft": left - 1 }); continue; }
     // A magical Hold lets go with the spell.
     if (e.flags.flowstate.spellEffect.kind === "hold" && e.parent?.getFlag?.("flowstate", "grappledBy") === caster.uuid) await setGrapple(e.parent, null);
     await e.delete();
@@ -3402,6 +3427,13 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
     rolls.push(...eh.rolls);
     chain = eh.chain ?? null;
   }
+  // Tier 3: Poison, Charm and Hex.
+  if (aff && profile?.afflict) {
+    const ah = await aff.onHit({ attacker, target, o, result, entry, profile, dodgeTotal });
+    if (ah.html) html.push(ah.html);
+    rolls.push(...ah.rolls);
+    if (ah.push) push = ah.push;
+  }
   return { html: html.join(""), rolls, push, chain: chain ? { ...chain, affected: o.spell?.chain?.affected ?? [target.uuid], depth: o.spell?.chain?.depth ?? 0, primary: o.spell?.chain?.primary ?? target.uuid } : null };
 }
 
@@ -3435,7 +3467,7 @@ async function spellDamageFacts(profile, o, attacker, target, defense, dmgOpts) 
 }
 
 /** Knockback / Push buttons: the Force info is stored on the card that offers them. */
-function knockbackRow(ownerUuid, feet, label = "Knockback") {
+export function knockbackRow(ownerUuid, feet, label = "Knockback") {
   return `<div class="fs-brawl-row fs-knockback-row" data-role="attacker" data-owner="${ownerUuid}">
     <button type="button" class="fs-knockback" data-tooltip="Choose a direction (or down, into the ground)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ${label} (${feet} ft)</button></div>`;
 }
@@ -4239,6 +4271,8 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
         <button type="button" class="fs-roll-damage"><i class="fa-solid fa-burst"></i> Roll damage (${esc(attacker?.name ?? "attacker")})</button></div>`;
     }
   }
+  // Hexes (Witchery) that trigger on the attack roll or the dodge/parry: Roll and Fail/Success.
+  if (aff) await aff.afterDefense({ attacker, target, result, dodgeRoll });
   // Spells: Force, shields, and die-size penalties that don't wait for damage.
   let spellRolls = [], defenseChain = null;
   if (result.hit && o.spell) {
@@ -4305,6 +4339,8 @@ function targetStacks(attacker, o, target, result, extra = 0, ctx = {}) {
   // Slip Off (Balanced T1) and Harden (Heavy T4 / Titanic T3) Weaken attacks against an active Parry/Brace.
   for (const w of ctx.weaken ?? []) { stacks -= 1; parts.push(`−1 ${w}`); }
   if (ctx.distracted) { stacks -= 1; parts.push("−1 Distracting Fire"); }
+  const charmed = aff?.charmWeakened(attacker) ?? 0;
+  if (charmed) { stacks -= charmed; parts.push(`−${charmed} Charm/Hex (damage rolls)`); }
   if (ctx.retort) { stacks -= 1; parts.push("−1 Retort (Shroud)"); }
   // Imposing Presence (Constitution T5): attacks from within your personal melee range that are already Weakened are Weakened again.
   if (stacks < 0 && ab.constitution(target, 5)) {
@@ -4328,6 +4364,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (!attack || !attacker || !target) return ui.notifications.warn("This attack can no longer be resolved.");
   if (!auto && !attacker.isOwner) return ui.notifications.warn(`Only ${attacker.name}'s owner can roll this damage.`);
   const o = attack.opts;
+  await hexRoll(attacker, "damage");
 
   const guard = guardFor(target, o, defense.attackMessage, defense.index);
   const ctx = { distracted: !!findDistract(defense.attackMessage, defense.index)?.getFlag("flowstate", "distract")?.hit, weaken: guard.weaken,
@@ -4571,8 +4608,8 @@ export async function reachFinisher(damageMessage, kind) {
 
 /** Apply damage directly if we own the target; otherwise ask the active GM to do it. */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
-  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false } = {}) {
-  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy };
+  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false } = {}) {
+  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex };
   if (target.isOwner) return applyDamage(target, amount, type, o);
   return requestGM("applyDamage", { target: target.uuid, amount, type, ...o });
 }
@@ -4639,7 +4676,7 @@ export async function loadWeapon(actor, item) {
  * Every client has the data, so the rolling client can show the result on its damage card while the owner applies it.
  */
 export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, archetype = "martial" } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, archetype = "martial", ignoreArmor = false } = {}) {
   if (bypass) return { toHp: Math.max(0, amount), lines: [`<strong>${Math.max(0, amount)}</strong> damage to HP (bypasses armor)`], weapon: null, weaponLoss: 0, weapons: [], armor: null, armorLoss: 0, afterWeapon: amount, parried: false, shrouds: [], shroudTook: 0 };
   const lines = [];
   let remaining = Math.max(0, amount);
@@ -4731,7 +4768,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     if (r.update) shrouds.push({ item: sh, loss: r.loss, absorbed: r.absorbed, update: r.update });
   }
   absorbWith("afterShroud");
-  let armor = actor.system.armor;
+  let armor = ignoreArmor ? null : actor.system.armor;                       // (Venomancy Combos ignore armor, but not Shrouds)
   // Chunky (Titanic Armor T5): Pierce affects worn Titanic armor half as much.
   const armorPierce = armor?.system.weight === "titanic" && ab.titanic(actor, 5) ? Math.floor(pierce / 2) : pierce;
   if (armor && tryBash(armor, armor.system.profile, armor.system.durability.value, armorPierce)) armor = null;
@@ -4765,9 +4802,9 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
  * @param {boolean} silent  don't post a card (the caller already shows the outcome on its own card)
  */
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
-  const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype });
+  const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor });
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.
   for (const { item, update } of out.shrouds ?? []) {
     if (item.isOwner === false) await requestGM("updateItem", { uuid: item.uuid, data: update });
@@ -4805,6 +4842,8 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   // Brand (Heat T3): heat damage that isn't from the Brand adds the Brand's damage.
   const brand = amount > 0 && elem ? elem.brandExtra(actor, type, brandBy) : 0;
   if (brand) { await post(actor, { title: `${esc(actor.name)} — Brand`, body: `<div class="fs-result">The Brand burns: ${brand} more heat damage.</div>` }); await applyDamage(actor, brand, "heat", { silent: true, brandBy: true }); }
+  // Hex (Witchery): damage from a source that isn't a Hex triggers a Harm Hex.
+  if (aff && !fromHex && amount > 0 && out.toHp > 0) await aff.hexTrigger(actor, "harm");
   return out;
 }
 

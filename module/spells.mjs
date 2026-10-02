@@ -190,6 +190,7 @@ export function planCast(ctx, v) {
       if (!target) { errors.push("Replicate needs another applied Mod to copy."); a.threshold = 0; continue; }
       a.threshold = target.threshold + 1;
       a.replicates = target.mod.id;
+      a.replicatesName = target.mod.name;
     }
   }
 
@@ -226,14 +227,16 @@ export function planCast(ctx, v) {
   }
 
   // Ritual Casting (Magic Theory T2).
-  const ritual = !!v.ritual && theory >= 2;
-  if (v.ritual && theory < 2) errors.push("Ritual Casting needs Magic Theory Tier 2.");
+  // Instant Ritual (Grasp Arcana T5): the Spell is a Ritual without the hours (it still costs its AP/RP to cast, and the Mod's Threshold counts toward the lost max Energy).
+  const instant = applied.some(a => !a.free && a.mod.name === "Instant Ritual");
+  const ritual = (!!v.ritual || instant) && theory >= 2;
+  if ((v.ritual || instant) && theory < 2) errors.push("Ritual Casting needs Magic Theory Tier 2.");
 
   const react = applied.some(a => !a.free && a.mod.treeId === "magic-theory" && modKey(a.mod) === "react");
   const weave = ctx.weave ?? null;
   if (weave && option && !option.ap.includes(weave.ap)) errors.push(`${option.label} takes ${option.ap.join("/")} AP; the attack you're weaving with costs ${weave.ap}.`);
   if (weave && ritual) errors.push("A Ritual can't be woven.");
-  const ap = weave ? 0 : ritual ? 0 : option ? (option.ap.length > 1 ? Math.min(3, Math.max(1, Math.round(Number(v.ap) || option.ap[0]))) : option.ap[0]) : 0;
+  const ap = weave ? 0 : ritual && !instant ? 0 : option ? (option.ap.length > 1 ? Math.min(3, Math.max(1, Math.round(Number(v.ap) || option.ap[0]))) : option.ap[0]) : 0;
   const trParts = [];
   if (option) {
     // Weaving still costs Energy but gets no TR (Webmaster, Magic Theory T5, lifts that); a woven spell's AP is the attack's.
@@ -260,9 +263,9 @@ export function planCast(ctx, v) {
   if (hasMod("Explode") && attack !== "Ranged") errors.push("Explode can only be added to a Ranged spell.");
   return {
     ok: errors.length === 0, errors, option, cores, combo: cores.length === 2, base, applied, areaSpell, free, focusedCast, ritual, react,
-    ap, usesRP: react && !ritual, tr, trParts, ...cost,
+    ap, usesRP: react && (!ritual || instant), instantRitual: instant && ritual, tr, trParts, ...cost,
     energy: ritual || freeFrom ? 0 : cost.energy, freeFrom,
-    ritualHours: ritual ? cost.gross : 0,
+    ritualHours: ritual && !instant ? cost.gross : 0,
     ritualLoss: ritual ? Math.floor(grossEnergy / 2) : 0,
     spellPower: option ? spellPower(option.scaling) : 0,
     power: option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,

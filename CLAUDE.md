@@ -27,9 +27,10 @@ the changes, implement them, then refresh the snapshot.
 
 Status: all Martial trees (Theory + every weapon/armor/method tree, T0–T5) are automated. Magic: Foci, Shrouds and
 Affixes are in (Shroud side fully automated; Foci effects wait on spells). Magic spells: the casting framework and
-the whole Magic T1 and T2 groups (T1: Magic Theory, Slashing, Piercing, Crushing, Protection Arcana, Gravity; T2: Reach
-Arcana, Heat, Cold, Radiation, Acid, with all their Combos) are automated; "tier" in Magic means the group of trees a Magic
-Theory tier unlocks, so T3 = Grasp Arcana, Venomancy, Charm, Witchery.
+the whole Magic T1, T2 and T3 groups (T1: Magic Theory, Slashing, Piercing, Crushing, Protection Arcana, Gravity; T2: Reach
+Arcana, Heat, Cold, Radiation, Acid; T3: Grasp Arcana, Venomancy, Charm, Witchery, with all their Combos) are automated;
+"tier" in Magic means the group of trees a Magic Theory tier unlocks, so T4 = Build Arcana, Summoning, Creation, Animation
+(next), T5 = Restoration Arcana, Geomancy, Illusion, Arcanomancy.
 Mental and Ancestries are not yet implemented.
 
 ## Layout
@@ -46,6 +47,7 @@ Mental and Ancestries are not yet implemented.
 - `module/spells.mjs` — pure spell framework: the Core/Mod catalog (parsed from `trees.mjs`), known spells, Combo Threshold, casting options, `planCast`, Threshold/Energy math.
 - `module/spellfx.mjs` — what each automated Core/Combo/Mod does (Tier 1 spells, Slashing/Piercing Mods); hooks live in `actions.mjs` (`spellHit`, `spellForce`, Shield soak, Bleed/Gash) and `casting.mjs` (`resolveSpell`).
 - `module/elemental.mjs` — Tier 2 spell effects (Ignite/Stain stacks, Energy removal, chains, Brand, Freeze, per-turn counters); registers its hooks into `actions.mjs` (`registerElemental`).
+- `module/afflictions.mjs` — Tier 3 spell effects (Poison coats and ticks, Charm, Hex triggers, the Combos); registers into `actions.mjs` (`registerAfflictions`).
 - `module/areas.mjs` — Area spells: shapes, pure geometry, template placement, Emplace card.
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
 - `module/data.mjs` — TypeDataModels (actor, weapon, armor, foci, shroud, gear, pile) and derived data.

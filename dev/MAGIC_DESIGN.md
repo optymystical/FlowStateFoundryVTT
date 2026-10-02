@@ -47,3 +47,15 @@ Phases: (A) casting framework → (C) per-tier spells/Mods, tier by tier (T1, T2
 
 - `areas.planFlight` (pure) plans a thrown creature's path through barriers and ordinary walls: 3 × untraveled feet to both sides, each capped by what the other has left; a surviving barrier stops the creature, a broken one lets it continue with `untraveled − barrierHP ÷ 3` feet. `actions.flyThrown` applies it (creature damage via `damageOutcome`, barrier health via `setBarrierHealth` / GM relay). A barrier between a thrower and the aimed target stops or slows the throw before the collision.
 - Judgment calls: Force damage to a barrier ignores its Limit (it is Force, not an attack); an ordinary wall earlier on the path (more than 1.25 ft sooner) wins over a barrier, a tie goes to the barrier; barriers are sampled a quarter square at a time. Untested in real Foundry (token movement and Wall collision).
+
+## Built (v0.30.0): Tier 3 (Grasp Arcana, Venomancy, Charm, Witchery)
+
+- `module/afflictions.mjs` is the Tier 3 engine, registered into `actions.mjs` as `registerAfflictions` (`onHit`, `charmNet`, `charmWeakened`, `charmedBy`, `hexTrigger`, `afterDefense`, `turnStart`, `casterTurn`, `act`). Data is `PROFILES[...].afflict` in `spellfx.mjs` (kinds `poison`, `charm`, `hex`, `venomCharm`, `venomHex`, `charmHex`).
+- Effects are Active Effects with `spellEffect.kind` of `coat`, `poison`, `charm`, `hex`. Poison/Hex/pending Charms are `onTargetTurn` (they survive the caster's turn); Ingrained Charms too. `turnsLeft` lets `clearSpellEffects` keep a Combo effect an extra caster turn.
+- Rolls: `charmNet(actor, type)` is added to the system's own rolls (attack, parry, dodge, stat check, d100); Weakened damage goes through `targetStacks`. Hex triggers: Harm in `applyDamage` (damage flagged `fromHex` never triggers), Move in `preUpdateToken`, Roll in each roll function / the damage roll, attack/dodge Fail/Success in `afterDefense`. Manual triggers are buttons (`act: "hex"`).
+- Buttons on our own cards read `flags.flowstate.afflict.acts[i]` (`pass`, `spread`, `arc`, `respread`, `hex`) and call `afflictions.act`. Spread / respread go through `performAttack` with a spell whose `act` field says what to do when it hits.
+- `damageOutcome` / `applyDamage` / `requestDamage` got `ignoreArmor` (Venomancy Combos) and `fromHex`.
+- Rituals: a Tier 3 Core's Ritual stores one free cast (`ritual.t3`); the free cast carries `ritualOf` and is spent on a hit (`spendRitual`).
+- Instant Ritual is a `planCast` flag (`instantRitual`); Foci Master bypasses the in-combat attuning refusal with the `flowstateFociMaster` update option.
+- Tests: `dev/tests/spell-t3.mjs`.
+

@@ -4,6 +4,7 @@ import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
+import "./afflictions.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
@@ -118,6 +119,9 @@ class FlowStateCombat extends Combat {
       await areas.clearAreas(combatant.actor);
       // Bleed (Slashing T2) hits at the start of the victim's turn.
       await actions.bleedTurnStart(combatant.actor);
+      // Poison, Charm and Hex (Tier 3): the victim's checks, and the caster's Ingrained Charms.
+      await actions.afflictTurnStart(combatant.actor);
+      await actions.afflictCasterTurn(combatant.actor);
     }
   }
 
@@ -506,6 +510,7 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
   }
   // Gash (Slashing T3): voluntarily moving reopens the wound.
   if (actor && !options?.flowstateThrow && actions.spellEffects(actor, "gash").length) actions.triggerGash(actor);
+  if (actor && !options?.flowstateThrow) actions.hexMove(actor);
   // Rapid T3 Mark: a Marked creature moving lets the marker shoot.
   if (actor?.getFlag("flowstate", "markedBy")) actions.triggerMark(actor, "moves");
   // Reach T1 Palisade: moving into a Reach wielder's range lets them strike (the palisading token is moved back on a hit).
@@ -997,6 +1002,9 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   for (const btn of html.querySelectorAll(".fs-chain")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.chainNext(message); });
   }
+  for (const btn of html.querySelectorAll(".fs-afflict-act")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.afflictAct(message, Number(btn.dataset.i)); });
+  }
   for (const btn of html.querySelectorAll(".fs-electric-transfer")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.electricTransfer(message); });
   }
@@ -1144,7 +1152,7 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
   if (item.type === "foci" || item.type === "shroud") {
     const attune = changed(changes, "system.attuned");
     if (attune !== undefined && attune !== item.system.attuned) {
-      if (attune && inCombat) return refuse(item, `Attuning to ${item.name} takes an hour, so it can't be done in combat.`);
+      if (attune && inCombat && !options?.flowstateFociMaster) return refuse(item, `Attuning to ${item.name} takes an hour, so it can't be done in combat.`);
       if (attune) {
         const others = actor.items.filter(i => i.type === item.type && i.id !== item.id && i.system.attuned);
         if (others.length) actor.updateEmbeddedDocuments("Item", others.map(i => ({ _id: i.id, "system.attuned": false })), { flowstateAuto: true });

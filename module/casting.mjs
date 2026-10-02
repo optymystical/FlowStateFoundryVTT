@@ -4,10 +4,11 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect } from "./actions.mjs";
+import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100 } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
+import "./afflictions.mjs";
 import { STATS } from "./rules.mjs";
 import { tierOf } from "./skills.mjs";
 
@@ -96,13 +97,32 @@ function effectHTML(v) {
   return e ? `<strong>${esc(e.title)}</strong>: ${esc(e.text)}` : "";
 }
 
+/** The Charm / Hex choices a Tier 3 spell needs on the cast: which roll a Charm hits, a Hex's trigger. */
+export function afflictHTML(v) {
+  const ids = [v.core1, v.core2].filter(Boolean);
+  const profile = ids.length ? fx.profileFor(ids) : null;
+  const need = fx.afflictNeeds(profile);
+  const sel = (name, opts, value) => `<select name="${name}">${Object.entries(opts).map(([k, label]) => `<option value="${k}" ${value === k ? "selected" : ""}>${esc(label)}</option>`).join("")}</select>`;
+  const out = [];
+  if (need.charm) out.push(`<div class="fs-field"><label>Charm: roll type</label>${sel("charmRoll", fx.ROLL_TYPES, v.charmRoll || "attack")}</div>`);
+  if (need.hex) {
+    const trig = v.hexTrigger || "harm";
+    out.push(`<div class="fs-field"><label>Hex: trigger</label>${sel("hexTrigger", Object.fromEntries(Object.entries(fx.HEX_TRIGGERS).map(([k, t]) => [k, t.label])), trig)}</div>`);
+    if (trig === "roll" || trig === "failsuccess") out.push(`<div class="fs-field"><label>…which roll</label>${sel("hexRoll", fx.ROLL_TYPES, v.hexRoll || "attack")}</div>`);
+    if (trig === "failsuccess") out.push(`<div class="fs-field"><label>…fails or succeeds</label>${sel("hexOutcome", { fail: "Fails", success: "Succeeds" }, v.hexOutcome || "fail")}</div>`);
+    if (trig === "act" || trig === "word") out.push(`<div class="fs-field"><label>${trig === "act" ? "Declared action" : "Word or condition"}</label><input type="text" name="hexDetail" value="${esc(v.hexDetail ?? "")}"></div>`);
+  }
+  if (need.hexDie) out.push(`<div class="fs-field"><label>Hex: shrink their</label>${sel("hexDie", { dodge: "Dodge (−3 die size)", attack: "Attack (−6 die size)" }, v.hexDie || "dodge")}</div>`);
+  return out.join("");
+}
+
 function previewHTML(plan, ctx) {
   if (!plan.ok) return `<p class="fs-warn">${plan.errors.map(esc).join(" ")}</p>`;
   const parts = [`${plan.base}${plan.combo ? " (Combo)" : ""}`, ...plan.applied.filter(a => a.threshold).map(a => `${a.mod.name} ${a.threshold}`)].join(" + ");
   const tr = plan.trParts.map(p => `${p.label} ${p.value}`).join(", ") || "none";
   return `<div class="fs-cast-sum">
     <div><strong>Threshold ${plan.threshold}</strong> <small>(${parts}${plan.tr ? ` − TR ${plan.tr}: ${tr}` : ""})</small></div>
-    <div><strong>${plan.ritual ? `Ritual: ${plan.ritualHours} h, −${plan.ritualLoss} max Energy` : `${plan.energy} Energy`}</strong>${plan.ritual ? "" : ` · ${plan.ap} ${plan.usesRP ? "RP" : "AP"}`}
+    <div><strong>${plan.ritual ? `Ritual: ${plan.instantRitual ? "instant" : `${plan.ritualHours} h`}, −${plan.ritualLoss} max Energy` : `${plan.energy} Energy`}</strong>${plan.ritual && !plan.instantRitual ? "" : ` · ${plan.ap} ${plan.usesRP ? "RP" : "AP"}`}
       · Spell Power ×${plan.power} <small>(${STATS[plan.scalingStat]?.label ?? plan.scalingStat} ${plan.scaling})</small> · ${esc(plan.attack ?? "")}</div></div>`;
 }
 
@@ -129,6 +149,7 @@ function dialogHTML(ctx, v) {
     <div class="fs-field"><label>Second Core (Combo)</label>${coreSelect("core2", known.cores.filter(c => c.id !== v.core1), v.core2, true)}</div>
     <div class="fs-field fs-cast-base" ${bt.ok && bt.max > bt.min ? "" : "hidden"}><label>Core Threshold</label><input type="number" name="base" value="${v.base ?? bt.min}" min="${bt.min}" max="${bt.max}" step="1"></div>
     <div class="fs-cast-effect">${effectHTML(v)}</div>
+    <div class="fs-cast-afflict">${afflictHTML(v)}</div>
     <div class="fs-cast-mods">${modsHTML(ctx, v, theory)}</div>
     ${(() => { const only = v.core1 && !v.core2 ? fx.profileFor([v.core1]) : null; return only?.hold ? `<label class="fs-cast-mod"><input type="checkbox" name="hold" ${v.hold ? "checked" : ""}> <strong>Hold it</strong> <small>in melee: no damage, but it stays available to use again for the same AP until your next turn</small></label>` : ""; })()}
     ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
@@ -161,6 +182,7 @@ async function castDialog(actor, ctx) {
         if (rebuild) {
           const bt = spells.baseThreshold([v.core1, v.core2].filter(Boolean));
           form.querySelector(".fs-cast-effect").innerHTML = effectHTML(v);
+          form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(v);
           form.querySelector(".fs-cast-mods").innerHTML = modsHTML(ctx, v, tierOf(ctx.trees, "magic-theory"));
           const baseField = form.querySelector(".fs-cast-base");
           baseField.hidden = !(bt.ok && bt.max > bt.min);
@@ -182,7 +204,8 @@ async function castDialog(actor, ctx) {
           form.querySelector(".fs-cast-mods").innerHTML = modsHTML(ctx, v, tierOf(ctx.trees, "magic-theory"));
           showTab(tab);
           refresh(false);
-        } else refresh(["core1", "core2"].includes(name), name);
+        } else if (name === "hexTrigger") { form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(valuesFromForm(form)); refresh(false); }
+        else refresh(["core1", "core2"].includes(name), name);
       });
       form.addEventListener("click", e => { const t = e.target?.closest?.(".fs-cast-tab"); if (t && !t.disabled) showTab(t.dataset.tab); });
       showTab("universal");
@@ -209,8 +232,8 @@ export function castCardHTML(actor, plan) {
   const mods = plan.applied.map(a => `<li><strong>${esc(a.mod.name)}${a.free ? " (Connection)" : ""}${a.replicates ? ` (copies ${esc(spells.spellById(a.replicates)?.name ?? "")})` : ""}:</strong> ${esc(stripHeader(a.mod.text))}</li>`).join("");
   return `<div class="fs-result"><strong>${esc(actor.name)}</strong> casts <strong>${esc(names)}</strong>${plan.combo ? " (Combo Spell)" : ""}${plan.ritual ? " as a <em>Ritual</em>" : ""}.</div>
     <ul class="fs-list">
-      <li>Through ${via}${plan.ritual ? "" : ` · ${plan.ap} ${plan.usesRP ? "RP" : "AP"}`}</li>
-      <li>Threshold <strong>${plan.threshold}</strong> (${parts}${plan.tr ? ` − TR ${plan.tr}` : ""})${plan.ritual ? ` · ${plan.ritualHours} hour${plan.ritualHours === 1 ? "" : "s"}, max Energy −${plan.ritualLoss}` : ` · <strong>${plan.energy} Energy</strong>`}</li>
+      <li>Through ${via}${plan.ritual && !plan.instantRitual ? "" : ` · ${plan.ap} ${plan.usesRP ? "RP" : "AP"}`}</li>
+      <li>Threshold <strong>${plan.threshold}</strong> (${parts}${plan.tr ? ` − TR ${plan.tr}` : ""})${plan.ritual ? ` · ${plan.instantRitual ? "instant" : `${plan.ritualHours} hour${plan.ritualHours === 1 ? "" : "s"}`}, max Energy −${plan.ritualLoss}` : ` · <strong>${plan.energy} Energy</strong>`}</li>
       <li>Spell Power ×${plan.power} (${STATS[plan.scalingStat]?.label ?? plan.scalingStat} ${plan.scaling}) · ${esc(plan.attack ?? "")}</li>
     </ul>
     <ul class="fs-list">${effects}${mods}</ul>
@@ -229,7 +252,7 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
   if (!plan.ok) { ui.notifications.warn(plan.errors.join(" ")); return null; }
 
   const inCombat = inActiveCombat(actor);
-  if (plan.ritual && inCombat) { ui.notifications.warn("Rituals take hours and can't be cast in combat."); return null; }
+  if (plan.ritual && inCombat && !plan.instantRitual) { ui.notifications.warn("Rituals take hours and can't be cast in combat."); return null; }
   if (inCombat && !plan.usesRP && !weave && game.combat.combatant?.actor?.uuid !== actor.uuid) {
     ui.notifications.warn("You can only cast with AP on your own turn (the React Mod casts with RP instead).");
     return null;
@@ -283,21 +306,28 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
   if (plan.ritual) {
     const heldRitual = !!profile?.hold && plan.cores.length === 1;
     const stored = !profile?.shield && !!profile && !heldRitual;
+    const t3 = !!profile?.afflict;
     const made = await actor.createEmbeddedDocuments?.("ActiveEffect", [{
       name: `Ritual: ${plan.cores.map(c => c.name).join(" + ")}`, img: "icons/magic/symbols/runes-star-orange.webp", origin: actor.uuid,
-      description: `Max Energy −${plan.ritualLoss} while the ritual lasts.${stored ? " Two free casts of this spell (AP/RP still needed); the Ritual ends after the second." : " Ending this effect ends the ritual's spell effects."}`,
-      flags: { flowstate: { ritual: { cores: ids, mods: plan.applied.filter(a => !a.free).map(a => a.mod.id), energyLost: plan.ritualLoss, power: plan.power, ...(stored ? { freeCasts: 2 } : {}) } } }
+      description: `Max Energy −${plan.ritualLoss} while the ritual lasts.${stored ? (t3 ? " One free cast of this spell (AP/RP still needed): on a hit its effect lasts until the Ritual ends, and a miss leaves the free cast." : " Two free casts of this spell (AP/RP still needed); the Ritual ends after the second.") : " Ending this effect ends the ritual's spell effects."}`,
+      flags: { flowstate: { ritual: { cores: ids, mods: plan.applied.filter(a => !a.free).map(a => a.mod.id), energyLost: plan.ritualLoss, power: plan.power, ...(stored ? { freeCasts: t3 ? 1 : 2, t3 } : {}) } } }
     }]);
     ritualOf = made?.[0]?.uuid ?? null;
     // Ritual Flame/Frost/Crackle/Glob: the spell stays held until the Ritual ends.
     if (heldRitual) await areasHeld(actor, { ...plan, ap: plan.option.ap.length === 1 ? plan.option.ap[0] : 2 }, profile, ids, fx.modCounts(plan.applied), ritualOf);
-    plan.note = heldRitual ? `Ritual complete: the ${profile.name.toLowerCase()} stays held until the Ritual ends (use it from the Action List for AP only).` : stored ? "Ritual complete: two free casts of this spell are ready (cast it again with the Ritual selected)." : profile ? "" : "";
+    plan.note = heldRitual ? `Ritual complete: the ${profile.name.toLowerCase()} stays held until the Ritual ends (use it from the Action List for AP only).` : stored ? (t3 ? "Ritual complete: one free cast is ready (cast it again with the Ritual selected); on a hit its effect lasts until the Ritual ends." : "Ritual complete: two free casts of this spell are ready (cast it again with the Ritual selected).") : profile ? "" : "";
   } else if (plan.freeFrom) {
     const r = actor.effects.get?.(plan.freeFrom) ?? Array.from(actor.effects).find(e => e.id === plan.freeFrom);
-    const left = (r?.flags?.flowstate?.ritual?.freeCasts ?? 1) - 1;
-    if (left <= 0) await r?.delete();
-    else await r?.update({ "flags.flowstate.ritual.freeCasts": left });
-    plan.note = left <= 0 ? "That was the Ritual's last free cast: the Ritual ends." : `${left} free cast${left === 1 ? "" : "s"} left on the Ritual.`;
+    if (r?.flags?.flowstate?.ritual?.t3) {
+      // Poison / Charm / Hex Rituals: the free cast is used up only on a hit, and what it applies lasts until the Ritual ends.
+      ritualOf = r.uuid; plan.t3Free = r.id;
+      plan.note = "Free cast: if it hits, its effect lasts until the Ritual ends (a miss leaves the free cast).";
+    } else {
+      const left = (r?.flags?.flowstate?.ritual?.freeCasts ?? 1) - 1;
+      if (left <= 0) await r?.delete();
+      else await r?.update({ "flags.flowstate.ritual.freeCasts": left });
+      plan.note = left <= 0 ? "That was the Ritual's last free cast: the Ritual ends." : `${left} free cast${left === 1 ? "" : "s"} left on the Ritual.`;
+    }
   }
   const manual = plan.applied.filter(a => !a.free && !fx.AUTOMATED_MODS.has(a.mod.id)).map(a => a.mod.name);
   if (manual.length && profile) plan.note = `${plan.note ? `${plan.note} ` : ""}Not automated yet (the GM resolves it from the text above): ${[...new Set(manual)].join(", ")}.`;
@@ -361,7 +391,8 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
     damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0,
     notes: [...notes, plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
-    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll }
+    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
+      ...(profile.afflict ? { ritualFree: plan.t3Free ?? null, afflict: { charmRoll: values?.charmRoll, hexDie: values?.hexDie, hex: { trigger: values?.hexTrigger, roll: values?.hexRoll, outcome: values?.hexOutcome, detail: values?.hexDetail } } } : {}) }
   };
   if (plan.hold) await areasHeld(actor, plan, profile, ids, mods, ritualOf);
   let first;
@@ -479,4 +510,36 @@ export async function useHeldSpell(actor, effectId) {
     pierce: 0, bash: 0, knockback: 0, notes: [`Held: no damage, ${holdRoll} worth of effect`], followups: [], targetActors: [targets[0].actor],
     spell: { cores: h.cores, power: h.power, ritualOf: null, scaling: h.scaling, mods: h.mods ?? {}, replaced: {}, dampen: [], singleRoll: false, telegraph: null, exploit: null, hold: true, holdRoll }
   });
+}
+
+
+/* -------------------------------------------- */
+/*  Grasp Arcana actions                        */
+/* -------------------------------------------- */
+
+/** Spirit Sense (Grasp Arcana T2): a spot check for magical energy. Secondary senses it within 10 ft; Primary (Grasp Arcana T4) within 100 ft. */
+export async function spiritSense(actor) {
+  const tier = tierOf(actor.system.trees ?? {}, "magic-grasp-arcana");
+  const primary = tier >= 4;
+  const range = primary ? 100 : 10;
+  await rollD100(actor, "Spirit Sense");
+  await post(actor, { title: `${esc(actor.name)} — Spirit Sense`, body: `<div class="fs-notes">${primary ? "Primary" : "Secondary"} Spirit Sense: on a success you sense the direction and amount of magical energy within <strong>${range} ft</strong> (for creatures, their total Spirit), regardless of obstacles, but not their exact location.${primary ? " You auto succeed on targets within melee range and are immune to a Targeted attack roll's stealth bonus." : ""} The GM decides the check's difficulty. (Heightened Spirit Sense, if you have it: 1000 ft and exact compositions.)</div>` });
+}
+
+/** Foci Master (Grasp Arcana T4): swap your attuned Foci for another one on your person for 2 AP (no hour of attuning). */
+export async function swapFoci(actor) {
+  if (tierOf(actor.system.trees ?? {}, "magic-grasp-arcana") < 4) return;
+  if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
+  const others = actor.items.filter(i => i.type === "foci" && !i.system.attuned);
+  if (!others.length) return ui.notifications.info(`${actor.name} has no other Foci to swap to.`);
+  const out = await DialogV2().prompt({
+    window: { title: "Foci Master: swap Foci" },
+    content: `<div class="fs-field"><label>Attune to</label><select name="f">${others.map(i => `<option value="${i.id}">${esc(i.name)}</option>`).join("")}</select></div>`,
+    ok: { label: "Swap (2 AP)", callback: (event, button) => button.form.elements.f.value }, rejectClose: false
+  });
+  const next = out ? actor.items.get(out) : null;
+  if (!next) return;
+  if (!(await spendPoints(actor, "ap", 2, "Foci Master"))) return;
+  await next.update({ "system.attuned": true }, { flowstateFociMaster: true });
+  await post(actor, { title: `${esc(actor.name)} — Foci Master`, body: `<div class="fs-result">${esc(actor.name)} swaps their attuned Foci to <strong>${esc(next.name)}</strong> (2 AP).</div>` });
 }

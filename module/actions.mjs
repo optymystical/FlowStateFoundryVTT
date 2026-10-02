@@ -4676,14 +4676,16 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
       lines.push(`Shield absorbed ${absorbed}${factor < 1 ? ` (Dampened: −${loss} health)` : ""} (${hp - loss} health left${hp - loss <= 0 ? ", it breaks" : ""})`);
     }
   };
-  // Emplace barriers (Protection Arcana T4) between the attacker and the target absorb first.
+  // Emplace barriers (Protection Arcana T4) between the attacker and the target are objects: they absorb first, up to their Limit
+  // per attack and their remaining health, so Pierce, Bash, Cleave, Weakpoint and Rend all apply to them.
   const barriers = [];
   for (const b of shroudCtx?.barriers ?? []) {
-    const absorbed = Math.min(remaining, b.hp);
-    if (!absorbed) continue;
-    remaining -= absorbed;
-    barriers.push({ ...b, absorbed, hp: b.hp - absorbed });
-    lines.push(`Emplace barrier absorbed ${absorbed} (${b.hp - absorbed} health left${b.hp - absorbed <= 0 ? ", it breaks" : ""})`);
+    const obj = { name: "Emplace barrier", system: { profile: { valid: true, limit: b.limit ?? Math.ceil(b.hp / 5), focus: { key: "magical", factor: 1 } }, durability: { value: b.hp } } };
+    if (tryBash(obj, obj.system.profile, b.hp, pierce)) { barriers.push({ ...b, absorbed: 0 }); continue; }
+    const before = remaining;
+    const loss = soakObject(obj, pierce, "");
+    if (!loss && remaining === before) continue;
+    barriers.push({ ...b, absorbed: before - remaining, hp: b.hp - loss });
   }
   absorbWith("first");
   // Parrying weapons (Martial Theory T1 Parry, Defender Block) soak first, in order.

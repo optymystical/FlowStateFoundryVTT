@@ -989,6 +989,11 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   for (const btn of html.querySelectorAll(".fs-shroud-counter")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.shroudCounter(message, btn.dataset.kind, Number(btn.dataset.amount)); });
   }
+  for (const btn of html.querySelectorAll(".fs-multicast")) {
+    const mc = message.getFlag("flowstate", "multicast");
+    if (mc && mc.remaining <= 0) { btn.replaceWith(Object.assign(document.createElement("div"), { className: "fs-waiting", textContent: "Multicast used up." })); continue; }
+    btn.addEventListener("click", event => { event.preventDefault(); import("./casting.mjs").then(c => c.multicast(message)); });
+  }
   for (const btn of html.querySelectorAll(".fs-chain")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.chainNext(message); });
   }

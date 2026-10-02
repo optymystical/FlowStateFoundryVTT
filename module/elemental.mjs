@@ -59,7 +59,7 @@ export async function onHit(ctx) {
   const dealt = sp.hold ? sp.holdRoll ?? 0 : 0;
   let stackAmount = 0, chain = null;
   for (const e of profile.effects ?? []) {
-    if (e.at !== "hit") continue;
+    if (e.at !== "hit" && !sp.hold) continue;       // a held spell applies its usual effects with no damage dealt
     if (e.stack) {
       let amount;
       if (e.stack.crushAcid) amount = fx.crushAcidStacks(entry?.total ?? 0, ctx.dodgeTotal ?? 0);
@@ -68,11 +68,15 @@ export async function onHit(ctx) {
       amount = applyStacks(amount, (o.stacks ?? 0) + (ctx.result?.critStacks ?? 0));
       const kind = fx.stainKindFor(e.stack.kind, m);
       stackAmount = amount;
-      const line = await giveStacks(target, kind, amount, { first: e.stack.where === "first", caster: attacker });
+      const line = await giveStacks(target, kind, amount, { first: e.stack.where === "first" || !!sp.hold, caster: attacker });
       if (line) html.push(`<div class="fs-result">${line}</div>`);
       if (kind === "stain" || kind === "solid") await trackStain(target, attacker, amount);
     }
-    if (e.chain && !profile.damage) chain = { adv: e.chain.adv, force: !!e.chain.force };
+    if (e.energy && sp.hold && !e.energy.sameAsStacks) {
+      const r = await removeEnergy(target, fx.amountSpec(e.energy, dealt, power));
+      html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${r.removed} Energy</strong> (${r.remaining} left).</div>`);
+    }
+    if (e.chain && !profile.damage && !sp.hold) chain = { adv: e.chain.adv, force: !!e.chain.force };
     if (e.energy?.sameAsStacks) {
       const r = await removeEnergy(target, stackAmount);
       html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${r.removed} Energy</strong>${r.remaining ? "" : " (none left)"}.</div>`);

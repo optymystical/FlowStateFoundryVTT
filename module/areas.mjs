@@ -55,7 +55,7 @@ export function tokensInArea(tpl, tokens, grid = { size: 100, distance: 5 }) {
  * Let the caster choose a shape, drop the template, drag it into place, and confirm. Returns
  * { actors, shape, templateId } (actors may include the caster), or null if cancelled, or undefined when there's no scene to place on.
  */
-export async function placeArea(actor, { title = "Area", scale = 1, aim = null, flags = {}, facing = false } = {}) {
+export async function placeArea(actor, { title = "Area", scale = 1, aim = null, flags = {}, facing = false, origin = null } = {}) {
   const scene = globalThis.canvas?.scene;
   const grid = globalThis.canvas?.grid;
   if (!scene || !grid) return undefined;
@@ -69,8 +69,9 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
   if (!pick) return null;
   // Start on the caster, pointing at the first target if there is one.
   const src = globalThis.canvas.tokens?.controlled?.find(t => t.actor?.uuid === actor.uuid) ?? actor.getActiveTokens?.()[0];
-  const x = src?.center?.x ?? 0, y = src?.center?.y ?? 0;
-  const direction = aim && src ? (Math.atan2(aim.center.y - y, aim.center.x - x) * 180) / Math.PI : 0;
+  // Lob / Explode: the area starts where the ranged part lands (the `origin` token), not on the caster.
+  const x = (origin ?? src)?.center?.x ?? 0, y = (origin ?? src)?.center?.y ?? 0;
+  const direction = aim && src && !origin ? (Math.atan2(aim.center.y - y, aim.center.x - x) * 180) / Math.PI : src && origin ? (Math.atan2(origin.center.y - src.center.y, origin.center.x - src.center.x) * 180) / Math.PI : 0;
   const data = { ...areaTemplate(pick, { x, y, direction, scale }), fillColor: game.user.color?.css ?? "#a050ff", borderColor: "#a050ff",
     flags: { flowstate: { areaOf: actor.uuid, casterX: x, casterY: y, ...flags } } };
   const [doc] = await scene.createEmbeddedDocuments("MeasuredTemplate", [data]);
@@ -223,7 +224,7 @@ export function barriersBetween(attackerToken, targetToken) {
     const f = d.flags?.flowstate;
     if (f?.spell !== "emplace" || !(f.health > 0)) continue;
     const tpl = { t: d.t, x: d.x, y: d.y, direction: d.direction, distance: d.distance, angle: d.angle, width: d.width };
-    if (barrierBlocks(tpl, { x: f.casterX ?? d.x, y: f.casterY ?? d.y }, a, t, g, f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null)) out.push({ id: d.id, sceneId: scene.id, hp: f.health });
+    if (barrierBlocks(tpl, { x: f.casterX ?? d.x, y: f.casterY ?? d.y }, a, t, g, f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null)) out.push({ id: d.id, sceneId: scene.id, hp: f.health, limit: f.limit ?? Math.ceil(f.health / 5) });
   }
   return out;
 }

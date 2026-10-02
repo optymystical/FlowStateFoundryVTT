@@ -145,6 +145,7 @@ export const AUTOMATED_MODS = new Set([
   "magic-gravity:burden", "magic-gravity:lighten", "magic-gravity:personal-repulsion", "magic-gravity:personal-well", "magic-gravity:hold", "magic-gravity:gravity-field",
   "magic-protection-arcana:reflect", "magic-protection-arcana:adjust", "magic-protection-arcana:dampen", "magic-protection-arcana:emplace",
   "magic-theory:empower", "magic-theory:snipe", "magic-theory:duplicate",
+  "magic-reach-arcana:multicast", "magic-reach-arcana:lob", "magic-reach-arcana:mold", "magic-reach-arcana:explode",
   "magic-heat:ignition", "magic-heat:brand", "magic-heat:flare", "magic-heat:cook",
   "magic-cold:frostbite", "magic-cold:chill", "magic-cold:freeze", "magic-cold:shatter",
   "magic-radiation:electrify", "magic-radiation:lightning-rod", "magic-radiation:charge", "magic-radiation:discharge",

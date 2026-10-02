@@ -55,8 +55,22 @@ const domeSegs = A.wallSegments({ t: "circle", x: 0, y: 0, distance: 10, directi
 ok(domeSegs.every(sg => { const mx = (sg.c[0] + sg.c[2]) / 2, my = (sg.c[1] + sg.c[3]) / 2; return mx * sg.front.x + my * sg.front.y > 0; }), "Every dome segment faces outward");
 const dome = { t: "circle", x: 500, y: 500, direction: 0, distance: 10, angle: 360, width: 0 };
 ok(A.barrierBlocks(dome, { x: 500, y: 500 }, { x: 1200, y: 500 }, { x: 500, y: 500 }, grid) && !A.barrierBlocks(dome, { x: 500, y: 500 }, { x: 550, y: 500 }, { x: 500, y: 450 }, grid), "A radius works as a dome: it blocks attacks from outside at those inside");
-const oc = await actions.damageOutcome({ name: "T", uuid: "A.T", effects: [], items: [], statuses: new Set(), system: { armor: null, derived: { size: {} } }, getFlag: () => null, getActiveTokens: () => [] }, 50, "physical", { shroudCtx: { barriers: [{ id: "t1", sceneId: "s", hp: 30 }] } });
-ok(oc.toHp === 20 && oc.barriers[0].hp === 0 && oc.barriers[0].absorbed === 30, "The barrier absorbs up to its health (30 of 50), the rest gets through");
+const dummy = () => ({ name: "T", uuid: "A.T", effects: [], items: [], statuses: new Set(), system: { armor: null, derived: { size: {} } }, getFlag: () => null, getActiveTokens: () => [] });
+const bar = (hp, limit) => ({ shroudCtx: { barriers: [{ id: "t1", sceneId: "s", hp, limit }] } });
+let oc = await actions.damageOutcome(dummy(), 50, "physical", bar(100, 20));
+ok(oc.toHp === 30 && oc.barriers[0].absorbed === 20 && oc.barriers[0].hp === 80, "The barrier is an object: it absorbs up to its Limit (20) of each attack");
+oc = await actions.damageOutcome(dummy(), 50, "physical", { pierce: 10, ...bar(100, 20) });
+ok(oc.barriers[0].absorbed === 10 && oc.toHp === 40, "Pierce ignores part of its Limit");
+oc = await actions.damageOutcome(dummy(), 50, "physical", { halfLimit: true, ...bar(100, 20) });
+ok(oc.barriers[0].absorbed === 10, "Weakpoint halves its Limit");
+oc = await actions.damageOutcome(dummy(), 50, "physical", { bash: 25, ...bar(100, 20) });
+ok(oc.barriers[0].absorbed === 0 && oc.toHp === 50 + 20, "Bash breaks through a barrier with a Limit at or under it (and adds the Limit as damage)");
+oc = await actions.damageOutcome(dummy(), 50, "physical", { cleave: 15, ...bar(100, 20) });
+ok(oc.barriers[0].hp === 80 && oc.toHp === 45, "Cleave uses up its Limit first (15), then normal damage takes the rest (5): 20 off its health, 45 gets through");
+oc = await actions.damageOutcome(dummy(), 50, "physical", bar(8, 20));
+ok(oc.barriers[0].absorbed === 8 && oc.barriers[0].hp === 0 && oc.toHp === 42, "It can't absorb more than its remaining health, and breaks");
+oc = await actions.damageOutcome(dummy(), 50, "arcane", bar(100, 20));
+ok(oc.barriers[0].absorbed === 20, "A magical object blocks Arcane damage too");
 
 console.log("== Adjust: a Shield holder within 10 ft can extend it");
 const mk = (name, x, y, shield) => {

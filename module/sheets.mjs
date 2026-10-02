@@ -625,6 +625,11 @@ function actionGroups(actor, weapons, stats) {
 
   // Magic: casting a spell (the dialog picks the Core Spell(s), Mods, and how to cast).
   const magicRows = [];
+  for (const e of Array.from(actor.effects ?? []).filter(x => !x.disabled && x.flags?.flowstate?.spellEffect?.kind === "held")) {
+    const h = e.flags.flowstate.spellEffect;
+    const myTurn = !actions.inActiveCombat(actor) || globalThis.game?.combat?.combatant?.actor?.uuid === actor.uuid;
+    magicRows.push({ label: `Use ${e.name.toLowerCase()}`, detail: "Melee, no damage, AP only · until your next turn", cost: `${h.ap} AP`, action: "useHeld", itemId: e.id, icon: "fa-solid fa-hand-holding-fire", disabled: !myTurn, tooltip: myTurn ? "" : "Only on your turn" });
+  }
   const cs = casting.castSummary(actor);
   if (cs.any) {
     const why = cs.usable ? "" : cs.ctx.options.map(o => `${o.label}: ${o.reason}`).join(" · ");
@@ -685,6 +690,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       dodge: FlowStateActorSheet.onDodge,
       recoverEnergy: FlowStateActorSheet.onRecoverEnergy,
       cast: FlowStateActorSheet.onCast,
+      useHeld: FlowStateActorSheet.onUseHeld,
       cycleShieldOrder: FlowStateActorSheet.onCycleShieldOrder,
       posture: FlowStateActorSheet.onPosture,
       rest: FlowStateActorSheet.onRest,
@@ -898,6 +904,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   static onDodge() { return actions.rollDodge(this.document); }
   static onRecoverEnergy() { return actions.recoverEnergy(this.document); }
   static onCast() { return casting.castSpell(this.document); }
+  static onUseHeld(event, target) { return casting.useHeldSpell(this.document, target.dataset.itemId ?? target.closest?.("[data-item-id]")?.dataset.itemId); }
   /** Adjust (Protection Arcana T3): the holder chooses where their Shield sits in the order damage is absorbed. */
   static async onCycleShieldOrder(event, target) {
     const e = this.document.effects.get(target.dataset.effectId);

@@ -4,7 +4,7 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM } from "./actions.mjs";
+import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
@@ -130,6 +130,7 @@ function dialogHTML(ctx, v) {
     <div class="fs-field fs-cast-base" ${bt.ok && bt.max > bt.min ? "" : "hidden"}><label>Core Threshold</label><input type="number" name="base" value="${v.base ?? bt.min}" min="${bt.min}" max="${bt.max}" step="1"></div>
     <div class="fs-cast-effect">${effectHTML(v)}</div>
     <div class="fs-cast-mods">${modsHTML(ctx, v, theory)}</div>
+    ${(() => { const only = v.core1 && !v.core2 ? fx.profileFor([v.core1]) : null; return only?.hold ? `<label class="fs-cast-mod"><input type="checkbox" name="hold" ${v.hold ? "checked" : ""}> <strong>Hold it</strong> <small>in melee: no damage, but it stays available to use again for the same AP until your next turn</small></label>` : ""; })()}
     ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
     ${theory >= 2 && !ctx.inCombat ? `<label class="fs-cast-mod"><input type="checkbox" name="ritual" ${v.ritual ? "checked" : ""}> <strong>Ritual</strong> <small>takes hours instead of AP, and lowers your max Energy while it lasts (out of combat)</small></label>` : ""}
     <div class="fs-cast-preview">${previewHTML(spells.planCast(ctx, v), ctx)}</div>
@@ -245,17 +246,27 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
   if (!weave && !plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, normalRange * (mods.snipe ? 2 : 1), `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack}${mods.snipe ? ", Snipe" : ""})`)) return null;
   // Area spells (Gravity Field) and Emplace: choose a shape and place it before anything is spent; everything it touches is targeted.
   const emplace = !!mods.emplace && !!profile?.shield;
-  const areaSpell = !weave && (!!mods["gravity field"] || emplace);
+  // Lob / Explode: a Ranged hit on the primary target, then an Area version where it lands.
+  const rangedPlusArea = !!(mods.lob || mods.explode) && !emplace;
+  const areaSpell = !weave && (!!mods["gravity field"] || emplace || rangedPlusArea);
+  const primary = targets.map(t => t.actor).filter(Boolean).slice(0, 1);
   let placed;
   if (areaSpell) {
     const fociItem = plan.option?.fociId ? actor.items.get?.(plan.option.fociId) ?? actor.items.find(i => i.id === plan.option.fociId) : null;
     const agate = fociItem?.system?.attuned && fociItem.system.profile?.affixes?.includes("agate") ? (fociItem.system.profile.affixPlus ? 2 : 1.5) : 1;
     const aim = [...(game.user?.targets ?? [])][0];
-    placed = await areas.placeArea(actor, { title: emplace ? "Emplace" : "Gravity Field", scale: (mods.snipe ? 2 : 1) * agate, aim,
-      facing: emplace, flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power } : {}) } });
+    const originTok = rangedPlusArea ? (aim?.object ?? aim) : null;
+    placed = await areas.placeArea(actor, { title: emplace ? "Emplace" : "Gravity Field", scale: (mods.snipe ? 2 : 1) * agate, aim, origin: originTok?.center ? originTok : null,
+      facing: emplace, flags: { spell: emplace ? "emplace" : "gravity field", ...(emplace ? { health: 20 * plan.power, limit: Math.floor(20 * plan.power / 5) } : {}) } });
     if (placed === null) return null;                                    // cancelled: nothing is spent
     if (placed && !emplace) targets = placed.actors.map(a => ({ actor: a }));
+    // Mold (Reach Arcana T3): you choose who in the area is attacked.
+    if (mods.mold && !emplace && targets.length > 1) targets = (await pickMold(actor, targets.map(t => t.actor), values.moldPick)).map(a => ({ actor: a }));
   }
+  const hold = !!values.hold && plan.cores.length === 1 && !!profile?.hold && !plan.ritual && !weave;
+  if (values.hold && !hold) { ui.notifications.warn("Only a single Flame, Frost, Crackle or Glob can be held (not woven or as a Ritual)."); return null; }
+  if (hold && !meleeRange) { ui.notifications.warn("A held spell is cast in melee: the target has to be within your personal melee range."); return null; }
+  plan.hold = hold;
   // Frost + Crackle only works on creatures with no Energy left.
   if (profile?.needsEnergyZero) {
     const rich = targets.map(t => t.actor).filter(a => (a?.system?.energy?.value ?? 0) > 0);
@@ -270,14 +281,17 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
   // A Ritual: Shield lasts until the Ritual ends; the attack spells store two free casts. Free casts used up end the Ritual.
   let ritualOf = null;
   if (plan.ritual) {
-    const stored = !profile?.shield && !!profile;
+    const heldRitual = !!profile?.hold && plan.cores.length === 1;
+    const stored = !profile?.shield && !!profile && !heldRitual;
     const made = await actor.createEmbeddedDocuments?.("ActiveEffect", [{
       name: `Ritual: ${plan.cores.map(c => c.name).join(" + ")}`, img: "icons/magic/symbols/runes-star-orange.webp", origin: actor.uuid,
       description: `Max Energy −${plan.ritualLoss} while the ritual lasts.${stored ? " Two free casts of this spell (AP/RP still needed); the Ritual ends after the second." : " Ending this effect ends the ritual's spell effects."}`,
       flags: { flowstate: { ritual: { cores: ids, mods: plan.applied.filter(a => !a.free).map(a => a.mod.id), energyLost: plan.ritualLoss, power: plan.power, ...(stored ? { freeCasts: 2 } : {}) } } }
     }]);
     ritualOf = made?.[0]?.uuid ?? null;
-    plan.note = stored ? "Ritual complete: two free casts of this spell are ready (cast it again with the Ritual selected)." : profile ? "" : "";
+    // Ritual Flame/Frost/Crackle/Glob: the spell stays held until the Ritual ends.
+    if (heldRitual) await areasHeld(actor, { ...plan, ap: plan.option.ap.length === 1 ? plan.option.ap[0] : 2 }, profile, ids, fx.modCounts(plan.applied), ritualOf);
+    plan.note = heldRitual ? `Ritual complete: the ${profile.name.toLowerCase()} stays held until the Ritual ends (use it from the Action List for AP only).` : stored ? "Ritual complete: two free casts of this spell are ready (cast it again with the Ritual selected)." : profile ? "" : "";
   } else if (plan.freeFrom) {
     const r = actor.effects.get?.(plan.freeFrom) ?? Array.from(actor.effects).find(e => e.id === plan.freeFrom);
     const left = (r?.flags?.flowstate?.ritual?.freeCasts ?? 1) - 1;
@@ -300,7 +314,7 @@ export async function castSpell(actor, preset = null, { weave = null } = {}) {
     if (placed?.tpl) await requestGM("createWalls", { sceneId: placed.sceneId, walls: areas.wallData(placed.tpl, placed.front, placed.grid, { barrierOf: placed.templateId, areaOf: actor.uuid }) });
     await emplaceCard(actor, { health: 20 * plan.power, shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId, sceneId: placed?.sceneId, walls: !!placed?.tpl });
   }
-  else if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave });
+  else if (profile && (!plan.ritual || profile.shield)) await resolveSpell(actor, plan, profile, ids, ritualOf, targets, meleeRange, ctx, values, { normalRange, weave, primary, rangedPlusArea });
   return plan;
 }
 
@@ -312,10 +326,10 @@ function inMeleeRange(actor, other) {
 }
 
 /** Make the spell's attack: Pinpoint and melee range give Advantage, Targeted spells attack from half stealth. */
-async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee, ctx, values, { normalRange = 200, weave = null } = {}) {
+async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee, ctx, values, { normalRange = 200, weave = null, primary = [], rangedPlusArea = false } = {}) {
   let targetActors = targets.map(t => t.actor);
   if (!targetActors.length && profile.shield) targetActors = [actor];     // a Shield with no target goes on yourself
-  const area = plan.applied.some(a => a.mod.name === "Gravity Field");
+  const area = plan.applied.some(a => a.mod.name === "Gravity Field") || rangedPlusArea;
   if (targetActors.length > 1 && !area) { ui.notifications.info(`${profile.name} has a single target: using ${targetActors[0].name}.`); targetActors = targetActors.slice(0, 1); }
   const pinpoint = plan.applied.some(a => a.mod.name === "Pinpoint");
   const mods0 = fx.modCounts(plan.applied);
@@ -325,6 +339,7 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
   if (mods0.snipe && !melee && srcTok && dstTok && globalThis.canvas?.grid && tokenDistance(srcTok, dstTok) > normalRange) farNet = -1;
   const notes = [pinpoint ? "Pinpoint: Advantage" : "", melee ? "Cast in melee range: Advantage" : "", farNet ? "Snipe: target is in the extra range (Disadvantage)" : "", weave ? "Woven into an attack: no AP/RP, no TR" : ""].filter(Boolean);
   const dice = profile.damage ? fx.damageDice(profile, plan.power) : null;
+  const holdRoll = plan.hold && dice ? (await new Roll(`${dice.n}d${dice.sides}`).evaluate()).total : 0;
   const mods = mods0;
   const replaced = Object.fromEntries(plan.applied.filter(a => a.replace).map(a => [a.mod.name.toLowerCase(), true]));
   const dampen = plan.applied.filter(a => a.mod.name === "Dampen").map(a => a.archetype);
@@ -343,18 +358,68 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
   // Bash (Crushing T3): Bash 10 × Power per stack (an object with that much Limit or less is ignored for extra damage).
   const bash = mods.bash ? mods.bash * 10 * plan.power : 0;
   const attackOpts = {
-    label: profile.name, net: (pinpoint ? 1 : 0) + (melee ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
-    damage: dice ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0,
-    notes: [...notes, pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
-    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null }
+    label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
+    damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0,
+    notes: [...notes, plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
+    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll }
   };
-  const first = await performAttack(actor, attackOpts);
+  if (plan.hold) await areasHeld(actor, plan, profile, ids, mods, ritualOf);
+  let first;
+  if (rangedPlusArea) {
+    // Lob / Explode: the Ranged part hits the primary target; the Area part goes off where it lands, whether or not that hit.
+    const p = primary.length ? primary : targetActors.slice(0, 1);
+    first = await performAttack(actor, { ...attackOpts, area: false, targetActors: p, notes: [...attackOpts.notes, "Ranged part (primary target)"], spell: { ...attackOpts.spell, singleRoll: false } });
+    await performAttack(actor, { ...attackOpts, area: true, notes: [...attackOpts.notes, "Area part"], spell: { ...attackOpts.spell, singleRoll: true, exploit: null } });
+  } else first = await performAttack(actor, attackOpts);
   // Duplicate (Magic Theory T5): cast once more for free, at any valid target.
   if (mods.duplicate) {
     const picked = await pickDuplicateTarget(actor, targetActors, values?.dupTarget);
     if (picked?.length) await performAttack(actor, { ...attackOpts, targetActors: picked, area: false, notes: [...attackOpts.notes, "Duplicate: the free second cast"], spell: { ...attackOpts.spell, exploit: null, telegraph: null, ritualOf: null } });
   }
+  // Multicast (Reach Arcana T1, stacking with Minigun at T5): pay the same AP/RP again to recast it for free.
+  if (mods.multicast) await multicastCard(actor, plan, first, targetActors, mods.multicast, !!mods.duplicate);
   return first;
+}
+
+/** Mold (Reach Arcana T3): pick who in the area is attacked. */
+async function pickMold(actor, actors, preset) {
+  if (preset) return actors.filter(a => preset.includes(a.uuid));
+  const out = await DialogV2().prompt({
+    window: { title: "Mold: who is attacked?" },
+    content: `<div class="fs-cast">${actors.map(a => `<label class="fs-cast-mod"><input type="checkbox" name="m:${a.uuid}" checked> ${esc(a.name)}</label>`).join("")}</div>`,
+    ok: { label: "Attack them", callback: (event, button) => valuesFromForm(button.form) }, rejectClose: false
+  });
+  if (!out) return actors;
+  return actors.filter(a => out[`m:${a.uuid}`]);
+}
+
+/** The Multicast card: a button per remaining recast. */
+async function multicastCard(actor, plan, attackMsg, targetActors, count, dup) {
+  const cost = Math.max(1, plan.ap || 1), key = plan.usesRP ? "rp" : "ap";
+  await post(actor, { title: `${esc(actor.name)} — Multicast`, body: `<div class="fs-result">Multicast: recast it at the same target${targetActors.length === 1 ? "" : "s"} for free by paying ${cost} ${key.toUpperCase()} again${count > 1 ? ` (up to ${count} times)` : ""}.</div>
+    <div class="fs-brawl-row fs-multicast-row" data-role="attacker" data-owner="${actor.uuid}"><button type="button" class="fs-multicast"><i class="fa-solid fa-repeat"></i> Multicast (${cost} ${key.toUpperCase()})</button></div>`,
+    flags: { flowstate: { multicast: { attackMessage: attackMsg?.id ?? null, cost, key, remaining: count, targets: targetActors.map(a => a.uuid), dup, caster: actor.uuid } } } });
+}
+
+/** Click: pay and recast the same spell (and its Duplicate) for no Energy. */
+export async function multicast(message) {
+  const mc = message.getFlag("flowstate", "multicast");
+  if (!mc || mc.remaining <= 0) return;
+  const actor = await fromUuid(mc.caster);
+  if (!actor?.isOwner) return ui.notifications.warn("Only the caster can do that.");
+  if (inActiveCombat(actor) && mc.key === "ap" && game.combat.combatant?.actor?.uuid !== actor.uuid) return ui.notifications.warn("Multicast with AP is for your own turn.");
+  const atk = game.messages.get(mc.attackMessage)?.getFlag("flowstate", "attack");
+  if (!atk) return ui.notifications.warn("The original cast can no longer be found.");
+  if (!(await spendPoints(actor, mc.key, mc.cost, "Multicast"))) return;
+  const targets = (await Promise.all(mc.targets.map(u => fromUuid(u)))).filter(Boolean);
+  const o = atk.opts;
+  const spell = { ...o.spell, exploit: null, telegraph: null, ritualOf: null };
+  await performAttack(actor, { ...o, targetActors: targets, notes: ["Multicast: free recast"], spell, followups: [] });
+  if (mc.dup) {                                                                  // Duplicate works multiplicatively with Multicast
+    const picked = await pickDuplicateTarget(actor, targets, null);
+    if (picked?.length) await performAttack(actor, { ...o, targetActors: picked, area: false, notes: ["Multicast + Duplicate"], spell, followups: [] });
+  }
+  await message.setFlag("flowstate", "multicast", { ...mc, remaining: mc.remaining - 1 });
 }
 
 /** Who gets the free second cast of a Duplicate? The same target by default, or anyone else on the scene. */
@@ -384,6 +449,34 @@ setWeaveHook({
 /** Chat card for a placed Emplace barrier. */
 async function emplaceCard(actor, { health, shapeLabel, templateId, sceneId, walls }) {
   return post(actor, { title: `${esc(actor.name)} — Emplace`, body: `<div class="fs-result"><i class="fa-solid fa-shield"></i> A one-way barrier (${esc(shapeLabel)}) with <strong>${health} health</strong> is in place.${templateId ? " Its template is on the scene." : ""}</div>
-    <div class="fs-notes">It blocks attacks coming from the far side of it from you (anything on your side passes), absorbing their damage up to its health before parries, Shields or armor. It blocks movement through it too, from the same side. It lasts until the start of your next turn.</div>
+    <div class="fs-notes">It's an object: it blocks attacks coming from the far side of it from you (anything on your side passes), absorbing up to its Limit of each attack (health ÷ 5) and its remaining health, before parries, Shields or armor. Pierce, Bash, Cleave and Weakpoint work on it. It blocks movement through it too, from the same side. It lasts until the start of your next turn.</div>
     ${walls ? `<div class="fs-brawl-row" data-role="attacker" data-owner="${actor.uuid}"><button type="button" class="fs-flip-wall" data-scene="${sceneId}" data-template="${templateId}" data-tooltip="If the wall's arrow points the wrong way, flip which side it blocks"><i class="fa-solid fa-arrows-left-right"></i> Flip facing</button></div>` : ""}` });
+}
+
+/** A held spell stays on the caster (until their next turn) so it can be used again for AP only. */
+async function areasHeld(actor, plan, profile, ids, mods, ritualOf = null) {
+  await applySpellEffect(actor, { kind: "held", caster: actor.uuid, name: `Held ${profile.name}`, cores: ids, power: plan.power, scaling: plan.scaling, mods, ap: plan.ap, ritualOf,
+    description: `${profile.name} is held in your hand: use it again from the Action List for ${plan.ap} AP (no Energy) until the start of your next turn.` });
+}
+
+/** Use a held Flame/Frost/Crackle/Glob again: AP only, in melee, no damage. */
+export async function useHeldSpell(actor, effectId) {
+  const e = Array.from(actor.effects ?? []).find(x => x.id === effectId);
+  const h = e?.flags?.flowstate?.spellEffect;
+  if (!h || h.kind !== "held") return;
+  if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
+  const inCombat = inActiveCombat(actor);
+  if (inCombat && game.combat.combatant?.actor?.uuid !== actor.uuid) return ui.notifications.warn("A held spell can only be used on your own turn.");
+  const targets = [...(game.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
+  if (!targets.length) return ui.notifications.warn("Target someone in melee range first.");
+  if (!inMeleeRange(actor, targets[0].actor)) return ui.notifications.warn("A held spell is used in melee: the target has to be within your personal melee range.");
+  if (!(await spendPoints(actor, "ap", h.ap, "using a held spell"))) return;
+  const profile = fx.profileFor(h.cores);
+  const dice = fx.damageDice(profile, h.power);
+  const holdRoll = (await new Roll(`${dice.n}d${dice.sides}`).evaluate()).total;
+  return performAttack(actor, {
+    label: `${profile.name} (held)`, net: 0, stealth: "none", melee: true, area: false, push: false, damage: "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0,
+    pierce: 0, bash: 0, knockback: 0, notes: [`Held: no damage, ${holdRoll} worth of effect`], followups: [], targetActors: [targets[0].actor],
+    spell: { cores: h.cores, power: h.power, ritualOf: null, scaling: h.scaling, mods: h.mods ?? {}, replaced: {}, dampen: [], singleRoll: false, telegraph: null, exploit: null, hold: true, holdRoll }
+  });
 }

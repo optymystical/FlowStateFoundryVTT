@@ -10,7 +10,7 @@ globalThis.foundry = {
 };
 globalThis.Roll = class { constructor(f){ this.formula=f; } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
 globalThis.ChatMessage = { getSpeaker: ({actor}) => ({ alias: actor.name }),
-  create: async d => { const m = { id: "m"+messages.length, ...d, getFlag: (s,k) => d.flags?.[s]?.[k] }; messages.push(m); return m; } };
+  create: async d => { const m = { id: "m"+messages.length, ...d, getFlag: (s,k) => m.flags?.[s]?.[k], setFlag: async (s,k,v) => { m.flags ??= {}; (m.flags[s] ??= {})[k] = v; } }; messages.push(m); return m; } };
 const combat = { id: "C", started: true, round: 1, turn: 0, combatant: null, combatants: [] };
 globalThis.game = { settings: { get: () => false }, messages: { find: fn => messages.find(fn), filter: fn => messages.filter(fn), get: id => messages.find(m=>m.id===id) }, combat,
   users: { activeGM: { id: "gm" } }, socket: { emit: (...a) => console.log("  socket emit", JSON.stringify(a[1])) }, user: { targets: new Set(), isGM: false }, actors: [] };
@@ -271,6 +271,72 @@ reset(); reset2(); orc.system.energy.value = 40; target(orc); seq = [20]; messag
 ok2(res0 === null, "Frost + Crackle refuses a target that still has Energy");
 reset(); reset2(); orc.system.energy.value = 0; card = await hit("magic-cold:frost", C2(0, "magic-radiation:crackle"), [20]);
 ok2(dmgOf() === "6d12" && /fs-chain/.test(card.content), "…and chains from a creature with none: 2d12 × 3 cold");
+
+console.log("== Held melee spells");
+globalThis.canvas = { grid: { size: 100, distance: 5 }, tokens: { placeables: [tokH, tokO, tokO2], controlled: [] }, scene: null };
+tokO.document.x = 100; tokO.center.x = 150;                                  // right next to Hero
+reset(); reset2(); orc.effects.splice(0); hero.effects.splice(0, hero.effects.length);
+target(orc); seq = [20, 14]; hero.system.ap.value = 6;
+res0 = await cast("magic-heat:flame", { hold: true });
+ok2(res0?.hold && lastAtk().flags.flowstate.attack.opts.damage === "", "Holding Flame in melee: no damage on the attack");
+const heldE = hero.effects.find(e => e.flags.flowstate.spellEffect?.kind === "held");
+ok2(!!heldE && heldE.flags.flowstate.spellEffect.ap === 2, "…and a held Flame stays on the caster (2 AP to use again)");
+seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+ok2(cond("ignite") > 0, `It still applies Ignite (${cond("ignite")}) without dealing damage`);
+orc.system.conditions.ignite = 0; hero.system.ap.value = 6; combat.combatant = { actor: hero };
+target(orc); seq = [9, 20]; await C.useHeldSpell(hero, heldE.id);
+ok2(hero.system.ap.value === 4 && lastAtk().flags.flowstate.attack.opts.spell.hold, "Using it again costs just 2 AP (no Energy)");
+seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+ok2(cond("ignite") > 0, "…and applies Ignite again");
+tokO.document.x = 400; tokO.center.x = 450; target(orc); hero.system.ap.value = 6;
+res0 = await cast("magic-heat:flame", { hold: true });
+ok2(res0 === null, "A target out of melee range can't be held against");
+await actions.clearSpellEffects(hero);
+ok2(!hero.effects.some(e => e.flags.flowstate.spellEffect?.kind === "held"), "The held spell ends at the start of the caster's next turn");
+globalThis.canvas = null;
+
+console.log("== Reach Arcana");
+reset(); reset2(); hero.effects.splice(0, hero.effects.length); hero.system.trees["magic-reach-arcana"] = 4;
+target(orc); seq = [20]; hero.system.ap.value = 6; hero.system.energy.value = 150; messages.length = 0;
+res0 = await cast("magic-slashing:cut", { [M("magic-reach-arcana:multicast")]: true });
+const mcCard = messages.find(m => m.flags?.flowstate?.multicast);
+ok2(!!mcCard && mcCard.flags.flowstate.multicast.cost === 2 && mcCard.flags.flowstate.multicast.remaining === 1, "Multicast: a card offers a free recast for the same AP");
+const apB = hero.system.ap.value, enB = hero.system.energy.value; seq = [20]; const nAtk = messages.filter(m => m.flags?.flowstate?.attack).length;
+await C.multicast(mcCard);
+ok2(hero.system.ap.value === apB - 2 && hero.system.energy.value === enB && messages.filter(m => m.flags?.flowstate?.attack).length === nAtk + 1, "…costs 2 AP, no Energy, and recasts at the same target");
+ok2(mcCard.flags.flowstate.multicast.remaining === 0, "…once");
+const stackPlan = S.planCast(C.castContext(hero), { ...baseVals, core1: "magic-slashing:cut", [M("magic-reach-arcana:multicast")]: 2 });
+ok2(stackPlan.applied.filter(a => a.mod.name === "Multicast").length === 1, "Without Minigun, Multicast doesn't stack");
+hero.system.trees["magic-reach-arcana"] = 5;
+const stackPlan2 = S.planCast(C.castContext(hero), { ...baseVals, core1: "magic-slashing:cut", [M("magic-reach-arcana:multicast")]: 3 });
+ok2(stackPlan2.applied.filter(a => a.mod.name === "Multicast").length === 3 && stackPlan2.threshold === 1 + 6 - 1, "Minigun: Multicast stacks (each use pays its own AP/RP)");
+hero.system.trees["magic-reach-arcana"] = 4;
+// Lob and Explode
+const lobBad = S.planCast(C.castContext(hero), { ...baseVals, core1: "magic-slashing:cut", [M("magic-reach-arcana:lob")]: true });
+ok2(!lobBad.ok && /Area/.test(lobBad.errors.join(" ")), "Lob needs an Area spell");
+const expBad = S.planCast(C.castContext(hero), { ...baseVals, core1: "magic-protection-arcana:shield", [M("magic-reach-arcana:explode")]: true });
+ok2(!expBad.ok && /Ranged/.test(expBad.errors.join(" ")), "Explode needs a Ranged spell");
+reset(); reset2(); hero.effects.splice(0, hero.effects.length); hero.system.ap.value = 6; hero.system.energy.value = 150;
+game.user.targets = new Set([{ actor: orc, name: "Orc", document: {} }, { actor: orc2, name: "Orc2", document: {} }]);
+messages.length = 0; seq = [20, 20, 20]; await cast("magic-slashing:cut", { [M("magic-reach-arcana:explode")]: true });
+const atks = messages.filter(m => m.flags?.flowstate?.attack);
+ok2(atks.length === 2 && atks[0].flags.flowstate.attack.targets.length === 1 && !atks[0].flags.flowstate.attack.opts.area && atks[1].flags.flowstate.attack.opts.area, "Explode: a Ranged hit on the primary target, then an Area version");
+// Mold
+hero.system.ap.value = 6; hero.system.energy.value = 150; messages.length = 0; seq = [20, 20];
+hero.system.trees["magic-gravity"] = 5;
+await cast("magic-gravity:force", { [M("magic-gravity:gravity-field")]: true, [M("magic-reach-arcana:mold")]: true, moldPick: [orc2.uuid] });
+const moldAtk = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
+ok2(moldAtk.flags.flowstate.attack.targets.length === 1 && moldAtk.flags.flowstate.attack.targets[0].uuid === orc2.uuid, "Mold: you choose who in the area is attacked");
+game.user.targets = new Set();
+
+console.log("== Rituals of held spells");
+hero.effects.splice(0, hero.effects.length); combat.started = false; hero.system.energy.value = 150; hero.system.ap.value = 6;
+res0 = await cast("magic-heat:flame", { ritual: true });
+const ritE = hero.effects.find(e => e.flags.flowstate.ritual), heldR = hero.effects.find(e => e.flags.flowstate.spellEffect?.kind === "held");
+ok2(!!ritE && !ritE.flags.flowstate.ritual.freeCasts && !!heldR && heldR.flags.flowstate.ritualOf === ritE.uuid, "A Flame Ritual keeps the Flame held (no free casts) until the Ritual ends");
+await actions.clearSpellEffects(hero);
+ok2(hero.effects.some(e => e.flags.flowstate.spellEffect?.kind === "held"), "…it survives the start of the caster's next turn");
+combat.started = true;
 
 console.log(fails ? `\n${fails} FAILED` : "\nAll Tier 2 spell checks passed");
 if (fails) process.exit(1);

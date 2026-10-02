@@ -112,13 +112,13 @@ export function castingOptions(ctx) {
     else if (p.deck && !(f.hand?.length)) reason = "No cards in hand (draw some, or wait for your next turn).";
     else if (p.twoHandCast && !f.twoHanded) reason = "Needs two hands to cast with.";
     if (p.form === "multi") {
-      raw(`foci:${f.id}`, `${f.name} (Multi, Raw Casting)`, { fociId: f.id, fociType: p.type, scaling: p.scaling, scalingHigh: p.scalingHigh, scalingStat: p.scalingStat, reason });
+      raw(`foci:${f.id}`, `${f.name} (${p.label}, Raw Casting)`, { fociId: f.id, fociType: p.type, scaling: p.scaling, scalingHigh: p.scalingHigh, scalingStat: p.scalingStat, reason });
       continue;
     }
     const stat = p.form === "igniter" ? grasp : reach;
     const ok = !reason && stat >= MIN_CAST_STAT;
     out.push({
-      key: `foci:${f.id}`, label: `${f.name} (${p.formLabel}${p.deck ? ", Deck" : ""})`, form: p.form, fociId: f.id, fociType: p.type, deck: p.deck ? { tr: p.deckTR, hand: f.hand ?? [] } : null,
+      key: `foci:${f.id}`, label: `${f.name} (${p.label}${p.deck ? ", Deck" : ""})`, form: p.form, fociId: f.id, fociType: p.type, deck: p.deck ? { tr: p.deckTR, hand: f.hand ?? [] } : null,
       ap: [Number(p.castAP)], tr: p.tr, scaling: p.scaling, scalingStat: p.scalingStat, ok,
       reason: reason || (ok ? "" : `Needs at least ${MIN_CAST_STAT} ${p.form === "igniter" ? "Grasp" : "Reach"}.`)
     });

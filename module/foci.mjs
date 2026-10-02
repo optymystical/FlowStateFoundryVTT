@@ -148,7 +148,7 @@ export async function deckTurnStart(actor) {
   const deck = { draw: shuffle(all.length ? all : fullDeck(actor)), hand: [], discard: [] };
   draw(deck, foci.system.profile.deckDraw);
   await save(actor, deck);
-  await post(actor, { title: `${esc(actor.name)} — ${esc(foci.name)}`, body: `<div class="fs-result">Hand: ${deck.hand.map(nameOf).map(esc).join(", ") || "(empty)"}</div>` });
+  await post(actor, { title: `${esc(actor.name)} — ${esc(foci.name)} (${esc(foci.system.profile.label)})`, body: `<div class="fs-result">Hand: ${deck.hand.map(nameOf).map(esc).join(", ") || "(empty)"}</div>` });
 }
 
 /** Spend Energy (1/10 of max for one card, 2/10 to mulligan) to draw a card / redraw your hand. */

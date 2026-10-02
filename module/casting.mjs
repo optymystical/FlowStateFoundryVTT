@@ -643,14 +643,14 @@ async function swapAttuned(actor, type) {
   if (!others.length) return ui.notifications.info(`${actor.name} has no other ${type === "foci" ? "Foci" : "Shroud"} to swap to.`);
   const out = await DialogV2().prompt({
     window: { title: `${label}: swap` },
-    content: `<div class="fs-field"><label>Attune to</label><select name="f">${others.map(i => `<option value="${i.id}">${esc(i.name)}</option>`).join("")}</select></div>`,
+    content: `<div class="fs-field"><label>Attune to</label><select name="f">${others.map(i => `<option value="${i.id}">${esc(i.name)}${type === "foci" && i.system.profile?.valid ? ` (${esc(i.system.profile.label)})` : ""}</option>`).join("")}</select></div>`,
     ok: { label: "Swap (2 AP)", callback: (event, button) => button.form.elements.f.value }, rejectClose: false
   });
   const next = out ? actor.items.get(out) : null;
   if (!next) return;
   if (!(await spendPoints(actor, "ap", 2, label))) return;
   await next.update({ "system.attuned": true }, { flowstateFociMaster: true });
-  await post(actor, { title: `${esc(actor.name)} — ${label}`, body: `<div class="fs-result">${esc(actor.name)} swaps their attuned ${type === "foci" ? "Foci" : "Shroud"} to <strong>${esc(next.name)}</strong> (2 AP).</div>` });
+  await post(actor, { title: `${esc(actor.name)} — ${label}`, body: `<div class="fs-result">${esc(actor.name)} swaps their attuned ${type === "foci" ? "Foci" : "Shroud"} to <strong>${esc(next.name)}</strong>${type === "foci" && next.system.profile?.valid ? ` (${esc(next.system.profile.label)})` : ""} (2 AP).</div>` });
 }
 export const swapFoci = actor => swapAttuned(actor, "foci");
 export const swapShroud = actor => swapAttuned(actor, "shroud");

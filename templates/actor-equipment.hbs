@@ -71,7 +71,7 @@
           <button type="button" class="fs-toggle {{#if system.attuned}}on{{/if}}" data-action="toggleField" data-field="attuned" data-tooltip="{{#if system.attuned}}Attuned (click to unattune){{else}}Attune (1 hour, not in combat; one Foci at a time){{/if}}"><i class="fa-solid fa-link"></i></button>
           <button type="button" class="fs-toggle {{#if system.equipped}}on{{/if}}" data-action="toggleField" data-field="equipped" data-tooltip="{{holdTip}}"><i class="fa-solid fa-hand"></i></button>
         </td>
-        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · G{{system.grade}} · {{statLabel}} {{profile.scaling}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a>{{#if profile.valid}} <span class="fs-tag" data-tooltip="{{profile.formLabel}} Foci">{{profile.typeLabel}}</span>{{/if}}<div class="fs-sub">{{#if profile.valid}}<strong>{{profile.label}}</strong> · G{{system.grade}} · {{statLabel}} {{profile.scaling}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
         <td>{{profile.castAP}} AP</td>
         <td>{{trText}}</td>
         <td class="fs-sub">{{#if affixText}}{{affixText}}{{else}}—{{/if}}{{#if profile.affixPlus}} (+){{/if}}</td>

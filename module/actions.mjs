@@ -3363,11 +3363,11 @@ async function slamDown(actor, feet) {
 
 /**
  * The most Force damage a creature can be dealt: its HP plus whatever its armor, Shroud, Shield and the rest would soak, so the damage
- * that finally reaches HP is at most all of it (it nets them to 0 HP, never past it). Armor Limit and other effects don't count against
+ * that finally reaches HP is at most all of it plus their max HP (it nets them to negative max HP, never past it). Armor Limit and other effects don't count against
  * the cap the way they would if the cap were just HP. Works out hits without applying them.
  */
 export async function forceCap(actor, type = "physical") {
-  const hp = Math.max(0, actor.system.hp.value);
+  const hp = Math.max(0, actor.system.hp.value + (actor.system.hp.max ?? 0));          // Overkill: down to negative max HP
   const reaches = async n => (await damageOutcome(actor, n, type)).toHp;
   let lo = 0, hi = hp + 1;                                    // lo always nets ≤ HP; hi nets more (once found)
   while ((await reaches(hi)) <= hp && hi < 1000000) { lo = hi; hi *= 2; }

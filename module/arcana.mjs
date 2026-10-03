@@ -99,6 +99,11 @@ export async function resolve({ actor, plan, profile, spec, mods, targets, ritua
   return null;
 }
 
+/** Irradiate (Enhanced) lowers every healing effect the creature receives, and stacks. */
+export function healingDown(actor) {
+  return Array.from(actor?.effects ?? []).reduce((n, e) => n + (e.disabled ? 0 : Number(e.flags?.flowstate?.spellEffect?.healDown) || 0), 0);
+}
+
 export async function setHp(actor, update) {
   if (actor.isOwner) await actor.update(update); else await requestGM("updateActor", { uuid: actor.uuid, data: update });
 }
@@ -119,7 +124,9 @@ async function restore({ actor, plan, profile, spec, mods, targets, ritualOf }) 
     await reevaluate(t);
   }
   if (!replaced) {
-    const raw = fx.restoreAmount(profile.arcana.heal, power);
+    const rawBase = fx.restoreAmount(profile.arcana.heal, power);
+    const cut = healingDown(t), raw = Math.max(0, rawBase - cut);
+    if (cut) lines.push(`Irradiated: healing is reduced by ${cut} (${rawBase} → ${raw}).`);
     const hp = t.system.hp.value, max = t.system.hp.max;
     if (free && !dead && hp >= max && mods.regenerate) {
       // Regenerate (Ritual, full health): restores Max HP instead.

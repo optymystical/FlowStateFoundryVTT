@@ -1,4 +1,4 @@
-import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost } from "./rules.mjs";
+import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, OBJECT_DENSITY, objectStats } from "./rules.mjs";
 import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, fociProfile, shroudProfile } from "./magic.mjs";
@@ -171,8 +171,20 @@ export class FlowStateGearData extends foundry.abstract.TypeDataModel {
       quantity: int(1, { min: 0 }),
       // Ammunition: the ranged weapon type it feeds ("" = not ammunition).
       ammoType: new f.StringField({ initial: "" }),
+      // A Non-Archetypal object (Rules, Ch10): Body above 0 makes it one, with Durability and Limit from its Body and density.
+      body: new f.NumberField({ required: true, nullable: false, integer: true, initial: 0, min: 0 }),
+      density: new f.StringField({ initial: "soft", choices: () => Object.fromEntries(Object.entries(OBJECT_DENSITY).map(([k, v]) => [k, v.label])) }),
+      wear: new f.NumberField({ required: true, nullable: false, integer: true, initial: 0 }),
       description: new f.HTMLField({ initial: "" })
     };
+  }
+
+  prepareDerivedData() {
+    const o = objectStats(this.body, this.density);
+    this.isObject = o.body > 0;
+    this.objectLimit = o.limit;
+    this.durability = { max: o.durability, value: o.durability - (this.wear ?? 0) };
+    this.broken = this.isObject && this.durability.value <= 0;
   }
 }
 

@@ -26,13 +26,21 @@ const living = a => a && a.type !== "pile" && !a.system?.magical;
 /* -------------------------------------------- */
 
 const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${game.combat.round}` : "ooc");
-/** "Once per round": true (and marked) the first time per round for this actor and id. */
-export async function tryOnce(actor, id) {
+/** Has this actor already used this "once per round" thing this round? */
+export function onceUsed(actor, id) {
+  const cur = actor.getFlag?.("flowstate", "mentalOnce");
+  return cur?.round === roundKey() && cur.ids.includes(id);
+}
+export async function markOnce(actor, id) {
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
   const key = roundKey();
   const ids = cur?.round === key ? cur.ids : [];
-  if (ids.includes(id)) return false;
-  await setActorFlag(actor, "mentalOnce", { round: key, ids: [...ids, id] });
+  if (!ids.includes(id)) await setActorFlag(actor, "mentalOnce", { round: key, ids: [...ids, id] });
+}
+/** "Once per round": true (and marked) the first time per round for this actor and id. */
+export async function tryOnce(actor, id) {
+  if (onceUsed(actor, id)) return false;
+  await markOnce(actor, id);
   return true;
 }
 
@@ -271,6 +279,7 @@ export function actButtons(acts) {
 export async function runAct(x) {
   const caster = await fromUuid(x.caster), target = await fromUuid(x.target);
   if (!caster?.isOwner) { ui.notifications.warn(`Only ${caster?.name ?? "the Mental user"}'s owner can do that.`); return false; }
+  if (["chant", "makeClear", "wobs"].includes(x.id)) return mental.theoryAct(x);
   const mode = R.modeById(x.mode);
   const energy = { pollinate: Math.floor(minOf(caster, "pon") / 2), fester: minOf(caster, "snap"), reap: minOf(caster, "snap") }[x.id] ?? 0;
   if (["verdantSoul", "mortalCoil", "gust"].includes(x.id) && !(await tryOnce(caster, x.id))) { ui.notifications.info("Once per round: already used this round."); return false; }
@@ -470,7 +479,7 @@ export async function placeCharge({ caster, target, kind, power, enhanced, choic
 for (const [modeId, kind] of Object.entries(CHARGE_MODES)) {
   MODES[modeId] = async c => {
     const persisted = await placeCharge({ caster: c.attacker, target: c.target, kind, power: c.power, enhanced: c.enhanced, choices: c.choices, mode: modeId });
-    return `${esc(c.target.name)} carries a <strong>${CHARGES[kind].label}</strong> charge${c.enhanced ? " (Enhanced)" : ""}${persisted ? " (it stays until used: Permanence)" : " until the start of your next turn"}: use <em>Charges</em> in the Action List when they roll.`;
+    return `${esc(c.target.name)} carries a <strong>${CHARGES[kind].label}</strong> charge${c.enhanced ? " (Enhanced)" : ""}${persisted ? " (it stays until used: Permanence)" : " until the start of your next turn"}: you're asked whether to spend it whenever they make a roll.`;
   };
 }
 

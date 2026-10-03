@@ -686,10 +686,11 @@ function actionGroups(actor, weapons, stats) {
   if (icons.length) mentalRows.push({ label: "Attune Icon", detail: icons.map(i => `${i.name}${i.system.attuned ? " (attuned)" : ""}`).join(", ") + " · pick the Tenet", cost: willT >= 1 ? "2 AP (or 2 RP once a turn)" : "6 AP", action: "attuneIcon", icon: "fa-solid fa-hands-praying" });
   const wardIcon = actor.system.icon;
   if (wardIcon && wardIcon.system.profile.kind !== "negate") mentalRows.push({ label: `Ward: ${wardIcon.system.profile.name}`, detail: wardIcon.system.profile.ward, cost: willT >= 3 ? "1 AP (the first each turn is free)" : "1 AP", action: "activateWard", icon: "fa-solid fa-shield-halved" });
-  for (const ch of wonders.chargesOf(actor)) mentalRows.push({ label: `Spend ${wonders.CHARGES[ch.kind]?.label ?? "charge"} on ${ch.holder.name}`, detail: ch.data.description ?? "", cost: "Free (already paid)", action: "spendCharge", itemId: ch.effect.uuid, icon: "fa-solid fa-bolt" });
-  if (mentalTenet(actor) === "mental-order-dream:balance") mentalRows.push({ label: "Balance", detail: "Once per round: +1 to your attack or dodge result, or −1 to the opposing result", cost: "Free", action: "useBalance", icon: "fa-solid fa-scale-balanced" });
+  for (const ch of wonders.chargesOf(actor)) mentalRows.push({ label: `Spend ${wonders.CHARGES[ch.kind]?.label ?? "charge"} on ${ch.holder.name} (manual)`, detail: "Normally offered automatically when they roll; this is for a roll the system did not see. " + (ch.data.description ?? ""), cost: "Free (already paid)", action: "spendCharge", itemId: ch.effect.uuid, icon: "fa-solid fa-bolt" });
   if (skills.tierOf(sys.trees, "mental-beyond-dream") >= 2) mentalRows.push({ label: "Momentum", detail: "A creature or object you moved with a Beyond Mode collided: 5d8 Force again in a new direction (can chain)", cost: `⚡ ${ab.statMinOf(actor, "pon")}`, action: "momentum", icon: "fa-solid fa-arrows-spin" });
   if (actions.spellEffects(actor, "redirect").length) mentalRows.push({ label: "Redirect", detail: "Use a stored charge against an attack that hit within its range", cost: "Free (already paid)", action: "useRedirect", icon: "fa-solid fa-reply" });
+  if (mTheory >= 1 && mctx.wonders.length) mentalRows.push({ label: "Dismiss a Wonder", detail: "Your own effects go freely; on someone else it's an attack roll (Range AP) they may dodge", cost: "Range AP", action: "dismissWonder", icon: "fa-solid fa-ban" });
+  if (mTheory >= 5) mentalRows.push({ label: "Patron Wonder", detail: `Chosen when you rest${actor.getFlag("flowstate", "patron") ? ` (now: ${mentalRules.wonderById(actor.getFlag("flowstate", "patron"))?.name ?? "none"})` : ""}: aligned to it, its Manifests Enhance/Burst without the energy cost`, cost: "On a rest", action: "choosePatron", icon: "fa-solid fa-star" });
   if (psionT >= 1) mentalRows.push({ label: "Psion Sense", detail: `Spot check for mental energies within ${mctx.farSight ? 1000 : 100} ft`, cost: "Check", action: "psionSense", icon: "fa-solid fa-brain" });
   if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
   if (psionT >= 4) mentalRows.push({ label: "Aura Sight", detail: "Spot everything in Psion range; doubles Area Manifestations until your next turn", cost: "2 AP + ⚡ half total Mind", action: "auraSight", icon: "fa-solid fa-eye" });
@@ -772,6 +773,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       alignNightmare: function () { return mental.changeAlignment(this.document, "nightmare"); },
       alignNeutral: function () { return mental.changeAlignment(this.document, "neutral"); },
       deepen: function () { return mental.deepen(this.document); },
+      dismissWonder: function () { return mental.dismiss(this.document); },
+      choosePatron: function () { return mental.choosePatron(this.document); },
       attuneIcon: function (event, target) { const item = target?.closest?.("[data-item-id]") ? this.document.items.get(target.closest("[data-item-id]").dataset.itemId) : null; return mental.attuneIcon(this.document, item); },
       activateWard: function () { return mental.activateWard(this.document); },
       psionSense: function () { return mental.psionSense(this.document); },

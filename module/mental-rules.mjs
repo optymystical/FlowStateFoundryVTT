@@ -74,12 +74,12 @@ export const AREA_SHAPES = { radius: "10 ft radius around you", cone: "20 ft 90Â
 export const wonderPower = (stat, bonusPct = 0) => Math.floor(Math.floor((Number(stat) || 0) / 10) * (1 + bonusPct / 100));
 
 /** What a Manifest costs. Burst pays RP instead of AP, plus the Enhance cost in energy; doing both pays the Enhance cost twice. */
-export function manifestCost({ range = "ranged", enhance = false, burst = false, enhanceCost = 0, free = false }) {
+export function manifestCost({ range = "ranged", enhance = false, burst = false, enhanceCost = 0, free = false, waive = {} }) {
   const base = RANGES[range]?.ap ?? 2;
-  const energy = free ? 0 : (enhance ? enhanceCost : 0) + (burst ? enhanceCost : 0);
-  return { ap: burst || free ? 0 : base, rp: burst && !free ? base : 0, energy, burst, enhance };
+  const w = free ? { ap: true, rp: true, energy: true } : waive;
+  const energy = w.energy ? 0 : (enhance ? enhanceCost : 0) + (burst ? enhanceCost : 0);
+  return { ap: burst || w.ap ? 0 : base, rp: burst && !w.rp ? base : 0, energy, burst, enhance };
 }
-
 /** Can this Wonder be Manifested, and at what Power? */
 export function manifestCheck(wonder, stat, bonusPct = 0) {
   const power = wonderPower(stat, bonusPct);

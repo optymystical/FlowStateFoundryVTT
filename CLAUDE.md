@@ -31,7 +31,7 @@ all five Magic groups (T1: Magic Theory, Slashing, Piercing, Crushing, Protectio
 Cold, Radiation, Acid; T3: Grasp Arcana, Venomancy, Charm, Witchery; T4: Build Arcana, Summoning, Creation, Animation; T5:
 Restoration Arcana, Geomancy, Illusion, Arcanomancy, with all their Combos) are automated; "tier" in Magic means the group of
 trees a Magic Theory tier unlocks. Only terrain effects (Muddy/Harden) and Mixed Animations are left to the GM.
-Mental is in progress (built from the Mental Rework Test Ground): the framework is in (Manifest, Alignment, Icons and Wards, Willpower Arts, Psion Arts) and the Wonders' Modes are being added Wonder by Wonder. Ancestries are not yet implemented.
+Mental is in progress (built from the Mental Rework Test Ground): the framework is in (Manifest, Alignment, Icons and Wards, Willpower Arts, Psion Arts) and the Wonders' Modes are being added Wonder by Wonder (Life, Death, Order, Chaos, Beyond, Below are in). Mental Theory, Forms/Wards and Willpower Arts are complete. Ancestries are not yet implemented.
 
 ## Layout
 
@@ -52,6 +52,8 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `module/arcana.mjs` — Tier 5: Restore/Painless/Resuscitate, Shift/Toss/Mend, Mirage, Delay support; registers into `actions.mjs` (`registerArcana`).
 - `module/conjure.mjs` + `conjure-rules.mjs` — Tier 4: Summons/Animations as temporary NPC actors, Made items, riders, Build Arcana helpers (rules math is pure).
 - `module/mental-rules.mjs` (pure: Wonders and Modes parsed from the Mental trees, Wonder Power, Manifest costs, Alignment, Icon Forms and their numbers) + `module/mental.mjs` (Manifest dialog and attack, Alignment, attuning Icons, Wards, Nightmare Ward negation, Psion Arts; registers into `actions.mjs` via `registerMental`).
+- `module/wonders.mjs` — Mental Wonders: Mode/ability/Tenet effects (`MODES` registry), charges, pending effects; registers into `mental.mjs`/`actions.mjs`.
+- `module/charges.mjs` — Order/Chaos charges live on rolls: asks the charge's caster (socket) at attack/dodge/other/damage rolls and after an attack resolves (Verdict, Entropy, Balance).
 - `module/areas.mjs` — Area spells: shapes, pure geometry, template placement, Emplace card.
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
 - `module/wonders.mjs` — Mental Wonders: Mode/ability/Tenet effects (`MODES` registry), charges, pending effects; registers into `mental.mjs`/`actions.mjs`.

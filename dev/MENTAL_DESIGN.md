@@ -24,3 +24,8 @@ See README, "Mental (in progress)".
 - Modes live in `wonders.mjs` `MODES` keyed by mode id; each returns card HTML. Delayed effects are `pending` effects (`onTargetTurn`) processed at the target's turn start.
 - Temp HP is effect kind `tempHP`, soaked in `damageOutcome` before HP.
 - Order/Chaos charges are effects spent via a calculator card, not live roll interception.
+
+## Live charges, Theory and Wards (v0.44.0)
+- `charges.mjs`: `onRoll` (hooked at every roll site via `mentalHook.rollCharges`), `afterResolve` (`resolveCharges`, in `defend`), `onDamage` (`damageCharges`, in `rollExchangeDamage`). A roll's total is overwritten with `setRollTotal`; notes go on the card. The caster is asked with `askFor` (local dialog, or the socket `chargeAsk`/`chargeAnswer` with a 60 s timeout).
+- Chant/Make Clear are follow-up acts (`rerollAct`) carrying the original net, die and dodge total. Will of Body and Spirit is `mentalHook.attackCost`, called after weapon and spell attacks.
+- Reverie's hold works through `beforeClear` (marks the effects `persistent`) + `maintainDream`; Anchor's "not moved" compares the token to the `turnPos` flag.

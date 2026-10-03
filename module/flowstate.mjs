@@ -13,6 +13,7 @@ import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
 import * as pictures from "./pictures.mjs";
 import "./mental.mjs";
+import * as charges from "./charges.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStatePileSheet } from "./sheets.mjs";
 /* -------------------------------------------- */
 /*  Documents                                   */
@@ -498,6 +499,7 @@ Hooks.once("ready", () => {
     await actions.GM_ACTIONS[data?.action]?.(data);
   });
   pictures.listenForBrowse();
+  charges.listen();
 });
 
 /* -------------------------------------------- */

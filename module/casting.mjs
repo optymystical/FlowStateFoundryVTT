@@ -196,6 +196,7 @@ async function castDialog(actor, ctx) {
   };
   return DialogV2().prompt({
     window: { title: `Cast a spell: ${actor.name}` },
+    position: { width: Math.min(800, (globalThis.innerWidth ?? 840) - 40) },   // twice Foundry's default dialog width, or the screen if it's narrower
     content: dialogHTML(ctx, v),
     render: (event, dlg) => {
       const el = dlg?.element ?? dlg;

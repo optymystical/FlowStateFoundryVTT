@@ -437,5 +437,19 @@ ok2(!hero.effects.some(e => e.flags.flowstate.ritual), "The second free cast end
 res = await cast("magic-gravity:force", { useRitual: "none" });
 ok2(res === null, "A free cast from a Ritual that doesn't exist is refused");
 
+console.log("== Spirit Sense (Primary): immune to a Targeted spell's stealth bonus");
+await actions.clearSpellEffects(hero);
+target(orc); seq = [20]; await cast("magic-protection-arcana:shield");
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 1, "A Targeted spell has the half-stealth Advantage");
+orc.system.trees = { "magic-grasp-arcana": 3 };
+target(orc); seq = [20]; await cast("magic-protection-arcana:shield");
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 1, "Secondary Spirit Sense (Grasp Arcana T3 or less) gives no immunity");
+orc.system.trees = { "magic-grasp-arcana": 4 };
+target(orc); seq = [20]; await cast("magic-protection-arcana:shield");
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 0 && /Spirit Sense: immune/.test(text(lastAtk())), "Primary Spirit Sense: no stealth bonus, and the card says why");
+target(orc); seq = [20]; await cast("magic-slashing:cut");
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 0, "A Ranged spell never had the bonus");
+orc.system.trees = {};
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll Tier 1 spell checks passed");
 if (fails) process.exit(1);

@@ -2204,7 +2204,7 @@ export const TREES = [
     "summary": "You unlock the following Passive:",
     "entries": [
      {
-      "name": "# Minigun",
+      "name": "Minigun",
       "text": "Multicast gains Stacking. Each instance requires its own usage of AP/RP."
      }
     ]
@@ -2524,7 +2524,7 @@ export const TREES = [
       "text": "Your Spirit Sense is now naturally Primary."
      },
      {
-      "name": "# Foci Master",
+      "name": "Foci Master",
       "text": "You can spend 2 AP to swap your Attuned Foci to another one, assuming the new one is on your person and easily accessible."
      }
     ]
@@ -2793,7 +2793,7 @@ export const TREES = [
       "text": "1 Threshold, Spell Mod, Universal. At the start of each of your turns, this Spell restores health/durability equal to your Build minimum, up to the damage it has taken since the start of your last turn."
      },
      {
-      "name": "# Shroud Master",
+      "name": "Shroud Master",
       "text": "You can spend 2 AP to swap your Attuned Shroud to another one, assuming the new one is on your person and easily accessible."
      }
     ]
@@ -2804,7 +2804,7 @@ export const TREES = [
     "summary": "You unlock the following Spell Mod:",
     "entries": [
      {
-      "name": "# Projection",
+      "name": "Projection",
       "text": "1 Threshold, Spell Mod, Universal. This Spell can be cast from the position of any willing target (or unwilling if you make a targeted attack roll against them) within 100ft of you. Treat its range as being based on their position, and count it as melee if it targets something within their melee range."
      }
     ]

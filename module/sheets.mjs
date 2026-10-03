@@ -12,6 +12,7 @@ const conjureHasSenseSwap = actor => (globalThis.game?.actors ?? []).some(a => a
 import * as spells from "./spells.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_RARITIES, ELEMENTS, sourceTypeChoices } from "./magic.mjs";
 import * as skills from "./skills.mjs";
+import { askImage } from "./pictures.mjs";
 import * as ab from "./abilities.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
 
@@ -702,30 +703,21 @@ export function runActionRow(actor, row) {
   return handler.call({ document: actor, actor }, new Event("click"), target);
 }
 
-/**
- * Change a sheet's picture. Foundry's own picker needs the file-browser permission, which players usually lack, so this asks for
- * an image URL or path (Browse is offered where the user may use the file browser). Owners can change their own sheets' pictures.
- */
+/** Change a sheet's picture (owners only; see `askImage`: players browse through a connected GM). */
 async function pickImage(event, target) {
   const doc = this.document;
   if (!this.isEditable) return;
   const field = target?.dataset?.edit || "img";
   const current = foundry.utils.getProperty(doc, field) ?? "";
-  const canBrowse = game.user.can?.("FILES_BROWSE");
-  const FP = foundry.applications?.apps?.FilePicker?.implementation ?? globalThis.FilePicker;
-  const url = await foundry.applications.api.DialogV2.prompt({
-    window: { title: `Picture: ${doc.name}` },
-    content: `<div class="fs-field"><label>Image URL or path</label><div style="display:flex;gap:4px">
-      <input type="text" name="img" value="${foundry.utils.escapeHTML ? foundry.utils.escapeHTML(current) : current}" placeholder="https://… or worlds/…/picture.png" style="flex:1" autofocus>
-      ${canBrowse && FP ? `<button type="button" data-browse><i class="fa-solid fa-folder-open"></i> Browse</button>` : ""}</div>
-      <p class="hint">Paste a link to an image, or the path of one already uploaded.</p></div>`,
-    render: (ev, dialog) => dialog.element.querySelector("[data-browse]")?.addEventListener("click", () => {
-      new FP({ type: "image", current, callback: path => { dialog.element.querySelector("input[name=img]").value = path; } }).browse();
-    }),
-    ok: { label: "Set picture", callback: (ev, button) => button.form.elements.img.value.trim() },
-    rejectClose: false
-  });
-  if (url && url !== current) await doc.update({ [field]: url });
+  const url = await askImage(`Picture: ${doc.name}`, current);
+  if (!url || url === current) return;
+  const update = { [field]: url };
+  // An actor's token art follows its portrait, unless the token was given its own picture.
+  if (doc.documentName === "Actor" && field === "img") {
+    const tex = doc.prototypeToken?.texture?.src;
+    if (!tex || tex === current || tex === "icons/svg/mystery-man.svg") update["prototypeToken.texture.src"] = url;
+  }
+  await doc.update(update);
 }
 
 export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {

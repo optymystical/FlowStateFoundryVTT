@@ -169,7 +169,7 @@ async function shift({ actor, plan, profile, spec, mods, targets }) {
     ${notes.length ? `<ul class="fs-list">${notes.map(l => `<li>${esc(l)}</li>`).join("")}</ul>` : ""}<div class="fs-notes">One piece must stay put; it must be Powder, Liquid or Soft material. 1 Body is about a cubic foot.</div>` });
   if (target) {
     const rider = a.rider ? { core: a.rider, level, charmRoll: null, hex: null, arcane: !!a.arcane } : null;
-    await performAttack(actor, { label: mods.toss ? "Toss" : "Shift", net: mods.toss ? 0 : 1, stealth: a.stealth ? "half" : "none", melee: !mods.toss, area: false, push: false, damage: `${n}d${sides}`, type, stacks: mods.harden && !["armor", "terrain"].includes(spec.harden) ? 1 : 0, physical: false,
+    await performAttack(actor, { label: mods.toss ? "Toss" : "Shift", net: mods.toss ? 0 : 1, stealth: a.stealth ? "half" : "none", magicStealth: !!a.stealth, melee: !mods.toss, area: false, push: false, damage: `${n}d${sides}`, type, stacks: mods.harden && !["armor", "terrain"].includes(spec.harden) ? 1 : 0, physical: false,
       shots: 1, critStacks: 0, pierce: 0, bash: 0, knockback: 0, notes: [mods.toss ? "Toss: ranged attack roll" : "Shift: melee attack roll with Advantage", `${n}d${sides} ${DAMAGE_TYPES[type] ?? type} (half the Body, rounded down)`],
       followups: [], targetActors: [target], ...(rider ? { rider } : {}), ...(spec.muddy && mods.muddy ? { muddy: { choice: spec.muddy, caster: actor.uuid, power: plan.power } } : {}) });
   }

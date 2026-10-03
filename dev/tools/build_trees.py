@@ -12,7 +12,8 @@ def clean(s):
     s = re.sub(r'\\([!*\[\]#_.()+=<>~`|{}-])', r'\1', s)   # any other Markdown escape (e.g. "Heave\!")
     s = re.sub(r'\*+', '', s)            # drop bold/italic markers (the doc's bolding is inconsistent)
     s = s.replace('&#10;', ' ')
-    return re.sub(r'\s+', ' ', s).strip()
+    s = re.sub(r'\s+', ' ', s).strip()
+    return re.sub(r'^#+\s*', '', s)     # some doc bullets are heading-styled ("# Minigun:")
 
 def slug(s):
     return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')

@@ -1199,6 +1199,16 @@ export const GM_ACTIONS = {
     const item = await fromUuid(uuid);
     if (item) await item.update(data, { flowstateSystem: true });
   },
+  /** Change a spell that is mid cast (its attack card): its Power and dice (Amplify), or the health it has left. */
+  async castChange({ id, power, damage, hpLeft }) {
+    const m = game.messages.get(id);
+    if (!m) return;
+    const upd = {};
+    if (power !== undefined) { upd["flags.flowstate.attack.opts.spell.power"] = power; upd["flags.flowstate.attack.opts.spell.amplified"] = true; }
+    if (damage !== undefined) upd["flags.flowstate.attack.opts.damage"] = damage;
+    if (hpLeft !== undefined) upd["flags.flowstate.attack.opts.spell.hpLeft"] = hpLeft;
+    await m.update(upd);
+  },
   async moveToken({ uuid, x, y }) {
     const doc = await fromUuid(uuid);
     if (doc) await doc.update({ x, y }, { flowstateThrow: true });
@@ -1655,7 +1665,8 @@ export function adjustGuards(attacker, target) {
 export async function adjustFor(message, index, ownerUuid) {
   const entry = message.getFlag("flowstate", "attack")?.targets?.[index];
   if (!entry) return;
-  if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
+  if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
+if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
   const owner = await fromUuid(ownerUuid);
   if (!owner?.isOwner) return ui.notifications.warn(`Only ${owner?.name ?? "its owner"}'s owner can extend that Shield.`);
   const eff = spellEffects(owner, "shield").find(e => e.flags.flowstate.spellEffect.adjust && e.flags.flowstate.spellEffect.hp > 0);
@@ -1673,7 +1684,8 @@ export async function allyHelp(message, index) {
   const attack = message.getFlag("flowstate", "attack");
   const entry = attack?.targets?.[index];
   if (!entry) return;
-  if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
+  if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
+if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
   const attacker = await fromUuid(attack.attacker), target = await fromUuid(entry.uuid);
   if (!target) return;
   const blocking = new Set(findBlocksFor(message.id, index).map(b => b.blocker));
@@ -1722,7 +1734,8 @@ export async function defend(message, index, choice) {
   const attack = message.getFlag("flowstate", "attack");
   let entry = attack?.targets?.[index];
   if (!entry) return;
-  if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
+  if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
+if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
   const target = await fromUuid(entry.uuid);
   if (!target) return ui.notifications.warn("That target no longer exists.");
   if (!target.isOwner) return ui.notifications.warn(`Only ${entry.name}'s owner can respond.`);
@@ -1922,7 +1935,8 @@ export async function blockFor(message, index, blockerUuid, perfect = false, tos
   const attack = message.getFlag("flowstate", "attack");
   const entry0 = attack?.targets?.[index];
   if (!entry0) return;
-  if (findDefense(message.id, index)) return ui.notifications.info(`${entry0.name} has already responded.`);
+  if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
+if (findDefense(message.id, index)) return ui.notifications.info(`${entry0.name} has already responded.`);
   const blocker = await fromUuid(blockerUuid);
   const target = await fromUuid(entry0.uuid);
   if (!blocker || !target) return;
@@ -4188,6 +4202,10 @@ export function findFollowup(sourceMessageId) {
   return game.messages.find(m => m.getFlag("flowstate", "followupOf") === sourceMessageId);
 }
 
+/** A spell that was countered mid cast (a Strike at it destroyed or Ripped it): the card that cancelled it, if any. */
+export function findCancel(attackMessageId) {
+  return game.messages.find(m => m.getFlag("flowstate", "spellCancelled")?.attackMessage === attackMessageId);
+}
 export function findDefense(attackMessageId, index) {
   return game.messages.find(m => {
     const f = m.getFlag("flowstate", "defense");
@@ -5579,7 +5597,8 @@ export function quartzGuards(attacker, target) {
 export async function quartzFor(message, index, ownerUuid) {
   const entry = message.getFlag("flowstate", "attack")?.targets?.[index];
   if (!entry) return;
-  if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
+  if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
+if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
   const owner = await fromUuid(ownerUuid);
   if (!owner?.isOwner) return ui.notifications.warn(`Only ${owner?.name ?? "its owner"}'s owner can extend that Shroud.`);
   const sh = owner.system.shroud;

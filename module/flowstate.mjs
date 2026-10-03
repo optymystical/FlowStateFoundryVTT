@@ -306,8 +306,15 @@ Hooks.once("init", () => {
 function decorateExchange(message, html) {
   const attack = message.getFlag("flowstate", "attack");
   if (attack) {
+    const cancelled = actions.findCancel(message.id)?.getFlag("flowstate", "spellCancelled");
     for (const [index, entry] of attack.targets.entries()) {
       const defense = actions.findDefense(message.id, index);
+      if (cancelled && !defense) {
+        html.querySelector(`.fs-target[data-index="${index}"] .fs-exchange-buttons`)?.remove();
+        const st = html.querySelector(`.fs-status[data-index="${index}"]`);
+        if (st) st.innerHTML = `<div class="fs-notes"><i class="fa-solid fa-ban"></i> Countered mid cast: ${foundry.utils.escapeHTML(cancelled.reason ?? "the spell is gone")}</div>`;
+        continue;
+      }
       const status = html.querySelector(`.fs-status[data-index="${index}"]`);
       const buttons = html.querySelector(`.fs-target[data-index="${index}"] .fs-exchange-buttons`);
       // Close Quarters (Bladed T2): once used, show the re-rolled attack and drop its button.
@@ -444,6 +451,7 @@ Hooks.on("createChatMessage", message => {
     ?? message.getFlag("flowstate", "dash")?.attackMessage ?? message.getFlag("flowstate", "blockFor")?.attackMessage
     ?? message.getFlag("flowstate", "perfect")?.attackMessage ?? message.getFlag("flowstate", "dipOf") ?? message.getFlag("flowstate", "dashMoveOf")
     ?? message.getFlag("flowstate", "riposteDeclined") ?? message.getFlag("flowstate", "quartzFor")?.attackMessage ?? message.getFlag("flowstate", "adjustFor")?.attackMessage ?? message.getFlag("flowstate", "retortOf") ?? message.getFlag("flowstate", "limberOf")
+    ?? message.getFlag("flowstate", "spellCancelled")?.attackMessage
     ?? message.getFlag("flowstate", "followupCard")
     ?? message.getFlag("flowstate", "followupOf");
   const target = ref && game.messages.get(String(ref).split(":")[0]);

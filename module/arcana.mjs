@@ -7,7 +7,7 @@ import * as fx from "./spellfx.mjs";
 import { COMBO_ILLUSION } from "./combos.mjs";
 import {
   post, requestGM, putSpellEffect, spellEffects, performAttack, changeEffect, registerArcana, attackerToken, tokenDistance, setActorFlag, pickSceneTarget, spendPoints,
-  requestDamage, GM_ACTIONS, damageOutcome
+  requestDamage, GM_ACTIONS, damageOutcome, findDefense, findCancel
 } from "./actions.mjs";
 import * as areas from "./areas.mjs";
 import { secret } from "./afflictions.mjs";
@@ -345,6 +345,18 @@ export function listSpells() {
       out.push({ id: `effect:${e.uuid}`, kind: "effect", label: `${e.name} on ${a.name}`, caster: d.caster, hp: d.kind === "shield" ? Number(d.hp) || 0 : d.spellHp ?? casterScaling(caster), power: d.power ?? spellPowerOf(caster), ritualOf: e.flags?.flowstate?.ritualOf ?? null, amplified: !!d.amplified, effect: e });
     }
   }
+  // Spells that are mid cast: the attack has been rolled and nobody has answered it yet. Another caster can Strike them.
+  for (const m of globalThis.game?.messages?.filter?.(x => x.getFlag?.("flowstate", "attack")?.opts?.spell) ?? []) {
+    const at = m.getFlag("flowstate", "attack");
+    if (findCancel(m.id)) continue;
+    const open = at.targets.filter((t, i) => !findDefense(m.id, i));
+    if (!open.length) continue;
+    const caster = globalThis.fromUuidSync?.(at.attacker);
+    const sp = at.opts.spell;
+    out.push({ id: `cast:${m.id}`, kind: "cast", label: `${at.opts.label ?? "A spell"} by ${caster?.name ?? "someone"}, mid cast (attack ${Math.max(...open.map(t => t.total ?? 0))})`, caster: at.attacker,
+      hp: sp.hpLeft ?? casterScaling(caster), power: sp.power ?? spellPowerOf(caster), ritualOf: sp.ritualOf ?? null, amplified: !!sp.amplified,
+      message: m, attackTotal: Math.max(...open.map(t => t.total ?? 0)), opts: at.opts });
+  }
   for (const t of globalThis.canvas?.scene?.templates ?? []) {
     const f = t.flags?.flowstate;
     if (f?.spell !== "emplace" || !(f.health > 0)) continue;
@@ -358,7 +370,10 @@ export const findSpell = id => listSpells().find(x => x.id === id) ?? null;
 /** Damage a Spell; it's destroyed at 0. Returns { destroyed, left }. */
 async function damageSpell(entry, amount) {
   const left = Math.max(0, entry.hp - amount);
-  if (entry.kind === "summon") {
+  if (entry.kind === "cast") {
+    if (left <= 0) await cancelCast(entry, "a Strike destroyed it");
+    else await requestGM("castChange", { id: entry.message.id, hpLeft: left });
+  } else if (entry.kind === "summon") {
     const a = await fromUuid(entry.id.slice(7));
     await requestDamage(a, amount, "arcane", 0, null, { silent: true, bypass: true });
   } else if (entry.kind === "barrier") {
@@ -368,7 +383,14 @@ async function damageSpell(entry, amount) {
   else await changeEffect(entry.effect, { "flags.flowstate.spellEffect.spellHp": left });
   return { destroyed: left <= 0, left };
 }
-async function destroySpell(entry) {
+/** A spell destroyed or taken mid cast never lands: a card says so, and the attack card loses its response buttons. */
+async function cancelCast(entry, reason) {
+  const caster = globalThis.fromUuidSync?.(entry.caster);
+  await post(caster ?? game.user, { title: `${esc(caster?.name ?? "A caster")} — spell countered`, body: `<div class="fs-result"><i class="fa-solid fa-ban"></i> ${esc(entry.label)} is countered: ${esc(reason)}.</div>`,
+    flags: { flowstate: { spellCancelled: { attackMessage: entry.message.id, reason } } } });
+}
+async function destroySpell(entry, reason = "it dissipates") {
+  if (entry.kind === "cast") return cancelCast(entry, reason);
   if (entry.kind === "summon") return requestGM("deleteCreation", { actorId: (await fromUuid(entry.id.slice(7))).id });
   if (entry.kind === "barrier") return requestGM("barrier", { sceneId: entry.sceneId, id: entry.tplId, hp: 0 });
   return changeEffect(entry.effect, null);
@@ -378,6 +400,14 @@ async function destroySpell(entry) {
 async function amplifySpell(entry) {
   if (entry.ritualOf) return "Amplify only works on non-Ritual Spells.";
   if (entry.amplified) return "That Spell has already been amplified.";
+  if (entry.kind === "cast") {
+    // Mid cast it can still be changed: +10 Power, so its dice, health and Force (everything the card works out later) scale up.
+    const p = Math.max(1, entry.power), dmg = String(entry.opts.damage ?? "").match(/^(\d+)d(\d+)$/);
+    const upd = { id: entry.message.id, power: p + 10 };
+    if (dmg) upd.damage = `${Math.round(Number(dmg[1]) / p * (p + 10))}d${dmg[2]}`;
+    await requestGM("castChange", upd);
+    return `${entry.label} is amplified: Power ${p} → ${p + 10}${upd.damage ? `, ${dmg[0]} → ${upd.damage}` : ""}. It lands with the new numbers.`;
+  }
   if (entry.kind === "barrier") {
     await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 200, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 200, amplified: true } });
     return `The barrier gains 200 health (20 × 10 Power).`;
@@ -398,6 +428,13 @@ async function amplifySpell(entry) {
 /** Rip (Arcanomancy T5): take control of a Spell with 5 or less Power, then redirect it or dissipate it. */
 async function ripSpell(entry, caster, mode, newTarget, ritualOf) {
   if (entry.power > 5) return `That Spell has ${entry.power} Power: Rip needs 5 or less.`;
+  if (entry.kind === "cast") {
+    await cancelCast(entry, `${caster.name} Ripped it`);
+    if (mode !== "redirect" || !newTarget) return `${entry.label} dissipates.`;
+    // Redirected: the same spell goes at the new target as a fresh attack roll, now under the Ripper's control.
+    await performAttack(caster, { ...entry.opts, targetActors: [newTarget], spell: { ...entry.opts.spell, ritualOf: null, hpLeft: undefined } });
+    return `${entry.label} is redirected to ${newTarget.name} (under ${caster.name}'s control, with a new attack roll).`;
+  }
   if (mode !== "redirect" || !newTarget || entry.kind === "barrier") { await destroySpell(entry); return `${entry.label} dissipates.`; }
   if (entry.kind === "summon") {
     await requestGM("takeControl", { actor: entry.id.slice(7), caster: caster.uuid });
@@ -448,6 +485,16 @@ export async function resolveStrike({ actor, plan, profile, mods, spec, ritualOf
   const entry = findSpell(spec.id);
   if (!entry) return post(actor, { title: `${esc(actor.name)} — Strike`, body: `<div class="fs-result">The Spell is already gone.</div>` });
   let body;
+  // A spell that is mid cast can only be hit if the Strike's attack roll beats the cast's attack roll.
+  if (entry.kind === "cast") {
+    const d = actor.system.derived;
+    const net = 1 + (mods.pinpoint ? 1 : 0);                                   // Strike has Advantage against magic
+    const atk = await roll(poolFormula(1, d.attackDie, net));
+    if (!(atk.total > entry.attackTotal)) {
+      return post(actor, { title: `${esc(actor.name)} — Strike a Spell`, body: `<div class="fs-result"><i class="fa-solid fa-burst"></i> Strike rolls ${atk.total} against the cast's ${entry.attackTotal}: it doesn't beat it, so ${esc(entry.label)} is untouched.</div>` });
+    }
+    var castNote = `Strike rolls ${atk.total}, beating the cast's ${entry.attackTotal}. `;
+  }
   if (mods.amplify) body = await amplifySpell(entry);
   else if (mods.rip) body = await ripSpell(entry, actor, spec.mode, spec.target ? await fromUuid(spec.target) : null, plan.freeFrom ? (Array.from(actor.effects).find(e => e.id === plan.freeFrom)?.uuid ?? null) : null);
   else {
@@ -461,7 +508,7 @@ export async function resolveStrike({ actor, plan, profile, mods, spec, ritualOf
       body += ` Absorb: ${esc(actor.name)} regains <strong>${gain} Energy</strong>.`;
     }
   }
-  await post(actor, { title: `${esc(actor.name)} — Strike a Spell`, body: `<div class="fs-result"><i class="fa-solid fa-burst"></i> ${body}</div>` });
+  await post(actor, { title: `${esc(actor.name)} — Strike a Spell`, body: `<div class="fs-result"><i class="fa-solid fa-burst"></i> ${typeof castNote === "string" ? castNote : ""}${body}</div>` });
 }
 
 /* -------------------------------------------- */

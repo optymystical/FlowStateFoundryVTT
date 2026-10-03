@@ -10,7 +10,7 @@ globalThis.foundry = {
 };
 globalThis.Roll = class { constructor(f){ this.formula=f; } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
 globalThis.ChatMessage = { getSpeaker: ({actor}) => ({ alias: actor.name }),
-  create: async d => { const m = { id: "m"+messages.length, ...d, getFlag: (s,k) => m.flags?.[s]?.[k], setFlag: async (s,k,v) => { m.flags ??= {}; (m.flags[s] ??= {})[k] = v; } }; messages.push(m); return m; } };
+  create: async d => { const m = { id: "m"+messages.length, ...d, getFlag: (s,k) => m.flags?.[s]?.[k], setFlag: async (s,k,v) => { m.flags ??= {}; (m.flags[s] ??= {})[k] = v; }, update: async u => { for (const [k, v] of Object.entries(u)) foundry.utils.setProperty(m, k, v); } }; messages.push(m); return m; } };
 const combat = { id: "C", started: true, round: 1, turn: 0, combatant: null, combatants: [] };
 globalThis.game = { settings: { get: () => false }, messages: { find: fn => messages.find(fn), filter: fn => messages.filter(fn), get: id => messages.find(m=>m.id===id) }, combat,
   users: Object.assign([{ id: "gm", isGM: true }], { activeGM: { id: "gm" } }), socket: { emit: (...a) => console.log("  socket emit", JSON.stringify(a[1])) }, user: { targets: new Set(), isGM: false }, actors: [] };
@@ -86,6 +86,7 @@ const power = () => S.spellPower(C.castContext(hero).options.find(o => o.key ===
 const dodgeDie0 = orc.system.derived.dodgeDie;
 
 const M = id => `mod:${id}`;
+const lastAtkOf = id => messages.find(m => m.id === id)?.flags?.flowstate?.attack?.opts;
 const lastAtk = () => messages.filter(m => m.flags?.flowstate?.attack).at(-1);
 const reset = () => { orc.system.hp.value = 432; orc.system.hp.lost = 0; orc.system.energy.value = 100; orc.system.conditions = { ignite: 0, stain: 0, slow: 0, haste: 0, solid: 0, searing: 0, frozen: 0, electric: 0 }; orc.effects.splice(0, orc.effects.length); orc.flags = {}; };
 // cast at the Orc, it fails a 12 dodge, then roll the damage; returns the damage card
@@ -203,6 +204,36 @@ ok2(eff(orc, "shield").length === 0, "Rip: a Spell with 5 or less Power dissipat
 clean6(); await shieldOn(orc, { hp: 25 }); const sid5 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
 await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: sid5, ripMode: "redirect", ripTarget: gob.uuid });
 ok2(eff(orc, "shield").length === 0 && eff(gob, "shield")[0]?.flags.flowstate.spellEffect.caster === hero.uuid && eff(gob, "shield")[0].flags.flowstate.spellEffect.hp === 25, "…or is redirected to a new target under your control");
+
+console.log("== Strike a spell that is mid cast (after its attack roll, before the defense)");
+{
+  const A = await import("../../module/actions.mjs");
+  const pending = async () => { clean6(); target(orc); seq = [10]; await cast("magic-slashing:cut"); return lastAtk(); };
+  let atk = await pending();
+  const mid = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
+  ok2(mid && mid.attackTotal === 10 && mid.hp > 0 && /mid cast/.test(mid.label), "A spell whose attack has been rolled but not answered is listed as a Strike target (mid cast)");
+  // Strike has to beat the cast's attack roll.
+  seq = [5]; await cast("magic-arcanomancy:strike", { base: 1, strikeSpell: mid.id });
+  ok2(!A.findCancel(atk.id) && /doesn't beat/.test(text(messages.at(-1))), "A Strike that doesn't beat the cast's attack roll leaves it alone");
+  // Beats it, and its damage destroys the spell: it never lands.
+  seq = [30, 500]; await cast("magic-arcanomancy:strike", { base: 1, strikeSpell: mid.id, [M("magic-arcanomancy:absorb")]: true });
+  ok2(!!A.findCancel(atk.id) && /countered/.test(text(messages.filter(m => m.flags?.flowstate?.spellCancelled).at(-1))), "A Strike that beats the roll and destroys it counters the spell");
+  const hpBefore = orc.system.hp.value; seq = [2];
+  await A.defend(atk, 0, "dodge");
+  ok2(orc.system.hp.value === hpBefore && !A.findDefense(atk.id, 0), "…so the target can no longer be made to answer it");
+  ok2(!AR.listSpells().some(x => x.kind === "cast" && x.message.id === atk.id), "…and it's off the list");
+  // Amplify: +10 Power on the spell before it lands.
+  atk = await pending(); const mid2 = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
+  const p0 = atk.flags.flowstate.attack.opts.spell.power;
+  seq = [30]; await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true, strikeSpell: mid2.id });
+  const o2 = lastAtkOf(atk.id);
+  ok2(o2.spell.power === p0 + 10 && o2.spell.amplified && o2.damage === `${2 * (p0 + 10)}d6`, `Amplify on a mid-cast spell: Power ${p0} → ${o2.spell.power}, damage ${o2.damage}`);
+  // Rip: take it over and send it at someone else with a new attack roll.
+  atk = await pending(); const mid3 = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
+  seq = [30, 20]; await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: mid3.id, ripMode: "redirect", ripTarget: gob.uuid });
+  const redirected = lastAtk();
+  ok2(!!A.findCancel(atk.id) && redirected.id !== atk.id && redirected.flags.flowstate.attack.targets[0].uuid === gob.uuid, "Rip (redirect): the original is gone and the spell goes at the new target with a fresh attack roll");
+}
 
 console.log("== Anti-Magic field (Blast Ritual) and Aura entrants");
 {

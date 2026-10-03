@@ -539,8 +539,8 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
  * interface and normal play; it isn't anti-cheat.
  */
 const BUILD_KEYS = ["system.stats", "system.skillPoints", "system.size", "system.unspentStats", "system.statCarry", "system.creation", "system.trees"];
-// Players may rename their own items; everything else about an item's identity is GM-only.
-const ITEM_IDENTITY_KEYS = ["img", "system.weaponType", "system.weight", "system.material", "system.grade",
+// Players may rename their own items and change their pictures; everything else about an item's identity is GM-only.
+const ITEM_IDENTITY_KEYS = ["system.weaponType", "system.weight", "system.material", "system.grade",
   "system.description", "system.quantity", "system.wear", "system.fociType", "system.shroudType", "system.affixes", "system.magazine", "system.extraTypes", "system.ammoType"];
 
 /** Keys in `changes` that match a guarded prefix AND actually differ from the document's current value. */

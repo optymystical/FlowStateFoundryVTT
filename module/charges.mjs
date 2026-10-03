@@ -7,7 +7,7 @@
  * After an attack is answered, `afterResolve` offers Verdict (swap hit and crit), Entropy (an extra roll on a crit) and Balance (Order Tenet).
  * `onDamage` handles damage rolls (Mandate Enhanced, Verdict's damage). `consumeCharge` in wonders.mjs stays as the manual fallback.
  */
-import { post, spellEffects, changeEffect, setActorFlag, turnKey } from "./actions.mjs";
+import { post, spellEffects, changeEffect, setActorFlag, turnKey, performAttack } from "./actions.mjs";
 import { poolFormula } from "./rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
@@ -112,10 +112,11 @@ const rollName = type => ({ attack: "attack roll", dodge: "dodge roll", other: "
  * { notes, rolls } (extra dice to show), or null if nothing was done.
  * ctx: { type: "attack" | "dodge" | "other", die, count, net, max (the roll's top result), label }
  */
-export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max = null, label = "" }) {
+export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max = null, label = "", attackOpts = null }) {
   if (!actor || actor.type === "pile") return null;
   const usable = chargesOn(actor, ["decree", "fracture", "larceny", "mandate"]);
   const stolen = actor.getFlag?.("flowstate", "stolenRoll");
+  let stolenAction = false;
   const out = { notes: [], rolls: [] };
   const top = max ?? die * count;
   // Charges other creatures placed on the roller, asked of each caster in turn.
@@ -170,10 +171,16 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
         let txt = `${count > 1 ? `${count}d` : "d"}${nd} = ${r.total}`;
         if (ans.control && control) { r = await reroll(count, nd, keep ? net : 0); out.rolls.push(r); txt += `, rerolled (Control) = ${r.total}`; }
         if (d.charge === "larceny") await setActorFlag(caster, "stolenRoll", { total: roll.total, type, original: roll.total, from: actor.name, key: turnKey() ?? "ooc" });
+        // Enhanced Larceny steals the action itself: for up to a minute the thief can make a copy of that exact attack (their RP, the victim's dice).
+        if (d.charge === "larceny" && d.enhanced && type === "attack" && attackOpts) {
+          const { targetActors, ...saved } = attackOpts;
+          await setActorFlag(caster, "stolenAction", { from: actor.uuid, fromName: actor.name, label: attackOpts.label || "Attack", opts: saved, cost: Math.max(0, Number(attackOpts.apCost) || 0), until: minuteFromNow() });
+          stolenAction = true;
+        }
         n = r.total;
         lines.push(d.charge === "fracture"
           ? `Fracture: ${esc(actor.name)} rerolls ${keep ? "(keeping the original's Advantage/Disadvantage)" : "(no effects carried over)"}: ${txt}.`
-          : `Larceny: ${esc(caster.name)} steals ${esc(actor.name)}'s ${rollName(type)} (${roll.total}) and its effects, and ${esc(actor.name)} rerolls: ${txt}. ${esc(caster.name)} can use the stolen ${roll.total} in place of any roll before their next turn${d.enhanced ? "; Enhanced, they can instead steal the action itself for up to a minute (RP equal to its cost, using their stats and dice)" : ""}.`);
+          : `Larceny: ${esc(caster.name)} steals ${esc(actor.name)}'s ${rollName(type)} (${roll.total}) and its effects, and ${esc(actor.name)} rerolls: ${txt}. ${esc(caster.name)} can use the stolen ${roll.total} in place of any roll before their next turn${d.enhanced ? (stolenAction ? `. Enhanced: ${esc(caster.name)} also steals the <strong>action itself</strong> for up to a minute: use "Stolen action" in the Action List to make a copy of this exact attack for RP equal to its AP cost, with ${esc(actor.name)}'s dice` : "; Enhanced, but this wasn't an attack, so there's no action to copy") : ""}.`);
       }
       used.push(rep);
     }
@@ -327,4 +334,33 @@ export async function onDamage({ actor }) {
     }
   }
   return out.notes.length ? out : null;
+}
+
+/* -------------------------------------------- */
+/*  Larceny, Enhanced: the stolen action        */
+/* -------------------------------------------- */
+
+/** "Up to a minute": ten rounds in combat, a real minute outside it. */
+function minuteFromNow() {
+  const c = globalThis.game?.combat;
+  return c?.started ? { combat: c.id, round: c.round + 10 } : { at: Date.now() + 60000 };
+}
+const expired = until => {
+  const c = globalThis.game?.combat;
+  if (!until) return true;
+  if (until.combat) return !(c?.started && c.id === until.combat && c.round <= until.round);
+  return Date.now() > until.at;
+};
+/** The action this creature stole and can still use, or null. */
+export const stolenActionOf = actor => { const s = actor?.getFlag?.("flowstate", "stolenAction"); return s && !expired(s.until) ? s : null; };
+
+/** Make a copy of the stolen attack: pay RP equal to its AP cost, roll with the victim's dice, aim at your targets. */
+export async function useStolenAction(actor) {
+  const s = stolenActionOf(actor);
+  if (!s) { if (actor.getFlag?.("flowstate", "stolenAction")) await setActorFlag(actor, "stolenAction", null); return ui.notifications.info(`${actor.name} has no stolen action (it lasts up to a minute).`); }
+  if (!(await pay(actor, { rp: s.cost }, `the stolen ${s.label}`))) return;
+  const victim = await fromUuid(s.from);
+  const targets = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
+  await post(actor, { title: `${esc(actor.name)} — Stolen action`, body: `<div class="fs-result">${esc(actor.name)} makes a copy of ${esc(s.fromName)}'s <strong>${esc(s.label)}</strong> (${s.cost} RP), using ${esc(s.fromName)}'s dice.</div>` });
+  return performAttack(actor, { ...s.opts, label: `${s.label} (stolen)`, dieOf: victim?.uuid ?? s.from, followups: [], notes: [...(s.opts.notes ?? []), `Stolen from ${s.fromName} (Larceny)`], ...(targets.length ? { targetActors: targets } : {}) });
 }

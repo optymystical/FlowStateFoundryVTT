@@ -1082,7 +1082,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   const result = await performAttack(actor, {
     label: followup ? `${item.name} — ${followup.label}` : unarmed ? `${item.name} (${WEAPON_TYPES.unarmed.label} ${p.scalingStat === "str" ? "Heavy" : "Light"})` : item.name,
     net, stealth: followup?.kind === "return" && ab.circular(actor, item, 5) ? "half" : opts.stealth, melee: opts.mode === "strike", push: false,
-    damage: shieldToss?.mode === "guard" || (opts.thrasherGrapple && !opts.getOverHere) ? "" : damage, type: p.damageType, stacks, ap: 0,
+    damage: shieldToss?.mode === "guard" || (opts.thrasherGrapple && !opts.getOverHere) ? "" : damage, type: p.damageType, stacks, ap: 0, apCost: ap || rpPaid,
     physical: true, shots,
     critStacks: p.critStacks, vsSupernatural: p.vsSupernatural, arcaneVsMagic: p.arcaneVsMagic,
     pierce, knockback, knockbackAdd: knockback ? knockbackAdd : 0, bash, notes, followups, followupOf: followup?.source ?? null,
@@ -1382,7 +1382,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth"];
+  "breakFree", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -1527,7 +1527,9 @@ async function startExchange(actor, opts, targets) {
     // Sticky (Acid T4): Advantage against a target with Stain stacks equal to or above their Pain Threshold.
     if (opts.spell?.mods?.sticky && stainTotal(target.system.conditions ?? {}) >= (target.system.hp?.pain ?? Infinity)) { atkNet += 1; spellNotes.push("Sticky: Advantage (Stained)"); }
     // Exploit (Piercing T2): each stack consumes one Advantage for +4 die size (× Spell Power); stacks with no Advantage left are refunded.
-    let atkDie = d.attackDie;
+    // A stolen action (Larceny, Enhanced) is rolled with the original attacker's dice.
+    const dice = opts.dieOf ? (globalThis.fromUuidSync?.(opts.dieOf)?.system?.derived ?? d) : d;
+    let atkDie = dice.attackDie;
     const ex = opts.spell?.exploit;
     if (ex?.stacks) {
       const used = Math.min(ex.stacks, Math.max(0, atkNet));
@@ -1546,7 +1548,8 @@ async function startExchange(actor, opts, targets) {
     if (!shared) rolls.push(atk);
     const chargeNotes = [];
     if (!shared && mentalHook?.rollCharges) {
-      const rc = await mentalHook.rollCharges({ actor, type: "attack", roll: atk, die: atkDie, count: 1, net: atkNet, max: atkDie, label: opts.label, targetActor: target });
+      const rc = await mentalHook.rollCharges({ actor, type: "attack", roll: atk, die: atkDie, count: 1, net: atkNet, max: atkDie, label: opts.label, targetActor: target,
+        attackOpts: foundry.utils.deepClone(Object.fromEntries(EXCHANGE_KEYS.map(k => [k, opts[k]]))) });
       if (rc) { rolls.push(...rc.rolls); chargeNotes.push(...rc.notes); }
     }
     if (opts.spell?.singleRoll || opts.singleRoll) { sharedRoll = atk; if (shared) spellNotes.push("Area: the single attack roll above"); }

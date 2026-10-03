@@ -17,6 +17,7 @@ import * as ab from "./abilities.mjs";
 import * as mentalRules from "./mental-rules.mjs";
 import * as mental from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
+import * as chargesMod from "./charges.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
 
 /** What an actor's Energy costs are computed from: stats, Skill Points, and held weapons. */
@@ -687,6 +688,8 @@ function actionGroups(actor, weapons, stats) {
   const wardIcon = actor.system.icon;
   if (wardIcon && wardIcon.system.profile.kind !== "negate") mentalRows.push({ label: `Ward: ${wardIcon.system.profile.name}`, detail: wardIcon.system.profile.ward, cost: willT >= 3 ? "1 AP (the first each turn is free)" : "1 AP", action: "activateWard", icon: "fa-solid fa-shield-halved" });
   for (const ch of wonders.chargesOf(actor)) mentalRows.push({ label: `Spend ${wonders.CHARGES[ch.kind]?.label ?? "charge"} on ${ch.holder.name} (manual)`, detail: "Normally offered automatically when they roll; this is for a roll the system did not see. " + (ch.data.description ?? ""), cost: "Free (already paid)", action: "spendCharge", itemId: ch.effect.uuid, icon: "fa-solid fa-bolt" });
+  const stolen = chargesMod.stolenActionOf(actor);
+  if (stolen) mentalRows.push({ label: `Stolen action: ${stolen.label}`, detail: `Larceny (Enhanced): a copy of ${stolen.fromName}'s attack, rolled with their dice, for up to a minute`, cost: `${stolen.cost} RP`, action: "useStolenAction", icon: "fa-solid fa-masks-theater" });
   if (skills.tierOf(sys.trees, "mental-beyond-dream") >= 2) mentalRows.push({ label: "Momentum", detail: "A creature or object you moved with a Beyond Mode collided: 5d8 Force again in a new direction (can chain)", cost: `⚡ ${ab.statMinOf(actor, "pon")}`, action: "momentum", icon: "fa-solid fa-arrows-spin" });
   if (actions.spellEffects(actor, "redirect").length) mentalRows.push({ label: "Redirect", detail: "Use a stored charge against an attack that hit within its range", cost: "Free (already paid)", action: "useRedirect", icon: "fa-solid fa-reply" });
   if (mTheory >= 1 && mctx.wonders.length) mentalRows.push({ label: "Dismiss a Wonder", detail: "Your own effects go freely; on someone else it's an attack roll (Range AP) they may dodge", cost: "Range AP", action: "dismissWonder", icon: "fa-solid fa-ban" });
@@ -779,6 +782,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       activateWard: function () { return mental.activateWard(this.document); },
       psionSense: function () { return mental.psionSense(this.document); },
       momentum: function () { return wonders.momentum(this.document); },
+      useStolenAction: function () { return chargesMod.useStolenAction(this.document); },
       spendCharge: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? wonders.consumeCharge(this.document, e) : null; },
       useBalance: function () { return wonders.balance(this.document); },
       useRedirect: function () { return wonders.useRedirect(this.document); },

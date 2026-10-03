@@ -191,5 +191,18 @@ dialog = html => ({ [`m:${idOf(html, "m")}`]: true });
 const md = await CH.onDamage({ actor: orc });
 ok2(md?.flat === 10, "An Enhanced Mandate changes damage by 10");
 
+console.log("== Enhanced Larceny steals the action");
+reset(); clearAll(hero);
+await place("mental-chaos-nightmare:larceny", { "choice:size": "down", enhance: true });
+dialog = html => ({ replace: optId(html) });
+r = synth("1d20", 18); seq = [5];
+await CH.onRoll({ actor: orc, type: "attack", roll: r, die: 20, count: 1, net: 0, attackOpts: { label: "Sword", apCost: 2, damage: "2d6", type: "physical", stacks: 0, net: 0, notes: [], melee: true } });
+const sa = CH.stolenActionOf(hero);
+ok2(sa && sa.cost === 2 && sa.opts.damage === "2d6" && sa.fromName === "Orc", "Enhanced Larceny on an attack keeps a copy of that exact attack for up to a minute");
+refresh(); target(ally); formulas.length = 0; seq = [12];
+await CH.useStolenAction(hero);
+ok2(hero.system.rp.value === 4 && lastAtk().flags.flowstate.attack.opts.label === "Sword (stolen)", "Using it costs RP equal to the attack's AP and makes that attack");
+ok2(formulas.some(f => f === `1d${orc.system.derived.attackDie}`) || formulas.some(f => new RegExp(`d${orc.system.derived.attackDie}`).test(f)), "…rolled with the victim's attack die");
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll live charge checks passed");
 if (fails) process.exit(1);

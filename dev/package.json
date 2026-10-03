@@ -5,7 +5,7 @@
   "description": "Test harnesses and tools for the Flow State Foundry VTT system (not loaded by Foundry).",
   "scripts": {
     "test": "node run-tests.mjs",
-    "trees": "python3 tools/build_trees.py docs/martial.md docs/magic.md ../module/trees.mjs",
+    "trees": "python3 tools/build_trees.py docs/martial.md docs/magic.md docs/mental.md ../module/trees.mjs",
     "combos": "python3 tools/build_combos.py docs/combos.md ../module/combos.mjs"
   },
   "devDependencies": {

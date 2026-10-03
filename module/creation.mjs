@@ -8,6 +8,7 @@ import {
 } from "./martial.mjs";
 import * as skills from "./skills.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES } from "./magic.mjs";
+import { FORMS } from "./mental-rules.mjs";
 
 export const RARITY_ORDER = ["common", "uncommon", "rare", "veryRare"];
 export const DEFAULT_RULES = { statPoints: 90, items: 4, maxRarity: "uncommon", grade: 10 };
@@ -33,6 +34,7 @@ export function allowedMaterials(kind, weight, maxRarity) {
 export function newSlot(kind, maxRarity, items = []) {
   if (kind === "foci") return { kind, fociType: "rod" };
   if (kind === "shroud") return { kind, shroudType: "bastion" };
+  if (kind === "icon") return { kind, iconForm: "aegis" };
   if (kind === "affix") {
     const target = affixTargets(items).find(t => t.free > 0);
     return { kind, affix: Object.keys(allowedAffixes(maxRarity))[0] ?? "", target: target ? String(target.index) : "" };
@@ -62,6 +64,7 @@ export function normalizeSlot(slot, maxRarity) {
   const s = { ...slot };
   if (s.kind === "foci") { if (!FOCI_TYPES[s.fociType]) s.fociType = "rod"; return s; }
   if (s.kind === "shroud") { if (!SHROUD_TYPES[s.shroudType]) s.shroudType = "bastion"; return s; }
+  if (s.kind === "icon") { if (!FORMS[s.iconForm]) s.iconForm = "aegis"; return s; }
   if (s.kind === "affix") {
     const allowed = allowedAffixes(maxRarity);
     if (!allowed[s.affix]) s.affix = Object.keys(allowed)[0] ?? "";
@@ -84,6 +87,7 @@ export function normalizeSlot(slot, maxRarity) {
 export function slotName(slot) {
   if (slot.kind === "foci") return `${FOCI_TYPES[slot.fociType]?.label ?? "Foci"} (Foci)`;
   if (slot.kind === "shroud") return `${SHROUD_TYPES[slot.shroudType]?.label ?? "Shroud"} (Shroud)`;
+  if (slot.kind === "icon") return `${FORMS[slot.iconForm]?.name ?? "Icon"} (Icon)`;
   if (slot.kind === "affix") return `${AFFIXES[slot.affix]?.label ?? "Affix"} (Affix)`;
   const mat = (slot.kind === "armor" ? ARMOR_MATERIALS : WEAPON_MATERIALS)[slot.material]?.label ?? "";
   if (slot.kind === "armor") return `${ARMOR_WEIGHTS[slot.weight]?.label ?? ""} Armor (${mat})`;
@@ -117,6 +121,7 @@ export function validate(choice, rules = DEFAULT_RULES) {
     const label = `Item ${n + 1}`;
     if (slot.kind === "foci") { if (!FOCI_TYPES[slot.fociType]) errors.push(`${label}: pick a Foci type.`); continue; }
     if (slot.kind === "shroud") { if (!SHROUD_TYPES[slot.shroudType]) errors.push(`${label}: pick a Shroud type.`); continue; }
+    if (slot.kind === "icon") { if (!FORMS[slot.iconForm]) errors.push(`${label}: pick a Form.`); continue; }
     if (slot.kind === "affix") {
       const a = AFFIXES[slot.affix];
       if (!a) { errors.push(`${label}: pick an Affix.`); continue; }
@@ -197,7 +202,7 @@ export function startingItems(slots, rules) {
   }];
   const affixesOn = index => slots.filter(a => a.kind === "affix" && a.target === String(index) && AFFIXES[a.affix]).map(a => a.affix);
   const ammo = {};
-  let fociAttuned = false, shroudAttuned = false;
+  let fociAttuned = false, shroudAttuned = false, iconAttuned = false;
   for (const [index, slot] of slots.entries()) {
     if (slot.kind === "affix") continue;
     if (slot.kind === "foci") {
@@ -210,6 +215,12 @@ export function startingItems(slots, rules) {
       out.push({ name: slotName(slot), type: "shroud", img: "icons/magic/defensive/shield-barrier-glowing-blue.webp",
         system: { shroudType: slot.shroudType, grade: rules.grade, attuned: !shroudAttuned, affixes: affixesOn(index) } });
       shroudAttuned = true;
+      continue;
+    }
+    if (slot.kind === "icon") {
+      out.push({ name: slotName(slot), type: "icon", img: "icons/magic/holy/yin-yang-balance-symbol.webp",
+        system: { form: slot.iconForm, grade: rules.grade, attuned: !iconAttuned } });
+      iconAttuned = true;
       continue;
     }
     if (slot.kind === "armor") {

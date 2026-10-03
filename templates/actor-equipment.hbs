@@ -113,6 +113,27 @@
       </tbody>
     </table>
   </details>
+  <details class="fs-collapse" data-section="icons" {{#if open.icons}}open{{/if}}>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Icons {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="icon" data-tooltip="New Icon"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
+    <table class="fs-table">
+      <thead><tr><th></th><th>Icon</th><th>Ward</th><th>Tenet</th><th></th></tr></thead>
+      <tbody>
+      {{#each icons}}
+      <tr data-item-id="{{id}}" class="{{#unless system.attuned}}fs-dim{{/unless}}">
+        <td><button type="button" class="fs-toggle {{#if system.attuned}}on{{/if}}" data-action="{{#if @root.inCombat}}attuneIcon{{else}}toggleField{{/if}}" data-field="attuned" data-tooltip="{{#if system.attuned}}Attuned (click to unattune){{else}}Attune (6 AP in combat, free outside it; one Icon at a time){{/if}}"><i class="fa-solid fa-link"></i></button></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a>{{#if profile.valid}} <span class="fs-tag" data-tooltip="{{profile.align}} Form">{{profile.name}}</span>{{/if}}<div class="fs-sub">{{#if profile.valid}}<strong>{{profile.align}}</strong> · G{{system.grade}} · Ward ×{{profile.wardMult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
+        <td class="fs-sub">{{#if profile.valid}}{{profile.ward}}{{/if}}</td>
+        <td class="fs-sub">{{#if tenetName}}{{tenetName}}{{else}}—{{/if}}</td>
+        <td class="fs-row-actions">
+          {{#if ../editable}}<button type="button" data-action="deleteItem" data-tooltip="Drop or delete"><i class="fa-solid fa-trash"></i></button>{{/if}}
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="5" class="hint">No Icons yet. A Mental user's equipment is their Icon: attune to one to Manifest and Ward through it.</td></tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </details>
   <details class="fs-collapse" data-section="misc" {{#if open.misc}}open{{/if}}>
     <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Misc Items {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="gear" data-tooltip="New item"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
     <ul class="fs-items">

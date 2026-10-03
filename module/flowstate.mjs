@@ -1,5 +1,5 @@
 import * as rules from "./rules.mjs";
-import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStatePileData } from "./data.mjs";
+import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStatePileData } from "./data.mjs";
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import * as areas from "./areas.mjs";
@@ -12,7 +12,7 @@ import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
 import * as pictures from "./pictures.mjs";
-import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStatePileSheet } from "./sheets.mjs";
+import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStatePileSheet } from "./sheets.mjs";
 /* -------------------------------------------- */
 /*  Documents                                   */
 /* -------------------------------------------- */
@@ -161,7 +161,7 @@ Hooks.once("init", () => {
   CONFIG.Actor.documentClass = FlowStateActor;
   CONFIG.Combat.documentClass = FlowStateCombat;
   CONFIG.Actor.dataModels = { character: FlowStateActorData, npc: FlowStateActorData, pile: FlowStatePileData };
-  CONFIG.Item.dataModels = { gear: FlowStateGearData, weapon: FlowStateWeaponData, armor: FlowStateArmorData, foci: FlowStateFociData, shroud: FlowStateShroudData };
+  CONFIG.Item.dataModels = { gear: FlowStateGearData, weapon: FlowStateWeaponData, armor: FlowStateArmorData, foci: FlowStateFociData, shroud: FlowStateShroudData, icon: FlowStateIconData };
   CONFIG.Actor.trackableAttributes = {
     character: { bar: ["hp", "energy", "ap", "rp"], value: [] },
     npc: { bar: ["hp", "energy", "ap", "rp"], value: [] }
@@ -296,6 +296,7 @@ Hooks.once("init", () => {
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateArmorSheet, { types: ["armor"], makeDefault: true, label: "Flow State Armor" });
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateFociSheet, { types: ["foci"], makeDefault: true, label: "Flow State Foci" });
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateShroudSheet, { types: ["shroud"], makeDefault: true, label: "Flow State Shroud" });
+  DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateIconSheet, { types: ["icon"], makeDefault: true, label: "Flow State Icon" });
 });
 
 /* -------------------------------------------- */
@@ -747,13 +748,14 @@ async function openForge() {
       { action: "armor", label: "Armor", icon: "fa-solid fa-shirt" },
       { action: "foci", label: "Foci", icon: "fa-solid fa-wand-sparkles" },
       { action: "shroud", label: "Shroud", icon: "fa-solid fa-ghost" },
+      { action: "icon", label: "Icon", icon: "fa-solid fa-hands-praying" },
       { action: "gear", label: "Misc Item", icon: "fa-solid fa-box" }
     ]
   });
   if (!type) return;
   const folder = game.folders.find(f => f.type === "Item" && f.name === "Forge") ?? await Folder.create({ name: "Forge", type: "Item" });
-  const name = { weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", gear: "New Item" }[type];
-  const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp" }[type];
+  const name = { weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", icon: "New Icon", gear: "New Item" }[type];
+  const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp", icon: "icons/magic/holy/yin-yang-balance-symbol.webp" }[type];
   const item = await Item.create({ name, type, folder: folder.id, ...(img ? { img } : {}) });
   item?.sheet.render(true);
 }
@@ -1215,6 +1217,19 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
       if (!attune && item.type === "shroud") setTimeout(() => actions.endShroudPlacement(actor, item), 0);
     }
     if (item.type === "shroud") return;
+  }
+
+  /* ---- Icons: attuning takes 6 AP in combat (the Action List does it); out of combat it's free. One at a time. ---- */
+  if (item.type === "icon") {
+    const attune = changed(changes, "system.attuned");
+    if (attune !== undefined && attune !== item.system.attuned) {
+      if (attune && inCombat && !auto && !options?.flowstateAttune) return refuse(item, `Attuning to ${item.name} takes AP in combat: use "Attune ${item.name}" in the Action List.`);
+      if (attune) {
+        const others = actor.items.filter(i => i.type === "icon" && i.id !== item.id && i.system.attuned);
+        if (others.length) actor.updateEmbeddedDocuments("Item", others.map(i => ({ _id: i.id, "system.attuned": false })), { flowstateAuto: true });
+      }
+    }
+    return;
   }
 
   /* ---- Weapons: at most two hands.

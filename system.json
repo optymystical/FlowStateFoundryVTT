@@ -68,6 +68,11 @@
         "htmlFields": [
           "description"
         ]
+      },
+      "icon": {
+        "htmlFields": [
+          "description"
+        ]
       }
     }
   },

@@ -2,6 +2,7 @@ import { askImage } from "./pictures.mjs";
 import { STATS } from "./rules.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, RARITIES, weaponProfile, armorProfile, describeTags } from "./martial.mjs";
 import * as creation from "./creation.mjs";
+import * as mentalRules from "./mental-rules.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, fociProfile, shroudProfile } from "./magic.mjs";
 import * as actions from "./actions.mjs";
 import * as skills from "./skills.mjs";
@@ -96,6 +97,12 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
             ? `${p.formLabel}: ${p.formText} · Durability ${p.durability}, Limit ${p.limit} · ${t.affixes}${t.plus ? "+" : ""} Affix slot${t.affixes === 1 ? "" : "s"}`
             : `Durability ${p.durability}, Limit ${p.limit} (×${p.mult} Build) · ${t.affixes}${t.plus ? "+" : ""} Affix slot${t.affixes === 1 ? "" : "s"}`,
           effect: t?.effect ?? "" };
+      }
+      if (slot.kind === "icon") {
+        const form = mentalRules.FORMS[slot.iconForm];
+        return { index, ...slot, icon: true, name: creation.slotName(slot), typeChoices: mentalRules.formGroups(), selected: slot.iconForm,
+          summary: `${mentalRules.KINDS[form?.align]?.label ?? ""} Form · ${form?.rarity ?? ""} · attune to it for 6 AP in combat; pick its Tenet on the item once you know a Wonder`,
+          effect: form ? `Ward: ${form.ward} Enhanced: ${form.enhance}` : "" };
       }
       if (slot.kind === "affix") {
         const a = AFFIXES[slot.affix];

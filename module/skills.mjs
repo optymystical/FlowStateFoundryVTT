@@ -9,7 +9,7 @@ import { TREES } from "./trees.mjs";
 
 export const ARCHETYPES = [
   { id: "martial", label: "Martial" },
-  { id: "mental", label: "Mental", placeholder: "Mental skill trees are mid-rework and will be added once the rework is finished." },
+  { id: "mental", label: "Mental" },
   { id: "magic", label: "Magic" },
   { id: "generic", label: "Generic", placeholder: "Generic Groups (Perception, Stealth, Speech, Energy, and more) will be added once that document is ready." }
 ];

@@ -1,0 +1,44 @@
+<div class="fs-sheet">
+  <header class="fs-header">
+    <img class="fs-portrait fs-small" src="{{item.img}}" alt="{{item.name}}" data-action="editImage" data-edit="img">
+    <div class="fs-header-main">
+      <input class="fs-name" type="text" name="name" value="{{item.name}}" {{#unless nameEditable}}disabled{{/unless}}>
+      {{#if p.valid}}<div class="fs-subtitle">Icon · {{alignLabel}} Form · {{p.name}}</div>{{/if}}
+    </div>
+  </header>
+
+  {{#if lockedNote}}<p class="fs-locked"><i class="fa-solid fa-lock"></i> {{lockedNote}}</p>{{/if}}
+  <section class="fs-builder">
+    <div class="fs-field"><label>Form</label>
+      <select name="system.form" {{#unless editable}}disabled{{/unless}}>
+        {{#each forms}}<optgroup label="{{label}}">{{selectOptions options selected=../system.form}}</optgroup>{{/each}}
+      </select></div>
+    <div class="fs-field"><label>Grade</label>
+      <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
+    <div class="fs-field"><label>Tenet <small>(only Wonders you know, of the Form's Alignment)</small></label>
+      <select name="system.tenet" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions tenets selected=system.tenet}}</select></div>
+    {{#if baneChoice}}
+    <div class="fs-field"><label>Bane: chosen damage</label>
+      <select name="system.chosen" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions categories selected=system.chosen}}</select></div>
+    {{/if}}
+    <div class="fs-field fs-checks-row">
+      <label><input type="checkbox" name="system.attuned" {{checked system.attuned}} {{#unless stateEditable}}disabled{{/unless}}> Attuned</label>
+    </div>
+  </section>
+
+  {{#if p.valid}}
+  <section class="fs-profile">
+    <h3>Ward {{#unless owned}}<small>(previewed at the Grade cap)</small>{{/unless}}</h3>
+    <div class="fs-kv">
+      <span>Scaling</span><span>×{{p.wardMult}} <small>(Willpower, up to 10 per Grade)</small></span>
+      <span>Durability / Limit</span><span>{{p.durability}} / {{p.limit}}</span>
+    </div>
+    <p>{{p.ward}}</p>
+    <p class="fs-affix-text"><strong>Enhanced:</strong> {{p.enhance}}</p>
+    <p class="hint">Attuning takes 6 AP in combat (free outside it); only one Icon at a time. While attuned it works from anywhere on your body, and swapping the Tenet costs the Attune cost again.</p>
+  </section>
+  {{#if tenetInfo}}
+  <section class="fs-material"><h3>Tenet: {{tenetInfo.name}}</h3><p>{{tenetInfo.text}}</p></section>
+  {{/if}}
+  {{/if}}
+</div>

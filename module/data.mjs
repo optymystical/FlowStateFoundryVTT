@@ -3,6 +3,7 @@ import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, fociProfile, shroudProfile } from "./magic.mjs";
 import { penalizedDie } from "./spellfx.mjs";
+import { FORMS, iconProfile } from "./mental-rules.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
@@ -100,11 +101,15 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     this.armor = null;
     this.shroud = null;
     this.foci = null;
+    this.icon = null;
     for (const item of this.parent?.items ?? []) {
       if (item.type === "weapon") item.system.computeProfile({ str: eff.str.value, dex: eff.dex.value });
       else if (item.type === "foci") {
         item.system.computeProfile({ reach: eff.reach.value, grasp: eff.grasp.value });
         if (item.system.attuned && item.system.profile.valid && !this.foci) this.foci = item;
+      } else if (item.type === "icon") {
+        item.system.computeProfile({ will: eff.will.value, pon: eff.pon.value, snap: eff.snap.value });
+        if (item.system.attuned && item.system.profile.valid && !this.icon) this.icon = item;
       } else if (item.type === "shroud") {
         item.system.computeProfile(eff.build.value, this);
         if (item.system.attuned && item.system.profile.valid && !this.shroud) this.shroud = item;
@@ -283,6 +288,33 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
     this.durability = { max, value: max - this.wear };
     this.broken = this.profile.valid && max - this.wear <= 0;
     this.held = this.equipped;
+  }
+}
+
+/**
+ * Mental Icon: an object of devotion with a Form (its Ward effect) and a Tenet. Attuned (one at a time, 6 AP in combat) it works from anywhere on your
+ * body. Ward numbers scale per 10 Willpower, the Tenet per 10 of its Wonder's Scaling Stat, both limited by Grade (10 per Grade).
+ */
+export class FlowStateIconData extends foundry.abstract.TypeDataModel {
+  static defineSchema() {
+    return {
+      form: new f.StringField({ required: true, initial: "aegis", choices: () => Object.fromEntries(Object.entries(FORMS).map(([k, v]) => [k, v.name])) }),
+      grade: int(1, { min: 1 }),
+      attuned: new f.BooleanField({ initial: false }),
+      tenet: new f.StringField({ initial: "" }),          // the Tenet's id ("mental-life-dream:verdant-soul"), chosen when attuning
+      chosen: new f.StringField({ initial: "physical" }), // Bane: the damage category chosen on attuning
+      description: new f.HTMLField({ initial: "" })
+    };
+  }
+
+  prepareDerivedData() {
+    const eff = this.parent?.actor?.system?.derived?.effective;
+    this.computeProfile(eff ? { will: eff.will.value, pon: eff.pon.value, snap: eff.snap.value } : { will: this.grade * 10, pon: this.grade * 10, snap: this.grade * 10 });
+  }
+
+  computeProfile(stats) {
+    this.profile = iconProfile(this, stats);
+    this.broken = false;
   }
 }
 

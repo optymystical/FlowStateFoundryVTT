@@ -14,6 +14,7 @@ import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_RARITIES, ELEME
 import * as skills from "./skills.mjs";
 import { askImage } from "./pictures.mjs";
 import * as ab from "./abilities.mjs";
+import * as mentalRules from "./mental-rules.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
 
 /** What an actor's Energy costs are computed from: stats, Skill Points, and held weapons. */
@@ -833,15 +834,20 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       return { id: i.id, name: i.name, img: i.img, system: i.system, profile: p, affixText: p.valid ? affixNames(p) : "" };
     });
 
+    const icons = actor.items.filter(i => i.type === "icon").map(i => {
+      const p = i.system.profile;
+      return { id: i.id, name: i.name, img: i.img, system: i.system, profile: p, tenetName: i.system.tenet ? mentalRules.wonderById(i.system.tenet.split(":")[0])?.tenet?.name ?? "" : "" };
+    });
     const collapsed = collapsedFor(actor.uuid);
     const actionGroups = buildActionList(actor, weapons, stats).map(g => ({ ...g, open: !collapsed.has(g.key) }));
-    const open = Object.fromEntries(["weapons", "armor", "foci", "shrouds", "misc"].map(k => [k, !collapsed.has(k)]));
+    const open = Object.fromEntries(["weapons", "armor", "foci", "shrouds", "icons", "misc"].map(k => [k, !collapsed.has(k)]));
 
     return Object.assign(context, {
       actor,
       system: sys,
       d,
       actionGroups,
+      icons,
       open,
       editable: this.isEditable,
       isGM: game.user.isGM,
@@ -1211,6 +1217,31 @@ export class FlowStateFociSheet extends FlowStateItemSheet {
 
   _processFormData(event, form, formData) {
     return collectAffixes(form, super._processFormData(event, form, formData));
+  }
+}
+
+/** Mental Icon: Form (its Ward), Grade, attunement and the chosen Tenet. */
+export class FlowStateIconSheet extends FlowStateItemSheet {
+  static DEFAULT_OPTIONS = { position: { width: 540, height: 600 } };
+  static PARTS = { sheet: { template: "systems/flowstate/templates/icon-sheet.hbs", scrollable: [""] } };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    const sys = this.document.system;
+    const p = sys.profile;
+    const actor = this.document.actor;
+    const form = mentalRules.FORMS[sys.form];
+    const known = actor ? mentalRules.tenetChoices(form?.align ?? "dream", actor.system.trees) : mentalRules.tenetChoices(form?.align ?? "dream");
+    return Object.assign(context, {
+      p,
+      forms: mentalRules.formGroups(),
+      tenets: Object.fromEntries([["", "— No Tenet —"], ...known.map(w => [w.tenet.id, `${w.tenet.name} (${w.name})`])]),
+      tenetInfo: sys.tenet ? mentalRules.wonderById(sys.tenet.split(":")[0])?.tenet : null,
+      alignLabel: form ? mentalRules.KINDS[form.align].label : "",
+      baneChoice: sys.form === "bane",
+      categories: { physical: "Physical", elemental: "Elemental", magical: "Magical" },
+      owned: !!actor
+    });
   }
 }
 

@@ -11,13 +11,13 @@
     {{#if is_identity}}
     <h2>Who are you?</h2>
     <div class="fs-wizard-identity">
-      <img class="fs-portrait" src="{{img}}" alt="">
+      <img class="fs-portrait" src="{{img}}" alt="" data-action="pickImage" data-tooltip="Click to change the portrait">
       <div class="fs-field-stack">
         <label>Name <input type="text" name="name" value="{{name}}" placeholder="Character name" autofocus></label>
         <label>Portrait
           <span class="fs-inline-row">
             <input type="text" name="img" value="{{img}}">
-            {{#if canBrowse}}<button type="button" class="fs-inline" data-action="pickImage"><i class="fa-solid fa-folder-open"></i></button>{{/if}}
+            <button type="button" class="fs-inline" data-action="pickImage" data-tooltip="Change the portrait"><i class="fa-solid fa-image"></i></button>
           </span>
         </label>
         <p class="hint">Ancestry, Background, and Culture will be chosen here once the A.B.C. rules are ready. For now they're flavor only.</p>

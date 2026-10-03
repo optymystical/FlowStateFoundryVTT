@@ -1,3 +1,4 @@
+import { askImage } from "./pictures.mjs";
 import { STATS } from "./rules.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, RARITIES, weaponProfile, armorProfile, describeTags } from "./martial.mjs";
 import * as creation from "./creation.mjs";
@@ -235,9 +236,9 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     this.render();
   }
 
-  static onPickImage() {
-    const FP = foundry.applications.apps?.FilePicker?.implementation ?? globalThis.FilePicker;
-    new FP({ type: "image", current: this.state.img, callback: path => { this.state.img = path; this.render(); } }).browse();
+  static async onPickImage() {
+    const url = await askImage("Portrait", this.state.img);
+    if (url) { this.state.img = url; this.render(); }
   }
 
   static async onFinish() {

@@ -3202,7 +3202,8 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
   const dist = slam ? 0 : from && to && globalThis.canvas?.grid ? Math.round(tokenDistance(from, to)) : 0;
   const untraveled = Math.max(0, reach - dist);
   const raw = forceDamage(untraveled);
-  const damage = Math.min(raw, Math.max(0, thrown.system.hp.value));
+  const cap = await forceCap(thrown);
+  const damage = Math.min(raw, cap);
   // It lands beside the target, on the side it came from.
   const tok = thrown.getActiveTokens?.()[0];
   if (tok && to && !slam) await moveTokenTopLeft(tok, landingPosition(to, tok));
@@ -3214,7 +3215,7 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
     }
   }
   return `${barrierHTML}<div class="fs-result"><strong>${esc(thrown.name)} collides with ${esc(target.name)}</strong> — ${damage} Force damage to each.</div>${taken}
-    <div class="fs-notes">Force ${force} → ${feet} ft, ${dist} ft to the target, ${untraveled} ft untraveled × 3 = ${raw}${damage < raw ? ` (capped at ${esc(thrown.name)}'s HP)` : ""}.${release ? ` ${esc(thrown.name)} is released.` : ""}</div>`;
+    <div class="fs-notes">Force ${force} → ${feet} ft, ${dist} ft to the target, ${untraveled} ft untraveled × 3 = ${raw}${damage < raw ? ` (capped at ${cap}: ${esc(thrown.name)}'s HP plus what its protection soaks)` : ""}.${release ? ` ${esc(thrown.name)} is released.` : ""}</div>`;
 }
 
 /**
@@ -3222,14 +3223,33 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
  * full distance (3 × feet, capped at its HP) and is knocked prone. Returns chat HTML.
  */
 async function slamDown(actor, feet) {
-  const damage = Math.min(forceDamage(feet), Math.max(0, actor.system.hp.value));
-  let html = `<div class="fs-notes">Driven ${feet} ft into the ground: ${feet} ft × 3 = ${forceDamage(feet)}${damage < forceDamage(feet) ? ` (capped at ${esc(actor.name)}'s HP)` : ""}.</div>`;
+  const cap = await forceCap(actor);
+  const damage = Math.min(forceDamage(feet), cap);
+  let html = `<div class="fs-notes">Driven ${feet} ft into the ground: ${feet} ft × 3 = ${forceDamage(feet)}${damage < forceDamage(feet) ? ` (capped at ${cap}: ${esc(actor.name)}'s HP plus what its protection soaks)` : ""}.</div>`;
   if (damage > 0) {
     html += damageOutcomeHTML(actor, damage, "physical", await damageOutcome(actor, damage, "physical"));
     await requestDamage(actor, damage, "physical", 0, null, { silent: true });
   }
   await setStatus(actor, "prone", true);
   return `${html}<div class="fs-result"><strong>${esc(actor.name)} is knocked prone.</strong></div>`;
+}
+
+/**
+ * The most Force damage a creature can be dealt: its HP plus whatever its armor, Shroud, Shield and the rest would soak, so the damage
+ * that finally reaches HP is at most all of it (it nets them to 0 HP, never past it). Armor Limit and other effects don't count against
+ * the cap the way they would if the cap were just HP. Works out hits without applying them.
+ */
+export async function forceCap(actor, type = "physical") {
+  const hp = Math.max(0, actor.system.hp.value);
+  const reaches = async n => (await damageOutcome(actor, n, type)).toHp;
+  let lo = 0, hi = hp + 1;                                    // lo always nets ≤ HP; hi nets more (once found)
+  while ((await reaches(hi)) <= hp && hi < 1000000) { lo = hi; hi *= 2; }
+  if (hi >= 1000000 && (await reaches(hi)) <= hp) return hi;
+  while (hi - lo > 1) {
+    const mid = Math.floor((lo + hi) / 2);
+    if ((await reaches(mid)) <= hp) lo = mid; else hi = mid;
+  }
+  return lo;
 }
 
 /**
@@ -3626,7 +3646,7 @@ async function flyThrown(thrown, dir, feet) {
   // Emplace barriers are objects: a creature thrown through one damages it and itself (3 × the untraveled feet each, capped by what the
   // other has left), is stopped by it if it holds, and carries on with the leftover distance if it breaks.
   const plan = areas.planFlight({ start, dir, feet, barriers: areas.emplaceBarriers(), grid: { size: dims.size, distance: dims.distance },
-    creatureHp: Math.max(0, thrown.system.hp.value), wallAt: (a, b) => { const h = wallHit(a, b); return h ? { x: h.x, y: h.y } : null; } });
+    creatureHp: await forceCap(thrown), wallAt: (a, b) => { const h = wallHit(a, b); return h ? { x: h.x, y: h.y } : null; } });
   let damage = 0, wall = false, taken = "";
   const notes = [];
   for (const ev of plan.events) {
@@ -4931,6 +4951,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   await actor.update(update);
   if (out.armor && out.armorLoss) await out.armor.update({ "system.wear": out.armor.system.wear + out.armorLoss }, { flowstateSystem: true });
   if (!silent) await post(actor, { title: `${esc(actor.name)} takes ${amount} ${DAMAGE_TYPES[type] ?? ""}`, body: `<ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>` });
+  if (out.shrouds?.length) await refillShroud(actor);                         // out of combat the Shroud recovers right away
   // Brand (Heat T3): heat damage that isn't from the Brand adds the Brand's damage.
   const brand = amount > 0 && elem ? elem.brandExtra(actor, type, brandBy) : 0;
   if (brand) { await post(actor, { title: `${esc(actor.name)} — Brand`, body: `<div class="fs-result">The Brand burns: ${brand} more heat damage.</div>` }); await applyDamage(actor, brand, "heat", { silent: true, brandBy: true }); }
@@ -4963,11 +4984,27 @@ export async function refundEnergy(actor, amount) {
   await actor.update({ "system.energy.value": Math.min(e.max, e.value + amount) });
 }
 
-/** Outside combat, Energy is always full. */
+/** Outside combat, Energy is always full (and an attuned Shroud recovers fully, see `refillShroud`). */
 export async function refillEnergy(actor) {
   if (!actor?.isOwner || actor.type === "pile" || inActiveCombat(actor)) return;
   const { value, max } = actor.system.energy ?? {};
   if (value !== undefined && value < max) await actor.update({ "system.energy.value": max });
+  await refillShroud(actor);
+}
+
+/**
+ * Outside combat an attuned Shroud recovers fully by itself, unless its passive says it doesn't naturally recover (`noRegen`).
+ * In combat it recovers at the start of its wearer's turns (`shroudTurnStart`).
+ */
+export async function refillShroud(actor) {
+  if (!actor || actor.type === "pile" || inActiveCombat(actor)) return;
+  const sh = actor.system?.shroud;
+  if (!sh || sh.system.profile?.noRegen) return;
+  const upd = {};
+  if (sh.system.wear > 0) upd["system.wear"] = 0;
+  if ((sh.system.negated ?? []).length) upd["system.negated"] = [];          // Agate / Jasper / Obsidian refresh when the Shroud recovers
+  if (sh.system.carapace) upd["system.carapace"] = 0;
+  if (Object.keys(upd).length) await sh.update(upd, { flowstateSystem: true });
 }
 
 /* -------------------------------------------- */

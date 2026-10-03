@@ -252,7 +252,7 @@ At the start of your turn a card lists the start-of-turn abilities you can use r
 - **T2 Disrupt:** an Action List entry (the target's STR min). The grappled creature's next roll of any kind has Disadvantage.
 - **T3 Big Hands:** you can grapple up to one size larger, and grapple attacks have Advantage.
 - **T4 Stunlock:** Disrupt is free on a creature you've Locked Down, and then applies to all of their rolls.
-- **T5 Slam:** an Action List entry, used as a Light (2 AP) or Heavy (3 AP) weapon, whichever the creature's body is closer to. Swing a grappled creature at a target: Force 10 × Str at 0 ft, and both take the Force damage (capped at the held creature's HP).
+- **T5 Slam:** an Action List entry, used as a Light (2 AP) or Heavy (3 AP) weapon, whichever the creature's body is closer to. Swing a grappled creature at a target: Force 10 × Str at 0 ft, and both take the Force damage (capped at the held creature's HP plus what its protection would soak).
 
 ## Thrasher Weapons (automated)
 - **T1 Grapple:** no damage; on a hit the weapon holds them and can't attack until they're released.
@@ -408,7 +408,8 @@ Follow-up buttons aren't on the attack card any more; the card just says a follo
 - **Bash:** when attacking a creature, the first object in the way (a parrying weapon, otherwise worn armor) is broken through if its effective Limit is at most the Bash value (¼ of the Grade-capped Scaling Stat). Its Limit is ignored and added to the damage. Otherwise Bash has no effect (noted on the card). Once per attack.
 - **Knockback and Push:** after the damage card (or the Push result), a **Knockback / Push (N ft)** button appears for the attacker when the Force can move the target (Force − Lift − ½ Max HP, ÷10). Choose straight away from the attacker, one of 8 directions, or **Down**.
   - **Sideways:** the token is moved, and walls stop it with Force damage for the feet left untraveled.
-  - **Down:** it's driven into the ground, taking Force damage for the full distance (3 × feet, capped at its HP), and knocked prone.
+  - **Down:** it's driven into the ground, taking Force damage for the full distance (3 × feet, capped at its HP plus what its armor and Shroud would soak), and knocked prone.
+  - **Force damage cap:** a creature's Force damage is capped at its HP *plus* whatever its armor Limit, Shroud, Shield and other protection would soak (so it nets them to 0 HP at most, instead of the soak eating into the cap). This holds for collisions, Slam, walls, barriers and being driven down.
   - Grapple throws with no target also offer **Down**.
   - **Into a creature:** target that creature first, then pick **Into <name>**. It's a ranged attack roll against them (their dodge, no Parry), and they must be within the distance the Force carries the pushed creature. On a hit, both take Force collision damage (3 × the feet left untraveled, capped at the pushed creature's HP), and the pushed creature lands beside them. On a miss, it flies past the full distance.
   - **No target declared:** the pushed creature passes through anyone in its path unharmed. Only walls stop it.
@@ -503,7 +504,7 @@ Foci and Shrouds have their own sections on the Equipment tab, under Armor, and 
 
 - **Attuning** (the link toggle) takes an hour, so it can't be done in combat. Only one Foci and one Shroud can be attuned; attuning another unattunes the old one. Items dropped or handed over are unattuned.
 - **Foci:** Durability and Limit are base × Grade. The sheet shows the casting form (Igniter: Grasp, 2 AP, 1 TR · Channeler: Reach, 3 AP, 2 TR · Multi: the lesser stat, Raw Casting AP/TR), the Grade-capped scaling stat, and the type's effect. A held Foci uses a hand like a weapon (drawing, swapping, and fists work the same; 2H toggle for Staff/Tome). Foci can be aimed at like held weapons; Zircon gives those attacks Disadvantage and Weakens the damage. Spell-side effects (TR, Power, Wand/Staff/Chime and the Foci Affixes) come with the spell automation.
-- **Shrouds:** Durability and Limit are base × floor(Build capped at Grade × 10 ÷ 10), at least ×1. The melded Shroud soaks Physical, Elemental, and Magical (Arcane) damage after a parrying weapon and **before armor** (Cleave hits it first, Pierce lowers its Limit). At the start of your turn it recovers Durability equal to its Limit.
+- **Shrouds:** Durability and Limit are base × floor(Build capped at Grade × 10 ÷ 10), at least ×1. The melded Shroud soaks Physical, Elemental, and Magical (Arcane) damage after a parrying weapon and **before armor** (Cleave hits it first, Pierce lowers its Limit). At the start of your turn it recovers Durability equal to its Limit. Out of combat an attuned Shroud recovers fully by itself (as Energy is always full), unless its passive says it doesn't naturally recover.
   - **Cinder** ×3 against damage types you've taken since your turn started · **Cistern** ×3 at full Energy, ×2 above half · **Ember** ×3 at or below half HP, ×2 below full · **Carapace** +base Limit per hit, reset at your turn start (before recovery).
   - **Aegis / Lattice:** fixed Durability that refills each turn; a hit up to the Limit is negated for 1 Durability, a bigger one isn't blocked.
   - **Ward** (Action List, 2 RP): placed on your target within 100 ft (or yourself) until your next turn, Durability refilled; it only protects where it's placed. **Bond** (3 RP): also protects your target; ends at 0 Durability (the 1000 ft limit is up to the GM). Shown in Active Effects; the GM can end it there.

@@ -130,8 +130,8 @@ export function resolveForce(force, { lift = 0, maxHp = 0, falling = false } = {
   return Math.floor(remaining / 10);
 }
 
-/** Ch10 Force Damage: 3 × untraveled feet. */
-export const forceDamage = untraveledFeet => 3 * Math.max(0, untraveledFeet);
+/** Ch10 Force Damage: 3 × untraveled feet (partial feet are dropped, so it rounds down). */
+export const forceDamage = untraveledFeet => 3 * Math.floor(Math.max(0, untraveledFeet));
 
 /** Ch8 Pushing: force = 5 × Strength. */
 export const pushForce = str => 5 * str;

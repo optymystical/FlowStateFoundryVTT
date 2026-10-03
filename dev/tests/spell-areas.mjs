@@ -81,8 +81,9 @@ let pf = fly();
 ok(pf.events.length === 1 && pf.events[0].kind === "barrier" && Math.abs(pf.events[0].untraveled - 17.5) < 1e-6, "It hits the barrier 22.5 ft in, with 17.5 ft untraveled");
 ok(pf.events[0].creature === 30 && pf.events[0].barrier === 30 && pf.events[0].broke, "A weak barrier (30 health): each takes 30 (all it has) and it breaks");
 ok(pf.end.x > 500 && Math.abs(pf.traveled - 30) < 1e-6, `…and the creature keeps going with the leftover (17.5 − 30 ÷ 3 = 7.5 ft): it travels ${pf.traveled} ft in all`);
+{ const R = await import("../../module/rules.mjs"); ok(R.forceDamage(17.5) === 51 && R.forceDamage(0.9) === 0 && R.forceDamage(-3) === 0 && R.forceDamage(10) === 30, "Force damage rounds down: 3 × whole untraveled feet (17.5 ft → 51)"); }
 pf = fly({ barriers: [mkBar(200)] });
-ok(pf.events[0].creature === 52.5 && pf.events[0].barrier === 52.5 && !pf.events[0].broke && pf.events[0].left === 147.5 && pf.end.x < 450, "A strong barrier (200 health) holds: 3 × 17.5 = 52.5 Force each, and the creature stops in front of it");
+ok(pf.events[0].creature === 51 && pf.events[0].barrier === 51 && !pf.events[0].broke && pf.events[0].left === 149 && pf.end.x < 450, "A strong barrier (200 health) holds: 3 × 17 whole feet (17.5 rounds down) = 51 Force each, and the creature stops in front of it");
 pf = fly({ creatureHp: 20 });
 ok(pf.events[0].creature === 20 && pf.events[0].barrier === 20 && !pf.events[0].broke, "Each side only takes what the other has left to give (a creature with 20 HP deals 20)");
 pf = fly({ start: { x: 800, y: 0 }, dir: { x: -1, y: 0 } });

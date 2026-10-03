@@ -1,7 +1,7 @@
 // Picture browsing for players: the GM's client lists the folders and sends them back; players never touch the file browser.
 const handlers = []; const emitted = [];
-const browseCalls = [];
-globalThis.foundry = { utils: { escapeHTML: s => s, randomID: () => "req1" }, applications: { api: { DialogV2: {} }, apps: { FilePicker: { implementation: { browse: async (src, path, opts) => { browseCalls.push([src, path, opts]); return { target: path, dirs: ["art/heroes/", "art/misc"], files: ["art/a.png"] }; } } } } } };
+const browseCalls = []; const made = []; const uploaded = [];
+globalThis.foundry = { utils: { escapeHTML: s => s, randomID: () => "req1" }, applications: { api: { DialogV2: {} }, apps: { FilePicker: { implementation: { createDirectory: async (src, d) => { made.push(d); if (d === "flowstate-art" && made.filter(x => x === d).length > 1) throw new Error("exists"); }, upload: async (src, dir, file) => { uploaded.push({ src, dir, name: file.name, size: file.size, type: file.type }); return { path: `${dir}/${file.name}` }; }, browse: async (src, path, opts) => { browseCalls.push([src, path, opts]); return { target: path, dirs: ["art/heroes/", "art/misc"], files: ["art/a.png"] }; } } } } } };
 const settings = { playerBrowse: true };
 const me = { id: "p1", isGM: false, can: () => false };
 globalThis.game = { user: me, users: { activeGM: { id: "gm" } }, settings: { get: (s, k) => settings[k] },
@@ -32,5 +32,43 @@ handlers[0]({ action: "browseResult", to: "someone-else", reqId: "r9", result: {
 ok(true, "an answer for another user is ignored without error");
 handlers[0]({ action: "somethingElse", to: "p1" });
 ok(true, "other socket messages are ignored");
+console.log("== GM saves an uploaded picture");
+game.user = { id: "gm", isGM: true, can: () => true };
+emitted.length = 0;
+const bytes = new Uint8Array(300 * 1024).map((_, k) => k % 251);
+const b64 = u => Buffer.from(u).toString("base64");
+const CH = 240 * 1024;
+const parts = [bytes.slice(0, CH), bytes.slice(CH)];
+const send = (name, idx, total, size, data) => P.receiveUpload({ user: "p1", userName: "Ann Lee!", uploadId: "u1", name, index: idx, total, size, data });
+await send("My Hero.PNG", 1, 2, bytes.length, b64(parts[1]));
+ok(!emitted.length && !uploaded.length, "nothing is saved until every chunk has arrived (chunks can come in any order)");
+await send("My Hero.PNG", 0, 2, bytes.length, b64(parts[0]));
+a = emitted.pop();
+ok(uploaded.length === 1 && uploaded[0].size === bytes.length, "the whole file is reassembled and uploaded");
+ok(uploaded[0].dir === "flowstate-art/Ann-Lee" && /^\d+-My-Hero\.png$/.test(uploaded[0].name) && uploaded[0].type === "image/png", "saved under flowstate-art/<player>/ with a safe name");
+ok(a.action === "uploadResult" && a.to === "p1" && a.path === `${uploaded[0].dir}/${uploaded[0].name}`, "the path goes back to the player");
+await P.receiveUpload({ user: "p1", userName: "Ann", uploadId: "u2", name: "virus.exe", index: 0, total: 1, size: 10, data: b64(new Uint8Array(10)) });
+a = emitted.pop();
+ok(a.error && uploaded.length === 1, "non-image files are refused");
+await P.receiveUpload({ user: "p1", userName: "Ann", uploadId: "u3", name: "big.png", index: 0, total: 1, size: 50 * 1024 * 1024, data: "AA==" });
+a = emitted.pop();
+ok(a.error && uploaded.length === 1, "oversized files are refused");
+settings.playerUpload = false;
+await P.receiveUpload({ user: "p1", userName: "Ann", uploadId: "u4", name: "a.png", index: 0, total: 1, size: 1, data: "AA==" });
+a = emitted.pop();
+ok(a.error && uploaded.length === 1, "the GM can turn uploads off");
+settings.playerUpload = true;
+ok(P.safeName("../../etc/passwd") === "etc-passwd" && P.safeName("") === "player" && P.imageExt("a.JPG") === "jpg" && P.imageExt("a.exe") === null, "names are made safe, extensions checked");
+
+console.log("== Player upload (sent to the GM in chunks)");
+game.user = me; game.user.name = "Ann";
+emitted.length = 0;
+const file = new File([bytes], "pic.webp", { type: "image/webp" });
+const pending = P.uploadPicture(file);
+await new Promise(r => setTimeout(r, 20));
+ok(emitted.length === 2 && emitted.every(m => m.action === "uploadChunk" && m.uploadId === emitted[0].uploadId && m.total === 2), "a 300 KB file goes out as 2 chunks");
+handlers[0]({ action: "uploadResult", to: "p1", uploadId: emitted[0].uploadId, path: "flowstate-art/Ann/1-pic.webp" });
+ok((await pending).path === "flowstate-art/Ann/1-pic.webp", "the player gets the saved path");
+ok((await P.uploadPicture(new File(["x"], "evil.js", { type: "text/javascript" }))).error, "the player's client refuses non-images too");
 console.log(fails ? `\n${fails} FAILED` : "\nAll picture checks passed");
 if (fails) process.exit(1);

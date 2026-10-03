@@ -15,6 +15,7 @@ import * as skills from "./skills.mjs";
 import { askImage } from "./pictures.mjs";
 import * as ab from "./abilities.mjs";
 import * as mentalRules from "./mental-rules.mjs";
+import * as mental from "./mental.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
 
 /** What an actor's Energy costs are computed from: stats, Skill Points, and held weapons. */
@@ -664,8 +665,32 @@ function actionGroups(actor, weapons, stats) {
       cost: "AP/RP + Energy", action: "cast", icon: "fa-solid fa-wand-sparkles", disabled: !cs.usable, tooltip: why });
   }
 
+  // Mental: Manifesting Wonder Modes, Alignment, Icons and Wards, Psion Arts.
+  const mentalRows = [];
+  const mctx = mental.manifestContext(actor);
+  const mTheory = mentalRules.theoryTier(sys.trees), willT = skills.tierOf(sys.trees, "mental-willpower-arts"), psionT = skills.tierOf(sys.trees, "mental-psion-arts");
+  if (mctx.wonders.length) {
+    mentalRows.push({ label: "Manifest", detail: `${mctx.wonders.map(w => w.name).join(", ")} · ${mentalRules.ALIGNMENTS[mctx.alignment.value]}${mctx.alignment.deepened ? " (Deepened)" : ""} Alignment · Range sets the AP (Melee 1, Ranged 2, Area 3)`, cost: "1–3 AP", action: "manifest", icon: "fa-solid fa-eye" });
+    const cur = mctx.alignment;
+    if (cur.value !== "dream") mentalRows.push({ label: "Align: Dream", detail: "Change Alignment", cost: mTheory >= 3 ? "2 AP or ⚡ half SP" : "2 AP", action: "alignDream", icon: "fa-solid fa-cloud" });
+    if (cur.value !== "nightmare") mentalRows.push({ label: "Align: Nightmare", detail: "Change Alignment", cost: mTheory >= 3 ? "2 AP or ⚡ half SP" : "2 AP", action: "alignNightmare", icon: "fa-solid fa-moon" });
+    if (cur.value !== "neutral") mentalRows.push({ label: "Return to Neutral", detail: "Form Ward attacks have Advantage in Neutral", cost: "Free", action: "alignNeutral", icon: "fa-solid fa-circle-half-stroke" });
+    if (!cur.deepened && ((cur.value !== "neutral" && mTheory >= 3) || (cur.value === "neutral" && mTheory >= 5))) {
+      const dk = cur.value === "neutral" ? `2 AP + ⚡ ${ab.statMinOf(actor, "will")}` : `⚡ ${ab.statMinOf(actor, mentalRules.KINDS[cur.value].stat)}`;
+      mentalRows.push({ label: cur.value === "neutral" ? "Deepen Neutral (Equilibrium)" : "Deepen Alignment", detail: cur.value === "neutral" ? "Form Wards are doubly Strengthened and can be Enhanced or Bursted for free, until your next turn" : "Wonders of your Alignment are doubly Strengthened until your next turn", cost: dk, action: "deepen", icon: "fa-solid fa-angles-down" });
+    }
+  }
+  const icons = actor.items.filter(i => i.type === "icon" && i.system.profile?.valid);
+  if (icons.length) mentalRows.push({ label: "Attune Icon", detail: icons.map(i => `${i.name}${i.system.attuned ? " (attuned)" : ""}`).join(", ") + " · pick the Tenet", cost: willT >= 1 ? "2 AP (or 2 RP once a turn)" : "6 AP", action: "attuneIcon", icon: "fa-solid fa-hands-praying" });
+  const wardIcon = actor.system.icon;
+  if (wardIcon && wardIcon.system.profile.kind !== "negate") mentalRows.push({ label: `Ward: ${wardIcon.system.profile.name}`, detail: wardIcon.system.profile.ward, cost: willT >= 3 ? "1 AP (the first each turn is free)" : "1 AP", action: "activateWard", icon: "fa-solid fa-shield-halved" });
+  if (psionT >= 1) mentalRows.push({ label: "Psion Sense", detail: `Spot check for mental energies within ${mctx.farSight ? 1000 : 100} ft`, cost: "Check", action: "psionSense", icon: "fa-solid fa-brain" });
+  if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
+  if (psionT >= 4) mentalRows.push({ label: "Aura Sight", detail: "Spot everything in Psion range; doubles Area Manifestations until your next turn", cost: "2 AP + ⚡ half total Mind", action: "auraSight", icon: "fa-solid fa-eye" });
+
   return [
     { key: "act-combat", name: "Combat", actions: combat },
+    ...(mentalRows.length ? [{ key: "act-mental", name: "Mental", actions: mentalRows }] : []),
     ...(magicRows.length ? [{ key: "act-magic", name: "Magic", actions: magicRows }] : []),
     ...(shroudRows.length ? [{ key: "act-shroud", name: "Shroud", actions: shroudRows }] : []),
     ...(parryRows.length ? [{ key: "act-parry", name: "Parry", actions: parryRows }] : []),
@@ -736,6 +761,16 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       recoverEnergy: FlowStateActorSheet.onRecoverEnergy,
       cast: FlowStateActorSheet.onCast,
       spiritSense: FlowStateActorSheet.onSpiritSense,
+      manifest: function () { return mental.manifest(this.document); },
+      alignDream: function () { return mental.changeAlignment(this.document, "dream"); },
+      alignNightmare: function () { return mental.changeAlignment(this.document, "nightmare"); },
+      alignNeutral: function () { return mental.changeAlignment(this.document, "neutral"); },
+      deepen: function () { return mental.deepen(this.document); },
+      attuneIcon: function (event, target) { const item = target?.closest?.("[data-item-id]") ? this.document.items.get(target.closest("[data-item-id]").dataset.itemId) : null; return mental.attuneIcon(this.document, item); },
+      activateWard: function () { return mental.activateWard(this.document); },
+      psionSense: function () { return mental.psionSense(this.document); },
+      farSight: function () { return mental.farSight(this.document); },
+      auraSight: function () { return mental.auraSight(this.document); },
       swapFoci: FlowStateActorSheet.onSwapFoci,
       swapShroud: FlowStateActorSheet.onSwapShroud,
       fireDelayed: FlowStateActorSheet.onFireDelayed,

@@ -19,7 +19,7 @@ export as markdown) whenever a rule matters; snapshots in `dev/docs/` go stale.
 | Flow State - Equipment | authoritative (Mental Equipment section in flux) | `1bjinhIrPGJr0Ss4M9fjlCRSZrteX5r9yjsSuhYkMuag` |
 | Flow State - Magic Stage 1 | authoritative | `10yfXGyX5-dTUYCJzsGw1DOTd7qpGaeD5ZlNF7mMbWI8` |
 | Combo Spell List (linked from Magic Theory) | authoritative | `1lyNQtEPZWuIpjxqvD3BIa_ZPFD25iTxi3YMp78hVAGY` |
-| Mental Rework Test Ground | in-dev (Mental Stage 1 holds the old system) | `1vyo3biYzh4smTOMmNM5OK7uqLXxKlrse6M-zHbnC0YI` |
+| Mental Rework Test Ground | in-dev: the source for Mental (Mental Stage 1 holds the old system); snapshot in `dev/docs/mental.md` | `1vyo3biYzh4smTOMmNM5OK7uqLXxKlrse6M-zHbnC0YI` |
 
 If an ID read fails, search by exact title. "[Discipline] Rework Test Ground" docs are scratchpads; "Stage 1" docs are
 the stable versions. When the user says "I updated the doc", diff the live doc against `dev/docs/*.md`, summarize
@@ -31,7 +31,7 @@ all five Magic groups (T1: Magic Theory, Slashing, Piercing, Crushing, Protectio
 Cold, Radiation, Acid; T3: Grasp Arcana, Venomancy, Charm, Witchery; T4: Build Arcana, Summoning, Creation, Animation; T5:
 Restoration Arcana, Geomancy, Illusion, Arcanomancy, with all their Combos) are automated; "tier" in Magic means the group of
 trees a Magic Theory tier unlocks. Only terrain effects (Muddy/Harden) and Mixed Animations are left to the GM.
-Mental and Ancestries are not yet implemented.
+Mental is in progress (built from the Mental Rework Test Ground): the framework is in (Manifest, Alignment, Icons and Wards, Willpower Arts, Psion Arts) and the Wonders' Modes are being added Wonder by Wonder. Ancestries are not yet implemented.
 
 ## Layout
 
@@ -51,6 +51,7 @@ Mental and Ancestries are not yet implemented.
 - `module/foci.mjs` — Foci effects: Affix hooks for spells, per-turn Foci state, Deck Foci (registers into `actions.mjs` via `registerFoci`).
 - `module/arcana.mjs` — Tier 5: Restore/Painless/Resuscitate, Shift/Toss/Mend, Mirage, Delay support; registers into `actions.mjs` (`registerArcana`).
 - `module/conjure.mjs` + `conjure-rules.mjs` — Tier 4: Summons/Animations as temporary NPC actors, Made items, riders, Build Arcana helpers (rules math is pure).
+- `module/mental-rules.mjs` (pure: Wonders and Modes parsed from the Mental trees, Wonder Power, Manifest costs, Alignment, Icon Forms and their numbers) + `module/mental.mjs` (Manifest dialog and attack, Alignment, attuning Icons, Wards, Nightmare Ward negation, Psion Arts; registers into `actions.mjs` via `registerMental`).
 - `module/areas.mjs` — Area spells: shapes, pure geometry, template placement, Emplace card.
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
 - `module/data.mjs` — TypeDataModels (actor, weapon, armor, foci, shroud, gear, pile) and derived data.
@@ -83,7 +84,7 @@ Mental and Ancestries are not yet implemented.
 - `node --check module/<file>.mjs` catches syntax errors fast.
 - Bump `system.json` `version` (patch for fixes, minor for features) and add a README note with each change.
 - Regenerate skill trees after Martial/Magic doc changes: export the docs to `dev/docs/martial.md` and `magic.md`,
-  then `cd dev && npm run trees`. After Combo Spell List changes: export it to `dev/docs/combos.md`, then `npm run combos`
+  then `cd dev && npm run trees` (Mental too: export the Mental Rework Test Ground to `dev/docs/mental.md`; the generator leaves out trees with no entries yet). After Combo Spell List changes: export it to `dev/docs/combos.md`, then `npm run combos`
   (generates `module/combos.mjs`; don't hand-edit).
 - Keep Foundry globals out of `abilities.mjs`, `martial.mjs`, `magic.mjs`, `rules.mjs`, `creation.mjs` (they're unit-tested).
 - Commit with clear messages; the user may test from `main`.

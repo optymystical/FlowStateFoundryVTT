@@ -12,6 +12,7 @@ import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
 import * as pictures from "./pictures.mjs";
+import "./mental.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStatePileSheet } from "./sheets.mjs";
 /* -------------------------------------------- */
 /*  Documents                                   */
@@ -130,6 +131,7 @@ class FlowStateCombat extends Combat {
       await actions.arcanaAntimagicTurn(combatant.actor);
       await fociEngine.deckTurnStart(combatant.actor);
       await conjure.autonomyTurn(combatant.actor);
+      await actions.mentalTurnStart(combatant.actor);
       await combatant.actor.setFlag?.("flowstate", "turnStartedAt", Date.now());
       // Tier 4: Reform, then the caster's temporary Summons, Animations and Made objects end.
       await conjure.turnStart(combatant.actor);

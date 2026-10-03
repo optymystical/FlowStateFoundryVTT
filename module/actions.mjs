@@ -1369,7 +1369,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "thrasherThrown", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth"];
+  "breakFree", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -3350,6 +3350,10 @@ export const registerFoci = h => { foci = h; };
 /** Tier 5 (Restoration, Geomancy, Illusion) lives in arcana.mjs, which registers its hooks here. */
 let arc = null;
 export const registerArcana = h => { arc = h; };
+/** Mental (mental.mjs) registers its hooks here: Manifest and Ward resolution, Nightmare Ward negation, turn start. */
+let mentalHook = null;
+export const registerMental = h => { mentalHook = h; };
+export const mentalTurnStart = actor => mentalHook?.turnStart(actor);
 export const arcanaTurnStart = actor => arc?.turnStart(actor);
 export const arcanaAct = (message, i) => arc?.act(message, i);
 export const arcanaCheckEntry = (token, changes) => arc?.checkEntry(token, changes);
@@ -3430,7 +3434,7 @@ export async function putSpellEffect(target, effect) {
 export async function clearSpellEffects(caster, { all = false } = {}) {
   // Bleed waits for its victim's next turn (that always comes before the caster's), unless combat is ending.
   const mine = e => e.flags?.flowstate?.spellEffect?.caster === caster.uuid && !e.flags?.flowstate?.ritualOf
-    && (all || !e.flags.flowstate.spellEffect.onTargetTurn);
+    && (all || (!e.flags.flowstate.spellEffect.onTargetTurn && !e.flags.flowstate.spellEffect.persistent));
   const docs = [];
   for (const a of game.actors ?? []) for (const e of a.effects ?? []) if (mine(e)) docs.push(e);
   for (const t of globalThis.canvas?.tokens?.placeables ?? []) if (!t.document.actorLink) for (const e of t.actor?.effects ?? []) if (mine(e)) docs.push(e);
@@ -4422,6 +4426,11 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     const sh = await spellHit(attacker, target, o, result, entry, dodgeRoll?.total ?? null);
     if (sh) { extra.push(sh.html); spellRolls = sh.rolls; if (sh.push) pushInfo = sh.push; defenseChain = sh.chain; }
   }
+  // Mental: a Manifest's Mode or a Ward's effect, once the attack is answered.
+  if (o.mental && mentalHook) {
+    const mh = await mentalHook.onResolve({ attacker, target, o, result, entry, dodgeRoll });
+    if (mh?.html) extra.push(mh.html);
+  }
   // Scorch (Slam + Flame): a failed dodge repeats the burn.
   if (result.hit && dodgeRoll) for (const e of spellEffects(target, "scorch")) {
     const amt = Number(e.flags.flowstate.spellEffect.amount) || 0;
@@ -4883,6 +4892,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
       if (((e.parent?.uuid === actor.uuid ? f.order : "default") ?? "default") !== pos || shields.some(x => x.effect === e)) continue;
       const hp = Number(f.hp) || 0;
       if (hp <= 0) continue;
+      if (f.types?.length && !f.types.includes(DAMAGE_CATEGORY[type] ?? "physical")) continue;      // Prism: only the chosen damage types
       const damped = (f.dampen ?? []).includes(archetype);
       const obj = { name: "Shield", system: { profile: { valid: true, limit: Number(f.max) || hp, focus: { key: "magical", factor: 1 }, selfWeakened: damped ? 1 : 0 }, durability: { value: hp } } };
       if (tryBash(obj, obj.system.profile, hp, pierce)) { shields.push({ effect: e, hp, absorbed: 0, reflect: !!f.reflect, caster: f.caster }); continue; }
@@ -4974,6 +4984,11 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
       if (c.isOwner) await c.update(data); else await requestGM("updateActor", { uuid: c.uuid, data });
       await post(actor, { title: `${esc(actor.name)} — Reactive`, body: `<div class="fs-result">${esc(c.name)} spends 1 RP: the damage is Weakened (${amount}).</div>` });
     }
+  }
+  // Mental: a Nightmare Ward may spend RP to negate some of it first, and a Premonition charge a lump.
+  if (mentalHook && amount > 0 && !bypass) {
+    const neg = await mentalHook.negate(actor, amount, type, { source: shroudCtx?.source ?? null });
+    if (neg.amount !== amount) { if (neg.html && !silent) await post(actor, { title: `${esc(actor.name)} — Ward`, body: neg.html }); amount = neg.amount; }
   }
   const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor });
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.

@@ -1,0 +1,473 @@
+/**
+ * Mental (Rework Test Ground): Manifesting Wonder Modes, Alignment, Icons and their Wards, Psion Arts and Willpower Arts.
+ * Pure numbers live in mental-rules.mjs. actions.mjs calls in through `registerMental()`:
+ *   onResolve   after a Manifest or Ward attack is answered (the Mode's text, or the Ward's effect),
+ *   negate      before damage is applied (Nightmare Wards that spend RP to negate damage),
+ *   turnStart   Alignment returns to Neutral, Far Sight / Aura Sight lapse.
+ * What each Wonder's Modes do (Life, Death, ...) is added Wonder by Wonder: until then a Manifest rolls its attack, pays its costs and the
+ * card shows the Mode's numbers worked out for your Wonder Power for the GM to resolve.
+ */
+import {
+  post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless,
+  rollD100, turnKey, registerMental, spellEffects, damageOutcome
+} from "./actions.mjs";
+import * as ab from "./abilities.mjs";
+import * as areas from "./areas.mjs";
+import * as R from "./mental-rules.mjs";
+import { tierOf } from "./skills.mjs";
+import { DAMAGE_CATEGORY } from "./martial.mjs";
+
+const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
+const DialogV2 = () => foundry.applications.api.DialogV2;
+const eff = (actor, k) => actor.system.derived?.effective?.[k]?.value ?? 0;
+const minOf = (actor, k) => ab.statMinOf(actor, k);
+const trees = actor => actor.system.trees ?? {};
+const theory = actor => R.theoryTier(trees(actor));
+const willTier = actor => tierOf(trees(actor), "mental-willpower-arts");
+const psionTier = actor => tierOf(trees(actor), "mental-psion-arts");
+const mind = actor => eff(actor, "pon") + eff(actor, "snap") + eff(actor, "will");
+
+/* -------------------------------------------- */
+/*  Alignment                                   */
+/* -------------------------------------------- */
+
+export const alignmentOf = actor => actor?.getFlag?.("flowstate", "alignment") ?? { value: "neutral", deepened: false };
+const setAlignment = (actor, value, deepened = false) => setActorFlag(actor, "alignment", value === "neutral" && !deepened ? null : { value, deepened });
+
+/** Pay AP / RP / energy together, checking all of it first so nothing is half spent. Returns false (with a warning) if the actor can't afford it. */
+async function pay(actor, { ap = 0, rp = 0, energy = 0 }, what) {
+  if (inActiveCombat(actor)) {
+    const s = actor.system;
+    if (s.ap.value < ap) { ui.notifications.warn(`${actor.name} needs ${ap} AP for ${what} but has ${s.ap.value}.`); return false; }
+    if (s.rp.value < rp) { ui.notifications.warn(`${actor.name} needs ${rp} RP for ${what} but has ${s.rp.value}.`); return false; }
+    if (s.energy.value < energy) { ui.notifications.warn(`${actor.name} needs ${energy} Energy for ${what} but has ${s.energy.value}.`); return false; }
+  }
+  if (ap && !(await spendPoints(actor, "ap", ap, what))) return false;
+  if (rp && !(await spendPoints(actor, "rp", rp, what))) return false;
+  if (energy && !(await spendEnergy(actor, energy, what))) return false;
+  return true;
+}
+
+/** Change Alignment (2 AP, or with Fluidity half your Skill Points in energy at any time). It lasts until the start of your next turn. */
+export async function changeAlignment(actor, to) {
+  if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
+  const cur = alignmentOf(actor);
+  if (cur.value === to) return ui.notifications.info(`${actor.name} is already ${R.ALIGNMENTS[to]}.`);
+  let fluidity = false;
+  if (theory(actor) >= 3 && inActiveCombat(actor)) {
+    const energy = R.alignChangeCost({ fluidity: true, skillPoints: actor.system.skillPoints ?? 0 }).energy;
+    fluidity = await DialogV2().wait({ window: { title: `Align: ${R.ALIGNMENTS[to]}` }, rejectClose: false,
+      content: `<p>Change to <strong>${R.ALIGNMENTS[to]}</strong> for 2 AP, or with Fluidity for ${energy} Energy (no AP, any time)?</p>`,
+      buttons: [{ action: "ap", label: "2 AP", default: true }, { action: "energy", label: `${energy} Energy (Fluidity)` }] });
+    if (!fluidity) return;
+    fluidity = fluidity === "energy";
+  }
+  const cost = R.alignChangeCost({ fluidity, skillPoints: actor.system.skillPoints ?? 0 });
+  if (to !== "neutral" && !(await pay(actor, cost, "changing Alignment"))) return;
+  await setAlignment(actor, to, false);
+  await post(actor, { title: `${esc(actor.name)} — Alignment`, body: `<div class="fs-result">${esc(actor.name)} is now <strong>${R.ALIGNMENTS[to]}</strong> until the start of their next turn${to === "neutral" ? "" : `: ${to === "dream" ? "Dream" : "Nightmare"} Wonders have Advantage on their attack rolls, ${to === "dream" ? "Nightmare" : "Dream"} Wonders have Disadvantage`}.</div>` });
+}
+
+/** Deepen your Alignment (Mental T3), or Deepen Neutral with Equilibrium (T5). */
+export async function deepen(actor) {
+  if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
+  const cur = alignmentOf(actor);
+  if (cur.deepened) return ui.notifications.info(`${actor.name}'s Alignment is already Deepened.`);
+  if (cur.value === "neutral" && theory(actor) < 5) return ui.notifications.warn("Only a Dream or Nightmare Alignment can be Deepened (Equilibrium, Mental T5, lets Neutral be).");
+  const kind = cur.value;
+  const cost = R.deepenCost(kind, { scalingMin: kind === "neutral" ? 0 : minOf(actor, R.KINDS[kind].stat), willMin: minOf(actor, "will") });
+  if (!(await pay(actor, cost, "Deepening"))) return;
+  await setAlignment(actor, kind, true);
+  await post(actor, { title: `${esc(actor.name)} — Deepen`, body: `<div class="fs-result">${esc(actor.name)}'s ${R.ALIGNMENTS[kind]} Alignment is <strong>Deepened</strong> until the start of their next turn: ${kind === "neutral" ? "Form Wards are doubly Strengthened, and can be Enhanced or Bursted for free with each use" : `${kind === "dream" ? "Dream" : "Nightmare"} Wonders Manifested are doubly Strengthened`}.</div>` });
+}
+
+/* -------------------------------------------- */
+/*  Manifesting                                 */
+/* -------------------------------------------- */
+
+/** What the Manifest dialog needs: known Modes grouped by Wonder, the Icon, Far Sight and Aura Sight. */
+export function manifestContext(actor) {
+  const wonders = R.knownWonders(trees(actor)).filter(w => w.modes.length);
+  const flags = actor.getFlag?.("flowstate", "psion") ?? {};
+  return { wonders, theory: theory(actor), icon: actor.system.icon ?? null, alignment: alignmentOf(actor), farSight: !!flags.farSight, auraSight: !!flags.auraSight, will: willTier(actor) };
+}
+
+/** Everything about a Manifest worked out from the dialog values (also used for the live preview). */
+export function manifestPlan(actor, ctx, v, { free = false } = {}) {
+  const mode = R.modeById(v.mode);
+  const wonder = mode ? R.wonderById(mode.wonder) : null;
+  if (!mode || !wonder || !ctx.wonders.some(w => w.modes.some(m => m.id === mode.id))) return { ok: false, errors: ["Pick a Mode you know."] };
+  const kind = R.KINDS[wonder.kind];
+  const stat = eff(actor, kind.stat);
+  const check = R.manifestCheck(wonder, stat);
+  const range = R.RANGES[v.range] ? v.range : "ranged";
+  const enhanceCost = minOf(actor, kind.stat);
+  const burst = !!v.burst && ctx.theory >= 1;
+  const cost = R.manifestCost({ range, enhance: !!v.enhance, burst, enhanceCost, free });
+  const align = ctx.alignment;
+  const net = R.alignmentNet(align.value, wonder.kind);
+  const power = check.power;
+  const text = R.scaleMentalText(v.enhance ? `${mode.base} Enhanced: ${mode.enhanced || "(no extra effect)"}` : mode.base, power);
+  const errors = check.ok ? [] : [check.reason];
+  if (v.burst && ctx.theory < 1) errors.push("Burst needs Mental Theory Tier 1.");
+  return { ok: errors.length === 0, errors, mode, wonder, kind: wonder.kind, power, stat, enhanceCost, cost, range, enhance: !!v.enhance, burst, net,
+    deepened: align.deepened && align.value === wonder.kind, text, alignment: align.value };
+}
+
+const costText = c => [c.ap ? `${c.ap} AP` : "", c.rp ? `${c.rp} RP` : "", c.energy ? `${c.energy} Energy` : ""].filter(Boolean).join(" + ") || "free";
+
+function previewHTML(plan) {
+  if (!plan.ok) return `<p class="fs-warn">${plan.errors.map(esc).join(" ")}</p>`;
+  const align = plan.net > 0 ? " · Alignment: Advantage" : plan.net < 0 ? " · Alignment: Disadvantage" : "";
+  return `<div class="fs-cast-sum"><div><strong>${esc(plan.mode.name)}</strong> <small>(${esc(plan.wonder.name)}, ${R.KINDS[plan.kind].label})</small>: ${esc(plan.text)}</div>
+    <div><strong>${costText(plan.cost)}</strong> · Wonder Power ×${plan.power} <small>(${R.KINDS[plan.kind].statLabel} ${plan.stat})</small>${align}${plan.deepened ? " · Deepened: doubly Strengthened" : ""}</div></div>`;
+}
+
+function dialogHTML(ctx, v, plan) {
+  const modes = ctx.wonders.map(w => `<optgroup label="${esc(w.name)} (${R.KINDS[w.kind].label})">${w.modes.map(m => `<option value="${esc(m.id)}" ${v.mode === m.id ? "selected" : ""}>${esc(m.name)}</option>`).join("")}</optgroup>`).join("");
+  const ranges = Object.entries(R.RANGES).map(([k, r]) => `<option value="${k}" ${v.range === k ? "selected" : ""}>${r.label} (${r.ap} AP): ${esc(r.text)}</option>`).join("");
+  return `<div class="fs-cast">
+    <div class="fs-field"><label>Mode</label><select name="mode">${modes}</select></div>
+    <div class="fs-field"><label>Range</label><select name="range">${ranges}</select></div>
+    <label class="fs-cast-mod"><input type="checkbox" name="enhance" ${v.enhance ? "checked" : ""}> <strong>Enhance</strong> <small>${v.mode && plan?.enhanceCost !== undefined ? `${plan.enhanceCost} Energy (the Wonder's Scaling Stat min)` : "costs the Wonder's Scaling Stat min in Energy"}</small></label>
+    ${ctx.theory >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="burst" ${v.burst ? "checked" : ""}> <strong>Burst</strong> <small>use RP instead of AP, and pay the Enhance cost in Energy</small></label>` : ""}
+    <div class="fs-cast-preview">${previewHTML(plan)}</div>
+  </div>`;
+}
+
+const formValues = form => {
+  const v = {};
+  for (const el of form.elements) if (el.name && !el.disabled) v[el.name] = el.type === "checkbox" ? el.checked : el.value;
+  return v;
+};
+
+async function manifestDialog(actor, ctx) {
+  let v = { mode: ctx.wonders[0]?.modes[0]?.id, range: "ranged", enhance: false, burst: false };
+  const plan0 = manifestPlan(actor, ctx, v);
+  return DialogV2().prompt({
+    window: { title: `Manifest: ${actor.name}` },
+    position: { width: 560 },
+    content: dialogHTML(ctx, v, plan0),
+    render: (event, dlg) => {
+      const el = dlg?.element ?? dlg;
+      const form = el?.querySelector?.("form");
+      if (!form) return;
+      const refresh = () => {
+        v = formValues(form);
+        const plan = manifestPlan(actor, ctx, v);
+        form.querySelector(".fs-cast-preview").innerHTML = previewHTML(plan);
+        const hint = form.querySelector('[name="enhance"] ~ small');
+        if (hint && plan.enhanceCost !== undefined) hint.textContent = `${plan.enhanceCost} Energy (the Wonder's Scaling Stat min)`;
+        const ok = el.querySelector('button[data-action="ok"]');
+        if (ok) ok.disabled = !plan.ok;
+      };
+      form.addEventListener("change", refresh);
+      refresh();
+    },
+    ok: { label: "Manifest", icon: "fa-solid fa-eye", callback: (event, button) => formValues(button.form) },
+    rejectClose: false
+  });
+}
+
+/** The base attack options for a Mental attack (a Manifest or a Ward): no damage of its own, effects come from the hook. */
+const baseAttack = { stealth: "none", push: false, damage: "", type: "arcane", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce: 0, bash: 0, knockback: 0, followups: [] };
+
+/**
+ * Manifest a Mode: choose it, its Range, Enhance and Burst, pay, and make the attack roll. `preset` skips the dialog (values as the form would give).
+ * `free` is for Manifests that cost nothing (Patron, Innate, Will of Body and Spirit).
+ */
+export async function manifest(actor, preset = null, { free = false } = {}) {
+  if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
+  const ctx = manifestContext(actor);
+  if (!ctx.wonders.length) return ui.notifications.warn(`${actor.name} doesn't know any Wonder Modes yet.`);
+  const v = preset ?? await manifestDialog(actor, ctx);
+  if (!v) return null;
+  const plan = manifestPlan(actor, ctx, v, { free });
+  if (!plan.ok) { ui.notifications.warn(plan.errors.join(" ")); return null; }
+  // Targets: Melee needs one close by, Ranged within 100 ft (500 with Far Sight), Area is placed on the scene.
+  const farSight = ctx.farSight;
+  const reach = actor.system.derived?.size?.melee ?? 5;
+  let targets = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
+  let area = null;
+  if (plan.range === "melee" && targets.length && !checkRange(actor, reach, `${plan.mode.name} (Melee)`)) return null;
+  if (plan.range === "ranged" && targets.length && !checkRange(actor, farSight ? 500 : 100, `${plan.mode.name} (Ranged)`)) return null;
+  if (plan.range === "area") {
+    area = await areas.placeArea(actor, { title: `Manifest ${plan.mode.name}`, scale: ctx.auraSight ? 2 : 1, aim: [...(game.user?.targets ?? [])][0] });
+    if (area === null) return null;                                     // cancelled: nothing is spent
+    if (area) targets = area.actors;
+  }
+  if (!(await pay(actor, plan.cost, `Manifesting ${plan.mode.name}`))) return null;
+  const notes = [
+    `${plan.mode.name} (${plan.wonder.name}, ${R.KINDS[plan.kind].label}) · Wonder Power ×${plan.power}`,
+    plan.enhance ? "Enhanced" : "", plan.burst ? "Burst (RP)" : "",
+    plan.net > 0 ? `${R.ALIGNMENTS[plan.alignment]} Alignment: Advantage` : plan.net < 0 ? `${R.ALIGNMENTS[plan.alignment]} Alignment: Disadvantage` : "",
+    plan.deepened ? "Deepened: doubly Strengthened" : "", plan.range === "area" ? "Area: Weakened if it hits more than two targets" : ""
+  ].filter(Boolean);
+  const mental = { mode: plan.mode.id, wonder: plan.wonder.id, kind: plan.kind, power: plan.power, enhanced: plan.enhance, burst: plan.burst, range: plan.range, deepened: plan.deepened,
+    text: plan.text, caster: actor.uuid };
+  return performAttack(actor, { ...baseAttack, label: `${plan.mode.name} (Manifest)`, net: plan.net, melee: plan.range === "melee", area: plan.range === "area",
+    stacks: plan.deepened ? R.DEEPENED_STACKS : 0, notes, mental, ...(targets.length ? { targetActors: targets } : {}) });
+}
+
+/* -------------------------------------------- */
+/*  Icons: attuning and Wards                   */
+/* -------------------------------------------- */
+
+/** Attune an Icon (6 AP; Willpower Arts T1: 2 AP, or 2 RP once per turn) and pick its Tenet. Free outside combat. */
+export async function attuneIcon(actor, item = null) {
+  if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
+  const icons = actor.items.filter(i => i.type === "icon" && i.system.profile?.valid);
+  if (!icons.length) return ui.notifications.info(`${actor.name} has no Icon.`);
+  const icon = item ?? (icons.length === 1 ? icons[0] : null);
+  const profile = icon?.system.profile;
+  const choices = icon ? R.tenetChoices(profile.align, trees(actor)) : [];
+  const key = turnKey();
+  const rpFree = willTier(actor) >= 1 && !!key && actor.getFlag("flowstate", "attuneRP") !== key;
+  const cost = willTier(actor) >= 1 ? { ap: 2 } : { ap: 6 };
+  const out = await DialogV2().prompt({
+    window: { title: `Attune: ${actor.name}` },
+    content: `<div class="fs-cast">
+      ${icon ? "" : `<div class="fs-field"><label>Icon</label><select name="icon">${icons.map(i => `<option value="${i.id}">${esc(i.name)}</option>`).join("")}</select></div>`}
+      <div class="fs-field"><label>Tenet</label><select name="tenet"><option value="">— No Tenet —</option>${(icon ? choices : R.tenetChoices(icons[0].system.profile.align, trees(actor))).map(w => `<option value="${esc(w.tenet.id)}" ${icon?.system.tenet === w.tenet.id ? "selected" : ""}>${esc(w.tenet.name)} (${esc(w.name)})</option>`).join("")}</select></div>
+      ${icon?.system.form === "bane" || (!icon && icons.some(i => i.system.form === "bane")) ? `<div class="fs-field"><label>Bane: chosen damage</label><select name="chosen"><option value="physical">Physical</option><option value="elemental">Elemental</option><option value="magical">Magical</option></select></div>` : ""}
+      <div class="fs-field"><label>Pay with</label><select name="pay"><option value="ap">${cost.ap} AP</option>${rpFree ? `<option value="rp">2 RP (once per turn)</option>` : ""}</select></div>
+      <p class="hint">Attuning takes ${cost.ap} AP in combat (free outside it). Only one Icon can be attuned; attuning again changes the Tenet.</p></div>`,
+    ok: { label: "Attune", callback: (event, button) => formValues(button.form) }, rejectClose: false
+  });
+  if (!out) return;
+  const target = icon ?? actor.items.get(out.icon);
+  if (!target) return;
+  const rp = out.pay === "rp";
+  if (!(await pay(actor, rp ? { rp: 2 } : { ap: cost.ap }, `attuning ${target.name}`))) return;
+  if (rp) await setActorFlag(actor, "attuneRP", key);
+  await target.update({ "system.attuned": true, "system.tenet": out.tenet ?? "", ...(out.chosen ? { "system.chosen": out.chosen } : {}) }, { flowstateAttune: true });
+  const tenet = out.tenet ? R.wonderById(out.tenet.split(":")[0])?.tenet?.name : null;
+  await post(actor, { title: `${esc(actor.name)} — Attune`, body: `<div class="fs-result">${esc(actor.name)} attunes to <strong>${esc(target.name)}</strong>${tenet ? ` with the Tenet <strong>${esc(tenet)}</strong>` : ""}.</div>` });
+}
+
+const mark = (actor, key) => { const k = turnKey(); return !!k && actor.getFlag?.("flowstate", key) === k; };
+
+/** Activate your Icon's Ward (shielding and charges): a self attack roll (Neutral gives it Advantage), or Projected at an ally (Mental T2). */
+export async function activateWard(actor) {
+  if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
+  const icon = actor.system.icon;
+  const p = icon?.system.profile;
+  if (!p?.valid) return ui.notifications.warn(`${actor.name} has no attuned Icon.`);
+  if (p.kind === "negate") return ui.notifications.info(`${p.name} works on its own: when you would take damage you're asked whether to spend 1 RP to negate it.`);
+  const form = R.FORMS[p.form];
+  const align = alignmentOf(actor);
+  if (form.needs === "dream" && align.value !== "dream") return ui.notifications.warn(`${p.name} can only be activated in the Dream Alignment.`);
+  const th = theory(actor), wt = willTier(actor);
+  const innate = wt >= 3 && !mark(actor, "innateTurn") && inActiveCombat(actor);
+  const enhanceCost = minOf(actor, "will");
+  const ally = th >= 2 ? [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.uuid !== actor.uuid && a.type !== "pile") : null;
+  const out = await DialogV2().prompt({
+    window: { title: `${p.name} Ward: ${actor.name}` },
+    content: `<div class="fs-cast">
+      <p>${esc(p.ward)}</p>
+      ${innate ? `<p class="hint"><strong>Innate:</strong> your first Ward each turn costs no AP/RP and is automatically Enhanced.</p>` : `
+      ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${enhanceCost} Energy: ${esc(p.enhance)}</small></label>
+      <label class="fs-cast-mod"><input type="checkbox" name="burst"> <strong>Burst</strong> <small>RP instead of AP, and ${enhanceCost} Energy</small></label>` : ""}`}
+      ${wt >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="clear"> <strong>Make Clear</strong> <small>${enhanceCost} Energy: Advantage on the activation roll, and one reroll if it misses</small></label>` : ""}
+      ${ally && wt >= 4 ? `<label class="fs-cast-mod"><input type="checkbox" name="recur"> <strong>Recur</strong> <small>${Math.floor(enhanceCost / 2)} Energy: it chains to you as well on a hit</small></label>` : ""}
+      ${ally ? `<p class="hint">Projected at ${esc(ally.name)} (Ranged, 100 ft).</p>` : ""}
+      ${form.kind === "shield" && form.typed ? `<div class="fs-field"><label>Shields against</label><select name="types"><option value="physical">Physical</option><option value="elemental">Elemental</option><option value="magical">Magical</option></select></div>` : ""}
+    </div>`,
+    ok: { label: "Ward", callback: (event, button) => formValues(button.form) }, rejectClose: false
+  });
+  if (!out) return;
+  const enhanced = innate || !!out.enhance;
+  const burst = !innate && !!out.burst;
+  let energy = (out.enhance && !innate ? enhanceCost : 0) + (burst ? enhanceCost : 0) + (out.clear ? enhanceCost : 0) + (out.recur ? Math.floor(enhanceCost / 2) : 0);
+  const costs = innate ? { ap: 0, rp: 0, energy } : burst ? { ap: 0, rp: form.ap ?? 1, energy } : { ap: form.ap ?? 1, rp: 0, energy };
+  if (!(await pay(actor, costs, `${p.name}'s Ward`))) return;
+  if (innate) await setActorFlag(actor, "innateTurn", turnKey());
+  const target = ally ?? actor;
+  const adv = R.alignmentNet(align.value, null, { ward: true }) + (out.clear ? 1 : 0);
+  const mental = { ward: { form: p.form, enhanced, types: out.types ? [out.types] : null, recur: !!out.recur, clear: !!out.clear, caster: actor.uuid, icon: icon.uuid,
+    amount: enhanced ? p.enhancedAmount : p.amount, deepened: align.deepened && align.value === "neutral" } };
+  const notes = [`${p.name} Ward`, enhanced ? "Enhanced" : "", burst ? "Burst (RP)" : "", innate ? "Innate (free)" : "", adv > 0 ? "Advantage (Neutral Alignment / Make Clear)" : "",
+    wt >= 5 && innate ? "Innate Mastery: the target has Disadvantage on their roll against it" : ""].filter(Boolean);
+  return performAttack(actor, { ...baseAttack, label: `${p.name} Ward`, net: adv, melee: false, notes, mental, targetActors: [target], dodgeNet: wt >= 5 && innate ? -1 : 0,
+    stacks: align.deepened && align.value === "neutral" ? R.DEEPENED_STACKS : 0 });
+}
+
+/** A hit Ward: put its effect on the target. */
+async function applyWard({ attacker, target, ward }) {
+  const form = R.FORMS[ward.form];
+  const caster = attacker;
+  const lines = [];
+  const place = async (who, amount) => {
+    if (form.kind === "shield" || form.kind === "persistent") {
+      let amt = amount;
+      const mine = spellEffects(who, "shield").filter(e => e.flags.flowstate.spellEffect.ward === ward.form && e.flags.flowstate.spellEffect.caster === caster.uuid);
+      if (form.cap) amt = Math.max(0, Math.min(amt, form.cap * R.iconScale(eff(caster, "will"), (ward.grade ?? 1)) - mine.reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.hp) || 0), 0)));
+      if (form.cap && amt <= 0) { lines.push(`${esc(who.name)} already has the most ${form.name} shielding.`); return; }
+      await putSpellEffect(who, { kind: "shield", stack: true, caster: caster.uuid, name: `${form.name} (${amt} shielding)`, hp: amt, max: amt, ward: ward.form, order: "default", ritualOf: null,
+        types: ward.types ?? null, turnsLeft: form.extraTurn && ward.enhanced ? 2 : undefined, persistent: form.kind === "persistent",
+        description: `Absorbs the next ${amt} damage${ward.types ? ` of ${ward.types.join("/")}` : ""}. ${form.kind === "persistent" ? "Does not decay or naturally regenerate." : "Until the start of the caster's next turn."}` });
+      lines.push(`${esc(who.name)} gets <strong>${amt} shielding</strong> from ${esc(form.name)}${form.kind === "persistent" ? " (it stays until it is used up)" : ""}.`);
+    } else if (form.kind === "charge") {
+      await putSpellEffect(who, { kind: "premonition", caster: caster.uuid, name: `Premonition (negates ${amount})`, charge: amount, ward: ward.form, ritualOf: null,
+        description: `One charge: when damage would be dealt, negate up to ${amount} of it. Until the start of the caster's next turn.` });
+      lines.push(`${esc(who.name)} stores a <strong>Premonition</strong> charge (negates up to ${amount}).`);
+    }
+  };
+  await place(target, ward.amount);
+  if (ward.recur && target.uuid !== caster.uuid) { await place(caster, ward.amount); lines.push("Recur: it chains to the caster too."); }
+  if (form.anchor) lines.push("Anchor: damage dealt to this shielding is Weakened while you haven't moved this turn (the GM applies that).");
+  if (ward.types && ward.enhanced && form.typed) lines.push("Enhanced: it protects against two chosen damage types (add the second on the effect).");
+  return lines.join("<br>");
+}
+
+/* -------------------------------------------- */
+/*  Resolving the attack: Manifests and Wards   */
+/* -------------------------------------------- */
+
+async function onResolve({ attacker, target, o, result }) {
+  const m = o.mental;
+  if (!m) return null;
+  if (m.ward) {
+    if (!result.hit) return { html: `<div class="fs-notes">${esc(R.FORMS[m.ward.form].name)}: the Ward doesn't take hold on ${esc(target.name)}.</div>` };
+    const html = await applyWard({ attacker, target, ward: { ...m.ward, grade: attacker.system.icon?.system.grade ?? 1 } });
+    return { html: `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${html}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>` };
+  }
+  if (!result.hit) return { html: `<div class="fs-notes">${esc(R.modeById(m.mode)?.name ?? "The Mode")} misses ${esc(target.name)}.</div>` };
+  const mode = R.modeById(m.mode);
+  return { html: `<div class="fs-result"><i class="fa-solid fa-eye"></i> <strong>${esc(mode?.name ?? "Manifest")}</strong> hits ${esc(target.name)}${result.crit ? " (critical)" : ""}${m.deepened ? ", doubly Strengthened (Deepened)" : ""}: ${esc(m.text)}
+    <div class="fs-notes">The Mode's effect isn't automated yet: the GM applies it from the numbers above.</div></div>` };
+}
+
+/* -------------------------------------------- */
+/*  Nightmare Wards: negate damage              */
+/* -------------------------------------------- */
+
+/**
+ * Before damage lands: a Nightmare Ward may spend 1 RP to negate part of it, as many times as the owner likes ("Can be used multiple times per damage
+ * instance"). Returns { amount, html }. A Premonition charge can negate a chunk too. Only the owner is asked; Echo, once it fully negates an
+ * attack, keeps negating for free until the start of the owner's next turn.
+ */
+async function negate(actor, amount, type, { source = null } = {}) {
+  if (!actor || actor.type === "pile" || amount <= 0 || !actor.isOwner) return { amount, html: "" };
+  const icon = actor.system.icon;
+  const p = icon?.system.profile;
+  const notes = [];
+  let left = amount;
+  // Premonition (Dream): one stored charge negates a lump of damage.
+  for (const e of spellEffects(actor, "premonition")) {
+    if (left <= 0) break;
+    const d = e.flags.flowstate.spellEffect;
+    const yes = await DialogV2().confirm({ window: { title: "Premonition" }, rejectClose: false, content: `<p>Consume a Premonition charge to negate up to <strong>${d.charge}</strong> of the ${left} ${esc(type)} damage?</p>` });
+    if (!yes) continue;
+    const n = Math.min(d.charge, left);
+    left -= n;
+    notes.push(`Premonition negates ${n}`);
+    await e.delete();
+  }
+  if (!p?.valid || p.kind !== "negate" || left <= 0) return { amount: left, html: notes.length ? `<div class="fs-notes">${notes.join(" · ")}</div>` : "" };
+  const form = R.FORMS[p.form];
+  const align = alignmentOf(actor);
+  const cat = DAMAGE_CATEGORY[type] ?? "physical";
+  const th = theory(actor);
+  const willMin = minOf(actor, "will");
+  const per = (uses, enhanced, near) => {
+    let n = enhanced ? p.enhancedAmount : p.amount;
+    if (form.chooses) n = enhanced || cat === icon.system.chosen ? p.amount : p.other;
+    if (form.needs === "deepNightmare") n = (align.value === "nightmare" && (align.deepened || enhanced)) ? p.amount : p.other;
+    if (form.near) n = near ? p.amount : p.other;
+    if (form.grows) n += p.grows * (uses + (enhanced ? 1 : 0));
+    return n;
+  };
+  // Echo: once it has fully negated an attack, it keeps working for free until your next turn.
+  const echo = actor.getFlag("flowstate", "echoWard");
+  let uses = 0, near = !!source?.near;
+  if (form.echo && echo && echo.key === (turnKey() ?? "ooc") && echo.n > 0) {
+    const n = Math.min(left, echo.n * p.amount);
+    left -= n;
+    notes.push(`Echo negates ${n} for free (×${echo.n})`);
+  }
+  for (;;) {
+    if (left <= 0 || ((actor.system.rp?.value ?? 0) < 1 && inActiveCombat(actor))) break;
+    const n = Math.min(left, per(uses, false, near));
+    const ask = await DialogV2().prompt({
+      window: { title: `${p.name} Ward` },
+      content: `<p><strong>${left}</strong> ${esc(type)} damage is coming. Spend 1 RP to negate up to <strong>${n}</strong> of it with ${esc(p.name)}?</p>
+        ${form.near ? `<label class="fs-cast-mod"><input type="checkbox" name="near" ${near ? "checked" : ""}> The source is within my melee range (${p.amount} instead of ${p.other})</label>` : ""}
+        ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${willMin} Energy: ${esc(p.enhance)}</small></label>` : ""}
+        ${uses ? `<small>Used ${uses} time${uses === 1 ? "" : "s"} already on this damage.</small>` : ""}`,
+      ok: { label: "Negate (1 RP)", callback: (event, button) => formValues(button.form) }, rejectClose: false
+    });
+    if (!ask) break;
+    near = form.near ? !!ask.near : near;
+    const enh = !!ask.enhance && th >= 1;
+    const nn = Math.min(left, per(uses, enh, near));
+    if (!(await pay(actor, { rp: 1, energy: enh ? willMin : 0 }, `${p.name}'s Ward`))) break;
+    left -= nn; uses++;
+    notes.push(`${p.name} negates ${nn} (1 RP${enh ? `, Enhanced for ${willMin} Energy` : ""})`);
+  }
+  if (form.echo && left <= 0 && amount > 0) {
+    const cur = actor.getFlag("flowstate", "echoWard");
+    const key = turnKey() ?? "ooc";
+    await setActorFlag(actor, "echoWard", { key, n: (cur?.key === key ? cur.n : 0) + 1 });
+    notes.push("Echo: it now negates every instance of damage for free until your next turn, and stacks");
+  }
+  return { amount: Math.max(0, left), html: notes.length ? `<div class="fs-notes">${notes.map(esc).join(" · ")}</div>` : "" };
+}
+
+/* -------------------------------------------- */
+/*  Psion Arts                                  */
+/* -------------------------------------------- */
+
+/** Sixth Sense: a Spot check for mental energies through any surface within 100 ft (1000 ft with Far Sight). */
+export async function psionSense(actor) {
+  const t = psionTier(actor);
+  if (t < 1) return;
+  const far = !!actor.getFlag("flowstate", "psion")?.farSight;
+  const range = far ? 1000 : 100;
+  await rollD100(actor, "Psion Sense");
+  const detail = t >= 5 ? "the individual mental stats and mental abilities (of stages you've reached) of those you detect, with direction and total Mind"
+    : t >= 3 ? "the direction of a chosen mental energy and its total Mind" : "only how many mental energies are around you, not where";
+  await post(actor, { title: `${esc(actor.name)} — Psion Sense`, body: `<div class="fs-notes">${t >= 3 ? "Primary" : "Secondary"} Psion within <strong>${range} ft</strong>${far ? " (Far Sight)" : ""}: on a success you learn ${detail}.</div>` });
+}
+
+/** Far Sight (Psion T2): 2 AP and energy equal to your total Mind. Psion Sense reaches 1000 ft and Ranged Manifestations 500 ft until your next turn. */
+export async function farSight(actor) {
+  if (psionTier(actor) < 2) return;
+  const cost = { ap: 2, energy: mind(actor) };
+  if (!(await pay(actor, cost, "Far Sight"))) return;
+  const cur = actor.getFlag("flowstate", "psion") ?? {};
+  await setActorFlag(actor, "psion", { ...cur, farSight: true });
+  await post(actor, { title: `${esc(actor.name)} — Far Sight`, body: `<div class="fs-result">Psion Sense reaches <strong>1000 ft</strong> and Ranged Manifestations <strong>500 ft</strong> until the start of ${esc(actor.name)}'s next turn (pay ${cost.energy} Energy again then to keep it).</div>` });
+}
+
+/** Aura Sight (Psion T4): 2 AP and half your total Mind: a Spot check on everyone in Psion range, and Area Manifestations are doubled until your next turn. */
+export async function auraSight(actor) {
+  if (psionTier(actor) < 4) return;
+  const cost = { ap: 2, energy: Math.floor(mind(actor) / 2) };
+  if (!(await pay(actor, cost, "Aura Sight"))) return;
+  const cur = actor.getFlag("flowstate", "psion") ?? {};
+  await setActorFlag(actor, "psion", { ...cur, auraSight: true });
+  await rollD100(actor, "Aura Sight (Spot)");
+  await post(actor, { title: `${esc(actor.name)} — Aura Sight`, body: `<div class="fs-result">A Spot check against everything within Psion range. Area Manifestations are <strong>doubled</strong> until the start of ${esc(actor.name)}'s next turn.</div>` });
+}
+
+/* -------------------------------------------- */
+/*  Turn start                                  */
+/* -------------------------------------------- */
+
+/** Start of the Mental user's turn: Alignment returns to Neutral; Far Sight and Aura Sight lapse (Far Sight can be paid again). */
+export async function turnStart(actor) {
+  if (alignmentOf(actor).value !== "neutral" || alignmentOf(actor).deepened) await setAlignment(actor, "neutral", false);
+  const psion = actor.getFlag("flowstate", "psion");
+  if (!psion) return;
+  let next = { ...psion, auraSight: false };
+  if (psion.farSight) {
+    const cost = mind(actor);
+    const keep = actor.isOwner && psionTier(actor) >= 2 && (actor.system.energy?.value ?? 0) >= cost
+      ? await DialogV2().confirm({ window: { title: "Far Sight" }, rejectClose: false, content: `<p>Pay <strong>${cost}</strong> Energy to keep Far Sight for another turn?</p>` }) : false;
+    if (keep && (await pay(actor, { energy: cost }, "Far Sight"))) next.farSight = true; else next.farSight = false;
+  }
+  await setActorFlag(actor, "psion", next.farSight || next.auraSight ? next : null);
+}
+
+registerMental({ onResolve, negate, turnStart });

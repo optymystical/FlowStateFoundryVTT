@@ -87,9 +87,14 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     const painDown = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.painDown) || 0), 0);
     // Phantom Pain (Illusion T2): illusion damage from a Mirage only raises the Pain Threshold (gone when no Mirage affects them).
     const phantom = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.phantomTotal) || 0), 0);
-    if (painDown || phantom) { d.pain = Math.max(0, d.pain - painDown + phantom); this.hp.pain = d.pain; }
-    d.dodgeDie = penalizedDie(d.dodgeDie, penalty("dodgeDie"));
-    d.attackDie = penalizedDie(d.attackDie, penalty("attackDie"));
+    // Execute (Mental, Death T5) raises it.
+    const painUp = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.painUp) || 0), 0);
+    if (painDown || phantom || painUp) { d.pain = Math.max(0, d.pain - painDown + phantom + painUp); this.hp.pain = d.pain; }
+    // Mental: Flourish (Life) makes dodge dice a size bigger (it doesn't stack).
+    const bonus = key => Math.max(0, ...effects.map(e => Number(e.flags?.flowstate?.spellEffect?.[key]) || 0));
+    this.lift = (this.lift ?? 0) + bonus("liftUp");                // Ascend (Mental, Beyond T5)
+    d.dodgeDie = penalizedDie(d.dodgeDie, penalty("dodgeDie")) + bonus("dodgeDieUp");
+    d.attackDie = penalizedDie(d.attackDie, penalty("attackDie")) + bonus("attackDieUp");
     // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).
     this.ritualLoss = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.ritual?.energyLost) || 0), 0);
     this.energy.max = Math.max(0, d.energyMax - this.ritualLoss);

@@ -38,7 +38,7 @@ const turnStamp = actor => (actor.getFlag?.("flowstate", "turnStartedAt") ?? 0) 
 const diedAt = actor => actor.getFlag?.("flowstate", "diedAt") ?? 0;
 
 /** Recompute dead / unconscious after something changed Pain Threshold or HP. */
-async function reevaluate(actor) {
+export async function reevaluate(actor) {
   const hp = actor.system.hp.value, pain = actor.system.hp.pain;
   const dead = hp <= 0, unconscious = !dead && hp < pain;
   if (dead !== actor.statuses.has("dead")) await requestGM("setStatus", { target: actor.uuid, status: "dead", active: dead });
@@ -99,7 +99,7 @@ export async function resolve({ actor, plan, profile, spec, mods, targets, ritua
   return null;
 }
 
-async function setHp(actor, update) {
+export async function setHp(actor, update) {
   if (actor.isOwner) await actor.update(update); else await requestGM("updateActor", { uuid: actor.uuid, data: update });
 }
 

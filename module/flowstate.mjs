@@ -121,6 +121,7 @@ class FlowStateCombat extends Combat {
       await actions.clearMarks(combatant.actor);
       await actions.treesTurnStart(combatant.actor);
       // Spell effects this creature put on others end now (Shield, Slam's dodge penalty); Rituals' last until the Ritual ends.
+      await actions.mentalBeforeClear(combatant.actor);
       await actions.clearSpellEffects(combatant.actor);
       await areas.clearAreas(combatant.actor);
       // Bleed (Slashing T2) hits at the start of the victim's turn.
@@ -454,7 +455,7 @@ Hooks.on("createChatMessage", message => {
     ?? message.getFlag("flowstate", "dash")?.attackMessage ?? message.getFlag("flowstate", "blockFor")?.attackMessage
     ?? message.getFlag("flowstate", "perfect")?.attackMessage ?? message.getFlag("flowstate", "dipOf") ?? message.getFlag("flowstate", "dashMoveOf")
     ?? message.getFlag("flowstate", "riposteDeclined") ?? message.getFlag("flowstate", "quartzFor")?.attackMessage ?? message.getFlag("flowstate", "adjustFor")?.attackMessage ?? message.getFlag("flowstate", "retortOf") ?? message.getFlag("flowstate", "limberOf")
-    ?? message.getFlag("flowstate", "spellCancelled")?.attackMessage
+    ?? message.getFlag("flowstate", "spellCancelled")?.attackMessage ?? message.getFlag("flowstate", "mentalActDone")?.card
     ?? message.getFlag("flowstate", "followupCard")
     ?? message.getFlag("flowstate", "followupOf");
   const target = ref && game.messages.get(String(ref).split(":")[0]);
@@ -1057,6 +1058,13 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   }
   for (const btn of html.querySelectorAll(".fs-arcana-act")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.arcanaAct(message, Number(btn.dataset.i)); });
+  }
+  for (const btn of html.querySelectorAll(".fs-mental-act")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.mentalAct(message, Number(btn.dataset.i)); });
+  }
+  if (message.getFlag("flowstate", "mentalAct")) {
+    const used = game.messages.filter(m => m.getFlag("flowstate", "mentalActDone")?.card === message.id).map(m => m.getFlag("flowstate", "mentalActDone").i);
+    for (const btn of html.querySelectorAll(".fs-mental-act")) if (used.includes(Number(btn.dataset.i))) btn.closest(".fs-mental-row")?.replaceChildren(Object.assign(document.createElement("div"), { className: "fs-waiting", textContent: "Used." }));
   }
   for (const btn of html.querySelectorAll(".fs-conjure-act")) {
     btn.addEventListener("click", event => { event.preventDefault(); conjure.act(message, Number(btn.dataset.i)); });

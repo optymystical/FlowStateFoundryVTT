@@ -1406,7 +1406,7 @@ async function untargetedAttack(actor, opts) {
     if (!base) return;
     rolls.push(...base.rolls);
   }
-  const baseNet = opts.net + exhaustionNet(actor) + (opts.stealth === "half" ? 1 : 0) + attackStanceNet(actor) + limberNet(actor);
+  const baseNet = opts.net + exhaustionNet(actor) + (opts.stealth === "half" ? 1 : 0) + attackStanceNet(actor) + limberNet(actor) + (mentalHook?.burdenNet(actor, "attackDis") ?? 0);
   await consumeLimber(actor);
   const atk = await evaluate(poolFormula(1, d.attackDie, baseNet));
   rolls.unshift(atk);
@@ -1475,7 +1475,7 @@ const followupsFlag = (actor, opts) => (opts.followups?.length ? { actor: actor.
 
 async function startExchange(actor, opts, targets) {
   const d = actor.system.derived;
-  const baseNet = opts.net + exhaustionNet(actor) + (opts.stealth === "half" ? 1 : 0) + attackStanceNet(actor) + limberNet(actor);
+  const baseNet = opts.net + exhaustionNet(actor) + (opts.stealth === "half" ? 1 : 0) + attackStanceNet(actor) + limberNet(actor) + (mentalHook?.burdenNet(actor, "attackDis") ?? 0);
   await consumeLimber(actor);
   const disrupted = disruptNet(actor);
   const rolls = [];
@@ -1790,7 +1790,15 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
     disruptNet(target) ? "Disrupted" : "", unfetteredNet(target) ? "Unfettered" : "", dodgeDisNet(target) ? "spell: dodge Disadvantage" : "", charmNet(target, "dodge") ? "Charm/Hex: dodge Disadvantage" : ""].filter(Boolean);
   await consumeDisrupt(target);
   await consumeLimber(target);
-  const dodge = await evaluate(poolFormula(2, t.derived.dodgeDie, net));
+  // Mental: a Waste charge shrinks this dodge (and may give it Disadvantage), Burden gives Disadvantage; the charge is used up.
+  const waste = mentalHook?.dodgeWaste(target) ?? null;
+  const burden = mentalHook?.burdenNet(target, "dodgeDis") ?? 0;
+  const dieNow = Math.max(1, t.derived.dodgeDie - (waste?.pen ?? 0));
+  const net2 = net + (waste?.net ?? 0) + burden;
+  if (waste) reasons.push(waste.note);
+  if (burden) reasons.push("Burden: dodge Disadvantage");
+  const dodge = await evaluate(poolFormula(2, dieNow, net2));
+  if (waste) await mentalHook.useWaste(waste);
   const result = resolveAttack(entry.total, dodge.total);
   return postDefense(target, message, index, target, result, dodge, reasons.join(" · "));
 }
@@ -3151,7 +3159,8 @@ async function pickGrappled(actor, verb) {
 export async function breakFree(actor) {
   if (cantAct(actor, "break free")) return;
   const grapplerUuid = actor.getFlag("flowstate", "grappledBy");
-  if (!grapplerUuid && !actor.statuses.has("grappled")) return ui.notifications.warn(`${actor.name} isn't grappled.`);
+  const burden = spellEffects(actor, "burden");
+  if (!grapplerUuid && !actor.statuses.has("grappled") && !burden.length) return ui.notifications.warn(`${actor.name} isn't grappled.`);
   // Held by magic (Gravity T4 Hold): a roll of the held minimum or more breaks free, instead of beating the grappler's dodge.
   const hold = spellEffects(actor, "hold")[0];
   if (hold) {
@@ -3160,7 +3169,21 @@ export async function breakFree(actor) {
     const roll = await evaluate(`1d${actor.system.derived.attackDie}`);
     const freed = roll.total >= min;
     await post(actor, { title: `${esc(actor.name)} — Break Free (magical hold)`, rolls: [roll], body: `${await rollBlock(roll, `Attack die (d${actor.system.derived.attackDie}), needs ${min}+`)}<div class="fs-result">${freed ? "Breaks free!" : "Still held."}</div>` });
-    if (freed) { await hold.delete(); await setGrapple(actor, null); }
+    // Mental (Below): Vice punishes a failed check, Quicksand can undo a successful one; a success also shakes off every Burden stack.
+    const held = { ...hold.flags.flowstate.spellEffect, name: hold.name };
+    if (freed) { await hold.delete(); await setGrapple(actor, null); for (const b of burden) await changeEffect(b, null); }
+    await mentalHook?.afterBreakFree({ actor, held, freed });
+    return;
+  }
+  // Mental (Below): Burden alone (nothing grappling them) is shaken off with a counter grapple check of 2 or higher.
+  if (!grapplerUuid && !actor.statuses.has("grappled") && burden.length) {
+    if (!(await spendAP(actor, 2, "shaking off Burden"))) return;
+    const roll = await evaluate(`1d${actor.system.derived.attackDie}`);
+    const freed = roll.total >= 2;
+    await post(actor, { title: `${esc(actor.name)} — Break Free (Burden)`, rolls: [roll], body: `${await rollBlock(roll, `Attack die (d${actor.system.derived.attackDie}), needs 2+`)}<div class="fs-result">${freed ? "The weight is gone!" : "Still weighed down."}</div>` });
+    const held = { ...burden[0].flags.flowstate.spellEffect, name: burden[0].name };
+    if (freed) for (const b of burden) await changeEffect(b, null);
+    await mentalHook?.afterBreakFree({ actor, held, freed });
     return;
   }
   const grappler = grapplerUuid ? await fromUuid(grapplerUuid) : null;
@@ -3354,6 +3377,8 @@ export const registerArcana = h => { arc = h; };
 let mentalHook = null;
 export const registerMental = h => { mentalHook = h; };
 export const mentalTurnStart = actor => mentalHook?.turnStart(actor);
+export const mentalBeforeClear = actor => mentalHook?.beforeClear(actor);
+export const mentalAct = (message, i) => mentalHook?.act(message, i);
 export const arcanaTurnStart = actor => arc?.turnStart(actor);
 export const arcanaAct = (message, i) => arc?.act(message, i);
 export const arcanaCheckEntry = (token, changes) => arc?.checkEntry(token, changes);
@@ -3389,13 +3414,28 @@ export async function changeEffect(effect, data) {
   return requestGM("changeEffect", { uuid: effect.uuid, data });
 }
 
+/** Temp HP (Mental: Bloom, Verdant Soul, Mortal Coil) soaks what is about to reach HP, even damage that ignores protection. Returns what's left. */
+function soakTemp(actor, amount, lines, used) {
+  let left = amount;
+  for (const e of spellEffects(actor, "tempHP")) {
+    if (left <= 0) break;
+    const have = Number(e.flags.flowstate.spellEffect.hp) || 0;
+    const n = Math.min(have, left);
+    if (n <= 0) continue;
+    left -= n;
+    used.push({ effect: e, used: n, left: have - n });
+    lines.push(`Temp HP absorbs ${n} (${have - n} left)`);
+  }
+  return left;
+}
+
 /** Combine the outcomes of several separate damage instances into one for the card. */
 function mergeOutcomes(list) {
   const first = list[0];
   return { ...first, toHp: list.reduce((n, x) => n + x.toHp, 0), armorLoss: list.reduce((n, x) => n + (x.armorLoss ?? 0), 0), weaponLoss: list.reduce((n, x) => n + (x.weaponLoss ?? 0), 0),
     afterWeapon: list.reduce((n, x) => n + (x.afterWeapon ?? 0), 0), shroudTook: list.reduce((n, x) => n + (x.shroudTook ?? 0), 0),
     lines: [`<strong>${list.reduce((n, x) => n + x.toHp, 0)}</strong> damage to HP across ${list.length} separate instances`, ...list.flatMap((x, i) => x.lines.slice(1).map(l => `(${i + 1}) ${l}`))],
-    weapons: list.flatMap(x => x.weapons ?? []), reactive: list.flatMap(x => x.reactive ?? []), shields: list.flatMap(x => x.shields ?? []), barriers: list.flatMap(x => x.barriers ?? []), shrouds: list.flatMap(x => x.shrouds ?? []) };
+    tempHp: list.flatMap(x => x.tempHp ?? []), weapons: list.flatMap(x => x.weapons ?? []), reactive: list.flatMap(x => x.reactive ?? []), shields: list.flatMap(x => x.shields ?? []), barriers: list.flatMap(x => x.barriers ?? []), shrouds: list.flatMap(x => x.shrouds ?? []) };
 }
 
 /** A cast's automated profile after Replacement Mods (or null when the GM resolves it). */
@@ -4430,6 +4470,8 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (o.mental && mentalHook) {
     const mh = await mentalHook.onResolve({ attacker, target, o, result, entry, dodgeRoll });
     if (mh?.html) extra.push(mh.html);
+    if (mh?.rolls?.length) spellRolls = [...spellRolls, ...mh.rolls];
+    if (mh?.push) pushInfo = mh.push;
   }
   // Scorch (Slam + Flame): a failed dodge repeats the burn.
   if (result.hit && dodgeRoll) for (const e of spellEffects(target, "scorch")) {
@@ -4836,7 +4878,12 @@ export async function loadWeapon(actor, item) {
  */
 export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, bash = 0, bypass = false, rend = null,
   cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, archetype = "martial", ignoreArmor = false } = {}) {
-  if (bypass) return { toHp: Math.max(0, amount), lines: [`<strong>${Math.max(0, amount)}</strong> damage to HP (bypasses armor)`], weapon: null, weaponLoss: 0, weapons: [], armor: null, armorLoss: 0, afterWeapon: amount, parried: false, shrouds: [], shroudTook: 0 };
+  if (bypass) {
+    const lines = [], tempHp = [];
+    const toHp = soakTemp(actor, Math.max(0, amount), lines, tempHp);
+    lines.unshift(`<strong>${toHp}</strong> damage to HP (bypasses armor)`);
+    return { toHp, lines, weapon: null, weaponLoss: 0, weapons: [], armor: null, armorLoss: 0, afterWeapon: amount, parried: false, shrouds: [], shroudTook: 0, tempHp };
+  }
   const lines = [];
   let remaining = Math.max(0, amount);
   // Cleave (Equipment): object-only damage that hits first and uses up each object's Limit before the normal damage.
@@ -4955,8 +5002,10 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     lines.push(`Rend (Blood and Iron): ${before} → ${toHp}`);
   }
   if (rend && (weapons.length || armorLoss)) lines.push("Rend: damage to objects Strengthened");
+  const tempHp = [];
+  toHp = soakTemp(actor, toHp, lines, tempHp);
   lines.unshift(`<strong>${toHp}</strong> damage to HP`);
-  return { toHp, lines, weapon: weapons[0]?.item ?? null, weaponLoss: weapons[0]?.loss ?? 0, weapons, armor: armorLoss ? armor : null, armorLoss,
+  return { toHp, tempHp, lines, weapon: weapons[0]?.item ?? null, weaponLoss: weapons[0]?.loss ?? 0, weapons, armor: armorLoss ? armor : null, armorLoss,
     afterWeapon, parried: uuids.length > 0, shields, barriers, reactive, shrouds, shroudTook: shrouds.reduce((n, x) => n + (x.absorbed ?? 0), 0) };
 }
 
@@ -4997,6 +5046,8 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
     else await item.update(update, { flowstateSystem: true });
     if (item.system.shroudType === "bond" && item.system.durability.max - (update["system.wear"] ?? item.system.wear) <= 0) await endShroudPlacement(item.parent, item);
   }
+  // Temp HP loses what it absorbed.
+  for (const { effect, left } of out.tempHp ?? []) await changeEffect(effect, left > 0 ? { "flags.flowstate.spellEffect.hp": left, name: `Temp HP (${left})` } : null);
   // Emplace barriers lose the health they absorbed.
   for (const b of out.barriers ?? []) { if (game.user.isGM) await areas.setBarrierHealth(b.sceneId, b.id, b.hp); else await requestGM("barrier", { sceneId: b.sceneId, id: b.id, hp: b.hp }); }
   // Spell Shields lose the health they absorbed (and end when it runs out).
@@ -5040,6 +5091,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (type === "cold" && actor.system.conditions.ignite > 0) update["system.conditions.ignite"] = 0;
   if (type === "cold" && actor.system.armor?.system.conditions?.ignite > 0 && out.armorLoss) await actor.system.armor.update({ "system.conditions.ignite": 0 }, { flowstateSystem: true });
   await actor.update(update);
+  if (mentalHook && out.toHp > 0) await mentalHook.checkExecute(actor);        // Execute (Enhanced): below half the raised Pain Threshold they die
   if (out.armor && out.armorLoss) await out.armor.update({ "system.wear": out.armor.system.wear + out.armorLoss }, { flowstateSystem: true });
   if (!silent) await post(actor, { title: `${esc(actor.name)} takes ${amount} ${DAMAGE_TYPES[type] ?? ""}`, body: `<ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>` });
   if (out.shrouds?.length) await refillShroud(actor);                         // out of combat the Shroud recovers right away
@@ -5270,6 +5322,7 @@ export async function rest(actor) {
   if (!ok) return;
   await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0 });
   await post(actor, { title: "8 Hour Rest", body: `<div class="fs-result">+${next - value} HP (${next}/${max})</div>` });
+  await mentalHook?.rest(actor);                     // Preordained (Mental, Order T4) rolls its number after a rest
 }
 
 /** Ch9 Ignite: put out (2 AP, anyone in melee). Stain: clean (3 AP). */

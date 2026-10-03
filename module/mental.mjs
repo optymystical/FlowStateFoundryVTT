@@ -9,8 +9,9 @@
  */
 import {
   post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless,
-  rollD100, turnKey, registerMental, spellEffects, damageOutcome
+  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple
 } from "./actions.mjs";
+import * as wonders from "./wonders.mjs";
 import * as ab from "./abilities.mjs";
 import * as areas from "./areas.mjs";
 import * as R from "./mental-rules.mjs";
@@ -35,7 +36,7 @@ export const alignmentOf = actor => actor?.getFlag?.("flowstate", "alignment") ?
 const setAlignment = (actor, value, deepened = false) => setActorFlag(actor, "alignment", value === "neutral" && !deepened ? null : { value, deepened });
 
 /** Pay AP / RP / energy together, checking all of it first so nothing is half spent. Returns false (with a warning) if the actor can't afford it. */
-async function pay(actor, { ap = 0, rp = 0, energy = 0 }, what) {
+export async function pay(actor, { ap = 0, rp = 0, energy = 0 }, what) {
   if (inActiveCombat(actor)) {
     const s = actor.system;
     if (s.ap.value < ap) { ui.notifications.warn(`${actor.name} needs ${ap} AP for ${what} but has ${s.ap.value}.`); return false; }
@@ -89,10 +90,25 @@ export async function deepen(actor) {
 export function manifestContext(actor) {
   const wonders = R.knownWonders(trees(actor)).filter(w => w.modes.length);
   const flags = actor.getFlag?.("flowstate", "psion") ?? {};
-  return { wonders, theory: theory(actor), icon: actor.system.icon ?? null, alignment: alignmentOf(actor), farSight: !!flags.farSight, auraSight: !!flags.auraSight, will: willTier(actor) };
+  return { actor, wonders, theory: theory(actor), icon: actor.system.icon ?? null, alignment: alignmentOf(actor), farSight: !!flags.farSight, auraSight: !!flags.auraSight, will: willTier(actor) };
 }
 
 /** Everything about a Manifest worked out from the dialog values (also used for the live preview). */
+/** Extra choices a Mode asks for when it's Manifested (and Kinetic Focus for Beyond's attacks). */
+export function modeChoices(actor, modeId) {
+  const out = [];
+  if (modeId === "mental-below-nightmare:burden") out.push({ name: "dis", label: "Disadvantage on", options: { attack: "Their attack rolls", dodge: "Their dodge rolls" } });
+  if (["mental-order-dream:decree", "mental-order-dream:mandate"].includes(modeId)) out.push({ name: "sign", label: "Plus or minus", options: { plus: "+1 (plus)", minus: "−1 (minus)" } });
+  if (["mental-chaos-nightmare:fracture", "mental-chaos-nightmare:larceny", "mental-chaos-nightmare:entropy"].includes(modeId)) out.push({ name: "size", label: "Die size", options: { up: "Increased", down: "Decreased" } });
+  if (["mental-beyond-dream:herald", "mental-beyond-dream:ascend"].includes(modeId) && tierOf(trees(actor), "mental-beyond-dream") >= 4)
+    out.push({ name: "kinetic", label: `Kinetic Focus (⚡ ${Math.floor(minOf(actor, "pon") / 2)} each: +1 Advantage)`, number: true });
+  return out;
+}
+const choiceValues = v => Object.fromEntries(Object.entries(v ?? {}).filter(([k]) => k.startsWith("choice:")).map(([k, val]) => [k.slice(7), val]));
+const choicesHTML = (actor, modeId, v) => modeChoices(actor, modeId).map(c => c.number
+  ? `<div class="fs-field"><label>${esc(c.label)}</label><input type="number" name="choice:${c.name}" value="${Number(v[`choice:${c.name}`]) || 0}" min="0" step="1"></div>`
+  : `<div class="fs-field"><label>${esc(c.label)}</label><select name="choice:${c.name}">${Object.entries(c.options).map(([k, l]) => `<option value="${k}" ${v[`choice:${c.name}`] === k ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></div>`).join("");
+
 export function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const mode = R.modeById(v.mode);
   const wonder = mode ? R.wonderById(mode.wonder) : null;
@@ -104,13 +120,16 @@ export function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const enhanceCost = minOf(actor, kind.stat);
   const burst = !!v.burst && ctx.theory >= 1;
   const cost = R.manifestCost({ range, enhance: !!v.enhance, burst, enhanceCost, free });
+  const choices = choiceValues(v);
+  const kinetic = Math.max(0, Math.floor(Number(choices.kinetic) || 0));
+  if (kinetic && !free) cost.energy += kinetic * Math.floor(minOf(actor, "pon") / 2);
   const align = ctx.alignment;
-  const net = R.alignmentNet(align.value, wonder.kind);
+  const net = R.alignmentNet(align.value, wonder.kind) + kinetic;
   const power = check.power;
   const text = R.scaleMentalText(v.enhance ? `${mode.base} Enhanced: ${mode.enhanced || "(no extra effect)"}` : mode.base, power);
   const errors = check.ok ? [] : [check.reason];
   if (v.burst && ctx.theory < 1) errors.push("Burst needs Mental Theory Tier 1.");
-  return { ok: errors.length === 0, errors, mode, wonder, kind: wonder.kind, power, stat, enhanceCost, cost, range, enhance: !!v.enhance, burst, net,
+  return { ok: errors.length === 0, errors, mode, wonder, kind: wonder.kind, power, stat, enhanceCost, cost, range, enhance: !!v.enhance, burst, net, choices, kinetic,
     deepened: align.deepened && align.value === wonder.kind, text, alignment: align.value };
 }
 
@@ -130,6 +149,7 @@ function dialogHTML(ctx, v, plan) {
     <div class="fs-field"><label>Mode</label><select name="mode">${modes}</select></div>
     <div class="fs-field"><label>Range</label><select name="range">${ranges}</select></div>
     <label class="fs-cast-mod"><input type="checkbox" name="enhance" ${v.enhance ? "checked" : ""}> <strong>Enhance</strong> <small>${v.mode && plan?.enhanceCost !== undefined ? `${plan.enhanceCost} Energy (the Wonder's Scaling Stat min)` : "costs the Wonder's Scaling Stat min in Energy"}</small></label>
+    <div class="fs-mode-choices">${choicesHTML(ctx.actor, v.mode, v)}</div>
     ${ctx.theory >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="burst" ${v.burst ? "checked" : ""}> <strong>Burst</strong> <small>use RP instead of AP, and pay the Enhance cost in Energy</small></label>` : ""}
     <div class="fs-cast-preview">${previewHTML(plan)}</div>
   </div>`;
@@ -161,12 +181,46 @@ async function manifestDialog(actor, ctx) {
         const ok = el.querySelector('button[data-action="ok"]');
         if (ok) ok.disabled = !plan.ok;
       };
-      form.addEventListener("change", refresh);
+      form.addEventListener("change", e => {
+        if (e.target?.name === "mode") form.querySelector(".fs-mode-choices").innerHTML = choicesHTML(actor, e.target.value, formValues(form));
+        refresh();
+      });
       refresh();
     },
     ok: { label: "Manifest", icon: "fa-solid fa-eye", callback: (event, button) => formValues(button.form) },
     rejectClose: false
   });
+}
+
+const NO_ATTACK = new Set(["mental-beyond-dream:redirect"]);
+
+/** Pick one of a few creatures / Modes with a small dialog. Null if cancelled. */
+export async function pickOne(actor, actors, title) {
+  const list = actors.filter(Boolean);
+  const out = await DialogV2().prompt({ window: { title }, content: `<div class="fs-field"><label>Who</label><select name="who">${list.map(a => `<option value="${a.uuid}">${esc(a.name)}</option>`).join("")}</select></div>`,
+    ok: { label: "Pick", callback: (event, button) => button.form.elements.who.value }, rejectClose: false });
+  return list.find(a => a.uuid === out) ?? null;
+}
+export const pickAnother = (actor, opts) => pickSceneTarget(actor, { within: 100, anchors: [attackerToken(actor)], ...opts });
+export async function pickMode(actor, modes, title) {
+  const out = await DialogV2().prompt({ window: { title }, content: `<div class="fs-field"><label>Mode</label><select name="m">${modes.map(m => `<option value="${esc(m.id)}">${esc(m.name)}</option>`).join("")}</select></div>`,
+    ok: { label: "Manifest", callback: (event, button) => button.form.elements.m.value }, rejectClose: false });
+  return out || null;
+}
+
+/** Manifest a known Mode at one specific target for free (an ability spreading it: Pollinate). */
+export async function manifestAt(actor, mode, target, { power, enhanced, range = "ranged", choices = {}, spread = false, label = null } = {}) {
+  const wonder = R.wonderById(mode.wonder);
+  const align = alignmentOf(actor);
+  const text = R.scaleMentalText(enhanced ? `${mode.base} Enhanced: ${mode.enhanced || ""}` : mode.base, power);
+  const mental = { mode: mode.id, wonder: wonder.id, kind: wonder.kind, power, enhanced: !!enhanced, burst: false, range, deepened: false, text, caster: actor.uuid, choices, spread };
+  return performAttack(actor, { ...baseAttack, label: `${label ?? mode.name} (${mode.name})`, net: R.alignmentNet(align.value, wonder.kind), melee: false, area: false,
+    notes: [`${label ?? "Free"}: ${mode.name} spreads to ${target.name}; its effect applies immediately`], mental, targetActors: [target] });
+}
+
+/** Quicksand (Below T4): an attack roll at a creature that just broke free; on a hit the escape fails and the effect is back on them. */
+export async function quicksand(caster, target, x) {
+  return performAttack(caster, { ...baseAttack, label: "Quicksand", net: 0, melee: false, notes: [`Quicksand: ${target.name}'s escape may fail`], mental: { quicksand: { held: x.held }, caster: caster.uuid }, targetActors: [target] });
 }
 
 /** The base attack options for a Mental attack (a Manifest or a Ward): no damage of its own, effects come from the hook. */
@@ -204,7 +258,13 @@ export async function manifest(actor, preset = null, { free = false } = {}) {
     plan.deepened ? "Deepened: doubly Strengthened" : "", plan.range === "area" ? "Area: Weakened if it hits more than two targets" : ""
   ].filter(Boolean);
   const mental = { mode: plan.mode.id, wonder: plan.wonder.id, kind: plan.kind, power: plan.power, enhanced: plan.enhance, burst: plan.burst, range: plan.range, deepened: plan.deepened,
-    text: plan.text, caster: actor.uuid };
+    text: plan.text, caster: actor.uuid, choices: plan.choices };
+  // Some Modes need no attack roll (Redirect stores a charge on you).
+  if (NO_ATTACK.has(plan.mode.id)) {
+    const out = await wonders.resolveMode({ attacker: actor, target: actor, o: { stacks: 0 }, result: { hit: true }, m: mental, mode: plan.mode, power: plan.power, enhanced: plan.enhance, choices: plan.choices, range: plan.range, stacks: 0, hit: true, crit: false, text: plan.text });
+    await post(actor, { title: `${esc(actor.name)} — ${esc(plan.mode.name)}`, rolls: out.rolls, body: `<div class="fs-result">${out.html}</div>` });
+    return true;
+  }
   return performAttack(actor, { ...baseAttack, label: `${plan.mode.name} (Manifest)`, net: plan.net, melee: plan.range === "melee", area: plan.range === "area",
     stacks: plan.deepened ? R.DEEPENED_STACKS : 0, notes, mental, ...(targets.length ? { targetActors: targets } : {}) });
 }
@@ -332,10 +392,23 @@ async function onResolve({ attacker, target, o, result }) {
     const html = await applyWard({ attacker, target, ward: { ...m.ward, grade: attacker.system.icon?.system.grade ?? 1 } });
     return { html: `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${html}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>` };
   }
-  if (!result.hit) return { html: `<div class="fs-notes">${esc(R.modeById(m.mode)?.name ?? "The Mode")} misses ${esc(target.name)}.</div>` };
   const mode = R.modeById(m.mode);
-  return { html: `<div class="fs-result"><i class="fa-solid fa-eye"></i> <strong>${esc(mode?.name ?? "Manifest")}</strong> hits ${esc(target.name)}${result.crit ? " (critical)" : ""}${m.deepened ? ", doubly Strengthened (Deepened)" : ""}: ${esc(m.text)}
-    <div class="fs-notes">The Mode's effect isn't automated yet: the GM applies it from the numbers above.</div></div>` };
+  if (m.quicksand) {
+    if (!result.hit) return { html: `<div class="fs-notes">Quicksand misses: ${esc(target.name)} stays free.</div>` };
+    const h = m.quicksand.held;
+    const { name, description, ...data } = h;
+    if (h.kind === "hold") await setGrapple(target, attacker.uuid);
+    await putSpellEffect(target, { ...data, name, description });
+    return { html: `<div class="fs-result"><i class="fa-solid fa-hill-rockslide"></i> Quicksand: ${esc(target.name)} fails the escape check after all and is held again by <strong>${esc(name)}</strong>.</div>` };
+  }
+  if (!result.hit) return { html: `<div class="fs-notes">${esc(mode?.name ?? "The Mode")} misses ${esc(target.name)}.</div>` };
+  const c = { attacker, target, o, result, m, mode, power: m.power, enhanced: m.enhanced, choices: m.choices ?? {}, range: m.range, text: m.text, hit: true, crit: !!result.crit,
+    stacks: (o.stacks ?? 0) + (result.critStacks ?? 0), now: !!m.spread };
+  const out = await wonders.resolveMode(c);
+  const tenet = await wonders.autoTenets(c);
+  const html = `<div class="fs-result"><i class="fa-solid fa-eye"></i> ${out.html}${result.crit ? " <em>(critical)</em>" : ""}${m.deepened ? " <em>(Deepened: doubly Strengthened)</em>" : ""}${tenet ? `<br>${tenet}` : ""}</div>`;
+  if (out.acts.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}: abilities`, body: wonders.actButtons(out.acts), flags: { flowstate: { mentalAct: { acts: out.acts } } } });
+  return { html, push: out.push, rolls: out.rolls };
 }
 
 /* -------------------------------------------- */
@@ -457,6 +530,7 @@ export async function auraSight(actor) {
 
 /** Start of the Mental user's turn: Alignment returns to Neutral; Far Sight and Aura Sight lapse (Far Sight can be paid again). */
 export async function turnStart(actor) {
+  await wonders.pendingTurnStart(actor);
   if (alignmentOf(actor).value !== "neutral" || alignmentOf(actor).deepened) await setAlignment(actor, "neutral", false);
   const psion = actor.getFlag("flowstate", "psion");
   if (!psion) return;
@@ -470,4 +544,20 @@ export async function turnStart(actor) {
   await setActorFlag(actor, "psion", next.farSight || next.auraSight ? next : null);
 }
 
-registerMental({ onResolve, negate, turnStart });
+/** Just before this creature's effects on others end (its turn has started): Perennial offers to reapply expiring Life effects. */
+async function beforeClear(actor) {
+  const acts = wonders.perennialActs(actor);
+  if (acts.length) await post(actor, { title: `${esc(actor.name)} — Perennial`, body: wonders.actButtons(acts), flags: { flowstate: { mentalAct: { acts } } } });
+}
+
+/** A button on one of our follow-up cards: run that ability. Marks it used with a card of its own. */
+async function act(message, i) {
+  const x = message.getFlag("flowstate", "mentalAct")?.acts?.[Number(i)];
+  if (!x) return;
+  if (game.messages.find(m => { const f = m.getFlag("flowstate", "mentalActDone"); return f?.card === message.id && f.i === Number(i); })) return ui.notifications.info("Already used.");
+  const done = x.id === "perennial" ? await wonders.runPerennial(x) : await wonders.runAct(x);
+  if (done) await post(await fromUuid(x.caster), { title: "Used", body: `<div class="fs-notes">${esc(x.label)}: used.</div>`, flags: { flowstate: { mentalActDone: { card: message.id, i: Number(i) } } } });
+}
+export const usedActs = id => game.messages.filter(m => m.getFlag("flowstate", "mentalActDone")?.card === id).map(m => m.getFlag("flowstate", "mentalActDone").i);
+
+registerMental({ onResolve, negate, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: wonders.afterRest });

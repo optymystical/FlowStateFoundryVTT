@@ -19,3 +19,8 @@ Charges (Decree, Fracture, Larceny, Waste...) are tracked as effects on the targ
 
 ## Judgment calls
 See README, "Mental (in progress)".
+
+## Wonders batch 1 (Life, Death, Order, Chaos, Beyond, Below)
+- Modes live in `wonders.mjs` `MODES` keyed by mode id; each returns card HTML. Delayed effects are `pending` effects (`onTargetTurn`) processed at the target's turn start.
+- Temp HP is effect kind `tempHP`, soaked in `damageOutcome` before HP.
+- Order/Chaos charges are effects spent via a calculator card, not live roll interception.

@@ -404,7 +404,7 @@ Judgment calls: Order/Chaos charges aren't intercepted live on dice rolls, only 
 - **Creation:** the Manifest's attack is rolled against yourself; a hit gives a **Create** button (Forge: weapon/armor, Conjure: Foci/Shroud with Affixes, Consecrate: Icon with optional attunement, Fabricate: a Body ≤ 15 object) with rarity limits (Rare when Enhanced). Items last until your next turn, or permanently with a **Rite** (T5; the hours of work are the GM's). **Alter** (Tenet) Strengthens or Weakens damage to an object the target wears or holds.
 Judgment calls: Benediction and Serenity are paid when used rather than before the roll; Fabricate's object is a gear note; a Wonder's "damage dealt" adjustments apply to damage cards (not to every automated rider); Freeze's slow, Pacify and Provoke are effects the table follows (Provoke's forced attack isn't enforced); Second Wind's "can't be applied again" is a note for the GM.
 
-**Not yet automated:** Wonders that aren't in the doc yet (Light, Dark, Earth, Sea, Growth, Stagnation, Fortune, Ruin, Truth, Mystery, Zeal, Serenity), Ponderance/Snappence/Esoteric Arts. Not covered by live charges: Decree, Fracture and Larceny on a *damage* roll (use the manual rows), and Entropy's "extra attack" only reports the extra roll.
+**Not yet automated:** Wonders that aren't in the doc yet (Light, Dark, Earth, Sea, Growth, Stagnation, Fortune, Ruin, Truth, Mystery, Zeal, Serenity), Ponderance/Snappence/Esoteric Arts. Larceny on a *damage* roll (use the manual rows). Decree and Fracture now work on damage rolls; Entropy's extra attack is a real extra attack. **Mental follow-ups (0.46.0):** Irradiate (Enhanced) reduces all healing; Second Wind (Enhanced) really blocks the condition until the caster's next turn; Benediction is chosen in the Manifest dialog and paid first (refunded on a miss); a **Rite** takes its hours (2 for Common, 8 for more; `Finish Rite` in the Action List, Energy stays 0, cancel loses progress); Wonder damage goes through the damage-adjust pipeline on the dealer's side too.
 
 **Judgment calls:** the Wonder's Scaling Stat for Power and Enhance is your *effective* stat (including the Skill Point bonus), and its "min" is the same Stat Minimum the other trees use; "total Mind" is Ponderance + Snappence + Willpower; Ward numbers are at least ×1 even under 10 Willpower; Riposte asks whether the source is in melee range because the damage doesn't know where it came from.
 
@@ -510,8 +510,14 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 - **Thrasher/Impale grapples don't stop the target moving** beyond the weapon's range; the GM handles that.
 
+## Falling, flight, objects and Ignite Spread (0.46.0)
+- **Objects:** a gear item with a **Body** above 0 (and a material: Powder/Liquid, Soft, Hard, Dense, Super Dense) is a Non-Archetypal object with Durability and Limit from the Rules chart. Target a pile on the scene that holds one and attack it: it always hits, the attack roll only decides a crit (at or above its Body), the damage goes straight to its Durability (its Limit doesn't apply) and the card says broken or destroyed. Objects held or worn by a creature aren't targetable this way yet (aim at the archetypal item instead).
+- **Falling:** a Falling status (Action List, or the token's status menu). At the start of each of their turns a falling creature accrues Gravity Force (Max HP × the world's **Gravity (G)** setting, growing each round up to Terminal Velocity by Size), minus Lift, ÷ 10 = feet fallen. A prompt asks how far the ground is: reaching it ends the fall, and the leftover distance hits as Force damage (3 × feet, capped as usual). Size 1 takes no fall damage; Lift of half the Gravity Force or more makes a slow, safe fall (10 ft a round).
+- **Flight:** a creature with Lift that takes damage of at least a tenth of its Max HP is asked whether to spend **3 RP to stabilize** or begin falling. The Action List has Stabilize too. (Being pushed by Force doesn't trigger it yet.)
+- **Ignite Spread** (optional, a world setting, off by default): Ignite grows by 10% a turn up to the Pain Threshold, but not while the creature tried to put it out; at the limit a card rolls the two d8 directions and the 10% per tile.
+
 ## Not yet automated
-Attacking objects (Body/Limit/Durability), the optional Ignite spread, falling and Gravity Force, Flight stabilizing, cover, and the senses table. The math helpers for Force and Terminal Velocity are in `module/rules.mjs`, ready to wire up.
+Cover, the senses table, and objects held or worn by a creature (as Rules-doc objects). The math helpers for Force and Terminal Velocity are in `module/rules.mjs`.
 
 ## Code map
 - `module/rules.mjs`: all rules math as pure functions. Unit-tested against the Rules doc examples.

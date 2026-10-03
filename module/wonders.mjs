@@ -7,7 +7,7 @@
 import {
   post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, performAttack, knockbackRow, setGrapple, clearSpellEffects
 } from "./actions.mjs";
-import { lossSince, setHp, reevaluate } from "./arcana.mjs";
+import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
 import { resolveForce, applyStacks } from "./rules.mjs";
 import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
@@ -102,6 +102,8 @@ async function heal(target, caster, n) {
   const hp = target.system.hp.value, max = target.system.hp.max;
   const room = Math.max(0, max - hp);
   const lost = dead ? Infinity : lossSince(target, stamp);
+  const cut = healingDown(target);
+  n = Math.max(0, n - cut);
   const amount = Math.max(0, Math.min(n, lost, room));
   await setHp(target, { "system.hp.value": hp + amount });
   await reevaluate(target);

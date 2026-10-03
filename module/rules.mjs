@@ -131,6 +131,25 @@ export function resolveForce(force, { lift = 0, maxHp = 0, falling = false } = {
 }
 
 /** Ch10 Force Damage: 3 × untraveled feet (partial feet are dropped, so it rounds down). */
+/** Non-Archetypal object materials (Rules, Ch10): Durability and Limit are the Body times these, rounded down. */
+export const OBJECT_DENSITY = {
+  powder: { label: "Powder / Liquid", durability: 1, limit: 1 }, soft: { label: "Soft", durability: 2, limit: 0.25 }, hard: { label: "Hard", durability: 4, limit: 0.5 },
+  dense: { label: "Dense", durability: 8, limit: 1 }, superdense: { label: "Super Dense", durability: 16, limit: 2 }
+};
+export const objectStats = (body, density = "soft") => {
+  const d = OBJECT_DENSITY[density] ?? OBJECT_DENSITY.soft, b = Math.max(0, Math.floor(body) || 0);
+  return { body: b, durability: Math.floor(b * d.durability), limit: Math.floor(b * d.limit) };
+};
+/** Attacking an object: it always hits; the attack roll only decides a crit, at or above its Body (Grade × 10 with no Body). */
+export const objectCrit = (roll, body, grade = 1) => roll >= (body > 0 ? body : Math.max(1, grade) * 10);
+/** Terminal Velocity: how many rounds of falling it takes a creature of this Size to stop accelerating (Size 1 also takes no fall damage). */
+export const TERMINAL_ROUNDS = { 1: 1, 2: 1, 3: 2, 4: 3, 5: 4 };
+/** The downward Gravity Force after `rounds` of falling: Max HP × the world's gravity (G) for each round, up to Terminal Velocity. */
+export const gravityForce = ({ gravity = 1, maxHp = 0, rounds = 1, size = 3 }) => Math.floor(Math.max(0, gravity) * Math.max(0, maxHp) * Math.min(Math.max(1, rounds), TERMINAL_ROUNDS[size] ?? 2));
+/** Feet fallen from a Gravity Force: Lift comes off first, then it's divided by 10 (no half-Max-HP step when falling via Gravity). */
+export const fallFeet = (force, lift = 0) => Math.max(0, Math.floor((force - Math.max(0, lift)) / 10));
+/** What a creature's Lift does against its current Gravity Force: "full" (no gravity while stabilized), "slow" (10 ft a round, no fall damage), or "none". */
+export const liftBand = (lift, gForce) => (lift >= gForce && gForce > 0 ? "full" : lift * 2 >= gForce && lift > 0 ? "slow" : "none");
 export const forceDamage = untraveledFeet => 3 * Math.floor(Math.max(0, untraveledFeet));
 
 /** Ch8 Pushing: force = 5 × Strength. */

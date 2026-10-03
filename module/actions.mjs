@@ -1,6 +1,6 @@
 import {
   STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth,
-  resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, igniteTotal, stainTotal, STAIN_VARIANTS
+  objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, igniteTotal, stainTotal, STAIN_VARIANTS
 } from "./rules.mjs";
 import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, soak, weaponProfile, effectiveLimit, DAMAGE_CATEGORY } from "./martial.mjs";
 import { AFFIXES, shroudBlocks } from "./magic.mjs";
@@ -1382,7 +1382,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf"];
+  "breakFree", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -1402,9 +1402,51 @@ export async function performAttack(actor, opts) {
   if (await triggerMark(actor, `attacks (${opts.label || "Attack"})`)) {
     opts = { ...opts, net: (opts.net ?? 0) - 1, notes: [...(opts.notes ?? []), "Lead Blindness (Marked): Disadvantage"] };
   }
-  const targets = (opts.targetActors ?? [...game.user.targets].map(t => t.actor)).filter(a => a && a.type !== "pile");
+  const picked = (opts.targetActors ?? [...game.user.targets].map(t => t.actor)).filter(a => a && (a.type !== "pile" || objectOf(a)));
+  // An object on the ground (a pile holding a Non-Archetypal object) is attacked on its own: it always hits.
+  if (picked.length === 1 && objectOf(picked[0])) return attackObject(actor, opts, picked[0], objectOf(picked[0]));
+  const targets = picked.filter(a => a.type !== "pile");
   if (targets.length) return startExchange(actor, opts, targets);
   return untargetedAttack(actor, opts);
+}
+
+/** The Non-Archetypal object a pile is (its first gear item with a Body), or null. */
+export const objectOf = actor => (actor?.type === "pile" ? (actor.items?.find?.(i => i.type === "gear" && i.system?.body > 0) ?? null) : null);
+
+/**
+ * Attacking an object (Rules, Ch8/Ch10): it automatically hits, the attack roll only decides a crit (at or above its Body, or Grade × 10 without one),
+ * and the damage goes straight to its Durability: its Limit is ignored because it is the target. Down to 0 it is broken; at its negative max, destroyed.
+ */
+async function attackObject(actor, opts, target, item) {
+  const d = actor.system.derived;
+  const shots = Math.max(1, opts.shots ?? 1);
+  const baseNet = opts.net + exhaustionNet(actor) + attackStanceNet(actor) + limberNet(actor);
+  await consumeLimber(actor);
+  const atk = await evaluate(poolFormula(1, d.attackDie, baseNet));
+  const crit = objectCrit(atk.total, item.system.body, item.system.grade ?? 1);
+  const rolls = [atk];
+  let body = "";
+  if (opts.damage?.trim() && opts.damage.trim() !== "0" && !opts.push) {
+    const base = await rollBaseDamage(opts.damage, shots);
+    if (!base) return;
+    rolls.push(...base.rolls);
+    let net = opts.stacks ?? 0;
+    if (crit) net += 2 + (opts.critStacks ?? 0);
+    if (opts.physical && d.size.physical) net += d.size.physical;
+    if (opts.rend) net += opts.rend.stacks;
+    const line = damageLine(base.totals, net, opts.type, shots);
+    const amount = line.final + (opts.cleave ?? 0);
+    const before = item.system.durability.value, max = item.system.durability.max;
+    if (item.isOwner) await item.update({ "system.wear": item.system.wear + amount }); else await requestGM("wearItem", { uuid: item.uuid, amount });
+    const left = before - amount;
+    body = `${await baseDamageHTML(base, opts.type)}${line.html}
+      <div class="fs-result fs-damage-taken">${esc(item.name)} takes ${amount}</div>
+      <ul class="fs-list"><li>−${amount} Durability (${Math.max(left, -max)}/${max}); its Limit (${item.system.objectLimit}) doesn't apply to a direct attack</li>${left <= -max ? `<li>${esc(item.name)} is destroyed</li>` : left <= 0 ? `<li>${esc(item.name)} is broken</li>` : ""}</ul>`;
+  }
+  await post(actor, { title: `${esc(opts.label || "Attack")} — ${esc(item.name)}`, rolls,
+    body: `<div class="fs-notes">${(opts.notes ?? []).join(" · ")}</div>${await rollBlock(atk, `Attack (d${d.attackDie})`)}
+      <div class="fs-outcome fs-${crit ? "crit" : "hit"}">${crit ? `Critical Hit (${atk.total} ≥ ${item.system.body > 0 ? `Body ${item.system.body}` : `Grade × 10`})` : "Hit"}</div>
+      <div class="fs-notes">An object always hits; the roll only decides a crit (Body ${item.system.body}).</div>${body}` });
 }
 
 /** No targets: attack roll plus base damage (with non-target stacks) for manual resolution. */
@@ -1529,7 +1571,7 @@ async function startExchange(actor, opts, targets) {
     // Exploit (Piercing T2): each stack consumes one Advantage for +4 die size (× Spell Power); stacks with no Advantage left are refunded.
     // A stolen action (Larceny, Enhanced) is rolled with the original attacker's dice.
     const dice = opts.dieOf ? (globalThis.fromUuidSync?.(opts.dieOf)?.system?.derived ?? d) : d;
-    let atkDie = dice.attackDie;
+    let atkDie = opts.dieOverride ?? dice.attackDie;
     const ex = opts.spell?.exploit;
     if (ex?.stacks) {
       const used = Math.min(ex.stacks, Math.max(0, atkNet));
@@ -1831,7 +1873,7 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
   let result = resolveAttack(entry.total, dodge.total);
   const attackerActor = await fromUuid(attack.attacker);
   const atkBox = { total: entry.total };
-  const ar = await mentalHook?.resolveCharges?.({ attacker: attackerActor, target, atk: atkBox, dodge, result, attackDie: entry.die });
+  const ar = await mentalHook?.resolveCharges?.({ attacker: attackerActor, target, atk: atkBox, dodge, result, attackDie: entry.die, o });
   if (ar) {
     result = { ...ar.result, ...(ar.dmgAdjust ? { mentalDmg: ar.dmgAdjust } : {}) };
     chargeRolls.push(...ar.rolls); chargeNotes.push(...ar.notes);
@@ -3104,6 +3146,7 @@ export async function riposte(message, { perfect = false, itemUuid = null } = {}
 /** Turn a status on or off, through the GM when we don't own the actor. */
 export async function setStatus(actor, status, active) {
   if (!actor) return;
+  if (active && mentalHook?.blocked?.(actor, status)) return;
   if (!actor.isOwner) return requestGM("setStatus", { target: actor.uuid, status, active });
   if (actor.statuses.has(status) !== !!active) await actor.toggleStatusEffect(status, { active: !!active });
 }
@@ -3412,6 +3455,9 @@ export const registerFoci = h => { foci = h; };
 let arc = null;
 export const registerArcana = h => { arc = h; };
 /** Mental (mental.mjs) registers its hooks here: Manifest and Ward resolution, Nightmare Ward negation, turn start. */
+let flightHook = null;
+/** Falling and Flight (gravity.mjs): told when a creature takes damage. */
+export const registerFlight = h => { flightHook = h; };
 let mentalHook = null;
 export const registerMental = h => { mentalHook = h; };
 export const mentalTurnStart = actor => mentalHook?.turnStart(actor);
@@ -4644,7 +4690,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   // Cleave (Slashing T4): the spell's damage is increased by your Scaling Stat min.
   const flat = o.spell?.mods?.cleave ? statMin(o.spell.scaling ?? 0) : 0;
   // Mental: Enhanced Mandate on this damage roll, and Verdict's damage change from the attack that landed.
-  const md = await mentalHook?.damageCharges?.({ actor: attacker });
+  const md = await mentalHook?.damageCharges?.({ actor: attacker, formula, totals: base.totals });
+  if (md?.totals) { base.totals = md.totals; base.rolls.push(...(md.rolls ?? [])); }
   const mflat = (md?.flat ?? 0) + (defense.result?.mentalDmg ?? 0);
   const line = damageLine(flat || mflat ? base.totals.map((t, i) => t + flat + (i === 0 ? mflat : 0)) : base.totals, stacks, type, shots);
   // Omega (Swift T5): Heavy Swift attacks let Strengthened/Weakened change their Pierce value too.
@@ -4652,7 +4699,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
 
   let extraHTML = spellPlan?.notes.length ? `<div class="fs-notes">${spellPlan.notes.map(esc).join(" · ")}</div>` : "";
   if (flat) extraHTML += `<div class="fs-notes">Cleave: +${flat} damage (Scaling Stat min)</div>`;
-  if (mflat) extraHTML += `<div class="fs-notes fs-charge-note"><i class="fa-solid fa-link"></i> ${[...(md?.notes ?? []), defense.result?.mentalDmg ? `Verdict: ${defense.result.mentalDmg > 0 ? "+" : "−"}${Math.abs(defense.result.mentalDmg)} damage.` : ""].filter(Boolean).join(" ")}</div>`;
+  if (md || mflat) extraHTML += `<div class="fs-notes fs-charge-note"><i class="fa-solid fa-link"></i> ${[...(md?.notes ?? []), defense.result?.mentalDmg ? `Verdict: ${defense.result.mentalDmg > 0 ? "+" : "−"}${Math.abs(defense.result.mentalDmg)} damage.` : ""].filter(Boolean).join(" ")}</div>`;
   extraHTML += dischargeHTML;
   let kb = null;
   if (o.knockback && !o.aimItem) {
@@ -5094,7 +5141,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   }
   // Mental: Wonder effects on whoever takes damage that didn't come through an attack's damage roll (those were settled there).
   if (mentalHook?.adjust && amount > 0 && !bypass && !mentalDone) {
-    const adj = await mentalHook.adjust({ attacker: null, target: actor, amount, type, o: null });
+    const adj = await mentalHook.adjust({ attacker: shroudCtx?.attacker ? syncUuid(shroudCtx.attacker) : null, target: actor, amount, type, o: null });
     if (adj.amount !== amount && adj.html && !silent) await post(actor, { title: `${esc(actor.name)} — Wonders`, body: adj.html });
     amount = adj.amount;
   }
@@ -5157,7 +5204,8 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (type === "cold" && actor.system.armor?.system.conditions?.ignite > 0 && out.armorLoss) await actor.system.armor.update({ "system.conditions.ignite": 0 }, { flowstateSystem: true });
   await actor.update(update);
   if (mentalHook && out.toHp > 0) await mentalHook.checkExecute(actor);        // Execute (Enhanced): below half the raised Pain Threshold they die
-  if (neg?.after) await neg.after();                                            // Warden / Riposte (Enhanced): strike back at the source
+  if (neg?.after) await neg.after();
+  if (flightHook && out.toHp > 0 && actor.isOwner) await flightHook(actor, out.toHp);   // a flyer hit hard enough must stabilize                                            // Warden / Riposte (Enhanced): strike back at the source
   if (out.armor && out.armorLoss) await out.armor.update({ "system.wear": out.armor.system.wear + out.armorLoss }, { flowstateSystem: true });
   if (!silent) await post(actor, { title: `${esc(actor.name)} takes ${amount} ${DAMAGE_TYPES[type] ?? ""}`, body: `<ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>` });
   if (out.shrouds?.length) await refillShroud(actor);                         // out of combat the Shroud recovers right away
@@ -5195,7 +5243,7 @@ export async function refundEnergy(actor, amount) {
 
 /** Outside combat, Energy is always full (and an attuned Shroud recovers fully, see `refillShroud`). */
 export async function refillEnergy(actor) {
-  if (!actor?.isOwner || actor.type === "pile" || inActiveCombat(actor)) return;
+  if (!actor?.isOwner || actor.type === "pile" || inActiveCombat(actor) || actor.getFlag?.("flowstate", "rite")) return;   // a Rite keeps Energy at zero
   const { value, max } = actor.system.energy ?? {};
   if (value !== undefined && value < max) await actor.update({ "system.energy.value": max });
   await refillShroud(actor);
@@ -5398,6 +5446,7 @@ export async function clearCondition(actor, key) {
   const armor = actor.system.armor;
   if (!actor.system.conditions[key] && !armor?.system.conditions?.[key]) return;
   if (!(await spendAP(actor, cost, key === "ignite" ? "putting out Ignite" : `removing ${STAIN_VARIANTS[key].label}`))) return;
+  if (key === "ignite") await actor.setFlag("flowstate", "ignitePutOut", true);        // Ignite Spread (optional): it doesn't grow while you're putting it out
   if (actor.system.conditions[key]) await actor.update({ [`system.conditions.${key}`]: 0 });
   if (armor?.system.conditions?.[key]) await armor.update({ [`system.conditions.${key}`]: 0 }, { flowstateSystem: true });
 }
@@ -5409,6 +5458,7 @@ export async function clearCondition(actor, key) {
 export async function giveStacks(target, kind, amount, { outcome = null, first = false, caster = null } = {}) {
   amount = Math.floor(amount);
   if (amount <= 0) return "";
+  if (mentalHook?.blocked?.(target, kind)) return `${esc(target.name)} has been cleansed: ${esc(kind)} can't be applied to them right now.`;
   const armor = target.system?.armor;
   const armorOk = armor && armor.system.profile?.valid && !armor.system.broken;
   const onArmor = armorOk && (first || (outcome && !(outcome.toHp > 0) && outcome.armorLoss > 0));
@@ -5456,6 +5506,24 @@ export async function electricTransfer(message, preset = null) {
 }
 
 /** Ch8/Ch9 end-of-turn processing: AP expires, Ignite/Stain damage, Slow/Haste decay. */
+/** The optional Ignite Spread rule (a world setting): Ignite grows 10% each turn up to the Pain Threshold; at it, it spreads twice to surrounding tiles. */
+const igniteSpreadOn = () => { try { return game.settings.get("flowstate", "igniteSpread") === true; } catch (err) { return false; } };
+export async function igniteSpread(actor, ignite) {
+  if (!igniteSpreadOn() || !(ignite > 0) || actor.type === "pile") return;
+  if (actor.getFlag?.("flowstate", "ignitePutOut")) { await actor.unsetFlag("flowstate", "ignitePutOut"); return; }
+  const limit = actor.system.hp?.pain ?? Infinity;
+  if (ignite < limit) {
+    const up = Math.min(limit, ignite + Math.floor(ignite * 0.1));
+    if (up > ignite) { await actor.update({ "system.conditions.ignite": up }); await post(actor, { title: `${esc(actor.name)} — Ignite spreads`, body: `<div class="fs-notes">Ignite Spread: ${ignite} → <strong>${up}</strong> (+10%${up >= limit ? ", at their Pain Threshold" : ""}).</div>` }); }
+    return;
+  }
+  const DIRS = ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"];
+  const r1 = await evaluate("1d8"), r2 = await evaluate("1d8");
+  const each = Math.floor(ignite * 0.1);
+  await post(actor, { title: `${esc(actor.name)} — Ignite spreads`, rolls: [r1, r2],
+    body: `<div class="fs-result"><i class="fa-solid fa-fire"></i> ${esc(actor.name)}'s Ignite (${ignite}) is at its limit: it spreads twice to surrounding tiles, <strong>${DIRS[r1.total - 1] ?? r1.total}</strong> and <strong>${DIRS[r2.total - 1] ?? r2.total}</strong>. Each tile gets <strong>${each} Ignite</strong> (10%); anything standing there is lit, an already burning tile adds it.</div>` });
+}
+
 export async function endOfTurn(actor) {
   // Fear from an Illusion Combo's creation ends when the afraid creature's turn ends.
   for (const e of spellEffects(actor, "fearTimed")) { await changeEffect(e, null); if (actor.statuses?.has("fear")) await setStatus(actor, "fear", false); }
@@ -5495,6 +5563,7 @@ export async function endOfTurn(actor) {
   if (electric) update["system.conditions.electric"] = 0;
 
   await actor.update(update);
+  await igniteSpread(actor, sys.conditions.ignite);
   if (lines.length) {
     await post(actor, { title: "End of Turn", body: `<ul class="fs-list">${lines.map(l => `<li>${l}</li>`).join("")}</ul>` });
   }

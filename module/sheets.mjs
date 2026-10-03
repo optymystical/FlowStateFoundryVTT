@@ -1,4 +1,4 @@
-import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS } from "./rules.mjs";
+import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS, OBJECT_DENSITY } from "./rules.mjs";
 import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, TAGS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
 } from "./martial.mjs";
@@ -18,6 +18,8 @@ import * as mentalRules from "./mental-rules.mjs";
 import * as mental from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
 import * as chargesMod from "./charges.mjs";
+import * as forgingMod from "./forging.mjs";
+import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
 
 /** What an actor's Energy costs are computed from: stats, Skill Points, and held weapons. */
@@ -417,6 +419,7 @@ function actionGroups(actor, weapons, stats) {
   // Only offer the postures you aren't already in.
   if (!isCrouch && !isProne) combat.push({ label: "Crouch", detail: "Half size behind cover; rough terrain", cost: "Free",
     action: "posture", op: "crouch", icon: "fa-solid fa-person-praying" });
+  if (gravityMod.isFalling(actor) || (actor.system.lift ?? 0) > 0) combat.push({ label: "Stabilize", detail: gravityMod.isFalling(actor) ? "Stop falling" : "Hold your flight steady after a hit or a push", cost: "3 RP", action: "stabilize", icon: "fa-solid fa-feather" });
   if (!isProne) combat.push({ label: "Go Prone", detail: "Quarter size behind cover; melee attackers get Advantage", cost: "1 AP",
     action: "posture", op: "prone", icon: "fa-solid fa-person-falling" });
   if (isProne || isCrouch) combat.push({ label: "Get Up", detail: isProne ? "Stand up from prone" : "Stand up from a crouch", cost: isProne ? "1 AP" : "Free",
@@ -688,6 +691,8 @@ function actionGroups(actor, weapons, stats) {
   const wardIcon = actor.system.icon;
   if (wardIcon && wardIcon.system.profile.kind !== "negate") mentalRows.push({ label: `Ward: ${wardIcon.system.profile.name}`, detail: wardIcon.system.profile.ward, cost: willT >= 3 ? "1 AP (the first each turn is free)" : "1 AP", action: "activateWard", icon: "fa-solid fa-shield-halved" });
   for (const ch of wonders.chargesOf(actor)) mentalRows.push({ label: `Spend ${wonders.CHARGES[ch.kind]?.label ?? "charge"} on ${ch.holder.name} (manual)`, detail: "Normally offered automatically when they roll; this is for a roll the system did not see. " + (ch.data.description ?? ""), cost: "Free (already paid)", action: "spendCharge", itemId: ch.effect.uuid, icon: "fa-solid fa-bolt" });
+  const rite = forgingMod.riteOf(actor);
+  if (rite) mentalRows.push({ label: rite.ready ? `Finish Rite: ${rite.name}` : `Rite: ${rite.name} (${rite.hoursLeft.toFixed(1)} h left)`, detail: "A Rite is heavy activity at zero Energy; finish it when the hours have passed, or cancel it and lose the progress", cost: "Hours", action: "finishRite", icon: "fa-solid fa-hourglass-half" });
   const stolen = chargesMod.stolenActionOf(actor);
   if (stolen) mentalRows.push({ label: `Stolen action: ${stolen.label}`, detail: `Larceny (Enhanced): a copy of ${stolen.fromName}'s attack, rolled with their dice, for up to a minute`, cost: `${stolen.cost} RP`, action: "useStolenAction", icon: "fa-solid fa-masks-theater" });
   if (skills.tierOf(sys.trees, "mental-beyond-dream") >= 2) mentalRows.push({ label: "Momentum", detail: "A creature or object you moved with a Beyond Mode collided: 5d8 Force again in a new direction (can chain)", cost: `⚡ ${ab.statMinOf(actor, "pon")}`, action: "momentum", icon: "fa-solid fa-arrows-spin" });
@@ -783,6 +788,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       psionSense: function () { return mental.psionSense(this.document); },
       momentum: function () { return wonders.momentum(this.document); },
       useStolenAction: function () { return chargesMod.useStolenAction(this.document); },
+      finishRite: function () { return forgingMod.finishRite(this.document); },
+      stabilize: function () { return gravityMod.stabilize(this.document); },
       spendCharge: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? wonders.consumeCharge(this.document, e) : null; },
       useBalance: function () { return wonders.balance(this.document); },
       useRedirect: function () { return wonders.useRedirect(this.document); },
@@ -1152,6 +1159,7 @@ export class FlowStateItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
       nameEditable: this.isEditable,           // owners can always rename their items
       lockedNote: this.isEditable && !identityOpen ? "Only the GM can modify this item (you can rename it and change its picture)." : "",
       isGear: this.document.type === "gear",
+      densities: Object.fromEntries(Object.entries(OBJECT_DENSITY).map(([k, v]) => [k, v.label])),
       ammoTypes: Object.fromEntries(Object.entries(WEAPON_TYPES).filter(([, v]) => v.ranged).map(([k, v]) => [k, `${v.label} weapons`]))
     });
   }

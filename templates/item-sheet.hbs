@@ -8,5 +8,8 @@
       {{#if isGear}}<label>Ammunition for <select name="system.ammoType" {{#unless editable}}disabled{{/unless}}><option value="">— Not ammunition —</option>{{selectOptions ammoTypes selected=system.ammoType}}</select></label>{{/if}}
     </div>
   </header>
+  {{#if isGear}}<div class="fs-field-row"><label>Body <small>(0 = not an object; ~1 per cubic foot)</small> <input type="number" name="system.body" value="{{system.body}}" min="0" {{#unless editable}}disabled{{/unless}}></label>
+    <label>Material <select name="system.density" {{#unless editable}}disabled{{/unless}}>{{selectOptions densities selected=system.density}}</select></label>
+    {{#if system.isObject}}<span class="hint">Durability {{system.durability.value}}/{{system.durability.max}} · Limit {{system.objectLimit}}</span>{{/if}}</div>{{/if}}
   <textarea name="system.description" rows="10" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
 </div>

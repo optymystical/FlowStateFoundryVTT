@@ -36,7 +36,7 @@ async function strike(c, dice, sides, type, { rend = null, label, pierce = 0 } =
   rolled.push(r);
   const n = Math.max(0, Math.floor(applyStacks(r.total, c.stacks)));
   const outcome = await damageOutcome(c.target, n, type, { archetype: "magic", rend, pierce });
-  await requestDamage(c.target, n, type, pierce, null, { silent: true, archetype: "magic", rend });
+  await requestDamage(c.target, n, type, pierce, null, { silent: true, archetype: "magic", rend, shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
   return { n, direct: outcome.toHp, r, line: `${label}: ${count}d${sides} = ${r.total}${c.stacks ? ` → ${n}` : ""} ${type} damage (${outcome.toHp} direct)` };
 }
 const setCond = async (actor, data) => { if (actor.isOwner) await actor.update(data); else await requestGM("updateActor", { uuid: actor.uuid, data }); };
@@ -154,8 +154,8 @@ MODES["mental-peace-dream:guard"] = async c => {
 };
 /** Benediction (Peace T4): after a Peace Mode hits, duplicate it onto other targets for free. */
 ACT_PROVIDERS.push(async c => {
-  if (c.mode.wonder !== ids.peace || tier(c.attacker, ids.peace) < 4 || c.m.spread) return [];
-  return [{ id: "benediction", label: "Benediction", tip: "Duplicate this Mode's effects onto other target(s) of the same Range, with no AP/RP and no attack roll", cost: `⚡ ${2 * minOf(c.attacker, "pon")}`, target: c.target.uuid, caster: c.attacker.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {} }];
+  if (c.mode.wonder !== ids.peace || tier(c.attacker, ids.peace) < 4 || c.m.spread || !c.m.benediction) return [];
+  return [{ id: "benediction", label: "Benediction", tip: "Duplicate this Mode's effects onto other target(s) of the same Range, with no AP/RP and no attack roll (already paid)", cost: "paid", target: c.target.uuid, caster: c.attacker.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {} }];
 });
 ACTS.benediction = async (x, caster, target) => {
   const mode = R.modeById(x.mode);
@@ -167,7 +167,6 @@ ACTS.benediction = async (x, caster, target) => {
     picked.push(p);
   }
   if (!picked.length) return false;
-  if (!(await mental.pay(caster, { energy: 2 * minOf(caster, "pon") }, "Benediction"))) return false;
   for (const p of picked) {
     const c = { attacker: caster, target: p, o: { stacks: 0 }, result: { hit: true, crit: false, critStacks: 0 }, m: { mode: mode.id, power: x.power, enhanced: x.enhanced, range: x.range, choices: x.choices, spread: true }, mode, power: x.power, enhanced: x.enhanced, choices: x.choices, stacks: 0, hit: true, crit: false, now: true };
     const out = await MODES[mode.id](c);
@@ -300,8 +299,8 @@ ACTS.cleanse = async (x, caster, target) => {
   if ((await spendStacks(caster, 2)) < 2) return false;
   if (out.startsWith("status:")) await requestGM("setStatus", { target: target.uuid, status: out.slice(7), active: false });
   else await setCond(target, { [`system.conditions.${out}`]: 0 });
-  if (x.enhanced) await putSpellEffect(target, { kind: "wardOff", caster: caster.uuid, name: `Cleansed of ${out.replace("status:", "")}`, description: `${out.replace("status:", "")} can't be applied to them again by the same effect until the start of ${caster.name}'s next turn (the GM enforces this).` });
-  await post(caster, { title: `${esc(caster.name)} — Second Wind`, body: `<div class="fs-result">${esc(target.name)} is rid of <strong>${esc(out.replace("status:", ""))}</strong>${x.enhanced ? " (it can't come back from the same effect until your next turn)" : ""}.</div>` });
+  if (x.enhanced) await putSpellEffect(target, { kind: "wardOff", caster: caster.uuid, name: `Cleansed of ${out.replace("status:", "")}`, blocks: [out.replace("status:", "")], description: `${out.replace("status:", "")} can't be applied to them again until the start of ${caster.name}'s next turn.` });
+  await post(caster, { title: `${esc(caster.name)} — Second Wind`, body: `<div class="fs-result">${esc(target.name)} is rid of <strong>${esc(out.replace("status:", ""))}</strong>${x.enhanced ? " (it can't be applied to them again until your next turn)" : ""}.</div>` });
   return true;
 };
 MISS_PROVIDERS.push(async c => c.mode.wonder === ids.adapt && tier(c.attacker, ids.adapt) >= 2
@@ -339,7 +338,7 @@ MODES["mental-perfection-nightmare:exact"] = async c => {
   rolled.push(r);
   let n = c.hit ? Math.floor(applyStacks(r.total, c.stacks + 1)) : Math.max(0, Math.floor(applyStacks(r.total, c.stacks)) - c.margin);
   const outcome = await damageOutcome(c.target, n, "physical", { archetype: "magic", pierce });
-  await requestDamage(c.target, n, "physical", pierce, null, { silent: true, archetype: "magic" });
+  await requestDamage(c.target, n, "physical", pierce, null, { silent: true, archetype: "magic", shroudCtx: { source: "type:physical", attacker: c.attacker.uuid } });
   return `Exact ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d10 = ${r.total} → <strong>${n}</strong> physical damage${c.hit ? " (Strengthened)" : ` (reduced by the ${c.margin} it missed by)`}${pierce ? `, Pierce ${pierce}` : ""} (${outcome.toHp} direct).`;
 };
 MODES["mental-perfection-nightmare:hone"] = async c => {
@@ -357,7 +356,7 @@ MODES["mental-perfection-nightmare:masterstroke"] = async c => {
   rolled.push(r);
   const n = c.hit ? Math.floor(applyStacks(r.total, c.stacks)) : Math.max(0, Math.floor(applyStacks(r.total, c.stacks)) - c.margin);
   const outcome = await damageOutcome(c.target, n, type, { archetype: "magic" });
-  await requestDamage(c.target, n, type, 0, null, { silent: true, archetype: "magic" });
+  await requestDamage(c.target, n, type, 0, null, { silent: true, archetype: "magic", shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
   for (const e of fx(c.attacker, "pride").slice(0, prideUsed)) await changeEffect(e, null);
   c.masterDirect = outcome.toHp;
   return `Masterstroke ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d8 = ${r.total} → <strong>${n}</strong> ${esc(type)} damage${c.hit ? "" : ` (reduced by ${c.margin})`} (${outcome.toHp} direct)${prideUsed ? `, ${prideUsed} Pride stack${prideUsed === 1 ? "" : "s"} spent` : ""}.${c.hit && outcome.toHp > 0 ? " The direct damage reapplies to another target (button below)." : ""}`;
@@ -585,4 +584,20 @@ TURN_START.push(async actor => {
     await post(actor, { title: `${esc(actor.name)} — Guard`, body: `<div class="fs-result">${esc(actor.name)} takes the <strong>${d.amount}</strong> ${esc(d.dtype)} damage Guard redirected.</div>` });
     busy = true; try { await requestDamage(actor, d.amount, d.dtype, 0, null, { silent: true }); } finally { busy = false; }
   }
+});
+
+/** Second Wind (Enhanced): has this condition been warded off this creature until the caster's next turn? */
+export const blocked = (actor, key) => fx(actor, "wardOff").some(e => (dataOf(e).blocks ?? []).includes(key));
+
+/** Benediction (Peace T4): chosen in the Manifest dialog (Energy is paid before the roll); a miss refunds it. */
+CHOICE_PROVIDERS.push((actor, modeId) => modeId?.startsWith(`${ids.peace}:`) && tier(actor, ids.peace) >= 4
+  ? [{ name: "benediction", label: `Benediction (⚡ ${2 * minOf(actor, "pon")}): duplicate it if it hits`, options: { no: "No", yes: "Yes" } }] : []);
+COST_PROVIDERS.push((actor, { wonder, choices }) => wonder.id === ids.peace && choices.benediction === "yes" && tier(actor, ids.peace) >= 4
+  ? { energy: 2 * minOf(actor, "pon"), flags: { benediction: true }, notes: ["Benediction: it duplicates if it hits"] } : null);
+MISS_PROVIDERS.push(async c => {
+  if (c.mode.wonder !== ids.peace || !c.m.benediction) return [];
+  const e = c.attacker.system.energy, back = Math.min(2 * minOf(c.attacker, "pon"), (e?.max ?? 0) - (e?.value ?? 0));
+  if (back > 0) await setCond(c.attacker, { "system.energy.value": e.value + back });
+  await post(c.attacker, { title: `${esc(c.attacker.name)} — Benediction`, body: `<div class="fs-notes">The Mode missed: Benediction's ${back} Energy is refunded.</div>` });
+  return [];
 });

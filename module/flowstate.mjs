@@ -13,6 +13,7 @@ import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
 import * as pictures from "./pictures.mjs";
 import "./mental.mjs";
+import * as gravity from "./gravity.mjs";
 import * as charges from "./charges.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStatePileSheet } from "./sheets.mjs";
 /* -------------------------------------------- */
@@ -134,6 +135,7 @@ class FlowStateCombat extends Combat {
       await fociEngine.deckTurnStart(combatant.actor);
       await conjure.autonomyTurn(combatant.actor);
       await actions.mentalTurnStart(combatant.actor);
+      await gravity.turnStart(combatant.actor);
       await combatant.actor.setFlag?.("flowstate", "turnStartedAt", Date.now());
       // Tier 4: Reform, then the caster's temporary Summons, Animations and Made objects end.
       await conjure.turnStart(combatant.actor);
@@ -176,6 +178,7 @@ Hooks.once("init", () => {
     { id: "dead", name: "Dead", img: "icons/svg/skull.svg" },
     { id: "unconscious", name: "Unconscious", img: "icons/svg/unconscious.svg" },
     { id: "prone", name: "Prone", img: "icons/svg/falling.svg" },
+    { id: "falling", name: "Falling", img: "icons/svg/wing.svg" },
     { id: "crouch", name: "Crouching", img: "icons/svg/down.svg" },
     { id: "stealth", name: "Stealthing", img: "icons/svg/invisible.svg" },
     { id: "fear", name: "Fear", img: "icons/svg/terror.svg" },
@@ -236,6 +239,22 @@ Hooks.once("init", () => {
     game.settings.register("flowstate", "customStacks", {
     name: "Custom Strengthened/Weakened",
     hint: "Show a field in attack and damage dialogs for adding extra Strengthened (+) or Weakened (−) stacks by hand. Automatic sources (materials, size, crits, Parry, armor, Area) apply either way.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });
+    game.settings.register("flowstate", "gravity", {
+    name: "Gravity (G)",
+    hint: "The world's gravity: 1 is standard (Gravity Force equals Max HP each round of falling), 0.5 a low-gravity moon, 2 or 3 crushing, 0 none.",
+    scope: "world",
+    config: true,
+    type: Number,
+    default: 1
+  });
+    game.settings.register("flowstate", "igniteSpread", {
+    name: "Ignite Spread (optional rule)",
+    hint: "Ignite grows by 10% each turn up to the target's Pain Threshold (not while they try to put it out); at the limit it spreads twice to surrounding tiles (a card gives the directions and amounts).",
     scope: "world",
     config: true,
     type: Boolean,

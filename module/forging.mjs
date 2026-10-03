@@ -3,13 +3,13 @@
  * next turn (like Build Arcana's Make), Rite makes them permanent, and Alter (the Tenet) changes damage dealt to an object.
  * The Manifest's attack roll is made against yourself; on a hit a "Create" button on the follow-up card asks what to make.
  */
-import { post, requestGM, putSpellEffect, spellEffects, attackerToken } from "./actions.mjs";
+import { post, requestGM, putSpellEffect, spellEffects, attackerToken, setActorFlag } from "./actions.mjs";
 import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
 import * as conjure from "./conjure.mjs";
 import * as mental from "./mental.mjs";
 import { AFFIXES, FOCI_TYPES, SHROUD_TYPES } from "./magic.mjs";
-import { WEAPON_TYPES } from "./martial.mjs";
+import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS } from "./martial.mjs";
 import { tierOf } from "./skills.mjs";
 import { MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
 
@@ -81,22 +81,49 @@ function buildItem(caster, x, v, permanent) {
   return { name: v.name || `Fabricated ${v.mat} object`, type: "gear", flags, system: { quantity: 1, description: `<p>Fabricated from ${esc(v.mat)} (Body ${Math.min(15, Math.max(1, Number(v.body) || 1))}): ${esc(v.name || "an object")}.</p>` } };
 }
 
+/** Put a created item in the recipient's hands (inventory) or at their feet. */
+async function deliver(caster, recipient, item, willing) {
+  if (willing) {
+    if (recipient.isOwner) await recipient.createEmbeddedDocuments("Item", [item], { flowstateAuto: true });
+    else await requestGM("giveItems", { actor: recipient.uuid, items: [item] });
+    return;
+  }
+  const tok = recipient.getActiveTokens?.()[0] ?? attackerToken(caster);
+  const canvas = globalThis.canvas;
+  if (tok && canvas?.grid && canvas.scene) { const gs = canvas.grid.size, d = tok.document; await requestGM("createPile", { sceneId: canvas.scene.id, x: d.x + (d.width ?? 1) * gs, y: d.y, item }); }
+  else if (recipient.isOwner) await recipient.createEmbeddedDocuments("Item", [item], { flowstateAuto: true });
+  else await requestGM("giveItems", { actor: recipient.uuid, items: [item] });
+}
+
+const nowSeconds = () => globalThis.game?.time?.worldTime ?? Date.now() / 1000;
+/** Rite: 2 hours for a Common archetypal item or a Powder/Liquid object, 8 hours for anything more (Uncommon and up, Soft and up). */
+export function riteHours(mode, v) {
+  const order = ["common", "uncommon", "rare", "veryRare"];
+  const rank = r => Math.max(0, order.indexOf(rarityKey(r ?? "common")));
+  if (mode === `${ID}:fabricate`) return ["powder", "liquid"].includes(v.mat) ? 2 : 8;
+  let r = 0;
+  if (mode === `${ID}:forge`) r = rank((v.kind === "armor" ? ARMOR_MATERIALS : WEAPON_MATERIALS)[v.material]?.rarity);
+  else if (mode === `${ID}:conjure`) r = Math.max(0, ...Object.keys(v).filter(k => k.startsWith("aff:") && v[k]).map(k => rank(AFFIXES[k.slice(4)]?.rarity)));
+  else r = rank(R.FORMS[v.form]?.rarity);
+  return r === 0 ? 2 : 8;
+}
+const hoursLeft = rite => Math.max(0, (rite.readyAt - nowSeconds()) / 3600);
+
 ACTS.create = async (x, caster, target) => {
   const v = await askWhat(caster, x);
   if (!v) return false;
   const permanent = !!x.rite;
   const item = buildItem(caster, x, v, permanent);
   const recipient = target ?? caster;
-  if (v.willing) {
-    if (recipient.isOwner) await recipient.createEmbeddedDocuments("Item", [item], { flowstateAuto: true });
-    else await requestGM("giveItems", { actor: recipient.uuid, items: [item] });
-  } else {
-    const tok = recipient.getActiveTokens?.()[0] ?? attackerToken(caster);
-    const canvas = globalThis.canvas;
-    if (tok && canvas?.grid && canvas.scene) { const gs = canvas.grid.size, d = tok.document; await requestGM("createPile", { sceneId: canvas.scene.id, x: d.x + (d.width ?? 1) * gs, y: d.y, item }); }
-    else if (recipient.isOwner) await recipient.createEmbeddedDocuments("Item", [item], { flowstateAuto: true });
-    else await requestGM("giveItems", { actor: recipient.uuid, items: [item] });
+  // A Rite takes hours of heavy work at zero Energy; the item arrives when it's finished (or the Rite is cancelled and the progress is lost).
+  if (permanent) {
+    const hours = riteHours(x.mode, v);
+    await setActorFlag(caster, "rite", { item, recipient: recipient.uuid, willing: !!v.willing, mode: x.mode, hours, readyAt: nowSeconds() + hours * 3600, name: item.name });
+    await caster.update({ "system.energy.value": 0 });
+    await post(caster, { title: `${esc(caster.name)} — Rite`, body: `<div class="fs-result"><i class="fa-solid fa-hourglass-half"></i> ${esc(caster.name)} begins a Rite to make <strong>${esc(item.name)}</strong>: <strong>${hours} hours</strong> of heavy activity at zero Energy. Use "Finish Rite" in the Action List when the time has passed (or cancel it, losing all progress).</div>` });
+    return true;
   }
+  await deliver(caster, recipient, item, v.willing);
   // Consecrate: a willing recipient's Icon can be attuned at once, to a Tenet either of you can use.
   let attuned = "";
   if (x.mode === `${ID}:consecrate` && v.willing) {
@@ -109,9 +136,30 @@ ACTS.create = async (x, caster, target) => {
       if (made && !recipient.items.some(i => i.type === "icon" && i.system.attuned)) { await made.update({ "system.attuned": true, "system.tenet": pick }, { flowstateAttune: true }); attuned = ` and attuned to ${esc(opts.get(pick))}`; }
     }
   }
-  await post(caster, { title: `${esc(caster.name)} — ${esc(R.modeById(x.mode)?.name)}`, body: `<div class="fs-result"><i class="fa-solid fa-hammer"></i> <strong>${esc(item.name)}</strong> appears ${v.willing ? `in ${esc(recipient.name)}'s hands` : `at ${esc(recipient.name)}'s feet`}${attuned}. ${permanent ? "A Rite: it's permanent (it can still be dismissed by you or anyone who identifies it as Mentally made)." : "It lasts until the start of your next turn."}</div>` });
+  await post(caster, { title: `${esc(caster.name)} — ${esc(R.modeById(x.mode)?.name)}`, body: `<div class="fs-result"><i class="fa-solid fa-hammer"></i> <strong>${esc(item.name)}</strong> appears ${v.willing ? `in ${esc(recipient.name)}'s hands` : `at ${esc(recipient.name)}'s feet`}${attuned}. It lasts until the start of your next turn.</div>` });
   return true;
 };
+
+/** The Rite in progress, if any: { name, hoursLeft, ready }. */
+export function riteOf(actor) {
+  const r = actor?.getFlag?.("flowstate", "rite");
+  return r ? { name: r.name, hoursLeft: hoursLeft(r), ready: hoursLeft(r) <= 0, hours: r.hours } : null;
+}
+/** Finish the Rite (once the hours have passed) or cancel it. */
+export async function finishRite(actor) {
+  const r = actor.getFlag("flowstate", "rite");
+  if (!r) return;
+  if (hoursLeft(r) > 0) {
+    const stop = await DialogV2().confirm({ window: { title: "Rite" }, rejectClose: false, content: `<p>${esc(r.name)} needs <strong>${hoursLeft(r).toFixed(1)}</strong> more hours. Cancel the Rite and lose all progress?</p>` });
+    if (!stop) return;
+    await setActorFlag(actor, "rite", null);
+    return post(actor, { title: `${esc(actor.name)} — Rite`, body: `<div class="fs-notes">${esc(actor.name)} cancels the Rite for ${esc(r.name)}: all progress is lost.</div>` });
+  }
+  const recipient = (await fromUuid(r.recipient)) ?? actor;
+  await deliver(actor, recipient, r.item, r.willing);
+  await setActorFlag(actor, "rite", null);
+  await post(actor, { title: `${esc(actor.name)} — Rite`, body: `<div class="fs-result"><i class="fa-solid fa-hammer"></i> The Rite is finished: <strong>${esc(r.name)}</strong> is made permanent, ${r.willing ? `in ${esc(recipient.name)}'s hands` : `at ${esc(recipient.name)}'s feet`}. It can still be dismissed by ${esc(actor.name)}, or by anyone who identifies it as Mentally made.</div>` });
+}
 
 /* ---- Alter (Creation Tenet) ---- */
 

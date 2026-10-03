@@ -92,6 +92,16 @@ ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, { living: true, dire
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, { living: true, direct: false }).sides === 6, "Cut: stays d6 without direct damage");
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, {}).n === 6, "Cut: 2d6 × Spell Power 3 = 6 dice");
 ok2(FX.shieldHealth(FX.profileFor(["magic-protection-arcana:shield"]), 3) === 60, "Shield: 20 × 3 health");
+console.log("== Spell and Mod text in the Cast Spell dialog shows scaled numbers");
+const scaled = (ids, p) => FX.scaleText(S.effectText(ids).text, p);
+ok2(/total of 60 health/.test(scaled(["magic-protection-arcana:shield"], 3)), "Shield at Power 3: 60 health (not 20)");
+ok2(/dealing 6d6 physical/.test(scaled(["magic-slashing:cut"], 3)) && /increased by 4\./.test(scaled(["magic-slashing:cut"], 3)), "Cut at Power 3: 6d6, and the fixed +4 die size stays");
+ok2(/12d6 physical/.test(scaled(["magic-gravity:force", "magic-slashing:cut"], 3)) && /24d10 Force/.test(scaled(["magic-gravity:force", "magic-slashing:cut"], 3)), "A Combo's dice and Force are scaled too");
+ok2(/-6 die size/.test(scaled(["magic-crushing:slam"], 3)), "Die-size penalties scale (Slam -2 → -6)");
+const modText = n => S.stripHeader(S.CATALOG.find(m => m.name === n).text);
+ok2(/60 Slow/.test(FX.scaleText(modText("Burden"), 3)) && /value of 30/.test(FX.scaleText(modText("Pierce"), 3)) && /Stat value of 60/.test(FX.scaleText(modText("Personal Repulsion"), 3)) && /\+12 die size/.test(FX.scaleText(modText("Exploit"), 3)), "Mod text scales: Burden 60 Slow, Pierce 30, Repulsion 60, Exploit +12");
+ok2(/2d12 normally/.test(FX.scaleText(modText("Flare"), 3)), "Worked examples in parentheses are left alone");
+ok2(FX.scaleText("deals 2d6", 1) === "deals 2d6" && FX.scaleText("deals 2d6", 0) === "deals 2d6", "At Power 1 (or none yet) the text is as printed");
 
 console.log("== Cut: living target, direct damage → d10");
 target(orc); seq = [25]; formulas.length = 0;

@@ -281,6 +281,31 @@ export function diePenalties(profile, power, { direct = false } = {}) {
   };
 }
 
+/**
+ * Show a spell's or Mod's doc text with its Spell Power numbers worked out (the doc lists the base values): dice counts, health,
+ * durability, Haste/Slow/Ignite/Stain stacks, signed die-size changes, Pierce/Bash values, Scaling Stat thresholds, Mirage Power,
+ * Shift's Body and Painless' Pain Threshold are multiplied by the Power. Fixed things (AP, ranges, check targets, +die sizes written
+ * "increased by") stay as printed. `mark` wraps each scaled number in \u0001…\u0002 so the caller can highlight it.
+ */
+export function scaleText(text, power, mark = false) {
+  const P = Math.max(1, Math.floor(power) || 1);
+  const s = String(text ?? "");
+  if (P <= 1) return s;
+  const w = n => mark ? `\u0001${n}\u0002` : String(n);
+  // Dice in parentheses are worked examples ("so if you use 2d12 normally…"): leave them.
+  let depth = 0, out = "";
+  for (const part of s.split(/([()])/)) {
+    if (part === "(") { depth++; out += part; continue; }
+    if (part === ")") { depth = Math.max(0, depth - 1); out += part; continue; }
+    out += depth ? part : part.replace(/\b(\d+)d(\d+)\b/g, (m, n, sides) => `${w(n * P)}d${sides}`);
+  }
+  return out
+    .replace(/\b(\d+)( (?:health|durability|Haste|Slow|Stain|Ignite)\b)/g, (m, n, rest) => `${w(n * P)}${rest}`)
+    .replace(/([+\u2212-])(\d+)( die size)/g, (m, sign, n, rest) => `${sign}${w(n * P)}${rest}`)
+    .replace(/(Scaling Stat value of |property with a value of |has |Move up to |Pain Threshold by )(\d+)( Power| Body|\b)/g, (m, pre, n, rest) =>
+      /^(Scaling Stat value of |property with a value of |Pain Threshold by )$/.test(pre) || /Power|Body/.test(rest) ? `${pre}${w(n * P)}${rest}` : m);
+}
+
 export const shieldHealth = (profile, power) => (profile.shield ?? 0) * Math.max(1, power);
 
 /** A die size after the worst active penalty (they don't stack), never below 1. */

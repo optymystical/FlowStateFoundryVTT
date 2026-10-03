@@ -77,17 +77,24 @@ const calmed = actor => !!actor?.statuses?.has("calmedDown");
 /** Net Advantage on this actor's own attack rolls from stances. */
 const attackStanceNet = actor => (psyched(actor) ? 1 : 0) - (calmed(actor) ? 1 : 0);
 
+/**
+ * Spirit Sense, Primary (Grasp Arcana T4): immune to the stealth bonus of Targeted attack rolls. That bonus only comes from Targeted
+ * spells (any Magic attack with half stealth), so a weapon attack from half stealth still counts against them.
+ */
+const spellStealthImmune = (opts, target) => opts?.stealth === "half" && !!(opts.spell || opts.magicStealth) && ab.treeTier(target, "magic-grasp-arcana") >= 4;
+
 /** Where an attack roll's Advantage/Disadvantage came from, as "Psych Up +1, target Psych Up +1" style parts. */
 function attackNetParts(actor, opts, target = null) {
   const parts = [];
   const add = (label, v) => { if (v) parts.push(`${label} ${v > 0 ? "+" : "−"}${Math.abs(v)}`); };
   add("attack options", opts.net ?? 0);
   add("exhausted", exhaustionNet(actor));
-  add("half stealth", opts.stealth === "half" ? 1 : 0);
+  add("half stealth", opts.stealth === "half" && !(target && spellStealthImmune(opts, target)) ? 1 : 0);
   add("Psych Up", psyched(actor) ? 1 : 0);
   add("Calm Down", calmed(actor) ? -1 : 0);
   add("Limber", limberNet(actor));
   if (target) {
+    if (spellStealthImmune(opts, target)) parts.push(`${target.name}'s Spirit Sense: immune to the Targeted stealth bonus`);
     add(`${target.name} prone`, opts.melee && target.statuses?.has("prone") ? 1 : 0);
     add(`${target.name} Psyched Up`, psyched(target) ? 1 : 0);
     add(`${target.name}'s Shroud`, shroudAttackNet(actor, target, opts));
@@ -1352,7 +1359,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy"];
+  "breakFree", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -1471,7 +1478,7 @@ async function startExchange(actor, opts, targets) {
     // Psych Up: attacks against you have Advantage.
     // In a Barrel (Longshot T4): Advantage against a target with any movement penalty.
     const barrel = opts.inABarrel && movementPenalized(target) ? 1 : 0;
-    let atkNet = baseNet + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts) + charmNet(actor, "attack") + (opts.spell ? magicDisNet(actor) : 0)
+    let atkNet = baseNet - (spellStealthImmune(opts, target) ? 1 : 0) + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts) + charmNet(actor, "attack") + (opts.spell ? magicDisNet(actor) : 0)
       - (autoDash(target, opts) ? 1 : 0);
     const spellNotes = [];
     // Personal Repulsion / Personal Well (Gravity T3): attacks with a small Scaling Stat get Disadvantage / Advantage.
@@ -1761,9 +1768,10 @@ export async function defend(message, index, choice) {
   if (findDefense(message.id, index)) return;
   const armorDis = t.penalties.physicalDis;
   const shiftAdv = findShifts(message.id, index).filter(f => f.mode === "adv").length;
-  const net = opts.net + (o.stealth === "half" ? -1 : 0) + (prone ? -1 : 0) + (t.exhausted ? -1 : 0) - armorDis + (calmed(target) ? 1 : 0)
+  const stealthImmune = spellStealthImmune(o, target);
+  const net = opts.net + (o.stealth === "half" && !stealthImmune ? -1 : 0) + (prone ? -1 : 0) + (t.exhausted ? -1 : 0) - armorDis + (calmed(target) ? 1 : 0)
     + limberNet(target) + shiftAdv + leadBlindNet(o) + boardNet + seeingRedNet(target) + (o.dodgeNet ?? 0) + pointBlankNet - (entry.snipe ?? 0) + disruptNet(target) + unfetteredNet(target) + dodgeDisNet(target) + charmNet(target, "dodge");
-  const reasons = [netLabel(net), o.stealth === "half" ? "attacker in half stealth" : "", prone ? "prone" : "", t.exhausted ? "exhausted" : "", armorDis ? "armor penalty" : "",
+  const reasons = [netLabel(net), o.stealth === "half" && !stealthImmune ? "attacker in half stealth" : "", prone ? "prone" : "", t.exhausted ? "exhausted" : "", armorDis ? "armor penalty" : "",
     calmed(target) ? "Calm Down" : "", limberNet(target) ? "Limber" : "", shiftAdv ? "Shift" : "", o.leadBlind ? "Lead Blindness" : "",
     boardNet ? "Sword and Board" : "", seeingRedNet(target) ? "Seeing Red" : "", o.dodgeNet ? "Shank" : "", pointBlankNet ? "Point Blank" : "", entry.snipe ? `Snipe Hunt (−${entry.snipe})` : "",
     disruptNet(target) ? "Disrupted" : "", unfetteredNet(target) ? "Unfettered" : "", dodgeDisNet(target) ? "spell: dodge Disadvantage" : "", charmNet(target, "dodge") ? "Charm/Hex: dodge Disadvantage" : ""].filter(Boolean);

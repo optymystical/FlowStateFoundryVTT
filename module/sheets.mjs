@@ -702,6 +702,32 @@ export function runActionRow(actor, row) {
   return handler.call({ document: actor, actor }, new Event("click"), target);
 }
 
+/**
+ * Change a sheet's picture. Foundry's own picker needs the file-browser permission, which players usually lack, so this asks for
+ * an image URL or path (Browse is offered where the user may use the file browser). Owners can change their own sheets' pictures.
+ */
+async function pickImage(event, target) {
+  const doc = this.document;
+  if (!this.isEditable) return;
+  const field = target?.dataset?.edit || "img";
+  const current = foundry.utils.getProperty(doc, field) ?? "";
+  const canBrowse = game.user.can?.("FILES_BROWSE");
+  const FP = foundry.applications?.apps?.FilePicker?.implementation ?? globalThis.FilePicker;
+  const url = await foundry.applications.api.DialogV2.prompt({
+    window: { title: `Picture: ${doc.name}` },
+    content: `<div class="fs-field"><label>Image URL or path</label><div style="display:flex;gap:4px">
+      <input type="text" name="img" value="${foundry.utils.escapeHTML ? foundry.utils.escapeHTML(current) : current}" placeholder="https://… or worlds/…/picture.png" style="flex:1" autofocus>
+      ${canBrowse && FP ? `<button type="button" data-browse><i class="fa-solid fa-folder-open"></i> Browse</button>` : ""}</div>
+      <p class="hint">Paste a link to an image, or the path of one already uploaded.</p></div>`,
+    render: (ev, dialog) => dialog.element.querySelector("[data-browse]")?.addEventListener("click", () => {
+      new FP({ type: "image", current, callback: path => { dialog.element.querySelector("input[name=img]").value = path; } }).browse();
+    }),
+    ok: { label: "Set picture", callback: (ev, button) => button.form.elements.img.value.trim() },
+    rejectClose: false
+  });
+  if (url && url !== current) await doc.update({ [field]: url });
+}
+
 export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: ["flowstate", "sheet", "actor"],
@@ -709,6 +735,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     window: { resizable: true },
     form: { submitOnChange: true },
     actions: {
+      editImage: pickImage,
       rollStat: FlowStateActorSheet.onRollStat,
       rollD100: FlowStateActorSheet.onRollD100,
       attack: FlowStateActorSheet.onAttack,
@@ -1056,7 +1083,8 @@ export class FlowStateItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
     classes: ["flowstate", "sheet", "item"],
     position: { width: 480, height: 420 },
     window: { resizable: true },
-    form: { submitOnChange: true }
+    form: { submitOnChange: true },
+    actions: { editImage: pickImage }
   };
 
   static PARTS = {
@@ -1072,7 +1100,7 @@ export class FlowStateItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
       editable: identityOpen,                 // name, type, material, grade, description, wear
       stateEditable: this.isEditable,          // held, two-handed, loaded
       nameEditable: this.isEditable,           // owners can always rename their items
-      lockedNote: this.isEditable && !identityOpen ? "Only the GM can modify this item (you can rename it)." : "",
+      lockedNote: this.isEditable && !identityOpen ? "Only the GM can modify this item (you can rename it and change its picture)." : "",
       isGear: this.document.type === "gear",
       ammoTypes: Object.fromEntries(Object.entries(WEAPON_TYPES).filter(([, v]) => v.ranged).map(([k, v]) => [k, `${v.label} weapons`]))
     });
@@ -1247,6 +1275,7 @@ export class FlowStatePileSheet extends HandlebarsApplicationMixin(ActorSheetV2)
     position: { width: 420, height: 360 },
     window: { resizable: true },
     actions: {
+      editImage: pickImage,
       take: FlowStatePileSheet.onTake,
       editItem: FlowStatePileSheet.onEditItem
     }

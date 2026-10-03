@@ -67,12 +67,14 @@ def parse(md, arch):
         numbered = re.match(r'^(\d+)\.\s+(.*)$', txt)
         bullet = re.match(r'^-\s+(.*)$', txt)
         body = clean(numbered.group(2) if numbered else bullet.group(1) if bullet else txt)
-        if not body: continue
+        if not body or body == "-": continue
         if numbered: body = f"{numbered.group(1)}. {body}"
         # Numbered option lists, deeper bullets, and loose paragraphs belong to the entry above them.
-        nested = bool(numbered) or raw.startswith('      ') or (not bullet and cur_tier["entries"])
+        # Mental lists its Modes and Tenets as plain paragraphs at the left margin (no bullet): each is its own entry.
+        flush = arch == "Mental" and not bullet and not numbered and raw[:1] not in (" ", "\t")
+        nested = bool(numbered) or raw.startswith('      ') or (not bullet and not flush and cur_tier["entries"])
         m = re.match(r'^([^:]{1,60}?):\s*(.*)$', body)
-        entry = {"name": m.group(1).strip(), "text": m.group(2).strip()} if (bullet and m and not nested) else {"name": "", "text": body}
+        entry = {"name": m.group(1).strip(), "text": m.group(2).strip()} if ((bullet or flush) and m and not nested) else {"name": "", "text": body}
         if nested and cur_tier["entries"]:
             cur_tier["entries"][-1].setdefault("sub", []).append(body)
         else:
@@ -80,10 +82,14 @@ def parse(md, arch):
     return trees
 
 out = []
-for path, arch in [(sys.argv[1], "Martial"), (sys.argv[2], "Magic")]:
-    out += parse(open(path).read(), arch)
-js = "// Generated from the Martial and Magic Stage 1 docs by tools/build_trees.py. Don't edit by hand; re-run the converter.\n"
+for path, arch in [(sys.argv[1], "Martial"), (sys.argv[2], "Magic"), (sys.argv[3], "Mental")]:
+    trees = parse(open(path).read(), arch)
+    if arch == "Mental":
+        # The Mental Rework Test Ground still has empty trees (Ponderance / Snappence / Esoteric Arts): leave those out until they're written.
+        trees = [t for t in trees if any(x["entries"] for x in t["tiers"])]
+    out += trees
+js = "// Generated from the Martial and Magic Stage 1 docs and the Mental Rework Test Ground by tools/build_trees.py. Don't edit by hand; re-run the converter.\n"
 js += "export const TREES = " + json.dumps(out, indent=1, ensure_ascii=False) + ";\n"
-open(sys.argv[3], 'w').write(js)
+open(sys.argv[4], 'w').write(js)
 for t in out:
     print(f"{t['archetype']:8} req T{t['requires']}  {t['name']:24} tiers {[x['tier'] for x in t['tiers']]}  entries {[len(x['entries']) for x in t['tiers']]}")

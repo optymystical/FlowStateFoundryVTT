@@ -34,7 +34,7 @@ const [name, mod] = called.find(c => c[0] === "tokenActionHudSystemReady") ?? []
 ok(name && mod.api.requiredCoreModuleVersion === "2", "TAH: system registered with Core");
 const sm = new mod.api.SystemManager();
 const defs = await sm.registerDefaults();
-ok(defs.layout.length === 6 && defs.groups.some(g => g.id === "act-parry") && defs.groups.some(g => g.id === "act-magic") && defs.layout[0].groups[0].nestId === "combat_act-combat", "TAH: default layout and groups");
+ok(defs.layout.length === 7 && defs.groups.some(g => g.id === "act-parry") && defs.groups.some(g => g.id === "act-magic") && defs.layout[0].groups[0].nestId === "combat_act-combat", "TAH: default layout and groups");
 const ah = sm.getActionHandler(); ah.actor = actor;
 await ah.buildSystemActions();
 const combat = ah.added.find(([id]) => id === "act-combat")?.[1] ?? [];

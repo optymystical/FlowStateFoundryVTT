@@ -1,5 +1,5 @@
 import * as rules from "./rules.mjs";
-import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStatePileData } from "./data.mjs";
+import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStatePileData } from "./data.mjs";
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import * as areas from "./areas.mjs";
@@ -12,7 +12,9 @@ import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
 import * as pictures from "./pictures.mjs";
-import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStatePileSheet } from "./sheets.mjs";
+import "./mental.mjs";
+import * as charges from "./charges.mjs";
+import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStatePileSheet } from "./sheets.mjs";
 /* -------------------------------------------- */
 /*  Documents                                   */
 /* -------------------------------------------- */
@@ -120,6 +122,7 @@ class FlowStateCombat extends Combat {
       await actions.clearMarks(combatant.actor);
       await actions.treesTurnStart(combatant.actor);
       // Spell effects this creature put on others end now (Shield, Slam's dodge penalty); Rituals' last until the Ritual ends.
+      await actions.mentalBeforeClear(combatant.actor);
       await actions.clearSpellEffects(combatant.actor);
       await areas.clearAreas(combatant.actor);
       // Bleed (Slashing T2) hits at the start of the victim's turn.
@@ -130,6 +133,7 @@ class FlowStateCombat extends Combat {
       await actions.arcanaAntimagicTurn(combatant.actor);
       await fociEngine.deckTurnStart(combatant.actor);
       await conjure.autonomyTurn(combatant.actor);
+      await actions.mentalTurnStart(combatant.actor);
       await combatant.actor.setFlag?.("flowstate", "turnStartedAt", Date.now());
       // Tier 4: Reform, then the caster's temporary Summons, Animations and Made objects end.
       await conjure.turnStart(combatant.actor);
@@ -161,7 +165,7 @@ Hooks.once("init", () => {
   CONFIG.Actor.documentClass = FlowStateActor;
   CONFIG.Combat.documentClass = FlowStateCombat;
   CONFIG.Actor.dataModels = { character: FlowStateActorData, npc: FlowStateActorData, pile: FlowStatePileData };
-  CONFIG.Item.dataModels = { gear: FlowStateGearData, weapon: FlowStateWeaponData, armor: FlowStateArmorData, foci: FlowStateFociData, shroud: FlowStateShroudData };
+  CONFIG.Item.dataModels = { gear: FlowStateGearData, weapon: FlowStateWeaponData, armor: FlowStateArmorData, foci: FlowStateFociData, shroud: FlowStateShroudData, icon: FlowStateIconData };
   CONFIG.Actor.trackableAttributes = {
     character: { bar: ["hp", "energy", "ap", "rp"], value: [] },
     npc: { bar: ["hp", "energy", "ap", "rp"], value: [] }
@@ -296,6 +300,7 @@ Hooks.once("init", () => {
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateArmorSheet, { types: ["armor"], makeDefault: true, label: "Flow State Armor" });
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateFociSheet, { types: ["foci"], makeDefault: true, label: "Flow State Foci" });
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateShroudSheet, { types: ["shroud"], makeDefault: true, label: "Flow State Shroud" });
+  DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateIconSheet, { types: ["icon"], makeDefault: true, label: "Flow State Icon" });
 });
 
 /* -------------------------------------------- */
@@ -451,7 +456,7 @@ Hooks.on("createChatMessage", message => {
     ?? message.getFlag("flowstate", "dash")?.attackMessage ?? message.getFlag("flowstate", "blockFor")?.attackMessage
     ?? message.getFlag("flowstate", "perfect")?.attackMessage ?? message.getFlag("flowstate", "dipOf") ?? message.getFlag("flowstate", "dashMoveOf")
     ?? message.getFlag("flowstate", "riposteDeclined") ?? message.getFlag("flowstate", "quartzFor")?.attackMessage ?? message.getFlag("flowstate", "adjustFor")?.attackMessage ?? message.getFlag("flowstate", "retortOf") ?? message.getFlag("flowstate", "limberOf")
-    ?? message.getFlag("flowstate", "spellCancelled")?.attackMessage
+    ?? message.getFlag("flowstate", "spellCancelled")?.attackMessage ?? message.getFlag("flowstate", "mentalActDone")?.card
     ?? message.getFlag("flowstate", "followupCard")
     ?? message.getFlag("flowstate", "followupOf");
   const target = ref && game.messages.get(String(ref).split(":")[0]);
@@ -494,6 +499,7 @@ Hooks.once("ready", () => {
     await actions.GM_ACTIONS[data?.action]?.(data);
   });
   pictures.listenForBrowse();
+  charges.listen();
 });
 
 /* -------------------------------------------- */
@@ -747,13 +753,14 @@ async function openForge() {
       { action: "armor", label: "Armor", icon: "fa-solid fa-shirt" },
       { action: "foci", label: "Foci", icon: "fa-solid fa-wand-sparkles" },
       { action: "shroud", label: "Shroud", icon: "fa-solid fa-ghost" },
+      { action: "icon", label: "Icon", icon: "fa-solid fa-hands-praying" },
       { action: "gear", label: "Misc Item", icon: "fa-solid fa-box" }
     ]
   });
   if (!type) return;
   const folder = game.folders.find(f => f.type === "Item" && f.name === "Forge") ?? await Folder.create({ name: "Forge", type: "Item" });
-  const name = { weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", gear: "New Item" }[type];
-  const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp" }[type];
+  const name = { weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", icon: "New Icon", gear: "New Item" }[type];
+  const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp", icon: "icons/magic/holy/yin-yang-balance-symbol.webp" }[type];
   const item = await Item.create({ name, type, folder: folder.id, ...(img ? { img } : {}) });
   item?.sheet.render(true);
 }
@@ -1054,6 +1061,13 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   for (const btn of html.querySelectorAll(".fs-arcana-act")) {
     btn.addEventListener("click", event => { event.preventDefault(); actions.arcanaAct(message, Number(btn.dataset.i)); });
   }
+  for (const btn of html.querySelectorAll(".fs-mental-act")) {
+    btn.addEventListener("click", event => { event.preventDefault(); actions.mentalAct(message, Number(btn.dataset.i)); });
+  }
+  if (message.getFlag("flowstate", "mentalAct")) {
+    const used = game.messages.filter(m => m.getFlag("flowstate", "mentalActDone")?.card === message.id).map(m => m.getFlag("flowstate", "mentalActDone").i);
+    for (const btn of html.querySelectorAll(".fs-mental-act")) if (used.includes(Number(btn.dataset.i))) btn.closest(".fs-mental-row")?.replaceChildren(Object.assign(document.createElement("div"), { className: "fs-waiting", textContent: "Used." }));
+  }
   for (const btn of html.querySelectorAll(".fs-conjure-act")) {
     btn.addEventListener("click", event => { event.preventDefault(); conjure.act(message, Number(btn.dataset.i)); });
   }
@@ -1215,6 +1229,19 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
       if (!attune && item.type === "shroud") setTimeout(() => actions.endShroudPlacement(actor, item), 0);
     }
     if (item.type === "shroud") return;
+  }
+
+  /* ---- Icons: attuning takes 6 AP in combat (the Action List does it); out of combat it's free. One at a time. ---- */
+  if (item.type === "icon") {
+    const attune = changed(changes, "system.attuned");
+    if (attune !== undefined && attune !== item.system.attuned) {
+      if (attune && inCombat && !auto && !options?.flowstateAttune) return refuse(item, `Attuning to ${item.name} takes AP in combat: use "Attune ${item.name}" in the Action List.`);
+      if (attune) {
+        const others = actor.items.filter(i => i.type === "icon" && i.id !== item.id && i.system.attuned);
+        if (others.length) actor.updateEmbeddedDocuments("Item", others.map(i => ({ _id: i.id, "system.attuned": false })), { flowstateAuto: true });
+      }
+    }
+    return;
   }
 
   /* ---- Weapons: at most two hands.

@@ -101,6 +101,9 @@
         {{#if magic}}
         <div class="fs-field"><label>{{#if foci}}Foci{{else}}Shroud{{/if}} type</label><select name="items.{{index}}.{{#if foci}}fociType{{else}}shroudType{{/if}}">
           {{#each typeChoices}}<optgroup label="{{label}}">{{selectOptions options selected=../selected}}</optgroup>{{/each}}</select></div>
+        {{else if icon}}
+        <div class="fs-field"><label>Icon Form</label><select name="items.{{index}}.iconForm">
+          {{#each typeChoices}}<optgroup label="{{label}}">{{selectOptions options selected=../selected}}</optgroup>{{/each}}</select></div>
         {{else if affixSlot}}
         <div class="fs-field"><label>Affix</label><select name="items.{{index}}.affix">{{selectOptions affixChoices selected=affix}}</select></div>
         <div class="fs-field"><label>Put it on</label><select name="items.{{index}}.target"><option value="">— Pick a Foci or Shroud —</option>{{selectOptions targetChoices selected=target}}</select></div>
@@ -128,6 +131,7 @@
       <button type="button" data-action="addItem" data-kind="armor" {{#unless canAddArmor}}disabled{{/unless}}><i class="fa-solid fa-shirt"></i> Add armor</button>
       <button type="button" data-action="addItem" data-kind="foci" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-wand-sparkles"></i> Add Foci</button>
       <button type="button" data-action="addItem" data-kind="shroud" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-ghost"></i> Add Shroud</button>
+      <button type="button" data-action="addItem" data-kind="icon" {{#unless canAddMagic}}disabled{{/unless}} data-tooltip="A Mental user's equipment: a Form with a Ward effect"><i class="fa-solid fa-hands-praying"></i> Add Icon</button>
       <button type="button" data-action="addItem" data-kind="affix" {{#unless canAddAffix}}disabled{{/unless}} data-tooltip="Needs a picked Foci or Shroud with a free Affix slot"><i class="fa-solid fa-gem"></i> Add Affix</button>
     </div>
     {{/if}}

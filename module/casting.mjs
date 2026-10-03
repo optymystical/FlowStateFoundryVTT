@@ -4,7 +4,7 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget } from "./actions.mjs";
+import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
@@ -508,6 +508,7 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     first = await performAttack(actor, { ...attackOpts, area: false, targetActors: p, notes: [...attackOpts.notes, "Ranged part (primary target)"], spell: { ...attackOpts.spell, singleRoll: false } });
     await performAttack(actor, { ...attackOpts, area: true, notes: [...attackOpts.notes, "Area part"], spell: { ...attackOpts.spell, singleRoll: true, exploit: null } });
   } else first = await performAttack(actor, attackOpts);
+  if (!weave && plan.ap) await afterAttackCost(actor, plan.usesRP ? { rp: plan.ap } : { ap: plan.ap });   // Will of Body and Spirit (Mental T4)
   // Aura (Illusion T5): remember it, so creatures that walk in later can be checked (everyone checked now is covered).
   if (mods.aura && profile.arcana?.kind === "mirage") {
     const { targetActors: _t, ...opts } = attackOpts;

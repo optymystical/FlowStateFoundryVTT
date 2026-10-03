@@ -3,6 +3,7 @@ import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, fociProfile, shroudProfile } from "./magic.mjs";
 import { penalizedDie } from "./spellfx.mjs";
+import { FORMS, iconProfile } from "./mental-rules.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
@@ -86,9 +87,14 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     const painDown = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.painDown) || 0), 0);
     // Phantom Pain (Illusion T2): illusion damage from a Mirage only raises the Pain Threshold (gone when no Mirage affects them).
     const phantom = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.phantomTotal) || 0), 0);
-    if (painDown || phantom) { d.pain = Math.max(0, d.pain - painDown + phantom); this.hp.pain = d.pain; }
-    d.dodgeDie = penalizedDie(d.dodgeDie, penalty("dodgeDie"));
-    d.attackDie = penalizedDie(d.attackDie, penalty("attackDie"));
+    // Execute (Mental, Death T5) raises it.
+    const painUp = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.spellEffect?.painUp) || 0), 0);
+    if (painDown || phantom || painUp) { d.pain = Math.max(0, d.pain - painDown + phantom + painUp); this.hp.pain = d.pain; }
+    // Mental: Flourish (Life) makes dodge dice a size bigger (it doesn't stack).
+    const bonus = key => Math.max(0, ...effects.map(e => Number(e.flags?.flowstate?.spellEffect?.[key]) || 0));
+    this.lift = (this.lift ?? 0) + bonus("liftUp");                // Ascend (Mental, Beyond T5)
+    d.dodgeDie = penalizedDie(d.dodgeDie, penalty("dodgeDie")) + bonus("dodgeDieUp");
+    d.attackDie = penalizedDie(d.attackDie, penalty("attackDie")) + bonus("attackDieUp");
     // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).
     this.ritualLoss = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.ritual?.energyLost) || 0), 0);
     this.energy.max = Math.max(0, d.energyMax - this.ritualLoss);
@@ -100,11 +106,15 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     this.armor = null;
     this.shroud = null;
     this.foci = null;
+    this.icon = null;
     for (const item of this.parent?.items ?? []) {
       if (item.type === "weapon") item.system.computeProfile({ str: eff.str.value, dex: eff.dex.value });
       else if (item.type === "foci") {
         item.system.computeProfile({ reach: eff.reach.value, grasp: eff.grasp.value });
         if (item.system.attuned && item.system.profile.valid && !this.foci) this.foci = item;
+      } else if (item.type === "icon") {
+        item.system.computeProfile({ will: eff.will.value, pon: eff.pon.value, snap: eff.snap.value });
+        if (item.system.attuned && item.system.profile.valid && !this.icon) this.icon = item;
       } else if (item.type === "shroud") {
         item.system.computeProfile(eff.build.value, this);
         if (item.system.attuned && item.system.profile.valid && !this.shroud) this.shroud = item;
@@ -146,6 +156,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         base: (this.parent?.getFlag?.("flowstate", "trudge") ? 1 : penalties.moveAP)
           // Slice (Balanced T3): +1 AP per move (a Martial source, so Unfettered ignores it).
           + (statuses.has("sliced") && !unfettered ? 1 : 0)
+          // Freeze (Mental, Destruction T4): +1 AP per move
+          + bonus("moveUp")
       })
     };
     // Ch7 Rest: after 1 day without rest, disadvantage on all rolls.
@@ -283,6 +295,33 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
     this.durability = { max, value: max - this.wear };
     this.broken = this.profile.valid && max - this.wear <= 0;
     this.held = this.equipped;
+  }
+}
+
+/**
+ * Mental Icon: an object of devotion with a Form (its Ward effect) and a Tenet. Attuned (one at a time, 6 AP in combat) it works from anywhere on your
+ * body. Ward numbers scale per 10 Willpower, the Tenet per 10 of its Wonder's Scaling Stat, both limited by Grade (10 per Grade).
+ */
+export class FlowStateIconData extends foundry.abstract.TypeDataModel {
+  static defineSchema() {
+    return {
+      form: new f.StringField({ required: true, initial: "aegis", choices: () => Object.fromEntries(Object.entries(FORMS).map(([k, v]) => [k, v.name])) }),
+      grade: int(1, { min: 1 }),
+      attuned: new f.BooleanField({ initial: false }),
+      tenet: new f.StringField({ initial: "" }),          // the Tenet's id ("mental-life-dream:verdant-soul"), chosen when attuning
+      chosen: new f.StringField({ initial: "physical" }), // Bane: the damage category chosen on attuning
+      description: new f.HTMLField({ initial: "" })
+    };
+  }
+
+  prepareDerivedData() {
+    const eff = this.parent?.actor?.system?.derived?.effective;
+    this.computeProfile(eff ? { will: eff.will.value, pon: eff.pon.value, snap: eff.snap.value } : { will: this.grade * 10, pon: this.grade * 10, snap: this.grade * 10 });
+  }
+
+  computeProfile(stats) {
+    this.profile = iconProfile(this, stats);
+    this.broken = false;
   }
 }
 

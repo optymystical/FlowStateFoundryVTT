@@ -317,6 +317,35 @@ ok2((fresh.match(/name="replace:/g) ?? []).length === 5, "The dialog offers a re
 const ticked = C.modsHTML(C.castContext(hero), { core1: "magic-gravity:force", "replace:magic-gravity:burden": true }, 5);
 ok2((ticked.match(/name="replace:/g) ?? []).length === 1 && /replace:magic-gravity:burden/.test(ticked), "Once one is ticked, the other replace boxes are gone");
 
+console.log("== Force in a spell is a bolded effect: Strengthened / Weakened stacks apply to it");
+{
+  const R = await import("../../module/rules.mjs");
+  seq = [5000];
+  const o = { stacks: 1, type: "arcane", spell: { cores: ["magic-gravity:force"], power: 3, mods: {} } };
+  const f = await actions.spellForce(hero, orc, o, { critStacks: 1 }, { n: 8, sides: 10 }, "Force");
+  ok2(f.push.force === R.applyStacks(5000, 1), `+1 spell stack, +1 crit and −1 Arcane vs a non-magical target net to ${R.applyStacks(5000, 1)} Force (not just the spell and crit stacks)`);
+  seq = [5000];
+  const g = await actions.spellForce(hero, orc, o, { critStacks: 1 }, { n: 8, sides: 10 }, "Force", 3);
+  ok2(g.push.force === R.applyStacks(5000, 3), "The damage path hands over its own stacks, and Force uses those");
+}
+
+console.log("== Cast Spell dialog: real range, and Connection locks its Mod");
+{
+  const P = (attack, mods = []) => ({ attack, applied: mods.map(name => ({ mod: { name } })) });
+  ok2(FX.rangeText(P("Ranged")) === "200 ft" && FX.rangeText(P("Targeted")) === "100 ft", "Ranged 200 ft, Targeted 100 ft");
+  ok2(FX.rangeText(P("Ranged"), { affixes: ["quartz"] }) === "300 ft", "Quartz: Ranged +50% = 300 ft");
+  ok2(FX.rangeText(P("Targeted"), { affixes: ["blackOpal"] }) === "200 ft" && FX.rangeText(P("Ranged"), { affixes: ["blackOpal"] }) === "100 ft", "Black Opal swaps Targeted and Ranged");
+  ok2(FX.rangeText(P("Ranged"), { affixes: ["blackOpal"], plus: true, opalRange: "ranged" }) === "150 ft", "Black Opal+: the chosen range is 50% longer");
+  ok2(/^200 ft \(up to 400 ft with Snipe/.test(FX.rangeText(P("Ranged", ["Snipe"]))), "Snipe: up to double, Disadvantage past the normal range");
+  ok2(/15 ft radius, 30 ft cone/.test(FX.rangeText({ attack: "Area", applied: [] }, { affixes: ["agate"] })), "Agate: Area size +50%");
+  const ctx = C.castContext(hero);
+  const noConn = C.modsHTML(ctx, { core1: "magic-gravity:force" }, 5);
+  ok2(!/name="mod:magic-theory:pinpoint"[^>]*disabled/.test(noConn), "Without Connection the Pinpoint box is free");
+  const conn = C.modsHTML(ctx, { core1: "magic-gravity:force", connection: "pinpoint", "mod:magic-theory:pinpoint": true }, 5);
+  ok2(/name="mod:magic-theory:pinpoint"[^>]*disabled/.test(conn) && !/name="mod:magic-theory:pinpoint"[^>]*checked/.test(conn) && /free from Connection/.test(conn), "Connection set to Pinpoint: its own box is locked, unticked and marked free");
+  ok2(!/name="mod:magic-theory:empower"[^>]*disabled/.test(conn), "…and the other Mods stay available");
+}
+
 console.log("== Magic Theory: Empower, Snipe, Duplicate");
 orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-slashing:cut", { [M("magic-theory:empower")]: true });
 ok2(lastAtk().flags.flowstate.attack.opts.damage === "12d6" && lastAtk().flags.flowstate.attack.opts.spell.power === 6, "Empower: +100% Power (×3 → ×6): 2d6 × 6 = 12d6");

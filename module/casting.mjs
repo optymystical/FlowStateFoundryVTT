@@ -33,7 +33,7 @@ function freeHand(actor) {
 export function castContext(actor, weave = null) {
   const eff = actor.system.derived?.effective ?? {};
   const foci = actor.items.filter(i => i.type === "foci" && i.system.equipped).map(i => ({
-    id: i.id, name: i.name, profile: i.system.profile, attuned: !!i.system.attuned, broken: !!i.system.broken, twoHanded: !!i.system.twoHanded,
+    id: i.id, name: i.name, profile: i.system.profile, opalRange: i.system.opalRange || "targeted", attuned: !!i.system.attuned, broken: !!i.system.broken, twoHanded: !!i.system.twoHanded,
     hand: i.system.profile?.deck ? fociFx.handOf(actor) : undefined
   }));
   const working = actor.items.filter(i => i.type === "foci" && i.system.attuned && !i.system.broken && i.system.profile?.valid);
@@ -71,11 +71,13 @@ const coreSelect = (name, cores, value, blank) => `<select name="${name}">${blan
   `<option value="${c.id}" ${c.id === value ? "selected" : ""}>${esc(c.name)}${c.min !== c.max ? ` (${c.min}–${c.max})` : ` (${c.min})`}</option>`).join("")}</select>`;
 
 function modRow(m, mods, v, power = 0) {
-  const on = m.stackable ? Number(v[`mod:${m.id}`]) > 0 : !!v[`mod:${m.id}`];
+  // Connection already gives this Mod for free, so its own box is locked (it can't be picked a second time by accident).
+  const viaConnection = !!v.connection && m.treeId === "magic-theory" && m.name.toLowerCase() === v.connection;
+  const on = !viaConnection && (m.stackable ? Number(v[`mod:${m.id}`]) > 0 : !!v[`mod:${m.id}`]);
   const thr = m.replicate ? "X+1" : m.min === m.max ? m.min : `${m.min}–${m.max}`;
   const control = m.stackable
-    ? `<input type="number" name="mod:${m.id}" value="${Number(v[`mod:${m.id}`]) || 0}" min="0" step="1" data-tooltip="Times applied (each adds Threshold)">`
-    : `<input type="checkbox" name="mod:${m.id}" ${on ? "checked" : ""}>`;
+    ? `<input type="number" name="mod:${m.id}" value="${viaConnection ? 0 : Number(v[`mod:${m.id}`]) || 0}" min="0" step="1" data-tooltip="Times applied (each adds Threshold)" ${viaConnection ? "disabled" : ""}>`
+    : `<input type="checkbox" name="mod:${m.id}" ${on ? "checked" : ""} ${viaConnection ? "disabled" : ""}>`;
   const extra = m.replicate
     ? `<select name="rep:${m.id}">${mods.filter(o => !o.replicate).map(o => `<option value="${o.id}" ${v[`rep:${m.id}`] === o.id ? "selected" : ""}>${esc(o.name)}</option>`).join("")}</select>`
     : m.min !== m.max ? `<input type="number" name="modT:${m.id}" value="${v[`modT:${m.id}`] ?? m.min}" min="${m.min}" max="${m.max}" step="1" data-tooltip="Threshold for this Mod">` : "";
@@ -86,7 +88,7 @@ function modRow(m, mods, v, power = 0) {
   const guess = m.name === "Telegraph" ? `<input type="number" name="telegraph" value="${v.telegraph ?? ""}" placeholder="dodge guess" data-tooltip="Predict their dodge roll before the attack">` : "";
   const manual = fx.AUTOMATED_MODS.has(m.id) ? "" : ` · <em data-tooltip="Costs Threshold, but its effect isn't automated yet: the GM resolves it from the card">not automated</em>`;
   const hint = m.name === "Exploit" ? " · each stack needs an Advantage on the attack, or it is refunded" : "";
-  return `<label class="fs-cast-mod" data-raw="${esc(m.text)}" data-tooltip="${esc(fx.scaleText(m.text, power))}">${control} <strong>${esc(m.name)}</strong> <small>${thr} Threshold${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}${replaceBox}${damp}${guess}</label>`;
+  return `<label class="fs-cast-mod" data-raw="${esc(m.text)}" data-tooltip="${esc(fx.scaleText(m.text, power))}">${control} <strong>${esc(m.name)}</strong> <small>${viaConnection ? "free from Connection" : `${thr} Threshold`}${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}${replaceBox}${damp}${guess}</label>`;
 }
 
 /** The Universal / Core 1 / Core 2 Mod tabs for the chosen Cores. */
@@ -151,7 +153,7 @@ function previewHTML(plan, ctx) {
   return `<div class="fs-cast-sum">
     <div><strong>Threshold ${plan.threshold}</strong> <small>(${parts}${plan.tr ? ` − TR ${plan.tr}: ${tr}` : ""})</small></div>
     <div><strong>${plan.ritual ? `Ritual: ${plan.instantRitual ? "instant" : `${plan.ritualHours} h`}, −${plan.ritualLoss} max Energy` : `${plan.energy} Energy`}</strong>${plan.ritual && !plan.instantRitual ? "" : ` · ${plan.ap} ${plan.usesRP ? "RP" : "AP"}`}
-      · Spell Power ×${plan.power} <small>(${STATS[plan.scalingStat]?.label ?? plan.scalingStat} ${plan.scaling})</small> · ${esc(plan.attack ?? "")}</div></div>`;
+      · Spell Power ×${plan.power} <small>(${STATS[plan.scalingStat]?.label ?? plan.scalingStat} ${plan.scaling})</small> · ${esc(plan.attack ?? "")}${(() => { const r = fx.rangeText(plan, ctx.foci?.find(f => f.id === plan.option?.fociId)); return r ? `, <strong>range ${esc(r)}</strong>` : ""; })()}</div></div>`;
 }
 
 /** Read the dialog's form into the values planCast() expects. */
@@ -233,7 +235,7 @@ async function castDialog(actor, ctx) {
       const activeTab = () => form.querySelector(".fs-cast-tab.active")?.dataset.tab ?? "universal";
       form.addEventListener("change", e => {
         const name = e.target?.name ?? "";
-        if (name.startsWith("replace:")) {                       // the other Replacement boxes appear or vanish
+        if (name.startsWith("replace:") || name === "connection") {   // the other Replacement boxes appear or vanish; Connection locks its Mod's box
           const tab = activeTab();
           v = valuesFromForm(form);
           form.querySelector(".fs-cast-mods").innerHTML = modsHTML(ctx, v, tierOf(ctx.trees, "magic-theory"));
@@ -313,12 +315,8 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   // Snipe (Magic Theory T4) doubles the range; past the normal range the initial attack roll has Disadvantage.
   const ffx = fociFx.fociFx(actor, plan, !!values.dark);
   plan.fociFx = ffx;
-  let normalRange = plan.attack === "Targeted" ? 100 : 200;
-  // Foci Affixes: Black Opal swaps the Targeted and Ranged ranges; Quartz adds 50% to Ranged spells.
-  if (ffx?.affixes.includes("blackOpal")) normalRange = plan.attack === "Targeted" ? 200 : plan.attack === "Ranged" ? 100 : normalRange;
-  if (ffx?.affixes.includes("quartz") && plan.attack === "Ranged") normalRange *= 1.5;
-  // Black Opal (+): one of the two ranges is also 50% longer.
-  if (ffx?.affixes.includes("blackOpal") && ffx.plus && ffx.opalRange === plan.attack?.toLowerCase()) normalRange *= 1.5;
+  // Foci Affixes: Black Opal swaps the Targeted and Ranged ranges (+: one is 50% longer); Quartz adds 50% to Ranged spells.
+  const normalRange = fx.normalRange(plan.attack, ffx ?? {});
   if (!weave && !fire && !mods.aura && !plan.ritual && !meleeRange && (plan.attack === "Ranged" || plan.attack === "Targeted") && !checkRange(actor, normalRange * (mods.snipe ? 2 : 1), `${plan.cores.map(c => c.name).join(" + ")} (${plan.attack}${mods.snipe ? ", Snipe" : ""})`, null, origin)) return null;
   // Area spells (Gravity Field) and Emplace: choose a shape and place it before anything is spent; everything it touches is targeted.
   const emplace = !!mods.emplace && !!profile?.shield;

@@ -3503,9 +3503,11 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
 }
 
 /** Roll a spell's Force dice and work out how far it can move the target (the attacker picks the direction on the button). */
-export async function spellForce(attacker, target, o, result, fd, label) {
+export async function spellForce(attacker, target, o, result, fd, label, stacksOverride = null) {
   const roll = await evaluate(`${fd.n}d${fd.sides}`);
-  const stacks = (o.stacks ?? 0) + (result.critStacks ?? 0);
+  // A spell's Force is a bolded effect like its damage, so the same Strengthened / Weakened stacks apply to it (the spell's, crits,
+  // Foci Affixes, Charm and so on). The damage path passes the stacks it already worked out.
+  const stacks = stacksOverride ?? (o.spell ? targetStacks(attacker, o, target, result, 0, {}).stacks : (o.stacks ?? 0) + (result.critStacks ?? 0));
   const force = applyStacks(roll.total, stacks);
   const feet = forceFeet(force, target, !!o.spell?.fociFx?.affixes?.includes("musgravite"));          // Musgravite: against current health
   const html = `<div class="fs-result">${label}: ${fd.n}d${fd.sides} = ${roll.total}${stacks ? ` ${stackLabel(stacks)} → ${force}` : ""} Force → up to <strong>${feet} ft</strong></div>`;
@@ -4558,7 +4560,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (profile) {
     const direct = outcome.toHp > 0;
     if (profile.force?.when === "direct" && direct) {
-      const f = await spellForce(attacker, target, o, defense.result, fx.forceDice(profile, o.spell.power, { direct }), "Force");
+      const f = await spellForce(attacker, target, o, defense.result, fx.forceDice(profile, o.spell.power, { direct }), "Force", stacks);
       spellHTML += f.html; spellRolls.push(...f.rolls); kb = f.push;
     }
     const m = o.spell.mods ?? {};

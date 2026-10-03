@@ -306,6 +306,33 @@ export function scaleText(text, power, mark = false) {
       /^(Scaling Stat value of |property with a value of |Pain Threshold by )$/.test(pre) || /Power|Body/.test(rest) ? `${pre}${w(n * P)}${rest}` : m);
 }
 
+/**
+ * Normal range of a Targeted (100 ft) or Ranged (200 ft) spell with the casting Foci's Affixes applied: Black Opal swaps the two ranges
+ * (and, upgraded, makes the chosen one 50% longer), Quartz adds 50% to Ranged spells. Snipe doubles it separately (see `rangeText`).
+ */
+export function normalRange(attack, { affixes = [], plus = false, opalRange = "targeted" } = {}) {
+  let r = attack === "Targeted" ? 100 : 200;
+  if (affixes.includes("blackOpal")) r = attack === "Targeted" ? 200 : attack === "Ranged" ? 100 : r;
+  if (affixes.includes("quartz") && attack === "Ranged") r *= 1.5;
+  if (affixes.includes("blackOpal") && plus && opalRange === String(attack ?? "").toLowerCase()) r *= 1.5;
+  return r;
+}
+/** The range shown in the Cast Spell dialog: real feet for this cast (Foci Affixes, Snipe), or the Area's size. */
+export function rangeText(plan, foci = null) {
+  const attack = plan.attack;
+  const snipe = (plan.applied ?? []).some(a => (a.replicatesName ?? a.mod.name).toLowerCase() === "snipe");
+  const f = foci ? { affixes: foci.profile?.affixes ?? foci.affixes ?? [], plus: !!(foci.profile?.affixPlus ?? foci.plus), opalRange: foci.opalRange } : {};
+  const ft = n => `${Number.isInteger(n) ? n : Math.floor(n * 10) / 10} ft`;
+  if (attack === "Melee") return "melee (your personal reach)";
+  if (attack === "Area" || plan.areaSpell) {
+    const k = (snipe ? 2 : 1) * (f.affixes?.includes("agate") ? (f.plus ? 2 : 1.5) : 1);
+    return `Area: ${ft(10 * k)} radius, ${ft(20 * k)} cone, or ${ft(30 * k)} × ${ft(5 * k)} line`;
+  }
+  if (attack !== "Targeted" && attack !== "Ranged") return "";
+  const r = normalRange(attack, f);
+  return snipe ? `${ft(r)} (up to ${ft(r * 2)} with Snipe, at Disadvantage past ${ft(r)})` : ft(r);
+}
+
 export const shieldHealth = (profile, power) => (profile.shield ?? 0) * Math.max(1, power);
 
 /** A die size after the worst active penalty (they don't stack), never below 1. */

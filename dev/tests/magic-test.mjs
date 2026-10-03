@@ -90,15 +90,15 @@ ok2(out.toHp === 25 - 10 * mult, "Jasper only once until recovery");
 await actions.applyDamage(hero, 25, "physical", { silent: true });
 ok2(sh.system.wear === 10 * mult && hero.getFlag("flowstate", "takenTypes")?.includes("physical"), "applyDamage wears the Shroud and records the type");
 
-console.log("== Force damage cap: HP plus what the Shroud soaks, netting 0 HP at most");
+console.log("== Force damage cap: HP plus what the Shroud soaks, netting negative max HP at most");
 await sh.update({ "system.affixes": [], "system.negated": [], "system.wear": 0 });
-const hpNow = hero.system.hp.value;
+const hpNow = hero.system.hp.value + hero.system.hp.max;
 const cap = await actions.forceCap(hero);
-ok2(cap === hpNow + 10 * mult, `Cap = HP ${hpNow} + the Shroud's Limit ${10 * mult} = ${cap} (not just HP)`);
+ok2(cap === hpNow + 10 * mult, `Cap = HP + max HP ${hpNow} + the Shroud's Limit ${10 * mult} = ${cap} (not just HP)`);
 out = await actions.damageOutcome(hero, cap, "physical", {});
-ok2(out.toHp === hpNow, "Taking the capped damage nets them to exactly 0 HP");
+ok2(out.toHp === hpNow, "Taking the capped damage nets them to exactly negative max HP");
 out = await actions.damageOutcome(hero, cap + 1, "physical", {});
-ok2(out.toHp > hpNow, "One more point would go past 0 HP");
+ok2(out.toHp > hpNow, "One more point would go past negative max HP");
 
 console.log("== Shrouds recover by themselves out of combat");
 await sh.update({ "system.wear": 30, "system.negated": ["physical"] });

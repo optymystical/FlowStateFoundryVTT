@@ -77,6 +77,7 @@ async function runThen(actor, caster, then) {
 
 /** Start of this creature's turn: delayed Mental effects take hold, and Entomb's damage lands. */
 export async function pendingTurnStart(actor) {
+  for (const f of TURN_START) await f(actor);
   for (const e of spellEffects(actor, "pending")) {
     const d = e.flags.flowstate.spellEffect;
     const caster = globalThis.fromUuidSync?.(d.caster);
@@ -121,10 +122,22 @@ async function forceRoll(ctx, n, sides, label, ignoreLift = false) {
 /*  Modes                                       */
 /* -------------------------------------------- */
 
-const rolled = [];            // dice rolled by the last resolve (so the card can show them)
+export const rolled = [];     // dice rolled by the last resolve (so the card can show them)
+/** Registries other Wonder files fill in: follow-up buttons (`ACTS`, by id) and extra buttons offered after a hit (`ACT_PROVIDERS`). */
+export const ACTS = {};
+export const ACT_PROVIDERS = [];
+/** Modes whose effect applies even when the attack roll misses (Perfection). */
+export const MISS_MODES = new Set();
+/** Extra Manifest choices (`CHOICE_PROVIDERS`), costs and bonuses (`COST_PROVIDERS`), work at the start of a turn (`TURN_START`) and before effects clear (`BEFORE_CLEAR`). */
+export const CHOICE_PROVIDERS = [];
+export const COST_PROVIDERS = [];
+export const TURN_START = [];
+export const BEFORE_CLEAR = [];
+/** Called with a Manifest context when it crits (Ego, Pride): return HTML or nothing. */
+export const ON_CRIT = [];
 
 /** Each Mode: ({ attacker, target, ctx... }) → HTML (and optional push / acts). */
-const MODES = {
+export const MODES = {
   /* ---- Life (Dream) ---- */
   async "mental-life-dream:bloom"(c) {
     const n = 20 * c.power;
@@ -228,8 +241,11 @@ export async function resolveMode(c) {
     html = typeof out === "string" ? out : out.html;
     push = typeof out === "string" ? null : out.push ?? null;
   }
-  return { html, push, rolls: [...rolled], acts: c.now ? [] : [...abilityActs(c), ...(MODES_CHARGES_READY ? chargeActs(c) : [])] };
+  return { html, push, rolls: [...rolled], acts: c.now || !c.hit ? (c.hit ? [] : await missActs(c)) : [...(await abilityActs(c)), ...(MODES_CHARGES_READY ? chargeActs(c) : [])] };
 }
+
+export const MISS_PROVIDERS = [];
+export async function missActs(c) { const out = []; for (const f of MISS_PROVIDERS) out.push(...(await f(c) ?? [])); return out; }
 
 /* -------------------------------------------- */
 /*  Abilities and Tenets after a hit            */
@@ -238,7 +254,7 @@ export async function resolveMode(c) {
 const wonderOf = c => R.wonderById(c.mode.wonder);
 
 /** Buttons offered to the Mental user once a Mode has hit: abilities that cost energy, and the attuned Tenet. */
-function abilityActs(c) {
+async function abilityActs(c) {
   const a = c.attacker, acts = [];
   const w = wonderOf(c);
   const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit };
@@ -252,6 +268,7 @@ function abilityActs(c) {
     if (tn.id === "mental-death-nightmare:mortal-coil") acts.push({ id: "mortalCoil", label: "Mortal Coil", tip: "Once per round: steal 1d8 health as temp HP", cost: "once per round", mult: tn.mult, ...base });
     if (tn.id === "mental-beyond-dream:gust") acts.push({ id: "gust", label: "Gust", tip: "Once per round: 5d8 Force on the target", cost: "once per round", mult: tn.mult, ...base });
   }
+  for (const f of ACT_PROVIDERS) acts.push(...(await f(c) ?? []));
   return acts;
 }
 
@@ -280,6 +297,7 @@ export async function runAct(x) {
   const caster = await fromUuid(x.caster), target = await fromUuid(x.target);
   if (!caster?.isOwner) { ui.notifications.warn(`Only ${caster?.name ?? "the Mental user"}'s owner can do that.`); return false; }
   if (["chant", "makeClear", "wobs"].includes(x.id)) return mental.theoryAct(x);
+  if (ACTS[x.id]) return ACTS[x.id](x, caster, target);
   const mode = R.modeById(x.mode);
   const energy = { pollinate: Math.floor(minOf(caster, "pon") / 2), fester: minOf(caster, "snap"), reap: minOf(caster, "snap") }[x.id] ?? 0;
   if (["verdantSoul", "mortalCoil", "gust"].includes(x.id) && !(await tryOnce(caster, x.id))) { ui.notifications.info("Once per round: already used this round."); return false; }

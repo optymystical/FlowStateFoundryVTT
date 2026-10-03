@@ -1196,9 +1196,9 @@ async function pileFolder() {
 }
 
 export const GM_ACTIONS = {
-  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex }) {
+  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone }) {
     const actor = await fromUuid(target);
-    if (actor) await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex });
+    if (actor) await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone });
   },
   async updateActor({ uuid, data }) {
     const actor = await fromUuid(uuid);
@@ -1542,7 +1542,7 @@ async function startExchange(actor, opts, targets) {
     if (!shared) rolls.push(atk);
     const chargeNotes = [];
     if (!shared && mentalHook?.rollCharges) {
-      const rc = await mentalHook.rollCharges({ actor, type: "attack", roll: atk, die: atkDie, count: 1, net: atkNet, max: atkDie, label: opts.label });
+      const rc = await mentalHook.rollCharges({ actor, type: "attack", roll: atk, die: atkDie, count: 1, net: atkNet, max: atkDie, label: opts.label, targetActor: target });
       if (rc) { rolls.push(...rc.rolls); chargeNotes.push(...rc.notes); }
     }
     if (opts.spell?.singleRoll || opts.singleRoll) { sharedRoll = atk; if (shared) spellNotes.push("Area: the single attack roll above"); }
@@ -4498,9 +4498,11 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     const sh = await spellHit(attacker, target, o, result, entry, dodgeRoll?.total ?? null);
     if (sh) { extra.push(sh.html); spellRolls = sh.rolls; if (sh.push) pushInfo = sh.push; defenseChain = sh.chain; }
   }
+  // Mental: other creatures' attacks that hit can be Infused (Destruction Tenet).
+  if (result.hit && !o.mental && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result });
   // Mental: a Manifest's Mode or a Ward's effect, once the attack is answered.
   if (o.mental && mentalHook) {
-    const mh = await mentalHook.onResolve({ attacker, target, o, result, entry, dodgeRoll });
+    const mh = await mentalHook.onResolve({ attacker, target, o, result, entry, dodgeRoll, index });
     if (mh?.html) extra.push(mh.html);
     if (mh?.rolls?.length) spellRolls = [...spellRolls, ...mh.rolls];
     if (mh?.push) pushInfo = mh.push;
@@ -4622,7 +4624,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (!base) return;
   // Cook (Heat T5): extra d4s for the heat damage you've already dealt them this turn.
   if (spellPlan?.extraDice) { const r = await evaluate(`${spellPlan.extraDice.n}d${spellPlan.extraDice.sides}`); base.rolls.push(r); base.totals.push(r.total); }
-  let { stacks, parts, type } = targetStacks(attacker, o, target, defense.result, (opts.extra ?? 0) + (spellPlan?.extraStacks ?? 0), ctx);
+  let { stacks, parts, type } = targetStacks(attacker, o, target, defense.result, (opts.extra ?? 0) + (spellPlan?.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0), ctx);
   // Discharge (Radiation T5): trade two Strengthened stacks for Advantage on your next attack before your next turn.
   let dischargeHTML = "";
   if (o.spell?.mods?.discharge && stacks >= 2 && attacker.isOwner) {
@@ -4705,13 +4707,18 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     extraHTML += `<div class="fs-notes">${r.label}: −${cut} → ${incoming}</div>`;
     if (r.label.startsWith("Dip") && incoming === 0 && line.final > 0) dipZero = true;
   }
+  // Mental: damage dealt and taken is changed by Wonder effects (Pacify, Warzone, Absolution, Irradiate, Guard, ...).
+  if (mentalHook?.adjust && incoming > 0) {
+    const adj = await mentalHook.adjust({ attacker, target, amount: incoming, type, o, crit: !!defense.result?.crit });
+    if (adj.amount !== incoming || adj.html) { incoming = adj.amount; extraHTML += adj.html; }
+  }
   const cleave = shattered ? 0 : o.cleave ?? 0;
   if (cleave) extraHTML += `<div class="fs-notes">Cleave ${cleave}: object damage, hits Limits first${o.striker ? "; what gets past them hits the creature (Blood and Iron)" : ""}</div>`;
 
   // The outcome (soak, HP lost) goes on this card; the owner (or GM) applies it without a separate card.
   const dmgOpts = { pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: o.bash || 0, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
     shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
-      barriers: barriersFor(attacker, target) } };
+      barriers: barriersFor(attacker, target) }, mentalDone: true };
   let outcome = await damageOutcome(target, incoming, type, dmgOpts);
   // Flare (Heat T4): each set of d4s is a separate instance, so Limits apply to each.
   const instances = flare ? base.totals.map(t => applyStacks(t + flat, stacks)) : null;
@@ -4845,8 +4852,8 @@ export async function reachFinisher(damageMessage, kind) {
 
 /** Apply damage directly if we own the target; otherwise ask the active GM to do it. */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
-  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false } = {}) {
-  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex };
+  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false } = {}) {
+  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone };
   if (target.isOwner) return applyDamage(target, amount, type, o);
   return requestGM("applyDamage", { target: target.uuid, amount, type, ...o });
 }
@@ -4943,7 +4950,8 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     const profile = obj.system.profile, durability = obj.system.durability.value;
     if (!profile?.valid || durability <= 0) return 0;
     // An object can't absorb more than its remaining Durability (it doesn't go negative unless targeted directly).
-    const lossFactor = (profile.selfWeakened ? Math.pow(0.5, profile.selfWeakened) : 1) * (rend ? stackMultiplier(rend.stacks) : 1);
+    const alter = mentalHook?.alterStacks?.(actor, obj) ?? 0;            // Alter (Creation Tenet): damage to this object is Strengthened or Weakened
+    const lossFactor = (profile.selfWeakened ? Math.pow(0.5, profile.selfWeakened) : 1) * (rend ? stackMultiplier(rend.stacks) : 1) * stackMultiplier(alter);
     // Weakpoint (Piercing T5): only half the object's Limit applies to this spell's damage.
     const baseLimit = effectiveLimit(profile, type, objPierce);
     const L = Math.min(halfLimit ? Math.floor(baseLimit / 2) : baseLimit, Math.floor(durability / lossFactor));
@@ -4954,6 +4962,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     if (!absorbed) return 0;
     let loss = profile.selfWeakened ? Math.floor(absorbed * Math.pow(0.5, profile.selfWeakened)) : absorbed;
     if (rend) loss = applyStacks(loss, rend.stacks);
+    if (alter) loss = applyStacks(loss, alter);
     loss = Math.min(loss, durability);
     lines.push(`${obj.name}${label} absorbed ${rAbs}${cAbs ? ` (+${cAbs} Cleave)` : ""} (−${loss} Durability)`);
     if (durability - loss <= 0) lines.push(`${obj.name} is broken`);
@@ -5060,7 +5069,7 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
  * @param {boolean} silent  don't post a card (the caller already shows the outcome on its own card)
  */
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
   // Reactive: a Summon or Animation of a caster with the Mod gets a Weakened stack on each instance (1 RP).
   const smr = actor.flags?.flowstate?.summon;
@@ -5072,6 +5081,12 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
       if (c.isOwner) await c.update(data); else await requestGM("updateActor", { uuid: c.uuid, data });
       await post(actor, { title: `${esc(actor.name)} — Reactive`, body: `<div class="fs-result">${esc(c.name)} spends 1 RP: the damage is Weakened (${amount}).</div>` });
     }
+  }
+  // Mental: Wonder effects on whoever takes damage that didn't come through an attack's damage roll (those were settled there).
+  if (mentalHook?.adjust && amount > 0 && !bypass && !mentalDone) {
+    const adj = await mentalHook.adjust({ attacker: null, target: actor, amount, type, o: null });
+    if (adj.amount !== amount && adj.html && !silent) await post(actor, { title: `${esc(actor.name)} — Wonders`, body: adj.html });
+    amount = adj.amount;
   }
   // Mental: a Nightmare Ward may spend RP to negate some of it first, and a Premonition charge a lump.
   let neg = null;

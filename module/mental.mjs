@@ -13,6 +13,8 @@ import {
 } from "./actions.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
+import * as wondersB from "./wonders-b.mjs";
+import * as forging from "./forging.mjs";
 import * as ab from "./abilities.mjs";
 import * as areas from "./areas.mjs";
 import * as R from "./mental-rules.mjs";
@@ -44,6 +46,13 @@ export async function pay(actor, { ap = 0, rp = 0, energy = 0 }, what) {
     if (s.ap.value < ap) { ui.notifications.warn(`${actor.name} needs ${ap} AP for ${what} but has ${s.ap.value}.`); return false; }
     if (s.rp.value < rp) { ui.notifications.warn(`${actor.name} needs ${rp} RP for ${what} but has ${s.rp.value}.`); return false; }
     if (s.energy.value < energy) { ui.notifications.warn(`${actor.name} needs ${energy} Energy for ${what} but has ${s.energy.value}.`); return false; }
+  }
+  // Paying for someone else's character (a charge's caster answering on another client): the GM applies it.
+  if (!actor.isOwner) {
+    if (!inActiveCombat(actor)) return true;
+    const s = actor.system;
+    await requestGM("updateActor", { uuid: actor.uuid, data: { ...(ap ? { "system.ap.value": s.ap.value - ap } : {}), ...(rp ? { "system.rp.value": s.rp.value - rp } : {}), ...(energy ? { "system.energy.value": s.energy.value - energy } : {}) } });
+    return true;
   }
   if (ap && !(await spendPoints(actor, "ap", ap, what))) return false;
   if (rp && !(await spendPoints(actor, "rp", rp, what))) return false;
@@ -105,6 +114,7 @@ export function modeChoices(actor, modeId) {
   if (["mental-chaos-nightmare:fracture", "mental-chaos-nightmare:larceny", "mental-chaos-nightmare:entropy"].includes(modeId)) out.push({ name: "size", label: "Die size", options: { up: "Increased", down: "Decreased" } });
   if (["mental-beyond-dream:herald", "mental-beyond-dream:ascend"].includes(modeId) && tierOf(trees(actor), "mental-beyond-dream") >= 4)
     out.push({ name: "kinetic", label: `Kinetic Focus (⚡ ${Math.floor(minOf(actor, "pon") / 2)} each: +1 Advantage)`, number: true });
+  for (const f of wonders.CHOICE_PROVIDERS) out.push(...(f(actor, modeId) ?? []));
   return out;
 }
 const choiceValues = v => Object.fromEntries(Object.entries(v ?? {}).filter(([k]) => k.startsWith("choice:")).map(([k, val]) => [k.slice(7), val]));
@@ -130,14 +140,19 @@ export function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const kinetic = Math.max(0, Math.floor(Number(choices.kinetic) || 0));
   if (kinetic && !free) cost.energy += kinetic * Math.floor(minOf(actor, "pon") / 2);
   const align = ctx.alignment;
-  const net = R.alignmentNet(align.value, wonder.kind) + kinetic;
+  // Wonder-specific costs and bonuses (Fusion, Hubris, Pride, Adapt, ...).
+  const extras = wonders.COST_PROVIDERS.map(f => f(actor, { mode, wonder, choices, free })).filter(Boolean);
+  for (const x of extras) if (!free) cost.energy += x.energy ?? 0;
+  const extraNet = extras.reduce((n, x) => n + (x.net ?? 0), 0), extraStacks = extras.reduce((n, x) => n + (x.stacks ?? 0), 0);
+  const net = R.alignmentNet(align.value, wonder.kind) + kinetic + extraNet;
   const power = check.power;
   const text = R.scaleMentalText(v.enhance ? `${mode.base} Enhanced: ${mode.enhanced || "(no extra effect)"}` : mode.base, power);
   const errors = check.ok ? [] : [check.reason];
   if (v.burst && ctx.theory < 1) errors.push("Burst needs Mental Theory Tier 1.");
   if (wobs && R.RANGES[range].ap !== (wobs.ap || wobs.rp)) errors.push(`Will of Body and Spirit: the Range has to cost ${wobs.ap || wobs.rp} ${wobs.ap ? "AP" : "RP"}, like your attack.`);
   return { ok: errors.length === 0, errors, mode, wonder, kind: wonder.kind, power, stat, enhanceCost, cost, range, enhance: !!v.enhance, burst, net, choices, kinetic,
-    deepened: align.deepened && align.value === wonder.kind, text, alignment: align.value, patronFree, wobs };
+    deepened: align.deepened && align.value === wonder.kind, text, alignment: align.value, patronFree, wobs,
+    extraStacks, extraNotes: extras.flatMap(x => x.notes ?? []), extraAfter: extras.map(x => x.after).filter(Boolean), extraFlags: Object.assign({}, ...extras.map(x => x.flags ?? {})) };
 }
 
 const costText = c => [c.ap ? `${c.ap} AP` : "", c.rp ? `${c.rp} RP` : "", c.energy ? `${c.energy} Energy` : ""].filter(Boolean).join(" + ") || "free";
@@ -202,6 +217,12 @@ async function manifestDialog(actor, ctx) {
 
 const NO_ATTACK = new Set(["mental-beyond-dream:redirect"]);
 
+/** Pick one of a list of [value, label] pairs. */
+export async function pickChoice(actor, title, pairs) {
+  const out = await DialogV2().prompt({ window: { title }, content: `<div class="fs-field"><label>${esc(title)}</label><select name="v">${pairs.map(([k, l]) => `<option value="${esc(k)}">${esc(l)}</option>`).join("")}</select></div>`,
+    ok: { label: "Pick", callback: (event, button) => button.form.elements.v.value }, rejectClose: false });
+  return out || null;
+}
 /** Pick one of a few creatures / Modes with a small dialog. Null if cancelled. */
 export async function pickOne(actor, actors, title) {
   const list = actors.filter(Boolean);
@@ -217,13 +238,18 @@ export async function pickMode(actor, modes, title) {
 }
 
 /** Manifest a known Mode at one specific target for free (an ability spreading it: Pollinate). */
-export async function manifestAt(actor, mode, target, { power, enhanced, range = "ranged", choices = {}, spread = false, label = null } = {}) {
+export async function manifestAt(actor, mode, target, { power, enhanced, range = "ranged", choices = {}, spread = false, label = null, extraModes = [] } = {}) {
   const wonder = R.wonderById(mode.wonder);
   const align = alignmentOf(actor);
   const text = R.scaleMentalText(enhanced ? `${mode.base} Enhanced: ${mode.enhanced || ""}` : mode.base, power);
-  const mental = { mode: mode.id, wonder: wonder.id, kind: wonder.kind, power, enhanced: !!enhanced, burst: false, range, deepened: false, text, caster: actor.uuid, choices, spread };
+  const mental = { mode: mode.id, wonder: wonder.id, kind: wonder.kind, power, enhanced: !!enhanced, burst: false, range, deepened: false, text, caster: actor.uuid, choices, spread, extraModes };
   return performAttack(actor, { ...baseAttack, label: `${label ?? mode.name} (${mode.name})`, net: R.alignmentNet(align.value, wonder.kind), melee: false, area: false,
     notes: [`${label ?? "Free"}: ${mode.name} spreads to ${target.name}; its effect applies immediately`], mental, targetActors: [target] });
+}
+
+/** An attack roll from `caster` at `target` that deals `amount` of `type` on a hit (Bloodbond, Masterstroke): no AP/RP. */
+export async function reflectStrike(caster, target, amount, type, label, { melee = false, net = 0 } = {}) {
+  return performAttack(caster, { ...baseAttack, label, net, melee, area: false, notes: [`${amount} ${type} damage on a hit`], mental: { reflect: { amount, type }, caster: caster.uuid }, targetActors: [target] });
 }
 
 /** Quicksand (Below T4): an attack roll at a creature that just broke free; on a hit the escape fails and the effect is back on them. */
@@ -264,10 +290,17 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
     `${plan.mode.name} (${plan.wonder.name}, ${R.KINDS[plan.kind].label}) · Wonder Power ×${plan.power}`,
     plan.enhance ? "Enhanced" : "", plan.burst ? "Burst (RP)" : "",
     plan.net > 0 ? `${R.ALIGNMENTS[plan.alignment]} Alignment: Advantage` : plan.net < 0 ? `${R.ALIGNMENTS[plan.alignment]} Alignment: Disadvantage` : "",
-    plan.deepened ? "Deepened: doubly Strengthened" : "", plan.range === "area" ? "Area: Weakened if it hits more than two targets" : ""
+    plan.deepened ? "Deepened: doubly Strengthened" : "", plan.range === "area" ? "Area: Weakened if it hits more than two targets" : "", ...plan.extraNotes
   ].filter(Boolean);
+  for (const f of plan.extraAfter) await f();
   const mental = { mode: plan.mode.id, wonder: plan.wonder.id, kind: plan.kind, power: plan.power, enhanced: plan.enhance, burst: plan.burst, range: plan.range, deepened: plan.deepened,
-    text: plan.text, caster: actor.uuid, choices: plan.choices };
+    text: plan.text, caster: actor.uuid, choices: plan.choices, uid: foundry.utils.randomID?.() ?? String(Math.random()), ...plan.extraFlags };
+  // Creation: the attack roll is made against yourself; the creature(s) you targeted (or the Area) are who it's created for.
+  let attackTargets = targets;
+  if (forging.CREATION_MODES.has(plan.mode.id)) {
+    mental.recipients = (targets.length ? targets : [actor]).map(a => a.uuid);
+    attackTargets = (targets.length ? targets : [actor]).map(() => actor);
+  }
   // Some Modes need no attack roll (Redirect stores a charge on you).
   if (NO_ATTACK.has(plan.mode.id)) {
     const out = await wonders.resolveMode({ attacker: actor, target: actor, o: { stacks: 0 }, result: { hit: true }, m: mental, mode: plan.mode, power: plan.power, enhanced: plan.enhance, choices: plan.choices, range: plan.range, stacks: 0, hit: true, crit: false, text: plan.text });
@@ -275,7 +308,7 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
     return true;
   }
   return performAttack(actor, { ...baseAttack, label: `${plan.mode.name} (Manifest)`, net: plan.net, melee: plan.range === "melee", area: plan.range === "area", singleRoll: plan.range === "area",
-    stacks: (plan.deepened ? R.DEEPENED_STACKS : 0) - (plan.range === "area" && targets.length > 2 ? 1 : 0), notes, mental, ...(targets.length ? { targetActors: targets } : {}) });
+    stacks: (plan.deepened ? R.DEEPENED_STACKS : 0) - (plan.range === "area" && targets.length > 2 ? 1 : 0) + plan.extraStacks, notes, mental, ...(attackTargets.length ? { targetActors: attackTargets } : {}) });
 }
 
 /* -------------------------------------------- */
@@ -440,18 +473,22 @@ async function growReverie(attacker, grade) {
 /* -------------------------------------------- */
 
 /** A Manifest's Mode lands (the first time, or after a Chant reroll): apply it and build the card. */
-async function landManifest({ attacker, target, o, m, mode, result, stacksBase }) {
-  const c = { attacker, target, o, result, m, mode, power: m.power, enhanced: m.enhanced, choices: m.choices ?? {}, range: m.range, text: m.text, hit: true, crit: !!result.crit,
-    stacks: stacksBase + (result.critStacks ?? 0), now: !!m.spread };
+async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0 }) {
+  const c = { attacker, target, o, result, m, mode, power: m.power, enhanced: m.enhanced, choices: m.choices ?? {}, range: m.range, text: m.text, hit, margin, crit: hit && !!result.crit, index,
+    stacks: stacksBase + (hit ? (result.critStacks ?? 0) : 0), now: !!m.spread };
   const out = await wonders.resolveMode(c);
+  // Fusion-style riders and Warpath: more Modes applied with the same hit.
+  for (const id of m.extraModes ?? []) { const em = R.modeById(id); if (em) { const x = await wonders.resolveMode({ ...c, mode: em }); out.html += `<br>${x.html}`; out.rolls.push(...x.rolls); } }
   const tenet = await wonders.autoTenets(c);
-  const grow = R.wonderById(m.wonder)?.kind === "dream" ? await growReverie(attacker, attacker.system.icon?.system.grade) : "";
-  const html = `<div class="fs-result"><i class="fa-solid fa-eye"></i> ${out.html}${result.crit ? " <em>(critical)</em>" : ""}${m.deepened ? " <em>(Deepened: doubly Strengthened)</em>" : ""}${tenet ? `<br>${tenet}` : ""}${grow ? `<br>${grow}` : ""}</div>`;
+  const grow = hit && R.wonderById(m.wonder)?.kind === "dream" ? await growReverie(attacker, attacker.system.icon?.system.grade) : "";
+  let crits = "";
+  if (c.crit) for (const f of wonders.ON_CRIT) crits += (await f(c)) ?? "";
+  const html = `<div class="fs-result"><i class="fa-solid fa-eye"></i> ${out.html}${result.crit ? " <em>(critical)</em>" : ""}${m.deepened ? " <em>(Deepened: doubly Strengthened)</em>" : ""}${tenet ? `<br>${tenet}` : ""}${grow ? `<br>${grow}` : ""}${crits ? `<br>${crits}` : ""}</div>`;
   if (out.acts.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}: abilities`, body: wonders.actButtons(out.acts), flags: { flowstate: { mentalAct: { acts: out.acts } } } });
   return { html, push: out.push, rolls: out.rolls };
 }
 
-async function onResolve({ attacker, target, o, result, entry, dodgeRoll }) {
+async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index = 0 }) {
   const m = o.mental;
   if (!m) return null;
   const reroll = { net: entry?.net ?? 0, die: entry?.die ?? attacker.system.derived.attackDie, dodge: dodgeRoll?.total ?? null };
@@ -489,7 +526,15 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll }) {
     await putSpellEffect(target, { ...data, name, description });
     return { html: `<div class="fs-result"><i class="fa-solid fa-hill-rockslide"></i> Quicksand: ${esc(target.name)} fails the escape check after all and is held again by <strong>${esc(name)}</strong>.</div>` };
   }
+  if (m.hubris && result.hit) result = { ...result, crit: true, critStacks: 2, outcome: "Critical Hit (Hubris)" };
+  if (!result.hit && wonders.MISS_MODES.has(m.mode) && !m.hubris) {
+    // Perfection Modes apply even on a miss: what they do is worked out from how far it missed.
+    return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, hit: false, margin: Math.max(0, (reroll.dodge ?? 0) - (entry?.total ?? 0)), index });
+  }
   if (!result.hit) {
+    // Mode-specific follow-ups on a miss (Instinct)
+    const missActs = await wonders.missActs({ attacker, target, m, mode, power: m.power, enhanced: m.enhanced, range: m.range, hit: false });
+    if (missActs.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}`, body: wonders.actButtons(missActs), flags: { flowstate: { mentalAct: { acts: missActs } } } });
     // Chant (Mental T2): once per Manifest, reroll a missed attack roll for the Enhance cost (keeping its Advantage/Disadvantage).
     let extra = "";
     if (theory(attacker) >= 2 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null) {
@@ -500,7 +545,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll }) {
     }
     return { html: `<div class="fs-notes">${esc(mode?.name ?? "The Mode")} misses ${esc(target.name)}.${extra}</div>` };
   }
-  return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0 });
+  return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, index });
 }
 
 /** Chant and Make Clear: reroll the missed attack roll against the same dodge. */
@@ -713,6 +758,7 @@ const everyActor = () => [...new Set([...(globalThis.game?.actors ?? []), ...(gl
 
 /** Just before this creature's effects on others end (its turn has started): Perennial offers to reapply expiring Life effects; Reverie may be kept. */
 async function beforeClear(actor) {
+  for (const f of wonders.BEFORE_CLEAR) await f(actor);
   const acts = wonders.perennialActs(actor);
   if (acts.length) await post(actor, { title: `${esc(actor.name)} — Perennial`, body: wonders.actButtons(acts), flags: { flowstate: { mentalAct: { acts } } } });
   // Reverie: the shielding holds between turns if you instantly maintain Dream Alignment as your turn starts.
@@ -815,4 +861,6 @@ async function act(message, i) {
 export const usedActs = id => game.messages.filter(m => m.getFlag("flowstate", "mentalActDone")?.card === id).map(m => m.getFlag("flowstate", "mentalActDone").i);
 
 registerMental({ onResolve, negate, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
-  rollCharges: charges.onRoll, resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });
+  rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
+  adjust: wondersB.adjust, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
+  resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });

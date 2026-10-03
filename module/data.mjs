@@ -156,6 +156,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         base: (this.parent?.getFlag?.("flowstate", "trudge") ? 1 : penalties.moveAP)
           // Slice (Balanced T3): +1 AP per move (a Martial source, so Unfettered ignores it).
           + (statuses.has("sliced") && !unfettered ? 1 : 0)
+          // Freeze (Mental, Destruction T4): +1 AP per move
+          + bonus("moveUp")
       })
     };
     // Ch7 Rest: after 1 day without rest, disadvantage on all rolls.

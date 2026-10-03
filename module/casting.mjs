@@ -70,7 +70,7 @@ export function castSummary(actor, weave = null) {
 const coreSelect = (name, cores, value, blank) => `<select name="${name}">${blank ? `<option value="">—</option>` : ""}${cores.map(c =>
   `<option value="${c.id}" ${c.id === value ? "selected" : ""}>${esc(c.name)}${c.min !== c.max ? ` (${c.min}–${c.max})` : ` (${c.min})`}</option>`).join("")}</select>`;
 
-function modRow(m, mods, v) {
+function modRow(m, mods, v, power = 0) {
   const on = m.stackable ? Number(v[`mod:${m.id}`]) > 0 : !!v[`mod:${m.id}`];
   const thr = m.replicate ? "X+1" : m.min === m.max ? m.min : `${m.min}–${m.max}`;
   const control = m.stackable
@@ -86,16 +86,16 @@ function modRow(m, mods, v) {
   const guess = m.name === "Telegraph" ? `<input type="number" name="telegraph" value="${v.telegraph ?? ""}" placeholder="dodge guess" data-tooltip="Predict their dodge roll before the attack">` : "";
   const manual = fx.AUTOMATED_MODS.has(m.id) ? "" : ` · <em data-tooltip="Costs Threshold, but its effect isn't automated yet: the GM resolves it from the card">not automated</em>`;
   const hint = m.name === "Exploit" ? " · each stack needs an Advantage on the attack, or it is refunded" : "";
-  return `<label class="fs-cast-mod" data-tooltip="${esc(m.text)}">${control} <strong>${esc(m.name)}</strong> <small>${thr} Threshold${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}${replaceBox}${damp}${guess}</label>`;
+  return `<label class="fs-cast-mod" data-raw="${esc(m.text)}" data-tooltip="${esc(fx.scaleText(m.text, power))}">${control} <strong>${esc(m.name)}</strong> <small>${thr} Threshold${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}${replaceBox}${damp}${guess}</label>`;
 }
 
 /** The Universal / Core 1 / Core 2 Mod tabs for the chosen Cores. */
-export function modsHTML(ctx, v, theory) {
+export function modsHTML(ctx, v, theory, power = 0) {
   const coreIds = [v.core1, v.core2].filter(Boolean);
   const all = spells.applicableMods(ctx.trees, coreIds);
   const universal = all.filter(m => m.universal);
   const own = id => all.filter(m => !m.universal && m.treeId === spells.spellById(id)?.treeId);
-  const panel = (key, rows, empty) => `<div class="fs-cast-panel" data-panel="${key}">${rows.length ? rows.map(m => modRow(m, all, v)).join("") : `<p class="hint">${empty}</p>`}</div>`;
+  const panel = (key, rows, empty) => `<div class="fs-cast-panel" data-panel="${key}">${rows.length ? rows.map(m => modRow(m, all, v, power)).join("") : `<p class="hint">${empty}</p>`}</div>`;
   const tab = (key, label, disabled) => `<button type="button" class="fs-cast-tab" data-tab="${key}" ${disabled ? "disabled" : ""}>${esc(label)}</button>`;
   const c1 = spells.spellById(v.core1), c2 = spells.spellById(v.core2);
   const focusedHere = ctx.focused && theory >= 4 && coreIds.includes(ctx.focused);
@@ -105,9 +105,10 @@ export function modsHTML(ctx, v, theory) {
 }
 
 /** The chosen Core's effect, or the Combo's when two are picked. */
-function effectHTML(v) {
+function effectHTML(v, power = 0) {
   const e = spells.effectText([v.core1, v.core2].filter(Boolean));
-  return e ? `<strong>${esc(e.title)}</strong>: ${esc(e.text)}` : "";
+  // Numbers are shown worked out for this cast's Spell Power (highlighted), not the doc's base values.
+  return e ? `<strong>${esc(e.title)}</strong>: ${esc(fx.scaleText(e.text, power, true)).replace(/\u0001/g, "<strong>").replace(/\u0002/g, "</strong>")}${power > 1 ? ` <small class="hint">(Spell Power ${power})</small>` : ""}` : "";
 }
 
 /** The Charm / Hex choices a Tier 3 spell needs on the cast: which roll a Charm hits, a Hex's trigger. */
@@ -169,15 +170,16 @@ function dialogHTML(ctx, v) {
   const opts = ctx.options.map(o => `<option value="${o.key}" ${o.key === v.via ? "selected" : ""} ${o.ok ? "" : "disabled"}>${esc(o.label)}${o.ok ? "" : ` — ${esc(o.reason)}`}</option>`).join("");
   const sel = ctx.options.find(o => o.key === v.via);
   const bt = spells.baseThreshold([v.core1, v.core2].filter(Boolean));
+  const power = spells.planCast(ctx, v).power || 0;
   return `<div class="fs-cast">
     <div class="fs-field"><label>Cast through</label><select name="via">${opts}</select></div>
     <div class="fs-field fs-cast-ap" ${sel?.ap?.length > 1 ? "" : "hidden"}><label>AP (more AP = more TR)</label><select name="ap">${[1, 2, 3].map(n => `<option value="${n}" ${Number(v.ap) === n ? "selected" : ""}>${n} AP · ${n} TR</option>`).join("")}</select></div>
     <div class="fs-field"><label>Core Spell</label>${coreSelect("core1", known.cores, v.core1, false)}</div>
     <div class="fs-field"><label>Second Core (Combo)</label>${coreSelect("core2", known.cores.filter(c => c.id !== v.core1), v.core2, true)}</div>
     <div class="fs-field fs-cast-base" ${bt.ok && bt.max > bt.min ? "" : "hidden"}><label>Core Threshold</label><input type="number" name="base" value="${v.base ?? bt.min}" min="${bt.min}" max="${bt.max}" step="1"></div>
-    <div class="fs-cast-effect">${effectHTML(v)}</div>
+    <div class="fs-cast-effect">${effectHTML(v, power)}</div>
     <div class="fs-cast-afflict">${afflictHTML(v)}</div>
-    <div class="fs-cast-mods">${modsHTML(ctx, v, theory)}</div>
+    <div class="fs-cast-mods">${modsHTML(ctx, v, theory, power)}</div>
     ${(() => { const only = v.core1 && !v.core2 ? fx.profileFor([v.core1]) : null; return only?.hold ? `<label class="fs-cast-mod"><input type="checkbox" name="hold" ${v.hold ? "checked" : ""}> <strong>Hold it</strong> <small>in melee: no damage, but it stays available to use again for the same AP until your next turn</small></label>` : ""; })()}
     ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
     ${ctx.moonstoneFoci?.length ? `<label class="fs-cast-mod"><input type="checkbox" name="dark" ${v.dark ? "checked" : ""}> <strong>Moonstone</strong> <small>you're in darkness or dim light</small></label>` : ""}
@@ -196,6 +198,7 @@ async function castDialog(actor, ctx) {
   };
   return DialogV2().prompt({
     window: { title: `Cast a spell: ${actor.name}` },
+    position: { width: Math.min(800, (globalThis.innerWidth ?? 840) - 40) },   // twice Foundry's default dialog width, or the screen if it's narrower
     content: dialogHTML(ctx, v),
     render: (event, dlg) => {
       const el = dlg?.element ?? dlg;
@@ -219,6 +222,9 @@ async function castDialog(actor, ctx) {
           showTab("universal");
         }
         const plan = spells.planCast(ctx, valuesFromForm(form));
+        // Spell and Mod text show this cast's Spell Power, so it follows the casting method, AP, Empower, Hematite and the rest.
+        form.querySelector(".fs-cast-effect").innerHTML = effectHTML(v, plan.power || 0);
+        for (const m of form.querySelectorAll(".fs-cast-mod[data-raw]")) m.dataset.tooltip = fx.scaleText(m.dataset.raw, plan.power || 0);
         form.querySelector(".fs-cast-preview").innerHTML = previewHTML(plan, ctx);
         form.querySelector(".fs-cast-ap").hidden = !(ctx.options.find(o => o.key === form.elements.via?.value)?.ap?.length > 1);
         const ok = el.querySelector('button[data-action="ok"]');

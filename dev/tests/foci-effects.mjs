@@ -186,8 +186,6 @@ ok2(trOf("magic-slashing:cut", ctxFor(), "foci:wand").tr === 1, "…so the next 
 
 console.log("== Foci Affixes: attack rolls");
 const atkText = () => text(lastAtk4());
-fresh(); use(rod, { affixes: ["jasper"] }); orc.system.movement.tempo = 2; target(orc); seq = [20]; await cast("magic-slashing:cut", {});
-ok2(/Jasper: Advantage/.test(atkText()), "Jasper: Advantage against a target slowed by 2+ AP");
 fresh(); use(rod, { affixes: ["topaz"] }); orc.system.movement.tempo = 2; target(orc); seq = [20]; await cast("magic-slashing:cut", {});
 ok2(/Topaz: Advantage/.test(atkText()), "Topaz: the same");
 fresh(); use(rod, { affixes: ["garnet"] }); orc.system.conditions.ignite = 500; target(orc); seq = [20]; await cast("magic-slashing:cut", {});
@@ -210,6 +208,8 @@ console.log("== Foci Affixes: damage");
 const dmgNote = async (core, affix, extra = {}) => { fresh(); use(rod, { affixes: [affix], ...extra }); target(orc); seq = [20]; await cast(core, {}); seq = [12]; await actions.defend(lastAtk4(), 0, "dodge"); seq = [10]; await actions.rollExchangeDamage(last()); return text(last()); };
 ok2(/\+1 Tourmaline/.test(await dmgNote("magic-heat:flame", "tourmaline", { element: "heat" })), "Tourmaline: Strengthened for the chosen element…");
 ok2(/−1 Tourmaline/.test(await dmgNote("magic-slashing:cut", "tourmaline", { element: "heat" })), "…Weakened for everything else");
+ok2(/\+1 Jasper/.test(await dmgNote("magic-slashing:cut", "jasper", {})), "Jasper: Physical damage Strengthened…");
+ok2(/−1 Jasper/.test(await dmgNote("magic-heat:flame", "jasper", { element: "heat" })), "…every other type Weakened");
 ok2(/\+1 Colored Diamond/.test(await dmgNote("magic-slashing:cut", "coloredDiamond", { declared: "magic-slashing:cut" })), "Colored Diamond: the declared spell's damage is Strengthened");
 fresh(); use(rod, { affixes: ["alexandrite"] }); target(orc); seq = [20]; await cast("magic-slashing:cut", {}); seq = [12]; await actions.defend(lastAtk4(), 0, "dodge"); seq = [10]; await actions.rollExchangeDamage(last());
 seq = [20]; await cast("magic-piercing:stab", {}); seq = [12]; await actions.defend(lastAtk4(), 0, "dodge"); seq = [10]; await actions.rollExchangeDamage(last());

@@ -297,10 +297,10 @@ export function planFlight({ start, dir, feet, barriers = [], wallAt = () => nul
     if (!hit && wd === null) { pos = end; traveled += remaining; remaining = 0; break; }
     if (wd !== null && (!hit || wd < hit.d - 1.25)) {                      // an ordinary wall stops it first
       const untraveled = remaining - wd;
-      events.push({ kind: "wall", untraveled, creature: Math.min(3 * Math.max(0, untraveled), Math.max(0, hp)), ft: wd });
+      events.push({ kind: "wall", untraveled, creature: Math.min(3 * Math.floor(Math.max(0, untraveled)), Math.max(0, hp)), ft: wd });
       pos = stopShort(w, grid.distance / 2); traveled += wd; remaining = 0; break;
     }
-    const U = remaining - hit.d, D = 3 * Math.max(0, U);
+    const U = remaining - hit.d, D = 3 * Math.floor(Math.max(0, U));        // whole untraveled feet only: Force damage rounds down
     const creature = Math.min(D, hit.b.hp, Math.max(0, hp));                // it takes what the barrier can give, and no more than it has
     const barrier = Math.min(D, Math.max(0, hp));                            // the barrier takes what the creature can give
     const broke = barrier >= hit.b.hp;

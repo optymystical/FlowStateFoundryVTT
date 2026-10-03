@@ -110,7 +110,7 @@
 | Balanced | Light | 1d8 | Broad, Solitary | Average |
 |  | Heavy | 1d12 | Broad, Farstrike, Solitary | Average |
 | Swift | Light | 1d4 | Fast+, Pierce | Good |
-|  | Heavy | 1d12 | Fast, Pierce | Good |
+|  | Heavy | 1d12 | Fast, Pierce+ | Good |
 | Striker | Light | 1d8 | Cleave | Good |
 |  | Heavy | 1d12 | Cleave+ | Good |
 | Defender | Light | 1d6 | Broad | Good |
@@ -415,7 +415,7 @@ Very Rare \- 40x cost and scarcity of 0.0025
 | **Name** | **Rarity** | **Foci Effect** |  | **Shroud Effect** |  |
 | Quartz | Common | The range of your Ranged spells is increased by 50%. |  | If a target within your personal melee range would be damaged, you can extend your shroud to protect them for that instance. |  |
 | Agate | Common | The area of your Area spells is increased by 50%. |  | Negates an amount of damage equal to your Scaling Stat from the first instance of Magical damage you would take. Refreshes when the Shroud Recovers. |  |
-| Jasper | Common | The attack rolls of your spells have advantage against targets with at least \+2 AP of movement slows. |  | Negates an amount of damage equal to your Scaling Stat from the first instance of Physical damage you would take. Refreshes when the Shroud Recovers. |  |
+| Jasper | Common | Physical Damage dealt by your spells is Strengthened, and all other damage types are Weakened. |  | Negates an amount of damage equal to your Scaling Stat from the first instance of Physical damage you would take. Refreshes when the Shroud Recovers. |  |
 | Obsidian | Common | Your Ranged spells are silent (if upgraded, your Area spells are silent as well). |  | Negates an amount of damage equal to your Scaling Stat from the first instance of Elemental damage you would take. Refreshes when the Shroud Recovers. |  |
 | Hematite | Common | When you cast a spell, you can double its Power by spending Health equal to the Power of that spell. |  | At any time, you can expend Health equal to half of your Skill Points (rounded down) to instantly refill this Shrouds durability to max. |  |
 | Garnet | Uncommon | Spells you cast at targets with more than half their Pain Threshold in Ignite stacks have advantage on their attack rolls. |  | An amount of Ignite stacks on you equal to your Scaling Stat min are automatically put out at the start of each of your turns. |  |

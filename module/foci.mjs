@@ -53,7 +53,6 @@ export function attackNet({ attacker, target, o }) {
   const notes = [];
   const add = (n, text) => { net += n; notes.push(text); };
   if ((target.system?.movement?.tempo ?? 0) >= 2) {
-    if (has("jasper")) add(1, "Jasper: Advantage (they're slowed by 2+ AP)");
     if (has("topaz")) add(1, "Topaz: Advantage (they're slowed by 2+ AP)");
   }
   const pain = target.system?.hp?.pain ?? Infinity;
@@ -74,6 +73,7 @@ export function damageStacks({ attacker, o, type }) {
   let stacks = 0;
   const parts = [];
   if (has("tourmaline")) { const s = type === f.element ? 1 : -1; stacks += s; parts.push(`${s > 0 ? "+1" : "−1"} Tourmaline (${type === f.element ? "the chosen element" : "other damage"})`); }
+  if (has("jasper")) { const s = type === "physical" ? 1 : -1; stacks += s; parts.push(`${s > 0 ? "+1" : "−1"} Jasper (${type === "physical" ? "Physical damage" : "other damage"})`); }
   if (has("coloredDiamond") && f.declared && o.spell.cores.includes(f.declared)) { stacks += 1; parts.push("+1 Colored Diamond (the declared spell)"); }
   if (has("alexandrite") && turnState(attacker, "fociLast").type === type) { stacks += 1; parts.push("+1 Alexandrite (the same damage type as your last spell)"); }
   return { stacks, parts };

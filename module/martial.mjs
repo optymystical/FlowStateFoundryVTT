@@ -79,7 +79,7 @@ export const WEAPON_TYPES = {
   unarmed:  melee("Unarmed",  { die: 10, tags: t("Fast, Pierce"),             throw: null },      { die: 12, tags: t("Knockback, Solitary, Cleave"), throw: null }),
   bladed:   melee("Bladed",   { die: 8,  tags: t("Fast"),                     throw: "average" }, { die: 12, tags: t("Broad, Cleave, Solitary+"),   throw: "bad" }),
   balanced: melee("Balanced", { die: 8,  tags: t("Broad, Solitary"),          throw: "average" }, { die: 12, tags: t("Broad, Farstrike, Solitary"), throw: "average" }),
-  swift:    melee("Swift",    { die: 4,  tags: t("Fast+, Pierce"),            throw: "good" },    { die: 12, tags: t("Fast, Pierce"),               throw: "good" }),
+  swift:    melee("Swift",    { die: 4,  tags: t("Fast+, Pierce"),            throw: "good" },    { die: 12, tags: t("Fast, Pierce+"),              throw: "good" }),
   striker:  melee("Striker",  { die: 8,  tags: t("Cleave"),                   throw: "good" },    { die: 12, tags: t("Cleave+"),                    throw: "good" }),
   defender: melee("Defender", { die: 6,  tags: t("Broad"),                    throw: "good" },    { die: 10, tags: t("Broad+, Cleave"),             throw: "average" }),
   weighted: melee("Weighted", { die: 8,  tags: t("Knockback"),                throw: "average" }, { die: 12, tags: t("Knockback+"),                 throw: "average" }),

@@ -1036,8 +1036,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
 
   static onCreateItem(event, target) {
     const type = target.dataset.type ?? "gear";
-    const name = { gear: "New Gear", weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud" }[type];
-    const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp" }[type];
+    const name = { gear: "New Gear", weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", icon: "New Icon" }[type] ?? "New Item";
+    const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp", icon: "icons/magic/holy/yin-yang-balance-symbol.webp" }[type];
     return this.document.createEmbeddedDocuments("Item", [{ name, type, ...(img ? { img } : {}) }], { renderSheet: type !== "gear" });
   }
   static onEditItem(event, target) { FlowStateActorSheet.#item(this, target)?.sheet.render(true); }

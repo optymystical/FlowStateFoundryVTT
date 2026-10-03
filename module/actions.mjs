@@ -38,6 +38,8 @@ export async function spendPoints(actor, key, cost, what = "that") {
   return true;
 }
 export const spendAP = (actor, cost, what) => spendPoints(actor, "ap", cost, what);
+/** Could this actor pay `cost` AP or RP (`key`) right now? Always, outside combat. Used to leave out buttons nobody could press. */
+export const canSpend = (actor, key, cost) => !cost || !inActiveCombat(actor) || (actor?.system?.[key]?.value ?? 0) >= cost;
 
 /** Is this item an improvised weapon? */
 export const isImprovised = item => item?.type === "weapon" && item.system?.weaponType === "improvised";
@@ -621,11 +623,11 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (board.length) {
     t2Opts += `<div class="form-group"><label>Sword and Board <span class="fs-energy-inline">⚡ ${ab.DEFENDER_COST.swordAndBoard(board[0])}</span>: attack with ${esc(board[0].name)} first; if it hits, the target's dodge against this attack has Disadvantage</label><input type="checkbox" name="swordBoard"></div>`;
   }
-  if (!unarmed && !followup && !base.ranged && base.throwType && ab.defender(actor, item, 2)) {
+  if (!unarmed && (!followup || followup.riposte) && !base.ranged && base.throwType && ab.defender(actor, item, 2)) {
     t2Opts += `<div class="form-group"><label>Shield Toss (Throw mode) <span class="fs-energy-inline">⚡ ${ab.DEFENDER_COST.shieldToss(item)}</span></label><select name="shieldToss">
       <option value="">No</option><option value="damage">Strengthened; returns to you on a hit${ab.defender(actor, item, 4) ? " (or Bounce)" : ""}</option>
       <option value="guard">No damage: on a hit, it Blocks the next attack against that target</option></select></div>
-      <div class="form-group"><label>Shield Toss paid with</label><select name="tossPay"><option value="ap">2 AP</option><option value="rp">2 RP</option></select></div>`;
+      ${followup?.riposte ? "" : `<div class="form-group"><label>Shield Toss paid with</label><select name="tossPay"><option value="ap">2 AP</option><option value="rp">2 RP</option></select></div>`}`;
   }
 
   // T3 Martial trees: Dexterity Methods, Reach, Circular, Blast.
@@ -848,7 +850,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   let shieldToss = null;
   if (opts.shieldToss) {
     if (opts.mode !== "throw") return ui.notifications.warn("Shield Toss is a Thrown attack: pick the Throw mode.");
-    shieldToss = { mode: opts.shieldToss, item: item.uuid, pay: opts.tossPay === "rp" ? "rp" : "ap", bounces: 0 };
+    shieldToss = { mode: opts.shieldToss, item: item.uuid, pay: followup?.riposte || opts.tossPay === "rp" ? "rp" : "ap", bounces: 0, riposte: !!followup?.riposte };
     energy += ab.DEFENDER_COST.shieldToss(item);
     if (opts.shieldToss === "damage") stacks += 1;
     if (shieldToss.pay === "rp") ap = 0;
@@ -1014,16 +1016,18 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
 
   // Riposte (Martial Theory T1) costs RP equal to the weapon's normal attack AP.
   if (followup?.riposte) {
-    if (!(await spendPoints(actor, "rp", p.ap, `${followup.cutBack ? "Cut Back" : "a Riposte"} with ${item.name}`))) return;
-    notes.push(`${followup.cutBack ? "Cut Back" : "Riposte"} (${p.ap} RP)`);
+    // A Shield Toss riposte is a throw: the Riposte's RP is the toss's 2, not an extra payment.
+    const ripCost = shieldToss ? 2 : p.ap;
+    if (!(await spendPoints(actor, "rp", ripCost, `${followup.cutBack ? "Cut Back" : "a Riposte"} with ${item.name}`))) return;
+    notes.push(`${followup.cutBack ? "Cut Back" : "Riposte"} (${ripCost} RP)`);
   }
   if (followup?.kind === "flurry" || followup?.kind === "mark" || followup?.kind === "palisade") {
     if (!(await spendPoints(actor, "rp", p.ap, `${{ mark: "a Mark shot", flurry: "Blade Flurry", palisade: "Palisade" }[followup.kind]} with ${item.name}`))) return;
     notes.push(`${p.ap} RP`);
   }
-  if (shieldToss?.pay === "rp" && !(await spendPoints(actor, "rp", 2, `Shield Toss with ${item.name}`))) return;
+  if (shieldToss?.pay === "rp" && !shieldToss.riposte && !(await spendPoints(actor, "rp", 2, `Shield Toss with ${item.name}`))) return;
   if (!(await spendAP(actor, ap, `attacking with ${item.name}`))) return;
-  const rpPaid = followup?.riposte || ["flurry", "mark", "palisade"].includes(followup?.kind) ? p.ap : shieldToss?.pay === "rp" ? 2 : 0;
+  const rpPaid = followup?.riposte ? (shieldToss ? 2 : p.ap) : ["flurry", "mark", "palisade"].includes(followup?.kind) ? p.ap : shieldToss?.pay === "rp" ? 2 : 0;
   if (energy && !(await spendEnergy(actor, energy, notes.filter(n => /Whirlwind|Remise|Perfect/.test(n)).join(", ") || "that"))) return;
   if (rooted && inActiveCombat(actor)) await actor.setFlag("flowstate", "rootedTurn", turnKey());
   if (energy) notes.push(`${energy} Energy`);
@@ -4371,7 +4375,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     }
   }
   // Retort Shroud: 1 RP to Weaken the damage of a hit it can block.
-  if (result.hit && o.damage && target.system?.shroud?.system.shroudType === "retort" && shroudBlocks(o.type ?? "physical")) {
+  if (result.hit && o.damage && target.system?.shroud?.system.shroudType === "retort" && shroudBlocks(o.type ?? "physical") && canSpend(target, "rp", 1)) {
     extra.push(`<div class="fs-brawl-row fs-retort-row" data-role="defender" data-owner="${entry.uuid}">
       <button type="button" class="fs-retort" data-tooltip="Retort Shroud: the damage of this hit gets a stack of Weakened"><i class="fa-solid fa-ghost"></i> Retort (1 RP)</button></div>`);
   }
@@ -4438,14 +4442,14 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
       <button type="button" class="fs-limber" data-actor="${who.uuid}" data-tooltip="Medium Armor T1: your next attack, dodge, or parry roll before your next turn has Advantage"><i class="fa-solid fa-person-running"></i> Limber: ${esc(who.name)} (⚡ ${ab.mediumCost(who, "limber")})</button></div>`);
   }
   // Swift T1 Cut Back: after a successful dodge, Riposte with a held Swift weapon.
-  if (dodgeRoll && !result.hit && !result.parry && ab.swiftHeld(target, 1).length) {
+  if (dodgeRoll && !result.hit && !result.parry && ab.swiftHeld(target, 1).length && canSpend(target, "rp", Math.min(...ab.swiftHeld(target, 1).map(i => i.system.profile.ap)))) {
     const sw = ab.swiftHeld(target, 1);
     const rp = Math.min(...sw.map(i => i.system.profile.ap));
     extra.push(`<div class="fs-brawl-row fs-cutback-row" data-role="defender" data-owner="${entry.uuid}">
       <button type="button" class="fs-cut-back" data-tooltip="Swift T1: Riposte ${esc(attacker.name)} with a held Swift weapon (RP = its attack AP); Fast follow-ups allowed"><i class="fa-solid fa-reply"></i> Cut Back (${rp} RP)</button></div>`);
   }
   // Unarmored T1 Dash used against this attack (automatic with Speedy, T3): once it hits or misses, the defender may move for 1 RP (+ slows).
-  if (findDash(attackMessage.id, index) || attack.targets[index]?.autoDash) {
+  if ((findDash(attackMessage.id, index) || attack.targets[index]?.autoDash) && canSpend(target, "rp", slowedCost(target))) {
     extra.push(`<div class="fs-brawl-row fs-dash-move-row" data-role="defender" data-owner="${entry.uuid}">
       <button type="button" class="fs-dash-move" data-tooltip="Dash: move up to your speed now"><i class="fa-solid fa-person-running"></i> Dash: move (${slowedCost(target)} RP)</button></div>`);
   }
@@ -4455,7 +4459,9 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
       <button type="button" class="fs-redirect" data-tooltip="Target a creature next to you first"><i class="fa-solid fa-shuffle"></i> Redirect (⚡ ${ab.BRAWLING_COST.redirect(target)})</button></div>`);
   }
   // Martial Theory T1 Riposte: after a successful Parry, strike back for RP equal to the weapon's attack AP.
-  if (result.parry?.success && !result.parry.noRiposte) {
+  let autoDeclineBy = null;
+  if (result.parry?.success && !result.parry.noRiposte && !canSpend(await fromUuid(result.parry.by ?? entry.uuid), "rp", result.parry.ap)) autoDeclineBy = await fromUuid(result.parry.by ?? entry.uuid);   // no RP left: no Riposte to offer
+  else if (result.parry?.success && !result.parry.noRiposte) {
     const parryItem = await fromUuid(result.parry.item);
     const perfect = parryItem && ab.bladed(target, parryItem, 5)
       ? `<button type="button" class="fs-riposte" data-perfect="1" data-tooltip="Bladed T5: Advantage and Strengthened, and so is its Fast/Solitary follow-up">
@@ -4536,6 +4542,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
       ${action}`,
     flags: { flowstate: { defense: { attackMessage: attackMessage.id, index, target: entry.uuid, attacker: attack.attacker, result, shatter: !!shatterMiss, guardItem, dodge: dodgeRoll?.total ?? null }, knockback: pushInfo, chain: defenseChain } }
   });
+  if (autoDeclineBy) await post(autoDeclineBy, { title: `${esc(autoDeclineBy.name)} — No Riposte`, body: `<div class="fs-notes">${esc(autoDeclineBy.name)} has no RP left to riposte.</div>`, flags: { flowstate: { riposteDeclined: defenseMessage.id } } });
   // "Roll damage automatically" setting: skip the button and roll straight away (no extra stacks).
   if (autoDamage) await rollExchangeDamage(defenseMessage, { auto: true });
   return defenseMessage;
@@ -4762,12 +4769,12 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   }
   // Balanced T4 Deflect: a Parry with a Balanced weapon that took all of the damage.
   const balancedParry = outcome.weapons?.find(w => ab.balanced(target, w.item, 4)) ?? null;
-  const canDeflect = !!balancedParry && incoming > 0 && outcome.afterWeapon === 0 && !o.deflectOf;
+  const canDeflect = !!balancedParry && incoming > 0 && outcome.afterWeapon === 0 && !o.deflectOf && canSpend(target, "rp", 1);
   const deflectRow = canDeflect ? `<div class="fs-brawl-row fs-deflect-row" data-role="defender" data-owner="${target.uuid}">
     <button type="button" class="fs-deflect" data-tooltip="Balanced T4: send the attack back at ${esc(attacker.name)} with their own weapon's attack"><i class="fa-solid fa-rotate-left"></i> Deflect (1 RP)</button></div>` : "";
   // Riposte (Martial Theory T1): a Parry that took no direct damage. Redirect (Brawling T4) and Dip's move too.
   const noDamage = outcome.toHp === 0 && guard.any;
-  const riposteItems = noDamage ? (await Promise.all(guard.riposteItems.map(u => fromUuid(u)))).filter(i => i && i.parent?.uuid === target.uuid) : [];
+  const riposteItems = noDamage ? (await Promise.all(guard.riposteItems.map(u => fromUuid(u)))).filter(i => i && i.parent?.uuid === target.uuid && canSpend(target, "rp", i.system.profile?.unarmed ? 2 : i.system.profile?.ap ?? 2)) : [];
   let parryRows = "";
   if (riposteItems.length) {
     parryRows += `<div class="fs-riposte-row" data-role="defender" data-owner="${target.uuid}">
@@ -4775,7 +4782,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
         ${ab.bladed(target, i, 5) ? `<button type="button" class="fs-riposte" data-item="${i.uuid}" data-perfect="1" data-tooltip="Bladed T5: Advantage and Strengthened, and so is its Fast/Solitary follow-up"><i class="fa-solid fa-star"></i> Perfect Riposte (⚡ ${ab.BLADED_COST.perfectRiposte(i)})</button>` : ""}`; }).join("")}
       <button type="button" class="fs-no-riposte" data-tooltip="Pass, so the attacker's follow-up can go ahead"><i class="fa-solid fa-xmark"></i> No riposte</button></div>`;
   }
-  if (dipZero) parryRows += `<div class="fs-brawl-row fs-dip-row" data-role="defender" data-owner="${target.uuid}">
+  if (dipZero && canSpend(target, "rp", 1)) parryRows += `<div class="fs-brawl-row fs-dip-row" data-role="defender" data-owner="${target.uuid}">
       <button type="button" class="fs-dip-move" data-tooltip="Brawling T2: the Dip took the whole hit; spend 1 RP to move your speed right away"><i class="fa-solid fa-person-walking-arrow-right"></i> Dip: move (1 RP)</button></div>`;
   if (noDamage && o.melee && ab.brawl(target, 4) && ab.fists(target)) parryRows += `<div class="fs-brawl-row fs-redirect-row" data-role="defender" data-owner="${target.uuid}">
       <button type="button" class="fs-redirect" data-tooltip="Target a creature next to you first"><i class="fa-solid fa-shuffle"></i> Redirect (⚡ ${ab.BRAWLING_COST.redirect(target)})</button></div>`;

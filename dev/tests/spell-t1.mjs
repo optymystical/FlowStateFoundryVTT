@@ -490,5 +490,53 @@ target(orc); seq = [20]; await cast("magic-slashing:cut");
 ok2(lastAtk().flags.flowstate.attack.targets[0].net === 0, "A Ranged spell never had the bonus");
 orc.system.trees = {};
 
+console.log("== Grappled movement: leash, follow, and held-in-place");
+{
+  const saveCanvas = globalThis.canvas;
+  globalThis.canvas = { grid: { size: 100, distance: 5 }, tokens: { placeables: [], controlled: [] } };
+  const placeTok = (actor, gx, gy) => {
+    const doc = { x: gx * 100, y: gy * 100, width: 1, height: 1, uuid: `${actor.uuid}.Token`, update: async u => { Object.assign(doc, u); } };
+    const tok = { name: actor.name, actor, document: doc, x: doc.x, y: doc.y, width: 1, height: 1, parent: { id: "S" } };
+    Object.defineProperty(tok, "x", { get: () => doc.x }); Object.defineProperty(tok, "y", { get: () => doc.y });
+    actor.getActiveTokens = () => [tok]; canvas.tokens.placeables.push(tok); uuids.set(doc.uuid, doc); return tok;
+  };
+  const holder = addEffects(mkActor("Holder", {}, { "martial-theory": 1 })), victim = addEffects(mkActor("Victim", {}, {}));
+  const hTok = placeTok(holder, 10, 10), vTok = placeTok(victim, 11, 10);
+  const blocks = (gx, gy) => actions.grappleMoveBlock(victim, vTok, gx * 100, gy * 100);
+  ok2(actions.grappleHold(victim) === null && blocks(30, 30) === null, "Not grappled: free to go anywhere");
+  await victim.setFlag("flowstate", "grappledBy", holder.uuid);
+  const hold = actions.grappleHold(victim);
+  ok2(hold.holder === holder && hold.leash === holder.system.derived.size.melee, `Held by a creature's hands: leash = their melee range (${hold.leash} ft)`);
+  ok2(blocks(12, 10) === null && blocks(10, 11) === null && blocks(9, 10) === null, "They can still move around the holder (within the leash)");
+  ok2(/can't get more than 5 ft/.test(blocks(13, 10) ?? "") && blocks(10, 14) !== null, "…but not further away");
+  // A weapon grapple reaches as far as the weapon: a Thrasher whip has Farstrike.
+  const whip = mkWeapon(holder, "Whip", { weaponType: "thrasher", weight: "light" });
+  await victim.setFlag("flowstate", "grappleWeapon", whip.uuid);
+  const wh = actions.grappleHold(victim);
+  ok2(wh.leash === holder.system.derived.size.melee * whip.system.profile.farstrike && wh.leash > hold.leash, `A Thrasher weapon grapple has a longer leash (${wh.leash} ft)`);
+  ok2(blocks(13, 10) === null && blocks(15, 10) !== null, "Farther than the unarmed leash, but still not unlimited");
+  // Following: the holder moves, the held creature goes along by the same step.
+  const prevHost = game.user.isGM; game.user.isGM = true;
+  const from = { x: hTok.x, y: hTok.y };
+  hTok.document.x += 300; hTok.document.y -= 100;
+  await actions.dragGrappled(holder, hTok, from);
+  ok2(vTok.document.x === 1100 + 300 && vTok.document.y === 1000 - 100, "When the holder moves, the creature they hold follows by the same step");
+  game.user.isGM = prevHost;
+  // Held in place: a weapon that left its wielder's hands (thrown), or Gravity's Hold.
+  whip.parent = { uuid: "Actor.Pile", name: "Pile" };
+  const st = actions.grappleHold(victim);
+  ok2(st.static && /can't move/.test(blocks(vTok.document.x / 100, vTok.document.y / 100) ?? ""), "Pinned by a thrown weapon: no movement at all");
+  game.user.isGM = true; const before = vTok.document.x; await actions.dragGrappled(holder, hTok, { x: hTok.x - 100, y: hTok.y }); game.user.isGM = prevHost;
+  ok2(vTok.document.x === before, "…and the thrower moving doesn't drag them");
+  await victim.unsetFlag("flowstate", "grappleWeapon");
+  ok2(!actions.grappleHold(victim).static, "Back to a leash once the weapon is out of the picture");
+  await victim.setFlag("flowstate", "grappleStatic", "pinned by a thrown weapon");
+  ok2(actions.grappleHold(victim).static && /pinned by a thrown weapon/.test(blocks(11, 10) ?? ""), "A thrown Thrasher weapon marks them pinned (its item is dropped as it lands)");
+  await victim.unsetFlag("flowstate", "grappleStatic");
+  await victim.createEmbeddedDocuments("ActiveEffect", [{ name: "Held", flags: { flowstate: { spellEffect: { kind: "hold", caster: holder.uuid } } } }]);
+  ok2(actions.grappleHold(victim).static && blocks(11, 10) !== null, "Gravity Hold: held in place");
+  globalThis.canvas = saveCanvas;
+}
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll Tier 1 spell checks passed");
 if (fails) process.exit(1);

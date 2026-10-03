@@ -509,6 +509,10 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
       ui.notifications.warn(`${token.name} is Locked Down and can't move.`);
       return false;
     }
+    // Grappled: held in place by an effect (Gravity Hold, a thrown weapon) means no movement at all; held by a creature means staying
+    // within their reach (a weapon grapple's reach is longer, Thrasher's most of all). Whoever holds you drags you along when they move.
+    const blocked = actions.grappleMoveBlock(actor, token, changes.x ?? token.x, changes.y ?? token.y);
+    if (blocked) { ui.notifications.warn(blocked); return false; }
     // Dip (Brawling T2): one free move away, even off-turn.
     if (actor?.getFlag("flowstate", "freeMove")) setTimeout(() => actor.unsetFlag("flowstate", "freeMove"), 0);
     else {
@@ -541,6 +545,16 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
   if (actor?.getFlag("flowstate", "markedBy")) actions.triggerMark(actor, "moves");
   // Reach T1 Palisade: moving into a Reach wielder's range lets them strike (the palisading token is moved back on a hit).
   if (!options?.flowstateThrow) actions.checkPalisade(token, { x: changes.x ?? token.x, y: changes.y ?? token.y });
+});
+
+/** Remember where a token started so the creatures it holds can follow by the same step. */
+Hooks.on("preUpdateToken", (token, changes, options) => {
+  if (("x" in changes || "y" in changes) && !options?.flowstateDrag) options.flowstateFrom = { x: token.x, y: token.y };
+});
+Hooks.on("updateToken", (token, changes, options, userId) => {
+  if (userId !== game.user.id || !options?.flowstateFrom || options.flowstateDrag || !token.actor) return;
+  if (!("x" in changes || "y" in changes)) return;
+  actions.dragGrappled(token.actor, token, options.flowstateFrom);
 });
 
 /* -------------------------------------------- */

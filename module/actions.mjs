@@ -1086,7 +1086,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     rend, swordBoard, shieldToss, dodgeNet, letItRip, palisadeFrom: followup?.palisadeFrom ?? null, cleave,
     disarm, omnislash, fishy: fish, sliceSlow, snipe, inABarrel, overshield: !!opts.overshield, striker: !unarmed && ab.striker(actor, item, 5),
     curved: !unarmed && ab.isCurvedAttack(actor, item), momentumItem: !unarmed && ab.curved(actor, item, 3) ? item.uuid : null,
-    thrasherGrapple: thrasherGrapple ? item.uuid : null, getOverHere: !!opts.getOverHere,
+    thrasherGrapple: thrasherGrapple ? item.uuid : null, thrasherThrown: thrasherGrapple && thrown ? "pinned by a thrown weapon" : null, getOverHere: !!opts.getOverHere,
     pointBlank: !unarmed && ab.blast(actor, item, 1),
     reachItem: !unarmed && ab.reach(actor, item, 4) ? item.uuid : null,
     targetActors: explicitTargets
@@ -1359,7 +1359,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth"];
+  "breakFree", "thrasherThrown", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -3055,9 +3055,64 @@ export async function setGrapple(actor, grappler) {
   if (grappler) await actor.setFlag("flowstate", "grappledBy", grappler);
   else {
     if (actor.getFlag("flowstate", "grappledBy")) await actor.unsetFlag("flowstate", "grappledBy");
-    for (const k of ["grappleWeapon", "lockedDown", "disrupted"]) if (actor.getFlag("flowstate", k)) await actor.unsetFlag("flowstate", k);
+    for (const k of ["grappleWeapon", "grappleStatic", "lockedDown", "disrupted"]) if (actor.getFlag("flowstate", k)) await actor.unsetFlag("flowstate", k);
   }
   if (!!grappler !== actor.statuses.has("grappled")) await actor.toggleStatusEffect("grappled", { active: !!grappler });
+}
+
+/**
+ * How a grappled creature is held, for movement:
+ *   { static: true, why }            held in place by an effect rather than a creature (Gravity Hold, a thrown weapon that pins them):
+ *                                    it can't move at all;
+ *   { holder, leash, why }           held by another creature: it can move around them but not more than `leash` ft away (token borders),
+ *                                    and it follows them when they move. Unarmed grapples reach the holder's melee range; a weapon
+ *                                    grapple reaches the weapon's (Farstrike: Thrasher's long whip reaches 2× or 4×);
+ *   null                             not grappled (or the holder isn't around).
+ */
+export function grappleHold(actor) {
+  const by = actor?.getFlag?.("flowstate", "grappledBy");
+  if (!by) return null;
+  if (spellEffects(actor, "hold").length) return { static: true, why: "held in place by magical force" };
+  const pinned = actor.getFlag?.("flowstate", "grappleStatic");
+  if (pinned) return { static: true, why: pinned };
+  const holder = syncUuid(by);
+  if (!holder) return null;
+  const melee = holder.system?.derived?.size?.melee ?? 5;
+  const weaponId = actor.getFlag?.("flowstate", "grappleWeapon");
+  const weapon = weaponId ? syncUuid(weaponId) : null;
+  if (weapon) {
+    // A weapon that has left its wielder's hands (thrown) holds them where it is.
+    if (weapon.parent?.uuid !== holder.uuid) return { static: true, why: `pinned by ${weapon.name}` };
+    return { holder, leash: melee * Math.max(1, weapon.system?.profile?.farstrike ?? 1), why: `${weapon.name}'s reach` };
+  }
+  return { holder, leash: melee, why: "their grapple" };
+}
+
+/** Can this grappled creature's token go to (x, y)? Returns null if so, else the reason it can't. */
+export function grappleMoveBlock(actor, token, x, y) {
+  const hold = grappleHold(actor);
+  if (!hold) return null;
+  if (hold.static) return `${token.name} is ${hold.why} and can't move.`;
+  const hTok = attackerToken(hold.holder);
+  if (!hTok || !globalThis.canvas?.grid) return null;
+  const at = { document: { x, y, width: token.width, height: token.height } };
+  const now = tokenDistance(token, hTok), then = tokenDistance(at, hTok);
+  // Moving around the holder is fine, and so is moving back toward them if something left them outside the leash.
+  if (then > Math.max(hold.leash, now)) return `${token.name} is grappled by ${hold.holder.name} and can't get more than ${hold.leash} ft from them (${hold.why}).`;
+  return null;
+}
+
+/** When a creature moves, the creatures it holds (not pinned in place) follow by the same step. */
+export async function dragGrappled(actor, token, from) {
+  const dx = token.x - from.x, dy = token.y - from.y;
+  if (!dx && !dy) return;
+  for (const victim of grappledBy(actor)) {
+    const hold = grappleHold(victim);
+    if (!hold || hold.static) continue;
+    const vTok = victim.getActiveTokens?.()[0];
+    if (!vTok || vTok.parent?.id !== token.parent?.id) continue;
+    await requestGM("moveToken", { uuid: vTok.document?.uuid ?? vTok.uuid, x: (vTok.document?.x ?? vTok.x) + dx, y: (vTok.document?.y ?? vTok.y) + dy });
+  }
 }
 
 /** Actors (world actors and tokens on the current scene) grappled by this actor. */
@@ -4236,6 +4291,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (o.thrasherGrapple && result.hit) {
     await setGrapple(target, attacker.uuid);
     await setActorFlag(target, "grappleWeapon", o.thrasherGrapple);
+    if (o.thrasherThrown) await setActorFlag(target, "grappleStatic", o.thrasherThrown);        // a thrown weapon pins them where it is
     extra.push(`<div class="fs-result"><strong>${esc(target.name)} is grappled</strong> by ${esc(attacker.name)}'s weapon (it can't attack while holding them).</div>`);
     if (o.getOverHere) {
       const aTok = attackerToken(attacker), tTok = target.getActiveTokens?.()[0];

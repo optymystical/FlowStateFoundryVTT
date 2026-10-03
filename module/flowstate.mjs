@@ -11,6 +11,7 @@ import * as conjure from "./conjure.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import "./integrations.mjs";
+import * as pictures from "./pictures.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStatePileSheet } from "./sheets.mjs";
 /* -------------------------------------------- */
 /*  Documents                                   */
@@ -244,6 +245,11 @@ Hooks.once("init", () => {
     type: Boolean,
     default: true
   });
+    game.settings.register("flowstate", "playerBrowse", {
+    name: "Players browse for pictures",
+    hint: "Players without the file-browser permission can browse the server's images through a connected GM when changing the picture of a sheet they own. Off: they can only paste an image link or path.",
+    scope: "world", config: true, type: Boolean, default: true
+  });
     game.settings.register("flowstate", "requireAmmo", {
     name: "Require ammunition",
     hint: "Reloading a ranged weapon uses Ammunition items of its type (a Misc item with an ammunition type; up to 100 per type). Off: reloads are free.",
@@ -470,8 +476,10 @@ Hooks.on("createChatMessage", message => {
 Hooks.once("ready", () => {
   game.socket.on("system.flowstate", async data => {
     if (!game.user.isActiveGM) return;
+    if (data?.action === "browseFiles") return pictures.answerBrowse(data);
     await actions.GM_ACTIONS[data?.action]?.(data);
   });
+  pictures.listenForBrowse();
 });
 
 /* -------------------------------------------- */

@@ -703,14 +703,21 @@ export function runActionRow(actor, row) {
   return handler.call({ document: actor, actor }, new Event("click"), target);
 }
 
-/** Change a sheet's picture (owners only; see `askImage`). */
+/** Change a sheet's picture (owners only; see `askImage`: players browse through a connected GM). */
 async function pickImage(event, target) {
   const doc = this.document;
   if (!this.isEditable) return;
   const field = target?.dataset?.edit || "img";
   const current = foundry.utils.getProperty(doc, field) ?? "";
   const url = await askImage(`Picture: ${doc.name}`, current);
-  if (url && url !== current) await doc.update({ [field]: url });
+  if (!url || url === current) return;
+  const update = { [field]: url };
+  // An actor's token art follows its portrait, unless the token was given its own picture.
+  if (doc.documentName === "Actor" && field === "img") {
+    const tex = doc.prototypeToken?.texture?.src;
+    if (!tex || tex === current || tex === "icons/svg/mystery-man.svg") update["prototypeToken.texture.src"] = url;
+  }
+  await doc.update(update);
 }
 
 export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {

@@ -130,7 +130,7 @@ export function shroudProfile(sys, build = 0) {
     limit: t.limit * mult,
     affixSlots: t.affixes, affixPlus: t.plus, affixes,
     affixMult: t.plus ? 2 : 1,
-    negator: !!t.negator, placed: t.placed ?? null, fixedDur: !!t.fixedDur,
+    negator: !!t.negator, placed: t.placed ?? null, fixedDur: !!t.fixedDur, noRegen: !!t.noRegen,
     effect: t.effect
   };
 }

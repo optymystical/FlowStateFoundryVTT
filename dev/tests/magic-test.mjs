@@ -90,6 +90,33 @@ ok2(out.toHp === 25 - 10 * mult, "Jasper only once until recovery");
 await actions.applyDamage(hero, 25, "physical", { silent: true });
 ok2(sh.system.wear === 10 * mult && hero.getFlag("flowstate", "takenTypes")?.includes("physical"), "applyDamage wears the Shroud and records the type");
 
+console.log("== Force damage cap: HP plus what the Shroud soaks, netting 0 HP at most");
+await sh.update({ "system.affixes": [], "system.negated": [], "system.wear": 0 });
+const hpNow = hero.system.hp.value;
+const cap = await actions.forceCap(hero);
+ok2(cap === hpNow + 10 * mult, `Cap = HP ${hpNow} + the Shroud's Limit ${10 * mult} = ${cap} (not just HP)`);
+out = await actions.damageOutcome(hero, cap, "physical", {});
+ok2(out.toHp === hpNow, "Taking the capped damage nets them to exactly 0 HP");
+out = await actions.damageOutcome(hero, cap + 1, "physical", {});
+ok2(out.toHp > hpNow, "One more point would go past 0 HP");
+
+console.log("== Shrouds recover by themselves out of combat");
+await sh.update({ "system.wear": 30, "system.negated": ["physical"] });
+await actions.refillShroud(hero);
+ok2(sh.system.wear === 30, "In combat nothing recovers until the wearer's turn");
+const ci = combat.combatants.findIndex(c => c.actor === hero); combat.combatants.splice(ci, 1);
+await actions.refillShroud(hero);
+ok2(sh.system.wear === 0 && !(sh.system.negated ?? []).length, "Out of combat the Shroud recovers fully (and Affix negations refresh)");
+await sh.update({ "system.wear": 30 });
+await actions.applyDamage(hero, 5, "physical", { silent: true });
+ok2(sh.system.wear === 0, "A hit out of combat is absorbed, then the Shroud recovers right away");
+M.SHROUD_TYPES.bastion.noRegen = true; await sh.update({ "system.wear": 30 }); sh.system.prepareDerivedData?.();
+await actions.refillShroud(hero);
+ok2(sh.system.wear === 30, "A Shroud whose passive says it doesn't naturally recover is left alone");
+delete M.SHROUD_TYPES.bastion.noRegen;
+combat.combatants.push({ actor: hero });
+await sh.update({ "system.affixes": ["painite", "jasper"], "system.negated": ["physical"], "system.wear": 10 * mult });   // back to what the next checks expect
+
 console.log("== Recovery at turn start");
 await actions.shroudTurnStart(hero);
 ok2(sh.system.wear === 0 && !sh.system.negated.length && !hero.getFlag("flowstate", "takenTypes"), "recovers its Limit, negations refresh, Cinder memory clears");

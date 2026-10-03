@@ -363,6 +363,8 @@ The last Magic group. Restore, Shift, Mirage and Strike are Cores; every Combo i
 - **Not automated:** difficult terrain from Muddy/Harden, and Mixed Animations (the material tables have no effects to apply).
 - **Judgment calls.** Restore needs the caster's turn stamp (set at each turn start); heal and Resuscitate checks happen before anything is spent. Delay stores the spell as an effect on you and fires the same cast. Contested checks use the caster's current roll as the requirement.
 
+**Riposte and RP buttons (0.45.1):** a Riposte, Cut Back, Dash move, Dip move, Deflect or Retort button only appears if the character has the RP for it (a parry with no RP left posts "no Riposte" by itself so follow-ups aren't held up). A Defender's Shield Toss can now be used as a Riposte (Throw mode; the Riposte's RP is the toss's 2 RP, not extra).
+
 ## Mental (in progress)
 Built from the **Mental Rework Test Ground** doc (the Mental Stage 1 doc still holds the old system). The skill trees for Mental Theory, Psion Arts, the twelve Wonders (Life, Death, Order, Chaos, Beyond, Below, Creation, Destruction, Peace, War, Adaptation, Perfection) and Willpower Arts are in the skill tree view and the New Character wizard; Ponderance Arts, Snappence Arts, Esoteric Arts and the Wonders that aren't written yet (Light, Dark, Earth, Sea, Growth, Stagnation, Fortune, Ruin, Truth, Mystery, Zeal, Serenity) join once the doc has them. Re-run `npm run trees` after the doc changes (export it to `dev/docs/mental.md`).
 

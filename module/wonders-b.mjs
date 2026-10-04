@@ -11,7 +11,7 @@ import { removeEnergy } from "./elemental.mjs";
 import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
 import * as mental from "./mental.mjs";
-import { askFor } from "./charges.mjs";
+import { askFor, runOnOwner } from "./charges.mjs";
 import { tierOf } from "./skills.mjs";
 import { MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
@@ -113,8 +113,10 @@ export async function anyHit({ attacker, target, result }) {
     if (attacker.uuid !== a.uuid && attacker.type === "pile") continue;
     const ta = attackerToken(a), tb = attackerToken(attacker);
     if (ta && tb && globalThis.canvas?.grid && tokenDistance(ta, tb) > 100) continue;
-    const act = { id: "infuse", label: "Infuse", tip: "Once per round: apply one of your Destruction Modes to this hit (not Enhanced, no Fusion), its damage Weakened", cost: "once per round", caster: a.uuid, target: target.uuid };
-    await post(a, { title: `${esc(a.name)} — Infuse`, body: `<div class="fs-notes">${esc(attacker.name)} hit ${esc(target.name)}.</div>${actButtons([act])}`, flags: { flowstate: { mentalAct: { acts: [act] } } } });
+    if (onceUsed(a, "infuse")) continue;
+    const act = { id: "infuse", label: "Infuse", tip: "Apply one of your Destruction Modes to this hit (not Enhanced, no Fusion), its damage Weakened", cost: "once per round", caster: a.uuid, target: target.uuid };
+    const ans = await askFor(a, { title: "Infuse (Tenet)", ok: "Use Infuse", html: `<p><strong>Infuse</strong>: ${esc(act.tip)}.</p><p>${esc(attacker.name)} hit ${esc(target.name)}. Use it now? (If not, it comes up again the next time a willing character within 100 ft hits something this round.)</p>` });
+    if (ans) await runOnOwner(a, act);
   }
 }
 ACTS.infuse = async (x, caster, target) => {
@@ -258,13 +260,7 @@ CHOICE_PROVIDERS.push((actor, modeId) => {
   const out = [];
   if (modeId === "mental-adaptation-dream:crescendo") out.push({ name: "consume", label: "Adaptation stacks to consume (+die size)", number: true }, { name: "dtype", label: "Damage type (Enhanced)", options: { physical: "Physical", heat: "Heat", cold: "Cold", radiation: "Radiation", acid: "Acid" } });
   if (modeId === "mental-adaptation-dream:adaptive-skin") out.push({ name: "dtype", label: "Damage type (Enhanced: it only works against this)", options: { physical: "Physical", heat: "Heat", cold: "Cold", radiation: "Radiation", acid: "Acid", supernatural: "Supernatural" } });
-  const tn = tenetOf(actor);
-  if (tn?.id === "mental-adaptation-dream:adapt" && stacksOf(actor).length && modeId) out.push({ name: "adapt", label: "Adapt: spend a stack for Strengthened (once per round)", options: { no: "No", yes: "Yes" } });
   return out;
-});
-COST_PROVIDERS.push((actor, { choices }) => {
-  if (choices.adapt !== "yes" || !stacksOf(actor).length || tenetOf(actor)?.id !== "mental-adaptation-dream:adapt") return null;
-  return { stacks: 1, notes: ["Adapt: an Adaptation stack makes this Manifest Strengthened"], after: async () => { if (await tryOnce(actor, "adapt")) await spendStacks(actor, 1); } };
 });
 MODES["mental-adaptation-dream:crescendo"] = async c => {
   const have = stacksOf(c.attacker).length;
@@ -389,13 +385,18 @@ ON_CRIT.push(async c => {
   if (tier(c.attacker, ids.perf) >= 4) { await putSpellEffect(c.attacker, { kind: "pride", stack: true, caster: c.attacker.uuid, name: "Pride", description: "Each stack gives your Perfection Manifests Advantage on their attack rolls. Until the start of your next turn." }); out += `You gain a stack of <strong>Pride</strong> (${fx(c.attacker, "pride").length}).`; }
   return out;
 });
-ON_CRIT.push(async c => {
+/** Ego (Perfection Tenet): once per round, on a crit, regain 5 Energy. */
+ACT_PROVIDERS.push(async c => {
   const tn = tenetOf(c.attacker);
-  if (tn?.id !== "mental-perfection-nightmare:ego" || !(await tryOnce(c.attacker, "ego"))) return "";
-  const e = c.attacker.system.energy, n = Math.min(5 * tn.mult, (e?.max ?? 0) - (e?.value ?? 0));
-  if (n > 0) await setCond(c.attacker, { "system.energy.value": e.value + n });
-  return `Ego: ${esc(c.attacker.name)} regains <strong>${5 * tn.mult}</strong> Energy.`;
+  return tn?.id === "mental-perfection-nightmare:ego" && c.crit && !c.m.spread ? [{ tenet: true, id: "ego", label: "Ego", tip: `Once per round, on a crit: regain ${5 * tn.mult} Energy`, cost: "once per round", mult: tn.mult, caster: c.attacker.uuid, target: c.target.uuid }] : [];
 });
+ACTS.ego = async (x, caster) => {
+  if (!(await tryOnce(caster, "ego"))) { ui.notifications.info("Ego: already used this round."); return false; }
+  const e = caster.system.energy, n = Math.min(5 * (x.mult ?? 1), (e?.max ?? 0) - (e?.value ?? 0));
+  if (n > 0) await setCond(caster, { "system.energy.value": e.value + n });
+  await post(caster, { title: `${esc(caster.name)} — Ego`, body: `<div class="fs-result">${esc(caster.name)} regains <strong>${5 * (x.mult ?? 1)}</strong> Energy.</div>` });
+  return true;
+};
 /** Hone: a creature that was Honed makes Strengthened damage rolls. */
 export const damageStacks = attacker => fx(attacker, "hone").some(e => dataOf(e).honeStr) ? 1 : 0;
 
@@ -601,3 +602,13 @@ MISS_PROVIDERS.push(async c => {
   await post(c.attacker, { title: `${esc(c.attacker.name)} — Benediction`, body: `<div class="fs-notes">The Mode missed: Benediction's ${back} Energy is refunded.</div>` });
   return [];
 });
+
+/** Adapt (Adaptation Tenet): when you would Manifest, spend a stack to make that Manifest Strengthened (once per round). Returns the extra Strengthened stacks. */
+export async function offerAdapt(actor) {
+  if (tenetOf(actor)?.id !== "mental-adaptation-dream:adapt" || !stacksOf(actor).length || onceUsed(actor, "adapt")) return 0;
+  const yes = await foundry.applications.api.DialogV2.confirm({ window: { title: "Adapt (Tenet)" }, rejectClose: false, content: `<p><strong>Adapt</strong>: spend one of your ${stacksOf(actor).length} Adaptation stack${stacksOf(actor).length === 1 ? "" : "s"} to make this Manifest Strengthened?</p><p class="hint">If not, it comes up again the next time you Manifest this round.</p>` });
+  if (!yes) return 0;
+  await markOnce(actor, "adapt");
+  await spendStacks(actor, 1);
+  return 1;
+}

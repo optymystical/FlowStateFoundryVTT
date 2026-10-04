@@ -11,7 +11,7 @@ import { post, spellEffects, changeEffect, setActorFlag, turnKey, performAttack 
 import { poolFormula } from "./rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
-import { CHARGES, onceUsed, markOnce, tenetOf } from "./wonders.mjs";
+import { CHARGES, onceUsed, markOnce, tenetOf, runAct } from "./wonders.mjs";
 import { pay } from "./mental.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
@@ -63,12 +63,21 @@ export async function askFor(actor, spec) {
   });
 }
 
+/** Run a button action (an ability or Tenet) as that character's player: here if it's ours, otherwise over the socket. */
+export async function runOnOwner(actor, act) {
+  const user = answeringUser(actor);
+  if (!user || user.id === game.user.id) return runAct(act);
+  game.socket.emit(SOCKET, { action: "mentalRun", to: user.id, act });
+}
+
 /** Wire the socket (every client answers dialogs addressed to it and receives answers to its own). */
 export function listen() {
   game.socket.on(SOCKET, async data => {
     if (data?.action === "chargeAsk" && data.to === game.user.id) {
       const answer = await showChoices(data.spec);
       game.socket.emit(SOCKET, { action: "chargeAnswer", to: data.from, reqId: data.reqId, answer });
+    } else if (data?.action === "mentalRun" && data.to === game.user.id) {
+      await runAct(data.act);
     } else if (data?.action === "chargeAnswer" && data.to === game.user.id) {
       pending.get(data.reqId)?.(data.answer ?? null);
       pending.delete(data.reqId);

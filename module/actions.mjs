@@ -1549,6 +1549,8 @@ async function startExchange(actor, opts, targets) {
     let atkNet = baseNet - (spellStealthImmune(opts, target) ? 1 : 0) + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts) + charmNet(actor, "attack") + (opts.spell ? magicDisNet(actor) : 0)
       - (autoDash(target, opts) ? 1 : 0);
     const spellNotes = [];
+    const burdenAtk = mentalHook?.burdenNet(actor, "attackDis") ?? 0;
+    if (burdenAtk) spellNotes.push(`Burden ×${-burdenAtk}: ${-burdenAtk} Disadvantage on the attack`);
     // Personal Repulsion / Personal Well (Gravity T3): attacks with a small Scaling Stat get Disadvantage / Advantage.
     for (const e of spellEffects(target, "field")) {
       const f = e.flags.flowstate.spellEffect;
@@ -1863,7 +1865,7 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
   const dieNow = Math.max(1, t.derived.dodgeDie - (waste?.pen ?? 0));
   const net2 = net + (waste?.net ?? 0) + burden;
   if (waste) reasons.push(waste.note);
-  if (burden) reasons.push("Burden: dodge Disadvantage");
+  if (burden) reasons.push(`Burden ×${-burden}: ${-burden} Disadvantage on the dodge`);
   const dodge = await evaluate(poolFormula(2, dieNow, net2));
   if (waste) await mentalHook.useWaste(waste);
   // Mental: Order/Chaos charges on the dodge roll (Decree, Fracture, Larceny, Mandate), then on the answered attack (Balance, Verdict, Entropy).

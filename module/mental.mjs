@@ -301,6 +301,8 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
     mental.recipients = (targets.length ? targets : [actor]).map(a => a.uuid);
     attackTargets = (targets.length ? targets : [actor]).map(() => actor);
   }
+  const adaptStack = await wondersB.offerAdapt(actor);           // Adapt (Adaptation Tenet): a stack for Strengthened
+  if (adaptStack) notes.push("Adapt: an Adaptation stack makes this Manifest Strengthened");
   // Some Modes need no attack roll (Redirect stores a charge on you).
   if (NO_ATTACK.has(plan.mode.id)) {
     const out = await wonders.resolveMode({ attacker: actor, target: actor, o: { stacks: 0 }, result: { hit: true }, m: mental, mode: plan.mode, power: plan.power, enhanced: plan.enhance, choices: plan.choices, range: plan.range, stacks: 0, hit: true, crit: false, text: plan.text });
@@ -308,7 +310,7 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
     return true;
   }
   return performAttack(actor, { ...baseAttack, label: `${plan.mode.name} (Manifest)`, net: plan.net, melee: plan.range === "melee", area: plan.range === "area", singleRoll: plan.range === "area",
-    stacks: (plan.deepened ? R.DEEPENED_STACKS : 0) - (plan.range === "area" && targets.length > 2 ? 1 : 0) + plan.extraStacks, notes, mental, ...(attackTargets.length ? { targetActors: attackTargets } : {}) });
+    stacks: (plan.deepened ? R.DEEPENED_STACKS : 0) - (plan.range === "area" && targets.length > 2 ? 1 : 0) + plan.extraStacks + adaptStack, notes, mental, ...(attackTargets.length ? { targetActors: attackTargets } : {}) });
 }
 
 /* -------------------------------------------- */
@@ -479,10 +481,12 @@ async function landManifest({ attacker, target, o, m, mode, result, stacksBase, 
   const out = await wonders.resolveMode(c);
   // Fusion-style riders and Warpath: more Modes applied with the same hit.
   for (const id of m.extraModes ?? []) { const em = R.modeById(id); if (em) { const x = await wonders.resolveMode({ ...c, mode: em }); out.html += `<br>${x.html}`; out.rolls.push(...x.rolls); } }
-  const tenet = await wonders.autoTenets(c);
+  const tenet = "";
   const grow = hit && R.wonderById(m.wonder)?.kind === "dream" ? await growReverie(attacker, attacker.system.icon?.system.grade) : "";
   let crits = "";
   if (c.crit) for (const f of wonders.ON_CRIT) crits += (await f(c)) ?? "";
+  // Tenets pop up once the card is out (and again next time if they aren't used).
+  if (hit && out.tenets?.length) setTimeout(() => wonders.offerTenets(c, out.tenets), 0);
   const html = `<div class="fs-result"><i class="fa-solid fa-eye"></i> ${out.html}${result.crit ? " <em>(critical)</em>" : ""}${m.deepened ? " <em>(Deepened: doubly Strengthened)</em>" : ""}${tenet ? `<br>${tenet}` : ""}${grow ? `<br>${grow}` : ""}${crits ? `<br>${crits}` : ""}</div>`;
   if (out.acts.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}: abilities`, body: wonders.actButtons(out.acts), flags: { flowstate: { mentalAct: { acts: out.acts } } } });
   return { html, push: out.push, rolls: out.rolls };

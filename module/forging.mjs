@@ -167,7 +167,7 @@ export async function finishRite(actor) {
 ACT_PROVIDERS.push(async c => {
   const tn = tenetOf(c.attacker);
   if (tn?.id !== "mental-creation-dream:alter" || c.m.spread || c.now || CREATION_MODES.has(c.mode.id)) return [];
-  return [{ id: "alter", label: "Alter", tip: "Once per round: choose an object the target wears or holds; damage to it is Strengthened or Weakened until your next turn", cost: "once per round", target: c.target.uuid, caster: c.attacker.uuid, mult: tn.mult }];
+  return [{ tenet: true, id: "alter", label: "Alter", tip: "Once per round: choose an object the target wears or holds; damage to it is Strengthened or Weakened until your next turn", cost: "once per round", target: c.target.uuid, caster: c.attacker.uuid, mult: tn.mult }];
 });
 ACTS.alter = async (x, caster, target) => {
   const objs = (target.items ?? []).filter(i => ["weapon", "armor", "foci", "shroud"].includes(i.type) && (i.system.equipped || i.system.attuned));

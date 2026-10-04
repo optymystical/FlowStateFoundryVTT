@@ -510,6 +510,8 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 - **Thrasher/Impale grapples don't stop the target moving** beyond the weapon's range; the GM handles that.
 
+**0.46.2:** the counter grapple numbers in Below scale with Wonder Power like every other bolded number: Sink and Burden need 2 × Power or higher, Entomb 3 × Power.
+
 **0.46.1:** a grapple made by a spell or a Manifest (Sink, Gravity's Hold and the like) no longer takes up one of your hands; only an Unarmed grapple does.
 
 ## Falling, flight, objects and Ignite Spread (0.46.0)

@@ -3260,8 +3260,9 @@ export async function breakFree(actor) {
   if (!grapplerUuid && !actor.statuses.has("grappled") && burden.length) {
     if (!(await spendAP(actor, 2, "shaking off Burden"))) return;
     const roll = await evaluate(`1d${actor.system.derived.attackDie}`);
-    const freed = roll.total >= 2;
-    await post(actor, { title: `${esc(actor.name)} — Break Free (Burden)`, rolls: [roll], body: `${await rollBlock(roll, `Attack die (d${actor.system.derived.attackDie}), needs 2+`)}<div class="fs-result">${freed ? "The weight is gone!" : "Still weighed down."}</div>` });
+    const need = Math.max(2, ...burden.map(b => Number(b.flags.flowstate.spellEffect.breakMin) || 0));       // 2 × Wonder Power
+    const freed = roll.total >= need;
+    await post(actor, { title: `${esc(actor.name)} — Break Free (Burden)`, rolls: [roll], body: `${await rollBlock(roll, `Attack die (d${actor.system.derived.attackDie}), needs ${need}+`)}<div class="fs-result">${freed ? "The weight is gone!" : "Still weighed down."}</div>` });
     const held = { ...burden[0].flags.flowstate.spellEffect, name: burden[0].name };
     if (freed) for (const b of burden) await changeEffect(b, null);
     await mentalHook?.afterBreakFree({ actor, held, freed });

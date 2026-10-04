@@ -204,15 +204,15 @@ export const MODES = {
   /* ---- Below (Nightmare) ---- */
   async "mental-below-nightmare:sink"(c) {
     if ((c.target.system.lift ?? 0) > 0 || spellEffects(c.target, "lift").length) return `${esc(c.target.name)} isn't on the ground: Sink needs a grounded creature.`;
-    await holdWith(c, { min: 2, label: "Sunk in the ground", turns: c.enhanced ? 3 : 1, flags: { below: true, sink: true } });
-    return `The ground grapples ${esc(c.target.name)}: breaking free needs a counter grapple roll of <strong>2</strong> or higher, ${c.enhanced ? "lasting 3 turns" : "until the start of your next turn"}.`;
+    await holdWith(c, { min: 2 * c.power, label: "Sunk in the ground", turns: c.enhanced ? 3 : 1, flags: { below: true, sink: true } });
+    return `The ground grapples ${esc(c.target.name)}: breaking free needs a counter grapple roll of <strong>${2 * c.power}</strong> or higher, ${c.enhanced ? "lasting 3 turns" : "until the start of your next turn"}.`;
   },
   async "mental-below-nightmare:burden"(c) {
     const dis = c.choices.dis === "dodge" ? "dodge" : "attack";
-    await putSpellEffect(c.target, { kind: "burden", stack: true, caster: c.attacker.uuid, name: `Burden (${dis})`, [dis === "attack" ? "attackDis" : "dodgeDis"]: 1, below: true, mode: c.mode.id, turnsLeft: c.enhanced ? 3 : undefined,
-      description: `Disadvantage on ${dis} rolls. Stacks. A counter grapple check of 2 or higher removes all of it; otherwise until ${c.enhanced ? "3 of the caster's turns" : "the start of the caster's next turn"}.` });
+    await putSpellEffect(c.target, { kind: "burden", stack: true, caster: c.attacker.uuid, name: `Burden (${dis})`, [dis === "attack" ? "attackDis" : "dodgeDis"]: 1, below: true, breakMin: 2 * c.power, mode: c.mode.id, turnsLeft: c.enhanced ? 3 : undefined,
+      description: `Disadvantage on ${dis} rolls. Stacks. A counter grapple check of ${2 * c.power} or higher removes all of it; otherwise until ${c.enhanced ? "3 of the caster's turns" : "the start of the caster's next turn"}.` });
     const n = spellEffects(c.target, "burden").length;
-    return `${esc(c.target.name)} is <strong>weighed down</strong>: Disadvantage on ${dis} rolls (${n} Burden stack${n === 1 ? "" : "s"}), until they break free with a counter grapple check of 2 or higher${c.enhanced ? ", or 3 turns" : ", or the start of your next turn"}.`;
+    return `${esc(c.target.name)} is <strong>weighed down</strong>: Disadvantage on ${dis} rolls (${n} Burden stack${n === 1 ? "" : "s"}), until they break free with a counter grapple check of ${2 * c.power} or higher${c.enhanced ? ", or 3 turns" : ", or the start of your next turn"}.`;
   },
   async "mental-below-nightmare:entomb"(c) {
     const sunk = spellEffects(c.target, "hold").find(e => e.flags.flowstate.spellEffect.sink);
@@ -220,7 +220,7 @@ export const MODES = {
     if (!sunk || stacks < 3) return `Entomb needs a target under Sink and at least 3 Burden stacks (${esc(c.target.name)} has ${sunk ? "Sink" : "no Sink"} and ${stacks} Burden).`;
     await changeEffect(sunk, null);
     for (const e of spellEffects(c.target, "burden")) await changeEffect(e, null);
-    await holdWith(c, { min: 3, label: "Entombed", turns: c.enhanced ? 3 : 1, flags: { below: true, entomb: true, power: c.power } });
+    await holdWith(c, { min: 3 * c.power, label: "Entombed", turns: c.enhanced ? 3 : 1, flags: { below: true, entomb: true, power: c.power } });
     return `${esc(c.target.name)} is <strong>entombed</strong> in the earth: blind, deaf and unable to smell. Escaping takes a counter grapple check of <strong>3</strong> or higher, and at the start of each of their turns they take ${3 * c.power}d10 physical damage${c.enhanced ? " (3 turns)" : ""}.`;
   }
 };

@@ -510,6 +510,8 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 - **Thrasher/Impale grapples don't stop the target moving** beyond the weapon's range; the GM handles that.
 
+**0.46.1:** a grapple made by a spell or a Manifest (Sink, Gravity's Hold and the like) no longer takes up one of your hands; only an Unarmed grapple does.
+
 ## Falling, flight, objects and Ignite Spread (0.46.0)
 - **Objects:** a gear item with a **Body** above 0 (and a material: Powder/Liquid, Soft, Hard, Dense, Super Dense) is a Non-Archetypal object with Durability and Limit from the Rules chart. Target a pile on the scene that holds one and attack it: it always hits, the attack roll only decides a crit (at or above its Body), the damage goes straight to its Durability (its Limit doesn't apply) and the card says broken or destroyed. Objects held or worn by a creature aren't targetable this way yet (aim at the archetypal item instead).
 - **Falling:** a Falling status (Action List, or the token's status menu). At the start of each of their turns a falling creature accrues Gravity Force (Max HP × the world's **Gravity (G)** setting, growing each round up to Terminal Velocity by Size), minus Lift, ÷ 10 = feet fallen. A prompt asks how far the ground is: reaching it ends the fall, and the leftover distance hits as Force damage (3 × feet, capped as usual). Size 1 takes no fall damage; Lift of half the Gravity Force or more makes a slow, safe fall (10 ft a round).

@@ -212,6 +212,8 @@ reset();
 await hit("mental-below-nightmare:sink");
 const hold = effs(orc, "hold")[0];
 ok2(hold && hold.flags.flowstate.spellEffect.holdMin === 2 && orc.statuses.has("grappled"), "Sink: the ground grapples them, escape needs a 2 or higher");
+const abMod = await import("../../module/abilities.mjs");
+ok2(abMod.handGrapples(hero).length === 0, "A magical grapple (Sink) doesn't take up a hand");
 const G = actions.grappleHold(orc);
 ok2(G.static, "…they can't move at all while sunk");
 reset();

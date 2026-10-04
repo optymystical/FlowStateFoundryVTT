@@ -510,6 +510,10 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 - **Thrasher/Impale grapples don't stop the target moving** beyond the weapon's range; the GM handles that.
 
+**0.47.1:** **Tenets are pop-ups now**, not buttons: Verdant Soul, Mortal Coil, Gust, Weight, Unbound, Alter, Ego and Infuse ask "Use it?" as soon as their condition is met (a Manifest hit, a crit, an ally's hit...), on the Mental user's own client. Declining leaves it unused, so it pops up again the next time the condition is met that round, until it's used (once per round). Adapt asks when you Manifest. Burden's cards now say how many stacks of Disadvantage they apply.
+
+**0.47.0 — scaling pass:** the Skills tab now shows numbers worked out for you: a Mental Wonder's tree uses that Wonder's Power (every bolded effect in the doc, picked up by `dev/tools/build_bold.py` into `module/mental-bold.mjs`, run `npm run bold` after doc changes) and Magic trees use your Spell Power (attuned Foci's Scaling Stat, else Raw Casting); Martial numbers aren't Power-scaled (Energy costs there already show your values). The engine was brought in line with the bolded numbers: Decree, Mandate, Verdict, Fracture, Larceny and Entropy now scale with Power (±1 becomes ±Power, die size changes ×Power, 5 and 10 damage ×Power), Flourish and Waste, Pacify's die sizes, Provoke's +2 die size, Execute's 1d12 (Power d12 now, not a roll times Power) and Fabricate's Body limit (15 × Power) scale too, and a Fabricated object is a real object with that Body.
+
 **0.46.2:** the counter grapple numbers in Below scale with Wonder Power like every other bolded number: Sink and Burden need 2 × Power or higher, Entomb 3 × Power.
 
 **0.46.1:** a grapple made by a spell or a Manifest (Sink, Gravity's Hold and the like) no longer takes up one of your hands; only an Unarmed grapple does.

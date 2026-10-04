@@ -147,10 +147,10 @@ console.log("== Peace");
 reset();
 await hitMiss("mental-peace-dream:pacify");
 const pf = effs(orc, "pacify")[0]?.flags.flowstate.spellEffect;
-ok2(pf?.attackDie === 2 && pf.dealtDice === pPow, "Pacify: −2 attack die size and damage dealt reduced by Power d8");
+ok2(pf?.attackDie === 2 * pPow && pf.dealtDice === pPow, "Pacify: −2 attack die size and damage dealt reduced by Power d8");
 clearAll(orc); reset();
 await hitMiss("mental-peace-dream:pacify", { enhance: true });
-ok2(effs(orc, "pacify")[0]?.flags.flowstate.spellEffect.dodgeDieUp === 1, "Enhanced Pacify: +1 dodge die size instead");
+ok2(effs(orc, "pacify")[0]?.flags.flowstate.spellEffect.dodgeDieUp === pPow, "Enhanced Pacify: +1 × Power dodge die size instead");
 orc.system.hp.value = 432; seq = [4];
 let r = await actions.requestDamage(orc, 20, "physical", 0, null, { silent: true });
 ok2(hp(orc) === 432 - (20 - 4), "…and incoming damage is reduced by Power d8 (rolled 4)");
@@ -179,7 +179,7 @@ let adj = await W2.adjust({ attacker: orc, target: ally, amount: 20, type: "phys
 ok2(adj.amount === 20 + 5 && effs(orc, "warzone").length === 0, "A Warzoned creature's damage gets +Power d8 and uses the stack up");
 reset(); clearAll(orc);
 await hitMiss("mental-war-nightmare:provoke");
-ok2(effs(orc, "provoke")[0]?.flags.flowstate.spellEffect.attackDieUp === 2, "Provoke: +2 die size on the provoked attack");
+ok2(effs(orc, "provoke")[0]?.flags.flowstate.spellEffect.attackDieUp === 2 * sPow, "Provoke: +2 × Power die size on the provoked attack");
 
 console.log("== Adaptation");
 clearAll(orc); clearAll(hero); reset(); setAlign("neutral");

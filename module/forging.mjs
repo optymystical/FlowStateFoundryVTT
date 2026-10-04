@@ -34,7 +34,7 @@ for (const id of CREATION_MODES) {
   };
 }
 ACT_PROVIDERS.push(async c => CREATION_MODES.has(c.mode.id)
-  ? [{ id: "create", label: `Create (${c.mode.name})`, tip: "Choose what to create and who it appears for", cost: "free", caster: c.attacker.uuid, target: c.m.recipients?.[c.index] ?? c.attacker.uuid, mode: c.mode.id, enhanced: !!c.enhanced, range: c.range, rite: c.choices?.rite === "yes" }] : []);
+  ? [{ id: "create", label: `Create (${c.mode.name})`, tip: "Choose what to create and who it appears for", cost: "free", caster: c.attacker.uuid, target: c.m.recipients?.[c.index] ?? c.attacker.uuid, mode: c.mode.id, enhanced: !!c.enhanced, range: c.range, power: c.power, rite: c.choices?.rite === "yes" }] : []);
 
 CHOICE_PROVIDERS.push((actor, modeId) => CREATION_MODES.has(modeId) && tier(actor, ID) >= 5
   ? [{ name: "rite", label: "Rite (hours of work, permanent: Energy is 0 meanwhile)", options: { no: "No", yes: "Yes: make it permanent" } }] : []);
@@ -54,7 +54,7 @@ async function askWhat(caster, x) {
     const forms = Object.entries(R.FORMS).filter(([, f]) => rar.includes(rarityKey(f.rarity)));
     html = field("Form", select("form", forms.map(([k, f]) => [k, `${f.name} (${R.KINDS[f.align].label}, ${f.rarity})`]))) + field("Name", `<input type="text" name="name">`);
   } else {
-    html = field("Material", select("mat", [["powder", "Powder"], ["liquid", "Liquid"], ["soft", "Soft"], ...(x.enhanced ? [["hard", "Hard"]] : [])])) + field("Body (up to 15)", `<input type="number" name="body" value="10" min="1" max="15">`) + field("Object (name, material, shape)", `<input type="text" name="name">`);
+    html = field("Material", select("mat", [["powder", "Powder"], ["liquid", "Liquid"], ["soft", "Soft"], ...(x.enhanced ? [["hard", "Hard"]] : [])])) + field(`Body (up to ${15 * x.power})`, `<input type="number" name="body" value="${Math.min(10, 15 * x.power)}" min="1" max="${15 * x.power}">`) + field("Object (name, material, shape)", `<input type="text" name="name">`);
   }
   html += `<label class="fs-cast-mod"><input type="checkbox" name="willing" checked> <strong>Willing recipient</strong> <small>it appears in their hand; otherwise at their feet</small></label>`;
   return DialogV2().prompt({ window: { title: `${R.modeById(mode)?.name}: what do you create?` }, content: `<div class="fs-cast">${html}</div>`, rejectClose: false,
@@ -78,7 +78,8 @@ function buildItem(caster, x, v, permanent) {
     return { name: v.name || `${FOCI_TYPES[v.ftype]?.label} Foci`, type: "foci", flags, system: { fociType: v.ftype, grade: 1, attuned: false, equipped: false, affixes: affixes.slice(0, FOCI_TYPES[v.ftype]?.affixes ?? 0) } };
   }
   if (mode === `${ID}:consecrate`) return { name: v.name || `${R.FORMS[v.form]?.name} Icon`, type: "icon", flags, system: { form: v.form, grade: 1, attuned: false, tenet: "" } };
-  return { name: v.name || `Fabricated ${v.mat} object`, type: "gear", flags, system: { quantity: 1, description: `<p>Fabricated from ${esc(v.mat)} (Body ${Math.min(15, Math.max(1, Number(v.body) || 1))}): ${esc(v.name || "an object")}.</p>` } };
+  const body = Math.min(15 * (x.power ?? 1), Math.max(1, Number(v.body) || 1));
+  return { name: v.name || `Fabricated ${v.mat} object`, type: "gear", flags, system: { quantity: 1, body, density: v.mat === "liquid" ? "powder" : v.mat, description: `<p>Fabricated from ${esc(v.mat)} (Body ${body}): ${esc(v.name || "an object")}.</p>` } };
 }
 
 /** Put a created item in the recipient's hands (inventory) or at their feet. */
@@ -166,7 +167,7 @@ export async function finishRite(actor) {
 ACT_PROVIDERS.push(async c => {
   const tn = tenetOf(c.attacker);
   if (tn?.id !== "mental-creation-dream:alter" || c.m.spread || c.now || CREATION_MODES.has(c.mode.id)) return [];
-  return [{ id: "alter", label: "Alter", tip: "Once per round: choose an object the target wears or holds; damage to it is Strengthened or Weakened until your next turn", cost: "once per round", target: c.target.uuid, caster: c.attacker.uuid, mult: tn.mult }];
+  return [{ tenet: true, id: "alter", label: "Alter", tip: "Once per round: choose an object the target wears or holds; damage to it is Strengthened or Weakened until your next turn", cost: "once per round", target: c.target.uuid, caster: c.attacker.uuid, mult: tn.mult }];
 });
 ACTS.alter = async (x, caster, target) => {
   const objs = (target.items ?? []).filter(i => ["weapon", "armor", "foci", "shroud"].includes(i.type) && (i.system.equipped || i.system.attuned));

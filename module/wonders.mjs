@@ -8,6 +8,7 @@ import {
   post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, performAttack, knockbackRow, setGrapple, clearSpellEffects
 } from "./actions.mjs";
 import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
+import { askFor, runOnOwner } from "./charges.mjs";
 import { resolveForce, applyStacks } from "./rules.mjs";
 import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
@@ -61,8 +62,8 @@ const putPending = (who, caster, label, then) => putSpellEffect(who, { kind: "pe
 async function runThen(actor, caster, then) {
   const who = caster?.name ?? "someone";
   if (then.type === "tempHP") return putTemp(actor, caster, then.n, then.mode);
-  if (then.type === "dodgeUp") return putSpellEffect(actor, { kind: "dodgeUp", caster: caster.uuid, name: "Flourish (+1 dodge die size)", dodgeDieUp: 1, mode: then.mode,
-    description: `Dodge dice are one size bigger until the start of ${who}'s next turn. Doesn't stack.` });
+  if (then.type === "dodgeUp") return putSpellEffect(actor, { kind: "dodgeUp", caster: caster.uuid, name: `Flourish (+${then.power ?? 1} dodge die size)`, dodgeDieUp: then.power ?? 1, mode: then.mode,
+    description: `Dodge dice are ${then.power ?? 1} size${(then.power ?? 1) === 1 ? "" : "s"} bigger until the start of ${who}'s next turn. Doesn't stack.` });
   if (then.type === "heal") {
     const html = await heal(actor, caster, then.n);
     return post(actor, { title: `${esc(actor.name)} — Renewal`, body: `<div class="fs-result"><i class="fa-solid fa-heart-pulse"></i> ${html}</div>` });
@@ -148,9 +149,9 @@ export const MODES = {
     return `${esc(c.target.name)} gets <strong>${n} temp HP</strong> at the start of their next turn (until the start of your next turn).`;
   },
   async "mental-life-dream:flourish"(c) {
-    if (c.enhanced || c.now) { await putSpellEffect(c.target, { kind: "dodgeUp", caster: c.attacker.uuid, name: "Flourish (+1 dodge die size)", dodgeDieUp: 1, mode: c.mode.id, description: `Dodge dice are one size bigger until the start of ${c.attacker.name}'s next turn.` }); return `${esc(c.target.name)}'s dodge dice are <strong>one size bigger</strong> now.`; }
-    await putPending(c.target, c.attacker, "Flourish", { type: "dodgeUp", mode: c.mode.id });
-    return `${esc(c.target.name)}'s dodge dice get <strong>+1 die size</strong> from the start of their next turn (until the start of your next turn).`;
+    if (c.enhanced || c.now) { await putSpellEffect(c.target, { kind: "dodgeUp", caster: c.attacker.uuid, name: `Flourish (+${c.power} dodge die size)`, dodgeDieUp: c.power, mode: c.mode.id, description: `Dodge dice are ${c.power} size${c.power === 1 ? "" : "s"} bigger until the start of ${c.attacker.name}'s next turn.` }); return `${esc(c.target.name)}'s dodge dice are <strong>one size bigger</strong> now.`; }
+    await putPending(c.target, c.attacker, "Flourish", { type: "dodgeUp", mode: c.mode.id, power: c.power });
+    return `${esc(c.target.name)}'s dodge dice get <strong>+${c.power} die size</strong> from the start of their next turn (until the start of your next turn).`;
   },
   async "mental-life-dream:renewal"(c) {
     const n = 4 * c.power;
@@ -169,17 +170,17 @@ export const MODES = {
     return `Wither removes <strong>${n}</strong> health from ${esc(c.target.name)} (${2 * c.power}d10 = ${r.total}${c.stacks ? ` → ${n}` : ""}), ignoring objects and defenses${c.enhanced ? ", and that much Max HP too" : ""}.`;
   },
   async "mental-death-nightmare:waste"(c) {
-    await putSpellEffect(c.target, { kind: "waste", stack: true, caster: c.attacker.uuid, name: `Waste${c.enhanced ? " (Enhanced)" : ""}`, enhanced: !!c.enhanced, mode: c.mode.id,
-      description: `A charge: the next dodge roll is a die size smaller by 2${c.enhanced ? " and has Disadvantage" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-    return `${esc(c.target.name)} carries a <strong>Waste</strong> charge: their next dodge roll has its die size reduced by 2${c.enhanced ? " and Disadvantage" : ""} (used automatically).`;
+    await putSpellEffect(c.target, { kind: "waste", stack: true, caster: c.attacker.uuid, name: `Waste${c.enhanced ? " (Enhanced)" : ""}`, enhanced: !!c.enhanced, power: c.power, mode: c.mode.id,
+      description: `A charge: the next dodge roll is ${2 * c.power} die sizes smaller${c.enhanced ? " and has Disadvantage" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
+    return `${esc(c.target.name)} carries a <strong>Waste</strong> charge: their next dodge roll has its die size reduced by ${2 * c.power}${c.enhanced ? " and Disadvantage" : ""} (used automatically).`;
   },
   async "mental-death-nightmare:execute"(c) {
-    const r = await roll(`1d12`);
+    const r = await roll(`${c.power}d12`);
     rolled.push(r);
-    const up = r.total * c.power;
+    const up = r.total;
     await putSpellEffect(c.target, { kind: "execute", stack: true, caster: c.attacker.uuid, name: `Execute (+${up} Pain Threshold)`, painUp: up, execute: !!c.enhanced, mode: c.mode.id,
       description: `Pain Threshold raised by ${up}${c.enhanced ? "; if their health falls below half of the raised Pain Threshold they die" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-    return `${esc(c.target.name)}'s Pain Threshold is raised by <strong>${up}</strong> (1d12 = ${r.total}${c.power > 1 ? ` × ${c.power}` : ""})${c.enhanced ? `. <strong>If their health drops below half of it they die.</strong>` : ""}`;
+    return `${esc(c.target.name)}'s Pain Threshold is raised by <strong>${up}</strong> (${c.power}d12 = ${r.total})${c.enhanced ? `. <strong>If their health drops below half of it they die.</strong>` : ""}`;
   },
 
   /* ---- Beyond (Dream) ---- */
@@ -243,7 +244,9 @@ export async function resolveMode(c) {
     html = typeof out === "string" ? out : out.html;
     push = typeof out === "string" ? null : out.push ?? null;
   }
-  return { html, push, rolls: [...rolled], acts: c.now || !c.hit ? (c.hit ? [] : await missActs(c)) : [...(await abilityActs(c)), ...(MODES_CHARGES_READY ? chargeActs(c) : [])] };
+  const all = c.now || !c.hit ? (c.hit ? [] : await missActs(c)) : [...(await abilityActs(c)), ...(MODES_CHARGES_READY ? chargeActs(c) : [])];
+  // Tenets aren't buttons: they pop up for the Mental user (offerTenets) whenever their condition is met, until used that round.
+  return { html, push, rolls: [...rolled], acts: all.filter(a => !a.tenet), tenets: all.filter(a => a.tenet) };
 }
 
 export const MISS_PROVIDERS = [];
@@ -266,27 +269,35 @@ async function abilityActs(c) {
   if (w.id === "mental-death-nightmare" && wt >= 4 && c.crit) acts.push({ id: "reap", label: "Reap", tip: "Manifest another Death Mode of the same Range for free", cost: `⚡ ${minOf(a, "snap")}`, ...base });
   const tn = tenetOf(a);
   if (tn && !c.m.spread && !c.now) {
-    if (tn.id === "mental-life-dream:verdant-soul") acts.push({ id: "verdantSoul", label: "Verdant Soul", tip: "Once per round: 10 temp HP to the target or yourself", cost: "once per round", mult: tn.mult, ...base });
-    if (tn.id === "mental-death-nightmare:mortal-coil") acts.push({ id: "mortalCoil", label: "Mortal Coil", tip: "Once per round: steal 1d8 health as temp HP", cost: "once per round", mult: tn.mult, ...base });
-    if (tn.id === "mental-beyond-dream:gust") acts.push({ id: "gust", label: "Gust", tip: "Once per round: 5d8 Force on the target", cost: "once per round", mult: tn.mult, ...base });
+    if (tn.id === "mental-life-dream:verdant-soul") acts.push({ tenet: true, id: "verdantSoul", label: "Verdant Soul", tip: "Once per round: 10 temp HP to the target or yourself", cost: "once per round", mult: tn.mult, ...base });
+    if (tn.id === "mental-death-nightmare:mortal-coil") acts.push({ tenet: true, id: "mortalCoil", label: "Mortal Coil", tip: "Once per round: steal 1d8 health as temp HP", cost: "once per round", mult: tn.mult, ...base });
+    if (tn.id === "mental-below-nightmare:weight") acts.push({ tenet: true, id: "weight", label: "Weight", tip: `Once per round: ${15 * tn.mult} Slow stacks on the target, until your next turn`, cost: "once per round", mult: tn.mult, ...base });
+    if (tn.id === "mental-beyond-dream:gust") acts.push({ tenet: true, id: "gust", label: "Gust", tip: "Once per round: 5d8 Force on the target", cost: "once per round", mult: tn.mult, ...base });
   }
   for (const f of ACT_PROVIDERS) acts.push(...(await f(c) ?? []));
   return acts;
 }
 
-/** Tenets that need no choice work on their own when a Manifest hits. Returns lines of text. */
-export async function autoTenets(c) {
-  const tn = tenetOf(c.attacker);
-  if (!tn || c.m.spread || c.now) return "";
-  const lines = [];
-  if (tn.id === "mental-below-nightmare:weight" && (await tryOnce(c.attacker, "weight"))) {
-    const n = 15 * tn.mult;
-    const cur = c.target.system.conditions?.slow ?? 0;
-    const data = { "system.conditions.slow": cur + n };
-    if (c.target.isOwner) await c.target.update(data); else await requestGM("updateActor", { uuid: c.target.uuid, data });
-    lines.push(`Weight: ${esc(c.target.name)} gets <strong>${n} Slow</strong> stacks.`);
+/** Weight (Below Tenet): 15 Slow stacks on the target. */
+ACTS.weight = async (x, caster, target) => {
+  if (!(await tryOnce(caster, "weight"))) { ui.notifications.info("Weight: already used this round."); return false; }
+  const n = 15 * (x.mult ?? 1);
+  const data = { "system.conditions.slow": (target.system.conditions?.slow ?? 0) + n };
+  if (target.isOwner) await target.update(data); else await requestGM("updateActor", { uuid: target.uuid, data });
+  await post(caster, { title: `${esc(caster.name)} — Weight`, body: `<div class="fs-result">${esc(target.name)} gets <strong>${n} Slow</strong> stacks, until the start of your next turn.</div>` });
+  return true;
+};
+
+/**
+ * Tenets pop up for the Mental user when their condition is met (a Manifest hit, a crit...): "Use it?". Declining leaves it unused, so it pops up
+ * again the next time the condition is met that round, until it is used. Asked of the character's player (over the socket if that's someone else).
+ */
+export async function offerTenets(c, acts) {
+  for (const x of acts ?? []) {
+    if (onceUsed(c.attacker, x.id)) continue;
+    const ans = await askFor(c.attacker, { title: `${x.label} (Tenet)`, ok: `Use ${x.label}`, html: `<p><strong>${esc(x.label)}</strong>: ${esc(x.tip)}.</p><p>${esc(c.attacker.name)}'s ${esc(c.mode?.name ?? "Manifest")} hit ${esc(c.target.name)}. Use it now? (If not, it comes up again the next time it can be used this round.)</p>` });
+    if (ans) await runOnOwner(c.attacker, x);
   }
-  return lines.join("<br>");
 }
 
 /** The button row(s) for a follow-up card. */
@@ -368,7 +379,8 @@ export function dodgeWaste(actor) {
   const charges = spellEffects(actor, "waste");
   if (!charges.length) return null;
   const e = charges[0], d = e.flags.flowstate.spellEffect;
-  return { pen: 2, net: d.enhanced ? -1 : 0, effect: e, note: `Waste: die size −2${d.enhanced ? " and Disadvantage" : ""}` };
+  const pen = 2 * (d.power ?? 1);
+  return { pen, net: d.enhanced ? -1 : 0, effect: e, note: `Waste: die size −${pen}${d.enhanced ? " and Disadvantage" : ""}` };
 }
 export const useWaste = w => changeEffect(w.effect, null);
 
@@ -598,7 +610,7 @@ export function chargeActs(c) {
   const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit };
   if (w.id === "mental-chaos-nightmare" && tier(a, w.id) >= 2 && !c.m.spread) acts.push({ id: "ricochet", label: "Ricochet", tip: "Place a copy of this charge on a random valid target within range", cost: `⚡ ${Math.floor(minOf(a, "snap") / 2)}`, ...base });
   const tn = tenetOf(a);
-  if (tn?.id === "mental-chaos-nightmare:unbound" && c.crit && !c.m.spread) acts.push({ id: "unbound", label: "Unbound", tip: "Once per round, on a crit: place a Chaos charge of your choice on the target for free", cost: "free, once per round", ...base });
+  if (tn?.id === "mental-chaos-nightmare:unbound" && c.crit && !c.m.spread) acts.push({ tenet: true, id: "unbound", label: "Unbound", tip: "Once per round, on a crit: place a Chaos charge of your choice on the target for free", cost: "free, once per round", ...base });
   return acts;
 }
 

@@ -208,5 +208,20 @@ dialog = html => ({ replace: html.match(/<option value="([^"]+)">Fracture/)?.[1]
 const fr = await CH.onDamage({ actor: orc, formula: "2d6+3", totals: [11] });
 ok2(CH.shiftFormula("2d6+3", 2) === "2d8+3" && fr?.totals?.[0] === 9 && formulas.includes("2d8+3"), "Fracture rerolls the damage with every die size +2");
 
+console.log("== Skill tree numbers are scaled");
+const SH = await import("../../module/tree-scale.mjs");
+const SK = await import("../../module/skills.mjs");
+if (SH) {
+  const lifeTree = SK.treeById("mental-life-dream");
+  const tp = SH.treePower(hero, lifeTree);
+  ok2(tp?.kind === "Wonder" && tp.power === R.wonderPower(hero.system.derived.effective.pon.value), "A Wonder tree's numbers use that Wonder's Power");
+  const bloom = lifeTree.tiers.flatMap(t => t.entries).find(e => e.name === "Bloom");
+  const scaled = SH.scaleEntry(bloom, tp);
+  ok2(new RegExp(`${20 * tp.power} temp HP`).test(scaled.text), `Bloom reads ${20 * tp.power} temp HP at Power ${tp.power}`);
+  const decree = SK.treeById("mental-order-dream").tiers.flatMap(t => t.entries).find(e => e.name === "Decree");
+  ok2(new RegExp(`plus or minus ${tp.power}`).test(SH.scaleEntry(decree, tp).text), "Decree's bolded ±1 scales too");
+  ok2(SH.treePower(hero, SK.treeById("martial-theory")) === null, "Martial trees show their own numbers (nothing to scale)");
+}
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll core extras checks passed");
 if (fails) process.exit(1);

@@ -101,7 +101,9 @@ export function handGrapples(actor) {
   const pool = new Map();
   for (const a of globalThis.game?.actors ?? []) pool.set(a.uuid, a);
   for (const t of globalThis.canvas?.tokens?.placeables ?? []) if (t.actor) pool.set(t.actor.uuid, t.actor);
-  return [...pool.values()].filter(a => a.getFlag?.("flowstate", "grappledBy") === actor.uuid && !a.getFlag?.("flowstate", "grappleWeapon"));
+  // Only a creature holding someone with its hands counts: a weapon grapple and a magical hold (a spell, a Manifest like Sink) don't take a hand.
+  const magical = a => Array.from(a.effects ?? []).some(e => !e.disabled && e.flags?.flowstate?.spellEffect?.kind === "hold" && e.flags.flowstate.spellEffect.caster === actor.uuid);
+  return [...pool.values()].filter(a => a.getFlag?.("flowstate", "grappledBy") === actor.uuid && !a.getFlag?.("flowstate", "grappleWeapon") && !magical(a));
 }
 
 /** Fists that are up and not holding a grapple (each Unarmed grapple occupies one hand). */

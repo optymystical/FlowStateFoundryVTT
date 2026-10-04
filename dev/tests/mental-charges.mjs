@@ -106,6 +106,7 @@ const reset = () => { clearAll(orc); clearAll(hero); orc.system.hp.value = 432; 
 
 
 const CH = await import("../../module/charges.mjs");
+const Pp = R.wonderPower(hero.system.derived.effective.pon.value), Ps = R.wonderPower(hero.system.derived.effective.snap.value);
 const place = async (mode, extra = {}) => { await hit(mode, extra); };
 const idOf = (html, name) => html.match(new RegExp(`name="${name}:([^"]+)"`))?.[1];
 const optId = html => html.match(/<option value="([^"]+)">(?:Decree|Fracture|Larceny)/)?.[1];
@@ -119,7 +120,7 @@ let shown = null;
 dialog = html => { shown = html; return { replace: optId(html), [`m:${idOf(html, "m")}`]: true }; };
 let r = synth("1d20", 14);
 let out = await CH.onRoll({ actor: orc, type: "attack", roll: r, die: 20, count: 1, net: 0 });
-ok2(/Spend your charges/.test(shown) && /Decree: the roll becomes 11/.test(shown), "The caster is offered Decree (half the die + 1) and Mandate as selectables");
+ok2(/Spend your charges/.test(shown) && new RegExp(`Decree: the roll becomes ${10 + Pp}`).test(shown), "The caster is offered Decree (half the die + 1) and Mandate as selectables");
 ok2(r.total === 10 && out.notes.length === 2, "Decree makes it 11, Mandate (minus) takes 1 off: 10");
 ok2(W.chargesOf(hero).length === 0, "Both charges are used up");
 
@@ -129,7 +130,7 @@ await place("mental-chaos-nightmare:fracture", { "choice:size": "up" });
 dialog = html => ({ replace: optId(html), control: true });
 r = synth("2d12", 9); seq = [7, 13]; formulas.length = 0;
 out = await CH.onRoll({ actor: orc, type: "dodge", roll: r, die: 12, count: 2, net: 0, max: 24 });
-ok2(formulas.includes("2d13") && r.total === 13, "Fracture (up) rerolls a dodge at half the change (2d13), Control rerolls it once more and the new result stands");
+ok2(formulas.includes(`2d${12 + Ps}`) && r.total === 13, "Fracture (up) rerolls a dodge at half the change (2d13), Control rerolls it once more and the new result stands");
 
 console.log("== Larceny steals a roll");
 reset();
@@ -151,7 +152,7 @@ await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged" });
 dialog = html => /Spend your charges/.test(html) ? { replace: optId(html) } : { net: 0 };
 seq = [3, 3]; await actions.defend(lastAtk(), 0, "dodge");
 const dcard = messages.filter(m => m.flags?.flowstate?.defense).at(-1);
-ok2(/Decree/.test(text(dcard)) && dcard.flags.flowstate.defense.dodge === orc.system.derived.dodgeDie + 1, "A charge on the dodge roll is offered as part of the real dodge, and its note is on the card");
+ok2(/Decree/.test(text(dcard)) && dcard.flags.flowstate.defense.dodge === orc.system.derived.dodgeDie + Pp, "A charge on the dodge roll is offered as part of the real dodge, and its note is on the card");
 
 console.log("== Verdict, Entropy and Balance after the attack");
 reset();
@@ -159,7 +160,7 @@ await place("mental-order-dream:verdict");
 let atk = { total: 14 }, dod = synth("2d10", 10);
 dialog = html => ({ adj: "1" });
 let ar = await CH.afterResolve({ attacker: orc, target: ally, atk, dodge: dod, result: { hit: true, crit: false, critStacks: 0 }, attackDie: 20 });
-ok2(ar?.result.crit && ar.dmgAdjust === 10, "Verdict turns a regular hit into a crit and adds 10 damage");
+ok2(ar?.result.crit && ar.dmgAdjust === 10 * Pp, "Verdict turns a regular hit into a crit and adds 10 damage");
 reset();
 await place("mental-chaos-nightmare:entropy", { "choice:size": "up" });
 atk = { total: 30 }; dod = synth("2d10", 10);
@@ -189,7 +190,7 @@ reset();
 await place("mental-order-dream:mandate", { "choice:sign": "plus", enhance: true });
 dialog = html => ({ [`m:${idOf(html, "m")}`]: true });
 const md = await CH.onDamage({ actor: orc });
-ok2(md?.flat === 10, "An Enhanced Mandate changes damage by 10");
+ok2(md?.flat === 10 * Pp, "An Enhanced Mandate changes damage by 10");
 
 console.log("== Enhanced Larceny steals the action");
 reset(); clearAll(hero);

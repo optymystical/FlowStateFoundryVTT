@@ -137,10 +137,10 @@ MODES["mental-peace-dream:pacify"] = async c => {
   for (const e of fx(c.target, "pacify")) if (dataOf(e).caster === c.attacker.uuid) await changeEffect(e, null);       // doesn't stack
   const enh = !!c.enhanced;
   await putSpellEffect(c.target, { kind: "pacify", caster: c.attacker.uuid, name: enh ? "Pacify (Enhanced)" : "Pacify", power: c.power, enhanced: enh, mode: c.mode.id,
-    ...(enh ? { dodgeDieUp: 1, takenDice: c.power } : { attackDie: 2, dealtDice: c.power }),
-    description: enh ? `Dodge dice +1 die size, and incoming damage is reduced by ${c.power}d8, until the start of ${c.attacker.name}'s next turn.` : `Attack rolls −2 die size, and damage dealt is reduced by ${c.power}d8, until the start of ${c.attacker.name}'s next turn.` });
-  return enh ? `${esc(c.target.name)} is Pacified (Enhanced): <strong>+1 die size</strong> to dodge rolls, and incoming damage is reduced by <strong>${c.power}d8</strong>.`
-    : `${esc(c.target.name)} is Pacified: <strong>−2 die size</strong> on attack rolls, and the damage they deal is reduced by <strong>${c.power}d8</strong>.`;
+    ...(enh ? { dodgeDieUp: c.power, takenDice: c.power } : { attackDie: 2 * c.power, dealtDice: c.power }),
+    description: enh ? `Dodge dice +${c.power} die size, and incoming damage is reduced by ${c.power}d8, until the start of ${c.attacker.name}'s next turn.` : `Attack rolls −${2 * c.power} die size, and damage dealt is reduced by ${c.power}d8, until the start of ${c.attacker.name}'s next turn.` });
+  return enh ? `${esc(c.target.name)} is Pacified (Enhanced): <strong>+${c.power} die size</strong> to dodge rolls, and incoming damage is reduced by <strong>${c.power}d8</strong>.`
+    : `${esc(c.target.name)} is Pacified: <strong>−${2 * c.power} die size</strong> on attack rolls, and the damage they deal is reduced by <strong>${c.power}d8</strong>.`;
 };
 MODES["mental-peace-dream:absolution"] = async c => {
   await putSpellEffect(c.target, { kind: "absolution", caster: c.attacker.uuid, name: "Absolution (2 stacks)", stacks: 2, power: c.power, enhanced: !!c.enhanced, mode: c.mode.id,
@@ -201,9 +201,9 @@ async function serenity({ actor, roll: atk, die, net, targetActor }) {
 
 MODES["mental-war-nightmare:provoke"] = async c => {
   for (const e of fx(c.target, "provoke")) if (!c.enhanced || dataOf(e).caster === c.attacker.uuid) { if (!c.enhanced) await changeEffect(e, null); }
-  await putSpellEffect(c.target, { kind: "provoke", caster: c.attacker.uuid, name: `Provoked${c.enhanced ? " (Enhanced)" : ""}`, attackDieUp: 2, power: c.power, enhanced: !!c.enhanced, mode: c.mode.id,
-    description: `Their first set of AP on their turn must be spent attacking the nearest target, with +2 die size on that attack roll${c.enhanced ? "; the caster chooses the attack and/or its target" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-  return `${esc(c.target.name)} is <strong>Provoked</strong>: their first AP on their turn must go on an attack at the nearest target (+2 die size on the roll)${c.enhanced ? `; <em>you</em> choose the attack or the target` : ""}.`;
+  await putSpellEffect(c.target, { kind: "provoke", caster: c.attacker.uuid, name: `Provoked${c.enhanced ? " (Enhanced)" : ""}`, attackDieUp: 2 * c.power, power: c.power, enhanced: !!c.enhanced, mode: c.mode.id,
+    description: `Their first set of AP on their turn must be spent attacking the nearest target, with +${2 * c.power} die size on that attack roll${c.enhanced ? "; the caster chooses the attack and/or its target" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
+  return `${esc(c.target.name)} is <strong>Provoked</strong>: their first AP on their turn must go on an attack at the nearest target (+${2 * c.power} die size on the roll)${c.enhanced ? `; <em>you</em> choose the attack or the target` : ""}.`;
 };
 MODES["mental-war-nightmare:warzone"] = async c => {
   await putSpellEffect(c.target, { kind: "warzone", stack: true, caster: c.attacker.uuid, name: `Warzone${c.enhanced ? " (Enhanced)" : ""}`, power: c.power, enhanced: !!c.enhanced, mode: c.mode.id,

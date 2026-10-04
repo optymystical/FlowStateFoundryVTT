@@ -20,7 +20,9 @@ const minOf = (a, k) => ab.statMinOf(a, k);
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
 const SOCKET = "system.flowstate";
 const half = n => Math.floor(n / 2);
-const sgn = d => (d?.sign === "minus" ? -1 : 1);
+const pw = d => Math.max(1, Math.floor(Number(d?.power)) || 1);                      // Wonder Power: every bolded number grows with it
+const sign = d => (d?.sign === "minus" ? -1 : 1);
+const sgn = d => sign(d) * pw(d);
 const upDown = d => (d?.size === "down" ? -1 : 1);
 
 /* -------------------------------------------- */
@@ -134,9 +136,9 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
       if (d.charge === "decree") {
         const myMax = type === "attack" ? caster.system.derived.attackDie : type === "dodge" ? 2 * caster.system.derived.dodgeDie : top;
         const base = half(d.enhanced ? myMax : top);
-        return `<option value="${c.effect.id}">Decree: the roll becomes ${Math.max(0, base + sgn(d))} (half of ${d.enhanced ? "your" : "their"} max ${d.enhanced ? myMax : top}, ${d.sign === "minus" ? "−" : "+"}1)</option>`;
+        return `<option value="${c.effect.id}">Decree: the roll becomes ${Math.max(0, base + sgn(d))} (half of ${d.enhanced ? "your" : "their"} max ${d.enhanced ? myMax : top}, ${d.sign === "minus" ? "−" : "+"}${pw(d)})</option>`;
       }
-      const delta = { fracture: 2, larceny: 1 }[d.charge] * upDown(d);
+      const delta = { fracture: 2, larceny: 1 }[d.charge] * pw(d) * upDown(d);
       return `<option value="${c.effect.id}">${name}: reroll at ${count > 1 ? `${count}d` : "d"}${shiftDie(die, delta, count)}${d.charge === "fracture" && d.enhanced ? ", keeping Advantage/Disadvantage" : ""}</option>`;
     };
     const replace = rows.filter(c => c.d.charge !== "mandate");
@@ -144,7 +146,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
     const html = `<p><strong>${esc(actor.name)}</strong> made ${/^[aeiou]/.test(rollName(type)) ? "an" : "a"} <strong>${rollName(type)}</strong>${label ? ` (${esc(label)})` : ""}: <strong>${total}</strong>${roll.formula ? ` <small>(${esc(roll.formula)})</small>` : ""}. Spend your charges on it?</p>
       ${replace.length ? `<div class="fs-field"><label>Replace the roll</label><select name="replace"><option value="">— Leave the roll —</option>${replace.map(opt).join("")}</select></div>` : ""}
       ${replace.map(c => (pre !== null && c.d.charge === "decree" ? `<div><label><input type="checkbox" name="p:${c.effect.id}"> Decree + Preordained (${c.d.sign === "minus" ? "−" : "+"}${pre}, ⚡ ${minOf(caster, "pon")})</label></div>` : "")).join("")}
-      ${mand.map(c => `<div><label class="fs-cast-mod"><input type="checkbox" name="m:${c.effect.id}"> <strong>Mandate</strong> ${c.d.sign === "minus" ? "−1" : "+1"} to the result${pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> + Preordained (${pre}, ⚡ ${minOf(caster, "pon")})</label>` : ""}</label></div>`).join("")}
+      ${mand.map(c => `<div><label class="fs-cast-mod"><input type="checkbox" name="m:${c.effect.id}"> <strong>Mandate</strong> ${c.d.sign === "minus" ? "−" : "+"}${pw(c.d)} to the result${pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> + Preordained (${pre}, ⚡ ${minOf(caster, "pon")})</label>` : ""}</label></div>`).join("")}
       ${control && replace.some(c => c.d.charge !== "decree") ? `<label class="fs-cast-mod"><input type="checkbox" name="control"> <strong>Control</strong> <small>reroll the forced roll once and use the new result</small></label>` : ""}`;
     const ans = await askFor(caster, { title: `${caster.name}'s charges on ${actor.name}`, html, ok: "Spend" });
     if (!ans) continue;
@@ -153,7 +155,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
     const lines = [];
     const rep = replace.find(c => c.effect.id === ans.replace);
     let preOn = 0;
-    const withPre = c => ans[`p:${c.effect.id}`] && pre !== null ? sgn(c.d) * pre : 0;
+    const withPre = c => ans[`p:${c.effect.id}`] && pre !== null ? sign(c.d) * pre : 0;
     const payPre = async c => { if (!ans[`p:${c.effect.id}`] || pre === null) return false; return pay(caster, { energy: minOf(caster, "pon") }, "Preordained"); };
     if (rep) {
       const d = rep.d;
@@ -163,7 +165,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
         n = Math.max(0, half(d.enhanced ? myMax : top) + sgn(d) + p);
         lines.push(`Decree: ${esc(actor.name)}'s ${rollName(type)} becomes the static result <strong>${n}</strong>${p ? ` (${p > 0 ? "+" : "−"}${Math.abs(p)} Preordained)` : ""}.`);
       } else {
-        const delta = { fracture: 2, larceny: 1 }[d.charge] * upDown(d);
+        const delta = { fracture: 2, larceny: 1 }[d.charge] * pw(d) * upDown(d);
         const keep = d.charge === "fracture" && d.enhanced;
         const nd = shiftDie(die, delta, count);
         let r = await reroll(count, nd, keep ? net : 0);
@@ -188,7 +190,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
       if (!ans[`m:${c.effect.id}`]) continue;
       const p = (await payPre(c)) ? withPre(c) : 0;
       n += sgn(c.d) + p; preOn += p;
-      lines.push(`Mandate: the result ${sgn(c.d) > 0 ? "+" : "−"}1${p ? `, ${p > 0 ? "+" : "−"}${Math.abs(p)} Preordained` : ""} → <strong>${Math.max(0, n)}</strong>.`);
+      lines.push(`Mandate: the result ${sgn(c.d) > 0 ? "+" : "−"}${pw(c.d)}${p ? `, ${p > 0 ? "+" : "−"}${Math.abs(p)} Preordained` : ""} → <strong>${Math.max(0, n)}</strong>.`);
       used.push(c);
     }
     if (!used.length) continue;
@@ -255,18 +257,18 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
     const pre = preordainedOf(caster);
     const to = res.crit ? "a regular hit" : "a crit";
     const ans = await askFor(caster, { title: `${caster.name}: Verdict on ${attacker.name}`, ok: "Pass judgment", html: `<p>${esc(attacker.name)}'s attack landed as <strong>${res.crit ? "a crit" : "a regular hit"}</strong> (attack ${atk.total} vs dodge ${dodge.total}). Use Verdict to make it ${to}?</p>
-      <div class="fs-field"><label>Damage</label><select name="adj"><option value="1">Add ${res.crit ? 5 : 10} damage</option><option value="-1">Remove ${res.crit ? 5 : 10} damage</option></select></div>
+      <div class="fs-field"><label>Damage</label><select name="adj"><option value="1">Add ${pw(c.d) * (res.crit ? 5 : 10)} damage</option><option value="-1">Remove ${pw(c.d) * (res.crit ? 5 : 10)} damage</option></select></div>
       ${c.d.enhanced ? `<div class="fs-field"><label>Also give the attack</label><select name="stack"><option value="1">a Strengthened stack</option><option value="-1">a Weakened stack</option></select></div>` : ""}
       ${pre !== null ? `<label class="fs-cast-mod"><input type="checkbox" name="pre"> <strong>Preordained</strong> <small>⚡ ${minOf(caster, "pon")}: ±${pre} more damage</small></label>` : ""}` });
     if (!ans) continue;
     const swapped = shape(res.crit ? "hit" : "crit", { outcome: `${res.crit ? "Hit" : "Critical Hit"} (Verdict)` });
-    const sign = Number(ans.adj) < 0 ? -1 : 1;
-    const dmg = sign * (swapped.crit ? 10 : 5);
+    const sgnV = Number(ans.adj) < 0 ? -1 : 1;
+    const dmg = (Number(ans.adj) < 0 ? -1 : 1) * pw(c.d) * (swapped.crit ? 10 : 5);
     let extra = 0;
-    if (ans.pre && pre !== null && (await pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) extra = sign * pre;
+    if (ans.pre && pre !== null && (await pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) extra = sgnV * pre;
     res = { ...swapped, critStacks: swapped.critStacks + (c.d.enhanced ? Number(ans.stack) || 0 : 0) };
     dmgAdjust += dmg + extra;
-    const line = `Verdict: ${esc(attacker.name)}'s ${swapped.crit ? "regular hit becomes a <strong>crit</strong>" : "crit becomes a <strong>regular hit</strong>"}, ${sign > 0 ? "+" : "−"}${Math.abs(dmg + extra)} damage${c.d.enhanced ? `, and a stack of ${Number(ans.stack) < 0 ? "Weakened" : "Strengthened"}` : ""}.`;
+    const line = `Verdict: ${esc(attacker.name)}'s ${swapped.crit ? "regular hit becomes a <strong>crit</strong>" : "crit becomes a <strong>regular hit</strong>"}, ${sgnV > 0 ? "+" : "−"}${Math.abs(dmg + extra)} damage${c.d.enhanced ? `, and a stack of ${Number(ans.stack) < 0 ? "Weakened" : "Strengthened"}` : ""}.`;
     notes.push(line);
     await changeEffect(c.effect, null);
     await post(caster, { title: `${esc(caster.name)} — Verdict`, body: `<div class="fs-result">${line}</div>` });
@@ -276,7 +278,7 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
     for (const [casterUuid, list] of byCaster(chargesOn(who, ["entropy"]))) {
       const caster = await fromUuid(casterUuid);
       if (!caster || !res.crit) continue;
-      const c = list[0], d = c.d, delta = 3 * upDown(d);
+      const c = list[0], d = c.d, delta = 3 * pw(d) * upDown(d);
       const control = tier(caster, "mental-chaos-nightmare") >= 4;
       const dodgeDie = target.system.derived.dodgeDie, atkDie = attackDie ?? attacker.system.derived.attackDie;
       const ans = await askFor(caster, { title: `${caster.name}: Entropy on ${who.name}`, ok: "Spend Entropy", html: `<p>${esc(who.name)} ${role === "attack" ? "would crit" : "would be crit"} (attack ${atk.total} vs dodge ${dodge.total}). Spend Entropy for an additional roll (die size ${delta > 0 ? "+" : "−"}${Math.abs(delta)}${role === "dodge" ? ", dodge dice by half" : ""}${d.enhanced ? ", keeping the original's effects" : ""})?</p>
@@ -345,18 +347,18 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
     const replace = list.filter(c => c.d.charge !== "mandate" && (c.d.charge !== "fracture" || formula));
     const mand = list.filter(c => c.d.charge === "mandate");
     const opt = c => c.d.charge === "decree"
-      ? `<option value="${c.effect.id}">Decree: the damage becomes ${Math.max(0, half(c.d.enhanced ? formulaMax(formula) : top) + sgn(c.d))} (half of ${top}, ${c.d.sign === "minus" ? "−" : "+"}1)</option>`
+      ? `<option value="${c.effect.id}">Decree: the damage becomes ${Math.max(0, half(c.d.enhanced ? formulaMax(formula) : top) + sgn(c.d))} (half of ${top}, ${c.d.sign === "minus" ? "−" : "+"}${pw(c.d)})</option>`
       : `<option value="${c.effect.id}">Fracture: reroll as ${esc(shiftFormula(formula, 2 * upDown(c.d)))}</option>`;
     const ans = await askFor(caster, { title: `${caster.name}: charges on ${actor.name}'s damage`, ok: "Spend", html: `<p>${esc(actor.name)} rolled damage (${esc(formula)}): <strong>${totals.join(" + ")}</strong>. Spend your charges?</p>
       ${replace.length ? `<div class="fs-field"><label>Replace the roll</label><select name="replace"><option value="">— Leave it —</option>${replace.map(opt).join("")}</select></div>` : ""}
       ${replace.filter(c => c.d.charge === "decree" && pre !== null).map(c => `<div><label><input type="checkbox" name="p:${c.effect.id}"> Decree + Preordained (${pre}, ⚡ ${minOf(caster, "pon")})</label></div>`).join("")}
-      ${mand.map(c => `<div><label class="fs-cast-mod"><input type="checkbox" name="m:${c.effect.id}"> <strong>Mandate</strong> ${c.d.sign === "minus" ? "−" : "+"}10${pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> + Preordained ×10 (${pre * 10}, ⚡ ${minOf(caster, "pon")})</label>` : ""}</label></div>`).join("")}` });
+      ${mand.map(c => `<div><label class="fs-cast-mod"><input type="checkbox" name="m:${c.effect.id}"> <strong>Mandate</strong> ${c.d.sign === "minus" ? "−" : "+"}${10 * pw(c.d)}${pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> + Preordained ×10 (${pre * 10}, ⚡ ${minOf(caster, "pon")})</label>` : ""}</label></div>`).join("")}` });
     if (!ans) continue;
     const rep = replace.find(c => c.effect.id === ans.replace);
     if (rep) {
       const d = rep.d;
       if (d.charge === "decree") {
-        const p = ans[`p:${rep.effect.id}`] && pre !== null && (await pay(caster, { energy: minOf(caster, "pon") }, "Preordained")) ? sgn(d) * pre : 0;
+        const p = ans[`p:${rep.effect.id}`] && pre !== null && (await pay(caster, { energy: minOf(caster, "pon") }, "Preordained")) ? sign(d) * pre : 0;
         const n = Math.max(0, half(top) + sgn(d) + p);
         out.totals = totals.map(() => n);
         out.notes.push(`Decree: the damage roll becomes the static <strong>${n}</strong>.`);
@@ -373,7 +375,7 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
     for (const c of mand) {
       if (!ans[`m:${c.effect.id}`]) continue;
       let n = sgn(c.d) * 10;
-      if (ans[`p:${c.effect.id}`] && pre !== null && (await pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) n += sgn(c.d) * pre * 10;
+      if (ans[`p:${c.effect.id}`] && pre !== null && (await pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) n += sign(c.d) * pre * 10;
       out.flat += n;
       out.notes.push(`Mandate: ${n > 0 ? "+" : "−"}${Math.abs(n)} damage.`);
       await changeEffect(c.effect, null);

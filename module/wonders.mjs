@@ -61,8 +61,8 @@ const putPending = (who, caster, label, then) => putSpellEffect(who, { kind: "pe
 async function runThen(actor, caster, then) {
   const who = caster?.name ?? "someone";
   if (then.type === "tempHP") return putTemp(actor, caster, then.n, then.mode);
-  if (then.type === "dodgeUp") return putSpellEffect(actor, { kind: "dodgeUp", caster: caster.uuid, name: "Flourish (+1 dodge die size)", dodgeDieUp: 1, mode: then.mode,
-    description: `Dodge dice are one size bigger until the start of ${who}'s next turn. Doesn't stack.` });
+  if (then.type === "dodgeUp") return putSpellEffect(actor, { kind: "dodgeUp", caster: caster.uuid, name: `Flourish (+${then.power ?? 1} dodge die size)`, dodgeDieUp: then.power ?? 1, mode: then.mode,
+    description: `Dodge dice are ${then.power ?? 1} size${(then.power ?? 1) === 1 ? "" : "s"} bigger until the start of ${who}'s next turn. Doesn't stack.` });
   if (then.type === "heal") {
     const html = await heal(actor, caster, then.n);
     return post(actor, { title: `${esc(actor.name)} — Renewal`, body: `<div class="fs-result"><i class="fa-solid fa-heart-pulse"></i> ${html}</div>` });
@@ -148,9 +148,9 @@ export const MODES = {
     return `${esc(c.target.name)} gets <strong>${n} temp HP</strong> at the start of their next turn (until the start of your next turn).`;
   },
   async "mental-life-dream:flourish"(c) {
-    if (c.enhanced || c.now) { await putSpellEffect(c.target, { kind: "dodgeUp", caster: c.attacker.uuid, name: "Flourish (+1 dodge die size)", dodgeDieUp: 1, mode: c.mode.id, description: `Dodge dice are one size bigger until the start of ${c.attacker.name}'s next turn.` }); return `${esc(c.target.name)}'s dodge dice are <strong>one size bigger</strong> now.`; }
-    await putPending(c.target, c.attacker, "Flourish", { type: "dodgeUp", mode: c.mode.id });
-    return `${esc(c.target.name)}'s dodge dice get <strong>+1 die size</strong> from the start of their next turn (until the start of your next turn).`;
+    if (c.enhanced || c.now) { await putSpellEffect(c.target, { kind: "dodgeUp", caster: c.attacker.uuid, name: `Flourish (+${c.power} dodge die size)`, dodgeDieUp: c.power, mode: c.mode.id, description: `Dodge dice are ${c.power} size${c.power === 1 ? "" : "s"} bigger until the start of ${c.attacker.name}'s next turn.` }); return `${esc(c.target.name)}'s dodge dice are <strong>one size bigger</strong> now.`; }
+    await putPending(c.target, c.attacker, "Flourish", { type: "dodgeUp", mode: c.mode.id, power: c.power });
+    return `${esc(c.target.name)}'s dodge dice get <strong>+${c.power} die size</strong> from the start of their next turn (until the start of your next turn).`;
   },
   async "mental-life-dream:renewal"(c) {
     const n = 4 * c.power;
@@ -169,17 +169,17 @@ export const MODES = {
     return `Wither removes <strong>${n}</strong> health from ${esc(c.target.name)} (${2 * c.power}d10 = ${r.total}${c.stacks ? ` → ${n}` : ""}), ignoring objects and defenses${c.enhanced ? ", and that much Max HP too" : ""}.`;
   },
   async "mental-death-nightmare:waste"(c) {
-    await putSpellEffect(c.target, { kind: "waste", stack: true, caster: c.attacker.uuid, name: `Waste${c.enhanced ? " (Enhanced)" : ""}`, enhanced: !!c.enhanced, mode: c.mode.id,
-      description: `A charge: the next dodge roll is a die size smaller by 2${c.enhanced ? " and has Disadvantage" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-    return `${esc(c.target.name)} carries a <strong>Waste</strong> charge: their next dodge roll has its die size reduced by 2${c.enhanced ? " and Disadvantage" : ""} (used automatically).`;
+    await putSpellEffect(c.target, { kind: "waste", stack: true, caster: c.attacker.uuid, name: `Waste${c.enhanced ? " (Enhanced)" : ""}`, enhanced: !!c.enhanced, power: c.power, mode: c.mode.id,
+      description: `A charge: the next dodge roll is ${2 * c.power} die sizes smaller${c.enhanced ? " and has Disadvantage" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
+    return `${esc(c.target.name)} carries a <strong>Waste</strong> charge: their next dodge roll has its die size reduced by ${2 * c.power}${c.enhanced ? " and Disadvantage" : ""} (used automatically).`;
   },
   async "mental-death-nightmare:execute"(c) {
-    const r = await roll(`1d12`);
+    const r = await roll(`${c.power}d12`);
     rolled.push(r);
-    const up = r.total * c.power;
+    const up = r.total;
     await putSpellEffect(c.target, { kind: "execute", stack: true, caster: c.attacker.uuid, name: `Execute (+${up} Pain Threshold)`, painUp: up, execute: !!c.enhanced, mode: c.mode.id,
       description: `Pain Threshold raised by ${up}${c.enhanced ? "; if their health falls below half of the raised Pain Threshold they die" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-    return `${esc(c.target.name)}'s Pain Threshold is raised by <strong>${up}</strong> (1d12 = ${r.total}${c.power > 1 ? ` × ${c.power}` : ""})${c.enhanced ? `. <strong>If their health drops below half of it they die.</strong>` : ""}`;
+    return `${esc(c.target.name)}'s Pain Threshold is raised by <strong>${up}</strong> (${c.power}d12 = ${r.total})${c.enhanced ? `. <strong>If their health drops below half of it they die.</strong>` : ""}`;
   },
 
   /* ---- Beyond (Dream) ---- */
@@ -368,7 +368,8 @@ export function dodgeWaste(actor) {
   const charges = spellEffects(actor, "waste");
   if (!charges.length) return null;
   const e = charges[0], d = e.flags.flowstate.spellEffect;
-  return { pen: 2, net: d.enhanced ? -1 : 0, effect: e, note: `Waste: die size −2${d.enhanced ? " and Disadvantage" : ""}` };
+  const pen = 2 * (d.power ?? 1);
+  return { pen, net: d.enhanced ? -1 : 0, effect: e, note: `Waste: die size −${pen}${d.enhanced ? " and Disadvantage" : ""}` };
 }
 export const useWaste = w => changeEffect(w.effect, null);
 

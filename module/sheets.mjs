@@ -15,6 +15,7 @@ import * as skills from "./skills.mjs";
 import { askImage } from "./pictures.mjs";
 import * as ab from "./abilities.mjs";
 import * as mentalRules from "./mental-rules.mjs";
+import { treePower, scaleEntry } from "./tree-scale.mjs";
 import * as mental from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
 import * as chargesMod from "./charges.mjs";
@@ -957,12 +958,14 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     const next = tree ? skills.nextTier(state, tree, sys.skills.unspent, { inCombat }) : null;
     const lockedCount = skills.treesFor(arch.id).length - available.length;
     const ectx = energyContext(this.document);
+    const tp = treePower(this.document, tree);
     return {
       archetypes: skills.ARCHETYPES.map(a => ({ ...a, selected: a.id === arch.id })),
       placeholder: arch.placeholder ?? "",
       trees: available.map(t => ({ id: t.id, selected: t.id === sel.tree,
         label: `${t.name} — Tier ${skills.tierOf(state, t.id)}/${skills.MAX_TIER}` })),
       weaponNote: weaponTreeNote(tree, state),
+      scaleNote: tp?.power > 1 ? `Numbers are worked out for your ${tp.kind} Power ${tp.power}.` : "",
       lockedNote: lockedCount ? `${lockedCount} more tree${lockedCount === 1 ? "" : "s"} unlock as you raise ${skills.theoryFor(arch.id)?.name}.` : "",
       tree: tree && {
         id: tree.id, name: tree.name, current,
@@ -970,7 +973,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
           const owned = t.tier <= current;
           const isNext = t.tier === current + 1;
           return {
-            ...t, entries: t.entries.map(e => withEnergy(e, ectx)), owned, isNext, locked: !owned && !isNext,
+            ...t, entries: t.entries.map(e => scaleEntry(withEnergy(e, ectx), tp)), owned, isNext, locked: !owned && !isNext,
             free: t.tier === 0,
             cost: t.tier, canUnlock: isNext && next?.ok && this.isEditable,
             reason: isNext ? next.reason : `Unlock Tier ${t.tier - 1} first.`,

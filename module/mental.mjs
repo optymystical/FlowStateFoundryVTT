@@ -146,7 +146,7 @@ export function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const extraNet = extras.reduce((n, x) => n + (x.net ?? 0), 0), extraStacks = extras.reduce((n, x) => n + (x.stacks ?? 0), 0);
   const net = R.alignmentNet(align.value, wonder.kind) + kinetic + extraNet;
   const power = check.power;
-  const text = R.scaleMentalText(v.enhance ? `${mode.base} Enhanced: ${mode.enhanced || "(no extra effect)"}` : mode.base, power);
+  const text = R.scaleMentalText(v.enhance ? `${mode.base} Enhanced: ${mode.enhanced || "(no extra effect)"}` : mode.base, power, mode.name);
   const errors = check.ok ? [] : [check.reason];
   if (v.burst && ctx.theory < 1) errors.push("Burst needs Mental Theory Tier 1.");
   if (wobs && R.RANGES[range].ap !== (wobs.ap || wobs.rp)) errors.push(`Will of Body and Spirit: the Range has to cost ${wobs.ap || wobs.rp} ${wobs.ap ? "AP" : "RP"}, like your attack.`);
@@ -241,7 +241,7 @@ export async function pickMode(actor, modes, title) {
 export async function manifestAt(actor, mode, target, { power, enhanced, range = "ranged", choices = {}, spread = false, label = null, extraModes = [] } = {}) {
   const wonder = R.wonderById(mode.wonder);
   const align = alignmentOf(actor);
-  const text = R.scaleMentalText(enhanced ? `${mode.base} Enhanced: ${mode.enhanced || ""}` : mode.base, power);
+  const text = R.scaleMentalText(enhanced ? `${mode.base} Enhanced: ${mode.enhanced || ""}` : mode.base, power, mode.name);
   const mental = { mode: mode.id, wonder: wonder.id, kind: wonder.kind, power, enhanced: !!enhanced, burst: false, range, deepened: false, text, caster: actor.uuid, choices, spread, extraModes };
   return performAttack(actor, { ...baseAttack, label: `${label ?? mode.name} (${mode.name})`, net: R.alignmentNet(align.value, wonder.kind), melee: false, area: false,
     notes: [`${label ?? "Free"}: ${mode.name} spreads to ${target.name}; its effect applies immediately`], mental, targetActors: [target] });

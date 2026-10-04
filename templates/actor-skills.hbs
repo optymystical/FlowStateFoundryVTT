@@ -25,6 +25,7 @@
   <p class="hint">{{skillView.placeholder}}</p>
   {{else}}
   {{#if skillView.lockedNote}}<p class="hint">{{skillView.lockedNote}}</p>{{/if}}
+  {{#if skillView.scaleNote}}<p class="hint"><i class="fa-solid fa-scale-balanced"></i> {{skillView.scaleNote}}</p>{{/if}}
   {{#if skillView.weaponNote}}<p class="hint fs-weapon-note"><i class="fa-solid fa-khanda"></i> {{skillView.weaponNote}}</p>{{/if}}
 
   {{#with skillView.tree}}

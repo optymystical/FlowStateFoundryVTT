@@ -4,6 +4,7 @@
  * and abilities/passives. Icons are the Mental equipment: a Form with a Ward effect and a Tenet.
  */
 import { TREES } from "./trees.mjs";
+import { BOLD } from "./mental-bold.mjs";
 
 export const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
@@ -163,11 +164,27 @@ export const tenetChoices = (align, state = null) => WONDERS.filter(w => w.kind 
 /*  Numbers in text                             */
 /* -------------------------------------------- */
 
-/** Scale a number in Mode / Tenet / Ward text by Wonder Power: dice counts and the other bolded amounts (temp HP, health, shielding, Force dice). */
-export function scaleMentalText(text, power) {
+/** Multiply the numbers in a bolded span by Power: dice counts (2d10 → 6d10) and plain numbers (20 temp HP → 60 temp HP). */
+const scaleSpan = (span, P) => span.replace(/(\d+)d(\d+)/g, (m, n, sides) => `${n * P}d${sides}`).replace(/(?<![\d.d])(\d+)(?!d\d|\d)/g, (m, n) => String(n * P));
+/**
+ * Scale a Mode / Tenet / ability's text by Wonder Power: every bolded effect in the doc grows with it (the Mental doc lists base values).
+ * `name` finds the bolded spans (`mental-bold.mjs`, generated from the doc); without them the common units are scaled instead.
+ */
+export function scaleMentalText(text, power, name = null) {
   const P = Math.max(1, Math.floor(power) || 1);
-  if (P <= 1) return String(text ?? "");
-  return String(text ?? "")
-    .replace(/\b(\d+)d(\d+)\b/g, (m, n, s) => `${n * P}d${s}`)
+  const src = String(text ?? "");
+  if (P <= 1) return src;
+  const spans = name ? BOLD[name] : null;
+  if (spans?.length) {
+    let out = src;
+    for (const span of spans) {
+      const variants = [span, span.replace(/^\+/, "+"), span.replace(/-/g, "−")];
+      const hit = variants.find(v => out.includes(v));
+      if (hit) out = out.replace(hit, scaleSpan(hit, P));
+    }
+    return out;
+  }
+  return src
+    .replace(/\b(\d+)d(\d+)\b/g, (m, n, sides) => `${n * P}d${sides}`)
     .replace(/\b(\d+)( (?:temp HP|health|shielding|negation|Lift|Slow stacks?)\b)/g, (m, n, rest) => `${n * P}${rest}`);
 }

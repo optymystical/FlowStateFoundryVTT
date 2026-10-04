@@ -125,7 +125,7 @@ const dd0 = orc.system.derived.dodgeDie;
 hero.system.trees["mental-life-dream"] = 5;
 await hit("mental-life-dream:flourish");
 await W.pendingTurnStart(orc);
-ok2(orc.system.derived.dodgeDie === dd0 + 1, "Flourish: dodge dice a size bigger from the start of their next turn");
+ok2(orc.system.derived.dodgeDie === dd0 + R.wonderPower(hero.system.derived.effective.pon.value), "Flourish: dodge dice +1 size × Power from the start of their next turn");
 reset();
 orc.system.hp.value = 400; orc.flags.flowstate = { lossLog: [{ at: 1000, n: 32 }] }; hero.flags.flowstate = { ...(hero.flags.flowstate ?? {}), turnStartedAt: 0 };
 await hit("mental-life-dream:renewal", { enhance: true });
@@ -169,7 +169,7 @@ hero.system.trees["mental-theory"] = 2;
 // the Orc attacks the Seer; the Orc's own dodge is what Waste shrinks, so make the Seer attack the Orc
 refresh(); target(orc); seq = [20]; await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged" });
 seq = [8]; await actions.defend(lastAtk(), 0, "dodge");
-ok2(formulas0.some(f => new RegExp(`^2d${orc.system.derived.dodgeDie - 2}`).test(f)) && effs(orc, "waste").length === 0, "Waste: the next dodge roll is 2 die sizes smaller, and the charge is used");
+ok2(formulas0.some(f => new RegExp(`^2d${orc.system.derived.dodgeDie - 2 * R.wonderPower(hero.system.derived.effective.snap.value)}`).test(f)) && effs(orc, "waste").length === 0, "Waste: the next dodge roll is 2 × Power die sizes smaller, and the charge is used");
 globalThis.Roll = origRoll;
 reset();
 orc.system.hp.value = 432;

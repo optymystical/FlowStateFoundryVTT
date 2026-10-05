@@ -10,6 +10,7 @@ import * as fociEngine from "./foci.mjs";
 import * as conjure from "./conjure.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
+import { NpcWizard } from "./npc-wizard.mjs";
 import "./integrations.mjs";
 import * as pictures from "./pictures.mjs";
 import "./mental.mjs";
@@ -211,6 +212,7 @@ Hooks.once("init", () => {
   game.settings.register("flowstate", "migratedCreationLock", { scope: "world", config: false, type: Boolean, default: false });
 
   game.flowstate.CharacterWizard = CharacterWizard;
+  game.flowstate.NpcWizard = NpcWizard;
   actions.GM_ACTIONS.createCharacter = createCharacterForUser;
 
   // Chat cards waiting on a choice are tinted: the attacker's choices in one color, the defender's in another.
@@ -742,6 +744,15 @@ Hooks.on("renderActorDirectory", (app, html) => {
   btn.addEventListener("click", () => CharacterWizard.open());
   const header = root.querySelector(".header-actions") ?? root.querySelector(".directory-header") ?? root;
   header.prepend(btn);
+  // The NPC wizard is GM-only: the button isn't even added for anyone else.
+  if (game.user.isGM && !root.querySelector(".fs-new-npc")) {
+    const npcBtn = document.createElement("button");
+    npcBtn.type = "button";
+    npcBtn.className = "fs-new-character fs-new-npc";
+    npcBtn.innerHTML = `<i class="fa-solid fa-skull"></i> New NPC`;
+    npcBtn.addEventListener("click", () => NpcWizard.open());
+    btn.after(npcBtn);
+  }
 });
 
 /** When the GM finishes creating someone's character, open it for them. */

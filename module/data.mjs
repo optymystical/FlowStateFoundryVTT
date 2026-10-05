@@ -12,8 +12,8 @@ const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, null
 export class FlowStateActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     const stats = {};
-    // 90 starting stat points spread evenly = 10 each.
-    for (const key of Object.keys(STATS)) stats[key] = int(10);
+    // New actors start with every stat at 0 (the wizards or the GM spend the points).
+    for (const key of Object.keys(STATS)) stats[key] = int(0);
 
     const sense = initial => new f.StringField({ required: true, initial, choices: SENSE_LEVELS });
 

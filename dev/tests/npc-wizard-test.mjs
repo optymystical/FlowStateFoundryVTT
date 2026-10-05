@@ -28,8 +28,7 @@ check(v.ctx.preview.skillPoints === 30, "120 stat points at ratio 4 → 30 Skill
 change({ skillManual: true, skillPoints: 50 });
 v = await view(); check(v.ctx.preview.skillPoints === 50 && v.ctx.skillPointsField === 50, "manual Skill Points override the ratio");
 change({ skillManual: false }); v = await view(); check(v.ctx.preview.skillPoints === 30, "back to ratio-derived");
-check(w.state.stats.str + w.state.stats.dex >= 0, "stats start evenly spread");
-check(Object.values(w.state.stats).reduce((a, b) => a + b, 0) === 90, "the starting even spread uses the default 90 points");
+check(Object.values(w.state.stats).every(x => x === 0), "stats start at 0");
 NpcWizard.onEvenStats.call(w); check(Object.values(w.state.stats).reduce((a, b) => a + b, 0) === 120, "Even spread uses all 120 points");
 change({ "stats.str": 200 }); v = await view(); check(v.ctx.overspent && v.ctx.errors.some(e => /stat points are spent/.test(e)), "overspending is an error");
 NpcWizard.onEvenStats.call(w);

@@ -36,8 +36,10 @@ async function strike(c, dice, sides, type, { rend = null, label, pierce = 0 } =
   rolled.push(r);
   const n = Math.max(0, Math.floor(applyStacks(r.total, c.stacks)));
   const outcome = await damageOutcome(c.target, n, type, { archetype: "magic", rend, pierce });
-  await requestDamage(c.target, n, type, pierce, null, { silent: true, archetype: "magic", rend, shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
-  return { n, direct: outcome.toHp, r, line: `${label}: ${count}d${sides} = ${r.total}${c.stacks ? ` → ${n}` : ""} ${type} damage (${outcome.toHp} direct)` };
+  const res = await requestDamage(c.target, n, type, pierce, null, { wantResult: true, silent: true, archetype: "magic", rend, shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
+  // What an Icon's Ward (or a Premonition) negated is not "damage dealt": effects that go by it shrink with it.
+  const negated = Math.min(n, res?.negated ?? 0), dealt = n - negated, direct = res?.toHp ?? outcome.toHp;
+  return { n, dealt, direct, negated, r, line: `${label}: ${count}d${sides} = ${r.total}${c.stacks ? ` → ${n}` : ""} ${type} damage${negated ? ` (Ward negated ${negated}: ${dealt} dealt)` : ""} (${direct} direct)` };
 }
 const setCond = async (actor, data) => { if (actor.isOwner) await actor.update(data); else await requestGM("updateActor", { uuid: actor.uuid, data }); };
 
@@ -49,12 +51,12 @@ const DESTRUCTION = {
   async "mental-destruction-nightmare:corrode"(c) {
     const s = await strike(c, 2, 6, "acid", { rend: { stacks: 1 }, label: "Corrode" });
     const kind = c.enhanced ? "solid" : "stain";
-    const g = await giveStacks(c.target, kind, s.n, { caster: c.attacker });
+    const g = await giveStacks(c.target, kind, s.dealt, { caster: c.attacker });
     return `${s.line} (Strengthened against objects). ${g}`;
   },
   async "mental-destruction-nightmare:immolate"(c) {
     const s = await strike(c, 2, 10, "heat", { label: "Immolate" });
-    const g = await giveStacks(c.target, "ignite", s.n, { caster: c.attacker });
+    const g = await giveStacks(c.target, "ignite", s.dealt, { caster: c.attacker });
     return `${s.line}. ${g}${c.enhanced ? " The Ignite can spread to an adjacent target (button below)." : ""}`;
   },
   async "mental-destruction-nightmare:irradiate"(c) {
@@ -334,8 +336,8 @@ MODES["mental-perfection-nightmare:exact"] = async c => {
   rolled.push(r);
   let n = c.hit ? Math.floor(applyStacks(r.total, c.stacks + 1)) : Math.max(0, Math.floor(applyStacks(r.total, c.stacks)) - c.margin);
   const outcome = await damageOutcome(c.target, n, "physical", { archetype: "magic", pierce });
-  await requestDamage(c.target, n, "physical", pierce, null, { silent: true, archetype: "magic", shroudCtx: { source: "type:physical", attacker: c.attacker.uuid } });
-  return `Exact ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d10 = ${r.total} → <strong>${n}</strong> physical damage${c.hit ? " (Strengthened)" : ` (reduced by the ${c.margin} it missed by)`}${pierce ? `, Pierce ${pierce}` : ""} (${outcome.toHp} direct).`;
+  const res = await requestDamage(c.target, n, "physical", pierce, null, { wantResult: true, silent: true, archetype: "magic", shroudCtx: { source: "type:physical", attacker: c.attacker.uuid } });
+  return `Exact ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d10 = ${r.total} → <strong>${n}</strong> physical damage${c.hit ? " (Strengthened)" : ` (reduced by the ${c.margin} it missed by)`}${pierce ? `, Pierce ${pierce}` : ""}${res?.negated ? ` (Ward negated ${res.negated})` : ""} (${res?.toHp ?? outcome.toHp} direct).`;
 };
 MODES["mental-perfection-nightmare:hone"] = async c => {
   for (const e of fx(c.target, "hone")) await changeEffect(e, null);                     // doesn't stack
@@ -352,10 +354,11 @@ MODES["mental-perfection-nightmare:masterstroke"] = async c => {
   rolled.push(r);
   const n = c.hit ? Math.floor(applyStacks(r.total, c.stacks)) : Math.max(0, Math.floor(applyStacks(r.total, c.stacks)) - c.margin);
   const outcome = await damageOutcome(c.target, n, type, { archetype: "magic" });
-  await requestDamage(c.target, n, type, 0, null, { silent: true, archetype: "magic", shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
+  const res = await requestDamage(c.target, n, type, 0, null, { wantResult: true, silent: true, archetype: "magic", shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
   for (const e of fx(c.attacker, "pride").slice(0, prideUsed)) await changeEffect(e, null);
-  c.masterDirect = outcome.toHp;
-  return `Masterstroke ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d8 = ${r.total} → <strong>${n}</strong> ${esc(type)} damage${c.hit ? "" : ` (reduced by ${c.margin})`} (${outcome.toHp} direct)${prideUsed ? `, ${prideUsed} Pride stack${prideUsed === 1 ? "" : "s"} spent` : ""}.${c.hit && outcome.toHp > 0 ? " The direct damage reapplies to another target (button below)." : ""}`;
+  const direct = res?.toHp ?? outcome.toHp;
+  c.masterDirect = direct;
+  return `Masterstroke ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d8 = ${r.total} → <strong>${n}</strong> ${esc(type)} damage${c.hit ? "" : ` (reduced by ${c.margin})`}${res?.negated ? ` (Ward negated ${res.negated})` : ""} (${direct} direct)${prideUsed ? `, ${prideUsed} Pride stack${prideUsed === 1 ? "" : "s"} spent` : ""}.${c.hit && direct > 0 ? " The direct damage reapplies to another target (button below)." : ""}`;
 };
 ACT_PROVIDERS.push(async c => c.mode.id === "mental-perfection-nightmare:masterstroke" && c.hit && c.masterDirect > 0
   ? [{ id: "masterReapply", label: "Masterstroke: reapply", tip: "The direct damage reapplies on another target within range that you can sense (no attack roll)", cost: "free", amount: c.masterDirect, dtype: ["physical", "heat", "cold", "radiation", "acid", "electric"].includes(c.choices.dtype) ? c.choices.dtype : "physical", target: c.target.uuid, caster: c.attacker.uuid, range: c.range }] : []);

@@ -514,6 +514,7 @@ Hooks.on("createChatMessage", message => {
 /** GM applies damage on behalf of players who don't own the target. */
 Hooks.once("ready", () => {
   game.socket.on("system.flowstate", async data => {
+    if (data?.action === "damageResult") { if (data.to === game.user.id) actions.damageResult(data); return; }
     if (!game.user.isActiveGM) return;
     if (data?.action === "browseFiles") return pictures.answerBrowse(data);
     if (data?.action === "uploadChunk") return pictures.receiveUpload(data);

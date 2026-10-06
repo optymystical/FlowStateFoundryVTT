@@ -1200,9 +1200,11 @@ async function pileFolder() {
 }
 
 export const GM_ACTIONS = {
-  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone }) {
+  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, reply }) {
     const actor = await fromUuid(target);
-    if (actor) await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone });
+    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone }) : null;
+    if (reply) game.socket.emit("system.flowstate", { action: "damageResult", to: reply.to, reqId: reply.reqId, result: summarizeDamage(out) });
+    return out;
   },
   async updateActor({ uuid, data }) {
     const actor = await fromUuid(uuid);
@@ -4910,12 +4912,40 @@ export async function reachFinisher(damageMessage, kind) {
     flags: { flowstate: { reachOf: `${damageMessage.id}:impale` } } });
 }
 
-/** Apply damage directly if we own the target; otherwise ask the active GM to do it. */
+/**
+ * Apply damage directly if we own the target; otherwise ask the active GM to do it. With `wantResult` the answer is
+ * { toHp, armorLoss, negated } (waits for the GM; for effects that go by the damage dealt, after any Ward negation).
+ */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
-  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false } = {}) {
+  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wantResult = false } = {}) {
   const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone };
   if (target.isOwner) return applyDamage(target, amount, type, o);
-  return requestGM("applyDamage", { target: target.uuid, amount, type, ...o });
+  const payload = { target: target.uuid, amount, type, ...o };
+  return wantResult ? askGMDamage(payload) : requestGM("applyDamage", payload);
+}
+
+/** Damage results that are on their way back from the GM: reqId → resolver. */
+const pendingDamage = new Map();
+let damageReq = 0;
+/**
+ * Ask the GM to apply damage and wait for what came of it ({ toHp, armorLoss, negated }: a Ward may have taken some off, and effects that
+ * go by the damage dealt need to know). Gives up after two minutes (null).
+ */
+async function askGMDamage(payload) {
+  if (game.user.isGM) return summarizeDamage(await GM_ACTIONS.applyDamage(payload));
+  if (!game.users.activeGM) return requestGM("applyDamage", payload);
+  const reqId = `${game.user.id}:${++damageReq}`;
+  return new Promise(resolve => {
+    const timer = setTimeout(() => { pendingDamage.delete(reqId); resolve(null); }, 120000);
+    pendingDamage.set(reqId, v => { clearTimeout(timer); resolve(v); });
+    game.socket.emit("system.flowstate", { action: "applyDamage", ...payload, reply: { to: game.user.id, reqId } });
+  });
+}
+const summarizeDamage = out => out ? { toHp: out.toHp ?? 0, armorLoss: out.armorLoss ?? 0, negated: out.negated ?? 0 } : null;
+/** A client receives the result of damage it asked the GM for. */
+export function damageResult(data) {
+  pendingDamage.get(data.reqId)?.(data.result ?? null);
+  pendingDamage.delete(data.reqId);
 }
 
 /** Ranged reload: spends RP by reload speed (Fast 1, Average 2, Slow 3). */
@@ -5149,10 +5179,12 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
     amount = adj.amount;
   }
   // Mental: a Nightmare Ward may spend RP to negate some of it first, and a Premonition charge a lump.
-  let neg = null;
+  let neg = null, negated = 0;
   if (mentalHook && amount > 0 && !bypass) {
+    const before = amount;
     neg = await mentalHook.negate(actor, amount, type, { source: shroudCtx?.source ?? null, attacker: shroudCtx?.attacker ?? null });
     if (neg.amount !== amount) { if (neg.html && !silent) await post(actor, { title: `${esc(actor.name)} — Ward`, body: neg.html }); amount = neg.amount; }
+    negated = before - amount;
   }
   const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor });
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.
@@ -5219,6 +5251,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (out.toHp > 0 && actor.setFlag) await actor.setFlag("flowstate", "lossLog", [...(actor.getFlag("flowstate", "lossLog") ?? []).slice(-24), { at: Date.now(), n: out.toHp }]);
   // Hex (Witchery): damage from a source that isn't a Hex triggers a Harm Hex.
   if (aff && !fromHex && amount > 0 && out.toHp > 0) await aff.hexTrigger(actor, "harm");
+  out.negated = negated;                                                      // what a Ward / Premonition took off (effects "equal to the damage dealt" shrink by it)
   return out;
 }
 

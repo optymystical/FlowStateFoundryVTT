@@ -246,8 +246,8 @@ async function poisonTick(actor, e) {
       const total = applyStacks(dmg.total, stacks);
       html.push(`<div class="fs-result">${esc(actor.name)} fails: ${dice(d.n, die)} = ${dmg.total}${stacks ? ` (Strengthened → ${total})` : ""} ${typeLabel(d.type)}${d.livingDie && living ? ` (+${d.livingDie} die size: living)` : ""}${d.lethality && d.procs ? ` (Lethality: d${sides})` : ""}.</div>`);
       const extra = await dealDamage(actor, total, d, html);
-      if (d.ignite) html.push(await stackLine(actor, "ignite", total, extra.outcome, caster));
-      if (d.stain) html.push(await stackLine(actor, "stain", total, extra.outcome, caster));
+      if (d.ignite) html.push(await stackLine(actor, "ignite", extra.dealt, extra.outcome, caster));
+      if (d.stain) html.push(await stackLine(actor, "stain", extra.dealt, extra.outcome, caster));
       if (d.energy) { const r = await removeEnergy(actor, total); html.push(`<div class="fs-result">${esc(actor.name)} loses <strong>${r.removed} Energy</strong> (${r.remaining} left).</div>`); }
       if (d.arc && caster) acts.push({ act: "arc", from: actor.uuid, attacker: caster.uuid, n: d.n, sides: die, type: d.type, stacks: 0, label: "Radiation Poison" });
     }
@@ -267,9 +267,9 @@ async function dealDamage(actor, total, d, html) {
   const type = health ? "arcane" : d.type;
   const opts = { bypass: health, ignoreArmor: !!d.bypassArmor, archetype: "magic", fromHex: !!d.fromHex };
   const outcome = await damageOutcome(actor, total, type, opts);
-  await requestDamage(actor, total, type, 0, null, { silent: true, ...opts });
+  const res = await requestDamage(actor, total, type, 0, null, { wantResult: true, silent: true, ...opts });
   if (!health) html.push(`<ul class="fs-list">${outcome.lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
-  return { outcome };
+  return { outcome, dealt: total - Math.min(total, res?.negated ?? 0) };      // an Icon's Ward may have negated some: stacks "equal to the damage" go by what was dealt
 }
 async function stackLine(actor, kind, amount, outcome, caster) {
   const line = await giveStacks(actor, kind, amount, { outcome: outcome ?? null, caster });
@@ -448,9 +448,9 @@ async function comboCheck(actor, e, req = 3) {
       const total = applyStacks(r.total, d.critStacks ?? 0);
       html.push(`<div class="fs-result">${esc(actor.name)} fails and hurts themselves: ${dice(n, cb.dice[1])} = ${r.total}${d.critStacks ? ` (Strengthened → ${total})` : ""} ${typeLabel(cb.type)}, in a way that seems natural. <em>The GM can lower it if it's too large to make sense.</em></div>`);
       const out = await dealDamage(actor, total, { type: cb.type, bypassArmor: false }, html);
-      if (cb.ignite) html.push(await stackLine(actor, "ignite", total, out.outcome, caster));
-      if (cb.stain) html.push(await stackLine(actor, "stain", total, out.outcome, caster));
-      if (cb.energy) { const rm = await removeEnergy(actor, total); html.push(`<div class="fs-result">${esc(actor.name)} loses <strong>${rm.removed} Energy</strong> (${rm.remaining} left).</div>`); }
+      if (cb.ignite) html.push(await stackLine(actor, "ignite", out.dealt, out.outcome, caster));
+      if (cb.stain) html.push(await stackLine(actor, "stain", out.dealt, out.outcome, caster));
+      if (cb.energy) { const rm = await removeEnergy(actor, out.dealt); html.push(`<div class="fs-result">${esc(actor.name)} loses <strong>${rm.removed} Energy</strong> (${rm.remaining} left).</div>`); }
       if (cb.zap) acts.push({ act: "arc", from: actor.uuid, attacker: actor.uuid, n, sides: cb.dice[1], type: "radiation", stacks: 0, label: "Zap an ally", ally: true });
       if (cb.nextRoll) { await setActorFlag(actor, "disrupted", { by: d.caster }); html.push(`<div class="fs-notes">${esc(actor.name)}'s next roll of any kind has Disadvantage (Weakened if it is a damage roll).</div>`); }
     }

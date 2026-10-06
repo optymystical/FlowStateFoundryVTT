@@ -65,7 +65,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     const sm = this.parent?.flags?.flowstate?.summon;
     if (sm) {
       d.hpMax = sm.hp - Math.max(0, this.hp.lost);
-      d.pain = d.hpMax;
+      d.pain = sm.hp;                                  // (Max HP loss doesn't lower it)
       d.energyMax = sm.energy ?? 0;
       d.energyRecover = 0;
       if (sm.attackDie) d.attackDie = sm.attackDie;

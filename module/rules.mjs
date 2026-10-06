@@ -190,13 +190,14 @@ export function deriveCharacter({ stats, skillPoints, size, hpLost = 0 }) {
     total += value;
   }
   const e = k => effective[k].value;
-  const hpMax = maxHP(e("con"), e("will"), e("build"), size) - Math.max(0, hpLost);
+  const hpFull = maxHP(e("con"), e("will"), e("build"), size);
+  const hpMax = hpFull - Math.max(0, hpLost);
   return {
     bonus,
     effective,
     totalStats: total,
     hpMax,
-    pain: painThreshold(hpMax),
+    pain: painThreshold(hpFull),                       // Max HP loss doesn't lower the Pain Threshold
     restHeal: restHeal(e("con"), e("will"), e("build")),
     energyMax: maxEnergy(skillPoints),
     energyRecover: energyRecover(maxEnergy(skillPoints)),

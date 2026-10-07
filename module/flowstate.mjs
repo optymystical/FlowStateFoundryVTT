@@ -4,6 +4,7 @@ import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import * as areas from "./areas.mjs";
 import * as terrain from "./terrain.mjs";
+import { register as registerMovement } from "./movement.mjs";
 import { registerCurrencySettings, register as registerCurrency } from "./currency.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
@@ -221,6 +222,7 @@ Hooks.once("init", () => {
   actions.GM_ACTIONS.createTerrain = terrain.gmCreate;
   terrain.register();
   registerCurrency();
+  registerMovement();
 
   // Chat cards waiting on a choice are tinted: the attacker's choices in one color, the defender's in another.
   const colorType = foundry.data?.fields?.ColorField ? new foundry.data.fields.ColorField({ nullable: false, initial: "#c0392b" }) : String;
@@ -288,6 +290,12 @@ Hooks.once("init", () => {
     scope: "world", config: true, type: Boolean, default: true
   });
     registerCurrencySettings();
+    game.settings.register("flowstate", "movementCost", {
+      name: "Movement cost in combat",
+      hint: "Moving a token on its turn costs AP, but only for distance nothing has covered: AP spent on actions covers movement too (strafing), and a move's open step can pay for an ability. Enforce refuses a move the AP can't pay (the GM may overspend); Warn lets everything through and just takes the AP.",
+      scope: "world", config: true, type: String, default: "enforce",
+      choices: { enforce: "Enforce", warn: "Warn only", off: "Off" }
+    });
     game.settings.register("flowstate", "requireAmmo", {
     name: "Require ammunition",
     hint: "Reloading a ranged weapon uses Ammunition items of its type (a Misc item with an ammunition type; up to 100 per type). Off: reloads are free.",

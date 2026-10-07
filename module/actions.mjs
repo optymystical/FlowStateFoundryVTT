@@ -8,6 +8,7 @@ import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
+import { planAction, emptyLedger } from "./movement-rules.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
@@ -26,15 +27,50 @@ export function inActiveCombat(actor) {
   return combat.combatants.some(c => c.actor?.uuid === actor.uuid);
 }
 
-/** Spend AP or RP only when in an active combat. Returns false if the actor can't afford it. */
+/* ---- Movement cost in combat: the ledger (movement-rules.mjs has the rules, movement.mjs the token hooks) ---- */
+
+/** World setting: how movement is charged in combat: "enforce" (default), "warn" or "off". */
+export function movementMode() {
+  try { return game.settings.get("flowstate", "movementCost") ?? "enforce"; } catch (err) { return "enforce"; }
+}
+/** What one step of movement is for this creature: the distance it carries you and the AP it costs. */
+export function moveParams(actor) {
+  const mv = actor.system?.movement ?? {};
+  return { speedFt: (mv.speed ?? 0) * Math.max(1, mv.multiplier ?? 1), cost: mv.ap ?? 1 };
+}
+/** This turn's movement ledger for a creature (a fresh one each turn). */
+export function moveLedger(actor) {
+  const key = turnKey(), l = actor?.getFlag?.("flowstate", "moveLedger");
+  return key && l?.key === key ? { ...emptyLedger(), ...l } : emptyLedger();
+}
+export async function setMoveLedger(actor, ledger) {
+  try { await setActorFlag(actor, "moveLedger", { ...ledger, key: turnKey() }); } catch (err) { /* the ledger is bookkeeping: never block an action on it */ }
+}
+/** Is movement being tracked for this creature right now (on its own turn in combat, the setting on)? */
+export const movementTracked = actor => movementMode() !== "off" && inActiveCombat(actor) && game.combat.combatant?.actor?.uuid === actor.uuid;
+/** AP its movement still has open for abilities (shown with the AP left). */
+export const openAp = actor => (actor && movementTracked(actor) ? moveLedger(actor).openAp : 0);
+/** Spends that are movement themselves don't cover movement. */
+const MOVEMENT_SPEND = /stand|leap|jump|dash|climb|crawl|\bmove|moving/i;
+
+/**
+ * Spend AP or RP only when in an active combat. Returns false if the actor can't afford it.
+ * AP spent on an action (strafing) also pays for moving with it: it covers that much movement (see movement-rules.mjs), and an action that fits in the
+ * AP a move still has open is paid out of that.
+ */
 export async function spendPoints(actor, key, cost, what = "that") {
   if (!cost || !inActiveCombat(actor)) return true;
+  const track = key === "ap" && movementTracked(actor) && !MOVEMENT_SPEND.test(String(what));
+  const ledger = track ? moveLedger(actor) : null;
+  const plan = track ? planAction(ledger, cost, moveParams(actor)) : null;
+  if (plan?.fromOpen) { await setMoveLedger(actor, plan.ledger); return true; }
   const have = actor.system[key].value;
   if (have < cost) {
     ui.notifications.warn(`${actor.name} needs ${cost} ${key.toUpperCase()} for ${what} but has ${have}.`);
     return false;
   }
   await actor.update({ [`system.${key}.value`]: have - cost });
+  if (plan) await setMoveLedger(actor, plan.ledger);
   return true;
 }
 export const spendAP = (actor, cost, what) => spendPoints(actor, "ap", cost, what);

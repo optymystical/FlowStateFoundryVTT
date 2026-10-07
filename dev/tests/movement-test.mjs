@@ -95,6 +95,18 @@ ok2(actions.moveLedger(hero).bank === 0, "Standing up (a movement itself) does n
 const thrown = {}; const before = hero.system.ap.value;
 (handlers.preUpdateToken ?? []).forEach(f => f(token, { x: 900 }, { flowstateThrow: true, ...thrown }));
 ok2(hero.system.ap.value === before, "Forced movement (throws, knockback) isn't charged");
+const forcedCases = [{ flowstateThrow: true }, { flowstateDrag: true }, { teleport: true }, { movement: { t1: { method: "api" } } }, { movement: { t1: { method: "undo" } } }, { movement: { t1: { method: "config" } } }];
+for (const opts of forcedCases) {
+  const ap0 = hero.system.ap.value, ledger0 = JSON.stringify(actions.moveLedger(hero)), o = { ...opts };
+  const res = (handlers.preUpdateToken ?? []).map(f => f(token, { x: token.x + 800 }, o));
+  for (const f of handlers.updateToken ?? []) await f(token, { x: token.x + 800 }, o, "u1");
+  ok2(!res.includes(false) && !o.flowstateMove && hero.system.ap.value === ap0 && JSON.stringify(actions.moveLedger(hero)) === ledger0, `Forced or free movement (${Object.keys(opts)[0]}${opts.movement ? ": " + opts.movement.t1.method : ""}) costs nothing and leaves the ledger alone`);
+}
+for (const method of ["dragging", "keyboard"]) {
+  const o = { movement: { t1: { method } } };
+  (handlers.preUpdateToken ?? []).forEach(f => f(token, { x: token.x + 100 }, o));
+  ok2(!!o.flowstateMove, `A creature moving (${method}) is charged`);
+}
 combat.combatant = { actor: { uuid: "Actor.Other" } };
 r = preMove(500);
 ok2(!r.refused && !r.options.flowstateMove, "Only the creature whose turn it is pays");

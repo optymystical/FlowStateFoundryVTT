@@ -188,12 +188,34 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   reset(); orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), parrying: { dip: { style: "dip" } } };
   const dipCard = await hitMiss("mental-destruction-nightmare:corrode");
   ok2(orc.system.conditions.stain === left && 432 - hp(orc) === left && /Dip/.test(text(dipCard)), `Corrode against a Dip: Stains ${orc.system.conditions.stain}, HP lost ${432 - hp(orc)} (Dip −${dex} of ${plain.stain})`);
-  ok2(/fs-riposte-row/.test(dipCard.content) && dipCard.flags.flowstate.defense.guardRiposte === true, "…and since the Dip took it all, the Orc is offered a Riposte (with the fist)");
+  ok2(/fs-riposte-row/.test(dipCard.content) && dipCard.flags.flowstate.guardRiposte?.defender === orc.uuid, "…and since the Dip took it all, the Orc is offered a Riposte (with the fist)");
   const nMsgs = messages.length; 
   const fistItem = orc.items.find(i => i.system.weaponType === "unarmed");
   orc.system.ap.value = 6; orc.system.rp.value = 6; combat.combatant = { actor: orc };
   seq = [20]; dialog = () => ({ net: 0 }); await actions.riposte(dipCard, { itemUuid: fistItem.uuid });
   ok2(messages.length > nMsgs && messages.slice(nMsgs).some(m => /Riposte/.test(m.content ?? "")), "…and the Riposte works from the Manifest's card");
+  ok2(/fs-dip-row/.test(dipCard.content), "…and the Dip's free move is offered too");
+  orc.system.rp.value = 6; await actions.dipMove(dipCard);
+  ok2(orc.getFlag("flowstate", "freeMove") === true && orc.system.rp.value === 5, "…and works from the Manifest's card (1 RP)");
+  // Redirect (Brawling T4) against a melee Manifest that did no damage.
+  orc.system.trees["martial-brawling-methods"] = 4; orc.system.prepareDerivedData();
+  orc.flags.flowstate = { parrying: { dip: { style: "dip" } } };
+  messages.length = 0; refresh(); target(orc); seq = [20];
+  await M.manifest(hero, { mode: "mental-destruction-nightmare:corrode", range: "melee" });
+  seq = [2]; dialog = () => ({ net: 0 }); await actions.defend(lastAtk(), 0, "dodge");
+  ok2(/fs-redirect-row/.test(messages.filter(m => m.flags?.flowstate?.defense).at(-1).content), "A melee Manifest the Dip took all of also offers Redirect");
+  // Riposte after a Chant reroll: the rerolled hit is Dip'd away, so the reroll card offers the Riposte.
+  messages.length = 0; orc.flags.flowstate = { parrying: { dip: { style: "dip" } } }; refresh(); target(orc); seq = [1];
+  await M.manifest(hero, { mode: "mental-destruction-nightmare:corrode", range: "melee" });
+  seq = [40]; dialog = () => ({ net: 0 }); await actions.defend(lastAtk(), 0, "dodge");
+  const chant2 = messages.flatMap(m => m.flags?.flowstate?.mentalAct?.acts ?? []).find(a => a.id === "chant");
+  hero.system.energy.value = 200; seq = [60, 10]; if (chant2) await M.rerollAct(chant2);
+  const rr = messages.at(-1);
+  ok2(chant2 && /fs-riposte-row/.test(rr.content) && !!rr.flags?.flowstate?.guardRiposte, "A Chant reroll whose hit a Dip takes all of offers the Riposte on the reroll card");
+  const n2 = messages.length; orc.system.rp.value = 6; combat.combatant = { actor: orc }; seq = [20];
+  await actions.riposte(rr, { itemUuid: orc.items.find(i => i.system.weaponType === "unarmed").uuid });
+  ok2(messages.length > n2, "…and it can be used");
+  combat.combatant = { actor: hero };
   combat.combatant = { actor: hero };
   reset(); orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), parrying: { shatter: { style: "shatter" } } };
   const shCard = await hitMiss("mental-destruction-nightmare:corrode");

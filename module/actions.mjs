@@ -2009,6 +2009,21 @@ export async function riposteRow(target, itemUuids) {
       <button type="button" class="fs-no-riposte" data-tooltip="Pass, so the attacker's follow-up can go ahead"><i class="fa-solid fa-xmark"></i> No riposte</button></div>`;
 }
 
+/**
+ * What a guard that took all of a non-weapon attack's damage (a Manifest) earns the defender, as on a weapon's damage card: Riposte (and "No riposte"),
+ * Dip's free move, and Brawling's Redirect against a melee attack. `r` = { items, noDamage, dipZero }. Returns { html, riposte } (riposte: a row to Riposte is there).
+ */
+export async function guardRows(target, r, o = {}) {
+  let html = "";
+  const row = r.noDamage ? await riposteRow(target, r.items) : "";
+  html += row;
+  if (r.dipZero && canSpend(target, "rp", 1)) html += `<div class="fs-brawl-row fs-dip-row" data-role="defender" data-owner="${target.uuid}">
+      <button type="button" class="fs-dip-move" data-tooltip="Brawling T2: the Dip took the whole hit; spend 1 RP to move your speed right away"><i class="fa-solid fa-person-walking-arrow-right"></i> Dip: move (1 RP)</button></div>`;
+  if (r.noDamage && o.melee && ab.brawl(target, 4) && ab.fists(target)) html += `<div class="fs-brawl-row fs-redirect-row" data-role="defender" data-owner="${target.uuid}">
+      <button type="button" class="fs-redirect" data-tooltip="Target a creature next to you first"><i class="fa-solid fa-shuffle"></i> Redirect (⚡ ${ab.BRAWLING_COST.redirect(target)})</button></div>`;
+  return { html, riposte: !!row };
+}
+
 /** Take a guard off one instance of damage: { amount, notes }. Shatter's lowering is spent across the instances in order. */
 export function guardDamage(g, amount) {
   if (!g) return { amount, notes: [] };
@@ -2885,7 +2900,7 @@ export async function spotWeakness(actor) {
 
 /** Dip (Brawling T2): when the Dip took a hit to 0, spend 1 RP to move your speed right away. */
 export async function dipMove(damageMessage) {
-  const d = damageMessage.getFlag("flowstate", "damage");
+  const d = damageMessage.getFlag("flowstate", "damage") ?? damageMessage.getFlag("flowstate", "defense");       // a damage card, or a Manifest's defense card
   if (!d) return;
   if (game.messages.find(m => m.getFlag("flowstate", "dipOf") === damageMessage.id)) return ui.notifications.info("That Dip move was already used.");
   const actor = await fromUuid(d.target);
@@ -3172,8 +3187,10 @@ export async function riposte(message, { perfect = false, itemUuid = null } = {}
   else if (defense?.result?.parry?.success) {
     const p = defense.result.parry;
     defenderUuid = p.by ?? defense.target; attackerUuid = defense.attacker; item = await fromUuid(itemUuid ?? p.item);
-  } else if (defense?.guardRiposte) { defenderUuid = defense.target; attackerUuid = defense.attacker; item = itemUuid ? await fromUuid(itemUuid) : null; }
-  else return;
+  } else if (message.getFlag("flowstate", "guardRiposte")) {
+    const gr = message.getFlag("flowstate", "guardRiposte");
+    defenderUuid = gr.defender; attackerUuid = gr.attacker; item = itemUuid ? await fromUuid(itemUuid) : null;
+  } else return;
   if (findFollowup(message.id) || riposteInFlight.has(message.id)) return ui.notifications.info("Riposte was already used.");
   if (findRiposteDeclined(message.id)) return ui.notifications.info("The Riposte was passed on.");
   const defender = await fromUuid(defenderUuid);
@@ -4370,9 +4387,10 @@ export async function brawlingExtra(card, kind) {
 export async function declineRiposte(defenseMessage) {
   const defense = defenseMessage.getFlag("flowstate", "defense");
   const dmg = defenseMessage.getFlag("flowstate", "damage");
-  if (!defense?.result?.parry?.success && !dmg?.riposte) return;
+  const gr = defenseMessage.getFlag("flowstate", "guardRiposte");
+  if (!defense?.result?.parry?.success && !dmg?.riposte && !gr) return;
   if (findFollowup(defenseMessage.id) || findRiposteDeclined(defenseMessage.id)) return;
-  const defender = await fromUuid(dmg?.riposte ? dmg.target : defense.result.parry.by ?? defense.target);
+  const defender = await fromUuid(gr ? gr.defender : dmg?.riposte ? dmg.target : defense.result.parry.by ?? defense.target);
   if (!defender?.isOwner) return ui.notifications.warn(`Only ${defender?.name ?? "the defender"}'s owner can decide that.`);
   await post(defender, { title: `${esc(defender.name)} — No Riposte`, body: `<div class="fs-notes">${esc(defender.name)} doesn't riposte.</div>`,
     flags: { flowstate: { riposteDeclined: defenseMessage.id } } });
@@ -4615,7 +4633,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     if (mh?.rolls?.length) spellRolls = [...spellRolls, ...mh.rolls];
     if (mh?.push) pushInfo = mh.push;
     // A Manifest a Parry / Dip / Shatter took all the damage from earns a Riposte, like any other attack would.
-    if (mh?.riposte) { const row = await riposteRow(target, mh.riposte.items); if (row) { extra.push(row); guardRiposte = true; } }
+    if (mh?.riposte) { const g = await guardRows(target, mh.riposte, o); if (g.html) extra.push(g.html); guardRiposte = g.riposte; }
   }
   // Scorch (Slam + Flame): a failed dodge repeats the burn.
   if (result.hit && dodgeRoll) for (const e of spellEffects(target, "scorch")) {
@@ -4644,7 +4662,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
       ${extra.join("")}${more?.html ?? ""}${shatterMiss?.html ?? ""}
       <div class="fs-status"></div>
       ${action}`,
-    flags: { flowstate: { defense: { attackMessage: attackMessage.id, index, target: entry.uuid, attacker: attack.attacker, result, shatter: !!shatterMiss, guardRiposte, guardItem, dodge: dodgeRoll?.total ?? null }, knockback: pushInfo, chain: defenseChain } }
+    flags: { flowstate: { defense: { attackMessage: attackMessage.id, index, target: entry.uuid, attacker: attack.attacker, result, shatter: !!shatterMiss, guardItem, dodge: dodgeRoll?.total ?? null }, knockback: pushInfo, chain: defenseChain, ...(guardRiposte ? { guardRiposte: { defender: entry.uuid, attacker: attack.attacker } } : {}) } }
   });
   if (autoDeclineBy) await post(autoDeclineBy, { title: `${esc(autoDeclineBy.name)} — No Riposte`, body: `<div class="fs-notes">${esc(autoDeclineBy.name)} has no RP left to riposte.</div>`, flags: { flowstate: { riposteDeclined: defenseMessage.id } } });
   // "Roll damage automatically" setting: skip the button and roll straight away (no extra stacks).

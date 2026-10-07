@@ -39,7 +39,10 @@ async function guardOf(c) {
   return {
     stacks: c.stacks - (g?.weaken?.length ?? 0), items: g?.items ?? [],
     done: direct => { if (g) { g.damaged = true; g.direct += direct ?? 0; } },                // what got through to HP, for the Riposte a guard earns
-    take: n => { const d = guardDamage(g, n); return { n: d.amount, note: d.notes.length ? ` (${d.notes.join(", ")})` : "" }; }
+    take: n => {
+      const d = guardDamage(g, n);
+      if (g && n > 0 && d.amount === 0 && g.reductions.some(r => r.label.startsWith("Dip"))) g.dipZero = true;          // the Dip took it all: its free move
+      return { n: d.amount, note: d.notes.length ? ` (${d.notes.join(", ")})` : "" }; }
   };
 }
 

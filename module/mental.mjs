@@ -9,7 +9,7 @@
  */
 import {
   post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless,
-  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple, requestDamage, changeEffect, clearSpellEffects, tokenDistance, attackGuard
+  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple, requestDamage, changeEffect, clearSpellEffects, tokenDistance, attackGuard, guardRows
 } from "./actions.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
@@ -488,7 +488,8 @@ async function landManifest({ attacker, target, o, m, mode, result, stacksBase, 
   if (guardP) {
     const g = await guardP;
     out.html += g.html; out.rolls.push(...g.rolls);
-    if (g.any && g.damaged && g.direct === 0 && g.riposteItems?.length) riposte = { items: g.riposteItems };     // a guard took all of it: Riposte
+    // A guard that took all of it earns a Riposte (and Dip's move, Redirect), as on a weapon's damage card.
+    if (g.any && g.damaged && (g.direct === 0 || g.dipZero)) riposte = { items: g.riposteItems ?? [], noDamage: g.direct === 0, dipZero: !!g.dipZero };
   }
   const tenet = "";
   const grow = hit && R.wonderById(m.wonder)?.kind === "dream" ? await growReverie(attacker, attacker.system.icon?.system.grade) : "";
@@ -573,6 +574,7 @@ export async function rerollAct(x) {
   const r = await new Roll(poolFormula(1, x.re.die, x.re.keepNet ? x.re.net : 0)).evaluate();
   const result = resolveAttack(r.total, x.re.dodge);
   const label = chant ? "Chant" : "Make Clear";
+  let riposteFlags = {};
   let html = `<div class="fs-notes">${label}: new attack roll <strong>${r.total}</strong> against a dodge of ${x.re.dodge}${x.re.keepNet ? "" : " (no Advantage/Disadvantage kept)"}: <strong>${result.outcome}</strong>.</div>`;
   if (result.hit) {
     if (chant) {
@@ -580,11 +582,13 @@ export async function rerollAct(x) {
       // The first roll was a miss: a melee miss already met Shatter, so the reroll doesn't strike the attack a second time.
       const landed = await landManifest({ attacker: caster, target, o, m: { ...x.m, chanted: true }, mode: R.modeById(x.m.mode), result, stacksBase: o.stacks, attackMessage: x.re.msg ?? null, index: x.re.index ?? 0, shattered: !!x.re.melee });
       html += landed.html;
+      // A guard that took all the damage of the rerolled hit earns the same Riposte (and Dip's move, Redirect) the first card would have.
+      if (landed.riposte) { const g = await guardRows(target, landed.riposte, o); html += g.html; if (g.riposte) riposteFlags = { guardRiposte: { defender: target.uuid, attacker: caster.uuid } }; }
     } else {
       html += `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${await applyWard({ attacker: caster, target, ward: x.ward })}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>`;
     }
   } else html += `<div class="fs-notes">Still a miss.</div>`;
-  await post(caster, { title: `${esc(caster.name)} — ${label}`, rolls: [r], body: html });
+  await post(caster, { title: `${esc(caster.name)} — ${label}`, rolls: [r], body: html, flags: { flowstate: { ...riposteFlags } } });
   return true;
 }
 

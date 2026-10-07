@@ -997,6 +997,8 @@ const followupInFlight = new Set();
 
 Hooks.on("renderChatMessageHTML", (message, html) => {
   decorateExchange(message, html);
+  // "Take the hit" is a GM option (for forced hits and unaware targets): players only see their real defenses.
+  if (!game.user.isGM) for (const btn of html.querySelectorAll('.fs-defend[data-choice="none"]')) btn.remove();
   for (const btn of html.querySelectorAll(".fs-defend")) {
     btn.addEventListener("click", event => {
       event.preventDefault();

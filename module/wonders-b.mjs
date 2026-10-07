@@ -38,6 +38,7 @@ async function guardOf(c) {
   const g = (await c.guardOf?.()) ?? null;
   return {
     stacks: c.stacks - (g?.weaken?.length ?? 0), items: g?.items ?? [],
+    done: direct => { if (g) { g.damaged = true; g.direct += direct ?? 0; } },                // what got through to HP, for the Riposte a guard earns
     take: n => { const d = guardDamage(g, n); return { n: d.amount, note: d.notes.length ? ` (${d.notes.join(", ")})` : "" }; }
   };
 }
@@ -54,6 +55,7 @@ async function strike(c, dice, sides, type, { rend = null, label, pierce = 0 } =
   const res = await requestDamage(c.target, n, type, pierce, null, { wantResult: true, silent: true, archetype: "magic", rend, parryItems: g.items, shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
   // What a Ward, a Premonition or a Wonder took off first is not "damage dealt": effects that go by it shrink with it.
   const cut = Math.min(n, res?.reduced ?? 0), dealt = n - cut, direct = res?.toHp ?? outcome.toHp;
+  g.done(direct);
   return { n, dealt, direct, cut, r, line: `${label}: ${count}d${sides} = ${r.total}${g.stacks ? ` → ${rolledN}` : ""}${guardNote} ${type} damage${cut ? ` (reduced by ${cut}: ${dealt} dealt)` : ""} (${direct} direct)` };
 }
 const setCond = async (actor, data) => { if (actor.isOwner) await actor.update(data); else await requestGM("updateActor", { uuid: actor.uuid, data }); };
@@ -353,6 +355,7 @@ MODES["mental-perfection-nightmare:exact"] = async c => {
   const { n, note: guardNote } = g.take(c.hit ? Math.floor(applyStacks(r.total, g.stacks + 1)) : Math.max(0, Math.floor(applyStacks(r.total, g.stacks)) - c.margin));
   const outcome = await damageOutcome(c.target, n, "physical", { archetype: "magic", pierce, parryItems: g.items });
   const res = await requestDamage(c.target, n, "physical", pierce, null, { wantResult: true, silent: true, archetype: "magic", parryItems: g.items, shroudCtx: { source: "type:physical", attacker: c.attacker.uuid } });
+  g.done(res?.toHp ?? outcome.toHp);
   return `Exact ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d10 = ${r.total} → <strong>${n}</strong>${guardNote} physical damage${c.hit ? " (Strengthened)" : ` (reduced by the ${c.margin} it missed by)`}${pierce ? `, Pierce ${pierce}` : ""}${res?.reduced ? ` (reduced by ${res.reduced})` : ""} (${res?.toHp ?? outcome.toHp} direct).`;
 };
 MODES["mental-perfection-nightmare:hone"] = async c => {
@@ -374,6 +377,7 @@ MODES["mental-perfection-nightmare:masterstroke"] = async c => {
   const res = await requestDamage(c.target, n, type, 0, null, { wantResult: true, silent: true, archetype: "magic", parryItems: g.items, shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
   for (const e of fx(c.attacker, "pride").slice(0, prideUsed)) await changeEffect(e, null);
   const direct = res?.toHp ?? outcome.toHp;
+  g.done(direct);
   c.masterDirect = direct;
   return `Masterstroke ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d8 = ${r.total} → <strong>${n}</strong>${guardNote} ${esc(type)} damage${c.hit ? "" : ` (reduced by ${c.margin})`}${res?.reduced ? ` (reduced by ${res.reduced})` : ""} (${direct} direct)${prideUsed ? `, ${prideUsed} Pride stack${prideUsed === 1 ? "" : "s"} spent` : ""}.${c.hit && direct > 0 ? " The direct damage reapplies to another target (button below)." : ""}`;
 };

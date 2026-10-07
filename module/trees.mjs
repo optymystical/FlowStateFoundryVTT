@@ -33,7 +33,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Parry",
-      "text": "At any time on your turn, you can spend energy equal to a held Weapon’s Scaling Stat to enable it to Parry incoming attacks until the start of your next turn. This causes all incoming melee/ranged attacks to have your chosen Weapon’s Limit and Durability applied to their damage (your armor and dodge roll still functions as normal). Only one form of this ability can be active per Weapon."
+      "text": "At any time on your turn, you can spend energy equal to a held Weapon’s Scaling Stat to enable it to Parry incoming attacks until the start of your next turn. This causes all incoming Melee/Ranged attacks to have your chosen Weapon’s Limit and Durability applied to their damage (your armor and dodge roll still functions as normal). Only one form of this ability can be active per Weapon."
      },
      {
       "name": "Riposte",
@@ -1689,16 +1689,23 @@ export const TREES = [
     "entries": [
      {
       "name": "Core Spells",
-      "text": "Every Magic Skill Tree (aka Spell School) is built around one Core Spell. As you advance, you learn Spell Mods that reshape that Core Spell. If you branch into another School, you can combine their Core Spells into a unique [Combo Spell], which can then use Mods from either parent School."
+      "text": "Every Magic Skill Tree (aka Spell School) is built around one Core Spell. As you advance, you learn Spell Mods that reshape that Core Spell. If you branch into another School, you can combine their Core Spells into a unique [Combo Spell](https://docs.google.com/document/u/0/d/1lyNQtEPZWuIpjxqvD3BIa_ZPFD25iTxi3YMp78hVAGY/edit), which can then use Mods from either parent School."
      },
      {
       "name": "Spell Mods",
-      "text": "A Spell Mod is an optional upgrade applied when casting a Spell within a given Spell School. Unless stated otherwise, each Spell Mod can only be applied once per cast.",
-      "sub": [
-       "Stackable Mods may be applied multiple times. Each time you apply the Mod, increase the Spell’s Threshold again.",
-       "Universal Mods can be applied to any Core or Combo Spell from any Spell School.",
-       "Replacement Mods can either replace a Spell’s listed base effect (only replacing a Combo Spell’s relevant part), or simply add on like a normal Spell Mod. When a Replacement Mod replaces a Spell’s base effect, it is doubled in power and any effects that would modify the Core/Combo Spell instead modify the Replacement Mod."
-      ]
+      "text": "A Spell Mod is an optional upgrade applied when casting a Spell within a given Spell School. Unless stated otherwise, each Spell Mod can only be applied once per cast."
+     },
+     {
+      "name": "",
+      "text": "Stackable Mods may be applied multiple times. Each time you apply the Mod, increase the Spell’s Threshold again."
+     },
+     {
+      "name": "",
+      "text": "Universal Mods can be applied to any Core or Combo Spell from any Spell School."
+     },
+     {
+      "name": "",
+      "text": "Replacement Mods can either replace a Spell’s listed base effect (only replacing a Combo Spell’s relevant part), or simply add on like a normal Spell Mod. When a Replacement Mod replaces a Spell’s base effect, it is doubled in power and any effects that would modify the Core/Combo Spell instead modify the Replacement Mod."
      },
      {
       "name": "Spell Threshold",
@@ -2492,8 +2499,9 @@ export const TREES = [
     "entries": [
      {
       "name": "Spirit Sense Secondary",
-      "text": "You gain an extra sense known as “Spirit Sense” that starts off as Secondary. Secondary: Allows you to make a spot check to detect any magical energy that is within 10ft. On success, you sense the direction of the source regardless of obstacles and know the quantity of energy present (for creatures, this is their total Spirit) but not their exact location.",
+      "text": "You gain an extra sense known as “Spirit Sense” that starts off as Secondary.",
       "sub": [
+       "Secondary: Allows you to make a spot check to detect any magical energy that is within 10ft. On success, you sense the direction of the source regardless of obstacles and know the quantity of energy present (for creatures, this is their total Spirit) but not their exact location.",
        "Primary: Increases spot check range to 100ft, and you now auto succeed on targets within melee range. In addition, you are now immune to Targeted attack roll’s stealth bonus."
       ]
      },
@@ -2684,14 +2692,32 @@ export const TREES = [
     "entries": [
      {
       "name": "Hex",
-      "text": "1 Threshold, Core Spell, Targeted. On a successful hit, the target has this Hex applied to them, lasting for a minute or until it triggers. They are not aware of this Hex until the trigger occurs. On trigger, the target must roll a Build Check and get a 3 or higher, or they suffer 1d12 arcane damage (this is not Weakened naturally due to the Hex being directly on their spirit), which can be blocked by things that block magical damage. This Spell cannot crit. You can select how it triggers from the following:",
+      "text": "1 Threshold, Core Spell, Targeted. On a successful hit, the target has this Hex applied to them, lasting for a minute or until it triggers. They are not aware of this Hex until the trigger occurs. On trigger, the target must roll a Build Check and get a 3 or higher, or they suffer 1d12 arcane damage (this is not Weakened naturally due to the Hex being directly on their spirit), which can be blocked by things that block magical damage. This Spell cannot crit. You can select how it triggers from the following:"
+     },
+     {
+      "name": "Harm",
+      "text": "The target takes damage from a non-hex source. The damage dealt by this hex is doubly Weakened."
+     },
+     {
+      "name": "Move",
+      "text": "The target spends AP to move. The damage dealt by this hex is Weakened."
+     },
+     {
+      "name": "Fail/Success",
+      "text": "The target fails/succeeds on an attack, dodge, stat check, or non-combat d100 roll."
+     },
+     {
+      "name": "Roll",
+      "text": "The target makes a specified roll (attack, damage, dodge, non-combat, stat check). The damage dealt by this hex is Strengthened."
+     },
+     {
+      "name": "Act",
+      "text": "The target performs a specific declared action (a named Weapon type, Wonder, or Core Spell). The damage dealt by this hex is doubly Strengthened."
+     },
+     {
+      "name": "Word/Condition",
+      "text": "The target speaks a chosen word or enters a chosen condition (prone, feared, 0 energy, etc). The damage dealt by this hex is triply Strengthened.",
       "sub": [
-       "Harm: The target takes damage from a non-hex source. The damage dealt by this hex is doubly Weakened.",
-       "Move: The target spends AP to move. The damage dealt by this hex is Weakened.",
-       "Fail/Success: The target fails/succeeds on an attack, dodge, stat check, or non-combat d100 roll.",
-       "Roll: The target makes a specified roll (attack, damage, dodge, non-combat, stat check). The damage dealt by this hex is Strengthened.",
-       "Act: The target performs a specific declared action (a named Weapon type, Wonder, or Core Spell). The damage dealt by this hex is doubly Strengthened.",
-       "Word/Condition: The target speaks a chosen word or enters a chosen condition (prone, feared, 0 energy, etc). The damage dealt by this hex is triply Strengthened.",
        "Ritual: You get a no-threshold cast of this Spell that, on hit, becomes permanent on the target until the ritual ends or the target dies (passing does not remove the hex), triggering each time the trigger would occur. If you miss this Spell, it is still usable on another cast attempt."
       ]
      }
@@ -2825,10 +2851,16 @@ export const TREES = [
     "entries": [
      {
       "name": "Form",
-      "text": "1-5 Threshold, Core Spell, Targeted. Summons a creature made entirely out of your Spirit at the target location (it counts as a Spell), lasting until the start of your next turn. This Spell's Threshold can be manually raised on cast to multiply its point pool by that much, up to a maximum of 5 Threshold (stacks additively with similar sources). You get 5 points to allocate towards the following:",
+      "text": "1-5 Threshold, Core Spell, Targeted. Summons a creature made entirely out of your Spirit at the target location (it counts as a Spell), lasting until the start of your next turn. This Spell's Threshold can be manually raised on cast to multiply its point pool by that much, up to a maximum of 5 Threshold (stacks additively with similar sources). You get 5 points to allocate towards the following:"
+     },
+     {
+      "name": "Body",
+      "text": "1 point adds 1 Strength, Dexterity, or Constitution to the Summon. Each stat must have at least 1 point put into it."
+     },
+     {
+      "name": "Skill",
+      "text": "2 points gives the Summon 1 skill point that can be allocated towards it knowing any Martial Archetype skill tree. It automatically knows any that you know at a baseline, this just adds to its knowledge. When it uses these skills, it uses energy from its own pool.",
       "sub": [
-       "Body: 1 point adds 1 Strength, Dexterity, or Constitution to the Summon. Each stat must have at least 1 point put into it.",
-       "Skill: 2 points gives the Summon 1 skill point that can be allocated towards it knowing any Martial Archetype skill tree. It automatically knows any that you know at a baseline, this just adds to its knowledge. When it uses these skills, it uses energy from its own pool.",
        "In addition, the Summon gets the following:"
       ]
      },
@@ -2925,10 +2957,16 @@ export const TREES = [
     "entries": [
      {
       "name": "Make",
-      "text": "1 Threshold, Core Spell, Targeted. You create an inanimate object that lasts until the start of your next turn that can be one of the following (it counts as a Spell, and can be conjured into a targets hand with no attack roll so long as they are willing, with it not being possible if they are not willing):",
+      "text": "1 Threshold, Core Spell, Targeted. You create an inanimate object that lasts until the start of your next turn that can be one of the following (it counts as a Spell, and can be conjured into a targets hand with no attack roll so long as they are willing, with it not being possible if they are not willing):"
+     },
+     {
+      "name": "Archetypal",
+      "text": "It is made of a Common material and has a Grade of 2. Can only make equipment with a material that your character is familiar with (up to GM), and can only create equipment with a single type and material."
+     },
+     {
+      "name": "Non-Archetypal",
+      "text": ". Can be any singular Powder, Liquid, or Soft material with a Body of 10.Can only make an object with a material that your character is familiar with (up to GM), and can only create objects with a single material. Note that 1 body of a material is roughly equal to a cubic foot of it, meaning 25 body equals a 5x5x1ft tile, and 125 body equals a 5x5x5ft cube.",
       "sub": [
-       "Archetypal: It is made of a Common material and has a Grade of 2. Can only make equipment with a material that your character is familiar with (up to GM), and can only create equipment with a single type and material.",
-       "Non-Archetypal:. Can be any singular Powder, Liquid, or Soft material with a Body of 10.Can only make an object with a material that your character is familiar with (up to GM), and can only create objects with a single material. Note that 1 body of a material is roughly equal to a cubic foot of it, meaning 25 body equals a 5x5x1ft tile, and 125 body equals a 5x5x5ft cube.",
        "Ritual: The Creation is permanent until it is destroyed or the ritual ends."
       ]
      }
@@ -2994,16 +3032,40 @@ export const TREES = [
     "entries": [
      {
       "name": "Animate",
-      "text": "1-5 Threshold, Core Spell, Targeted. Animates a pile of inanimate materials that are Soft or Liquid (such as a pile of wood, plastic, a pool of water, a corpse, etc), infusing it with up to 5 points of magical energy (the effect binding it counts as a Spell). This Spell's Threshold can be manually raised on cast to multiply its point count by that much, up to a maximum of 5 Threshold (stacks additively with similar sources). It has the following effects/requirements:",
+      "text": "1-5 Threshold, Core Spell, Targeted. Animates a pile of inanimate materials that are Soft or Liquid (such as a pile of wood, plastic, a pool of water, a corpse, etc), infusing it with up to 5 points of magical energy (the effect binding it counts as a Spell). This Spell's Threshold can be manually raised on cast to multiply its point count by that much, up to a maximum of 5 Threshold (stacks additively with similar sources). It has the following effects/requirements:"
+     },
+     {
+      "name": "Body",
+      "text": "The pile must be at least X Body to be targeted, with X being the points used in its animation."
+     },
+     {
+      "name": "Size",
+      "text": "Its size is by default 1, increasing to 2 if at least 5 Body of materials were used, to 3 if at least 25 Body were used, to 4 with 125, and to 5 with 625. Multiply its eventual health value by this size."
+     },
+     {
+      "name": "Material",
+      "text": "The created Animation has stats and features based on its primary material category (see the tables below this tree)."
+     },
+     {
+      "name": "Duration",
+      "text": "Lasts until the start of your next turn"
+     },
+     {
+      "name": "Skills",
+      "text": "Can use any Martial skills that you know."
+     },
+     {
+      "name": "Mindless",
+      "text": "Animations are immune to Mind altering effects due to being Mindless, and cannot take orders. In addition, your Animation has no natural senses, and instead follows your senses as you control it. This means if your character’s senses are limited, your Animation would be equally limited by this."
+     },
+     {
+      "name": "Non-Body Checks",
+      "text": "Any non-Body checks the Animation would need to make, such as Attacks, Dodges, Magic checks, etc, are instead made using your relevant die for its roll. Any effects your Animation has that would enhance these rolls still applies."
+     },
+     {
+      "name": "Unarmed Attacks, AP, RP",
+      "text": "All of these systems function as they normally would for a Creature, utilizing points as a stand in for Strength, Dexterity (Both used for unarmed damage calcs), and Constitution (Con has no effect other than being used for checks). It shares a turn order with you (meaning you decide who goes first when it comes to your turn), and after cast can immediately act after your turn ends. Your Animations do not count as you attacking, and thus Weaving cannot proc off of their attacks.",
       "sub": [
-       "Body: The pile must be at least X Body to be targeted, with X being the points used in its animation.",
-       "Size: Its size is by default 1, increasing to 2 if at least 5 Body of materials were used, to 3 if at least 25 Body were used, to 4 with 125, and to 5 with 625. Multiply its eventual health value by this size.",
-       "Material: The created Animation has stats and features based on its primary material category (see the tables below this tree).",
-       "Duration: Lasts until the start of your next turn",
-       "Skills: Can use any Martial skills that you know.",
-       "Mindless: Animations are immune to Mind altering effects due to being Mindless, and cannot take orders. In addition, your Animation has no natural senses, and instead follows your senses as you control it. This means if your character’s senses are limited, your Animation would be equally limited by this.",
-       "Non-Body Checks: Any non-Body checks the Animation would need to make, such as Attacks, Dodges, Magic checks, etc, are instead made using your relevant die for its roll. Any effects your Animation has that would enhance these rolls still applies.",
-       "Unarmed Attacks, AP, RP: All of these systems function as they normally would for a Creature, utilizing points as a stand in for Strength, Dexterity (Both used for unarmed damage calcs), and Constitution (Con has no effect other than being used for checks). It shares a turn order with you (meaning you decide who goes first when it comes to your turn), and after cast can immediately act after your turn ends. Your Animations do not count as you attacking, and thus Weaving cannot proc off of their attacks.",
        "Note that 1 body of a material is roughly equal to a cubic foot of it, meaning 25 body equals a 5x5x1ft tile, and 125 body equals a 5x5x5ft cube. Ritual: The animation is permanent until it is destroyed or the ritual ends."
       ]
      }
@@ -3051,9 +3113,8 @@ export const TREES = [
       "name": "Mixed Animations",
       "text": "1 Threshold, Stackable, Spell Mod. You may select one additional material that is present within the Animation on cast to have its material effect be active.",
       "sub": [
-       "| | | |",
-       "| :-: | :-: | :-: |",
        "| Liquid Animations | | |",
+       "| ----- | ----- | ----- |",
        "| Liquid Animations cannot hold items such as weapons or armor, but can move through nearly any opening, have advantage dodging non-targeted attacks as well as imposing disadvantage on said attacks, ignore swimming restrictions, and targets grappled by them begin drowning as if they are underwater without breath left but are not slowed or restricted otherwise. The Animation has health equal to 1x Points, a speed of 50ft/AP, and Weakened physical attacks. | | |",
        "| Name | Rarity | Effect |",
        "| Water | Common | |",
@@ -3063,9 +3124,8 @@ export const TREES = [
        "| Resin | Uncommon | |",
        "| Alcohol / Spirits | Uncommon | |",
        "| Mercury | Rare | |",
-       "| | | |",
-       "| :-: | :-: | :-: |",
        "| Soft Animations | | |",
+       "| ----- | ----- | ----- |",
        "| Animations made of a soft material have no restrictions, acting as a standard summon. The Animation has health equal to 3x Points, a speed of 20ft/AP, and normal physical attacks. | | |",
        "| Name | Rarity | Effect |",
        "| Hardwood | Common | |",
@@ -3085,9 +3145,8 @@ export const TREES = [
        "| Gravesalt | Rare | |",
        "| Beryllium | Very Rare | |",
        "| Aetherwood | Very Rare | |",
-       "| | | |",
-       "| :-: | :-: | :-: |",
        "| Powder Animations | | |",
+       "| ----- | ----- | ----- |",
        "| Powder Animations can only ever hold one object or entity at a time with excess objects falling through them (but cannot attack with held items), have advantage dodging non-targeted attacks, can fit through ¼ inch gaps, and after being hit they can use 2 RP to scatter, causing them to be untargetable by non-area/targeted attacks until the start of their next turn, dropping their held item as well. The Animation has health equal to 2x Points, a speed of 30ft/AP, and doubly Weakened physical attacks. | | |",
        "| Name | Rarity | Effect |",
        "| Charcoal | Common | |",
@@ -3097,9 +3156,8 @@ export const TREES = [
        "| Chalk Dust | Common | |",
        "| Lime Powder | Uncommon | |",
        "| Pigment Powder | Uncommon | |",
-       "| | | |",
-       "| :-: | :-: | :-: |",
        "| Hard Animations | | |",
+       "| ----- | ----- | ----- |",
        "| Hard Animations have only 3 AP and RP per turn, but their Points count as twice as high for determining weapon and armor limits. The Animation has health equal to 5x Points, a speed of 10ft/AP, and Strengthened physical attacks. | | |",
        "| Name | Rarity | Effect |",
        "| Stone | Common | |",

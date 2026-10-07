@@ -1988,10 +1988,10 @@ export function guardFor(target, o, attackMessageId = null, index = 0) {
  * damage instance with `guardDamage`. Shatter is rolled once (a hit; on a melee miss it already happened when the attack was answered).
  * Returns { reductions, items, weaken, shatterLeft, broken, html, rolls, any }.
  */
-export async function attackGuard(attacker, target, o, attackMessageId = null, index = 0, { hit = true } = {}) {
+export async function attackGuard(attacker, target, o, attackMessageId = null, index = 0, { hit = true, shattered = false } = {}) {
   const g = guardFor(target, o, attackMessageId, index);
-  const out = { reductions: g.reductions, items: g.items, weaken: g.weaken, shatterLeft: 0, broken: false, html: "", rolls: [], any: g.any };
-  if (g.shatter && hit) {
+  const out = { reductions: g.reductions, items: g.items, weaken: g.weaken, riposteItems: g.riposteItems, shatterLeft: 0, broken: false, html: "", rolls: [], any: g.any, direct: 0, damaged: false };
+  if (g.shatter && hit && !shattered) {                                        // Shatter strikes an attack once (a melee miss already did)
     const sh = await shatterStrike(target, attacker, o);
     out.html += sh.html; out.rolls.push(...sh.rolls);
     if (sh.broken) out.broken = true; else out.shatterLeft = sh.reduce;
@@ -1999,6 +1999,16 @@ export async function attackGuard(attacker, target, o, attackMessageId = null, i
   if (g.any || g.weaken.length) out.html += `<div class="fs-notes">${esc(target.name)} is guarding: ${[...g.items.map(u => syncUuid(u)?.name).filter(Boolean), ...g.reductions.map(r => `${r.label} −${r.amount}`), ...(g.shatter ? ["Shatter"] : []), ...g.weaken].join(", ")}</div>`;
   return out;
 }
+/** The Riposte buttons a guard that took all the damage earns (weapons the defender holds and can pay for), or "" when there's nothing to offer. */
+export async function riposteRow(target, itemUuids) {
+  const items = (await Promise.all((itemUuids ?? []).map(u => fromUuid(u)))).filter(i => i && i.parent?.uuid === target.uuid && canSpend(target, "rp", i.system.profile?.unarmed ? 2 : i.system.profile?.ap ?? 2));
+  if (!items.length) return "";
+  return `<div class="fs-riposte-row" data-role="defender" data-owner="${target.uuid}">
+      ${items.map(i => { const ap = i.system.profile?.unarmed ? 2 : i.system.profile?.ap ?? 2; return `<button type="button" class="fs-riposte" data-item="${i.uuid}"><i class="fa-solid fa-reply"></i> Riposte: ${esc(i.name)} (${ap} RP)</button>
+        ${ab.bladed(target, i, 5) ? `<button type="button" class="fs-riposte" data-item="${i.uuid}" data-perfect="1" data-tooltip="Bladed T5: Advantage and Strengthened, and so is its Fast/Solitary follow-up"><i class="fa-solid fa-star"></i> Perfect Riposte (⚡ ${ab.BLADED_COST.perfectRiposte(i)})</button>` : ""}`; }).join("")}
+      <button type="button" class="fs-no-riposte" data-tooltip="Pass, so the attacker's follow-up can go ahead"><i class="fa-solid fa-xmark"></i> No riposte</button></div>`;
+}
+
 /** Take a guard off one instance of damage: { amount, notes }. Shatter's lowering is spent across the instances in order. */
 export function guardDamage(g, amount) {
   if (!g) return { amount, notes: [] };
@@ -3162,7 +3172,8 @@ export async function riposte(message, { perfect = false, itemUuid = null } = {}
   else if (defense?.result?.parry?.success) {
     const p = defense.result.parry;
     defenderUuid = p.by ?? defense.target; attackerUuid = defense.attacker; item = await fromUuid(itemUuid ?? p.item);
-  } else return;
+  } else if (defense?.guardRiposte) { defenderUuid = defense.target; attackerUuid = defense.attacker; item = itemUuid ? await fromUuid(itemUuid) : null; }
+  else return;
   if (findFollowup(message.id) || riposteInFlight.has(message.id)) return ui.notifications.info("Riposte was already used.");
   if (findRiposteDeclined(message.id)) return ui.notifications.info("The Riposte was passed on.");
   const defender = await fromUuid(defenderUuid);
@@ -4597,11 +4608,14 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   // Mental: other creatures' attacks that hit can be Infused (Destruction Tenet).
   if (result.hit && !o.mental && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result });
   // Mental: a Manifest's Mode or a Ward's effect, once the attack is answered.
+  let guardRiposte = false;
   if (o.mental && mentalHook) {
     const mh = await mentalHook.onResolve({ attacker, target, o, result, entry, dodgeRoll, index, attackMessage: attackMessage.id });
     if (mh?.html) extra.push(mh.html);
     if (mh?.rolls?.length) spellRolls = [...spellRolls, ...mh.rolls];
     if (mh?.push) pushInfo = mh.push;
+    // A Manifest a Parry / Dip / Shatter took all the damage from earns a Riposte, like any other attack would.
+    if (mh?.riposte) { const row = await riposteRow(target, mh.riposte.items); if (row) { extra.push(row); guardRiposte = true; } }
   }
   // Scorch (Slam + Flame): a failed dodge repeats the burn.
   if (result.hit && dodgeRoll) for (const e of spellEffects(target, "scorch")) {
@@ -4630,7 +4644,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
       ${extra.join("")}${more?.html ?? ""}${shatterMiss?.html ?? ""}
       <div class="fs-status"></div>
       ${action}`,
-    flags: { flowstate: { defense: { attackMessage: attackMessage.id, index, target: entry.uuid, attacker: attack.attacker, result, shatter: !!shatterMiss, guardItem, dodge: dodgeRoll?.total ?? null }, knockback: pushInfo, chain: defenseChain } }
+    flags: { flowstate: { defense: { attackMessage: attackMessage.id, index, target: entry.uuid, attacker: attack.attacker, result, shatter: !!shatterMiss, guardRiposte, guardItem, dodge: dodgeRoll?.total ?? null }, knockback: pushInfo, chain: defenseChain } }
   });
   if (autoDeclineBy) await post(autoDeclineBy, { title: `${esc(autoDeclineBy.name)} — No Riposte`, body: `<div class="fs-notes">${esc(autoDeclineBy.name)} has no RP left to riposte.</div>`, flags: { flowstate: { riposteDeclined: defenseMessage.id } } });
   // "Roll damage automatically" setting: skip the button and roll straight away (no extra stacks).
@@ -4785,37 +4799,48 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
       flags: { flowstate: { damage: { defenseMessage: defenseMessage.id } } } });
   }
 
-  // Shatter (Brawling T2): the defender's Heavy Unarmed damage hits the incoming attack (its weapon) first; Solitary doubles it.
-  let incoming = line.final;
-  let shatterRolls = [], shattered = false;
+  // Each damage instance meets the defenses on its own: Heat's Flare rolls several sets of d4s, every set its own instance (Limits, Brace/Dip, Wonders and
+  // Wards all apply to each). Everything else is a single instance.
+  const instances = flare ? base.totals.map(t => applyStacks(t + flat, stacks)) : [line.final];
+  const tag = i => (instances.length > 1 ? `Set ${i + 1}: ` : "");
+  // Shatter (Brawling T2): the defender's Heavy Unarmed damage hits the incoming attack (its weapon) first; Solitary doubles it. Rolled once.
+  let shatterRolls = [], shattered = false, shatterLeft = 0;
   if (guard.shatter) {
     const sh = await shatterStrike(target, attacker, o);
     extraHTML += sh.html; shatterRolls = sh.rolls;
-    if (sh.broken) { incoming = 0; shattered = true; if (kb) { kb = null; extraHTML += `<div class="fs-notes">No Knockback: the weapon broke.</div>`; } }
-    else if (sh.reduce) {
-      incoming = Math.max(0, incoming - sh.reduce);
-      extraHTML += `<div class="fs-notes">Shatter: −${Math.min(line.final, sh.reduce)} → ${incoming}${incoming === 0 ? " (the projectile is destroyed: no damage)" : ""}</div>`;
+    if (sh.broken) { shattered = true; if (kb) { kb = null; extraHTML += `<div class="fs-notes">No Knockback: the weapon broke.</div>`; } }
+    else shatterLeft = sh.reduce;
+  }
+  let dipZero = false, wardCut = 0;
+  const amounts = [], wards = [];
+  for (const [i, inst] of instances.entries()) {
+    let incoming = shattered ? 0 : inst;
+    if (shatterLeft > 0 && incoming > 0) {
+      const cut = Math.min(incoming, shatterLeft);
+      shatterLeft -= cut; incoming -= cut;
+      extraHTML += `<div class="fs-notes">${tag(i)}Shatter: −${cut} → ${incoming}${incoming === 0 ? " (the projectile is destroyed: no damage)" : ""}</div>`;
     }
+    // Brace / Dip: flat reductions before any Limit.
+    for (const r of guard.reductions) {
+      const cut = Math.min(incoming, r.amount);
+      incoming -= cut;
+      extraHTML += `<div class="fs-notes">${tag(i)}${r.label}: −${cut} → ${incoming}</div>`;
+      if (r.label.startsWith("Dip") && incoming === 0 && inst > 0) dipZero = true;
+    }
+    // Mental: damage dealt and taken is changed by Wonder effects (Pacify, Warzone, Absolution, Irradiate, Guard, ...).
+    if (mentalHook?.adjust && incoming > 0) {
+      const adj = await mentalHook.adjust({ attacker, target, amount: incoming, type, o, crit: !!defense.result?.crit });
+      if (adj.amount !== incoming || adj.html) { incoming = adj.amount; extraHTML += adj.html; }
+    }
+    // Mental: a Nightmare Ward may negate some of it now, so Stains, Bleed, Gash and the like go by what is actually dealt.
+    let w = null;
+    if (mentalHook?.negate && incoming > 0) {
+      w = await wardNegate(target, incoming, type, { source: sourceOf(o), attacker: attacker.uuid });
+      if (w) { wardCut += Math.max(0, incoming - w.amount); incoming = w.amount; extraHTML += w.html ? `${instances.length > 1 ? `<div class="fs-notes">${tag(i)}</div>` : ""}${w.html}` : ""; }
+    }
+    amounts.push(incoming); wards.push(w);
   }
-  // Brace / Dip: flat reductions before any Limit.
-  let dipZero = false;
-  for (const r of guard.reductions) {
-    const cut = Math.min(incoming, r.amount);
-    incoming -= cut;
-    extraHTML += `<div class="fs-notes">${r.label}: −${cut} → ${incoming}</div>`;
-    if (r.label.startsWith("Dip") && incoming === 0 && line.final > 0) dipZero = true;
-  }
-  // Mental: damage dealt and taken is changed by Wonder effects (Pacify, Warzone, Absolution, Irradiate, Guard, ...).
-  if (mentalHook?.adjust && incoming > 0) {
-    const adj = await mentalHook.adjust({ attacker, target, amount: incoming, type, o, crit: !!defense.result?.crit });
-    if (adj.amount !== incoming || adj.html) { incoming = adj.amount; extraHTML += adj.html; }
-  }
-  // Mental: a Nightmare Ward may negate some of it now, so Stains, Bleed, Gash and the like go by what is actually dealt.
-  let ward = null, wardCut = 0;
-  if (mentalHook?.negate && incoming > 0 && !flare) {
-    ward = await wardNegate(target, incoming, type, { source: sourceOf(o), attacker: attacker.uuid });
-    if (ward) { wardCut = Math.max(0, incoming - ward.amount); incoming = ward.amount; extraHTML += ward.html ?? ""; }
-  }
+  let incoming = amounts.reduce((a, b) => a + b, 0);
   const cleave = shattered ? 0 : o.cleave ?? 0;
   if (cleave) extraHTML += `<div class="fs-notes">Cleave ${cleave}: object damage, hits Limits first${o.striker ? "; what gets past them hits the creature (Blood and Iron)" : ""}</div>`;
 
@@ -4823,10 +4848,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const dmgOpts = { pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: o.bash || 0, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
     shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
       barriers: barriersFor(attacker, target) }, mentalDone: true };
-  let outcome = await damageOutcome(target, incoming, type, dmgOpts);
-  // Flare (Heat T4): each set of d4s is a separate instance, so Limits apply to each.
-  const instances = flare ? base.totals.map(t => applyStacks(t + flat, stacks)) : null;
-  if (instances) { outcome = mergeOutcomes(await Promise.all(instances.map(a => damageOutcome(target, a, type, dmgOpts)))); incoming = instances.reduce((a, b) => a + b, 0); }
+  // Limits apply to each instance on its own.
+  const outcome = instances.length > 1 ? mergeOutcomes(await Promise.all(amounts.map(a => damageOutcome(target, a, type, dmgOpts)))) : await damageOutcome(target, incoming, type, dmgOpts);
   // Spell riders that need the damage to have got through to HP (direct damage): Force, attack-die penalties.
   let spellHTML = "", spellRolls = [], chainFlag = null;
   if (profile) {
@@ -4913,8 +4936,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
       deflect: canDeflect ? { defender: target.uuid, attacker: attacker.uuid, attackMessage: defense.attackMessage } : null,
       chain: chainFlag ? { ...chainFlag, affected: o.spell?.chain?.affected ?? [target.uuid], depth: o.spell?.chain?.depth ?? 0, primary: o.spell?.chain?.primary ?? target.uuid } : null } }
   });
-  if (instances) for (const amt of instances) await requestDamage(target, amt, type, pierceNow, null, { silent: true, ...dmgOpts });
-  else await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts, wardDone: !!ward, wardReflect: ward?.reflect ?? null });
+  for (const [i, amt] of amounts.entries()) await requestDamage(target, amt, type, pierceNow, null, { silent: true, ...dmgOpts, wardDone: !!wards[i], wardReflect: wards[i]?.reflect ?? null });
   if (ripHTML) await requestDamage(target, incoming + wardCut, type, pierceNow, null, { silent: true, ...dmgOpts });                       // a second instance: a Ward may answer it again
   // A Summon's or Animation's attacks carry the Core they were Combo'd with (Any T1/T2/T3 + Summoning / Animation).
   if (conj && !o.spell) await conj.riderAfter({ attacker, target, o, outcome, defense });

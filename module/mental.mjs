@@ -475,16 +475,21 @@ async function growReverie(attacker, grade) {
 /* -------------------------------------------- */
 
 /** A Manifest's Mode lands (the first time, or after a Chant reroll): apply it and build the card. */
-async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0, attackMessage = null }) {
+async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0, attackMessage = null, shattered = false }) {
   const c = { attacker, target, o, result, m, mode, power: m.power, enhanced: m.enhanced, choices: m.choices ?? {}, range: m.range, text: m.text, hit, margin, crit: hit && !!result.crit, index,
     stacks: stacksBase + (hit ? (result.critStacks ?? 0) : 0), now: !!m.spread };
   // Brace, Dip, Shatter and parrying weapons guard against this attack like any other Melee or Ranged one: a damaging Mode asks for the guard (once).
   let guardP = null;
-  c.guardOf = () => (guardP ??= attackGuard(attacker, target, o, attackMessage, index, { hit }));
+  c.guardOf = () => (guardP ??= attackGuard(attacker, target, o, attackMessage, index, { hit, shattered }));
   const out = await wonders.resolveMode(c);
-  if (guardP) { const g = await guardP; out.html += g.html; out.rolls.push(...g.rolls); }
   // Fusion-style riders and Warpath: more Modes applied with the same hit.
   for (const id of m.extraModes ?? []) { const em = R.modeById(id); if (em) { const x = await wonders.resolveMode({ ...c, mode: em }); out.html += `<br>${x.html}`; out.rolls.push(...x.rolls); } }
+  let riposte = null;
+  if (guardP) {
+    const g = await guardP;
+    out.html += g.html; out.rolls.push(...g.rolls);
+    if (g.any && g.damaged && g.direct === 0 && g.riposteItems?.length) riposte = { items: g.riposteItems };     // a guard took all of it: Riposte
+  }
   const tenet = "";
   const grow = hit && R.wonderById(m.wonder)?.kind === "dream" ? await growReverie(attacker, attacker.system.icon?.system.grade) : "";
   let crits = "";
@@ -493,7 +498,7 @@ async function landManifest({ attacker, target, o, m, mode, result, stacksBase, 
   if (hit && out.tenets?.length) setTimeout(() => wonders.offerTenets(c, out.tenets), 0);
   const html = `<div class="fs-result"><i class="fa-solid fa-eye"></i> ${out.html}${result.crit ? " <em>(critical)</em>" : ""}${m.deepened ? " <em>(Deepened: doubly Strengthened)</em>" : ""}${tenet ? `<br>${tenet}` : ""}${grow ? `<br>${grow}` : ""}${crits ? `<br>${crits}` : ""}</div>`;
   if (out.acts.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}: abilities`, body: wonders.actButtons(out.acts), flags: { flowstate: { mentalAct: { acts: out.acts } } } });
-  return { html, push: out.push, rolls: out.rolls };
+  return { html, push: out.push, rolls: out.rolls, riposte };
 }
 
 async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index = 0, attackMessage = null }) {
@@ -547,7 +552,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     let extra = "";
     if (theory(attacker) >= 2 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null) {
       const cost = minOf(attacker, R.KINDS[R.wonderById(m.wonder).kind].stat);
-      const act = { id: "chant", label: "Chant: reroll", tip: "Reroll the missed attack roll once (keeps its Advantage/Disadvantage; this does not Enhance it)", cost: `⚡ ${cost}`, caster: attacker.uuid, target: target.uuid, mode: m.mode, re: { ...reroll, keepNet: true, stacks: o.stacks ?? 0 }, m, range: m.range };
+      const act = { id: "chant", label: "Chant: reroll", tip: "Reroll the missed attack roll once (keeps its Advantage/Disadvantage; this does not Enhance it)", cost: `⚡ ${cost}`, caster: attacker.uuid, target: target.uuid, mode: m.mode, re: { ...reroll, keepNet: true, stacks: o.stacks ?? 0, melee: !!o.melee, msg: attackMessage, index }, m, range: m.range };
       await post(attacker, { title: `${esc(attacker.name)} — Chant`, body: wonders.actButtons([act]), flags: { flowstate: { mentalAct: { acts: [act] } } } });
       extra = " Chant can reroll it.";
     }
@@ -571,8 +576,9 @@ export async function rerollAct(x) {
   let html = `<div class="fs-notes">${label}: new attack roll <strong>${r.total}</strong> against a dodge of ${x.re.dodge}${x.re.keepNet ? "" : " (no Advantage/Disadvantage kept)"}: <strong>${result.outcome}</strong>.</div>`;
   if (result.hit) {
     if (chant) {
-      const o = { stacks: x.re.stacks ?? 0, area: false };
-      const landed = await landManifest({ attacker: caster, target, o, m: { ...x.m, chanted: true }, mode: R.modeById(x.m.mode), result, stacksBase: o.stacks });
+      const o = { stacks: x.re.stacks ?? 0, area: false, melee: !!x.re.melee };
+      // The first roll was a miss: a melee miss already met Shatter, so the reroll doesn't strike the attack a second time.
+      const landed = await landManifest({ attacker: caster, target, o, m: { ...x.m, chanted: true }, mode: R.modeById(x.m.mode), result, stacksBase: o.stacks, attackMessage: x.re.msg ?? null, index: x.re.index ?? 0, shattered: !!x.re.melee });
       html += landed.html;
     } else {
       html += `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${await applyWard({ attacker: caster, target, ward: x.ward })}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>`;

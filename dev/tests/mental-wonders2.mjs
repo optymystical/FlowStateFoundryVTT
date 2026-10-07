@@ -166,13 +166,48 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   const dipped = await glob({ parrying: { dip: { style: "dip" } } });
   const left = Math.max(0, plain.stain - dex);
   ok2(dipped.stain === left && dipped.lost === left, `Glob against a Dip (−${dex}): Stains ${plain.stain} → ${dipped.stain}, HP lost ${plain.lost} → ${dipped.lost}`);
+  // Heat's Flare: every set of d4s is its own instance, so a Ward (and a Dip) deals with each set before the card is worked out.
+  hero.system.trees["magic-heat"] = 5; hero.system.prepareDerivedData();
+  const flare = async (guardFlags = null) => {
+    reset(); if (guardFlags) orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), ...guardFlags }; refresh(); target(orc); hero.system.ap.value = 6; hero.system.rp.value = 6; hero.system.energy.value = 150; seq = [20]; dialog = () => ({ net: 0 });
+    await C.castSpell(hero, { via: "foci:rod", ap: 2, core1: "magic-heat:flame", core2: "", base: 1, "mod:magic-heat:flare": true });
+    seq = [12]; dialog = wardOverride ?? (() => ({ net: 0 })); await actions.defend(lastAtk(), 0, "dodge");
+    seq = [5, 6, 7]; await actions.rollExchangeDamage(messages.filter(m => m.flags?.flowstate?.defense).at(-1));
+    return { lost: 432 - hp(orc), ignite: orc.system.conditions.ignite, card: text(messages.filter(m => /Damage to/.test(m.content ?? "")).at(-1)) };
+  };
+  const fPlain = await flare();
+  const veil3 = mkIcon(orc, "Veil", { form: "veil", attuned: true });
+  uses = 0; wardOverride = html => (/Spend 1 RP to negate/.test(html ?? "") ? (uses++ < 1 ? {} : null) : { net: 0 });
+  const fWard = await flare();
+  ok2(/Set 1/.test(fWard.card) && fWard.lost === fPlain.lost - 5 && fWard.ignite === fPlain.ignite - 5, `Flare through a Veil Ward: HP lost ${fPlain.lost} → ${fWard.lost}, Ignite ${fPlain.ignite} → ${fWard.ignite} (the Ward negated all of the first set's 5; asked per set, before the card)`);
+  await veil3.update({ "system.attuned": false }); wardOverride = null; dialog = () => ({ net: 0 });
+  const fDip = await flare({ parrying: { dip: { style: "dip" } } });
+  ok2(fPlain.lost > 0 && fDip.lost === 0 && /Set 1: Dip/.test(fDip.card), `Flare against a Dip: every set is reduced (HP lost ${fPlain.lost} → ${fDip.lost})`);
+
   // …and a Manifest's Mode faces Brace/Dip/Shatter like any other Melee or Ranged attack.
   reset(); orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), parrying: { dip: { style: "dip" } } };
   const dipCard = await hitMiss("mental-destruction-nightmare:corrode");
   ok2(orc.system.conditions.stain === left && 432 - hp(orc) === left && /Dip/.test(text(dipCard)), `Corrode against a Dip: Stains ${orc.system.conditions.stain}, HP lost ${432 - hp(orc)} (Dip −${dex} of ${plain.stain})`);
+  ok2(/fs-riposte-row/.test(dipCard.content) && dipCard.flags.flowstate.defense.guardRiposte === true, "…and since the Dip took it all, the Orc is offered a Riposte (with the fist)");
+  const nMsgs = messages.length; 
+  const fistItem = orc.items.find(i => i.system.weaponType === "unarmed");
+  orc.system.ap.value = 6; orc.system.rp.value = 6; combat.combatant = { actor: orc };
+  seq = [20]; dialog = () => ({ net: 0 }); await actions.riposte(dipCard, { itemUuid: fistItem.uuid });
+  ok2(messages.length > nMsgs && messages.slice(nMsgs).some(m => /Riposte/.test(m.content ?? "")), "…and the Riposte works from the Manifest's card");
+  combat.combatant = { actor: hero };
   reset(); orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), parrying: { shatter: { style: "shatter" } } };
   const shCard = await hitMiss("mental-destruction-nightmare:corrode");
   ok2(/Shatter/.test(text(shCard)) && 432 - hp(orc) < plain.lost && orc.system.conditions.stain === 432 - hp(orc), `Corrode against a Shatter: the projectile is hit, damage ${plain.lost} → ${432 - hp(orc)}, Stains ${orc.system.conditions.stain}`);
+  // Shatter strikes an attack once: a melee miss meets it, and a Chant reroll that hits doesn't meet it again.
+  reset(); messages.length = 0; orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), parrying: { shatter: { style: "shatter" } } };
+  const shatters = () => messages.filter(m => /Shatter \(Orc\)/.test(m.content ?? "")).length;
+  refresh(); target(orc); seq = [1];
+  await M.manifest(hero, { mode: "mental-destruction-nightmare:corrode", range: "melee" });
+  seq = [40]; dialog = () => ({ net: 0 }); await actions.defend(lastAtk(), 0, "dodge");
+  const missShatters = shatters();
+  const chantAct = messages.flatMap(m => m.flags?.flowstate?.mentalAct?.acts ?? []).find(a => a.id === "chant");
+  if (chantAct) { hero.system.energy.value = 200; seq = [60, 10]; await M.rerollAct(chantAct); }
+  ok2(chantAct && missShatters === 1 && shatters() === 1, `Shatter strikes once: ${missShatters} on the melee miss, ${shatters()} after the Chant reroll hit`);
   reset();
 }
 reset(); await hitMiss("mental-destruction-nightmare:immolate");

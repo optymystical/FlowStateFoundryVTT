@@ -660,10 +660,13 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
   }
   // Warden and Riposte (Enhanced): once the damage resolves, one attack at its source; on a hit the negated damage is dealt to them.
   const negated = startLeft - Math.max(0, left);
-  let after = null;
-  if (negated > 0 && form.reflect && icon.system && enhancedUsed && attacker) after = () => reflectAttack(actor, form.reflect, negated, type, attacker);
-  return { amount: Math.max(0, left), html: notes.length ? `<div class="fs-notes">${notes.map(esc).join(" · ")}</div>` : "", after };
+  let reflect = null;
+  if (negated > 0 && form.reflect && icon.system && enhancedUsed && attacker) reflect = { kind: form.reflect, amount: negated, type, attacker };
+  return { amount: Math.max(0, left), html: notes.length ? `<div class="fs-notes">${notes.map(esc).join(" · ")}</div>` : "", reflect, after: reflect ? () => reflectNow(actor, reflect) : null };
 }
+
+/** Run a Warden / Riposte reflect that `negate` handed back (it can travel as data: the damage may be applied on another client). */
+const reflectNow = (actor, r) => reflectAttack(actor, r.kind, r.amount, r.type, r.attacker);
 
 /** Warden (Ranged, within 100 ft) / Riposte (Melee with Advantage, within melee range): an attack roll at the damage's source for the damage that was negated. */
 async function reflectAttack(actor, kind, amount, type, attackerUuid) {
@@ -864,7 +867,7 @@ async function act(message, i) {
 }
 export const usedActs = id => game.messages.filter(m => m.getFlag("flowstate", "mentalActDone")?.card === id).map(m => m.getFlag("flowstate", "mentalActDone").i);
 
-registerMental({ onResolve, negate, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+registerMental({ onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });

@@ -1200,11 +1200,19 @@ async function pileFolder() {
 }
 
 export const GM_ACTIONS = {
-  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, reply }) {
+  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, reply }) {
     const actor = await fromUuid(target);
-    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone }) : null;
+    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect }) : null;
     if (reply) game.socket.emit("system.flowstate", { action: "damageResult", to: reply.to, reqId: reply.reqId, result: summarizeDamage(out) });
     return out;
+  },
+  /** A Ward's owner (the GM's client, for someone else's character) is asked to negate damage the attacker's client is about to settle. */
+  async wardNegate({ target, amount, type, source, attacker, reply }) {
+    const actor = await fromUuid(target);
+    const r = actor && mentalHook?.negate ? await mentalHook.negate(actor, amount, type, { source, attacker }) : null;
+    const result = r ? { amount: r.amount, html: r.html ?? "", reflect: r.reflect ?? null } : null;
+    if (reply) game.socket.emit("system.flowstate", { action: "damageResult", to: reply.to, reqId: reply.reqId, result });
+    return result;
   },
   async updateActor({ uuid, data }) {
     const actor = await fromUuid(uuid);
@@ -4774,6 +4782,12 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     const adj = await mentalHook.adjust({ attacker, target, amount: incoming, type, o, crit: !!defense.result?.crit });
     if (adj.amount !== incoming || adj.html) { incoming = adj.amount; extraHTML += adj.html; }
   }
+  // Mental: a Nightmare Ward may negate some of it now, so Stains, Bleed, Gash and the like go by what is actually dealt.
+  let ward = null, wardCut = 0;
+  if (mentalHook?.negate && incoming > 0 && !flare) {
+    ward = await wardNegate(target, incoming, type, { source: sourceOf(o), attacker: attacker.uuid });
+    if (ward) { wardCut = Math.max(0, incoming - ward.amount); incoming = ward.amount; extraHTML += ward.html ?? ""; }
+  }
   const cleave = shattered ? 0 : o.cleave ?? 0;
   if (cleave) extraHTML += `<div class="fs-notes">Cleave ${cleave}: object damage, hits Limits first${o.striker ? "; what gets past them hits the creature (Blood and Iron)" : ""}</div>`;
 
@@ -4812,7 +4826,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     // Tier 2: Brand, Ignite/Stain stacks, Energy removal, chains, Catalyst, counters.
     if (elem) {
       spellHTML += await elem.beforeApply({ attacker, target, o, baseTotal: base.totals.reduce((a, b) => a + b, 0) + flat });
-      const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: line.final, type, profile, facts: spellFacts ?? {}, dmgOpts });
+      const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: Math.max(0, line.final - wardCut), type, profile, facts: spellFacts ?? {}, dmgOpts });
       spellHTML += er.html; spellRolls.push(...er.rolls); if (er.kb) kb = er.kb; chainFlag = er.chain;
     }
     const pen = fx.diePenalties(profile, o.spell.power, { direct });
@@ -4871,8 +4885,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
       chain: chainFlag ? { ...chainFlag, affected: o.spell?.chain?.affected ?? [target.uuid], depth: o.spell?.chain?.depth ?? 0, primary: o.spell?.chain?.primary ?? target.uuid } : null } }
   });
   if (instances) for (const amt of instances) await requestDamage(target, amt, type, pierceNow, null, { silent: true, ...dmgOpts });
-  else await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts });
-  if (ripHTML) await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts });
+  else await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts, wardDone: !!ward, wardReflect: ward?.reflect ?? null });
+  if (ripHTML) await requestDamage(target, incoming + wardCut, type, pierceNow, null, { silent: true, ...dmgOpts });                       // a second instance: a Ward may answer it again
   // A Summon's or Animation's attacks carry the Core they were Combo'd with (Any T1/T2/T3 + Summoning / Animation).
   if (conj && !o.spell) await conj.riderAfter({ attacker, target, o, outcome, defense });
   if (foci && o.spell?.fociFx) await foci.afterDamage({ attacker, o, type });
@@ -4917,8 +4931,8 @@ export async function reachFinisher(damageMessage, kind) {
  * { toHp, armorLoss, negated } (waits for the GM; for effects that go by the damage dealt, after any Ward negation).
  */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
-  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wantResult = false } = {}) {
-  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone };
+  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, wantResult = false } = {}) {
+  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect };
   if (target.isOwner) return applyDamage(target, amount, type, o);
   const payload = { target: target.uuid, amount, type, ...o };
   return wantResult ? askGMDamage(payload) : requestGM("applyDamage", payload);
@@ -4934,12 +4948,30 @@ let damageReq = 0;
 async function askGMDamage(payload) {
   if (game.user.isGM) return summarizeDamage(await GM_ACTIONS.applyDamage(payload));
   if (!game.users.activeGM) return requestGM("applyDamage", payload);
+  return askGM("applyDamage", payload);
+}
+/** Run a GM action over the socket and wait for what it answers (null after two minutes, or if it gave nothing). */
+function askGM(action, payload) {
   const reqId = `${game.user.id}:${++damageReq}`;
   return new Promise(resolve => {
     const timer = setTimeout(() => { pendingDamage.delete(reqId); resolve(null); }, 120000);
     pendingDamage.set(reqId, v => { clearTimeout(timer); resolve(v); });
-    game.socket.emit("system.flowstate", { action: "applyDamage", ...payload, reply: { to: game.user.id, reqId } });
+    game.socket.emit("system.flowstate", { action, ...payload, reply: { to: game.user.id, reqId } });
   });
+}
+/**
+ * Mental: let a Nightmare Ward (or a Premonition charge) negate part of incoming damage *before* anything that goes by the damage dealt
+ * (Stains, Bleed, Gash...) is worked out. The Ward's owner is asked (the GM's client, for someone else's character).
+ * Returns { amount, html, reflect } or null when it can't be asked (then applyDamage asks as usual).
+ */
+export async function wardNegate(target, amount, type, { source = null, attacker = null } = {}) {
+  if (!mentalHook?.negate || amount <= 0 || target.type === "pile") return null;
+  if (target.isOwner) {
+    const r = await mentalHook.negate(target, amount, type, { source, attacker });
+    return { amount: r.amount, html: r.html ?? "", reflect: r.reflect ?? null };
+  }
+  if (game.user.isGM || !game.users.activeGM) return null;
+  return askGM("wardNegate", { target: target.uuid, amount, type, source, attacker });
 }
 const summarizeDamage = out => out ? { toHp: out.toHp ?? 0, armorLoss: out.armorLoss ?? 0, negated: out.negated ?? 0 } : null;
 /** A client receives the result of damage it asked the GM for. */
@@ -5159,7 +5191,7 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
  * @param {boolean} silent  don't post a card (the caller already shows the outcome on its own card)
  */
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
   // Reactive: a Summon or Animation of a caster with the Mod gets a Weakened stack on each instance (1 RP).
   const smr = actor.flags?.flowstate?.summon;
@@ -5180,7 +5212,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   }
   // Mental: a Nightmare Ward may spend RP to negate some of it first, and a Premonition charge a lump.
   let neg = null, negated = 0;
-  if (mentalHook && amount > 0 && !bypass) {
+  if (mentalHook && amount > 0 && !bypass && !wardDone) {
     const before = amount;
     neg = await mentalHook.negate(actor, amount, type, { source: shroudCtx?.source ?? null, attacker: shroudCtx?.attacker ?? null });
     if (neg.amount !== amount) { if (neg.html && !silent) await post(actor, { title: `${esc(actor.name)} — Ward`, body: neg.html }); amount = neg.amount; }
@@ -5240,6 +5272,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   await actor.update(update);
   if (mentalHook && out.toHp > 0) await mentalHook.checkExecute(actor);        // Execute (Enhanced): below half the raised Pain Threshold they die
   if (neg?.after) await neg.after();
+  else if (wardReflect && mentalHook?.reflect) await mentalHook.reflect(actor, wardReflect);          // a Warden / Riposte the pre-damage Ward earned
   if (flightHook && out.toHp > 0 && actor.isOwner) await flightHook(actor, out.toHp);   // a flyer hit hard enough must stabilize                                            // Warden / Riposte (Enhanced): strike back at the source
   if (out.armor && out.armorLoss) await out.armor.update({ "system.wear": out.armor.system.wear + out.armorLoss }, { flowstateSystem: true });
   if (!silent) await post(actor, { title: `${esc(actor.name)} takes ${amount} ${DAMAGE_TYPES[type] ?? ""}`, body: `<ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>` });

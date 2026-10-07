@@ -228,7 +228,7 @@ At the start of your turn a card lists the start-of-turn abilities you can use r
 ## Constitution Methods (automated)
 - **T1 One With Body:** information only.
 - **T2 Taunt:** an Action List entry (2 RP, CON min) against one creature within 100 ft. Your Persuasion/Deception d100 is rolled against their d100; a higher roll wins. A Taunted creature's attack cards note when they attack someone else. They repeat the check automatically at the end of their turn, or with **Shake off Taunt** (2 AP/RP), and each repeat gives you another Disadvantage. It ends at the start of your next turn.
-- **T3 Pure Body:** Martial (Strength, Dexterity, Constitution) checks get a **resisting** checkbox (the stat counts twice as high) and a *target number or contested result* field: under half your stat, it's an automatic success (no roll). Unstoppable and Pure Body both double the stat once; they don't multiply.
+- **T3 Pure Body:** Martial (Strength, Dexterity, Constitution) checks get a **resisting** checkbox (the stat counts twice as high) and a *target number or contested result* field: under half your stat, it's an automatic success (no roll). Unstoppable and Pure Body multiply: with both, the stat counts four times as high.
 - **T4 Pull Aggro:** a Taunt (CON stat) against every targeted creature within 30 ft.
 - **T5 Imposing Presence:** attacks from within your personal melee range that are already Weakened get another Weakened.
 
@@ -512,8 +512,10 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.49.1:** **Unstoppable and Pure Body multiply** (×4 with both). **Anything worn or held can be aimed at**, not just weapons and armor: the target dropdown in a weapon attack's dialog and the Cast dialog (for a damaging spell at one target) lists the creature's held weapons (not fists), worn armor, held Foci and melded Shroud. Icons, Misc items, currency and Affixes can't be aimed at. The creature's own dodge roll answers the attack, and the damage goes to the object's Durability. A spell aimed at an object only damages it: its riders (Stains, Force, Poison and so on) don't apply to the creature.
+
 **0.49.0 — Automation pass:**
-- **Martial resisting:** Strength, Dexterity and Constitution checks get *resisting* checkboxes for **Unstoppable** (while active: Advantage, stat counts twice) and **Pure Body** (stat counts twice; a target number under half your stat is an automatic success). Both double the stat once (the docs don't say they multiply).
+- **Martial resisting:** Strength, Dexterity and Constitution checks get *resisting* checkboxes for **Unstoppable** (while active: Advantage, stat counts twice) and **Pure Body** (stat counts twice; a target number under half your stat is an automatic success). They multiply: with both, the stat counts four times as high.
 - **Terrain regions** (Muddy and Harden included): see *Terrain regions* above.
 - **Larceny on damage rolls:** the caster can steal a damage roll (the target rerolls with bigger or smaller dice), and the thief can use a stolen roll for a damage roll of their own.
 - **Flight and Force:** a flyer moved by Force must spend 3 RP to stabilize or begin falling, as for a big hit.
@@ -551,7 +553,7 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Ignite Spread** (optional, a world setting, off by default): Ignite grows by 10% a turn up to the Pain Threshold, but not while the creature tried to put it out; at the limit a card rolls the two d8 directions and the 10% per tile.
 
 ## Not yet automated
-Cover, the senses table, objects held or worn by a creature (as Rules-doc objects), and equipment repair. The math helpers for Force and Terminal Velocity are in `module/rules.mjs`.
+Cover, the senses table, and equipment repair. The math helpers for Force and Terminal Velocity are in `module/rules.mjs`.
 
 ## Code map
 - `module/rules.mjs`: all rules math as pure functions. Unit-tested against the Rules doc examples.

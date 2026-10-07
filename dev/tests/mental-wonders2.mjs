@@ -184,6 +184,16 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   const fDip = await flare({ parrying: { dip: { style: "dip" } } });
   ok2(fPlain.lost > 0 && fDip.lost === 0 && /Set 1: Dip/.test(fDip.card), `Flare against a Dip: every set is reduced (HP lost ${fPlain.lost} → ${fDip.lost})`);
 
+  // A damaging spell can be aimed at a worn or held item: the damage goes to the object, not the creature.
+  const axe = mkWeapon(orc, "Axe", { weaponType: "bladed", weight: "light", material: "hardwood", equipped: true }); axe.isOwner = true;
+  ok2(actions.aimableItems(orc).some(i => i.uuid === axe.uuid) && !actions.aimableItems(orc).some(i => i.type === "gear" || i.type === "icon"), "Held weapons are aimable; Icons and Misc items are not");
+  ok2(actions.aimableItems({ items: [{ type: "shroud", uuid: "S1" }, { type: "shroud", uuid: "S2" }, { type: "icon", uuid: "I1", system: { attuned: true } }], system: { shroud: { uuid: "S1" } } }).map(i => i.uuid).join() === "S1", "A creature's melded Shroud is aimable (not an unmelded one, not an Icon)");
+  reset(); orc.flags = {}; refresh(); target(orc); hero.system.ap.value = 6; hero.system.rp.value = 6; hero.system.energy.value = 150; seq = [20]; dialog = () => ({ net: 0 });
+  await C.castSpell(hero, { via: "foci:rod", ap: 2, core1: "magic-acid:glob", core2: "", base: 1, aim: axe.uuid });
+  seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
+  seq = [20]; const wear0 = axe.system.wear; await actions.rollExchangeDamage(messages.filter(m => m.flags?.flowstate?.defense).at(-1));
+  ok2(hp(orc) === 432 && orc.system.conditions.stain === 0 && axe.system.wear > wear0 && /Damage to Orc's Axe/.test(text(messages.at(-1))), `A Glob aimed at the Orc's axe wears the axe (${wear0} → ${axe.system.wear}) and leaves the Orc alone`);
+
   // …and a Manifest's Mode faces Brace/Dip/Shatter like any other Melee or Ranged attack.
   reset(); orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), parrying: { dip: { style: "dip" } } };
   const dipCard = await hitMiss("mental-destruction-nightmare:corrode");

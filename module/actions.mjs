@@ -705,10 +705,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
 
   // Targeting (Ch8): with one creature targeted, you can aim at one of its equipped items instead of the creature.
   const aimTargets = (followup?.targetActors ?? [...(game.user.targets ?? [])].map(t => t.actor)).filter(a => a && a.type !== "pile");
-  const aimables = aimTargets.length === 1
-    ? aimTargets[0].items.filter(i => (i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed") || (i.type === "armor" && i.system.equipped)
-      || (i.type === "foci" && i.system.equipped))
-    : [];
+  const aimables = aimTargets.length === 1 ? aimableItems(aimTargets[0]) : [];
   const aimField = aimables.length ? `<div class="form-group"><label>Target</label><select name="aim">
       <option value="">${esc(aimTargets[0].name)}</option>
       ${aimables.map(i => `<option value="${i.uuid}">${esc(aimTargets[0].name)}'s ${esc(i.name)}</option>`).join("")}</select></div>` : "";
@@ -3691,6 +3688,16 @@ async function wouldBeDirect(target, maxDamage, type, dmgOpts) {
 }
 
 /** A Spell hit that doesn't wait for damage: a Shield goes up, Force is applied, die sizes shrink. */
+/**
+ * What can be aimed at instead of a creature (Ch8): everything it is holding or wearing that has Durability: held weapons (not fists), worn armor,
+ * held Foci and its melded Shroud. Not Icons, Misc items, currency or Affixes. The creature's own dodge roll answers the attack.
+ */
+export function aimableItems(actor) {
+  const shroud = actor?.system?.shroud ?? null;
+  return (actor?.items ?? []).filter(i => (i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed") || (i.type === "armor" && i.system.equipped)
+    || (i.type === "foci" && i.system.equipped) || (i.type === "shroud" && shroud && i.uuid === shroud.uuid));
+}
+
 async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = null) {
   const sp = o.spell;
   const profile = spellProfile(o);
@@ -4642,7 +4649,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (conj && o.spell?.makeAct && !result.hit) await conj.makeMiss({ attacker, target, sp: o.spell });
   // Spells: Force, shields, and die-size penalties that don't wait for damage.
   let spellRolls = [], defenseChain = null;
-  if (result.hit && o.spell) {
+  if (result.hit && o.spell && !o.aimItem) {                              // a spell aimed at an object only damages it
     const sh = await spellHit(attacker, target, o, result, entry, dodgeRoll?.total ?? null);
     if (sh) { extra.push(sh.html); spellRolls = sh.rolls; if (sh.push) pushInfo = sh.push; defenseChain = sh.chain; }
   }

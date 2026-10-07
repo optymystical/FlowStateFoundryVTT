@@ -59,7 +59,7 @@ ok2(r.die === 64 && r.net === 0 && r.auto, "Pure Body: stat counts twice, and a 
 r = ab.resistCheck(base, { pureBody: true, target: 8 });
 ok2(!r.auto, "…8 is not under half of 16");
 r = ab.resistCheck(base, { unstoppable: true, pureBody: true });
-ok2(r.value === 32 && r.net === 1, "Both together double the stat once (they don't stack)");
+ok2(r.value === 64 && r.die === 128 && r.net === 1, "Both together multiply: the stat counts four times as high");
 r = ab.resistCheck(base, {});
 ok2(r.die === 32 && r.net === 0 && !r.auto, "Neither: a normal check");
 

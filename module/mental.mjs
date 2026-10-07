@@ -534,7 +534,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     await putSpellEffect(target, { ...data, name, description });
     return { html: `<div class="fs-result"><i class="fa-solid fa-hill-rockslide"></i> Quicksand: ${esc(target.name)} fails the escape check after all and is held again by <strong>${esc(name)}</strong>.</div>` };
   }
-  if (m.hubris && result.hit) result = { ...result, crit: true, critStacks: 2, outcome: "Critical Hit (Hubris)" };
+  if (m.hubris && result.hit && !result.noCrit) result = { ...result, crit: true, critStacks: 2, outcome: "Critical Hit (Hubris)" };
   if (!result.hit && wonders.MISS_MODES.has(m.mode) && !m.hubris) {
     // Perfection Modes apply even on a miss: what they do is worked out from how far it missed.
     return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, hit: false, margin: Math.max(0, (reroll.dodge ?? 0) - (entry?.total ?? 0)), index, attackMessage });

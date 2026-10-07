@@ -266,7 +266,7 @@ async function abilityActs(c) {
   const wt = tier(a, w.id);
   if (w.id === "mental-life-dream" && wt >= 2 && !c.m.spread) acts.push({ id: "pollinate", label: "Pollinate", tip: "Spread this Mode to another target within 100 ft you can sense (an attack roll)", cost: `⚡ ${Math.floor(minOf(a, "pon") / 2)}`, ...base });
   if (w.id === "mental-death-nightmare" && wt >= 2 && !c.m.reapplied) acts.push({ id: "fester", label: "Fester", tip: "The Mode's effect applies again at the start of their next turn", cost: `⚡ ${minOf(a, "snap")}`, ...base });
-  if (w.id === "mental-death-nightmare" && wt >= 4 && c.crit) acts.push({ id: "reap", label: "Reap", tip: "Manifest another Death Mode of the same Range for free", cost: `⚡ ${minOf(a, "snap")}`, ...base });
+  if (w.id === "mental-death-nightmare" && wt >= 4 && c.crit && living(c.target)) acts.push({ id: "reap", label: "Reap", tip: "Manifest another Death Mode of the same Range for free", cost: `⚡ ${minOf(a, "snap")}`, ...base });
   const tn = tenetOf(a);
   if (tn && !c.m.spread && !c.now) {
     if (tn.id === "mental-life-dream:verdant-soul") acts.push({ tenet: true, id: "verdantSoul", label: "Verdant Soul", tip: "Once per round: 10 temp HP to the target or yourself", cost: "once per round", mult: tn.mult, ...base });

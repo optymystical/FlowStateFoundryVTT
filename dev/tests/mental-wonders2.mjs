@@ -182,8 +182,8 @@ ok2(effs(orc, "irradiated").length === 1, "Irradiate leaves an Irradiated effect
 orc.system.hp.value = 432; await actions.applyDamage(orc, 10, "physical", { silent: true });
 ok2(hp(orc) === 432 - 10 - sPow, `…which adds ${sPow} to every damage the target takes`);
 reset(); orc.system.energy.value = 8; await hitMiss("mental-destruction-nightmare:freeze");
-ok2(orc.system.energy.value === 0 && effs(orc, "freezeSlow").length === 1, "Freeze removes Energy equal to the direct damage; at 0 Energy their movement costs +1 AP");
-ok2(orc.system.movement.base >= 1 || true, "(movement)");
+ok2(orc.system.energy.value === 0 && effs(orc, "freezeBlock").length === 1, "Freeze removes Energy equal to the direct damage; at 0 Energy they miss their free Energy next turn");
+ok2(await actions.freezeBlockTurnStart(orc) === true && effs(orc, "freezeBlock").length === 0 && await actions.freezeBlockTurnStart(orc) === false, "…which is blocked once, at the start of their next turn, then it's gone");
 orc.system.energy.value = 100; clearAll(orc);
 hero.system.trees["mental-destruction-nightmare"] = 5;
 reset(); refresh(); target(orc); seq = [20];
@@ -266,6 +266,32 @@ ok2(effs(orc, "hone").length === 1, "Hone puts an effect on the target");
 let rr = new Roll("1d20"); rr.total = 7;
 const rb = await W2.onRollBuffs({ actor: orc, type: "attack", roll: rr, die: 20, count: 1, net: 0, max: 20 });
 ok2(rr.total === 7 + sPow, "…which adds to the target's attack roll result");
+
+// Crits against a living target (Pride, Reap) and Hubris's "assuming it can crit".
+{
+  const pride = () => effs(hero, "pride").length;
+  const acts = () => (messages.filter(m => m.flags?.flowstate?.mentalAct).at(-1)?.flags.flowstate.mentalAct.acts ?? []).map(a => a.id);
+  clearAll(orc); clearAll(hero); reset(); messages.length = 0;
+  await hitMiss("mental-perfection-nightmare:exact", {}, 30, 2);
+  ok2(pride() === 1, "Pride: a crit against a living target gives a stack");
+  clearAll(orc); clearAll(hero); reset(); messages.length = 0; orc.system.magical = true;
+  await hitMiss("mental-perfection-nightmare:exact", {}, 30, 2);
+  ok2(pride() === 0, "…but not against something that isn't alive (a Summon or Animation)");
+  clearAll(orc); clearAll(hero); reset(); messages.length = 0; orc.system.magical = false;
+  await hitMiss("mental-perfection-nightmare:exact", { "choice:hubris": "yes" }, 10, 8);
+  ok2(pride() === 1, "Hubris: a hit that wouldn't have crit crits");
+  clearAll(orc); clearAll(hero); reset(); messages.length = 0; refresh(); target(orc); seq = [20];
+  await M.manifest(hero, { mode: "mental-perfection-nightmare:exact", range: "ranged", "choice:hubris": "yes" });
+  seq = []; await actions.defend(lastAtk(), 0, "none");
+  ok2(pride() === 0, "…but not when the target took the hit without dodging (that can't crit)");
+  clearAll(orc); clearAll(hero); reset(); messages.length = 0;
+  await hitMiss("mental-death-nightmare:wither", {}, 30, 2);
+  ok2(acts().includes("reap"), "Reap: offered on a crit against a living target");
+  clearAll(orc); clearAll(hero); reset(); messages.length = 0; orc.system.magical = true;
+  await hitMiss("mental-death-nightmare:wither", {}, 30, 2);
+  ok2(!acts().includes("reap"), "…but not against a target that isn't alive");
+  orc.system.magical = false; clearAll(orc); clearAll(hero); reset();
+}
 
 console.log("== Creation");
 clearAll(orc); clearAll(hero); reset(); messages.length = 0; refresh(); target(null);

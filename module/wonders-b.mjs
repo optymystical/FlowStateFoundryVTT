@@ -20,6 +20,7 @@ const roll = f => new Roll(f).evaluate();
 const minOf = (a, k) => ab.statMinOf(a, k);
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
 const living = a => a && a.type !== "pile";
+const livingTarget = a => living(a) && !a.system?.magical;                   // what the Mental doc means by a living target (no Summons, Animations or objects)
 const fromU = u => globalThis.fromUuidSync?.(u) ?? null;
 const everyActor = () => [...new Set([...(globalThis.game?.actors ?? []), ...(globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(Boolean)])];
 const ids = { dest: "mental-destruction-nightmare", peace: "mental-peace-dream", war: "mental-war-nightmare", adapt: "mental-adaptation-dream", perf: "mental-perfection-nightmare" };
@@ -85,9 +86,9 @@ const DESTRUCTION = {
     const r = await removeEnergy(c.target, s.direct);
     let tail = `${esc(c.target.name)} loses <strong>${r.removed} Energy</strong> (${r.remaining} left).`;
     if (r.remaining <= 0) {
-      await putSpellEffect(c.target, { kind: "freezeSlow", caster: c.attacker.uuid, name: "Frozen (+1 AP to move)", moveUp: 1, enhanced: !!c.enhanced, mode: c.mode.id,
-        description: `Moving costs 1 more AP until the start of ${c.attacker.name}'s next turn${c.enhanced ? "; damage removes it and is doubly Strengthened" : ""}.` });
-      tail += ` Out of Energy: their movement costs <strong>+1 AP</strong> until your next turn${c.enhanced ? " (damage removes it, doubly Strengthened)" : ""}.`;
+      await putSpellEffect(c.target, { kind: "freezeBlock", onTargetTurn: true, caster: c.attacker.uuid, name: "Frozen (no free Energy)", enhanced: !!c.enhanced, mode: c.mode.id,
+        description: `Doesn't gain their free Energy at the start of their next turn${c.enhanced ? "; damage removes it and is doubly Strengthened" : ""}.` });
+      tail += ` Out of Energy: they <strong>don't gain their free Energy</strong> at the start of their next turn${c.enhanced ? " (damage removes it, doubly Strengthened)" : ""}.`;
     }
     return `${s.line}. ${tail}`;
   }
@@ -396,12 +397,12 @@ COST_PROVIDERS.push((actor, { mode, wonder, choices }) => {
   if (wonder.id !== ids.perf) return null;
   const hubris = choices.hubris === "yes" && tier(actor, ids.perf) >= 2;
   const pride = fx(actor, "pride").length;
-  return { energy: hubris ? Math.floor(minOf(actor, "snap") / 2) : 0, net: pride, flags: hubris ? { hubris: true } : {}, notes: [...(hubris ? ["Hubris: the whole effect is on hit, and a hit crits"] : []), ...(pride ? [`Pride ×${pride}: Advantage`] : [])] };
+  return { energy: hubris ? Math.floor(minOf(actor, "snap") / 2) : 0, net: pride, flags: hubris ? { hubris: true } : {}, notes: [...(hubris ? ["Hubris: the whole effect is on hit, and a hit crits (if the attack can crit)"] : []), ...(pride ? [`Pride ×${pride}: Advantage`] : [])] };
 });
 ON_CRIT.push(async c => {
   if (c.mode.wonder !== ids.perf) return "";
   let out = "";
-  if (tier(c.attacker, ids.perf) >= 4) { await putSpellEffect(c.attacker, { kind: "pride", stack: true, caster: c.attacker.uuid, name: "Pride", description: "Each stack gives your Perfection Manifests Advantage on their attack rolls. Until the start of your next turn." }); out += `You gain a stack of <strong>Pride</strong> (${fx(c.attacker, "pride").length}).`; }
+  if (tier(c.attacker, ids.perf) >= 4 && livingTarget(c.target)) { await putSpellEffect(c.attacker, { kind: "pride", stack: true, caster: c.attacker.uuid, name: "Pride", description: "Each stack gives your Perfection Manifests Advantage on their attack rolls. Until the start of your next turn." }); out += `You gain a stack of <strong>Pride</strong> (${fx(c.attacker, "pride").length}).`; }
   return out;
 });
 /** Ego (Perfection Tenet): once per round, on a crit, regain 5 Energy. */
@@ -537,8 +538,8 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     n -= cut; notes.push(`Adaptive Skin: −${cut}`);
   }
   for (const e of fx(target, "skinType")) { const d = dataOf(e); if (d.dtype === type && !fx(target, "skin").some(s => dataOf(s).caster === d.caster && !dataOf(s).dtype)) { n -= d.dr; notes.push(`Adaptive Skin (${type}): −${d.dr}`); } }
-  // Frozen (Enhanced Freeze): damage removes the slow and is doubly Strengthened.
-  for (const e of fx(target, "freezeSlow")) if (dataOf(e).enhanced) { n = applyStacks(n, 2); notes.push("Frozen (Enhanced): the damage is doubly Strengthened and breaks the slow"); await changeEffect(e, null); }
+  // Frozen (Enhanced Freeze): damage removes the Energy block and is doubly Strengthened.
+  for (const e of fx(target, "freezeBlock")) if (dataOf(e).enhanced) { n = applyStacks(n, 2); notes.push("Frozen (Enhanced): the damage is doubly Strengthened and lifts the Energy block"); await changeEffect(e, null); }
   // Reactions of others: Dampen (Peace Tenet) lowers it, Guard redirects a chunk.
   for (const a of everyActor()) {
     const tn = tenetOf(a);

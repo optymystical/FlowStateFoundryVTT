@@ -163,7 +163,7 @@
 
 **Tier 4: You gain the following ability:**
 
-- **Reap:** **Cost: *Energy equal to your SNA min.*** Whenever one of your Death Modes would critically hit, you can use this ability to instantly attempt to manifest a Death Mode of your choosing of the same Range type for no AP/RP cost (if the initial was Bursted, this one is Bursted for free).
+- **Reap:** **Cost: *Energy equal to your SNA min.*** Whenever one of your Death Modes would critically hit a living target, you can use this ability to instantly attempt to manifest a Death Mode of your choosing of the same Range type for no AP/RP cost (if the initial was Bursted, this one is Bursted for free).
 
 **Tier 5: You gain the following Mode:**
 
@@ -195,7 +195,7 @@
 
 **Tier 1: You gain the following Mode and Tenet:**  
 **Fracture:** Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size **increased or decreased by 2** (your choice on manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as advantage/disadvantage). **Enhanced:** The forced reroll retains any effects the original roll had, such as advantage/disadvantage.  
-**Unbound:** Only active while attuned to this Tenet. Once per round when you get a crit on a Manifest (even if that Manifest cannot crit), you can instantly for free apply one Chaos Mode Charge of your choice onto that Manifest’s target.
+**Unbound:** Only active while attuned to this Tenet. Once per round when you get a crit on a Manifest, you can instantly for free apply one Chaos Mode Charge of your choice onto that Manifest’s target.
 
 **Tier 2: You gain the following ability:**
 
@@ -321,7 +321,7 @@
 
 **Tier 4: You gain the following Mode:**
 
-- **Freeze:** On hit, deals **2d8 cold damage**, removing energy from the target equal to the direct damage dealt.  If, after removing their energy, the target has 0 remaining energy, the target’s movement now takes \+1 AP until the start of your next turn (even if their energy rises above 0). **Enhanced:** The slowing effect of this Mode can now be removed with damage, causing that damage to be doubly Strengthened.
+- **Freeze:** On hit, deals **2d8 cold damage**, removing energy from the target equal to the direct damage dealt. If, after removing their energy, the target has 0 remaining energy, they are prevented from gaining their free energy gain at the start of their next turn. **Enhanced:** The energy block effect of this Mode can now be removed with damage, causing that damage to be doubly Strengthened.
 
 **Tier 5: You gain the following ability:**
 
@@ -405,7 +405,7 @@
 
 **Tier 2: You gain the following ability:**
 
-- **Hubris:** **Cost: *Energy equal to half of your SNA min, rounded down.*** Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits.
+- **Hubris:** **Cost: *Energy equal to half of your SNA min, rounded down.*** Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits (assuming it can crit).
 
 **Tier 3: You gain the following Mode:**
 
@@ -413,7 +413,7 @@
 
 **Tier 4: You gain the following passive:**
 
-- **Pride:** Whenever you Crit with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests advantage on their attack rolls.
+- **Pride:** Whenever you Crit against a living target with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests advantage on their attack rolls.
 
 **Tier 5: You gain the following Mode:**
 

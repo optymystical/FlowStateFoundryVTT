@@ -1825,7 +1825,7 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
 
   if (choice === "none") {
     // Declining to dodge: the attack hits but can't crit (also how forced auto-hits like Parry will resolve).
-    const result = { hit: true, crit: false, doubleCrit: false, critStacks: 0, outcome: "Hit (no dodge)" };
+    const result = { hit: true, crit: false, doubleCrit: false, critStacks: 0, outcome: "Hit (no dodge)", noCrit: true };
     return postDefense(target, message, index, target, result, null, "Took the hit without dodging — can't crit.");
   }
 
@@ -4402,7 +4402,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     extra.push(`<div class="fs-result"><i class="fa-solid fa-shield"></i> ${esc(sh?.parent?.name ?? "An ally")}'s ${esc(sh?.name ?? "shield")} (Shield Toss guard) Blocks this attack for ${esc(target.name)}, then returns.</div>`);
   }
   // Grapples, breaking free, and creature throws don't deal crit damage: a crit is just a hit.
-  if (result.crit && (o.breakFree || o.throwGrappled || o.grappleOnly)) result = { ...result, crit: false, doubleCrit: false, critStacks: 0, outcome: "Hit" };
+  if (result.crit && (o.breakFree || o.throwGrappled || o.grappleOnly)) result = { ...result, crit: false, doubleCrit: false, critStacks: 0, outcome: "Hit", noCrit: true };
 
   // Martial Theory T0: breaking free, throwing a grappled creature, and grappling.
   if (o.breakFree) {
@@ -5539,6 +5539,18 @@ export async function rest(actor) {
   await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0 });
   await post(actor, { title: "8 Hour Rest", body: `<div class="fs-result">+${next - value} HP (${next}/${max})</div>` });
   await mentalHook?.rest(actor);                     // Preordained (Mental, Order T4) rolls its number after a rest
+}
+
+/**
+ * Freeze (Mental, Destruction): a creature left with no Energy doesn't gain its free Energy at the start of its next turn. Returns true
+ * (and uses the block up) when this turn's regain is blocked.
+ */
+export async function freezeBlockTurnStart(actor) {
+  const blocks = spellEffects(actor, "freezeBlock");
+  if (!blocks.length) return false;
+  for (const e of blocks) await e.delete();
+  await post(actor, { title: `${esc(actor.name)} — Frozen`, body: `<div class="fs-result">${esc(actor.name)} is frozen: no free Energy at the start of this turn.</div>` });
+  return true;
 }
 
 /** Ch9 Ignite: put out (2 AP, anyone in melee). Stain: clean (3 AP). */

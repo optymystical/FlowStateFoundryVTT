@@ -3700,7 +3700,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Reap",
-      "text": "Cost: Energy equal to your SNA min. Whenever one of your Death Modes would critically hit a living target, you can use this ability to instantly attempt to manifest a Death Mode of your choosing of the same Range type for no AP/RP cost (if the initial was Bursted, this one is Bursted for free)."
+      "text": "Cost: Energy equal to your SNA min. Whenever one of your Death Modes would critically hit, you can use this ability to instantly attempt to manifest a Death Mode of your choosing of the same Range type for no AP/RP cost (if the initial was Bursted, this one is Bursted for free)."
      }
     ]
    },
@@ -3803,7 +3803,7 @@ export const TREES = [
      },
      {
       "name": "Unbound",
-      "text": "Only active while attuned to this Tenet. Once per round when you get a crit on a Manifest, you can instantly for free apply one Chaos Mode Charge of your choice onto that Manifest’s target."
+      "text": "Only active while attuned to this Tenet. Once per round when you get a crit on a Manifest (even if that Manifest cannot crit), you can instantly for free apply one Chaos Mode Charge of your choice onto that Manifest’s target."
      }
     ]
    },
@@ -4108,7 +4108,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Freeze",
-      "text": "On hit, deals 2d8 cold damage, removing energy from the target equal to the direct damage dealt. If, after removing their energy, the target has 0 remaining energy, they are prevented from gaining their free energy gain at the start of their next turn. Enhanced: The energy block effect of this Mode can now be removed with damage, causing that damage to be doubly Strengthened."
+      "text": "On hit, deals 2d8 cold damage, removing energy from the target equal to the direct damage dealt. If, after removing their energy, the target has 0 remaining energy, the target’s movement now takes +1 AP until the start of your next turn (even if their energy rises above 0). Enhanced: The slowing effect of this Mode can now be removed with damage, causing that damage to be doubly Strengthened."
      }
     ]
    },
@@ -4358,7 +4358,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Hubris",
-      "text": "Cost: Energy equal to half of your SNA min, rounded down. Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits (assuming it can crit)."
+      "text": "Cost: Energy equal to half of your SNA min, rounded down. Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits."
      }
     ]
    },
@@ -4380,7 +4380,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Pride",
-      "text": "Whenever you Crit against a living target with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests advantage on their attack rolls."
+      "text": "Whenever you Crit with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests advantage on their attack rolls."
      }
     ]
    },

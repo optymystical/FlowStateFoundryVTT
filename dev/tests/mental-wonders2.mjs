@@ -145,8 +145,8 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
 // …and so do the Stains of an ordinary spell attack (Acid + Glob), which are worked out on the damage card.
 {
   Object.assign(hero.system.trees, { "magic-theory": 5, "magic-acid": 5 }); mkFoci(hero, "rod", { fociType: "rod" }); hero.system.prepareDerivedData();
-  const glob = async () => {
-    reset(); refresh(); target(orc); hero.system.ap.value = 6; hero.system.rp.value = 6; hero.system.energy.value = 150; seq = [20]; dialog = () => ({ net: 0 });
+  const glob = async (guardFlags = null) => {
+    reset(); if (guardFlags) orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), ...guardFlags }; refresh(); target(orc); hero.system.ap.value = 6; hero.system.rp.value = 6; hero.system.energy.value = 150; seq = [20]; dialog = () => ({ net: 0 });
     await C.castSpell(hero, { via: "foci:rod", ap: 2, core1: "magic-acid:glob", core2: "", base: 1 });
     seq = [12]; dialog = wardOverride ?? (() => ({ net: 0 })); await actions.defend(lastAtk(), 0, "dodge");
     seq = [20]; await actions.rollExchangeDamage(messages.filter(m => m.flags?.flowstate?.defense).at(-1));
@@ -160,6 +160,12 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   ok2(plain.stain > 10 * wmO && warded.stain === plain.stain - 10 * wmO && warded.lost === plain.lost - 10 * wmO, `Glob through a Veil Ward: Stains ${plain.stain} → ${warded.stain}, HP lost ${plain.lost} → ${warded.lost}`);
   ok2(uses === 2, `…and the Ward is asked once, not again when the damage lands (one use, one decline: ${uses} prompts)`);
   await veil2.update({ "system.attuned": false }); wardOverride = null; dialog = () => ({ net: 0 });
+  // Anything else that takes damage off first (Dip here, like Brace and Shatter) shrinks the Stains too.
+  mkWeapon(orc, "fist", { weaponType: "unarmed", weight: "light", material: "hardwood" });
+  const dex = ab.statValue(orc, "dex");
+  const dipped = await glob({ parrying: { dip: { style: "dip" } } });
+  const left = Math.max(0, plain.stain - dex);
+  ok2(dipped.stain === left && dipped.lost === left, `Glob against a Dip (−${dex}): Stains ${plain.stain} → ${dipped.stain}, HP lost ${plain.lost} → ${dipped.lost}`);
 }
 reset(); await hitMiss("mental-destruction-nightmare:immolate");
 ok2(orc.system.conditions.ignite > 0, "Immolate applies Ignite");

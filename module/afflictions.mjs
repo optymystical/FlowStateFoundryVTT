@@ -269,7 +269,7 @@ async function dealDamage(actor, total, d, html) {
   const outcome = await damageOutcome(actor, total, type, opts);
   const res = await requestDamage(actor, total, type, 0, null, { wantResult: true, silent: true, ...opts });
   if (!health) html.push(`<ul class="fs-list">${outcome.lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
-  return { outcome, dealt: total - Math.min(total, res?.negated ?? 0) };      // an Icon's Ward may have negated some: stacks "equal to the damage" go by what was dealt
+  return { outcome, dealt: total - Math.min(total, res?.reduced ?? 0) };      // a Ward or a Wonder may have taken some off: stacks "equal to the damage" go by what was dealt
 }
 async function stackLine(actor, kind, amount, outcome, caster) {
   const line = await giveStacks(actor, kind, amount, { outcome: outcome ?? null, caster });

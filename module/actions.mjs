@@ -4826,7 +4826,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     // Tier 2: Brand, Ignite/Stain stacks, Energy removal, chains, Catalyst, counters.
     if (elem) {
       spellHTML += await elem.beforeApply({ attacker, target, o, baseTotal: base.totals.reduce((a, b) => a + b, 0) + flat });
-      const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: Math.max(0, line.final - wardCut), type, profile, facts: spellFacts ?? {}, dmgOpts });
+      // `dealt`: Shatter, Brace, Dip, Wonders and Wards all take it down before Stains, Energy loss and the like are worked out.
+      const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: Math.min(line.final, incoming), type, profile, facts: spellFacts ?? {}, dmgOpts });
       spellHTML += er.html; spellRolls.push(...er.rolls); if (er.kb) kb = er.kb; chainFlag = er.chain;
     }
     const pen = fx.diePenalties(profile, o.spell.power, { direct });
@@ -4928,7 +4929,7 @@ export async function reachFinisher(damageMessage, kind) {
 
 /**
  * Apply damage directly if we own the target; otherwise ask the active GM to do it. With `wantResult` the answer is
- * { toHp, armorLoss, negated } (waits for the GM; for effects that go by the damage dealt, after any Ward negation).
+ * { toHp, armorLoss, reduced } (waits for the GM; for effects that go by the damage dealt, after anything that negated or reduced it).
  */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
   parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, wantResult = false } = {}) {
@@ -4942,7 +4943,7 @@ export async function requestDamage(target, amount, type, pierce = 0, parryItem 
 const pendingDamage = new Map();
 let damageReq = 0;
 /**
- * Ask the GM to apply damage and wait for what came of it ({ toHp, armorLoss, negated }: a Ward may have taken some off, and effects that
+ * Ask the GM to apply damage and wait for what came of it ({ toHp, armorLoss, reduced }: a Ward or a Wonder may have taken some off, and effects that
  * go by the damage dealt need to know). Gives up after two minutes (null).
  */
 async function askGMDamage(payload) {
@@ -4973,7 +4974,7 @@ export async function wardNegate(target, amount, type, { source = null, attacker
   if (game.user.isGM || !game.users.activeGM) return null;
   return askGM("wardNegate", { target: target.uuid, amount, type, source, attacker });
 }
-const summarizeDamage = out => out ? { toHp: out.toHp ?? 0, armorLoss: out.armorLoss ?? 0, negated: out.negated ?? 0 } : null;
+const summarizeDamage = out => out ? { toHp: out.toHp ?? 0, armorLoss: out.armorLoss ?? 0, reduced: out.reduced ?? 0 } : null;
 /** A client receives the result of damage it asked the GM for. */
 export function damageResult(data) {
   pendingDamage.get(data.reqId)?.(data.result ?? null);
@@ -5194,11 +5195,14 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
   // Reactive: a Summon or Animation of a caster with the Mod gets a Weakened stack on each instance (1 RP).
+  let reduced = 0;                                                            // everything that took damage off before it reached the soak (Reactive, Wonders, Wards)
   const smr = actor.flags?.flowstate?.summon;
   if (smr?.reactive && amount > 0) {
     const c = syncUuid(smr.owner);
     if (c && !c.getFlag?.("flowstate", "reactiveOff") && (c.system?.rp?.value ?? 0) >= 1) {
+      const was = amount;
       amount = Math.floor(applyStacks(amount, -1));
+      reduced += Math.max(0, was - amount);
       const data = { "system.rp.value": c.system.rp.value - 1 };
       if (c.isOwner) await c.update(data); else await requestGM("updateActor", { uuid: c.uuid, data });
       await post(actor, { title: `${esc(actor.name)} — Reactive`, body: `<div class="fs-result">${esc(c.name)} spends 1 RP: the damage is Weakened (${amount}).</div>` });
@@ -5208,15 +5212,16 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (mentalHook?.adjust && amount > 0 && !bypass && !mentalDone) {
     const adj = await mentalHook.adjust({ attacker: shroudCtx?.attacker ? syncUuid(shroudCtx.attacker) : null, target: actor, amount, type, o: null });
     if (adj.amount !== amount && adj.html && !silent) await post(actor, { title: `${esc(actor.name)} — Wonders`, body: adj.html });
+    reduced += Math.max(0, amount - adj.amount);
     amount = adj.amount;
   }
   // Mental: a Nightmare Ward may spend RP to negate some of it first, and a Premonition charge a lump.
-  let neg = null, negated = 0;
+  let neg = null;
   if (mentalHook && amount > 0 && !bypass && !wardDone) {
     const before = amount;
     neg = await mentalHook.negate(actor, amount, type, { source: shroudCtx?.source ?? null, attacker: shroudCtx?.attacker ?? null });
     if (neg.amount !== amount) { if (neg.html && !silent) await post(actor, { title: `${esc(actor.name)} — Ward`, body: neg.html }); amount = neg.amount; }
-    negated = before - amount;
+    reduced += Math.max(0, before - amount);
   }
   const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor });
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.
@@ -5284,7 +5289,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (out.toHp > 0 && actor.setFlag) await actor.setFlag("flowstate", "lossLog", [...(actor.getFlag("flowstate", "lossLog") ?? []).slice(-24), { at: Date.now(), n: out.toHp }]);
   // Hex (Witchery): damage from a source that isn't a Hex triggers a Harm Hex.
   if (aff && !fromHex && amount > 0 && out.toHp > 0) await aff.hexTrigger(actor, "harm");
-  out.negated = negated;                                                      // what a Ward / Premonition took off (effects "equal to the damage dealt" shrink by it)
+  out.reduced = reduced;                                                      // what negated or reduced it first (effects "equal to the damage dealt" shrink by it)
   return out;
 }
 

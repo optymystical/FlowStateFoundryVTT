@@ -512,6 +512,8 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.49.2:** **Objects get Ignite and Stain stacks when they're aimed at directly.** A spell aimed at a worn or held object (weapon, armor, Foci, Shroud) now puts its Ignite / Stain stacks on the object instead of skipping them: the ones that follow its damage go by the damage the object took, and a spell with no damage (Searing Stain, Heat + Cold...) puts its stacks on the object when it lands. Each object has its own stacks (shown under the conditions as "Objects: ..."): at the end of its holder's turn it takes damage from them, cold damage aimed at it puts out its Ignite, and cleaning or putting out a condition clears it from the objects too. Stacks that land on armor because it absorbed an ordinary hit work as before (only a direct aim does this).
+
 **0.49.1:** **Unstoppable and Pure Body multiply** (×4 with both). **Anything worn or held can be aimed at**, not just weapons and armor: the target dropdown in a weapon attack's dialog and the Cast dialog (for a damaging spell at one target) lists the creature's held weapons (not fists), worn armor, held Foci and melded Shroud. Icons, Misc items, currency and Affixes can't be aimed at. The creature's own dodge roll answers the attack, and the damage goes to the object's Durability. A spell aimed at an object only damages it: its riders (Stains, Force, Poison and so on) don't apply to the creature.
 
 **0.49.0 — Automation pass:**

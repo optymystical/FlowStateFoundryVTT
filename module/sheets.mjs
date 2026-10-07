@@ -914,7 +914,11 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       editable: this.isEditable,
       isGM: game.user.isGM,
       shieldRows: shieldOrderRows(actor),
-      armorConditions: Object.entries(sys.armor?.system.conditions ?? {}).filter(([, v]) => v > 0).map(([k, v]) => `${v} ${k === "ignite" ? "Ignite" : STAIN_VARIANTS[k]?.label ?? k}`).join(" · "),
+      // Ignite / Stain stacks on armor and on the other held or worn objects that were aimed at, by name.
+      armorConditions: [sys.armor, ...actions.aimableItems(actor).filter(x => x.type !== "armor")].filter(Boolean).map(x => {
+        const txt = Object.entries(x.system.conditions ?? {}).filter(([, v]) => v > 0).map(([k, v]) => `${v} ${k === "ignite" ? "Ignite" : STAIN_VARIANTS[k]?.label ?? k}`).join(", ");
+        return txt ? `${x.name}: ${txt}` : "";
+      }).filter(Boolean).join(" · "),
       showFocus: skills.tierOf(sys.trees, "magic-theory") >= 2,
       focusChoices: coreChoices(sys.trees),
       focusEditable: this.isEditable && !actions.inActiveCombat(actor),

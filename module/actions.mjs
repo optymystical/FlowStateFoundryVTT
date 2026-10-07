@@ -4649,6 +4649,14 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (conj && o.spell?.makeAct && !result.hit) await conj.makeMiss({ attacker, target, sp: o.spell });
   // Spells: Force, shields, and die-size penalties that don't wait for damage.
   let spellRolls = [], defenseChain = null;
+  if (result.hit && o.spell && o.aimItem && elem) {                       // a spell aimed at an object: no creature effects, but its Ignite / Stain stacks go on the object
+    const aimedItem = syncUuid(o.aimItem), prof = spellProfile(o);
+    if (aimedItem && prof) {
+      const os = await elem.objectStacks({ o, attacker, target, item: aimedItem, profile: prof, phase: "hit", entryTotal: entry?.total ?? 0, dodgeTotal: dodgeRoll?.total ?? 0, critStacks: result.critStacks ?? 0 });
+      if (os.html) extra.push(os.html);
+      spellRolls = [...spellRolls, ...os.rolls];
+    }
+  }
   if (result.hit && o.spell && !o.aimItem) {                              // a spell aimed at an object only damages it
     const sh = await spellHit(attacker, target, o, result, entry, dodgeRoll?.total ?? null);
     if (sh) { extra.push(sh.html); spellRolls = sh.rolls; if (sh.push) pushInfo = sh.push; defenseChain = sh.chain; }
@@ -4842,6 +4850,15 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
         ${left <= 0 ? `<li>${esc(aimed.name)} is ${left <= -aimed.system.durability.max ? "destroyed" : "broken"}</li>` : ""}</ul>`;
       if (aimed.isOwner) await aimed.update({ "system.wear": aimed.system.wear + line.final }, { flowstateSystem: true });
       else await requestGM("wearItem", { uuid: aimed.uuid, amount: line.final });
+      // Cold damage puts Ignite out on the object; a spell's Ignite / Stain stacks that follow its damage land on the object too.
+      if (type === "cold" && aimed.system.conditions?.ignite > 0) {
+        if (aimed.isOwner !== false) await aimed.update({ "system.conditions.ignite": 0 }, { flowstateSystem: true }); else await requestGM("updateItem", { uuid: aimed.uuid, data: { "system.conditions.ignite": 0 } });
+        body += `<div class="fs-notes">The cold puts out ${esc(aimed.name)}'s Ignite.</div>`;
+      }
+      if (profile && elem) {
+        const os = await elem.objectStacks({ o, attacker, target, item: aimed, dealt: line.final, profile, phase: "damage", critStacks: defense.result?.critStacks ?? 0 });
+        body += os.html; base.rolls.push(...os.rolls);
+      }
     } else body += `<div class="fs-notes">The targeted item is gone.</div>`;
     return post(attacker, { title: `${esc(o.label || "Attack")} — Damage to ${esc(target.name)}'s ${esc(o.aimName ?? "item")}`, rolls: base.rolls, body,
       flags: { flowstate: { damage: { defenseMessage: defenseMessage.id } } } });
@@ -5628,20 +5645,29 @@ export async function clearCondition(actor, key) {
   const cost = key === "ignite" ? 2 : STAIN_VARIANTS[key]?.ap;
   if (cost === null || cost === undefined) return ui.notifications.warn(`${STAIN_VARIANTS[key]?.label ?? key} can't be removed.`);
   const armor = actor.system.armor;
-  if (!actor.system.conditions[key] && !armor?.system.conditions?.[key]) return;
+  const burning = aimableItems(actor).filter(i => i.system.conditions?.[key]);
+  if (!actor.system.conditions[key] && !armor?.system.conditions?.[key] && !burning.length) return;
   if (!(await spendAP(actor, cost, key === "ignite" ? "putting out Ignite" : `removing ${STAIN_VARIANTS[key].label}`))) return;
   if (key === "ignite") await actor.setFlag("flowstate", "ignitePutOut", true);        // Ignite Spread (optional): it doesn't grow while you're putting it out
   if (actor.system.conditions[key]) await actor.update({ [`system.conditions.${key}`]: 0 });
-  if (armor?.system.conditions?.[key]) await armor.update({ [`system.conditions.${key}`]: 0 }, { flowstateSystem: true });
+  if (armor?.system.conditions?.[key] && !burning.includes(armor)) await armor.update({ [`system.conditions.${key}`]: 0 }, { flowstateSystem: true });
+  for (const i of burning) await i.update({ [`system.conditions.${key}`]: 0 }, { flowstateSystem: true });
 }
 
 /**
  * Put Ignite/Stain stacks on a creature or its armor. "Whatever is damaged": the creature if the damage reached HP,
  * else the armor that absorbed it. With no damage (`first`), the armor is hit first if it's worn. Returns a chat line.
  */
-export async function giveStacks(target, kind, amount, { outcome = null, first = false, caster = null } = {}) {
+export async function giveStacks(target, kind, amount, { outcome = null, first = false, caster = null, item = null } = {}) {
   amount = Math.floor(amount);
   if (amount <= 0) return "";
+  // A worn or held object that was aimed at directly gets the stacks itself (its Durability takes them down at the end of its holder's turn).
+  if (item) {
+    const upItem = addStacks(item.system.conditions ?? {}, kind, amount);
+    const itemData = Object.fromEntries(Object.entries(upItem).map(([k, v]) => [`system.conditions.${k}`, v]));
+    if (item.isOwner !== false) await item.update(itemData, { flowstateSystem: true }); else await requestGM("updateItem", { uuid: item.uuid, data: itemData });
+    return `${esc(target.name)}'s ${esc(item.name)} gets <strong>${amount} ${kind === "ignite" ? "Ignite" : STAIN_VARIANTS[kind]?.label ?? kind}</strong>${amount === 1 ? "" : " stacks"}.`;
+  }
   if (mentalHook?.blocked?.(target, kind)) return `${esc(target.name)} has been cleansed: ${esc(kind)} can't be applied to them right now.`;
   const armor = target.system?.armor;
   const armorOk = armor && armor.system.profile?.valid && !armor.system.broken;
@@ -5736,6 +5762,15 @@ export async function endOfTurn(actor) {
     if (own) { wear += own; lines.push(`${armor.name} takes ${own} from its own Ignite/Stain`); }
   }
   if (armor && wear) await armor.update({ "system.wear": armor.system.wear + wear }, { flowstateSystem: true });
+  // Other held or worn objects that were aimed at (weapons, Foci, the Shroud) burn or corrode on their own stacks too.
+  for (const item of aimableItems(actor)) {
+    if (item.type === "armor") continue;
+    const at = tickAmounts(item.system.conditions);
+    const own = at.heat + at.acid + at.radiation;
+    if (!own) continue;
+    lines.push(`${item.name} takes ${own} from its own Ignite/Stain`);
+    await item.update({ "system.wear": (item.system.wear ?? 0) + own }, { flowstateSystem: true });
+  }
   // Brand (Heat T3): Ignite's heat damage triggers it too.
   const brandTick = t.heat > 0 && elem ? elem.brandExtra(actor, "heat", false) : 0;
   if (brandTick) { hpLoss += brandTick; update["system.hp.value"] = sys.hp.value - hpLoss; lines.push(`Brand: ${brandTick} more heat damage`); }

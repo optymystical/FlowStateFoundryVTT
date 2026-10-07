@@ -7,6 +7,8 @@ import { FORMS, iconProfile } from "./mental-rules.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
+/** Ignite and Stain stacks on an object (armor, or a held or worn item that was aimed at). */
+const objectConditions = () => new f.SchemaField({ ignite: int(0, { min: 0 }), stain: int(0, { min: 0 }), solid: int(0, { min: 0 }), searing: int(0, { min: 0 }), frozen: int(0, { min: 0 }), electric: int(0, { min: 0 }) });
 
 /** Shared data model for characters and NPCs (Flow State has no class split). */
 export class FlowStateActorData extends foundry.abstract.TypeDataModel {
@@ -213,6 +215,7 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
       // Multi-type weapons (Weapon Master, Martial Theory T5): extra weapon types besides the main one.
       extraTypes: new f.ArrayField(new f.StringField()),
       wear: int(0, { min: 0 }),
+      conditions: objectConditions(),                    // Ignite / Stain stacks, when it was aimed at
       description: new f.HTMLField({ initial: "" })
     };
   }
@@ -259,7 +262,7 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
       natural: new f.BooleanField({ initial: false }),    // natural armor (Summoning Skin): can't be dropped
       wear: int(0, { min: 0 }),
       // Ignite and Stain stacks "on whatever is damaged" can land on the armor itself.
-      conditions: new f.SchemaField({ ignite: int(0, { min: 0 }), stain: int(0, { min: 0 }), solid: int(0, { min: 0 }), searing: int(0, { min: 0 }), frozen: int(0, { min: 0 }), electric: int(0, { min: 0 }) }),
+      conditions: objectConditions(),
       description: new f.HTMLField({ initial: "" })
     };
   }
@@ -289,6 +292,7 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
       equipped: new f.BooleanField({ initial: false }),   // held
       twoHanded: new f.BooleanField({ initial: false }),
       wear: int(0, { min: 0 }),
+      conditions: objectConditions(),                    // Ignite / Stain stacks, when it was aimed at
       affixes: new f.ArrayField(new f.StringField()),
       element: new f.StringField({ initial: "heat" }),    // Tourmaline
       chosenSpell: new f.StringField({ initial: "" }),    // Ring
@@ -348,6 +352,7 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
       grade: int(1, { min: 1 }),
       attuned: new f.BooleanField({ initial: false }),
       wear: int(0),                                       // spent Durability (Aegis/Lattice: charges used)
+      conditions: objectConditions(),
       affixes: new f.ArrayField(new f.StringField()),
       element: new f.StringField({ initial: "heat" }),    // Tourmaline
       declared: new f.StringField({ initial: "" }),       // Colored Diamond source type

@@ -108,6 +108,26 @@ export async function onHit(ctx) {
   return { html: html.join(""), rolls, chain };
 }
 
+/**
+ * A spell aimed straight at a worn or held object: its Ignite / Stain stacks go on that object (phase "hit": the ones a spell with no damage applies when
+ * it lands; phase "damage": the ones that follow its damage, worked out from the damage the object took).
+ */
+export async function objectStacks({ o, attacker, target, item, dealt = 0, profile, phase = "damage", entryTotal = 0, dodgeTotal = 0, critStacks = 0 }) {
+  const sp = o.spell, m = sp.mods ?? {}, power = sp.power;
+  const html = [], rolls = [];
+  for (const e of profile.effects ?? []) {
+    if (!e.stack || (phase === "hit") !== (e.at === "hit")) continue;
+    let amount;
+    if (e.stack.crushAcid) amount = fx.crushAcidStacks(entryTotal, dodgeTotal);
+    else if (e.stack.dice) { const r = await roll(`${e.stack.dice[0] * power}d${e.stack.dice[1]}`); rolls.push(r); amount = r.total; }
+    else amount = fx.amountSpec(e.stack, dealt, power);
+    amount = applyStacks(amount, (o.stacks ?? 0) + critStacks);
+    const line = await giveStacks(target, fx.stainKindFor(e.stack.kind, m), amount, { item, caster: attacker });
+    if (line) html.push(`<div class="fs-result">${line}</div>`);
+  }
+  return { html: html.join(""), rolls };
+}
+
 /* -------------------------------------------- */
 /*  Before the damage is applied                */
 /* -------------------------------------------- */
@@ -289,4 +309,4 @@ export async function chainNext(message, preset = null) {
 /*  Wiring                                      */
 /* -------------------------------------------- */
 
-registerElemental({ onHit, afterDamage, beforeApply, brandExtra, chainRow, countFor, removeEnergy, chainNext });
+registerElemental({ onHit, afterDamage, beforeApply, objectStacks, brandExtra, chainRow, countFor, removeEnergy, chainNext });

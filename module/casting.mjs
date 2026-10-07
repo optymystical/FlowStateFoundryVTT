@@ -131,7 +131,7 @@ export function afflictHTML(v) {
   // Illusion: the sense a Mirage dulls, and Fidelity's tangible affliction.
   if (profile?.arcana?.kind === "mirage" && !profile.arcana.chart) out.push(`<div class="fs-field"><label>Mirage: sense</label>${sel("sense", { sight: "Sight", sound: "Sound", smell: "Smell", other: "Another sense" }, v.sense || "sight")}</div>`);
   // A damaging spell can be aimed at one of a lone target's worn or held items instead of the creature (its damage goes to the object).
-  if (profile?.damage && globalThis.game && !v.strikeSpell) {
+  if ((profile?.damage || (profile?.effects ?? []).some(e => e.stack)) && globalThis.game && !v.strikeSpell) {
     const lone = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
     const items = lone.length === 1 ? aimableItems(lone[0]) : [];
     if (items.length) out.push(`<div class="fs-field"><label>Aim at</label><select name="aim"><option value="">${esc(lone[0].name)}</option>${items.map(i => `<option value="${i.uuid}" ${v.aim === i.uuid ? "selected" : ""}>${esc(lone[0].name)}'s ${esc(i.name)}</option>`).join("")}</select></div>`);
@@ -508,7 +508,7 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
   };
   // Aimed at one of the target's worn or held items: the damage goes to the object.
   const aimed = !area && !plan.hold && targetActors.length === 1 && values?.aim ? aimableItems(targetActors[0]).find(i => i.uuid === values.aim) : null;
-  if (aimed && attackOpts.damage) { attackOpts.aimItem = aimed.uuid; attackOpts.aimName = aimed.name; attackOpts.notes.push(`Aimed at ${targetActors[0].name}'s ${aimed.name}: the damage goes to the object`); }
+  if (aimed && (attackOpts.damage || (profile.effects ?? []).some(e => e.stack))) { attackOpts.aimItem = aimed.uuid; attackOpts.aimName = aimed.name; attackOpts.notes.push(`Aimed at ${targetActors[0].name}'s ${aimed.name}: the damage goes to the object, and its Ignite / Stain stacks too`); }
   if (plan.hold) await areasHeld(actor, plan, profile, ids, mods, ritualOf);
   let first;
   if (rangedPlusArea) {

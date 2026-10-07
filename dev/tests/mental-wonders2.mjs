@@ -193,6 +193,12 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
   seq = [20]; const wear0 = axe.system.wear; await actions.rollExchangeDamage(messages.filter(m => m.flags?.flowstate?.defense).at(-1));
   ok2(hp(orc) === 432 && orc.system.conditions.stain === 0 && axe.system.wear > wear0 && /Damage to Orc's Axe/.test(text(messages.at(-1))), `A Glob aimed at the Orc's axe wears the axe (${wear0} → ${axe.system.wear}) and leaves the Orc alone`);
+  const stainsOnAxe = axe.system.conditions?.stain ?? 0;
+  ok2(stainsOnAxe === axe.system.wear - wear0 && stainsOnAxe > 0 && orc.system.conditions.stain === 0, `…and the axe itself gets the Stain stacks (${stainsOnAxe}), not the Orc`);
+  const wearBefore = axe.system.wear; await actions.endOfTurn(orc);
+  ok2(axe.system.wear === wearBefore + stainsOnAxe, "At the end of its holder's turn the stacked object takes that much more damage");
+  orc.system.ap.value = 6; await actions.clearCondition(orc, "stain");
+  ok2((axe.system.conditions.stain ?? 0) === 0, "Cleaning the Stain takes it off the axe too");
 
   // …and a Manifest's Mode faces Brace/Dip/Shatter like any other Melee or Ranged attack.
   reset(); orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), parrying: { dip: { style: "dip" } } };

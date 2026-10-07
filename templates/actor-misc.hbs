@@ -34,7 +34,7 @@
       <div class="fs-cond"><label>Frozen Stain</label><input type="number" name="system.conditions.frozen" value="{{system.conditions.frozen}}" {{#unless editable}}disabled{{/unless}}>
         <button type="button" data-action="clearCondition" data-condition="frozen" data-tooltip="Remove (6 AP)"><i class="fa-solid fa-hand-sparkles"></i></button></div>
       <div class="fs-cond"><label>Electric Stain</label><input type="number" name="system.conditions.electric" value="{{system.conditions.electric}}" {{#unless editable}}disabled{{/unless}}></div>
-      {{#if armorConditions}}<p class="hint">Armor: {{armorConditions}}</p>{{/if}}
+      {{#if armorConditions}}<p class="hint">Objects: {{armorConditions}}</p>{{/if}}
       <div class="fs-cond"><label>Slow</label><input type="number" name="system.conditions.slow" value="{{system.conditions.slow}}" {{#unless editable}}disabled{{/unless}}></div>
       <div class="fs-cond"><label>Haste</label><input type="number" name="system.conditions.haste" value="{{system.conditions.haste}}" {{#unless editable}}disabled{{/unless}}></div>
       <p class="hint">Ignite/Stain tick and Slow/Haste decay by {{system.hp.pain}}÷2 at end of turn.</p>

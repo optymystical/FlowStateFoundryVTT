@@ -48,22 +48,20 @@ export async function setMoveLedger(actor, ledger) {
 }
 /** Is movement being tracked for this creature right now (on its own turn in combat, the setting on)? */
 export const movementTracked = actor => movementMode() !== "off" && inActiveCombat(actor) && game.combat.combatant?.actor?.uuid === actor.uuid;
-/** AP its movement still has open for abilities (shown with the AP left). */
-export const openAp = actor => (actor && movementTracked(actor) ? moveLedger(actor).openAp : 0);
+/** Feet of its current step of movement still left (shown beside the AP). */
+export const moveLeft = actor => (actor && movementTracked(actor) ? Math.round(moveLedger(actor).ft) : 0);
 /** Spends that are movement themselves don't cover movement. */
 const MOVEMENT_SPEND = /stand|leap|jump|dash|climb|crawl|\bmove|moving/i;
 
 /**
  * Spend AP or RP only when in an active combat. Returns false if the actor can't afford it.
- * AP spent on an action (strafing) also pays for moving with it: it covers that much movement (see movement-rules.mjs), and an action that fits in the
- * AP a move still has open is paid out of that.
+ * AP spent on an action (strafing) also pays for moving with it: it settles a step of movement that is still unpaid and banks the rest (see movement-rules.mjs).
  */
 export async function spendPoints(actor, key, cost, what = "that") {
   if (!cost || !inActiveCombat(actor)) return true;
   const track = key === "ap" && movementTracked(actor) && !MOVEMENT_SPEND.test(String(what));
   const ledger = track ? moveLedger(actor) : null;
   const plan = track ? planAction(ledger, cost, moveParams(actor)) : null;
-  if (plan?.fromOpen) { await setMoveLedger(actor, plan.ledger); return true; }
   const have = actor.system[key].value;
   if (have < cost) {
     ui.notifications.warn(`${actor.name} needs ${cost} ${key.toUpperCase()} for ${what} but has ${have}.`);

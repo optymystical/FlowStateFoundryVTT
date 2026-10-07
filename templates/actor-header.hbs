@@ -17,7 +17,7 @@
     {{#if inCombat}}
     <div class="fs-vital fs-vital-points" data-tooltip="Action and Reaction Points (only the GM can edit these here)">
       <span class="fs-res-label">AP</span>
-      <span class="fs-res-values">{{#if isGM}}<input type="number" name="system.ap.value" value="{{system.ap.value}}" min="0" max="6">{{else}}<b>{{system.ap.value}}</b>{{/if}} / {{system.ap.max}}{{#if apOpen}} <span class="fs-sub" data-tooltip="AP still open in your move: an ability that fits in it costs nothing extra">(+{{apOpen}} open)</span>{{/if}}</span>
+      <span class="fs-res-values">{{#if isGM}}<input type="number" name="system.ap.value" value="{{system.ap.value}}" min="0" max="6">{{else}}<b>{{system.ap.value}}</b>{{/if}} / {{system.ap.max}}{{#if moveLeft}} <span class="fs-sub" data-tooltip="Movement left in the step you're in: it's only paid for if you move past it, and any action's AP pays for it">({{moveLeft}} ft of move left)</span>{{/if}}</span>
       <span class="fs-res-label">RP</span>
       <span class="fs-res-values">{{#if isGM}}<input type="number" name="system.rp.value" value="{{system.rp.value}}" min="0" max="6">{{else}}<b>{{system.rp.value}}</b>{{/if}} / {{system.rp.max}}</span>
     </div>

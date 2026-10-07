@@ -942,7 +942,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       foci,
       shrouds,
       wornArmor: sys.armor,
-      apOpen: actions.openAp(actor),
+      moveLeft: actions.moveLeft(actor),
       currencies: currencyRows(getCurrencies(), sys.currency),
       gear: actor.items.filter(i => i.type === "gear").map(i => ({ id: i.id, name: i.name, img: i.img, system: i.system,
         ammoNote: i.system.ammoType ? `${WEAPON_TYPES[i.system.ammoType]?.label ?? i.system.ammoType} ammunition (max ${actions.AMMO_MAX})` : "" })),

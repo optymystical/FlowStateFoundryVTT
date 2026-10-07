@@ -166,6 +166,14 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   const dipped = await glob({ parrying: { dip: { style: "dip" } } });
   const left = Math.max(0, plain.stain - dex);
   ok2(dipped.stain === left && dipped.lost === left, `Glob against a Dip (−${dex}): Stains ${plain.stain} → ${dipped.stain}, HP lost ${plain.lost} → ${dipped.lost}`);
+  // …and a Manifest's Mode faces Brace/Dip/Shatter like any other Melee or Ranged attack.
+  reset(); orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), parrying: { dip: { style: "dip" } } };
+  const dipCard = await hitMiss("mental-destruction-nightmare:corrode");
+  ok2(orc.system.conditions.stain === left && 432 - hp(orc) === left && /Dip/.test(text(dipCard)), `Corrode against a Dip: Stains ${orc.system.conditions.stain}, HP lost ${432 - hp(orc)} (Dip −${dex} of ${plain.stain})`);
+  reset(); orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), parrying: { shatter: { style: "shatter" } } };
+  const shCard = await hitMiss("mental-destruction-nightmare:corrode");
+  ok2(/Shatter/.test(text(shCard)) && 432 - hp(orc) < plain.lost && orc.system.conditions.stain === 432 - hp(orc), `Corrode against a Shatter: the projectile is hit, damage ${plain.lost} → ${432 - hp(orc)}, Stains ${orc.system.conditions.stain}`);
+  reset();
 }
 reset(); await hitMiss("mental-destruction-nightmare:immolate");
 ok2(orc.system.conditions.ignite > 0, "Immolate applies Ignite");

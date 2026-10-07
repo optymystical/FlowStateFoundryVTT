@@ -4,7 +4,7 @@
  * (Hone, Serenity, Provoke) and `damageStacks` (Hone) through `registerMental`.
  */
 import {
-  post, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, damageOutcome, giveStacks, requestGM, tokenDistance, attackerToken, pickSceneTarget
+  post, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, damageOutcome, guardDamage, giveStacks, requestGM, tokenDistance, attackerToken, pickSceneTarget
 } from "./actions.mjs";
 import { applyStacks, poolFormula } from "./rules.mjs";
 import { removeEnergy } from "./elemental.mjs";
@@ -29,17 +29,31 @@ const wonderPowerOf = (actor, wonderId) => { const w = R.wonderById(wonderId); r
 const note = t => `<div class="fs-notes fs-charge-note"><i class="fa-solid fa-yin-yang"></i> ${t}</div>`;
 const num = (v, d = 0) => Number.isFinite(Number(v)) ? Number(v) : d;
 
+/**
+ * The guard on this Manifest's attack (Brace, Dip, Shatter, parrying weapons, Slip Off: they work against every Melee and Ranged attack, whatever
+ * its archetype): Weakened stacks on the damage roll, then the flat reductions off this instance. Returns { stacks, take(n) → { n, note }, items }.
+ */
+async function guardOf(c) {
+  const g = (await c.guardOf?.()) ?? null;
+  return {
+    stacks: c.stacks - (g?.weaken?.length ?? 0), items: g?.items ?? [],
+    take: n => { const d = guardDamage(g, n); return { n: d.amount, note: d.notes.length ? ` (${d.notes.join(", ")})` : "" }; }
+  };
+}
+
 /** Roll damage dice for a Mode (Power times the dice), apply stacks, and deal it. Returns { n, direct, r, line }. */
 async function strike(c, dice, sides, type, { rend = null, label, pierce = 0 } = {}) {
   const count = dice * c.power;
   const r = await roll(`${count}d${sides}`);
   rolled.push(r);
-  const n = Math.max(0, Math.floor(applyStacks(r.total, c.stacks)));
-  const outcome = await damageOutcome(c.target, n, type, { archetype: "magic", rend, pierce });
-  const res = await requestDamage(c.target, n, type, pierce, null, { wantResult: true, silent: true, archetype: "magic", rend, shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
+  const g = await guardOf(c);
+  const rolledN = Math.max(0, Math.floor(applyStacks(r.total, g.stacks)));
+  const { n, note: guardNote } = g.take(rolledN);
+  const outcome = await damageOutcome(c.target, n, type, { archetype: "magic", rend, pierce, parryItems: g.items });
+  const res = await requestDamage(c.target, n, type, pierce, null, { wantResult: true, silent: true, archetype: "magic", rend, parryItems: g.items, shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
   // What a Ward, a Premonition or a Wonder took off first is not "damage dealt": effects that go by it shrink with it.
   const cut = Math.min(n, res?.reduced ?? 0), dealt = n - cut, direct = res?.toHp ?? outcome.toHp;
-  return { n, dealt, direct, cut, r, line: `${label}: ${count}d${sides} = ${r.total}${c.stacks ? ` → ${n}` : ""} ${type} damage${cut ? ` (reduced by ${cut}: ${dealt} dealt)` : ""} (${direct} direct)` };
+  return { n, dealt, direct, cut, r, line: `${label}: ${count}d${sides} = ${r.total}${g.stacks ? ` → ${rolledN}` : ""}${guardNote} ${type} damage${cut ? ` (reduced by ${cut}: ${dealt} dealt)` : ""} (${direct} direct)` };
 }
 const setCond = async (actor, data) => { if (actor.isOwner) await actor.update(data); else await requestGM("updateActor", { uuid: actor.uuid, data }); };
 
@@ -334,10 +348,11 @@ MODES["mental-perfection-nightmare:exact"] = async c => {
   const count = c.power;
   const r = await roll(`${count}d10`);
   rolled.push(r);
-  let n = c.hit ? Math.floor(applyStacks(r.total, c.stacks + 1)) : Math.max(0, Math.floor(applyStacks(r.total, c.stacks)) - c.margin);
-  const outcome = await damageOutcome(c.target, n, "physical", { archetype: "magic", pierce });
-  const res = await requestDamage(c.target, n, "physical", pierce, null, { wantResult: true, silent: true, archetype: "magic", shroudCtx: { source: "type:physical", attacker: c.attacker.uuid } });
-  return `Exact ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d10 = ${r.total} → <strong>${n}</strong> physical damage${c.hit ? " (Strengthened)" : ` (reduced by the ${c.margin} it missed by)`}${pierce ? `, Pierce ${pierce}` : ""}${res?.reduced ? ` (reduced by ${res.reduced})` : ""} (${res?.toHp ?? outcome.toHp} direct).`;
+  const g = await guardOf(c);
+  const { n, note: guardNote } = g.take(c.hit ? Math.floor(applyStacks(r.total, g.stacks + 1)) : Math.max(0, Math.floor(applyStacks(r.total, g.stacks)) - c.margin));
+  const outcome = await damageOutcome(c.target, n, "physical", { archetype: "magic", pierce, parryItems: g.items });
+  const res = await requestDamage(c.target, n, "physical", pierce, null, { wantResult: true, silent: true, archetype: "magic", parryItems: g.items, shroudCtx: { source: "type:physical", attacker: c.attacker.uuid } });
+  return `Exact ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d10 = ${r.total} → <strong>${n}</strong>${guardNote} physical damage${c.hit ? " (Strengthened)" : ` (reduced by the ${c.margin} it missed by)`}${pierce ? `, Pierce ${pierce}` : ""}${res?.reduced ? ` (reduced by ${res.reduced})` : ""} (${res?.toHp ?? outcome.toHp} direct).`;
 };
 MODES["mental-perfection-nightmare:hone"] = async c => {
   for (const e of fx(c.target, "hone")) await changeEffect(e, null);                     // doesn't stack
@@ -352,13 +367,14 @@ MODES["mental-perfection-nightmare:masterstroke"] = async c => {
   const count = c.power * (1 + prideUsed);
   const r = await roll(`${count}d8`);
   rolled.push(r);
-  const n = c.hit ? Math.floor(applyStacks(r.total, c.stacks)) : Math.max(0, Math.floor(applyStacks(r.total, c.stacks)) - c.margin);
-  const outcome = await damageOutcome(c.target, n, type, { archetype: "magic" });
-  const res = await requestDamage(c.target, n, type, 0, null, { wantResult: true, silent: true, archetype: "magic", shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
+  const g = await guardOf(c);
+  const { n, note: guardNote } = g.take(c.hit ? Math.floor(applyStacks(r.total, g.stacks)) : Math.max(0, Math.floor(applyStacks(r.total, g.stacks)) - c.margin));
+  const outcome = await damageOutcome(c.target, n, type, { archetype: "magic", parryItems: g.items });
+  const res = await requestDamage(c.target, n, type, 0, null, { wantResult: true, silent: true, archetype: "magic", parryItems: g.items, shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });
   for (const e of fx(c.attacker, "pride").slice(0, prideUsed)) await changeEffect(e, null);
   const direct = res?.toHp ?? outcome.toHp;
   c.masterDirect = direct;
-  return `Masterstroke ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d8 = ${r.total} → <strong>${n}</strong> ${esc(type)} damage${c.hit ? "" : ` (reduced by ${c.margin})`}${res?.reduced ? ` (reduced by ${res.reduced})` : ""} (${direct} direct)${prideUsed ? `, ${prideUsed} Pride stack${prideUsed === 1 ? "" : "s"} spent` : ""}.${c.hit && direct > 0 ? " The direct damage reapplies to another target (button below)." : ""}`;
+  return `Masterstroke ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d8 = ${r.total} → <strong>${n}</strong>${guardNote} ${esc(type)} damage${c.hit ? "" : ` (reduced by ${c.margin})`}${res?.reduced ? ` (reduced by ${res.reduced})` : ""} (${direct} direct)${prideUsed ? `, ${prideUsed} Pride stack${prideUsed === 1 ? "" : "s"} spent` : ""}.${c.hit && direct > 0 ? " The direct damage reapplies to another target (button below)." : ""}`;
 };
 ACT_PROVIDERS.push(async c => c.mode.id === "mental-perfection-nightmare:masterstroke" && c.hit && c.masterDirect > 0
   ? [{ id: "masterReapply", label: "Masterstroke: reapply", tip: "The direct damage reapplies on another target within range that you can sense (no attack roll)", cost: "free", amount: c.masterDirect, dtype: ["physical", "heat", "cold", "radiation", "acid", "electric"].includes(c.choices.dtype) ? c.choices.dtype : "physical", target: c.target.uuid, caster: c.attacker.uuid, range: c.range }] : []);

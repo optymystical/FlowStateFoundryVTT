@@ -1982,6 +1982,34 @@ export function guardFor(target, o, attackMessageId = null, index = 0) {
   return g;
 }
 
+/**
+ * Brace, Dip, Shatter and parrying weapons guard against every Melee and Ranged attack, whatever its archetype. Weapon and spell attacks work
+ * this out on their damage card; an attack with a flow of its own (a Mental Manifest's Mode) asks for it once, here, and then takes it off each
+ * damage instance with `guardDamage`. Shatter is rolled once (a hit; on a melee miss it already happened when the attack was answered).
+ * Returns { reductions, items, weaken, shatterLeft, broken, html, rolls, any }.
+ */
+export async function attackGuard(attacker, target, o, attackMessageId = null, index = 0, { hit = true } = {}) {
+  const g = guardFor(target, o, attackMessageId, index);
+  const out = { reductions: g.reductions, items: g.items, weaken: g.weaken, shatterLeft: 0, broken: false, html: "", rolls: [], any: g.any };
+  if (g.shatter && hit) {
+    const sh = await shatterStrike(target, attacker, o);
+    out.html += sh.html; out.rolls.push(...sh.rolls);
+    if (sh.broken) out.broken = true; else out.shatterLeft = sh.reduce;
+  }
+  if (g.any || g.weaken.length) out.html += `<div class="fs-notes">${esc(target.name)} is guarding: ${[...g.items.map(u => syncUuid(u)?.name).filter(Boolean), ...g.reductions.map(r => `${r.label} −${r.amount}`), ...(g.shatter ? ["Shatter"] : []), ...g.weaken].join(", ")}</div>`;
+  return out;
+}
+/** Take a guard off one instance of damage: { amount, notes }. Shatter's lowering is spent across the instances in order. */
+export function guardDamage(g, amount) {
+  if (!g) return { amount, notes: [] };
+  if (g.broken) return { amount: 0, notes: ["the weapon broke: no damage"] };
+  const notes = [];
+  let left = amount;
+  if (g.shatterLeft > 0 && left > 0) { const cut = Math.min(left, g.shatterLeft); left -= cut; g.shatterLeft -= cut; notes.push(`Shatter −${cut}`); }
+  for (const r of g.reductions) { const cut = Math.min(left, r.amount); if (cut) { left -= cut; notes.push(`${r.label} −${cut}`); } }
+  return { amount: left, notes };
+}
+
 /** Items whose Perfect Parry/Perfect Block roll failed against this attack (they don't apply to it). */
 export function findPerfectFails(attackMessageId, index) {
   return game.messages.filter(m => { const f = m.getFlag("flowstate", "perfect"); return f?.attackMessage === attackMessageId && f.index === index && !f.success; })
@@ -4570,7 +4598,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (result.hit && !o.mental && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result });
   // Mental: a Manifest's Mode or a Ward's effect, once the attack is answered.
   if (o.mental && mentalHook) {
-    const mh = await mentalHook.onResolve({ attacker, target, o, result, entry, dodgeRoll, index });
+    const mh = await mentalHook.onResolve({ attacker, target, o, result, entry, dodgeRoll, index, attackMessage: attackMessage.id });
     if (mh?.html) extra.push(mh.html);
     if (mh?.rolls?.length) spellRolls = [...spellRolls, ...mh.rolls];
     if (mh?.push) pushInfo = mh.push;

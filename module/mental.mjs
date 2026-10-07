@@ -9,7 +9,7 @@
  */
 import {
   post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless,
-  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple, requestDamage, changeEffect, clearSpellEffects, tokenDistance
+  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple, requestDamage, changeEffect, clearSpellEffects, tokenDistance, attackGuard
 } from "./actions.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
@@ -475,10 +475,14 @@ async function growReverie(attacker, grade) {
 /* -------------------------------------------- */
 
 /** A Manifest's Mode lands (the first time, or after a Chant reroll): apply it and build the card. */
-async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0 }) {
+async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0, attackMessage = null }) {
   const c = { attacker, target, o, result, m, mode, power: m.power, enhanced: m.enhanced, choices: m.choices ?? {}, range: m.range, text: m.text, hit, margin, crit: hit && !!result.crit, index,
     stacks: stacksBase + (hit ? (result.critStacks ?? 0) : 0), now: !!m.spread };
+  // Brace, Dip, Shatter and parrying weapons guard against this attack like any other Melee or Ranged one: a damaging Mode asks for the guard (once).
+  let guardP = null;
+  c.guardOf = () => (guardP ??= attackGuard(attacker, target, o, attackMessage, index, { hit }));
   const out = await wonders.resolveMode(c);
+  if (guardP) { const g = await guardP; out.html += g.html; out.rolls.push(...g.rolls); }
   // Fusion-style riders and Warpath: more Modes applied with the same hit.
   for (const id of m.extraModes ?? []) { const em = R.modeById(id); if (em) { const x = await wonders.resolveMode({ ...c, mode: em }); out.html += `<br>${x.html}`; out.rolls.push(...x.rolls); } }
   const tenet = "";
@@ -492,7 +496,7 @@ async function landManifest({ attacker, target, o, m, mode, result, stacksBase, 
   return { html, push: out.push, rolls: out.rolls };
 }
 
-async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index = 0 }) {
+async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index = 0, attackMessage = null }) {
   const m = o.mental;
   if (!m) return null;
   const reroll = { net: entry?.net ?? 0, die: entry?.die ?? attacker.system.derived.attackDie, dodge: dodgeRoll?.total ?? null };
@@ -533,7 +537,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
   if (m.hubris && result.hit) result = { ...result, crit: true, critStacks: 2, outcome: "Critical Hit (Hubris)" };
   if (!result.hit && wonders.MISS_MODES.has(m.mode) && !m.hubris) {
     // Perfection Modes apply even on a miss: what they do is worked out from how far it missed.
-    return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, hit: false, margin: Math.max(0, (reroll.dodge ?? 0) - (entry?.total ?? 0)), index });
+    return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, hit: false, margin: Math.max(0, (reroll.dodge ?? 0) - (entry?.total ?? 0)), index, attackMessage });
   }
   if (!result.hit) {
     // Mode-specific follow-ups on a miss (Instinct)
@@ -549,7 +553,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     }
     return { html: `<div class="fs-notes">${esc(mode?.name ?? "The Mode")} misses ${esc(target.name)}.${extra}</div>` };
   }
-  return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, index });
+  return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, index, attackMessage });
 }
 
 /** Chant and Make Clear: reroll the missed attack roll against the same dodge. */

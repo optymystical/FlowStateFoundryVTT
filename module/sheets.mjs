@@ -1,3 +1,5 @@
+import { getCurrencies } from "./currency.mjs";
+import { currencyRows } from "./currency-rules.mjs";
 import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS, OBJECT_DENSITY } from "./rules.mjs";
 import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, TAGS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
@@ -212,7 +214,7 @@ const AUTOMATED = {
     2: "Heave! is an option in the attack dialog of any Heavy attack.",
     3: "Crunch Time is an option when you Knockback, Push, Launch, or throw a grappled creature: the Force is matched against current HP.",
     4: "Ho! is an option when throwing a Heavy weapon that isn't a Good throw.",
-    5: "Unstoppable is in the Action List (Strength Methods). Its resistance effects are shown as a status for the GM to apply."
+    5: "Unstoppable is in the Action List (Strength Methods). While Unstoppable, a Martial (Body) stat check has a resisting checkbox: Advantage and the stat counts twice as high."
   },
   "martial-striker-weapons": {
     1: "Rend is an option in a Striker weapon's attack dialog: object damage (after their Limit) is Strengthened.",
@@ -900,7 +902,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     });
     const collapsed = collapsedFor(actor.uuid);
     const actionGroups = buildActionList(actor, weapons, stats).map(g => ({ ...g, open: !collapsed.has(g.key) }));
-    const open = Object.fromEntries(["weapons", "armor", "foci", "shrouds", "icons", "misc"].map(k => [k, !collapsed.has(k)]));
+    const open = Object.fromEntries(["weapons", "armor", "foci", "shrouds", "icons", "currency", "misc"].map(k => [k, !collapsed.has(k)]));
 
     return Object.assign(context, {
       actor,
@@ -936,6 +938,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       foci,
       shrouds,
       wornArmor: sys.armor,
+      currencies: currencyRows(getCurrencies(), sys.currency),
       gear: actor.items.filter(i => i.type === "gear").map(i => ({ id: i.id, name: i.name, img: i.img, system: i.system,
         ammoNote: i.system.ammoType ? `${WEAPON_TYPES[i.system.ammoType]?.label ?? i.system.ammoType} ammunition (max ${actions.AMMO_MAX})` : "" })),
       activeEffects: activeEffectRows(actor)

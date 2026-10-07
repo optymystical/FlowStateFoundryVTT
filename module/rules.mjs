@@ -169,11 +169,12 @@ export function tempoModifier(slow, haste, pain) {
 
 /**
  * Movement cost in AP (Ch8 Movement/Terrain, Ch9 Crouch/Prone/Stealth/Slow/Haste).
- * Posture/stealth terrain penalties act as rough (+1) or difficult (+2) and don't stack with each other.
+ * Posture/stealth terrain penalties act as rough (+1) or difficult (+2) and don't stack with each other, nor with the terrain the creature stands in
+ * (`terrain`: 0, 1 or 2 from terrain regions): the worst one applies.
  * If haste pushes the cost below 1 AP, you instead move multiple increments for 1 AP.
  */
-export function movementCost({ prone = false, crouch = false, stealth = false, tempo = 0, base = 1 } = {}) {
-  const terrain = prone ? 2 : crouch || stealth ? 1 : 0;
+export function movementCost({ prone = false, crouch = false, stealth = false, tempo = 0, base = 1, terrain: ground = 0 } = {}) {
+  const terrain = Math.max(prone ? 2 : crouch || stealth ? 1 : 0, ground);
   const cost = base + terrain + tempo;
   if (cost >= 1) return { ap: cost, multiplier: 1 };
   return { ap: 1, multiplier: 1 + (1 - cost) };

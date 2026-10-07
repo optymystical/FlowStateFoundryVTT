@@ -462,6 +462,24 @@ export function leapInfo(actor) {
 /*  Constitution Methods                        */
 /* -------------------------------------------- */
 
+/**
+ * Resisting with a Martial (Body) stat check: Unstoppable (Strength T5, while it lasts: Advantage, and the stat counts twice as high) and Pure Body
+ * (Constitution T3: the stat counts twice as high, and a target number or contested result under half of the stat is an automatic success).
+ * Both double the stat; they don't stack with each other (the docs don't say they multiply). `target` is the number to beat (0 = none).
+ * Returns { value, die, min, net, auto, notes }.
+ */
+export function resistCheck(stat, { unstoppable = false, pureBody = false, target = 0 } = {}) {
+  const doubled = unstoppable || pureBody;
+  const value = doubled ? stat.value * 2 : stat.value;
+  const notes = [];
+  if (unstoppable) notes.push("Unstoppable: Advantage, stat counts twice");
+  if (pureBody) notes.push("Pure Body: stat counts twice");
+  const auto = pureBody && target > 0 && target < stat.value / 2;
+  if (auto) notes.push(`Pure Body: ${target} is less than half of ${stat.value}, an automatic success`);
+  return { value, die: doubled ? Math.max(1, value * 2) : stat.die, min: doubled ? Math.floor(value / 3) : stat.min, net: unstoppable ? 1 : 0, auto, notes };
+}
+export const BODY_STATS = new Set(["str", "dex", "con"]);
+
 export const CONSTITUTION = "martial-constitution-methods";
 export const constitution = (actor, tier) => treeTier(actor, CONSTITUTION) >= tier;
 export const CONSTITUTION_COST = {

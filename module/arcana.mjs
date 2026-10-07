@@ -10,6 +10,7 @@ import {
   requestDamage, GM_ACTIONS, damageOutcome, findDefense, findCancel
 } from "./actions.mjs";
 import * as areas from "./areas.mjs";
+import * as terrain from "./terrain.mjs";
 import { secret } from "./afflictions.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 
@@ -95,7 +96,7 @@ export async function prompt({ actor, plan, profile, mods, values, targets }) {
 export async function resolve({ actor, plan, profile, spec, mods, targets, ritualOf }) {
   const k = profile.arcana.kind;
   if (k === "restore") return restore({ actor, plan, profile, spec, mods, targets, ritualOf });
-  if (k === "shift") return shift({ actor, plan, profile, spec, mods, targets });
+  if (k === "shift") return shift({ actor, plan, profile, spec, mods, targets, ritualOf });
   return null;
 }
 
@@ -146,7 +147,7 @@ async function restore({ actor, plan, profile, spec, mods, targets, ritualOf }) 
   return true;
 }
 
-async function shift({ actor, plan, profile, spec, mods, targets }) {
+async function shift({ actor, plan, profile, spec, mods, targets, ritualOf = null }) {
   const a = profile.arcana;
   const target = targets?.[0]?.actor && targets[0].actor.uuid !== actor.uuid ? targets[0].actor : null;
   const tierUp = (mods["tier up"] ?? 0) > 0 ? 2 : 0, again = (mods["tier up, again"] ?? 0) > 0 && tierUp ? 4 : 0;
@@ -174,6 +175,11 @@ async function shift({ actor, plan, profile, spec, mods, targets }) {
   if (a.stealth) notes.push("Hidden from normal viewing: the attack roll is made from stealth.");
   await post(actor, { title: `${esc(actor.name)} — ${esc(profile.name)}`, body: `<div class="fs-result"><i class="fa-solid fa-mountain"></i> ${body} Body of ${mods.toss ? "material is flung" : "connected material moves"}${mods.toss ? " (it needn't be connected)" : ""}; it returns to its place at the start of your next turn if it can.</div>
     ${notes.length ? `<ul class="fs-list">${notes.map(l => `<li>${esc(l)}</li>`).join("")}</ul>` : ""}<div class="fs-notes">One piece must stay put; it must be Powder, Liquid or Soft material. 1 Body is about a cubic foot.</div>` });
+  // Muddy (difficult terrain) and Harden (loses negative terrain modifiers) leave terrain on the scene where the material is.
+  const ground = [];
+  if (mods.muddy && ["difficult", "all"].includes(spec.muddy)) ground.push(await terrain.placeSpellTerrain({ actor, kind: "difficult", body, target, ritualOf, label: "Muddy ground" }));
+  if (mods.harden && ["terrain", "all"].includes(spec.harden)) ground.push(await terrain.placeSpellTerrain({ actor, kind: "clear", body, target, ritualOf, label: "Hardened ground" }));
+  if (ground.some(Boolean)) await post(actor, { title: `${esc(actor.name)} — Terrain`, body: `<ul class="fs-list">${ground.filter(Boolean).map(l => `<li>${esc(l)}</li>`).join("")}</ul>` });
   if (target) {
     const rider = a.rider ? { core: a.rider, level, charmRoll: null, hex: null, arcane: !!a.arcane } : null;
     await performAttack(actor, { label: mods.toss ? "Toss" : "Shift", net: mods.toss ? 0 : 1, stealth: a.stealth ? "half" : "none", magicStealth: !!a.stealth, melee: !mods.toss, area: false, push: false, damage: `${n}d${sides}`, type, stacks: mods.harden && !["armor", "terrain"].includes(spec.harden) ? 1 : 0, physical: false,

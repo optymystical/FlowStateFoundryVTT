@@ -3,6 +3,8 @@ import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateAr
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import * as areas from "./areas.mjs";
+import * as terrain from "./terrain.mjs";
+import { registerCurrencySettings, register as registerCurrency } from "./currency.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
 import "./arcana.mjs";
@@ -128,6 +130,7 @@ class FlowStateCombat extends Combat {
       await actions.mentalBeforeClear(combatant.actor);
       await actions.clearSpellEffects(combatant.actor);
       await areas.clearAreas(combatant.actor);
+      await terrain.clearTerrain(combatant.actor);
       // Bleed (Slashing T2) hits at the start of the victim's turn.
       await actions.bleedTurnStart(combatant.actor);
       // Poison, Charm and Hex (Tier 3): the victim's checks, and the caster's Ingrained Charms.
@@ -215,6 +218,9 @@ Hooks.once("init", () => {
   game.flowstate.CharacterWizard = CharacterWizard;
   game.flowstate.NpcWizard = NpcWizard;
   actions.GM_ACTIONS.createCharacter = createCharacterForUser;
+  actions.GM_ACTIONS.createTerrain = terrain.gmCreate;
+  terrain.register();
+  registerCurrency();
 
   // Chat cards waiting on a choice are tinted: the attacker's choices in one color, the defender's in another.
   const colorType = foundry.data?.fields?.ColorField ? new foundry.data.fields.ColorField({ nullable: false, initial: "#c0392b" }) : String;
@@ -281,6 +287,7 @@ Hooks.once("init", () => {
     hint: "Players without the upload permission can upload a picture from their computer for a sheet they own: it is sent to a connected GM and saved under flowstate-art/<player>/ (images only, up to 10 MB). Off: they can only browse, or paste an image link or path.",
     scope: "world", config: true, type: Boolean, default: true
   });
+    registerCurrencySettings();
     game.settings.register("flowstate", "requireAmmo", {
     name: "Require ammunition",
     hint: "Reloading a ranged weapon uses Ammunition items of its type (a Misc item with an ammunition type; up to 100 per type). Off: reloads are free.",
@@ -820,6 +827,7 @@ Hooks.on("deleteCombat", combat => {
   for (const c of combat.combatants) setTimeout(() => {
     actions.clearSpellEffects(c.actor, { all: true });
     areas.clearAreas(c.actor, { all: true });
+    terrain.clearTerrain(c.actor, { all: true });
     conjure.clearAll(c.actor);
     actions.refillEnergy(c.actor); actions.clearStances(c.actor);
     if (c.actor?.getFlag("flowstate", "carefulLapsed")) c.actor.unsetFlag("flowstate", "carefulLapsed"); // Careful Steps is free again
@@ -1495,6 +1503,7 @@ Hooks.on("deleteActiveEffect", async effect => {
   for (const t of canvas?.tokens?.placeables ?? []) if (!t.document.actorLink) for (const e of t.actor?.effects ?? []) if (e.flags?.flowstate?.ritualOf === effect.uuid) tied.push(e);
   for (const e of tied) await e.delete();
   await conjure.endRitual(effect.uuid);
+  await terrain.endRitual(effect.uuid);
 });
 Hooks.on("createActiveEffect", effect => {
   if (!game.user.isActiveGM || !effect.flags?.flowstate?.ritual || !(effect.parent instanceof Actor)) return;

@@ -344,19 +344,21 @@ export const shiftFormula = (formula, delta) => String(formula).replace(/(\d+)d(
 
 /**
  * The attacker rolled damage (`formula`, one total per shot in `totals`): Decree sets it to half its top result ±1, Fracture rerolls it with every die
- * size changed by 2, Enhanced Mandates change it by ±10 each. Returns { flat, notes, totals?, rolls } or null.
+ * size changed by 2, Larceny steals the roll and has them reroll with every die size changed by 1 (the thief can use it for a roll of their own, a
+ * damage roll included), Enhanced Mandates change it by ±10 each. Returns { flat, notes, totals?, rolls } or null.
  */
 export async function onDamage({ actor, formula = "", totals = [] }) {
   const out = { flat: 0, notes: [], rolls: [], totals: null };
-  for (const [casterUuid, list] of byCaster(chargesOn(actor, ["decree", "fracture", "mandate"]).filter(c => c.d.charge !== "mandate" || c.d.enhanced))) {
+  for (const [casterUuid, list] of byCaster(chargesOn(actor, ["decree", "fracture", "larceny", "mandate"]).filter(c => c.d.charge !== "mandate" || c.d.enhanced))) {
     const caster = await fromUuid(casterUuid);
     if (!caster) continue;
     const pre = preordainedOf(caster);
     const top = formulaMax(formula);
-    const replace = list.filter(c => c.d.charge !== "mandate" && (c.d.charge !== "fracture" || formula));
+    const replace = list.filter(c => c.d.charge !== "mandate" && (c.d.charge === "decree" || formula));
     const mand = list.filter(c => c.d.charge === "mandate");
     const opt = c => c.d.charge === "decree"
       ? `<option value="${c.effect.id}">Decree: the damage becomes ${Math.max(0, half(c.d.enhanced ? formulaMax(formula) : top) + sgn(c.d))} (half of ${top}, ${c.d.sign === "minus" ? "−" : "+"}${pw(c.d)})</option>`
+      : c.d.charge === "larceny" ? `<option value="${c.effect.id}">Larceny: steal this damage roll, they reroll as ${esc(shiftFormula(formula, pw(c.d) * upDown(c.d)))}</option>`
       : `<option value="${c.effect.id}">Fracture: reroll as ${esc(shiftFormula(formula, 2 * upDown(c.d)))}</option>`;
     const ans = await askFor(caster, { title: `${caster.name}: charges on ${actor.name}'s damage`, ok: "Spend", html: `<p>${esc(actor.name)} rolled damage (${esc(formula)}): <strong>${totals.join(" + ")}</strong>. Spend your charges?</p>
       ${replace.length ? `<div class="fs-field"><label>Replace the roll</label><select name="replace"><option value="">— Leave it —</option>${replace.map(opt).join("")}</select></div>` : ""}
@@ -372,12 +374,17 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
         out.totals = totals.map(() => n);
         out.notes.push(`Decree: the damage roll becomes the static <strong>${n}</strong>.`);
       } else {
-        const f = shiftFormula(formula, 2 * upDown(d));
+        const larceny = d.charge === "larceny";
+        const f = shiftFormula(formula, (larceny ? 1 : 2) * pw(d) * upDown(d));
         const rolls = [];
         for (let i = 0; i < Math.max(1, totals.length); i++) rolls.push(await new Roll(f).evaluate());
         out.rolls.push(...rolls);
         out.totals = rolls.map(r => r.total);
-        out.notes.push(`Fracture: the damage is rerolled as ${esc(f)}: <strong>${out.totals.join(" + ")}</strong>.`);
+        if (larceny) {
+          const stolenTotal = totals.reduce((a, b) => a + b, 0);
+          await setActorFlag(caster, "stolenRoll", { total: stolenTotal, type: "damage", original: stolenTotal, from: actor.name, key: turnKey() ?? "ooc" });
+          out.notes.push(`Larceny: ${esc(caster.name)} steals ${esc(actor.name)}'s damage roll (${stolenTotal}) and its effects, and ${esc(actor.name)} rerolls as ${esc(f)}: <strong>${out.totals.join(" + ")}</strong>. ${esc(caster.name)} can use the stolen ${stolenTotal} in place of any roll of their own before the start of their next turn.`);
+        } else out.notes.push(`Fracture: the damage is rerolled as ${esc(f)}: <strong>${out.totals.join(" + ")}</strong>.`);
       }
       await changeEffect(rep.effect, null);
     }
@@ -388,6 +395,19 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
       out.flat += n;
       out.notes.push(`Mandate: ${n > 0 ? "+" : "−"}${Math.abs(n)} damage.`);
       await changeEffect(c.effect, null);
+    }
+  }
+  // Larceny: a stolen roll can replace this damage roll too.
+  const stolen = actor.getFlag?.("flowstate", "stolenRoll");
+  const rolled = (out.totals ?? totals).reduce((a, b) => a + b, 0);
+  if (stolen && actor.isOwner) {
+    const ans = await showChoices({ title: "Stolen roll", html: `<p>Use the roll you stole from ${esc(stolen.from)} (<strong>${stolen.total}</strong>) in place of this damage roll (<strong>${rolled}</strong>)?</p>`, ok: "Use the stolen roll" });
+    if (ans) {
+      out.totals = (out.totals ?? totals).map((t, i) => (i === 0 ? stolen.total : 0));
+      await setActorFlag(actor, "stolenRoll", null);
+      const line = `Larceny: the stolen roll (${stolen.total}) replaces this damage roll.`;
+      out.notes.push(line);
+      await post(actor, { title: `${esc(actor.name)} — Larceny`, body: `<div class="fs-result">${line}</div>` });
     }
   }
   return out.notes.length ? out : null;

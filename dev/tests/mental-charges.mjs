@@ -192,6 +192,18 @@ dialog = html => ({ [`m:${idOf(html, "m")}`]: true });
 const md = await CH.onDamage({ actor: orc });
 ok2(md?.flat === 10 * Pp, "An Enhanced Mandate changes damage by 10");
 
+console.log("== Larceny on a damage roll");
+reset(); clearAll(hero);
+await place("mental-chaos-nightmare:larceny", { "choice:size": "up" });
+dialog = html => /charges on/.test(html) || /Spend your charges/.test(html) || /damage/.test(html) ? { replace: optId(html) } : {};
+formulas.length = 0; seq = [7];
+const ld = await CH.onDamage({ actor: orc, formula: "2d6", totals: [9] });
+const stolenFlag = hero.getFlag("flowstate", "stolenRoll");
+ok2(ld?.totals?.[0] === 7 && formulas.some(f => f === `2d${6 + Pp}`) && stolenFlag?.total === 9 && stolenFlag.type === "damage", `Larceny steals a damage roll (9) and they reroll with bigger dice (2d${6 + Pp}): ${ld?.totals}`);
+dialog = html => (/Stolen roll|stole from/.test(html) ? { go: true } : {});
+const ld2 = await CH.onDamage({ actor: hero, formula: "1d8", totals: [3] });
+ok2(ld2?.totals?.[0] === 9 && !hero.getFlag("flowstate", "stolenRoll"), "The thief can use the stolen roll in place of their own damage roll");
+
 console.log("== Enhanced Larceny steals the action");
 reset(); clearAll(hero);
 await place("mental-chaos-nightmare:larceny", { "choice:size": "down", enhance: true });

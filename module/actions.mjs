@@ -242,22 +242,33 @@ const netField = () => (customNetOn() ? `<div class="form-group"><label>Advantag
 
 /** Ch7 Stat Check: d(2 × stat); Stat Minimum floor out of combat unless in a time crunch. */
 export async function rollStatCheck(actor, key) {
-  const stat = actor.system.derived.effective[key];
+  const base = actor.system.derived.effective[key];
   const minDefault = !inActiveCombat(actor);
-  const opts = await optionsDialog(`${STATS[key].label} Check`, `${netField()}
-    <div class="form-group"><label>Apply Stat Minimum (${stat.min})</label>
+  // Martial (Body) stat checks: resisting a negative condition or effect with Unstoppable (Strength T5, while active) or Pure Body (Constitution T3).
+  const canUnstoppable = ab.BODY_STATS.has(key) && !!actor.statuses?.has("unstoppable");
+  const canPureBody = ab.BODY_STATS.has(key) && ab.constitution(actor, 3);
+  const resistFields = `${canUnstoppable ? `<div class="form-group"><label>Resisting a negative condition or effect (Unstoppable)</label><input type="checkbox" name="unstoppable" checked></div>` : ""}
+    ${canPureBody ? `<div class="form-group"><label>Resisting a negative effect or ability (Pure Body)</label><input type="checkbox" name="pureBody"></div>
+    <div class="form-group"><label>Target number or contested result (Pure Body: under half your stat is an automatic success)</label><input type="number" name="target" value="0" min="0" step="1"></div>` : ""}`;
+  const opts = await optionsDialog(`${STATS[key].label} Check`, `${netField()}${resistFields}
+    <div class="form-group"><label>Apply Stat Minimum (${base.min})</label>
     <input type="checkbox" name="applyMin" ${minDefault ? "checked" : ""}></div>
     <p class="hint">Off in combat or a time crunch.</p>`);
   if (!opts) return;
+  const res = ab.resistCheck(base, { unstoppable: canUnstoppable && !!opts.unstoppable, pureBody: canPureBody && !!opts.pureBody, target: canPureBody ? opts.target ?? 0 : 0 });
+  const stat = { ...base, die: res.die, min: res.min };
+  if (res.auto) {
+    return post(actor, { title: `${STATS[key].label} Check`, body: `<div class="fs-outcome fs-hit">Automatic success</div><div class="fs-notes">${res.notes.map(esc).join(" · ")}</div>` });
+  }
 
   const armorDis = PHYSICAL_STATS.has(key) ? actor.system.penalties.physicalDis : 0;
-  const net = opts.net + exhaustionNet(actor) - armorDis + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0);
+  const net = opts.net + res.net + exhaustionNet(actor) - armorDis + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0);
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, stat.die, net));
   const cr = await mentalHook?.rollCharges?.({ actor, type: "other", roll, die: stat.die, count: 1, net, max: stat.die, label: `${STATS[key].label} Check` });
   const floored = opts.applyMin && roll.total < stat.min;
   const result = floored ? stat.min : roll.total;
-  const notes = [netLabel(net), armorDis ? "armor penalty" : "", floored ? `raised to Stat Minimum` : ""].filter(Boolean).join(" · ");
+  const notes = [netLabel(net), armorDis ? "armor penalty" : "", ...res.notes, floored ? `raised to Stat Minimum` : ""].filter(Boolean).join(" · ");
 
   await post(actor, {
     title: `${STATS[key].label} Check (d${stat.die})`,
@@ -1200,6 +1211,10 @@ async function pileFolder() {
 }
 
 export const GM_ACTIONS = {
+  async flightCheck({ target, reason }) {
+    const actor = await fromUuid(target);
+    if (actor) await flightForceHook?.(actor, reason);
+  },
   async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, reply }) {
     const actor = await fromUuid(target);
     const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect }) : null;
@@ -3524,9 +3539,16 @@ export const registerFoci = h => { foci = h; };
 let arc = null;
 export const registerArcana = h => { arc = h; };
 /** Mental (mental.mjs) registers its hooks here: Manifest and Ward resolution, Nightmare Ward negation, turn start. */
-let flightHook = null;
-/** Falling and Flight (gravity.mjs): told when a creature takes damage. */
-export const registerFlight = h => { flightHook = h; };
+let flightHook = null, flightForceHook = null;
+/** Falling and Flight (gravity.mjs): told when a creature takes damage, and asked to run the stabilize check when Force pushes a flyer. */
+export const registerFlight = (h, force) => { flightHook = h; flightForceHook = force ?? null; };
+/** A flyer was hit by enough Force to push it (the Rules: it must spend 3 RP to stabilize or begin falling). Asked of the owner, through the GM for someone else's. */
+export async function flyerPushed(target, feet, label = "Force") {
+  if (!flightForceHook || !target || !(feet > 0)) return;
+  const reason = `${target.name} was hit by enough Force to push them (${label}, ${feet} ft)`;
+  if (target.isOwner) return flightForceHook(target, reason);
+  return requestGM("flightCheck", { target: target.uuid, reason });
+}
 let mentalHook = null;
 export const registerMental = h => { mentalHook = h; };
 export const mentalTurnStart = actor => mentalHook?.turnStart(actor);
@@ -3870,6 +3892,7 @@ export async function knockback(message) {
     const flight = await flyThrown(target, dir, feet);
     body = await flightHTML(target, flight, feet);
   }
+  await flyerPushed(target, feet, info.label ?? "Knockback");
   await post(attacker, { title: `${info.label ?? "Knockback"} — ${esc(target.name)}`, body: `<div class="fs-notes">Force ${info.force}${opts.crunch ? ` · Crunch Time (${ab.STRENGTH_COST.crunchTime(attacker)} Energy): matched against current HP` : ""}</div>${body}`,
     flags: { flowstate: { knockbackOf: message.id } } });
 }

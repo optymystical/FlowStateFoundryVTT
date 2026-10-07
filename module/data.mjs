@@ -24,6 +24,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       unspentStats: int(0, { min: 0 }),
       statCarry: int(0, { min: 0 }),           // stat points granted toward the next skill point (3:1)
       trees: new f.ObjectField({ initial: {} }), // skill tree id → current tier
+      currency: new f.ObjectField({ initial: {} }), // currency id (c0, c1, ...; see currency-rules.mjs) → amount
       creation: new f.BooleanField({ initial: false }), // legacy unlock flag; creation now happens in the New Character wizard
       size: int(3, { min: 1, max: 5 }),
       hp: new f.SchemaField({
@@ -147,6 +148,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       speed: statuses.has("quickened") ? d.move * 2 : d.move,
       tempo,
       ...movementCost({
+        // Terrain regions the creature stands in (rough +1, difficult +2; Zircon ignores rough terrain).
+        terrain: (lvl => (zircon && lvl === 1 ? 0 : lvl))(Number(this.parent?.getFlag?.("flowstate", "terrainLevel")) || 0),
         prone: statuses.has("prone"),
         // Like Shooting Fish (Longshot T2): moves as if in rough terrain.
         crouch: statuses.has("crouch") || (statuses.has("fishy") && !unfettered && !zircon),

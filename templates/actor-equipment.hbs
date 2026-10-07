@@ -134,6 +134,19 @@
       </tbody>
     </table>
   </details>
+  <details class="fs-collapse" data-section="currency" {{#if open.currency}}open{{/if}}>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Currency</summary>
+    <ul class="fs-currency">
+      {{#each currencies}}
+      <li>
+        <img src="{{img}}" alt="" width="28" height="28">
+        <span class="fs-item-name">{{name}}</span>
+        <input type="number" name="system.currency.{{id}}" value="{{amount}}" min="0" step="1" {{#unless @root.editable}}disabled{{/unless}}>
+        {{#if note}}<span class="fs-sub">{{note}}</span>{{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </details>
   <details class="fs-collapse" data-section="misc" {{#if open.misc}}open{{/if}}>
     <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Misc Items {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="gear" data-tooltip="New item"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
     <ul class="fs-items">

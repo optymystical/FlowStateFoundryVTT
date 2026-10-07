@@ -333,7 +333,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   let placed;
   if (areaSpell) {
     const fociItem = plan.option?.fociId ? actor.items.get?.(plan.option.fociId) ?? actor.items.find(i => i.id === plan.option.fociId) : null;
-    const agate = fociItem?.system?.attuned && fociItem.system.profile?.affixes?.includes("agate") ? (fociItem.system.profile.affixPlus ? 2 : 1.5) : 1;
+    const agate = fociItem?.system?.attuned && fociItem.system.profile?.affixes?.includes("agate") ? (fociItem.system.profile.doubled === "agate" ? 2 : 1.5) : 1;
     const aim = [...(game.user?.targets ?? [])][0];
     const originTok = rangedPlusArea ? (aim?.object ?? aim) : null;
     const layered = (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0);

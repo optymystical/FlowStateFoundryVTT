@@ -27,16 +27,22 @@ const living = a => a && a.type !== "pile" && !a.system?.magical;
 /* -------------------------------------------- */
 
 const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${game.combat.round}` : "ooc");
-/** Has this actor already used this "once per round" thing this round? */
+/** How many times a Tenet can trigger per round: once, or twice with 3 Alignment of the Tenet's type. */
+export function tenetUses(actor) {
+  const tn = tenetOf(actor);
+  if (!tn) return 1;
+  return R.tenetUses(actor.getFlag?.("flowstate", "alignment"), R.wonderById(tn.wonder)?.kind);
+}
+/** Has this actor already used this "once per round" thing this round (Tenets: as many times as they may per round)? */
 export function onceUsed(actor, id) {
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
-  return cur?.round === roundKey() && cur.ids.includes(id);
+  return cur?.round === roundKey() && cur.ids.filter(x => x === id).length >= tenetUses(actor);
 }
 export async function markOnce(actor, id) {
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
   const key = roundKey();
   const ids = cur?.round === key ? cur.ids : [];
-  if (!ids.includes(id)) await setActorFlag(actor, "mentalOnce", { round: key, ids: [...ids, id] });
+  if (ids.filter(x => x === id).length < tenetUses(actor)) await setActorFlag(actor, "mentalOnce", { round: key, ids: [...ids, id] });
 }
 /** "Once per round": true (and marked) the first time per round for this actor and id. */
 export async function tryOnce(actor, id) {

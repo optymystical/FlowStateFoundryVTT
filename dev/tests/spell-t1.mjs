@@ -335,7 +335,7 @@ console.log("== Cast Spell dialog: real range, and Connection locks its Mod");
   ok2(FX.rangeText(P("Ranged")) === "200 ft" && FX.rangeText(P("Targeted")) === "100 ft", "Ranged 200 ft, Targeted 100 ft");
   ok2(FX.rangeText(P("Ranged"), { affixes: ["quartz"] }) === "300 ft", "Quartz: Ranged +50% = 300 ft");
   ok2(FX.rangeText(P("Targeted"), { affixes: ["blackOpal"] }) === "200 ft" && FX.rangeText(P("Ranged"), { affixes: ["blackOpal"] }) === "100 ft", "Black Opal swaps Targeted and Ranged");
-  ok2(FX.rangeText(P("Ranged"), { affixes: ["blackOpal"], plus: true, opalRange: "ranged" }) === "150 ft", "Black Opal+: the chosen range is 50% longer");
+  ok2(FX.rangeText(P("Ranged"), { affixes: ["blackOpal"], doubled: "blackOpal", opalRange: "ranged" }) === "150 ft", "Black Opal+: the chosen range is 50% longer");
   ok2(/^200 ft \(up to 400 ft with Snipe/.test(FX.rangeText(P("Ranged", ["Snipe"]))), "Snipe: up to double, Disadvantage past the normal range");
   ok2(/15 ft radius, 30 ft cone/.test(FX.rangeText({ attack: "Area", applied: [] }, { affixes: ["agate"] })), "Agate: Area size +50%");
   const ctx = C.castContext(hero);

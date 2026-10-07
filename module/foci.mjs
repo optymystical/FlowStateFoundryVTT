@@ -23,7 +23,7 @@ export function fociFx(actor, plan, dark = false) {
   const item = fociItem(actor, plan.option?.fociId);
   if (!item) return null;
   const p = item.system.profile;
-  return { id: item.id, type: p.type ?? item.system.fociType, plus: !!p.affixPlus, affixes: [...p.affixes], element: item.system.element, lush: !!item.system.lush || !!globalThis.canvas?.scene?.getFlag?.("flowstate", "lush"),
+  return { id: item.id, type: p.type ?? item.system.fociType, doubled: p.doubled ?? null, affixes: [...p.affixes], element: item.system.element, lush: !!item.system.lush || !!globalThis.canvas?.scene?.getFlag?.("flowstate", "lush"),
     declared: item.system.declared || "", opalRange: item.system.opalRange || "targeted", dark: !!dark, scalingMin: Math.floor((plan.scaling ?? 0) / 3) };
 }
 
@@ -61,7 +61,7 @@ export function attackNet({ attacker, target, o }) {
   const key = [...o.spell.cores].sort().join("+");
   if (has("diamond") && (turnState(attacker, "fociHits").hits ?? []).some(h => h.key === key && h.target === target.uuid)) add(1, "Diamond: Advantage (the same spell already hit them this turn)");
   if (has("coloredDiamond") && f.declared && o.spell.cores.includes(f.declared)) add(1, "Colored Diamond: Advantage (the declared spell)");
-  if (has("moonstone") && f.plus && f.dark) add(1, "Moonstone: Advantage (darkness or dim light)");
+  if (has("moonstone") && f.doubled === "moonstone" && f.dark) add(1, "Moonstone: Advantage (darkness or dim light)");
   return { net, notes };
 }
 
@@ -111,7 +111,7 @@ export async function afterHit({ attacker, target, o }) {
 export function castNotes(fx, plan) {
   if (!fx) return [];
   const out = [];
-  if (fx.affixes.includes("obsidian") && (plan.attack === "Ranged" || (fx.plus && plan.attack === "Area"))) out.push(`Obsidian: this ${plan.attack} spell is silent.`);
+  if (fx.affixes.includes("obsidian") && (plan.attack === "Ranged" || (fx.doubled === "obsidian" && plan.attack === "Area"))) out.push(`Obsidian: this ${plan.attack} spell is silent.`);
   if (fx.affixes.includes("moonstone") && fx.dark) out.push("Moonstone: this spell is silent in the dark.");
   return out;
 }

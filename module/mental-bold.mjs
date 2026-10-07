@@ -8,6 +8,12 @@ export const BOLD = {
  "Ranged": [
   "maximum range of 100ft"
  ],
+ "Neutral": [
+  "1 Alignment:",
+  "2 Alignment:",
+  "3 Alignment:",
+  "4 Alignment:"
+ ],
  "Bloom": [
   "20 temp HP"
  ],

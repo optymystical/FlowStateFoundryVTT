@@ -205,10 +205,10 @@ Very Rare \- 8x cost and scarcity of 0.05
 
 **Armor Design:** Pick an Armor weight from the list, then a material matching its weight. Armors with multiple materials (but not weights) can exist, but they cost more and are harder to make. You can only wear one Armor at a time.  
 **Weight:** The weights of Armor have varying effects, as denoted below. Armor weight is set in stone when the material is decided, and cannot be changed without modifying the Armor. If a material has multiple weights listed, which one it is is decided when the Armor is created, and can only be changed by modifying the Armor.  
-**Light:** You get no penalties from wearing this Armor. Takes a single turn to remove or put on.  
-**Medium:** While wearing this Armor, you roll stealth rolls with a disadvantage. Takes a minute to remove or put on.  
-**Heavy:** While wearing this Armor, you roll stealth rolls with two disadvantages, and movement takes 2 AP. Takes 10 minutes to remove or put on.  
-**Titanic:** While wearing this Armor, you automatically fail stealth rolls, and movement takes 3 AP. Takes 1 hour to remove or put on.  
+**Light:** While wearing this armor, your movement speed is 20% lower. Takes a single turn to remove or put on.  
+**Medium:** While wearing this armor, your movement speed is 40% lower, and you roll stealth rolls with a disadvantage. Takes a minute to remove or put on.  
+**Heavy:** While wearing this armor, your movement speed is 60% lower, and you roll stealth rolls with a disadvantage. Takes 10 minutes to remove or put on.  
+**Titanic:** While wearing this armor, your movement speed is 80% lower, and you automatically fail stealth rolls. Takes 1 hour to remove or put on.  
 **Scaling and Grade:** The actual stats listed in each Armor increases for every 10 points you have in its Scaling Stat, which is Constitution by default. This is limited by the Grade of the Armor, which denotes how much Stat can actually affect the bonuses of the Armor, where every 1 grade represents a max of 10 Stat scaling. So, a grade 3 Armor allows for up to 30 Constitution to affect its stats, any higher would do nothing until the Grade would be increased.  
 **Rarity:** The rarity denoted in each table only affects the scarcity and cost of those items, usually being the following:   
 Common \- 1x cost and scarcity of 1 (meaning this is found in 100% of normal stores)  
@@ -253,7 +253,7 @@ Very Rare \- 8x cost and scarcity of 0.05
 | Rare Armor Materials |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: |
 | **Name** | **Weight** | **Durability** | **Limit** | **Bonus Effect** |
-| Gray Iron | Medium | 60 | 12 | Has the penalties of Armor one weight heavier than it. If Titanic, you have disadvantage on all physical rolls. |
+| Gray Iron | Medium | 60 | 12 | Has the penalties of Armor one weight heavier than it. If Titanic, your speed is instead 0% (the minimum). |
 |  | Heavy | 120 | 24 |  |
 |  | Titanic | 240 | 48 |  |
 | Scarletite | Light | 40 | 8 | The Limit is a tenth as effective against non-heat damage. |
@@ -276,7 +276,7 @@ Very Rare \- 8x cost and scarcity of 0.05
 | Very Rare Armor Materials |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: |
 | Name | **Weight** | **Durability** | **Limit** | **Bonus Effect** |
-| Gray Steel | Medium | 80 | 16 | Has the penalties of Armor two weights heavier than it. If Heavy, you have disadvantage on all physical rolls and the normal Titanic penalties. If Titanic, you have disadvantage on all physical rolls and your physical attacks have one stack of Weakened. |
+| Gray Steel | Medium | 80 | 16 | Has the penalties of Armor two weights heavier than it. If Heavy, your speed is instead 0% (the minimum). If Titanic, your speed both 0% and takes \+1 AP to move. |
 |  | Heavy | 160 | 32 |  |
 |  | Titanic | 320 | 64 |  |
 | Orichalcum | Medium | 30 | 6 | Damage that would be dealt to this Armor is Weakened. |
@@ -339,37 +339,37 @@ Very Rare \- 8x cost and scarcity of 0.05
 3. Foci denoted as Multi Type use Raw Casting AP and TR (1 AP/TR, 2 AP/TR, 3 AP/TR), but use from the lesser of your two Scaling Stats.
 
 **Scaling and Grade:** The Power of spells outputted by your Foci increases for every 10 points you have in its Scaling Stat, which is Reach or Grasp depending on the Casting Form of your Foci. This is limited by the Grade of the Foci, which denotes how much Stat can actually affect the Power of the Foci, where every 1 grade represents a max of 10 Stat scaling. So, a grade 3 Foci allows for up to 30 Reach/Grasp to affect its Power output, any higher would do nothing until the Grade would be increased. Grade also directly impacts the durability and limit of the Foci, independent of your Scaling Stat.  
-**Affix Number:** Shows how many Affixes the Foci can have at most. A \+ next to the number means that the Affix(es) effects are doubled.  
+**Affixes:** Affixes are your weight equivalent for armor, also requiring attunement to either their Offensive or Defensive form. You can have one Affix attuned at no cost, and for every additional Affix attuned your speed is lowered by 20%. This is shared with Shroud’s Affixes.  
 **One vs Two Hands:** How many hands hold a Foci or are used to cast a spell has no effect on how the spells perform outside of specific Foci Types. Foci do still count as a held item, however, and cannot be used in the same hand as another held item.  
 **Durability:** The overall “health” of the Foci. Reaching 0 or lower means the Foci is broken and can no longer be used, but it is still fixable. Negative durability equal to or exceeding the normal max means the Foci is completely destroyed.  
 **Limit:** How much damage the Foci can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Foci is the target of the attack.
 
 | Igniter Foci Types |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
-| **Name** | **Durability** | **Limit** | **Affix \#** | **Other Effects** |  |
-| Rod | 20 | 4 | 3 | N/A |  |
-| Shard | 40 | 8 | 1+ | N/A. |  |
-| Wand | 30 | 6 | 1 | Every other spell cast with this Foci grants it 1 additional TR until the start of your next turn. Has 0 TR baseline. |  |
-| Staff | 30 | 6 | 1 | Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was a different Core Spell. |  |
-| Scepter | 60 | 12 | 1 | Spells cast with this foci have 1 additional TR when targeting an ally. |  |
-| Chime | 10 | 2 | 0 | Cannot cast spells normally. Create a “deck” of spells using all of your Core spells (3 each). At the start of your turn, shuffle your hand and discard the pile into your deck and draw 7 cards (reshuffle when empty). You can do the following (casting follows normal AP/RP rules):1\. Spend 1/10th of your max Energy to draw a card. 2\. Spend 2/10th of your max Energy to mulligan your entire hand (discard your whole hand to draw that many cards). 3\. Cast a card as a Core spell with 2 TR base (it discards after). 4\. Combine two cards together for a Combo spell with 4 TR base (they discard after).*Visually, you can see this as playing notes to create a melody.* |  |
+| **Name** | **Durability** | **Limit** | **Free Affixes** | **Other Effects** |  |
+| Rod | 20 | 4 | 2 | N/A |  |
+| Shard | 40 | 8 | 0 | While attuned, select one Offensive Affix, its effects are doubled (this can be changed by attuning again). |  |
+| Wand | 30 | 6 | 0 | Every other spell cast with this Foci grants it 1 additional TR until the start of your next turn. Has 0 TR baseline. |  |
+| Staff | 30 | 6 | 0 | Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was a different Core Spell. |  |
+| Scepter | 60 | 12 | 0 | Spells cast with this foci have 1 additional TR when targeting an ally. |  |
+| Chime | 10 | 2 | \-1 (Acts as if one affix is already attuned for speed) | Cannot cast spells normally. Create a “deck” of spells using all of your Core spells (3 each). At the start of your turn, shuffle your hand and discard the pile into your deck and draw 7 cards (reshuffle when empty). You can do the following (casting follows normal AP/RP rules):1\. Spend 1/10th of your max Energy to draw a card. 2\. Spend 2/10th of your max Energy to mulligan your entire hand (discard your whole hand to draw that many cards). 3\. Cast a card as a Core spell with 2 TR base (it discards after). 4\. Combine two cards together for a Combo spell with 4 TR base (they discard after).*Visually, you can see this as playing notes to create a melody.* |  |
 
 | Channeler Foci Types |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
 | **Name** | **Durability** | **Limit** | **Affix \#** | **Other Effects** |  |
-| Scroll | 20 | 4 | 3 | N/A |  |
-| Orb | 40 | 8 | 1+ | N/A |  |
-| Lens | 30 | 6 | 1 | Every spell cast with this Foci removes 1 TR from it until the start of your next turn. Has 4 TR baseline. |  |
-| Tome | 30 | 6 | 1 | Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was the same Core Spell. |  |
-| Tablet | 60 | 12 | 1 | Spells cast with this foci have 2 additional TR when targeting an ally. |  |
-| Cards | 10 | 2 | 0 | Cannot cast spells normally. Create a “deck” of spells using all of your Core spells (3 each). At the start of your turn, shuffle your hand and discard the pile into your deck and draw 5 cards (reshuffle when empty). You can do the following (casting follows normal AP/RP rules):1\. Spend 1/10th of your max Energy to draw a card. 2\. Spend 2/10th of your max Energy to mulligan your entire hand (discard your whole hand to draw that many cards). 3\. Cast a card as a Core spell with 3 TR base (it discards after). 4\. Combine two cards together for a Combo spell with 6 TR base (they discard after). |  |
+| Scroll | 20 | 4 | 2 | N/A |  |
+| Orb | 40 | 8 | 0 | While attuned, select one Offensive Affix, its effects are doubled (this can be changed by attuning again). |  |
+| Lens | 30 | 6 | 0 | Every spell cast with this Foci removes 1 TR from it until the start of your next turn. Has 4 TR baseline. |  |
+| Tome | 30 | 6 | 0 | Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was the same Core Spell. |  |
+| Tablet | 60 | 12 | 0 | Spells cast with this foci have 2 additional TR when targeting an ally. |  |
+| Cards | 10 | 2 | \-1 (Acts as if one affix is already attuned for speed) | Cannot cast spells normally. Create a “deck” of spells using all of your Core spells (3 each). At the start of your turn, shuffle your hand and discard the pile into your deck and draw 5 cards (reshuffle when empty). You can do the following (casting follows normal AP/RP rules):1\. Spend 1/10th of your max Energy to draw a card. 2\. Spend 2/10th of your max Energy to mulligan your entire hand (discard your whole hand to draw that many cards). 3\. Cast a card as a Core spell with 3 TR base (it discards after). 4\. Combine two cards together for a Combo spell with 6 TR base (they discard after). |  |
 
 | Multi Foci Types |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
 | **Name** | **Durability** | **Limit** | **Affix \#** | **Other Effects** |  |
-| Glove | 40 | 8 | 3 | N/A |  |
-| Band | 60 | 12 | 1+ | N/A |  |
-| Ring | 30 | 6 | 1 | Select one Core spell to be the chosen spell of this Foci (can be changed on rest). That Core spell and its Combos have 1 additional TR when cast with this Foci. |  |
+| Glove | 40 | 8 | 2 | N/A |  |
+| Band | 60 | 12 | 0 | While attuned, select one Offensive Affix, its effects are doubled (this can be changed by attuning again). |  |
+| Ring | 30 | 6 | 0 | Select one Core spell to be the chosen spell of this Foci (can be changed on rest). That Core spell and its Combos have 1 additional TR when cast with this Foci. |  |
 | Gauntlet | 10 | 2 | 0 | Whenever you cast a spell with this Foci using AP/RP, duplicate it. The first spell in this chain uses your higher Scaling Stat, and the second uses your lower Scaling Stat (between Reach and Grasp). |  |
 
 # **Magic Shrouds** {#magic-shrouds}
@@ -378,7 +378,7 @@ Very Rare \- 8x cost and scarcity of 0.05
 
 **Shroud Design:** Pick a Shroud type from the list, and pick Affixes if your Shroud type can utilize them. To use a Shroud, you need to Attune to it by spending one hour magically connecting to it (you can only Attune to one Shroud at a time). Once Attuned it becomes melded into your Spirit, meaning its Stats and Affixes are now active on your person, allowing it to protect you as Martial Armor would. Shrouds are considered Magical objects, both while melded and while not melded.  
 **Scaling and Grade:** The Stats of your Shroud increases for every 10 points you have in its Scaling Stat, which is Build by default. This is limited by the Grade of the Shroud, which denotes how much Stat can actually affect the Stats and grade of the Shroud, where every 1 grade represents a max of 10 Stat scaling. So, a grade 3 Shroud allows for up to 30 Build to affect its Stats, any higher would do nothing until the Grade would be increased.  
-**Affix Number:** Shows how many Affixes the Shroud can have at most. A \+ next to the number means that the Affix(es) effects are doubled.  
+**Affixes:** Affixes are your weight equivalent for armor, also requiring attunement to either their Offensive or Defensive form. You can have one Affix attuned at no cost, and for every additional Affix attuned your speed is lowered by 20%. This is shared with Foci’s Affixes.  
 **Shroud Recovery:** Attuned Shrouds naturally recover their spent durability, by default recovering durability equal to its Limit at the start of each of your turns. This can vary, and would be stated in a Shroud’s passive if it is anything else.  
 **Durability:** The overall “health” of the Shroud. Reaching 0 or lower means the Shroud is unable to block any more damage, but it can still recover. Shrouds cannot be destroyed unless they are unmelded, or they are directly targeted by arcane damage or similar effects, with durability in the negatives exceeding its normal max resulting in its destruction.  
 **Limit:** How much damage the Shroud can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Shroud is the target of the attack. Only blocks Physical, Elemental, and Magical damage normally.
@@ -386,18 +386,18 @@ Very Rare \- 8x cost and scarcity of 0.05
 | Shroud Types |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
 | **Name** | **Durability** | **Limit** | **Affix \#** | **Other Effects** |  |
-| Bastion | 50 | 10 | 2 | N/A |  |
-| Keystone | 60 | 12 | 1+ | N/A |  |
-| Cinder | 80 | 5 / 15 | 1 | The Limit of this Shroud is three times as high against damage types you have already taken since the start of your turn. |  |
-| Cistern | 60 | 5 / 10 / 15 | 1 | The Limit of this Shroud is three times as high while you are at full Energy, two times as high if you are instead above half Energy, and normal if you are at or below half Energy. Recovery scales with this varying limit. |  |
-| Ember | 60 | 5 / 10 / 15 | 1 | The Limit of this Shroud is three times as high while you are at or below half of your max HP, two times as high if you are instead above half of your max HP, and normal if you are at full HP. Recovery scales with this varying limit. |  |
-| Aegis | 3 | 12 | 0 | The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated. |  |
-| Lattice | 6 | 6 | 0 | The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead  and gets fully negated. |  |
-| Ward | 30 | 8 | 1 | Instead of blocking damage as normal, this Shroud must be activated with 2 RP to be placed on a target within 100ft (no attack roll, only one application at a time, can target yourself). Durability restores to full on usage, effect lasts until the start of your next turn or until reactivated. |  |
-| Bond | 80 | 8 | 1 | This Shroud applies to both you and a single other target within 100ft you may declare for 3 RP at any time. Doing so refreshes the durability of this Shroud. This effect goes away if the target goes more than 1000ft away from you, or the Shroud’s durability reaches 0\. |  |
-| Carapace | 50 | 5+ | 1 | Every time this Shroud takes damage, its Limit increases by what it is at a baseline post scaling. Resets at the start of your turn (before recovery).  |  |
-| Riposte | 40 | 8 | 1 | When this Shroud takes damage from a source within 100ft, you can spend 1 RP to make a ranged attack roll against that target, dealing the damage that the Shroud took back at them on hit. |  |
-| Retort | 40 | 8 | 1 | While you are melded with this Shroud, if you would take damage from an attack that this Shroud can block, you may spend 1 RP to give that attack’s damage a stack of Weakened. |  |
+| Bastion | 50 | 10 | 1 | N/A |  |
+| Keystone | 60 | 12 | 0 | While attuned, select one Defensive Affix, its effects are doubled (this can be changed by attuning again). |  |
+| Cinder | 80 | 5 / 15 | 0 | The Limit of this Shroud is three times as high against damage types you have already taken since the start of your turn. |  |
+| Cistern | 60 | 5 / 10 / 15 | 0 | The Limit of this Shroud is three times as high while you are at full Energy, two times as high if you are instead above half Energy, and normal if you are at or below half Energy. Recovery scales with this varying limit. |  |
+| Ember | 60 | 5 / 10 / 15 | 0 | The Limit of this Shroud is three times as high while you are at or below half of your max HP, two times as high if you are instead above half of your max HP, and normal if you are at full HP. Recovery scales with this varying limit. |  |
+| Aegis | 3 | 12 | \-1 (Acts as if one affix is already attuned for speed) | The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated. |  |
+| Lattice | 6 | 6 | \-1 (Acts as if one affix is already attuned for speed) | The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead  and gets fully negated. |  |
+| Ward | 30 | 8 | 0 | Instead of blocking damage as normal, this Shroud must be activated with 2 RP to be placed on a target within 100ft (no attack roll, only one application at a time, can target yourself). Durability restores to full on usage, effect lasts until the start of your next turn or until reactivated. |  |
+| Bond | 80 | 8 | 0 | This Shroud applies to both you and a single other target within 100ft you may declare for 3 RP at any time. Doing so refreshes the durability of this Shroud. This effect goes away if the target goes more than 1000ft away from you, or the Shroud’s durability reaches 0\. |  |
+| Carapace | 50 | 5+ | 0 | Every time this Shroud takes damage, its Limit increases by what it is at a baseline post scaling. Resets at the start of your turn (before recovery).  |  |
+| Riposte | 40 | 8 | 0 | When this Shroud takes damage from a source within 100ft, you can spend 1 RP to make a ranged attack roll against that target, dealing the damage that the Shroud took back at them on hit. |  |
+| Retort | 40 | 8 | 0 | While you are melded with this Shroud, if you would take damage from an attack that this Shroud can block, you may spend 1 RP to give that attack’s damage a stack of Weakened. |  |
 
 # **Magic Affixes** {#magic-affixes}
 

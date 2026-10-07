@@ -168,12 +168,12 @@ export const WEAPON_MATERIALS = {
 /*  Armor                                       */
 /* -------------------------------------------- */
 
-/** Armor weights: stealth Disadvantage stacks (Infinity = auto-fail) and base AP per movement. */
+/** Armor weights: stealth Disadvantage stacks (Infinity = auto-fail) and the percentage of movement speed the armor takes away. */
 export const ARMOR_WEIGHTS = {
-  light:   { label: "Light",   order: 0, stealthDis: 0,        moveAP: 1, don: "1 turn" },
-  medium:  { label: "Medium",  order: 1, stealthDis: 1,        moveAP: 1, don: "1 minute" },
-  heavy:   { label: "Heavy",   order: 2, stealthDis: 2,        moveAP: 2, don: "10 minutes" },
-  titanic: { label: "Titanic", order: 3, stealthDis: Infinity, moveAP: 3, don: "1 hour" }
+  light:   { label: "Light",   order: 0, stealthDis: 0,        speedPct: 20, don: "1 turn" },
+  medium:  { label: "Medium",  order: 1, stealthDis: 1,        speedPct: 40, don: "1 minute" },
+  heavy:   { label: "Heavy",   order: 2, stealthDis: 1,        speedPct: 60, don: "10 minutes" },
+  titanic: { label: "Titanic", order: 3, stealthDis: Infinity, speedPct: 80, don: "1 hour" }
 };
 const WEIGHT_ORDER = ["light", "medium", "heavy", "titanic"];
 
@@ -195,12 +195,12 @@ export const ARMOR_MATERIALS = {
   bronze:      am("Bronze", "uncommon", W({ heavy: [120, 24], titanic: [240, 48] }), "The Limit is a tenth as effective against non-elemental damage.", tenth("elemental")),
   coldIron:    am("Cold Iron", "uncommon", W({ heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-supernatural damage.", tenth("supernatural")),
   quartz:      am("Quartz", "uncommon", W({ heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-magical damage.", tenth("magical")),
-  grayIron:    am("Gray Iron", "rare", W({ medium: [60, 12], heavy: [120, 24], titanic: [240, 48] }), "Has the penalties of Armor one weight heavier than it. If Titanic, you have disadvantage on all physical rolls.", { heavier: 1 }),
+  grayIron:    am("Gray Iron", "rare", W({ medium: [60, 12], heavy: [120, 24], titanic: [240, 48] }), "Has the penalties of Armor one weight heavier than it. If Titanic, your speed is instead 0% (the minimum).", { heavier: 1 }),
   scarletite:  am("Scarletite", "rare", W({ light: [40, 8], medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-heat damage.", tenth("heat")),
   frigidium:   am("Frigidium", "rare", W({ light: [40, 8], medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-cold damage.", tenth("cold")),
   positron:    am("Positron", "rare", W({ light: [40, 8], medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-radiation damage.", tenth("radiation")),
   wyrmMetal:   am("Wyrm Metal", "rare", W({ light: [40, 8], medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-acid damage.", tenth("acid")),
-  graySteel:   am("Gray Steel", "veryRare", W({ medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "Has the penalties of Armor two weights heavier than it. If Heavy, you have disadvantage on all physical rolls and the normal Titanic penalties. If Titanic, you have disadvantage on all physical rolls and your physical attacks have one stack of Weakened.", { heavier: 2 }),
+  graySteel:   am("Gray Steel", "veryRare", W({ medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "Has the penalties of Armor two weights heavier than it. If Heavy, your speed is instead 0% (the minimum). If Titanic, your speed is both 0% and takes +1 AP to move.", { heavier: 2 }),
   orichalcum:  am("Orichalcum", "veryRare", W({ medium: [30, 6], heavy: [60, 12] }), "Damage that would be dealt to this Armor is Weakened.", { selfWeakened: 1 }),
   mithrite:    am("Mithrite", "veryRare", W({ light: [15, 3] }), "Damage that would be dealt to this Armor is Weakened.", { selfWeakened: 1 }),
   adamantine:  am("Adamantine", "veryRare", W({ titanic: [120, 24] }), "Damage that would be dealt to this Armor is Weakened.", { selfWeakened: 1 })
@@ -311,7 +311,10 @@ export function weaponProfile(w, stats) {
   };
 }
 
-/** Effective armor penalties after Gray Iron / Gray Steel shifts. */
+/**
+ * Effective armor penalties after Gray Iron / Gray Steel shifts. Pushed one weight past Titanic, speed is 0% (the 5 ft minimum);
+ * two past Titanic (Gray Steel Titanic) it also takes +1 AP to move.
+ */
 export function armorPenalties(weight, material) {
   const mods = ARMOR_MATERIALS[material]?.mods ?? {};
   const shift = mods.heavier ?? 0;
@@ -322,9 +325,8 @@ export function armorPenalties(weight, material) {
   return {
     effectiveWeight: WEIGHT_ORDER[shiftedIdx],
     stealthDis: eff.stealthDis,
-    moveAP: eff.moveAP,
-    physicalDis: overflow >= 1 ? 1 : 0,           // penalties pushed past Titanic
-    physicalWeakened: overflow >= 2 ? 1 : 0        // Gray Steel Titanic
+    speedPct: overflow >= 1 ? 100 : eff.speedPct,
+    moveAP: overflow >= 2 ? 2 : 1
   };
 }
 
@@ -336,6 +338,7 @@ export function armorProfile(a, con) {
   if (!weight || !matStats) return { valid: false, error: `${mat?.label ?? "That material"} can't be made ${weight?.label ?? "that weight"}.` };
   const grade = Math.max(1, a.grade || 1);
   const mult = armorMultiplier(con, grade);
+  const pen = armorPenalties(a.weight, a.material);
   return {
     valid: true,
     label: `${weight.label} · ${mat.label}`,
@@ -347,7 +350,8 @@ export function armorProfile(a, con) {
     selfWeakened: mat.mods.selfWeakened ?? 0,
     don: weight.don,
     effect: mat.effect,
-    ...armorPenalties(a.weight, a.material)
+    ...pen,
+    moveText: `${pen.speedPct >= 100 ? "speed 0% (5 ft minimum)" : `speed -${pen.speedPct}%`}${pen.moveAP > 1 ? `, +${pen.moveAP - 1} AP to move` : ""}`
   };
 }
 

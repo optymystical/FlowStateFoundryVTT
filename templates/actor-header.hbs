@@ -4,7 +4,7 @@
     <div class="fs-header-main">
       <input class="fs-name" type="text" name="name" value="{{actor.name}}" placeholder="Name" {{#unless editable}}disabled{{/unless}}>
       <div class="fs-header-row">
-        <span class="fs-pill fs-move" data-tooltip="Movement speed and AP per move (armor, posture, and Slow/Haste included)"><i class="fa-solid fa-shoe-prints"></i> {{system.movement.speed}} ft · {{moveNote}}</span>
+        <span class="fs-pill fs-move" data-tooltip="{{speedNote}}. AP per move includes armor, posture, terrain and Slow/Haste"><i class="fa-solid fa-shoe-prints"></i> {{system.movement.speed}} ft · {{moveNote}}</span>
       </div>
     </div>
   </header>

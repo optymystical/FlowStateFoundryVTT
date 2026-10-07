@@ -32,10 +32,18 @@ ok(c.rp === 1 && c.energy === 14, "Burst and Enhance together combine the costs"
 ok(M.manifestCost({ range: "ranged", enhance: true, burst: true, enhanceCost: 7, free: true }).energy === 0, "Free Manifests (Patron, Innate) cost nothing");
 
 console.log("== Alignment");
-ok(M.alignmentNet("dream", "dream") === 1 && M.alignmentNet("dream", "nightmare") === -1 && M.alignmentNet("neutral", "dream") === 0, "Dream/Nightmare: Advantage for its own Wonders, Disadvantage for the opposite");
-ok(M.alignmentNet("neutral", "dream", { ward: true }) === 1 && M.alignmentNet("dream", "dream", { ward: true }) === 0, "Neutral: Ward attacks have Advantage");
-ok(M.alignChangeCost({}).ap === 2 && M.alignChangeCost({ fluidity: true, skillPoints: 31 }).energy === 15, "Changing Alignment: 2 AP, or half your Skill Points in energy with Fluidity");
-ok(M.deepenCost("dream", { scalingMin: 9 }).energy === 9 && M.deepenCost("neutral", { willMin: 6 }).ap === 2 && M.deepenCost("neutral", { willMin: 6 }).energy === 6, "Deepening costs the Scaling Stat min; Neutral Equilibrium costs 2 AP and Willpower min");
+const A = (kind, level, equilibrium = false) => ({ kind, level, equilibrium });
+ok(M.alignmentState(null).level === 0 && M.alignmentState({ kind: "dream", level: 9 }).level === 4 && M.alignmentState({ kind: "neutral", level: 3 }).level === 0, "Alignment: Neutral by default, 4 at most, no points on Neutral");
+ok(M.alignmentSpeedPct(A("dream", 3)) === 60 && M.alignmentSpeedPct(A("neutral", 0)) === 0 && M.alignmentSpeedPct(A("dream", 2, true)) === 0, "20% speed per point; none for Neutral or Equilibrium");
+ok(M.alignmentManifest(A("dream", 1), "dream").net === 1 && M.alignmentManifest(A("dream", 1), "nightmare").net === -1 && M.alignmentManifest(A("neutral", 0), "dream").net === 0, "1 Alignment: Advantage for its own Wonders, Disadvantage for the opposite");
+ok(M.alignmentManifest(A("dream", 1), "dream").stacks === 0 && M.alignmentManifest(A("dream", 2), "dream").stacks === 1 && M.alignmentManifest(A("dream", 2), "nightmare").stacks === -1, "2 Alignment: Strengthened bolded effects for its type, Weakened for the opposite");
+ok(M.alignmentManifest(A("dream", 2, true), "dream").net === -1 && M.alignmentManifest(A("dream", 2, true), "dream").stacks === 0, "Equilibrium: Manifest attack rolls have Disadvantage, no bonuses");
+ok(M.tenetUses(A("dream", 3), "dream") === 2 && M.tenetUses(A("dream", 3), "nightmare") === 1 && M.tenetUses(A("dream", 2), "dream") === 1 && M.tenetUses(A("dream", 3, true), "dream") === 1, "3 Alignment: a Tenet of its type triggers twice per round");
+ok(M.alignmentWard(A("nightmare", 4), "nightmare").net === 1 && M.alignmentWard(A("nightmare", 4), "nightmare").stacks === 1 && M.alignmentWard(A("nightmare", 4), "dream").net === 0 && M.alignmentWard(A("nightmare", 3), "nightmare").net === 0, "4 Alignment: your type's Icon Ward has Advantage and a Strengthened bolded effect");
+ok(M.alignmentWard(A("neutral", 0), "dream").net === 0 && M.alignmentWard(A("dream", 1, true), "dream").dodgeNet === -1, "Neutral gives the Ward nothing; Equilibrium gives everything dodging it Disadvantage");
+ok(M.fluidityCost(A("dream", 3), 31) === 45 && M.fluidityCost(A("neutral", 0), 31) === 0, "Fluidity: half your Skill Points times your Alignment number");
+ok(M.alignedTo(A("dream", 1), "dream") && !M.alignedTo(A("dream", 1, true), "dream") && !M.alignedTo(A("neutral", 0), "dream"), "Aligned towards a type: at least 1 Alignment of it, not in Equilibrium");
+ok(M.alignmentLabel(A("dream", 2)) === "Dream 2" && M.alignmentLabel(A("neutral", 0)) === "Neutral" && M.alignmentLabel(A("dream", 2, true)) === "Equilibrium (-1)", "Alignment labels");
 
 console.log("== Icons and Forms");
 ok(M.FORM_KEYS.length === 14 && M.FORM_KEYS.filter(k => M.FORMS[k].align === "dream").length === 7, "14 Forms, 7 Dream and 7 Nightmare");

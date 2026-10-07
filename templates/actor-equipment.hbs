@@ -50,7 +50,7 @@
         <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · G{{system.grade}} · ×{{profile.mult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
         <td>{{profile.limit}}</td>
         <td>{{system.durability.value}}/{{system.durability.max}}{{#if system.broken}} <span class="fs-warn">broken</span>{{/if}}</td>
-        <td class="fs-sub">{{#if profile.valid}}{{#if profile.stealthDis}}Dis ×{{profile.stealthDis}}{{else}}—{{/if}} / {{profile.moveAP}} AP{{/if}}</td>
+        <td class="fs-sub">{{#if profile.valid}}{{#if profile.stealthDis}}Dis ×{{profile.stealthDis}}{{else}}—{{/if}} / {{profile.moveText}}{{/if}}</td>
         <td class="fs-row-actions">
           {{#if @root.isGM}}{{#if system.wear}}<button type="button" data-action="repair" data-tooltip="Repair to full"><i class="fa-solid fa-hammer"></i></button>{{/if}}{{/if}}
           {{#if ../editable}}<button type="button" data-action="deleteItem" data-tooltip="Drop or delete"><i class="fa-solid fa-trash"></i></button>{{/if}}
@@ -76,7 +76,7 @@
         <td><a data-action="editItem" class="fs-item-link">{{name}}</a>{{#if profile.valid}} <span class="fs-tag" data-tooltip="{{profile.formLabel}} Foci">{{profile.typeLabel}}</span>{{/if}}<div class="fs-sub">{{#if profile.valid}}<strong>{{profile.label}}</strong> · G{{system.grade}} · {{statLabel}} {{profile.scaling}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
         <td>{{profile.castAP}} AP</td>
         <td>{{trText}}</td>
-        <td class="fs-sub">{{#if affixText}}{{affixText}}{{else}}—{{/if}}{{#if profile.affixPlus}} (+){{/if}}</td>
+        <td class="fs-sub">{{#if affixText}}{{affixText}}{{else}}—{{/if}}{{#if profile.doubled}} (doubled: {{profile.doubled}}){{/if}}</td>
         <td>{{system.durability.value}}/{{system.durability.max}}{{#if system.broken}} <span class="fs-warn">broken</span>{{/if}}</td>
         <td class="fs-row-actions">
           <button type="button" class="fs-toggle {{#if system.twoHanded}}on{{/if}}" data-action="toggleField" data-field="twoHanded" {{#if twoHandBlocked}}disabled data-tooltip="Another item is held"{{else}}data-tooltip="Held in two hands{{#if profile.twoHandCast}} (needed to cast with it){{/if}}"{{/if}}>2H</button>
@@ -101,7 +101,7 @@
         <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · G{{system.grade}} · ×{{profile.mult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
         <td>{{profile.limit}}</td>
         <td>{{system.durability.value}}/{{system.durability.max}}</td>
-        <td class="fs-sub">{{#if affixText}}{{affixText}}{{else}}—{{/if}}{{#if profile.affixPlus}} (+){{/if}}</td>
+        <td class="fs-sub">{{#if affixText}}{{affixText}}{{else}}—{{/if}}{{#if profile.doubled}} (doubled: {{profile.doubled}}){{/if}}</td>
         <td class="fs-row-actions">
           {{#if @root.isGM}}{{#if system.wear}}<button type="button" data-action="repair" data-tooltip="Restore to full"><i class="fa-solid fa-hammer"></i></button>{{/if}}{{/if}}
           {{#if ../editable}}<button type="button" data-action="deleteItem" data-tooltip="Drop or delete"><i class="fa-solid fa-trash"></i></button>{{/if}}

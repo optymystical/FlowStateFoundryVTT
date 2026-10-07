@@ -11,45 +11,47 @@ export const CASTING_FORMS = {
   multi: { label: "Multi", stat: "lesser", ap: "1 / 2 / 3", tr: null, text: "The lesser of Reach and Grasp · Raw Casting AP and TR (1, 2 or 3)" }
 };
 
-const fo = (label, form, dur, limit, affixes, plus, effect = "", extra = {}) => ({ label, form, dur, limit, affixes, plus, effect, ...extra });
+// `free` = Free Affixes: how many Affixes this item carries beyond the one every character gets at no speed cost (Chime, Cards, Aegis and Lattice are -1:
+// they act as if an Affix were already attuned). `plus` = while attuned, one chosen Affix has its effects doubled.
+const fo = (label, form, dur, limit, free, plus, effect = "", extra = {}) => ({ label, form, dur, limit, free, plus, effect, ...extra });
 const DECK = (draw, core, combo) => `Cannot cast spells normally. Create a "deck" of spells using all of your Core spells (3 each). At the start of your turn, shuffle your hand and discard pile into your deck and draw ${draw} cards (reshuffle when empty). You can: 1. Spend 1/10th of your max Energy to draw a card. 2. Spend 2/10th of your max Energy to mulligan your entire hand (discard your whole hand to draw that many cards). 3. Cast a card as a Core spell with ${core} TR base (it discards after). 4. Combine two cards for a Combo spell with ${combo} TR base (they discard after).`;
 
 export const FOCI_TYPES = {
   // Igniters
-  rod: fo("Rod", "igniter", 20, 4, 3, false),
-  shard: fo("Shard", "igniter", 40, 8, 1, true),
-  wand: fo("Wand", "igniter", 30, 6, 1, false, "Every other spell cast with this Foci grants it 1 additional TR until the start of your next turn. Has 0 TR baseline.", { tr: 0 }),
-  staff: fo("Staff", "igniter", 30, 6, 1, false, "Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was a different Core Spell.", { twoHandCast: true }),
-  scepter: fo("Scepter", "igniter", 60, 12, 1, false, "Spells cast with this Foci have 1 additional TR when targeting an ally."),
-  chime: fo("Chime", "igniter", 10, 2, 0, false, DECK(7, 2, 4), { deck: true, draw: 7, deckTR: [2, 4] }),
+  rod: fo("Rod", "igniter", 20, 4, 2, false),
+  shard: fo("Shard", "igniter", 40, 8, 0, true, "While attuned, select one Offensive Affix, its effects are doubled (this can be changed by attuning again)."),
+  wand: fo("Wand", "igniter", 30, 6, 0, false, "Every other spell cast with this Foci grants it 1 additional TR until the start of your next turn. Has 0 TR baseline.", { tr: 0 }),
+  staff: fo("Staff", "igniter", 30, 6, 0, false, "Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was a different Core Spell.", { twoHandCast: true }),
+  scepter: fo("Scepter", "igniter", 60, 12, 0, false, "Spells cast with this Foci have 1 additional TR when targeting an ally."),
+  chime: fo("Chime", "igniter", 10, 2, -1, false, DECK(7, 2, 4), { deck: true, draw: 7, deckTR: [2, 4] }),
   // Channelers
-  scroll: fo("Scroll", "channeler", 20, 4, 3, false),
-  orb: fo("Orb", "channeler", 40, 8, 1, true),
-  lens: fo("Lens", "channeler", 30, 6, 1, false, "Every spell cast with this Foci removes 1 TR from it until the start of your next turn. Has 4 TR baseline.", { tr: 4 }),
-  tome: fo("Tome", "channeler", 30, 6, 1, false, "Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was the same Core Spell.", { twoHandCast: true }),
-  tablet: fo("Tablet", "channeler", 60, 12, 1, false, "Spells cast with this Foci have 2 additional TR when targeting an ally."),
-  cards: fo("Cards", "channeler", 10, 2, 0, false, DECK(5, 3, 6), { deck: true, draw: 5, deckTR: [3, 6] }),
+  scroll: fo("Scroll", "channeler", 20, 4, 2, false),
+  orb: fo("Orb", "channeler", 40, 8, 0, true, "While attuned, select one Offensive Affix, its effects are doubled (this can be changed by attuning again)."),
+  lens: fo("Lens", "channeler", 30, 6, 0, false, "Every spell cast with this Foci removes 1 TR from it until the start of your next turn. Has 4 TR baseline.", { tr: 4 }),
+  tome: fo("Tome", "channeler", 30, 6, 0, false, "Requires two hands to cast with. Your next spell cast with this Foci using AP/RP casts twice, as long as your last one cast since the start of your turn was the same Core Spell.", { twoHandCast: true }),
+  tablet: fo("Tablet", "channeler", 60, 12, 0, false, "Spells cast with this Foci have 2 additional TR when targeting an ally."),
+  cards: fo("Cards", "channeler", 10, 2, -1, false, DECK(5, 3, 6), { deck: true, draw: 5, deckTR: [3, 6] }),
   // Multi
-  glove: fo("Glove", "multi", 40, 8, 3, false),
-  band: fo("Band", "multi", 60, 12, 1, true),
-  ring: fo("Ring", "multi", 30, 6, 1, false, "Select one Core spell to be the chosen spell of this Foci (can be changed on rest). That Core spell and its Combos have 1 additional TR when cast with this Foci.", { choice: "spell" }),
+  glove: fo("Glove", "multi", 40, 8, 2, false),
+  band: fo("Band", "multi", 60, 12, 0, true, "While attuned, select one Offensive Affix, its effects are doubled (this can be changed by attuning again)."),
+  ring: fo("Ring", "multi", 30, 6, 0, false, "Select one Core spell to be the chosen spell of this Foci (can be changed on rest). That Core spell and its Combos have 1 additional TR when cast with this Foci.", { choice: "spell" }),
   gauntlet: fo("Gauntlet", "multi", 10, 2, 0, false, "Whenever you cast a spell with this Foci using AP/RP, duplicate it. The first spell in this chain uses your higher Scaling Stat, and the second uses your lower Scaling Stat (between Reach and Grasp).")
 };
 
-const sh = (label, dur, limit, affixes, plus, effect = "", extra = {}) => ({ label, dur, limit, affixes, plus, effect, ...extra });
+const sh = (label, dur, limit, free, plus, effect = "", extra = {}) => ({ label, dur, limit, free, plus, effect, ...extra });
 export const SHROUD_TYPES = {
-  bastion: sh("Bastion", 50, 10, 2, false),
-  keystone: sh("Keystone", 60, 12, 1, true),
-  cinder: sh("Cinder", 80, 5, 1, false, "The Limit of this Shroud is three times as high against damage types you have already taken since the start of your turn."),
-  cistern: sh("Cistern", 60, 5, 1, false, "The Limit of this Shroud is three times as high while you are at full Energy, two times as high if you are instead above half Energy, and normal if you are at or below half Energy. Recovery scales with this varying limit."),
-  ember: sh("Ember", 60, 5, 1, false, "The Limit of this Shroud is three times as high while you are at or below half of your max HP, two times as high if you are instead above half of your max HP, and normal if you are at full HP. Recovery scales with this varying limit."),
-  aegis: sh("Aegis", 3, 12, 0, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
-  lattice: sh("Lattice", 6, 6, 0, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
-  ward: sh("Ward", 30, 8, 1, false, "Instead of blocking damage as normal, this Shroud must be activated with 2 RP to be placed on a target within 100ft (no attack roll, only one application at a time, can target yourself). Durability restores to full on usage, effect lasts until the start of your next turn or until reactivated.", { placed: "ward" }),
-  bond: sh("Bond", 80, 8, 1, false, "This Shroud applies to both you and a single other target within 100ft you may declare for 3 RP at any time. Doing so refreshes the durability of this Shroud. This effect goes away if the target goes more than 1000ft away from you, or the Shroud's durability reaches 0.", { placed: "bond" }),
-  carapace: sh("Carapace", 50, 5, 1, false, "Every time this Shroud takes damage, its Limit increases by what it is at a baseline post scaling. Resets at the start of your turn (before recovery)."),
-  riposte: sh("Riposte", 40, 8, 1, false, "When this Shroud takes damage from a source within 100ft, you can spend 1 RP to make a ranged attack roll against that target, dealing the damage that the Shroud took back at them on hit."),
-  retort: sh("Retort", 40, 8, 1, false, "While you are melded with this Shroud, if you would take damage from an attack that this Shroud can block, you may spend 1 RP to give that attack's damage a stack of Weakened.")
+  bastion: sh("Bastion", 50, 10, 1, false),
+  keystone: sh("Keystone", 60, 12, 0, true, "While attuned, select one Defensive Affix, its effects are doubled (this can be changed by attuning again)."),
+  cinder: sh("Cinder", 80, 5, 0, false, "The Limit of this Shroud is three times as high against damage types you have already taken since the start of your turn."),
+  cistern: sh("Cistern", 60, 5, 0, false, "The Limit of this Shroud is three times as high while you are at full Energy, two times as high if you are instead above half Energy, and normal if you are at or below half Energy. Recovery scales with this varying limit."),
+  ember: sh("Ember", 60, 5, 0, false, "The Limit of this Shroud is three times as high while you are at or below half of your max HP, two times as high if you are instead above half of your max HP, and normal if you are at full HP. Recovery scales with this varying limit."),
+  aegis: sh("Aegis", 3, 12, -1, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
+  lattice: sh("Lattice", 6, 6, -1, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
+  ward: sh("Ward", 30, 8, 0, false, "Instead of blocking damage as normal, this Shroud must be activated with 2 RP to be placed on a target within 100ft (no attack roll, only one application at a time, can target yourself). Durability restores to full on usage, effect lasts until the start of your next turn or until reactivated.", { placed: "ward" }),
+  bond: sh("Bond", 80, 8, 0, false, "This Shroud applies to both you and a single other target within 100ft you may declare for 3 RP at any time. Doing so refreshes the durability of this Shroud. This effect goes away if the target goes more than 1000ft away from you, or the Shroud's durability reaches 0.", { placed: "bond" }),
+  carapace: sh("Carapace", 50, 5, 0, false, "Every time this Shroud takes damage, its Limit increases by what it is at a baseline post scaling. Resets at the start of your turn (before recovery)."),
+  riposte: sh("Riposte", 40, 8, 0, false, "When this Shroud takes damage from a source within 100ft, you can spend 1 RP to make a ranged attack roll against that target, dealing the damage that the Shroud took back at them on hit."),
+  retort: sh("Retort", 40, 8, 0, false, "While you are melded with this Shroud, if you would take damage from an attack that this Shroud can block, you may spend 1 RP to give that attack's damage a stack of Weakened.")
 };
 
 const af = (label, rarity, foci, shroud) => ({ label, rarity, foci, shroud });
@@ -80,8 +82,32 @@ export const AFFIX_RARITIES = { common: "Common", uncommon: "Uncommon", rare: "R
 export const ELEMENTS = { heat: "Heat", cold: "Cold", acid: "Acid", radiation: "Radiation" };
 
 /** Affix keys on an item, trimmed to its slot count (unknown keys dropped). */
-export function affixList(keys, slots) {
+export function affixList(keys, slots = AFFIX_LIMIT) {
   return (keys ?? []).filter(k => AFFIXES[k]).slice(0, Math.max(0, slots));
+}
+
+/** Affixes cost speed, not slots; this is only the most one piece of equipment holds on a sheet. */
+export const AFFIX_LIMIT = 6;
+export const AFFIX_SPEED_PCT = 20;
+
+/** The Affix with doubled effects (Shard, Orb, Band, Keystone): the one picked, else the item's first. */
+export function doubledAffix(sys, t, affixes) {
+  if (!t?.plus || !affixes.length) return null;
+  return affixes.includes(sys.doubled) ? sys.doubled : affixes[0];
+}
+
+/** How much a piece of equipment multiplies one of its Affix's effects. */
+export const affixMultOf = (profile, key) => (profile?.doubled && profile.doubled === key ? 2 : 1);
+
+/**
+ * Speed lost to attuned Affixes (a percentage). Everyone gets one Affix at no cost, each Free Affix on the attuned Foci and Shroud adds another,
+ * and every Affix past that costs 20% (Chime, Cards, Aegis and Lattice count as an Affix already attuned, by having -1 Free Affixes).
+ */
+export function affixSpeedPct(...profiles) {
+  const worn = profiles.filter(p => p?.valid);
+  const count = worn.reduce((n, p) => n + (p.affixes?.length ?? 0), 0);
+  const free = 1 + worn.reduce((n, p) => n + (p.freeAffixes ?? 0), 0);
+  return AFFIX_SPEED_PCT * Math.max(0, count - free);
 }
 
 /** Foci profile. `stats` = { reach, grasp } effective values (or Grade-cap previews). */
@@ -93,7 +119,8 @@ export function fociProfile(sys, stats = {}) {
   const reach = cappedStat(stats.reach ?? 0, grade), grasp = cappedStat(stats.grasp ?? 0, grade);
   const scalingStat = form.stat === "lesser" ? (reach <= grasp ? "reach" : "grasp") : form.stat;
   const scaling = form.stat === "lesser" ? Math.min(reach, grasp) : form.stat === "reach" ? reach : grasp;
-  const affixes = affixList(sys.affixes, t.affixes);
+  const affixes = affixList(sys.affixes);
+  const doubled = doubledAffix(sys, t, affixes);
   return {
     valid: true,
     label: `${form.label} · ${t.label}`, typeLabel: t.label,
@@ -103,13 +130,13 @@ export function fociProfile(sys, stats = {}) {
     tr: t.tr ?? form.tr,
     durability: t.dur * grade,
     limit: t.limit * grade,
-    affixSlots: t.affixes, affixPlus: t.plus, affixes,
+    affixSlots: AFFIX_LIMIT, freeAffixes: t.free, affixPlus: !!t.plus, doubled, affixes,
     twoHandCast: !!t.twoHandCast, deck: !!t.deck, deckTR: t.deckTR ?? null, deckDraw: t.draw ?? 0, type: sys.fociType,
     // Gauntlet: the first cast uses the higher of Reach and Grasp, the second the lower.
     scalingHigh: Math.max(reach, grasp), scalingLow: Math.min(reach, grasp),
     effect: t.effect,
     // Foci only block what they would as an object (Physical and Elemental), when something targets or hits through them.
-    focus: null, selfWeakened: affixes.includes("zircon") ? (t.plus ? 2 : 1) : 0
+    focus: null, selfWeakened: affixes.includes("zircon") ? (doubled === "zircon" ? 2 : 1) : 0
   };
 }
 
@@ -119,7 +146,8 @@ export function shroudProfile(sys, build = 0) {
   if (!t) return { valid: false, error: "Pick a Shroud type." };
   const grade = Math.max(1, sys.grade || 1);
   const mult = armorMultiplier(build, grade);
-  const affixes = affixList(sys.affixes, t.affixes);
+  const affixes = affixList(sys.affixes);
+  const doubled = doubledAffix(sys, t, affixes);
   return {
     valid: true,
     label: t.label,
@@ -128,8 +156,7 @@ export function shroudProfile(sys, build = 0) {
     durability: t.fixedDur ? t.dur : t.dur * mult,
     baseLimit: t.limit * mult,
     limit: t.limit * mult,
-    affixSlots: t.affixes, affixPlus: t.plus, affixes,
-    affixMult: t.plus ? 2 : 1,
+    affixSlots: AFFIX_LIMIT, freeAffixes: t.free, affixPlus: !!t.plus, doubled, affixes,
     negator: !!t.negator, placed: t.placed ?? null, fixedDur: !!t.fixedDur, noRegen: !!t.noRegen,
     effect: t.effect
   };

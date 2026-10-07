@@ -108,4 +108,5 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
   Affixes are a pick-list on the item (GM-set). Attuning takes an hour (not in combat).
 - Ammo: X shots per reload (weapon setting, default 1) using X ammo; 1 shot per attack; max 100 per type.
 - Token size: Size 1–5 = ¼, ½, 1, 2, 4 squares. Downed creatures are deleted from the combat tracker.
+- Speed: base = Size maximum less additive percentages (armor 20/40/60/80, Affixes past the free ones 20 each, Alignment 20 per point), nearest 5 ft, minimum 5 ft; Quicken doubles the result. Affix allowance = 1 + each attuned Foci/Shroud's Free Affixes (can be -1). Snapshots of the Rules doc are in `dev/docs/rules.md`.
 - Open question: Dragon Lash still doubles total Knockback (user hasn't decided vs. +5×).

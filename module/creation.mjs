@@ -7,7 +7,7 @@ import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES, weaponProfile, armorProfile
 } from "./martial.mjs";
 import * as skills from "./skills.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES, AFFIX_LIMIT } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 
 export const RARITY_ORDER = ["common", "uncommon", "rare", "veryRare"];
@@ -55,7 +55,7 @@ export function affixTargets(items) {
   return items.map((slot, index) => ({ slot, index })).filter(({ slot }) => slot.kind === "foci" || slot.kind === "shroud").map(({ slot, index }) => {
     const t = slot.kind === "foci" ? FOCI_TYPES[slot.fociType] : SHROUD_TYPES[slot.shroudType];
     const used = items.filter(a => a.kind === "affix" && a.target === String(index)).length;
-    return { index, slot, slots: t?.affixes ?? 0, free: (t?.affixes ?? 0) - used, label: `${slotName(slot)} (item ${index + 1})` };
+    return { index, slot, slots: AFFIX_LIMIT, free: AFFIX_LIMIT - used, label: `${slotName(slot)} (item ${index + 1})` };
   });
 }
 

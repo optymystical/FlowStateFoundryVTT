@@ -325,7 +325,7 @@
   # 
 
   **Tier 2: You gain the following ability:**  
-- **Trudge:** **Cost: *Energy equal to a quarter of your CON min, rounded down.*** Prior to moving whilst wearing Heavy Armor, you can use this ability. You ignore the Heavy Armor movement cost penalty for that instance of movement, essentially making normal movement cost energy equal to this ability’s energy cost.  
+- **Trudge:** **Cost: *Energy equal to a quarter of your CON min, rounded down.*** Prior to moving whilst wearing Heavy Armor, you can use this ability. You ignore the Heavy Armor movement speed penalty for that instance of movement.  
     
   **Tier 3: You gain the following ability:**  
 - **Bodyslam: Cost: *Energy equal to your CON min.*** You can use this ability whilst wearing Heavy Armor by spending  **3 AP**. Make an attack roll against a target within your personal melee range. On hit, you slam your body into the target, dealing Physical damage equal to your worn armor’s Limit plus your Constitution min to them.  
@@ -525,7 +525,7 @@
 - **Harden:** When you would use Brace, you can expend additional energy equal to half your Con min rounded down to apply Weakened to the incoming attack (Weakened applies first).  
     
   **Tier 4: You gain the following ability:**  
-- **Trudge:** **Cost: *Energy equal to half of your CON min, rounded down.*** Prior to moving whilst wearing Titanic Armor, you can use this ability. You ignore the Titanic Armor movement cost penalty for that instance of movement, essentially making normal movement cost energy equal to this ability’s energy cost.  
+- **Trudge:** **Cost: *Energy equal to half of your CON min, rounded down.*** Prior to moving whilst wearing Titanic Armor, you can use this ability. You ignore the Titanic Armor movement speed penalty for that instance of movement.  
     
   **Tier 5: You gain the following passive:**  
 - **Chunky:** Pierce affects your worn Titanic Armor half as much, rounded down.

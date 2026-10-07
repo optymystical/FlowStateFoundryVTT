@@ -29,8 +29,7 @@
       <span>Durability</span><span><input type="number" class="fs-wear" value="{{system.durability.value}}" disabled> / {{system.durability.max}} <small>(wear <input type="number" name="system.wear" value="{{system.wear}}" min="0" {{#unless editable}}disabled{{/unless}}>)</small></span>
       <span>Limit</span><span>{{p.limit}}</span>
       <span>Stealth</span><span>{{stealth}}</span>
-      <span>Movement</span><span>{{p.moveAP}} AP per move</span>
-      {{#if p.physicalDis}}<span>Physical rolls</span><span>Disadvantage{{#if p.physicalWeakened}}; physical attacks Weakened{{/if}}</span>{{/if}}
+      <span>Movement</span><span>{{p.moveText}}</span>
       <span>Don/doff</span><span>{{p.don}}</span>
     </div>
     <p class="hint">Blocks Physical and Elemental damage unless the material says otherwise. Soaks automatically when damage is applied.</p>

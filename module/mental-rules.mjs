@@ -93,23 +93,68 @@ export function manifestCheck(wonder, stat, bonusPct = 0) {
 /* -------------------------------------------- */
 
 export const ALIGNMENTS = { neutral: "Neutral", dream: "Dream", nightmare: "Nightmare" };
+export const MAX_ALIGNMENT = 4;
+export const ALIGN_SPEED_PCT = 20;
 
 /**
- * Advantage/Disadvantage on a Manifest's attack roll from Alignment: a Dream or Nightmare Alignment gives its own Wonders Advantage and the
- * opposite Wonders Disadvantage. Neutral gives Advantage to Form Ward attacks instead.
+ * An Alignment is a kind (Dream or Nightmare) and how far you went (1 to 4, Neutral = 0). It is set with a 1 hour activity, and every point costs 20% speed.
+ * Equilibrium (Mental T4) is a temporary -1 Alignment, entered with Fluidity and lasting until the start of your next turn: your Alignment is suspended
+ * (no bonuses, no speed penalty) until it ends. Stored as { kind, level, equilibrium }; this returns it cleaned up.
  */
-export function alignmentNet(alignment, kind, { ward = false } = {}) {
-  if (ward) return alignment === "neutral" ? 1 : 0;
-  if (alignment === "neutral" || !kind) return 0;
-  return alignment === kind ? 1 : -1;
+export function alignmentState(raw) {
+  const kind = raw?.kind === "dream" || raw?.kind === "nightmare" ? raw.kind : "neutral";
+  const level = kind === "neutral" ? 0 : Math.max(0, Math.min(MAX_ALIGNMENT, Math.floor(Number(raw?.level)) || 0));
+  return level ? { kind, level, equilibrium: !!raw?.equilibrium } : { kind: "neutral", level: 0, equilibrium: !!raw?.equilibrium };
 }
 
-/** Strengthened stacks Deepening gives Wonders of the Aligned type (doubly Strengthened). */
-export const DEEPENED_STACKS = 2;
+/** What the sheet calls it: "Dream 2", "Neutral", "Equilibrium (-1)". */
+export function alignmentLabel(state) {
+  const s = alignmentState(state);
+  return s.equilibrium ? "Equilibrium (-1)" : s.level ? `${ALIGNMENTS[s.kind]} ${s.level}` : "Neutral";
+}
 
-/** Changing Alignment: 2 AP, or (Fluidity, Mental T3) energy equal to half your Skill Points at any time. Deepening / Equilibrium costs. */
-export const alignChangeCost = ({ fluidity = false, skillPoints = 0 }) => fluidity ? { ap: 0, energy: Math.floor(skillPoints / 2) } : { ap: 2, energy: 0 };
-export const deepenCost = (alignment, { scalingMin = 0, willMin = 0 }) => alignment === "neutral" ? { ap: 2, energy: willMin } : { ap: 0, energy: scalingMin };
+/** Speed lost to Alignment: 20% per point (none in Equilibrium). */
+export const alignmentSpeedPct = state => { const s = alignmentState(state); return s.equilibrium ? 0 : ALIGN_SPEED_PCT * s.level; };
+
+/**
+ * What Alignment does to a Manifest of a Wonder of `kind` ("dream" / "nightmare"):
+ *  - 1 Alignment: a stack of Advantage on its attack roll if it is your Alignment's type, Disadvantage if it is the opposite type.
+ *  - 2 Alignment: a stack of Strengthened on its bolded effects if it is your type, Weakened if it is the opposite.
+ *  - Equilibrium: your Manifest attack rolls have a stack of Disadvantage.
+ */
+export function alignmentManifest(state, kind) {
+  const s = alignmentState(state);
+  if (s.equilibrium) return { net: -1, stacks: 0 };
+  if (!s.level || !kind) return { net: 0, stacks: 0 };
+  const sign = s.kind === kind ? 1 : -1;
+  return { net: sign, stacks: s.level >= 2 ? sign : 0 };
+}
+
+/**
+ * What Alignment does to the Ward of a Form of `kind`: 4 Alignment gives your own type's Icon Advantage on its attack roll and Strengthened on its
+ * bolded effect. In Equilibrium everything dodging your Icon's Ward (yourself included) has a stack of Disadvantage (`dodgeNet`).
+ */
+export function alignmentWard(state, kind) {
+  const s = alignmentState(state);
+  if (s.equilibrium) return { net: 0, stacks: 0, dodgeNet: -1 };
+  if (s.level >= 4 && s.kind === kind) return { net: 1, stacks: 1, dodgeNet: 0 };
+  return { net: 0, stacks: 0, dodgeNet: 0 };
+}
+
+/** 3 Alignment: a Tenet of your Alignment's type can trigger twice per round. */
+export function tenetUses(state, kind) {
+  const s = alignmentState(state);
+  return !s.equilibrium && s.level >= 3 && s.kind === kind ? 2 : 1;
+}
+
+/** Are you Aligned towards this type of Wonder (Dream or Nightmare, at least 1 Alignment)? */
+export function alignedTo(state, kind) {
+  const s = alignmentState(state);
+  return !s.equilibrium && s.level >= 1 && s.kind === kind;
+}
+
+/** Fluidity (Mental T3): energy equal to half your Skill Points multiplied by your current Alignment number swaps its type (and, with Equilibrium, enters -1). */
+export const fluidityCost = (state, skillPoints = 0) => Math.floor(skillPoints / 2) * alignmentState(state).level;
 
 /* -------------------------------------------- */
 /*  Icons and Forms                             */

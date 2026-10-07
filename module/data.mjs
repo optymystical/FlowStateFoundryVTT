@@ -1,9 +1,9 @@
-import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, OBJECT_DENSITY, objectStats } from "./rules.mjs";
+import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats } from "./rules.mjs";
 import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, fociProfile, shroudProfile } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, fociProfile, shroudProfile, affixMultOf, affixSpeedPct } from "./magic.mjs";
 import { penalizedDie } from "./spellfx.mjs";
-import { FORMS, iconProfile } from "./mental-rules.mjs";
+import { FORMS, iconProfile, alignmentSpeedPct } from "./mental-rules.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
@@ -127,14 +127,14 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         if (item.system.equipped && item.system.profile.valid && !this.armor) this.armor = item;
       }
     }
-    const penalties = this.armor?.system.profile ?? { stealthDis: 0, moveAP: 1, physicalDis: 0, physicalWeakened: 0 };
+    const penalties = this.armor?.system.profile ?? { stealthDis: 0, moveAP: 1, speedPct: 0 };
     // Careful Steps (Medium Armor T3): no stealth penalty from worn Medium armor while it's active.
     const careful = this.parent?.statuses?.has?.("carefulSteps") && !this.parent?.getFlag?.("flowstate", "carefulLapsed")
       && this.armor?.system.weight === "medium";
     this.penalties = {
       stealthDis: careful ? 0 : penalties.stealthDis,
-      physicalDis: penalties.physicalDis,
-      physicalWeakened: penalties.physicalWeakened
+      physicalDis: 0,
+      physicalWeakened: 0
     };
 
     const statuses = this.parent?.statuses ?? new Set();
@@ -145,9 +145,20 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     // Zircon (Shroud): while the melded Shroud is undamaged, ignore Rough Terrain and Slow stacks.
     const zircon = !!this.shroud?.system.profile.affixes?.includes("zircon") && this.shroud.system.wear <= 0;
     const tempo = tempoModifier(zircon ? 0 : this.conditions.slow, this.conditions.haste, d.pain);
+    // Speed is the Size's maximum, less percentages that add together: armor, attuned Affixes past the free ones, and Mental Alignment.
+    // Trudge (Heavy T2 / Titanic T4) ignores the armor's share for the next move. A summon's speed is whatever it was made with.
+    const trudge = !!this.parent?.getFlag?.("flowstate", "trudge");
+    const speedLoss = {
+      armor: trudge ? 0 : penalties.speedPct ?? 0,
+      affix: affixSpeedPct(this.foci?.system.profile, this.shroud?.system.profile),
+      alignment: alignmentSpeedPct(this.parent?.getFlag?.("flowstate", "alignment"))
+    };
+    speedLoss.total = sm ? 0 : speedLoss.armor + speedLoss.affix + speedLoss.alignment;
+    const walk = speedFt(d.move, speedLoss.total);
     this.movement = {
       // Quicken (Unarmored T4): double speed.
-      speed: statuses.has("quickened") ? d.move * 2 : d.move,
+      speed: statuses.has("quickened") ? walk * 2 : walk,
+      speedLoss,
       tempo,
       ...movementCost({
         // Terrain regions the creature stands in (rough +1, difficult +2; Zircon ignores rough terrain).
@@ -158,7 +169,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         stealth: statuses.has("stealth"),
         tempo,
         // Trudge (Heavy T2 / Titanic T4): the next move ignores the armor's movement penalty.
-        base: (this.parent?.getFlag?.("flowstate", "trudge") ? 1 : penalties.moveAP)
+        base: (trudge ? 1 : penalties.moveAP)
           // Slice (Balanced T3): +1 AP per move (a Martial source, so Unfettered ignores it).
           + (statuses.has("sliced") && !unfettered ? 1 : 0)
           // Freeze (Mental, Destruction T4): +1 AP per move
@@ -294,6 +305,7 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
       wear: int(0, { min: 0 }),
       conditions: objectConditions(),                    // Ignite / Stain stacks, when it was aimed at
       affixes: new f.ArrayField(new f.StringField()),
+      doubled: new f.StringField({ initial: "" }),        // Shard / Orb / Band: the Offensive Affix whose effects are doubled
       element: new f.StringField({ initial: "heat" }),    // Tourmaline
       chosenSpell: new f.StringField({ initial: "" }),    // Ring
       lush: new f.BooleanField({ initial: false }),       // Emerald: in a Lush biome
@@ -354,6 +366,7 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
       wear: int(0),                                       // spent Durability (Aegis/Lattice: charges used)
       conditions: objectConditions(),
       affixes: new f.ArrayField(new f.StringField()),
+      doubled: new f.StringField({ initial: "" }),        // Keystone: the Defensive Affix whose effects are doubled
       element: new f.StringField({ initial: "heat" }),    // Tourmaline
       declared: new f.StringField({ initial: "" }),       // Colored Diamond source type
       lush: new f.BooleanField({ initial: false }),       // Emerald: in a Lush biome
@@ -388,7 +401,7 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
       p.limitFactor = factor;
       p.limit = p.baseLimit * factor;
       // Emerald: doubled in a Lush biome, halved elsewhere (×2 / ÷4 with an upgraded affix).
-      if (p.affixes.includes("emerald")) p.limit = this.lush ? p.limit * 2 * p.affixMult : Math.floor(p.limit / (2 * p.affixMult));
+      if (p.affixes.includes("emerald")) p.limit = this.lush ? p.limit * 2 * affixMultOf(p, "emerald") : Math.floor(p.limit / (2 * affixMultOf(p, "emerald")));
       p.recovery = t === "cistern" || t === "ember" ? p.limit : p.baseLimit;
     }
     this.profile = p;

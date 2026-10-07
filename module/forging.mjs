@@ -8,7 +8,7 @@ import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
 import * as conjure from "./conjure.mjs";
 import * as mental from "./mental.mjs";
-import { AFFIXES, FOCI_TYPES, SHROUD_TYPES } from "./magic.mjs";
+import { AFFIXES, FOCI_TYPES, SHROUD_TYPES, AFFIX_LIMIT } from "./magic.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS } from "./martial.mjs";
 import { tierOf } from "./skills.mjs";
 import { MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
@@ -49,7 +49,7 @@ async function askWhat(caster, x) {
   } else if (mode === `${ID}:conjure`) {
     const aff = Object.entries(AFFIXES).filter(([, a]) => rar.includes(rarityKey(a.rarity)));
     html = field("What", select("kind", [["foci", "Magic Foci"], ["shroud", "Shroud"]])) + field("Foci type", select("ftype", Object.entries(FOCI_TYPES).map(([k, v]) => [k, v.label]))) + field("Shroud type", select("stype", Object.entries(SHROUD_TYPES).map(([k, v]) => [k, v.label])))
-      + `<fieldset><legend>Affixes (up to the item's slots)</legend>${aff.map(([k, a]) => `<label class="fs-cast-mod"><input type="checkbox" name="aff:${k}"> ${esc(a.label)} <small>(${esc(a.rarity)})</small></label>`).join("")}</fieldset>` + field("Name", `<input type="text" name="name">`);
+      + `<fieldset><legend>Affixes (each past your free ones costs 20% speed)</legend>${aff.map(([k, a]) => `<label class="fs-cast-mod"><input type="checkbox" name="aff:${k}"> ${esc(a.label)} <small>(${esc(a.rarity)})</small></label>`).join("")}</fieldset>` + field("Name", `<input type="text" name="name">`);
   } else if (mode === `${ID}:consecrate`) {
     const forms = Object.entries(R.FORMS).filter(([, f]) => rar.includes(rarityKey(f.rarity)));
     html = field("Form", select("form", forms.map(([k, f]) => [k, `${f.name} (${R.KINDS[f.align].label}, ${f.rarity})`]))) + field("Name", `<input type="text" name="name">`);
@@ -74,8 +74,8 @@ function buildItem(caster, x, v, permanent) {
   }
   if (mode === `${ID}:conjure`) {
     const affixes = Object.keys(v).filter(k => k.startsWith("aff:") && v[k]).map(k => k.slice(4));
-    if (v.kind === "shroud") return { name: v.name || `${SHROUD_TYPES[v.stype]?.label} Shroud`, type: "shroud", flags, system: { shroudType: v.stype, grade: 1, attuned: false, affixes: affixes.slice(0, SHROUD_TYPES[v.stype]?.affixes ?? 0) } };
-    return { name: v.name || `${FOCI_TYPES[v.ftype]?.label} Foci`, type: "foci", flags, system: { fociType: v.ftype, grade: 1, attuned: false, equipped: false, affixes: affixes.slice(0, FOCI_TYPES[v.ftype]?.affixes ?? 0) } };
+    if (v.kind === "shroud") return { name: v.name || `${SHROUD_TYPES[v.stype]?.label} Shroud`, type: "shroud", flags, system: { shroudType: v.stype, grade: 1, attuned: false, affixes: affixes.slice(0, AFFIX_LIMIT) } };
+    return { name: v.name || `${FOCI_TYPES[v.ftype]?.label} Foci`, type: "foci", flags, system: { fociType: v.ftype, grade: 1, attuned: false, equipped: false, affixes: affixes.slice(0, AFFIX_LIMIT) } };
   }
   if (mode === `${ID}:consecrate`) return { name: v.name || `${R.FORMS[v.form]?.name} Icon`, type: "icon", flags, system: { form: v.form, grade: 1, attuned: false, tenet: "" } };
   const body = Math.min(15 * (x.power ?? 1), Math.max(1, Number(v.body) || 1));

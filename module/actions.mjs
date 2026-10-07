@@ -3,7 +3,7 @@ import {
   objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, igniteTotal, stainTotal, STAIN_VARIANTS
 } from "./rules.mjs";
 import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, soak, weaponProfile, effectiveLimit, DAMAGE_CATEGORY } from "./martial.mjs";
-import { AFFIXES, shroudBlocks } from "./magic.mjs";
+import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
 import * as fx from "./spellfx.mjs";
@@ -2937,7 +2937,7 @@ export async function spotWeakness(actor) {
   const body = armor && p?.valid
     ? `<div class="fs-result">${esc(t.name)} wears <strong>${esc(armor.name)}</strong> (${esc(p.label)}, Grade ${p.grade}).</div>
       <ul class="fs-list"><li>Limit ${p.limit}</li><li>Durability ${armor.system.durability.value}/${armor.system.durability.max}</li>
-      ${p.stealthDis ? `<li>Stealth ${p.stealthDis === Infinity ? "auto-fails" : `Disadvantage ×${p.stealthDis}`}</li>` : ""}<li>${p.moveAP} AP per move</li>${p.effect ? `<li>${esc(p.effect)}</li>` : ""}</ul>`
+      ${p.stealthDis ? `<li>Stealth ${p.stealthDis === Infinity ? "auto-fails" : `Disadvantage ×${p.stealthDis}`}</li>` : ""}<li>${esc(p.moveText)}</li>${p.effect ? `<li>${esc(p.effect)}</li>` : ""}</ul>`
     : `<div class="fs-result">${esc(t.name)} isn't wearing armor.</div>`;
   const whisper = game.users?.filter?.(u => u.isGM || actor.testUserPermission?.(u, "OWNER")).map(u => u.id) ?? [];
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), whisper,
@@ -5865,13 +5865,12 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
   const P = sh.system.profile;
   const lines = [];
   const update = {};
-  const m = P.affixMult;
   const cat = DAMAGE_CATEGORY[type] ?? "physical";
   const own = sh.parent?.uuid === actor.uuid;
   // Agate (Magical) / Jasper (Physical) / Obsidian (Elemental): the first instance since the Shroud last recovered.
   const negKey = { magical: "agate", physical: "jasper", elemental: "obsidian" }[cat];
   if (own && negKey && hasAffix(sh, negKey) && !(sh.system.negated ?? []).includes(cat) && remaining > 0) {
-    const cut = Math.min(remaining, P.scaling * m);
+    const cut = Math.min(remaining, P.scaling * affixMultOf(P, negKey));
     remaining -= cut;
     lines.push(`${sh.name} (${AFFIXES[negKey].label}): −${cut} ${cat} damage`);
     update["system.negated"] = [...(sh.system.negated ?? []), cat];
@@ -5885,9 +5884,9 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
   // Damage that would hit the Shroud: Weakened by Diamond (same source this turn), Alexandrite (same type as last), Colored Diamond (declared source).
   let weak = 0;
   const why = [];
-  if (hasAffix(sh, "diamond") && source && (sh.system.hitSources ?? []).includes(`${key}|${source}`)) { weak += m; why.push("Diamond"); }
-  if (hasAffix(sh, "alexandrite") && sh.system.lastType && sh.system.lastType === type) { weak += m; why.push("Alexandrite"); }
-  if (hasAffix(sh, "coloredDiamond") && source && sh.system.declared === source) { weak += m; why.push("Colored Diamond"); }
+  if (hasAffix(sh, "diamond") && source && (sh.system.hitSources ?? []).includes(`${key}|${source}`)) { weak += affixMultOf(P, "diamond"); why.push("Diamond"); }
+  if (hasAffix(sh, "alexandrite") && sh.system.lastType && sh.system.lastType === type) { weak += affixMultOf(P, "alexandrite"); why.push("Alexandrite"); }
+  if (hasAffix(sh, "coloredDiamond") && source && sh.system.declared === source) { weak += affixMultOf(P, "coloredDiamond"); why.push("Colored Diamond"); }
   if (weak && remaining > 0) {
     const before = remaining;
     remaining = applyStacks(remaining, -weak);
@@ -5903,7 +5902,7 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
   // It can't absorb more than its remaining Durability (Tourmaline / Rend change how fast that runs out).
   const durLeft = sh.system.durability.value;
   if (!P.negator) {
-    const f = (hasAffix(sh, "tourmaline") && sh.system.element === type ? stackMultiplier(-m) : 1) * (rend ? stackMultiplier(rend.stacks) : 1);
+    const f = (hasAffix(sh, "tourmaline") && sh.system.element === type ? stackMultiplier(-affixMultOf(P, "tourmaline")) : 1) * (rend ? stackMultiplier(rend.stacks) : 1);
     L = Math.min(L, Math.floor(durLeft / f));
   }
   let loss = 0, rAbs = 0, cAbs = 0;
@@ -5917,7 +5916,7 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
     cleaveLeft -= cAbs; remaining -= rAbs;
     loss = cAbs + rAbs;
     // Tourmaline: damage of the chosen element taken by the Shroud is Weakened.
-    if (loss && hasAffix(sh, "tourmaline") && sh.system.element === type) loss = applyStacks(loss, -m);
+    if (loss && hasAffix(sh, "tourmaline") && sh.system.element === type) loss = applyStacks(loss, -affixMultOf(P, "tourmaline"));
     if (loss && rend) loss = applyStacks(loss, rend.stacks);
     loss = Math.min(loss, durLeft);
     if (rAbs || cAbs) lines.push(`${sh.name} (Shroud) absorbed ${rAbs}${cAbs ? ` (+${cAbs} Cleave)` : ""} (−${loss} Durability)`);
@@ -5939,7 +5938,7 @@ export const sceneLush = () => !!globalThis.canvas?.scene?.getFlag?.("flowstate"
 /** Musgravite (Shroud): Force against you is reduced by your Scaling Stat. */
 export function musgraviteNegate(actor) {
   const sh = actor?.system?.shroud;
-  return hasAffix(sh, "musgravite") ? sh.system.profile.scaling * sh.system.profile.affixMult : 0;
+  return hasAffix(sh, "musgravite") ? sh.system.profile.scaling * affixMultOf(sh.system.profile, "musgravite") : 0;
 }
 
 /** Within this creature's personal melee range? (Unknown positions count as yes.) */
@@ -5956,10 +5955,10 @@ export function shroudAttackNet(attacker, target, opts) {
   const fociNet = aimed?.type === "foci" ? -(aimed.system.profile?.selfWeakened ?? 0) : 0;
   const sh = target?.system?.shroud;
   if (!sh) return fociNet;
-  const m = sh.system.profile.affixMult;
+  const P = sh.system.profile;
   let net = 0;
-  if (hasAffix(sh, "blackOpal") && inPersonalMelee(target, attacker)) net -= m;
-  if (hasAffix(sh, "coloredDiamond") && sh.system.declared && sh.system.declared === sourceOf(opts)) net -= m;
+  if (hasAffix(sh, "blackOpal") && inPersonalMelee(target, attacker)) net -= affixMultOf(P, "blackOpal");
+  if (hasAffix(sh, "coloredDiamond") && sh.system.declared && sh.system.declared === sourceOf(opts)) net -= affixMultOf(P, "coloredDiamond");
   return net + fociNet;
 }
 
@@ -6023,11 +6022,11 @@ export async function shroudTurnStart(actor) {
   if (recover > 0) { update["system.wear"] = sh.system.wear - recover; notes.push(`recovers ${recover} Durability`); }
   if ((sh.system.negated ?? []).length) update["system.negated"] = [];
   if (Object.keys(update).length) await sh.update(update, { flowstateSystem: true });
-  const minB = Math.floor(P.scaling / 3) * P.affixMult;
+  const minB = Math.floor(P.scaling / 3);
   const cond = actor.system.conditions ?? {};
   const cu = {};
-  if (hasAffix(sh, "garnet") && cond.ignite > 0) { cu["system.conditions.ignite"] = Math.max(0, cond.ignite - minB); notes.push(`Garnet puts out ${Math.min(cond.ignite, minB)} Ignite`); }
-  if (hasAffix(sh, "topaz") && cond.slow > 0) { cu["system.conditions.slow"] = Math.max(0, cond.slow - minB); notes.push(`Topaz removes ${Math.min(cond.slow, minB)} Slow`); }
+  if (hasAffix(sh, "garnet") && cond.ignite > 0) { cu["system.conditions.ignite"] = Math.max(0, cond.ignite - minB * affixMultOf(P, "garnet")); notes.push(`Garnet puts out ${Math.min(cond.ignite, minB * affixMultOf(P, "garnet"))} Ignite`); }
+  if (hasAffix(sh, "topaz") && cond.slow > 0) { cu["system.conditions.slow"] = Math.max(0, cond.slow - minB * affixMultOf(P, "topaz")); notes.push(`Topaz removes ${Math.min(cond.slow, minB * affixMultOf(P, "topaz"))} Slow`); }
   if (Object.keys(cu).length) await actor.update(cu);
   if (hasAffix(sh, "coloredDiamond")) notes.push(`Colored Diamond: declare a source type on ${esc(sh.name)} (now: ${sh.system.declared ? esc(sh.system.declared.split(":")[1]) : "none"})`);
   if (notes.length) await post(actor, { title: `${esc(actor.name)} — ${esc(sh.name)}`, body: `<div class="fs-notes">${notes.join(" · ")}</div>` });

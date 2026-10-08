@@ -83,7 +83,12 @@ function viewCenter() {
 }
 
 /** The scene-control button: drop a region of this terrain in the middle of the view and select it for dragging and resizing. */
+let lastDrop = { kind: null, at: 0 };
 export async function dropTerrain(kind) {
+  // Foundry can report one click on a button tool more than once (onChange and the older onClick): drop a single region per click.
+  const now = Date.now();
+  if (lastDrop.kind === kind && now - lastDrop.at < 700) return null;
+  lastDrop = { kind, at: now };
   const scene = globalThis.canvas?.scene;
   if (!scene) return ui.notifications.warn("There's no scene to put terrain on.");
   const grid = scene.grid;
@@ -141,7 +146,7 @@ export function register() {
     const tools = {};
     let order = 0;
     for (const [kind, t] of Object.entries(TERRAIN)) {
-      tools[`fsTerrain-${kind}`] = { name: `fsTerrain-${kind}`, title: `${t.label}: drop on the view`, icon: t.icon, order: order++, button: true, visible: true, onChange: () => dropTerrain(kind), onClick: () => dropTerrain(kind) };
+      tools[`fsTerrain-${kind}`] = { name: `fsTerrain-${kind}`, title: `${t.label}: drop on the view`, icon: t.icon, order: order++, button: true, visible: true, onChange: () => dropTerrain(kind) };
     }
     const group = { name: "flowstate", title: "Flow State terrain", icon: "fa-solid fa-mountain-sun", order: 99, visible: true, tools, activeTool: "" };
     if (Array.isArray(controls)) controls.push({ ...group, tools: Object.values(tools) });

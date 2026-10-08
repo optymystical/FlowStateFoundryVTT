@@ -520,6 +520,8 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.51.6:** Fixed the terrain buttons dropping two regions per click: the buttons were wired through both `onChange` and `onClick`, which Foundry can fire together. They now use `onChange` only, and a repeat click on the same button within a moment is ignored.
+
 **0.51.5:** Cleanup, no rules changes: removed the old Gray Iron/Gray Steel physical-roll penalty fields from the engine, renamed the Affix profile fields (`affixLimit`, `doubles`), and rewrote the Code map below to list every module.
 
 **0.51.4:** More Mental follow-ups now carry the stacks of the Manifest that caused them, so a crit doubles their bolded numbers:

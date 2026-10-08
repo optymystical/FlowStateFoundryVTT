@@ -7,7 +7,7 @@ import * as R from "./conjure-rules.mjs";
 import * as fx from "./spellfx.mjs";
 import * as A from "./afflictions.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, ARMOR_WEIGHTS, WEIGHTS, RARITIES } from "./martial.mjs";
-import { setActorFlag, post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, rollWeaponAttack, registerConjure, spendPoints, changeEffect, spellEffects } from "./actions.mjs";
+import { setActorFlag, post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, rollWeaponAttack, registerConjure, spendPoints, changeEffect, spellEffects, castStacks } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 
@@ -186,9 +186,11 @@ export function describe({ actor, plan, profile, mods, mult }) {
   const arms = applied.filter(a => a.mod.name === "Arm").map(a => a.threshold);
   const skin = applied.find(a => a.mod.name === "Skin");
   const expanded = !!mods["expanded animation"];
+  const st = castStacks(actor, plan);                 // Strengthened/Weakened scales the bolded pools (Body, points)
+  const scale = n => applyStacks(n, st);
   const rarities = R.makeRarities({ mk2: !!mods["make mk2"], mk3: !!mods["make mk3"] });
   return { cj, actor, mult, gross: plan.gross ?? plan.threshold, mods, arms, skin: skin?.threshold ?? 0, expanded, rarities, complexity: mods.complexity ?? 0,
-    armory: mods.armory ?? 0, pool: cj.instant ? 10 * mult : (cj.kind === "summon" || cj.summonStats) ? R.summonPool(mult) : R.formPool(mult), bodyMin: cj.instant ? 10 * mult : R.formPool(mult), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
+    armory: mods.armory ?? 0, pool: scale(cj.instant ? 10 * mult : (cj.kind === "summon" || cj.summonStats) ? R.summonPool(mult) : R.formPool(mult)), bodyMin: scale(cj.instant ? 10 * mult : R.formPool(mult)), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
     equipment: !!(mods["weapon/foci"] || mods["armor/shroud"]), combo: plan.combo };
 }
 

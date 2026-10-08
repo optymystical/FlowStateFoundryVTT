@@ -45,7 +45,7 @@
       </select></div>
     {{#if info}}<p class="fs-affix-text"><strong>{{info.label}}:</strong> {{info.shroud}}</p>{{/if}}
     {{/each}}
-    {{#if p.affixPlus}}{{#if p.affixes.length}}
+    {{#if p.doubles}}{{#if p.affixes.length}}
     <div class="fs-field"><label>Doubled Affix <small>(while attuned, one Defensive Affix has its effects doubled)</small></label>
       <select name="system.doubled" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions doubledChoices selected=p.doubled}}</select></div>
     {{/if}}{{/if}}

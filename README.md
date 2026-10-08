@@ -511,6 +511,15 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.51.5:** Cleanup, no rules changes: removed the old Gray Iron/Gray Steel physical-roll penalty fields from the engine, renamed the Affix profile fields (`affixLimit`, `doubles`), and rewrote the Code map below to list every module.
+
+**0.51.4:** More Mental follow-ups now carry the stacks of the Manifest that caused them, so a crit doubles their bolded numbers:
+- **Fester**'s re-application at the start of their turn, **Unbound** and **Ricochet** charges, **Benediction**'s copies, **Infuse** (its own Weakened now scales the Mode's numbers), and the Tenets that fire on a Manifest hit: **Verdant Soul**, **Mortal Coil**, **Weight**, **Gust** (its Force too), and **Ego** (on a crit it always doubles).
+- **Momentum** (Beyond T2) is now offered automatically, on a card, whenever a creature moved by Herald, Gust or Momentum collides (a wall, an Emplace barrier, the ground, or another creature it was knocked into), like Vice after a failed counter grapple check. It uses fresh Power and no stacks; you can still use the Action List row for a collision the system didn't see.
+- Vice and Quicksand already come up after every failed or successful counter grapple check against a Below Mode (holds and Burden).
+
+**0.51.3:** Spells with no attack roll (Restore and Painless, Shift, Mend, Summons and Animations pools, a Mirage's Power) now scale with Strengthened/Weakened too, from the plan's stacks and from any effect on the caster with a `strengthened` value (nothing in the rules gives one yet, so this is plumbing for when something does). A crit Mirage's Power now scales with its stacks. Removed a stray `trees.mjs.orig`.
+
 **0.51.2:** Any Strengthened or Weakened stack on an attack (a crit's two, Alignment, an Area spread, Adapt, a Mod) now scales the **bolded** numbers of what it carries, not just damage.
 - **Mental:** every Manifest's stacks (crit included) scale the bolded numbers of its Mode (temp HP, healing, Lift, die sizes, escape checks, charge sizes, damage reduction and caps, Body); effects that last remember the stacks they were made with. A critical Bloom gives 120 temp HP at Power 3 instead of 60.
 - **Magic:** on a hit, a Shield's health, Slow/Haste and die-size penalties, Personal Repulsion/Well thresholds, Hold's escape check, Static, Freeze and held-spell Energy removal scale with the spell's stacks (the damage's stacks for attack-die penalties, Frostbite and Lightning Rod). Restore, Shift/Mend, Mirage and Summons resolve at the cast with no attack roll, so there is no crit to scale them.
@@ -581,13 +590,15 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 Cover, the senses table, and equipment repair. The math helpers for Force and Terminal Velocity are in `module/rules.mjs`.
 
 ## Code map
-- `module/rules.mjs`: all rules math as pure functions. Unit-tested against the Rules doc examples.
-- `module/martial.mjs`: Martial weapon and armor tables and scaling, as pure functions. Unit-tested.
-- `module/data.mjs`: actor and item data models, and the derived values.
-- `module/actions.mjs`: rolls, the attack flow, chat cards, and damage.
-- `module/sheets.mjs` and `templates/`: the ApplicationV2 sheets.
-- `module/flowstate.mjs`: init, the Actor and Combat subclasses, statuses, and chat buttons.
-- `module/mental-rules.mjs` (pure) and `module/mental.mjs`: Mental Wonders, Manifesting, Alignment, Icons and Wards.
+Pure modules (no Foundry globals, unit-tested): `rules`, `martial`, `magic`, `abilities`, `spells`, `spellfx`, `mental-rules`, `conjure-rules`, `movement-rules`, `currency-rules`, `creation`.
+
+- **Core:** `module/flowstate.mjs` (init, the Actor and Combat subclasses, settings, statuses, chat-button hooks), `module/data.mjs` (actor and item data models and derived values, speed), `module/rules.mjs` (all rules math), `module/actions.mjs` (rolls, the attack/defense/damage exchange, tree abilities, grapples, Shrouds, the GM relay), `module/sheets.mjs` and `templates/` (the ApplicationV2 sheets and the Action List), `module/energy.mjs`, `module/gravity.mjs`, `module/skills.mjs` and `module/trees.mjs` (skill trees, generated from the docs), `module/tree-scale.mjs` (scaled numbers in tree text).
+- **Martial:** `module/martial.mjs` (weapon and armor tables, materials, tags, profiles), `module/abilities.mjs` (who can use which tree ability, Energy costs).
+- **Magic:** `module/magic.mjs` (Foci, Shrouds, Affixes), `module/spells.mjs` and `module/combos.mjs` (the spell catalog, Combos, casting plans), `module/casting.mjs` (the Cast Spell dialog, Rituals), `module/spellfx.mjs` (what each spell does), `module/elemental.mjs` (Tier 2), `module/afflictions.mjs` (Tier 3), `module/conjure.mjs` and `module/conjure-rules.mjs` (Tier 4), `module/arcana.mjs` (Tier 5), `module/foci.mjs` (Affix and Deck Foci effects), `module/areas.mjs` (Area shapes and templates).
+- **Mental:** `module/mental-rules.mjs` and `module/mental.mjs` (Manifesting, Alignment, Icons and Wards, Psion Arts), `module/wonders.mjs`, `module/wonders-b.mjs` and `module/forging.mjs` (each Wonder's Modes, Tenets and abilities), `module/charges.mjs` (Order and Chaos charges), `module/mental-bold.mjs` (generated).
+- **World and movement:** `module/movement-rules.mjs` and `module/movement.mjs` (movement cost in combat), `module/terrain.mjs` (terrain regions), `module/currency-rules.mjs` and `module/currency.mjs` (currencies).
+- **Creation and tools:** `module/wizard.mjs` and `module/creation.mjs` (New Character), `module/npc-wizard.mjs` and `module/npc-creation.mjs` (New NPC), `module/pictures.mjs` (portrait picker), `module/integrations.mjs` (Carousel Combat Tracker, Token Action HUD).
+- **Dev only:** `dev/` holds the test harnesses (`npm test`), the doc snapshots in `dev/docs/` and the generators for `trees.mjs`, `combos.mjs` and `mental-bold.mjs`.
 
 Flow State © 2019 by Christopher Caplinger, CC BY 4.0.
 

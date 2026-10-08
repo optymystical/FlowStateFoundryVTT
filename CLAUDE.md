@@ -30,7 +30,7 @@ Affixes are in (Shroud side and Foci side, including Deck Foci). Magic spells: t
 all five Magic groups (T1: Magic Theory, Slashing, Piercing, Crushing, Protection Arcana, Gravity; T2: Reach Arcana, Heat,
 Cold, Radiation, Acid; T3: Grasp Arcana, Venomancy, Charm, Witchery; T4: Build Arcana, Summoning, Creation, Animation; T5:
 Restoration Arcana, Geomancy, Illusion, Arcanomancy, with all their Combos) are automated; "tier" in Magic means the group of
-trees a Magic Theory tier unlocks. Only terrain effects (Muddy/Harden) and Mixed Animations are left to the GM.
+trees a Magic Theory tier unlocks. Muddy/Harden place terrain regions (rough/difficult/cleared); only Mixed Animations are left to the GM.
 Mental is in progress (built from the Mental Rework Test Ground): the framework is in (Manifest, Alignment, Icons and Wards, Willpower Arts, Psion Arts) and the Wonders' Modes are being added Wonder by Wonder (all twelve written Wonders are in). Mental Theory, Forms/Wards and Willpower Arts are complete. Ancestries are not yet implemented.
 
 ## Layout
@@ -57,7 +57,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `module/charges.mjs` — Order/Chaos charges live on rolls: asks the charge's caster (socket) at attack/dodge/other/damage rolls and after an attack resolves (Verdict, Entropy, Balance).
 - `module/areas.mjs` — Area spells: shapes, pure geometry, template placement, Emplace card.
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
-- `module/wonders.mjs` — Mental Wonders: Mode/ability/Tenet effects (`MODES` registry), charges, pending effects; registers into `mental.mjs`/`actions.mjs`.
+- `module/movement-rules.mjs` (pure) + `module/movement.mjs`: movement cost in combat (a step is paid only when you move past it or an action settles it; forced/free moves are excluded). `module/terrain.mjs`: terrain regions (scene-control buttons, Muddy/Harden). `module/currency-rules.mjs` + `module/currency.mjs`: the world's currency list and the sheet section. `module/tree-scale.mjs`: scaled numbers in skill-tree text.
 - `module/data.mjs` — TypeDataModels (actor, weapon, armor, foci, shroud, gear, pile) and derived data.
 - `module/rules.mjs` — core rules math (stats, sizes, stacks, rolls, Force). `skills.mjs` + `trees.mjs` — skill trees
   (`trees.mjs` is GENERATED from the docs; don't hand-edit).
@@ -109,4 +109,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - Ammo: X shots per reload (weapon setting, default 1) using X ammo; 1 shot per attack; max 100 per type.
 - Token size: Size 1–5 = ¼, ½, 1, 2, 4 squares. Downed creatures are deleted from the combat tracker.
 - Speed: base = Size maximum less additive percentages (armor 20/40/60/80, Affixes past the free ones 20 each, Alignment 20 per point), nearest 5 ft, minimum 5 ft; Quicken doubles the result. Affix allowance = 1 + each attuned Foci/Shroud's Free Affixes (can be -1). Snapshots of the Rules doc are in `dev/docs/rules.md`.
+- Strengthened/Weakened stacks, from any source (a crit's two, Alignment, an Area spread, Adapt, a Mod, anything on the caster), scale the **bolded** numbers of what they carry, not only damage: Mental Modes (`bold(stacks, n)` in `mental-rules.mjs`; effects that last, Fester, charges and Tenet acts keep `bstacks`; Vice, Quicksand and Momentum are responses that use fresh Power and no stacks) and Magic spell hits (`stackBonus` in `spellHit`/`elemental.mjs`). Spells with no roll use `castStacks(actor, plan)`. Martial has no bolded numbers and is unchanged. Wards ignore Alignment 2 (only Alignment 4 Strengthens them).
+- Mental Alignment is Dream/Nightmare 1-4 (Neutral 0), set with a 1 hour activity, 20% speed a point; Fluidity (T3) swaps the type for half Skill Points × the Alignment number in Energy (0 from Neutral), Equilibrium (T4) is -1 until your next turn. Reverie needs Dream 2 (Enhanced growth: 4); Zealot negates 30 at Nightmare 2+ (Enhanced at 4 also Weakens).
+- Heavy armor has two stealth Disadvantages; Size 1 speed rounds to the nearest 5 ft.
 - Open question: Dragon Lash still doubles total Knockback (user hasn't decided vs. +5×).

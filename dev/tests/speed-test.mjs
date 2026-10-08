@@ -64,7 +64,7 @@ for (const [w, ft] of [["light", 40], ["medium", 30], ["heavy", 20], ["titanic",
 const heavyStealth = mkActor("Stealthy"); armor(heavyStealth, "heavy");
 ok2(heavyStealth.system.penalties.stealthDis === 2, "Heavy armor: two stacks of stealth Disadvantage");
 const gi = mkActor("GrayIron"); armor(gi, "titanic", "grayIron");
-ok2(speed(gi) === 5 && gi.system.movement.ap === 1 && gi.system.penalties.physicalDis === 0, "Gray Iron Titanic: speed 0% (5 ft minimum), no physical Disadvantage any more");
+ok2(speed(gi) === 5 && gi.system.movement.ap === 1 && gi.system.penalties.physicalDis === undefined, "Gray Iron Titanic: speed 0% (5 ft minimum), and the old physical Disadvantage is gone");
 const gs = mkActor("GraySteel"); armor(gs, "titanic", "graySteel");
 ok2(speed(gs) === 5 && gs.system.movement.ap === 2, "Gray Steel Titanic: speed 0% and +1 AP to move");
 const gsh = mkActor("GraySteelHeavy"); armor(gsh, "heavy", "graySteel");

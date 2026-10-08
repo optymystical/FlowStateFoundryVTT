@@ -909,7 +909,7 @@ async function act(message, i) {
 }
 export const usedActs = id => game.messages.filter(m => m.getFlag("flowstate", "mentalActDone")?.card === id).map(m => m.getFlag("flowstate", "mentalActDone").i);
 
-registerMental({ onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+registerMental({ momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });

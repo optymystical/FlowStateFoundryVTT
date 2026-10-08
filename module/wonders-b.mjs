@@ -148,7 +148,7 @@ ACTS.infuse = async (x, caster, target) => {
   const mode = R.modeById(await mental.pickMode(caster, w?.modes ?? [], "Infuse: which Mode?"));
   if (!mode) return false;
   const power = wonderPowerOf(caster, ids.dest);
-  const c = { attacker: caster, target, o: { stacks: -1 }, result: { hit: true, crit: false, critStacks: 0 }, m: { mode: mode.id, power, enhanced: false, range: "ranged", choices: {}, spread: true }, mode, power, enhanced: false, choices: {}, stacks: -1, hit: true, crit: false, now: true };
+  const c = { attacker: caster, target, o: { stacks: -1 }, result: { hit: true, crit: false, critStacks: 0 }, m: { mode: mode.id, power, enhanced: false, range: "ranged", choices: {}, spread: true }, mode, power, enhanced: false, choices: {}, stacks: -1, bs: -1, hit: true, crit: false, now: true };
   const out = await MODES[mode.id](c);
   await post(caster, { title: `${esc(caster.name)} — Infuse: ${esc(mode.name)}`, rolls: [...rolled], body: `<div class="fs-result">${out}</div>` });
   return true;
@@ -181,7 +181,7 @@ MODES["mental-peace-dream:guard"] = async c => {
 /** Benediction (Peace T4): after a Peace Mode hits, duplicate it onto other targets for free. */
 ACT_PROVIDERS.push(async c => {
   if (c.mode.wonder !== ids.peace || tier(c.attacker, ids.peace) < 4 || c.m.spread || !c.m.benediction) return [];
-  return [{ id: "benediction", label: "Benediction", tip: "Duplicate this Mode's effects onto other target(s) of the same Range, with no AP/RP and no attack roll (already paid)", cost: "paid", target: c.target.uuid, caster: c.attacker.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {} }];
+  return [{ id: "benediction", label: "Benediction", tip: "Duplicate this Mode's effects onto other target(s) of the same Range, with no AP/RP and no attack roll (already paid)", cost: "paid", target: c.target.uuid, caster: c.attacker.uuid, mode: c.mode.id, power: c.power, bstacks: c.bs ?? 0, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {} }];
 });
 ACTS.benediction = async (x, caster, target) => {
   const mode = R.modeById(x.mode);
@@ -194,7 +194,7 @@ ACTS.benediction = async (x, caster, target) => {
   }
   if (!picked.length) return false;
   for (const p of picked) {
-    const c = { attacker: caster, target: p, o: { stacks: 0 }, result: { hit: true, crit: false, critStacks: 0 }, m: { mode: mode.id, power: x.power, enhanced: x.enhanced, range: x.range, choices: x.choices, spread: true }, mode, power: x.power, enhanced: x.enhanced, choices: x.choices, stacks: 0, hit: true, crit: false, now: true };
+    const c = { attacker: caster, target: p, o: { stacks: 0 }, result: { hit: true, crit: false, critStacks: 0 }, m: { mode: mode.id, power: x.power, enhanced: x.enhanced, range: x.range, choices: x.choices, spread: true }, mode, power: x.power, enhanced: x.enhanced, choices: x.choices, stacks: x.bstacks ?? 0, bs: x.bstacks ?? 0, hit: true, crit: false, now: true };
     const out = await MODES[mode.id](c);
     await post(caster, { title: `${esc(caster.name)} — Benediction`, body: `<div class="fs-result">${typeof out === "string" ? out : out.html}</div>` });
   }
@@ -417,13 +417,13 @@ ON_CRIT.push(async c => {
 /** Ego (Perfection Tenet): once per round, on a crit, regain 5 Energy. */
 ACT_PROVIDERS.push(async c => {
   const tn = tenetOf(c.attacker);
-  return tn?.id === "mental-perfection-nightmare:ego" && c.crit && !c.m.spread ? [{ tenet: true, id: "ego", label: "Ego", tip: `Once per round, on a crit: regain ${5 * tn.mult} Energy`, cost: "once per round", mult: tn.mult, caster: c.attacker.uuid, target: c.target.uuid }] : [];
+  return tn?.id === "mental-perfection-nightmare:ego" && c.crit && !c.m.spread ? [{ tenet: true, id: "ego", label: "Ego", tip: `Once per round, on a crit: regain ${5 * tn.mult} Energy`, cost: "once per round", mult: tn.mult, bstacks: c.bs ?? c.stacks ?? 0, caster: c.attacker.uuid, target: c.target.uuid }] : [];
 });
 ACTS.ego = async (x, caster) => {
   if (!(await tryOnce(caster, "ego"))) { ui.notifications.info("Ego: already used this round."); return false; }
-  const e = caster.system.energy, n = Math.min(5 * (x.mult ?? 1), (e?.max ?? 0) - (e?.value ?? 0));
+  const e = caster.system.energy, amount = bold(x.bstacks, 5 * (x.mult ?? 1)), n = Math.min(amount, (e?.max ?? 0) - (e?.value ?? 0));
   if (n > 0) await setCond(caster, { "system.energy.value": e.value + n });
-  await post(caster, { title: `${esc(caster.name)} — Ego`, body: `<div class="fs-result">${esc(caster.name)} regains <strong>${5 * (x.mult ?? 1)}</strong> Energy.</div>` });
+  await post(caster, { title: `${esc(caster.name)} — Ego`, body: `<div class="fs-result">${esc(caster.name)} regains <strong>${amount}</strong> Energy.</div>` });
   return true;
 };
 /** Hone: a creature that was Honed makes Strengthened damage rolls. */

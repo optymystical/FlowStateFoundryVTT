@@ -79,7 +79,7 @@ async function runThen(actor, caster, then) {
   if (then.type === "reapply") {
     const mode = R.modeById(then.mode);
     const out = await resolveMode({ attacker: caster, target: actor, o: { stacks: 0 }, result: { hit: true, crit: !!then.crit, critStacks: 0 }, m: { mode: then.mode, power: then.power, enhanced: then.enhanced, range: then.range, choices: then.choices ?? {}, reapplied: true, spread: true },
-      mode, power: then.power, enhanced: then.enhanced, choices: then.choices ?? {}, stacks: 0, hit: true, crit: false, now: true });
+      mode, power: then.power, enhanced: then.enhanced, choices: then.choices ?? {}, stacks: then.stacks ?? 0, bs: then.stacks ?? 0, hit: true, crit: false, now: true });
     return post(actor, { title: `${esc(actor.name)} — ${esc(mode?.name ?? "Mode")} (Fester)`, body: `<div class="fs-result">${out.html}</div>` });
   }
 }
@@ -127,7 +127,7 @@ async function forceRoll(ctx, n, sides, label, ignoreLift = false) {
   const r = await roll(`${n}d${sides}`);
   const force = Math.floor(applyStacks(r.total, ctx.stacks));
   const feet = forceFeet(force, ctx.target, ignoreLift);
-  return { r, force, feet, html: `${label}: ${n}d${sides} = ${r.total}${ctx.stacks ? ` → ${force}` : ""} Force → up to <strong>${feet} ft</strong>${ignoreLift ? " (ignores Lift)" : ""}`, push: feet > 0 ? { attacker: ctx.attacker.uuid, target: ctx.target.uuid, force, feet, label } : null };
+  return { r, force, feet, html: `${label}: ${n}d${sides} = ${r.total}${ctx.stacks ? ` → ${force}` : ""} Force → up to <strong>${feet} ft</strong>${ignoreLift ? " (ignores Lift)" : ""}`, push: feet > 0 ? { attacker: ctx.attacker.uuid, target: ctx.target.uuid, force, feet, label, beyond: ["Herald", "Gust", "Momentum"].includes(label) } : null };
 }
 
 /* -------------------------------------------- */
@@ -276,7 +276,7 @@ const wonderOf = c => R.wonderById(c.mode.wonder);
 async function abilityActs(c) {
   const a = c.attacker, acts = [];
   const w = wonderOf(c);
-  const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit };
+  const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0 };
   const wt = tier(a, w.id);
   if (w.id === "mental-life-dream" && wt >= 2 && !c.m.spread) acts.push({ id: "pollinate", label: "Pollinate", tip: "Spread this Mode to another target within 100 ft you can sense (an attack roll)", cost: `⚡ ${Math.floor(minOf(a, "pon") / 2)}`, ...base });
   if (w.id === "mental-death-nightmare" && wt >= 2 && !c.m.reapplied) acts.push({ id: "fester", label: "Fester", tip: "The Mode's effect applies again at the start of their next turn", cost: `⚡ ${minOf(a, "snap")}`, ...base });
@@ -295,7 +295,7 @@ async function abilityActs(c) {
 /** Weight (Below Tenet): 15 Slow stacks on the target. */
 ACTS.weight = async (x, caster, target) => {
   if (!(await tryOnce(caster, "weight"))) { ui.notifications.info("Weight: already used this round."); return false; }
-  const n = 15 * (x.mult ?? 1);
+  const n = bold(x.bstacks, 15 * (x.mult ?? 1));
   const data = { "system.conditions.slow": (target.system.conditions?.slow ?? 0) + n };
   if (target.isOwner) await target.update(data); else await requestGM("updateActor", { uuid: target.uuid, data });
   await post(caster, { title: `${esc(caster.name)} — Weight`, body: `<div class="fs-result">${esc(target.name)} gets <strong>${n} Slow</strong> stacks, until the start of your next turn.</div>` });
@@ -349,7 +349,7 @@ export async function runAct(x) {
     return true;
   }
   if (x.id === "fester") {
-    await putPending(target, caster, `${mode.name} (Fester)`, { type: "reapply", mode: x.mode, power: x.power, enhanced: x.enhanced, range: x.range, choices: x.choices, crit: false });
+    await putPending(target, caster, `${mode.name} (Fester)`, { type: "reapply", mode: x.mode, power: x.power, enhanced: x.enhanced, range: x.range, choices: x.choices, crit: false, stacks: x.bstacks ?? 0 });
     await post(caster, { title: `${esc(caster.name)} — Fester`, body: `<div class="fs-result">${esc(mode.name)}'s effect applies to ${esc(target.name)} again at the start of their next turn (no attack roll).</div>` });
     return true;
   }
@@ -361,7 +361,7 @@ export async function runAct(x) {
     return true;
   }
   if (x.id === "verdantSoul") {
-    const n = 10 * x.mult;
+    const n = bold(x.bstacks, 10 * x.mult);
     const who = await mental.pickOne(caster, [target, caster], "Verdant Soul: give 10 temp HP to");
     if (!who) return false;
     await putTemp(who, caster, n, "verdant-soul");
@@ -370,14 +370,15 @@ export async function runAct(x) {
   }
   if (x.id === "mortalCoil") {
     const r = await roll(`${x.mult}d8`);
+    const took = bold(x.bstacks, r.total);
     if (!living(target)) { ui.notifications.warn("Mortal Coil needs a living target."); return false; }
-    await requestDamage(target, r.total, "supernatural", 0, null, { silent: true, bypass: true });
-    await putTemp(caster, caster, r.total, "mortal-coil");
-    await post(caster, { title: `${esc(caster.name)} — Mortal Coil`, rolls: [r], body: `<div class="fs-result">${esc(caster.name)} steals <strong>${r.total}</strong> health from ${esc(target.name)}, becoming temp HP until the start of their next turn.</div>` });
+    await requestDamage(target, took, "supernatural", 0, null, { silent: true, bypass: true });
+    await putTemp(caster, caster, took, "mortal-coil");
+    await post(caster, { title: `${esc(caster.name)} — Mortal Coil`, rolls: [r], body: `<div class="fs-result">${esc(caster.name)} steals <strong>${took}</strong> health from ${esc(target.name)}, becoming temp HP until the start of their next turn.</div>` });
     return true;
   }
   if (x.id === "gust") {
-    const f = await forceRoll({ stacks: 0, target, attacker: caster }, 5 * x.mult, 8, "Gust", false);
+    const f = await forceRoll({ stacks: x.bstacks ?? 0, target, attacker: caster }, 5 * x.mult, 8, "Gust", false);
     await post(caster, { title: `${esc(caster.name)} — Gust`, rolls: [f.r], body: `<div class="fs-result">${f.html}${f.push ? knockbackRow(caster.uuid, f.feet, "Gust") : ""}</div>`, flags: f.push ? { flowstate: { knockback: f.push } } : {} });
     return true;
   }
@@ -461,15 +462,26 @@ export async function runPerennial(x) {
 /* -------------------------------------------- */
 
 /** Momentum (Beyond T2): a creature or object you moved with a Beyond Mode collided: apply 5d8 Force again in a new direction, no attack roll. */
-export async function momentum(actor) {
+export async function momentum(actor, collided = null) {
   if (tier(actor, "mental-beyond-dream") < 2) return;
   const power = Math.max(1, R.wonderPower(eff(actor, "pon")));
-  const target = [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.type !== "pile") ?? await mental.pickAnother(actor, { title: "Momentum: the one that collided", within: Infinity, anchors: [] });
+  const target = collided ?? [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.type !== "pile") ?? await mental.pickAnother(actor, { title: "Momentum: the one that collided", within: Infinity, anchors: [] });
   if (!target) return;
   if (!(await mental.pay(actor, { energy: minOf(actor, "pon") }, "Momentum"))) return;
   const f = await forceRoll({ stacks: 0, target, attacker: actor }, 5 * power, 8, "Momentum", false);
   await post(actor, { title: `${esc(actor.name)} — Momentum`, rolls: [f.r], body: `<div class="fs-result">${esc(target.name)}: ${f.html}${f.push ? knockbackRow(actor.uuid, f.feet, "Momentum") : ""} <small>(Momentum can chain with itself)</small></div>`, flags: f.push ? { flowstate: { knockback: f.push } } : {} });
 }
+
+/**
+ * A creature you moved with a Beyond Mode (Herald, Gust, Momentum itself) collided with a wall, a barrier, the ground or another creature: Momentum is offered
+ * on a card for the caster, the way Vice is when a Below Mode's counter grapple check fails. No stacks apply: it is a response, not part of the Manifest.
+ */
+export async function momentumOffer(caster, collided) {
+  if (!caster || !collided || tier(caster, "mental-beyond-dream") < 2) return;
+  const acts = [{ id: "momentumNow", label: `Momentum on ${collided.name}`, tip: "5d8 Force × Power on the one that collided, in a new direction (no attack roll; it can chain)", cost: `⚡ ${minOf(caster, "pon")}`, caster: caster.uuid, target: collided.uuid }];
+  await post(caster, { title: `${esc(caster.name)} — Beyond`, body: `<div class="fs-notes">${esc(collided.name)} collided after being moved by your Beyond Mode.</div>${actButtons(acts)}`, flags: { flowstate: { mentalAct: { acts } } } });
+}
+ACTS.momentumNow = async (x, caster, target) => { await momentum(caster, target); return true; };
 
 /** Redirect (Beyond T3): spend a stored charge against an attack that hit within its range: an attack roll against that attack's result. */
 export async function useRedirect(actor) {
@@ -621,7 +633,7 @@ export async function balance(actor) {
 export function chargeActs(c) {
   const a = c.attacker, acts = [];
   const w = R.wonderById(c.mode.wonder);
-  const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit };
+  const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0 };
   if (w.id === "mental-chaos-nightmare" && tier(a, w.id) >= 2 && !c.m.spread) acts.push({ id: "ricochet", label: "Ricochet", tip: "Place a copy of this charge on a random valid target within range", cost: `⚡ ${Math.floor(minOf(a, "snap") / 2)}`, ...base });
   const tn = tenetOf(a);
   if (tn?.id === "mental-chaos-nightmare:unbound" && c.crit && !c.m.spread) acts.push({ tenet: true, id: "unbound", label: "Unbound", tip: "Once per round, on a crit: place a Chaos charge of your choice on the target for free", cost: "free, once per round", ...base });
@@ -640,7 +652,7 @@ export async function runChargeAct(x, caster, target) {
     if (!(await mental.pay(caster, { energy: cost }, "Ricochet"))) return false;
     const pick = pool[Math.floor(Math.random() * pool.length)].actor;
     const kind = CHARGE_MODES[x.mode];
-    await placeCharge({ caster, target: pick, kind, power: x.power, enhanced: x.enhanced, choices: x.choices, mode: x.mode });
+    await placeCharge({ caster, target: pick, kind, power: x.power, bstacks: x.bstacks ?? 0, enhanced: x.enhanced, choices: x.choices, mode: x.mode });
     await post(caster, { title: `${esc(caster.name)} — Ricochet`, body: `<div class="fs-result">A copy of the ${CHARGES[kind].label} charge lands on <strong>${esc(pick.name)}</strong>.</div>` });
     return true;
   }
@@ -651,7 +663,7 @@ export async function runChargeAct(x, caster, target) {
     const id = await mental.pickMode(caster, charges, "Unbound: place a Chaos charge");
     if (!id) return false;
     const kind = CHARGE_MODES[id];
-    await placeCharge({ caster, target, kind, power: x.power, enhanced: false, choices: x.choices ?? {}, mode: id });
+    await placeCharge({ caster, target, kind, power: x.power, bstacks: x.bstacks ?? 0, enhanced: false, choices: x.choices ?? {}, mode: id });
     await post(caster, { title: `${esc(caster.name)} — Unbound`, body: `<div class="fs-result">A free ${CHARGES[kind].label} charge goes on ${esc(target.name)}.</div>` });
     return true;
   }

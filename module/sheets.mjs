@@ -1251,7 +1251,7 @@ function affixContext(sys, p) {
   }));
   const current = sys.affixes ?? [];
   // Affixes cost speed rather than slots: always one empty row to add another, up to the most one item holds.
-  const slots = Array.from({ length: Math.min(p.affixSlots ?? 0, current.filter(Boolean).length + 1) }, (_, i) => ({ n: i + 1, value: current[i] ?? "", info: AFFIXES[current[i]] ?? null }));
+  const slots = Array.from({ length: Math.min(p.affixLimit ?? 0, current.filter(Boolean).length + 1) }, (_, i) => ({ n: i + 1, value: current[i] ?? "", info: AFFIXES[current[i]] ?? null }));
   const doubledChoices = Object.fromEntries((p.affixes ?? []).map(k => [k, AFFIXES[k]?.label ?? k]));
   return { affixChoices: choices, slots, doubledChoices, hasTourmaline: p.affixes?.includes("tourmaline"), elements: ELEMENTS };
 }

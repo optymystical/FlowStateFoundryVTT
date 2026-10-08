@@ -7,7 +7,7 @@ import * as fx from "./spellfx.mjs";
 import { COMBO_ILLUSION } from "./combos.mjs";
 import {
   post, requestGM, putSpellEffect, spellEffects, performAttack, changeEffect, registerArcana, attackerToken, tokenDistance, setActorFlag, pickSceneTarget, spendPoints,
-  requestDamage, GM_ACTIONS, damageOutcome, findDefense, findCancel
+  requestDamage, GM_ACTIONS, damageOutcome, findDefense, findCancel, castStacks
 } from "./actions.mjs";
 import * as areas from "./areas.mjs";
 import * as terrain from "./terrain.mjs";
@@ -67,7 +67,7 @@ export async function prompt({ actor, plan, profile, mods, values, targets }) {
     return { target: t.uuid };
   }
   if (k === "shift") {
-    const max = fx.shiftBody(profile.arcana.body, plan.power);
+    const max = applyStacks(fx.shiftBody(profile.arcana.body, plan.power), castStacks(actor, plan));
     if (values?.arcanaSpec) return { ...values.arcanaSpec, body: Math.min(max, Math.max(1, Math.floor(Number(values.arcanaSpec.body) || max))), max };
     const spec = { body: max, muddy: "difficult", harden: "strong", item: "" };
     if (!mods.mend && !mods.muddy && !mods.harden) return { ...spec, max };
@@ -115,17 +115,18 @@ async function restore({ actor, plan, profile, spec, mods, targets, ritualOf }) 
   const painless = plan.applied.find(a => a.mod.name === "Painless");
   const replaced = !!painless?.replace;
   const power = plan.power;
+  const st = castStacks(actor, plan);                 // Strengthened/Weakened scales the bolded numbers (there is no roll to carry a crit)
   const lines = [];
   const dead = t.statuses?.has("dead");
   if (painless) {
-    const down = 3 * power * (replaced ? 2 : 1);
+    const down = applyStacks(3 * power * (replaced ? 2 : 1), st);
     await putSpellEffect(t, { kind: "painless", caster: actor.uuid, ritualOf: replaced && plan.t3Free ? ritualOf : null, name: `Painless (−${down} Pain Threshold)`, painDown: down,
       description: `Pain Threshold lowered by ${down}${replaced && plan.t3Free ? " until the Ritual ends" : " until the start of the caster's next turn"}.` });
     lines.push(`${esc(t.name)}'s Pain Threshold is lowered by <strong>${down}</strong>.`);
     await reevaluate(t);
   }
   if (!replaced) {
-    const rawBase = fx.restoreAmount(profile.arcana.heal, power);
+    const rawBase = applyStacks(fx.restoreAmount(profile.arcana.heal, power), st);
     const cut = healingDown(t), raw = Math.max(0, rawBase - cut);
     if (cut) lines.push(`Irradiated: healing is reduced by ${cut} (${rawBase} → ${raw}).`);
     const hp = t.system.hp.value, max = t.system.hp.max;
@@ -153,7 +154,7 @@ async function shift({ actor, plan, profile, spec, mods, targets, ritualOf = nul
   const tierUp = (mods["tier up"] ?? 0) > 0 ? 2 : 0, again = (mods["tier up, again"] ?? 0) > 0 && tierUp ? 4 : 0;
   if (mods.mend) {
     const item = spec.item ? await fromUuid(spec.item) : null;
-    const amount = 5 * plan.power;
+    const amount = applyStacks(5 * plan.power, castStacks(actor, plan));
     if (!item) { await post(actor, { title: `${esc(actor.name)} — Mend`, body: `<div class="fs-result">Mend restores ${amount} Durability to an object: nothing damaged was chosen.</div>` }); return true; }
     const free = !!plan.freeFrom;
     if (item.system.durability?.value <= 0 && !free) { ui.notifications.warn(`${item.name} is broken: only a Ritual can Mend it.`); }
@@ -162,7 +163,7 @@ async function shift({ actor, plan, profile, spec, mods, targets, ritualOf = nul
     await post(actor, { title: `${esc(actor.name)} — Mend`, body: `<div class="fs-result"><i class="fa-solid fa-hammer"></i> ${esc(item.name)} regains <strong>${back}</strong> Durability (up to ${amount}).</div><div class="fs-notes">Rarity and density limits apply; only damage dealt since the start of your last turn counts (a Ritual: any, even broken).</div>` });
     return true;
   }
-  const body = spec.body ?? spec.max ?? fx.shiftBody(a.body, plan.power);
+  const body = spec.body ?? spec.max ?? applyStacks(fx.shiftBody(a.body, plan.power), castStacks(actor, plan));
   const sides = (mods.toss ? 6 : 4) + tierUp + again;
   const n = Math.floor(body / 2);
   const type = a.arcane ? "arcane" : "physical";
@@ -201,7 +202,8 @@ export async function mirageHit({ attacker, target, o, result, profile }) {
   const sp = o.spell, a = profile.arcana, m = sp.mods ?? {}, ch = sp.arcana ?? {};
   const out = { html: "", rolls: [] };
   if (sp.ritualFree) { const r = Array.from(attacker.effects ?? []).find(e => e.id === sp.ritualFree); if (r) await r.update({ "flags.flowstate.ritual.freeCasts": 0 }); }
-  const power = a.power * Math.max(1, sp.power);
+  // Every Strengthened/Weakened stack on the Mirage (a crit, a Mod, anything on the caster) scales its Power.
+  const power = applyStacks(a.power * Math.max(1, sp.power), (o.stacks ?? 0) + (result.critStacks ?? 0) + castStacks(attacker, sp));
   const slug = a.chart ? a.chart.split(":")[0].replace("magic-", "") : null;
   const chartText = a.chart === "magic-arcanomancy:strike" ? "The target believes their Magic has ultimately failed them: all their Magical attacks are at Disadvantage and Weakened, and prompt a Power check on cast."
     : slug ? COMBO_ILLUSION[slug === "witchery" ? "hex" : slug] : null;

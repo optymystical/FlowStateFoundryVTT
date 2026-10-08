@@ -7,7 +7,7 @@ const rolls = [];
 globalThis.Roll = class { constructor(f) { this.formula = f; } async evaluate() { this.total = 7; rolls.push(this.formula); return this; } async render() { return ""; } };
 globalThis.ChatMessage = { getSpeaker: () => ({}), create: async d => d };
 const actions = await import("../../module/actions.mjs");
-const actor = { name: "A", uuid: "A", statuses: new Set(), system: { exhausted: false, penalties: { physicalDis: 0 }, derived: { dodgeDie: 15, attackDie: 30 } } };
+const actor = { name: "A", uuid: "A", statuses: new Set(), system: { exhausted: false, derived: { dodgeDie: 15, attackDie: 30 } } };
 await actions.rollDodge(actor); await actions.rollAttackCheck(actor);
 console.log("off: dialogs", dialogs, "rolls", rolls.splice(0));
 custom = true; dialogs = 0;

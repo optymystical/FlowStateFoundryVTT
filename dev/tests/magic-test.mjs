@@ -61,7 +61,7 @@ console.log("== Profiles");
 let p = M.fociProfile({ fociType: "staff", grade: 3, affixes: ["quartz", "agate"] }, { reach: 40, grasp: 25 });
 ok2(p.valid && p.durability === 90 && p.limit === 18 && p.scalingStat === "grasp" && p.scaling === 25 && p.castAP === "2" && p.freeAffixes === 0 && p.twoHandCast, "Staff: Igniter, base × Grade, Grasp, no extra Free Affixes");
 p = M.fociProfile({ fociType: "band", grade: 2 }, { reach: 12, grasp: 30 });
-ok2(p.scalingStat === "reach" && p.scaling === 12 && p.affixPlus && p.tr === null, "Band: Multi uses the lesser stat, 1+ Affix");
+ok2(p.scalingStat === "reach" && p.scaling === 12 && p.doubles && p.tr === null, "Band: Multi uses the lesser stat, 1+ Affix");
 p = M.shroudProfile({ shroudType: "bastion", grade: 3, affixes: [] }, 25);
 ok2(p.durability === 100 && p.limit === 20 && p.mult === 2, "Bastion: ×floor(Build/10) Grade-capped");
 p = M.shroudProfile({ shroudType: "aegis", grade: 5 }, 50);

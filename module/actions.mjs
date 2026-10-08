@@ -1438,7 +1438,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
+  "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -3926,12 +3926,12 @@ export async function knockback(message) {
     return performAttack(attacker, {
       label: `${info.label ?? "Knockback"}: ${target.name} into ${aimAt.name}`, net: 0, melee: false,
       damage: "", type: "physical", stacks: 0, physical: false, shots: 1,
-      throwGrappled: target.uuid, throwForce: info.force, knockInto: true, knockbackOf: message.id, crunch: !!opts.crunch,
+      throwGrappled: target.uuid, throwForce: info.force, knockInto: true, knockbackOf: message.id, crunch: !!opts.crunch, momentum: !!info.beyond,
       notes: [`${target.name} is knocked at ${aimAt.name} (Force ${info.force}, ${feet} ft${opts.crunch ? ", Crunch Time" : ""})`], targetActors: [aimAt]
     });
   }
-  let body;
-  if (opts.dir === "down") body = await slamDown(target, feet);
+  let body, collided = false;
+  if (opts.dir === "down") { body = await slamDown(target, feet); collided = true; }
   else {
     let dir;
     if (opts.dir === "away") {
@@ -3944,10 +3944,13 @@ export async function knockback(message) {
     }
     const flight = await flyThrown(target, dir, feet);
     body = await flightHTML(target, flight, feet);
+    collided = !!(flight.wall || (flight.events ?? []).length);
   }
   await flyerPushed(target, feet, info.label ?? "Knockback");
   await post(attacker, { title: `${info.label ?? "Knockback"} — ${esc(target.name)}`, body: `<div class="fs-notes">Force ${info.force}${opts.crunch ? ` · Crunch Time (${ab.STRENGTH_COST.crunchTime(attacker)} Energy): matched against current HP` : ""}</div>${body}`,
     flags: { flowstate: { knockbackOf: message.id } } });
+  // Momentum (Beyond T2): a creature moved by a Beyond Mode collided: the caster is offered it.
+  if (info.beyond && collided) await mentalHook?.momentumOffer?.(attacker, target);
 }
 
 /** Compass directions for throws without a target (screen space: +y is down). */
@@ -4521,6 +4524,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     const thrown = await fromUuid(o.throwGrappled);
     const out = await resolveGrappleThrow(attacker, thrown, target, result.hit, o.throwForce, { release: !o.knockInto && !o.slamGrappled, crunch: !!o.crunch, slam: !!o.slamGrappled });
     extra.push(out);
+    if (o.momentum && result.hit) setTimeout(() => mentalHook?.momentumOffer?.(attacker, thrown), 0);        // Momentum (Beyond): the creature you knocked into another collided
   } else if (result.hit && o.grapple) {
     await setGrapple(target, attack.attacker);
     extra.push(`<div class="fs-result"><strong>${esc(target.name)} is grappled</strong> by ${esc(attacker.name)}.</div>`);

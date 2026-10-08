@@ -511,6 +511,11 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.51.4:** More Mental follow-ups now carry the stacks of the Manifest that caused them, so a crit doubles their bolded numbers:
+- **Fester**'s re-application at the start of their turn, **Unbound** and **Ricochet** charges, **Benediction**'s copies, **Infuse** (its own Weakened now scales the Mode's numbers), and the Tenets that fire on a Manifest hit: **Verdant Soul**, **Mortal Coil**, **Weight**, **Gust** (its Force too), and **Ego** (on a crit it always doubles).
+- **Momentum** (Beyond T2) is now offered automatically, on a card, whenever a creature moved by Herald, Gust or Momentum collides (a wall, an Emplace barrier, the ground, or another creature it was knocked into), like Vice after a failed counter grapple check. It uses fresh Power and no stacks; you can still use the Action List row for a collision the system didn't see.
+- Vice and Quicksand already come up after every failed or successful counter grapple check against a Below Mode (holds and Burden).
+
 **0.51.3:** Spells with no attack roll (Restore and Painless, Shift, Mend, Summons and Animations pools, a Mirage's Power) now scale with Strengthened/Weakened too, from the plan's stacks and from any effect on the caster with a `strengthened` value (nothing in the rules gives one yet, so this is plumbing for when something does). A crit Mirage's Power now scales with its stacks. Removed a stray `trees.mjs.orig`.
 
 **0.51.2:** Any Strengthened or Weakened stack on an attack (a crit's two, Alignment, an Area spread, Adapt, a Mod) now scales the **bolded** numbers of what it carries, not just damage.

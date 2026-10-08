@@ -335,7 +335,7 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
   if (adaptStack) notes.push("Adapt: an Adaptation stack makes this Manifest Strengthened");
   // Some Modes need no attack roll (Redirect stores a charge on you).
   if (NO_ATTACK.has(plan.mode.id)) {
-    const out = await wonders.resolveMode({ attacker: actor, target: actor, o: { stacks: 0 }, result: { hit: true }, m: mental, bs: plan.alignStacks, mode: plan.mode, power: plan.power, enhanced: plan.enhance, choices: plan.choices, range: plan.range, stacks: 0, hit: true, crit: false, text: plan.text });
+    const out = await wonders.resolveMode({ attacker: actor, target: actor, o: { stacks: 0 }, result: { hit: true }, m: mental, bs: plan.alignStacks + plan.extraStacks + adaptStack, mode: plan.mode, power: plan.power, enhanced: plan.enhance, choices: plan.choices, range: plan.range, stacks: 0, hit: true, crit: false, text: plan.text });
     await post(actor, { title: `${esc(actor.name)} — ${esc(plan.mode.name)}`, rolls: out.rolls, body: `<div class="fs-result">${out.html}</div>` });
     return true;
   }
@@ -508,7 +508,8 @@ async function growReverie(attacker, grade) {
 /** A Manifest's Mode lands (the first time, or after a Chant reroll): apply it and build the card. */
 async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0, attackMessage = null, shattered = false }) {
   const c = { attacker, target, o, result, m, mode, power: m.power, enhanced: m.enhanced, choices: m.choices ?? {}, range: m.range, text: m.text, hit, margin, crit: hit && !!result.crit, index,
-    stacks: stacksBase + (hit ? (result.critStacks ?? 0) : 0), bs: m.alignStacks ?? 0, now: !!m.spread };
+    stacks: stacksBase + (hit ? (result.critStacks ?? 0) : 0), now: !!m.spread };
+  c.bs = c.stacks;                                    // every Strengthened/Weakened stack on the Manifest (a crit, an Area, Alignment, Adapt...) scales its bolded effects
   // Brace, Dip, Shatter and parrying weapons guard against this attack like any other Melee or Ranged one: a damaging Mode asks for the guard (once).
   let guardP = null;
   c.guardOf = () => (guardP ??= attackGuard(attacker, target, o, attackMessage, index, { hit, shattered }));

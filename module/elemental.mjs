@@ -56,6 +56,7 @@ export async function onHit(ctx) {
   const { attacker, target, o, entry, profile } = ctx;
   const sp = o.spell, m = sp.mods ?? {}, power = sp.power;
   const html = [], rolls = [];
+  const stackBonus = (o.stacks ?? 0) + (ctx.result?.critStacks ?? 0);          // every Strengthened/Weakened stack scales the bolded numbers
   const dealt = sp.hold ? sp.holdRoll ?? 0 : 0;
   let stackAmount = 0, chain = null;
   for (const e of profile.effects ?? []) {
@@ -65,7 +66,7 @@ export async function onHit(ctx) {
       if (e.stack.crushAcid) amount = fx.crushAcidStacks(entry?.total ?? 0, ctx.dodgeTotal ?? 0);
       else if (e.stack.dice) { const r = await roll(`${e.stack.dice[0] * power}d${e.stack.dice[1]}`); rolls.push(r); amount = r.total; }
       else amount = fx.amountSpec(e.stack, dealt, power);
-      amount = applyStacks(amount, (o.stacks ?? 0) + (ctx.result?.critStacks ?? 0));
+      amount = applyStacks(amount, stackBonus);
       const kind = fx.stainKindFor(e.stack.kind, m);
       stackAmount = amount;
       const line = await giveStacks(target, kind, amount, { first: e.stack.where === "first" || !!sp.hold, caster: attacker });
@@ -73,7 +74,7 @@ export async function onHit(ctx) {
       if (kind === "stain" || kind === "solid") await trackStain(target, attacker, amount);
     }
     if (e.energy && sp.hold && !e.energy.sameAsStacks) {
-      const r = await removeEnergy(target, fx.amountSpec(e.energy, dealt, power));
+      const r = await removeEnergy(target, applyStacks(fx.amountSpec(e.energy, dealt, power), stackBonus));
       html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${r.removed} Energy</strong> (${r.remaining} left).</div>`);
     }
     if (e.chain && !profile.damage && !sp.hold) chain = { adv: e.chain.adv, force: !!e.chain.force };
@@ -92,14 +93,15 @@ export async function onHit(ctx) {
     if (e.heatRad) {
       const r = await roll(`${e.heatRad.dice[0] * power}d${e.heatRad.dice[1]}`);
       rolls.push(r);
-      await putSpellEffect(target, { kind: "heatRad", caster: attacker.uuid, name: `Static (${r.total} Ignite)`, amount: r.total,
-        description: `Gets ${r.total} Ignite stacks whenever another target takes heat or radiation damage from ${attacker.name}'s spells, until the start of their next turn.` });
-      html.push(`<div class="fs-result">${esc(target.name)} is charged: <strong>${r.total} Ignite</strong> whenever another target takes heat or radiation damage from your spells (until your next turn).</div>`);
+      const st = applyStacks(r.total, stackBonus);
+      await putSpellEffect(target, { kind: "heatRad", caster: attacker.uuid, name: `Static (${st} Ignite)`, amount: st,
+        description: `Gets ${st} Ignite stacks whenever another target takes heat or radiation damage from ${attacker.name}'s spells, until the start of their next turn.` });
+      html.push(`<div class="fs-result">${esc(target.name)} is charged: <strong>${st} Ignite</strong> whenever another target takes heat or radiation damage from your spells (until your next turn).</div>`);
     }
   }
   // Freeze (Cold T4): the next time they'd restore Energy they restore less and take that much cold damage.
   if (m.freeze) {
-    const amount = 3 * power;
+    const amount = applyStacks(3 * power, stackBonus);
     await putSpellEffect(target, { kind: "freeze", caster: attacker.uuid, name: `Freeze (${amount})`, amount,
       description: `The next time they would restore Energy they restore ${amount} less and take that much cold damage.`, stack: true });
     html.push(`<div class="fs-notes">Freeze: the next time ${esc(target.name)} restores Energy, ${amount} less and ${amount} cold damage.</div>`);
@@ -171,6 +173,7 @@ export async function afterDamage(ctx) {
   const { o, attacker, target, outcome, dealt, type, profile, facts } = ctx;
   const sp = o.spell, m = sp.mods ?? {}, power = sp.power;
   const html = [], rolls = [];
+  const st = ctx.stacks ?? 0;                                                  // the damage's Strengthened/Weakened stacks scale the bolded numbers
   let kb = null, chain = null;
   const c0 = target.system.conditions ?? {};
   const ignitedBefore = igniteTotal(c0);
@@ -202,7 +205,7 @@ export async function afterDamage(ctx) {
     }
     if (e.energy) {
       let amount = fx.amountSpec(e.energy, dealt, power);
-      if (m.frostbite) { const r = await roll(`${m.frostbite * power}d12`); rolls.push(r); amount += r.total; html.push(`<div class="fs-notes">Frostbite: +${r.total} Energy removed (${m.frostbite * power}d12)</div>`); }
+      if (m.frostbite) { const r = await roll(`${m.frostbite * power}d12`); rolls.push(r); const fb = applyStacks(r.total, st); amount += fb; html.push(`<div class="fs-notes">Frostbite: +${fb} Energy removed (${m.frostbite * power}d12 = ${r.total})</div>`); }
       energyRemovedAmount = amount;
       const r = await removeEnergy(target, amount);
       f.energyZeroAfter = r.remaining <= 0;
@@ -244,7 +247,7 @@ export async function afterDamage(ctx) {
   // Lightning Rod (Radiation T3): the primary target takes 1d10 radiation whenever another target takes damage from this spell.
   if (m["lightning rod"] && sp.chain?.primary && sp.chain.primary !== target.uuid) {
     const primary = await fromUuid(sp.chain.primary);
-    if (primary) { const r = await roll(`${power}d10`); rolls.push(r); html.push(`<div class="fs-notes">Lightning Rod: ${esc(primary.name)} takes ${r.total} radiation.</div>`); html.push(await dealDamage(primary, r.total, "radiation")); }
+    if (primary) { const r = await roll(`${power}d10`); rolls.push(r); const lr = applyStacks(r.total, st); html.push(`<div class="fs-notes">Lightning Rod: ${esc(primary.name)} takes ${lr} radiation.</div>`); html.push(await dealDamage(primary, lr, "radiation")); }
   }
   // Per-turn counters (Cook, Electrify) and Heat + Crackle's static.
   if (type === "heat") await bump(attacker, "heatDealt", target.uuid);

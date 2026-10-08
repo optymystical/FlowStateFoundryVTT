@@ -3740,10 +3740,13 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   let push = null, chain = null;
   const caster = attacker.uuid;
   const ritualOf = sp.ritualOf ?? null;
+  // Every Strengthened/Weakened stack on the spell (a crit, a Mod, Alignment...) scales its bolded numbers: health, die sizes, thresholds, stacks.
+  const stackBonus = (o.stacks ?? 0) + (result.critStacks ?? 0);
+  const bold = n => applyStacks(n, stackBonus);
   if (profile.shield) {
     const m = sp.mods ?? {};
     // Layered (Build Arcana T1): a Shield isn't default Spell health, so it gains your Build per Layered.
-    const hp = fx.shieldHealth(profile, sp.power) + (m.layered ?? 0) * Math.max(0, attacker.system?.derived?.effective?.build?.value ?? 0);
+    const hp = bold(fx.shieldHealth(profile, sp.power)) + (m.layered ?? 0) * Math.max(0, attacker.system?.derived?.effective?.build?.value ?? 0);
     // A Shield doesn't stack with itself: a target keeps one Shield (from any caster), the one with more health left; a weaker new one is wasted.
     const standing = spellEffects(target, "shield");
     const best = standing.reduce((m, e) => Math.max(m, Number(e.flags.flowstate.spellEffect.hp) || 0), 0);
@@ -3757,6 +3760,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
     }
   }
   const pen = fx.diePenalties(profile, sp.power, { direct: false });
+  pen.dodge = pen.dodge ? bold(pen.dodge) : 0;
   if (pen.dodge) {
     await putSpellEffect(target, { kind: "dodgeDie", caster, name: `Dodge −${pen.dodge} die size`, dodgeDie: pen.dodge, ritualOf,
       description: `Dodge dice are ${pen.dodge} sizes smaller until the start of the caster's next turn (doesn't stack).` });
@@ -3764,7 +3768,6 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   }
   // Gravity Mods (the base effect may be replaced, which doubles the Mod): Slow/Haste stacks, personal fields, Hold.
   const m = sp.mods ?? {}, rp = sp.replaced ?? {};
-  const stackBonus = (o.stacks ?? 0) + (result.critStacks ?? 0);
   const conditionStacks = async (kind, label, name) => {
     const n = applyStacks(20 * sp.power * fx.replaceFactor(rp, name), stackBonus);
     const cur = target.system.conditions?.[kind] ?? 0;
@@ -3776,7 +3779,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   if (m.lighten) await conditionStacks("haste", "Haste", "lighten");
   for (const [key, mode, label] of [["personal repulsion", "repulse", "Personal Repulsion"], ["personal well", "well", "Personal Well"]]) {
     if (!m[key]) continue;
-    const threshold = 20 * sp.power * fx.replaceFactor(rp, key);
+    const threshold = bold(20 * sp.power * fx.replaceFactor(rp, key));
     await putSpellEffect(target, { kind: "field", mode, caster, name: `${label} (≤ ${threshold})`, threshold, ritualOf,
       description: `Incoming attacks with a Scaling Stat of ${threshold} or less have ${mode === "well" ? "Advantage" : "Disadvantage"} on their attack rolls, until the start of the caster's next turn.` });
     html.push(`<div class="fs-result">${esc(target.name)} has a ${label}: attacks with a Scaling Stat of <strong>${threshold}</strong> or less against them have ${mode === "well" ? "Advantage" : "Disadvantage"} until the start of your next turn.</div>`);
@@ -3790,7 +3793,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
       await requestDamage(target, applyStacks(roll.total, stackBonus), "physical", 0, null, { silent: false });
     } else {
       const size = target.system.size ?? 3;
-      const min = Math.max(1, Math.floor(3 * sp.power * mult * Math.pow(2, 3 - size)));
+      const min = Math.max(1, bold(Math.floor(3 * sp.power * mult * Math.pow(2, 3 - size))));
       await setGrapple(target, attacker.uuid);
       await putSpellEffect(target, { kind: "hold", caster, name: `Held by ${esc(attacker.name)} (≥ ${min})`, holdMin: min, ritualOf,
         description: `Magically held: breaking free needs a roll of ${min} or more. Ends at the start of the caster's next turn.` });
@@ -4977,10 +4980,11 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     if (elem) {
       spellHTML += await elem.beforeApply({ attacker, target, o, baseTotal: base.totals.reduce((a, b) => a + b, 0) + flat });
       // `dealt`: Shatter, Brace, Dip, Wonders and Wards all take it down before Stains, Energy loss and the like are worked out.
-      const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: Math.min(line.final, incoming), type, profile, facts: spellFacts ?? {}, dmgOpts });
+      const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: Math.min(line.final, incoming), type, profile, facts: spellFacts ?? {}, dmgOpts, stacks });
       spellHTML += er.html; spellRolls.push(...er.rolls); if (er.kb) kb = er.kb; chainFlag = er.chain;
     }
     const pen = fx.diePenalties(profile, o.spell.power, { direct });
+    if (pen.attack) pen.attack = applyStacks(pen.attack, stacks);        // scaled by every Strengthened/Weakened stack on the damage
     if (pen.attack) {
       await putSpellEffect(target, { kind: "attackDie", caster: attacker.uuid, name: `Attack −${pen.attack} die size`, attackDie: pen.attack, ritualOf: o.spell.ritualOf ?? null,
         description: `Attack dice are ${pen.attack} sizes smaller until the start of the caster's next turn (doesn't stack).` });

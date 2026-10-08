@@ -96,10 +96,11 @@ const flag = (a, k) => a.getFlag("flowstate", k);
 const effs = (a, k) => a.effects.filter(e => e.flags.flowstate.spellEffect?.kind === k);
 const clearAll = a => { a.effects.splice(0, a.effects.length); a.system.prepareDerivedData(); };
 /** Manifest at the Orc, it fails to dodge: returns the defense card. */
+let dodgeRoll = 12;   // a hit but not a crit (a crit is double the dodge result)
 async function hit(mode, extra = {}, atk = 20) {
   refresh(); target(orc); seq = [atk];
   await M.manifest(hero, { mode, range: "ranged", ...extra });
-  seq = [2]; await actions.defend(lastAtk(), 0, "dodge");
+  seq = [dodgeRoll]; await actions.defend(lastAtk(), 0, "dodge");
   return messages.filter(m => m.flags?.flowstate?.defense).at(-1);
 }
 const reset = () => { clearAll(orc); clearAll(hero); orc.system.hp.value = 432; orc.system.hp.lost = 0; orc.system.conditions = { ignite: 0, stain: 0, slow: 0, haste: 0, solid: 0, searing: 0, frozen: 0, electric: 0 }; for (const k of Object.keys(orc.flags)) delete orc.flags[k]; orc.system.lift = 0; orc.system.prepareDerivedData?.(); };
@@ -134,6 +135,14 @@ reset(); messages.length = 0;
 card = await hit("mental-life-dream:bloom");
 const acts = messages.find(m => m.flags?.flowstate?.mentalAct)?.flags.flowstate.mentalAct.acts ?? [];
 ok2(acts.some(a => a.id === "pollinate"), "Life T2: Pollinate is offered after a hit");
+
+console.log("== Any Strengthened stack scales bolded effects (a crit is doubly Strengthened)");
+reset(); dodgeRoll = 2;
+await hit("mental-life-dream:bloom");
+ok2(effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === 120, "A critical Bloom: 60 temp HP doubly Strengthened → 120");
+reset(); await hit("mental-below-nightmare:sink");
+ok2(effs(orc, "hold")[0]?.flags.flowstate.spellEffect.holdMin === 12, "…a critical Sink: the escape check 6 → 12");
+dodgeRoll = 12;
 
 console.log("== Alignment 2 scales the bolded effects of Modes");
 const setAlign = (kind, level) => { hero.flags.flowstate = { ...(hero.flags.flowstate ?? {}), alignment: kind ? { kind, level } : null }; };

@@ -96,10 +96,11 @@ const flag = (a, k) => a.getFlag("flowstate", k);
 const effs = (a, k) => a.effects.filter(e => e.flags.flowstate.spellEffect?.kind === k);
 const clearAll = a => { a.effects.splice(0, a.effects.length); a.system.prepareDerivedData(); };
 /** Manifest at the Orc, it fails to dodge: returns the defense card. */
+let dodgeRoll = 12;   // a hit but not a crit (a crit is double the dodge result)
 async function hit(mode, extra = {}, atk = 20) {
   refresh(); target(orc); seq = [atk];
   await M.manifest(hero, { mode, range: "ranged", ...extra });
-  seq = [2]; await actions.defend(lastAtk(), 0, "dodge");
+  seq = [dodgeRoll]; await actions.defend(lastAtk(), 0, "dodge");
   return messages.filter(m => m.flags?.flowstate?.defense).at(-1);
 }
 const reset = () => { clearAll(orc); clearAll(hero); orc.system.hp.value = 432; orc.system.hp.lost = 0; orc.system.conditions = { ignite: 0, stain: 0, slow: 0, haste: 0, solid: 0, searing: 0, frozen: 0, electric: 0 }; for (const k of Object.keys(orc.flags)) delete orc.flags[k]; orc.system.lift = 0; orc.system.prepareDerivedData?.(); };

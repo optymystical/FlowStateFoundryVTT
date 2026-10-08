@@ -133,8 +133,6 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       && this.armor?.system.weight === "medium";
     this.penalties = {
       stealthDis: careful ? 0 : penalties.stealthDis,
-      physicalDis: 0,
-      physicalWeakened: 0
     };
 
     const statuses = this.parent?.statuses ?? new Set();

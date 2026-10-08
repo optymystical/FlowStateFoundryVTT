@@ -130,7 +130,7 @@ export function fociProfile(sys, stats = {}) {
     tr: t.tr ?? form.tr,
     durability: t.dur * grade,
     limit: t.limit * grade,
-    affixSlots: AFFIX_LIMIT, freeAffixes: t.free, affixPlus: !!t.plus, doubled, affixes,
+    affixLimit: AFFIX_LIMIT, freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
     twoHandCast: !!t.twoHandCast, deck: !!t.deck, deckTR: t.deckTR ?? null, deckDraw: t.draw ?? 0, type: sys.fociType,
     // Gauntlet: the first cast uses the higher of Reach and Grasp, the second the lower.
     scalingHigh: Math.max(reach, grasp), scalingLow: Math.min(reach, grasp),
@@ -156,7 +156,7 @@ export function shroudProfile(sys, build = 0) {
     durability: t.fixedDur ? t.dur : t.dur * mult,
     baseLimit: t.limit * mult,
     limit: t.limit * mult,
-    affixSlots: AFFIX_LIMIT, freeAffixes: t.free, affixPlus: !!t.plus, doubled, affixes,
+    affixLimit: AFFIX_LIMIT, freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
     negator: !!t.negator, placed: t.placed ?? null, fixedDur: !!t.fixedDur, noRegen: !!t.noRegen,
     effect: t.effect
   };

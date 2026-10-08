@@ -14,7 +14,6 @@ const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
 const syncUuid = u => globalThis.fromUuidSync?.(u) ?? null;
 const DialogV2 = () => foundry.applications.api.DialogV2;
-const PHYSICAL_STATS = new Set(["str", "dex", "con"]);
 
 /* -------------------------------------------- */
 /*  Helpers                                     */
@@ -295,14 +294,13 @@ export async function rollStatCheck(actor, key) {
     return post(actor, { title: `${STATS[key].label} Check`, body: `<div class="fs-outcome fs-hit">Automatic success</div><div class="fs-notes">${res.notes.map(esc).join(" · ")}</div>` });
   }
 
-  const armorDis = PHYSICAL_STATS.has(key) ? actor.system.penalties.physicalDis : 0;
-  const net = opts.net + res.net + exhaustionNet(actor) - armorDis + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0);
+  const net = opts.net + res.net + exhaustionNet(actor) + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0);
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, stat.die, net));
   const cr = await mentalHook?.rollCharges?.({ actor, type: "other", roll, die: stat.die, count: 1, net, max: stat.die, label: `${STATS[key].label} Check` });
   const floored = opts.applyMin && roll.total < stat.min;
   const result = floored ? stat.min : roll.total;
-  const notes = [netLabel(net), armorDis ? "armor penalty" : "", ...res.notes, floored ? `raised to Stat Minimum` : ""].filter(Boolean).join(" · ");
+  const notes = [netLabel(net), ...res.notes, floored ? `raised to Stat Minimum` : ""].filter(Boolean).join(" · ");
 
   await post(actor, {
     title: `${STATS[key].label} Check (d${stat.die})`,
@@ -355,7 +353,7 @@ export async function rollD100(actor, label, { apCost = 0 } = {}) {
 export async function rollAttackCheck(actor) {
   const opts = await optionsDialog("Attack Roll", netField(), "Roll", { skipIfEmpty: true });
   if (!opts) return;
-  const net = opts.net + exhaustionNet(actor) - actor.system.penalties.physicalDis + attackStanceNet(actor) + limberNet(actor) + charmNet(actor, "attack");
+  const net = opts.net + exhaustionNet(actor) + attackStanceNet(actor) + limberNet(actor) + charmNet(actor, "attack");
   await consumeLimber(actor);
   const size = actor.system.derived.attackDie;
   const roll = await evaluate(poolFormula(1, size, net));
@@ -372,7 +370,7 @@ export async function rollAttackCheck(actor) {
 export async function rollDodge(actor) {
   const opts = await optionsDialog("Dodge", netField(), "Roll", { skipIfEmpty: true });
   if (!opts) return;
-  const net = opts.net + exhaustionNet(actor) + (actor.statuses.has("prone") ? -1 : 0) - actor.system.penalties.physicalDis + (calmed(actor) ? 1 : 0) + limberNet(actor) + seeingRedNet(actor) + unfetteredNet(actor) + disruptNet(actor) + dodgeDisNet(actor) + charmNet(actor, "dodge");
+  const net = opts.net + exhaustionNet(actor) + (actor.statuses.has("prone") ? -1 : 0) + (calmed(actor) ? 1 : 0) + limberNet(actor) + seeingRedNet(actor) + unfetteredNet(actor) + disruptNet(actor) + dodgeDisNet(actor) + charmNet(actor, "dodge");
   await consumeLimber(actor); await consumeDisrupt(actor);
   const size = actor.system.derived.dodgeDie;
   const roll = await evaluate(poolFormula(2, size, net));
@@ -764,9 +762,9 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (followup?.kind === "return") opts.mode = "throw";
   const p = unarmed ? unarmedProfile(followup?.weight ?? opts.weight ?? w.weight) : base;
   let ap = followup ? 0 : p.ap;
-  let net = opts.net + (followup?.net ?? 0) - actor.system.penalties.physicalDis;
+  let net = opts.net + (followup?.net ?? 0);
   const explicitTargets = followup?.targetActors ?? null;
-  let stacks = opts.stacks + p.stacks - actor.system.penalties.physicalWeakened;
+  let stacks = opts.stacks + p.stacks;
   const notes = unarmed ? [p.label] : [];
   // Ho! (Strength T4): a thrown Heavy weapon's throw is one step better per use (Bad → Average → Good).
   let throwType = p.throwType;
@@ -1031,7 +1029,6 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (energy && inActiveCombat(actor) && actor.system.energy.value < energy) {
     return ui.notifications.warn(`${actor.name} needs ${energy} Energy for that but has ${actor.system.energy.value}.`);
   }
-  if (actor.system.penalties.physicalDis) notes.push("armor penalty");
   if (followup && !followup.riposte) notes.push(`${followup.label}${followup.net < 0 ? " — Disadvantage" : ""}`);
 
   // Range: melee reach (× Farstrike), throw range, or the chosen range band (Area extends to its radius).
@@ -1113,8 +1110,8 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (boardItem) {
     const bp = boardItem.system.profile;
     const shieldMsg = await performAttack(actor, {
-      label: `${boardItem.name} — Sword and Board`, net: -actor.system.penalties.physicalDis, melee: true, push: false,
-      damage: bp.formula, cleave: bp.cleave ?? 0, type: bp.damageType, stacks: bp.stacks - actor.system.penalties.physicalWeakened, physical: true, shots: 1,
+      label: `${boardItem.name} — Sword and Board`, net: 0, melee: true, push: false,
+      damage: bp.formula, cleave: bp.cleave ?? 0, type: bp.damageType, stacks: bp.stacks, physical: true, shots: 1,
       critStacks: bp.critStacks, vsSupernatural: bp.vsSupernatural, arcaneVsMagic: bp.arcaneVsMagic, pierce: bp.pierce, knockback: bp.knockback,
       notes: [`Sword and Board (${ab.DEFENDER_COST.swordAndBoard(boardItem)} Energy): if this hits, the dodge against ${item.name} has Disadvantage`],
       followups: [], itemUuid: boardItem.uuid, turnKey: turnKey(), targetActors: explicitTargets
@@ -1904,12 +1901,11 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
     <p class="hint">Incoming attack: <strong>${entry.total}</strong> · Dodge 2d${t.derived.dodgeDie}</p>${netField()}`, "Dodge", { skipIfEmpty: true });
   if (!opts) return;
   if (findDefense(message.id, index)) return;
-  const armorDis = t.penalties.physicalDis;
   const shiftAdv = findShifts(message.id, index).filter(f => f.mode === "adv").length;
   const stealthImmune = spellStealthImmune(o, target);
-  const net = opts.net + (o.stealth === "half" && !stealthImmune ? -1 : 0) + (prone ? -1 : 0) + (t.exhausted ? -1 : 0) - armorDis + (calmed(target) ? 1 : 0)
+  const net = opts.net + (o.stealth === "half" && !stealthImmune ? -1 : 0) + (prone ? -1 : 0) + (t.exhausted ? -1 : 0) + (calmed(target) ? 1 : 0)
     + limberNet(target) + shiftAdv + leadBlindNet(o) + boardNet + seeingRedNet(target) + (o.dodgeNet ?? 0) + pointBlankNet - (entry.snipe ?? 0) + disruptNet(target) + unfetteredNet(target) + dodgeDisNet(target) + charmNet(target, "dodge");
-  const reasons = [netLabel(net), o.stealth === "half" && !stealthImmune ? "attacker in half stealth" : "", prone ? "prone" : "", t.exhausted ? "exhausted" : "", armorDis ? "armor penalty" : "",
+  const reasons = [netLabel(net), o.stealth === "half" && !stealthImmune ? "attacker in half stealth" : "", prone ? "prone" : "", t.exhausted ? "exhausted" : "",
     calmed(target) ? "Calm Down" : "", limberNet(target) ? "Limber" : "", shiftAdv ? "Shift" : "", o.leadBlind ? "Lead Blindness" : "",
     boardNet ? "Sword and Board" : "", seeingRedNet(target) ? "Seeing Red" : "", o.dodgeNet ? "Shank" : "", pointBlankNet ? "Point Blank" : "", entry.snipe ? `Snipe Hunt (−${entry.snipe})` : "",
     disruptNet(target) ? "Disrupted" : "", unfetteredNet(target) ? "Unfettered" : "", dodgeDisNet(target) ? "spell: dodge Disadvantage" : "", charmNet(target, "dodge") ? "Charm/Hex: dodge Disadvantage" : ""].filter(Boolean);
@@ -2112,7 +2108,7 @@ async function perfectRoll(message, index, target, entry, o, { kind, blocker = n
   const item = items.find(i => i.id === opts.item) ?? items[0];
   if (findPerfectFails(message.id, index).includes(item.uuid)) return ui.notifications.info(`${item.name} already missed its ${label}.`);
   const w = who.system;
-  const net = opts.net + (kind === "perfectParry" ? 1 : 0) + exhaustionNet(who) - w.penalties.physicalDis + attackStanceNet(who) + limberNet(who) + leadBlindNet(o) + disruptNet(who) + charmNet(who, "attack");
+  const net = opts.net + (kind === "perfectParry" ? 1 : 0) + exhaustionNet(who) + attackStanceNet(who) + limberNet(who) + leadBlindNet(o) + disruptNet(who) + charmNet(who, "attack");
   await consumeLimber(who); await consumeDisrupt(who);
   const roll = await evaluate(poolFormula(1, w.derived.attackDie, net));
   const success = roll.total >= entry.total;
@@ -2792,8 +2788,8 @@ export async function bodyslam(actor) {
   if (!(await spendEnergy(actor, info.cost, "Bodyslam"))) return;
   const launch = !!opts.launch && info.launch;
   return performAttack(actor, {
-    label: launch ? "Bodyslam (Launch)" : "Bodyslam", net: opts.net + info.net - actor.system.penalties.physicalDis, melee: true, push: false,
-    damage: launch ? "" : String(amount), type: "physical", stacks: -actor.system.penalties.physicalWeakened, physical: true, shots: 1,
+    label: launch ? "Bodyslam (Launch)" : "Bodyslam", net: opts.net + info.net, melee: true, push: false,
+    damage: launch ? "" : String(amount), type: "physical", stacks: 0, physical: true, shots: 1,
     launchForce: launch ? 10 * amount : null, turnKey: turnKey(), followups: [],
     notes: [`Bodyslam · 3 AP · ${info.cost} Energy${info.net ? " · Disadvantage (Titanic)" : ""}${launch ? ` · Launch (Force ${10 * amount})` : ""}`],
     targetActors: targets
@@ -3109,7 +3105,7 @@ export async function slamGrappled(actor) {
   if (!checkRange(actor, actor.system.derived.size.melee, "a Slam", targets[0].getActiveTokens?.() ?? [])) return;
   if (!(await spendAP(actor, ap, "Slam"))) return;
   return performAttack(actor, {
-    label: `Slam: ${victim.name}`, net: opts.net - actor.system.penalties.physicalDis, stealth: "none", melee: true,
+    label: `Slam: ${victim.name}`, net: opts.net, stealth: "none", melee: true,
     damage: "", type: "physical", stacks: 0, physical: false, shots: 1,
     throwGrappled: victim.uuid, throwForce: force, knockInto: true, slamGrappled: true,
     notes: [`${victim.name} is used as a ${opts.weight === "light" ? "Light" : "Heavy"} weapon (${ap} AP · Force ${force}, 0 ft)`], targetActors: targets
@@ -3392,7 +3388,7 @@ export async function breakFree(actor) {
   if (!opts) return;
   if (!(await spendAP(actor, 2, "breaking free"))) return;
   return performAttack(actor, {
-    label: "Break Free", net: opts.net - actor.system.penalties.physicalDis, stealth: "none", melee: true,
+    label: "Break Free", net: opts.net, stealth: "none", melee: true,
     damage: "", type: "physical", stacks: 0, physical: false, shots: 1,
     breakFree: true, notes: [`Break free from ${grappler.name}`], targetActors: [grappler]
   });
@@ -3450,7 +3446,7 @@ export async function throwGrappled(actor) {
       ${await flightHTML(victim, flight, feet)}` });
   }
   return performAttack(actor, {
-    label: `Throw ${victim.name}`, net: (opts.net ?? 0) - actor.system.penalties.physicalDis, stealth: "none", melee: false,
+    label: `Throw ${victim.name}`, net: (opts.net ?? 0), stealth: "none", melee: false,
     damage: "", type: "physical", stacks: 0, physical: false, shots: 1,
     throwGrappled: victim.uuid, throwForce: force, crunch: !!opts.crunch,
     notes: [`Thrown creature: ${victim.name} (Force ${force}, ${feet} ft${opts.crunch ? ", Crunch Time" : ""})`], targetActors: [target]
@@ -3608,7 +3604,7 @@ export const hexMove = actor => (inActiveCombat(actor) ? aff?.hexTrigger(actor, 
 export const afflictAct = (message, i) => aff?.act(message, i);
 const dodgeDisNet = actor => (spellEffects(actor, "dodgeDis").length ? -1 : 0);
 /** The Advantage/Disadvantage this creature's dodge rolls are known to carry (for Foresight). */
-const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.has("prone") ? -1 : 0) - (actor.system?.penalties?.physicalDis ?? 0) + seeingRedNet(actor) + disruptNet(actor)
+const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.has("prone") ? -1 : 0) + seeingRedNet(actor) + disruptNet(actor)
   + dodgeDisNet(actor) + charmNet(actor, "dodge") + unfetteredNet(actor) + limberNet(actor) + (calmed(actor) ? 1 : 0);
 
 /** Weaving (Magic Theory T3): casting.mjs registers this so the weapon attack dialog can offer a spell. */
@@ -4165,7 +4161,7 @@ async function distractingFire(message, index, target, entry, o) {
   const cost = ab.ASSAULT_COST.distractingFire(item);
   if (!(await spendEnergy(target, cost, "Distracting Fire"))) return;
   const t = target.system;
-  const net = opts.net + exhaustionNet(target) - t.penalties.physicalDis + attackStanceNet(target) + limberNet(target);
+  const net = opts.net + exhaustionNet(target) + attackStanceNet(target) + limberNet(target);
   await consumeLimber(target);
   const roll = await evaluate(poolFormula(1, t.derived.attackDie, net));
   const hit = roll.total >= entry.total;

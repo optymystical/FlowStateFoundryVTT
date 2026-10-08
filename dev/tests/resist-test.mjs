@@ -62,6 +62,12 @@ r = ab.resistCheck(base, { unstoppable: true, pureBody: true });
 ok2(r.value === 64 && r.die === 128 && r.net === 1, "Both together multiply: the stat counts four times as high");
 r = ab.resistCheck(base, {});
 ok2(r.die === 32 && r.net === 0 && !r.auto, "Neither: a normal check");
+r = ab.resistCheck(base, { pureBody: true, con: { value: 40, die: 80, min: 13 } });
+ok2(r.value === 40 && r.die === 80 && r.min === 13, "Pure Body: Constitution (not doubled) stands in for the required stat when it is higher (40 beats 16 × 2)");
+r = ab.resistCheck(base, { pureBody: true, con: { value: 20, die: 40, min: 6 } });
+ok2(r.die === 64, "…but not when the doubled stat is higher (20 < 32)");
+r = ab.resistCheck(base, { pureBody: true, target: 19, con: { value: 40, die: 80, min: 13 } });
+ok2(r.auto, "…and the automatic success goes by the stat used (19 is under half of 40)");
 
 const hero = mkActor("Hero", {}, { "martial-constitution-methods": 3, "martial-strength-methods": 5 });
 // Dialog answers: an options object per check.

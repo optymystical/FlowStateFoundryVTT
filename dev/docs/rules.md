@@ -451,7 +451,7 @@ Energy is used by all Archetypes to use various abilities and actions. Your maxi
 
 ## **Grappling** {#grappling}
 
-Grappling is an involuntary capturing of one creature by another, typically requiring at least one free hand to maintain. While Grappled, a creature cannot move using their movement action. The various ways grappling can be achieved are outlined in the Archetypes document. Once a creature is grappled, it can spend **2 AP** to make a counter grapple check. This involves it making an attack roll against its grappler, with a success meaning it breaks free. If its grappler is an object, instead it makes that attack roll against the Limit of that object (they can also break the object to free themselves, if possible). Dragging a grappled target costs \+1 AP per move.
+Grappling is an involuntary capturing of one creature by another, typically requiring at least one free hand to maintain. While Grappled, a creature cannot move outside of the range of whatever is grappling them. The various ways grappling can be achieved are outlined in the Archetypes document. Once a creature is grappled, it can spend **2 AP** to make a counter grapple check. This involves it making an attack roll against its grappler, with a success meaning it breaks free. If its grappler is an object, instead it makes that attack roll against the Limit of that object (they can also break the object to free themselves, if possible). Dragging a grappled target costs \+1 AP per move.
 
 ## **Pushing**  {#pushing}
 
@@ -520,18 +520,18 @@ Fear can be applied in a variety of ways, but can also occur naturally in situat
 
 ## **Ignite** {#ignite}
 
-Ignite is a stacking value that applies to an object or creature. At the end of that Creature’s turn (or at the start of the round for objects) it takes Heat damage equal to its Ignite stacks, and then begins the Spread system unless it attempts to put it out at least once. Attempting to put it out requires **2 AP** to be spent and can be done by any creature in melee range of the Ignited thing, which removes all Ignite stacks currently on them. If a target with Ignite stacks takes any amount of cold damage, all Ignite stacks are removed from them.
+Ignite is a stacking value that applies to an object or creature. At the end of that Creature’s turn (or at the start of the round for objects) it takes Heat damage equal to its Ignite stacks, and then begins the Spread system unless it attempts to put it out at least once. Attempting to put it out requires **2 AP** to be spent and can be done by any creature in melee range of the Ignited thing, which removes all Ignite stacks currently on them. If a target with Ignite stacks takes any amount of cold damage, all Ignite stacks are removed from them. Ignite damage does not ignore armor, barriers, or temp HP.
 
 ### 
 
 ## **Ignite Spread** {#ignite-spread}
 
 *This rule is optional and is only intended for more realistic games.*  
-Ignite spreads differently depending on if the afflicted target is attempting to put it out or not. If attempted, it does not naturally increase. Otherwise, it increases by 10% (rounded down) every turn unless it is equal to that target's Pain Threshold or Limit. If it is at that limit, instead it attempts to spread twice to surrounding tiles, with each spread requiring its own d8 roll to determine direction. Whether it's spreading to an ignited source or not, add Ignite stacks to that tile equal to 10% of the Igniter’s stacks. Ignite damage does not ignore armor, barriers, or temp HP.
+Ignite spreads differently depending on if the afflicted target is attempting to put it out or not. If attempted, it does not naturally increase. Otherwise, it increases by 10% (rounded down) every turn unless it is equal to that target's Pain Threshold or Limit. If it is at that limit, instead it attempts to spread twice to surrounding tiles, with each spread requiring its own d8 roll to determine direction. Whether it's spreading to an ignited source or not, add Ignite stacks to that tile equal to 10% of the Igniter’s stacks.
 
 ## **Stain** {#stain}
 
-Stain is a stacking value that applies to an object or creature. At the end of that Creature’s turn (or at the start of the round for objects) it takes Acid damage equal to its Stain stacks. Removing Stains can be done by anyone in melee range (can also be the one who is Stained) who spends **3 AP**, which instantly removes all Stains from that target.
+Stain is a stacking value that applies to an object or creature. At the end of that Creature’s turn (or at the start of the round for objects) it takes Acid damage equal to its Stain stacks. Removing Stains can be done by anyone in melee range (can also be the one who is Stained) who spends **3 AP**, which instantly removes all Stains from that target. Stain damage does not ignore armor, barriers, or temp HP.
 
 ## **Slow** {#slow}
 

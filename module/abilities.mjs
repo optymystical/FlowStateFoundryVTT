@@ -464,15 +464,22 @@ export function leapInfo(actor) {
 
 /**
  * Resisting with a Martial (Body) stat check: Unstoppable (Strength T5, while it lasts: Advantage, and the stat counts twice as high) and Pure Body
- * (Constitution T3: the stat counts twice as high, and a target number or contested result under half of the stat is an automatic success).
+ * (Constitution T3: the stat counts twice as high, or Constitution itself stands in for it if that is higher; a target number or contested result under half of the stat is an automatic success).
  * Each doubles the stat, and together they multiply (×4). `target` is the number to beat (0 = none).
  * Returns { value, die, min, net, auto, notes }.
  */
-export function resistCheck(stat, { unstoppable = false, pureBody = false, target = 0 } = {}) {
+export function resistCheck(stat, { unstoppable = false, pureBody = false, target = 0, con = null } = {}) {
   const factor = (unstoppable ? 2 : 1) * (pureBody ? 2 : 1);
   const doubled = factor > 1;
   const value = stat.value * factor;
   const notes = [];
+  // Pure Body: when resisting, Constitution (not doubled) can stand in for the required stat if it is higher than the stat as boosted.
+  if (pureBody && con && con !== stat && con.value > value) {
+    notes.push(`Pure Body: Constitution ${con.value} (not doubled) stands in for the required stat`);
+    const auto = target > 0 && target < con.value / 2;
+    if (auto) notes.push(`Pure Body: ${target} is less than half of ${con.value}, an automatic success`);
+    return { value: con.value, die: con.die, min: con.min, net: unstoppable ? 1 : 0, auto, notes: [...(unstoppable ? ["Unstoppable: Advantage"] : []), ...notes] };
+  }
   if (unstoppable) notes.push("Unstoppable: Advantage, stat counts twice");
   if (pureBody) notes.push(unstoppable ? "Pure Body: twice again (×4 with Unstoppable)" : "Pure Body: stat counts twice");
   const auto = pureBody && target > 0 && target < stat.value / 2;

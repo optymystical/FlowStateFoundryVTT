@@ -168,6 +168,14 @@ await hit("mental-below-nightmare:sink");
 setAlign(null);
 reset();
 
+console.log("== Ignite and Stain ticks don't ignore temp HP");
+reset(); orc.system.conditions.ignite = 20; orc.system.conditions.stain = 5;
+await W.putSpellEffect?.(orc, { kind: "tempHP", caster: hero.uuid, name: "Temp", hp: 30, max: 30 }) ?? await actions.putSpellEffect(orc, { kind: "tempHP", caster: hero.uuid, name: "Temp", hp: 30, max: 30 });
+const hpTick = orc.system.hp.value;
+await actions.endOfTurn(orc);
+ok2(orc.system.hp.value === hpTick - 0 && effs(orc, "tempHP")[0]?.flags.flowstate.spellEffect.hp === 5, `20 heat then 5 acid come off the 30 temp HP first (HP ${orc.system.hp.value}, temp HP left ${effs(orc, "tempHP")[0]?.flags.flowstate.spellEffect.hp})`);
+reset();
+
 console.log("== Stored stacks follow delayed and copied effects; Momentum is offered on a collision");
 reset(); hero.system.energy.value = 200;
 await W.runAct({ id: "fester", label: "Fester", mode: "mental-death-nightmare:waste", power: 3, enhanced: false, range: "ranged", choices: {}, bstacks: 2, caster: hero.uuid, target: orc.uuid });

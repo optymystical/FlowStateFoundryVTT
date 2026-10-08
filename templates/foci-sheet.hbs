@@ -46,7 +46,7 @@
 
   <section class="fs-affixes">
     <h3>Affixes <small>{{p.affixes.length}} attached · Free Affixes: {{p.freeAffixes}}</small></h3>
-    <p class="hint">Everyone attunes one Affix at no cost; each Foci or Shroud adds its Free Affixes to that, and every attuned Affix past them lowers your speed by 20%.</p>
+    <p class="hint">Every attuned Affix lowers your speed by 20%, not counting the Free Affixes of your attuned Foci and Shroud.</p>
     {{#each slots}}
     <div class="fs-field"><label>Slot {{n}}</label>
       <select data-affix-slot="{{n}}" {{#unless ../editable}}disabled{{/unless}}>

@@ -485,7 +485,7 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 ## Judgment calls (confirm or correct)
 - **Two-handed doubles the total damage** (dice plus Cleave, then ×2). It doesn't double the number of dice.
 - **Weapon and tag scaling use the capped stat** (Grade × 10). That covers Cleave's Stat Min, Pierce, and Knockback.
-- **Ignite and Stain ticks are soaked by armor.** The rules say this about Ignite; Stain is treated the same way.
+- **Ignite and Stain ticks are ordinary damage** (Rules doc): armor, Shields, a Shroud and temp HP all take their share, and a Ward may be asked about it. 
 - **Taking the hit without dodging** counts as a hit that can't crit (designer ruling; Parry-style forced hits will use the same path).
 - **Energy outside combat:** Energy use is free and Energy is always full (designer ruling). It refills when combat ends, when you leave combat, and whenever the max changes. Recover Energy only matters in combat.
 - **Perfect Parry/Block rolls use your attack roll modifiers** (stances, exhaustion, armor penalty).
@@ -519,6 +519,13 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Momentum is stored per attacker and target** and ends at the start of the attacker's next turn.
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
+
+**0.51.7 (doc refresh: Rules, Martial, Magic, Equipment; Mental unchanged):**
+- **Ignite and Stain ticks** no longer slip past barriers and temp HP: each tick goes through the normal damage pipeline (Shields, Shroud, armor, temp HP, Wards).
+- **Pure Body:** when resisting, Constitution (not doubled) can stand in for the required stat if it is higher; the check uses whichever is better.
+- **Hold** (Gravity): the counter grapple check needs a minimum of **2** (was 3), and a creature that is already grappled takes **1d12** physical (was 2d12), both × Power.
+- **Affixes** (Equipment): nobody gets an Affix free any more. Every attuned Affix costs 20% speed, not counting the Free Affixes of your attuned Foci and Shroud (a Wand with one Affix is -20%).
+- **Grappling** (Rules): a grappled creature can't move out of its grappler's range (this was already how held creatures work). **Get Over Here!** still deals its damage. Wording only: Harden ("when Brace would apply"), Skin (Soft Leather), and the Foci/Shroud Affix columns now read Offensive/Defensive Effect.
 
 **0.51.6:** Fixed the terrain buttons dropping two regions per click: the buttons were wired through both `onChange` and `onClick`, which Foundry can fire together. They now use `onChange` only, and a repeat click on the same button within a moment is ignored.
 
@@ -637,7 +644,7 @@ Everywhere a Foci is listed, its type shows with it: a type tag on the Equipment
 
 ## Magic Equipment (automated)
 
-Foci and Shrouds have their own sections on the Equipment tab, under Armor, and are made in the Forge (or with + while the build is open). Both use the Affix pick-list on their sheet, with one more empty row than they hold (at most 6 per item). Affixes are GM-set, like a weapon's material. **Affixes cost speed, not slots:** everyone gets one attuned Affix free, each type adds its **Free Affixes** (Rod/Scroll/Glove 2, Bastion 1, Chime/Cards/Aegis/Lattice -1 "acts as if one Affix is already attuned", the rest 0) to that allowance, shared between your attuned Foci and Shroud, and every attuned Affix past it lowers your speed by 20%. Shard, Orb, Band and Keystone let you pick **one** Affix on the item whose effects are doubled (the first one until you pick).
+Foci and Shrouds have their own sections on the Equipment tab, under Armor, and are made in the Forge (or with + while the build is open). Both use the Affix pick-list on their sheet, with one more empty row than they hold (at most 6 per item). Affixes are GM-set, like a weapon's material. **Affixes cost speed, not slots:** every attuned Affix lowers your speed by 20%, not counting the **Free Affixes** of your attuned Foci and Shroud (Rod/Scroll/Glove 2, Bastion 1, Chime/Cards/Aegis/Lattice -1 "acts as if one Affix is already attuned", the rest 0), which are shared between them. Nobody gets an Affix free any more: a Wand with one Affix costs 20% speed. Shard, Orb, Band and Keystone let you pick **one** Affix on the item whose effects are doubled (the first one until you pick).
 
 - **Attuning** (the link toggle) takes an hour, so it can't be done in combat. Only one Foci and one Shroud can be attuned; attuning another unattunes the old one. Items dropped or handed over are unattuned.
 - **Foci:** Durability and Limit are base × Grade. The sheet shows the casting form (Igniter: Grasp, 2 AP, 1 TR · Channeler: Reach, 3 AP, 2 TR · Multi: the lesser stat, Raw Casting AP/TR), the Grade-capped scaling stat, and the type's effect. A held Foci uses a hand like a weapon (drawing, swapping, and fists work the same; 2H toggle for Staff/Tome). Foci can be aimed at like held weapons; Zircon gives those attacks Disadvantage and Weakens the damage. Spell-side effects (TR, Power, Wand/Staff/Chime and the Foci Affixes) come with the spell automation.

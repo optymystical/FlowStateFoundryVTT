@@ -288,7 +288,7 @@ export async function rollStatCheck(actor, key) {
     <input type="checkbox" name="applyMin" ${minDefault ? "checked" : ""}></div>
     <p class="hint">Off in combat or a time crunch.</p>`);
   if (!opts) return;
-  const res = ab.resistCheck(base, { unstoppable: canUnstoppable && !!opts.unstoppable, pureBody: canPureBody && !!opts.pureBody, target: canPureBody ? opts.target ?? 0 : 0 });
+  const res = ab.resistCheck(base, { unstoppable: canUnstoppable && !!opts.unstoppable, pureBody: canPureBody && !!opts.pureBody, target: canPureBody ? opts.target ?? 0 : 0, con: actor.system.derived.effective.con });
   const stat = { ...base, die: res.die, min: res.min };
   if (res.auto) {
     return post(actor, { title: `${STATS[key].label} Check`, body: `<div class="fs-outcome fs-hit">Automatic success</div><div class="fs-notes">${res.notes.map(esc).join(" · ")}</div>` });
@@ -3792,13 +3792,13 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   if (m.hold) {
     const mult = fx.replaceFactor(rp, "hold");
     if (target.statuses?.has("grappled")) {
-      const roll = await evaluate(`${2 * sp.power * mult}d12`);
+      const roll = await evaluate(`${sp.power * mult}d12`);
       rolls.push(roll);
-      html.push(`<div class="fs-result">Already grappled: ${esc(target.name)} takes ${2 * sp.power * mult}d12 = <strong>${roll.total}</strong> physical instead.</div>`);
+      html.push(`<div class="fs-result">Already grappled: ${esc(target.name)} takes ${sp.power * mult}d12 = <strong>${roll.total}</strong> physical instead.</div>`);
       await requestDamage(target, applyStacks(roll.total, stackBonus), "physical", 0, null, { silent: false });
     } else {
       const size = target.system.size ?? 3;
-      const min = Math.max(1, bold(Math.floor(3 * sp.power * mult * Math.pow(2, 3 - size))));
+      const min = Math.max(1, bold(Math.floor(2 * sp.power * mult * Math.pow(2, 3 - size))));
       await setGrapple(target, attacker.uuid);
       await putSpellEffect(target, { kind: "hold", caster, name: `Held by ${esc(attacker.name)} (≥ ${min})`, holdMin: min, ritualOf,
         description: `Magically held: breaking free needs a roll of ${min} or more. Ends at the start of the caster's next turn.` });
@@ -5790,19 +5790,17 @@ export async function endOfTurn(actor) {
   const update = { "system.ap.value": 0 };
   const lines = [];
 
-  // Ignite (Heat), Stain (Acid), Searing (both), Frozen (Acid, and drains Energy) and Electric (Radiation) Stains don't ignore armor:
-  // equipped armor soaks each tick. Armor's own stacks wear it down directly.
+  // Ignite (Heat), Stain (Acid), Searing (both), Frozen (Acid, and drains Energy) and Electric (Radiation) Stains don't ignore armor, barriers (Shields, a
+  // Shroud) or temp HP: each tick is ordinary damage, dealt after the turn's other changes. Armor's own stacks wear it down directly.
   const armor = sys.armor;
   const t = tickAmounts(sys.conditions);
-  let hpLoss = 0, wear = 0;
+  const ticks = [];
+  let wear = 0;
   for (const [amount, type, label] of [[t.heat, "heat", "Ignite"], [t.acid, "acid", "Stain"], [t.radiation, "radiation", "Electric Stain"]]) {
     if (!amount) continue;
-    const s = soak(amount, type, armor?.system.profile, { durability: (armor?.system.durability.value ?? 0) - wear });
-    hpLoss += s.toHp; wear += s.durabilityLoss;
-    lines.push(`${amount} ${DAMAGE_TYPES[type]} from ${label}${s.absorbed ? ` (${armor.name} absorbed ${s.absorbed})` : ""}`);
+    ticks.push({ amount, type, label });
   }
   if (t.energy) { update["system.energy.value"] = Math.max(0, sys.energy.value - t.energy); lines.push(`Frozen Stains drain ${t.energy} Energy`); }
-  if (hpLoss) update["system.hp.value"] = sys.hp.value - hpLoss;
   if (armor) {
     const at = tickAmounts(armor.system.conditions);
     const own = at.heat + at.acid + at.radiation;
@@ -5820,7 +5818,7 @@ export async function endOfTurn(actor) {
   }
   // Brand (Heat T3): Ignite's heat damage triggers it too.
   const brandTick = t.heat > 0 && elem ? elem.brandExtra(actor, "heat", false) : 0;
-  if (brandTick) { hpLoss += brandTick; update["system.hp.value"] = sys.hp.value - hpLoss; lines.push(`Brand: ${brandTick} more heat damage`); }
+  if (brandTick) { ticks.push({ amount: brandTick, type: "heat", label: "Brand" }); }
 
   if (slow) { update["system.conditions.slow"] = Math.max(0, slow - decay); lines.push(`Slow ${slow} → ${update["system.conditions.slow"]}`); }
   if (haste) { update["system.conditions.haste"] = Math.max(0, haste - decay); lines.push(`Haste ${haste} → ${update["system.conditions.haste"]}`); }
@@ -5829,6 +5827,12 @@ export async function endOfTurn(actor) {
   if (electric) update["system.conditions.electric"] = 0;
 
   await actor.update(update);
+  for (const tk of ticks) {
+    const hpBefore = actor.system.hp.value;
+    await applyDamage(actor, tk.amount, tk.type, { silent: true, shroudCtx: { source: `type:${tk.type}`, attacker: null } });
+    const lost = Math.max(0, hpBefore - actor.system.hp.value);
+    lines.push(`${tk.amount} ${DAMAGE_TYPES[tk.type]} from ${tk.label}${lost < tk.amount ? ` (${lost} reached HP)` : ""}`);
+  }
   await igniteSpread(actor, sys.conditions.ignite);
   if (lines.length) {
     await post(actor, { title: "End of Turn", body: `<ul class="fs-list">${lines.map(l => `<li>${l}</li>`).join("")}</ul>` });

@@ -44,7 +44,7 @@ export const layeredBonus = (build, defaultHealth) => (defaultHealth ? 2 : 1) * 
 export function naturalWeapon({ weaponType, weight, scaling }) {
   return { weaponType, weight, material: weight === "heavy" ? "iron" : "hardwood", grade: Math.max(1, Math.floor((scaling || 0) / 10)) };
 }
-/** Natural armor (Skin): Threshold 1 = Light, 2 = Medium, 3 = Heavy, 4 = Titanic; Untreated Leather's stats (Soft Leather here) for Light/Medium, Copper for Heavy/Titanic. */
+/** Natural armor (Skin): Threshold 1 = Light, 2 = Medium, 3 = Heavy, 4 = Titanic; Soft Leather's stats for Light/Medium, Copper for Heavy/Titanic. */
 export const SKIN_WEIGHTS = { 1: "light", 2: "medium", 3: "heavy", 4: "titanic" };
 export function naturalArmor({ threshold, con }) {
   const weight = SKIN_WEIGHTS[Math.min(4, Math.max(1, Math.floor(threshold || 1)))];

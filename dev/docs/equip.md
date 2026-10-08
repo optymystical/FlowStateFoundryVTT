@@ -339,7 +339,7 @@ Very Rare \- 8x cost and scarcity of 0.05
 3. Foci denoted as Multi Type use Raw Casting AP and TR (1 AP/TR, 2 AP/TR, 3 AP/TR), but use from the lesser of your two Scaling Stats.
 
 **Scaling and Grade:** The Power of spells outputted by your Foci increases for every 10 points you have in its Scaling Stat, which is Reach or Grasp depending on the Casting Form of your Foci. This is limited by the Grade of the Foci, which denotes how much Stat can actually affect the Power of the Foci, where every 1 grade represents a max of 10 Stat scaling. So, a grade 3 Foci allows for up to 30 Reach/Grasp to affect its Power output, any higher would do nothing until the Grade would be increased. Grade also directly impacts the durability and limit of the Foci, independent of your Scaling Stat.  
-**Affixes:** Affixes are your weight equivalent for armor, also requiring attunement to either their Offensive or Defensive form. You can have one Affix attuned at no cost, and for every additional Affix attuned your speed is lowered by 20%. This is shared with Shroud’s Affixes.  
+**Affixes:** Affixes are your weight equivalent for armor, also requiring attunement to either their Offensive or Defensive form. For every Affix attuned your speed is lowered by 20% (not counting free ones). This is shared with Shroud’s Affixes.  
 **One vs Two Hands:** How many hands hold a Foci or are used to cast a spell has no effect on how the spells perform outside of specific Foci Types. Foci do still count as a held item, however, and cannot be used in the same hand as another held item.  
 **Durability:** The overall “health” of the Foci. Reaching 0 or lower means the Foci is broken and can no longer be used, but it is still fixable. Negative durability equal to or exceeding the normal max means the Foci is completely destroyed.  
 **Limit:** How much damage the Foci can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Foci is the target of the attack.
@@ -356,7 +356,7 @@ Very Rare \- 8x cost and scarcity of 0.05
 
 | Channeler Foci Types |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
-| **Name** | **Durability** | **Limit** | **Affix \#** | **Other Effects** |  |
+| **Name** | **Durability** | **Limit** | **Free Affixes** | **Other Effects** |  |
 | Scroll | 20 | 4 | 2 | N/A |  |
 | Orb | 40 | 8 | 0 | While attuned, select one Offensive Affix, its effects are doubled (this can be changed by attuning again). |  |
 | Lens | 30 | 6 | 0 | Every spell cast with this Foci removes 1 TR from it until the start of your next turn. Has 4 TR baseline. |  |
@@ -366,7 +366,7 @@ Very Rare \- 8x cost and scarcity of 0.05
 
 | Multi Foci Types |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
-| **Name** | **Durability** | **Limit** | **Affix \#** | **Other Effects** |  |
+| **Name** | **Durability** | **Limit** | **Free Affixes** | **Other Effects** |  |
 | Glove | 40 | 8 | 2 | N/A |  |
 | Band | 60 | 12 | 0 | While attuned, select one Offensive Affix, its effects are doubled (this can be changed by attuning again). |  |
 | Ring | 30 | 6 | 0 | Select one Core spell to be the chosen spell of this Foci (can be changed on rest). That Core spell and its Combos have 1 additional TR when cast with this Foci. |  |
@@ -378,14 +378,14 @@ Very Rare \- 8x cost and scarcity of 0.05
 
 **Shroud Design:** Pick a Shroud type from the list, and pick Affixes if your Shroud type can utilize them. To use a Shroud, you need to Attune to it by spending one hour magically connecting to it (you can only Attune to one Shroud at a time). Once Attuned it becomes melded into your Spirit, meaning its Stats and Affixes are now active on your person, allowing it to protect you as Martial Armor would. Shrouds are considered Magical objects, both while melded and while not melded.  
 **Scaling and Grade:** The Stats of your Shroud increases for every 10 points you have in its Scaling Stat, which is Build by default. This is limited by the Grade of the Shroud, which denotes how much Stat can actually affect the Stats and grade of the Shroud, where every 1 grade represents a max of 10 Stat scaling. So, a grade 3 Shroud allows for up to 30 Build to affect its Stats, any higher would do nothing until the Grade would be increased.  
-**Affixes:** Affixes are your weight equivalent for armor, also requiring attunement to either their Offensive or Defensive form. You can have one Affix attuned at no cost, and for every additional Affix attuned your speed is lowered by 20%. This is shared with Foci’s Affixes.  
+**Affixes:** Affixes are your weight equivalent for armor, also requiring attunement to either their Offensive or Defensive form. For every Affix attuned your speed is lowered by 20% (not counting free ones). This is shared with Foci’s Affixes.  
 **Shroud Recovery:** Attuned Shrouds naturally recover their spent durability, by default recovering durability equal to its Limit at the start of each of your turns. This can vary, and would be stated in a Shroud’s passive if it is anything else.  
 **Durability:** The overall “health” of the Shroud. Reaching 0 or lower means the Shroud is unable to block any more damage, but it can still recover. Shrouds cannot be destroyed unless they are unmelded, or they are directly targeted by arcane damage or similar effects, with durability in the negatives exceeding its normal max resulting in its destruction.  
 **Limit:** How much damage the Shroud can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Shroud is the target of the attack. Only blocks Physical, Elemental, and Magical damage normally.
 
 | Shroud Types |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
-| **Name** | **Durability** | **Limit** | **Affix \#** | **Other Effects** |  |
+| **Name** | **Durability** | **Limit** | **Free Affixes** | **Other Effects** |  |
 | Bastion | 50 | 10 | 1 | N/A |  |
 | Keystone | 60 | 12 | 0 | While attuned, select one Defensive Affix, its effects are doubled (this can be changed by attuning again). |  |
 | Cinder | 80 | 5 / 15 | 0 | The Limit of this Shroud is three times as high against damage types you have already taken since the start of your turn. |  |
@@ -412,7 +412,7 @@ Very Rare \- 40x cost and scarcity of 0.0025
 
 | Affixes |  |  |  |  |  |
 | :---: | :---: | :---: | ----- | :---: | ----- |
-| **Name** | **Rarity** | **Foci Effect** |  | **Shroud Effect** |  |
+| **Name** | **Rarity** | **Offensive Effect** |  | **Defensive Effect** |  |
 | Quartz | Common | The range of your Ranged spells is increased by 50%. |  | If a target within your personal melee range would be damaged, you can extend your shroud to protect them for that instance. |  |
 | Agate | Common | The area of your Area spells is increased by 50%. |  | Negates an amount of damage equal to your Scaling Stat from the first instance of Magical damage you would take. Refreshes when the Shroud Recovers. |  |
 | Jasper | Common | Physical Damage dealt by your spells is Strengthened, and all other damage types are Weakened. |  | Negates an amount of damage equal to your Scaling Stat from the first instance of Physical damage you would take. Refreshes when the Shroud Recovers. |  |

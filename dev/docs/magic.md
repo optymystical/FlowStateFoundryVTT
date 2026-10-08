@@ -151,7 +151,7 @@
 
   **Tier 4: You unlock the following Spell Mod:**
 
-- **Hold: *2 Threshold, Spell Mod, Replacement, Targeted.*** The Spell grapples the target with Magical force on a successful hit until the start of your next turn. Their counter grapple check must get a **minimum of 3** on the roll to break free from this hold. This value is halved for every size above 3 the creature is, and doubled inversely. If the target is already grappled, they instead take **2d12 physical** damage.  **Ritual:** Lasts until the ritual ends or the target is no longer grappled.  
+- **Hold: *2 Threshold, Spell Mod, Replacement, Targeted.*** The Spell grapples the target in place with Magical force on a successful hit until the start of your next turn. Their counter grapple check must get a **minimum of 2** on the roll to break free from this hold. This value is halved for every size above 3 the creature is, and doubled inversely. If the target is already grappled, they instead take **1d12 physical** damage.  **Ritual:** Lasts until the ritual ends or the target is no longer grappled.  
     
   **Tier 5: You unlock the following Spell Mod:**  
 - **Gravity Field: *2 Threshold, Spell Mod.*** The Spell changes its attack type to **Area**, applying its effect to all targets within the area. In addition, its Ritual form now continues the application in the area until the ritual ends (this changes Force’s ritual to be this instead, effects do not stack and apply at the start of each of your turns).
@@ -456,7 +456,7 @@
 
   **Tier 3: You unlock the following Spell Mod:**
 
-- **Skin:** ***1-4 Threshold, Spell Mod.*** This Spell’s Summon naturally has Armor built into it, with a weight based on the Threshold used for this Spell Mod (1 \= Light, 2 \= Medium, 3 \= Heavy, 4 \= Titanic) . This creates Natural Armor scaling in stats for every 10 Constitution the Summon has. The Natural Armor follows Untreated Leather’s stats if Light or Medium, and Copper’s stats if Heavy or Titanic, and can only be repaired with healing effects.  
+- **Skin:** ***1-4 Threshold, Spell Mod.*** This Spell’s Summon naturally has Armor built into it, with a weight based on the Threshold used for this Spell Mod (1 \= Light, 2 \= Medium, 3 \= Heavy, 4 \= Titanic) . This creates Natural Armor scaling in stats for every 10 Constitution the Summon has. The Natural Armor follows Soft Leather’s stats if Light or Medium, and Copper’s stats if Heavy or Titanic, and can only be repaired with healing effects.  
     
   **Tier 4: You unlock the following Spell Mod:**  
 - **Sense Swap: *1 Threshold, Spell Mod.*** At any time, you can spend **2 RP** to swap your senses with this Spell’s Summon (can only be active on one summon at a time, reuse this ability to deactivate it). This results in your body being limited by whatever sense the Summon has, and the Summon now utilizing your senses. During this time your character may still act, following the same rules your Summon would have previously. While this effect is active on a Summon, Spells you cast using your turn are cast from the position of your Summon using your senses, regardless of its distance from you (they still use your energy and AP/RP).  

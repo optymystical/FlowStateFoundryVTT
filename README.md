@@ -1,6 +1,15 @@
-# Flow State — Foundry VTT system (v0.23.0, core rules + Martial equipment + skill trees)
+# Flow State — Foundry VTT system
 
-Ports the core rules from "Flow State - Rules" into Foundry VTT (v13 and later; built for v14). Includes Martial weapons and armor from "Flow State - Equipment". Mental (Icons/Forms) and Magic (Foci, Shrouds, Affixes) aren't ported yet, and no skill trees are.
+A Foundry VTT game system for **Flow State**, Christopher Caplinger's setting-universal, digital-only TTRPG. It automates the rules from the design docs (Rules, Martial, Magic, Mental and Equipment) so the sheet and the chat cards do the math. Built for Foundry v14, compatible with v13. The current version is in `system.json`.
+
+**What's in:**
+- **The core rules:** stats and checks, the attack / dodge / damage exchange, Strengthened and Weakened, Advantage and Disadvantage, HP and Pain Threshold, Energy, AP and RP, Ignite and Stain, Slow and Haste, grapples, Force, falling and flight, objects, rest, and movement speed and its cost in combat.
+- **Martial:** every weapon and armor tree (Theory through Tier 5), weapons, armor and materials.
+- **Magic:** Foci, Shrouds and Affixes, the casting framework, all five spell groups with their Combos, Rituals, Summons and Animations.
+- **Mental:** Manifesting, Alignment, Icons and Wards, Willpower and Psion Arts, and every Wonder written so far.
+- **Tools:** New Character and New NPC wizards, Action List, terrain regions, a world currency list, and optional integrations (Carousel Combat Tracker, Token Action HUD).
+
+**Not in yet:** Ancestries, Cover, the senses table, equipment repair, and the Wonders and Arts the Mental doc hasn't written. The rest of this page is the detail: every automated rule and every judgment call.
 
 ## Install
 1. Unzip so that the folder `flowstate/` sits in `{Foundry User Data}/Data/systems/`.

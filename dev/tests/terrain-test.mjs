@@ -97,5 +97,16 @@ ok2(scene.regions.some(r => r.flags?.flowstate?.ritualOf === "Effect.R") && !sce
 await T.endRitual("Effect.R");
 ok2(!scene.regions.some(r => r.flags?.flowstate?.ritualOf === "Effect.R"), "…and Ritual terrain ends with the Ritual");
 
+// The scene-control buttons: one click drops one region even if Foundry reports the click twice.
+const before = created.length;
+await Promise.all([T.dropTerrain("rough"), T.dropTerrain("rough")]);
+ok2(created.length === before + 1 && created.at(-1).flags.flowstate.terrain === "rough" && created.at(-1).flags.flowstate.placed, "A button click drops a single region (a repeat within a moment is ignored)");
+await new Promise(r => setTimeout(r, 750));
+await T.dropTerrain("rough");
+ok2(created.length === before + 2, "…and a later click drops another");
+await new Promise(r => setTimeout(r, 750));
+await T.dropTerrain("difficult");
+ok2(created.length === before + 3 && created.at(-1).flags.flowstate.terrain === "difficult", "…and a different button isn't held up by the last one");
+
 console.log(fails ? `${fails} FAILED` : "all passed");
 process.exit(fails ? 1 : 0);

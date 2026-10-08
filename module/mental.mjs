@@ -335,7 +335,7 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
   if (adaptStack) notes.push("Adapt: an Adaptation stack makes this Manifest Strengthened");
   // Some Modes need no attack roll (Redirect stores a charge on you).
   if (NO_ATTACK.has(plan.mode.id)) {
-    const out = await wonders.resolveMode({ attacker: actor, target: actor, o: { stacks: 0 }, result: { hit: true }, m: mental, mode: plan.mode, power: plan.power, enhanced: plan.enhance, choices: plan.choices, range: plan.range, stacks: 0, hit: true, crit: false, text: plan.text });
+    const out = await wonders.resolveMode({ attacker: actor, target: actor, o: { stacks: 0 }, result: { hit: true }, m: mental, bs: plan.alignStacks, mode: plan.mode, power: plan.power, enhanced: plan.enhance, choices: plan.choices, range: plan.range, stacks: 0, hit: true, crit: false, text: plan.text });
     await post(actor, { title: `${esc(actor.name)} — ${esc(plan.mode.name)}`, rolls: out.rolls, body: `<div class="fs-result">${out.html}</div>` });
     return true;
   }
@@ -396,7 +396,7 @@ export async function activateWard(actor) {
   if (p.kind === "negate") return ui.notifications.info(`${p.name} works on its own: when you would take damage you're asked whether to spend 1 RP to negate it.`);
   const form = R.FORMS[p.form];
   const align = alignmentOf(actor);
-  if (form.needs === "dream" && !R.alignedTo(align, "dream")) return ui.notifications.warn(`${p.name} can only be activated in the Dream Alignment.`);
+  if (form.needs === "dream" && !(R.alignedTo(align, "dream") && align.level >= 2)) return ui.notifications.warn(`${p.name} can only be activated while you are at least 2 in the Dream Alignment.`);
   const th = theory(actor), wt = willTier(actor);
   const innate = wt >= 3 && !mark(actor, "innateTurn") && inActiveCombat(actor);
   const enhanceCost = minOf(actor, "will");
@@ -478,7 +478,7 @@ async function applyWard({ attacker, target, ward }) {
   return lines.join("<br>");
 }
 
-/** Enhanced Reverie: whenever a Dream Manifest of yours hits, each Enhanced Reverie shield you hold grows by 5 (× the Icon's scaling), up to the cap in all. */
+/** Enhanced Reverie at 4 Dream Alignment: whenever a Dream Manifest of yours hits, each Enhanced Reverie shield you hold grows by 5 (× the Icon's scaling), up to the cap in all. */
 async function growReverie(attacker, grade) {
   const mine = [];
   for (const a of new Set([...(globalThis.game?.actors ?? []), ...(globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(Boolean)])) {
@@ -508,7 +508,7 @@ async function growReverie(attacker, grade) {
 /** A Manifest's Mode lands (the first time, or after a Chant reroll): apply it and build the card. */
 async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0, attackMessage = null, shattered = false }) {
   const c = { attacker, target, o, result, m, mode, power: m.power, enhanced: m.enhanced, choices: m.choices ?? {}, range: m.range, text: m.text, hit, margin, crit: hit && !!result.crit, index,
-    stacks: stacksBase + (hit ? (result.critStacks ?? 0) : 0), now: !!m.spread };
+    stacks: stacksBase + (hit ? (result.critStacks ?? 0) : 0), bs: m.alignStacks ?? 0, now: !!m.spread };
   // Brace, Dip, Shatter and parrying weapons guard against this attack like any other Melee or Ranged one: a damaging Mode asks for the guard (once).
   let guardP = null;
   c.guardOf = () => (guardP ??= attackGuard(attacker, target, o, attackMessage, index, { hit, shattered }));
@@ -523,7 +523,7 @@ async function landManifest({ attacker, target, o, m, mode, result, stacksBase, 
     if (g.any && g.damaged && (g.direct === 0 || g.dipZero)) riposte = { items: g.riposteItems ?? [], noDamage: g.direct === 0, dipZero: !!g.dipZero };
   }
   const tenet = "";
-  const grow = hit && R.wonderById(m.wonder)?.kind === "dream" ? await growReverie(attacker, attacker.system.icon?.system.grade) : "";
+  const grow = hit && R.wonderById(m.wonder)?.kind === "dream" && R.alignedTo(alignmentOf(attacker), "dream") && alignmentOf(attacker).level >= 4 ? await growReverie(attacker, attacker.system.icon?.system.grade) : "";
   let crits = "";
   if (c.crit) for (const f of wonders.ON_CRIT) crits += (await f(c)) ?? "";
   // Tenets pop up once the card is out (and again next time if they aren't used).
@@ -664,15 +664,15 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
   const per = (uses, enhanced, near) => {
     let n = enhanced ? p.enhancedAmount : p.amount;
     if (form.chooses) n = enhanced || cat === icon.system.chosen ? p.amount : p.other;
-    // Zealot: full negation in a Deepened Nightmare Alignment (2 or more), or in any Nightmare Alignment when Enhanced.
-    if (form.needs === "deepNightmare") n = (R.alignedTo(align, "nightmare") && (align.level >= 2 || enhanced)) ? p.amount : p.other;
+    // Zealot: full negation at 2 or more Nightmare Alignment.
+    if (form.needs === "deepNightmare") n = (R.alignedTo(align, "nightmare") && align.level >= 2) ? p.amount : p.other;
     if (form.near) n = near ? p.amount : p.other;
     if (form.grows) n += p.grows * (uses + (enhanced ? 1 : 0));
     return Math.floor(applyStacks(n, R.alignmentWard(align, p.align).stacks));        // 4 Alignment: the bolded effect is Strengthened
   };
   // Echo: once it has fully negated an attack, it keeps working for free until your next turn.
   const echo = actor.getFlag("flowstate", "echoWard");
-  let uses = 0, near = !!source?.near, enhancedUsed = false;
+  let uses = 0, near = !!source?.near, enhancedUsed = false, weakened = false;
   if (form.echo && echo && echo.key === (turnKey() ?? "ooc") && echo.n > 0) {
     const n = Math.min(left, echo.n * p.amount);
     left -= n;
@@ -696,6 +696,8 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
     if (!(await pay(actor, { rp: 1, energy: enh ? willMin : 0 }, `${p.name}'s Ward`))) break;
     left -= nn; uses++;
     if (enh) enhancedUsed = true;
+    // Zealot, Enhanced at 4 Nightmare Alignment: the damage is Weakened on use (once per damage instance).
+    if (enh && form.needs === "deepNightmare" && R.alignedTo(align, "nightmare") && align.level >= 4 && !weakened) { weakened = true; const before = left; left = Math.floor(applyStacks(left, -1)); notes.push(`Zealot (4 Nightmare): the rest is Weakened, ${before} → ${left}`); }
     notes.push(`${p.name} negates ${nn} (1 RP${enh ? `, Enhanced for ${willMin} Energy` : ""})`);
   }
   if (form.echo && left <= 0 && amount > 0) {
@@ -812,12 +814,12 @@ async function beforeClear(actor) {
   for (const f of wonders.BEFORE_CLEAR) await f(actor);
   const acts = wonders.perennialActs(actor);
   if (acts.length) await post(actor, { title: `${esc(actor.name)} — Perennial`, body: wonders.actButtons(acts), flags: { flowstate: { mentalAct: { acts } } } });
-  // Reverie: the shielding holds between turns as long as you are still in a Dream Alignment as your turn starts (it is kept, so there is nothing to pay).
+  // Reverie: the shielding holds between turns as long as you are still at least 2 in a Dream Alignment as your turn starts (it is kept, so there is nothing to pay).
   const rev = [];
   for (const a of everyActor()) for (const e of spellEffects(a, "shield")) { const d = e.flags.flowstate.spellEffect; if (d.reverie && d.caster === actor.uuid) rev.push(e); }
   if (!rev.length) return;
   const al = alignmentOf(actor);
-  const keep = al.kind === "dream" && al.level >= 1;
+  const keep = al.kind === "dream" && al.level >= 2;
   for (const e of rev) await changeEffect(e, { "flags.flowstate.spellEffect.persistent": keep });
 }
 

@@ -13,7 +13,7 @@ import * as R from "./mental-rules.mjs";
 import * as mental from "./mental.mjs";
 import { askFor, runOnOwner } from "./charges.mjs";
 import { tierOf } from "./skills.mjs";
-import { MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
+import { bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = f => new Roll(f).evaluate();
@@ -80,11 +80,12 @@ const DESTRUCTION = {
     return `${s.line}. ${g}${c.enhanced ? " The Ignite can spread to an adjacent target (button below)." : ""}`;
   },
   async "mental-destruction-nightmare:irradiate"(c) {
-    await putSpellEffect(c.target, { kind: "irradiated", stack: true, caster: c.attacker.uuid, name: `Irradiated (+${c.power} damage taken)`, extra: c.power, healDown: c.enhanced ? c.power : 0, mode: c.mode.id,
-      description: `Takes ${c.power} additional damage from all sources${c.enhanced ? " and healing is reduced by the same" : ""}, until the start of ${c.attacker.name}'s next turn. Stacks.` });
+    const more = bold(c.bs, c.power);
+    await putSpellEffect(c.target, { kind: "irradiated", stack: true, caster: c.attacker.uuid, name: `Irradiated (+${more} damage taken)`, extra: more, healDown: c.enhanced ? more : 0, mode: c.mode.id,
+      description: `Takes ${more} additional damage from all sources${c.enhanced ? " and healing is reduced by the same" : ""}, until the start of ${c.attacker.name}'s next turn. Stacks.` });
     const s = await strike(c, 2, 8, "radiation", { label: "Irradiate" });
     const stacks = fx(c.target, "irradiated").length;
-    return `${s.line}. ${esc(c.target.name)} takes <strong>${c.power * stacks}</strong> extra damage from every source until your next turn (${stacks} stack${stacks === 1 ? "" : "s"})${c.enhanced ? ", and healing is reduced by the same" : ""}.`;
+    return `${s.line}. ${esc(c.target.name)} takes <strong>${more * stacks}</strong> extra damage from every source until your next turn (${stacks} stack${stacks === 1 ? "" : "s"})${c.enhanced ? ", and healing is reduced by the same" : ""}.`;
   },
   async "mental-destruction-nightmare:freeze"(c) {
     const s = await strike(c, 2, 8, "cold", { label: "Freeze" });
@@ -160,21 +161,22 @@ ACTS.infuse = async (x, caster, target) => {
 MODES["mental-peace-dream:pacify"] = async c => {
   for (const e of fx(c.target, "pacify")) if (dataOf(e).caster === c.attacker.uuid) await changeEffect(e, null);       // doesn't stack
   const enh = !!c.enhanced;
-  await putSpellEffect(c.target, { kind: "pacify", caster: c.attacker.uuid, name: enh ? "Pacify (Enhanced)" : "Pacify", power: c.power, enhanced: enh, mode: c.mode.id,
-    ...(enh ? { dodgeDieUp: c.power, takenDice: c.power } : { attackDie: 2 * c.power, dealtDice: c.power }),
-    description: enh ? `Dodge dice +${c.power} die size, and incoming damage is reduced by ${c.power}d8, until the start of ${c.attacker.name}'s next turn.` : `Attack rolls −${2 * c.power} die size, and damage dealt is reduced by ${c.power}d8, until the start of ${c.attacker.name}'s next turn.` });
-  return enh ? `${esc(c.target.name)} is Pacified (Enhanced): <strong>+${c.power} die size</strong> to dodge rolls, and incoming damage is reduced by <strong>${c.power}d8</strong>.`
-    : `${esc(c.target.name)} is Pacified: <strong>−${2 * c.power} die size</strong> on attack rolls, and the damage they deal is reduced by <strong>${c.power}d8</strong>.`;
+  const up = bold(c.bs, c.power), down = bold(c.bs, 2 * c.power);
+  await putSpellEffect(c.target, { kind: "pacify", caster: c.attacker.uuid, name: enh ? "Pacify (Enhanced)" : "Pacify", power: c.power, bstacks: c.bs, enhanced: enh, mode: c.mode.id,
+    ...(enh ? { dodgeDieUp: up, takenDice: c.power } : { attackDie: down, dealtDice: c.power }),
+    description: enh ? `Dodge dice +${up} die size, and incoming damage is reduced by ${c.power}d8, until the start of ${c.attacker.name}'s next turn.` : `Attack rolls −${down} die size, and damage dealt is reduced by ${c.power}d8, until the start of ${c.attacker.name}'s next turn.` });
+  return enh ? `${esc(c.target.name)} is Pacified (Enhanced): <strong>+${up} die size</strong> to dodge rolls, and incoming damage is reduced by <strong>${c.power}d8</strong>.`
+    : `${esc(c.target.name)} is Pacified: <strong>−${down} die size</strong> on attack rolls, and the damage they deal is reduced by <strong>${c.power}d8</strong>.`;
 };
 MODES["mental-peace-dream:absolution"] = async c => {
-  await putSpellEffect(c.target, { kind: "absolution", caster: c.attacker.uuid, name: "Absolution (2 stacks)", stacks: 2, power: c.power, enhanced: !!c.enhanced, mode: c.mode.id,
-    description: `Each time they deal or take damage, a stack reduces it by ${5 * c.power}${c.enhanced ? " (the caster chooses when and how many)" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-  return `${esc(c.target.name)} gains <strong>2 Absolution</strong> stacks: each time they deal or take damage, a stack reduces it by <strong>${5 * c.power}</strong>${c.enhanced ? " (you choose when, and how many)" : ""}.`;
+  await putSpellEffect(c.target, { kind: "absolution", caster: c.attacker.uuid, name: "Absolution (2 stacks)", stacks: 2, power: c.power, bstacks: c.bs, enhanced: !!c.enhanced, mode: c.mode.id,
+    description: `Each time they deal or take damage, a stack reduces it by ${bold(c.bs, 5 * c.power)}${c.enhanced ? " (the caster chooses when and how many)" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
+  return `${esc(c.target.name)} gains <strong>2 Absolution</strong> stacks: each time they deal or take damage, a stack reduces it by <strong>${bold(c.bs, 5 * c.power)}</strong>${c.enhanced ? " (you choose when, and how many)" : ""}.`;
 };
 MODES["mental-peace-dream:guard"] = async c => {
-  await putSpellEffect(c.target, { kind: "guard", stack: true, caster: c.attacker.uuid, name: `Guard${c.enhanced ? " (Enhanced)" : ""}`, power: c.power, enhanced: !!c.enhanced, mode: c.mode.id,
-    description: `When they would take damage, ${c.attacker.name} can redirect up to ${15 * c.power} of it to themselves${c.enhanced ? " (taken at the start of their next turn)" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-  return `${esc(c.target.name)} gains a <strong>Guard</strong> stack: you can redirect up to <strong>${15 * c.power}</strong> of the damage they would take to yourself${c.enhanced ? ", taking it at the start of your next turn" : ""}.`;
+  await putSpellEffect(c.target, { kind: "guard", stack: true, caster: c.attacker.uuid, name: `Guard${c.enhanced ? " (Enhanced)" : ""}`, power: c.power, bstacks: c.bs, enhanced: !!c.enhanced, mode: c.mode.id,
+    description: `When they would take damage, ${c.attacker.name} can redirect up to ${bold(c.bs, 15 * c.power)} of it to themselves${c.enhanced ? " (taken at the start of their next turn)" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
+  return `${esc(c.target.name)} gains a <strong>Guard</strong> stack: you can redirect up to <strong>${bold(c.bs, 15 * c.power)}</strong> of the damage they would take to yourself${c.enhanced ? ", taking it at the start of your next turn" : ""}.`;
 };
 /** Benediction (Peace T4): after a Peace Mode hits, duplicate it onto other targets for free. */
 ACT_PROVIDERS.push(async c => {
@@ -225,19 +227,19 @@ async function serenity({ actor, roll: atk, die, net, targetActor }) {
 
 MODES["mental-war-nightmare:provoke"] = async c => {
   for (const e of fx(c.target, "provoke")) if (!c.enhanced || dataOf(e).caster === c.attacker.uuid) { if (!c.enhanced) await changeEffect(e, null); }
-  await putSpellEffect(c.target, { kind: "provoke", caster: c.attacker.uuid, name: `Provoked${c.enhanced ? " (Enhanced)" : ""}`, attackDieUp: 2 * c.power, power: c.power, enhanced: !!c.enhanced, mode: c.mode.id,
-    description: `Their first set of AP on their turn must be spent attacking the nearest target, with +${2 * c.power} die size on that attack roll${c.enhanced ? "; the caster chooses the attack and/or its target" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-  return `${esc(c.target.name)} is <strong>Provoked</strong>: their first AP on their turn must go on an attack at the nearest target (+${2 * c.power} die size on the roll)${c.enhanced ? `; <em>you</em> choose the attack or the target` : ""}.`;
+  await putSpellEffect(c.target, { kind: "provoke", caster: c.attacker.uuid, name: `Provoked${c.enhanced ? " (Enhanced)" : ""}`, attackDieUp: bold(c.bs, 2 * c.power), power: c.power, bstacks: c.bs, enhanced: !!c.enhanced, mode: c.mode.id,
+    description: `Their first set of AP on their turn must be spent attacking the nearest target, with +${bold(c.bs, 2 * c.power)} die size on that attack roll${c.enhanced ? "; the caster chooses the attack and/or its target" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
+  return `${esc(c.target.name)} is <strong>Provoked</strong>: their first AP on their turn must go on an attack at the nearest target (+${bold(c.bs, 2 * c.power)} die size on the roll)${c.enhanced ? `; <em>you</em> choose the attack or the target` : ""}.`;
 };
 MODES["mental-war-nightmare:warzone"] = async c => {
-  await putSpellEffect(c.target, { kind: "warzone", stack: true, caster: c.attacker.uuid, name: `Warzone${c.enhanced ? " (Enhanced)" : ""}`, power: c.power, enhanced: !!c.enhanced, mode: c.mode.id,
+  await putSpellEffect(c.target, { kind: "warzone", stack: true, caster: c.attacker.uuid, name: `Warzone${c.enhanced ? " (Enhanced)" : ""}`, power: c.power, bstacks: c.bs, enhanced: !!c.enhanced, mode: c.mode.id,
     description: `When they deal damage, a stack adds ${c.power}d8 of its type${c.enhanced ? " (not used up on a crit)" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
   return `${esc(c.target.name)} gains a <strong>Warzone</strong> stack: their next damage gets <strong>+${c.power}d8</strong> of its type${c.enhanced ? " (kept on a crit)" : ""}.`;
 };
 MODES["mental-war-nightmare:bloodbond"] = async c => {
-  await putSpellEffect(c.target, { kind: "bloodbond", stack: true, caster: c.attacker.uuid, name: `Bloodbond${c.enhanced ? " (Enhanced)" : ""}`, power: c.power, enhanced: !!c.enhanced, range: c.range, mode: c.mode.id,
-    description: `When they deal damage, ${c.attacker.name} can duplicate up to ${10 * c.power} of it onto another target in range. Until the start of the caster's next turn.` });
-  return `${esc(c.target.name)} gains a <strong>Bloodbond</strong> stack: you can duplicate up to <strong>${10 * c.power}</strong> of the damage they deal onto another target (a new attack roll).`;
+  await putSpellEffect(c.target, { kind: "bloodbond", stack: true, caster: c.attacker.uuid, name: `Bloodbond${c.enhanced ? " (Enhanced)" : ""}`, power: c.power, bstacks: c.bs, enhanced: !!c.enhanced, range: c.range, mode: c.mode.id,
+    description: `When they deal damage, ${c.attacker.name} can duplicate up to ${bold(c.bs, 10 * c.power)} of it onto another target in range. Until the start of the caster's next turn.` });
+  return `${esc(c.target.name)} gains a <strong>Bloodbond</strong> stack: you can duplicate up to <strong>${bold(c.bs, 10 * c.power)}</strong> of the damage they deal onto another target (a new attack roll).`;
 };
 ACTS.warpath = async (x, caster, target) => {
   if (!(await mental.pay(caster, { energy: minOf(caster, "snap") }, "Warpath"))) return false;
@@ -296,12 +298,12 @@ MODES["mental-adaptation-dream:crescendo"] = async c => {
 };
 MODES["mental-adaptation-dream:adaptive-skin"] = async c => {
   const dtype = c.enhanced ? (c.choices.dtype || "physical") : null;
-  await putSpellEffect(c.target, { kind: "skin", stack: true, caster: c.attacker.uuid, name: `Adaptive Skin${dtype ? ` (${dtype})` : ""}`, power: c.power, dtype, enhanced: !!c.enhanced, mode: c.mode.id,
-    description: `All damage they take is reduced by ${c.power}${dtype ? ` (only ${dtype} damage; the first stack of extra reduction is already counted)` : ""}; ${c.attacker.name} can spend Adaptation stacks for more reduction against a damage type. Until the start of ${c.attacker.name}'s next turn.` });
-  return `${esc(c.target.name)} gains <strong>Adaptive Skin</strong>: damage they take is reduced by <strong>${c.power}</strong>${dtype ? `, but only ${esc(dtype)} damage (with one Adaptation stack's worth already in)` : ""}.${await gainOncePerAttack(c)}`;
+  await putSpellEffect(c.target, { kind: "skin", stack: true, caster: c.attacker.uuid, name: `Adaptive Skin${dtype ? ` (${dtype})` : ""}`, power: c.power, bstacks: c.bs, dtype, enhanced: !!c.enhanced, mode: c.mode.id,
+    description: `All damage they take is reduced by ${bold(c.bs, c.power)}${dtype ? ` (only ${dtype} damage; the first stack of extra reduction is already counted)` : ""}; ${c.attacker.name} can spend Adaptation stacks for more reduction against a damage type. Until the start of ${c.attacker.name}'s next turn.` });
+  return `${esc(c.target.name)} gains <strong>Adaptive Skin</strong>: damage they take is reduced by <strong>${bold(c.bs, c.power)}</strong>${dtype ? `, but only ${esc(dtype)} damage (with one Adaptation stack's worth already in)` : ""}.${await gainOncePerAttack(c)}`;
 };
 MODES["mental-adaptation-dream:second-wind"] = async c => {
-  const n = 5 * c.power, e = c.target.system.energy;
+  const n = bold(c.bs, 5 * c.power), e = c.target.system.energy;
   const gain = Math.max(0, Math.min(n, (e?.max ?? 0) - (e?.value ?? 0)));
   if (gain) await setCond(c.target, { "system.energy.value": e.value + gain });
   return `${esc(c.target.name)} regains <strong>${gain}</strong> Energy.${await gainOncePerAttack(c)}${stacksOf(c.attacker).length >= 2 ? " You can spend 2 stacks to remove a condition (button below)." : ""}`;
@@ -350,7 +352,7 @@ BEFORE_CLEAR.push(async actor => {
 
 for (const id of ["mental-perfection-nightmare:exact", "mental-perfection-nightmare:hone", "mental-perfection-nightmare:masterstroke"]) MISS_MODES.add(id);
 MODES["mental-perfection-nightmare:exact"] = async c => {
-  const pierce = c.enhanced ? applyStacks(5 * c.power, c.hit ? 1 : 0) : 0;
+  const pierce = c.enhanced ? bold((c.bs ?? 0) + (c.hit ? 1 : 0), 5 * c.power) : 0;
   const count = c.power;
   const r = await roll(`${count}d10`);
   rolled.push(r);
@@ -363,7 +365,7 @@ MODES["mental-perfection-nightmare:exact"] = async c => {
 };
 MODES["mental-perfection-nightmare:hone"] = async c => {
   for (const e of fx(c.target, "hone")) await changeEffect(e, null);                     // doesn't stack
-  const bonus = c.hit ? c.power : Math.floor(applyStacks(c.power, -1));
+  const bonus = bold((c.bs ?? 0) + (c.hit ? 0 : -1), c.power);
   await putSpellEffect(c.target, { kind: "hone", caster: c.attacker.uuid, name: `Hone (${c.enhanced ? "set to average" : `+${bonus}`})`, honeBonus: bonus, honeStr: !!c.hit, honeSet: !!c.enhanced, mode: c.mode.id,
     description: `${c.enhanced ? `Attack roll results are set to the die's average (rounded down) plus ${bonus}, up to the roll's maximum.` : `Attack roll results get +${bonus}, up to the roll's maximum.`}${c.hit ? " Damage rolls are Strengthened." : ""} Until the start of ${c.attacker.name}'s next turn.` });
   return `${esc(c.target.name)} is <strong>Honed</strong>${c.hit ? "" : " (it missed, so the bonus is Weakened)"}: attack roll results ${c.enhanced ? `are set to the average, +${bonus}` : `+${bonus}`} (up to the roll's maximum)${c.hit ? ", and their damage rolls are Strengthened" : ""}.`;
@@ -460,7 +462,7 @@ export async function onRollBuffs(ctx) {
 /* -------------------------------------------- */
 
 let busy = false;
-const dealDice = async (count, sides, label, notes, sign = 1) => { const r = await roll(`${count}d${sides}`); const v = r.total * sign; notes.push(`${label}: ${sign > 0 ? "+" : "−"}${r.total} (${count}d${sides})`); return v; };
+const dealDice = async (count, sides, label, notes, sign = 1, bstacks = 0) => { const r = await roll(`${count}d${sides}`); const total = bold(bstacks, r.total); const v = total * sign; notes.push(`${label}: ${sign > 0 ? "+" : "−"}${total} (${count}d${sides}${bstacks ? ` = ${r.total}` : ""})`); return v; };
 const near100 = (a, target) => { const ta = attackerToken(a), tb = target ? attackerToken(target) : null; return !ta || !tb || !globalThis.canvas?.grid || tokenDistance(ta, tb) <= 100; };
 
 /** Use up (or ask about) Absolution stacks on a creature for one instance of damage. Returns the reduction. */
@@ -476,8 +478,9 @@ async function absolve(holder, notes) {
       used = Math.max(0, Math.min(stacks, Math.floor(num(ans?.n))));
     }
     if (!used) continue;
-    cut += 5 * d.power * used;
-    notes.push(`Absolution on ${esc(holder.name)}: −${5 * d.power * used} (${used} stack${used === 1 ? "" : "s"})`);
+    const per = bold(d.bstacks, 5 * d.power);
+    cut += per * used;
+    notes.push(`Absolution on ${esc(holder.name)}: −${per * used} (${used} stack${used === 1 ? "" : "s"})`);
     if (stacks - used <= 0) await changeEffect(e, null); else await changeEffect(e, { "flags.flowstate.spellEffect.stacks": stacks - used, name: `Absolution (${stacks - used} stack${stacks - used === 1 ? "" : "s"})` });
   }
   return cut;
@@ -492,7 +495,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     // War: Warzone adds dice automatically; a Provoked attack was buffed too.
     for (const e of fx(attacker, "warzone").slice(0, 1)) {
       const d = dataOf(e);
-      n += await dealDice(d.power, 8, "Warzone", notes);
+      n += await dealDice(d.power, 8, "Warzone", notes, 1, d.bstacks);
       buffs.push({ caster: d.caster, power: d.power, mode: "mental-war-nightmare:warzone" });
       if (!(d.enhanced && crit)) await changeEffect(e, null);
     }
@@ -517,18 +520,18 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
       if (ans && (await mental.pay(caster, { energy: cost }, "Warmonger"))) n += await dealDice(power, 12, "Warmonger", notes);
     }
     // Pacify (normal) lowers the damage its target deals; Absolution lowers it too.
-    for (const e of fx(attacker, "pacify")) { const d = dataOf(e); if (d.dealtDice) n -= await dealDice(d.dealtDice, 8, "Pacify", notes, 1); }
+    for (const e of fx(attacker, "pacify")) { const d = dataOf(e); if (d.dealtDice) n -= await dealDice(d.dealtDice, 8, "Pacify", notes, 1, d.bstacks); }
     n -= await absolve(attacker, notes);
   }
   // ---- the one taking the damage
   for (const e of fx(target, "irradiated")) n += dataOf(e).extra;
   if (fx(target, "irradiated").length) notes.push(`Irradiated: +${fx(target, "irradiated").reduce((s, e) => s + dataOf(e).extra, 0)}`);
-  for (const e of fx(target, "pacify")) { const d = dataOf(e); if (d.takenDice) n -= await dealDice(d.takenDice, 8, "Pacify (Enhanced)", notes); }
+  for (const e of fx(target, "pacify")) { const d = dataOf(e); if (d.takenDice) n -= await dealDice(d.takenDice, 8, "Pacify (Enhanced)", notes, 1, d.bstacks); }
   n -= await absolve(target, notes);
   for (const e of fx(target, "skin")) {
     const d = dataOf(e);
     if (d.dtype && d.dtype !== type) continue;
-    let cut = d.power;
+    let cut = bold(d.bstacks, d.power);
     // Extra reduction: the caster may spend Adaptation stacks (1, then 2, then 3, ... times the Power) against this damage's type.
     const caster = fromU(d.caster);
     const have = caster ? stacksOf(caster).length : 0;
@@ -536,7 +539,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
       const ans = await askFor(caster, { title: `${caster.name}: Adaptive Skin`, ok: "Adapt", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Spend Adaptation stacks (you have ${have}) for extra damage reduction against ${esc(type)} until your next turn: the first stack gives ${d.power}, the next ${2 * d.power}, then ${3 * d.power}...${d.enhanced ? " (one stack's worth is already counted)" : ""}</p><div class="fs-field"><label>Stacks</label><input type="number" name="n" value="0" min="0" max="${have}"></div>` });
       const k = Math.max(0, Math.min(have, Math.floor(num(ans?.n))));
       if (k) {
-        const total = (k + (d.enhanced ? 1 : 0)) * (k + (d.enhanced ? 1 : 0) + 1) / 2 * d.power;
+        const total = bold(d.bstacks, (k + (d.enhanced ? 1 : 0)) * (k + (d.enhanced ? 1 : 0) + 1) / 2 * d.power);
         await spendStacks(caster, k);
         await putSpellEffect(target, { kind: "skinType", caster: caster.uuid, name: `Adaptive Skin vs ${type} (−${total})`, dtype: type, dr: total, description: `Reduces ${type} damage by ${total} until the start of ${caster.name}'s next turn.` });
         cut += total; notes.push(`${k} Adaptation stack${k === 1 ? "" : "s"}: −${total} against ${esc(type)}`);
@@ -558,7 +561,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
   for (const e of fx(target, "guard")) {
     const d = dataOf(e), caster = fromU(d.caster);
     if (!caster || n <= 0 || caster.uuid === target.uuid) continue;
-    const cap = 15 * d.power;
+    const cap = bold(d.bstacks, 15 * d.power);
     const ans = await askFor(caster, { title: `${caster.name}: Guard`, ok: "Redirect", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Consume a Guard stack to redirect up to <strong>${cap}</strong> of it to yourself${d.enhanced ? " (you take it at the start of your next turn)" : ""}?</p>` });
     if (!ans) continue;
     const moved = Math.min(cap, n);
@@ -572,7 +575,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
   if (attacker) for (const e of fx(attacker, "bloodbond")) {
     const d = dataOf(e), caster = fromU(d.caster);
     if (!caster || n <= 0) continue;
-    const cap = 10 * d.power, take = Math.min(cap, n);
+    const cap = bold(d.bstacks, 10 * d.power), take = Math.min(cap, n);
     const reach = d.range === "melee" ? caster.system.derived?.size?.melee ?? 5 : 100;
     const ct = attackerToken(caster);
     const cands = (globalThis.canvas?.tokens?.placeables ?? []).filter(t => t.actor && t.actor.type !== "pile" && t.actor.uuid !== target.uuid && t.actor.uuid !== caster.uuid && (!ct || tokenDistance(ct, t) <= reach)).map(t => t.actor);

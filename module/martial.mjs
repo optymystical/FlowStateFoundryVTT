@@ -172,7 +172,7 @@ export const WEAPON_MATERIALS = {
 export const ARMOR_WEIGHTS = {
   light:   { label: "Light",   order: 0, stealthDis: 0,        speedPct: 20, don: "1 turn" },
   medium:  { label: "Medium",  order: 1, stealthDis: 1,        speedPct: 40, don: "1 minute" },
-  heavy:   { label: "Heavy",   order: 2, stealthDis: 1,        speedPct: 60, don: "10 minutes" },
+  heavy:   { label: "Heavy",   order: 2, stealthDis: 2,        speedPct: 60, don: "10 minutes" },
   titanic: { label: "Titanic", order: 3, stealthDis: Infinity, speedPct: 80, don: "1 hour" }
 };
 const WEIGHT_ORDER = ["light", "medium", "heavy", "titanic"];

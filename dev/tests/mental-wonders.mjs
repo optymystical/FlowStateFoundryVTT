@@ -135,6 +135,30 @@ card = await hit("mental-life-dream:bloom");
 const acts = messages.find(m => m.flags?.flowstate?.mentalAct)?.flags.flowstate.mentalAct.acts ?? [];
 ok2(acts.some(a => a.id === "pollinate"), "Life T2: Pollinate is offered after a hit");
 
+console.log("== Alignment 2 scales the bolded effects of Modes");
+const setAlign = (kind, level) => { hero.flags.flowstate = { ...(hero.flags.flowstate ?? {}), alignment: kind ? { kind, level } : null }; };
+reset(); setAlign("dream", 1);
+await hit("mental-life-dream:bloom");
+ok2(effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === 60, "1 Alignment: no scaling yet (Bloom still 60 temp HP)");
+reset(); setAlign("dream", 2);
+await hit("mental-life-dream:bloom");
+ok2(effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === 90, "2 Dream Alignment: a Dream Mode's bolded effect is Strengthened (Bloom 60 → 90 temp HP)");
+reset(); setAlign("dream", 2);
+await hit("mental-beyond-dream:ascend");
+ok2(effs(orc, "lift")[0]?.flags.flowstate.spellEffect.liftUp === 270, "…Ascend's 180 Lift becomes 270");
+reset(); setAlign("dream", 2);
+await hit("mental-death-nightmare:waste");
+ok2(effs(orc, "waste")[0] && Math.floor(6 * 0.5) === 3 && effs(orc, "waste")[0].flags.flowstate.spellEffect.bstacks === -1, "A Nightmare Mode under Dream 2 is Weakened (Waste carries the Weakened stack)");
+{ const w = W.dodgeWaste(orc); ok2(w?.pen === 3, "…and takes 3 die sizes off instead of 6"); }
+reset(); setAlign("dream", 2);
+await hit("mental-below-nightmare:sink");
+{ const hold = effs(orc, "hold")[0]; ok2(hold?.flags.flowstate.spellEffect.holdMin === 3, "…Sink's escape check is 3 instead of 6"); }
+reset(); setAlign("nightmare", 2);
+await hit("mental-below-nightmare:sink");
+{ const hold = effs(orc, "hold")[0]; ok2(hold?.flags.flowstate.spellEffect.holdMin === 9, "2 Nightmare Alignment: Sink is Strengthened (6 → 9)"); }
+setAlign(null);
+reset();
+
 console.log("== Life: Verdant Soul (Tenet) and Perennial");
 const icon = mkIcon(hero, "Aegis", { form: "aegis", attuned: true, tenet: "mental-life-dream:verdant-soul" });
 reset(); messages.length = 0;

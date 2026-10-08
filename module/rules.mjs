@@ -18,11 +18,11 @@ export const STATS = {
 
 /** Ch7 Size Categories + Ch10 Terminal Velocity. physical = Strengthened(+)/Weakened(-) stacks on physical attacks. */
 export const SIZES = {
-  1: { maxMove: 10,  ratio: 0.25, rations: 0.25, physical: -2, melee: 1,  space: "< 1 ft³",   terminal: 1, noFallDamage: true },
-  2: { maxMove: 25,  ratio: 0.33, rations: 0.5,  physical: -1, melee: 3,  space: "1–3 ft³",   terminal: 1 },
-  3: { maxMove: 50,  ratio: 0.50, rations: 1,    physical: 0,  melee: 5,  space: "3–5 ft³",   terminal: 2 },
-  4: { maxMove: 100, ratio: 0.67, rations: 2,    physical: 1,  melee: 10, space: "5–10 ft³",  terminal: 3 },
-  5: { maxMove: 200, ratio: 0.75, rations: 4,    physical: 2,  melee: 20, space: "10–20 ft³", terminal: 4 }
+  1: { maxMove: 10,  rations: 0.25, physical: -2, melee: 1,  space: "< 1 ft³",   terminal: 1, noFallDamage: true },
+  2: { maxMove: 25,  rations: 0.5,  physical: -1, melee: 3,  space: "1–3 ft³",   terminal: 1 },
+  3: { maxMove: 50,  rations: 1,    physical: 0,  melee: 5,  space: "3–5 ft³",   terminal: 2 },
+  4: { maxMove: 100, rations: 2,    physical: 1,  melee: 10, space: "5–10 ft³",  terminal: 3 },
+  5: { maxMove: 200, rations: 4,    physical: 2,  melee: 20, space: "10–20 ft³", terminal: 4 }
 };
 
 export const DAMAGE_TYPES = {
@@ -68,16 +68,17 @@ export const maxEnergy = sp => sp * 5;
 export const energyRecover = max => Math.floor(max / 10);
 
 /**
- * Ch8 Movement. Full size max when Dex+Snap+Grasp ≥ ratio × total stats (incl. bonuses).
- * Below that it scales linearly, rounded to the nearest 5 ft, minimum 10 ft (designer ruling).
+ * Ch8 Movement. Base speed is the Size's maximum. Speed penalties are percentages that add together (two 20%s are 40%), speed moves in
+ * 5 ft increments (rounded to the nearest) and never drops below 5 ft.
  */
-export function moveSpeed({ dex, snap, grasp, total }, size) {
-  const s = SIZES[clampSize(size)];
-  const threshold = s.ratio * total;
-  const mobility = dex + snap + grasp;
-  if (threshold <= 0 || mobility >= threshold) return Math.max(10, s.maxMove);
-  const raw = s.maxMove * (mobility / threshold);
-  return Math.max(10, Math.round(raw / 5) * 5);
+export function moveSpeed(size, penaltyPct = 0) {
+  return speedFt(SIZES[clampSize(size)].maxMove, penaltyPct);
+}
+
+/** A speed (ft) less a percentage penalty: whole 5 ft increments, at least 5 ft. */
+export function speedFt(base, penaltyPct = 0) {
+  const pct = Math.min(100, Math.max(0, Number(penaltyPct) || 0));
+  return Math.max(5, Math.round(base * (1 - pct / 100) / 5) * 5);
 }
 
 /**
@@ -169,11 +170,12 @@ export function tempoModifier(slow, haste, pain) {
 
 /**
  * Movement cost in AP (Ch8 Movement/Terrain, Ch9 Crouch/Prone/Stealth/Slow/Haste).
- * Posture/stealth terrain penalties act as rough (+1) or difficult (+2) and don't stack with each other.
+ * Posture/stealth terrain penalties act as rough (+1) or difficult (+2) and don't stack with each other, nor with the terrain the creature stands in
+ * (`terrain`: 0, 1 or 2 from terrain regions): the worst one applies.
  * If haste pushes the cost below 1 AP, you instead move multiple increments for 1 AP.
  */
-export function movementCost({ prone = false, crouch = false, stealth = false, tempo = 0, base = 1 } = {}) {
-  const terrain = prone ? 2 : crouch || stealth ? 1 : 0;
+export function movementCost({ prone = false, crouch = false, stealth = false, tempo = 0, base = 1, terrain: ground = 0 } = {}) {
+  const terrain = Math.max(prone ? 2 : crouch || stealth ? 1 : 0, ground);
   const cost = base + terrain + tempo;
   if (cost >= 1) return { ap: cost, multiplier: 1 };
   return { ap: 1, multiplier: 1 + (1 - cost) };
@@ -190,19 +192,20 @@ export function deriveCharacter({ stats, skillPoints, size, hpLost = 0 }) {
     total += value;
   }
   const e = k => effective[k].value;
-  const hpMax = maxHP(e("con"), e("will"), e("build"), size) - Math.max(0, hpLost);
+  const hpFull = maxHP(e("con"), e("will"), e("build"), size);
+  const hpMax = hpFull - Math.max(0, hpLost);
   return {
     bonus,
     effective,
     totalStats: total,
     hpMax,
-    pain: painThreshold(hpMax),
+    pain: painThreshold(hpFull),                       // Max HP loss doesn't lower the Pain Threshold
     restHeal: restHeal(e("con"), e("will"), e("build")),
     energyMax: maxEnergy(skillPoints),
     energyRecover: energyRecover(maxEnergy(skillPoints)),
     attackDie: attackDie(skillPoints),
     dodgeDie: dodgeDie(skillPoints),
-    move: moveSpeed({ dex: e("dex"), snap: e("snap"), grasp: e("grasp"), total }, size),
+    move: moveSpeed(size),
     size: SIZES[clampSize(size)]
   };
 }

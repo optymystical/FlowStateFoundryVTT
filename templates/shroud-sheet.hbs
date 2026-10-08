@@ -35,7 +35,8 @@
   {{/if}}
 
   <section class="fs-affixes">
-    <h3>Affixes <small>{{p.affixes.length}} / {{p.affixSlots}}{{#if p.affixPlus}} · effects doubled (+){{/if}}</small></h3>
+    <h3>Affixes <small>{{p.affixes.length}} attached · Free Affixes: {{p.freeAffixes}}</small></h3>
+    <p class="hint">Everyone attunes one Affix at no cost; each Foci or Shroud adds its Free Affixes to that, and every attuned Affix past them lowers your speed by 20%.</p>
     {{#each slots}}
     <div class="fs-field"><label>Slot {{n}}</label>
       <select data-affix-slot="{{n}}" {{#unless ../editable}}disabled{{/unless}}>
@@ -43,9 +44,11 @@
         {{#each ../affixChoices}}<optgroup label="{{label}}">{{selectOptions options selected=../value}}</optgroup>{{/each}}
       </select></div>
     {{#if info}}<p class="fs-affix-text"><strong>{{info.label}}:</strong> {{info.shroud}}</p>{{/if}}
-    {{else}}
-    <p class="hint">This Shroud type can't hold Affixes.</p>
     {{/each}}
+    {{#if p.affixPlus}}{{#if p.affixes.length}}
+    <div class="fs-field"><label>Doubled Affix <small>(while attuned, one Defensive Affix has its effects doubled)</small></label>
+      <select name="system.doubled" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions doubledChoices selected=p.doubled}}</select></div>
+    {{/if}}{{/if}}
     {{#if hasTourmaline}}
     <div class="fs-field"><label>Tourmaline element</label><select name="system.element" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions elements selected=system.element}}</select></div>
     {{/if}}

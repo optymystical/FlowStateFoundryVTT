@@ -1,0 +1,29 @@
+<div class="fs-currency-body">
+  <p class="hint">Characters carry these in their Misc items. A currency that merges into another turns every batch of the amount you give into one of that currency (100 copper make 1 silver). Currencies can't be removed from sheets.</p>
+  <div class="form-group">
+    <label>How many currencies</label>
+    <input type="number" name="count" value="{{count}}" min="1" max="{{max}}" step="1">
+  </div>
+  <table class="fs-table">
+    <thead><tr><th></th><th>Name</th><th>Merges into</th><th>How many make one</th></tr></thead>
+    <tbody>
+      {{#each rows}}
+      <tr data-index="{{index}}">
+        <td>
+          <button type="button" class="fs-inline" data-action="pickImage" data-index="{{index}}" data-tooltip="Choose a picture"><img src="{{img}}" alt="" width="32" height="32"></button>
+          <input type="hidden" name="img-{{index}}" value="{{img}}">
+        </td>
+        <td><input type="text" name="name-{{index}}" value="{{name}}" data-name-input placeholder="Currency {{number}}"></td>
+        <td>
+          <select name="into-{{index}}">
+            <option value="">Doesn't merge</option>
+            {{#each others}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}
+          </select>
+        </td>
+        <td><input type="number" name="amt-{{index}}" value="{{mergeAmount}}" min="0" step="1" data-tooltip="At least 2"></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <footer class="fs-wizard-nav"><button type="submit"><i class="fa-solid fa-floppy-disk"></i> Save</button></footer>
+</div>

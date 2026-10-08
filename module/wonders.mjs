@@ -15,6 +15,8 @@ import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import * as mental from "./mental.mjs";
 
+export const bold = R.bold;
+
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = formula => new Roll(formula).evaluate();
 const eff = (a, k) => a?.system?.derived?.effective?.[k]?.value ?? 0;
@@ -27,16 +29,22 @@ const living = a => a && a.type !== "pile" && !a.system?.magical;
 /* -------------------------------------------- */
 
 const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${game.combat.round}` : "ooc");
-/** Has this actor already used this "once per round" thing this round? */
+/** How many times a Tenet can trigger per round: once, or twice with 3 Alignment of the Tenet's type. */
+export function tenetUses(actor) {
+  const tn = tenetOf(actor);
+  if (!tn) return 1;
+  return R.tenetUses(actor.getFlag?.("flowstate", "alignment"), R.wonderById(tn.wonder)?.kind);
+}
+/** Has this actor already used this "once per round" thing this round (Tenets: as many times as they may per round)? */
 export function onceUsed(actor, id) {
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
-  return cur?.round === roundKey() && cur.ids.includes(id);
+  return cur?.round === roundKey() && cur.ids.filter(x => x === id).length >= tenetUses(actor);
 }
 export async function markOnce(actor, id) {
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
   const key = roundKey();
   const ids = cur?.round === key ? cur.ids : [];
-  if (!ids.includes(id)) await setActorFlag(actor, "mentalOnce", { round: key, ids: [...ids, id] });
+  if (ids.filter(x => x === id).length < tenetUses(actor)) await setActorFlag(actor, "mentalOnce", { round: key, ids: [...ids, id] });
 }
 /** "Once per round": true (and marked) the first time per round for this actor and id. */
 export async function tryOnce(actor, id) {
@@ -89,8 +97,9 @@ export async function pendingTurnStart(actor) {
     const d = e.flags.flowstate.spellEffect;
     if (!d.entomb) continue;
     const r = await roll(`${3 * d.power}d10`);
-    await post(actor, { title: `${esc(actor.name)} — Entombed`, rolls: [r], body: `<div class="fs-result">${esc(actor.name)} is crushed in the earth: <strong>${r.total}</strong> physical damage.</div>` });
-    await requestDamage(actor, r.total, "physical", 0, null, { silent: true });
+    const crush = bold(d.bstacks, r.total);
+    await post(actor, { title: `${esc(actor.name)} — Entombed`, rolls: [r], body: `<div class="fs-result">${esc(actor.name)} is crushed in the earth: <strong>${crush}</strong> physical damage.</div>` });
+    await requestDamage(actor, crush, "physical", 0, null, { silent: true });
   }
 }
 
@@ -143,18 +152,19 @@ export const ON_CRIT = [];
 export const MODES = {
   /* ---- Life (Dream) ---- */
   async "mental-life-dream:bloom"(c) {
-    const n = 20 * c.power;
+    const n = bold(c.bs, 20 * c.power);
     if (c.enhanced || c.now) { await putTemp(c.target, c.attacker, n, c.mode.id); return `${esc(c.target.name)} gets <strong>${n} temp HP</strong> now.`; }
     await putPending(c.target, c.attacker, "Bloom", { type: "tempHP", n, mode: c.mode.id });
     return `${esc(c.target.name)} gets <strong>${n} temp HP</strong> at the start of their next turn (until the start of your next turn).`;
   },
   async "mental-life-dream:flourish"(c) {
-    if (c.enhanced || c.now) { await putSpellEffect(c.target, { kind: "dodgeUp", caster: c.attacker.uuid, name: `Flourish (+${c.power} dodge die size)`, dodgeDieUp: c.power, mode: c.mode.id, description: `Dodge dice are ${c.power} size${c.power === 1 ? "" : "s"} bigger until the start of ${c.attacker.name}'s next turn.` }); return `${esc(c.target.name)}'s dodge dice are <strong>one size bigger</strong> now.`; }
-    await putPending(c.target, c.attacker, "Flourish", { type: "dodgeUp", mode: c.mode.id, power: c.power });
-    return `${esc(c.target.name)}'s dodge dice get <strong>+${c.power} die size</strong> from the start of their next turn (until the start of your next turn).`;
+    const up = bold(c.bs, c.power);
+    if (c.enhanced || c.now) { await putSpellEffect(c.target, { kind: "dodgeUp", caster: c.attacker.uuid, name: `Flourish (+${up} dodge die size)`, dodgeDieUp: up, mode: c.mode.id, description: `Dodge dice are ${up} size${up === 1 ? "" : "s"} bigger until the start of ${c.attacker.name}'s next turn.` }); return `${esc(c.target.name)}'s dodge dice are <strong>one size bigger</strong> now.`; }
+    await putPending(c.target, c.attacker, "Flourish", { type: "dodgeUp", mode: c.mode.id, power: up });
+    return `${esc(c.target.name)}'s dodge dice get <strong>+${up} die size</strong> from the start of their next turn (until the start of your next turn).`;
   },
   async "mental-life-dream:renewal"(c) {
-    const n = 4 * c.power;
+    const n = bold(c.bs, 4 * c.power);
     if (c.enhanced || c.now) return await heal(c.target, c.attacker, n);
     await putPending(c.target, c.attacker, "Renewal", { type: "heal", n, mode: c.mode.id });
     return `${esc(c.target.name)} will restore up to <strong>${n}</strong> health at the start of their next turn (even if they die before then: it can raise them from the dead).`;
@@ -170,17 +180,18 @@ export const MODES = {
     return `Wither removes <strong>${n}</strong> health from ${esc(c.target.name)} (${2 * c.power}d10 = ${r.total}${c.stacks ? ` → ${n}` : ""}), ignoring objects and defenses${c.enhanced ? ", and that much Max HP too" : ""}.`;
   },
   async "mental-death-nightmare:waste"(c) {
-    await putSpellEffect(c.target, { kind: "waste", stack: true, caster: c.attacker.uuid, name: `Waste${c.enhanced ? " (Enhanced)" : ""}`, enhanced: !!c.enhanced, power: c.power, mode: c.mode.id,
-      description: `A charge: the next dodge roll is ${2 * c.power} die sizes smaller${c.enhanced ? " and has Disadvantage" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-    return `${esc(c.target.name)} carries a <strong>Waste</strong> charge: their next dodge roll has its die size reduced by ${2 * c.power}${c.enhanced ? " and Disadvantage" : ""} (used automatically).`;
+    const size = bold(c.bs, 2 * c.power);
+    await putSpellEffect(c.target, { kind: "waste", stack: true, caster: c.attacker.uuid, name: `Waste${c.enhanced ? " (Enhanced)" : ""}`, enhanced: !!c.enhanced, power: c.power, bstacks: c.bs, mode: c.mode.id,
+      description: `A charge: the next dodge roll is ${size} die sizes smaller${c.enhanced ? " and has Disadvantage" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
+    return `${esc(c.target.name)} carries a <strong>Waste</strong> charge: their next dodge roll has its die size reduced by ${size}${c.enhanced ? " and Disadvantage" : ""} (used automatically).`;
   },
   async "mental-death-nightmare:execute"(c) {
     const r = await roll(`${c.power}d12`);
     rolled.push(r);
-    const up = r.total;
+    const up = bold(c.bs, r.total);
     await putSpellEffect(c.target, { kind: "execute", stack: true, caster: c.attacker.uuid, name: `Execute (+${up} Pain Threshold)`, painUp: up, execute: !!c.enhanced, mode: c.mode.id,
       description: `Pain Threshold raised by ${up}${c.enhanced ? "; if their health falls below half of the raised Pain Threshold they die" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-    return `${esc(c.target.name)}'s Pain Threshold is raised by <strong>${up}</strong> (${c.power}d12 = ${r.total})${c.enhanced ? `. <strong>If their health drops below half of it they die.</strong>` : ""}`;
+    return `${esc(c.target.name)}'s Pain Threshold is raised by <strong>${up}</strong> (${c.power}d12 = ${r.total}${c.bs ? ` → ${up}` : ""})${c.enhanced ? `. <strong>If their health drops below half of it they die.</strong>` : ""}`;
   },
 
   /* ---- Beyond (Dream) ---- */
@@ -191,12 +202,12 @@ export const MODES = {
   },
   async "mental-beyond-dream:redirect"(c) {
     // No attack roll: the charge goes on the caster until their next turn.
-    await putSpellEffect(c.attacker, { kind: "redirect", stack: true, caster: c.attacker.uuid, name: `Redirect (${R.RANGES[c.range]?.label ?? c.range}${c.enhanced ? ", Enhanced" : ""})`, range: c.range, enhanced: !!c.enhanced, power: c.power,
+    await putSpellEffect(c.attacker, { kind: "redirect", stack: true, caster: c.attacker.uuid, name: `Redirect (${R.RANGES[c.range]?.label ?? c.range}${c.enhanced ? ", Enhanced" : ""})`, range: c.range, enhanced: !!c.enhanced, power: c.power, bstacks: c.bs,
       description: `A charge: when an attack hits within ${R.RANGES[c.range]?.label ?? c.range} range that you can sense, use "Redirect" to make an attack roll against its result: on a hit it deals ${c.enhanced ? 10 : 20} × ${c.power} less damage${c.enhanced ? " (the roll automatically hits)" : ""}. Until your next turn.` });
     return `${esc(c.attacker.name)} stores a <strong>Redirect</strong> charge (${R.RANGES[c.range]?.label ?? c.range}) until their next turn: use the Redirect action when an attack hits within range.`;
   },
   async "mental-beyond-dream:ascend"(c) {
-    const lift = 60 * c.power;
+    const lift = bold(c.bs, 60 * c.power);
     await putSpellEffect(c.target, { kind: "lift", caster: c.attacker.uuid, name: `Ascend (${lift} Lift)`, liftUp: lift, mode: c.mode.id,
       description: `Grants ${lift} Lift until the start of ${c.attacker.name}'s next turn. ${c.enhanced ? "The caster controls the stabilization check." : "The target controls their flight and must stabilize (3 RP) if they take more than 1/10 of their max HP in damage or are pushed by enough Force."}` });
     return `${esc(c.target.name)} is lifted: <strong>${lift} Lift</strong> until the start of your next turn${c.enhanced ? ". You control their stabilization (succeed or fail as you like)." : `. They fly as they choose, and must stabilize for 3 RP if they take more than ${Math.floor(c.target.system.hp.max / 10)} damage or are pushed.`}`;
@@ -204,25 +215,28 @@ export const MODES = {
 
   /* ---- Below (Nightmare) ---- */
   async "mental-below-nightmare:sink"(c) {
+    const min = bold(c.bs, 2 * c.power);
     if ((c.target.system.lift ?? 0) > 0 || spellEffects(c.target, "lift").length) return `${esc(c.target.name)} isn't on the ground: Sink needs a grounded creature.`;
-    await holdWith(c, { min: 2 * c.power, label: "Sunk in the ground", turns: c.enhanced ? 3 : 1, flags: { below: true, sink: true } });
-    return `The ground grapples ${esc(c.target.name)}: breaking free needs a counter grapple roll of <strong>${2 * c.power}</strong> or higher, ${c.enhanced ? "lasting 3 turns" : "until the start of your next turn"}.`;
+    await holdWith(c, { min, label: "Sunk in the ground", turns: c.enhanced ? 3 : 1, flags: { below: true, sink: true } });
+    return `The ground grapples ${esc(c.target.name)}: breaking free needs a counter grapple roll of <strong>${min}</strong> or higher, ${c.enhanced ? "lasting 3 turns" : "until the start of your next turn"}.`;
   },
   async "mental-below-nightmare:burden"(c) {
+    const min = bold(c.bs, 2 * c.power);
     const dis = c.choices.dis === "dodge" ? "dodge" : "attack";
-    await putSpellEffect(c.target, { kind: "burden", stack: true, caster: c.attacker.uuid, name: `Burden (${dis})`, [dis === "attack" ? "attackDis" : "dodgeDis"]: 1, below: true, breakMin: 2 * c.power, mode: c.mode.id, turnsLeft: c.enhanced ? 3 : undefined,
-      description: `Disadvantage on ${dis} rolls. Stacks. A counter grapple check of ${2 * c.power} or higher removes all of it; otherwise until ${c.enhanced ? "3 of the caster's turns" : "the start of the caster's next turn"}.` });
+    await putSpellEffect(c.target, { kind: "burden", stack: true, caster: c.attacker.uuid, name: `Burden (${dis})`, [dis === "attack" ? "attackDis" : "dodgeDis"]: 1, below: true, breakMin: min, mode: c.mode.id, turnsLeft: c.enhanced ? 3 : undefined,
+      description: `Disadvantage on ${dis} rolls. Stacks. A counter grapple check of ${min} or higher removes all of it; otherwise until ${c.enhanced ? "3 of the caster's turns" : "the start of the caster's next turn"}.` });
     const n = spellEffects(c.target, "burden").length;
-    return `${esc(c.target.name)} is <strong>weighed down</strong>: Disadvantage on ${dis} rolls (${n} Burden stack${n === 1 ? "" : "s"}), until they break free with a counter grapple check of ${2 * c.power} or higher${c.enhanced ? ", or 3 turns" : ", or the start of your next turn"}.`;
+    return `${esc(c.target.name)} is <strong>weighed down</strong>: Disadvantage on ${dis} rolls (${n} Burden stack${n === 1 ? "" : "s"}), until they break free with a counter grapple check of ${min} or higher${c.enhanced ? ", or 3 turns" : ", or the start of your next turn"}.`;
   },
   async "mental-below-nightmare:entomb"(c) {
+    const min = bold(c.bs, 3 * c.power);
     const sunk = spellEffects(c.target, "hold").find(e => e.flags.flowstate.spellEffect.sink);
     const stacks = spellEffects(c.target, "burden").reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.attackDis) || 0) + (Number(e.flags.flowstate.spellEffect.dodgeDis) || 0), 0);
     if (!sunk || stacks < 3) return `Entomb needs a target under Sink and at least 3 Burden stacks (${esc(c.target.name)} has ${sunk ? "Sink" : "no Sink"} and ${stacks} Burden).`;
     await changeEffect(sunk, null);
     for (const e of spellEffects(c.target, "burden")) await changeEffect(e, null);
-    await holdWith(c, { min: 3 * c.power, label: "Entombed", turns: c.enhanced ? 3 : 1, flags: { below: true, entomb: true, power: c.power } });
-    return `${esc(c.target.name)} is <strong>entombed</strong> in the earth: blind, deaf and unable to smell. Escaping takes a counter grapple check of <strong>3</strong> or higher, and at the start of each of their turns they take ${3 * c.power}d10 physical damage${c.enhanced ? " (3 turns)" : ""}.`;
+    await holdWith(c, { min, label: "Entombed", turns: c.enhanced ? 3 : 1, flags: { below: true, entomb: true, power: c.power, bstacks: c.bs } });
+    return `${esc(c.target.name)} is <strong>entombed</strong> in the earth: blind, deaf and unable to smell. Escaping takes a counter grapple check of <strong>${min}</strong> or higher, and at the start of each of their turns they take ${3 * c.power}d10 physical damage${c.enhanced ? " (3 turns)" : ""}.`;
   }
 };
 
@@ -266,7 +280,7 @@ async function abilityActs(c) {
   const wt = tier(a, w.id);
   if (w.id === "mental-life-dream" && wt >= 2 && !c.m.spread) acts.push({ id: "pollinate", label: "Pollinate", tip: "Spread this Mode to another target within 100 ft you can sense (an attack roll)", cost: `⚡ ${Math.floor(minOf(a, "pon") / 2)}`, ...base });
   if (w.id === "mental-death-nightmare" && wt >= 2 && !c.m.reapplied) acts.push({ id: "fester", label: "Fester", tip: "The Mode's effect applies again at the start of their next turn", cost: `⚡ ${minOf(a, "snap")}`, ...base });
-  if (w.id === "mental-death-nightmare" && wt >= 4 && c.crit) acts.push({ id: "reap", label: "Reap", tip: "Manifest another Death Mode of the same Range for free", cost: `⚡ ${minOf(a, "snap")}`, ...base });
+  if (w.id === "mental-death-nightmare" && wt >= 4 && c.crit && living(c.target)) acts.push({ id: "reap", label: "Reap", tip: "Manifest another Death Mode of the same Range for free", cost: `⚡ ${minOf(a, "snap")}`, ...base });
   const tn = tenetOf(a);
   if (tn && !c.m.spread && !c.now) {
     if (tn.id === "mental-life-dream:verdant-soul") acts.push({ tenet: true, id: "verdantSoul", label: "Verdant Soul", tip: "Once per round: 10 temp HP to the target or yourself", cost: "once per round", mult: tn.mult, ...base });
@@ -379,7 +393,7 @@ export function dodgeWaste(actor) {
   const charges = spellEffects(actor, "waste");
   if (!charges.length) return null;
   const e = charges[0], d = e.flags.flowstate.spellEffect;
-  const pen = 2 * (d.power ?? 1);
+  const pen = bold(d.bstacks, 2 * (d.power ?? 1));
   return { pen, net: d.enhanced ? -1 : 0, effect: e, note: `Waste: die size −${pen}${d.enhanced ? " and Disadvantage" : ""}` };
 }
 export const useWaste = w => changeEffect(w.effect, null);
@@ -471,7 +485,7 @@ export async function useRedirect(actor) {
   let r = null, hit = !!d.enhanced;
   if (!hit) { r = await roll(`1d${actor.system.derived.attackDie}`); hit = r.total >= Number(out.beat); }
   await changeEffect(e, null);
-  const cut = (d.enhanced ? 10 : 20) * d.power;
+  const cut = bold(d.bstacks, (d.enhanced ? 10 : 20) * d.power);
   await post(actor, { title: `${esc(actor.name)} — Redirect`, rolls: r ? [r] : [], body: `<div class="fs-result">${hit ? `Redirect ${d.enhanced ? "(Enhanced: automatically hits)" : `hits (${r.total} vs ${out.beat})`}: the attack deals <strong>${cut}</strong> less damage. If that reduces it to 0 you may redirect it to another target within ${R.RANGES[d.range]?.label ?? d.range} range with a new attack roll, repeating the attack's effect on a hit.` : `Redirect misses (${r.total} vs ${out.beat}): the attack is unchanged.`}</div>` });
 }
 
@@ -498,19 +512,19 @@ const CHARGE_MODES = Object.fromEntries(Object.entries(CHARGES).map(([k, c]) => 
 export const isCharge = modeId => modeId in CHARGE_MODES;
 
 /** Put a charge of this kind on a target (no attack roll). `free` = from Unbound or Ricochet. */
-export async function placeCharge({ caster, target, kind, power, enhanced, choices = {}, mode }) {
+export async function placeCharge({ caster, target, kind, power, bstacks = 0, enhanced, choices = {}, mode }) {
   const orderPersist = CHARGES[kind].wonder === "mental-order-dream" && tier(caster, "mental-order-dream") >= 2
     && !spellEffects(target, "charge").some(e => e.flags.flowstate.spellEffect.caster === caster.uuid && e.flags.flowstate.spellEffect.persistent && CHARGES[e.flags.flowstate.spellEffect.charge]?.wonder === "mental-order-dream");
   const sign = choices.sign === "minus" ? "minus" : "plus", size = choices.size === "down" ? "down" : "up";
   const bits = [kind === "decree" || kind === "mandate" ? (sign === "plus" ? "+1" : "−1") : "", ["fracture", "larceny", "entropy"].includes(kind) ? `die size ${size === "up" ? "+" : "−"}` : "", enhanced ? "Enhanced" : ""].filter(Boolean).join(", ");
-  await putSpellEffect(target, { kind: "charge", stack: true, caster: caster.uuid, name: `${CHARGES[kind].label} charge${bits ? ` (${bits})` : ""}`, charge: kind, enhanced: !!enhanced, power, sign, size, persistent: orderPersist, mode,
+  await putSpellEffect(target, { kind: "charge", stack: true, caster: caster.uuid, name: `${CHARGES[kind].label} charge${bits ? ` (${bits})` : ""}`, charge: kind, enhanced: !!enhanced, power, bstacks, sign, size, persistent: orderPersist, mode,
     description: `A ${CHARGES[kind].label} charge: ${CHARGES[kind].text}. ${orderPersist ? "Permanence: it lasts until it is consumed." : `Until the start of ${caster.name}'s next turn.`}` });
   return orderPersist;
 }
 
 for (const [modeId, kind] of Object.entries(CHARGE_MODES)) {
   MODES[modeId] = async c => {
-    const persisted = await placeCharge({ caster: c.attacker, target: c.target, kind, power: c.power, enhanced: c.enhanced, choices: c.choices, mode: modeId });
+    const persisted = await placeCharge({ caster: c.attacker, target: c.target, kind, power: c.power, bstacks: c.bs, enhanced: c.enhanced, choices: c.choices, mode: modeId });
     return `${esc(c.target.name)} carries a <strong>${CHARGES[kind].label}</strong> charge${c.enhanced ? " (Enhanced)" : ""}${persisted ? " (it stays until used: Permanence)" : " until the start of your next turn"}: you're asked whether to spend it whenever they make a roll.`;
   };
 }

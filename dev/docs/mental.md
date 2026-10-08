@@ -67,11 +67,17 @@
 
 - **Enhancing:** When Manifesting a Mode of a Wonder, you can Enhance it for energy equal to that Wonder’s Scaling Stat min, giving that instance the benefits listed in the Enhance section.  
 - **Dismissing Wonders:** You can dismiss concentrated Wonders freely as a reaction. Non-concentrated Wonders you have created can be dismissed by making an attack roll against them (apply Wonder Range AP cost to this). If the target is an object, the rolled number needed to dismiss it is equal to the energy spent on manifesting it (if 0 then no attack roll is needed), and if they are a creature they can choose to resist it using their dodge roll, only being dismissed if you successfully hit.  
-- **Alignment:** All characters interfacing with the Mental system have an Alignment that they actively control which gives various bonuses depending on its position. Changing your Alignment from Neutral takes **2 AP**, which lasts until the start of your next turn, after which you return to Neutral.
+- **Alignment:** All characters interfacing with the Mental system have an Alignment that they set  which gives various bonuses depending on its position at the cost of speed. Changing your Alignment can only be done with a 1 hour activity. You can choose how far you want to go as desired, gaining all prior bonuses but stacking a 20% speed penalty for each point of alignment, and Alignment can either be for Dreams or Nightmares.
 
-  **Neutral:** This is the default Alignment that characters sit at when not actively focusing on a specific Alignment. While in Neutral, attacks you make using your Form’s Ward have advantage.
+  **Neutral:** This is the default Alignment that characters sit at when not actively focusing on a specific Alignment. Has no benefits, but you also get no speed penalty.
 
-  **Dream/Nightmare:** This Alignment gives all Wonders of its namesake advantage on their attack rolls, while giving disadvantage on the attack rolls of all Wonders of the opposite Alignment.
+  **1 Alignment:** This Alignment gives all Dream/Nightmare Wonders a stack of Advantage on their attack rolls, while giving a stack of Disadvantage on the attack rolls of all Wonders of the opposite type.
+
+  **2 Alignment:** This Alignment gives all Dream/Nightmare Wonders a stack of Strengthened on their bolded effects, while giving a stack of Weakened on the bolded effects of all Wonders of the opposite type.
+
+  **3 Alignment:** Your chosen Tenet(s) can now trigger twice per round (they must be a Dream/Nightmare Tenet to benefit from this).
+
+  **4 Alignment:** Your Dream/Nightmare Icon’s Ward has Advantage on its attack roll and Strengthened on their bolded effect.
 
 **Tier 1: You unlock the Psion Arts, Life, Death, Order, Chaos, Beyond, and Below trees. You also gain the following action and passive:**
 
@@ -80,24 +86,23 @@
 
 **Tier 2: You unlock the Ponderance Arts, Creation, Destruction, War, Peace, Adaptation, and Perfection trees. You also gain the following actions:**
 
-- **Chant:** If you miss the attack roll on a Manifest, you can, once per Manifest, reroll that attack roll by spending energy equal to its Enhance effect’s cost (this does not Enhance it). The new roll keeps any disadvantages/advantages the first attempt had, but does not re-proc effects.  
+- **Chant:** If you miss the attack roll on a Manifest, you can, once per Manifest, reroll that attack roll by spending energy equal to its Enhance effect’s cost (this does not Enhance it). The new roll keeps any Disadvantages/Advantages the first attempt had, but does not re-proc effects.  
 - **Project:** Your Form’s Ward can now be applied to an ally as a Ranged attack with a range of 100ft, still requiring whatever AP/RP/energy the Action normally would take.
 
 
 **Tier 3: You unlock the Snappence Arts, Light, Dark, Earth, and Sea trees. You also gain the following actions:**
 
-- **Fluidity:** You can now spend energy equal to half of your Skill Points to change your alignment from Neutral, instead of spending AP. This can be done at any time.  
-- **Deepening:** While you are in Dream/Nightmare Alignment, you can spend energy equal to that type’s Scaling Stat Min to Deepen the Alignment, lasting until the start of your next turn (in which you return to Neutral Alignment, unless stated otherwise). While Deepened, all Wonders Manifested of that type are doubly Strengthened.
+- **Fluidity:** You can now spend energy equal to half of your Skill Points multiplied by your current Alignment number to swap your Alignment type.  
+- **Expansion:** If you expend energy equal to double your Form’s Ward Enhance cost, you can now treat it as an Area attack, which can either be a 10ft radius around you, a 20ft 90 degree cone in front of you, or a 30ft by 5ft line in one cardinal direction.
 
 **Tier 4: You unlock the Willpower Arts, Growth, Stagnation, Fortune, and Ruin trees. You also gain the following passive:**
 
 - **Will of Body and Spirit:** Whenever you make a Martial or Magic attack using AP, you can Manifest a Wonder at no extra AP cost so long as that Wonder’s normal AP cost matches that of the initial attack. This can also be done with RP based Martial/Magic attacks if Burst is used. The target(s) of your Wonder does not need to be the same as the Martial attack.  
-- **Expansion:** If you expend energy equal to double your Form’s Ward Enhance cost, you can now treat it as an Area attack, which can either be a 10ft radius around you, a 20ft 90 degree cone in front of you, or a 30ft by 5ft line in one cardinal direction.
+- **Equilibrium:** You can now enter \-1 Alignment, which gives everything a stack of Disadvantage when dodging your Icon’s Ward (including yourself), but your Manifest attack rolls have a stack of Disadvantage (this has no movement speed penalty/bonus). Fluidity allows you to swap into this, lasting until the start of your next turn (in which you then go back to whatever Alignment you were at).
 
 **Tier 5: You unlock the Esoteric Arts, Truth, Mystery, Zeal, and Serenity trees. You also gain the following action and passive:**
 
-- **Patron:** Whenever you rest, you can select one Wonder to become your Patron Wonder (or change your currently selected Patron Wonder). While you are Aligned towards that Wonder, whenever you Manifest it you can choose to Enhance or Burst it completely for free.  
-- **Equilibrium:** The Neutral Alignment can now be Deepened, costing 2 AP and energy equal to your Willpower Min. While Deepened, your Form’s Wards are doubly Strengthened, and they can be Enhanced or Bursted for free with each use. Lasts until the start of your next turn.
+- **Patron:** Whenever you rest, you can select one Wonder to become your Patron Wonder (or change your currently selected Patron Wonder). While you are Aligned towards that Wonder, whenever you Manifest it you can choose to Enhance or Burst it completely for free.
 
 # **Mental T1 Skill Trees** {#mental-t1-skill-trees}
 
@@ -159,11 +164,11 @@
 
 **Tier 3: You gain the following Mode:**
 
-- **Waste:** Store a Waste charge on the target, lasting until the start of your next turn. Whenever the target makes a dodge roll, you can consume up to one Waste charge on them to reduce that roll’s **die size by 2**. **Enhanced:** The affected dodge roll also has disadvantage for this charge.
+- **Waste:** Store a Waste charge on the target, lasting until the start of your next turn. Whenever the target makes a dodge roll, you can consume up to one Waste charge on them to reduce that roll’s **die size by 2**. **Enhanced:** The affected dodge roll also has Disadvantage for this charge.
 
 **Tier 4: You gain the following ability:**
 
-- **Reap:** **Cost: *Energy equal to your SNA min.*** Whenever one of your Death Modes would critically hit, you can use this ability to instantly attempt to manifest a Death Mode of your choosing of the same Range type for no AP/RP cost (if the initial was Bursted, this one is Bursted for free).
+- **Reap:** **Cost: *Energy equal to your SNA min.*** Whenever one of your Death Modes would critically hit a living target, you can use this ability to instantly attempt to manifest a Death Mode of your choosing of the same Range type for no AP/RP cost (if the initial was Bursted, this one is Bursted for free).
 
 **Tier 5: You gain the following Mode:**
 
@@ -194,8 +199,8 @@
 ## **Chaos (Nightmare)** {#chaos-(nightmare)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Fracture:** Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size **increased or decreased by 2** (your choice on manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as advantage/disadvantage). **Enhanced:** The forced reroll retains any effects the original roll had, such as advantage/disadvantage.  
-**Unbound:** Only active while attuned to this Tenet. Once per round when you get a crit on a Manifest (even if that Manifest cannot crit), you can instantly for free apply one Chaos Mode Charge of your choice onto that Manifest’s target.
+**Fracture:** Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size **increased or decreased by 2** (your choice on manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). **Enhanced:** The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage.  
+**Unbound:** Only active while attuned to this Tenet. Once per round when you get a crit on a Manifest, you can instantly for free apply one Chaos Mode Charge of your choice onto that Manifest’s target.
 
 **Tier 2: You gain the following ability:**
 
@@ -211,7 +216,7 @@
 
 **Tier 5: You gain the following Mode:**
 
-- **Entropy:** Store an Entropy charge on the target, lasting until the start of your next turn. When the target would crit or be crit (can still occur on things with no crit effect), you can consume up to one Entropy charge on them to give them an additional roll (if critting, the additional roll is either an extra attack, or forcing them to redo the attack. If being crit, the additional roll is a new attempt to dodge. Either way, the roll does not inherit any effects from the original roll) with its die size **increased or decreased by 3** (dodge dice are affected by half). **Enhanced:** The extra reroll retains any effects the original roll had, such as advantage/disadvantage.
+- **Entropy:** Store an Entropy charge on the target, lasting until the start of your next turn. When the target would crit or be crit (can still occur on things with no crit effect), you can consume up to one Entropy charge on them to give them an additional roll (if critting, the additional roll is either an extra attack, or forcing them to redo the attack. If being crit, the additional roll is a new attempt to dodge. Either way, the roll does not inherit any effects from the original roll) with its die size **increased or decreased by 3** (dodge dice are affected by half). **Enhanced:** The extra reroll retains any effects the original roll had, such as Advantage/Disadvantage.
 
 ## **Beyond (Dream)** {#beyond-(dream)}
 
@@ -229,7 +234,7 @@
 
 **Tier 4: You gain the following ability:**
 
-- **Kinetic Focus:** **Cost: *Energy equal to half of your PON min, rounded down.*** When you make a Herald or Ascend attack roll, or the attack roll for Redirects extra attack, you can use this ability. Give that attack roll a stack of advantage. This effect can be used as much as desired per attack.
+- **Kinetic Focus:** **Cost: *Energy equal to half of your PON min, rounded down.*** When you make a Herald or Ascend attack roll, or the attack roll for Redirects extra attack, you can use this ability. Give that attack roll a stack of Advantage. This effect can be used as much as desired per attack.
 
 **Tier 5: You gain the following Mode:**
 
@@ -247,7 +252,7 @@
 
 **Tier 3: You gain the following Mode:**
 
-- **Burden:** On hit, the target gets disadvantage on either their attack or dodge rolls (your choice on Manifest, has no effect on counter grapple checks), until they break free with a counter grapple check of **2 or higher**, or the start of your next turn. This effect stacks with itself (both of the types of disadvantage, as well as more disadvantage on one type), but are all removed at once with a successful counter grapple check. **Enhanced:** The effect now lasts for 3 turns, or until broken free from.
+- **Burden:** On hit, the target gets Disadvantage on either their attack or dodge rolls (your choice on Manifest, has no effect on counter grapple checks), until they break free with a counter grapple check of **2 or higher**, or the start of your next turn. This effect stacks with itself (both of the types of Disadvantage, as well as more Disadvantage on one type), but are all removed at once with a successful counter grapple check. **Enhanced:** The effect now lasts for 3 turns, or until broken free from.
 
 **Tier 4: You gain the following ability:**
 
@@ -321,7 +326,7 @@
 
 **Tier 4: You gain the following Mode:**
 
-- **Freeze:** On hit, deals **2d8 cold damage**, removing energy from the target equal to the direct damage dealt.  If, after removing their energy, the target has 0 remaining energy, the target’s movement now takes \+1 AP until the start of your next turn (even if their energy rises above 0). **Enhanced:** The slowing effect of this Mode can now be removed with damage, causing that damage to be doubly Strengthened.
+- **Freeze:** On hit, deals **2d8 cold damage**, removing energy from the target equal to the direct damage dealt. If, after removing their energy, the target has 0 remaining energy, they are prevented from gaining their free energy gain at the start of their next turn. **Enhanced:** The energy block effect of this Mode can now be removed with damage, causing that damage to be doubly Strengthened.
 
 **Tier 5: You gain the following ability:**
 
@@ -337,7 +342,7 @@
 
 **Tier 2: You gain the following ability:**
 
-- **Serenity:** **Cost: *Energy equal to half of your PON min, rounded down.*** When a target under the effects of one of your Peace Modes is attacked or makes an attack, you can use this ability. That triggering attack roll is made with a stack of disadvantage, only usable once per triggering instance.
+- **Serenity:** **Cost: *Energy equal to half of your PON min, rounded down.*** When a target under the effects of one of your Peace Modes is attacked or makes an attack, you can use this ability. That triggering attack roll is made with a stack of Disadvantage, only usable once per triggering instance.
 
 **Tier 3: You gain the following Mode:**
 
@@ -405,7 +410,7 @@
 
 **Tier 2: You gain the following ability:**
 
-- **Hubris:** **Cost: *Energy equal to half of your SNA min, rounded down.*** Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits.
+- **Hubris:** **Cost: *Energy equal to half of your SNA min, rounded down.*** Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits (assuming it can crit).
 
 **Tier 3: You gain the following Mode:**
 
@@ -413,7 +418,7 @@
 
 **Tier 4: You gain the following passive:**
 
-- **Pride:** Whenever you Crit with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests advantage on their attack rolls.
+- **Pride:** Whenever you Crit against a living target with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests Advantage on their attack rolls.
 
 **Tier 5: You gain the following Mode:**
 
@@ -457,7 +462,7 @@
 
 **Tier 2: You gain the following ability:**
 
-- **Make Clear:** **Cost: *Energy equal to your WIL min.*** Whenever you activate your Icon’s Ward effect, you can use this ability. You get advantage on the Ward’s activation attack roll. In addition, if you still end up missing the Ward activation attack roll, you can reroll it once, not keeping any advantages/disadvantages the original roll had.
+- **Make Clear:** **Cost: *Energy equal to your WIL min.*** Whenever you activate your Icon’s Ward effect, you can use this ability. You get Advantage on the Ward’s activation attack roll. In addition, if you still end up missing the Ward activation attack roll, you can reroll it once, not keeping any Advantages/Disadvantages the original roll had.
 
 **Tier 3: You gain the following passive:**
 
@@ -469,7 +474,7 @@
 
 **Tier 5: You gain the following passive:**
 
-- **Innate Mastery:** Innate also causes that Ward’s target to have disadvantage on their roll against it.
+- **Innate Mastery:** Innate also causes that Ward’s target to have Disadvantage on their roll against it.
 
 # **Mental T5 Skill Trees** {#mental-t5-skill-trees}
 

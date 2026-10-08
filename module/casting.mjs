@@ -4,7 +4,7 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost } from "./actions.mjs";
+import { aimableItems, post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
@@ -130,6 +130,12 @@ export function afflictHTML(v) {
   }
   // Illusion: the sense a Mirage dulls, and Fidelity's tangible affliction.
   if (profile?.arcana?.kind === "mirage" && !profile.arcana.chart) out.push(`<div class="fs-field"><label>Mirage: sense</label>${sel("sense", { sight: "Sight", sound: "Sound", smell: "Smell", other: "Another sense" }, v.sense || "sight")}</div>`);
+  // A damaging spell can be aimed at one of a lone target's worn or held items instead of the creature (its damage goes to the object).
+  if ((profile?.damage || (profile?.effects ?? []).some(e => e.stack)) && globalThis.game && !v.strikeSpell) {
+    const lone = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
+    const items = lone.length === 1 ? aimableItems(lone[0]) : [];
+    if (items.length) out.push(`<div class="fs-field"><label>Aim at</label><select name="aim"><option value="">${esc(lone[0].name)}</option>${items.map(i => `<option value="${i.uuid}" ${v.aim === i.uuid ? "selected" : ""}>${esc(lone[0].name)}'s ${esc(i.name)}</option>`).join("")}</select></div>`);
+  }
   // Strike: aim it at a Spell (Absorb refunds Energy; Amplify and Rip need one).
   if (profile?.strike && ids.length === 1) {
     const list = globalThis.game ? arcana.listSpells() : [];
@@ -327,7 +333,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   let placed;
   if (areaSpell) {
     const fociItem = plan.option?.fociId ? actor.items.get?.(plan.option.fociId) ?? actor.items.find(i => i.id === plan.option.fociId) : null;
-    const agate = fociItem?.system?.attuned && fociItem.system.profile?.affixes?.includes("agate") ? (fociItem.system.profile.affixPlus ? 2 : 1.5) : 1;
+    const agate = fociItem?.system?.attuned && fociItem.system.profile?.affixes?.includes("agate") ? (fociItem.system.profile.doubled === "agate" ? 2 : 1.5) : 1;
     const aim = [...(game.user?.targets ?? [])][0];
     const originTok = rangedPlusArea ? (aim?.object ?? aim) : null;
     const layered = (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0);
@@ -500,6 +506,9 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
       ...(profile.arcana?.kind === "mirage" ? { ritualFree: plan.t3Free ?? null, arcana: { sense: values?.sense, fidelity: values?.fidelityKind, fidelityRoll: values?.fidelityRoll } } : {}),
       ...(profile.afflict ? { ritualFree: plan.t3Free ?? null, afflict: { charmRoll: values?.charmRoll, hexDie: values?.hexDie, hex: { trigger: values?.hexTrigger, roll: values?.hexRoll, outcome: values?.hexOutcome, detail: values?.hexDetail } } } : {}) }
   };
+  // Aimed at one of the target's worn or held items: the damage goes to the object.
+  const aimed = !area && !plan.hold && targetActors.length === 1 && values?.aim ? aimableItems(targetActors[0]).find(i => i.uuid === values.aim) : null;
+  if (aimed && (attackOpts.damage || (profile.effects ?? []).some(e => e.stack))) { attackOpts.aimItem = aimed.uuid; attackOpts.aimName = aimed.name; attackOpts.notes.push(`Aimed at ${targetActors[0].name}'s ${aimed.name}: the damage goes to the object, and its Ignite / Stain stacks too`); }
   if (plan.hold) await areasHeld(actor, plan, profile, ids, mods, ritualOf);
   let first;
   if (rangedPlusArea) {

@@ -157,6 +157,14 @@ ok2(!G.isFalling(f1), "Stabilizing (3 RP) stops it");
 const flyer = addEffects(mkActor("Flyer", { skillPoints: 30 }, {})); flyer.system.lift = 50; flyer.system.hp.max = 100;
 confirmAnswer = false; await G.flightCheck(flyer, "Hit");
 ok2(G.isFalling(flyer), "A flyer who doesn't stabilize begins falling");
+await G.stopFalling(flyer); confirmAnswer = false;
+await actions.flyerPushed(flyer, 15, "Knockback");
+ok2(G.isFalling(flyer), "A flyer hit by enough Force to push it must stabilize, or begins falling");
+await G.stopFalling(flyer); confirmAnswer = false;
+await actions.flyerPushed(flyer, 0, "Knockback");
+ok2(!G.isFalling(flyer), "…but not when the Force doesn't move them at all");
+await actions.flyerPushed(addEffects(mkActor("Walker2", { skillPoints: 30 }, {})), 15, "Knockback");
+ok2(true, "(a creature with no Lift is unaffected)");
 
 console.log("== Ignite Spread");
 const burner = addEffects(mkActor("Burner", { skillPoints: 30 }, {}));

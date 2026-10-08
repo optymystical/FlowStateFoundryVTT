@@ -8,7 +8,7 @@ import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
 import * as conjure from "./conjure.mjs";
 import * as mental from "./mental.mjs";
-import { AFFIXES, FOCI_TYPES, SHROUD_TYPES } from "./magic.mjs";
+import { AFFIXES, FOCI_TYPES, SHROUD_TYPES, AFFIX_LIMIT } from "./magic.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS } from "./martial.mjs";
 import { tierOf } from "./skills.mjs";
 import { MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
@@ -34,7 +34,7 @@ for (const id of CREATION_MODES) {
   };
 }
 ACT_PROVIDERS.push(async c => CREATION_MODES.has(c.mode.id)
-  ? [{ id: "create", label: `Create (${c.mode.name})`, tip: "Choose what to create and who it appears for", cost: "free", caster: c.attacker.uuid, target: c.m.recipients?.[c.index] ?? c.attacker.uuid, mode: c.mode.id, enhanced: !!c.enhanced, range: c.range, power: c.power, rite: c.choices?.rite === "yes" }] : []);
+  ? [{ id: "create", label: `Create (${c.mode.name})`, tip: "Choose what to create and who it appears for", cost: "free", caster: c.attacker.uuid, target: c.m.recipients?.[c.index] ?? c.attacker.uuid, mode: c.mode.id, enhanced: !!c.enhanced, range: c.range, power: c.power, bstacks: c.bs, rite: c.choices?.rite === "yes" }] : []);
 
 CHOICE_PROVIDERS.push((actor, modeId) => CREATION_MODES.has(modeId) && tier(actor, ID) >= 5
   ? [{ name: "rite", label: "Rite (hours of work, permanent: Energy is 0 meanwhile)", options: { no: "No", yes: "Yes: make it permanent" } }] : []);
@@ -49,12 +49,12 @@ async function askWhat(caster, x) {
   } else if (mode === `${ID}:conjure`) {
     const aff = Object.entries(AFFIXES).filter(([, a]) => rar.includes(rarityKey(a.rarity)));
     html = field("What", select("kind", [["foci", "Magic Foci"], ["shroud", "Shroud"]])) + field("Foci type", select("ftype", Object.entries(FOCI_TYPES).map(([k, v]) => [k, v.label]))) + field("Shroud type", select("stype", Object.entries(SHROUD_TYPES).map(([k, v]) => [k, v.label])))
-      + `<fieldset><legend>Affixes (up to the item's slots)</legend>${aff.map(([k, a]) => `<label class="fs-cast-mod"><input type="checkbox" name="aff:${k}"> ${esc(a.label)} <small>(${esc(a.rarity)})</small></label>`).join("")}</fieldset>` + field("Name", `<input type="text" name="name">`);
+      + `<fieldset><legend>Affixes (each past your free ones costs 20% speed)</legend>${aff.map(([k, a]) => `<label class="fs-cast-mod"><input type="checkbox" name="aff:${k}"> ${esc(a.label)} <small>(${esc(a.rarity)})</small></label>`).join("")}</fieldset>` + field("Name", `<input type="text" name="name">`);
   } else if (mode === `${ID}:consecrate`) {
     const forms = Object.entries(R.FORMS).filter(([, f]) => rar.includes(rarityKey(f.rarity)));
     html = field("Form", select("form", forms.map(([k, f]) => [k, `${f.name} (${R.KINDS[f.align].label}, ${f.rarity})`]))) + field("Name", `<input type="text" name="name">`);
   } else {
-    html = field("Material", select("mat", [["powder", "Powder"], ["liquid", "Liquid"], ["soft", "Soft"], ...(x.enhanced ? [["hard", "Hard"]] : [])])) + field(`Body (up to ${15 * x.power})`, `<input type="number" name="body" value="${Math.min(10, 15 * x.power)}" min="1" max="${15 * x.power}">`) + field("Object (name, material, shape)", `<input type="text" name="name">`);
+    html = field("Material", select("mat", [["powder", "Powder"], ["liquid", "Liquid"], ["soft", "Soft"], ...(x.enhanced ? [["hard", "Hard"]] : [])])) + field(`Body (up to ${R.bold(x.bstacks, 15 * x.power)})`, `<input type="number" name="body" value="${Math.min(10, R.bold(x.bstacks, 15 * x.power))}" min="1" max="${15 * x.power}">`) + field("Object (name, material, shape)", `<input type="text" name="name">`);
   }
   html += `<label class="fs-cast-mod"><input type="checkbox" name="willing" checked> <strong>Willing recipient</strong> <small>it appears in their hand; otherwise at their feet</small></label>`;
   return DialogV2().prompt({ window: { title: `${R.modeById(mode)?.name}: what do you create?` }, content: `<div class="fs-cast">${html}</div>`, rejectClose: false,
@@ -74,11 +74,11 @@ function buildItem(caster, x, v, permanent) {
   }
   if (mode === `${ID}:conjure`) {
     const affixes = Object.keys(v).filter(k => k.startsWith("aff:") && v[k]).map(k => k.slice(4));
-    if (v.kind === "shroud") return { name: v.name || `${SHROUD_TYPES[v.stype]?.label} Shroud`, type: "shroud", flags, system: { shroudType: v.stype, grade: 1, attuned: false, affixes: affixes.slice(0, SHROUD_TYPES[v.stype]?.affixes ?? 0) } };
-    return { name: v.name || `${FOCI_TYPES[v.ftype]?.label} Foci`, type: "foci", flags, system: { fociType: v.ftype, grade: 1, attuned: false, equipped: false, affixes: affixes.slice(0, FOCI_TYPES[v.ftype]?.affixes ?? 0) } };
+    if (v.kind === "shroud") return { name: v.name || `${SHROUD_TYPES[v.stype]?.label} Shroud`, type: "shroud", flags, system: { shroudType: v.stype, grade: 1, attuned: false, affixes: affixes.slice(0, AFFIX_LIMIT) } };
+    return { name: v.name || `${FOCI_TYPES[v.ftype]?.label} Foci`, type: "foci", flags, system: { fociType: v.ftype, grade: 1, attuned: false, equipped: false, affixes: affixes.slice(0, AFFIX_LIMIT) } };
   }
   if (mode === `${ID}:consecrate`) return { name: v.name || `${R.FORMS[v.form]?.name} Icon`, type: "icon", flags, system: { form: v.form, grade: 1, attuned: false, tenet: "" } };
-  const body = Math.min(15 * (x.power ?? 1), Math.max(1, Number(v.body) || 1));
+  const body = Math.min(R.bold(x.bstacks, 15 * (x.power ?? 1)), Math.max(1, Number(v.body) || 1));
   return { name: v.name || `Fabricated ${v.mat} object`, type: "gear", flags, system: { quantity: 1, body, density: v.mat === "liquid" ? "powder" : v.mat, description: `<p>Fabricated from ${esc(v.mat)} (Body ${body}): ${esc(v.name || "an object")}.</p>` } };
 }
 

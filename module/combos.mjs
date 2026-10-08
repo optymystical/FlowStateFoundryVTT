@@ -284,7 +284,7 @@ export const COMBO_GENERIC = {
  },
  "geomancy": {
   "head": "2 Threshold, Combo Spell, Targeted.",
-  "text": "Follows base Shift rules, but the moved/thrown/enchanted material becomes Charged with the comboing spell core (scaling with Body moved, 1 level per 12 Body). This Charged material applies an extra effect once per turn per target on contact with them (resets at start of turn). Refer to the chart in the T1/T2/T3 + T4 Combos list for effects (the same chart: Gravity, Slashing, Piercing, Crushing, Heat, Cold, Radiation, Acid, Venomancy, Charm, Hex)."
+  "text": "Follows base Shift rules, but the moved/thrown/enchanted material becomes Charged with the comboing spell core (scaling with Body moved, 1 level per 12 Body). This Charged material applies an extra effect once per turn per target on contact with them (resets at start of turn). Refer to the below chart for effects (this is the same chart as the T4 combos list): Gravity, Slashing, Piercing, Crushing, Heat, Cold, Radiation, Acid, Venomancy, Charm, Hex."
  },
  "illusion": {
   "head": "3 Threshold, Combo Spell, Targeted.",

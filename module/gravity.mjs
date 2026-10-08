@@ -85,4 +85,4 @@ export async function turnStart(actor) {
   await post(actor, { title: `${esc(actor.name)} — Landing`, body: html });
 }
 
-registerFlight(afterDamage);
+registerFlight(afterDamage, flightCheck);

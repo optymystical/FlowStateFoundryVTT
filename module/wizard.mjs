@@ -94,8 +94,8 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
             : [{ label: "Shroud", options: Object.fromEntries(Object.entries(SHROUD_TYPES).map(([k, x]) => [k, x.label])) }],
           selected: foci ? slot.fociType : slot.shroudType,
           summary: !p.valid ? p.error : foci
-            ? `${p.formLabel}: ${p.formText} · Durability ${p.durability}, Limit ${p.limit} · ${t.affixes}${t.plus ? "+" : ""} Affix slot${t.affixes === 1 ? "" : "s"}`
-            : `Durability ${p.durability}, Limit ${p.limit} (×${p.mult} Build) · ${t.affixes}${t.plus ? "+" : ""} Affix slot${t.affixes === 1 ? "" : "s"}`,
+            ? `${p.formLabel}: ${p.formText} · Durability ${p.durability}, Limit ${p.limit} · Free Affixes: ${t.free}${t.plus ? " · doubles one Affix" : ""}`
+            : `Durability ${p.durability}, Limit ${p.limit} (×${p.mult} Build) · Free Affixes: ${t.free}${t.plus ? " · doubles one Affix" : ""}`,
           effect: t?.effect ?? "" };
       }
       if (slot.kind === "icon") {
@@ -123,7 +123,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
           : Object.fromEntries(Object.entries(WEIGHTS).map(([k, v]) => [k, `${v.label} (${STATS[v.stat].abbr}, ${v.ap} AP)`])),
         materials: creation.allowedMaterials(slot.kind, slot.weight, rules.maxRarity),
         summary: !p.valid ? p.error : armor
-          ? `Limit ${p.limit} · Durability ${p.durability}${p.stealthDis ? ` · Stealth ${p.stealthDis === Infinity ? "auto-fail" : `Dis ×${p.stealthDis}`}` : ""} · ${p.moveAP} AP/move`
+          ? `Limit ${p.limit} · Durability ${p.durability}${p.stealthDis ? ` · Stealth ${p.stealthDis === Infinity ? "auto-fail" : `Dis ×${p.stealthDis}`}` : ""} · ${p.moveText}`
           : `${p.display ?? p.formula} · ${p.ap} AP`,
         tags: !armor && p.valid ? describeTags(p.tags) : [],
         extraChoices: armor || !rules.multiType ? [] : Object.entries(weaponTypes).filter(([k]) => k !== slot.type)

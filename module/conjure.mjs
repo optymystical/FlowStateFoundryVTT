@@ -622,11 +622,12 @@ export async function riderAfter({ attacker, target, o, outcome, defense }) {
     const total = applyStacks(dmg.total, rd.critStack && defense?.result?.crit ? rd.critStack : 0);
     const dtype = r.arcane ? "arcane" : rd.type;
     const out = await damageOutcome(target, total, dtype, { archetype: "magic" });
-    await requestDamage(target, total, dtype, 0, null, { silent: true, archetype: "magic" });
+    const res = await requestDamage(target, total, dtype, 0, null, { wantResult: true, silent: true, archetype: "magic" });
+    const dealt = total - Math.min(total, res?.reduced ?? 0);             // a Ward's negation shrinks effects that go by the damage dealt
     html.push(`<div class="fs-result">${esc(profileName)}: ${rd.dice[0] * level}d${sides} = ${dmg.total}${total !== dmg.total ? ` (Strengthened → ${total})` : ""} additional ${DAMAGE_TYPES[dtype] ?? dtype}.</div><ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
-    if (rd.ignite) { const l = await giveStacks(target, "ignite", total, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
-    if (rd.stain) { const l = await giveStacks(target, "stain", total, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
-    if (rd.energy) { const e = await removeEnergy(target, total); html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${e.removed} Energy</strong> (${e.remaining} left).</div>`); }
+    if (rd.ignite) { const l = await giveStacks(target, "ignite", dealt, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
+    if (rd.stain) { const l = await giveStacks(target, "stain", dealt, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
+    if (rd.energy) { const e = await removeEnergy(target, dealt); html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${e.removed} Energy</strong> (${e.remaining} left).</div>`); }
     if (rd.dodgeDie) {
       const amt = rd.dodgeDie * level;
       await putSpellEffect(target, { kind: "dodgeDie", caster: ownerUuid, name: `Dodge −${amt} die size`, dodgeDie: amt, ritualOf, description: `Dodge dice are ${amt} sizes smaller until the start of the caster's next turn (doesn't stack).` });

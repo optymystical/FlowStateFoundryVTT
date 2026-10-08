@@ -23,11 +23,11 @@ assert.equal(r.resolveFullStealth(30,15).critStacks, 4);
 assert.equal(r.poolFormula(1,30,0), "1d30");
 assert.equal(r.poolFormula(2,15,1), "3d15kh2");
 assert.equal(r.poolFormula(2,15,-2), "4d15kl2");
-// Movement: default char, 16 each, total 144, mobility 48, threshold 72 -> 50*48/72=33.3 -> 35
-assert.equal(r.moveSpeed({dex:16,snap:16,grasp:16,total:144},3), 35);
-assert.equal(r.moveSpeed({dex:30,snap:30,grasp:30,total:144},3), 50);
-assert.equal(r.moveSpeed({dex:0,snap:0,grasp:0,total:144},3), 10);
-assert.equal(r.moveSpeed({dex:30,snap:30,grasp:30,total:144},1), 10);
+// Movement: the Size's maximum, less percentages that add up, in 5 ft steps, never under 5 ft
+assert.equal(r.moveSpeed(3), 50); assert.equal(r.moveSpeed(1), 10); assert.equal(r.moveSpeed(2), 25); assert.equal(r.moveSpeed(4), 100); assert.equal(r.moveSpeed(5), 200);
+assert.equal(r.moveSpeed(3, 20), 40); assert.equal(r.moveSpeed(3, 20 + 20), 30); assert.equal(r.moveSpeed(3, 80), 10);
+assert.equal(r.moveSpeed(3, 100), 5); assert.equal(r.moveSpeed(3, 250), 5); assert.equal(r.moveSpeed(2, 20), 20); assert.equal(r.moveSpeed(2, 60), 10);
+assert.equal(r.speedFt(50, 0), 50); assert.equal(r.speedFt(35, 20), 30);
 // Force: 5*Str 16=80 vs maxHP 432 -> 0 ft; falling ignores half HP
 assert.equal(r.resolveForce(80,{maxHp:432}), 0);
 assert.equal(r.resolveForce(432,{maxHp:432, falling:true}), 43);
@@ -39,5 +39,7 @@ assert.deepEqual(r.movementCost({tempo:-2}), {ap:1, multiplier:3});
 assert.deepEqual(r.movementCost({prone:true, stealth:true, tempo:1}), {ap:4, multiplier:1});
 // Derived default character
 const d = r.deriveCharacter({stats:{str:10,dex:10,con:10,pon:10,snap:10,will:10,reach:10,grasp:10,build:10}, skillPoints:30, size:3});
-assert.equal(d.effective.str.value,16); assert.equal(d.hpMax,432); assert.equal(d.restHeal,15); assert.equal(d.move,35);
+const dl = r.deriveCharacter({stats:{str:10,dex:10,con:10,pon:10,snap:10,will:10,reach:10,grasp:10,build:10}, skillPoints:30, size:3, hpLost:100});
+assert.equal(dl.hpMax,332); assert.equal(dl.pain,108, "Max HP loss doesn't lower the Pain Threshold");
+assert.equal(d.effective.str.value,16); assert.equal(d.hpMax,432); assert.equal(d.restHeal,15); assert.equal(d.move,50, "base speed is the Size maximum, whatever the stats");
 console.log("all rules tests passed", d.hpMax, d.pain, d.move);

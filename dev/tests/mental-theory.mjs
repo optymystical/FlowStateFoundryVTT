@@ -107,7 +107,7 @@ const reset = () => { clearAll(orc); clearAll(hero); orc.system.hp.value = 432; 
 
 const ab = await import("../../module/abilities.mjs");
 const theory = n => { hero.system.trees["mental-theory"] = n; hero.system.prepareDerivedData(); };
-const setAlign = (value, deepened = false) => { hero.flags.flowstate = { ...(hero.flags.flowstate ?? {}), alignment: { value, deepened } }; };
+const setAlign = (kind, level = 1, equilibrium = false) => { hero.flags.flowstate = { ...(hero.flags.flowstate ?? {}), alignment: kind === "neutral" ? null : { kind, level, equilibrium } }; };
 const setFlag = (k, v) => { hero.flags.flowstate = { ...(hero.flags.flowstate ?? {}), [k]: v }; };
 const ponMin = () => ab.statMinOf(hero, "pon"), willMin = () => ab.statMinOf(hero, "will");
 const mkRef = () => {};
@@ -156,14 +156,20 @@ const e0 = hero.system.energy.value; seq = [60];
 done = await W.runAct(chantAct);
 ok2(done && hero.system.energy.value === e0 - ab.statMinOf(hero, "snap") && effs(orc, "waste").length === 1, "Chant rerolls it for the Enhance cost, and a hit lands the Mode");
 
-console.log("== Equilibrium, Make Clear, Prism and Premonition on the Ward");
+console.log("== Alignment on the Ward, Make Clear, Prism and Premonition");
 const aegis = mkIcon(hero, "Aegis", { form: "aegis", attuned: true });
 target(null);
-reset(); theory(5); hero.system.trees["mental-willpower-arts"] = 2; hero.system.prepareDerivedData();
-setAlign("neutral", true); refresh(); messages.length = 0;
-dialog = () => ({ enhance: true, burst: true });
+reset(); theory(4); hero.system.trees["mental-willpower-arts"] = 2; hero.system.prepareDerivedData();
+setAlign("dream", 4); refresh(); messages.length = 0; dialog = () => ({});
 await M.activateWard(hero);
-ok2(hero.system.energy.value === 200 && hero.system.rp.value === 5, "Equilibrium: a Deepened Neutral Ward Enhances and Bursts for no energy");
+{ const w = lastAtk().flags.flowstate.attack; ok2(w.targets[0].net === 1 && w.opts.stacks === 1, "4 Alignment: your own type's Icon Ward has Advantage and a Strengthened bolded effect"); seq = [2]; await actions.defend(lastAtk(), 0, "none");
+  ok2(shields(hero)[0]?.flags.flowstate.spellEffect.hp === Math.floor(20 * R.iconScale(hero.system.derived.effective.will.value, 3) * 1.5), "…the shielding is 1.5× (Strengthened)"); }
+clearAll(hero); setAlign("dream", 3); refresh(); messages.length = 0;
+await M.activateWard(hero);
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 0 && !lastAtk().flags.flowstate.attack.opts.stacks, "3 Alignment: nothing yet for the Ward");
+clearAll(hero); setAlign("dream", 2, true); refresh(); messages.length = 0;
+await M.activateWard(hero);
+ok2(lastAtk().flags.flowstate.attack.opts.dodgeNet === -1, "Equilibrium: everything dodging the Ward has Disadvantage");
 setAlign("neutral"); refresh(); clearAll(hero);
 dialog = () => ({ clear: true }); seq = [2];
 await M.activateWard(hero);
@@ -212,21 +218,40 @@ ok2(rAtk?.flags.flowstate.attack.opts.mental?.reflect?.amount === 10, "Enhanced 
 seq = [2]; await actions.defend(rAtk, 0, "none");
 ok2(orc.system.hp.value === 422, "…and a hit deals the negated damage to them");
 
+console.log("== Zealot and Reverie follow the Alignment number");
+clearAll(hero); aegis.system.form = "zealot"; hero.system.prepareDerivedData(); hero.system.hp.value = 432; hero.system.rp.value = 6; theory(1);
+const zealotNegates = async (level, enhance, dmg = 300) => { hero.system.hp.value = 432; hero.system.rp.value = 6; setAlign("nightmare", level); refresh(); dialog = () => (enhance ? { enhance: true } : {}); await actions.applyDamage(hero, dmg, "heat", { silent: true, shroudCtx: { source: "type:heat", attacker: orc.uuid } }); return 432 - hero.system.hp.value; };
+const zScale = R.iconScale(hero.system.derived.effective.will.value, 3);
+{ const a1 = await zealotNegates(1, false), a2 = await zealotNegates(2, false);
+  ok2(a1 === 300 - 6 * 5 * zScale && a2 === 0, "Zealot: only 5 × scale negated per use at 1 Nightmare, the full 30 × scale at 2"); }
+{ const w3 = await zealotNegates(3, true, 2000), w4 = await zealotNegates(4, true, 2000);
+  ok2(w3 === 1460 && w4 === 257, "Zealot Enhanced at 4 Nightmare: Strengthened by Alignment 4 (135 a use) and the damage is Weakened once (2000 → 1865 → 932 → 257)"); }
+clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 1); refresh(); messages.length = 0; dialog = () => ({});
+await M.activateWard(hero);
+ok2(!messages.some(m => m.flags?.flowstate?.attack), "Reverie can't be activated under 2 Dream Alignment");
+setAlign("dream", 2); refresh(); await M.activateWard(hero);
+ok2(messages.some(m => m.flags?.flowstate?.attack), "…but can at 2");
+clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 3); refresh();
+await putSpellEffect(hero, { kind: "shield", caster: hero.uuid, name: "Reverie", hp: 20, max: 20, reverie: true, reverieEnhanced: true, order: "default" });
+await hit("mental-life-dream:flourish");
+ok2(shields(hero)[0].flags.flowstate.spellEffect.hp === 20, "Enhanced Reverie only grows from 4 Dream Alignment (not at 3)");
+clearAll(hero);
+
 console.log("== Reverie");
-clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream"); refresh();
+clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 4); refresh();
 await putSpellEffect(hero, { kind: "shield", caster: hero.uuid, name: "Reverie", hp: 20, max: 20, reverie: true, reverieEnhanced: true, order: "default" });
 await hit("mental-life-dream:flourish");
 ok2(shields(hero)[0].flags.flowstate.spellEffect.hp === 20 + 5 * mult, "Enhanced Reverie grows by 5 (× the scale) when a Dream Manifest hits");
-confirmAnswer = true; refresh(); setAlign("dream");
+refresh(); setAlign("dream", 2);
 await actions.mentalBeforeClear(hero);
 await actions.clearSpellEffects(hero);
-ok2(shields(hero).length === 1, "Maintaining Dream Alignment at turn start keeps the shielding");
+ok2(shields(hero).length === 1, "Still at least 2 in a Dream Alignment at turn start: the shielding is kept (nothing to pay)");
 await actions.mentalTurnStart(hero);
-ok2(flag(hero, "alignment")?.value === "dream", "…and the Alignment stays Dream");
-confirmAnswer = false;
+ok2(flag(hero, "alignment")?.kind === "dream", "…and the Alignment stays Dream (it no longer resets each turn)");
+setAlign("dream", 1); refresh();
 await actions.mentalBeforeClear(hero);
 await actions.clearSpellEffects(hero);
-ok2(shields(hero).length === 0, "Not maintaining it lets the shielding go");
+ok2(shields(hero).length === 0, "Under 2 Dream Alignment at turn start lets the shielding go");
 confirmAnswer = true;
 
 console.log("== Dismissing Wonders");

@@ -162,7 +162,7 @@
 
 ## **Geomancy Combos**
 
-**Any T1/T2/T3 + Geomancy:** ***2 Threshold, Combo Spell, Targeted.*** Follows base Shift rules, but the moved/thrown/enchanted material becomes Charged with the comboing spell core (scaling with Body moved, 1 level per 12 Body). This Charged material applies an extra effect once per turn per target on contact with them (resets at start of turn). Refer to the chart in the T1/T2/T3 + T4 Combos list for effects (the same chart: Gravity, Slashing, Piercing, Crushing, Heat, Cold, Radiation, Acid, Venomancy, Charm, Hex).
+**Any T1/T2/T3 + Geomancy:** ***2 Threshold, Combo Spell, Targeted.*** Follows base Shift rules, but the moved/thrown/enchanted material becomes Charged with the comboing spell core (scaling with Body moved, 1 level per 12 Body). This Charged material applies an extra effect once per turn per target on contact with them (resets at start of turn). Refer to the below chart for effects (this is the same chart as the T4 combos list): Gravity, Slashing, Piercing, Crushing, Heat, Cold, Radiation, Acid, Venomancy, Charm, Hex.
 
 **Summoning + Geomancy:** ***2-6 Threshold, Combo Spell, Targeted.*** The Summon gets a natural ranged variant of its unarmed attack that deals its normal unarmed damage and has a range of 100ft. In addition, its Natural Ranged Weapons no longer need to be reloaded, its Natural Melee Weapons automatically return on throw, and all of its Natural Armor and Weapons can benefit from Harden if applied to this casting (the extra 1 baseline Threshold cost does not multiply base summon effect).
 

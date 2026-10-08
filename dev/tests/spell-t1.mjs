@@ -138,12 +138,26 @@ seq = [10]; await actions.rollExchangeDamage(last());
 ok2(/\+1 added/.test(text(last())) || /added/.test(text(last())), "extra Strengthened stack from Stab's crit rider");
 
 console.log("== Slam: dodge dice shrink, then end at the caster's next turn");
-orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-crushing:slam");
+orc.system.hp.value = 432; target(orc); seq = [22]; await cast("magic-crushing:slam");
 const atkD = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
 seq = [12]; await actions.defend(atkD, 0, "dodge");
 ok2(orc.system.derived.dodgeDie === dodgeDie0 - 6, `Orc's dodge die ${dodgeDie0} → ${orc.system.derived.dodgeDie} (−2 × Power 3)`);
 await actions.clearSpellEffects(hero);
 ok2(orc.system.derived.dodgeDie === dodgeDie0 && orc.effects.length === 0, "Effect ends when Hero's next turn starts");
+
+// A crit is doubly Strengthened, which scales the bolded numbers too: the dodge penalty doubles.
+await actions.clearSpellEffects(hero);
+orc.system.hp.value = 432; target(orc); seq = [25]; await cast("magic-crushing:slam");
+const atkD2 = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
+seq = [12]; await actions.defend(atkD2, 0, "dodge");
+ok2(orc.system.derived.dodgeDie === dodgeDie0 - 12, `A critical Slam: dodge die ${dodgeDie0} → ${orc.system.derived.dodgeDie} (−6 doubly Strengthened → −12)`);
+await actions.clearSpellEffects(hero);
+// …and a Shield from a crit (an ally's dodge roll low enough) has doubled health.
+target(null); seq = [25]; await cast("magic-protection-arcana:shield");
+const atkS2 = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
+seq = [2]; await actions.defend(atkS2, 0, "dodge");
+{ const s2 = hero.effects.find(e => e.flags.flowstate.spellEffect?.kind === "shield"); ok2(s2 && s2.flags.flowstate.spellEffect.hp === 120, `A critical Shield: 60 health doubly Strengthened → ${s2?.flags.flowstate.spellEffect.hp}`); }
+await actions.clearSpellEffects(hero);
 
 console.log("== Force: applies Force and offers a push");
 orc.system.hp.value = 432; target(orc); seq = [20]; await cast("magic-gravity:force");
@@ -210,7 +224,7 @@ seq = [10, 600]; formulas.length = 0; await actions.defend(atkI, 0, "dodge");
 ok2(formulas.includes("60d10") && last().flags.flowstate.knockback?.force >= 600, "A crit applies 20d10 × 3 = 60d10 Force");
 
 console.log("== Combo Cut + Slam: attack dice shrink on direct damage");
-orc.system.hp.value = 432; const attackDie0 = orc.system.derived.attackDie; target(orc); seq = [25]; await cast("magic-slashing:cut", { core2: "magic-crushing:slam" });
+orc.system.hp.value = 432; const attackDie0 = orc.system.derived.attackDie; target(orc); seq = [22]; await cast("magic-slashing:cut", { core2: "magic-crushing:slam" });
 const atkJ = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
 seq = [12]; await actions.defend(atkJ, 0, "dodge");
 seq = [30]; await actions.rollExchangeDamage(last());
@@ -335,7 +349,7 @@ console.log("== Cast Spell dialog: real range, and Connection locks its Mod");
   ok2(FX.rangeText(P("Ranged")) === "200 ft" && FX.rangeText(P("Targeted")) === "100 ft", "Ranged 200 ft, Targeted 100 ft");
   ok2(FX.rangeText(P("Ranged"), { affixes: ["quartz"] }) === "300 ft", "Quartz: Ranged +50% = 300 ft");
   ok2(FX.rangeText(P("Targeted"), { affixes: ["blackOpal"] }) === "200 ft" && FX.rangeText(P("Ranged"), { affixes: ["blackOpal"] }) === "100 ft", "Black Opal swaps Targeted and Ranged");
-  ok2(FX.rangeText(P("Ranged"), { affixes: ["blackOpal"], plus: true, opalRange: "ranged" }) === "150 ft", "Black Opal+: the chosen range is 50% longer");
+  ok2(FX.rangeText(P("Ranged"), { affixes: ["blackOpal"], doubled: "blackOpal", opalRange: "ranged" }) === "150 ft", "Black Opal+: the chosen range is 50% longer");
   ok2(/^200 ft \(up to 400 ft with Snipe/.test(FX.rangeText(P("Ranged", ["Snipe"]))), "Snipe: up to double, Disadvantage past the normal range");
   ok2(/15 ft radius, 30 ft cone/.test(FX.rangeText({ attack: "Area", applied: [] }, { affixes: ["agate"] })), "Agate: Area size +50%");
   const ctx = C.castContext(hero);

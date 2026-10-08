@@ -3,11 +3,12 @@ import {
   objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, igniteTotal, stainTotal, STAIN_VARIANTS
 } from "./rules.mjs";
 import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, soak, weaponProfile, effectiveLimit, DAMAGE_CATEGORY } from "./martial.mjs";
-import { AFFIXES, shroudBlocks } from "./magic.mjs";
+import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
+import { planAction, emptyLedger } from "./movement-rules.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
@@ -26,15 +27,48 @@ export function inActiveCombat(actor) {
   return combat.combatants.some(c => c.actor?.uuid === actor.uuid);
 }
 
-/** Spend AP or RP only when in an active combat. Returns false if the actor can't afford it. */
+/* ---- Movement cost in combat: the ledger (movement-rules.mjs has the rules, movement.mjs the token hooks) ---- */
+
+/** World setting: how movement is charged in combat: "enforce" (default), "warn" or "off". */
+export function movementMode() {
+  try { return game.settings.get("flowstate", "movementCost") ?? "enforce"; } catch (err) { return "enforce"; }
+}
+/** What one step of movement is for this creature: the distance it carries you and the AP it costs. */
+export function moveParams(actor) {
+  const mv = actor.system?.movement ?? {};
+  return { speedFt: (mv.speed ?? 0) * Math.max(1, mv.multiplier ?? 1), cost: mv.ap ?? 1 };
+}
+/** This turn's movement ledger for a creature (a fresh one each turn). */
+export function moveLedger(actor) {
+  const key = turnKey(), l = actor?.getFlag?.("flowstate", "moveLedger");
+  return key && l?.key === key ? { ...emptyLedger(), ...l } : emptyLedger();
+}
+export async function setMoveLedger(actor, ledger) {
+  try { await setActorFlag(actor, "moveLedger", { ...ledger, key: turnKey() }); } catch (err) { /* the ledger is bookkeeping: never block an action on it */ }
+}
+/** Is movement being tracked for this creature right now (on its own turn in combat, the setting on)? */
+export const movementTracked = actor => movementMode() !== "off" && inActiveCombat(actor) && game.combat.combatant?.actor?.uuid === actor.uuid;
+/** Feet of its current step of movement still left (shown beside the AP). */
+export const moveLeft = actor => (actor && movementTracked(actor) ? Math.round(moveLedger(actor).ft) : 0);
+/** Spends that are movement themselves don't cover movement. */
+const MOVEMENT_SPEND = /stand|leap|jump|dash|climb|crawl|\bmove|moving/i;
+
+/**
+ * Spend AP or RP only when in an active combat. Returns false if the actor can't afford it.
+ * AP spent on an action (strafing) also pays for moving with it: it settles a step of movement that is still unpaid and banks the rest (see movement-rules.mjs).
+ */
 export async function spendPoints(actor, key, cost, what = "that") {
   if (!cost || !inActiveCombat(actor)) return true;
+  const track = key === "ap" && movementTracked(actor) && !MOVEMENT_SPEND.test(String(what));
+  const ledger = track ? moveLedger(actor) : null;
+  const plan = track ? planAction(ledger, cost, moveParams(actor)) : null;
   const have = actor.system[key].value;
   if (have < cost) {
     ui.notifications.warn(`${actor.name} needs ${cost} ${key.toUpperCase()} for ${what} but has ${have}.`);
     return false;
   }
   await actor.update({ [`system.${key}.value`]: have - cost });
+  if (plan) await setMoveLedger(actor, plan.ledger);
   return true;
 }
 export const spendAP = (actor, cost, what) => spendPoints(actor, "ap", cost, what);
@@ -242,22 +276,33 @@ const netField = () => (customNetOn() ? `<div class="form-group"><label>Advantag
 
 /** Ch7 Stat Check: d(2 × stat); Stat Minimum floor out of combat unless in a time crunch. */
 export async function rollStatCheck(actor, key) {
-  const stat = actor.system.derived.effective[key];
+  const base = actor.system.derived.effective[key];
   const minDefault = !inActiveCombat(actor);
-  const opts = await optionsDialog(`${STATS[key].label} Check`, `${netField()}
-    <div class="form-group"><label>Apply Stat Minimum (${stat.min})</label>
+  // Martial (Body) stat checks: resisting a negative condition or effect with Unstoppable (Strength T5, while active) or Pure Body (Constitution T3).
+  const canUnstoppable = ab.BODY_STATS.has(key) && !!actor.statuses?.has("unstoppable");
+  const canPureBody = ab.BODY_STATS.has(key) && ab.constitution(actor, 3);
+  const resistFields = `${canUnstoppable ? `<div class="form-group"><label>Resisting a negative condition or effect (Unstoppable)</label><input type="checkbox" name="unstoppable" checked></div>` : ""}
+    ${canPureBody ? `<div class="form-group"><label>Resisting a negative effect or ability (Pure Body)</label><input type="checkbox" name="pureBody"></div>
+    <div class="form-group"><label>Target number or contested result (Pure Body: under half your stat is an automatic success)</label><input type="number" name="target" value="0" min="0" step="1"></div>` : ""}`;
+  const opts = await optionsDialog(`${STATS[key].label} Check`, `${netField()}${resistFields}
+    <div class="form-group"><label>Apply Stat Minimum (${base.min})</label>
     <input type="checkbox" name="applyMin" ${minDefault ? "checked" : ""}></div>
     <p class="hint">Off in combat or a time crunch.</p>`);
   if (!opts) return;
+  const res = ab.resistCheck(base, { unstoppable: canUnstoppable && !!opts.unstoppable, pureBody: canPureBody && !!opts.pureBody, target: canPureBody ? opts.target ?? 0 : 0 });
+  const stat = { ...base, die: res.die, min: res.min };
+  if (res.auto) {
+    return post(actor, { title: `${STATS[key].label} Check`, body: `<div class="fs-outcome fs-hit">Automatic success</div><div class="fs-notes">${res.notes.map(esc).join(" · ")}</div>` });
+  }
 
   const armorDis = PHYSICAL_STATS.has(key) ? actor.system.penalties.physicalDis : 0;
-  const net = opts.net + exhaustionNet(actor) - armorDis + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0);
+  const net = opts.net + res.net + exhaustionNet(actor) - armorDis + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0);
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, stat.die, net));
   const cr = await mentalHook?.rollCharges?.({ actor, type: "other", roll, die: stat.die, count: 1, net, max: stat.die, label: `${STATS[key].label} Check` });
   const floored = opts.applyMin && roll.total < stat.min;
   const result = floored ? stat.min : roll.total;
-  const notes = [netLabel(net), armorDis ? "armor penalty" : "", floored ? `raised to Stat Minimum` : ""].filter(Boolean).join(" · ");
+  const notes = [netLabel(net), armorDis ? "armor penalty" : "", ...res.notes, floored ? `raised to Stat Minimum` : ""].filter(Boolean).join(" · ");
 
   await post(actor, {
     title: `${STATS[key].label} Check (d${stat.die})`,
@@ -694,10 +739,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
 
   // Targeting (Ch8): with one creature targeted, you can aim at one of its equipped items instead of the creature.
   const aimTargets = (followup?.targetActors ?? [...(game.user.targets ?? [])].map(t => t.actor)).filter(a => a && a.type !== "pile");
-  const aimables = aimTargets.length === 1
-    ? aimTargets[0].items.filter(i => (i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed") || (i.type === "armor" && i.system.equipped)
-      || (i.type === "foci" && i.system.equipped))
-    : [];
+  const aimables = aimTargets.length === 1 ? aimableItems(aimTargets[0]) : [];
   const aimField = aimables.length ? `<div class="form-group"><label>Target</label><select name="aim">
       <option value="">${esc(aimTargets[0].name)}</option>
       ${aimables.map(i => `<option value="${i.uuid}">${esc(aimTargets[0].name)}'s ${esc(i.name)}</option>`).join("")}</select></div>` : "";
@@ -1200,9 +1242,23 @@ async function pileFolder() {
 }
 
 export const GM_ACTIONS = {
-  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone }) {
+  async flightCheck({ target, reason }) {
     const actor = await fromUuid(target);
-    if (actor) await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone });
+    if (actor) await flightForceHook?.(actor, reason);
+  },
+  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, reply }) {
+    const actor = await fromUuid(target);
+    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect }) : null;
+    if (reply) game.socket.emit("system.flowstate", { action: "damageResult", to: reply.to, reqId: reply.reqId, result: summarizeDamage(out) });
+    return out;
+  },
+  /** A Ward's owner (the GM's client, for someone else's character) is asked to negate damage the attacker's client is about to settle. */
+  async wardNegate({ target, amount, type, source, attacker, reply }) {
+    const actor = await fromUuid(target);
+    const r = actor && mentalHook?.negate ? await mentalHook.negate(actor, amount, type, { source, attacker }) : null;
+    const result = r ? { amount: r.amount, html: r.html ?? "", reflect: r.reflect ?? null } : null;
+    if (reply) game.socket.emit("system.flowstate", { action: "damageResult", to: reply.to, reqId: reply.reqId, result });
+    return result;
   },
   async updateActor({ uuid, data }) {
     const actor = await fromUuid(uuid);
@@ -1815,7 +1871,7 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
 
   if (choice === "none") {
     // Declining to dodge: the attack hits but can't crit (also how forced auto-hits like Parry will resolve).
-    const result = { hit: true, crit: false, doubleCrit: false, critStacks: 0, outcome: "Hit (no dodge)" };
+    const result = { hit: true, crit: false, doubleCrit: false, critStacks: 0, outcome: "Hit (no dodge)", noCrit: true };
     return postDefense(target, message, index, target, result, null, "Took the hit without dodging — can't crit.");
   }
 
@@ -1970,6 +2026,59 @@ export function guardFor(target, o, attackMessageId = null, index = 0) {
   if (g.items.some(u => { const it = syncUuid(u); return it && ab.balanced(it.parent, it, 1); })) g.weaken.push("Slip Off");
   g.any = g.items.length > 0 || g.reductions.length > 0 || g.shatter;
   return g;
+}
+
+/**
+ * Brace, Dip, Shatter and parrying weapons guard against every Melee and Ranged attack, whatever its archetype. Weapon and spell attacks work
+ * this out on their damage card; an attack with a flow of its own (a Mental Manifest's Mode) asks for it once, here, and then takes it off each
+ * damage instance with `guardDamage`. Shatter is rolled once (a hit; on a melee miss it already happened when the attack was answered).
+ * Returns { reductions, items, weaken, shatterLeft, broken, html, rolls, any }.
+ */
+export async function attackGuard(attacker, target, o, attackMessageId = null, index = 0, { hit = true, shattered = false } = {}) {
+  const g = guardFor(target, o, attackMessageId, index);
+  const out = { reductions: g.reductions, items: g.items, weaken: g.weaken, riposteItems: g.riposteItems, shatterLeft: 0, broken: false, html: "", rolls: [], any: g.any, direct: 0, damaged: false };
+  if (g.shatter && hit && !shattered) {                                        // Shatter strikes an attack once (a melee miss already did)
+    const sh = await shatterStrike(target, attacker, o);
+    out.html += sh.html; out.rolls.push(...sh.rolls);
+    if (sh.broken) out.broken = true; else out.shatterLeft = sh.reduce;
+  }
+  if (g.any || g.weaken.length) out.html += `<div class="fs-notes">${esc(target.name)} is guarding: ${[...g.items.map(u => syncUuid(u)?.name).filter(Boolean), ...g.reductions.map(r => `${r.label} −${r.amount}`), ...(g.shatter ? ["Shatter"] : []), ...g.weaken].join(", ")}</div>`;
+  return out;
+}
+/** The Riposte buttons a guard that took all the damage earns (weapons the defender holds and can pay for), or "" when there's nothing to offer. */
+export async function riposteRow(target, itemUuids) {
+  const items = (await Promise.all((itemUuids ?? []).map(u => fromUuid(u)))).filter(i => i && i.parent?.uuid === target.uuid && canSpend(target, "rp", i.system.profile?.unarmed ? 2 : i.system.profile?.ap ?? 2));
+  if (!items.length) return "";
+  return `<div class="fs-riposte-row" data-role="defender" data-owner="${target.uuid}">
+      ${items.map(i => { const ap = i.system.profile?.unarmed ? 2 : i.system.profile?.ap ?? 2; return `<button type="button" class="fs-riposte" data-item="${i.uuid}"><i class="fa-solid fa-reply"></i> Riposte: ${esc(i.name)} (${ap} RP)</button>
+        ${ab.bladed(target, i, 5) ? `<button type="button" class="fs-riposte" data-item="${i.uuid}" data-perfect="1" data-tooltip="Bladed T5: Advantage and Strengthened, and so is its Fast/Solitary follow-up"><i class="fa-solid fa-star"></i> Perfect Riposte (⚡ ${ab.BLADED_COST.perfectRiposte(i)})</button>` : ""}`; }).join("")}
+      <button type="button" class="fs-no-riposte" data-tooltip="Pass, so the attacker's follow-up can go ahead"><i class="fa-solid fa-xmark"></i> No riposte</button></div>`;
+}
+
+/**
+ * What a guard that took all of a non-weapon attack's damage (a Manifest) earns the defender, as on a weapon's damage card: Riposte (and "No riposte"),
+ * Dip's free move, and Brawling's Redirect against a melee attack. `r` = { items, noDamage, dipZero }. Returns { html, riposte } (riposte: a row to Riposte is there).
+ */
+export async function guardRows(target, r, o = {}) {
+  let html = "";
+  const row = r.noDamage ? await riposteRow(target, r.items) : "";
+  html += row;
+  if (r.dipZero && canSpend(target, "rp", 1)) html += `<div class="fs-brawl-row fs-dip-row" data-role="defender" data-owner="${target.uuid}">
+      <button type="button" class="fs-dip-move" data-tooltip="Brawling T2: the Dip took the whole hit; spend 1 RP to move your speed right away"><i class="fa-solid fa-person-walking-arrow-right"></i> Dip: move (1 RP)</button></div>`;
+  if (r.noDamage && o.melee && ab.brawl(target, 4) && ab.fists(target)) html += `<div class="fs-brawl-row fs-redirect-row" data-role="defender" data-owner="${target.uuid}">
+      <button type="button" class="fs-redirect" data-tooltip="Target a creature next to you first"><i class="fa-solid fa-shuffle"></i> Redirect (⚡ ${ab.BRAWLING_COST.redirect(target)})</button></div>`;
+  return { html, riposte: !!row };
+}
+
+/** Take a guard off one instance of damage: { amount, notes }. Shatter's lowering is spent across the instances in order. */
+export function guardDamage(g, amount) {
+  if (!g) return { amount, notes: [] };
+  if (g.broken) return { amount: 0, notes: ["the weapon broke: no damage"] };
+  const notes = [];
+  let left = amount;
+  if (g.shatterLeft > 0 && left > 0) { const cut = Math.min(left, g.shatterLeft); left -= cut; g.shatterLeft -= cut; notes.push(`Shatter −${cut}`); }
+  for (const r of g.reductions) { const cut = Math.min(left, r.amount); if (cut) { left -= cut; notes.push(`${r.label} −${cut}`); } }
+  return { amount: left, notes };
 }
 
 /** Items whose Perfect Parry/Perfect Block roll failed against this attack (they don't apply to it). */
@@ -2828,7 +2937,7 @@ export async function spotWeakness(actor) {
   const body = armor && p?.valid
     ? `<div class="fs-result">${esc(t.name)} wears <strong>${esc(armor.name)}</strong> (${esc(p.label)}, Grade ${p.grade}).</div>
       <ul class="fs-list"><li>Limit ${p.limit}</li><li>Durability ${armor.system.durability.value}/${armor.system.durability.max}</li>
-      ${p.stealthDis ? `<li>Stealth ${p.stealthDis === Infinity ? "auto-fails" : `Disadvantage ×${p.stealthDis}`}</li>` : ""}<li>${p.moveAP} AP per move</li>${p.effect ? `<li>${esc(p.effect)}</li>` : ""}</ul>`
+      ${p.stealthDis ? `<li>Stealth ${p.stealthDis === Infinity ? "auto-fails" : `Disadvantage ×${p.stealthDis}`}</li>` : ""}<li>${esc(p.moveText)}</li>${p.effect ? `<li>${esc(p.effect)}</li>` : ""}</ul>`
     : `<div class="fs-result">${esc(t.name)} isn't wearing armor.</div>`;
   const whisper = game.users?.filter?.(u => u.isGM || actor.testUserPermission?.(u, "OWNER")).map(u => u.id) ?? [];
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), whisper,
@@ -2837,7 +2946,7 @@ export async function spotWeakness(actor) {
 
 /** Dip (Brawling T2): when the Dip took a hit to 0, spend 1 RP to move your speed right away. */
 export async function dipMove(damageMessage) {
-  const d = damageMessage.getFlag("flowstate", "damage");
+  const d = damageMessage.getFlag("flowstate", "damage") ?? damageMessage.getFlag("flowstate", "defense");       // a damage card, or a Manifest's defense card
   if (!d) return;
   if (game.messages.find(m => m.getFlag("flowstate", "dipOf") === damageMessage.id)) return ui.notifications.info("That Dip move was already used.");
   const actor = await fromUuid(d.target);
@@ -3124,6 +3233,9 @@ export async function riposte(message, { perfect = false, itemUuid = null } = {}
   else if (defense?.result?.parry?.success) {
     const p = defense.result.parry;
     defenderUuid = p.by ?? defense.target; attackerUuid = defense.attacker; item = await fromUuid(itemUuid ?? p.item);
+  } else if (message.getFlag("flowstate", "guardRiposte")) {
+    const gr = message.getFlag("flowstate", "guardRiposte");
+    defenderUuid = gr.defender; attackerUuid = gr.attacker; item = itemUuid ? await fromUuid(itemUuid) : null;
   } else return;
   if (findFollowup(message.id) || riposteInFlight.has(message.id)) return ui.notifications.info("Riposte was already used.");
   if (findRiposteDeclined(message.id)) return ui.notifications.info("The Riposte was passed on.");
@@ -3458,9 +3570,16 @@ export const registerFoci = h => { foci = h; };
 let arc = null;
 export const registerArcana = h => { arc = h; };
 /** Mental (mental.mjs) registers its hooks here: Manifest and Ward resolution, Nightmare Ward negation, turn start. */
-let flightHook = null;
-/** Falling and Flight (gravity.mjs): told when a creature takes damage. */
-export const registerFlight = h => { flightHook = h; };
+let flightHook = null, flightForceHook = null;
+/** Falling and Flight (gravity.mjs): told when a creature takes damage, and asked to run the stabilize check when Force pushes a flyer. */
+export const registerFlight = (h, force) => { flightHook = h; flightForceHook = force ?? null; };
+/** A flyer was hit by enough Force to push it (the Rules: it must spend 3 RP to stabilize or begin falling). Asked of the owner, through the GM for someone else's. */
+export async function flyerPushed(target, feet, label = "Force") {
+  if (!flightForceHook || !target || !(feet > 0)) return;
+  const reason = `${target.name} was hit by enough Force to push them (${label}, ${feet} ft)`;
+  if (target.isOwner) return flightForceHook(target, reason);
+  return requestGM("flightCheck", { target: target.uuid, reason });
+}
 let mentalHook = null;
 export const registerMental = h => { mentalHook = h; };
 export const mentalTurnStart = actor => mentalHook?.turnStart(actor);
@@ -3603,6 +3722,16 @@ async function wouldBeDirect(target, maxDamage, type, dmgOpts) {
 }
 
 /** A Spell hit that doesn't wait for damage: a Shield goes up, Force is applied, die sizes shrink. */
+/**
+ * What can be aimed at instead of a creature (Ch8): everything it is holding or wearing that has Durability: held weapons (not fists), worn armor,
+ * held Foci and its melded Shroud. Not Icons, Misc items, currency or Affixes. The creature's own dodge roll answers the attack.
+ */
+export function aimableItems(actor) {
+  const shroud = actor?.system?.shroud ?? null;
+  return (actor?.items ?? []).filter(i => (i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed") || (i.type === "armor" && i.system.equipped)
+    || (i.type === "foci" && i.system.equipped) || (i.type === "shroud" && shroud && i.uuid === shroud.uuid));
+}
+
 async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = null) {
   const sp = o.spell;
   const profile = spellProfile(o);
@@ -3611,10 +3740,13 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   let push = null, chain = null;
   const caster = attacker.uuid;
   const ritualOf = sp.ritualOf ?? null;
+  // Every Strengthened/Weakened stack on the spell (a crit, a Mod, Alignment...) scales its bolded numbers: health, die sizes, thresholds, stacks.
+  const stackBonus = (o.stacks ?? 0) + (result.critStacks ?? 0);
+  const bold = n => applyStacks(n, stackBonus);
   if (profile.shield) {
     const m = sp.mods ?? {};
     // Layered (Build Arcana T1): a Shield isn't default Spell health, so it gains your Build per Layered.
-    const hp = fx.shieldHealth(profile, sp.power) + (m.layered ?? 0) * Math.max(0, attacker.system?.derived?.effective?.build?.value ?? 0);
+    const hp = bold(fx.shieldHealth(profile, sp.power)) + (m.layered ?? 0) * Math.max(0, attacker.system?.derived?.effective?.build?.value ?? 0);
     // A Shield doesn't stack with itself: a target keeps one Shield (from any caster), the one with more health left; a weaker new one is wasted.
     const standing = spellEffects(target, "shield");
     const best = standing.reduce((m, e) => Math.max(m, Number(e.flags.flowstate.spellEffect.hp) || 0), 0);
@@ -3628,6 +3760,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
     }
   }
   const pen = fx.diePenalties(profile, sp.power, { direct: false });
+  pen.dodge = pen.dodge ? bold(pen.dodge) : 0;
   if (pen.dodge) {
     await putSpellEffect(target, { kind: "dodgeDie", caster, name: `Dodge −${pen.dodge} die size`, dodgeDie: pen.dodge, ritualOf,
       description: `Dodge dice are ${pen.dodge} sizes smaller until the start of the caster's next turn (doesn't stack).` });
@@ -3635,7 +3768,6 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   }
   // Gravity Mods (the base effect may be replaced, which doubles the Mod): Slow/Haste stacks, personal fields, Hold.
   const m = sp.mods ?? {}, rp = sp.replaced ?? {};
-  const stackBonus = (o.stacks ?? 0) + (result.critStacks ?? 0);
   const conditionStacks = async (kind, label, name) => {
     const n = applyStacks(20 * sp.power * fx.replaceFactor(rp, name), stackBonus);
     const cur = target.system.conditions?.[kind] ?? 0;
@@ -3647,7 +3779,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   if (m.lighten) await conditionStacks("haste", "Haste", "lighten");
   for (const [key, mode, label] of [["personal repulsion", "repulse", "Personal Repulsion"], ["personal well", "well", "Personal Well"]]) {
     if (!m[key]) continue;
-    const threshold = 20 * sp.power * fx.replaceFactor(rp, key);
+    const threshold = bold(20 * sp.power * fx.replaceFactor(rp, key));
     await putSpellEffect(target, { kind: "field", mode, caster, name: `${label} (≤ ${threshold})`, threshold, ritualOf,
       description: `Incoming attacks with a Scaling Stat of ${threshold} or less have ${mode === "well" ? "Advantage" : "Disadvantage"} on their attack rolls, until the start of the caster's next turn.` });
     html.push(`<div class="fs-result">${esc(target.name)} has a ${label}: attacks with a Scaling Stat of <strong>${threshold}</strong> or less against them have ${mode === "well" ? "Advantage" : "Disadvantage"} until the start of your next turn.</div>`);
@@ -3661,7 +3793,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
       await requestDamage(target, applyStacks(roll.total, stackBonus), "physical", 0, null, { silent: false });
     } else {
       const size = target.system.size ?? 3;
-      const min = Math.max(1, Math.floor(3 * sp.power * mult * Math.pow(2, 3 - size)));
+      const min = Math.max(1, bold(Math.floor(3 * sp.power * mult * Math.pow(2, 3 - size))));
       await setGrapple(target, attacker.uuid);
       await putSpellEffect(target, { kind: "hold", caster, name: `Held by ${esc(attacker.name)} (≥ ${min})`, holdMin: min, ritualOf,
         description: `Magically held: breaking free needs a roll of ${min} or more. Ends at the start of the caster's next turn.` });
@@ -3804,6 +3936,7 @@ export async function knockback(message) {
     const flight = await flyThrown(target, dir, feet);
     body = await flightHTML(target, flight, feet);
   }
+  await flyerPushed(target, feet, info.label ?? "Knockback");
   await post(attacker, { title: `${info.label ?? "Knockback"} — ${esc(target.name)}`, body: `<div class="fs-notes">Force ${info.force}${opts.crunch ? ` · Crunch Time (${ab.STRENGTH_COST.crunchTime(attacker)} Energy): matched against current HP` : ""}</div>${body}`,
     flags: { flowstate: { knockbackOf: message.id } } });
 }
@@ -4321,9 +4454,10 @@ export async function brawlingExtra(card, kind) {
 export async function declineRiposte(defenseMessage) {
   const defense = defenseMessage.getFlag("flowstate", "defense");
   const dmg = defenseMessage.getFlag("flowstate", "damage");
-  if (!defense?.result?.parry?.success && !dmg?.riposte) return;
+  const gr = defenseMessage.getFlag("flowstate", "guardRiposte");
+  if (!defense?.result?.parry?.success && !dmg?.riposte && !gr) return;
   if (findFollowup(defenseMessage.id) || findRiposteDeclined(defenseMessage.id)) return;
-  const defender = await fromUuid(dmg?.riposte ? dmg.target : defense.result.parry.by ?? defense.target);
+  const defender = await fromUuid(gr ? gr.defender : dmg?.riposte ? dmg.target : defense.result.parry.by ?? defense.target);
   if (!defender?.isOwner) return ui.notifications.warn(`Only ${defender?.name ?? "the defender"}'s owner can decide that.`);
   await post(defender, { title: `${esc(defender.name)} — No Riposte`, body: `<div class="fs-notes">${esc(defender.name)} doesn't riposte.</div>`,
     flags: { flowstate: { riposteDeclined: defenseMessage.id } } });
@@ -4364,7 +4498,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     extra.push(`<div class="fs-result"><i class="fa-solid fa-shield"></i> ${esc(sh?.parent?.name ?? "An ally")}'s ${esc(sh?.name ?? "shield")} (Shield Toss guard) Blocks this attack for ${esc(target.name)}, then returns.</div>`);
   }
   // Grapples, breaking free, and creature throws don't deal crit damage: a crit is just a hit.
-  if (result.crit && (o.breakFree || o.throwGrappled || o.grappleOnly)) result = { ...result, crit: false, doubleCrit: false, critStacks: 0, outcome: "Hit" };
+  if (result.crit && (o.breakFree || o.throwGrappled || o.grappleOnly)) result = { ...result, crit: false, doubleCrit: false, critStacks: 0, outcome: "Hit", noCrit: true };
 
   // Martial Theory T0: breaking free, throwing a grappled creature, and grappling.
   if (o.breakFree) {
@@ -4552,18 +4686,29 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (conj && o.spell?.makeAct && !result.hit) await conj.makeMiss({ attacker, target, sp: o.spell });
   // Spells: Force, shields, and die-size penalties that don't wait for damage.
   let spellRolls = [], defenseChain = null;
-  if (result.hit && o.spell) {
+  if (result.hit && o.spell && o.aimItem && elem) {                       // a spell aimed at an object: no creature effects, but its Ignite / Stain stacks go on the object
+    const aimedItem = syncUuid(o.aimItem), prof = spellProfile(o);
+    if (aimedItem && prof) {
+      const os = await elem.objectStacks({ o, attacker, target, item: aimedItem, profile: prof, phase: "hit", entryTotal: entry?.total ?? 0, dodgeTotal: dodgeRoll?.total ?? 0, critStacks: result.critStacks ?? 0 });
+      if (os.html) extra.push(os.html);
+      spellRolls = [...spellRolls, ...os.rolls];
+    }
+  }
+  if (result.hit && o.spell && !o.aimItem) {                              // a spell aimed at an object only damages it
     const sh = await spellHit(attacker, target, o, result, entry, dodgeRoll?.total ?? null);
     if (sh) { extra.push(sh.html); spellRolls = sh.rolls; if (sh.push) pushInfo = sh.push; defenseChain = sh.chain; }
   }
   // Mental: other creatures' attacks that hit can be Infused (Destruction Tenet).
   if (result.hit && !o.mental && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result });
   // Mental: a Manifest's Mode or a Ward's effect, once the attack is answered.
+  let guardRiposte = false;
   if (o.mental && mentalHook) {
-    const mh = await mentalHook.onResolve({ attacker, target, o, result, entry, dodgeRoll, index });
+    const mh = await mentalHook.onResolve({ attacker, target, o, result, entry, dodgeRoll, index, attackMessage: attackMessage.id });
     if (mh?.html) extra.push(mh.html);
     if (mh?.rolls?.length) spellRolls = [...spellRolls, ...mh.rolls];
     if (mh?.push) pushInfo = mh.push;
+    // A Manifest a Parry / Dip / Shatter took all the damage from earns a Riposte, like any other attack would.
+    if (mh?.riposte) { const g = await guardRows(target, mh.riposte, o); if (g.html) extra.push(g.html); guardRiposte = g.riposte; }
   }
   // Scorch (Slam + Flame): a failed dodge repeats the burn.
   if (result.hit && dodgeRoll) for (const e of spellEffects(target, "scorch")) {
@@ -4592,7 +4737,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
       ${extra.join("")}${more?.html ?? ""}${shatterMiss?.html ?? ""}
       <div class="fs-status"></div>
       ${action}`,
-    flags: { flowstate: { defense: { attackMessage: attackMessage.id, index, target: entry.uuid, attacker: attack.attacker, result, shatter: !!shatterMiss, guardItem, dodge: dodgeRoll?.total ?? null }, knockback: pushInfo, chain: defenseChain } }
+    flags: { flowstate: { defense: { attackMessage: attackMessage.id, index, target: entry.uuid, attacker: attack.attacker, result, shatter: !!shatterMiss, guardItem, dodge: dodgeRoll?.total ?? null }, knockback: pushInfo, chain: defenseChain, ...(guardRiposte ? { guardRiposte: { defender: entry.uuid, attacker: attack.attacker } } : {}) } }
   });
   if (autoDeclineBy) await post(autoDeclineBy, { title: `${esc(autoDeclineBy.name)} — No Riposte`, body: `<div class="fs-notes">${esc(autoDeclineBy.name)} has no RP left to riposte.</div>`, flags: { flowstate: { riposteDeclined: defenseMessage.id } } });
   // "Roll damage automatically" setting: skip the button and roll straight away (no extra stacks).
@@ -4742,36 +4887,62 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
         ${left <= 0 ? `<li>${esc(aimed.name)} is ${left <= -aimed.system.durability.max ? "destroyed" : "broken"}</li>` : ""}</ul>`;
       if (aimed.isOwner) await aimed.update({ "system.wear": aimed.system.wear + line.final }, { flowstateSystem: true });
       else await requestGM("wearItem", { uuid: aimed.uuid, amount: line.final });
+      // Cold damage puts Ignite out on the object; a spell's Ignite / Stain stacks that follow its damage land on the object too.
+      if (type === "cold" && aimed.system.conditions?.ignite > 0) {
+        if (aimed.isOwner !== false) await aimed.update({ "system.conditions.ignite": 0 }, { flowstateSystem: true }); else await requestGM("updateItem", { uuid: aimed.uuid, data: { "system.conditions.ignite": 0 } });
+        body += `<div class="fs-notes">The cold puts out ${esc(aimed.name)}'s Ignite.</div>`;
+      }
+      if (profile && elem) {
+        const os = await elem.objectStacks({ o, attacker, target, item: aimed, dealt: line.final, profile, phase: "damage", critStacks: defense.result?.critStacks ?? 0 });
+        body += os.html; base.rolls.push(...os.rolls);
+      }
     } else body += `<div class="fs-notes">The targeted item is gone.</div>`;
     return post(attacker, { title: `${esc(o.label || "Attack")} — Damage to ${esc(target.name)}'s ${esc(o.aimName ?? "item")}`, rolls: base.rolls, body,
       flags: { flowstate: { damage: { defenseMessage: defenseMessage.id } } } });
   }
 
-  // Shatter (Brawling T2): the defender's Heavy Unarmed damage hits the incoming attack (its weapon) first; Solitary doubles it.
-  let incoming = line.final;
-  let shatterRolls = [], shattered = false;
+  // Each damage instance meets the defenses on its own: Heat's Flare rolls several sets of d4s, every set its own instance (Limits, Brace/Dip, Wonders and
+  // Wards all apply to each). Everything else is a single instance.
+  const instances = flare ? base.totals.map(t => applyStacks(t + flat, stacks)) : [line.final];
+  const tag = i => (instances.length > 1 ? `Set ${i + 1}: ` : "");
+  // Shatter (Brawling T2): the defender's Heavy Unarmed damage hits the incoming attack (its weapon) first; Solitary doubles it. Rolled once.
+  let shatterRolls = [], shattered = false, shatterLeft = 0;
   if (guard.shatter) {
     const sh = await shatterStrike(target, attacker, o);
     extraHTML += sh.html; shatterRolls = sh.rolls;
-    if (sh.broken) { incoming = 0; shattered = true; if (kb) { kb = null; extraHTML += `<div class="fs-notes">No Knockback: the weapon broke.</div>`; } }
-    else if (sh.reduce) {
-      incoming = Math.max(0, incoming - sh.reduce);
-      extraHTML += `<div class="fs-notes">Shatter: −${Math.min(line.final, sh.reduce)} → ${incoming}${incoming === 0 ? " (the projectile is destroyed: no damage)" : ""}</div>`;
+    if (sh.broken) { shattered = true; if (kb) { kb = null; extraHTML += `<div class="fs-notes">No Knockback: the weapon broke.</div>`; } }
+    else shatterLeft = sh.reduce;
+  }
+  let dipZero = false, wardCut = 0;
+  const amounts = [], wards = [];
+  for (const [i, inst] of instances.entries()) {
+    let incoming = shattered ? 0 : inst;
+    if (shatterLeft > 0 && incoming > 0) {
+      const cut = Math.min(incoming, shatterLeft);
+      shatterLeft -= cut; incoming -= cut;
+      extraHTML += `<div class="fs-notes">${tag(i)}Shatter: −${cut} → ${incoming}${incoming === 0 ? " (the projectile is destroyed: no damage)" : ""}</div>`;
     }
+    // Brace / Dip: flat reductions before any Limit.
+    for (const r of guard.reductions) {
+      const cut = Math.min(incoming, r.amount);
+      incoming -= cut;
+      extraHTML += `<div class="fs-notes">${tag(i)}${r.label}: −${cut} → ${incoming}</div>`;
+      if (r.label.startsWith("Dip") && incoming === 0 && inst > 0) dipZero = true;
+    }
+    // Mental: damage dealt and taken is changed by Wonder effects (Pacify, Warzone, Absolution, Irradiate, Guard, ...).
+    if (mentalHook?.adjust && incoming > 0) {
+      const adj = await mentalHook.adjust({ attacker, target, amount: incoming, type, o, crit: !!defense.result?.crit });
+      if (adj.amount !== incoming || adj.html) { incoming = adj.amount; extraHTML += adj.html; }
+    }
+    // Mental: a Nightmare Ward may negate some of it now, so Stains, Bleed, Gash and the like go by what is actually dealt.
+    let w = null;
+    if (mentalHook?.negate && incoming > 0) {
+      w = await wardNegate(target, incoming, type, { source: sourceOf(o), attacker: attacker.uuid });
+      if (w) { wardCut += Math.max(0, incoming - w.amount); incoming = w.amount; extraHTML += w.html ? `${instances.length > 1 ? `<div class="fs-notes">${tag(i)}</div>` : ""}${w.html}` : ""; }
+    }
+    amounts.push(incoming); wards.push(w);
   }
-  // Brace / Dip: flat reductions before any Limit.
-  let dipZero = false;
-  for (const r of guard.reductions) {
-    const cut = Math.min(incoming, r.amount);
-    incoming -= cut;
-    extraHTML += `<div class="fs-notes">${r.label}: −${cut} → ${incoming}</div>`;
-    if (r.label.startsWith("Dip") && incoming === 0 && line.final > 0) dipZero = true;
-  }
-  // Mental: damage dealt and taken is changed by Wonder effects (Pacify, Warzone, Absolution, Irradiate, Guard, ...).
-  if (mentalHook?.adjust && incoming > 0) {
-    const adj = await mentalHook.adjust({ attacker, target, amount: incoming, type, o, crit: !!defense.result?.crit });
-    if (adj.amount !== incoming || adj.html) { incoming = adj.amount; extraHTML += adj.html; }
-  }
+  let incoming = amounts.reduce((a, b) => a + b, 0);
   const cleave = shattered ? 0 : o.cleave ?? 0;
   if (cleave) extraHTML += `<div class="fs-notes">Cleave ${cleave}: object damage, hits Limits first${o.striker ? "; what gets past them hits the creature (Blood and Iron)" : ""}</div>`;
 
@@ -4779,10 +4950,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const dmgOpts = { pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: o.bash || 0, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
     shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
       barriers: barriersFor(attacker, target) }, mentalDone: true };
-  let outcome = await damageOutcome(target, incoming, type, dmgOpts);
-  // Flare (Heat T4): each set of d4s is a separate instance, so Limits apply to each.
-  const instances = flare ? base.totals.map(t => applyStacks(t + flat, stacks)) : null;
-  if (instances) { outcome = mergeOutcomes(await Promise.all(instances.map(a => damageOutcome(target, a, type, dmgOpts)))); incoming = instances.reduce((a, b) => a + b, 0); }
+  // Limits apply to each instance on its own.
+  const outcome = instances.length > 1 ? mergeOutcomes(await Promise.all(amounts.map(a => damageOutcome(target, a, type, dmgOpts)))) : await damageOutcome(target, incoming, type, dmgOpts);
   // Spell riders that need the damage to have got through to HP (direct damage): Force, attack-die penalties.
   let spellHTML = "", spellRolls = [], chainFlag = null;
   if (profile) {
@@ -4810,10 +4979,12 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     // Tier 2: Brand, Ignite/Stain stacks, Energy removal, chains, Catalyst, counters.
     if (elem) {
       spellHTML += await elem.beforeApply({ attacker, target, o, baseTotal: base.totals.reduce((a, b) => a + b, 0) + flat });
-      const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: line.final, type, profile, facts: spellFacts ?? {}, dmgOpts });
+      // `dealt`: Shatter, Brace, Dip, Wonders and Wards all take it down before Stains, Energy loss and the like are worked out.
+      const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: Math.min(line.final, incoming), type, profile, facts: spellFacts ?? {}, dmgOpts, stacks });
       spellHTML += er.html; spellRolls.push(...er.rolls); if (er.kb) kb = er.kb; chainFlag = er.chain;
     }
     const pen = fx.diePenalties(profile, o.spell.power, { direct });
+    if (pen.attack) pen.attack = applyStacks(pen.attack, stacks);        // scaled by every Strengthened/Weakened stack on the damage
     if (pen.attack) {
       await putSpellEffect(target, { kind: "attackDie", caster: attacker.uuid, name: `Attack −${pen.attack} die size`, attackDie: pen.attack, ritualOf: o.spell.ritualOf ?? null,
         description: `Attack dice are ${pen.attack} sizes smaller until the start of the caster's next turn (doesn't stack).` });
@@ -4868,9 +5039,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
       deflect: canDeflect ? { defender: target.uuid, attacker: attacker.uuid, attackMessage: defense.attackMessage } : null,
       chain: chainFlag ? { ...chainFlag, affected: o.spell?.chain?.affected ?? [target.uuid], depth: o.spell?.chain?.depth ?? 0, primary: o.spell?.chain?.primary ?? target.uuid } : null } }
   });
-  if (instances) for (const amt of instances) await requestDamage(target, amt, type, pierceNow, null, { silent: true, ...dmgOpts });
-  else await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts });
-  if (ripHTML) await requestDamage(target, incoming, type, pierceNow, null, { silent: true, ...dmgOpts });
+  for (const [i, amt] of amounts.entries()) await requestDamage(target, amt, type, pierceNow, null, { silent: true, ...dmgOpts, wardDone: !!wards[i], wardReflect: wards[i]?.reflect ?? null });
+  if (ripHTML) await requestDamage(target, incoming + wardCut, type, pierceNow, null, { silent: true, ...dmgOpts });                       // a second instance: a Ward may answer it again
   // A Summon's or Animation's attacks carry the Core they were Combo'd with (Any T1/T2/T3 + Summoning / Animation).
   if (conj && !o.spell) await conj.riderAfter({ attacker, target, o, outcome, defense });
   if (foci && o.spell?.fociFx) await foci.afterDamage({ attacker, o, type });
@@ -4910,12 +5080,58 @@ export async function reachFinisher(damageMessage, kind) {
     flags: { flowstate: { reachOf: `${damageMessage.id}:impale` } } });
 }
 
-/** Apply damage directly if we own the target; otherwise ask the active GM to do it. */
+/**
+ * Apply damage directly if we own the target; otherwise ask the active GM to do it. With `wantResult` the answer is
+ * { toHp, armorLoss, reduced } (waits for the GM; for effects that go by the damage dealt, after anything that negated or reduced it).
+ */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
-  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false } = {}) {
-  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone };
+  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, wantResult = false } = {}) {
+  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect };
   if (target.isOwner) return applyDamage(target, amount, type, o);
-  return requestGM("applyDamage", { target: target.uuid, amount, type, ...o });
+  const payload = { target: target.uuid, amount, type, ...o };
+  return wantResult ? askGMDamage(payload) : requestGM("applyDamage", payload);
+}
+
+/** Damage results that are on their way back from the GM: reqId → resolver. */
+const pendingDamage = new Map();
+let damageReq = 0;
+/**
+ * Ask the GM to apply damage and wait for what came of it ({ toHp, armorLoss, reduced }: a Ward or a Wonder may have taken some off, and effects that
+ * go by the damage dealt need to know). Gives up after two minutes (null).
+ */
+async function askGMDamage(payload) {
+  if (game.user.isGM) return summarizeDamage(await GM_ACTIONS.applyDamage(payload));
+  if (!game.users.activeGM) return requestGM("applyDamage", payload);
+  return askGM("applyDamage", payload);
+}
+/** Run a GM action over the socket and wait for what it answers (null after two minutes, or if it gave nothing). */
+function askGM(action, payload) {
+  const reqId = `${game.user.id}:${++damageReq}`;
+  return new Promise(resolve => {
+    const timer = setTimeout(() => { pendingDamage.delete(reqId); resolve(null); }, 120000);
+    pendingDamage.set(reqId, v => { clearTimeout(timer); resolve(v); });
+    game.socket.emit("system.flowstate", { action, ...payload, reply: { to: game.user.id, reqId } });
+  });
+}
+/**
+ * Mental: let a Nightmare Ward (or a Premonition charge) negate part of incoming damage *before* anything that goes by the damage dealt
+ * (Stains, Bleed, Gash...) is worked out. The Ward's owner is asked (the GM's client, for someone else's character).
+ * Returns { amount, html, reflect } or null when it can't be asked (then applyDamage asks as usual).
+ */
+export async function wardNegate(target, amount, type, { source = null, attacker = null } = {}) {
+  if (!mentalHook?.negate || amount <= 0 || target.type === "pile") return null;
+  if (target.isOwner) {
+    const r = await mentalHook.negate(target, amount, type, { source, attacker });
+    return { amount: r.amount, html: r.html ?? "", reflect: r.reflect ?? null };
+  }
+  if (game.user.isGM || !game.users.activeGM) return null;
+  return askGM("wardNegate", { target: target.uuid, amount, type, source, attacker });
+}
+const summarizeDamage = out => out ? { toHp: out.toHp ?? 0, armorLoss: out.armorLoss ?? 0, reduced: out.reduced ?? 0 } : null;
+/** A client receives the result of damage it asked the GM for. */
+export function damageResult(data) {
+  pendingDamage.get(data.reqId)?.(data.result ?? null);
+  pendingDamage.delete(data.reqId);
 }
 
 /** Ranged reload: spends RP by reload speed (Fast 1, Average 2, Slow 3). */
@@ -5129,14 +5345,17 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
  * @param {boolean} silent  don't post a card (the caller already shows the outcome on its own card)
  */
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
   // Reactive: a Summon or Animation of a caster with the Mod gets a Weakened stack on each instance (1 RP).
+  let reduced = 0;                                                            // everything that took damage off before it reached the soak (Reactive, Wonders, Wards)
   const smr = actor.flags?.flowstate?.summon;
   if (smr?.reactive && amount > 0) {
     const c = syncUuid(smr.owner);
     if (c && !c.getFlag?.("flowstate", "reactiveOff") && (c.system?.rp?.value ?? 0) >= 1) {
+      const was = amount;
       amount = Math.floor(applyStacks(amount, -1));
+      reduced += Math.max(0, was - amount);
       const data = { "system.rp.value": c.system.rp.value - 1 };
       if (c.isOwner) await c.update(data); else await requestGM("updateActor", { uuid: c.uuid, data });
       await post(actor, { title: `${esc(actor.name)} — Reactive`, body: `<div class="fs-result">${esc(c.name)} spends 1 RP: the damage is Weakened (${amount}).</div>` });
@@ -5146,13 +5365,16 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (mentalHook?.adjust && amount > 0 && !bypass && !mentalDone) {
     const adj = await mentalHook.adjust({ attacker: shroudCtx?.attacker ? syncUuid(shroudCtx.attacker) : null, target: actor, amount, type, o: null });
     if (adj.amount !== amount && adj.html && !silent) await post(actor, { title: `${esc(actor.name)} — Wonders`, body: adj.html });
+    reduced += Math.max(0, amount - adj.amount);
     amount = adj.amount;
   }
   // Mental: a Nightmare Ward may spend RP to negate some of it first, and a Premonition charge a lump.
   let neg = null;
-  if (mentalHook && amount > 0 && !bypass) {
+  if (mentalHook && amount > 0 && !bypass && !wardDone) {
+    const before = amount;
     neg = await mentalHook.negate(actor, amount, type, { source: shroudCtx?.source ?? null, attacker: shroudCtx?.attacker ?? null });
     if (neg.amount !== amount) { if (neg.html && !silent) await post(actor, { title: `${esc(actor.name)} — Ward`, body: neg.html }); amount = neg.amount; }
+    reduced += Math.max(0, before - amount);
   }
   const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor });
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.
@@ -5208,6 +5430,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   await actor.update(update);
   if (mentalHook && out.toHp > 0) await mentalHook.checkExecute(actor);        // Execute (Enhanced): below half the raised Pain Threshold they die
   if (neg?.after) await neg.after();
+  else if (wardReflect && mentalHook?.reflect) await mentalHook.reflect(actor, wardReflect);          // a Warden / Riposte the pre-damage Ward earned
   if (flightHook && out.toHp > 0 && actor.isOwner) await flightHook(actor, out.toHp);   // a flyer hit hard enough must stabilize                                            // Warden / Riposte (Enhanced): strike back at the source
   if (out.armor && out.armorLoss) await out.armor.update({ "system.wear": out.armor.system.wear + out.armorLoss }, { flowstateSystem: true });
   if (!silent) await post(actor, { title: `${esc(actor.name)} takes ${amount} ${DAMAGE_TYPES[type] ?? ""}`, body: `<ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>` });
@@ -5219,6 +5442,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (out.toHp > 0 && actor.setFlag) await actor.setFlag("flowstate", "lossLog", [...(actor.getFlag("flowstate", "lossLog") ?? []).slice(-24), { at: Date.now(), n: out.toHp }]);
   // Hex (Witchery): damage from a source that isn't a Hex triggers a Harm Hex.
   if (aff && !fromHex && amount > 0 && out.toHp > 0) await aff.hexTrigger(actor, "harm");
+  out.reduced = reduced;                                                      // what negated or reduced it first (effects "equal to the damage dealt" shrink by it)
   return out;
 }
 
@@ -5442,25 +5666,46 @@ export async function rest(actor) {
   await mentalHook?.rest(actor);                     // Preordained (Mental, Order T4) rolls its number after a rest
 }
 
+/**
+ * Freeze (Mental, Destruction): a creature left with no Energy doesn't gain its free Energy at the start of its next turn. Returns true
+ * (and uses the block up) when this turn's regain is blocked.
+ */
+export async function freezeBlockTurnStart(actor) {
+  const blocks = spellEffects(actor, "freezeBlock");
+  if (!blocks.length) return false;
+  for (const e of blocks) await e.delete();
+  await post(actor, { title: `${esc(actor.name)} — Frozen`, body: `<div class="fs-result">${esc(actor.name)} is frozen: no free Energy at the start of this turn.</div>` });
+  return true;
+}
+
 /** Ch9 Ignite: put out (2 AP, anyone in melee). Stain: clean (3 AP). */
 export async function clearCondition(actor, key) {
   const cost = key === "ignite" ? 2 : STAIN_VARIANTS[key]?.ap;
   if (cost === null || cost === undefined) return ui.notifications.warn(`${STAIN_VARIANTS[key]?.label ?? key} can't be removed.`);
   const armor = actor.system.armor;
-  if (!actor.system.conditions[key] && !armor?.system.conditions?.[key]) return;
+  const burning = aimableItems(actor).filter(i => i.system.conditions?.[key]);
+  if (!actor.system.conditions[key] && !armor?.system.conditions?.[key] && !burning.length) return;
   if (!(await spendAP(actor, cost, key === "ignite" ? "putting out Ignite" : `removing ${STAIN_VARIANTS[key].label}`))) return;
   if (key === "ignite") await actor.setFlag("flowstate", "ignitePutOut", true);        // Ignite Spread (optional): it doesn't grow while you're putting it out
   if (actor.system.conditions[key]) await actor.update({ [`system.conditions.${key}`]: 0 });
-  if (armor?.system.conditions?.[key]) await armor.update({ [`system.conditions.${key}`]: 0 }, { flowstateSystem: true });
+  if (armor?.system.conditions?.[key] && !burning.includes(armor)) await armor.update({ [`system.conditions.${key}`]: 0 }, { flowstateSystem: true });
+  for (const i of burning) await i.update({ [`system.conditions.${key}`]: 0 }, { flowstateSystem: true });
 }
 
 /**
  * Put Ignite/Stain stacks on a creature or its armor. "Whatever is damaged": the creature if the damage reached HP,
  * else the armor that absorbed it. With no damage (`first`), the armor is hit first if it's worn. Returns a chat line.
  */
-export async function giveStacks(target, kind, amount, { outcome = null, first = false, caster = null } = {}) {
+export async function giveStacks(target, kind, amount, { outcome = null, first = false, caster = null, item = null } = {}) {
   amount = Math.floor(amount);
   if (amount <= 0) return "";
+  // A worn or held object that was aimed at directly gets the stacks itself (its Durability takes them down at the end of its holder's turn).
+  if (item) {
+    const upItem = addStacks(item.system.conditions ?? {}, kind, amount);
+    const itemData = Object.fromEntries(Object.entries(upItem).map(([k, v]) => [`system.conditions.${k}`, v]));
+    if (item.isOwner !== false) await item.update(itemData, { flowstateSystem: true }); else await requestGM("updateItem", { uuid: item.uuid, data: itemData });
+    return `${esc(target.name)}'s ${esc(item.name)} gets <strong>${amount} ${kind === "ignite" ? "Ignite" : STAIN_VARIANTS[kind]?.label ?? kind}</strong>${amount === 1 ? "" : " stacks"}.`;
+  }
   if (mentalHook?.blocked?.(target, kind)) return `${esc(target.name)} has been cleansed: ${esc(kind)} can't be applied to them right now.`;
   const armor = target.system?.armor;
   const armorOk = armor && armor.system.profile?.valid && !armor.system.broken;
@@ -5555,6 +5800,15 @@ export async function endOfTurn(actor) {
     if (own) { wear += own; lines.push(`${armor.name} takes ${own} from its own Ignite/Stain`); }
   }
   if (armor && wear) await armor.update({ "system.wear": armor.system.wear + wear }, { flowstateSystem: true });
+  // Other held or worn objects that were aimed at (weapons, Foci, the Shroud) burn or corrode on their own stacks too.
+  for (const item of aimableItems(actor)) {
+    if (item.type === "armor") continue;
+    const at = tickAmounts(item.system.conditions);
+    const own = at.heat + at.acid + at.radiation;
+    if (!own) continue;
+    lines.push(`${item.name} takes ${own} from its own Ignite/Stain`);
+    await item.update({ "system.wear": (item.system.wear ?? 0) + own }, { flowstateSystem: true });
+  }
   // Brand (Heat T3): Ignite's heat damage triggers it too.
   const brandTick = t.heat > 0 && elem ? elem.brandExtra(actor, "heat", false) : 0;
   if (brandTick) { hpLoss += brandTick; update["system.hp.value"] = sys.hp.value - hpLoss; lines.push(`Brand: ${brandTick} more heat damage`); }
@@ -5615,13 +5869,12 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
   const P = sh.system.profile;
   const lines = [];
   const update = {};
-  const m = P.affixMult;
   const cat = DAMAGE_CATEGORY[type] ?? "physical";
   const own = sh.parent?.uuid === actor.uuid;
   // Agate (Magical) / Jasper (Physical) / Obsidian (Elemental): the first instance since the Shroud last recovered.
   const negKey = { magical: "agate", physical: "jasper", elemental: "obsidian" }[cat];
   if (own && negKey && hasAffix(sh, negKey) && !(sh.system.negated ?? []).includes(cat) && remaining > 0) {
-    const cut = Math.min(remaining, P.scaling * m);
+    const cut = Math.min(remaining, P.scaling * affixMultOf(P, negKey));
     remaining -= cut;
     lines.push(`${sh.name} (${AFFIXES[negKey].label}): −${cut} ${cat} damage`);
     update["system.negated"] = [...(sh.system.negated ?? []), cat];
@@ -5635,9 +5888,9 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
   // Damage that would hit the Shroud: Weakened by Diamond (same source this turn), Alexandrite (same type as last), Colored Diamond (declared source).
   let weak = 0;
   const why = [];
-  if (hasAffix(sh, "diamond") && source && (sh.system.hitSources ?? []).includes(`${key}|${source}`)) { weak += m; why.push("Diamond"); }
-  if (hasAffix(sh, "alexandrite") && sh.system.lastType && sh.system.lastType === type) { weak += m; why.push("Alexandrite"); }
-  if (hasAffix(sh, "coloredDiamond") && source && sh.system.declared === source) { weak += m; why.push("Colored Diamond"); }
+  if (hasAffix(sh, "diamond") && source && (sh.system.hitSources ?? []).includes(`${key}|${source}`)) { weak += affixMultOf(P, "diamond"); why.push("Diamond"); }
+  if (hasAffix(sh, "alexandrite") && sh.system.lastType && sh.system.lastType === type) { weak += affixMultOf(P, "alexandrite"); why.push("Alexandrite"); }
+  if (hasAffix(sh, "coloredDiamond") && source && sh.system.declared === source) { weak += affixMultOf(P, "coloredDiamond"); why.push("Colored Diamond"); }
   if (weak && remaining > 0) {
     const before = remaining;
     remaining = applyStacks(remaining, -weak);
@@ -5653,7 +5906,7 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
   // It can't absorb more than its remaining Durability (Tourmaline / Rend change how fast that runs out).
   const durLeft = sh.system.durability.value;
   if (!P.negator) {
-    const f = (hasAffix(sh, "tourmaline") && sh.system.element === type ? stackMultiplier(-m) : 1) * (rend ? stackMultiplier(rend.stacks) : 1);
+    const f = (hasAffix(sh, "tourmaline") && sh.system.element === type ? stackMultiplier(-affixMultOf(P, "tourmaline")) : 1) * (rend ? stackMultiplier(rend.stacks) : 1);
     L = Math.min(L, Math.floor(durLeft / f));
   }
   let loss = 0, rAbs = 0, cAbs = 0;
@@ -5667,7 +5920,7 @@ export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0,
     cleaveLeft -= cAbs; remaining -= rAbs;
     loss = cAbs + rAbs;
     // Tourmaline: damage of the chosen element taken by the Shroud is Weakened.
-    if (loss && hasAffix(sh, "tourmaline") && sh.system.element === type) loss = applyStacks(loss, -m);
+    if (loss && hasAffix(sh, "tourmaline") && sh.system.element === type) loss = applyStacks(loss, -affixMultOf(P, "tourmaline"));
     if (loss && rend) loss = applyStacks(loss, rend.stacks);
     loss = Math.min(loss, durLeft);
     if (rAbs || cAbs) lines.push(`${sh.name} (Shroud) absorbed ${rAbs}${cAbs ? ` (+${cAbs} Cleave)` : ""} (−${loss} Durability)`);
@@ -5689,7 +5942,7 @@ export const sceneLush = () => !!globalThis.canvas?.scene?.getFlag?.("flowstate"
 /** Musgravite (Shroud): Force against you is reduced by your Scaling Stat. */
 export function musgraviteNegate(actor) {
   const sh = actor?.system?.shroud;
-  return hasAffix(sh, "musgravite") ? sh.system.profile.scaling * sh.system.profile.affixMult : 0;
+  return hasAffix(sh, "musgravite") ? sh.system.profile.scaling * affixMultOf(sh.system.profile, "musgravite") : 0;
 }
 
 /** Within this creature's personal melee range? (Unknown positions count as yes.) */
@@ -5706,10 +5959,10 @@ export function shroudAttackNet(attacker, target, opts) {
   const fociNet = aimed?.type === "foci" ? -(aimed.system.profile?.selfWeakened ?? 0) : 0;
   const sh = target?.system?.shroud;
   if (!sh) return fociNet;
-  const m = sh.system.profile.affixMult;
+  const P = sh.system.profile;
   let net = 0;
-  if (hasAffix(sh, "blackOpal") && inPersonalMelee(target, attacker)) net -= m;
-  if (hasAffix(sh, "coloredDiamond") && sh.system.declared && sh.system.declared === sourceOf(opts)) net -= m;
+  if (hasAffix(sh, "blackOpal") && inPersonalMelee(target, attacker)) net -= affixMultOf(P, "blackOpal");
+  if (hasAffix(sh, "coloredDiamond") && sh.system.declared && sh.system.declared === sourceOf(opts)) net -= affixMultOf(P, "coloredDiamond");
   return net + fociNet;
 }
 
@@ -5773,11 +6026,11 @@ export async function shroudTurnStart(actor) {
   if (recover > 0) { update["system.wear"] = sh.system.wear - recover; notes.push(`recovers ${recover} Durability`); }
   if ((sh.system.negated ?? []).length) update["system.negated"] = [];
   if (Object.keys(update).length) await sh.update(update, { flowstateSystem: true });
-  const minB = Math.floor(P.scaling / 3) * P.affixMult;
+  const minB = Math.floor(P.scaling / 3);
   const cond = actor.system.conditions ?? {};
   const cu = {};
-  if (hasAffix(sh, "garnet") && cond.ignite > 0) { cu["system.conditions.ignite"] = Math.max(0, cond.ignite - minB); notes.push(`Garnet puts out ${Math.min(cond.ignite, minB)} Ignite`); }
-  if (hasAffix(sh, "topaz") && cond.slow > 0) { cu["system.conditions.slow"] = Math.max(0, cond.slow - minB); notes.push(`Topaz removes ${Math.min(cond.slow, minB)} Slow`); }
+  if (hasAffix(sh, "garnet") && cond.ignite > 0) { cu["system.conditions.ignite"] = Math.max(0, cond.ignite - minB * affixMultOf(P, "garnet")); notes.push(`Garnet puts out ${Math.min(cond.ignite, minB * affixMultOf(P, "garnet"))} Ignite`); }
+  if (hasAffix(sh, "topaz") && cond.slow > 0) { cu["system.conditions.slow"] = Math.max(0, cond.slow - minB * affixMultOf(P, "topaz")); notes.push(`Topaz removes ${Math.min(cond.slow, minB * affixMultOf(P, "topaz"))} Slow`); }
   if (Object.keys(cu).length) await actor.update(cu);
   if (hasAffix(sh, "coloredDiamond")) notes.push(`Colored Diamond: declare a source type on ${esc(sh.name)} (now: ${sh.system.declared ? esc(sh.system.declared.split(":")[1]) : "none"})`);
   if (notes.length) await post(actor, { title: `${esc(actor.name)} — ${esc(sh.name)}`, body: `<div class="fs-notes">${notes.join(" · ")}</div>` });

@@ -24,10 +24,14 @@ assert.equal(m.weaponProfile({type:"balanced",weight:"light",material:"graySteel
 p = m.weaponProfile({type:"longshot",weight:"heavy",material:"iron",grade:3},{str:30}); assert.equal(p.die,14); assert.equal(p.reloadRP,3); assert.equal(p.range,300); assert.equal(p.pierce,7);
 // Armor: Con scaling capped, min x1
 assert.equal(m.armorMultiplier(16,3),1); assert.equal(m.armorMultiplier(30,3),3); assert.equal(m.armorMultiplier(50,3),3); assert.equal(m.armorMultiplier(5,3),1);
-let a = m.armorProfile({weight:"heavy",material:"steel",grade:3},25); assert.equal(a.durability,240); assert.equal(a.limit,48); assert.equal(a.moveAP,2); assert.equal(a.stealthDis,2);
+let a = m.armorProfile({weight:"heavy",material:"steel",grade:3},25); assert.equal(a.durability,240); assert.equal(a.limit,48); assert.equal(a.moveAP,1); assert.equal(a.speedPct,60); assert.equal(a.stealthDis,2);
 // Gray iron / gray steel penalties
-assert.deepEqual(m.armorPenalties("titanic","grayIron"), {effectiveWeight:"titanic",stealthDis:Infinity,moveAP:3,physicalDis:1,physicalWeakened:0});
-assert.equal(m.armorPenalties("heavy","graySteel").physicalDis,1); assert.equal(m.armorPenalties("titanic","graySteel").physicalWeakened,1);
+// Armor takes a percentage of speed: Light 20, Medium 40, Heavy 60, Titanic 80; Gray Iron/Steel pushed past Titanic is 0% speed (and +1 AP two past it)
+assert.deepEqual([m.armorPenalties("light","iron").speedPct,m.armorPenalties("medium","iron").speedPct,m.armorPenalties("heavy","iron").speedPct,m.armorPenalties("titanic","iron").speedPct],[20,40,60,80]);
+assert.deepEqual(m.armorPenalties("titanic","grayIron"), {effectiveWeight:"titanic",stealthDis:Infinity,speedPct:100,moveAP:1});
+assert.deepEqual(m.armorPenalties("medium","grayIron"), {effectiveWeight:"heavy",stealthDis:2,speedPct:60,moveAP:1});
+assert.deepEqual(m.armorPenalties("heavy","graySteel"), {effectiveWeight:"titanic",stealthDis:Infinity,speedPct:100,moveAP:1});
+assert.deepEqual(m.armorPenalties("titanic","graySteel"), {effectiveWeight:"titanic",stealthDis:Infinity,speedPct:100,moveAP:2});
 assert.equal(m.armorPenalties("medium","graySteel").effectiveWeight,"titanic");
 // Soak: limit 48 steel vs physical; vs heat 1/10 -> 4; vs arcane 0; pierce reduces
 assert.deepEqual(m.soak(100,"physical",a), {absorbed:48,toHp:52,durabilityLoss:48});

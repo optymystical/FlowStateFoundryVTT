@@ -1,3 +1,5 @@
+import { getCurrencies } from "./currency.mjs";
+import { currencyRows } from "./currency-rules.mjs";
 import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS, OBJECT_DENSITY } from "./rules.mjs";
 import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, TAGS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
@@ -212,7 +214,7 @@ const AUTOMATED = {
     2: "Heave! is an option in the attack dialog of any Heavy attack.",
     3: "Crunch Time is an option when you Knockback, Push, Launch, or throw a grappled creature: the Force is matched against current HP.",
     4: "Ho! is an option when throwing a Heavy weapon that isn't a Good throw.",
-    5: "Unstoppable is in the Action List (Strength Methods). Its resistance effects are shown as a status for the GM to apply."
+    5: "Unstoppable is in the Action List (Strength Methods). While Unstoppable, a Martial (Body) stat check has a resisting checkbox: Advantage and the stat counts twice as high."
   },
   "martial-striker-weapons": {
     1: "Rend is an option in a Striker weapon's attack dialog: object damage (after their Limit) is Strengthened.",
@@ -677,14 +679,15 @@ function actionGroups(actor, weapons, stats) {
   const mctx = mental.manifestContext(actor);
   const mTheory = mentalRules.theoryTier(sys.trees), willT = skills.tierOf(sys.trees, "mental-willpower-arts"), psionT = skills.tierOf(sys.trees, "mental-psion-arts");
   if (mctx.wonders.length) {
-    mentalRows.push({ label: "Manifest", detail: `${mctx.wonders.map(w => w.name).join(", ")} · ${mentalRules.ALIGNMENTS[mctx.alignment.value]}${mctx.alignment.deepened ? " (Deepened)" : ""} Alignment · Range sets the AP (Melee 1, Ranged 2, Area 3)`, cost: "1–3 AP", action: "manifest", icon: "fa-solid fa-eye" });
+    mentalRows.push({ label: "Manifest", detail: `${mctx.wonders.map(w => w.name).join(", ")} · ${mentalRules.alignmentLabel(mctx.alignment)} Alignment · Range sets the AP (Melee 1, Ranged 2, Area 3)`, cost: "1–3 AP", action: "manifest", icon: "fa-solid fa-eye" });
+  }
+  // Alignment is set with a 1 hour activity (any Mental user); Fluidity (T3) and Equilibrium (T4) change it in the moment.
+  if (mTheory >= 1 || mctx.wonders.length) {
     const cur = mctx.alignment;
-    if (cur.value !== "dream") mentalRows.push({ label: "Align: Dream", detail: "Change Alignment", cost: mTheory >= 3 ? "2 AP or ⚡ half SP" : "2 AP", action: "alignDream", icon: "fa-solid fa-cloud" });
-    if (cur.value !== "nightmare") mentalRows.push({ label: "Align: Nightmare", detail: "Change Alignment", cost: mTheory >= 3 ? "2 AP or ⚡ half SP" : "2 AP", action: "alignNightmare", icon: "fa-solid fa-moon" });
-    if (cur.value !== "neutral") mentalRows.push({ label: "Return to Neutral", detail: "Form Ward attacks have Advantage in Neutral", cost: "Free", action: "alignNeutral", icon: "fa-solid fa-circle-half-stroke" });
-    if (!cur.deepened && ((cur.value !== "neutral" && mTheory >= 3) || (cur.value === "neutral" && mTheory >= 5))) {
-      const dk = cur.value === "neutral" ? `2 AP + ⚡ ${ab.statMinOf(actor, "will")}` : `⚡ ${ab.statMinOf(actor, mentalRules.KINDS[cur.value].stat)}`;
-      mentalRows.push({ label: cur.value === "neutral" ? "Deepen Neutral (Equilibrium)" : "Deepen Alignment", detail: cur.value === "neutral" ? "Form Wards are doubly Strengthened and can be Enhanced or Bursted for free, until your next turn" : "Wonders of your Alignment are doubly Strengthened until your next turn", cost: dk, action: "deepen", icon: "fa-solid fa-angles-down" });
+    mentalRows.push({ label: "Set Alignment", detail: `Now ${mentalRules.alignmentLabel(cur)} (${mentalRules.alignmentSpeedPct(cur)}% speed lost). Dream or Nightmare, 1 to 4 points, 20% speed each`, cost: "1 hour (not in combat)", action: "alignSet", icon: "fa-solid fa-circle-half-stroke" });
+    if (mTheory >= 3 && !cur.equilibrium && (cur.level > 0 || mTheory >= 4)) {
+      const fc = mentalRules.fluidityCost(cur, sys.skillPoints ?? 0);
+      mentalRows.push({ label: mTheory >= 4 ? "Fluidity / Equilibrium" : "Fluidity", detail: `Swap ${cur.kind === "dream" ? "Dream to Nightmare" : "Nightmare to Dream"}${mTheory >= 4 ? ", or enter -1 Alignment until your next turn" : ""}`, cost: `⚡ ${fc}`, action: "fluidity", icon: "fa-solid fa-shuffle" });
     }
   }
   const icons = actor.items.filter(i => i.type === "icon" && i.system.profile?.valid);
@@ -778,10 +781,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       cast: FlowStateActorSheet.onCast,
       spiritSense: FlowStateActorSheet.onSpiritSense,
       manifest: function () { return mental.manifest(this.document); },
-      alignDream: function () { return mental.changeAlignment(this.document, "dream"); },
-      alignNightmare: function () { return mental.changeAlignment(this.document, "nightmare"); },
-      alignNeutral: function () { return mental.changeAlignment(this.document, "neutral"); },
-      deepen: function () { return mental.deepen(this.document); },
+      alignSet: function () { return mental.setAlignmentActivity(this.document); },
+      fluidity: function () { return mental.fluidity(this.document); },
       dismissWonder: function () { return mental.dismiss(this.document); },
       choosePatron: function () { return mental.choosePatron(this.document); },
       attuneIcon: function (event, target) { const item = target?.closest?.("[data-item-id]") ? this.document.items.get(target.closest("[data-item-id]").dataset.itemId) : null; return mental.attuneIcon(this.document, item); },
@@ -872,6 +873,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       : sys.movement.multiplier > 1
       ? `${sys.movement.multiplier}× distance for 1 AP`
       : `${sys.movement.ap} AP per move`;
+    const lost = sys.movement.speedLoss;
+    const speedNote = lost?.total ? `Speed -${Math.min(100, lost.total)}% of ${d.move} ft (${[lost.armor && `armor ${lost.armor}%`, lost.affix && `Affixes ${lost.affix}%`, lost.alignment && `Alignment ${lost.alignment}%`].filter(Boolean).join(", ")}; 5 ft minimum)` : `Speed ${d.move} ft (your Size's maximum)`;
 
     const stats = { str: d.effective.str.value, dex: d.effective.dex.value };
     const weapons = weaponRows(actor);
@@ -900,7 +903,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     });
     const collapsed = collapsedFor(actor.uuid);
     const actionGroups = buildActionList(actor, weapons, stats).map(g => ({ ...g, open: !collapsed.has(g.key) }));
-    const open = Object.fromEntries(["weapons", "armor", "foci", "shrouds", "icons", "misc"].map(k => [k, !collapsed.has(k)]));
+    const open = Object.fromEntries(["weapons", "armor", "foci", "shrouds", "icons", "currency", "misc"].map(k => [k, !collapsed.has(k)]));
 
     return Object.assign(context, {
       actor,
@@ -912,7 +915,11 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       editable: this.isEditable,
       isGM: game.user.isGM,
       shieldRows: shieldOrderRows(actor),
-      armorConditions: Object.entries(sys.armor?.system.conditions ?? {}).filter(([, v]) => v > 0).map(([k, v]) => `${v} ${k === "ignite" ? "Ignite" : STAIN_VARIANTS[k]?.label ?? k}`).join(" · "),
+      // Ignite / Stain stacks on armor and on the other held or worn objects that were aimed at, by name.
+      armorConditions: [sys.armor, ...actions.aimableItems(actor).filter(x => x.type !== "armor")].filter(Boolean).map(x => {
+        const txt = Object.entries(x.system.conditions ?? {}).filter(([, v]) => v > 0).map(([k, v]) => `${v} ${k === "ignite" ? "Ignite" : STAIN_VARIANTS[k]?.label ?? k}`).join(", ");
+        return txt ? `${x.name}: ${txt}` : "";
+      }).filter(Boolean).join(" · "),
       showFocus: skills.tierOf(sys.trees, "magic-theory") >= 2,
       focusChoices: coreChoices(sys.trees),
       focusEditable: this.isEditable && !actions.inActiveCombat(actor),
@@ -927,7 +934,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       statGroups: Object.values(groups),
       sizeChoices: Object.fromEntries(Object.keys(SIZES).map(k => [k, `Size ${k}`])),
       senseChoices: SENSE_LEVELS,
-      moveNote,
+      moveNote, speedNote,
       showOptional: game.settings.get("flowstate", "showOptionalFields"),
       hpState: sys.hp.destroyed ? "Body destroyed" : sys.hp.value <= 0 ? "Dead" : sys.hp.value < sys.hp.pain ? "Unconscious" : "",
       weapons,
@@ -936,6 +943,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       foci,
       shrouds,
       wornArmor: sys.armor,
+      moveLeft: actions.moveLeft(actor),
+      currencies: currencyRows(getCurrencies(), sys.currency),
       gear: actor.items.filter(i => i.type === "gear").map(i => ({ id: i.id, name: i.name, img: i.img, system: i.system,
         ammoNote: i.system.ammoType ? `${WEAPON_TYPES[i.system.ammoType]?.label ?? i.system.ammoType} ammunition (max ${actions.AMMO_MAX})` : "" })),
       activeEffects: activeEffectRows(actor)
@@ -1241,8 +1250,10 @@ function affixContext(sys, p) {
     label, options: Object.fromEntries(Object.entries(AFFIXES).filter(([, a]) => a.rarity === r).map(([k, a]) => [k, a.label]))
   }));
   const current = sys.affixes ?? [];
-  const slots = Array.from({ length: p.affixSlots ?? 0 }, (_, i) => ({ n: i + 1, value: current[i] ?? "", info: AFFIXES[current[i]] ?? null }));
-  return { affixChoices: choices, slots, hasTourmaline: p.affixes?.includes("tourmaline"), elements: ELEMENTS };
+  // Affixes cost speed rather than slots: always one empty row to add another, up to the most one item holds.
+  const slots = Array.from({ length: Math.min(p.affixSlots ?? 0, current.filter(Boolean).length + 1) }, (_, i) => ({ n: i + 1, value: current[i] ?? "", info: AFFIXES[current[i]] ?? null }));
+  const doubledChoices = Object.fromEntries((p.affixes ?? []).map(k => [k, AFFIXES[k]?.label ?? k]));
+  return { affixChoices: choices, slots, doubledChoices, hasTourmaline: p.affixes?.includes("tourmaline"), elements: ELEMENTS };
 }
 
 /** Affix slots aren't named form fields: collect them into system.affixes on submit. */
@@ -1271,7 +1282,7 @@ export class FlowStateFociSheet extends FlowStateItemSheet {
       scalingLabel: p.valid ? (p.form === "multi" ? `Lesser of Reach and Grasp (${statLabel(p.scalingStat)})` : statLabel(p.scalingStat)) : "",
       trLabel: p.valid ? (p.tr === null || p.tr === undefined ? "1 / 2 / 3 (Raw Casting)" : String(p.tr)) : "",
       isRing: sys.fociType === "ring",
-      hasOpal: p.valid && p.affixes?.includes("blackOpal") && p.affixPlus, opalChoices: { targeted: "Targeted", ranged: "Ranged" }, hasEmerald: p.valid && p.affixes?.includes("emerald"), hasColored: p.valid && p.affixes?.includes("coloredDiamond"),
+      hasOpal: p.valid && p.doubled === "blackOpal", opalChoices: { targeted: "Targeted", ranged: "Ranged" }, hasEmerald: p.valid && p.affixes?.includes("emerald"), hasColored: p.valid && p.affixes?.includes("coloredDiamond"),
       spellChoices: coreChoices(this.document.actor?.system?.trees),
       owned: !!this.document.actor,
       ...(p.valid ? affixContext(sys, p) : {})

@@ -47,7 +47,10 @@ console.log("creation tests passed");
   if (!bad.some(e => /Foci or Shroud/.test(e))) throw new Error("FAIL loose Affix should be rejected");
   const rare = c.validate({ ...good, items: [{ kind: "foci", fociType: "rod" }, { kind: "affix", affix: "diamond", target: "0" }] }, R4);
   if (!rare.some(e => /above/.test(e))) throw new Error("FAIL rare Affix above the cap should be rejected");
-  const full = c.validate({ ...good, items: [{ kind: "foci", fociType: "wand" }, { kind: "affix", affix: "agate", target: "0" }, { kind: "affix", affix: "jasper", target: "0" }] }, R4);
-  if (!full.some(e => /at most 1 Affix/.test(e))) throw new Error("FAIL Wand holds one Affix");
+  // Affixes cost speed rather than slots: a Wand takes two (the second costs 20% speed), up to the sanity cap per item.
+  const two = c.validate({ ...good, items: [{ kind: "foci", fociType: "wand" }, { kind: "affix", affix: "agate", target: "0" }, { kind: "affix", affix: "jasper", target: "0" }] }, R4);
+  if (two.some(e => /at most/.test(e))) throw new Error("FAIL a Wand may take a second Affix (at a speed cost)");
+  const many = c.validate({ ...good, items: [{ kind: "foci", fociType: "wand" }, ...Array.from({ length: 7 }, () => ({ kind: "affix", affix: "agate", target: "0" }))] }, R4);
+  if (!many.some(e => /at most 6 Affix/.test(e))) throw new Error("FAIL the per-item Affix cap");
   console.log("  PASS Affix rules (needs a target, rarity cap, slot count)");
 }

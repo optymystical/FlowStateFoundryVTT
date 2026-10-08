@@ -96,10 +96,11 @@ const flag = (a, k) => a.getFlag("flowstate", k);
 const effs = (a, k) => a.effects.filter(e => e.flags.flowstate.spellEffect?.kind === k);
 const clearAll = a => { a.effects.splice(0, a.effects.length); a.system.prepareDerivedData(); };
 /** Manifest at the Orc, it fails to dodge: returns the defense card. */
+let dodgeRoll = 12;   // a hit but not a crit (a crit is double the dodge result)
 async function hit(mode, extra = {}, atk = 20) {
   refresh(); target(orc); seq = [atk];
   await M.manifest(hero, { mode, range: "ranged", ...extra });
-  seq = [2]; await actions.defend(lastAtk(), 0, "dodge");
+  seq = [dodgeRoll]; await actions.defend(lastAtk(), 0, "dodge");
   return messages.filter(m => m.flags?.flowstate?.defense).at(-1);
 }
 const reset = () => { clearAll(orc); clearAll(hero); orc.system.hp.value = 432; orc.system.hp.lost = 0; orc.system.conditions = { ignite: 0, stain: 0, slow: 0, haste: 0, solid: 0, searing: 0, frozen: 0, electric: 0 }; for (const k of Object.keys(orc.flags)) delete orc.flags[k]; orc.system.lift = 0; orc.system.prepareDerivedData?.(); };
@@ -134,6 +135,38 @@ reset(); messages.length = 0;
 card = await hit("mental-life-dream:bloom");
 const acts = messages.find(m => m.flags?.flowstate?.mentalAct)?.flags.flowstate.mentalAct.acts ?? [];
 ok2(acts.some(a => a.id === "pollinate"), "Life T2: Pollinate is offered after a hit");
+
+console.log("== Any Strengthened stack scales bolded effects (a crit is doubly Strengthened)");
+reset(); dodgeRoll = 2;
+await hit("mental-life-dream:bloom");
+ok2(effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === 120, "A critical Bloom: 60 temp HP doubly Strengthened → 120");
+reset(); await hit("mental-below-nightmare:sink");
+ok2(effs(orc, "hold")[0]?.flags.flowstate.spellEffect.holdMin === 12, "…a critical Sink: the escape check 6 → 12");
+dodgeRoll = 12;
+
+console.log("== Alignment 2 scales the bolded effects of Modes");
+const setAlign = (kind, level) => { hero.flags.flowstate = { ...(hero.flags.flowstate ?? {}), alignment: kind ? { kind, level } : null }; };
+reset(); setAlign("dream", 1);
+await hit("mental-life-dream:bloom");
+ok2(effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === 60, "1 Alignment: no scaling yet (Bloom still 60 temp HP)");
+reset(); setAlign("dream", 2);
+await hit("mental-life-dream:bloom");
+ok2(effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === 90, "2 Dream Alignment: a Dream Mode's bolded effect is Strengthened (Bloom 60 → 90 temp HP)");
+reset(); setAlign("dream", 2);
+await hit("mental-beyond-dream:ascend");
+ok2(effs(orc, "lift")[0]?.flags.flowstate.spellEffect.liftUp === 270, "…Ascend's 180 Lift becomes 270");
+reset(); setAlign("dream", 2);
+await hit("mental-death-nightmare:waste");
+ok2(effs(orc, "waste")[0] && Math.floor(6 * 0.5) === 3 && effs(orc, "waste")[0].flags.flowstate.spellEffect.bstacks === -1, "A Nightmare Mode under Dream 2 is Weakened (Waste carries the Weakened stack)");
+{ const w = W.dodgeWaste(orc); ok2(w?.pen === 3, "…and takes 3 die sizes off instead of 6"); }
+reset(); setAlign("dream", 2);
+await hit("mental-below-nightmare:sink");
+{ const hold = effs(orc, "hold")[0]; ok2(hold?.flags.flowstate.spellEffect.holdMin === 3, "…Sink's escape check is 3 instead of 6"); }
+reset(); setAlign("nightmare", 2);
+await hit("mental-below-nightmare:sink");
+{ const hold = effs(orc, "hold")[0]; ok2(hold?.flags.flowstate.spellEffect.holdMin === 9, "2 Nightmare Alignment: Sink is Strengthened (6 → 9)"); }
+setAlign(null);
+reset();
 
 console.log("== Life: Verdant Soul (Tenet) and Perennial");
 const icon = mkIcon(hero, "Aegis", { form: "aegis", attuned: true, tenet: "mental-life-dream:verdant-soul" });

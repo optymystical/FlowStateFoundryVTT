@@ -3732,6 +3732,15 @@ export function aimableItems(actor) {
     || (i.type === "foci" && i.system.equipped) || (i.type === "shroud" && shroud && i.uuid === shroud.uuid));
 }
 
+/**
+ * Strengthened/Weakened stacks a caster brings to a spell that has no attack roll to carry them (Restore, Shift, Mend, Summons...): the plan's own
+ * `stacks`, plus any active effect on the caster that gives Strengthened outside of a roll (`spellEffect.strengthened`, negative for Weakened).
+ */
+export function castStacks(actor, plan = null) {
+  const fromEffects = Array.from(actor?.effects ?? []).reduce((n, e) => n + (e.disabled ? 0 : Number(e.flags?.flowstate?.spellEffect?.strengthened) || 0), 0);
+  return (Number(plan?.stacks) || 0) + fromEffects;
+}
+
 async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = null) {
   const sp = o.spell;
   const profile = spellProfile(o);

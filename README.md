@@ -511,6 +511,8 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.51.3:** Spells with no attack roll (Restore and Painless, Shift, Mend, Summons and Animations pools, a Mirage's Power) now scale with Strengthened/Weakened too, from the plan's stacks and from any effect on the caster with a `strengthened` value (nothing in the rules gives one yet, so this is plumbing for when something does). A crit Mirage's Power now scales with its stacks. Removed a stray `trees.mjs.orig`.
+
 **0.51.2:** Any Strengthened or Weakened stack on an attack (a crit's two, Alignment, an Area spread, Adapt, a Mod) now scales the **bolded** numbers of what it carries, not just damage.
 - **Mental:** every Manifest's stacks (crit included) scale the bolded numbers of its Mode (temp HP, healing, Lift, die sizes, escape checks, charge sizes, damage reduction and caps, Body); effects that last remember the stacks they were made with. A critical Bloom gives 120 temp HP at Power 3 instead of 60.
 - **Magic:** on a hit, a Shield's health, Slow/Haste and die-size penalties, Personal Repulsion/Well thresholds, Hold's escape check, Static, Freeze and held-spell Energy removal scale with the spell's stacks (the damage's stacks for attack-die penalties, Frostbite and Lightning Rod). Restore, Shift/Mend, Mirage and Summons resolve at the cast with no attack roll, so there is no crit to scale them.

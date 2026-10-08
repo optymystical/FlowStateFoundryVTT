@@ -151,6 +151,13 @@ clean5(); const free0 = hero.system.energy.value;
 await dmg(gob, 30); target(gob);
 await cast("magic-restoration-arcana:restore", { base: 1 });
 ok2(gob.system.hp.value === 432 - 30 + 6, `Restore heals 2 × Power (6) of what was lost since your last turn (HP ${gob.system.hp.value})`);
+// Strengthened outside of a roll (anything on the caster that gives it) scales the bolded number too: 6 → 9.
+clean5(); await actions.putSpellEffect(hero, { kind: "boost", caster: hero.uuid, name: "Boost", strengthened: 1 });
+await dmg(gob, 30); target(gob);
+await cast("magic-restoration-arcana:restore", { base: 1 });
+ok2(gob.system.hp.value === 432 - 30 + 9, `A caster with a Strengthened stack heals 1.5 × (9) (HP ${gob.system.hp.value})`);
+ok2(actions.castStacks(hero, { stacks: 1 }) === 2 && actions.castStacks(hero) === 1, "castStacks adds the plan's stacks to effects that give Strengthened");
+await actions.clearSpellEffects(hero);
 clean5(); target(gob); let r5 = await cast("magic-restoration-arcana:restore", { base: 1 });
 ok2(!r5 && gob.system.hp.value === 432, "…with nothing lost it refuses (nothing is spent)");
 clean5(); await dmg(gob, 2); target(gob); await cast("magic-restoration-arcana:restore", { base: 1 });

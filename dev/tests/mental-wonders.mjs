@@ -230,6 +230,11 @@ console.log("== Infuse (Destruction Tenet) sees the caster's own Manifest hits")
   await new Promise(r => setTimeout(r, 30));
   ok2(prompts.some(h => /Infuse/.test(h) && /Use it now/.test(h)), "A successful Manifest of the caster's own pops Infuse up");
   prompts.length = 0; await hit("mental-life-dream:bloom", {}, 4);
+  // An Icon set to a Tenet the holder hasn't learned (no Destruction) does nothing.
+  hero.system.trees["mental-destruction-nightmare"] = 0; hero.system.prepareDerivedData(); hero.flags.flowstate.mentalOnce = undefined; prompts.length = 0;
+  await hit("mental-life-dream:bloom"); await new Promise(r => setTimeout(r, 30));
+  ok2(!prompts.some(h => /Infuse/.test(h)), "A Tenet whose Wonder the holder hasn't learned isn't offered");
+  hero.system.trees["mental-destruction-nightmare"] = 1; hero.system.prepareDerivedData();
   // The holder of Infuse is the one being hit: it isn't offered an attack that lands on itself.
   const WB = await import("../../module/wonders-b.mjs");
   hero.flags.flowstate.mentalOnce = undefined; prompts.length = 0;

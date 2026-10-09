@@ -58,6 +58,8 @@ export function tenetOf(actor) {
   const icon = actor?.system?.icon;
   const p = icon?.system?.profile;
   if (!p?.valid || !p.tenet || !icon.system.tenet) return null;
+  // A Tenet comes with its Wonder's first tier: an Icon set to a Tenet its holder hasn't learned gives nothing.
+  if (tier(actor, p.tenet.wonder) < (R.wonderById(p.tenet.wonder)?.tenet?.tier ?? 1)) return null;
   return { id: icon.system.tenet, wonder: p.tenet.wonder, mult: p.tenet.mult };
 }
 

@@ -230,6 +230,11 @@ console.log("== Infuse (Destruction Tenet) sees the caster's own Manifest hits")
   await new Promise(r => setTimeout(r, 30));
   ok2(prompts.some(h => /Infuse/.test(h) && /Use it now/.test(h)), "A successful Manifest of the caster's own pops Infuse up");
   prompts.length = 0; await hit("mental-life-dream:bloom", {}, 4);
+  // The holder of Infuse is the one being hit: it isn't offered an attack that lands on itself.
+  const WB = await import("../../module/wonders-b.mjs");
+  hero.flags.flowstate.mentalOnce = undefined; prompts.length = 0;
+  await WB.anyHit({ attacker: orc, target: hero, result: { hit: true } });
+  ok2(!prompts.some(h => /Infuse/.test(h)), "A creature holding Infuse isn't offered an enemy's hit on itself");
   icon.system.tenet = was; hero.system.trees["mental-destruction-nightmare"] = 0; hero.system.prepareDerivedData(); }
 
 console.log("== Death (Nightmare): Wither, Waste, Execute");

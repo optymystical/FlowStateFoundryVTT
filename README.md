@@ -520,6 +520,13 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.51.17:** **Helping effects only come up for allies, harming ones for foes.** A new check by token disposition (Friendly vs Hostile; Neutral and tokenless creatures count as either side):
+- **Offered only for a creature not on the opposite side of the one being helped:** Block, Shield Toss guard, Perfect Block, Quartz and Adjust (the "Ally help" button), Dampen (Peace Tenet) and Infuse (Destruction Tenet; also never offered to a creature whose own hit it would be, or the one being hit).
+- **Offered only against a creature that isn't the holder's ally:** Empower (War Tenet).
+- Choices you pick yourself (a Ward projected at someone, Bloodbond's second target, Zap an ally, Scepter and Tablet's ally bonus) are unchanged.
+
+**0.51.16:** **Infuse needs a willing character.** The Infuse question went to every creature holding the Tenet, including the enemy being hit (the GM got asked for an NPC's Infuse). It is now skipped when the holder is the one being hit, and when the holder and the attacker are on opposite sides of the scene (a friendly token and a hostile token); neutral tokens still get asked.
+
 **0.51.15:** Every question the system asks a player logs a line to the browser console (F12) saying whose client asked, who answered it, and who owns the character: a debugging aid for prompts that reach the wrong client.
 
 **0.51.14:** **Infuse is offered once per hit.** At 3 Alignment a Tenet can be used twice a round, but the same hit is never offered Infuse twice.

@@ -229,6 +229,14 @@ console.log("== Questions go to the character's player, not to whoever runs the 
   ok2(CH.answeringUser(owned) === game.user, "…with the player offline, whoever owns it here answers");
   const npc = { isOwner: true, testUserPermission: () => false };
   pl.active = true; ok2(CH.answeringUser(npc) === game.user, "An NPC nobody else owns is answered by the GM");
+  // An unlinked token is a copy of its world actor: the player's ownership of the original counts, and the pair is one creature in play.
+  const world = { id: "W1", isOwner: true, testUserPermission: (u) => u.id === "p1" };
+  const copy = { id: "W1", token: { baseActor: world }, isOwner: true, testUserPermission: () => false };
+  ok2(CH.answeringUser(copy) === pl, "A token copy that grants the player nothing is still answered by the original's owner");
+  const savedCanvas = globalThis.canvas, savedActors = [...game.actors];
+  globalThis.canvas = { tokens: { placeables: [{ actor: copy }] } }; game.actors.length = 0; game.actors.push(world, { id: "W2" });
+  ok2(CH.everyActor().length === 2 && CH.everyActor().includes(copy) && !CH.everyActor().includes(world), "everyActor lists the token's actor instead of its world actor, so nobody is asked about the same creature twice");
+  globalThis.canvas = savedCanvas; game.actors.length = 0; game.actors.push(...savedActors);
   game.users.length = 0; game.users.push(...saved); game.user = savedUser; }
 
 console.log("== One popup per question");

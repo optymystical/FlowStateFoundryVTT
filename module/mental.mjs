@@ -802,8 +802,9 @@ export async function turnStart(actor) {
   let next = { ...psion, auraSight: false };
   if (psion.farSight) {
     const cost = mind(actor);
-    const keep = actor.isOwner && psionTier(actor) >= 2 && (actor.system.energy?.value ?? 0) >= cost
-      ? await DialogV2().confirm({ window: { title: "Far Sight" }, rejectClose: false, content: `<p>Pay <strong>${cost}</strong> Energy to keep Far Sight for another turn?</p>` }) : false;
+    // Turn start runs on the client that advanced the combat (usually the GM's): ask the character's own player, not whoever is running this.
+    const keep = psionTier(actor) >= 2 && (actor.system.energy?.value ?? 0) >= cost
+      ? !!(await charges.askFor(actor, { title: "Far Sight", ok: "Pay", html: `<p>${esc(actor.name)}: pay <strong>${cost}</strong> Energy to keep Far Sight for another turn?</p>` })) : false;
     if (keep && (await pay(actor, { energy: cost }, "Far Sight"))) next.farSight = true; else next.farSight = false;
   }
   await setActorFlag(actor, "psion", next.farSight || next.auraSight ? next : null);
@@ -911,7 +912,7 @@ async function act(message, i) {
 }
 export const usedActs = id => game.messages.filter(m => m.getFlag("flowstate", "mentalActDone")?.card === id).map(m => m.getFlag("flowstate", "mentalActDone").i);
 
-registerMental({ momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+registerMental({ askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });

@@ -187,6 +187,8 @@ Hooks.once("init", () => {
     { id: "falling", name: "Falling", img: "icons/svg/wing.svg" },
     { id: "crouch", name: "Crouching", img: "icons/svg/down.svg" },
     { id: "stealth", name: "Stealthing", img: "icons/svg/invisible.svg" },
+    { id: "halfStealth", name: "Half Stealth (GM)", img: "icons/svg/eye.svg" },
+    { id: "fullStealth", name: "Full Stealth (GM)", img: "icons/svg/blind.svg" },
     { id: "fear", name: "Fear", img: "icons/svg/terror.svg" },
     { id: "grappled", name: "Grappled", img: "icons/svg/net.svg" },
     { id: "flying", name: "Flying", img: "icons/svg/wing.svg" },
@@ -538,6 +540,29 @@ Hooks.once("ready", () => {
   });
   pictures.listenForBrowse();
   charges.listen();
+});
+
+/* -------------------------------------------- */
+/*  Half / Full Stealth: GM-only statuses       */
+/* -------------------------------------------- */
+
+const gmStatusOf = effect => [...(effect?.statuses ?? [])].some(st => actions.GM_ONLY_STATUSES.has(st));
+/** Only the GM puts on or takes off Half Stealth / Full Stealth (the stealth value is the GM's call). */
+Hooks.on("preCreateActiveEffect", (effect, data, options) => {
+  if (game.user.isGM || options?.flowstateSystem || !gmStatusOf(effect)) return;
+  ui.notifications.warn("Only the GM can set Half Stealth or Full Stealth.");
+  return false;
+});
+Hooks.on("preDeleteActiveEffect", (effect, options) => {
+  if (game.user.isGM || options?.flowstateSystem || !gmStatusOf(effect)) return;
+  ui.notifications.warn("Only the GM can remove Half Stealth or Full Stealth.");
+  return false;
+});
+/** ...and the two buttons aren't on the token HUD for anyone else. */
+Hooks.on("renderTokenHUD", (hud, html) => {
+  if (game.user.isGM) return;
+  const root = html instanceof HTMLElement ? html : html?.[0];
+  for (const id of actions.GM_ONLY_STATUSES) root?.querySelectorAll?.(`[data-status-id="${id}"]`).forEach(el => el.remove());
 });
 
 /* -------------------------------------------- */

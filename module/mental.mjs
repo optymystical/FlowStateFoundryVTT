@@ -664,7 +664,7 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
   const echo = actor.getFlag("flowstate", "echoWard");
   let uses = 0, near = !!source?.near, enhancedUsed = false, weakened = false;
   if (form.echo && echo && echo.key === (turnKey() ?? "ooc") && echo.n > 0) {
-    const n = Math.min(left, echo.n * p.amount);
+    const n = Math.min(left, echo.n * per(0, false, false));          // the free negation is Strengthened at 4 Alignment too
     left -= n;
     notes.push(`Echo negates ${n} for free (×${echo.n})`);
   }

@@ -520,6 +520,8 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.51.9:** **Nightmare negate Wards (Veil, Warden, Bane, Grudge, Riposte, Zealot, Echo) need an attack roll**, as the Equipment doc says Wards are used with "a self attack as per the rules". Each use costs the 1 RP, then you roll your attack against your own dodge roll (4 Alignment gives the roll Advantage, Equilibrium gives the dodge Disadvantage, exhaustion and the like apply to the dodge): a hit negates, a miss spends the RP (and Enhance Energy) and negates nothing. **Make Clear** (Willpower Arts T2) is offered in the same prompt: Advantage and one reroll for its Energy. Echo's free uses after it fully negates an attack need no roll, and Grudge only counts hits.
+
 **0.51.8 (testing fixes):**
 - **Ward and Premonition prompts go to the defender's player.** "Spend 1 RP to negate…" was asked on whichever client applied the damage, so a GM's or an attacker's screen got it (most visibly after a Chant reroll). It is now asked of the character's own player (the GM only for NPCs or when no player owns it). Charge and Tenet questions use the same rule.
 - **Infuse (Destruction Tenet)** now comes up on the caster's own Manifest hits (and Chant rerolls that hit), as the Tenet says; it still skips Ward activations and Warden/Riposte reflects.

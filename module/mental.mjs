@@ -9,7 +9,7 @@
  */
 import {
   post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless,
-  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple, requestDamage, changeEffect, clearSpellEffects, tokenDistance, attackGuard, guardRows
+  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple, requestDamage, changeEffect, clearSpellEffects, tokenDistance, attackGuard, guardRows, dodgeNetKnown
 } from "./actions.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
@@ -676,6 +676,8 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
       html: `<p><strong>${left}</strong> ${esc(type)} damage is coming. Spend 1 RP to negate up to <strong>${n}</strong> of it with ${esc(p.name)}?</p>
         ${form.near ? `<label class="fs-cast-mod"><input type="checkbox" name="near" ${near ? "checked" : ""}> The source is within my melee range (${p.amount} instead of ${p.other})</label>` : ""}
         ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${willMin} Energy: ${esc(p.enhance)}</small></label>` : ""}
+        ${willTier(actor) >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="clear"> <strong>Make Clear</strong> <small>${willMin} Energy: Advantage on the activation roll, and one reroll if it misses</small></label>` : ""}
+        <p class="hint">A Ward is used with a self attack roll: your attack roll against your own dodge roll. A miss still costs the RP and negates nothing.</p>
         ${uses ? `<small>Used ${uses} time${uses === 1 ? "" : "s"} already on this damage.</small>` : ""}`,
       ok: "Negate (1 RP)"
     });                                          // asked of the Ward owner's player, whichever client is applying the damage
@@ -683,7 +685,18 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
     near = form.near ? !!ask.near : near;
     const enh = !!ask.enhance && th >= 1;
     const nn = Math.min(left, per(uses, enh, near));
-    if (!(await pay(actor, { rp: 1, energy: enh ? willMin : 0 }, `${p.name}'s Ward`))) break;
+    const clear = !!ask.clear && willTier(actor) >= 2;
+    if (!(await pay(actor, { rp: 1, energy: (enh ? willMin : 0) + (clear ? willMin : 0) }, `${p.name}'s Ward`))) break;
+    // Wards need an attack roll (Rules: "a self attack"): your attack roll against your own dodge roll. A miss spends the RP and negates nothing.
+    const wfx = R.alignmentWard(align, p.align);
+    const dNet = wfx.dodgeNet + dodgeNetKnown(actor);
+    const dd = await new Roll(poolFormula(2, actor.system.derived.dodgeDie, dNet)).evaluate();
+    let atk = await new Roll(poolFormula(1, actor.system.derived.attackDie, wfx.net + (clear ? 1 : 0))).evaluate();
+    let res = resolveAttack(atk.total, dd.total);
+    const rolls = [atk, dd];
+    if (!res.hit && clear) { atk = await new Roll(poolFormula(1, actor.system.derived.attackDie, 0)).evaluate(); res = resolveAttack(atk.total, dd.total); rolls.push(atk); }
+    await post(actor, { title: `${esc(actor.name)} — ${esc(p.name)} Ward`, rolls, body: `<div class="fs-notes">Attack roll <strong>${atk.total}</strong> against a dodge of <strong>${dd.total}</strong>${clear ? " (Make Clear)" : ""}: <strong>${res.hit ? "hit" : "miss"}</strong>.</div>` });
+    if (!res.hit) { notes.push(`${p.name} misses (1 RP${enh ? `, ${willMin} Energy` : ""} spent, nothing negated)`); continue; }
     left -= nn; uses++;
     if (enh) enhancedUsed = true;
     // Zealot, Enhanced at 4 Nightmare Alignment: the damage is Weakened on use (once per damage instance).

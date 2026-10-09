@@ -3617,7 +3617,7 @@ export const hexMove = actor => (inActiveCombat(actor) ? aff?.hexTrigger(actor, 
 export const afflictAct = (message, i) => aff?.act(message, i);
 const dodgeDisNet = actor => (spellEffects(actor, "dodgeDis").length ? -1 : 0);
 /** The Advantage/Disadvantage this creature's dodge rolls are known to carry (for Foresight). */
-const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.has("prone") ? -1 : 0) + seeingRedNet(actor) + disruptNet(actor)
+export const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.has("prone") ? -1 : 0) + seeingRedNet(actor) + disruptNet(actor)
   + dodgeDisNet(actor) + charmNet(actor, "dodge") + unfetteredNet(actor) + limberNet(actor) + (calmed(actor) ? 1 : 0);
 
 /** Weaving (Magic Theory T3): casting.mjs registers this so the weapon attack dialog can offer a spell. */

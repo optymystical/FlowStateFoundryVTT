@@ -231,5 +231,16 @@ console.log("== Questions go to the character's player, not to whoever runs the 
   pl.active = true; ok2(CH.answeringUser(npc) === game.user, "An NPC nobody else owns is answered by the GM");
   game.users.length = 0; game.users.push(...saved); game.user = savedUser; }
 
+console.log("== One popup per question");
+{ const CH = await import("../../module/charges.mjs");
+  let shown = 0; const savedDialog = dialog;
+  dialog = () => { shown++; return new Promise(r => setTimeout(() => r({ ok: true }), 20)); };
+  const owned = { isOwner: true, testUserPermission: () => false };
+  const [a, b] = await Promise.all([CH.askFor(owned, { title: "Ward", html: "<p>same</p>" }), CH.askFor(owned, { title: "Ward", html: "<p>same</p>" })]);
+  ok2(shown === 1 && a?.ok && b?.ok, "The same question asked twice at once opens one window and both askers get its answer");
+  await CH.askFor(owned, { title: "Ward", html: "<p>same</p>" });
+  ok2(shown === 2, "…and asking it again afterwards opens a new one");
+  dialog = savedDialog; }
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll live charge checks passed");
 if (fails) process.exit(1);

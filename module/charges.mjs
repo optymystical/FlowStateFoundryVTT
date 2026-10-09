@@ -59,10 +59,33 @@ export function answeringUser(actor) {
 const pending = new Map();
 let reqCounter = 0;
 
+/**
+ * One popup per question on a client: while a dialog is open, the same question (same title and text) asked again, by this client or by another one
+ * over the socket, joins it and shares its answer instead of opening a second window. A question asked twice by two clients is shown to one player once.
+ */
+const inflight = new Map();
+const questionKey = spec => `${spec?.title ?? ""}|${spec?.html ?? ""}`;
+function askOnce(spec) {
+  const key = questionKey(spec);
+  if (inflight.has(key)) return inflight.get(key);
+  const p = Promise.resolve(showChoices(spec)).finally(() => inflight.delete(key));
+  inflight.set(key, p);
+  return p;
+}
+/** The same ability sent to this client twice within a couple of seconds runs once. */
+const recentRuns = new Map();
+function runOnce(act) {
+  const key = JSON.stringify(act), now = Date.now();
+  for (const [k, t] of recentRuns) if (now - t > 3000) recentRuns.delete(k);
+  if (recentRuns.has(key)) return null;
+  recentRuns.set(key, now);
+  return runAct(act);
+}
+
 /** Ask `actor`'s player to answer a dialog: locally if that's us, over the socket otherwise. Gives up (null) after a minute. */
 export async function askFor(actor, spec) {
   const user = answeringUser(actor);
-  if (!user || user.id === game.user.id) return showChoices(spec);
+  if (!user || user.id === game.user.id) return askOnce(spec);
   const reqId = `${game.user.id}:${++reqCounter}`;
   return new Promise(resolve => {
     const timer = setTimeout(() => { pending.delete(reqId); resolve(null); }, 60000);
@@ -74,7 +97,7 @@ export async function askFor(actor, spec) {
 /** Run a button action (an ability or Tenet) as that character's player: here if it's ours, otherwise over the socket. */
 export async function runOnOwner(actor, act) {
   const user = answeringUser(actor);
-  if (!user || user.id === game.user.id) return runAct(act);
+  if (!user || user.id === game.user.id) return runOnce(act);
   game.socket.emit(SOCKET, { action: "mentalRun", to: user.id, act });
 }
 
@@ -82,10 +105,10 @@ export async function runOnOwner(actor, act) {
 export function listen() {
   game.socket.on(SOCKET, async data => {
     if (data?.action === "chargeAsk" && data.to === game.user.id) {
-      const answer = await showChoices(data.spec);
+      const answer = await askOnce(data.spec);
       game.socket.emit(SOCKET, { action: "chargeAnswer", to: data.from, reqId: data.reqId, answer });
     } else if (data?.action === "mentalRun" && data.to === game.user.id) {
-      await runAct(data.act);
+      await runOnce(data.act);
     } else if (data?.action === "chargeAnswer" && data.to === game.user.id) {
       pending.get(data.reqId)?.(data.answer ?? null);
       pending.delete(data.reqId);

@@ -520,6 +520,8 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.52.2:** **Infuse, Empower and Dampen only look at creatures on the scene.** They scanned every character in the world, so a character who wasn't on the scene at all (Rustgnaw, with no token) was still asked about hits in the fight, and the GM got the popup. A character who isn't on the scene can't see the fight and isn't asked.
+
 **0.52.1:** **A Tenet only works for someone who has learned its Wonder.** An Icon set to a Tenet (Infuse, Empower, Dampen, Verdant Soul...) gave that Tenet to its attuned holder even if they hadn't learned the Wonder it comes with (its first tier), so Infuse could pop up for a character who had no Destruction.
 
 **0.52.0:** **Half Stealth and Full Stealth statuses (GM only).** Two new statuses on the token HUD, "Half Stealth (GM)" and "Full Stealth (GM)". A token with one attacks from that stealth value:

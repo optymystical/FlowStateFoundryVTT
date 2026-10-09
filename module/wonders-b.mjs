@@ -13,6 +13,7 @@ import * as R from "./mental-rules.mjs";
 import * as mental from "./mental.mjs";
 import { askFor, runOnOwner, everyActor } from "./charges.mjs";
 import { tierOf } from "./skills.mjs";
+import { mayHelp, mayHarm } from "./sides.mjs";
 import { bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
@@ -137,10 +138,8 @@ export async function anyHit({ attacker, target, result, hitKey = null }) {
     if (tn?.id !== "mental-destruction-nightmare:infuse" || a.type === "pile") continue;
     if (attacker.uuid !== a.uuid && attacker.type === "pile") continue;
     if (a.uuid === target.uuid && attacker.uuid !== a.uuid) continue;          // nobody Infuses an attack that lands on themselves
+    if (!mayHelp(a, attacker)) continue;                                        // "a willing character": not across the two sides of the scene
     const ta = attackerToken(a), tb = attackerToken(attacker);
-    // "A willing character": the two sides of the scene (friendly / hostile tokens) don't Infuse each other's hits; neutral tokens go by the asking.
-    const da = ta?.document?.disposition ?? 0, db = tb?.document?.disposition ?? 0;
-    if (attacker.uuid !== a.uuid && da && db && da !== db) continue;
     if (ta && tb && globalThis.canvas?.grid && tokenDistance(ta, tb) > 100) continue;
     if (onceUsed(a, "infuse")) continue;
     const act = { id: "infuse", label: "Infuse", tip: "Apply one of your Destruction Modes to this hit (not Enhanced, no Fusion), its damage Weakened", cost: "once per round", caster: a.uuid, target: target.uuid };
@@ -510,7 +509,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     // Empower (War Tenet): a War user within 100 ft may add 1d10 (of the damage's type).
     for (const a of everyActor()) {
       const tn = tenetOf(a);
-      if (tn?.id !== "mental-war-nightmare:empower" || !near100(a, target)) continue;
+      if (tn?.id !== "mental-war-nightmare:empower" || !near100(a, target) || !mayHarm(a, target)) continue;           // a Nightmare: never on an ally's damage
       if (await tryOnceCheck(a, "empower")) {
         const ans = await askFor(a, { title: `${a.name}: Empower`, ok: "Empower", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage${attacker ? ` from ${esc(attacker.name)}` : ""}. Increase it by <strong>${tn.mult}d10</strong>?</p>` });
         if (ans) { await markUsed(a, "empower"); n += await dealDice(tn.mult, 10, "Empower", notes); buffs.push({ caster: a.uuid, power: tn.mult, mode: null }); }
@@ -559,7 +558,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
   // Reactions of others: Dampen (Peace Tenet) lowers it, Guard redirects a chunk.
   for (const a of everyActor()) {
     const tn = tenetOf(a);
-    if (tn?.id !== "mental-peace-dream:dampen" || !near100(a, target) || n <= 0) continue;
+    if (tn?.id !== "mental-peace-dream:dampen" || !near100(a, target) || n <= 0 || !mayHelp(a, target)) continue;       // a Dream: never to a foe's benefit
     if (!(await tryOnceCheck(a, "dampen"))) continue;
     const ans = await askFor(a, { title: `${a.name}: Dampen`, ok: "Dampen", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Reduce it by <strong>${tn.mult}d10</strong>?</p>` });
     if (ans) { await markUsed(a, "dampen"); n -= await dealDice(tn.mult, 10, "Dampen", notes); }

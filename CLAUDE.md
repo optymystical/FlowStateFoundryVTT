@@ -54,6 +54,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `module/mental-rules.mjs` (pure: Wonders and Modes parsed from the Mental trees, Wonder Power, Manifest costs, Alignment, Icon Forms and their numbers) + `module/mental.mjs` (Manifest dialog and attack, Alignment, attuning Icons, Wards, Nightmare Ward negation, Psion Arts; registers into `actions.mjs` via `registerMental`).
 - `module/wonders.mjs` — Mental Wonders: Mode/ability/Tenet effects (`MODES` registry), charges, pending effects; registers into `mental.mjs`/`actions.mjs`.
 - `module/wonders-b.mjs` — Destruction, Peace, War, Adaptation, Perfection and the damage-adjust pipeline (`adjust`); `module/forging.mjs` — Creation (items via the Create button, Alter). Both register into `wonders.mjs` (`MODES`, `ACTS`, the provider lists).
+- `module/sides.mjs` — pure: `opposed/allied/mayHelp/mayHarm` by token disposition (Friendly vs Hostile; Neutral/tokenless go either way). Every automatic offer that helps "a willing creature" (Block, Shield Toss, Quartz, Adjust, Dampen, Infuse) or hurts a foe (Empower) must check it.
 - `module/charges.mjs` — Order/Chaos charges live on rolls: asks the charge's caster (socket) at attack/dodge/other/damage rolls and after an attack resolves (Verdict, Entropy, Balance).
 - `module/areas.mjs` — Area spells: shapes, pure geometry, template placement, Emplace card.
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.

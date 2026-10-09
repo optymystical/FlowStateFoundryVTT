@@ -9,6 +9,7 @@ import * as ab from "./abilities.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import { planAction, emptyLedger } from "./movement-rules.mjs";
+import { mayHelp } from "./sides.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
@@ -1751,7 +1752,7 @@ function blockersFor(attacker, target) {
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
     const a = tok.actor;
-    if (!a || a.type === "pile" || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.has(a.uuid)) continue;
+    if (!a || a.type === "pile" || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.has(a.uuid) || !mayHelp(a, target)) continue;
     const shields = ab.defenderHeld(a, 1);
     if (!shields.length) continue;
     // A Shield Toss guard Blocks on its own (see shieldGuardItem); the guard's owner can still Block normally when in reach.
@@ -1791,7 +1792,7 @@ export function adjustGuards(attacker, target) {
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
     const a = tok.actor;
-    if (!a || a.type === "pile" || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.some(x => x.uuid === a.uuid)) continue;
+    if (!a || a.type === "pile" || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.some(x => x.uuid === a.uuid) || !mayHelp(a, target)) continue;
     if (!spellEffects(a, "shield").some(e => e.flags.flowstate.spellEffect.adjust && e.flags.flowstate.spellEffect.hp > 0)) continue;
     if (tTok && tokenDistance(tok, tTok) <= 10) out.push(a);
   }
@@ -6074,7 +6075,7 @@ export function quartzGuards(attacker, target) {
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
     const a = tok.actor;
-    if (!a || a.type === "pile" || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.some(x => x.uuid === a.uuid)) continue;
+    if (!a || a.type === "pile" || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.some(x => x.uuid === a.uuid) || !mayHelp(a, target)) continue;
     const sh = a.system?.shroud;
     if (!hasAffix(sh, "quartz") || sh.system.durability.value <= 0) continue;
     if (tTok && tokenDistance(tok, tTok) <= (a.system.derived?.size?.melee ?? 5)) out.push(a);

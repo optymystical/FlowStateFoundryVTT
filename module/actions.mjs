@@ -4853,8 +4853,11 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   let { stacks, parts, type } = targetStacks(attacker, o, target, defense.result, (opts.extra ?? 0) + (spellPlan?.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0), ctx);
   // Discharge (Radiation T5): trade two Strengthened stacks for Advantage on your next attack before your next turn.
   let dischargeHTML = "";
-  if (o.spell?.mods?.discharge && stacks >= 2 && attacker.isOwner) {
-    const use = await DialogV2().confirm({ window: { title: "Discharge" }, content: `<p>Remove 2 Strengthened stacks from this damage (${stacks} → ${stacks - 2}) to give your next attack before the start of your next turn Advantage?</p>`, rejectClose: false });
+  if (o.spell?.mods?.discharge && stacks >= 2 && (attacker.isOwner || mentalHook?.askFor)) {
+    // The attacker's decision: asked of the attacker's own player even when the defender's (or the GM's) client is the one rolling the damage.
+    const text = `<p>Remove 2 Strengthened stacks from this damage (${stacks} → ${stacks - 2}) to give your next attack before the start of your next turn Advantage?</p>`;
+    const use = mentalHook?.askFor ? !!(await mentalHook.askFor(attacker, { title: "Discharge", ok: "Remove them", html: text }))
+      : await DialogV2().confirm({ window: { title: "Discharge" }, content: text, rejectClose: false });
     if (use) { stacks -= 2; parts.push("−2 Discharge"); await setActorFlag(attacker, "setup", { target: "any", count: 1 }); dischargeHTML = `<div class="fs-notes">Discharge: 2 Strengthened stacks removed; Advantage on your next attack before your next turn.</div>`; }
   }
   // Cleave (Slashing T4): the spell's damage is increased by your Scaling Stat min.

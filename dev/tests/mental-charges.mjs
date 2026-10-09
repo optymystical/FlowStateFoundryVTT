@@ -218,5 +218,18 @@ await CH.useStolenAction(hero);
 ok2(hero.system.rp.value === 4 && lastAtk().flags.flowstate.attack.opts.label === "Sword (stolen)", "Using it costs RP equal to the attack's AP and makes that attack");
 ok2(formulas.some(f => f === `1d${orc.system.derived.attackDie}`) || formulas.some(f => new RegExp(`d${orc.system.derived.attackDie}`).test(f)), "…rolled with the victim's attack die");
 
+console.log("== Questions go to the character's player, not to whoever runs the code");
+{ const CH = await import("../../module/charges.mjs");
+  const gmUser = { id: "gm", isGM: true, active: true }, pl = { id: "p1", isGM: false, active: true };
+  const saved = [...game.users]; const savedUser = game.user;
+  game.users.length = 0; game.users.push(gmUser, pl); game.users.activeGM = gmUser; game.user = { id: "gm", isGM: true, targets: new Set() };
+  const owned = { isOwner: true, testUserPermission: (u) => u.id === "p1" };
+  ok2(CH.answeringUser(owned) === pl, "The GM's client owns everything, but a connected player who owns the character is the one asked");
+  pl.active = false;
+  ok2(CH.answeringUser(owned) === game.user, "…with the player offline, whoever owns it here answers");
+  const npc = { isOwner: true, testUserPermission: () => false };
+  pl.active = true; ok2(CH.answeringUser(npc) === game.user, "An NPC nobody else owns is answered by the GM");
+  game.users.length = 0; game.users.push(...saved); game.user = savedUser; }
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll live charge checks passed");
 if (fails) process.exit(1);

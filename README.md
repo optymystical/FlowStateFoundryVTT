@@ -520,6 +520,8 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.52.1:** **A Tenet only works for someone who has learned its Wonder.** An Icon set to a Tenet (Infuse, Empower, Dampen, Verdant Soul...) gave that Tenet to its attuned holder even if they hadn't learned the Wonder it comes with (its first tier), so Infuse could pop up for a character who had no Destruction.
+
 **0.52.0:** **Half Stealth and Full Stealth statuses (GM only).** Two new statuses on the token HUD, "Half Stealth (GM)" and "Full Stealth (GM)". A token with one attacks from that stealth value:
 - **Half stealth:** Advantage on the attack roll and Disadvantage on the target's dodge. **Full stealth:** the target can't react, and the attack roll only decides a crit (at or above their dodge die size, double crit at twice that).
 - **They don't stack.** Full beats Half, and an attack that already has half stealth by itself (a Targeted spell, Vector Assault's return attack) is still a single half stealth, not two. Spirit Sense (Grasp Arcana T4) only cancels the Targeted spell's own bonus, not one the GM set with the status.

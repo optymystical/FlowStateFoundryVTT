@@ -11,7 +11,7 @@ import { removeEnergy } from "./elemental.mjs";
 import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
 import * as mental from "./mental.mjs";
-import { askFor, runOnOwner, everyActor } from "./charges.mjs";
+import { askFor, runOnOwner, actorsInPlay } from "./charges.mjs";
 import { tierOf } from "./skills.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
 import { bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
@@ -133,7 +133,7 @@ export async function anyHit({ attacker, target, result, hitKey = null }) {
   if (!result.hit || !target) return;
   // One hit is offered once: at 3 Alignment Infuse can be used twice a round, but not twice on the same hit.
   if (hitKey) { if (infusedHits.has(hitKey)) return; infusedHits.add(hitKey); if (infusedHits.size > 200) infusedHits.delete(infusedHits.values().next().value); }
-  for (const a of everyActor()) {
+  for (const a of actorsInPlay()) {
     const tn = tenetOf(a);
     if (tn?.id !== "mental-destruction-nightmare:infuse" || a.type === "pile") continue;
     if (attacker.uuid !== a.uuid && attacker.type === "pile") continue;
@@ -507,7 +507,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     const wb = attacker.getFlag?.("flowstate", "warBuff");
     if (wb) { buffs.push(...wb.casters); await setActorFlag(attacker, "warBuff", null); }
     // Empower (War Tenet): a War user within 100 ft may add 1d10 (of the damage's type).
-    for (const a of everyActor()) {
+    for (const a of actorsInPlay()) {
       const tn = tenetOf(a);
       if (tn?.id !== "mental-war-nightmare:empower" || !near100(a, target) || !mayHarm(a, target)) continue;           // a Nightmare: never on an ally's damage
       if (await tryOnceCheck(a, "empower")) {
@@ -556,7 +556,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
   // Frozen (Enhanced Freeze): damage removes the Energy block and is doubly Strengthened.
   for (const e of fx(target, "freezeBlock")) if (dataOf(e).enhanced) { n = applyStacks(n, 2); notes.push("Frozen (Enhanced): the damage is doubly Strengthened and lifts the Energy block"); await changeEffect(e, null); }
   // Reactions of others: Dampen (Peace Tenet) lowers it, Guard redirects a chunk.
-  for (const a of everyActor()) {
+  for (const a of actorsInPlay()) {
     const tn = tenetOf(a);
     if (tn?.id !== "mental-peace-dream:dampen" || !near100(a, target) || n <= 0 || !mayHelp(a, target)) continue;       // a Dream: never to a foe's benefit
     if (!(await tryOnceCheck(a, "dampen"))) continue;

@@ -69,6 +69,16 @@ export function everyActor() {
   return [...tokenActors, ...[...(globalThis.game?.actors ?? [])].filter(a => !represented.has(a.id))];
 }
 
+/**
+ * The creatures on the scene being played: what a Tenet that watches for "a creature within 100 ft" looks at (Infuse, Empower, Dampen). A character
+ * who isn't on the scene can't see the fight, so isn't asked. With no scene at all (no canvas), everyone.
+ */
+export function actorsInPlay() {
+  const placeables = globalThis.canvas?.tokens?.placeables;
+  if (!placeables) return everyActor();
+  return [...new Set(placeables.map(t => t.actor).filter(Boolean))];
+}
+
 const pending = new Map();
 let reqCounter = 0;
 

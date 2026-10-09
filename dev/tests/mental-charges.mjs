@@ -236,6 +236,9 @@ console.log("== Questions go to the character's player, not to whoever runs the 
   const savedCanvas = globalThis.canvas, savedActors = [...game.actors];
   globalThis.canvas = { tokens: { placeables: [{ actor: copy }] } }; game.actors.length = 0; game.actors.push(world, { id: "W2" });
   ok2(CH.everyActor().length === 2 && CH.everyActor().includes(copy) && !CH.everyActor().includes(world), "everyActor lists the token's actor instead of its world actor, so nobody is asked about the same creature twice");
+  ok2(CH.actorsInPlay().length === 1 && CH.actorsInPlay()[0] === copy, "actorsInPlay is only the creatures on the scene: a character who isn't there isn't asked about Infuse, Empower or Dampen");
+  globalThis.canvas = { tokens: { placeables: [] } };
+  ok2(CH.actorsInPlay().length === 0, "…and an empty scene asks nobody");
   globalThis.canvas = savedCanvas; game.actors.length = 0; game.actors.push(...savedActors);
   game.users.length = 0; game.users.push(...saved); game.user = savedUser; }
 

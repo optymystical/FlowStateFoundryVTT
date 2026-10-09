@@ -100,13 +100,13 @@ export function doubledAffix(sys, t, affixes) {
 export const affixMultOf = (profile, key) => (profile?.doubled && profile.doubled === key ? 2 : 1);
 
 /**
- * Speed lost to attuned Affixes (a percentage). Everyone gets one Affix at no cost, each Free Affix on the attuned Foci and Shroud adds another,
- * and every Affix past that costs 20% (Chime, Cards, Aegis and Lattice count as an Affix already attuned, by having -1 Free Affixes).
+ * Speed lost to attuned Affixes (a percentage): every attuned Affix costs 20%, not counting the Free Affixes of the attuned Foci and Shroud
+ * (Chime, Cards, Aegis and Lattice have -1: they act as if an Affix were already attuned).
  */
 export function affixSpeedPct(...profiles) {
   const worn = profiles.filter(p => p?.valid);
   const count = worn.reduce((n, p) => n + (p.affixes?.length ?? 0), 0);
-  const free = 1 + worn.reduce((n, p) => n + (p.freeAffixes ?? 0), 0);
+  const free = worn.reduce((n, p) => n + (p.freeAffixes ?? 0), 0);
   return AFFIX_SPEED_PCT * Math.max(0, count - free);
 }
 

@@ -875,7 +875,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Harden",
-      "text": "When you would use Brace, you can expend additional energy equal to your Con min to apply Weakened to the incoming attack (Weakened applies first)."
+      "text": "When Brace would apply, you can expend additional energy equal to your Con min to apply Weakened to the incoming attack (Weakened applies first)."
      }
     ]
    },
@@ -1258,7 +1258,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Pure Body",
-      "text": "Your Martial stats are twice as high for the purpose of resisting negative effects and abilities, and you automatically succeed on Martial checks that have a target number or contested result that is less than half of your relevant stat."
+      "text": "Your Martial stats are twice as high for the purpose of resisting negative effects and abilities, and you automatically succeed on Martial checks that have a target number or contested result that is less than half of your relevant stat. When resisting any negative effect or ability, you may use your Constitution (not doubled) in place of the required stat."
      }
     ]
    },
@@ -1455,7 +1455,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Harden",
-      "text": "When you would use Brace, you can expend additional energy equal to half your Con min rounded down to apply Weakened to the incoming attack (Weakened applies first)."
+      "text": "When Brace would apply, you can expend additional energy equal to half your Con min rounded down to apply Weakened to the incoming attack (Weakened applies first)."
      }
     ]
    },
@@ -1605,7 +1605,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Get Over Here!",
-      "text": "Cost: Energy equal to double your Scaling Stat min. Can be used in place of any Thrasher Weapon Attack, still benefiting from any skills or features that affect them. On hit, the attack grapples the target, pulls the target into melee range of you, and knocks them prone (or applies Lock Down if you have it unlocked)."
+      "text": "Cost: Energy equal to double your Scaling Stat min. Can be used in place of any Thrasher Weapon Attack, still benefiting from any skills or features that affect them, and still dealing damage. On hit, the attack grapples the target, pulls the target into melee range of you, and knocks them prone (or applies Lock Down if you have it unlocked)."
      }
     ]
    }
@@ -1945,7 +1945,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Hold",
-      "text": "2 Threshold, Spell Mod, Replacement, Targeted. The Spell grapples the target with Magical force on a successful hit until the start of your next turn. Their counter grapple check must get a minimum of 3 on the roll to break free from this hold. This value is halved for every size above 3 the creature is, and doubled inversely. If the target is already grappled, they instead take 2d12 physical damage. Ritual: Lasts until the ritual ends or the target is no longer grappled."
+      "text": "2 Threshold, Spell Mod, Replacement, Targeted. The Spell grapples the target in place with Magical force on a successful hit until the start of your next turn. Their counter grapple check must get a minimum of 2 on the roll to break free from this hold. This value is halved for every size above 3 the creature is, and doubled inversely. If the target is already grappled, they instead take 1d12 physical damage. Ritual: Lasts until the ritual ends or the target is no longer grappled."
      }
     ]
    },
@@ -2915,7 +2915,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Skin",
-      "text": "1-4 Threshold, Spell Mod. This Spell’s Summon naturally has Armor built into it, with a weight based on the Threshold used for this Spell Mod (1 = Light, 2 = Medium, 3 = Heavy, 4 = Titanic) . This creates Natural Armor scaling in stats for every 10 Constitution the Summon has. The Natural Armor follows Untreated Leather’s stats if Light or Medium, and Copper’s stats if Heavy or Titanic, and can only be repaired with healing effects."
+      "text": "1-4 Threshold, Spell Mod. This Spell’s Summon naturally has Armor built into it, with a weight based on the Threshold used for this Spell Mod (1 = Light, 2 = Medium, 3 = Heavy, 4 = Titanic) . This creates Natural Armor scaling in stats for every 10 Constitution the Summon has. The Natural Armor follows Soft Leather’s stats if Light or Medium, and Copper’s stats if Heavy or Titanic, and can only be repaired with healing effects."
      }
     ]
    },

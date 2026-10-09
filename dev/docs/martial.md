@@ -331,7 +331,7 @@
 - **Bodyslam: Cost: *Energy equal to your CON min.*** You can use this ability whilst wearing Heavy Armor by spending  **3 AP**. Make an attack roll against a target within your personal melee range. On hit, you slam your body into the target, dealing Physical damage equal to your worn armor’s Limit plus your Constitution min to them.  
     
   **Tier 4: You gain the following passive:**  
-- **Harden:** When you would use Brace, you can expend additional energy equal to your Con min to apply Weakened to the incoming attack (Weakened applies first).  
+- **Harden:** When Brace would apply, you can expend additional energy equal to your Con min to apply Weakened to the incoming attack (Weakened applies first).  
     
   **Tier 5: You gain the following passive:**  
 - **Launch:** When you hit with bodyslam while wearing Heavy Armor, instead of applying damage as normal, you can instead apply 10x that amount in Force to the target in the direction of your attack.
@@ -461,7 +461,7 @@
 - **Taunt: Cost: *Energy equal to your CON min.*** You can use this ability at any time by spending **2 RP**. Make a contested Persuasion or Deception check against a target who can sense you within 100ft. They are compelled to attack you until they are no longer within your range or the effect ends. They can repeat this check at the end of each of their turns or by spending **2 AP/RP**, with each repeat giving you a stacking disadvantage on your check. Lasts until the start of your next turn.  
     
   **Tier 3: You gain the following passive:**  
-- **Pure Body:** Your Martial stats are twice as high for the purpose of resisting negative effects and abilities, and you automatically succeed on Martial checks that have a target number or contested result that is less than half of your relevant stat.  
+- **Pure Body:** Your Martial stats are twice as high for the purpose of resisting negative effects and abilities, and you automatically succeed on Martial checks that have a target number or contested result that is less than half of your relevant stat. When resisting any negative effect or ability, you may use your Constitution (not doubled) in place of the required stat.  
     
   **Tier 4: You gain the following ability:**  
 - **Pull Aggro:** **Cost: *Energy equal to your CON stat.*** Can be used as an alternative to Taunt. Follows the same rules as Taunt, but instead you make the check against all targets within 30ft of you.  
@@ -522,7 +522,7 @@
 - **Bodyslam: Cost: *Energy equal to your CON min.*** You can use this ability whilst wearing Titanic Armor by spending **3 AP**. Make an attack roll with disadvantage against a target within your personal melee range. On hit, you slam your body into the target, dealing Physical damage equal to your worn armor’s Limit plus your Constitution min to them.  
     
   **Tier 3: You gain the following passive:**  
-- **Harden:** When you would use Brace, you can expend additional energy equal to half your Con min rounded down to apply Weakened to the incoming attack (Weakened applies first).  
+- **Harden:** When Brace would apply, you can expend additional energy equal to half your Con min rounded down to apply Weakened to the incoming attack (Weakened applies first).  
     
   **Tier 4: You gain the following ability:**  
 - **Trudge:** **Cost: *Energy equal to half of your CON min, rounded down.*** Prior to moving whilst wearing Titanic Armor, you can use this ability. You ignore the Titanic Armor movement speed penalty for that instance of movement.  
@@ -568,7 +568,7 @@
 - **Whirlygig:** Every two uses of Windup additionally grants that attack one stack of Strengthened.  
     
   **Tier 5: You gain the following ability:**  
-- **Get Over Here\!:** **Cost: *Energy equal to double your Scaling Stat min.*** Can be used in place of any Thrasher Weapon Attack, still benefiting from any skills or features that affect them. On hit, the attack grapples the target, pulls the target into melee range of you, and knocks them prone (or applies Lock Down if you have it unlocked).
+- **Get Over Here\!:** **Cost: *Energy equal to double your Scaling Stat min.*** Can be used in place of any Thrasher Weapon Attack, still benefiting from any skills or features that affect them, and still dealing damage. On hit, the attack grapples the target, pulls the target into melee range of you, and knocks them prone (or applies Lock Down if you have it unlocked).
 
 ## **Unarmored** {#unarmored}
 

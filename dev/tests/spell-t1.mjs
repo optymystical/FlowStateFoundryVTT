@@ -421,7 +421,7 @@ await actions.clearSpellEffects(hero);
 orc.system.hp.value = 432; target(orc); seq = [20]; await cast("magic-gravity:force", { [M("magic-gravity:hold")]: true, "replace:magic-gravity:hold": true });
 seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
 const holdE = orc.effects.find(e => e.flags.flowstate.spellEffect?.kind === "hold");
-ok2(orc.statuses.has("grappled") && holdE?.flags.flowstate.spellEffect.holdMin === 18, `Hold: grappled, break free needs 3 × 3 × 2 = 18 (${holdE?.flags.flowstate.spellEffect.holdMin})`);
+ok2(orc.statuses.has("grappled") && holdE?.flags.flowstate.spellEffect.holdMin === 12, `Hold: grappled, break free needs 2 × 3 × 2 = 12 (${holdE?.flags.flowstate.spellEffect.holdMin})`);
 combat.combatant = { actor: orc }; orc.system.ap.value = 6; seq = [5]; await actions.breakFree(orc);
 ok2(orc.statuses.has("grappled"), "A low roll doesn't break the hold");
 seq = [100]; await actions.breakFree(orc);

@@ -226,6 +226,17 @@ const zScale = R.iconScale(hero.system.derived.effective.will.value, 3);
   ok2(a1 === 300 - 6 * 5 * zScale && a2 === 0, "Zealot: only 5 × scale negated per use at 1 Nightmare, the full 30 × scale at 2"); }
 { const w3 = await zealotNegates(3, true, 2000), w4 = await zealotNegates(4, true, 2000);
   ok2(w3 === 1460 && w4 === 257, "Zealot Enhanced at 4 Nightmare: Strengthened by Alignment 4 (135 a use) and the damage is Weakened once (2000 → 1865 → 932 → 257)"); }
+// Wards are used with a self attack roll (attack roll against your own dodge): a miss costs the RP and negates nothing.
+clearAll(hero); aegis.system.form = "veil"; hero.system.prepareDerivedData(); setAlign("neutral"); theory(1); refresh();
+{ hero.system.hp.value = 432; hero.system.rp.value = 2; dialog = () => ({}); seq = [30, 5, 30, 5];
+  await actions.applyDamage(hero, 300, "heat", { silent: true, shroudCtx: { source: "type:heat", attacker: orc.uuid } });
+  const missLoss = 432 - hero.system.hp.value;
+  ok2(missLoss === 300 && hero.system.rp.value === 0, `Veil with two missed Ward rolls: nothing negated, both RP spent (took ${missLoss})`);
+  hero.system.hp.value = 432; hero.system.rp.value = 2; seq = [5, 30, 5, 30];
+  await actions.applyDamage(hero, 300, "heat", { silent: true, shroudCtx: { source: "type:heat", attacker: orc.uuid } });
+  const hitLoss = 432 - hero.system.hp.value;
+  ok2(hitLoss === 300 - 2 * 10 * zScale, `…and two hits negate 10 × scale each (took ${hitLoss})`); seq = []; }
+
 clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 1); refresh(); messages.length = 0; dialog = () => ({});
 await M.activateWard(hero);
 ok2(!messages.some(m => m.flags?.flowstate?.attack), "Reverie can't be activated under 2 Dream Alignment");

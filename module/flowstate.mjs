@@ -973,6 +973,9 @@ Hooks.on("renderCombatTracker", (app, html) => {
         <b>AP</b>${pips(actor.system.ap.value, "ap")}</span>
       <span class="fs-points" data-resource="rp" data-tooltip="RP: click to spend, right-click to restore">
         <b>RP</b>${pips(actor.system.rp.value, "rp")}</span>`;
+    // Free movement left this turn (only for the creature whose turn it is).
+    const mv = actions.moveStatus(actor);
+    if (mv) el.insertAdjacentHTML("beforeend", `<span class="fs-points fs-move-left" data-tooltip="Movement you can still make without spending AP${mv.pay ? `; moving past it costs ${mv.pay} AP` : ""}${mv.bank ? ` (${mv.bank} AP banked from actions)` : ""}"><b>Move</b>${mv.free} ft</span>`);
 
     if (actor.isOwner) {
       for (const group of el.querySelectorAll(".fs-points")) {
@@ -999,6 +1002,7 @@ const refreshTracker = foundry.utils.debounce(() => ui.combat?.render(), 50);
 Hooks.on("updateActor", (actor, changes) => {
   const s = changes.system;
   if (s && ("ap" in s || "rp" in s) && game.combat) refreshTracker();
+  if (changes.flags?.flowstate && "moveLedger" in changes.flags.flowstate && game.combat) refreshTracker();     // free movement left
 });
 Hooks.on("updateToken", (token, changes) => {
   const s = changes.delta?.system;

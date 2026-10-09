@@ -222,6 +222,16 @@ reset(); await hit("mental-life-dream:bloom", { enhance: true });
 const pe = W.perennialActs(hero);
 ok2(pe.length >= 1 && pe[0].id === "perennial", "Perennial offers to reapply a Life effect that is about to expire");
 
+console.log("== Infuse (Destruction Tenet) sees the caster's own Manifest hits");
+{ const was = icon.system.tenet; icon.system.tenet = "mental-destruction-nightmare:infuse"; hero.system.trees["mental-destruction-nightmare"] = 1; hero.system.prepareDerivedData();
+  reset(); prompts.length = 0; take = false; hero.flags.flowstate.mentalOnce = undefined;
+  dialog = html => { prompts.push(html); return /Use it now/.test(html) ? (take ? {} : null) : { net: 0 }; };
+  await hit("mental-life-dream:bloom");
+  await new Promise(r => setTimeout(r, 30));
+  ok2(prompts.some(h => /Infuse/.test(h) && /Use it now/.test(h)), "A successful Manifest of the caster's own pops Infuse up");
+  prompts.length = 0; await hit("mental-life-dream:bloom", {}, 4);
+  icon.system.tenet = was; hero.system.trees["mental-destruction-nightmare"] = 0; hero.system.prepareDerivedData(); }
+
 console.log("== Death (Nightmare): Wither, Waste, Execute");
 reset();
 seq = [12]; target(orc); refresh();

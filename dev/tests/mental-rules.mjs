@@ -45,6 +45,10 @@ ok(M.fluidityCost(A("dream", 3), 31) === 45 && M.fluidityCost(A("neutral", 0), 3
 ok(M.alignedTo(A("dream", 1), "dream") && !M.alignedTo(A("dream", 1, true), "dream") && !M.alignedTo(A("neutral", 0), "dream"), "Aligned towards a type: at least 1 Alignment of it, not in Equilibrium");
 ok(M.alignmentLabel(A("dream", 2)) === "Dream 2" && M.alignmentLabel(A("neutral", 0)) === "Neutral" && M.alignmentLabel(A("dream", 2, true)) === "Equilibrium (-1)", "Alignment labels");
 
+console.log("== Icon texts scale");
+ok(M.scaleFormText("provides 20 shielding for 1 AP, up to 60 shielding. In the Dream 2, 5 shielding", 3) === "provides 60 shielding for 1 AP, up to 180 shielding. In the Dream 2, 15 shielding", "Shielding grows with the Icon; AP and Alignment numbers don't");
+ok(M.scaleFormText("spend 1 RP to negate up to 30 of that damage, 5 negation otherwise", 2) === "spend 1 RP to negate up to 60 of that damage, 10 negation otherwise", "Negation grows too; RP doesn't");
+
 console.log("== Icons and Forms");
 ok(M.FORM_KEYS.length === 14 && M.FORM_KEYS.filter(k => M.FORMS[k].align === "dream").length === 7, "14 Forms, 7 Dream and 7 Nightmare");
 let p = M.iconProfile({ form: "aegis", grade: 2, tenet: "mental-life-dream:verdant-soul" }, { will: 45, pon: 32 });

@@ -47,10 +47,23 @@ export async function setMoveLedger(actor, ledger) {
 }
 /** Is movement being tracked for this creature right now (on its own turn in combat, the setting on)? */
 export const movementTracked = actor => movementMode() !== "off" && inActiveCombat(actor) && game.combat.combatant?.actor?.uuid === actor.uuid;
-/** Feet of its current step of movement still left (shown beside the AP). */
-export const moveLeft = actor => (actor && movementTracked(actor) ? Math.round(moveLedger(actor).ft) : 0);
+/**
+ * Where a creature stands with its movement this turn (null when movement isn't tracked for it): `free` = feet it can still move without spending AP
+ * (what is left of the step it is in, or a whole new step that costs nothing until it is moved past), `pay` = AP the next step beyond that costs
+ * (the unpaid step it is in, less what is banked), `bank` = AP banked from actions toward the next step.
+ */
+export function moveStatus(actor) {
+  if (!actor || !movementTracked(actor)) return null;
+  const { speedFt, cost } = moveParams(actor), L = moveLedger(actor);
+  const free = L.ft > 0 ? L.ft : (L.pending ? 0 : speedFt);
+  const pay = L.pending ? Math.max(0, cost - Math.min(L.bank, cost)) : 0;
+  return { free: Math.round(free), pay: Math.round(pay * 100) / 100, bank: Math.round(L.bank * 100) / 100, speed: Math.round(speedFt) };
+}
+/** Feet of movement it can still make without spending AP (shown beside the AP). */
+export const moveLeft = actor => moveStatus(actor)?.free ?? 0;
 /** Spends that are movement themselves don't cover movement. */
-const MOVEMENT_SPEND = /stand|leap|jump|dash|climb|crawl|\bmove|moving/i;
+// (Whole words: "removing Stain" and "putting out Ignite" are actions you can strafe with, not movement.)
+const MOVEMENT_SPEND = /\b(stand(ing)?|leap(ing)?|jump(ing)?|dash(ing)?|climb(ing)?|crawl(ing)?|move|moves|moving)\b/i;
 
 /**
  * Spend AP or RP only when in an active combat. Returns false if the actor can't afford it.
@@ -3604,7 +3617,7 @@ export const hexMove = actor => (inActiveCombat(actor) ? aff?.hexTrigger(actor, 
 export const afflictAct = (message, i) => aff?.act(message, i);
 const dodgeDisNet = actor => (spellEffects(actor, "dodgeDis").length ? -1 : 0);
 /** The Advantage/Disadvantage this creature's dodge rolls are known to carry (for Foresight). */
-const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.has("prone") ? -1 : 0) + seeingRedNet(actor) + disruptNet(actor)
+export const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.has("prone") ? -1 : 0) + seeingRedNet(actor) + disruptNet(actor)
   + dodgeDisNet(actor) + charmNet(actor, "dodge") + unfetteredNet(actor) + limberNet(actor) + (calmed(actor) ? 1 : 0);
 
 /** Weaving (Magic Theory T3): casting.mjs registers this so the weapon attack dialog can offer a spell. */
@@ -4708,7 +4721,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     if (sh) { extra.push(sh.html); spellRolls = sh.rolls; if (sh.push) pushInfo = sh.push; defenseChain = sh.chain; }
   }
   // Mental: other creatures' attacks that hit can be Infused (Destruction Tenet).
-  if (result.hit && !o.mental && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result });
+  if (result.hit && !o.mental?.ward && !o.mental?.reflect && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result });
   // Mental: a Manifest's Mode or a Ward's effect, once the attack is answered.
   let guardRiposte = false;
   if (o.mental && mentalHook) {

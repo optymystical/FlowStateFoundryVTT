@@ -9,7 +9,7 @@
  */
 import {
   post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless,
-  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple, requestDamage, changeEffect, clearSpellEffects, tokenDistance, attackGuard, guardRows
+  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple, requestDamage, changeEffect, clearSpellEffects, tokenDistance, attackGuard, guardRows, dodgeNetKnown
 } from "./actions.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
@@ -63,18 +63,6 @@ export async function pay(actor, { ap = 0, rp = 0, energy = 0 }, what) {
   return true;
 }
 
-/** What an Alignment gives, for the card and the dialog. */
-const alignmentBlurb = st => {
-  if (st.equilibrium) return "Equilibrium (-1): your Manifest attack rolls have Disadvantage, and everything dodging your Icon's Ward has Disadvantage. No speed penalty.";
-  if (!st.level) return "Neutral: no benefits and no speed penalty.";
-  const own = st.kind === "dream" ? "Dream" : "Nightmare", other = st.kind === "dream" ? "Nightmare" : "Dream";
-  return [`${own} Wonders: Advantage on their attack rolls; ${other} Wonders: Disadvantage.`,
-    st.level >= 2 ? `${own} bolded effects Strengthened, ${other} Weakened.` : "",
-    st.level >= 3 ? `A ${own} Tenet can trigger twice per round.` : "",
-    st.level >= 4 ? `Your ${own} Icon's Ward has Advantage and a Strengthened bolded effect.` : "",
-    `Speed lowered by ${R.alignmentSpeedPct(st)}%.`].filter(Boolean).join(" ");
-};
-
 /**
  * Set your Alignment: a 1 hour activity (so never in combat). Choose Dream or Nightmare and how far to go (1 to 4, each point costs 20% speed),
  * or Neutral. Going further keeps everything before it.
@@ -92,7 +80,7 @@ export async function setAlignmentActivity(actor) {
   if (!out) return;
   const st = R.alignmentState({ kind: out.kind, level: Number(out.level) });
   await setAlignment(actor, st);
-  await post(actor, { title: `${esc(actor.name)} — Alignment`, body: `<div class="fs-result">${esc(actor.name)} sets their Alignment to <strong>${esc(R.alignmentLabel(st))}</strong>. ${esc(alignmentBlurb(st))}</div>` });
+  await post(actor, { title: `${esc(actor.name)} — Alignment`, body: `<div class="fs-result">${esc(actor.name)} sets their Alignment to <strong>${esc(R.alignmentLabel(st))}</strong>. ${esc(R.alignmentBlurb(st))}</div>` });
 }
 
 /**
@@ -117,7 +105,7 @@ export async function fluidity(actor) {
     return post(actor, { title: `${esc(actor.name)} — Fluidity`, body: `<div class="fs-result">${esc(actor.name)} swaps to <strong>${esc(R.alignmentLabel({ kind: other, level: cur.level }))}</strong>.</div>` });
   }
   await setAlignment(actor, { ...cur, equilibrium: true });
-  await post(actor, { title: `${esc(actor.name)} — Equilibrium`, body: `<div class="fs-result">${esc(actor.name)} enters <strong>Equilibrium (-1 Alignment)</strong> until the start of their next turn, then returns to ${esc(R.alignmentLabel({ ...cur, equilibrium: false }))}. ${esc(alignmentBlurb({ ...cur, equilibrium: true }))}</div>` });
+  await post(actor, { title: `${esc(actor.name)} — Equilibrium`, body: `<div class="fs-result">${esc(actor.name)} enters <strong>Equilibrium (-1 Alignment)</strong> until the start of their next turn, then returns to ${esc(R.alignmentLabel({ ...cur, equilibrium: false }))}. ${esc(R.alignmentBlurb({ ...cur, equilibrium: true }))}</div>` });
 }
 
 /* -------------------------------------------- */
@@ -614,6 +602,7 @@ export async function rerollAct(x) {
       // The first roll was a miss: a melee miss already met Shatter, so the reroll doesn't strike the attack a second time.
       const landed = await landManifest({ attacker: caster, target, o, m: { ...x.m, chanted: true }, mode: R.modeById(x.m.mode), result, stacksBase: o.stacks, attackMessage: x.re.msg ?? null, index: x.re.index ?? 0, shattered: !!x.re.melee });
       html += landed.html;
+      await wondersB.anyHit({ attacker: caster, target, result });          // Infuse (Destruction Tenet) also sees a Chant reroll that hits
       // A guard that took all the damage of the rerolled hit earns the same Riposte (and Dip's move, Redirect) the first card would have.
       if (landed.riposte) { const g = await guardRows(target, landed.riposte, o); html += g.html; if (g.riposte) riposteFlags = { guardRiposte: { defender: target.uuid, attacker: caster.uuid } }; }
     } else {
@@ -648,7 +637,7 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
       notes.push(`Premonition: the declared source (${sourceChoices()[d.declared] ?? d.declared}) gets a stack of Weakened, so ${left} becomes ${weak}`);
       left = weak; amount = left;
     }
-    const yes = await DialogV2().confirm({ window: { title: "Premonition" }, rejectClose: false, content: `<p>Consume a Premonition charge to negate up to <strong>${d.charge}</strong> of the ${left} ${esc(type)} damage?</p>` });
+    const yes = !!(await charges.askFor(actor, { title: "Premonition", ok: "Consume", html: `<p>Consume a Premonition charge to negate up to <strong>${d.charge}</strong> of the ${left} ${esc(type)} damage?</p>` }));
     if (!yes) continue;
     const n = Math.min(d.charge, left);
     left -= n;
@@ -682,19 +671,32 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
   for (;;) {
     if (left <= 0 || ((actor.system.rp?.value ?? 0) < 1 && inActiveCombat(actor))) break;
     const n = Math.min(left, per(uses, false, near));
-    const ask = await DialogV2().prompt({
-      window: { title: `${p.name} Ward` },
-      content: `<p><strong>${left}</strong> ${esc(type)} damage is coming. Spend 1 RP to negate up to <strong>${n}</strong> of it with ${esc(p.name)}?</p>
+    const ask = await charges.askFor(actor, {
+      title: `${p.name} Ward`,
+      html: `<p><strong>${left}</strong> ${esc(type)} damage is coming. Spend 1 RP to negate up to <strong>${n}</strong> of it with ${esc(p.name)}?</p>
         ${form.near ? `<label class="fs-cast-mod"><input type="checkbox" name="near" ${near ? "checked" : ""}> The source is within my melee range (${p.amount} instead of ${p.other})</label>` : ""}
         ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${willMin} Energy: ${esc(p.enhance)}</small></label>` : ""}
+        ${willTier(actor) >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="clear"> <strong>Make Clear</strong> <small>${willMin} Energy: Advantage on the activation roll, and one reroll if it misses</small></label>` : ""}
+        <p class="hint">A Ward is used with a self attack roll: your attack roll against your own dodge roll. A miss still costs the RP and negates nothing.</p>
         ${uses ? `<small>Used ${uses} time${uses === 1 ? "" : "s"} already on this damage.</small>` : ""}`,
-      ok: { label: "Negate (1 RP)", callback: (event, button) => formValues(button.form) }, rejectClose: false
-    });
+      ok: "Negate (1 RP)"
+    });                                          // asked of the Ward owner's player, whichever client is applying the damage
     if (!ask) break;
     near = form.near ? !!ask.near : near;
     const enh = !!ask.enhance && th >= 1;
     const nn = Math.min(left, per(uses, enh, near));
-    if (!(await pay(actor, { rp: 1, energy: enh ? willMin : 0 }, `${p.name}'s Ward`))) break;
+    const clear = !!ask.clear && willTier(actor) >= 2;
+    if (!(await pay(actor, { rp: 1, energy: (enh ? willMin : 0) + (clear ? willMin : 0) }, `${p.name}'s Ward`))) break;
+    // Wards need an attack roll (Rules: "a self attack"): your attack roll against your own dodge roll. A miss spends the RP and negates nothing.
+    const wfx = R.alignmentWard(align, p.align);
+    const dNet = wfx.dodgeNet + dodgeNetKnown(actor);
+    const dd = await new Roll(poolFormula(2, actor.system.derived.dodgeDie, dNet)).evaluate();
+    let atk = await new Roll(poolFormula(1, actor.system.derived.attackDie, wfx.net + (clear ? 1 : 0))).evaluate();
+    let res = resolveAttack(atk.total, dd.total);
+    const rolls = [atk, dd];
+    if (!res.hit && clear) { atk = await new Roll(poolFormula(1, actor.system.derived.attackDie, 0)).evaluate(); res = resolveAttack(atk.total, dd.total); rolls.push(atk); }
+    await post(actor, { title: `${esc(actor.name)} — ${esc(p.name)} Ward`, rolls, body: `<div class="fs-notes">Attack roll <strong>${atk.total}</strong> against a dodge of <strong>${dd.total}</strong>${clear ? " (Make Clear)" : ""}: <strong>${res.hit ? "hit" : "miss"}</strong>.</div>` });
+    if (!res.hit) { notes.push(`${p.name} misses (1 RP${enh ? `, ${willMin} Energy` : ""} spent, nothing negated)`); continue; }
     left -= nn; uses++;
     if (enh) enhancedUsed = true;
     // Zealot, Enhanced at 4 Nightmare Alignment: the damage is Weakened on use (once per damage instance).

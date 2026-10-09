@@ -43,12 +43,17 @@ export async function showChoices({ title, html, ok = "Use" }) {
   return DialogV2().prompt({ window: { title }, content: `<div class="fs-cast">${html}</div>`, ok: { label: ok, callback: (event, button) => formValues(button.form) }, rejectClose: false });
 }
 
-/** The user who should answer for this actor: one of its owners if any is online (us first), else the GM. */
+/**
+ * The user who should answer for this actor: its player (an active non-GM owner, us first if that's us), even when the GM's client is the one running the
+ * code (the GM owns everything, so being an owner is not enough); else us if we own it, else the GM.
+ */
 export function answeringUser(actor) {
   const users = globalThis.game?.users;
-  if (!users || actor?.isOwner) return globalThis.game?.user ?? null;
-  const owner = [...users].find(u => u.active && !u.isGM && actor?.testUserPermission?.(u, "OWNER"));
-  return owner ?? users.activeGM ?? [...users].find(u => u.isGM && u.active) ?? null;
+  if (!users) return globalThis.game?.user ?? null;
+  const players = [...users].filter(u => u.active && !u.isGM && actor?.testUserPermission?.(u, "OWNER"));
+  if (players.length) return players.find(u => u.id === globalThis.game.user?.id) ?? players[0];
+  if (actor?.isOwner) return globalThis.game?.user ?? null;
+  return users.activeGM ?? [...users].find(u => u.isGM && u.active) ?? null;
 }
 
 const pending = new Map();

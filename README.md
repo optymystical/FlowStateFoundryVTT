@@ -520,6 +520,16 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.51.9:** **Nightmare negate Wards (Veil, Warden, Bane, Grudge, Riposte, Zealot, Echo) need an attack roll**, as the Equipment doc says Wards are used with "a self attack as per the rules". Each use costs the 1 RP, then you roll your attack against your own dodge roll (4 Alignment gives the roll Advantage, Equilibrium gives the dodge Disadvantage, exhaustion and the like apply to the dodge): a hit negates, a miss spends the RP (and Enhance Energy) and negates nothing. **Make Clear** (Willpower Arts T2) is offered in the same prompt: Advantage and one reroll for its Energy. Echo's free uses after it fully negates an attack need no roll, and Grudge only counts hits.
+
+**0.51.8 (testing fixes):**
+- **Ward and Premonition prompts go to the defender's player.** "Spend 1 RP to negate…" was asked on whichever client applied the damage, so a GM's or an attacker's screen got it (most visibly after a Chant reroll). It is now asked of the character's own player (the GM only for NPCs or when no player owns it). Charge and Tenet questions use the same rule.
+- **Infuse (Destruction Tenet)** now comes up on the caster's own Manifest hits (and Chant rerolls that hit), as the Tenet says; it still skips Ward activations and Warden/Riposte reflects.
+- **Icons show scaled numbers:** the Equipment tab, Icon sheet, Ward dialog and cards now show the Ward and Enhance text with its shielding and negation scaled by Willpower and Grade.
+- **Alignment explains itself:** the Set Alignment row in the Action List says what your current Alignment does at each point and its speed cost.
+- **Removing Ignite or Stain can be strafed with.** "Removing Stain" and "putting out Ignite" were being mistaken for movement (the word "removing" contains "moving"), so their AP did not pay for pending movement. The movement check now matches whole words only.
+- **Free movement indicator:** the combat tracker shows **Move N ft** for the creature whose turn it is (what it can move without spending AP; hover for the AP the next step would cost), and the sheet header shows the same ("30 ft free · moving past it costs 2 AP"). A fresh turn shows a whole step.
+
 **0.51.7 (doc refresh: Rules, Martial, Magic, Equipment; Mental unchanged):**
 - **Ignite and Stain ticks** no longer slip past barriers and temp HP: each tick goes through the normal damage pipeline (Shields, Shroud, armor, temp HP, Wards).
 - **Pure Body:** when resisting, Constitution (not doubled) can stand in for the required stat if it is higher; the check uses whichever is better.

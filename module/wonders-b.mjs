@@ -11,7 +11,7 @@ import { removeEnergy } from "./elemental.mjs";
 import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
 import * as mental from "./mental.mjs";
-import { askFor, runOnOwner } from "./charges.mjs";
+import { askFor, runOnOwner, everyActor } from "./charges.mjs";
 import { tierOf } from "./skills.mjs";
 import { bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
@@ -22,7 +22,6 @@ const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
 const living = a => a && a.type !== "pile";
 const livingTarget = a => living(a) && !a.system?.magical;                   // what the Mental doc means by a living target (no Summons, Animations or objects)
 const fromU = u => globalThis.fromUuidSync?.(u) ?? null;
-const everyActor = () => [...new Set([...(globalThis.game?.actors ?? []), ...(globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(Boolean)])];
 const ids = { dest: "mental-destruction-nightmare", peace: "mental-peace-dream", war: "mental-war-nightmare", adapt: "mental-adaptation-dream", perf: "mental-perfection-nightmare" };
 const fx = (actor, kind) => (actor ? spellEffects(actor, kind) : []);
 const dataOf = e => e.flags.flowstate.spellEffect;

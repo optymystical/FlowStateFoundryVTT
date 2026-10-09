@@ -50,10 +50,23 @@ export async function showChoices({ title, html, ok = "Use" }) {
 export function answeringUser(actor) {
   const users = globalThis.game?.users;
   if (!users) return globalThis.game?.user ?? null;
-  const players = [...users].filter(u => u.active && !u.isGM && actor?.testUserPermission?.(u, "OWNER"));
+  // An unlinked token is a copy of its world actor: the player's ownership of the original counts for it too.
+  const base = actor?.token?.baseActor ?? null;
+  const owns = u => !!(actor?.testUserPermission?.(u, "OWNER") || base?.testUserPermission?.(u, "OWNER"));
+  const players = [...users].filter(u => u.active && !u.isGM && owns(u));
   if (players.length) return players.find(u => u.id === globalThis.game.user?.id) ?? players[0];
   if (actor?.isOwner) return globalThis.game?.user ?? null;
   return users.activeGM ?? [...users].find(u => u.isGM && u.active) ?? null;
+}
+
+/**
+ * Every creature in play, once each: the actors of the tokens on the scene, plus world actors that have no token there. (An unlinked token is a copy of
+ * its world actor, so listing both used to ask the same question twice, the second time of a copy nobody owns.)
+ */
+export function everyActor() {
+  const tokenActors = [...new Set((globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(Boolean))];
+  const represented = new Set(tokenActors.map(a => a.token?.baseActor?.id ?? a.id));
+  return [...tokenActors, ...[...(globalThis.game?.actors ?? [])].filter(a => !represented.has(a.id))];
 }
 
 const pending = new Map();

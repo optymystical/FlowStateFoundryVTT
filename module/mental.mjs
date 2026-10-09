@@ -811,7 +811,7 @@ export async function turnStart(actor) {
 }
 
 /** Every creature we can see on the scene or in the world (actors and unlinked tokens). */
-const everyActor = () => [...new Set([...(globalThis.game?.actors ?? []), ...(globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(Boolean)])];
+const everyActor = () => charges.everyActor();
 
 /** Just before this creature's effects on others end (its turn has started): Perennial offers to reapply expiring Life effects; Reverie may be kept. */
 async function beforeClear(actor) {

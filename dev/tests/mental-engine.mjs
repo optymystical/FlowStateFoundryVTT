@@ -197,6 +197,12 @@ ok2(hero.system.hp.value === 400 && flag(hero, "echoWard")?.n === 1, "Echo: full
 answers = []; hero.system.hp.value = 400;
 await actions.applyDamage(hero, 12 * wm, "physical", { silent: true });
 ok2(hero.system.hp.value === 400 - (12 * wm - 5 * wm), "…it negates for free until your next turn (no prompt, no RP)");
+{ const was = flag(hero, "alignment"); await hero.setFlag("flowstate", "alignment", { kind: "nightmare", level: 4 });
+  hero.system.hp.value = 400; answers = [];
+  await actions.applyDamage(hero, 12 * wm, "physical", { silent: true });
+  const freeNegated = hero.system.hp.value - (400 - 12 * wm);
+  ok2(freeNegated === Math.floor(5 * wm * 1.5), `4 Alignment Strengthens Echo's free negation too (${freeNegated} instead of ${5 * wm})`);
+  await hero.setFlag("flowstate", "alignment", was ?? null); }
 await echoI.update({ "system.attuned": false });
 
 console.log("== Psion Arts");

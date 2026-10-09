@@ -136,7 +136,11 @@ export async function anyHit({ attacker, target, result, hitKey = null }) {
     const tn = tenetOf(a);
     if (tn?.id !== "mental-destruction-nightmare:infuse" || a.type === "pile") continue;
     if (attacker.uuid !== a.uuid && attacker.type === "pile") continue;
+    if (a.uuid === target.uuid && attacker.uuid !== a.uuid) continue;          // nobody Infuses an attack that lands on themselves
     const ta = attackerToken(a), tb = attackerToken(attacker);
+    // "A willing character": the two sides of the scene (friendly / hostile tokens) don't Infuse each other's hits; neutral tokens go by the asking.
+    const da = ta?.document?.disposition ?? 0, db = tb?.document?.disposition ?? 0;
+    if (attacker.uuid !== a.uuid && da && db && da !== db) continue;
     if (ta && tb && globalThis.canvas?.grid && tokenDistance(ta, tb) > 100) continue;
     if (onceUsed(a, "infuse")) continue;
     const act = { id: "infuse", label: "Infuse", tip: "Apply one of your Destruction Modes to this hit (not Enhanced, no Fusion), its damage Weakened", cost: "once per round", caster: a.uuid, target: target.uuid };

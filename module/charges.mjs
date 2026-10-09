@@ -98,6 +98,8 @@ function runOnce(act) {
 /** Ask `actor`'s player to answer a dialog: locally if that's us, over the socket otherwise. Gives up (null) after a minute. */
 export async function askFor(actor, spec) {
   const user = answeringUser(actor);
+  console.debug(`flowstate | "${spec?.title}" about ${actor?.name} (${actor?.uuid}) asked from ${game.user.name} → answered by ${user?.name ?? "nobody"}`,
+    { owners: [...(globalThis.game?.users ?? [])].filter(u => actor?.testUserPermission?.(u, "OWNER")).map(u => `${u.name}${u.isGM ? " (GM)" : ""}${u.active ? " (online)" : ""}`) });
   if (!user || user.id === game.user.id) return askOnce(spec);
   const reqId = `${game.user.id}:${++reqCounter}`;
   return new Promise(resolve => {

@@ -4764,7 +4764,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (autoDamage) await rollExchangeDamage(defenseMessage, { auto: true });
   // Mental: other creatures' attacks that hit can be Infused (Destruction Tenet). Asked only now the response is on the card: while the question is open
   // the attack card would still show its response buttons, and a second response would repeat the whole attack.
-  if (result.hit && !o.mental?.ward && !o.mental?.reflect && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result });
+  if (result.hit && !o.mental?.ward && !o.mental?.reflect && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result, hitKey: `${attackMessage.id}:${index}` });
   return defenseMessage;
 }
 

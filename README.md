@@ -520,6 +520,10 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.51.15:** Every question the system asks a player logs a line to the browser console (F12) saying whose client asked, who answered it, and who owns the character: a debugging aid for prompts that reach the wrong client.
+
+**0.51.14:** **Infuse is offered once per hit.** At 3 Alignment a Tenet can be used twice a round, but the same hit is never offered Infuse twice.
+
 **0.51.13:** **Infuse is asked after the response is on the card.** The Infuse question used to open while the defense was still being worked out, so the attack card kept showing its response buttons until it was answered; a second click (from either client) repeated the whole attack. The defense card is now posted first, then Infuse is offered.
 
 **0.51.12:** **Questions about an unlinked token's character go to its owning player.** A token whose character isn't linked is a copy of the world actor, and the copy didn't always show who owned it, so Infuse and other prompts could fall through to the GM. The copy now defers to the original character's owners, and each creature is asked about once instead of both the world actor and its token copy.

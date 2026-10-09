@@ -2,7 +2,7 @@
   "id": "flowstate",
   "title": "Flow State",
   "description": "Core rules and Martial equipment for Flow State, a Setting Universal, Digital Only, Open Ended TTRPG. Mental and Magic archetypes not yet included. Flow State © 2019 by Christopher Caplinger, CC BY 4.0.",
-  "version": "0.51.13",
+  "version": "0.51.14",
   "compatibility": {
     "minimum": "13",
     "verified": "14"

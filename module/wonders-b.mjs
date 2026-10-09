@@ -127,8 +127,11 @@ ACTS.spreadIgnite = async (x, caster, target) => {
   return true;
 };
 /** Infuse (Destruction Tenet): when a willing character within 100 ft hits a target, apply one of your Destruction Modes to that attack with Weakened damage. */
-export async function anyHit({ attacker, target, result }) {
+const infusedHits = new Set();
+export async function anyHit({ attacker, target, result, hitKey = null }) {
   if (!result.hit || !target) return;
+  // One hit is offered once: at 3 Alignment Infuse can be used twice a round, but not twice on the same hit.
+  if (hitKey) { if (infusedHits.has(hitKey)) return; infusedHits.add(hitKey); if (infusedHits.size > 200) infusedHits.delete(infusedHits.values().next().value); }
   for (const a of everyActor()) {
     const tn = tenetOf(a);
     if (tn?.id !== "mental-destruction-nightmare:infuse" || a.type === "pile") continue;

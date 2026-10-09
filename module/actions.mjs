@@ -4720,8 +4720,6 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     const sh = await spellHit(attacker, target, o, result, entry, dodgeRoll?.total ?? null);
     if (sh) { extra.push(sh.html); spellRolls = sh.rolls; if (sh.push) pushInfo = sh.push; defenseChain = sh.chain; }
   }
-  // Mental: other creatures' attacks that hit can be Infused (Destruction Tenet).
-  if (result.hit && !o.mental?.ward && !o.mental?.reflect && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result });
   // Mental: a Manifest's Mode or a Ward's effect, once the attack is answered.
   let guardRiposte = false;
   if (o.mental && mentalHook) {
@@ -4764,6 +4762,9 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (autoDeclineBy) await post(autoDeclineBy, { title: `${esc(autoDeclineBy.name)} — No Riposte`, body: `<div class="fs-notes">${esc(autoDeclineBy.name)} has no RP left to riposte.</div>`, flags: { flowstate: { riposteDeclined: defenseMessage.id } } });
   // "Roll damage automatically" setting: skip the button and roll straight away (no extra stacks).
   if (autoDamage) await rollExchangeDamage(defenseMessage, { auto: true });
+  // Mental: other creatures' attacks that hit can be Infused (Destruction Tenet). Asked only now the response is on the card: while the question is open
+  // the attack card would still show its response buttons, and a second response would repeat the whole attack.
+  if (result.hit && !o.mental?.ward && !o.mental?.reflect && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result });
   return defenseMessage;
 }
 

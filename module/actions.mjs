@@ -130,7 +130,24 @@ const attackStanceNet = actor => (psyched(actor) ? 1 : 0) - (calmed(actor) ? 1 :
  * Spirit Sense, Primary (Grasp Arcana T4): immune to the stealth bonus of Targeted attack rolls. That bonus only comes from Targeted
  * spells (any Magic attack with half stealth), so a weapon attack from half stealth still counts against them.
  */
-const spellStealthImmune = (opts, target) => opts?.stealth === "half" && !!(opts.spell || opts.magicStealth) && ab.treeTier(target, "magic-grasp-arcana") >= 4;
+const spellStealthImmune = (opts, target) => opts?.stealth === "half" && !opts.statusStealth && !!(opts.spell || opts.magicStealth) && ab.treeTier(target, "magic-grasp-arcana") >= 4;
+
+/** The GM-set Half Stealth / Full Stealth statuses: a token with one attacks from that stealth value, on top of whatever its own attack already gives. */
+export const STEALTH_STATUSES = { halfStealth: "half", fullStealth: "full" };
+export const GM_ONLY_STATUSES = new Set(Object.keys(STEALTH_STATUSES));
+/**
+ * `opts` with the attacker's stealth status applied. Stealth values don't stack: Full beats Half, and Half from the status and Half from the attack itself
+ * (a Targeted spell, Vector Assault) is still a single Half. Escapes, throws and Ward rolls aren't attacks from stealth.
+ */
+export function withStealthStatus(actor, opts) {
+  const set = actor?.statuses;
+  if (!set || opts.breakFree || opts.throwGrappled || opts.mental?.reflect || opts.mental?.ward || opts.mental?.quicksand) return opts;
+  const st = set.has("fullStealth") ? "full" : set.has("halfStealth") ? "half" : null;
+  if (!st) return opts;
+  const stealth = st === "full" || opts.stealth === "full" ? "full" : "half";
+  const note = stealth === "full" ? "Full stealth (GM)" : opts.stealth === "half" ? null : "Half stealth (GM)";
+  return { ...opts, stealth, statusStealth: true, notes: note ? [...(opts.notes ?? []), note] : opts.notes };
+}
 
 /** Where an attack roll's Advantage/Disadvantage came from, as "Psych Up +1, target Psych Up +1" style parts. */
 function attackNetParts(actor, opts, target = null) {
@@ -1448,7 +1465,7 @@ export async function pickUp(pile, item) {
 
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
-  "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "melee", "area", "grapple", "grappleOnly",
+  "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "statusStealth", "melee", "area", "grapple", "grappleOnly",
   "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
 
 /**
@@ -1469,6 +1486,7 @@ export async function performAttack(actor, opts) {
   if (await triggerMark(actor, `attacks (${opts.label || "Attack"})`)) {
     opts = { ...opts, net: (opts.net ?? 0) - 1, notes: [...(opts.notes ?? []), "Lead Blindness (Marked): Disadvantage"] };
   }
+  opts = withStealthStatus(actor, opts);
   const picked = (opts.targetActors ?? [...game.user.targets].map(t => t.actor)).filter(a => a && (a.type !== "pile" || objectOf(a)));
   // An object on the ground (a pile holding a Non-Archetypal object) is attacked on its own: it always hits.
   if (picked.length === 1 && objectOf(picked[0])) return attackObject(actor, opts, picked[0], objectOf(picked[0]));

@@ -520,6 +520,12 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
 
+**0.52.0:** **Half Stealth and Full Stealth statuses (GM only).** Two new statuses on the token HUD, "Half Stealth (GM)" and "Full Stealth (GM)". A token with one attacks from that stealth value:
+- **Half stealth:** Advantage on the attack roll and Disadvantage on the target's dodge. **Full stealth:** the target can't react, and the attack roll only decides a crit (at or above their dodge die size, double crit at twice that).
+- **They don't stack.** Full beats Half, and an attack that already has half stealth by itself (a Targeted spell, Vector Assault's return attack) is still a single half stealth, not two. Spirit Sense (Grasp Arcana T4) only cancels the Targeted spell's own bonus, not one the GM set with the status.
+- Breaking free, throwing or slamming a grapple victim, and Ward rolls aren't attacks from stealth, so the status doesn't apply to them.
+- Only the GM can add or remove them: players don't see them on the token HUD and can't toggle them.
+
 **0.51.17:** **Helping effects only come up for allies, harming ones for foes.** A new check by token disposition (Friendly vs Hostile; Neutral and tokenless creatures count as either side):
 - **Offered only for a creature not on the opposite side of the one being helped:** Block, Shield Toss guard, Perfect Block, Quartz and Adjust (the "Ally help" button), Dampen (Peace Tenet) and Infuse (Destruction Tenet; also never offered to a creature whose own hit it would be, or the one being hit).
 - **Offered only against a creature that isn't the holder's ally:** Empower (War Tenet).

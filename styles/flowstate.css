@@ -311,3 +311,6 @@
 .fs-currency-config .fs-currency-body { padding: 8px; }
 .fs-currency-config td img { border: none; }
 .fs-currency-config input[type="text"], .fs-currency-config select { width: 100%; }
+
+/* Free movement left, in the combat tracker */
+.fs-tracker-points .fs-move-left { cursor: help; }

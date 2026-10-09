@@ -123,6 +123,20 @@ export function alignmentLabel(state) {
 /** Speed lost to Alignment: 20% per point (none in Equilibrium). */
 export const alignmentSpeedPct = state => { const s = alignmentState(state); return s.equilibrium ? 0 : ALIGN_SPEED_PCT * s.level; };
 
+/** What an Alignment does, in words (for the Action List, the dialog and the cards). */
+export function alignmentBlurb(raw) {
+  const st = alignmentState(raw);
+  if (st.equilibrium) return "Equilibrium (-1): your Manifest attack rolls have Disadvantage, and everything dodging your Icon's Ward has Disadvantage. No speed penalty, and none of your other Alignment bonuses until your next turn.";
+  if (!st.level) return "Neutral: no benefits and no speed penalty.";
+  const own = st.kind === "dream" ? "Dream" : "Nightmare", other = st.kind === "dream" ? "Nightmare" : "Dream";
+  return [`1: ${own} Wonders have Advantage on their attack rolls, ${other} Wonders Disadvantage.`,
+    st.level >= 2 ? `2: ${own} Modes' bolded effects are Strengthened, ${other}'s Weakened.` : "",
+    st.level >= 3 ? `3: a ${own} Tenet can trigger twice per round.` : "",
+    st.level >= 4 ? `4: your ${own} Icon's Ward has Advantage and a Strengthened bolded effect.` : "",
+    `Speed lowered by ${alignmentSpeedPct(st)}%.`].filter(Boolean).join(" ");
+}
+
+
 /**
  * What Alignment does to a Manifest of a Wonder of `kind` ("dream" / "nightmare"):
  *  - 1 Alignment: a stack of Advantage on its attack roll if it is your Alignment's type, Disadvantage if it is the opposite type.
@@ -203,11 +217,14 @@ export function iconProfile(item, stats = {}) {
     valid: true, form: item.form, name: form.name, align: form.align, rarity: form.rarity, grade, wardMult,
     amount: (form.amount ?? 0) * wardMult, enhancedAmount: (form.enhanced ?? form.amount ?? 0) * wardMult, other: (form.other ?? 0) * wardMult, grows: (form.grows ?? 0) * wardMult,
     cap: form.cap ? form.cap * wardMult : null, recover: (form.recover ?? 0) * wardMult,
-    ward: form.ward, enhance: form.enhance, kind: form.kind,
+    ward: scaleFormText(form.ward, wardMult), enhance: scaleFormText(form.enhance, wardMult), kind: form.kind,
     tenet: tenetWonder ? { wonder: tenetWonder.id, wonderName: tenetWonder.name, mult: iconScale(tenetStat, grade) } : null,
     durability: 20 * grade, limit: 4 * grade
   };
 }
+
+/** A Form's Ward / Enhance text with its numbers scaled by the Icon (shielding, negation and "N of that damage" grow with Willpower and Grade; AP, RP and Alignment numbers don't). */
+export const scaleFormText = (text, mult) => String(text ?? "").replace(/(\d+)(?=\s+(?:shielding|negation|of that|damage otherwise))/g, (m, n) => String(Number(n) * mult));
 
 /** The Tenets a Form may be attuned to: those of Wonders of the same Alignment (Dream or Nightmare). */
 export const tenetChoices = (align, state = null) => WONDERS.filter(w => w.kind === align && w.tenet && (!state || (Number(state[w.id]) || 0) >= (w.tenet.tier ?? 1)));

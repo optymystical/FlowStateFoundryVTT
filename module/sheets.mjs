@@ -684,7 +684,7 @@ function actionGroups(actor, weapons, stats) {
   // Alignment is set with a 1 hour activity (any Mental user); Fluidity (T3) and Equilibrium (T4) change it in the moment.
   if (mTheory >= 1 || mctx.wonders.length) {
     const cur = mctx.alignment;
-    mentalRows.push({ label: "Set Alignment", detail: `Now ${mentalRules.alignmentLabel(cur)} (${mentalRules.alignmentSpeedPct(cur)}% speed lost). Dream or Nightmare, 1 to 4 points, 20% speed each`, cost: "1 hour (not in combat)", action: "alignSet", icon: "fa-solid fa-circle-half-stroke" });
+    mentalRows.push({ label: "Set Alignment", detail: `Now ${mentalRules.alignmentLabel(cur)}. ${mentalRules.alignmentBlurb(cur)} Set Dream or Nightmare, 1 to 4 points (20% speed each), as a 1 hour activity.`, cost: "1 hour (not in combat)", action: "alignSet", icon: "fa-solid fa-circle-half-stroke" });
     if (mTheory >= 3 && !cur.equilibrium && (cur.level > 0 || mTheory >= 4)) {
       const fc = mentalRules.fluidityCost(cur, sys.skillPoints ?? 0);
       mentalRows.push({ label: mTheory >= 4 ? "Fluidity / Equilibrium" : "Fluidity", detail: `Swap ${cur.kind === "dream" ? "Dream to Nightmare" : "Nightmare to Dream"}${mTheory >= 4 ? ", or enter -1 Alignment until your next turn" : ""}`, cost: `⚡ ${fc}`, action: "fluidity", icon: "fa-solid fa-shuffle" });
@@ -943,7 +943,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       foci,
       shrouds,
       wornArmor: sys.armor,
-      moveLeft: actions.moveLeft(actor),
+      moveLeft: actions.moveLeft(actor), moveStatus: actions.moveStatus(actor),
       currencies: currencyRows(getCurrencies(), sys.currency),
       gear: actor.items.filter(i => i.type === "gear").map(i => ({ id: i.id, name: i.name, img: i.img, system: i.system,
         ammoNote: i.system.ammoType ? `${WEAPON_TYPES[i.system.ammoType]?.label ?? i.system.ammoType} ammunition (max ${actions.AMMO_MAX})` : "" })),

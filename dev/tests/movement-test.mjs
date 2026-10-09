@@ -62,13 +62,16 @@ const preMove = (dx, dy = 0) => { const options = {}; const changes = { x: token
 const doMove = async (feet) => { const r = preMove((feet / 5) * 100); if (r.refused) return r; token.x = r.changes.x; for (const f of handlers.updateToken ?? []) await f(token, r.changes, r.options, "u1"); return r; };
 
 console.log("== A turn of movement and an action");
+ok2(actions.moveStatus(hero)?.free === 30 && actions.moveStatus(hero).pay === 0, "At the start of the turn a whole step (30 ft) is free to move");
 let r = await doMove(30);
+ok2(actions.moveStatus(hero).free === 0 && actions.moveStatus(hero).pay === 2, "After moving it, 0 ft are free and moving on costs the pending step's 2 AP");
 ok2(!r.refused && hero.system.ap.value === 6 && actions.moveLedger(hero).pending, "Moving 30 ft spends nothing yet (the 2 AP of movement is pending)");
 await actions.spendAP(hero, 3, "Cast Spell");
 ok2(hero.system.ap.value === 3 && !actions.moveLedger(hero).pending && actions.moveLedger(hero).bank === 1, "A 3 AP spell settles the pending movement and banks 1 AP");
 r = await doMove(40);
 ok2(!r.refused && hero.system.ap.value === 2, `Moving 40 ft costs 1 AP (the bank covers the other one): ${hero.system.ap.value} AP left`);
 ok2(actions.moveLeft(hero) === 20 && actions.moveLedger(hero).pending, "…and 20 ft of the next 30 ft step are left (its 2 AP still pending)");
+ok2(actions.moveStatus(hero).free === 20 && actions.moveStatus(hero).pay === 2, "…shown as 20 ft free, and 2 AP for what comes after");
 r = preMove(800);
 ok2(r.refused, "A player who can't pay for the move can't make it (Enforce)");
 game.user.isGM = true;
@@ -110,6 +113,18 @@ for (const method of ["dragging", "keyboard"]) {
 combat.combatant = { actor: { uuid: "Actor.Other" } };
 r = preMove(500);
 ok2(!r.refused && !r.options.flowstateMove, "Only the creature whose turn it is pays");
+
+console.log("== Removing Ignite / Stain is an action you can strafe with");
+mode = "enforce"; combat.started = true; combat.combatant = { actor: hero };
+hero.system.ap.value = 6; await actions.setMoveLedger(hero, { bank: 0, ft: 10, pending: true });
+await actions.spendAP(hero, 3, "removing Stain");
+ok2(!actions.moveLedger(hero).pending && actions.moveLedger(hero).bank === 1, "Removing Stain (3 AP) settles the pending movement like any action, and banks the rest");
+await actions.setMoveLedger(hero, { bank: 0, ft: 10, pending: true });
+await actions.spendAP(hero, 2, "putting out Ignite");
+ok2(!actions.moveLedger(hero).pending && actions.moveLedger(hero).bank === 0, "Putting out Ignite (2 AP) does too");
+await actions.setMoveLedger(hero, { bank: 0, ft: 10, pending: true });
+await actions.spendAP(hero, 1, "Stand up");
+ok2(actions.moveLedger(hero).pending, "…while standing up is movement itself and settles nothing");
 
 console.log(fails ? `${fails} FAILED` : "all passed");
 process.exit(fails ? 1 : 0);

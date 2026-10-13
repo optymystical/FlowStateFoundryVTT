@@ -253,5 +253,19 @@ console.log("== One popup per question");
   ok2(shown === 2, "…and asking it again afterwards opens a new one");
   dialog = savedDialog; }
 
+console.log("== Switched-off reactions");
+{ const CH = await import("../../module/charges.mjs");
+  let shown = 0; const savedDialog = dialog;
+  dialog = () => { shown++; return { ok: true }; };
+  const flags = { autoDecline: { infuse: true, ward: false } };
+  const who = { isOwner: true, testUserPermission: () => false, getFlag: (s, k) => flags[k] };
+  const skipped = await CH.askFor(who, { react: "infuse", title: "Infuse (Tenet)", html: "<p>x</p>" });
+  ok2(skipped === null && shown === 0, "A reaction the player switched off is never asked and counts as no");
+  const asked = await CH.askFor(who, { react: "ward", title: "Bane Ward", html: "<p>x</p>" });
+  ok2(asked?.ok && shown === 1, "…one that is switched on, or has no switch, is asked as usual");
+  const plain = await CH.askFor(who, { title: "Something else", html: "<p>y</p>" });
+  ok2(plain?.ok && shown === 2, "…and a question with no reaction key is always asked");
+  dialog = savedDialog; }
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll live charge checks passed");
 if (fails) process.exit(1);

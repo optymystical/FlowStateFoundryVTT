@@ -1,7 +1,7 @@
 {
   "id": "flowstate",
   "title": "Flow State",
-  "description": "Core rules and Martial equipment for Flow State, a Setting Universal, Digital Only, Open Ended TTRPG. Mental and Magic archetypes not yet included. Flow State © 2019 by Christopher Caplinger, CC BY 4.0.",
+  "description": "Flow State, a Setting Universal, Digital Only, Open Ended TTRPG by Christopher Caplinger: the core rules, all Martial equipment and skill trees, Magic (Foci, Shrouds, Affixes and every spell group with its Combos) and Mental (Manifest, Alignment, Icons, Wards and the Wonders), with chat-card combat, movement cost, terrain and a character wizard. Flow State © 2019 by Christopher Caplinger, CC BY 4.0.",
   "version": "0.52.3",
   "compatibility": {
     "minimum": "13",
@@ -12,6 +12,10 @@
       "name": "Christopher Caplinger"
     }
   ],
+  "url": "https://github.com/optymystical/FlowStateFoundryVTT",
+  "bugs": "https://github.com/optymystical/FlowStateFoundryVTT/issues",
+  "readme": "https://github.com/optymystical/FlowStateFoundryVTT/blob/main/README.md",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
   "esmodules": [
     "module/flowstate.mjs"
   ],

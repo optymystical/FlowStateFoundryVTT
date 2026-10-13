@@ -637,7 +637,7 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
       notes.push(`Premonition: the declared source (${sourceChoices()[d.declared] ?? d.declared}) gets a stack of Weakened, so ${left} becomes ${weak}`);
       left = weak; amount = left;
     }
-    const yes = !!(await charges.askFor(actor, { title: "Premonition", ok: "Consume", html: `<p>Consume a Premonition charge to negate up to <strong>${d.charge}</strong> of the ${left} ${esc(type)} damage?</p>` }));
+    const yes = !!(await charges.askFor(actor, { react: "premonition", title: "Premonition", ok: "Consume", html: `<p>Consume a Premonition charge to negate up to <strong>${d.charge}</strong> of the ${left} ${esc(type)} damage?</p>` }));
     if (!yes) continue;
     const n = Math.min(d.charge, left);
     left -= n;
@@ -672,7 +672,7 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
     if (left <= 0 || ((actor.system.rp?.value ?? 0) < 1 && inActiveCombat(actor))) break;
     const n = Math.min(left, per(uses, false, near));
     const ask = await charges.askFor(actor, {
-      title: `${p.name} Ward`,
+      react: "ward", title: `${p.name} Ward`,
       html: `<p><strong>${left}</strong> ${esc(type)} damage is coming. Spend 1 RP to negate up to <strong>${n}</strong> of it with ${esc(p.name)}?</p>
         ${form.near ? `<label class="fs-cast-mod"><input type="checkbox" name="near" ${near ? "checked" : ""}> The source is within my melee range (${p.amount} instead of ${p.other})</label>` : ""}
         ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${willMin} Energy: ${esc(p.enhance)}</small></label>` : ""}

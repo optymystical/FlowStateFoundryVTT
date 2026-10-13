@@ -7,6 +7,7 @@
  * After an attack is answered, `afterResolve` offers Verdict (swap hit and crit), Entropy (an extra roll on a crit) and Balance (Order Tenet).
  * `onDamage` handles damage rolls (Mandate Enhanced, Verdict's damage). `consumeCharge` in wonders.mjs stays as the manual fallback.
  */
+import { isDeclined } from "./reactions.mjs";
 import { post, spellEffects, changeEffect, setActorFlag, turnKey, performAttack } from "./actions.mjs";
 import { poolFormula } from "./rules.mjs";
 import { bold } from "./mental-rules.mjs";
@@ -107,6 +108,7 @@ function runOnce(act) {
 
 /** Ask `actor`'s player to answer a dialog: locally if that's us, over the socket otherwise. Gives up (null) after a minute. */
 export async function askFor(actor, spec) {
+  if (isDeclined(actor, spec?.react)) return null;                         // the player switched this reaction off in their Action List: no popup, counts as "no"
   const user = answeringUser(actor);
   console.debug(`flowstate | "${spec?.title}" about ${actor?.name} (${actor?.uuid}) asked from ${game.user.name} → answered by ${user?.name ?? "nobody"}`,
     { owners: [...(globalThis.game?.users ?? [])].filter(u => actor?.testUserPermission?.(u, "OWNER")).map(u => `${u.name}${u.isGM ? " (GM)" : ""}${u.active ? " (online)" : ""}`) });
@@ -213,7 +215,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
       ${replace.map(c => (pre !== null && c.d.charge === "decree" ? `<div><label><input type="checkbox" name="p:${c.effect.id}"> Decree + Preordained (${c.d.sign === "minus" ? "−" : "+"}${pre}, ⚡ ${minOf(caster, "pon")})</label></div>` : "")).join("")}
       ${mand.map(c => `<div><label class="fs-cast-mod"><input type="checkbox" name="m:${c.effect.id}"> <strong>Mandate</strong> ${c.d.sign === "minus" ? "−" : "+"}${bs(c.d, 1)} to the result${pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> + Preordained (${pre}, ⚡ ${minOf(caster, "pon")})</label>` : ""}</label></div>`).join("")}
       ${control && replace.some(c => c.d.charge !== "decree") ? `<label class="fs-cast-mod"><input type="checkbox" name="control"> <strong>Control</strong> <small>reroll the forced roll once and use the new result</small></label>` : ""}`;
-    const ans = await askFor(caster, { title: `${caster.name}'s charges on ${actor.name}`, html, ok: "Spend" });
+    const ans = await askFor(caster, { react: "charges", title: `${caster.name}'s charges on ${actor.name}`, html, ok: "Spend" });
     if (!ans) continue;
     const used = [];
     let n = roll.total;
@@ -306,7 +308,7 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
     const optMine = tryOpt(myKey, m), optOpp = tryOpt(oppKey, -m);
     if (optMine === cur && optOpp === cur) continue;
     if (onceUsed(who, "balance")) continue;
-    const ans = await askFor(who, { title: "Balance", ok: "Use Balance", html: `<p>Balance (once per round): the attack is <strong>${atk.total}</strong> against a dodge of <strong>${dodge.total}</strong> (${cur}).</p>
+    const ans = await askFor(who, { react: "balance", title: "Balance", ok: "Use Balance", html: `<p>Balance (once per round): the attack is <strong>${atk.total}</strong> against a dodge of <strong>${dodge.total}</strong> (${cur}).</p>
       <div class="fs-field"><label>Use it to</label><select name="b"><option value="">— Don't —</option><option value="mine">Add ${m} to your ${who === attacker ? "attack" : "dodge"} result (→ ${optMine})</option><option value="opp">Remove ${m} from the ${who === attacker ? "dodge" : "attack"} result (→ ${optOpp})</option></select></div>` });
     if (!ans?.b) continue;
     await markOnce(who, "balance");
@@ -321,7 +323,7 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
     const c = list[0];
     const pre = preordainedOf(caster);
     const to = res.crit ? "a regular hit" : "a crit";
-    const ans = await askFor(caster, { title: `${caster.name}: Verdict on ${attacker.name}`, ok: "Pass judgment", html: `<p>${esc(attacker.name)}'s attack landed as <strong>${res.crit ? "a crit" : "a regular hit"}</strong> (attack ${atk.total} vs dodge ${dodge.total}). Use Verdict to make it ${to}?</p>
+    const ans = await askFor(caster, { react: "verdict", title: `${caster.name}: Verdict on ${attacker.name}`, ok: "Pass judgment", html: `<p>${esc(attacker.name)}'s attack landed as <strong>${res.crit ? "a crit" : "a regular hit"}</strong> (attack ${atk.total} vs dodge ${dodge.total}). Use Verdict to make it ${to}?</p>
       <div class="fs-field"><label>Damage</label><select name="adj"><option value="1">Add ${bs(c.d, res.crit ? 5 : 10)} damage</option><option value="-1">Remove ${bs(c.d, res.crit ? 5 : 10)} damage</option></select></div>
       ${c.d.enhanced ? `<div class="fs-field"><label>Also give the attack</label><select name="stack"><option value="1">a Strengthened stack</option><option value="-1">a Weakened stack</option></select></div>` : ""}
       ${pre !== null ? `<label class="fs-cast-mod"><input type="checkbox" name="pre"> <strong>Preordained</strong> <small>⚡ ${minOf(caster, "pon")}: ±${pre} more damage</small></label>` : ""}` });
@@ -346,7 +348,7 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
       const c = list[0], d = c.d, delta = bs(d, 3) * upDown(d);
       const control = tier(caster, "mental-chaos-nightmare") >= 4;
       const dodgeDie = target.system.derived.dodgeDie, atkDie = attackDie ?? attacker.system.derived.attackDie;
-      const ans = await askFor(caster, { title: `${caster.name}: Entropy on ${who.name}`, ok: "Spend Entropy", html: `<p>${esc(who.name)} ${role === "attack" ? "would crit" : "would be crit"} (attack ${atk.total} vs dodge ${dodge.total}). Spend Entropy for an additional roll (die size ${delta > 0 ? "+" : "−"}${Math.abs(delta)}${role === "dodge" ? ", dodge dice by half" : ""}${d.enhanced ? ", keeping the original's effects" : ""})?</p>
+      const ans = await askFor(caster, { react: "entropy", title: `${caster.name}: Entropy on ${who.name}`, ok: "Spend Entropy", html: `<p>${esc(who.name)} ${role === "attack" ? "would crit" : "would be crit"} (attack ${atk.total} vs dodge ${dodge.total}). Spend Entropy for an additional roll (die size ${delta > 0 ? "+" : "−"}${Math.abs(delta)}${role === "dodge" ? ", dodge dice by half" : ""}${d.enhanced ? ", keeping the original's effects" : ""})?</p>
         ${role === "attack" ? `<div class="fs-field"><label>The additional roll is</label><select name="how"><option value="redo">The attack redone (replaces it)</option><option value="extra">An extra attack roll (the crit stands)</option></select></div>` : `<p class="hint">It's a new attempt to dodge, which replaces theirs.</p>`}
         ${control ? `<label class="fs-cast-mod"><input type="checkbox" name="control"> <strong>Control</strong> <small>reroll it once and use the new result</small></label>` : ""}` });
       if (!ans) continue;
@@ -416,7 +418,7 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
       ? `<option value="${c.effect.id}">Decree: the damage becomes ${Math.max(0, half(c.d.enhanced ? formulaMax(formula) : top) + sgn(c.d))} (half of ${top}, ${c.d.sign === "minus" ? "−" : "+"}${bs(c.d, 1)})</option>`
       : c.d.charge === "larceny" ? `<option value="${c.effect.id}">Larceny: steal this damage roll, they reroll as ${esc(shiftFormula(formula, bs(c.d, 1) * upDown(c.d)))}</option>`
       : `<option value="${c.effect.id}">Fracture: reroll as ${esc(shiftFormula(formula, 2 * upDown(c.d)))}</option>`;
-    const ans = await askFor(caster, { title: `${caster.name}: charges on ${actor.name}'s damage`, ok: "Spend", html: `<p>${esc(actor.name)} rolled damage (${esc(formula)}): <strong>${totals.join(" + ")}</strong>. Spend your charges?</p>
+    const ans = await askFor(caster, { react: "charges", title: `${caster.name}: charges on ${actor.name}'s damage`, ok: "Spend", html: `<p>${esc(actor.name)} rolled damage (${esc(formula)}): <strong>${totals.join(" + ")}</strong>. Spend your charges?</p>
       ${replace.length ? `<div class="fs-field"><label>Replace the roll</label><select name="replace"><option value="">— Leave it —</option>${replace.map(opt).join("")}</select></div>` : ""}
       ${replace.filter(c => c.d.charge === "decree" && pre !== null).map(c => `<div><label><input type="checkbox" name="p:${c.effect.id}"> Decree + Preordained (${pre}, ⚡ ${minOf(caster, "pon")})</label></div>`).join("")}
       ${mand.map(c => `<div><label class="fs-cast-mod"><input type="checkbox" name="m:${c.effect.id}"> <strong>Mandate</strong> ${c.d.sign === "minus" ? "−" : "+"}${bs(c.d, 10)}${pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> + Preordained ×10 (${pre * 10}, ⚡ ${minOf(caster, "pon")})</label>` : ""}</label></div>`).join("")}` });

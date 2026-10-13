@@ -312,7 +312,7 @@ ACTS.weight = async (x, caster, target) => {
 export async function offerTenets(c, acts) {
   for (const x of acts ?? []) {
     if (onceUsed(c.attacker, x.id)) continue;
-    const ans = await askFor(c.attacker, { title: `${x.label} (Tenet)`, ok: `Use ${x.label}`, html: `<p><strong>${esc(x.label)}</strong>: ${esc(x.tip)}.</p><p>${esc(c.attacker.name)}'s ${esc(c.mode?.name ?? "Manifest")} hit ${esc(c.target.name)}. Use it now? (If not, it comes up again the next time it can be used this round.)</p>` });
+    const ans = await askFor(c.attacker, { react: "tenet", title: `${x.label} (Tenet)`, ok: `Use ${x.label}`, html: `<p><strong>${esc(x.label)}</strong>: ${esc(x.tip)}.</p><p>${esc(c.attacker.name)}'s ${esc(c.mode?.name ?? "Manifest")} hit ${esc(c.target.name)}. Use it now? (If not, it comes up again the next time it can be used this round.)</p>` });
     if (ans) await runOnOwner(c.attacker, x);
   }
 }

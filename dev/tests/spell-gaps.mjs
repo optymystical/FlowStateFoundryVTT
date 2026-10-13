@@ -193,7 +193,7 @@ seq = [10]; await cast("magic-arcanomancy:strike", { base: 1, strikeSpell: sid2 
 ok2(eff(orc, "shield")[0].flags.flowstate.spellEffect.hp === 30, "…less damage leaves it standing (40 → 30)");
 clean6(); await shieldOn(orc); const sid3 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
 await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true, strikeSpell: sid3 });
-ok2(eff(orc, "shield")[0].flags.flowstate.spellEffect.hp === 240, "Amplify: +10 Power (+200 health on a Shield)");
+ok2(eff(orc, "shield")[0].flags.flowstate.spellEffect.hp === 60, "Amplify: +1 Power (+20 health on a Shield)");
 let r5 = await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true, strikeSpell: AR.listSpells().find(x => x.label.startsWith("Shield on")).id });
 ok2(!r5, "…and only once per Spell");
 r5 = await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true });
@@ -222,12 +222,12 @@ console.log("== Strike a spell that is mid cast (after its attack roll, before t
   await A.defend(atk, 0, "dodge");
   ok2(orc.system.hp.value === hpBefore && !A.findDefense(atk.id, 0), "…so the target can no longer be made to answer it");
   ok2(!AR.listSpells().some(x => x.kind === "cast" && x.message.id === atk.id), "…and it's off the list");
-  // Amplify: +10 Power on the spell before it lands.
+  // Amplify: +1 Power on the spell before it lands.
   atk = await pending(); const mid2 = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
   const p0 = atk.flags.flowstate.attack.opts.spell.power;
   seq = [30]; await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true, strikeSpell: mid2.id });
   const o2 = lastAtkOf(atk.id);
-  ok2(o2.spell.power === p0 + 10 && o2.spell.amplified && o2.damage === `${2 * (p0 + 10)}d6`, `Amplify on a mid-cast spell: Power ${p0} → ${o2.spell.power}, damage ${o2.damage}`);
+  ok2(o2.spell.power === p0 + 1 && o2.spell.amplified && o2.damage === `${2 * (p0 + 1)}d6`, `Amplify on a mid-cast spell: Power ${p0} → ${o2.spell.power}, damage ${o2.damage}`);
   // Rip: take it over and send it at someone else with a new attack roll.
   atk = await pending(); const mid3 = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
   seq = [30, 20]; await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: mid3.id, ripMode: "redirect", ripTarget: gob.uuid });

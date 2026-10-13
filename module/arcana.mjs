@@ -266,7 +266,7 @@ async function loseMirage(actor, live, d, lost) {
   if (d.phantom) {
     const r = await roll(`${d.phantom}d6`);
     phantom += r.total;
-    html += `<div class="fs-result">Phantom Pain: ${actor.name} takes ${r.total} illusion damage (${phantom} in all): it ignores protections and only counts toward their Pain Threshold. It disappears when no Mirage affects them.</div>`;
+    html += `<div class="fs-result">Phantom Pain: ${actor.name}'s Pain Threshold rises by ${r.total} (${phantom} in all). It goes away when no Mirage affects them.</div>`;
   }
   if (power <= 0) { if (live) await endMirage(actor, live); return { html: html + `<div class="fs-result">The Mirage is gone.</div>`, ended: true }; }
   if (live) await changeEffect(live, { "flags.flowstate.spellEffect.power": power, "flags.flowstate.spellEffect.phantomTotal": phantom, "flags.flowstate.spellEffect.tests": (d.tests ?? 0) + 1 });
@@ -410,30 +410,30 @@ async function destroySpell(entry, reason = "it dissipates") {
   return changeEffect(entry.effect, null);
 }
 
-/** Amplify (Arcanomancy T4): +10 Power to a non-Ritual Spell, once. Only effects that scale with Power change. */
+/** Amplify (Arcanomancy T4): +10 Scaling Stat (one Spell Power) to a non-Ritual Spell, once. Only effects that scale with Power change. */
 async function amplifySpell(entry) {
   if (entry.ritualOf) return "Amplify only works on non-Ritual Spells.";
   if (entry.amplified) return "That Spell has already been amplified.";
   if (entry.kind === "cast") {
-    // Mid cast it can still be changed: +10 Power, so its dice, health and Force (everything the card works out later) scale up.
+    // Mid cast it can still be changed: +1 Power (10 more Scaling Stat), so its dice, health and Force (everything the card works out later) scale up.
     const p = Math.max(1, entry.power), dmg = String(entry.opts.damage ?? "").match(/^(\d+)d(\d+)$/);
-    const upd = { id: entry.message.id, power: p + 10 };
-    if (dmg) upd.damage = `${Math.round(Number(dmg[1]) / p * (p + 10))}d${dmg[2]}`;
+    const upd = { id: entry.message.id, power: p + 1 };
+    if (dmg) upd.damage = `${Math.round(Number(dmg[1]) / p * (p + 1))}d${dmg[2]}`;
     await requestGM("castChange", upd);
-    return `${entry.label} is amplified: Power ${p} → ${p + 10}${upd.damage ? `, ${dmg[0]} → ${upd.damage}` : ""}. It lands with the new numbers.`;
+    return `${entry.label} is amplified: Power ${p} → ${p + 1}${upd.damage ? `, ${dmg[0]} → ${upd.damage}` : ""}. It lands with the new numbers.`;
   }
   if (entry.kind === "barrier") {
-    await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 200, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 200, amplified: true } });
-    return `The barrier gains 200 health (20 × 10 Power).`;
+    await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 20, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 20, amplified: true } });
+    return `The barrier gains 20 health (20 × 1 Power).`;
   }
   if (entry.kind === "summon") return "A Summon's stats don't scale with Power: nothing changes.";
   const d = data(entry.effect), p = Math.max(1, d.power ?? 1);
   const upd = { "flags.flowstate.spellEffect.amplified": true };
   let msg;
-  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 200; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 200; msg = "The Shield gains 200 health (20 × 10 Power)."; }
-  else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + 10)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + 10; msg = `Its dice go from ${d.n} to ${n}.`; }
-  else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 100; upd["flags.flowstate.spellEffect.power"] = d.power + 100; msg = "The Mirage gains 100 Power."; }
-  else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 30; msg = "Pain Threshold drops 30 more."; }
+  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 20; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 20; msg = "The Shield gains 20 health (20 × 1 Power)."; }
+  else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + 1)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + 1; msg = `Its dice go from ${d.n} to ${n}.`; }
+  else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 10; upd["flags.flowstate.spellEffect.power"] = d.power + 10; msg = "The Mirage gains 10 Power."; }
+  else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 3; msg = "Pain Threshold drops 3 more."; }
   else return "That Spell has no Power-scaled number to amplify: nothing changes.";
   await changeEffect(entry.effect, upd);
   return msg;

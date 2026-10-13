@@ -64,9 +64,9 @@ Object.assign(PROFILES, {
   [profileKey([PI, FR])]: { name: "Stab + Frost", damage: dmg(1, 12, "cold"), effects: [{ when: "crit", energy: { per: 2 } }] },
   [profileKey([CR, FR])]: { name: "Slam + Frost", damage: dmg(2, 6, "cold"), effects: [{ when: "energyZeroBefore", dodgeDis: true }] },
   [profileKey([G, CK])]: { name: "Force + Crackle", force: { n: 20, sides: 10, when: "hit" }, chain: true, effects: [{ chain: { adv: 0, force: true } }] },
-  [profileKey([SL, CK])]: { name: "Cut + Crackle", damage: dmg(2, 8, "physical"), effects: [{ when: "directLiving", chain: { adv: -1 } }] },
-  [profileKey([PI, CK])]: { name: "Stab + Crackle", damage: dmg(2, 12, "physical"), effects: [{ when: "crit", chain: { adv: 1 } }] },
-  [profileKey([CR, CK])]: { name: "Slam + Crackle", damage: dmg(2, 10, "physical"), effects: [{ when: "lowDodge", chain: { adv: 0 } }] },
+  [profileKey([SL, CK])]: { name: "Cut + Crackle", damage: dmg(2, 8, "radiation"), effects: [{ when: "directLiving", chain: { adv: -1 } }] },
+  [profileKey([PI, CK])]: { name: "Stab + Crackle", damage: dmg(2, 12, "radiation"), effects: [{ when: "crit", chain: { adv: 1 } }] },
+  [profileKey([CR, CK])]: { name: "Slam + Crackle", damage: dmg(2, 10, "radiation"), effects: [{ when: "lowDodge", chain: { adv: 0 } }] },
   [profileKey([G, GL])]: { name: "Force + Glob", damage: dmg(2, 6, "acid"), effects: [{ stack: { kind: "stain", per: 1 } }, { when: "stainMore", force: { n: 16, sides: 10 } }] },
   [profileKey([SL, GL])]: { name: "Cut + Glob", damage: dmg(2, 6, "acid"), effects: [{ when: "direct", stack: { kind: "stain", per: 2 } }] },
   [profileKey([PI, GL])]: { name: "Stab + Glob", damage: dmg(2, 6, "acid"), effects: [{ when: "crit", stack: { kind: "stain", per: 2 } }] },
@@ -409,9 +409,9 @@ export function amountSpec(spec, dealt, power, roll = (n, sides) => n * (sides +
   return 0;
 }
 
-/** Flare (Heat T4): n dice of d`sides` become `sides ÷ 4` separate sets of n d4 (so 2d12 → three 2d4s). */
+/** Flare (Heat T4): each of the n d`sides` becomes `sides ÷ 4` d4s, and the n proportional sets deal their damage separately (so 2d12 → two sets of 3d4). */
 function flareSets(n, sides) {
-  return { sets: Math.max(1, Math.floor(sides / 4)), dice: Math.max(1, n) };
+  return { sets: Math.max(1, n), dice: Math.max(1, Math.floor(sides / 4)) };
 }
 
 /** Crushing + Acid: 1 Stain stack plus twice the difference between your attack roll and their total dodge roll (never negative). */

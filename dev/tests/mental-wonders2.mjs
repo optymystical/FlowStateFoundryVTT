@@ -154,15 +154,15 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   const left = Math.max(0, plain.stain - dex);
   ok2(dipped.stain === left && dipped.lost === left, `Glob against a Dip (−${dex}): Stains ${plain.stain} → ${dipped.stain}, HP lost ${plain.lost} → ${dipped.lost}`);
   // Heat's Flare: every set of d4s is its own instance, so a Ward (and a Dip) deals with each set before the card is worked out.
-  hero.system.trees["magic-heat"] = 5; hero.system.prepareDerivedData();
+  hero.system.trees["magic-heat"] = 5; hero.system.trees["magic-theory"] = 3; hero.system.prepareDerivedData();
   const flare = async (guardFlags = null) => {
     reset(); if (guardFlags) orc.flags.flowstate = { ...(orc.flags.flowstate ?? {}), ...guardFlags }; refresh(); target(orc); hero.system.ap.value = 6; hero.system.rp.value = 6; hero.system.energy.value = 150; seq = [20]; dialog = () => ({ net: 0 });
-    await C.castSpell(hero, { via: "foci:rod", ap: 2, core1: "magic-heat:flame", core2: "", base: 1, "mod:magic-heat:flare": true });
+    await C.castSpell(hero, { via: "foci:rod", ap: 3, core1: "magic-heat:flame", core2: "", base: 1, "mod:magic-heat:flare": true, "mod:magic-theory:empower": true });
     seq = [12]; dialog = wardOverride ?? (() => ({ net: 0 })); await actions.defend(lastAtk(), 0, "dodge");
     seq = [5, 6, 7]; await actions.rollExchangeDamage(messages.filter(m => m.flags?.flowstate?.defense).at(-1));
     return { lost: 432 - hp(orc), ignite: orc.system.conditions.ignite, card: text(messages.filter(m => /Damage to/.test(m.content ?? "")).at(-1)) };
   };
-  const fPlain = await flare();
+  const fPlain = await flare(); 
   const veil3 = mkIcon(orc, "Veil", { form: "veil", attuned: true });
   uses = 0; wardOverride = html => (/Spend 1 RP to negate/.test(html ?? "") ? (uses++ < 1 ? {} : null) : { net: 0 });
   const fWard = await flare();

@@ -5151,19 +5151,18 @@ const pendingDamage = new Map();
 let damageReq = 0;
 /**
  * Ask the GM to apply damage and wait for what came of it ({ toHp, armorLoss, reduced }: a Ward or a Wonder may have taken some off, and effects that
- * go by the damage dealt need to know). Gives up after two minutes (null).
+ * go by the damage dealt need to know). Waits for the GM (null if they go offline).
  */
 async function askGMDamage(payload) {
   if (game.user.isGM) return summarizeDamage(await GM_ACTIONS.applyDamage(payload));
   if (!game.users.activeGM) return requestGM("applyDamage", payload);
   return askGM("applyDamage", payload);
 }
-/** Run a GM action over the socket and wait for what it answers (null after two minutes, or if it gave nothing). */
+/** Run a GM action over the socket and wait for what it answers (null if the GM goes offline, or if it gave nothing). */
 function askGM(action, payload) {
   const reqId = `${game.user.id}:${++damageReq}`;
   return new Promise(resolve => {
-    const timer = setTimeout(() => { pendingDamage.delete(reqId); resolve(null); }, 120000);
-    pendingDamage.set(reqId, v => { clearTimeout(timer); resolve(v); });
+    pendingDamage.set(reqId, resolve);
     game.socket.emit("system.flowstate", { action, ...payload, reply: { to: game.user.id, reqId } });
   });
 }
@@ -5183,6 +5182,11 @@ export async function wardNegate(target, amount, type, { source = null, attacker
 }
 const summarizeDamage = out => out ? { toHp: out.toHp ?? 0, armorLoss: out.armorLoss ?? 0, reduced: out.reduced ?? 0 } : null;
 /** A client receives the result of damage it asked the GM for. */
+/** The GM went offline: whatever was waiting on them is answered "nothing came of it" (there is no timer on these). */
+export function dropGMRequests() {
+  for (const resolve of pendingDamage.values()) resolve(null);
+  pendingDamage.clear();
+}
 export function damageResult(data) {
   pendingDamage.get(data.reqId)?.(data.result ?? null);
   pendingDamage.delete(data.reqId);

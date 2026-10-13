@@ -6,6 +6,7 @@ import { relayAllowed, relayKey, makeQueue } from "./relay-guard.mjs";
 import * as areas from "./areas.mjs";
 import * as terrain from "./terrain.mjs";
 import { register as registerMovement } from "./movement.mjs";
+import { register as registerPrompts } from "./prompts.mjs";
 import { registerCurrencySettings, register as registerCurrency } from "./currency.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
@@ -226,6 +227,7 @@ Hooks.once("init", () => {
   actions.GM_ACTIONS.createCharacter = createCharacterForUser;
   actions.GM_ACTIONS.createTerrain = terrain.gmCreate;
   terrain.register();
+  registerPrompts();
   registerCurrency();
   registerMovement();
 
@@ -530,6 +532,13 @@ Hooks.on("createChatMessage", message => {
     attackMsg = game.messages.get(def?.attackMessage);
   }
   if (attackMsg) setTimeout(() => actions.postReadyFollowups(attackMsg), 0);
+});
+
+/** Someone went offline: questions waiting on them are answered "no", and requests waiting on a GM who left are dropped. */
+Hooks.on("userConnected", (user, connected) => {
+  if (connected) return;
+  charges.userLeft(user);
+  if (user.isGM && !game.users.activeGM) actions.dropGMRequests();
 });
 
 /** GM applies damage on behalf of players who don't own the target. */

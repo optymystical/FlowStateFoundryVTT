@@ -8,7 +8,7 @@
  * `onDamage` handles damage rolls (Mandate Enhanced, Verdict's damage). `consumeCharge` in wonders.mjs stays as the manual fallback.
  */
 import { askFor, showChoices } from "./ask.mjs";
-export { askFor, runOnOwner, showChoices, answeringUser, everyActor, actorsInPlay, listen } from "./ask.mjs";
+export { askFor, runOnOwner, showChoices, answeringUser, everyActor, actorsInPlay, listen, userLeft } from "./ask.mjs";
 import { post, spellEffects, changeEffect, setActorFlag, turnKey, performAttack } from "./actions.mjs";
 import { poolFormula } from "./rules.mjs";
 import { bold } from "./mental-rules.mjs";

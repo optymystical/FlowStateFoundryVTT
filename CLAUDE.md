@@ -68,7 +68,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `module/sheets.mjs` — actor/item sheets, the Action List (`buildActionList`), `runActionRow`.
 - `module/wizard.mjs` + `creation.mjs` — New Character wizard (GM creates the actor via the relay).
 - `module/integrations.mjs` — Carousel Combat Tracker defaults and a built-in Token Action HUD system integration.
-- `README.md` — player/GM-facing description of every automated rule and the judgment calls. Keep it current.
+- `README.md` — short front page. `CHANGELOG.md` — one short entry per version (newest first). `dev/AUTOMATION.md` — every automated rule and judgment call in detail; update it when a rule changes.
 - `dev/` — not loaded by Foundry: `tests/` (Node harnesses with Foundry mocks), `run-tests.mjs`, `tools/build_trees.py`,
   `docs/` (doc snapshots).
 
@@ -90,7 +90,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
   subset). Add or update a harness for new behavior. Harnesses use `seq = [...]` to script dice and `dialog = () => ({...})`
   to answer popups.
 - `node --check module/<file>.mjs` catches syntax errors fast.
-- Bump `system.json` `version` (patch for fixes, minor for features) and add a README note with each change.
+- Bump `system.json` `version` (patch for fixes, minor for features) and add a short `CHANGELOG.md` entry with each change (and update `dev/AUTOMATION.md` if a rule or judgment call changed).
 - Regenerate skill trees after Martial/Magic doc changes: export the docs to `dev/docs/martial.md` and `magic.md`,
   then `cd dev && npm run trees` (Mental too: export the Mental Rework Test Ground to `dev/docs/mental.md`; the generator leaves out trees with no entries yet). After Combo Spell List changes: export it to `dev/docs/combos.md`, then `npm run combos`
   (generates `module/combos.mjs`; don't hand-edit).

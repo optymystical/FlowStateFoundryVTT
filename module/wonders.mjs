@@ -5,8 +5,9 @@
  * effects on the target that turn into the real effect when their turn starts (`pendingTurnStart`).
  */
 import {
-  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, performAttack, knockbackRow, setGrapple, clearSpellEffects
+  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, performAttack, knockbackRow, setGrapple, clearSpellEffects, gridFor
 } from "./actions.mjs";
+import { centreDistance } from "./distance.mjs";
 import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
 import { askFor, runOnOwner } from "./charges.mjs";
 import { resolveForce, applyStacks } from "./rules.mjs";
@@ -671,7 +672,7 @@ export async function runChargeAct(x, caster, target) {
   }
   return false;
 }
-const mentalDistance = (a, b) => (globalThis.canvas?.grid ? Math.round((Math.max(Math.abs(a.center.x - b.center.x), Math.abs(a.center.y - b.center.y)) / canvas.grid.size) * canvas.grid.distance) : 0);
+const mentalDistance = (a, b) => (globalThis.canvas?.grid ? centreDistance(a.center, b.center, gridFor(canvas.grid)) : 0);
 
 /** Preordained (Order T4): when you finish a rest, roll one of your dodge dice: that is your Preordained Number. */
 export async function afterRest(actor) {

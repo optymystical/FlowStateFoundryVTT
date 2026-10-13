@@ -10,6 +10,7 @@ import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import { planAction, emptyLedger } from "./movement-rules.mjs";
 import { mayHelp } from "./sides.mjs";
+import { borderDistance } from "./distance.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
@@ -424,23 +425,22 @@ export function attackerToken(actor) {
   return controlled ?? actor.getActiveTokens?.()[0] ?? null;
 }
 
-/** Grid distance between the closest spaces two tokens occupy (so large creatures measure edge to edge). */
+/** The scene grid as `distance.mjs` wants it (square, hex or gridless; hexes are measured by Foundry's own path measure). */
+export function gridFor(grid = globalThis.canvas?.grid) {
+  const kind = grid?.isGridless ? "gridless" : grid?.isHexagonal ? "hex" : "square";
+  return { size: grid?.size ?? 100, distance: grid?.distance ?? 5, kind,
+    measure: kind === "hex" ? (from, to) => { try { const d = grid.measurePath([from, to]).distance; return Number.isFinite(d) ? d : 0; } catch (err) { return 0; } } : undefined };
+}
+
+/** Grid distance between the borders of two tokens (touching = 0 ft), on square, hex and gridless scenes; large and small tokens measure edge to edge. */
 export function tokenDistance(a, b) {
-  // Measured between token borders (two tokens that touch are 0 ft apart), square-grid style: the larger of the
-  // horizontal and vertical gaps. Works for fractional (small) and multi-square (large) tokens alike.
-  const grid = canvas.grid;
+  const grid = gridFor(canvas?.grid);
   const box = t => {
     const d = t.document ?? t;
-    const gs = grid?.size ?? 100;
     const x = d.x ?? (t.center?.x ?? 0), y = d.y ?? (t.center?.y ?? 0);
-    const w = (d.width ?? 0) * gs, h = (d.height ?? 0) * gs;
-    return { x, y, w, h };
+    return { x, y, w: (d.width ?? 0) * grid.size, h: (d.height ?? 0) * grid.size };
   };
-  const A = box(a), B = box(b);
-  const dx = Math.max(0, B.x - (A.x + A.w), A.x - (B.x + B.w));
-  const dy = Math.max(0, B.y - (A.y + A.h), A.y - (B.y + B.h));
-  const px = Math.max(dx, dy);
-  return Math.round((px / (grid?.size ?? 100)) * (grid?.distance ?? 5) * 100) / 100;
+  return borderDistance(box(a), box(b), grid);
 }
 
 /**

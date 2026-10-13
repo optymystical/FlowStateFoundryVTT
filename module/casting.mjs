@@ -496,12 +496,12 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     }
     exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund };
   } else if (mods.exploit) exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund: [] };
-  const pierce = mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0;
+  const pierce = (mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0) + (plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin : 0);   // Painite: ignores Limit as Pierce does
   // Bash (Crushing T3): Bash 10 × Power per stack (an object with that much Limit or less is ignored for extra damage).
   const bash = mods.bash ? mods.bash * 10 * plan.power : 0;
   const attackOpts = { apCost: plan.ap,
     label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
-    damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin : 0,
+    damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: 0,
     notes: [...notes, plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
     spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area && !mods.absorb, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
       ...(plan.fociFx ? { fociFx: plan.fociFx } : {}),

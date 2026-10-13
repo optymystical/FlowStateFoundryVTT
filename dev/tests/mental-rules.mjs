@@ -52,12 +52,12 @@ ok(M.scaleFormText("spend 1 RP to negate up to 30 of that damage, 5 negation oth
 console.log("== Icons and Forms");
 ok(M.FORM_KEYS.length === 14 && M.FORM_KEYS.filter(k => M.FORMS[k].align === "dream").length === 7, "14 Forms, 7 Dream and 7 Nightmare");
 let p = M.iconProfile({ form: "aegis", grade: 2, tenet: "mental-life-dream:verdant-soul" }, { will: 45, pon: 32 });
-ok(p.wardMult === 2 && p.amount === 40 && p.enhancedAmount === 60, "Aegis at Grade 2 with Willpower 45: capped at 20 → ×2, 20 → 40 shielding (30 → 60 Enhanced)");
+ok(p.wardMult === 2 && p.amount === 16 && p.enhancedAmount === 30, "Aegis at Grade 2 with Willpower 45: capped at 20 → ×2, 8 → 16 shielding (15 → 30 Enhanced)");
 ok(p.tenet.mult === 2 && p.durability === 40 && p.limit === 8, "The Tenet scales with the Wonder's stat, limited by Grade; Durability 20 and Limit 4 per Grade");
 p = M.iconProfile({ form: "veil", grade: 3 }, { will: 15 });
-ok(p.wardMult === 1 && p.amount === 10 && p.enhancedAmount === 20, "Veil: 10 negation (20 Enhanced), at least ×1");
+ok(p.wardMult === 1 && p.amount === 4 && p.enhancedAmount === 8, "Veil: 4 negation (8 Enhanced), at least ×1");
 p = M.iconProfile({ form: "bane", grade: 1 }, { will: 99 });
-ok(p.amount === 20 && p.other === 5, "Bane: 20 against the chosen type, 5 otherwise");
+ok(p.amount === 6 && p.other === 3, "Bane: 6 against the chosen type, 3 otherwise");
 ok(M.iconProfile({ form: "nope" }).valid === false, "An unknown Form isn't valid");
 ok(M.tenetChoices("dream").every(w => w.kind === "dream") && M.tenetChoices("nightmare").every(w => w.kind === "nightmare"), "Tenets match the Form's Alignment");
 ok(M.tenetChoices("dream").length === 6 && M.tenetChoices("nightmare").length === 6, "Six Dream and six Nightmare Tenets");

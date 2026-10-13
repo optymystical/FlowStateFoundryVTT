@@ -201,7 +201,7 @@ fresh(); use(rod, { affixes: ["alexandrite"] }); target(orc); seq = [20]; await 
 seq = [20]; await cast("magic-piercing:stab", {}); seq = [12]; await actions.defend(lastAtk4(), 0, "dodge"); seq = [10]; await actions.rollExchangeDamage(last());
 ok2(/\+1 Alexandrite/.test(text(last())), "Alexandrite: Strengthened when the damage type matches your last spell's");
 fresh(); use(rod, { affixes: ["painite"] }); target(orc); seq = [20]; await cast("magic-slashing:cut", {});
-ok2(lastAtk4().flags.flowstate.attack.opts.cleave === Math.floor(lastAtk4().flags.flowstate.attack.opts.spell.scaling / 3) && lastAtk4().flags.flowstate.attack.opts.cleave > 0, "Painite: the spell ignores Limit equal to your Scaling Stat min (Cleave)");
+ok2(lastAtk4().flags.flowstate.attack.opts.pierce === Math.floor(lastAtk4().flags.flowstate.attack.opts.spell.scaling / 3) && lastAtk4().flags.flowstate.attack.opts.pierce > 0, "Painite: the spell ignores Limit equal to your Scaling Stat min (Pierce)");
 
 console.log("== Foci Affixes: on hit, range, cost");
 fresh(); use(rod, { affixes: ["ruby", "sapphire"] }); const px = F.fociFx(hero, { option: { fociId: "rod" }, scaling: 30 });

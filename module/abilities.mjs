@@ -72,12 +72,14 @@ function solitaryValue(actor, item, p) {
 
 /**
  * Solitary follow-up for an attack, or null.
- * - Normal: one-handed Solitary weapon (Solitary+ = no Disadvantage).
+ * - Normal: one-handed Solitary weapon (Solitary+ = no Disadvantage), while holding no other weapon.
  * - Titan Weapon (Bladed T4, Heavy): two-handed attacks benefit from Solitary+, but the extra attack has Disadvantage.
  */
 export function solitaryFollowup(actor, item, p) {
   const sol = solitaryValue(actor, item, p);
-  if (p.hands === 1 && sol) return { net: sol === 2 ? 0 : -1, titan: false };
+  // Equipment doc: a one-handed Solitary extra attack can't be made while holding another weapon.
+  const otherHeld = (actor?.items ?? []).some?.(i => i.type === "weapon" && i.id !== item.id && i.system.held && i.system.weaponType !== "unarmed");
+  if (p.hands === 1 && sol && !otherHeld) return { net: sol === 2 ? 0 : -1, titan: false };
   if (p.hands === 2 && bladed(actor, item, 4, "heavy")) return { net: -1, titan: true };
   return null;
 }

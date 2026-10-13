@@ -466,7 +466,7 @@ async function applyWard({ attacker, target, ward }) {
   return lines.join("<br>");
 }
 
-/** Enhanced Reverie at 4 Dream Alignment: whenever a Dream Manifest of yours hits, each Enhanced Reverie shield you hold grows by 5 (× the Icon's scaling), up to the cap in all. */
+/** Enhanced Reverie at 4 Dream Alignment: whenever a Dream Manifest of yours hits, each Enhanced Reverie shield you hold grows by 4 (× the Icon's scaling), up to the cap in all. */
 async function growReverie(attacker, grade) {
   const mine = [];
   for (const a of new Set([...(globalThis.game?.actors ?? []), ...(globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(Boolean)])) {
@@ -480,7 +480,7 @@ async function growReverie(attacker, grade) {
   let added = 0;
   for (const e of mine) {
     const room = cap - total - added;
-    const n = Math.min(5 * mult, room);
+    const n = Math.min(4 * mult, room);
     if (n <= 0) break;
     const d = e.flags.flowstate.spellEffect;
     await changeEffect(e, { "flags.flowstate.spellEffect.hp": (Number(d.hp) || 0) + n, "flags.flowstate.spellEffect.max": (Number(d.max) || 0) + n, name: `Reverie (${(Number(d.hp) || 0) + n} shielding)` });
@@ -653,7 +653,7 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
   const willMin = minOf(actor, "will");
   const per = (uses, enhanced, near) => {
     let n = enhanced ? p.enhancedAmount : p.amount;
-    if (form.chooses) n = enhanced || cats.includes(icon.system.chosen) ? p.amount : p.other;
+    if (form.chooses) n = cats.includes(icon.system.chosen) ? p.amount : p.other;
     // Zealot: full negation at 2 or more Nightmare Alignment.
     if (form.needs === "deepNightmare") n = (R.alignedTo(align, "nightmare") && align.level >= 2) ? p.amount : p.other;
     if (form.near) n = near ? p.amount : p.other;
@@ -699,8 +699,10 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
     if (!res.hit) { notes.push(`${p.name} misses (1 RP${enh ? `, ${willMin} Energy` : ""} spent, nothing negated)`); continue; }
     left -= nn; uses++;
     if (enh) enhancedUsed = true;
-    // Zealot, Enhanced at 4 Nightmare Alignment: the damage is Weakened on use (once per damage instance).
-    if (enh && form.needs === "deepNightmare" && R.alignedTo(align, "nightmare") && align.level >= 4 && !weakened) { weakened = true; const before = left; left = Math.floor(applyStacks(left, -1)); notes.push(`Zealot (4 Nightmare): the rest is Weakened, ${before} → ${left}`); }
+    // Zealot, Enhanced at 4 Nightmare Alignment: the damage is Weakened when the activation roll crits (once per damage instance).
+    if (enh && form.needs === "deepNightmare" && res.crit && R.alignedTo(align, "nightmare") && align.level >= 4 && !weakened) { weakened = true; const before = left; left = Math.floor(applyStacks(left, -1)); notes.push(`Zealot (critical, 4 Nightmare): the rest is Weakened, ${before} → ${left}`); }
+    // Bane, Enhanced: incoming damage of the chosen type gets a stack of Weakened when the Ward hits (once per damage instance).
+    if (enh && form.chooses && cats.includes(icon.system.chosen) && !weakened) { weakened = true; const before = left; left = Math.floor(applyStacks(left, -1)); notes.push(`Bane: the ${esc(type)} damage is Weakened, ${before} → ${left}`); }
     notes.push(`${p.name} negates ${nn} (1 RP${enh ? `, Enhanced for ${willMin} Energy` : ""})`);
   }
   if (form.echo && left <= 0 && amount > 0) {

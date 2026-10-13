@@ -360,7 +360,7 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
       shroudType: new f.StringField({ required: true, initial: "bastion", choices: () => Object.fromEntries(Object.entries(SHROUD_TYPES).map(([k, v]) => [k, v.label])) }),
       grade: int(1, { min: 1 }),
       attuned: new f.BooleanField({ initial: false }),
-      wear: int(0),                                       // spent Durability (Aegis/Lattice: charges used)
+      wear: int(0),                                       // spent Durability (Bulwark/Lattice: charges used)
       conditions: objectConditions(),
       affixes: new f.ArrayField(new f.StringField()),
       doubled: new f.StringField({ initial: "" }),        // Keystone: the Defensive Affix whose effects are doubled

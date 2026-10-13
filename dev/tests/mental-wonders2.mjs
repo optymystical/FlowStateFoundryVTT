@@ -123,10 +123,10 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   let uses = 0; const wardDialog = html => (/Spend 1 RP to negate/.test(html ?? "") ? (uses++ < 1 ? {} : null) : { net: 0 });
   wardOverride = wardDialog;
   await hitMiss("mental-destruction-nightmare:corrode", {}, 20, 2);
-  ok2(base > 10 * wmO && orc.system.conditions.stain === base - 10 * wmO, `Corrode through a Veil Ward: Stains ${base} → ${orc.system.conditions.stain} (the ${10 * wmO} negated damage is no Stain)`);
+  ok2(base > 4 * wmO && orc.system.conditions.stain === base - 4 * wmO, `Corrode through a Veil Ward: Stains ${base} → ${orc.system.conditions.stain} (the ${4 * wmO} negated damage is no Stain)`);
   reset(); uses = 0; wardOverride = wardDialog;
   await hitMiss("mental-destruction-nightmare:immolate", {}, 20, 2);
-  ok2(orc.system.conditions.ignite === baseIgnite - 10 * wmO, `…and Immolate's Ignite ${baseIgnite} → ${orc.system.conditions.ignite}`);
+  ok2(orc.system.conditions.ignite === baseIgnite - 4 * wmO, `…and Immolate's Ignite ${baseIgnite} → ${orc.system.conditions.ignite}`);
   await veilIcon.update({ "system.attuned": false }); wardOverride = null; dialog = () => ({ net: 0 });
 }
 // …and so do the Stains of an ordinary spell attack (Acid + Glob), which are worked out on the damage card.
@@ -144,7 +144,7 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   const veil2 = mkIcon(orc, "Veil", { form: "veil", attuned: true });
   let uses = 0; wardOverride = html => (/Spend 1 RP to negate/.test(html ?? "") ? (uses++ < 1 ? {} : null) : { net: 0 });
   const warded = await glob();
-  ok2(plain.stain > 10 * wmO && warded.stain === plain.stain - 10 * wmO && warded.lost === plain.lost - 10 * wmO, `Glob through a Veil Ward: Stains ${plain.stain} → ${warded.stain}, HP lost ${plain.lost} → ${warded.lost}`);
+  ok2(plain.stain > 4 * wmO && warded.stain === plain.stain - 4 * wmO && warded.lost === plain.lost - 4 * wmO, `Glob through a Veil Ward: Stains ${plain.stain} → ${warded.stain}, HP lost ${plain.lost} → ${warded.lost}`);
   ok2(uses === 2, `…and the Ward is asked once, not again when the damage lands (one use, one decline: ${uses} prompts)`);
   await veil2.update({ "system.attuned": false }); wardOverride = null; dialog = () => ({ net: 0 });
   // Anything else that takes damage off first (Dip here, like Brace and Shatter) shrinks the Stains too.
@@ -166,7 +166,7 @@ ok2(orc.system.conditions.stain === 432 - hp(orc) || orc.system.conditions.stain
   const veil3 = mkIcon(orc, "Veil", { form: "veil", attuned: true });
   uses = 0; wardOverride = html => (/Spend 1 RP to negate/.test(html ?? "") ? (uses++ < 1 ? {} : null) : { net: 0 });
   const fWard = await flare();
-  ok2(/Set 1/.test(fWard.card) && fWard.lost === fPlain.lost - 5 && fWard.ignite === fPlain.ignite - 5, `Flare through a Veil Ward: HP lost ${fPlain.lost} → ${fWard.lost}, Ignite ${fPlain.ignite} → ${fWard.ignite} (the Ward negated all of the first set's 5; asked per set, before the card)`);
+  ok2(/Set 1/.test(fWard.card) && fWard.lost === fPlain.lost - 4 && fWard.ignite === fPlain.ignite - 4, `Flare through a Veil Ward: HP lost ${fPlain.lost} → ${fWard.lost}, Ignite ${fPlain.ignite} → ${fWard.ignite} (the Veil negated 4 of the first set's 5; asked per set, before the card)`);
   await veil3.update({ "system.attuned": false }); wardOverride = null; dialog = () => ({ net: 0 });
   const fDip = await flare({ parrying: { dip: { style: "dip" } } });
   ok2(fPlain.lost > 0 && fDip.lost === 0 && /Set 1: Dip/.test(fDip.card), `Flare against a Dip: every set is reduced (HP lost ${fPlain.lost} → ${fDip.lost})`);

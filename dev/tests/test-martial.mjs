@@ -33,9 +33,9 @@ assert.deepEqual(m.armorPenalties("medium","grayIron"), {effectiveWeight:"heavy"
 assert.deepEqual(m.armorPenalties("heavy","graySteel"), {effectiveWeight:"titanic",stealthDis:Infinity,speedPct:100,moveAP:1});
 assert.deepEqual(m.armorPenalties("titanic","graySteel"), {effectiveWeight:"titanic",stealthDis:Infinity,speedPct:100,moveAP:2});
 assert.equal(m.armorPenalties("medium","graySteel").effectiveWeight,"titanic");
-// Soak: limit 48 steel vs physical; vs heat 1/10 -> 4; vs arcane 0; pierce reduces
+// Soak: limit 48 steel vs physical; vs heat 1/3 -> 16; vs arcane 0; pierce reduces
 assert.deepEqual(m.soak(100,"physical",a), {absorbed:48,toHp:52,durabilityLoss:48});
-assert.equal(m.soak(100,"heat",a).absorbed,4); assert.equal(m.soak(100,"arcane",a).absorbed,0);
+assert.equal(m.soak(100,"heat",a).absorbed,16); assert.equal(m.soak(100,"arcane",a).absorbed,0);
 assert.equal(m.soak(100,"physical",a,{pierce:10}).absorbed,38);
 assert.equal(m.soak(20,"physical",a).toHp,0);
 // Silver armor blocks supernatural fully, physical at 1/10

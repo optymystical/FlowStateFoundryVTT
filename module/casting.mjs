@@ -163,7 +163,7 @@ function previewHTML(plan, ctx) {
 }
 
 /** Read the dialog's form into the values planCast() expects. */
-export function valuesFromForm(form) {
+function valuesFromForm(form) {
   const v = {};
   for (const el of form.elements) {
     if (!el.name || el.disabled) continue;
@@ -266,7 +266,7 @@ async function castDialog(actor, ctx) {
 const stripHeader = spells.stripHeader;
 
 /** Cast card: the cost breakdown and the effect text for the GM to resolve (until the spell is automated). */
-export function castCardHTML(actor, plan) {
+function castCardHTML(actor, plan) {
   const names = plan.cores.map(c => c.name).join(" + ");
   const via = esc(plan.option.label);
   const parts = [`${plan.base}`, ...plan.applied.filter(a => a.threshold).map(a => `${esc(a.mod.name)} ${a.threshold}`)].join(" + ");

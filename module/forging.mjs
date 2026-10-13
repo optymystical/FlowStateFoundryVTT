@@ -96,7 +96,7 @@ async function deliver(caster, recipient, item, willing) {
 
 const nowSeconds = () => globalThis.game?.time?.worldTime ?? Date.now() / 1000;
 /** Rite: 2 hours for a Common archetypal item or a Powder/Liquid object, 8 hours for anything more (Uncommon and up, Soft and up). */
-export function riteHours(mode, v) {
+function riteHours(mode, v) {
   const order = ["common", "uncommon", "rare", "veryRare"];
   const rank = r => Math.max(0, order.indexOf(rarityKey(r ?? "common")));
   if (mode === `${ID}:fabricate`) return ["powder", "liquid"].includes(v.mat) ? 2 : 8;

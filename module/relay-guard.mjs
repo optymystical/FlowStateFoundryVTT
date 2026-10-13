@@ -6,14 +6,14 @@
  */
 
 /** Fields the system writes on a creature it doesn't own: health, the pools, conditions, and the system's own flags. */
-export const ACTOR_PATH = /^(system\.(hp\.(value|lost)|ap\.value|rp\.value|energy\.value|conditions\.[A-Za-z]+)|flags\.flowstate\.[\w.]+)$/;
+const ACTOR_PATH = /^(system\.(hp\.(value|lost)|ap\.value|rp\.value|energy\.value|conditions\.[A-Za-z]+)|flags\.flowstate\.[\w.]+)$/;
 /** ...on an item: Durability, a Carapace, where a Ward is placed, conditions on it, and the system's own flags. */
-export const ITEM_PATH = /^(system\.(wear|carapace|placedOn|conditions\.[A-Za-z]+)|flags\.flowstate\.[\w.]+)$/;
+const ITEM_PATH = /^(system\.(wear|carapace|placedOn|conditions\.[A-Za-z]+)|flags\.flowstate\.[\w.]+)$/;
 /** ...on an Active Effect the system made: its numbers, its name and its description. */
-export const EFFECT_PATH = /^(flags\.flowstate\.spellEffect\.[\w.]+|name|description)$/;
+const EFFECT_PATH = /^(flags\.flowstate\.spellEffect\.[\w.]+|name|description)$/;
 
 /** Statuses only the GM sets (Half / Full Stealth). */
-export const GM_ONLY = new Set(["halfStealth", "fullStealth"]);
+const GM_ONLY = new Set(["halfStealth", "fullStealth"]);
 
 const isObject = v => !!v && typeof v === "object" && !Array.isArray(v);
 const onlyPaths = (data, re) => isObject(data) && Object.keys(data).length > 0 && Object.keys(data).every(k => re.test(k));

@@ -524,10 +524,10 @@ export const CHARGES = {
 };
 const CHARGE_MODES = Object.fromEntries(Object.entries(CHARGES).map(([k, c]) => [`${c.wonder}:${k}`, k]));
 
-export const isCharge = modeId => modeId in CHARGE_MODES;
+const isCharge = modeId => modeId in CHARGE_MODES;
 
 /** Put a charge of this kind on a target (no attack roll). `free` = from Unbound or Ricochet. */
-export async function placeCharge({ caster, target, kind, power, bstacks = 0, enhanced, choices = {}, mode }) {
+async function placeCharge({ caster, target, kind, power, bstacks = 0, enhanced, choices = {}, mode }) {
   const orderPersist = CHARGES[kind].wonder === "mental-order-dream" && tier(caster, "mental-order-dream") >= 2
     && !spellEffects(target, "charge").some(e => e.flags.flowstate.spellEffect.caster === caster.uuid && e.flags.flowstate.spellEffect.persistent && CHARGES[e.flags.flowstate.spellEffect.charge]?.wonder === "mental-order-dream");
   const sign = choices.sign === "minus" ? "minus" : "plus", size = choices.size === "down" ? "down" : "up";
@@ -631,7 +631,7 @@ export async function balance(actor) {
 }
 
 /** After an Order/Chaos Manifest hits: Unbound (Chaos Tenet, on a crit) and Ricochet (Chaos T2) come as buttons. */
-export function chargeActs(c) {
+function chargeActs(c) {
   const a = c.attacker, acts = [];
   const w = R.wonderById(c.mode.wonder);
   const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0 };
@@ -642,7 +642,7 @@ export function chargeActs(c) {
 }
 
 /** Place a Chaos charge by Unbound or copy it by Ricochet. Returns true if it happened. */
-export async function runChargeAct(x, caster, target) {
+async function runChargeAct(x, caster, target) {
   if (x.id === "ricochet") {
     const cost = Math.floor(minOf(caster, "snap") / 2);
     const cTok = globalThis.canvas?.tokens?.placeables?.find(t => t.actor?.uuid === caster.uuid);

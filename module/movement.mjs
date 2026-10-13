@@ -10,7 +10,7 @@ import { planMove } from "./movement-rules.mjs";
 import { movementMode, movementTracked, moveParams, moveLedger, setMoveLedger } from "./actions.mjs";
 
 /** Feet a token update would move it: Foundry's own measure of the pending path when it has one, else the straight line on the grid. */
-export function movedFeet(token, changes, options = {}) {
+function movedFeet(token, changes, options = {}) {
   const pending = options?.movement?.[token.id]?.pending?.distance;
   if (Number.isFinite(pending) && pending > 0) return pending;
   const from = { x: token.x, y: token.y }, to = { x: changes.x ?? token.x, y: changes.y ?? token.y };
@@ -25,7 +25,7 @@ export function movedFeet(token, changes, options = {}) {
  * dragging a held creature) is marked; so is a teleport, and a move Foundry says came from a script or macro ("api"), the token's configuration, a paste
  * or an undo. Only a player dragging the token or using the keys is a creature moving.
  */
-export function isForcedMove(options, token) {
+function isForcedMove(options, token) {
   if (options?.flowstateThrow || options?.flowstateDrag || options?.flowstateNoCost || options?.teleport) return true;
   const method = options?.movement?.[token?.id]?.method;
   return method !== undefined && method !== "dragging" && method !== "keyboard";

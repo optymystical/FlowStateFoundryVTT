@@ -37,7 +37,7 @@ export function parseEnergyCost(text = "") {
 export const stripEnergyCost = (text = "") => String(text).replace(COST_RE, "").trim();
 
 /** Apply the multiplier; costs are whole numbers, rounded down. */
-export const scaleCost = (value, mult) => Math.floor(Math.max(0, value) * mult);
+const scaleCost = (value, mult) => Math.floor(Math.max(0, value) * mult);
 
 /**
  * The actor's cost for a parsed formula.

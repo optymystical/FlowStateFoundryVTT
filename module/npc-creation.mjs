@@ -109,7 +109,7 @@ export function validate(choice) {
 }
 
 /** The items an NPC starts with: Unarmed, every picked piece of gear (Affixes go onto their Foci or Shroud) and ammunition for ranged weapons. */
-export function npcItems(slots, choice = {}) {
+function npcItems(slots, choice = {}) {
   const readyWeapons = slots.filter(s => s.kind === "weapon" && s.ready !== false).length;
   const out = [{
     name: "Unarmed", type: "weapon", img: "icons/skills/melee/unarmed-punch-fist.webp",

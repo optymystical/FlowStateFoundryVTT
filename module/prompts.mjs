@@ -7,7 +7,7 @@ import { openPrompts, onPromptsChanged, cancelPrompt } from "./ask.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
-export class PromptsApp extends HandlebarsApplicationMixin(ApplicationV2) {
+class PromptsApp extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     id: "flowstate-prompts",
     classes: ["flowstate"],
@@ -41,7 +41,7 @@ export class PromptsApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
 let app = null;
 /** Open (or bring forward) the list. */
-export function showPrompts() {
+function showPrompts() {
   app ??= new PromptsApp();
   return app.render({ force: true });
 }

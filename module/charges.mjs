@@ -32,14 +32,14 @@ const upDown = d => (d?.size === "down" ? -1 : 1);
 /* -------------------------------------------- */
 
 /** Overwrite a roll's total (the dice stay as rolled; the card notes say what changed). */
-export function setRollTotal(r, n) {
+function setRollTotal(r, n) {
   try { r._total = n; } catch (err) { /* read-only */ }
   if (r.total !== n) Object.defineProperty(r, "total", { value: n, configurable: true });
   return r;
 }
 
 /** Charges sitting on a creature: [{ effect, d, caster uuid }]. */
-export const chargesOn = (actor, kinds = null) => spellEffects(actor, "charge")
+const chargesOn = (actor, kinds = null) => spellEffects(actor, "charge")
   .map(effect => ({ effect, d: effect.flags.flowstate.spellEffect })).filter(c => !kinds || kinds.includes(c.d.charge));
 
 const byCaster = list => { const m = new Map(); for (const c of list) { const k = c.d.caster; if (!m.has(k)) m.set(k, []); m.get(k).push(c); } return m; };

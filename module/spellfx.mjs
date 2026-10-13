@@ -5,7 +5,7 @@
  */
 
 /** Key for a cast's Core(s): one id, or two ids sorted and joined with "+". */
-export const profileKey = coreIds => [...coreIds].sort().join("+");
+const profileKey = coreIds => [...coreIds].sort().join("+");
 
 const G = "magic-gravity:force", SL = "magic-slashing:cut", PI = "magic-piercing:stab", CR = "magic-crushing:slam", SH = "magic-protection-arcana:shield";
 
@@ -174,7 +174,7 @@ for (const core of T123) {
   PROFILES[profileKey([core, MR])] = { name: `${short} + Mirage`, arcana: { kind: "mirage", power: 10, chart: core } };
 }
 /** The Arcanomancy version of a profile: all its damage is Arcane. */
-export function arcanize(profile) {
+function arcanize(profile) {
   const p = structuredClone(profile);
   p.name = `${profile.name} + Strike`;
   p.arcano = true;
@@ -366,7 +366,7 @@ export const AUTOMATED_MODS = new Set([
 ]);
 
 /** Gravity's Replacement Mods: when one replaces the base effect, Force (the Gravity part of the spell) is dropped. */
-export const GRAVITY_REPLACEMENTS = ["burden", "lighten", "personal repulsion", "personal well", "hold"];
+const GRAVITY_REPLACEMENTS = ["burden", "lighten", "personal repulsion", "personal well", "hold"];
 /** The spell's profile after Replacement Mods: a replaced Force is gone (its Combo partner's part stays). */
 export function applyReplacements(profile, replaced = {}) {
   if (!profile) return profile;
@@ -410,7 +410,7 @@ export function amountSpec(spec, dealt, power, roll = (n, sides) => n * (sides +
 }
 
 /** Flare (Heat T4): n dice of d`sides` become `sides ÷ 4` separate sets of n d4 (so 2d12 → three 2d4s). */
-export function flareSets(n, sides) {
+function flareSets(n, sides) {
   return { sets: Math.max(1, Math.floor(sides / 4)), dice: Math.max(1, n) };
 }
 

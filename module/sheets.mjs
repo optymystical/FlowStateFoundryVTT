@@ -27,7 +27,7 @@ import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
 
 /** What an actor's Energy costs are computed from: stats, Skill Points, and held weapons. */
-export function energyContext(actor) {
+function energyContext(actor) {
   const sys = actor.system;
   const weapons = actor.items.filter(i => i.type === "weapon" && i.system.held && i.system.profile?.valid && !i.system.broken)
     .map(i => ({ name: i.name, capped: i.system.profile.capped, unarmed: !!i.system.profile.unarmed }));
@@ -109,7 +109,7 @@ function weaponTreeNote(tree, state) {
 }
 
 /** A tree entry with its Energy cost pulled out into a badge (formula + this actor's value). */
-export function withEnergy(entry, ctx) {
+function withEnergy(entry, ctx) {
   const cost = parseEnergyCost(entry.text);
   if (!cost) return entry;
   return { ...entry, text: stripEnergyCost(entry.text),

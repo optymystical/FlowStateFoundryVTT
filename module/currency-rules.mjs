@@ -40,7 +40,7 @@ export function sanitizeCurrencies(raw, count = null) {
 }
 
 /** Whole, non-negative amounts for each currency (anything else is 0). */
-export function cleanAmounts(defs, amounts) {
+function cleanAmounts(defs, amounts) {
   return Object.fromEntries(defs.map(c => [c.id, Math.max(0, Math.floor(Number(amounts?.[c.id]) || 0))]));
 }
 

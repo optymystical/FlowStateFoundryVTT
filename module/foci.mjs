@@ -122,7 +122,7 @@ export function castNotes(fx, plan) {
 const shuffle = list => { const a = [...list]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 /** The attuned, working Deck Foci, if any. */
 export const deckFoci = actor => Array.from(actor.items ?? []).find(i => i.type === "foci" && i.system.attuned && !i.system.broken && i.system.profile?.deck) ?? null;
-export const deckOf = actor => actor.getFlag?.("flowstate", "deck") ?? null;
+const deckOf = actor => actor.getFlag?.("flowstate", "deck") ?? null;
 export const handOf = actor => deckOf(actor)?.hand ?? [];
 
 /** Three copies of every Core Spell you know. */

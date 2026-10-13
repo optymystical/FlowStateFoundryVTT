@@ -379,7 +379,7 @@ export function listSpells() {
   }
   return out;
 }
-export const findSpell = id => listSpells().find(x => x.id === id) ?? null;
+const findSpell = id => listSpells().find(x => x.id === id) ?? null;
 
 /** Damage a Spell; it's destroyed at 0. Returns { destroyed, left }. */
 async function damageSpell(entry, amount) {

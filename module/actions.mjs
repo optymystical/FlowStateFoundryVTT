@@ -135,7 +135,7 @@ const attackStanceNet = actor => (psyched(actor) ? 1 : 0) - (calmed(actor) ? 1 :
 const spellStealthImmune = (opts, target) => opts?.stealth === "half" && !opts.statusStealth && !!(opts.spell || opts.magicStealth) && ab.treeTier(target, "magic-grasp-arcana") >= 4;
 
 /** The GM-set Half Stealth / Full Stealth statuses: a token with one attacks from that stealth value, on top of whatever its own attack already gives. */
-export const STEALTH_STATUSES = { halfStealth: "half", fullStealth: "full" };
+const STEALTH_STATUSES = { halfStealth: "half", fullStealth: "full" };
 export const GM_ONLY_STATUSES = new Set(Object.keys(STEALTH_STATUSES));
 /**
  * `opts` with the attacker's stealth status applied. Stealth values don't stack: Full beats Half, and Half from the status and Half from the attack itself
@@ -197,7 +197,7 @@ async function consumeDisrupt(actor) {
 export const momentumOf = (target, attacker) => target?.getFlag?.("flowstate", `momentum.${attacker.id}`) ?? { adv: 0, str: 0 };
 
 /** Does this creature suffer any movement penalty (In a Barrel, Longshot T4)? */
-export function movementPenalized(actor) {
+function movementPenalized(actor) {
   const st = actor?.statuses ?? new Set();
   return st.has("prone") || st.has("crouch") || st.has("grappled") || st.has("fishy") || !!actor?.getFlag?.("flowstate", "lockedDown")
     || (actor?.system?.conditions?.slow ?? 0) > 0 || (actor?.system?.movement?.ap ?? 1) > 1;
@@ -221,7 +221,7 @@ function stackLabel(net) {
 }
 
 /** Damage line showing base → final so the Strengthened/Weakened math is visible. */
-export function damageLine(totals, net, type, shots) {
+function damageLine(totals, net, type, shots) {
   const base = totals.reduce((a, b) => a + b, 0);
   const final = totals.reduce((sum, v) => sum + applyStacks(v, net), 0);
   return { final, html: `<div class="fs-result">Damage: ${net ? `${base} → <strong>${final}</strong>` : `<strong>${final}</strong>`} ${DAMAGE_TYPES[type]}${shots > 1 ? ` (${shots} shots)` : ""}</div>
@@ -1508,7 +1508,7 @@ export async function performAttack(actor, opts) {
 }
 
 /** The Non-Archetypal object a pile is (its first gear item with a Body), or null. */
-export const objectOf = actor => (actor?.type === "pile" ? (actor.items?.find?.(i => i.type === "gear" && i.system?.body > 0) ?? null) : null);
+const objectOf = actor => (actor?.type === "pile" ? (actor.items?.find?.(i => i.type === "gear" && i.system?.body > 0) ?? null) : null);
 
 /**
  * Attacking an object (Rules, Ch8/Ch10): it automatically hits, the attack roll only decides a crit (at or above its Body, or Grade × 10 without one),
@@ -1839,7 +1839,7 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
   await post(owner, { title: `${esc(owner.name)} — Adjust`, body: `<div class="fs-result">${esc(owner.name)}'s Shield extends over ${esc(entry.name)} for this attack.</div>`,
     flags: { flowstate: { adjustFor: { attackMessage: message.id, index, effect: eff.uuid, owner: owner.uuid } } } });
 }
-export function findAdjust(attackMessageId, index) {
+function findAdjust(attackMessageId, index) {
   return game.messages.filter(m => { const f = m.getFlag("flowstate", "adjustFor"); return f?.attackMessage === attackMessageId && f.index === index; })
     .map(m => m.getFlag("flowstate", "adjustFor").effect);
 }
@@ -1871,7 +1871,7 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
 }
 
 /** The shield guarding this creature from a Shield Toss (Defender T2, "Block for the target"), if it's still usable. */
-export function shieldGuardItem(target) {
+function shieldGuardItem(target) {
   const sg = target?.getFlag?.("flowstate", "shieldGuard");
   if (!sg?.item) return null;
   const sh = syncUuid(sg.item);
@@ -2037,7 +2037,7 @@ export async function clearParries(actor) {
  * What protects `target` from one incoming attack: parrying and Blocking weapons (soak), Brace/Dip reductions, Weakened from
  * Slip Off and Harden, and Shatter. Overshield Strike ignores all of it. Perfect Parry/Block failures drop that weapon.
  */
-export function guardFor(target, o, attackMessageId = null, index = 0) {
+function guardFor(target, o, attackMessageId = null, index = 0) {
   const g = { items: [], riposteItems: [], reductions: [], weaken: [], shatter: false, dip: 0, brace: false, any: false };
   if (o?.overshield || !(o?.melee || !o?.area)) return g;
   const failed = new Set(attackMessageId ? findPerfectFails(attackMessageId, index) : []);
@@ -4260,7 +4260,7 @@ function breathingFree(actor, key, info) {
 async function useBreathing(actor, key) { if (roundKey()) await actor.setFlag("flowstate", `breathing.${key}`, roundKey()); }
 
 /** Why Dash can't be used now ("" if it can). */
-export function dashBlocked(actor) {
+function dashBlocked(actor) {
   const info = ab.dashInfo(actor);
   if (!info) return "Needs Dash (Light Armor T2 in Light armor, or Unarmored T1 with no armor).";
   return "";
@@ -4348,7 +4348,7 @@ async function closeQuarters(message, index, target, entry) {
  * Did the first attack in a chain land? true / false, "pending" while any target hasn't responded,
  * or null when it can't be known (an untargeted attack).
  */
-export function firstHitLanded(sourceMessageId) {
+function firstHitLanded(sourceMessageId) {
   const msg = sourceMessageId ? game.messages.get(sourceMessageId) : null;
   const attack = msg?.getFlag("flowstate", "attack");
   if (!attack) return null;
@@ -4371,7 +4371,7 @@ export function findRiposteDeclined(defenseMessageId) {
  * Is this attack card's exchange fully resolved? Every target has responded, every hit that deals damage has
  * rolled it, and every successful Parry has been answered (Riposte resolved, or passed).
  */
-export function exchangeDone(message, depth = 0) {
+function exchangeDone(message, depth = 0) {
   const attack = message?.getFlag("flowstate", "attack");
   if (!attack) return true;
   if (depth > 10) return true;
@@ -5213,14 +5213,14 @@ export function ammoRequired() {
 export const AMMO_MAX = 100;
 export const ammoLabel = type => `${WEAPON_TYPES[type]?.label ?? "matching"} ammunition`;
 /** Ammunition items this actor carries for a ranged weapon type. */
-export const ammoStacks = (actor, type) => (actor?.items ?? []).filter(i => i.type === "gear" && type && i.system.ammoType === type);
+const ammoStacks = (actor, type) => (actor?.items ?? []).filter(i => i.type === "gear" && type && i.system.ammoType === type);
 export const ammoCount = (actor, type) => ammoStacks(actor, type).reduce((n, i) => n + (i.system.quantity ?? 0), 0);
 
 /**
  * Reload a ranged weapon up to its magazine (X shots per reload), using only the ammunition of its type needed to fill it
  * (or what's left), so a partly loaded weapon takes less. It can be done any time. Returns the shots loaded (0 = nothing to load).
  */
-export async function loadWeapon(actor, item) {
+async function loadWeapon(actor, item) {
   const w = item.system;
   const need = Math.max(0, (w.magazine ?? 1) - (w.rounds ?? 0));
   if (!need) return 0;
@@ -5520,7 +5520,7 @@ export async function spendEnergy(actor, cost, what = "that") {
 }
 
 /** Give Energy back (in combat), up to the maximum. */
-export async function refundEnergy(actor, amount) {
+async function refundEnergy(actor, amount) {
   if (!amount || !inActiveCombat(actor)) return;
   const e = actor.system.energy;
   await actor.update({ "system.energy.value": Math.min(e.max, e.value + amount) });
@@ -5899,7 +5899,7 @@ export async function endOfTurn(actor) {
 /* -------------------------------------------- */
 
 /** Damage source type for Diamond / Colored Diamond: the weapon type, else the damage type. */
-export function sourceOf(o) {
+function sourceOf(o) {
   if (o?.attackType && WEAPON_TYPES[o.attackType]) return `weapon:${o.attackType}`;
   const item = o?.itemUuid ? syncUuid(o.itemUuid) : null;
   if (item?.type === "weapon") return `weapon:${item.system.weaponType}`;
@@ -5907,7 +5907,7 @@ export function sourceOf(o) {
 }
 
 /** Shrouds protecting this creature: its own melded one (a Ward only protects where it's placed), Wards/Bonds placed on it, Quartz extensions. */
-export function shroudsFor(actor, extra = []) {
+function shroudsFor(actor, extra = []) {
   const out = [];
   const own = actor?.system?.shroud;
   if (own && own.system.shroudType !== "ward") out.push(own);
@@ -5927,7 +5927,7 @@ const hasAffix = (sh, k) => !!sh?.system?.profile?.affixes?.includes(k);
  * One Shroud's soak (no changes made; returns the update to apply).
  * Order: Agate/Jasper/Obsidian negation → Diamond/Alexandrite/Colored Diamond Weakened → Limit (Cleave first, then damage).
  */
-export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null, halfLimit = false }) {
+function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null, halfLimit = false }) {
   const P = sh.system.profile;
   const lines = [];
   const update = {};
@@ -6008,7 +6008,7 @@ export function musgraviteNegate(actor) {
 }
 
 /** Within this creature's personal melee range? (Unknown positions count as yes.) */
-export function inPersonalMelee(actor, other) {
+function inPersonalMelee(actor, other) {
   const a = attackerToken(actor), b = attackerToken(other);
   if (!a || !b || !globalThis.canvas?.grid) return true;
   return tokenDistance(a, b) <= (actor.system.derived?.size?.melee ?? 5);
@@ -6101,7 +6101,7 @@ export async function shroudTurnStart(actor) {
 /* ---- Shroud reactions: Quartz (extend to an ally), Retort, Riposte / Ruby / Sapphire ---- */
 
 /** Creatures that could extend a Quartz Shroud over this target (the target is within their personal melee range). */
-export function quartzGuards(attacker, target) {
+function quartzGuards(attacker, target) {
   const out = [];
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
@@ -6151,7 +6151,7 @@ export const findRetort = defenseMessageId => game.messages.find(m => m.getFlag(
  * After the Shroud takes damage from an attacker: Riposte Shroud (1 RP, ranged attack for the damage it took),
  * Ruby / Sapphire (free melee attack in your melee range: Ignite / Slow stacks equal to the damage it took).
  */
-export function shroudCounterRows(target, attacker, outcome) {
+function shroudCounterRows(target, attacker, outcome) {
   const sh = target.system?.shroud;
   const took = (outcome.shrouds ?? []).find(x => x.item === sh)?.absorbed ?? 0;
   if (!sh || !took || !attacker) return "";

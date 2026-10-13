@@ -6,7 +6,7 @@
  */
 
 /** A reaction: `key` (what askFor carries as `react`), a label and tip for the Action List, and when the character can be asked it. */
-export const REACTIONS = [
+const REACTIONS = [
   { key: "ward", label: "Ward negation", tip: "Whether to spend 1 RP to negate incoming damage with your Icon's Ward.", when: c => c.iconKind === "negate" },
   { key: "premonition", label: "Premonition charge", tip: "Whether to consume a Premonition charge to negate incoming damage.", when: c => c.iconKind === "charge" || c.hasPremonition },
   { key: "tenet", label: "Tenet on a Manifest hit", tip: "Verdant Soul, Mortal Coil, Weight and Gust: offered when your Manifest hits.", when: c => ["verdant-soul", "mortal-coil", "weight", "gust"].includes(c.tenet) },

@@ -8,7 +8,7 @@ import { gravityForce, fallFeet, liftBand, forceDamage, TERMINAL_ROUNDS } from "
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const DialogV2 = () => foundry.applications.api.DialogV2;
-export const gravityG = () => { try { return Number(game.settings.get("flowstate", "gravity")); } catch (err) { return 1; } };
+const gravityG = () => { try { return Number(game.settings.get("flowstate", "gravity")); } catch (err) { return 1; } };
 
 export const isFalling = actor => !!actor?.statuses?.has("falling");
 const lift = actor => Math.max(0, actor?.system?.lift ?? 0);

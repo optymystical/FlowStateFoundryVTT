@@ -36,7 +36,7 @@ const mind = actor => eff(actor, "pon") + eff(actor, "snap") + eff(actor, "will"
 /*  Alignment                                   */
 /* -------------------------------------------- */
 
-export const alignmentOf = actor => R.alignmentState(actor?.getFlag?.("flowstate", "alignment"));
+const alignmentOf = actor => R.alignmentState(actor?.getFlag?.("flowstate", "alignment"));
 const setAlignment = (actor, state) => {
   const st = R.alignmentState(state);
   return setActorFlag(actor, "alignment", st.level || st.equilibrium ? st : null);
@@ -137,7 +137,7 @@ const choicesHTML = (actor, modeId, v) => modeChoices(actor, modeId).map(c => c.
   ? `<div class="fs-field"><label>${esc(c.label)}</label><input type="number" name="choice:${c.name}" value="${Number(v[`choice:${c.name}`]) || 0}" min="0" step="1"></div>`
   : `<div class="fs-field"><label>${esc(c.label)}</label><select name="choice:${c.name}">${Object.entries(c.options).map(([k, l]) => `<option value="${k}" ${v[`choice:${c.name}`] === k ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></div>`).join("");
 
-export function manifestPlan(actor, ctx, v, { free = false } = {}) {
+function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const wobs = ctx.wobs ?? null;
   const mode = R.modeById(v.mode);
   const wonder = mode ? R.wonderById(mode.wonder) : null;

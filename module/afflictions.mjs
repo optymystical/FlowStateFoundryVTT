@@ -283,7 +283,7 @@ async function forceRoll(caster, target, fd) {
 /*  Hex                                         */
 /* -------------------------------------------- */
 
-export const hexBase = (caster, power, ritualOf) => ({ caster, power, ritualOf: ritualOf ?? null, ritual: !!ritualOf, hid: foundry.utils.randomID?.() ?? String(Math.random()).slice(2) });
+const hexBase = (caster, power, ritualOf) => ({ caster, power, ritualOf: ritualOf ?? null, ritual: !!ritualOf, hid: foundry.utils.randomID?.() ?? String(Math.random()).slice(2) });
 
 export function hexData(a, sp, base, ch, profile, extra = {}) {
   const m = sp.mods ?? {}, p = base.power, hx = ch.hex ?? {};

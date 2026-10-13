@@ -82,7 +82,7 @@ const records = new Map();
 const listeners = new Set();
 const changed = () => { for (const fn of listeners) { try { fn(); } catch (err) { console.error(err); } } };
 /** How long before a waiting question opens the GM's list by itself. */
-export const STUCK_MS = 30000;
+const STUCK_MS = 30000;
 export const openPrompts = () => [...records.values()].sort((a, b) => a.startedAt - b.startedAt);
 export function onPromptsChanged(fn) { listeners.add(fn); return () => listeners.delete(fn); }
 function track(record) {

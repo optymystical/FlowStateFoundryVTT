@@ -29,7 +29,7 @@ const relayQueue = makeQueue();                 // GM relay: one request at a ti
 /* -------------------------------------------- */
 
 /** Grid squares a token of this creature Size takes (Size 3 = 1). */
-export const tokenSquares = size => ({ 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 }[Math.round(size || 3)] ?? 1);
+const tokenSquares = size => ({ 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 }[Math.round(size || 3)] ?? 1);
 
 class FlowStateActor extends Actor {
   /** New actors start at full HP and Energy. */
@@ -899,7 +899,7 @@ Hooks.once("ready", () => {
  * through a token's synthetic actor, which isn't always the same object the open sheet holds.
  */
 const pendingRefresh = new Map();
-export function refreshActorSheets(actor) {
+function refreshActorSheets(actor) {
   const uuid = actor?.uuid;
   if (!uuid || pendingRefresh.has(uuid)) return;
   pendingRefresh.set(uuid, setTimeout(() => {
@@ -916,7 +916,7 @@ export function refreshActorSheets(actor) {
 
 /** Re-render every open actor sheet (for changes that affect other actors' Action Lists, like combat turns). */
 let pendingAll = null;
-export function refreshAllActorSheets() {
+function refreshAllActorSheets() {
   if (pendingAll) return;
   pendingAll = setTimeout(() => {
     pendingAll = null;
@@ -1226,22 +1226,22 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 const changed = (changes, key) => (key in changes ? changes[key] : foundry.utils.getProperty(changes, key));
 
 /** Item types that are held in hands (Foci count as held items too). */
-export const HELD_TYPES = new Set(["weapon", "foci"]);
+const HELD_TYPES = new Set(["weapon", "foci"]);
 
 /** Hands a weapon occupies. Unarmed takes one hand per raised fist; other weapons 1, or 2 if two-handed. */
-export function handsFor(data) {
+function handsFor(data) {
   if (data.weaponType === "unarmed") return (data.equipped ? 1 : 0) + (data.secondHand ? 1 : 0);
   if (!data.equipped) return 0;
   return data.twoHanded ? 2 : 1;
 }
 
 /** Hands occupied by held weapons, optionally ignoring one item. */
-export function handsUsed(actor, excludeId = null) {
+function handsUsed(actor, excludeId = null) {
   return actor.items.reduce((n, i) => (HELD_TYPES.has(i.type) && i.id !== excludeId ? n + handsFor(i.system) : n), 0);
 }
 
 /** Default Unarmed weapon every actor starts with (both fists up). */
-export const UNARMED_ITEM = {
+const UNARMED_ITEM = {
   name: "Unarmed",
   type: "weapon",
   img: "icons/skills/melee/unarmed-punch-fist.webp",

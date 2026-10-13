@@ -3,7 +3,7 @@ import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, fociProfile, shroudProfile, affixMultOf, affixSpeedPct } from "./magic.mjs";
 import { penalizedDie } from "./spellfx.mjs";
-import { FORMS, iconProfile, alignmentSpeedPct } from "./mental-rules.mjs";
+import { FORMS, iconProfile, alignmentSpeedPct, alignmentApLoss } from "./mental-rules.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
@@ -101,7 +101,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).
     this.ritualLoss = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.ritual?.energyLost) || 0), 0);
     this.energy.max = Math.max(0, d.energyMax - this.ritualLoss);
-    this.ap.max = sm?.ap ?? 6;
+    // Deepening (Mental T3): Alignment past 2 costs 1 AP a turn per point.
+    this.ap.max = Math.max(0, (sm?.ap ?? 6) - alignmentApLoss(this.parent?.getFlag?.("flowstate", "alignment")));
     this.rp.max = sm?.rp ?? 6;
 
     // Martial equipment scales off this actor's effective stats.

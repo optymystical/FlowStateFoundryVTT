@@ -1983,6 +1983,7 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
   const dc = await mentalHook?.rollCharges?.({ actor: target, type: "dodge", roll: dodge, die: dieNow, count: 2, net: net2, max: 2 * dieNow, label: o.label });
   if (dc) { chargeRolls.push(...dc.rolls); chargeNotes.push(...dc.notes); }
   let result = resolveAttack(entry.total, dodge.total);
+  if ((o.mental?.ward?.autoHit || o.mental?.autoHit) && !result.hit) result = { ...result, hit: true, outcome: "Hit" };       // Alignment 4: a Ward hits regardless; the roll only decides a crit
   const attackerActor = await fromUuid(attack.attacker);
   const atkBox = { total: entry.total };
   const ar = await mentalHook?.resolveCharges?.({ attacker: attackerActor, target, atk: atkBox, dodge, result, attackDie: entry.die, o });

@@ -673,13 +673,13 @@ function actionGroups(actor, weapons, stats) {
   if (mctx.wonders.length) {
     mentalRows.push({ label: "Manifest", detail: `${mctx.wonders.map(w => w.name).join(", ")} · ${mentalRules.alignmentLabel(mctx.alignment)} Alignment · Range sets the AP (Melee 1, Ranged 2, Area 3)`, cost: "1–3 AP", action: "manifest", icon: "fa-solid fa-eye" });
   }
-  // Alignment is set with a 1 hour activity (any Mental user); Fluidity (T3) and Equilibrium (T4) change it in the moment.
+  // Alignment is set with a 1 hour activity (any Mental user); Fluidity (T3) swaps its type in the moment.
   if (mTheory >= 1 || mctx.wonders.length) {
     const cur = mctx.alignment;
-    mentalRows.push({ label: "Set Alignment", detail: `Now ${mentalRules.alignmentLabel(cur)}. ${mentalRules.alignmentBlurb(cur)} Set Dream or Nightmare, 1 to 4 points (20% speed each), as a 1 hour activity.`, cost: "1 hour (not in combat)", action: "alignSet", icon: "fa-solid fa-circle-half-stroke" });
-    if (mTheory >= 3 && !cur.equilibrium && (cur.level > 0 || mTheory >= 4)) {
+    mentalRows.push({ label: "Set Alignment", detail: `Now ${mentalRules.alignmentLabel(cur)}. ${mentalRules.alignmentBlurb(cur)} Set Dream or Nightmare, 1 to ${mentalRules.maxAlignment(mTheory)} points (20% speed each${mTheory >= 3 ? ", 1 AP a turn past 2" : ""}), as a 1 hour activity.`, cost: "1 hour (not in combat)", action: "alignSet", icon: "fa-solid fa-circle-half-stroke" });
+    if (mTheory >= 3 && cur.level > 0) {
       const fc = mentalRules.fluidityCost(cur, sys.skillPoints ?? 0);
-      mentalRows.push({ label: mTheory >= 4 ? "Fluidity / Equilibrium" : "Fluidity", detail: `Swap ${cur.kind === "dream" ? "Dream to Nightmare" : "Nightmare to Dream"}${mTheory >= 4 ? ", or enter -1 Alignment until your next turn" : ""}`, cost: `⚡ ${fc}`, action: "fluidity", icon: "fa-solid fa-shuffle" });
+      mentalRows.push({ label: "Fluidity", detail: `Swap ${cur.kind === "dream" ? "Dream to Nightmare" : "Nightmare to Dream"}`, cost: `⚡ ${fc}`, action: "fluidity", icon: "fa-solid fa-shuffle" });
     }
   }
   const icons = actor.items.filter(i => i.type === "icon" && i.system.profile?.valid);

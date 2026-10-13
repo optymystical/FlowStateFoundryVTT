@@ -95,8 +95,7 @@ ok2(plain.system.profile.doubled === null && M.affixMultOf(plain.system.profile,
 console.log("== Alignment");
 const mind = mkActor("Mind"); mind.flags.flowstate = { alignment: { kind: "nightmare", level: 3 } };
 ok2(speed(mind) === 20 && mind.system.movement.speedLoss.alignment === 60, "3 Alignment costs 60% speed");
-mind.flags.flowstate.alignment.equilibrium = true;
-ok2(speed(mind) === 50, "Equilibrium has no speed penalty");
+
 const all = mkActor("All"); all.flags.flowstate = { alignment: { kind: "dream", level: 4 } }; armor(all, "titanic");
 ok2(speed(all) === 5, "Armor 80% + Alignment 80% is capped by the 5 ft minimum");
 

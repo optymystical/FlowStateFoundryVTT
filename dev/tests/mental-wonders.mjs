@@ -130,27 +130,14 @@ reset(); await hit("mental-below-nightmare:sink");
 ok2(effs(orc, "hold")[0]?.flags.flowstate.spellEffect.holdMin === 12, "…a critical Sink: the escape check 6 → 12");
 dodgeRoll = 12;
 
-console.log("== Alignment 2 scales the bolded effects of Modes");
+console.log("== Alignment shapes the Ward, not Modes");
 const setAlign = (kind, level) => { hero.flags.flowstate = { ...(hero.flags.flowstate ?? {}), alignment: kind ? { kind, level } : null }; };
-reset(); setAlign("dream", 1);
-await hit("mental-life-dream:bloom");
-ok2(effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === 60, "1 Alignment: no scaling yet (Bloom still 60 temp HP)");
 reset(); setAlign("dream", 2);
 await hit("mental-life-dream:bloom");
-ok2(effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === 90, "2 Dream Alignment: a Dream Mode's bolded effect is Strengthened (Bloom 60 → 90 temp HP)");
-reset(); setAlign("dream", 2);
-await hit("mental-beyond-dream:ascend");
-ok2(effs(orc, "lift")[0]?.flags.flowstate.spellEffect.liftUp === 270, "…Ascend's 180 Lift becomes 270");
-reset(); setAlign("dream", 2);
-await hit("mental-death-nightmare:waste");
-ok2(effs(orc, "waste")[0] && Math.floor(6 * 0.5) === 3 && effs(orc, "waste")[0].flags.flowstate.spellEffect.bstacks === -1, "A Nightmare Mode under Dream 2 is Weakened (Waste carries the Weakened stack)");
-{ const w = W.dodgeWaste(orc); ok2(w?.pen === 3, "…and takes 3 die sizes off instead of 6"); }
+ok2(effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === 60, "2 Dream Alignment: a Dream Mode's bolded effect is not scaled (Bloom still 60 temp HP)");
 reset(); setAlign("dream", 2);
 await hit("mental-below-nightmare:sink");
-{ const hold = effs(orc, "hold")[0]; ok2(hold?.flags.flowstate.spellEffect.holdMin === 3, "…Sink's escape check is 3 instead of 6"); }
-reset(); setAlign("nightmare", 2);
-await hit("mental-below-nightmare:sink");
-{ const hold = effs(orc, "hold")[0]; ok2(hold?.flags.flowstate.spellEffect.holdMin === 9, "2 Nightmare Alignment: Sink is Strengthened (6 → 9)"); }
+{ const hold = effs(orc, "hold")[0]; ok2(hold?.flags.flowstate.spellEffect.holdMin === 6, "…nor is a Nightmare Mode weakened (Sink's escape check stays 6)"); }
 setAlign(null);
 reset();
 
@@ -233,7 +220,7 @@ reset();
 seq = [12]; target(orc); refresh();
 await M.manifest(hero, { mode: "mental-death-nightmare:wither", range: "ranged" });
 seq = [2, 55]; await actions.defend(lastAtk(), 0, "dodge");
-ok2(orc.system.hp.value === 432 - 110 && /Wither removes 110/.test(text(messages.filter(m => m.flags?.flowstate?.defense).at(-1))), "Wither removes 2d10 × Power health (doubled by the critical), ignoring defenses");
+ok2(orc.system.hp.value === 432 - 110 && /Wither removes 110/.test(text(messages.filter(m => m.flags?.flowstate?.defense).at(-1))), "Wither removes 1d12 × Power health (doubled by the critical), ignoring defenses");
 reset(); orc.system.magical = true;
 seq = [20]; await M.manifest(hero, { mode: "mental-death-nightmare:wither", range: "ranged" }); seq = [2, 55]; await actions.defend(lastAtk(), 0, "dodge");
 ok2(orc.system.hp.value === 432, "Wither needs a living target");

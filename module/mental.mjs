@@ -19,7 +19,7 @@ import * as ab from "./abilities.mjs";
 import * as areas from "./areas.mjs";
 import * as R from "./mental-rules.mjs";
 import { tierOf } from "./skills.mjs";
-import { DAMAGE_CATEGORY, WEAPON_TYPES } from "./martial.mjs";
+import { damageCategories, WEAPON_TYPES } from "./martial.mjs";
 import { poolFormula, resolveAttack, DAMAGE_TYPES, applyStacks } from "./rules.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
@@ -39,7 +39,7 @@ const mind = actor => eff(actor, "pon") + eff(actor, "snap") + eff(actor, "will"
 const alignmentOf = actor => R.alignmentState(actor?.getFlag?.("flowstate", "alignment"));
 const setAlignment = (actor, state) => {
   const st = R.alignmentState(state);
-  return setActorFlag(actor, "alignment", st.level || st.equilibrium ? st : null);
+  return setActorFlag(actor, "alignment", st.level ? st : null);
 };
 
 /** Pay AP / RP / energy together, checking all of it first so nothing is half spent. Returns false (with a warning) if the actor can't afford it. */
@@ -70,42 +70,31 @@ export async function pay(actor, { ap = 0, rp = 0, energy = 0 }, what) {
 export async function setAlignmentActivity(actor) {
   if (inActiveCombat(actor)) return ui.notifications.warn("Changing your Alignment takes a 1 hour activity, so it can't be done in combat.");
   const cur = alignmentOf(actor);
+  const maxDepth = R.maxAlignment(theory(actor));
   const out = await DialogV2().prompt({
     window: { title: `Alignment: ${actor.name}` },
     content: `<div class="fs-cast"><p class="hint">A 1 hour activity. Each point of Alignment lowers your speed by ${R.ALIGN_SPEED_PCT}%.</p>
       <div class="fs-field"><label>Alignment</label><select name="kind">${Object.entries(R.ALIGNMENTS).map(([k, l]) => `<option value="${k}" ${cur.kind === k ? "selected" : ""}>${l}</option>`).join("")}</select></div>
-      <div class="fs-field"><label>How far (1 to ${R.MAX_ALIGNMENT})</label><input type="number" name="level" min="0" max="${R.MAX_ALIGNMENT}" step="1" value="${cur.level || 1}"></div>
-      <p class="hint">1: Advantage for your type, Disadvantage for the other. 2: Strengthened/Weakened bolded effects. 3: your Tenet triggers twice per round. 4: your Icon's Ward has Advantage and Strengthened.</p></div>`,
+      <div class="fs-field"><label>How far (1 to ${maxDepth}${maxDepth < R.MAX_ALIGNMENT ? "; Deepening, Mental Tier 3, unlocks 3 and 4" : ""})</label><input type="number" name="level" min="0" max="${maxDepth}" step="1" value="${Math.min(maxDepth, cur.level || 1)}"></div>
+      <p class="hint">1: your Form's Ward has Advantage on its attack rolls. 2: its bolded effect is Strengthened. 3 (Deepening): Ward attacks come from half stealth, 1 AP less each turn. 4 (Deepening): the Ward hits regardless of the roll, 2 AP less each turn.</p></div>`,
     ok: { label: "Set", callback: (event, button) => formValues(button.form) }, rejectClose: false });
   if (!out) return;
-  const st = R.alignmentState({ kind: out.kind, level: Number(out.level) });
+  const st = R.alignmentState({ kind: out.kind, level: Math.min(maxDepth, Number(out.level)) });
   await setAlignment(actor, st);
   await post(actor, { title: `${esc(actor.name)} — Alignment`, body: `<div class="fs-result">${esc(actor.name)} sets their Alignment to <strong>${esc(R.alignmentLabel(st))}</strong>. ${esc(R.alignmentBlurb(st))}</div>` });
 }
 
-/**
- * Fluidity (Mental T3): swap your Alignment between Dream and Nightmare for energy equal to half your Skill Points times your current Alignment number.
- * With Equilibrium (T4) the same swap can instead drop you into -1 Alignment until the start of your next turn, when you return to what you were.
- */
+/** Fluidity (Mental T3): swap your Alignment between Dream and Nightmare for energy equal to half your Skill Points times your current Alignment number. */
 export async function fluidity(actor) {
   if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
   if (theory(actor) < 3) return ui.notifications.warn("Fluidity is a Mental Theory Tier 3 ability.");
   const cur = alignmentOf(actor);
-  if (cur.equilibrium) return ui.notifications.info(`${actor.name} is in Equilibrium until the start of their next turn.`);
+  if (cur.level <= 0) return ui.notifications.warn("Fluidity swaps an Alignment you already have; you are Neutral.");
   const cost = R.fluidityCost(cur, actor.system.skillPoints ?? 0);
-  const canSwap = cur.level > 0, canEq = theory(actor) >= 4;
-  if (!canSwap && !canEq) return ui.notifications.warn("Fluidity swaps an Alignment you already have; you are Neutral.");
   const other = cur.kind === "dream" ? "nightmare" : "dream";
-  const buttons = [...(canSwap ? [{ action: "swap", label: `Swap to ${R.ALIGNMENTS[other]} (${cost} Energy)`, default: true }] : []), ...(canEq ? [{ action: "eq", label: `Equilibrium (${cost} Energy)` }] : [])];
-  const pick = buttons.length === 1 ? buttons[0].action : await DialogV2().wait({ window: { title: "Fluidity" }, rejectClose: false, content: `<p>You are ${esc(R.alignmentLabel(cur))}. Spend <strong>${cost}</strong> Energy to:</p>`, buttons });
-  if (!pick) return;
   if (!(await pay(actor, { energy: cost }, "Fluidity"))) return;
-  if (pick === "swap") {
-    await setAlignment(actor, { kind: other, level: cur.level });
-    return post(actor, { title: `${esc(actor.name)} — Fluidity`, body: `<div class="fs-result">${esc(actor.name)} swaps to <strong>${esc(R.alignmentLabel({ kind: other, level: cur.level }))}</strong>.</div>` });
-  }
-  await setAlignment(actor, { ...cur, equilibrium: true });
-  await post(actor, { title: `${esc(actor.name)} — Equilibrium`, body: `<div class="fs-result">${esc(actor.name)} enters <strong>Equilibrium (-1 Alignment)</strong> until the start of their next turn, then returns to ${esc(R.alignmentLabel({ ...cur, equilibrium: false }))}. ${esc(R.alignmentBlurb({ ...cur, equilibrium: true }))}</div>` });
+  await setAlignment(actor, { kind: other, level: cur.level });
+  return post(actor, { title: `${esc(actor.name)} — Fluidity`, body: `<div class="fs-result">${esc(actor.name)} swaps to <strong>${esc(R.alignmentLabel({ kind: other, level: cur.level }))}</strong> (${cost} Energy).</div>` });
 }
 
 /* -------------------------------------------- */
@@ -147,8 +136,8 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const check = R.manifestCheck(wonder, stat);
   const range = R.RANGES[v.range] ? v.range : "ranged";
   const enhanceCost = minOf(actor, kind.stat);
-  // Will of Body and Spirit: the Range must cost what the attack did; an RP attack needs Burst. Patron: its Wonder's Enhance and Burst energy is free while aligned to it.
-  const patronFree = ctx.theory >= 5 && ctx.patron === wonder.id && R.alignedTo(ctx.alignment, wonder.kind);
+  // Will of Body and Spirit: the Range must cost what the attack did; an RP attack needs Burst. Patron: its Wonder's Enhance and Burst energy is free.
+  const patronFree = ctx.theory >= 5 && ctx.patron === wonder.id;
   const burst = wobs ? !!wobs.rp : !!v.burst && ctx.theory >= 1;
   const cost = R.manifestCost({ range, enhance: !!v.enhance, burst, enhanceCost, free, waive: { ap: !!wobs?.ap, rp: !!wobs?.rp, energy: patronFree } });
   const choices = choiceValues(v);
@@ -159,15 +148,15 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const extras = wonders.COST_PROVIDERS.map(f => f(actor, { mode, wonder, choices, free })).filter(Boolean);
   for (const x of extras) if (!free) cost.energy += x.energy ?? 0;
   const extraNet = extras.reduce((n, x) => n + (x.net ?? 0), 0), extraStacks = extras.reduce((n, x) => n + (x.stacks ?? 0), 0);
-  const alignFx = R.alignmentManifest(align, wonder.kind);
-  const net = alignFx.net + kinetic + extraNet;
+  // Melee Manifest: the attack roll gets a stack of Disadvantage.
+  const net = (range === "melee" ? -1 : 0) + kinetic + extraNet;
   const power = check.power;
   const text = R.scaleMentalText(v.enhance ? `${mode.base} Enhanced: ${mode.enhanced || "(no extra effect)"}` : mode.base, power, mode.name);
   const errors = check.ok ? [] : [check.reason];
   if (v.burst && ctx.theory < 1) errors.push("Burst needs Mental Theory Tier 1.");
   if (wobs && R.RANGES[range].ap !== (wobs.ap || wobs.rp)) errors.push(`Will of Body and Spirit: the Range has to cost ${wobs.ap || wobs.rp} ${wobs.ap ? "AP" : "RP"}, like your attack.`);
   return { ok: errors.length === 0, errors, mode, wonder, kind: wonder.kind, power, stat, enhanceCost, cost, range, enhance: !!v.enhance, burst, net, choices, kinetic,
-    alignStacks: alignFx.stacks, text, alignment: align, patronFree, wobs,
+    alignStacks: 0, text, alignment: align, patronFree, wobs,
     extraStacks, extraNotes: extras.flatMap(x => x.notes ?? []), extraAfter: extras.map(x => x.after).filter(Boolean), extraFlags: Object.assign({}, ...extras.map(x => x.flags ?? {})) };
 }
 
@@ -175,8 +164,8 @@ const costText = c => [c.ap ? `${c.ap} AP` : "", c.rp ? `${c.rp} RP` : "", c.ene
 
 function previewHTML(plan) {
   if (!plan.ok) return `<p class="fs-warn">${plan.errors.map(esc).join(" ")}</p>`;
-  const align = plan.net > 0 ? " · Alignment: Advantage" : plan.net < 0 ? " · Alignment: Disadvantage" : "";
-  const alignStr = plan.alignStacks > 0 ? " · Alignment: Strengthened" : plan.alignStacks < 0 ? " · Alignment: Weakened" : "";
+  const align = plan.range === "melee" ? " · Melee: Disadvantage" : "";
+  const alignStr = "";
   return `<div class="fs-cast-sum"><div><strong>${esc(plan.mode.name)}</strong> <small>(${esc(plan.wonder.name)}, ${R.KINDS[plan.kind].label})</small>: ${esc(plan.text)}</div>
     <div><strong>${costText(plan.cost)}</strong> · Wonder Power ×${plan.power} <small>(${R.KINDS[plan.kind].statLabel} ${plan.stat})</small>${align}${alignStr}${plan.patronFree ? " · Patron: Enhance and Burst energy is free" : ""}${plan.wobs ? " · Will of Body and Spirit: no AP/RP of its own" : ""}</div></div>`;
 }
@@ -257,11 +246,9 @@ export async function pickMode(actor, modes, title) {
 /** Manifest a known Mode at one specific target for free (an ability spreading it: Pollinate). */
 export async function manifestAt(actor, mode, target, { power, enhanced, range = "ranged", choices = {}, spread = false, label = null, extraModes = [] } = {}) {
   const wonder = R.wonderById(mode.wonder);
-  const align = alignmentOf(actor);
   const text = R.scaleMentalText(enhanced ? `${mode.base} Enhanced: ${mode.enhanced || ""}` : mode.base, power, mode.name);
-  const alignFx = R.alignmentManifest(align, wonder.kind);
-  const mental = { mode: mode.id, wonder: wonder.id, kind: wonder.kind, power, enhanced: !!enhanced, burst: false, range, alignStacks: alignFx.stacks, text, caster: actor.uuid, choices, spread, extraModes };
-  return performAttack(actor, { ...baseAttack, label: `${label ?? mode.name} (${mode.name})`, net: alignFx.net, stacks: alignFx.stacks, melee: false, area: false,
+  const mental = { mode: mode.id, wonder: wonder.id, kind: wonder.kind, power, enhanced: !!enhanced, burst: false, range, alignStacks: 0, text, caster: actor.uuid, choices, spread, extraModes };
+  return performAttack(actor, { ...baseAttack, label: `${label ?? mode.name} (${mode.name})`, net: range === "melee" ? -1 : 0, stacks: 0, melee: false, area: false,
     notes: [`${label ?? "Free"}: ${mode.name} spreads to ${target.name}; its effect applies immediately`], mental, targetActors: [target] });
 }
 
@@ -388,7 +375,7 @@ export async function activateWard(actor) {
   const th = theory(actor), wt = willTier(actor);
   const innate = wt >= 3 && !mark(actor, "innateTurn") && inActiveCombat(actor);
   const enhanceCost = minOf(actor, "will");
-  const wardFx = R.alignmentWard(align, p.align);          // 4 Alignment: Advantage and Strengthened; Equilibrium: everything dodging it has Disadvantage
+  const wardFx = R.alignmentWard(align, p.align);          // Alignment: 1 Advantage, 2 Strengthened, 3 half stealth (dodging has Disadvantage), 4 hits regardless
   const ally = th >= 2 ? [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.uuid !== actor.uuid && a.type !== "pile") : null;
   const out = await DialogV2().prompt({
     window: { title: `${p.name} Ward: ${actor.name}` },
@@ -424,9 +411,9 @@ export async function activateWard(actor) {
   const targets = area ? area.actors : [ally ?? actor];
   const adv = wardFx.net + (out.clear ? 1 : 0);
   const mental = { ward: { form: p.form, enhanced, types: out.types ? [out.types, ...(enhanced && out.types2 && out.types2 !== out.types ? [out.types2] : [])] : null, recur: !!out.recur, clear: !!out.clear, caster: actor.uuid, icon: icon.uuid,
-    declared: enhanced && out.declared ? out.declared : "", amount: enhanced ? p.enhancedAmount : p.amount, alignStacks: wardFx.stacks } };
-  const notes = [`${p.name} Ward`, enhanced ? "Enhanced" : "", burst ? "Burst (RP)" : "", innate ? "Innate (free)" : "", wardFx.net > 0 ? `${R.alignmentLabel(align)}: Advantage and Strengthened` : "", out.clear ? "Make Clear: Advantage" : "", out.expand ? "Expansion (Area)" : "",
-    align.equilibrium ? "Equilibrium: the target has Disadvantage on their dodge" : "", wt >= 5 && innate ? "Innate Mastery: the target has Disadvantage on their roll against it" : ""].filter(Boolean);
+    declared: enhanced && out.declared ? out.declared : "", amount: enhanced ? p.enhancedAmount : p.amount, alignStacks: wardFx.stacks, autoHit: wardFx.autoHit } };
+  const notes = [`${p.name} Ward`, enhanced ? "Enhanced" : "", burst ? "Burst (RP)" : "", innate ? "Innate (free)" : "", wardFx.net > 0 ? `${R.alignmentLabel(align)}: ${[ "Advantage", wardFx.stacks ? "Strengthened" : "", wardFx.dodgeNet < 0 ? "half stealth (Disadvantage dodging)" : "", wardFx.autoHit ? "hits regardless (the roll decides a crit)" : ""].filter(Boolean).join(", ")}` : "", out.clear ? "Make Clear: Advantage" : "", out.expand ? "Expansion (Area)" : "",
+    wt >= 5 && innate ? "Innate Mastery: the target has Disadvantage on their roll against it" : ""].filter(Boolean);
   return performAttack(actor, { ...baseAttack, label: `${p.name} Ward`, net: adv, melee: false, area: !!area, singleRoll: !!area, notes, mental, targetActors: targets, dodgeNet: (wt >= 5 && innate ? -1 : 0) + wardFx.dodgeNet,
     stacks: wardFx.stacks });
 }
@@ -466,7 +453,7 @@ async function applyWard({ attacker, target, ward }) {
   return lines.join("<br>");
 }
 
-/** Enhanced Reverie at 4 Dream Alignment: whenever a Dream Manifest of yours hits, each Enhanced Reverie shield you hold grows by 5 (× the Icon's scaling), up to the cap in all. */
+/** Enhanced Reverie at 4 Dream Alignment: whenever a Dream Manifest of yours hits, each Enhanced Reverie shield you hold grows by 4 (× the Icon's scaling), up to the cap in all. */
 async function growReverie(attacker, grade) {
   const mine = [];
   for (const a of new Set([...(globalThis.game?.actors ?? []), ...(globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(Boolean)])) {
@@ -480,7 +467,7 @@ async function growReverie(attacker, grade) {
   let added = 0;
   for (const e of mine) {
     const room = cap - total - added;
-    const n = Math.min(5 * mult, room);
+    const n = Math.min(4 * mult, room);
     if (n <= 0) break;
     const d = e.flags.flowstate.spellEffect;
     await changeEffect(e, { "flags.flowstate.spellEffect.hp": (Number(d.hp) || 0) + n, "flags.flowstate.spellEffect.max": (Number(d.max) || 0) + n, name: `Reverie (${(Number(d.hp) || 0) + n} shielding)` });
@@ -622,7 +609,7 @@ export async function rerollAct(x) {
  * instance"). Returns { amount, html }. A Premonition charge can negate a chunk too. Only the owner is asked; Echo, once it fully negates an
  * attack, keeps negating for free until the start of the owner's next turn.
  */
-async function negate(actor, amount, type, { source = null, attacker = null } = {}) {
+async function negate(actor, amount, type, { source = null, attacker = null, magic = false } = {}) {
   if (!actor || actor.type === "pile" || amount <= 0 || !actor.isOwner) return { amount, html: "" };
   const icon = actor.system.icon;
   const p = icon?.system.profile;
@@ -648,12 +635,12 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
   const startLeft = left;
   const form = R.FORMS[p.form];
   const align = alignmentOf(actor);
-  const cat = DAMAGE_CATEGORY[type] ?? "physical";
+  const cats = damageCategories(type, magic);             // spell damage is Magical as well as its own type
   const th = theory(actor);
   const willMin = minOf(actor, "will");
   const per = (uses, enhanced, near) => {
     let n = enhanced ? p.enhancedAmount : p.amount;
-    if (form.chooses) n = enhanced || cat === icon.system.chosen ? p.amount : p.other;
+    if (form.chooses) n = cats.includes(icon.system.chosen) ? p.amount : p.other;
     // Zealot: full negation at 2 or more Nightmare Alignment.
     if (form.needs === "deepNightmare") n = (R.alignedTo(align, "nightmare") && align.level >= 2) ? p.amount : p.other;
     if (form.near) n = near ? p.amount : p.other;
@@ -695,12 +682,15 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
     let res = resolveAttack(atk.total, dd.total);
     const rolls = [atk, dd];
     if (!res.hit && clear) { atk = await new Roll(poolFormula(1, actor.system.derived.attackDie, 0)).evaluate(); res = resolveAttack(atk.total, dd.total); rolls.push(atk); }
+    if (wfx.autoHit && !res.hit) res = { ...res, hit: true, outcome: "Hit" };       // Alignment 4: it hits regardless; the roll only decides a crit
     await post(actor, { title: `${esc(actor.name)} — ${esc(p.name)} Ward`, rolls, body: `<div class="fs-notes">Attack roll <strong>${atk.total}</strong> against a dodge of <strong>${dd.total}</strong>${clear ? " (Make Clear)" : ""}: <strong>${res.hit ? "hit" : "miss"}</strong>.</div>` });
     if (!res.hit) { notes.push(`${p.name} misses (1 RP${enh ? `, ${willMin} Energy` : ""} spent, nothing negated)`); continue; }
     left -= nn; uses++;
     if (enh) enhancedUsed = true;
-    // Zealot, Enhanced at 4 Nightmare Alignment: the damage is Weakened on use (once per damage instance).
-    if (enh && form.needs === "deepNightmare" && R.alignedTo(align, "nightmare") && align.level >= 4 && !weakened) { weakened = true; const before = left; left = Math.floor(applyStacks(left, -1)); notes.push(`Zealot (4 Nightmare): the rest is Weakened, ${before} → ${left}`); }
+    // Zealot, Enhanced at 4 Nightmare Alignment: the damage is Weakened when the activation roll crits (once per damage instance).
+    if (enh && form.needs === "deepNightmare" && res.crit && R.alignedTo(align, "nightmare") && align.level >= 4 && !weakened) { weakened = true; const before = left; left = Math.floor(applyStacks(left, -1)); notes.push(`Zealot (critical, 4 Nightmare): the rest is Weakened, ${before} → ${left}`); }
+    // Bane, Enhanced: incoming damage of the chosen type gets a stack of Weakened when the Ward hits (once per damage instance).
+    if (enh && form.chooses && cats.includes(icon.system.chosen) && !weakened) { weakened = true; const before = left; left = Math.floor(applyStacks(left, -1)); notes.push(`Bane: the ${esc(type)} damage is Weakened, ${before} → ${left}`); }
     notes.push(`${p.name} negates ${nn} (1 RP${enh ? `, Enhanced for ${willMin} Energy` : ""})`);
   }
   if (form.echo && left <= 0 && amount > 0) {
@@ -729,11 +719,11 @@ async function reflectAttack(actor, kind, amount, type, attackerUuid) {
   if (a && b && globalThis.canvas?.grid) {
     if (tokenDistance(a, b) > reach) return post(actor, { title: `${esc(actor.name)} — ${melee ? "Riposte" : "Warden"}`, body: `<div class="fs-notes">${esc(src.name)} isn't within ${reach} ft: no attack is made.</div>` });
   }
-  // 4 Alignment gives the Ward's attack roll Advantage; in Equilibrium everything dodging it has Disadvantage: the reflect roll is the Ward's attack too.
+  // Alignment shapes the Ward's attack roll (Advantage, half stealth at 3, hits regardless at 4): the reflect roll is the Ward's attack too.
   const wfx = R.alignmentWard(alignmentOf(actor), actor.system.icon?.system?.profile?.align);
   await performAttack(actor, { ...baseAttack, label: melee ? "Riposte (Ward)" : "Warden (Ward)", net: (melee ? 1 : 0) + wfx.net, melee, area: false, dodgeNet: wfx.dodgeNet,
-    notes: [`The ${amount} negated ${type} damage goes to ${src.name} on a hit`, ...(wfx.net > 0 ? [`${R.alignmentLabel(alignmentOf(actor))}: Advantage`] : []), ...(wfx.dodgeNet < 0 ? ["Equilibrium: the target has Disadvantage on their dodge"] : [])],
-    mental: { reflect: { amount, type }, caster: actor.uuid }, targetActors: [src] });
+    notes: [`The ${amount} negated ${type} damage goes to ${src.name} on a hit`, ...(wfx.net > 0 ? [`${R.alignmentLabel(alignmentOf(actor))}: Advantage`] : []), ...(wfx.dodgeNet < 0 ? ["Half stealth: the target has Disadvantage on their dodge"] : []), ...(wfx.autoHit ? ["Alignment 4: hits regardless (the roll decides a crit)"] : [])],
+    mental: { reflect: { amount, type }, caster: actor.uuid, autoHit: wfx.autoHit }, targetActors: [src] });
 }
 
 /* -------------------------------------------- */
@@ -793,13 +783,11 @@ function anchorWeak(actor) {
   return spellEffects(actor, "anchorWeak").some(e => anchorStill(e.flags.flowstate.spellEffect.caster));
 }
 
-/** Start of the Mental user's turn: Equilibrium ends; Far Sight and Aura Sight lapse (Far Sight can be paid again). */
+/** Start of the Mental user's turn: Far Sight and Aura Sight lapse (Far Sight can be paid again). */
 export async function turnStart(actor) {
   await wonders.pendingTurnStart(actor);
   if (actor.getFlag("flowstate", "stolenRoll")) await setActorFlag(actor, "stolenRoll", null);      // Larceny: a stolen roll lasts until your next turn
   if (hasForm(actor, "anchor")) { const pos = posOf(actor); await setActorFlag(actor, "turnPos", pos); }
-  // Equilibrium (-1 Alignment) ends: you are back to the Alignment you set.
-  if (alignmentOf(actor).equilibrium) await setAlignment(actor, { ...alignmentOf(actor), equilibrium: false });
   const psion = actor.getFlag("flowstate", "psion");
   if (!psion) return;
   let next = { ...psion, auraSight: false };

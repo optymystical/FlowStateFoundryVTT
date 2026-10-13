@@ -7,7 +7,7 @@ export class Field { constructor(o = {}) { Object.assign(this, o); } }
 export function installFoundry({ roll, dialog, confirm = () => true, wait = () => "ap", messages, uuids }) {
   globalThis.foundry = {
     data: { fields: { NumberField: Field, StringField: Field, BooleanField: Field, HTMLField: Field, SchemaField: Field, ObjectField: Field } },
-    abstract: { TypeDataModel: class {} },
+    abstract: { TypeDataModel: class { static migrateData(source) { return source; } } },
     utils: { escapeHTML: s => s, deepClone: o => structuredClone(o), getProperty: (o, k) => k.split(".").reduce((a, b) => a?.[b], o),
       setProperty: (o, k, v) => { const p = k.split("."); let c = o; for (const x of p.slice(0, -1)) c = c[x] ??= {}; c[p.at(-1)] = v; } },
     applications: { api: { DialogV2: { prompt: async ({ content }) => dialog(content), confirm: async () => confirm(), wait: async () => wait() } } }

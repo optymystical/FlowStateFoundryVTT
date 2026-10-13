@@ -11,7 +11,7 @@ export const CASTING_FORMS = {
   multi: { label: "Multi", stat: "lesser", ap: "1 / 2 / 3", tr: null, text: "The lesser of Reach and Grasp · Raw Casting AP and TR (1, 2 or 3)" }
 };
 
-// `free` = Free Affixes: how many Affixes this item carries beyond the one every character gets at no speed cost (Chime, Cards, Aegis and Lattice are -1:
+// `free` = Free Affixes: how many Affixes this item carries beyond the one every character gets at no speed cost (Chime, Cards, Bulwark and Lattice are -1:
 // they act as if an Affix were already attuned). `plus` = while attuned, one chosen Affix has its effects doubled.
 const fo = (label, form, dur, limit, free, plus, effect = "", extra = {}) => ({ label, form, dur, limit, free, plus, effect, ...extra });
 const DECK = (draw, core, combo) => `Cannot cast spells normally. Create a "deck" of spells using all of your Core spells (3 each). At the start of your turn, shuffle your hand and discard pile into your deck and draw ${draw} cards (reshuffle when empty). You can: 1. Spend 1/10th of your max Energy to draw a card. 2. Spend 2/10th of your max Energy to mulligan your entire hand (discard your whole hand to draw that many cards). 3. Cast a card as a Core spell with ${core} TR base (it discards after). 4. Combine two cards for a Combo spell with ${combo} TR base (they discard after).`;
@@ -45,12 +45,12 @@ export const SHROUD_TYPES = {
   cinder: sh("Cinder", 80, 5, 0, false, "The Limit of this Shroud is three times as high against damage types you have already taken since the start of your turn."),
   cistern: sh("Cistern", 60, 5, 0, false, "The Limit of this Shroud is three times as high while you are at full Energy, two times as high if you are instead above half Energy, and normal if you are at or below half Energy. Recovery scales with this varying limit."),
   ember: sh("Ember", 60, 5, 0, false, "The Limit of this Shroud is three times as high while you are at or below half of your max HP, two times as high if you are instead above half of your max HP, and normal if you are at full HP. Recovery scales with this varying limit."),
-  aegis: sh("Aegis", 3, 12, -1, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
+  bulwark: sh("Bulwark", 3, 12, -1, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
   lattice: sh("Lattice", 6, 6, -1, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
-  ward: sh("Ward", 30, 8, 0, false, "Instead of blocking damage as normal, this Shroud must be activated with 2 RP to be placed on a target within 100ft (no attack roll, only one application at a time, can target yourself). Durability restores to full on usage, effect lasts until the start of your next turn or until reactivated.", { placed: "ward" }),
+  mantle: sh("Mantle", 30, 8, 0, false, "Instead of blocking damage as normal, this Shroud must be activated with 2 RP to be placed on a target within 100ft (no attack roll, only one application at a time, can target yourself). Durability restores to full on usage, effect lasts until the start of your next turn or until reactivated.", { placed: "mantle" }),
   bond: sh("Bond", 80, 8, 0, false, "This Shroud applies to both you and a single other target within 100ft you may declare for 3 RP at any time. Doing so refreshes the durability of this Shroud. This effect goes away if the target goes more than 1000ft away from you, or the Shroud's durability reaches 0.", { placed: "bond" }),
   carapace: sh("Carapace", 50, 5, 0, false, "Every time this Shroud takes damage, its Limit increases by what it is at a baseline post scaling. Resets at the start of your turn (before recovery)."),
-  riposte: sh("Riposte", 40, 8, 0, false, "When this Shroud takes damage from a source within 100ft, you can spend 1 RP to make a ranged attack roll against that target, dealing the damage that the Shroud took back at them on hit."),
+  rebuke: sh("Rebuke", 40, 8, 0, false, "When this Shroud takes damage from a source within 100ft, you can spend 1 RP to make a ranged attack roll against that target, dealing the damage that the Shroud took back at them on hit."),
   retort: sh("Retort", 40, 8, 0, false, "While you are melded with this Shroud, if you would take damage from an attack that this Shroud can block, you may spend 1 RP to give that attack's damage a stack of Weakened.")
 };
 
@@ -72,8 +72,8 @@ export const AFFIXES = {
   sapphire: af("Sapphire", "rare", "Your spells that target something within your personal melee range also impart Slow stacks on that target equal to your Scaling Stat min if they hit.", "If your Shroud is damaged by a source that is within your personal melee range, make a melee attack against that target for free. On hit, they get Slow stacks equal to the damage your Shroud took."),
   diamond: af("Diamond", "rare", "Whenever you successfully hit a spell, if you cast that same spell against the same target this turn, that spell's attack roll has advantage.", "If your Shroud would be damaged by a source that already damaged it this turn, that damage is Weakened. Applies to specific source types only, such as Bladed Weapons or Heat Spells."),
   alexandrite: af("Alexandrite", "veryRare", "When you deal damage with a spell, the next time you deal damage with a spell this turn, if the new damage type is the same as the previous one, the new damage is Strengthened.", "When your Shroud takes damage, the next time it would be damaged, if the new damage type is the same as the previous one, the new damage is Weakened."),
-  painite: af("Painite", "veryRare", "Your spells ignore Limit (as Martial Cleave would) equal to your Scaling Stat min.", "This Shroud's Limit cannot be ignored."),
-  musgravite: af("Musgravite", "veryRare", "Force applied by your spells goes against the target's current health instead of their maximum health.", "Negates an amount of Force equal to your Scaling Stat from each instance of Force that would affect you."),
+  painite: af("Painite", "veryRare", "Your spells ignore Limit (as Martial Pierce would) equal to your Scaling Stat min.", "This Shroud's Limit cannot be ignored."),
+  musgravite: af("Musgravite", "veryRare", "Force applied by your spells is subtracted by half the target's current health instead of half of their maximum health.", "Negates an amount of Force equal to your Scaling Stat from each instance of Force that would affect you."),
   taaffeite: af("Taaffeite", "veryRare", "Rituals you cast take half as much Energy to complete.", "Whenever a Ritual would be destroyed while you are attuned to this Shroud, you may instead set this Shroud's Durability to 0 to keep that Ritual alive at 1 health. Your shroud must have more than 0 Durability to proc this effect."),
   coloredDiamond: af("Colored Diamond", "veryRare", "At the start of each of your turns, declare a spell name. Any damage you would deal with that spell this turn is Strengthened, and any attack rolls for that spell have advantage.", "At the start of each of your turns, declare a source type that can deal damage (such as Bladed Weapons or Heat Spells). For that turn, damage your Shroud would take from the named source is Weakened, and attacks from that source against you have disadvantage.")
 };
@@ -81,13 +81,36 @@ export const AFFIXES = {
 export const AFFIX_RARITIES = { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" };
 export const ELEMENTS = { heat: "Heat", cold: "Cold", acid: "Acid", radiation: "Radiation" };
 
-/** Affix keys on an item, trimmed to its slot count (unknown keys dropped). */
-function affixList(keys, slots = AFFIX_LIMIT) {
-  return (keys ?? []).filter(k => AFFIXES[k]).slice(0, Math.max(0, slots));
+/** Affixes are attuned on their own, to their Offensive (Foci, spells) or Defensive (Shroud) form. */
+export const AFFIX_SIDES = { offensive: "Offensive", defensive: "Defensive" };
+
+/**
+ * The Affixes in effect on a Foci or Shroud: the attuned Affix items of its side (`sys.attached`, set from the owner), plus any left in the old
+ * per-item list (`sys.affixes`) until they are converted into Affix items. Unknown keys dropped, no repeats.
+ */
+function affixList(sys) {
+  return [...new Set([...(sys.affixes ?? []), ...(sys.attached ?? [])])].filter(k => AFFIXES[k]);
 }
 
-/** Affixes cost speed, not slots; this is only the most one piece of equipment holds on a sheet. */
-export const AFFIX_LIMIT = 6;
+/** An Affix item's profile: what it is, which form it is attuned to, and what it does there. */
+export function affixProfile(sys) {
+  const a = AFFIXES[sys.affix];
+  if (!a) return { valid: false, error: "Pick an Affix." };
+  const side = sys.side === "defensive" ? "defensive" : "offensive";
+  return { valid: true, label: a.label, rarity: a.rarity, rarityLabel: AFFIX_RARITIES[a.rarity], side, sideLabel: AFFIX_SIDES[side],
+    text: side === "defensive" ? a.shroud : a.foci, foci: a.foci, shroud: a.shroud };
+}
+
+/** The attuned Affix items of one side on an actor: distinct Affix keys (their effects do not stack). */
+export function attunedAffixKeys(actor, side) {
+  return [...new Set(attunedAffixItems(actor, side).map(i => i.system.affix))];
+}
+
+/** The attuned Affix items of one side on an actor. */
+export function attunedAffixItems(actor, side) {
+  return [...(actor?.items ?? [])].filter(i => i.type === "affix" && i.system.attuned && (i.system.side === "defensive" ? "defensive" : "offensive") === side && AFFIXES[i.system.affix]);
+}
+
 const AFFIX_SPEED_PCT = 20;
 
 /** The Affix with doubled effects (Shard, Orb, Band, Keystone): the one picked, else the item's first. */
@@ -100,14 +123,14 @@ function doubledAffix(sys, t, affixes) {
 export const affixMultOf = (profile, key) => (profile?.doubled && profile.doubled === key ? 2 : 1);
 
 /**
- * Speed lost to attuned Affixes (a percentage): every attuned Affix costs 20%, not counting the Free Affixes of the attuned Foci and Shroud
- * (Chime, Cards, Aegis and Lattice have -1: they act as if an Affix were already attuned).
+ * Speed lost to attuned Affixes (a percentage): every attuned Affix costs 20%, not counting the Free Affixes of the attuned Foci (Offensive ones) and
+ * Shroud (Defensive ones). Chime, Cards, Bulwark and Lattice have -1: they act as if an Affix were already attuned.
+ * `count` = { offensive, defensive } attuned Affixes.
  */
-export function affixSpeedPct(...profiles) {
-  const worn = profiles.filter(p => p?.valid);
-  const count = worn.reduce((n, p) => n + (p.affixes?.length ?? 0), 0);
-  const free = worn.reduce((n, p) => n + (p.freeAffixes ?? 0), 0);
-  return AFFIX_SPEED_PCT * Math.max(0, count - free);
+export function affixSpeedPct(count, foci, shroud) {
+  const free = p => (p?.valid ? p.freeAffixes ?? 0 : 0);
+  const over = (n, f) => Math.max(0, (n ?? 0) - f);
+  return AFFIX_SPEED_PCT * (over(count?.offensive, free(foci)) + over(count?.defensive, free(shroud)));
 }
 
 /** Foci profile. `stats` = { reach, grasp } effective values (or Grade-cap previews). */
@@ -119,7 +142,7 @@ export function fociProfile(sys, stats = {}) {
   const reach = cappedStat(stats.reach ?? 0, grade), grasp = cappedStat(stats.grasp ?? 0, grade);
   const scalingStat = form.stat === "lesser" ? (reach <= grasp ? "reach" : "grasp") : form.stat;
   const scaling = form.stat === "lesser" ? Math.min(reach, grasp) : form.stat === "reach" ? reach : grasp;
-  const affixes = affixList(sys.affixes);
+  const affixes = affixList(sys);
   const doubled = doubledAffix(sys, t, affixes);
   return {
     valid: true,
@@ -130,7 +153,7 @@ export function fociProfile(sys, stats = {}) {
     tr: t.tr ?? form.tr,
     durability: t.dur * grade,
     limit: t.limit * grade,
-    affixLimit: AFFIX_LIMIT, freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
+    freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
     twoHandCast: !!t.twoHandCast, deck: !!t.deck, deckTR: t.deckTR ?? null, deckDraw: t.draw ?? 0, type: sys.fociType,
     // Gauntlet: the first cast uses the higher of Reach and Grasp, the second the lower.
     scalingHigh: Math.max(reach, grasp), scalingLow: Math.min(reach, grasp),
@@ -146,7 +169,7 @@ export function shroudProfile(sys, build = 0) {
   if (!t) return { valid: false, error: "Pick a Shroud type." };
   const grade = Math.max(1, sys.grade || 1);
   const mult = armorMultiplier(build, grade);
-  const affixes = affixList(sys.affixes);
+  const affixes = affixList(sys);
   const doubled = doubledAffix(sys, t, affixes);
   return {
     valid: true,
@@ -156,7 +179,7 @@ export function shroudProfile(sys, build = 0) {
     durability: t.fixedDur ? t.dur : t.dur * mult,
     baseLimit: t.limit * mult,
     limit: t.limit * mult,
-    affixLimit: AFFIX_LIMIT, freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
+    freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
     negator: !!t.negator, placed: t.placed ?? null, fixedDur: !!t.fixedDur, noRegen: !!t.noRegen,
     effect: t.effect
   };

@@ -3,7 +3,7 @@ import { STATS } from "./rules.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, RARITIES, weaponProfile, armorProfile, describeTags } from "./martial.mjs";
 import * as creation from "./creation.mjs";
 import * as mentalRules from "./mental-rules.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, fociProfile, shroudProfile } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile } from "./magic.mjs";
 import * as actions from "./actions.mjs";
 import * as skills from "./skills.mjs";
 
@@ -81,7 +81,6 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const eff = { str: pv.effective.str.value, dex: pv.effective.dex.value };
     const weaponTypes = Object.fromEntries(Object.entries(WEAPON_TYPES).filter(([k]) => k !== "unarmed" && k !== "improvised").map(([k, v]) => [k, `${v.label}${v.ranged ? " (ranged)" : ""}`]));
-    const targets = creation.affixTargets(st.items);
     const items = st.items.map((slot, index) => {
       if (slot.kind === "foci" || slot.kind === "shroud") {
         const foci = slot.kind === "foci";
@@ -106,12 +105,10 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       }
       if (slot.kind === "affix") {
         const a = AFFIXES[slot.affix];
-        const on = targets.find(t => String(t.index) === slot.target);
         return { index, ...slot, affixSlot: true, name: creation.slotName(slot),
-          affixChoices: creation.allowedAffixes(rules.maxRarity),
-          targetChoices: Object.fromEntries(targets.map(t => [String(t.index), `${t.label} · ${t.free} free`])),
-          summary: on ? `On ${on.label}` : "Pick a Foci or Shroud for it",
-          effect: a ? (on?.slot.kind === "shroud" ? `Shroud: ${a.shroud}` : on ? `Foci: ${a.foci}` : `Foci: ${a.foci} · Shroud: ${a.shroud}`) : "" };
+          affixChoices: creation.allowedAffixes(rules.maxRarity), sideChoices: AFFIX_SIDES,
+          summary: `Attuned to its ${AFFIX_SIDES[slot.side] ?? "Offensive"} form: ${slot.side === "defensive" ? "your Shroud" : "your Foci and raw casting"}. Costs 20% speed past your Free Affixes`,
+          effect: a ? (slot.side === "defensive" ? a.shroud : a.foci) : "" };
       }
       const armor = slot.kind === "armor";
       const p = armor
@@ -169,7 +166,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       lockedTrees: skills.treesFor(arch.id).length - available.length, theoryName: skills.theoryFor(arch.id)?.name ?? "",
       canAddWeapon: st.items.length < rules.items, canAddArmor: st.items.length < rules.items && armorCount < 1,
       canAddMagic: st.items.length < rules.items,
-      canAddAffix: st.items.length < rules.items && targets.some(t => t.free > 0),
+      canAddAffix: st.items.length < rules.items,
       errors, ready: !errors.length
     };
   }
@@ -198,18 +195,12 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   static onAddItem(event, target) {
     const rules = creationRules();
     if (this.state.items.length >= rules.items) return;
-    this.state.items.push(creation.newSlot(target.dataset.kind, rules.maxRarity, this.state.items));
+    this.state.items.push(creation.newSlot(target.dataset.kind, rules.maxRarity));
     this.render();
   }
   static onRemoveItem(event, target) {
     const gone = Number(target.dataset.index);
     this.state.items.splice(gone, 1);
-    // Affixes point at their Foci/Shroud by position: shift them, and unhook any that were on the removed item.
-    for (const slot of this.state.items) {
-      if (slot.kind !== "affix" || slot.target === "") continue;
-      const t = Number(slot.target);
-      slot.target = t === gone ? "" : t > gone ? String(t - 1) : slot.target;
-    }
     this.render();
   }
 

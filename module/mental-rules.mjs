@@ -27,7 +27,7 @@ export const KINDS = {
 
 const wonderKind = tree => /\((Dream|Nightmare)\)\s*$/i.exec(tree.name)?.[1]?.toLowerCase() ?? null;
 
-const isTenet = e => /^Only active while attuned/i.test(e.text ?? "");
+const isTenet = e => /^Only active while/i.test(e.text ?? "");
 
 /** "Bloom: …" → { base, enhanced } (the part after "Enhanced:" is what Enhancing adds or changes). */
 function splitEnhanced(text) {
@@ -105,76 +105,59 @@ export const ALIGN_SPEED_PCT = 20;
 
 /**
  * An Alignment is a kind (Dream or Nightmare) and how far you went (1 to 4, Neutral = 0). It is set with a 1 hour activity, and every point costs 20% speed.
- * Equilibrium (Mental T4) is a temporary -1 Alignment, entered with Fluidity and lasting until the start of your next turn: your Alignment is suspended
- * (no bonuses, no speed penalty) until it ends. Stored as { kind, level, equilibrium }; this returns it cleaned up.
+ * It shapes your Form's Ward (see `alignmentWard`). Depths 3 and 4 need Deepening (Mental T3), which also costs 1 AP a turn per point past 2.
  */
 export function alignmentState(raw) {
   const kind = raw?.kind === "dream" || raw?.kind === "nightmare" ? raw.kind : "neutral";
   const level = kind === "neutral" ? 0 : Math.max(0, Math.min(MAX_ALIGNMENT, Math.floor(Number(raw?.level)) || 0));
-  return level ? { kind, level, equilibrium: !!raw?.equilibrium } : { kind: "neutral", level: 0, equilibrium: !!raw?.equilibrium };
+  return level ? { kind, level } : { kind: "neutral", level: 0 };
 }
 
-/** What the sheet calls it: "Dream 2", "Neutral", "Equilibrium (-1)". */
+/** What the sheet calls it: "Dream 2", "Neutral". */
 export function alignmentLabel(state) {
   const s = alignmentState(state);
-  return s.equilibrium ? "Equilibrium (-1)" : s.level ? `${ALIGNMENTS[s.kind]} ${s.level}` : "Neutral";
+  return s.level ? `${ALIGNMENTS[s.kind]} ${s.level}` : "Neutral";
 }
 
-/** Speed lost to Alignment: 20% per point (none in Equilibrium). */
-export const alignmentSpeedPct = state => { const s = alignmentState(state); return s.equilibrium ? 0 : ALIGN_SPEED_PCT * s.level; };
+/** Speed lost to Alignment: 20% per point. */
+export const alignmentSpeedPct = state => ALIGN_SPEED_PCT * alignmentState(state).level;
+
+/** Deepening (Mental T3): AP lost each turn to Alignment past 2 (-1 at 3, -2 at 4). */
+export const alignmentApLoss = state => Math.max(0, alignmentState(state).level - 2);
+
+/** The deepest Alignment a character may set: 2 at first, 4 with Deepening (Mental Theory T3). */
+export const maxAlignment = theoryTier => (theoryTier >= 3 ? MAX_ALIGNMENT : 2);
 
 /** What an Alignment does, in words (for the Action List, the dialog and the cards). */
 export function alignmentBlurb(raw) {
   const st = alignmentState(raw);
-  if (st.equilibrium) return "Equilibrium (-1): your Manifest attack rolls have Disadvantage, and everything dodging your Icon's Ward has Disadvantage. No speed penalty, and none of your other Alignment bonuses until your next turn.";
   if (!st.level) return "Neutral: no benefits and no speed penalty.";
-  const own = st.kind === "dream" ? "Dream" : "Nightmare", other = st.kind === "dream" ? "Nightmare" : "Dream";
-  return [`1: ${own} Wonders have Advantage on their attack rolls, ${other} Wonders Disadvantage.`,
-    st.level >= 2 ? `2: ${own} Modes' bolded effects are Strengthened, ${other}'s Weakened.` : "",
-    st.level >= 3 ? `3: a ${own} Tenet can trigger twice per round.` : "",
-    st.level >= 4 ? `4: your ${own} Icon's Ward has Advantage and a Strengthened bolded effect.` : "",
-    `Speed lowered by ${alignmentSpeedPct(st)}%.`].filter(Boolean).join(" ");
-}
-
-
-/**
- * What Alignment does to a Manifest of a Wonder of `kind` ("dream" / "nightmare"):
- *  - 1 Alignment: a stack of Advantage on its attack roll if it is your Alignment's type, Disadvantage if it is the opposite type.
- *  - 2 Alignment: a stack of Strengthened on its bolded effects if it is your type, Weakened if it is the opposite.
- *  - Equilibrium: your Manifest attack rolls have a stack of Disadvantage.
- */
-export function alignmentManifest(state, kind) {
-  const s = alignmentState(state);
-  if (s.equilibrium) return { net: -1, stacks: 0 };
-  if (!s.level || !kind) return { net: 0, stacks: 0 };
-  const sign = s.kind === kind ? 1 : -1;
-  return { net: sign, stacks: s.level >= 2 ? sign : 0 };
+  const own = st.kind === "dream" ? "Dream" : "Nightmare";
+  return [st.level >= 3 ? `3: your ${own} Form's Ward is made from half stealth (Advantage, and the target dodges with Disadvantage).` : `1: your ${own} Form's Ward has Advantage on its attack rolls.`,
+    st.level >= 2 ? `2: your ${own} Form's Ward bolded effect is Strengthened.` : "",
+    st.level >= 4 ? `4: your ${own} Form's Ward hits regardless of the roll (the roll only decides a crit).` : "",
+    `Speed lowered by ${alignmentSpeedPct(st)}%${st.level > 2 ? `, and ${alignmentApLoss(st)} AP less each turn` : ""}.`].filter(Boolean).join(" ");
 }
 
 /**
- * What Alignment does to the Ward of a Form of `kind`: 4 Alignment gives your own type's Icon Advantage on its attack roll and Strengthened on its
- * bolded effect. In Equilibrium everything dodging your Icon's Ward (yourself included) has a stack of Disadvantage (`dodgeNet`).
+ * What Alignment does to the Ward of a Form of `kind` (only your own type's Form benefits):
+ *  - 1: Advantage on its attack roll. 2: its bolded effect is Strengthened.
+ *  - 3: made from half stealth: Advantage, and whoever dodges it has Disadvantage (`dodgeNet`).
+ *  - 4: it hits regardless of the roll (`autoHit`); the roll only decides whether it crits.
  */
 export function alignmentWard(state, kind) {
   const s = alignmentState(state);
-  if (s.equilibrium) return { net: 0, stacks: 0, dodgeNet: -1 };
-  if (s.level >= 4 && s.kind === kind) return { net: 1, stacks: 1, dodgeNet: 0 };
-  return { net: 0, stacks: 0, dodgeNet: 0 };
-}
-
-/** 3 Alignment: a Tenet of your Alignment's type can trigger twice per round. */
-export function tenetUses(state, kind) {
-  const s = alignmentState(state);
-  return !s.equilibrium && s.level >= 3 && s.kind === kind ? 2 : 1;
+  if (!s.level || s.kind !== kind) return { net: 0, stacks: 0, dodgeNet: 0, autoHit: false };
+  return { net: 1, stacks: s.level >= 2 ? 1 : 0, dodgeNet: s.level >= 3 ? -1 : 0, autoHit: s.level >= 4 };
 }
 
 /** Are you Aligned towards this type of Wonder (Dream or Nightmare, at least 1 Alignment)? */
 export function alignedTo(state, kind) {
   const s = alignmentState(state);
-  return !s.equilibrium && s.level >= 1 && s.kind === kind;
+  return s.level >= 1 && s.kind === kind;
 }
 
-/** Fluidity (Mental T3): energy equal to half your Skill Points multiplied by your current Alignment number swaps its type (and, with Equilibrium, enters -1). */
+/** Fluidity (Mental T3): energy equal to half your Skill Points multiplied by your current Alignment number swaps its type. */
 export const fluidityCost = (state, skillPoints = 0) => Math.floor(skillPoints / 2) * alignmentState(state).level;
 
 /* -------------------------------------------- */
@@ -184,20 +167,20 @@ export const fluidityCost = (state, skillPoints = 0) => Math.floor(skillPoints /
 const f = (name, align, rarity, ward, enhance, extra = {}) => ({ name, align, rarity, ward, enhance, ...extra });
 /** Forms from the Equipment doc. `kind`: how the engine plays the Ward: shield (1 AP, stacking shielding), negate (reaction, RP), persistent, charge. */
 export const FORMS = {
-  aegis: f("Aegis", "dream", "common", "For 1 AP, provides 20 shielding, lasting until the start of your next turn. This effect stacks.", "Instead provides 30 shielding.", { kind: "shield", amount: 20, enhanced: 30, ap: 1 }),
-  sanctum: f("Sanctum", "dream", "common", "For 1 AP, provides 20 shielding, lasting until the start of your next turn. This effect stacks.", "The shield provided lasts an additional turn.", { kind: "shield", amount: 20, enhanced: 20, ap: 1, extraTurn: true }),
-  prism: f("Prism", "dream", "uncommon", "For 1 AP, provides 40 shielding against specifically Physical, Elemental, or Magical damage, lasting until the start of your next turn. This effect stacks.", "The shield protects against two chosen damage types.", { kind: "shield", amount: 40, enhanced: 40, ap: 1, typed: true }),
-  vigil: f("Vigil", "dream", "uncommon", "Provides a passive 60 shielding that does not decay or naturally regenerate. Instead, on your turn you can spend 1 AP to recover 10 shielding for this effect (still requires a hit). Project/Expansion causes this persistent shield to apply to the target(s) instead.", "The recovery attack automatically succeeds.", { kind: "persistent", amount: 60, recover: 10, ap: 1 }),
-  anchor: f("Anchor", "dream", "rare", "For 1 AP, provides 20 shielding, lasting until the start of your next turn. This effect stacks. If you have not moved since the start of your turn, damage dealt to this shielding is Weakened (the Weakened does not stack with multiple instances of this shield).", "The Weakened persists beyond the shield, now applying to all damage you would take until the start of your next turn, so long as you do not move.", { kind: "shield", amount: 20, enhanced: 20, ap: 1, anchor: true }),
-  reverie: f("Reverie", "dream", "rare", "Can only be activated while you are at least 2 in the Dream Alignment. For 1 AP, provides 20 shielding, lasting until the start of your next turn. This effect stacks up to 60 shielding, and holds between turns so long as you instantly maintain Dream Alignment on turn start.", "If you are at least in 4 Dream Alignment, whenever you Manifest a Dream successfully, add 5 shielding to this effect, up to the cap. This effect stacks, so multiple instances increase the shielding provided per Manifest.", { kind: "shield", amount: 20, enhanced: 20, ap: 1, cap: 60, needs: "dream" }),
-  premonition: f("Premonition", "dream", "very rare", "Store one charge of Premonition until the start of your next turn. Whenever you would take damage, you can consume up to one charge of Premonition to negate 40 of that damage.", "When you store the charge, declare an attack source. If, on activation, the declared source is the one causing the damage, it gets a stack of Weakened.", { kind: "charge", amount: 40, enhanced: 40, ap: 1 }),
-  veil: f("Veil", "nightmare", "common", "When you would take damage, spend 1 RP to negate up to 10 of that damage. Can be used multiple times per damage instance.", "Instead provides 20 negation.", { kind: "negate", amount: 10, enhanced: 20 }),
-  warden: f("Warden", "nightmare", "common", "When you would take damage, spend 1 RP to negate up to 10 of that damage. Can be used multiple times per damage instance.", "After negation occurs and damage resolves, if the source of the damage is within 100ft, make a Ranged attack roll against them. On hit, the damage negated is dealt to them. Only one attack needs to be made per damage instance, regardless of times this Ward was used.", { kind: "negate", amount: 10, enhanced: 10, reflect: "ranged" }),
-  bane: f("Bane", "nightmare", "uncommon", "When you attune to this Form, select Physical, Elemental, or Magical damage. When you would take damage, spend 1 RP to negate up to 20 of that damage if it matches the chosen damage type, or 5 of that damage otherwise. Can be used multiple times per damage instance.", "Treat all incoming damage as your chosen damage type for this Ward effect.", { kind: "negate", amount: 20, other: 5, enhanced: 20, chooses: "category" }),
-  grudge: f("Grudge", "nightmare", "uncommon", "When you would take damage, spend 1 RP to negate up to 10 of that damage. Increases by 10 negation per instance of this Ward used in the same damage instance. Can be used multiple times per damage instance.", "Treat this effect as if it already triggered one additional time for the purposes of increasing the negation amount.", { kind: "negate", amount: 10, enhanced: 10, grows: 10 }),
-  riposte: f("Riposte", "nightmare", "rare", "When you would take damage, spend 1 RP to negate up to 30 of that damage if the attack’s source is within your melee range, and 5 damage otherwise. Can be used multiple times per damage instance.", "After negation occurs and damage resolves, if the source of the damage is within melee range, make a Melee attack roll against them with advantage. On hit, the damage negated is dealt to them. Only one attack needs to be made per damage instance, regardless of times this Ward was used.", { kind: "negate", amount: 30, other: 5, enhanced: 30, near: true, reflect: "melee" }),
-  zealot: f("Zealot", "nightmare", "rare", "When you would take damage, spend 1 RP to negate up to 30 of that damage so long as you are in at least 2 Nightmare Alignment, providing 5 negation otherwise. Can be used multiple times per damage instance.", "If you are in at least 4 Nightmare Alignment, the damage is Weakened on use (only applies once per damage instance).", { kind: "negate", amount: 30, other: 5, enhanced: 30, needs: "deepNightmare" }),
-  echo: f("Echo", "nightmare", "very rare", "When you would take damage, spend 1 RP to negate up to 5 of that damage. Can be used multiple times per damage instance. If this fully negates the attack, this effect is now applied for free to all instances of damage you would take until the start of your next turn. This effect stacks.", "Instead provides 10 negation.", { kind: "negate", amount: 5, enhanced: 10, echo: true })
+  aegis: f("Aegis", "dream", "common", "For 1 AP, provides 8 shielding, lasting until the start of your next turn. This effect stacks.", "Instead provides 15 shielding.", { kind: "shield", amount: 8, enhanced: 15, ap: 1 }),
+  sanctum: f("Sanctum", "dream", "common", "For 1 AP, provides 8 shielding, lasting until the start of your next turn. This effect stacks.", "The shield provided lasts an additional turn.", { kind: "shield", amount: 8, enhanced: 8, ap: 1, extraTurn: true }),
+  prism: f("Prism", "dream", "uncommon", "For 1 AP, provides 25 shielding against specifically Physical, Elemental, or Magical damage, lasting until the start of your next turn. This effect stacks.", "The shield protects against two chosen damage types.", { kind: "shield", amount: 25, enhanced: 25, ap: 1, typed: true }),
+  vigil: f("Vigil", "dream", "uncommon", "Provides a passive 40 shielding that does not decay or naturally regenerate. Instead, on your turn you can spend 1 AP to recover 8 shielding for this effect (still requires a hit). Project/Expansion causes this persistent shield to apply to the target(s) instead.", "The recovery attack automatically succeeds.", { kind: "persistent", amount: 40, recover: 8, ap: 1 }),
+  anchor: f("Anchor", "dream", "rare", "For 1 AP, provides 8 shielding, lasting until the start of your next turn. This effect stacks. If you have not moved since the start of your turn, damage dealt to this shielding is Weakened (the Weakened does not stack with multiple instances of this shield).", "The Weakened persists beyond the shield, now applying to all damage you would take until the start of your next turn, so long as you do not move.", { kind: "shield", amount: 8, enhanced: 8, ap: 1, anchor: true }),
+  reverie: f("Reverie", "dream", "rare", "Can only be activated while you are at 2+ Dream Alignment. For 1 AP, provides 12 shielding, lasting until the start of your next turn. This effect stacks up to 40 shielding, and holds between turns so long as you remain at 2+ Dream Alignment.", "If you are at 4+ Dream Alignment, whenever you Manifest a Dream successfully, add 4 shielding to this effect, up to the cap. This effect stacks, so multiple instances increase the shielding provided per Manifest.", { kind: "shield", amount: 12, enhanced: 12, ap: 1, cap: 40, needs: "dream" }),
+  premonition: f("Premonition", "dream", "very rare", "For 1 AP, store one charge of Premonition until the start of your next turn. Whenever you would take damage, you can consume up to one charge of Premonition to negate 40 of that damage.", "When you store the charge, declare an attack source. If, on activation, the declared source is the one causing the damage, it gets a stack of Weakened.", { kind: "charge", amount: 40, enhanced: 40, ap: 1 }),
+  veil: f("Veil", "nightmare", "common", "When you would take damage, spend 1 RP to negate up to 4 of that damage. Can be used multiple times per damage instance.", "Instead provides 8 negation.", { kind: "negate", amount: 4, enhanced: 8 }),
+  warden: f("Warden", "nightmare", "common", "When you would take damage, spend 1 RP to negate up to 5 of that damage. Can be used multiple times per damage instance.", "After negation occurs and damage resolves, if the source of the damage is within 100ft, make a Ranged attack roll against them. On hit, the damage negated is dealt to them. Only one attack needs to be made per damage instance, regardless of times this Ward was used.", { kind: "negate", amount: 5, enhanced: 5, reflect: "ranged" }),
+  bane: f("Bane", "nightmare", "uncommon", "When you attune to this Form, select Physical, Elemental, or Magical damage. When you would take damage, spend 1 RP to negate up to 6 of that damage if it matches the chosen damage type, or 3 of that damage otherwise. Can be used multiple times per damage instance.", "If the incoming damage matches the type of damage this Form is set against, give that incoming damage a stack of Weakened on hit (once per damage instance).", { kind: "negate", amount: 6, other: 3, enhanced: 6, chooses: "category" }),
+  grudge: f("Grudge", "nightmare", "uncommon", "When you would take damage, spend 1 RP to negate up to 4 of that damage. Increases by 4 negation per instance of this Ward used in the same damage instance. Can be used multiple times per damage instance.", "Treat this effect as if it already triggered one additional time for the purposes of increasing the negation amount.", { kind: "negate", amount: 4, enhanced: 4, grows: 4 }),
+  riposte: f("Riposte", "nightmare", "rare", "When you would take damage, spend 1 RP to negate up to 10 of that damage if the attack’s source is within your melee range, or 4 of that damage otherwise. Can be used multiple times per damage instance.", "After negation occurs and damage resolves, if the source of the damage is within melee range, make a Melee attack roll against them with advantage. On hit, the damage negated is dealt to them. Only one attack needs to be made per damage instance, regardless of times this Ward was used.", { kind: "negate", amount: 10, other: 4, enhanced: 10, near: true, reflect: "melee" }),
+  zealot: f("Zealot", "nightmare", "rare", "When you would take damage, spend 1 RP to negate up to 6 of that damage so long as you are at 2+ Nightmare Alignment, providing 4 negation otherwise. Can be used multiple times per damage instance.", "If you are at 4+ Nightmare Alignment, the incoming damage is Weakened on crit (only applies once per damage instance).", { kind: "negate", amount: 6, other: 4, enhanced: 6, needs: "deepNightmare" }),
+  echo: f("Echo", "nightmare", "very rare", "When you would take damage, spend 1 RP to negate up to 3 of that damage. Can be used multiple times per damage instance. If this fully negates the attack, this effect is now applied for free to all instances of damage you would take until the start of your next turn. This effect stacks.", "Instead provides 6 negation.", { kind: "negate", amount: 3, enhanced: 6, echo: true })
 };
 export const FORM_KEYS = Object.keys(FORMS);
 export const formGroups = () => Object.entries(KINDS).map(([k, v]) => ({ label: `${v.label} Forms`, options: Object.fromEntries(Object.entries(FORMS).filter(([, x]) => x.align === k).map(([id, x]) => [id, `${x.name} (${x.rarity})`])) }));

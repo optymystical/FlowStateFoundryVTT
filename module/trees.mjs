@@ -14,7 +14,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Attack",
-      "text": "You can use Weapons and Unarmed strikes to attack an enemy within their listed range. Attacking takes 2 AP for light Weapons, and 3 AP for heavy Weapons. See the Combat Rules section and the Equipment document for more details."
+      "text": "You can use Weapons and Unarmed strikes to attack an enemy within their listed range. Attacking takes 2 AP for Light Weapons, and 3 AP for Heavy Weapons. See the Combat Rules section and the Equipment document for more details."
      },
      {
       "name": "Grappling",
@@ -22,18 +22,18 @@ export const TREES = [
      },
      {
       "name": "Throw",
-      "text": "Allows you to throw a held martial Weapon or a grappled target using 2 AP. If you are throwing a grappled target, impart an amount of force onto the target equal to 10x your strength stat. Either way, if you throw at a living target, make a ranged attack roll against them, on hit both targets collide and take the same amount of damage from the throw (if the damage would exceed the health of the thrown thing, it instead only deals that much damage to itself and the target)."
+      "text": "Allows you to throw a held Martial Weapon or a grappled target using 2 AP. If you are throwing a grappled target, impart an amount of force onto the target equal to 10x your Strength stat. Either way, if you throw at a living target, make a ranged attack roll against them. On hit with a grappled target, both targets collide and take the same amount of damage from the throw (if the damage would exceed the health of the thrown thing, it instead only deals that much damage to itself and the target). On hit with a Weapon, apply its damage and any passives/activated abilities to whatever it was thrown at."
      }
     ]
    },
    {
     "tier": 1,
     "free": false,
-    "summary": "You unlock the Brawling, Bladed, Balanced, Swift, Rapid, and Medium Armor skill trees. You also gain the following actions:",
+    "summary": "You unlock the Brawling, Bladed, Balanced, Swift, Rapid, and Medium Armor skill trees. You also gain the following ability and action:",
     "entries": [
      {
       "name": "Parry",
-      "text": "At any time on your turn, you can spend energy equal to a held Weapon’s Scaling Stat to enable it to Parry incoming attacks until the start of your next turn. This causes all incoming Melee/Ranged attacks to have your chosen Weapon’s Limit and Durability applied to their damage (your armor and dodge roll still functions as normal). Only one form of this ability can be active per Weapon."
+      "text": "Cost: Energy equal to your Scaling Stat. At any time on your turn, you can activate this ability with a held Weapon to enable it to Parry incoming attacks until the start of your next turn. This causes all incoming Melee/Ranged attacks to have your chosen Weapon’s Limit and Durability applied to their damage (your armor and dodge roll still function as normal). Only one form of this ability can be active per Weapon."
      },
      {
       "name": "Riposte",
@@ -48,7 +48,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Psych Up",
-      "text": "Cost: Energy equal to half of your Skill Points, rounded down. Can be done once per turn at any time on your turn. You gain advantage on all attack rolls you make, but all attacks made against you have advantage on their attack rolls. Both effects last until the start of your next turn."
+      "text": "Cost: Energy equal to half of your Skill Points, rounded down. Can be done once per turn at any time on your turn. You gain Advantage on all attack rolls you make, but all attacks made against you have Advantage on their attack rolls. Both effects last until the start of your next turn."
      }
     ]
    },
@@ -59,7 +59,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Calm Down",
-      "text": "Cost: Energy equal to half of your Skill Points, rounded down. Can be done once per turn at any time on your turn. You gain advantage on all dodge rolls you make, but all attacks you make have disadvantage on their attack rolls. Both effects last until the start of your next turn."
+      "text": "Cost: Energy equal to half of your Skill Points, rounded down. Can be done once per turn at any time on your turn. You gain Advantage on all dodge rolls you make, but all attacks you make have Disadvantage on their attack rolls. Both effects last until the start of your next turn."
      }
     ]
    },
@@ -70,7 +70,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Improvise",
-      "text": "Improvised Weapons now instead follow the closest Weapon type to what they would be (previously they would default to 1d6 damage per tier and have no effects)."
+      "text": "Improvised Weapons now instead follow the closest Weapon type to what they would be."
      }
     ]
    },
@@ -101,11 +101,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Twin Fang (Light)",
-      "text": "Cost: Energy equal to your DEX min. Can be used prior to making a set of Fast Unarmed Attacks. Those attacks get your choice of advantage on their attack roll, or Strengthened (chosen for each separately)."
+      "text": "Cost: Energy equal to your DEX min. Can be used prior to making a set of Fast Unarmed Attacks. Those attacks get your choice of Advantage on their attack roll, or Strengthened (chosen for each separately)."
      },
      {
       "name": "Jab (Heavy)",
-      "text": "Cost: Energy equal to your STR min. Can be used prior to making a Solitary Unarmed Attack. That attack gets advantage on its attack roll and is Strengthened."
+      "text": "Cost: Energy equal to your STR min. Can be used prior to making a Solitary Unarmed Attack. That attack gets Advantage on its attack roll and is Strengthened."
      }
     ]
    },
@@ -120,7 +120,7 @@ export const TREES = [
      },
      {
       "name": "Shatter (Heavy)",
-      "text": "You can now use Parry on any free hand using your STR as the Scaling Stat, changing it to do the following instead: Allows you to deal your Heavy Unarmed damage to the incoming attack for free (such as the weapon, projectile, etc), applying before the damage of that attack does. Solitary does not apply here. Only one hand can benefit from this at a time."
+      "text": "You can now use Parry on any free hand using your STR as the Scaling Stat, changing it to do the following instead: Allows you to deal your Heavy Unarmed damage to the incoming attack for free (such as the weapon, projectile, etc.), applying before the damage of that attack does. Solitary does not apply here. Only one hand can benefit from this at a time."
      }
     ]
    },
@@ -131,7 +131,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Combo (Light)",
-      "text": "Cost: Energy equal to double your DEX min. Can be used after successfully landing both hits in a set of Fast Unarmed Attacks. You immediately attack the same target again at no AP/RP cost with a Light Unarmed Attack with advantage on the attack roll (that attack cannot chain into another Fast attack as per the Fast rules)."
+      "text": "Cost: Energy equal to double your DEX min. Can be used after successfully landing both hits in a set of Fast Unarmed Attacks. You immediately attack the same target again at no AP/RP cost with a Light Unarmed Attack with Advantage on the attack roll (that attack cannot chain into another Fast attack as per the Fast rules)."
      },
      {
       "name": "Dragon Lash (Heavy)",
@@ -146,7 +146,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Redirect (Light)",
-      "text": "Cost: Energy equal to your DEX min. Whenever you successfully dodge or use Parry to take no damage from an incoming melee attack, you can use this ability. The attacker instead redirects their attack to a target adjacent to you (your choice, forced movement if necessary), rerolling the attack with advantage on its attack rolls, and reapplying any skills they applied to the initial attack (at no extra cost to them)."
+      "text": "Cost: Energy equal to your DEX min. Whenever you successfully dodge or use Parry to take no damage from an incoming melee attack, you can use this ability. The attacker instead redirects their attack to a target adjacent to you (your choice, forced movement if necessary), rerolling the attack with Advantage on its attack rolls, and reapplying any skills they applied to the initial attack (at no extra cost to them)."
      },
      {
       "name": "Kick Out (Heavy)",
@@ -185,7 +185,7 @@ export const TREES = [
      },
      {
       "name": "Remise (Heavy)",
-      "text": "Cost: Energy equal to your Scaling Stat min. When you make a Solitary Bladed Weapon attack where the first hit in the chain landed, you can use this ability. That attack gets advantage on its attack roll and is Strengthened."
+      "text": "Cost: Energy equal to your Scaling Stat min. When you make a Solitary Bladed Weapon attack where the first hit in the chain landed, you can use this ability. That attack gets Advantage on its attack roll and is Strengthened."
      }
     ]
    },
@@ -196,7 +196,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Close Quarters",
-      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Can be used when you are attacked in melee whilst wielding a Bladed Weapon. The incoming attack is made at double disadvantage."
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Can be used when you are attacked in melee while wielding a Bladed Weapon. The incoming attack is made at double Disadvantage."
      }
     ]
    },
@@ -207,7 +207,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Blender (Light)",
-      "text": "Your Light Bladed Weapons can now benefit from Fast+. If Whirlwind is used with this, it costs twice as much energy but all attacks made with this way gain the Cleave tag."
+      "text": "Your Light Bladed Weapons can now benefit from Fast+. If Whirlwind is used with this, it costs twice as much energy but all attacks made this way gain the Cleave tag."
      }
     ]
    },
@@ -218,7 +218,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Titan Weapon (Heavy)",
-      "text": "Your Two Handed Bladed Weapon attacks can now benefit from Solitary+, but get disadvantage on their extra attack roll if this is used."
+      "text": "Your Two Handed Bladed Weapon attacks can now benefit from Solitary+, but get Disadvantage on their extra attack roll if this is used."
      }
     ]
    },
@@ -229,7 +229,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Perfect Riposte",
-      "text": "Cost: Energy equal to double your Scaling Stat min. You can use this ability whenever you Riposte with a Bladed Weapon. The Riposte is made with advantage on its attack roll and is Strengthened. If used with Fast or Solitary, that extra attack also gets this benefit."
+      "text": "Cost: Energy equal to double your Scaling Stat min. You can use this ability whenever you Riposte with a Bladed Weapon. The Riposte is made with Advantage on its attack roll and is Strengthened. If used with Fast or Solitary, that extra attack also gets this benefit."
      }
     ]
    }
@@ -271,11 +271,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Slice (Light)",
-      "text": "Cost: Energy equal to your Scaling Stat min. When you make a Light Balanced Weapon Attack, you can use this ability. Your attack gains the Pierce effect, or it causes the target’s movement to take 1 more AP on hit, lasting until the start of your next turn (your choice)."
+      "text": "Cost: Energy equal to your Scaling Stat min. When you make a Light Balanced Weapon Attack, you can use this ability. Your attack gains the Pierce tag, or it causes the target’s movement to take 1 more AP on hit, lasting until the start of your next turn (your choice)."
      },
      {
       "name": "Slam (Heavy)",
-      "text": "Cost: Energy equal to your Scaling Stat min. When you make a Heavy Balanced Weapon Attack, you can use this ability. Your attack gains the Bash or Knockback effects (your choice)."
+      "text": "Cost: Energy equal to your Scaling Stat min. When you make a Heavy Balanced Weapon Attack, you can use this ability. Your attack gains the Bash or Knockback tag (your choice)."
      }
     ]
    },
@@ -317,7 +317,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Cut Back",
-      "text": "While wielding a Swift weapon, you can use Riposte with it whenever you dodge an incoming attack roll."
+      "text": "While wielding a Swift Weapon, you can use Riposte with it whenever you dodge an incoming attack roll."
      }
     ]
    },
@@ -328,7 +328,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Quick Strike",
-      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Swift Weapon Attack, you can use this ability. That attack has advantage on its attack roll. Applies to both attacks in a set of Fast Attacks so long as they are both Swift Weapon Attacks."
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Swift Weapon Attack, you can use this ability. That attack has Advantage on its attack roll. Applies to both attacks in a set of Fast Attacks so long as they are both Swift Weapon Attacks."
      }
     ]
    },
@@ -350,21 +350,21 @@ export const TREES = [
     "entries": [
      {
       "name": "Eviscerate",
-      "text": "Cost: Energy equal to double your Scaling Stat min. This ability can be used once at the end of your turn, so long as you have dealt direct damage to any number of targets using Swift Weapon attacks. Repeat all direct damage dealt by Swift Weapon attacks you have dealt during your turn (this bypasses objects, and has no effect on objects)."
+      "text": "Cost: Energy equal to double your Scaling Stat min. This ability can be used once at the end of your turn, so long as you have dealt direct damage to any number of targets using Swift Weapon attacks. Repeat all direct damage you dealt with Swift Weapon attacks during your turn back to those targets (this bypasses objects, and has no effect on objects)."
      }
     ]
    },
    {
     "tier": 5,
     "free": false,
-    "summary": "You gain the following passive:",
+    "summary": "You gain the following passives:",
     "entries": [
      {
-      "name": "Delta",
+      "name": "Delta (Light)",
       "text": "When you end your turn having landed at least 12 Light Swift Weapon attacks, you regain 6 RP."
      },
      {
-      "name": "Omega",
+      "name": "Omega (Heavy)",
       "text": "Your Heavy Swift Weapon attacks now allow Strengthened to affect their Pierce value."
      }
     ]
@@ -385,7 +385,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Quickload",
-      "text": "Whenever you attempt to attack or fire a shot while out of ammo with a held Rapid Weapon, you can choose to forgo that attack (still using the resources needed for that attack) to reload instantly. If used with Pepper, the attack is made with one less disadvantage."
+      "text": "Whenever you attempt to attack or fire a shot while out of ammo with a held Rapid Weapon, you can choose to forgo that attack (still using the resources needed for that attack) to reload instantly. If used with Pepper, replace one of the Pepper shots with this effect, and those remaining shots get one less Disadvantage."
      }
     ]
    },
@@ -396,7 +396,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Spin Down",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to using the Pepper effect during a Rapid Weapon attack, you can use this ability. Double the number of shots fired. They are still made as one attack with disadvantage on its attack roll (or two disadvantages with Pepper+ being used), and all shots must be at the same target."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to using the Pepper tag during a Rapid Weapon attack, you can use this ability. Double the number of shots fired. They are still made as one attack with Disadvantage on its attack roll (or two Disadvantages with Pepper+ being used), and all shots must be at the same target."
      }
     ]
    },
@@ -418,7 +418,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Lead Blindness",
-      "text": "Any actions used by the attacked target in reaction to your Rapid Weapon attacks, or actions used that result in Mark being consumed, have disadvantage on their relevant rolls."
+      "text": "Any actions used by the attacked target in reaction to your Rapid Weapon attacks, or actions used that result in Mark being consumed, have Disadvantage on their relevant rolls."
      }
     ]
    },
@@ -449,7 +449,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Limber",
-      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. After succeeding on any attack or dodge roll during combat whilst wearing Medium Armor, you can use this ability. Your next roll before the start of your next turn has advantage. This effect does not stack with itself."
+      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. After succeeding on any attack or dodge roll during combat while wearing Medium Armor, you can use this ability. Your next roll before the start of your next turn has Advantage. This effect does not stack with itself."
      }
     ]
    },
@@ -471,7 +471,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Careful Steps",
-      "text": "You can spend 2 AP to remove the stealth penalty from your worn Medium Armor. This can be done every turn automatically, allowing for normal stealth but Limiting your individual turn movement, and your surprise round AP available."
+      "text": "You can spend 2 AP to remove the stealth penalty from your worn Medium Armor. This can be done every turn passively by expending the 2 AP at turn start, allowing for normal stealth but limiting your individual turn movement, and your surprise round AP available."
      }
     ]
    },
@@ -482,7 +482,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Shift",
-      "text": "Cost: Energy equal to half of your CON min, rounded down. When you are attacked whilst wearing Medium armor, you can use this ability. You either gain advantage on your dodge roll or impose disadvantage on the incoming attack roll, your choice."
+      "text": "Cost: Energy equal to half of your CON min, rounded down. When you are attacked while wearing Medium Armor, you can use this ability. You either gain Advantage on your dodge roll or impose Disadvantage on the incoming attack roll, your choice."
      }
     ]
    },
@@ -513,7 +513,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Intimidate",
-      "text": "Your persuasion and deception rolls impose disadvantage against their target’s counter rolls so long as your Strength is higher than theirs. If they are a size larger than you, your strength needs to be twice as high to trigger this effect (scaling for each size larger they are). Works inversely against smaller sizes."
+      "text": "Your persuasion and deception rolls impose Disadvantage against their target’s counter rolls so long as your Strength is higher than theirs. If they are a size larger than you, your Strength needs to be twice as high to trigger this effect (scaling for each size larger they are). Works inversely against smaller sizes."
      }
     ]
    },
@@ -524,7 +524,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Heave!",
-      "text": "Cost: Energy equal to your STR stat. Prior to making a Heavy attack, you can use this ability. That attack is Strengthened and gets the Bash effect for that attack (if it already has Bash, it instead gets Bash+)."
+      "text": "Cost: Energy equal to double your STR min. Prior to making a Heavy attack, you can use this ability. That attack is Strengthened and gets the Bash tag for that attack (if it already has Bash, it instead gets Bash+)."
      }
     ]
    },
@@ -557,7 +557,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Unstoppable",
-      "text": "Cost: Energy equal to double your STR min. At any time, you can use this ability. You become Unstoppable until the start of your next turn. While Unstoppable, any rolls you make to block negative conditions and effects are rolled with advantage, and your stats are considered twice as high for resisting negative conditions and effects."
+      "text": "Cost: Energy equal to double your STR min. At any time, you can use this ability. You become Unstoppable until the start of your next turn. While Unstoppable, any rolls you make to resist negative conditions and effects are rolled with Advantage, and your stats are considered twice as high for resisting negative conditions and effects (stacks with Pure Body)."
      }
     ]
    }
@@ -588,7 +588,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Berserk",
-      "text": "Cost: Energy equal to your Scaling Stat min. At the start of your turn, you can use this ability. Until the start of your next turn, Light Striker attacks get the Fast property, and Heavy Striker attacks get the Solitary property. When this effect would end, you can expend its energy cost to maintain it instead."
+      "text": "Cost: Energy equal to your Scaling Stat min. At the start of your turn, you can use this ability. Until the start of your next turn, Light Striker attacks get the Fast tag, and Heavy Striker attacks get the Solitary tag. When this effect would end, you can expend its energy cost to maintain it instead."
      }
     ]
    },
@@ -610,7 +610,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Seeing Red",
-      "text": "Cost: Energy equal to your Scaling Stat min. While under the effects of Berserk, you can use this ability. You make all non-attack rolls at disadvantage, but the benefits of Berserk are upgraded to Fast+ and Solitary+. Lasts for the duration of that Berserk (maintaining Berserk continues these effects at no extra cost)."
+      "text": "Cost: Energy equal to your Scaling Stat min. While under the effects of Berserk, you can use this ability. You make all non-attack rolls at Disadvantage, but the benefits of Berserk are upgraded to Fast+ and Solitary+. Lasts for the duration of that Berserk (maintaining Berserk continues these effects at no extra cost)."
      }
     ]
    },
@@ -621,7 +621,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Blood and Iron",
-      "text": "The Cleave effect for Striker Weapons now applies to non-objects."
+      "text": "The Cleave tag for Striker Weapons now applies to non-objects."
      }
     ]
    }
@@ -652,11 +652,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Shield Toss",
-      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. This ability can be used as an alternative to making a Thrown Defender attack, can be done for AP or RP equal to the normal AP cost of that attack. If this attack is successful, it can do the following:",
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. This ability can be used as an alternative to making a Thrown Defender attack, and can be done for AP or RP equal to the normal AP cost of that attack. If this attack is successful, choose one or more of the following:",
       "sub": [
        "1. Return to you immediately after finishing its attack.",
        "2. Deal no damage and instead Block an attack for that target (Note that this still requires you to have succeeded in attacking them with the toss).",
-       "3. Be Strengthened (has no effect if using #2)."
+       "3. Be Strengthened (has no effect if Blocking)."
       ]
      }
     ]
@@ -668,7 +668,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Sword and Board",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making an attack with a non-Defender Weapon while holding a Defender Weapon in a different hand, you can use this ability. Make an attack roll with your Defender Weapon, if you hit you deal damage as normal and impose disadvantage on the target’s dodge roll against your triggering attack. Does not interrupt Solitary attacks."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making an attack with a non-Defender Weapon while holding a Defender Weapon in a different hand, you can use this ability. Make an attack roll with your Defender Weapon. If you hit, you deal damage as normal and impose Disadvantage on the target’s dodge roll against your triggering attack."
      }
     ]
    },
@@ -679,7 +679,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Bounce",
-      "text": "If you use Shield Toss and it hits its attack roll, instead of having it return you can have it bounce to another target within range, making an attack roll with disadvantage against the new target. This effect can keep triggering on the same Shield Toss, but the disadvantage stacks."
+      "text": "If you use Shield Toss and it hits its attack roll, instead of having it return you can have it bounce to another target within range, making an attack roll with Disadvantage against the new target. This effect can keep triggering on the same Shield Toss, but the Disadvantage stacks."
      }
     ]
    },
@@ -710,11 +710,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Controlled Swing (Light)",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Light Weighted Weapon attack, you can use this ability. Your attack gains your choice of advantage on its attack roll or Solitary (allowing another attack to be made as per Solitary’s rules)."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Light Weighted Weapon attack, you can use this ability. Your attack gains your choice of Advantage on its attack roll or Solitary (allowing another attack to be made as per Solitary’s rules)."
      },
      {
       "name": "Wild Swing (Heavy)",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Heavy Weighted Weapon attack, you can use this ability. Your attack gets disadvantage on its roll, but gains your choice of Bash+, two stacks of Strengthened, or Bash and one stack of Strengthened."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Heavy Weighted Weapon attack, you can use this ability. Your attack gets Disadvantage on its roll, but gains your choice of Bash+, two stacks of Strengthened, or Bash and one stack of Strengthened."
      }
     ]
    },
@@ -725,7 +725,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Spin",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Weighted Weapon attack, you can use this ability. Your attack is made as an area attack against all targets within your melee attack range."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Weighted Weapon attack, you can use this ability. Your attack is made as an Area attack against all targets within your melee attack range."
      }
     ]
    },
@@ -747,7 +747,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Smash",
-      "text": "Cost: Energy equal to half your Scaling Stat min, rounded down. Before making a Weighted Weapon attack, you can choose to use this skill. Your attack gets extra Knockback equal to its base Knockback value (before multiplying or adding from other effects)."
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Weighted Weapon attack, you can choose to use this ability. Your attack gets extra Knockback equal to its base Knockback value (before multiplying or adding from other effects)."
      }
     ]
    },
@@ -789,7 +789,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Take Aim",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making an Assault Weapon attack, you can use this ability. That attack gets your choice of advantage on its attack roll or Strengthened."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making an Assault Weapon attack, you can use this ability. That attack gets your choice of Advantage on its attack roll or Strengthened."
      }
     ]
    },
@@ -800,7 +800,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Distracting Fire",
-      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. When you would be attacked by a non-targeted attack within your Assault Weapon range while holding an Assault Weapon, you can use this ability. Make an attack roll against the offending attack roll. If you hit, the triggering attack suffers disadvantage on its attack roll and is Weakened. Distracting Fire itself only deals damage to whatever the offending thing is."
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. When you would be attacked by an attack you can sense within your Assault Weapon range while holding an Assault Weapon, you can use this ability. Make an attack roll against the offending attack roll. If you hit, the triggering attack suffers Disadvantage on its attack roll and is Weakened. Distracting Fire itself only deals damage to whatever the offending thing is."
      }
     ]
    },
@@ -838,7 +838,7 @@ export const TREES = [
    {
     "tier": 1,
     "free": false,
-    "summary": "You gain the following ability:",
+    "summary": "You gain the following action:",
     "entries": [
      {
       "name": "Brace",
@@ -853,7 +853,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Trudge",
-      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. Prior to moving whilst wearing Heavy Armor, you can use this ability. You ignore the Heavy Armor movement speed penalty for that instance of movement."
+      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. Prior to moving while wearing Heavy Armor, you can use this ability. You ignore the Heavy Armor movement speed penalty for that instance of movement."
      }
     ]
    },
@@ -864,18 +864,18 @@ export const TREES = [
     "entries": [
      {
       "name": "Bodyslam",
-      "text": "Cost: Energy equal to your CON min. You can use this ability whilst wearing Heavy Armor by spending 3 AP. Make an attack roll against a target within your personal melee range. On hit, you slam your body into the target, dealing Physical damage equal to your worn armor’s Limit plus your Constitution min to them."
+      "text": "Cost: Energy equal to your CON min. You can use this ability while wearing Heavy Armor by spending 3 AP. Make an attack roll against a target within your personal melee range. On hit, you slam your body into the target, dealing Physical damage equal to your worn armor’s Limit plus your Constitution min to them."
      }
     ]
    },
    {
     "tier": 4,
     "free": false,
-    "summary": "You gain the following passive:",
+    "summary": "You gain the following ability:",
     "entries": [
      {
       "name": "Harden",
-      "text": "When Brace would apply, you can expend additional energy equal to your Con min to apply Weakened to the incoming attack (Weakened applies first)."
+      "text": "Cost: Energy equal to your CON min. When Brace would apply, you can use this ability to apply Weakened to the incoming attack (Weakened applies first)."
      }
     ]
    },
@@ -886,7 +886,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Launch",
-      "text": "When you hit with bodyslam while wearing Heavy Armor, instead of applying damage as normal, you can instead apply 10x that amount in Force to the target in the direction of your attack."
+      "text": "When you hit with Bodyslam while wearing Heavy Armor, instead of applying damage as normal, you can instead apply 10x that amount in Force to the target in the direction of your attack."
      }
     ]
    }
@@ -906,7 +906,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Fast Lips",
-      "text": "Your persuasion and deception rolls have advantage against targets with less Dexterity than you. If they are a size smaller than you, your dexterity needs to be twice as high to trigger this effect (scaling for each size smaller they are). Works inversely against larger sizes."
+      "text": "Your persuasion and deception rolls have Advantage against targets with less Dexterity than you. If they are a size smaller than you, your Dexterity needs to be twice as high to trigger this effect (scaling for each size smaller they are). Works inversely against larger sizes."
      }
     ]
    },
@@ -921,8 +921,8 @@ export const TREES = [
       "sub": [
        "1. Pierce, upgrading existing Pierce to Pierce+ (Pierce+, does not stack with existing Pierce, does not upgrade again).",
        "2. Cleave, upgrading existing Cleave to Cleave+ (Cleave+, does not stack with existing Cleave, does not upgrade again).",
-       "3. Imposes Disadvantage on their dodge roll (two disadvantages, then three disadvantages).",
-       "4. Advantage on the attack roll (two advantages, then three advantages)."
+       "3. Imposes Disadvantage on their dodge roll (two Disadvantages, then three Disadvantages).",
+       "4. Advantage on the attack roll (two Advantages, then three Advantages)."
       ]
      }
     ]
@@ -945,7 +945,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Spot Weakness",
-      "text": "Cost: Energy equal to half of your DEX min, rounded down. Can be used as an alternative to Spotting. Follows the standard rules of Spotting, but can only target already sensed characters, and instead automatically reveals to you what armor they are wearing (if any), and its stats."
+      "text": "Cost: Energy equal to half of your DEX min, rounded down. Can be used as an alternative to a Spot action. Follows the standard rules of the Spot action, but can only target already sensed characters, and instead automatically reveals to you what armor they are wearing (if any), and its stats."
      }
     ]
    },
@@ -972,7 +972,7 @@ export const TREES = [
    {
     "tier": 1,
     "free": false,
-    "summary": "You gain the following passive:",
+    "summary": "You gain the following action:",
     "entries": [
      {
       "name": "Palisade",
@@ -987,7 +987,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Thrust",
-      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Reach Weapon attack, you can use this ability. If your attack is Light, it gains the Cleave effect. If your attack is Heavy, it gains the Cleave+ effect."
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Reach Weapon attack, you can use this ability. If your attack is Light, it gains the Cleave tag. If your attack is Heavy, it gains the Cleave+ tag."
      }
     ]
    },
@@ -1020,7 +1020,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Impale",
-      "text": "Cost: Energy equal to double your Scaling Stat min. When you deal more direct damage to a target than they have HP Regen with a Reach Weapon attack, you can use this ability. The target becomes grappled at the end of your Weapon. While they are grappled, you cannot make more attacks with that Reach Weapon."
+      "text": "Cost: Energy equal to double your Scaling Stat min. When you deal more direct damage to a target than half of their Pain Threshold with a Reach Weapon attack, you can use this ability. The target becomes grappled at the end of your Weapon. While they are grappled, you cannot make more attacks with that Reach Weapon."
      }
     ]
    }
@@ -1051,11 +1051,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Pierce Through (Light)",
-      "text": "Cost: Energy equal to half your Scaling Stat min, rounded down. Prior to making a Light Circular Weapon attack, you can use this ability. Your attack gains your choice of advantage on its attack roll or the Pierce+ effect."
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Light Circular Weapon attack, you can use this ability. Your attack gains your choice of Advantage on its attack roll or the Pierce+ tag."
      },
      {
       "name": "Cut Through (Heavy)",
-      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Heavy Circular Weapon attack, you can use this ability. Your attack gains your choice of Strengthened or the Cleave+ effect."
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Heavy Circular Weapon attack, you can use this ability. Your attack gains your choice of Strengthened or the Cleave+ tag."
      }
     ]
    },
@@ -1066,7 +1066,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Let it Rip!",
-      "text": "Cost: Energy equal to half your Scaling Stat min, rounded down. Prior to making a Circular Weapon attack, you can use this ability. If the attack hits, its damage is repeated again against the same target. This ability cannot be chained within the same attack."
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Circular Weapon attack, you can use this ability. If the attack hits, its damage is repeated again against the same target. This ability cannot be chained within the same attack."
      }
     ]
    },
@@ -1077,7 +1077,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Shadow Wings",
-      "text": "If you would use Pierce or Cut Through on a Thrown Circular Weapon attack made from at least half stealth, it would instead gain both of the effects from that ability."
+      "text": "If you would use Pierce Through or Cut Through on a Thrown Circular Weapon attack made from at least half stealth, it would instead gain both of the effects from that ability."
      }
     ]
    },
@@ -1088,7 +1088,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Vector Assault",
-      "text": "The return attack from What Goes Around is made from Half Stealth automatically."
+      "text": "The return attack from What Goes Around is made from half stealth automatically."
      }
     ]
    }
@@ -1108,7 +1108,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Point Blank",
-      "text": "Targets attempting to dodge your Blast Weapon attacks while within your personal melee range have disadvantage on their dodge roll. Applies to Area Blast Weapon attacks as well."
+      "text": "Targets attempting to dodge your Blast Weapon attacks while within your personal melee range have Disadvantage on their dodge roll. Applies to Area Blast Weapon attacks as well."
      }
     ]
    },
@@ -1126,7 +1126,7 @@ export const TREES = [
    {
     "tier": 3,
     "free": false,
-    "summary": "You gain the following ability and passive:",
+    "summary": "You gain the following passive:",
     "entries": [
      {
       "name": "Rip and Tear",
@@ -1141,7 +1141,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Punch",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Blast Weapon attack, you can use this ability. If your attack is Light, it gains the Knockback effect. If your attack is Heavy, it gains the Knockback+ effect."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Blast Weapon attack, you can use this ability. If your attack is Light, it gains the Knockback tag. If your attack is Heavy, it gains the Knockback+ tag."
      }
     ]
    },
@@ -1172,7 +1172,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Shift",
-      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. When you are attacked whilst wearing Light armor, you can use this ability. You either gain advantage on your dodge roll or impose disadvantage on the incoming attack roll, your choice."
+      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. When you are attacked while wearing Light Armor, you can use this ability. You either gain Advantage on your dodge roll or impose Disadvantage on the incoming attack roll, your choice."
      }
     ]
    },
@@ -1194,7 +1194,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Leap",
-      "text": "Cost: Energy equal to half your CON min, rounded down. You can use this ability whilst wearing Light Armor by spending 1 AP. You Jump, following normal Jumping rules. The AP cost of this ability is affected by movement slows, but not doubly so as normal jump rules would state."
+      "text": "Cost: Energy equal to half of your CON min, rounded down. You can use this ability while wearing Light Armor by spending 1 AP. You Jump, following normal Jumping rules. The AP cost of this ability is affected by movement slows, but not doubly so as normal jump rules would state."
      }
     ]
    },
@@ -1235,7 +1235,7 @@ export const TREES = [
     "summary": "You gain the following passive:",
     "entries": [
      {
-      "name": "One With Body",
+      "name": "One with Body",
       "text": "You are aware of any wounds, poisons, and diseases that affect you, as well as all of their effects (unless stated otherwise)."
      }
     ]
@@ -1247,7 +1247,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Taunt",
-      "text": "Cost: Energy equal to your CON min. You can use this ability at any time by spending 2 RP. Make a contested Persuasion or Deception check against a target who can sense you within 100ft. They are compelled to attack you until they are no longer within your range or the effect ends. They can repeat this check at the end of each of their turns or by spending 2 AP/RP, with each repeat giving you a stacking disadvantage on your check. Lasts until the start of your next turn."
+      "text": "Cost: Energy equal to your CON min. You can use this ability at any time by spending 2 RP. Make a contested Persuasion or Deception check against a target who can sense you within 100ft. They are compelled to attack you until they are no longer within 100ft of you or the effect ends. They can repeat this check at the end of each of their turns or by spending 2 AP/RP, with each repeat giving you a stacking Disadvantage on your check. Lasts until the start of your next turn."
      }
     ]
    },
@@ -1258,7 +1258,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Pure Body",
-      "text": "Your Martial stats are twice as high for the purpose of resisting negative effects and abilities, and you automatically succeed on Martial checks that have a target number or contested result that is less than half of your relevant stat. When resisting any negative effect or ability, you may use your Constitution (not doubled) in place of the required stat."
+      "text": "Your Martial stats are twice as high for the purpose of resisting negative effects and abilities (stacks with Unstoppable), and you automatically succeed on Martial checks that have a target number or contested result that is less than half of your relevant stat. When resisting any negative effect or ability, you may use your Constitution (not counting the doubling by Pure Body) in place of the required stat."
      }
     ]
    },
@@ -1280,7 +1280,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Imposing Presence",
-      "text": "Attacks made against you from within your Personal Melee Range are Weakened so long as they already have at least one stack of Weakened."
+      "text": "Attacks made against you from within your personal melee range are Weakened so long as they already have at least one stack of Weakened."
      }
     ]
    }
@@ -1300,7 +1300,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Disarm",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Curved Weapon attack against a target that is holding something, you can use this ability. Your attack is Weakened, but if you hit, the target immediately releases their held thing, be it a grappled target, Weapon, foci, etc."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Curved Weapon attack against a target that is holding something, you can use this ability. Your attack is Weakened, but if you hit, the target immediately releases their held thing, be it a grappled target, Weapon, Foci, etc."
      }
     ]
    },
@@ -1311,7 +1311,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Perfect Parry",
-      "text": "Whenever Parry is used with a Curved Weapon, you can instead make an attack roll with advantage against that incoming attack roll. On hit, that attack is completely negated, and on miss, your Parry does not apply to that hit."
+      "text": "Whenever Parry is used with a Curved Weapon, you can instead make an attack roll with Advantage against that incoming attack roll. On hit, that attack is completely negated, and on miss, your Parry does not apply to that hit."
      }
     ]
    },
@@ -1322,7 +1322,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Momentum",
-      "text": "When you hit a target with a Curved Weapon attack, you can choose to give all further Curved Weapon attacks against that target one stack of advantage or Strengthened. This effect stacks, and lasts until the start of your next turn."
+      "text": "When you hit a target with a Curved Weapon attack, you can choose to give all further Curved Weapon attacks against that target one stack of Advantage or Strengthened. This effect stacks, and lasts until the start of your next turn."
      }
     ]
    },
@@ -1333,7 +1333,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Sheath Weapon",
-      "text": "Cost: Energy equal to double your Scaling Stat min. At the end of your turn, you can use this ability if you have dealt direct damage with a Curved Weapon this turn. Immediately repeat all direct damage you dealt to targets during your turn back to them. This damage does not ignore armor."
+      "text": "Cost: Energy equal to double your Scaling Stat min. At the end of your turn, you can use this ability if you have dealt direct damage with a Curved Weapon this turn. Immediately repeat all direct damage you dealt with Curved Weapon attacks during your turn back to those targets. This damage does not ignore armor."
      }
     ]
    },
@@ -1364,7 +1364,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Prepared Shot",
-      "text": "Cost: Energy equal to double your Scaling Stat min. Prior to making a Longshot Weapon attack, you can use this ability. Your attack gains advantage on its attack roll and one of the following (your choice):",
+      "text": "Cost: Energy equal to double your Scaling Stat min. Prior to making a Longshot Weapon attack, you can use this ability. Your attack gains Advantage on its attack roll and one of the following (your choice):",
       "sub": [
        "1. Cleave+",
        "2. Pierce+",
@@ -1391,7 +1391,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Snipe Hunt",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Longshot Weapon attack that has at least one stack of advantage, you can choose to use this ability. Your opponent gets a number of disadvantages dodging your attack equal to the advantages you have on your attack roll."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Longshot Weapon attack that has at least one stack of Advantage, you can choose to use this ability. Your opponent gets a number of Disadvantages dodging your attack equal to the Advantages you have on your attack roll."
      }
     ]
    },
@@ -1402,7 +1402,7 @@ export const TREES = [
     "entries": [
      {
       "name": "In a Barrel",
-      "text": "When you make a longshot Weapon attack against a target suffering from any movement penalty, you get an advantage on that attack roll."
+      "text": "When you make a Longshot Weapon attack against a target suffering from any movement penalty, you get an Advantage on that attack roll."
      }
     ]
    },
@@ -1413,7 +1413,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Headshot",
-      "text": "Cost: Energy equal to your Scaling Stat. Can be used as an alternative to Prepared Shot. Your attack gets all benefits of Prepared Shot."
+      "text": "Cost: Energy equal to your Scaling Stat. Can be used as an alternative to Prepared Shot. Your attack gains Advantage on its attack roll and all three of Prepared Shot's options (Cleave+, Pierce+, and Strengthened)."
      }
     ]
    }
@@ -1429,7 +1429,7 @@ export const TREES = [
    {
     "tier": 1,
     "free": false,
-    "summary": "You gain the following ability:",
+    "summary": "You gain the following action:",
     "entries": [
      {
       "name": "Giga Brace",
@@ -1444,18 +1444,18 @@ export const TREES = [
     "entries": [
      {
       "name": "Bodyslam",
-      "text": "Cost: Energy equal to your CON min. You can use this ability whilst wearing Titanic Armor by spending 3 AP. Make an attack roll with disadvantage against a target within your personal melee range. On hit, you slam your body into the target, dealing Physical damage equal to your worn armor’s Limit plus your Constitution min to them."
+      "text": "Cost: Energy equal to your CON min. You can use this ability while wearing Titanic Armor by spending 3 AP. Make an attack roll with Disadvantage against a target within your personal melee range. On hit, you slam your body into the target, dealing Physical damage equal to your worn armor’s Limit plus your Constitution min to them."
      }
     ]
    },
    {
     "tier": 3,
     "free": false,
-    "summary": "You gain the following passive:",
+    "summary": "You gain the following ability:",
     "entries": [
      {
-      "name": "Harden",
-      "text": "When Brace would apply, you can expend additional energy equal to half your Con min rounded down to apply Weakened to the incoming attack (Weakened applies first)."
+      "name": "Giga Harden",
+      "text": "Cost: Energy equal to half of your CON min, rounded down. When Giga Brace would apply, you can use this ability to apply Weakened to the incoming attack (Weakened applies first)."
      }
     ]
    },
@@ -1466,7 +1466,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Trudge",
-      "text": "Cost: Energy equal to half of your CON min, rounded down. Prior to moving whilst wearing Titanic Armor, you can use this ability. You ignore the Titanic Armor movement speed penalty for that instance of movement."
+      "text": "Cost: Energy equal to half of your CON min, rounded down. Prior to moving while wearing Titanic Armor, you can use this ability. You ignore the Titanic Armor movement speed penalty for that instance of movement."
      }
     ]
    },
@@ -1508,7 +1508,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Disrupt",
-      "text": "Cost: Energy equal to the STR min of your grappled target. Whenever your grappled target would attempt any roll, you can use this ability. They get disadvantage on that roll."
+      "text": "Cost: Energy equal to the STR min of your grappled target. Whenever your grappled target would attempt any roll, you can use this ability. They get Disadvantage on that roll."
      }
     ]
    },
@@ -1519,7 +1519,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Big Hands",
-      "text": "You can now grapple targets that are up to one size larger than you, and you have advantage on all grapple attacks you make."
+      "text": "You can now grapple targets that are up to one size larger than you, and you have Advantage on all grapple attacks you make."
      }
     ]
    },
@@ -1540,8 +1540,8 @@ export const TREES = [
     "summary": "You gain the following action:",
     "entries": [
      {
-      "name": "Slam",
-      "text": "Creatures grappled by you can now be used as improvised melee Weapons, following the Weapon type that most closely matches their body type. They attack as a normal Weapon would, but do not do damage as the Weapon normally would, instead you apply Force to them equal to 10x your Strength stat, and treat them as hitting a “wall” (the target of your attack) 0ft away, dealing damage to both them and the target (if the damage would exceed the health of the grappled target, it instead only deals that much damage to itself and the target)."
+      "name": "Living Weapon",
+      "text": "Creatures grappled by you can now be used as improvised melee Weapons, following the Weapon type that most closely matches their body type. They attack as a normal Weapon would, but do not do damage as the Weapon normally would; instead, you apply Force to them equal to 10x your Strength stat, and treat them as hitting a “wall” (the target of your attack) 0ft away, dealing damage to both them and the target (if the damage would exceed the health of the grappled target, it instead only deals that much damage to itself and the target)."
      }
     ]
    }
@@ -1572,7 +1572,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Windup",
-      "text": "Cost: Energy equal to your Scaling Stat min, rounded down. Prior to making a Thrasher Weapon attack, you can use this ability. That attack has one extra advantage on its attack roll. This effect can be used as many times as desired before an attack."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Thrasher Weapon attack, you can use this ability. That attack has one extra Advantage on its attack roll. This effect can be used as many times as desired before an attack."
      }
     ]
    },
@@ -1593,7 +1593,7 @@ export const TREES = [
     "summary": "You gain the following passive:",
     "entries": [
      {
-      "name": "Whirlygig",
+      "name": "Whirligig",
       "text": "Every two uses of Windup additionally grants that attack one stack of Strengthened."
      }
     ]
@@ -1625,7 +1625,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Dash",
-      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. You can use this ability at any time for 1 RP, so long as you are not wearing armor. Immediately move up to your movement speed. The RP cost of this ability is affected by movement slows. If used while under attack, you impose disadvantage on the incoming attack roll and move for 1 RP after the attack hits/misses."
+      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. You can use this ability at any time for 1 RP, so long as you are not wearing armor. Immediately move up to your movement speed. The RP cost of this ability is affected by movement slows. If used while under attack, you impose Disadvantage on the incoming attack roll and move for 1 RP after the attack hits/misses."
      }
     ]
    },
@@ -1636,14 +1636,14 @@ export const TREES = [
     "entries": [
      {
       "name": "Leap",
-      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. You can use this ability whilst wearing no armor by spending 1 AP. You Jump, following normal Jumping rules. The AP cost of this ability is affected by movement slows, but not doubly so as normal jump rules would state."
+      "text": "Cost: Energy equal to a quarter of your CON min, rounded down. You can use this ability while wearing no armor by spending 1 AP. You Jump, following normal Jumping rules. The AP cost of this ability is affected by movement slows, but not doubly so as normal jump rules would state."
      }
     ]
    },
    {
     "tier": 3,
     "free": false,
-    "summary": "You gain the following action:",
+    "summary": "You gain the following passive:",
     "entries": [
      {
       "name": "Speedy",
@@ -1669,7 +1669,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Unfettered",
-      "text": "You are immune to physical movement slows while you are not wearing armor, and you have advantage on your dodge rolls against all attacks."
+      "text": "You are immune to all Stage 1 movement slows while you are not wearing armor, and you have Advantage on your dodge rolls against all attacks."
      }
     ]
    }
@@ -1705,7 +1705,7 @@ export const TREES = [
      },
      {
       "name": "",
-      "text": "Replacement Mods can either replace a Spell’s listed base effect (only replacing a Combo Spell’s relevant part), or simply add on like a normal Spell Mod. When a Replacement Mod replaces a Spell’s base effect, it is doubled in power and any effects that would modify the Core/Combo Spell instead modify the Replacement Mod."
+      "text": "Replacement Mods can either replace a Spell’s listed base effect (only replacing a Combo Spell’s relevant part), or simply add on like a normal Spell Mod. When a Replacement Mod replaces a Spell’s base effect, it is doubled in Power and any effects that would modify the Core/Combo Spell instead modify the Replacement Mod."
      },
      {
       "name": "Spell Threshold",
@@ -1743,7 +1743,7 @@ export const TREES = [
       "sub": [
        "Melee: All Spells cast at a target within your personal melee range are considered melee attacks regardless of their normal range type. Spells cast this way have advantage on their attack rolls.",
        "Ranged: Has a maximum range of 200ft. The attack is made as normal, respecting cover.",
-       "Targeted: Has a maximum range of 100ft. The attack is automatically made from half stealth (unless the target is immune to stealth attacks or has magic sense). Doubles up with Melee if made in melee.",
+       "Targeted: Has a maximum range of 100ft. The attack is automatically made from half stealth (unless the target is immune to stealth attacks or has Primary/Heightened Spirit Sense). Doubles up with Melee if made in melee.",
        "Area: Can either be a 10ft radius, a 20ft 90 degree cone, or a 30ft by 5ft line. Each target in the area must defend separately against your singular attack roll. This Area can include yourself if desired."
       ]
      }
@@ -1771,7 +1771,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Ritual Casting",
-      "text": "Unlocks a new way to cast Spells, known as Rituals. To cast this way, one must spend a longer period of time channeling energy into the Spell as a heavy activity, requiring a number of hours equal to the Threshold of the Spell (ignoring TR). While a Ritual is active, your maximum energy is reduced by half of the total energy cost of that Spell (ignoring TR, rounded down), only returning when the ritual ends. While a Ritual is active, it can be hidden inside of you for 2 AP. This does not end the ritual, it merely makes it impossible to detect by any means. At any time, you can make a hidden Ritual reappear anywhere within its normal cast range using 2 AP/RP."
+      "text": "Unlocks a new way to cast Spells, known as Rituals. To cast this way, one must spend a longer period of time channeling energy into the Spell as a heavy activity, requiring a number of hours equal to the Threshold of the Spell (ignoring TR). While a Ritual is active, your maximum energy is reduced by half of the total energy cost of that Spell (ignoring TR, rounded down), only returning when the Ritual ends. While a Ritual is active, it can be hidden inside of you for 2 AP. This does not end the Ritual, it merely makes it impossible to detect by any means. At any time, you can make a hidden Ritual reappear anywhere within its normal cast range using 2 AP/RP."
      },
      {
       "name": "Focus",
@@ -1820,7 +1820,7 @@ export const TREES = [
      },
      {
       "name": "Webmaster",
-      "text": "Weaving now no longer ignores TR."
+      "text": "Weaving now benefits from TR."
      }
     ]
    }
@@ -1840,7 +1840,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Shield",
-      "text": "1 Threshold, Core Spell, Targeted, Uncombinable. This Spell can be used to project a shield of energy on a target within range until the start of your next turn. The shield has a total of 20 health which it uses to absorb damage that would attempt to harm the target or anything the target is wearing/holding. Does not stack with itself, treat the Limit of this shield as being equal to its health. Ritual: Lasts until the ritual ends or the shield breaks."
+      "text": "1 Threshold, Core Spell, Targeted, Uncombinable. This Spell can be used to project a shield of energy on a target within range until the start of your next turn. The shield has a total of 20 health which it uses to absorb damage that would attempt to harm the target or anything the target is wearing/holding. Does not stack with itself, treat the Limit of this shield as being equal to its health. Ritual: Lasts until the Ritual ends or the shield breaks."
      }
     ]
    },
@@ -1930,11 +1930,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Personal Repulsion",
-      "text": "1 Threshold, Spell Mod, Replacement, Targeted. The Spell gives the target a personal repulsion field that lasts until the start of your next turn. Any incoming attack that has a Scaling Stat value of 20 or less has disadvantage on its attack roll. Ritual: Lasts until the ritual ends."
+      "text": "1 Threshold, Spell Mod, Replacement, Targeted. The Spell gives the target a personal repulsion field that lasts until the start of your next turn. Any incoming attack that has a Scaling Stat value of 20 or less has disadvantage on its attack roll. Ritual: Lasts until the Ritual ends."
      },
      {
       "name": "Personal Well",
-      "text": "1 Threshold, Spell Mod, Replacement, Targeted. The Spell gives the target a personal gravity well that lasts until the start of your next turn. Any incoming attack that has a Scaling Stat value of 20 or less has advantage on its attack roll. Ritual: Lasts until the ritual ends."
+      "text": "1 Threshold, Spell Mod, Replacement, Targeted. The Spell gives the target a personal gravity well that lasts until the start of your next turn. Any incoming attack that has a Scaling Stat value of 20 or less has advantage on its attack roll. Ritual: Lasts until the Ritual ends."
      }
     ]
    },
@@ -1945,7 +1945,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Hold",
-      "text": "2 Threshold, Spell Mod, Replacement, Targeted. The Spell grapples the target in place with Magical force on a successful hit until the start of your next turn. Their counter grapple check must get a minimum of 2 on the roll to break free from this hold. This value is halved for every size above 3 the creature is, and doubled inversely. If the target is already grappled, they instead take 1d12 physical damage. Ritual: Lasts until the ritual ends or the target is no longer grappled."
+      "text": "2 Threshold, Spell Mod, Replacement, Targeted. The Spell grapples the target in place with Magical force on a successful hit until the start of your next turn. Their counter grapple check must get a minimum of 2 on the roll to break free from this hold. This value is halved for every size above 3 the creature is, and doubled for every size below 3. If the target is already grappled, they instead take 1d12 physical damage. Ritual: Lasts until the Ritual ends or the target is no longer grappled."
      }
     ]
    },
@@ -1956,7 +1956,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Gravity Field",
-      "text": "2 Threshold, Spell Mod. The Spell changes its attack type to Area, applying its effect to all targets within the area. In addition, its Ritual form now continues the application in the area until the ritual ends (this changes Force’s ritual to be this instead, effects do not stack and apply at the start of each of your turns)."
+      "text": "2 Threshold, Spell Mod. The Spell changes its attack type to Area, applying its effect to all targets within the area. In addition, its Ritual form now continues the application in the area until the Ritual ends (this changes Force’s Ritual to be this instead, effects do not stack and apply at the start of each of your turns)."
      }
     ]
    }
@@ -2008,7 +2008,7 @@ export const TREES = [
     "summary": "You unlock the following Spell Mod:",
     "entries": [
      {
-      "name": "Cleave",
+      "name": "Rend",
       "text": "1 Threshold, Spell Mod. The damage dealt by this Spell is increased by your Scaling Stat min."
      }
     ]
@@ -2126,7 +2126,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Bash",
-      "text": "1 Threshold, Spell Mod, Stackable. This Spell gains the Bash property with a value of 10 (if an object has this much Limit or less, ignore it and deal that value as extra damage to the target)."
+      "text": "1 Threshold, Spell Mod, Stackable. This Spell gains the Bash property with a value of 10 (if an object has this much Limit or less, ignore it and deal damage equal to its Limit as extra damage to the target)."
      }
     ]
    },
@@ -2212,7 +2212,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Minigun",
-      "text": "Multicast gains Stacking. Each instance requires its own usage of AP/RP."
+      "text": "Multicast becomes Stackable. Each instance requires its own usage of AP/RP."
      }
     ]
    }
@@ -2232,7 +2232,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Flame",
-      "text": "1 Threshold, Core Spell, Ranged. This Spell can be used to produce a flame which can be launched at a target, dealing 1d12 heat damage to the target and applying that many Ignite stacks to whatever is damaged. If done in melee, the Spell can instead deal no damage (still applying Ignite stacks) to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. In addition, while this Spell or its Ignite effect is active, it can produce light up to 30ft away (chosen at Spell cast). Ritual: The flame no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the ritual ends."
+      "text": "1 Threshold, Core Spell, Ranged. This Spell can be used to produce a flame which can be launched at a target, dealing 1d12 heat damage to the target and applying that many Ignite stacks to whatever is damaged. If done in melee, the Spell can instead deal no damage (still applying Ignite stacks) to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. In addition, while this Spell or its Ignite effect is active, it can produce light up to 30ft away (chosen at Spell cast). Ritual: The flame no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends."
      }
     ]
    },
@@ -2254,7 +2254,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Brand",
-      "text": "3 Threshold, Spell Mod. If this Spell hits, prior to it dealing damage the target gets marked with a Brand until the start of your next turn. While under the effects of a Brand, anytime they take Heat damage that isn’t from Brand, they are dealt heat damage equal to the base damage of the Spell this mod is attached to."
+      "text": "3 Threshold, Spell Mod. If this Spell hits, prior to it dealing damage the target gets marked with a Brand until the start of your next turn. While under the effects of a Brand, anytime they take heat damage that isn’t from Brand, they are dealt heat damage equal to the base damage of the Spell this mod is attached to."
      }
     ]
    },
@@ -2265,7 +2265,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Flare",
-      "text": "2 Threshold, Spell Mod. The damage dice of this Spell are split into a proportional amount of d4s instead, and each proportional set of d4s deals its damage separately (so if you use 2d12 normally, this would do 3 2d4s each dealt separately)."
+      "text": "2 Threshold, Spell Mod. The damage dice of this Spell are split into a proportional amount of d4s instead, and each proportional set of d4s deals its damage separately (so if you use 2d12 normally, this would do 2 3d4s each dealt separately)."
      }
     ]
    },
@@ -2296,7 +2296,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Frost",
-      "text": "1 Threshold, Core Spell, Ranged. This Spell can be used to produce a frost which can be launched at a target, dealing 1d8 cold damage and removing that much energy from them. If done in melee, the Spell can instead deal no damage (still removing energy) to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The frost no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the ritual ends."
+      "text": "1 Threshold, Core Spell, Ranged. This Spell can be used to produce a frost which can be launched at a target, dealing 1d8 cold damage and removing that much energy from them. If done in melee, the Spell can instead deal no damage (still removing energy) to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The frost no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends."
      }
     ]
    },
@@ -2360,7 +2360,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Crackle",
-      "text": "1 Threshold, Core Spell, Ranged. This Spell can be used to produce electricity which can be launched at a target, dealing 1d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the ritual ends."
+      "text": "1 Threshold, Core Spell, Ranged. This Spell can be used to produce electricity which can be launched at a target, dealing 1d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends."
      }
     ]
    },
@@ -2404,7 +2404,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Discharge",
-      "text": "1 Threshold, Spell Mod. Any time this Spell would deal damage that has at least two Strengthened stacks, you can remove those two Strengthened stacks from that damage to cause your next attack before the start of your next turn have advantage on its attack roll."
+      "text": "1 Threshold, Spell Mod. Any time this Spell would deal damage that has at least two Strengthened stacks, you can remove those two Strengthened stacks from that damage to cause your next attack before the start of your next turn to have advantage on its attack roll."
      }
     ]
    }
@@ -2424,7 +2424,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Glob",
-      "text": "1 Threshold, Core Spell, Ranged. This Spell can be used to mold a ball of acid which can be launched at a target, dealing 1d8 acid damage to the target and applying that many Stain stacks to whatever is damaged. If done in melee, the Spell can instead deal no damage (still applying Stain stacks) to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The glob no longer goes away naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the ritual ends."
+      "text": "1 Threshold, Core Spell, Ranged. This Spell can be used to mold a ball of acid which can be launched at a target, dealing 1d8 acid damage to the target and applying that many Stain stacks to whatever is damaged. If done in melee, the Spell can instead deal no damage (still applying Stain stacks) to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The glob no longer goes away naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends."
      }
     ]
    },
@@ -2457,7 +2457,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Sticky",
-      "text": "1 Threshold, Spell Mod. This Spell has advantage on its attack rolls against targets with Stain stacks equal to or greater than their pain threshold (includes Solid Stains)."
+      "text": "1 Threshold, Spell Mod. This Spell has advantage on its attack rolls against targets with Stain stacks equal to or greater than their Pain Threshold (includes Solid Stains)."
      }
     ]
    },
@@ -2495,19 +2495,23 @@ export const TREES = [
    {
     "tier": 2,
     "free": false,
-    "summary": "You unlock the following action:",
+    "summary": "You unlock the following Passive:",
     "entries": [
      {
       "name": "Spirit Sense Secondary",
-      "text": "You gain an extra sense known as “Spirit Sense” that starts off as Secondary.",
-      "sub": [
-       "Secondary: Allows you to make a spot check to detect any magical energy that is within 10ft. On success, you sense the direction of the source regardless of obstacles and know the quantity of energy present (for creatures, this is their total Spirit) but not their exact location.",
-       "Primary: Increases spot check range to 100ft, and you now auto succeed on targets within melee range. In addition, you are now immune to Targeted attack roll’s stealth bonus."
-      ]
+      "text": "You gain an extra sense known as “Spirit Sense” that starts off as Secondary."
+     },
+     {
+      "name": "Secondary",
+      "text": "Allows you to make a spot check to detect any magical energy that is within 10ft. On success, you sense the direction of the source regardless of obstacles and know the quantity of energy present (for creatures, this is their total Spirit) but not their exact location."
+     },
+     {
+      "name": "Primary",
+      "text": "Increases spot check range to 100ft, and you now auto succeed on targets within melee range. In addition, you are now immune to Targeted attack roll’s stealth bonus."
      },
      {
       "name": "Heightened",
-      "text": "Increases spot check range to 1000ft, and you can now determine the exact composition of Spells, as well as the individual Spirit stats of creatures, and the exact location of all energies detected this way."
+      "text": "Increases spot check range to 1000ft, and you can now determine the exact composition of Spells, as well as the individual Spirit stats of creatures, and the exact location of all energies detected this way. Obtainable using the Perception Generic Group or other methods."
      }
     ]
    },
@@ -2564,7 +2568,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Poison",
-      "text": "1 Threshold, Core Spell, Targeted. Coats the target object, creature, Spell, or wonder with this Poison on a successful hit, lasting until the start of your next turn. When that coated thing would next deal direct damage to a target before then, the Poison then transfers to that target. On the start of that target's next turn, they must roll a Constitution Check and get a 3 or higher, or they lose 3d6 health. Regardless of if they succeed or fail, the Poison then ends. This Spell cannot crit. Ritual: This Spell no longer decays after a turn while coating something. In addition, when it applies to a target after they are dealt direct damage, it lasts on them until either they die, or they pass the Constitution Check, triggering the effect at the start of each of their turns."
+      "text": "1 Threshold, Core Spell, Targeted. Coats the target object, creature, Spell, or Wonder with this Poison on a successful hit, lasting until the start of your next turn. When that coated thing would next deal direct damage to a target before then, the Poison then transfers to that target. On the start of that target's next turn, they must roll a Constitution Check and get a 3 or higher, or they lose 3d6 health. Regardless of if they succeed or fail, the Poison then ends. This Spell cannot crit. Ritual: This Spell no longer decays after a turn while coating something. In addition, when it applies to a target after they are dealt direct damage, it lasts on them until either they die, or they pass the Constitution Check, triggering the effect at the start of each of their turns."
      }
     ]
    },
@@ -2575,7 +2579,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Prolong",
-      "text": "1 Threshold, Spell Mod, Stackable. This Poison now continues applying its effect until its Constitution check has been passed 1 time, or its effect has applied 2 times (+1 each stack)."
+      "text": "1 Threshold, Spell Mod, Stackable. This Poison now continues applying its effect until its Constitution Check has been passed 1 time, or its effect has applied 2 times (+1 each stack)."
      }
     ]
    },
@@ -2608,7 +2612,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Virality",
-      "text": "2 Threshold, Spell Mod. If the target rolls less than half of the Constitution Check required for this Poison, you may make an attack roll against a target within 100ft of them and you. On hit, the Poison duplicates and spreads to that new target (that new target can also trigger Virality, the new Poison cannot be a ritual, and Lethality resets for the new target)."
+      "text": "2 Threshold, Spell Mod. If the target rolls less than half of the Constitution Check required for this Poison, you may make an attack roll against a target within 100ft of them and you. On hit, the Poison duplicates and spreads to that new target (that new target can also trigger Virality, the new Poison cannot be a Ritual, and Lethality resets for the new target)."
      }
     ]
    }
@@ -2628,7 +2632,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Charm",
-      "text": "1 Threshold, Core Spell, Targeted. On a successful hit, the target must roll a Willpower Check and get a 3 or higher, or they get disadvantage/Weakened on a generic roll type of your choice (attack, damage, dodge, non-combat, stat check), lasting until the start of your next turn. In addition, a successful hit and failure of the check does not alert the target that this Spell is affecting them. This effect does not stack for the same roll type, but can be applied to different roll types. Ritual: You get a no-threshold cast of this Spell that, on hit, becomes permanent on the target until the ritual ends or the target passes/dies. If you miss this Spell, it is still usable on another cast attempt."
+      "text": "1 Threshold, Core Spell, Targeted. On a successful hit, the target must roll a Willpower Check and get a 3 or higher, or they get disadvantage/Weakened on a generic roll type of your choice (attack, damage, dodge, non-combat, stat check), lasting until the start of your next turn. In addition, a successful hit and failure of the check does not alert the target that this Spell is affecting them. This effect does not stack for the same roll type, but can be applied to different roll types. Ritual: You get a no-threshold cast of this Spell that, on hit, becomes permanent on the target until the Ritual ends or the target passes/dies. If you miss this Spell, it is still usable on another cast attempt."
      }
     ]
    },
@@ -2639,7 +2643,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Ingrained",
-      "text": "2 Threshold, Spell Mod. This Charm now lasts for 1 minute, with the target repeating the Willpower check at the start of each of your turns, with the requirement being halved each successive time (rounded down). The effect ends if they pass the check."
+      "text": "2 Threshold, Spell Mod. This Charm now lasts for 1 minute, with the target repeating the Willpower Check at the start of each of your turns, with the requirement being halved each successive time (rounded down). The effect ends if they pass the check."
      }
     ]
    },
@@ -2650,7 +2654,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Convince",
-      "text": "1 Threshold, Spell Mod. If the target is already under the effects of one of your Charm’s, this Spell has advantage on its attack roll."
+      "text": "1 Threshold, Spell Mod. If the target is already under the effects of one of your Charms, this Spell has advantage on its attack roll."
      }
     ]
    },
@@ -2696,11 +2700,11 @@ export const TREES = [
      },
      {
       "name": "Harm",
-      "text": "The target takes damage from a non-hex source. The damage dealt by this hex is doubly Weakened."
+      "text": "The target takes damage from a non-Hex source. The damage dealt by this Hex is doubly Weakened."
      },
      {
       "name": "Move",
-      "text": "The target spends AP to move. The damage dealt by this hex is Weakened."
+      "text": "The target spends AP to move. The damage dealt by this Hex is Weakened."
      },
      {
       "name": "Fail/Success",
@@ -2708,17 +2712,17 @@ export const TREES = [
      },
      {
       "name": "Roll",
-      "text": "The target makes a specified roll (attack, damage, dodge, non-combat, stat check). The damage dealt by this hex is Strengthened."
+      "text": "The target makes a specified roll (attack, damage, dodge, non-combat, stat check). The damage dealt by this Hex is Strengthened."
      },
      {
       "name": "Act",
-      "text": "The target performs a specific declared action (a named Weapon type, Wonder, or Core Spell). The damage dealt by this hex is doubly Strengthened."
+      "text": "The target performs a specific declared action (a named Weapon type, Wonder, or Core Spell). The damage dealt by this Hex is doubly Strengthened."
      },
      {
       "name": "Word/Condition",
-      "text": "The target speaks a chosen word or enters a chosen condition (prone, feared, 0 energy, etc). The damage dealt by this hex is triply Strengthened.",
+      "text": "The target speaks a chosen word or enters a chosen condition (prone, feared, 0 energy, etc). The damage dealt by this Hex is triply Strengthened.",
       "sub": [
-       "Ritual: You get a no-threshold cast of this Spell that, on hit, becomes permanent on the target until the ritual ends or the target dies (passing does not remove the hex), triggering each time the trigger would occur. If you miss this Spell, it is still usable on another cast attempt."
+       "Ritual: You get a no-threshold cast of this Spell that, on hit, becomes permanent on the target until the Ritual ends or the target dies (passing does not remove the Hex), triggering each time the trigger would occur. If you miss this Spell, it is still usable on another cast attempt."
       ]
      }
     ]
@@ -2763,7 +2767,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Consume",
-      "text": "2 Threshold, Spell Mod. If this Hex’s damage destroys its target, you regain energy equal to the damage dealt and you may instantly reapply the Hex to another valid target within your Targeted attack range so long as you make a successful Targeted attack roll against them. The new Hex resets its trigger count for Linger and Fester’s purposes, but can be maintained as a ritual if it was one."
+      "text": "2 Threshold, Spell Mod. If this Hex’s damage destroys its target, you regain energy equal to the damage dealt and you may instantly reapply the Hex to another valid target within your Targeted attack range so long as you make a successful Targeted attack roll against them. The new Hex resets its trigger count for Linger and Fester’s purposes, but can be maintained as a Ritual if it was one."
      }
     ]
    }
@@ -2816,7 +2820,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Reform",
-      "text": "1 Threshold, Spell Mod, Universal. At the start of each of your turns, this Spell restores health/durability equal to your Build minimum, up to the damage it has taken since the start of your last turn."
+      "text": "1 Threshold, Spell Mod, Universal. At the start of each of your turns, this Spell restores health/durability equal to your Build min, up to the damage it has taken since the start of your last turn."
      },
      {
       "name": "Shroud Master",
@@ -2831,7 +2835,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Projection",
-      "text": "1 Threshold, Spell Mod, Universal. This Spell can be cast from the position of any willing target (or unwilling if you make a targeted attack roll against them) within 100ft of you. Treat its range as being based on their position, and count it as melee if it targets something within their melee range."
+      "text": "1 Threshold, Spell Mod, Universal. This Spell can be cast from the position of any willing target (or unwilling if you make a Targeted attack roll against them) within 100ft of you. Treat its range as being based on their position, and count it as melee if it targets something within their melee range."
      }
     ]
    }
@@ -2859,7 +2863,7 @@ export const TREES = [
      },
      {
       "name": "Skill",
-      "text": "2 points gives the Summon 1 skill point that can be allocated towards it knowing any Martial Archetype skill tree. It automatically knows any that you know at a baseline, this just adds to its knowledge. When it uses these skills, it uses energy from its own pool.",
+      "text": "2 points give the Summon 1 skill point that can be allocated towards it knowing any Martial Archetype skill tree. It automatically knows any that you know at a baseline, this just adds to its knowledge. When it uses these skills, it uses energy from its own pool.",
       "sub": [
        "In addition, the Summon gets the following:"
       ]
@@ -2882,7 +2886,7 @@ export const TREES = [
      },
      {
       "name": "Non-Body Checks",
-      "text": "Any non-Body checks the Summon would need to make, such as Attacks, Dodges, Magic checks, etc, are instead made using your relevant die for its roll. Any effects your Summon has that would enhance these rolls still applies."
+      "text": "Any non-Body checks the Summon would need to make, such as Attacks, Dodges, Magic checks, etc, are instead made using your relevant die for its roll. Any effects your Summon has that would enhance these rolls still apply."
      },
      {
       "name": "Mindless",
@@ -2892,7 +2896,7 @@ export const TREES = [
       "name": "Unarmed Attacks, Movement, AP, RP",
       "text": "All of these systems function as they normally would for a Creature. It shares a turn order with you (meaning you decide who goes first when it comes to your turn), and after cast can immediately act after your turn ends. Your Summons do not count as you attacking, and thus Weaving cannot proc off of their attacks.",
       "sub": [
-       "Ritual: The Summon is permanent until it is destroyed or the ritual ends."
+       "Ritual: The Summon is permanent until it is destroyed or the Ritual ends."
       ]
      }
     ]
@@ -2904,7 +2908,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Arm",
-      "text": "1-2 Threshold, Spell Mod, Stackable. This Spell’s Summon naturally has one of its arms turned into a natural weapon (can only be stacked one additional time this way for both arms to be different weapons), or both arms into one weapon if 2 Threshold is used for this spell instead (follows normal weapon two handing rules). This creates a Natural Weapon with a type and weight of your choice, scaling in stats for every 10 Scaling Stat the Summon has. The Natural Weapon follows Hardwood’s stats if Light, and Iron’s stats if Heavy, and can only be repaired with healing effects. Ranged Natural Weapons need to reload still, but have infinite accessible ammunition, and Natural Melee Weapons can be thrown, returning if the Summon spends 1 RP."
+      "text": "1-2 Threshold, Spell Mod, Stackable. This Spell’s Summon naturally has one of its arms turned into a natural weapon (can only be stacked one additional time this way for both arms to be different weapons), or both arms into one weapon if 2 Threshold is used for this Spell instead (follows normal weapon two handing rules). This creates a Natural Weapon with a type and weight of your choice, scaling in stats for every 10 Scaling Stat the Summon has. The Natural Weapon follows Hardwood’s stats if Light, and Iron’s stats if Heavy, and can only be repaired with healing effects. Ranged Natural Weapons need to reload still, but have infinite accessible ammunition, and Natural Melee Weapons can be thrown, returning if the Summon spends 1 RP."
      }
     ]
    },
@@ -2915,7 +2919,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Skin",
-      "text": "1-4 Threshold, Spell Mod. This Spell’s Summon naturally has Armor built into it, with a weight based on the Threshold used for this Spell Mod (1 = Light, 2 = Medium, 3 = Heavy, 4 = Titanic) . This creates Natural Armor scaling in stats for every 10 Constitution the Summon has. The Natural Armor follows Soft Leather’s stats if Light or Medium, and Copper’s stats if Heavy or Titanic, and can only be repaired with healing effects."
+      "text": "1-4 Threshold, Spell Mod. This Spell’s Summon naturally has Armor built into it, with a weight based on the Threshold used for this Spell Mod (1 = Light, 2 = Medium, 3 = Heavy, 4 = Titanic). This creates Natural Armor scaling in stats for every 10 Constitution the Summon has. The Natural Armor follows Soft Leather’s stats if Light or Medium, and Iron’s stats if Heavy or Titanic, and can only be repaired with healing effects."
      }
     ]
    },
@@ -2937,7 +2941,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Limited Autonomy",
-      "text": "2 Threshold, Spell Mod. This Spell’s Summon can follow simple commands given by you, carrying it out until it is unable to, or until their (or your) destruction. While carrying out this command, their senses are elevated to that of your own, and it can act independently of you given the command it was given (Sense Swap used during this causes them to try and act from your body instead). The command can be no longer than a single short sentence (it utilizes your memory for knowing named individuals and places). Despite all of this, it is still Mindless and is to be treated as such."
+      "text": "2 Threshold, Spell Mod. This Spell’s Summon can follow a simple command given by you, carrying it out until it is unable to, or until its (or your) destruction. While carrying out this command, their senses are elevated to that of your own, and it can act independently of you given the command it was given (Sense Swap used during this causes them to try and act from your body instead). The command can be no longer than a single short sentence (it utilizes your memory for knowing named individuals and places). Despite all of this, it is still Mindless and is to be treated as such."
      }
     ]
    }
@@ -2957,7 +2961,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Make",
-      "text": "1 Threshold, Core Spell, Targeted. You create an inanimate object that lasts until the start of your next turn that can be one of the following (it counts as a Spell, and can be conjured into a targets hand with no attack roll so long as they are willing, with it not being possible if they are not willing):"
+      "text": "1 Threshold, Core Spell, Targeted. You create an inanimate object that lasts until the start of your next turn that can be one of the following (it counts as a Spell, and can be conjured into a target’s hand with no attack roll so long as they are willing, with it not being possible if they are not willing):"
      },
      {
       "name": "Archetypal",
@@ -2965,9 +2969,9 @@ export const TREES = [
      },
      {
       "name": "Non-Archetypal",
-      "text": ". Can be any singular Powder, Liquid, or Soft material with a Body of 10.Can only make an object with a material that your character is familiar with (up to GM), and can only create objects with a single material. Note that 1 body of a material is roughly equal to a cubic foot of it, meaning 25 body equals a 5x5x1ft tile, and 125 body equals a 5x5x5ft cube.",
+      "text": "Can be any singular Powder, Liquid, or Soft material with a Body of 10. Can only make an object with a material that your character is familiar with (up to GM), and can only create objects with a single material. Note that 1 body of a material is roughly equal to a cubic foot of it, meaning 25 body equals a 5x5x1ft tile, and 125 body equals a 5x5x5ft cube.",
       "sub": [
-       "Ritual: The Creation is permanent until it is destroyed or the ritual ends."
+       "Ritual: The Creation is permanent until it is destroyed or the Ritual ends."
       ]
      }
     ]
@@ -2979,7 +2983,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Armory",
-      "text": "1 Threshold, Stackable, Spell Mod. Creates an additional equipment/object of your choice at the same target."
+      "text": "1 Threshold, Spell Mod, Stackable. Creates an additional equipment/object of your choice at the same target."
      }
     ]
    },
@@ -3001,7 +3005,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Complexity",
-      "text": "1 Threshold, Stackable, Spell Mod. Creates an Archetypal equipment with one additional Type (if it supports multiple types), or a non-Archetypal object with one additional Material."
+      "text": "1 Threshold, Spell Mod, Stackable. Creates an Archetypal equipment with one additional Type (if it supports multiple types), or a non-Archetypal object with one additional Material."
      }
     ]
    },
@@ -3048,7 +3052,7 @@ export const TREES = [
      },
      {
       "name": "Duration",
-      "text": "Lasts until the start of your next turn"
+      "text": "Lasts until the start of your next turn."
      },
      {
       "name": "Skills",
@@ -3060,13 +3064,13 @@ export const TREES = [
      },
      {
       "name": "Non-Body Checks",
-      "text": "Any non-Body checks the Animation would need to make, such as Attacks, Dodges, Magic checks, etc, are instead made using your relevant die for its roll. Any effects your Animation has that would enhance these rolls still applies."
+      "text": "Any non-Body checks the Animation would need to make, such as Attacks, Dodges, Magic checks, etc, are instead made using your relevant die for its roll. Any effects your Animation has that would enhance these rolls still apply."
      },
      {
       "name": "Unarmed Attacks, AP, RP",
       "text": "All of these systems function as they normally would for a Creature, utilizing points as a stand in for Strength, Dexterity (Both used for unarmed damage calcs), and Constitution (Con has no effect other than being used for checks). It shares a turn order with you (meaning you decide who goes first when it comes to your turn), and after cast can immediately act after your turn ends. Your Animations do not count as you attacking, and thus Weaving cannot proc off of their attacks.",
       "sub": [
-       "Note that 1 body of a material is roughly equal to a cubic foot of it, meaning 25 body equals a 5x5x1ft tile, and 125 body equals a 5x5x5ft cube. Ritual: The animation is permanent until it is destroyed or the ritual ends."
+       "Note that 1 body of a material is roughly equal to a cubic foot of it, meaning 25 body equals a 5x5x1ft tile, and 125 body equals a 5x5x5ft cube. Ritual: The Animation is permanent until it is destroyed or the Ritual ends."
       ]
      }
     ]
@@ -3077,8 +3081,8 @@ export const TREES = [
     "summary": "You unlock the following Spell Mod:",
     "entries": [
      {
-      "name": "Weapon/Foci",
-      "text": "1 Threshold, Replacement, Spell Mod. Can only be used as a replacement (no doubling). Animate under your control the targeted common/uncommon Weapon or Foci with Grade 2 or lower within range. If held by an unwilling target, make a targeted attack roll against them for this to succeed. For the duration, you can expend AP or RP equal to that equipment’s attack cost (can be done as a reaction) to move the animated equipment a number of feet equal to your Scaling Stat minimum (Reach/Grasp) and attack using it as if you were holding it (if Weapon, make attacks as normal with skills allowed. If Foci, you can cast Spells through it). Lasts until the start of your next turn."
+      "name": "Animate Weapon/Icon/Foci",
+      "text": "1 Threshold, Spell Mod, Replacement. Can only be used as a replacement (no doubling). Animate under your control the targeted Weapon, Icon, or Foci with Grade 2 or lower within range. If held by an unwilling target, make a Targeted attack roll against them for this to succeed. For the duration, you can expend AP or RP equal to that equipment’s attack cost (can be done as a reaction) to move the animated equipment a number of feet equal to your Scaling Stat min (Reach/Grasp) and attack using it as if you were holding it (if Weapon, make attacks as normal with skills allowed. If Icon, you can Manifest through it and use its Ward. If Foci, you can cast Spells through it). Lasts until the start of your next turn."
      }
     ]
    },
@@ -3089,7 +3093,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Expanded Animation",
-      "text": "1 Threshold, Spell Mod. Allows using powder or hard materials for Animate (or rare equipment for Animate Weapon/Foci/Armor/Shroud)."
+      "text": "1 Threshold, Spell Mod. Allows using Powder or Hard materials for Animate."
      }
     ]
    },
@@ -3099,8 +3103,8 @@ export const TREES = [
     "summary": "You unlock the following Spell Mod:",
     "entries": [
      {
-      "name": "Armor/Shroud",
-      "text": "1 Threshold, Replacement, Spell Mod. Can only be used as a replacement (no doubling). Animate under your control the targeted Armor or Shroud that is at most Grade 2 within range. If held by an unwilling target, make a targeted attack roll against them for this to succeed. For the duration, you can expend 2 AP or RP (can be done as a reaction) to either attempt to suffocate the target, or mould the armor/shroud. Suffocation causes the armor/shroud to deal Xd12 Physical damage to its wearer, where X is the Grade of the armor, halved if its Light, doubled if its Heavy, and quadruple if its Titanic. Moulding the armor instead deals this damage to a target within melee range. Both suffocation and moulding require a successful melee attack roll, with suffocation having advantage on its attack roll."
+      "name": "Animate Armor/Shroud",
+      "text": "1 Threshold, Spell Mod, Replacement. Can only be used as a replacement (no doubling). Animate under your control the targeted Armor or Shroud that is at most Grade 2 within range. If worn/melded by an unwilling target, make a Targeted attack roll against them for this to succeed. For the duration, you can expend 2 AP or RP (can be done as a reaction) to either attempt to suffocate the target, or mold the armor/shroud. Suffocation causes the armor/shroud to deal Xd12 physical damage to its wearer, where X is the Grade of the armor, halved if it’s Light, normal if it’s Medium, doubled if it’s Heavy, and quadruple if it’s Titanic (shrouds deal double the damage but as arcane damage). Molding the armor instead deals this damage to a target within melee range. Both suffocation and molding require a successful melee attack roll, with suffocation having advantage on its attack roll."
      }
     ]
    },
@@ -3111,68 +3115,68 @@ export const TREES = [
     "entries": [
      {
       "name": "Mixed Animations",
-      "text": "1 Threshold, Stackable, Spell Mod. You may select one additional material that is present within the Animation on cast to have its material effect be active.",
+      "text": "1 Threshold, Spell Mod, Stackable. You may select one additional material that is present within the Animation on cast to have its material effect be active.",
       "sub": [
        "| Liquid Animations | | |",
-       "| ----- | ----- | ----- |",
-       "| Liquid Animations cannot hold items such as weapons or armor, but can move through nearly any opening, have advantage dodging non-targeted attacks as well as imposing disadvantage on said attacks, ignore swimming restrictions, and targets grappled by them begin drowning as if they are underwater without breath left but are not slowed or restricted otherwise. The Animation has health equal to 1x Points, a speed of 50ft/AP, and Weakened physical attacks. | | |",
+       "| ----- | ----- | :---: |",
+       "| Liquid Animations cannot hold items such as weapons or armor, but can move through nearly any opening, have advantage dodging non-targeted attacks as well as imposing disadvantage on said attacks, ignore swimming restrictions, and targets grappled by them begin drowning as if they are underwater without breath left but are not slowed or restricted otherwise. The Animation has health equal to 1x Points, a speed of 100%, and Weakened physical attacks. | | |",
        "| Name | Rarity | Effect |",
-       "| Water | Common | |",
-       "| Oil | Common | |",
-       "| Blood | Common | |",
-       "| Tar / Pitch | Uncommon | |",
-       "| Resin | Uncommon | |",
-       "| Alcohol / Spirits | Uncommon | |",
-       "| Mercury | Rare | |",
+       "| Water | Common | TBD |",
+       "| Oil | Common | TBD |",
+       "| Blood | Common | TBD |",
+       "| Tar / Pitch | Uncommon | TBD |",
+       "| Resin | Uncommon | TBD |",
+       "| Alcohol / Spirits | Uncommon | TBD |",
+       "| Mercury | Rare | TBD |",
        "| Soft Animations | | |",
-       "| ----- | ----- | ----- |",
-       "| Animations made of a soft material have no restrictions, acting as a standard summon. The Animation has health equal to 3x Points, a speed of 20ft/AP, and normal physical attacks. | | |",
+       "| ----- | ----- | :---: |",
+       "| Animations made of a soft material have no restrictions, acting as a standard summon. The Animation has health equal to 3x Points, a speed of 40%, and normal physical attacks. | | |",
        "| Name | Rarity | Effect |",
-       "| Hardwood | Common | |",
-       "| Softwood | Common | |",
-       "| Bone | Common | |",
-       "| Cloth | Common | |",
-       "| Soft Leather | Common | |",
-       "| Hide | Common | |",
-       "| Clay | Common | |",
-       "| Coal | Common | |",
-       "| Wool | Common | |",
-       "| Salt / Halite | Common | |",
-       "| Amberite | Uncommon | |",
-       "| Chitin | Uncommon | |",
-       "| Hard Leather | Uncommon | |",
-       "| Sulfur | Uncommon | |",
-       "| Gravesalt | Rare | |",
-       "| Beryllium | Very Rare | |",
-       "| Aetherwood | Very Rare | |",
+       "| Hardwood | Common | TBD |",
+       "| Softwood | Common | TBD |",
+       "| Bone | Common | TBD |",
+       "| Cloth | Common | TBD |",
+       "| Soft Leather | Common | TBD |",
+       "| Hide | Common | TBD |",
+       "| Clay | Common | TBD |",
+       "| Coal | Common | TBD |",
+       "| Wool | Common | TBD |",
+       "| Salt / Halite | Common | TBD |",
+       "| Amberite | Uncommon | TBD |",
+       "| Chitin | Uncommon | TBD |",
+       "| Hard Leather | Uncommon | TBD |",
+       "| Sulfur | Uncommon | TBD |",
+       "| Gravesalt | Rare | TBD |",
+       "| Beryllium | Very Rare | TBD |",
+       "| Aetherwood | Very Rare | TBD |",
        "| Powder Animations | | |",
-       "| ----- | ----- | ----- |",
-       "| Powder Animations can only ever hold one object or entity at a time with excess objects falling through them (but cannot attack with held items), have advantage dodging non-targeted attacks, can fit through ¼ inch gaps, and after being hit they can use 2 RP to scatter, causing them to be untargetable by non-area/targeted attacks until the start of their next turn, dropping their held item as well. The Animation has health equal to 2x Points, a speed of 30ft/AP, and doubly Weakened physical attacks. | | |",
+       "| ----- | ----- | :---: |",
+       "| Powder Animations can only ever hold one object or entity at a time with excess objects falling through them (but cannot attack with held items), have advantage dodging non-targeted attacks, can fit through ¼ inch gaps, and after being hit they can use 2 RP to scatter, causing them to be untargetable by attacks that are neither Targeted nor Area until the start of their next turn, dropping their held item as well. The Animation has health equal to 2x Points, a speed of 60%, and doubly Weakened physical attacks. | | |",
        "| Name | Rarity | Effect |",
-       "| Charcoal | Common | |",
-       "| Cotton | Common | |",
-       "| Sand | Common | |",
-       "| Ash | Common | |",
-       "| Chalk Dust | Common | |",
-       "| Lime Powder | Uncommon | |",
-       "| Pigment Powder | Uncommon | |",
+       "| Charcoal | Common | TBD |",
+       "| Cotton | Common | TBD |",
+       "| Sand | Common | TBD |",
+       "| Ash | Common | TBD |",
+       "| Chalk Dust | Common | TBD |",
+       "| Lime Powder | Uncommon | TBD |",
+       "| Pigment Powder | Uncommon | TBD |",
        "| Hard Animations | | |",
-       "| ----- | ----- | ----- |",
-       "| Hard Animations have only 3 AP and RP per turn, but their Points count as twice as high for determining weapon and armor limits. The Animation has health equal to 5x Points, a speed of 10ft/AP, and Strengthened physical attacks. | | |",
+       "| ----- | ----- | :---: |",
+       "| Hard Animations have only 3 AP and RP per turn, but their Points count as twice as high for determining weapon and armor limits. The Animation has health equal to 5x Points, a speed of 20%, and Strengthened physical attacks. | | |",
        "| Name | Rarity | Effect |",
-       "| Stone | Common | |",
-       "| Titanium | Common | |",
-       "| Glass | Uncommon | |",
-       "| Obsidian | Uncommon | |",
-       "| Quartz | Uncommon | |",
-       "| Aluminum | Uncommon | |",
-       "| Brick | Uncommon | |",
-       "| Granite | Uncommon | |",
-       "| Marble | Uncommon | |",
-       "| Positron | Rare | |",
-       "| Jade | Rare | |",
-       "| Mithrite | Very Rare | |",
-       "| Leviathan Chitin | Very Rare | |"
+       "| Stone | Common | TBD |",
+       "| Titanium | Common | TBD |",
+       "| Glass | Uncommon | TBD |",
+       "| Obsidian | Uncommon | TBD |",
+       "| Quartz | Uncommon | TBD |",
+       "| Aluminum | Uncommon | TBD |",
+       "| Brick | Uncommon | TBD |",
+       "| Granite | Uncommon | TBD |",
+       "| Marble | Uncommon | TBD |",
+       "| Positron | Rare | TBD |",
+       "| Jade | Rare | TBD |",
+       "| Mithrite | Very Rare | TBD |",
+       "| Leviathan Chitin | Very Rare | TBD |"
       ]
      }
     ]
@@ -3193,7 +3197,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Restore",
-      "text": "1 Threshold, Core Spell, Targeted, Uncombinable. Restores 2 health to a living target, only restoring health that has been lost since the start of your last turn. Ritual: Restores the health regardless of time since damage was taken. This ritual applies once as an effect then ends."
+      "text": "1 Threshold, Core Spell, Targeted, Uncombinable. Restores 2 health to a living target, only restoring health that has been lost since the start of your last turn. Ritual: Restores the health regardless of time since damage was taken. This Ritual applies once as an effect then ends."
      }
     ]
    },
@@ -3204,7 +3208,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Painless",
-      "text": "1 Threshold, Spell Mod, Replacement. Lowers the target’s Pain Threshold by 3. If they are unconscious and this brings their health above their Pain Threshold, they can be woken up. If this replaces Restore, this can be used as a Ritual to make this effect last until you die, they die, or the ritual ends."
+      "text": "1 Threshold, Spell Mod, Replacement. Lowers the target’s Pain Threshold by 3. If they are unconscious and this brings their health above their Pain Threshold, they can be woken up. If this replaces Restore, this can be used as a Ritual to make this effect last until you die, they die, or the Ritual ends."
      }
     ]
    },
@@ -3215,7 +3219,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Regenerate",
-      "text": "1 Threshold, Spell Mod. When this spell is cast as a Ritual while the target’s health is full, it instead restores maximum health."
+      "text": "1 Threshold, Spell Mod. When this Spell is cast as a Ritual while the target’s health is full, it instead restores maximum health."
      }
     ]
    },
@@ -3226,7 +3230,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Delay",
-      "text": "2 Threshold, Spell Mod, Universal. This spell now triggers against a target chosen now whenever a predefined trigger is met (can include things within 100ft of you). This Spell gains +100% Power to its Core or Combo bolded effect(s). If the spell has no normal duration, the delay lasts until the start of your next turn."
+      "text": "2 Threshold, Spell Mod, Universal. This Spell now triggers against a target chosen now whenever a predefined trigger is met (can include things within 100ft of you). This Spell gains +100% Power to its Core or Combo bolded effect(s). If the Spell has no normal duration, the delay lasts until the start of your next turn."
      }
     ]
    },
@@ -3257,7 +3261,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Shift",
-      "text": "1 Threshold, Core Spell, Targeted. Move up to 6 Body of connected material in an area. One piece of connected material must remain in its original position during this move, and the material must be a Powder/Liquid/Soft object (does not matter if it is Archetypal or not). If you move the terrain into someone, make a melee attack roll against them with advantage on the attack roll (this is due to it being melee, as per Spell range rules). On a hit, they take a number of d4’s of Physical damage equal to half of the Body of the material moved, rounded down. The moved material returns to its original position if possible at the start of your next turn. Note that 1 body of a material is roughly equal to a cubic foot of it, meaning 25 body equals a 5x5x1ft tile, and 125 body equals a 5x5x5ft cube. Ritual: While the Ritual is active, you may cast this Spell up to two times without spending Energy. These casts still require AP/RP. Once both casts are used, the Ritual ends."
+      "text": "1 Threshold, Core Spell, Targeted. Move up to 6 Body of connected material in an area. One piece of connected material must remain in its original position during this move, and the material must be a Powder/Liquid/Soft object Non-Archetypal object, or a Common Archetypal piece of equipment. If you move the terrain into someone, make a melee attack roll against them with advantage on the attack roll (this is due to it being melee, as per Spell range rules). On a hit, they take a number of d4s of physical damage equal to half of the Body of the material moved, rounded down. The moved material returns to its original position if possible at the start of your next turn. Note that 1 body of a material is roughly equal to a cubic foot of it, meaning 25 body equals a 5x5x1ft tile, and 125 body equals a 5x5x5ft cube. Ritual: While the Ritual is active, you may cast this Spell up to two times without spending Energy. These casts still require AP/RP. Once both casts are used, the Ritual ends."
      }
     ]
    },
@@ -3268,7 +3272,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Mend",
-      "text": "1 Threshold, Spell Mod, Replacement. Can only be used as a replacement (no doubling). Restores 5 durability to an object (still following rarity/density restrictions) that is not broken, only restoring damage that was dealt to it since the start of your last turn. Ritual: Restores the durability regardless of time since damage was taken, and it can now target broken objects. This ritual applies once as an effect then ends."
+      "text": "1 Threshold, Spell Mod, Replacement. Can only be used as a replacement (no doubling). Restores 5 durability to an object (still following rarity/density restrictions) that is not broken, only restoring damage that was dealt to it since the start of your last turn. Ritual: Restores the durability regardless of time since damage was taken, and it can now target broken objects. This Ritual applies once as an effect then ends."
      }
     ]
    },
@@ -3279,7 +3283,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Toss",
-      "text": "1 Threshold, Spell Mod. The material no longer needs to be connected, and can instead be flung from its starting location to a target within 100ft. If this is a living target, make a ranged attack roll against them. On a hit, they take a number of d6’s of Physical damage equal to half of the Body of the material moved, rounded down (this does not double up with Shift’s damage, it overrides it)."
+      "text": "1 Threshold, Spell Mod. The material no longer needs to be connected, and can instead be flung from its starting location to a target within 100ft. If this is a living target, make a ranged attack roll against them. On a hit, they take a number of d6s of physical damage equal to half of the Body of the material moved, rounded down (this does not double up with Shift’s damage, it overrides it)."
      },
      {
       "name": "Tier Up",
@@ -3294,7 +3298,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Muddy",
-      "text": "1 Threshold, Spell Mod, Replacement. Choose from the following: The material becomes difficult terrain, all rolls made while using or wearing the object are made at disadvantage for the duration, or all damage dealt by it is Weakened (this effect does not stack). If this fully replaces Shift, instead get all three effects, and the Ritual variant causes these effects to become permanent until the ritual ends or the object is destroyed."
+      "text": "1 Threshold, Spell Mod, Replacement. Choose from the following: The material becomes difficult terrain, all rolls made while using or wearing the object are made at disadvantage for the duration, or all damage dealt by it is Weakened (this effect does not stack). If this fully replaces Shift, instead get all three effects, and the Ritual variant causes these effects to become permanent until the Ritual ends or the object is destroyed."
      }
     ]
    },
@@ -3305,7 +3309,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Harden",
-      "text": "1 Threshold, Spell Mod, Replacement. Choose from the following: The material loses all negative terrain modifiers, all damage dealt by the material is Strengthened, or all damage dealt to it is Weakened (this effect does not stack). If this fully replaces Shift, instead get all three effects, and the Ritual variant causes these effects to become permanent until the ritual ends or the object is destroyed."
+      "text": "1 Threshold, Spell Mod, Replacement. Choose from the following: The material loses all negative terrain modifiers, all damage dealt by the material is Strengthened, or all damage dealt to it is Weakened (this effect does not stack). If this fully replaces Shift, instead get all three effects, and the Ritual variant causes these effects to become permanent until the Ritual ends or the object is destroyed."
      },
      {
       "name": "Tier Up, Again",
@@ -3329,7 +3333,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Mirage",
-      "text": "2 Threshold, Core Spell, Targeted. You plant a false sensory impression in the target which can come in the form of a sound, a sight, or a smell (other senses you are aware of can apply here too). The Mirage has 10 Power, which is reduced by a tenth of the target’s Skill Points at the start of each of their turns. This can, at worst, remove the targeted sense from the character completely for the duration. On cast and whenever they take an action that would test it (up to GM), they make a Attack Roll vs the remaining Power, on pass the Mirage ends for them, and on failure it loses Power equal to a tenth of their Skill Points. Lasts for one minute. Ritual: You get a no-threshold cast of this Spell that, on hit, becomes permanent on the target until the ritual ends, the target dies, or the Mirage’s power becomes 0. Instead of a pass removing the Mirage, it instead reduces the Power twice. If you miss this Spell, it is still usable on another cast attempt."
+      "text": "2 Threshold, Core Spell, Targeted. You plant a false sensory impression in the target which can come in the form of a sound, a sight, or a smell (other senses you are aware of can apply here too). The Mirage has 10 Power, which is reduced by a tenth of the target’s Skill Points at the start of each of their turns. This can, at worst, remove the targeted sense from the character completely for the duration. On cast and whenever they take an action that would test it (up to GM), they make an Attack Roll vs the remaining Power, on pass the Mirage ends for them, and on failure it loses Power equal to a tenth of their Skill Points. Lasts for one minute. Ritual: You get a no-threshold cast of this Spell that, on hit, becomes permanent on the target until the Ritual ends, the target dies, or the Mirage’s Power becomes 0. Instead of a pass removing the Mirage, it instead reduces the Power twice. If you miss this Spell, it is still usable on another cast attempt."
      }
     ]
    },
@@ -3340,7 +3344,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Phantom Pain",
-      "text": "1 Threshold, Spell Mod. Whenever this Mirage would lose Power, whomever it is affecting takes 1d6 illusion damage, which ignores all protections but only increases their Pain Threshold. If the target is no longer under the effects of any Mirages, this damage is removed."
+      "text": "1 Threshold, Spell Mod. Whenever this Mirage would lose Power, whomever it is affecting has their Pain Threshold increased by 1d6. If the target is no longer under the effects of any Mirages, this effect is removed."
      }
     ]
    },
@@ -3408,7 +3412,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Blast",
-      "text": "2 Threshold, Spell Mod. The Spell changes its attack type to Area, applying its effect to all targets within the area. In addition, the Ritual effect changes to create an Anti-Magic field in the specified Area, which applies the Arcane damage to all magical things whenever they enter the field and whenever your turn starts, lasting until it is dispelled or the ritual ends."
+      "text": "2 Threshold, Spell Mod. The Spell changes its attack type to Area, applying its effect to all targets within the area. In addition, the Ritual effect changes to create an Anti-Magic field in the specified Area, which applies the arcane damage to all magical things whenever they enter the field and whenever your turn starts, lasting until it is dispelled or the Ritual ends."
      }
     ]
    },
@@ -3419,7 +3423,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Absorb",
-      "text": "2 Threshold, Spell Mod. The Spell changes its attack type to Targeted, and gives you back Energy equal to the Spell’s Power if this destroys the spell. If this is used with Blast, it causes the attack to be treated as a Targeted attack roll on all targets within the Area (this does not grant back energy on destruction)."
+      "text": "2 Threshold, Spell Mod. The Spell changes its attack type to Targeted, and gives you back Energy equal to the Spell’s Power if this destroys the Spell. If this is used with Blast, it causes the attack to be treated as a Targeted attack roll on all targets within the Area (this does not grant back energy on destruction)."
      }
     ]
    },
@@ -3430,7 +3434,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Amplify",
-      "text": "1 Threshold, Spell Mod, Replacement. Can only be used as a replacement (no doubling). Adds 10 to the Power of target non-Ritual Spell. Cannot apply to the same Spell more than once. If used on a spell with on-cast decisions, it has no effect unless that spell is mid cast (requiring Reaction casting to do so)."
+      "text": "1 Threshold, Spell Mod, Replacement. Can only be used as a replacement (no doubling). Adds 10 to the Power (increase its effect as if its caster had 10 more scaling stat) of target non-Ritual Spell. Cannot apply to the same Spell more than once. If used on a Spell with on-cast decisions, it has no effect unless that Spell is mid cast (requiring the React Spell Mod to do so)."
      }
     ]
    },
@@ -3441,7 +3445,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Rip",
-      "text": "1 Threshold, Spell Mod, Replacement. Can only be used as a replacement (no doubling). Takes control of a magical Spell that has 5 or less Power. When you take control of it, you can redirect it or cause it to dissipate instantly. If you redirect it, make a new attack roll based on the magical Spell if needed. Ritual: You get a no-threshold cast of this Spell that, on hit, becomes permanent on the target Spell until the ritual ends or the Spell is dispelled, and causes the Spell to be made into a ritual."
+      "text": "1 Threshold, Spell Mod, Replacement. Can only be used as a replacement (no doubling). Takes control of a magical Spell that has 5 or less Power (scaling stat the caster had for that Spell). When you take control of it, you can redirect it or cause it to dissipate instantly. If you redirect it, make a new attack roll based on the magical Spell if needed. Ritual: You get a no-threshold cast of this Spell that, on hit, becomes permanent on the target Spell until the Ritual ends or the Spell is dispelled, and causes the Spell to be made into a Ritual."
      }
     ]
    }
@@ -3475,8 +3479,8 @@ export const TREES = [
       "name": "Wonder Ranges",
       "text": "The range of a Wonder is chosen from among the following whenever you Manifest it:",
       "sub": [
-       "Melee: The Manifestation targets one target within your personal melee range. Has an AP cost of 1.",
-       "Ranged: Has a maximum range of 100ft. The attack is made as normal, respecting cover. Has an AP cost of 2",
+       "Melee: The Manifestation targets one target within your personal melee range. Has an AP cost of 1, but the attack roll for the Manifest gets a stack of disadvantage.",
+       "Ranged: Has a maximum range of 100ft. The attack is made as normal, respecting cover. Has an AP cost of 2.",
        "Area: Can either be a 10ft radius around you, a 20ft 90 degree cone in front of you, or a 30ft by 5ft line in one cardinal direction. Each target in the area must make a dodge roll separately against your singular attack roll. Has an AP cost of 3, and the effect is Weakened if it hits more than two targets. This Area can include yourself if desired."
       ]
      },
@@ -3486,17 +3490,15 @@ export const TREES = [
      },
      {
       "name": "Dismissing Wonders",
-      "text": "You can dismiss concentrated Wonders freely as a reaction. Non-concentrated Wonders you have created can be dismissed by making an attack roll against them (apply Wonder Range AP cost to this). If the target is an object, the rolled number needed to dismiss it is equal to the energy spent on manifesting it (if 0 then no attack roll is needed), and if they are a creature they can choose to resist it using their dodge roll, only being dismissed if you successfully hit."
+      "text": "You can dismiss concentrated Wonders freely as a reaction. Non-concentrated Wonders you have created can be dismissed by making an attack roll against them (apply Wonder Range AP cost to this). If the target is an object, the rolled number needed to dismiss it is equal to the energy spent on Manifesting it (if 0 then no attack roll is needed), and if it is a creature, it can choose to resist it using its dodge roll, only being dismissed if you successfully hit."
      },
      {
       "name": "Alignment",
-      "text": "All characters interfacing with the Mental system have an Alignment that they set which gives various bonuses depending on its position at the cost of speed. Changing your Alignment can only be done with a 1 hour activity. You can choose how far you want to go as desired, gaining all prior bonuses but stacking a 20% speed penalty for each point of alignment, and Alignment can either be for Dreams or Nightmares.",
+      "text": "All characters interfacing with the Mental system have an Alignment that they set, which gives various bonuses depending on its position at the cost of speed. Changing your Alignment can only be done with a 1 hour activity. You can choose how far you want to go as desired, gaining all prior bonuses but stacking a 20% speed penalty for each point of Alignment, and Alignment can either be for Dreams or Nightmares.",
       "sub": [
-       "Neutral: This is the default Alignment that characters sit at when not actively focusing on a specific Alignment. Has no benefits, but you also get no speed penalty.",
-       "1 Alignment: This Alignment gives all Dream/Nightmare Wonders a stack of Advantage on their attack rolls, while giving a stack of Disadvantage on the attack rolls of all Wonders of the opposite type.",
-       "2 Alignment: This Alignment gives all Dream/Nightmare Wonders a stack of Strengthened on their bolded effects, while giving a stack of Weakened on the bolded effects of all Wonders of the opposite type.",
-       "3 Alignment: Your chosen Tenet(s) can now trigger twice per round (they must be a Dream/Nightmare Tenet to benefit from this).",
-       "4 Alignment: Your Dream/Nightmare Icon’s Ward has Advantage on its attack roll and Strengthened on their bolded effect."
+       "Neutral: Has no benefits, but you also get no speed penalty.",
+       "1 Alignment: Your Dream/Nightmare Form’s Ward has advantage on it’s attack rolls.",
+       "2 Alignment: Your Dream/Nightmare Form’s Ward bolded effect is Strengthened."
       ]
      }
     ]
@@ -3512,14 +3514,14 @@ export const TREES = [
      },
      {
       "name": "Defensive Enhance",
-      "text": "You can now Enhance your Form’s Ward, working the same as normal Wonder Mode’s Enhance actions do."
+      "text": "You can now Enhance your Form’s Ward, working the same as normal Wonder Modes Enhance actions do."
      }
     ]
    },
    {
     "tier": 2,
     "free": false,
-    "summary": "You unlock the Ponderance Arts, Creation, Destruction, War, Peace, Adaptation, and Perfection trees. You also gain the following actions:",
+    "summary": "You unlock the Ponderance Arts, Creation, Destruction, Peace, War, Adaptation, and Perfection trees. You also gain the following actions:",
     "entries": [
      {
       "name": "Chant",
@@ -3534,41 +3536,45 @@ export const TREES = [
    {
     "tier": 3,
     "free": false,
-    "summary": "You unlock the Snappence Arts, Light, Dark, Earth, and Sea trees. You also gain the following actions:",
+    "summary": "You unlock the Snappence Arts, Light, Dark, Earth, and Sea trees. You also gain the following action and passive:",
     "entries": [
      {
       "name": "Fluidity",
       "text": "You can now spend energy equal to half of your Skill Points multiplied by your current Alignment number to swap your Alignment type."
      },
      {
-      "name": "Expansion",
-      "text": "If you expend energy equal to double your Form’s Ward Enhance cost, you can now treat it as an Area attack, which can either be a 10ft radius around you, a 20ft 90 degree cone in front of you, or a 30ft by 5ft line in one cardinal direction."
+      "name": "Deepening",
+      "text": "You unlock two new Alignment depths, seen below. While these Alignments are set, you additionally have -1 AP per turn for each Alignment past 2 (so -1 AP at Alignment 3, and -2 AP at Alignment 4).",
+      "sub": [
+       "3 Alignment: Upgrades the 1st Alignment effect to instead be “treat your Dream/Nightmare Form’s Ward attacks as being made from half stealth”, thus giving them advantage on their attack rolls, and targets disadvantage dodging them.",
+       "4 Alignment: Your Dream/Nightmare Form’s Ward hits regardless of roll, the roll now being used to determine if a crit occurs."
+      ]
      }
     ]
    },
    {
     "tier": 4,
     "free": false,
-    "summary": "You unlock the Willpower Arts, Growth, Stagnation, Fortune, and Ruin trees. You also gain the following passive:",
+    "summary": "You unlock the Willpower Arts, Growth, Stagnation, Fortune, and Ruin trees. You also gain the following action and passive:",
     "entries": [
      {
-      "name": "Will of Body and Spirit",
-      "text": "Whenever you make a Martial or Magic attack using AP, you can Manifest a Wonder at no extra AP cost so long as that Wonder’s normal AP cost matches that of the initial attack. This can also be done with RP based Martial/Magic attacks if Burst is used. The target(s) of your Wonder does not need to be the same as the Martial attack."
+      "name": "Expansion",
+      "text": "If you expend energy equal to double your Form’s Ward Enhance cost, you can now treat it as an Area attack, which can either be a 10ft radius around you, a 20ft 90 degree cone in front of you, or a 30ft by 5ft line in one cardinal direction."
      },
      {
-      "name": "Equilibrium",
-      "text": "You can now enter -1 Alignment, which gives everything a stack of Disadvantage when dodging your Icon’s Ward (including yourself), but your Manifest attack rolls have a stack of Disadvantage (this has no movement speed penalty/bonus). Fluidity allows you to swap into this, lasting until the start of your next turn (in which you then go back to whatever Alignment you were at)."
+      "name": "Will of Body and Spirit",
+      "text": "Whenever you make a Martial or Magic attack using AP, you can Manifest a Wonder at no extra AP cost so long as that Wonder’s normal AP cost matches that of the initial attack. This can also be done with RP based Martial/Magic attacks if Burst is used. The target(s) of your Wonder does not need to be the same as the Martial/Magic attack."
      }
     ]
    },
    {
     "tier": 5,
     "free": false,
-    "summary": "You unlock the Esoteric Arts, Truth, Mystery, Zeal, and Serenity trees. You also gain the following action and passive:",
+    "summary": "You unlock the Esoteric Arts, Truth, Mystery, Zeal, and Serenity trees. You also gain the following passive:",
     "entries": [
      {
       "name": "Patron",
-      "text": "Whenever you rest, you can select one Wonder to become your Patron Wonder (or change your currently selected Patron Wonder). While you are Aligned towards that Wonder, whenever you Manifest it you can choose to Enhance or Burst it completely for free."
+      "text": "Whenever you rest, you can select one Wonder to become your Patron Wonder (or change your currently selected Patron Wonder). Whenever you Manifest that Wonder, you can choose to Enhance or Burst it completely for free."
      }
     ]
    }
@@ -3588,7 +3594,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Sixth Sense",
-      "text": "You gain an extra sense known as “Psion” that starts off as secondary. Psion as a secondary sense allows you to detect mental energies through any surface within 100ft. This ability only informs you of the number of mental energies around you, not their location or direction. You cannot increase this sense to primary or higher unless directly stated. Keep in mind you still need to roll a perceive check to detect them in the first place."
+      "text": "You gain an extra sense known as “Psion” that starts off as Secondary. Psion as a Secondary sense allows you to detect mental energies through any surface within 100ft. This ability only informs you of the number of mental energies around you, not their location or direction. You cannot increase this sense to Primary or higher unless directly stated. Keep in mind you still need to use a Spot action to detect them in the first place."
      }
     ]
    },
@@ -3610,7 +3616,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Primary Psion",
-      "text": "Psion now becomes a primary sense for you, enabling you to use Spot to determine the direction of a chosen mental energy, as well as it’s total Mind."
+      "text": "Psion now becomes a Primary sense for you, enabling you to use Spot to determine the direction of a chosen mental energy, as well as its total Mind."
      }
     ]
    },
@@ -3632,7 +3638,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Heightened Psion",
-      "text": "Psion now becomes a heightened sense for you, enabling your Spot check to give the individual mental stats and mental abilities (if any) of those you detect. Cannot detect abilities of a higher stage than you’ve achieved."
+      "text": "Psion now becomes a Heightened sense for you, enabling your Spot check to give the individual mental stats and mental abilities (if any) of those you detect. Cannot detect abilities of a higher Stage than you’ve achieved."
      }
     ]
    }
@@ -3656,7 +3662,7 @@ export const TREES = [
      },
      {
       "name": "Verdant Soul",
-      "text": "Only active while attuned to this Tenet. Once per round when you successfully hit a Manifest, you can give either the target or yourself 10 temp HP, lasting until the start of your next turn."
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can give either the target or yourself 10 temp HP, lasting until the start of your next turn."
      }
     ]
    },
@@ -3667,7 +3673,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Pollinate",
-      "text": "Cost: Energy equal to half of your PON min, rounded down. Whenever one of your Life modes would activate on a target, you can use this ability to attempt to spread it to another target within 100ft of you that you can sense, requiring an attack roll. This spread cannot trigger Pollinate, and it applies the effect of that mode immediately."
+      "text": "Cost: Energy equal to half of your PON min, rounded down. Whenever one of your Life Modes would activate on a target, you can use this ability to attempt to spread it to another target within 100ft of you that you can sense, requiring an attack roll. This spread cannot trigger Pollinate, and it applies the effect of that Mode immediately."
      }
     ]
    },
@@ -3685,11 +3691,11 @@ export const TREES = [
    {
     "tier": 4,
     "free": false,
-    "summary": "You gain the following passive:",
+    "summary": "You gain the following ability:",
     "entries": [
      {
       "name": "Perennial",
-      "text": "Whenever one of your Life Modes would expire on a target that you can sense within 100ft of you, you can spend energy equal to its Enhance cost to instantly reapply that effect to them at no AP/RP cost, requiring no attack roll, and applying immediately without needing to be enhanced."
+      "text": "Cost: Energy equal to your PON min. Whenever one of your Life Modes would expire on a target that you can sense within 100ft of you, you can use this ability. Instantly reapply that effect to them at no AP/RP cost, requiring no attack roll, and applying immediately without needing to be enhanced."
      }
     ]
    },
@@ -3720,11 +3726,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Wither",
-      "text": "Removes 2d10 health from a living target, ignoring objects and defenses entirely (does not ignore temp HP). Enhanced: This damage also removes that much Max HP from the target."
+      "text": "Removes 1d12 health from a living target, ignoring objects and defenses entirely (does not ignore temp HP). Enhanced: This damage also removes that much Max HP from the target."
      },
      {
       "name": "Mortal Coil",
-      "text": "Only active while attuned to this Tenet. Once per round when you successfully hit a Manifest, you can steal 1d8 health from the target(s), becoming Temp HP for yourself that lasts until the start of your next turn."
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can steal 1d8 health from the target(s), becoming Temp HP for yourself that lasts until the start of your next turn."
      }
     ]
    },
@@ -3735,7 +3741,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Fester",
-      "text": "Cost: Energy equal to your SNA min. Whenever you successfully manifest a Death Mode, you can use this ability to cause that Mode’s effect (including its Enhance effect if it was applied) to reapply to the same target at the start of their next turn. This reapplication does not require an attack roll, and does not count as a manifestation."
+      "text": "Cost: Energy equal to your SNA min. Whenever you successfully Manifest a Death Mode, you can use this ability to cause that Mode’s effect (including its Enhance effect if it was applied) to reapply to the same target at the start of their next turn. This reapplication does not require an attack roll, and does not count as a Manifestation."
      }
     ]
    },
@@ -3757,7 +3763,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Reap",
-      "text": "Cost: Energy equal to your SNA min. Whenever one of your Death Modes would critically hit a living target, you can use this ability to instantly attempt to manifest a Death Mode of your choosing of the same Range type for no AP/RP cost (if the initial was Bursted, this one is Bursted for free)."
+      "text": "Cost: Energy equal to your SNA min. Whenever one of your Death Modes would critically hit a living target, you can use this ability to instantly attempt to Manifest a Death Mode of your choosing of the same Range type for no AP/RP cost (if the initial was Bursted, this one is Bursted for free)."
      }
     ]
    },
@@ -3788,11 +3794,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Decree",
-      "text": "Store a Decree charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Decree charge on them to change that roll to instead be a static result, equal to half of their roll’s max result, plus or minus 1 (your choice on manifest). Enhanced: The baseline is instead set from your relevant die’s halfway point, instead of the target’s."
+      "text": "Store a Decree charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Decree charge on them to change that roll to instead be a static result, equal to half of their roll’s max result, plus or minus 1 (your choice on Manifest). Enhanced: The baseline is set from your relevant die’s halfway point, instead of the target’s."
      },
      {
       "name": "Balance",
-      "text": "Only active while attuned to this Tenet. Once per round when you make an attack or dodge roll, you can add 1 to the result, or remove 1 from the opposing side’s result."
+      "text": "Only active while this is your selected Tenet. Once per round when you make an attack or dodge roll, you can add 1 to the result, or remove 1 from the opposing side’s result."
      }
     ]
    },
@@ -3814,7 +3820,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Mandate",
-      "text": "Store a Mandate charge on the target, lasting until the start of your next turn. When the target gets a result (from a roll or from Decree), you can consume any number of Mandate charges on them to give that result plus or minus 1 (your choice on manifest) per charge consumed. Enhanced: This effect is instead activated on a damage roll, changing its damage to be plus or minus 10 damage of its type if it does so."
+      "text": "Store a Mandate charge on the target, lasting until the start of your next turn. When the target gets a result (from a roll or from Decree), you can consume any number of Mandate charges on them to give that result plus or minus 1 (your choice on Manifest) per charge consumed. Enhanced: This effect is instead activated on a damage roll, changing its damage to be plus or minus 10 damage of its type if it does so."
      }
     ]
    },
@@ -3825,7 +3831,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Preordained",
-      "text": "Cost: Energy equal to your PON min. When you finish a rest, roll one of your dodge dice, that result is your Preordained Number. Whenever you consume an Order charge, you can use this ability to additionally increase/decrease that effect by your preordained number (Mandate’s Enhance 10x’s this effect as damage instead)."
+      "text": "Cost: Energy equal to your PON min. When you finish a rest, roll one of your dodge dice, that result is your Preordained Number. Whenever you consume an Order charge, you can use this ability to additionally increase/decrease that effect by your Preordained Number (Mandate’s Enhance 10x’s this effect as damage instead)."
      }
     ]
    },
@@ -3856,11 +3862,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Fracture",
-      "text": "Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size increased or decreased by 2 (your choice on manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). Enhanced: The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage."
+      "text": "Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size increased or decreased by 2 (your choice on Manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). Enhanced: The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage."
      },
      {
       "name": "Unbound",
-      "text": "Only active while attuned to this Tenet. Once per round when you get a crit on a Manifest, you can instantly for free apply one Chaos Mode Charge of your choice onto that Manifest’s target."
+      "text": "Only active while this is your selected Tenet. Once per round when you get a crit on a Manifest, you can instantly for free apply one Chaos Mode charge of your choice onto that Manifest’s target."
      }
     ]
    },
@@ -3871,7 +3877,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Ricochet",
-      "text": "Cost: Energy equal to half of your SNA min, rounded down. When you successfully Manifest a Chaos mode, you can use this ability to place a copy that Charge onto a random valid target within range (this copies the chosen effect exactly)."
+      "text": "Cost: Energy equal to half of your SNA min, rounded down. When you successfully Manifest a Chaos Mode, you can use this ability to place a copy of that charge onto a random valid target within range (this copies the chosen effect exactly)."
      }
     ]
    },
@@ -3882,7 +3888,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Larceny",
-      "text": "Store a Larceny charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Larceny charge on them to steal that roll and any effects it would have, forcing them to roll a die that’s size is increased or decreased by 1 (dodge dice are affected by half). You can use their roll, including its effects, to replace any roll you would make prior to the start of your next turn. Enhanced: You now instead steal the action they were doing itself, lasting up to a minute. Their side functions the same (forced reroll), but now you can do their action exactly as they were attempting to by spending RP equal to its AP/RP cost, following the same rules they would as well as using their stats/dice."
+      "text": "Store a Larceny charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Larceny charge on them to steal that roll and any effects it would have, forcing them to roll a die whose size is increased or decreased by 1 (dodge dice are affected by half). You can use their roll, including its effects, to replace any roll you would make prior to the start of your next turn. Enhanced: You now instead steal the action they were doing itself, lasting up to a minute. Their side functions the same (forced reroll), but now you can do their action exactly as they were attempting to by spending RP equal to its AP/RP cost, following the same rules they would as well as using their stats/dice."
      }
     ]
    },
@@ -3893,7 +3899,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Control",
-      "text": "Once per Charge, you can reroll one extra roll made by a Chaos Mode. If you do, you must use that new result."
+      "text": "Once per charge, you can reroll one extra roll made by a Chaos Mode. If you do, you must use that new result."
      }
     ]
    },
@@ -3924,11 +3930,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Herald",
-      "text": "On hit, apply 10d8 Force to the target in a direction of your choice. This Force ignores the half-max HP threshold, instead converting directly into feet pushed. Enhanced: The Force also ignores Lift, treating it as if it were 0."
+      "text": "On hit, apply 10d8 Force to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead converting directly into feet pushed after being divided by 10. Enhanced: The Force also ignores Lift, treating it as if it were 0."
      },
      {
       "name": "Gust",
-      "text": "Only active while attuned to this Tenet. Once per round when you successfully hit a Manifest, you can apply 5d8 Force to whatever the target(s) of the Manifest are in any direction of your choosing. This Force adds up with any Force the Manifest itself would produce."
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can apply 5d8 Force to whatever the target(s) of the Manifest are in any direction of your choosing. This Force adds up with any Force the Manifest itself would produce."
      }
     ]
    },
@@ -3961,7 +3967,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Kinetic Focus",
-      "text": "Cost: Energy equal to half of your PON min, rounded down. When you make a Herald or Ascend attack roll, or the attack roll for Redirects extra attack, you can use this ability. Give that attack roll a stack of Advantage. This effect can be used as much as desired per attack."
+      "text": "Cost: Energy equal to half of your PON min, rounded down. When you make a Herald or Ascend attack roll, or the attack roll for Redirect’s extra attack, you can use this ability. Give that attack roll a stack of Advantage. This effect can be used as much as desired per attack."
      }
     ]
    },
@@ -3996,7 +4002,7 @@ export const TREES = [
      },
      {
       "name": "Weight",
-      "text": "Only active while attuned to this Tenet. Once per round when you successfully hit a Manifest, you can apply 15 Slow stacks to whatever the target(s) of the Manifest are, lasting until the start of your next turn."
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can apply 15 Slow stacks to whatever the target(s) of the Manifest are, lasting until the start of your next turn."
      }
     ]
    },
@@ -4007,7 +4013,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Vice",
-      "text": "Cost: Energy equal to half of your SNA min, rounded down. Whenever a creature fails a counter-grapple check against one of your Below Modes, you can use this ability. They take 1d12 physical damage. Usable once per failed instance."
+      "text": "Cost: Energy equal to half of your SNA min, rounded down. Whenever a creature fails a counter grapple check against one of your Below Modes, you can use this ability. They take 1d12 physical damage. Usable once per failed instance."
      }
     ]
    },
@@ -4018,7 +4024,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Burden",
-      "text": "On hit, the target gets Disadvantage on either their attack or dodge rolls (your choice on Manifest, has no effect on counter grapple checks), until they break free with a counter grapple check of 2 or higher, or the start of your next turn. This effect stacks with itself (both of the types of Disadvantage, as well as more Disadvantage on one type), but are all removed at once with a successful counter grapple check. Enhanced: The effect now lasts for 3 turns, or until broken free from."
+      "text": "On hit, the target gets Disadvantage on either their attack or dodge rolls (your choice on Manifest, has no effect on counter grapple checks), until they break free with a counter grapple check of 2 or higher, or the start of your next turn. This effect stacks with itself (both of the types of Disadvantage, as well as more Disadvantage on one type), but they are all removed at once with a successful counter grapple check. Enhanced: The effect now lasts for 3 turns, or until broken free from."
      }
     ]
    },
@@ -4029,7 +4035,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Quicksand",
-      "text": "Cost: Energy equal to double your SNA min. Whenever a creature would successfully break free from one of your Below Mode effects while they are within 100ft of you and you can sense them, you can use this ability. Make an attack roll against that target, on hit they instead fail their escape check in that instance. Usable once per breakout instance."
+      "text": "Cost: Energy equal to double your SNA min. Whenever a creature would successfully break free from one of your Below Mode effects while they are within 100ft of you and you can sense them, you can use this ability. Make an attack roll against that target, on hit they instead fail their counter grapple check in that instance. Usable once per breakout instance."
      }
     ]
    },
@@ -4040,7 +4046,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Entomb",
-      "text": "Can only be used on a target affected by both Sink and at least 3 Burden stacks. Completely entomb the target in the ground below them, clearing their Sink and Burden effects but causing them to be blind, deaf, and unable to smell. While encased, they can attempt a counter grapple check of 3 or higher to escape their entombment. Additionally, at the start of each of their turns while entombed, they suffer 3d10 physical damage. Enhanced: The effect now lasts for 3 turns, or until broken free from."
+      "text": "Can only be used on a target affected by both Sink and at least 3 Burden stacks. Completely entomb the target in the ground below them, clearing their Sink and Burden effects but causing them to be blind, deaf, and unable to smell, lasting until the start of your next turn. While encased, they can attempt a counter grapple check of 3 or higher to escape their entombment. Additionally, at the start of each of their turns while entombed, they suffer 3d10 physical damage. Enhanced: The effect now lasts for 3 turns, or until broken free from."
      }
     ]
    }
@@ -4064,7 +4070,7 @@ export const TREES = [
      },
      {
       "name": "Alter",
-      "text": "Only active while attuned. Once per round when you hit a Manifest, choose an object the target is wearing or holding. All damage dealt to it is either Strengthened or Weakened, lasting until the start of your next turn."
+      "text": "Only active while this is your selected Tenet. Once per round when you hit a Manifest, choose an object the target is wearing or holding. All damage dealt to it is either Strengthened or Weakened, lasting until the start of your next turn."
      }
     ]
    },
@@ -4086,7 +4092,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Consecrate",
-      "text": "The attack roll for this Manifest is made against yourself. On hit, create a real Mental Icon of a single type with either Common or Uncommon rarity, and a grade of 1. The item is created at a place within your chosen range (Area creates multiple per target, each requiring a separate dodge roll from yourself against the same attack roll), and it appears either in a willing target's free hand, or at the feet of an unwilling target/a target that cannot wield it. In addition, if it appeared in a willing target’s hand, you can automatically attune it to them to a Tenet either you or the target have access to (must match the pole of the Icon’s Form). The item lasts until the start of your next turn. Enhanced: The created Icon can be of Rare rarity instead."
+      "text": "The attack roll for this Manifest is made against yourself. On hit, create a real Mental Icon of a single Form with either Common or Uncommon rarity, and a grade of 1. The item is created at a place within your chosen range (Area creates multiple per target, each requiring a separate dodge roll from yourself against the same attack roll), and it appears either in a willing target's free hand, or at the feet of an unwilling target/a target that cannot wield it. In addition, if it appeared in a willing target’s hand, you can automatically attune it to them to a Tenet either you or the target have access to (must match the Pole of the Icon’s Form). The item lasts until the start of your next turn. Enhanced: The created Icon can be of Rare rarity instead."
      }
     ]
    },
@@ -4108,7 +4114,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Rite",
-      "text": "You can alternately Manifest one of your Creation Modes as a Rite. Doing so requires 2 hours if the item is Archetypal and Common, or Non-Archetypal and Powder/Liquid. It instead takes 8 hours if its Archetypal and Uncommon, or Non-Archetypal and Soft. During the Rite, you are considered doing a heavy activity and have zero energy (you can cancel the Rite at any time, losing all progress). On completion, the item is made permanent, though it can still be dismissed by yourself, or by others who identify it as Mentally made."
+      "text": "You can alternately Manifest one of your Creation Modes as a Rite. Doing so requires 2 hours if the item is Archetypal and Common, or Non-Archetypal and Powder/Liquid (Rare/Hard items cannot be made permanent through Rite). It instead takes 8 hours if it's Archetypal and Uncommon, or Non-Archetypal and Soft. During the Rite, you are considered doing a heavy activity and have zero energy (you can cancel the Rite at any time, losing all progress). On completion, the item is made permanent, though it can still be dismissed by yourself, or by others who identify it as Mentally made."
      }
     ]
    }
@@ -4132,7 +4138,7 @@ export const TREES = [
      },
      {
       "name": "Infuse",
-      "text": "Only active while attuned. Once per round when a willing character within 100ft that you can sense hits a target, you can instantly apply the damage and effect of one of your Destruction Mode’s to that attack (cannot be enhanced or fusioned, can be used on your own hits), but its damage is Weakened."
+      "text": "Only active while this is your selected Tenet. Once per round when a willing character within 100ft that you can sense hits a target, you can instantly apply the damage and effect of one of your Destruction Modes to that attack (cannot be enhanced or fusioned, can be used on your own hits), but its damage is Weakened."
      }
     ]
    },
@@ -4143,7 +4149,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Immolate",
-      "text": "On hit, deals 2d10 heat damage, applying Ignite stacks equal to the damage dealt. Enhanced: After application, the target’s Ignite stacks instantly spread to an adjacent target of your choosing (adding the current target’s Ignite stacks to the new Target, still capping out at Pain Threshold/Limit)."
+      "text": "On hit, deals 2d10 heat damage, applying Ignite stacks equal to the damage dealt. Enhanced: After application, the target’s Ignite stacks instantly spread to an adjacent target of your choosing (adding the current target’s Ignite stacks to the new target, still capping out at Pain Threshold/Limit)."
      }
     ]
    },
@@ -4200,7 +4206,7 @@ export const TREES = [
      },
      {
       "name": "Dampen",
-      "text": "Only active while attuned. Once per round when damage would be dealt to a target within 100ft of you that you can sense, you can reduce that damage by 1d10."
+      "text": "Only active while this is your selected Tenet. Once per round when damage would be dealt to a target within 100ft of you that you can sense, you can reduce that damage by 1d10."
      }
     ]
    },
@@ -4210,7 +4216,7 @@ export const TREES = [
     "summary": "You gain the following ability:",
     "entries": [
      {
-      "name": "Serenity",
+      "name": "Tranquility",
       "text": "Cost: Energy equal to half of your PON min, rounded down. When a target under the effects of one of your Peace Modes is attacked or makes an attack, you can use this ability. That triggering attack roll is made with a stack of Disadvantage, only usable once per triggering instance."
      }
     ]
@@ -4264,11 +4270,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Provoke",
-      "text": "On hit, the target is Provoked until the start of your turn. While provoked, their first set of AP spent on their turn must be spent making an attack of their choice at the nearest target to them, with an additional 2 die size for that attack roll. This can include movement (using strafing up to the AP the attack would cost, otherwise just using the AP to move). Cannot stack. Enhanced: You instead choose the attack they use (from what you know of their attacks), or the target of their attack. Two uses of Enhanced Provoke allow for both of these to apply."
+      "text": "On hit, the target is Provoked until the start of your next turn. While provoked, their first set of AP spent on their turn must be spent making an attack of their choice at the nearest target to them, with an additional 2 die size for that attack roll. This can include movement (using strafing up to the AP the attack would cost, otherwise just using the AP to move). Cannot stack. Enhanced: You instead choose the attack they use (from what you know of their attacks), or the target of their attack. Two uses of Enhanced Provoke allow for both of these to apply."
      },
      {
       "name": "Empower",
-      "text": "Only active while attuned. Once per round when damage would be dealt to a target within 100ft of you that you can sense, you can increase that damage by 1d10 (of that damage’s type)."
+      "text": "Only active while this is your selected Tenet. Once per round when damage would be dealt to a target within 100ft of you that you can sense, you can increase that damage by 1d10 (of that damage’s type)."
      }
     ]
    },
@@ -4332,11 +4338,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Crescendo",
-      "text": "On Hit, deals 1d10 Physical damage to the target. The first time this Manifest hits per attack, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 2 more than the stack before it. Enhanced: This Manifest's damage can be of a type of your choice, from among Physical, Heat, Cold, Radiation and Acid, and it is resolved as though you consumed one additional Adaptation stack."
+      "text": "On hit, deals 1d10 physical damage to the target. The first time this Manifest hits per attack, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 2 more than the stack before it. Enhanced: This Manifest's damage can be of a type of your choice, from among physical, heat, cold, radiation and acid, and it is resolved as though you consumed one additional Adaptation stack."
      },
      {
       "name": "Adapt",
-      "text": "Only active while attuned. Once per round when you would Manifest, you can expend one of your Adaptation stacks to give that Manifest Strengthened."
+      "text": "Only active while this is your selected Tenet. Once per round when you would Manifest, you can expend one of your Adaptation stacks to give that Manifest Strengthened."
      }
     ]
    },
@@ -4365,11 +4371,11 @@ export const TREES = [
    {
     "tier": 4,
     "free": false,
-    "summary": "You gain the following passive:",
+    "summary": "You gain the following ability:",
     "entries": [
      {
       "name": "Memory",
-      "text": "Whenever an Adaptation stack of yours would be removed, whether by being used or lost, you can spend energy equal to your PON min to keep it instead. Any effect that stack was used for still applies as normal. If multiple stacks would be removed at once, you can do this for each one affected."
+      "text": "Cost: Energy equal to your PON min. Whenever an Adaptation stack of yours would be removed, whether by being used or lost, you can use this ability. Keep that stack instead of consuming it. Any effect that stack was used for still applies as normal. If multiple stacks would be removed at once, you can do this for each one affected."
      }
     ]
    },
@@ -4400,11 +4406,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Exact",
-      "text": "Deals 1d10 Physical damage to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. Enhanced: The damage from this gains 5 Pierce, which is affected by the Strengthened from the on hit bonus."
+      "text": "Deals 1d10 physical damage to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. Enhanced: The damage from this gains 5 Pierce, which is affected by the Strengthened from the on hit bonus."
      },
      {
       "name": "Ego",
-      "text": "Only active while attuned. Once per round when you would Crit on a Manifest, you can regain 5 energy."
+      "text": "Only active while this is your selected Tenet. Once per round when you crit on a Manifest, you can regain 5 energy."
      }
     ]
    },
@@ -4437,7 +4443,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Pride",
-      "text": "Whenever you Crit against a living target with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests Advantage on their attack rolls."
+      "text": "Whenever you crit against a living target with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests Advantage on their attack rolls."
      }
     ]
    },
@@ -4448,7 +4454,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Masterstroke",
-      "text": "Deals 1d8 damage of your choice (from among the Physical and Elemental damage types) to the target, applying regardless of if you hit after the attack roll is made. On hit any direct damage dealt by this reapplies on another target within the Manifest range that you can sense, no extra attack roll needed, while on miss the damage is reduced by how much you missed by. Enhanced: When you Manifest this Mode, you can consume any number of Pride stacks. For each consumed, increase the damage dealt by this Mode by 1d8."
+      "text": "Deals 1d8 damage of your choice from among physical, heat, cold, radiation and acid to the target, applying regardless of if you hit after the attack roll is made. On hit any direct damage dealt by this reapplies on another target within the Manifest range that you can sense, no extra attack roll needed, while on miss the damage is reduced by how much you missed by. Enhanced: When you Manifest this Mode, you can consume any number of Pride stacks. For each consumed, increase the damage dealt by this Mode by 1d8."
      }
     ]
    }
@@ -4479,7 +4485,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Make Clear",
-      "text": "Cost: Energy equal to your WIL min. Whenever you activate your Icon’s Ward effect, you can use this ability. You get Advantage on the Ward’s activation attack roll. In addition, if you still end up missing the Ward activation attack roll, you can reroll it once, not keeping any Advantages/Disadvantages the original roll had."
+      "text": "Cost: Energy equal to your WIL min. Whenever you activate your Form’s Ward effect, you can use this ability. You get Advantage on the Ward’s activation attack roll. In addition, if you still end up missing the Ward activation attack roll, you can reroll it once, not keeping any Advantages/Disadvantages the original roll had."
      }
     ]
    },
@@ -4490,7 +4496,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Innate",
-      "text": "Your first usage of your Icon’s Ward effect each turn costs no AP/RP, and is automatically Enhanced."
+      "text": "Your first usage of your Form’s Ward effect each turn costs no AP/RP, and is automatically Enhanced."
      }
     ]
    },
@@ -4501,7 +4507,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Recur",
-      "text": "Cost: Energy equal to half of your WIL min, rounded down. Whenever you activate your Icon’s Ward effect on a target other than yourself, you can use this ability. If you hit the Ward effect, it chains to you as well for free, no additional hit required (including its Enhance effect if it was initially Enhanced, and crit bonus if the initial crit)."
+      "text": "Cost: Energy equal to half of your WIL min, rounded down. Whenever you activate your Form’s Ward effect on a target other than yourself, you can use this ability. If you hit the Ward effect, it chains to you as well for free, no additional hit required (including its Enhance effect if it was initially Enhanced, and its crit bonus if the initial activation crit)."
      }
     ]
    },

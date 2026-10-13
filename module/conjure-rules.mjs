@@ -2,6 +2,7 @@
  * Tier 4 rules math (Summoning, Animation, Creation, Build Arcana): pure functions, no Foundry globals.
  * The engine that makes the actors and items is conjure.mjs.
  */
+import { moveSpeed } from "./rules.mjs";
 
 /** Form / Animate: the point pool is 5 × a multiplier (the Core's Threshold; a Combo's extra baseline Threshold doesn't multiply). */
 const POINTS_PER_THRESHOLD = 5;
@@ -44,11 +45,11 @@ export const layeredBonus = (build, defaultHealth) => (defaultHealth ? 2 : 1) * 
 export function naturalWeapon({ weaponType, weight, scaling }) {
   return { weaponType, weight, material: weight === "heavy" ? "iron" : "hardwood", grade: Math.max(1, Math.floor((scaling || 0) / 10)) };
 }
-/** Natural armor (Skin): Threshold 1 = Light, 2 = Medium, 3 = Heavy, 4 = Titanic; Soft Leather's stats for Light/Medium, Copper for Heavy/Titanic. */
+/** Natural armor (Skin): Threshold 1 = Light, 2 = Medium, 3 = Heavy, 4 = Titanic; Soft Leather's stats for Light/Medium, Iron for Heavy/Titanic. */
 const SKIN_WEIGHTS = { 1: "light", 2: "medium", 3: "heavy", 4: "titanic" };
 export function naturalArmor({ threshold, con }) {
   const weight = SKIN_WEIGHTS[Math.min(4, Math.max(1, Math.floor(threshold || 1)))];
-  return { weight, material: weight === "light" || weight === "medium" ? "softLeather" : "copper", grade: Math.max(1, Math.floor((con || 0) / 10)) };
+  return { weight, material: weight === "light" || weight === "medium" ? "softLeather" : "iron", grade: Math.max(1, Math.floor((con || 0) / 10)) };
 }
 
 /* ---- Animation ---- */
@@ -59,12 +60,12 @@ export function animationSize(body) {
   return b >= 625 ? 5 : b >= 125 ? 4 : b >= 25 ? 3 : b >= 5 ? 2 : 1;
 }
 
-/** The four material categories: health = hpPer × points × size; speed in ft per AP; physical attack stacks. */
+/** The four material categories: health = hpPer × points × size; speed as a percentage of the Size's maximum; physical attack stacks. */
 export const ANIM_CATEGORIES = {
-  liquid: { label: "Liquid", hpPer: 1, speed: 50, physical: -1, ap: 6, rp: 6, text: "Can't hold items; moves through nearly any opening; Advantage dodging non-targeted attacks and Disadvantage on them; ignores swimming restrictions; a grappled target begins drowning." },
-  soft: { label: "Soft", hpPer: 3, speed: 20, physical: 0, ap: 6, rp: 6, text: "No restrictions: a standard summon." },
-  powder: { label: "Powder", hpPer: 2, speed: 30, physical: -2, ap: 6, rp: 6, text: "Holds one object at a time (can't attack with it); Advantage dodging non-targeted attacks; fits through ¼ inch gaps; after being hit, 2 RP to scatter (untargetable by non-area/targeted attacks until its next turn, dropping what it held)." },
-  hard: { label: "Hard", hpPer: 5, speed: 10, physical: 1, ap: 3, rp: 3, text: "Only 3 AP and RP per turn, but its points count as twice as high for weapon and armor limits." }
+  liquid: { label: "Liquid", hpPer: 1, speedPct: 100, physical: -1, ap: 6, rp: 6, text: "Can't hold items; moves through nearly any opening; Advantage dodging non-targeted attacks and Disadvantage on them; ignores swimming restrictions; a grappled target begins drowning." },
+  soft: { label: "Soft", hpPer: 3, speedPct: 40, physical: 0, ap: 6, rp: 6, text: "No restrictions: a standard summon." },
+  powder: { label: "Powder", hpPer: 2, speedPct: 60, physical: -2, ap: 6, rp: 6, text: "Holds one object at a time (can't attack with it); Advantage dodging non-targeted attacks; fits through ¼ inch gaps; after being hit, 2 RP to scatter (untargetable by attacks that are neither targeted nor area until its next turn, dropping what it held)." },
+  hard: { label: "Hard", hpPer: 5, speedPct: 20, physical: 1, ap: 3, rp: 3, text: "Only 3 AP and RP per turn, but its points count as twice as high for weapon and armor limits." }
 };
 
 const mat = (category, rarity, ...names) => names.map(name => ({ name, category, rarity }));
@@ -86,7 +87,7 @@ export const animationAllowed = (category, expanded) => expanded || category ===
 export function animationStats({ points, category, size, stats = null }) {
   const c = ANIM_CATEGORIES[category];
   const s = stats ?? { str: points, dex: points, con: points };
-  return { ...s, size, hp: c.hpPer * (stats ? s.con : points) * size, energy: 0, speed: c.speed, physical: c.physical, ap: c.ap, rp: c.rp };
+  return { ...s, size, hp: c.hpPer * (stats ? s.con : points) * size, energy: 0, speed: moveSpeed(size, 100 - c.speedPct), speedPct: c.speedPct, physical: c.physical, ap: c.ap, rp: c.rp };
 }
 
 /* ---- Creation ---- */

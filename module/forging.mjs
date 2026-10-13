@@ -6,7 +6,7 @@
 import { post, requestGM, putSpellEffect, spellEffects, attackerToken, setActorFlag, besideTokenPosition } from "./actions.mjs";
 import * as R from "./mental-rules.mjs";
 import * as conjure from "./conjure.mjs";
-import { AFFIXES, FOCI_TYPES, SHROUD_TYPES, AFFIX_LIMIT } from "./magic.mjs";
+import { AFFIXES, AFFIX_SIDES, FOCI_TYPES, SHROUD_TYPES } from "./magic.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS } from "./martial.mjs";
 import { tierOf } from "./skills.mjs";
 import { mental, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
@@ -46,8 +46,8 @@ async function askWhat(caster, x) {
       + field("Weight", select("weight", [["light", "Light"], ["medium", "Medium"], ["heavy", "Heavy"], ["titanic", "Titanic (armor)"]])) + field("Material", `<input type="text" name="material" placeholder="a material key, e.g. ironwood">`) + field("Name", `<input type="text" name="name">`);
   } else if (mode === `${ID}:conjure`) {
     const aff = Object.entries(AFFIXES).filter(([, a]) => rar.includes(rarityKey(a.rarity)));
-    html = field("What", select("kind", [["foci", "Magic Foci"], ["shroud", "Shroud"]])) + field("Foci type", select("ftype", Object.entries(FOCI_TYPES).map(([k, v]) => [k, v.label]))) + field("Shroud type", select("stype", Object.entries(SHROUD_TYPES).map(([k, v]) => [k, v.label])))
-      + `<fieldset><legend>Affixes (each past your free ones costs 20% speed)</legend>${aff.map(([k, a]) => `<label class="fs-cast-mod"><input type="checkbox" name="aff:${k}"> ${esc(a.label)} <small>(${esc(a.rarity)})</small></label>`).join("")}</fieldset>` + field("Name", `<input type="text" name="name">`);
+    html = field("What", select("kind", [["foci", "Magic Foci"], ["shroud", "Shroud"], ["affix", "Affix"]])) + field("Foci type", select("ftype", Object.entries(FOCI_TYPES).map(([k, v]) => [k, v.label]))) + field("Shroud type", select("stype", Object.entries(SHROUD_TYPES).map(([k, v]) => [k, v.label])))
+      + field("Affix", select("affix", aff.map(([k, a]) => [k, `${a.label} (${a.rarity})`]))) + field("Attuned to its (Affix)", select("side", Object.entries(AFFIX_SIDES))) + field("Name", `<input type="text" name="name">`);
   } else if (mode === `${ID}:consecrate`) {
     const forms = Object.entries(R.FORMS).filter(([, f]) => rar.includes(rarityKey(f.rarity)));
     html = field("Form", select("form", forms.map(([k, f]) => [k, `${f.name} (${R.KINDS[f.align].label}, ${f.rarity})`]))) + field("Name", `<input type="text" name="name">`);
@@ -71,9 +71,9 @@ function buildItem(caster, x, v, permanent) {
     return d;
   }
   if (mode === `${ID}:conjure`) {
-    const affixes = Object.keys(v).filter(k => k.startsWith("aff:") && v[k]).map(k => k.slice(4));
-    if (v.kind === "shroud") return { name: v.name || `${SHROUD_TYPES[v.stype]?.label} Shroud`, type: "shroud", flags, system: { shroudType: v.stype, grade: 1, attuned: false, affixes: affixes.slice(0, AFFIX_LIMIT) } };
-    return { name: v.name || `${FOCI_TYPES[v.ftype]?.label} Foci`, type: "foci", flags, system: { fociType: v.ftype, grade: 1, attuned: false, equipped: false, affixes: affixes.slice(0, AFFIX_LIMIT) } };
+    if (v.kind === "affix") return { name: v.name || `${AFFIXES[v.affix]?.label} Affix`, type: "affix", flags, system: { affix: v.affix, side: v.side === "defensive" ? "defensive" : "offensive", attuned: false } };
+    if (v.kind === "shroud") return { name: v.name || `${SHROUD_TYPES[v.stype]?.label} Shroud`, type: "shroud", flags, system: { shroudType: v.stype, grade: 1, attuned: false } };
+    return { name: v.name || `${FOCI_TYPES[v.ftype]?.label} Foci`, type: "foci", flags, system: { fociType: v.ftype, grade: 1, attuned: false, equipped: false } };
   }
   if (mode === `${ID}:consecrate`) return { name: v.name || `${R.FORMS[v.form]?.name} Icon`, type: "icon", flags, system: { form: v.form, grade: 1, attuned: false, tenet: "" } };
   const body = Math.min(R.bold(x.bstacks, 15 * (x.power ?? 1)), Math.max(1, Number(v.body) || 1));
@@ -95,16 +95,16 @@ async function deliver(caster, recipient, item, willing) {
 }
 
 const nowSeconds = () => globalThis.game?.time?.worldTime ?? Date.now() / 1000;
-/** Rite: 2 hours for a Common archetypal item or a Powder/Liquid object, 8 hours for anything more (Uncommon and up, Soft and up). */
+/** Rite: 2 hours for a Common archetypal item or a Powder/Liquid object, 8 hours for an Uncommon one or a Soft object; Rare (and up) or Hard things can't be made permanent (null). */
 function riteHours(mode, v) {
   const order = ["common", "uncommon", "rare", "veryRare"];
   const rank = r => Math.max(0, order.indexOf(rarityKey(r ?? "common")));
-  if (mode === `${ID}:fabricate`) return ["powder", "liquid"].includes(v.mat) ? 2 : 8;
+  if (mode === `${ID}:fabricate`) return ["powder", "liquid"].includes(v.mat) ? 2 : v.mat === "soft" ? 8 : null;
   let r = 0;
   if (mode === `${ID}:forge`) r = rank((v.kind === "armor" ? ARMOR_MATERIALS : WEAPON_MATERIALS)[v.material]?.rarity);
-  else if (mode === `${ID}:conjure`) r = Math.max(0, ...Object.keys(v).filter(k => k.startsWith("aff:") && v[k]).map(k => rank(AFFIXES[k.slice(4)]?.rarity)));
+  else if (mode === `${ID}:conjure`) r = v.kind === "affix" ? rank(AFFIXES[v.affix]?.rarity) : 0;
   else r = rank(R.FORMS[v.form]?.rarity);
-  return r === 0 ? 2 : 8;
+  return r === 0 ? 2 : r === 1 ? 8 : null;
 }
 const hoursLeft = rite => Math.max(0, (rite.readyAt - nowSeconds()) / 3600);
 
@@ -117,6 +117,7 @@ ACTS.create = async (x, caster, target) => {
   // A Rite takes hours of heavy work at zero Energy; the item arrives when it's finished (or the Rite is cancelled and the progress is lost).
   if (permanent) {
     const hours = riteHours(x.mode, v);
+    if (hours == null) { ui.notifications.warn("Rare or Hard things can't be made permanent through a Rite."); return false; }
     await setActorFlag(caster, "rite", { item, recipient: recipient.uuid, willing: !!v.willing, mode: x.mode, hours, readyAt: nowSeconds() + hours * 3600, name: item.name });
     await caster.update({ "system.energy.value": 0 });
     await post(caster, { title: `${esc(caster.name)} — Rite`, body: `<div class="fs-result"><i class="fa-solid fa-hourglass-half"></i> ${esc(caster.name)} begins a Rite to make <strong>${esc(item.name)}</strong>: <strong>${hours} hours</strong> of heavy activity at zero Energy. Use "Finish Rite" in the Action List when the time has passed (or cancel it, losing all progress).</div>` });

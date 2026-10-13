@@ -32,12 +32,8 @@ const living = a => a && a.type !== "pile" && !a.system?.magical;
 /* -------------------------------------------- */
 
 const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${game.combat.round}` : "ooc");
-/** How many times a Tenet can trigger per round: once, or twice with 3 Alignment of the Tenet's type. */
-export function tenetUses(actor) {
-  const tn = tenetOf(actor);
-  if (!tn) return 1;
-  return R.tenetUses(actor.getFlag?.("flowstate", "alignment"), R.wonderById(tn.wonder)?.kind);
-}
+/** A Tenet triggers once per round (the old 3 Alignment doubling is gone). */
+export const tenetUses = () => 1;
 /** Has this actor already used this "once per round" thing this round (Tenets: as many times as they may per round)? */
 export function onceUsed(actor, id) {
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
@@ -178,11 +174,11 @@ export const MODES = {
   /* ---- Death (Nightmare) ---- */
   async "mental-death-nightmare:wither"(c) {
     if (!living(c.target)) return `${esc(c.target.name)} isn't a living target: Wither does nothing.`;
-    const r = await roll(`${2 * c.power}d10`);
+    const r = await roll(`${c.power}d12`);
     rolled.push(r);
     const n = Math.floor(applyStacks(r.total, c.stacks));
     await requestDamage(c.target, n, "supernatural", 0, null, { silent: true, bypass: true, maxHpLoss: !!c.enhanced });
-    return `Wither removes <strong>${n}</strong> health from ${esc(c.target.name)} (${2 * c.power}d10 = ${r.total}${c.stacks ? ` → ${n}` : ""}), ignoring objects and defenses${c.enhanced ? ", and that much Max HP too" : ""}.`;
+    return `Wither removes <strong>${n}</strong> health from ${esc(c.target.name)} (${c.power}d12 = ${r.total}${c.stacks ? ` → ${n}` : ""}), ignoring objects and defenses${c.enhanced ? ", and that much Max HP too" : ""}.`;
   },
   async "mental-death-nightmare:waste"(c) {
     const size = bold(c.bs, 2 * c.power);

@@ -1,9 +1,9 @@
 import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats } from "./rules.mjs";
 import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, fociProfile, shroudProfile, affixMultOf, affixSpeedPct } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile, affixProfile, affixMultOf, affixSpeedPct, attunedAffixKeys, attunedAffixItems } from "./magic.mjs";
 import { penalizedDie } from "./spellfx.mjs";
-import { FORMS, iconProfile, alignmentSpeedPct } from "./mental-rules.mjs";
+import { FORMS, iconProfile, alignmentSpeedPct, alignmentApLoss } from "./mental-rules.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
@@ -101,7 +101,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).
     this.ritualLoss = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.ritual?.energyLost) || 0), 0);
     this.energy.max = Math.max(0, d.energyMax - this.ritualLoss);
-    this.ap.max = sm?.ap ?? 6;
+    // Deepening (Mental T3): Alignment past 2 costs 1 AP a turn per point.
+    this.ap.max = Math.max(0, (sm?.ap ?? 6) - alignmentApLoss(this.parent?.getFlag?.("flowstate", "alignment")));
     this.rp.max = sm?.rp ?? 6;
 
     // Martial equipment scales off this actor's effective stats.
@@ -136,19 +137,18 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     };
 
     const statuses = this.parent?.statuses ?? new Set();
-    // Unfettered (Unarmored T5): immune to physical movement slows (Martial Theory, Martial equipment, physical sources) while
-    // wearing no armor. The Slow condition's stacks don't record a source, so they still apply.
+    // Unfettered (Unarmored T5): immune to all Stage 1 movement slows (the Slow stacks, Like Shooting Fish, Sliced) while wearing no armor.
     const noArmor = !(this.parent?.items ?? []).some?.(i => i.type === "armor" && i.system.equipped);
     const unfettered = noArmor && (Number(this.trees?.["martial-unarmored"]) || 0) >= 5;
     // Zircon (Shroud): while the melded Shroud is undamaged, ignore Rough Terrain and Slow stacks.
     const zircon = !!this.shroud?.system.profile.affixes?.includes("zircon") && this.shroud.system.wear <= 0;
-    const tempo = tempoModifier(zircon ? 0 : this.conditions.slow, this.conditions.haste, d.pain);
+    const tempo = tempoModifier(zircon || unfettered ? 0 : this.conditions.slow, this.conditions.haste, d.pain);
     // Speed is the Size's maximum, less percentages that add together: armor, attuned Affixes past the free ones, and Mental Alignment.
     // Trudge (Heavy T2 / Titanic T4) ignores the armor's share for the next move. A summon's speed is whatever it was made with.
     const trudge = !!this.parent?.getFlag?.("flowstate", "trudge");
     const speedLoss = {
       armor: trudge ? 0 : penalties.speedPct ?? 0,
-      affix: affixSpeedPct(this.foci?.system.profile, this.shroud?.system.profile),
+      affix: affixSpeedPct(attunedAffixCount(this.parent, this.foci, this.shroud), this.foci?.system.profile, this.shroud?.system.profile),
       alignment: alignmentSpeedPct(this.parent?.getFlag?.("flowstate", "alignment"))
     };
     speedLoss.total = sm ? 0 : speedLoss.armor + speedLoss.affix + speedLoss.alignment;
@@ -291,6 +291,40 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
   }
 }
 
+/** Tourmaline's element and Colored Diamond's declaration are set on the Affix itself; the Foci or Shroud it works through reads them from there. */
+function applyAffixSettings(sys, side) {
+  const items = attunedAffixItems(sys.parent?.actor, side);
+  const tourmaline = items.find(i => i.system.affix === "tourmaline");
+  if (tourmaline) sys.element = tourmaline.system.element;
+  const colored = items.find(i => i.system.affix === "coloredDiamond");
+  if (colored) sys.declared = colored.system.declared;
+}
+
+/** How many Affixes are attuned on each side (each costs speed past the Free Affixes): Affix items, plus any still in an attuned Foci/Shroud's old list. */
+function attunedAffixCount(actor, foci, shroud) {
+  const n = side => attunedAffixItems(actor, side).length;
+  return { offensive: n("offensive") + (foci?.system.affixes?.length ?? 0), defensive: n("defensive") + (shroud?.system.affixes?.length ?? 0) };
+}
+
+/** An Affix: a gem attuned on its own to its Offensive form (it works through your Foci and raw casting) or its Defensive form (your Shroud). */
+export class FlowStateAffixData extends foundry.abstract.TypeDataModel {
+  static defineSchema() {
+    return {
+      affix: new f.StringField({ required: true, initial: "quartz", choices: () => Object.fromEntries(Object.entries(AFFIXES).map(([k, v]) => [k, v.label])) }),
+      side: new f.StringField({ required: true, initial: "offensive", choices: () => AFFIX_SIDES }),
+      attuned: new f.BooleanField({ initial: false }),
+      element: new f.StringField({ initial: "heat" }),    // Tourmaline: the specified element
+      declared: new f.StringField({ initial: "" }),       // Colored Diamond: the spell (Offensive) or source type (Defensive) declared
+      description: new f.HTMLField({ initial: "" })
+    };
+  }
+
+  prepareDerivedData() {
+    this.profile = affixProfile(this);
+    this.broken = false;
+  }
+}
+
 /** Magic Foci: attuned (one at a time) and held to cast. */
 export class FlowStateFociData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -319,6 +353,8 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
   }
 
   computeProfile(stats) {
+    this.attached = attunedAffixKeys(this.parent?.actor, "offensive");
+    applyAffixSettings(this, "offensive");
     this.profile = fociProfile(this, stats);
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
@@ -361,7 +397,7 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
       shroudType: new f.StringField({ required: true, initial: "bastion", choices: () => Object.fromEntries(Object.entries(SHROUD_TYPES).map(([k, v]) => [k, v.label])) }),
       grade: int(1, { min: 1 }),
       attuned: new f.BooleanField({ initial: false }),
-      wear: int(0),                                       // spent Durability (Aegis/Lattice: charges used)
+      wear: int(0),                                       // spent Durability (Bulwark/Lattice: charges used)
       conditions: objectConditions(),
       affixes: new f.ArrayField(new f.StringField()),
       doubled: new f.StringField({ initial: "" }),        // Keystone: the Defensive Affix whose effects are doubled
@@ -377,6 +413,13 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
     };
   }
 
+  /** Shroud types renamed in the Equipment doc: Aegis → Bulwark, Ward → Mantle, Riposte → Rebuke. */
+  static migrateData(source) {
+    const renamed = { aegis: "bulwark", ward: "mantle", riposte: "rebuke" };
+    if (renamed[source.shroudType]) source.shroudType = renamed[source.shroudType];
+    return super.migrateData(source);
+  }
+
   prepareDerivedData() {
     const eff = this.parent?.actor?.system?.derived?.effective;
     this.computeProfile(eff ? eff.build.value : gradePreview(this.grade), this.parent?.actor?.system ?? null);
@@ -384,6 +427,8 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
 
   /** `owner` is the wearer's system data (for Cistern/Ember/Carapace/Emerald limits). */
   computeProfile(build, owner = null) {
+    this.attached = attunedAffixKeys(this.parent?.actor, "defensive");
+    applyAffixSettings(this, "defensive");
     const p = shroudProfile(this, build);
     if (p.valid) {
       let factor = 1;

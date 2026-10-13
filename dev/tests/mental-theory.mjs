@@ -106,10 +106,10 @@ await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged", enhan
 ok2(hero.system.energy.value === 200 - ponMin(), "Without a Patron, Enhance costs its energy");
 setFlag("patron", "mental-life-dream"); refresh(); seq = [20];
 await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged", enhance: true, burst: true });
-ok2(hero.system.energy.value === 200 && hero.system.rp.value === 4, "Aligned to the Patron Wonder, Enhance and Burst cost no energy (Burst still pays its RP)");
+ok2(hero.system.energy.value === 200 && hero.system.rp.value === 4, "For the Patron Wonder, Enhance and Burst cost no energy (Burst still pays its RP)");
 setAlign("nightmare"); refresh(); seq = [20];
 await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged", enhance: true });
-ok2(hero.system.energy.value === 200 - ponMin(), "…but not when you're not aligned to it");
+ok2(hero.system.energy.value === 200, "…and Alignment does not matter: the Patron Wonder's Enhance is free either way");
 dialog = () => "mental-death-nightmare"; await M.choosePatron(hero);
 ok2(flag(hero, "patron") === "mental-death-nightmare", "Choosing a Patron Wonder sets it");
 
@@ -148,14 +148,20 @@ target(null);
 reset(); theory(4); hero.system.trees["mental-willpower-arts"] = 2; hero.system.prepareDerivedData();
 setAlign("dream", 4); refresh(); messages.length = 0; dialog = () => ({});
 await M.activateWard(hero);
-{ const w = lastAtk().flags.flowstate.attack; ok2(w.targets[0].net === 1 && w.opts.stacks === 1, "4 Alignment: your own type's Icon Ward has Advantage and a Strengthened bolded effect"); seq = [2]; await actions.defend(lastAtk(), 0, "none");
-  ok2(shields(hero)[0]?.flags.flowstate.spellEffect.hp === Math.floor(20 * R.iconScale(hero.system.derived.effective.will.value, 3) * 1.5), "…the shielding is 1.5× (Strengthened)"); }
+{ const w = lastAtk().flags.flowstate.attack; ok2(w.targets[0].net === 1 && w.opts.stacks === 1 && w.opts.dodgeNet === -1 && w.opts.mental.ward.autoHit, "4 Alignment: your own type's Icon Ward has Advantage, a Strengthened bolded effect, half stealth and hits regardless"); seq = [2]; await actions.defend(lastAtk(), 0, "none");
+  ok2(shields(hero)[0]?.flags.flowstate.spellEffect.hp === Math.floor(8 * R.iconScale(hero.system.derived.effective.will.value, 3) * 1.5), "…the shielding is 1.5× (Strengthened)"); }
 clearAll(hero); setAlign("dream", 3); refresh(); messages.length = 0;
 await M.activateWard(hero);
-ok2(lastAtk().flags.flowstate.attack.targets[0].net === 0 && !lastAtk().flags.flowstate.attack.opts.stacks, "3 Alignment: nothing yet for the Ward");
-clearAll(hero); setAlign("dream", 2, true); refresh(); messages.length = 0;
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 1 && lastAtk().flags.flowstate.attack.opts.dodgeNet === -1 && !lastAtk().flags.flowstate.attack.opts.mental.ward.autoHit, "3 Alignment: half stealth, so the Ward has Advantage and whoever dodges it has Disadvantage");
+clearAll(hero); setAlign("dream", 2); refresh(); messages.length = 0;
 await M.activateWard(hero);
-ok2(lastAtk().flags.flowstate.attack.opts.dodgeNet === -1, "Equilibrium: everything dodging the Ward has Disadvantage");
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 1 && lastAtk().flags.flowstate.attack.opts.stacks === 1 && !lastAtk().flags.flowstate.attack.opts.dodgeNet, "2 Alignment: Advantage and a Strengthened bolded effect");
+clearAll(hero); setAlign("dream", 1); refresh(); messages.length = 0;
+await M.activateWard(hero);
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 1 && !lastAtk().flags.flowstate.attack.opts.stacks, "1 Alignment: Advantage on the Ward's attack roll");
+{ clearAll(hero); setAlign("dream", 4); refresh(); messages.length = 0; dialog = () => ({});
+  await M.activateWard(hero); seq = [2]; await actions.defend(lastAtk(), 0, "dodge");
+  ok2(/Hit|Critical/.test(messages.filter(m => m.flags?.flowstate?.defense).at(-1)?.content ?? ""), "4 Alignment: the Ward lands even when the roll would have missed"); }
 setAlign("neutral"); refresh(); clearAll(hero);
 dialog = () => ({ clear: true }); seq = [2];
 await M.activateWard(hero);
@@ -214,10 +220,13 @@ console.log("== Zealot and Reverie follow the Alignment number");
 clearAll(hero); aegis.system.form = "zealot"; hero.system.prepareDerivedData(); hero.system.hp.value = 432; hero.system.rp.value = 6; theory(1);
 const zealotNegates = async (level, enhance, dmg = 300) => { hero.system.hp.value = 432; hero.system.rp.value = 6; setAlign("nightmare", level); refresh(); dialog = () => (enhance ? { enhance: true } : {}); await actions.applyDamage(hero, dmg, "heat", { silent: true, shroudCtx: { source: "type:heat", attacker: orc.uuid } }); return 432 - hero.system.hp.value; };
 const zScale = R.iconScale(hero.system.derived.effective.will.value, 3);
-{ const a1 = await zealotNegates(1, false), a2 = await zealotNegates(2, false);
-  ok2(a1 === 300 - 6 * 5 * zScale && a2 === 0, "Zealot: only 5 × scale negated per use at 1 Nightmare, the full 30 × scale at 2"); }
-{ const w3 = await zealotNegates(3, true, 2000), w4 = await zealotNegates(4, true, 2000);
-  ok2(w3 === 1460 && w4 === 257, "Zealot Enhanced at 4 Nightmare: Strengthened by Alignment 4 (135 a use) and the damage is Weakened once (2000 → 1865 → 932 → 257)"); }
+{ const a1 = await zealotNegates(1, false), a2 = await zealotNegates(2, false); 
+  ok2(a1 === 300 - 6 * 4 * zScale && a2 === 300 - 6 * Math.floor(6 * zScale * 1.5), "Zealot: only 4 × scale negated per use at 1 Nightmare, the full 6 × scale at 2 (Strengthened by the Alignment: ×1.5)"); }
+{ const w3 = await zealotNegates(3, true, 2000);
+  const w4plain = await zealotNegates(4, true, 2000);
+  seq = [5, 30, 5, 30, 5, 30, 5, 30, 5, 30, 5, 30]; const w4 = await zealotNegates(4, true, 2000); seq = [];
+  ok2(w3 === 2000 - 6 * 27 && w4plain === 2000 - 6 * 27, "Zealot Enhanced: 27 a use (Strengthened) at 3 and 4 Nightmare, no Weakened without a crit");
+  ok2(w4 === 851, `Zealot Enhanced at 4 Nightmare: a critical Ward roll Weakens the damage once (2000 → 1973 → 986 → 851, took ${w4})`); }
 // Wards are used with a self attack roll (attack roll against your own dodge): a miss costs the RP and negates nothing.
 clearAll(hero); aegis.system.form = "veil"; hero.system.prepareDerivedData(); setAlign("neutral"); theory(1); refresh();
 { hero.system.hp.value = 432; hero.system.rp.value = 2; dialog = () => ({}); seq = [30, 5, 30, 5];
@@ -227,7 +236,7 @@ clearAll(hero); aegis.system.form = "veil"; hero.system.prepareDerivedData(); se
   hero.system.hp.value = 432; hero.system.rp.value = 2; seq = [5, 30, 5, 30];
   await actions.applyDamage(hero, 300, "heat", { silent: true, shroudCtx: { source: "type:heat", attacker: orc.uuid } });
   const hitLoss = 432 - hero.system.hp.value;
-  ok2(hitLoss === 300 - 2 * 10 * zScale, `…and two hits negate 10 × scale each (took ${hitLoss})`); seq = []; }
+  ok2(hitLoss === 300 - 2 * 4 * zScale, `…and two hits negate 4 × scale each (took ${hitLoss})`); seq = []; }
 
 clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 1); refresh(); messages.length = 0; dialog = () => ({});
 await M.activateWard(hero);
@@ -244,7 +253,7 @@ console.log("== Reverie");
 clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 4); refresh();
 await putSpellEffect(hero, { kind: "shield", caster: hero.uuid, name: "Reverie", hp: 20, max: 20, reverie: true, reverieEnhanced: true, order: "default" });
 await hit("mental-life-dream:flourish");
-ok2(shields(hero)[0].flags.flowstate.spellEffect.hp === 20 + 5 * mult, "Enhanced Reverie grows by 5 (× the scale) when a Dream Manifest hits");
+ok2(shields(hero)[0].flags.flowstate.spellEffect.hp === 20 + 4 * mult, "Enhanced Reverie grows by 4 (× the scale) when a Dream Manifest hits");
 refresh(); setAlign("dream", 2);
 await actions.mentalBeforeClear(hero);
 await actions.clearSpellEffects(hero);

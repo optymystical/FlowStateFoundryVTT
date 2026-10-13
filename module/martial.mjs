@@ -114,15 +114,25 @@ export const DAMAGE_CATEGORY = {
 };
 
 /**
+ * Every damage category a hit counts as: its own type's, and Magical as well when Magic produced it (Rules: "Any damage produced by Magic is also Magical in
+ * addition to its own type", so a Heat spell is Heat and Magical, and is blocked by protections that are either).
+ */
+export const damageCategories = (damageType, magic = false) => {
+  const cat = DAMAGE_CATEGORY[damageType] ?? "physical";
+  return magic && cat !== "magical" ? [cat, "magical"] : [cat];
+};
+
+/**
  * Limit effectiveness vs a damage type.
  * Default (Martial): blocks Physical and Elemental fully, nothing else.
  * A material "focus" means: that type/category blocks fully, every other type it would block at `factor`.
+ * `magic`: the damage came from a spell, so it is also Magical.
  */
-export function limitFactor(damageType, focus = null) {
-  const cat = DAMAGE_CATEGORY[damageType] ?? "physical";
-  const normallyBlocked = cat === "physical" || cat === "elemental";
+export function limitFactor(damageType, focus = null, magic = false) {
+  const cats = damageCategories(damageType, magic);
+  const normallyBlocked = cats.includes("physical") || cats.includes("elemental");
   if (!focus) return normallyBlocked ? 1 : 0;
-  const matches = focus.key === damageType || focus.key === cat;
+  const matches = focus.key === damageType || cats.includes(focus.key);
   if (matches) return 1;
   return normallyBlocked ? focus.factor : 0;
 }
@@ -148,7 +158,7 @@ export const WEAPON_MATERIALS = {
   steel:      wm("Steel", "uncommon", LH(45, 9, 90, 18), "The Limit is a third as effective against non-physical damage.", third("physical")),
   bronze:     wm("Bronze", "uncommon", LH(45, 9, 90, 18), "The Limit is a third as effective against non-elemental damage.", third("elemental")),
   glass:      wm("Glass", "uncommon", L(5, 1), "Damage dealt is doubly Strengthened, but requires four times as much work/resources to make and repair.", { stacks: 2 }),
-  silver:     wm("Silver", "uncommon", L(60, 12), "Damage dealt is Strengthened against supernatural targets, but the Limit is a tenth as effective against non-supernatural damage.", { vsSupernatural: 1, ...tenth("supernatural") }),
+  silver:     wm("Silver Coating", "uncommon", L(60, 12), "Damage dealt is Strengthened against supernatural targets, but the Limit is a tenth as effective against non-supernatural damage.", { vsSupernatural: 1, ...tenth("supernatural") }),
   amberite:   wm("Amberite", "uncommon", L(60, 12), "Deals arcane damage to magic, but the Limit is a tenth as effective against non-magical damage.", { arcaneVsMagic: true, ...tenth("magical") }),
   obsidian:   wm("Obsidian", "uncommon", H(10, 2), "Damage dealt is doubly Strengthened, but requires four times as much work/resources to make and repair.", { stacks: 2 }),
   coldIron:   wm("Cold Iron", "uncommon", H(120, 24), "Damage dealt is Strengthened against supernatural targets, but the Limit is a tenth as effective against non-supernatural damage.", { vsSupernatural: 1, ...tenth("supernatural") }),
@@ -185,22 +195,22 @@ export const ARMOR_MATERIALS = {
   softLeather: am("Soft Leather", "common", W({ light: [20, 4], medium: [40, 8] }), ""),
   hide:        am("Hide", "common", W({ medium: [30, 6] }), "Requires half as much work/resources to make and repair."),
   titanium:    am("Titanium", "common", W({ heavy: [60, 12] }), "Requires half as much work/resources to make and repair."),
-  copper:      am("Copper", "common", W({ heavy: [80, 16], titanic: [160, 32] }), ""),
-  iron:        am("Iron", "common", W({ titanic: [120, 24] }), "Requires half as much work/resources to make and repair."),
+  iron:        am("Iron", "common", W({ heavy: [80, 16], titanic: [160, 32] }), ""),
+  copper:      am("Copper", "common", W({ titanic: [120, 24] }), "Requires half as much work/resources to make and repair."),
   chitin:      am("Chitin", "uncommon", W({ light: [30, 6], medium: [60, 12] }), "The Limit is a third as effective against non-physical damage.", third("physical")),
   hardLeather: am("Hard Leather", "uncommon", W({ light: [30, 6], medium: [60, 12] }), "The Limit is a third as effective against non-elemental damage.", third("elemental")),
   silver:      am("Silver", "uncommon", W({ light: [40, 8], medium: [80, 16] }), "The Limit is a tenth as effective against non-supernatural damage.", tenth("supernatural")),
   amberite:    am("Amberite", "uncommon", W({ light: [40, 8], medium: [80, 16] }), "The Limit is a tenth as effective against non-magical damage.", tenth("magical")),
-  steel:       am("Steel", "uncommon", W({ heavy: [120, 24], titanic: [240, 48] }), "The Limit is a tenth as effective against non-physical damage.", tenth("physical")),
-  bronze:      am("Bronze", "uncommon", W({ heavy: [120, 24], titanic: [240, 48] }), "The Limit is a tenth as effective against non-elemental damage.", tenth("elemental")),
+  steel:       am("Steel", "uncommon", W({ heavy: [120, 24], titanic: [240, 48] }), "The Limit is a third as effective against non-physical damage.", third("physical")),
+  bronze:      am("Bronze", "uncommon", W({ heavy: [120, 24], titanic: [240, 48] }), "The Limit is a third as effective against non-elemental damage.", third("elemental")),
   coldIron:    am("Cold Iron", "uncommon", W({ heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-supernatural damage.", tenth("supernatural")),
   quartz:      am("Quartz", "uncommon", W({ heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-magical damage.", tenth("magical")),
-  grayIron:    am("Gray Iron", "rare", W({ medium: [60, 12], heavy: [120, 24], titanic: [240, 48] }), "Has the penalties of Armor one weight heavier than it. If Titanic, your speed is instead 0% (the minimum).", { heavier: 1 }),
+  grayIron:    am("Gray Iron", "rare", W({ medium: [60, 12], heavy: [120, 24], titanic: [240, 48] }), "Has the penalties of Armor one weight heavier than it. If Titanic, your speed is instead 0% (5ft minimum).", { heavier: 1 }),
   scarletite:  am("Scarletite", "rare", W({ light: [40, 8], medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-heat damage.", tenth("heat")),
   frigidium:   am("Frigidium", "rare", W({ light: [40, 8], medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-cold damage.", tenth("cold")),
   positron:    am("Positron", "rare", W({ light: [40, 8], medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-radiation damage.", tenth("radiation")),
   wyrmMetal:   am("Wyrm Metal", "rare", W({ light: [40, 8], medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "The Limit is a tenth as effective against non-acid damage.", tenth("acid")),
-  graySteel:   am("Gray Steel", "veryRare", W({ medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "Has the penalties of Armor two weights heavier than it. If Heavy, your speed is instead 0% (the minimum). If Titanic, your speed is both 0% and takes +1 AP to move.", { heavier: 2 }),
+  graySteel:   am("Gray Steel", "veryRare", W({ medium: [80, 16], heavy: [160, 32], titanic: [320, 64] }), "Has the penalties of Armor two weights heavier than it. If Heavy, your speed is instead 0% (5ft minimum). If Titanic, your speed is both 0% (5ft minimum) and takes +1 AP to move.", { heavier: 2 }),
   orichalcum:  am("Orichalcum", "veryRare", W({ medium: [30, 6], heavy: [60, 12] }), "Damage that would be dealt to this Armor is Weakened.", { selfWeakened: 1 }),
   mithrite:    am("Mithrite", "veryRare", W({ light: [15, 3] }), "Damage that would be dealt to this Armor is Weakened.", { selfWeakened: 1 }),
   adamantine:  am("Adamantine", "veryRare", W({ titanic: [120, 24] }), "Damage that would be dealt to this Armor is Weakened.", { selfWeakened: 1 })
@@ -360,14 +370,14 @@ export function armorProfile(a, con) {
  * Returns {absorbed, toHp, durabilityLoss}.
  */
 /** The Limit an object actually applies against this damage type, after Pierce. */
-export function effectiveLimit(profile, damageType, pierce = 0) {
+export function effectiveLimit(profile, damageType, pierce = 0, magic = false) {
   if (!profile?.valid) return 0;
-  return Math.max(0, Math.floor(profile.limit * limitFactor(damageType, profile.focus)) - Math.max(0, pierce));
+  return Math.max(0, Math.floor(profile.limit * limitFactor(damageType, profile.focus, magic)) - Math.max(0, pierce));
 }
 
-export function soak(damage, damageType, armor, { pierce = 0, durability = Infinity } = {}) {
+export function soak(damage, damageType, armor, { pierce = 0, durability = Infinity, magic = false } = {}) {
   if (!armor?.valid || durability <= 0 || damage <= 0) return { absorbed: 0, toHp: Math.max(0, damage), durabilityLoss: 0 };
-  let effLimit = Math.max(0, Math.floor(armor.limit * limitFactor(damageType, armor.focus)) - Math.max(0, pierce));
+  let effLimit = Math.max(0, Math.floor(armor.limit * limitFactor(damageType, armor.focus, magic)) - Math.max(0, pierce));
   // Can't absorb more than the remaining Durability.
   if (Number.isFinite(durability)) effLimit = Math.min(effLimit, Math.floor(durability / (armor.selfWeakened ? Math.pow(0.5, armor.selfWeakened) : 1)));
   const absorbed = Math.min(damage, effLimit);

@@ -191,7 +191,7 @@ function describe({ actor, plan, profile, mods, mult }) {
   const rarities = R.makeRarities({ mk2: !!mods["make mk2"], mk3: !!mods["make mk3"] });
   return { cj, actor, mult, gross: plan.gross ?? plan.threshold, mods, arms, skin: skin?.threshold ?? 0, expanded, rarities, complexity: mods.complexity ?? 0,
     armory: mods.armory ?? 0, pool: scale(cj.instant ? 10 * mult : (cj.kind === "summon" || cj.summonStats) ? R.summonPool(mult) : R.formPool(mult)), bodyMin: scale(cj.instant ? 10 * mult : R.formPool(mult)), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
-    equipment: !!(mods["weapon/foci"] || mods["armor/shroud"]), combo: plan.combo };
+    equipment: !!(mods["animate weapon/icon/foci"] || mods["animate armor/shroud"]), combo: plan.combo };
 }
 
 function dialogHTML(ctx, spec) {
@@ -378,7 +378,7 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
   const name = spec.name || `${mat.name} Animation`;
   const id = await spawn({ actor, name, system: { stats: { str: st.str, dex: st.dex, con: st.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f?.skillPoints ?? 0, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets, tile: spec.tile });
   await post(actor, { title: `${esc(actor.name)} — Animate`, body: `<div class="fs-result"><i class="fa-solid fa-hill-rockslide"></i> ${esc(name)} (${esc(mat.name)}, ${cat.label}) rises${ritualOf ? " (until the Ritual ends)" : " until the start of your next turn"}.</div>
-    <ul class="fs-list"><li>${points} points (Str, Dex, Con ${st.str}/${st.dex}/${st.con}) · Size ${size} (${body} Body) · ${hp} health${layered ? ` (Layered +${layered})` : ""} · ${st.speed} ft per AP · ${st.ap} AP / ${st.rp} RP</li>
+    <ul class="fs-list"><li>${points} points (Str, Dex, Con ${st.str}/${st.dex}/${st.con}) · Size ${size} (${body} Body) · ${hp} health${layered ? ` (Layered +${layered})` : ""} · ${st.speed} ft speed (${st.speedPct}% of its Size's maximum) · ${st.ap} AP / ${st.rp} RP</li>
     <li>Physical attacks ${st.physical > 0 ? "Strengthened" : st.physical === -1 ? "Weakened" : st.physical < -1 ? "doubly Weakened" : "normal"}</li><li>${esc(cat.text)}</li></ul>
     <div class="fs-notes">Mindless: it uses your senses and your attack and dodge dice, and shares your turn order (it acts right after your turn).${mods["mixed animations"] ? ` Mixed Animations: ${mods["mixed animations"]} extra material effect${mods["mixed animations"] === 1 ? "" : "s"} are active (the GM applies them).` : ""}</div>` });
   return id;
@@ -461,31 +461,34 @@ export async function makeMiss({ attacker, target, sp }) {
   await post(attacker, { title: `${esc(attacker.name)} — Make`, body: `<div class="fs-result">It missed: ${m.items.map(i => `<strong>${esc(i.name)}</strong>`).join(", ")} ${at ? `land${m.items.length === 1 ? "s" : ""} on the floor beside ${esc(target.name)}` : "go into your inventory (no scene)"}.</div>` });
 }
 
-/** Animate Weapon/Foci and Animate Armor/Shroud (the Replacement Mods): a card of what the animated equipment can do. */
+/** Animate Weapon/Icon/Foci and Animate Armor/Shroud (the Replacement Mods): a card of what the animated equipment can do. */
 async function animateEquipment({ actor, plan, mods, targets, ritualOf }) {
   const tgt = targets?.[0]?.actor ?? actor;
-  const armor = !!mods["armor/shroud"];
-  const pool = armor ? [tgt.system.armor, tgt.system.shroud].filter(Boolean) : (tgt.items ?? []).filter(i => (i.type === "weapon" && !i.system.profile?.unarmed) || i.type === "foci");
+  const armor = !!mods["animate armor/shroud"];
+  const pool = armor ? [tgt.system.armor, tgt.system.shroud].filter(Boolean) : (tgt.items ?? []).filter(i => (i.type === "weapon" && !i.system.profile?.unarmed) || i.type === "foci" || i.type === "icon");
   const picks = pool.filter(i => (i.system.grade ?? 9) <= 2);
-  if (!picks.length) { ui.notifications.warn(`${tgt.name} has no ${armor ? "armor or Shroud" : "weapon or Foci"} of Grade 2 or lower to animate.`); return 0; }
+  if (!picks.length) { ui.notifications.warn(`${tgt.name} has no ${armor ? "armor or Shroud" : "weapon, Icon or Foci"} of Grade 2 or lower to animate.`); return 0; }
   const item = picks[0];
   const acts = [];
   if (!armor && item.type === "weapon") acts.push({ act: "weapon", caster: actor.uuid, item: item.uuid, name: item.name });
   if (armor) {
     const grade = item.system.grade ?? 1;
-    const mult = item.type === "armor" ? { light: 0.5, medium: 1, heavy: 2, titanic: 4 }[item.system.weight] ?? 1 : 1;
+    // Armor: Grade d12s, halved if Light, normal if Medium, doubled if Heavy, quadrupled if Titanic. A Shroud deals double that, as Arcane damage.
+    const shroud = item.type === "shroud";
+    const mult = shroud ? 2 : { light: 0.5, medium: 1, heavy: 2, titanic: 4 }[item.system.weight] ?? 1;
     const dice = Math.max(1, Math.floor(grade * mult));
-    acts.push({ act: "suffocate", wearer: tgt.uuid, caster: actor.uuid, dice, name: item.name }, { act: "mould", wearer: tgt.uuid, caster: actor.uuid, dice, name: item.name });
+    const type = shroud ? "arcane" : "physical";
+    acts.push({ act: "suffocate", wearer: tgt.uuid, caster: actor.uuid, dice, type, name: item.name }, { act: "mould", wearer: tgt.uuid, caster: actor.uuid, dice, type, name: item.name });
   }
   await putSpellEffect(tgt, { kind: "animatedEquip", caster: actor.uuid, ritualOf, name: `Animated: ${item.name}`, item: item.uuid, description: `${item.name} is animated under ${actor.name}'s control until the start of their next turn.` });
-  const rows = acts.map((a, i) => `<div class="fs-brawl-row" data-role="attacker" data-owner="${actor.uuid}"><button type="button" class="fs-conjure-act" data-i="${i}"><i class="fa-solid fa-hand-fist"></i> ${a.act === "weapon" ? `Attack with ${esc(a.name)}` : a.act === "suffocate" ? `Suffocate ${esc(tgt.name)}` : "Mould it into a strike"} ${a.act === "weapon" ? "" : ` (${a.dice}d12 physical, 2 AP/RP)`}</button></div>`).join("");
-  await post(actor, { title: `${esc(actor.name)} — Animate ${armor ? "Armor/Shroud" : "Weapon/Foci"}`, body: `<div class="fs-result">${esc(item.name)} is animated under ${esc(actor.name)}'s control until the start of ${ritualOf ? "the Ritual's end" : "their next turn"}.</div>
-    <div class="fs-notes">${armor ? "Spend 2 AP or RP (also as a reaction) to suffocate its wearer (melee attack roll with Advantage) or mould it into a strike on someone in melee range of it (melee attack roll)." : `Spend AP or RP equal to its attack cost to move it up to ${plan.scaling ? Math.min(plan.scaling, 999) : "your Scaling Stat min"} ft and attack with it as if you held it (Foci: cast through it). You resolve the attacks at the table.`}</div>${rows}`,
+  const rows = acts.map((a, i) => `<div class="fs-brawl-row" data-role="attacker" data-owner="${actor.uuid}"><button type="button" class="fs-conjure-act" data-i="${i}"><i class="fa-solid fa-hand-fist"></i> ${a.act === "weapon" ? `Attack with ${esc(a.name)}` : a.act === "suffocate" ? `Suffocate ${esc(tgt.name)}` : "Mold it into a strike"} ${a.act === "weapon" ? "" : ` (${a.dice}d12 ${a.type}, 2 AP/RP)`}</button></div>`).join("");
+  await post(actor, { title: `${esc(actor.name)} — Animate ${armor ? "Armor/Shroud" : "Weapon/Icon/Foci"}`, body: `<div class="fs-result">${esc(item.name)} is animated under ${esc(actor.name)}'s control until the start of ${ritualOf ? "the Ritual's end" : "their next turn"}.</div>
+    <div class="fs-notes">${armor ? "Spend 2 AP or RP (also as a reaction) to suffocate its wearer (melee attack roll with Advantage) or mold it into a strike on someone in melee range of it (melee attack roll)." : `Spend AP or RP equal to its attack cost to move it up to ${plan.scaling ? Math.min(plan.scaling, 999) : "your Scaling Stat min"} ft and attack with it as if you held it (Foci: cast through it; Icon: manifest through it and use its Ward). You resolve the attacks at the table.`}</div>${rows}`,
     flags: { flowstate: { conjure: { acts } } } });
   return 1;
 }
 
-/** Click: Suffocate / Mould (Animate Armor/Shroud). */
+/** Click: Suffocate / Mold (Animate Armor/Shroud). */
 export async function act(message, i = 0) {
   const x = message.getFlag("flowstate", "conjure")?.acts?.[Number(i)];
   if (!x) return;
@@ -504,15 +507,15 @@ export async function act(message, i = 0) {
   }
   if (!(await spendPoints(caster, "ap", 2, `animated ${x.name}`))) return;
   const targets = x.act === "suffocate" ? [wearer] : undefined;
-  return performAttack(caster, { label: `${x.act === "suffocate" ? "Suffocate" : "Mould"}: ${x.name}`, net: x.act === "suffocate" ? 1 : 0, stealth: "none", melee: true, area: false, push: false, damage: `${x.dice}d12`, type: "physical",
-    stacks: 0, physical: false, shots: 1, critStacks: 0, pierce: 0, bash: 0, knockback: 0, notes: [x.act === "suffocate" ? "Suffocation: Advantage" : "Moulded armor strike"], followups: [], ...(targets ? { targetActors: targets } : {}) });
+  return performAttack(caster, { label: `${x.act === "suffocate" ? "Suffocate" : "Mold"}: ${x.name}`, net: x.act === "suffocate" ? 1 : 0, stealth: "none", melee: true, area: false, push: false, damage: `${x.dice}d12`, type: x.type ?? "physical",
+    stacks: 0, physical: false, shots: 1, critStacks: 0, pierce: 0, bash: 0, knockback: 0, notes: [x.act === "suffocate" ? "Suffocation: Advantage" : "Molded armor strike"], followups: [], ...(targets ? { targetActors: targets } : {}) });
 }
 
 /** Cast resolution for Form / Make / Animate. Returns what was made (an actor id or a count). */
 export async function resolve({ actor, plan, profile, spec, mods, ritualOf, targets, values }) {
   const cj = profile.conjure;
   let made;
-  if (cj.kind === "animate" && (mods["weapon/foci"] || mods["armor/shroud"])) made = await animateEquipment({ actor, plan, mods, targets, ritualOf });
+  if (cj.kind === "animate" && (mods["animate weapon/icon/foci"] || mods["animate armor/shroud"])) made = await animateEquipment({ actor, plan, mods, targets, ritualOf });
   else if (cj.kind === "summon") made = await makeSummon({ actor, plan, profile, spec, mods, ritualOf, targets, values });
   else if (cj.kind === "animate") made = await makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targets, values });
   else made = await makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets, values });

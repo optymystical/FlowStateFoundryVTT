@@ -50,6 +50,8 @@ r = ab.resistCheck(base, {});
 ok2(r.die === 32 && r.net === 0 && !r.auto, "Neither: a normal check");
 r = ab.resistCheck(base, { pureBody: true, con: { value: 40, die: 80, min: 13 } });
 ok2(r.value === 40 && r.die === 80 && r.min === 13, "Pure Body: Constitution (not doubled) stands in for the required stat when it is higher (40 beats 16 × 2)");
+r = ab.resistCheck(base, { pureBody: true, unstoppable: true, con: { value: 40, die: 80, min: 13 } });
+ok2(r.value === 80 && r.die === 160 && r.net === 1, "With Unstoppable, the stand-in Constitution still counts Unstoppable's doubling (not Pure Body's): 40 × 2 = 80 (the doc: \"not counting the doubling by Pure Body\")");
 r = ab.resistCheck(base, { pureBody: true, con: { value: 20, die: 40, min: 6 } });
 ok2(r.die === 64, "…but not when the doubled stat is higher (20 < 32)");
 r = ab.resistCheck(base, { pureBody: true, target: 19, con: { value: 40, die: 80, min: 13 } });

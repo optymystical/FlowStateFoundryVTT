@@ -8,7 +8,7 @@ import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile, desc
 import * as creation from "./creation.mjs";
 import * as npc from "./npc-creation.mjs";
 import * as mentalRules from "./mental-rules.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, fociProfile, shroudProfile } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
@@ -68,7 +68,6 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const eff = { str: pv.effective.str.value, dex: pv.effective.dex.value };
     const weaponTypes = Object.fromEntries(Object.entries(WEAPON_TYPES).filter(([k]) => k !== "unarmed" && k !== "improvised").map(([k, v]) => [k, `${v.label}${v.ranged ? " (ranged)" : ""}`]));
     const rangedTypes = Object.fromEntries([["", "— Not ammunition —"], ...Object.entries(WEAPON_TYPES).filter(([, v]) => v.ranged).map(([k, v]) => [k, `${v.label} ammunition`])]);
-    const targets = creation.affixTargets(st.items);
     const items = st.items.map((slot, index) => {
       const base = { index, ...slot, rawName: slot.name, name: npc.slotName(slot), ready: slot.ready !== false };
       if (slot.kind === "gear") return { ...base, gear: true, ammoChoices: rangedTypes, summary: slot.ammoType ? `Ammunition for ${WEAPON_TYPES[slot.ammoType]?.label} weapons` : "A plain item" };
@@ -93,11 +92,9 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       }
       if (slot.kind === "affix") {
         const a = AFFIXES[slot.affix];
-        const on = targets.find(t => String(t.index) === slot.target);
-        return { ...base, affixSlot: true, affixChoices: creation.allowedAffixes(npc.ANY_RARITY),
-          targetChoices: Object.fromEntries(targets.map(t => [String(t.index), `${t.label} · ${t.free} free`])),
-          summary: on ? `On ${on.label}` : "Pick a Foci or Shroud for it",
-          effect: a ? (on?.slot.kind === "shroud" ? `Shroud: ${a.shroud}` : on ? `Foci: ${a.foci}` : `Foci: ${a.foci} · Shroud: ${a.shroud}`) : "" };
+        return { ...base, affixSlot: true, readyLabel: "Attuned", affixChoices: creation.allowedAffixes(npc.ANY_RARITY), sideChoices: AFFIX_SIDES,
+          summary: `Attuned to its ${AFFIX_SIDES[slot.side] ?? "Offensive"} form: ${slot.side === "defensive" ? "the Shroud" : "the Foci and raw casting"}. Costs 20% speed past the Free Affixes`,
+          effect: a ? (slot.side === "defensive" ? a.shroud : a.foci) : "" };
       }
       const armor = slot.kind === "armor";
       const grade = Math.max(1, Math.trunc(Number(slot.grade)) || 1);
@@ -147,7 +144,6 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       skillPoints: sp, spentSP, remainingSP: sp - spentSP, treeRows, pickedTrees,
       archetypes: skills.ARCHETYPES.map(a => ({ ...a, selected: a.id === arch.id })), archPlaceholder: arch.placeholder ?? "",
       lockedTrees: skills.treesFor(arch.id).length - available.length, theoryName: skills.theoryFor(arch.id)?.name ?? "",
-      canAddAffix: targets.some(t => t.free > 0),
       errors, ready: !errors.length
     };
   }
@@ -188,18 +184,12 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   static onEvenStats() { this.state.stats = npc.evenStats(this.state.statPoints); this.render(); }
 
   static onAddItem(event, target) {
-    this.state.items.push(npc.newNpcSlot(target.dataset.kind, this.state.grade, this.state.items));
+    this.state.items.push(npc.newNpcSlot(target.dataset.kind, this.state.grade));
     this.render();
   }
   static onRemoveItem(event, target) {
     const gone = Number(target.dataset.index);
     this.state.items.splice(gone, 1);
-    // Affixes point at their Foci/Shroud by position: shift them, and unhook any that were on the removed item.
-    for (const slot of this.state.items) {
-      if (slot.kind !== "affix" || slot.target === "") continue;
-      const t = Number(slot.target);
-      slot.target = t === gone ? "" : t > gone ? String(t - 1) : slot.target;
-    }
     this.render();
   }
 

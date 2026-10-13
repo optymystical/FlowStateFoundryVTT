@@ -32,7 +32,7 @@ console.log("creation tests passed");
     { kind: "weapon", type: "rapid", weight: "light", material: "hardwood" },
     { kind: "weapon", type: "rapid", weight: "light", material: "hardwood" },
     { kind: "shroud", shroudType: "bastion" },
-    { kind: "affix", affix: "agate", target: "2" }
+    { kind: "affix", affix: "agate", side: "defensive" }
   ];
   const R4 = { ...R, items: 4, maxRarity: "uncommon" };
   const errs = c.validate({ ...good, items: slots }, R4);
@@ -41,16 +41,16 @@ console.log("creation tests passed");
   const ammo = items.filter(i => i.system.ammoType === "rapid");
   const shroud = items.find(i => i.type === "shroud");
   if (!(ammo.length === 1 && ammo[0].system.quantity === 40)) throw new Error("FAIL two Rapid weapons should give 40 Rapid ammo");
-  if (!(shroud.system.attuned && shroud.system.affixes.join() === "agate")) throw new Error("FAIL Affix should go on the Shroud, attuned");
-  console.log("  PASS 2 Rapid weapons → 40 Rapid ammo; Affix on the attuned Shroud");
-  const bad = c.validate({ ...good, items: [{ kind: "affix", affix: "agate", target: "" }] }, R4);
-  if (!bad.some(e => /Foci or Shroud/.test(e))) throw new Error("FAIL loose Affix should be rejected");
-  const rare = c.validate({ ...good, items: [{ kind: "foci", fociType: "rod" }, { kind: "affix", affix: "diamond", target: "0" }] }, R4);
+  const gem = items.find(i => i.type === "affix");
+  if (!(shroud.system.attuned && !shroud.system.affixes && gem && gem.system.affix === "agate" && gem.system.side === "defensive" && gem.system.attuned)) throw new Error("FAIL Affix should be its own attuned item on the Defensive form");
+  console.log("  PASS 2 Rapid weapons → 40 Rapid ammo; the Affix is an attuned Defensive item");
+  const bad = c.validate({ ...good, items: [{ kind: "affix", affix: "agate", side: "sideways" }] }, R4);
+  if (!bad.some(e => /Offensive or Defensive/.test(e))) throw new Error("FAIL an Affix needs a form");
+  const alone = c.validate({ ...good, items: [{ kind: "affix", affix: "agate", side: "offensive" }] }, R4);
+  if (alone.length) throw new Error("FAIL an Affix needs no Foci or Shroud: " + alone.join("; "));
+  const rare = c.validate({ ...good, items: [{ kind: "foci", fociType: "rod" }, { kind: "affix", affix: "diamond", side: "offensive" }] }, R4);
   if (!rare.some(e => /above/.test(e))) throw new Error("FAIL rare Affix above the cap should be rejected");
-  // Affixes cost speed rather than slots: a Wand takes two (the second costs 20% speed), up to the sanity cap per item.
-  const two = c.validate({ ...good, items: [{ kind: "foci", fociType: "wand" }, { kind: "affix", affix: "agate", target: "0" }, { kind: "affix", affix: "jasper", target: "0" }] }, R4);
-  if (two.some(e => /at most/.test(e))) throw new Error("FAIL a Wand may take a second Affix (at a speed cost)");
-  const many = c.validate({ ...good, items: [{ kind: "foci", fociType: "wand" }, ...Array.from({ length: 7 }, () => ({ kind: "affix", affix: "agate", target: "0" }))] }, R4);
-  if (!many.some(e => /at most 6 Affix/.test(e))) throw new Error("FAIL the per-item Affix cap");
-  console.log("  PASS Affix rules (needs a target, rarity cap, slot count)");
+  const slot = c.newSlot("affix", "uncommon");
+  if (!(slot.side === "offensive" && slot.affix && c.normalizeSlot({ ...slot, side: "x" }, "uncommon").side === "offensive")) throw new Error("FAIL new Affix slots default to the Offensive form");
+  console.log("  PASS Affix rules (their own form, rarity cap, no Foci or Shroud needed)");
 }

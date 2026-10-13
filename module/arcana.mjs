@@ -266,7 +266,7 @@ async function loseMirage(actor, live, d, lost) {
   if (d.phantom) {
     const r = await roll(`${d.phantom}d6`);
     phantom += r.total;
-    html += `<div class="fs-result">Phantom Pain: ${actor.name} takes ${r.total} illusion damage (${phantom} in all): it ignores protections and only counts toward their Pain Threshold. It disappears when no Mirage affects them.</div>`;
+    html += `<div class="fs-result">Phantom Pain: ${actor.name}'s Pain Threshold rises by ${r.total} (${phantom} in all). It goes away when no Mirage affects them.</div>`;
   }
   if (power <= 0) { if (live) await endMirage(actor, live); return { html: html + `<div class="fs-result">The Mirage is gone.</div>`, ended: true }; }
   if (live) await changeEffect(live, { "flags.flowstate.spellEffect.power": power, "flags.flowstate.spellEffect.phantomTotal": phantom, "flags.flowstate.spellEffect.tests": (d.tests ?? 0) + 1 });
@@ -356,7 +356,7 @@ export function listSpells() {
       const d = data(e);
       if (e.disabled || !d.caster || !SPELLISH.has(d.kind)) continue;
       const caster = globalThis.fromUuidSync?.(d.caster);
-      out.push({ id: `effect:${e.uuid}`, kind: "effect", label: `${e.name} on ${a.name}`, caster: d.caster, hp: d.kind === "shield" ? Number(d.hp) || 0 : d.spellHp ?? casterScaling(caster), power: d.power ?? spellPowerOf(caster), ritualOf: e.flags?.flowstate?.ritualOf ?? null, amplified: !!d.amplified, effect: e });
+      out.push({ id: `effect:${e.uuid}`, kind: "effect", label: `${e.name} on ${a.name}`, caster: d.caster, hp: d.kind === "shield" ? Number(d.hp) || 0 : d.spellHp ?? casterScaling(caster), power: d.power ?? spellPowerOf(caster), scaling: d.scaling, ritualOf: e.flags?.flowstate?.ritualOf ?? null, amplified: !!d.amplified, effect: e });
     }
   }
   // Spells that are mid cast: the attack has been rolled and nobody has answered it yet. Another caster can Strike them.
@@ -368,7 +368,7 @@ export function listSpells() {
     const caster = globalThis.fromUuidSync?.(at.attacker);
     const sp = at.opts.spell;
     out.push({ id: `cast:${m.id}`, kind: "cast", label: `${at.opts.label ?? "A spell"} by ${caster?.name ?? "someone"}, mid cast (attack ${Math.max(...open.map(t => t.total ?? 0))})`, caster: at.attacker,
-      hp: sp.hpLeft ?? casterScaling(caster), power: sp.power ?? spellPowerOf(caster), ritualOf: sp.ritualOf ?? null, amplified: !!sp.amplified,
+      hp: sp.hpLeft ?? casterScaling(caster), power: sp.power ?? spellPowerOf(caster), scaling: sp.scaling, ritualOf: sp.ritualOf ?? null, amplified: !!sp.amplified,
       message: m, attackTotal: Math.max(...open.map(t => t.total ?? 0)), opts: at.opts });
   }
   for (const t of globalThis.canvas?.scene?.templates ?? []) {
@@ -379,6 +379,8 @@ export function listSpells() {
   }
   return out;
 }
+/** The Scaling Stat its caster had for a Spell (Rip compares this, not the Power): the one recorded on the cast, else the caster's current. */
+const scalingOf = x => x.scaling ?? casterScaling(globalThis.fromUuidSync?.(x.caster));
 const findSpell = id => listSpells().find(x => x.id === id) ?? null;
 
 /** Damage a Spell; it's destroyed at 0. Returns { destroyed, left }. */
@@ -410,38 +412,38 @@ async function destroySpell(entry, reason = "it dissipates") {
   return changeEffect(entry.effect, null);
 }
 
-/** Amplify (Arcanomancy T4): +10 Power to a non-Ritual Spell, once. Only effects that scale with Power change. */
+/** Amplify (Arcanomancy T4): +10 Scaling Stat (one Spell Power) to a non-Ritual Spell, once. Only effects that scale with Power change. */
 async function amplifySpell(entry) {
   if (entry.ritualOf) return "Amplify only works on non-Ritual Spells.";
   if (entry.amplified) return "That Spell has already been amplified.";
   if (entry.kind === "cast") {
-    // Mid cast it can still be changed: +10 Power, so its dice, health and Force (everything the card works out later) scale up.
+    // Mid cast it can still be changed: +1 Power (10 more Scaling Stat), so its dice, health and Force (everything the card works out later) scale up.
     const p = Math.max(1, entry.power), dmg = String(entry.opts.damage ?? "").match(/^(\d+)d(\d+)$/);
-    const upd = { id: entry.message.id, power: p + 10 };
-    if (dmg) upd.damage = `${Math.round(Number(dmg[1]) / p * (p + 10))}d${dmg[2]}`;
+    const upd = { id: entry.message.id, power: p + 1 };
+    if (dmg) upd.damage = `${Math.round(Number(dmg[1]) / p * (p + 1))}d${dmg[2]}`;
     await requestGM("castChange", upd);
-    return `${entry.label} is amplified: Power ${p} → ${p + 10}${upd.damage ? `, ${dmg[0]} → ${upd.damage}` : ""}. It lands with the new numbers.`;
+    return `${entry.label} is amplified: Power ${p} → ${p + 1}${upd.damage ? `, ${dmg[0]} → ${upd.damage}` : ""}. It lands with the new numbers.`;
   }
   if (entry.kind === "barrier") {
-    await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 200, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 200, amplified: true } });
-    return `The barrier gains 200 health (20 × 10 Power).`;
+    await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 20, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 20, amplified: true } });
+    return `The barrier gains 20 health (20 × 1 Power).`;
   }
   if (entry.kind === "summon") return "A Summon's stats don't scale with Power: nothing changes.";
   const d = data(entry.effect), p = Math.max(1, d.power ?? 1);
   const upd = { "flags.flowstate.spellEffect.amplified": true };
   let msg;
-  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 200; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 200; msg = "The Shield gains 200 health (20 × 10 Power)."; }
-  else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + 10)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + 10; msg = `Its dice go from ${d.n} to ${n}.`; }
-  else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 100; upd["flags.flowstate.spellEffect.power"] = d.power + 100; msg = "The Mirage gains 100 Power."; }
-  else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 30; msg = "Pain Threshold drops 30 more."; }
+  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 20; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 20; msg = "The Shield gains 20 health (20 × 1 Power)."; }
+  else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + 1)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + 1; msg = `Its dice go from ${d.n} to ${n}.`; }
+  else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 10; upd["flags.flowstate.spellEffect.power"] = d.power + 10; msg = "The Mirage gains 10 Power."; }
+  else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 3; msg = "Pain Threshold drops 3 more."; }
   else return "That Spell has no Power-scaled number to amplify: nothing changes.";
   await changeEffect(entry.effect, upd);
   return msg;
 }
 
-/** Rip (Arcanomancy T5): take control of a Spell with 5 or less Power, then redirect it or dissipate it. */
+/** Rip (Arcanomancy T5): take control of a Spell cast with 5 or less Scaling Stat, then redirect it or dissipate it. */
 async function ripSpell(entry, caster, mode, newTarget, ritualOf) {
-  if (entry.power > 5) return `That Spell has ${entry.power} Power: Rip needs 5 or less.`;
+  if (scalingOf(entry) > 5) return `That Spell was cast with ${scalingOf(entry)} Scaling Stat: Rip needs 5 or less.`;
   if (entry.kind === "cast") {
     await cancelCast(entry, `${caster.name} Ripped it`);
     if (mode !== "redirect" || !newTarget) return `${entry.label} dissipates.`;
@@ -481,7 +483,7 @@ export async function promptSpell({ actor, plan, mods, values }) {
   if (!entry) { ui.notifications.warn("That Spell is gone."); return null; }
   if (mods.amplify && entry.ritualOf) { ui.notifications.warn("Amplify only works on non-Ritual Spells."); return null; }
   if (mods.amplify && entry.amplified) { ui.notifications.warn("That Spell has already been amplified."); return null; }
-  if (mods.rip && entry.power > 5) { ui.notifications.warn(`That Spell has ${entry.power} Power: Rip needs 5 or less.`); return null; }
+  if (mods.rip && scalingOf(entry) > 5) { ui.notifications.warn(`That Spell was cast with ${scalingOf(entry)} Scaling Stat: Rip needs 5 or less.`); return null; }
   const spec = { id };
   if (mods.rip) {
     spec.mode = values.ripMode === "redirect" ? "redirect" : "dissipate";

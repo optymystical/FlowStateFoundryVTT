@@ -193,15 +193,18 @@ seq = [10]; await cast("magic-arcanomancy:strike", { base: 1, strikeSpell: sid2 
 ok2(eff(orc, "shield")[0].flags.flowstate.spellEffect.hp === 30, "…less damage leaves it standing (40 → 30)");
 clean6(); await shieldOn(orc); const sid3 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
 await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true, strikeSpell: sid3 });
-ok2(eff(orc, "shield")[0].flags.flowstate.spellEffect.hp === 240, "Amplify: +10 Power (+200 health on a Shield)");
+ok2(eff(orc, "shield")[0].flags.flowstate.spellEffect.hp === 60, "Amplify: +1 Power (+20 health on a Shield)");
 let r5 = await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true, strikeSpell: AR.listSpells().find(x => x.label.startsWith("Shield on")).id });
 ok2(!r5, "…and only once per Spell");
 r5 = await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true });
 ok2(!r5, "Amplify needs a Spell to target");
-clean6(); await shieldOn(orc); const sid4 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
+clean6(); await shieldOn(orc); const sidBig = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
+await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: sidBig, ripMode: "dissipate" });
+ok2(eff(orc, "shield").length === 1, "Rip: a Spell cast with more than 5 Scaling Stat can't be taken");
+clean6(); await shieldOn(orc, { scaling: 5 }); const sid4 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
 await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: sid4, ripMode: "dissipate" });
-ok2(eff(orc, "shield").length === 0, "Rip: a Spell with 5 or less Power dissipates…");
-clean6(); await shieldOn(orc, { hp: 25 }); const sid5 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
+ok2(eff(orc, "shield").length === 0, "Rip: a Spell cast with 5 or less Scaling Stat dissipates…");
+clean6(); await shieldOn(orc, { hp: 25, scaling: 5 }); const sid5 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
 await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: sid5, ripMode: "redirect", ripTarget: gob.uuid });
 ok2(eff(orc, "shield").length === 0 && eff(gob, "shield")[0]?.flags.flowstate.spellEffect.caster === hero.uuid && eff(gob, "shield")[0].flags.flowstate.spellEffect.hp === 25, "…or is redirected to a new target under your control");
 
@@ -222,14 +225,14 @@ console.log("== Strike a spell that is mid cast (after its attack roll, before t
   await A.defend(atk, 0, "dodge");
   ok2(orc.system.hp.value === hpBefore && !A.findDefense(atk.id, 0), "…so the target can no longer be made to answer it");
   ok2(!AR.listSpells().some(x => x.kind === "cast" && x.message.id === atk.id), "…and it's off the list");
-  // Amplify: +10 Power on the spell before it lands.
+  // Amplify: +1 Power on the spell before it lands.
   atk = await pending(); const mid2 = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
   const p0 = atk.flags.flowstate.attack.opts.spell.power;
   seq = [30]; await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true, strikeSpell: mid2.id });
   const o2 = lastAtkOf(atk.id);
-  ok2(o2.spell.power === p0 + 10 && o2.spell.amplified && o2.damage === `${2 * (p0 + 10)}d6`, `Amplify on a mid-cast spell: Power ${p0} → ${o2.spell.power}, damage ${o2.damage}`);
+  ok2(o2.spell.power === p0 + 1 && o2.spell.amplified && o2.damage === `${2 * (p0 + 1)}d6`, `Amplify on a mid-cast spell: Power ${p0} → ${o2.spell.power}, damage ${o2.damage}`);
   // Rip: take it over and send it at someone else with a new attack roll.
-  atk = await pending(); const mid3 = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
+  atk = await pending(); atk.flags.flowstate.attack.opts.spell.scaling = 5; const mid3 = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
   seq = [30, 20]; await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: mid3.id, ripMode: "redirect", ripTarget: gob.uuid });
   const redirected = lastAtk();
   ok2(!!A.findCancel(atk.id) && redirected.id !== atk.id && redirected.flags.flowstate.attack.targets[0].uuid === gob.uuid, "Rip (redirect): the original is gone and the spell goes at the new target with a fresh attack roll");
@@ -286,7 +289,7 @@ globalThis.canvas = null;
 
 console.log("== Animated weapon");
 clean6(); const sword2 = mkWeapon(orc, "sword", { grade: 2 }); sword2.system.prepareDerivedData(); target(orc);
-await cast("magic-animation:animate", { base: 1, [M("magic-animation:weapon-foci")]: true, conj: {} });
+await cast("magic-animation:animate", { base: 1, [M("magic-animation:animate-weapon-icon-foci")]: true, conj: {} });
 const wm = messages.find(m => m.flags?.flowstate?.conjure);
 ok2(wm?.flags.flowstate.conjure.acts[0].act === "weapon", "Animate Weapon: an attack button");
 hero.system.ap.value = 6; messages.length = 0; seq = [20];

@@ -12,7 +12,7 @@ import "./afflictions.mjs";
 import * as conjure from "./conjure.mjs";
 import * as arcana from "./arcana.mjs";
 import * as fociFx from "./foci.mjs";
-import { castsTwice } from "./magic.mjs";
+import { castsTwice, attunedAffixKeys } from "./magic.mjs";
 import { STATS } from "./rules.mjs";
 import { tierOf } from "./skills.mjs";
 
@@ -49,9 +49,10 @@ export function castContext(actor, weave = null) {
   const theory = tierOf(actor.system.trees ?? {}, "magic-theory");
   // Weaving: only options whose normal AP equals the attack's can be woven; Webmaster (T5) keeps TR.
   if (weave) for (const o of options) if (o.ok && !o.ap.includes(weave.ap)) { o.ok = false; o.reason = `Takes ${o.ap.join("/")} AP; the attack you're weaving with costs ${weave.ap}.`; }
-  return { fociState: fociFx.castState(actor), targetsAlly, hematiteFoci: working.filter(i => i.system.profile.affixes.includes("hematite")).map(i => i.id),
-    moonstoneFoci: working.filter(i => i.system.profile.affixes.includes("moonstone")).map(i => i.id),
-    taaffeiteFoci: working.filter(i => i.system.profile.affixes.includes("taaffeite")).map(i => i.id),
+  // Offensive Affixes also work with Raw Casting (no Foci): it counts as the pseudo-Foci "raw" below.
+  const rawKeys = attunedAffixKeys(actor, "offensive");
+  const withAffix = k => [...working.filter(i => i.system.profile.affixes.includes(k)).map(i => i.id), ...(rawKeys.includes(k) ? ["raw"] : [])];
+  return { fociState: fociFx.castState(actor), targetsAlly, hematiteFoci: withAffix("hematite"), moonstoneFoci: withAffix("moonstone"), taaffeiteFoci: withAffix("taaffeite"),
     inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals,
     weave: weave ? { ap: weave.ap, keepTR: theory >= 5 } : null };
 }
@@ -334,8 +335,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const primary = targets.map(t => t.actor).filter(Boolean).slice(0, 1);
   let placed;
   if (areaSpell) {
-    const fociItem = plan.option?.fociId ? actor.items.get?.(plan.option.fociId) ?? actor.items.find(i => i.id === plan.option.fociId) : null;
-    const agate = fociItem?.system?.attuned && fociItem.system.profile?.affixes?.includes("agate") ? (fociItem.system.profile.doubled === "agate" ? 2 : 1.5) : 1;
+    const agate = ffx?.affixes?.includes("agate") ? (ffx.doubled === "agate" ? 2 : 1.5) : 1;
     const aim = [...(game.user?.targets ?? [])][0];
     const originTok = rangedPlusArea ? (aim?.object ?? aim) : null;
     const layered = (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0);
@@ -496,12 +496,12 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     }
     exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund };
   } else if (mods.exploit) exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund: [] };
-  const pierce = mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0;
+  const pierce = (mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0) + (plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin : 0);   // Painite: ignores Limit as Pierce does
   // Bash (Crushing T3): Bash 10 × Power per stack (an object with that much Limit or less is ignored for extra damage).
   const bash = mods.bash ? mods.bash * 10 * plan.power : 0;
   const attackOpts = { apCost: plan.ap,
     label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
-    damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin : 0,
+    damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: 0,
     notes: [...notes, plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
     spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area && !mods.absorb, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
       ...(plan.fociFx ? { fociFx: plan.fociFx } : {}),

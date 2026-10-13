@@ -13,7 +13,7 @@ import * as conjureEngine from "./conjure.mjs";
 /** Does this actor have a Summon with Sense Swap? */
 const conjureHasSenseSwap = actor => (globalThis.game?.actors ?? []).some(a => a.flags?.flowstate?.summon?.owner === actor.uuid && a.flags.flowstate.summon.senseSwap);
 import * as spells from "./spells.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_RARITIES, ELEMENTS, sourceTypeChoices } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_RARITIES, AFFIX_SIDES, ELEMENTS, sourceTypeChoices } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import { askImage } from "./pictures.mjs";
 import * as ab from "./abilities.mjs";
@@ -88,7 +88,7 @@ export function activeEffectRows(actor) {
   const placed = actor.getFlag?.("flowstate", "shroudOn");
   const placedShroud = placed ? globalThis.fromUuidSync?.(placed) : null;
   if (placedShroud?.system?.placedOn === actor.uuid) {
-    rows.push({ key: "shroudOn", name: `${placedShroud.parent?.name ?? "Someone"}'s ${placedShroud.system.shroudType === "ward" ? "Ward" : "Bond"}: ${placedShroud.name}`,
+    rows.push({ key: "shroudOn", name: `${placedShroud.parent?.name ?? "Someone"}'s ${placedShroud.system.shroudType === "mantle" ? "Mantle" : "Bond"}: ${placedShroud.name}`,
       img: "icons/svg/aura.svg", detail: `Soaks your damage too (${placedShroud.system.durability.value}/${placedShroud.system.durability.max} Durability).`, shroudOn: true });
   }
   for (const victim of actions.grappledBy(actor)) {
@@ -145,7 +145,7 @@ const AUTOMATED = {
   "martial-titanic-armor": {
     1: "Giga Brace is in the Action List (Parry) while you wear Titanic armor (−2× CON).",
     2: "Bodyslam is in the Action List (Titanic Armor), with Disadvantage.",
-    3: "Harden is offered when you turn Giga Brace on.",
+    3: "Giga Harden is offered when you turn Giga Brace on.",
     4: "Trudge is in the Action List (Titanic Armor).",
     5: "Chunky: Pierce against your Titanic armor is halved (automatic)."
   },
@@ -154,7 +154,7 @@ const AUTOMATED = {
     2: "Disrupt is in the Action List: the grappled creature's next roll has Disadvantage.",
     3: "Big Hands: grapple up to one size larger, with Advantage (automatic).",
     4: "Stunlock: Disrupt is free on a Locked Down creature and covers all their rolls (automatic).",
-    5: "Slam is in the Action List while you're grappling someone."
+    5: "Living Weapon is in the Action List while you're grappling someone."
   },
   "martial-thrasher-weapons": {
     1: "Grapple is an option in a Thrasher weapon's attack dialog.",
@@ -401,7 +401,7 @@ function actionGroups(actor, weapons, stats) {
     }
     combat.push({
       label: `Attack: ${w.name}`, itemId: w.id, action: "weaponAttack", icon: "fa-solid fa-khanda",
-      detail: `${w.formula} ${w.damageType}${w.unarmed ? " (Light / Heavy)" : ""}`,
+      detail: `${w.formula} ${w.damageType}${w.unarmed ? " (Light / Heavy) · Grapple is an option in the attack dialog" : ""}`,
       cost: w.unarmed ? "2 / 3 AP" : `${w.profile.ap} AP`
     });
     if (w.canReload) combat.push({ label: `Reload ${w.name}`, detail: `Tops up to ${w.system.magazine ?? 1} (${w.system.rounds ?? 0} loaded)${actions.ammoRequired() ? ` · ${actions.ammoCount(actor, w.system.ammoType)} ${actions.ammoLabel(w.system.ammoType)} left` : ""}`,
@@ -440,9 +440,6 @@ function actionGroups(actor, weapons, stats) {
   const martial = [];
   const mt = actions.theoryTier(actor);
   const statuses = actor.statuses ?? new Set();
-  const unarmed = weapons.find(w => w.unarmed && w.system.held);
-  if (unarmed) martial.push({ label: "Grapple", detail: "Unarmed attack · Light: grapple only · Heavy: damage + grapple · your size or smaller",
-    cost: "2 / 3 AP", action: "weaponAttack", itemId: unarmed.id, grapple: true, icon: "fa-solid fa-hands-holding" });
   if (statuses.has("grappled")) martial.push({ label: "Break Free", detail: "Attack roll vs the grappler's dodge", cost: "2 AP",
     action: "martial", op: "breakFree", icon: "fa-solid fa-link-slash" });
   const victims = actions.grappledBy(actor);
@@ -612,7 +609,7 @@ function actionGroups(actor, weapons, stats) {
     energy: `${ab.GRAPPLING_COST.lockDown(held[0])} Energy`, energyTip: "grappled target's STR stat", action: "martial", op: "lockDown", icon: "fa-solid fa-lock" });
   if (ab.grappling(actor, 2) && held.length) grappleRows.push({ label: "Disrupt", detail: "Your grappled creature's next roll has Disadvantage (every roll while Locked Down, with Stunlock)", cost: "Any time",
     energy: `${ab.GRAPPLING_COST.disrupt(held[0])} Energy`, energyTip: "grappled target's STR min", action: "martial", op: "disrupt", icon: "fa-solid fa-hand-back-fist" });
-  if (ab.grappling(actor, 5) && held.length) grappleRows.push({ label: "Slam", detail: `Swing a grappled creature at a target: Force ${10 * (sys.derived.effective.str.value ?? 0)} at 0 ft`, cost: "2 / 3 AP",
+  if (ab.grappling(actor, 5) && held.length) grappleRows.push({ label: "Living Weapon", detail: `Swing a grappled creature at a target: Force ${10 * (sys.derived.effective.str.value ?? 0)} at 0 ft`, cost: "2 / 3 AP",
     action: "martial", op: "slam", icon: "fa-solid fa-person-falling-burst" });
   const curvedRows = [];
   if (ab.treeTier(actor, ab.CURVED) >= 4 && ab.curvedHeld(actor, 4).length) {
@@ -627,9 +624,9 @@ function actionGroups(actor, weapons, stats) {
   const shroudRows = [];
   const shr = sys.shroud;
   if (shr?.system.profile?.placed) {
-    const ward = shr.system.shroudType === "ward";
+    const ward = shr.system.shroudType === "mantle";
     const on = shr.system.placedOn ? globalThis.fromUuidSync?.(shr.system.placedOn)?.name : null;
-    shroudRows.push({ label: `${ward ? "Ward" : "Bond"}: ${shr.name}${on ? ` (on ${on})` : ""}`, detail: ward
+    shroudRows.push({ label: `${ward ? "Mantle" : "Bond"}: ${shr.name}${on ? ` (on ${on})` : ""}`, detail: ward
       ? "Place it on your target within 100 ft (or yourself with no target) until your next turn; restores its Durability"
       : "Also protect your target within 100 ft; restores its Durability", cost: ward ? "2 RP" : "3 RP", action: "martial", op: "placeShroud", icon: "fa-solid fa-ghost" });
   }
@@ -676,13 +673,13 @@ function actionGroups(actor, weapons, stats) {
   if (mctx.wonders.length) {
     mentalRows.push({ label: "Manifest", detail: `${mctx.wonders.map(w => w.name).join(", ")} · ${mentalRules.alignmentLabel(mctx.alignment)} Alignment · Range sets the AP (Melee 1, Ranged 2, Area 3)`, cost: "1–3 AP", action: "manifest", icon: "fa-solid fa-eye" });
   }
-  // Alignment is set with a 1 hour activity (any Mental user); Fluidity (T3) and Equilibrium (T4) change it in the moment.
+  // Alignment is set with a 1 hour activity (any Mental user); Fluidity (T3) swaps its type in the moment.
   if (mTheory >= 1 || mctx.wonders.length) {
     const cur = mctx.alignment;
-    mentalRows.push({ label: "Set Alignment", detail: `Now ${mentalRules.alignmentLabel(cur)}. ${mentalRules.alignmentBlurb(cur)} Set Dream or Nightmare, 1 to 4 points (20% speed each), as a 1 hour activity.`, cost: "1 hour (not in combat)", action: "alignSet", icon: "fa-solid fa-circle-half-stroke" });
-    if (mTheory >= 3 && !cur.equilibrium && (cur.level > 0 || mTheory >= 4)) {
+    mentalRows.push({ label: "Set Alignment", detail: `Now ${mentalRules.alignmentLabel(cur)}. ${mentalRules.alignmentBlurb(cur)} Set Dream or Nightmare, 1 to ${mentalRules.maxAlignment(mTheory)} points (20% speed each${mTheory >= 3 ? ", 1 AP a turn past 2" : ""}), as a 1 hour activity.`, cost: "1 hour (not in combat)", action: "alignSet", icon: "fa-solid fa-circle-half-stroke" });
+    if (mTheory >= 3 && cur.level > 0) {
       const fc = mentalRules.fluidityCost(cur, sys.skillPoints ?? 0);
-      mentalRows.push({ label: mTheory >= 4 ? "Fluidity / Equilibrium" : "Fluidity", detail: `Swap ${cur.kind === "dream" ? "Dream to Nightmare" : "Nightmare to Dream"}${mTheory >= 4 ? ", or enter -1 Alignment until your next turn" : ""}`, cost: `⚡ ${fc}`, action: "fluidity", icon: "fa-solid fa-shuffle" });
+      mentalRows.push({ label: "Fluidity", detail: `Swap ${cur.kind === "dream" ? "Dream to Nightmare" : "Nightmare to Dream"}`, cost: `⚡ ${fc}`, action: "fluidity", icon: "fa-solid fa-shuffle" });
     }
   }
   const icons = actor.items.filter(i => i.type === "icon" && i.system.profile?.valid);
@@ -710,7 +707,6 @@ function actionGroups(actor, weapons, stats) {
 
   return [
     { key: "act-combat", name: "Combat", actions: combat },
-    ...(reactionRows.length ? [{ key: "act-reactions", name: "Reactions", actions: reactionRows }] : []),
     ...(mentalRows.length ? [{ key: "act-mental", name: "Mental", actions: mentalRows }] : []),
     ...(magicRows.length ? [{ key: "act-magic", name: "Magic", actions: magicRows }] : []),
     ...(shroudRows.length ? [{ key: "act-shroud", name: "Shroud", actions: shroudRows }] : []),
@@ -728,6 +724,7 @@ function actionGroups(actor, weapons, stats) {
     ...(rapidRows.length ? [{ key: "act-rapid", name: "Rapid Weapons", actions: rapidRows }] : []),
     ...(swiftRows.length ? [{ key: "act-swift", name: "Swift Weapons", actions: swiftRows }] : []),
     ...(martial.length ? [{ key: "act-martial", name: "Martial Theory", actions: martial }] : []),
+    ...(reactionRows.length ? [{ key: "act-reactions", name: "Reactions", actions: reactionRows }] : []),
     { key: "act-checks", name: "Checks", actions: checks }
   ];
 }
@@ -899,20 +896,22 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       return { id: i.id, name: i.name, img: i.img, system: i.system, profile: p, affixText: p.valid ? affixNames(p) : "" };
     });
 
+    const affixes = actor.items.filter(i => i.type === "affix").map(i => ({ id: i.id, name: i.name, img: i.img, system: i.system, profile: i.system.profile }));
+    const affixCost = lost => lost?.affix ? `Attuned Affixes cost ${lost.affix}% speed` : "Free Affixes cover every attuned Affix";
     const icons = actor.items.filter(i => i.type === "icon").map(i => {
       const p = i.system.profile;
       return { id: i.id, name: i.name, img: i.img, system: i.system, profile: p, tenetName: i.system.tenet ? mentalRules.wonderById(i.system.tenet.split(":")[0])?.tenet?.name ?? "" : "" };
     });
     const collapsed = collapsedFor(actor.uuid);
     const actionGroups = buildActionList(actor, weapons, stats).map(g => ({ ...g, open: !collapsed.has(g.key) }));
-    const open = Object.fromEntries(["weapons", "armor", "foci", "shrouds", "icons", "currency", "misc"].map(k => [k, !collapsed.has(k)]));
+    const open = Object.fromEntries(["weapons", "armor", "foci", "shrouds", "affixes", "icons", "currency", "misc"].map(k => [k, !collapsed.has(k)]));
 
     return Object.assign(context, {
       actor,
       system: sys,
       d,
       actionGroups,
-      icons,
+      icons, affixes, affixCostNote: affixCost(d.movement?.speedLoss),
       open,
       editable: this.isEditable,
       isGM: game.user.isGM,
@@ -1061,8 +1060,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
 
   static onCreateItem(event, target) {
     const type = target.dataset.type ?? "gear";
-    const name = { gear: "New Gear", weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", icon: "New Icon" }[type] ?? "New Item";
-    const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp", icon: "icons/magic/holy/yin-yang-balance-symbol.webp" }[type];
+    const name = { gear: "New Gear", weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", icon: "New Icon", affix: "New Affix" }[type] ?? "New Item";
+    const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp", icon: "icons/magic/holy/yin-yang-balance-symbol.webp", affix: "icons/commodities/gems/gem-faceted-diamond-blue.webp" }[type];
     return this.document.createEmbeddedDocuments("Item", [{ name, type, ...(img ? { img } : {}) }], { renderSheet: type !== "gear" });
   }
   static onEditItem(event, target) { FlowStateActorSheet.#item(this, target)?.sheet.render(true); }
@@ -1250,26 +1249,14 @@ export class FlowStateArmorSheet extends FlowStateItemSheet {
   }
 }
 
-/** Affix pick-list grouped by rarity, plus one slot row per Affix the item can hold. */
-function affixContext(sys, p) {
-  const choices = Object.entries(AFFIX_RARITIES).map(([r, label]) => ({
-    label, options: Object.fromEntries(Object.entries(AFFIXES).filter(([, a]) => a.rarity === r).map(([k, a]) => [k, a.label]))
-  }));
-  const current = sys.affixes ?? [];
-  // Affixes cost speed rather than slots: always one empty row to add another, up to the most one item holds.
-  const slots = Array.from({ length: Math.min(p.affixLimit ?? 0, current.filter(Boolean).length + 1) }, (_, i) => ({ n: i + 1, value: current[i] ?? "", info: AFFIXES[current[i]] ?? null }));
+/** The Affixes in effect on a Foci (Offensive form) or Shroud (Defensive form): the owner's attuned Affix items, with their text and per-Affix settings. */
+function affixContext(sys, p, side) {
   const doubledChoices = Object.fromEntries((p.affixes ?? []).map(k => [k, AFFIXES[k]?.label ?? k]));
-  return { affixChoices: choices, slots, doubledChoices, hasTourmaline: p.affixes?.includes("tourmaline"), elements: ELEMENTS };
+  const attached = (p.affixes ?? []).map(k => ({ label: AFFIXES[k]?.label ?? k, text: AFFIXES[k]?.[side === "defensive" ? "shroud" : "foci"] ?? "", doubled: p.doubled === k }));
+  return { attached, doubledChoices };
 }
 
-/** Affix slots aren't named form fields: collect them into system.affixes on submit. */
-function collectAffixes(form, data) {
-  const selects = [...form.querySelectorAll("select[data-affix-slot]")];
-  if (selects.length && !selects[0].disabled) foundry.utils.setProperty(data, "system.affixes", selects.map(el => el.value).filter(Boolean));
-  return data;
-}
-
-/** Magic Foci: Type (grouped by casting form) → Grade, attunement, held, Affix slots. */
+/** Magic Foci: Type (grouped by casting form) → Grade, attunement, held; shows the Affixes working through it. */
 export class FlowStateFociSheet extends FlowStateItemSheet {
   static DEFAULT_OPTIONS = { position: { width: 540, height: 640 } };
   static PARTS = { sheet: { template: "systems/flowstate/templates/foci-sheet.hbs", scrollable: [""] } };
@@ -1288,15 +1275,11 @@ export class FlowStateFociSheet extends FlowStateItemSheet {
       scalingLabel: p.valid ? (p.form === "multi" ? `Lesser of Reach and Grasp (${statLabel(p.scalingStat)})` : statLabel(p.scalingStat)) : "",
       trLabel: p.valid ? (p.tr === null || p.tr === undefined ? "1 / 2 / 3 (Raw Casting)" : String(p.tr)) : "",
       isRing: sys.fociType === "ring",
-      hasOpal: p.valid && p.doubled === "blackOpal", opalChoices: { targeted: "Targeted", ranged: "Ranged" }, hasEmerald: p.valid && p.affixes?.includes("emerald"), hasColored: p.valid && p.affixes?.includes("coloredDiamond"),
+      hasOpal: p.valid && p.doubled === "blackOpal", opalChoices: { targeted: "Targeted", ranged: "Ranged" }, hasEmerald: p.valid && p.affixes?.includes("emerald"),
       spellChoices: coreChoices(this.document.actor?.system?.trees),
       owned: !!this.document.actor,
-      ...(p.valid ? affixContext(sys, p) : {})
+      ...(p.valid ? affixContext(sys, p, "offensive") : {})
     });
-  }
-
-  _processFormData(event, form, formData) {
-    return collectAffixes(form, super._processFormData(event, form, formData));
   }
 }
 
@@ -1325,7 +1308,32 @@ export class FlowStateIconSheet extends FlowStateItemSheet {
   }
 }
 
-/** Magic Shroud: Type → Grade, attunement, Affix slots and their settings. */
+/** An Affix: which gem it is, which form it is attuned to (Offensive for spells and Foci, Defensive for the Shroud) and whether it is attuned. */
+export class FlowStateAffixSheet extends FlowStateItemSheet {
+  static DEFAULT_OPTIONS = { position: { width: 500, height: 460 } };
+  static PARTS = { sheet: { template: "systems/flowstate/templates/affix-sheet.hbs", scrollable: [""] } };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    const sys = this.document.system;
+    const actor = this.document.actor;
+    return Object.assign(context, {
+      p: sys.profile,
+      choices: Object.entries(AFFIX_RARITIES).map(([r, label]) => ({
+        label, options: Object.fromEntries(Object.entries(AFFIXES).filter(([, a]) => a.rarity === r).map(([k, a]) => [k, a.label]))
+      })),
+      sides: AFFIX_SIDES,
+      elements: ELEMENTS, isTourmaline: sys.affix === "tourmaline",
+      isColored: sys.affix === "coloredDiamond", defensive: sys.side === "defensive",
+      declareChoices: sys.side === "defensive" ? sourceTypeChoices(WEAPON_TYPES, DAMAGE_TYPES) : coreChoices(actor?.system?.trees),
+      otherLabel: sys.side === "defensive" ? "Offensive" : "Defensive",
+      otherText: sys.side === "defensive" ? sys.profile.foci : sys.profile.shroud,
+      owned: !!actor
+    });
+  }
+}
+
+/** Magic Shroud: Type → Grade, attunement; shows the Affixes working through it and their settings. */
 export class FlowStateShroudSheet extends FlowStateItemSheet {
   static DEFAULT_OPTIONS = { position: { width: 540, height: 640 } };
   static PARTS = { sheet: { template: "systems/flowstate/templates/shroud-sheet.hbs", scrollable: [""] } };
@@ -1347,15 +1355,9 @@ export class FlowStateShroudSheet extends FlowStateItemSheet {
       recoveryLabel: !p.valid ? "" : p.fixedDur ? "Fully restores at the start of your turn" : p.placed ? "Restores to full when placed; otherwise recovers its Limit each turn"
         : `+${p.recovery} Durability at the start of your turn`,
       owned: !!this.document.actor,
-      hasColored: p.affixes?.includes("coloredDiamond"),
       hasEmerald: p.affixes?.includes("emerald"),
-      sources: sourceTypeChoices(WEAPON_TYPES, DAMAGE_TYPES),
-      ...(p.valid ? affixContext(sys, p) : {})
+      ...(p.valid ? affixContext(sys, p, "defensive") : {})
     });
-  }
-
-  _processFormData(event, form, formData) {
-    return collectAffixes(form, super._processFormData(event, form, formData));
   }
 }
 

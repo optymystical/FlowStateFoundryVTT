@@ -2,6 +2,21 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.56.0:** **Affixes are items of their own, and Rip.**
+- **Affix items** (Equipment tab, new item type): a gem with an Offensive and a Defensive form, attuned separately (an hour, not in combat) to one of them. Offensive Affixes work through your attuned Foci and Raw Casting, Defensive ones through your Shroud. Each attuned Affix costs 20% speed past the Free Affixes of the matching Foci (Offensive) or Shroud (Defensive). Tourmaline's element and Colored Diamond's declaration are set on the Affix. Old per-item lists convert automatically when the GM's client loads.
+- **Wizards and Forge:** the New Character and New NPC wizards pick Affixes as their own items with a form (no Foci or Shroud needed); Conjure makes Foci, Shrouds or Affixes.
+- **Shroud ids** renamed to bulwark / mantle / rebuke (old items convert).
+- **Rip** compares the Scaling Stat the caster had (5 or less), as the Magic doc says.
+
+**0.55.0:** **Doc refresh (Rules, Martial, Equipment, Magic, Combos, Mental) and Action List tidy.**
+- **Action List:** Grapple is no longer its own row (it's an option in the Unarmed attack dialog); Reactions sit just above Checks (also in the Token Action HUD).
+- **Rules:** speed rounds down to 5 ft steps; Magic damage also counts as Magical (Agate/Jasper/Obsidian, Prism, Wards, Limit factors); Thrasher grapples need a target your size or smaller; Heave costs double STR min; Impale uses half Pain Threshold; Pure Body doubles with Unstoppable.
+- **Martial:** Shield Toss is now Return / Block / Strengthened boxes (none needed beyond one); Quickload can replace a Pepper shot; renamed Rend, Living Weapon, Giga Harden, Delta/Omega; Solitary can't be used while holding another weapon.
+- **Equipment:** Iron/Copper armor swapped, Steel/Bronze armor Limit is a third (was a tenth), Silver Coating; Shrouds renamed Bulwark / Mantle / Rebuke; Painite works as Pierce; every Icon Form Ward number changed (and Bane Enhanced Weakens, Zealot Enhanced Weakens on a crit).
+- **Magic:** Flare sets (2d12 = two 3d4), Phantom Pain raises the Pain Threshold, Animation speed as a percentage of Size, Animate Armor/Shroud by weight (Shrouds Arcane), Animate Icon, Amplify +1 Power, Skin uses Iron, Slashing/Piercing/Crushing + Radiation deal radiation.
+- **Mental:** Alignment reworked: it now only shapes your Form's Ward (1 Advantage, 2 Strengthened, 3 half stealth, 4 hits regardless), depths 3-4 need Deepening (Mental T3) and cost 1/2 AP a turn; Equilibrium and the Tenet doubling are gone; Melee Manifests have Disadvantage; Patron no longer needs Alignment; Wither is 1d12; Rite can't make Rare or Hard things permanent.
+- Affixes as separately attuned items (Equipment doc) are not built yet: Affixes still sit on the Foci/Shroud.
+
 **0.54.1:** **Lint and CI.** ESLint config in the repo (`eslint.config.mjs`, run with `npm run lint` from `dev/`) and a GitHub Action that runs lint and the tests on every push and pull request. No change to play.
 
 **0.54.0:**

@@ -32,6 +32,7 @@ const ok = (c, msg) => console.log(`  ${c ? "PASS" : "FAIL"} ${msg}`);
 
 globalThis.CONFIG = {};
 let fails = 0; const ok2 = (c, m) => { ok(c, m); if (!c) fails++; };
+const R4 = await import("../../module/rules.mjs");
 const S = await import("../../module/spells.mjs");
 const C = await import("../../module/casting.mjs");
 const FX = await import("../../module/spellfx.mjs");
@@ -122,7 +123,7 @@ ok2(R.formSize(3, 4) === 2 && R.formSize(3, 5) === 3 && R.formSize(4, 10) === 4 
 ok2(R.summonHealth(5, 2) === 30 && R.summonEnergy(5) === 25, "Health 3 × Con × size; Energy 5 × Con");
 ok2(R.animationSize(4) === 1 && R.animationSize(5) === 2 && R.animationSize(25) === 3 && R.animationSize(125) === 4 && R.animationSize(625) === 5, "Animation size by Body");
 ok2(R.animationStats({ points: 10, category: "hard", size: 2 }).hp === 100 && R.animationStats({ points: 10, category: "liquid", size: 1 }).hp === 10, "Animation health: Hard 5×, Liquid 1× points × size");
-ok2(R.naturalArmor({ threshold: 3, con: 25 }).material === "copper" && R.naturalArmor({ threshold: 1, con: 5 }).weight === "light" && R.naturalWeapon({ weaponType: "bladed", weight: "heavy", scaling: 24 }).grade === 2, "Natural armor and weapons by Threshold and stat");
+ok2(R.naturalArmor({ threshold: 3, con: 25 }).material === "iron" && R.naturalArmor({ threshold: 1, con: 5 }).weight === "light" && R.naturalWeapon({ weaponType: "bladed", weight: "heavy", scaling: 24 }).grade === 2, "Natural armor and weapons by Threshold and stat");
 const planOk = (core, extra = {}) => S.planCast(C.castContext(hero), { via: "foci:rod", ap: 2, core1: core, core2: extra.core2 ?? "", base: extra.base ?? 1, ...extra });
 ok2(S.baseThreshold(["magic-summoning:form", "magic-animation:animate"]).max === 6 && S.baseThreshold(["magic-slashing:cut", "magic-summoning:form"]).min === 2, "Combo Thresholds: Form + Animate is 2–6; Cut + Form is 2–6");
 
@@ -166,8 +167,8 @@ console.log("== Animate");
 const wat = { material: "Water", body: 10, arms: [], items: [] };
 clean4(); plan = await cast("magic-animation:animate", { base: 2, conj: wat });
 sm = summons()[0];
-ok2(sm && sm.system.size === 2 && sm.system.hp.max === 1 * 10 * 2 && sm.flags.flowstate.summon.speed === 50, `Water Animation: 10 points, Size 2 (10 Body), health 1 × 10 × 2 = 20 (${sm?.system.hp.max}), 50 ft/AP`);
-ok2(sm.system.derived.move === 50 && sm.system.derived.size.physical < 0, "…its speed and Weakened physical attacks are in its derived stats");
+ok2(sm && sm.system.size === 2 && sm.system.hp.max === 1 * 10 * 2 && sm.flags.flowstate.summon.speed === R4.moveSpeed(2, 0), `Water Animation: 10 points, Size 2 (10 Body), health 1 × 10 × 2 = 20 (${sm?.system.hp.max}), 100% of the Size's speed`);
+ok2(sm.system.derived.move === R4.moveSpeed(2, 0) && sm.system.derived.size.physical < 0, "…its speed and Weakened physical attacks are in its derived stats");
 clean4(); plan = await cast("magic-animation:animate", { base: 2, conj: { material: "Stone", body: 10 } });
 ok2(!plan, "Stone needs Expanded Animation (Hard material)");
 clean4(); plan = await cast("magic-animation:animate", { base: 2, [M("magic-animation:expanded-animation")]: true, conj: { material: "Stone", body: 10 } });
@@ -246,7 +247,7 @@ ok2(formulas.some(f => /^2d(6|10)$/.test(f)), "…attacks with it add the Cut ef
 
 console.log("== Animate Armor/Shroud");
 clean4(); mkItem(orc, { name: "Plate", type: "armor", system: { weight: "heavy", material: "titanium", grade: 1, equipped: true } }); target(orc);
-plan = await cast("magic-animation:animate", { base: 1, [M("magic-animation:armor-shroud")]: true, conj: {} });
+plan = await cast("magic-animation:animate", { base: 1, [M("magic-animation:animate-armor-shroud")]: true, conj: {} });
 const ae = orc.effects.find(e => e.flags.flowstate.spellEffect?.kind === "animatedEquip");
 const acard = messages.find(m => m.flags?.flowstate?.conjure);
 ok2(ae && acard?.flags.flowstate.conjure.acts[0].dice === 2, "Armor/Shroud: the armor is animated; suffocate / mould buttons deal Grade × 2 (Heavy) d12 physical");

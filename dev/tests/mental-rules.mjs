@@ -32,18 +32,19 @@ ok(c.rp === 1 && c.energy === 14, "Burst and Enhance together combine the costs"
 ok(M.manifestCost({ range: "ranged", enhance: true, burst: true, enhanceCost: 7, free: true }).energy === 0, "Free Manifests (Patron, Innate) cost nothing");
 
 console.log("== Alignment");
-const A = (kind, level, equilibrium = false) => ({ kind, level, equilibrium });
+const A = (kind, level) => ({ kind, level });
 ok(M.alignmentState(null).level === 0 && M.alignmentState({ kind: "dream", level: 9 }).level === 4 && M.alignmentState({ kind: "neutral", level: 3 }).level === 0, "Alignment: Neutral by default, 4 at most, no points on Neutral");
-ok(M.alignmentSpeedPct(A("dream", 3)) === 60 && M.alignmentSpeedPct(A("neutral", 0)) === 0 && M.alignmentSpeedPct(A("dream", 2, true)) === 0, "20% speed per point; none for Neutral or Equilibrium");
-ok(M.alignmentManifest(A("dream", 1), "dream").net === 1 && M.alignmentManifest(A("dream", 1), "nightmare").net === -1 && M.alignmentManifest(A("neutral", 0), "dream").net === 0, "1 Alignment: Advantage for its own Wonders, Disadvantage for the opposite");
-ok(M.alignmentManifest(A("dream", 1), "dream").stacks === 0 && M.alignmentManifest(A("dream", 2), "dream").stacks === 1 && M.alignmentManifest(A("dream", 2), "nightmare").stacks === -1, "2 Alignment: Strengthened bolded effects for its type, Weakened for the opposite");
-ok(M.alignmentManifest(A("dream", 2, true), "dream").net === -1 && M.alignmentManifest(A("dream", 2, true), "dream").stacks === 0, "Equilibrium: Manifest attack rolls have Disadvantage, no bonuses");
-ok(M.tenetUses(A("dream", 3), "dream") === 2 && M.tenetUses(A("dream", 3), "nightmare") === 1 && M.tenetUses(A("dream", 2), "dream") === 1 && M.tenetUses(A("dream", 3, true), "dream") === 1, "3 Alignment: a Tenet of its type triggers twice per round");
-ok(M.alignmentWard(A("nightmare", 4), "nightmare").net === 1 && M.alignmentWard(A("nightmare", 4), "nightmare").stacks === 1 && M.alignmentWard(A("nightmare", 4), "dream").net === 0 && M.alignmentWard(A("nightmare", 3), "nightmare").net === 0, "4 Alignment: your type's Icon Ward has Advantage and a Strengthened bolded effect");
-ok(M.alignmentWard(A("neutral", 0), "dream").net === 0 && M.alignmentWard(A("dream", 1, true), "dream").dodgeNet === -1, "Neutral gives the Ward nothing; Equilibrium gives everything dodging it Disadvantage");
+ok(M.alignmentSpeedPct(A("dream", 3)) === 60 && M.alignmentSpeedPct(A("neutral", 0)) === 0, "20% speed per point; none for Neutral");
+ok(M.alignmentApLoss(A("dream", 2)) === 0 && M.alignmentApLoss(A("dream", 3)) === 1 && M.alignmentApLoss(A("nightmare", 4)) === 2 && M.maxAlignment(2) === 2 && M.maxAlignment(3) === 4, "Deepening: 1 AP a turn per point past 2; depths 3 and 4 need Mental T3");
+{ const w = (k, n, f) => M.alignmentWard(A(k, n), f);
+  ok(w("nightmare", 1, "nightmare").net === 1 && w("nightmare", 1, "nightmare").stacks === 0 && w("nightmare", 1, "dream").net === 0, "1 Alignment: your own type's Ward has Advantage on its attack roll");
+  ok(w("nightmare", 2, "nightmare").stacks === 1 && w("nightmare", 2, "nightmare").dodgeNet === 0 && !w("nightmare", 2, "nightmare").autoHit, "2 Alignment: its bolded effect is Strengthened");
+  ok(w("nightmare", 3, "nightmare").dodgeNet === -1 && w("nightmare", 3, "nightmare").net === 1 && !w("nightmare", 3, "nightmare").autoHit, "3 Alignment: half stealth, so whoever dodges has Disadvantage");
+  ok(w("nightmare", 4, "nightmare").autoHit && w("nightmare", 4, "dream").autoHit === false, "4 Alignment: the Ward hits regardless of the roll"); }
+ok(M.alignmentWard(A("neutral", 0), "dream").net === 0, "Neutral gives the Ward nothing");
 ok(M.fluidityCost(A("dream", 3), 31) === 45 && M.fluidityCost(A("neutral", 0), 31) === 0, "Fluidity: half your Skill Points times your Alignment number");
-ok(M.alignedTo(A("dream", 1), "dream") && !M.alignedTo(A("dream", 1, true), "dream") && !M.alignedTo(A("neutral", 0), "dream"), "Aligned towards a type: at least 1 Alignment of it, not in Equilibrium");
-ok(M.alignmentLabel(A("dream", 2)) === "Dream 2" && M.alignmentLabel(A("neutral", 0)) === "Neutral" && M.alignmentLabel(A("dream", 2, true)) === "Equilibrium (-1)", "Alignment labels");
+ok(M.alignedTo(A("dream", 1), "dream") && !M.alignedTo(A("neutral", 0), "dream"), "Aligned towards a type: at least 1 Alignment of it");
+ok(M.alignmentLabel(A("dream", 2)) === "Dream 2" && M.alignmentLabel(A("neutral", 0)) === "Neutral", "Alignment labels");
 
 console.log("== Icon texts scale");
 ok(M.scaleFormText("provides 20 shielding for 1 AP, up to 60 shielding. In the Dream 2, 5 shielding", 3) === "provides 60 shielding for 1 AP, up to 180 shielding. In the Dream 2, 15 shielding", "Shielding grows with the Icon; AP and Alignment numbers don't");
@@ -52,12 +53,12 @@ ok(M.scaleFormText("spend 1 RP to negate up to 30 of that damage, 5 negation oth
 console.log("== Icons and Forms");
 ok(M.FORM_KEYS.length === 14 && M.FORM_KEYS.filter(k => M.FORMS[k].align === "dream").length === 7, "14 Forms, 7 Dream and 7 Nightmare");
 let p = M.iconProfile({ form: "aegis", grade: 2, tenet: "mental-life-dream:verdant-soul" }, { will: 45, pon: 32 });
-ok(p.wardMult === 2 && p.amount === 40 && p.enhancedAmount === 60, "Aegis at Grade 2 with Willpower 45: capped at 20 → ×2, 20 → 40 shielding (30 → 60 Enhanced)");
+ok(p.wardMult === 2 && p.amount === 16 && p.enhancedAmount === 30, "Aegis at Grade 2 with Willpower 45: capped at 20 → ×2, 8 → 16 shielding (15 → 30 Enhanced)");
 ok(p.tenet.mult === 2 && p.durability === 40 && p.limit === 8, "The Tenet scales with the Wonder's stat, limited by Grade; Durability 20 and Limit 4 per Grade");
 p = M.iconProfile({ form: "veil", grade: 3 }, { will: 15 });
-ok(p.wardMult === 1 && p.amount === 10 && p.enhancedAmount === 20, "Veil: 10 negation (20 Enhanced), at least ×1");
+ok(p.wardMult === 1 && p.amount === 4 && p.enhancedAmount === 8, "Veil: 4 negation (8 Enhanced), at least ×1");
 p = M.iconProfile({ form: "bane", grade: 1 }, { will: 99 });
-ok(p.amount === 20 && p.other === 5, "Bane: 20 against the chosen type, 5 otherwise");
+ok(p.amount === 6 && p.other === 3, "Bane: 6 against the chosen type, 3 otherwise");
 ok(M.iconProfile({ form: "nope" }).valid === false, "An unknown Form isn't valid");
 ok(M.tenetChoices("dream").every(w => w.kind === "dream") && M.tenetChoices("nightmare").every(w => w.kind === "nightmare"), "Tenets match the Form's Alignment");
 ok(M.tenetChoices("dream").length === 6 && M.tenetChoices("nightmare").length === 6, "Six Dream and six Nightmare Tenets");

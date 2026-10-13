@@ -26,7 +26,7 @@ the stable versions. When the user says "I updated the doc", diff the live doc a
 the changes, implement them, then refresh the snapshot.
 
 Status: all Martial trees (Theory + every weapon/armor/method tree, T0–T5) are automated. Magic: Foci, Shrouds and
-Affixes are in (Shroud side and Foci side, including Deck Foci). Magic spells: the casting framework and
+Affixes (separately attuned items) are in (Shroud side and Foci side, including Deck Foci). Magic spells: the casting framework and
 all five Magic groups (T1: Magic Theory, Slashing, Piercing, Crushing, Protection Arcana, Gravity; T2: Reach Arcana, Heat,
 Cold, Radiation, Acid; T3: Grasp Arcana, Venomancy, Charm, Witchery; T4: Build Arcana, Summoning, Creation, Animation; T5:
 Restoration Arcana, Geomancy, Illusion, Arcanomancy, with all their Combos) are automated; "tier" in Magic means the group of
@@ -43,7 +43,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
   `applyDamage`), all tree abilities, movement/Force, grapples, Shrouds, ammo/reloads, GM relay (`GM_ACTIONS`).
 - `module/abilities.mjs` — pure helpers: "can this actor use tree X tier N with this item", Energy cost tables.
 - `module/martial.mjs` — weapon/armor tables, materials, tags, `weaponProfile`/`armorProfile`, Limit math.
-- `module/magic.mjs` — Foci/Shroud/Affix tables and profiles.
+- `module/magic.mjs` — Foci/Shroud/Affix tables and profiles. `module/affix-migration.mjs` converts old per-Foci/Shroud Affix lists into Affix items.
 - `module/spells.mjs` — pure spell framework: the Core/Mod catalog (parsed from `trees.mjs`), known spells, Combo Threshold, casting options, `planCast`, Threshold/Energy math.
 - `module/spellfx.mjs` — what each automated Core/Combo/Mod does (Tier 1 spells, Slashing/Piercing Mods); hooks live in `actions.mjs` (`spellHit`, `spellForce`, Shield soak, Bleed/Gash) and `casting.mjs` (`resolveSpell`).
 - `module/elemental.mjs` — Tier 2 spell effects (Ignite/Stain stacks, Energy removal, chains, Brand, Freeze, per-turn counters); registers its hooks into `actions.mjs` (`registerElemental`).
@@ -109,13 +109,13 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - Forced re-rolls (Dash, Shift, Close Quarters, Distracting Fire) keep the lower result. Speedy (Unarmored T3) applies
   Dash's Disadvantage automatically. Dash reaction costs Energy only; the move after costs 1 RP.
 - Shroud scaling: base × floor(Build capped at Grade×10 ÷ 10), min ×1; Foci: base × Grade. Shroud soaks before armor.
-  Affixes are a pick-list on the item (GM-set). Attuning takes an hour (not in combat).
+  Affixes are items of their own (type `affix`: key + Offensive/Defensive form + attuned). Offensive ones work through the attuned Foci and Raw Casting, Defensive ones through the Shroud; the actor feeds them into the Foci/Shroud profiles (`attunedAffixKeys` in `magic.mjs`), so effect code still reads `profile.affixes`. Attuning takes an hour (not in combat).
 - Ammo: X shots per reload (weapon setting, default 1) using X ammo; 1 shot per attack; max 100 per type.
 - Token size: Size 1–5 = ¼, ½, 1, 2, 4 squares. Downed creatures are deleted from the combat tracker.
-- Speed: base = Size maximum less additive percentages (armor 20/40/60/80, attuned Affixes 20 each, less the Free Affixes of the attuned Foci and Shroud, Alignment 20 per point), nearest 5 ft, minimum 5 ft; Quicken doubles the result. Affix allowance = the sum of the attuned Foci and Shroud's Free Affixes (no free one for everyone; can be -1). Snapshots of the Rules doc are in `dev/docs/rules.md`.
-- Strengthened/Weakened stacks, from any source (a crit's two, Alignment, an Area spread, Adapt, a Mod, anything on the caster), scale the **bolded** numbers of what they carry, not only damage: Mental Modes (`bold(stacks, n)` in `mental-rules.mjs`; effects that last, Fester, charges and Tenet acts keep `bstacks`; Vice, Quicksand and Momentum are responses that use fresh Power and no stacks) and Magic spell hits (`stackBonus` in `spellHit`/`elemental.mjs`). Spells with no roll use `castStacks(actor, plan)`. Martial has no bolded numbers and is unchanged. Wards ignore Alignment 2 (only Alignment 4 Strengthens them).
-- Mental Alignment is Dream/Nightmare 1-4 (Neutral 0), set with a 1 hour activity, 20% speed a point; Fluidity (T3) swaps the type for half Skill Points × the Alignment number in Energy (0 from Neutral), Equilibrium (T4) is -1 until your next turn. Reverie needs Dream 2 (Enhanced growth: 4); Zealot negates 30 at Nightmare 2+ (Enhanced at 4 also Weakens).
-- Heavy armor has two stealth Disadvantages; Size 1 speed rounds to the nearest 5 ft.
+- Speed: base = Size maximum less additive percentages (armor 20/40/60/80, attuned Affixes 20 each, less the Free Affixes of the attuned Foci and Shroud, Alignment 20 per point), rounded down to 5 ft steps, minimum 5 ft (Rules doc); Quicken doubles the result. Affix allowance = the sum of the attuned Foci and Shroud's Free Affixes (no free one for everyone; can be -1). Snapshots of the Rules doc are in `dev/docs/rules.md`.
+- Strengthened/Weakened stacks, from any source (a crit's two, Alignment, an Area spread, Adapt, a Mod, anything on the caster), scale the **bolded** numbers of what they carry, not only damage: Mental Modes (`bold(stacks, n)` in `mental-rules.mjs`; effects that last, Fester, charges and Tenet acts keep `bstacks`; Vice, Quicksand and Momentum are responses that use fresh Power and no stacks) and Magic spell hits (`stackBonus` in `spellHit`/`elemental.mjs`). Spells with no roll use `castStacks(actor, plan)`. Martial has no bolded numbers and is unchanged. Alignment no longer scales Modes (it shapes the Form's Ward only).
+- Mental Alignment is Dream/Nightmare 1-4 (Neutral 0; 3-4 need Deepening, Mental T3), set with a 1 hour activity, 20% speed a point, 1 AP a turn per point past 2. It only changes your own type's Form Ward: 1 Advantage, 2 Strengthened bolded effect, 3 half stealth, 4 hits regardless (roll decides a crit). Fluidity (T3) swaps the type for half Skill Points × the Alignment number in Energy (0 from Neutral). No Equilibrium, no Tenet doubling. Reverie needs Dream 2 (Enhanced growth: 4); Zealot negates 6 at Nightmare 2+.
+- Heavy armor has two stealth Disadvantages.
 - Wonders and `mental.mjs` don't import each other: `wonders.mjs` exports `mental` and `setMental` (mental.mjs registers itself on load); Mental modules reach it as `import { mental } from "./wonders.mjs"`. Keep the import graph acyclic (the only self-reference is mental.mjs importing itself for that).
 - Dragon Lash doubles total Knockback (a multiplier, not +5×): settled, don't ask again.
-- Alignment 4 gives a Ward's attack roll Advantage, including the Warden/Riposte reflect roll. Neutral tokens count as either side for ally/foe checks. Spirit Sense (Grasp Arcana T4) only stops a Targeted spell's own automatic half stealth against that target; a GM-set Half/Full Stealth status still applies.
+- Alignment's Ward effects also apply to the Warden/Riposte reflect roll. Neutral tokens count as either side for ally/foe checks. Spirit Sense (Grasp Arcana T4) only stops a Targeted spell's own automatic half stealth against that target; a GM-set Half/Full Stealth status still applies.

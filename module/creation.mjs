@@ -7,7 +7,7 @@ import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES, weaponProfile, armorProfile
 } from "./martial.mjs";
 import * as skills from "./skills.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES, AFFIX_LIMIT } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES, AFFIX_SIDES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 
 const RARITY_ORDER = ["common", "uncommon", "rare", "veryRare"];
@@ -31,14 +31,11 @@ export function allowedMaterials(kind, weight, maxRarity) {
 }
 
 /** A fresh equipment slot, already pointing at valid choices. */
-export function newSlot(kind, maxRarity, items = []) {
+export function newSlot(kind, maxRarity) {
   if (kind === "foci") return { kind, fociType: "rod" };
   if (kind === "shroud") return { kind, shroudType: "bastion" };
   if (kind === "icon") return { kind, iconForm: "aegis" };
-  if (kind === "affix") {
-    const target = affixTargets(items).find(t => t.free > 0);
-    return { kind, affix: Object.keys(allowedAffixes(maxRarity))[0] ?? "", target: target ? String(target.index) : "" };
-  }
+  if (kind === "affix") return { kind, affix: Object.keys(allowedAffixes(maxRarity))[0] ?? "", side: "offensive" };
   const slot = kind === "armor" ? { kind, weight: "light" } : { kind, type: "bladed", weight: "light" };
   slot.material = Object.keys(allowedMaterials(kind, slot.weight, maxRarity))[0] ?? "";
   return slot;
@@ -50,14 +47,6 @@ export function allowedAffixes(maxRarity) {
     .map(([k, a]) => [k, `${a.label} (${AFFIX_RARITIES[a.rarity]})`]));
 }
 
-/** Picked Foci/Shrouds that Affixes can go on, with their free Affix slots. */
-export function affixTargets(items) {
-  return items.map((slot, index) => ({ slot, index })).filter(({ slot }) => slot.kind === "foci" || slot.kind === "shroud").map(({ slot, index }) => {
-    const used = items.filter(a => a.kind === "affix" && a.target === String(index)).length;
-    return { index, slot, slots: AFFIX_LIMIT, free: AFFIX_LIMIT - used, label: `${slotName(slot)} (item ${index + 1})` };
-  });
-}
-
 /** Keep a slot valid after a change (e.g. weight changed so the material no longer fits). */
 export function normalizeSlot(slot, maxRarity) {
   const s = { ...slot };
@@ -67,7 +56,7 @@ export function normalizeSlot(slot, maxRarity) {
   if (s.kind === "affix") {
     const allowed = allowedAffixes(maxRarity);
     if (!allowed[s.affix]) s.affix = Object.keys(allowed)[0] ?? "";
-    s.target = s.target === undefined || s.target === null ? "" : String(s.target);
+    if (!AFFIX_SIDES[s.side]) s.side = "offensive";
     return s;
   }
   if (s.kind === "weapon") {
@@ -87,7 +76,7 @@ export function slotName(slot) {
   if (slot.kind === "foci") return `${FOCI_TYPES[slot.fociType]?.label ?? "Foci"} (Foci)`;
   if (slot.kind === "shroud") return `${SHROUD_TYPES[slot.shroudType]?.label ?? "Shroud"} (Shroud)`;
   if (slot.kind === "icon") return `${FORMS[slot.iconForm]?.name ?? "Icon"} (Icon)`;
-  if (slot.kind === "affix") return `${AFFIXES[slot.affix]?.label ?? "Affix"} (Affix)`;
+  if (slot.kind === "affix") return `${AFFIXES[slot.affix]?.label ?? "Affix"} (${slot.side === "defensive" ? "Defensive " : ""}Affix)`;
   const mat = (slot.kind === "armor" ? ARMOR_MATERIALS : WEAPON_MATERIALS)[slot.material]?.label ?? "";
   if (slot.kind === "armor") return `${ARMOR_WEIGHTS[slot.weight]?.label ?? ""} Armor (${mat})`;
   const types = [slot.type, ...(slot.extraTypes ?? [])].map(k => WEAPON_TYPES[k]?.label ?? "").filter(Boolean).join("/");
@@ -114,8 +103,6 @@ export function validate(choice, rules = DEFAULT_RULES) {
   const items = choice.items ?? [];
   if (items.length > rules.items) errors.push(`You can pick at most ${rules.items} starting items.`);
   if (items.filter(i => i.kind === "armor").length > 1) errors.push("You can start with at most one armor.");
-  const targets = affixTargets(items);
-  for (const t of targets) if (t.free < 0) errors.push(`${t.label}: holds at most ${t.slots} Affix${t.slots === 1 ? "" : "es"}.`);
   for (const [n, slot] of items.entries()) {
     const label = `Item ${n + 1}`;
     if (slot.kind === "foci") { if (!FOCI_TYPES[slot.fociType]) errors.push(`${label}: pick a Foci type.`); continue; }
@@ -125,7 +112,7 @@ export function validate(choice, rules = DEFAULT_RULES) {
       const a = AFFIXES[slot.affix];
       if (!a) { errors.push(`${label}: pick an Affix.`); continue; }
       if (!rarityOk(a.rarity, rules.maxRarity)) errors.push(`${label}: ${a.label} is above the ${RARITIES[rules.maxRarity]} limit.`);
-      if (!targets.some(t => String(t.index) === slot.target)) errors.push(`${label}: put ${a.label} on a picked Foci or Shroud.`);
+      if (!AFFIX_SIDES[slot.side]) errors.push(`${label}: pick the form ${a.label} is attuned to (Offensive or Defensive).`);
       continue;
     }
     const table = slot.kind === "armor" ? ARMOR_MATERIALS : WEAPON_MATERIALS;
@@ -190,29 +177,31 @@ export function buildActorData(choice, rules, userId) {
 }
 
 /**
- * The items a new character starts with: Unarmed, the picked weapons/armor/Foci/Shrouds (Affixes go onto their Foci or
- * Shroud), and 20 ammunition per starting ranged weapon (one stack per ammo type, at most 100).
- * The first Foci and the first Shroud start attuned.
+ * The items a new character starts with: Unarmed, the picked weapons/armor/Foci/Shrouds/Icons/Affixes, and 20 ammunition per starting ranged weapon
+ * (one stack per ammo type, at most 100). The first Foci, Shroud and Icon start attuned, and so does every Affix (to the form picked).
  */
 export function startingItems(slots, rules) {
   const out = [{
     name: "Unarmed", type: "weapon", img: "icons/skills/melee/unarmed-punch-fist.webp",
     system: { weaponType: "unarmed", weight: "light", material: "", equipped: true, secondHand: true }
   }];
-  const affixesOn = index => slots.filter(a => a.kind === "affix" && a.target === String(index) && AFFIXES[a.affix]).map(a => a.affix);
   const ammo = {};
   let fociAttuned = false, shroudAttuned = false, iconAttuned = false;
-  for (const [index, slot] of slots.entries()) {
-    if (slot.kind === "affix") continue;
+  for (const slot of slots) {
+    if (slot.kind === "affix") {
+      if (AFFIXES[slot.affix]) out.push({ name: AFFIXES[slot.affix].label, type: "affix", img: "icons/commodities/gems/gem-faceted-diamond-blue.webp",
+        system: { affix: slot.affix, side: slot.side === "defensive" ? "defensive" : "offensive", attuned: true } });
+      continue;
+    }
     if (slot.kind === "foci") {
       out.push({ name: slotName(slot), type: "foci", img: "icons/weapons/wands/wand-gem-purple.webp",
-        system: { fociType: slot.fociType, grade: rules.grade, attuned: !fociAttuned, equipped: false, affixes: affixesOn(index) } });
+        system: { fociType: slot.fociType, grade: rules.grade, attuned: !fociAttuned, equipped: false } });
       fociAttuned = true;
       continue;
     }
     if (slot.kind === "shroud") {
       out.push({ name: slotName(slot), type: "shroud", img: "icons/magic/defensive/shield-barrier-glowing-blue.webp",
-        system: { shroudType: slot.shroudType, grade: rules.grade, attuned: !shroudAttuned, affixes: affixesOn(index) } });
+        system: { shroudType: slot.shroudType, grade: rules.grade, attuned: !shroudAttuned } });
       shroudAttuned = true;
       continue;
     }

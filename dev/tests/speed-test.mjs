@@ -61,13 +61,15 @@ const qk = mkActor("Quick"); qk.statuses.add("quickened");
 ok2(speed(qk) === 100, "Quicken doubles the speed");
 
 console.log("== Affixes");
-const P = (n, free = 0) => ({ valid: true, affixes: Array.from({ length: n }, (_, i) => `a${i}`), freeAffixes: free });
-ok2(M.affixSpeedPct() === 0 && M.affixSpeedPct(P(0)) === 0, "No Affixes: no loss");
-ok2(M.affixSpeedPct(P(1)) === 20 && M.affixSpeedPct(P(2)) === 40, "Every attuned Affix costs 20% (nobody gets one free any more)");
-ok2(M.affixSpeedPct(P(2, 2)) === 0 && M.affixSpeedPct(P(3, 2)) === 20, "A Rod's 2 Free Affixes cover two; the third costs 20%");
-ok2(M.affixSpeedPct(P(2, 0), P(1, 0)) === 60 && M.affixSpeedPct(P(2, 2), P(1, 1)) === 0, "The Foci's and the Shroud's Affixes are counted together, with their Free Affixes");
-ok2(M.affixSpeedPct(P(0, -1)) === 20 && M.affixSpeedPct(P(1, -1)) === 40, "A Chime acts as if an Affix were already attuned (20% even with none)");
-ok2(M.affixSpeedPct(P(0, -1), P(0, -1)) === 40, "Chime and Aegis together count as two");
+const C = (offensive = 0, defensive = 0) => ({ offensive, defensive });
+const FP = (free = 0) => ({ valid: true, freeAffixes: free });
+ok2(M.affixSpeedPct() === 0 && M.affixSpeedPct(C()) === 0, "No Affixes: no loss");
+ok2(M.affixSpeedPct(C(1)) === 20 && M.affixSpeedPct(C(2)) === 40, "Every attuned Affix costs 20% (nobody gets one free any more)");
+ok2(M.affixSpeedPct(C(2), FP(2)) === 0 && M.affixSpeedPct(C(3), FP(2)) === 20, "A Rod's 2 Free Affixes cover two Offensive ones; the third costs 20%");
+ok2(M.affixSpeedPct(C(2, 1), FP(0), FP(0)) === 60 && M.affixSpeedPct(C(2, 1), FP(2), FP(1)) === 0, "Offensive and Defensive Affixes are counted with their own Free Affixes");
+ok2(M.affixSpeedPct(C(0, 2), FP(2), FP(0)) === 40, "A Foci's Free Affixes can't cover a Defensive one");
+ok2(M.affixSpeedPct(C(0), FP(-1)) === 20 && M.affixSpeedPct(C(1), FP(-1)) === 40, "A Chime acts as if an Affix were already attuned (20% even with none)");
+ok2(M.affixSpeedPct(C(0, 0), FP(-1), FP(-1)) === 40, "Chime and Bulwark together count as two");
 const mage = mkActor("Mage");
 foci(mage, "rod", ["agate", "jasper"]);
 ok2(speed(mage) === 50, "A Rod holds two Affixes with no speed loss");
@@ -95,8 +97,7 @@ ok2(plain.system.profile.doubled === null && M.affixMultOf(plain.system.profile,
 console.log("== Alignment");
 const mind = mkActor("Mind"); mind.flags.flowstate = { alignment: { kind: "nightmare", level: 3 } };
 ok2(speed(mind) === 20 && mind.system.movement.speedLoss.alignment === 60, "3 Alignment costs 60% speed");
-mind.flags.flowstate.alignment.equilibrium = true;
-ok2(speed(mind) === 50, "Equilibrium has no speed penalty");
+
 const all = mkActor("All"); all.flags.flowstate = { alignment: { kind: "dream", level: 4 } }; armor(all, "titanic");
 ok2(speed(all) === 5, "Armor 80% + Alignment 80% is capped by the 5 ft minimum");
 

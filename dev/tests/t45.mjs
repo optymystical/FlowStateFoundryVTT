@@ -102,6 +102,11 @@ hero.system.ap.value = 6; seq = [30]; await attack(whip, { getOverHere: true });
 dialog = () => ({ net: 0 }); seq = [1, 5]; await actions.defend(last("attack"), 0, "dodge");
 ok(orc.getFlag("flowstate", "grappledBy") === hero.uuid && orc.getFlag("flowstate", "lockedDown") === hero.uuid && orc.statuses.has("prone"), "Get Over Here!: grappled, Locked Down (Grappling T1), prone");
 
+{ const was = orc.system.size, firstId = last("attack").id; orc.system.size = was + 1; hero.system.ap.value = 6; seq = [30];
+  await attack(whip, { thrasherGrapple: true });
+  ok(last("attack").id === firstId, "A weapon grapple (Thrasher) can't target something larger than you (Rules: your size or smaller)");
+  orc.system.size = was; }
+
 console.log("== Grappling: Disrupt with Stunlock, Lock Down escape");
 await actions.disrupt(hero);
 ok(orc.getFlag("flowstate", "disrupted")?.auto === true, "Stunlock: free, every roll");

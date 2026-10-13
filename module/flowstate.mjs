@@ -1,5 +1,6 @@
 import * as rules from "./rules.mjs";
-import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStatePileData } from "./data.mjs";
+import { migrateAffixes } from "./affix-migration.mjs";
+import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStateAffixData, FlowStatePileData } from "./data.mjs";
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import { relayAllowed, relayKey, makeQueue } from "./relay-guard.mjs";
@@ -21,7 +22,7 @@ import * as pictures from "./pictures.mjs";
 import "./mental.mjs";
 import * as gravity from "./gravity.mjs";
 import * as charges from "./charges.mjs";
-import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStatePileSheet } from "./sheets.mjs";
+import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
 
 const relayQueue = makeQueue();                 // GM relay: one request at a time per creature
 /* -------------------------------------------- */
@@ -177,7 +178,7 @@ Hooks.once("init", () => {
   CONFIG.Actor.documentClass = FlowStateActor;
   CONFIG.Combat.documentClass = FlowStateCombat;
   CONFIG.Actor.dataModels = { character: FlowStateActorData, npc: FlowStateActorData, pile: FlowStatePileData };
-  CONFIG.Item.dataModels = { gear: FlowStateGearData, weapon: FlowStateWeaponData, armor: FlowStateArmorData, foci: FlowStateFociData, shroud: FlowStateShroudData, icon: FlowStateIconData };
+  CONFIG.Item.dataModels = { gear: FlowStateGearData, weapon: FlowStateWeaponData, armor: FlowStateArmorData, foci: FlowStateFociData, shroud: FlowStateShroudData, icon: FlowStateIconData, affix: FlowStateAffixData };
   CONFIG.Actor.trackableAttributes = {
     character: { bar: ["hp", "energy", "ap", "rp"], value: [] },
     npc: { bar: ["hp", "energy", "ap", "rp"], value: [] }
@@ -345,6 +346,7 @@ Hooks.once("init", () => {
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateFociSheet, { types: ["foci"], makeDefault: true, label: "Flow State Foci" });
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateShroudSheet, { types: ["shroud"], makeDefault: true, label: "Flow State Shroud" });
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateIconSheet, { types: ["icon"], makeDefault: true, label: "Flow State Icon" });
+  DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateAffixSheet, { types: ["affix"], makeDefault: true, label: "Flow State Affix" });
 });
 
 /* -------------------------------------------- */
@@ -661,7 +663,7 @@ Hooks.on("updateToken", (token, changes, options, userId) => {
 const BUILD_KEYS = ["system.stats", "system.skillPoints", "system.size", "system.unspentStats", "system.statCarry", "system.creation", "system.trees"];
 // Players may rename their own items and change their pictures; everything else about an item's identity is GM-only.
 const ITEM_IDENTITY_KEYS = ["system.weaponType", "system.weight", "system.material", "system.grade",
-  "system.description", "system.quantity", "system.wear", "system.fociType", "system.shroudType", "system.affixes", "system.magazine", "system.extraTypes", "system.ammoType"];
+  "system.description", "system.quantity", "system.wear", "system.fociType", "system.shroudType", "system.affixes", "system.affix", "system.magazine", "system.extraTypes", "system.ammoType"];
 
 /** Keys in `changes` that match a guarded prefix AND actually differ from the document's current value. */
 function guardedChanges(doc, changes, keys) {
@@ -817,6 +819,11 @@ Hooks.on("createActor", actor => {
   if (actor.getFlag("flowstate", "createdBy") === game.user.id) actor.sheet?.render(true);
 });
 
+/** Affixes are items of their own now: convert any left in a Foci's or Shroud's old list. */
+Hooks.once("ready", async () => {
+  if (game.user.isActiveGM) await migrateAffixes();
+});
+
 /** One-time: sheets no longer have a creation mode, so lock any character still in it. */
 Hooks.once("ready", async () => {
   if (!game.user.isActiveGM || game.settings.get("flowstate", "migratedCreationLock")) return;
@@ -841,13 +848,14 @@ async function openForge() {
       { action: "foci", label: "Foci", icon: "fa-solid fa-wand-sparkles" },
       { action: "shroud", label: "Shroud", icon: "fa-solid fa-ghost" },
       { action: "icon", label: "Icon", icon: "fa-solid fa-hands-praying" },
+      { action: "affix", label: "Affix", icon: "fa-solid fa-gem" },
       { action: "gear", label: "Misc Item", icon: "fa-solid fa-box" }
     ]
   });
   if (!type) return;
   const folder = game.folders.find(f => f.type === "Item" && f.name === "Forge") ?? await Folder.create({ name: "Forge", type: "Item" });
-  const name = { weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", icon: "New Icon", gear: "New Item" }[type];
-  const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp", icon: "icons/magic/holy/yin-yang-balance-symbol.webp" }[type];
+  const name = { weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", icon: "New Icon", affix: "New Affix", gear: "New Item" }[type];
+  const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp", icon: "icons/magic/holy/yin-yang-balance-symbol.webp", affix: "icons/commodities/gems/gem-faceted-diamond-blue.webp" }[type];
   const item = await Item.create({ name, type, folder: folder.id, ...(img ? { img } : {}) });
   item?.sheet.render(true);
 }
@@ -1323,6 +1331,15 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
       if (!attune && item.type === "shroud") setTimeout(() => actions.endShroudPlacement(actor, item), 0);
     }
     if (item.type === "shroud") return;
+  }
+
+  /* ---- Affixes: attuned on their own, taking an hour (not in combat), any number of them; each costs speed past the free ones ---- */
+  if (item.type === "affix") {
+    const attune = changed(changes, "system.attuned");
+    if (attune && attune !== item.system.attuned && inCombat) return refuse(item, `Attuning to ${item.name} takes an hour, so it can't be done in combat.`);
+    const side = changed(changes, "system.side");
+    if (side !== undefined && side !== item.system.side && item.system.attuned && inCombat) return refuse(item, "Changing the form an Affix is attuned to takes an hour, so it can't be done in combat.");
+    return;
   }
 
   /* ---- Icons: attuning takes 6 AP in combat (the Action List does it); out of combat it's free. One at a time. ---- */

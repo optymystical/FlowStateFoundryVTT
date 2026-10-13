@@ -117,4 +117,5 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - Mental Alignment is Dream/Nightmare 1-4 (Neutral 0), set with a 1 hour activity, 20% speed a point; Fluidity (T3) swaps the type for half Skill Points × the Alignment number in Energy (0 from Neutral), Equilibrium (T4) is -1 until your next turn. Reverie needs Dream 2 (Enhanced growth: 4); Zealot negates 30 at Nightmare 2+ (Enhanced at 4 also Weakens).
 - Heavy armor has two stealth Disadvantages; Size 1 speed rounds to the nearest 5 ft.
 - Wonders and `mental.mjs` don't import each other: `wonders.mjs` exports `mental` and `setMental` (mental.mjs registers itself on load); Mental modules reach it as `import { mental } from "./wonders.mjs"`. Keep the import graph acyclic (the only self-reference is mental.mjs importing itself for that).
-- Open question: Dragon Lash still doubles total Knockback (user hasn't decided vs. +5×).
+- Dragon Lash doubles total Knockback (a multiplier, not +5×): settled, don't ask again.
+- Alignment 4 gives a Ward's attack roll Advantage, including the Warden/Riposte reflect roll. Neutral tokens count as either side for ally/foe checks. Spirit Sense (Grasp Arcana T4) only stops a Targeted spell's own automatic half stealth against that target; a GM-set Half/Full Stealth status still applies.

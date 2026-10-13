@@ -540,6 +540,7 @@ Hooks.once("ready", () => {
     if (senderId && !game.users.get(senderId)) return;                       // Foundry names the sender: a request from nobody we know is dropped
     if (data?.action === "browseFiles") return pictures.answerBrowse(data);
     if (data?.action === "uploadChunk") return pictures.receiveUpload(data);
+    if (!Object.prototype.hasOwnProperty.call(actions.GM_ACTIONS, data?.action)) return;                // not a GM request (questions and answers between players go over the same socket)
     if (!relayAllowed(data?.action, data, actions.GM_ACTIONS)) return console.warn(`flowstate | refused a relayed "${data?.action}" request`, data);
     await relayQueue(relayKey(data), () => actions.GM_ACTIONS[data.action](data));          // one request at a time per creature, so none reads a number another is about to change
   });

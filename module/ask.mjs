@@ -94,8 +94,6 @@ function runOnce(act) {
 export async function askFor(actor, spec) {
   if (isDeclined(actor, spec?.react)) return null;                         // the player switched this reaction off in their Action List: no popup, counts as "no"
   const user = answeringUser(actor);
-  console.debug(`flowstate | "${spec?.title}" about ${actor?.name} (${actor?.uuid}) asked from ${game.user.name} → answered by ${user?.name ?? "nobody"}`,
-    { owners: [...(globalThis.game?.users ?? [])].filter(u => actor?.testUserPermission?.(u, "OWNER")).map(u => `${u.name}${u.isGM ? " (GM)" : ""}${u.active ? " (online)" : ""}`) });
   if (!user || user.id === game.user.id) return askOnce(spec);
   const reqId = `${game.user.id}:${++reqCounter}`;
   return new Promise(resolve => {

@@ -217,6 +217,12 @@ const rAtk = lastAtk();
 ok2(rAtk?.flags.flowstate.attack.opts.mental?.reflect?.amount === 10, "Enhanced Warden makes an attack at the source for the negated damage");
 seq = [2]; await actions.defend(rAtk, 0, "none");
 ok2(orc.system.hp.value === 422, "…and a hit deals the negated damage to them");
+ok2(rAtk.flags.flowstate.attack.opts.net === 0, "Without Alignment the reflect roll has no Advantage");
+setAlign("nightmare", 4); orc.system.hp.value = 432; hero.system.hp.value = 432; hero.system.rp.value = 6; refresh(); dialog = () => ({ enhance: true }); seq = [20];
+await actions.applyDamage(hero, 10, "physical", { silent: true, shroudCtx: { source: "weapon:bladed", attacker: orc.uuid } });
+const rAtk4 = lastAtk();
+ok2(rAtk4.flags.flowstate.attack.opts.net === 1, "At 4 Nightmare Alignment the Warden's reflect roll gets Advantage too (it is the Ward's attack roll)");
+setAlign("neutral");
 
 console.log("== Zealot and Reverie follow the Alignment number");
 clearAll(hero); aegis.system.form = "zealot"; hero.system.prepareDerivedData(); hero.system.hp.value = 432; hero.system.rp.value = 6; theory(1);

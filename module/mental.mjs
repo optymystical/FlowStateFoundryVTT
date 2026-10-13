@@ -729,8 +729,11 @@ async function reflectAttack(actor, kind, amount, type, attackerUuid) {
   if (a && b && globalThis.canvas?.grid) {
     if (tokenDistance(a, b) > reach) return post(actor, { title: `${esc(actor.name)} — ${melee ? "Riposte" : "Warden"}`, body: `<div class="fs-notes">${esc(src.name)} isn't within ${reach} ft: no attack is made.</div>` });
   }
-  await performAttack(actor, { ...baseAttack, label: melee ? "Riposte (Ward)" : "Warden (Ward)", net: melee ? 1 : 0, melee, area: false,
-    notes: [`The ${amount} negated ${type} damage goes to ${src.name} on a hit`], mental: { reflect: { amount, type }, caster: actor.uuid }, targetActors: [src] });
+  // 4 Alignment gives the Ward's attack roll Advantage; in Equilibrium everything dodging it has Disadvantage: the reflect roll is the Ward's attack too.
+  const wfx = R.alignmentWard(alignmentOf(actor), actor.system.icon?.system?.profile?.align);
+  await performAttack(actor, { ...baseAttack, label: melee ? "Riposte (Ward)" : "Warden (Ward)", net: (melee ? 1 : 0) + wfx.net, melee, area: false, dodgeNet: wfx.dodgeNet,
+    notes: [`The ${amount} negated ${type} damage goes to ${src.name} on a hit`, ...(wfx.net > 0 ? [`${R.alignmentLabel(alignmentOf(actor))}: Advantage`] : []), ...(wfx.dodgeNet < 0 ? ["Equilibrium: the target has Disadvantage on their dodge"] : [])],
+    mental: { reflect: { amount, type }, caster: actor.uuid }, targetActors: [src] });
 }
 
 /* -------------------------------------------- */

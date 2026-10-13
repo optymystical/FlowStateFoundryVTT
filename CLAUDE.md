@@ -57,7 +57,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `module/sides.mjs` — pure: `opposed/allied/mayHelp/mayHarm` by token disposition (Friendly vs Hostile; Neutral/tokenless go either way). Every automatic offer that helps "a willing creature" (Block, Shield Toss, Quartz, Adjust, Dampen, Infuse) or hurts a foe (Empower) must check it.
 - `module/reactions.mjs` (pure) — the catalog of popups a player can switch off (flag `autoDecline`, shown in the Action List under Reactions). Every `askFor` spec for a reaction carries `react: "<key>"`; add the key to `REACTIONS` when adding a new popup. `module/ask.mjs` — `askFor`/`runOnOwner`/`answeringUser`: asks a character's player on their own client (charges.mjs re-exports it).
 - `module/relay-guard.mjs` (pure) — `relayAllowed`: what the socket GM relay accepts. A new `GM_ACTIONS` handler that writes data needs a check here (field allow-list) or players could write anything.
-- `module/distance.mjs` (pure) — border/centre distance on square, hex and gridless grids (`tokenDistance` in `actions.mjs` wraps it).
+- `module/distance.mjs` (pure) — border/centre distance on square, hex and gridless grids (`tokenDistance` in `actions.mjs` wraps it). `module/placement.mjs` (pure) — spots beside a token on hex/gridless scenes (`landingPosition`, `adjacentSpot`, `besideTokenPosition` in `actions.mjs` use it; square grids keep their cell arithmetic). `snapTopLeft` is the one place that snaps a token position.
 - `module/charges.mjs` — Order/Chaos charges live on rolls: asks the charge's caster (socket) at attack/dodge/other/damage rolls and after an attack resolves (Verdict, Entropy, Balance).
 - `module/areas.mjs` — Area spells: shapes, pure geometry, template placement, Emplace card.
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
@@ -79,7 +79,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
   the exchange is resolved. Every opts key that must survive on the card has to be listed in `EXCHANGE_KEYS`.
   Rows tagged `data-role`/`data-owner` show buttons only to the owner; a new chat message re-renders the card it
   answers (see the `createChatMessage` hook's ref chain — add new flag names there).
-- **GM relay:** players can't update others' documents; use `requestGM(action, payload)` with a handler in `GM_ACTIONS`.
+- **GM relay:** players can't update others' documents; use `requestGM(action, payload)` with a handler in `GM_ACTIONS` and a field check in `relay-guard.mjs`. The GM client runs relayed requests one at a time per creature (`makeQueue`); a handler must not `await` another relayed request for the same creature, or it waits on itself.
 - **Soak order:** parrying weapons → Shroud(s) → armor. Objects absorb at most their remaining Durability.
 - **Distance:** `tokenDistance` measures between token borders (touching = 0 ft).
 - **Weapon trees:** `abilities.weaponFits` — a weapon's main type, plus its extra types with Weapon Master (MT T5).

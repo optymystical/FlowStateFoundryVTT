@@ -3,7 +3,7 @@
  * next turn (like Build Arcana's Make), Rite makes them permanent, and Alter (the Tenet) changes damage dealt to an object.
  * The Manifest's attack roll is made against yourself; on a hit a "Create" button on the follow-up card asks what to make.
  */
-import { post, requestGM, putSpellEffect, spellEffects, attackerToken, setActorFlag } from "./actions.mjs";
+import { post, requestGM, putSpellEffect, spellEffects, attackerToken, setActorFlag, besideTokenPosition } from "./actions.mjs";
 import * as R from "./mental-rules.mjs";
 import * as conjure from "./conjure.mjs";
 import { AFFIXES, FOCI_TYPES, SHROUD_TYPES, AFFIX_LIMIT } from "./magic.mjs";
@@ -89,7 +89,7 @@ async function deliver(caster, recipient, item, willing) {
   }
   const tok = recipient.getActiveTokens?.()[0] ?? attackerToken(caster);
   const canvas = globalThis.canvas;
-  if (tok && canvas?.grid && canvas.scene) { const gs = canvas.grid.size, d = tok.document; await requestGM("createPile", { sceneId: canvas.scene.id, x: d.x + (d.width ?? 1) * gs, y: d.y, item }); }
+  if (tok && canvas?.grid && canvas.scene) { const at = besideTokenPosition(tok); await requestGM("createPile", { sceneId: canvas.scene.id, x: at.x, y: at.y, item }); }
   else if (recipient.isOwner) await recipient.createEmbeddedDocuments("Item", [item], { flowstateAuto: true });
   else await requestGM("giveItems", { actor: recipient.uuid, items: [item] });
 }

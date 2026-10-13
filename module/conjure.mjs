@@ -7,7 +7,7 @@ import * as R from "./conjure-rules.mjs";
 import * as fx from "./spellfx.mjs";
 import * as A from "./afflictions.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, ARMOR_WEIGHTS, WEIGHTS, RARITIES } from "./martial.mjs";
-import { setActorFlag, post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, rollWeaponAttack, registerConjure, spendPoints, changeEffect, spellEffects, castStacks } from "./actions.mjs";
+import { besideTokenPosition, setActorFlag, post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, rollWeaponAttack, registerConjure, spendPoints, changeEffect, spellEffects, castStacks } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 
@@ -35,8 +35,8 @@ function placement(actor, targets, tile = null) {
   const anchor = tgt ?? attackerToken(actor);
   const canvas = globalThis.canvas;
   if (!anchor || !canvas?.grid || !canvas.scene) return null;
-  const gs = canvas.grid.size, d = anchor.document;
-  return { sceneId: canvas.scene.id, x: d.x + (d.width ?? 1) * gs, y: d.y };
+  const at = besideTokenPosition(anchor);
+  return { sceneId: canvas.scene.id, x: at.x, y: at.y };
 }
 
 /**

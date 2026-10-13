@@ -27,3 +27,10 @@ export function centreDistance(a, b, grid = {}) {
   if (kind === "hex" && typeof grid.measure === "function") return grid.measure(a, b);
   return Math.round((Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y)) / size) * ft * 100) / 100;
 }
+
+/** The scene grid as `distance.mjs` wants it (square, hex or gridless; hexes are measured by Foundry's own path measure). */
+export function gridFor(grid = globalThis.canvas?.grid) {
+  const kind = grid?.isGridless ? "gridless" : grid?.isHexagonal ? "hex" : "square";
+  return { size: grid?.size ?? 100, distance: grid?.distance ?? 5, kind,
+    measure: kind === "hex" ? (from, to) => { try { const d = grid.measurePath([from, to]).distance; return Number.isFinite(d) ? d : 0; } catch (err) { return 0; } } : undefined };
+}

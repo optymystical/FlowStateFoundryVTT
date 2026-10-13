@@ -9,7 +9,9 @@ import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import { planAction, emptyLedger } from "./movement-rules.mjs";
 import { mayHelp } from "./sides.mjs";
-import { borderDistance } from "./distance.mjs";
+import { borderDistance, gridFor } from "./distance.mjs";
+import { pickSpot, candidateSpots } from "./placement.mjs";
+export { gridFor };
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
@@ -422,13 +424,6 @@ export async function rollDodge(actor) {
 export function attackerToken(actor) {
   const controlled = canvas?.tokens?.controlled?.find(t => t.actor?.uuid === actor.uuid);
   return controlled ?? actor.getActiveTokens?.()[0] ?? null;
-}
-
-/** The scene grid as `distance.mjs` wants it (square, hex or gridless; hexes are measured by Foundry's own path measure). */
-export function gridFor(grid = globalThis.canvas?.grid) {
-  const kind = grid?.isGridless ? "gridless" : grid?.isHexagonal ? "hex" : "square";
-  return { size: grid?.size ?? 100, distance: grid?.distance ?? 5, kind,
-    measure: kind === "hex" ? (from, to) => { try { const d = grid.measurePath([from, to]).distance; return Number.isFinite(d) ? d : 0; } catch (err) { return 0; } } : undefined };
 }
 
 /** Grid distance between the borders of two tokens (touching = 0 ft), on square, hex and gridless scenes; large and small tokens measure edge to edge. */
@@ -1163,8 +1158,48 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
 /*  Dropped items (thrown weapons)              */
 /* -------------------------------------------- */
 
+/** Is the scene's grid something other than squares (hexes, or none at all)? Square grids keep their own cell arithmetic below. */
+const offSquare = () => !!(globalThis.canvas?.grid?.isGridless || globalThis.canvas?.grid?.isHexagonal);
+
+/** A token's box on the canvas, { x, y, w, h } in pixels. */
+function rectOf(tok) {
+  const d = tok.document ?? tok, gs = canvas.grid.size;
+  return { x: d.x, y: d.y, w: (d.width ?? 1) * gs, h: (d.height ?? 1) * gs };
+}
+
+/**
+ * A top-left position put on the grid the way Foundry snaps a token of this size: squares round to cells, gridless is left alone, and hexes go
+ * through the grid (the token's own snapping where Foundry offers it, else the hex under its centre).
+ */
+function snapTopLeft(doc, pos) {
+  const grid = canvas.grid, gs = grid.size;
+  if (grid.isGridless) return { x: pos.x, y: pos.y };
+  if (grid.isHexagonal) {
+    try {
+      const snapped = doc?.getSnappedPosition?.(pos) ?? doc?.object?.getSnappedPosition?.(pos);
+      if (snapped && Number.isFinite(snapped.x) && Number.isFinite(snapped.y)) return { x: snapped.x, y: snapped.y };
+    } catch (err) { /* fall back to the hex under the centre */ }
+    const w = (doc?.width ?? 1) * gs, h = (doc?.height ?? 1) * gs;
+    const tl = grid.getTopLeftPoint(grid.getOffset({ x: pos.x + w / 2, y: pos.y + h / 2 }));
+    return { x: tl.x, y: tl.y };
+  }
+  return { x: Math.round(pos.x / gs) * gs, y: Math.round(pos.y / gs) * gs };
+}
+
+/** Where something one space big appears beside a token: its right-hand side on squares, the facing side's nearest free grid spot elsewhere. */
+export function besideTokenPosition(tok) {
+  if (!offSquare()) { const gs = canvas.grid.size, d = tok.document; return { x: d.x + (d.width ?? 1) * gs, y: d.y }; }
+  return landingPosition(tok, null);
+}
+
 /** Top-left pixel position one space from `near`, on the side facing `from` (or beside it). */
 function landingPosition(near, from) {
+  if (offSquare()) {
+    // Hexes and gridless scenes: a spot touching the token on the side facing `from`, snapped the way Foundry snaps a token.
+    const pref = from ? { x: from.center.x - near.center.x, y: from.center.y - near.center.y } : { x: 1, y: 0 };
+    const [first] = candidateSpots(rectOf(near), { w: canvas.grid.size, h: canvas.grid.size }, pref);
+    return snapTopLeft({ width: 1, height: 1 }, first);
+  }
   const gs = canvas.grid.size;
   const d = near.document;
   const w = (d.width ?? 1) * gs, h = (d.height ?? 1) * gs;
@@ -2266,6 +2301,7 @@ const touches = (a, b) => !overlaps(a, b) && a[0] <= b[0] + b[2] && b[0] <= a[0]
 
 /** Are these two tokens next to each other? */
 function adjacent(a, b) {
+  if (offSquare()) return tokenDistance(a, b) <= (canvas.grid.distance ?? 5) / 2;
   return touches(footprint(a), footprint(b)) || overlaps(footprint(a), footprint(b));
 }
 
@@ -2274,6 +2310,12 @@ function adjacent(a, b) {
  * then the shortest pull. Returns a top-left pixel position, or null if every space is taken.
  */
 function adjacentSpot(anchor, mover, attackerTok, reach) {
+  if (offSquare()) {
+    const g = canvas.grid, box = rectOf(mover);
+    const others = (canvas.tokens?.placeables ?? []).filter(t => t.id !== mover.id && t.id !== anchor.id && t.actor?.type !== "pile").map(rectOf);
+    return pickSpot({ anchor: rectOf(anchor), mover: { w: box.w, h: box.h }, others, from: box, snap: p => snapTopLeft(mover.document, p),
+      inReach: c => attackerTok ? g.measurePath([attackerTok.center, c]).distance <= reach + (g.distance ?? 5) * 0.5 : true });
+  }
   const gs = canvas.grid.size;
   const A = footprint(anchor);
   const [mx, my, mw, mh] = footprint(mover);
@@ -2892,7 +2934,7 @@ function palisadeSpot(tokenDoc, from, wielder, weapon) {
   const dx = wTok.center.x - start.x, dy = wTok.center.y - start.y, len = Math.hypot(dx, dy) || 1;
   const step = { x: (dx / len) * gs, y: (dy / len) * gs };
   // Walk from the start toward the wielder, one grid space at a time, keeping the last snapped spot still outside reach.
-  const snap = c => (canvas.grid.isGridless ? { x: c.x - w / 2, y: c.y - h / 2 } : { x: Math.round((c.x - w / 2) / gs) * gs, y: Math.round((c.y - h / 2) / gs) * gs });
+  const snap = c => snapTopLeft(tokenDoc, { x: c.x - w / 2, y: c.y - h / 2 });
   const outside = tl => canvas.grid.measurePath([wTok.center, { x: tl.x + w / 2, y: tl.y + h / 2 }]).distance > reach;
   let best = { x: from.x, y: from.y };
   for (let i = 1; i < 200; i++) {
@@ -3976,8 +4018,7 @@ function wallHit(a, b) {
 async function moveTokenTopLeft(token, pos) {
   const doc = token.document;
   const gs = canvas.grid.size;
-  let { x, y } = pos;
-  if (!canvas.grid.isGridless) { x = Math.round(x / gs) * gs; y = Math.round(y / gs) * gs; }
+  let { x, y } = snapTopLeft(doc, pos);
   const d = canvas.dimensions;
   x = Math.min(Math.max(x, d.sceneX ?? 0), (d.sceneX ?? 0) + (d.sceneWidth ?? d.width) - (doc.width ?? 1) * gs);
   y = Math.min(Math.max(y, d.sceneY ?? 0), (d.sceneY ?? 0) + (d.sceneHeight ?? d.height) - (doc.height ?? 1) * gs);

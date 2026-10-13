@@ -465,7 +465,7 @@ Follow-up buttons aren't on the attack card any more; the card just says a follo
 Every question the system asks a player in someone else's turn (Ward and Premonition negation, Tenets, Infuse/Empower/Dampen, Order and Chaos charges, Serenity, Guard, Warmonger, Bloodbond, Adaptive Skin...) has a switch in the character's **Action List**, in a **Reactions** group that only lists what that character can actually be asked. A switched-off reaction is never asked and counts as "no": nothing is spent and nothing happens. Switch it back on to be asked again. It is per character, so a player can turn off a chatty Tenet and keep their Ward prompt. Upkeep questions that cost you something if you don't answer (Far Sight, Memory) are not switchable.
 
 ### Range on any grid
-Distance between tokens is measured border to border (touching = 0 ft): a diagonal square counts as one square on square grids, the straight line on gridless scenes, and Foundry's own path measure less the tokens' half widths on hex grids. Placing things next to a token (thrown items, forced moves) still assumes a square grid.
+Distance between tokens is measured border to border (touching = 0 ft): a diagonal square counts as one square on square grids, the straight line on gridless scenes, and Foundry's own path measure less the tokens' half widths on hex grids. Placing things beside a token (thrown items and dropped piles, a creature forced next to another, Palisade, new Summons and Made items) works on all three: squares use cells, gridless scenes use the spot touching the token on the facing side, and hex scenes use the nearest free hex that touches it (through Foundry's own grid snapping). The hex and gridless placement can't be run outside Foundry, so report anything that lands a space off.
 
 ### Posture, targeting, Bash, and Force
 - **Crouch / Go Prone / Get Up** (Action List → Combat; only the ones you can switch to are shown). Crouching is free. Going prone costs 1 AP. Getting up costs 1 AP from prone and is free from a crouch. In combat these only work on your own turn, and unconscious characters can't change posture.
@@ -525,6 +525,11 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Momentum is stored per attacker and target** and ends at the start of the attacker's next turn.
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
+
+**0.53.1:**
+- **Concurrent relayed requests no longer lose updates.** The GM's client now runs relayed requests for the same creature (or item or effect of it) one after another, so two hits that arrive at once both land instead of both reading the same health. A request waits for the one before it, including a Ward question still open for that creature.
+- **Redirected damage (Guard) no longer uses a global flag** that made every other damage instance skip its Wonder effects while it was being applied; it now says so on the damage itself.
+- **Placement beside a token works on hex and gridless scenes** (see "Range on any grid").
 
 **0.53.0:** **Audit follow-ups.**
 - **The GM relay only carries out what the system sends.** A player's client asks the GM's client to change things it doesn't own (damage, conditions, Durability). Every such request is now checked: only health, the pools, conditions, Durability, Ward placement and the system's own flags and effects are accepted; stats, Skill Points, trees, ownership, items' identity and the GM-only stealth statuses are refused (and logged to the console). It cannot tell a real hit from a made-up one, so this narrows what a modified client can do rather than stopping all cheating.

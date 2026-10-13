@@ -246,7 +246,7 @@ export const unarmored = actor => !(actor?.items ?? []).some(i => i.type === "ar
 const STRENGTH = "martial-strength-methods";
 export const strength = (actor, tier) => treeTier(actor, STRENGTH) >= tier;
 export const STRENGTH_COST = {
-  heave: a => statValue(a, "str"),        // T2, STR stat
+  heave: a => 2 * statMinOf(a, "str"),  // T2, double the STR min
   crunchTime: a => statMinOf(a, "str"),   // T3, STR min
   ho: a => statMinOf(a, "str"),           // T4, STR min (per step)
   unstoppable: a => 2 * statMinOf(a, "str") // T5
@@ -466,12 +466,13 @@ export function resistCheck(stat, { unstoppable = false, pureBody = false, targe
   const doubled = factor > 1;
   const value = stat.value * factor;
   const notes = [];
-  // Pure Body: when resisting, Constitution (not doubled) can stand in for the required stat if it is higher than the stat as boosted.
-  if (pureBody && con && con !== stat && con.value > value) {
-    notes.push(`Pure Body: Constitution ${con.value} (not doubled) stands in for the required stat`);
+  // Pure Body: when resisting, Constitution (not counting Pure Body's own doubling, but Unstoppable's still counts) can stand in for the required stat if it is higher than the stat as boosted.
+  const conValue = con ? con.value * (unstoppable ? 2 : 1) : 0;
+  if (pureBody && con && con !== stat && conValue > value) {
+    notes.push(`Pure Body: Constitution ${conValue}${unstoppable ? " (Unstoppable doubles it)" : " (not doubled)"} stands in for the required stat`);
     const auto = target > 0 && target < con.value / 2;
     if (auto) notes.push(`Pure Body: ${target} is less than half of ${con.value}, an automatic success`);
-    return { value: con.value, die: con.die, min: con.min, net: unstoppable ? 1 : 0, auto, notes: [...(unstoppable ? ["Unstoppable: Advantage"] : []), ...notes] };
+    return { value: conValue, die: unstoppable ? Math.max(1, conValue * 2) : con.die, min: unstoppable ? Math.floor(conValue / 3) : con.min, net: unstoppable ? 1 : 0, auto, notes: [...(unstoppable ? ["Unstoppable: Advantage"] : []), ...notes] };
   }
   if (unstoppable) notes.push("Unstoppable: Advantage, stat counts twice");
   if (pureBody) notes.push(unstoppable ? "Pure Body: twice again (×4 with Unstoppable)" : "Pure Body: stat counts twice");

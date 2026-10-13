@@ -136,13 +136,12 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     };
 
     const statuses = this.parent?.statuses ?? new Set();
-    // Unfettered (Unarmored T5): immune to physical movement slows (Martial Theory, Martial equipment, physical sources) while
-    // wearing no armor. The Slow condition's stacks don't record a source, so they still apply.
+    // Unfettered (Unarmored T5): immune to all Stage 1 movement slows (the Slow stacks, Like Shooting Fish, Sliced) while wearing no armor.
     const noArmor = !(this.parent?.items ?? []).some?.(i => i.type === "armor" && i.system.equipped);
     const unfettered = noArmor && (Number(this.trees?.["martial-unarmored"]) || 0) >= 5;
     // Zircon (Shroud): while the melded Shroud is undamaged, ignore Rough Terrain and Slow stacks.
     const zircon = !!this.shroud?.system.profile.affixes?.includes("zircon") && this.shroud.system.wear <= 0;
-    const tempo = tempoModifier(zircon ? 0 : this.conditions.slow, this.conditions.haste, d.pain);
+    const tempo = tempoModifier(zircon || unfettered ? 0 : this.conditions.slow, this.conditions.haste, d.pain);
     // Speed is the Size's maximum, less percentages that add together: armor, attuned Affixes past the free ones, and Mental Alignment.
     // Trudge (Heavy T2 / Titanic T4) ignores the armor's share for the next move. A summon's speed is whatever it was made with.
     const trudge = !!this.parent?.getFlag?.("flowstate", "trudge");

@@ -490,13 +490,14 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   const pinned = grappledBy(actor).find(v => v.getFlag?.("flowstate", "grappleWeapon") === item.uuid);
   if (pinned) return ui.notifications.warn(`${item.name} is holding ${pinned.name}; it can't attack until they're released.`);
   // Rapid T1 Quickload / T5 Speedloader: attacking while out of ammo can reload instead (or reload and fire).
-  let speedloaded = false;
+  let speedloaded = false, pepperLoad = false;
   if (base.ranged && !w.loaded) {
     if (followup || !(ab.rapid(actor, item, 1) || ab.assault(actor, item, 1))) return ui.notifications.warn(`${item.name} needs to be reloaded (${base.reloadRP} RP${ammoRequired() && !w.natural ? `; ${ammoCount(actor, w.ammoType)} ${ammoLabel(w.ammoType)} left` : ""}).`);
     if (!ammoCount(actor, w.ammoType) && ammoRequired() && !w.natural) return ui.notifications.warn(`${actor.name} has no ${ammoLabel(w.ammoType)} for ${item.name}.`);
-    const r = await quickload(actor, item);
-    if (r !== "speed") return;
-    speedloaded = true;
+    const r = await quickload(actor, item, base.pepper && ab.rapid(actor, item, 1));
+    if (r === "pepper") pepperLoad = true;
+    else if (r !== "speed") return;
+    else speedloaded = true;
   }
 
   // Unarmed: Light or Heavy is declared per attack.
@@ -592,6 +593,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     rapidOpts += `<div class="form-group"><label>Spin Down <span class="fs-energy-inline">⚡ ${ab.RAPID_COST.spinDown(item)}</span>: double the Pepper shots (same target, same Disadvantage)</label><input type="checkbox" name="spinDown"></div>`;
   }
   if (speedloaded) rapidOpts += `<p class="hint"><strong>Speedloader:</strong> reloaded; a Pepper attack has one less Disadvantage.</p>`;
+  if (pepperLoad) rapidOpts += `<p class="hint"><strong>Quickload:</strong> one Pepper shot is spent reloading (pick at least 1 Pepper shot); the shots left have one less Disadvantage.</p>`;
 
   // Swift Weapons: Quick Strike (T2).
   let swiftOpts = "";
@@ -670,9 +672,10 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     t2Opts += `<div class="form-group"><label>Sword and Board <span class="fs-energy-inline">⚡ ${ab.DEFENDER_COST.swordAndBoard(board[0])}</span>: attack with ${esc(board[0].name)} first; if it hits, the target's dodge against this attack has Disadvantage</label><input type="checkbox" name="swordBoard"></div>`;
   }
   if (!unarmed && (!followup || followup.riposte) && !base.ranged && base.throwType && ab.defender(actor, item, 2)) {
-    t2Opts += `<div class="form-group"><label>Shield Toss (Throw mode) <span class="fs-energy-inline">⚡ ${ab.DEFENDER_COST.shieldToss(item)}</span></label><select name="shieldToss">
-      <option value="">No</option><option value="damage">Strengthened; returns to you on a hit${ab.defender(actor, item, 4) ? " (or Bounce)" : ""}</option>
-      <option value="guard">No damage: on a hit, it Blocks the next attack against that target</option></select></div>
+    t2Opts += `<div class="form-group"><label>Shield Toss (Throw mode) <span class="fs-energy-inline">⚡ ${ab.DEFENDER_COST.shieldToss(item)}</span></label><input type="checkbox" name="shieldToss"></div>
+      <div class="form-group"><label>&nbsp;&nbsp;On a hit: returns to you${ab.defender(actor, item, 4) ? " (or Bounce)" : ""}</label><input type="checkbox" name="tossReturn"></div>
+      <div class="form-group"><label>&nbsp;&nbsp;On a hit: no damage, Blocks the next attack against that target</label><input type="checkbox" name="tossBlock"></div>
+      <div class="form-group"><label>&nbsp;&nbsp;Strengthened (no effect if Blocking)</label><input type="checkbox" name="tossStrong"></div>
       ${followup?.riposte ? "" : `<div class="form-group"><label>Shield Toss paid with</label><select name="tossPay"><option value="ap">2 AP</option><option value="rp">2 RP</option></select></div>`}`;
   }
 
@@ -893,11 +896,13 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   let shieldToss = null;
   if (opts.shieldToss) {
     if (opts.mode !== "throw") return ui.notifications.warn("Shield Toss is a Thrown attack: pick the Throw mode.");
-    shieldToss = { mode: opts.shieldToss, item: item.uuid, pay: followup?.riposte || opts.tossPay === "rp" ? "rp" : "ap", bounces: 0, riposte: !!followup?.riposte };
+    const block = !!opts.tossBlock, ret = !!opts.tossReturn, strong = !!opts.tossStrong && !block;
+    if (!block && !ret && !strong) return ui.notifications.warn("Shield Toss: choose at least one of Return, Block or Strengthened.");
+    shieldToss = { mode: block ? "guard" : "damage", returns: ret, strong, item: item.uuid, pay: followup?.riposte || opts.tossPay === "rp" ? "rp" : "ap", bounces: 0, riposte: !!followup?.riposte };
     energy += ab.DEFENDER_COST.shieldToss(item);
-    if (opts.shieldToss === "damage") stacks += 1;
+    if (strong) stacks += 1;
     if (shieldToss.pay === "rp") ap = 0;
-    notes.push(`Shield Toss (${opts.shieldToss === "guard" ? "Block for the target, no damage" : "Strengthened, returns on a hit"}; 2 ${shieldToss.pay.toUpperCase()})`);
+    notes.push(`Shield Toss (${[block ? "Blocks for the target, no damage" : "", strong ? "Strengthened" : "", ret ? "returns to you" : ""].filter(Boolean).join(", ")}; 2 ${shieldToss.pay.toUpperCase()})`);
   }
   const boardItem = opts.swordBoard ? board[0] : null;
   if (boardItem) energy += ab.DEFENDER_COST.swordAndBoard(boardItem);
@@ -1034,6 +1039,10 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     shots *= 2; energy += ab.RAPID_COST.spinDown(item); notes.push(`Spin Down (${shots} shots)`);
   }
   if (speedloaded && pepper) { net += 1; notes.push("Speedloader (−1 Disadvantage)"); }
+  if (pepperLoad) {
+    if (!pepper) return ui.notifications.warn("Quickload with Pepper replaces one of the Pepper shots: pick at least 1.");
+    shots -= 1; net += 1; notes.push("Quickload replaces one Pepper shot (reloads; −1 Disadvantage)");
+  }
   if (energy && inActiveCombat(actor) && actor.system.energy.value < energy) {
     return ui.notifications.warn(`${actor.name} needs ${energy} Energy for that but has ${actor.system.energy.value}.`);
   }
@@ -1074,6 +1083,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   }
   if (shieldToss?.pay === "rp" && !shieldToss.riposte && !(await spendPoints(actor, "rp", 2, `Shield Toss with ${item.name}`))) return;
   if (!(await spendAP(actor, ap, `attacking with ${item.name}`))) return;
+  if (pepperLoad && !(await loadWeapon(actor, item))) return;
   const rpPaid = followup?.riposte ? (shieldToss ? 2 : p.ap) : ["flurry", "mark", "palisade"].includes(followup?.kind) ? p.ap : shieldToss?.pay === "rp" ? 2 : 0;
   if (energy && !(await spendEnergy(actor, energy, notes.filter(n => /Whirlwind|Remise|Perfect/.test(n)).join(", ") || "that"))) return;
   if (rooted && inActiveCombat(actor)) await actor.setFlag("flowstate", "rootedTurn", turnKey());
@@ -2481,16 +2491,17 @@ export async function delta(actor, key) {
  * Quickload (Rapid T1): attacking with an empty Rapid weapon can instead spend the attack's AP to reload instantly.
  * Speedloader (T5): pay Energy to reload and still fire. Returns "speed" to go on with the attack, else "done"/null.
  */
-async function quickload(actor, item) {
+async function quickload(actor, item, pepperOk = false) {
   const p = item.system.profile;
   const speed = ab.rapid(actor, item, 5);
   const cost = ab.RAPID_COST.speedloader(item);
   const choice = await DialogV2().wait({
     window: { title: `${item.name} is empty` },
     content: `<p><strong>${esc(item.name)}</strong> is out of ammo.</p>
-      <p class="hint">Quickload: spend the attack's ${p.ap} AP to reload instantly (no attack).${speed ? ` Speedloader: ${cost} Energy to reload and fire as normal (a Pepper attack has one less Disadvantage).` : ""}</p>`,
+      <p class="hint">Quickload: spend the attack's ${p.ap} AP to reload instantly (no attack)${pepperOk ? ", or replace one Pepper shot with the reload and fire the rest (one less Disadvantage)" : ""}.${speed ? ` Speedloader: ${cost} Energy to reload and fire as normal (a Pepper attack has one less Disadvantage).` : ""}</p>`,
     buttons: [
       { action: "quick", label: `Quickload (${p.ap} AP)`, icon: "fa-solid fa-rotate", default: true },
+      ...(pepperOk ? [{ action: "pepper", label: "Quickload as a Pepper shot", icon: "fa-solid fa-arrows-rotate" }] : []),
       ...(speed ? [{ action: "speed", label: `Speedloader (⚡ ${cost})`, icon: "fa-solid fa-bolt" }] : []),
       { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }
     ],
@@ -2502,6 +2513,7 @@ async function quickload(actor, item) {
     await post(actor, { title: `${esc(actor.name)} — Quickload`, body: `<div class="fs-result">${esc(item.name)} is reloaded (${p.ap} AP, no attack).</div>` });
     return "done";
   }
+  if (choice === "pepper") return "pepper";
   if (choice === "speed") {
     if (inActiveCombat(actor) && actor.system.energy.value < cost) { ui.notifications.warn(`${actor.name} needs ${cost} Energy for Speedloader.`); return null; }
     if (!(await spendEnergy(actor, cost, "Speedloader"))) return null;
@@ -4645,21 +4657,23 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
       await setStatus(target, "prone", true);
     }
   }
-  // Shield Toss (Defender T2): returns on a hit (or Bounces, T4), guards the target, or lands by them on a miss.
+  // Shield Toss (Defender T2): returns to you (or Bounces, T4), Blocks for the target (no damage), and otherwise lands by the target.
   if (o.shieldToss && !o.breakFree) {
     const shield = await fromUuid(o.shieldToss.item);
-    if (!result.hit) {
-      extra.push(`<div class="fs-notes">${esc(shield?.name ?? "The shield")} misses and lands by ${esc(target.name)}.</div>`);
-      if (shield && attacker) await requestGM("dropItem", { actor: attacker.uuid, item: shield.uuid, near: target.uuid });
-    } else if (o.shieldToss.mode === "guard") {
+    const sname = esc(shield?.name ?? "The shield");
+    const guards = o.shieldToss.mode === "guard", returns = !!o.shieldToss.returns;
+    if (result.hit && guards) {
       await setActorFlag(target, "shieldGuard", { blocker: attacker.uuid, item: o.shieldToss.item });
-      extra.push(`<div class="fs-result">${esc(shield?.name ?? "The shield")} guards ${esc(target.name)}: ${esc(attacker.name)} can Block the next attack against them (no range needed), then it returns.</div>`);
-    } else {
-      extra.push(`<div class="fs-notes">${esc(shield?.name ?? "The shield")} returns to ${esc(attacker.name)}${ab.defender(attacker, shield, 4) ? " unless it Bounces" : ""}.</div>`);
+      extra.push(`<div class="fs-result">${sname} guards ${esc(target.name)}: ${esc(attacker.name)} can Block the next attack against them (no range needed), then it returns.</div>`);
+    } else if (result.hit && returns) {
+      extra.push(`<div class="fs-notes">${sname} returns to ${esc(attacker.name)}${ab.defender(attacker, shield, 4) ? " unless it Bounces" : ""}.</div>`);
       if (shield && ab.defender(attacker, shield, 4)) {
         extra.push(`<div class="fs-brawl-row fs-bounce-row" data-role="attacker" data-owner="${attacker.uuid}">
           <button type="button" class="fs-bounce" data-tooltip="Defender T4: target another creature within throw range of ${esc(target.name)}; the attack has ${(o.shieldToss.bounces ?? 0) + 1}× Disadvantage"><i class="fa-solid fa-arrow-turn-up"></i> Bounce (target the next creature first)</button></div>`);
       }
+    } else {
+      extra.push(`<div class="fs-notes">${sname} ${result.hit ? "lands" : "misses and lands"} by ${esc(target.name)}.</div>`);
+      if (shield && attacker) await requestGM("dropItem", { actor: attacker.uuid, item: shield.uuid, near: target.uuid });
     }
   }
   // Brawling T4 Kick Out: a hit knocks the target prone (no more than one size larger than you).
@@ -5082,10 +5096,10 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   let reachRow = "";
   const reachWeapon = o.reachItem ? await fromUuid(o.reachItem) : null;
   if (reachWeapon && outcome.toHp > 0) {
-    const regen = ab.statMinOf(target, "con") + ab.statMinOf(target, "will") + ab.statMinOf(target, "build");
+    const halfPain = Math.floor((target.system.hp?.pain ?? 0) / 2);
     reachRow = `<div class="fs-brawl-row fs-reach-row" data-role="attacker" data-owner="${attacker.uuid}">
       ${o.pierce ? `<button type="button" class="fs-twist" data-tooltip="Reach T4: add your Pierce (${o.pierce}) as direct damage"><i class="fa-solid fa-rotate"></i> Twist +${o.pierce} (⚡ ${ab.REACH_COST.twist(reachWeapon)})</button>` : ""}
-      ${ab.reach(attacker, reachWeapon, 5) ? `<button type="button" class="fs-impale" data-tooltip="Reach T5: needs more direct damage than ${esc(target.name)}'s HP Regen (${regen}); grapples them on your weapon"><i class="fa-solid fa-thumbtack"></i> Impale (⚡ ${ab.REACH_COST.impale(reachWeapon)})</button>` : ""}</div>`;
+      ${ab.reach(attacker, reachWeapon, 5) ? `<button type="button" class="fs-impale" data-tooltip="Reach T5: needs more direct damage than half of ${esc(target.name)}'s Pain Threshold (${halfPain}); grapples them on your weapon"><i class="fa-solid fa-thumbtack"></i> Impale (⚡ ${ab.REACH_COST.impale(reachWeapon)})</button>` : ""}</div>`;
   }
   await post(attacker, {
     title: `${esc(o.label || "Attack")} — Damage to ${esc(target.name)}`,
@@ -5128,14 +5142,14 @@ export async function reachFinisher(damageMessage, kind) {
     return post(attacker, { title: `${esc(attacker.name)} — Twist`, body: `<div class="fs-notes">${cost} Energy · +${amount} direct damage (Pierce)</div>${body}`,
       flags: { flowstate: { reachOf: `${damageMessage.id}:twist` } } });
   }
-  const regen = ab.statMinOf(target, "con") + ab.statMinOf(target, "will") + ab.statMinOf(target, "build");
+  const halfPain = Math.floor((target.system.hp?.pain ?? 0) / 2);
   const dealt = (d.toHp ?? 0) + (twisted ? (o.pierce ?? 0) : 0);
-  if (dealt <= regen) return ui.notifications.warn(`Impale needs more direct damage (${dealt}) than ${target.name}'s HP Regen (${regen}).`);
+  if (dealt <= halfPain) return ui.notifications.warn(`Impale needs more direct damage (${dealt}) than half of ${target.name}'s Pain Threshold (${halfPain}).`);
   const cost = ab.REACH_COST.impale(weapon);
   if (!(await spendEnergy(attacker, cost, "Impale"))) return;
   await setGrapple(target, attacker.uuid);
   await setActorFlag(target, "grappleWeapon", weapon.uuid);
-  return post(attacker, { title: `${esc(attacker.name)} — Impale`, body: `<div class="fs-result"><strong>${esc(target.name)} is impaled</strong> on ${esc(weapon.name)} (grappled). ${esc(weapon.name)} can't attack while they're held.</div><div class="fs-notes">${cost} Energy · ${dealt} direct damage > HP Regen ${regen}</div>`,
+  return post(attacker, { title: `${esc(attacker.name)} — Impale`, body: `<div class="fs-result"><strong>${esc(target.name)} is impaled</strong> on ${esc(weapon.name)} (grappled). ${esc(weapon.name)} can't attack while they're held.</div><div class="fs-notes">${cost} Energy · ${dealt} direct damage > half Pain Threshold ${halfPain}</div>`,
     flags: { flowstate: { reachOf: `${damageMessage.id}:impale` } } });
 }
 

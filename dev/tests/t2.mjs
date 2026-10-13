@@ -57,7 +57,7 @@ let e0 = hero.system.energy.value;
 seq = [20]; await attack(maul, { heave: true });
 let o = last("attack").flags.flowstate.attack.opts;
 ok(o.stacks === maul.system.profile.stacks + 1 && o.bash === Math.floor(maul.system.profile.capped / 4), "Strengthened and Bash");
-ok(e0 - hero.system.energy.value === hero.system.derived.effective.str.value, "costs the STR stat");
+ok(e0 - hero.system.energy.value === 2 * hero.system.derived.effective.str.min, "costs double the STR min (Heave!)");
 
 console.log("== Rend + Shred on armor (Striker T1/T3/T5)");
 maul.system.equipped = true;
@@ -158,7 +158,7 @@ ok(hero.getFlag("flowstate", "rootedTurn") === actions.turnKey() && e0 === hero.
 console.log("== Shield Toss (Defender T2) misses → lands by the target");
 const buckler = mkWeapon(hero, "Buckler", { weaponType: "defender", weight: "light", material: "hardwood", grade: 3 });
 hero.system.ap.value = 6; hero.system.rp.value = 6;
-seq = [3]; await attack(buckler, { mode: "throw", shieldToss: "damage", tossPay: "rp" });
+seq = [3]; await attack(buckler, { mode: "throw", shieldToss: true, tossReturn: true, tossStrong: true, tossPay: "rp" });
 ok(hero.system.rp.value === 4 && hero.items.includes(buckler), "paid 2 RP, still in hand");
 dialog = () => ({ net: 0 }); seq = [10, 10]; await actions.defend(last("attack"), 0, "dodge");
 ok(/misses and lands/.test(last("defense").content), "miss → lands by the target (GM drop requested)");

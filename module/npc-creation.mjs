@@ -3,10 +3,9 @@
  * and gets an unlinked NPC. Pure functions (no Foundry globals) so they're unit-tested; the wizard and the final check use the same logic.
  */
 import { STATS, deriveCharacter } from "./rules.mjs";
-import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, WEAPON_MATERIALS, ARMOR_MATERIALS, weaponProfile, armorProfile } from "./martial.mjs";
+import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
-import * as skills from "./skills.mjs";
 import * as creation from "./creation.mjs";
 
 export const NPC_DEFAULTS = { statPoints: 90, ratio: 3, skillManual: false, skillPoints: 30, grade: 1, size: 3, disposition: -1, ammo: creation.STARTING_AMMO };

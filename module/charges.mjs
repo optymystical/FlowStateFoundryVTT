@@ -199,7 +199,6 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
     const total = roll.total;
     const opt = c => {
       const d = c.d, name = CHARGES[d.charge].label;
-      const preBox = c.d.charge === "decree" || c.d.charge === "mandate" ? (pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> Preordained (${d.sign === "minus" ? "−" : "+"}${pre}, ⚡ ${minOf(caster, "pon")})</label>` : "") : "";
       if (d.charge === "decree") {
         const myMax = type === "attack" ? caster.system.derived.attackDie : type === "dodge" ? 2 * caster.system.derived.dodgeDie : top;
         const base = half(d.enhanced ? myMax : top);
@@ -221,7 +220,6 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
     let n = roll.total;
     const lines = [];
     const rep = replace.find(c => c.effect.id === ans.replace);
-    let preOn = 0;
     const withPre = c => ans[`p:${c.effect.id}`] && pre !== null ? sign(c.d) * pre : 0;
     const payPre = async c => { if (!ans[`p:${c.effect.id}`] || pre === null) return false; return pay(caster, { energy: minOf(caster, "pon") }, "Preordained"); };
     if (rep) {
@@ -242,7 +240,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
         if (d.charge === "larceny") await setActorFlag(caster, "stolenRoll", { total: roll.total, type, original: roll.total, from: actor.name, key: turnKey() ?? "ooc" });
         // Enhanced Larceny steals the action itself: for up to a minute the thief can make a copy of that exact attack (their RP, the victim's dice).
         if (d.charge === "larceny" && d.enhanced && type === "attack" && attackOpts) {
-          const { targetActors, ...saved } = attackOpts;
+          const saved = { ...attackOpts }; delete saved.targetActors;
           await setActorFlag(caster, "stolenAction", { from: actor.uuid, fromName: actor.name, label: attackOpts.label || "Attack", opts: saved, cost: Math.max(0, Number(attackOpts.apCost) || 0), until: minuteFromNow() });
           stolenAction = true;
         }
@@ -256,7 +254,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
     for (const c of mand) {
       if (!ans[`m:${c.effect.id}`]) continue;
       const p = (await payPre(c)) ? withPre(c) : 0;
-      n += sgn(c.d) + p; preOn += p;
+      n += sgn(c.d) + p;
       lines.push(`Mandate: the result ${sgn(c.d) > 0 ? "+" : "−"}${bs(c.d, 1)}${p ? `, ${p > 0 ? "+" : "−"}${Math.abs(p)} Preordained` : ""} → <strong>${Math.max(0, n)}</strong>.`);
       used.push(c);
     }
@@ -302,7 +300,6 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
     if (tn?.id !== "mental-order-dream:balance") continue;
     const cur = outcomeOf(atk.total, dodge.total);
     const m = tn.mult ?? 1;
-    const wantUp = who === attacker ? 1 : -1;                                   // the attacker wants a higher result, the defender a lower attack/higher dodge
     const tryOpt = (side, delta) => outcomeOf(atk.total + (side === "atk" ? delta : 0), dodge.total + (side === "dodge" ? delta : 0));
     const myKey = who === attacker ? "atk" : "dodge", oppKey = who === attacker ? "dodge" : "atk";
     const optMine = tryOpt(myKey, m), optOpp = tryOpt(oppKey, -m);

@@ -95,10 +95,6 @@ export function animationStats({ points, category, size, stats = null }) {
 export function makeRarities({ mk2 = false, mk3 = false }) {
   return mk2 ? (mk3 ? ["common", "uncommon", "rare"] : ["common", "uncommon"]) : ["common"];
 }
-/** Non-Archetypal objects: Powder, Liquid or Soft; Hard with Mk2; Dense with Mk2 + Mk3. */
-export function makeObjectKinds({ mk2 = false, mk3 = false }) {
-  return ["powder", "liquid", "soft", ...(mk2 ? ["hard"] : []), ...(mk2 && mk3 ? ["dense"] : [])];
-}
 /** Make Mk3 needs Make Mk2 on the same Spell. */
 export const mk3Needs = ({ mk2, mk3 }) => !mk3 || mk2;
 

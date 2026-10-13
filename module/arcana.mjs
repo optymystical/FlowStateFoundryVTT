@@ -6,8 +6,7 @@
 import * as fx from "./spellfx.mjs";
 import { COMBO_ILLUSION } from "./combos.mjs";
 import {
-  post, requestGM, putSpellEffect, spellEffects, performAttack, changeEffect, registerArcana, attackerToken, tokenDistance, setActorFlag, pickSceneTarget, spendPoints,
-  requestDamage, GM_ACTIONS, damageOutcome, findDefense, findCancel, castStacks
+  post, requestGM, putSpellEffect, spellEffects, performAttack, changeEffect, registerArcana, attackerToken, tokenDistance, pickSceneTarget, spendPoints, requestDamage, GM_ACTIONS, findDefense, findCancel, castStacks
 } from "./actions.mjs";
 import * as areas from "./areas.mjs";
 import * as terrain from "./terrain.mjs";

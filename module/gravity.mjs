@@ -3,7 +3,7 @@
  * growing each round up to Terminal Velocity), resolved through the Force rules; Lift can hold them up. A creature generating its own Lift that takes
  * a big hit has to spend 3 RP to stabilize or it begins falling. There is no elevation on the scene, so the table says how far the ground is.
  */
-import { post, setStatus, setActorFlag, requestDamage, damageOutcome, damageOutcomeHTML, forceCap, spendPoints, inActiveCombat, canSpend, registerFlight } from "./actions.mjs";
+import { post, setStatus, setActorFlag, requestDamage, damageOutcome, damageOutcomeHTML, forceCap, spendPoints, canSpend, registerFlight } from "./actions.mjs";
 import { gravityForce, fallFeet, liftBand, forceDamage, TERMINAL_ROUNDS } from "./rules.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);

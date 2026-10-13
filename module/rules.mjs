@@ -220,8 +220,6 @@ export const STAIN_VARIANTS = {
   frozen: { label: "Frozen Stain", ap: 6 }, electric: { label: "Electric Stain", ap: null }
 };
 const SPECIAL_STAINS = ["searing", "frozen", "electric"];
-export const CONDITION_KEYS = ["ignite", ...Object.keys(STAIN_VARIANTS)];
-
 /** Ignite counts Searing Stains too ("both Ignite and Stain stacks for all purposes"). */
 export const igniteTotal = c => (c?.ignite ?? 0) + (c?.searing ?? 0);
 /** Every kind of Stain stack. */

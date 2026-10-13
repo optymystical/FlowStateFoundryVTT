@@ -2,7 +2,7 @@ import { getCurrencies } from "./currency.mjs";
 import { currencyRows } from "./currency-rules.mjs";
 import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS, OBJECT_DENSITY } from "./rules.mjs";
 import {
-  WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, TAGS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
+  WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
 } from "./martial.mjs";
 import * as reactionRules from "./reactions.mjs";
 import * as actions from "./actions.mjs";
@@ -118,11 +118,6 @@ export function withEnergy(entry, ctx) {
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2, ItemSheetV2 } = foundry.applications.sheets;
-
-/** "Fast+, Pierce" style tag list from a profile. */
-export function tagList(tags = {}) {
-  return Object.entries(tags).map(([k, v]) => `${TAGS[k] ?? k}${v === 2 ? "+" : ""}`).join(", ");
-}
 
 /** Tiers whose rules are automated, with where to find them (shown as a badge in the Skills tab). */
 const AUTOMATED = {
@@ -386,7 +381,6 @@ function coreChoices(trees) {
 const collapsedSections = new Map();
 
 /** Everything the character can do right now, grouped, with costs. Each entry reuses a sheet action. */
-const mentalTenet = actor => actor.system?.icon?.system?.tenet || "";
 export function buildActionList(actor, weapons, stats) {
   // Only things that can be clicked to activate belong here: passives, reactions, and info rows are left out.
   return actionGroups(actor, weapons, stats)

@@ -1,8 +1,7 @@
 import {
-  STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth,
-  objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, igniteTotal, stainTotal, STAIN_VARIANTS
+  STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS
 } from "./rules.mjs";
-import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, soak, weaponProfile, effectiveLimit, DAMAGE_CATEGORY } from "./martial.mjs";
+import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, DAMAGE_CATEGORY } from "./martial.mjs";
 import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
@@ -463,28 +462,6 @@ export function checkRange(actor, maxRange, what, tokens = null, from = null) {
 /* -------------------------------------------- */
 /*  Attacks                                     */
 /* -------------------------------------------- */
-
-const damageTypeOptions = Object.entries(DAMAGE_TYPES)
-  .map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
-
-/** Generic attack (no weapon): manual damage formula and type. */
-export async function rollAttack(actor) {
-  if (cantAct(actor, "attack")) return;
-  const opts = await optionsDialog("Attack", `
-    <div class="form-group"><label>Attack name</label><input type="text" name="label" value="Attack"></div>
-    ${netField()}
-    <div class="form-group"><label>Melee</label><input type="checkbox" name="melee"></div>
-    <div class="form-group"><label>Push instead of damage</label><input type="checkbox" name="push"></div>
-    <div class="form-group"><label>Damage formula</label><input type="text" name="damage" placeholder="e.g. 3d12+4"></div>
-    <div class="form-group"><label>Damage type</label><select name="type">${damageTypeOptions}</select></div>
-    ${stacksField("stacks", "Strengthened (+) / Weakened (−) stacks")}
-    <div class="form-group"><label>AP cost</label><input type="number" name="ap" value="2" min="0" step="1"></div>
-    <p class="hint">Target tokens first. Size and Arcane modifiers are applied automatically.</p>`);
-  if (!opts) return;
-  if (opts.melee && !checkRange(actor, actor.system.derived.size.melee, "a melee attack")) return;
-  if (!(await spendAP(actor, opts.ap, "an attack"))) return;
-  return performAttack(actor, { ...opts, physical: opts.type === "physical" || opts.push });
-}
 
 /**
  * Attack with a Martial weapon item. Dialog adapts to the weapon (range bands, throwing, Area, Pepper).
@@ -1766,7 +1743,6 @@ async function startExchange(actor, opts, targets) {
  */
 function blockersFor(attacker, target) {
   const out = new Map();
-  const guard = target.getFlag?.("flowstate", "shieldGuard");
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
     const a = tok.actor;
@@ -4017,7 +3993,6 @@ async function flyThrown(thrown, dir, feet) {
   const tok = thrown.getActiveTokens?.()[0];
   const dims = globalThis.canvas?.dimensions;
   if (!tok || !dims || !feet) return { moved: false, traveled: feet, wall: false, damage: 0 };
-  const ppf = dims.size / dims.distance;
   const start = tok.center;
   // Emplace barriers are objects: a creature thrown through one damages it and itself (3 × the untraveled feet each, capped by what the
   // other has left), is stopped by it if it holds, and carries on with the leftover distance if it breaks.
@@ -4099,13 +4074,6 @@ export function findShifts(attackMessageId, index) {
     const f = m.getFlag("flowstate", "shift");
     return f?.attackMessage === attackMessageId && f.index === index;
   }).map(m => m.getFlag("flowstate", "shift"));
-}
-
-export function findShift(attackMessageId, index) {
-  return game.messages.find(m => {
-    const f = m.getFlag("flowstate", "shift");
-    return f?.attackMessage === attackMessageId && f.index === index;
-  });
 }
 
 /** Net Advantage for re-rolling this attack now: the original, minus Close Quarters (2) and Shift (1) if used. */

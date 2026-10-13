@@ -4,9 +4,8 @@
  * through `registerFoci()` (actions.mjs). A Foci's effects only work while it's attuned and unbroken, for spells cast through it.
  */
 import * as spells from "./spells.mjs";
-import { FOCI_TYPES } from "./magic.mjs";
 import { igniteTotal } from "./rules.mjs";
-import { post, requestGM, turnKey, setActorFlag, spendEnergy, giveStacks, registerFoci, inActiveCombat, attackerToken } from "./actions.mjs";
+import { post, requestGM, turnKey, setActorFlag, spendEnergy, giveStacks, registerFoci } from "./actions.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const stamp = () => (globalThis.game ? turnKey() : null) ?? "ooc";

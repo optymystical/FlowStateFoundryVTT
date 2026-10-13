@@ -4,7 +4,6 @@
  * The Manifest's attack roll is made against yourself; on a hit a "Create" button on the follow-up card asks what to make.
  */
 import { post, requestGM, putSpellEffect, spellEffects, attackerToken, setActorFlag } from "./actions.mjs";
-import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
 import * as conjure from "./conjure.mjs";
 import * as mental from "./mental.mjs";

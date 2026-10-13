@@ -11,8 +11,7 @@
  */
 import * as fx from "./spellfx.mjs";
 import {
-  post, requestGM, requestDamage, damageOutcome, putSpellEffect, spellEffects, spellForce, giveStacks, pickSceneTarget, performAttack, attackerToken,
-  tokenDistance, changeEffect, knockbackRow, exhaustionNet, magicDisNet, registerAfflictions, setActorFlag
+  post, requestGM, requestDamage, damageOutcome, putSpellEffect, spellEffects, spellForce, giveStacks, pickSceneTarget, performAttack, attackerToken, changeEffect, knockbackRow, exhaustionNet, magicDisNet, registerAfflictions, setActorFlag
 } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES, STATS } from "./rules.mjs";
@@ -106,7 +105,6 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
   const ritualOf = sp.ritualOf ?? null;
   const power = Math.max(1, sp.power);
   const base = { caster: attacker.uuid, power, ritualOf, crit: result.critStacks ?? 0 };
-  const lines = [];
   if (a.kind === "poison" || a.kind === "venomCharm" || a.kind === "venomHex") {
     const d = poisonData(a, sp, base, ch);
     await putSpellEffect(target, { kind: "coat", caster: attacker.uuid, ritualOf, name: `${profile.name} coating`, poison: d,

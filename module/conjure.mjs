@@ -259,7 +259,7 @@ export function validate(ctx, spec) {
     }
   }
   if (!R.mk3Needs({ mk2: !!ctx.mods["make mk2"], mk3: !!ctx.mods["make mk3"] })) errors.push("Make Mk3 needs Make Mk2 on the same Spell.");
-  for (const [i, t] of ctx.arms.entries()) if (!spec.arms?.[i]) errors.push(`Choose a weapon for Arm ${i + 1}.`);
+  for (const i of ctx.arms.keys()) if (!spec.arms?.[i]) errors.push(`Choose a weapon for Arm ${i + 1}.`);
   return { ok: errors.length === 0, errors };
 }
 

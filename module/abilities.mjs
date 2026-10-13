@@ -140,10 +140,6 @@ export function balanced(actor, item, tier, weight = null) {
     && (!weight || item.system.weight === weight);
 }
 
-/** Held weapons that can use a Balanced ability of this tier. */
-export const balancedHeld = (actor, tier, weight = null) =>
-  (actor?.items ?? []).filter(i => i.type === "weapon" && i.system.held && !i.system.broken && i.system.profile?.valid && balanced(actor, i, tier, weight));
-
 /** Energy costs (Balanced Weapons tree). Slice/Slam cost double for both effects (One with your Weapon, T5). */
 export const BALANCED_COST = {
   spinCycle: item => scalingMin(item),                 // T2
@@ -201,9 +197,6 @@ export function mediumCost(actor, ability) {
   if (v === ability && medium(actor, 5)) return 0;
   return MEDIUM_COST_BASE[ability](actor);
 }
-/** Brace reduces the damage by your Constitution stat. */
-export const braceReduction = actor => conStat(actor);
-
 /* -------------------------------------------- */
 /*  Rapid Weapons                               */
 /* -------------------------------------------- */

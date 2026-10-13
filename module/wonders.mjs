@@ -5,7 +5,7 @@
  * effects on the target that turn into the real effect when their turn starts (`pendingTurnStart`).
  */
 import {
-  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, performAttack, knockbackRow, setGrapple, clearSpellEffects, gridFor
+  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, knockbackRow, setGrapple, gridFor
 } from "./actions.mjs";
 import { centreDistance } from "./distance.mjs";
 import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
@@ -445,7 +445,6 @@ export function perennialActs(caster) {
     const key = `${a.uuid}:${d.mode}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    const { name, img, ...rest } = e.toObject ? { name: e.name, ...d } : { name: e.name, ...d };
     out.push({ id: "perennial", label: `Perennial: ${R.modeById(d.mode)?.name ?? "Life Mode"} on ${a.name}`, tip: "Reapply this effect instantly (no attack roll)", cost: `⚡ ${minOf(caster, "pon")}`, caster: caster.uuid, target: a.uuid, effect: { ...d, name: e.name } });
   }
   return out;
@@ -496,7 +495,6 @@ export async function useRedirect(actor) {
     ok: { label: "Redirect", callback: (event, button) => Object.fromEntries(new FormData(button.form).entries()) }, rejectClose: false });
   if (!out) return;
   const e = charges[Number(out.c)] ?? charges[0], d = e.flags.flowstate.spellEffect;
-  const net = (d.kinetic ? d.kinetic : 0);
   let r = null, hit = !!d.enhanced;
   if (!hit) { r = await roll(`1d${actor.system.derived.attackDie}`); hit = r.total >= Number(out.beat); }
   await changeEffect(e, null);
@@ -604,8 +602,6 @@ export async function consumeCharge(caster, effect) {
     if (out.damage && d.enhanced) lines.push(`The damage becomes ${Number(out.result)} ${signN > 0 ? "+" : "−"} <strong>${10 * n}</strong>${preN ? ` ${signN > 0 ? "+" : "−"} ${Math.abs(preN) * 10} (Preordained × 10)` : ""} = <strong>${Math.max(0, Number(out.result) + signN * 10 * n + preN * 10)}</strong>.`);
     else lines.push(`The result ${Number(out.result)} becomes <strong>${Number(out.result) + signN * n + preN}</strong> (${d.sign === "minus" ? "−" : "+"}${n}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
   } else if (kind === "verdict") {
-    const crit = out.was === "hit";
-    const adj = (crit ? 10 : 5) * (d.sign === "minus" ? -1 : 1);
     lines.push(`The ${out.was === "hit" ? "hit becomes a <strong>crit</strong>" : "crit becomes a <strong>regular hit</strong>"}, and the damage goes ${Number(out.dmg)} → <strong>${Math.max(0, Number(out.dmg) + (out.was === "crit" ? -5 : 5) + preN)}</strong> (${out.was === "hit" ? "+5" : "−5"}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
     if (d.enhanced) lines.push(`Also: the attack gets a stack of ${out.stack === "weak" ? "Weakened" : "Strengthened"}.`);
   } else {
@@ -647,7 +643,7 @@ export function chargeActs(c) {
 export async function runChargeAct(x, caster, target) {
   if (x.id === "ricochet") {
     const cost = Math.floor(minOf(caster, "snap") / 2);
-    const tTok = target?.getActiveTokens?.()[0], cTok = globalThis.canvas?.tokens?.placeables?.find(t => t.actor?.uuid === caster.uuid);
+    const cTok = globalThis.canvas?.tokens?.placeables?.find(t => t.actor?.uuid === caster.uuid);
     const reach = x.range === "melee" ? (caster.system.derived?.size?.melee ?? 5) : 100;
     const pool = (globalThis.canvas?.tokens?.placeables ?? []).filter(t => t.actor && t.actor.type !== "pile" && t.actor.uuid !== caster.uuid && t.actor.uuid !== target?.uuid && !t.actor.statuses?.has("dead")
       && (!cTok || globalThis.canvas?.grid) && (!cTok || mentalDistance(cTok, t) <= reach));

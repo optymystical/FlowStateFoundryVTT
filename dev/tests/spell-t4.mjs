@@ -246,7 +246,7 @@ ok2(formulas.some(f => /^2d(6|10)$/.test(f)), "…attacks with it add the Cut ef
 
 console.log("== Animate Armor/Shroud");
 clean4(); mkItem(orc, { name: "Plate", type: "armor", system: { weight: "heavy", material: "titanium", grade: 1, equipped: true } }); target(orc);
-plan = await cast("magic-animation:animate", { base: 1, [M("magic-animation:armor-shroud")]: true, conj: {} });
+plan = await cast("magic-animation:animate", { base: 1, [M("magic-animation:animate-armor-shroud")]: true, conj: {} });
 const ae = orc.effects.find(e => e.flags.flowstate.spellEffect?.kind === "animatedEquip");
 const acard = messages.find(m => m.flags?.flowstate?.conjure);
 ok2(ae && acard?.flags.flowstate.conjure.acts[0].dice === 2, "Armor/Shroud: the armor is animated; suffocate / mould buttons deal Grade × 2 (Heavy) d12 physical");

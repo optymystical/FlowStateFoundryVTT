@@ -5,12 +5,11 @@ export const BOLD = {
   "1d8 damage",
   "3d8 damage"
  ],
- "Ranged": [
-  "maximum range of 100ft"
- ],
  "Neutral": [
   "1 Alignment:",
-  "2 Alignment:",
+  "2 Alignment:"
+ ],
+ "Deepening": [
   "3 Alignment:",
   "4 Alignment:"
  ],
@@ -27,7 +26,7 @@ export const BOLD = {
   "4 health"
  ],
  "Wither": [
-  "2d10 health"
+  "1d12 health"
  ],
  "Mortal Coil": [
   "1d8"
@@ -141,7 +140,7 @@ export const BOLD = {
   "10 of the damage they dealt"
  ],
  "Crescendo": [
-  "1d10 Physical damage"
+  "1d10 physical damage"
  ],
  "Adaptive Skin": [
   "reducing all damage they take by 1",
@@ -152,7 +151,7 @@ export const BOLD = {
   "restores 5 energy"
  ],
  "Exact": [
-  "1d10 Physical damage",
+  "1d10 physical damage",
   "5 Pierce"
  ],
  "Ego": [

@@ -27,7 +27,7 @@ export const KINDS = {
 
 const wonderKind = tree => /\((Dream|Nightmare)\)\s*$/i.exec(tree.name)?.[1]?.toLowerCase() ?? null;
 
-const isTenet = e => /^Only active while attuned/i.test(e.text ?? "");
+const isTenet = e => /^Only active while/i.test(e.text ?? "");
 
 /** "Bloom: …" → { base, enhanced } (the part after "Enhanced:" is what Enhancing adds or changes). */
 function splitEnhanced(text) {

@@ -23,13 +23,14 @@ def main(src, out):
             continue
         name, head, text = clean(m.group(1)), clean(m.group(2) or ""), clean(m.group(3))
         low = name.lower()
-        if low in SCHOOLS or low == "hex":
+        if low in SCHOOLS or low in ("hex", "witchery"):
+            low = "hex" if low == "witchery" else low                       # the doc calls the Witchery bonus "Witchery" (it used to say "Hex"); the code keys it as hex
             (illusion if section == "Illusion Combos" else bonus)[low] = text
             continue
         if low.startswith("any t1/t2/t3 + "):
             generic[low.split("+")[1].strip()] = {"head": head, "text": text}
             continue
-        if low.startswith("t1/t2/t3/t4 + "):
+        if low.startswith("any t1/t2/t3/t4 + ") or low.startswith("t1/t2/t3/t4 + "):
             generic["arcanomancy"] = {"head": head, "text": text}
             continue
         parts = [p.strip() for p in low.split("+")]

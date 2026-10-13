@@ -145,7 +145,7 @@ const AUTOMATED = {
   "martial-titanic-armor": {
     1: "Giga Brace is in the Action List (Parry) while you wear Titanic armor (−2× CON).",
     2: "Bodyslam is in the Action List (Titanic Armor), with Disadvantage.",
-    3: "Harden is offered when you turn Giga Brace on.",
+    3: "Giga Harden is offered when you turn Giga Brace on.",
     4: "Trudge is in the Action List (Titanic Armor).",
     5: "Chunky: Pierce against your Titanic armor is halved (automatic)."
   },
@@ -154,7 +154,7 @@ const AUTOMATED = {
     2: "Disrupt is in the Action List: the grappled creature's next roll has Disadvantage.",
     3: "Big Hands: grapple up to one size larger, with Advantage (automatic).",
     4: "Stunlock: Disrupt is free on a Locked Down creature and covers all their rolls (automatic).",
-    5: "Slam is in the Action List while you're grappling someone."
+    5: "Living Weapon is in the Action List while you're grappling someone."
   },
   "martial-thrasher-weapons": {
     1: "Grapple is an option in a Thrasher weapon's attack dialog.",
@@ -401,7 +401,7 @@ function actionGroups(actor, weapons, stats) {
     }
     combat.push({
       label: `Attack: ${w.name}`, itemId: w.id, action: "weaponAttack", icon: "fa-solid fa-khanda",
-      detail: `${w.formula} ${w.damageType}${w.unarmed ? " (Light / Heavy)" : ""}`,
+      detail: `${w.formula} ${w.damageType}${w.unarmed ? " (Light / Heavy) · Grapple is an option in the attack dialog" : ""}`,
       cost: w.unarmed ? "2 / 3 AP" : `${w.profile.ap} AP`
     });
     if (w.canReload) combat.push({ label: `Reload ${w.name}`, detail: `Tops up to ${w.system.magazine ?? 1} (${w.system.rounds ?? 0} loaded)${actions.ammoRequired() ? ` · ${actions.ammoCount(actor, w.system.ammoType)} ${actions.ammoLabel(w.system.ammoType)} left` : ""}`,
@@ -440,9 +440,6 @@ function actionGroups(actor, weapons, stats) {
   const martial = [];
   const mt = actions.theoryTier(actor);
   const statuses = actor.statuses ?? new Set();
-  const unarmed = weapons.find(w => w.unarmed && w.system.held);
-  if (unarmed) martial.push({ label: "Grapple", detail: "Unarmed attack · Light: grapple only · Heavy: damage + grapple · your size or smaller",
-    cost: "2 / 3 AP", action: "weaponAttack", itemId: unarmed.id, grapple: true, icon: "fa-solid fa-hands-holding" });
   if (statuses.has("grappled")) martial.push({ label: "Break Free", detail: "Attack roll vs the grappler's dodge", cost: "2 AP",
     action: "martial", op: "breakFree", icon: "fa-solid fa-link-slash" });
   const victims = actions.grappledBy(actor);
@@ -612,7 +609,7 @@ function actionGroups(actor, weapons, stats) {
     energy: `${ab.GRAPPLING_COST.lockDown(held[0])} Energy`, energyTip: "grappled target's STR stat", action: "martial", op: "lockDown", icon: "fa-solid fa-lock" });
   if (ab.grappling(actor, 2) && held.length) grappleRows.push({ label: "Disrupt", detail: "Your grappled creature's next roll has Disadvantage (every roll while Locked Down, with Stunlock)", cost: "Any time",
     energy: `${ab.GRAPPLING_COST.disrupt(held[0])} Energy`, energyTip: "grappled target's STR min", action: "martial", op: "disrupt", icon: "fa-solid fa-hand-back-fist" });
-  if (ab.grappling(actor, 5) && held.length) grappleRows.push({ label: "Slam", detail: `Swing a grappled creature at a target: Force ${10 * (sys.derived.effective.str.value ?? 0)} at 0 ft`, cost: "2 / 3 AP",
+  if (ab.grappling(actor, 5) && held.length) grappleRows.push({ label: "Living Weapon", detail: `Swing a grappled creature at a target: Force ${10 * (sys.derived.effective.str.value ?? 0)} at 0 ft`, cost: "2 / 3 AP",
     action: "martial", op: "slam", icon: "fa-solid fa-person-falling-burst" });
   const curvedRows = [];
   if (ab.treeTier(actor, ab.CURVED) >= 4 && ab.curvedHeld(actor, 4).length) {
@@ -710,7 +707,6 @@ function actionGroups(actor, weapons, stats) {
 
   return [
     { key: "act-combat", name: "Combat", actions: combat },
-    ...(reactionRows.length ? [{ key: "act-reactions", name: "Reactions", actions: reactionRows }] : []),
     ...(mentalRows.length ? [{ key: "act-mental", name: "Mental", actions: mentalRows }] : []),
     ...(magicRows.length ? [{ key: "act-magic", name: "Magic", actions: magicRows }] : []),
     ...(shroudRows.length ? [{ key: "act-shroud", name: "Shroud", actions: shroudRows }] : []),
@@ -728,6 +724,7 @@ function actionGroups(actor, weapons, stats) {
     ...(rapidRows.length ? [{ key: "act-rapid", name: "Rapid Weapons", actions: rapidRows }] : []),
     ...(swiftRows.length ? [{ key: "act-swift", name: "Swift Weapons", actions: swiftRows }] : []),
     ...(martial.length ? [{ key: "act-martial", name: "Martial Theory", actions: martial }] : []),
+    ...(reactionRows.length ? [{ key: "act-reactions", name: "Reactions", actions: reactionRows }] : []),
     { key: "act-checks", name: "Checks", actions: checks }
   ];
 }

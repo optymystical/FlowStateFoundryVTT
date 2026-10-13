@@ -191,7 +191,7 @@ function describe({ actor, plan, profile, mods, mult }) {
   const rarities = R.makeRarities({ mk2: !!mods["make mk2"], mk3: !!mods["make mk3"] });
   return { cj, actor, mult, gross: plan.gross ?? plan.threshold, mods, arms, skin: skin?.threshold ?? 0, expanded, rarities, complexity: mods.complexity ?? 0,
     armory: mods.armory ?? 0, pool: scale(cj.instant ? 10 * mult : (cj.kind === "summon" || cj.summonStats) ? R.summonPool(mult) : R.formPool(mult)), bodyMin: scale(cj.instant ? 10 * mult : R.formPool(mult)), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
-    equipment: !!(mods["weapon/foci"] || mods["armor/shroud"]), combo: plan.combo };
+    equipment: !!(mods["animate weapon/icon/foci"] || mods["animate armor/shroud"]), combo: plan.combo };
 }
 
 function dialogHTML(ctx, spec) {
@@ -464,7 +464,7 @@ export async function makeMiss({ attacker, target, sp }) {
 /** Animate Weapon/Foci and Animate Armor/Shroud (the Replacement Mods): a card of what the animated equipment can do. */
 async function animateEquipment({ actor, plan, mods, targets, ritualOf }) {
   const tgt = targets?.[0]?.actor ?? actor;
-  const armor = !!mods["armor/shroud"];
+  const armor = !!mods["animate armor/shroud"];
   const pool = armor ? [tgt.system.armor, tgt.system.shroud].filter(Boolean) : (tgt.items ?? []).filter(i => (i.type === "weapon" && !i.system.profile?.unarmed) || i.type === "foci");
   const picks = pool.filter(i => (i.system.grade ?? 9) <= 2);
   if (!picks.length) { ui.notifications.warn(`${tgt.name} has no ${armor ? "armor or Shroud" : "weapon or Foci"} of Grade 2 or lower to animate.`); return 0; }
@@ -512,7 +512,7 @@ export async function act(message, i = 0) {
 export async function resolve({ actor, plan, profile, spec, mods, ritualOf, targets, values }) {
   const cj = profile.conjure;
   let made;
-  if (cj.kind === "animate" && (mods["weapon/foci"] || mods["armor/shroud"])) made = await animateEquipment({ actor, plan, mods, targets, ritualOf });
+  if (cj.kind === "animate" && (mods["animate weapon/icon/foci"] || mods["animate armor/shroud"])) made = await animateEquipment({ actor, plan, mods, targets, ritualOf });
   else if (cj.kind === "summon") made = await makeSummon({ actor, plan, profile, spec, mods, ritualOf, targets, values });
   else if (cj.kind === "animate") made = await makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targets, values });
   else made = await makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets, values });

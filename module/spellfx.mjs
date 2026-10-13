@@ -341,7 +341,7 @@ export const penalizedDie = (die, penalty) => Math.max(1, die - Math.max(0, pena
 /** Spell Mods whose effects are automated (everything else only costs Threshold, and the card tells the GM to resolve it). */
 export const AUTOMATED_MODS = new Set([
   "magic-theory:pinpoint", "magic-theory:react",
-  "magic-slashing:bleed", "magic-slashing:gash", "magic-slashing:cleave", "magic-slashing:chop",
+  "magic-slashing:bleed", "magic-slashing:gash", "magic-slashing:rend", "magic-slashing:chop",
   "magic-piercing:exploit", "magic-piercing:pierce", "magic-piercing:setup", "magic-piercing:weakpoint",
   "magic-crushing:crush", "magic-crushing:bash", "magic-crushing:beatdown", "magic-crushing:telegraph",
   "magic-gravity:burden", "magic-gravity:lighten", "magic-gravity:personal-repulsion", "magic-gravity:personal-well", "magic-gravity:hold", "magic-gravity:gravity-field",
@@ -358,7 +358,7 @@ export const AUTOMATED_MODS = new Set([
   "magic-witchery:linger", "magic-witchery:fester", "magic-witchery:unravel", "magic-witchery:consume",
   "magic-build-arcana:layered", "magic-build-arcana:reactive", "magic-build-arcana:reform", "magic-build-arcana:projection",
   "magic-summoning:arm", "magic-summoning:skin", "magic-summoning:sense-swap", "magic-summoning:limited-autonomy", "magic-creation:armory", "magic-creation:make-mk2", "magic-creation:make-mk3", "magic-creation:complexity",
-  "magic-animation:weapon-foci", "magic-animation:armor-shroud", "magic-animation:expanded-animation", "magic-animation:mixed-animations",
+  "magic-animation:animate-weapon-icon-foci", "magic-animation:animate-armor-shroud", "magic-animation:expanded-animation", "magic-animation:mixed-animations",
   "magic-restoration-arcana:painless", "magic-restoration-arcana:regenerate", "magic-restoration-arcana:delay", "magic-restoration-arcana:resuscitate",
   "magic-arcanomancy:absorb", "magic-arcanomancy:amplify", "magic-arcanomancy:rip",
   "magic-geomancy:mend", "magic-geomancy:toss", "magic-geomancy:tier-up", "magic-geomancy:muddy", "magic-geomancy:harden", "magic-geomancy:tier-up-again",

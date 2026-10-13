@@ -2000,11 +2000,11 @@ export async function startParry(actor, key) {
     if (!info) return ui.notifications.warn(`${actor.name} needs Brace for the armor they're wearing.`);
     let harden = false;
     if (info.harden !== null) {
-      const opts = await optionsDialog(info.name, `<div class="form-group"><label>Harden (+${info.harden} Energy): incoming attacks are also Weakened (before the reduction)</label><input type="checkbox" name="harden"></div>`, "Brace");
+      const opts = await optionsDialog(info.name, `<div class="form-group"><label>${info.name === "Giga Brace" ? "Giga Harden" : "Harden"} (+${info.harden} Energy): incoming attacks are also Weakened (before the reduction)</label><input type="checkbox" name="harden"></div>`, "Brace");
       if (!opts) return;
       harden = !!opts.harden;
     }
-    cost = info.cost + (harden ? info.harden : 0); label = `${info.name}${harden ? " + Harden" : ""}`; entry = { style: "brace", harden };
+    cost = info.cost + (harden ? info.harden : 0); label = `${info.name}${harden ? (info.name === "Giga Brace" ? " + Giga Harden" : " + Harden") : ""}`; entry = { style: "brace", harden };
   } else {
     const item = actor.items.get(key);
     if (theoryTier(actor) < 1) return ui.notifications.warn("Parry requires Martial Theory Tier 1.");
@@ -3136,26 +3136,26 @@ export async function disrupt(actor) {
 }
 
 /**
- * Slam (Grappling T5): swing a grappled creature at a target (3 AP, an attack roll). On a hit, Force 10 × your STR drives it into
+ * Living Weapon (Grappling T5): swing a grappled creature at a target (3 AP, an attack roll). On a hit, Force 10 × your STR drives it into
  * the target 0 ft away: both take the Force damage (capped at the held creature's HP). It stays grappled.
  */
 export async function slamGrappled(actor) {
   if (cantAct(actor, "attack")) return;
-  if (!ab.grappling(actor, 5)) return ui.notifications.warn("Slam requires Grappling Methods Tier 5.");
-  const victim = await pickGrappled(actor, "Slam");
+  if (!ab.grappling(actor, 5)) return ui.notifications.warn("Living Weapon requires Grappling Methods Tier 5.");
+  const victim = await pickGrappled(actor, "Living Weapon");
   if (!victim) return;
   const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== victim.uuid && a.uuid !== actor.uuid);
-  if (targets.length !== 1) return ui.notifications.warn("Target exactly one creature to Slam into.");
+  if (targets.length !== 1) return ui.notifications.warn("Target exactly one creature to swing them into.");
   const force = 10 * actor.system.derived.effective.str.value;
-  const opts = await optionsDialog(`Slam ${victim.name}`, `<p class="hint">Melee attack roll against ${esc(targets[0].name)}. On a hit, Force ${force} (10 × Str) at 0 ft: both take Force damage.</p>
+  const opts = await optionsDialog(`Living Weapon: ${victim.name}`, `<p class="hint">Melee attack roll against ${esc(targets[0].name)}. On a hit, Force ${force} (10 × Str) at 0 ft: both take Force damage.</p>
     <div class="form-group"><label>Used as a</label><select name="weight"><option value="heavy">Heavy weapon (3 AP)</option><option value="light">Light weapon (2 AP)</option></select></div>
-    <p class="hint">Pick whichever its body type most closely matches.</p>${netField()}`, "Slam");
+    <p class="hint">Pick whichever its body type most closely matches.</p>${netField()}`, "Living Weapon");
   if (!opts) return;
   const ap = opts.weight === "light" ? 2 : 3;
-  if (!checkRange(actor, actor.system.derived.size.melee, "a Slam", targets[0].getActiveTokens?.() ?? [])) return;
-  if (!(await spendAP(actor, ap, "Slam"))) return;
+  if (!checkRange(actor, actor.system.derived.size.melee, "Living Weapon", targets[0].getActiveTokens?.() ?? [])) return;
+  if (!(await spendAP(actor, ap, "Living Weapon"))) return;
   return performAttack(actor, {
-    label: `Slam: ${victim.name}`, net: opts.net, stealth: "none", melee: true,
+    label: `Living Weapon: ${victim.name}`, net: opts.net, stealth: "none", melee: true,
     damage: "", type: "physical", stacks: 0, physical: false, shots: 1,
     throwGrappled: victim.uuid, throwForce: force, knockInto: true, slamGrappled: true,
     notes: [`${victim.name} is used as a ${opts.weight === "light" ? "Light" : "Heavy"} weapon (${ap} AP · Force ${force}, 0 ft)`], targetActors: targets
@@ -3511,7 +3511,7 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
   const feet = forceFeet(force, thrown, crunch);
   const from = thrown.getActiveTokens?.()[0] ?? attackerToken(thrower);
   const to = target.getActiveTokens?.()[0];
-  if (!hit && slam) return `<div class="fs-notes">The Slam misses; ${esc(thrown.name)} is still held.</div>`;
+  if (!hit && slam) return `<div class="fs-notes">Living Weapon misses; ${esc(thrown.name)} is still held.</div>`;
   if (!hit) {
     // A miss: it flies past the target, the full distance (unless a wall stops it).
     let flight = null;
@@ -3532,7 +3532,7 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
     if (!bars.length || bars.some(e => !e.broke) || flight.wall) return `<div class="fs-notes">${esc(thrown.name)} is stopped before reaching ${esc(target.name)}${released}.</div>${barrierHTML}`;
     reach = feet - bars.reduce((n, e) => n + e.creature / 3, 0);
   }
-  // Slam (Grappling T5): the target is a "wall" 0 ft away.
+  // Living Weapon (Grappling T5): the target is a "wall" 0 ft away.
   const dist = slam ? 0 : from && to && globalThis.canvas?.grid ? Math.round(tokenDistance(from, to)) : 0;
   const untraveled = Math.max(0, reach - dist);
   const raw = forceDamage(untraveled);
@@ -4889,8 +4889,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
       : await DialogV2().confirm({ window: { title: "Discharge" }, content: text, rejectClose: false });
     if (use) { stacks -= 2; parts.push("−2 Discharge"); await setActorFlag(attacker, "setup", { target: "any", count: 1 }); dischargeHTML = `<div class="fs-notes">Discharge: 2 Strengthened stacks removed; Advantage on your next attack before your next turn.</div>`; }
   }
-  // Cleave (Slashing T4): the spell's damage is increased by your Scaling Stat min.
-  const flat = o.spell?.mods?.cleave ? statMin(o.spell.scaling ?? 0) : 0;
+  // Rend (Slashing T4, was Cleave): the spell's damage is increased by your Scaling Stat min.
+  const flat = o.spell?.mods?.rend ? statMin(o.spell.scaling ?? 0) : 0;
   // Mental: Enhanced Mandate on this damage roll, and Verdict's damage change from the attack that landed.
   const md = await mentalHook?.damageCharges?.({ actor: attacker, formula, totals: base.totals });
   if (md?.totals) { base.totals = md.totals; base.rolls.push(...(md.rolls ?? [])); }
@@ -4900,7 +4900,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const pierceNow = o.omega && o.pierce ? applyStacks(o.pierce, stacks) : (o.pierce ?? 0);
 
   let extraHTML = spellPlan?.notes.length ? `<div class="fs-notes">${spellPlan.notes.map(esc).join(" · ")}</div>` : "";
-  if (flat) extraHTML += `<div class="fs-notes">Cleave: +${flat} damage (Scaling Stat min)</div>`;
+  if (flat) extraHTML += `<div class="fs-notes">Rend: +${flat} damage (Scaling Stat min)</div>`;
   if (md || mflat) extraHTML += `<div class="fs-notes fs-charge-note"><i class="fa-solid fa-link"></i> ${[...(md?.notes ?? []), defense.result?.mentalDmg ? `Verdict: ${defense.result.mentalDmg > 0 ? "+" : "−"}${Math.abs(defense.result.mentalDmg)} damage.` : ""].filter(Boolean).join(" ")}</div>`;
   extraHTML += dischargeHTML;
   let kb = null;

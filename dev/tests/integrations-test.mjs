@@ -34,13 +34,13 @@ const [name, mod] = called.find(c => c[0] === "tokenActionHudSystemReady") ?? []
 ok(name && mod.api.requiredCoreModuleVersion === "2", "TAH: system registered with Core");
 const sm = new mod.api.SystemManager();
 const defs = await sm.registerDefaults();
-ok(defs.layout.length === 7 && defs.groups.some(g => g.id === "act-parry") && defs.groups.some(g => g.id === "act-magic") && defs.layout[0].groups[0].nestId === "combat_act-combat", "TAH: default layout and groups");
+ok(defs.layout.length === 8 && defs.groups.some(g => g.id === "act-parry") && defs.groups.some(g => g.id === "act-magic") && defs.layout[0].groups[0].nestId === "combat_act-combat", "TAH: default layout and groups");
 const ah = sm.getActionHandler(); ah.actor = actor;
 await ah.buildSystemActions();
 const combat = ah.added.find(([id]) => id === "act-combat")?.[1] ?? [];
 const atk = combat.find(a => a.name === "Attack: Unarmed");
 ok(atk && atk.info1?.text === "2 / 3 AP" && typeof atk.onClick === "function", "TAH: weapon attack action with cost");
-ok(ah.added.some(([id]) => id === "act-martial") && ah.added.find(([id]) => id === "act-martial")[1].some(a => a.name === "Grapple"), "TAH: Martial Theory group (Grapple)");
+ok(!ah.added.flatMap(([, a]) => a).some(a => a.name === "Grapple") && /Grapple/.test(atk.info2?.text ?? atk.tooltip ?? JSON.stringify(atk)), "TAH: Grapple is not its own action: it is an option of Attack: Unarmed");
 ok(new Set(ah.added.flatMap(([, a]) => a.map(x => x.id))).size === ah.added.flatMap(([, a]) => a).length, "TAH: action ids unique");
 // Click → same handler as the sheet.
 let called2 = null;

@@ -247,9 +247,9 @@ const hit = async (core, extra, dmg = 30) => {            // cast, dodge, roll d
   seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
   seq = [dmg]; await actions.rollExchangeDamage(last()); return last();
 };
-let card = await hit("magic-slashing:cut", { [M("magic-slashing:cleave")]: true });
-ok2(/Cleave: \+10/.test(text(card)), "Cleave: +Scaling Stat min (30 ÷ 3 = 10) to the damage");
-ok2(orc.system.hp.value === 432 - (30 + 10) * 2 || orc.system.hp.value < 432 - 30, `Cleave adds to the damage taken (HP ${orc.system.hp.value})`);
+let card = await hit("magic-slashing:cut", { [M("magic-slashing:rend")]: true });
+ok2(/Rend: \+10/.test(text(card)), "Rend: +Scaling Stat min (30 ÷ 3 = 10) to the damage");
+ok2(orc.system.hp.value === 432 - (30 + 10) * 2 || orc.system.hp.value < 432 - 30, `Rend adds to the damage taken (HP ${orc.system.hp.value})`);
 
 target(orc); seq = [25]; await cast("magic-piercing:stab", { [M("magic-piercing:pierce")]: 2 });
 ok2(lastAtk().flags.flowstate.attack.opts.pierce === 60, "Pierce ×2 at Power 3: 2 × 10 × 3 = Pierce 60");

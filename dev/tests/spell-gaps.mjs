@@ -286,7 +286,7 @@ globalThis.canvas = null;
 
 console.log("== Animated weapon");
 clean6(); const sword2 = mkWeapon(orc, "sword", { grade: 2 }); sword2.system.prepareDerivedData(); target(orc);
-await cast("magic-animation:animate", { base: 1, [M("magic-animation:weapon-foci")]: true, conj: {} });
+await cast("magic-animation:animate", { base: 1, [M("magic-animation:animate-weapon-icon-foci")]: true, conj: {} });
 const wm = messages.find(m => m.flags?.flowstate?.conjure);
 ok2(wm?.flags.flowstate.conjure.acts[0].act === "weapon", "Animate Weapon: an attack button");
 hero.system.ap.value = 6; messages.length = 0; seq = [20];

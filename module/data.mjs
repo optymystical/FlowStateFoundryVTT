@@ -377,6 +377,13 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
     };
   }
 
+  /** Shroud types renamed in the Equipment doc: Aegis → Bulwark, Ward → Mantle, Riposte → Rebuke. */
+  static migrateData(source) {
+    const renamed = { aegis: "bulwark", ward: "mantle", riposte: "rebuke" };
+    if (renamed[source.shroudType]) source.shroudType = renamed[source.shroudType];
+    return super.migrateData(source);
+  }
+
   prepareDerivedData() {
     const eff = this.parent?.actor?.system?.derived?.effective;
     this.computeProfile(eff ? eff.build.value : gradePreview(this.grade), this.parent?.actor?.system ?? null);

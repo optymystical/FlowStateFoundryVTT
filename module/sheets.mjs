@@ -88,7 +88,7 @@ export function activeEffectRows(actor) {
   const placed = actor.getFlag?.("flowstate", "shroudOn");
   const placedShroud = placed ? globalThis.fromUuidSync?.(placed) : null;
   if (placedShroud?.system?.placedOn === actor.uuid) {
-    rows.push({ key: "shroudOn", name: `${placedShroud.parent?.name ?? "Someone"}'s ${placedShroud.system.shroudType === "ward" ? "Ward" : "Bond"}: ${placedShroud.name}`,
+    rows.push({ key: "shroudOn", name: `${placedShroud.parent?.name ?? "Someone"}'s ${placedShroud.system.shroudType === "mantle" ? "Mantle" : "Bond"}: ${placedShroud.name}`,
       img: "icons/svg/aura.svg", detail: `Soaks your damage too (${placedShroud.system.durability.value}/${placedShroud.system.durability.max} Durability).`, shroudOn: true });
   }
   for (const victim of actions.grappledBy(actor)) {
@@ -624,9 +624,9 @@ function actionGroups(actor, weapons, stats) {
   const shroudRows = [];
   const shr = sys.shroud;
   if (shr?.system.profile?.placed) {
-    const ward = shr.system.shroudType === "ward";
+    const ward = shr.system.shroudType === "mantle";
     const on = shr.system.placedOn ? globalThis.fromUuidSync?.(shr.system.placedOn)?.name : null;
-    shroudRows.push({ label: `${ward ? "Ward" : "Bond"}: ${shr.name}${on ? ` (on ${on})` : ""}`, detail: ward
+    shroudRows.push({ label: `${ward ? "Mantle" : "Bond"}: ${shr.name}${on ? ` (on ${on})` : ""}`, detail: ward
       ? "Place it on your target within 100 ft (or yourself with no target) until your next turn; restores its Durability"
       : "Also protect your target within 100 ft; restores its Durability", cost: ward ? "2 RP" : "3 RP", action: "martial", op: "placeShroud", icon: "fa-solid fa-ghost" });
   }

@@ -50,7 +50,7 @@ p = M.fociProfile({ fociType: "band", grade: 2 }, { reach: 12, grasp: 30 });
 ok2(p.scalingStat === "reach" && p.scaling === 12 && p.doubles && p.tr === null, "Band: Multi uses the lesser stat, 1+ Affix");
 p = M.shroudProfile({ shroudType: "bastion", grade: 3, affixes: [] }, 25);
 ok2(p.durability === 100 && p.limit === 20 && p.mult === 2, "Bastion: ×floor(Build/10) Grade-capped");
-p = M.shroudProfile({ shroudType: "aegis", grade: 5 }, 50);
+p = M.shroudProfile({ shroudType: "bulwark", grade: 5 }, 50);
 ok2(p.durability === 3 && p.limit === 60 && p.negator, "Aegis: fixed Durability, scaling Limit");
 
 console.log("== Shroud soaks before armor");
@@ -122,7 +122,7 @@ await actions.shroudTurnStart(hero);
 ok2(sh.system.wear === 0 && !sh.system.negated.length && !hero.getFlag("flowstate", "takenTypes"), "recovers its Limit, negations refresh, Cinder memory clears");
 
 console.log("== Types");
-await sh.update({ "system.shroudType": "aegis", "system.affixes": [] });
+await sh.update({ "system.shroudType": "bulwark", "system.affixes": [] });
 out = await actions.damageOutcome(hero, 5, "physical", {});
 ok2(out.toHp === 0 && out.shrouds[0].update["system.wear"] === 1, "Aegis negates damage up to its Limit for 1 Durability");
 out = await actions.damageOutcome(hero, 500, "physical", {});
@@ -150,7 +150,7 @@ ok2(out.lines.some(l => /Alexandrite: Weakened 200 → 100/.test(l)), "Alexandri
 
 console.log("== Ward on an ally");
 const ally = mkActor("Ally", {}, {});
-await sh.update({ "system.shroudType": "ward", "system.affixes": [], "system.lastType": "" });
+await sh.update({ "system.shroudType": "mantle", "system.affixes": [], "system.lastType": "" });
 game.user.targets = new Set([{ actor: ally }]); hero.system.rp.value = 6;
 await actions.placeShroud(hero);
 ok2(sh.system.placedOn === ally.uuid && ally.getFlag("flowstate", "shroudOn") === sh.uuid && hero.system.rp.value === 4, "Ward placed on the ally (2 RP)");
@@ -180,12 +180,12 @@ await actions.retort(dm);
 ok2(hero.system.rp.value === 5 && actions.findRetort(dm.id), "Retort: 1 RP");
 seq = [20]; await actions.rollExchangeDamage(dm);
 ok2(/Retort/.test(text(messages.at(-1))), "Retort Weakens the damage");
-await sh.update({ "system.shroudType": "riposte", "system.affixes": ["ruby"], "system.wear": 0 });
+await sh.update({ "system.shroudType": "rebuke", "system.affixes": ["ruby"], "system.wear": 0 });
 seq = [30]; await actions.performAttack(foe, fo);
 await actions.defend(messages.at(-1), 0, "none");
 seq = [20]; await actions.rollExchangeDamage(messages.at(-1));
 const dmg = messages.at(-1);
-ok2(dmg.content.includes('data-kind="riposte"') && dmg.content.includes('data-kind="ruby"'), "damage card offers Shroud Riposte and Ruby");
+ok2(dmg.content.includes('data-kind="rebuke"') && dmg.content.includes('data-kind="ruby"'), "damage card offers Shroud Rebuke and Ruby");
 const took = Number(dmg.content.match(/data-kind="ruby" data-amount="(\d+)"/)?.[1]);
 seq = [25]; await actions.shroudCounter(dmg, "ruby", took);
 const ra = messages.at(-1);

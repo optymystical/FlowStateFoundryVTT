@@ -356,7 +356,7 @@ export function listSpells() {
       const d = data(e);
       if (e.disabled || !d.caster || !SPELLISH.has(d.kind)) continue;
       const caster = globalThis.fromUuidSync?.(d.caster);
-      out.push({ id: `effect:${e.uuid}`, kind: "effect", label: `${e.name} on ${a.name}`, caster: d.caster, hp: d.kind === "shield" ? Number(d.hp) || 0 : d.spellHp ?? casterScaling(caster), power: d.power ?? spellPowerOf(caster), ritualOf: e.flags?.flowstate?.ritualOf ?? null, amplified: !!d.amplified, effect: e });
+      out.push({ id: `effect:${e.uuid}`, kind: "effect", label: `${e.name} on ${a.name}`, caster: d.caster, hp: d.kind === "shield" ? Number(d.hp) || 0 : d.spellHp ?? casterScaling(caster), power: d.power ?? spellPowerOf(caster), scaling: d.scaling, ritualOf: e.flags?.flowstate?.ritualOf ?? null, amplified: !!d.amplified, effect: e });
     }
   }
   // Spells that are mid cast: the attack has been rolled and nobody has answered it yet. Another caster can Strike them.
@@ -368,7 +368,7 @@ export function listSpells() {
     const caster = globalThis.fromUuidSync?.(at.attacker);
     const sp = at.opts.spell;
     out.push({ id: `cast:${m.id}`, kind: "cast", label: `${at.opts.label ?? "A spell"} by ${caster?.name ?? "someone"}, mid cast (attack ${Math.max(...open.map(t => t.total ?? 0))})`, caster: at.attacker,
-      hp: sp.hpLeft ?? casterScaling(caster), power: sp.power ?? spellPowerOf(caster), ritualOf: sp.ritualOf ?? null, amplified: !!sp.amplified,
+      hp: sp.hpLeft ?? casterScaling(caster), power: sp.power ?? spellPowerOf(caster), scaling: sp.scaling, ritualOf: sp.ritualOf ?? null, amplified: !!sp.amplified,
       message: m, attackTotal: Math.max(...open.map(t => t.total ?? 0)), opts: at.opts });
   }
   for (const t of globalThis.canvas?.scene?.templates ?? []) {
@@ -379,6 +379,8 @@ export function listSpells() {
   }
   return out;
 }
+/** The Scaling Stat its caster had for a Spell (Rip compares this, not the Power): the one recorded on the cast, else the caster's current. */
+const scalingOf = x => x.scaling ?? casterScaling(globalThis.fromUuidSync?.(x.caster));
 const findSpell = id => listSpells().find(x => x.id === id) ?? null;
 
 /** Damage a Spell; it's destroyed at 0. Returns { destroyed, left }. */
@@ -439,9 +441,9 @@ async function amplifySpell(entry) {
   return msg;
 }
 
-/** Rip (Arcanomancy T5): take control of a Spell with 5 or less Power, then redirect it or dissipate it. */
+/** Rip (Arcanomancy T5): take control of a Spell cast with 5 or less Scaling Stat, then redirect it or dissipate it. */
 async function ripSpell(entry, caster, mode, newTarget, ritualOf) {
-  if (entry.power > 5) return `That Spell has ${entry.power} Power: Rip needs 5 or less.`;
+  if (scalingOf(entry) > 5) return `That Spell was cast with ${scalingOf(entry)} Scaling Stat: Rip needs 5 or less.`;
   if (entry.kind === "cast") {
     await cancelCast(entry, `${caster.name} Ripped it`);
     if (mode !== "redirect" || !newTarget) return `${entry.label} dissipates.`;
@@ -481,7 +483,7 @@ export async function promptSpell({ actor, plan, mods, values }) {
   if (!entry) { ui.notifications.warn("That Spell is gone."); return null; }
   if (mods.amplify && entry.ritualOf) { ui.notifications.warn("Amplify only works on non-Ritual Spells."); return null; }
   if (mods.amplify && entry.amplified) { ui.notifications.warn("That Spell has already been amplified."); return null; }
-  if (mods.rip && entry.power > 5) { ui.notifications.warn(`That Spell has ${entry.power} Power: Rip needs 5 or less.`); return null; }
+  if (mods.rip && scalingOf(entry) > 5) { ui.notifications.warn(`That Spell was cast with ${scalingOf(entry)} Scaling Stat: Rip needs 5 or less.`); return null; }
   const spec = { id };
   if (mods.rip) {
     spec.mode = values.ripMode === "redirect" ? "redirect" : "dissipate";

@@ -5931,7 +5931,7 @@ function sourceOf(o) {
 function shroudsFor(actor, extra = []) {
   const out = [];
   const own = actor?.system?.shroud;
-  if (own && own.system.shroudType !== "ward") out.push(own);
+  if (own && own.system.shroudType !== "mantle") out.push(own);
   const placed = actor?.getFlag?.("flowstate", "shroudOn");
   for (const u of [placed, ...extra].filter(Boolean)) {
     const sh = syncUuid(u);
@@ -6059,18 +6059,18 @@ export async function placeShroud(actor) {
   const kind = sh?.system.profile?.placed;
   if (!kind) return ui.notifications.warn(`${actor.name} needs a melded Ward or Bond Shroud.`);
   const picks = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
-  const target = kind === "ward" ? (picks[0] ?? actor) : picks.find(a => a.uuid !== actor.uuid);
-  if (!target) return ui.notifications.warn(kind === "ward" ? "Target a creature (or none, for yourself)." : "Target the creature to Bond with.");
+  const target = kind === "mantle" ? (picks[0] ?? actor) : picks.find(a => a.uuid !== actor.uuid);
+  if (!target) return ui.notifications.warn(kind === "mantle" ? "Target a creature (or none, for yourself)." : "Target the creature to Bond with.");
   if (picks.length > 1) return ui.notifications.warn("Target just one creature.");
   const tTok = target.getActiveTokens?.()[0], aTok = attackerToken(actor);
   if (target !== actor && tTok && aTok && globalThis.canvas?.grid && tokenDistance(aTok, tTok) > 100) return ui.notifications.warn(`${target.name} is more than 100 ft away.`);
-  const rp = kind === "ward" ? 2 : 3;
-  if (!(await spendPoints(actor, "rp", rp, kind === "ward" ? "Mantle" : "Bond"))) return;
+  const rp = kind === "mantle" ? 2 : 3;
+  if (!(await spendPoints(actor, "rp", rp, kind === "mantle" ? "Mantle" : "Bond"))) return;
   await endShroudPlacement(actor, sh);
   await sh.update({ "system.placedOn": target.uuid, "system.wear": 0 }, { flowstateSystem: true });
   await setActorFlag(target, "shroudOn", sh.uuid);
-  await post(actor, { title: `${esc(actor.name)} — ${kind === "ward" ? "Mantle" : "Bond"}`,
-    body: `<div class="fs-result">${esc(sh.name)} ${kind === "ward" ? `is placed on ${esc(target.name)} until the start of ${esc(actor.name)}'s next turn` : `now also protects ${esc(target.name)} (ends at 0 Durability or beyond 1000 ft)`}. Durability restored to full.</div><div class="fs-notes">${rp} RP</div>` });
+  await post(actor, { title: `${esc(actor.name)} — ${kind === "mantle" ? "Mantle" : "Bond"}`,
+    body: `<div class="fs-result">${esc(sh.name)} ${kind === "mantle" ? `is placed on ${esc(target.name)} until the start of ${esc(actor.name)}'s next turn` : `now also protects ${esc(target.name)} (ends at 0 Durability or beyond 1000 ft)`}. Durability restored to full.</div><div class="fs-notes">${rp} RP</div>` });
 }
 
 /** End a Ward/Bond placement (unattuning, re-placing, Ward expiring, Bond spent). */
@@ -6103,7 +6103,7 @@ export async function shroudTurnStart(actor) {
   const sh = actor.system?.shroud;
   if (!sh) return;
   const notes = [];
-  if (sh.system.shroudType === "ward" && sh.system.placedOn) { await endShroudPlacement(actor, sh); notes.push("the Mantle ends"); }
+  if (sh.system.shroudType === "mantle" && sh.system.placedOn) { await endShroudPlacement(actor, sh); notes.push("the Mantle ends"); }
   const update = {};
   if (sh.system.shroudType === "carapace" && sh.system.carapace) update["system.carapace"] = 0;
   // Recovery uses the Limit after Carapace resets (Cistern/Ember use their current Limit).
@@ -6182,7 +6182,7 @@ function shroudCounterRows(target, attacker, outcome) {
   const btn = (kind, label, tip) => `<button type="button" class="fs-shroud-counter" data-kind="${kind}" data-amount="${took}" data-tooltip="${tip}"><i class="fa-solid fa-ghost"></i> ${label}</button>`;
   const near = inPersonalMelee(target, attacker);
   const buttons = [
-    sh.system.shroudType === "riposte" ? btn("riposte", `Shroud Rebuke (1 RP): ${took} back`, `Ranged attack roll against ${esc(attacker.name)}; on a hit they take ${took}`) : "",
+    sh.system.shroudType === "rebuke" ? btn("rebuke", `Shroud Rebuke (1 RP): ${took} back`, `Ranged attack roll against ${esc(attacker.name)}; on a hit they take ${took}`) : "",
     hasAffix(sh, "ruby") && near ? btn("ruby", `Ruby: free attack (Ignite ${took})`, `Free melee attack; on a hit ${esc(attacker.name)} gets ${took} Ignite`) : "",
     hasAffix(sh, "sapphire") && near ? btn("sapphire", `Sapphire: free attack (Slow ${took})`, `Free melee attack; on a hit ${esc(attacker.name)} gets ${took} Slow`) : ""
   ].filter(Boolean);
@@ -6221,13 +6221,13 @@ export async function shroudCounter(damageMessage, kind, amount) {
   const actor = await fromUuid(d.target), foe = await fromUuid(d.attacker);
   if (!actor?.isOwner) return ui.notifications.warn("You don't control that character.");
   if (!foe) return;
-  if (kind === "riposte" && !(await spendPoints(actor, "rp", 1, "Shroud Rebuke"))) return;
+  if (kind === "rebuke" && !(await spendPoints(actor, "rp", 1, "Shroud Rebuke"))) return;
   const sh = actor.system.shroud;
   const type = damageMessage.getFlag("flowstate", "damage")?.type ?? "physical";
   return performAttack(actor, {
-    label: kind === "riposte" ? `${sh?.name ?? "Shroud"} — Rebuke` : `${sh?.name ?? "Shroud"} — ${kind === "ruby" ? "Ruby" : "Sapphire"}`,
-    net: 0, melee: kind !== "riposte", push: false, damage: kind === "riposte" ? String(amount) : "", type, stacks: 0, physical: false, shots: 1,
-    notes: [kind === "riposte" ? `The damage the Shroud took (${amount}) goes back at them` : `On a hit: ${amount} ${kind === "ruby" ? "Ignite" : "Slow"}`],
+    label: kind === "rebuke" ? `${sh?.name ?? "Shroud"} — Rebuke` : `${sh?.name ?? "Shroud"} — ${kind === "ruby" ? "Ruby" : "Sapphire"}`,
+    net: 0, melee: kind !== "rebuke", push: false, damage: kind === "rebuke" ? String(amount) : "", type, stacks: 0, physical: false, shots: 1,
+    notes: [kind === "rebuke" ? `The damage the Shroud took (${amount}) goes back at them` : `On a hit: ${amount} ${kind === "ruby" ? "Ignite" : "Slow"}`],
     followups: [], targetActors: [foe], shroudCounterOf: `${damageMessage.id}:${kind}`,
     inflict: kind === "ruby" ? { ignite: amount } : kind === "sapphire" ? { slow: amount } : null
   });

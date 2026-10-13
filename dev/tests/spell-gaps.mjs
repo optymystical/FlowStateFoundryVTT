@@ -198,10 +198,13 @@ let r5 = await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy
 ok2(!r5, "…and only once per Spell");
 r5 = await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true });
 ok2(!r5, "Amplify needs a Spell to target");
-clean6(); await shieldOn(orc); const sid4 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
+clean6(); await shieldOn(orc); const sidBig = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
+await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: sidBig, ripMode: "dissipate" });
+ok2(eff(orc, "shield").length === 1, "Rip: a Spell cast with more than 5 Scaling Stat can't be taken");
+clean6(); await shieldOn(orc, { scaling: 5 }); const sid4 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
 await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: sid4, ripMode: "dissipate" });
-ok2(eff(orc, "shield").length === 0, "Rip: a Spell with 5 or less Power dissipates…");
-clean6(); await shieldOn(orc, { hp: 25 }); const sid5 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
+ok2(eff(orc, "shield").length === 0, "Rip: a Spell cast with 5 or less Scaling Stat dissipates…");
+clean6(); await shieldOn(orc, { hp: 25, scaling: 5 }); const sid5 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
 await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: sid5, ripMode: "redirect", ripTarget: gob.uuid });
 ok2(eff(orc, "shield").length === 0 && eff(gob, "shield")[0]?.flags.flowstate.spellEffect.caster === hero.uuid && eff(gob, "shield")[0].flags.flowstate.spellEffect.hp === 25, "…or is redirected to a new target under your control");
 
@@ -229,7 +232,7 @@ console.log("== Strike a spell that is mid cast (after its attack roll, before t
   const o2 = lastAtkOf(atk.id);
   ok2(o2.spell.power === p0 + 1 && o2.spell.amplified && o2.damage === `${2 * (p0 + 1)}d6`, `Amplify on a mid-cast spell: Power ${p0} → ${o2.spell.power}, damage ${o2.damage}`);
   // Rip: take it over and send it at someone else with a new attack roll.
-  atk = await pending(); const mid3 = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
+  atk = await pending(); atk.flags.flowstate.attack.opts.spell.scaling = 5; const mid3 = AR.listSpells().find(x => x.kind === "cast" && x.message.id === atk.id);
   seq = [30, 20]; await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:rip")]: true, strikeSpell: mid3.id, ripMode: "redirect", ripTarget: gob.uuid });
   const redirected = lastAtk();
   ok2(!!A.findCancel(atk.id) && redirected.id !== atk.id && redirected.flags.flowstate.attack.targets[0].uuid === gob.uuid, "Rip (redirect): the original is gone and the spell goes at the new target with a fresh attack roll");

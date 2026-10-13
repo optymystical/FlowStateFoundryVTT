@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.54.1:** **Lint and CI.** ESLint config in the repo (`eslint.config.mjs`, run with `npm run lint` from `dev/`) and a GitHub Action that runs lint and the tests on every push and pull request. No change to play.
+
 **0.54.0:**
 - **Open prompts list (GM).** A bell button in the scene controls opens a list of every question the game is waiting on a player to answer: what, who it waits on, about whom, and for how long, with a Cancel button each (and Cancel all). It opens by itself when a question has waited 30 seconds. Cancelling closes the window for the player and counts as "no".
 - **Questions no longer time out.** The 60-second timer on questions to players and the 2-minute timer on requests to the GM are gone. A question asked of a player who goes offline is answered "no" at once, and requests waiting on a GM who left are dropped.

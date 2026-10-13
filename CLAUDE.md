@@ -89,7 +89,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - Run the tests after every change: `cd dev && npm install && npm test` (or `node run-tests.mjs t2 brawling` for a
   subset). Add or update a harness for new behavior. Harnesses use `seq = [...]` to script dice and `dialog = () => ({...})`
   to answer popups.
-- `node --check module/<file>.mjs` catches syntax errors fast.
+- `node --check module/<file>.mjs` catches syntax errors fast. `cd dev && npm run lint` (ESLint, config in `eslint.config.mjs`) catches undefined names and unused code; `npm run check` runs lint and the tests, and is what CI (`.github/workflows/ci.yml`) runs on every push. Keep both clean.
 - Bump `system.json` `version` (patch for fixes, minor for features) and add a short `CHANGELOG.md` entry with each change (and update `dev/AUTOMATION.md` if a rule or judgment call changed).
 - Regenerate skill trees after Martial/Magic doc changes: export the docs to `dev/docs/martial.md` and `magic.md`,
   then `cd dev && npm run trees` (Mental too: export the Mental Rework Test Ground to `dev/docs/mental.md`; the generator leaves out trees with no entries yet). After Combo Spell List changes: export it to `dev/docs/combos.md`, then `npm run combos`

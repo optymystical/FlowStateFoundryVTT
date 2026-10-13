@@ -65,7 +65,7 @@ check(d.items.find(i => i.type === "weapon" && i.system.grade === 3), "grade is 
 
 console.log("== magic gear is any rarity");
 add("foci"); add("shroud"); add("icon"); add("affix");
-v = await view(); log: console.log("  errors:", v.ctx.errors.join("; ") || "none");
+v = await view(); console.log("  errors:", v.ctx.errors.join("; ") || "none");
 const rar = npc.newNpcSlot("foci"); check(rar && Object.keys(v.ctx.items[6].typeChoices ?? []).length > 0, "Foci types offered");
 
 console.log("== GM only");

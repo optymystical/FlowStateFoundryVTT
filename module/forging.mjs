@@ -6,11 +6,10 @@
 import { post, requestGM, putSpellEffect, spellEffects, attackerToken, setActorFlag } from "./actions.mjs";
 import * as R from "./mental-rules.mjs";
 import * as conjure from "./conjure.mjs";
-import * as mental from "./mental.mjs";
 import { AFFIXES, FOCI_TYPES, SHROUD_TYPES, AFFIX_LIMIT } from "./magic.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS } from "./martial.mjs";
 import { tierOf } from "./skills.mjs";
-import { MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
+import { mental, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const DialogV2 = () => foundry.applications.api.DialogV2;

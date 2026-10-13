@@ -459,7 +459,13 @@ Follow-up buttons aren't on the attack card any more; the card just says a follo
 ### Turns, unconsciousness, and stealth
 - **Movement is turn-locked:** during a started combat, players can only move a combatant's token on that combatant's turn. The GM can always move tokens, system moves (thrown creatures) go through, and tokens not in the combat move freely.
 - **Unconscious or dead:** the character is knocked prone and can't act. That means no attacks, follow-ups, stances, Break Free, throws, Recover Energy, reloading, picking up, or moving. Attacks against them resolve immediately as if from full stealth: they auto-hit, crit on ≥ their dodge die size, and there are no Dodge or Parry buttons. Prone still gives melee attackers Advantage. Waking up leaves them prone until they stand.
-- **No Stealth dropdown in attack dialogs.** Full stealth now only comes from automatic sources (a helpless target). Stealth via the Stealthing status can be wired in later.
+- **No Stealth dropdown in attack dialogs.** Full stealth comes from a helpless target, or from the GM's **Half Stealth** / **Full Stealth** statuses on a token (token HUD; players can't set them). They apply to that token's attack rolls and never stack: Full beats Half, and half stealth an attack already has (a Targeted spell, Vector Assault) is not counted twice.
+
+### Reactions: skipping popups
+Every question the system asks a player in someone else's turn (Ward and Premonition negation, Tenets, Infuse/Empower/Dampen, Order and Chaos charges, Serenity, Guard, Warmonger, Bloodbond, Adaptive Skin...) has a switch in the character's **Action List**, in a **Reactions** group that only lists what that character can actually be asked. A switched-off reaction is never asked and counts as "no": nothing is spent and nothing happens. Switch it back on to be asked again. It is per character, so a player can turn off a chatty Tenet and keep their Ward prompt. Upkeep questions that cost you something if you don't answer (Far Sight, Memory) are not switchable.
+
+### Range on any grid
+Distance between tokens is measured border to border (touching = 0 ft): a diagonal square counts as one square on square grids, the straight line on gridless scenes, and Foundry's own path measure less the tokens' half widths on hex grids. Placing things next to a token (thrown items, forced moves) still assumes a square grid.
 
 ### Posture, targeting, Bash, and Force
 - **Crouch / Go Prone / Get Up** (Action List → Combat; only the ones you can switch to are shown). Crouching is free. Going prone costs 1 AP. Getting up costs 1 AP from prone and is free from a crouch. In combat these only work on your own turn, and unconscious characters can't change posture.
@@ -519,6 +525,14 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Momentum is stored per attacker and target** and ends at the start of the attacker's next turn.
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
 - **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
+
+**0.53.0:** **Audit follow-ups.**
+- **The GM relay only carries out what the system sends.** A player's client asks the GM's client to change things it doesn't own (damage, conditions, Durability). Every such request is now checked: only health, the pools, conditions, Durability, Ward placement and the system's own flags and effects are accepted; stats, Skill Points, trees, ownership, items' identity and the GM-only stealth statuses are refused (and logged to the console). It cannot tell a real hit from a made-up one, so this narrows what a modified client can do rather than stopping all cheating.
+- **Reaction switches** in the Action List (see "Reactions: skipping popups").
+- **Distance works on hex and gridless scenes.**
+- **Fix:** the Infuse card showed dice left over from the previous resolution; it now shows only its own.
+- **Cleanup:** dead code and unused imports removed, and the Mental modules no longer import each other in a circle (`ask.mjs`, and `wonders.mjs` is handed `mental.mjs` when it loads).
+- `system.json` description updated.
 
 **0.52.3:** **Echo's free negation is Strengthened at 4 Alignment too.** Every Ward already got Advantage on its attack roll and a Strengthened bolded effect at 4 Alignment of its own type (shielding, Premonition charges, every negating Ward); Echo's free negation on later instances of damage was the one piece that still used the unscaled number.
 
@@ -649,8 +663,9 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 Cover, the senses table, and equipment repair. The math helpers for Force and Terminal Velocity are in `module/rules.mjs`.
 
 ## Code map
-Pure modules (no Foundry globals, unit-tested): `rules`, `martial`, `magic`, `abilities`, `spells`, `spellfx`, `mental-rules`, `conjure-rules`, `movement-rules`, `currency-rules`, `creation`.
+Pure modules (no Foundry globals, unit-tested): `rules`, `martial`, `magic`, `abilities`, `spells`, `spellfx`, `mental-rules`, `conjure-rules`, `movement-rules`, `currency-rules`, `creation`, `sides`, `distance`, `reactions`, `relay-guard`.
 
+- **Cross-cutting:** `module/sides.mjs` (who is an ally or a foe, by token disposition), `module/distance.mjs` (distance on square, hex and gridless grids), `module/reactions.mjs` (the switches for skipping popups), `module/ask.mjs` (asking a character's player a question on their own client), `module/relay-guard.mjs` (what a player's client may ask the GM's client to do).
 - **Core:** `module/flowstate.mjs` (init, the Actor and Combat subclasses, settings, statuses, chat-button hooks), `module/data.mjs` (actor and item data models and derived values, speed), `module/rules.mjs` (all rules math), `module/actions.mjs` (rolls, the attack/defense/damage exchange, tree abilities, grapples, Shrouds, the GM relay), `module/sheets.mjs` and `templates/` (the ApplicationV2 sheets and the Action List), `module/energy.mjs`, `module/gravity.mjs`, `module/skills.mjs` and `module/trees.mjs` (skill trees, generated from the docs), `module/tree-scale.mjs` (scaled numbers in tree text).
 - **Martial:** `module/martial.mjs` (weapon and armor tables, materials, tags, profiles), `module/abilities.mjs` (who can use which tree ability, Energy costs).
 - **Magic:** `module/magic.mjs` (Foci, Shrouds, Affixes), `module/spells.mjs` and `module/combos.mjs` (the spell catalog, Combos, casting plans), `module/casting.mjs` (the Cast Spell dialog, Rituals), `module/spellfx.mjs` (what each spell does), `module/elemental.mjs` (Tier 2), `module/afflictions.mjs` (Tier 3), `module/conjure.mjs` and `module/conjure-rules.mjs` (Tier 4), `module/arcana.mjs` (Tier 5), `module/foci.mjs` (Affix and Deck Foci effects), `module/areas.mjs` (Area shapes and templates).

@@ -10,6 +10,7 @@
 import {
   post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless, rollD100, turnKey, registerMental, spellEffects, pickSceneTarget, setGrapple, requestDamage, changeEffect, tokenDistance, attackGuard, guardRows, dodgeNetKnown
 } from "./actions.mjs";
+import * as self from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
 import * as wondersB from "./wonders-b.mjs";
@@ -909,6 +910,7 @@ async function act(message, i) {
   const done = x.id === "perennial" ? await wonders.runPerennial(x) : await wonders.runAct(x);
   if (done) await post(await fromUuid(x.caster), { title: "Used", body: `<div class="fs-notes">${esc(x.label)}: used.</div>`, flags: { flowstate: { mentalActDone: { card: message.id, i: Number(i) } } } });
 }
+wonders.setMental(self);
 registerMental({ askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,

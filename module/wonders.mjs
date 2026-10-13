@@ -9,12 +9,14 @@ import {
 } from "./actions.mjs";
 import { centreDistance } from "./distance.mjs";
 import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
-import { askFor, runOnOwner } from "./charges.mjs";
+import { askFor, runOnOwner, setActRunner } from "./ask.mjs";
 import { resolveForce, applyStacks } from "./rules.mjs";
 import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
-import * as mental from "./mental.mjs";
+/** mental.mjs hands itself over when it loads (`setMental`): the Wonders call into it, and it calls into them. */
+export let mental = null;
+export const setMental = m => { mental = m; };
 
 export const bold = R.bold;
 
@@ -677,3 +679,4 @@ export async function afterRest(actor) {
   await setActorFlag(actor, "preordained", { n: r.total });
   await post(actor, { title: `${esc(actor.name)} — Preordained`, rolls: [r], body: `<div class="fs-result">${esc(actor.name)}'s Preordained Number is <strong>${r.total}</strong>.</div>` });
 }
+setActRunner(runAct);

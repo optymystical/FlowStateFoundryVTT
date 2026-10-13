@@ -10,11 +10,10 @@ import { applyStacks, poolFormula } from "./rules.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
-import * as mental from "./mental.mjs";
-import { askFor, runOnOwner, actorsInPlay } from "./charges.mjs";
+import { askFor, runOnOwner, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
-import { bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = f => new Roll(f).evaluate();

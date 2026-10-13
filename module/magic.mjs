@@ -81,13 +81,36 @@ export const AFFIXES = {
 export const AFFIX_RARITIES = { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" };
 export const ELEMENTS = { heat: "Heat", cold: "Cold", acid: "Acid", radiation: "Radiation" };
 
-/** Affix keys on an item, trimmed to its slot count (unknown keys dropped). */
-function affixList(keys, slots = AFFIX_LIMIT) {
-  return (keys ?? []).filter(k => AFFIXES[k]).slice(0, Math.max(0, slots));
+/** Affixes are attuned on their own, to their Offensive (Foci, spells) or Defensive (Shroud) form. */
+export const AFFIX_SIDES = { offensive: "Offensive", defensive: "Defensive" };
+
+/**
+ * The Affixes in effect on a Foci or Shroud: the attuned Affix items of its side (`sys.attached`, set from the owner), plus any left in the old
+ * per-item list (`sys.affixes`) until they are converted into Affix items. Unknown keys dropped, no repeats.
+ */
+function affixList(sys) {
+  return [...new Set([...(sys.affixes ?? []), ...(sys.attached ?? [])])].filter(k => AFFIXES[k]);
 }
 
-/** Affixes cost speed, not slots; this is only the most one piece of equipment holds on a sheet. */
-export const AFFIX_LIMIT = 6;
+/** An Affix item's profile: what it is, which form it is attuned to, and what it does there. */
+export function affixProfile(sys) {
+  const a = AFFIXES[sys.affix];
+  if (!a) return { valid: false, error: "Pick an Affix." };
+  const side = sys.side === "defensive" ? "defensive" : "offensive";
+  return { valid: true, label: a.label, rarity: a.rarity, rarityLabel: AFFIX_RARITIES[a.rarity], side, sideLabel: AFFIX_SIDES[side],
+    text: side === "defensive" ? a.shroud : a.foci, foci: a.foci, shroud: a.shroud };
+}
+
+/** The attuned Affix items of one side on an actor: distinct Affix keys (their effects do not stack). */
+export function attunedAffixKeys(actor, side) {
+  return [...new Set(attunedAffixItems(actor, side).map(i => i.system.affix))];
+}
+
+/** The attuned Affix items of one side on an actor. */
+export function attunedAffixItems(actor, side) {
+  return [...(actor?.items ?? [])].filter(i => i.type === "affix" && i.system.attuned && (i.system.side === "defensive" ? "defensive" : "offensive") === side && AFFIXES[i.system.affix]);
+}
+
 const AFFIX_SPEED_PCT = 20;
 
 /** The Affix with doubled effects (Shard, Orb, Band, Keystone): the one picked, else the item's first. */
@@ -100,14 +123,14 @@ function doubledAffix(sys, t, affixes) {
 export const affixMultOf = (profile, key) => (profile?.doubled && profile.doubled === key ? 2 : 1);
 
 /**
- * Speed lost to attuned Affixes (a percentage): every attuned Affix costs 20%, not counting the Free Affixes of the attuned Foci and Shroud
- * (Chime, Cards, Bulwark and Lattice have -1: they act as if an Affix were already attuned).
+ * Speed lost to attuned Affixes (a percentage): every attuned Affix costs 20%, not counting the Free Affixes of the attuned Foci (Offensive ones) and
+ * Shroud (Defensive ones). Chime, Cards, Bulwark and Lattice have -1: they act as if an Affix were already attuned.
+ * `count` = { offensive, defensive } attuned Affixes.
  */
-export function affixSpeedPct(...profiles) {
-  const worn = profiles.filter(p => p?.valid);
-  const count = worn.reduce((n, p) => n + (p.affixes?.length ?? 0), 0);
-  const free = worn.reduce((n, p) => n + (p.freeAffixes ?? 0), 0);
-  return AFFIX_SPEED_PCT * Math.max(0, count - free);
+export function affixSpeedPct(count, foci, shroud) {
+  const free = p => (p?.valid ? p.freeAffixes ?? 0 : 0);
+  const over = (n, f) => Math.max(0, (n ?? 0) - f);
+  return AFFIX_SPEED_PCT * (over(count?.offensive, free(foci)) + over(count?.defensive, free(shroud)));
 }
 
 /** Foci profile. `stats` = { reach, grasp } effective values (or Grade-cap previews). */
@@ -119,7 +142,7 @@ export function fociProfile(sys, stats = {}) {
   const reach = cappedStat(stats.reach ?? 0, grade), grasp = cappedStat(stats.grasp ?? 0, grade);
   const scalingStat = form.stat === "lesser" ? (reach <= grasp ? "reach" : "grasp") : form.stat;
   const scaling = form.stat === "lesser" ? Math.min(reach, grasp) : form.stat === "reach" ? reach : grasp;
-  const affixes = affixList(sys.affixes);
+  const affixes = affixList(sys);
   const doubled = doubledAffix(sys, t, affixes);
   return {
     valid: true,
@@ -130,7 +153,7 @@ export function fociProfile(sys, stats = {}) {
     tr: t.tr ?? form.tr,
     durability: t.dur * grade,
     limit: t.limit * grade,
-    affixLimit: AFFIX_LIMIT, freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
+    freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
     twoHandCast: !!t.twoHandCast, deck: !!t.deck, deckTR: t.deckTR ?? null, deckDraw: t.draw ?? 0, type: sys.fociType,
     // Gauntlet: the first cast uses the higher of Reach and Grasp, the second the lower.
     scalingHigh: Math.max(reach, grasp), scalingLow: Math.min(reach, grasp),
@@ -146,7 +169,7 @@ export function shroudProfile(sys, build = 0) {
   if (!t) return { valid: false, error: "Pick a Shroud type." };
   const grade = Math.max(1, sys.grade || 1);
   const mult = armorMultiplier(build, grade);
-  const affixes = affixList(sys.affixes);
+  const affixes = affixList(sys);
   const doubled = doubledAffix(sys, t, affixes);
   return {
     valid: true,
@@ -156,7 +179,7 @@ export function shroudProfile(sys, build = 0) {
     durability: t.fixedDur ? t.dur : t.dur * mult,
     baseLimit: t.limit * mult,
     limit: t.limit * mult,
-    affixLimit: AFFIX_LIMIT, freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
+    freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
     negator: !!t.negator, placed: t.placed ?? null, fixedDur: !!t.fixedDur, noRegen: !!t.noRegen,
     effect: t.effect
   };

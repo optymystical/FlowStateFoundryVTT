@@ -5,6 +5,7 @@
  */
 import * as spells from "./spells.mjs";
 import { igniteTotal } from "./rules.mjs";
+import { attunedAffixItems } from "./magic.mjs";
 import { post, requestGM, turnKey, setActorFlag, spendEnergy, giveStacks, registerFoci } from "./actions.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
@@ -20,7 +21,14 @@ export function fociItem(actor, fociId) {
 /** Everything a cast needs to remember about its Foci (plain data, it travels on the attack card). */
 export function fociFx(actor, plan, dark = false) {
   const item = fociItem(actor, plan.option?.fociId);
-  if (!item) return null;
+  // Raw Casting has no Foci, but your attuned Offensive Affixes still work on the spell (no doubling, they are not in a Foci).
+  if (!item) {
+    const items = attunedAffixItems(actor, "offensive");
+    if (!items.length || plan.option?.fociId || plan.option?.form !== "raw") return null;
+    const setting = k => items.find(i => i.system.affix === k)?.system;
+    return { id: null, type: "raw", doubled: null, affixes: [...new Set(items.map(i => i.system.affix))], element: setting("tourmaline")?.element ?? "heat", lush: !!globalThis.canvas?.scene?.getFlag?.("flowstate", "lush"),
+      declared: setting("coloredDiamond")?.declared ?? "", opalRange: "targeted", dark: !!dark, scalingMin: Math.floor((plan.scaling ?? 0) / 3) };
+  }
   const p = item.system.profile;
   return { id: item.id, type: p.type ?? item.system.fociType, doubled: p.doubled ?? null, affixes: [...p.affixes], element: item.system.element, lush: !!item.system.lush || !!globalThis.canvas?.scene?.getFlag?.("flowstate", "lush"),
     declared: item.system.declared || "", opalRange: item.system.opalRange || "targeted", dark: !!dark, scalingMin: Math.floor((plan.scaling ?? 0) / 3) };

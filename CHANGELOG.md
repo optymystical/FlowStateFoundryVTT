@@ -2,6 +2,12 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.56.0:** **Affixes are items of their own, and Rip.**
+- **Affix items** (Equipment tab, new item type): a gem with an Offensive and a Defensive form, attuned separately (an hour, not in combat) to one of them. Offensive Affixes work through your attuned Foci and Raw Casting, Defensive ones through your Shroud. Each attuned Affix costs 20% speed past the Free Affixes of the matching Foci (Offensive) or Shroud (Defensive). Tourmaline's element and Colored Diamond's declaration are set on the Affix. Old per-item lists convert automatically when the GM's client loads.
+- **Wizards and Forge:** the New Character and New NPC wizards pick Affixes as their own items with a form (no Foci or Shroud needed); Conjure makes Foci, Shrouds or Affixes.
+- **Shroud ids** renamed to bulwark / mantle / rebuke (old items convert).
+- **Rip** compares the Scaling Stat the caster had (5 or less), as the Magic doc says.
+
 **0.55.0:** **Doc refresh (Rules, Martial, Equipment, Magic, Combos, Mental) and Action List tidy.**
 - **Action List:** Grapple is no longer its own row (it's an option in the Unarmed attack dialog); Reactions sit just above Checks (also in the Token Action HUD).
 - **Rules:** speed rounds down to 5 ft steps; Magic damage also counts as Magical (Agate/Jasper/Obsidian, Prism, Wards, Limit factors); Thrasher grapples need a target your size or smaller; Heave costs double STR min; Impale uses half Pain Threshold; Pure Body doubles with Unstoppable.

@@ -1,7 +1,7 @@
 import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats } from "./rules.mjs";
 import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, fociProfile, shroudProfile, affixMultOf, affixSpeedPct } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile, affixProfile, affixMultOf, affixSpeedPct, attunedAffixKeys, attunedAffixItems } from "./magic.mjs";
 import { penalizedDie } from "./spellfx.mjs";
 import { FORMS, iconProfile, alignmentSpeedPct, alignmentApLoss } from "./mental-rules.mjs";
 
@@ -148,7 +148,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     const trudge = !!this.parent?.getFlag?.("flowstate", "trudge");
     const speedLoss = {
       armor: trudge ? 0 : penalties.speedPct ?? 0,
-      affix: affixSpeedPct(this.foci?.system.profile, this.shroud?.system.profile),
+      affix: affixSpeedPct(attunedAffixCount(this.parent, this.foci, this.shroud), this.foci?.system.profile, this.shroud?.system.profile),
       alignment: alignmentSpeedPct(this.parent?.getFlag?.("flowstate", "alignment"))
     };
     speedLoss.total = sm ? 0 : speedLoss.armor + speedLoss.affix + speedLoss.alignment;
@@ -291,6 +291,40 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
   }
 }
 
+/** Tourmaline's element and Colored Diamond's declaration are set on the Affix itself; the Foci or Shroud it works through reads them from there. */
+function applyAffixSettings(sys, side) {
+  const items = attunedAffixItems(sys.parent?.actor, side);
+  const tourmaline = items.find(i => i.system.affix === "tourmaline");
+  if (tourmaline) sys.element = tourmaline.system.element;
+  const colored = items.find(i => i.system.affix === "coloredDiamond");
+  if (colored) sys.declared = colored.system.declared;
+}
+
+/** How many Affixes are attuned on each side (each costs speed past the Free Affixes): Affix items, plus any still in an attuned Foci/Shroud's old list. */
+function attunedAffixCount(actor, foci, shroud) {
+  const n = side => attunedAffixItems(actor, side).length;
+  return { offensive: n("offensive") + (foci?.system.affixes?.length ?? 0), defensive: n("defensive") + (shroud?.system.affixes?.length ?? 0) };
+}
+
+/** An Affix: a gem attuned on its own to its Offensive form (it works through your Foci and raw casting) or its Defensive form (your Shroud). */
+export class FlowStateAffixData extends foundry.abstract.TypeDataModel {
+  static defineSchema() {
+    return {
+      affix: new f.StringField({ required: true, initial: "quartz", choices: () => Object.fromEntries(Object.entries(AFFIXES).map(([k, v]) => [k, v.label])) }),
+      side: new f.StringField({ required: true, initial: "offensive", choices: () => AFFIX_SIDES }),
+      attuned: new f.BooleanField({ initial: false }),
+      element: new f.StringField({ initial: "heat" }),    // Tourmaline: the specified element
+      declared: new f.StringField({ initial: "" }),       // Colored Diamond: the spell (Offensive) or source type (Defensive) declared
+      description: new f.HTMLField({ initial: "" })
+    };
+  }
+
+  prepareDerivedData() {
+    this.profile = affixProfile(this);
+    this.broken = false;
+  }
+}
+
 /** Magic Foci: attuned (one at a time) and held to cast. */
 export class FlowStateFociData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -319,6 +353,8 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
   }
 
   computeProfile(stats) {
+    this.attached = attunedAffixKeys(this.parent?.actor, "offensive");
+    applyAffixSettings(this, "offensive");
     this.profile = fociProfile(this, stats);
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
@@ -391,6 +427,8 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
 
   /** `owner` is the wearer's system data (for Cistern/Ember/Carapace/Emerald limits). */
   computeProfile(build, owner = null) {
+    this.attached = attunedAffixKeys(this.parent?.actor, "defensive");
+    applyAffixSettings(this, "defensive");
     const p = shroudProfile(this, build);
     if (p.valid) {
       let factor = 1;

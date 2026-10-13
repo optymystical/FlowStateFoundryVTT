@@ -4,7 +4,7 @@
  */
 import { STATS, deriveCharacter } from "./rules.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, weaponProfile, armorProfile } from "./martial.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, AFFIXES } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 import * as creation from "./creation.mjs";
 
@@ -34,11 +34,11 @@ export function evenStats(statPoints) {
 }
 
 /** A fresh slot for any piece of gear: the same slots as the player wizard, plus a grade, a "ready" flag, and plain gear. */
-export function newNpcSlot(kind, grade = NPC_DEFAULTS.grade, items = []) {
+export function newNpcSlot(kind, grade = NPC_DEFAULTS.grade) {
   if (kind === "gear") return { kind, name: "Supplies", quantity: 1, ammoType: "" };
-  const slot = creation.newSlot(kind, ANY_RARITY, items);
+  const slot = creation.newSlot(kind, ANY_RARITY);
   slot.grade = Math.max(1, int(grade));
-  if (kind !== "affix") slot.ready = true;
+  slot.ready = true;
   return slot;
 }
 
@@ -49,7 +49,7 @@ export function normalizeNpcSlot(slot) {
   }
   const s = creation.normalizeSlot(slot, ANY_RARITY);
   s.grade = Math.max(1, int(slot.grade) || 1);
-  if (s.kind !== "affix") s.ready = slot.ready === undefined ? true : slot.ready === true || slot.ready === "true" || slot.ready === "on";
+  s.ready = slot.ready === undefined ? true : slot.ready === true || slot.ready === "true" || slot.ready === "on";
   return s;
 }
 
@@ -77,8 +77,6 @@ export function validate(choice) {
   const size = int(choice.size);
   if (size < 1 || size > 5) errors.push("Size must be from 1 to 5.");
   const items = choice.items ?? [];
-  const targets = creation.affixTargets(items);
-  for (const t of targets) if (t.free < 0) errors.push(`${t.label}: holds at most ${t.slots} Affix${t.slots === 1 ? "" : "es"}.`);
   for (const [n, slot] of items.entries()) {
     const label = `Item ${n + 1}`;
     if (slot.kind !== "gear" && !(int(slot.grade) >= 1)) errors.push(`${label}: Grade must be 1 or more.`);
@@ -88,7 +86,7 @@ export function validate(choice) {
     if (slot.kind === "icon") { if (!FORMS[slot.iconForm]) errors.push(`${label}: pick a Form.`); continue; }
     if (slot.kind === "affix") {
       if (!AFFIXES[slot.affix]) { errors.push(`${label}: pick an Affix.`); continue; }
-      if (!targets.some(t => String(t.index) === slot.target)) errors.push(`${label}: put ${AFFIXES[slot.affix].label} on a Foci or Shroud.`);
+      if (!AFFIX_SIDES[slot.side]) errors.push(`${label}: pick the form ${AFFIXES[slot.affix].label} is attuned to (Offensive or Defensive).`);
       continue;
     }
     const table = slot.kind === "armor" ? ARMOR_MATERIALS : WEAPON_MATERIALS;
@@ -108,21 +106,20 @@ export function validate(choice) {
   return errors;
 }
 
-/** The items an NPC starts with: Unarmed, every picked piece of gear (Affixes go onto their Foci or Shroud) and ammunition for ranged weapons. */
+/** The items an NPC starts with: Unarmed, every picked piece of gear (Affixes are items of their own) and ammunition for ranged weapons. */
 function npcItems(slots, choice = {}) {
   const readyWeapons = slots.filter(s => s.kind === "weapon" && s.ready !== false).length;
   const out = [{
     name: "Unarmed", type: "weapon", img: "icons/skills/melee/unarmed-punch-fist.webp",
     system: { weaponType: "unarmed", weight: "light", material: "", equipped: readyWeapons === 0, secondHand: readyWeapons === 0 }
   }];
-  const affixesOn = index => slots.filter(a => a.kind === "affix" && a.target === String(index) && AFFIXES[a.affix]).map(a => a.affix);
   const ammo = {};
-  for (const [index, slot] of slots.entries()) {
-    if (slot.kind === "affix") continue;
+  for (const slot of slots) {
     const grade = Math.max(1, int(slot.grade) || 1), ready = slot.ready !== false;
+    if (slot.kind === "affix") { if (AFFIXES[slot.affix]) out.push({ name: AFFIXES[slot.affix].label, type: "affix", img: "icons/commodities/gems/gem-faceted-diamond-blue.webp", system: { affix: slot.affix, side: slot.side === "defensive" ? "defensive" : "offensive", attuned: ready } }); continue; }
     if (slot.kind === "gear") { out.push({ name: String(slot.name).trim(), type: "gear", system: { quantity: Math.max(1, int(slot.quantity) || 1), ammoType: slot.ammoType || "" } }); continue; }
-    if (slot.kind === "foci") { out.push({ name: slotName(slot), type: "foci", img: "icons/weapons/wands/wand-gem-purple.webp", system: { fociType: slot.fociType, grade, attuned: ready, equipped: ready, affixes: affixesOn(index) } }); continue; }
-    if (slot.kind === "shroud") { out.push({ name: slotName(slot), type: "shroud", img: "icons/magic/defensive/shield-barrier-glowing-blue.webp", system: { shroudType: slot.shroudType, grade, attuned: ready, affixes: affixesOn(index) } }); continue; }
+    if (slot.kind === "foci") { out.push({ name: slotName(slot), type: "foci", img: "icons/weapons/wands/wand-gem-purple.webp", system: { fociType: slot.fociType, grade, attuned: ready, equipped: ready } }); continue; }
+    if (slot.kind === "shroud") { out.push({ name: slotName(slot), type: "shroud", img: "icons/magic/defensive/shield-barrier-glowing-blue.webp", system: { shroudType: slot.shroudType, grade, attuned: ready } }); continue; }
     if (slot.kind === "icon") { out.push({ name: slotName(slot), type: "icon", img: "icons/magic/holy/yin-yang-balance-symbol.webp", system: { form: slot.iconForm, grade, attuned: ready } }); continue; }
     if (slot.kind === "armor") { out.push({ name: slotName(slot), type: "armor", system: { weight: slot.weight, material: slot.material, grade, equipped: ready } }); continue; }
     const extraTypes = slot.extraTypes ?? [];

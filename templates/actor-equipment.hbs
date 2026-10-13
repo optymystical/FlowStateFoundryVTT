@@ -113,6 +113,28 @@
       </tbody>
     </table>
   </details>
+  <details class="fs-collapse" data-section="affixes" {{#if open.affixes}}open{{/if}}>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Affixes {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="affix" data-tooltip="New Affix"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
+    <p class="hint">{{affixCostNote}}. Offensive Affixes work through your Foci and raw casting, Defensive ones through your Shroud.</p>
+    <table class="fs-table">
+      <thead><tr><th></th><th>Affix</th><th>Form</th><th>Effect</th><th></th></tr></thead>
+      <tbody>
+      {{#each affixes}}
+      <tr data-item-id="{{id}}" class="{{#unless system.attuned}}fs-dim{{/unless}}">
+        <td><button type="button" class="fs-toggle {{#if system.attuned}}on{{/if}}" data-action="toggleField" data-field="attuned" data-tooltip="{{#if system.attuned}}Attuned (click to unattune){{else}}Attune (1 hour, not in combat; costs 20% speed past your Free Affixes){{/if}}"><i class="fa-solid fa-link"></i></button></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a>{{#if profile.valid}} <span class="fs-tag">{{profile.rarityLabel}}</span>{{else}}<div class="fs-sub fs-warn">{{profile.error}}</div>{{/if}}</td>
+        <td>{{#if profile.valid}}{{profile.sideLabel}}{{/if}}</td>
+        <td class="fs-sub">{{#if profile.valid}}{{profile.text}}{{/if}}</td>
+        <td class="fs-row-actions">
+          {{#if ../editable}}<button type="button" data-action="deleteItem" data-tooltip="Drop or delete"><i class="fa-solid fa-trash"></i></button>{{/if}}
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="5" class="hint">No Affixes yet. They are gems attuned on their own (an hour, not in combat), each to its Offensive or Defensive form.</td></tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </details>
   <details class="fs-collapse" data-section="icons" {{#if open.icons}}open{{/if}}>
     <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Icons {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="icon" data-tooltip="New Icon"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
     <table class="fs-table">

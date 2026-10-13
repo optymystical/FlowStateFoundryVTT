@@ -66,6 +66,11 @@ check(d.items.find(i => i.type === "weapon" && i.system.grade === 3), "grade is 
 console.log("== magic gear is any rarity");
 add("foci"); add("shroud"); add("icon"); add("affix");
 v = await view(); console.log("  errors:", v.ctx.errors.join("; ") || "none");
+{ const aff = v.ctx.items.find(i => i.affixSlot); check(aff && aff.sideChoices && aff.readyLabel === "Attuned" && !v.ctx.errors.some(e => /Affix/.test(e)), "an Affix is a gem of its own: no Foci or Shroud needed, picks its form");
+  const built = npc.buildNpcData({ ...w.state, items: [{ kind: "affix", affix: "agate", side: "defensive", ready: true, grade: 1 }] });
+  const gem = built.items.find(i => i.type === "affix"); check(gem && gem.system.affix === "agate" && gem.system.side === "defensive" && gem.system.attuned === true, "NPC Affix item: its form, attuned when ready");
+  const off = npc.buildNpcData({ ...w.state, items: [{ kind: "affix", affix: "agate", side: "offensive", ready: false, grade: 1 }] }).items.find(i => i.type === "affix");
+  check(off.system.attuned === false, "…and not attuned when it isn't ready"); }
 const rar = npc.newNpcSlot("foci"); check(rar && Object.keys(v.ctx.items[6].typeChoices ?? []).length > 0, "Foci types offered");
 
 console.log("== GM only");

@@ -265,8 +265,9 @@ export function planCast(ctx, v) {
 
   // Empower: +100% Power to the bolded effects (Power bonuses are additive).
   // Hematite (Foci Affix): double the Power by spending Health equal to it. Taaffeite: Rituals take half as much Energy.
-  const hematite = !!v.hematite && !!option?.fociId && (ctx.hematiteFoci ?? []).includes(option.fociId);
-  const taaffeite = !!option?.fociId && (ctx.taaffeiteFoci ?? []).includes(option.fociId);
+  const affixKey = option?.fociId ?? (option?.key === "raw" ? "raw" : null);
+  const hematite = !!v.hematite && !!affixKey && (ctx.hematiteFoci ?? []).includes(affixKey);
+  const taaffeite = !!affixKey && (ctx.taaffeiteFoci ?? []).includes(affixKey);
   // Delay (Restoration Arcana T4) also gives +100% Power.
   const empower = applied.filter(a => ["Empower", "Delay"].includes(a.mod.name) || (a.replicates && ["Empower", "Delay"].includes(spellById(a.replicates)?.name))).length;
   const cost = castCost({ base, mods: applied, tr, skillPoints: ctx.skillPoints });

@@ -90,7 +90,7 @@
 
     {{#if is_equipment}}
     <h2>Starting Equipment</h2>
-    <p class="fs-budget">Pick up to <strong>{{rules.items}}</strong> items (<strong>{{slotsLeft}}</strong> left), {{rarityLabel}} or lower, Grade {{rules.grade}}. At most one armor. Each Affix is one pick and goes on a picked Foci or Shroud. Unarmed comes free; each ranged weapon comes with 20 ammunition.</p>
+    <p class="fs-budget">Pick up to <strong>{{rules.items}}</strong> items (<strong>{{slotsLeft}}</strong> left), {{rarityLabel}} or lower, Grade {{rules.grade}}. At most one armor. Each Affix is one pick (a gem attuned to its Offensive or Defensive form; each costs 20% speed past your Free Affixes). Unarmed comes free; each ranged weapon comes with 20 ammunition.</p>
     {{#each items}}
     <div class="fs-wizard-item">
       <header>
@@ -106,7 +106,7 @@
           {{#each typeChoices}}<optgroup label="{{label}}">{{selectOptions options selected=../selected}}</optgroup>{{/each}}</select></div>
         {{else if affixSlot}}
         <div class="fs-field"><label>Affix</label><select name="items.{{index}}.affix">{{selectOptions affixChoices selected=affix}}</select></div>
-        <div class="fs-field"><label>Put it on</label><select name="items.{{index}}.target"><option value="">— Pick a Foci or Shroud —</option>{{selectOptions targetChoices selected=target}}</select></div>
+        <div class="fs-field"><label>Attuned to its</label><select name="items.{{index}}.side">{{selectOptions sideChoices selected=side}}</select></div>
         {{else}}
         {{#unless armor}}
         <div class="fs-field"><label>Type</label><select name="items.{{index}}.type">{{selectOptions @root.weaponTypes selected=type}}</select></div>
@@ -132,7 +132,7 @@
       <button type="button" data-action="addItem" data-kind="foci" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-wand-sparkles"></i> Add Foci</button>
       <button type="button" data-action="addItem" data-kind="shroud" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-ghost"></i> Add Shroud</button>
       <button type="button" data-action="addItem" data-kind="icon" {{#unless canAddMagic}}disabled{{/unless}} data-tooltip="A Mental user's equipment: a Form with a Ward effect"><i class="fa-solid fa-hands-praying"></i> Add Icon</button>
-      <button type="button" data-action="addItem" data-kind="affix" {{#unless canAddAffix}}disabled{{/unless}} data-tooltip="Needs a picked Foci or Shroud with a free Affix slot"><i class="fa-solid fa-gem"></i> Add Affix</button>
+      <button type="button" data-action="addItem" data-kind="affix" {{#unless canAddAffix}}disabled{{/unless}} data-tooltip="A gem attuned on its own, to its Offensive or Defensive form"><i class="fa-solid fa-gem"></i> Add Affix</button>
     </div>
     {{/if}}
 

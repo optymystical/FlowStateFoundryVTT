@@ -1,0 +1,45 @@
+<div class="fs-sheet">
+  <header class="fs-header">
+    <img class="fs-portrait fs-small" src="{{item.img}}" alt="{{item.name}}" data-action="editImage" data-edit="img">
+    <div class="fs-header-main">
+      <input class="fs-name" type="text" name="name" value="{{item.name}}" {{#unless nameEditable}}disabled{{/unless}}>
+      {{#if p.valid}}<div class="fs-subtitle">Affix · {{p.rarityLabel}} · {{p.sideLabel}} form</div>{{/if}}
+    </div>
+  </header>
+
+  {{#if lockedNote}}<p class="fs-locked"><i class="fa-solid fa-lock"></i> {{lockedNote}}</p>{{/if}}
+  <section class="fs-builder">
+    <div class="fs-field"><label>Affix</label>
+      <select name="system.affix" {{#unless editable}}disabled{{/unless}}>
+        {{#each choices}}<optgroup label="{{label}}">{{selectOptions options selected=../system.affix}}</optgroup>{{/each}}
+      </select></div>
+    <div class="fs-field"><label>Attuned to its <small>(Offensive works through your Foci and raw casting, Defensive through your Shroud)</small></label>
+      <select name="system.side" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions sides selected=system.side}}</select></div>
+    <div class="fs-field fs-checks-row">
+      <label><input type="checkbox" name="system.attuned" {{checked system.attuned}} {{#unless stateEditable}}disabled{{/unless}}> Attuned</label>
+    </div>
+    {{#if isTourmaline}}
+    <div class="fs-field"><label>Tourmaline element <small>(can be changed when you rest)</small></label><select name="system.element" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions elements selected=system.element}}</select></div>
+    {{/if}}
+    {{#if isColored}}
+    <div class="fs-field"><label>Colored Diamond {{#if defensive}}source{{else}}spell{{/if}} <small>(declare each turn)</small></label><select name="system.declared" {{#unless stateEditable}}disabled{{/unless}}><option value="">— None —</option>{{selectOptions declareChoices selected=system.declared}}</select></div>
+    {{/if}}
+    <p class="hint">Attuning takes an hour (not in combat). Any number can be attuned; each lowers your speed by 20%, not counting the Free Affixes of your attuned Foci (Offensive) and Shroud (Defensive).</p>
+  </section>
+
+  {{#if p.valid}}
+  <section class="fs-material">
+    <h3>{{p.label}} · {{p.sideLabel}}</h3>
+    <p>{{p.text}}</p>
+  </section>
+  <section class="fs-material">
+    <h3>The other form</h3>
+    <p class="fs-affix-text"><strong>{{otherLabel}}:</strong> {{otherText}}</p>
+  </section>
+  {{/if}}
+
+  <section>
+    <h3>Notes</h3>
+    <textarea name="system.description" rows="4" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+  </section>
+</div>

@@ -35,27 +35,16 @@
   {{/if}}
 
   <section class="fs-affixes">
-    <h3>Affixes <small>{{p.affixes.length}} attached · Free Affixes: {{p.freeAffixes}}</small></h3>
-    <p class="hint">Every attuned Affix lowers your speed by 20%, not counting the Free Affixes of your attuned Foci and Shroud.</p>
-    {{#each slots}}
-    <div class="fs-field"><label>Slot {{n}}</label>
-      <select data-affix-slot="{{n}}" {{#unless ../editable}}disabled{{/unless}}>
-        <option value="">— None —</option>
-        {{#each ../affixChoices}}<optgroup label="{{label}}">{{selectOptions options selected=../value}}</optgroup>{{/each}}
-      </select></div>
-    {{#if info}}<p class="fs-affix-text"><strong>{{info.label}}:</strong> {{info.shroud}}</p>{{/if}}
+    <h3>Affixes <small>{{p.affixes.length}} working here · Free Defensive Affixes: {{p.freeAffixes}}</small></h3>
+    <p class="hint">Affixes are attuned on their own (Equipment tab, Defensive form) and work through your Shroud. Every attuned Affix lowers your speed by 20%, not counting the Free Affixes of your attuned Foci (Offensive) and Shroud (Defensive).</p>
+    {{#each attached}}
+    <p class="fs-affix-text"><strong>{{label}}{{#if doubled}} (doubled){{/if}}:</strong> {{text}}</p>
+    {{else}}<p class="hint">No Defensive Affixes are attuned.</p>
     {{/each}}
     {{#if p.doubles}}{{#if p.affixes.length}}
     <div class="fs-field"><label>Doubled Affix <small>(while attuned, one Defensive Affix has its effects doubled)</small></label>
       <select name="system.doubled" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions doubledChoices selected=p.doubled}}</select></div>
     {{/if}}{{/if}}
-    {{#if hasTourmaline}}
-    <div class="fs-field"><label>Tourmaline element</label><select name="system.element" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions elements selected=system.element}}</select></div>
-    {{/if}}
-    {{#if hasColored}}
-    <div class="fs-field"><label>Colored Diamond source (declare each turn)</label><select name="system.declared" {{#unless stateEditable}}disabled{{/unless}}>
-      <option value="">— None —</option>{{selectOptions sources selected=system.declared}}</select></div>
-    {{/if}}
     {{#if hasEmerald}}
     <div class="fs-field fs-checks-row"><label><input type="checkbox" name="system.lush" {{checked system.lush}} {{#unless stateEditable}}disabled{{/unless}}> In a Lush biome (Emerald)</label></div>
     {{/if}}

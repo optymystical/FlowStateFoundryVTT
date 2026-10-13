@@ -3,15 +3,13 @@
  * next turn (like Build Arcana's Make), Rite makes them permanent, and Alter (the Tenet) changes damage dealt to an object.
  * The Manifest's attack roll is made against yourself; on a hit a "Create" button on the follow-up card asks what to make.
  */
-import { post, requestGM, putSpellEffect, spellEffects, attackerToken, setActorFlag } from "./actions.mjs";
-import * as ab from "./abilities.mjs";
+import { post, requestGM, putSpellEffect, spellEffects, attackerToken, setActorFlag, besideTokenPosition } from "./actions.mjs";
 import * as R from "./mental-rules.mjs";
 import * as conjure from "./conjure.mjs";
-import * as mental from "./mental.mjs";
 import { AFFIXES, FOCI_TYPES, SHROUD_TYPES, AFFIX_LIMIT } from "./magic.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS } from "./martial.mjs";
 import { tierOf } from "./skills.mjs";
-import { MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
+import { mental, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const DialogV2 = () => foundry.applications.api.DialogV2;
@@ -91,14 +89,14 @@ async function deliver(caster, recipient, item, willing) {
   }
   const tok = recipient.getActiveTokens?.()[0] ?? attackerToken(caster);
   const canvas = globalThis.canvas;
-  if (tok && canvas?.grid && canvas.scene) { const gs = canvas.grid.size, d = tok.document; await requestGM("createPile", { sceneId: canvas.scene.id, x: d.x + (d.width ?? 1) * gs, y: d.y, item }); }
+  if (tok && canvas?.grid && canvas.scene) { const at = besideTokenPosition(tok); await requestGM("createPile", { sceneId: canvas.scene.id, x: at.x, y: at.y, item }); }
   else if (recipient.isOwner) await recipient.createEmbeddedDocuments("Item", [item], { flowstateAuto: true });
   else await requestGM("giveItems", { actor: recipient.uuid, items: [item] });
 }
 
 const nowSeconds = () => globalThis.game?.time?.worldTime ?? Date.now() / 1000;
 /** Rite: 2 hours for a Common archetypal item or a Powder/Liquid object, 8 hours for anything more (Uncommon and up, Soft and up). */
-export function riteHours(mode, v) {
+function riteHours(mode, v) {
   const order = ["common", "uncommon", "rare", "veryRare"];
   const rank = r => Math.max(0, order.indexOf(rarityKey(r ?? "common")));
   if (mode === `${ID}:fabricate`) return ["powder", "liquid"].includes(v.mat) ? 2 : 8;

@@ -10,7 +10,7 @@ import * as skills from "./skills.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES, AFFIX_LIMIT } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 
-export const RARITY_ORDER = ["common", "uncommon", "rare", "veryRare"];
+const RARITY_ORDER = ["common", "uncommon", "rare", "veryRare"];
 export const DEFAULT_RULES = { statPoints: 90, items: 4, maxRarity: "uncommon", grade: 10 };
 /** Ammunition given with each starting ranged weapon (per weapon, by its ammo type; at most 100 per type). */
 export const STARTING_AMMO = 20;
@@ -18,7 +18,7 @@ export const DEFAULT_IMG = "icons/svg/mystery-man.svg";
 
 export const emptyStats = () => Object.fromEntries(Object.keys(STATS).map(k => [k, 0]));
 export const statTotal = stats => Object.keys(STATS).reduce((n, k) => n + (Number(stats[k]) || 0), 0);
-export const skillPointsFor = statPoints => Math.floor(statPoints / 3);
+const skillPointsFor = statPoints => Math.floor(statPoints / 3);
 
 const rarityOk = (rarity, max) => RARITY_ORDER.indexOf(rarity) <= RARITY_ORDER.indexOf(max);
 
@@ -53,7 +53,6 @@ export function allowedAffixes(maxRarity) {
 /** Picked Foci/Shrouds that Affixes can go on, with their free Affix slots. */
 export function affixTargets(items) {
   return items.map((slot, index) => ({ slot, index })).filter(({ slot }) => slot.kind === "foci" || slot.kind === "shroud").map(({ slot, index }) => {
-    const t = slot.kind === "foci" ? FOCI_TYPES[slot.fociType] : SHROUD_TYPES[slot.shroudType];
     const used = items.filter(a => a.kind === "affix" && a.target === String(index)).length;
     return { index, slot, slots: AFFIX_LIMIT, free: AFFIX_LIMIT - used, label: `${slotName(slot)} (item ${index + 1})` };
   });

@@ -4,7 +4,7 @@
  */
 import { askImage } from "./pictures.mjs";
 import { STATS } from "./rules.mjs";
-import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, RARITIES, weaponProfile, armorProfile, describeTags } from "./martial.mjs";
+import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile, describeTags } from "./martial.mjs";
 import * as creation from "./creation.mjs";
 import * as npc from "./npc-creation.mjs";
 import * as mentalRules from "./mental-rules.mjs";

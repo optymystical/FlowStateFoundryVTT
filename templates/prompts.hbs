@@ -1,0 +1,19 @@
+<div class="fs-prompts">
+  {{#if none}}
+  <p class="hint">Nothing is waiting on anyone.</p>
+  {{else}}
+  <table class="fs-table">
+    <thead><tr><th>Question</th><th>Waiting on</th><th>About</th><th>Asked by</th><th>For</th><th></th></tr></thead>
+    <tbody>
+      {{#each prompts}}
+      <tr>
+        <td>{{title}}</td><td>{{toName}}</td><td>{{about}}</td><td>{{fromName}}</td><td>{{seconds}} s</td>
+        <td><button type="button" data-action="cancel" data-id="{{id}}"><i class="fa-solid fa-xmark"></i> Cancel</button></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <button type="button" data-action="cancelAll"><i class="fa-solid fa-ban"></i> Cancel all</button>
+  {{/if}}
+  <p class="hint">A question waits until it is answered; there is no timer. Cancelling closes the window for the player and counts as "no". A question asked of someone who goes offline is answered "no" by itself. This list opens by itself when one has waited 30 seconds.</p>
+</div>

@@ -5,10 +5,9 @@
  */
 import * as fx from "./spellfx.mjs";
 import {
-  post, giveStacks, requestGM, requestDamage, damageOutcome, putSpellEffect, setActorFlag, pickSceneTarget, performAttack,
-  attackerToken, tokenDistance, spellEffects, spellForce, turnKey, inActiveCombat, registerElemental, applySpellEffect
+  giveStacks, requestGM, requestDamage, damageOutcome, putSpellEffect, setActorFlag, pickSceneTarget, performAttack, attackerToken, spellEffects, spellForce, turnKey, registerElemental
 } from "./actions.mjs";
-import { applyStacks, igniteTotal, stainTotal, freezeStains, STAIN_VARIANTS } from "./rules.mjs";
+import { applyStacks, igniteTotal, stainTotal, freezeStains } from "./rules.mjs";
 import { DAMAGE_TYPES } from "./rules.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
@@ -190,7 +189,6 @@ export async function afterDamage(ctx) {
   const stainWould = stainEffect ? fx.amountSpec(stainEffect.stack, dealt, power) : 0;
   f.stainMore = stainTotal(c0) > stainWould;
 
-  let energyRemovedAmount = 0, stainsApplied = false;
   for (const e of effects) {
     if (e.at === "hit" || !fx.whenMet(e.when, f)) continue;
     if (e.stack) {
@@ -200,13 +198,12 @@ export async function afterDamage(ctx) {
         const kind = fx.stainKindFor(e.stack.kind, m);
         const line = await giveStacks(target, kind, amount, { outcome: e.stack.where === "target" ? { toHp: 1, armorLoss: 0 } : outcome, caster: attacker });
         if (line) html.push(`<div class="fs-result">${line}</div>`);
-        if (kind === "stain" || kind === "solid") { stainsApplied = true; await trackStain(target, attacker, amount); }
+        if (kind === "stain" || kind === "solid") await trackStain(target, attacker, amount);
       }
     }
     if (e.energy) {
       let amount = fx.amountSpec(e.energy, dealt, power);
       if (m.frostbite) { const r = await roll(`${m.frostbite * power}d12`); rolls.push(r); const fb = applyStacks(r.total, st); amount += fb; html.push(`<div class="fs-notes">Frostbite: +${fb} Energy removed (${m.frostbite * power}d12 = ${r.total})</div>`); }
-      energyRemovedAmount = amount;
       const r = await removeEnergy(target, amount);
       f.energyZeroAfter = r.remaining <= 0;
       html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${r.removed} Energy</strong> (${r.remaining} left).</div>`);

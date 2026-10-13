@@ -7,7 +7,7 @@ import * as R from "./conjure-rules.mjs";
 import * as fx from "./spellfx.mjs";
 import * as A from "./afflictions.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, ARMOR_WEIGHTS, WEIGHTS, RARITIES } from "./martial.mjs";
-import { setActorFlag, post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, rollWeaponAttack, registerConjure, spendPoints, changeEffect, spellEffects, castStacks } from "./actions.mjs";
+import { besideTokenPosition, setActorFlag, post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, rollWeaponAttack, registerConjure, spendPoints, changeEffect, spellEffects, castStacks } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 
@@ -35,15 +35,15 @@ function placement(actor, targets, tile = null) {
   const anchor = tgt ?? attackerToken(actor);
   const canvas = globalThis.canvas;
   if (!anchor || !canvas?.grid || !canvas.scene) return null;
-  const gs = canvas.grid.size, d = anchor.document;
-  return { sceneId: canvas.scene.id, x: d.x + (d.width ?? 1) * gs, y: d.y };
+  const at = besideTokenPosition(anchor);
+  return { sceneId: canvas.scene.id, x: at.x, y: at.y };
 }
 
 /**
  * Pick an empty tile within range on the scene: click it (right-click or Esc cancels). Returns { sceneId, x, y } (top-left), null if cancelled,
  * or undefined when there's no scene to click on. `squares` is the footprint (a size 4 Summon takes 2 × 2).
  */
-export function pickTile(actor, { range = 100, squares = 1, title = "Pick a tile" } = {}) {
+function pickTile(actor, { range = 100, squares = 1, title = "Pick a tile" } = {}) {
   const canvas = globalThis.canvas, src = attackerToken(actor);
   if (!canvas?.grid || !canvas.scene || !src || !canvas.stage?.on) return Promise.resolve(undefined);
   const gs = canvas.grid.size, n = Math.max(1, Math.ceil(squares));
@@ -129,7 +129,7 @@ const field = (label, html) => `<div class="fs-field"><label>${esc(label)}</labe
 const WEAPON_CHOICES = Object.entries(WEAPON_TYPES).filter(([k]) => k !== "unarmed" && k !== "improvised").map(([k, w]) => [k, w.label]);
 
 /** The rarities a Make can use, and the equipment materials of that rarity for a weight. */
-export function makeMaterials(kind, weight, rarities) {
+function makeMaterials(kind, weight, rarities) {
   const table = kind === "armor" ? ARMOR_MATERIALS : WEAPON_MATERIALS;
   return Object.entries(table).filter(([, m]) => m.weights[weight] && rarities.includes(m.rarity)).map(([k, m]) => [k, `${m.label} (${RARITIES[m.rarity]})`]);
 }
@@ -180,7 +180,7 @@ export async function prompt({ actor, plan, profile, mods, values, targets }) {
 }
 
 /** What the cast allows: pool, sizes, Arms, Skin, Creation limits. Pure given its inputs. */
-export function describe({ actor, plan, profile, mods, mult }) {
+function describe({ actor, plan, profile, mods, mult }) {
   const cj = profile.conjure;
   const applied = plan.applied ?? [];
   const arms = applied.filter(a => a.mod.name === "Arm").map(a => a.threshold);
@@ -259,7 +259,7 @@ export function validate(ctx, spec) {
     }
   }
   if (!R.mk3Needs({ mk2: !!ctx.mods["make mk2"], mk3: !!ctx.mods["make mk3"] })) errors.push("Make Mk3 needs Make Mk2 on the same Spell.");
-  for (const [i, t] of ctx.arms.entries()) if (!spec.arms?.[i]) errors.push(`Choose a weapon for Arm ${i + 1}.`);
+  for (const i of ctx.arms.keys()) if (!spec.arms?.[i]) errors.push(`Choose a weapon for Arm ${i + 1}.`);
   return { ok: errors.length === 0, errors };
 }
 

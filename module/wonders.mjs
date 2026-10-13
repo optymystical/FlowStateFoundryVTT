@@ -5,15 +5,18 @@
  * effects on the target that turn into the real effect when their turn starts (`pendingTurnStart`).
  */
 import {
-  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, performAttack, knockbackRow, setGrapple, clearSpellEffects
+  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, knockbackRow, setGrapple, gridFor
 } from "./actions.mjs";
+import { centreDistance } from "./distance.mjs";
 import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
-import { askFor, runOnOwner } from "./charges.mjs";
+import { askFor, runOnOwner, setActRunner } from "./ask.mjs";
 import { resolveForce, applyStacks } from "./rules.mjs";
 import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
-import * as mental from "./mental.mjs";
+/** mental.mjs hands itself over when it loads (`setMental`): the Wonders call into it, and it calls into them. */
+export let mental = null;
+export const setMental = m => { mental = m; };
 
 export const bold = R.bold;
 
@@ -311,7 +314,7 @@ ACTS.weight = async (x, caster, target) => {
 export async function offerTenets(c, acts) {
   for (const x of acts ?? []) {
     if (onceUsed(c.attacker, x.id)) continue;
-    const ans = await askFor(c.attacker, { title: `${x.label} (Tenet)`, ok: `Use ${x.label}`, html: `<p><strong>${esc(x.label)}</strong>: ${esc(x.tip)}.</p><p>${esc(c.attacker.name)}'s ${esc(c.mode?.name ?? "Manifest")} hit ${esc(c.target.name)}. Use it now? (If not, it comes up again the next time it can be used this round.)</p>` });
+    const ans = await askFor(c.attacker, { react: "tenet", title: `${x.label} (Tenet)`, ok: `Use ${x.label}`, html: `<p><strong>${esc(x.label)}</strong>: ${esc(x.tip)}.</p><p>${esc(c.attacker.name)}'s ${esc(c.mode?.name ?? "Manifest")} hit ${esc(c.target.name)}. Use it now? (If not, it comes up again the next time it can be used this round.)</p>` });
     if (ans) await runOnOwner(c.attacker, x);
   }
 }
@@ -444,7 +447,6 @@ export function perennialActs(caster) {
     const key = `${a.uuid}:${d.mode}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    const { name, img, ...rest } = e.toObject ? { name: e.name, ...d } : { name: e.name, ...d };
     out.push({ id: "perennial", label: `Perennial: ${R.modeById(d.mode)?.name ?? "Life Mode"} on ${a.name}`, tip: "Reapply this effect instantly (no attack roll)", cost: `⚡ ${minOf(caster, "pon")}`, caster: caster.uuid, target: a.uuid, effect: { ...d, name: e.name } });
   }
   return out;
@@ -495,7 +497,6 @@ export async function useRedirect(actor) {
     ok: { label: "Redirect", callback: (event, button) => Object.fromEntries(new FormData(button.form).entries()) }, rejectClose: false });
   if (!out) return;
   const e = charges[Number(out.c)] ?? charges[0], d = e.flags.flowstate.spellEffect;
-  const net = (d.kinetic ? d.kinetic : 0);
   let r = null, hit = !!d.enhanced;
   if (!hit) { r = await roll(`1d${actor.system.derived.attackDie}`); hit = r.total >= Number(out.beat); }
   await changeEffect(e, null);
@@ -523,10 +524,10 @@ export const CHARGES = {
 };
 const CHARGE_MODES = Object.fromEntries(Object.entries(CHARGES).map(([k, c]) => [`${c.wonder}:${k}`, k]));
 
-export const isCharge = modeId => modeId in CHARGE_MODES;
+const isCharge = modeId => modeId in CHARGE_MODES;
 
 /** Put a charge of this kind on a target (no attack roll). `free` = from Unbound or Ricochet. */
-export async function placeCharge({ caster, target, kind, power, bstacks = 0, enhanced, choices = {}, mode }) {
+async function placeCharge({ caster, target, kind, power, bstacks = 0, enhanced, choices = {}, mode }) {
   const orderPersist = CHARGES[kind].wonder === "mental-order-dream" && tier(caster, "mental-order-dream") >= 2
     && !spellEffects(target, "charge").some(e => e.flags.flowstate.spellEffect.caster === caster.uuid && e.flags.flowstate.spellEffect.persistent && CHARGES[e.flags.flowstate.spellEffect.charge]?.wonder === "mental-order-dream");
   const sign = choices.sign === "minus" ? "minus" : "plus", size = choices.size === "down" ? "down" : "up";
@@ -603,8 +604,6 @@ export async function consumeCharge(caster, effect) {
     if (out.damage && d.enhanced) lines.push(`The damage becomes ${Number(out.result)} ${signN > 0 ? "+" : "−"} <strong>${10 * n}</strong>${preN ? ` ${signN > 0 ? "+" : "−"} ${Math.abs(preN) * 10} (Preordained × 10)` : ""} = <strong>${Math.max(0, Number(out.result) + signN * 10 * n + preN * 10)}</strong>.`);
     else lines.push(`The result ${Number(out.result)} becomes <strong>${Number(out.result) + signN * n + preN}</strong> (${d.sign === "minus" ? "−" : "+"}${n}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
   } else if (kind === "verdict") {
-    const crit = out.was === "hit";
-    const adj = (crit ? 10 : 5) * (d.sign === "minus" ? -1 : 1);
     lines.push(`The ${out.was === "hit" ? "hit becomes a <strong>crit</strong>" : "crit becomes a <strong>regular hit</strong>"}, and the damage goes ${Number(out.dmg)} → <strong>${Math.max(0, Number(out.dmg) + (out.was === "crit" ? -5 : 5) + preN)}</strong> (${out.was === "hit" ? "+5" : "−5"}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
     if (d.enhanced) lines.push(`Also: the attack gets a stack of ${out.stack === "weak" ? "Weakened" : "Strengthened"}.`);
   } else {
@@ -632,7 +631,7 @@ export async function balance(actor) {
 }
 
 /** After an Order/Chaos Manifest hits: Unbound (Chaos Tenet, on a crit) and Ricochet (Chaos T2) come as buttons. */
-export function chargeActs(c) {
+function chargeActs(c) {
   const a = c.attacker, acts = [];
   const w = R.wonderById(c.mode.wonder);
   const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0 };
@@ -643,10 +642,10 @@ export function chargeActs(c) {
 }
 
 /** Place a Chaos charge by Unbound or copy it by Ricochet. Returns true if it happened. */
-export async function runChargeAct(x, caster, target) {
+async function runChargeAct(x, caster, target) {
   if (x.id === "ricochet") {
     const cost = Math.floor(minOf(caster, "snap") / 2);
-    const tTok = target?.getActiveTokens?.()[0], cTok = globalThis.canvas?.tokens?.placeables?.find(t => t.actor?.uuid === caster.uuid);
+    const cTok = globalThis.canvas?.tokens?.placeables?.find(t => t.actor?.uuid === caster.uuid);
     const reach = x.range === "melee" ? (caster.system.derived?.size?.melee ?? 5) : 100;
     const pool = (globalThis.canvas?.tokens?.placeables ?? []).filter(t => t.actor && t.actor.type !== "pile" && t.actor.uuid !== caster.uuid && t.actor.uuid !== target?.uuid && !t.actor.statuses?.has("dead")
       && (!cTok || globalThis.canvas?.grid) && (!cTok || mentalDistance(cTok, t) <= reach));
@@ -671,7 +670,7 @@ export async function runChargeAct(x, caster, target) {
   }
   return false;
 }
-const mentalDistance = (a, b) => (globalThis.canvas?.grid ? Math.round((Math.max(Math.abs(a.center.x - b.center.x), Math.abs(a.center.y - b.center.y)) / canvas.grid.size) * canvas.grid.distance) : 0);
+const mentalDistance = (a, b) => (globalThis.canvas?.grid ? centreDistance(a.center, b.center, gridFor(canvas.grid)) : 0);
 
 /** Preordained (Order T4): when you finish a rest, roll one of your dodge dice: that is your Preordained Number. */
 export async function afterRest(actor) {
@@ -680,3 +679,4 @@ export async function afterRest(actor) {
   await setActorFlag(actor, "preordained", { n: r.total });
   await post(actor, { title: `${esc(actor.name)} — Preordained`, rolls: [r], body: `<div class="fs-result">${esc(actor.name)}'s Preordained Number is <strong>${r.total}</strong>.</div>` });
 }
+setActRunner(runAct);

@@ -1,22 +1,8 @@
 // Speed: Size maximum, less armor, Affix and Alignment percentages (and what each piece of equipment does to it).
-class Field { constructor(o={}){ Object.assign(this,o); } }
+import { installFoundry } from "./support/foundry.mjs";
 let seq = []; const messages = []; const uuids = new Map();
 let dialog = () => ({ net: 0 });
-globalThis.foundry = {
-  data: { fields: { NumberField: Field, StringField: Field, BooleanField: Field, HTMLField: Field, SchemaField: Field, ObjectField: Field } },
-  abstract: { TypeDataModel: class {} },
-  utils: { escapeHTML: s => s, deepClone: o => structuredClone(o), getProperty: (o,k)=>k.split(".").reduce((a,b)=>a?.[b],o), setProperty: (o,k,v)=>{const p=k.split(".");let c=o;for(const x of p.slice(0,-1))c=c[x]??={};c[p.at(-1)]=v;} },
-  applications: { api: { DialogV2: { prompt: async ({ content }) => dialog(content) } } }
-};
-globalThis.Roll = class { constructor(f){ this.formula=f; } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
-globalThis.ChatMessage = { getSpeaker: ({actor}) => ({ alias: actor.name }),
-  create: async d => { const m = { id: "m"+messages.length, ...d, getFlag: (s,k) => d.flags?.[s]?.[k] }; messages.push(m); return m; } };
-const combat = { id: "C", started: true, round: 1, turn: 0, combatant: null, combatants: [] };
-globalThis.game = { settings: { get: () => false }, messages: { find: fn => messages.find(fn), filter: fn => messages.filter(fn), get: id => messages.find(m=>m.id===id) }, combat,
-  users: { activeGM: { id: "gm" } }, socket: { emit: (...a) => console.log("  socket emit", JSON.stringify(a[1])) }, user: { targets: new Set(), isGM: false }, actors: [] };
-globalThis.ui = { notifications: { warn: m => console.log("  WARN", m), info: m => console.log("  INFO", m), error: m => console.log("  ERR", m) } };
-globalThis.canvas = null;
-globalThis.fromUuid = async u => uuids.get(u); globalThis.fromUuidSync = u => uuids.get(u);
+const { combat } = installFoundry({ roll: () => (seq.length ? seq.shift() : 10), dialog: c => dialog(c), messages, uuids });
 
 const { FlowStateActorData, FlowStateShroudData, FlowStateFociData, FlowStateArmorData } = await import("../../module/data.mjs");
 const actions = await import("../../module/actions.mjs");

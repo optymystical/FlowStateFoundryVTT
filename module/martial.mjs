@@ -5,13 +5,13 @@
 
 export const RARITIES = { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" };
 
-export const TAGS = {
+const TAGS = {
   broad: "Broad", cleave: "Cleave", knockback: "Knockback", fast: "Fast", pierce: "Pierce",
   farstrike: "Farstrike", solitary: "Solitary", bash: "Bash", area: "Area", pepper: "Pepper"
 };
 
 /** Tag rules text from "Flow State - Equipment" (Melee Tags, Ranged Tags). */
-export const TAG_DESCRIPTIONS = {
+const TAG_DESCRIPTIONS = {
   broad: {
     base: "This Weapon's Durability and Limit are twice as high as they normally would be.",
     plus: "Durability and Limit are three times as high instead."
@@ -96,7 +96,7 @@ export const WEAPON_TYPES = {
 };
 
 export const WEIGHTS = { light: { label: "Light", stat: "dex", ap: 2 }, heavy: { label: "Heavy", stat: "str", ap: 3 } };
-export const RELOAD_RP = { fast: 1, average: 2, slow: 3 };
+const RELOAD_RP = { fast: 1, average: 2, slow: 3 };
 export const THROW = {
   bad:     { label: "Bad",     range: 50,  net: -1 },
   average: { label: "Average", range: 100, net: 0 },

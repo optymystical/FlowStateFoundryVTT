@@ -30,13 +30,13 @@ const wonderKind = tree => /\((Dream|Nightmare)\)\s*$/i.exec(tree.name)?.[1]?.to
 const isTenet = e => /^Only active while attuned/i.test(e.text ?? "");
 
 /** "Bloom: …" → { base, enhanced } (the part after "Enhanced:" is what Enhancing adds or changes). */
-export function splitEnhanced(text) {
+function splitEnhanced(text) {
   const m = /\s*\bEnhanced:\s*/.exec(text ?? "");
   return m ? { base: text.slice(0, m.index).trim(), enhanced: text.slice(m.index + m[0].length).trim() } : { base: String(text ?? "").trim(), enhanced: "" };
 }
 
 /** One Wonder parsed from its skill tree: its Modes (with the tier they unlock), Tenet, and abilities/passives. */
-export function parseWonder(tree) {
+function parseWonder(tree) {
   const kind = wonderKind(tree);
   if (!tree || tree.archetype !== "mental" || tree.theory || !kind) return null;
   const name = tree.name.replace(/\s*\((Dream|Nightmare)\)\s*$/i, "");

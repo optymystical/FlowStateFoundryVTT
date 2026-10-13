@@ -10,11 +10,10 @@ import { applyStacks, poolFormula } from "./rules.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
-import * as mental from "./mental.mjs";
-import { askFor, runOnOwner, actorsInPlay } from "./charges.mjs";
+import { askFor, runOnOwner, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
-import { bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = f => new Roll(f).evaluate();
@@ -143,7 +142,7 @@ export async function anyHit({ attacker, target, result, hitKey = null }) {
     if (ta && tb && globalThis.canvas?.grid && tokenDistance(ta, tb) > 100) continue;
     if (onceUsed(a, "infuse")) continue;
     const act = { id: "infuse", label: "Infuse", tip: "Apply one of your Destruction Modes to this hit (not Enhanced, no Fusion), its damage Weakened", cost: "once per round", caster: a.uuid, target: target.uuid };
-    const ans = await askFor(a, { title: "Infuse (Tenet)", ok: "Use Infuse", html: `<p><strong>Infuse</strong>: ${esc(act.tip)}.</p><p>${esc(attacker.name)} hit ${esc(target.name)}. Use it now? (If not, it comes up again the next time a willing character within 100 ft hits something this round.)</p>` });
+    const ans = await askFor(a, { react: "infuse", title: "Infuse (Tenet)", ok: "Use Infuse", html: `<p><strong>Infuse</strong>: ${esc(act.tip)}.</p><p>${esc(attacker.name)} hit ${esc(target.name)}. Use it now? (If not, it comes up again the next time a willing character within 100 ft hits something this round.)</p>` });
     if (ans) await runOnOwner(a, act);
   }
 }
@@ -154,6 +153,7 @@ ACTS.infuse = async (x, caster, target) => {
   if (!mode) return false;
   const power = wonderPowerOf(caster, ids.dest);
   const c = { attacker: caster, target, o: { stacks: -1 }, result: { hit: true, crit: false, critStacks: 0 }, m: { mode: mode.id, power, enhanced: false, range: "ranged", choices: {}, spread: true }, mode, power, enhanced: false, choices: {}, stacks: -1, bs: -1, hit: true, crit: false, now: true };
+  rolled.length = 0;                                                      // only this Mode's dice go on its card, not the last resolution's
   const out = await MODES[mode.id](c);
   await post(caster, { title: `${esc(caster.name)} — Infuse: ${esc(mode.name)}`, rolls: [...rolled], body: `<div class="fs-result">${out}</div>` });
   return true;
@@ -214,7 +214,7 @@ async function serenity({ actor, roll: atk, die, net, targetActor }) {
   }
   const notes = [];
   for (const { caster } of rows) {
-    const ans = await askFor(caster, { title: `${caster.name}: Serenity`, ok: `Use (⚡ ${Math.floor(minOf(caster, "pon") / 2)})`, html: `<p>${esc(actor.name)} makes an attack roll${targetActor ? ` against ${esc(targetActor.name)}` : ""} and one of them is under your Peace Mode. Spend <strong>${Math.floor(minOf(caster, "pon") / 2)}</strong> Energy to make that roll with a stack of Disadvantage (it's rerolled)?</p>` });
+    const ans = await askFor(caster, { react: "serenity", title: `${caster.name}: Serenity`, ok: `Use (⚡ ${Math.floor(minOf(caster, "pon") / 2)})`, html: `<p>${esc(actor.name)} makes an attack roll${targetActor ? ` against ${esc(targetActor.name)}` : ""} and one of them is under your Peace Mode. Spend <strong>${Math.floor(minOf(caster, "pon") / 2)}</strong> Energy to make that roll with a stack of Disadvantage (it's rerolled)?</p>` });
     if (!ans) continue;
     if (!(await mental.pay(caster, { energy: Math.floor(minOf(caster, "pon") / 2) }, "Serenity"))) continue;
     const r = await roll(poolFormula(1, die, net - 1));
@@ -466,7 +466,6 @@ export async function onRollBuffs(ctx) {
 /*  Damage dealt and taken                      */
 /* -------------------------------------------- */
 
-let busy = false;
 const dealDice = async (count, sides, label, notes, sign = 1, bstacks = 0) => { const r = await roll(`${count}d${sides}`); const total = bold(bstacks, r.total); const v = total * sign; notes.push(`${label}: ${sign > 0 ? "+" : "−"}${total} (${count}d${sides}${bstacks ? ` = ${r.total}` : ""})`); return v; };
 const near100 = (a, target) => { const ta = attackerToken(a), tb = target ? attackerToken(target) : null; return !ta || !tb || !globalThis.canvas?.grid || tokenDistance(ta, tb) <= 100; };
 
@@ -479,7 +478,7 @@ async function absolve(holder, notes) {
     if (stacks <= 0) continue;
     let used = 1;
     if (d.enhanced && caster) {
-      const ans = await askFor(caster, { title: `${caster.name}: Absolution on ${holder.name}`, ok: "Consume", html: `<p>${esc(holder.name)} has <strong>${stacks}</strong> Absolution stack${stacks === 1 ? "" : "s"} and is about to deal or take damage. Consume how many (each reduces it by ${5 * d.power})?</p><div class="fs-field"><label>Stacks</label><input type="number" name="n" value="0" min="0" max="${stacks}"></div>` });
+      const ans = await askFor(caster, { react: "absolution", title: `${caster.name}: Absolution on ${holder.name}`, ok: "Consume", html: `<p>${esc(holder.name)} has <strong>${stacks}</strong> Absolution stack${stacks === 1 ? "" : "s"} and is about to deal or take damage. Consume how many (each reduces it by ${5 * d.power})?</p><div class="fs-field"><label>Stacks</label><input type="number" name="n" value="0" min="0" max="${stacks}"></div>` });
       used = Math.max(0, Math.min(stacks, Math.floor(num(ans?.n))));
     }
     if (!used) continue;
@@ -493,7 +492,7 @@ async function absolve(holder, notes) {
 
 /** Damage dealt by `attacker` (if any) to `target` is changed by Wonder effects. Returns { amount, html }. */
 export async function adjust({ attacker, target, amount, type, o = null, crit = false }) {
-  if (busy || amount <= 0) return { amount, html: "" };
+  if (amount <= 0) return { amount, html: "" };
   let n = amount;
   const notes = [], buffs = [];
   if (attacker) {
@@ -511,7 +510,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
       const tn = tenetOf(a);
       if (tn?.id !== "mental-war-nightmare:empower" || !near100(a, target) || !mayHarm(a, target)) continue;           // a Nightmare: never on an ally's damage
       if (await tryOnceCheck(a, "empower")) {
-        const ans = await askFor(a, { title: `${a.name}: Empower`, ok: "Empower", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage${attacker ? ` from ${esc(attacker.name)}` : ""}. Increase it by <strong>${tn.mult}d10</strong>?</p>` });
+        const ans = await askFor(a, { react: "empower", title: `${a.name}: Empower`, ok: "Empower", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage${attacker ? ` from ${esc(attacker.name)}` : ""}. Increase it by <strong>${tn.mult}d10</strong>?</p>` });
         if (ans) { await markUsed(a, "empower"); n += await dealDice(tn.mult, 10, "Empower", notes); buffs.push({ caster: a.uuid, power: tn.mult, mode: null }); }
       }
     }
@@ -521,7 +520,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
       if (tier(caster, ids.war) < 2) continue;
       const cost = Math.floor(minOf(caster, "snap") / 2);
       const power = buffs.find(b => b.caster === caster.uuid)?.power ?? 1;
-      const ans = await askFor(caster, { title: `${caster.name}: Warmonger`, ok: `Warmonger (⚡ ${cost})`, html: `<p>${esc(attacker.name)}'s attack, buffed by your War Mode, deals <strong>${n}</strong> ${esc(type)} damage. Spend <strong>${cost}</strong> Energy to add <strong>${power}d12</strong>?</p>` });
+      const ans = await askFor(caster, { react: "warmonger", title: `${caster.name}: Warmonger`, ok: `Warmonger (⚡ ${cost})`, html: `<p>${esc(attacker.name)}'s attack, buffed by your War Mode, deals <strong>${n}</strong> ${esc(type)} damage. Spend <strong>${cost}</strong> Energy to add <strong>${power}d12</strong>?</p>` });
       if (ans && (await mental.pay(caster, { energy: cost }, "Warmonger"))) n += await dealDice(power, 12, "Warmonger", notes);
     }
     // Pacify (normal) lowers the damage its target deals; Absolution lowers it too.
@@ -541,7 +540,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     const caster = fromU(d.caster);
     const have = caster ? stacksOf(caster).length : 0;
     if (caster && have > 0 && n - cut > 0) {
-      const ans = await askFor(caster, { title: `${caster.name}: Adaptive Skin`, ok: "Adapt", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Spend Adaptation stacks (you have ${have}) for extra damage reduction against ${esc(type)} until your next turn: the first stack gives ${d.power}, the next ${2 * d.power}, then ${3 * d.power}...${d.enhanced ? " (one stack's worth is already counted)" : ""}</p><div class="fs-field"><label>Stacks</label><input type="number" name="n" value="0" min="0" max="${have}"></div>` });
+      const ans = await askFor(caster, { react: "adaptiveSkin", title: `${caster.name}: Adaptive Skin`, ok: "Adapt", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Spend Adaptation stacks (you have ${have}) for extra damage reduction against ${esc(type)} until your next turn: the first stack gives ${d.power}, the next ${2 * d.power}, then ${3 * d.power}...${d.enhanced ? " (one stack's worth is already counted)" : ""}</p><div class="fs-field"><label>Stacks</label><input type="number" name="n" value="0" min="0" max="${have}"></div>` });
       const k = Math.max(0, Math.min(have, Math.floor(num(ans?.n))));
       if (k) {
         const total = bold(d.bstacks, (k + (d.enhanced ? 1 : 0)) * (k + (d.enhanced ? 1 : 0) + 1) / 2 * d.power);
@@ -560,20 +559,20 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     const tn = tenetOf(a);
     if (tn?.id !== "mental-peace-dream:dampen" || !near100(a, target) || n <= 0 || !mayHelp(a, target)) continue;       // a Dream: never to a foe's benefit
     if (!(await tryOnceCheck(a, "dampen"))) continue;
-    const ans = await askFor(a, { title: `${a.name}: Dampen`, ok: "Dampen", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Reduce it by <strong>${tn.mult}d10</strong>?</p>` });
+    const ans = await askFor(a, { react: "dampen", title: `${a.name}: Dampen`, ok: "Dampen", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Reduce it by <strong>${tn.mult}d10</strong>?</p>` });
     if (ans) { await markUsed(a, "dampen"); n -= await dealDice(tn.mult, 10, "Dampen", notes); }
   }
   for (const e of fx(target, "guard")) {
     const d = dataOf(e), caster = fromU(d.caster);
     if (!caster || n <= 0 || caster.uuid === target.uuid) continue;
     const cap = bold(d.bstacks, 15 * d.power);
-    const ans = await askFor(caster, { title: `${caster.name}: Guard`, ok: "Redirect", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Consume a Guard stack to redirect up to <strong>${cap}</strong> of it to yourself${d.enhanced ? " (you take it at the start of your next turn)" : ""}?</p>` });
+    const ans = await askFor(caster, { react: "guard", title: `${caster.name}: Guard`, ok: "Redirect", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Consume a Guard stack to redirect up to <strong>${cap}</strong> of it to yourself${d.enhanced ? " (you take it at the start of your next turn)" : ""}?</p>` });
     if (!ans) continue;
     const moved = Math.min(cap, n);
     n -= moved;
     await changeEffect(e, null);
     if (d.enhanced) await putSpellEffect(caster, { kind: "guardDebt", stack: true, onTargetTurn: true, caster: caster.uuid, name: `Guard debt (${moved})`, amount: moved, dtype: type, description: `Takes ${moved} ${type} damage at the start of their next turn (redirected by Guard).` });
-    else { busy = true; try { await requestDamage(caster, moved, type, 0, null, { silent: true }); } finally { busy = false; } }
+    else await requestDamage(caster, moved, type, 0, null, { silent: true, mentalDone: true });          // redirected damage isn't adjusted a second time
     notes.push(`Guard: ${moved} ${esc(type)} goes to ${esc(caster.name)}${d.enhanced ? " at the start of their next turn" : ""}`);
   }
   // Bloodbond (War T5): the one dealing damage carries a Bloodbond: duplicate part of it onto someone else.
@@ -585,7 +584,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     const ct = attackerToken(caster);
     const cands = (globalThis.canvas?.tokens?.placeables ?? []).filter(t => t.actor && t.actor.type !== "pile" && t.actor.uuid !== target.uuid && t.actor.uuid !== caster.uuid && (!ct || tokenDistance(ct, t) <= reach)).map(t => t.actor);
     if (!cands.length) continue;
-    const ans = await askFor(caster, { title: `${caster.name}: Bloodbond`, ok: "Duplicate", html: `<p>${esc(attacker.name)} deals <strong>${n}</strong> ${esc(type)} damage while Bloodbonded. Duplicate up to <strong>${take}</strong> of it onto another target (a new attack roll)?</p><div class="fs-field"><label>Onto</label><select name="who">${cands.map(a => `<option value="${a.uuid}">${esc(a.name)}</option>`).join("")}</select></div>` });
+    const ans = await askFor(caster, { react: "bloodbond", title: `${caster.name}: Bloodbond`, ok: "Duplicate", html: `<p>${esc(attacker.name)} deals <strong>${n}</strong> ${esc(type)} damage while Bloodbonded. Duplicate up to <strong>${take}</strong> of it onto another target (a new attack roll)?</p><div class="fs-field"><label>Onto</label><select name="who">${cands.map(a => `<option value="${a.uuid}">${esc(a.name)}</option>`).join("")}</select></div>` });
     if (!ans?.who) continue;
     const victim = cands.find(a => a.uuid === ans.who);
     if (!victim) continue;
@@ -618,7 +617,7 @@ TURN_START.push(async actor => {
     const d = dataOf(e);
     await changeEffect(e, null);
     await post(actor, { title: `${esc(actor.name)} — Guard`, body: `<div class="fs-result">${esc(actor.name)} takes the <strong>${d.amount}</strong> ${esc(d.dtype)} damage Guard redirected.</div>` });
-    busy = true; try { await requestDamage(actor, d.amount, d.dtype, 0, null, { silent: true }); } finally { busy = false; }
+    await requestDamage(actor, d.amount, d.dtype, 0, null, { silent: true, mentalDone: true });
   }
 });
 

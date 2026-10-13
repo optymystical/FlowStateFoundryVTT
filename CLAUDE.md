@@ -55,6 +55,9 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `module/wonders.mjs` — Mental Wonders: Mode/ability/Tenet effects (`MODES` registry), charges, pending effects; registers into `mental.mjs`/`actions.mjs`.
 - `module/wonders-b.mjs` — Destruction, Peace, War, Adaptation, Perfection and the damage-adjust pipeline (`adjust`); `module/forging.mjs` — Creation (items via the Create button, Alter). Both register into `wonders.mjs` (`MODES`, `ACTS`, the provider lists).
 - `module/sides.mjs` — pure: `opposed/allied/mayHelp/mayHarm` by token disposition (Friendly vs Hostile; Neutral/tokenless go either way). Every automatic offer that helps "a willing creature" (Block, Shield Toss, Quartz, Adjust, Dampen, Infuse) or hurts a foe (Empower) must check it.
+- `module/reactions.mjs` (pure) — the catalog of popups a player can switch off (flag `autoDecline`, shown in the Action List under Reactions). Every `askFor` spec for a reaction carries `react: "<key>"`; add the key to `REACTIONS` when adding a new popup. `module/ask.mjs` — `askFor`/`runOnOwner`/`answeringUser`: asks a character's player on their own client (charges.mjs re-exports it).
+- `module/relay-guard.mjs` (pure) — `relayAllowed`: what the socket GM relay accepts. A new `GM_ACTIONS` handler that writes data needs a check here (field allow-list) or players could write anything.
+- `module/distance.mjs` (pure) — border/centre distance on square, hex and gridless grids (`tokenDistance` in `actions.mjs` wraps it). `module/placement.mjs` (pure) — spots beside a token on hex/gridless scenes (`landingPosition`, `adjacentSpot`, `besideTokenPosition` in `actions.mjs` use it; square grids keep their cell arithmetic). `snapTopLeft` is the one place that snaps a token position.
 - `module/charges.mjs` — Order/Chaos charges live on rolls: asks the charge's caster (socket) at attack/dodge/other/damage rolls and after an attack resolves (Verdict, Entropy, Balance).
 - `module/areas.mjs` — Area spells: shapes, pure geometry, template placement, Emplace card.
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
@@ -65,7 +68,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `module/sheets.mjs` — actor/item sheets, the Action List (`buildActionList`), `runActionRow`.
 - `module/wizard.mjs` + `creation.mjs` — New Character wizard (GM creates the actor via the relay).
 - `module/integrations.mjs` — Carousel Combat Tracker defaults and a built-in Token Action HUD system integration.
-- `README.md` — player/GM-facing description of every automated rule and the judgment calls. Keep it current.
+- `README.md` — short front page. `CHANGELOG.md` — one short entry per version (newest first). `dev/AUTOMATION.md` — every automated rule and judgment call in detail; update it when a rule changes.
 - `dev/` — not loaded by Foundry: `tests/` (Node harnesses with Foundry mocks), `run-tests.mjs`, `tools/build_trees.py`,
   `docs/` (doc snapshots).
 
@@ -76,7 +79,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
   the exchange is resolved. Every opts key that must survive on the card has to be listed in `EXCHANGE_KEYS`.
   Rows tagged `data-role`/`data-owner` show buttons only to the owner; a new chat message re-renders the card it
   answers (see the `createChatMessage` hook's ref chain — add new flag names there).
-- **GM relay:** players can't update others' documents; use `requestGM(action, payload)` with a handler in `GM_ACTIONS`.
+- **GM relay:** players can't update others' documents; use `requestGM(action, payload)` with a handler in `GM_ACTIONS` and a field check in `relay-guard.mjs`. The GM client runs relayed requests one at a time per creature (`makeQueue`); a handler must not `await` another relayed request for the same creature, or it waits on itself.
 - **Soak order:** parrying weapons → Shroud(s) → armor. Objects absorb at most their remaining Durability.
 - **Distance:** `tokenDistance` measures between token borders (touching = 0 ft).
 - **Weapon trees:** `abilities.weaponFits` — a weapon's main type, plus its extra types with Weapon Master (MT T5).
@@ -86,8 +89,8 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - Run the tests after every change: `cd dev && npm install && npm test` (or `node run-tests.mjs t2 brawling` for a
   subset). Add or update a harness for new behavior. Harnesses use `seq = [...]` to script dice and `dialog = () => ({...})`
   to answer popups.
-- `node --check module/<file>.mjs` catches syntax errors fast.
-- Bump `system.json` `version` (patch for fixes, minor for features) and add a README note with each change.
+- `node --check module/<file>.mjs` catches syntax errors fast. `cd dev && npm run lint` (ESLint, config in `eslint.config.mjs`) catches undefined names and unused code; `npm run check` runs lint and the tests, and is what CI (`.github/workflows/ci.yml`) runs on every push. Keep both clean.
+- Bump `system.json` `version` (patch for fixes, minor for features) and add a short `CHANGELOG.md` entry with each change (and update `dev/AUTOMATION.md` if a rule or judgment call changed).
 - Regenerate skill trees after Martial/Magic doc changes: export the docs to `dev/docs/martial.md` and `magic.md`,
   then `cd dev && npm run trees` (Mental too: export the Mental Rework Test Ground to `dev/docs/mental.md`; the generator leaves out trees with no entries yet). After Combo Spell List changes: export it to `dev/docs/combos.md`, then `npm run combos`
   (generates `module/combos.mjs`; don't hand-edit).
@@ -113,4 +116,6 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - Strengthened/Weakened stacks, from any source (a crit's two, Alignment, an Area spread, Adapt, a Mod, anything on the caster), scale the **bolded** numbers of what they carry, not only damage: Mental Modes (`bold(stacks, n)` in `mental-rules.mjs`; effects that last, Fester, charges and Tenet acts keep `bstacks`; Vice, Quicksand and Momentum are responses that use fresh Power and no stacks) and Magic spell hits (`stackBonus` in `spellHit`/`elemental.mjs`). Spells with no roll use `castStacks(actor, plan)`. Martial has no bolded numbers and is unchanged. Wards ignore Alignment 2 (only Alignment 4 Strengthens them).
 - Mental Alignment is Dream/Nightmare 1-4 (Neutral 0), set with a 1 hour activity, 20% speed a point; Fluidity (T3) swaps the type for half Skill Points × the Alignment number in Energy (0 from Neutral), Equilibrium (T4) is -1 until your next turn. Reverie needs Dream 2 (Enhanced growth: 4); Zealot negates 30 at Nightmare 2+ (Enhanced at 4 also Weakens).
 - Heavy armor has two stealth Disadvantages; Size 1 speed rounds to the nearest 5 ft.
-- Open question: Dragon Lash still doubles total Knockback (user hasn't decided vs. +5×).
+- Wonders and `mental.mjs` don't import each other: `wonders.mjs` exports `mental` and `setMental` (mental.mjs registers itself on load); Mental modules reach it as `import { mental } from "./wonders.mjs"`. Keep the import graph acyclic (the only self-reference is mental.mjs importing itself for that).
+- Dragon Lash doubles total Knockback (a multiplier, not +5×): settled, don't ask again.
+- Alignment 4 gives a Ward's attack roll Advantage, including the Warden/Riposte reflect roll. Neutral tokens count as either side for ally/foe checks. Spirit Sense (Grasp Arcana T4) only stops a Targeted spell's own automatic half stealth against that target; a GM-set Half/Full Stealth status still applies.

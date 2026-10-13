@@ -4,7 +4,7 @@
  */
 
 /** Form / Animate: the point pool is 5 × a multiplier (the Core's Threshold; a Combo's extra baseline Threshold doesn't multiply). */
-export const POINTS_PER_THRESHOLD = 5;
+const POINTS_PER_THRESHOLD = 5;
 
 
 /** The multiplier a cast's base Threshold gives: the whole Threshold for a single Core, one less for a Combo (the partner's baseline). */
@@ -45,7 +45,7 @@ export function naturalWeapon({ weaponType, weight, scaling }) {
   return { weaponType, weight, material: weight === "heavy" ? "iron" : "hardwood", grade: Math.max(1, Math.floor((scaling || 0) / 10)) };
 }
 /** Natural armor (Skin): Threshold 1 = Light, 2 = Medium, 3 = Heavy, 4 = Titanic; Soft Leather's stats for Light/Medium, Copper for Heavy/Titanic. */
-export const SKIN_WEIGHTS = { 1: "light", 2: "medium", 3: "heavy", 4: "titanic" };
+const SKIN_WEIGHTS = { 1: "light", 2: "medium", 3: "heavy", 4: "titanic" };
 export function naturalArmor({ threshold, con }) {
   const weight = SKIN_WEIGHTS[Math.min(4, Math.max(1, Math.floor(threshold || 1)))];
   return { weight, material: weight === "light" || weight === "medium" ? "softLeather" : "copper", grade: Math.max(1, Math.floor((con || 0) / 10)) };
@@ -94,10 +94,6 @@ export function animationStats({ points, category, size, stats = null }) {
 /** The rarities Make can create: Common; Uncommon with Make Mk2; Rare with Mk2 + Mk3 (Archetypal), and the same for non-Archetypal hardness. */
 export function makeRarities({ mk2 = false, mk3 = false }) {
   return mk2 ? (mk3 ? ["common", "uncommon", "rare"] : ["common", "uncommon"]) : ["common"];
-}
-/** Non-Archetypal objects: Powder, Liquid or Soft; Hard with Mk2; Dense with Mk2 + Mk3. */
-export function makeObjectKinds({ mk2 = false, mk3 = false }) {
-  return ["powder", "liquid", "soft", ...(mk2 ? ["hard"] : []), ...(mk2 && mk3 ? ["dense"] : [])];
 }
 /** Make Mk3 needs Make Mk2 on the same Spell. */
 export const mk3Needs = ({ mk2, mk3 }) => !mk3 || mk2;

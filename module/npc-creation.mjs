@@ -3,10 +3,9 @@
  * and gets an unlinked NPC. Pure functions (no Foundry globals) so they're unit-tested; the wizard and the final check use the same logic.
  */
 import { STATS, deriveCharacter } from "./rules.mjs";
-import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, WEAPON_MATERIALS, ARMOR_MATERIALS, weaponProfile, armorProfile } from "./martial.mjs";
+import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
-import * as skills from "./skills.mjs";
 import * as creation from "./creation.mjs";
 
 export const NPC_DEFAULTS = { statPoints: 90, ratio: 3, skillManual: false, skillPoints: 30, grade: 1, size: 3, disposition: -1, ammo: creation.STARTING_AMMO };
@@ -110,7 +109,7 @@ export function validate(choice) {
 }
 
 /** The items an NPC starts with: Unarmed, every picked piece of gear (Affixes go onto their Foci or Shroud) and ammunition for ranged weapons. */
-export function npcItems(slots, choice = {}) {
+function npcItems(slots, choice = {}) {
   const readyWeapons = slots.filter(s => s.kind === "weapon" && s.ready !== false).length;
   const out = [{
     name: "Unarmed", type: "weapon", img: "icons/skills/melee/unarmed-punch-fist.webp",

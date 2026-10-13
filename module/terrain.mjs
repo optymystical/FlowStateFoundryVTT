@@ -13,7 +13,7 @@
  */
 import { requestGM } from "./actions.mjs";
 
-export const TERRAIN = {
+const TERRAIN = {
   rough: { label: "Rough terrain", level: 1, color: "#b8863b", icon: "fa-solid fa-shoe-prints", tip: "+1 AP to move" },
   difficult: { label: "Difficult terrain", level: 2, color: "#8a3f1f", icon: "fa-solid fa-mountain", tip: "+2 AP to move" },
   clear: { label: "Cleared terrain", level: 0, color: "#3a9ec9", icon: "fa-solid fa-broom", tip: "cancels rough and difficult terrain" }
@@ -45,10 +45,10 @@ export function terrainRegionData(kind, { cx, cy, sidePx, name = null, flags = {
 }
 
 /** The terrain kind a region carries, if it is a terrain region. */
-export const kindOf = region => { const k = region?.flags?.flowstate?.terrain; return TERRAIN[k] ? k : null; };
+const kindOf = region => { const k = region?.flags?.flowstate?.terrain; return TERRAIN[k] ? k : null; };
 
 /** The Regions a token is standing in (its own list where Foundry keeps one, else tested by the token's centre). */
-export function regionsOf(token, scene = token?.parent) {
+function regionsOf(token, scene = token?.parent) {
   if (token?.regions) return [...token.regions];
   const w = (token?.width ?? 1) * (scene?.grid?.size ?? 100), h = (token?.height ?? 1) * (scene?.grid?.size ?? 100);
   const p = { x: (token?.x ?? 0) + w / 2, y: (token?.y ?? 0) + h / 2 };
@@ -56,7 +56,7 @@ export function regionsOf(token, scene = token?.parent) {
 }
 
 /** The terrain level for a token from the regions it is in. */
-export const levelFor = token => terrainLevel(regionsOf(token).map(kindOf));
+const levelFor = token => terrainLevel(regionsOf(token).map(kindOf));
 
 /** Bring every token on the scene's `terrainLevel` flag in line with the terrain regions it stands in. GM only. */
 export async function syncTerrain(scene = globalThis.canvas?.scene) {

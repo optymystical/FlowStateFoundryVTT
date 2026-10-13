@@ -11,7 +11,7 @@ import { buildActionList, weaponRows, runActionRow } from "./sheets.mjs";
 /* -------------------------------------------- */
 
 /** Attributes shown on each portrait (paths are relative to actor.system). GMs can still change them in its settings. */
-export const CAROUSEL_ATTRIBUTES = [
+const CAROUSEL_ATTRIBUTES = [
   { attr: "hp.value", icon: "fas fa-heart", units: "HP" },
   { attr: "energy.value", icon: "fas fa-bolt", units: "Energy" },
   { attr: "ap.value", icon: "fas fa-circle", units: "AP" },
@@ -19,7 +19,7 @@ export const CAROUSEL_ATTRIBUTES = [
 ];
 
 /** One line under the name: armor and held weapons. */
-export function carouselDescription(actor) {
+function carouselDescription(actor) {
   if (!actor || actor.type === "pile") return null;
   const armor = actor.items.find(i => i.type === "armor" && i.system.equipped);
   const held = actor.items.filter(i => i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed").map(i => i.name);
@@ -45,7 +45,7 @@ Hooks.once("combat-tracker-dock-init", config => {
 export const TAH_LAYOUT = [
   { id: "combat", name: "Combat", groups: [["act-combat", "Combat"], ["act-parry", "Parry"], ["act-shroud", "Shroud"], ["act-martial", "Martial Theory"]] },
   { id: "magic", name: "Magic", groups: [["act-magic", "Magic"]] },
-  { id: "mental", name: "Mental", groups: [["act-mental", "Mental"]] },
+  { id: "mental", name: "Mental", groups: [["act-mental", "Mental"], ["act-reactions", "Reactions"]] },
   { id: "movement", name: "Movement", groups: [["act-move", "Movement"], ["act-heavy", "Armor"], ["act-medium", "Medium Armor"]] },
   { id: "methods", name: "Methods", groups: [["act-strength", "Strength Methods"], ["act-dex", "Dexterity Methods"], ["act-con", "Constitution Methods"], ["act-grappling", "Grappling Methods"]] },
   { id: "weapons", name: "Weapon Trees", groups: [["act-curved", "Curved Weapons"], ["act-striker", "Striker Weapons"], ["act-assault", "Assault Weapons"], ["act-rapid", "Rapid Weapons"], ["act-swift", "Swift Weapons"]] },
@@ -53,12 +53,12 @@ export const TAH_LAYOUT = [
 ];
 
 /** Stable action id for an Action List row (so HUD customizations survive re-renders). */
-export function rowId(groupKey, row) {
+function rowId(groupKey, row) {
   return [groupKey, row.action, row.op ?? "", row.itemId ?? "", row.rollLabel ?? "", row.grapple ? "g" : ""].join("|");
 }
 
 /** The HUD actions for one actor, grouped by Action List key. */
-export function hudActions(actor) {
+function hudActions(actor) {
   const out = new Map();
   for (const g of buildActionList(actor, weaponRows(actor))) {
     const seen = new Set();

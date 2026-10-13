@@ -11,9 +11,9 @@ const esc = s => (foundry.utils.escapeHTML ?? (x => x))(String(s ?? ""));
 const DialogV2 = () => foundry.applications.api.DialogV2;
 const FP = () => foundry.applications?.apps?.FilePicker?.implementation ?? globalThis.FilePicker;
 
-export const relayEnabled = () => { try { return game.settings.get("flowstate", "playerBrowse") !== false; } catch (err) { return true; } };
-export const uploadRelayEnabled = () => { try { return game.settings.get("flowstate", "playerUpload") !== false; } catch (err) { return true; } };
-export const MAX_UPLOAD = 10 * 1024 * 1024;
+const relayEnabled = () => { try { return game.settings.get("flowstate", "playerBrowse") !== false; } catch (err) { return true; } };
+const uploadRelayEnabled = () => { try { return game.settings.get("flowstate", "playerUpload") !== false; } catch (err) { return true; } };
+const MAX_UPLOAD = 10 * 1024 * 1024;
 const CHUNK = 240 * 1024;
 const ART_DIR = "flowstate-art";
 /** A folder or file name with only letters, digits, dashes, dots and underscores. */

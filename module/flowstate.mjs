@@ -2,9 +2,11 @@ import * as rules from "./rules.mjs";
 import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStatePileData } from "./data.mjs";
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
+import { relayAllowed, relayKey, makeQueue } from "./relay-guard.mjs";
 import * as areas from "./areas.mjs";
 import * as terrain from "./terrain.mjs";
 import { register as registerMovement } from "./movement.mjs";
+import { register as registerPrompts } from "./prompts.mjs";
 import { registerCurrencySettings, register as registerCurrency } from "./currency.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
@@ -20,12 +22,14 @@ import "./mental.mjs";
 import * as gravity from "./gravity.mjs";
 import * as charges from "./charges.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStatePileSheet } from "./sheets.mjs";
+
+const relayQueue = makeQueue();                 // GM relay: one request at a time per creature
 /* -------------------------------------------- */
 /*  Documents                                   */
 /* -------------------------------------------- */
 
 /** Grid squares a token of this creature Size takes (Size 3 = 1). */
-export const tokenSquares = size => ({ 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 }[Math.round(size || 3)] ?? 1);
+const tokenSquares = size => ({ 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 }[Math.round(size || 3)] ?? 1);
 
 class FlowStateActor extends Actor {
   /** New actors start at full HP and Energy. */
@@ -223,6 +227,7 @@ Hooks.once("init", () => {
   actions.GM_ACTIONS.createCharacter = createCharacterForUser;
   actions.GM_ACTIONS.createTerrain = terrain.gmCreate;
   terrain.register();
+  registerPrompts();
   registerCurrency();
   registerMovement();
 
@@ -529,14 +534,24 @@ Hooks.on("createChatMessage", message => {
   if (attackMsg) setTimeout(() => actions.postReadyFollowups(attackMsg), 0);
 });
 
+/** Someone went offline: questions waiting on them are answered "no", and requests waiting on a GM who left are dropped. */
+Hooks.on("userConnected", (user, connected) => {
+  if (connected) return;
+  charges.userLeft(user);
+  if (user.isGM && !game.users.activeGM) actions.dropGMRequests();
+});
+
 /** GM applies damage on behalf of players who don't own the target. */
 Hooks.once("ready", () => {
-  game.socket.on("system.flowstate", async data => {
+  game.socket.on("system.flowstate", async (data, senderId) => {
     if (data?.action === "damageResult") { if (data.to === game.user.id) actions.damageResult(data); return; }
     if (!game.user.isActiveGM) return;
+    if (senderId && !game.users.get(senderId)) return;                       // Foundry names the sender: a request from nobody we know is dropped
     if (data?.action === "browseFiles") return pictures.answerBrowse(data);
     if (data?.action === "uploadChunk") return pictures.receiveUpload(data);
-    await actions.GM_ACTIONS[data?.action]?.(data);
+    if (!Object.prototype.hasOwnProperty.call(actions.GM_ACTIONS, data?.action)) return;                // not a GM request (questions and answers between players go over the same socket)
+    if (!relayAllowed(data?.action, data, actions.GM_ACTIONS)) return console.warn(`flowstate | refused a relayed "${data?.action}" request`, data);
+    await relayQueue(relayKey(data), () => actions.GM_ACTIONS[data.action](data));          // one request at a time per creature, so none reads a number another is about to change
   });
   pictures.listenForBrowse();
   charges.listen();
@@ -884,7 +899,7 @@ Hooks.once("ready", () => {
  * through a token's synthetic actor, which isn't always the same object the open sheet holds.
  */
 const pendingRefresh = new Map();
-export function refreshActorSheets(actor) {
+function refreshActorSheets(actor) {
   const uuid = actor?.uuid;
   if (!uuid || pendingRefresh.has(uuid)) return;
   pendingRefresh.set(uuid, setTimeout(() => {
@@ -901,7 +916,7 @@ export function refreshActorSheets(actor) {
 
 /** Re-render every open actor sheet (for changes that affect other actors' Action Lists, like combat turns). */
 let pendingAll = null;
-export function refreshAllActorSheets() {
+function refreshAllActorSheets() {
   if (pendingAll) return;
   pendingAll = setTimeout(() => {
     pendingAll = null;
@@ -1211,22 +1226,22 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 const changed = (changes, key) => (key in changes ? changes[key] : foundry.utils.getProperty(changes, key));
 
 /** Item types that are held in hands (Foci count as held items too). */
-export const HELD_TYPES = new Set(["weapon", "foci"]);
+const HELD_TYPES = new Set(["weapon", "foci"]);
 
 /** Hands a weapon occupies. Unarmed takes one hand per raised fist; other weapons 1, or 2 if two-handed. */
-export function handsFor(data) {
+function handsFor(data) {
   if (data.weaponType === "unarmed") return (data.equipped ? 1 : 0) + (data.secondHand ? 1 : 0);
   if (!data.equipped) return 0;
   return data.twoHanded ? 2 : 1;
 }
 
 /** Hands occupied by held weapons, optionally ignoring one item. */
-export function handsUsed(actor, excludeId = null) {
+function handsUsed(actor, excludeId = null) {
   return actor.items.reduce((n, i) => (HELD_TYPES.has(i.type) && i.id !== excludeId ? n + handsFor(i.system) : n), 0);
 }
 
 /** Default Unarmed weapon every actor starts with (both fists up). */
-export const UNARMED_ITEM = {
+const UNARMED_ITEM = {
   name: "Unarmed",
   type: "weapon",
   img: "icons/skills/melee/unarmed-punch-fist.webp",

@@ -1,8 +1,7 @@
 import {
-  STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth,
-  objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, igniteTotal, stainTotal, STAIN_VARIANTS
+  STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS
 } from "./rules.mjs";
-import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, soak, weaponProfile, effectiveLimit, DAMAGE_CATEGORY } from "./martial.mjs";
+import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, DAMAGE_CATEGORY } from "./martial.mjs";
 import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
@@ -10,6 +9,9 @@ import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import { planAction, emptyLedger } from "./movement-rules.mjs";
 import { mayHelp } from "./sides.mjs";
+import { borderDistance, gridFor } from "./distance.mjs";
+import { pickSpot, candidateSpots } from "./placement.mjs";
+export { gridFor };
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
@@ -133,7 +135,7 @@ const attackStanceNet = actor => (psyched(actor) ? 1 : 0) - (calmed(actor) ? 1 :
 const spellStealthImmune = (opts, target) => opts?.stealth === "half" && !opts.statusStealth && !!(opts.spell || opts.magicStealth) && ab.treeTier(target, "magic-grasp-arcana") >= 4;
 
 /** The GM-set Half Stealth / Full Stealth statuses: a token with one attacks from that stealth value, on top of whatever its own attack already gives. */
-export const STEALTH_STATUSES = { halfStealth: "half", fullStealth: "full" };
+const STEALTH_STATUSES = { halfStealth: "half", fullStealth: "full" };
 export const GM_ONLY_STATUSES = new Set(Object.keys(STEALTH_STATUSES));
 /**
  * `opts` with the attacker's stealth status applied. Stealth values don't stack: Full beats Half, and Half from the status and Half from the attack itself
@@ -195,7 +197,7 @@ async function consumeDisrupt(actor) {
 export const momentumOf = (target, attacker) => target?.getFlag?.("flowstate", `momentum.${attacker.id}`) ?? { adv: 0, str: 0 };
 
 /** Does this creature suffer any movement penalty (In a Barrel, Longshot T4)? */
-export function movementPenalized(actor) {
+function movementPenalized(actor) {
   const st = actor?.statuses ?? new Set();
   return st.has("prone") || st.has("crouch") || st.has("grappled") || st.has("fishy") || !!actor?.getFlag?.("flowstate", "lockedDown")
     || (actor?.system?.conditions?.slow ?? 0) > 0 || (actor?.system?.movement?.ap ?? 1) > 1;
@@ -219,7 +221,7 @@ function stackLabel(net) {
 }
 
 /** Damage line showing base → final so the Strengthened/Weakened math is visible. */
-export function damageLine(totals, net, type, shots) {
+function damageLine(totals, net, type, shots) {
   const base = totals.reduce((a, b) => a + b, 0);
   const final = totals.reduce((sum, v) => sum + applyStacks(v, net), 0);
   return { final, html: `<div class="fs-result">Damage: ${net ? `${base} → <strong>${final}</strong>` : `<strong>${final}</strong>`} ${DAMAGE_TYPES[type]}${shots > 1 ? ` (${shots} shots)` : ""}</div>
@@ -424,23 +426,15 @@ export function attackerToken(actor) {
   return controlled ?? actor.getActiveTokens?.()[0] ?? null;
 }
 
-/** Grid distance between the closest spaces two tokens occupy (so large creatures measure edge to edge). */
+/** Grid distance between the borders of two tokens (touching = 0 ft), on square, hex and gridless scenes; large and small tokens measure edge to edge. */
 export function tokenDistance(a, b) {
-  // Measured between token borders (two tokens that touch are 0 ft apart), square-grid style: the larger of the
-  // horizontal and vertical gaps. Works for fractional (small) and multi-square (large) tokens alike.
-  const grid = canvas.grid;
+  const grid = gridFor(canvas?.grid);
   const box = t => {
     const d = t.document ?? t;
-    const gs = grid?.size ?? 100;
     const x = d.x ?? (t.center?.x ?? 0), y = d.y ?? (t.center?.y ?? 0);
-    const w = (d.width ?? 0) * gs, h = (d.height ?? 0) * gs;
-    return { x, y, w, h };
+    return { x, y, w: (d.width ?? 0) * grid.size, h: (d.height ?? 0) * grid.size };
   };
-  const A = box(a), B = box(b);
-  const dx = Math.max(0, B.x - (A.x + A.w), A.x - (B.x + B.w));
-  const dy = Math.max(0, B.y - (A.y + A.h), A.y - (B.y + B.h));
-  const px = Math.max(dx, dy);
-  return Math.round((px / (grid?.size ?? 100)) * (grid?.distance ?? 5) * 100) / 100;
+  return borderDistance(box(a), box(b), grid);
 }
 
 /**
@@ -463,28 +457,6 @@ export function checkRange(actor, maxRange, what, tokens = null, from = null) {
 /* -------------------------------------------- */
 /*  Attacks                                     */
 /* -------------------------------------------- */
-
-const damageTypeOptions = Object.entries(DAMAGE_TYPES)
-  .map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
-
-/** Generic attack (no weapon): manual damage formula and type. */
-export async function rollAttack(actor) {
-  if (cantAct(actor, "attack")) return;
-  const opts = await optionsDialog("Attack", `
-    <div class="form-group"><label>Attack name</label><input type="text" name="label" value="Attack"></div>
-    ${netField()}
-    <div class="form-group"><label>Melee</label><input type="checkbox" name="melee"></div>
-    <div class="form-group"><label>Push instead of damage</label><input type="checkbox" name="push"></div>
-    <div class="form-group"><label>Damage formula</label><input type="text" name="damage" placeholder="e.g. 3d12+4"></div>
-    <div class="form-group"><label>Damage type</label><select name="type">${damageTypeOptions}</select></div>
-    ${stacksField("stacks", "Strengthened (+) / Weakened (−) stacks")}
-    <div class="form-group"><label>AP cost</label><input type="number" name="ap" value="2" min="0" step="1"></div>
-    <p class="hint">Target tokens first. Size and Arcane modifiers are applied automatically.</p>`);
-  if (!opts) return;
-  if (opts.melee && !checkRange(actor, actor.system.derived.size.melee, "a melee attack")) return;
-  if (!(await spendAP(actor, opts.ap, "an attack"))) return;
-  return performAttack(actor, { ...opts, physical: opts.type === "physical" || opts.push });
-}
 
 /**
  * Attack with a Martial weapon item. Dialog adapts to the weapon (range bands, throwing, Area, Pepper).
@@ -1186,8 +1158,48 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
 /*  Dropped items (thrown weapons)              */
 /* -------------------------------------------- */
 
+/** Is the scene's grid something other than squares (hexes, or none at all)? Square grids keep their own cell arithmetic below. */
+const offSquare = () => !!(globalThis.canvas?.grid?.isGridless || globalThis.canvas?.grid?.isHexagonal);
+
+/** A token's box on the canvas, { x, y, w, h } in pixels. */
+function rectOf(tok) {
+  const d = tok.document ?? tok, gs = canvas.grid.size;
+  return { x: d.x, y: d.y, w: (d.width ?? 1) * gs, h: (d.height ?? 1) * gs };
+}
+
+/**
+ * A top-left position put on the grid the way Foundry snaps a token of this size: squares round to cells, gridless is left alone, and hexes go
+ * through the grid (the token's own snapping where Foundry offers it, else the hex under its centre).
+ */
+function snapTopLeft(doc, pos) {
+  const grid = canvas.grid, gs = grid.size;
+  if (grid.isGridless) return { x: pos.x, y: pos.y };
+  if (grid.isHexagonal) {
+    try {
+      const snapped = doc?.getSnappedPosition?.(pos) ?? doc?.object?.getSnappedPosition?.(pos);
+      if (snapped && Number.isFinite(snapped.x) && Number.isFinite(snapped.y)) return { x: snapped.x, y: snapped.y };
+    } catch (err) { /* fall back to the hex under the centre */ }
+    const w = (doc?.width ?? 1) * gs, h = (doc?.height ?? 1) * gs;
+    const tl = grid.getTopLeftPoint(grid.getOffset({ x: pos.x + w / 2, y: pos.y + h / 2 }));
+    return { x: tl.x, y: tl.y };
+  }
+  return { x: Math.round(pos.x / gs) * gs, y: Math.round(pos.y / gs) * gs };
+}
+
+/** Where something one space big appears beside a token: its right-hand side on squares, the facing side's nearest free grid spot elsewhere. */
+export function besideTokenPosition(tok) {
+  if (!offSquare()) { const gs = canvas.grid.size, d = tok.document; return { x: d.x + (d.width ?? 1) * gs, y: d.y }; }
+  return landingPosition(tok, null);
+}
+
 /** Top-left pixel position one space from `near`, on the side facing `from` (or beside it). */
 function landingPosition(near, from) {
+  if (offSquare()) {
+    // Hexes and gridless scenes: a spot touching the token on the side facing `from`, snapped the way Foundry snaps a token.
+    const pref = from ? { x: from.center.x - near.center.x, y: from.center.y - near.center.y } : { x: 1, y: 0 };
+    const [first] = candidateSpots(rectOf(near), { w: canvas.grid.size, h: canvas.grid.size }, pref);
+    return snapTopLeft({ width: 1, height: 1 }, first);
+  }
   const gs = canvas.grid.size;
   const d = near.document;
   const w = (d.width ?? 1) * gs, h = (d.height ?? 1) * gs;
@@ -1327,7 +1339,7 @@ export const GM_ACTIONS = {
   async flipBarrier({ sceneId, templateId }) { await areas.flipBarrier(sceneId, templateId); },
   async changeEffect({ uuid, data }) {
     const e = await fromUuid(uuid);
-    if (e) await (data ? e.update(data) : e.delete());
+    if (e?.flags?.flowstate?.spellEffect) await (data ? e.update(data) : e.delete());          // only the system's own effects, never a status or someone's own
   },
   async spellEffect({ target, effect }) {
     const actor = await fromUuid(target);
@@ -1496,7 +1508,7 @@ export async function performAttack(actor, opts) {
 }
 
 /** The Non-Archetypal object a pile is (its first gear item with a Body), or null. */
-export const objectOf = actor => (actor?.type === "pile" ? (actor.items?.find?.(i => i.type === "gear" && i.system?.body > 0) ?? null) : null);
+const objectOf = actor => (actor?.type === "pile" ? (actor.items?.find?.(i => i.type === "gear" && i.system?.body > 0) ?? null) : null);
 
 /**
  * Attacking an object (Rules, Ch8/Ch10): it automatically hits, the attack roll only decides a crit (at or above its Body, or Grade × 10 without one),
@@ -1766,7 +1778,6 @@ async function startExchange(actor, opts, targets) {
  */
 function blockersFor(attacker, target) {
   const out = new Map();
-  const guard = target.getFlag?.("flowstate", "shieldGuard");
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
     const a = tok.actor;
@@ -1828,7 +1839,7 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
   await post(owner, { title: `${esc(owner.name)} — Adjust`, body: `<div class="fs-result">${esc(owner.name)}'s Shield extends over ${esc(entry.name)} for this attack.</div>`,
     flags: { flowstate: { adjustFor: { attackMessage: message.id, index, effect: eff.uuid, owner: owner.uuid } } } });
 }
-export function findAdjust(attackMessageId, index) {
+function findAdjust(attackMessageId, index) {
   return game.messages.filter(m => { const f = m.getFlag("flowstate", "adjustFor"); return f?.attackMessage === attackMessageId && f.index === index; })
     .map(m => m.getFlag("flowstate", "adjustFor").effect);
 }
@@ -1860,7 +1871,7 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
 }
 
 /** The shield guarding this creature from a Shield Toss (Defender T2, "Block for the target"), if it's still usable. */
-export function shieldGuardItem(target) {
+function shieldGuardItem(target) {
   const sg = target?.getFlag?.("flowstate", "shieldGuard");
   if (!sg?.item) return null;
   const sh = syncUuid(sg.item);
@@ -2026,7 +2037,7 @@ export async function clearParries(actor) {
  * What protects `target` from one incoming attack: parrying and Blocking weapons (soak), Brace/Dip reductions, Weakened from
  * Slip Off and Harden, and Shatter. Overshield Strike ignores all of it. Perfect Parry/Block failures drop that weapon.
  */
-export function guardFor(target, o, attackMessageId = null, index = 0) {
+function guardFor(target, o, attackMessageId = null, index = 0) {
   const g = { items: [], riposteItems: [], reductions: [], weaken: [], shatter: false, dip: 0, brace: false, any: false };
   if (o?.overshield || !(o?.melee || !o?.area)) return g;
   const failed = new Set(attackMessageId ? findPerfectFails(attackMessageId, index) : []);
@@ -2290,6 +2301,7 @@ const touches = (a, b) => !overlaps(a, b) && a[0] <= b[0] + b[2] && b[0] <= a[0]
 
 /** Are these two tokens next to each other? */
 function adjacent(a, b) {
+  if (offSquare()) return tokenDistance(a, b) <= (canvas.grid.distance ?? 5) / 2;
   return touches(footprint(a), footprint(b)) || overlaps(footprint(a), footprint(b));
 }
 
@@ -2298,6 +2310,12 @@ function adjacent(a, b) {
  * then the shortest pull. Returns a top-left pixel position, or null if every space is taken.
  */
 function adjacentSpot(anchor, mover, attackerTok, reach) {
+  if (offSquare()) {
+    const g = canvas.grid, box = rectOf(mover);
+    const others = (canvas.tokens?.placeables ?? []).filter(t => t.id !== mover.id && t.id !== anchor.id && t.actor?.type !== "pile").map(rectOf);
+    return pickSpot({ anchor: rectOf(anchor), mover: { w: box.w, h: box.h }, others, from: box, snap: p => snapTopLeft(mover.document, p),
+      inReach: c => attackerTok ? g.measurePath([attackerTok.center, c]).distance <= reach + (g.distance ?? 5) * 0.5 : true });
+  }
   const gs = canvas.grid.size;
   const A = footprint(anchor);
   const [mx, my, mw, mh] = footprint(mover);
@@ -2916,7 +2934,7 @@ function palisadeSpot(tokenDoc, from, wielder, weapon) {
   const dx = wTok.center.x - start.x, dy = wTok.center.y - start.y, len = Math.hypot(dx, dy) || 1;
   const step = { x: (dx / len) * gs, y: (dy / len) * gs };
   // Walk from the start toward the wielder, one grid space at a time, keeping the last snapped spot still outside reach.
-  const snap = c => (canvas.grid.isGridless ? { x: c.x - w / 2, y: c.y - h / 2 } : { x: Math.round((c.x - w / 2) / gs) * gs, y: Math.round((c.y - h / 2) / gs) * gs });
+  const snap = c => snapTopLeft(tokenDoc, { x: c.x - w / 2, y: c.y - h / 2 });
   const outside = tl => canvas.grid.measurePath([wTok.center, { x: tl.x + w / 2, y: tl.y + h / 2 }]).distance > reach;
   let best = { x: from.x, y: from.y };
   for (let i = 1; i < 200; i++) {
@@ -4000,8 +4018,7 @@ function wallHit(a, b) {
 async function moveTokenTopLeft(token, pos) {
   const doc = token.document;
   const gs = canvas.grid.size;
-  let { x, y } = pos;
-  if (!canvas.grid.isGridless) { x = Math.round(x / gs) * gs; y = Math.round(y / gs) * gs; }
+  let { x, y } = snapTopLeft(doc, pos);
   const d = canvas.dimensions;
   x = Math.min(Math.max(x, d.sceneX ?? 0), (d.sceneX ?? 0) + (d.sceneWidth ?? d.width) - (doc.width ?? 1) * gs);
   y = Math.min(Math.max(y, d.sceneY ?? 0), (d.sceneY ?? 0) + (d.sceneHeight ?? d.height) - (doc.height ?? 1) * gs);
@@ -4017,7 +4034,6 @@ async function flyThrown(thrown, dir, feet) {
   const tok = thrown.getActiveTokens?.()[0];
   const dims = globalThis.canvas?.dimensions;
   if (!tok || !dims || !feet) return { moved: false, traveled: feet, wall: false, damage: 0 };
-  const ppf = dims.size / dims.distance;
   const start = tok.center;
   // Emplace barriers are objects: a creature thrown through one damages it and itself (3 × the untraveled feet each, capped by what the
   // other has left), is stopped by it if it holds, and carries on with the leftover distance if it breaks.
@@ -4099,13 +4115,6 @@ export function findShifts(attackMessageId, index) {
     const f = m.getFlag("flowstate", "shift");
     return f?.attackMessage === attackMessageId && f.index === index;
   }).map(m => m.getFlag("flowstate", "shift"));
-}
-
-export function findShift(attackMessageId, index) {
-  return game.messages.find(m => {
-    const f = m.getFlag("flowstate", "shift");
-    return f?.attackMessage === attackMessageId && f.index === index;
-  });
 }
 
 /** Net Advantage for re-rolling this attack now: the original, minus Close Quarters (2) and Shift (1) if used. */
@@ -4251,7 +4260,7 @@ function breathingFree(actor, key, info) {
 async function useBreathing(actor, key) { if (roundKey()) await actor.setFlag("flowstate", `breathing.${key}`, roundKey()); }
 
 /** Why Dash can't be used now ("" if it can). */
-export function dashBlocked(actor) {
+function dashBlocked(actor) {
   const info = ab.dashInfo(actor);
   if (!info) return "Needs Dash (Light Armor T2 in Light armor, or Unarmored T1 with no armor).";
   return "";
@@ -4339,7 +4348,7 @@ async function closeQuarters(message, index, target, entry) {
  * Did the first attack in a chain land? true / false, "pending" while any target hasn't responded,
  * or null when it can't be known (an untargeted attack).
  */
-export function firstHitLanded(sourceMessageId) {
+function firstHitLanded(sourceMessageId) {
   const msg = sourceMessageId ? game.messages.get(sourceMessageId) : null;
   const attack = msg?.getFlag("flowstate", "attack");
   if (!attack) return null;
@@ -4362,7 +4371,7 @@ export function findRiposteDeclined(defenseMessageId) {
  * Is this attack card's exchange fully resolved? Every target has responded, every hit that deals damage has
  * rolled it, and every successful Parry has been answered (Riposte resolved, or passed).
  */
-export function exchangeDone(message, depth = 0) {
+function exchangeDone(message, depth = 0) {
   const attack = message?.getFlag("flowstate", "attack");
   if (!attack) return true;
   if (depth > 10) return true;
@@ -5142,19 +5151,18 @@ const pendingDamage = new Map();
 let damageReq = 0;
 /**
  * Ask the GM to apply damage and wait for what came of it ({ toHp, armorLoss, reduced }: a Ward or a Wonder may have taken some off, and effects that
- * go by the damage dealt need to know). Gives up after two minutes (null).
+ * go by the damage dealt need to know). Waits for the GM (null if they go offline).
  */
 async function askGMDamage(payload) {
   if (game.user.isGM) return summarizeDamage(await GM_ACTIONS.applyDamage(payload));
   if (!game.users.activeGM) return requestGM("applyDamage", payload);
   return askGM("applyDamage", payload);
 }
-/** Run a GM action over the socket and wait for what it answers (null after two minutes, or if it gave nothing). */
+/** Run a GM action over the socket and wait for what it answers (null if the GM goes offline, or if it gave nothing). */
 function askGM(action, payload) {
   const reqId = `${game.user.id}:${++damageReq}`;
   return new Promise(resolve => {
-    const timer = setTimeout(() => { pendingDamage.delete(reqId); resolve(null); }, 120000);
-    pendingDamage.set(reqId, v => { clearTimeout(timer); resolve(v); });
+    pendingDamage.set(reqId, resolve);
     game.socket.emit("system.flowstate", { action, ...payload, reply: { to: game.user.id, reqId } });
   });
 }
@@ -5174,6 +5182,11 @@ export async function wardNegate(target, amount, type, { source = null, attacker
 }
 const summarizeDamage = out => out ? { toHp: out.toHp ?? 0, armorLoss: out.armorLoss ?? 0, reduced: out.reduced ?? 0 } : null;
 /** A client receives the result of damage it asked the GM for. */
+/** The GM went offline: whatever was waiting on them is answered "nothing came of it" (there is no timer on these). */
+export function dropGMRequests() {
+  for (const resolve of pendingDamage.values()) resolve(null);
+  pendingDamage.clear();
+}
 export function damageResult(data) {
   pendingDamage.get(data.reqId)?.(data.result ?? null);
   pendingDamage.delete(data.reqId);
@@ -5200,14 +5213,14 @@ export function ammoRequired() {
 export const AMMO_MAX = 100;
 export const ammoLabel = type => `${WEAPON_TYPES[type]?.label ?? "matching"} ammunition`;
 /** Ammunition items this actor carries for a ranged weapon type. */
-export const ammoStacks = (actor, type) => (actor?.items ?? []).filter(i => i.type === "gear" && type && i.system.ammoType === type);
+const ammoStacks = (actor, type) => (actor?.items ?? []).filter(i => i.type === "gear" && type && i.system.ammoType === type);
 export const ammoCount = (actor, type) => ammoStacks(actor, type).reduce((n, i) => n + (i.system.quantity ?? 0), 0);
 
 /**
  * Reload a ranged weapon up to its magazine (X shots per reload), using only the ammunition of its type needed to fill it
  * (or what's left), so a partly loaded weapon takes less. It can be done any time. Returns the shots loaded (0 = nothing to load).
  */
-export async function loadWeapon(actor, item) {
+async function loadWeapon(actor, item) {
   const w = item.system;
   const need = Math.max(0, (w.magazine ?? 1) - (w.rounds ?? 0));
   if (!need) return 0;
@@ -5507,7 +5520,7 @@ export async function spendEnergy(actor, cost, what = "that") {
 }
 
 /** Give Energy back (in combat), up to the maximum. */
-export async function refundEnergy(actor, amount) {
+async function refundEnergy(actor, amount) {
   if (!amount || !inActiveCombat(actor)) return;
   const e = actor.system.energy;
   await actor.update({ "system.energy.value": Math.min(e.max, e.value + amount) });
@@ -5886,7 +5899,7 @@ export async function endOfTurn(actor) {
 /* -------------------------------------------- */
 
 /** Damage source type for Diamond / Colored Diamond: the weapon type, else the damage type. */
-export function sourceOf(o) {
+function sourceOf(o) {
   if (o?.attackType && WEAPON_TYPES[o.attackType]) return `weapon:${o.attackType}`;
   const item = o?.itemUuid ? syncUuid(o.itemUuid) : null;
   if (item?.type === "weapon") return `weapon:${item.system.weaponType}`;
@@ -5894,7 +5907,7 @@ export function sourceOf(o) {
 }
 
 /** Shrouds protecting this creature: its own melded one (a Ward only protects where it's placed), Wards/Bonds placed on it, Quartz extensions. */
-export function shroudsFor(actor, extra = []) {
+function shroudsFor(actor, extra = []) {
   const out = [];
   const own = actor?.system?.shroud;
   if (own && own.system.shroudType !== "ward") out.push(own);
@@ -5914,7 +5927,7 @@ const hasAffix = (sh, k) => !!sh?.system?.profile?.affixes?.includes(k);
  * One Shroud's soak (no changes made; returns the update to apply).
  * Order: Agate/Jasper/Obsidian negation → Diamond/Alexandrite/Colored Diamond Weakened → Limit (Cleave first, then damage).
  */
-export function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null, halfLimit = false }) {
+function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null, halfLimit = false }) {
   const P = sh.system.profile;
   const lines = [];
   const update = {};
@@ -5995,7 +6008,7 @@ export function musgraviteNegate(actor) {
 }
 
 /** Within this creature's personal melee range? (Unknown positions count as yes.) */
-export function inPersonalMelee(actor, other) {
+function inPersonalMelee(actor, other) {
   const a = attackerToken(actor), b = attackerToken(other);
   if (!a || !b || !globalThis.canvas?.grid) return true;
   return tokenDistance(a, b) <= (actor.system.derived?.size?.melee ?? 5);
@@ -6088,7 +6101,7 @@ export async function shroudTurnStart(actor) {
 /* ---- Shroud reactions: Quartz (extend to an ally), Retort, Riposte / Ruby / Sapphire ---- */
 
 /** Creatures that could extend a Quartz Shroud over this target (the target is within their personal melee range). */
-export function quartzGuards(attacker, target) {
+function quartzGuards(attacker, target) {
   const out = [];
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
@@ -6138,7 +6151,7 @@ export const findRetort = defenseMessageId => game.messages.find(m => m.getFlag(
  * After the Shroud takes damage from an attacker: Riposte Shroud (1 RP, ranged attack for the damage it took),
  * Ruby / Sapphire (free melee attack in your melee range: Ignite / Slow stacks equal to the damage it took).
  */
-export function shroudCounterRows(target, attacker, outcome) {
+function shroudCounterRows(target, attacker, outcome) {
   const sh = target.system?.shroud;
   const took = (outcome.shrouds ?? []).find(x => x.item === sh)?.absorbed ?? 0;
   if (!sh || !took || !attacker) return "";

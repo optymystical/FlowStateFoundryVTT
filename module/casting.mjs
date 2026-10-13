@@ -110,6 +110,8 @@ export function modsHTML(ctx, v, theory, power = 0) {
 function effectHTML(v, power = 0) {
   const e = spells.effectText([v.core1, v.core2].filter(Boolean));
   // Numbers are shown worked out for this cast's Spell Power (highlighted), not the doc's base values.
+  // \u0001 and \u0002 are the markers `scaleText` puts around a highlighted number.
+  // eslint-disable-next-line no-control-regex
   return e ? `<strong>${esc(e.title)}</strong>: ${esc(fx.scaleText(e.text, power, true)).replace(/\u0001/g, "<strong>").replace(/\u0002/g, "</strong>")}${power > 1 ? ` <small class="hint">(Spell Power ${power})</small>` : ""}` : "";
 }
 
@@ -163,7 +165,7 @@ function previewHTML(plan, ctx) {
 }
 
 /** Read the dialog's form into the values planCast() expects. */
-export function valuesFromForm(form) {
+function valuesFromForm(form) {
   const v = {};
   for (const el of form.elements) {
     if (!el.name || el.disabled) continue;
@@ -266,7 +268,7 @@ async function castDialog(actor, ctx) {
 const stripHeader = spells.stripHeader;
 
 /** Cast card: the cost breakdown and the effect text for the GM to resolve (until the spell is automated). */
-export function castCardHTML(actor, plan) {
+function castCardHTML(actor, plan) {
   const names = plan.cores.map(c => c.name).join(" + ");
   const via = esc(plan.option.label);
   const parts = [`${plan.base}`, ...plan.applied.filter(a => a.threshold).map(a => `${esc(a.mod.name)} ${a.threshold}`)].join(" + ");

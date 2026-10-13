@@ -1,22 +1,8 @@
 // Mental Wonders: Life, Death, Order, Chaos, Beyond and Below (their Modes, Tenets and abilities, through the real attack exchange).
-class Field { constructor(o={}){ Object.assign(this,o); } }
+import { installFoundry } from "./support/foundry.mjs";
 let seq = []; const messages = []; const uuids = new Map();
 let dialog = () => ({ net: 0 }); let confirmAnswer = true; let waitAnswer = "ap";
-globalThis.foundry = {
-  data: { fields: { NumberField: Field, StringField: Field, BooleanField: Field, HTMLField: Field, SchemaField: Field, ObjectField: Field } },
-  abstract: { TypeDataModel: class {} },
-  utils: { escapeHTML: s => s, deepClone: o => structuredClone(o), getProperty: (o,k)=>k.split(".").reduce((a,b)=>a?.[b],o), setProperty: (o,k,v)=>{const p=k.split(".");let c=o;for(const x of p.slice(0,-1))c=c[x]??={};c[p.at(-1)]=v;} },
-  applications: { api: { DialogV2: { prompt: async ({ content }) => dialog(content), confirm: async () => confirmAnswer, wait: async () => waitAnswer } } }
-};
-globalThis.Roll = class { constructor(f){ this.formula=f; } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
-globalThis.ChatMessage = { getSpeaker: ({actor}) => ({ alias: actor.name }),
-  create: async d => { const m = { id: "m"+messages.length, ...d, getFlag: (s,k) => m.flags?.[s]?.[k], setFlag: async (s,k,v) => { m.flags ??= {}; (m.flags[s] ??= {})[k] = v; }, update: async u => { for (const [k, v] of Object.entries(u)) foundry.utils.setProperty(m, k, v); } }; messages.push(m); return m; } };
-const combat = { id: "C", started: true, round: 1, turn: 0, combatant: null, combatants: [] };
-globalThis.game = { settings: { get: () => false }, messages: { find: fn => messages.find(fn), filter: fn => messages.filter(fn), get: id => messages.find(m=>m.id===id) }, combat,
-  users: Object.assign([{ id: "gm", isGM: true }], { activeGM: { id: "gm" } }), socket: { emit: (...a) => console.log("  socket emit", JSON.stringify(a[1])) }, user: { targets: new Set(), isGM: false }, actors: [] };
-globalThis.ui = { notifications: { warn: m => console.log("  WARN", m), info: m => console.log("  INFO", m), error: m => console.log("  ERR", m) } };
-globalThis.canvas = null;
-globalThis.fromUuid = async u => uuids.get(u); globalThis.fromUuidSync = u => uuids.get(u);
+const { combat } = installFoundry({ roll: () => (seq.length ? seq.shift() : 10), dialog: c => dialog(c), confirm: () => confirmAnswer, wait: () => waitAnswer, messages, uuids });
 
 const { FlowStateActorData, FlowStateWeaponData, FlowStateShroudData, FlowStateFociData, FlowStateIconData } = await import("../../module/data.mjs");
 const actions = await import("../../module/actions.mjs");
@@ -217,6 +203,12 @@ const rAtk = lastAtk();
 ok2(rAtk?.flags.flowstate.attack.opts.mental?.reflect?.amount === 10, "Enhanced Warden makes an attack at the source for the negated damage");
 seq = [2]; await actions.defend(rAtk, 0, "none");
 ok2(orc.system.hp.value === 422, "…and a hit deals the negated damage to them");
+ok2(rAtk.flags.flowstate.attack.opts.net === 0, "Without Alignment the reflect roll has no Advantage");
+setAlign("nightmare", 4); orc.system.hp.value = 432; hero.system.hp.value = 432; hero.system.rp.value = 6; refresh(); dialog = () => ({ enhance: true }); seq = [20];
+await actions.applyDamage(hero, 10, "physical", { silent: true, shroudCtx: { source: "weapon:bladed", attacker: orc.uuid } });
+const rAtk4 = lastAtk();
+ok2(rAtk4.flags.flowstate.attack.opts.net === 1, "At 4 Nightmare Alignment the Warden's reflect roll gets Advantage too (it is the Ward's attack roll)");
+setAlign("neutral");
 
 console.log("== Zealot and Reverie follow the Alignment number");
 clearAll(hero); aegis.system.form = "zealot"; hero.system.prepareDerivedData(); hero.system.hp.value = 432; hero.system.rp.value = 6; theory(1);

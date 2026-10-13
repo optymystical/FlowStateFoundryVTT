@@ -7,19 +7,18 @@
  * After an attack is answered, `afterResolve` offers Verdict (swap hit and crit), Entropy (an extra roll on a crit) and Balance (Order Tenet).
  * `onDamage` handles damage rolls (Mandate Enhanced, Verdict's damage). `consumeCharge` in wonders.mjs stays as the manual fallback.
  */
+import { askFor, showChoices } from "./ask.mjs";
+export { askFor, runOnOwner, showChoices, answeringUser, everyActor, actorsInPlay, listen, userLeft } from "./ask.mjs";
 import { post, spellEffects, changeEffect, setActorFlag, turnKey, performAttack } from "./actions.mjs";
 import { poolFormula } from "./rules.mjs";
 import { bold } from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
-import { CHARGES, onceUsed, markOnce, tenetOf, runAct } from "./wonders.mjs";
-import { pay } from "./mental.mjs";
+import { CHARGES, onceUsed, markOnce, tenetOf, mental } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
-const DialogV2 = () => foundry.applications.api.DialogV2;
 const minOf = (a, k) => ab.statMinOf(a, k);
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
-const SOCKET = "system.flowstate";
 const half = n => Math.floor(n / 2);
 const pw = d => Math.max(1, Math.floor(Number(d?.power)) || 1);                      // Wonder Power: every bolded number grows with it
 // A bolded number of a charge: its base value times Wonder Power, after the Strengthened/Weakened stacks the Manifest had.
@@ -29,131 +28,18 @@ const sgn = d => sign(d) * bs(d, 1);
 const upDown = d => (d?.size === "down" ? -1 : 1);
 
 /* -------------------------------------------- */
-/*  Asking the caster                           */
-/* -------------------------------------------- */
-
-const formValues = form => {
-  const v = {};
-  for (const el of form.elements) if (el.name && !el.disabled) v[el.name] = el.type === "checkbox" ? el.checked : el.value;
-  return v;
-};
-
-/** Show a small options dialog on this client and return its values (null if closed). */
-export async function showChoices({ title, html, ok = "Use" }) {
-  return DialogV2().prompt({ window: { title }, content: `<div class="fs-cast">${html}</div>`, ok: { label: ok, callback: (event, button) => formValues(button.form) }, rejectClose: false });
-}
-
-/**
- * The user who should answer for this actor: its player (an active non-GM owner, us first if that's us), even when the GM's client is the one running the
- * code (the GM owns everything, so being an owner is not enough); else us if we own it, else the GM.
- */
-export function answeringUser(actor) {
-  const users = globalThis.game?.users;
-  if (!users) return globalThis.game?.user ?? null;
-  // An unlinked token is a copy of its world actor: the player's ownership of the original counts for it too.
-  const base = actor?.token?.baseActor ?? null;
-  const owns = u => !!(actor?.testUserPermission?.(u, "OWNER") || base?.testUserPermission?.(u, "OWNER"));
-  const players = [...users].filter(u => u.active && !u.isGM && owns(u));
-  if (players.length) return players.find(u => u.id === globalThis.game.user?.id) ?? players[0];
-  if (actor?.isOwner) return globalThis.game?.user ?? null;
-  return users.activeGM ?? [...users].find(u => u.isGM && u.active) ?? null;
-}
-
-/**
- * Every creature in play, once each: the actors of the tokens on the scene, plus world actors that have no token there. (An unlinked token is a copy of
- * its world actor, so listing both used to ask the same question twice, the second time of a copy nobody owns.)
- */
-export function everyActor() {
-  const tokenActors = [...new Set((globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(Boolean))];
-  const represented = new Set(tokenActors.map(a => a.token?.baseActor?.id ?? a.id));
-  return [...tokenActors, ...[...(globalThis.game?.actors ?? [])].filter(a => !represented.has(a.id))];
-}
-
-/**
- * The creatures on the scene being played: what a Tenet that watches for "a creature within 100 ft" looks at (Infuse, Empower, Dampen). A character
- * who isn't on the scene can't see the fight, so isn't asked. With no scene at all (no canvas), everyone.
- */
-export function actorsInPlay() {
-  const placeables = globalThis.canvas?.tokens?.placeables;
-  if (!placeables) return everyActor();
-  return [...new Set(placeables.map(t => t.actor).filter(Boolean))];
-}
-
-const pending = new Map();
-let reqCounter = 0;
-
-/**
- * One popup per question on a client: while a dialog is open, the same question (same title and text) asked again, by this client or by another one
- * over the socket, joins it and shares its answer instead of opening a second window. A question asked twice by two clients is shown to one player once.
- */
-const inflight = new Map();
-const questionKey = spec => `${spec?.title ?? ""}|${spec?.html ?? ""}`;
-function askOnce(spec) {
-  const key = questionKey(spec);
-  if (inflight.has(key)) return inflight.get(key);
-  const p = Promise.resolve(showChoices(spec)).finally(() => inflight.delete(key));
-  inflight.set(key, p);
-  return p;
-}
-/** The same ability sent to this client twice within a couple of seconds runs once. */
-const recentRuns = new Map();
-function runOnce(act) {
-  const key = JSON.stringify(act), now = Date.now();
-  for (const [k, t] of recentRuns) if (now - t > 3000) recentRuns.delete(k);
-  if (recentRuns.has(key)) return null;
-  recentRuns.set(key, now);
-  return runAct(act);
-}
-
-/** Ask `actor`'s player to answer a dialog: locally if that's us, over the socket otherwise. Gives up (null) after a minute. */
-export async function askFor(actor, spec) {
-  const user = answeringUser(actor);
-  console.debug(`flowstate | "${spec?.title}" about ${actor?.name} (${actor?.uuid}) asked from ${game.user.name} → answered by ${user?.name ?? "nobody"}`,
-    { owners: [...(globalThis.game?.users ?? [])].filter(u => actor?.testUserPermission?.(u, "OWNER")).map(u => `${u.name}${u.isGM ? " (GM)" : ""}${u.active ? " (online)" : ""}`) });
-  if (!user || user.id === game.user.id) return askOnce(spec);
-  const reqId = `${game.user.id}:${++reqCounter}`;
-  return new Promise(resolve => {
-    const timer = setTimeout(() => { pending.delete(reqId); resolve(null); }, 60000);
-    pending.set(reqId, v => { clearTimeout(timer); resolve(v); });
-    game.socket.emit(SOCKET, { action: "chargeAsk", to: user.id, from: game.user.id, reqId, spec });
-  });
-}
-
-/** Run a button action (an ability or Tenet) as that character's player: here if it's ours, otherwise over the socket. */
-export async function runOnOwner(actor, act) {
-  const user = answeringUser(actor);
-  if (!user || user.id === game.user.id) return runOnce(act);
-  game.socket.emit(SOCKET, { action: "mentalRun", to: user.id, act });
-}
-
-/** Wire the socket (every client answers dialogs addressed to it and receives answers to its own). */
-export function listen() {
-  game.socket.on(SOCKET, async data => {
-    if (data?.action === "chargeAsk" && data.to === game.user.id) {
-      const answer = await askOnce(data.spec);
-      game.socket.emit(SOCKET, { action: "chargeAnswer", to: data.from, reqId: data.reqId, answer });
-    } else if (data?.action === "mentalRun" && data.to === game.user.id) {
-      await runOnce(data.act);
-    } else if (data?.action === "chargeAnswer" && data.to === game.user.id) {
-      pending.get(data.reqId)?.(data.answer ?? null);
-      pending.delete(data.reqId);
-    }
-  });
-}
-
-/* -------------------------------------------- */
 /*  Helpers                                     */
 /* -------------------------------------------- */
 
 /** Overwrite a roll's total (the dice stay as rolled; the card notes say what changed). */
-export function setRollTotal(r, n) {
+function setRollTotal(r, n) {
   try { r._total = n; } catch (err) { /* read-only */ }
   if (r.total !== n) Object.defineProperty(r, "total", { value: n, configurable: true });
   return r;
 }
 
 /** Charges sitting on a creature: [{ effect, d, caster uuid }]. */
-export const chargesOn = (actor, kinds = null) => spellEffects(actor, "charge")
+const chargesOn = (actor, kinds = null) => spellEffects(actor, "charge")
   .map(effect => ({ effect, d: effect.flags.flowstate.spellEffect })).filter(c => !kinds || kinds.includes(c.d.charge));
 
 const byCaster = list => { const m = new Map(); for (const c of list) { const k = c.d.caster; if (!m.has(k)) m.set(k, []); m.get(k).push(c); } return m; };
@@ -197,7 +83,6 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
     const total = roll.total;
     const opt = c => {
       const d = c.d, name = CHARGES[d.charge].label;
-      const preBox = c.d.charge === "decree" || c.d.charge === "mandate" ? (pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> Preordained (${d.sign === "minus" ? "−" : "+"}${pre}, ⚡ ${minOf(caster, "pon")})</label>` : "") : "";
       if (d.charge === "decree") {
         const myMax = type === "attack" ? caster.system.derived.attackDie : type === "dodge" ? 2 * caster.system.derived.dodgeDie : top;
         const base = half(d.enhanced ? myMax : top);
@@ -213,15 +98,14 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
       ${replace.map(c => (pre !== null && c.d.charge === "decree" ? `<div><label><input type="checkbox" name="p:${c.effect.id}"> Decree + Preordained (${c.d.sign === "minus" ? "−" : "+"}${pre}, ⚡ ${minOf(caster, "pon")})</label></div>` : "")).join("")}
       ${mand.map(c => `<div><label class="fs-cast-mod"><input type="checkbox" name="m:${c.effect.id}"> <strong>Mandate</strong> ${c.d.sign === "minus" ? "−" : "+"}${bs(c.d, 1)} to the result${pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> + Preordained (${pre}, ⚡ ${minOf(caster, "pon")})</label>` : ""}</label></div>`).join("")}
       ${control && replace.some(c => c.d.charge !== "decree") ? `<label class="fs-cast-mod"><input type="checkbox" name="control"> <strong>Control</strong> <small>reroll the forced roll once and use the new result</small></label>` : ""}`;
-    const ans = await askFor(caster, { title: `${caster.name}'s charges on ${actor.name}`, html, ok: "Spend" });
+    const ans = await askFor(caster, { react: "charges", title: `${caster.name}'s charges on ${actor.name}`, html, ok: "Spend" });
     if (!ans) continue;
     const used = [];
     let n = roll.total;
     const lines = [];
     const rep = replace.find(c => c.effect.id === ans.replace);
-    let preOn = 0;
     const withPre = c => ans[`p:${c.effect.id}`] && pre !== null ? sign(c.d) * pre : 0;
-    const payPre = async c => { if (!ans[`p:${c.effect.id}`] || pre === null) return false; return pay(caster, { energy: minOf(caster, "pon") }, "Preordained"); };
+    const payPre = async c => { if (!ans[`p:${c.effect.id}`] || pre === null) return false; return mental.pay(caster, { energy: minOf(caster, "pon") }, "Preordained"); };
     if (rep) {
       const d = rep.d;
       if (d.charge === "decree") {
@@ -240,7 +124,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
         if (d.charge === "larceny") await setActorFlag(caster, "stolenRoll", { total: roll.total, type, original: roll.total, from: actor.name, key: turnKey() ?? "ooc" });
         // Enhanced Larceny steals the action itself: for up to a minute the thief can make a copy of that exact attack (their RP, the victim's dice).
         if (d.charge === "larceny" && d.enhanced && type === "attack" && attackOpts) {
-          const { targetActors, ...saved } = attackOpts;
+          const saved = { ...attackOpts }; delete saved.targetActors;
           await setActorFlag(caster, "stolenAction", { from: actor.uuid, fromName: actor.name, label: attackOpts.label || "Attack", opts: saved, cost: Math.max(0, Number(attackOpts.apCost) || 0), until: minuteFromNow() });
           stolenAction = true;
         }
@@ -254,7 +138,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
     for (const c of mand) {
       if (!ans[`m:${c.effect.id}`]) continue;
       const p = (await payPre(c)) ? withPre(c) : 0;
-      n += sgn(c.d) + p; preOn += p;
+      n += sgn(c.d) + p;
       lines.push(`Mandate: the result ${sgn(c.d) > 0 ? "+" : "−"}${bs(c.d, 1)}${p ? `, ${p > 0 ? "+" : "−"}${Math.abs(p)} Preordained` : ""} → <strong>${Math.max(0, n)}</strong>.`);
       used.push(c);
     }
@@ -300,13 +184,12 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
     if (tn?.id !== "mental-order-dream:balance") continue;
     const cur = outcomeOf(atk.total, dodge.total);
     const m = tn.mult ?? 1;
-    const wantUp = who === attacker ? 1 : -1;                                   // the attacker wants a higher result, the defender a lower attack/higher dodge
     const tryOpt = (side, delta) => outcomeOf(atk.total + (side === "atk" ? delta : 0), dodge.total + (side === "dodge" ? delta : 0));
     const myKey = who === attacker ? "atk" : "dodge", oppKey = who === attacker ? "dodge" : "atk";
     const optMine = tryOpt(myKey, m), optOpp = tryOpt(oppKey, -m);
     if (optMine === cur && optOpp === cur) continue;
     if (onceUsed(who, "balance")) continue;
-    const ans = await askFor(who, { title: "Balance", ok: "Use Balance", html: `<p>Balance (once per round): the attack is <strong>${atk.total}</strong> against a dodge of <strong>${dodge.total}</strong> (${cur}).</p>
+    const ans = await askFor(who, { react: "balance", title: "Balance", ok: "Use Balance", html: `<p>Balance (once per round): the attack is <strong>${atk.total}</strong> against a dodge of <strong>${dodge.total}</strong> (${cur}).</p>
       <div class="fs-field"><label>Use it to</label><select name="b"><option value="">— Don't —</option><option value="mine">Add ${m} to your ${who === attacker ? "attack" : "dodge"} result (→ ${optMine})</option><option value="opp">Remove ${m} from the ${who === attacker ? "dodge" : "attack"} result (→ ${optOpp})</option></select></div>` });
     if (!ans?.b) continue;
     await markOnce(who, "balance");
@@ -321,7 +204,7 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
     const c = list[0];
     const pre = preordainedOf(caster);
     const to = res.crit ? "a regular hit" : "a crit";
-    const ans = await askFor(caster, { title: `${caster.name}: Verdict on ${attacker.name}`, ok: "Pass judgment", html: `<p>${esc(attacker.name)}'s attack landed as <strong>${res.crit ? "a crit" : "a regular hit"}</strong> (attack ${atk.total} vs dodge ${dodge.total}). Use Verdict to make it ${to}?</p>
+    const ans = await askFor(caster, { react: "verdict", title: `${caster.name}: Verdict on ${attacker.name}`, ok: "Pass judgment", html: `<p>${esc(attacker.name)}'s attack landed as <strong>${res.crit ? "a crit" : "a regular hit"}</strong> (attack ${atk.total} vs dodge ${dodge.total}). Use Verdict to make it ${to}?</p>
       <div class="fs-field"><label>Damage</label><select name="adj"><option value="1">Add ${bs(c.d, res.crit ? 5 : 10)} damage</option><option value="-1">Remove ${bs(c.d, res.crit ? 5 : 10)} damage</option></select></div>
       ${c.d.enhanced ? `<div class="fs-field"><label>Also give the attack</label><select name="stack"><option value="1">a Strengthened stack</option><option value="-1">a Weakened stack</option></select></div>` : ""}
       ${pre !== null ? `<label class="fs-cast-mod"><input type="checkbox" name="pre"> <strong>Preordained</strong> <small>⚡ ${minOf(caster, "pon")}: ±${pre} more damage</small></label>` : ""}` });
@@ -330,7 +213,7 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
     const sgnV = Number(ans.adj) < 0 ? -1 : 1;
     const dmg = (Number(ans.adj) < 0 ? -1 : 1) * bs(c.d, swapped.crit ? 10 : 5);
     let extra = 0;
-    if (ans.pre && pre !== null && (await pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) extra = sgnV * pre;
+    if (ans.pre && pre !== null && (await mental.pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) extra = sgnV * pre;
     res = { ...swapped, critStacks: swapped.critStacks + (c.d.enhanced ? Number(ans.stack) || 0 : 0) };
     dmgAdjust += dmg + extra;
     const line = `Verdict: ${esc(attacker.name)}'s ${swapped.crit ? "regular hit becomes a <strong>crit</strong>" : "crit becomes a <strong>regular hit</strong>"}, ${sgnV > 0 ? "+" : "−"}${Math.abs(dmg + extra)} damage${c.d.enhanced ? `, and a stack of ${Number(ans.stack) < 0 ? "Weakened" : "Strengthened"}` : ""}.`;
@@ -346,7 +229,7 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
       const c = list[0], d = c.d, delta = bs(d, 3) * upDown(d);
       const control = tier(caster, "mental-chaos-nightmare") >= 4;
       const dodgeDie = target.system.derived.dodgeDie, atkDie = attackDie ?? attacker.system.derived.attackDie;
-      const ans = await askFor(caster, { title: `${caster.name}: Entropy on ${who.name}`, ok: "Spend Entropy", html: `<p>${esc(who.name)} ${role === "attack" ? "would crit" : "would be crit"} (attack ${atk.total} vs dodge ${dodge.total}). Spend Entropy for an additional roll (die size ${delta > 0 ? "+" : "−"}${Math.abs(delta)}${role === "dodge" ? ", dodge dice by half" : ""}${d.enhanced ? ", keeping the original's effects" : ""})?</p>
+      const ans = await askFor(caster, { react: "entropy", title: `${caster.name}: Entropy on ${who.name}`, ok: "Spend Entropy", html: `<p>${esc(who.name)} ${role === "attack" ? "would crit" : "would be crit"} (attack ${atk.total} vs dodge ${dodge.total}). Spend Entropy for an additional roll (die size ${delta > 0 ? "+" : "−"}${Math.abs(delta)}${role === "dodge" ? ", dodge dice by half" : ""}${d.enhanced ? ", keeping the original's effects" : ""})?</p>
         ${role === "attack" ? `<div class="fs-field"><label>The additional roll is</label><select name="how"><option value="redo">The attack redone (replaces it)</option><option value="extra">An extra attack roll (the crit stands)</option></select></div>` : `<p class="hint">It's a new attempt to dodge, which replaces theirs.</p>`}
         ${control ? `<label class="fs-cast-mod"><input type="checkbox" name="control"> <strong>Control</strong> <small>reroll it once and use the new result</small></label>` : ""}` });
       if (!ans) continue;
@@ -416,7 +299,7 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
       ? `<option value="${c.effect.id}">Decree: the damage becomes ${Math.max(0, half(c.d.enhanced ? formulaMax(formula) : top) + sgn(c.d))} (half of ${top}, ${c.d.sign === "minus" ? "−" : "+"}${bs(c.d, 1)})</option>`
       : c.d.charge === "larceny" ? `<option value="${c.effect.id}">Larceny: steal this damage roll, they reroll as ${esc(shiftFormula(formula, bs(c.d, 1) * upDown(c.d)))}</option>`
       : `<option value="${c.effect.id}">Fracture: reroll as ${esc(shiftFormula(formula, 2 * upDown(c.d)))}</option>`;
-    const ans = await askFor(caster, { title: `${caster.name}: charges on ${actor.name}'s damage`, ok: "Spend", html: `<p>${esc(actor.name)} rolled damage (${esc(formula)}): <strong>${totals.join(" + ")}</strong>. Spend your charges?</p>
+    const ans = await askFor(caster, { react: "charges", title: `${caster.name}: charges on ${actor.name}'s damage`, ok: "Spend", html: `<p>${esc(actor.name)} rolled damage (${esc(formula)}): <strong>${totals.join(" + ")}</strong>. Spend your charges?</p>
       ${replace.length ? `<div class="fs-field"><label>Replace the roll</label><select name="replace"><option value="">— Leave it —</option>${replace.map(opt).join("")}</select></div>` : ""}
       ${replace.filter(c => c.d.charge === "decree" && pre !== null).map(c => `<div><label><input type="checkbox" name="p:${c.effect.id}"> Decree + Preordained (${pre}, ⚡ ${minOf(caster, "pon")})</label></div>`).join("")}
       ${mand.map(c => `<div><label class="fs-cast-mod"><input type="checkbox" name="m:${c.effect.id}"> <strong>Mandate</strong> ${c.d.sign === "minus" ? "−" : "+"}${bs(c.d, 10)}${pre !== null ? ` <label><input type="checkbox" name="p:${c.effect.id}"> + Preordained ×10 (${pre * 10}, ⚡ ${minOf(caster, "pon")})</label>` : ""}</label></div>`).join("")}` });
@@ -425,7 +308,7 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
     if (rep) {
       const d = rep.d;
       if (d.charge === "decree") {
-        const p = ans[`p:${rep.effect.id}`] && pre !== null && (await pay(caster, { energy: minOf(caster, "pon") }, "Preordained")) ? sign(d) * pre : 0;
+        const p = ans[`p:${rep.effect.id}`] && pre !== null && (await mental.pay(caster, { energy: minOf(caster, "pon") }, "Preordained")) ? sign(d) * pre : 0;
         const n = Math.max(0, half(top) + sgn(d) + p);
         out.totals = totals.map(() => n);
         out.notes.push(`Decree: the damage roll becomes the static <strong>${n}</strong>.`);
@@ -447,7 +330,7 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
     for (const c of mand) {
       if (!ans[`m:${c.effect.id}`]) continue;
       let n = sgn(c.d) * 10;
-      if (ans[`p:${c.effect.id}`] && pre !== null && (await pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) n += sign(c.d) * pre * 10;
+      if (ans[`p:${c.effect.id}`] && pre !== null && (await mental.pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) n += sign(c.d) * pre * 10;
       out.flat += n;
       out.notes.push(`Mandate: ${n > 0 ? "+" : "−"}${Math.abs(n)} damage.`);
       await changeEffect(c.effect, null);
@@ -491,7 +374,7 @@ export const stolenActionOf = actor => { const s = actor?.getFlag?.("flowstate",
 export async function useStolenAction(actor) {
   const s = stolenActionOf(actor);
   if (!s) { if (actor.getFlag?.("flowstate", "stolenAction")) await setActorFlag(actor, "stolenAction", null); return ui.notifications.info(`${actor.name} has no stolen action (it lasts up to a minute).`); }
-  if (!(await pay(actor, { rp: s.cost }, `the stolen ${s.label}`))) return;
+  if (!(await mental.pay(actor, { rp: s.cost }, `the stolen ${s.label}`))) return;
   const victim = await fromUuid(s.from);
   const targets = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
   await post(actor, { title: `${esc(actor.name)} — Stolen action`, body: `<div class="fs-result">${esc(actor.name)} makes a copy of ${esc(s.fromName)}'s <strong>${esc(s.label)}</strong> (${s.cost} RP), using ${esc(s.fromName)}'s dice.</div>` });

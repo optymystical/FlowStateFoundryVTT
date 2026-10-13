@@ -9,12 +9,12 @@ import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combo
 import { tierOf, isAvailable, treeById } from "./skills.mjs";
 import { fociTR } from "./magic.mjs";
 
-export const MIN_CAST_STAT = 10;
+const MIN_CAST_STAT = 10;
 const SPELL_RE = /^(X\+1|\d+(?:-\d+)?) Threshold, ([^.]*)\.\s*(.*)$/s;
 const ATTACK_TYPES = ["Melee", "Ranged", "Targeted", "Area", "Mixed"];
 
 /** Parse one skill-tree entry into a spell/mod record, or null if it isn't one. */
-export function parseSpellEntry(entry, tree, tier) {
+function parseSpellEntry(entry, tree, tier) {
   const m = SPELL_RE.exec(entry.text ?? "");
   if (!m) return null;
   const tags = m[2].split(",").map(s => s.trim());

@@ -18,7 +18,7 @@ const STEPS = [
 ];
 
 /** World creation rules from settings. */
-export function creationRules() {
+function creationRules() {
   return {
     statPoints: game.settings.get("flowstate", "startingStatPoints"),
     items: game.settings.get("flowstate", "startingItems"),

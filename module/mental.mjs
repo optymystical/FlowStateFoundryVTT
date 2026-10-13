@@ -8,9 +8,9 @@
  * card shows the Mode's numbers worked out for your Wonder Power for the GM to resolve.
  */
 import {
-  post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless,
-  rollD100, turnKey, registerMental, spellEffects, damageOutcome, pickSceneTarget, setGrapple, requestDamage, changeEffect, clearSpellEffects, tokenDistance, attackGuard, guardRows, dodgeNetKnown
+  post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless, rollD100, turnKey, registerMental, spellEffects, pickSceneTarget, setGrapple, requestDamage, changeEffect, tokenDistance, attackGuard, guardRows, dodgeNetKnown
 } from "./actions.mjs";
+import * as self from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
 import * as wondersB from "./wonders-b.mjs";
@@ -36,7 +36,7 @@ const mind = actor => eff(actor, "pon") + eff(actor, "snap") + eff(actor, "will"
 /*  Alignment                                   */
 /* -------------------------------------------- */
 
-export const alignmentOf = actor => R.alignmentState(actor?.getFlag?.("flowstate", "alignment"));
+const alignmentOf = actor => R.alignmentState(actor?.getFlag?.("flowstate", "alignment"));
 const setAlignment = (actor, state) => {
   const st = R.alignmentState(state);
   return setActorFlag(actor, "alignment", st.level || st.equilibrium ? st : null);
@@ -137,7 +137,7 @@ const choicesHTML = (actor, modeId, v) => modeChoices(actor, modeId).map(c => c.
   ? `<div class="fs-field"><label>${esc(c.label)}</label><input type="number" name="choice:${c.name}" value="${Number(v[`choice:${c.name}`]) || 0}" min="0" step="1"></div>`
   : `<div class="fs-field"><label>${esc(c.label)}</label><select name="choice:${c.name}">${Object.entries(c.options).map(([k, l]) => `<option value="${k}" ${v[`choice:${c.name}`] === k ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></div>`).join("");
 
-export function manifestPlan(actor, ctx, v, { free = false } = {}) {
+function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const wobs = ctx.wobs ?? null;
   const mode = R.modeById(v.mode);
   const wonder = mode ? R.wonderById(mode.wonder) : null;
@@ -637,7 +637,7 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
       notes.push(`Premonition: the declared source (${sourceChoices()[d.declared] ?? d.declared}) gets a stack of Weakened, so ${left} becomes ${weak}`);
       left = weak; amount = left;
     }
-    const yes = !!(await charges.askFor(actor, { title: "Premonition", ok: "Consume", html: `<p>Consume a Premonition charge to negate up to <strong>${d.charge}</strong> of the ${left} ${esc(type)} damage?</p>` }));
+    const yes = !!(await charges.askFor(actor, { react: "premonition", title: "Premonition", ok: "Consume", html: `<p>Consume a Premonition charge to negate up to <strong>${d.charge}</strong> of the ${left} ${esc(type)} damage?</p>` }));
     if (!yes) continue;
     const n = Math.min(d.charge, left);
     left -= n;
@@ -672,7 +672,7 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
     if (left <= 0 || ((actor.system.rp?.value ?? 0) < 1 && inActiveCombat(actor))) break;
     const n = Math.min(left, per(uses, false, near));
     const ask = await charges.askFor(actor, {
-      title: `${p.name} Ward`,
+      react: "ward", title: `${p.name} Ward`,
       html: `<p><strong>${left}</strong> ${esc(type)} damage is coming. Spend 1 RP to negate up to <strong>${n}</strong> of it with ${esc(p.name)}?</p>
         ${form.near ? `<label class="fs-cast-mod"><input type="checkbox" name="near" ${near ? "checked" : ""}> The source is within my melee range (${p.amount} instead of ${p.other})</label>` : ""}
         ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${willMin} Energy: ${esc(p.enhance)}</small></label>` : ""}
@@ -729,8 +729,11 @@ async function reflectAttack(actor, kind, amount, type, attackerUuid) {
   if (a && b && globalThis.canvas?.grid) {
     if (tokenDistance(a, b) > reach) return post(actor, { title: `${esc(actor.name)} — ${melee ? "Riposte" : "Warden"}`, body: `<div class="fs-notes">${esc(src.name)} isn't within ${reach} ft: no attack is made.</div>` });
   }
-  await performAttack(actor, { ...baseAttack, label: melee ? "Riposte (Ward)" : "Warden (Ward)", net: melee ? 1 : 0, melee, area: false,
-    notes: [`The ${amount} negated ${type} damage goes to ${src.name} on a hit`], mental: { reflect: { amount, type }, caster: actor.uuid }, targetActors: [src] });
+  // 4 Alignment gives the Ward's attack roll Advantage; in Equilibrium everything dodging it has Disadvantage: the reflect roll is the Ward's attack too.
+  const wfx = R.alignmentWard(alignmentOf(actor), actor.system.icon?.system?.profile?.align);
+  await performAttack(actor, { ...baseAttack, label: melee ? "Riposte (Ward)" : "Warden (Ward)", net: (melee ? 1 : 0) + wfx.net, melee, area: false, dodgeNet: wfx.dodgeNet,
+    notes: [`The ${amount} negated ${type} damage goes to ${src.name} on a hit`, ...(wfx.net > 0 ? [`${R.alignmentLabel(alignmentOf(actor))}: Advantage`] : []), ...(wfx.dodgeNet < 0 ? ["Equilibrium: the target has Disadvantage on their dodge"] : [])],
+    mental: { reflect: { amount, type }, caster: actor.uuid }, targetActors: [src] });
 }
 
 /* -------------------------------------------- */
@@ -910,8 +913,7 @@ async function act(message, i) {
   const done = x.id === "perennial" ? await wonders.runPerennial(x) : await wonders.runAct(x);
   if (done) await post(await fromUuid(x.caster), { title: "Used", body: `<div class="fs-notes">${esc(x.label)}: used.</div>`, flags: { flowstate: { mentalActDone: { card: message.id, i: Number(i) } } } });
 }
-export const usedActs = id => game.messages.filter(m => m.getFlag("flowstate", "mentalActDone")?.card === id).map(m => m.getFlag("flowstate", "mentalActDone").i);
-
+wonders.setMental(self);
 registerMental({ askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,

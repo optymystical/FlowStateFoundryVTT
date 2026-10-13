@@ -2,8 +2,9 @@ import { getCurrencies } from "./currency.mjs";
 import { currencyRows } from "./currency-rules.mjs";
 import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS, OBJECT_DENSITY } from "./rules.mjs";
 import {
-  WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, TAGS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
+  WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
 } from "./martial.mjs";
+import * as reactionRules from "./reactions.mjs";
 import * as actions from "./actions.mjs";
 import * as casting from "./casting.mjs";
 import * as fociEngine from "./foci.mjs";
@@ -26,7 +27,7 @@ import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
 
 /** What an actor's Energy costs are computed from: stats, Skill Points, and held weapons. */
-export function energyContext(actor) {
+function energyContext(actor) {
   const sys = actor.system;
   const weapons = actor.items.filter(i => i.type === "weapon" && i.system.held && i.system.profile?.valid && !i.system.broken)
     .map(i => ({ name: i.name, capped: i.system.profile.capped, unarmed: !!i.system.profile.unarmed }));
@@ -108,7 +109,7 @@ function weaponTreeNote(tree, state) {
 }
 
 /** A tree entry with its Energy cost pulled out into a badge (formula + this actor's value). */
-export function withEnergy(entry, ctx) {
+function withEnergy(entry, ctx) {
   const cost = parseEnergyCost(entry.text);
   if (!cost) return entry;
   return { ...entry, text: stripEnergyCost(entry.text),
@@ -117,11 +118,6 @@ export function withEnergy(entry, ctx) {
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2, ItemSheetV2 } = foundry.applications.sheets;
-
-/** "Fast+, Pierce" style tag list from a profile. */
-export function tagList(tags = {}) {
-  return Object.entries(tags).map(([k, v]) => `${TAGS[k] ?? k}${v === 2 ? "+" : ""}`).join(", ");
-}
 
 /** Tiers whose rules are automated, with where to find them (shown as a badge in the Skills tab). */
 const AUTOMATED = {
@@ -385,7 +381,6 @@ function coreChoices(trees) {
 const collapsedSections = new Map();
 
 /** Everything the character can do right now, grouped, with costs. Each entry reuses a sheet action. */
-const mentalTenet = actor => actor.system?.icon?.system?.tenet || "";
 export function buildActionList(actor, weapons, stats) {
   // Only things that can be clicked to activate belong here: passives, reactions, and info rows are left out.
   return actionGroups(actor, weapons, stats)
@@ -707,8 +702,15 @@ function actionGroups(actor, weapons, stats) {
   if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
   if (psionT >= 4) mentalRows.push({ label: "Aura Sight", detail: "Spot everything in Psion range; doubles Area Manifestations until your next turn", cost: "2 AP + ⚡ half total Mind", action: "auraSight", icon: "fa-solid fa-eye" });
 
+  // Reactions: every popup this character can be asked in someone else's turn, each with a switch to skip it (counts as "no").
+  const reactionList = reactionRules.reactionRows(actor, { tenet: wonders.tenetOf(actor)?.id?.split(":")[1] ?? "", iconKind: actor.system.icon?.system.profile?.kind ?? "",
+    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, tier: w => skills.tierOf(sys.trees, w) });
+  const reactionRows = reactionList.map(r => ({ label: `${r.label}: ${r.off ? "skipped" : "asked"}`, detail: `${r.tip} ${r.off ? "You are not asked: it counts as no." : "A popup asks you when it comes up."}`,
+    cost: r.off ? "Click to ask again" : "Click to skip", action: "martial", op: `reaction:${r.key}`, icon: r.off ? "fa-solid fa-bell-slash" : "fa-solid fa-bell" }));
+
   return [
     { key: "act-combat", name: "Combat", actions: combat },
+    ...(reactionRows.length ? [{ key: "act-reactions", name: "Reactions", actions: reactionRows }] : []),
     ...(mentalRows.length ? [{ key: "act-mental", name: "Mental", actions: mentalRows }] : []),
     ...(magicRows.length ? [{ key: "act-magic", name: "Magic", actions: magicRows }] : []),
     ...(shroudRows.length ? [{ key: "act-shroud", name: "Shroud", actions: shroudRows }] : []),
@@ -1090,6 +1092,10 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   }
   static onMartial(event, target) {
     const actor = this.document;
+    if (target.dataset.op?.startsWith("reaction:")) {
+      const key = target.dataset.op.slice(9);
+      return actor.setFlag("flowstate", "autoDecline", { [key]: reactionRules.toggledTo(actor, key) });
+    }
     switch (target.dataset.op) {
       case "breakFree": return actions.breakFree(actor);
       case "release": return actions.releaseGrapple(actor);

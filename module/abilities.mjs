@@ -4,7 +4,7 @@
  */
 import * as skills from "./skills.mjs";
 
-export const BLADED = "martial-bladed-weapons";
+const BLADED = "martial-bladed-weapons";
 
 /** Tier the actor has in a tree. */
 export const treeTier = (actor, id) => skills.tierOf(actor?.system?.trees, id);
@@ -16,7 +16,7 @@ export const scalingMin = item => Math.floor((item?.system?.profile?.capped ?? 0
  * Can this weapon use this weapon tree's abilities? Its main type does; a multi-type weapon's other types count too
  * with Weapon Master (Martial Theory T5): "while held, their normal and defensive abilities for each type are always available".
  */
-export function weaponFits(actor, item, treeId) {
+function weaponFits(actor, item, treeId) {
   const type = item?.system?.weaponType;
   if (!type || item.type !== "weapon") return false;
   return skills.canUseWeaponSkill(actor?.system?.trees, treeId, item.system.types ?? [type]);
@@ -63,7 +63,7 @@ export function fastValue(actor, item, unarmedLightFast = 0) {
 }
 
 /** Solitary value for an attack with this weapon after tree effects (Berserk, Proper Stance). */
-export function solitaryValue(actor, item, p) {
+function solitaryValue(actor, item, p) {
   let v = p.solitary ?? 0;
   if (actor?.statuses?.has?.("berserk") && striker(actor, item, 2, "heavy")) v = Math.max(v, actor.statuses.has("seeingRed") ? 2 : 1);
   if (actor?.statuses?.has?.("properStance") && assault(actor, item, 5)) v = 2;
@@ -86,7 +86,7 @@ export function solitaryFollowup(actor, item, p) {
 /*  Brawling Methods (Unarmed)                  */
 /* -------------------------------------------- */
 
-export const BRAWLING = "martial-brawling-methods";
+const BRAWLING = "martial-brawling-methods";
 
 /** Brawling Methods tier reached. */
 export const brawl = (actor, tier) => treeTier(actor, BRAWLING) >= tier;
@@ -132,17 +132,13 @@ export const BRAWLING_COST = {
 /*  Balanced Weapons                            */
 /* -------------------------------------------- */
 
-export const BALANCED = "martial-balanced-weapons";
+const BALANCED = "martial-balanced-weapons";
 
 /** A Balanced Weapons ability of this tier can be used with this weapon ("light"/"heavy" for Slice/Slam). */
 export function balanced(actor, item, tier, weight = null) {
   return treeTier(actor, BALANCED) >= tier && weaponFits(actor, item, BALANCED)
     && (!weight || item.system.weight === weight);
 }
-
-/** Held weapons that can use a Balanced ability of this tier. */
-export const balancedHeld = (actor, tier, weight = null) =>
-  (actor?.items ?? []).filter(i => i.type === "weapon" && i.system.held && !i.system.broken && i.system.profile?.valid && balanced(actor, i, tier, weight));
 
 /** Energy costs (Balanced Weapons tree). Slice/Slam cost double for both effects (One with your Weapon, T5). */
 export const BALANCED_COST = {
@@ -190,7 +186,7 @@ const conMin = a => a?.system?.derived?.effective?.con?.min ?? 0;
 const conStat = a => a?.system?.derived?.effective?.con?.value ?? 0;
 
 /** Energy costs (Medium Armor tree). Versatility (T5) makes the chosen one free until your next turn. */
-export const MEDIUM_COST_BASE = {
+const MEDIUM_COST_BASE = {
   limber: a => Math.floor(conMin(a) / 4),   // T1
   // T2 Brace is a Parry on the armor: Energy = CON (capped by the armor's Grade × 10).
   brace: a => Math.min(conStat(a), Math.max(1, a?.system?.armor?.system?.grade ?? 1) * 10),
@@ -201,9 +197,6 @@ export function mediumCost(actor, ability) {
   if (v === ability && medium(actor, 5)) return 0;
   return MEDIUM_COST_BASE[ability](actor);
 }
-/** Brace reduces the damage by your Constitution stat. */
-export const braceReduction = actor => conStat(actor);
-
 /* -------------------------------------------- */
 /*  Rapid Weapons                               */
 /* -------------------------------------------- */
@@ -250,7 +243,7 @@ export const unarmored = actor => !(actor?.items ?? []).some(i => i.type === "ar
 /*  Strength Methods                            */
 /* -------------------------------------------- */
 
-export const STRENGTH = "martial-strength-methods";
+const STRENGTH = "martial-strength-methods";
 export const strength = (actor, tier) => treeTier(actor, STRENGTH) >= tier;
 export const STRENGTH_COST = {
   heave: a => statValue(a, "str"),        // T2, STR stat
@@ -290,7 +283,7 @@ export const STRIKER_COST = {
 /*  Defender Weapons                            */
 /* -------------------------------------------- */
 
-export const DEFENDER = "martial-defender-weapons";
+const DEFENDER = "martial-defender-weapons";
 const defenderT = weaponTree(DEFENDER);
 export const defender = defenderT.can;
 export const defenderHeld = defenderT.held;
@@ -303,7 +296,7 @@ export const DEFENDER_COST = {
 /*  Weighted Weapons                            */
 /* -------------------------------------------- */
 
-export const WEIGHTED = "martial-weighted-weapons";
+const WEIGHTED = "martial-weighted-weapons";
 const weightedT = weaponTree(WEIGHTED);
 export const weighted = weightedT.can;
 export const WEIGHTED_COST = {
@@ -330,8 +323,8 @@ export const ASSAULT_COST = {
 /*  Heavy & Titanic Armor (Brace, Harden, Trudge, Bodyslam)  */
 /* -------------------------------------------- */
 
-export const HEAVY = "martial-heavy-armor";
-export const TITANIC = "martial-titanic-armor";
+const HEAVY = "martial-heavy-armor";
+const TITANIC = "martial-titanic-armor";
 export const heavy = (actor, tier) => treeTier(actor, HEAVY) >= tier && wornWeight(actor) === "heavy";
 export const titanic = (actor, tier) => treeTier(actor, TITANIC) >= tier && wornWeight(actor) === "titanic";
 
@@ -377,7 +370,7 @@ export function bodyslamInfo(actor) {
 /*  Dexterity Methods                           */
 /* -------------------------------------------- */
 
-export const DEXTERITY = "martial-dexterity-methods";
+const DEXTERITY = "martial-dexterity-methods";
 export const dexterity = (actor, tier) => treeTier(actor, DEXTERITY) >= tier;
 export const DEXTERITY_COST = {
   shank: a => 2 * statMinOf(a, "dex"),                       // T2
@@ -389,7 +382,7 @@ export const DEXTERITY_COST = {
 /*  Reach Weapons                               */
 /* -------------------------------------------- */
 
-export const REACH = "martial-reach-weapons";
+const REACH = "martial-reach-weapons";
 const reachT = weaponTree(REACH);
 export const reach = reachT.can;
 export const reachHeld = reachT.held;
@@ -404,7 +397,7 @@ export const REACH_COST = {
 /*  Circular Weapons                            */
 /* -------------------------------------------- */
 
-export const CIRCULAR = "martial-circular-weapons";
+const CIRCULAR = "martial-circular-weapons";
 const circularT = weaponTree(CIRCULAR);
 export const circular = circularT.can;
 export const CIRCULAR_COST = {
@@ -417,7 +410,7 @@ export const CIRCULAR_COST = {
 /*  Blast Weapons                               */
 /* -------------------------------------------- */
 
-export const BLAST = "martial-blast-weapons";
+const BLAST = "martial-blast-weapons";
 const blastT = weaponTree(BLAST);
 export const blast = blastT.can;
 export const BLAST_COST = {
@@ -430,9 +423,9 @@ export const BLAST_COST = {
 /*  Light Armor / Unarmored (Shift, Dash, Leap) */
 /* -------------------------------------------- */
 
-export const LIGHT = "martial-light-armor";
-export const UNARMORED = "martial-unarmored";
-export const lightArmor = (actor, tier) => treeTier(actor, LIGHT) >= tier && wornWeight(actor) === "light";
+const LIGHT = "martial-light-armor";
+const UNARMORED = "martial-unarmored";
+const lightArmor = (actor, tier) => treeTier(actor, LIGHT) >= tier && wornWeight(actor) === "light";
 export const unarmoredT = (actor, tier) => treeTier(actor, UNARMORED) >= tier && unarmored(actor);
 
 /** Shift for the armor being worn: Medium T4 (½ CON min, Versatility) or Light T1 (¼ CON min). Uses: 2 with Evade (Light T4). */
@@ -488,7 +481,7 @@ export function resistCheck(stat, { unstoppable = false, pureBody = false, targe
 }
 export const BODY_STATS = new Set(["str", "dex", "con"]);
 
-export const CONSTITUTION = "martial-constitution-methods";
+const CONSTITUTION = "martial-constitution-methods";
 export const constitution = (actor, tier) => treeTier(actor, CONSTITUTION) >= tier;
 export const CONSTITUTION_COST = {
   taunt: a => statMinOf(a, "con"),      // T2 (plus 2 RP)
@@ -513,7 +506,7 @@ export const CURVED_COST = {
 /*  Longshot Weapons                            */
 /* -------------------------------------------- */
 
-export const LONGSHOT = "martial-longshot-weapons";
+const LONGSHOT = "martial-longshot-weapons";
 const longshotT = weaponTree(LONGSHOT);
 export const longshot = longshotT.can;
 export const LONGSHOT_COST = {
@@ -527,7 +520,7 @@ export const LONGSHOT_COST = {
 /*  Grappling Methods                           */
 /* -------------------------------------------- */
 
-export const GRAPPLING = "martial-grappling-methods";
+const GRAPPLING = "martial-grappling-methods";
 export const grappling = (actor, tier) => treeTier(actor, GRAPPLING) >= tier;
 export const GRAPPLING_COST = {
   lockDown: target => statValue(target, "str"),   // T1: the grappled target's STR stat
@@ -538,7 +531,7 @@ export const GRAPPLING_COST = {
 /*  Thrasher Weapons                            */
 /* -------------------------------------------- */
 
-export const THRASHER = "martial-thrasher-weapons";
+const THRASHER = "martial-thrasher-weapons";
 const thrasherT = weaponTree(THRASHER);
 export const thrasher = thrasherT.can;
 export const THRASHER_COST = {

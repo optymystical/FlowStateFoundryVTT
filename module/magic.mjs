@@ -82,16 +82,16 @@ export const AFFIX_RARITIES = { common: "Common", uncommon: "Uncommon", rare: "R
 export const ELEMENTS = { heat: "Heat", cold: "Cold", acid: "Acid", radiation: "Radiation" };
 
 /** Affix keys on an item, trimmed to its slot count (unknown keys dropped). */
-export function affixList(keys, slots = AFFIX_LIMIT) {
+function affixList(keys, slots = AFFIX_LIMIT) {
   return (keys ?? []).filter(k => AFFIXES[k]).slice(0, Math.max(0, slots));
 }
 
 /** Affixes cost speed, not slots; this is only the most one piece of equipment holds on a sheet. */
 export const AFFIX_LIMIT = 6;
-export const AFFIX_SPEED_PCT = 20;
+const AFFIX_SPEED_PCT = 20;
 
 /** The Affix with doubled effects (Shard, Orb, Band, Keystone): the one picked, else the item's first. */
-export function doubledAffix(sys, t, affixes) {
+function doubledAffix(sys, t, affixes) {
   if (!t?.plus || !affixes.length) return null;
   return affixes.includes(sys.doubled) ? sys.doubled : affixes[0];
 }

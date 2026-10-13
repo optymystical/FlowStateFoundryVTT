@@ -4,9 +4,8 @@
  * through `registerFoci()` (actions.mjs). A Foci's effects only work while it's attuned and unbroken, for spells cast through it.
  */
 import * as spells from "./spells.mjs";
-import { FOCI_TYPES } from "./magic.mjs";
 import { igniteTotal } from "./rules.mjs";
-import { post, requestGM, turnKey, setActorFlag, spendEnergy, giveStacks, registerFoci, inActiveCombat, attackerToken } from "./actions.mjs";
+import { post, requestGM, turnKey, setActorFlag, spendEnergy, giveStacks, registerFoci } from "./actions.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const stamp = () => (globalThis.game ? turnKey() : null) ?? "ooc";
@@ -123,7 +122,7 @@ export function castNotes(fx, plan) {
 const shuffle = list => { const a = [...list]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 /** The attuned, working Deck Foci, if any. */
 export const deckFoci = actor => Array.from(actor.items ?? []).find(i => i.type === "foci" && i.system.attuned && !i.system.broken && i.system.profile?.deck) ?? null;
-export const deckOf = actor => actor.getFlag?.("flowstate", "deck") ?? null;
+const deckOf = actor => actor.getFlag?.("flowstate", "deck") ?? null;
 export const handOf = actor => deckOf(actor)?.hand ?? [];
 
 /** Three copies of every Core Spell you know. */

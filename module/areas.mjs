@@ -164,7 +164,7 @@ export function wallSegments(tpl, front = null, grid = { size: 100, distance: 5 
  * Foundry's one-way `dir` for a wall segment so that it blocks from the `front` side. Foundry's convention (which of LEFT/RIGHT
  * means "blocks from the positive side") couldn't be checked here, so it's one constant: flip POSITIVE_SIDE_DIR if arrows come out reversed.
  */
-export const POSITIVE_SIDE_DIR = 2;     // CONST.WALL_DIRECTIONS.RIGHT
+const POSITIVE_SIDE_DIR = 2;     // CONST.WALL_DIRECTIONS.RIGHT
 export function wallDir(c, front) {
   const [x1, y1, x2, y2] = c;
   const mx = (x1 + x2) / 2 + front.x * 10, my = (y1 + y2) / 2 + front.y * 10;
@@ -182,7 +182,7 @@ export function wallData(tpl, front, grid, flags = {}) {
 /* -------------------------------------------- */
 
 /** Samples along a segment (a quarter square apart): is any of it inside the area? */
-export function segmentTouchesArea(tpl, a, b, grid = { size: 100, distance: 5 }) {
+function segmentTouchesArea(tpl, a, b, grid = { size: 100, distance: 5 }) {
   const len = Math.hypot(b.x - a.x, b.y - a.y);
   const steps = Math.max(1, Math.ceil(len / (grid.size / 4)));
   for (let i = 0; i <= steps; i++) {
@@ -193,7 +193,7 @@ export function segmentTouchesArea(tpl, a, b, grid = { size: 100, distance: 5 })
 }
 
 /** Which side of a barrier a point is on: a line has a left and a right; a radius or cone has an inside and an outside. */
-export function barrierSide(tpl, p) {
+function barrierSide(tpl, p) {
   if (tpl.t === "ray") {
     const rad = (tpl.direction * Math.PI) / 180;
     return Math.sign(-(p.x - tpl.x) * Math.sin(rad) + (p.y - tpl.y) * Math.cos(rad)) || 1;

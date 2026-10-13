@@ -19,7 +19,7 @@ import * as ab from "./abilities.mjs";
 import * as areas from "./areas.mjs";
 import * as R from "./mental-rules.mjs";
 import { tierOf } from "./skills.mjs";
-import { DAMAGE_CATEGORY, WEAPON_TYPES } from "./martial.mjs";
+import { damageCategories, WEAPON_TYPES } from "./martial.mjs";
 import { poolFormula, resolveAttack, DAMAGE_TYPES, applyStacks } from "./rules.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
@@ -622,7 +622,7 @@ export async function rerollAct(x) {
  * instance"). Returns { amount, html }. A Premonition charge can negate a chunk too. Only the owner is asked; Echo, once it fully negates an
  * attack, keeps negating for free until the start of the owner's next turn.
  */
-async function negate(actor, amount, type, { source = null, attacker = null } = {}) {
+async function negate(actor, amount, type, { source = null, attacker = null, magic = false } = {}) {
   if (!actor || actor.type === "pile" || amount <= 0 || !actor.isOwner) return { amount, html: "" };
   const icon = actor.system.icon;
   const p = icon?.system.profile;
@@ -648,12 +648,12 @@ async function negate(actor, amount, type, { source = null, attacker = null } = 
   const startLeft = left;
   const form = R.FORMS[p.form];
   const align = alignmentOf(actor);
-  const cat = DAMAGE_CATEGORY[type] ?? "physical";
+  const cats = damageCategories(type, magic);             // spell damage is Magical as well as its own type
   const th = theory(actor);
   const willMin = minOf(actor, "will");
   const per = (uses, enhanced, near) => {
     let n = enhanced ? p.enhancedAmount : p.amount;
-    if (form.chooses) n = enhanced || cat === icon.system.chosen ? p.amount : p.other;
+    if (form.chooses) n = enhanced || cats.includes(icon.system.chosen) ? p.amount : p.other;
     // Zealot: full negation at 2 or more Nightmare Alignment.
     if (form.needs === "deepNightmare") n = (R.alignedTo(align, "nightmare") && align.level >= 2) ? p.amount : p.other;
     if (form.near) n = near ? p.amount : p.other;

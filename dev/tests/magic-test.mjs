@@ -76,6 +76,20 @@ ok2(out.toHp === 25 - 10 * mult, "Jasper only once until recovery");
 await actions.applyDamage(hero, 25, "physical", { silent: true });
 ok2(sh.system.wear === 10 * mult && hero.getFlag("flowstate", "takenTypes")?.includes("physical"), "applyDamage wears the Shroud and records the type");
 
+console.log("== Magic damage is Magical as well as its own type (Rules)");
+await sh.update({ "system.affixes": ["agate"], "system.negated": [], "system.wear": 0 });
+out = await actions.damageOutcome(hero, 25, "heat", {});
+ok2(!out.shrouds[0]?.update?.["system.negated"]?.includes("magical"), "A Heat hit that isn't a spell is only Elemental: Agate (Magical) doesn't touch it");
+out = await actions.damageOutcome(hero, 25, "heat", { archetype: "magic" });
+ok2(out.shrouds[0]?.update?.["system.negated"]?.includes("magical") && out.toHp < 25 - 10 * mult, `A Heat spell is Magical too: Agate negates ${sh.system.profile.scaling} before the Limit (${25 - out.toHp} absorbed)`);
+await sh.update({ "system.affixes": ["agate", "obsidian"], "system.negated": [], "system.wear": 0 });
+out = await actions.damageOutcome(hero, 25, "heat", { archetype: "magic" });
+ok2(out.shrouds[0]?.update?.["system.negated"]?.includes("magical") && out.shrouds[0].update["system.negated"].includes("elemental"), "…and Obsidian (Elemental) negates it as well: it is blocked by either");
+const MART = await import("../../module/martial.mjs");
+ok2(MART.damageCategories("heat", true).join() === "elemental,magical" && MART.damageCategories("heat").join() === "elemental" && MART.damageCategories("arcane", true).join() === "magical", "damageCategories");
+ok2(MART.limitFactor("heat", { key: "magical", factor: 0.1 }) === 0.1 && MART.limitFactor("heat", { key: "magical", factor: 0.1 }, true) === 1, "A Magical-focus Limit blocks a Heat spell fully, but only a tenth of Heat that isn't from Magic");
+await sh.update({ "system.affixes": [], "system.negated": [], "system.wear": 0 });
+
 console.log("== Force damage cap: HP plus what the Shroud soaks, netting negative max HP at most");
 await sh.update({ "system.affixes": [], "system.negated": [], "system.wear": 0 });
 const hpNow = hero.system.hp.value + hero.system.hp.max;

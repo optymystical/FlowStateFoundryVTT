@@ -27,7 +27,8 @@ assert.equal(r.poolFormula(2,15,-2), "4d15kl2");
 assert.equal(r.moveSpeed(3), 50); assert.equal(r.moveSpeed(1), 10); assert.equal(r.moveSpeed(2), 25); assert.equal(r.moveSpeed(4), 100); assert.equal(r.moveSpeed(5), 200);
 assert.equal(r.moveSpeed(3, 20), 40); assert.equal(r.moveSpeed(3, 20 + 20), 30); assert.equal(r.moveSpeed(3, 80), 10);
 assert.equal(r.moveSpeed(3, 100), 5); assert.equal(r.moveSpeed(3, 250), 5); assert.equal(r.moveSpeed(2, 20), 20); assert.equal(r.moveSpeed(2, 60), 10);
-assert.equal(r.speedFt(50, 0), 50); assert.equal(r.speedFt(35, 20), 30);
+assert.equal(r.moveSpeed(1, 20), 5); assert.equal(r.moveSpeed(4, 20), 80); assert.equal(r.speedFt(37, 0), 35);       // rounds down to 5 ft steps
+assert.equal(r.speedFt(50, 0), 50); assert.equal(r.speedFt(35, 20), 25);                 // 28 rounds down (Rules doc)
 // Force: 5*Str 16=80 vs maxHP 432 -> 0 ft; falling ignores half HP
 assert.equal(r.resolveForce(80,{maxHp:432}), 0);
 assert.equal(r.resolveForce(432,{maxHp:432, falling:true}), 43);

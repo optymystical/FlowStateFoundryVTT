@@ -114,15 +114,25 @@ export const DAMAGE_CATEGORY = {
 };
 
 /**
+ * Every damage category a hit counts as: its own type's, and Magical as well when Magic produced it (Rules: "Any damage produced by Magic is also Magical in
+ * addition to its own type", so a Heat spell is Heat and Magical, and is blocked by protections that are either).
+ */
+export const damageCategories = (damageType, magic = false) => {
+  const cat = DAMAGE_CATEGORY[damageType] ?? "physical";
+  return magic && cat !== "magical" ? [cat, "magical"] : [cat];
+};
+
+/**
  * Limit effectiveness vs a damage type.
  * Default (Martial): blocks Physical and Elemental fully, nothing else.
  * A material "focus" means: that type/category blocks fully, every other type it would block at `factor`.
+ * `magic`: the damage came from a spell, so it is also Magical.
  */
-export function limitFactor(damageType, focus = null) {
-  const cat = DAMAGE_CATEGORY[damageType] ?? "physical";
-  const normallyBlocked = cat === "physical" || cat === "elemental";
+export function limitFactor(damageType, focus = null, magic = false) {
+  const cats = damageCategories(damageType, magic);
+  const normallyBlocked = cats.includes("physical") || cats.includes("elemental");
   if (!focus) return normallyBlocked ? 1 : 0;
-  const matches = focus.key === damageType || focus.key === cat;
+  const matches = focus.key === damageType || cats.includes(focus.key);
   if (matches) return 1;
   return normallyBlocked ? focus.factor : 0;
 }
@@ -360,14 +370,14 @@ export function armorProfile(a, con) {
  * Returns {absorbed, toHp, durabilityLoss}.
  */
 /** The Limit an object actually applies against this damage type, after Pierce. */
-export function effectiveLimit(profile, damageType, pierce = 0) {
+export function effectiveLimit(profile, damageType, pierce = 0, magic = false) {
   if (!profile?.valid) return 0;
-  return Math.max(0, Math.floor(profile.limit * limitFactor(damageType, profile.focus)) - Math.max(0, pierce));
+  return Math.max(0, Math.floor(profile.limit * limitFactor(damageType, profile.focus, magic)) - Math.max(0, pierce));
 }
 
-export function soak(damage, damageType, armor, { pierce = 0, durability = Infinity } = {}) {
+export function soak(damage, damageType, armor, { pierce = 0, durability = Infinity, magic = false } = {}) {
   if (!armor?.valid || durability <= 0 || damage <= 0) return { absorbed: 0, toHp: Math.max(0, damage), durabilityLoss: 0 };
-  let effLimit = Math.max(0, Math.floor(armor.limit * limitFactor(damageType, armor.focus)) - Math.max(0, pierce));
+  let effLimit = Math.max(0, Math.floor(armor.limit * limitFactor(damageType, armor.focus, magic)) - Math.max(0, pierce));
   // Can't absorb more than the remaining Durability.
   if (Number.isFinite(durability)) effLimit = Math.min(effLimit, Math.floor(durability / (armor.selfWeakened ? Math.pow(0.5, armor.selfWeakened) : 1)));
   const absorbed = Math.min(damage, effLimit);

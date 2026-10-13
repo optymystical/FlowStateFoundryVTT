@@ -69,16 +69,16 @@ export const energyRecover = max => Math.floor(max / 10);
 
 /**
  * Ch8 Movement. Base speed is the Size's maximum. Speed penalties are percentages that add together (two 20%s are 40%), speed moves in
- * 5 ft increments (rounded to the nearest) and never drops below 5 ft.
+ * 5 ft increments (rounded down) and never drops below 5 ft.
  */
 export function moveSpeed(size, penaltyPct = 0) {
   return speedFt(SIZES[clampSize(size)].maxMove, penaltyPct);
 }
 
-/** A speed (ft) less a percentage penalty: whole 5 ft increments, at least 5 ft. */
+/** A speed (ft) less a percentage penalty: whole 5 ft increments rounding down (Rules doc), at least 5 ft after all reductions. */
 export function speedFt(base, penaltyPct = 0) {
   const pct = Math.min(100, Math.max(0, Number(penaltyPct) || 0));
-  return Math.max(5, Math.round(base * (1 - pct / 100) / 5) * 5);
+  return Math.max(5, Math.floor(base * (1 - pct / 100) / 5 + 1e-9) * 5);
 }
 
 /**

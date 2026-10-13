@@ -1,7 +1,7 @@
 import {
   STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS
 } from "./rules.mjs";
-import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, DAMAGE_CATEGORY } from "./martial.mjs";
+import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, damageCategories } from "./martial.mjs";
 import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
@@ -979,6 +979,11 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (snipe) { energy += ab.LONGSHOT_COST.snipe(item); notes.push("Snipe Hunt"); }
   const inABarrel = !unarmed && base.ranged && ab.longshot(actor, item, 4);
   const thrasherGrapple = !!(opts.thrasherGrapple || opts.getOverHere);
+  if (thrasherGrapple) {
+    // Rules: you can only grapple something your size or smaller (Big Hands' extra size is for Unarmed grapples).
+    const tooBig = (explicitTargets ?? [...game.user.targets].map(t => t.actor)).filter(a => a && (a.system?.size ?? 3) > actor.system.size);
+    if (tooBig.length) return ui.notifications.warn(`${tooBig.map(a => a.name).join(", ")} ${tooBig.length === 1 ? "is" : "are"} too large to grapple (your size or smaller).`);
+  }
   if (opts.thrasherGrapple && !opts.getOverHere) notes.push("Grapple (Thrasher, no damage)");
   if (opts.getOverHere) { energy += ab.THRASHER_COST.getOverHere(item); notes.push("Get Over Here!"); }
   const windup = Math.max(0, Math.floor(Number(opts.windup) || 0));
@@ -1293,9 +1298,9 @@ export const GM_ACTIONS = {
     return out;
   },
   /** A Ward's owner (the GM's client, for someone else's character) is asked to negate damage the attacker's client is about to settle. */
-  async wardNegate({ target, amount, type, source, attacker, reply }) {
+  async wardNegate({ target, amount, type, source, attacker, magic, reply }) {
     const actor = await fromUuid(target);
-    const r = actor && mentalHook?.negate ? await mentalHook.negate(actor, amount, type, { source, attacker }) : null;
+    const r = actor && mentalHook?.negate ? await mentalHook.negate(actor, amount, type, { source, attacker, magic }) : null;
     const result = r ? { amount: r.amount, html: r.html ?? "", reflect: r.reflect ?? null } : null;
     if (reply) game.socket.emit("system.flowstate", { action: "damageResult", to: reply.to, reqId: reply.reqId, result });
     return result;
@@ -4991,7 +4996,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     // Mental: a Nightmare Ward may negate some of it now, so Stains, Bleed, Gash and the like go by what is actually dealt.
     let w = null;
     if (mentalHook?.negate && incoming > 0) {
-      w = await wardNegate(target, incoming, type, { source: sourceOf(o), attacker: attacker.uuid });
+      w = await wardNegate(target, incoming, type, { source: sourceOf(o), attacker: attacker.uuid, magic: !!o.spell });
       if (w) { wardCut += Math.max(0, incoming - w.amount); incoming = w.amount; extraHTML += w.html ? `${instances.length > 1 ? `<div class="fs-notes">${tag(i)}</div>` : ""}${w.html}` : ""; }
     }
     amounts.push(incoming); wards.push(w);
@@ -5171,14 +5176,14 @@ function askGM(action, payload) {
  * (Stains, Bleed, Gash...) is worked out. The Ward's owner is asked (the GM's client, for someone else's character).
  * Returns { amount, html, reflect } or null when it can't be asked (then applyDamage asks as usual).
  */
-export async function wardNegate(target, amount, type, { source = null, attacker = null } = {}) {
+export async function wardNegate(target, amount, type, { source = null, attacker = null, magic = false } = {}) {
   if (!mentalHook?.negate || amount <= 0 || target.type === "pile") return null;
   if (target.isOwner) {
-    const r = await mentalHook.negate(target, amount, type, { source, attacker });
+    const r = await mentalHook.negate(target, amount, type, { source, attacker, magic });
     return { amount: r.amount, html: r.html ?? "", reflect: r.reflect ?? null };
   }
   if (game.user.isGM || !game.users.activeGM) return null;
-  return askGM("wardNegate", { target: target.uuid, amount, type, source, attacker });
+  return askGM("wardNegate", { target: target.uuid, amount, type, source, attacker, magic });
 }
 const summarizeDamage = out => out ? { toHp: out.toHp ?? 0, armorLoss: out.armorLoss ?? 0, reduced: out.reduced ?? 0 } : null;
 /** A client receives the result of damage it asked the GM for. */
@@ -5255,6 +5260,7 @@ async function loadWeapon(actor, item) {
  */
 export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, bash = 0, bypass = false, rend = null,
   cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, archetype = "martial", ignoreArmor = false } = {}) {
+  const magic = archetype === "magic";                    // spell damage is Magical as well as its own type
   if (bypass) {
     const lines = [], tempHp = [];
     const toHp = soakTemp(actor, Math.max(0, amount), lines, tempHp);
@@ -5273,7 +5279,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   const tryBash = (obj, profile, durability, objPierce) => {
     if (!bashLeft || !profile?.valid || durability <= 0) return false;
     bashLeft = false;
-    const lim = effectiveLimit(profile, type, objPierce);
+    const lim = effectiveLimit(profile, type, objPierce, magic);
     if (lim > bash) { lines.push(`Bash: ${obj.name}'s Limit ${lim} is above ${bash}, no effect`); return false; }
     remaining += lim;
     lines.push(`Bash: broke through ${obj.name} (Limit ${lim} ignored, +${lim} damage)`);
@@ -5287,7 +5293,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     const alter = mentalHook?.alterStacks?.(actor, obj) ?? 0;            // Alter (Creation Tenet): damage to this object is Strengthened or Weakened
     const lossFactor = (profile.selfWeakened ? Math.pow(0.5, profile.selfWeakened) : 1) * (rend ? stackMultiplier(rend.stacks) : 1) * stackMultiplier(alter);
     // Weakpoint (Piercing T5): only half the object's Limit applies to this spell's damage.
-    const baseLimit = effectiveLimit(profile, type, objPierce);
+    const baseLimit = effectiveLimit(profile, type, objPierce, magic);
     const L = Math.min(halfLimit ? Math.floor(baseLimit / 2) : baseLimit, Math.floor(durability / lossFactor));
     const cAbs = Math.min(cleaveLeft, L);
     const rAbs = Math.min(remaining, L - cAbs);
@@ -5320,7 +5326,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
       if (((e.parent?.uuid === actor.uuid ? f.order : "default") ?? "default") !== pos || shields.some(x => x.effect === e)) continue;
       const hp = Number(f.hp) || 0;
       if (hp <= 0) continue;
-      if (f.types?.length && !f.types.includes(DAMAGE_CATEGORY[type] ?? "physical")) continue;      // Prism: only the chosen damage types
+      if (f.types?.length && !damageCategories(type, magic).some(c => f.types.includes(c))) continue;      // Prism: only the chosen damage types (spell damage is also Magical)
       const damped = (f.dampen ?? []).includes(archetype);
       const anchored = f.anchor && mentalHook?.anchorStill?.(f.caster);              // Anchor: damage to this shielding is Weakened while its caster hasn't moved
       const obj = { name: "Shield", system: { profile: { valid: true, limit: Number(f.max) || hp, focus: { key: "magical", factor: 1 }, selfWeakened: damped || anchored ? 1 : 0 }, durability: { value: hp } } };
@@ -5361,7 +5367,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   // Magic Shrouds soak next (before armor): the creature's own melded Shroud, Wards/Bonds placed on it, Quartz extensions.
   const shrouds = [];
   for (const sh of shroudsFor(actor, shroudCtx?.extra ?? [])) {
-    const r = shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce, rend, source: shroudCtx?.source ?? null, halfLimit });
+    const r = shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce, rend, source: shroudCtx?.source ?? null, halfLimit, magic });
     remaining = r.remaining; cleaveLeft = r.cleaveLeft;
     lines.push(...r.lines);
     if (r.update) shrouds.push({ item: sh, loss: r.loss, absorbed: r.absorbed, update: r.update });
@@ -5430,7 +5436,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   let neg = null;
   if (mentalHook && amount > 0 && !bypass && !wardDone) {
     const before = amount;
-    neg = await mentalHook.negate(actor, amount, type, { source: shroudCtx?.source ?? null, attacker: shroudCtx?.attacker ?? null });
+    neg = await mentalHook.negate(actor, amount, type, { source: shroudCtx?.source ?? null, attacker: shroudCtx?.attacker ?? null, magic: archetype === "magic" });
     if (neg.amount !== amount) { if (neg.html && !silent) await post(actor, { title: `${esc(actor.name)} — Ward`, body: neg.html }); amount = neg.amount; }
     reduced += Math.max(0, before - amount);
   }
@@ -5927,19 +5933,22 @@ const hasAffix = (sh, k) => !!sh?.system?.profile?.affixes?.includes(k);
  * One Shroud's soak (no changes made; returns the update to apply).
  * Order: Agate/Jasper/Obsidian negation → Diamond/Alexandrite/Colored Diamond Weakened → Limit (Cleave first, then damage).
  */
-function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null, halfLimit = false }) {
+function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null, halfLimit = false, magic = false }) {
   const P = sh.system.profile;
   const lines = [];
   const update = {};
-  const cat = DAMAGE_CATEGORY[type] ?? "physical";
   const own = sh.parent?.uuid === actor.uuid;
-  // Agate (Magical) / Jasper (Physical) / Obsidian (Elemental): the first instance since the Shroud last recovered.
-  const negKey = { magical: "agate", physical: "jasper", elemental: "obsidian" }[cat];
-  if (own && negKey && hasAffix(sh, negKey) && !(sh.system.negated ?? []).includes(cat) && remaining > 0) {
-    const cut = Math.min(remaining, P.scaling * affixMultOf(P, negKey));
-    remaining -= cut;
-    lines.push(`${sh.name} (${AFFIXES[negKey].label}): −${cut} ${cat} damage`);
-    update["system.negated"] = [...(sh.system.negated ?? []), cat];
+  // Agate (Magical) / Jasper (Physical) / Obsidian (Elemental): the first instance since the Shroud last recovered. Spell damage counts as Magical as well as its own type.
+  const negated = [...(sh.system.negated ?? [])];
+  for (const cat of damageCategories(type, magic)) {
+    const negKey = { magical: "agate", physical: "jasper", elemental: "obsidian" }[cat];
+    if (own && negKey && hasAffix(sh, negKey) && !negated.includes(cat) && remaining > 0) {
+      const cut = Math.min(remaining, P.scaling * affixMultOf(P, negKey));
+      remaining -= cut;
+      lines.push(`${sh.name} (${AFFIXES[negKey].label}): −${cut} ${cat} damage`);
+      negated.push(cat);
+      update["system.negated"] = [...negated];
+    }
   }
   const done = () => ({ remaining, cleaveLeft, lines, loss: 0, absorbed: 0, update: Object.keys(update).length ? update : null });
   if (!shroudBlocks(type) || sh.system.durability.value <= 0 || remaining + cleaveLeft <= 0) {

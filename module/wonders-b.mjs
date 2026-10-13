@@ -154,6 +154,7 @@ ACTS.infuse = async (x, caster, target) => {
   if (!mode) return false;
   const power = wonderPowerOf(caster, ids.dest);
   const c = { attacker: caster, target, o: { stacks: -1 }, result: { hit: true, crit: false, critStacks: 0 }, m: { mode: mode.id, power, enhanced: false, range: "ranged", choices: {}, spread: true }, mode, power, enhanced: false, choices: {}, stacks: -1, bs: -1, hit: true, crit: false, now: true };
+  rolled.length = 0;                                                      // only this Mode's dice go on its card, not the last resolution's
   const out = await MODES[mode.id](c);
   await post(caster, { title: `${esc(caster.name)} — Infuse: ${esc(mode.name)}`, rolls: [...rolled], body: `<div class="fs-result">${out}</div>` });
   return true;

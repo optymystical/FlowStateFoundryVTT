@@ -1327,7 +1327,7 @@ export const GM_ACTIONS = {
   async flipBarrier({ sceneId, templateId }) { await areas.flipBarrier(sceneId, templateId); },
   async changeEffect({ uuid, data }) {
     const e = await fromUuid(uuid);
-    if (e) await (data ? e.update(data) : e.delete());
+    if (e?.flags?.flowstate?.spellEffect) await (data ? e.update(data) : e.delete());          // only the system's own effects, never a status or someone's own
   },
   async spellEffect({ target, effect }) {
     const actor = await fromUuid(target);

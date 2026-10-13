@@ -2,6 +2,7 @@ import * as rules from "./rules.mjs";
 import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStatePileData } from "./data.mjs";
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
+import { relayAllowed } from "./relay-guard.mjs";
 import * as areas from "./areas.mjs";
 import * as terrain from "./terrain.mjs";
 import { register as registerMovement } from "./movement.mjs";
@@ -531,12 +532,14 @@ Hooks.on("createChatMessage", message => {
 
 /** GM applies damage on behalf of players who don't own the target. */
 Hooks.once("ready", () => {
-  game.socket.on("system.flowstate", async data => {
+  game.socket.on("system.flowstate", async (data, senderId) => {
     if (data?.action === "damageResult") { if (data.to === game.user.id) actions.damageResult(data); return; }
     if (!game.user.isActiveGM) return;
+    if (senderId && !game.users.get(senderId)) return;                       // Foundry names the sender: a request from nobody we know is dropped
     if (data?.action === "browseFiles") return pictures.answerBrowse(data);
     if (data?.action === "uploadChunk") return pictures.receiveUpload(data);
-    await actions.GM_ACTIONS[data?.action]?.(data);
+    if (!relayAllowed(data?.action, data, actions.GM_ACTIONS)) return console.warn(`flowstate | refused a relayed "${data?.action}" request`, data);
+    await actions.GM_ACTIONS[data.action](data);
   });
   pictures.listenForBrowse();
   charges.listen();

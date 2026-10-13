@@ -2,7 +2,7 @@ import * as rules from "./rules.mjs";
 import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStatePileData } from "./data.mjs";
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
-import { relayAllowed } from "./relay-guard.mjs";
+import { relayAllowed, relayKey, makeQueue } from "./relay-guard.mjs";
 import * as areas from "./areas.mjs";
 import * as terrain from "./terrain.mjs";
 import { register as registerMovement } from "./movement.mjs";
@@ -21,6 +21,8 @@ import "./mental.mjs";
 import * as gravity from "./gravity.mjs";
 import * as charges from "./charges.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStatePileSheet } from "./sheets.mjs";
+
+const relayQueue = makeQueue();                 // GM relay: one request at a time per creature
 /* -------------------------------------------- */
 /*  Documents                                   */
 /* -------------------------------------------- */
@@ -539,7 +541,7 @@ Hooks.once("ready", () => {
     if (data?.action === "browseFiles") return pictures.answerBrowse(data);
     if (data?.action === "uploadChunk") return pictures.receiveUpload(data);
     if (!relayAllowed(data?.action, data, actions.GM_ACTIONS)) return console.warn(`flowstate | refused a relayed "${data?.action}" request`, data);
-    await actions.GM_ACTIONS[data.action](data);
+    await relayQueue(relayKey(data), () => actions.GM_ACTIONS[data.action](data));          // one request at a time per creature, so none reads a number another is about to change
   });
   pictures.listenForBrowse();
   charges.listen();

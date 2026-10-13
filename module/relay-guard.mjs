@@ -39,3 +39,30 @@ export function relayAllowed(action, payload, actions) {
   const check = CHECKS[action];
   return check ? !!check(payload) : true;
 }
+
+/**
+ * The document a relayed request writes to: the creature (an item or effect of it counts as the creature), the token or scene, or the chat message.
+ * Requests that name nothing return null. Pure.
+ */
+export function relayKey(payload) {
+  const raw = payload?.target ?? payload?.uuid ?? payload?.actor ?? payload?.actorId ?? payload?.sceneId ?? payload?.id ?? null;
+  if (typeof raw !== "string") return null;
+  return raw.replace(/\.(Item|ActiveEffect)\..*$/, "");
+}
+
+/**
+ * Run tasks one after another per key, different keys side by side. Two relayed requests for the same creature used to read its health (or RP, or an item's
+ * wear) at the same moment and write back from the same stale number, so one of them was lost; queued, the second reads what the first wrote.
+ * A task that fails never blocks the ones behind it. Returns `run(key, task) → Promise`.
+ */
+export function makeQueue() {
+  const tails = new Map();
+  return (key, task) => {
+    if (key === null || key === undefined) return Promise.resolve().then(task);
+    const run = (tails.get(key) ?? Promise.resolve()).then(task, task);
+    const tail = run.then(() => {}, () => {});
+    tails.set(key, tail);
+    tail.then(() => { if (tails.get(key) === tail) tails.delete(key); });
+    return run;
+  };
+}

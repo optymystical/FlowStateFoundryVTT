@@ -466,7 +466,6 @@ export async function onRollBuffs(ctx) {
 /*  Damage dealt and taken                      */
 /* -------------------------------------------- */
 
-let busy = false;
 const dealDice = async (count, sides, label, notes, sign = 1, bstacks = 0) => { const r = await roll(`${count}d${sides}`); const total = bold(bstacks, r.total); const v = total * sign; notes.push(`${label}: ${sign > 0 ? "+" : "−"}${total} (${count}d${sides}${bstacks ? ` = ${r.total}` : ""})`); return v; };
 const near100 = (a, target) => { const ta = attackerToken(a), tb = target ? attackerToken(target) : null; return !ta || !tb || !globalThis.canvas?.grid || tokenDistance(ta, tb) <= 100; };
 
@@ -493,7 +492,7 @@ async function absolve(holder, notes) {
 
 /** Damage dealt by `attacker` (if any) to `target` is changed by Wonder effects. Returns { amount, html }. */
 export async function adjust({ attacker, target, amount, type, o = null, crit = false }) {
-  if (busy || amount <= 0) return { amount, html: "" };
+  if (amount <= 0) return { amount, html: "" };
   let n = amount;
   const notes = [], buffs = [];
   if (attacker) {
@@ -573,7 +572,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     n -= moved;
     await changeEffect(e, null);
     if (d.enhanced) await putSpellEffect(caster, { kind: "guardDebt", stack: true, onTargetTurn: true, caster: caster.uuid, name: `Guard debt (${moved})`, amount: moved, dtype: type, description: `Takes ${moved} ${type} damage at the start of their next turn (redirected by Guard).` });
-    else { busy = true; try { await requestDamage(caster, moved, type, 0, null, { silent: true }); } finally { busy = false; } }
+    else await requestDamage(caster, moved, type, 0, null, { silent: true, mentalDone: true });          // redirected damage isn't adjusted a second time
     notes.push(`Guard: ${moved} ${esc(type)} goes to ${esc(caster.name)}${d.enhanced ? " at the start of their next turn" : ""}`);
   }
   // Bloodbond (War T5): the one dealing damage carries a Bloodbond: duplicate part of it onto someone else.
@@ -618,7 +617,7 @@ TURN_START.push(async actor => {
     const d = dataOf(e);
     await changeEffect(e, null);
     await post(actor, { title: `${esc(actor.name)} — Guard`, body: `<div class="fs-result">${esc(actor.name)} takes the <strong>${d.amount}</strong> ${esc(d.dtype)} damage Guard redirected.</div>` });
-    busy = true; try { await requestDamage(actor, d.amount, d.dtype, 0, null, { silent: true }); } finally { busy = false; }
+    await requestDamage(actor, d.amount, d.dtype, 0, null, { silent: true, mentalDone: true });
   }
 });
 

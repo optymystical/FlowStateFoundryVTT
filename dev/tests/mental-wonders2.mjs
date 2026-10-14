@@ -97,7 +97,7 @@ const { putSpellEffect } = actions;
 const setAlign = (value, deepened = false) => { hero.flags.flowstate = { ...(hero.flags.flowstate ?? {}), alignment: { value, deepened } }; };
 const dmgTaken = (a0, fn) => async () => {};
 const hp = a => a.system.hp.value;
-hero.system.trees["mental-theory"] = 2; hero.system.prepareDerivedData();
+hero.system.trees["mental-theory"] = 3; hero.system.prepareDerivedData();
 const pPow = R.wonderPower(hero.system.derived.effective.pon.value), sPow = R.wonderPower(hero.system.derived.effective.snap.value);
 console.log("powers", pPow, sPow);
 let wardOverride = null;

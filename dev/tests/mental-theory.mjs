@@ -113,8 +113,8 @@ ok2(hero.system.energy.value === 200, "…and Alignment does not matter: the Pat
 dialog = () => "mental-death-nightmare"; await M.choosePatron(hero);
 ok2(flag(hero, "patron") === "mental-death-nightmare", "Choosing a Patron Wonder sets it");
 
-console.log("== Will of Body and Spirit (Mental T4)");
-reset(); theory(4); setAlign("neutral"); messages.length = 0;
+console.log("== Will of Body and Spirit (Mental T5)");
+reset(); theory(5); setAlign("neutral"); messages.length = 0;
 await actions.afterAttackCost(hero, { ap: 2 });
 let wcard = messages.find(m => m.flags?.flowstate?.mentalAct);
 let wact = wcard?.flags.flowstate.mentalAct.acts[0];
@@ -131,8 +131,8 @@ refresh(); seq = [20]; dialog = () => ({ mode: "mental-life-dream:flourish", ran
 done = await W.runAct(wact);
 ok2(done && hero.system.rp.value === 6 && hero.system.energy.value === 200 - ponMin(), "An RP attack's Manifest is a Burst: no RP, but the Burst energy is still paid");
 
-console.log("== Chant (Mental T2)");
-reset(); theory(2); setAlign("neutral"); messages.length = 0;
+console.log("== Chant (Mental T3)");
+reset(); theory(3); setAlign("neutral"); messages.length = 0;
 refresh(); target(orc); seq = [3];
 await M.manifest(hero, { mode: "mental-death-nightmare:waste", range: "ranged" });
 dialog = () => ({ net: 0 }); seq = [40]; await actions.defend(lastAtk(), 0, "dodge");

@@ -231,14 +231,14 @@ export const MODES = {
     const dis = split.attackDis && split.dodgeDis ? "one on attack and one on dodge rolls" : split.dodgeDis ? "two on dodge rolls" : "two on attack rolls";
     await putSpellEffect(c.target, { kind: "burden", stack: true, caster: c.attacker.uuid, name: `Burden (${dis})`, ...split, below: true, breakMin: min, mode: c.mode.id, turnsLeft: c.enhanced ? 3 : undefined,
       description: `Disadvantage: ${dis}. Stacks. A counter grapple check of ${min} or higher removes all of it; otherwise until ${c.enhanced ? "3 of the caster's turns" : "the start of the caster's next turn"}.` });
-    const n = spellEffects(c.target, "burden").length;
-    return `${esc(c.target.name)} is <strong>weighed down</strong>: Disadvantage, ${dis} (${n} Burden stack${n === 1 ? "" : "s"}), until they break free with a counter grapple check of ${min} or higher${c.enhanced ? ", or 3 turns" : ", or the start of your next turn"}.`;
+    const total = spellEffects(c.target, "burden").reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.attackDis) || 0) + (Number(e.flags.flowstate.spellEffect.dodgeDis) || 0), 0);
+    return `${esc(c.target.name)} is <strong>weighed down</strong>: Disadvantage, ${dis} (${total} Burden stack${total === 1 ? "" : "s"}), until they break free with a counter grapple check of ${min} or higher${c.enhanced ? ", or 3 turns" : ", or the start of your next turn"}.`;
   },
   async "mental-below-nightmare:entomb"(c) {
     const min = bold(c.bs, 4 * c.power);
     const sunk = spellEffects(c.target, "hold").find(e => e.flags.flowstate.spellEffect.sink);
-    const stacks = spellEffects(c.target, "burden").length;
-    if (!sunk || stacks < 3) return `Entomb needs a target under Sink and at least 3 Burden stacks (${esc(c.target.name)} has ${sunk ? "Sink" : "no Sink"} and ${stacks} Burden).`;
+    const stacks = spellEffects(c.target, "burden").reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.attackDis) || 0) + (Number(e.flags.flowstate.spellEffect.dodgeDis) || 0), 0);       // a Burden stack is one Disadvantage
+    if (!sunk || stacks < 4) return `Entomb needs a target under Sink and at least 4 Burden stacks (${esc(c.target.name)} has ${sunk ? "Sink" : "no Sink"} and ${stacks} Burden).`;
     await changeEffect(sunk, null);
     for (const e of spellEffects(c.target, "burden")) await changeEffect(e, null);
     await holdWith(c, { min, label: "Entombed", turns: c.enhanced ? 3 : 1, flags: { below: true, entomb: true, power: c.power, bstacks: c.bs } });

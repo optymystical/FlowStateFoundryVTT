@@ -157,7 +157,7 @@ export function alignedTo(state, kind) {
   return s.level >= 1 && s.kind === kind;
 }
 
-/** Fluidity (Mental T3): energy equal to half your Skill Points multiplied by your current Alignment number swaps its type. */
+/** Fluidity (Mental T4): energy equal to half your Skill Points multiplied by your current Alignment number swaps its type. */
 export const fluidityCost = (state, skillPoints = 0) => Math.floor(skillPoints / 2) * alignmentState(state).level;
 
 /* -------------------------------------------- */

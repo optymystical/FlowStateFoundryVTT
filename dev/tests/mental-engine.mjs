@@ -115,9 +115,9 @@ combat.started = false; dialog = () => ({ kind: "dream", level: 4 }); await M.se
 ok2(flag(hero, "alignment").level === 2, "Without Deepening (Mental T3) the deepest Alignment is 2");
 hero.system.prepareDerivedData();
 ok2(hero.system.movement.speed === 30, "2 Alignment: 40% speed lost (50 ft → 30 ft)");
-hero.system.trees["mental-theory"] = 3; hero.system.prepareDerivedData(); refresh();
+hero.system.trees["mental-theory"] = 4; hero.system.prepareDerivedData(); refresh();
 await M.fluidity(hero);
-ok2(flag(hero, "alignment").kind === "nightmare" && flag(hero, "alignment").level === 2 && hero.system.energy.value === 200 - 15 * 2, "Fluidity (Mental T3): swap the type for half your Skill Points × your Alignment number in Energy");
+ok2(flag(hero, "alignment").kind === "nightmare" && flag(hero, "alignment").level === 2 && hero.system.energy.value === 200 - 15 * 2, "Fluidity (Mental T4): swap the type for half your Skill Points × your Alignment number in Energy");
 combat.started = false; dialog = () => ({ kind: "nightmare", level: 4 }); await M.setAlignmentActivity(hero); combat.started = true;
 hero.system.prepareDerivedData();
 ok2(flag(hero, "alignment").level === 4 && hero.system.ap.max === 4 && hero.system.movement.speed === 10, "Deepening (Mental T3): 4 Alignment is allowed, costing 2 AP a turn (and 80% speed)");

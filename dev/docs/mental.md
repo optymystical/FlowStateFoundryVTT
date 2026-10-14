@@ -73,6 +73,8 @@
 
   **2 Alignment:** Your Dream/Nightmare Form’s Ward bolded effect is Strengthened.
 
+- **Concentration:** Some abilities and actions in Mental Theory require Concentration to maintain. When you take direct damage while Concentrating on something, you must expend 1 RP to make a Willpower check against the direct damage taken as a target number; if the result is lower, all of your Concentrations end at that moment. You can Concentrate on a number of things equal to your Mental Theory tier, any more must require you losing Concentration on something else. You can end Concentrations freely, and going unconscious removes all active Concentrations.
+
 **Tier 1: You unlock the Psion Arts, Life, Death, Order, Chaos, Beyond, and Below trees. You also gain the following action and passive:**
 
 - **Burst:** You can Manifest a Wonder using RP equal to your chosen Range’s Manifest AP cost if you additionally spend energy equal to its Enhance cost. This can be done in conjunction with Enhance by combining the costs. This also can apply to Form’s Wards and their Enhance Costs.  
@@ -80,26 +82,30 @@
 
 **Tier 2: You unlock the Ponderance Arts, Creation, Destruction, Peace, War, Adaptation, and Perfection trees. You also gain the following actions:**
 
-- **Chant:** If you miss the attack roll on a Manifest, you can, once per Manifest, reroll that attack roll by spending energy equal to its Enhance effect’s cost (this does not Enhance it). The new roll keeps any Disadvantages/Advantages the first attempt had, but does not re-proc effects.  
+- **Trance:** You can spend 8 hours attempting to make permanent a Mode of your choice on a willing target (they must participate in the 8 hours as well). Upon completion, the effect of the Mode is permanently active on them, so long as you maintain Concentration on it (this counts towards your cap).   
+  - Modes with a normal lingering effect require a successful self attack roll (crits do apply) at the start of the target’s turns, with a failure meaning it doesn't apply that round.  
+  - Modes that have an instanced effect such as Bloom or Decree trigger at the start of each of their turns so long as they make a successful attack roll against themselves (crits do apply), and that effect lasts until the start of their next turn.   
+  - Hostile effects are instead treated as a new ability the target can use for an AP cost determined by the Wonder Ranges (as well as the effects those impart), which are chosen on use, using your scaling dice for the effect but their own attack dice/buffs for the attack roll, and their own energy if they wish to Enhance or Burst it.  
 - **Project:** Your Form’s Ward can now be applied to an ally as a Ranged attack with a range of 100ft, still requiring whatever AP/RP/energy the Action normally would take.
 
 
 **Tier 3: You unlock the Snappence Arts, Light, Dark, Earth, and Sea trees. You also gain the following action and passive:**
 
-- **Fluidity:** You can now spend energy equal to half of your Skill Points multiplied by your current Alignment number to swap your Alignment type.  
+- **Chant:** If you miss the attack roll on a Manifest, you can, once per Manifest, reroll that attack roll by spending energy equal to its Enhance effect’s cost (this does not Enhance it). The new roll keeps any Disadvantages/Advantages the first attempt had, but does not re-proc effects.  
 - **Deepening:** You unlock two new Alignment depths, seen below. While these Alignments are set, you additionally have \-1 AP per turn for each Alignment past 2 (so \-1 AP at Alignment 3, and \-2 AP at Alignment 4).
 
   **3 Alignment:** Upgrades the 1st Alignment effect to instead be “treat your Dream/Nightmare Form’s Ward attacks as being made from half stealth”, thus giving them advantage on their attack rolls, and targets disadvantage dodging them.
 
   **4 Alignment:** Your Dream/Nightmare Form’s Ward hits regardless of roll, the roll now being used to determine if a crit occurs.
 
-**Tier 4: You unlock the Willpower Arts, Growth, Stagnation, Fortune, and Ruin trees. You also gain the following action and passive:**
+**Tier 4: You unlock the Willpower Arts, Growth, Stagnation, Fortune, and Ruin trees. You also gain the following actions:**
 
 - **Expansion:** If you expend energy equal to double your Form’s Ward Enhance cost, you can now treat it as an Area attack, which can either be a 10ft radius around you, a 20ft 90 degree cone in front of you, or a 30ft by 5ft line in one cardinal direction.  
-- **Will of Body and Spirit:** Whenever you make a Martial or Magic attack using AP, you can Manifest a Wonder at no extra AP cost so long as that Wonder’s normal AP cost matches that of the initial attack. This can also be done with RP based Martial/Magic attacks if Burst is used. The target(s) of your Wonder does not need to be the same as the Martial/Magic attack.
+- **Fluidity:** You can now spend energy equal to half of your Skill Points multiplied by your current Alignment number to swap your Alignment type.
 
-**Tier 5: You unlock the Esoteric Arts, Truth, Mystery, Zeal, and Serenity trees. You also gain the following passive:**
+**Tier 5: You unlock the Esoteric Arts, Truth, Mystery, Zeal, and Serenity trees. You also gain the following passives:**
 
+- **Will of Body and Spirit:** Whenever you make a Martial or Magic attack using AP, you can Manifest a Wonder at no extra AP cost so long as that Wonder’s normal AP cost matches that of the initial attack. This can also be done with RP based Martial/Magic attacks if Burst is used. The target(s) of your Wonder does not need to be the same as the Martial/Magic attack.  
 - **Patron:** Whenever you rest, you can select one Wonder to become your Patron Wonder (or change your currently selected Patron Wonder). Whenever you Manifest that Wonder, you can choose to Enhance or Burst it completely for free.
 
 # **Mental T1 Skill Trees** {#mental-t1-skill-trees}
@@ -258,7 +264,7 @@
 
 **Tier 5: You gain the following Mode:**
 
-- **Entomb:** Can only be used on a target affected by both Sink and at least 3 Burden stacks. Completely entomb the target in the ground below them, clearing their Sink and Burden effects but causing them to be blind, deaf, and unable to smell, lasting until the start of your next turn. While encased, they can attempt a counter grapple check of **4 or higher** to escape their entombment. Additionally, at the start of each of their turns while entombed, they suffer **3d10 physical damage**. **Enhanced:** The effect now lasts for 3 turns, or until broken free from.
+- **Entomb:** Can only be used on a target affected by both Sink and at least 4 Burden stacks. Completely entomb the target in the ground below them, clearing their Sink and Burden effects but causing them to be blind, deaf, and unable to smell, lasting until the start of your next turn. While encased, they can attempt a counter grapple check of **4 or higher** to escape their entombment. Additionally, at the start of each of their turns while entombed, they suffer **3d10 physical damage**. **Enhanced:** The effect now lasts for 3 turns, or until broken free from.
 
 # 
 
@@ -268,23 +274,23 @@
 
 **Tier 1: You gain the following ability:**
 
-- 
+- **Premeditate: Cost: *Energy equal to your Scaling Stat min.*** When you would apply the effects of a Wonder, you can instead use this ability. That Wonder is stored as an effect on the target requiring Concentration, its effect only activating when a preset action of your choosing occurs by or to that character, such as attacking, dodging, or moving. In addition, the effects of that Wonder are Strengthened. The stored effect ends at the start of your next turn if not used. 
 
 **Tier 2: You gain the following ability:**
 
-- 
+- **Mantra: Cost: *Energy equal to half of your Scaling Stat min, rounded down.*** When your Tenet triggers, you can use this ability. Double its bolded effect for this instance.
 
 **Tier 3: You gain the following passive:**
 
-- 
+- **Composure:** When you would lose your Concentration from taking damage, you instead lose only one effect you are Concentrating on, of your choice. 
 
 **Tier 4: You gain the following passive:**
 
-- 
+- **Forethought:** Your selected Tenet automatically applies to each of your Premeditated Wonders, if it can. This does not count against that Tenet’s once per round limit. 
 
 **Tier 5: You gain the following passive:**
 
-- 
+- **Daydreaming:** One of your active Concentrations cannot be broken, even if you fall unconscious. Losing Concentration still requires you to pick one to lose if you have more than one active.
 
 ## **Creation (Dream)** {#creation-(dream)}
 

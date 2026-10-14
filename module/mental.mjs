@@ -84,10 +84,10 @@ export async function setAlignmentActivity(actor) {
   await post(actor, { title: `${esc(actor.name)} — Alignment`, body: `<div class="fs-result">${esc(actor.name)} sets their Alignment to <strong>${esc(R.alignmentLabel(st))}</strong>. ${esc(R.alignmentBlurb(st))}</div>` });
 }
 
-/** Fluidity (Mental T3): swap your Alignment between Dream and Nightmare for energy equal to half your Skill Points times your current Alignment number. */
+/** Fluidity (Mental T4): swap your Alignment between Dream and Nightmare for energy equal to half your Skill Points times your current Alignment number. */
 export async function fluidity(actor) {
   if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
-  if (theory(actor) < 3) return ui.notifications.warn("Fluidity is a Mental Theory Tier 3 ability.");
+  if (theory(actor) < 4) return ui.notifications.warn("Fluidity is a Mental Theory Tier 4 ability.");
   const cur = alignmentOf(actor);
   if (cur.level <= 0) return ui.notifications.warn("Fluidity swaps an Alignment you already have; you are Neutral.");
   const cost = R.fluidityCost(cur, actor.system.skillPoints ?? 0);
@@ -557,9 +557,9 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     const missActs = await wonders.missActs({ attacker, target, m, mode, power: m.power, enhanced: m.enhanced, range: m.range, hit: false });
     if (missActs.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}`, body: wonders.actButtons(missActs), flags: { flowstate: { mentalAct: { acts: missActs } } } });
     const missAuto = await wonders.missAuto({ attacker, target, m, mode });
-    // Chant (Mental T2): once per Manifest, reroll a missed attack roll for the Enhance cost (keeping its Advantage/Disadvantage).
+    // Chant (Mental T3): once per Manifest, reroll a missed attack roll for the Enhance cost (keeping its Advantage/Disadvantage).
     let extra = "";
-    if (theory(attacker) >= 2 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null) {
+    if (theory(attacker) >= 3 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null) {
       const cost = minOf(attacker, R.KINDS[R.wonderById(m.wonder).kind].stat);
       const act = { id: "chant", label: "Chant: reroll", tip: "Reroll the missed attack roll once (keeps its Advantage/Disadvantage; this does not Enhance it)", cost: `⚡ ${cost}`, caster: attacker.uuid, target: target.uuid, mode: m.mode, re: { ...reroll, keepNet: true, stacks: o.stacks ?? 0, melee: !!o.melee, msg: attackMessage, index }, m, range: m.range };
       await post(attacker, { title: `${esc(attacker.name)} — Chant`, body: wonders.actButtons([act]), flags: { flowstate: { mentalAct: { acts: [act] } } } });
@@ -873,9 +873,9 @@ export async function dismiss(actor) {
     notes: [`Dismissing ${pick.e.name} on ${pick.a.name} (${R.RANGES[range].label})`], mental: { dismiss: { effects: [pick.e.uuid] }, caster: actor.uuid }, targetActors: [pick.a] });
 }
 
-/** Will of Body and Spirit (Mental T4): after a Martial or Magic attack, a Manifest whose Range costs the same AP is free (RP attacks need Burst). */
+/** Will of Body and Spirit (Mental T5): after a Martial or Magic attack, a Manifest whose Range costs the same AP is free (RP attacks need Burst). */
 async function attackCost(actor, cost) {
-  if (theory(actor) < 4 || !actor.isOwner) return;
+  if (theory(actor) < 5 || !actor.isOwner) return;
   if (!R.knownWonders(trees(actor)).some(w => w.modes.length)) return;
   const n = cost.ap > 0 ? cost.ap : cost.rp;
   if (![1, 2, 3].includes(n)) return;

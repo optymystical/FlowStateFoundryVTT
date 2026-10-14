@@ -4,7 +4,7 @@
  * A Mode leaves a charge (an effect of kind "charge") on its target. Whenever that creature makes a roll, `onRoll` finds the charges on them
  * and asks the creature that placed them (over the socket if that is somebody else) which to spend, as selectable options:
  *   Decree (static result), Fracture / Larceny (forced reroll), Mandate (plus or minus per charge), Preordained (Order T4), Control (Chaos T4).
- * After an attack is answered, `afterResolve` offers Verdict (swap hit and crit), Entropy (an extra roll on a crit) and Balance (Order Tenet).
+ * After an attack is answered, `afterResolve` offers Verdict (swap hit and crit), Entropy (Chaos T5: a Fracture charge spent for an extra roll on a crit) and Balance (Order Tenet).
  * `onDamage` handles damage rolls (Mandate Enhanced, Verdict's damage). `consumeCharge` in wonders.mjs stays as the manual fallback.
  */
 import { askFor, showChoices } from "./ask.mjs";
@@ -88,7 +88,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
         const base = half(d.enhanced ? myMax : top);
         return `<option value="${c.effect.id}">Decree: the roll becomes ${Math.max(0, base + sgn(d))} (half of ${d.enhanced ? "your" : "their"} max ${d.enhanced ? myMax : top}, ${d.sign === "minus" ? "−" : "+"}${bs(d, 1)})</option>`;
       }
-      const delta = bs(d, { fracture: 2, larceny: 1 }[d.charge]) * upDown(d);
+      const delta = bs(d, { fracture: 3, larceny: 1 }[d.charge]) * upDown(d);
       return `<option value="${c.effect.id}">${name}: reroll at ${count > 1 ? `${count}d` : "d"}${shiftDie(die, delta, count)}${d.charge === "fracture" && d.enhanced ? ", keeping Advantage/Disadvantage" : ""}</option>`;
     };
     const replace = rows.filter(c => c.d.charge !== "mandate");
@@ -114,7 +114,7 @@ export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max =
         n = Math.max(0, half(d.enhanced ? myMax : top) + sgn(d) + p);
         lines.push(`Decree: ${esc(actor.name)}'s ${rollName(type)} becomes the static result <strong>${n}</strong>${p ? ` (${p > 0 ? "+" : "−"}${Math.abs(p)} Preordained)` : ""}.`);
       } else {
-        const delta = bs(d, { fracture: 2, larceny: 1 }[d.charge]) * upDown(d);
+        const delta = bs(d, { fracture: 3, larceny: 1 }[d.charge]) * upDown(d);
         const keep = d.charge === "fracture" && d.enhanced;
         const nd = shiftDie(die, delta, count);
         let r = await reroll(count, nd, keep ? net : 0);
@@ -223,9 +223,10 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
   }
   // Entropy: when the target would crit (the attacker) or be crit (the defender), an additional roll.
   if (res.crit) for (const [who, role] of [[attacker, "attack"], [target, "dodge"]]) {
-    for (const [casterUuid, list] of byCaster(chargesOn(who, ["entropy"]))) {
+    // Entropy (Chaos T5) is a passive: the caster's Fracture charges can also be spent on a crit.
+    for (const [casterUuid, list] of byCaster(chargesOn(who, ["fracture"]))) {
       const caster = await fromUuid(casterUuid);
-      if (!caster || !res.crit) continue;
+      if (!caster || !res.crit || tier(caster, "mental-chaos-nightmare") < 5) continue;
       const c = list[0], d = c.d, delta = bs(d, 3) * upDown(d);
       const control = tier(caster, "mental-chaos-nightmare") >= 4;
       const dodgeDie = target.system.derived.dodgeDie, atkDie = attackDie ?? attacker.system.derived.attackDie;

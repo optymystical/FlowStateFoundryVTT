@@ -432,7 +432,7 @@ async function amplifySpell(entry) {
   const d = data(entry.effect), p = Math.max(1, d.power ?? 1);
   const upd = { "flags.flowstate.spellEffect.amplified": true };
   let msg;
-  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 20; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 20; msg = "The Shield gains 20 health (20 × 1 Power)."; }
+  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 10; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 10; msg = "The Shield gains 10 health (10 × 1 Power)."; }
   else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + 1)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + 1; msg = `Its dice go from ${d.n} to ${n}.`; }
   else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 10; upd["flags.flowstate.spellEffect.power"] = d.power + 10; msg = "The Mirage gains 10 Power."; }
   else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 3; msg = "Pain Threshold drops 3 more."; }

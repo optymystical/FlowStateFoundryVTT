@@ -131,7 +131,7 @@
 ## **Life (Dream)** {#life-(dream)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Bloom:** At the start of the target’s next turn, they get **20 temp HP**, lasting until the start of your next turn. **Enhanced:** The temp HP applies immediately instead.  
+**Bloom:** At the start of the target’s next turn, they get **50 temp HP**, lasting until the start of your next turn (can stack with itself). **Enhanced:** The temp HP applies immediately instead.  
 **Verdant Soul:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can give either the target or yourself **10 temp HP**, lasting until the start of your next turn.
 
 **Tier 2: You gain the following ability:**
@@ -153,7 +153,7 @@
 ## **Death (Nightmare)** {#death-(nightmare)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Wither:** Removes **1d12 health** from a living target, ignoring objects and defenses entirely (does not ignore temp HP). **Enhanced:** This damage also removes that much Max HP from the target.  
+**Wither:** Removes **1d12 health** from a living target. This effect is reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects. **Enhanced:** This damage also removes that much Max HP from the target.  
 **Mortal Coil:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can steal **1d8** **health** from the target(s), becoming Temp HP for yourself that lasts until the start of your next turn.
 
 **Tier 2: You gain the following ability:**
@@ -197,7 +197,7 @@
 ## **Chaos (Nightmare)** {#chaos-(nightmare)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Fracture:** Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size **increased or decreased by 2** (your choice on Manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). **Enhanced:** The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage.  
+**Fracture:** Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size **increased or decreased by 3** (your choice on Manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). **Enhanced:** The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage.  
 **Unbound:** Only active while this is your selected Tenet. Once per round when you get a crit on a Manifest, you can instantly for free apply one Chaos Mode charge of your choice onto that Manifest’s target.
 
 **Tier 2: You gain the following ability:**
@@ -212,9 +212,9 @@
 
 - **Control:** Once per charge, you can reroll one extra roll made by a Chaos Mode. If you do, you must use that new result.
 
-**Tier 5: You gain the following Mode:**
+**Tier 5: You gain the following passive:**
 
-- **Entropy:** Store an Entropy charge on the target, lasting until the start of your next turn. When the target would crit or be crit (can still occur on things with no crit effect), you can consume up to one Entropy charge on them to give them an additional roll (if critting, the additional roll is either an extra attack, or forcing them to redo the attack. If being crit, the additional roll is a new attempt to dodge. Either way, the roll does not inherit any effects from the original roll) with its die size **increased or decreased by 3** (dodge dice are affected by half). **Enhanced:** The extra reroll retains any effects the original roll had, such as Advantage/Disadvantage.
+- **Entropy:** Fracture charges can now be used for the following effect: when the target would crit or be crit (can still occur on things with no crit effect), you can consume up to one Fracture charge on them to give them an additional roll (if critting, the additional roll is either an extra attack, or forcing them to redo the attack. If being crit, the additional roll is a new attempt to dodge. Either way, the roll does not inherit any effects from the original roll) with its die size **increased or decreased by 3** (dodge dice are affected by half). **Enhanced:** The extra reroll retains any effects the original roll had, such as Advantage/Disadvantage.
 
 ## **Beyond (Dream)** {#beyond-(dream)}
 
@@ -250,7 +250,7 @@
 
 **Tier 3: You gain the following Mode:**
 
-- **Burden:** On hit, the target gets Disadvantage on either their attack or dodge rolls (your choice on Manifest, has no effect on counter grapple checks), until they break free with a counter grapple check of **2 or higher**, or the start of your next turn. This effect stacks with itself (both of the types of Disadvantage, as well as more Disadvantage on one type), but they are all removed at once with a successful counter grapple check. **Enhanced:** The effect now lasts for 3 turns, or until broken free from.
+- **Burden:** On hit, the target gets two Disadvantages split among either their attack or dodge rolls (your choice on Manifest, has no effect on counter grapple checks), until they break free with a counter grapple check of **3 or higher**, or the start of your next turn. This effect stacks with itself (both of the types of Disadvantage, as well as more Disadvantage on one type), but they are all removed at once with a successful counter grapple check. **Enhanced:** The effect now lasts for 3 turns, or until broken free from.
 
 **Tier 4: You gain the following ability:**
 
@@ -258,7 +258,7 @@
 
 **Tier 5: You gain the following Mode:**
 
-- **Entomb:** Can only be used on a target affected by both Sink and at least 3 Burden stacks. Completely entomb the target in the ground below them, clearing their Sink and Burden effects but causing them to be blind, deaf, and unable to smell, lasting until the start of your next turn. While encased, they can attempt a counter grapple check of **3 or higher** to escape their entombment. Additionally, at the start of each of their turns while entombed, they suffer **3d10 physical damage**. **Enhanced:** The effect now lasts for 3 turns, or until broken free from.
+- **Entomb:** Can only be used on a target affected by both Sink and at least 3 Burden stacks. Completely entomb the target in the ground below them, clearing their Sink and Burden effects but causing them to be blind, deaf, and unable to smell, lasting until the start of your next turn. While encased, they can attempt a counter grapple check of **4 or higher** to escape their entombment. Additionally, at the start of each of their turns while entombed, they suffer **3d10 physical damage**. **Enhanced:** The effect now lasts for 3 turns, or until broken free from.
 
 # 
 
@@ -366,7 +366,7 @@
 
 **Tier 3: You gain the following Mode:**
 
-- **Warzone:** On hit, the target gains a stack of Warzone lasting until the start of your next turn. When a creature with a Warzone stack deals damage, they automatically consume up to one stack of Warzone to increase that damage by **1d8 of that attack’s damage type**. **Enhanced:** If the target crits on the attack that Warzone is buffing, the stack is not consumed (still applying its buff).
+- **Warzone:** On hit, the target gains a stack of Warzone lasting until the start of your next turn. When a creature with a Warzone stack deals damage, the damage dealt increases by **1d10 of that attack’s damage type** for each stack of Warzone that they have. **Enhanced:** Adds your snappence min to the damage as well, stacking for each instance of Enhanced Warzone on the target.
 
 **Tier 4: You gain the following ability:**
 
@@ -380,16 +380,16 @@
 
 **Tier 1: You gain the following Mode and Tenet:**
 
-- **Crescendo:** On hit, deals **1d10 physical damage** to the target. The first time this Manifest hits per attack, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 2 more than the stack before it. **Enhanced:** This Manifest's damage can be of a type of your choice, from among physical, heat, cold, radiation and acid, and it is resolved as though you consumed one additional Adaptation stack.   
+- **Crescendo:** On hit, deals **1d10 physical damage** to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 4 more than the stack before it. **Enhanced:** This Manifest's damage can be of a type of your choice, from among physical, heat, cold, radiation and acid, and it is resolved as though you consumed one additional Adaptation stack.   
 - **Adapt:** Only active while this is your selected Tenet. Once per round when you would Manifest, you can expend one of your Adaptation stacks to give that Manifest Strengthened.
 
-**Tier 2: You gain the following ability:**
+**Tier 2: You gain the following passive:**
 
-- **Instinct:** **Cost: *Energy equal to half of your PON min, rounded down.*** When an Adaptation Mode you Manifest misses its attack roll, you can use this ability (once per attack instance). Gain a stack of Adaptation.
+- **Instinct:** You keep up to 4 stacks of Adaptation between turns (overrides the duration listed in each mode). In addition, when combat starts, you start with 4 stacks of Adaptation already banked.
 
 **Tier 3: You gain the following Mode:**
 
-- **Adaptive Skin:** On hit, the target gains an instance of Adaptive Skin until the start of your next turn, **reducing all damage they take by 1**. The first time this Manifest hits per attack, you gain a stack of Adaptation, lasting until the start of your next turn. Whenever a creature with Adaptive Skin would take damage, you can consume any number of your Adaptation stacks to give them additional damage reduction against that damage's type until the start of your next turn: the first stack consumed **grants 1 damage reduction**, and each stack after that **grants 1 more damage reduction** than the stack before it. **Enhanced:** This instance's damage reduction applies only against a single damage type of your choice, but is resolved as though one Adaptation stack had already been consumed for it. 
+- **Adaptive Skin:** On hit, the target gains an instance of Adaptive Skin until the start of your next turn, **reducing all damage they take by 1**. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. Whenever a creature with Adaptive Skin would take damage, you can consume any number of your Adaptation stacks to give them additional damage reduction against that damage's type until the start of your next turn: the first stack consumed **grants 1 damage reduction**, and each stack after that **grants 1 more damage reduction** than the stack before it. **Enhanced:** This instance's damage reduction applies only against a single damage type of your choice, but is resolved as though one Adaptation stack had already been consumed for it. 
 
 **Tier 4: You gain the following ability:**
 
@@ -397,13 +397,13 @@
 
 **Tier 5: You gain the following Mode:**
 
-- **Second Wind:** On hit, **restores 5 energy** to the target. The first time this Manifest hits per attack, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you can consume 2 of your Adaptation stacks to remove one negative condition affecting the target. **Enhanced:** Until the start of your next turn, the condition(s) removed by this Manifest cannot be applied to that target again by the same effect.
+- **Second Wind:** On hit, **restores 5 energy** to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you can consume 2 of your Adaptation stacks to remove one negative condition affecting the target. **Enhanced:** Until the start of your next turn, the condition(s) removed by this Manifest cannot be applied to that target again by the same effect.
 
 ## **Perfection (Nightmare)** {#perfection-(nightmare)}
 
 **Tier 1: You gain the following Mode and Tenet:**
 
-- **Exact:** Deals **1d10 physical damage** to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. **Enhanced:** The damage from this gains **5 Pierce**, which is affected by the Strengthened from the on hit bonus.  
+- **Exact:** Deals **1d12 physical damage** to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. **Enhanced:** The damage from this gains **5 Pierce**, which is affected by the Strengthened from the on hit bonus.  
 - **Ego:** Only active while this is your selected Tenet. Once per round when you crit on a Manifest, you can regain **5 energy**.
 
 **Tier 2: You gain the following ability:**

@@ -14,7 +14,7 @@ export const BOLD = {
   "4 Alignment:"
  ],
  "Bloom": [
-  "20 temp HP"
+  "50 temp HP"
  ],
  "Verdant Soul": [
   "10 temp HP"
@@ -52,7 +52,7 @@ export const BOLD = {
   "add/subtract 5"
  ],
  "Fracture": [
-  "increased or decreased by 2"
+  "increased or decreased by 3"
  ],
  "Larceny": [
   "increased or decreased by 1"
@@ -86,10 +86,10 @@ export const BOLD = {
   "1d12 physical"
  ],
  "Burden": [
-  "2 or higher"
+  "3 or higher"
  ],
  "Entomb": [
-  "3 or higher",
+  "4 or higher",
   "3d10 physical damage"
  ],
  "Fabricate": [
@@ -134,7 +134,7 @@ export const BOLD = {
   "1d12 of the attack’s damage type"
  ],
  "Warzone": [
-  "1d8 of that attack’s damage type"
+  "1d10 of that attack’s damage type"
  ],
  "Bloodbond": [
   "10 of the damage they dealt"
@@ -151,7 +151,7 @@ export const BOLD = {
   "restores 5 energy"
  ],
  "Exact": [
-  "1d10 physical damage",
+  "1d12 physical damage",
   "5 Pierce"
  ],
  "Ego": [

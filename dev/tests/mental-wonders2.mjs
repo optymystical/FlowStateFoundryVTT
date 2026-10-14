@@ -285,7 +285,10 @@ clearAll(ally);
 const W2 = await import("../../module/wonders-b.mjs");
 seq = [5]; dialog = () => null;
 let adj = await W2.adjust({ attacker: orc, target: ally, amount: 20, type: "physical", o: {}, crit: false });
-ok2(adj.amount === 20 + 5 && effs(orc, "warzone").length === 0, "A Warzoned creature's damage gets +Power d8 and uses the stack up");
+ok2(adj.amount === 20 + 5 && effs(orc, "warzone").length === 1, "A Warzoned creature's damage gets +Power d10 per stack, and the stack stays until the caster's next turn");
+await putSpellEffect(orc, { kind: "warzone", stack: true, caster: hero.uuid, name: "Warzone", power: 1, bstacks: 0, enhanced: false });
+seq = [5, 5]; adj = await W2.adjust({ attacker: orc, target: ally, amount: 20, type: "physical", o: {}, crit: false });
+ok2(adj.amount === 20 + 10, "Two stacks add their dice twice");
 reset(); clearAll(orc);
 await hitMiss("mental-war-nightmare:provoke");
 ok2(effs(orc, "provoke")[0]?.flags.flowstate.spellEffect.attackDieUp === 2 * sPow, "Provoke: +2 × Power die size on the provoked attack");
@@ -309,7 +312,13 @@ ok2(orc.system.energy.value === 50 + 5 * pPow, "Second Wind restores 5 × Power 
 clearAll(hero); reset(); messages.length = 0; refresh(); target(orc); seq = [1];
 await M.manifest(hero, { mode: "mental-adaptation-dream:crescendo", range: "ranged" });
 seq = [90]; await actions.defend(lastAtk(), 0, "dodge");
-ok2(messages.some(m => m.flags?.flowstate?.mentalAct?.acts?.[0]?.id === "instinct"), "A missed Adaptation Mode offers Instinct");
+ok2(effs(hero, "adaptation").length === 1 && !messages.some(m => m.flags?.flowstate?.mentalAct?.acts?.[0]?.id === "instinct"), "A missed Adaptation Mode still gives its Adaptation stack");
+clearAll(hero); hero.system.trees["mental-adaptation-dream"] = 2; hero.system.prepareDerivedData();
+await W2.combatStart(hero);
+ok2(effs(hero, "adaptation").length === 4 && effs(hero, "adaptation").every(e => e.flags.flowstate.spellEffect.persistent), "Instinct: combat starts with 4 stacks of Adaptation banked");
+await W2.combatStart(hero);
+ok2(effs(hero, "adaptation").length === 4, "…and only tops it up to 4");
+clearAll(hero);
 
 console.log("== Perfection");
 clearAll(orc); clearAll(hero); reset();

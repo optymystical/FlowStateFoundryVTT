@@ -3434,11 +3434,11 @@ export async function breakFree(actor) {
     await mentalHook?.afterBreakFree({ actor, held, freed });
     return;
   }
-  // Mental (Below): Burden alone (nothing grappling them) is shaken off with a counter grapple check of 2 or higher.
+  // Mental (Below): Burden alone (nothing grappling them) is shaken off with a counter grapple check (3 × Wonder Power or higher).
   if (!grapplerUuid && !actor.statuses.has("grappled") && burden.length) {
     if (!(await spendAP(actor, 2, "shaking off Burden"))) return;
     const roll = await evaluate(`1d${actor.system.derived.attackDie}`);
-    const need = Math.max(2, ...burden.map(b => Number(b.flags.flowstate.spellEffect.breakMin) || 0));       // 2 × Wonder Power
+    const need = Math.max(3, ...burden.map(b => Number(b.flags.flowstate.spellEffect.breakMin) || 0));       // 3 × Wonder Power
     const freed = roll.total >= need;
     await post(actor, { title: `${esc(actor.name)} — Break Free (Burden)`, rolls: [roll], body: `${await rollBlock(roll, `Attack die (d${actor.system.derived.attackDie}), needs ${need}+`)}<div class="fs-result">${freed ? "The weight is gone!" : "Still weighed down."}</div>` });
     const held = { ...burden[0].flags.flowstate.spellEffect, name: burden[0].name };
@@ -3647,6 +3647,7 @@ export async function flyerPushed(target, feet, label = "Force") {
 let mentalHook = null;
 export const registerMental = h => { mentalHook = h; };
 export const mentalTurnStart = actor => mentalHook?.turnStart(actor);
+export const mentalCombatStart = actor => mentalHook?.combatStart?.(actor);
 export const mentalBeforeClear = actor => mentalHook?.beforeClear(actor);
 export const mentalAct = (message, i) => mentalHook?.act(message, i);
 export const afterAttackCost = (actor, cost) => mentalHook?.attackCost?.(actor, cost);

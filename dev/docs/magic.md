@@ -116,7 +116,7 @@
 
 **Tier 1: You unlock the following Core Spell:**
 
-- **Shield:** ***1 Threshold, Core Spell, Targeted, Uncombinable.*** This Spell can be used to project a shield of energy on a target within range until the start of your next turn. The shield has a total of **20 health** which it uses to absorb damage that would attempt to harm the target or anything the target is wearing/holding. Does not stack with itself, treat the Limit of this shield as being equal to its health. **Ritual:** Lasts until the Ritual ends or the shield breaks.  
+- **Shield:** ***1 Threshold, Core Spell, Targeted, Uncombinable.*** This Spell can be used to project a shield of energy on a target within range until the start of your next turn. The shield has a total of **10 health** which it uses to absorb damage that would attempt to harm the target or anything the target is wearing/holding. Does not stack with itself, treat the Limit of this shield as being equal to its health. **Ritual:** Lasts until the Ritual ends or the shield breaks.  
     
   **Tier 2: You unlock the following Spell Mod:**  
 - **Reflect: *2 Threshold, Spell Mod, Universal.*** Any damage this Spell takes is sent back as a Ranged Attack roll against the damage’s source so long as it is within 200ft of this effect (this does not negate the damage). You make the attack roll in this instance, even if you lack the required sense(s) to do so (it would be made at disadvantage in that case).
@@ -402,7 +402,7 @@
 - **Layered: *1 Threshold, Spell Mod, Universal.*** This Spell’s health is increased by two times your Build stat if it uses default Spell health. If it does not use default Spell health (such as summons or shields), instead its health/durability is increased by your Build stat.  
     
   **Tier 2: You unlock the following Spell Mod:**  
-- **Reactive: *1 Threshold, Spell Mod, Universal.*** Whenever this Spell would take damage, you can spend 1 RP to give that damage instance a stack of Weakened. This can be done as much as desired for an instance of damage.  
+- **Reactive: *1 Threshold, Spell Mod, Universal.*** Whenever this Spell would take damage, you can spend 1 RP to give that damage instance a stack of Weakened. This can be done once per instance of damage.  
     
   **Tier 3: You unlock the following Passive:**  
 - **Seep:** Whenever you spend AP to regain energy, you can forgo half of the energy gained (rounded down) to activate the recovery of your Shroud once.  

@@ -113,6 +113,7 @@ class FlowStateCombat extends Combat {
     for (const c of this.combatants) {
       if (c.actor?.isOwner) await c.actor.update({ "system.ap.value": c.actor.system.ap?.max ?? 6, "system.rp.value": c.actor.system.rp?.max ?? 6 });
     }
+    for (const c of this.combatants) if (c.actor) await actions.mentalCombatStart(c.actor);          // Instinct (Adaptation T2): 4 stacks banked
     return super.startCombat();
   }
 

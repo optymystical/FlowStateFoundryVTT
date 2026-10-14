@@ -113,9 +113,9 @@ export function manifestContext(actor) {
 /** Extra choices a Mode asks for when it's Manifested (and Kinetic Focus for Beyond's attacks). */
 export function modeChoices(actor, modeId) {
   const out = [];
-  if (modeId === "mental-below-nightmare:burden") out.push({ name: "dis", label: "Disadvantage on", options: { attack: "Their attack rolls", dodge: "Their dodge rolls" } });
+  if (modeId === "mental-below-nightmare:burden") out.push({ name: "dis", label: "Two Disadvantages", options: { attack: "Both on their attack rolls", dodge: "Both on their dodge rolls", split: "One on each" } });
   if (["mental-order-dream:decree", "mental-order-dream:mandate"].includes(modeId)) out.push({ name: "sign", label: "Plus or minus", options: { plus: "+1 (plus)", minus: "−1 (minus)" } });
-  if (["mental-chaos-nightmare:fracture", "mental-chaos-nightmare:larceny", "mental-chaos-nightmare:entropy"].includes(modeId)) out.push({ name: "size", label: "Die size", options: { up: "Increased", down: "Decreased" } });
+  if (["mental-chaos-nightmare:fracture", "mental-chaos-nightmare:larceny"].includes(modeId)) out.push({ name: "size", label: "Die size", options: { up: "Increased", down: "Decreased" } });
   if (["mental-beyond-dream:herald", "mental-beyond-dream:ascend"].includes(modeId) && tierOf(trees(actor), "mental-beyond-dream") >= 4)
     out.push({ name: "kinetic", label: `Kinetic Focus (⚡ ${Math.floor(minOf(actor, "pon") / 2)} each: +1 Advantage)`, number: true });
   for (const f of wonders.CHOICE_PROVIDERS) out.push(...(f(actor, modeId) ?? []));
@@ -556,6 +556,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     // Mode-specific follow-ups on a miss (Instinct)
     const missActs = await wonders.missActs({ attacker, target, m, mode, power: m.power, enhanced: m.enhanced, range: m.range, hit: false });
     if (missActs.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}`, body: wonders.actButtons(missActs), flags: { flowstate: { mentalAct: { acts: missActs } } } });
+    const missAuto = await wonders.missAuto({ attacker, target, m, mode });
     // Chant (Mental T2): once per Manifest, reroll a missed attack roll for the Enhance cost (keeping its Advantage/Disadvantage).
     let extra = "";
     if (theory(attacker) >= 2 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null) {
@@ -564,7 +565,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
       await post(attacker, { title: `${esc(attacker.name)} — Chant`, body: wonders.actButtons([act]), flags: { flowstate: { mentalAct: { acts: [act] } } } });
       extra = " Chant can reroll it.";
     }
-    return { html: `<div class="fs-notes">${esc(mode?.name ?? "The Mode")} misses ${esc(target.name)}.${extra}</div>` };
+    return { html: `<div class="fs-notes">${esc(mode?.name ?? "The Mode")} misses ${esc(target.name)}.${extra}${missAuto}</div>` };
   }
   return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, index, attackMessage });
 }
@@ -902,7 +903,7 @@ async function act(message, i) {
   if (done) await post(await fromUuid(x.caster), { title: "Used", body: `<div class="fs-notes">${esc(x.label)}: used.</div>`, flags: { flowstate: { mentalActDone: { card: message.id, i: Number(i) } } } });
 }
 wonders.setMental(self);
-registerMental({ askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+registerMental({ combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });

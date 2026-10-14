@@ -22,7 +22,7 @@ const G = "magic-gravity:force", SL = "magic-slashing:cut", PI = "magic-piercing
  *  shield        health of a projected shield (scaled by power)
  */
 export const PROFILES = {
-  [SH]: { name: "Shield", shield: 20 },
+  [SH]: { name: "Shield", shield: 10 },
   [G]: { name: "Force", force: { n: 8, sides: 10, when: "hit" } },
   [SL]: { name: "Cut", damage: { n: 2, sides: 6, type: "physical" }, livingDie: 4 },
   [PI]: { name: "Stab", damage: { n: 1, sides: 10, type: "physical" }, critStack: 1 },

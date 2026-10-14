@@ -84,7 +84,7 @@ let atk = lastAtk();
 ok2(atk && atk.flags.flowstate.attack.opts.mental.power === 3 && atk.flags.flowstate.attack.opts.mental.wonder === "mental-life-dream", "A Ranged Bloom is cast at Wonder Power 3 (Ponderance 30)");
 ok2(hero.system.ap.value === 4 && hero.system.energy.value === 200, "Ranged costs 2 AP (no energy without Enhance)");
 seq = [12]; await actions.defend(atk, 0, "dodge");
-ok2(/60 temp HP/.test(text(last())) && /Bloom/.test(text(last())), "On a hit the card shows Bloom's numbers scaled by Power (20 → 60 temp HP)");
+ok2(/150 temp HP/.test(text(last())) && /Bloom/.test(text(last())), "On a hit the card shows Bloom's numbers scaled by Power (50 → 150 temp HP)");
 refresh(); target(orc); seq = [20];
 await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "melee", enhance: true });
 ok2(hero.system.ap.value === 5 && hero.system.energy.value === 200 - R.wonderPower(0) - hero.system.derived.effective.pon.min, "Melee 1 AP, Enhance costs the Ponderance min in Energy");

@@ -193,7 +193,7 @@ seq = [10]; await cast("magic-arcanomancy:strike", { base: 1, strikeSpell: sid2 
 ok2(eff(orc, "shield")[0].flags.flowstate.spellEffect.hp === 30, "…less damage leaves it standing (40 → 30)");
 clean6(); await shieldOn(orc); const sid3 = AR.listSpells().find(x => x.label.startsWith("Shield on")).id;
 await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true, strikeSpell: sid3 });
-ok2(eff(orc, "shield")[0].flags.flowstate.spellEffect.hp === 60, "Amplify: +1 Power (+20 health on a Shield)");
+ok2(eff(orc, "shield")[0].flags.flowstate.spellEffect.hp === 50, "Amplify: +1 Power (+10 health on a Shield)");
 let r5 = await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true, strikeSpell: AR.listSpells().find(x => x.label.startsWith("Shield on")).id });
 ok2(!r5, "…and only once per Spell");
 r5 = await cast("magic-arcanomancy:strike", { base: 1, [M("magic-arcanomancy:amplify")]: true });

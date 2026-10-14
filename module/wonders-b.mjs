@@ -13,7 +13,7 @@ import * as R from "./mental-rules.mjs";
 import { askFor, runOnOwner, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
-import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = f => new Roll(f).evaluate();
@@ -238,8 +238,9 @@ MODES["mental-war-nightmare:provoke"] = async c => {
 };
 MODES["mental-war-nightmare:warzone"] = async c => {
   await putSpellEffect(c.target, { kind: "warzone", stack: true, caster: c.attacker.uuid, name: `Warzone${c.enhanced ? " (Enhanced)" : ""}`, power: c.power, bstacks: c.bs, enhanced: !!c.enhanced, mode: c.mode.id,
-    description: `When they deal damage, a stack adds ${c.power}d8 of its type${c.enhanced ? " (not used up on a crit)" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
-  return `${esc(c.target.name)} gains a <strong>Warzone</strong> stack: their next damage gets <strong>+${c.power}d8</strong> of its type${c.enhanced ? " (kept on a crit)" : ""}.`;
+    description: `When they deal damage, each stack adds ${c.power}d10 of its type${c.enhanced ? " plus the caster's Snappence min" : ""}. Until the start of ${c.attacker.name}'s next turn.` });
+  const stacks = fx(c.target, "warzone").length;
+  return `${esc(c.target.name)} gains a <strong>Warzone</strong> stack (${stacks}): their damage gets <strong>+${c.power}d10</strong> of its type for each stack${c.enhanced ? ", plus your Snappence min for each Enhanced one" : ""}, until the start of your next turn.`;
 };
 MODES["mental-war-nightmare:bloodbond"] = async c => {
   await putSpellEffect(c.target, { kind: "bloodbond", stack: true, caster: c.attacker.uuid, name: `Bloodbond${c.enhanced ? " (Enhanced)" : ""}`, power: c.power, bstacks: c.bs, enhanced: !!c.enhanced, range: c.range, mode: c.mode.id,
@@ -259,9 +260,15 @@ ACTS.warpath = async (x, caster, target) => {
 /* -------------------------------------------- */
 
 const stacksOf = a => fx(a, "adaptation");
-async function gainStack(actor) {
-  await putSpellEffect(actor, { kind: "adaptation", stack: true, caster: actor.uuid, name: "Adaptation", description: "A stack of Adaptation: spend it on Crescendo, Adaptive Skin, Second Wind, Adapt... Lasts until the start of your next turn." });
+async function gainStack(actor, persistent = false) {
+  await putSpellEffect(actor, { kind: "adaptation", stack: true, caster: actor.uuid, name: "Adaptation", ...(persistent ? { persistent: true } : {}), description: "A stack of Adaptation: spend it on Crescendo, Adaptive Skin, Second Wind, Adapt... Lasts until the start of your next turn." });
 }
+/** Instinct (Adaptation T2): when combat starts, you start with 4 stacks of Adaptation already banked. */
+export async function combatStart(actor) {
+  if (tier(actor, ids.adapt) < 2) return;
+  for (let i = stacksOf(actor).length; i < INSTINCT_STACKS; i++) await gainStack(actor, true);
+}
+const INSTINCT_STACKS = 4;
 /** Use up `n` Adaptation stacks; with Memory (Adaptation T4) each can be kept for your PON min in Energy. Returns how many were really spent. */
 async function spendStacks(actor, n) {
   const have = stacksOf(actor);
@@ -277,8 +284,9 @@ async function spendStacks(actor, n) {
   for (const e of have.slice(0, n - keep)) await changeEffect(e, null);
   return n;
 }
-async function gainOncePerAttack(c) {
-  if (c.m.spread || !c.hit) return "";
+/** Adaptation modes give a stack once per Manifest, hit or miss. */
+export async function gainOncePerAttack(c) {
+  if (c.m.spread) return "";
   const uid = c.m.uid ?? "";
   if (uid && c.attacker.getFlag?.("flowstate", "adaptUid") === uid) return "";
   await setActorFlag(c.attacker, "adaptUid", uid);
@@ -295,7 +303,7 @@ MODES["mental-adaptation-dream:crescendo"] = async c => {
   const have = stacksOf(c.attacker).length;
   const eat = Math.max(0, Math.min(have, Math.floor(num(c.choices.consume))));
   const n = eat + (c.enhanced ? 1 : 0);
-  const inc = n * (n + 1);                                       // +2, then +4, +6, ...
+  const inc = 2 * n * n;                                         // +2, then 4 more than that (+6), then +10, ...
   const dtype = c.enhanced && ["physical", "heat", "cold", "radiation", "acid"].includes(c.choices.dtype) ? c.choices.dtype : "physical";
   const s = await strike({ ...c }, 1, 10 + inc, dtype, { label: `Crescendo (d${10 + inc}${n ? `, ${eat} stack${eat === 1 ? "" : "s"} consumed${c.enhanced ? " +1 Enhanced" : ""}` : ""})` });
   if (eat) await spendStacks(c.attacker, eat);
@@ -328,17 +336,17 @@ ACTS.cleanse = async (x, caster, target) => {
   await post(caster, { title: `${esc(caster.name)} — Second Wind`, body: `<div class="fs-result">${esc(target.name)} is rid of <strong>${esc(out.replace("status:", ""))}</strong>${x.enhanced ? " (it can't be applied to them again until your next turn)" : ""}.</div>` });
   return true;
 };
-MISS_PROVIDERS.push(async c => c.mode.wonder === ids.adapt && tier(c.attacker, ids.adapt) >= 2
-  ? [{ id: "instinct", label: "Instinct", tip: "Gain a stack of Adaptation for missing", cost: `⚡ ${Math.floor(minOf(c.attacker, "pon") / 2)}`, caster: c.attacker.uuid, target: c.target.uuid }] : []);
-ACTS.instinct = async (x, caster) => {
-  if (!(await mental.pay(caster, { energy: Math.floor(minOf(caster, "pon") / 2) }, "Instinct"))) return false;
-  await gainStack(caster);
-  await post(caster, { title: `${esc(caster.name)} — Instinct`, body: `<div class="fs-result">${esc(caster.name)} gains a stack of Adaptation (${stacksOf(caster).length}).</div>` });
-  return true;
-};
-/** Memory (Adaptation T4): stacks that would be lost at the start of your turn can be kept for your PON min each. */
+/** A missed Adaptation Manifest still gives its stack. */
+MISS_AUTO.push(async c => (c.mode.wonder === ids.adapt && ["crescendo", "adaptive-skin", "second-wind"].some(k => c.mode.id.endsWith(`:${k}`)) ? await gainOncePerAttack(c) : ""));
+/**
+ * Instinct (Adaptation T2): up to 4 stacks of Adaptation are kept between turns for free. Memory (T4): any more that would be lost at the start of
+ * your turn can be kept for your PON min each.
+ */
 BEFORE_CLEAR.push(async actor => {
-  const have = stacksOf(actor);
+  const all = stacksOf(actor);
+  const free = tier(actor, ids.adapt) >= 2 ? INSTINCT_STACKS : 0;
+  for (const [i, e] of all.entries()) if (i < free) await changeEffect(e, { "flags.flowstate.spellEffect.persistent": true });
+  const have = all.slice(free);
   if (!have.length || tier(actor, ids.adapt) < 4 || !actor.isOwner) {
     return;
   }
@@ -359,14 +367,14 @@ for (const id of ["mental-perfection-nightmare:exact", "mental-perfection-nightm
 MODES["mental-perfection-nightmare:exact"] = async c => {
   const pierce = c.enhanced ? bold((c.bs ?? 0) + (c.hit ? 1 : 0), 5 * c.power) : 0;
   const count = c.power;
-  const r = await roll(`${count}d10`);
+  const r = await roll(`${count}d12`);
   rolled.push(r);
   const g = await guardOf(c);
   const { n, note: guardNote } = g.take(c.hit ? Math.floor(applyStacks(r.total, g.stacks + 1)) : Math.max(0, Math.floor(applyStacks(r.total, g.stacks)) - c.margin));
   const outcome = await damageOutcome(c.target, n, "physical", { archetype: "magic", pierce, parryItems: g.items });
   const res = await requestDamage(c.target, n, "physical", pierce, null, { wantResult: true, silent: true, archetype: "magic", parryItems: g.items, shroudCtx: { source: "type:physical", attacker: c.attacker.uuid } });
   g.done(res?.toHp ?? outcome.toHp);
-  return `Exact ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d10 = ${r.total} → <strong>${n}</strong>${guardNote} physical damage${c.hit ? " (Strengthened)" : ` (reduced by the ${c.margin} it missed by)`}${pierce ? `, Pierce ${pierce}` : ""}${res?.reduced ? ` (reduced by ${res.reduced})` : ""} (${res?.toHp ?? outcome.toHp} direct).`;
+  return `Exact ${c.hit ? "hits" : `misses by ${c.margin}`}: ${count}d12 = ${r.total} → <strong>${n}</strong>${guardNote} physical damage${c.hit ? " (Strengthened)" : ` (reduced by the ${c.margin} it missed by)`}${pierce ? `, Pierce ${pierce}` : ""}${res?.reduced ? ` (reduced by ${res.reduced})` : ""} (${res?.toHp ?? outcome.toHp} direct).`;
 };
 MODES["mental-perfection-nightmare:hone"] = async c => {
   for (const e of fx(c.target, "hone")) await changeEffect(e, null);                     // doesn't stack
@@ -497,11 +505,12 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
   const notes = [], buffs = [];
   if (attacker) {
     // War: Warzone adds dice automatically; a Provoked attack was buffed too.
-    for (const e of fx(attacker, "warzone").slice(0, 1)) {
+    // Every Warzone stack on them adds 1d10 (× Power) of the damage's type, and an Enhanced one adds its caster's Snappence min too; none is used up.
+    for (const e of fx(attacker, "warzone")) {
       const d = dataOf(e);
-      n += await dealDice(d.power, 8, "Warzone", notes, 1, d.bstacks);
+      n += await dealDice(d.power, 10, "Warzone", notes, 1, d.bstacks);
+      if (d.enhanced) { const wc = fromU(d.caster); const extra = wc ? minOf(wc, "snap") : 0; if (extra) { n += extra; notes.push(`Warzone (Enhanced): +${extra}`); } }
       buffs.push({ caster: d.caster, power: d.power, mode: "mental-war-nightmare:warzone" });
-      if (!(d.enhanced && crit)) await changeEffect(e, null);
     }
     const wb = attacker.getFlag?.("flowstate", "warBuff");
     if (wb) { buffs.push(...wb.casters); await setActorFlag(attacker, "warBuff", null); }

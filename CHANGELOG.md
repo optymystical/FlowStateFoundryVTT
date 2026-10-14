@@ -2,6 +2,10 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.56.1:** **Mental and Magic doc changes.**
+- **Magic:** Shield has 10 × Power health (was 20); Reactive works once per instance of damage.
+- **Mental:** Bloom is 50 × Power temp HP and stacks with itself; Wither (1d12) is reduced by Temp HP, shielding, Shrouds and Wards; Fracture changes the die by 3; Entropy is now a Chaos T5 passive that lets Fracture charges be spent on a crit; Burden is two Disadvantages split as you choose (escape 3 × Power) and Entomb escapes on 4 × Power (it needs 3 Burden instances); Warzone adds 1d10 per stack (Enhanced adds your Snappence min) and no longer uses up; Adaptation Modes give their stack hit or miss, Crescendo's die grows 2, 6, 10..., Exact is 1d12; Instinct is a passive (keep 4 stacks, start combat with 4).
+
 **0.56.0:** **Affixes are items of their own, and Rip.**
 - **Affix items** (Equipment tab, new item type): a gem with an Offensive and a Defensive form, attuned separately (an hour, not in combat) to one of them. Offensive Affixes work through your attuned Foci and Raw Casting, Defensive ones through your Shroud. Each attuned Affix costs 20% speed past the Free Affixes of the matching Foci (Offensive) or Shroud (Defensive). Tourmaline's element and Colored Diamond's declaration are set on the Affix. Old per-item lists convert automatically when the GM's client loads.
 - **Wizards and Forge:** the New Character and New NPC wizards pick Affixes as their own items with a form (no Foci or Shroud needed); Conjure makes Foci, Shrouds or Affixes.

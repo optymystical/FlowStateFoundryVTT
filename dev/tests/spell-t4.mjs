@@ -270,7 +270,7 @@ ok2(summons().length === 0, "…and ends with the Ritual");
 console.log("== Build Arcana");
 clean4(); target(orc); seq = [20]; await cast("magic-protection-arcana:shield", { base: 1, [M("magic-build-arcana:layered")]: true }); seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
 const shield = orc.effects.find(e => e.flags.flowstate.spellEffect?.kind === "shield");
-ok2(shield?.flags.flowstate.spellEffect.hp === 60 + hero.system.derived.effective.build.value, `Layered: a Shield gains your Build (${shield?.flags.flowstate.spellEffect.hp})`);
+ok2(shield?.flags.flowstate.spellEffect.hp === 30 + hero.system.derived.effective.build.value, `Layered: a Shield gains your Build (${shield?.flags.flowstate.spellEffect.hp})`);
 clean4(); combat.started = false; await cast("magic-protection-arcana:shield", { base: 1, ritual: true, [M("magic-build-arcana:reform")]: true }); combat.started = true;
 clean4();
 // Reform on a ritual Shield

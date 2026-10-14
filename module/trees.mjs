@@ -1840,7 +1840,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Shield",
-      "text": "1 Threshold, Core Spell, Targeted, Uncombinable. This Spell can be used to project a shield of energy on a target within range until the start of your next turn. The shield has a total of 20 health which it uses to absorb damage that would attempt to harm the target or anything the target is wearing/holding. Does not stack with itself, treat the Limit of this shield as being equal to its health. Ritual: Lasts until the Ritual ends or the shield breaks."
+      "text": "1 Threshold, Core Spell, Targeted, Uncombinable. This Spell can be used to project a shield of energy on a target within range until the start of your next turn. The shield has a total of 10 health which it uses to absorb damage that would attempt to harm the target or anything the target is wearing/holding. Does not stack with itself, treat the Limit of this shield as being equal to its health. Ritual: Lasts until the Ritual ends or the shield breaks."
      }
     ]
    },
@@ -2798,7 +2798,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Reactive",
-      "text": "1 Threshold, Spell Mod, Universal. Whenever this Spell would take damage, you can spend 1 RP to give that damage instance a stack of Weakened. This can be done as much as desired for an instance of damage."
+      "text": "1 Threshold, Spell Mod, Universal. Whenever this Spell would take damage, you can spend 1 RP to give that damage instance a stack of Weakened. This can be done once per instance of damage."
      }
     ]
    },
@@ -3658,7 +3658,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Bloom",
-      "text": "At the start of the target’s next turn, they get 20 temp HP, lasting until the start of your next turn. Enhanced: The temp HP applies immediately instead."
+      "text": "At the start of the target’s next turn, they get 50 temp HP, lasting until the start of your next turn (can stack with itself). Enhanced: The temp HP applies immediately instead."
      },
      {
       "name": "Verdant Soul",
@@ -3726,7 +3726,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Wither",
-      "text": "Removes 1d12 health from a living target, ignoring objects and defenses entirely (does not ignore temp HP). Enhanced: This damage also removes that much Max HP from the target."
+      "text": "Removes 1d12 health from a living target. This effect is reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects. Enhanced: This damage also removes that much Max HP from the target."
      },
      {
       "name": "Mortal Coil",
@@ -3862,7 +3862,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Fracture",
-      "text": "Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size increased or decreased by 2 (your choice on Manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). Enhanced: The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage."
+      "text": "Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size increased or decreased by 3 (your choice on Manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). Enhanced: The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage."
      },
      {
       "name": "Unbound",
@@ -3906,11 +3906,11 @@ export const TREES = [
    {
     "tier": 5,
     "free": false,
-    "summary": "You gain the following Mode:",
+    "summary": "You gain the following passive:",
     "entries": [
      {
       "name": "Entropy",
-      "text": "Store an Entropy charge on the target, lasting until the start of your next turn. When the target would crit or be crit (can still occur on things with no crit effect), you can consume up to one Entropy charge on them to give them an additional roll (if critting, the additional roll is either an extra attack, or forcing them to redo the attack. If being crit, the additional roll is a new attempt to dodge. Either way, the roll does not inherit any effects from the original roll) with its die size increased or decreased by 3 (dodge dice are affected by half). Enhanced: The extra reroll retains any effects the original roll had, such as Advantage/Disadvantage."
+      "text": "Fracture charges can now be used for the following effect: when the target would crit or be crit (can still occur on things with no crit effect), you can consume up to one Fracture charge on them to give them an additional roll (if critting, the additional roll is either an extra attack, or forcing them to redo the attack. If being crit, the additional roll is a new attempt to dodge. Either way, the roll does not inherit any effects from the original roll) with its die size increased or decreased by 3 (dodge dice are affected by half). Enhanced: The extra reroll retains any effects the original roll had, such as Advantage/Disadvantage."
      }
     ]
    }
@@ -4024,7 +4024,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Burden",
-      "text": "On hit, the target gets Disadvantage on either their attack or dodge rolls (your choice on Manifest, has no effect on counter grapple checks), until they break free with a counter grapple check of 2 or higher, or the start of your next turn. This effect stacks with itself (both of the types of Disadvantage, as well as more Disadvantage on one type), but they are all removed at once with a successful counter grapple check. Enhanced: The effect now lasts for 3 turns, or until broken free from."
+      "text": "On hit, the target gets two Disadvantages split among either their attack or dodge rolls (your choice on Manifest, has no effect on counter grapple checks), until they break free with a counter grapple check of 3 or higher, or the start of your next turn. This effect stacks with itself (both of the types of Disadvantage, as well as more Disadvantage on one type), but they are all removed at once with a successful counter grapple check. Enhanced: The effect now lasts for 3 turns, or until broken free from."
      }
     ]
    },
@@ -4046,7 +4046,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Entomb",
-      "text": "Can only be used on a target affected by both Sink and at least 3 Burden stacks. Completely entomb the target in the ground below them, clearing their Sink and Burden effects but causing them to be blind, deaf, and unable to smell, lasting until the start of your next turn. While encased, they can attempt a counter grapple check of 3 or higher to escape their entombment. Additionally, at the start of each of their turns while entombed, they suffer 3d10 physical damage. Enhanced: The effect now lasts for 3 turns, or until broken free from."
+      "text": "Can only be used on a target affected by both Sink and at least 3 Burden stacks. Completely entomb the target in the ground below them, clearing their Sink and Burden effects but causing them to be blind, deaf, and unable to smell, lasting until the start of your next turn. While encased, they can attempt a counter grapple check of 4 or higher to escape their entombment. Additionally, at the start of each of their turns while entombed, they suffer 3d10 physical damage. Enhanced: The effect now lasts for 3 turns, or until broken free from."
      }
     ]
    }
@@ -4296,7 +4296,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Warzone",
-      "text": "On hit, the target gains a stack of Warzone lasting until the start of your next turn. When a creature with a Warzone stack deals damage, they automatically consume up to one stack of Warzone to increase that damage by 1d8 of that attack’s damage type. Enhanced: If the target crits on the attack that Warzone is buffing, the stack is not consumed (still applying its buff)."
+      "text": "On hit, the target gains a stack of Warzone lasting until the start of your next turn. When a creature with a Warzone stack deals damage, the damage dealt increases by 1d10 of that attack’s damage type for each stack of Warzone that they have. Enhanced: Adds your snappence min to the damage as well, stacking for each instance of Enhanced Warzone on the target."
      }
     ]
    },
@@ -4338,7 +4338,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Crescendo",
-      "text": "On hit, deals 1d10 physical damage to the target. The first time this Manifest hits per attack, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 2 more than the stack before it. Enhanced: This Manifest's damage can be of a type of your choice, from among physical, heat, cold, radiation and acid, and it is resolved as though you consumed one additional Adaptation stack."
+      "text": "On hit, deals 1d10 physical damage to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 4 more than the stack before it. Enhanced: This Manifest's damage can be of a type of your choice, from among physical, heat, cold, radiation and acid, and it is resolved as though you consumed one additional Adaptation stack."
      },
      {
       "name": "Adapt",
@@ -4349,11 +4349,11 @@ export const TREES = [
    {
     "tier": 2,
     "free": false,
-    "summary": "You gain the following ability:",
+    "summary": "You gain the following passive:",
     "entries": [
      {
       "name": "Instinct",
-      "text": "Cost: Energy equal to half of your PON min, rounded down. When an Adaptation Mode you Manifest misses its attack roll, you can use this ability (once per attack instance). Gain a stack of Adaptation."
+      "text": "You keep up to 4 stacks of Adaptation between turns (overrides the duration listed in each mode). In addition, when combat starts, you start with 4 stacks of Adaptation already banked."
      }
     ]
    },
@@ -4364,7 +4364,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Adaptive Skin",
-      "text": "On hit, the target gains an instance of Adaptive Skin until the start of your next turn, reducing all damage they take by 1. The first time this Manifest hits per attack, you gain a stack of Adaptation, lasting until the start of your next turn. Whenever a creature with Adaptive Skin would take damage, you can consume any number of your Adaptation stacks to give them additional damage reduction against that damage's type until the start of your next turn: the first stack consumed grants 1 damage reduction, and each stack after that grants 1 more damage reduction than the stack before it. Enhanced: This instance's damage reduction applies only against a single damage type of your choice, but is resolved as though one Adaptation stack had already been consumed for it."
+      "text": "On hit, the target gains an instance of Adaptive Skin until the start of your next turn, reducing all damage they take by 1. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. Whenever a creature with Adaptive Skin would take damage, you can consume any number of your Adaptation stacks to give them additional damage reduction against that damage's type until the start of your next turn: the first stack consumed grants 1 damage reduction, and each stack after that grants 1 more damage reduction than the stack before it. Enhanced: This instance's damage reduction applies only against a single damage type of your choice, but is resolved as though one Adaptation stack had already been consumed for it."
      }
     ]
    },
@@ -4386,7 +4386,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Second Wind",
-      "text": "On hit, restores 5 energy to the target. The first time this Manifest hits per attack, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you can consume 2 of your Adaptation stacks to remove one negative condition affecting the target. Enhanced: Until the start of your next turn, the condition(s) removed by this Manifest cannot be applied to that target again by the same effect."
+      "text": "On hit, restores 5 energy to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you can consume 2 of your Adaptation stacks to remove one negative condition affecting the target. Enhanced: Until the start of your next turn, the condition(s) removed by this Manifest cannot be applied to that target again by the same effect."
      }
     ]
    }
@@ -4406,7 +4406,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Exact",
-      "text": "Deals 1d10 physical damage to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. Enhanced: The damage from this gains 5 Pierce, which is affected by the Strengthened from the on hit bonus."
+      "text": "Deals 1d12 physical damage to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. Enhanced: The damage from this gains 5 Pierce, which is affected by the Strengthened from the on hit bonus."
      },
      {
       "name": "Ego",

@@ -5509,6 +5509,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (type === "cold" && actor.system.armor?.system.conditions?.ignite > 0 && out.armorLoss) await actor.system.armor.update({ "system.conditions.ignite": 0 }, { flowstateSystem: true });
   await actor.update(update);
   if (mentalHook && out.toHp > 0) await mentalHook.checkExecute(actor);        // Execute (Enhanced): below half the raised Pain Threshold they die
+  if (mentalHook?.concentrate && out.toHp > 0) await mentalHook.concentrate(actor, out.toHp, update["system.hp.value"]);          // Concentration: 1 RP and a Willpower check against the direct damage
   if (neg?.after) await neg.after();
   else if (wardReflect && mentalHook?.reflect) await mentalHook.reflect(actor, wardReflect);          // a Warden / Riposte the pre-damage Ward earned
   if (flightHook && out.toHp > 0 && actor.isOwner) await flightHook(actor, out.toHp);   // a flyer hit hard enough must stabilize                                            // Warden / Riposte (Enhanced): strike back at the source

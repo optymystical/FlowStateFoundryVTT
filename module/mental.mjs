@@ -15,6 +15,8 @@ import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
 import * as wondersB from "./wonders-b.mjs";
 import * as forging from "./forging.mjs";
+import * as ponderance from "./ponderance.mjs";
+import * as concentration from "./concentration.mjs";
 import * as ab from "./abilities.mjs";
 import * as areas from "./areas.mjs";
 import * as R from "./mental-rules.mjs";
@@ -106,7 +108,7 @@ export function manifestContext(actor) {
   const wonders = R.knownWonders(trees(actor)).filter(w => w.modes.length);
   const flags = actor.getFlag?.("flowstate", "psion") ?? {};
   return { actor, wonders, theory: theory(actor), icon: actor.system.icon ?? null, alignment: alignmentOf(actor), farSight: !!flags.farSight, auraSight: !!flags.auraSight, will: willTier(actor),
-    patron: actor.getFlag?.("flowstate", "patron") ?? null, wobs: null };
+    patron: actor.getFlag?.("flowstate", "patron") ?? null, wobs: null, ponder: ponderance.ponderTier(actor) };
 }
 
 /** Everything about a Manifest worked out from the dialog values (also used for the live preview). */
@@ -141,8 +143,11 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const burst = wobs ? !!wobs.rp : !!v.burst && ctx.theory >= 1;
   const cost = R.manifestCost({ range, enhance: !!v.enhance, burst, enhanceCost, free, waive: { ap: !!wobs?.ap, rp: !!wobs?.rp, energy: patronFree } });
   const choices = choiceValues(v);
+  // Premeditate (Ponderance Arts T1): store the Wonder instead of applying it, for your Scaling Stat min in Energy.
+  const premeditate = !!v.premeditate && ctx.ponder >= 1 && !free;
   const kinetic = Math.max(0, Math.floor(Number(choices.kinetic) || 0));
   if (kinetic && !free) cost.energy += kinetic * Math.floor(minOf(actor, "pon") / 2);
+  if (premeditate) cost.energy += enhanceCost;
   const align = ctx.alignment;
   // Wonder-specific costs and bonuses (Fusion, Hubris, Pride, Adapt, ...).
   const extras = wonders.COST_PROVIDERS.map(f => f(actor, { mode, wonder, choices, free })).filter(Boolean);
@@ -156,7 +161,7 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   if (v.burst && ctx.theory < 1) errors.push("Burst needs Mental Theory Tier 1.");
   if (wobs && R.RANGES[range].ap !== (wobs.ap || wobs.rp)) errors.push(`Will of Body and Spirit: the Range has to cost ${wobs.ap || wobs.rp} ${wobs.ap ? "AP" : "RP"}, like your attack.`);
   return { ok: errors.length === 0, errors, mode, wonder, kind: wonder.kind, power, stat, enhanceCost, cost, range, enhance: !!v.enhance, burst, net, choices, kinetic,
-    alignStacks: 0, text, alignment: align, patronFree, wobs,
+    alignStacks: 0, text, alignment: align, patronFree, wobs, premeditate,
     extraStacks, extraNotes: extras.flatMap(x => x.notes ?? []), extraAfter: extras.map(x => x.after).filter(Boolean), extraFlags: Object.assign({}, ...extras.map(x => x.flags ?? {})) };
 }
 
@@ -178,6 +183,7 @@ function dialogHTML(ctx, v, plan) {
     <div class="fs-field"><label>Range</label><select name="range">${ranges}</select></div>
     <label class="fs-cast-mod"><input type="checkbox" name="enhance" ${v.enhance ? "checked" : ""}> <strong>Enhance</strong> <small>${v.mode && plan?.enhanceCost !== undefined ? `${plan.enhanceCost} Energy (the Wonder's Scaling Stat min)` : "costs the Wonder's Scaling Stat min in Energy"}</small></label>
     <div class="fs-mode-choices">${choicesHTML(ctx.actor, v.mode, v)}</div>
+ ${ctx.ponder >= 1 && !ctx.wobs ? `<label class="fs-cast-mod"><input type="checkbox" name="premeditate" ${v.premeditate ? "checked" : ""}> <strong>Premeditate</strong> <small>store it on a hit (Strengthened, Concentration) for the Wonder's Scaling Stat min in Energy, to take hold on a preset action</small></label>` : ""}
     ${ctx.theory >= 1 && !ctx.wobs ? `<label class="fs-cast-mod"><input type="checkbox" name="burst" ${v.burst ? "checked" : ""}> <strong>Burst</strong> <small>use RP instead of AP, and pay the Enhance cost in Energy</small></label>` : ""}
     <div class="fs-cast-preview">${previewHTML(plan)}</div>
   </div>`;
@@ -299,7 +305,7 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
   ].filter(Boolean);
   for (const f of plan.extraAfter) await f();
   const mental = { mode: plan.mode.id, wonder: plan.wonder.id, kind: plan.kind, power: plan.power, enhanced: plan.enhance, burst: plan.burst, range: plan.range, alignStacks: plan.alignStacks,
-    text: plan.text, caster: actor.uuid, choices: plan.choices, uid: foundry.utils.randomID?.() ?? String(Math.random()), ...plan.extraFlags };
+    text: plan.text, caster: actor.uuid, choices: plan.choices, uid: foundry.utils.randomID?.() ?? String(Math.random()), ...(plan.premeditate ? { premeditate: true } : {}), ...plan.extraFlags };
   // Creation: the attack roll is made against yourself; the creature(s) you targeted (or the Area) are who it's created for.
   let attackTargets = targets;
   if (forging.CREATION_MODES.has(plan.mode.id)) {
@@ -481,9 +487,14 @@ async function growReverie(attacker, grade) {
 /* -------------------------------------------- */
 
 /** A Manifest's Mode lands (the first time, or after a Chant reroll): apply it and build the card. */
-async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0, attackMessage = null, shattered = false }) {
+export async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0, attackMessage = null, shattered = false }) {
   const c = { attacker, target, o, result, m, mode, power: m.power, enhanced: m.enhanced, choices: m.choices ?? {}, range: m.range, text: m.text, hit, margin, crit: hit && !!result.crit, index,
     stacks: stacksBase + (hit ? (result.critStacks ?? 0) : 0), now: !!m.spread };
+  // Premeditate: a hit is stored on the target instead of taking hold.
+  if (m.premeditate && hit) {
+    const html = await ponderance.storePremeditated({ attacker, target, m, mode, stacks: c.stacks });
+    return { html: `<div class="fs-result"><i class="fa-solid fa-hourglass-half"></i> ${html}</div>`, push: null, rolls: [], riposte: null };
+  }
   c.bs = c.stacks;                                    // every Strengthened/Weakened stack on the Manifest (a crit, an Area, Alignment, Adapt...) scales its bolded effects
   // Brace, Dip, Shatter and parrying weapons guard against this attack like any other Melee or Ranged one: a damaging Mode asks for the guard (once).
   let guardP = null;
@@ -503,7 +514,7 @@ async function landManifest({ attacker, target, o, m, mode, result, stacksBase, 
   let crits = "";
   if (c.crit) for (const f of wonders.ON_CRIT) crits += (await f(c)) ?? "";
   // Tenets pop up once the card is out (and again next time if they aren't used).
-  if (hit && out.tenets?.length) setTimeout(() => wonders.offerTenets(c, out.tenets), 0);
+  if (hit && out.tenets?.length) { if (m.forethought) await wonders.forethoughtTenets(c, out.tenets); else setTimeout(() => wonders.offerTenets(c, out.tenets), 0); }
   const html = `<div class="fs-result"><i class="fa-solid fa-eye"></i> ${out.html}${result.crit ? " <em>(critical)</em>" : ""}${m.alignStacks ? ` <em>(Alignment: ${m.alignStacks > 0 ? "Strengthened" : "Weakened"})</em>` : ""}${tenet ? `<br>${tenet}` : ""}${grow ? `<br>${grow}` : ""}${crits ? `<br>${crits}` : ""}</div>`;
   if (out.acts.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}: abilities`, body: wonders.actButtons(out.acts), flags: { flowstate: { mentalAct: { acts: out.acts } } } });
   return { html, push: out.push, rolls: out.rolls, riposte };
@@ -852,7 +863,7 @@ export async function dismiss(actor) {
   for (const a of everyActor()) for (const e of a.effects ?? []) {
     const d = e.flags?.flowstate?.spellEffect;
     if (!d || d.caster !== actor.uuid || e.flags.flowstate.ritualOf) continue;
-    if (String(d.mode ?? "").startsWith("mental-") || d.ward || ["charge", "burden", "pending", "waste", "redirect", "anchorWeak", "premonition"].includes(d.kind) || d.below || d.mode === "verdant-soul") mine.push({ e, a, d });
+    if (String(d.mode ?? "").startsWith("mental-") || d.ward || ["charge", "burden", "pending", "waste", "redirect", "anchorWeak", "premonition", "premeditated"].includes(d.kind) || d.below || d.mode === "verdant-soul") mine.push({ e, a, d });
   }
   if (!mine.length) return ui.notifications.info(`${actor.name} has no Wonder effects to dismiss.`);
   const out = await DialogV2().prompt({ window: { title: `Dismiss: ${actor.name}` }, rejectClose: false,
@@ -863,6 +874,12 @@ export async function dismiss(actor) {
   if (!out) return;
   const pick = mine[Number(out.e)];
   if (!pick) return;
+  // A Concentration's effects go freely, whoever carries them (and the Concentration ends with them).
+  const cid = pick.e.flags?.flowstate?.spellEffect?.concentration;
+  if (cid && concentration.list(actor).some(c => c.id === cid)) {
+    await concentration.end(actor, cid, "dismissed");
+    return post(actor, { title: `${esc(actor.name)} — Dismiss`, body: `<div class="fs-result">${esc(actor.name)} dismisses the Concentration on <strong>${esc(pick.e.name)}</strong>.</div>` });
+  }
   if (pick.a.uuid === actor.uuid) {
     await changeEffect(pick.e, null);
     return post(actor, { title: `${esc(actor.name)} — Dismiss`, body: `<div class="fs-result">${esc(actor.name)} dismisses <strong>${esc(pick.e.name)}</strong>.</div>` });
@@ -903,7 +920,7 @@ async function act(message, i) {
   if (done) await post(await fromUuid(x.caster), { title: "Used", body: `<div class="fs-notes">${esc(x.label)}: used.</div>`, flags: { flowstate: { mentalActDone: { card: message.id, i: Number(i) } } } });
 }
 wonders.setMental(self);
-registerMental({ combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+registerMental({ concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });

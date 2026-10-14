@@ -2,6 +2,13 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.57.0:** **Concentration, Trance and the Ponderance Arts (Mental doc changes).**
+- **Concentration:** you can concentrate on as many things as your Mental Theory tier. Taking direct damage costs 1 RP and a Willpower-die check (the result must at least match the damage), or every Concentration is lost; falling unconscious loses them all. Ending one (Action List: Concentration, or Dismiss) ends the effects it was keeping up, for free.
+- **Trance** (Mental Theory T2): an 8 hour activity (not in combat) that puts a permanent Mode on a creature and a Concentration on you. At the start of their turn they make a self attack roll; a hit applies the Mode (last round's copy is replaced). Nightmare Modes become abilities of the target instead.
+- **Ponderance Arts** (new tree): Premeditate (store a Manifest that hits, trigger it later; Forethought makes it free of once-per-turn limits), Mantra (doubles a Tenet's bolded effect once), Composure (damage costs you only one Concentration), Daydreaming (one Concentration can't be broken).
+- **Burden / Entomb:** Burden stacks are counted per Disadvantage, so Entomb (escape 4 × Power) needs 4 stacks in total (two Burden applications).
+- **Tier moves:** Chant is Mental Theory T3, Fluidity T4, Will of Body and Spirit T5.
+
 **0.56.1:** **Mental and Magic doc changes.**
 - **Magic:** Shield has 10 × Power health (was 20); Reactive works once per instance of damage.
 - **Mental:** Bloom is 50 × Power temp HP and stacks with itself; Wither (1d12) is reduced by Temp HP, shielding, Shrouds and Wards; Fracture changes the die by 3; Entropy is now a Chaos T5 passive that lets Fracture charges be spent on a crit; Burden is two Disadvantages split as you choose (escape 3 × Power) and Entomb escapes on 4 × Power (it needs 3 Burden instances); Warzone adds 1d10 per stack (Enhanced adds your Snappence min) and no longer uses up; Adaptation Modes give their stack hit or miss, Crescendo's die grows 2, 6, 10..., Exact is 1d12; Instinct is a passive (keep 4 stacks, start combat with 4).

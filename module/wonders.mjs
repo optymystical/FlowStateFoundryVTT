@@ -35,11 +35,15 @@ const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${
 /** A Tenet triggers once per round (the old 3 Alignment doubling is gone). */
 export const tenetUses = () => 1;
 /** Has this actor already used this "once per round" thing this round (Tenets: as many times as they may per round)? */
+export const forethought = { on: false };      // Ponderance T4: a Premeditated Wonder's Tenet applies outside the once per round limit
 export function onceUsed(actor, id) {
+  if (forethought.on) return false;
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
   return cur?.round === roundKey() && cur.ids.filter(x => x === id).length >= tenetUses(actor);
 }
 export async function markOnce(actor, id) {
+  if (forethought.on) return;
+  if (actor.getFlag?.("flowstate", "mantra")) await setActorFlag(actor, "mantra", null);          // Mantra is used up by the Tenet it doubled
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
   const key = roundKey();
   const ids = cur?.round === key ? cur.ids : [];
@@ -59,7 +63,7 @@ export function tenetOf(actor) {
   if (!p?.valid || !p.tenet || !icon.system.tenet) return null;
   // A Tenet comes with its Wonder's first tier: an Icon set to a Tenet its holder hasn't learned gives nothing.
   if (tier(actor, p.tenet.wonder) < (R.wonderById(p.tenet.wonder)?.tenet?.tier ?? 1)) return null;
-  return { id: icon.system.tenet, wonder: p.tenet.wonder, mult: p.tenet.mult };
+  return { id: icon.system.tenet, wonder: p.tenet.wonder, mult: p.tenet.mult * (actor.getFlag?.("flowstate", "mantra") ? 2 : 1) };          // Mantra doubles it once
 }
 
 const putTemp = (who, caster, n, why) => putSpellEffect(who, { kind: "tempHP", ...(why === "mental-life-dream:bloom" ? { stack: true } : {}), caster: caster.uuid, name: `Temp HP (${n})`, hp: n, max: n, mode: why,
@@ -321,6 +325,12 @@ export async function offerTenets(c, acts) {
     const ans = await askFor(c.attacker, { react: "tenet", title: `${x.label} (Tenet)`, ok: `Use ${x.label}`, html: `<p><strong>${esc(x.label)}</strong>: ${esc(x.tip)}.</p><p>${esc(c.attacker.name)}'s ${esc(c.mode?.name ?? "Manifest")} hit ${esc(c.target.name)}. Use it now? (If not, it comes up again the next time it can be used this round.)</p>` });
     if (ans) await runOnOwner(c.attacker, x);
   }
+}
+
+/** Forethought (Ponderance T4): the Tenet acts of a Premeditated Wonder go off at once, outside the once per round limit. */
+export async function forethoughtTenets(c, acts) {
+  forethought.on = true;
+  try { for (const x of acts ?? []) await runAct(x); } finally { forethought.on = false; }
 }
 
 /** The button row(s) for a follow-up card. */

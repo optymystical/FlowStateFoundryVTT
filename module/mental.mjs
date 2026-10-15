@@ -14,6 +14,7 @@ import * as self from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
 import * as wondersB from "./wonders-b.mjs";
+import * as wondersC from "./wonders-c.mjs";
 import * as forging from "./forging.mjs";
 import * as ponderance from "./ponderance.mjs";
 import * as snappence from "./snappence.mjs";
@@ -235,7 +236,7 @@ async function manifestDialog(actor, ctx) {
   });
 }
 
-const NO_ATTACK = new Set(["mental-beyond-dream:redirect"]);
+const NO_ATTACK = new Set(["mental-beyond-dream:redirect", "mental-light-dream:dispersion"]);
 
 /** Pick one of a list of [value, label] pairs. */
 export async function pickChoice(actor, title, pairs) {
@@ -264,6 +265,11 @@ export async function manifestAt(actor, mode, target, { power, enhanced, range =
   const mental = { mode: mode.id, wonder: wonder.id, kind: wonder.kind, power, enhanced: !!enhanced, burst: false, range, alignStacks: 0, text, caster: actor.uuid, choices, spread, extraModes };
   return performAttack(actor, { ...baseAttack, label: `${label ?? mode.name} (${mode.name})`, net: range === "melee" ? -1 : 0, stacks: 0, melee: false, area: false,
     notes: [`${label ?? "Free"}: ${mode.name} spreads to ${target.name}; its effect applies immediately`], mental, targetActors: [target] });
+}
+
+/** An attack roll from `caster` at `target` that does something special on a hit (Dispersion, Corona, Nightfall): `flag` goes on the Manifest data for `onResolve`. */
+export async function specialAttack(caster, target, { label, net = 0, stacks = 0, notes = [], flag }) {
+  return performAttack(caster, { ...baseAttack, label, net, stacks, melee: false, area: false, notes, mental: { ...flag, caster: caster.uuid }, targetActors: [target] });
 }
 
 /** An attack roll from `caster` at `target` that deals `amount` of `type` on a hit (Bloodbond, Masterstroke): no AP/RP. */
@@ -541,6 +547,8 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     await requestDamage(target, m.reflect.amount, m.reflect.type, 0, null, { silent: true });
     return { html: `<div class="fs-result"><i class="fa-solid fa-reply"></i> The negated damage is dealt back: <strong>${m.reflect.amount}</strong> ${esc(DAMAGE_TYPES[m.reflect.type] ?? m.reflect.type)} to ${esc(target.name)}.</div>` };
   }
+  if (m.disperse) return wondersC.disperseResolve({ attacker, target, result, m });
+  if (m.expand) return wondersC.expandResolve({ attacker, target, result, m });
   if (m.dismiss) {
     if (!result.hit) return { html: `<div class="fs-notes">The dismissal misses: ${esc(target.name)} keeps their effects.</div>` };
     let n = 0;
@@ -932,7 +940,7 @@ async function act(message, i) {
   if (done) await post(await fromUuid(x.caster), { title: "Used", body: `<div class="fs-notes">${esc(x.label)}: used.</div>`, flags: { flowstate: { mentalActDone: { card: message.id, i: Number(i) } } } });
 }
 wonders.setMental(self);
-registerMental({ reflex: snappence.offerReflex, concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+registerMental({ attackStart: wondersC.attackStart, attackDieAgainst: wondersC.attackDieAgainst, dodgeDieAgainst: wondersC.dodgeDieAgainst, reflex: snappence.offerReflex, concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });

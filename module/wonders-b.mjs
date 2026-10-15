@@ -13,7 +13,7 @@ import * as R from "./mental-rules.mjs";
 import { askFor, runOnOwner, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
-import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, DAMAGE_PROVIDERS, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = f => new Roll(f).evaluate();
@@ -505,6 +505,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
   if (amount <= 0) return { amount, html: "" };
   let n = amount;
   const notes = [], buffs = [];
+  for (const f of DAMAGE_PROVIDERS) n = (await f({ attacker, target, n, type, notes })) ?? n;
   if (attacker) {
     // War: Warzone adds dice automatically; a Provoked attack was buffed too.
     // Every Warzone stack on them adds 1d10 (× Power) of the damage's type, and an Enhanced one adds its caster's Snappence min too; none is used up.

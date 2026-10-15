@@ -164,5 +164,18 @@ export const BOLD = {
  "Masterstroke": [
   "1d8 damage of your choice",
   "1d8"
+ ],
+ "Illuminate": [
+  "die size reduced by 1"
+ ],
+ "Dispersion": [
+  "Scaling Stat is 15 or less",
+  "20 health"
+ ],
+ "Eclipse": [
+  "die size reduced by 0.5"
+ ],
+ "Umbral Strike": [
+  "1d8"
  ]
 };

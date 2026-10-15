@@ -2,6 +2,10 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.59.0:** **Light (Dream) and Dark (Nightmare) Wonders.**
+- **Illuminate / Eclipse:** the version follows the target's side (ally or enemy; a neutral one asks). Illuminate shrinks an enemy's attack die, or the attack die of anyone attacking a warded ally (not the caster's allies); Eclipse shrinks an enemy's dodge die by 0.5 × Power (rounded down), or the dodge die of whoever an Eclipsed ally attacks. The versions don't stack with each other (Convergence lets the Illuminate ones). Enhanced: the damage of affected attacks is Weakened (Illuminate) or Strengthened (Eclipse).
+- **Tenets:** Beacon and Shadowmark (markers for the GM: seen through obstruction, one step more obscured). **Refraction / Penumbra** spread the Mode with an attack roll. **Totality:** an Eclipsed ally attacking an Eclipsed target is in half stealth. **Umbral Strike:** a charge that gives a step deeper into stealth and 1d8 damage, asked when the holder attacks. **Dispersion:** an attack with Advantage at an effect's creator; the effect loses 20 health or is destroyed if its creator's Scaling Stat is 15 or less. **Corona / Nightfall** (Action List, 1 AP) spread a lasting Illuminate / Eclipse to everyone within 10 ft.
+
 **0.58.1:** **Reflex picks its target.** The Reflex popup lets you choose whether the Manifest goes at the attacker or at who they are attacking.
 
 **0.58.0:** **Snappence Arts (new Mental T3 tree).**

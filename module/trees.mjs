@@ -4609,6 +4609,142 @@ export const TREES = [
   ]
  },
  {
+  "id": "mental-light-dream",
+  "name": "Light (Dream)",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 3,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following Mode and Tenet:",
+    "entries": [
+     {
+      "name": "Illuminate",
+      "text": "Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. Against an enemy: On hit, that creature is Illuminated until the start of your next turn. Its attack rolls have their die size reduced by 1, it cannot be naturally obscured, and it cannot benefit from half cover. Against an ally: On hit, attack rolls made against that ally have their die size reduced by 1 until the start of your next turn. Attacks made by your own allies are unaffected. Enhanced: Damage dealt by an attack affected by this Mode is Weakened."
+     },
+     {
+      "name": "Beacon",
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you and your allies can see that target through any obstruction until the start of your next turn."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Refraction",
+      "text": "Cost: Energy equal to half of your PON min, rounded down. When you Illuminate a creature, you can use this ability to attempt to spread that effect to another creature within the used Mental attack range, requiring an attack roll. The spread may apply either version of the effect, whichever suits the new target. This spread cannot trigger Refraction."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Convergence",
+      "text": "The two effects of Illuminate now stack with one another. A creature that is itself Illuminated and is attacking a target affected by Illuminate suffers both die size reductions."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You gain the following Mode:",
+    "entries": [
+     {
+      "name": "Dispersion",
+      "text": "Target one Manifestation or Spell within your chosen range and make your attack roll with Advantage against a dodge roll from that target’s creator. On hit, and if that target has no normal health/durability (such as a normal spell), it is destroyed if its creator’s Scaling Stat is 15 or less. Instead, if it has health or durability and is not sentient, it loses 20 health. Enhanced: This single attack also affects any number of other effects of your choosing within 5ft of the target(s)."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following action:",
+    "entries": [
+     {
+      "name": "Corona",
+      "text": "You can, for 1 AP, make an attack roll against a creature you can sense within 100ft that is already under the effects of your Illuminate. On hit, that instance of Illuminate expands to also affect every valid target within 10ft of that creature."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "mental-dark-nightmare",
+  "name": "Dark (Nightmare)",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 3,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following Mode and Tenet:",
+    "entries": [
+     {
+      "name": "Eclipse",
+      "text": "Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. Against an enemy: On hit, that creature is Eclipsed until the start of your next turn. Its dodge rolls have their die size reduced by 0.5 (rounded down). Against an ally: On hit, until the start of your next turn, that ally’s attacks cause their targets’ dodge rolls to have their die size reduced by 0.5 (rounded down), and that ally becomes one step more obscured (none → lightly → heavily). Enhanced: Damage dealt by an attack affected by this Mode is Strengthened."
+     },
+     {
+      "name": "Shadowmark",
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can make that target or yourself one more step obscured (none → lightly → heavily) until the start of your next turn."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Penumbra",
+      "text": "Cost: Energy equal to half of your SNA min, rounded down. When you Eclipse a creature, you can use this ability to attempt to spread that effect to another creature within the used Mental attack range, requiring an attack roll. The spread may apply either version of the effect, whichever suits the new target. This spread cannot trigger Penumbra."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Totality",
+      "text": "When an ally under your Eclipse attacks a creature under your Eclipse, that attack is treated as though the ally were undetectable to it, giving them half stealth against that target."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You gain the following Mode:",
+    "entries": [
+     {
+      "name": "Umbral Strike",
+      "text": "Store an Umbral Strike charge on the target, lasting until the start of your next turn. When a creature with an Umbral Strike charge makes an attack, it can consume up to one Umbral Strike charge to treat that attack as being made from one step further into stealth (none → half → full) and increase its damage by 1d8 of that attack’s damage type. Enhanced: Gives two charges of Umbral Strike instead."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following action:",
+    "entries": [
+     {
+      "name": "Nightfall",
+      "text": "You can, for 1 AP, make an attack roll against a creature you can sense within 100ft that is already under the effects of your Eclipse. On hit, that instance of Eclipse expands to also affect every valid target within 10ft of that creature."
+     }
+    ]
+   }
+  ]
+ },
+ {
   "id": "mental-willpower-arts",
   "name": "Willpower Arts",
   "archetype": "mental",

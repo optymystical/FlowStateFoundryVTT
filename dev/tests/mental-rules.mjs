@@ -3,7 +3,7 @@ const M = await import("../../module/mental-rules.mjs");
 let fails = 0; const ok = (c, m) => { console.log(`  ${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
 
 console.log("== Wonders from the Mental trees");
-ok(M.WONDERS.length === 12, `12 Wonders are written (${M.WONDERS.map(w => w.name).join(", ")})`);
+ok(M.WONDERS.length === 14, `14 Wonders are written (${M.WONDERS.map(w => w.name).join(", ")})`);
 const life = M.wonderById("mental-life-dream");
 ok(life.kind === "dream" && life.name === "Life" && life.modes.map(m => m.name).join() === "Bloom,Flourish,Renewal", "Life (Dream): Modes Bloom, Flourish, Renewal");
 ok(life.tenet.name === "Verdant Soul" && life.tenet.tier === 1 && life.abilities.map(a => a.name).join() === "Pollinate,Perennial", "…its Tenet is Verdant Soul and its abilities Pollinate and Perennial");
@@ -61,7 +61,7 @@ p = M.iconProfile({ form: "bane", grade: 1 }, { will: 99 });
 ok(p.amount === 6 && p.other === 3, "Bane: 6 against the chosen type, 3 otherwise");
 ok(M.iconProfile({ form: "nope" }).valid === false, "An unknown Form isn't valid");
 ok(M.tenetChoices("dream").every(w => w.kind === "dream") && M.tenetChoices("nightmare").every(w => w.kind === "nightmare"), "Tenets match the Form's Alignment");
-ok(M.tenetChoices("dream").length === 6 && M.tenetChoices("nightmare").length === 6, "Six Dream and six Nightmare Tenets");
+ok(M.tenetChoices("dream").length === 7 && M.tenetChoices("nightmare").length === 7, "Seven Dream and seven Nightmare Tenets");
 ok(M.tenetChoices("dream", { "mental-life-dream": 1 }).length === 1, "A character can pick only Tenets they know");
 
 console.log("== Text scaling");

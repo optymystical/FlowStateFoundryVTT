@@ -143,7 +143,7 @@ export const GM_ONLY_STATUSES = new Set(Object.keys(STEALTH_STATUSES));
  */
 export function withStealthStatus(actor, opts) {
   const set = actor?.statuses;
-  if (!set || opts.breakFree || opts.throwGrappled || opts.mental?.reflect || opts.mental?.ward || opts.mental?.quicksand) return opts;
+  if (!set || opts.breakFree || opts.throwGrappled || opts.mental?.reflect || opts.mental?.ward || opts.mental?.quicksand || opts.mental?.disperse || opts.mental?.expand) return opts;
   const st = set.has("fullStealth") ? "full" : set.has("halfStealth") ? "half" : null;
   if (!st) return opts;
   const stealth = st === "full" || opts.stealth === "full" ? "full" : "half";
@@ -1519,7 +1519,7 @@ export async function performAttack(actor, opts) {
   // An object on the ground (a pile holding a Non-Archetypal object) is attacked on its own: it always hits.
   if (picked.length === 1 && objectOf(picked[0])) return attackObject(actor, opts, picked[0], objectOf(picked[0]));
   const targets = picked.filter(a => a.type !== "pile");
-  if (targets.length) return startExchange(actor, opts, targets);
+  if (targets.length) return startExchange(actor, (await mentalHook?.attackStart?.(actor, opts, targets)) ?? opts, targets);
   return untargetedAttack(actor, opts);
 }
 
@@ -1687,6 +1687,8 @@ async function startExchange(actor, opts, targets) {
     // A stolen action (Larceny, Enhanced) is rolled with the original attacker's dice.
     const dice = opts.dieOf ? (globalThis.fromUuidSync?.(opts.dieOf)?.system?.derived ?? d) : d;
     let atkDie = opts.dieOverride ?? dice.attackDie;
+    const lightDie = mentalHook?.attackDieAgainst?.(actor, target);                 // Illuminate (Light): attacks against a warded ally have a smaller die
+    if (lightDie?.pen) { atkDie = Math.max(1, atkDie - lightDie.pen); spellNotes.push(lightDie.note); }
     const ex = opts.spell?.exploit;
     if (ex?.stacks) {
       const used = Math.min(ex.stacks, Math.max(0, atkNet));
@@ -1973,7 +1975,9 @@ if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} 
   // Mental: a Waste charge shrinks this dodge (and may give it Disadvantage), Burden gives Disadvantage; the charge is used up.
   const waste = mentalHook?.dodgeWaste(target) ?? null;
   const burden = mentalHook?.burdenNet(target, "dodgeDis") ?? 0;
-  const dieNow = Math.max(1, t.derived.dodgeDie - (waste?.pen ?? 0));
+  const eclipse = mentalHook?.dodgeDieAgainst?.(await fromUuid(attack.attacker), target) ?? null;          // Eclipse (Dark): an eclipsed attacker's targets dodge with a smaller die
+  const dieNow = Math.max(1, t.derived.dodgeDie - (waste?.pen ?? 0) - (eclipse?.pen ?? 0));
+  if (eclipse?.pen) reasons.push(eclipse.note);
   const net2 = net + (waste?.net ?? 0) + burden;
   if (waste) reasons.push(waste.note);
   if (burden) reasons.push(`Burden ×${-burden}: ${-burden} Disadvantage on the dodge`);

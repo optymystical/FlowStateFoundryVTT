@@ -277,6 +277,8 @@ export async function resolveMode(c) {
 }
 
 export const MISS_PROVIDERS = [];
+/** Damage changes from lasting effects (Light, Dark): ({ attacker, target, n, type, notes }) → the new damage, or undefined for no change. Run first in the damage-adjust pipeline. */
+export const DAMAGE_PROVIDERS = [];
 /** Things a missed Manifest does by itself: ({ attacker, target, m, mode }) → HTML to add to its card. */
 export const MISS_AUTO = [];
 export async function missAuto(c) { let out = ""; for (const f of MISS_AUTO) out += (await f(c)) ?? ""; return out; }

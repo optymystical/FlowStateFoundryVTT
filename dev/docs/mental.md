@@ -482,7 +482,7 @@
 
 **Tier 1: You gain the following Mode and Tenet:**
 
-**Eclipse:** Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. **Against an enemy:** On hit, that creature is Eclipsed until the start of your next turn. Its dodge rolls have their **die size reduced by 0.5** (rounded down). **Against an ally:** On hit, until the start of your next turn, that ally’s attacks cause their targets’ dodge rolls to have their **die size reduced by 0.5** (rounded down), and that ally becomes one step more obscured (none → lightly → heavily). **Enhanced:** Damage dealt by an attack affected by this Mode is Strengthened.
+**Eclipse:** Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. **Against an enemy:** On hit, that creature is Eclipsed until the start of your next turn. Its dodge rolls have their **die size reduced by 0.5** (this reduction is rounded up). **Against an ally:** On hit, until the start of your next turn, that ally’s attacks cause their targets’ dodge rolls to have their **die size reduced by 0.5** (this reduction is rounded up), and that ally becomes one step more obscured (none → lightly → heavily). **Enhanced:** Damage dealt by an attack affected by this Mode is Strengthened.
 
 **Shadowmark:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can make that target or yourself one more step obscured (none → lightly → heavily) until the start of your next turn.
 

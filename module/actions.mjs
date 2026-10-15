@@ -35,11 +35,13 @@ export function inActiveCombat(actor) {
 export function movementMode() {
   try { return game.settings.get("flowstate", "movementCost") ?? "enforce"; } catch (err) { return "enforce"; }
 }
-/** What one step of movement is for this creature: the distance it carries you and the AP it costs. */
+/** What one step of movement is for this creature: the distance it carries you and the AP it costs (+1 while dragging a grappled creature, Rules Ch8). */
 export function moveParams(actor) {
   const mv = actor.system?.movement ?? {};
-  return { speedFt: (mv.speed ?? 0) * Math.max(1, mv.multiplier ?? 1), cost: mv.ap ?? 1 };
+  return { speedFt: (mv.speed ?? 0) * Math.max(1, mv.multiplier ?? 1), cost: (mv.ap ?? 1) + (dragging(actor) ? 1 : 0) };
 }
+/** Is this creature dragging a grappled creature along when it moves? One held in place by an effect (a magical Hold, a thrown weapon) isn't dragged. */
+export const dragging = actor => grappledBy(actor).some(v => { const h = grappleHold(v); return !!h && !h.static; });
 /** This turn's movement ledger for a creature (a fresh one each turn). */
 export function moveLedger(actor) {
   const key = turnKey(), l = actor?.getFlag?.("flowstate", "moveLedger");
@@ -1027,9 +1029,6 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   // Combo (T3) and Flow Like Water (T5): free extra attacks against the same target.
   if (followup?.kind === "combo") { energy += B.combo(actor); notes.push("Combo"); }
   if (followup?.kind === "flow") { energy += B.flow(actor, heavyAtk ? "heavy" : "light"); notes.push("Flow Like Water"); }
-  if (energy && inActiveCombat(actor) && actor.system.energy.value < energy) {
-    return ui.notifications.warn(`${actor.name} needs ${energy} Energy for that but has ${actor.system.energy.value}.`);
-  }
   const pepper = Number(opts.pepper) || 0;
   let shots = 1 + pepper;
   if (pepper) { net -= pepper; notes.push(`Pepper +${pepper} shot${pepper > 1 ? "s" : ""}`); }
@@ -1803,11 +1802,10 @@ function blockersFor(attacker, target) {
     const shields = ab.defenderHeld(a, 1);
     if (!shields.length) continue;
     // A Shield Toss guard Blocks on its own (see shieldGuardItem); the guard's owner can still Block normally when in reach.
-    const isGuard = false;
     const reach = (a.system.derived?.size?.melee ?? 5) * Math.max(...shields.map(i => i.system.profile.farstrike ?? 1));
     const dist = tTok ? tokenDistance(tok, tTok) : Infinity;
     const perfect = ab.defenderHeld(a, 5).length > 0;
-    if (isGuard || dist <= reach) { out.set(a.uuid, { actor: a, perfect, guard: isGuard }); continue; }
+    if (dist <= reach) { out.set(a.uuid, { actor: a, perfect, guard: false }); continue; }
     // Shield Toss (Defender T2) as a guard: throw the shield to an ally in throw range, then Block for them (2 RP).
     const toss = tossShields(a).filter(i => dist <= (THROW[i.system.profile.throwType]?.range ?? 0));
     if (toss.length) out.set(a.uuid, { actor: a, perfect, guard: false, toss: true, cost: Math.min(...toss.map(ab.DEFENDER_COST.shieldToss)) });
@@ -1849,7 +1847,7 @@ export async function adjustFor(message, index, ownerUuid) {
   const entry = message.getFlag("flowstate", "attack")?.targets?.[index];
   if (!entry) return;
   if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
-if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
+  if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
   const owner = await fromUuid(ownerUuid);
   if (!owner?.isOwner) return ui.notifications.warn(`Only ${owner?.name ?? "its owner"}'s owner can extend that Shield.`);
   const eff = spellEffects(owner, "shield").find(e => e.flags.flowstate.spellEffect.adjust && e.flags.flowstate.spellEffect.hp > 0);
@@ -1868,7 +1866,7 @@ export async function allyHelp(message, index) {
   const entry = attack?.targets?.[index];
   if (!entry) return;
   if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
-if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
+  if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
   const attacker = await fromUuid(attack.attacker), target = await fromUuid(entry.uuid);
   if (!target) return;
   const blocking = new Set(findBlocksFor(message.id, index).map(b => b.blocker));
@@ -1918,7 +1916,7 @@ export async function defend(message, index, choice) {
   let entry = attack?.targets?.[index];
   if (!entry) return;
   if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
-if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
+  if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
   const target = await fromUuid(entry.uuid);
   if (!target) return ui.notifications.warn("That target no longer exists.");
   if (!target.isOwner) return ui.notifications.warn(`Only ${entry.name}'s owner can respond.`);
@@ -2195,7 +2193,7 @@ export async function blockFor(message, index, blockerUuid, perfect = false, tos
   const entry0 = attack?.targets?.[index];
   if (!entry0) return;
   if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
-if (findDefense(message.id, index)) return ui.notifications.info(`${entry0.name} has already responded.`);
+  if (findDefense(message.id, index)) return ui.notifications.info(`${entry0.name} has already responded.`);
   const blocker = await fromUuid(blockerUuid);
   const target = await fromUuid(entry0.uuid);
   if (!blocker || !target) return;
@@ -5708,6 +5706,17 @@ export async function energyRestoreAdjust(actor, restore) {
   return left;
 }
 
+/**
+ * The Energy a creature regains as its turn starts (Ch8: 2 AP of Recover Energy). A Mental Freeze block uses itself up here; Fear (Ch9) blocks all Energy
+ * gain, regen included; a Cold Freeze (T4) then takes its cut.
+ */
+export async function turnStartEnergy(actor) {
+  const blocked = await freezeBlockTurnStart(actor);
+  if (actor.statuses?.has?.("fear")) return 0;
+  const regain = blocked ? 0 : 2 * (actor.system.derived?.energyRecover ?? 0);
+  return regain ? energyRestoreAdjust(actor, regain) : 0;
+}
+
 export async function recoverEnergy(actor) {
   if (cantAct(actor, "recover Energy")) return;
   await triggerMark(actor, `recovers Energy`);
@@ -6151,7 +6160,7 @@ export async function quartzFor(message, index, ownerUuid) {
   const entry = message.getFlag("flowstate", "attack")?.targets?.[index];
   if (!entry) return;
   if (findCancel(message.id)) return ui.notifications.info("That spell was countered before it landed.");
-if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
+  if (findDefense(message.id, index)) return ui.notifications.info(`${entry.name} has already responded.`);
   const owner = await fromUuid(ownerUuid);
   if (!owner?.isOwner) return ui.notifications.warn(`Only ${owner?.name ?? "its owner"}'s owner can extend that Shroud.`);
   const sh = owner.system.shroud;

@@ -299,6 +299,7 @@ export function hexData(a, sp, base, ch, profile, extra = {}) {
   for (const [k, v] of Object.entries(a.extra ?? {})) scaled[k] = Array.isArray(v) ? [v[0] * p, v[1]] : v;
   return { ...hexBase(base.caster, p, base.ritualOf), trigger, roll: hx.roll || "attack", outcome: hx.outcome || "fail", detail: hx.detail || "",
     n: a.dice[0] * p, sides: a.dice[1], type: a.type, linger: m.linger ?? 0, fester: m.fester ?? 0, unravel: !!m.unravel, consume: !!m.consume,
+    livingDie: a.livingDie ?? 0, halfStacks: a.halfStacks ?? 0,          // Cut + Hex, Stab + Hex
     extra: Object.keys(scaled).length ? scaled : null, hexDie: ch.hexDie || "dodge", contested: !!a.contested, procs: 0, checks: 0, triggers: 0, stacks: base.stacks ?? 0, req: needOf(3, p, base.stacks), ...extra };
 }
 
@@ -315,7 +316,7 @@ const hexTriggerText = h => `${fx.HEX_TRIGGERS[h.trigger]?.label ?? h.trigger}${
 export function hexCard(target, h) {
   const manual = h.trigger === "act" || h.trigger === "word" || (h.trigger === "failsuccess" && (h.roll === "stat" || h.roll === "noncombat"));
   return `<div class="fs-result"><i class="fa-solid fa-hat-wizard"></i> ${esc(target.name)} carries a Hex. Trigger: <strong>${hexTriggerText(h)}</strong>.</div>
-    <div class="fs-notes">${h.noCheck ? "" : `Build check (${h.req ?? 3} or higher), then `}${dice(h.n, h.sides)} ${typeLabel(h.type)} (${(() => { const hs = (fx.HEX_TRIGGERS[h.trigger]?.stacks ?? 0) + (h.stacks ?? 0); return hs > 0 ? `Strengthened ×${hs}` : hs < 0 ? `Weakened ×${-hs}` : "no stacks"; })()}). ${h.ritual ? "Permanent until the ritual ends." : h.repeat ? "Lasts until the start of your next turn." : `Lasts a minute or ${h.linger ? `${timesWith(h.linger, h.stacks, h.power)} triggers` : "until it triggers"}.`}
+    <div class="fs-notes">${h.noCheck ? "" : `Build check (${h.req ?? 3} or higher), then `}${dice(h.n, h.sides)} ${typeLabel(h.type)} (${(() => { const hs = (fx.HEX_TRIGGERS[h.trigger]?.stacks ?? 0) + (h.stacks ?? 0); return hs > 0 ? `Strengthened ×${hs}` : hs < 0 ? `Weakened ×${-hs}` : "no stacks"; })()})${h.livingDie ? `, +${h.livingDie} die size against a living target it damages directly` : ""}${h.halfStacks ? `, ${h.halfStacks} more Strengthened when their check rolls half or less of what it needs` : ""}. ${h.ritual ? "Permanent until the ritual ends." : h.repeat ? "Lasts until the start of your next turn." : `Lasts a minute or ${h.linger ? `${timesWith(h.linger, h.stacks, h.power)} triggers` : "until it triggers"}.`}
     ${manual ? "This trigger can't be detected automatically: click the button below when it happens." : "It triggers automatically."}</div>
     ${manual ? actRow({ uuid: h.caster }, 0, "hex", "Trigger the Hex", "fa-solid fa-bolt", "The trigger just happened") : ""}`;
 }
@@ -360,14 +361,21 @@ async function fireHex(actor, e) {
   let destroyed = false, push = null;
   const acts = [];
   if (failed) {
-    const sides = fx.hexSides(d.sides, d.fester, d.procs);
+    const dmgOpts = { ...d, fromHex: true, bypassArmor: false };
+    let sides = fx.hexSides(d.sides, d.fester, d.procs);
+    // Cut + Hex: +12 die size against a living target the Hex would damage directly (its biggest roll reaching HP).
+    const living = actor.type !== "pile" && !actor.system?.magical;
+    const direct = d.livingDie && living ? (await damageOutcome(actor, d.n * (sides + d.livingDie), d.type === "health" ? "arcane" : d.type, { bypass: d.type === "health", ignoreArmor: !!dmgOpts.bypassArmor, archetype: "magic" })).toHp > 0 : false;
+    if (direct) sides += d.livingDie;
     const dmg = await roll(dice(d.n, sides));
     rolls.push(dmg);
     const cast = d.stacks ?? 0;          // the Hex was cast with these stacks
-    const stacks = (fx.HEX_TRIGGERS[d.trigger]?.stacks ?? 0) + cast;
+    // Stab + Hex: three Strengthened when the Build check rolls half or less of what it needed.
+    const low = d.halfStacks && ch && fx.halfOrLower(ch.total, ch.req) ? d.halfStacks : 0;
+    const stacks = (fx.HEX_TRIGGERS[d.trigger]?.stacks ?? 0) + cast + low;
     const total = applyStacks(dmg.total, stacks);
-    html.push(`<div class="fs-result">${dice(d.n, sides)} = ${dmg.total}${stacks ? ` (${stacks > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(stacks)} → ${total})` : ""} ${typeLabel(d.type)}${d.fester && d.procs ? ` (Fester: d${sides})` : ""}.</div>`);
-    const out = await dealDamage(actor, total, { ...d, fromHex: true, bypassArmor: false }, html);
+    html.push(`<div class="fs-result">${dice(d.n, sides)} = ${dmg.total}${stacks ? ` (${stacks > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(stacks)} → ${total})` : ""} ${typeLabel(d.type)}${d.fester && d.procs ? ` (Fester: d${sides})` : ""}${direct ? ` (+${d.livingDie} die size: living, direct)` : ""}${low ? ` (+${low} Strengthened: the check rolled half or less)` : ""}.</div>`);
+    const out = await dealDamage(actor, total, dmgOpts, html);
     destroyed = actor.system.hp.value - out.outcome.toHp <= 0;
     const ex = d.extra ?? {};
     if (ex.force) { const f = await forceRoll(caster, actor, { n: ex.force[0], sides: ex.force[1] }, cast); html.push(f.html); rolls.push(...f.rolls); push = f.push; }

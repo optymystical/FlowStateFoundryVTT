@@ -43,6 +43,7 @@ const STATUS_DETAIL = {
   psychedUp: "Advantage on your attack rolls; attacks against you have Advantage. Ends at the start of your next turn.",
   calmedDown: "Advantage on your dodge rolls; your attack rolls have Disadvantage. Ends at the start of your next turn.",
   prone: "Dodge rolls have Disadvantage; melee attacks against you have Advantage.",
+  grappled: "Can only move within the grappler's reach (held in place by an effect: not at all). Break Free (2 AP) from the Action List.",
   unconscious: "HP below the Pain Threshold (set automatically from HP).",
   limber: "Your next attack, dodge, or parry roll has Advantage (until your next turn).",
   carefulSteps: "No stealth penalty from Medium armor; 2 AP at the start of each of your turns in combat (lapses for the turn if you can't pay). Toggle any time.",
@@ -71,7 +72,7 @@ export function activeEffectRows(actor) {
     if (id === "grappled") {
       const by = actor.getFlag?.("flowstate", "grappledBy");
       const name = by ? globalThis.fromUuidSync?.(by)?.name : null;
-      detail = `${name ? `By ${name}. ` : ""}Can't move. Break Free (2 AP) from the Action List.`;
+      detail = `${name ? `By ${name}. ` : ""}${STATUS_DETAIL.grappled}`;
     }
     if (!id && (effect.flags?.flowstate?.spellEffect || effect.flags?.flowstate?.ritual)) detail = String(effect.description ?? "").replace(/<[^>]+>/g, "");
     rows.push({
@@ -128,7 +129,7 @@ const AUTOMATED = {
   "martial-constitution-methods": {
     1: "One With Body is information for you and the GM (nothing to roll).",
     2: "Taunt is in the Action List (Constitution Methods); the Taunted creature repeats the check at the end of its turn automatically.",
-    3: "Pure Body: resisting effects isn't automated yet; the GM applies it.",
+    3: "Pure Body: a Martial (Body) stat check has a resisting checkbox: the stat counts twice as high (Constitution stands in if higher), and a target under half of it is an automatic success.",
     4: "Pull Aggro is in the Action List (Constitution Methods).",
     5: "Imposing Presence: already-Weakened attacks from within your personal melee range are Weakened again (automatic)."
   },
@@ -411,8 +412,10 @@ function actionGroups(actor, weapons, stats) {
     if (w.canReload) combat.push({ label: `Reload ${w.name}`, detail: `Tops up to ${w.system.magazine ?? 1} (${w.system.rounds ?? 0} loaded)${actions.ammoRequired() ? ` · ${actions.ammoCount(actor, w.system.ammoType)} ${actions.ammoLabel(w.system.ammoType)} left` : ""}`,
       cost: `${w.profile.reloadRP} RP`, action: "reload", itemId: w.id, icon: "fa-solid fa-rotate" });
   }
+  // Dragging a grappled creature along costs +1 AP per move (Rules, Ch8).
+  const drag = actions.dragging(actor);
   combat.push(
-    { label: "Move", detail: `${sys.movement.speed} ft${sys.movement.multiplier > 1 ? ` ×${sys.movement.multiplier}` : ""}`, cost: `${sys.movement.ap} AP`, icon: "fa-solid fa-shoe-prints" }
+    { label: "Move", detail: `${sys.movement.speed} ft${sys.movement.multiplier > 1 ? ` ×${sys.movement.multiplier}` : ""}${drag ? " · dragging a grappled creature (+1 AP)" : ""}`, cost: `${actions.moveParams(actor).cost} AP`, icon: "fa-solid fa-shoe-prints" }
   );
 
   // Posture (Ch9): crouch is free on your turn, going prone or standing up from prone costs 1 AP.
@@ -889,10 +892,12 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       (groups[meta.group] ??= { name: meta.group, stats: [] }).stats.push({ key, ...meta, ...d.effective[key] });
     }
 
-    const moveNote = actor.statuses?.has("grappled") ? "Grappled — can't move"
+    const hold = actor.statuses?.has("grappled") ? actions.grappleHold(actor) : null;
+    const moveNote = hold?.static ? `Grappled — ${hold.why}, can't move`
+      : hold ? `Grappled — only within ${hold.leash} ft of ${hold.holder.name}`
       : sys.movement.multiplier > 1
       ? `${sys.movement.multiplier}× distance for 1 AP`
-      : `${sys.movement.ap} AP per move`;
+      : `${actions.moveParams(actor).cost} AP per move${actions.dragging(actor) ? " (dragging a grappled creature)" : ""}`;
     const lost = sys.movement.speedLoss;
     const speedNote = lost?.total ? `Speed -${Math.min(100, lost.total)}% of ${d.move} ft (${[lost.armor && `armor ${lost.armor}%`, lost.affix && `Affixes ${lost.affix}%`, lost.alignment && `Alignment ${lost.alignment}%`].filter(Boolean).join(", ")}; 5 ft minimum)` : `Speed ${d.move} ft (your Size's maximum)`;
 

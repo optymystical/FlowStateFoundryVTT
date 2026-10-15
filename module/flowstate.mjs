@@ -121,11 +121,9 @@ class FlowStateCombat extends Combat {
   async _onStartTurn(combatant, context) {
     await super._onStartTurn(combatant, context);
     if (combatant.actor) {
-      // AP/RP refresh, and Energy regained equal to 2 AP of Recover Energy.
+      // AP/RP refresh, and Energy regained equal to 2 AP of Recover Energy (none while afraid or Frozen; a Cold Freeze takes its cut).
       const a = combatant.actor, e = a.system.energy;
-      let regain = 2 * (a.system.derived?.energyRecover ?? 0);
-      if (await actions.freezeBlockTurnStart(a)) regain = 0;                              // Freeze (Mental, Destruction): no free Energy this turn
-      if (regain) regain = await actions.energyRestoreAdjust(a, regain);                 // Freeze (Cold T4)
+      const regain = await actions.turnStartEnergy(a);
       await a.update({ "system.ap.value": a.system.ap?.max ?? 6, "system.rp.value": a.system.rp?.max ?? 6, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
       // Psych Up / Calm Down last until the start of your next turn.
       await actions.clearStances(combatant.actor);

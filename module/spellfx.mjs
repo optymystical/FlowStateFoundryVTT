@@ -85,7 +85,7 @@ Object.assign(PROFILES, {
  * (see afflictions.mjs). Dice counts scale with Spell Power.
  *   poison  { dice, type: "health" or a damage type, bypassArmor, force, livingDie, halfStrength, dodgeDie, ignite|stain|energy: true, arc: true }
  *   charm   { combo?: { dice, type, force, ignite|stain|energy, nextRoll, zap, critStrength } }
- *   hex     { dice: [1, 12], extra?: { force|ignite|stain|energy: [n, sides], dieDown: true, arcs: 2 } }
+ *   hex     { dice: [1, 12], extra?: { force|ignite|stain|energy: [n, sides], dieDown: true, arcs: 2 }, livingDie (die size bonus against a living target it damages directly), halfStacks (Strengthened when the Build check rolls half or less of what it needed) }
  *   venomCharm / venomHex / charmHex   the pure Tier 3 Combos: a combined check, then a lingering damage-over-time effect
  */
 const PO = "magic-venomancy:poison", CM = "magic-charm:charm", HX = "magic-witchery:hex";
@@ -113,6 +113,8 @@ Object.assign(PROFILES, {
   [profileKey([GL, CM])]: { name: "Glob + Charm", afflict: { kind: "charm", combo: { dice: [4, 8], type: "acid", stain: true } } },
   // + Witchery: Hex does something extra whenever it procs.
   [profileKey([G, HX])]: { name: "Force + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { force: [20, 10] } } },
+  [profileKey([SL, HX])]: { name: "Cut + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", livingDie: 12 } },
+  [profileKey([PI, HX])]: { name: "Stab + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", halfStacks: 3 } },
   [profileKey([CR, HX])]: { name: "Slam + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { dieDown: true } } },
   [profileKey([FL, HX])]: { name: "Flame + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { ignite: [4, 12] } } },
   [profileKey([FR, HX])]: { name: "Frost + Hex", afflict: { kind: "hex", dice: [1, 12], type: "arcane", extra: { energy: [4, 8] } } },

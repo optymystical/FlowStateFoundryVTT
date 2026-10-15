@@ -651,7 +651,6 @@ export async function consumeCharge(caster, effect) {
     const first = await rerollWith(holder, out.type === "dodge" ? "dodge" : "attack", delta);
     rolls.push(first.r);
     let text = first.text;
-    if (control) { /* Control: one extra reroll, and the new result must be used */ }
     if (out.control) { const again = await rerollWith(holder, out.type === "dodge" ? "dodge" : "attack", delta); rolls.push(again.r); text = `${first.text}, rerolled (Control): <strong>${again.text}</strong>`; }
     lines.push(kind === "fracture" ? `${esc(holder.name)} rerolls with the die size ${first.applied >= 0 ? "+" : "−"}${Math.abs(first.applied)}: ${text}${d.enhanced ? " (keeps the original roll's Advantage/Disadvantage)" : " (no effects carried over)"}.`
       : kind === "larceny" ? `${esc(caster.name)} steals ${esc(holder.name)}'s roll and its effects: ${esc(holder.name)} rerolls at die size ${first.applied >= 0 ? "+" : "−"}${Math.abs(first.applied)}: ${text}. You can use the stolen roll, with its effects, in place of any roll you make before your next turn${d.enhanced ? "; or, Enhanced, steal the action itself for up to a minute (spend RP equal to its AP/RP cost, using their stats and dice)" : ""}.`

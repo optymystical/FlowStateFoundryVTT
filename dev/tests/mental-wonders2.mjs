@@ -244,6 +244,13 @@ ok2(hp(orc) === 432 - 10 - sPow, `…which adds ${sPow} to every damage the targ
 reset(); orc.system.energy.value = 8; await hitMiss("mental-destruction-nightmare:freeze");
 ok2(orc.system.energy.value === 0 && effs(orc, "freezeBlock").length === 1, "Freeze removes Energy equal to the direct damage; at 0 Energy they miss their free Energy next turn");
 ok2(await actions.freezeBlockTurnStart(orc) === true && effs(orc, "freezeBlock").length === 0 && await actions.freezeBlockTurnStart(orc) === false, "…which is blocked once, at the start of their next turn, then it's gone");
+const freeEnergy = 2 * orc.system.derived.energyRecover;
+ok2(freeEnergy > 0 && await actions.turnStartEnergy(orc) === freeEnergy, `The free Energy at the start of a turn is 2 AP of Recover Energy (${freeEnergy})`);
+orc.statuses.add("fear");
+ok2(await actions.turnStartEnergy(orc) === 0, "…and Fear blocks it (no Energy from any source, regen included)");
+orc.statuses.delete("fear");
+await hitMiss("mental-destruction-nightmare:freeze"); orc.system.energy.value = 0;
+ok2(await actions.turnStartEnergy(orc) === 0 && effs(orc, "freezeBlock").length === 0, "…as does a Freeze at 0 Energy, which uses its block up");
 orc.system.energy.value = 100; clearAll(orc);
 hero.system.trees["mental-destruction-nightmare"] = 5;
 reset(); refresh(); target(orc); seq = [20];

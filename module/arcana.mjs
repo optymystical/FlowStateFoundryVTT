@@ -507,7 +507,7 @@ export async function promptSpell({ actor, plan, mods, values }) {
 export async function resolveStrike({ actor, plan, profile, mods, spec, ritualOf }) {
   const entry = findSpell(spec.id);
   if (!entry) return post(actor, { title: `${esc(actor.name)} — Strike`, body: `<div class="fs-result">The Spell is already gone.</div>` });
-  let body;
+  let body, castNote = "";
   // A spell that is mid cast can only be hit if the Strike's attack roll beats the cast's attack roll.
   if (entry.kind === "cast") {
     const d = actor.system.derived;
@@ -516,7 +516,7 @@ export async function resolveStrike({ actor, plan, profile, mods, spec, ritualOf
     if (!(atk.total > entry.attackTotal)) {
       return post(actor, { title: `${esc(actor.name)} — Strike a Spell`, body: `<div class="fs-result"><i class="fa-solid fa-burst"></i> Strike rolls ${atk.total} against the cast's ${entry.attackTotal}: it doesn't beat it, so ${esc(entry.label)} is untouched.</div>` });
     }
-    var castNote = `Strike rolls ${atk.total}, beating the cast's ${entry.attackTotal}. `;
+    castNote = `Strike rolls ${atk.total}, beating the cast's ${entry.attackTotal}. `;
   }
   if (mods.amplify) body = await amplifySpell(entry, ampGain(actor, plan));
   else if (mods.rip) body = await ripSpell(entry, actor, spec.mode, spec.target ? await fromUuid(spec.target) : null, plan.freeFrom ? (Array.from(actor.effects).find(e => e.id === plan.freeFrom)?.uuid ?? null) : null, ripLimit(actor, plan));
@@ -532,7 +532,7 @@ export async function resolveStrike({ actor, plan, profile, mods, spec, ritualOf
       body += ` Absorb: ${esc(actor.name)} regains <strong>${gain} Energy</strong>.`;
     }
   }
-  await post(actor, { title: `${esc(actor.name)} — Strike a Spell`, body: `<div class="fs-result"><i class="fa-solid fa-burst"></i> ${typeof castNote === "string" ? castNote : ""}${body}</div>` });
+  await post(actor, { title: `${esc(actor.name)} — Strike a Spell`, body: `<div class="fs-result"><i class="fa-solid fa-burst"></i> ${castNote}${body}</div>` });
 }
 
 /* -------------------------------------------- */

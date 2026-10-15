@@ -65,8 +65,8 @@ function buildItem(caster, x, v, permanent) {
   if (mode === `${ID}:forge`) {
     const kind = v.kind === "armor" ? "armor" : "weapon";
     const it = { kind, type: v.type, weight: v.weight, material: v.material, name: v.name };
-    const d = conjure.itemData(it, { actor: caster, ritualOf: null });
-    d.system.grade = Math.max(1, R.bold(x.bstacks, x.power ?? 1)); d.system.equipped = false;          // "grade of 1" is bolded: the Wonder's Power and the Manifest's stacks scale it d.flags = { ...(d.flags ?? {}), ...flags };
+    const d = conjure.itemData(it, { actor: caster, ritualOf: null });          // carries the `made` marker; a permanent item loses it below
+    d.system.grade = Math.max(1, R.bold(x.bstacks, x.power ?? 1)); d.system.equipped = false;          // "grade of 1" is bolded: the Wonder's Power and the Manifest's stacks scale it
     if (permanent) delete d.flags?.flowstate?.made;
     return d;
   }

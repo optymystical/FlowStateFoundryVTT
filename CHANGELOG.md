@@ -2,6 +2,13 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.62.0:** **Rules audit: Fear, dragging, Cut + Hex and Stab + Hex.**
+- **Fear** now also blocks the free Energy at the start of a turn (Rules Ch9: no Energy from any source), not just Recover Energy.
+- **Dragging** a grappled creature along costs +1 AP per move (Rules Ch8); the Action List's Move row and the movement pill show it, and the pill now says how far a grappled creature can move instead of "can't move".
+- **Cut + Hex** (+12 die size against a living target the Hex damages directly) and **Stab + Hex** (three Strengthened when the Build check rolls half or less) are automated: every Combo in the list now is.
+- **Impale** note in AUTOMATION.md corrected (more than half the Pain Threshold, as the code already did); the Eclipse snapshot and trees carry the doc's "reduction rounded up" wording (the code already rounded that way); the Pure Body sheet note no longer says it's manual.
+- Cleanups: a duplicate Energy check in the attack flow, a dead Shield-guard variable, an empty Control branch in the Wonder reroll, a `var` in Strike a Spell, and a comment that swallowed a line in Forging.
+
 **0.61.2:** **Emplace barrier health** is the Shield's 10 × Power (it was still the old 20 × Power), and Amplify adds 10 per Power level to a barrier.
 
 **0.61.1:** **Shown numbers match applied numbers.**

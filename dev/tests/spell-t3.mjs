@@ -98,7 +98,7 @@ const T3_CORES = ["magic-venomancy:poison", "magic-charm:charm", "magic-witchery
 ok2(T3_CORES.every(c => FX.profileFor([c])?.afflict), "Poison, Charm and Hex are automated");
 const SCHOOLS = ["magic-gravity:force", "magic-slashing:cut", "magic-piercing:stab", "magic-crushing:slam", "magic-heat:flame", "magic-cold:frost", "magic-radiation:crackle", "magic-acid:glob"];
 const wanted = [];
-for (const s of SCHOOLS) for (const t of T3_CORES) if (!(t === "magic-witchery:hex" && ["magic-slashing:cut", "magic-piercing:stab"].includes(s))) wanted.push([s, t]);
+for (const s of SCHOOLS) for (const t of T3_CORES) wanted.push([s, t]);
 ok2(wanted.every(p => FX.profileFor(p)?.afflict), `Every listed T1/T2 + T3 Combo is automated (${wanted.length})`);
 ok2(FX.profileFor(["magic-venomancy:poison", "magic-charm:charm"]) && FX.profileFor(["magic-venomancy:poison", "magic-witchery:hex"]) && FX.profileFor(["magic-charm:charm", "magic-witchery:hex"]), "…and the three pure T3 Combos");
 ok2(FX.poisonSides(6, 1, 2) === 12 && FX.hexSides(12, 1, 2) === 24 && FX.charmRequirement(3, 1) === 1 && FX.charmRequirement(3, 2) === 0, "Lethality, Fester and Ingrained maths");
@@ -310,6 +310,17 @@ he = await hexOn({ hexTrigger: "harm", hexDie: "dodge" }, "magic-crushing:slam")
 ok2(orc.system.derived.dodgeDie < 15, `Crushing + Hex: −9 dodge die size on a proc (d${orc.system.derived.dodgeDie})`);
 he = await hexOn({ hexTrigger: "harm" }, "magic-radiation:crackle"); seq = [1, 10]; await actions.requestDamage(orc, 5, "physical");
 ok2(messages.filter(m => m.flags?.flowstate?.afflict?.acts?.some(x => x.act === "arc")).length > 0, "Radiation + Hex: arc buttons (two others, Strengthened)");
+he = await hexOn({ hexTrigger: "harm" }, "magic-slashing:cut"); formulas.length = 0; seq = [1, 10]; await actions.requestDamage(orc, 5, "physical");
+ok2(formulas.includes("3d24") && !formulas.includes("3d12"), `Cut + Hex: +12 die size against a living target it damages directly (${formulas.filter(f => /^3d/.test(f))})`);
+orc.system.magical = true;
+he = await hexOn({ hexTrigger: "harm" }, "magic-slashing:cut"); formulas.length = 0; seq = [1, 10]; await actions.requestDamage(orc, 5, "physical");
+ok2(formulas.includes("3d12") && !formulas.includes("3d24"), "…but not against a magical (non-living) one");
+orc.system.magical = false;
+he = await hexOn({ hexTrigger: "harm" }, "magic-piercing:stab"); seq = [4, 40]; await actions.requestDamage(orc, 5, "physical");
+const stabLow = 432 - orc.system.hp.value - 5;
+ok2(stabLow > doubleWeak && stabLow > 40, `Stab + Hex: a Build check of half or less (4 vs 9) adds three Strengthened (Harm's two Weakened → one Strengthened: 40 → ${stabLow})`);
+he = await hexOn({ hexTrigger: "harm" }, "magic-piercing:stab"); seq = [5, 40]; await actions.requestDamage(orc, 5, "physical");
+ok2(432 - orc.system.hp.value - 5 === doubleWeak, "…a 5 fails the check but is more than half, so no extra stacks");
 
 console.log("== Pure Tier 3 Combos");
 clean(); target(orc); seq = [20]; await cast("magic-venomancy:poison", { core2: "magic-charm:charm", charmRoll: "dodge" }); seq = [12]; await actions.defend(lastAtk(), 0, "dodge");

@@ -112,5 +112,15 @@ await actions.setMoveLedger(hero, { bank: 0, ft: 10, pending: true });
 await actions.spendAP(hero, 1, "Stand up");
 ok2(actions.moveLedger(hero).pending, "…while standing up is movement itself and settles nothing");
 
+console.log("== Dragging a grappled creature costs +1 AP per move");
+const victim = mkActor("Victim", { skillPoints: 30 }, {});
+ok2(actions.moveParams(hero).cost === 2 && !actions.dragging(hero), "Not grappling anyone: a move costs the usual 2 AP");
+await victim.setFlag("flowstate", "grappledBy", hero.uuid);
+ok2(actions.dragging(hero) && actions.moveParams(hero).cost === 3, "Holding a grappled creature: moving drags them along for 3 AP");
+await victim.setFlag("flowstate", "grappleStatic", "pinned by a spear");
+ok2(!actions.dragging(hero) && actions.moveParams(hero).cost === 2, "…unless they're held in place by something else (a thrown weapon, a Hold): no drag, no extra AP");
+await victim.unsetFlag("flowstate", "grappleStatic"); await victim.unsetFlag("flowstate", "grappledBy");
+ok2(actions.moveParams(hero).cost === 2, "Releasing them brings the cost back down");
+
 console.log(fails ? `${fails} FAILED` : "all passed");
 process.exit(fails ? 1 : 0);

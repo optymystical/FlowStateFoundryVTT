@@ -4690,7 +4690,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Eclipse",
-      "text": "Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. Against an enemy: On hit, that creature is Eclipsed until the start of your next turn. Its dodge rolls have their die size reduced by 0.5 (rounded down). Against an ally: On hit, until the start of your next turn, that ally’s attacks cause their targets’ dodge rolls to have their die size reduced by 0.5 (rounded down), and that ally becomes one step more obscured (none → lightly → heavily). Enhanced: Damage dealt by an attack affected by this Mode is Strengthened."
+      "text": "Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. Against an enemy: On hit, that creature is Eclipsed until the start of your next turn. Its dodge rolls have their die size reduced by 0.5 (this reduction is rounded up). Against an ally: On hit, until the start of your next turn, that ally’s attacks cause their targets’ dodge rolls to have their die size reduced by 0.5 (this reduction is rounded up), and that ally becomes one step more obscured (none → lightly → heavily). Enhanced: Damage dealt by an attack affected by this Mode is Strengthened."
      },
      {
       "name": "Shadowmark",

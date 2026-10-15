@@ -13,7 +13,7 @@ import * as R from "./mental-rules.mjs";
 import { askFor, runOnOwner, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
-import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, mantraHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = f => new Roll(f).evaluate();
@@ -520,7 +520,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
       if (tn?.id !== "mental-war-nightmare:empower" || !near100(a, target) || !mayHarm(a, target)) continue;           // a Nightmare: never on an ally's damage
       if (await tryOnceCheck(a, "empower")) {
         const ans = await askFor(a, { react: "empower", title: `${a.name}: Empower`, ok: "Empower", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage${attacker ? ` from ${esc(attacker.name)}` : ""}. Increase it by <strong>${tn.mult}d10</strong>?</p>` });
-        if (ans) { await markUsed(a, "empower"); n += await dealDice(tn.mult, 10, "Empower", notes); buffs.push({ caster: a.uuid, power: tn.mult, mode: null }); }
+        if (ans) { await markUsed(a, "empower"); n += await dealDice(await mantraHook.offer(a, tn.mult, "Empower"), 10, "Empower", notes); buffs.push({ caster: a.uuid, power: tn.mult, mode: null }); }
       }
     }
     // Warmonger (War T2): buffed damage gets 1d12 more, for Energy.
@@ -569,7 +569,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     if (tn?.id !== "mental-peace-dream:dampen" || !near100(a, target) || n <= 0 || !mayHelp(a, target)) continue;       // a Dream: never to a foe's benefit
     if (!(await tryOnceCheck(a, "dampen"))) continue;
     const ans = await askFor(a, { react: "dampen", title: `${a.name}: Dampen`, ok: "Dampen", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Reduce it by <strong>${tn.mult}d10</strong>?</p>` });
-    if (ans) { await markUsed(a, "dampen"); n -= await dealDice(tn.mult, 10, "Dampen", notes); }
+    if (ans) { await markUsed(a, "dampen"); n -= await dealDice(await mantraHook.offer(a, tn.mult, "Dampen"), 10, "Dampen", notes); }
   }
   for (const e of fx(target, "guard")) {
     const d = dataOf(e), caster = fromU(d.caster);

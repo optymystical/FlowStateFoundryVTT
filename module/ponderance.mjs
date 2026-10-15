@@ -3,17 +3,17 @@
  *  - Trance (Theory T2): 8 hours to make a Mode permanent on a willing target, for as long as you concentrate on it. A Dream Mode takes hold at the start of
  *    each of the target's turns if they succeed on a self attack roll; a Nightmare (hostile) one becomes an ability the target can use, with your Power and their dice.
  *  - Premeditate (Ponderance T1): a Manifest that hits is stored (Strengthened) on its target, to take hold when a preset action happens (Concentration).
- *  - Mantra (T2): double a Tenet's bolded effect for one trigger. Composure (T3) and Daydreaming (T5) shape Concentration (concentration.mjs).
+ *  - Mantra (T2): asked as a Tenet is used; double its bolded effect for half the Scaling Stat min in Energy. Composure (T3) and Daydreaming (T5) shape Concentration (concentration.mjs).
  *  - Forethought (T4): your Tenet applies to each Premeditated Wonder for free, outside its once per round limit.
  */
-import { post, putSpellEffect, spellEffects, changeEffect, setActorFlag, inActiveCombat } from "./actions.mjs";
+import { post, putSpellEffect, spellEffects, changeEffect, inActiveCombat } from "./actions.mjs";
 import { askFor, everyActor } from "./ask.mjs";
 import { poolFormula, resolveAttack } from "./rules.mjs";
 import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import * as conc from "./concentration.mjs";
-import { mental, TURN_START, tenetOf } from "./wonders.mjs";
+import { mental, mantraHook, TURN_START, tenetOf } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const trees = a => a?.system?.trees ?? {};
@@ -144,16 +144,16 @@ export async function useTrance(holder, effect) {
 /*  Mantra                                      */
 /* -------------------------------------------- */
 
-/** Mantra (Ponderance T2): half your Scaling Stat min in Energy doubles the bolded effect of your next Tenet trigger (until your next turn). */
-export async function mantra(actor) {
-  if (ponderTier(actor) < 2) return ui.notifications.warn("Mantra needs Ponderance Arts Tier 2.");
+/** Mantra (Ponderance T2): when a Tenet is used, pay half your Scaling Stat min in Energy to double its bolded effect. Returns the mult to use. */
+mantraHook.offer = async (actor, mult, label = "Tenet") => {
+  if (ponderTier(actor) < 2 || mult == null) return mult;
   const tn = tenetOf(actor);
-  if (!tn) return ui.notifications.warn(`${actor.name} has no Tenet attuned.`);
-  if (actor.getFlag?.("flowstate", "mantra")) return ui.notifications.info("Mantra is already ready.");
-  const kind = R.KINDS[R.wonderById(tn.wonder).kind];
-  if (!(await mental.pay(actor, { energy: Math.floor(minOf(actor, kind.stat) / 2) }, "Mantra"))) return false;
-  await setActorFlag(actor, "mantra", true);
-  await post(actor, { title: `${esc(actor.name)} — Mantra`, body: `<div class="fs-result">The next time ${esc(actor.name)}'s Tenet triggers (before their next turn), its bolded effect is doubled.</div>` });
-  return true;
-}
-TURN_START.push(async actor => { if (actor.getFlag?.("flowstate", "mantra")) await setActorFlag(actor, "mantra", null); });
+  if (!tn) return mult;
+  const cost = Math.floor(minOf(actor, R.KINDS[R.wonderById(tn.wonder).kind].stat) / 2);
+  if ((actor.system.energy?.value ?? 0) < cost) return mult;
+  const ans = await askFor(actor, { react: "mantra", title: "Mantra", ok: "Use Mantra", html: `<p><strong>Mantra</strong>: pay <strong>⚡ ${cost}</strong> to double the bolded effect of ${esc(label)}?</p>` });
+  if (!ans) return mult;
+  if (!(await mental.pay(actor, { energy: cost }, "Mantra"))) return mult;
+  await post(actor, { title: `${esc(actor.name)} — Mantra`, body: `<div class="fs-result">${esc(label)}'s bolded effect is doubled.</div>` });
+  return mult * 2;
+};

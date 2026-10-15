@@ -199,10 +199,17 @@ tree("mental-ponderance-arts", 2);
 const ic = mkIcon(hero, "ic", { form: "aegis", grade: 3, attuned: true, tenet: "mental-life-dream:verdant-soul" });
 refresh();
 const mult0 = W.tenetOf(hero).mult;
-await P.mantra(hero);
-ok2(W.tenetOf(hero).mult === mult0 * 2 && hero.system.energy.value === 200 - Math.floor((await import("../../module/abilities.mjs")).statMinOf(hero, "pon") / 2), "Mantra costs half the Scaling Stat min and doubles the Tenet's bolded effect");
-await W.markOnce(hero, "verdantSoul");
-ok2(W.tenetOf(hero).mult === mult0, "…once, for the next trigger");
+const cost = Math.floor((await import("../../module/abilities.mjs")).statMinOf(hero, "pon") / 2);
+const eMax = hero.system.energy.value;
+dialog = () => null;
+ok2(await W.mantraHook.offer(hero, mult0, "Verdant Soul") === mult0 && hero.system.energy.value === eMax, "Mantra is asked as the Tenet is used: declining changes nothing");
+dialog = () => ({});
+ok2(await W.mantraHook.offer(hero, mult0, "Verdant Soul") === mult0 * 2 && hero.system.energy.value === eMax - cost, "…accepting pays half the Scaling Stat min and doubles the bolded effect");
+hero.system.energy.value = cost - 1;
+ok2(await W.mantraHook.offer(hero, mult0, "Verdant Soul") === mult0, "…not offered without the Energy");
+hero.system.energy.value = eMax;
+tree("mental-ponderance-arts", 1);
+ok2(await W.mantraHook.offer(hero, mult0, "Verdant Soul") === mult0, "…and not before Ponderance Arts Tier 2");
 tree("mental-ponderance-arts", 0);
 
 if (fails) { console.log(`${fails} FAILED`); process.exit(1); }

@@ -14,6 +14,7 @@ const REACTIONS = [
   { key: "empower", label: "Empower", tip: "Offered when damage is about to be dealt to a foe within 100 ft.", when: c => c.tenet === "empower" },
   { key: "dampen", label: "Dampen", tip: "Offered when damage is about to be dealt to an ally within 100 ft.", when: c => c.tenet === "dampen" },
   { key: "balance", label: "Balance", tip: "Offered when it would change the result of an attack or dodge you are part of.", when: c => c.tenet === "balance" },
+  { key: "mantra", label: "Mantra", tip: "Whether to pay Energy to double a Tenet's bolded effect as it triggers.", when: c => !!c.tenet && c.ponderance >= 2 },
   { key: "charges", label: "Order / Chaos charges", tip: "Spending your charges on rolls (attack, dodge, other and damage rolls).", when: c => c.tier("mental-order-dream") >= 1 || c.tier("mental-chaos-nightmare") >= 1 },
   { key: "verdict", label: "Verdict", tip: "Passing judgment after an attack lands.", when: c => c.tier("mental-order-dream") >= 1 },
   { key: "entropy", label: "Entropy", tip: "Spending Entropy on a roll.", when: c => c.tier("mental-chaos-nightmare") >= 1 },

@@ -14,7 +14,7 @@ import { poolFormula } from "./rules.mjs";
 import { bold } from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
-import { CHARGES, onceUsed, markOnce, tenetOf, mental } from "./wonders.mjs";
+import { CHARGES, onceUsed, markOnce, tenetOf, mantraHook, mental } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const minOf = (a, k) => ab.statMinOf(a, k);
@@ -193,8 +193,9 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
       <div class="fs-field"><label>Use it to</label><select name="b"><option value="">— Don't —</option><option value="mine">Add ${m} to your ${who === attacker ? "attack" : "dodge"} result (→ ${optMine})</option><option value="opp">Remove ${m} from the ${who === attacker ? "dodge" : "attack"} result (→ ${optOpp})</option></select></div>` });
     if (!ans?.b) continue;
     await markOnce(who, "balance");
-    if (ans.b === "mine") setRollTotal(mine, mine.total + m); else setRollTotal(theirs, Math.max(0, theirs.total - m));
-    notes.push(`Balance: ${ans.b === "mine" ? `+${m} to ${who.name}'s own result` : `−${m} from the opposing result`} (attack ${atk.total}, dodge ${dodge.total}).`);
+    const mm = await mantraHook.offer(who, m, "Balance");          // Mantra
+    if (ans.b === "mine") setRollTotal(mine, mine.total + mm); else setRollTotal(theirs, Math.max(0, theirs.total - mm));
+    notes.push(`Balance: ${ans.b === "mine" ? `+${mm} to ${who.name}'s own result` : `−${mm} from the opposing result`} (attack ${atk.total}, dodge ${dodge.total}).`);
     recompute();
   }
   // Verdict (on the attacker): swap a regular hit and a crit, with 5 damage added or removed (doubled if the result is a crit).

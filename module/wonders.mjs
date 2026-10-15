@@ -35,6 +35,8 @@ const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${
 /** A Tenet triggers once per round (the old 3 Alignment doubling is gone). */
 export const tenetUses = () => 1;
 /** Has this actor already used this "once per round" thing this round (Tenets: as many times as they may per round)? */
+/** Mantra (Ponderance T2) is asked when a Tenet is used: ponderance.mjs sets `offer(actor, mult) -> the (possibly doubled) mult`. */
+export const mantraHook = { offer: async (_actor, mult) => mult };
 export const forethought = { on: false };      // Ponderance T4: a Premeditated Wonder's Tenet applies outside the once per round limit
 export function onceUsed(actor, id) {
   if (forethought.on) return false;
@@ -43,7 +45,6 @@ export function onceUsed(actor, id) {
 }
 export async function markOnce(actor, id) {
   if (forethought.on) return;
-  if (actor.getFlag?.("flowstate", "mantra")) await setActorFlag(actor, "mantra", null);          // Mantra is used up by the Tenet it doubled
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
   const key = roundKey();
   const ids = cur?.round === key ? cur.ids : [];
@@ -63,7 +64,7 @@ export function tenetOf(actor) {
   if (!p?.valid || !p.tenet || !icon.system.tenet) return null;
   // A Tenet comes with its Wonder's first tier: an Icon set to a Tenet its holder hasn't learned gives nothing.
   if (tier(actor, p.tenet.wonder) < (R.wonderById(p.tenet.wonder)?.tenet?.tier ?? 1)) return null;
-  return { id: icon.system.tenet, wonder: p.tenet.wonder, mult: p.tenet.mult * (actor.getFlag?.("flowstate", "mantra") ? 2 : 1) };          // Mantra doubles it once
+  return { id: icon.system.tenet, wonder: p.tenet.wonder, mult: p.tenet.mult };
 }
 
 const putTemp = (who, caster, n, why) => putSpellEffect(who, { kind: "tempHP", ...(why === "mental-life-dream:bloom" ? { stack: true } : {}), caster: caster.uuid, name: `Temp HP (${n})`, hp: n, max: n, mode: why,
@@ -343,6 +344,7 @@ export async function runAct(x) {
   const caster = await fromUuid(x.caster), target = await fromUuid(x.target);
   if (!caster?.isOwner) { ui.notifications.warn(`Only ${caster?.name ?? "the Mental user"}'s owner can do that.`); return false; }
   if (["chant", "makeClear", "wobs"].includes(x.id)) return mental.theoryAct(x);
+  if (x.tenet && x.mult != null && !onceUsed(caster, x.id)) x = { ...x, mult: await mantraHook.offer(caster, x.mult, x.label) };          // Mantra: double the bolded effect, asked as the Tenet is used
   if (ACTS[x.id]) return ACTS[x.id](x, caster, target);
   const mode = R.modeById(x.mode);
   const energy = { pollinate: Math.floor(minOf(caster, "pon") / 2), fester: minOf(caster, "snap"), reap: minOf(caster, "snap") }[x.id] ?? 0;

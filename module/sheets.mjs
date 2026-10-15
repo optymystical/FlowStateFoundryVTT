@@ -704,7 +704,6 @@ function actionGroups(actor, weapons, stats) {
   if (mTheory >= 2 && mctx.wonders.length) mentalRows.push({ label: "Trance", detail: "8 hours with a willing target to make a Mode permanent on them, for as long as you concentrate on it (target them first)", cost: "8 hours (not in combat)", action: "trance", icon: "fa-solid fa-moon" });
   for (const e of ponderanceMod.premeditatedBy(actor)) mentalRows.push({ label: `Trigger ${e.name} on ${e.parent?.name ?? "?"}`, detail: `Takes hold when they ${e.flags.flowstate.spellEffect.trigger}. Ends at the start of your next turn if unused.`, cost: "Free", action: "triggerPremeditated", itemId: e.uuid, icon: "fa-solid fa-hourglass-half" });
   for (const e of ponderanceMod.tranceAbilities(actor)) mentalRows.push({ label: `Trance: ${e.name.replace(/^Trance: /, "")}`, detail: `${e.flags.flowstate.spellEffect.description} Target a creature first.`, cost: "Range AP", action: "useTrance", itemId: e.uuid, icon: "fa-solid fa-hand-sparkles" });
-  if (ponderT >= 2 && wonders.tenetOf(actor)) mentalRows.push({ label: actor.getFlag("flowstate", "mantra") ? "Mantra (ready)" : "Mantra", detail: "Double the bolded effect of your Tenet's next trigger (until your next turn)", cost: `⚡ ${Math.floor(ab.statMinOf(actor, mentalRules.KINDS[mentalRules.wonderById(wonders.tenetOf(actor).wonder).kind].stat) / 2)}`, action: "mantra", icon: "fa-solid fa-om" });
   if (ponderT >= 5 && concs.length > 1) mentalRows.push({ label: "Daydreaming", detail: "Choose which Concentration can't be broken", cost: "Free", action: "daydream", icon: "fa-solid fa-cloud" });
   if (psionT >= 1) mentalRows.push({ label: "Psion Sense", detail: `Spot check for mental energies within ${mctx.farSight ? 1000 : 100} ft`, cost: "Check", action: "psionSense", icon: "fa-solid fa-brain" });
   if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
@@ -712,7 +711,7 @@ function actionGroups(actor, weapons, stats) {
 
   // Reactions: every popup this character can be asked in someone else's turn, each with a switch to skip it (counts as "no").
   const reactionList = reactionRules.reactionRows(actor, { tenet: wonders.tenetOf(actor)?.id?.split(":")[1] ?? "", iconKind: actor.system.icon?.system.profile?.kind ?? "",
-    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, tier: w => skills.tierOf(sys.trees, w) });
+    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, ponderance: ponderT, tier: w => skills.tierOf(sys.trees, w) });
   const reactionRows = reactionList.map(r => ({ label: `${r.label}: ${r.off ? "skipped" : "asked"}`, detail: `${r.tip} ${r.off ? "You are not asked: it counts as no." : "A popup asks you when it comes up."}`,
     cost: r.off ? "Click to ask again" : "Click to skip", action: "martial", op: `reaction:${r.key}`, icon: r.off ? "fa-solid fa-bell-slash" : "fa-solid fa-bell" }));
 
@@ -795,7 +794,6 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       fluidity: function () { return mental.fluidity(this.document); },
       endConcentration: function () { return concentration.endDialog(this.document); },
       trance: function () { return ponderanceMod.trance(this.document); },
-      mantra: function () { return ponderanceMod.mantra(this.document); },
       daydream: function () { return concentration.chooseDaydream(this.document); },
       triggerPremeditated: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.triggerPremeditated(this.document, e) : null; },
       useTrance: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.useTrance(this.document, e) : null; },

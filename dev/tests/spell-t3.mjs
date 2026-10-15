@@ -138,14 +138,17 @@ const poisoned = async (core, extra = {}, core2 = "") => { clean(); await land(c
 await poisoned("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 });
 seq = [1, 5]; await A.turnStart(gob);
 ok2(eff(gob, "poison").length === 1 && eff(gob, "poison")[0].flags.flowstate.spellEffect.procs === 1, "Prolong: after a failed check the Poison goes on");
-// "2 times (+1 each stack)" is bolded: a crit's two Strengthened stacks make it 4 applications.
-clean(); await land("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 }, 30); target(gob); await A.act(lastMsgWith("afflict"), 0);
-for (let i = 0; i < 3; i++) { seq = [1, 5]; await A.turnStart(gob); }
+// "2 times (+1 each stack)" is bolded: Spell Power (3) makes it 6 applications, and a crit's two Strengthened stacks double that.
+await poisoned("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 });
+for (let i = 0; i < 5; i++) { seq = [1, 5]; await A.turnStart(gob); }
 const stillOn = eff(gob, "poison").length === 1;
 seq = [1, 5]; await A.turnStart(gob);
-ok2(stillOn && eff(gob, "poison").length === 0, "Prolong's 2 applications are Strengthened by the crit's stacks (4 in all)");
+ok2(stillOn && eff(gob, "poison").length === 0, "Prolong's 2 applications are scaled by Spell Power (3): it applies 6 times");
+clean(); await land("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 }, 30); target(gob); await A.act(lastMsgWith("afflict"), 0);
+for (let i = 0; i < 11; i++) { seq = [1, 5]; await A.turnStart(gob); }
+const stillOn2 = eff(gob, "poison").length === 1;
 seq = [1, 5]; await A.turnStart(gob);
-ok2(eff(gob, "poison").length === 0, "…and ends once it has applied 2 times");
+ok2(stillOn2 && eff(gob, "poison").length === 0, "…and a crit's two Strengthened stacks double it (12 times)");
 await poisoned("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 });
 seq = [9]; await A.turnStart(gob);
 ok2(eff(gob, "poison").length === 0, "…or as soon as they pass the check");
@@ -258,9 +261,9 @@ ok2(formulas.includes("3d12"), "…a Build check, then 3d12 arcane");
 ok2(eff(orc, "hex").length === 0, "…and the Hex is spent (it triggers once)");
 he = await hexOn({ hexTrigger: "harm", [M("magic-witchery:linger")]: 1 });
 seq = [1, 10]; await actions.requestDamage(orc, 5, "physical");
-ok2(eff(orc, "hex").length === 1 && eff(orc, "hex")[0].flags.flowstate.spellEffect.left === 1, "Linger: it triggers 2 times (1 left after the first)");
+ok2(eff(orc, "hex").length === 1 && eff(orc, "hex")[0].flags.flowstate.spellEffect.left === 5, "Linger: 2 times × Spell Power (3) = 6 triggers (5 left after the first)");
 seq = [9]; await actions.requestDamage(orc, 5, "physical");
-ok2(eff(orc, "hex").length === 0, "…and a passed Build check still uses a trigger up");
+ok2(eff(orc, "hex").length === 1 && eff(orc, "hex")[0].flags.flowstate.spellEffect.left === 4, "…and a passed Build check still uses a trigger up");
 // Damage multiplier by trigger: Harm Weakened twice, Roll Strengthened, Word triply
 he = await hexOn({ hexTrigger: "harm" }); seq = [1, 40]; await actions.requestDamage(orc, 1, "physical");
 const doubleWeak = 432 - orc.system.hp.value - 1;

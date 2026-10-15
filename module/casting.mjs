@@ -55,6 +55,7 @@ export function castContext(actor, weave = null) {
   const rawKeys = attunedAffixKeys(actor, "offensive");
   const withAffix = k => [...working.filter(i => i.system.profile.affixes.includes(k)).map(i => i.id), ...(rawKeys.includes(k) ? ["raw"] : [])];
   return { fociState: fociFx.castState(actor), targetsAlly, hematiteFoci: withAffix("hematite"), moonstoneFoci: withAffix("moonstone"), taaffeiteFoci: withAffix("taaffeite"),
+    hematiteDoubled: working.filter(i => i.system.profile.doubled === "hematite").map(i => i.id), taaffeiteDoubled: working.filter(i => i.system.profile.doubled === "taaffeite").map(i => i.id),
     inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals,
     weave: weave ? { ap: weave.ap, keepTR: theory >= 5 } : null };
 }
@@ -413,7 +414,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const manual = plan.applied.filter(a => !a.free && !fx.AUTOMATED_MODS.has(a.mod.id)).map(a => a.mod.name);
   if (manual.length && profile) plan.note = `${plan.note ? `${plan.note} ` : ""}Not automated yet (the GM resolves it from the text above): ${[...new Set(manual)].join(", ")}.`;
   const fnotes = fociFx.castNotes(ffx, plan);
-  if (plan.hematite) fnotes.push(`Hematite: Power doubled, ${plan.hematiteCost} Health spent.`);
+  if (plan.hematite) fnotes.push(`Hematite: Power ${plan.hematiteBonus > 1 ? "quadrupled (the Affix is doubled)" : "doubled"}, ${plan.hematiteCost} Health spent.`);
   if (fnotes.length) plan.note = `${plan.note ? `${plan.note} ` : ""}${fnotes.join(" ")}`;
   if (!plan.note && !profile) plan.note = `Spell effects for this spell aren't automated yet: scale the effect by Spell Power ×${plan.power} and resolve it at the table (attack roll, damage, and effects).`;
 
@@ -449,7 +450,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const twice = !!type && !plan.ritual && !plan.freeFrom && !fire && castsTwice(type, state.last, coreKey);
   if (type === "gauntlet" && twice) {
     const hi = plan.option.scalingHigh ?? plan.scaling;
-    await run({ ...plan, scaling: hi, power: spells.spellPower(hi) * (1 + (plan.empower ?? 0) + (plan.hematite ? 1 : 0)) });
+    await run({ ...plan, scaling: hi, power: spells.spellPower(hi) * (1 + (plan.empower ?? 0) + (plan.hematiteBonus ?? (plan.hematite ? 1 : 0))) });
     await post(actor, { title: `${esc(actor.name)} — Gauntlet`, body: `<div class="fs-result">The Gauntlet duplicates it, using your lower Scaling Stat (${plan.scaling}).</div>` });
     await run(plan);
   } else {

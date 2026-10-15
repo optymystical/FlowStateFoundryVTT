@@ -252,7 +252,7 @@ async function poisonTick(actor, e) {
     }
   }
   const procs = d.procs + (c.passed ? 0 : 1);
-  const ended = fx.poisonEnds({ passed: c.passed, procs, prolong: d.prolong ? timesWith(d.prolong, d.stacks) - 1 : 0, ritual: !!d.ritual });
+  const ended = fx.poisonEnds({ passed: c.passed, procs, prolong: d.prolong ? timesWith(d.prolong, d.stacks, d.power) - 1 : 0, ritual: !!d.ritual });
   if (d.virality && caster && fx.lessThanHalf(c.total, req)) acts.push({ act: "spread", from: actor.uuid, attacker: caster.uuid, poison: { ...d, procs: 0, checks: 0, ritual: false, ritualOf: null, lethality: d.lethality } });
   if (ended) { await changeEffect(e, null); html.push(`<div class="fs-notes">The Poison ends.</div>`); }
   else await changeEffect(e, { "flags.flowstate.spellEffect.procs": procs, "flags.flowstate.spellEffect.checks": d.checks + 1 });
@@ -299,7 +299,7 @@ export function hexData(a, sp, base, ch, profile, extra = {}) {
 /** The Active Effect data for a Hex (a minute, or until it has triggered enough times; Rituals are permanent). */
 export function hexEffect(h, profile) {
   const w = globalThis.game?.time?.worldTime;
-  const left = h.ritual || h.repeat ? Infinity : timesWith(h.linger ?? 0, h.stacks);
+  const left = h.ritual || h.repeat ? Infinity : timesWith(h.linger ?? 0, h.stacks, h.power);
   const trig = fx.HEX_TRIGGERS[h.trigger]?.label ?? h.trigger;
   const penalty = h.penalty && (h.trigger === "roll" || h.trigger === "failsuccess") ? { roll: h.roll, amount: 1 } : null;
   return { ...h, kind: "hex", stack: true, onTargetTurn: !h.lastsToCaster, left: Number.isFinite(left) ? left : 99999, penalty, expiresAt: !h.ritual && !h.lastsToCaster && w !== undefined ? w + 60 : null, name: `${profile.name} (${h.trigger})`,
@@ -332,10 +332,10 @@ export async function hexTrigger(actor, kind, info = {}) {
   }
 }
 
-/** How many times a Poison applies / a Hex triggers: 1, or "2 times (+1 each stack)" with Prolong / Linger. It is a bolded number, so the spell's Strengthened/Weakened stacks scale it (at least once). */
+/** How many times a Poison applies / a Hex triggers: 1, or "2 times (+1 each stack)" with Prolong / Linger. It is a bolded number, so Spell Power and the spell's Strengthened/Weakened stacks scale it (at least once). */
 /** Arcane damage against something that isn't magical is Weakened once (not a Hex's, which has its own table). */
 const arcanePen = (actor, type, fromHex = false) => (type === "arcane" && !fromHex && !actor.system?.magical ? -1 : 0);
-const timesWith = (extra, stacks) => (extra ? Math.max(1, applyStacks(1 + extra, stacks ?? 0)) : 1);
+const timesWith = (extra, stacks, power = 1) => (extra ? Math.max(1, applyStacks((1 + extra) * Math.max(1, power), stacks ?? 0)) : 1);
 const hexExpired = d => d.expiresAt != null && globalThis.game?.time?.worldTime !== undefined && globalThis.game.time.worldTime >= d.expiresAt;
 
 async function fireHex(actor, e) {
@@ -385,7 +385,7 @@ async function fireHex(actor, e) {
       const maxE = caster.system.energy?.max ?? 0, haveE = caster.system.energy?.value ?? 0;
       if (caster.isOwner) await caster.update({ "system.energy.value": Math.min(maxE, haveE + gain) }); else await requestGM("updateActor", { uuid: caster.uuid, data: { "system.energy.value": Math.min(maxE, haveE + gain) } });
       html.push(`<div class="fs-result">Consume: ${esc(caster.name)} regains <strong>${gain} Energy</strong>.</div>`);
-      acts.push({ act: "respread", from: actor.uuid, attacker: caster.uuid, hex: { ...d, procs: 0, checks: 0, triggers: 0, hid: foundry.utils.randomID?.() ?? "x", left: d.ritual ? 99999 : timesWith(d.linger ?? 0, d.stacks) } });
+      acts.push({ act: "respread", from: actor.uuid, attacker: caster.uuid, hex: { ...d, procs: 0, checks: 0, triggers: 0, hid: foundry.utils.randomID?.() ?? "x", left: d.ritual ? 99999 : timesWith(d.linger ?? 0, d.stacks, d.power) } });
     }
   } else html.push(`<div class="fs-notes">${esc(actor.name)} passes: no damage.</div>`);
   const triggers = (d.triggers ?? 0) + 1;

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.60.2:** **Power scales the rest.** Make/Animate's Grade 2, Creation's grade of 1 and Prolong/Linger's counts now scale with Power as well as stacks; a doubled Hematite is 4× Power and a doubled Taaffeite quarters a Ritual's Energy.
+
 **0.60.1:** **Audit follow-ups.**
 - **Foci Affix doubling** (Shard / Orb / Band) now also doubles Quartz's range, Jasper / Tourmaline / Colored Diamond / Alexandrite's stacks and Ruby / Sapphire / Painite's numbers (only some Affixes were wired before).
 - **Scaling:** Prolong and Linger counts, Make/Animate Grade, Creation's grade and Brand's damage (with its stacks) are scaled by Strengthened/Weakened.

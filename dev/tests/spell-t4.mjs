@@ -183,7 +183,7 @@ const wvals = (o = {}) => ({ items: [{ kind: "weapon", type: "bladed", weight: "
 clean4(); const heroItems0 = hero.items.length;
 plan = await cast("magic-creation:make", { base: 1, conj: wvals() });
 let it = made(hero)[0];
-ok2(it && it.type === "weapon" && it.system.grade === 2 && it.system.material === "hardwood", "Make: a Grade 2 Common weapon appears in your hand (a real item)");
+ok2(it && it.type === "weapon" && it.system.grade === 6 && it.system.material === "hardwood", "Make: a Common weapon of Grade 2 × Spell Power (3) appears in your hand (a real item)");
 await J.turnStart(hero);
 ok2(made(hero).length === 0 && hero.items.length === heroItems0, "…and ends at the start of your next turn");
 clean4(); plan = await cast("magic-creation:make", { base: 1, conj: wvals({ material: "steel" }) });
@@ -209,7 +209,7 @@ ok2(made(hero)[0]?.type === "gear", "A non-Archetypal object is a plain misc ite
 console.log("== Pure Tier 4 Combos");
 clean4(); plan = await cast("magic-summoning:form", { core2: "magic-creation:make", base: 4, conj: body(5, 5, 5, { items: [{ kind: "weapon", type: "balanced", weight: "light", material: "hardwood" }] }) });
 sm = summons()[0]; const held = sm?.items.find(i => i.type === "weapon" && !i.system.natural);
-ok2(held?.system.equipped && held.system.grade === 2, "Form + Make: the Summon holds a Made weapon (Threshold 4 → 3 × 5 points)");
+ok2(held?.system.equipped && held.system.grade === 6, "Form + Make: the Summon holds a Made weapon (Threshold 4 → 3 × 5 points)");
 clean4(); plan = await cast("magic-animation:animate", { core2: "magic-creation:make", base: 3, conj: { material: "Hardwood" } });
 sm = summons()[0];
 ok2(sm && sm.system.stats.str === 20 && sm.system.size === 2, `Make + Animate: instantly a 20-point Animation (10 × the multiplier of 2), size 2 (20 Body)`);

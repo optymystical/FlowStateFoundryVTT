@@ -219,6 +219,15 @@ use(rod, { affixes: ["taaffeite"] }); ctx = ctxFor();
 const r1 = trOf("magic-slashing:cut", ctx, "foci:rod", { ritual: true }).ritualLoss;
 use(rod, { affixes: [] }); const r0 = trOf("magic-slashing:cut", ctxFor(), "foci:rod", { ritual: true }).ritualLoss;
 ok2(r1 === Math.floor(r0 / 2), `Taaffeite: Rituals take half as much Energy (${r0} → ${r1})`);
+{ const shard = mk("shard", "shard");
+  use(shard, { affixes: ["hematite", "taaffeite"], doubled: "hematite" }); ctx = ctxFor();
+  const d1 = trOf("magic-slashing:cut", ctx, "foci:shard", { hematite: true }), d0 = trOf("magic-slashing:cut", ctx, "foci:shard");
+  ok2(d1.power === d0.power * 4 && d1.hematiteCost === d0.power, `A doubled Hematite is 4× Power (${d0.power} → ${d1.power}), the Health cost staying the base Power`);
+  const e0 = trOf("magic-slashing:cut", ctx, "foci:shard", { ritual: true }).ritualLoss;
+  use(shard, { affixes: ["taaffeite"], doubled: "taaffeite" }); ctx = ctxFor();
+  const e1 = trOf("magic-slashing:cut", ctx, "foci:shard", { ritual: true }).ritualLoss;
+  ok2(e1 === Math.floor(r0 / 4) && e0 === Math.floor(r0 / 2), `A doubled Taaffeite quarters a Ritual's Energy (${r0} → ${e1}; halved when another Affix is the doubled one: ${e0})`);
+  use(rod, {}); }
 use(rod, { affixes: ["quartz", "obsidian"] }); fresh(); target(orc); seq = [20]; await cast("magic-slashing:cut", {});
 ok2(F.castNotes(F.fociFx(hero, { option: { fociId: "rod" }, scaling: 30 }), { attack: "Ranged" }).some(t => /silent/.test(t)), "Obsidian: Ranged spells are silent (a note)");
 use(rod, {});

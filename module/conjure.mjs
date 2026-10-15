@@ -269,8 +269,8 @@ export function validate(ctx, spec) {
 
 const madeFlag = (actor, ritualOf, extra = {}) => ({ flowstate: { made: { caster: actor.uuid, ritualOf: ritualOf ?? null, ...extra } } });
 
-/** The Grade of what a spell makes: the bolded 2, scaled by the stacks on the caster (it has no attack roll to carry them), at least 1. */
-export const madeGrade = (actor, plan) => Math.max(1, applyStacks(2, castStacks(actor, plan)));
+/** The Grade of what a spell makes: the bolded 2, scaled by Spell Power and by the stacks on the caster (it has no attack roll to carry them), at least 1. */
+export const madeGrade = (actor, plan) => Math.max(1, applyStacks(2 * Math.max(1, plan?.power ?? 1), castStacks(actor, plan)));
 
 /** The item data for a Made weapon or armor (Grade 2 unless stacks change it), or a plain object. */
 export function itemData(it, { actor, ritualOf = null, extraFlags = {}, equipped = false, grade = 2 } = {}) {
@@ -419,7 +419,7 @@ async function makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets
     else { await actor.createEmbeddedDocuments?.("Item", items, { flowstateAuto: true }); where = "into their inventory (no scene to drop them on)"; }
   }
   await post(actor, { title: `${esc(actor.name)} — Make`, body: `<div class="fs-result"><i class="fa-solid fa-wand-magic-sparkles"></i> ${esc(actor.name)} makes ${items.map(i => `<strong>${esc(i.name)}</strong>`).join(", ")} ${where}${ritualOf ? " (until the Ritual ends)" : ", until the start of their next turn"}.</div>
-    <div class="fs-notes">Archetypal equipment is Grade 2. Non-Archetypal objects are just a note: a Body of 10 of a single material (a cubic foot per Body).${rider ? ` Attacks with it carry ${fx.profileFor([cj.rider])?.name ?? cj.rider}.` : ""}</div>` });
+    <div class="fs-notes">Archetypal equipment is Grade ${madeGrade(actor, plan)} (2 × Spell Power, with stacks). Non-Archetypal objects are just a note: a Body of ${Math.max(1, applyStacks(10 * Math.max(1, plan.power), castStacks(actor, plan)))} of a single material (a cubic foot per Body).${rider ? ` Attacks with it carry ${fx.profileFor([cj.rider])?.name ?? cj.rider}.` : ""}</div>` });
   return items.length;
 }
 

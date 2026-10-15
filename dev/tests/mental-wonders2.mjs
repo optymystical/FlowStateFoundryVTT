@@ -373,7 +373,7 @@ ok2(!!cact, "A hit offers the Create button");
 hero.createEmbeddedDocuments = async (type, docs) => { hero.items.push(...docs.map((d, i) => ({ ...d, id: "Made" + i, uuid: "Made" + i }))); return docs; };
 dialog = () => ({ kind: "weapon", type: "bladed", weight: "light", material: "ironwood", name: "Forged Blade", willing: true });
 const made = await W.runAct(cact);
-ok2(made && hero.items.some(i => i.name === "Forged Blade" && i.system.grade === 2 && i.flags.flowstate.made?.caster === hero.uuid), "Forge creates a weapon that lasts until your next turn: Grade 1, doubly Strengthened by the crit so Grade 2");
+ok2(made && hero.items.some(i => i.name === "Forged Blade" && i.system.grade === 6 && i.flags.flowstate.made?.caster === hero.uuid), "Forge creates a weapon that lasts until your next turn: grade of 1 × Power (3), doubled by the crit's stacks = 6");
 
 console.log(fails ? `\n${fails} FAILED` : "\nAll second-batch Wonder checks passed");
 if (fails) process.exit(1);

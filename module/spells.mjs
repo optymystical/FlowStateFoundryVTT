@@ -268,6 +268,9 @@ export function planCast(ctx, v) {
   const affixKey = option?.fociId ?? (option?.key === "raw" ? "raw" : null);
   const hematite = !!v.hematite && !!affixKey && (ctx.hematiteFoci ?? []).includes(affixKey);
   const taaffeite = !!affixKey && (ctx.taaffeiteFoci ?? []).includes(affixKey);
+  // A Foci whose Affix is doubled (Shard / Orb / Band): Hematite makes it 4× the Power, Taaffeite quarters the Ritual's Energy.
+  const hematiteBonus = hematite ? ((ctx.hematiteDoubled ?? []).includes(affixKey) ? 3 : 1) : 0;
+  const taaffeiteDiv = taaffeite ? ((ctx.taaffeiteDoubled ?? []).includes(affixKey) ? 4 : 2) : 1;
   // Delay (Restoration Arcana T4) also gives +100% Power.
   const empower = applied.filter(a => ["Empower", "Delay"].includes(a.mod.name) || (a.replicates && ["Empower", "Delay"].includes(spellById(a.replicates)?.name))).length;
   const cost = castCost({ base, mods: applied, tr, skillPoints: ctx.skillPoints });
@@ -285,9 +288,9 @@ export function planCast(ctx, v) {
     ap, usesRP: react && (!ritual || instant), instantRitual: instant && ritual, tr, trParts, ...cost,
     energy: ritual || freeFrom ? 0 : cost.energy, freeFrom,
     ritualHours: ritual && !instant ? cost.gross : 0,
-    ritualLoss: ritual ? Math.floor(grossEnergy / 2 / (taaffeite ? 2 : 1)) : 0,
+    ritualLoss: ritual ? Math.floor(grossEnergy / 2 / taaffeiteDiv) : 0,
     spellPower: option ? spellPower(option.scaling) : 0,
-    power: option ? spellPower(option.scaling) * (1 + empower + (hematite ? 1 : 0)) : 0, hematite, hematiteCost: hematite && option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
+    power: option ? spellPower(option.scaling) * (1 + empower + hematiteBonus) : 0, hematite, hematiteBonus, hematiteCost: hematite && option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
     attack
   };
 }

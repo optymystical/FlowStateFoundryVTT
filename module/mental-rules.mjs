@@ -207,7 +207,7 @@ export function iconProfile(item, stats = {}) {
 }
 
 /** A Form's Ward / Enhance text with its numbers scaled by the Icon (shielding, negation and "N of that damage" grow with Willpower and Grade; AP, RP and Alignment numbers don't). */
-export const scaleFormText = (text, mult) => String(text ?? "").replace(/(\d+)(?=\s+(?:shielding|negation|of that|damage otherwise))/g, (m, n) => String(Number(n) * mult));
+export const scaleFormText = (text, mult, stacks = 0) => String(text ?? "").replace(/(\d+)(?=\s+(?:shielding|negation|of that|damage otherwise))/g, (m, n) => String(Math.floor(applyStacks(Number(n) * mult, stacks))));          // `stacks`: the Alignment (or other) Strengthened on the Ward
 
 /** The Tenets a Form may be attuned to: those of Wonders of the same Alignment (Dream or Nightmare). */
 export const tenetChoices = (align, state = null) => WONDERS.filter(w => w.kind === align && w.tenet && (!state || (Number(state[w.id]) || 0) >= (w.tenet.tier ?? 1)));

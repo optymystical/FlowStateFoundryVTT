@@ -67,13 +67,13 @@ async function applyEclipse(caster, target, side, { power, enhanced, bs, mode = 
   const str = enhanced ? " Damage dealt by an attack affected by this is Strengthened." : "";
   if (side === "enemy") {
     await putSpellEffect(target, { kind: "eclipsed", caster: caster.uuid, name: "Eclipsed", dodgeDie: pen, enhanced, power, bstacks: bs, mode,
-      description: `Dodge rolls have their die size reduced by ${0.5 * power} (rounded down).${str} Until the start of ${caster.name}'s next turn.` });
-    return `<strong>${esc(target.name)}</strong> is Eclipsed: their dodge rolls have their die size reduced by <strong>${0.5 * power}</strong> (rounded down)${enhanced ? ", and damage from the attacks it affects is Strengthened" : ""}.`;
+      description: `Dodge rolls have their die size reduced by ${pen}.${str} Until the start of ${caster.name}'s next turn.` });
+    return `<strong>${esc(target.name)}</strong> is Eclipsed: their dodge rolls have their die size reduced by <strong>${pen}</strong>${enhanced ? ", and damage from the attacks it affects is Strengthened" : ""}.`;
   }
   await putSpellEffect(target, { kind: "eclipseWard", caster: caster.uuid, name: "Eclipsed (ally)", dodgeAgainst: pen, enhanced, power, bstacks: bs, mode,
-    description: `Their attacks make targets' dodge rolls have their die size reduced by ${0.5 * power} (rounded down), and they are one step more obscured.${str} Until the start of ${caster.name}'s next turn.` });
+    description: `Their attacks make targets' dodge rolls have their die size reduced by ${pen}, and they are one step more obscured.${str} Until the start of ${caster.name}'s next turn.` });
   const step = await obscure(target, caster);
-  return `<strong>${esc(target.name)}</strong>'s attacks make their targets' dodge rolls have their die size reduced by <strong>${0.5 * power}</strong> (rounded down)${enhanced ? " and Strengthen the damage" : ""}; they are one step more obscured (${step}).`;
+  return `<strong>${esc(target.name)}</strong>'s attacks make their targets' dodge rolls have their die size reduced by <strong>${pen}</strong>${enhanced ? " and Strengthen the damage" : ""}; they are one step more obscured (${step}).`;
 }
 
 for (const [id, apply, name] of [[ILLUMINATE, applyIlluminate, "Illuminate"], [ECLIPSE, applyEclipse, "Eclipse"]]) {
@@ -190,7 +190,7 @@ export async function attackStart(actor, opts, targets) {
     if (ans) {
       if ((d.count ?? 1) > 1) await charge.update({ "flags.flowstate.spellEffect.count": d.count - 1 }); else await changeEffect(charge, null);
       await setActorFlag(actor, "umbral", { power: d.power ?? 1, bs: d.bstacks ?? 0 });
-      o = { ...o, stealth: STEP[o.stealth ?? "none"], notes: [...(o.notes ?? []), "Umbral Strike: a step deeper into stealth, +1d8 damage"] };
+      o = { ...o, stealth: STEP[o.stealth ?? "none"], notes: [...(o.notes ?? []), `Umbral Strike: a step deeper into stealth, +${d.power ?? 1}d8 damage`] };
     }
   }
   return o === opts ? undefined : o;

@@ -341,7 +341,7 @@ reset();
 await hit("mental-chaos-nightmare:fracture", { "choice:size": "up" });
 messages.length = 0; dialog = () => ({ type: "dodge", max: "0" }); seq = [11];
 await W.consumeCharge(hero, W.chargesOf(hero)[0].effect);
-ok2(/rerolls with the die size \+9/.test(text(messages.at(-1))), "Fracture: a forced reroll with the die size +3 × Power");
+ok2(/rerolls with the die size \+5/.test(text(messages.at(-1))), "Fracture on a dodge roll: die size +3 × Power (9), halved for dodge dice and shown as +5");
 reset();
 hero.flags.flowstate = { preordained: { n: 3 } };
 await hit("mental-order-dream:decree", { "choice:sign": "plus" });

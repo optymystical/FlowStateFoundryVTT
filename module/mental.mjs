@@ -117,8 +117,9 @@ export function manifestContext(actor) {
 /** Extra choices a Mode asks for when it's Manifested (and Kinetic Focus for Beyond's attacks). */
 export function modeChoices(actor, modeId) {
   const out = [];
+  const P = Math.max(1, R.wonderPower(eff(actor, R.KINDS[R.wonderById(R.modeById(modeId)?.wonder)?.kind ?? "dream"].stat)));          // the Wonder's Power: what +1 / −1 is worth
   if (modeId === "mental-below-nightmare:burden") out.push({ name: "dis", label: "Two Disadvantages", options: { attack: "Both on their attack rolls", dodge: "Both on their dodge rolls", split: "One on each" } });
-  if (["mental-order-dream:decree", "mental-order-dream:mandate"].includes(modeId)) out.push({ name: "sign", label: "Plus or minus", options: { plus: "+1 (plus)", minus: "−1 (minus)" } });
+  if (["mental-order-dream:decree", "mental-order-dream:mandate"].includes(modeId)) out.push({ name: "sign", label: "Plus or minus", options: { plus: `+${P} (plus)`, minus: `−${P} (minus)` } });
   if (["mental-chaos-nightmare:fracture", "mental-chaos-nightmare:larceny"].includes(modeId)) out.push({ name: "size", label: "Die size", options: { up: "Increased", down: "Decreased" } });
   if (["mental-beyond-dream:herald", "mental-beyond-dream:ascend"].includes(modeId) && tierOf(trees(actor), "mental-beyond-dream") >= 4)
     out.push({ name: "kinetic", label: `Kinetic Focus (⚡ ${Math.floor(minOf(actor, "pon") / 2)} each: +1 Advantage)`, number: true });
@@ -404,9 +405,9 @@ export async function activateWard(actor) {
   const out = await DialogV2().prompt({
     window: { title: `${p.name} Ward: ${actor.name}` },
     content: `<div class="fs-cast">
-      <p>${esc(p.ward)}</p>
+      <p>${esc(R.scaleFormText(R.FORMS[p.form].ward, p.wardMult, wardFx.stacks))}</p>
       ${innate ? `<p class="hint"><strong>Innate:</strong> your first Ward each turn costs no AP/RP and is automatically Enhanced.</p>` : `
-      ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${enhanceCost} Energy: ${esc(p.enhance)}</small></label>
+      ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${enhanceCost} Energy: ${esc(R.scaleFormText(R.FORMS[p.form].enhance, p.wardMult, wardFx.stacks))}</small></label>
       <label class="fs-cast-mod"><input type="checkbox" name="burst"> <strong>Burst</strong> <small>RP instead of AP, and ${enhanceCost} Energy</small></label>` : ""}`}
       ${wt >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="clear"> <strong>Make Clear</strong> <small>${enhanceCost} Energy: Advantage on the activation roll, and one reroll if it misses</small></label>` : ""}
       ${ally && wt >= 4 ? `<label class="fs-cast-mod"><input type="checkbox" name="recur"> <strong>Recur</strong> <small>${Math.floor(enhanceCost / 2)} Energy: it chains to you as well on a hit</small></label>` : ""}
@@ -705,7 +706,7 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
     const ask = await charges.askFor(actor, {
       react: "ward", title: `${p.name} Ward`,
       html: `<p><strong>${left}</strong> ${esc(type)} damage is coming. Spend 1 RP to negate up to <strong>${n}</strong> of it with ${esc(p.name)}?</p>
-        ${form.near ? `<label class="fs-cast-mod"><input type="checkbox" name="near" ${near ? "checked" : ""}> The source is within my melee range (${p.amount} instead of ${p.other})</label>` : ""}
+        ${form.near ? `<label class="fs-cast-mod"><input type="checkbox" name="near" ${near ? "checked" : ""}> The source is within my melee range (${Math.floor(applyStacks(p.amount, R.alignmentWard(align, p.align).stacks))} instead of ${Math.floor(applyStacks(p.other, R.alignmentWard(align, p.align).stacks))})</label>` : ""}
         ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${willMin} Energy: ${esc(p.enhance)}</small></label>` : ""}
         ${willTier(actor) >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="clear"> <strong>Make Clear</strong> <small>${willMin} Energy: Advantage on the activation roll, and one reroll if it misses</small></label>` : ""}
         <p class="hint">A Ward is used with a self attack roll: your attack roll against your own dodge roll. A miss still costs the RP and negates nothing.</p>

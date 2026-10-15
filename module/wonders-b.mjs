@@ -432,13 +432,13 @@ ON_CRIT.push(async c => {
 /** Ego (Perfection Tenet): once per round, on a crit, regain 5 Energy. */
 ACT_PROVIDERS.push(async c => {
   const tn = tenetOf(c.attacker);
-  return tn?.id === "mental-perfection-nightmare:ego" && c.crit && !c.m.spread ? [{ tenet: true, id: "ego", label: "Ego", tip: `Once per round, on a crit: regain ${5 * tn.mult} Energy`, cost: "once per round", mult: tn.mult, bstacks: c.bs ?? c.stacks ?? 0, caster: c.attacker.uuid, target: c.target.uuid }] : [];
+  return tn?.id === "mental-perfection-nightmare:ego" && c.crit && !c.m.spread ? [{ tenet: true, id: "ego", label: "Ego", tip: `Once per round, on a crit: regain ${bold(c.bs ?? c.stacks ?? 0, 5 * tn.mult)} Energy`, cost: "once per round", mult: tn.mult, bstacks: c.bs ?? c.stacks ?? 0, caster: c.attacker.uuid, target: c.target.uuid }] : [];
 });
 ACTS.ego = async (x, caster) => {
   if (!(await tryOnce(caster, "ego"))) { ui.notifications.info("Ego: already used this round."); return false; }
   const e = caster.system.energy, amount = bold(x.bstacks, 5 * (x.mult ?? 1)), n = Math.min(amount, (e?.max ?? 0) - (e?.value ?? 0));
   if (n > 0) await setCond(caster, { "system.energy.value": e.value + n });
-  await post(caster, { title: `${esc(caster.name)} — Ego`, body: `<div class="fs-result">${esc(caster.name)} regains <strong>${amount}</strong> Energy.</div>` });
+  await post(caster, { title: `${esc(caster.name)} — Ego`, body: `<div class="fs-result">${esc(caster.name)} regains <strong>${n}</strong> Energy${n < amount ? ` (${amount} before the maximum)` : ""}.</div>` });
   return true;
 };
 /** Hone: a creature that was Honed makes Strengthened damage rolls. */
@@ -488,7 +488,7 @@ async function absolve(holder, notes) {
     if (stacks <= 0) continue;
     let used = 1;
     if (d.enhanced && caster) {
-      const ans = await askFor(caster, { react: "absolution", title: `${caster.name}: Absolution on ${holder.name}`, ok: "Consume", html: `<p>${esc(holder.name)} has <strong>${stacks}</strong> Absolution stack${stacks === 1 ? "" : "s"} and is about to deal or take damage. Consume how many (each reduces it by ${5 * d.power})?</p><div class="fs-field"><label>Stacks</label><input type="number" name="n" value="0" min="0" max="${stacks}"></div>` });
+      const ans = await askFor(caster, { react: "absolution", title: `${caster.name}: Absolution on ${holder.name}`, ok: "Consume", html: `<p>${esc(holder.name)} has <strong>${stacks}</strong> Absolution stack${stacks === 1 ? "" : "s"} and is about to deal or take damage. Consume how many (each reduces it by ${bold(d.bstacks, 5 * d.power)})?</p><div class="fs-field"><label>Stacks</label><input type="number" name="n" value="0" min="0" max="${stacks}"></div>` });
       used = Math.max(0, Math.min(stacks, Math.floor(num(ans?.n))));
     }
     if (!used) continue;
@@ -538,13 +538,13 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
       if (ans && (await mental.pay(caster, { energy: cost }, "Warmonger"))) n += await dealDice(power, 12, "Warmonger", notes, 1, buff?.bstacks ?? 0);
     }
     // Pacify (normal) lowers the damage its target deals; Absolution lowers it too.
-    for (const e of fx(attacker, "pacify")) { const d = dataOf(e); if (d.dealtDice) n -= await dealDice(d.dealtDice, 8, "Pacify", notes, 1, d.bstacks); }
+    for (const e of fx(attacker, "pacify")) { const d = dataOf(e); if (d.dealtDice) n += await dealDice(d.dealtDice, 8, "Pacify", notes, -1, d.bstacks); }
     n -= await absolve(attacker, notes);
   }
   // ---- the one taking the damage
   for (const e of fx(target, "irradiated")) n += dataOf(e).extra;
   if (fx(target, "irradiated").length) notes.push(`Irradiated: +${fx(target, "irradiated").reduce((s, e) => s + dataOf(e).extra, 0)}`);
-  for (const e of fx(target, "pacify")) { const d = dataOf(e); if (d.takenDice) n -= await dealDice(d.takenDice, 8, "Pacify (Enhanced)", notes, 1, d.bstacks); }
+  for (const e of fx(target, "pacify")) { const d = dataOf(e); if (d.takenDice) n += await dealDice(d.takenDice, 8, "Pacify (Enhanced)", notes, -1, d.bstacks); }
   n -= await absolve(target, notes);
   for (const e of fx(target, "skin")) {
     const d = dataOf(e);
@@ -554,7 +554,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     const caster = fromU(d.caster);
     const have = caster ? stacksOf(caster).length : 0;
     if (caster && have > 0 && n - cut > 0) {
-      const ans = await askFor(caster, { react: "adaptiveSkin", title: `${caster.name}: Adaptive Skin`, ok: "Adapt", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Spend Adaptation stacks (you have ${have}) for extra damage reduction against ${esc(type)} until your next turn: the first stack gives ${d.power}, the next ${2 * d.power}, then ${3 * d.power}...${d.enhanced ? " (one stack's worth is already counted)" : ""}</p><div class="fs-field"><label>Stacks</label><input type="number" name="n" value="0" min="0" max="${have}"></div>` });
+      const ans = await askFor(caster, { react: "adaptiveSkin", title: `${caster.name}: Adaptive Skin`, ok: "Adapt", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Spend Adaptation stacks (you have ${have}) for extra damage reduction against ${esc(type)} until your next turn: the first stack gives ${bold(d.bstacks, d.power)}, the next ${bold(d.bstacks, 2 * d.power)}, then ${bold(d.bstacks, 3 * d.power)}...${d.enhanced ? " (one stack's worth is already counted)" : ""}</p><div class="fs-field"><label>Stacks</label><input type="number" name="n" value="0" min="0" max="${have}"></div>` });
       const k = Math.max(0, Math.min(have, Math.floor(num(ans?.n))));
       if (k) {
         const total = bold(d.bstacks, (k + (d.enhanced ? 1 : 0)) * (k + (d.enhanced ? 1 : 0) + 1) / 2 * d.power);
@@ -575,7 +575,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     const again = onceUsed(a, "dampen");
     if (again && !impulseHook.can(a)) continue;
     const ans = await askFor(a, { react: "dampen", title: `${a.name}: Dampen`, ok: "Dampen", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Reduce it by <strong>${tn.mult}d10</strong>?</p>` });
-    if (ans && (!again || await impulseHook.use(a, "Dampen"))) { await markUsed(a, "dampen"); n -= await dealDice(await mantraHook.offer(a, tn.mult, "Dampen"), 10, "Dampen", notes); }
+    if (ans && (!again || await impulseHook.use(a, "Dampen"))) { await markUsed(a, "dampen"); n += await dealDice(await mantraHook.offer(a, tn.mult, "Dampen"), 10, "Dampen", notes, -1); }
   }
   for (const e of fx(target, "guard")) {
     const d = dataOf(e), caster = fromU(d.caster);

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.58.1:** **Reflex picks its target.** The Reflex popup lets you choose whether the Manifest goes at the attacker or at who they are attacking.
+
 **0.58.0:** **Snappence Arts (new Mental T3 tree).**
 - **Reflex** (T1): when a character you can sense attacks, you're offered a Manifest first, for RP equal to the Range's AP cost and half the Wonder's Scaling Stat min in Energy; its effects are Weakened. Other actions (moving, dodging...) use the Action List row.
 - **Impulse** (T2): once a round, pay half the Scaling Stat min to apply your Tenet again after it already triggered (Tenet buttons, Balance, Infuse, Empower, Dampen, Adapt).

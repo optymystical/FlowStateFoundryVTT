@@ -33,28 +33,32 @@ export const useAfterimage = actor => markRound(actor, "afterimage");
 /** What Reflex looks like for this reactor against this trigger: Weakened unless it's your Fixation, free once a round with Afterimage. */
 export const reflexFor = (actor, trigger) => ({ weak: !(trigger && fixationOf(actor) === trigger.uuid), trigger: trigger?.uuid ?? null, afterimage: afterimageReady(actor) });
 
-ACTS.reflex = async (x, caster, trigger) => {
-  const rf = reflexFor(caster, trigger);
-  return !!(await mental.manifest(caster, null, { reflex: rf }));
+/** `x.trigger` is who began the action (Fixation checks them); the Manifest's target is `x.target` (the attacker or the defender, the reactor's choice). */
+ACTS.reflex = async (x, caster) => {
+  const trigger = x.trigger ? await fromUuid(x.trigger) : null;
+  return !!(await mental.manifest(caster, null, { reflex: { ...reflexFor(caster, trigger), target: x.target ?? null } }));
 };
 
 /** The Action List's Reflex row (for actions the system can't see begin): the creature you have targeted is the one acting. */
 export async function reflexManual(actor) {
   if (snapTier(actor) < 1) return ui.notifications.warn("Reflex needs Snappence Arts Tier 1.");
   const trigger = [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.uuid !== actor.uuid) ?? null;
-  return ACTS.reflex({ id: "reflex", caster: actor.uuid }, actor, trigger);
+  return ACTS.reflex({ id: "reflex", caster: actor.uuid, trigger: trigger?.uuid ?? null, target: trigger?.uuid ?? null }, actor);
 }
 
-/** Someone is about to attack: every character who can sense it and has Reflex may Manifest first. Called from `performAttack`. */
+/** Someone is about to attack: every character who can sense it and has Reflex may Manifest first, at the attacker or at who they attack. Called from `performAttack`. */
 export async function offerReflex(attacker, opts) {
   if (opts?.mental?.reflex) return;                                       // a Reflex Manifest doesn't set off other Reflexes
+  const defenders = (opts?.targetActors ?? [...(game.user?.targets ?? [])].map(t => t.actor)).filter(t => t && t.type !== "pile" && t.uuid !== attacker.uuid);
   for (const a of actorsInPlay()) {
     if (a.uuid === attacker.uuid || a.type === "pile" || snapTier(a) < 1 || helpless(a) || !near100(a, attacker)) continue;
     const free = afterimageReady(a);
     if (!free && (a.system.rp?.value ?? 0) < 1) continue;
-    const ans = await askFor(a, { react: "reflex", title: "Reflex", ok: "Use Reflex", html: `<p><strong>Reflex</strong>: ${esc(attacker.name)} is about to attack. Manifest a Wonder first, its effects ${fixationOf(a) === attacker.uuid ? "not Weakened (your Fixation)" : "Weakened"}.</p>
+    const pickable = [attacker, ...defenders];
+    const ans = await askFor(a, { react: "reflex", title: "Reflex", ok: "Use Reflex", html: `<p><strong>Reflex</strong>: ${esc(attacker.name)} is about to attack${defenders.length ? ` ${esc(defenders.map(d => d.name).join(", "))}` : ""}. Manifest a Wonder first, its effects ${fixationOf(a) === attacker.uuid ? "not Weakened (your Fixation)" : "Weakened"}.</p>
+      <div class="fs-field"><label>Manifest at</label><select name="who">${pickable.map(t => `<option value="${esc(t.uuid)}">${esc(t.name)}${t.uuid === attacker.uuid ? " (attacker)" : " (defender)"}</option>`).join("")}</select></div>
       <p>${free ? "Afterimage: no RP or Energy for Reflex this time." : "Costs RP equal to the Range's AP cost, and half the Wonder's Scaling Stat min in Energy."}</p>` });
-    if (ans) await runOnOwner(a, { id: "reflex", caster: a.uuid, target: attacker.uuid });
+    if (ans) await runOnOwner(a, { id: "reflex", caster: a.uuid, trigger: attacker.uuid, target: ans.who || attacker.uuid });
   }
 }
 

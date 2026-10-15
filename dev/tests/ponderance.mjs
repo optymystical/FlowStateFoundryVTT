@@ -276,6 +276,11 @@ await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged" }, { r
 const eAfter = pr1.e - hero.system.energy.value;
 ok2(hero.system.ap.value === pr1.ap && hero.system.rp.value === pr1.rp - 2 && eAfter === Math.floor(AB.statMinOf(hero, "pon") / 2), "Reflex pays RP equal to the Range's AP cost (not AP) and half the Scaling Stat min in Energy");
 const rfCard = lastAtk();
+reset(); refresh(); target(orc); seq = [20];
+await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged" }, { reflex: { ...SN.reflexFor(hero, orc), target: ally.uuid } });
+ok2(lastAtk().flags.flowstate.attack.targets.some(t => (t.uuid ?? t.actor ?? t) === ally.uuid || JSON.stringify(t).includes(ally.uuid)) && !JSON.stringify(lastAtk().flags.flowstate.attack.targets).includes(orc.uuid), "Reflex Manifests at the chosen creature, not whatever you had targeted");
+seq = [20]; reset(); refresh(); target(orc); hero.flags.flowstate.afterimage = undefined;
+await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged" }, { reflex: SN.reflexFor(hero, orc) });
 ok2(rfCard.flags.flowstate.attack.opts.mental?.reflex === true && (rfCard.flags.flowstate.attack.opts.stacks ?? 0) < 0, "…the Manifest is marked as a Reflex and Weakened");
 tree("mental-snappence-arts", 5); refresh(); reset(); target(orc); seq = [20]; hero.flags.flowstate.afterimage = undefined;
 const pr2 = { rp: hero.system.rp.value, e: hero.system.energy.value };
@@ -285,12 +290,14 @@ ok2(hero.system.rp.value === pr2.rp && hero.system.energy.value === pr2.e && !SN
 // An attack offers Reflex to those who can sense it (and a Reflex isn't itself offered)
 tree("mental-snappence-arts", 0);
 ally.system.trees["mental-snappence-arts"] = 1; ally.system.prepareDerivedData();
-const spied = []; const realReflex = W.ACTS.reflex; W.ACTS.reflex = async (x, c, t) => { spied.push([c.name, t?.name]); return true; };
+const spied = []; const realReflex = W.ACTS.reflex; W.ACTS.reflex = async (x, c) => { spied.push([c.name, x.trigger, x.target]); return true; };
 dialog = () => null; await SN.offerReflex(orc, {});
 ok2(spied.length === 0, "Declining the Reflex offer does nothing");
-dialog = () => ({}); await SN.offerReflex(orc, {});
-ok2(spied.length === 1 && spied[0][0] === "Ally" && spied[0][1] === "Orc", "An attack offers Reflex to a character with Snappence Arts");
-spied.length = 0; await SN.offerReflex(orc, { mental: { reflex: true } });
+dialog = () => ({}); await SN.offerReflex(orc, { targetActors: [hero] });
+ok2(spied.length === 1 && spied[0][0] === "Ally" && spied[0][1] === orc.uuid && spied[0][2] === orc.uuid, "An attack offers Reflex to a character with Snappence Arts, at the attacker by default");
+spied.length = 0; let popup = ""; dialog = h => { popup = String(h); return { who: hero.uuid }; }; await SN.offerReflex(orc, { targetActors: [hero] });
+ok2(spied[0]?.[2] === hero.uuid && popup.includes(`value="${orc.uuid}"`) && popup.includes(`value="${hero.uuid}"`), "…and the Reflex user can pick the attacker or the defender as the target");
+spied.length = 0; dialog = () => ({}); await SN.offerReflex(orc, { mental: { reflex: true } });
 ok2(spied.length === 0, "…but a Reflex Manifest doesn't set off other Reflexes");
 W.ACTS.reflex = realReflex; ally.system.trees["mental-snappence-arts"] = 0; ally.system.prepareDerivedData();
 tree("mental-snappence-arts", 0);

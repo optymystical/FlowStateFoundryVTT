@@ -296,12 +296,14 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
   // Targets: Melee needs one close by, Ranged within 100 ft (500 with Far Sight), Area is placed on the scene.
   const farSight = ctx.farSight;
   const reach = actor.system.derived?.size?.melee ?? 5;
-  let targets = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
+  const forced = reflex?.target ? await fromUuid(reflex.target) : null;          // Reflex: the attacker or defender picked in the popup, whatever you have targeted
+  const forcedTokens = forced ? [attackerToken(forced)].filter(Boolean) : null;
+  let targets = forced ? [forced] : [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
   let area = null;
-  if (plan.range === "melee" && targets.length && !checkRange(actor, reach, `${plan.mode.name} (Melee)`)) return null;
-  if (plan.range === "ranged" && targets.length && !checkRange(actor, farSight ? 500 : 100, `${plan.mode.name} (Ranged)`)) return null;
+  if (plan.range === "melee" && targets.length && !checkRange(actor, reach, `${plan.mode.name} (Melee)`, forcedTokens)) return null;
+  if (plan.range === "ranged" && targets.length && !checkRange(actor, farSight ? 500 : 100, `${plan.mode.name} (Ranged)`, forcedTokens)) return null;
   if (plan.range === "area") {
-    area = await areas.placeArea(actor, { title: `Manifest ${plan.mode.name}`, scale: ctx.auraSight ? 2 : 1, aim: [...(game.user?.targets ?? [])][0] });
+    area = await areas.placeArea(actor, { title: `Manifest ${plan.mode.name}`, scale: ctx.auraSight ? 2 : 1, aim: forcedTokens?.[0] ?? [...(game.user?.targets ?? [])][0] });
     if (area === null) return null;                                     // cancelled: nothing is spent
     if (area) targets = area.actors;
   }

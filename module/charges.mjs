@@ -302,7 +302,7 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
     const opt = c => c.d.charge === "decree"
       ? `<option value="${c.effect.id}">Decree: the damage becomes ${Math.max(0, half(c.d.enhanced ? formulaMax(formula) : top) + sgn(c.d))} (half of ${top}, ${c.d.sign === "minus" ? "−" : "+"}${bs(c.d, 1)})</option>`
       : c.d.charge === "larceny" ? `<option value="${c.effect.id}">Larceny: steal this damage roll, they reroll as ${esc(shiftFormula(formula, bs(c.d, 1) * upDown(c.d)))}</option>`
-      : `<option value="${c.effect.id}">Fracture: reroll as ${esc(shiftFormula(formula, 2 * upDown(c.d)))}</option>`;
+      : `<option value="${c.effect.id}">Fracture: reroll as ${esc(shiftFormula(formula, bs(c.d, 3) * upDown(c.d)))}</option>`;
     const ans = await askFor(caster, { react: "charges", title: `${caster.name}: charges on ${actor.name}'s damage`, ok: "Spend", html: `<p>${esc(actor.name)} rolled damage (${esc(formula)}): <strong>${totals.join(" + ")}</strong>. Spend your charges?</p>
       ${replace.length ? `<div class="fs-field"><label>Replace the roll</label><select name="replace"><option value="">— Leave it —</option>${replace.map(opt).join("")}</select></div>` : ""}
       ${replace.filter(c => c.d.charge === "decree" && pre !== null).map(c => `<div><label><input type="checkbox" name="p:${c.effect.id}"> Decree + Preordained (${pre}, ⚡ ${minOf(caster, "pon")})</label></div>`).join("")}
@@ -318,7 +318,7 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
         out.notes.push(`Decree: the damage roll becomes the static <strong>${n}</strong>.`);
       } else {
         const larceny = d.charge === "larceny";
-        const f = shiftFormula(formula, bs(d, larceny ? 1 : 2) * upDown(d));
+        const f = shiftFormula(formula, bs(d, larceny ? 1 : 3) * upDown(d));
         const rolls = [];
         for (let i = 0; i < Math.max(1, totals.length); i++) rolls.push(await new Roll(f).evaluate());
         out.rolls.push(...rolls);
@@ -333,7 +333,7 @@ export async function onDamage({ actor, formula = "", totals = [] }) {
     }
     for (const c of mand) {
       if (!ans[`m:${c.effect.id}`]) continue;
-      let n = sgn(c.d) * 10;
+      let n = sign(c.d) * bs(c.d, 10);
       if (ans[`p:${c.effect.id}`] && pre !== null && (await mental.pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) n += sign(c.d) * pre * 10;
       out.flat += n;
       out.notes.push(`Mandate: ${n > 0 ? "+" : "−"}${Math.abs(n)} damage.`);

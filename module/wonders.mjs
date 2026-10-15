@@ -620,21 +620,22 @@ export async function consumeCharge(caster, effect) {
   if (out.pre && !(await mental.pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) return;
   const lines = [], rolls = [];
   const signN = d.sign === "minus" ? -1 : 1, preN = out.pre ? signN * pre.n : 0;
+  const u = k => bold(d.bstacks, k * (d.power ?? 1));          // a charge's numbers scale with the Power and stacks it was placed with
   const maxOf = () => out.type === "attack" ? dieOf(holder, "attack") : out.type === "dodge" ? 2 * dieOf(holder, "dodge") : Number(out.max) || 0;
   if (kind === "decree") {
     const myMax = out.type === "attack" ? dieOf(caster, "attack") : out.type === "dodge" ? 2 * dieOf(caster, "dodge") : Number(out.max) || 0;
     const base = half(d.enhanced ? myMax : maxOf());
-    const result = Math.max(0, base + signN + preN);
-    lines.push(`${esc(holder.name)}'s ${out.type} roll becomes the static result <strong>${result}</strong> (half of ${d.enhanced ? "your" : "their"} max ${d.enhanced ? myMax : maxOf()} = ${base}, ${d.sign === "minus" ? "−" : "+"}1${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
+    const result = Math.max(0, base + signN * u(1) + preN);
+    lines.push(`${esc(holder.name)}'s ${out.type} roll becomes the static result <strong>${result}</strong> (half of ${d.enhanced ? "your" : "their"} max ${d.enhanced ? myMax : maxOf()} = ${base}, ${d.sign === "minus" ? "−" : "+"}${u(1)}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
   } else if (kind === "mandate") {
     const n = Math.max(1, Math.floor(Number(out.n) || 1));
-    if (out.damage && d.enhanced) lines.push(`The damage becomes ${Number(out.result)} ${signN > 0 ? "+" : "−"} <strong>${10 * n}</strong>${preN ? ` ${signN > 0 ? "+" : "−"} ${Math.abs(preN) * 10} (Preordained × 10)` : ""} = <strong>${Math.max(0, Number(out.result) + signN * 10 * n + preN * 10)}</strong>.`);
-    else lines.push(`The result ${Number(out.result)} becomes <strong>${Number(out.result) + signN * n + preN}</strong> (${d.sign === "minus" ? "−" : "+"}${n}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
+    if (out.damage && d.enhanced) lines.push(`The damage becomes ${Number(out.result)} ${signN > 0 ? "+" : "−"} <strong>${u(10) * n}</strong>${preN ? ` ${signN > 0 ? "+" : "−"} ${Math.abs(preN) * 10} (Preordained × 10)` : ""} = <strong>${Math.max(0, Number(out.result) + signN * u(10) * n + preN * 10)}</strong>.`);
+    else lines.push(`The result ${Number(out.result)} becomes <strong>${Number(out.result) + signN * u(1) * n + preN}</strong> (${d.sign === "minus" ? "−" : "+"}${u(1) * n}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
   } else if (kind === "verdict") {
-    lines.push(`The ${out.was === "hit" ? "hit becomes a <strong>crit</strong>" : "crit becomes a <strong>regular hit</strong>"}, and the damage goes ${Number(out.dmg)} → <strong>${Math.max(0, Number(out.dmg) + (out.was === "crit" ? -5 : 5) + preN)}</strong> (${out.was === "hit" ? "+5" : "−5"}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
+    lines.push(`The ${out.was === "hit" ? "hit becomes a <strong>crit</strong>" : "crit becomes a <strong>regular hit</strong>"}, and the damage goes ${Number(out.dmg)} → <strong>${Math.max(0, Number(out.dmg) + (out.was === "crit" ? -u(5) : u(5)) + preN)}</strong> (${out.was === "hit" ? "+" : "−"}${u(5)}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
     if (d.enhanced) lines.push(`Also: the attack gets a stack of ${out.stack === "weak" ? "Weakened" : "Strengthened"}.`);
   } else {
-    const delta = { fracture: 3, larceny: 1 }[kind] * (d.size === "down" ? -1 : 1);
+    const delta = u({ fracture: 3, larceny: 1 }[kind]) * (d.size === "down" ? -1 : 1);
     const first = await rerollWith(holder, out.type === "dodge" ? "dodge" : "attack", delta);
     rolls.push(first.r);
     let text = first.text;

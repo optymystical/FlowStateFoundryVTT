@@ -3443,7 +3443,7 @@ export async function breakFree(actor) {
   if (!grapplerUuid && !actor.statuses.has("grappled") && burden.length) {
     if (!(await spendAP(actor, 2, "shaking off Burden"))) return;
     const roll = await evaluate(`1d${actor.system.derived.attackDie}`);
-    const need = Math.max(3, ...burden.map(b => Number(b.flags.flowstate.spellEffect.breakMin) || 0));       // 3 × Wonder Power
+    const need = Math.max(1, ...burden.map(b => Number(b.flags.flowstate.spellEffect.breakMin) || 0));       // 3 × Wonder Power (scaled by the Manifest's stacks)
     const freed = roll.total >= need;
     await post(actor, { title: `${esc(actor.name)} — Break Free (Burden)`, rolls: [roll], body: `${await rollBlock(roll, `Attack die (d${actor.system.derived.attackDie}), needs ${need}+`)}<div class="fs-result">${freed ? "The weight is gone!" : "Still weighed down."}</div>` });
     const held = { ...burden[0].flags.flowstate.spellEffect, name: burden[0].name };
@@ -4921,7 +4921,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const md = await mentalHook?.damageCharges?.({ actor: attacker, formula, totals: base.totals });
   if (md?.totals) { base.totals = md.totals; base.rolls.push(...(md.rolls ?? [])); }
   const mflat = (md?.flat ?? 0) + (defense.result?.mentalDmg ?? 0);
-  const line = damageLine(flat || mflat ? base.totals.map((t, i) => t + flat + (i === 0 ? mflat : 0)) : base.totals, stacks, type, shots);
+  const line = damageLine(flat || mflat ? base.totals.map((t, i) => Math.max(0, t + flat + (i === 0 ? mflat : 0))) : base.totals, stacks, type, shots);
   // Omega (Swift T5): Heavy Swift attacks let Strengthened/Weakened change their Pierce value too.
   const pierceNow = o.omega && o.pierce ? applyStacks(o.pierce, stacks) : (o.pierce ?? 0);
 

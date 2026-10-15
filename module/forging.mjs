@@ -52,7 +52,7 @@ async function askWhat(caster, x) {
     const forms = Object.entries(R.FORMS).filter(([, f]) => rar.includes(rarityKey(f.rarity)));
     html = field("Form", select("form", forms.map(([k, f]) => [k, `${f.name} (${R.KINDS[f.align].label}, ${f.rarity})`]))) + field("Name", `<input type="text" name="name">`);
   } else {
-    html = field("Material", select("mat", [["powder", "Powder"], ["liquid", "Liquid"], ["soft", "Soft"], ...(x.enhanced ? [["hard", "Hard"]] : [])])) + field(`Body (up to ${R.bold(x.bstacks, 15 * x.power)})`, `<input type="number" name="body" value="${Math.min(10, R.bold(x.bstacks, 15 * x.power))}" min="1" max="${15 * x.power}">`) + field("Object (name, material, shape)", `<input type="text" name="name">`);
+    html = field("Material", select("mat", [["powder", "Powder"], ["liquid", "Liquid"], ["soft", "Soft"], ...(x.enhanced ? [["hard", "Hard"]] : [])])) + field(`Body (up to ${R.bold(x.bstacks, 15 * x.power)})`, `<input type="number" name="body" value="${Math.min(10, R.bold(x.bstacks, 15 * x.power))}" min="1" max="${R.bold(x.bstacks, 15 * x.power)}">`) + field("Object (name, material, shape)", `<input type="text" name="name">`);
   }
   html += `<label class="fs-cast-mod"><input type="checkbox" name="willing" checked> <strong>Willing recipient</strong> <small>it appears in their hand; otherwise at their feet</small></label>`;
   return DialogV2().prompt({ window: { title: `${R.modeById(mode)?.name}: what do you create?` }, content: `<div class="fs-cast">${html}</div>`, rejectClose: false,

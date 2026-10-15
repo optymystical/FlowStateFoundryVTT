@@ -155,7 +155,7 @@ dialog = () => null;
 ok2(await WC.attackStart(orc, { stealth: "none", notes: [] }, [ally]) === undefined && fxs(orc, "umbralCharge").length === 1, "Declining keeps the charge");
 dialog = () => ({});
 o2 = await WC.attackStart(orc, { stealth: "none", notes: [] }, [ally]);
-ok2(o2?.stealth === "half" && fxs(orc, "umbralCharge").length === 0 && orc.getFlag("flowstate", "umbral") === true, "Using it: one step deeper into stealth, the charge is spent");
+ok2(o2?.stealth === "half" && fxs(orc, "umbralCharge").length === 0 && !!orc.getFlag("flowstate", "umbral"), "Using it: one step deeper into stealth, the charge is spent");
 seq = [5];
 ok2((await WB.adjust({ attacker: orc, target: hero, amount: 20, type: "physical" })).amount === 25 && !orc.getFlag("flowstate", "umbral"), "…and its damage gets 1d8 more, once");
 reset(); dialog = () => "enemy"; await hit("mental-dark-nightmare:umbral-strike", { enhance: true });
@@ -211,7 +211,7 @@ reset(); refresh(); seq = [20]; await M.manifest(hero, { mode: "mental-light-dre
 const ic2 = lastAtk();
 ok2(ic2?.flags.flowstate.attack.opts.mental?.disperse?.targets?.[0]?.kind === "item", "A Made item can be dispersed too");
 seq = [1]; await actions.defend(ic2, 0, "dodge");
-ok2(gem.system.wear === w0 + 20 * power("pon"), `On a hit it loses 20 × Power durability (wear ${gem.system.wear})`);
+ok2(gem.system.wear === w0 + 2 * 20 * power("pon"), `On a crit it loses 20 × Power durability, doubled by the crit's stacks (wear ${gem.system.wear})`);
 
 console.log("== Corona and Nightfall (T5)");
 reset(); refresh(); dialog = () => "enemy"; await hit(ILL); refresh(); seq = [20]; dialog = () => orc.uuid;

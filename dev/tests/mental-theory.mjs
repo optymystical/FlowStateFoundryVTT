@@ -226,7 +226,7 @@ const zScale = R.iconScale(hero.system.derived.effective.will.value, 3);
   const w4plain = await zealotNegates(4, true, 2000);
   seq = [5, 30, 5, 30, 5, 30, 5, 30, 5, 30, 5, 30]; const w4 = await zealotNegates(4, true, 2000); seq = [];
   ok2(w3 === 2000 - 6 * 27 && w4plain === 2000 - 6 * 27, "Zealot Enhanced: 27 a use (Strengthened) at 3 and 4 Nightmare, no Weakened without a crit");
-  ok2(w4 === 851, `Zealot Enhanced at 4 Nightmare: a critical Ward roll Weakens the damage once (2000 → 1973 → 986 → 851, took ${w4})`); }
+  ok2(w4 === 752, `Zealot Enhanced at 4 Nightmare: a critical Ward roll is doubly Strengthened (more negated) and Weakens the damage once (took ${w4})`); }
 // Wards are used with a self attack roll (attack roll against your own dodge): a miss costs the RP and negates nothing.
 clearAll(hero); aegis.system.form = "veil"; hero.system.prepareDerivedData(); setAlign("neutral"); theory(1); refresh();
 { hero.system.hp.value = 432; hero.system.rp.value = 2; dialog = () => ({}); seq = [30, 5, 30, 5];
@@ -236,7 +236,7 @@ clearAll(hero); aegis.system.form = "veil"; hero.system.prepareDerivedData(); se
   hero.system.hp.value = 432; hero.system.rp.value = 2; seq = [5, 30, 5, 30];
   await actions.applyDamage(hero, 300, "heat", { silent: true, shroudCtx: { source: "type:heat", attacker: orc.uuid } });
   const hitLoss = 432 - hero.system.hp.value;
-  ok2(hitLoss === 300 - 2 * 4 * zScale, `…and two hits negate 4 × scale each (took ${hitLoss})`); seq = []; }
+  ok2(hitLoss === 300 - 2 * 4 * zScale * 2, `…and two (critical) hits negate 4 × scale each, doubled by the crit's two Strengthened stacks (took ${hitLoss})`); seq = []; }
 
 clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 1); refresh(); messages.length = 0; dialog = () => ({});
 await M.activateWard(hero);
@@ -253,7 +253,7 @@ console.log("== Reverie");
 clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 4); refresh();
 await putSpellEffect(hero, { kind: "shield", caster: hero.uuid, name: "Reverie", hp: 20, max: 20, reverie: true, reverieEnhanced: true, order: "default" });
 await hit("mental-life-dream:flourish");
-ok2(shields(hero)[0].flags.flowstate.spellEffect.hp === 20 + 4 * mult, "Enhanced Reverie grows by 4 (× the scale) when a Dream Manifest hits");
+ok2(shields(hero)[0].flags.flowstate.spellEffect.hp === 20 + Math.floor(4 * mult * 1.5), "Enhanced Reverie grows by 4 (× the scale, Strengthened by the Alignment) when a Dream Manifest hits");
 refresh(); setAlign("dream", 2);
 await actions.mentalBeforeClear(hero);
 await actions.clearSpellEffects(hero);

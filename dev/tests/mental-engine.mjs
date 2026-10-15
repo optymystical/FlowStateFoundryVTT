@@ -158,7 +158,7 @@ let answers = [{}, {}, null];
 dialog = () => answers.shift();
 refresh(); hero.system.hp.value = 400;
 await actions.applyDamage(hero, 80, "physical", { silent: true });
-ok2(hero.system.hp.value === 400 - (80 - 2 * 4 * wm) && hero.system.rp.value === 4, `Veil (×${wm}): two uses negate ${4 * wm} each (2 RP); the rest lands`);
+{ const negated = hero.system.hp.value - (400 - 80); ok2(negated >= 2 * 4 * wm && negated <= 2 * 4 * wm * 2 && hero.system.rp.value === 4, `Veil (×${wm}): two uses negate ${4 * wm} each, more when the Ward roll crits (2 RP); the rest lands (negated ${negated})`); }
 answers = [{ enhance: true }, null]; refresh(); hero.system.hp.value = 400;
 await actions.applyDamage(hero, 80, "physical", { silent: true });
 ok2(hero.system.hp.value === 400 - (80 - 8 * wm) && hero.system.rp.value === 5 && hero.system.energy.value === 200 - hero.system.derived.effective.will.min, "Enhanced (Mental T1): double the negation for the Willpower min in Energy");

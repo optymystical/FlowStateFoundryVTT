@@ -464,7 +464,7 @@ export async function onRollBuffs(ctx) {
     }
     const pro = fx(actor, "provoke");
     if (pro.length) {
-      await setActorFlag(actor, "warBuff", { casters: pro.map(e => ({ caster: dataOf(e).caster, power: dataOf(e).power, mode: "mental-war-nightmare:provoke" })) });
+      await setActorFlag(actor, "warBuff", { casters: pro.map(e => ({ caster: dataOf(e).caster, power: dataOf(e).power, bstacks: dataOf(e).bstacks ?? 0, mode: "mental-war-nightmare:provoke" })) });
       for (const e of pro) await changeEffect(e, null);
     }
     out.notes.push(...(await serenity(ctx)));
@@ -513,7 +513,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
       const d = dataOf(e);
       n += await dealDice(d.power, 10, "Warzone", notes, 1, d.bstacks);
       if (d.enhanced) { const wc = fromU(d.caster); const extra = wc ? minOf(wc, "snap") : 0; if (extra) { n += extra; notes.push(`Warzone (Enhanced): +${extra}`); } }
-      buffs.push({ caster: d.caster, power: d.power, mode: "mental-war-nightmare:warzone" });
+      buffs.push({ caster: d.caster, power: d.power, bstacks: d.bstacks ?? 0, mode: "mental-war-nightmare:warzone" });
     }
     const wb = attacker.getFlag?.("flowstate", "warBuff");
     if (wb) { buffs.push(...wb.casters); await setActorFlag(attacker, "warBuff", null); }
@@ -532,9 +532,10 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     for (const caster of casters) {
       if (tier(caster, ids.war) < 2) continue;
       const cost = Math.floor(minOf(caster, "snap") / 2);
-      const power = buffs.find(b => b.caster === caster.uuid)?.power ?? 1;
+      const buff = buffs.find(b => b.caster === caster.uuid);
+      const power = buff?.power ?? 1;
       const ans = await askFor(caster, { react: "warmonger", title: `${caster.name}: Warmonger`, ok: `Warmonger (⚡ ${cost})`, html: `<p>${esc(attacker.name)}'s attack, buffed by your War Mode, deals <strong>${n}</strong> ${esc(type)} damage. Spend <strong>${cost}</strong> Energy to add <strong>${power}d12</strong>?</p>` });
-      if (ans && (await mental.pay(caster, { energy: cost }, "Warmonger"))) n += await dealDice(power, 12, "Warmonger", notes);
+      if (ans && (await mental.pay(caster, { energy: cost }, "Warmonger"))) n += await dealDice(power, 12, "Warmonger", notes, 1, buff?.bstacks ?? 0);
     }
     // Pacify (normal) lowers the damage its target deals; Absolution lowers it too.
     for (const e of fx(attacker, "pacify")) { const d = dataOf(e); if (d.dealtDice) n -= await dealDice(d.dealtDice, 8, "Pacify", notes, 1, d.bstacks); }

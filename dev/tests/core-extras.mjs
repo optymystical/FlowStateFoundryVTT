@@ -200,7 +200,7 @@ await putSpellEffect(orc, { kind: "charge", stack: true, caster: hero.uuid, name
 formulas.length = 0; seq = [9];
 dialog = html => ({ replace: html.match(/<option value="([^"]+)">Fracture/)?.[1] });
 const fr = await CH.onDamage({ actor: orc, formula: "2d6+3", totals: [11] });
-ok2(CH.shiftFormula("2d6+3", 2) === "2d8+3" && fr?.totals?.[0] === 9 && formulas.includes("2d8+3"), "Fracture rerolls the damage with every die size +2");
+ok2(CH.shiftFormula("2d6+3", 3) === "2d9+3" && fr?.totals?.[0] === 9 && formulas.includes("2d9+3"), "Fracture rerolls the damage with every die size +3");
 
 console.log("== Skill tree numbers are scaled");
 const SH = await import("../../module/tree-scale.mjs");

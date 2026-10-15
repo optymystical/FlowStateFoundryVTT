@@ -433,26 +433,28 @@ export async function activateWard(actor) {
   if (!(await pay(actor, costs, `${p.name}'s Ward`))) return;
   if (innate) await setActorFlag(actor, "innateTurn", turnKey());
   const targets = area ? area.actors : [ally ?? actor];
+  const areaWeak = area && targets.length > 2 ? -1 : 0;          // an Area Ward that hits more than two targets is Weakened, like any Area Manifest
   const adv = wardFx.net + (out.clear ? 1 : 0);
   const mental = { ward: { form: p.form, enhanced, types: out.types ? [out.types, ...(enhanced && out.types2 && out.types2 !== out.types ? [out.types2] : [])] : null, recur: !!out.recur, clear: !!out.clear, caster: actor.uuid, icon: icon.uuid,
-    declared: enhanced && out.declared ? out.declared : "", amount: enhanced ? p.enhancedAmount : p.amount, alignStacks: wardFx.stacks, autoHit: wardFx.autoHit } };
+    declared: enhanced && out.declared ? out.declared : "", amount: enhanced ? p.enhancedAmount : p.amount, alignStacks: wardFx.stacks + areaWeak, autoHit: wardFx.autoHit } };
   const notes = [`${p.name} Ward`, enhanced ? "Enhanced" : "", burst ? "Burst (RP)" : "", innate ? "Innate (free)" : "", wardFx.net > 0 ? `${R.alignmentLabel(align)}: ${[ "Advantage", wardFx.stacks ? "Strengthened" : "", wardFx.dodgeNet < 0 ? "half stealth (Disadvantage dodging)" : "", wardFx.autoHit ? "hits regardless (the roll decides a crit)" : ""].filter(Boolean).join(", ")}` : "", out.clear ? "Make Clear: Advantage" : "", out.expand ? "Expansion (Area)" : "",
     wt >= 5 && innate ? "Innate Mastery: the target has Disadvantage on their roll against it" : ""].filter(Boolean);
   return performAttack(actor, { ...baseAttack, label: `${p.name} Ward`, net: adv, melee: false, area: !!area, singleRoll: !!area, notes, mental, targetActors: targets, dodgeNet: (wt >= 5 && innate ? -1 : 0) + wardFx.dodgeNet,
-    stacks: wardFx.stacks });
+    stacks: wardFx.stacks + areaWeak });
 }
 const psion = actor => actor.getFlag?.("flowstate", "psion") ?? {};
 
 /** A hit Ward: put its effect on the target. */
 async function applyWard({ attacker, target, ward }) {
   const form = R.FORMS[ward.form];
+  const st = (ward.alignStacks ?? 0) + (ward.critStacks ?? 0);          // Alignment, an Area, and a crit on the activation roll all scale the Ward's bolded numbers
   const caster = attacker;
   const lines = [];
   const place = async (who, amount) => {
     if (form.kind === "shield" || form.kind === "persistent") {
       let amt = amount;
       const mine = spellEffects(who, "shield").filter(e => e.flags.flowstate.spellEffect.ward === ward.form && e.flags.flowstate.spellEffect.caster === caster.uuid);
-      if (form.cap) amt = Math.max(0, Math.min(amt, form.cap * R.iconScale(eff(caster, "will"), (ward.grade ?? 1)) - mine.reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.hp) || 0), 0)));
+      if (form.cap) amt = Math.max(0, Math.min(amt, Math.floor(applyStacks(form.cap * R.iconScale(eff(caster, "will"), (ward.grade ?? 1)), st)) - mine.reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.hp) || 0), 0)));
       if (form.cap && amt <= 0) { lines.push(`${esc(who.name)} already has the most ${form.name} shielding.`); return; }
       await putSpellEffect(who, { kind: "shield", stack: true, caster: caster.uuid, name: `${form.name} (${amt} shielding)`, hp: amt, max: amt, ward: ward.form, order: "default", ritualOf: null,
         types: ward.types ?? null, turnsLeft: form.extraTurn && ward.enhanced ? 2 : undefined, persistent: form.kind === "persistent",
@@ -471,7 +473,7 @@ async function applyWard({ attacker, target, ward }) {
     }
   };
   // 4 Alignment: the Ward's bolded effect is Strengthened.
-  const amount = Math.floor(applyStacks(ward.amount, ward.alignStacks ?? 0));
+  const amount = Math.floor(applyStacks(ward.amount, st));
   await place(target, amount);
   if (ward.recur && target.uuid !== caster.uuid) { await place(caster, amount); lines.push("Recur: it chains to the caster too."); }
   return lines.join("<br>");
@@ -485,13 +487,14 @@ async function growReverie(attacker, grade) {
   }
   if (!mine.length) return "";
   const mult = R.iconScale(eff(attacker, "will"), grade ?? 1);
-  const cap = R.FORMS.reverie.cap * mult;
+  const st = R.alignmentWard(alignmentOf(attacker), "dream").stacks;          // 2+ Dream Alignment: the bolded cap and growth are Strengthened
+  const cap = Math.floor(applyStacks(R.FORMS.reverie.cap * mult, st));
   let total = 0;
   for (const a of new Set(mine.map(e => e.parent))) for (const e of spellEffects(a, "shield")) { const d = e.flags.flowstate.spellEffect; if (d.reverie && d.caster === attacker.uuid) total += Number(d.hp) || 0; }
   let added = 0;
   for (const e of mine) {
     const room = cap - total - added;
-    const n = Math.min(4 * mult, room);
+    const n = Math.min(Math.floor(applyStacks(4 * mult, st)), room);
     if (n <= 0) break;
     const d = e.flags.flowstate.spellEffect;
     await changeEffect(e, { "flags.flowstate.spellEffect.hp": (Number(d.hp) || 0) + n, "flags.flowstate.spellEffect.max": (Number(d.max) || 0) + n, name: `Reverie (${(Number(d.hp) || 0) + n} shielding)` });
@@ -566,7 +569,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
       }
       return { html: `<div class="fs-notes">${esc(R.FORMS[m.ward.form].name)}: the Ward doesn't take hold on ${esc(target.name)}.${extra}</div>` };
     }
-    const html = await applyWard({ attacker, target, ward: w });
+    const html = await applyWard({ attacker, target, ward: { ...w, critStacks: result.critStacks ?? (result.crit ? 2 : 0) } });
     return { html: `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${html}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>` };
   }
   const mode = R.modeById(m.mode);
@@ -625,7 +628,7 @@ export async function rerollAct(x) {
       // A guard that took all the damage of the rerolled hit earns the same Riposte (and Dip's move, Redirect) the first card would have.
       if (landed.riposte) { const g = await guardRows(target, landed.riposte, o); html += g.html; if (g.riposte) riposteFlags = { guardRiposte: { defender: target.uuid, attacker: caster.uuid } }; }
     } else {
-      html += `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${await applyWard({ attacker: caster, target, ward: x.ward })}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>`;
+      html += `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${await applyWard({ attacker: caster, target, ward: { ...x.ward, critStacks: result.critStacks ?? (result.crit ? 2 : 0) } })}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>`;
     }
   } else html += `<div class="fs-notes">Still a miss.</div>`;
   await post(caster, { title: `${esc(caster.name)} — ${label}`, rolls: [r], body: html, flags: { flowstate: { ...riposteFlags } } });
@@ -670,14 +673,14 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
   const cats = damageCategories(type, magic);             // spell damage is Magical as well as its own type
   const th = theory(actor);
   const willMin = minOf(actor, "will");
-  const per = (uses, enhanced, near) => {
+  const per = (uses, enhanced, near, extra = 0) => {
     let n = enhanced ? p.enhancedAmount : p.amount;
     if (form.chooses) n = cats.includes(icon.system.chosen) ? p.amount : p.other;
     // Zealot: full negation at 2 or more Nightmare Alignment.
     if (form.needs === "deepNightmare") n = (R.alignedTo(align, "nightmare") && align.level >= 2) ? p.amount : p.other;
     if (form.near) n = near ? p.amount : p.other;
     if (form.grows) n += p.grows * (uses + (enhanced ? 1 : 0));
-    return Math.floor(applyStacks(n, R.alignmentWard(align, p.align).stacks));        // 4 Alignment: the bolded effect is Strengthened
+    return Math.floor(applyStacks(n, R.alignmentWard(align, p.align).stacks + extra));        // 2 Alignment: the bolded effect is Strengthened (and a crit on the activation roll)
   };
   // Echo: once it has fully negated an attack, it keeps working for free until your next turn.
   const echo = actor.getFlag("flowstate", "echoWard");
@@ -703,7 +706,7 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
     if (!ask) break;
     near = form.near ? !!ask.near : near;
     const enh = !!ask.enhance && th >= 1;
-    const nn = Math.min(left, per(uses, enh, near));
+    let nn = Math.min(left, per(uses, enh, near));
     const clear = !!ask.clear && willTier(actor) >= 2;
     if (!(await pay(actor, { rp: 1, energy: (enh ? willMin : 0) + (clear ? willMin : 0) }, `${p.name}'s Ward`))) break;
     // Wards need an attack roll (Rules: "a self attack"): your attack roll against your own dodge roll. A miss spends the RP and negates nothing.
@@ -717,6 +720,7 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
     if (wfx.autoHit && !res.hit) res = { ...res, hit: true, outcome: "Hit" };       // Alignment 4: it hits regardless; the roll only decides a crit
     await post(actor, { title: `${esc(actor.name)} — ${esc(p.name)} Ward`, rolls, body: `<div class="fs-notes">Attack roll <strong>${atk.total}</strong> against a dodge of <strong>${dd.total}</strong>${clear ? " (Make Clear)" : ""}: <strong>${res.hit ? "hit" : "miss"}</strong>.</div>` });
     if (!res.hit) { notes.push(`${p.name} misses (1 RP${enh ? `, ${willMin} Energy` : ""} spent, nothing negated)`); continue; }
+    if (res.crit) nn = Math.min(left, per(uses, enh, near, res.critStacks ?? 2));          // a crit on the activation roll is doubly Strengthened
     left -= nn; uses++;
     if (enh) enhancedUsed = true;
     // Zealot, Enhanced at 4 Nightmare Alignment: the damage is Weakened when the activation roll crits (once per damage instance).

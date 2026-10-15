@@ -114,8 +114,10 @@ DAMAGE_PROVIDERS.push(async ({ attacker, target, n, notes }) => {
   if (fx(target, "eclipsed").some(e => dataOf(e).enhanced) || (attacker && fx(attacker, "eclipseWard").some(e => dataOf(e).enhanced))) { out = applyStacks(out, 1); notes.push("Eclipse (Enhanced): the damage is Strengthened"); }
   if (attacker?.getFlag?.("flowstate", "umbral")) {
     await setActorFlag(attacker, "umbral", null);
-    const r = await new Roll("1d8").evaluate(); rolled.push(r);
-    out += r.total; notes.push(`Umbral Strike: +${r.total} damage (1d8)`);
+    const u = attacker.getFlag("flowstate", "umbral");
+    const r = await new Roll(`${u?.power ?? 1}d8`).evaluate(); rolled.push(r);
+    const add = bold(u?.bs ?? 0, r.total);
+    out += add; notes.push(`Umbral Strike: +${add} damage (${u?.power ?? 1}d8)`);
   }
   return out;
 });
@@ -184,10 +186,10 @@ export async function attackStart(actor, opts, targets) {
   const charge = fx(actor, "umbralCharge")[0];
   if (charge) {
     const d = dataOf(charge);
-    const ans = await askFor(actor, { react: "umbral", title: "Umbral Strike", ok: "Use a charge", html: `<p><strong>Umbral Strike</strong>: use one of your ${d.count ?? 1} charge${(d.count ?? 1) === 1 ? "" : "s"} to make this attack from one step further into stealth (${o.stealth && o.stealth !== "none" ? o.stealth : "none"} → ${STEP[o.stealth ?? "none"]}) and add 1d8 damage of its type?</p>` });
+    const ans = await askFor(actor, { react: "umbral", title: "Umbral Strike", ok: "Use a charge", html: `<p><strong>Umbral Strike</strong>: use one of your ${d.count ?? 1} charge${(d.count ?? 1) === 1 ? "" : "s"} to make this attack from one step further into stealth (${o.stealth && o.stealth !== "none" ? o.stealth : "none"} → ${STEP[o.stealth ?? "none"]}) and add ${d.power ?? 1}d8 damage of its type?</p>` });
     if (ans) {
       if ((d.count ?? 1) > 1) await charge.update({ "flags.flowstate.spellEffect.count": d.count - 1 }); else await changeEffect(charge, null);
-      await setActorFlag(actor, "umbral", true);
+      await setActorFlag(actor, "umbral", { power: d.power ?? 1, bs: d.bstacks ?? 0 });
       o = { ...o, stealth: STEP[o.stealth ?? "none"], notes: [...(o.notes ?? []), "Umbral Strike: a step deeper into stealth, +1d8 damage"] };
     }
   }
@@ -197,8 +199,8 @@ TURN_START.push(async actor => { if (actor.getFlag?.("flowstate", "umbral")) awa
 
 MODES[`${DARK}:umbral-strike`] = async c => {
   const count = c.enhanced ? 2 : 1;
-  await putSpellEffect(c.target, { kind: "umbralCharge", caster: c.attacker.uuid, name: `Umbral Strike (${count})`, count, enhanced: !!c.enhanced,
-    description: `${count} charge${count === 1 ? "" : "s"}: when they attack they can use one to attack from one step further into stealth and add 1d8 damage of its type. Until the start of ${c.attacker.name}'s next turn.` });
+  await putSpellEffect(c.target, { kind: "umbralCharge", caster: c.attacker.uuid, name: `Umbral Strike (${count})`, count, enhanced: !!c.enhanced, power: c.power, bstacks: c.bs ?? c.stacks ?? 0,
+    description: `${count} charge${count === 1 ? "" : "s"}: when they attack they can use one to attack from one step further into stealth and add ${c.power}d8 damage of its type. Until the start of ${c.attacker.name}'s next turn.` });
   return `<strong>${esc(c.target.name)}</strong> gets ${count} Umbral Strike charge${count === 1 ? "" : "s"}, until your next turn.`;
 };
 
@@ -284,7 +286,8 @@ async function disperse(caster, { targets, power, bs }) {
 
 export async function disperseResolve({ attacker, target, result, m }) {
   if (!result.hit) return { html: `<div class="fs-notes">Dispersion misses ${esc(target.name)}: their effects stay.</div>` };
-  return { html: `<div class="fs-result"><i class="fa-solid fa-wind"></i> Dispersion: ${await disperse(attacker, m.disperse)}</div>` };
+  const crit = result.critStacks ?? (result.crit ? 2 : 0);          // a crit's stacks scale it too
+  return { html: `<div class="fs-result"><i class="fa-solid fa-wind"></i> Dispersion: ${await disperse(attacker, { ...m.disperse, bs: (m.disperse.bs ?? 0) + crit })}</div>` };
 }
 
 /* -------------------------------------------- */

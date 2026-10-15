@@ -271,7 +271,7 @@ async function loseMirage(actor, live, d, lost) {
     html += `<div class="fs-result">Phantom Pain: ${actor.name}'s Pain Threshold rises by ${pp} (${phantom} in all). It goes away when no Mirage affects them.</div>`;
   }
   if (power <= 0) { if (live) await endMirage(actor, live); return { html: html + `<div class="fs-result">The Mirage is gone.</div>`, ended: true }; }
-  if (live) await changeEffect(live, { "flags.flowstate.spellEffect.power": power, "flags.flowstate.spellEffect.phantomTotal": phantom, "flags.flowstate.spellEffect.tests": (d.tests ?? 0) + 1 });
+  if (live) await changeEffect(live, { description: String(live.description ?? "").replace(`${d.power} Power`, `${power} Power`), "flags.flowstate.spellEffect.power": power, "flags.flowstate.spellEffect.phantomTotal": phantom, "flags.flowstate.spellEffect.tests": (d.tests ?? 0) + 1 });
   return { html, ended: false };
 }
 
@@ -436,11 +436,13 @@ async function amplifySpell(entry, gain = 1) {          // `gain`: Power levels 
   if (entry.kind === "summon") return "A Summon's points are set when it is made: Amplify changes nothing.";
   const d = data(entry.effect), p = Math.max(1, d.power ?? 1);
   const upd = { "flags.flowstate.spellEffect.amplified": true };
+  const swap = (text, from, to) => String(text ?? "").replace(new RegExp(`(?<![\\d.])${from}(?![\\d])`), String(to));          // keep the name and description numbers in step
+  const eff = entry.effect;
   let msg;
-  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 10 * gain; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 10 * gain; msg = `The Shield gains ${10 * gain} health (10 × ${gain} Power).`; }
-  else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + gain)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + gain; msg = `Its dice go from ${d.n} to ${n}.`; }
-  else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 10 * gain; upd["flags.flowstate.spellEffect.power"] = d.power + 10 * gain; msg = `The Mirage gains ${10 * gain} Power.`; }
-  else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 3 * gain; msg = `Pain Threshold drops ${3 * gain} more.`; }
+  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 10 * gain; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 10 * gain; upd.description = swap(eff.description, d.hp, d.hp + 10 * gain); msg = `The Shield gains ${10 * gain} health (10 × ${gain} Power).`; }
+  else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + gain)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + gain; upd.name = swap(eff.name, `${d.n}d`, `${n}d`); upd.description = swap(eff.description, `${d.n}d`, `${n}d`); msg = `Its dice go from ${d.n} to ${n}.`; }
+  else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 10 * gain; upd["flags.flowstate.spellEffect.power"] = d.power + 10 * gain; upd.description = swap(eff.description, `${d.power} Power`, `${d.power + 10 * gain} Power`); msg = `The Mirage gains ${10 * gain} Power.`; }
+  else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 3 * gain; upd.name = swap(eff.name, d.painDown, d.painDown + 3 * gain); upd.description = swap(eff.description, d.painDown, d.painDown + 3 * gain); msg = `Pain Threshold drops ${3 * gain} more.`; }
   else return "That Spell has no Power-scaled number to amplify: nothing changes.";
   await changeEffect(entry.effect, upd);
   return msg;

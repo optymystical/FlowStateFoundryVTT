@@ -284,7 +284,7 @@ export function diePenalties(profile, power, { direct = false } = {}) {
 /**
  * Show a spell's or Mod's doc text with its Spell Power numbers worked out (the doc lists the base values): dice counts, health,
  * durability, Haste/Slow/Ignite/Stain stacks, signed die-size changes, Pierce/Bash values, Scaling Stat thresholds, Mirage Power,
- * Shift's Body and Painless' Pain Threshold are multiplied by the Power. Fixed things (AP, ranges, check targets, +die sizes written
+ * Shift's Body and Painless' Pain Threshold are multiplied by the Power. Check targets, counts, pools, Grade and Body scale too. Fixed things (AP, ranges, +die sizes written
  * "increased by") stay as printed. `mark` wraps each scaled number in \u0001…\u0002 so the caller can highlight it.
  */
 export function scaleText(text, power, mark = false) {
@@ -302,6 +302,16 @@ export function scaleText(text, power, mark = false) {
   return out
     .replace(/\b(\d+)( (?:health|durability|Haste|Slow|Stain|Ignite)\b)/g, (m, n, rest) => `${w(n * P)}${rest}`)
     .replace(/([+\u2212-])(\d+)( die size)/g, (m, sign, n, rest) => `${sign}${w(n * P)}${rest}`)
+    // Every other bolded number scales too: thresholds and counts, check targets, pools, Grade and Body, Amplify's and Rip's numbers.
+    .replace(/(minimum of |within )(\d+)(?=( of your guess|\b)(?! ?ft))/g, (m, pre, n, rest) => (pre === "within " && !/ of your guess/.test(m + rest) ? m : `${pre}${w(n * P)}`))
+    .replace(/(\d+)( less energy)/g, (m, n, rest) => `${w(n * P)}${rest}`)
+    .replace(/(get an? )(\d+)( or higher)/g, (m, pre, n, rest) => `${pre}${w(n * P)}${rest}`)
+    .replace(/(\d+)( or less Power)/g, (m, n, rest) => `${w(n * P)}${rest}`)
+    .replace(/(\d+)( times)(?= \()/g, (m, n, rest) => `${w(n * P)}${rest}`)
+    .replace(/(\d+)( points)\b/g, (m, n, rest) => `${w(n * P)}${rest}`)
+    .replace(/(Grade (?:of )?|Body of |points value of |Adds )(\d+)/g, (m, pre, n) => `${pre}${w(n * P)}`)
+    .replace(/(\d+)( more scaling stat)/g, (m, n, rest) => `${w(n * P)}${rest}`)
+    .replace(/([+\u2212-])(\d+)(?=\/[+\u2212-]\d+ die size)/g, (m, sign, n) => `${sign}${w(n * P)}`)
     .replace(/(Scaling Stat value of |property with a value of |has |Move up to |Pain Threshold by )(\d+)( Power| Body|\b)/g, (m, pre, n, rest) =>
       /^(Scaling Stat value of |property with a value of |Pain Threshold by )$/.test(pre) || /Power|Body/.test(rest) ? `${pre}${w(n * P)}${rest}` : m);
 }

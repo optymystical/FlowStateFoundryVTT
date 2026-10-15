@@ -2,6 +2,10 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.61.1:** **Shown numbers match applied numbers.**
+- **Mental:** charge names, descriptions and dialogs, the Order sign options, Tenet tips and popups (Verdant Soul, Mortal Coil, Weight, Gust, Ego), Ward text (with Alignment's Strengthened), Eclipse, Flourish, Redirect, Vice, Absolution, Adaptive Skin and Umbral Strike now show the scaled values; Pacify and Dampen reductions read "−".
+- **Magic:** the Cast Spell dialog, Mod tooltips (a ticked Replacement doubles them), the Skills tab and the cast card scale check targets, Prolong/Linger counts, Hold, Telegraph, Freeze, Form/Animate points, Grade, Body, Amplify and Rip; Combo rider text stays "per level"; the Slam + Hex choice shows the scaled die size; Poison, Hex and Charm cards show the real check target, count and stacks (Weakened too); Hold on a grappled target shows the stacked total; Amplify and Mirage updates keep effect names and descriptions in step.
+
 **0.61.0:** **Every bolded number scales with Power and stacks.**
 - **Check targets:** Poison's, Charm's and Hex's "3 or higher" (and the combined "5 or higher") are multiplied by Spell Power and the spell's stacks (a Power 3 Poison needs a 9). Combo riders use their level.
 - **Pools:** Form, Animate and Make + Animate point pools and Body minimums scale with Spell Power too (a Power 3 Form has 15 points before the Threshold multiplier).

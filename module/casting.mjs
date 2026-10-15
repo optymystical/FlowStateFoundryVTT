@@ -92,7 +92,7 @@ function modRow(m, mods, v, power = 0) {
   const guess = m.name === "Telegraph" ? `<input type="number" name="telegraph" value="${v.telegraph ?? ""}" placeholder="dodge guess" data-tooltip="Predict their dodge roll before the attack">` : "";
   const manual = fx.AUTOMATED_MODS.has(m.id) ? "" : ` · <em data-tooltip="Costs Threshold, but its effect isn't automated yet: the GM resolves it from the card">not automated</em>`;
   const hint = m.name === "Exploit" ? " · each stack needs an Advantage on the attack, or it is refunded" : "";
-  return `<label class="fs-cast-mod" data-raw="${esc(m.text)}" data-tooltip="${esc(fx.scaleText(m.text, power))}">${control} <strong>${esc(m.name)}</strong> <small>${viaConnection ? "free from Connection" : `${thr} Threshold`}${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}${replaceBox}${damp}${guess}</label>`;
+  return `<label class="fs-cast-mod" data-raw="${esc(m.text)}" data-tooltip="${esc(scaleBody(m.text, power * (v[`replace:${m.id}`] ? 2 : 1)))}">${control} <strong>${esc(m.name)}</strong> <small>${viaConnection ? "free from Connection" : `${thr} Threshold`}${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}${replaceBox}${damp}${guess}</label>`;
 }
 
 /** The Universal / Core 1 / Core 2 Mod tabs for the chosen Cores. */
@@ -110,17 +110,26 @@ export function modsHTML(ctx, v, theory, power = 0) {
     ${focusedHere ? `<div class="fs-field"><label>Connection (free on your Focused Spell)</label><select name="connection"><option value="">None</option>${spells.CONNECTION_MODS.map(k => `<option value="${k}" ${v.connection === k ? "selected" : ""}>${k[0].toUpperCase() + k.slice(1)}</option>`).join("")}</select></div>` : ""}`;
 }
 
+/**
+ * A spell's doc text with its numbers worked out for `power`. A Combo with a Summon / Make / Animate / Shift Core adds its Core's effect "per level" of the creation
+ * (not per Spell Power), so only the text before " Added effect (" is scaled.
+ */
+const scaleBody = (text, power, mark = false) => {
+  const s = String(text ?? ""), i = s.indexOf(" Added effect (");
+  return i < 0 ? fx.scaleText(s, power, mark) : fx.scaleText(s.slice(0, i), power, mark) + s.slice(i);
+};
+
 /** The chosen Core's effect, or the Combo's when two are picked. */
 function effectHTML(v, power = 0) {
   const e = spells.effectText([v.core1, v.core2].filter(Boolean));
   // Numbers are shown worked out for this cast's Spell Power (highlighted), not the doc's base values.
   // \u0001 and \u0002 are the markers `scaleText` puts around a highlighted number.
   // eslint-disable-next-line no-control-regex
-  return e ? `<strong>${esc(e.title)}</strong>: ${esc(fx.scaleText(e.text, power, true)).replace(/\u0001/g, "<strong>").replace(/\u0002/g, "</strong>")}${power > 1 ? ` <small class="hint">(Spell Power ${power})</small>` : ""}` : "";
+  return e ? `<strong>${esc(e.title)}</strong>: ${esc(scaleBody(e.text, power, true)).replace(/\u0001/g, "<strong>").replace(/\u0002/g, "</strong>")}${power > 1 ? ` <small class="hint">(Spell Power ${power})</small>` : ""}` : "";
 }
 
 /** The Charm / Hex choices a Tier 3 spell needs on the cast: which roll a Charm hits, a Hex's trigger. */
-export function afflictHTML(v) {
+export function afflictHTML(v, power = 1) {
   const ids = [v.core1, v.core2].filter(Boolean);
   const profile = ids.length ? fx.profileFor(ids) : null;
   const need = fx.afflictNeeds(profile);
@@ -154,7 +163,7 @@ export function afflictHTML(v) {
   }
   // Delay: what sets it off.
   if (v["mod:magic-restoration-arcana:delay"]) out.push(`<div class="fs-field"><label>Delay: trigger</label><input type="text" name="delayTrigger" value="${esc(v.delayTrigger ?? "")}" placeholder="when…"></div>`);
-  if (need.hexDie) out.push(`<div class="fs-field"><label>Hex: shrink their</label>${sel("hexDie", { dodge: "Dodge (−3 die size)", attack: "Attack (−6 die size)" }, v.hexDie || "dodge")}</div>`);
+  if (need.hexDie) out.push(`<div class="fs-field"><label>Hex: shrink their</label>${sel("hexDie", { dodge: `Dodge (−${3 * Math.max(1, power)} die size)`, attack: `Attack (−${6 * Math.max(1, power)} die size)` }, v.hexDie || "dodge")}</div>`);
   return out.join("");
 }
 
@@ -192,7 +201,7 @@ function dialogHTML(ctx, v) {
     <div class="fs-field"><label>Second Core (Combo)</label>${coreSelect("core2", known.cores.filter(c => c.id !== v.core1), v.core2, true)}</div>
     <div class="fs-field fs-cast-base" ${bt.ok && bt.max > bt.min ? "" : "hidden"}><label>Core Threshold</label><input type="number" name="base" value="${v.base ?? bt.min}" min="${bt.min}" max="${bt.max}" step="1"></div>
     <div class="fs-cast-effect">${effectHTML(v, power)}</div>
-    <div class="fs-cast-afflict">${afflictHTML(v)}</div>
+    <div class="fs-cast-afflict">${afflictHTML(v, power)}</div>
     <div class="fs-cast-mods">${modsHTML(ctx, v, theory, power)}</div>
     ${(() => { const only = v.core1 && !v.core2 ? fx.profileFor([v.core1]) : null; return only?.hold ? `<label class="fs-cast-mod"><input type="checkbox" name="hold" ${v.hold ? "checked" : ""}> <strong>Hold it</strong> <small>in melee: no damage, but it stays available to use again for the same AP until your next turn</small></label>` : ""; })()}
     ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
@@ -228,7 +237,7 @@ async function castDialog(actor, ctx) {
         if (rebuild) {
           const bt = spells.baseThreshold([v.core1, v.core2].filter(Boolean));
           form.querySelector(".fs-cast-effect").innerHTML = effectHTML(v);
-          form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(v);
+          form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(v, spells.planCast(ctx, v).power || 0);
           form.querySelector(".fs-cast-mods").innerHTML = modsHTML(ctx, v, tierOf(ctx.trees, "magic-theory"));
           const baseField = form.querySelector(".fs-cast-base");
           baseField.hidden = !(bt.ok && bt.max > bt.min);
@@ -238,7 +247,10 @@ async function castDialog(actor, ctx) {
         const plan = spells.planCast(ctx, valuesFromForm(form));
         // Spell and Mod text show this cast's Spell Power, so it follows the casting method, AP, Empower, Hematite and the rest.
         form.querySelector(".fs-cast-effect").innerHTML = effectHTML(v, plan.power || 0);
-        for (const m of form.querySelectorAll(".fs-cast-mod[data-raw]")) m.dataset.tooltip = fx.scaleText(m.dataset.raw, plan.power || 0);
+        for (const m of form.querySelectorAll(".fs-cast-mod[data-raw]")) {
+          const id = m.querySelector('[name^="mod:"]')?.name.slice(4);
+          m.dataset.tooltip = scaleBody(m.dataset.raw, (plan.power || 0) * (id && form.elements[`replace:${id}`]?.checked ? 2 : 1));          // a ticked Replacement doubles its numbers
+        }
         form.querySelector(".fs-cast-preview").innerHTML = previewHTML(plan, ctx);
         form.querySelector(".fs-cast-ap").hidden = !(ctx.options.find(o => o.key === form.elements.via?.value)?.ap?.length > 1);
         const ok = el.querySelector('button[data-action="ok"]');
@@ -253,7 +265,7 @@ async function castDialog(actor, ctx) {
           form.querySelector(".fs-cast-mods").innerHTML = modsHTML(ctx, v, tierOf(ctx.trees, "magic-theory"));
           showTab(tab);
           refresh(false);
-        } else if (name === "hexTrigger" || name === "fidelityKind" || name.startsWith("mod:")) { form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(valuesFromForm(form)); refresh(false); }
+        } else if (name === "hexTrigger" || name === "fidelityKind" || name.startsWith("mod:")) { { const vv = valuesFromForm(form); form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(vv, spells.planCast(ctx, vv).power || 0); } refresh(false); }
         else refresh(["core1", "core2"].includes(name), name);
       });
       form.addEventListener("click", e => { const t = e.target?.closest?.(".fs-cast-tab"); if (t && !t.disabled) showTab(t.dataset.tab); });
@@ -277,8 +289,8 @@ function castCardHTML(actor, plan) {
   const via = esc(plan.option.label);
   const parts = [`${plan.base}`, ...plan.applied.filter(a => a.threshold).map(a => `${esc(a.mod.name)} ${a.threshold}`)].join(" + ");
   const eff = spells.effectText(plan.cores.map(c => c.id));
-  const effects = eff ? `<li><strong>${esc(plan.combo ? eff.title : plan.cores[0].name)}:</strong> ${esc(eff.text)}</li>` : "";
-  const mods = plan.applied.map(a => `<li><strong>${esc(a.mod.name)}${a.free ? " (Connection)" : ""}${a.replicates ? ` (copies ${esc(spells.spellById(a.replicates)?.name ?? "")})` : ""}:</strong> ${esc(stripHeader(a.mod.text))}</li>`).join("");
+  const effects = eff ? `<li><strong>${esc(plan.combo ? eff.title : plan.cores[0].name)}:</strong> ${esc(scaleBody(eff.text, plan.power))}</li>` : "";
+  const mods = plan.applied.map(a => `<li><strong>${esc(a.mod.name)}${a.free ? " (Connection)" : ""}${a.replicates ? ` (copies ${esc(spells.spellById(a.replicates)?.name ?? "")})` : ""}:</strong> ${esc(scaleBody(stripHeader(a.mod.text), plan.power * (a.replace ? 2 : 1)))}</li>`).join("");
   return `<div class="fs-result"><strong>${esc(actor.name)}</strong> casts <strong>${esc(names)}</strong>${plan.combo ? " (Combo Spell)" : ""}${plan.ritual ? " as a <em>Ritual</em>" : ""}.</div>
     <ul class="fs-list">
       <li>Through ${via}${plan.ritual && !plan.instantRitual ? "" : ` · ${plan.ap} ${plan.usesRP ? "RP" : "AP"}`}</li>

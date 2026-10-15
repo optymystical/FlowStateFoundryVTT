@@ -3868,7 +3868,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
     if (target.statuses?.has("grappled")) {
       const roll = await evaluate(`${sp.power * mult}d12`);
       rolls.push(roll);
-      html.push(`<div class="fs-result">Already grappled: ${esc(target.name)} takes ${sp.power * mult}d12 = <strong>${roll.total}</strong> physical instead.</div>`);
+      html.push(`<div class="fs-result">Already grappled: ${esc(target.name)} takes ${sp.power * mult}d12 = ${roll.total}${stackBonus ? ` (${stackBonus > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(stackBonus)})` : ""} → <strong>${applyStacks(roll.total, stackBonus)}</strong> physical instead.</div>`);
       await requestDamage(target, applyStacks(roll.total, stackBonus), "physical", 0, null, { silent: false });
     } else {
       const size = target.system.size ?? 3;

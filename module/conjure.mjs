@@ -635,7 +635,7 @@ export async function riderAfter({ attacker, target, o, outcome, defense, stacks
     const out = await damageOutcome(target, total, dtype, { archetype: "magic" });
     const res = await requestDamage(target, total, dtype, 0, null, { wantResult: true, silent: true, archetype: "magic" });
     const dealt = total - Math.min(total, res?.reduced ?? 0);             // a Ward's negation shrinks effects that go by the damage dealt
-    html.push(`<div class="fs-result">${esc(profileName)}: ${rd.dice[0] * level}d${sides} = ${dmg.total}${total !== dmg.total ? ` (Strengthened → ${total})` : ""} additional ${DAMAGE_TYPES[dtype] ?? dtype}.</div><ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
+    html.push(`<div class="fs-result">${esc(profileName)}: ${rd.dice[0] * level}d${sides} = ${dmg.total}${total !== dmg.total ? ` (${stacks + arcPen + (rd.critStack && defense?.result?.crit ? rd.critStack : 0) > 0 ? "Strengthened" : "Weakened"} → ${total})` : ""} additional ${DAMAGE_TYPES[dtype] ?? dtype}.</div><ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
     if (rd.ignite) { const l = await giveStacks(target, "ignite", dealt, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
     if (rd.stain) { const l = await giveStacks(target, "stain", dealt, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
     if (rd.energy) { const e = await removeEnergy(target, dealt); html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${e.removed} Energy</strong> (${e.remaining} left).</div>`); }

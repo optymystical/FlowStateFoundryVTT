@@ -8,8 +8,10 @@ import { post, changeEffect, setActorFlag, spendPoints, canSpend } from "./actio
 import { askFor, everyActor } from "./ask.mjs";
 import * as R from "./mental-rules.mjs";
 import { tierOf } from "./skills.mjs";
+import { poolFormula } from "./rules.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
+const snapTier = actor => tierOf(actor?.system?.trees ?? {}, "mental-snappence-arts");
 const ponder = actor => tierOf(actor?.system?.trees ?? {}, "mental-ponderance-arts");
 
 /** How many things you can concentrate on: your Mental Theory tier. */
@@ -84,7 +86,7 @@ export async function damageCheck(actor, damage, hpAfter = actor.system?.hp?.val
   if (hpAfter <= 0) return lose(actor, "unconscious");
   const eff = actor.system?.derived?.effective?.will;
   if (!canSpend(actor, "rp", 1) || !(await spendPoints(actor, "rp", 1, "holding Concentration"))) return lose(actor, "no RP to hold it", { oneOnly: ponder(actor) >= 3 });
-  const r = await new Roll(`1d${eff?.die ?? 10}`).evaluate();
+  const r = await new Roll(poolFormula(1, eff?.die ?? 10, snapTier(actor) >= 4 ? 1 : 0)).evaluate();          // Nerve (Snappence Arts T4): Advantage
   const held = r.total >= damage;
   await post(actor, { title: `${esc(actor.name)} — Concentration`, rolls: [r], body: `<div class="fs-notes">Willpower check against ${damage} damage: <strong>${r.total}</strong> — ${held ? "the Concentration holds" : "broken"}.</div>` });
   if (!held) await lose(actor, `the damage (${damage}) beat the Willpower check`, { oneOnly: ponder(actor) >= 3 });

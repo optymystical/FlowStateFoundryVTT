@@ -234,4 +234,78 @@ for (const [label, ans, want] of [["without Mantra", null, -1], ["with Mantra", 
 W.MODES[dest] = orig;
 tree("mental-ponderance-arts", 0);
 
+
+console.log("== Snappence Arts: Nerve, Impulse, Fixation, Reflex, Afterimage");
+const SN = await import("../../module/snappence.mjs");
+const AB = await import("../../module/abilities.mjs");
+tree("mental-snappence-arts", 0);
+await resetC(); await concentrate("A"); seq = [30]; formulas.length = 0;
+await CN.damageCheck(hero, 10);
+ok2(!formulas.some(f => /kh/.test(f)), "Without Nerve the Concentration check is a plain Willpower roll");
+tree("mental-snappence-arts", 4);
+await resetC(); await concentrate("A"); seq = [30, 30]; formulas.length = 0;
+await CN.damageCheck(hero, 10);
+ok2(formulas.some(f => /^2d\d+kh1$/.test(f)), "Nerve (T4): the Concentration check has Advantage");
+
+// Impulse: the Tenet applies once more, once per round, for half the Scaling Stat min
+tree("mental-snappence-arts", 2); tree("mental-ponderance-arts", 0);
+ic.system.tenet = "mental-life-dream:verdant-soul"; refresh(); hero.flags.flowstate.mentalOnce = undefined; hero.flags.flowstate.impulse = undefined;
+const iCost = Math.floor(AB.statMinOf(hero, R.KINDS[R.wonderById(W.tenetOf(hero).wonder).kind].stat) / 2);
+dialog = () => null;
+ok2(W.impulseHook.can(hero) && await W.impulseHook.use(hero, "Verdant Soul") === false && hero.system.energy.value === 200, "Impulse is asked first: declining costs nothing");
+dialog = () => ({});
+const ur = await W.impulseHook.use(hero, "Verdant Soul");
+ok2(ur === true && hero.system.energy.value === 200 - iCost, "Impulse (T2): accepting pays half the Scaling Stat min");
+ok2(!W.impulseHook.can(hero), "…and only once per round");
+tree("mental-snappence-arts", 1); hero.flags.flowstate.impulse = undefined;
+ok2(!W.impulseHook.can(hero), "…and not before Snappence Arts Tier 2");
+
+// Fixation and Afterimage shape Reflex
+tree("mental-snappence-arts", 1);
+ok2(SN.reflexFor(hero, orc).weak === true && SN.reflexFor(hero, orc).afterimage === false, "Reflex is Weakened and costs something by default");
+tree("mental-snappence-arts", 3); hero.flags.flowstate.fixation = orc.uuid;
+ok2(SN.reflexFor(hero, orc).weak === false && SN.reflexFor(hero, ally).weak === true, "Fixation (T3): Reflex against the fixated character isn't Weakened");
+tree("mental-snappence-arts", 5);
+ok2(SN.reflexFor(hero, orc).afterimage === true, "Afterimage (T5): Reflex is free once per round");
+
+// A Reflex Manifest: RP equal to the Range's AP cost, half the Scaling Stat min in Energy, Weakened
+tree("mental-snappence-arts", 1); hero.flags.flowstate.fixation = null; reset(); refresh(); target(orc);
+seq = [20]; dialog = () => ({ net: 0 });
+const pr1 = { ap: hero.system.ap.value, rp: hero.system.rp.value, e: hero.system.energy.value };
+await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged" }, { reflex: SN.reflexFor(hero, orc) });
+const eAfter = pr1.e - hero.system.energy.value;
+ok2(hero.system.ap.value === pr1.ap && hero.system.rp.value === pr1.rp - 2 && eAfter === Math.floor(AB.statMinOf(hero, "pon") / 2), "Reflex pays RP equal to the Range's AP cost (not AP) and half the Scaling Stat min in Energy");
+const rfCard = lastAtk();
+ok2(rfCard.flags.flowstate.attack.opts.mental?.reflex === true && (rfCard.flags.flowstate.attack.opts.stacks ?? 0) < 0, "…the Manifest is marked as a Reflex and Weakened");
+tree("mental-snappence-arts", 5); refresh(); reset(); target(orc); seq = [20]; hero.flags.flowstate.afterimage = undefined;
+const pr2 = { rp: hero.system.rp.value, e: hero.system.energy.value };
+await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged" }, { reflex: SN.reflexFor(hero, orc) });
+ok2(hero.system.rp.value === pr2.rp && hero.system.energy.value === pr2.e && !SN.afterimageReady(hero), "Afterimage: no RP or Energy for Reflex, once per round");
+
+// An attack offers Reflex to those who can sense it (and a Reflex isn't itself offered)
+tree("mental-snappence-arts", 0);
+ally.system.trees["mental-snappence-arts"] = 1; ally.system.prepareDerivedData();
+const spied = []; const realReflex = W.ACTS.reflex; W.ACTS.reflex = async (x, c, t) => { spied.push([c.name, t?.name]); return true; };
+dialog = () => null; await SN.offerReflex(orc, {});
+ok2(spied.length === 0, "Declining the Reflex offer does nothing");
+dialog = () => ({}); await SN.offerReflex(orc, {});
+ok2(spied.length === 1 && spied[0][0] === "Ally" && spied[0][1] === "Orc", "An attack offers Reflex to a character with Snappence Arts");
+spied.length = 0; await SN.offerReflex(orc, { mental: { reflex: true } });
+ok2(spied.length === 0, "…but a Reflex Manifest doesn't set off other Reflexes");
+W.ACTS.reflex = realReflex; ally.system.trees["mental-snappence-arts"] = 0; ally.system.prepareDerivedData();
+tree("mental-snappence-arts", 0);
+
+
+// Impulse through a Tenet button: the second use in a round asks for Impulse; declining leaves the usual "already used"
+tree("mental-snappence-arts", 2); refresh(); reset(); hero.flags.flowstate.mentalOnce = undefined; hero.flags.flowstate.impulse = undefined; tree("mental-life-dream", 5);
+const vs = { tenet: true, id: "verdantSoul", label: "Verdant Soul", mult: 1, caster: hero.uuid, target: orc.uuid, mode: "mental-life-dream:bloom", power: 1, bstacks: 0 };
+dialog = () => ({ who: "target" });
+await W.runAct(vs);
+const e1 = hero.system.energy.value;
+dialog = () => null; await W.runAct(vs);
+ok2(hero.system.energy.value === e1 && hero.flags.flowstate.impulse === undefined, "A Tenet button used twice in a round: declining Impulse costs nothing");
+dialog = () => ({}); await W.runAct(vs);
+ok2(hero.system.energy.value < e1 && hero.flags.flowstate.impulse !== undefined, "…accepting Impulse pays and lets the Tenet apply again");
+tree("mental-snappence-arts", 0);
+
 if (fails) { console.log(`${fails} FAILED`); process.exit(1); }

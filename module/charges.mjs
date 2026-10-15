@@ -14,7 +14,7 @@ import { poolFormula } from "./rules.mjs";
 import { bold } from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
-import { CHARGES, onceUsed, markOnce, tenetOf, mantraHook, mental } from "./wonders.mjs";
+import { CHARGES, onceUsed, markOnce, tenetOf, mantraHook, impulseHook, mental } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const minOf = (a, k) => ab.statMinOf(a, k);
@@ -188,10 +188,12 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
     const myKey = who === attacker ? "atk" : "dodge", oppKey = who === attacker ? "dodge" : "atk";
     const optMine = tryOpt(myKey, m), optOpp = tryOpt(oppKey, -m);
     if (optMine === cur && optOpp === cur) continue;
-    if (onceUsed(who, "balance")) continue;
+    const again = onceUsed(who, "balance");
+    if (again && !impulseHook.can(who)) continue;
     const ans = await askFor(who, { react: "balance", title: "Balance", ok: "Use Balance", html: `<p>Balance (once per round): the attack is <strong>${atk.total}</strong> against a dodge of <strong>${dodge.total}</strong> (${cur}).</p>
       <div class="fs-field"><label>Use it to</label><select name="b"><option value="">— Don't —</option><option value="mine">Add ${m} to your ${who === attacker ? "attack" : "dodge"} result (→ ${optMine})</option><option value="opp">Remove ${m} from the ${who === attacker ? "dodge" : "attack"} result (→ ${optOpp})</option></select></div>` });
     if (!ans?.b) continue;
+    if (again && !(await impulseHook.use(who, "Balance"))) continue;          // Impulse
     await markOnce(who, "balance");
     const mm = await mantraHook.offer(who, m, "Balance");          // Mantra
     if (ans.b === "mine") setRollTotal(mine, mine.total + mm); else setRollTotal(theirs, Math.max(0, theirs.total - mm));

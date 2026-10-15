@@ -4545,6 +4545,70 @@ export const TREES = [
   ]
  },
  {
+  "id": "mental-snappence-arts",
+  "name": "Snappence Arts",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 3,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Reflex",
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. When any character you can sense begins an action (attacking, dodging, moving, etc), you can use this ability. Manifest a Wonder in response, spending RP equal to your chosen Range’s AP cost. That Manifest resolves before the triggering action, but its effects are Weakened."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Impulse",
+      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Once per round, if your selected Tenet has already triggered this round and would trigger again, you can use this ability to apply it to that instance."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Fixation",
+      "text": "At the start of your turn, declare a character you can sense. Whenever you use Reflex to react to an action by that character, that instance of Reflex is not Weakened."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Nerve",
+      "text": "You have Advantage on the Willpower checks you make to maintain your Concentration."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Afterimage",
+      "text": "Once per round, you can Manifest in reaction to a triggering action without spending RP or energy."
+     }
+    ]
+   }
+  ]
+ },
+ {
   "id": "mental-willpower-arts",
   "name": "Willpower Arts",
   "archetype": "mental",

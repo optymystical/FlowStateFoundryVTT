@@ -16,6 +16,7 @@ import * as charges from "./charges.mjs";
 import * as wondersB from "./wonders-b.mjs";
 import * as forging from "./forging.mjs";
 import * as ponderance from "./ponderance.mjs";
+import * as snappence from "./snappence.mjs";
 import * as concentration from "./concentration.mjs";
 import * as ab from "./abilities.mjs";
 import * as areas from "./areas.mjs";
@@ -108,7 +109,7 @@ export function manifestContext(actor) {
   const wonders = R.knownWonders(trees(actor)).filter(w => w.modes.length);
   const flags = actor.getFlag?.("flowstate", "psion") ?? {};
   return { actor, wonders, theory: theory(actor), icon: actor.system.icon ?? null, alignment: alignmentOf(actor), farSight: !!flags.farSight, auraSight: !!flags.auraSight, will: willTier(actor),
-    patron: actor.getFlag?.("flowstate", "patron") ?? null, wobs: null, ponder: ponderance.ponderTier(actor) };
+    patron: actor.getFlag?.("flowstate", "patron") ?? null, wobs: null, reflex: null, ponder: ponderance.ponderTier(actor) };
 }
 
 /** Everything about a Manifest worked out from the dialog values (also used for the live preview). */
@@ -140,8 +141,15 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const enhanceCost = minOf(actor, kind.stat);
   // Will of Body and Spirit: the Range must cost what the attack did; an RP attack needs Burst. Patron: its Wonder's Enhance and Burst energy is free.
   const patronFree = ctx.theory >= 5 && ctx.patron === wonder.id;
-  const burst = wobs ? !!wobs.rp : !!v.burst && ctx.theory >= 1;
+  const burst = ctx.reflex ? false : wobs ? !!wobs.rp : !!v.burst && ctx.theory >= 1;
   const cost = R.manifestCost({ range, enhance: !!v.enhance, burst, enhanceCost, free, waive: { ap: !!wobs?.ap, rp: !!wobs?.rp, energy: patronFree } });
+  // Reflex (Snappence Arts T1): RP equal to the Range's AP cost and half the Scaling Stat min in Energy (Afterimage waives both); the Manifest is Weakened unless against your Fixation.
+  const rf = ctx.reflex;
+  if (rf) {
+    cost.ap = 0; cost.burst = false;
+    cost.rp = rf.afterimage ? 0 : R.RANGES[range].ap;
+    cost.energy = (v.enhance ? enhanceCost : 0) + (rf.afterimage ? 0 : Math.floor(enhanceCost / 2));
+  }
   const choices = choiceValues(v);
   // Premeditate (Ponderance Arts T1): store the Wonder instead of applying it, for your Scaling Stat min in Energy.
   const premeditate = !!v.premeditate && ctx.ponder >= 1 && !free;
@@ -161,7 +169,7 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   if (v.burst && ctx.theory < 1) errors.push("Burst needs Mental Theory Tier 1.");
   if (wobs && R.RANGES[range].ap !== (wobs.ap || wobs.rp)) errors.push(`Will of Body and Spirit: the Range has to cost ${wobs.ap || wobs.rp} ${wobs.ap ? "AP" : "RP"}, like your attack.`);
   return { ok: errors.length === 0, errors, mode, wonder, kind: wonder.kind, power, stat, enhanceCost, cost, range, enhance: !!v.enhance, burst, net, choices, kinetic,
-    alignStacks: 0, text, alignment: align, patronFree, wobs, premeditate,
+    alignStacks: rf?.weak ? -1 : 0, reflex: rf, text, alignment: align, patronFree, wobs, premeditate,
     extraStacks, extraNotes: extras.flatMap(x => x.notes ?? []), extraAfter: extras.map(x => x.after).filter(Boolean), extraFlags: Object.assign({}, ...extras.map(x => x.flags ?? {})) };
 }
 
@@ -275,10 +283,11 @@ const baseAttack = { stealth: "none", push: false, damage: "", type: "arcane", s
  * Manifest a Mode: choose it, its Range, Enhance and Burst, pay, and make the attack roll. `preset` skips the dialog (values as the form would give).
  * `free` is for Manifests that cost nothing (Patron, Innate, Will of Body and Spirit).
  */
-export async function manifest(actor, preset = null, { free = false, wobs = null } = {}) {
+export async function manifest(actor, preset = null, { free = false, wobs = null, reflex = null } = {}) {
   if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
   const ctx = manifestContext(actor);
   ctx.wobs = wobs;
+  ctx.reflex = reflex;
   if (!ctx.wonders.length) return ui.notifications.warn(`${actor.name} doesn't know any Wonder Modes yet.`);
   const v = preset ?? await manifestDialog(actor, ctx);
   if (!v) return null;
@@ -297,15 +306,16 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
     if (area) targets = area.actors;
   }
   if (!(await pay(actor, plan.cost, `Manifesting ${plan.mode.name}`))) return null;
+  if (reflex?.afterimage) await snappence.useAfterimage(actor);
   const notes = [
     `${plan.mode.name} (${plan.wonder.name}, ${R.KINDS[plan.kind].label}) · Wonder Power ×${plan.power}`,
     plan.enhance ? "Enhanced" : "", plan.burst ? "Burst (RP)" : "",
     plan.net > 0 ? `${R.alignmentLabel(plan.alignment)}: Advantage` : plan.net < 0 ? `${R.alignmentLabel(plan.alignment)}: Disadvantage` : "",
-    plan.alignStacks > 0 ? `${R.alignmentLabel(plan.alignment)}: Strengthened` : plan.alignStacks < 0 ? `${R.alignmentLabel(plan.alignment)}: Weakened` : "", plan.range === "area" ? "Area: Weakened if it hits more than two targets" : "", ...plan.extraNotes
+    plan.alignStacks > 0 ? `${R.alignmentLabel(plan.alignment)}: Strengthened` : plan.alignStacks < 0 ? `${plan.reflex ? "Reflex" : R.alignmentLabel(plan.alignment)}: Weakened` : "", plan.range === "area" ? "Area: Weakened if it hits more than two targets" : "", ...plan.extraNotes
   ].filter(Boolean);
   for (const f of plan.extraAfter) await f();
   const mental = { mode: plan.mode.id, wonder: plan.wonder.id, kind: plan.kind, power: plan.power, enhanced: plan.enhance, burst: plan.burst, range: plan.range, alignStacks: plan.alignStacks,
-    text: plan.text, caster: actor.uuid, choices: plan.choices, uid: foundry.utils.randomID?.() ?? String(Math.random()), ...(plan.premeditate ? { premeditate: true } : {}), ...plan.extraFlags };
+    text: plan.text, caster: actor.uuid, choices: plan.choices, uid: foundry.utils.randomID?.() ?? String(Math.random()), ...(plan.premeditate ? { premeditate: true } : {}), ...(plan.reflex ? { reflex: true } : {}), ...plan.extraFlags };
   // Creation: the attack roll is made against yourself; the creature(s) you targeted (or the Area) are who it's created for.
   let attackTargets = targets;
   if (forging.CREATION_MODES.has(plan.mode.id)) {
@@ -920,7 +930,7 @@ async function act(message, i) {
   if (done) await post(await fromUuid(x.caster), { title: "Used", body: `<div class="fs-notes">${esc(x.label)}: used.</div>`, flags: { flowstate: { mentalActDone: { card: message.id, i: Number(i) } } } });
 }
 wonders.setMental(self);
-registerMental({ concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+registerMental({ reflex: snappence.offerReflex, concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });

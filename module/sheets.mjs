@@ -24,6 +24,7 @@ import * as wonders from "./wonders.mjs";
 import * as chargesMod from "./charges.mjs";
 import * as forgingMod from "./forging.mjs";
 import * as ponderanceMod from "./ponderance.mjs";
+import * as snappenceMod from "./snappence.mjs";
 import * as concentration from "./concentration.mjs";
 import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
@@ -698,12 +699,13 @@ function actionGroups(actor, weapons, stats) {
   if (mTheory >= 1 && mctx.wonders.length) mentalRows.push({ label: "Dismiss a Wonder", detail: "Your own effects go freely; on someone else it's an attack roll (Range AP) they may dodge", cost: "Range AP", action: "dismissWonder", icon: "fa-solid fa-ban" });
   if (mTheory >= 5) mentalRows.push({ label: "Patron Wonder", detail: `Chosen when you rest${actor.getFlag("flowstate", "patron") ? ` (now: ${mentalRules.wonderById(actor.getFlag("flowstate", "patron"))?.name ?? "none"})` : ""}: aligned to it, its Manifests Enhance/Burst without the energy cost`, cost: "On a rest", action: "choosePatron", icon: "fa-solid fa-star" });
   // Concentration, Trance and the Ponderance Arts.
-  const ponderT = skills.tierOf(sys.trees, "mental-ponderance-arts");
+  const ponderT = skills.tierOf(sys.trees, "mental-ponderance-arts"), snapT = skills.tierOf(sys.trees, "mental-snappence-arts");
   const concs = concentration.list(actor);
   if (mTheory >= 1 && (concs.length || mTheory >= 2)) mentalRows.push({ label: `Concentration: ${concs.length} of ${concentration.cap(actor)}`, detail: concs.length ? concs.map(c => c.label).join("; ") + ". Direct damage costs 1 RP and a Willpower check or it breaks. Stop one here." : "Nothing yet. Direct damage costs 1 RP and a Willpower check or it breaks.", cost: "Free", action: "endConcentration", icon: "fa-solid fa-brain", disabled: !concs.length });
   if (mTheory >= 2 && mctx.wonders.length) mentalRows.push({ label: "Trance", detail: "8 hours with a willing target to make a Mode permanent on them, for as long as you concentrate on it (target them first)", cost: "8 hours (not in combat)", action: "trance", icon: "fa-solid fa-moon" });
   for (const e of ponderanceMod.premeditatedBy(actor)) mentalRows.push({ label: `Trigger ${e.name} on ${e.parent?.name ?? "?"}`, detail: `Takes hold when they ${e.flags.flowstate.spellEffect.trigger}. Ends at the start of your next turn if unused.`, cost: "Free", action: "triggerPremeditated", itemId: e.uuid, icon: "fa-solid fa-hourglass-half" });
   for (const e of ponderanceMod.tranceAbilities(actor)) mentalRows.push({ label: `Trance: ${e.name.replace(/^Trance: /, "")}`, detail: `${e.flags.flowstate.spellEffect.description} Target a creature first.`, cost: "Range AP", action: "useTrance", itemId: e.uuid, icon: "fa-solid fa-hand-sparkles" });
+  if (snapT >= 1 && mctx.wonders.length) mentalRows.push({ label: "Reflex", detail: `When a character you can sense begins an action, Manifest a Wonder first (target the one acting). Its effects are Weakened${snapT >= 3 ? " unless it's your Fixation" : ""}. Attacks offer this automatically.`, cost: snapT >= 5 && snappenceMod.afterimageReady(actor) ? "Free (Afterimage)" : "RP = Range AP + ⚡ half Scaling Stat min", action: "reflex", icon: "fa-solid fa-bolt" });
   if (ponderT >= 5 && concs.length > 1) mentalRows.push({ label: "Daydreaming", detail: "Choose which Concentration can't be broken", cost: "Free", action: "daydream", icon: "fa-solid fa-cloud" });
   if (psionT >= 1) mentalRows.push({ label: "Psion Sense", detail: `Spot check for mental energies within ${mctx.farSight ? 1000 : 100} ft`, cost: "Check", action: "psionSense", icon: "fa-solid fa-brain" });
   if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
@@ -711,7 +713,7 @@ function actionGroups(actor, weapons, stats) {
 
   // Reactions: every popup this character can be asked in someone else's turn, each with a switch to skip it (counts as "no").
   const reactionList = reactionRules.reactionRows(actor, { tenet: wonders.tenetOf(actor)?.id?.split(":")[1] ?? "", iconKind: actor.system.icon?.system.profile?.kind ?? "",
-    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, ponderance: ponderT, tier: w => skills.tierOf(sys.trees, w) });
+    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, ponderance: ponderT, snappence: snapT, tier: w => skills.tierOf(sys.trees, w) });
   const reactionRows = reactionList.map(r => ({ label: `${r.label}: ${r.off ? "skipped" : "asked"}`, detail: `${r.tip} ${r.off ? "You are not asked: it counts as no." : "A popup asks you when it comes up."}`,
     cost: r.off ? "Click to ask again" : "Click to skip", action: "martial", op: `reaction:${r.key}`, icon: r.off ? "fa-solid fa-bell-slash" : "fa-solid fa-bell" }));
 
@@ -794,6 +796,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       fluidity: function () { return mental.fluidity(this.document); },
       endConcentration: function () { return concentration.endDialog(this.document); },
       trance: function () { return ponderanceMod.trance(this.document); },
+      reflex: function () { return snappenceMod.reflexManual(this.document); },
       daydream: function () { return concentration.chooseDaydream(this.document); },
       triggerPremeditated: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.triggerPremeditated(this.document, e) : null; },
       useTrance: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.useTrance(this.document, e) : null; },

@@ -436,25 +436,23 @@
 
 **Tier 1: You gain the following ability:**
 
-- 
+- **Reflex: Cost: ***Energy equal to half of your Scaling Stat min, rounded down.*** When any character you can sense begins an action (attacking, dodging, moving, etc), you can use this ability. Manifest a Wonder in response, spending RP equal to your chosen Range’s AP cost. That Manifest resolves before the triggering action, but its effects are Weakened.
 
 **Tier 2: You gain the following ability:**
 
-- 
+- **Impulse: Cost: ***Energy equal to half of your Scaling Stat min, rounded down.*** Once per round, if your selected Tenet has already triggered this round and would trigger again, you can use this ability to apply it to that instance.
 
 **Tier 3: You gain the following passive:**
 
-- 
+- **Fixation:** At the start of your turn, declare a character you can sense. Whenever you use Reflex to react to an action by that character, that instance of Reflex is not Weakened.
 
 **Tier 4: You gain the following passive:**
 
-- 
+- **Nerve:** You have Advantage on the Willpower checks you make to maintain your Concentration.
 
 **Tier 5: You gain the following passive:**
 
-- 
-
-# 
+- **Afterimage:** Once per round, you can Manifest in reaction to a triggering action without spending RP or energy.
 
 # **Mental T4 Skill Trees** {#mental-t4-skill-trees}
 

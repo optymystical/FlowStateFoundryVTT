@@ -2,6 +2,14 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.58.0:** **Snappence Arts (new Mental T3 tree).**
+- **Reflex** (T1): when a character you can sense attacks, you're offered a Manifest first, for RP equal to the Range's AP cost and half the Wonder's Scaling Stat min in Energy; its effects are Weakened. Other actions (moving, dodging...) use the Action List row.
+- **Impulse** (T2): once a round, pay half the Scaling Stat min to apply your Tenet again after it already triggered (Tenet buttons, Balance, Infuse, Empower, Dampen, Adapt).
+- **Fixation** (T3): at the start of your turn you declare a character; Reflex against them isn't Weakened.
+- **Nerve** (T4): Advantage on the Willpower check that keeps a Concentration.
+- **Afterimage** (T5): once a round, Reflex costs no RP or Energy for the ability.
+- Reflex, Impulse and Fixation are switchable popups under Reactions.
+
 **0.57.0:** **Concentration, Trance and the Ponderance Arts (Mental doc changes).**
 - **Concentration:** you can concentrate on as many things as your Mental Theory tier. Taking direct damage costs 1 RP and a Willpower-die check (the result must at least match the damage), or every Concentration is lost; falling unconscious loses them all. Ending one (Action List: Concentration, or Dismiss) ends the effects it was keeping up, for free.
 - **Trance** (Mental Theory T2): an 8 hour activity (not in combat) that puts a permanent Mode on a creature and a Concentration on you. At the start of their turn they make a self attack roll; a hit applies the Mode (last round's copy is replaced). Nightmare Modes become abilities of the target instead.

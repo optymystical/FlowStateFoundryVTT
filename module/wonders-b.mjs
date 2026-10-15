@@ -13,7 +13,7 @@ import * as R from "./mental-rules.mjs";
 import { askFor, runOnOwner, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
-import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, mantraHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = f => new Roll(f).evaluate();
@@ -140,14 +140,15 @@ export async function anyHit({ attacker, target, result, hitKey = null }) {
     if (!mayHelp(a, attacker)) continue;                                        // "a willing character": not across the two sides of the scene
     const ta = attackerToken(a), tb = attackerToken(attacker);
     if (ta && tb && globalThis.canvas?.grid && tokenDistance(ta, tb) > 100) continue;
-    if (onceUsed(a, "infuse")) continue;
+    const again = onceUsed(a, "infuse");
+    if (again && !impulseHook.can(a)) continue;
     const act = { id: "infuse", label: "Infuse", tip: "Apply one of your Destruction Modes to this hit (not Enhanced, no Fusion), its damage Weakened", cost: "once per round", caster: a.uuid, target: target.uuid };
     const ans = await askFor(a, { react: "infuse", title: "Infuse (Tenet)", ok: "Use Infuse", html: `<p><strong>Infuse</strong>: ${esc(act.tip)}.</p><p>${esc(attacker.name)} hit ${esc(target.name)}. Use it now? (If not, it comes up again the next time a willing character within 100 ft hits something this round.)</p>` });
-    if (ans) await runOnOwner(a, act);
+    if (ans && (!again || await impulseHook.use(a, "Infuse"))) await runOnOwner(a, { ...act, ...(again ? { again: true } : {}) });
   }
 }
 ACTS.infuse = async (x, caster, target) => {
-  if (!(await tryOnce(caster, "infuse"))) { ui.notifications.info("Infuse: already used this round."); return false; }
+  if (!x.again && !(await tryOnce(caster, "infuse"))) { ui.notifications.info("Infuse: already used this round."); return false; }          // `again`: Impulse paid for a second use
   const w = R.knownWonders(caster.system.trees).find(w => w.id === ids.dest);
   const mode = R.modeById(await mental.pickMode(caster, w?.modes ?? [], "Infuse: which Mode?"));
   if (!mode) return false;
@@ -519,9 +520,10 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     for (const a of actorsInPlay()) {
       const tn = tenetOf(a);
       if (tn?.id !== "mental-war-nightmare:empower" || !near100(a, target) || !mayHarm(a, target)) continue;           // a Nightmare: never on an ally's damage
-      if (await tryOnceCheck(a, "empower")) {
+      const again = onceUsed(a, "empower");
+      if (!again || impulseHook.can(a)) {
         const ans = await askFor(a, { react: "empower", title: `${a.name}: Empower`, ok: "Empower", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage${attacker ? ` from ${esc(attacker.name)}` : ""}. Increase it by <strong>${tn.mult}d10</strong>?</p>` });
-        if (ans) { await markUsed(a, "empower"); n += await dealDice(await mantraHook.offer(a, tn.mult, "Empower"), 10, "Empower", notes); buffs.push({ caster: a.uuid, power: tn.mult, mode: null }); }
+        if (ans && (!again || await impulseHook.use(a, "Empower"))) { await markUsed(a, "empower"); n += await dealDice(await mantraHook.offer(a, tn.mult, "Empower"), 10, "Empower", notes); buffs.push({ caster: a.uuid, power: tn.mult, mode: null }); }
       }
     }
     // Warmonger (War T2): buffed damage gets 1d12 more, for Energy.
@@ -568,9 +570,10 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
   for (const a of actorsInPlay()) {
     const tn = tenetOf(a);
     if (tn?.id !== "mental-peace-dream:dampen" || !near100(a, target) || n <= 0 || !mayHelp(a, target)) continue;       // a Dream: never to a foe's benefit
-    if (!(await tryOnceCheck(a, "dampen"))) continue;
+    const again = onceUsed(a, "dampen");
+    if (again && !impulseHook.can(a)) continue;
     const ans = await askFor(a, { react: "dampen", title: `${a.name}: Dampen`, ok: "Dampen", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Reduce it by <strong>${tn.mult}d10</strong>?</p>` });
-    if (ans) { await markUsed(a, "dampen"); n -= await dealDice(await mantraHook.offer(a, tn.mult, "Dampen"), 10, "Dampen", notes); }
+    if (ans && (!again || await impulseHook.use(a, "Dampen"))) { await markUsed(a, "dampen"); n -= await dealDice(await mantraHook.offer(a, tn.mult, "Dampen"), 10, "Dampen", notes); }
   }
   for (const e of fx(target, "guard")) {
     const d = dataOf(e), caster = fromU(d.caster);
@@ -618,7 +621,6 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
 }
 
 /** Once-per-round without marking it yet (the prompt may be declined). */
-const tryOnceCheck = async (a, id) => !onceUsed(a, id);
 const markUsed = (a, id) => markOnce(a, id);
 
 /** Guard (Enhanced): damage redirected for later lands at the start of the Guard user's turn. */
@@ -649,9 +651,11 @@ MISS_PROVIDERS.push(async c => {
 
 /** Adapt (Adaptation Tenet): when you would Manifest, spend a stack to make that Manifest Strengthened (once per round). Returns the extra Strengthened stacks. */
 export async function offerAdapt(actor) {
-  if (tenetOf(actor)?.id !== "mental-adaptation-dream:adapt" || !stacksOf(actor).length || onceUsed(actor, "adapt")) return 0;
+  if (tenetOf(actor)?.id !== "mental-adaptation-dream:adapt" || !stacksOf(actor).length) return 0;
+  const again = onceUsed(actor, "adapt");
+  if (again && !impulseHook.can(actor)) return 0;
   const yes = await foundry.applications.api.DialogV2.confirm({ window: { title: "Adapt (Tenet)" }, rejectClose: false, content: `<p><strong>Adapt</strong>: spend one of your ${stacksOf(actor).length} Adaptation stack${stacksOf(actor).length === 1 ? "" : "s"} to make this Manifest Strengthened?</p><p class="hint">If not, it comes up again the next time you Manifest this round.</p>` });
-  if (!yes) return 0;
+  if (!yes || (again && !(await impulseHook.use(actor, "Adapt")))) return 0;
   await markOnce(actor, "adapt");
   await spendStacks(actor, 1);
   return (await mantraHook.offer(actor, 1, "Adapt")) > 1 ? 2 : 1;          // Mantra: a second Strengthened stack

@@ -37,6 +37,8 @@ export const tenetUses = () => 1;
 /** Has this actor already used this "once per round" thing this round (Tenets: as many times as they may per round)? */
 /** Mantra (Ponderance T2) is asked when a Tenet is used: ponderance.mjs sets `offer(actor, mult) -> the (possibly doubled) mult`. */
 export const mantraHook = { offer: async (_actor, mult) => mult };
+/** Impulse (Snappence T2): a Tenet that already triggered this round may apply once more. snappence.mjs sets `can(actor)` and `use(actor, label)` (asks and pays). */
+export const impulseHook = { can: () => false, use: async () => false };
 export const forethought = { on: false };      // Ponderance T4: a Premeditated Wonder's Tenet applies outside the once per round limit
 export function onceUsed(actor, id) {
   if (forethought.on) return false;
@@ -341,6 +343,14 @@ export function actButtons(acts) {
 
 /** A button on one of our follow-up cards was clicked: do it. Returns true if it was used. */
 export async function runAct(x) {
+  const c = x.tenet ? await fromUuid(x.caster) : null;
+  if (c?.isOwner && onceUsed(c, x.id) && await impulseHook.use(c, x.label ?? x.id)) {          // Impulse: this Tenet applies again
+    forethought.on = true;
+    try { return await runActOnce(x); } finally { forethought.on = false; }
+  }
+  return runActOnce(x);
+}
+async function runActOnce(x) {
   const caster = await fromUuid(x.caster), target = await fromUuid(x.target);
   if (!caster?.isOwner) { ui.notifications.warn(`Only ${caster?.name ?? "the Mental user"}'s owner can do that.`); return false; }
   if (["chant", "makeClear", "wobs"].includes(x.id)) return mental.theoryAct(x);

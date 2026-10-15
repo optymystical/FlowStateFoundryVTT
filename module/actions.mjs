@@ -1503,6 +1503,7 @@ const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots",
  * Full stealth skips step 1's choice (targets can't react). Without targets, rolls everything at once.
  */
 export async function performAttack(actor, opts) {
+  await mentalHook?.reflex?.(actor, opts);                                                      // Reflex (Snappence Arts): others may Manifest before this action resolves
   // Taunt (Constitution T2): note when a Taunted creature attacks someone else.
   const taunt = actor.getFlag?.("flowstate", "tauntedBy");
   if (taunt) {

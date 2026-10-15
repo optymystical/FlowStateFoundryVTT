@@ -430,8 +430,8 @@ async function amplifySpell(entry, gain = 1) {          // `gain`: Power levels 
     return `${entry.label} is amplified: Power ${p} → ${p + gain}${upd.damage ? `, ${dmg[0]} → ${upd.damage}` : ""}. It lands with the new numbers.`;
   }
   if (entry.kind === "barrier") {
-    await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 20 * gain, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 20 * gain, amplified: true } });
-    return `The barrier gains ${20 * gain} health (20 × ${gain} Power).`;
+    await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 10 * gain, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 10 * gain, amplified: true } });
+    return `The barrier gains ${10 * gain} health (10 × ${gain} Power).`;
   }
   if (entry.kind === "summon") return "A Summon's points are set when it is made: Amplify changes nothing.";
   const d = data(entry.effect), p = Math.max(1, d.power ?? 1);

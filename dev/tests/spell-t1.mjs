@@ -320,7 +320,7 @@ delete hero.system.trees["magic-grasp-arcana"];
 console.log("== Emplace and one Replacement at a time");
 target(null); seq = []; messages.length = 0;
 await cast("magic-protection-arcana:shield", { [M("magic-protection-arcana:emplace")]: true });
-ok2(/one-way barrier/.test(text(messages.at(-1))) && /60 health/.test(text(messages.at(-1))), "Emplace puts up a one-way barrier card (20 × Power health)");
+ok2(/one-way barrier/.test(text(messages.at(-1))) && /30 health/.test(text(messages.at(-1))), "Emplace puts up a one-way barrier card (the Shield's 10 × Power health)");
 const twoRep = S.planCast(C.castContext(hero), { ...baseVals, core1: "magic-gravity:force", [M("magic-gravity:burden")]: true, [M("magic-gravity:lighten")]: true, "replace:magic-gravity:burden": true, "replace:magic-gravity:lighten": true });
 ok2(!twoRep.ok && /Only one Replacement/.test(twoRep.errors.join(" ")), "Two Replacement Mods can't both replace the base effect");
 let dlgHtml = "";

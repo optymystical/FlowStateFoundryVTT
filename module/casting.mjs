@@ -14,8 +14,8 @@ import * as arcana from "./arcana.mjs";
 import * as fociFx from "./foci.mjs";
 import { castsTwice, attunedAffixKeys } from "./magic.mjs";
 import { STATS, applyStacks } from "./rules.mjs";
-/** An Emplace barrier's health: 20 × Power, scaled by any Strengthened/Weakened on the caster (it has no roll to carry them). */
-const emplaceHealth = (actor, plan) => applyStacks(20 * plan.power, castStacks(actor, plan));
+/** An Emplace barrier's health: the Shield's 10 × Power (Emplace applies the Shield's effects as a one-way Shield), scaled by any Strengthened/Weakened on the caster (it has no roll to carry them). */
+const emplaceHealth = (actor, plan) => applyStacks(10 * plan.power, castStacks(actor, plan));
 import { tierOf } from "./skills.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);

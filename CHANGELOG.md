@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.61.2:** **Emplace barrier health** is the Shield's 10 × Power (it was still the old 20 × Power), and Amplify adds 10 per Power level to a barrier.
+
 **0.61.1:** **Shown numbers match applied numbers.**
 - **Mental:** charge names, descriptions and dialogs, the Order sign options, Tenet tips and popups (Verdant Soul, Mortal Coil, Weight, Gust, Ego), Ward text (with Alignment's Strengthened), Eclipse, Flourish, Redirect, Vice, Absolution, Adaptive Skin and Umbral Strike now show the scaled values; Pacify and Dampen reductions read "−".
 - **Magic:** the Cast Spell dialog, Mod tooltips (a ticked Replacement doubles them), the Skills tab and the cast card scale check targets, Prolong/Linger counts, Hold, Telegraph, Freeze, Form/Animate points, Grade, Body, Amplify and Rip; Combo rider text stays "per level"; the Slam + Hex choice shows the scaled die size; Poison, Hex and Charm cards show the real check target, count and stacks (Weakened too); Hold on a grappled target shows the stacked total; Amplify and Mirage updates keep effect names and descriptions in step.

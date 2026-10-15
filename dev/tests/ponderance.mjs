@@ -210,6 +210,28 @@ ok2(await W.mantraHook.offer(hero, mult0, "Verdant Soul") === mult0, "…not off
 hero.system.energy.value = eMax;
 tree("mental-ponderance-arts", 1);
 ok2(await W.mantraHook.offer(hero, mult0, "Verdant Soul") === mult0, "…and not before Ponderance Arts Tier 2");
+
+console.log("== Mantra with Adapt and Infuse");
+tree("mental-ponderance-arts", 2); tree("mental-adaptation-dream", 3); tree("mental-destruction-nightmare", 3);
+const WBm = await import("../../module/wonders-b.mjs");
+ic.system.tenet = "mental-adaptation-dream:adapt"; refresh();
+await resetC(); hero.flags.flowstate.mentalOnce = undefined;
+await putSpellEffect(hero, { kind: "adaptation", stack: true, caster: hero.uuid, name: "Adaptation", mode: "mental-adaptation-dream:crescendo" });
+dialog = () => ({}); confirmAnswer = true;
+ok2(await WBm.offerAdapt(hero) === 2, "Adapt with Mantra gives a second Strengthened stack");
+await putSpellEffect(hero, { kind: "adaptation", stack: true, caster: hero.uuid, name: "Adaptation", mode: "mental-adaptation-dream:crescendo" });
+hero.flags.flowstate.mentalOnce = undefined; dialog = () => null;
+ok2(await WBm.offerAdapt(hero) === 1, "…and one without it");
+ic.system.tenet = "mental-destruction-nightmare:infuse"; refresh();
+const dest = (await import("../../module/mental-rules.mjs")).wonderById("mental-destruction-nightmare").modes[0].id;
+const seen = []; const orig = W.MODES[dest]; W.MODES[dest] = async c => { seen.push(c.stacks); return "ok"; };
+for (const [label, ans, want] of [["without Mantra", null, -1], ["with Mantra", {}, 0]]) {
+  hero.flags.flowstate.mentalOnce = undefined; seen.length = 0;
+  dialog = h => (typeof h === "string" && /Mantra/.test(h)) || (h?.title === "Mantra") ? ans : dest;
+  await W.ACTS.infuse({ id: "infuse", caster: hero.uuid, target: orc.uuid }, hero, orc);
+  ok2(seen[0] === want, `Infuse ${label}: ${want === 0 ? "no Weakened stack" : "Weakened"}`);
+}
+W.MODES[dest] = orig;
 tree("mental-ponderance-arts", 0);
 
 if (fails) { console.log(`${fails} FAILED`); process.exit(1); }

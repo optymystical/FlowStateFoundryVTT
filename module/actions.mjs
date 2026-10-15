@@ -3872,7 +3872,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
       await requestDamage(target, applyStacks(roll.total, stackBonus), "physical", 0, null, { silent: false });
     } else {
       const size = target.system.size ?? 3;
-      const min = Math.max(1, bold(Math.floor(2 * sp.power * mult * Math.pow(2, 3 - size))));
+      const min = Math.max(1, Math.floor(2 * sp.power * mult * stackMultiplier(stackBonus) * Math.pow(2, 3 - size)));          // the stacks scale the bolded 2, before the size halving rounds it
       await setGrapple(target, attacker.uuid);
       await putSpellEffect(target, { kind: "hold", caster, name: `Held by ${esc(attacker.name)} (≥ ${min})`, holdMin: min, ritualOf,
         description: `Magically held: breaking free needs a roll of ${min} or more. Ends at the start of the caster's next turn.` });
@@ -3938,7 +3938,7 @@ async function spellDamageFacts(profile, o, attacker, target, defense, dmgOpts) 
   const dodgeMax = 2 * Math.max(1, Math.floor((target.system.skillPoints ?? 0) / 2));
   const lowDodge = defense.dodge != null && defense.dodge <= dodgeMax / 3;
   const tg = sp.telegraph;
-  const telegraphRange = tg ? 1 * sp.power : 0;
+  const telegraphRange = tg ? applyStacks(sp.power, (o.stacks ?? 0) + (defense.result?.critStacks ?? 0)) : 0;          // "within 1" is bolded: Power and the stacks scale it
   const telegraphHit = !!tg && defense.dodge != null && Math.abs(defense.dodge - tg.guess) <= telegraphRange;
   return { living, direct, crit: !!defense.result?.crit, lowDodge, telegraphHit, telegraphRange, telegraphGuess: tg?.guess,
     cookCount: elem?.countFor(attacker, "heatDealt", target.uuid) ?? 0, energyZeroBefore: (target.system.energy?.value ?? 0) <= 0,
@@ -4887,7 +4887,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const profile = spellProfile(o);
   let spellPlan = null, spellFacts = null;
   if (profile?.damage) {
-    spellFacts = await spellDamageFacts(profile, o, attacker, target, defense, { pierce: o.pierce ?? 0, halfLimit: !!o.spell?.mods?.weakpoint, parryItems: guard.items, bash: o.bash || 0,
+    spellFacts = await spellDamageFacts(profile, o, attacker, target, defense, { pierce: o.spell?.pierceBold != null ? applyStacks(o.spell.pierceBold, (o.stacks ?? 0) + (defense.result.critStacks ?? 0)) + (o.spell.pierceFlat ?? 0) : (o.pierce ?? 0), halfLimit: !!o.spell?.mods?.weakpoint, parryItems: guard.items, bash: o.spell ? applyStacks(o.bash || 0, (o.stacks ?? 0) + (defense.result.critStacks ?? 0)) : (o.bash || 0),
       shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), barriers: barriersFor(attacker, target) } });
     spellPlan = fx.damageDice(profile, o.spell.power, spellFacts, o.spell.mods ?? {});
   }
@@ -4923,7 +4923,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const mflat = (md?.flat ?? 0) + (defense.result?.mentalDmg ?? 0);
   const line = damageLine(flat || mflat ? base.totals.map((t, i) => Math.max(0, t + flat + (i === 0 ? mflat : 0))) : base.totals, stacks, type, shots);
   // Omega (Swift T5): Heavy Swift attacks let Strengthened/Weakened change their Pierce value too.
-  const pierceNow = o.omega && o.pierce ? applyStacks(o.pierce, stacks) : (o.pierce ?? 0);
+  const pierceNow = o.spell ? (o.spell.pierceBold != null ? applyStacks(o.spell.pierceBold, stacks) + (o.spell.pierceFlat ?? 0) : (o.pierce ?? 0)) : o.omega && o.pierce ? applyStacks(o.pierce, stacks) : (o.pierce ?? 0);          // a spell's Pierce and Bash are bolded: the stacks scale them
+  const bashNow = o.spell ? applyStacks(o.bash || 0, stacks) : (o.bash || 0);
 
   let extraHTML = spellPlan?.notes.length ? `<div class="fs-notes">${spellPlan.notes.map(esc).join(" · ")}</div>` : "";
   if (flat) extraHTML += `<div class="fs-notes">Rend: +${flat} damage (Scaling Stat min)</div>`;
@@ -4939,7 +4940,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     extraHTML += `<div class="fs-notes">Knockback: up to ${force} Force → ${feet} ft${crunchFeet > feet ? ` (${crunchFeet} ft with Crunch Time)` : ""}${lash > 1 ? ` (Dragon Lash ×${lash})` : ""}</div>`;
     if (Math.max(feet, crunchFeet) > 0) kb = { attacker: attacker.uuid, target: target.uuid, force, feet, label: "Knockback" };
   }
-  if (pierceNow) extraHTML += `<div class="fs-notes">Pierce ${pierceNow}${pierceNow !== o.pierce ? ` (${o.pierce} with Omega: ${stackLabel(stacks)})` : ""}: ignores that much armor Limit</div>`;
+  if (pierceNow) extraHTML += `<div class="fs-notes">Pierce ${pierceNow}${pierceNow !== o.pierce ? ` (${o.pierce} ${o.omega ? "with Omega" : "base"}: ${stackLabel(stacks)})` : ""}: ignores that much armor Limit</div>`;
 
   // Aimed at an equipped item: the item is the target, so its Limit doesn't apply and it loses Durability instead.
   if (o.aimItem) {
@@ -5027,7 +5028,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (cleave) extraHTML += `<div class="fs-notes">Cleave ${cleave}: object damage, hits Limits first${o.striker ? "; what gets past them hits the creature (Blood and Iron)" : ""}</div>`;
 
   // The outcome (soak, HP lost) goes on this card; the owner (or GM) applies it without a separate card.
-  const dmgOpts = { pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: o.bash || 0, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
+  const dmgOpts = { pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: bashNow, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
     shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
       barriers: barriersFor(attacker, target) }, mentalDone: true };
   // Limits apply to each instance on its own.
@@ -5122,7 +5123,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   for (const [i, amt] of amounts.entries()) await requestDamage(target, amt, type, pierceNow, null, { silent: true, ...dmgOpts, wardDone: !!wards[i], wardReflect: wards[i]?.reflect ?? null });
   if (ripHTML) await requestDamage(target, incoming + wardCut, type, pierceNow, null, { silent: true, ...dmgOpts });                       // a second instance: a Ward may answer it again
   // A Summon's or Animation's attacks carry the Core they were Combo'd with (Any T1/T2/T3 + Summoning / Animation).
-  if (conj && !o.spell) await conj.riderAfter({ attacker, target, o, outcome, defense });
+  if (conj && !o.spell) await conj.riderAfter({ attacker, target, o, outcome, defense, stacks });
   if (foci && o.spell?.fociFx) await foci.afterDamage({ attacker, o, type });
 }
 

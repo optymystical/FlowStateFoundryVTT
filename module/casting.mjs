@@ -4,7 +4,7 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { aimableItems, post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost } from "./actions.mjs";
+import { aimableItems, post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost, castStacks } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
@@ -13,7 +13,9 @@ import * as conjure from "./conjure.mjs";
 import * as arcana from "./arcana.mjs";
 import * as fociFx from "./foci.mjs";
 import { castsTwice, attunedAffixKeys } from "./magic.mjs";
-import { STATS } from "./rules.mjs";
+import { STATS, applyStacks } from "./rules.mjs";
+/** An Emplace barrier's health: 20 × Power, scaled by any Strengthened/Weakened on the caster (it has no roll to carry them). */
+const emplaceHealth = (actor, plan) => applyStacks(20 * plan.power, castStacks(actor, plan));
 import { tierOf } from "./skills.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
@@ -340,7 +342,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
     const originTok = rangedPlusArea ? (aim?.object ?? aim) : null;
     const layered = (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0);
     placed = await areas.placeArea(actor, { title: emplace ? "Emplace" : mods.blast && !mods["gravity field"] ? "Blast" : "Gravity Field", scale: (mods.snipe ? 2 : 1) * agate, aim, origin: originTok?.center ? originTok : null,
-      facing: emplace, flags: { spell: emplace ? "emplace" : mods.blast && !mods["gravity field"] ? "blast" : "gravity field", ...(emplace ? { health: 20 * plan.power + layered, limit: 20 * plan.power + layered, reactive: !!mods.reactive, casterUuid: actor.uuid } : {}) } });
+      facing: emplace, flags: { spell: emplace ? "emplace" : mods.blast && !mods["gravity field"] ? "blast" : "gravity field", ...(emplace ? { health: emplaceHealth(actor, plan) + layered, limit: emplaceHealth(actor, plan) + layered, reactive: !!mods.reactive, casterUuid: actor.uuid } : {}) } });
     if (placed === null) return null;                                    // cancelled: nothing is spent
     if (placed && !emplace) targets = placed.actors.map(a => ({ actor: a }));
     // Mold (Reach Arcana T3): you choose who in the area is attacked.
@@ -433,7 +435,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   if (emplace) {
     // The barrier is a real one-way Wall (movement only), made through the GM; its template holds the health.
     if (placed?.tpl) await requestGM("createWalls", { sceneId: placed.sceneId, walls: areas.wallData(placed.tpl, placed.front, placed.grid, { barrierOf: placed.templateId, areaOf: actor.uuid }) });
-    await emplaceCard(actor, { health: 20 * plan.power + (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0), shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId, sceneId: placed?.sceneId, walls: !!placed?.tpl });
+    await emplaceCard(actor, { health: emplaceHealth(actor, plan) + (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0), shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId, sceneId: placed?.sceneId, walls: !!placed?.tpl });
   }
   else if (strikeSpec && Object.keys(strikeSpec).length) { await arcana.resolveStrike({ actor, plan, profile, mods, spec: strikeSpec, ritualOf }); }
   else if (conjureCast) { if (!plan.ritual) await conjure.resolve({ actor, plan, profile, spec: cjSpec, mods, ritualOf, targets, values }); }
@@ -503,7 +505,7 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
     damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: 0,
     notes: [...notes, plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
-    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area && !mods.absorb, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
+    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, pierceBold: mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0, pierceFlat: plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin : 0, singleRoll: area && !mods.absorb, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
       ...(plan.fociFx ? { fociFx: plan.fociFx } : {}),
       ...(profile.arcana?.kind === "mirage" ? { ritualFree: plan.t3Free ?? null, arcana: { sense: values?.sense, fidelity: values?.fidelityKind, fidelityRoll: values?.fidelityRoll } } : {}),
       ...(profile.afflict ? { ritualFree: plan.t3Free ?? null, afflict: { charmRoll: values?.charmRoll, hexDie: values?.hexDie, hex: { trigger: values?.hexTrigger, roll: values?.hexRoll, outcome: values?.hexOutcome, detail: values?.hexDetail } } } : {}) }

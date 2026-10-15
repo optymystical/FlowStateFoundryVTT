@@ -583,7 +583,7 @@ async function reform(caster) {
 /* -------------------------------------------- */
 
 /** After a creation's weapon attack dealt its damage: the Combo Core's extra effect. */
-export async function riderAfter({ attacker, target, o, outcome, defense }) {
+export async function riderAfter({ attacker, target, o, outcome, defense, stacks = 0 }) {
   let r = summonOf(attacker)?.rider ?? null, ritualOf = summonOf(attacker)?.ritualOf ?? null, ownerUuid = summonOf(attacker)?.owner ?? attacker.uuid, fear = !!summonOf(attacker)?.fear;
   if (o.itemUuid) {
     const item = await fromUuid(o.itemUuid);
@@ -624,7 +624,7 @@ export async function riderAfter({ attacker, target, o, outcome, defense }) {
     const sides = rd.dice[1] + (rd.livingDie && living && direct ? rd.livingDie : 0);
     const dmg = await roll(`${rd.dice[0] * level}d${sides}`);
     rolls.push(dmg);
-    const total = applyStacks(dmg.total, rd.critStack && defense?.result?.crit ? rd.critStack : 0);
+    const total = applyStacks(dmg.total, stacks + (rd.critStack && defense?.result?.crit ? rd.critStack : 0));          // the attack's own stacks (a crit, the weapon...) scale the rider too
     const dtype = r.arcane ? "arcane" : rd.type;
     const out = await damageOutcome(target, total, dtype, { archetype: "magic" });
     const res = await requestDamage(target, total, dtype, 0, null, { wantResult: true, silent: true, archetype: "magic" });
@@ -634,18 +634,18 @@ export async function riderAfter({ attacker, target, o, outcome, defense }) {
     if (rd.stain) { const l = await giveStacks(target, "stain", dealt, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
     if (rd.energy) { const e = await removeEnergy(target, dealt); html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${e.removed} Energy</strong> (${e.remaining} left).</div>`); }
     if (rd.dodgeDie) {
-      const amt = rd.dodgeDie * level;
+      const amt = Math.max(0, applyStacks(rd.dodgeDie * level, stacks));
       await putSpellEffect(target, { kind: "dodgeDie", caster: ownerUuid, name: `Dodge −${amt} die size`, dodgeDie: amt, ritualOf, description: `Dodge dice are ${amt} sizes smaller until the start of the caster's next turn (doesn't stack).` });
       html.push(`<div class="fs-notes">${esc(target.name)}'s dodge dice suffer <strong>−${amt} die size</strong> until the start of your next turn.</div>`);
     }
-    if (rd.chain) acts.push({ act: "arc", from: target.uuid, attacker: attacker.uuid, n: rd.dice[0] * level, sides, type: dtype, stacks: 0, label: "Chain" });
+    if (rd.chain) acts.push({ act: "arc", from: target.uuid, attacker: attacker.uuid, n: rd.dice[0] * level, sides, type: dtype, stacks, label: "Chain" });
   }
   if (rd.force) {
-    const f = await spellForce(attacker, target, { stacks: 0 }, { critStacks: 0 }, { n: rd.force[0] * level, sides: rd.force[1] }, "Force");
+    const f = await spellForce(attacker, target, { stacks: 0 }, { critStacks: 0 }, { n: rd.force[0] * level, sides: rd.force[1] }, "Force", stacks);
     html.push(f.html); rolls.push(...f.rolls); push = f.push;
   }
   if (rd.poison && living && direct) {
-    await A.applyPoison(target, { kind: "poison", caster: ownerUuid, ritualOf: null, ritual: false, n: 3 * level, sides: 6, type: "health", bypassArmor: false, force: false, livingDie: 0, halfStrength: false, dodgeDie: 0,
+    await A.applyPoison(target, { kind: "poison", caster: ownerUuid, ritualOf: null, ritual: false, n: 3 * level, sides: 6, type: "health", bypassArmor: false, force: false, livingDie: 0, halfStrength: false, dodgeDie: 0, stacks,
       ignite: false, stain: false, energy: false, arc: false, prolong: 0, lethality: 0, potency: false, virality: false, power: level, procs: 0, checks: 0 }, caster);
   }
   if (rd.charm && living) {
@@ -657,7 +657,7 @@ export async function riderAfter({ attacker, target, o, outcome, defense }) {
   }
   if (rd.hex && living) {
     const a = fx.PROFILES["magic-witchery:hex"].afflict;
-    const h = A.hexData(a, { mods: {} }, { caster: ownerUuid, power: level, ritualOf }, { hex: r.hex, hexDie: r.hexDie }, { name: "Hex" });
+    const h = A.hexData(a, { mods: {} }, { caster: ownerUuid, power: level, ritualOf, stacks }, { hex: r.hex, hexDie: r.hexDie }, { name: "Hex" });
     await putSpellEffect(target, A.hexEffect(h, { name: "Hex" }));
     await A.secret(target, caster, { title: `${esc(attacker.name)} — Hex`, body: A.hexCard(target, h), flags: A.hexFlags(target, h) });
   }

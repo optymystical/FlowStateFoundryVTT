@@ -254,7 +254,7 @@ ok2(orc.system.hp.value === 432 - (30 + 10) * 2 || orc.system.hp.value < 432 - 3
 target(orc); seq = [25]; await cast("magic-piercing:stab", { [M("magic-piercing:pierce")]: 2 });
 ok2(lastAtk().flags.flowstate.attack.opts.pierce === 60, "Pierce ×2 at Power 3: 2 × 10 × 3 = Pierce 60");
 seq = [12]; await actions.defend(lastAtk(), 0, "dodge"); seq = [10]; await actions.rollExchangeDamage(last());
-ok2(/Pierce 60/.test(text(last())), "The damage card shows the Pierce");
+ok2(/Pierce (\d+) \(60 base/.test(text(last())) && Number(/Pierce (\d+) \(60 base/.exec(text(last()))[1]) > 60, "The damage card shows the Pierce, scaled up by the hit's Strengthened stacks (it is a bolded number)");
 
 console.log("== Exploit: consumes Advantage, refunds the rest");
 orc.system.hp.value = 432; target(orc); seq = [25];

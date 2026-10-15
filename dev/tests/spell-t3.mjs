@@ -125,6 +125,14 @@ clean(); await land("magic-venomancy:poison"); target(gob); await A.act(lastMsgW
 seq = [9]; await A.turnStart(gob);
 ok2(gob.system.hp.value === 432 && eff(gob, "poison").length === 0, "A passed check: no health lost, and the Poison still ends");
 
+console.log("== Poison carries the stacks it was cast with");
+clean(); await land("magic-venomancy:poison", {}, 30);
+const critCoat = eff(orc, "coat")[0];
+ok2(critCoat?.flags.flowstate.spellEffect.poison.stacks === 2, "A critical hit stores the crit's two Strengthened stacks on the Poison");
+target(gob); await A.act(lastMsgWith("afflict"), 0);
+seq = [2, 10]; await A.turnStart(gob);
+ok2(gob.system.hp.value === 432 - 20, `…and each tick is doubly Strengthened (10 → 20; HP ${gob.system.hp.value})`);
+
 console.log("== Poison Mods");
 const poisoned = async (core, extra = {}, core2 = "") => { clean(); await land(core, extra, 20, core2); target(gob); await A.act(lastMsgWith("afflict"), 0); return eff(gob, "poison")[0]; };
 await poisoned("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 });

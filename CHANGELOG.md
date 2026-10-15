@@ -2,6 +2,10 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.60.0:** **Strengthened/Weakened now scale every bolded number (audit).**
+- **Mental:** a Ward's amounts are scaled by a crit on its activation roll and by an Area Ward that hits more than two targets (Weakened); Reverie's cap and growth by Alignment's Strengthened. Enhanced Mandate damage (±10), damage-roll Fracture (±3, was 2) and the manual charge dialog scale with Power and stacks. A Weakened Burden is no longer held at 3 to escape. Dispersion counts a crit's stacks. Umbral Strike's damage is Power d8 scaled by the Manifest's stacks. Warmonger's 1d12 scales with the buffing Mode's stacks.
+- **Magic:** Poison, Hex and combo Charms (and their Force, dice, Ignite/Stain/Energy extras and die-size penalties) keep the stacks they were cast with and use them every tick; Summon, Animation and Made riders use the attack's stacks; a spell's Pierce and Bash, Telegraph's tolerance, Hold's minimum, Phantom Pain, Strike on a Spell and Combo Force go through the stacks too. Slam + Acid's 1 Stain is now × Power and scaled; object-aimed Ignite/Stain no longer scales twice.
+
 **0.59.1:** **Dispersion works on magically made things.** Summons, Animations (the `summon` marker) and Made items (the `made` marker) can be dispersed; they lose 20 × Power health or durability, and the attack goes at their creator.
 
 **0.59.0:** **Light (Dream) and Dark (Nightmare) Wonders.**

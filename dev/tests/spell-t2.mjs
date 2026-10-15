@@ -247,7 +247,7 @@ ok2(cond("stain") === 2 * 10 * 2, `Stab + Glob: a crit applies two times the dam
 reset(); reset2(); target(orc); seq = [20]; await cast("magic-crushing:slam", C2(0, "magic-acid:glob"));
 ok2(dmgOf() === "", "Slam + Glob deals no damage");
 seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
-ok2(cond("stain") === 1 + 2 * (20 - 12), `…but applies 1 Stain plus twice the attack-roll margin (${cond("stain")})`);
+ok2(cond("stain") === 3 + 2 * (20 - 12), `…but applies 1 Stain × Power (3) plus twice the attack-roll margin (${cond("stain")})`);
 
 console.log("== Pure T2 Combos");
 reset(); reset2(); target(orc); seq = [20]; await cast("magic-heat:flame", C2(0, "magic-cold:frost"));

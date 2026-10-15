@@ -202,13 +202,14 @@ export async function mirageHit({ attacker, target, o, result, profile }) {
   const out = { html: "", rolls: [] };
   if (sp.ritualFree) { const r = Array.from(attacker.effects ?? []).find(e => e.id === sp.ritualFree); if (r) await r.update({ "flags.flowstate.ritual.freeCasts": 0 }); }
   // Every Strengthened/Weakened stack on the Mirage (a crit, a Mod, anything on the caster) scales its Power.
-  const power = applyStacks(a.power * Math.max(1, sp.power), (o.stacks ?? 0) + (result.critStacks ?? 0) + castStacks(attacker, sp));
+  const stacksOn = (o.stacks ?? 0) + (result.critStacks ?? 0) + castStacks(attacker, sp);
+  const power = applyStacks(a.power * Math.max(1, sp.power), stacksOn);
   const slug = a.chart ? a.chart.split(":")[0].replace("magic-", "") : null;
   const chartText = a.chart === "magic-arcanomancy:strike" ? "The target believes their Magic has ultimately failed them: all their Magical attacks are at Disadvantage and Weakened, and prompt a Power check on cast."
     : slug ? COMBO_ILLUSION[slug === "witchery" ? "hex" : slug] : null;
   const fid = m.fidelity ? { kind: ch.fidelity === "dis" ? "dis" : "fear", roll: ch.fidelityRoll || "attack" } : null;
   const eff = { kind: "mirage", stack: true, onTargetTurn: !sp.ritualOf, caster: attacker.uuid, ritualOf: sp.ritualOf ?? null, ritual: !!sp.ritualOf, name: `${profile.name}${a.chart ? "" : ` (${ch.sense || "sight"})`}`,
-    power, max: power, sense: ch.sense || "sight", chart: a.chart ?? null, chartText, magicFail: a.chart === "magic-arcanomancy:strike", pervasive: !!m.pervasive, phantom: m["phantom pain"] ? sp.power : 0, reshape: !!m.reshape,
+    power, max: power, sense: ch.sense || "sight", chart: a.chart ?? null, chartText, magicFail: a.chart === "magic-arcanomancy:strike", pervasive: !!m.pervasive, phantom: m["phantom pain"] ? sp.power : 0, phantomStacks: stacksOn, reshape: !!m.reshape,
     fidelity: fid, penalty: fid?.kind === "dis" ? { roll: fid.roll, amount: 1 } : null, aura: !!m.aura, expiresAt: sp.ritualOf ? null : expiry(), phantomTotal: 0, tests: 0,
     description: `A false impression with ${power} Power${chartText ? `: ${String(chartText).replace(/\*\*/g, "")}` : ""} Each turn its Power drops; the target's attack-roll check against it ends it.` };
   await putSpellEffect(target, eff);
@@ -265,8 +266,9 @@ async function loseMirage(actor, live, d, lost) {
   let phantom = d.phantomTotal ?? 0;
   if (d.phantom) {
     const r = await roll(`${d.phantom}d6`);
-    phantom += r.total;
-    html += `<div class="fs-result">Phantom Pain: ${actor.name}'s Pain Threshold rises by ${r.total} (${phantom} in all). It goes away when no Mirage affects them.</div>`;
+    const pp = applyStacks(r.total, d.phantomStacks ?? 0);          // the Mirage's stacks scale the bolded 1d6
+    phantom += pp;
+    html += `<div class="fs-result">Phantom Pain: ${actor.name}'s Pain Threshold rises by ${pp} (${phantom} in all). It goes away when no Mirage affects them.</div>`;
   }
   if (power <= 0) { if (live) await endMirage(actor, live); return { html: html + `<div class="fs-result">The Mirage is gone.</div>`, ended: true }; }
   if (live) await changeEffect(live, { "flags.flowstate.spellEffect.power": power, "flags.flowstate.spellEffect.phantomTotal": phantom, "flags.flowstate.spellEffect.tests": (d.tests ?? 0) + 1 });
@@ -515,8 +517,9 @@ export async function resolveStrike({ actor, plan, profile, mods, spec, ritualOf
   else if (mods.rip) body = await ripSpell(entry, actor, spec.mode, spec.target ? await fromUuid(spec.target) : null, plan.freeFrom ? (Array.from(actor.effects).find(e => e.id === plan.freeFrom)?.uuid ?? null) : null);
   else {
     const dmg = await roll(`${profile.damage.n * Math.max(1, plan.power)}d${profile.damage.sides}`);
-    const res = await damageSpell(entry, dmg.total);
-    body = `Strike hits ${entry.label} for ${dmg.total} arcane (${entry.hp} health → ${res.left}).${res.destroyed ? " <strong>It is destroyed.</strong>" : ""}`;
+    const dealtTo = applyStacks(dmg.total, castStacks(actor, plan));
+    const res = await damageSpell(entry, dealtTo);
+    body = `Strike hits ${entry.label} for ${dealtTo} arcane (${entry.hp} health → ${res.left}).${res.destroyed ? " <strong>It is destroyed.</strong>" : ""}`;
     if (res.destroyed && mods.absorb) {
       const gain = entry.power, maxE = actor.system.energy.max, haveE = actor.system.energy.value;
       const upd = { "system.energy.value": Math.min(maxE, haveE + gain) };

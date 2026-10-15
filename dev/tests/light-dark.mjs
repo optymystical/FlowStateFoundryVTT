@@ -186,10 +186,32 @@ const tfx = orc.effects.find(e => e.name === "Temp HP");
   dialog = () => ({ e: tfx.uuid, net: 0 });
   seq = [20]; await M.manifest(hero, { mode: "mental-light-dream:dispersion", range: "ranged" });
   const card = lastAtk();
-  ok2(card?.flags.flowstate.attack.targets[0].uuid === ally.uuid && card.flags.flowstate.attack.opts.mental?.disperse?.effects?.[0] === tfx.uuid, "Dispersion goes at the effect's creator (their dodge), not at its holder");
+  ok2(card?.flags.flowstate.attack.targets[0].uuid === ally.uuid && card.flags.flowstate.attack.opts.mental?.disperse?.targets?.[0]?.uuid === tfx.uuid, "Dispersion goes at the effect's creator (their dodge), not at its holder");
   seq = [1]; await actions.defend(card, 0, "dodge");
   ok2(!orc.effects.includes(tfx) && fxs(orc, "tempHP").length === 0, "On a hit an effect with health loses 20 × Power health (here it's gone)");
 }
+
+console.log("== Dispersion against Summons, Animations and Made items");
+reset(); clearAll(ally); refresh();
+const wisp = addEffects(mkActor("Wisp", { skillPoints: 5, hp: { value: 100, lost: 0 } }, {}));
+wisp.flags.flowstate = { summon: { owner: ally.uuid, kind: "summon", hp: 100 } }; wisp.system.prepareDerivedData();
+target(wisp);
+dialog = () => ({ e: wisp.uuid, net: 0 });
+seq = [20]; await M.manifest(hero, { mode: "mental-light-dream:dispersion", range: "ranged" });
+const sc = lastAtk();
+ok2(sc?.flags.flowstate.attack.targets[0].uuid === ally.uuid && sc.flags.flowstate.attack.opts.mental?.disperse?.targets?.[0]?.kind === "summon", "A Summon (marked with its caster) can be dispersed: the attack goes at its creator");
+seq = [1]; await actions.defend(sc, 0, "dodge");
+ok2(wisp.system.hp.value <= 100 - 20 * power("pon") || wisp.system.hp.value < 100, `On a hit it loses 20 × Power health (${wisp.system.hp.value} left of 100)`);
+const gem = mkWeapon(ally, "gem", { wear: 0 }); gem.flags = { flowstate: { made: { caster: ally.uuid, ritualOf: null } } };
+gem.update = async u => { for (const [k, v] of Object.entries(u)) set(gem, k, v); };
+const w0 = gem.system.wear;
+target(ally);
+dialog = () => ({ e: gem.uuid, net: 0 });
+reset(); refresh(); seq = [20]; await M.manifest(hero, { mode: "mental-light-dream:dispersion", range: "ranged" });
+const ic2 = lastAtk();
+ok2(ic2?.flags.flowstate.attack.opts.mental?.disperse?.targets?.[0]?.kind === "item", "A Made item can be dispersed too");
+seq = [1]; await actions.defend(ic2, 0, "dodge");
+ok2(gem.system.wear === w0 + 20 * power("pon"), `On a hit it loses 20 × Power durability (wear ${gem.system.wear})`);
 
 console.log("== Corona and Nightfall (T5)");
 reset(); refresh(); dialog = () => "enemy"; await hit(ILL); refresh(); seq = [20]; dialog = () => orc.uuid;

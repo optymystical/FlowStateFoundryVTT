@@ -4,7 +4,7 @@
  * They register into wonders.mjs (`MODES`, `ACTS`, the provider lists); mental.mjs calls `attackStart`, `attackDieAgainst`, `dodgeDieAgainst`,
  * `disperseResolve` and `expandResolve` through `registerMental` / its resolve step.
  */
-import { post, putSpellEffect, spellEffects, changeEffect, setActorFlag, tokenDistance, attackerToken } from "./actions.mjs";
+import { post, putSpellEffect, spellEffects, changeEffect, setActorFlag, tokenDistance, attackerToken, requestDamage, requestGM } from "./actions.mjs";
 import { stackMultiplier, applyStacks } from "./rules.mjs";
 import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
@@ -214,50 +214,70 @@ function creatorStat(creator, d) {
   return Math.max(eff.reach?.value ?? 0, eff.grasp?.value ?? 0);
 }
 
-/** Dispersion's Manifest picks an effect (and, Enhanced, others within 5 ft of it), then makes the attack roll with Advantage against its creator's dodge. */
-MODES[`${LIGHT}:dispersion`] = async c => {
-  const caster = c.attacker;
+/** Everything Dispersion can pick: spell and Mental effects, Summons and Animations (actors carrying the `summon` marker) and Made items (items carrying the `made` marker). */
+function dispersionTargets(caster, range) {
   const cands = [];
   for (const a of actorsInPlay()) {
-    if (a.uuid !== caster.uuid && !near(caster, a, reachOf(caster, c.range)) && attackerToken(caster) && attackerToken(a)) continue;
-    for (const e of a.effects ?? []) { const d = e.flags?.flowstate?.spellEffect; if (d?.caster && d.caster !== caster.uuid && !e.disabled) cands.push({ e, d, holder: a }); }
+    if (a.uuid !== caster.uuid && !near(caster, a, reachOf(caster, range)) && attackerToken(caster) && attackerToken(a)) continue;
+    const sm = a.flags?.flowstate?.summon;
+    if (sm?.owner && sm.owner !== caster.uuid) cands.push({ kind: "summon", uuid: a.uuid, label: `${a.name} (${sm.kind === "animation" ? "Animation" : "Summon"})`, creator: sm.owner, holder: a });
+    for (const e of a.effects ?? []) { const d = e.flags?.flowstate?.spellEffect; if (d?.caster && d.caster !== caster.uuid && !e.disabled) cands.push({ kind: "effect", uuid: e.uuid, label: `${e.name} on ${a.name}`, creator: d.caster, holder: a, d }); }
+    if (!sm) for (const i of a.items ?? []) { const m = i.flags?.flowstate?.made; if (m?.caster && m.caster !== caster.uuid) cands.push({ kind: "item", uuid: i.uuid, label: `${i.name} (made, ${a.name})`, creator: m.caster, holder: a }); }
   }
+  return cands;
+}
+
+/** Dispersion's Manifest picks something (and, Enhanced, others within 5 ft of it), then makes the attack roll with Advantage against its creator's dodge. */
+MODES[`${LIGHT}:dispersion`] = async c => {
+  const caster = c.attacker;
+  const cands = dispersionTargets(caster, c.range);
   if (!cands.length) return `<strong>Dispersion</strong> finds no Manifestation or spell within range.`;
-  const label = x => `${x.e.name} on ${x.holder.name}${fromU(x.d.caster) ? ` (${fromU(x.d.caster).name})` : ""}`;
-  const ans = await askFor(caster, { title: "Dispersion", ok: "Disperse", html: `<p>Target one Manifestation or spell:</p><div class="fs-field"><label>Effect</label><select name="e">${cands.map(x => `<option value="${esc(x.e.uuid)}">${esc(label(x))}</option>`).join("")}</select></div>` });
-  const first = cands.find(x => x.e.uuid === ans?.e);
+  const label = x => `${x.label}${fromU(x.creator) ? ` — ${fromU(x.creator).name}` : ""}`;
+  const ans = await askFor(caster, { title: "Dispersion", ok: "Disperse", html: `<p>Target one Manifestation or spell:</p><div class="fs-field"><label>Target</label><select name="e">${cands.map(x => `<option value="${esc(x.uuid)}">${esc(label(x))}</option>`).join("")}</select></div>` });
+  const first = cands.find(x => x.uuid === ans?.e);
   if (!first) return `<strong>Dispersion</strong>: nothing picked.`;
   let picked = [first];
   if (c.enhanced) {
     const others = cands.filter(x => x !== first && (x.holder.uuid === first.holder.uuid || near(first.holder, x.holder, 5)));
     if (others.length) {
-      const more = await askFor(caster, { title: "Dispersion (Enhanced)", ok: "Also these", html: `<p>Also affect any effects within 5 ft of the target:</p>${others.map(x => `<label class="fs-cast-mod"><input type="checkbox" name="o:${esc(x.e.uuid)}"> ${esc(label(x))}</label>`).join("")}` });
-      picked = [first, ...others.filter(x => more?.[`o:${x.e.uuid}`])];
+      const more = await askFor(caster, { title: "Dispersion (Enhanced)", ok: "Also these", html: `<p>Also affect anything within 5 ft of the target:</p>${others.map(x => `<label class="fs-cast-mod"><input type="checkbox" name="o:${esc(x.uuid)}"> ${esc(label(x))}</label>`).join("")}` });
+      picked = [first, ...others.filter(x => more?.[`o:${x.uuid}`])];
     }
   }
-  const creator = fromU(first.d.caster);
-  const flag = { disperse: { effects: picked.map(x => x.e.uuid), power: c.power, bs: c.bs ?? c.stacks ?? 0 } };
+  const creator = fromU(first.creator);
+  const flag = { disperse: { targets: picked.map(x => ({ kind: x.kind, uuid: x.uuid })), power: c.power, bs: c.bs ?? c.stacks ?? 0 } };
   if (!creator || creator.uuid === caster.uuid) { const r = await disperse(caster, flag.disperse); return `<strong>Dispersion</strong>: ${r}`; }
   await mental.specialAttack(caster, creator, { label: "Dispersion", net: 1, notes: [`Dispersion: ${picked.map(label).join("; ")} (Advantage against ${creator.name}'s dodge)`], flag });
-  return `<strong>Dispersion</strong> goes at ${esc(creator.name)}, the creator of ${esc(first.e.name)}: an attack roll with Advantage against their dodge.`;
+  return `<strong>Dispersion</strong> goes at ${esc(creator.name)}, the creator of ${esc(first.label)}: an attack roll with Advantage against their dodge.`;
 };
 
-/** What Dispersion does to its effects: one with health loses 20, any other is destroyed if its creator's Scaling Stat is 15 or less (scaled by Power). */
-async function disperse(caster, { effects, power, bs }) {
-  const lines = [];
-  for (const u of effects) {
-    const e = await fromUuid(u);
-    if (!e) continue;
-    const d = dataOf(e), creator = fromU(d.caster);
-    if (Number.isFinite(d.hp) && d.hp > 0) {
-      const left = d.hp - bold(bs, 20 * power);
-      if (left > 0) { await e.update({ "flags.flowstate.spellEffect.hp": left }); lines.push(`${esc(e.name)} loses ${bold(bs, 20 * power)} health (${left} left).`); }
-      else { await changeEffect(e, null); lines.push(`${esc(e.name)} is destroyed.`); }
-      continue;
+/**
+ * What Dispersion does: something with health or durability (a Summon, an Animation, a Made item, a shield) loses 20 × Power health; anything else
+ * (a spell or Mental effect) is destroyed if its creator's Scaling Stat is 15 × Power or less.
+ */
+async function disperse(caster, { targets, power, bs }) {
+  const lines = [], loss = bold(bs, 20 * power), limit = bold(bs, 15 * power);
+  for (const t of targets) {
+    const doc = await fromUuid(t.uuid);
+    if (!doc) continue;
+    if (t.kind === "summon") {
+      await requestDamage(doc, loss, "arcane", 0, null, { silent: true, bypass: true });
+      lines.push(`${esc(doc.name)} loses ${loss} health.`);
+    } else if (t.kind === "item") {
+      if (doc.isOwner !== false) await doc.update({ "system.wear": (doc.system.wear ?? 0) + loss }, { flowstateSystem: true }); else await requestGM("wearItem", { uuid: doc.uuid, amount: loss });
+      lines.push(`${esc(doc.name)} loses ${loss} durability.`);
+    } else {
+      const d = dataOf(doc), creator = fromU(d.caster);
+      if (Number.isFinite(d.hp) && d.hp > 0) {
+        const left = d.hp - loss;
+        if (left > 0) { await doc.update({ "flags.flowstate.spellEffect.hp": left }); lines.push(`${esc(doc.name)} loses ${loss} health (${left} left).`); }
+        else { await changeEffect(doc, null); lines.push(`${esc(doc.name)} is destroyed.`); }
+        continue;
+      }
+      const stat = creatorStat(creator, d);
+      if (stat <= limit) { await changeEffect(doc, null); lines.push(`${esc(doc.name)} is destroyed (its creator's stat is ${stat}, ${limit} or less).`); }
+      else lines.push(`${esc(doc.name)} holds: its creator's stat is ${stat}, over ${limit}.`);
     }
-    const limit = bold(bs, 15 * power), stat = creatorStat(creator, d);
-    if (stat <= limit) { await changeEffect(e, null); lines.push(`${esc(e.name)} is destroyed (its creator's stat is ${stat}, ${limit} or less).`); }
-    else lines.push(`${esc(e.name)} holds: its creator's stat is ${stat}, over ${limit}.`);
   }
   return lines.join(" ") || "nothing there.";
 }

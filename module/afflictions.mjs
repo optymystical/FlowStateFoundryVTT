@@ -119,20 +119,21 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
   if (a.kind === "charm") {
     if (a.combo) {
       await putSpellEffect(target, { kind: "charm", stack: true, onTargetTurn: true, pending: true, caster: attacker.uuid, ritualOf, name: `${profile.name}`, combo: a.combo, power,
-        ingrained: !!m.ingrained, req: 3, cloud: !!m.cloud, contested: !!a.contested, critStacks: a.combo.critStrength ? base.crit : 0, stacks: base.stacks,
-        description: `At the start of their next turn they roll a Willpower check (3 or higher); on a failure they hurt themselves (${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}).` });
+        ingrained: !!m.ingrained, req: needOf(3, power, stacks), cloud: !!m.cloud, contested: !!a.contested, critStacks: a.combo.critStrength ? base.crit : 0, stacks: base.stacks,
+        description: `At the start of their next turn they roll a Willpower check (${needOf(3, power, stacks)} or higher); on a failure they hurt themselves (${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}).` });
       out.html = `<div class="fs-notes">${esc(profile.name)} hit. The result goes to the caster and the GM.</div>`;
-      await secret(target, attacker, { title: `${esc(attacker.name)} — ${esc(profile.name)}`, body: `<div class="fs-result">${esc(target.name)} makes a Willpower check (3 or higher) at the start of their next turn; on a failure they hurt themselves for ${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}.</div>` });
+      await secret(target, attacker, { title: `${esc(attacker.name)} — ${esc(profile.name)}`, body: `<div class="fs-result">${esc(target.name)} makes a Willpower check (${needOf(3, power, stacks)} or higher) at the start of their next turn; on a failure they hurt themselves for ${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}.</div>` });
       return out;
     }
-    const r = await charmCheck(attacker, target, { dis: m.cloud ? 1 : 0, contest: a.contested ? attacker : null });
+    const need = needOf(3, power, stacks);
+    const r = await charmCheck(attacker, target, { dis: m.cloud ? 1 : 0, contest: a.contested ? attacker : null, req: need });
     out.rolls.push(r.roll);
     out.html = `<div class="fs-notes">Charm hit. The result goes to the caster and the GM.</div>`;
     if (r.passed) {
       await secret(target, attacker, { title: `${esc(attacker.name)} — Charm`, rolls: [r.roll], body: `${checkLine(target, r)}<div class="fs-result">${esc(target.name)} resists the Charm.</div>` });
       return out;
     }
-    const placed = await placeCharm(attacker, target, { rollType: ch.charmRoll || "attack", ritualOf, ingrained: !!m.ingrained, propagandize: !!m.propagandize });
+    const placed = await placeCharm(attacker, target, { rollType: ch.charmRoll || "attack", ritualOf, ingrained: !!m.ingrained, propagandize: !!m.propagandize, req: need });
     await secret(target, attacker, { title: `${esc(attacker.name)} — Charm`, rolls: [r.roll], body: `${checkLine(target, r)}${placed}` });
     return out;
   }
@@ -145,7 +146,7 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
     return out;
   }
   if (a.kind === "charmHex") {
-    const c = await combinedCheck(attacker, target, a, { dis: 0 });
+    const c = await combinedCheck(attacker, target, a, { dis: 0, req: needOf(a.req, power, stacks) });
     out.rolls.push(c.roll);
     out.html = `<div class="fs-notes">${esc(profile.name)} hit. The result goes to the caster and the GM.</div>`;
     if (c.passed) { await secret(target, attacker, { title: `${esc(attacker.name)} — ${esc(profile.name)}`, rolls: [c.roll], body: `${checkLine(target, c)}<div class="fs-result">${esc(target.name)} resists.</div>` }); return out; }
@@ -157,13 +158,16 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
   return out;
 }
 
+/** A check's "N or higher" is a bolded number: Spell Power and the spell's stacks scale it. */
+const needOf = (base, power = 1, stacks = 0) => (base ? Math.max(0, applyStacks(base * Math.max(1, power), stacks ?? 0)) : 0);
+
 /** Charm's Willpower check (3 or higher). */
 const charmCheck = (attacker, target, { dis = 0, req = 3, contest = null } = {}) => check(target, "will", req, { dis, contest });
 /** A combined check (die sizes added), 5 or higher: Venomancy + Charm, Venomancy + Witchery, Charm + Witchery. */
-const combinedCheck = (attacker, target, a, { dis = 0 } = {}) => check(target, a.combined, a.req, { dis, contest: a.contested ? attacker : null });
+const combinedCheck = (attacker, target, a, { dis = 0, req = a.req } = {}) => check(target, a.combined, req, { dis, contest: a.contested ? attacker : null });
 
 /** Put a Charm on a creature (replacing one of the same caster and roll type; doubled by Propagandize). */
-export async function placeCharm(caster, target, { rollType, ritualOf = null, ingrained = false, propagandize = false, dot = null, turnsLeft = 0 }) {
+export async function placeCharm(caster, target, { rollType, ritualOf = null, ingrained = false, propagandize = false, dot = null, turnsLeft = 0, req = 3 }) {
   const mine = spellEffects(target, "charm").filter(e => data(e).caster === caster.uuid && !data(e).pending);
   const same = mine.find(e => data(e).rollType === rollType);
   if (same && turnsLeft) { await changeEffect(same, { "flags.flowstate.spellEffect.turnsLeft": (data(same).turnsLeft ?? 1) + 1 }); return `<div class="fs-result">${esc(target.name)}'s Charm lasts one more turn of yours.</div>`; }
@@ -171,7 +175,7 @@ export async function placeCharm(caster, target, { rollType, ritualOf = null, in
   const amount = fx.charmAmount(propagandize, mine.filter(e => data(e).rollType !== rollType).length);
   const weak = rollType === "damage";
   const what = weak ? `Weakened ${amount > 1 ? "twice" : ""} on damage rolls` : `${amount > 1 ? "double " : ""}Disadvantage on ${fx.ROLL_TYPES[rollType]?.toLowerCase() ?? rollType} rolls`;
-  await putSpellEffect(target, { kind: "charm", stack: true, caster: caster.uuid, ritualOf, onTargetTurn: ingrained && !ritualOf, ingrained: ingrained && !ritualOf, req: 3, rollType, amount, dot, turnsLeft,
+  await putSpellEffect(target, { kind: "charm", stack: true, caster: caster.uuid, ritualOf, onTargetTurn: ingrained && !ritualOf, ingrained: ingrained && !ritualOf, req, rollType, amount, dot, turnsLeft,
     name: `Charm (${fx.ROLL_TYPES[rollType] ?? rollType})`, description: `${what}${ritualOf ? " until the ritual ends" : ingrained ? " for a minute (repeating the Willpower check each of the caster's turns, halving the requirement)" : ", until the start of the caster's next turn"}.${dot ? ` Loses ${dice(dot.n, dot.sides)} health at the start of each of their turns.` : ""}` });
   return `<div class="fs-result">${esc(target.name)} is Charmed: <strong>${what}</strong>${ritualOf ? " (permanent until the ritual ends)" : ingrained ? " (about a minute)" : " until the start of your next turn"}.</div>`;
 }
@@ -189,7 +193,7 @@ function poisonData(a, sp, base, ch = {}) {
     bypassArmor: !!a.bypassArmor, force: !!a.force, livingDie: a.livingDie ?? 0, halfStrength: !!a.halfStrength, dodgeDie: a.dodgeDie ? applyStacks(a.dodgeDie * p, base.stacks ?? 0) : 0, stacks: base.stacks ?? 0,
     ignite: !!a.ignite, stain: !!a.stain, energy: !!a.energy, arc: !!a.arc,
     prolong: m.prolong ?? 0, lethality: m.lethality ?? 0, potency: !!m.potency, virality: !!m.virality,
-    combined: a.combined ?? null, comboReq: a.req ?? 0, contested: !!a.contested, charmRoll: ch.charmRoll || "attack", hex: ch.hex ?? null, hexDie: ch.hexDie ?? null,
+    combined: a.combined ?? null, comboReq: needOf(a.req ?? 0, p, base.stacks), req: needOf(3, p, base.stacks), contested: !!a.contested, charmRoll: ch.charmRoll || "attack", hex: ch.hex ?? null, hexDie: ch.hexDie ?? null,
     power: p, procs: 0, checks: 0
   };
 }
@@ -293,7 +297,7 @@ export function hexData(a, sp, base, ch, profile, extra = {}) {
   for (const [k, v] of Object.entries(a.extra ?? {})) scaled[k] = Array.isArray(v) ? [v[0] * p, v[1]] : v;
   return { ...hexBase(base.caster, p, base.ritualOf), trigger, roll: hx.roll || "attack", outcome: hx.outcome || "fail", detail: hx.detail || "",
     n: a.dice[0] * p, sides: a.dice[1], type: a.type, linger: m.linger ?? 0, fester: m.fester ?? 0, unravel: !!m.unravel, consume: !!m.consume,
-    extra: Object.keys(scaled).length ? scaled : null, hexDie: ch.hexDie || "dodge", contested: !!a.contested, procs: 0, checks: 0, triggers: 0, stacks: base.stacks ?? 0, ...extra };
+    extra: Object.keys(scaled).length ? scaled : null, hexDie: ch.hexDie || "dodge", contested: !!a.contested, procs: 0, checks: 0, triggers: 0, stacks: base.stacks ?? 0, req: needOf(3, p, base.stacks), ...extra };
 }
 
 /** The Active Effect data for a Hex (a minute, or until it has triggered enough times; Rituals are permanent). */
@@ -309,7 +313,7 @@ const hexTriggerText = h => `${fx.HEX_TRIGGERS[h.trigger]?.label ?? h.trigger}${
 export function hexCard(target, h) {
   const manual = h.trigger === "act" || h.trigger === "word" || (h.trigger === "failsuccess" && (h.roll === "stat" || h.roll === "noncombat"));
   return `<div class="fs-result"><i class="fa-solid fa-hat-wizard"></i> ${esc(target.name)} carries a Hex. Trigger: <strong>${hexTriggerText(h)}</strong>.</div>
-    <div class="fs-notes">${h.noCheck ? "" : "Build check (3 or higher), then "}${dice(h.n, h.sides)} ${typeLabel(h.type)} (${fx.HEX_TRIGGERS[h.trigger].stacks > 0 ? `Strengthened ×${fx.HEX_TRIGGERS[h.trigger].stacks}` : fx.HEX_TRIGGERS[h.trigger].stacks < 0 ? `Weakened ×${-fx.HEX_TRIGGERS[h.trigger].stacks}` : "no stacks"}). ${h.ritual ? "Permanent until the ritual ends." : h.repeat ? "Lasts until the start of your next turn." : `Lasts a minute or ${h.linger ? `${1 + h.linger} triggers` : "until it triggers"}.`}
+    <div class="fs-notes">${h.noCheck ? "" : `Build check (${h.req ?? 3} or higher), then `}${dice(h.n, h.sides)} ${typeLabel(h.type)} (${fx.HEX_TRIGGERS[h.trigger].stacks > 0 ? `Strengthened ×${fx.HEX_TRIGGERS[h.trigger].stacks}` : fx.HEX_TRIGGERS[h.trigger].stacks < 0 ? `Weakened ×${-fx.HEX_TRIGGERS[h.trigger].stacks}` : "no stacks"}). ${h.ritual ? "Permanent until the ritual ends." : h.repeat ? "Lasts until the start of your next turn." : `Lasts a minute or ${h.linger ? `${1 + h.linger} triggers` : "until it triggers"}.`}
     ${manual ? "This trigger can't be detected automatically: click the button below when it happens." : "It triggers automatically."}</div>
     ${manual ? actRow({ uuid: h.caster }, 0, "hex", "Trigger the Hex", "fa-solid fa-bolt", "The trigger just happened") : ""}`;
 }
@@ -346,7 +350,7 @@ async function fireHex(actor, e) {
   const rolls = [];
   let failed = true, ch = null;
   if (!d.noCheck) {
-    ch = await check(actor, "build", 3, { dis: d.unravel && !d.checks ? 1 : 0, contest: d.contested ? caster : null });
+    ch = await check(actor, "build", d.req ?? 3, { dis: d.unravel && !d.checks ? 1 : 0, contest: d.contested ? caster : null });
     rolls.push(ch.roll);
     failed = !ch.passed;
     html.push(checkLine(actor, ch));
@@ -433,8 +437,9 @@ async function dotTick(actor, e) {
 }
 
 /** A Combo Charm's Willpower check; a failure hurts the victim (it can repeat each caster turn with Ingrained). */
-async function comboCheck(actor, e, req = 3) {
+async function comboCheck(actor, e, req = null) {
   const d = data(e);
+  req ??= d.req ?? 3;
   const caster = await fromUuid(d.caster);
   const c = await check(actor, "will", req, { dis: d.cloud && !d.checked ? 1 : 0, contest: d.contested && !d.checked ? caster : null });
   const html = [checkLine(actor, c)];

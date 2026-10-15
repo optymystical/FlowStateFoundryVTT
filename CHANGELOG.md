@@ -2,6 +2,11 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.61.0:** **Every bolded number scales with Power and stacks.**
+- **Check targets:** Poison's, Charm's and Hex's "3 or higher" (and the combined "5 or higher") are multiplied by Spell Power and the spell's stacks (a Power 3 Poison needs a 9). Combo riders use their level.
+- **Pools:** Form, Animate and Make + Animate point pools and Body minimums scale with Spell Power too (a Power 3 Form has 15 points before the Threshold multiplier).
+- **Amplify** adds the Amplify caster's Spell Power in Power levels; **Rip** accepts Spells up to 5 × the Rip caster's Spell Power; Exploit's +4 die size uses the caster's stacks.
+
 **0.60.2:** **Power scales the rest.** Make/Animate's Grade 2, Creation's grade of 1 and Prolong/Linger's counts now scale with Power as well as stacks; a doubled Hematite is 4× Power and a doubled Taaffeite quarters a Ritual's Energy.
 
 **0.60.1:** **Audit follow-ups.**

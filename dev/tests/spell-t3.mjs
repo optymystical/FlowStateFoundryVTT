@@ -216,8 +216,8 @@ ce = await charmOn({ [M("magic-charm:ingrained")]: true }, 1, "attack");
 ok2(ce.flags.flowstate.spellEffect.ingrained && ce.flags.flowstate.spellEffect.onTargetTurn, "Ingrained: the Charm outlasts the caster's next turn");
 await actions.clearSpellEffects(hero);
 ok2(eff(orc, "charm").length === 1, "…it isn't cleared at the start of the caster's turn");
-seq = [1]; await A.casterTurn(hero);
-ok2(eff(orc, "charm").length === 0, "…each of the caster's turns repeats the check with the requirement halved (3 → 1), and a pass ends it");
+seq = [4]; await A.casterTurn(hero);
+ok2(eff(orc, "charm").length === 0, "…each of the caster's turns repeats the check with the requirement halved (3 × Power 3 = 9 → 4), and a pass ends it");
 // Propagandize needs two other Charms
 clean();
 for (const t of ["dodge", "stat"]) { target(orc); seq = [20]; await cast("magic-charm:charm", { charmRoll: t }); seq = [12, 1]; await actions.defend(lastAtk(), 0, "dodge"); }

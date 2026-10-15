@@ -187,10 +187,11 @@ function describe({ actor, plan, profile, mods, mult }) {
   const skin = applied.find(a => a.mod.name === "Skin");
   const expanded = !!mods["expanded animation"];
   const st = castStacks(actor, plan);                 // Strengthened/Weakened scales the bolded pools (Body, points)
+  const pw = Math.max(1, plan?.power ?? 1);          // ...and so does Spell Power (every bolded number does)
   const scale = n => applyStacks(n, st);
   const rarities = R.makeRarities({ mk2: !!mods["make mk2"], mk3: !!mods["make mk3"] });
   return { cj, actor, mult, gross: plan.gross ?? plan.threshold, mods, arms, skin: skin?.threshold ?? 0, expanded, rarities, complexity: mods.complexity ?? 0,
-    armory: mods.armory ?? 0, pool: scale(cj.instant ? 10 * mult : (cj.kind === "summon" || cj.summonStats) ? R.summonPool(mult) : R.formPool(mult)), bodyMin: scale(cj.instant ? 10 * mult : R.formPool(mult)), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
+    armory: mods.armory ?? 0, pool: scale(pw * (cj.instant ? 10 * mult : (cj.kind === "summon" || cj.summonStats) ? R.summonPool(mult) : R.formPool(mult))), bodyMin: scale(pw * (cj.instant ? 10 * mult : R.formPool(mult))), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
     equipment: !!(mods["animate weapon/icon/foci"] || mods["animate armor/shroud"]), combo: plan.combo };
 }
 
@@ -650,14 +651,15 @@ export async function riderAfter({ attacker, target, o, outcome, defense, stacks
     html.push(f.html); rolls.push(...f.rolls); push = f.push;
   }
   if (rd.poison && living && direct) {
-    await A.applyPoison(target, { kind: "poison", caster: ownerUuid, ritualOf: null, ritual: false, n: 3 * level, sides: 6, type: "health", bypassArmor: false, force: false, livingDie: 0, halfStrength: false, dodgeDie: 0, stacks,
+    await A.applyPoison(target, { kind: "poison", caster: ownerUuid, ritualOf: null, ritual: false, n: 3 * level, sides: 6, type: "health", bypassArmor: false, force: false, livingDie: 0, halfStrength: false, dodgeDie: 0, stacks, req: Math.max(0, applyStacks(3 * level, stacks)),
       ignite: false, stain: false, energy: false, arc: false, prolong: 0, lethality: 0, potency: false, virality: false, power: level, procs: 0, checks: 0 }, caster);
   }
   if (rd.charm && living) {
-    const c = await A.check(target, "will", 3);
+    const need = Math.max(0, applyStacks(3 * level, stacks));          // "3 or higher" is bolded: Power and stacks scale it
+    const c = await A.check(target, "will", need);
     rolls.push(c.roll);
-    let body = `<div class="fs-notes">${esc(target.name)}: Willpower check needs 3 or higher: <strong>${c.total}</strong> — ${c.passed ? "passed" : "failed"}.</div>`;
-    if (!c.passed) body += await A.placeCharm(caster ?? attacker, target, { rollType: r.charmRoll || "attack", ritualOf });
+    let body = `<div class="fs-notes">${esc(target.name)}: Willpower check needs ${need} or higher: <strong>${c.total}</strong> — ${c.passed ? "passed" : "failed"}.</div>`;
+    if (!c.passed) body += await A.placeCharm(caster ?? attacker, target, { rollType: r.charmRoll || "attack", ritualOf, req: need });
     await A.secret(target, caster, { title: `${esc(attacker.name)} — Charm`, rolls: [c.roll], body });
   }
   if (rd.hex && living) {

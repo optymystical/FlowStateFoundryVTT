@@ -497,8 +497,8 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
       const fewer = spells.planCast(ctx, { ...values, [`mod:${exploitMod.id}`]: mods.exploit - unused });
       refund[unused] = Math.max(0, plan.energy - fewer.energy);
     }
-    exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund };
-  } else if (mods.exploit) exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund: [] };
+    exploit = { stacks: mods.exploit, die: applyStacks(fx.exploitDie(plan.power), castStacks(actor, plan)), refund };
+  } else if (mods.exploit) exploit = { stacks: mods.exploit, die: applyStacks(fx.exploitDie(plan.power), castStacks(actor, plan)), refund: [] };
   const pierce = (mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0) + (plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin * (plan.fociFx.doubled === "painite" ? 2 : 1) : 0);   // Painite: ignores Limit as Pierce does
   // Bash (Crushing T3): Bash 10 × Power per stack (an object with that much Limit or less is ignored for extra damage).
   const bash = mods.bash ? mods.bash * 10 * plan.power : 0;

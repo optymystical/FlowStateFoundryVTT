@@ -79,10 +79,11 @@ export function damageStacks({ attacker, o, type }) {
   const has = k => f.affixes.includes(k);
   let stacks = 0;
   const parts = [];
-  if (has("tourmaline")) { const s = type === f.element ? 1 : -1; stacks += s; parts.push(`${s > 0 ? "+1" : "−1"} Tourmaline (${type === f.element ? "the chosen element" : "other damage"})`); }
-  if (has("jasper")) { const s = type === "physical" ? 1 : -1; stacks += s; parts.push(`${s > 0 ? "+1" : "−1"} Jasper (${type === "physical" ? "Physical damage" : "other damage"})`); }
-  if (has("coloredDiamond") && f.declared && o.spell.cores.includes(f.declared)) { stacks += 1; parts.push("+1 Colored Diamond (the declared spell)"); }
-  if (has("alexandrite") && turnState(attacker, "fociLast").type === type) { stacks += 1; parts.push("+1 Alexandrite (the same damage type as your last spell)"); }
+  const k = key => (f.doubled === key ? 2 : 1);          // Shard / Orb / Band double one Affix's effects: doubly Strengthened / Weakened
+  if (has("tourmaline")) { const s = (type === f.element ? 1 : -1) * k("tourmaline"); stacks += s; parts.push(`${s > 0 ? "+" : "−"}${Math.abs(s)} Tourmaline (${type === f.element ? "the chosen element" : "other damage"})`); }
+  if (has("jasper")) { const s = (type === "physical" ? 1 : -1) * k("jasper"); stacks += s; parts.push(`${s > 0 ? "+" : "−"}${Math.abs(s)} Jasper (${type === "physical" ? "Physical damage" : "other damage"})`); }
+  if (has("coloredDiamond") && f.declared && o.spell.cores.includes(f.declared)) { stacks += k("coloredDiamond"); parts.push(`+${k("coloredDiamond")} Colored Diamond (the declared spell)`); }
+  if (has("alexandrite") && turnState(attacker, "fociLast").type === type) { stacks += k("alexandrite"); parts.push(`+${k("alexandrite")} Alexandrite (the same damage type as your last spell)`); }
   return { stacks, parts };
 }
 
@@ -103,12 +104,13 @@ export async function afterHit({ attacker, target, o }) {
     await setActorFlag(attacker, "fociHits", s);
   }
   if (o.melee && f.scalingMin > 0) {
-    if (f.affixes.includes("ruby")) { const l = await giveStacks(target, "ignite", f.scalingMin, { caster: attacker }); if (l) html += `<div class="fs-result">Ruby: ${l}</div>`; }
+    if (f.affixes.includes("ruby")) { const l = await giveStacks(target, "ignite", f.scalingMin * (f.doubled === "ruby" ? 2 : 1), { caster: attacker }); if (l) html += `<div class="fs-result">Ruby: ${l}</div>`; }
     if (f.affixes.includes("sapphire")) {
       const cur = target.system.conditions?.slow ?? 0;
-      const data = { "system.conditions.slow": cur + f.scalingMin };
+      const slowN = f.scalingMin * (f.doubled === "sapphire" ? 2 : 1);
+      const data = { "system.conditions.slow": cur + slowN };
       if (target.isOwner) await target.update(data); else await requestGM("updateActor", { uuid: target.uuid, data });
-      html += `<div class="fs-result">Sapphire: ${esc(target.name)} gets <strong>${f.scalingMin} Slow</strong> stacks.</div>`;
+      html += `<div class="fs-result">Sapphire: ${esc(target.name)} gets <strong>${slowN} Slow</strong> stacks.</div>`;
     }
   }
   return html;

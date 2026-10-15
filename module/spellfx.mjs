@@ -313,7 +313,7 @@ export function scaleText(text, power, mark = false) {
 export function normalRange(attack, { affixes = [], doubled = null, opalRange = "targeted" } = {}) {
   let r = attack === "Targeted" ? 100 : 200;
   if (affixes.includes("blackOpal")) r = attack === "Targeted" ? 200 : attack === "Ranged" ? 100 : r;
-  if (affixes.includes("quartz") && attack === "Ranged") r *= 1.5;
+  if (affixes.includes("quartz") && attack === "Ranged") r *= doubled === "quartz" ? 2 : 1.5;
   if (affixes.includes("blackOpal") && doubled === "blackOpal" && opalRange === String(attack ?? "").toLowerCase()) r *= 1.5;
   return r;
 }

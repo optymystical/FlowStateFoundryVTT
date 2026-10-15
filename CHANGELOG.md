@@ -2,6 +2,11 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.60.1:** **Audit follow-ups.**
+- **Foci Affix doubling** (Shard / Orb / Band) now also doubles Quartz's range, Jasper / Tourmaline / Colored Diamond / Alexandrite's stacks and Ruby / Sapphire / Painite's numbers (only some Affixes were wired before).
+- **Scaling:** Prolong and Linger counts, Make/Animate Grade, Creation's grade and Brand's damage (with its stacks) are scaled by Strengthened/Weakened.
+- **Frostbite** works on spells with no Energy removal of their own (held Frost, Slam + Frost, a Stab + Frost that doesn't crit). **Vigil**'s later activations recover 8 shielding instead of placing a new one. Lingering Arcane damage and riders are Weakened once against non-magical targets.
+
 **0.60.0:** **Strengthened/Weakened now scale every bolded number (audit).**
 - **Mental:** a Ward's amounts are scaled by a crit on its activation roll and by an Area Ward that hits more than two targets (Weakened); Reverie's cap and growth by Alignment's Strengthened. Enhanced Mandate damage (±10), damage-roll Fracture (±3, was 2) and the manual charge dialog scale with Power and stacks. A Weakened Burden is no longer held at 3 to escape. Dispersion counts a crit's stacks. Umbral Strike's damage is Power d8 scaled by the Manifest's stacks. Warmonger's 1d12 scales with the buffing Mode's stacks.
 - **Magic:** Poison, Hex and combo Charms (and their Force, dice, Ignite/Stain/Energy extras and die-size penalties) keep the stacks they were cast with and use them every tick; Summon, Animation and Made riders use the attack's stacks; a spell's Pierce and Bash, Telegraph's tolerance, Hold's minimum, Phantom Pain, Strike on a Spell and Combo Force go through the stacks too. Slam + Acid's 1 Stain is now × Power and scaled; object-aimed Ignite/Stain no longer scales twice.

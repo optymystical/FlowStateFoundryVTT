@@ -5059,7 +5059,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     if (outcome.toHp > 0 && m.chop) spellHTML += `<div class="fs-notes">Chop: the ${outcome.toHp} direct damage is Max HP loss instead.</div>`;
     // Tier 2: Brand, Ignite/Stain stacks, Energy removal, chains, Catalyst, counters.
     if (elem) {
-      spellHTML += await elem.beforeApply({ attacker, target, o, baseTotal: base.totals.reduce((a, b) => a + b, 0) + flat });
+      spellHTML += await elem.beforeApply({ attacker, target, o, baseTotal: applyStacks(base.totals.reduce((a, b) => a + b, 0), stacks) });          // the Core spell's own damage, with its Strengthened/Weakened stacks (not Mod flats)
       // `dealt`: Shatter, Brace, Dip, Wonders and Wards all take it down before Stains, Energy loss and the like are worked out.
       const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: Math.min(line.final, incoming), type, profile, facts: spellFacts ?? {}, dmgOpts, stacks });
       spellHTML += er.html; spellRolls.push(...er.rolls); if (er.kb) kb = er.kb; chainFlag = er.chain;

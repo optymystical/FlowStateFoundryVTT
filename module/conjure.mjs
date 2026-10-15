@@ -269,17 +269,20 @@ export function validate(ctx, spec) {
 
 const madeFlag = (actor, ritualOf, extra = {}) => ({ flowstate: { made: { caster: actor.uuid, ritualOf: ritualOf ?? null, ...extra } } });
 
-/** The item data for a Made weapon or armor (Grade 2), or a plain object. */
-export function itemData(it, { actor, ritualOf = null, extraFlags = {}, equipped = false } = {}) {
+/** The Grade of what a spell makes: the bolded 2, scaled by the stacks on the caster (it has no attack roll to carry them), at least 1. */
+export const madeGrade = (actor, plan) => Math.max(1, applyStacks(2, castStacks(actor, plan)));
+
+/** The item data for a Made weapon or armor (Grade 2 unless stacks change it), or a plain object. */
+export function itemData(it, { actor, ritualOf = null, extraFlags = {}, equipped = false, grade = 2 } = {}) {
   const flags = madeFlag(actor, ritualOf, extraFlags);
   if (it.kind === "armor") {
     return { name: it.name || `${ARMOR_MATERIALS[it.material]?.label ?? it.material} ${cap(it.weight)} Armor`, type: "armor", flags,
-      system: { weight: it.weight, material: it.material, grade: 2, equipped } };
+      system: { weight: it.weight, material: it.material, grade, equipped } };
   }
   if (it.kind === "object") return { name: it.name || "Conjured object", type: "gear", flags, system: { quantity: 1, description: `<p>Conjured${it.name ? `: ${esc(it.name)}` : ""}. Lasts until the start of the caster's next turn (or the Ritual ends).</p>` } };
   const extraTypes = (it.extra ?? []).filter(Boolean);
   return { name: it.name || `${WEAPON_MATERIALS[it.material]?.label ?? it.material} ${WEAPON_TYPES[it.type]?.label ?? it.type}`, type: "weapon", flags,
-    system: { weaponType: it.type, weight: it.weight, material: it.material, grade: 2, extraTypes, equipped } };
+    system: { weaponType: it.type, weight: it.weight, material: it.material, grade, extraTypes, equipped } };
 }
 
 const martialTrees = actor => Object.fromEntries(Object.entries(actor.system?.trees ?? {}).filter(([k, v]) => k.startsWith("martial-") && v > 0));
@@ -336,7 +339,7 @@ async function makeSummon({ actor, plan, profile, spec, mods, ritualOf, targets,
     const a = R.naturalArmor({ threshold: ctx.skin, con: f.stats.con });
     items.push({ name: `Natural ${cap(a.weight)} Armor`, type: "armor", flags: madeFlag(actor, ritualOf), system: { ...a, equipped: true, natural: true } });
   }
-  if (cj.make && spec.items?.[0]) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true }));
+  if (cj.make && spec.items?.[0]) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true, grade: madeGrade(actor, plan) }));
   hardenItems(items, mods, spec, cj);
   const sm = { owner: actor.uuid, ritualOf: ritualOf ?? null, kind: "summon", hp, energy, attackDie: actor.system.derived.attackDie, dodgeDie: actor.system.derived.dodgeDie, ap: 6, rp: 6, reform: !!mods.reform, reactive: !!mods.reactive, reformMark: hp, fear: !!cj.fear, senseSwap: !!mods["sense swap"], command: mods["limited autonomy"] ? spec.command || "" : "",
     rider: riderOf(cj, values, level) };
@@ -373,7 +376,7 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
     speed: st.speed, physical: st.physical, ap: st.ap, rp: st.rp, reform: !!mods.reform, reactive: !!mods.reactive, senseSwap: !!mods["sense swap"], command: mods["limited autonomy"] ? spec.command || "" : "", reformMark: hp, fear: !!cj.fear, rider: riderOf(cj, values, level) };
   const items = [];
   if (cj.geo) items.push(geoRanged(actor, ritualOf, Math.max(st.str, st.dex)));
-  if (cj.make && spec.items?.[0] && !cj.instant) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true }));
+  if (cj.make && spec.items?.[0] && !cj.instant) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true, grade: madeGrade(actor, plan) }));
   hardenItems(items, mods, spec, cj);
   const name = spec.name || `${mat.name} Animation`;
   const id = await spawn({ actor, name, system: { stats: { str: st.str, dex: st.dex, con: st.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f?.skillPoints ?? 0, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets, tile: spec.tile });
@@ -388,9 +391,9 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
 async function makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets, values }) {
   const cj = profile.conjure;
   const rider = cj.rider ? { core: cj.rider, level: 1, charmRoll: values?.charmRoll ?? null, hex: values?.hexTrigger ? { trigger: values.hexTrigger, roll: values.hexRoll, outcome: values.hexOutcome, detail: values.hexDetail } : null } : null;
-  const flagsFor = it => ({ ...(rider && it.kind !== "object" ? { rider: { ...rider, level: R.riderLevel(2, 4), arcane: !!cj.arcane } } : {}), ...(cj.fear && it.kind !== "object" ? { fear: true } : {}) });
+  const flagsFor = it => ({ ...(rider && it.kind !== "object" ? { rider: { ...rider, level: R.riderLevel(madeGrade(actor, plan), 4), arcane: !!cj.arcane } } : {}), ...(cj.fear && it.kind !== "object" ? { fear: true } : {}) });
   const items = (spec.items ?? []).map(it => {
-    const d = itemData(it, { actor, ritualOf, extraFlags: flagsFor(it) });
+    const d = itemData(it, { actor, ritualOf, extraFlags: flagsFor(it), grade: madeGrade(actor, plan) });
     if (cj.geo && d.type === "weapon") { d.system.returning = true; d.system.rounds = 99; d.system.magazine = 99; }   // reloads itself; returns when thrown
     return d;
   });
@@ -466,8 +469,9 @@ async function animateEquipment({ actor, plan, mods, targets, ritualOf }) {
   const tgt = targets?.[0]?.actor ?? actor;
   const armor = !!mods["animate armor/shroud"];
   const pool = armor ? [tgt.system.armor, tgt.system.shroud].filter(Boolean) : (tgt.items ?? []).filter(i => (i.type === "weapon" && !i.system.profile?.unarmed) || i.type === "foci" || i.type === "icon");
-  const picks = pool.filter(i => (i.system.grade ?? 9) <= 2);
-  if (!picks.length) { ui.notifications.warn(`${tgt.name} has no ${armor ? "armor or Shroud" : "weapon, Icon or Foci"} of Grade 2 or lower to animate.`); return 0; }
+  const maxGrade = madeGrade(actor, plan);
+  const picks = pool.filter(i => (i.system.grade ?? 9) <= maxGrade);
+  if (!picks.length) { ui.notifications.warn(`${tgt.name} has no ${armor ? "armor or Shroud" : "weapon, Icon or Foci"} of Grade ${maxGrade} or lower to animate.`); return 0; }
   const item = picks[0];
   const acts = [];
   if (!armor && item.type === "weapon") acts.push({ act: "weapon", caster: actor.uuid, item: item.uuid, name: item.name });
@@ -624,7 +628,8 @@ export async function riderAfter({ attacker, target, o, outcome, defense, stacks
     const sides = rd.dice[1] + (rd.livingDie && living && direct ? rd.livingDie : 0);
     const dmg = await roll(`${rd.dice[0] * level}d${sides}`);
     rolls.push(dmg);
-    const total = applyStacks(dmg.total, stacks + (rd.critStack && defense?.result?.crit ? rd.critStack : 0));          // the attack's own stacks (a crit, the weapon...) scale the rider too
+    const arcPen = (r.arcane ? "arcane" : rd.type) === "arcane" && !target.system?.magical && target.type !== "pile" ? -1 : 0;          // Arcane against something not magical is Weakened
+    const total = applyStacks(dmg.total, stacks + arcPen + (rd.critStack && defense?.result?.crit ? rd.critStack : 0));          // the attack's own stacks (a crit, the weapon...) scale the rider too
     const dtype = r.arcane ? "arcane" : rd.type;
     const out = await damageOutcome(target, total, dtype, { archetype: "magic" });
     const res = await requestDamage(target, total, dtype, 0, null, { wantResult: true, silent: true, archetype: "magic" });

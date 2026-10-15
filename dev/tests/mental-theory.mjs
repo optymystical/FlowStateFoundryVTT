@@ -280,4 +280,14 @@ await M.dismiss(hero);
 ok2(effs(hero, "redirect").length === 0 && hero.system.ap.value === 6, "Your own effects are dismissed freely");
 
 console.log(fails ? `\n${fails} FAILED` : "\nAll Mental Theory checks passed");
+console.log("== Vigil recovers instead of stacking");
+target(null); clearAll(hero); aegis.system.form = "vigil"; hero.system.prepareDerivedData(); setAlign("neutral"); refresh(); dialog = () => ({});
+messages.length = 0; seq = [40]; await M.activateWard(hero); seq = [2]; dialog = () => ({ net: 0 }); await actions.defend(lastAtk(), 0, "dodge");
+const vg = shields(hero);
+ok2(vg.length === 1 && vg[0].flags.flowstate.spellEffect.max >= 40, "Vigil's first activation places its full persistent shield");
+await vg[0].update({ "flags.flowstate.spellEffect.hp": 10 }); refresh(); dialog = () => ({});
+messages.length = 0; seq = [40]; await M.activateWard(hero); seq = [2]; dialog = () => ({ net: 0 }); await actions.defend(lastAtk(), 0, "dodge");
+const vg2 = shields(hero);
+ok2(vg2.length === 1 && vg2[0].flags.flowstate.spellEffect.hp > 10 && vg2[0].flags.flowstate.spellEffect.hp < vg2[0].flags.flowstate.spellEffect.max, `…a later activation only recovers part of it (${vg2[0]?.flags.flowstate.spellEffect.hp} of ${vg2[0]?.flags.flowstate.spellEffect.max})`);
+
 if (fails) process.exit(1);

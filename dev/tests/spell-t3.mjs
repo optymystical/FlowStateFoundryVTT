@@ -138,6 +138,12 @@ const poisoned = async (core, extra = {}, core2 = "") => { clean(); await land(c
 await poisoned("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 });
 seq = [1, 5]; await A.turnStart(gob);
 ok2(eff(gob, "poison").length === 1 && eff(gob, "poison")[0].flags.flowstate.spellEffect.procs === 1, "Prolong: after a failed check the Poison goes on");
+// "2 times (+1 each stack)" is bolded: a crit's two Strengthened stacks make it 4 applications.
+clean(); await land("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 }, 30); target(gob); await A.act(lastMsgWith("afflict"), 0);
+for (let i = 0; i < 3; i++) { seq = [1, 5]; await A.turnStart(gob); }
+const stillOn = eff(gob, "poison").length === 1;
+seq = [1, 5]; await A.turnStart(gob);
+ok2(stillOn && eff(gob, "poison").length === 0, "Prolong's 2 applications are Strengthened by the crit's stacks (4 in all)");
 seq = [1, 5]; await A.turnStart(gob);
 ok2(eff(gob, "poison").length === 0, "…and ends once it has applied 2 times");
 await poisoned("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 });

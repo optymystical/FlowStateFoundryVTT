@@ -128,6 +128,8 @@ reset(); card = await hit("magic-cold:frost", {}, [20]);
 ok2(lastAtk().flags.flowstate.attack.opts.damage === "3d8" && orc.system.energy.value === 80, `Frost: 1d8 × 3 cold, removes that much Energy (Energy ${orc.system.energy.value})`);
 reset(); formulas.length = 0; card = await hit("magic-cold:frost", { [M("magic-cold:frostbite")]: 1 }, [20, 30]);
 ok2(formulas.includes("3d12") && orc.system.energy.value === 50, `Frostbite: an extra 1d12 × 3 removed (Energy ${orc.system.energy.value})`);
+reset(); formulas.length = 0; card = await hit("magic-crushing:slam", { core2: "magic-cold:frost", [M("magic-cold:frostbite")]: 1 }, [30]);
+ok2(formulas.includes("3d12") && orc.system.energy.value < 100, `Frostbite also works on a Slam + Frost that has no Energy removal of its own (Energy ${orc.system.energy.value})`);
 reset(); card = await hit("magic-cold:frost", { [M("magic-cold:chill")]: true }, [20]);
 ok2(orc.system.hp.value === 432 - 20 - 30, `Chill: they also take that much cold damage, Strengthened (HP ${orc.system.hp.value})`);
 reset(); orc.system.energy.value = 0; card = await hit("magic-cold:frost", { [M("magic-cold:shatter")]: true }, [20]);

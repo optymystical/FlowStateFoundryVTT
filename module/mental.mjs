@@ -436,7 +436,7 @@ export async function activateWard(actor) {
   const areaWeak = area && targets.length > 2 ? -1 : 0;          // an Area Ward that hits more than two targets is Weakened, like any Area Manifest
   const adv = wardFx.net + (out.clear ? 1 : 0);
   const mental = { ward: { form: p.form, enhanced, types: out.types ? [out.types, ...(enhanced && out.types2 && out.types2 !== out.types ? [out.types2] : [])] : null, recur: !!out.recur, clear: !!out.clear, caster: actor.uuid, icon: icon.uuid,
-    declared: enhanced && out.declared ? out.declared : "", amount: enhanced ? p.enhancedAmount : p.amount, alignStacks: wardFx.stacks + areaWeak, autoHit: wardFx.autoHit } };
+    declared: enhanced && out.declared ? out.declared : "", amount: enhanced ? p.enhancedAmount : p.amount, recover: p.recover ?? 0, alignStacks: wardFx.stacks + areaWeak, autoHit: wardFx.autoHit } };
   const notes = [`${p.name} Ward`, enhanced ? "Enhanced" : "", burst ? "Burst (RP)" : "", innate ? "Innate (free)" : "", wardFx.net > 0 ? `${R.alignmentLabel(align)}: ${[ "Advantage", wardFx.stacks ? "Strengthened" : "", wardFx.dodgeNet < 0 ? "half stealth (Disadvantage dodging)" : "", wardFx.autoHit ? "hits regardless (the roll decides a crit)" : ""].filter(Boolean).join(", ")}` : "", out.clear ? "Make Clear: Advantage" : "", out.expand ? "Expansion (Area)" : "",
     wt >= 5 && innate ? "Innate Mastery: the target has Disadvantage on their roll against it" : ""].filter(Boolean);
   return performAttack(actor, { ...baseAttack, label: `${p.name} Ward`, net: adv, melee: false, area: !!area, singleRoll: !!area, notes, mental, targetActors: targets, dodgeNet: (wt >= 5 && innate ? -1 : 0) + wardFx.dodgeNet,
@@ -454,6 +454,15 @@ async function applyWard({ attacker, target, ward }) {
     if (form.kind === "shield" || form.kind === "persistent") {
       let amt = amount;
       const mine = spellEffects(who, "shield").filter(e => e.flags.flowstate.spellEffect.ward === ward.form && e.flags.flowstate.spellEffect.caster === caster.uuid);
+      // Vigil: once the persistent shield stands, each further activation only recovers part of it (up to what it started with).
+      if (form.recover && mine.length) {
+        const e = mine[0], d = e.flags.flowstate.spellEffect;
+        const add = Math.min(Math.max(0, (Number(d.max) || 0) - (Number(d.hp) || 0)), Math.floor(applyStacks(ward.recover ?? 0, st)));
+        if (add <= 0) { lines.push(`${esc(who.name)}'s ${form.name} shielding is already full.`); return; }
+        await changeEffect(e, { "flags.flowstate.spellEffect.hp": (Number(d.hp) || 0) + add, name: `${form.name} (${(Number(d.hp) || 0) + add} shielding)` });
+        lines.push(`${esc(who.name)}'s ${form.name} recovers <strong>${add} shielding</strong> (${(Number(d.hp) || 0) + add} of ${d.max}).`);
+        return;
+      }
       if (form.cap) amt = Math.max(0, Math.min(amt, Math.floor(applyStacks(form.cap * R.iconScale(eff(caster, "will"), (ward.grade ?? 1)), st)) - mine.reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.hp) || 0), 0)));
       if (form.cap && amt <= 0) { lines.push(`${esc(who.name)} already has the most ${form.name} shielding.`); return; }
       await putSpellEffect(who, { kind: "shield", stack: true, caster: caster.uuid, name: `${form.name} (${amt} shielding)`, hp: amt, max: amt, ward: ward.form, order: "default", ritualOf: null,

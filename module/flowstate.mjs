@@ -221,6 +221,7 @@ Hooks.once("init", () => {
     choices: { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" }
   });
   game.settings.register("flowstate", "migratedCreationLock", { scope: "world", config: false, type: Boolean, default: false });
+  game.settings.register("flowstate", "migratedTerrainVisibility", { scope: "world", config: false, type: Boolean, default: false });
 
   game.flowstate.CharacterWizard = CharacterWizard;
   game.flowstate.NpcWizard = NpcWizard;
@@ -830,6 +831,13 @@ Hooks.once("ready", async () => {
     if (actor.system?.creation) await actor.update({ "system.creation": false });
   }
   await game.settings.set("flowstate", "migratedCreationLock", true);
+});
+
+/** One-time: terrain regions are GM-only now; hide the ones already on scenes. */
+Hooks.once("ready", async () => {
+  if (!game.user.isActiveGM || game.settings.get("flowstate", "migratedTerrainVisibility")) return;
+  await terrain.migrateVisibility();
+  await game.settings.set("flowstate", "migratedTerrainVisibility", true);
 });
 
 /* -------------------------------------------- */

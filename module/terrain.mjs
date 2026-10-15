@@ -34,8 +34,11 @@ export function squareSideFt(body, gridFt = 5) {
   return Math.max(1, Math.ceil(side / gridFt)) * gridFt;
 }
 
+/** Region visibility "Gamemaster": the GM always sees terrain; players don't (it still costs them AP). */
+export const GM_ONLY = 1;
+
 /** Data for a terrain Region: a square of `sidePx` centred on (cx, cy). */
-export function terrainRegionData(kind, { cx, cy, sidePx, name = null, flags = {}, visibility = 2 } = {}) {
+export function terrainRegionData(kind, { cx, cy, sidePx, name = null, flags = {}, visibility = GM_ONLY } = {}) {
   const t = TERRAIN[kind] ?? TERRAIN.rough;
   return {
     name: name ?? t.label, color: t.color, visibility,
@@ -120,7 +123,15 @@ export async function placeSpellTerrain({ actor, kind, body, target = null, ritu
 export async function gmCreate({ sceneId, data }) {
   const scene = game.scenes.get(sceneId);
   if (!scene) return;
-  await scene.createEmbeddedDocuments("Region", [data]);
+  await scene.createEmbeddedDocuments("Region", [{ ...data, visibility: GM_ONLY }]);
+}
+
+/** One-time: terrain placed before it became GM-only (visibility "Always") is hidden from players. */
+export async function migrateVisibility() {
+  for (const scene of game.scenes ?? []) {
+    const shown = [...(scene.regions ?? [])].filter(r => kindOf(r) && r.visibility !== GM_ONLY);
+    if (shown.length) await scene.updateEmbeddedDocuments("Region", shown.map(r => ({ _id: r.id, visibility: GM_ONLY })));
+  }
 }
 
 /** A caster's terrain ends (the start of their next turn; `all` = when combat ends too, Ritual terrain included). */

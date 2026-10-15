@@ -41,6 +41,7 @@ ok2(T.squareSideFt(6) === 5 && T.squareSideFt(25) === 5 && T.squareSideFt(30) ==
 ok2(R.movementCost({ terrain: 2 }).ap === 3 && R.movementCost({ terrain: 1 }).ap === 2 && R.movementCost({ crouch: true, terrain: 1 }).ap === 2 && R.movementCost({ crouch: true, terrain: 2 }).ap === 3 && R.movementCost({ prone: true, terrain: 1 }).ap === 3, "Terrain costs AP and doesn't stack with posture (the worst applies)");
 const d = T.terrainRegionData("difficult", { cx: 250, cy: 250, sidePx: 200, flags: { terrainOf: "Actor.X" } });
 ok2(d.shapes[0].x === 150 && d.shapes[0].width === 200 && d.flags.flowstate.terrain === "difficult" && d.flags.flowstate.terrainOf === "Actor.X", "Region data: a square around the point, flagged with its terrain");
+ok2(d.visibility === T.GM_ONLY && T.GM_ONLY === 1, "Terrain regions are visible to the GM only (Region visibility: Gamemaster)");
 
 console.log("== Keeping creatures in step with the terrain they stand in");
 const hero = { name: "Hero", uuid: "Actor.Hero", type: "character", flags: {}, getFlag(s, k) { return foundry.utils.getProperty(this.flags, `${s}.${k}`); }, async setFlag(s, k, v) { foundry.utils.setProperty(this.flags, `${s}.${k}`, v); }, async unsetFlag(s, k) { foundry.utils.setProperty(this.flags, `${s}.${k}`, undefined); } };
@@ -76,6 +77,15 @@ scene.createEmbeddedDocuments = async (t, docs) => { created.push(...docs); scen
 const line = await T.placeSpellTerrain({ actor: caster, kind: "difficult", body: 30, target: orcActor, label: "Muddy ground" });
 ok2(created.length === 1 && created[0].flags.flowstate.terrain === "difficult" && created[0].shapes[0].width === 200 && /10 ft square around Orc/.test(line), `Muddy puts a 10 ft difficult-terrain square around the target (${line})`);
 ok2(created[0].shapes[0].x === 200, "…centred on their token");
+ok2(created[0].visibility === T.GM_ONLY, "…and only the GM sees it");
+await T.gmCreate({ sceneId: "S1", data: { ...created[0], visibility: 2 } });
+ok2(created.at(-1).visibility === T.GM_ONLY, "A relayed request can't make terrain visible to players");
+created.pop(); scene.regions.pop();
+const old = { id: "OLD", visibility: 2, flags: { flowstate: { terrain: "rough" } } }; scene.regions.push(old);
+const updates = []; scene.updateEmbeddedDocuments = async (t, docs) => { updates.push(...docs); };
+await T.migrateVisibility();
+ok2(updates.some(u => u._id === "OLD") && updates.every(u => u.visibility === T.GM_ONLY && u._id !== "R3"), "Terrain placed before this was shown to players is hidden by the one-time migration (other regions untouched)");
+scene.regions.splice(scene.regions.indexOf(old), 1);
 await T.placeSpellTerrain({ actor: caster, kind: "clear", body: 6, label: "Hardened ground", ritualOf: "Effect.R" });
 ok2(created[1].flags.flowstate.terrain === "clear" && created[1].flags.flowstate.ritualOf === "Effect.R" && created[1].shapes[0].width === 100, "Harden puts cleared terrain around the caster when nothing is targeted, tied to the Ritual");
 await T.clearTerrain(caster);

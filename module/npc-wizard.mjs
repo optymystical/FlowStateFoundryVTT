@@ -51,7 +51,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     step: 0, name: "", img: creation.DEFAULT_IMG, size: npc.NPC_DEFAULTS.size, disposition: npc.NPC_DEFAULTS.disposition,
     statPoints: npc.NPC_DEFAULTS.statPoints, ratio: npc.NPC_DEFAULTS.ratio, skillManual: false, skillPoints: npc.NPC_DEFAULTS.skillPoints,
     grade: npc.NPC_DEFAULTS.grade, ammo: npc.NPC_DEFAULTS.ammo,
-    stats: npc.evenStats(npc.NPC_DEFAULTS.statPoints), items: [], trees: {}, skillArch: "martial", openTree: null
+    stats: creation.emptyStats(), items: [], trees: {}, skillArch: "martial", openTree: null
   };
 
   async _prepareContext(options) {

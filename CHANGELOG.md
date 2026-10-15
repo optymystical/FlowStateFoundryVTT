@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.62.1:** **New NPC stats start at 0** (Even spread still fills them). **Terrain regions are GM only:** players don't see rough/difficult/cleared terrain but still pay its AP; terrain already on scenes is hidden once when the GM loads the world.
+
 **0.62.0:** **Rules audit: Fear, dragging, Cut + Hex and Stab + Hex.**
 - **Fear** now also blocks the free Energy at the start of a turn (Rules Ch9: no Energy from any source), not just Recover Energy.
 - **Dragging** a grappled creature along costs +1 AP per move (Rules Ch8); the Action List's Move row and the movement pill show it, and the pill now says how far a grappled creature can move instead of "can't move".

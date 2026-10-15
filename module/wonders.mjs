@@ -5,7 +5,7 @@
  * effects on the target that turn into the real effect when their turn starts (`pendingTurnStart`).
  */
 import {
-  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, knockbackRow, setGrapple, gridFor
+  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, damageOutcome, knockbackRow, setGrapple, gridFor
 } from "./actions.mjs";
 import { centreDistance } from "./distance.mjs";
 import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
@@ -35,11 +35,18 @@ const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${
 /** A Tenet triggers once per round (the old 3 Alignment doubling is gone). */
 export const tenetUses = () => 1;
 /** Has this actor already used this "once per round" thing this round (Tenets: as many times as they may per round)? */
+/** Mantra (Ponderance T2) is asked when a Tenet is used: ponderance.mjs sets `offer(actor, mult) -> the (possibly doubled) mult`. */
+export const mantraHook = { offer: async (_actor, mult) => mult };
+/** Impulse (Snappence T2): a Tenet that already triggered this round may apply once more. snappence.mjs sets `can(actor)` and `use(actor, label)` (asks and pays). */
+export const impulseHook = { can: () => false, use: async () => false };
+export const forethought = { on: false };      // Ponderance T4: a Premeditated Wonder's Tenet applies outside the once per round limit
 export function onceUsed(actor, id) {
+  if (forethought.on) return false;
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
   return cur?.round === roundKey() && cur.ids.filter(x => x === id).length >= tenetUses(actor);
 }
 export async function markOnce(actor, id) {
+  if (forethought.on) return;
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
   const key = roundKey();
   const ids = cur?.round === key ? cur.ids : [];
@@ -62,7 +69,7 @@ export function tenetOf(actor) {
   return { id: icon.system.tenet, wonder: p.tenet.wonder, mult: p.tenet.mult };
 }
 
-const putTemp = (who, caster, n, why) => putSpellEffect(who, { kind: "tempHP", caster: caster.uuid, name: `Temp HP (${n})`, hp: n, max: n, mode: why,
+const putTemp = (who, caster, n, why) => putSpellEffect(who, { kind: "tempHP", ...(why === "mental-life-dream:bloom" ? { stack: true } : {}), caster: caster.uuid, name: `Temp HP (${n})`, hp: n, max: n, mode: why,
   description: `Absorbs the next ${n} damage that would reach HP. Until the start of ${caster.name}'s next turn.` });
 const putPending = (who, caster, label, then) => putSpellEffect(who, { kind: "pending", stack: true, onTargetTurn: true, caster: caster.uuid, name: `${label} (starts on ${who.name}'s next turn)`, then,
   description: `Takes hold at the start of the creature's next turn.` });
@@ -153,14 +160,14 @@ export const ON_CRIT = [];
 export const MODES = {
   /* ---- Life (Dream) ---- */
   async "mental-life-dream:bloom"(c) {
-    const n = bold(c.bs, 20 * c.power);
+    const n = bold(c.bs, 50 * c.power);
     if (c.enhanced || c.now) { await putTemp(c.target, c.attacker, n, c.mode.id); return `${esc(c.target.name)} gets <strong>${n} temp HP</strong> now.`; }
     await putPending(c.target, c.attacker, "Bloom", { type: "tempHP", n, mode: c.mode.id });
     return `${esc(c.target.name)} gets <strong>${n} temp HP</strong> at the start of their next turn (until the start of your next turn).`;
   },
   async "mental-life-dream:flourish"(c) {
     const up = bold(c.bs, c.power);
-    if (c.enhanced || c.now) { await putSpellEffect(c.target, { kind: "dodgeUp", caster: c.attacker.uuid, name: `Flourish (+${up} dodge die size)`, dodgeDieUp: up, mode: c.mode.id, description: `Dodge dice are ${up} size${up === 1 ? "" : "s"} bigger until the start of ${c.attacker.name}'s next turn.` }); return `${esc(c.target.name)}'s dodge dice are <strong>one size bigger</strong> now.`; }
+    if (c.enhanced || c.now) { await putSpellEffect(c.target, { kind: "dodgeUp", caster: c.attacker.uuid, name: `Flourish (+${up} dodge die size)`, dodgeDieUp: up, mode: c.mode.id, description: `Dodge dice are ${up} size${up === 1 ? "" : "s"} bigger until the start of ${c.attacker.name}'s next turn.` }); return `${esc(c.target.name)}'s dodge dice are <strong>+${up} die size</strong> now.`; }
     await putPending(c.target, c.attacker, "Flourish", { type: "dodgeUp", mode: c.mode.id, power: up });
     return `${esc(c.target.name)}'s dodge dice get <strong>+${up} die size</strong> from the start of their next turn (until the start of your next turn).`;
   },
@@ -177,8 +184,11 @@ export const MODES = {
     const r = await roll(`${c.power}d12`);
     rolled.push(r);
     const n = Math.floor(applyStacks(r.total, c.stacks));
-    await requestDamage(c.target, n, "supernatural", 0, null, { silent: true, bypass: true, maxHpLoss: !!c.enhanced });
-    return `Wither removes <strong>${n}</strong> health from ${esc(c.target.name)} (${c.power}d12 = ${r.total}${c.stacks ? ` → ${n}` : ""}), ignoring objects and defenses${c.enhanced ? ", and that much Max HP too" : ""}.`;
+    // Supernatural damage: Temp HP, shielding, Shrouds, Wards and anything else that blocks it take their share first.
+    const outcome = await damageOutcome(c.target, n, "supernatural", { archetype: "magic" });
+    const res = await requestDamage(c.target, n, "supernatural", 0, null, { wantResult: true, silent: true, archetype: "magic", maxHpLoss: !!c.enhanced, shroudCtx: { source: "type:supernatural", attacker: c.attacker.uuid } });
+    const lost = res?.toHp ?? outcome.toHp;
+    return `Wither removes <strong>${lost}</strong> health from ${esc(c.target.name)} (${c.power}d12 = ${r.total}${c.stacks ? ` → ${n}` : ""}${lost < n ? `, ${n - lost} blocked` : ""})${c.enhanced ? ", and that much Max HP too" : ""}.`;
   },
   async "mental-death-nightmare:waste"(c) {
     const size = bold(c.bs, 2 * c.power);
@@ -204,7 +214,7 @@ export const MODES = {
   async "mental-beyond-dream:redirect"(c) {
     // No attack roll: the charge goes on the caster until their next turn.
     await putSpellEffect(c.attacker, { kind: "redirect", stack: true, caster: c.attacker.uuid, name: `Redirect (${R.RANGES[c.range]?.label ?? c.range}${c.enhanced ? ", Enhanced" : ""})`, range: c.range, enhanced: !!c.enhanced, power: c.power, bstacks: c.bs,
-      description: `A charge: when an attack hits within ${R.RANGES[c.range]?.label ?? c.range} range that you can sense, use "Redirect" to make an attack roll against its result: on a hit it deals ${c.enhanced ? 10 : 20} × ${c.power} less damage${c.enhanced ? " (the roll automatically hits)" : ""}. Until your next turn.` });
+      description: `A charge: when an attack hits within ${R.RANGES[c.range]?.label ?? c.range} range that you can sense, use "Redirect" to make an attack roll against its result: on a hit it deals ${bold(c.bs, (c.enhanced ? 10 : 20) * c.power)} less damage${c.enhanced ? " (the roll automatically hits)" : ""}. Until your next turn.` });
     return `${esc(c.attacker.name)} stores a <strong>Redirect</strong> charge (${R.RANGES[c.range]?.label ?? c.range}) until their next turn: use the Redirect action when an attack hits within range.`;
   },
   async "mental-beyond-dream:ascend"(c) {
@@ -222,18 +232,20 @@ export const MODES = {
     return `The ground grapples ${esc(c.target.name)}: breaking free needs a counter grapple roll of <strong>${min}</strong> or higher, ${c.enhanced ? "lasting 3 turns" : "until the start of your next turn"}.`;
   },
   async "mental-below-nightmare:burden"(c) {
-    const min = bold(c.bs, 2 * c.power);
-    const dis = c.choices.dis === "dodge" ? "dodge" : "attack";
-    await putSpellEffect(c.target, { kind: "burden", stack: true, caster: c.attacker.uuid, name: `Burden (${dis})`, [dis === "attack" ? "attackDis" : "dodgeDis"]: 1, below: true, breakMin: min, mode: c.mode.id, turnsLeft: c.enhanced ? 3 : undefined,
-      description: `Disadvantage on ${dis} rolls. Stacks. A counter grapple check of ${min} or higher removes all of it; otherwise until ${c.enhanced ? "3 of the caster's turns" : "the start of the caster's next turn"}.` });
-    const n = spellEffects(c.target, "burden").length;
-    return `${esc(c.target.name)} is <strong>weighed down</strong>: Disadvantage on ${dis} rolls (${n} Burden stack${n === 1 ? "" : "s"}), until they break free with a counter grapple check of ${min} or higher${c.enhanced ? ", or 3 turns" : ", or the start of your next turn"}.`;
+    const min = bold(c.bs, 3 * c.power);
+    // Two Disadvantages, split among the attack and dodge rolls as chosen on Manifest: both on attacks, both on dodges, or one of each.
+    const split = c.choices.dis === "dodge" ? { attackDis: 0, dodgeDis: 2 } : c.choices.dis === "split" ? { attackDis: 1, dodgeDis: 1 } : { attackDis: 2, dodgeDis: 0 };
+    const dis = split.attackDis && split.dodgeDis ? "one on attack and one on dodge rolls" : split.dodgeDis ? "two on dodge rolls" : "two on attack rolls";
+    await putSpellEffect(c.target, { kind: "burden", stack: true, caster: c.attacker.uuid, name: `Burden (${dis})`, ...split, below: true, breakMin: min, mode: c.mode.id, turnsLeft: c.enhanced ? 3 : undefined,
+      description: `Disadvantage: ${dis}. Stacks. A counter grapple check of ${min} or higher removes all of it; otherwise until ${c.enhanced ? "3 of the caster's turns" : "the start of the caster's next turn"}.` });
+    const total = spellEffects(c.target, "burden").reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.attackDis) || 0) + (Number(e.flags.flowstate.spellEffect.dodgeDis) || 0), 0);
+    return `${esc(c.target.name)} is <strong>weighed down</strong>: Disadvantage, ${dis} (${total} Burden stack${total === 1 ? "" : "s"}), until they break free with a counter grapple check of ${min} or higher${c.enhanced ? ", or 3 turns" : ", or the start of your next turn"}.`;
   },
   async "mental-below-nightmare:entomb"(c) {
-    const min = bold(c.bs, 3 * c.power);
+    const min = bold(c.bs, 4 * c.power);
     const sunk = spellEffects(c.target, "hold").find(e => e.flags.flowstate.spellEffect.sink);
-    const stacks = spellEffects(c.target, "burden").reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.attackDis) || 0) + (Number(e.flags.flowstate.spellEffect.dodgeDis) || 0), 0);
-    if (!sunk || stacks < 3) return `Entomb needs a target under Sink and at least 3 Burden stacks (${esc(c.target.name)} has ${sunk ? "Sink" : "no Sink"} and ${stacks} Burden).`;
+    const stacks = spellEffects(c.target, "burden").reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.attackDis) || 0) + (Number(e.flags.flowstate.spellEffect.dodgeDis) || 0), 0);       // a Burden stack is one Disadvantage
+    if (!sunk || stacks < 4) return `Entomb needs a target under Sink and at least 4 Burden stacks (${esc(c.target.name)} has ${sunk ? "Sink" : "no Sink"} and ${stacks} Burden).`;
     await changeEffect(sunk, null);
     for (const e of spellEffects(c.target, "burden")) await changeEffect(e, null);
     await holdWith(c, { min, label: "Entombed", turns: c.enhanced ? 3 : 1, flags: { below: true, entomb: true, power: c.power, bstacks: c.bs } });
@@ -265,6 +277,11 @@ export async function resolveMode(c) {
 }
 
 export const MISS_PROVIDERS = [];
+/** Damage changes from lasting effects (Light, Dark): ({ attacker, target, n, type, notes }) → the new damage, or undefined for no change. Run first in the damage-adjust pipeline. */
+export const DAMAGE_PROVIDERS = [];
+/** Things a missed Manifest does by itself: ({ attacker, target, m, mode }) → HTML to add to its card. */
+export const MISS_AUTO = [];
+export async function missAuto(c) { let out = ""; for (const f of MISS_AUTO) out += (await f(c)) ?? ""; return out; }
 export async function missActs(c) { const out = []; for (const f of MISS_PROVIDERS) out.push(...(await f(c) ?? [])); return out; }
 
 /* -------------------------------------------- */
@@ -284,10 +301,10 @@ async function abilityActs(c) {
   if (w.id === "mental-death-nightmare" && wt >= 4 && c.crit && living(c.target)) acts.push({ id: "reap", label: "Reap", tip: "Manifest another Death Mode of the same Range for free", cost: `⚡ ${minOf(a, "snap")}`, ...base });
   const tn = tenetOf(a);
   if (tn && !c.m.spread && !c.now) {
-    if (tn.id === "mental-life-dream:verdant-soul") acts.push({ tenet: true, id: "verdantSoul", label: "Verdant Soul", tip: "Once per round: 10 temp HP to the target or yourself", cost: "once per round", mult: tn.mult, ...base });
-    if (tn.id === "mental-death-nightmare:mortal-coil") acts.push({ tenet: true, id: "mortalCoil", label: "Mortal Coil", tip: "Once per round: steal 1d8 health as temp HP", cost: "once per round", mult: tn.mult, ...base });
-    if (tn.id === "mental-below-nightmare:weight") acts.push({ tenet: true, id: "weight", label: "Weight", tip: `Once per round: ${15 * tn.mult} Slow stacks on the target, until your next turn`, cost: "once per round", mult: tn.mult, ...base });
-    if (tn.id === "mental-beyond-dream:gust") acts.push({ tenet: true, id: "gust", label: "Gust", tip: "Once per round: 5d8 Force on the target", cost: "once per round", mult: tn.mult, ...base });
+    if (tn.id === "mental-life-dream:verdant-soul") acts.push({ tenet: true, id: "verdantSoul", label: "Verdant Soul", tip: `Once per round: ${bold(base.bstacks, 10 * tn.mult)} temp HP to the target or yourself`, cost: "once per round", mult: tn.mult, ...base });
+    if (tn.id === "mental-death-nightmare:mortal-coil") acts.push({ tenet: true, id: "mortalCoil", label: "Mortal Coil", tip: `Once per round: steal ${tn.mult}d8 health as temp HP${base.bstacks ? " (scaled by the Manifest's stacks)" : ""}`, cost: "once per round", mult: tn.mult, ...base });
+    if (tn.id === "mental-below-nightmare:weight") acts.push({ tenet: true, id: "weight", label: "Weight", tip: `Once per round: ${bold(base.bstacks, 15 * tn.mult)} Slow stacks on the target, until your next turn`, cost: "once per round", mult: tn.mult, ...base });
+    if (tn.id === "mental-beyond-dream:gust") acts.push({ tenet: true, id: "gust", label: "Gust", tip: `Once per round: ${5 * tn.mult}d8 Force on the target${base.bstacks ? " (scaled by the Manifest's stacks)" : ""}`, cost: "once per round", mult: tn.mult, ...base });
   }
   for (const f of ACT_PROVIDERS) acts.push(...(await f(c) ?? []));
   return acts;
@@ -315,6 +332,12 @@ export async function offerTenets(c, acts) {
   }
 }
 
+/** Forethought (Ponderance T4): the Tenet acts of a Premeditated Wonder go off at once, outside the once per round limit. */
+export async function forethoughtTenets(c, acts) {
+  forethought.on = true;
+  try { for (const x of acts ?? []) await runAct(x); } finally { forethought.on = false; }
+}
+
 /** The button row(s) for a follow-up card. */
 export function actButtons(acts) {
   return acts.map((x, i) => `<div class="fs-brawl-row fs-mental-row" data-role="attacker" data-owner="${x.caster}"><button type="button" class="fs-mental-act" data-i="${i}" data-tooltip="${esc(x.tip ?? "")}"><i class="fa-solid fa-wand-sparkles"></i> ${esc(x.label)} <small>${esc(x.cost ?? "")}</small></button></div>`).join("");
@@ -322,9 +345,18 @@ export function actButtons(acts) {
 
 /** A button on one of our follow-up cards was clicked: do it. Returns true if it was used. */
 export async function runAct(x) {
+  const c = x.tenet ? await fromUuid(x.caster) : null;
+  if (c?.isOwner && onceUsed(c, x.id) && await impulseHook.use(c, x.label ?? x.id)) {          // Impulse: this Tenet applies again
+    forethought.on = true;
+    try { return await runActOnce(x); } finally { forethought.on = false; }
+  }
+  return runActOnce(x);
+}
+async function runActOnce(x) {
   const caster = await fromUuid(x.caster), target = await fromUuid(x.target);
   if (!caster?.isOwner) { ui.notifications.warn(`Only ${caster?.name ?? "the Mental user"}'s owner can do that.`); return false; }
   if (["chant", "makeClear", "wobs"].includes(x.id)) return mental.theoryAct(x);
+  if (x.tenet && x.mult != null && !onceUsed(caster, x.id)) x = { ...x, mult: await mantraHook.offer(caster, x.mult, x.label) };          // Mantra: double the bolded effect, asked as the Tenet is used
   if (ACTS[x.id]) return ACTS[x.id](x, caster, target);
   const mode = R.modeById(x.mode);
   const energy = { pollinate: Math.floor(minOf(caster, "pon") / 2), fester: minOf(caster, "snap"), reap: minOf(caster, "snap") }[x.id] ?? 0;
@@ -363,7 +395,7 @@ export async function runAct(x) {
   }
   if (x.id === "verdantSoul") {
     const n = bold(x.bstacks, 10 * x.mult);
-    const who = await mental.pickOne(caster, [target, caster], "Verdant Soul: give 10 temp HP to");
+    const who = await mental.pickOne(caster, [target, caster], `Verdant Soul: give ${n} temp HP to`);
     if (!who) return false;
     await putTemp(who, caster, n, "verdant-soul");
     await post(caster, { title: `${esc(caster.name)} — Verdant Soul`, body: `<div class="fs-result">${esc(who.name)} gets <strong>${n} temp HP</strong> until the start of ${esc(caster.name)}'s next turn.</div>` });
@@ -407,7 +439,7 @@ export async function afterBreakFree({ actor, held, freed }) {
   if (!caster) return;
   const power = Math.max(1, R.wonderPower(eff(caster, "snap")));
   const acts = [];
-  if (!freed && tier(caster, "mental-below-nightmare") >= 2) acts.push({ id: "vice", label: `Vice on ${actor.name}`, tip: "1d12 physical damage for a failed counter grapple check", cost: `⚡ ${Math.floor(minOf(caster, "snap") / 2)}`, caster: caster.uuid, target: actor.uuid, power });
+  if (!freed && tier(caster, "mental-below-nightmare") >= 2) acts.push({ id: "vice", label: `Vice on ${actor.name}`, tip: `${power}d12 physical damage for a failed counter grapple check`, cost: `⚡ ${Math.floor(minOf(caster, "snap") / 2)}`, caster: caster.uuid, target: actor.uuid, power });
   if (freed && tier(caster, "mental-below-nightmare") >= 4) acts.push({ id: "quicksand", label: `Quicksand on ${actor.name}`, tip: "An attack roll: on a hit they fail their escape check instead", cost: `⚡ ${2 * minOf(caster, "snap")}`, caster: caster.uuid, target: actor.uuid, power, held });
   if (acts.length) await post(caster, { title: `${esc(caster.name)} — Below`, body: `<div class="fs-notes">${esc(actor.name)} ${freed ? "broke free of" : "failed to break free of"} ${esc(held.name)}.</div>${actButtons(acts)}`, flags: { flowstate: { mentalAct: { acts } } } });
 }
@@ -514,10 +546,20 @@ export const CHARGES = {
   decree: { label: "Decree", wonder: "mental-order-dream", text: "changes their roll to a static result: half the roll's max result, plus or minus 1" },
   mandate: { label: "Mandate", wonder: "mental-order-dream", text: "gives a result plus or minus 1 per charge consumed" },
   verdict: { label: "Verdict", wonder: "mental-order-dream", text: "swaps a regular hit and a crit, and adds or subtracts 5 damage (doubled on a crit)" },
-  fracture: { label: "Fracture", wonder: "mental-chaos-nightmare", text: "forces a reroll with the die size changed by 2 (dodge dice by half)" },
-  larceny: { label: "Larceny", wonder: "mental-chaos-nightmare", text: "steals the roll and its effects, forcing a reroll with the die size changed by 1 (dodge dice by half)" },
-  entropy: { label: "Entropy", wonder: "mental-chaos-nightmare", text: "on a crit gives them an additional roll with the die size changed by 3 (dodge dice by half)" }
+  fracture: { label: "Fracture", wonder: "mental-chaos-nightmare", text: "forces a reroll with the die size changed by 3 (dodge dice by half); with Entropy (Chaos T5) it can instead be spent on a crit, giving them an additional roll with the die size changed by 3" },
+  larceny: { label: "Larceny", wonder: "mental-chaos-nightmare", text: "steals the roll and its effects, forcing a reroll with the die size changed by 1 (dodge dice by half)" }
 };
+/** What a charge does with its own numbers: the bolded amounts scaled by the Power and stacks it was placed with. */
+export function chargeText(kind, d = {}) {
+  const n = k => bold(d.bstacks ?? 0, k * (d.power ?? 1));
+  return {
+    decree: `changes their roll to a static result: half the roll's max result, plus or minus ${n(1)}`,
+    mandate: `gives a result plus or minus ${n(1)} per charge consumed${d.enhanced ? ` (on a damage roll: plus or minus ${n(10)} damage instead)` : ""}`,
+    verdict: `swaps a regular hit and a crit, and adds or subtracts ${n(5)} damage (doubled on a crit)`,
+    fracture: `forces a reroll with the die size changed by ${n(3)} (dodge dice by half); with Entropy (Chaos T5) it can instead be spent on a crit, giving them an additional roll with the die size changed by ${n(3)}`,
+    larceny: `steals the roll and its effects, forcing a reroll with the die size changed by ${n(1)} (dodge dice by half)`
+  }[kind] ?? CHARGES[kind].text;
+}
 const CHARGE_MODES = Object.fromEntries(Object.entries(CHARGES).map(([k, c]) => [`${c.wonder}:${k}`, k]));
 
 const isCharge = modeId => modeId in CHARGE_MODES;
@@ -527,9 +569,10 @@ async function placeCharge({ caster, target, kind, power, bstacks = 0, enhanced,
   const orderPersist = CHARGES[kind].wonder === "mental-order-dream" && tier(caster, "mental-order-dream") >= 2
     && !spellEffects(target, "charge").some(e => e.flags.flowstate.spellEffect.caster === caster.uuid && e.flags.flowstate.spellEffect.persistent && CHARGES[e.flags.flowstate.spellEffect.charge]?.wonder === "mental-order-dream");
   const sign = choices.sign === "minus" ? "minus" : "plus", size = choices.size === "down" ? "down" : "up";
-  const bits = [kind === "decree" || kind === "mandate" ? (sign === "plus" ? "+1" : "−1") : "", ["fracture", "larceny", "entropy"].includes(kind) ? `die size ${size === "up" ? "+" : "−"}` : "", enhanced ? "Enhanced" : ""].filter(Boolean).join(", ");
+  const one = bold(bstacks, (kind === "fracture" ? 3 : 1) * power);
+  const bits = [kind === "decree" || kind === "mandate" ? `${sign === "plus" ? "+" : "−"}${one}` : "", ["fracture", "larceny"].includes(kind) ? `die size ${size === "up" ? "+" : "−"}${one}` : "", enhanced ? "Enhanced" : ""].filter(Boolean).join(", ");
   await putSpellEffect(target, { kind: "charge", stack: true, caster: caster.uuid, name: `${CHARGES[kind].label} charge${bits ? ` (${bits})` : ""}`, charge: kind, enhanced: !!enhanced, power, bstacks, sign, size, persistent: orderPersist, mode,
-    description: `A ${CHARGES[kind].label} charge: ${CHARGES[kind].text}. ${orderPersist ? "Permanence: it lasts until it is consumed." : `Until the start of ${caster.name}'s next turn.`}` });
+    description: `A ${CHARGES[kind].label} charge: ${chargeText(kind, { power, bstacks, enhanced })}. ${orderPersist ? "Permanence: it lasts until it is consumed." : `Until the start of ${caster.name}'s next turn.`}` });
   return orderPersist;
 }
 
@@ -560,7 +603,7 @@ async function rerollWith(holder, type, delta) {
   const base = dieOf(holder, type);
   const d = type === "dodge" ? Math.max(1, base + Math.trunc(delta / 2) + (delta % 2 ? Math.sign(delta) : 0)) : Math.max(1, base + delta);
   const r = await roll(type === "dodge" ? `2d${d}` : `1d${d}`);
-  return { r, d, text: `${type === "dodge" ? "2" : "1"}d${d} = ${r.total}` };
+  return { r, d, applied: d - base, text: `${type === "dodge" ? "2" : "1"}d${d} = ${r.total}` };          // `applied`: what the die really changed by (dodge dice take half)
 }
 
 /** Spend a charge: ask what the roll was, work out the effect, and post it. */
@@ -575,13 +618,13 @@ export async function consumeCharge(caster, effect) {
     <div class="fs-field"><label>Its max result <small>(damage and other rolls)</small></label><input type="number" name="max" value="0" min="0"></div>`;
   const fields = {
     decree: types, mandate: `<div class="fs-field"><label>The result</label><input type="number" name="result" value="0"></div><div class="fs-field"><label>Charges consumed</label><input type="number" name="n" value="1" min="1"></div>
-      <label class="fs-cast-mod"><input type="checkbox" name="damage"> It's a damage roll${d.enhanced ? ": ±10 damage instead (Enhanced)" : ""}</label>`,
+      <label class="fs-cast-mod"><input type="checkbox" name="damage"> It's a damage roll${d.enhanced ? `: ±${bold(d.bstacks, 10 * (d.power ?? 1))} damage instead (Enhanced)` : ""}</label>`,
     verdict: `<div class="fs-field"><label>Their attack landed as</label><select name="was"><option value="hit">A regular hit (becomes a crit)</option><option value="crit">A crit (becomes a regular hit)</option></select></div><div class="fs-field"><label>Damage</label><input type="number" name="dmg" value="0" min="0"></div>
       ${d.enhanced ? `<div class="fs-field"><label>Also give the attack</label><select name="stack"><option value="str">a Strengthened stack</option><option value="weak">a Weakened stack</option></select></div>` : ""}`,
-    fracture: types, larceny: types, entropy: types
+    fracture: types, larceny: types
   }[kind];
   const out = await foundry.applications.api.DialogV2.prompt({ window: { title: `${def.label} on ${holder.name}` },
-    content: `<div class="fs-cast"><p>${esc(holder.name)}'s ${esc(def.label)} charge: ${esc(def.text)}.</p>${fields}
+    content: `<div class="fs-cast"><p>${esc(holder.name)}'s ${esc(def.label)} charge: ${esc(chargeText(kind, d))}.</p>${fields}
       ${preOk ? `<label class="fs-cast-mod"><input type="checkbox" name="pre"> <strong>Preordained</strong> <small>⚡ ${minOf(caster, "pon")}: also ${d.sign === "minus" ? "subtract" : "add"} your Preordained Number (${pre.n})</small></label>` : ""}
       ${control ? `<label class="fs-cast-mod"><input type="checkbox" name="control"> <strong>Control</strong> <small>reroll the extra roll once and use the new result</small></label>` : ""}</div>`,
     ok: { label: "Consume", callback: (event, button) => { const f = {}; for (const el of button.form.elements) if (el.name) f[el.name] = el.type === "checkbox" ? el.checked : el.value; return f; } }, rejectClose: false });
@@ -589,29 +632,30 @@ export async function consumeCharge(caster, effect) {
   if (out.pre && !(await mental.pay(caster, { energy: minOf(caster, "pon") }, "Preordained"))) return;
   const lines = [], rolls = [];
   const signN = d.sign === "minus" ? -1 : 1, preN = out.pre ? signN * pre.n : 0;
+  const u = k => bold(d.bstacks, k * (d.power ?? 1));          // a charge's numbers scale with the Power and stacks it was placed with
   const maxOf = () => out.type === "attack" ? dieOf(holder, "attack") : out.type === "dodge" ? 2 * dieOf(holder, "dodge") : Number(out.max) || 0;
   if (kind === "decree") {
     const myMax = out.type === "attack" ? dieOf(caster, "attack") : out.type === "dodge" ? 2 * dieOf(caster, "dodge") : Number(out.max) || 0;
     const base = half(d.enhanced ? myMax : maxOf());
-    const result = Math.max(0, base + signN + preN);
-    lines.push(`${esc(holder.name)}'s ${out.type} roll becomes the static result <strong>${result}</strong> (half of ${d.enhanced ? "your" : "their"} max ${d.enhanced ? myMax : maxOf()} = ${base}, ${d.sign === "minus" ? "−" : "+"}1${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
+    const result = Math.max(0, base + signN * u(1) + preN);
+    lines.push(`${esc(holder.name)}'s ${out.type} roll becomes the static result <strong>${result}</strong> (half of ${d.enhanced ? "your" : "their"} max ${d.enhanced ? myMax : maxOf()} = ${base}, ${d.sign === "minus" ? "−" : "+"}${u(1)}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
   } else if (kind === "mandate") {
     const n = Math.max(1, Math.floor(Number(out.n) || 1));
-    if (out.damage && d.enhanced) lines.push(`The damage becomes ${Number(out.result)} ${signN > 0 ? "+" : "−"} <strong>${10 * n}</strong>${preN ? ` ${signN > 0 ? "+" : "−"} ${Math.abs(preN) * 10} (Preordained × 10)` : ""} = <strong>${Math.max(0, Number(out.result) + signN * 10 * n + preN * 10)}</strong>.`);
-    else lines.push(`The result ${Number(out.result)} becomes <strong>${Number(out.result) + signN * n + preN}</strong> (${d.sign === "minus" ? "−" : "+"}${n}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
+    if (out.damage && d.enhanced) lines.push(`The damage becomes ${Number(out.result)} ${signN > 0 ? "+" : "−"} <strong>${u(10) * n}</strong>${preN ? ` ${signN > 0 ? "+" : "−"} ${Math.abs(preN) * 10} (Preordained × 10)` : ""} = <strong>${Math.max(0, Number(out.result) + signN * u(10) * n + preN * 10)}</strong>.`);
+    else lines.push(`The result ${Number(out.result)} becomes <strong>${Number(out.result) + signN * u(1) * n + preN}</strong> (${d.sign === "minus" ? "−" : "+"}${u(1) * n}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
   } else if (kind === "verdict") {
-    lines.push(`The ${out.was === "hit" ? "hit becomes a <strong>crit</strong>" : "crit becomes a <strong>regular hit</strong>"}, and the damage goes ${Number(out.dmg)} → <strong>${Math.max(0, Number(out.dmg) + (out.was === "crit" ? -5 : 5) + preN)}</strong> (${out.was === "hit" ? "+5" : "−5"}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
+    lines.push(`The ${out.was === "hit" ? "hit becomes a <strong>crit</strong>" : "crit becomes a <strong>regular hit</strong>"}, and the damage goes ${Number(out.dmg)} → <strong>${Math.max(0, Number(out.dmg) + (out.was === "crit" ? -u(5) : u(5)) + preN)}</strong> (${out.was === "hit" ? "+" : "−"}${u(5)}${preN ? `, ${preN > 0 ? "+" : "−"}${Math.abs(preN)} Preordained` : ""}).`);
     if (d.enhanced) lines.push(`Also: the attack gets a stack of ${out.stack === "weak" ? "Weakened" : "Strengthened"}.`);
   } else {
-    const delta = { fracture: 2, larceny: 1, entropy: 3 }[kind] * (d.size === "down" ? -1 : 1);
+    const delta = u({ fracture: 3, larceny: 1 }[kind]) * (d.size === "down" ? -1 : 1);
     const first = await rerollWith(holder, out.type === "dodge" ? "dodge" : "attack", delta);
     rolls.push(first.r);
     let text = first.text;
     if (control) { /* Control: one extra reroll, and the new result must be used */ }
     if (out.control) { const again = await rerollWith(holder, out.type === "dodge" ? "dodge" : "attack", delta); rolls.push(again.r); text = `${first.text}, rerolled (Control): <strong>${again.text}</strong>`; }
-    lines.push(kind === "fracture" ? `${esc(holder.name)} rerolls with the die size ${delta > 0 ? "+" : "−"}${Math.abs(delta)}: ${text}${d.enhanced ? " (keeps the original roll's Advantage/Disadvantage)" : " (no effects carried over)"}.`
-      : kind === "larceny" ? `${esc(caster.name)} steals ${esc(holder.name)}'s roll and its effects: ${esc(holder.name)} rerolls at die size ${delta > 0 ? "+" : "−"}${Math.abs(delta)}: ${text}. You can use the stolen roll, with its effects, in place of any roll you make before your next turn${d.enhanced ? "; or, Enhanced, steal the action itself for up to a minute (spend RP equal to its AP/RP cost, using their stats and dice)" : ""}.`
-      : `${esc(holder.name)} gets an additional roll (${out.type === "dodge" ? "a new dodge attempt" : "an extra attack or a redo"}) at die size ${delta > 0 ? "+" : "−"}${Math.abs(delta)}: ${text}${d.enhanced ? " (keeps the original roll's effects)" : ""}.`);
+    lines.push(kind === "fracture" ? `${esc(holder.name)} rerolls with the die size ${first.applied >= 0 ? "+" : "−"}${Math.abs(first.applied)}: ${text}${d.enhanced ? " (keeps the original roll's Advantage/Disadvantage)" : " (no effects carried over)"}.`
+      : kind === "larceny" ? `${esc(caster.name)} steals ${esc(holder.name)}'s roll and its effects: ${esc(holder.name)} rerolls at die size ${first.applied >= 0 ? "+" : "−"}${Math.abs(first.applied)}: ${text}. You can use the stolen roll, with its effects, in place of any roll you make before your next turn${d.enhanced ? "; or, Enhanced, steal the action itself for up to a minute (spend RP equal to its AP/RP cost, using their stats and dice)" : ""}.`
+      : `${esc(holder.name)} gets an additional roll (${out.type === "dodge" ? "a new dodge attempt" : "an extra attack or a redo"}) at die size ${first.applied >= 0 ? "+" : "−"}${Math.abs(first.applied)}: ${text}${d.enhanced ? " (keeps the original roll's effects)" : ""}.`);
   }
   await changeEffect(effect, null);
   await post(caster, { title: `${esc(caster.name)} — ${def.label}`, rolls, body: `<div class="fs-result">${lines.join("<br>")}</div>` });

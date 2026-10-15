@@ -14,7 +14,11 @@ import * as self from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
 import * as wondersB from "./wonders-b.mjs";
+import * as wondersC from "./wonders-c.mjs";
 import * as forging from "./forging.mjs";
+import * as ponderance from "./ponderance.mjs";
+import * as snappence from "./snappence.mjs";
+import * as concentration from "./concentration.mjs";
 import * as ab from "./abilities.mjs";
 import * as areas from "./areas.mjs";
 import * as R from "./mental-rules.mjs";
@@ -84,10 +88,10 @@ export async function setAlignmentActivity(actor) {
   await post(actor, { title: `${esc(actor.name)} — Alignment`, body: `<div class="fs-result">${esc(actor.name)} sets their Alignment to <strong>${esc(R.alignmentLabel(st))}</strong>. ${esc(R.alignmentBlurb(st))}</div>` });
 }
 
-/** Fluidity (Mental T3): swap your Alignment between Dream and Nightmare for energy equal to half your Skill Points times your current Alignment number. */
+/** Fluidity (Mental T4): swap your Alignment between Dream and Nightmare for energy equal to half your Skill Points times your current Alignment number. */
 export async function fluidity(actor) {
   if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
-  if (theory(actor) < 3) return ui.notifications.warn("Fluidity is a Mental Theory Tier 3 ability.");
+  if (theory(actor) < 4) return ui.notifications.warn("Fluidity is a Mental Theory Tier 4 ability.");
   const cur = alignmentOf(actor);
   if (cur.level <= 0) return ui.notifications.warn("Fluidity swaps an Alignment you already have; you are Neutral.");
   const cost = R.fluidityCost(cur, actor.system.skillPoints ?? 0);
@@ -106,16 +110,17 @@ export function manifestContext(actor) {
   const wonders = R.knownWonders(trees(actor)).filter(w => w.modes.length);
   const flags = actor.getFlag?.("flowstate", "psion") ?? {};
   return { actor, wonders, theory: theory(actor), icon: actor.system.icon ?? null, alignment: alignmentOf(actor), farSight: !!flags.farSight, auraSight: !!flags.auraSight, will: willTier(actor),
-    patron: actor.getFlag?.("flowstate", "patron") ?? null, wobs: null };
+    patron: actor.getFlag?.("flowstate", "patron") ?? null, wobs: null, reflex: null, ponder: ponderance.ponderTier(actor) };
 }
 
 /** Everything about a Manifest worked out from the dialog values (also used for the live preview). */
 /** Extra choices a Mode asks for when it's Manifested (and Kinetic Focus for Beyond's attacks). */
 export function modeChoices(actor, modeId) {
   const out = [];
-  if (modeId === "mental-below-nightmare:burden") out.push({ name: "dis", label: "Disadvantage on", options: { attack: "Their attack rolls", dodge: "Their dodge rolls" } });
-  if (["mental-order-dream:decree", "mental-order-dream:mandate"].includes(modeId)) out.push({ name: "sign", label: "Plus or minus", options: { plus: "+1 (plus)", minus: "−1 (minus)" } });
-  if (["mental-chaos-nightmare:fracture", "mental-chaos-nightmare:larceny", "mental-chaos-nightmare:entropy"].includes(modeId)) out.push({ name: "size", label: "Die size", options: { up: "Increased", down: "Decreased" } });
+  const P = Math.max(1, R.wonderPower(eff(actor, R.KINDS[R.wonderById(R.modeById(modeId)?.wonder)?.kind ?? "dream"].stat)));          // the Wonder's Power: what +1 / −1 is worth
+  if (modeId === "mental-below-nightmare:burden") out.push({ name: "dis", label: "Two Disadvantages", options: { attack: "Both on their attack rolls", dodge: "Both on their dodge rolls", split: "One on each" } });
+  if (["mental-order-dream:decree", "mental-order-dream:mandate"].includes(modeId)) out.push({ name: "sign", label: "Plus or minus", options: { plus: `+${P} (plus)`, minus: `−${P} (minus)` } });
+  if (["mental-chaos-nightmare:fracture", "mental-chaos-nightmare:larceny"].includes(modeId)) out.push({ name: "size", label: "Die size", options: { up: "Increased", down: "Decreased" } });
   if (["mental-beyond-dream:herald", "mental-beyond-dream:ascend"].includes(modeId) && tierOf(trees(actor), "mental-beyond-dream") >= 4)
     out.push({ name: "kinetic", label: `Kinetic Focus (⚡ ${Math.floor(minOf(actor, "pon") / 2)} each: +1 Advantage)`, number: true });
   for (const f of wonders.CHOICE_PROVIDERS) out.push(...(f(actor, modeId) ?? []));
@@ -138,11 +143,21 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const enhanceCost = minOf(actor, kind.stat);
   // Will of Body and Spirit: the Range must cost what the attack did; an RP attack needs Burst. Patron: its Wonder's Enhance and Burst energy is free.
   const patronFree = ctx.theory >= 5 && ctx.patron === wonder.id;
-  const burst = wobs ? !!wobs.rp : !!v.burst && ctx.theory >= 1;
+  const burst = ctx.reflex ? false : wobs ? !!wobs.rp : !!v.burst && ctx.theory >= 1;
   const cost = R.manifestCost({ range, enhance: !!v.enhance, burst, enhanceCost, free, waive: { ap: !!wobs?.ap, rp: !!wobs?.rp, energy: patronFree } });
+  // Reflex (Snappence Arts T1): RP equal to the Range's AP cost and half the Scaling Stat min in Energy (Afterimage waives both); the Manifest is Weakened unless against your Fixation.
+  const rf = ctx.reflex;
+  if (rf) {
+    cost.ap = 0; cost.burst = false;
+    cost.rp = rf.afterimage ? 0 : R.RANGES[range].ap;
+    cost.energy = (v.enhance ? enhanceCost : 0) + (rf.afterimage ? 0 : Math.floor(enhanceCost / 2));
+  }
   const choices = choiceValues(v);
+  // Premeditate (Ponderance Arts T1): store the Wonder instead of applying it, for your Scaling Stat min in Energy.
+  const premeditate = !!v.premeditate && ctx.ponder >= 1 && !free;
   const kinetic = Math.max(0, Math.floor(Number(choices.kinetic) || 0));
   if (kinetic && !free) cost.energy += kinetic * Math.floor(minOf(actor, "pon") / 2);
+  if (premeditate) cost.energy += enhanceCost;
   const align = ctx.alignment;
   // Wonder-specific costs and bonuses (Fusion, Hubris, Pride, Adapt, ...).
   const extras = wonders.COST_PROVIDERS.map(f => f(actor, { mode, wonder, choices, free })).filter(Boolean);
@@ -156,7 +171,7 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   if (v.burst && ctx.theory < 1) errors.push("Burst needs Mental Theory Tier 1.");
   if (wobs && R.RANGES[range].ap !== (wobs.ap || wobs.rp)) errors.push(`Will of Body and Spirit: the Range has to cost ${wobs.ap || wobs.rp} ${wobs.ap ? "AP" : "RP"}, like your attack.`);
   return { ok: errors.length === 0, errors, mode, wonder, kind: wonder.kind, power, stat, enhanceCost, cost, range, enhance: !!v.enhance, burst, net, choices, kinetic,
-    alignStacks: 0, text, alignment: align, patronFree, wobs,
+    alignStacks: rf?.weak ? -1 : 0, reflex: rf, text, alignment: align, patronFree, wobs, premeditate,
     extraStacks, extraNotes: extras.flatMap(x => x.notes ?? []), extraAfter: extras.map(x => x.after).filter(Boolean), extraFlags: Object.assign({}, ...extras.map(x => x.flags ?? {})) };
 }
 
@@ -178,6 +193,7 @@ function dialogHTML(ctx, v, plan) {
     <div class="fs-field"><label>Range</label><select name="range">${ranges}</select></div>
     <label class="fs-cast-mod"><input type="checkbox" name="enhance" ${v.enhance ? "checked" : ""}> <strong>Enhance</strong> <small>${v.mode && plan?.enhanceCost !== undefined ? `${plan.enhanceCost} Energy (the Wonder's Scaling Stat min)` : "costs the Wonder's Scaling Stat min in Energy"}</small></label>
     <div class="fs-mode-choices">${choicesHTML(ctx.actor, v.mode, v)}</div>
+ ${ctx.ponder >= 1 && !ctx.wobs ? `<label class="fs-cast-mod"><input type="checkbox" name="premeditate" ${v.premeditate ? "checked" : ""}> <strong>Premeditate</strong> <small>store it on a hit (Strengthened, Concentration) for the Wonder's Scaling Stat min in Energy, to take hold on a preset action</small></label>` : ""}
     ${ctx.theory >= 1 && !ctx.wobs ? `<label class="fs-cast-mod"><input type="checkbox" name="burst" ${v.burst ? "checked" : ""}> <strong>Burst</strong> <small>use RP instead of AP, and pay the Enhance cost in Energy</small></label>` : ""}
     <div class="fs-cast-preview">${previewHTML(plan)}</div>
   </div>`;
@@ -221,7 +237,7 @@ async function manifestDialog(actor, ctx) {
   });
 }
 
-const NO_ATTACK = new Set(["mental-beyond-dream:redirect"]);
+const NO_ATTACK = new Set(["mental-beyond-dream:redirect", "mental-light-dream:dispersion"]);
 
 /** Pick one of a list of [value, label] pairs. */
 export async function pickChoice(actor, title, pairs) {
@@ -252,6 +268,11 @@ export async function manifestAt(actor, mode, target, { power, enhanced, range =
     notes: [`${label ?? "Free"}: ${mode.name} spreads to ${target.name}; its effect applies immediately`], mental, targetActors: [target] });
 }
 
+/** An attack roll from `caster` at `target` that does something special on a hit (Dispersion, Corona, Nightfall): `flag` goes on the Manifest data for `onResolve`. */
+export async function specialAttack(caster, target, { label, net = 0, stacks = 0, notes = [], flag }) {
+  return performAttack(caster, { ...baseAttack, label, net, stacks, melee: false, area: false, notes, mental: { ...flag, caster: caster.uuid }, targetActors: [target] });
+}
+
 /** An attack roll from `caster` at `target` that deals `amount` of `type` on a hit (Bloodbond, Masterstroke): no AP/RP. */
 export async function reflectStrike(caster, target, amount, type, label, { melee = false, net = 0 } = {}) {
   return performAttack(caster, { ...baseAttack, label, net, melee, area: false, notes: [`${amount} ${type} damage on a hit`], mental: { reflect: { amount, type }, caster: caster.uuid }, targetActors: [target] });
@@ -269,10 +290,11 @@ const baseAttack = { stealth: "none", push: false, damage: "", type: "arcane", s
  * Manifest a Mode: choose it, its Range, Enhance and Burst, pay, and make the attack roll. `preset` skips the dialog (values as the form would give).
  * `free` is for Manifests that cost nothing (Patron, Innate, Will of Body and Spirit).
  */
-export async function manifest(actor, preset = null, { free = false, wobs = null } = {}) {
+export async function manifest(actor, preset = null, { free = false, wobs = null, reflex = null } = {}) {
   if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
   const ctx = manifestContext(actor);
   ctx.wobs = wobs;
+  ctx.reflex = reflex;
   if (!ctx.wonders.length) return ui.notifications.warn(`${actor.name} doesn't know any Wonder Modes yet.`);
   const v = preset ?? await manifestDialog(actor, ctx);
   if (!v) return null;
@@ -281,25 +303,28 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
   // Targets: Melee needs one close by, Ranged within 100 ft (500 with Far Sight), Area is placed on the scene.
   const farSight = ctx.farSight;
   const reach = actor.system.derived?.size?.melee ?? 5;
-  let targets = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
+  const forced = reflex?.target ? await fromUuid(reflex.target) : null;          // Reflex: the attacker or defender picked in the popup, whatever you have targeted
+  const forcedTokens = forced ? [attackerToken(forced)].filter(Boolean) : null;
+  let targets = forced ? [forced] : [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
   let area = null;
-  if (plan.range === "melee" && targets.length && !checkRange(actor, reach, `${plan.mode.name} (Melee)`)) return null;
-  if (plan.range === "ranged" && targets.length && !checkRange(actor, farSight ? 500 : 100, `${plan.mode.name} (Ranged)`)) return null;
+  if (plan.range === "melee" && targets.length && !checkRange(actor, reach, `${plan.mode.name} (Melee)`, forcedTokens)) return null;
+  if (plan.range === "ranged" && targets.length && !checkRange(actor, farSight ? 500 : 100, `${plan.mode.name} (Ranged)`, forcedTokens)) return null;
   if (plan.range === "area") {
-    area = await areas.placeArea(actor, { title: `Manifest ${plan.mode.name}`, scale: ctx.auraSight ? 2 : 1, aim: [...(game.user?.targets ?? [])][0] });
+    area = await areas.placeArea(actor, { title: `Manifest ${plan.mode.name}`, scale: ctx.auraSight ? 2 : 1, aim: forcedTokens?.[0] ?? [...(game.user?.targets ?? [])][0] });
     if (area === null) return null;                                     // cancelled: nothing is spent
     if (area) targets = area.actors;
   }
   if (!(await pay(actor, plan.cost, `Manifesting ${plan.mode.name}`))) return null;
+  if (reflex?.afterimage) await snappence.useAfterimage(actor);
   const notes = [
     `${plan.mode.name} (${plan.wonder.name}, ${R.KINDS[plan.kind].label}) · Wonder Power ×${plan.power}`,
     plan.enhance ? "Enhanced" : "", plan.burst ? "Burst (RP)" : "",
     plan.net > 0 ? `${R.alignmentLabel(plan.alignment)}: Advantage` : plan.net < 0 ? `${R.alignmentLabel(plan.alignment)}: Disadvantage` : "",
-    plan.alignStacks > 0 ? `${R.alignmentLabel(plan.alignment)}: Strengthened` : plan.alignStacks < 0 ? `${R.alignmentLabel(plan.alignment)}: Weakened` : "", plan.range === "area" ? "Area: Weakened if it hits more than two targets" : "", ...plan.extraNotes
+    plan.alignStacks > 0 ? `${R.alignmentLabel(plan.alignment)}: Strengthened` : plan.alignStacks < 0 ? `${plan.reflex ? "Reflex" : R.alignmentLabel(plan.alignment)}: Weakened` : "", plan.range === "area" ? "Area: Weakened if it hits more than two targets" : "", ...plan.extraNotes
   ].filter(Boolean);
   for (const f of plan.extraAfter) await f();
   const mental = { mode: plan.mode.id, wonder: plan.wonder.id, kind: plan.kind, power: plan.power, enhanced: plan.enhance, burst: plan.burst, range: plan.range, alignStacks: plan.alignStacks,
-    text: plan.text, caster: actor.uuid, choices: plan.choices, uid: foundry.utils.randomID?.() ?? String(Math.random()), ...plan.extraFlags };
+    text: plan.text, caster: actor.uuid, choices: plan.choices, uid: foundry.utils.randomID?.() ?? String(Math.random()), ...(plan.premeditate ? { premeditate: true } : {}), ...(plan.reflex ? { reflex: true } : {}), ...plan.extraFlags };
   // Creation: the attack roll is made against yourself; the creature(s) you targeted (or the Area) are who it's created for.
   let attackTargets = targets;
   if (forging.CREATION_MODES.has(plan.mode.id)) {
@@ -380,9 +405,9 @@ export async function activateWard(actor) {
   const out = await DialogV2().prompt({
     window: { title: `${p.name} Ward: ${actor.name}` },
     content: `<div class="fs-cast">
-      <p>${esc(p.ward)}</p>
+      <p>${esc(R.scaleFormText(R.FORMS[p.form].ward, p.wardMult, wardFx.stacks))}</p>
       ${innate ? `<p class="hint"><strong>Innate:</strong> your first Ward each turn costs no AP/RP and is automatically Enhanced.</p>` : `
-      ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${enhanceCost} Energy: ${esc(p.enhance)}</small></label>
+      ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${enhanceCost} Energy: ${esc(R.scaleFormText(R.FORMS[p.form].enhance, p.wardMult, wardFx.stacks))}</small></label>
       <label class="fs-cast-mod"><input type="checkbox" name="burst"> <strong>Burst</strong> <small>RP instead of AP, and ${enhanceCost} Energy</small></label>` : ""}`}
       ${wt >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="clear"> <strong>Make Clear</strong> <small>${enhanceCost} Energy: Advantage on the activation roll, and one reroll if it misses</small></label>` : ""}
       ${ally && wt >= 4 ? `<label class="fs-cast-mod"><input type="checkbox" name="recur"> <strong>Recur</strong> <small>${Math.floor(enhanceCost / 2)} Energy: it chains to you as well on a hit</small></label>` : ""}
@@ -409,26 +434,37 @@ export async function activateWard(actor) {
   if (!(await pay(actor, costs, `${p.name}'s Ward`))) return;
   if (innate) await setActorFlag(actor, "innateTurn", turnKey());
   const targets = area ? area.actors : [ally ?? actor];
+  const areaWeak = area && targets.length > 2 ? -1 : 0;          // an Area Ward that hits more than two targets is Weakened, like any Area Manifest
   const adv = wardFx.net + (out.clear ? 1 : 0);
   const mental = { ward: { form: p.form, enhanced, types: out.types ? [out.types, ...(enhanced && out.types2 && out.types2 !== out.types ? [out.types2] : [])] : null, recur: !!out.recur, clear: !!out.clear, caster: actor.uuid, icon: icon.uuid,
-    declared: enhanced && out.declared ? out.declared : "", amount: enhanced ? p.enhancedAmount : p.amount, alignStacks: wardFx.stacks, autoHit: wardFx.autoHit } };
+    declared: enhanced && out.declared ? out.declared : "", amount: enhanced ? p.enhancedAmount : p.amount, recover: p.recover ?? 0, alignStacks: wardFx.stacks + areaWeak, autoHit: wardFx.autoHit } };
   const notes = [`${p.name} Ward`, enhanced ? "Enhanced" : "", burst ? "Burst (RP)" : "", innate ? "Innate (free)" : "", wardFx.net > 0 ? `${R.alignmentLabel(align)}: ${[ "Advantage", wardFx.stacks ? "Strengthened" : "", wardFx.dodgeNet < 0 ? "half stealth (Disadvantage dodging)" : "", wardFx.autoHit ? "hits regardless (the roll decides a crit)" : ""].filter(Boolean).join(", ")}` : "", out.clear ? "Make Clear: Advantage" : "", out.expand ? "Expansion (Area)" : "",
     wt >= 5 && innate ? "Innate Mastery: the target has Disadvantage on their roll against it" : ""].filter(Boolean);
   return performAttack(actor, { ...baseAttack, label: `${p.name} Ward`, net: adv, melee: false, area: !!area, singleRoll: !!area, notes, mental, targetActors: targets, dodgeNet: (wt >= 5 && innate ? -1 : 0) + wardFx.dodgeNet,
-    stacks: wardFx.stacks });
+    stacks: wardFx.stacks + areaWeak });
 }
 const psion = actor => actor.getFlag?.("flowstate", "psion") ?? {};
 
 /** A hit Ward: put its effect on the target. */
 async function applyWard({ attacker, target, ward }) {
   const form = R.FORMS[ward.form];
+  const st = (ward.alignStacks ?? 0) + (ward.critStacks ?? 0);          // Alignment, an Area, and a crit on the activation roll all scale the Ward's bolded numbers
   const caster = attacker;
   const lines = [];
   const place = async (who, amount) => {
     if (form.kind === "shield" || form.kind === "persistent") {
       let amt = amount;
       const mine = spellEffects(who, "shield").filter(e => e.flags.flowstate.spellEffect.ward === ward.form && e.flags.flowstate.spellEffect.caster === caster.uuid);
-      if (form.cap) amt = Math.max(0, Math.min(amt, form.cap * R.iconScale(eff(caster, "will"), (ward.grade ?? 1)) - mine.reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.hp) || 0), 0)));
+      // Vigil: once the persistent shield stands, each further activation only recovers part of it (up to what it started with).
+      if (form.recover && mine.length) {
+        const e = mine[0], d = e.flags.flowstate.spellEffect;
+        const add = Math.min(Math.max(0, (Number(d.max) || 0) - (Number(d.hp) || 0)), Math.floor(applyStacks(ward.recover ?? 0, st)));
+        if (add <= 0) { lines.push(`${esc(who.name)}'s ${form.name} shielding is already full.`); return; }
+        await changeEffect(e, { "flags.flowstate.spellEffect.hp": (Number(d.hp) || 0) + add, name: `${form.name} (${(Number(d.hp) || 0) + add} shielding)` });
+        lines.push(`${esc(who.name)}'s ${form.name} recovers <strong>${add} shielding</strong> (${(Number(d.hp) || 0) + add} of ${d.max}).`);
+        return;
+      }
+      if (form.cap) amt = Math.max(0, Math.min(amt, Math.floor(applyStacks(form.cap * R.iconScale(eff(caster, "will"), (ward.grade ?? 1)), st)) - mine.reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.hp) || 0), 0)));
       if (form.cap && amt <= 0) { lines.push(`${esc(who.name)} already has the most ${form.name} shielding.`); return; }
       await putSpellEffect(who, { kind: "shield", stack: true, caster: caster.uuid, name: `${form.name} (${amt} shielding)`, hp: amt, max: amt, ward: ward.form, order: "default", ritualOf: null,
         types: ward.types ?? null, turnsLeft: form.extraTurn && ward.enhanced ? 2 : undefined, persistent: form.kind === "persistent",
@@ -447,7 +483,7 @@ async function applyWard({ attacker, target, ward }) {
     }
   };
   // 4 Alignment: the Ward's bolded effect is Strengthened.
-  const amount = Math.floor(applyStacks(ward.amount, ward.alignStacks ?? 0));
+  const amount = Math.floor(applyStacks(ward.amount, st));
   await place(target, amount);
   if (ward.recur && target.uuid !== caster.uuid) { await place(caster, amount); lines.push("Recur: it chains to the caster too."); }
   return lines.join("<br>");
@@ -461,13 +497,14 @@ async function growReverie(attacker, grade) {
   }
   if (!mine.length) return "";
   const mult = R.iconScale(eff(attacker, "will"), grade ?? 1);
-  const cap = R.FORMS.reverie.cap * mult;
+  const st = R.alignmentWard(alignmentOf(attacker), "dream").stacks;          // 2+ Dream Alignment: the bolded cap and growth are Strengthened
+  const cap = Math.floor(applyStacks(R.FORMS.reverie.cap * mult, st));
   let total = 0;
   for (const a of new Set(mine.map(e => e.parent))) for (const e of spellEffects(a, "shield")) { const d = e.flags.flowstate.spellEffect; if (d.reverie && d.caster === attacker.uuid) total += Number(d.hp) || 0; }
   let added = 0;
   for (const e of mine) {
     const room = cap - total - added;
-    const n = Math.min(4 * mult, room);
+    const n = Math.min(Math.floor(applyStacks(4 * mult, st)), room);
     if (n <= 0) break;
     const d = e.flags.flowstate.spellEffect;
     await changeEffect(e, { "flags.flowstate.spellEffect.hp": (Number(d.hp) || 0) + n, "flags.flowstate.spellEffect.max": (Number(d.max) || 0) + n, name: `Reverie (${(Number(d.hp) || 0) + n} shielding)` });
@@ -481,9 +518,14 @@ async function growReverie(attacker, grade) {
 /* -------------------------------------------- */
 
 /** A Manifest's Mode lands (the first time, or after a Chant reroll): apply it and build the card. */
-async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0, attackMessage = null, shattered = false }) {
+export async function landManifest({ attacker, target, o, m, mode, result, stacksBase, hit = true, margin = 0, index = 0, attackMessage = null, shattered = false }) {
   const c = { attacker, target, o, result, m, mode, power: m.power, enhanced: m.enhanced, choices: m.choices ?? {}, range: m.range, text: m.text, hit, margin, crit: hit && !!result.crit, index,
     stacks: stacksBase + (hit ? (result.critStacks ?? 0) : 0), now: !!m.spread };
+  // Premeditate: a hit is stored on the target instead of taking hold.
+  if (m.premeditate && hit) {
+    const html = await ponderance.storePremeditated({ attacker, target, m, mode, stacks: c.stacks });
+    return { html: `<div class="fs-result"><i class="fa-solid fa-hourglass-half"></i> ${html}</div>`, push: null, rolls: [], riposte: null };
+  }
   c.bs = c.stacks;                                    // every Strengthened/Weakened stack on the Manifest (a crit, an Area, Alignment, Adapt...) scales its bolded effects
   // Brace, Dip, Shatter and parrying weapons guard against this attack like any other Melee or Ranged one: a damaging Mode asks for the guard (once).
   let guardP = null;
@@ -503,7 +545,7 @@ async function landManifest({ attacker, target, o, m, mode, result, stacksBase, 
   let crits = "";
   if (c.crit) for (const f of wonders.ON_CRIT) crits += (await f(c)) ?? "";
   // Tenets pop up once the card is out (and again next time if they aren't used).
-  if (hit && out.tenets?.length) setTimeout(() => wonders.offerTenets(c, out.tenets), 0);
+  if (hit && out.tenets?.length) { if (m.forethought) await wonders.forethoughtTenets(c, out.tenets); else setTimeout(() => wonders.offerTenets(c, out.tenets), 0); }
   const html = `<div class="fs-result"><i class="fa-solid fa-eye"></i> ${out.html}${result.crit ? " <em>(critical)</em>" : ""}${m.alignStacks ? ` <em>(Alignment: ${m.alignStacks > 0 ? "Strengthened" : "Weakened"})</em>` : ""}${tenet ? `<br>${tenet}` : ""}${grow ? `<br>${grow}` : ""}${crits ? `<br>${crits}` : ""}</div>`;
   if (out.acts.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}: abilities`, body: wonders.actButtons(out.acts), flags: { flowstate: { mentalAct: { acts: out.acts } } } });
   return { html, push: out.push, rolls: out.rolls, riposte };
@@ -518,6 +560,8 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     await requestDamage(target, m.reflect.amount, m.reflect.type, 0, null, { silent: true });
     return { html: `<div class="fs-result"><i class="fa-solid fa-reply"></i> The negated damage is dealt back: <strong>${m.reflect.amount}</strong> ${esc(DAMAGE_TYPES[m.reflect.type] ?? m.reflect.type)} to ${esc(target.name)}.</div>` };
   }
+  if (m.disperse) return wondersC.disperseResolve({ attacker, target, result, m });
+  if (m.expand) return wondersC.expandResolve({ attacker, target, result, m });
   if (m.dismiss) {
     if (!result.hit) return { html: `<div class="fs-notes">The dismissal misses: ${esc(target.name)} keeps their effects.</div>` };
     let n = 0;
@@ -535,7 +579,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
       }
       return { html: `<div class="fs-notes">${esc(R.FORMS[m.ward.form].name)}: the Ward doesn't take hold on ${esc(target.name)}.${extra}</div>` };
     }
-    const html = await applyWard({ attacker, target, ward: w });
+    const html = await applyWard({ attacker, target, ward: { ...w, critStacks: result.critStacks ?? (result.crit ? 2 : 0) } });
     return { html: `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${html}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>` };
   }
   const mode = R.modeById(m.mode);
@@ -556,15 +600,16 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     // Mode-specific follow-ups on a miss (Instinct)
     const missActs = await wonders.missActs({ attacker, target, m, mode, power: m.power, enhanced: m.enhanced, range: m.range, hit: false });
     if (missActs.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}`, body: wonders.actButtons(missActs), flags: { flowstate: { mentalAct: { acts: missActs } } } });
-    // Chant (Mental T2): once per Manifest, reroll a missed attack roll for the Enhance cost (keeping its Advantage/Disadvantage).
+    const missAuto = await wonders.missAuto({ attacker, target, m, mode });
+    // Chant (Mental T3): once per Manifest, reroll a missed attack roll for the Enhance cost (keeping its Advantage/Disadvantage).
     let extra = "";
-    if (theory(attacker) >= 2 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null) {
+    if (theory(attacker) >= 3 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null) {
       const cost = minOf(attacker, R.KINDS[R.wonderById(m.wonder).kind].stat);
       const act = { id: "chant", label: "Chant: reroll", tip: "Reroll the missed attack roll once (keeps its Advantage/Disadvantage; this does not Enhance it)", cost: `⚡ ${cost}`, caster: attacker.uuid, target: target.uuid, mode: m.mode, re: { ...reroll, keepNet: true, stacks: o.stacks ?? 0, melee: !!o.melee, msg: attackMessage, index }, m, range: m.range };
       await post(attacker, { title: `${esc(attacker.name)} — Chant`, body: wonders.actButtons([act]), flags: { flowstate: { mentalAct: { acts: [act] } } } });
       extra = " Chant can reroll it.";
     }
-    return { html: `<div class="fs-notes">${esc(mode?.name ?? "The Mode")} misses ${esc(target.name)}.${extra}</div>` };
+    return { html: `<div class="fs-notes">${esc(mode?.name ?? "The Mode")} misses ${esc(target.name)}.${extra}${missAuto}</div>` };
   }
   return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, index, attackMessage });
 }
@@ -593,7 +638,7 @@ export async function rerollAct(x) {
       // A guard that took all the damage of the rerolled hit earns the same Riposte (and Dip's move, Redirect) the first card would have.
       if (landed.riposte) { const g = await guardRows(target, landed.riposte, o); html += g.html; if (g.riposte) riposteFlags = { guardRiposte: { defender: target.uuid, attacker: caster.uuid } }; }
     } else {
-      html += `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${await applyWard({ attacker: caster, target, ward: x.ward })}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>`;
+      html += `<div class="fs-result"><i class="fa-solid fa-hands-praying"></i> ${await applyWard({ attacker: caster, target, ward: { ...x.ward, critStacks: result.critStacks ?? (result.crit ? 2 : 0) } })}${result.crit ? "<br>Critical hit: the Ward's crit bonus applies." : ""}</div>`;
     }
   } else html += `<div class="fs-notes">Still a miss.</div>`;
   await post(caster, { title: `${esc(caster.name)} — ${label}`, rolls: [r], body: html, flags: { flowstate: { ...riposteFlags } } });
@@ -638,14 +683,14 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
   const cats = damageCategories(type, magic);             // spell damage is Magical as well as its own type
   const th = theory(actor);
   const willMin = minOf(actor, "will");
-  const per = (uses, enhanced, near) => {
+  const per = (uses, enhanced, near, extra = 0) => {
     let n = enhanced ? p.enhancedAmount : p.amount;
     if (form.chooses) n = cats.includes(icon.system.chosen) ? p.amount : p.other;
     // Zealot: full negation at 2 or more Nightmare Alignment.
     if (form.needs === "deepNightmare") n = (R.alignedTo(align, "nightmare") && align.level >= 2) ? p.amount : p.other;
     if (form.near) n = near ? p.amount : p.other;
     if (form.grows) n += p.grows * (uses + (enhanced ? 1 : 0));
-    return Math.floor(applyStacks(n, R.alignmentWard(align, p.align).stacks));        // 4 Alignment: the bolded effect is Strengthened
+    return Math.floor(applyStacks(n, R.alignmentWard(align, p.align).stacks + extra));        // 2 Alignment: the bolded effect is Strengthened (and a crit on the activation roll)
   };
   // Echo: once it has fully negated an attack, it keeps working for free until your next turn.
   const echo = actor.getFlag("flowstate", "echoWard");
@@ -661,7 +706,7 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
     const ask = await charges.askFor(actor, {
       react: "ward", title: `${p.name} Ward`,
       html: `<p><strong>${left}</strong> ${esc(type)} damage is coming. Spend 1 RP to negate up to <strong>${n}</strong> of it with ${esc(p.name)}?</p>
-        ${form.near ? `<label class="fs-cast-mod"><input type="checkbox" name="near" ${near ? "checked" : ""}> The source is within my melee range (${p.amount} instead of ${p.other})</label>` : ""}
+        ${form.near ? `<label class="fs-cast-mod"><input type="checkbox" name="near" ${near ? "checked" : ""}> The source is within my melee range (${Math.floor(applyStacks(p.amount, R.alignmentWard(align, p.align).stacks))} instead of ${Math.floor(applyStacks(p.other, R.alignmentWard(align, p.align).stacks))})</label>` : ""}
         ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${willMin} Energy: ${esc(p.enhance)}</small></label>` : ""}
         ${willTier(actor) >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="clear"> <strong>Make Clear</strong> <small>${willMin} Energy: Advantage on the activation roll, and one reroll if it misses</small></label>` : ""}
         <p class="hint">A Ward is used with a self attack roll: your attack roll against your own dodge roll. A miss still costs the RP and negates nothing.</p>
@@ -671,7 +716,7 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
     if (!ask) break;
     near = form.near ? !!ask.near : near;
     const enh = !!ask.enhance && th >= 1;
-    const nn = Math.min(left, per(uses, enh, near));
+    let nn = Math.min(left, per(uses, enh, near));
     const clear = !!ask.clear && willTier(actor) >= 2;
     if (!(await pay(actor, { rp: 1, energy: (enh ? willMin : 0) + (clear ? willMin : 0) }, `${p.name}'s Ward`))) break;
     // Wards need an attack roll (Rules: "a self attack"): your attack roll against your own dodge roll. A miss spends the RP and negates nothing.
@@ -685,6 +730,7 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
     if (wfx.autoHit && !res.hit) res = { ...res, hit: true, outcome: "Hit" };       // Alignment 4: it hits regardless; the roll only decides a crit
     await post(actor, { title: `${esc(actor.name)} — ${esc(p.name)} Ward`, rolls, body: `<div class="fs-notes">Attack roll <strong>${atk.total}</strong> against a dodge of <strong>${dd.total}</strong>${clear ? " (Make Clear)" : ""}: <strong>${res.hit ? "hit" : "miss"}</strong>.</div>` });
     if (!res.hit) { notes.push(`${p.name} misses (1 RP${enh ? `, ${willMin} Energy` : ""} spent, nothing negated)`); continue; }
+    if (res.crit) nn = Math.min(left, per(uses, enh, near, res.critStacks ?? 2));          // a crit on the activation roll is doubly Strengthened
     left -= nn; uses++;
     if (enh) enhancedUsed = true;
     // Zealot, Enhanced at 4 Nightmare Alignment: the damage is Weakened when the activation roll crits (once per damage instance).
@@ -851,7 +897,7 @@ export async function dismiss(actor) {
   for (const a of everyActor()) for (const e of a.effects ?? []) {
     const d = e.flags?.flowstate?.spellEffect;
     if (!d || d.caster !== actor.uuid || e.flags.flowstate.ritualOf) continue;
-    if (String(d.mode ?? "").startsWith("mental-") || d.ward || ["charge", "burden", "pending", "waste", "redirect", "anchorWeak", "premonition"].includes(d.kind) || d.below || d.mode === "verdant-soul") mine.push({ e, a, d });
+    if (String(d.mode ?? "").startsWith("mental-") || d.ward || ["charge", "burden", "pending", "waste", "redirect", "anchorWeak", "premonition", "premeditated"].includes(d.kind) || d.below || d.mode === "verdant-soul") mine.push({ e, a, d });
   }
   if (!mine.length) return ui.notifications.info(`${actor.name} has no Wonder effects to dismiss.`);
   const out = await DialogV2().prompt({ window: { title: `Dismiss: ${actor.name}` }, rejectClose: false,
@@ -862,6 +908,12 @@ export async function dismiss(actor) {
   if (!out) return;
   const pick = mine[Number(out.e)];
   if (!pick) return;
+  // A Concentration's effects go freely, whoever carries them (and the Concentration ends with them).
+  const cid = pick.e.flags?.flowstate?.spellEffect?.concentration;
+  if (cid && concentration.list(actor).some(c => c.id === cid)) {
+    await concentration.end(actor, cid, "dismissed");
+    return post(actor, { title: `${esc(actor.name)} — Dismiss`, body: `<div class="fs-result">${esc(actor.name)} dismisses the Concentration on <strong>${esc(pick.e.name)}</strong>.</div>` });
+  }
   if (pick.a.uuid === actor.uuid) {
     await changeEffect(pick.e, null);
     return post(actor, { title: `${esc(actor.name)} — Dismiss`, body: `<div class="fs-result">${esc(actor.name)} dismisses <strong>${esc(pick.e.name)}</strong>.</div>` });
@@ -872,9 +924,9 @@ export async function dismiss(actor) {
     notes: [`Dismissing ${pick.e.name} on ${pick.a.name} (${R.RANGES[range].label})`], mental: { dismiss: { effects: [pick.e.uuid] }, caster: actor.uuid }, targetActors: [pick.a] });
 }
 
-/** Will of Body and Spirit (Mental T4): after a Martial or Magic attack, a Manifest whose Range costs the same AP is free (RP attacks need Burst). */
+/** Will of Body and Spirit (Mental T5): after a Martial or Magic attack, a Manifest whose Range costs the same AP is free (RP attacks need Burst). */
 async function attackCost(actor, cost) {
-  if (theory(actor) < 4 || !actor.isOwner) return;
+  if (theory(actor) < 5 || !actor.isOwner) return;
   if (!R.knownWonders(trees(actor)).some(w => w.modes.length)) return;
   const n = cost.ap > 0 ? cost.ap : cost.rp;
   if (![1, 2, 3].includes(n)) return;
@@ -902,7 +954,7 @@ async function act(message, i) {
   if (done) await post(await fromUuid(x.caster), { title: "Used", body: `<div class="fs-notes">${esc(x.label)}: used.</div>`, flags: { flowstate: { mentalActDone: { card: message.id, i: Number(i) } } } });
 }
 wonders.setMental(self);
-registerMental({ askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+registerMental({ attackStart: wondersC.attackStart, attackDieAgainst: wondersC.attackDieAgainst, dodgeDieAgainst: wondersC.dodgeDieAgainst, reflex: snappence.offerReflex, concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });

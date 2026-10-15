@@ -4,7 +4,7 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { aimableItems, post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost } from "./actions.mjs";
+import { aimableItems, post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost, castStacks } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
@@ -13,7 +13,9 @@ import * as conjure from "./conjure.mjs";
 import * as arcana from "./arcana.mjs";
 import * as fociFx from "./foci.mjs";
 import { castsTwice, attunedAffixKeys } from "./magic.mjs";
-import { STATS } from "./rules.mjs";
+import { STATS, applyStacks } from "./rules.mjs";
+/** An Emplace barrier's health: the Shield's 10 × Power (Emplace applies the Shield's effects as a one-way Shield), scaled by any Strengthened/Weakened on the caster (it has no roll to carry them). */
+const emplaceHealth = (actor, plan) => applyStacks(10 * plan.power, castStacks(actor, plan));
 import { tierOf } from "./skills.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
@@ -53,6 +55,7 @@ export function castContext(actor, weave = null) {
   const rawKeys = attunedAffixKeys(actor, "offensive");
   const withAffix = k => [...working.filter(i => i.system.profile.affixes.includes(k)).map(i => i.id), ...(rawKeys.includes(k) ? ["raw"] : [])];
   return { fociState: fociFx.castState(actor), targetsAlly, hematiteFoci: withAffix("hematite"), moonstoneFoci: withAffix("moonstone"), taaffeiteFoci: withAffix("taaffeite"),
+    hematiteDoubled: working.filter(i => i.system.profile.doubled === "hematite").map(i => i.id), taaffeiteDoubled: working.filter(i => i.system.profile.doubled === "taaffeite").map(i => i.id),
     inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals,
     weave: weave ? { ap: weave.ap, keepTR: theory >= 5 } : null };
 }
@@ -89,7 +92,7 @@ function modRow(m, mods, v, power = 0) {
   const guess = m.name === "Telegraph" ? `<input type="number" name="telegraph" value="${v.telegraph ?? ""}" placeholder="dodge guess" data-tooltip="Predict their dodge roll before the attack">` : "";
   const manual = fx.AUTOMATED_MODS.has(m.id) ? "" : ` · <em data-tooltip="Costs Threshold, but its effect isn't automated yet: the GM resolves it from the card">not automated</em>`;
   const hint = m.name === "Exploit" ? " · each stack needs an Advantage on the attack, or it is refunded" : "";
-  return `<label class="fs-cast-mod" data-raw="${esc(m.text)}" data-tooltip="${esc(fx.scaleText(m.text, power))}">${control} <strong>${esc(m.name)}</strong> <small>${viaConnection ? "free from Connection" : `${thr} Threshold`}${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}${replaceBox}${damp}${guess}</label>`;
+  return `<label class="fs-cast-mod" data-raw="${esc(m.text)}" data-tooltip="${esc(scaleBody(m.text, power * (v[`replace:${m.id}`] ? 2 : 1)))}">${control} <strong>${esc(m.name)}</strong> <small>${viaConnection ? "free from Connection" : `${thr} Threshold`}${m.replacement ? " · Replacement" : ""}${m.stackable ? " · Stackable" : ""}${hint}${manual}</small> ${extra}${replaceBox}${damp}${guess}</label>`;
 }
 
 /** The Universal / Core 1 / Core 2 Mod tabs for the chosen Cores. */
@@ -107,17 +110,26 @@ export function modsHTML(ctx, v, theory, power = 0) {
     ${focusedHere ? `<div class="fs-field"><label>Connection (free on your Focused Spell)</label><select name="connection"><option value="">None</option>${spells.CONNECTION_MODS.map(k => `<option value="${k}" ${v.connection === k ? "selected" : ""}>${k[0].toUpperCase() + k.slice(1)}</option>`).join("")}</select></div>` : ""}`;
 }
 
+/**
+ * A spell's doc text with its numbers worked out for `power`. A Combo with a Summon / Make / Animate / Shift Core adds its Core's effect "per level" of the creation
+ * (not per Spell Power), so only the text before " Added effect (" is scaled.
+ */
+const scaleBody = (text, power, mark = false) => {
+  const s = String(text ?? ""), i = s.indexOf(" Added effect (");
+  return i < 0 ? fx.scaleText(s, power, mark) : fx.scaleText(s.slice(0, i), power, mark) + s.slice(i);
+};
+
 /** The chosen Core's effect, or the Combo's when two are picked. */
 function effectHTML(v, power = 0) {
   const e = spells.effectText([v.core1, v.core2].filter(Boolean));
   // Numbers are shown worked out for this cast's Spell Power (highlighted), not the doc's base values.
   // \u0001 and \u0002 are the markers `scaleText` puts around a highlighted number.
   // eslint-disable-next-line no-control-regex
-  return e ? `<strong>${esc(e.title)}</strong>: ${esc(fx.scaleText(e.text, power, true)).replace(/\u0001/g, "<strong>").replace(/\u0002/g, "</strong>")}${power > 1 ? ` <small class="hint">(Spell Power ${power})</small>` : ""}` : "";
+  return e ? `<strong>${esc(e.title)}</strong>: ${esc(scaleBody(e.text, power, true)).replace(/\u0001/g, "<strong>").replace(/\u0002/g, "</strong>")}${power > 1 ? ` <small class="hint">(Spell Power ${power})</small>` : ""}` : "";
 }
 
 /** The Charm / Hex choices a Tier 3 spell needs on the cast: which roll a Charm hits, a Hex's trigger. */
-export function afflictHTML(v) {
+export function afflictHTML(v, power = 1) {
   const ids = [v.core1, v.core2].filter(Boolean);
   const profile = ids.length ? fx.profileFor(ids) : null;
   const need = fx.afflictNeeds(profile);
@@ -151,7 +163,7 @@ export function afflictHTML(v) {
   }
   // Delay: what sets it off.
   if (v["mod:magic-restoration-arcana:delay"]) out.push(`<div class="fs-field"><label>Delay: trigger</label><input type="text" name="delayTrigger" value="${esc(v.delayTrigger ?? "")}" placeholder="when…"></div>`);
-  if (need.hexDie) out.push(`<div class="fs-field"><label>Hex: shrink their</label>${sel("hexDie", { dodge: "Dodge (−3 die size)", attack: "Attack (−6 die size)" }, v.hexDie || "dodge")}</div>`);
+  if (need.hexDie) out.push(`<div class="fs-field"><label>Hex: shrink their</label>${sel("hexDie", { dodge: `Dodge (−${3 * Math.max(1, power)} die size)`, attack: `Attack (−${6 * Math.max(1, power)} die size)` }, v.hexDie || "dodge")}</div>`);
   return out.join("");
 }
 
@@ -189,7 +201,7 @@ function dialogHTML(ctx, v) {
     <div class="fs-field"><label>Second Core (Combo)</label>${coreSelect("core2", known.cores.filter(c => c.id !== v.core1), v.core2, true)}</div>
     <div class="fs-field fs-cast-base" ${bt.ok && bt.max > bt.min ? "" : "hidden"}><label>Core Threshold</label><input type="number" name="base" value="${v.base ?? bt.min}" min="${bt.min}" max="${bt.max}" step="1"></div>
     <div class="fs-cast-effect">${effectHTML(v, power)}</div>
-    <div class="fs-cast-afflict">${afflictHTML(v)}</div>
+    <div class="fs-cast-afflict">${afflictHTML(v, power)}</div>
     <div class="fs-cast-mods">${modsHTML(ctx, v, theory, power)}</div>
     ${(() => { const only = v.core1 && !v.core2 ? fx.profileFor([v.core1]) : null; return only?.hold ? `<label class="fs-cast-mod"><input type="checkbox" name="hold" ${v.hold ? "checked" : ""}> <strong>Hold it</strong> <small>in melee: no damage, but it stays available to use again for the same AP until your next turn</small></label>` : ""; })()}
     ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
@@ -225,7 +237,7 @@ async function castDialog(actor, ctx) {
         if (rebuild) {
           const bt = spells.baseThreshold([v.core1, v.core2].filter(Boolean));
           form.querySelector(".fs-cast-effect").innerHTML = effectHTML(v);
-          form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(v);
+          form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(v, spells.planCast(ctx, v).power || 0);
           form.querySelector(".fs-cast-mods").innerHTML = modsHTML(ctx, v, tierOf(ctx.trees, "magic-theory"));
           const baseField = form.querySelector(".fs-cast-base");
           baseField.hidden = !(bt.ok && bt.max > bt.min);
@@ -235,7 +247,10 @@ async function castDialog(actor, ctx) {
         const plan = spells.planCast(ctx, valuesFromForm(form));
         // Spell and Mod text show this cast's Spell Power, so it follows the casting method, AP, Empower, Hematite and the rest.
         form.querySelector(".fs-cast-effect").innerHTML = effectHTML(v, plan.power || 0);
-        for (const m of form.querySelectorAll(".fs-cast-mod[data-raw]")) m.dataset.tooltip = fx.scaleText(m.dataset.raw, plan.power || 0);
+        for (const m of form.querySelectorAll(".fs-cast-mod[data-raw]")) {
+          const id = m.querySelector('[name^="mod:"]')?.name.slice(4);
+          m.dataset.tooltip = scaleBody(m.dataset.raw, (plan.power || 0) * (id && form.elements[`replace:${id}`]?.checked ? 2 : 1));          // a ticked Replacement doubles its numbers
+        }
         form.querySelector(".fs-cast-preview").innerHTML = previewHTML(plan, ctx);
         form.querySelector(".fs-cast-ap").hidden = !(ctx.options.find(o => o.key === form.elements.via?.value)?.ap?.length > 1);
         const ok = el.querySelector('button[data-action="ok"]');
@@ -250,7 +265,7 @@ async function castDialog(actor, ctx) {
           form.querySelector(".fs-cast-mods").innerHTML = modsHTML(ctx, v, tierOf(ctx.trees, "magic-theory"));
           showTab(tab);
           refresh(false);
-        } else if (name === "hexTrigger" || name === "fidelityKind" || name.startsWith("mod:")) { form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(valuesFromForm(form)); refresh(false); }
+        } else if (name === "hexTrigger" || name === "fidelityKind" || name.startsWith("mod:")) { { const vv = valuesFromForm(form); form.querySelector(".fs-cast-afflict").innerHTML = afflictHTML(vv, spells.planCast(ctx, vv).power || 0); } refresh(false); }
         else refresh(["core1", "core2"].includes(name), name);
       });
       form.addEventListener("click", e => { const t = e.target?.closest?.(".fs-cast-tab"); if (t && !t.disabled) showTab(t.dataset.tab); });
@@ -274,8 +289,8 @@ function castCardHTML(actor, plan) {
   const via = esc(plan.option.label);
   const parts = [`${plan.base}`, ...plan.applied.filter(a => a.threshold).map(a => `${esc(a.mod.name)} ${a.threshold}`)].join(" + ");
   const eff = spells.effectText(plan.cores.map(c => c.id));
-  const effects = eff ? `<li><strong>${esc(plan.combo ? eff.title : plan.cores[0].name)}:</strong> ${esc(eff.text)}</li>` : "";
-  const mods = plan.applied.map(a => `<li><strong>${esc(a.mod.name)}${a.free ? " (Connection)" : ""}${a.replicates ? ` (copies ${esc(spells.spellById(a.replicates)?.name ?? "")})` : ""}:</strong> ${esc(stripHeader(a.mod.text))}</li>`).join("");
+  const effects = eff ? `<li><strong>${esc(plan.combo ? eff.title : plan.cores[0].name)}:</strong> ${esc(scaleBody(eff.text, plan.power))}</li>` : "";
+  const mods = plan.applied.map(a => `<li><strong>${esc(a.mod.name)}${a.free ? " (Connection)" : ""}${a.replicates ? ` (copies ${esc(spells.spellById(a.replicates)?.name ?? "")})` : ""}:</strong> ${esc(scaleBody(stripHeader(a.mod.text), plan.power * (a.replace ? 2 : 1)))}</li>`).join("");
   return `<div class="fs-result"><strong>${esc(actor.name)}</strong> casts <strong>${esc(names)}</strong>${plan.combo ? " (Combo Spell)" : ""}${plan.ritual ? " as a <em>Ritual</em>" : ""}.</div>
     <ul class="fs-list">
       <li>Through ${via}${plan.ritual && !plan.instantRitual ? "" : ` · ${plan.ap} ${plan.usesRP ? "RP" : "AP"}`}</li>
@@ -340,7 +355,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
     const originTok = rangedPlusArea ? (aim?.object ?? aim) : null;
     const layered = (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0);
     placed = await areas.placeArea(actor, { title: emplace ? "Emplace" : mods.blast && !mods["gravity field"] ? "Blast" : "Gravity Field", scale: (mods.snipe ? 2 : 1) * agate, aim, origin: originTok?.center ? originTok : null,
-      facing: emplace, flags: { spell: emplace ? "emplace" : mods.blast && !mods["gravity field"] ? "blast" : "gravity field", ...(emplace ? { health: 20 * plan.power + layered, limit: 20 * plan.power + layered, reactive: !!mods.reactive, casterUuid: actor.uuid } : {}) } });
+      facing: emplace, flags: { spell: emplace ? "emplace" : mods.blast && !mods["gravity field"] ? "blast" : "gravity field", ...(emplace ? { health: emplaceHealth(actor, plan) + layered, limit: emplaceHealth(actor, plan) + layered, reactive: !!mods.reactive, casterUuid: actor.uuid } : {}) } });
     if (placed === null) return null;                                    // cancelled: nothing is spent
     if (placed && !emplace) targets = placed.actors.map(a => ({ actor: a }));
     // Mold (Reach Arcana T3): you choose who in the area is attacked.
@@ -411,7 +426,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const manual = plan.applied.filter(a => !a.free && !fx.AUTOMATED_MODS.has(a.mod.id)).map(a => a.mod.name);
   if (manual.length && profile) plan.note = `${plan.note ? `${plan.note} ` : ""}Not automated yet (the GM resolves it from the text above): ${[...new Set(manual)].join(", ")}.`;
   const fnotes = fociFx.castNotes(ffx, plan);
-  if (plan.hematite) fnotes.push(`Hematite: Power doubled, ${plan.hematiteCost} Health spent.`);
+  if (plan.hematite) fnotes.push(`Hematite: Power ${plan.hematiteBonus > 1 ? "quadrupled (the Affix is doubled)" : "doubled"}, ${plan.hematiteCost} Health spent.`);
   if (fnotes.length) plan.note = `${plan.note ? `${plan.note} ` : ""}${fnotes.join(" ")}`;
   if (!plan.note && !profile) plan.note = `Spell effects for this spell aren't automated yet: scale the effect by Spell Power ×${plan.power} and resolve it at the table (attack roll, damage, and effects).`;
 
@@ -433,7 +448,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   if (emplace) {
     // The barrier is a real one-way Wall (movement only), made through the GM; its template holds the health.
     if (placed?.tpl) await requestGM("createWalls", { sceneId: placed.sceneId, walls: areas.wallData(placed.tpl, placed.front, placed.grid, { barrierOf: placed.templateId, areaOf: actor.uuid }) });
-    await emplaceCard(actor, { health: 20 * plan.power + (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0), shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId, sceneId: placed?.sceneId, walls: !!placed?.tpl });
+    await emplaceCard(actor, { health: emplaceHealth(actor, plan) + (mods.layered ?? 0) * Math.max(0, actor.system.derived?.effective?.build?.value ?? 0), shapeLabel: areas.AREA_SHAPES[placed?.shape]?.label ?? "your chosen area", templateId: placed?.templateId, sceneId: placed?.sceneId, walls: !!placed?.tpl });
   }
   else if (strikeSpec && Object.keys(strikeSpec).length) { await arcana.resolveStrike({ actor, plan, profile, mods, spec: strikeSpec, ritualOf }); }
   else if (conjureCast) { if (!plan.ritual) await conjure.resolve({ actor, plan, profile, spec: cjSpec, mods, ritualOf, targets, values }); }
@@ -447,7 +462,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const twice = !!type && !plan.ritual && !plan.freeFrom && !fire && castsTwice(type, state.last, coreKey);
   if (type === "gauntlet" && twice) {
     const hi = plan.option.scalingHigh ?? plan.scaling;
-    await run({ ...plan, scaling: hi, power: spells.spellPower(hi) * (1 + (plan.empower ?? 0) + (plan.hematite ? 1 : 0)) });
+    await run({ ...plan, scaling: hi, power: spells.spellPower(hi) * (1 + (plan.empower ?? 0) + (plan.hematiteBonus ?? (plan.hematite ? 1 : 0))) });
     await post(actor, { title: `${esc(actor.name)} — Gauntlet`, body: `<div class="fs-result">The Gauntlet duplicates it, using your lower Scaling Stat (${plan.scaling}).</div>` });
     await run(plan);
   } else {
@@ -494,16 +509,16 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
       const fewer = spells.planCast(ctx, { ...values, [`mod:${exploitMod.id}`]: mods.exploit - unused });
       refund[unused] = Math.max(0, plan.energy - fewer.energy);
     }
-    exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund };
-  } else if (mods.exploit) exploit = { stacks: mods.exploit, die: fx.exploitDie(plan.power), refund: [] };
-  const pierce = (mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0) + (plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin : 0);   // Painite: ignores Limit as Pierce does
+    exploit = { stacks: mods.exploit, die: applyStacks(fx.exploitDie(plan.power), castStacks(actor, plan)), refund };
+  } else if (mods.exploit) exploit = { stacks: mods.exploit, die: applyStacks(fx.exploitDie(plan.power), castStacks(actor, plan)), refund: [] };
+  const pierce = (mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0) + (plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin * (plan.fociFx.doubled === "painite" ? 2 : 1) : 0);   // Painite: ignores Limit as Pierce does
   // Bash (Crushing T3): Bash 10 × Power per stack (an object with that much Limit or less is ignored for extra damage).
   const bash = mods.bash ? mods.bash * 10 * plan.power : 0;
   const attackOpts = { apCost: plan.ap,
     label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
     damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: 0,
     notes: [...notes, plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
-    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, singleRoll: area && !mods.absorb, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
+    spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, pierceBold: mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0, pierceFlat: plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin * (plan.fociFx.doubled === "painite" ? 2 : 1) : 0, singleRoll: area && !mods.absorb, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
       ...(plan.fociFx ? { fociFx: plan.fociFx } : {}),
       ...(profile.arcana?.kind === "mirage" ? { ritualFree: plan.t3Free ?? null, arcana: { sense: values?.sense, fidelity: values?.fidelityKind, fidelityRoll: values?.fidelityRoll } } : {}),
       ...(profile.afflict ? { ritualFree: plan.t3Free ?? null, afflict: { charmRoll: values?.charmRoll, hexDie: values?.hexDie, hex: { trigger: values?.hexTrigger, roll: values?.hexRoll, outcome: values?.hexOutcome, detail: values?.hexDetail } } } : {}) }

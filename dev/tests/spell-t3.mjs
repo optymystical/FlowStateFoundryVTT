@@ -125,13 +125,30 @@ clean(); await land("magic-venomancy:poison"); target(gob); await A.act(lastMsgW
 seq = [9]; await A.turnStart(gob);
 ok2(gob.system.hp.value === 432 && eff(gob, "poison").length === 0, "A passed check: no health lost, and the Poison still ends");
 
+console.log("== Poison carries the stacks it was cast with");
+clean(); await land("magic-venomancy:poison", {}, 30);
+const critCoat = eff(orc, "coat")[0];
+ok2(critCoat?.flags.flowstate.spellEffect.poison.stacks === 2, "A critical hit stores the crit's two Strengthened stacks on the Poison");
+target(gob); await A.act(lastMsgWith("afflict"), 0);
+seq = [2, 10]; await A.turnStart(gob);
+ok2(gob.system.hp.value === 432 - 20, `…and each tick is doubly Strengthened (10 → 20; HP ${gob.system.hp.value})`);
+
 console.log("== Poison Mods");
 const poisoned = async (core, extra = {}, core2 = "") => { clean(); await land(core, extra, 20, core2); target(gob); await A.act(lastMsgWith("afflict"), 0); return eff(gob, "poison")[0]; };
 await poisoned("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 });
 seq = [1, 5]; await A.turnStart(gob);
 ok2(eff(gob, "poison").length === 1 && eff(gob, "poison")[0].flags.flowstate.spellEffect.procs === 1, "Prolong: after a failed check the Poison goes on");
+// "2 times (+1 each stack)" is bolded: Spell Power (3) makes it 6 applications, and a crit's two Strengthened stacks double that.
+await poisoned("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 });
+for (let i = 0; i < 5; i++) { seq = [1, 5]; await A.turnStart(gob); }
+const stillOn = eff(gob, "poison").length === 1;
 seq = [1, 5]; await A.turnStart(gob);
-ok2(eff(gob, "poison").length === 0, "…and ends once it has applied 2 times");
+ok2(stillOn && eff(gob, "poison").length === 0, "Prolong's 2 applications are scaled by Spell Power (3): it applies 6 times");
+clean(); await land("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 }, 30); target(gob); await A.act(lastMsgWith("afflict"), 0);
+for (let i = 0; i < 11; i++) { seq = [1, 5]; await A.turnStart(gob); }
+const stillOn2 = eff(gob, "poison").length === 1;
+seq = [1, 5]; await A.turnStart(gob);
+ok2(stillOn2 && eff(gob, "poison").length === 0, "…and a crit's two Strengthened stacks double it (12 times)");
 await poisoned("magic-venomancy:poison", { [M("magic-venomancy:prolong")]: 1 });
 seq = [9]; await A.turnStart(gob);
 ok2(eff(gob, "poison").length === 0, "…or as soon as they pass the check");
@@ -199,8 +216,8 @@ ce = await charmOn({ [M("magic-charm:ingrained")]: true }, 1, "attack");
 ok2(ce.flags.flowstate.spellEffect.ingrained && ce.flags.flowstate.spellEffect.onTargetTurn, "Ingrained: the Charm outlasts the caster's next turn");
 await actions.clearSpellEffects(hero);
 ok2(eff(orc, "charm").length === 1, "…it isn't cleared at the start of the caster's turn");
-seq = [1]; await A.casterTurn(hero);
-ok2(eff(orc, "charm").length === 0, "…each of the caster's turns repeats the check with the requirement halved (3 → 1), and a pass ends it");
+seq = [4]; await A.casterTurn(hero);
+ok2(eff(orc, "charm").length === 0, "…each of the caster's turns repeats the check with the requirement halved (3 × Power 3 = 9 → 4), and a pass ends it");
 // Propagandize needs two other Charms
 clean();
 for (const t of ["dodge", "stat"]) { target(orc); seq = [20]; await cast("magic-charm:charm", { charmRoll: t }); seq = [12, 1]; await actions.defend(lastAtk(), 0, "dodge"); }
@@ -244,9 +261,9 @@ ok2(formulas.includes("3d12"), "…a Build check, then 3d12 arcane");
 ok2(eff(orc, "hex").length === 0, "…and the Hex is spent (it triggers once)");
 he = await hexOn({ hexTrigger: "harm", [M("magic-witchery:linger")]: 1 });
 seq = [1, 10]; await actions.requestDamage(orc, 5, "physical");
-ok2(eff(orc, "hex").length === 1 && eff(orc, "hex")[0].flags.flowstate.spellEffect.left === 1, "Linger: it triggers 2 times (1 left after the first)");
+ok2(eff(orc, "hex").length === 1 && eff(orc, "hex")[0].flags.flowstate.spellEffect.left === 5, "Linger: 2 times × Spell Power (3) = 6 triggers (5 left after the first)");
 seq = [9]; await actions.requestDamage(orc, 5, "physical");
-ok2(eff(orc, "hex").length === 0, "…and a passed Build check still uses a trigger up");
+ok2(eff(orc, "hex").length === 1 && eff(orc, "hex")[0].flags.flowstate.spellEffect.left === 4, "…and a passed Build check still uses a trigger up");
 // Damage multiplier by trigger: Harm Weakened twice, Roll Strengthened, Word triply
 he = await hexOn({ hexTrigger: "harm" }); seq = [1, 40]; await actions.requestDamage(orc, 1, "physical");
 const doubleWeak = 432 - orc.system.hp.value - 1;

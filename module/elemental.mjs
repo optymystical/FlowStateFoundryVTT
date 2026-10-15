@@ -50,6 +50,19 @@ async function dealDamage(target, amount, type, { bypass = false, brandBy = fals
 /*  After a hit (spells with no damage)         */
 /* -------------------------------------------- */
 
+/**
+ * Frostbite (Cold Mod): "this Spell removes an additional 1d12 Energy" (× Power per stack, scaled by the stacks). A Frost's own Energy removal takes it into its amount;
+ * any other spell with the Mod (a held or no-damage one, Slam + Frost, a Stab + Frost that didn't crit...) removes it on its own here. Chill follows it as usual.
+ */
+async function frostbiteAlone({ attacker, target, m, power, stacks, html, rolls, chillDmgOpts }) {
+  const r = await roll(`${m.frostbite * power}d12`); rolls.push(r);
+  const fb = applyStacks(r.total, stacks);
+  const rm = await removeEnergy(target, fb);
+  html.push(`<div class="fs-result">Frostbite: ${esc(target.name)} loses <strong>${rm.removed} Energy</strong> (${m.frostbite * power}d12 = ${r.total}; ${rm.remaining} left).</div>`);
+  if (m.chill) html.push(await dealDamage(target, applyStacks(fb, 1), "cold", { opts: chillDmgOpts }));
+  return fb;
+}
+
 /** Effects that fire on a hit: no-damage spells (Heat + Cold, Crushing + Acid, ...), Freeze, Heat + Crackle. */
 export async function onHit(ctx) {
   const { attacker, target, o, entry, profile } = ctx;
@@ -62,10 +75,12 @@ export async function onHit(ctx) {
     if (e.at !== "hit" && !sp.hold) continue;       // a held spell applies its usual effects with no damage dealt
     if (e.stack) {
       let amount;
-      if (e.stack.crushAcid) amount = fx.crushAcidStacks(entry?.total ?? 0, ctx.dodgeTotal ?? 0);
-      else if (e.stack.dice) { const r = await roll(`${e.stack.dice[0] * power}d${e.stack.dice[1]}`); rolls.push(r); amount = r.total; }
-      else amount = fx.amountSpec(e.stack, dealt, power);
-      amount = applyStacks(amount, stackBonus);
+      if (e.stack.crushAcid) amount = applyStacks(power, stackBonus) + 2 * Math.max(0, (entry?.total ?? 0) - (ctx.dodgeTotal ?? 0));          // only the bolded 1 Stain (× Power) scales, not the roll difference
+      else {
+        if (e.stack.dice) { const r = await roll(`${e.stack.dice[0] * power}d${e.stack.dice[1]}`); rolls.push(r); amount = r.total; }
+        else amount = fx.amountSpec(e.stack, dealt, power);
+        amount = applyStacks(amount, stackBonus);
+      }
       const kind = fx.stainKindFor(e.stack.kind, m);
       stackAmount = amount;
       const line = await giveStacks(target, kind, amount, { first: e.stack.where === "first" || !!sp.hold, caster: attacker });
@@ -98,6 +113,8 @@ export async function onHit(ctx) {
       html.push(`<div class="fs-result">${esc(target.name)} is charged: <strong>${st} Ignite</strong> whenever another target takes heat or radiation damage from your spells (until your next turn).</div>`);
     }
   }
+  // Frostbite on a spell that deals no damage here (held, or a Combo with no damage): its extra Energy removal still happens.
+  if (m.frostbite && (sp.hold || !profile.damage)) await frostbiteAlone({ attacker, target, m, power, stacks: stackBonus, html, rolls, chillDmgOpts: undefined });
   // Freeze (Cold T4): the next time they'd restore Energy they restore less and take that much cold damage.
   if (m.freeze) {
     const amount = applyStacks(3 * power, stackBonus);
@@ -119,10 +136,10 @@ export async function objectStacks({ o, attacker, target, item, dealt = 0, profi
   for (const e of profile.effects ?? []) {
     if (!e.stack || (phase === "hit") !== (e.at === "hit")) continue;
     let amount;
-    if (e.stack.crushAcid) amount = fx.crushAcidStacks(entryTotal, dodgeTotal);
-    else if (e.stack.dice) { const r = await roll(`${e.stack.dice[0] * power}d${e.stack.dice[1]}`); rolls.push(r); amount = r.total; }
-    else amount = fx.amountSpec(e.stack, dealt, power);
-    amount = applyStacks(amount, (o.stacks ?? 0) + critStacks);
+    const st = (o.stacks ?? 0) + critStacks;
+    if (e.stack.crushAcid) amount = applyStacks(power, st) + 2 * Math.max(0, entryTotal - dodgeTotal);
+    else if (e.stack.dice) { const r = await roll(`${e.stack.dice[0] * power}d${e.stack.dice[1]}`); rolls.push(r); amount = applyStacks(r.total, st); }
+    else amount = e.stack.per !== undefined ? fx.amountSpec(e.stack, dealt, power) : applyStacks(fx.amountSpec(e.stack, dealt, power), st);          // "that many" stacks go by damage already dealt (stacks included)
     const line = await giveStacks(target, fx.stainKindFor(e.stack.kind, m), amount, { item, caster: attacker });
     if (line) html.push(`<div class="fs-result">${line}</div>`);
   }
@@ -173,7 +190,7 @@ export async function afterDamage(ctx) {
   const sp = o.spell, m = sp.mods ?? {}, power = sp.power;
   const html = [], rolls = [];
   const st = ctx.stacks ?? 0;                                                  // the damage's Strengthened/Weakened stacks scale the bolded numbers
-  let kb = null, chain = null;
+  let kb = null, chain = null, frostbiteDone = false;
   const c0 = target.system.conditions ?? {};
   const ignitedBefore = igniteTotal(c0);
   const energyBefore = target.system.energy?.value ?? 0;
@@ -203,7 +220,7 @@ export async function afterDamage(ctx) {
     }
     if (e.energy) {
       let amount = fx.amountSpec(e.energy, dealt, power);
-      if (m.frostbite) { const r = await roll(`${m.frostbite * power}d12`); rolls.push(r); const fb = applyStacks(r.total, st); amount += fb; html.push(`<div class="fs-notes">Frostbite: +${fb} Energy removed (${m.frostbite * power}d12 = ${r.total})</div>`); }
+      if (m.frostbite) { frostbiteDone = true; const r = await roll(`${m.frostbite * power}d12`); rolls.push(r); const fb = applyStacks(r.total, st); amount += fb; html.push(`<div class="fs-notes">Frostbite: +${fb} Energy removed (${m.frostbite * power}d12 = ${r.total})</div>`); }
       const r = await removeEnergy(target, amount);
       f.energyZeroAfter = r.remaining <= 0;
       html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${r.removed} Energy</strong> (${r.remaining} left).</div>`);
@@ -216,7 +233,7 @@ export async function afterDamage(ctx) {
       html.push(await dealDamage(target, amount, e.extra.type, { bypass: !!e.extra.bypass }));
     }
     if (e.force) {
-      const fr = await spellForce(attacker, target, o, ctx.defense.result, { n: e.force.n * power, sides: e.force.sides }, "Force");
+      const fr = await spellForce(attacker, target, o, ctx.defense.result, { n: e.force.n * power, sides: e.force.sides }, "Force", st);
       html.push(fr.html); rolls.push(...fr.rolls); kb = fr.push ?? kb;
     }
     if (e.dodgeDis) {
@@ -230,6 +247,9 @@ export async function afterDamage(ctx) {
     }
     if (e.chain && !(e.chain.needsEnergyZero && !f.energyZeroAfter && !f.energyZeroBefore)) chain = { adv: e.chain.adv, force: !!e.chain.force };
   }
+
+  // Frostbite on a damaging spell whose own effects removed no Energy (Slam + Frost, a Stab + Frost that didn't crit): it removes its extra Energy by itself.
+  if (m.frostbite && !frostbiteDone && !sp.hold) await frostbiteAlone({ attacker, target, m, power, stacks: st, html, rolls, chillDmgOpts: { shroudCtx: ctx.dmgOpts?.shroudCtx } });
 
   // Ignition (Heat T2): a target that already had Ignite has it triggered once everything else is done.
   if (m.ignition && ig.trigger) {

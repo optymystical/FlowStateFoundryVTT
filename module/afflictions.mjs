@@ -11,7 +11,7 @@
  */
 import * as fx from "./spellfx.mjs";
 import {
-  post, requestGM, requestDamage, damageOutcome, putSpellEffect, spellEffects, spellForce, giveStacks, pickSceneTarget, performAttack, attackerToken, changeEffect, knockbackRow, exhaustionNet, magicDisNet, registerAfflictions, setActorFlag
+  post, requestGM, requestDamage, damageOutcome, putSpellEffect, spellEffects, spellForce, giveStacks, pickSceneTarget, performAttack, attackerToken, changeEffect, knockbackRow, exhaustionNet, magicDisNet, registerAfflictions, setActorFlag, castStacks
 } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES, STATS } from "./rules.mjs";
@@ -104,7 +104,8 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
   const m = sp.mods ?? {};
   const ritualOf = sp.ritualOf ?? null;
   const power = Math.max(1, sp.power);
-  const base = { caster: attacker.uuid, power, ritualOf, crit: result.critStacks ?? 0 };
+  const stacks = (o.stacks ?? 0) + (result.critStacks ?? 0) + castStacks(attacker, sp);          // every Strengthened/Weakened stack on the spell scales what it leaves behind
+  const base = { caster: attacker.uuid, power, ritualOf, crit: result.critStacks ?? 0, stacks };
   if (a.kind === "poison" || a.kind === "venomCharm" || a.kind === "venomHex") {
     const d = poisonData(a, sp, base, ch);
     await putSpellEffect(target, { kind: "coat", caster: attacker.uuid, ritualOf, name: `${profile.name} coating`, poison: d,
@@ -118,20 +119,21 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
   if (a.kind === "charm") {
     if (a.combo) {
       await putSpellEffect(target, { kind: "charm", stack: true, onTargetTurn: true, pending: true, caster: attacker.uuid, ritualOf, name: `${profile.name}`, combo: a.combo, power,
-        ingrained: !!m.ingrained, req: 3, cloud: !!m.cloud, contested: !!a.contested, critStacks: a.combo.critStrength ? base.crit : 0,
-        description: `At the start of their next turn they roll a Willpower check (3 or higher); on a failure they hurt themselves (${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}).` });
+        ingrained: !!m.ingrained, req: needOf(3, power, stacks), cloud: !!m.cloud, contested: !!a.contested, critStacks: a.combo.critStrength ? base.crit : 0, stacks: base.stacks,
+        description: `At the start of their next turn they roll a Willpower check (${needOf(3, power, stacks)} or higher); on a failure they hurt themselves (${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}${stackNote(stacks)}).` });
       out.html = `<div class="fs-notes">${esc(profile.name)} hit. The result goes to the caster and the GM.</div>`;
-      await secret(target, attacker, { title: `${esc(attacker.name)} — ${esc(profile.name)}`, body: `<div class="fs-result">${esc(target.name)} makes a Willpower check (3 or higher) at the start of their next turn; on a failure they hurt themselves for ${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}.</div>` });
+      await secret(target, attacker, { title: `${esc(attacker.name)} — ${esc(profile.name)}`, body: `<div class="fs-result">${esc(target.name)} makes a Willpower check (${needOf(3, power, stacks)} or higher) at the start of their next turn; on a failure they hurt themselves for ${dice(a.combo.dice[0] * power, a.combo.dice[1])} ${typeLabel(a.combo.type)}.</div>` });
       return out;
     }
-    const r = await charmCheck(attacker, target, { dis: m.cloud ? 1 : 0, contest: a.contested ? attacker : null });
+    const need = needOf(3, power, stacks);
+    const r = await charmCheck(attacker, target, { dis: m.cloud ? 1 : 0, contest: a.contested ? attacker : null, req: need });
     out.rolls.push(r.roll);
     out.html = `<div class="fs-notes">Charm hit. The result goes to the caster and the GM.</div>`;
     if (r.passed) {
       await secret(target, attacker, { title: `${esc(attacker.name)} — Charm`, rolls: [r.roll], body: `${checkLine(target, r)}<div class="fs-result">${esc(target.name)} resists the Charm.</div>` });
       return out;
     }
-    const placed = await placeCharm(attacker, target, { rollType: ch.charmRoll || "attack", ritualOf, ingrained: !!m.ingrained, propagandize: !!m.propagandize });
+    const placed = await placeCharm(attacker, target, { rollType: ch.charmRoll || "attack", ritualOf, ingrained: !!m.ingrained, propagandize: !!m.propagandize, req: need });
     await secret(target, attacker, { title: `${esc(attacker.name)} — Charm`, rolls: [r.roll], body: `${checkLine(target, r)}${placed}` });
     return out;
   }
@@ -144,7 +146,7 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
     return out;
   }
   if (a.kind === "charmHex") {
-    const c = await combinedCheck(attacker, target, a, { dis: 0 });
+    const c = await combinedCheck(attacker, target, a, { dis: 0, req: needOf(a.req, power, stacks) });
     out.rolls.push(c.roll);
     out.html = `<div class="fs-notes">${esc(profile.name)} hit. The result goes to the caster and the GM.</div>`;
     if (c.passed) { await secret(target, attacker, { title: `${esc(attacker.name)} — ${esc(profile.name)}`, rolls: [c.roll], body: `${checkLine(target, c)}<div class="fs-result">${esc(target.name)} resists.</div>` }); return out; }
@@ -156,13 +158,18 @@ export async function onHit({ attacker, target, o, result, entry, profile, dodge
   return out;
 }
 
+/** A check's "N or higher" is a bolded number: Spell Power and the spell's stacks scale it. */
+/** " (Strengthened ×2)" for the stacks a lingering effect was cast with. */
+const stackNote = n => (n ? ` (${n > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(n)})` : "");
+const needOf = (base, power = 1, stacks = 0) => (base ? Math.max(0, applyStacks(base * Math.max(1, power), stacks ?? 0)) : 0);
+
 /** Charm's Willpower check (3 or higher). */
 const charmCheck = (attacker, target, { dis = 0, req = 3, contest = null } = {}) => check(target, "will", req, { dis, contest });
 /** A combined check (die sizes added), 5 or higher: Venomancy + Charm, Venomancy + Witchery, Charm + Witchery. */
-const combinedCheck = (attacker, target, a, { dis = 0 } = {}) => check(target, a.combined, a.req, { dis, contest: a.contested ? attacker : null });
+const combinedCheck = (attacker, target, a, { dis = 0, req = a.req } = {}) => check(target, a.combined, req, { dis, contest: a.contested ? attacker : null });
 
 /** Put a Charm on a creature (replacing one of the same caster and roll type; doubled by Propagandize). */
-export async function placeCharm(caster, target, { rollType, ritualOf = null, ingrained = false, propagandize = false, dot = null, turnsLeft = 0 }) {
+export async function placeCharm(caster, target, { rollType, ritualOf = null, ingrained = false, propagandize = false, dot = null, turnsLeft = 0, req = 3 }) {
   const mine = spellEffects(target, "charm").filter(e => data(e).caster === caster.uuid && !data(e).pending);
   const same = mine.find(e => data(e).rollType === rollType);
   if (same && turnsLeft) { await changeEffect(same, { "flags.flowstate.spellEffect.turnsLeft": (data(same).turnsLeft ?? 1) + 1 }); return `<div class="fs-result">${esc(target.name)}'s Charm lasts one more turn of yours.</div>`; }
@@ -170,7 +177,7 @@ export async function placeCharm(caster, target, { rollType, ritualOf = null, in
   const amount = fx.charmAmount(propagandize, mine.filter(e => data(e).rollType !== rollType).length);
   const weak = rollType === "damage";
   const what = weak ? `Weakened ${amount > 1 ? "twice" : ""} on damage rolls` : `${amount > 1 ? "double " : ""}Disadvantage on ${fx.ROLL_TYPES[rollType]?.toLowerCase() ?? rollType} rolls`;
-  await putSpellEffect(target, { kind: "charm", stack: true, caster: caster.uuid, ritualOf, onTargetTurn: ingrained && !ritualOf, ingrained: ingrained && !ritualOf, req: 3, rollType, amount, dot, turnsLeft,
+  await putSpellEffect(target, { kind: "charm", stack: true, caster: caster.uuid, ritualOf, onTargetTurn: ingrained && !ritualOf, ingrained: ingrained && !ritualOf, req, rollType, amount, dot, turnsLeft,
     name: `Charm (${fx.ROLL_TYPES[rollType] ?? rollType})`, description: `${what}${ritualOf ? " until the ritual ends" : ingrained ? " for a minute (repeating the Willpower check each of the caster's turns, halving the requirement)" : ", until the start of the caster's next turn"}.${dot ? ` Loses ${dice(dot.n, dot.sides)} health at the start of each of their turns.` : ""}` });
   return `<div class="fs-result">${esc(target.name)} is Charmed: <strong>${what}</strong>${ritualOf ? " (permanent until the ritual ends)" : ingrained ? " (about a minute)" : " until the start of your next turn"}.</div>`;
 }
@@ -185,10 +192,10 @@ function poisonData(a, sp, base, ch = {}) {
   return {
     kind: a.kind, caster: base.caster, ritualOf: base.ritualOf, ritual: !!base.ritualOf,
     n: (a.dice?.[0] ?? 0) * p, sides: a.dice?.[1] ?? 6, type: a.type ?? "health",
-    bypassArmor: !!a.bypassArmor, force: !!a.force, livingDie: a.livingDie ?? 0, halfStrength: !!a.halfStrength, dodgeDie: a.dodgeDie ? a.dodgeDie * p : 0,
+    bypassArmor: !!a.bypassArmor, force: !!a.force, livingDie: a.livingDie ?? 0, halfStrength: !!a.halfStrength, dodgeDie: a.dodgeDie ? applyStacks(a.dodgeDie * p, base.stacks ?? 0) : 0, stacks: base.stacks ?? 0,
     ignite: !!a.ignite, stain: !!a.stain, energy: !!a.energy, arc: !!a.arc,
     prolong: m.prolong ?? 0, lethality: m.lethality ?? 0, potency: !!m.potency, virality: !!m.virality,
-    combined: a.combined ?? null, comboReq: a.req ?? 0, contested: !!a.contested, charmRoll: ch.charmRoll || "attack", hex: ch.hex ?? null, hexDie: ch.hexDie ?? null,
+    combined: a.combined ?? null, comboReq: needOf(a.req ?? 0, p, base.stacks), req: needOf(3, p, base.stacks), contested: !!a.contested, charmRoll: ch.charmRoll || "attack", hex: ch.hex ?? null, hexDie: ch.hexDie ?? null,
     power: p, procs: 0, checks: 0
   };
 }
@@ -197,8 +204,8 @@ function poisonData(a, sp, base, ch = {}) {
 export async function applyPoison(victim, d, caster, { fromSpread = false } = {}) {
   if (d.kind === "venomCharm" || d.kind === "venomHex") return applyVenomCombo(victim, d, caster);
   await putSpellEffect(victim, { ...d, kind: "poison", stack: true, onTargetTurn: true, name: `Poison (${dice(d.n, d.sides)}${d.type === "health" ? "" : ` ${typeLabel(d.type)}`})`, ritualOf: d.ritualOf ?? null,
-    description: `At the start of their turn they roll a Constitution check (${d.req ?? 3} or higher) or ${d.force ? `take ${dice(d.n, d.sides)} Force` : `lose ${dice(d.n, d.sides)} ${typeLabel(d.type)}${d.bypassArmor ? " (ignoring armor)" : ""}`}${d.ritual ? "; it lasts until they pass or die" : d.prolong ? `; it repeats until they pass or it has applied ${1 + d.prolong} times` : ""}.` });
-  await post(victim, { title: `${esc(victim.name)} — Poisoned`, body: `<div class="fs-result"><i class="fa-solid fa-skull-crossbones"></i> ${esc(victim.name)} is poisoned${fromSpread ? " (it spread)" : ""}: at the start of their next turn they roll a Constitution check (3 or higher) or ${d.force ? `take ${dice(d.n, d.sides)} Force` : `lose ${dice(d.n, d.sides)} ${typeLabel(d.type)}`}.</div>` });
+    description: `At the start of their turn they roll a Constitution check (${d.req ?? 3} or higher) or ${d.force ? `take ${dice(d.n, d.sides)} Force` : `lose ${dice(d.n, d.sides)} ${typeLabel(d.type)}${d.bypassArmor ? " (ignoring armor)" : ""}`}${d.ritual ? "; it lasts until they pass or die" : d.prolong ? `; it repeats until they pass or it has applied ${timesWith(d.prolong, d.stacks, d.power)} times` : ""}.` });
+  await post(victim, { title: `${esc(victim.name)} — Poisoned`, body: `<div class="fs-result"><i class="fa-solid fa-skull-crossbones"></i> ${esc(victim.name)} is poisoned${fromSpread ? " (it spread)" : ""}: at the start of their next turn they roll a Constitution check (${d.req ?? 3} or higher) or ${d.force ? `take ${dice(d.n, d.sides)} Force` : `lose ${dice(d.n, d.sides)} ${typeLabel(d.type)}`}${stackNote(d.stacks)}.</div>` });
 }
 
 /** Venomancy + Charm / Venomancy + Witchery, once the coating has passed: the combined check. */
@@ -208,10 +215,10 @@ async function applyVenomCombo(victim, d, caster) {
   if (c.passed) return secret(victim, caster, { title: `${esc(title)} — ${esc(victim.name)}`, rolls: [c.roll], body: `${checkLine(victim, c)}<div class="fs-result">${esc(victim.name)} resists.</div>` });
   let body = checkLine(victim, c);
   if (d.kind === "venomCharm") {
-    body += await placeCharm(caster ?? victim, victim, { rollType: d.charmRoll, ritualOf: d.ritualOf, dot: { n: d.n, sides: d.sides }, turnsLeft: 1 });
+    body += await placeCharm(caster ?? victim, victim, { rollType: d.charmRoll, ritualOf: d.ritualOf, dot: { n: d.n, sides: d.sides, stacks: d.stacks ?? 0 }, turnsLeft: 1 });
   } else {
     const h = { ...hexBase(d.caster, d.power, d.ritualOf), trigger: d.hex?.trigger || "harm", roll: d.hex?.roll || "attack", outcome: d.hex?.outcome || "fail", detail: d.hex?.detail || "",
-      n: d.n, sides: d.sides, type: "health", noCheck: true, repeat: true, lastsToCaster: true, turnsLeft: 1, linger: 0, fester: 0, unravel: false, consume: false, extra: null };
+      n: d.n, sides: d.sides, type: "health", noCheck: true, repeat: true, lastsToCaster: true, turnsLeft: 1, linger: 0, fester: 0, unravel: false, consume: false, extra: null, stacks: d.stacks ?? 0 };
     await putSpellEffect(victim, hexEffect(h, { name: "Poison + Hex" }));
     body += hexCard(victim, h);
   }
@@ -235,23 +242,23 @@ async function poisonTick(actor, e) {
     const die = sides + (d.livingDie && living ? d.livingDie : 0);
     if (d.force) {
       html.push(`<div class="fs-result">${esc(actor.name)} fails and the Poison applies Force instead of health loss.</div>`);
-      const f = await forceRoll(caster, actor, { n: d.n, sides });
+      const f = await forceRoll(caster, actor, { n: d.n, sides }, d.stacks ?? 0);
       html.push(f.html); rolls.push(...f.rolls); push = f.push;
     } else {
       const dmg = await roll(dice(d.n, die));
       rolls.push(dmg);
-      const stacks = d.halfStrength && fx.halfOrLower(c.total, req) ? 1 : 0;
+      const stacks = (d.halfStrength && fx.halfOrLower(c.total, req) ? 1 : 0) + (d.stacks ?? 0) + arcanePen(actor, d.type);
       const total = applyStacks(dmg.total, stacks);
-      html.push(`<div class="fs-result">${esc(actor.name)} fails: ${dice(d.n, die)} = ${dmg.total}${stacks ? ` (Strengthened → ${total})` : ""} ${typeLabel(d.type)}${d.livingDie && living ? ` (+${d.livingDie} die size: living)` : ""}${d.lethality && d.procs ? ` (Lethality: d${sides})` : ""}.</div>`);
+      html.push(`<div class="fs-result">${esc(actor.name)} fails: ${dice(d.n, die)} = ${dmg.total}${stacks ? ` (${stacks > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(stacks)} → ${total})` : ""} ${typeLabel(d.type)}${d.livingDie && living ? ` (+${d.livingDie} die size: living)` : ""}${d.lethality && d.procs ? ` (Lethality: d${sides})` : ""}.</div>`);
       const extra = await dealDamage(actor, total, d, html);
       if (d.ignite) html.push(await stackLine(actor, "ignite", extra.dealt, extra.outcome, caster));
       if (d.stain) html.push(await stackLine(actor, "stain", extra.dealt, extra.outcome, caster));
       if (d.energy) { const r = await removeEnergy(actor, total); html.push(`<div class="fs-result">${esc(actor.name)} loses <strong>${r.removed} Energy</strong> (${r.remaining} left).</div>`); }
-      if (d.arc && caster) acts.push({ act: "arc", from: actor.uuid, attacker: caster.uuid, n: d.n, sides: die, type: d.type, stacks: 0, label: "Radiation Poison" });
+      if (d.arc && caster) acts.push({ act: "arc", from: actor.uuid, attacker: caster.uuid, n: d.n, sides: die, type: d.type, stacks: d.stacks ?? 0, label: "Radiation Poison" });
     }
   }
   const procs = d.procs + (c.passed ? 0 : 1);
-  const ended = fx.poisonEnds({ passed: c.passed, procs, prolong: d.prolong, ritual: !!d.ritual });
+  const ended = fx.poisonEnds({ passed: c.passed, procs, prolong: d.prolong ? timesWith(d.prolong, d.stacks, d.power) - 1 : 0, ritual: !!d.ritual });
   if (d.virality && caster && fx.lessThanHalf(c.total, req)) acts.push({ act: "spread", from: actor.uuid, attacker: caster.uuid, poison: { ...d, procs: 0, checks: 0, ritual: false, ritualOf: null, lethality: d.lethality } });
   if (ended) { await changeEffect(e, null); html.push(`<div class="fs-notes">The Poison ends.</div>`); }
   else await changeEffect(e, { "flags.flowstate.spellEffect.procs": procs, "flags.flowstate.spellEffect.checks": d.checks + 1 });
@@ -274,8 +281,8 @@ async function stackLine(actor, kind, amount, outcome, caster) {
   return line ? `<div class="fs-result">${line}</div>` : "";
 }
 /** Force from a lingering effect: the caster picks the direction on the card's button. */
-async function forceRoll(caster, target, fd) {
-  const f = await spellForce(caster ?? target, target, { stacks: 0 }, { critStacks: 0 }, fd, "Force");
+async function forceRoll(caster, target, fd, stacks = 0) {
+  const f = await spellForce(caster ?? target, target, { stacks: 0 }, { critStacks: 0 }, fd, "Force", stacks);
   return f;
 }
 
@@ -292,23 +299,23 @@ export function hexData(a, sp, base, ch, profile, extra = {}) {
   for (const [k, v] of Object.entries(a.extra ?? {})) scaled[k] = Array.isArray(v) ? [v[0] * p, v[1]] : v;
   return { ...hexBase(base.caster, p, base.ritualOf), trigger, roll: hx.roll || "attack", outcome: hx.outcome || "fail", detail: hx.detail || "",
     n: a.dice[0] * p, sides: a.dice[1], type: a.type, linger: m.linger ?? 0, fester: m.fester ?? 0, unravel: !!m.unravel, consume: !!m.consume,
-    extra: Object.keys(scaled).length ? scaled : null, hexDie: ch.hexDie || "dodge", contested: !!a.contested, procs: 0, checks: 0, triggers: 0, ...extra };
+    extra: Object.keys(scaled).length ? scaled : null, hexDie: ch.hexDie || "dodge", contested: !!a.contested, procs: 0, checks: 0, triggers: 0, stacks: base.stacks ?? 0, req: needOf(3, p, base.stacks), ...extra };
 }
 
 /** The Active Effect data for a Hex (a minute, or until it has triggered enough times; Rituals are permanent). */
 export function hexEffect(h, profile) {
   const w = globalThis.game?.time?.worldTime;
-  const left = h.ritual || h.repeat ? Infinity : 1 + (h.linger ?? 0);
+  const left = h.ritual || h.repeat ? Infinity : timesWith(h.linger ?? 0, h.stacks, h.power);
   const trig = fx.HEX_TRIGGERS[h.trigger]?.label ?? h.trigger;
   const penalty = h.penalty && (h.trigger === "roll" || h.trigger === "failsuccess") ? { roll: h.roll, amount: 1 } : null;
   return { ...h, kind: "hex", stack: true, onTargetTurn: !h.lastsToCaster, left: Number.isFinite(left) ? left : 99999, penalty, expiresAt: !h.ritual && !h.lastsToCaster && w !== undefined ? w + 60 : null, name: `${profile.name} (${h.trigger})`,
-    description: `Triggers on: ${trig}${h.trigger === "roll" || h.trigger === "failsuccess" ? ` (${fx.ROLL_TYPES[h.roll] ?? h.roll}${h.trigger === "failsuccess" ? `, ${h.outcome}` : ""})` : ""}${h.detail ? ` — ${h.detail}` : ""}. ${h.noCheck ? "" : "Build check (3 or higher), "}${h.type === "health" ? `${dice(h.n, h.sides)} health` : `${dice(h.n, h.sides)} ${typeLabel(h.type)}`}.` };
+    description: `Triggers on: ${trig}${h.trigger === "roll" || h.trigger === "failsuccess" ? ` (${fx.ROLL_TYPES[h.roll] ?? h.roll}${h.trigger === "failsuccess" ? `, ${h.outcome}` : ""})` : ""}${h.detail ? ` — ${h.detail}` : ""}. ${h.noCheck ? "" : "Build check (${h.req ?? 3} or higher), "}${h.type === "health" ? `${dice(h.n, h.sides)} health` : `${dice(h.n, h.sides)} ${typeLabel(h.type)}`}.` };
 }
 const hexTriggerText = h => `${fx.HEX_TRIGGERS[h.trigger]?.label ?? h.trigger}${h.trigger === "roll" || h.trigger === "failsuccess" ? ` (${fx.ROLL_TYPES[h.roll] ?? h.roll}${h.trigger === "failsuccess" ? `, ${h.outcome}` : ""})` : ""}${h.detail ? ` — ${esc(h.detail)}` : ""}`;
 export function hexCard(target, h) {
   const manual = h.trigger === "act" || h.trigger === "word" || (h.trigger === "failsuccess" && (h.roll === "stat" || h.roll === "noncombat"));
   return `<div class="fs-result"><i class="fa-solid fa-hat-wizard"></i> ${esc(target.name)} carries a Hex. Trigger: <strong>${hexTriggerText(h)}</strong>.</div>
-    <div class="fs-notes">${h.noCheck ? "" : "Build check (3 or higher), then "}${dice(h.n, h.sides)} ${typeLabel(h.type)} (${fx.HEX_TRIGGERS[h.trigger].stacks > 0 ? `Strengthened ×${fx.HEX_TRIGGERS[h.trigger].stacks}` : fx.HEX_TRIGGERS[h.trigger].stacks < 0 ? `Weakened ×${-fx.HEX_TRIGGERS[h.trigger].stacks}` : "no stacks"}). ${h.ritual ? "Permanent until the ritual ends." : h.repeat ? "Lasts until the start of your next turn." : `Lasts a minute or ${h.linger ? `${1 + h.linger} triggers` : "until it triggers"}.`}
+    <div class="fs-notes">${h.noCheck ? "" : `Build check (${h.req ?? 3} or higher), then `}${dice(h.n, h.sides)} ${typeLabel(h.type)} (${(() => { const hs = (fx.HEX_TRIGGERS[h.trigger]?.stacks ?? 0) + (h.stacks ?? 0); return hs > 0 ? `Strengthened ×${hs}` : hs < 0 ? `Weakened ×${-hs}` : "no stacks"; })()}). ${h.ritual ? "Permanent until the ritual ends." : h.repeat ? "Lasts until the start of your next turn." : `Lasts a minute or ${h.linger ? `${timesWith(h.linger, h.stacks, h.power)} triggers` : "until it triggers"}.`}
     ${manual ? "This trigger can't be detected automatically: click the button below when it happens." : "It triggers automatically."}</div>
     ${manual ? actRow({ uuid: h.caster }, 0, "hex", "Trigger the Hex", "fa-solid fa-bolt", "The trigger just happened") : ""}`;
 }
@@ -331,6 +338,10 @@ export async function hexTrigger(actor, kind, info = {}) {
   }
 }
 
+/** How many times a Poison applies / a Hex triggers: 1, or "2 times (+1 each stack)" with Prolong / Linger. It is a bolded number, so Spell Power and the spell's Strengthened/Weakened stacks scale it (at least once). */
+/** Arcane damage against something that isn't magical is Weakened once (not a Hex's, which has its own table). */
+const arcanePen = (actor, type, fromHex = false) => (type === "arcane" && !fromHex && !actor.system?.magical ? -1 : 0);
+const timesWith = (extra, stacks, power = 1) => (extra ? Math.max(1, applyStacks((1 + extra) * Math.max(1, power), stacks ?? 0)) : 1);
 const hexExpired = d => d.expiresAt != null && globalThis.game?.time?.worldTime !== undefined && globalThis.game.time.worldTime >= d.expiresAt;
 
 async function fireHex(actor, e) {
@@ -341,7 +352,7 @@ async function fireHex(actor, e) {
   const rolls = [];
   let failed = true, ch = null;
   if (!d.noCheck) {
-    ch = await check(actor, "build", 3, { dis: d.unravel && !d.checks ? 1 : 0, contest: d.contested ? caster : null });
+    ch = await check(actor, "build", d.req ?? 3, { dis: d.unravel && !d.checks ? 1 : 0, contest: d.contested ? caster : null });
     rolls.push(ch.roll);
     failed = !ch.passed;
     html.push(checkLine(actor, ch));
@@ -352,19 +363,20 @@ async function fireHex(actor, e) {
     const sides = fx.hexSides(d.sides, d.fester, d.procs);
     const dmg = await roll(dice(d.n, sides));
     rolls.push(dmg);
-    const stacks = fx.HEX_TRIGGERS[d.trigger]?.stacks ?? 0;
+    const cast = d.stacks ?? 0;          // the Hex was cast with these stacks
+    const stacks = (fx.HEX_TRIGGERS[d.trigger]?.stacks ?? 0) + cast;
     const total = applyStacks(dmg.total, stacks);
     html.push(`<div class="fs-result">${dice(d.n, sides)} = ${dmg.total}${stacks ? ` (${stacks > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(stacks)} → ${total})` : ""} ${typeLabel(d.type)}${d.fester && d.procs ? ` (Fester: d${sides})` : ""}.</div>`);
     const out = await dealDamage(actor, total, { ...d, fromHex: true, bypassArmor: false }, html);
     destroyed = actor.system.hp.value - out.outcome.toHp <= 0;
     const ex = d.extra ?? {};
-    if (ex.force) { const f = await forceRoll(caster, actor, { n: ex.force[0], sides: ex.force[1] }); html.push(f.html); rolls.push(...f.rolls); push = f.push; }
-    if (ex.ignite) { const r = await roll(dice(ex.ignite[0], ex.ignite[1])); rolls.push(r); html.push(await stackLine(actor, "ignite", r.total, out.outcome, caster)); }
-    if (ex.stain) { const r = await roll(dice(ex.stain[0], ex.stain[1])); rolls.push(r); html.push(await stackLine(actor, "stain", r.total, out.outcome, caster)); }
-    if (ex.energy) { const r = await roll(dice(ex.energy[0], ex.energy[1])); rolls.push(r); const rm = await removeEnergy(actor, r.total); html.push(`<div class="fs-result">${esc(actor.name)} loses <strong>${rm.removed} Energy</strong> (${rm.remaining} left).</div>`); }
+    if (ex.force) { const f = await forceRoll(caster, actor, { n: ex.force[0], sides: ex.force[1] }, cast); html.push(f.html); rolls.push(...f.rolls); push = f.push; }
+    if (ex.ignite) { const r = await roll(dice(ex.ignite[0], ex.ignite[1])); rolls.push(r); html.push(await stackLine(actor, "ignite", applyStacks(r.total, cast), out.outcome, caster)); }
+    if (ex.stain) { const r = await roll(dice(ex.stain[0], ex.stain[1])); rolls.push(r); html.push(await stackLine(actor, "stain", applyStacks(r.total, cast), out.outcome, caster)); }
+    if (ex.energy) { const r = await roll(dice(ex.energy[0], ex.energy[1])); rolls.push(r); const rm = await removeEnergy(actor, applyStacks(r.total, cast)); html.push(`<div class="fs-result">${esc(actor.name)} loses <strong>${rm.removed} Energy</strong> (${rm.remaining} left).</div>`); }
     if (ex.dieDown) {
       const choice = d.hexDie === "attack" ? { key: "attackDie", n: 6, label: "attack" } : { key: "dodgeDie", n: 3, label: "dodge" };
-      const amt = choice.n * d.power;
+      const amt = Math.max(0, applyStacks(choice.n * d.power, cast));
       await putSpellEffect(actor, { kind: choice.key, caster: d.caster, name: `${choice.label[0].toUpperCase()}${choice.label.slice(1)} −${amt} die size`, [choice.key]: amt,
         description: `${choice.label} dice are ${amt} sizes smaller until the start of the caster's next turn (doesn't stack).` });
       html.push(`<div class="fs-notes">${esc(actor.name)}'s ${choice.label} dice suffer <strong>−${amt} die size</strong> until the start of your next turn.</div>`);
@@ -379,7 +391,7 @@ async function fireHex(actor, e) {
       const maxE = caster.system.energy?.max ?? 0, haveE = caster.system.energy?.value ?? 0;
       if (caster.isOwner) await caster.update({ "system.energy.value": Math.min(maxE, haveE + gain) }); else await requestGM("updateActor", { uuid: caster.uuid, data: { "system.energy.value": Math.min(maxE, haveE + gain) } });
       html.push(`<div class="fs-result">Consume: ${esc(caster.name)} regains <strong>${gain} Energy</strong>.</div>`);
-      acts.push({ act: "respread", from: actor.uuid, attacker: caster.uuid, hex: { ...d, procs: 0, checks: 0, triggers: 0, hid: foundry.utils.randomID?.() ?? "x", left: d.ritual ? 99999 : 1 + (d.linger ?? 0) } });
+      acts.push({ act: "respread", from: actor.uuid, attacker: caster.uuid, hex: { ...d, procs: 0, checks: 0, triggers: 0, hid: foundry.utils.randomID?.() ?? "x", left: d.ritual ? 99999 : timesWith(d.linger ?? 0, d.stacks, d.power) } });
     }
   } else html.push(`<div class="fs-notes">${esc(actor.name)} passes: no damage.</div>`);
   const triggers = (d.triggers ?? 0) + 1;
@@ -421,13 +433,15 @@ export async function turnStart(actor) {
 async function dotTick(actor, e) {
   const d = data(e);
   const r = await roll(dice(d.dot.n, d.dot.sides));
-  await dealDamage(actor, r.total, { type: "health", bypassArmor: false }, []);
-  await post(actor, { title: `${esc(actor.name)} — Poison + Charm`, rolls: [r], body: `<div class="fs-result">${esc(actor.name)} loses <strong>${r.total} health</strong> (${dice(d.dot.n, d.dot.sides)}).</div>` });
+  const total = applyStacks(r.total, d.dot.stacks ?? 0);
+  await dealDamage(actor, total, { type: "health", bypassArmor: false }, []);
+  await post(actor, { title: `${esc(actor.name)} — Poison + Charm`, rolls: [r], body: `<div class="fs-result">${esc(actor.name)} loses <strong>${total} health</strong> (${dice(d.dot.n, d.dot.sides)}${d.dot.stacks ? `, ${d.dot.stacks > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(d.dot.stacks)}` : ""}).</div>` });
 }
 
 /** A Combo Charm's Willpower check; a failure hurts the victim (it can repeat each caster turn with Ingrained). */
-async function comboCheck(actor, e, req = 3) {
+async function comboCheck(actor, e, req = null) {
   const d = data(e);
+  req ??= d.req ?? 3;
   const caster = await fromUuid(d.caster);
   const c = await check(actor, "will", req, { dis: d.cloud && !d.checked ? 1 : 0, contest: d.contested && !d.checked ? caster : null });
   const html = [checkLine(actor, c)];
@@ -438,13 +452,14 @@ async function comboCheck(actor, e, req = 3) {
     const cb = d.combo, n = cb.dice[0] * d.power;
     if (cb.force) {
       html.push(`<div class="fs-result">${esc(actor.name)} fails and is thrown about, in a way that seems natural. <em>The GM can lower it if it's too large to make sense.</em></div>`);
-      const f = await forceRoll(caster, actor, { n, sides: cb.dice[1] });
+      const f = await forceRoll(caster, actor, { n, sides: cb.dice[1] }, d.stacks ?? 0);
       html.push(f.html); rolls.push(...f.rolls); push = f.push;
     } else {
       const r = await roll(dice(n, cb.dice[1]));
       rolls.push(r);
-      const total = applyStacks(r.total, d.critStacks ?? 0);
-      html.push(`<div class="fs-result">${esc(actor.name)} fails and hurts themselves: ${dice(n, cb.dice[1])} = ${r.total}${d.critStacks ? ` (Strengthened → ${total})` : ""} ${typeLabel(cb.type)}, in a way that seems natural. <em>The GM can lower it if it's too large to make sense.</em></div>`);
+      const cs = (d.stacks ?? d.critStacks ?? 0) + arcanePen(actor, cb.type);          // every stack the Charm was cast with (a crit, the caster's)
+      const total = applyStacks(r.total, cs);
+      html.push(`<div class="fs-result">${esc(actor.name)} fails and hurts themselves: ${dice(n, cb.dice[1])} = ${r.total}${cs ? ` (${cs > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(cs)} → ${total})` : ""} ${typeLabel(cb.type)}, in a way that seems natural. <em>The GM can lower it if it's too large to make sense.</em></div>`);
       const out = await dealDamage(actor, total, { type: cb.type, bypassArmor: false }, html);
       if (cb.ignite) html.push(await stackLine(actor, "ignite", out.dealt, out.outcome, caster));
       if (cb.stain) html.push(await stackLine(actor, "stain", out.dealt, out.outcome, caster));

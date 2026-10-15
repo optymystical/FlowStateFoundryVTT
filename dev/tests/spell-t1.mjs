@@ -91,10 +91,10 @@ ok2(FX.profileFor(["magic-nonexistent:core"]) === null, "Spells from later group
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, { living: true, direct: true }).sides === 10, "Cut: d6 → d10 on a living target with direct damage");
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, { living: true, direct: false }).sides === 6, "Cut: stays d6 without direct damage");
 ok2(FX.damageDice(FX.profileFor(["magic-slashing:cut"]), 3, {}).n === 6, "Cut: 2d6 × Spell Power 3 = 6 dice");
-ok2(FX.shieldHealth(FX.profileFor(["magic-protection-arcana:shield"]), 3) === 60, "Shield: 20 × 3 health");
+ok2(FX.shieldHealth(FX.profileFor(["magic-protection-arcana:shield"]), 3) === 30, "Shield: 10 × 3 health");
 console.log("== Spell and Mod text in the Cast Spell dialog shows scaled numbers");
 const scaled = (ids, p) => FX.scaleText(S.effectText(ids).text, p);
-ok2(/total of 60 health/.test(scaled(["magic-protection-arcana:shield"], 3)), "Shield at Power 3: 60 health (not 20)");
+ok2(/total of 30 health/.test(scaled(["magic-protection-arcana:shield"], 3)), "Shield at Power 3: 30 health (not 10)");
 ok2(/dealing 6d6 physical/.test(scaled(["magic-slashing:cut"], 3)) && /increased by 4\./.test(scaled(["magic-slashing:cut"], 3)), "Cut at Power 3: 6d6, and the fixed +4 die size stays");
 ok2(/12d6 physical/.test(scaled(["magic-gravity:force", "magic-slashing:cut"], 3)) && /24d10 Force/.test(scaled(["magic-gravity:force", "magic-slashing:cut"], 3)), "A Combo's dice and Force are scaled too");
 ok2(/-6 die size/.test(scaled(["magic-crushing:slam"], 3)), "Die-size penalties scale (Slam -2 → -6)");
@@ -156,7 +156,7 @@ await actions.clearSpellEffects(hero);
 target(null); seq = [25]; await cast("magic-protection-arcana:shield");
 const atkS2 = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
 seq = [2]; await actions.defend(atkS2, 0, "dodge");
-{ const s2 = hero.effects.find(e => e.flags.flowstate.spellEffect?.kind === "shield"); ok2(s2 && s2.flags.flowstate.spellEffect.hp === 120, `A critical Shield: 60 health doubly Strengthened → ${s2?.flags.flowstate.spellEffect.hp}`); }
+{ const s2 = hero.effects.find(e => e.flags.flowstate.spellEffect?.kind === "shield"); ok2(s2 && s2.flags.flowstate.spellEffect.hp === 60, `A critical Shield: 30 health doubly Strengthened → ${s2?.flags.flowstate.spellEffect.hp}`); }
 await actions.clearSpellEffects(hero);
 
 console.log("== Force: applies Force and offers a push");
@@ -174,14 +174,14 @@ const atkF = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
 ok2(atkF.flags.flowstate.attack.targets[0].uuid === hero.uuid, "No target: the Shield goes on the caster");
 seq = [12]; await actions.defend(atkF, 0, "none");
 const sh = hero.effects.find(e => e.flags.flowstate.spellEffect?.kind === "shield");
-ok2(sh && sh.flags.flowstate.spellEffect.hp === 60, "Shield has 20 × 3 = 60 health");
+ok2(sh && sh.flags.flowstate.spellEffect.hp === 30, "Shield has 10 × 3 = 30 health");
 let out = await actions.damageOutcome(hero, 25, "physical");
-ok2(out.toHp === 0 && out.shields[0].hp === 35, "25 damage is absorbed (35 left)");
+ok2(out.toHp === 0 && out.shields[0].hp === 5, "25 damage is absorbed (5 left)");
 out = await actions.damageOutcome(hero, 100, "magical");
-ok2(out.toHp === 40 && out.shields[0].hp === 0, "100 damage: 60 absorbed, 40 gets through");
+ok2(out.toHp === 70 && out.shields[0].hp === 0, "100 damage: 30 absorbed, 70 gets through");
 hero.system.hp.value = 432;
 await actions.applyDamage(hero, 100, "physical", { silent: true });
-ok2(!hero.effects.some(e => e.flags.flowstate.spellEffect?.kind === "shield") && hero.system.hp.value === 392, "A broken Shield ends and the rest hits HP");
+ok2(!hero.effects.some(e => e.flags.flowstate.spellEffect?.kind === "shield") && hero.system.hp.value === 362, "A broken Shield ends and the rest hits HP");
 
 
 console.log("== Shield: doesn't stack with itself");
@@ -192,7 +192,7 @@ for (const [have, label] of [[100, "a stronger standing Shield stays and the new
   const atk = messages.filter(m => m.flags?.flowstate?.attack).at(-1);
   seq = [12]; await actions.defend(atk, 0, "none");
   const shields = hero.effects.filter(e => e.flags.flowstate.spellEffect?.kind === "shield");
-  ok2(shields.length === 1 && shields[0].flags.flowstate.spellEffect.hp === Math.max(have, 60), label);
+  ok2(shields.length === 1 && shields[0].flags.flowstate.spellEffect.hp === Math.max(have, 30), label);
 }
 hero.effects.splice(0, hero.effects.length);
 await hero.createEmbeddedDocuments("ActiveEffect", [{ name: "Shield", flags: { flowstate: { spellEffect: { kind: "shield", caster: hero.uuid, hp: 60, max: 60 } } } }]);
@@ -254,7 +254,7 @@ ok2(orc.system.hp.value === 432 - (30 + 10) * 2 || orc.system.hp.value < 432 - 3
 target(orc); seq = [25]; await cast("magic-piercing:stab", { [M("magic-piercing:pierce")]: 2 });
 ok2(lastAtk().flags.flowstate.attack.opts.pierce === 60, "Pierce ×2 at Power 3: 2 × 10 × 3 = Pierce 60");
 seq = [12]; await actions.defend(lastAtk(), 0, "dodge"); seq = [10]; await actions.rollExchangeDamage(last());
-ok2(/Pierce 60/.test(text(last())), "The damage card shows the Pierce");
+ok2(/Pierce (\d+) \(60 base/.test(text(last())) && Number(/Pierce (\d+) \(60 base/.exec(text(last()))[1]) > 60, "The damage card shows the Pierce, scaled up by the hit's Strengthened stacks (it is a bolded number)");
 
 console.log("== Exploit: consumes Advantage, refunds the rest");
 orc.system.hp.value = 432; target(orc); seq = [25];
@@ -320,7 +320,7 @@ delete hero.system.trees["magic-grasp-arcana"];
 console.log("== Emplace and one Replacement at a time");
 target(null); seq = []; messages.length = 0;
 await cast("magic-protection-arcana:shield", { [M("magic-protection-arcana:emplace")]: true });
-ok2(/one-way barrier/.test(text(messages.at(-1))) && /60 health/.test(text(messages.at(-1))), "Emplace puts up a one-way barrier card (20 × Power health)");
+ok2(/one-way barrier/.test(text(messages.at(-1))) && /30 health/.test(text(messages.at(-1))), "Emplace puts up a one-way barrier card (the Shield's 10 × Power health)");
 const twoRep = S.planCast(C.castContext(hero), { ...baseVals, core1: "magic-gravity:force", [M("magic-gravity:burden")]: true, [M("magic-gravity:lighten")]: true, "replace:magic-gravity:burden": true, "replace:magic-gravity:lighten": true });
 ok2(!twoRep.ok && /Only one Replacement/.test(twoRep.errors.join(" ")), "Two Replacement Mods can't both replace the base effect");
 let dlgHtml = "";
@@ -442,9 +442,9 @@ seq = [12]; await actions.defend(lastAtk(), 0, "none");
 const shE = hero.effects.find(e => e.flags.flowstate.spellEffect?.kind === "shield");
 ok2(shE?.flags.flowstate.spellEffect.reflect && shE.flags.flowstate.spellEffect.dampen[0] === "martial", "The Shield carries Reflect and Dampen");
 let oc = await actions.damageOutcome(hero, 40, "physical", { archetype: "martial" });
-ok2(oc.shields[0].absorbed === 40 && oc.shields[0].hp === 60 - 20, "Dampen: martial damage is Weakened against the Shield (absorbs 40, loses 20)");
+ok2(oc.shields[0].absorbed === 30 && oc.shields[0].hp === 30 - 15, "Dampen: martial damage is Weakened against the Shield (absorbs 30, loses 15)");
 oc = await actions.damageOutcome(hero, 40, "physical", { archetype: "magic" });
-ok2(oc.shields[0].hp === 20, "…but magic damage hurts it normally");
+ok2(oc.shields[0].hp === 0, "…but magic damage hurts it normally");
 ok2(/fs-reflect-counter/.test(actions.reflectRows(oc)), "Reflect offers a counter button");
 shE.flags.flowstate.spellEffect.order = "last";
 oc = await actions.damageOutcome(hero, 30, "physical", { archetype: "magic" });

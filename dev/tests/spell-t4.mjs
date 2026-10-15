@@ -138,8 +138,8 @@ ok2(sm.system.stats.str === 5 && sm.system.trees["martial-bladed"] === 2, "Stats
 ok2(hero.system.energy.value < eBefore, `It cost Energy (${eBefore} → ${hero.system.energy.value})`);
 await J.turnStart(hero);
 ok2(summons().length === 0, "At the start of your next turn it's gone");
-clean4(); plan = await cast("magic-summoning:form", formVals(body(10, 10, 10)));
-ok2(!plan && summons().length === 0, "Overspending the 15 points (5 × the multiplier) is refused (nothing is cast or spent)");
+clean4(); plan = await cast("magic-summoning:form", formVals(body(20, 20, 20)));
+ok2(!plan && summons().length === 0, "Overspending the 45 points (5 × the multiplier × Spell Power 3) is refused (nothing is cast or spent)");
 clean4(); plan = await cast("magic-summoning:form", { base: 8 - 3, conj: body(5, 5, 15) });
 ok2(summons()[0]?.system.hp.max === 45 && summons()[0].system.stats.con === 15, "Form: the pool (5 × the multiplier, here 25) is split as you like");
 plan = await cast("magic-summoning:form", formVals(body(5, 5, 5, { size: 3 })));
@@ -164,16 +164,16 @@ ok2(skin?.system.natural && skin.system.weight === "medium" && skin.system.mater
 ok2(sm.system.armor === skin, "…which it wears");
 
 console.log("== Animate");
-const wat = { material: "Water", body: 10, arms: [], items: [] };
+const wat = { material: "Water", body: 30, arms: [], items: [] };
 clean4(); plan = await cast("magic-animation:animate", { base: 2, conj: wat });
 sm = summons()[0];
-ok2(sm && sm.system.size === 2 && sm.system.hp.max === 1 * 10 * 2 && sm.flags.flowstate.summon.speed === R4.moveSpeed(2, 0), `Water Animation: 10 points, Size 2 (10 Body), health 1 × 10 × 2 = 20 (${sm?.system.hp.max}), 100% of the Size's speed`);
-ok2(sm.system.derived.move === R4.moveSpeed(2, 0) && sm.system.derived.size.physical < 0, "…its speed and Weakened physical attacks are in its derived stats");
-clean4(); plan = await cast("magic-animation:animate", { base: 2, conj: { material: "Stone", body: 10 } });
+ok2(sm && sm.system.size === R.animationSize(30) && sm.system.hp.max === 1 * 30 * R.animationSize(30) && sm.flags.flowstate.summon.speed === R4.moveSpeed(R.animationSize(30), 0), `Water Animation: 30 points (10 × Spell Power 3), Size ${R.animationSize(30)}, health 1 × 30 × size (${sm?.system.hp.max}), 100% of the Size's speed`);
+ok2(sm.system.derived.move === R4.moveSpeed(R.animationSize(30), 0) && sm.system.derived.size.physical < 0, "…its speed and Weakened physical attacks are in its derived stats");
+clean4(); plan = await cast("magic-animation:animate", { base: 2, conj: { material: "Stone", body: 30 } });
 ok2(!plan, "Stone needs Expanded Animation (Hard material)");
-clean4(); plan = await cast("magic-animation:animate", { base: 2, [M("magic-animation:expanded-animation")]: true, conj: { material: "Stone", body: 10 } });
+clean4(); plan = await cast("magic-animation:animate", { base: 2, [M("magic-animation:expanded-animation")]: true, conj: { material: "Stone", body: 30 } });
 sm = summons()[0];
-ok2(sm.system.hp.max === 5 * 10 * 2 && sm.system.ap.max === 3 && sm.system.rp.max === 3 && sm.flags.flowstate.summon.physical === 1, "Stone: health 5×, only 3 AP / 3 RP, Strengthened physical attacks");
+ok2(sm.system.hp.max === 5 * 30 * R.animationSize(30) && sm.system.ap.max === 3 && sm.system.rp.max === 3 && sm.flags.flowstate.summon.physical === 1, "Stone: health 5×, only 3 AP / 3 RP, Strengthened physical attacks");
 clean4(); plan = await cast("magic-animation:animate", { base: 2, conj: { material: "Water", body: 9 } });
 ok2(!plan, "The pile must hold at least as much Body as the points");
 await J.turnStart(hero);
@@ -183,7 +183,7 @@ const wvals = (o = {}) => ({ items: [{ kind: "weapon", type: "bladed", weight: "
 clean4(); const heroItems0 = hero.items.length;
 plan = await cast("magic-creation:make", { base: 1, conj: wvals() });
 let it = made(hero)[0];
-ok2(it && it.type === "weapon" && it.system.grade === 2 && it.system.material === "hardwood", "Make: a Grade 2 Common weapon appears in your hand (a real item)");
+ok2(it && it.type === "weapon" && it.system.grade === 6 && it.system.material === "hardwood", "Make: a Common weapon of Grade 2 × Spell Power (3) appears in your hand (a real item)");
 await J.turnStart(hero);
 ok2(made(hero).length === 0 && hero.items.length === heroItems0, "…and ends at the start of your next turn");
 clean4(); plan = await cast("magic-creation:make", { base: 1, conj: wvals({ material: "steel" }) });
@@ -209,13 +209,13 @@ ok2(made(hero)[0]?.type === "gear", "A non-Archetypal object is a plain misc ite
 console.log("== Pure Tier 4 Combos");
 clean4(); plan = await cast("magic-summoning:form", { core2: "magic-creation:make", base: 4, conj: body(5, 5, 5, { items: [{ kind: "weapon", type: "balanced", weight: "light", material: "hardwood" }] }) });
 sm = summons()[0]; const held = sm?.items.find(i => i.type === "weapon" && !i.system.natural);
-ok2(held?.system.equipped && held.system.grade === 2, "Form + Make: the Summon holds a Made weapon (Threshold 4 → 3 × 5 points)");
+ok2(held?.system.equipped && held.system.grade === 6, "Form + Make: the Summon holds a Made weapon (Threshold 4 → 3 × 5 points)");
 clean4(); plan = await cast("magic-animation:animate", { core2: "magic-creation:make", base: 3, conj: { material: "Hardwood" } });
 sm = summons()[0];
-ok2(sm && sm.system.stats.str === 20 && sm.system.size === 2, `Make + Animate: instantly a 20-point Animation (10 × the multiplier of 2), size 2 (20 Body)`);
-clean4(); plan = await cast("magic-summoning:form", { core2: "magic-animation:animate", base: 3, conj: { material: "Hardwood", body: 10, str: 3, dex: 3, con: 4, skill: 0 } });
+ok2(sm && sm.system.stats.str === 60 && sm.system.size === R.animationSize(60), `Make + Animate: instantly a 60-point Animation (10 × the multiplier of 2 × Spell Power 3), size ${R.animationSize(60)}`);
+clean4(); plan = await cast("magic-summoning:form", { core2: "magic-animation:animate", base: 3, conj: { material: "Hardwood", body: 30, str: 3, dex: 3, con: 4, skill: 0 } });
 sm = summons()[0];
-ok2(sm && sm.system.stats.con === 4 && sm.system.hp.max === 3 * 4 * 2 && sm.system.size === 2, `Form + Animate: points allocated like Form; health = Con × Material scaling (Soft 3×) × size (${sm?.system.hp.max})`);
+ok2(sm && sm.system.stats.con === 4 && sm.system.hp.max === 3 * 4 * R.animationSize(30) && sm.system.size === R.animationSize(30), `Form + Animate: points allocated like Form; health = Con × Material scaling (Soft 3×) × size (${sm?.system.hp.max})`);
 
 console.log("== Riders (Any T1/T2/T3 + Summoning / Creation)");
 clean4(); plan = await cast("magic-slashing:cut", { core2: "magic-summoning:form", base: 3, conj: body(3, 3, 4) });
@@ -224,7 +224,7 @@ ok2(sm?.flags.flowstate.summon.rider?.core === "magic-slashing:cut" && sm.flags.
 formulas.length = 0; seq = [9]; const hp0 = orc.system.hp.value;
 await J.riderAfter({ attacker: sm, target: orc, o: {}, outcome: { toHp: 5 }, defense: { result: {} } });
 ok2(formulas.includes("2d10") && orc.system.hp.value < hp0, `…2d6 additional physical, d10 against a living target taking direct damage (${formulas})`);
-clean4(); plan = await cast("magic-heat:flame", { core2: "magic-animation:animate", base: 3, conj: { material: "Water", body: 10 } });
+clean4(); plan = await cast("magic-heat:flame", { core2: "magic-animation:animate", base: 3, conj: { material: "Water", body: 30 } });
 sm = summons()[0]; seq = [12]; await J.riderAfter({ attacker: sm, target: orc, o: {}, outcome: { toHp: 3 }, defense: { result: {} } });
 ok2(orc.system.conditions.ignite === 12, "Flame + Animate: additional heat damage and Ignite equal to it");
 clean4(); plan = await cast("magic-cold:frost", { core2: "magic-summoning:form", base: 3, conj: body(3, 3, 4) });
@@ -270,7 +270,7 @@ ok2(summons().length === 0, "…and ends with the Ritual");
 console.log("== Build Arcana");
 clean4(); target(orc); seq = [20]; await cast("magic-protection-arcana:shield", { base: 1, [M("magic-build-arcana:layered")]: true }); seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
 const shield = orc.effects.find(e => e.flags.flowstate.spellEffect?.kind === "shield");
-ok2(shield?.flags.flowstate.spellEffect.hp === 60 + hero.system.derived.effective.build.value, `Layered: a Shield gains your Build (${shield?.flags.flowstate.spellEffect.hp})`);
+ok2(shield?.flags.flowstate.spellEffect.hp === 30 + hero.system.derived.effective.build.value, `Layered: a Shield gains your Build (${shield?.flags.flowstate.spellEffect.hp})`);
 clean4(); combat.started = false; await cast("magic-protection-arcana:shield", { base: 1, ritual: true, [M("magic-build-arcana:reform")]: true }); combat.started = true;
 clean4();
 // Reform on a ritual Shield

@@ -202,13 +202,14 @@ export async function mirageHit({ attacker, target, o, result, profile }) {
   const out = { html: "", rolls: [] };
   if (sp.ritualFree) { const r = Array.from(attacker.effects ?? []).find(e => e.id === sp.ritualFree); if (r) await r.update({ "flags.flowstate.ritual.freeCasts": 0 }); }
   // Every Strengthened/Weakened stack on the Mirage (a crit, a Mod, anything on the caster) scales its Power.
-  const power = applyStacks(a.power * Math.max(1, sp.power), (o.stacks ?? 0) + (result.critStacks ?? 0) + castStacks(attacker, sp));
+  const stacksOn = (o.stacks ?? 0) + (result.critStacks ?? 0) + castStacks(attacker, sp);
+  const power = applyStacks(a.power * Math.max(1, sp.power), stacksOn);
   const slug = a.chart ? a.chart.split(":")[0].replace("magic-", "") : null;
   const chartText = a.chart === "magic-arcanomancy:strike" ? "The target believes their Magic has ultimately failed them: all their Magical attacks are at Disadvantage and Weakened, and prompt a Power check on cast."
     : slug ? COMBO_ILLUSION[slug === "witchery" ? "hex" : slug] : null;
   const fid = m.fidelity ? { kind: ch.fidelity === "dis" ? "dis" : "fear", roll: ch.fidelityRoll || "attack" } : null;
   const eff = { kind: "mirage", stack: true, onTargetTurn: !sp.ritualOf, caster: attacker.uuid, ritualOf: sp.ritualOf ?? null, ritual: !!sp.ritualOf, name: `${profile.name}${a.chart ? "" : ` (${ch.sense || "sight"})`}`,
-    power, max: power, sense: ch.sense || "sight", chart: a.chart ?? null, chartText, magicFail: a.chart === "magic-arcanomancy:strike", pervasive: !!m.pervasive, phantom: m["phantom pain"] ? sp.power : 0, reshape: !!m.reshape,
+    power, max: power, sense: ch.sense || "sight", chart: a.chart ?? null, chartText, magicFail: a.chart === "magic-arcanomancy:strike", pervasive: !!m.pervasive, phantom: m["phantom pain"] ? sp.power : 0, phantomStacks: stacksOn, reshape: !!m.reshape,
     fidelity: fid, penalty: fid?.kind === "dis" ? { roll: fid.roll, amount: 1 } : null, aura: !!m.aura, expiresAt: sp.ritualOf ? null : expiry(), phantomTotal: 0, tests: 0,
     description: `A false impression with ${power} Power${chartText ? `: ${String(chartText).replace(/\*\*/g, "")}` : ""} Each turn its Power drops; the target's attack-roll check against it ends it.` };
   await putSpellEffect(target, eff);
@@ -265,11 +266,12 @@ async function loseMirage(actor, live, d, lost) {
   let phantom = d.phantomTotal ?? 0;
   if (d.phantom) {
     const r = await roll(`${d.phantom}d6`);
-    phantom += r.total;
-    html += `<div class="fs-result">Phantom Pain: ${actor.name}'s Pain Threshold rises by ${r.total} (${phantom} in all). It goes away when no Mirage affects them.</div>`;
+    const pp = applyStacks(r.total, d.phantomStacks ?? 0);          // the Mirage's stacks scale the bolded 1d6
+    phantom += pp;
+    html += `<div class="fs-result">Phantom Pain: ${actor.name}'s Pain Threshold rises by ${pp} (${phantom} in all). It goes away when no Mirage affects them.</div>`;
   }
   if (power <= 0) { if (live) await endMirage(actor, live); return { html: html + `<div class="fs-result">The Mirage is gone.</div>`, ended: true }; }
-  if (live) await changeEffect(live, { "flags.flowstate.spellEffect.power": power, "flags.flowstate.spellEffect.phantomTotal": phantom, "flags.flowstate.spellEffect.tests": (d.tests ?? 0) + 1 });
+  if (live) await changeEffect(live, { description: String(live.description ?? "").replace(`${d.power} Power`, `${power} Power`), "flags.flowstate.spellEffect.power": power, "flags.flowstate.spellEffect.phantomTotal": phantom, "flags.flowstate.spellEffect.tests": (d.tests ?? 0) + 1 });
   return { html, ended: false };
 }
 
@@ -380,6 +382,9 @@ export function listSpells() {
   return out;
 }
 /** The Scaling Stat its caster had for a Spell (Rip compares this, not the Power): the one recorded on the cast, else the caster's current. */
+/** Rip's "5 or less Power" and Amplify's "10 to the Power" are bolded: the caster's Spell Power and stacks scale them. */
+const ripLimit = (actor, plan) => Math.max(0, applyStacks(5 * Math.max(1, plan?.power ?? 1), castStacks(actor, plan)));
+const ampGain = (actor, plan) => Math.max(1, applyStacks(Math.max(1, plan?.power ?? 1), castStacks(actor, plan)));
 const scalingOf = x => x.scaling ?? casterScaling(globalThis.fromUuidSync?.(x.caster));
 const findSpell = id => listSpells().find(x => x.id === id) ?? null;
 
@@ -413,37 +418,39 @@ async function destroySpell(entry, reason = "it dissipates") {
 }
 
 /** Amplify (Arcanomancy T4): +10 Scaling Stat (one Spell Power) to a non-Ritual Spell, once. Only effects that scale with Power change. */
-async function amplifySpell(entry) {
+async function amplifySpell(entry, gain = 1) {          // `gain`: Power levels added; the bolded "10" scales with the Amplify caster's Spell Power and stacks
   if (entry.ritualOf) return "Amplify only works on non-Ritual Spells.";
   if (entry.amplified) return "That Spell has already been amplified.";
   if (entry.kind === "cast") {
     // Mid cast it can still be changed: +1 Power (10 more Scaling Stat), so its dice, health and Force (everything the card works out later) scale up.
     const p = Math.max(1, entry.power), dmg = String(entry.opts.damage ?? "").match(/^(\d+)d(\d+)$/);
-    const upd = { id: entry.message.id, power: p + 1 };
-    if (dmg) upd.damage = `${Math.round(Number(dmg[1]) / p * (p + 1))}d${dmg[2]}`;
+    const upd = { id: entry.message.id, power: p + gain };
+    if (dmg) upd.damage = `${Math.round(Number(dmg[1]) / p * (p + gain))}d${dmg[2]}`;
     await requestGM("castChange", upd);
-    return `${entry.label} is amplified: Power ${p} → ${p + 1}${upd.damage ? `, ${dmg[0]} → ${upd.damage}` : ""}. It lands with the new numbers.`;
+    return `${entry.label} is amplified: Power ${p} → ${p + gain}${upd.damage ? `, ${dmg[0]} → ${upd.damage}` : ""}. It lands with the new numbers.`;
   }
   if (entry.kind === "barrier") {
-    await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 20, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 20, amplified: true } });
-    return `The barrier gains 20 health (20 × 1 Power).`;
+    await requestGM("tplFlags", { sceneId: entry.sceneId, id: entry.tplId, flags: { health: entry.tpl.flags.flowstate.health + 10 * gain, limit: (entry.tpl.flags.flowstate.limit ?? entry.tpl.flags.flowstate.health) + 10 * gain, amplified: true } });
+    return `The barrier gains ${10 * gain} health (10 × ${gain} Power).`;
   }
-  if (entry.kind === "summon") return "A Summon's stats don't scale with Power: nothing changes.";
+  if (entry.kind === "summon") return "A Summon's points are set when it is made: Amplify changes nothing.";
   const d = data(entry.effect), p = Math.max(1, d.power ?? 1);
   const upd = { "flags.flowstate.spellEffect.amplified": true };
+  const swap = (text, from, to) => String(text ?? "").replace(new RegExp(`(?<![\\d.])${from}(?![\\d])`), String(to));          // keep the name and description numbers in step
+  const eff = entry.effect;
   let msg;
-  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 20; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 20; msg = "The Shield gains 20 health (20 × 1 Power)."; }
-  else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + 1)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + 1; msg = `Its dice go from ${d.n} to ${n}.`; }
-  else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 10; upd["flags.flowstate.spellEffect.power"] = d.power + 10; msg = "The Mirage gains 10 Power."; }
-  else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 3; msg = "Pain Threshold drops 3 more."; }
+  if (d.kind === "shield") { upd["flags.flowstate.spellEffect.hp"] = d.hp + 10 * gain; upd["flags.flowstate.spellEffect.max"] = (d.max ?? d.hp) + 10 * gain; upd.description = swap(eff.description, d.hp, d.hp + 10 * gain); msg = `The Shield gains ${10 * gain} health (10 × ${gain} Power).`; }
+  else if (["poison", "coat", "hex", "charm"].includes(d.kind) && d.n) { const n = Math.round(d.n / p * (p + gain)); upd["flags.flowstate.spellEffect.n"] = n; upd["flags.flowstate.spellEffect.power"] = p + gain; upd.name = swap(eff.name, `${d.n}d`, `${n}d`); upd.description = swap(eff.description, `${d.n}d`, `${n}d`); msg = `Its dice go from ${d.n} to ${n}.`; }
+  else if (d.kind === "mirage") { upd["flags.flowstate.spellEffect.max"] = d.max + 10 * gain; upd["flags.flowstate.spellEffect.power"] = d.power + 10 * gain; upd.description = swap(eff.description, `${d.power} Power`, `${d.power + 10 * gain} Power`); msg = `The Mirage gains ${10 * gain} Power.`; }
+  else if (d.kind === "painless") { upd["flags.flowstate.spellEffect.painDown"] = d.painDown + 3 * gain; upd.name = swap(eff.name, d.painDown, d.painDown + 3 * gain); upd.description = swap(eff.description, d.painDown, d.painDown + 3 * gain); msg = `Pain Threshold drops ${3 * gain} more.`; }
   else return "That Spell has no Power-scaled number to amplify: nothing changes.";
   await changeEffect(entry.effect, upd);
   return msg;
 }
 
 /** Rip (Arcanomancy T5): take control of a Spell cast with 5 or less Scaling Stat, then redirect it or dissipate it. */
-async function ripSpell(entry, caster, mode, newTarget, ritualOf) {
-  if (scalingOf(entry) > 5) return `That Spell was cast with ${scalingOf(entry)} Scaling Stat: Rip needs 5 or less.`;
+async function ripSpell(entry, caster, mode, newTarget, ritualOf, limit = 5) {
+  if (scalingOf(entry) > limit) return `That Spell was cast with ${scalingOf(entry)} Scaling Stat: Rip needs ${limit} or less.`;
   if (entry.kind === "cast") {
     await cancelCast(entry, `${caster.name} Ripped it`);
     if (mode !== "redirect" || !newTarget) return `${entry.label} dissipates.`;
@@ -483,7 +490,7 @@ export async function promptSpell({ actor, plan, mods, values }) {
   if (!entry) { ui.notifications.warn("That Spell is gone."); return null; }
   if (mods.amplify && entry.ritualOf) { ui.notifications.warn("Amplify only works on non-Ritual Spells."); return null; }
   if (mods.amplify && entry.amplified) { ui.notifications.warn("That Spell has already been amplified."); return null; }
-  if (mods.rip && scalingOf(entry) > 5) { ui.notifications.warn(`That Spell was cast with ${scalingOf(entry)} Scaling Stat: Rip needs 5 or less.`); return null; }
+  if (mods.rip && scalingOf(entry) > ripLimit(actor, plan)) { ui.notifications.warn(`That Spell was cast with ${scalingOf(entry)} Scaling Stat: Rip needs ${ripLimit(actor, plan)} or less.`); return null; }
   const spec = { id };
   if (mods.rip) {
     spec.mode = values.ripMode === "redirect" ? "redirect" : "dissipate";
@@ -511,12 +518,13 @@ export async function resolveStrike({ actor, plan, profile, mods, spec, ritualOf
     }
     var castNote = `Strike rolls ${atk.total}, beating the cast's ${entry.attackTotal}. `;
   }
-  if (mods.amplify) body = await amplifySpell(entry);
-  else if (mods.rip) body = await ripSpell(entry, actor, spec.mode, spec.target ? await fromUuid(spec.target) : null, plan.freeFrom ? (Array.from(actor.effects).find(e => e.id === plan.freeFrom)?.uuid ?? null) : null);
+  if (mods.amplify) body = await amplifySpell(entry, ampGain(actor, plan));
+  else if (mods.rip) body = await ripSpell(entry, actor, spec.mode, spec.target ? await fromUuid(spec.target) : null, plan.freeFrom ? (Array.from(actor.effects).find(e => e.id === plan.freeFrom)?.uuid ?? null) : null, ripLimit(actor, plan));
   else {
     const dmg = await roll(`${profile.damage.n * Math.max(1, plan.power)}d${profile.damage.sides}`);
-    const res = await damageSpell(entry, dmg.total);
-    body = `Strike hits ${entry.label} for ${dmg.total} arcane (${entry.hp} health → ${res.left}).${res.destroyed ? " <strong>It is destroyed.</strong>" : ""}`;
+    const dealtTo = applyStacks(dmg.total, castStacks(actor, plan));
+    const res = await damageSpell(entry, dealtTo);
+    body = `Strike hits ${entry.label} for ${dealtTo} arcane (${entry.hp} health → ${res.left}).${res.destroyed ? " <strong>It is destroyed.</strong>" : ""}`;
     if (res.destroyed && mods.absorb) {
       const gain = entry.power, maxE = actor.system.energy.max, haveE = actor.system.energy.value;
       const upd = { "system.energy.value": Math.min(maxE, haveE + gain) };

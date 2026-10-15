@@ -113,8 +113,8 @@ ok2(hero.system.energy.value === 200, "…and Alignment does not matter: the Pat
 dialog = () => "mental-death-nightmare"; await M.choosePatron(hero);
 ok2(flag(hero, "patron") === "mental-death-nightmare", "Choosing a Patron Wonder sets it");
 
-console.log("== Will of Body and Spirit (Mental T4)");
-reset(); theory(4); setAlign("neutral"); messages.length = 0;
+console.log("== Will of Body and Spirit (Mental T5)");
+reset(); theory(5); setAlign("neutral"); messages.length = 0;
 await actions.afterAttackCost(hero, { ap: 2 });
 let wcard = messages.find(m => m.flags?.flowstate?.mentalAct);
 let wact = wcard?.flags.flowstate.mentalAct.acts[0];
@@ -131,8 +131,8 @@ refresh(); seq = [20]; dialog = () => ({ mode: "mental-life-dream:flourish", ran
 done = await W.runAct(wact);
 ok2(done && hero.system.rp.value === 6 && hero.system.energy.value === 200 - ponMin(), "An RP attack's Manifest is a Burst: no RP, but the Burst energy is still paid");
 
-console.log("== Chant (Mental T2)");
-reset(); theory(2); setAlign("neutral"); messages.length = 0;
+console.log("== Chant (Mental T3)");
+reset(); theory(3); setAlign("neutral"); messages.length = 0;
 refresh(); target(orc); seq = [3];
 await M.manifest(hero, { mode: "mental-death-nightmare:waste", range: "ranged" });
 dialog = () => ({ net: 0 }); seq = [40]; await actions.defend(lastAtk(), 0, "dodge");
@@ -226,7 +226,7 @@ const zScale = R.iconScale(hero.system.derived.effective.will.value, 3);
   const w4plain = await zealotNegates(4, true, 2000);
   seq = [5, 30, 5, 30, 5, 30, 5, 30, 5, 30, 5, 30]; const w4 = await zealotNegates(4, true, 2000); seq = [];
   ok2(w3 === 2000 - 6 * 27 && w4plain === 2000 - 6 * 27, "Zealot Enhanced: 27 a use (Strengthened) at 3 and 4 Nightmare, no Weakened without a crit");
-  ok2(w4 === 851, `Zealot Enhanced at 4 Nightmare: a critical Ward roll Weakens the damage once (2000 → 1973 → 986 → 851, took ${w4})`); }
+  ok2(w4 === 752, `Zealot Enhanced at 4 Nightmare: a critical Ward roll is doubly Strengthened (more negated) and Weakens the damage once (took ${w4})`); }
 // Wards are used with a self attack roll (attack roll against your own dodge): a miss costs the RP and negates nothing.
 clearAll(hero); aegis.system.form = "veil"; hero.system.prepareDerivedData(); setAlign("neutral"); theory(1); refresh();
 { hero.system.hp.value = 432; hero.system.rp.value = 2; dialog = () => ({}); seq = [30, 5, 30, 5];
@@ -236,7 +236,7 @@ clearAll(hero); aegis.system.form = "veil"; hero.system.prepareDerivedData(); se
   hero.system.hp.value = 432; hero.system.rp.value = 2; seq = [5, 30, 5, 30];
   await actions.applyDamage(hero, 300, "heat", { silent: true, shroudCtx: { source: "type:heat", attacker: orc.uuid } });
   const hitLoss = 432 - hero.system.hp.value;
-  ok2(hitLoss === 300 - 2 * 4 * zScale, `…and two hits negate 4 × scale each (took ${hitLoss})`); seq = []; }
+  ok2(hitLoss === 300 - 2 * 4 * zScale * 2, `…and two (critical) hits negate 4 × scale each, doubled by the crit's two Strengthened stacks (took ${hitLoss})`); seq = []; }
 
 clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 1); refresh(); messages.length = 0; dialog = () => ({});
 await M.activateWard(hero);
@@ -253,7 +253,7 @@ console.log("== Reverie");
 clearAll(hero); aegis.system.form = "reverie"; hero.system.prepareDerivedData(); setAlign("dream", 4); refresh();
 await putSpellEffect(hero, { kind: "shield", caster: hero.uuid, name: "Reverie", hp: 20, max: 20, reverie: true, reverieEnhanced: true, order: "default" });
 await hit("mental-life-dream:flourish");
-ok2(shields(hero)[0].flags.flowstate.spellEffect.hp === 20 + 4 * mult, "Enhanced Reverie grows by 4 (× the scale) when a Dream Manifest hits");
+ok2(shields(hero)[0].flags.flowstate.spellEffect.hp === 20 + Math.floor(4 * mult * 1.5), "Enhanced Reverie grows by 4 (× the scale, Strengthened by the Alignment) when a Dream Manifest hits");
 refresh(); setAlign("dream", 2);
 await actions.mentalBeforeClear(hero);
 await actions.clearSpellEffects(hero);
@@ -280,4 +280,14 @@ await M.dismiss(hero);
 ok2(effs(hero, "redirect").length === 0 && hero.system.ap.value === 6, "Your own effects are dismissed freely");
 
 console.log(fails ? `\n${fails} FAILED` : "\nAll Mental Theory checks passed");
+console.log("== Vigil recovers instead of stacking");
+target(null); clearAll(hero); aegis.system.form = "vigil"; hero.system.prepareDerivedData(); setAlign("neutral"); refresh(); dialog = () => ({});
+messages.length = 0; seq = [40]; await M.activateWard(hero); seq = [2]; dialog = () => ({ net: 0 }); await actions.defend(lastAtk(), 0, "dodge");
+const vg = shields(hero);
+ok2(vg.length === 1 && vg[0].flags.flowstate.spellEffect.max >= 40, "Vigil's first activation places its full persistent shield");
+await vg[0].update({ "flags.flowstate.spellEffect.hp": 10 }); refresh(); dialog = () => ({});
+messages.length = 0; seq = [40]; await M.activateWard(hero); seq = [2]; dialog = () => ({ net: 0 }); await actions.defend(lastAtk(), 0, "dodge");
+const vg2 = shields(hero);
+ok2(vg2.length === 1 && vg2[0].flags.flowstate.spellEffect.hp > 10 && vg2[0].flags.flowstate.spellEffect.hp < vg2[0].flags.flowstate.spellEffect.max, `…a later activation only recovers part of it (${vg2[0]?.flags.flowstate.spellEffect.hp} of ${vg2[0]?.flags.flowstate.spellEffect.max})`);
+
 if (fails) process.exit(1);

@@ -23,6 +23,10 @@ import * as mental from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
 import * as chargesMod from "./charges.mjs";
 import * as forgingMod from "./forging.mjs";
+import * as ponderanceMod from "./ponderance.mjs";
+import * as snappenceMod from "./snappence.mjs";
+import * as wondersC from "./wonders-c.mjs";
+import * as concentration from "./concentration.mjs";
 import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
 
@@ -673,11 +677,11 @@ function actionGroups(actor, weapons, stats) {
   if (mctx.wonders.length) {
     mentalRows.push({ label: "Manifest", detail: `${mctx.wonders.map(w => w.name).join(", ")} · ${mentalRules.alignmentLabel(mctx.alignment)} Alignment · Range sets the AP (Melee 1, Ranged 2, Area 3)`, cost: "1–3 AP", action: "manifest", icon: "fa-solid fa-eye" });
   }
-  // Alignment is set with a 1 hour activity (any Mental user); Fluidity (T3) swaps its type in the moment.
+  // Alignment is set with a 1 hour activity (any Mental user); Fluidity (T4) swaps its type in the moment.
   if (mTheory >= 1 || mctx.wonders.length) {
     const cur = mctx.alignment;
     mentalRows.push({ label: "Set Alignment", detail: `Now ${mentalRules.alignmentLabel(cur)}. ${mentalRules.alignmentBlurb(cur)} Set Dream or Nightmare, 1 to ${mentalRules.maxAlignment(mTheory)} points (20% speed each${mTheory >= 3 ? ", 1 AP a turn past 2" : ""}), as a 1 hour activity.`, cost: "1 hour (not in combat)", action: "alignSet", icon: "fa-solid fa-circle-half-stroke" });
-    if (mTheory >= 3 && cur.level > 0) {
+    if (mTheory >= 4 && cur.level > 0) {
       const fc = mentalRules.fluidityCost(cur, sys.skillPoints ?? 0);
       mentalRows.push({ label: "Fluidity", detail: `Swap ${cur.kind === "dream" ? "Dream to Nightmare" : "Nightmare to Dream"}`, cost: `⚡ ${fc}`, action: "fluidity", icon: "fa-solid fa-shuffle" });
     }
@@ -685,23 +689,33 @@ function actionGroups(actor, weapons, stats) {
   const icons = actor.items.filter(i => i.type === "icon" && i.system.profile?.valid);
   if (icons.length) mentalRows.push({ label: "Attune Icon", detail: icons.map(i => `${i.name}${i.system.attuned ? " (attuned)" : ""}`).join(", ") + " · pick the Tenet", cost: willT >= 1 ? "2 AP (or 2 RP once a turn)" : "6 AP", action: "attuneIcon", icon: "fa-solid fa-hands-praying" });
   const wardIcon = actor.system.icon;
-  if (wardIcon && wardIcon.system.profile.kind !== "negate") mentalRows.push({ label: `Ward: ${wardIcon.system.profile.name}`, detail: wardIcon.system.profile.ward, cost: willT >= 3 ? "1 AP (the first each turn is free)" : "1 AP", action: "activateWard", icon: "fa-solid fa-shield-halved" });
+  if (wardIcon && wardIcon.system.profile.kind !== "negate") mentalRows.push({ label: `Ward: ${wardIcon.system.profile.name}`, detail: mentalRules.scaleFormText(mentalRules.FORMS[wardIcon.system.profile.form].ward, wardIcon.system.profile.wardMult, mentalRules.alignmentWard(mctx.alignment, wardIcon.system.profile.align).stacks), cost: willT >= 3 ? "1 AP (the first each turn is free)" : "1 AP", action: "activateWard", icon: "fa-solid fa-shield-halved" });
   for (const ch of wonders.chargesOf(actor)) mentalRows.push({ label: `Spend ${wonders.CHARGES[ch.kind]?.label ?? "charge"} on ${ch.holder.name} (manual)`, detail: "Normally offered automatically when they roll; this is for a roll the system did not see. " + (ch.data.description ?? ""), cost: "Free (already paid)", action: "spendCharge", itemId: ch.effect.uuid, icon: "fa-solid fa-bolt" });
   const rite = forgingMod.riteOf(actor);
   if (rite) mentalRows.push({ label: rite.ready ? `Finish Rite: ${rite.name}` : `Rite: ${rite.name} (${rite.hoursLeft.toFixed(1)} h left)`, detail: "A Rite is heavy activity at zero Energy; finish it when the hours have passed, or cancel it and lose the progress", cost: "Hours", action: "finishRite", icon: "fa-solid fa-hourglass-half" });
   const stolen = chargesMod.stolenActionOf(actor);
   if (stolen) mentalRows.push({ label: `Stolen action: ${stolen.label}`, detail: `Larceny (Enhanced): a copy of ${stolen.fromName}'s attack, rolled with their dice, for up to a minute`, cost: `${stolen.cost} RP`, action: "useStolenAction", icon: "fa-solid fa-masks-theater" });
-  if (skills.tierOf(sys.trees, "mental-beyond-dream") >= 2) mentalRows.push({ label: "Momentum", detail: "A creature or object you moved with a Beyond Mode collided: 5d8 Force again in a new direction (can chain)", cost: `⚡ ${ab.statMinOf(actor, "pon")}`, action: "momentum", icon: "fa-solid fa-arrows-spin" });
+  if (skills.tierOf(sys.trees, "mental-beyond-dream") >= 2) mentalRows.push({ label: "Momentum", detail: `A creature or object you moved with a Beyond Mode collided: ${5 * Math.max(1, mentalRules.wonderPower(actor.system.derived?.effective?.pon?.value ?? 0))}d8 Force again in a new direction (can chain)`, cost: `⚡ ${ab.statMinOf(actor, "pon")}`, action: "momentum", icon: "fa-solid fa-arrows-spin" });
   if (actions.spellEffects(actor, "redirect").length) mentalRows.push({ label: "Redirect", detail: "Use a stored charge against an attack that hit within its range", cost: "Free (already paid)", action: "useRedirect", icon: "fa-solid fa-reply" });
   if (mTheory >= 1 && mctx.wonders.length) mentalRows.push({ label: "Dismiss a Wonder", detail: "Your own effects go freely; on someone else it's an attack roll (Range AP) they may dodge", cost: "Range AP", action: "dismissWonder", icon: "fa-solid fa-ban" });
   if (mTheory >= 5) mentalRows.push({ label: "Patron Wonder", detail: `Chosen when you rest${actor.getFlag("flowstate", "patron") ? ` (now: ${mentalRules.wonderById(actor.getFlag("flowstate", "patron"))?.name ?? "none"})` : ""}: aligned to it, its Manifests Enhance/Burst without the energy cost`, cost: "On a rest", action: "choosePatron", icon: "fa-solid fa-star" });
+  // Concentration, Trance and the Ponderance Arts.
+  const ponderT = skills.tierOf(sys.trees, "mental-ponderance-arts"), snapT = skills.tierOf(sys.trees, "mental-snappence-arts");
+  const concs = concentration.list(actor);
+  if (mTheory >= 1 && (concs.length || mTheory >= 2)) mentalRows.push({ label: `Concentration: ${concs.length} of ${concentration.cap(actor)}`, detail: concs.length ? concs.map(c => c.label).join("; ") + ". Direct damage costs 1 RP and a Willpower check or it breaks. Stop one here." : "Nothing yet. Direct damage costs 1 RP and a Willpower check or it breaks.", cost: "Free", action: "endConcentration", icon: "fa-solid fa-brain", disabled: !concs.length });
+  if (mTheory >= 2 && mctx.wonders.length) mentalRows.push({ label: "Trance", detail: "8 hours with a willing target to make a Mode permanent on them, for as long as you concentrate on it (target them first)", cost: "8 hours (not in combat)", action: "trance", icon: "fa-solid fa-moon" });
+  for (const e of ponderanceMod.premeditatedBy(actor)) mentalRows.push({ label: `Trigger ${e.name} on ${e.parent?.name ?? "?"}`, detail: `Takes hold when they ${e.flags.flowstate.spellEffect.trigger}. Ends at the start of your next turn if unused.`, cost: "Free", action: "triggerPremeditated", itemId: e.uuid, icon: "fa-solid fa-hourglass-half" });
+  for (const e of ponderanceMod.tranceAbilities(actor)) mentalRows.push({ label: `Trance: ${e.name.replace(/^Trance: /, "")}`, detail: `${e.flags.flowstate.spellEffect.description} Target a creature first.`, cost: "Range AP", action: "useTrance", itemId: e.uuid, icon: "fa-solid fa-hand-sparkles" });
+  if (snapT >= 1 && mctx.wonders.length) mentalRows.push({ label: "Reflex", detail: `When a character you can sense begins an action, Manifest a Wonder first (target the one acting). Its effects are Weakened${snapT >= 3 ? " unless it's your Fixation" : ""}. Attacks offer this automatically.`, cost: snapT >= 5 && snappenceMod.afterimageReady(actor) ? "Free (Afterimage)" : "RP = Range AP + ⚡ half Scaling Stat min", action: "reflex", icon: "fa-solid fa-bolt" });
+  for (const [which, id, label, apply] of [["light", "mental-light-dream", "Corona", "Illuminate"], ["dark", "mental-dark-nightmare", "Nightfall", "Eclipse"]]) if (skills.tierOf(sys.trees, id) >= 5) mentalRows.push({ label, detail: `An attack roll at a creature within 100 ft already under your ${apply}: on a hit that ${apply} spreads to everyone within 10 ft of it`, cost: "1 AP", action: "expand", op: which, icon: "fa-solid fa-sun" });
+  if (ponderT >= 5 && concs.length > 1) mentalRows.push({ label: "Daydreaming", detail: "Choose which Concentration can't be broken", cost: "Free", action: "daydream", icon: "fa-solid fa-cloud" });
   if (psionT >= 1) mentalRows.push({ label: "Psion Sense", detail: `Spot check for mental energies within ${mctx.farSight ? 1000 : 100} ft`, cost: "Check", action: "psionSense", icon: "fa-solid fa-brain" });
   if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
   if (psionT >= 4) mentalRows.push({ label: "Aura Sight", detail: "Spot everything in Psion range; doubles Area Manifestations until your next turn", cost: "2 AP + ⚡ half total Mind", action: "auraSight", icon: "fa-solid fa-eye" });
 
   // Reactions: every popup this character can be asked in someone else's turn, each with a switch to skip it (counts as "no").
   const reactionList = reactionRules.reactionRows(actor, { tenet: wonders.tenetOf(actor)?.id?.split(":")[1] ?? "", iconKind: actor.system.icon?.system.profile?.kind ?? "",
-    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, tier: w => skills.tierOf(sys.trees, w) });
+    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, hasUmbral: actions.spellEffects(actor, "umbralCharge").length > 0, ponderance: ponderT, snappence: snapT, tier: w => skills.tierOf(sys.trees, w) });
   const reactionRows = reactionList.map(r => ({ label: `${r.label}: ${r.off ? "skipped" : "asked"}`, detail: `${r.tip} ${r.off ? "You are not asked: it counts as no." : "A popup asks you when it comes up."}`,
     cost: r.off ? "Click to ask again" : "Click to skip", action: "martial", op: `reaction:${r.key}`, icon: r.off ? "fa-solid fa-bell-slash" : "fa-solid fa-bell" }));
 
@@ -782,6 +796,13 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       manifest: function () { return mental.manifest(this.document); },
       alignSet: function () { return mental.setAlignmentActivity(this.document); },
       fluidity: function () { return mental.fluidity(this.document); },
+      endConcentration: function () { return concentration.endDialog(this.document); },
+      trance: function () { return ponderanceMod.trance(this.document); },
+      reflex: function () { return snappenceMod.reflexManual(this.document); },
+      expand: function (event, target) { return wondersC.expand(this.document, target.closest("[data-op]")?.dataset.op); },
+      daydream: function () { return concentration.chooseDaydream(this.document); },
+      triggerPremeditated: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.triggerPremeditated(this.document, e) : null; },
+      useTrance: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.useTrance(this.document, e) : null; },
       dismissWonder: function () { return mental.dismiss(this.document); },
       choosePatron: function () { return mental.choosePatron(this.document); },
       attuneIcon: function (event, target) { const item = target?.closest?.("[data-item-id]") ? this.document.items.get(target.closest("[data-item-id]").dataset.itemId) : null; return mental.attuneIcon(this.document, item); },

@@ -2,6 +2,55 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.61.2:** **Emplace barrier health** is the Shield's 10 × Power (it was still the old 20 × Power), and Amplify adds 10 per Power level to a barrier.
+
+**0.61.1:** **Shown numbers match applied numbers.**
+- **Mental:** charge names, descriptions and dialogs, the Order sign options, Tenet tips and popups (Verdant Soul, Mortal Coil, Weight, Gust, Ego), Ward text (with Alignment's Strengthened), Eclipse, Flourish, Redirect, Vice, Absolution, Adaptive Skin and Umbral Strike now show the scaled values; Pacify and Dampen reductions read "−".
+- **Magic:** the Cast Spell dialog, Mod tooltips (a ticked Replacement doubles them), the Skills tab and the cast card scale check targets, Prolong/Linger counts, Hold, Telegraph, Freeze, Form/Animate points, Grade, Body, Amplify and Rip; Combo rider text stays "per level"; the Slam + Hex choice shows the scaled die size; Poison, Hex and Charm cards show the real check target, count and stacks (Weakened too); Hold on a grappled target shows the stacked total; Amplify and Mirage updates keep effect names and descriptions in step.
+
+**0.61.0:** **Every bolded number scales with Power and stacks.**
+- **Check targets:** Poison's, Charm's and Hex's "3 or higher" (and the combined "5 or higher") are multiplied by Spell Power and the spell's stacks (a Power 3 Poison needs a 9). Combo riders use their level.
+- **Pools:** Form, Animate and Make + Animate point pools and Body minimums scale with Spell Power too (a Power 3 Form has 15 points before the Threshold multiplier).
+- **Amplify** adds the Amplify caster's Spell Power in Power levels; **Rip** accepts Spells up to 5 × the Rip caster's Spell Power; Exploit's +4 die size uses the caster's stacks.
+
+**0.60.2:** **Power scales the rest.** Make/Animate's Grade 2, Creation's grade of 1 and Prolong/Linger's counts now scale with Power as well as stacks; a doubled Hematite is 4× Power and a doubled Taaffeite quarters a Ritual's Energy.
+
+**0.60.1:** **Audit follow-ups.**
+- **Foci Affix doubling** (Shard / Orb / Band) now also doubles Quartz's range, Jasper / Tourmaline / Colored Diamond / Alexandrite's stacks and Ruby / Sapphire / Painite's numbers (only some Affixes were wired before).
+- **Scaling:** Prolong and Linger counts, Make/Animate Grade, Creation's grade and Brand's damage (with its stacks) are scaled by Strengthened/Weakened.
+- **Frostbite** works on spells with no Energy removal of their own (held Frost, Slam + Frost, a Stab + Frost that doesn't crit). **Vigil**'s later activations recover 8 shielding instead of placing a new one. Lingering Arcane damage and riders are Weakened once against non-magical targets.
+
+**0.60.0:** **Strengthened/Weakened now scale every bolded number (audit).**
+- **Mental:** a Ward's amounts are scaled by a crit on its activation roll and by an Area Ward that hits more than two targets (Weakened); Reverie's cap and growth by Alignment's Strengthened. Enhanced Mandate damage (±10), damage-roll Fracture (±3, was 2) and the manual charge dialog scale with Power and stacks. A Weakened Burden is no longer held at 3 to escape. Dispersion counts a crit's stacks. Umbral Strike's damage is Power d8 scaled by the Manifest's stacks. Warmonger's 1d12 scales with the buffing Mode's stacks.
+- **Magic:** Poison, Hex and combo Charms (and their Force, dice, Ignite/Stain/Energy extras and die-size penalties) keep the stacks they were cast with and use them every tick; Summon, Animation and Made riders use the attack's stacks; a spell's Pierce and Bash, Telegraph's tolerance, Hold's minimum, Phantom Pain, Strike on a Spell and Combo Force go through the stacks too. Slam + Acid's 1 Stain is now × Power and scaled; object-aimed Ignite/Stain no longer scales twice.
+
+**0.59.1:** **Dispersion works on magically made things.** Summons, Animations (the `summon` marker) and Made items (the `made` marker) can be dispersed; they lose 20 × Power health or durability, and the attack goes at their creator.
+
+**0.59.0:** **Light (Dream) and Dark (Nightmare) Wonders.**
+- **Illuminate / Eclipse:** the version follows the target's side (ally or enemy; a neutral one asks). Illuminate shrinks an enemy's attack die, or the attack die of anyone attacking a warded ally (not the caster's allies); Eclipse shrinks an enemy's dodge die by 0.5 × Power (rounded down), or the dodge die of whoever an Eclipsed ally attacks. The versions don't stack with each other (Convergence lets the Illuminate ones). Enhanced: the damage of affected attacks is Weakened (Illuminate) or Strengthened (Eclipse).
+- **Tenets:** Beacon and Shadowmark (markers for the GM: seen through obstruction, one step more obscured). **Refraction / Penumbra** spread the Mode with an attack roll. **Totality:** an Eclipsed ally attacking an Eclipsed target is in half stealth. **Umbral Strike:** a charge that gives a step deeper into stealth and 1d8 damage, asked when the holder attacks. **Dispersion:** an attack with Advantage at an effect's creator; the effect loses 20 health or is destroyed if its creator's Scaling Stat is 15 or less. **Corona / Nightfall** (Action List, 1 AP) spread a lasting Illuminate / Eclipse to everyone within 10 ft.
+
+**0.58.1:** **Reflex picks its target.** The Reflex popup lets you choose whether the Manifest goes at the attacker or at who they are attacking.
+
+**0.58.0:** **Snappence Arts (new Mental T3 tree).**
+- **Reflex** (T1): when a character you can sense attacks, you're offered a Manifest first, for RP equal to the Range's AP cost and half the Wonder's Scaling Stat min in Energy; its effects are Weakened. Other actions (moving, dodging...) use the Action List row.
+- **Impulse** (T2): once a round, pay half the Scaling Stat min to apply your Tenet again after it already triggered (Tenet buttons, Balance, Infuse, Empower, Dampen, Adapt).
+- **Fixation** (T3): at the start of your turn you declare a character; Reflex against them isn't Weakened.
+- **Nerve** (T4): Advantage on the Willpower check that keeps a Concentration.
+- **Afterimage** (T5): once a round, Reflex costs no RP or Energy for the ability.
+- Reflex, Impulse and Fixation are switchable popups under Reactions.
+
+**0.57.0:** **Concentration, Trance and the Ponderance Arts (Mental doc changes).**
+- **Concentration:** you can concentrate on as many things as your Mental Theory tier. Taking direct damage costs 1 RP and a Willpower-die check (the result must at least match the damage), or every Concentration is lost; falling unconscious loses them all. Ending one (Action List: Concentration, or Dismiss) ends the effects it was keeping up, for free.
+- **Trance** (Mental Theory T2): an 8 hour activity (not in combat) that puts a permanent Mode on a creature and a Concentration on you. At the start of their turn they make a self attack roll; a hit applies the Mode (last round's copy is replaced). Nightmare Modes become abilities of the target instead.
+- **Ponderance Arts** (new tree): Premeditate (store a Manifest that hits, trigger it later; Forethought makes it free of once-per-turn limits), Mantra (asked whenever a Tenet triggers: pay Energy to double its bolded effect; with Infuse it removes the Weakened stack, with Adapt it adds a second Strengthened stack), Composure (damage costs you only one Concentration), Daydreaming (one Concentration can't be broken).
+- **Burden / Entomb:** Burden stacks are counted per Disadvantage, so Entomb (escape 4 × Power) needs 4 stacks in total (two Burden applications).
+- **Tier moves:** Chant is Mental Theory T3, Fluidity T4, Will of Body and Spirit T5.
+
+**0.56.1:** **Mental and Magic doc changes.**
+- **Magic:** Shield has 10 × Power health (was 20); Reactive works once per instance of damage.
+- **Mental:** Bloom is 50 × Power temp HP and stacks with itself; Wither (1d12) is reduced by Temp HP, shielding, Shrouds and Wards; Fracture changes the die by 3; Entropy is now a Chaos T5 passive that lets Fracture charges be spent on a crit; Burden is two Disadvantages split as you choose (escape 3 × Power) and Entomb escapes on 4 × Power (it needs 3 Burden instances); Warzone adds 1d10 per stack (Enhanced adds your Snappence min) and no longer uses up; Adaptation Modes give their stack hit or miss, Crescendo's die grows 2, 6, 10..., Exact is 1d12; Instinct is a passive (keep 4 stacks, start combat with 4).
+
 **0.56.0:** **Affixes are items of their own, and Rip.**
 - **Affix items** (Equipment tab, new item type): a gem with an Offensive and a Defensive form, attuned separately (an hour, not in combat) to one of them. Offensive Affixes work through your attuned Foci and Raw Casting, Defensive ones through your Shroud. Each attuned Affix costs 20% speed past the Free Affixes of the matching Foci (Offensive) or Shroud (Defensive). Tourmaline's element and Colored Diamond's declaration are set on the Affix. Old per-item lists convert automatically when the GM's client loads.
 - **Wizards and Forge:** the New Character and New NPC wizards pick Affixes as their own items with a form (no Foci or Shroud needed); Conjure makes Foci, Shrouds or Affixes.

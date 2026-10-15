@@ -128,6 +128,8 @@ reset(); card = await hit("magic-cold:frost", {}, [20]);
 ok2(lastAtk().flags.flowstate.attack.opts.damage === "3d8" && orc.system.energy.value === 80, `Frost: 1d8 × 3 cold, removes that much Energy (Energy ${orc.system.energy.value})`);
 reset(); formulas.length = 0; card = await hit("magic-cold:frost", { [M("magic-cold:frostbite")]: 1 }, [20, 30]);
 ok2(formulas.includes("3d12") && orc.system.energy.value === 50, `Frostbite: an extra 1d12 × 3 removed (Energy ${orc.system.energy.value})`);
+reset(); formulas.length = 0; card = await hit("magic-crushing:slam", { core2: "magic-cold:frost", [M("magic-cold:frostbite")]: 1 }, [30]);
+ok2(formulas.includes("3d12") && orc.system.energy.value < 100, `Frostbite also works on a Slam + Frost that has no Energy removal of its own (Energy ${orc.system.energy.value})`);
 reset(); card = await hit("magic-cold:frost", { [M("magic-cold:chill")]: true }, [20]);
 ok2(orc.system.hp.value === 432 - 20 - 30, `Chill: they also take that much cold damage, Strengthened (HP ${orc.system.hp.value})`);
 reset(); orc.system.energy.value = 0; card = await hit("magic-cold:frost", { [M("magic-cold:shatter")]: true }, [20]);
@@ -247,7 +249,7 @@ ok2(cond("stain") === 2 * 10 * 2, `Stab + Glob: a crit applies two times the dam
 reset(); reset2(); target(orc); seq = [20]; await cast("magic-crushing:slam", C2(0, "magic-acid:glob"));
 ok2(dmgOf() === "", "Slam + Glob deals no damage");
 seq = [12]; await actions.defend(lastAtk(), 0, "dodge");
-ok2(cond("stain") === 1 + 2 * (20 - 12), `…but applies 1 Stain plus twice the attack-roll margin (${cond("stain")})`);
+ok2(cond("stain") === 3 + 2 * (20 - 12), `…but applies 1 Stain × Power (3) plus twice the attack-roll margin (${cond("stain")})`);
 
 console.log("== Pure T2 Combos");
 reset(); reset2(); target(orc); seq = [20]; await cast("magic-heat:flame", C2(0, "magic-cold:frost"));

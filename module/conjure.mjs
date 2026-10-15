@@ -187,10 +187,11 @@ function describe({ actor, plan, profile, mods, mult }) {
   const skin = applied.find(a => a.mod.name === "Skin");
   const expanded = !!mods["expanded animation"];
   const st = castStacks(actor, plan);                 // Strengthened/Weakened scales the bolded pools (Body, points)
+  const pw = Math.max(1, plan?.power ?? 1);          // ...and so does Spell Power (every bolded number does)
   const scale = n => applyStacks(n, st);
   const rarities = R.makeRarities({ mk2: !!mods["make mk2"], mk3: !!mods["make mk3"] });
   return { cj, actor, mult, gross: plan.gross ?? plan.threshold, mods, arms, skin: skin?.threshold ?? 0, expanded, rarities, complexity: mods.complexity ?? 0,
-    armory: mods.armory ?? 0, pool: scale(cj.instant ? 10 * mult : (cj.kind === "summon" || cj.summonStats) ? R.summonPool(mult) : R.formPool(mult)), bodyMin: scale(cj.instant ? 10 * mult : R.formPool(mult)), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
+    armory: mods.armory ?? 0, pool: scale(pw * (cj.instant ? 10 * mult : (cj.kind === "summon" || cj.summonStats) ? R.summonPool(mult) : R.formPool(mult))), bodyMin: scale(pw * (cj.instant ? 10 * mult : R.formPool(mult))), makes: cj.kind === "make" || !!cj.make, scaling: plan.scaling ?? 0,
     equipment: !!(mods["animate weapon/icon/foci"] || mods["animate armor/shroud"]), combo: plan.combo };
 }
 
@@ -269,17 +270,20 @@ export function validate(ctx, spec) {
 
 const madeFlag = (actor, ritualOf, extra = {}) => ({ flowstate: { made: { caster: actor.uuid, ritualOf: ritualOf ?? null, ...extra } } });
 
-/** The item data for a Made weapon or armor (Grade 2), or a plain object. */
-export function itemData(it, { actor, ritualOf = null, extraFlags = {}, equipped = false } = {}) {
+/** The Grade of what a spell makes: the bolded 2, scaled by Spell Power and by the stacks on the caster (it has no attack roll to carry them), at least 1. */
+export const madeGrade = (actor, plan) => Math.max(1, applyStacks(2 * Math.max(1, plan?.power ?? 1), castStacks(actor, plan)));
+
+/** The item data for a Made weapon or armor (Grade 2 unless stacks change it), or a plain object. */
+export function itemData(it, { actor, ritualOf = null, extraFlags = {}, equipped = false, grade = 2 } = {}) {
   const flags = madeFlag(actor, ritualOf, extraFlags);
   if (it.kind === "armor") {
     return { name: it.name || `${ARMOR_MATERIALS[it.material]?.label ?? it.material} ${cap(it.weight)} Armor`, type: "armor", flags,
-      system: { weight: it.weight, material: it.material, grade: 2, equipped } };
+      system: { weight: it.weight, material: it.material, grade, equipped } };
   }
   if (it.kind === "object") return { name: it.name || "Conjured object", type: "gear", flags, system: { quantity: 1, description: `<p>Conjured${it.name ? `: ${esc(it.name)}` : ""}. Lasts until the start of the caster's next turn (or the Ritual ends).</p>` } };
   const extraTypes = (it.extra ?? []).filter(Boolean);
   return { name: it.name || `${WEAPON_MATERIALS[it.material]?.label ?? it.material} ${WEAPON_TYPES[it.type]?.label ?? it.type}`, type: "weapon", flags,
-    system: { weaponType: it.type, weight: it.weight, material: it.material, grade: 2, extraTypes, equipped } };
+    system: { weaponType: it.type, weight: it.weight, material: it.material, grade, extraTypes, equipped } };
 }
 
 const martialTrees = actor => Object.fromEntries(Object.entries(actor.system?.trees ?? {}).filter(([k, v]) => k.startsWith("martial-") && v > 0));
@@ -336,7 +340,7 @@ async function makeSummon({ actor, plan, profile, spec, mods, ritualOf, targets,
     const a = R.naturalArmor({ threshold: ctx.skin, con: f.stats.con });
     items.push({ name: `Natural ${cap(a.weight)} Armor`, type: "armor", flags: madeFlag(actor, ritualOf), system: { ...a, equipped: true, natural: true } });
   }
-  if (cj.make && spec.items?.[0]) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true }));
+  if (cj.make && spec.items?.[0]) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true, grade: madeGrade(actor, plan) }));
   hardenItems(items, mods, spec, cj);
   const sm = { owner: actor.uuid, ritualOf: ritualOf ?? null, kind: "summon", hp, energy, attackDie: actor.system.derived.attackDie, dodgeDie: actor.system.derived.dodgeDie, ap: 6, rp: 6, reform: !!mods.reform, reactive: !!mods.reactive, reformMark: hp, fear: !!cj.fear, senseSwap: !!mods["sense swap"], command: mods["limited autonomy"] ? spec.command || "" : "",
     rider: riderOf(cj, values, level) };
@@ -373,7 +377,7 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
     speed: st.speed, physical: st.physical, ap: st.ap, rp: st.rp, reform: !!mods.reform, reactive: !!mods.reactive, senseSwap: !!mods["sense swap"], command: mods["limited autonomy"] ? spec.command || "" : "", reformMark: hp, fear: !!cj.fear, rider: riderOf(cj, values, level) };
   const items = [];
   if (cj.geo) items.push(geoRanged(actor, ritualOf, Math.max(st.str, st.dex)));
-  if (cj.make && spec.items?.[0] && !cj.instant) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true }));
+  if (cj.make && spec.items?.[0] && !cj.instant) items.push(itemData(spec.items[0], { actor, ritualOf, equipped: true, grade: madeGrade(actor, plan) }));
   hardenItems(items, mods, spec, cj);
   const name = spec.name || `${mat.name} Animation`;
   const id = await spawn({ actor, name, system: { stats: { str: st.str, dex: st.dex, con: st.con, pon: 0, snap: 0, will: 0, reach: 0, grasp: 0, build: 0 }, skillPoints: f?.skillPoints ?? 0, size, trees: martialTrees(actor), hp: { value: hp, lost: 0 }, energy: { value: energy } }, flags: { flowstate: { summon: sm } }, items, targets, tile: spec.tile });
@@ -388,9 +392,9 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
 async function makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets, values }) {
   const cj = profile.conjure;
   const rider = cj.rider ? { core: cj.rider, level: 1, charmRoll: values?.charmRoll ?? null, hex: values?.hexTrigger ? { trigger: values.hexTrigger, roll: values.hexRoll, outcome: values.hexOutcome, detail: values.hexDetail } : null } : null;
-  const flagsFor = it => ({ ...(rider && it.kind !== "object" ? { rider: { ...rider, level: R.riderLevel(2, 4), arcane: !!cj.arcane } } : {}), ...(cj.fear && it.kind !== "object" ? { fear: true } : {}) });
+  const flagsFor = it => ({ ...(rider && it.kind !== "object" ? { rider: { ...rider, level: R.riderLevel(madeGrade(actor, plan), 4), arcane: !!cj.arcane } } : {}), ...(cj.fear && it.kind !== "object" ? { fear: true } : {}) });
   const items = (spec.items ?? []).map(it => {
-    const d = itemData(it, { actor, ritualOf, extraFlags: flagsFor(it) });
+    const d = itemData(it, { actor, ritualOf, extraFlags: flagsFor(it), grade: madeGrade(actor, plan) });
     if (cj.geo && d.type === "weapon") { d.system.returning = true; d.system.rounds = 99; d.system.magazine = 99; }   // reloads itself; returns when thrown
     return d;
   });
@@ -416,7 +420,7 @@ async function makeObjects({ actor, plan, profile, spec, mods, ritualOf, targets
     else { await actor.createEmbeddedDocuments?.("Item", items, { flowstateAuto: true }); where = "into their inventory (no scene to drop them on)"; }
   }
   await post(actor, { title: `${esc(actor.name)} — Make`, body: `<div class="fs-result"><i class="fa-solid fa-wand-magic-sparkles"></i> ${esc(actor.name)} makes ${items.map(i => `<strong>${esc(i.name)}</strong>`).join(", ")} ${where}${ritualOf ? " (until the Ritual ends)" : ", until the start of their next turn"}.</div>
-    <div class="fs-notes">Archetypal equipment is Grade 2. Non-Archetypal objects are just a note: a Body of 10 of a single material (a cubic foot per Body).${rider ? ` Attacks with it carry ${fx.profileFor([cj.rider])?.name ?? cj.rider}.` : ""}</div>` });
+    <div class="fs-notes">Archetypal equipment is Grade ${madeGrade(actor, plan)} (2 × Spell Power, with stacks). Non-Archetypal objects are just a note: a Body of ${Math.max(1, applyStacks(10 * Math.max(1, plan.power), castStacks(actor, plan)))} of a single material (a cubic foot per Body).${rider ? ` Attacks with it carry ${fx.profileFor([cj.rider])?.name ?? cj.rider}.` : ""}</div>` });
   return items.length;
 }
 
@@ -466,8 +470,9 @@ async function animateEquipment({ actor, plan, mods, targets, ritualOf }) {
   const tgt = targets?.[0]?.actor ?? actor;
   const armor = !!mods["animate armor/shroud"];
   const pool = armor ? [tgt.system.armor, tgt.system.shroud].filter(Boolean) : (tgt.items ?? []).filter(i => (i.type === "weapon" && !i.system.profile?.unarmed) || i.type === "foci" || i.type === "icon");
-  const picks = pool.filter(i => (i.system.grade ?? 9) <= 2);
-  if (!picks.length) { ui.notifications.warn(`${tgt.name} has no ${armor ? "armor or Shroud" : "weapon, Icon or Foci"} of Grade 2 or lower to animate.`); return 0; }
+  const maxGrade = madeGrade(actor, plan);
+  const picks = pool.filter(i => (i.system.grade ?? 9) <= maxGrade);
+  if (!picks.length) { ui.notifications.warn(`${tgt.name} has no ${armor ? "armor or Shroud" : "weapon, Icon or Foci"} of Grade ${maxGrade} or lower to animate.`); return 0; }
   const item = picks[0];
   const acts = [];
   if (!armor && item.type === "weapon") acts.push({ act: "weapon", caster: actor.uuid, item: item.uuid, name: item.name });
@@ -583,7 +588,7 @@ async function reform(caster) {
 /* -------------------------------------------- */
 
 /** After a creation's weapon attack dealt its damage: the Combo Core's extra effect. */
-export async function riderAfter({ attacker, target, o, outcome, defense }) {
+export async function riderAfter({ attacker, target, o, outcome, defense, stacks = 0 }) {
   let r = summonOf(attacker)?.rider ?? null, ritualOf = summonOf(attacker)?.ritualOf ?? null, ownerUuid = summonOf(attacker)?.owner ?? attacker.uuid, fear = !!summonOf(attacker)?.fear;
   if (o.itemUuid) {
     const item = await fromUuid(o.itemUuid);
@@ -624,40 +629,42 @@ export async function riderAfter({ attacker, target, o, outcome, defense }) {
     const sides = rd.dice[1] + (rd.livingDie && living && direct ? rd.livingDie : 0);
     const dmg = await roll(`${rd.dice[0] * level}d${sides}`);
     rolls.push(dmg);
-    const total = applyStacks(dmg.total, rd.critStack && defense?.result?.crit ? rd.critStack : 0);
+    const arcPen = (r.arcane ? "arcane" : rd.type) === "arcane" && !target.system?.magical && target.type !== "pile" ? -1 : 0;          // Arcane against something not magical is Weakened
+    const total = applyStacks(dmg.total, stacks + arcPen + (rd.critStack && defense?.result?.crit ? rd.critStack : 0));          // the attack's own stacks (a crit, the weapon...) scale the rider too
     const dtype = r.arcane ? "arcane" : rd.type;
     const out = await damageOutcome(target, total, dtype, { archetype: "magic" });
     const res = await requestDamage(target, total, dtype, 0, null, { wantResult: true, silent: true, archetype: "magic" });
     const dealt = total - Math.min(total, res?.reduced ?? 0);             // a Ward's negation shrinks effects that go by the damage dealt
-    html.push(`<div class="fs-result">${esc(profileName)}: ${rd.dice[0] * level}d${sides} = ${dmg.total}${total !== dmg.total ? ` (Strengthened → ${total})` : ""} additional ${DAMAGE_TYPES[dtype] ?? dtype}.</div><ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
+    html.push(`<div class="fs-result">${esc(profileName)}: ${rd.dice[0] * level}d${sides} = ${dmg.total}${total !== dmg.total ? ` (${stacks + arcPen + (rd.critStack && defense?.result?.crit ? rd.critStack : 0) > 0 ? "Strengthened" : "Weakened"} → ${total})` : ""} additional ${DAMAGE_TYPES[dtype] ?? dtype}.</div><ul class="fs-list">${out.lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
     if (rd.ignite) { const l = await giveStacks(target, "ignite", dealt, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
     if (rd.stain) { const l = await giveStacks(target, "stain", dealt, { outcome: out, caster }); if (l) html.push(`<div class="fs-result">${l}</div>`); }
     if (rd.energy) { const e = await removeEnergy(target, dealt); html.push(`<div class="fs-result">${esc(target.name)} loses <strong>${e.removed} Energy</strong> (${e.remaining} left).</div>`); }
     if (rd.dodgeDie) {
-      const amt = rd.dodgeDie * level;
+      const amt = Math.max(0, applyStacks(rd.dodgeDie * level, stacks));
       await putSpellEffect(target, { kind: "dodgeDie", caster: ownerUuid, name: `Dodge −${amt} die size`, dodgeDie: amt, ritualOf, description: `Dodge dice are ${amt} sizes smaller until the start of the caster's next turn (doesn't stack).` });
       html.push(`<div class="fs-notes">${esc(target.name)}'s dodge dice suffer <strong>−${amt} die size</strong> until the start of your next turn.</div>`);
     }
-    if (rd.chain) acts.push({ act: "arc", from: target.uuid, attacker: attacker.uuid, n: rd.dice[0] * level, sides, type: dtype, stacks: 0, label: "Chain" });
+    if (rd.chain) acts.push({ act: "arc", from: target.uuid, attacker: attacker.uuid, n: rd.dice[0] * level, sides, type: dtype, stacks, label: "Chain" });
   }
   if (rd.force) {
-    const f = await spellForce(attacker, target, { stacks: 0 }, { critStacks: 0 }, { n: rd.force[0] * level, sides: rd.force[1] }, "Force");
+    const f = await spellForce(attacker, target, { stacks: 0 }, { critStacks: 0 }, { n: rd.force[0] * level, sides: rd.force[1] }, "Force", stacks);
     html.push(f.html); rolls.push(...f.rolls); push = f.push;
   }
   if (rd.poison && living && direct) {
-    await A.applyPoison(target, { kind: "poison", caster: ownerUuid, ritualOf: null, ritual: false, n: 3 * level, sides: 6, type: "health", bypassArmor: false, force: false, livingDie: 0, halfStrength: false, dodgeDie: 0,
+    await A.applyPoison(target, { kind: "poison", caster: ownerUuid, ritualOf: null, ritual: false, n: 3 * level, sides: 6, type: "health", bypassArmor: false, force: false, livingDie: 0, halfStrength: false, dodgeDie: 0, stacks, req: Math.max(0, applyStacks(3 * level, stacks)),
       ignite: false, stain: false, energy: false, arc: false, prolong: 0, lethality: 0, potency: false, virality: false, power: level, procs: 0, checks: 0 }, caster);
   }
   if (rd.charm && living) {
-    const c = await A.check(target, "will", 3);
+    const need = Math.max(0, applyStacks(3 * level, stacks));          // "3 or higher" is bolded: Power and stacks scale it
+    const c = await A.check(target, "will", need);
     rolls.push(c.roll);
-    let body = `<div class="fs-notes">${esc(target.name)}: Willpower check needs 3 or higher: <strong>${c.total}</strong> — ${c.passed ? "passed" : "failed"}.</div>`;
-    if (!c.passed) body += await A.placeCharm(caster ?? attacker, target, { rollType: r.charmRoll || "attack", ritualOf });
+    let body = `<div class="fs-notes">${esc(target.name)}: Willpower check needs ${need} or higher: <strong>${c.total}</strong> — ${c.passed ? "passed" : "failed"}.</div>`;
+    if (!c.passed) body += await A.placeCharm(caster ?? attacker, target, { rollType: r.charmRoll || "attack", ritualOf, req: need });
     await A.secret(target, caster, { title: `${esc(attacker.name)} — Charm`, rolls: [c.roll], body });
   }
   if (rd.hex && living) {
     const a = fx.PROFILES["magic-witchery:hex"].afflict;
-    const h = A.hexData(a, { mods: {} }, { caster: ownerUuid, power: level, ritualOf }, { hex: r.hex, hexDie: r.hexDie }, { name: "Hex" });
+    const h = A.hexData(a, { mods: {} }, { caster: ownerUuid, power: level, ritualOf, stacks }, { hex: r.hex, hexDie: r.hexDie }, { name: "Hex" });
     await putSpellEffect(target, A.hexEffect(h, { name: "Hex" }));
     await A.secret(target, caster, { title: `${esc(attacker.name)} — Hex`, body: A.hexCard(target, h), flags: A.hexFlags(target, h) });
   }

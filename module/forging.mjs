@@ -52,7 +52,7 @@ async function askWhat(caster, x) {
     const forms = Object.entries(R.FORMS).filter(([, f]) => rar.includes(rarityKey(f.rarity)));
     html = field("Form", select("form", forms.map(([k, f]) => [k, `${f.name} (${R.KINDS[f.align].label}, ${f.rarity})`]))) + field("Name", `<input type="text" name="name">`);
   } else {
-    html = field("Material", select("mat", [["powder", "Powder"], ["liquid", "Liquid"], ["soft", "Soft"], ...(x.enhanced ? [["hard", "Hard"]] : [])])) + field(`Body (up to ${R.bold(x.bstacks, 15 * x.power)})`, `<input type="number" name="body" value="${Math.min(10, R.bold(x.bstacks, 15 * x.power))}" min="1" max="${15 * x.power}">`) + field("Object (name, material, shape)", `<input type="text" name="name">`);
+    html = field("Material", select("mat", [["powder", "Powder"], ["liquid", "Liquid"], ["soft", "Soft"], ...(x.enhanced ? [["hard", "Hard"]] : [])])) + field(`Body (up to ${R.bold(x.bstacks, 15 * x.power)})`, `<input type="number" name="body" value="${Math.min(10, R.bold(x.bstacks, 15 * x.power))}" min="1" max="${R.bold(x.bstacks, 15 * x.power)}">`) + field("Object (name, material, shape)", `<input type="text" name="name">`);
   }
   html += `<label class="fs-cast-mod"><input type="checkbox" name="willing" checked> <strong>Willing recipient</strong> <small>it appears in their hand; otherwise at their feet</small></label>`;
   return DialogV2().prompt({ window: { title: `${R.modeById(mode)?.name}: what do you create?` }, content: `<div class="fs-cast">${html}</div>`, rejectClose: false,
@@ -66,16 +66,16 @@ function buildItem(caster, x, v, permanent) {
     const kind = v.kind === "armor" ? "armor" : "weapon";
     const it = { kind, type: v.type, weight: v.weight, material: v.material, name: v.name };
     const d = conjure.itemData(it, { actor: caster, ritualOf: null });
-    d.system.grade = 1; d.system.equipped = false; d.flags = { ...(d.flags ?? {}), ...flags };
+    d.system.grade = Math.max(1, R.bold(x.bstacks, x.power ?? 1)); d.system.equipped = false;          // "grade of 1" is bolded: the Wonder's Power and the Manifest's stacks scale it d.flags = { ...(d.flags ?? {}), ...flags };
     if (permanent) delete d.flags?.flowstate?.made;
     return d;
   }
   if (mode === `${ID}:conjure`) {
     if (v.kind === "affix") return { name: v.name || `${AFFIXES[v.affix]?.label} Affix`, type: "affix", flags, system: { affix: v.affix, side: v.side === "defensive" ? "defensive" : "offensive", attuned: false } };
-    if (v.kind === "shroud") return { name: v.name || `${SHROUD_TYPES[v.stype]?.label} Shroud`, type: "shroud", flags, system: { shroudType: v.stype, grade: 1, attuned: false } };
-    return { name: v.name || `${FOCI_TYPES[v.ftype]?.label} Foci`, type: "foci", flags, system: { fociType: v.ftype, grade: 1, attuned: false, equipped: false } };
+    if (v.kind === "shroud") return { name: v.name || `${SHROUD_TYPES[v.stype]?.label} Shroud`, type: "shroud", flags, system: { shroudType: v.stype, grade: Math.max(1, R.bold(x.bstacks, x.power ?? 1)), attuned: false } };
+    return { name: v.name || `${FOCI_TYPES[v.ftype]?.label} Foci`, type: "foci", flags, system: { fociType: v.ftype, grade: Math.max(1, R.bold(x.bstacks, x.power ?? 1)), attuned: false, equipped: false } };
   }
-  if (mode === `${ID}:consecrate`) return { name: v.name || `${R.FORMS[v.form]?.name} Icon`, type: "icon", flags, system: { form: v.form, grade: 1, attuned: false, tenet: "" } };
+  if (mode === `${ID}:consecrate`) return { name: v.name || `${R.FORMS[v.form]?.name} Icon`, type: "icon", flags, system: { form: v.form, grade: Math.max(1, R.bold(x.bstacks, x.power ?? 1)), attuned: false, tenet: "" } };
   const body = Math.min(R.bold(x.bstacks, 15 * (x.power ?? 1)), Math.max(1, Number(v.body) || 1));
   return { name: v.name || `Fabricated ${v.mat} object`, type: "gear", flags, system: { quantity: 1, body, density: v.mat === "liquid" ? "powder" : v.mat, description: `<p>Fabricated from ${esc(v.mat)} (Body ${body}): ${esc(v.name || "an object")}.</p>` } };
 }

@@ -82,12 +82,9 @@ def parse(md, arch):
         if not body or body == "-": continue
         if numbered: body = f"{numbered.group(1)}. {body}"
         # Mental: a Mode's versions ("Against an enemy:" / "Against an ally:" bullets) and its indented "Enhanced:" line are part of that Mode's text.
-        if arch == "Mental" and cur_tier["entries"] and re.match(r'^(Against an? \w+|Enhanced):', body):
-            prev = cur_tier["entries"][-1]
-            prev["text"] = f'{prev["text"]} {body}'.strip()
-            continue
-        # A Wonder entry's indented sub-bullets (Fortune's and Ruin's Bands) are its sub-points, shown as a list under it.
-        if wonder and bullet and raw[:1] in (" ", "\t") and cur_tier["entries"]:
+        # A Wonder entry's sub-points, shown as a list under it: a Mode's versions ("Against an enemy:" / "Against an ally:") and its "Enhanced:" line, and
+        # indented sub-bullets (Fortune's and Ruin's Bands). The Wonder parser joins them back into the entry's text for the game.
+        if wonder and cur_tier["entries"] and (re.match(r'^(Against an? \w+|Enhanced):', body) or (bullet and raw[:1] in (" ", "\t"))):
             cur_tier["entries"][-1].setdefault("sub", []).append(body)
             continue
         # Numbered option lists, deeper bullets, and loose paragraphs belong to the entry above them.

@@ -65,6 +65,7 @@ ok(M.tenetChoices("dream").length === 9 && M.tenetChoices("nightmare").length ==
 const earth = M.wonderById("mental-earth-dream"), sea = M.wonderById("mental-sea-nightmare");
 ok(earth?.modes.map(m => m.name).join() === "Accretion" && earth.tenet?.name === "Adamant" && sea?.modes.map(m => m.name).join() === "Undertow,Riptide,Drown" && sea.tenet?.name === "Surge", "Earth (Accretion, Adamant) and Sea (Undertow, Riptide, Drown, Surge) parse");
 const ill = M.modeById("mental-light-dream:illuminate");
+ok((M.scaleMentalText(ill.base, 3, "Illuminate").match(/reduced by 3/g) ?? []).length === 2, "A phrase bolded in both versions scales in both");
 ok(/Against an enemy:.*Against an ally:/.test(ill?.base ?? "") && /Weakened/.test(ill?.enhanced ?? ""), "Illuminate keeps its two versions and its Enhanced text (the doc's bullet layout)");
 ok(M.tenetChoices("dream", { "mental-life-dream": 1 }).length === 1, "A character can pick only Tenets they know");
 

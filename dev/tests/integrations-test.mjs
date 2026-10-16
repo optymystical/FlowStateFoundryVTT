@@ -84,6 +84,10 @@ ok(/isn't grappling/.test(called2 ?? ""), `TAH: martial op dispatch (${called2})
   ok(/^Deals 3d12 physical damage/.test(row("1–3")) && /raised by 30 until/.test(row("32–35")) && /45 Slow stacks/.test(row("44–47")) && /15 Temp HP, restore 15 health/.test(row("98–100")) && /within 20ft/.test(row("1–3")),
     `Skills tab: the table's bolded values are worked out for Power 3, the rest stays (${row("98–100")})`);
   ok(/Deals 1d12 physical/.test(rt.rows[0].effect), "…and as printed at Power 1");
+  for (const id of ["mental-light-dream", "mental-dark-nightmare"]) {
+    const m = skills.treeById(id).tiers.find(t => t.tier === 1).entries[0];
+    ok(m.sub?.length === 3 && /^Against an enemy/.test(m.sub[0]) && /^Against an ally/.test(m.sub[1]) && /^Enhanced/.test(m.sub[2]) && !/Against/.test(m.text), `${m.name}: its two versions and Enhanced are sub-points`);
+  }
   for (const id of ["mental-fortune-dream", "mental-ruin-nightmare"]) {
     const bands = skills.treeById(id).tiers.find(t => t.tier === 1).entries.find(e => /Bands/.test(e.name));
     ok(bands?.sub?.length === 3 && !/Under one half/.test(bands.text), `${skills.treeById(id).name}: the Bands are three sub-points, not run into the text`);

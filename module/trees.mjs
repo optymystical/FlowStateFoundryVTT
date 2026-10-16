@@ -4622,7 +4622,12 @@ export const TREES = [
     "entries": [
      {
       "name": "Illuminate",
-      "text": "Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. Against an enemy: On hit, that creature is Illuminated until the start of your next turn. Its attack rolls have their die size reduced by 1, it cannot be naturally obscured, and it cannot benefit from half cover. Against an ally: On hit, attack rolls made against that ally have their die size reduced by 1 until the start of your next turn. Attacks made by your own allies are unaffected. Enhanced: Damage dealt by an attack affected by this Mode is Weakened."
+      "text": "Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other.",
+      "sub": [
+       "Against an enemy: On hit, that creature is Illuminated until the start of your next turn. Its attack rolls have their die size reduced by 1, it cannot be naturally obscured, and it cannot benefit from half cover.",
+       "Against an ally: On hit, attack rolls made against that ally have their die size reduced by 1 until the start of your next turn. Attacks made by your own allies are unaffected.",
+       "Enhanced: Damage dealt by an attack affected by this Mode is Weakened."
+      ]
      },
      {
       "name": "Beacon",
@@ -4690,7 +4695,12 @@ export const TREES = [
     "entries": [
      {
       "name": "Eclipse",
-      "text": "Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. Against an enemy: On hit, that creature is Eclipsed until the start of your next turn. Its dodge rolls have their die size reduced by 0.5 (this reduction is rounded up). Against an ally: On hit, until the start of your next turn, that ally’s attacks cause their targets’ dodge rolls to have their die size reduced by 0.5 (this reduction is rounded up), and that ally becomes one step more obscured (none → lightly → heavily). Enhanced: Damage dealt by an attack affected by this Mode is Strengthened."
+      "text": "Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other.",
+      "sub": [
+       "Against an enemy: On hit, that creature is Eclipsed until the start of your next turn. Its dodge rolls have their die size reduced by 0.5 (this reduction is rounded up).",
+       "Against an ally: On hit, until the start of your next turn, that ally’s attacks cause their targets’ dodge rolls to have their die size reduced by 0.5 (this reduction is rounded up), and that ally becomes one step more obscured (none → lightly → heavily).",
+       "Enhanced: Damage dealt by an attack affected by this Mode is Strengthened."
+      ]
      },
      {
       "name": "Shadowmark",

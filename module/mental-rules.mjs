@@ -48,7 +48,9 @@ function parseWonder(tree) {
     const modeTier = /\bMode\b/i.test(t.summary ?? "");
     // When the tier names one kind per entry ("Mode, passive, and Tenet"), that says which entry is the Mode.
     const kinds = tierKinds(t.summary);
-    for (const [i, e] of t.entries.entries()) {
+    for (const [i, entry] of t.entries.entries()) {
+      // Sub-points (a Mode's "Against an enemy / ally" and "Enhanced" lines, Bands) are listed under the entry in the Skills tab; the game reads them as one text.
+      const e = entry.sub?.length ? { ...entry, text: [entry.text, ...entry.sub].join(" ") } : entry;
       if (isTenet(e)) { out.tenet = { name: e.name, text: e.text, tier: t.tier, id: `${tree.id}:${slug(e.name)}` }; continue; }
       if (kinds.length === t.entries.length ? kinds[i] === "mode" : modeTier) out.modes.push({ id: `${tree.id}:${slug(e.name)}`, wonder: tree.id, name: e.name, tier: t.tier, text: e.text, ...splitEnhanced(e.text) });
       else out.abilities.push({ id: `${tree.id}:${slug(e.name || "x")}`, wonder: tree.id, name: e.name, tier: t.tier, text: e.text });
@@ -296,7 +298,8 @@ export function scaleMentalText(text, power, name = null) {
     for (const span of spans) {
       const variants = [span, span.replace(/^\+/, "+"), span.replace(/-/g, "−")];
       const hit = variants.find(v => out.includes(v));
-      if (hit) out = out.replace(hit, scaleSpan(hit, P));
+      // A phrase bolded more than once (Illuminate's "die size reduced by 1", in both versions) scales everywhere; a bare number only where it first appears.
+      if (hit) out = hit.length >= 8 ? out.split(hit).join(scaleSpan(hit, P)) : out.replace(hit, scaleSpan(hit, P));
     }
     return out;
   }

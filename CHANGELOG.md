@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.65.9:** **Illuminate and Eclipse are bulleted too.** Their "Against an enemy", "Against an ally" and "Enhanced" lines show as bullets in the Skills tab and the wizards. Fixed: a bolded phrase that appears in both versions (Illuminate's "die size reduced by 1") now scales in both, in the Skills tab and on Manifest cards.
+
 **0.65.8:** **Fortune's and Ruin's Bands are a list again.** Their three bands show as bullets under the passive in the Skills tab and the wizards, instead of running into one sentence.
 
 **0.65.7:** **The Fortune and Ruin Tables show real numbers.** Their bolded values are worked out for the character's Wonder Power in the Skills tab and the wizards (e.g. 3d12 at Power 3, not 1d12); a note says when Rig or Doom use a different Tenet multiplier.

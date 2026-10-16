@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.64.1:** **Mark shot switch.** Rapid Weapons T3 characters get a "Mark shot" switch under Reactions in the Action List: off, a Marked creature acting uses the Mark up without posting the Shoot card (Lead Blindness still applies).
+
 **0.64.0:** **Fortune (Dream) Wonder, and Mental doc changes.**
 - **Fortune:** Wager (damage), Windfall (Energy, overflow to Temp HP), Providence (the Fortune Table), Fortune's Bands (no crits: a low roll hits you, a high one adds 2/4 Strengthened), Parlay (stacks multiply), Double Down (Disadvantage, an 8-stack band), and Rig (Tenet: roll the table any time, from the Action List). All 25 Fortune Table effects are automated.
 - **Changed:** Herald is 6d8 × Power Force (was 10d8); Umbral Strike adds 1d4 × Power (was 1d8); Drown drains 2d8 × Power (was 2d10), and downward movement doesn't count toward it.

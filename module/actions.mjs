@@ -9,6 +9,7 @@ import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import { planAction, emptyLedger } from "./movement-rules.mjs";
 import { mayHelp } from "./sides.mjs";
+import { isDeclined } from "./reactions.mjs";
 import { borderDistance, gridFor } from "./distance.mjs";
 import { pickSpot, candidateSpots } from "./placement.mjs";
 export { gridFor };
@@ -2562,6 +2563,8 @@ export async function triggerMark(actor, what) {
   const marker = await fromUuid(mark.marker);
   await setActorFlag(actor, "markedBy", null);
   if (!marker) return false;
+  // The marker switched the Mark shot off (Action List, Reactions): the Mark is used up with no card; Lead Blindness still applies.
+  if (isDeclined(marker, "mark")) return ab.treeTier(marker, ab.RAPID) >= 4;
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor: marker }),
     content: `<div class="flowstate-card"><header class="fs-card-title">Mark — ${esc(actor.name)} ${esc(what)}</header>

@@ -19,6 +19,7 @@ const REACTIONS = [
   { key: "reflex", label: "Reflex", tip: "Offered when a character you can sense is about to attack.", when: c => c.snappence >= 1 },
   { key: "impulse", label: "Impulse", tip: "Whether to pay Energy to apply your Tenet once more after it has already triggered this round.", when: c => c.snappence >= 2 && !!c.tenet },
   { key: "fixation", label: "Fixation", tip: "The question at the start of your turn about whom to fixate on.", when: c => c.snappence >= 3 },
+  { key: "mark", label: "Mark shot", tip: "The card to shoot your Marked creature when it attacks, acts or moves (the Mark is used up either way; Lead Blindness still applies).", when: c => c.tier("martial-rapid-weapons") >= 3 },
   { key: "umbral", label: "Umbral Strike", tip: "Offered when you attack while you hold an Umbral Strike charge.", when: c => !!c.hasUmbral },
   { key: "charges", label: "Order / Chaos charges", tip: "Spending your charges on rolls (attack, dodge, other and damage rolls).", when: c => c.tier("mental-order-dream") >= 1 || c.tier("mental-chaos-nightmare") >= 1 },
   { key: "verdict", label: "Verdict", tip: "Passing judgment after an attack lands.", when: c => c.tier("mental-order-dream") >= 1 },

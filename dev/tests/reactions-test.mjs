@@ -12,6 +12,7 @@ ok2(R.reactionRows(actor({}), ctx({ hasPremonition: true })).some(r => r.key ===
 const war = R.reactionRows(actor({}), ctx({}, { "mental-war-nightmare": 5 })).map(r => r.key);
 ok2(war.includes("warmonger") && war.includes("bloodbond") && !war.includes("serenity"), "War T5 gives Warmonger and Bloodbond, and nothing from Peace");
 ok2(R.reactionRows(actor({}), ctx({ tenet: "gust" })).some(r => r.key === "tenet"), "A Manifest-hit Tenet gives the Tenet switch");
+ok2(R.reactionRows(actor({}), ctx({}, { "martial-rapid-weapons": 3 })).map(r => r.key).join() === "mark" && !R.reactionRows(actor({}), ctx({}, { "martial-rapid-weapons": 2 })).length, "Rapid Weapons T3 gives the Mark shot switch");
 
 console.log("== the switch");
 ok2(R.isDeclined(actor({ autoDecline: { infuse: true } }), "infuse") && !R.isDeclined(actor({ autoDecline: { infuse: false } }), "infuse") && !R.isDeclined(actor({}), "infuse"), "Only an explicit true skips a reaction");

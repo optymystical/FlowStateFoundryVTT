@@ -156,3 +156,16 @@ refill(hero); gun.system.rounds = 1; gun.system.prepareDerivedData();
 dialog = () => ({ mode: "r1", net: 0, stacks: 0 });
 seq = [20]; await actions.markShot(markCard);
 ok(F().attack.targets[0].name === "Orc" && hero.system.rp.value === 6 - gun.system.profile.ap, "Mark shot: RP = attack AP");
+
+console.log("== Mark shot switched off (Reactions)");
+combat.combatant = { actor: hero }; refill(hero); gun.system.rounds = 1; gun.system.prepareDerivedData();
+game.user.targets = new Set([{ actor: orc }]);
+await actions.markTarget(hero);
+ok(orc.getFlag("flowstate", "markedBy")?.marker === hero.uuid, "orc is Marked again");
+await hero.setFlag("flowstate", "autoDecline", { mark: true });
+const cards0 = messages.filter(m => m.flags?.flowstate?.markCard).length;
+game.user.targets = new Set([{ actor: hero }]); combat.combatant = { actor: orc };
+seq = [20]; await actions.performAttack(orc, orcOpts);
+ok(messages.filter(m => m.flags?.flowstate?.markCard).length === cards0 && !orc.getFlag("flowstate", "markedBy"), "No Mark card when the marker switched it off; the Mark is still used up");
+ok(/Lead Blindness \(Marked\)/.test(text(messages.at(-1))), "…and Lead Blindness still applies");
+await hero.setFlag("flowstate", "autoDecline", { mark: false });

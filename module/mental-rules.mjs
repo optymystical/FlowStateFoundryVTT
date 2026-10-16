@@ -61,6 +61,19 @@ export const WONDERS = TREES.map(parseWonder).filter(Boolean);
 export const wonderById = id => WONDERS.find(w => w.id === id) ?? null;
 export const modeById = id => WONDERS.flatMap(w => w.modes).find(m => m.id === id) ?? null;
 
+/**
+ * Trance (Mental T2): is this Mode's baseline (unenhanced) effect hostile? A hostile Mode becomes an ability the Tranced creature can use on others; any other
+ * applies to them at the start of their turns. It goes by what the Mode does to its target, not its Wonder's type: Nightmare Modes are hostile and Dream ones
+ * aren't, except these. Illuminate and Eclipse count as non-hostile: a willing Trance target gets their ally version (the user's ruling).
+ */
+const HOSTILE_EXCEPTIONS = {
+  "mental-peace-dream:pacify": true, "mental-beyond-dream:herald": true, "mental-adaptation-dream:crescendo": true, "mental-fortune-dream:wager": true,
+  "mental-light-dream:dispersion": true, "mental-fortune-dream:providence": true,
+  "mental-war-nightmare:warzone": false, "mental-war-nightmare:bloodbond": false, "mental-perfection-nightmare:hone": false,
+  "mental-dark-nightmare:umbral-strike": false, "mental-dark-nightmare:eclipse": false
+};
+export const modeHostile = id => (id in HOSTILE_EXCEPTIONS ? HOSTILE_EXCEPTIONS[id] : wonderById(modeById(id)?.wonder)?.kind === "nightmare");
+
 /** The Wonders, Modes and Tenets a character knows, from their skill tree state ({ [treeId]: tier }). */
 export function knownWonders(state = {}) {
   return WONDERS.map(w => {

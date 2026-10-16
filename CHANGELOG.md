@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.65.2:** **Trance: hostile goes by the Mode.** A Trance Mode is hostile (an ability the target can use) by what its baseline effect does, not by Dream or Nightmare: Pacify, Herald, Crescendo, Wager, Dispersion and Providence are hostile; Warzone, Bloodbond, Hone, Umbral Strike and Eclipse aren't (Illuminate and Eclipse give a willing target their ally version).
+
 **0.65.1:** **Character creation help.** The wizards' Skill Trees step now describes each tier: the doc's tier line, then every entry's name with its first sentence or two and its Energy cost (the full text on hover). The Stats step has advice for new players: one Archetype, one offensive stat (Str/Dex, Pon/Snap or Reach/Grasp) plus its defensive stat (Con, Will or Build).
 
 **0.65.0:** **Ruin (Nightmare) Wonder, the Reaction List tab, and Rig's attack roll.**

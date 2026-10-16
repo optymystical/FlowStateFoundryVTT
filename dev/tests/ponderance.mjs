@@ -192,6 +192,15 @@ dialog = () => "mental-death-nightmare:wither";
 await P.trance(hero);
 combat.started = true;
 ok2(effs(orc, "trance")[0]?.flags.flowstate.spellEffect.hostile && P.tranceAbilities(orc).length === 1, "A Nightmare (hostile) Mode becomes an ability of the target instead");
+await resetC(); target(orc); combat.started = false;
+hero.system.trees["mental-peace-dream"] = 1; hero.system.prepareDerivedData();
+dialog = () => "mental-peace-dream:pacify";
+await P.trance(hero);
+ok2(effs(orc, "trance")[0]?.flags.flowstate.spellEffect.hostile && P.tranceAbilities(orc).length === 1, "Pacify is hostile at baseline (a debuff), though it's a Dream Mode: it becomes an ability too");
+ok2(R.modeHostile("mental-peace-dream:pacify") && R.modeHostile("mental-beyond-dream:herald") && R.modeHostile("mental-fortune-dream:wager") && !R.modeHostile("mental-life-dream:bloom"), "Hostile goes by the Mode: Pacify, Herald and Wager are, Bloom isn't");
+ok2(!R.modeHostile("mental-perfection-nightmare:hone") && !R.modeHostile("mental-war-nightmare:warzone") && !R.modeHostile("mental-dark-nightmare:umbral-strike") && !R.modeHostile("mental-dark-nightmare:eclipse") && R.modeHostile("mental-death-nightmare:wither"), "…and Hone, Warzone, Umbral Strike and Eclipse aren't, though they're Nightmare; Wither is");
+delete hero.system.trees["mental-peace-dream"]; hero.system.prepareDerivedData();
+combat.started = true;
 await resetC();
 
 console.log("== Mantra (Ponderance Arts T2)");

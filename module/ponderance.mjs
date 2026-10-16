@@ -1,7 +1,7 @@
 /**
  * Mental Theory's Concentration-based abilities and the Ponderance Arts (Mental doc):
  *  - Trance (Theory T2): 8 hours to make a Mode permanent on a willing target, for as long as you concentrate on it. A Dream Mode takes hold at the start of
- *    each of the target's turns if they succeed on a self attack roll; a Nightmare (hostile) one becomes an ability the target can use, with your Power and their dice.
+ *    each of the target's turns if they succeed on a self attack roll; a hostile one (`modeHostile`: Pacify, Wither...) becomes an ability the target can use, with your Power and their dice.
  *  - Premeditate (Ponderance T1): a Manifest that hits is stored (Strengthened) on its target, to take hold when a preset action happens (Concentration).
  *  - Mantra (T2): asked as a Tenet is used; double its bolded effect for half the Scaling Stat min in Energy. Composure (T3) and Daydreaming (T5) shape Concentration (concentration.mjs).
  *  - Forethought (T4): your Tenet applies to each Premeditated Wonder for free, outside its once per round limit.
@@ -82,7 +82,7 @@ export async function trance(actor) {
   const id = `trance:${uid()}`;
   if (!(await conc.begin(actor, { id, label: `Trance: ${mode.name} on ${target.name}` }))) return null;
   const mm = modeMental(actor, mode);
-  const hostile = mm.kind === "nightmare";
+  const hostile = R.modeHostile(mode.id);          // by what the Mode does to its target (Pacify is hostile, Hone isn't), not by Dream / Nightmare
   await putSpellEffect(target, { kind: "trance", stack: true, persistent: true, caster: actor.uuid, concentration: id, name: `Trance: ${mode.name}`, mode: mode.id, power: mm.power, hostile, m: mm,
     description: hostile ? `${actor.name}'s ${mode.name} is a permanent ability for ${target.name}: they can use it for the Range's AP, with ${actor.name}'s Power and their own attack dice.`
       : `${actor.name}'s ${mode.name} takes hold at the start of each of ${target.name}'s turns if they succeed on an attack roll against themselves; it lasts until their next turn.` });

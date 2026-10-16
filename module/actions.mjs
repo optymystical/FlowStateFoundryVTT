@@ -1654,6 +1654,8 @@ async function startExchange(actor, opts, targets) {
   const sections = [];
 
   let sharedRoll = null;
+  // Mental (Ruin): Gild's Advantage on the roll that resolves this creature's Jinxes, and a Ruin Table "next attack roll at Disadvantage" (used up).
+  const ruinNet = (await mentalHook?.attackNetBefore?.(actor)) ?? { net: 0, notes: [] };
   for (const [index, target] of targets.entries()) {
     const prone = target.statuses.has("prone");
     // Psych Up: attacks against you have Advantage.
@@ -1662,6 +1664,7 @@ async function startExchange(actor, opts, targets) {
     let atkNet = baseNet - (spellStealthImmune(opts, target) ? 1 : 0) + (opts.melee && prone ? 1 : 0) + (psyched(target) ? 1 : 0) + barrel + disruptNet(actor) + shroudAttackNet(actor, target, opts) + charmNet(actor, "attack") + (opts.spell ? magicDisNet(actor) : 0)
       - (autoDash(target, opts) ? 1 : 0);
     const spellNotes = [];
+    if (index === 0 && ruinNet.net) { atkNet += ruinNet.net; spellNotes.push(...ruinNet.notes); }
     const burdenAtk = mentalHook?.burdenNet(actor, "attackDis") ?? 0;
     if (burdenAtk) spellNotes.push(`Burden ×${-burdenAtk}: ${-burdenAtk} Disadvantage on the attack`);
     // Personal Repulsion / Personal Well (Gravity T3): attacks with a small Scaling Stat get Disadvantage / Advantage.
@@ -1710,6 +1713,12 @@ async function startExchange(actor, opts, targets) {
       const rc = await mentalHook.rollCharges({ actor, type: "attack", roll: atk, die: atkDie, count: 1, net: atkNet, max: atkDie, label: opts.label, targetActor: target,
         attackOpts: foundry.utils.deepClone(Object.fromEntries(EXCHANGE_KEYS.map(k => [k, opts[k]]))) });
       if (rc) { rolls.push(...rc.rolls); chargeNotes.push(...rc.notes); }
+    }
+    // Mental (Ruin): this attack roll resolves the Jinxes on the attacker; Reversal may then flip it (only the attack uses the flipped number).
+    if (!shared && index === 0 && mentalHook?.attackRolled) {
+      const jr = await mentalHook.attackRolled(actor, { total: atk.total, die: atkDie });
+      if (jr?.lines?.length) chargeNotes.push(...jr.lines);
+      if (jr && jr.total !== atk.total) atk.total = jr.total;
     }
     if (opts.spell?.singleRoll || opts.singleRoll) { sharedRoll = atk; if (shared) spellNotes.push("Area: the single attack roll above"); }
     entries.push({ uuid: target.uuid, name: target.name, total: atk.total, net: atkNet, die: atkDie, snipe: opts.snipe ? Math.max(0, atkNet) : 0,
@@ -1977,7 +1986,9 @@ export async function defend(message, index, choice) {
   const eclipse = mentalHook?.dodgeDieAgainst?.(await fromUuid(attack.attacker), target) ?? null;          // Eclipse (Dark): an eclipsed attacker's targets dodge with a smaller die
   const dieNow = Math.max(1, t.derived.dodgeDie - (waste?.pen ?? 0) - (eclipse?.pen ?? 0));
   if (eclipse?.pen) reasons.push(eclipse.note);
-  const net2 = net + (waste?.net ?? 0) + burden;
+  const ruinDodge = (await mentalHook?.dodgeNext?.(target)) ?? 0;          // Ruin Table: "their next dodge roll has Disadvantage" (used up)
+  if (ruinDodge) reasons.push("Ruin: Disadvantage on this dodge");
+  const net2 = net + (waste?.net ?? 0) + burden + ruinDodge;
   if (waste) reasons.push(waste.note);
   if (burden) reasons.push(`Burden ×${-burden}: ${-burden} Disadvantage on the dodge`);
   const dodge = await evaluate(poolFormula(2, dieNow, noAdvantage(target, net2)));
@@ -5620,6 +5631,7 @@ export async function spendEnergy(actor, cost, what = "that") {
     return false;
   }
   await actor.update({ "system.energy.value": have - cost });
+  await mentalHook?.energySpent?.(actor, cost);                            // Ruin Table: the next Energy spent costs more
   return true;
 }
 

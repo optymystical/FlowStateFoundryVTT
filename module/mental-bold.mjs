@@ -205,5 +205,11 @@ export const BOLD = {
  ],
  "Windfall": [
   "4 energy"
+ ],
+ "Jinx": [
+  "1d10 physical damage"
+ ],
+ "Forfeit": [
+  "4 energy"
  ]
 };

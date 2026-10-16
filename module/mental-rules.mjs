@@ -112,6 +112,17 @@ export function fortuneBand(total, die, doubleDown = false) {
   if (f >= 0.75) return { self: false, stacks: 4, label: "three quarters or higher: 4 Strengthened" };
   return { self: false, stacks: 2, label: "one half to under three quarters: 2 Strengthened" };
 }
+/**
+ * Ruin's Bands: the attack roll that resolves a creature's Jinxes, as a fraction of its die's max. Under one half they all fizzle; one half to under three quarters
+ * gives them 2 Strengthened, three quarters or higher 4.
+ */
+export function ruinBand(total, die) {
+  const f = (Number(total) || 0) / Math.max(1, Number(die) || 1);
+  if (f < 0.5) return { fizzle: true, stacks: 0, label: "under one half: the Jinxes fizzle" };
+  return f >= 0.75 ? { fizzle: false, stacks: 4, label: "three quarters or higher: 4 Strengthened" } : { fizzle: false, stacks: 2, label: "one half to under three quarters: 2 Strengthened" };
+}
+/** Reversal (Ruin T4): a die's result flipped: its size + 1 − the result. */
+export const flipRoll = (total, die) => Math.max(1, (Number(die) || 1) + 1 - (Number(total) || 0));
 /** Parlay (Fortune T2): Strengthened stacks multiply (×1.5 each) instead of adding; Weakened is unchanged. */
 export const fortuneScale = (value, stacks, parlay = false) => (parlay && stacks > 0 ? Math.floor(value * Math.pow(1.5, stacks)) : applyStacks(value, stacks));
 

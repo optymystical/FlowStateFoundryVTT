@@ -17,6 +17,7 @@ import * as wondersB from "./wonders-b.mjs";
 import * as wondersC from "./wonders-c.mjs";
 import * as wondersD from "./wonders-d.mjs";
 import * as wondersE from "./wonders-e.mjs";
+import * as wondersF from "./wonders-f.mjs";
 import * as forging from "./forging.mjs";
 import * as ponderance from "./ponderance.mjs";
 import * as snappence from "./snappence.mjs";
@@ -567,6 +568,8 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
   if (m.expand) return wondersC.expandResolve({ attacker, target, result, m });
   if (m.ejecta) return wondersD.ejectaResolve({ attacker, target, result, m });
   if (m.escape) return wondersD.escapeResolve({ attacker, target, result, m });
+  if (m.rig) return wondersE.rigResolve({ attacker, target, result, m });
+  if (m.doom) return wondersF.doomResolve({ attacker, target, result, m });
   if (m.dismiss) {
     if (!result.hit) return { html: `<div class="fs-notes">The dismissal misses: ${esc(target.name)} keeps their effects.</div>` };
     let n = 0;
@@ -598,6 +601,8 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
   }
   if (m.hubris && result.hit && !result.noCrit) result = { ...result, crit: true, critStacks: 2, outcome: "Critical Hit (Hubris)" };
   // Fortune: no crits; where the roll lands picks a band (a self hit under one half, Strengthened stacks above it).
+  // Ruin: no crits either; a hit stores the Mode as a Jinx (the Mode does that).
+  if (wondersF.isRuin(m)) { const f = await wondersF.ruinResolve({ attacker, target, o, result, m, mode, index, attackMessage }); if (f) return f; }
   if (wondersE.isFortune(m) && !m.selfHit) { const f = await wondersE.fortuneResolve({ attacker, target, o, result, entry, m, mode, index, attackMessage }); if (f) return f; }
   if (!result.hit && wonders.MISS_MODES.has(m.mode) && !m.hubris) {
     // Perfection Modes apply even on a miss: what they do is worked out from how far it missed.
@@ -965,4 +970,5 @@ registerMental({ attackStart: wondersC.attackStart, attackDieAgainst: wondersC.a
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage,
-  encasements: wondersD.encasements, accretionAsk: wondersD.accretionAsk, accretionWorn: wondersD.accretionWorn, forcedMove: wondersD.forcedMove, voluntaryMove: wondersD.voluntaryMove, standUp: wondersD.standUp });
+  encasements: wondersD.encasements, accretionAsk: wondersD.accretionAsk, accretionWorn: wondersD.accretionWorn, forcedMove: wondersD.forcedMove, voluntaryMove: wondersD.voluntaryMove, standUp: wondersD.standUp,
+  attackNetBefore: wondersF.attackNetBefore, attackRolled: wondersF.attackRolled, dodgeNext: wondersF.dodgeNext, energySpent: wondersF.energySpent });

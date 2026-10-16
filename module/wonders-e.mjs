@@ -286,16 +286,21 @@ export async function rig(actor) {
   if (tn?.id !== RIG) return ui.notifications.warn("Rig is Fortune's Tenet: attune an Icon to it first.");
   return runAct({ id: "rig", tenet: true, label: "Rig", caster: actor.uuid, target: actor.uuid, mult: tn.mult, bstacks: 0 });
 }
+/** Rig: roll the table, pick a creature within 100 ft, and make an attack roll at it: the rolled effect applies on a hit (a crit's stacks scale it). */
 ACTS.rig = async (x, caster) => {
   if (!(await tryOnce(caster, "rig"))) { ui.notifications.info("Rig: already used this round."); return false; }
   const r = await roll("1d100");
   const row = fortuneRow(r.total);
   const targeted = [...(game.user?.targets ?? [])].map(t => t.actor).filter(live);
-  const target = targeted.length === 1 ? targeted[0]
-    : await mental.pickAnother(caster, { title: `Rig rolled ${r.total} (${row?.text ?? "?"}): apply it to`, within: 100 }) ?? await mental.pickOne(caster, [caster], `Rig rolled ${r.total}: apply it to`);
+  const target = targeted.length === 1 ? targeted[0] : await mental.pickAnother(caster, { title: `Rig rolled ${r.total} (${row?.text ?? "?"}): attack`, within: 100 });
   if (!target) return true;
-  const out = await applyFortune(caster, target, { P: x.mult ?? 1, label: "Rig", preset: r.total });
-  await post(caster, { title: `${esc(caster.name)} — Rig`, rolls: [r, ...out.rolls], body: `<div class="fs-result"><i class="fa-solid fa-dice"></i> ${out.html}</div>` });
+  await post(caster, { title: `${esc(caster.name)} — Rig`, rolls: [r], body: `<div class="fs-result"><i class="fa-solid fa-dice"></i> Rig rolls <strong>${r.total}</strong> on the Fortune Table (${esc(row?.range ?? "?")}: ${esc(row?.text ?? "")}). An attack roll at ${esc(target.name)} applies it on a hit.</div>` });
+  await mental.specialAttack(caster, target, { label: "Rig", notes: [`Rig: Fortune Table ${r.total} on a hit`], flag: { rig: { n: r.total, mult: x.mult ?? 1 } } });
   return true;
 };
+export async function rigResolve({ attacker, target, result, m }) {
+  if (!result.hit) return { html: `<div class="fs-notes">Rig misses ${esc(target.name)}: the Fortune Table result is lost.</div>` };
+  const out = await applyFortune(attacker, target, { P: m.rig.mult ?? 1, bs: result.critStacks ?? (result.crit ? 2 : 0), label: "Rig", preset: m.rig.n });
+  return { html: `<div class="fs-result"><i class="fa-solid fa-dice"></i> ${out.html}</div>`, rolls: out.rolls };
+}
 

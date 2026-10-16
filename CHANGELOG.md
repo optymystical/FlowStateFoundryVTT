@@ -2,6 +2,11 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.65.0:** **Ruin (Nightmare) Wonder, the Reaction List tab, and Rig's attack roll.**
+- **Ruin:** Jinx, Forfeit and Calamity store Jinxes (no crits); the Jinxed creature's next attack roll resolves them all (under half its die: they fizzle; higher: 2 or 4 Strengthened). Gild (Advantage on that roll), Reversal (flip their attack roll after the Jinxes resolve), Doom (Tenet: roll the Ruin Table, apply it on a hit), and all 25 Ruin Table effects.
+- **Reaction List:** the popup and offer card switches have their own sheet tab (Popups and Offer cards) instead of the Action List's Reactions group, and their own Token Action HUD tab.
+- **Fortune:** Rig now needs a successful attack roll at the creature you pick (the doc's update).
+
 **0.64.2:** **More offer cards can be switched off** under Reactions in the Action List: Palisade, Blade Flurry, Combo / Flow Like Water, the start-of-turn card, the Wonder ability buttons, Chant, Will of Body and Spirit, Perennial, Vice / Quicksand, Momentum, Warpath and Current. Each switch only shows for characters who can get that card.
 
 **0.64.1:** **Mark shot switch.** Rapid Weapons T3 characters get a "Mark shot" switch under Reactions in the Action List: off, a Marked creature acting uses the Mark up without posting the Shoot card (Lead Blindness still applies).

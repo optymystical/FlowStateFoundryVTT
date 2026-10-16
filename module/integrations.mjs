@@ -2,9 +2,9 @@
  * Optional module integrations. Each block only runs if that module is installed and active (it fires the hook).
  *  - Carousel Combat Tracker (combat-tracker-dock): default portrait attributes and a short description.
  *  - Token Action HUD Core (token-action-hud-core): a built-in Flow State system integration that mirrors the
- *    sheet's Action List, so the HUD always offers exactly what the Action List does, at the same costs.
+ *    sheet's Action List (so the HUD offers exactly what it does, at the same costs) and its Reaction List (the popup and offer card switches).
  */
-import { buildActionList, weaponRows, runActionRow } from "./sheets.mjs";
+import { buildActionList, buildReactionList, weaponRows, runActionRow } from "./sheets.mjs";
 
 /* -------------------------------------------- */
 /*  Carousel Combat Tracker                     */
@@ -41,7 +41,7 @@ Hooks.once("combat-tracker-dock-init", config => {
 /*  Token Action HUD                            */
 /* -------------------------------------------- */
 
-/** HUD tabs → Action List groups (by key). Empty groups are hidden by the HUD. */
+/** HUD tabs → Action List and Reaction List groups (by key). Empty groups are hidden by the HUD. */
 export const TAH_LAYOUT = [
   { id: "combat", name: "Combat", groups: [["act-combat", "Combat"], ["act-parry", "Parry"], ["act-shroud", "Shroud"], ["act-martial", "Martial Theory"]] },
   { id: "magic", name: "Magic", groups: [["act-magic", "Magic"]] },
@@ -49,7 +49,7 @@ export const TAH_LAYOUT = [
   { id: "movement", name: "Movement", groups: [["act-move", "Movement"], ["act-heavy", "Armor"], ["act-medium", "Medium Armor"]] },
   { id: "methods", name: "Methods", groups: [["act-strength", "Strength Methods"], ["act-dex", "Dexterity Methods"], ["act-con", "Constitution Methods"], ["act-grappling", "Grappling Methods"]] },
   { id: "weapons", name: "Weapon Trees", groups: [["act-curved", "Curved Weapons"], ["act-striker", "Striker Weapons"], ["act-assault", "Assault Weapons"], ["act-rapid", "Rapid Weapons"], ["act-swift", "Swift Weapons"]] },
-  { id: "reactions", name: "Reactions", groups: [["act-reactions", "Reactions"]] },
+  { id: "reactions", name: "Reaction List", groups: [["react-popups", "Popups"], ["react-cards", "Offer cards"]] },
   { id: "checks", name: "Checks", groups: [["act-checks", "Checks"]] }
 ];
 
@@ -58,10 +58,10 @@ function rowId(groupKey, row) {
   return [groupKey, row.action, row.op ?? "", row.itemId ?? "", row.rollLabel ?? "", row.grapple ? "g" : ""].join("|");
 }
 
-/** The HUD actions for one actor, grouped by Action List key. */
+/** The HUD actions for one actor, grouped by Action List / Reaction List key. */
 function hudActions(actor) {
   const out = new Map();
-  for (const g of buildActionList(actor, weaponRows(actor))) {
+  for (const g of [...buildActionList(actor, weaponRows(actor)), ...buildReactionList(actor)]) {
     const seen = new Set();
     const list = [];
     for (const row of g.actions) {

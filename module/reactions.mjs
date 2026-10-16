@@ -1,11 +1,11 @@
 /**
  * Reaction prompts a player can switch off. Every question the system asks a player in the middle of someone else's turn ("Use Infuse?", "Spend 1 RP
  * to negate with your Ward?") has a key here; when it is switched off for a character the question is never asked and counts as "no" (nothing is
- * spent, nothing happens). The switches live on the character (flag `autoDecline`) and show up in the Action List under "Reactions", only for the
+ * spent, nothing happens). The switches live on the character (flag `autoDecline`) and show up in the sheet's Reaction List tab (offer cards too: off, the card isn't posted), only for the
  * reactions that character can actually be asked. Pure: no Foundry globals.
  */
 
-/** A reaction: `key` (what askFor carries as `react`), a label and tip for the Action List, and when the character can be asked it. */
+/** A reaction: `key` (what askFor carries as `react`), a label and tip for the Reaction List tab, when the character can be asked it, and `card` for an offer card (posted, not asked). */
 const REACTIONS = [
   { key: "ward", label: "Ward negation", tip: "Whether to spend 1 RP to negate incoming damage with your Icon's Ward.", when: c => c.iconKind === "negate" },
   { key: "premonition", label: "Premonition charge", tip: "Whether to consume a Premonition charge to negate incoming damage.", when: c => c.iconKind === "charge" || c.hasPremonition },
@@ -20,19 +20,20 @@ const REACTIONS = [
   { key: "impulse", label: "Impulse", tip: "Whether to pay Energy to apply your Tenet once more after it has already triggered this round.", when: c => c.snappence >= 2 && !!c.tenet },
   { key: "fixation", label: "Fixation", tip: "The question at the start of your turn about whom to fixate on.", when: c => c.snappence >= 3 },
   // Offer cards: optional buttons the system posts on their own card. Switched off, the card isn't posted (nothing is spent).
-  { key: "palisade", label: "Palisade", tip: "The card to strike a creature that moves into your Reach weapon's range.", when: c => c.tier("martial-reach-weapons") >= 1 },
-  { key: "flurry", label: "Blade Flurry", tip: "The card offered when both Fast Swift attacks land on one target.", when: c => c.tier("martial-swift-weapons") >= 3 },
-  { key: "brawling", label: "Combo / Flow Like Water", tip: "The card offered when a whole Fast or Solitary Unarmed set lands on one target.", when: c => c.tier("martial-brawling-methods") >= 3 },
-  { key: "turnStart", label: "Start-of-turn abilities", tip: "The card at the start of your turn with Berserk, Proper Stance and Quicken (switched off, Berserk can't be maintained from it).", when: c => c.tier("martial-striker-weapons") >= 2 || c.tier("martial-assault-weapons") >= 5 || c.tier("martial-unarmored") >= 4 },
-  { key: "wonderAbilities", label: "Wonder ability buttons", tip: "The card of ability buttons after a Manifest (Pollinate, Fester, Refraction, Ricochet, Instinct and the like).", when: c => !!c.anyWonder },
-  { key: "chant", label: "Chant reroll", tip: "The card offering to reroll a missed Manifest (Mental Theory T3).", when: c => (c.theory ?? 0) >= 3 },
-  { key: "wobs", label: "Will of Body and Spirit", tip: "The card offering a free Manifest after your Martial or Magic attacks (Mental Theory T5).", when: c => (c.theory ?? 0) >= 5 },
-  { key: "perennial", label: "Perennial", tip: "The card at the start of your turn to reapply expiring Life effects.", when: c => c.tier("mental-life-dream") >= 4 },
-  { key: "below", label: "Vice / Quicksand", tip: "The card offered when someone tries to break free of your Below effects.", when: c => c.tier("mental-below-nightmare") >= 2 },
-  { key: "momentum", label: "Momentum", tip: "The card offered when a creature you moved with a Beyond Mode collides.", when: c => c.tier("mental-beyond-dream") >= 2 },
-  { key: "warpath", label: "Warpath", tip: "The card offering to carry your War buffs to another creature.", when: c => c.tier("mental-war-nightmare") >= 4 },
-  { key: "current", label: "Current", tip: "The button to move a creature after your Sea Modes hurt it.", when: c => c.tier("mental-sea-nightmare") >= 2 },
-  { key: "mark", label: "Mark shot", tip: "The card to shoot your Marked creature when it attacks, acts or moves (the Mark is used up either way; Lead Blindness still applies).", when: c => c.tier("martial-rapid-weapons") >= 3 },
+  { key: "palisade", card: true, label: "Palisade", tip: "The card to strike a creature that moves into your Reach weapon's range.", when: c => c.tier("martial-reach-weapons") >= 1 },
+  { key: "flurry", card: true, label: "Blade Flurry", tip: "The card offered when both Fast Swift attacks land on one target.", when: c => c.tier("martial-swift-weapons") >= 3 },
+  { key: "brawling", card: true, label: "Combo / Flow Like Water", tip: "The card offered when a whole Fast or Solitary Unarmed set lands on one target.", when: c => c.tier("martial-brawling-methods") >= 3 },
+  { key: "turnStart", card: true, label: "Start-of-turn abilities", tip: "The card at the start of your turn with Berserk, Proper Stance and Quicken (switched off, Berserk can't be maintained from it).", when: c => c.tier("martial-striker-weapons") >= 2 || c.tier("martial-assault-weapons") >= 5 || c.tier("martial-unarmored") >= 4 },
+  { key: "wonderAbilities", card: true, label: "Wonder ability buttons", tip: "The card of ability buttons after a Manifest (Pollinate, Fester, Refraction, Ricochet, Instinct and the like).", when: c => !!c.anyWonder },
+  { key: "chant", card: true, label: "Chant reroll", tip: "The card offering to reroll a missed Manifest (Mental Theory T3).", when: c => (c.theory ?? 0) >= 3 },
+  { key: "wobs", card: true, label: "Will of Body and Spirit", tip: "The card offering a free Manifest after your Martial or Magic attacks (Mental Theory T5).", when: c => (c.theory ?? 0) >= 5 },
+  { key: "perennial", card: true, label: "Perennial", tip: "The card at the start of your turn to reapply expiring Life effects.", when: c => c.tier("mental-life-dream") >= 4 },
+  { key: "below", card: true, label: "Vice / Quicksand", tip: "The card offered when someone tries to break free of your Below effects.", when: c => c.tier("mental-below-nightmare") >= 2 },
+  { key: "momentum", card: true, label: "Momentum", tip: "The card offered when a creature you moved with a Beyond Mode collides.", when: c => c.tier("mental-beyond-dream") >= 2 },
+  { key: "warpath", card: true, label: "Warpath", tip: "The card offering to carry your War buffs to another creature.", when: c => c.tier("mental-war-nightmare") >= 4 },
+  { key: "current", card: true, label: "Current", tip: "The button to move a creature after your Sea Modes hurt it.", when: c => c.tier("mental-sea-nightmare") >= 2 },
+  { key: "mark", card: true, label: "Mark shot", tip: "The card to shoot your Marked creature when it attacks, acts or moves (the Mark is used up either way; Lead Blindness still applies).", when: c => c.tier("martial-rapid-weapons") >= 3 },
+  { key: "reversal", label: "Reversal / Ruin flips", tip: "Offered when a creature's attack roll resolves your Jinxes (Reversal, Ruin T4) or a Ruin Table result lets you flip their roll.", when: c => c.tier("mental-ruin-nightmare") >= 1 },
   { key: "umbral", label: "Umbral Strike", tip: "Offered when you attack while you hold an Umbral Strike charge.", when: c => !!c.hasUmbral },
   { key: "charges", label: "Order / Chaos charges", tip: "Spending your charges on rolls (attack, dodge, other and damage rolls).", when: c => c.tier("mental-order-dream") >= 1 || c.tier("mental-chaos-nightmare") >= 1 },
   { key: "verdict", label: "Verdict", tip: "Passing judgment after an attack lands.", when: c => c.tier("mental-order-dream") >= 1 },

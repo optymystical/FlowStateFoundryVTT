@@ -57,9 +57,19 @@ ok(/isn't grappling/.test(called2 ?? ""), `TAH: martial op dispatch (${called2})
 {
   const { readFileSync } = await import("node:fs");
   const { TAH_LAYOUT } = await import("../../module/integrations.mjs");
-  const keys = [...readFileSync(new URL("../../module/sheets.mjs", import.meta.url), "utf8").matchAll(/key: "(act-[a-z-]+)"/g)].map(m => m[1]);
+  const keys = [...readFileSync(new URL("../../module/sheets.mjs", import.meta.url), "utf8").matchAll(/key: "((?:act|react)-[a-z-]+)"/g)].map(m => m[1]);
   const placed = new Set(TAH_LAYOUT.flatMap(t => t.groups.map(g => g[0])));
   const missing = [...new Set(keys)].filter(k => !placed.has(k));
-  ok(missing.length === 0, `TAH: every Action List group is in the HUD layout (missing: ${missing.join(", ") || "none"})`);
+  ok(missing.length === 0, `TAH: every Action List and Reaction List group is in the HUD layout (missing: ${missing.join(", ") || "none"})`);
+  ok(TAH_LAYOUT.find(t => t.id === "reactions")?.name === "Reaction List" && keys.includes("react-cards"), "TAH: the Reaction List has its own HUD tab");
+}
+// The Reaction List's switches reach the HUD, and a click toggles the same flag as the sheet.
+{
+  actor.system.trees["martial-rapid-weapons"] = 3; actor.flags = {}; actor.setFlag = async (s, k, v) => { actor.flags[k] = { ...(actor.flags[k] ?? {}), ...v }; };
+  const ah2 = sm.getActionHandler(); ah2.actor = actor; await ah2.buildSystemActions();
+  const mark = (ah2.added.find(([id]) => id === "react-cards")?.[1] ?? []).find(a => /Mark shot/.test(a.name));
+  ok(mark && !ah2.added.some(([id]) => id === "act-reactions"), "TAH: the Mark shot switch is in the HUD's Reaction List, not the Action List");
+  await mark.onClick();
+  ok(actor.flags.autoDecline?.mark === true, "TAH: clicking it switches the card off");
 }
 process.exit(fails ? 1 : 0);

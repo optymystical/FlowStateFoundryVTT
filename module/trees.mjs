@@ -4966,7 +4966,7 @@ export const TREES = [
      },
      {
       "name": "Rig",
-      "text": "Only active while this is your selected Tenet. Once per round at any time as a free reaction you can roll the Fortune Table found at the end of this tree, then select a target you can sense within 100ft of you to apply the rolled effect to."
+      "text": "Only active while this is your selected Tenet. Once per round at any time as a free reaction you can roll the Fortune Table found at the end of this tree, then select a target you can sense within 100ft of you to apply the rolled effect to on a successful attack roll."
      }
     ]
    },
@@ -5117,6 +5117,183 @@ export const TREES = [
     [
      "98–100",
      "Give the target 5 Temp HP, restore 5 health to them (only affecting damage taken since the start of your last turn), and remove one Stage 1 negative condition from them."
+    ]
+   ]
+  }
+ },
+ {
+  "id": "mental-ruin-nightmare",
+  "name": "Ruin (Nightmare)",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 4,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following Mode, passive, and Tenet:",
+    "entries": [
+     {
+      "name": "Jinx",
+      "text": "On hit, store a Jinx of 1d10 physical damage on the target. Enhanced: The first time this Jinx would fizzle, it waits for the target’s next attack roll instead."
+     },
+     {
+      "name": "Ruin’s Bands",
+      "text": "Ruin Modes cannot crit. Instead, on hit, they store their effect on the target as a Jinx, lasting until the start of your next turn. The target’s next attack roll resolves every Jinx on it at once. The result depends on where that roll lands relative to its maximum: Under one half: All the Jinxes fizzle. One half to under three quarters: The Jinxes’ effects gain 2 stacks of Strengthened Three quarters or higher: The Jinxes’ effects gain 4 stacks of Strengthened"
+     },
+     {
+      "name": "Doom",
+      "text": "Only active while this is your selected Tenet. Once per round at any time as a free reaction you can roll the Ruin Table found at the end of this tree, then select a target you can sense within 100ft of you to apply the rolled effect to on a successful attack roll."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Gild",
+      "text": "Cost: Energy equal to half your SNA min, rounded down. When you Manifest a Ruin Mode, you can use this ability. If that Manifest hits, the roll that resolves the target’s Jinxes has Advantage."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You gain the following Mode:",
+    "entries": [
+     {
+      "name": "Forfeit",
+      "text": "On hit, store a Jinx that removes 4 energy from the target. Any energy that would go below 0 becomes health loss at 1:1 instead (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). Enhanced: That conversion becomes 1:2."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Reversal",
+      "text": "Cost: Energy equal to half your SNA min, rounded down. After a Jinxed creature’s roll resolves your Jinxes, you can use this ability to flip that roll: that die’s result becomes (its size + 1 − the result)."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following Mode:",
+    "entries": [
+     {
+      "name": "Calamity",
+      "text": "On hit, roll a d100 and store the Ruin Table result on the target as a Jinx. Enhanced: Roll twice and choose which result to store."
+     }
+    ]
+   }
+  ],
+  "table": {
+   "title": "The Ruin Table",
+   "rows": [
+    [
+     "1–4",
+     "Deals 1d12 physical to the target. If the target is at or above ¾ of its max health, this damage gains 2 stacks of Strengthened."
+    ],
+    [
+     "5–8",
+     "The target’s next attack after this one causes them to deal 1d10 physical to themself, hit or miss. Lasts until used or the start of your next turn."
+    ],
+    [
+     "9–12",
+     "Deals 1d10 physical to the target and to one creature of your choice within 10ft of it."
+    ],
+    [
+     "13–16",
+     "A fresh Jinx holding 1d8 physical passes to a creature of your choice within 10ft of the target. Lasts until used or the start of your next turn."
+    ],
+    [
+     "17–20",
+     "Removes 1d10 Temp HP/Shielding from the target, then deals 1d10 acid damage to them."
+    ],
+    [
+     "21–24",
+     "Deals 1d10 radiation damage to the target, and the target cannot regain health until the start of your next turn."
+    ],
+    [
+     "25–28",
+     "Deals 1d8 heat damage to the target now, and again at the start of the target’s next turn."
+    ],
+    [
+     "29–32",
+     "Deals 1d10 cold damage to the target and applies 10 Slow stacks to them."
+    ],
+    [
+     "33–36",
+     "The target loses 1d10 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects)."
+    ],
+    [
+     "37–40",
+     "The target loses 3 energy. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects)."
+    ],
+    [
+     "41–44",
+     "The next time the target spends energy, it spends 3 more. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). Lasts until used or the start of your next turn."
+    ],
+    [
+     "45–48",
+     "The target’s Haste stacks become Slow stacks, then it gains 10 Slow stacks."
+    ],
+    [
+     "49–52",
+     "The target loses 10 Temp HP/Shielding, and one object that it is holding or wearing that has Durability loses 10 Durability."
+    ],
+    [
+     "53–56",
+     "Deals 1d8 physical damage to the target, and their next attack roll has Disadvantage. Lasts until used or the start of your next turn."
+    ],
+    [
+     "57–60",
+     "Deals 1d8 physical damage to the target, and their next dodge roll has Disadvantage. Lasts until used or the start of your next turn."
+    ],
+    [
+     "61–64",
+     "Deals 1d6 physical damage to the target, and the next Jinx to resolve on the target gains 2 Strengthened stacks (if multiple, choose one). Lasts until used or the start of your next turn."
+    ],
+    [
+     "65–68",
+     "Deals 1d6 physical damage to the target, and you may flip the target’s next attack roll for free, as Reversal does. Lasts until used or the start of your next turn."
+    ],
+    [
+     "69–72",
+     "Deals 1d12 physical damage to the target, ignoring up to 10 Limit."
+    ],
+    [
+     "73–76",
+     "Deals 1d8 physical damage to the target, and the next time they deal damage, that damage has a stack of Weakened. Lasts until used or the start of your next turn."
+    ],
+    [
+     "77–80",
+     "One effect the target is Concentrating on ends, and it loses 1d8 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects)."
+    ],
+    [
+     "81–84",
+     "Deals 1d8 physical damage to the target, and the next time they take non-Jinx damage, that damage has a stack of Strengthened. Lasts until used or the start of your next turn."
+    ],
+    [
+     "85–88",
+     "If the target has more than half its max energy, it loses 5 energy. Otherwise, they are dealt 1d10 physical damage."
+    ],
+    [
+     "89–92",
+     "Roll again and store the new result on the target as a fresh Calamity."
+    ],
+    [
+     "93–96",
+     "Roll twice more and apply both, rerolling any 89–100."
+    ],
+    [
+     "97–100",
+     "Deals 1d12 Supernatural damage to the target, and they are knocked prone."
     ]
    ]
   }

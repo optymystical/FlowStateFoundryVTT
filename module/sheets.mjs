@@ -28,6 +28,7 @@ import * as snappenceMod from "./snappence.mjs";
 import * as wondersC from "./wonders-c.mjs";
 import * as wondersD from "./wonders-d.mjs";
 import * as wondersE from "./wonders-e.mjs";
+import * as wondersF from "./wonders-f.mjs";
 import * as concentration from "./concentration.mjs";
 import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
@@ -718,18 +719,12 @@ function actionGroups(actor, weapons, stats) {
     mentalRows.push({ label: "Ejecta", detail: accs.length ? `Throw one of your Accretions (${accs.map(x => `on ${x.holder.name}`).join(", ")}) at a creature within 100 ft of it: an attack roll, ${skills.tierOf(sys.trees, wondersD.EARTH) >= 4 ? "damage" : "physical damage"} equal to a fifth of its remaining Durability` : "You have no Accretion to throw",
       cost: "Free", action: "ejecta", icon: "fa-solid fa-meteor", disabled: !accs.length });
   }
-  if (wonders.tenetOf(actor)?.id === `${wondersE.FORTUNE}:rig`) mentalRows.push({ label: "Rig", detail: `Any time, once per round: roll the Fortune Table and apply the result to a creature within 100 ft (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "rig", icon: "fa-solid fa-dice" });
+  if (wonders.tenetOf(actor)?.id === `${wondersE.FORTUNE}:rig`) mentalRows.push({ label: "Rig", detail: `Any time, once per round: roll the Fortune Table, then an attack roll at a creature within 100 ft applies it on a hit (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "rig", icon: "fa-solid fa-dice" });
+  if (wonders.tenetOf(actor)?.id === `${wondersF.RUIN}:doom`) mentalRows.push({ label: "Doom", detail: `Any time, once per round: roll the Ruin Table, then an attack roll at a creature within 100 ft applies it on a hit (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "doom", icon: "fa-solid fa-skull" });
   if (ponderT >= 5 && concs.length > 1) mentalRows.push({ label: "Daydreaming", detail: "Choose which Concentration can't be broken", cost: "Free", action: "daydream", icon: "fa-solid fa-cloud" });
   if (psionT >= 1) mentalRows.push({ label: "Psion Sense", detail: `Spot check for mental energies within ${mctx.farSight ? 1000 : 100} ft`, cost: "Check", action: "psionSense", icon: "fa-solid fa-brain" });
   if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
   if (psionT >= 4) mentalRows.push({ label: "Aura Sight", detail: "Spot everything in Psion range; doubles Area Manifestations until your next turn", cost: "2 AP + ⚡ half total Mind", action: "auraSight", icon: "fa-solid fa-eye" });
-
-  // Reactions: every popup this character can be asked in someone else's turn, each with a switch to skip it (counts as "no").
-  const reactionList = reactionRules.reactionRows(actor, { tenet: wonders.tenetOf(actor)?.id?.split(":")[1] ?? "", iconKind: actor.system.icon?.system.profile?.kind ?? "",
-    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, hasUmbral: actions.spellEffects(actor, "umbralCharge").length > 0, ponderance: ponderT, snappence: snapT, tier: w => skills.tierOf(sys.trees, w),
-    theory: mTheory, anyWonder: mctx.wonders.length > 0 });
-  const reactionRows = reactionList.map(r => ({ label: `${r.label}: ${r.off ? "skipped" : "asked"}`, detail: `${r.tip} ${r.off ? "You are not asked: it counts as no." : "A popup asks you when it comes up."}`,
-    cost: r.off ? "Click to ask again" : "Click to skip", action: "martial", op: `reaction:${r.key}`, icon: r.off ? "fa-solid fa-bell-slash" : "fa-solid fa-bell" }));
 
   return [
     { key: "act-combat", name: "Combat", actions: combat },
@@ -750,9 +745,25 @@ function actionGroups(actor, weapons, stats) {
     ...(rapidRows.length ? [{ key: "act-rapid", name: "Rapid Weapons", actions: rapidRows }] : []),
     ...(swiftRows.length ? [{ key: "act-swift", name: "Swift Weapons", actions: swiftRows }] : []),
     ...(martial.length ? [{ key: "act-martial", name: "Martial Theory", actions: martial }] : []),
-    ...(reactionRows.length ? [{ key: "act-reactions", name: "Reactions", actions: reactionRows }] : []),
     { key: "act-checks", name: "Checks", actions: checks }
   ];
+}
+
+/**
+ * The Reaction List tab: every popup this character can be asked (usually in someone else's turn) and every offer card the system posts for them, each with a
+ * switch. Off, a popup counts as "no" and an offer card isn't posted. Same row shape as the Action List (the Token Action HUD shows it too).
+ */
+export function buildReactionList(actor) {
+  const sys = actor.system;
+  const list = reactionRules.reactionRows(actor, { tenet: wonders.tenetOf(actor)?.id?.split(":")[1] ?? "", iconKind: sys.icon?.system.profile?.kind ?? "",
+    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, hasUmbral: actions.spellEffects(actor, "umbralCharge").length > 0,
+    ponderance: skills.tierOf(sys.trees, "mental-ponderance-arts"), snappence: skills.tierOf(sys.trees, "mental-snappence-arts"), tier: w => skills.tierOf(sys.trees, w),
+    theory: mentalRules.theoryTier(sys.trees), anyWonder: mental.manifestContext(actor).wonders.length > 0 });
+  const row = r => ({ label: `${r.label}: ${r.off ? (r.card ? "hidden" : "skipped") : (r.card ? "shown" : "asked")}`,
+    detail: `${r.tip} ${r.off ? (r.card ? "The card isn't posted." : "You are not asked: it counts as no.") : (r.card ? "The card is posted when it comes up." : "A popup asks you when it comes up.")}`,
+    cost: r.off ? "Off: click to turn on" : "On: click to turn off", action: "martial", op: `reaction:${r.key}`, icon: r.off ? "fa-solid fa-bell-slash" : "fa-solid fa-bell", off: r.off });
+  const popups = list.filter(r => !r.card).map(row), cards = list.filter(r => r.card).map(row);
+  return [...(popups.length ? [{ key: "react-popups", name: "Popups", actions: popups }] : []), ...(cards.length ? [{ key: "react-cards", name: "Offer cards", actions: cards }] : [])];
 }
 
 /**
@@ -814,6 +825,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       expand: function (event, target) { return wondersC.expand(this.document, target.closest("[data-op]")?.dataset.op); },
       ejecta: function () { return wondersD.ejecta(this.document); },
       rig: function () { return wondersE.rig(this.document); },
+      doom: function () { return wondersF.doom(this.document); },
       daydream: function () { return concentration.chooseDaydream(this.document); },
       triggerPremeditated: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.triggerPremeditated(this.document, e) : null; },
       useTrance: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.useTrance(this.document, e) : null; },
@@ -864,6 +876,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     main: { template: "systems/flowstate/templates/actor-main.hbs", scrollable: [""] },
     skills: { template: "systems/flowstate/templates/actor-skills.hbs", scrollable: [""] },
     actions: { template: "systems/flowstate/templates/actor-actions.hbs", scrollable: [""] },
+    reactions: { template: "systems/flowstate/templates/actor-reactions.hbs", scrollable: [""] },
     equipment: { template: "systems/flowstate/templates/actor-equipment.hbs", scrollable: [""] },
     misc: { template: "systems/flowstate/templates/actor-misc.hbs", scrollable: [""] },
     notes: { template: "systems/flowstate/templates/actor-notes.hbs", scrollable: [""] }
@@ -876,6 +889,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         { id: "main", label: "Main", icon: "fa-solid fa-user" },
         { id: "skills", label: "Skills", icon: "fa-solid fa-sitemap" },
         { id: "actions", label: "Action List", icon: "fa-solid fa-list-check" },
+        { id: "reactions", label: "Reaction List", icon: "fa-solid fa-bell" },
         { id: "equipment", label: "Equipment", icon: "fa-solid fa-shield-halved" },
         { id: "misc", label: "Misc", icon: "fa-solid fa-sliders" },
         { id: "notes", label: "Notes", icon: "fa-solid fa-feather" }
@@ -941,13 +955,14 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     });
     const collapsed = collapsedFor(actor.uuid);
     const actionGroups = buildActionList(actor, weapons, stats).map(g => ({ ...g, open: !collapsed.has(g.key) }));
+    const reactionGroups = buildReactionList(actor).map(g => ({ ...g, open: !collapsed.has(g.key) }));
     const open = Object.fromEntries(["weapons", "armor", "foci", "shrouds", "affixes", "icons", "currency", "misc"].map(k => [k, !collapsed.has(k)]));
 
     return Object.assign(context, {
       actor,
       system: sys,
       d,
-      actionGroups,
+      actionGroups, reactionGroups,
       icons, affixes, affixCostNote: affixCost(d.movement?.speedLoss),
       open,
       editable: this.isEditable,

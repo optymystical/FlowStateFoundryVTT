@@ -11,7 +11,7 @@
  */
 import * as fx from "./spellfx.mjs";
 import {
-  post, requestGM, requestDamage, damageOutcome, putSpellEffect, spellEffects, spellForce, giveStacks, pickSceneTarget, performAttack, attackerToken, changeEffect, knockbackRow, exhaustionNet, magicDisNet, registerAfflictions, setActorFlag, castStacks
+  post, requestGM, requestDamage, damageOutcome, putSpellEffect, spellEffects, spellForce, giveStacks, pickSceneTarget, performAttack, attackerToken, changeEffect, knockbackRow, exhaustionNet, magicDisNet, registerAfflictions, setActorFlag, castStacks, noAdvantage
 } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES, STATS } from "./rules.mjs";
@@ -60,7 +60,7 @@ export async function check(actor, stats, req, { dis = 0, contest = null } = {})
   const die = keys.reduce((n, k) => n + (eff[k]?.die ?? 0), 0);
   const spirit = keys.some(k => ["reach", "grasp", "build"].includes(k));
   const net = -dis + exhaustionNet(actor) + charmNet(actor, "stat") + (spirit ? magicDisNet(actor) : 0);
-  const r = await roll(poolFormula(1, Math.max(1, die), net));
+  const r = await roll(poolFormula(1, Math.max(1, die), noAdvantage(actor, net)));
   return { roll: r, total: r.total, passed: r.total >= req, die, req, net, label: keys.map(k => STATS[k]?.label ?? k).join(" + ") };
 }
 const checkLine = (who, c) => `<div class="fs-notes">${esc(who.name)}: ${c.label} check (d${c.die}${c.net ? `, ${c.net < 0 ? `${-c.net}× Disadvantage` : `${c.net}× Advantage`}` : ""}) needs ${c.req} or higher: <strong>${c.total}</strong> — ${c.passed ? "passed" : "failed"}.</div>`;

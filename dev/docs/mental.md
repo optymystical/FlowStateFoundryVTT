@@ -44,9 +44,13 @@
 
 [Earth (Dream)](#earth-\(dream\))
 
+[Sea (Nightmare)](#sea-\(nightmare\))
+
 [**Mental T4 Skill Trees**](#mental-t4-skill-trees)
 
 [Willpower Arts](#willpower-arts)
+
+[Fortune (Dream)](#fortune-\(dream\))
 
 [**Mental T5 Skill Trees**](#mental-t5-skill-trees)
 
@@ -231,7 +235,7 @@
 ## **Beyond (Dream)** {#beyond-(dream)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Herald:** On hit, apply **10d8 Force** to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead converting directly into feet pushed after being divided by 10\. **Enhanced:** The Force also ignores Lift, treating it as if it were 0\.  
+**Herald:** On hit, apply **6d8 Force** to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead converting directly into feet pushed after being divided by 10\. **Enhanced:** The Force also ignores Lift, treating it as if it were 0\.  
 **Gust:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can apply **5d8 Force** to whatever the target(s) of the Manifest are in any direction of your choosing. This Force adds up with any Force the Manifest itself would produce.
 
 **Tier 2: You gain the following ability:**
@@ -510,7 +514,7 @@
 
 **Tier 4: You gain the following Mode:**
 
-- **Umbral Strike:** Store an Umbral Strike charge on the target, lasting until the start of your next turn. When a creature with an Umbral Strike charge makes an attack, it can consume up to one Umbral Strike charge to treat that attack as being made from one step further into stealth (none → half → full) and increase its **damage by** **1d8** of that attack’s damage type. **Enhanced:** Gives two charges of Umbral Strike instead.
+- **Umbral Strike:** Store an Umbral Strike charge on the target, lasting until the start of your next turn. When a creature with an Umbral Strike charge makes an attack, it can consume up to one Umbral Strike charge to treat that attack as being made from one step further into stealth (none → half → full) and increase its **damage by** **1d4** of that attack’s damage type. **Enhanced:** Gives two charges of Umbral Strike instead.
 
 **Tier 5: You gain the following action:**
 
@@ -522,7 +526,7 @@
 
 **Tier 1: You gain the following Mode and Tenet:**
 
-- **Accretion:** On hit, the target is encased in soft material until the start of your next turn. The encasement is an object with **50 Durability** and a Limit equal to one fifth of its Durability, working only against Physical and Elemental damage. Attacks against that creature strike the encasement first: it absorbs damage up to its Limit from each attack, reducing its Durability by that much, with any excess passing through to the creature. This Mode stacks on the same target, melding into a single encasement whose Durability and Limit are the sums of its parts. **Enhanced:** On Manifest, select a damage category (Physical, Elemental, Magical, Supernatural). Damage dealt to this instance is Weakened.  
+- **Accretion:** On hit, the target is encased in soft material until the start of your next turn. The encasement is an object with **50 Durability** and a Limit equal to one fifth of its Durability, working only against Physical and Elemental damage. Attacks against that creature strike the encasement first: it absorbs damage up to its Limit from each attack, reducing its Durability by that much, with any excess passing through to the creature. This Mode stacks on the same target, melding into a single encasement whose Durability and Limit are the sums of its parts. **Enhanced:** On Manifest, select a damage category (Physical, Elemental, Magical, Supernatural). Damage of that category dealt to this instance is Weakened.  
 - **Adamant:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can lower the target’s or your own **Pain Threshold by 10**, lasting until the start of your next turn. If reapplied with a reaction the moment the effect ends, the target will not fall unconscious from the change in Pain Threshold.
 
 **Tier 2: You gain the following ability:**
@@ -543,7 +547,7 @@
 
 # 
 
-## **Sea (Nightmare)**
+## **Sea (Nightmare)** {#sea-(nightmare)}
 
 **Tier 1: You gain the following Mode and Tenet:**
 
@@ -564,7 +568,7 @@
 
 **Tier 5: You gain the following Mode:**
 
-- **Drown:** Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved **at least 4ft** during your current turn they **lose 2d10 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). **Enhanced:** You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they lose that health again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit. 
+- **Drown:** Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved **at least 4ft** (downward movement does not count) during your current turn they **lose 2d8 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). **Enhanced:** You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they lose that health again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit. 
 
 # **Mental T4 Skill Trees** {#mental-t4-skill-trees}
 
@@ -589,6 +593,64 @@
 **Tier 5: You gain the following passive:**
 
 - **Innate Mastery:** Innate also causes that Ward’s target to have Disadvantage on their roll against it.
+
+# 
+
+## **Fortune (Dream)** {#fortune-(dream)}
+
+**Tier 1: You gain the following Mode, passive, and Tenet:**
+
+- **Wager:** On hit, deals **1d10 physical damage** to the target. **Enhanced:** The damage is instead Elemental (your choice of the 4\) or Arcane, your choice on Manifest.   
+- **Fortune’s Bands:** Fortune Modes cannot crit, instead they get benefits or drawbacks depending on where they land in the below chart. The beneficial effects still require a hit overall, while the self hit automatically applies.  
+  - **Under one half:** You hit yourself with the Manifest instead of the target  
+  - **One half to under three quarters:** Its effects gain 2 stacks of Strengthened  
+  - **Three quarters or higher:** Its effects gain 4 stacks of Strengthened  
+- **Rig:** Only active while this is your selected Tenet. Once per round at any time as a free reaction you can roll the Fortune Table found at the end of this tree, then select a target you can sense within 100ft of you to apply the rolled effect to.
+
+**Tier 2: You gain the following ability:**
+
+- **Parlay: Cost: *Energy equal to your PON min.*** When you Manifest a Fortune Mode, you can use this ability. For that Manifest, stacks of Strengthened are multiplicative instead of additive.
+
+**Tier 3: You gain the following Mode:**
+
+- **Windfall:** On hit, restore **4 energy** to the target. Energy restored above their maximum becomes Temp HP at 1:1, lasting until the start of your next turn. If this Manifest self hits from the bands, you instead lose that energy, and energy lost below 0 becomes health loss at 1:1. **Enhanced:** Both Energy conversion ratios become 1:2.
+
+**Tier 4: You gain the following ability:**
+
+- **Double Down: Cost: *Energy equal to your PON min.*** When you Manifest a Fortune Mode, you can use this ability. For that Manifest, the attack roll has Disadvantage, but a band at seven eighths and above is added that grants 8 stacks of Strengthened, and the self-hit bands gain Strengthened as well; 2 stacks from one eighth to under one half, 4 stacks below one eighth. 
+
+**Tier 5: You gain the following Mode:**
+
+- **Providence:** Select a target to make an attack roll against, on hit roll a d100 to get a result from the Fortune Table, applying the rolled effect to the target (the self hit band still applies here). **Enhanced:** Roll the d100 twice and choose which result applies.
+
+| The Fortune Table |  |
+| ----- | ----- |
+| **Roll** | **Applied effect (bolded values scale).** |
+| 1–3 | Deals **1d12 physical damage** to the target and every creature of your choice within 20ft, each knocked prone. |
+| 4–6 | Deals **1d12 cold damage** to the target, and one effect they are Concentrating on ends. |
+| 7–11 | Deals **1d12 physical damage** to the target, and they cannot benefit from advantage until the start of your next turn. |
+| 12–16 | Deals **1d10 radiation damage** to the target, and their senses are each treated as one step lower until the start of your next turn (does not stack). |
+| 17–21 | The target loses **1d10 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). |
+| 22–26 | Deals **1d10 physical damage** to the target and knocks them prone. |
+| 27–31 | Deals **1d8 heat damage** to the target and every creature within 10ft of it. |
+| 32–35 | The target’s Pain Threshold is **raised by** **10** until the start of your next turn. |
+| 36–39 | The target’s dodge rolls have their **die size reduced by 0.5**, rounded up, until the start of your next turn. |
+| 40–43 | The target’s attack rolls have their **die size reduced by 1** until the start of your next turn. |
+| 44–47 | The target gains **15 Slow stacks**, lasting until the start of your next turn. |
+| 48–50 | The target loses **3 energy**. |
+| 51–53 | Apply **5d8 Force** to the target in a direction of your choosing. |
+| 54–56 | The target is forcefully moved **2ft** in a direction of your choosing, ignoring Force and Lift. |
+| 57–59 | Deals **1d10 Elemental damage** to the target, of a type of your choice. |
+| 60–63 | Restore **3 energy** to the target. |
+| 64–67 | Give the target **15 Haste stacks**, lasting until the start of your next turn. |
+| 68–71 | Give the target **5 Temp HP**, lasting until the start of your next turn. |
+| 72–75 | The target’s dodge rolls gain **\+0.5 die size**, rounded up, until the start of your next turn. |
+| 76–79 | The target’s attack rolls gain **\+1 die size** until the start of your next turn. |
+| 80–84 | Restore **5 health** to the target, only affecting damage taken since the start of your last turn. |
+| 85–89 | The target’s Pain Threshold is **lowered by** **10** until the start of your next turn. |
+| 90–94 | Restore **5 energy** to the target; energy above maximum becomes Temp HP at 1:1 until the start of your next turn. |
+| 95–97 | Reroll this table, applying that effect to the same target. |
+| 98–100 | Give the target **5 Temp HP**, restore **5 health** to them (only affecting damage taken since the start of your last turn), and remove one Stage 1 negative condition from them. |
 
 # **Mental T5 Skill Trees** {#mental-t5-skill-trees}
 

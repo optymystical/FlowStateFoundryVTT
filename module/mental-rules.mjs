@@ -35,17 +35,22 @@ function splitEnhanced(text) {
   return m ? { base: text.slice(0, m.index).trim(), enhanced: text.slice(m.index + m[0].length).trim() } : { base: String(text ?? "").trim(), enhanced: "" };
 }
 
-/** One Wonder parsed from its skill tree: its Modes (with the tier they unlock), Tenet, and abilities/passives. */
+/** "You gain the following Mode, passive, and Tenet:" → ["mode", "passive", "tenet"]: what each of a tier's entries is, in order. */
+const tierKinds = summary => (/following\s+(.*?):?\s*$/i.exec(summary ?? "")?.[1] ?? "").split(/\s*,\s*(?:and\s+)?|\s+and\s+/i).map(s => s.trim().toLowerCase().replace(/s$/, "")).filter(Boolean);
+
+/** One Wonder parsed from its skill tree: its Modes (with the tier they unlock), Tenet, abilities/passives, and its table if it has one (Fortune). */
 function parseWonder(tree) {
   const kind = wonderKind(tree);
   if (!tree || tree.archetype !== "mental" || tree.theory || !kind) return null;
   const name = tree.name.replace(/\s*\((Dream|Nightmare)\)\s*$/i, "");
-  const out = { id: tree.id, name, kind, requires: tree.requires, modes: [], tenet: null, abilities: [] };
+  const out = { id: tree.id, name, kind, requires: tree.requires, modes: [], tenet: null, abilities: [], table: tree.table ?? null };
   for (const t of tree.tiers) {
     const modeTier = /\bMode\b/i.test(t.summary ?? "");
-    for (const e of t.entries) {
+    // When the tier names one kind per entry ("Mode, passive, and Tenet"), that says which entry is the Mode.
+    const kinds = tierKinds(t.summary);
+    for (const [i, e] of t.entries.entries()) {
       if (isTenet(e)) { out.tenet = { name: e.name, text: e.text, tier: t.tier, id: `${tree.id}:${slug(e.name)}` }; continue; }
-      if (modeTier) out.modes.push({ id: `${tree.id}:${slug(e.name)}`, wonder: tree.id, name: e.name, tier: t.tier, text: e.text, ...splitEnhanced(e.text) });
+      if (kinds.length === t.entries.length ? kinds[i] === "mode" : modeTier) out.modes.push({ id: `${tree.id}:${slug(e.name)}`, wonder: tree.id, name: e.name, tier: t.tier, text: e.text, ...splitEnhanced(e.text) });
       else out.abilities.push({ id: `${tree.id}:${slug(e.name || "x")}`, wonder: tree.id, name: e.name, tier: t.tier, text: e.text });
     }
   }
@@ -94,6 +99,21 @@ export function manifestCheck(wonder, stat, bonusPct = 0) {
   if (power < 1) return { ok: false, power, reason: `${KINDS[wonder.kind].statLabel} is under 10, so ${wonder.name} can't be Manifested.` };
   return { ok: true, power };
 }
+
+/**
+ * Fortune's Bands: a Fortune Manifest can't crit; where its attack roll lands as a fraction of the attack die's max decides instead. Under one half it hits
+ * you ({ self: true }); one half up to three quarters gives 2 Strengthened, three quarters or more 4. Double Down (Fortune T4) adds 8 at seven eighths or more,
+ * and Strengthens the self hits: 2 from one eighth to under one half, 4 under one eighth.
+ */
+export function fortuneBand(total, die, doubleDown = false) {
+  const f = (Number(total) || 0) / Math.max(1, Number(die) || 1);
+  if (f < 0.5) return { self: true, stacks: doubleDown ? (f < 0.125 ? 4 : 2) : 0, label: `under one half${doubleDown ? (f < 0.125 ? " (under one eighth)" : "") : ""}: it hits you instead` };
+  if (doubleDown && f >= 0.875) return { self: false, stacks: 8, label: "seven eighths or higher: 8 Strengthened" };
+  if (f >= 0.75) return { self: false, stacks: 4, label: "three quarters or higher: 4 Strengthened" };
+  return { self: false, stacks: 2, label: "one half to under three quarters: 2 Strengthened" };
+}
+/** Parlay (Fortune T2): Strengthened stacks multiply (×1.5 each) instead of adding; Weakened is unchanged. */
+export const fortuneScale = (value, stacks, parlay = false) => (parlay && stacks > 0 ? Math.floor(value * Math.pow(1.5, stacks)) : applyStacks(value, stacks));
 
 /* -------------------------------------------- */
 /*  Alignment                                   */

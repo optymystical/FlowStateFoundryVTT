@@ -61,7 +61,7 @@ export const BOLD = {
   "increased or decreased by 3"
  ],
  "Herald": [
-  "10d8 Force"
+  "6d8 Force"
  ],
  "Gust": [
   "5d8 Force"
@@ -176,7 +176,7 @@ export const BOLD = {
   "die size reduced by 0.5"
  ],
  "Umbral Strike": [
-  "1d8"
+  "1d4"
  ],
  "Accretion": [
   "50 Durability"
@@ -198,6 +198,12 @@ export const BOLD = {
  ],
  "Drown": [
   "at least 4ft",
-  "lose 2d10 health"
+  "lose 2d8 health"
+ ],
+ "Wager": [
+  "1d10 physical damage"
+ ],
+ "Windfall": [
+  "4 energy"
  ]
 };

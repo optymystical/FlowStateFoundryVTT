@@ -112,7 +112,7 @@ export async function pendingTurnStart(actor) {
 }
 
 /** Heal with the "only health lost since the start of the caster's last turn" rule; the dead come back if they died since. */
-async function heal(target, caster, n) {
+export async function heal(target, caster, n) {
   const stamp = caster.getFlag?.("flowstate", "turnStartedAt") ?? 0;
   const dead = target.statuses?.has("dead");
   const diedSince = !stamp || (target.getFlag?.("flowstate", "diedAt") ?? 0) >= stamp;
@@ -131,7 +131,7 @@ async function heal(target, caster, n) {
 const forceFeet = (force, target, ignoreLift) => resolveForce(force, { lift: ignoreLift ? 0 : target.system.lift ?? 0, maxHp: 0 });
 
 /** Roll `n`d`sides` Force with the Manifest's Strengthened/Weakened and turn it into feet pushed, ignoring the half-max-HP threshold. */
-async function forceRoll(ctx, n, sides, label, ignoreLift = false) {
+export async function forceRoll(ctx, n, sides, label, ignoreLift = false) {
   const r = await roll(`${n}d${sides}`);
   const force = Math.floor(applyStacks(r.total, ctx.stacks));
   const feet = forceFeet(force, ctx.target, ignoreLift);
@@ -207,7 +207,7 @@ export const MODES = {
 
   /* ---- Beyond (Dream) ---- */
   async "mental-beyond-dream:herald"(c) {
-    const f = await forceRoll(c, 10 * c.power, 8, "Herald", !!c.enhanced);
+    const f = await forceRoll(c, 6 * c.power, 8, "Herald", !!c.enhanced);
     rolled.push(f.r);
     return { html: `${f.html}${f.push ? knockbackRow(c.attacker.uuid, f.feet, "Herald") : ""}`, push: f.push };
   },

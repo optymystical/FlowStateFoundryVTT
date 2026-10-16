@@ -260,7 +260,7 @@ seq = [12]; target(orc); refresh();
 await M.manifest(hero, { mode: "mental-beyond-dream:herald", range: "ranged" });
 seq = [2, 900]; await actions.defend(lastAtk(), 0, "dodge");
 card = messages.filter(m => m.flags?.flowstate?.defense).at(-1);
-ok2(/Herald: 30d8 = 900/.test(text(card)) && card.flags.flowstate.knockback?.feet === Math.floor((1800 - (orc.system.lift ?? 0)) / 10), "Herald: 10d8 × Power Force becomes feet directly (no half-HP threshold), with a Push button");
+ok2(/Herald: 18d8 = 900/.test(text(card)) && card.flags.flowstate.knockback?.feet === Math.floor((1800 - (orc.system.lift ?? 0)) / 10), "Herald: 6d8 × Power Force becomes feet directly (no half-HP threshold), with a Push button");
 reset();
 await hit("mental-beyond-dream:ascend");
 orc.system.lift = 0; orc.system.prepareDerivedData();

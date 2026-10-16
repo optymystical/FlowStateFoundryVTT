@@ -27,6 +27,7 @@ import * as ponderanceMod from "./ponderance.mjs";
 import * as snappenceMod from "./snappence.mjs";
 import * as wondersC from "./wonders-c.mjs";
 import * as wondersD from "./wonders-d.mjs";
+import * as wondersE from "./wonders-e.mjs";
 import * as concentration from "./concentration.mjs";
 import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
@@ -717,6 +718,7 @@ function actionGroups(actor, weapons, stats) {
     mentalRows.push({ label: "Ejecta", detail: accs.length ? `Throw one of your Accretions (${accs.map(x => `on ${x.holder.name}`).join(", ")}) at a creature within 100 ft of it: an attack roll, ${skills.tierOf(sys.trees, wondersD.EARTH) >= 4 ? "damage" : "physical damage"} equal to a fifth of its remaining Durability` : "You have no Accretion to throw",
       cost: "Free", action: "ejecta", icon: "fa-solid fa-meteor", disabled: !accs.length });
   }
+  if (wonders.tenetOf(actor)?.id === `${wondersE.FORTUNE}:rig`) mentalRows.push({ label: "Rig", detail: `Any time, once per round: roll the Fortune Table and apply the result to a creature within 100 ft (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "rig", icon: "fa-solid fa-dice" });
   if (ponderT >= 5 && concs.length > 1) mentalRows.push({ label: "Daydreaming", detail: "Choose which Concentration can't be broken", cost: "Free", action: "daydream", icon: "fa-solid fa-cloud" });
   if (psionT >= 1) mentalRows.push({ label: "Psion Sense", detail: `Spot check for mental energies within ${mctx.farSight ? 1000 : 100} ft`, cost: "Check", action: "psionSense", icon: "fa-solid fa-brain" });
   if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
@@ -810,6 +812,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       reflex: function () { return snappenceMod.reflexManual(this.document); },
       expand: function (event, target) { return wondersC.expand(this.document, target.closest("[data-op]")?.dataset.op); },
       ejecta: function () { return wondersD.ejecta(this.document); },
+      rig: function () { return wondersE.rig(this.document); },
       daydream: function () { return concentration.chooseDaydream(this.document); },
       triggerPremeditated: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.triggerPremeditated(this.document, e) : null; },
       useTrance: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.useTrance(this.document, e) : null; },

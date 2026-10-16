@@ -2,6 +2,12 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.64.0:** **Fortune (Dream) Wonder, and Mental doc changes.**
+- **Fortune:** Wager (damage), Windfall (Energy, overflow to Temp HP), Providence (the Fortune Table), Fortune's Bands (no crits: a low roll hits you, a high one adds 2/4 Strengthened), Parlay (stacks multiply), Double Down (Disadvantage, an 8-stack band), and Rig (Tenet: roll the table any time, from the Action List). All 25 Fortune Table effects are automated.
+- **Changed:** Herald is 6d8 × Power Force (was 10d8); Umbral Strike adds 1d4 × Power (was 1d8); Drown drains 2d8 × Power (was 2d10), and downward movement doesn't count toward it.
+- **Fixed:** Umbral Strike's extra damage always rolled at Power 1 (it cleared the charge before reading it).
+- The tree generator reads Wonder tables and indented sub-bullets, and the Wonder parser tells a tier's Mode from its passive when the tier names both.
+
 **0.63.0:** **Earth (Dream) and Sea (Nightmare) Wonders.**
 - **Earth:** Accretion encases a creature in an object that soaks Physical and Elemental hits up to its Limit before anything else (your Accretions meld; Enhanced Weakens a chosen category against it); Adamant (Tenet) lowers a Pain Threshold; Reinforce and Bedrock are asked when a big hit strikes an Accretion; Ejecta throws an Accretion (Action List); Batholith widens both.
 - **Sea:** Undertow hurts a creature whenever it moves or something else moves it; Surge (Tenet), Current and Riptide are short forced moves that ignore Force and Lift (direction card, up to the distance); Shoal Strengthens Sea damage on prone targets; Drown knocks prone and drains health after enough forced movement this turn (Enhanced: a Concentration that keeps them down; getting up is an attack roll).

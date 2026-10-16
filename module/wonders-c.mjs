@@ -106,18 +106,18 @@ export function dodgeDieAgainst(attacker, target) {
   return extra ? { pen: extra, note: `Eclipse (ally): dodge die −${extra}` } : null;
 }
 
-/** Enhanced Illuminate Weakens, Enhanced Eclipse Strengthens, the damage of the attacks they affect; Umbral Strike adds 1d8 of the damage's type. */
+/** Enhanced Illuminate Weakens, Enhanced Eclipse Strengthens, the damage of the attacks they affect; Umbral Strike adds 1d4 of the damage's type. */
 DAMAGE_PROVIDERS.push(async ({ attacker, target, n, notes }) => {
   let out = n;
   const wardHits = effs => effs.some(e => { const c = fromU(dataOf(e).caster); return dataOf(e).enhanced && (!attacker || !c || (c.uuid !== attacker.uuid && !allied(c, attacker))); });
   if (attacker && (fx(attacker, "illuminated").some(e => dataOf(e).enhanced) || wardHits(fx(target, "illumWard")))) { out = applyStacks(out, -1); notes.push("Illuminate (Enhanced): the damage is Weakened"); }
   if (fx(target, "eclipsed").some(e => dataOf(e).enhanced) || (attacker && fx(attacker, "eclipseWard").some(e => dataOf(e).enhanced))) { out = applyStacks(out, 1); notes.push("Eclipse (Enhanced): the damage is Strengthened"); }
-  if (attacker?.getFlag?.("flowstate", "umbral")) {
-    await setActorFlag(attacker, "umbral", null);
-    const u = attacker.getFlag("flowstate", "umbral");
-    const r = await new Roll(`${u?.power ?? 1}d8`).evaluate(); rolled.push(r);
+  const u = attacker?.getFlag?.("flowstate", "umbral");
+  if (u) {
+    await setActorFlag(attacker, "umbral", null);          // read before clearing: the charge's Power and stacks
+    const r = await new Roll(`${u?.power ?? 1}d4`).evaluate(); rolled.push(r);
     const add = bold(u?.bs ?? 0, r.total);
-    out += add; notes.push(`Umbral Strike: +${add} damage (${u?.power ?? 1}d8)`);
+    out += add; notes.push(`Umbral Strike: +${add} damage (${u?.power ?? 1}d4)`);
   }
   return out;
 });
@@ -174,7 +174,7 @@ ACTS.penumbra = spreadAct("snap", "Penumbra");
 
 const STEP = { none: "half", half: "full", full: "full" };
 
-/** Just before an attack is rolled: Totality (an Eclipsed ally attacking an Eclipsed target is in half stealth) and Umbral Strike (a charge: a step deeper into stealth and 1d8 more). */
+/** Just before an attack is rolled: Totality (an Eclipsed ally attacking an Eclipsed target is in half stealth) and Umbral Strike (a charge: a step deeper into stealth and 1d4 more). */
 export async function attackStart(actor, opts, targets) {
   let o = opts;
   if (actor.getFlag?.("flowstate", "umbral")) await setActorFlag(actor, "umbral", null);          // last attack's bonus never carries over
@@ -186,11 +186,11 @@ export async function attackStart(actor, opts, targets) {
   const charge = fx(actor, "umbralCharge")[0];
   if (charge) {
     const d = dataOf(charge);
-    const ans = await askFor(actor, { react: "umbral", title: "Umbral Strike", ok: "Use a charge", html: `<p><strong>Umbral Strike</strong>: use one of your ${d.count ?? 1} charge${(d.count ?? 1) === 1 ? "" : "s"} to make this attack from one step further into stealth (${o.stealth && o.stealth !== "none" ? o.stealth : "none"} → ${STEP[o.stealth ?? "none"]}) and add ${d.power ?? 1}d8 damage of its type?</p>` });
+    const ans = await askFor(actor, { react: "umbral", title: "Umbral Strike", ok: "Use a charge", html: `<p><strong>Umbral Strike</strong>: use one of your ${d.count ?? 1} charge${(d.count ?? 1) === 1 ? "" : "s"} to make this attack from one step further into stealth (${o.stealth && o.stealth !== "none" ? o.stealth : "none"} → ${STEP[o.stealth ?? "none"]}) and add ${d.power ?? 1}d4 damage of its type?</p>` });
     if (ans) {
       if ((d.count ?? 1) > 1) await charge.update({ "flags.flowstate.spellEffect.count": d.count - 1 }); else await changeEffect(charge, null);
       await setActorFlag(actor, "umbral", { power: d.power ?? 1, bs: d.bstacks ?? 0 });
-      o = { ...o, stealth: STEP[o.stealth ?? "none"], notes: [...(o.notes ?? []), `Umbral Strike: a step deeper into stealth, +${d.power ?? 1}d8 damage`] };
+      o = { ...o, stealth: STEP[o.stealth ?? "none"], notes: [...(o.notes ?? []), `Umbral Strike: a step deeper into stealth, +${d.power ?? 1}d4 damage`] };
     }
   }
   return o === opts ? undefined : o;
@@ -200,7 +200,7 @@ TURN_START.push(async actor => { if (actor.getFlag?.("flowstate", "umbral")) awa
 MODES[`${DARK}:umbral-strike`] = async c => {
   const count = c.enhanced ? 2 : 1;
   await putSpellEffect(c.target, { kind: "umbralCharge", caster: c.attacker.uuid, name: `Umbral Strike (${count})`, count, enhanced: !!c.enhanced, power: c.power, bstacks: c.bs ?? c.stacks ?? 0,
-    description: `${count} charge${count === 1 ? "" : "s"}: when they attack they can use one to attack from one step further into stealth and add ${c.power}d8 damage of its type. Until the start of ${c.attacker.name}'s next turn.` });
+    description: `${count} charge${count === 1 ? "" : "s"}: when they attack they can use one to attack from one step further into stealth and add ${c.power}d4 damage of its type. Until the start of ${c.attacker.name}'s next turn.` });
   return `<strong>${esc(c.target.name)}</strong> gets ${count} Umbral Strike charge${count === 1 ? "" : "s"}, until your next turn.`;
 };
 

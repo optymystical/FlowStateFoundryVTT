@@ -64,13 +64,22 @@ def parse(md, arch):
         if cur_tier is None: continue
         txt = line.strip()
         if not txt or txt.startswith('<!--'): continue
+        wonder = arch == "Mental" and re.search(r'\((Dream|Nightmare)\)\s*$', cur["name"])
+        # A Wonder's Markdown table (Fortune's Fortune Table) belongs to the tree, not to a tier's entries: rows of cells, the header and separator dropped.
+        if wonder and txt.startswith('|'):
+            cells = [clean(c) for c in txt.strip('|').split('|')]
+            if all(re.fullmatch(r'-*', c) for c in cells): continue
+            tbl = cur.setdefault("table", {"title": cells[0], "rows": []})
+            if cells[0] != tbl["title"] and not re.match(r'^Roll$', cells[0], re.I): tbl["rows"].append(cells)
+            continue
         numbered = re.match(r'^(\d+)\.\s+(.*)$', txt)
         bullet = re.match(r'^-\s+(.*)$', txt)
         body = clean(numbered.group(2) if numbered else bullet.group(1) if bullet else txt)
         if not body or body == "-": continue
         if numbered: body = f"{numbered.group(1)}. {body}"
         # Mental: a Mode's versions ("Against an enemy:" / "Against an ally:" bullets) and its indented "Enhanced:" line are part of that Mode's text.
-        if arch == "Mental" and cur_tier["entries"] and re.match(r'^(Against an? \w+|Enhanced):', body):
+        # So are a Wonder entry's indented sub-bullets (Fortune's Bands).
+        if arch == "Mental" and cur_tier["entries"] and (re.match(r'^(Against an? \w+|Enhanced):', body) or (wonder and bullet and raw[:1] in (" ", "\t"))):
             prev = cur_tier["entries"][-1]
             prev["text"] = f'{prev["text"]} {body}'.strip()
             continue

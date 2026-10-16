@@ -45,13 +45,16 @@ async function guardOf(c) {
   };
 }
 
-/** Roll damage dice for a Mode (Power times the dice), apply stacks, and deal it. Returns { n, direct, r, line }. */
-async function strike(c, dice, sides, type, { rend = null, label, pierce = 0 } = {}) {
+/**
+ * Roll damage dice for a Mode (Power times the dice), apply stacks, and deal it. Returns { n, direct, r, line }. `scale(n, stacks)` is how the stacks apply
+ * (Parlay, Fortune T2: Strengthened stacks multiply).
+ */
+export async function strike(c, dice, sides, type, { rend = null, label, pierce = 0, scale = applyStacks } = {}) {
   const count = dice * c.power;
   const r = await roll(`${count}d${sides}`);
   rolled.push(r);
   const g = await guardOf(c);
-  const rolledN = Math.max(0, Math.floor(applyStacks(r.total, g.stacks)));
+  const rolledN = Math.max(0, Math.floor(scale(r.total, g.stacks)));
   const { n, note: guardNote } = g.take(rolledN);
   const outcome = await damageOutcome(c.target, n, type, { archetype: "magic", rend, pierce, parryItems: g.items });
   const res = await requestDamage(c.target, n, type, pierce, null, { wantResult: true, silent: true, archetype: "magic", rend, parryItems: g.items, shroudCtx: { source: `type:${type}`, attacker: c.attacker.uuid } });

@@ -331,7 +331,7 @@ export async function rollStatCheck(actor, key) {
 
   const net = opts.net + res.net + exhaustionNet(actor) + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0);
   await consumeDisrupt(actor);
-  const roll = await evaluate(poolFormula(1, stat.die, net));
+  const roll = await evaluate(poolFormula(1, stat.die, noAdvantage(actor, net)));
   const cr = await mentalHook?.rollCharges?.({ actor, type: "other", roll, die: stat.die, count: 1, net, max: stat.die, label: `${STATS[key].label} Check` });
   const floored = opts.applyMin && roll.total < stat.min;
   const result = floored ? stat.min : roll.total;
@@ -1702,7 +1702,7 @@ async function startExchange(actor, opts, targets) {
     }
     // An Area spell makes one attack roll that every target in the area defends against.
     const shared = (opts.spell?.singleRoll || opts.singleRoll) && sharedRoll;
-    const atk = shared || await evaluate(poolFormula(1, atkDie, atkNet));
+    const atk = shared || await evaluate(poolFormula(1, atkDie, noAdvantage(actor, atkNet)));
     if (!shared) rolls.push(atk);
     const chargeNotes = [];
     if (!shared && mentalHook?.rollCharges) {
@@ -1979,7 +1979,7 @@ export async function defend(message, index, choice) {
   const net2 = net + (waste?.net ?? 0) + burden;
   if (waste) reasons.push(waste.note);
   if (burden) reasons.push(`Burden ×${-burden}: ${-burden} Disadvantage on the dodge`);
-  const dodge = await evaluate(poolFormula(2, dieNow, net2));
+  const dodge = await evaluate(poolFormula(2, dieNow, noAdvantage(target, net2)));
   if (waste) await mentalHook.useWaste(waste);
   // Mental: Order/Chaos charges on the dodge roll (Decree, Fracture, Larceny, Mandate), then on the answered attack (Balance, Verdict, Entropy).
   const chargeRolls = [], chargeNotes = [];
@@ -3675,6 +3675,8 @@ export const magicDisNet = actor => (spellEffects(actor, "magicDis").length || a
 export const afflictTurnStart = actor => aff?.turnStart(actor);
 export const afflictCasterTurn = actor => aff?.casterTurn(actor);
 export const hexMove = actor => (inActiveCombat(actor) ? aff?.hexTrigger(actor, "move") : null);
+/** Mental (Fortune Table 7–11): a creature that can't benefit from Advantage rolls with none (its Disadvantage still counts). */
+export const noAdvantage = (actor, net) => (net > 0 && spellEffects(actor, "noAdvantage").length ? 0 : net);
 /** Mental (Sea): a creature moving itself in combat sets off an Undertow on it. */
 export const seaMove = actor => (inActiveCombat(actor) ? mentalHook?.voluntaryMove?.(actor) : null);
 export const afflictAct = (message, i) => aff?.act(message, i);
@@ -3967,7 +3969,7 @@ export async function knockback(message) {
   const target = await fromUuid(info.target);
   if (!attacker?.isOwner) return ui.notifications.warn(`Only ${attacker?.name ?? "the attacker"}'s owner can do that.`);
   if (!target) return ui.notifications.warn("The target no longer exists.");
-  if (info.sea) return seaKnockback(message, info, attacker, target);
+  if (info.sea || info.fixed) return seaKnockback(message, info, attacker, target);
   // Knocking them into another creature is a targeted attack: target that creature first.
   const into = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== target.uuid);
   const aimAt = into.length === 1 ? into[0] : null;
@@ -4027,21 +4029,21 @@ export async function knockback(message) {
 }
 
 /**
- * Mental (Sea): Surge, Current and Riptide move the target a set distance that ignores Force and Lift ("up to": the caster may move them less), away from or
- * toward the caster or in a compass direction; an Enhanced Riptide pulls toward its other target, stopping beside it. Walls still stop it (Force damage for the
- * feet left), and the move doesn't set off the caster's own Undertow.
+ * Mental: a move of a set distance that ignores Force and Lift (Sea's Surge, Current and Riptide; the Fortune Table's 2 ft). "Up to" (`upTo`) lets the caster move
+ * them less. Away from or toward the caster or in a compass direction; an Enhanced Riptide pulls toward its other target, stopping beside it. Walls still stop
+ * it (Force damage for the feet left). A Sea move (`sea`) doesn't set off the caster's own Undertow.
  */
 async function seaKnockback(message, info, attacker, target) {
   const other = info.toward ? await fromUuid(info.toward) : null;
   const opts = await optionsDialog(`${info.label ?? "Sea"} — ${target.name}`, `
-    <p class="hint">${esc(target.name)} can be moved up to <strong>${info.feet} ft</strong> (ignores Force and Lift).</p>
-    <div class="form-group"><label>Distance (ft)</label><input type="number" name="ft" value="${info.feet}" min="1" max="${info.feet}" step="1"></div>
+    <p class="hint">${esc(target.name)} can be moved ${info.upTo ? "up to " : ""}<strong>${info.feet} ft</strong> (ignores Force and Lift).</p>
+    ${info.upTo ? `<div class="form-group"><label>Distance (ft)</label><input type="number" name="ft" value="${info.feet}" min="1" max="${info.feet}" step="1"></div>` : ""}
     <div class="form-group"><label>Direction</label><select name="dir">
       ${other ? `<option value="other">Toward ${esc(other.name)}</option>`
         : `<option value="away">Away from ${esc(attacker.name)}</option><option value="toward">Toward ${esc(attacker.name)}</option>${Object.entries(DIRECTIONS).map(([k, d]) => `<option value="${k}">${d.label}</option>`).join("")}`}
     </select></div>`, info.label ?? "Move");
   if (!opts || knockbackUsed(message.id)) return;
-  let feet = Math.max(0, Math.min(info.feet, Math.floor(Number(opts.ft) || info.feet)));
+  let feet = info.upTo ? Math.max(0, Math.min(info.feet, Math.floor(Number(opts.ft) || info.feet))) : info.feet;
   const tok = target.getActiveTokens?.()[0];
   const anchor = opts.dir === "other" ? other?.getActiveTokens?.()[0] : ["away", "toward"].includes(opts.dir) ? attackerToken(attacker) : null;
   let dir;
@@ -4054,7 +4056,7 @@ async function seaKnockback(message, info, attacker, target) {
     const d = DIRECTIONS[opts.dir] ?? DIRECTIONS.n, len = Math.hypot(d.x, d.y);
     dir = { x: d.x / len, y: d.y / len };
   }
-  const flight = feet > 0 ? await flyThrown(target, dir, feet, { source: `sea:${info.sea}` }) : null;
+  const flight = feet > 0 ? await flyThrown(target, dir, feet, { source: info.sea ? `sea:${info.sea}` : null }) : null;
   const body = flight ? await flightHTML(target, flight, feet) : `<div class="fs-notes">${esc(target.name)} is already beside ${esc((other ?? attacker).name)}.</div>`;
   await post(attacker, { title: `${esc(info.label ?? "Sea")} — ${esc(target.name)}`, body, flags: { flowstate: { knockbackOf: message.id } } });
 }

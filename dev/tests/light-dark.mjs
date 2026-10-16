@@ -157,7 +157,7 @@ dialog = () => ({});
 o2 = await WC.attackStart(orc, { stealth: "none", notes: [] }, [ally]);
 ok2(o2?.stealth === "half" && fxs(orc, "umbralCharge").length === 0 && !!orc.getFlag("flowstate", "umbral"), "Using it: one step deeper into stealth, the charge is spent");
 seq = [5];
-ok2((await WB.adjust({ attacker: orc, target: hero, amount: 20, type: "physical" })).amount === 25 && !orc.getFlag("flowstate", "umbral"), "…and its damage gets 1d8 more, once");
+ok2((await WB.adjust({ attacker: orc, target: hero, amount: 20, type: "physical" })).amount === 25 && !orc.getFlag("flowstate", "umbral"), "…and its damage gets 1d4 × Power more, once");
 reset(); dialog = () => "enemy"; await hit("mental-dark-nightmare:umbral-strike", { enhance: true });
 ok2(fxs(orc, "umbralCharge")[0]?.flags.flowstate.spellEffect.count === 2, "Enhanced: two charges");
 

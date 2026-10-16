@@ -320,16 +320,16 @@ MODES[RIPTIDE] = async c => {
 /*  Sea: Drown (T5)                             */
 /* -------------------------------------------- */
 
-/** Drown's health loss: 2d10 × Power, reduced by what blocks Supernatural damage (Temp HP, shielding, Shrouds, Wards); Strengthened by Shoal. */
+/** Drown's health loss: 2d8 × Power, reduced by what blocks Supernatural damage (Temp HP, shielding, Shrouds, Wards); Strengthened by Shoal. */
 async function drownLoss(caster, target, power, bs) {
-  const r = await roll(`${2 * power}d10`);
+  const r = await roll(`${2 * power}d8`);
   let n = bold(bs ?? 0, r.total);
   const shoal = shoalOn(caster, target);
   if (shoal) n = applyStacks(n, 1);
   const outcome = await damageOutcome(target, n, "supernatural", { archetype: "magic" });
   const res = await requestDamage(target, n, "supernatural", 0, null, { wantResult: true, silent: true, archetype: "magic", shroudCtx: { source: "type:supernatural", attacker: caster.uuid } });
   const lost = res?.toHp ?? outcome.toHp;
-  return { r, lost, html: ` They lose <strong>${lost}</strong> health (${2 * power}d10 = ${r.total}${n !== r.total ? ` → ${n}` : ""}${shoal ? ", Shoal: Strengthened" : ""}${lost < n ? `, ${n - lost} blocked` : ""}).` };
+  return { r, lost, html: ` They lose <strong>${lost}</strong> health (${2 * power}d8 = ${r.total}${n !== r.total ? ` → ${n}` : ""}${shoal ? ", Shoal: Strengthened" : ""}${lost < n ? `, ${n - lost} blocked` : ""}).` };
 }
 
 MODES[DROWN] = async c => {
@@ -350,7 +350,7 @@ MODES[DROWN] = async c => {
     const id = `drown:${foundry.utils.randomID?.() ?? String(Math.random()).slice(2)}`;
     if (await concentration.begin(caster, { id, label: `Drown on ${t.name}` })) {
       await putSpellEffect(t, { kind: "drowning", stack: true, persistent: true, caster: caster.uuid, concentration: id, mode: DROWN, power: c.power, bstacks: c.bs, need, name: "Drowning",
-        description: `Kept prone by ${caster.name}'s Drown (Concentration). At the start of each of ${caster.name}'s turns they lose ${2 * c.power}d10 health if they were forcefully moved ${need} ft since the start of ${caster.name}'s last turn; otherwise it ends. Getting up costs 1 AP and an attack roll against ${caster.name}: a hit ends it.` });
+        description: `Kept prone by ${caster.name}'s Drown (Concentration). At the start of each of ${caster.name}'s turns they lose ${2 * c.power}d8 health if they were forcefully moved ${need} ft since the start of ${caster.name}'s last turn; otherwise it ends. Getting up costs 1 AP and an attack roll against ${caster.name}: a hit ends it.` });
       html += ` You concentrate on it: they stay down, losing that health at the start of each of your turns while they keep being moved ${need} ft a turn.`;
     }
   }

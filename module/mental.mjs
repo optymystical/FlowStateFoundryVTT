@@ -16,6 +16,7 @@ import * as charges from "./charges.mjs";
 import * as wondersB from "./wonders-b.mjs";
 import * as wondersC from "./wonders-c.mjs";
 import * as wondersD from "./wonders-d.mjs";
+import * as wondersE from "./wonders-e.mjs";
 import * as forging from "./forging.mjs";
 import * as ponderance from "./ponderance.mjs";
 import * as snappence from "./snappence.mjs";
@@ -530,7 +531,7 @@ export async function landManifest({ attacker, target, o, m, mode, result, stack
   c.bs = c.stacks;                                    // every Strengthened/Weakened stack on the Manifest (a crit, an Area, Alignment, Adapt...) scales its bolded effects
   // Brace, Dip, Shatter and parrying weapons guard against this attack like any other Melee or Ranged one: a damaging Mode asks for the guard (once).
   let guardP = null;
-  c.guardOf = () => (guardP ??= attackGuard(attacker, target, o, attackMessage, index, { hit, shattered }));
+  c.guardOf = () => (m.selfHit ? Promise.resolve(null) : (guardP ??= attackGuard(attacker, target, o, attackMessage, index, { hit, shattered })));          // a Fortune self hit isn't an attack on you: nothing guards it
   const out = await wonders.resolveMode(c);
   // Fusion-style riders and Warpath: more Modes applied with the same hit.
   for (const id of m.extraModes ?? []) { const em = R.modeById(id); if (em) { const x = await wonders.resolveMode({ ...c, mode: em }); out.html += `<br>${x.html}`; out.rolls.push(...x.rolls); } }
@@ -595,6 +596,8 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     return { html: `<div class="fs-result"><i class="fa-solid fa-hill-rockslide"></i> Quicksand: ${esc(target.name)} fails the escape check after all and is held again by <strong>${esc(name)}</strong>.</div>` };
   }
   if (m.hubris && result.hit && !result.noCrit) result = { ...result, crit: true, critStacks: 2, outcome: "Critical Hit (Hubris)" };
+  // Fortune: no crits; where the roll lands picks a band (a self hit under one half, Strengthened stacks above it).
+  if (wondersE.isFortune(m) && !m.selfHit) { const f = await wondersE.fortuneResolve({ attacker, target, o, result, entry, m, mode, index, attackMessage }); if (f) return f; }
   if (!result.hit && wonders.MISS_MODES.has(m.mode) && !m.hubris) {
     // Perfection Modes apply even on a miss: what they do is worked out from how far it missed.
     return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, hit: false, margin: Math.max(0, (reroll.dodge ?? 0) - (entry?.total ?? 0)), index, attackMessage });

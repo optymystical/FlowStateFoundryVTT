@@ -82,11 +82,14 @@ export async function trance(actor) {
   const id = `trance:${uid()}`;
   if (!(await conc.begin(actor, { id, label: `Trance: ${mode.name} on ${target.name}` }))) return null;
   const mm = modeMental(actor, mode);
-  const hostile = R.modeHostile(mode.id);          // by what the Mode does to its target (Pacify is hostile, Hone isn't), not by Dream / Nightmare
-  await putSpellEffect(target, { kind: "trance", stack: true, persistent: true, caster: actor.uuid, concentration: id, name: `Trance: ${mode.name}`, mode: mode.id, power: mm.power, hostile, m: mm,
-    description: hostile ? `${actor.name}'s ${mode.name} is a permanent ability for ${target.name}: they can use it for the Range's AP (or Burst it for RP and their own Energy), with ${actor.name}'s Power and their own attack dice, Enhanced for free if they want.`
+  const hostile = R.modeHostile(mode.id);
+  // On yourself, a hostile Mode isn't a new ability (you have it): your Manifests of it are Enhanced for free instead (the user's ruling).
+  const selfFree = hostile && target.uuid === actor.uuid;          // by what the Mode does to its target (Pacify is hostile, Hone isn't), not by Dream / Nightmare
+  await putSpellEffect(target, { kind: "trance", stack: true, persistent: true, caster: actor.uuid, concentration: id, name: `Trance: ${mode.name}`, mode: mode.id, power: mm.power, hostile, selfFree, m: mm,
+    description: selfFree ? `${actor.name}'s Manifests of ${mode.name} are Enhanced for free (no Energy for the Enhance; Burst still costs), for as long as they concentrate on it.`
+      : hostile ? `${actor.name}'s ${mode.name} is a permanent ability for ${target.name}: they can use it for the Range's AP (or Burst it for RP and their own Energy), with ${actor.name}'s Power and their own attack dice, Enhanced for free if they want.`
       : `${actor.name}'s ${mode.name} takes hold at the start of each of ${target.name}'s turns if they succeed on an attack roll against themselves; it lasts until their next turn.` });
-  await post(actor, { title: `${esc(actor.name)} — Trance`, body: `<div class="fs-result">After 8 hours, <strong>${esc(mode.name)}</strong> is permanently ${hostile ? "an ability of" : "active on"} <strong>${esc(target.name)}</strong>, for as long as ${esc(actor.name)} concentrates on it.</div>` });
+  await post(actor, { title: `${esc(actor.name)} — Trance`, body: `<div class="fs-result">After 8 hours, <strong>${esc(mode.name)}</strong> is permanently ${selfFree ? "free to Enhance for" : hostile ? "an ability of" : "active on"} <strong>${esc(target.name)}</strong>, for as long as ${esc(actor.name)} concentrates on it.</div>` });
   return true;
 }
 
@@ -118,7 +121,7 @@ async function tranceTurnStart(holder) {
 TURN_START.push(tranceTurnStart);
 
 /** Hostile Trance Modes this creature may use. */
-export const tranceAbilities = holder => spellEffects(holder, "trance").filter(e => e.flags.flowstate.spellEffect.hostile);
+export const tranceAbilities = holder => spellEffects(holder, "trance").filter(e => e.flags.flowstate.spellEffect.hostile && !e.flags.flowstate.spellEffect.selfFree);
 
 /**
  * Use a hostile Trance Mode: the Range's AP, the caster's Power, the user's own attack dice. It is Enhanced for free if they want it; Burst (RP equal to the

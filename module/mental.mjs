@@ -148,13 +148,15 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   // Will of Body and Spirit: the Range must cost what the attack did; an RP attack needs Burst. Patron: its Wonder's Enhance and Burst energy is free.
   const patronFree = ctx.theory >= 5 && ctx.patron === wonder.id;
   const burst = ctx.reflex ? false : wobs ? !!wobs.rp : !!v.burst && ctx.theory >= 1;
-  const cost = R.manifestCost({ range, enhance: !!v.enhance, burst, enhanceCost, free, waive: { ap: !!wobs?.ap, rp: !!wobs?.rp, energy: patronFree } });
+  // Trance on yourself with a hostile Mode: that Mode is Enhanced for free while the Trance lasts (Burst still costs).
+  const selfTrance = spellEffects(actor, "trance").some(e => e.flags.flowstate.spellEffect.selfFree && e.flags.flowstate.spellEffect.mode === mode.id);
+  const cost = R.manifestCost({ range, enhance: !!v.enhance, burst, enhanceCost, free, waive: { ap: !!wobs?.ap, rp: !!wobs?.rp, energy: patronFree }, freeEnhance: selfTrance });
   // Reflex (Snappence Arts T1): RP equal to the Range's AP cost and half the Scaling Stat min in Energy (Afterimage waives both); the Manifest is Weakened unless against your Fixation.
   const rf = ctx.reflex;
   if (rf) {
     cost.ap = 0; cost.burst = false;
     cost.rp = rf.afterimage ? 0 : R.RANGES[range].ap;
-    cost.energy = (v.enhance ? enhanceCost : 0) + (rf.afterimage ? 0 : Math.floor(enhanceCost / 2));
+    cost.energy = (v.enhance && !selfTrance ? enhanceCost : 0) + (rf.afterimage ? 0 : Math.floor(enhanceCost / 2));
   }
   const choices = choiceValues(v);
   // Premeditate (Ponderance Arts T1): store the Wonder instead of applying it, for your Scaling Stat min in Energy.
@@ -176,7 +178,7 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   if (wobs && R.RANGES[range].ap !== (wobs.ap || wobs.rp)) errors.push(`Will of Body and Spirit: the Range has to cost ${wobs.ap || wobs.rp} ${wobs.ap ? "AP" : "RP"}, like your attack.`);
   return { ok: errors.length === 0, errors, mode, wonder, kind: wonder.kind, power, stat, enhanceCost, cost, range, enhance: !!v.enhance, burst, net, choices, kinetic,
     alignStacks: rf?.weak ? -1 : 0, reflex: rf, text, alignment: align, patronFree, wobs, premeditate,
-    extraStacks, extraNotes: extras.flatMap(x => x.notes ?? []), extraAfter: extras.map(x => x.after).filter(Boolean), extraFlags: Object.assign({}, ...extras.map(x => x.flags ?? {})) };
+    extraStacks, extraNotes: [...(selfTrance && v.enhance ? [`Trance: ${mode.name} is Enhanced for free`] : []), ...extras.flatMap(x => x.notes ?? [])], extraAfter: extras.map(x => x.after).filter(Boolean), extraFlags: Object.assign({}, ...extras.map(x => x.flags ?? {})) };
 }
 
 const costText = c => [c.ap ? `${c.ap} AP` : "", c.rp ? `${c.rp} RP` : "", c.energy ? `${c.energy} Energy` : ""].filter(Boolean).join(" + ") || "free";

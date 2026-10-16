@@ -211,6 +211,21 @@ ok2(effs(orc, "trance")[0]?.flags.flowstate.spellEffect.hostile && P.tranceAbili
 ok2(R.modeHostile("mental-peace-dream:pacify") && R.modeHostile("mental-beyond-dream:herald") && R.modeHostile("mental-fortune-dream:wager") && !R.modeHostile("mental-life-dream:bloom"), "Hostile goes by the Mode: Pacify, Herald and Wager are, Bloom isn't");
 ok2(!R.modeHostile("mental-perfection-nightmare:hone") && !R.modeHostile("mental-war-nightmare:warzone") && !R.modeHostile("mental-dark-nightmare:umbral-strike") && !R.modeHostile("mental-dark-nightmare:eclipse") && R.modeHostile("mental-death-nightmare:wither"), "…and Hone, Warzone, Umbral Strike and Eclipse aren't, though they're Nightmare; Wither is");
 delete hero.system.trees["mental-peace-dream"]; hero.system.prepareDerivedData();
+{
+  // Trance on yourself with a hostile Mode: your Manifests of it are Enhanced for free (no new ability).
+  await resetC(); combat.started = false; target();
+  dialog = () => "mental-death-nightmare:wither";
+  await P.trance(hero);
+  const self = effs(hero, "trance")[0];
+  ok2(self?.flags.flowstate.spellEffect.selfFree && P.tranceAbilities(hero).length === 0, "A hostile Mode Tranced onto yourself isn't a new ability");
+  combat.started = true; combat.combatant = { actor: hero }; hero.system.ap.value = 6; hero.system.energy.value = 100; target(orc); seq = [1];
+  await M.manifest(hero, { mode: "mental-death-nightmare:wither", range: "ranged", enhance: true });
+  ok2(hero.system.energy.value === 100 && hero.system.ap.value === 4 && lastAtk()?.flags.flowstate.attack.opts.mental?.enhanced, "…your Manifests of it are Enhanced for free");
+  hero.system.ap.value = 6; seq = [1];
+  await M.manifest(hero, { mode: "mental-death-nightmare:waste", range: "ranged", enhance: true });
+  ok2(hero.system.energy.value < 100, "…only that Mode: another one still pays for its Enhance");
+  combat.started = false;
+}
 combat.started = true;
 await resetC();
 

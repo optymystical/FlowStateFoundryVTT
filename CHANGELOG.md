@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.65.10:** **Trance on yourself.** A hostile Mode Tranced onto yourself makes your Manifests of that Mode Enhanced for free while the Trance lasts (Burst still costs Energy), instead of adding a Trance ability you already have.
+
 **0.65.9:** **Illuminate and Eclipse are bulleted too.** Their "Against an enemy", "Against an ally" and "Enhanced" lines show as bullets in the Skills tab and the wizards. Fixed: a bolded phrase that appears in both versions (Illuminate's "die size reduced by 1") now scales in both, in the Skills tab and on Manifest cards.
 
 **0.65.8:** **Fortune's and Ruin's Bands are a list again.** Their three bands show as bullets under the passive in the Skills tab and the wizards, instead of running into one sentence.

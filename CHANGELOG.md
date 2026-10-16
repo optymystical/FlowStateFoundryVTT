@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.65.6:** **The Fortune and Ruin Tables in the Skills tab.** A Wonder's table shows under its tree's tiers (with how its bolded values scale for you), and in the creation wizards' Skill Trees step.
+
 **0.65.5:** **Trance abilities: free Enhance, Burst with your own Energy** (the doc's update). Using a hostile Trance Mode can be Enhanced for free; Burst (RP instead of AP) is now offered and costs the user's own Energy.
 
 **0.65.4:** **Stat points the GM takes back stay spendable.** Lowering a character's stat (after creation) puts those points into their unspent stat points, so the player can still spend their whole total (setting the unspent points in the same edit overrides it). The character sheet opens wider (900 px), so the stat rows and their + buttons fit.

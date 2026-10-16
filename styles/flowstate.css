@@ -322,3 +322,11 @@
 
 /* Free movement left, in the combat tracker */
 .fs-tracker-points .fs-move-left { cursor: help; }
+
+/* Wonder tables (Fortune Table, Ruin Table) in the Skills tab and the wizards */
+.flowstate .fs-wonder-table .hint { margin: 2px 0 6px; }
+.flowstate table.fs-table { width: 100%; border-collapse: collapse; font-size: .9em; }
+.flowstate table.fs-table th, .flowstate table.fs-table td { border-bottom: 1px solid rgba(0,0,0,.12); padding: 3px 6px; text-align: left; vertical-align: top; }
+.flowstate table.fs-table td.fs-table-roll { white-space: nowrap; font-weight: 700; width: 4.5em; }
+.fs-wizard .fs-wizard-table { margin: 4px 0 2px 18px; font-size: .9em; }
+.fs-wizard .fs-wizard-table summary { cursor: pointer; font-weight: 700; }

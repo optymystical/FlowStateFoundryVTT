@@ -72,4 +72,16 @@ ok(/isn't grappling/.test(called2 ?? ""), `TAH: martial op dispatch (${called2})
   await mark.onClick();
   ok(actor.flags.autoDecline?.mark === true, "TAH: clicking it switches the card off");
 }
+// The Skills tab shows a Wonder's table (Fortune Table, Ruin Table) under its tiers.
+{
+  const { wonderTable } = await import("../../module/sheets.mjs");
+  const skills = await import("../../module/skills.mjs");
+  const ft = wonderTable(skills.treeById("mental-fortune-dream"), null, { power: 3 });
+  const rt = wonderTable(skills.treeById("mental-ruin-nightmare"));
+  ok(ft?.rows.length === 25 && ft.rows[0].roll === "1–3" && /Wonder Power \(3\)/.test(ft.note) && rt?.rows.length === 25 && rt.title === "The Ruin Table", "Skills tab: the Fortune and Ruin Tables, with how their values scale");
+  ok(wonderTable(skills.treeById("mental-life-dream")) === null, "Skills tab: no table for a tree without one");
+  const H = (await import("handlebars")).default, fs = await import("node:fs");
+  const html = H.compile(fs.readFileSync(new URL("../../templates/actor-skills.hbs", import.meta.url), "utf8"))({ tab: {}, skillView: { trees: [], archetypes: [], points: {}, tree: { tiers: [] }, table: ft } });
+  ok(/fs-wonder-table/.test(html) && (html.match(/<tr>/g) ?? []).length === 26, "Skills tab: the table renders (25 rows and a header)");
+}
 process.exit(fails ? 1 : 0);

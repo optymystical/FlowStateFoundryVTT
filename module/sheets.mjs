@@ -117,6 +117,21 @@ export function activeEffectRows(actor) {
   return rows;
 }
 
+/**
+ * A Wonder's table (Fortune Table, Ruin Table) for the Skills tab: its rows from the doc, and how its bolded values scale for this character (Wonder Power
+ * for the Modes that roll it, the Tenet multiplier for its Tenet).
+ */
+export function wonderTable(tree, actor = null, tp = null) {
+  const t = tree?.table;
+  if (!t?.rows?.length) return null;
+  const tn = actor ? wonders.tenetOf(actor) : null;
+  const mult = tn && tn.wonder === tree.id ? tn.mult : null;
+  const power = tp?.power ?? null;
+  const note = [power ? `Bolded values are × your Wonder Power (${power}) when a Mode rolls it` : "Bolded values are × Wonder Power when a Mode rolls it",
+    mult ? `× your Tenet multiplier (${mult}) when your Tenet does` : "× the Tenet multiplier when the Tenet does", "and scaled by the stacks it carries."].join(", ");
+  return { title: t.title, rows: t.rows.map(([roll, effect]) => ({ roll, effect })), note };
+}
+
 /** Weapon trees: which weapons their abilities work with (Weapon Master adds a multi-type weapon's other types). */
 function weaponTreeNote(tree, state) {
   const type = skills.weaponTypeOfTree(tree?.id);
@@ -1056,6 +1071,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
           };
         })
       },
+      table: wonderTable(tree, this.document, tp),
       points: sys.skills,
       gmPoints: game.user.isGM && this.isEditable
     };

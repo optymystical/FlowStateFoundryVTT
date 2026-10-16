@@ -145,7 +145,8 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         canRaise: next <= skills.MAX_TIER && spentSP + next <= sp, nextCost: next <= skills.MAX_TIER ? next : null,
         canLower: tier > 0 && !dependents.length, lowerTip: dependents.length ? "Lower the trees this Theory tier opens first" : `Refund ${tier} SP`,
         tiers: t.tiers.filter(x => x.tier > 0).map(x => ({ tier: x.tier, summary: x.summary, owned: x.tier <= tier,
-          entries: x.entries.filter(e => e.name || e.text).map(e => creation.entryBlurb(e)) }))
+          entries: x.entries.filter(e => e.name || e.text).map(e => creation.entryBlurb(e)) })),
+        table: t.table?.rows?.length ? { title: t.table.title, rows: t.table.rows.map(([roll, effect]) => ({ roll, effect })) } : null
       };
     });
     const pickedTrees = Object.entries(st.trees).filter(([, t]) => t > 0).map(([id, t]) => `${skills.treeById(id)?.name} ${t}`);

@@ -55,5 +55,15 @@
     {{/each}}
   </div>
   {{/with}}
+  {{#with skillView.table}}
+  <section class="fs-tier fs-wonder-table">
+    <header class="fs-tier-head"><span class="fs-tier-num"><i class="fa-solid fa-dice-d20"></i> {{title}}</span><span class="fs-tier-summary">d100</span></header>
+    <p class="hint">{{note}}</p>
+    <table class="fs-table">
+      <thead><tr><th>Roll</th><th>Effect</th></tr></thead>
+      <tbody>{{#each rows}}<tr><td class="fs-table-roll">{{roll}}</td><td>{{effect}}</td></tr>{{/each}}</tbody>
+    </table>
+  </section>
+  {{/with}}
   {{/if}}
 </section>

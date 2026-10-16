@@ -3541,7 +3541,7 @@ export const TREES = [
      },
      {
       "name": "",
-      "text": "Hostile effects are instead treated as a new ability the target can use for an AP cost determined by the Wonder Ranges (as well as the effects those impart), which are chosen on use, using your scaling dice for the effect but their own attack dice/buffs for the attack roll, and their own energy if they wish to Enhance or Burst it."
+      "text": "Hostile effects are instead treated as a new ability the target can use for an AP cost determined by the Wonder Ranges (as well as the effects those impart), which are chosen on use, using your scaling dice for the effect but their own attack dice/buffs for the attack roll, are automatically Enhanced (if desired) for free, and their own energy if they wish to Burst it."
      },
      {
       "name": "Project",

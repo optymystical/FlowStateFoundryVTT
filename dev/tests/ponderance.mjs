@@ -197,6 +197,17 @@ hero.system.trees["mental-peace-dream"] = 1; hero.system.prepareDerivedData();
 dialog = () => "mental-peace-dream:pacify";
 await P.trance(hero);
 ok2(effs(orc, "trance")[0]?.flags.flowstate.spellEffect.hostile && P.tranceAbilities(orc).length === 1, "Pacify is hostile at baseline (a debuff), though it's a Dream Mode: it becomes an ability too");
+{
+  combat.started = true; combat.combatant = { actor: orc };
+  orc.system.ap.value = 6; orc.system.rp.value = 6; orc.system.energy.value = 50; target(hero);
+  dialog = () => ({ range: "ranged", enhance: true, burst: false });
+  await P.useTrance(orc, effs(orc, "trance")[0]);
+  ok2(orc.system.ap.value === 4 && orc.system.energy.value === 50 && lastAtk()?.flags.flowstate.attack.opts.mental?.enhanced, "Using a hostile Trance ability: the Range's AP, Enhanced for free");
+  dialog = () => ({ range: "ranged", enhance: false, burst: true });
+  await P.useTrance(orc, effs(orc, "trance")[0]);
+  ok2(orc.system.ap.value === 4 && orc.system.rp.value === 4 && orc.system.energy.value < 50, "…Burst: RP instead of AP, and their own Energy");
+  combat.started = false; combat.combatant = { actor: hero }; target(orc);
+}
 ok2(R.modeHostile("mental-peace-dream:pacify") && R.modeHostile("mental-beyond-dream:herald") && R.modeHostile("mental-fortune-dream:wager") && !R.modeHostile("mental-life-dream:bloom"), "Hostile goes by the Mode: Pacify, Herald and Wager are, Bloom isn't");
 ok2(!R.modeHostile("mental-perfection-nightmare:hone") && !R.modeHostile("mental-war-nightmare:warzone") && !R.modeHostile("mental-dark-nightmare:umbral-strike") && !R.modeHostile("mental-dark-nightmare:eclipse") && R.modeHostile("mental-death-nightmare:wither"), "…and Hone, Warzone, Umbral Strike and Eclipse aren't, though they're Nightmare; Wither is");
 delete hero.system.trees["mental-peace-dream"]; hero.system.prepareDerivedData();

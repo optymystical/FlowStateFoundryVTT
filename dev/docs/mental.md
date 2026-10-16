@@ -52,6 +52,8 @@
 
 [Fortune (Dream)](#fortune-\(dream\))
 
+[Ruin (Nightmare)](#ruin-\(nightmare\))
+
 [**Mental T5 Skill Trees**](#mental-t5-skill-trees)
 
 [Esoteric Arts](#esoteric-arts)
@@ -95,7 +97,7 @@
 - **Trance:** You can spend 8 hours attempting to make permanent a Mode of your choice on a willing target (they must participate in the 8 hours as well). Upon completion, the effect of the Mode is permanently active on them, so long as you maintain Concentration on it (this counts towards your cap).   
   - Modes with a normal lingering effect require a successful self attack roll (crits do apply) at the start of the target’s turns, with a failure meaning it doesn't apply that round.  
   - Modes that have an instanced effect such as Bloom or Decree trigger at the start of each of their turns so long as they make a successful attack roll against themselves (crits do apply), and that effect lasts until the start of their next turn.   
-  - Hostile effects are instead treated as a new ability the target can use for an AP cost determined by the Wonder Ranges (as well as the effects those impart), which are chosen on use, using your scaling dice for the effect but their own attack dice/buffs for the attack roll, and their own energy if they wish to Enhance or Burst it.  
+  - Hostile effects are instead treated as a new ability the target can use for an AP cost determined by the Wonder Ranges (as well as the effects those impart), which are chosen on use, using your scaling dice for the effect but their own attack dice/buffs for the attack roll, are automatically Enhanced (if desired) for free, and their own energy if they wish to Burst it.  
 - **Project:** Your Form’s Ward can now be applied to an ally as a Ranged attack with a range of 100ft, still requiring whatever AP/RP/energy the Action normally would take.
 
 
@@ -652,7 +654,7 @@
 | 95–97 | Reroll this table, applying that effect to the same target. |
 | 98–100 | Give the target **5 Temp HP**, restore **5 health** to them (only affecting damage taken since the start of your last turn), and remove one Stage 1 negative condition from them. |
 
-## **Ruin (Nightmare)**
+## **Ruin (Nightmare)** {#ruin-(nightmare)}
 
 **Tier 1: You gain the following Mode, passive, and Tenet:**
 

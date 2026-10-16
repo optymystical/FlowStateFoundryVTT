@@ -84,7 +84,7 @@ export async function trance(actor) {
   const mm = modeMental(actor, mode);
   const hostile = R.modeHostile(mode.id);          // by what the Mode does to its target (Pacify is hostile, Hone isn't), not by Dream / Nightmare
   await putSpellEffect(target, { kind: "trance", stack: true, persistent: true, caster: actor.uuid, concentration: id, name: `Trance: ${mode.name}`, mode: mode.id, power: mm.power, hostile, m: mm,
-    description: hostile ? `${actor.name}'s ${mode.name} is a permanent ability for ${target.name}: they can use it for the Range's AP, with ${actor.name}'s Power and their own attack dice.`
+    description: hostile ? `${actor.name}'s ${mode.name} is a permanent ability for ${target.name}: they can use it for the Range's AP (or Burst it for RP and their own Energy), with ${actor.name}'s Power and their own attack dice, Enhanced for free if they want.`
       : `${actor.name}'s ${mode.name} takes hold at the start of each of ${target.name}'s turns if they succeed on an attack roll against themselves; it lasts until their next turn.` });
   await post(actor, { title: `${esc(actor.name)} — Trance`, body: `<div class="fs-result">After 8 hours, <strong>${esc(mode.name)}</strong> is permanently ${hostile ? "an ability of" : "active on"} <strong>${esc(target.name)}</strong>, for as long as ${esc(actor.name)} concentrates on it.</div>` });
   return true;
@@ -120,7 +120,10 @@ TURN_START.push(tranceTurnStart);
 /** Hostile Trance Modes this creature may use. */
 export const tranceAbilities = holder => spellEffects(holder, "trance").filter(e => e.flags.flowstate.spellEffect.hostile);
 
-/** Use a hostile Trance Mode: the Range's AP, the caster's Power, the user's own attack dice (and energy to Enhance). */
+/**
+ * Use a hostile Trance Mode: the Range's AP, the caster's Power, the user's own attack dice. It is Enhanced for free if they want it; Burst (RP equal to the
+ * Range's AP instead) costs their own Energy, the Wonder's Enhance cost from their stat.
+ */
 export async function useTrance(holder, effect) {
   const d = effect?.flags?.flowstate?.spellEffect;
   const mode = R.modeById(d?.mode);
@@ -131,12 +134,14 @@ export async function useTrance(holder, effect) {
   const out = await foundry.applications.api.DialogV2.prompt({ window: { title: `Trance: ${mode.name}` }, rejectClose: false,
     content: `<div class="fs-cast"><p>${esc(mode.name)} at Power ${d.power} (${esc(R.wonderById(mode.wonder).name)}), with your own attack roll.</p>
       <div class="fs-field"><label>Range</label><select name="range">${Object.entries(R.RANGES).filter(([k]) => k !== "area").map(([k, r]) => `<option value="${k}">${r.label} (${r.ap} AP)</option>`).join("")}</select></div>
-      <label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${minOf(holder, kind.stat)} of your Energy</small></label></div>`,
-    ok: { label: "Use it", callback: (event, button) => ({ range: button.form.elements.range.value, enhance: button.form.elements.enhance.checked }) } });
+      <label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>free (a Trance ability is Enhanced for free if you want)</small></label>
+      <label class="fs-cast-mod"><input type="checkbox" name="burst"> <strong>Burst</strong> <small>RP instead of AP, and ${minOf(holder, kind.stat)} of your Energy</small></label></div>`,
+    ok: { label: "Use it", callback: (event, button) => ({ range: button.form.elements.range.value, enhance: button.form.elements.enhance.checked, burst: button.form.elements.burst.checked }) } });
   if (!out) return false;
   const range = R.RANGES[out.range] ? out.range : "ranged";
-  if (!(await mental.pay(holder, { ap: R.RANGES[range].ap, energy: out.enhance ? minOf(holder, kind.stat) : 0 }, `Trance: ${mode.name}`))) return false;
-  await mental.manifestAt(holder, mode, target, { power: d.power, enhanced: !!out.enhance, range, label: "Trance" });
+  const cost = out.burst ? { rp: R.RANGES[range].ap, energy: minOf(holder, kind.stat) } : { ap: R.RANGES[range].ap };
+  if (!(await mental.pay(holder, cost, `Trance: ${mode.name}`))) return false;
+  await mental.manifestAt(holder, mode, target, { power: d.power, enhanced: !!out.enhance, range, label: out.burst ? "Trance (Burst)" : "Trance" });
   return true;
 }
 

@@ -110,7 +110,7 @@ await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "ranged" });
 ok2(lastAtk().flags.flowstate.attack.targets[0].net === 0 && !lastAtk().flags.flowstate.attack.opts.stacks, "Alignment no longer touches Manifests: a Dream Wonder has no Advantage");
 refresh(); target(orc); seq = [20];
 await M.manifest(hero, { mode: "mental-life-dream:bloom", range: "melee" });
-ok2(lastAtk().flags.flowstate.attack.targets[0].net === -1, "A Melee Manifest's attack roll has a stack of Disadvantage");
+ok2(lastAtk().flags.flowstate.attack.targets[0].net === 0, "A Melee Manifest's attack roll has no Disadvantage (1 AP, within your melee range)");
 combat.started = false; dialog = () => ({ kind: "dream", level: 4 }); await M.setAlignmentActivity(hero); combat.started = true;
 ok2(flag(hero, "alignment").level === 2, "Without Deepening (Mental T3) the deepest Alignment is 2");
 hero.system.prepareDerivedData();

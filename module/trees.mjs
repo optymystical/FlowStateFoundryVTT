@@ -3479,7 +3479,7 @@ export const TREES = [
       "name": "Wonder Ranges",
       "text": "The range of a Wonder is chosen from among the following whenever you Manifest it:",
       "sub": [
-       "Melee: The Manifestation targets one target within your personal melee range. Has an AP cost of 1, but the attack roll for the Manifest gets a stack of disadvantage.",
+       "Melee: The Manifestation targets one target within your personal melee range. Has an AP cost of 1.",
        "Ranged: Has a maximum range of 100ft. The attack is made as normal, respecting cover. Has an AP cost of 2.",
        "Area: Can either be a 10ft radius around you, a 20ft 90 degree cone in front of you, or a 30ft by 5ft line in one cardinal direction. Each target in the area must make a dodge roll separately against your singular attack roll. Has an AP cost of 3, and the effect is Weakened if it hits more than two targets. This Area can include yourself if desired."
       ]

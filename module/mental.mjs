@@ -169,8 +169,7 @@ function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const extras = wonders.COST_PROVIDERS.map(f => f(actor, { mode, wonder, choices, free })).filter(Boolean);
   for (const x of extras) if (!free) cost.energy += x.energy ?? 0;
   const extraNet = extras.reduce((n, x) => n + (x.net ?? 0), 0), extraStacks = extras.reduce((n, x) => n + (x.stacks ?? 0), 0);
-  // Melee Manifest: the attack roll gets a stack of Disadvantage.
-  const net = (range === "melee" ? -1 : 0) + kinetic + extraNet;
+  const net = kinetic + extraNet;          // (Melee no longer gives the attack roll Disadvantage: the doc's update)
   const power = check.power;
   const text = R.scaleMentalText(v.enhance ? `${mode.base} Enhanced: ${mode.enhanced || "(no extra effect)"}` : mode.base, power, mode.name);
   const errors = check.ok ? [] : [check.reason];
@@ -185,10 +184,8 @@ const costText = c => [c.ap ? `${c.ap} AP` : "", c.rp ? `${c.rp} RP` : "", c.ene
 
 function previewHTML(plan) {
   if (!plan.ok) return `<p class="fs-warn">${plan.errors.map(esc).join(" ")}</p>`;
-  const align = plan.range === "melee" ? " · Melee: Disadvantage" : "";
-  const alignStr = "";
   return `<div class="fs-cast-sum"><div><strong>${esc(plan.mode.name)}</strong> <small>(${esc(plan.wonder.name)}, ${R.KINDS[plan.kind].label})</small>: ${esc(plan.text)}</div>
-    <div><strong>${costText(plan.cost)}</strong> · Wonder Power ×${plan.power} <small>(${R.KINDS[plan.kind].statLabel} ${plan.stat})</small>${align}${alignStr}${plan.patronFree ? " · Patron: Enhance and Burst energy is free" : ""}${plan.wobs ? " · Will of Body and Spirit: no AP/RP of its own" : ""}</div></div>`;
+    <div><strong>${costText(plan.cost)}</strong> · Wonder Power ×${plan.power} <small>(${R.KINDS[plan.kind].statLabel} ${plan.stat})</small>${plan.patronFree ? " · Patron: Enhance and Burst energy is free" : ""}${plan.wobs ? " · Will of Body and Spirit: no AP/RP of its own" : ""}</div></div>`;
 }
 
 function dialogHTML(ctx, v, plan) {
@@ -270,7 +267,7 @@ export async function manifestAt(actor, mode, target, { power, enhanced, range =
   const wonder = R.wonderById(mode.wonder);
   const text = R.scaleMentalText(enhanced ? `${mode.base} Enhanced: ${mode.enhanced || ""}` : mode.base, power, mode.name);
   const mental = { mode: mode.id, wonder: wonder.id, kind: wonder.kind, power, enhanced: !!enhanced, burst: false, range, alignStacks: 0, text, caster: actor.uuid, choices, spread, extraModes };
-  return performAttack(actor, { ...baseAttack, label: `${label ?? mode.name} (${mode.name})`, net: range === "melee" ? -1 : 0, stacks: 0, melee: false, area: false,
+  return performAttack(actor, { ...baseAttack, label: `${label ?? mode.name} (${mode.name})`, net: 0, stacks: 0, melee: false, area: false,
     notes: [`${label ?? "Free"}: ${mode.name} spreads to ${target.name}; its effect applies immediately`], mental, targetActors: [target] });
 }
 

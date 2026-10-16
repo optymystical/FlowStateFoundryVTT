@@ -69,7 +69,7 @@
 - **Wonder Power:** The Power of a Wonder increases by 1 for every 10 points you have in its Scaling stat (which is Snappence for Nightmares, and Ponderance for Dreams). All **bolded effects** within the Wonder are increased with its Power, so if you have 30 Snappence and have a Nightmare that deals **1d8 damage**, that would increase to **3d8 damage** due to its power being 3\. If your Scaling Stat is less than 10 or the Power of a Wonder would otherwise be 0, you cannot Manifest it. Any effects that modify the Power of a Wonder are additive, so two 50% increases would result in a 100% increase in Power (rounding down as needed after all power bonuses have been calculated).  
 - **Wonder Ranges:** The range of a Wonder is chosen from among the following whenever you Manifest it:
 
-  **Melee:** The Manifestation targets one target within your personal melee range. Has an AP cost of 1, but the attack roll for the Manifest gets a stack of disadvantage.
+  **Melee:** The Manifestation targets one target within your personal melee range. Has an AP cost of 1\.
 
   **Ranged:** Has a maximum range of 100ft. The attack is made as normal, respecting cover. Has an AP cost of 2\.
 

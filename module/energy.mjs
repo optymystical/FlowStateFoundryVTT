@@ -6,7 +6,9 @@
 import { statMin } from "./rules.mjs";
 
 const COST_RE = /Cost:\s*Energy equal to ([^.]*)\.\s*/i;
-const STAT_KEYS = { str: "str", dex: "dex", con: "con" };
+/** The doc's abbreviations for the badge. */
+const ABBR = { snap: "SNA", will: "WIL", reach: "REA", grasp: "GRA", build: "BUI" };
+const STAT_KEYS = { str: "str", dex: "dex", con: "con", pon: "pon", sna: "snap", snap: "snap", wil: "will", will: "will", rea: "reach", reach: "reach", gra: "grasp", grasp: "grasp", bui: "build", build: "build" };
 
 /** Parse a cost sentence. Returns null if the text has no Energy cost. */
 export function parseEnergyCost(text = "") {
@@ -18,17 +20,18 @@ export function parseEnergyCost(text = "") {
   const target = /grappled target/.test(p);
   let base, stat = null;
   if (/skill points/.test(p)) base = "skillPoints";
+  else if (/total mind/.test(p)) base = "mind";
   else if (/scaling stat min/.test(p)) base = "scalingMin";
   else if (/scaling stat/.test(p)) base = "scaling";
   else {
-    const s = p.match(/\b(str|dex|con)\b\s+(min|stat)/);
+    const s = p.match(/\b(str|dex|con|pon|snap?|will?|reach|rea|grasp|gra|build|bui)\b\s+(min|stat)/);
     if (s) { stat = STAT_KEYS[s[1]]; base = s[2] === "min" ? "statMin" : "stat"; }
   }
   if (!base) return { phrase, mult, base: "other", stat: null, target, short: phrase };
   const multLabel = { 2: "2 × ", 0.5: "½ × ", 0.25: "¼ × ", 1: "" }[mult];
   const baseLabel = {
-    skillPoints: "Skill Points", scalingMin: "Scaling Stat min", scaling: "Scaling Stat",
-    statMin: `${stat?.toUpperCase()} min`, stat: `${stat?.toUpperCase()} stat`
+    skillPoints: "Skill Points", mind: "total Mind", scalingMin: "Scaling Stat min", scaling: "Scaling Stat",
+    statMin: `${ABBR[stat] ?? stat?.toUpperCase()} min`, stat: `${ABBR[stat] ?? stat?.toUpperCase()} stat`
   }[base];
   return { phrase, mult, base, stat, target, short: `${multLabel}${target ? "target's " : ""}${baseLabel}` };
 }
@@ -41,7 +44,9 @@ const scaleCost = (value, mult) => Math.floor(Math.max(0, value) * mult);
 
 /**
  * The actor's cost for a parsed formula.
- * @param {object} ctx  { effective, skillPoints, weapons: [{name, capped, statValue, unarmed, light?, heavy?}] }
+ * @param {object} ctx  { effective, skillPoints, weapons: [{name, capped, statValue, unarmed, light?, heavy?}], scalingStats? }
+ *   `scalingStats` ([{ label, stat }]): where "Scaling Stat" means a stat rather than a weapon's (Mental: a Wonder's own stat, or for the Arts the Wonder you
+ *   use them with, PON for a Dream one and SNA for a Nightmare one), one part per stat.
  * @returns {{ value: number|null, parts: Array<{label, value}> , note: string }}
  */
 export function energyFor(cost, ctx) {
@@ -52,10 +57,15 @@ export function energyFor(cost, ctx) {
     case "skillPoints": return { value: scaleCost(ctx.skillPoints ?? 0, cost.mult), parts: [], note: "" };
     case "statMin": return { value: scaleCost(eff[cost.stat]?.min ?? 0, cost.mult), parts: [], note: "" };
     case "stat": return { value: scaleCost(eff[cost.stat]?.value ?? 0, cost.mult), parts: [], note: "" };
+    case "mind": return { value: scaleCost((eff.pon?.value ?? 0) + (eff.snap?.value ?? 0) + (eff.will?.value ?? 0), cost.mult), parts: [], note: "" };
     case "scalingMin":
     case "scaling": {
       const pick = v => (cost.base === "scalingMin" ? statMin(v) : v);
       const parts = [];
+      if (ctx.scalingStats?.length) {
+        for (const s of ctx.scalingStats) parts.push({ label: s.label, value: scaleCost(cost.base === "scalingMin" ? (eff[s.stat]?.min ?? statMin(eff[s.stat]?.value ?? 0)) : (eff[s.stat]?.value ?? 0), cost.mult) });
+        return { value: parts.length === 1 ? parts[0].value : null, parts, note: "" };
+      }
       for (const w of ctx.weapons ?? []) {
         if (w.unarmed) {
           parts.push({ label: `${w.name} (Light)`, value: scaleCost(pick(eff.dex?.value ?? 0), cost.mult) });

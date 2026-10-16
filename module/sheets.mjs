@@ -41,6 +41,17 @@ function energyContext(actor) {
   return { effective: sys.derived.effective, skillPoints: sys.skills?.total ?? sys.skillPoints ?? 0, weapons };
 }
 
+/**
+ * A tree's cost context. In a Mental tree "Scaling Stat" is a stat, not a weapon's: a Wonder's own (Life: PON, Death: SNA), or in the Arts and Mental Theory
+ * the Wonder you use them with, so both are shown (Reflex: "Dream (PON): 3 · Nightmare (SNA): 4").
+ */
+function treeEnergyContext(ectx, tree) {
+  if (tree?.archetype !== "mental") return ectx;
+  const kind = /\((Dream|Nightmare)\)\s*$/i.exec(tree.name ?? "")?.[1]?.toLowerCase();
+  const both = [{ label: "Dream (PON)", stat: "pon" }, { label: "Nightmare (SNA)", stat: "snap" }];
+  return { ...ectx, scalingStats: kind === "dream" ? [both[0]] : kind === "nightmare" ? [both[1]] : both };
+}
+
 /** Extra detail for system statuses on the Misc tab's Active Effects list. */
 const STATUS_DETAIL = {
   psychedUp: "Advantage on your attack rolls; attacks against you have Advantage. Ends at the start of your next turn.",
@@ -712,7 +723,7 @@ function actionGroups(actor, weapons, stats) {
   if (mTheory >= 2 && mctx.wonders.length) mentalRows.push({ label: "Trance", detail: "8 hours with a willing target to make a Mode permanent on them, for as long as you concentrate on it (target them first)", cost: "8 hours (not in combat)", action: "trance", icon: "fa-solid fa-moon" });
   for (const e of ponderanceMod.premeditatedBy(actor)) mentalRows.push({ label: `Trigger ${e.name} on ${e.parent?.name ?? "?"}`, detail: `Takes hold when they ${e.flags.flowstate.spellEffect.trigger}. Ends at the start of your next turn if unused.`, cost: "Free", action: "triggerPremeditated", itemId: e.uuid, icon: "fa-solid fa-hourglass-half" });
   for (const e of ponderanceMod.tranceAbilities(actor)) mentalRows.push({ label: `Trance: ${e.name.replace(/^Trance: /, "")}`, detail: `${e.flags.flowstate.spellEffect.description} Target a creature first.`, cost: "Range AP", action: "useTrance", itemId: e.uuid, icon: "fa-solid fa-hand-sparkles" });
-  if (snapT >= 1 && mctx.wonders.length) mentalRows.push({ label: "Reflex", detail: `When a character you can sense begins an action, Manifest a Wonder first (target the one acting). Its effects are Weakened${snapT >= 3 ? " unless it's your Fixation" : ""}. Attacks offer this automatically.`, cost: snapT >= 5 && snappenceMod.afterimageReady(actor) ? "Free (Afterimage)" : "RP = Range AP + ⚡ half Scaling Stat min", action: "reflex", icon: "fa-solid fa-bolt" });
+  if (snapT >= 1 && mctx.wonders.length) mentalRows.push({ label: "Reflex", detail: `When a character you can sense begins an action, Manifest a Wonder first (target the one acting). Its effects are Weakened${snapT >= 3 ? " unless it's your Fixation" : ""}. Attacks offer this automatically.`, cost: snapT >= 5 && snappenceMod.afterimageReady(actor) ? "Free (Afterimage)" : `RP = Range AP + ⚡ ${Math.floor(ab.statMinOf(actor, "pon") / 2)} (Dream) / ${Math.floor(ab.statMinOf(actor, "snap") / 2)} (Nightmare)`, action: "reflex", icon: "fa-solid fa-bolt" });
   for (const [which, id, label, apply] of [["light", "mental-light-dream", "Corona", "Illuminate"], ["dark", "mental-dark-nightmare", "Nightfall", "Eclipse"]]) if (skills.tierOf(sys.trees, id) >= 5) mentalRows.push({ label, detail: `An attack roll at a creature within 100 ft already under your ${apply}: on a hit that ${apply} spreads to everyone within 10 ft of it`, cost: "1 AP", action: "expand", op: which, icon: "fa-solid fa-sun" });
   if (skills.tierOf(sys.trees, wondersD.EARTH) >= 3) {
     const accs = wondersD.accretionsOf(actor);
@@ -1035,7 +1046,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
           const owned = t.tier <= current;
           const isNext = t.tier === current + 1;
           return {
-            ...t, entries: t.entries.map(e => scaleEntry(withEnergy(e, ectx), tp)), owned, isNext, locked: !owned && !isNext,
+            ...t, entries: t.entries.map(e => scaleEntry(withEnergy(e, treeEnergyContext(ectx, tree)), tp)), owned, isNext, locked: !owned && !isNext,
             free: t.tier === 0,
             cost: t.tier, canUnlock: isNext && next?.ok && this.isEditable,
             reason: isNext ? next.reason : `Unlock Tier ${t.tier - 1} first.`,

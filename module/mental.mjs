@@ -198,7 +198,7 @@ function dialogHTML(ctx, v, plan) {
     <label class="fs-cast-mod"><input type="checkbox" name="enhance" ${v.enhance ? "checked" : ""}> <strong>Enhance</strong> <small>${v.mode && plan?.enhanceCost !== undefined ? `${plan.enhanceCost} Energy (the Wonder's Scaling Stat min)` : "costs the Wonder's Scaling Stat min in Energy"}</small></label>
     <div class="fs-mode-choices">${choicesHTML(ctx.actor, v.mode, v)}</div>
  ${ctx.ponder >= 1 && !ctx.wobs ? `<label class="fs-cast-mod"><input type="checkbox" name="premeditate" ${v.premeditate ? "checked" : ""}> <strong>Premeditate</strong> <small>store it on a hit (Strengthened, Concentration) for the Wonder's Scaling Stat min in Energy, to take hold on a preset action</small></label>` : ""}
-    ${ctx.theory >= 1 && !ctx.wobs ? `<label class="fs-cast-mod"><input type="checkbox" name="burst" ${v.burst ? "checked" : ""}> <strong>Burst</strong> <small>use RP instead of AP, and pay the Enhance cost in Energy</small></label>` : ""}
+    ${ctx.theory >= 1 && !ctx.wobs && !ctx.reflex ? `<label class="fs-cast-mod"><input type="checkbox" name="burst" ${v.burst ? "checked" : ""}> <strong>Burst</strong> <small>use RP instead of AP, and pay the Enhance cost in Energy</small></label>` : ""}
     <div class="fs-cast-preview">${previewHTML(plan)}</div>
   </div>`;
 }

@@ -3769,8 +3769,9 @@ export async function putSpellEffect(target, effect) {
 /** End every spell effect this caster put on others (until the start of their next turn). Rituals' effects end with the Ritual instead. */
 export async function clearSpellEffects(caster, { all = false } = {}) {
   // Bleed waits for its victim's next turn (that always comes before the caster's), unless combat is ending.
+  // A Concentration (Trance, Premeditate, an Enhanced Drown) isn't ended by combat ending: its effects stay until the caster stops concentrating.
   const mine = e => e.flags?.flowstate?.spellEffect?.caster === caster.uuid && !e.flags?.flowstate?.ritualOf
-    && (all || (!e.flags.flowstate.spellEffect.onTargetTurn && !e.flags.flowstate.spellEffect.persistent));
+    && (all ? !e.flags.flowstate.spellEffect.concentration : (!e.flags.flowstate.spellEffect.onTargetTurn && !e.flags.flowstate.spellEffect.persistent));
   const docs = [];
   for (const a of game.actors ?? []) for (const e of a.effects ?? []) if (mine(e)) docs.push(e);
   for (const t of globalThis.canvas?.tokens?.placeables ?? []) if (!t.document.actorLink) for (const e of t.actor?.effects ?? []) if (mine(e)) docs.push(e);

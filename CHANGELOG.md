@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.65.12:** **Fixed: combat ending ended Concentrations.** Clearing a creature's effects when combat ends now leaves the effects its Concentrations keep going (Trance, Premeditate, an Enhanced Drown), so the Concentration carries on.
+
 **0.65.11:** **Melee Manifests no longer have Disadvantage** (the Mental doc's update): Melee is 1 AP at a target within your personal melee range, with a normal attack roll.
 
 **0.65.10:** **Trance on yourself.** A hostile Mode Tranced onto yourself makes your Manifests of that Mode Enhanced for free while the Trance lasts (Burst still costs Energy), instead of adding a Trance ability you already have.

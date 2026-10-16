@@ -185,6 +185,8 @@ await W.pendingTurnStart(orc);
 ok2(effs(orc, "tempHP").length === 1 && effs(orc, "tempHP")[0].flags.flowstate.spellEffect.tranceOf === tr[0].id, "At the start of their turn a successful self attack roll applies it (Bloom, immediately)");
 seq = [1, 30]; await W.pendingTurnStart(orc);
 ok2(effs(orc, "tempHP").length === 0 && /doesn't take hold/.test(messages.map(text).join(" ")), "…a failed one doesn't, and last round's copy is gone");
+await actions.clearSpellEffects(hero, { all: true });          // what combat ending does
+ok2(effs(orc, "trance").length === 1 && CN.list(hero).length === 1, "Combat ending doesn't end a Concentration (the Trance stays)");
 await CN.end(hero, CN.list(hero)[0].id);
 ok2(effs(orc, "trance").length === 0, "Ending the Concentration ends the Trance");
 await resetC(); target(orc);

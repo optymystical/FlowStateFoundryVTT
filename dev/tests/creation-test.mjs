@@ -66,15 +66,16 @@ console.log("creation tests passed");
   assert.equal(short.cost, "");
   console.log("  PASS Tier descriptions in the wizards: first sentences, cost apart, full text kept");
 }
-// The GM lowering a stat after creation puts the points back into the character's unspent ones (the player can spend their whole total).
+// A character's spendable stat points: 3 per Skill Point (+ carry) less their stats. GM edits move points around; nothing comes from nowhere.
 {
-  const sys = { creation: false, stats: { str: 30, dex: 10, con: 20 }, unspentStats: 0 };
-  assert.equal(c.statRefund(sys, { system: { stats: { str: 20 } } }), 10);
-  assert.equal(c.statRefund(sys, { "system.stats.con": 5, "system.stats.dex": 15 }), 15);
-  assert.equal(c.statRefund(sys, { system: { stats: { str: 20 }, unspentStats: 0 } }), 0);
-  assert.equal(c.statRefund({ ...sys, creation: true }, { system: { stats: { str: 20 } } }), 0);
-  assert.equal(c.statRefund(sys, { system: { stats: { str: 40 } } }), 0);
-  console.log("  PASS GM-lowered stats go back into the unspent points (unless the GM sets those too)");
+  const { statPointsLeft } = await import("../../module/rules.mjs");
+  const base = { stats: { str: 30, dex: 30, con: 30 }, skillPoints: 30, statCarry: 0 };
+  assert.equal(statPointsLeft(base), 0);
+  assert.equal(statPointsLeft({ ...base, stats: { ...base.stats, str: 20 } }), 10);             // the GM lowers a stat: those points are spendable
+  assert.equal(statPointsLeft({ ...base, stats: { ...base.stats, str: 20, dex: 40 } }), 0);     // ...and raising another takes them back
+  assert.equal(statPointsLeft({ ...base, stats: { ...base.stats, str: 40 } }), 0);             // never negative
+  assert.equal(statPointsLeft({ ...base, skillPoints: 31, statCarry: 1 }), 4);                // granted points (3:1 with a remainder)
+  console.log("  PASS Stat points left: 3 × Skill Points + carry − stats (no free points from GM edits)");
 }
 // Sub-points (Fortune's and Ruin's Bands) stay a list in the wizards.
 {

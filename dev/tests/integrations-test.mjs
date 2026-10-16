@@ -26,6 +26,15 @@ fist.system.prepareDerivedData(); actor.system.prepareDerivedData();
 const portrait = new cfg.CombatantPortrait(actor);
 ok(portrait.getDescription() === "Unarmored · Unarmed", `Carousel description: ${portrait.getDescription()}`);
 
+// A character's unspent stat points are worked out: 3 × Skill Points (+ carry) less their stats.
+{
+  const stats0 = { ...actor.system.stats };
+  actor.system.stats = { ...stats0, str: 0, dex: 0 }; actor.system.prepareDerivedData();          // 110 − 40 = 70 in stats, 90 total
+  ok(actor.system.unspentStats === 20, `Lowering stats frees points within the 3 × Skill Points total (${actor.system.unspentStats})`);
+  actor.system.stats = { ...stats0, str: 0, dex: 40 }; actor.system.prepareDerivedData();
+  ok(actor.system.unspentStats === 0, "…raising another uses them back up: no points from nowhere");
+  actor.system.stats = stats0; actor.system.prepareDerivedData();
+}
 // Token Action HUD
 class ActionHandler { constructor() { this.added = []; } addActions(a, g) { this.added.push([g.id, a]); } }
 class SystemManager {} class RollHandler {}

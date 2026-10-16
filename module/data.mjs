@@ -1,4 +1,4 @@
-import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats } from "./rules.mjs";
+import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats, statPointsLeft } from "./rules.mjs";
 import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile, affixProfile, affixMultOf, affixSpeedPct, attunedAffixKeys, attunedAffixItems } from "./magic.mjs";
@@ -58,6 +58,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
   }
 
   prepareDerivedData() {
+    // A character's unspent stat points: 3 per Skill Point (plus the carried remainder) less what's in their stats (statPointsLeft). NPCs keep their own count.
+    if (this.parent?.type === "character" && !this.creation) this.unspentStats = statPointsLeft(this);
     const d = deriveCharacter({
       stats: this.stats,
       skillPoints: this.skillPoints,

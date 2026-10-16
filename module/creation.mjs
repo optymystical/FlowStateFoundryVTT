@@ -10,25 +10,6 @@ import * as skills from "./skills.mjs";
 import { parseEnergyCost, stripEnergyCost } from "./energy.mjs";
 
 /**
- * Stat points the GM's edit takes off this character's stats (after creation): they go back into its unspent points, so the player can still spend their
- * whole total. None when the same edit sets the unspent points itself (the GM really taking them away), during creation, or for raised stats.
- * `changes` is an update (nested { system: { stats } }, or flat "system.stats.str" keys).
- */
-export function statRefund(system, changes = {}) {
-  if (!system || system.creation) return 0;
-  const flat = Object.entries(changes ?? {});
-  if ("system.unspentStats" in (changes ?? {}) || changes?.system?.unspentStats !== undefined) return 0;
-  const next = { ...(changes?.system?.stats ?? {}) };
-  for (const [k, v] of flat) { const m = /^system\.stats\.(\w+)$/.exec(k); if (m) next[m[1]] = v; }
-  let refund = 0;
-  for (const [k, v] of Object.entries(next)) {
-    const before = Number(system.stats?.[k]) || 0, after = Number(v);
-    if (Number.isFinite(after) && after < before) refund += before - after;
-  }
-  return refund;
-}
-
-/**
  * A skill tree entry in a few words for the creation wizards: its first sentence or two (at most about `max` characters, cut at a word), with the Energy cost
  * pulled out as `cost` ("half of your PON min, rounded down"), its sub-points (`sub`: Fortune's and Ruin's Bands) kept as a list, and the whole text kept as
  * `full` for a tooltip.
@@ -208,7 +189,7 @@ export function buildActorData(choice, rules, userId) {
       stats: { ...emptyStats(), ...choice.stats },
       skillPoints: skillPointsFor(rules.statPoints),
       unspentStats: rules.statPoints - spent,
-      statCarry: 0,
+      statCarry: rules.statPoints - 3 * skillPointsFor(rules.statPoints),          // so 3 × Skill Points + carry is the full total
       creation: false,
       size: 3,
       trees: cleanTrees(choice.trees)

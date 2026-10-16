@@ -15,7 +15,6 @@ import "./arcana.mjs";
 import * as fociEngine from "./foci.mjs";
 import * as conjure from "./conjure.mjs";
 import * as ab from "./abilities.mjs";
-import * as creation from "./creation.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import { NpcWizard } from "./npc-wizard.mjs";
 import "./integrations.mjs";
@@ -684,13 +683,6 @@ Hooks.on("preUpdateActor", (actor, changes, options) => {
   ui.notifications.warn("Character size is set by Ancestry, which isn't in the system yet. It stays at Size 3.");
   setTimeout(() => actor.sheet?.rendered && actor.sheet.render(), 0);
   return false;
-});
-
-/** A stat the GM lowers after creation goes back into the character's unspent stat points (creation.statRefund), so the player can spend their whole total. */
-Hooks.on("preUpdateActor", (actor, changes, options) => {
-  if (!game.user.isGM || options?.flowstateSpend || options?.flowstateSystem || actor.type === "pile") return;
-  const refund = creation.statRefund(actor.system, changes);
-  if (refund) foundry.utils.setProperty(changes, "system.unspentStats", (Number(actor.system.unspentStats) || 0) + refund);
 });
 
 Hooks.on("preUpdateActor", (actor, changes, options) => {

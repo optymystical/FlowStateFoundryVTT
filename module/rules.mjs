@@ -92,6 +92,14 @@ export function poolFormula(keep, size, net = 0) {
   return `${keep + extra}d${size}${net > 0 ? "kh" : "kl"}${keep}`;
 }
 
+/**
+ * A character's stat points left to spend: their total is 3 per Skill Point (plus the carried remainder of granted points, `statCarry`), less what's in their
+ * stats. The GM lowering a stat frees those points, raising one uses them, and nothing appears from nowhere; the total changes with Skill Points (or Grant
+ * Points). Never below 0.
+ */
+export const statPointsLeft = ({ stats = {}, skillPoints = 0, statCarry = 0 } = {}) =>
+  Math.max(0, 3 * (Number(skillPoints) || 0) + (Number(statCarry) || 0) - Object.keys(STATS).reduce((n, k) => n + (Number(stats?.[k]) || 0), 0));
+
 /** Ch8 Strengthened/Weakened multiplier from net stacks. Str is additive +50%, Weak is multiplicative ×0.5. */
 export const stackMultiplier = net => (net >= 0 ? 1 + 0.5 * net : Math.pow(0.5, -net));
 

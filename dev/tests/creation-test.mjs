@@ -54,3 +54,15 @@ console.log("creation tests passed");
   if (!(slot.side === "offensive" && slot.affix && c.normalizeSlot({ ...slot, side: "x" }, "uncommon").side === "offensive")) throw new Error("FAIL new Affix slots default to the Offensive form");
   console.log("  PASS Affix rules (their own form, rarity cap, no Foci or Shroud needed)");
 }
+// The wizards' tier descriptions: a sentence or two, the Energy cost pulled out, the full text kept for the tooltip.
+{
+  const b = c.entryBlurb({ name: "Parry", text: "Cost: Energy equal to your Scaling Stat. At any time on your turn, you can activate this ability with a held Weapon to enable it to Parry incoming attacks until the start of your next turn. While Parrying, that Weapon's Limit applies to every incoming attack. More text follows here that is long." });
+  assert.equal(b.name, "Parry");
+  assert.equal(b.cost, "your Scaling Stat");
+  assert.ok(b.text.startsWith("At any time on your turn") && !b.text.includes("Cost:") && b.text.length <= 175 && /…$/.test(b.text), b.text);
+  assert.ok(b.full.startsWith("Cost: Energy equal to your Scaling Stat."));
+  const short = c.entryBlurb({ name: "Bloom", text: "Gives 50 temp HP." });
+  assert.equal(short.text, "Gives 50 temp HP.");
+  assert.equal(short.cost, "");
+  console.log("  PASS Tier descriptions in the wizards: first sentences, cost apart, full text kept");
+}

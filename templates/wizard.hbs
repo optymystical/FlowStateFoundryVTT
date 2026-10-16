@@ -54,6 +54,15 @@
       <span><strong>Dodge</strong> 2d{{preview.dodgeDie}}</span>
       <span><strong>Skill Points</strong> {{preview.skillPoints}}</span>
     </div>
+    <div class="fs-wizard-advice">
+      <p><i class="fa-solid fa-lightbulb"></i> <strong>New to Flow State?</strong> Stick to one Archetype for your first character, and split your points between one of its <strong>offensive</strong> stats and its <strong>defensive</strong> stat:</p>
+      <ul>
+        <li><strong>Martial</strong> (Body): Strength <em>or</em> Dexterity, plus Constitution.</li>
+        <li><strong>Mental</strong> (Mind): Ponderance <em>or</em> Snappence, plus Willpower.</li>
+        <li><strong>Magic</strong> (Spirit): Reach <em>or</em> Grasp, plus Build.</li>
+      </ul>
+      <p class="hint">The offensive stat powers your attacks and abilities; the defensive one keeps you standing. Spreading points over many stats leaves you weak at everything.</p>
+    </div>
     {{/if}}
 
     {{#if is_skills}}
@@ -77,7 +86,8 @@
         </div>
         {{#if open}}
         <ul class="fs-wizard-tree-tiers">
-          {{#each tiers}}<li class="{{#if owned}}fs-owned{{/if}}"><strong>T{{tier}}</strong> {{#if names}}{{names}}{{else}}{{summary}}{{/if}}</li>{{/each}}
+          {{#each tiers}}<li class="{{#if owned}}fs-owned{{/if}}"><strong>T{{tier}}</strong> <span class="fs-tier-summary">{{summary}}</span>
+            <ul class="fs-wizard-entries">{{#each entries}}<li data-tooltip="{{full}}">{{#if name}}<strong>{{name}}:</strong> {{/if}}{{text}}{{#if cost}} <span class="fs-entry-cost"><i class="fa-solid fa-bolt"></i> {{cost}}</span>{{/if}}</li>{{/each}}</ul></li>{{/each}}
         </ul>
         {{/if}}
       </li>

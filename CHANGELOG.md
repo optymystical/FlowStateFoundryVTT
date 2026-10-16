@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.65.1:** **Character creation help.** The wizards' Skill Trees step now describes each tier: the doc's tier line, then every entry's name with its first sentence or two and its Energy cost (the full text on hover). The Stats step has advice for new players: one Archetype, one offensive stat (Str/Dex, Pon/Snap or Reach/Grasp) plus its defensive stat (Con, Will or Build).
+
 **0.65.0:** **Ruin (Nightmare) Wonder, the Reaction List tab, and Rig's attack roll.**
 - **Ruin:** Jinx, Forfeit and Calamity store Jinxes (no crits); the Jinxed creature's next attack roll resolves them all (under half its die: they fizzle; higher: 2 or 4 Strengthened). Gild (Advantage on that roll), Reversal (flip their attack roll after the Jinxes resolve), Doom (Tenet: roll the Ruin Table, apply it on a hit), and all 25 Ruin Table effects.
 - **Reaction List:** the popup and offer card switches have their own sheet tab (Popups and Offer cards) instead of the Action List's Reactions group, and their own Token Action HUD tab.

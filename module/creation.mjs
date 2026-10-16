@@ -7,6 +7,27 @@ import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES, weaponProfile, armorProfile
 } from "./martial.mjs";
 import * as skills from "./skills.mjs";
+import { parseEnergyCost, stripEnergyCost } from "./energy.mjs";
+
+/**
+ * A skill tree entry in a few words for the creation wizards: its first sentence or two (at most about `max` characters, cut at a word), with the Energy cost
+ * pulled out as `cost` ("half of your PON min, rounded down") and the whole text kept as `full` for a tooltip.
+ */
+export function entryBlurb(entry, max = 170) {
+  const raw = String(entry?.text ?? "").trim();
+  const cost = parseEnergyCost(raw) ? (/Cost:\s*Energy equal to ([^.]*)\./i.exec(raw)?.[1] ?? "").trim() : "";
+  const body = stripEnergyCost(raw);
+  const sentences = body.match(/[^.!?]+[.!?]+(\s|$)|[^.!?]+$/g) ?? [body];
+  let out = "";
+  for (const s of sentences) {
+    if (out && (out + s).length > max) break;
+    out += s;
+  }
+  out = out.trim();
+  if (out.length > max) out = `${out.slice(0, max).replace(/\s+\S*$/, "")}…`;
+  else if (out.length < body.length) out = `${out} …`;
+  return { name: entry?.name ?? "", text: out, cost, full: raw };
+}
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES, AFFIX_SIDES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 

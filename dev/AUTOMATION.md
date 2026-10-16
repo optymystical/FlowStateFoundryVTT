@@ -39,8 +39,8 @@ A Foundry VTT game system for **Flow State**, Christopher Caplinger's setting-un
 ## Progression and GM control
 - **New Character wizard:** everyone sees a **New Character** button at the top of the Actors tab. It walks through these steps:
   1. Identity (name and portrait). Click the portrait or the picture button to set it with an image link or path, Browse or Upload (both go through a connected GM for players without the file permissions).
-  2. Stats, with a live preview of HP, Energy, move, and dice. Unspent points are banked.
-  3. Skill Trees: spend the starting Skill Points (a third of the stat points). Pick an Archetype, then use + / − on each tree (tier N costs N). Only trees your Theory tier has opened are listed. A Theory can't be lowered below what your other trees need, and clicking a tree name shows what each tier grants. Leftover points are banked. The GM re-checks the budget and Theory requirements.
+  2. Stats, with a live preview of HP, Energy, move, and dice. Unspent points are banked. Below it, advice for new players: stick to one Archetype and split points between one of its offensive stats (Str/Dex, Pon/Snap, Reach/Grasp) and its defensive stat (Con, Will, Build).
+  3. Skill Trees: spend the starting Skill Points (a third of the stat points). Pick an Archetype, then use + / − on each tree (tier N costs N). Only trees your Theory tier has opened are listed. A Theory can't be lowered below what your other trees need, and clicking a tree name shows what each tier grants: the tier's line from the doc, then each entry's name with its first sentence or two (its Energy cost beside it, the full text on hover). The NPC wizard shows the same. Leftover points are banked. The GM re-checks the budget and Theory requirements.
   4. Starting Equipment, within the world budget: picks, rarity limit, Grade, and at most one armor. Unarmed is free.
   5. Review.
 

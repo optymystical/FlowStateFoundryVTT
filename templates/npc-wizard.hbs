@@ -88,7 +88,7 @@
         {{#if open}}
         <ul class="fs-wizard-tree-tiers">
           {{#each tiers}}<li class="{{#if owned}}fs-owned{{/if}}"><strong>T{{tier}}</strong> <span class="fs-tier-summary">{{summary}}</span>
-            <ul class="fs-wizard-entries">{{#each entries}}<li data-tooltip="{{full}}">{{#if name}}<strong>{{name}}:</strong> {{/if}}{{text}}{{#if cost}} <span class="fs-entry-cost"><i class="fa-solid fa-bolt"></i> {{cost}}</span>{{/if}}</li>{{/each}}</ul></li>{{/each}}
+            <ul class="fs-wizard-entries">{{#each entries}}<li data-tooltip="{{full}}">{{#if name}}<strong>{{name}}:</strong> {{/if}}{{text}}{{#if cost}} <span class="fs-entry-cost"><i class="fa-solid fa-bolt"></i> {{cost}}</span>{{/if}}{{#if sub.length}}<ul class="fs-wizard-sub">{{#each sub}}<li>{{this}}</li>{{/each}}</ul>{{/if}}</li>{{/each}}</ul></li>{{/each}}
         </ul>
         {{#if table}}<details class="fs-wizard-table"><summary>{{table.title}} (d100)</summary>
           <table class="fs-table"><tbody>{{#each table.rows}}<tr><td class="fs-table-roll">{{roll}}</td><td>{{effect}}</td></tr>{{/each}}</tbody></table></details>{{/if}}

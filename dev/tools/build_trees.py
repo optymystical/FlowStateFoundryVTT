@@ -82,10 +82,13 @@ def parse(md, arch):
         if not body or body == "-": continue
         if numbered: body = f"{numbered.group(1)}. {body}"
         # Mental: a Mode's versions ("Against an enemy:" / "Against an ally:" bullets) and its indented "Enhanced:" line are part of that Mode's text.
-        # So are a Wonder entry's indented sub-bullets (Fortune's Bands).
-        if arch == "Mental" and cur_tier["entries"] and (re.match(r'^(Against an? \w+|Enhanced):', body) or (wonder and bullet and raw[:1] in (" ", "\t"))):
+        if arch == "Mental" and cur_tier["entries"] and re.match(r'^(Against an? \w+|Enhanced):', body):
             prev = cur_tier["entries"][-1]
             prev["text"] = f'{prev["text"]} {body}'.strip()
+            continue
+        # A Wonder entry's indented sub-bullets (Fortune's and Ruin's Bands) are its sub-points, shown as a list under it.
+        if wonder and bullet and raw[:1] in (" ", "\t") and cur_tier["entries"]:
+            cur_tier["entries"][-1].setdefault("sub", []).append(body)
             continue
         # Numbered option lists, deeper bullets, and loose paragraphs belong to the entry above them.
         # Mental lists its Modes and Tenets as plain paragraphs at the left margin (no bullet): each is its own entry.

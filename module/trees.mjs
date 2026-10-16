@@ -4962,7 +4962,12 @@ export const TREES = [
      },
      {
       "name": "Fortune’s Bands",
-      "text": "Fortune Modes cannot crit, instead they get benefits or drawbacks depending on where they land in the below chart. The beneficial effects still require a hit overall, while the self hit automatically applies. Under one half: You hit yourself with the Manifest instead of the target One half to under three quarters: Its effects gain 2 stacks of Strengthened Three quarters or higher: Its effects gain 4 stacks of Strengthened"
+      "text": "Fortune Modes cannot crit, instead they get benefits or drawbacks depending on where they land in the below chart. The beneficial effects still require a hit overall, while the self hit automatically applies.",
+      "sub": [
+       "Under one half: You hit yourself with the Manifest instead of the target",
+       "One half to under three quarters: Its effects gain 2 stacks of Strengthened",
+       "Three quarters or higher: Its effects gain 4 stacks of Strengthened"
+      ]
      },
      {
       "name": "Rig",
@@ -5215,7 +5220,12 @@ export const TREES = [
      },
      {
       "name": "Ruin’s Bands",
-      "text": "Ruin Modes cannot crit. Instead, on hit, they store their effect on the target as a Jinx, lasting until the start of your next turn. The target’s next attack roll resolves every Jinx on it at once. The result depends on where that roll lands relative to its maximum: Under one half: All the Jinxes fizzle. One half to under three quarters: The Jinxes’ effects gain 2 stacks of Strengthened Three quarters or higher: The Jinxes’ effects gain 4 stacks of Strengthened"
+      "text": "Ruin Modes cannot crit. Instead, on hit, they store their effect on the target as a Jinx, lasting until the start of your next turn. The target’s next attack roll resolves every Jinx on it at once. The result depends on where that roll lands relative to its maximum:",
+      "sub": [
+       "Under one half: All the Jinxes fizzle.",
+       "One half to under three quarters: The Jinxes’ effects gain 2 stacks of Strengthened",
+       "Three quarters or higher: The Jinxes’ effects gain 4 stacks of Strengthened"
+      ]
      },
      {
       "name": "Doom",

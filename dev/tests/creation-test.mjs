@@ -76,3 +76,10 @@ console.log("creation tests passed");
   assert.equal(c.statRefund(sys, { system: { stats: { str: 40 } } }), 0);
   console.log("  PASS GM-lowered stats go back into the unspent points (unless the GM sets those too)");
 }
+// Sub-points (Fortune's and Ruin's Bands) stay a list in the wizards.
+{
+  const b = c.entryBlurb({ name: "Ruin's Bands", text: "Ruin Modes cannot crit.", sub: ["Under one half: All the Jinxes fizzle.", "Three quarters or higher: 4 Strengthened"] });
+  assert.equal(b.sub.length, 2);
+  assert.ok(b.full.includes("Under one half"));
+  console.log("  PASS Sub-points stay a list in the wizards");
+}

@@ -30,7 +30,8 @@ export function statRefund(system, changes = {}) {
 
 /**
  * A skill tree entry in a few words for the creation wizards: its first sentence or two (at most about `max` characters, cut at a word), with the Energy cost
- * pulled out as `cost` ("half of your PON min, rounded down") and the whole text kept as `full` for a tooltip.
+ * pulled out as `cost` ("half of your PON min, rounded down"), its sub-points (`sub`: Fortune's and Ruin's Bands) kept as a list, and the whole text kept as
+ * `full` for a tooltip.
  */
 export function entryBlurb(entry, max = 170) {
   const raw = String(entry?.text ?? "").trim();
@@ -45,7 +46,8 @@ export function entryBlurb(entry, max = 170) {
   out = out.trim();
   if (out.length > max) out = `${out.slice(0, max).replace(/\s+\S*$/, "")}…`;
   else if (out.length < body.length) out = `${out} …`;
-  return { name: entry?.name ?? "", text: out, cost, full: raw };
+  const sub = Array.isArray(entry?.sub) ? entry.sub : [];
+  return { name: entry?.name ?? "", text: out, cost, full: [raw, ...sub].join(" · "), sub };
 }
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES, AFFIX_SIDES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";

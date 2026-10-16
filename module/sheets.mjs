@@ -815,7 +815,7 @@ async function pickImage(event, target) {
 export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: ["flowstate", "sheet", "actor"],
-    position: { width: 780, height: 860 },
+    position: { width: 900, height: 860 },          // wide enough for the stat rows with their + buttons
     window: { resizable: true },
     form: { submitOnChange: true },
     actions: {

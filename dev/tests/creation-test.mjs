@@ -66,3 +66,13 @@ console.log("creation tests passed");
   assert.equal(short.cost, "");
   console.log("  PASS Tier descriptions in the wizards: first sentences, cost apart, full text kept");
 }
+// The GM lowering a stat after creation puts the points back into the character's unspent ones (the player can spend their whole total).
+{
+  const sys = { creation: false, stats: { str: 30, dex: 10, con: 20 }, unspentStats: 0 };
+  assert.equal(c.statRefund(sys, { system: { stats: { str: 20 } } }), 10);
+  assert.equal(c.statRefund(sys, { "system.stats.con": 5, "system.stats.dex": 15 }), 15);
+  assert.equal(c.statRefund(sys, { system: { stats: { str: 20 }, unspentStats: 0 } }), 0);
+  assert.equal(c.statRefund({ ...sys, creation: true }, { system: { stats: { str: 20 } } }), 0);
+  assert.equal(c.statRefund(sys, { system: { stats: { str: 40 } } }), 0);
+  console.log("  PASS GM-lowered stats go back into the unspent points (unless the GM sets those too)");
+}

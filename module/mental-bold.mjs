@@ -177,5 +177,27 @@ export const BOLD = {
  ],
  "Umbral Strike": [
   "1d8"
+ ],
+ "Accretion": [
+  "50 Durability"
+ ],
+ "Adamant": [
+  "Pain Threshold by 10"
+ ],
+ "Undertow": [
+  "1d8 physical damage"
+ ],
+ "Surge": [
+  "1ft"
+ ],
+ "Current": [
+  "up to 1.5ft"
+ ],
+ "Riptide": [
+  "2ft"
+ ],
+ "Drown": [
+  "at least 4ft",
+  "lose 2d10 health"
  ]
 };

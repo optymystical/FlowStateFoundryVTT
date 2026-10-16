@@ -4745,6 +4745,142 @@ export const TREES = [
   ]
  },
  {
+  "id": "mental-earth-dream",
+  "name": "Earth (Dream)",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 3,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following Mode and Tenet:",
+    "entries": [
+     {
+      "name": "Accretion",
+      "text": "On hit, the target is encased in soft material until the start of your next turn. The encasement is an object with 50 Durability and a Limit equal to one fifth of its Durability, working only against Physical and Elemental damage. Attacks against that creature strike the encasement first: it absorbs damage up to its Limit from each attack, reducing its Durability by that much, with any excess passing through to the creature. This Mode stacks on the same target, melding into a single encasement whose Durability and Limit are the sums of its parts. Enhanced: On Manifest, select a damage category (Physical, Elemental, Magical, Supernatural). Damage dealt to this instance is Weakened."
+     },
+     {
+      "name": "Adamant",
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can lower the target’s or your own Pain Threshold by 10, lasting until the start of your next turn. If reapplied with a reaction the moment the effect ends, the target will not fall unconscious from the change in Pain Threshold."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Reinforce",
+      "text": "Cost: Energy equal to half of your PON min, rounded down. When an attack would reduce one of your Accretions’ Durability, you can use this ability. For that attack instance, its Limit is equal to its full remaining Durability."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You gain the following action:",
+    "entries": [
+     {
+      "name": "Ejecta",
+      "text": "At any time, you can consume an Accretion to throw it as an attack roll against a target within 100ft of that Accretion. On a hit, deal physical damage equal to one fifth of that Accretion’s remaining Durability."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Batholith",
+      "text": "Your Accretions absorb damage of any category, including Magical and Supernatural. In addition, Ejecta can target fully magical and Supernatural creatures, dealing Arcane damage to fully magical targets and Supernatural damage to Supernatural targets."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Bedrock",
+      "text": "When damage would exceed one of your Accretions’ Limit, you may choose to have the excess reduce that encasement’s Durability by twice the excess instead of passing through to the creature."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "mental-sea-nightmare",
+  "name": "Sea (Nightmare)",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 3,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following Mode and Tenet:",
+    "entries": [
+     {
+      "name": "Undertow",
+      "text": "On hit, the target is engulfed in flowing water until the start of your next turn. Whenever they spend AP to move, or the target is forcefully moved by something other than your own Sea effects, it takes 1d8 physical damage. Enhanced: This Mode’s damage is cold instead of physical, and removes energy from the target equal to the direct damage dealt."
+     },
+     {
+      "name": "Surge",
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can forcefully move the target up to 1ft in a direction of your choosing, ignoring Force and Lift."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Current",
+      "text": "Cost: Energy equal to your SNA min. Whenever a creature takes damage or loses health from one of your Sea Modes, you can use this ability to move them up to 1.5ft (rounded down) in a direction of your choosing."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You gain the following Mode:",
+    "entries": [
+     {
+      "name": "Riptide",
+      "text": "On hit, the target is forcefully moved up to 2ft toward or away from a point of your choosing within the used range, ignoring Force and Lift. Enhanced: Target an additional creature; the original target is pulled toward it, and if the additional target is also hit it is pulled the same distance toward the original. A creature cannot take Force Damage from both pulls of the same Manifest."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Shoal",
+      "text": "Damage and health loss from your Sea Modes is Strengthened against prone targets. This does not apply to Force Damage."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following Mode:",
+    "entries": [
+     {
+      "name": "Drown",
+      "text": "Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved at least 4ft during your current turn they lose 2d10 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). Enhanced: You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they lose that health again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit."
+     }
+    ]
+   }
+  ]
+ },
+ {
   "id": "mental-willpower-arts",
   "name": "Willpower Arts",
   "archetype": "mental",

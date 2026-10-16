@@ -3396,6 +3396,8 @@ export async function dragGrappled(actor, token, from) {
     const vTok = victim.getActiveTokens?.()[0];
     if (!vTok || vTok.parent?.id !== token.parent?.id) continue;
     await requestGM("moveToken", { uuid: vTok.document?.uuid ?? vTok.uuid, x: (vTok.document?.x ?? vTok.x) + dx, y: (vTok.document?.y ?? vTok.y) + dy });
+    // Being dragged along is a forced move for the victim (Mental: Drown, Undertow).
+    if (globalThis.canvas?.grid) await noteForced(victim, Math.round((Math.hypot(dx, dy) / canvas.grid.size) * (canvas.grid.distance ?? 5)));
   }
 }
 
@@ -3673,6 +3675,8 @@ export const magicDisNet = actor => (spellEffects(actor, "magicDis").length || a
 export const afflictTurnStart = actor => aff?.turnStart(actor);
 export const afflictCasterTurn = actor => aff?.casterTurn(actor);
 export const hexMove = actor => (inActiveCombat(actor) ? aff?.hexTrigger(actor, "move") : null);
+/** Mental (Sea): a creature moving itself in combat sets off an Undertow on it. */
+export const seaMove = actor => (inActiveCombat(actor) ? mentalHook?.voluntaryMove?.(actor) : null);
 export const afflictAct = (message, i) => aff?.act(message, i);
 const dodgeDisNet = actor => (spellEffects(actor, "dodgeDis").length ? -1 : 0);
 /** The Advantage/Disadvantage this creature's dodge rolls are known to carry (for Foresight). */
@@ -3710,7 +3714,7 @@ function mergeOutcomes(list) {
   return { ...first, toHp: list.reduce((n, x) => n + x.toHp, 0), armorLoss: list.reduce((n, x) => n + (x.armorLoss ?? 0), 0), weaponLoss: list.reduce((n, x) => n + (x.weaponLoss ?? 0), 0),
     afterWeapon: list.reduce((n, x) => n + (x.afterWeapon ?? 0), 0), shroudTook: list.reduce((n, x) => n + (x.shroudTook ?? 0), 0),
     lines: [`<strong>${list.reduce((n, x) => n + x.toHp, 0)}</strong> damage to HP across ${list.length} separate instances`, ...list.flatMap((x, i) => x.lines.slice(1).map(l => `(${i + 1}) ${l}`))],
-    tempHp: list.flatMap(x => x.tempHp ?? []), weapons: list.flatMap(x => x.weapons ?? []), reactive: list.flatMap(x => x.reactive ?? []), shields: list.flatMap(x => x.shields ?? []), barriers: list.flatMap(x => x.barriers ?? []), shrouds: list.flatMap(x => x.shrouds ?? []) };
+    tempHp: list.flatMap(x => x.tempHp ?? []), weapons: list.flatMap(x => x.weapons ?? []), reactive: list.flatMap(x => x.reactive ?? []), shields: list.flatMap(x => x.shields ?? []), barriers: list.flatMap(x => x.barriers ?? []), accretions: list.flatMap(x => x.accretions ?? []), shrouds: list.flatMap(x => x.shrouds ?? []) };
 }
 
 /** A cast's automated profile after Replacement Mods (or null when the GM resolves it). */
@@ -3963,6 +3967,7 @@ export async function knockback(message) {
   const target = await fromUuid(info.target);
   if (!attacker?.isOwner) return ui.notifications.warn(`Only ${attacker?.name ?? "the attacker"}'s owner can do that.`);
   if (!target) return ui.notifications.warn("The target no longer exists.");
+  if (info.sea) return seaKnockback(message, info, attacker, target);
   // Knocking them into another creature is a targeted attack: target that creature first.
   const into = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== target.uuid);
   const aimAt = into.length === 1 ? into[0] : null;
@@ -4021,6 +4026,39 @@ export async function knockback(message) {
   if (info.beyond && collided) await mentalHook?.momentumOffer?.(attacker, target);
 }
 
+/**
+ * Mental (Sea): Surge, Current and Riptide move the target a set distance that ignores Force and Lift ("up to": the caster may move them less), away from or
+ * toward the caster or in a compass direction; an Enhanced Riptide pulls toward its other target, stopping beside it. Walls still stop it (Force damage for the
+ * feet left), and the move doesn't set off the caster's own Undertow.
+ */
+async function seaKnockback(message, info, attacker, target) {
+  const other = info.toward ? await fromUuid(info.toward) : null;
+  const opts = await optionsDialog(`${info.label ?? "Sea"} — ${target.name}`, `
+    <p class="hint">${esc(target.name)} can be moved up to <strong>${info.feet} ft</strong> (ignores Force and Lift).</p>
+    <div class="form-group"><label>Distance (ft)</label><input type="number" name="ft" value="${info.feet}" min="1" max="${info.feet}" step="1"></div>
+    <div class="form-group"><label>Direction</label><select name="dir">
+      ${other ? `<option value="other">Toward ${esc(other.name)}</option>`
+        : `<option value="away">Away from ${esc(attacker.name)}</option><option value="toward">Toward ${esc(attacker.name)}</option>${Object.entries(DIRECTIONS).map(([k, d]) => `<option value="${k}">${d.label}</option>`).join("")}`}
+    </select></div>`, info.label ?? "Move");
+  if (!opts || knockbackUsed(message.id)) return;
+  let feet = Math.max(0, Math.min(info.feet, Math.floor(Number(opts.ft) || info.feet)));
+  const tok = target.getActiveTokens?.()[0];
+  const anchor = opts.dir === "other" ? other?.getActiveTokens?.()[0] : ["away", "toward"].includes(opts.dir) ? attackerToken(attacker) : null;
+  let dir;
+  if (anchor && tok) {
+    const sign = opts.dir === "away" ? 1 : -1;
+    const dx = (tok.center.x - anchor.center.x) * sign, dy = (tok.center.y - anchor.center.y) * sign, len = Math.hypot(dx, dy) || 1;
+    dir = { x: dx / len, y: dy / len };
+    if (sign < 0 && globalThis.canvas?.grid) feet = Math.min(feet, Math.floor(tokenDistance(tok, anchor)));          // a pull stops beside them
+  } else {
+    const d = DIRECTIONS[opts.dir] ?? DIRECTIONS.n, len = Math.hypot(d.x, d.y);
+    dir = { x: d.x / len, y: d.y / len };
+  }
+  const flight = feet > 0 ? await flyThrown(target, dir, feet, { source: `sea:${info.sea}` }) : null;
+  const body = flight ? await flightHTML(target, flight, feet) : `<div class="fs-notes">${esc(target.name)} is already beside ${esc((other ?? attacker).name)}.</div>`;
+  await post(attacker, { title: `${esc(info.label ?? "Sea")} — ${esc(target.name)}`, body, flags: { flowstate: { knockbackOf: message.id } } });
+}
+
 /** Compass directions for throws without a target (screen space: +y is down). */
 const DIRECTIONS = {
   n: { label: "North", x: 0, y: -1 }, ne: { label: "North-east", x: 1, y: -1 }, e: { label: "East", x: 1, y: 0 },
@@ -4036,26 +4074,33 @@ function wallHit(a, b) {
   } catch (err) { return null; }
 }
 
-/** Move a token to a top-left position (snapped to the grid). Routed through the GM if we don't own it. */
-async function moveTokenTopLeft(token, pos) {
+/**
+ * Move a token to a top-left position (snapped to the grid). Routed through the GM if we don't own it. It's a forced move: `feet` (else the distance
+ * the token moved) is reported to the Mental hooks (Drown counts it; Undertow triggers unless `source` is the Undertow caster's own Sea).
+ */
+async function moveTokenTopLeft(token, pos, { feet = null, source = null } = {}) {
   const doc = token.document;
   const gs = canvas.grid.size;
   let { x, y } = snapTopLeft(doc, pos);
   const d = canvas.dimensions;
   x = Math.min(Math.max(x, d.sceneX ?? 0), (d.sceneX ?? 0) + (d.sceneWidth ?? d.width) - (doc.width ?? 1) * gs);
   y = Math.min(Math.max(y, d.sceneY ?? 0), (d.sceneY ?? 0) + (d.sceneHeight ?? d.height) - (doc.height ?? 1) * gs);
-  if (doc.isOwner) return doc.update({ x, y }, { flowstateThrow: true });
-  return requestGM("moveToken", { uuid: doc.uuid, x, y });
+  const moved = feet ?? Math.round((Math.hypot(x - (doc.x ?? 0), y - (doc.y ?? 0)) / gs) * (canvas.grid.distance ?? 5));
+  if (doc.isOwner) await doc.update({ x, y }, { flowstateThrow: true });
+  else await requestGM("moveToken", { uuid: doc.uuid, x, y });
+  await noteForced(token.actor, moved, source);
 }
+/** A creature was forcefully moved (Mental: Drown keeps count, Undertow triggers). */
+const noteForced = (actor, feet, source = null) => (actor && feet > 0 ? mentalHook?.forcedMove?.(actor, feet, source) : null);
 
 /**
  * Fly a thrown creature's token `feet` along a unit direction. Walls stop it early; the feet it didn't
  * travel become Force damage to it (3 × untraveled, capped at its HP). Returns { moved, traveled, wall, damage }.
  */
-async function flyThrown(thrown, dir, feet) {
+async function flyThrown(thrown, dir, feet, { source = null } = {}) {
   const tok = thrown.getActiveTokens?.()[0];
   const dims = globalThis.canvas?.dimensions;
-  if (!tok || !dims || !feet) return { moved: false, traveled: feet, wall: false, damage: 0 };
+  if (!tok || !dims || !feet) { await noteForced(thrown, feet, source); return { moved: false, traveled: feet, wall: false, damage: 0 }; }
   const start = tok.center;
   // Emplace barriers are objects: a creature thrown through one damages it and itself (3 × the untraveled feet each, capped by what the
   // other has left), is stopped by it if it holds, and carries on with the leftover distance if it breaks.
@@ -4077,7 +4122,7 @@ async function flyThrown(thrown, dir, feet) {
     }
   }
   const w = (tok.document.width ?? 1) * dims.size, h = (tok.document.height ?? 1) * dims.size;
-  await moveTokenTopLeft(tok, { x: plan.end.x - w / 2, y: plan.end.y - h / 2 });
+  await moveTokenTopLeft(tok, { x: plan.end.x - w / 2, y: plan.end.y - h / 2 }, { feet: Math.floor(plan.traveled), source });
   const wallEv = plan.events.find(e => e.kind === "wall");
   return { moved: true, traveled: Math.floor(plan.traveled), wall, damage: wallEv ? wallEv.creature : 0, untraveledAtWall: wallEv?.untraveled, taken, notes, totalDamage: damage, events: plan.events };
 }
@@ -5025,10 +5070,12 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const cleave = shattered ? 0 : o.cleave ?? 0;
   if (cleave) extraHTML += `<div class="fs-notes">Cleave ${cleave}: object damage, hits Limits first${o.striker ? "; what gets past them hits the creature (Blood and Iron)" : ""}</div>`;
 
+  // Mental (Earth): Reinforce / Bedrock are asked once, before the outcome, so the card shows what really happens.
+  const accretion = mentalHook?.accretionAsk && incoming > 0 ? await mentalHook.accretionAsk(target, incoming, type, !!o.spell) : null;
   // The outcome (soak, HP lost) goes on this card; the owner (or GM) applies it without a separate card.
   const dmgOpts = { pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: bashNow, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
     shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
-      barriers: barriersFor(attacker, target) }, mentalDone: true };
+      barriers: barriersFor(attacker, target), ...(accretion ? { accretion } : {}) }, mentalDone: true };
   // Limits apply to each instance on its own.
   const outcome = instances.length > 1 ? mergeOutcomes(await Promise.all(amounts.map(a => damageOutcome(target, a, type, dmgOpts)))) : await damageOutcome(target, incoming, type, dmgOpts);
   // Spell riders that need the damage to have got through to HP (direct damage): Force, attack-die penalties.
@@ -5370,6 +5417,26 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     if (!loss && remaining === before) continue;
     barriers.push({ ...b, absorbed: before - remaining, hp: b.hp - loss });
   }
+  // Mental (Earth): an Accretion encases the creature, so hits strike it first: an object with a Limit (Reinforce: its whole Durability for this hit)
+  // and Durability. Bedrock lets it take what gets past the Limit too, at twice the Durability.
+  const accretions = [];
+  for (const a of mentalHook?.encasements?.(actor, type, magic, shroudCtx?.accretion) ?? []) {
+    const obj = { name: a.name, system: { profile: { valid: true, limit: a.reinforce ? a.hp : a.limit, focus: { key: "magical", factor: 1 }, selfWeakened: a.weakened ? 1 : 0 }, durability: { value: a.hp } } };
+    if (tryBash(obj, obj.system.profile, a.hp, pierce)) { accretions.push({ effect: a.effect, hp: a.hp, absorbed: 0 }); continue; }
+    const before = remaining;
+    let loss = soakObject(obj, pierce, a.reinforce ? " (Reinforce)" : a.weakened ? " (Weakened)" : "");
+    if (a.bedrock && remaining > 0 && a.hp - loss > 0) {
+      const per = a.weakened ? 1 : 2;                                          // twice the excess, halved again when that damage is Weakened against it
+      const take = Math.min(remaining, Math.floor((a.hp - loss) / per));
+      if (take > 0) {
+        remaining -= take; loss += take * per;
+        lines.push(`Bedrock: ${a.name} takes the other ${take} too (−${take * per} Durability)`);
+        if (a.hp - loss <= 0) lines.push(`${a.name} is broken`);
+      }
+    }
+    if (!loss && remaining === before) continue;
+    accretions.push({ effect: a.effect, hp: a.hp - loss, absorbed: before - remaining });
+  }
   absorbWith("first");
   // Parrying weapons (Martial Theory T1 Parry, Defender Block) soak first, in order.
   const uuids = [...new Set([...(parryItems ?? []), ...(parryItem ? [parryItem] : [])])];
@@ -5414,7 +5481,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   toHp = soakTemp(actor, toHp, lines, tempHp);
   lines.unshift(`<strong>${toHp}</strong> damage to HP`);
   return { toHp, tempHp, lines, weapon: weapons[0]?.item ?? null, weaponLoss: weapons[0]?.loss ?? 0, weapons, armor: armorLoss ? armor : null, armorLoss,
-    afterWeapon, parried: uuids.length > 0, shields, barriers, reactive, shrouds, shroudTook: shrouds.reduce((n, x) => n + (x.absorbed ?? 0), 0) };
+    afterWeapon, parried: uuids.length > 0, shields, barriers, accretions, reactive, shrouds, shroudTook: shrouds.reduce((n, x) => n + (x.absorbed ?? 0), 0) };
 }
 
 /** "Orc takes 12 Physical" block for a card: the outcome lines as a list. */
@@ -5460,7 +5527,11 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
     if (neg.amount !== amount) { if (neg.html && !silent) await post(actor, { title: `${esc(actor.name)} — Ward`, body: neg.html }); amount = neg.amount; }
     reduced += Math.max(0, before - amount);
   }
+  // Mental (Earth): Reinforce / Bedrock for an Accretion this damage is about to strike (asked here unless the attack's damage card already did).
+  if (mentalHook?.accretionAsk && amount > 0 && !bypass && !shroudCtx?.accretion) shroudCtx = { ...(shroudCtx ?? {}), accretion: await mentalHook.accretionAsk(actor, amount, type, archetype === "magic") };
   const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor });
+  // Accretions lose the Durability they absorbed (and crumble at 0).
+  for (const { effect, hp } of out.accretions ?? []) await mentalHook?.accretionWorn?.(effect, hp);
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.
   for (const { item, update } of out.shrouds ?? []) {
     if (item.isOwner === false) await requestGM("updateItem", { uuid: item.uuid, data: update });
@@ -5680,6 +5751,7 @@ export async function setPosture(actor, posture) {
     await actor.toggleStatusEffect("prone", { active: true });
   } else if (posture === "stand") {
     if (!prone && !crouch) return;
+    if (prone && await mentalHook?.standUp?.(actor)) return;          // Drowning (Sea T5, Enhanced): getting up is an attack roll against the drowner
     if (prone && !(await spendAP(actor, 1, "standing up"))) return;
     if (prone) await actor.toggleStatusEffect("prone", { active: false });
     if (crouch) await actor.toggleStatusEffect("crouch", { active: false });

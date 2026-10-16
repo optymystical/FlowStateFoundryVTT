@@ -216,8 +216,9 @@ export const tenetChoices = (align, state = null) => WONDERS.filter(w => w.kind 
 /*  Numbers in text                             */
 /* -------------------------------------------- */
 
-/** Multiply the numbers in a bolded span by Power: dice counts (2d10 → 6d10) and plain numbers (20 temp HP → 60 temp HP). */
-const scaleSpan = (span, P) => span.replace(/(\d+)d(\d+)/g, (m, n, sides) => `${n * P}d${sides}`).replace(/(?<![\d.d])(\d+)(?!d\d|\d)/g, (m, n) => String(n * P));
+/** Multiply the numbers in a bolded span by Power: dice counts (2d10 → 6d10) and plain numbers (20 temp HP → 60 temp HP, 1.5ft → 4.5ft). */
+const scaleSpan = (span, P) => span.replace(/(\d+)d(\d+)/g, (m, n, sides) => `${n * P}d${sides}`)
+  .replace(/(?<![\d.d])(\d+(?:\.\d+)?)(?!d\d|[\d.])/g, (m, n) => String(Math.round(Number(n) * P * 10) / 10));
 /**
  * Scale a Mode / Tenet / ability's text by Wonder Power: every bolded effect in the doc grows with it (the Mental doc lists base values).
  * `name` finds the bolded spans (`mental-bold.mjs`, generated from the doc); without them the common units are scaled instead.

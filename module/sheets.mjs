@@ -26,6 +26,7 @@ import * as forgingMod from "./forging.mjs";
 import * as ponderanceMod from "./ponderance.mjs";
 import * as snappenceMod from "./snappence.mjs";
 import * as wondersC from "./wonders-c.mjs";
+import * as wondersD from "./wonders-d.mjs";
 import * as concentration from "./concentration.mjs";
 import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
@@ -711,6 +712,11 @@ function actionGroups(actor, weapons, stats) {
   for (const e of ponderanceMod.tranceAbilities(actor)) mentalRows.push({ label: `Trance: ${e.name.replace(/^Trance: /, "")}`, detail: `${e.flags.flowstate.spellEffect.description} Target a creature first.`, cost: "Range AP", action: "useTrance", itemId: e.uuid, icon: "fa-solid fa-hand-sparkles" });
   if (snapT >= 1 && mctx.wonders.length) mentalRows.push({ label: "Reflex", detail: `When a character you can sense begins an action, Manifest a Wonder first (target the one acting). Its effects are Weakened${snapT >= 3 ? " unless it's your Fixation" : ""}. Attacks offer this automatically.`, cost: snapT >= 5 && snappenceMod.afterimageReady(actor) ? "Free (Afterimage)" : "RP = Range AP + ⚡ half Scaling Stat min", action: "reflex", icon: "fa-solid fa-bolt" });
   for (const [which, id, label, apply] of [["light", "mental-light-dream", "Corona", "Illuminate"], ["dark", "mental-dark-nightmare", "Nightfall", "Eclipse"]]) if (skills.tierOf(sys.trees, id) >= 5) mentalRows.push({ label, detail: `An attack roll at a creature within 100 ft already under your ${apply}: on a hit that ${apply} spreads to everyone within 10 ft of it`, cost: "1 AP", action: "expand", op: which, icon: "fa-solid fa-sun" });
+  if (skills.tierOf(sys.trees, wondersD.EARTH) >= 3) {
+    const accs = wondersD.accretionsOf(actor);
+    mentalRows.push({ label: "Ejecta", detail: accs.length ? `Throw one of your Accretions (${accs.map(x => `on ${x.holder.name}`).join(", ")}) at a creature within 100 ft of it: an attack roll, ${skills.tierOf(sys.trees, wondersD.EARTH) >= 4 ? "damage" : "physical damage"} equal to a fifth of its remaining Durability` : "You have no Accretion to throw",
+      cost: "Free", action: "ejecta", icon: "fa-solid fa-meteor", disabled: !accs.length });
+  }
   if (ponderT >= 5 && concs.length > 1) mentalRows.push({ label: "Daydreaming", detail: "Choose which Concentration can't be broken", cost: "Free", action: "daydream", icon: "fa-solid fa-cloud" });
   if (psionT >= 1) mentalRows.push({ label: "Psion Sense", detail: `Spot check for mental energies within ${mctx.farSight ? 1000 : 100} ft`, cost: "Check", action: "psionSense", icon: "fa-solid fa-brain" });
   if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
@@ -803,6 +809,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       trance: function () { return ponderanceMod.trance(this.document); },
       reflex: function () { return snappenceMod.reflexManual(this.document); },
       expand: function (event, target) { return wondersC.expand(this.document, target.closest("[data-op]")?.dataset.op); },
+      ejecta: function () { return wondersD.ejecta(this.document); },
       daydream: function () { return concentration.chooseDaydream(this.document); },
       triggerPremeditated: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.triggerPremeditated(this.document, e) : null; },
       useTrance: async function (event, target) { const e = await fromUuid(target.closest("[data-item-id]")?.dataset.itemId); return e ? ponderanceMod.useTrance(this.document, e) : null; },

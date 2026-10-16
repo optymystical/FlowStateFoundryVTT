@@ -3,7 +3,7 @@ const M = await import("../../module/mental-rules.mjs");
 let fails = 0; const ok = (c, m) => { console.log(`  ${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
 
 console.log("== Wonders from the Mental trees");
-ok(M.WONDERS.length === 14, `14 Wonders are written (${M.WONDERS.map(w => w.name).join(", ")})`);
+ok(M.WONDERS.length === 16, `16 Wonders are written (${M.WONDERS.map(w => w.name).join(", ")})`);
 const life = M.wonderById("mental-life-dream");
 ok(life.kind === "dream" && life.name === "Life" && life.modes.map(m => m.name).join() === "Bloom,Flourish,Renewal", "Life (Dream): Modes Bloom, Flourish, Renewal");
 ok(life.tenet.name === "Verdant Soul" && life.tenet.tier === 1 && life.abilities.map(a => a.name).join() === "Pollinate,Perennial", "…its Tenet is Verdant Soul and its abilities Pollinate and Perennial");
@@ -61,11 +61,17 @@ p = M.iconProfile({ form: "bane", grade: 1 }, { will: 99 });
 ok(p.amount === 6 && p.other === 3, "Bane: 6 against the chosen type, 3 otherwise");
 ok(M.iconProfile({ form: "nope" }).valid === false, "An unknown Form isn't valid");
 ok(M.tenetChoices("dream").every(w => w.kind === "dream") && M.tenetChoices("nightmare").every(w => w.kind === "nightmare"), "Tenets match the Form's Alignment");
-ok(M.tenetChoices("dream").length === 7 && M.tenetChoices("nightmare").length === 7, "Seven Dream and seven Nightmare Tenets");
+ok(M.tenetChoices("dream").length === 8 && M.tenetChoices("nightmare").length === 8, "Eight Dream and eight Nightmare Tenets");
+const earth = M.wonderById("mental-earth-dream"), sea = M.wonderById("mental-sea-nightmare");
+ok(earth?.modes.map(m => m.name).join() === "Accretion" && earth.tenet?.name === "Adamant" && sea?.modes.map(m => m.name).join() === "Undertow,Riptide,Drown" && sea.tenet?.name === "Surge", "Earth (Accretion, Adamant) and Sea (Undertow, Riptide, Drown, Surge) parse");
+const ill = M.modeById("mental-light-dream:illuminate");
+ok(/Against an enemy:.*Against an ally:/.test(ill?.base ?? "") && /Weakened/.test(ill?.enhanced ?? ""), "Illuminate keeps its two versions and its Enhanced text (the doc's bullet layout)");
 ok(M.tenetChoices("dream", { "mental-life-dream": 1 }).length === 1, "A character can pick only Tenets they know");
 
 console.log("== Text scaling");
 ok(M.scaleMentalText("they get 20 temp HP. Herald: apply 10d8 Force", 3) === "they get 60 temp HP. Herald: apply 30d8 Force", "Dice counts and temp HP scale with Wonder Power");
 ok(M.scaleMentalText("2d10 health", 1) === "2d10 health", "Power 1 leaves it as printed");
+ok(M.scaleMentalText("move them up to 1.5ft (rounded down)", 3, "Current") === "move them up to 4.5ft (rounded down)", "Decimals scale too (Current: 1.5 ft × 3)");
+ok(M.scaleMentalText("Its dodge rolls have their die size reduced by 0.5 (this reduction is rounded up).", 3, "Eclipse").includes("reduced by 1.5"), "…and Eclipse's 0.5 die size");
 console.log(fails ? `\n${fails} FAILED` : "\nAll Mental rules checks passed");
 if (fails) process.exit(1);

@@ -69,6 +69,11 @@ def parse(md, arch):
         body = clean(numbered.group(2) if numbered else bullet.group(1) if bullet else txt)
         if not body or body == "-": continue
         if numbered: body = f"{numbered.group(1)}. {body}"
+        # Mental: a Mode's versions ("Against an enemy:" / "Against an ally:" bullets) and its indented "Enhanced:" line are part of that Mode's text.
+        if arch == "Mental" and cur_tier["entries"] and re.match(r'^(Against an? \w+|Enhanced):', body):
+            prev = cur_tier["entries"][-1]
+            prev["text"] = f'{prev["text"]} {body}'.strip()
+            continue
         # Numbered option lists, deeper bullets, and loose paragraphs belong to the entry above them.
         # Mental lists its Modes and Tenets as plain paragraphs at the left margin (no bullet): each is its own entry.
         flush = arch == "Mental" and not bullet and not numbered and raw[:1] not in (" ", "\t")

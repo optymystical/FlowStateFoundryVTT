@@ -634,6 +634,7 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
   // Gash (Slashing T3): voluntarily moving reopens the wound.
   if (actor && !options?.flowstateThrow && actions.spellEffects(actor, "gash").length) actions.triggerGash(actor);
   if (actor && !options?.flowstateThrow) actions.hexMove(actor);
+  if (actor && !options?.flowstateThrow) actions.seaMove(actor);
   if (actor && !options?.flowstateThrow) actions.arcanaCheckEntry(token, changes);
   // Rapid T3 Mark: a Marked creature moving lets the marker shoot.
   if (actor?.getFlag("flowstate", "markedBy")) actions.triggerMark(actor, "moves");

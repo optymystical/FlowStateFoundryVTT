@@ -7,8 +7,9 @@ text = (root / "dev/docs/mental.md").read_text()
 skip = re.compile(r"grade of|\bAP\b|\bRP\b|\bft\b|Skill Trees|^Cost|^Tier", re.I)
 out, cur = {}, None
 for ln in text.split("\n"):
-    m = re.match(r"^\s*(?:- )?\*\*([A-Z][A-Za-z' ]+?):\*+", ln)
-    if m: cur = m.group(1).strip()
+    # "**Name:**" starts an entry, and so does an ability's "**Name: Cost: ...**"; a Mode's "Against an enemy/ally:" and "Enhanced:" lines stay with it.
+    m = re.match(r"^\s*(?:- )?\*\*([A-Z][A-Za-z' ]+?):(?:\*+| Cost:)", ln)
+    if m and not re.match(r"^(Against an? \w+|Enhanced)$", m.group(1).strip()): cur = m.group(1).strip()
     if not cur or ln.startswith("#"): continue
     for span in re.findall(r"\*\*(.+?)\*\*", ln):
         s = span.replace("\\+", "+").replace("\\-", "-").replace("\\", "").strip(" ,.")

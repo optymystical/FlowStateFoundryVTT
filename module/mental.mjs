@@ -15,6 +15,7 @@ import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
 import * as wondersB from "./wonders-b.mjs";
 import * as wondersC from "./wonders-c.mjs";
+import * as wondersD from "./wonders-d.mjs";
 import * as forging from "./forging.mjs";
 import * as ponderance from "./ponderance.mjs";
 import * as snappence from "./snappence.mjs";
@@ -324,7 +325,7 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
   ].filter(Boolean);
   for (const f of plan.extraAfter) await f();
   const mental = { mode: plan.mode.id, wonder: plan.wonder.id, kind: plan.kind, power: plan.power, enhanced: plan.enhance, burst: plan.burst, range: plan.range, alignStacks: plan.alignStacks,
-    text: plan.text, caster: actor.uuid, choices: plan.choices, uid: foundry.utils.randomID?.() ?? String(Math.random()), ...(plan.premeditate ? { premeditate: true } : {}), ...(plan.reflex ? { reflex: true } : {}), ...plan.extraFlags };
+    text: plan.text, caster: actor.uuid, choices: plan.choices, uid: foundry.utils.randomID?.() ?? String(Math.random()), targets: targets.map(a => a.uuid), ...(plan.premeditate ? { premeditate: true } : {}), ...(plan.reflex ? { reflex: true } : {}), ...plan.extraFlags };
   // Creation: the attack roll is made against yourself; the creature(s) you targeted (or the Area) are who it's created for.
   let attackTargets = targets;
   if (forging.CREATION_MODES.has(plan.mode.id)) {
@@ -562,6 +563,8 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
   }
   if (m.disperse) return wondersC.disperseResolve({ attacker, target, result, m });
   if (m.expand) return wondersC.expandResolve({ attacker, target, result, m });
+  if (m.ejecta) return wondersD.ejectaResolve({ attacker, target, result, m });
+  if (m.escape) return wondersD.escapeResolve({ attacker, target, result, m });
   if (m.dismiss) {
     if (!result.hit) return { html: `<div class="fs-notes">The dismissal misses: ${esc(target.name)} keeps their effects.</div>` };
     let n = 0;
@@ -897,7 +900,7 @@ export async function dismiss(actor) {
   for (const a of everyActor()) for (const e of a.effects ?? []) {
     const d = e.flags?.flowstate?.spellEffect;
     if (!d || d.caster !== actor.uuid || e.flags.flowstate.ritualOf) continue;
-    if (String(d.mode ?? "").startsWith("mental-") || d.ward || ["charge", "burden", "pending", "waste", "redirect", "anchorWeak", "premonition", "premeditated"].includes(d.kind) || d.below || d.mode === "verdant-soul") mine.push({ e, a, d });
+    if (String(d.mode ?? "").startsWith("mental-") || d.ward || ["charge", "accretion", "undertow", "drowning", "adamant", "burden", "pending", "waste", "redirect", "anchorWeak", "premonition", "premeditated"].includes(d.kind) || d.below || d.mode === "verdant-soul") mine.push({ e, a, d });
   }
   if (!mine.length) return ui.notifications.info(`${actor.name} has no Wonder effects to dismiss.`);
   const out = await DialogV2().prompt({ window: { title: `Dismiss: ${actor.name}` }, rejectClose: false,
@@ -957,4 +960,5 @@ wonders.setMental(self);
 registerMental({ attackStart: wondersC.attackStart, attackDieAgainst: wondersC.attackDieAgainst, dodgeDieAgainst: wondersC.dodgeDieAgainst, reflex: snappence.offerReflex, concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
   adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
-  resolveCharges: charges.afterResolve, damageCharges: charges.onDamage });
+  resolveCharges: charges.afterResolve, damageCharges: charges.onDamage,
+  encasements: wondersD.encasements, accretionAsk: wondersD.accretionAsk, accretionWorn: wondersD.accretionWorn, forcedMove: wondersD.forcedMove, voluntaryMove: wondersD.voluntaryMove, standUp: wondersD.standUp });

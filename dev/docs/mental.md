@@ -38,6 +38,12 @@
 
 [Snappence Arts](#snappence-arts)
 
+[Light (Dream)](#light-\(dream\))
+
+[Dark (Nightmare)](#dark-\(nightmare\))
+
+[Earth (Dream)](#earth-\(dream\))
+
 [**Mental T4 Skill Trees**](#mental-t4-skill-trees)
 
 [Willpower Arts](#willpower-arts)
@@ -436,35 +442,39 @@
 
 **Tier 1: You gain the following ability:**
 
-- **Reflex: Cost: ***Energy equal to half of your Scaling Stat min, rounded down.*** When any character you can sense begins an action (attacking, dodging, moving, etc), you can use this ability. Manifest a Wonder in response, spending RP equal to your chosen Range’s AP cost. That Manifest resolves before the triggering action, but its effects are Weakened.
+- **Reflex:** **Cost:** ***Energy equal to half of your Scaling Stat min, rounded down.*** When any character you can sense begins an action (attacking, dodging, moving, etc), you can use this ability. Manifest a Wonder in response, spending RP equal to your chosen Range’s AP cost. That Manifest resolves before the triggering action, but its effects are Weakened.
 
 **Tier 2: You gain the following ability:**
 
-- **Impulse: Cost: ***Energy equal to half of your Scaling Stat min, rounded down.*** Once per round, if your selected Tenet has already triggered this round and would trigger again, you can use this ability to apply it to that instance.
+- **Impulse: Cost: *Energy equal to half of your Scaling Stat min, rounded down.*** Once per round, if your selected Tenet has already triggered this round and would trigger again, you can use this ability to apply it to that instance. 
 
 **Tier 3: You gain the following passive:**
 
-- **Fixation:** At the start of your turn, declare a character you can sense. Whenever you use Reflex to react to an action by that character, that instance of Reflex is not Weakened.
+- **Fixation:** At the start of your turn, declare a character you can sense. Whenever you use Reflex to react to an action by that character, that instance of Reflex is not Weakened. 
 
 **Tier 4: You gain the following passive:**
 
-- **Nerve:** You have Advantage on the Willpower checks you make to maintain your Concentration.
+- **Nerve:** You have Advantage on the Willpower checks you make to maintain your Concentration. 
 
 **Tier 5: You gain the following passive:**
 
-- **Afterimage:** Once per round, you can Manifest in reaction to a triggering action without spending RP or energy.
+- **Afterimage:** Once per round, you can Manifest in reaction to a triggering action without spending RP or energy. 
 
-## **Light (Dream)** {#light-dream}
+# 
+
+## **Light (Dream)** {#light-(dream)}
 
 **Tier 1: You gain the following Mode and Tenet:**
 
-**Illuminate:** Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. **Against an enemy:** On hit, that creature is Illuminated until the start of your next turn. Its attack rolls have their **die size reduced by 1**, it cannot be naturally obscured, and it cannot benefit from half cover. **Against an ally:** On hit, attack rolls made against that ally have their **die size reduced by 1** until the start of your next turn. Attacks made by your own allies are unaffected. **Enhanced:** Damage dealt by an attack affected by this Mode is Weakened.
-
-**Beacon:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you and your allies can see that target through any obstruction until the start of your next turn.
+- **Illuminate:** Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other.  
+- **Against an enemy:** On hit, that creature is Illuminated until the start of your next turn. Its attack rolls have their **die size reduced by 1**, it cannot be naturally obscured, and it cannot benefit from half cover.   
+- **Against an ally:** On hit, attack rolls made against that ally have their **die size reduced by 1** until the start of your next turn. Attacks made by your own allies are unaffected.  
+  **Enhanced:** Damage dealt by an attack affected by this Mode is Weakened.   
+- **Beacon:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you and your allies can see that target through any obstruction until the start of your next turn. 
 
 **Tier 2: You gain the following ability:**
 
-- **Refraction: Cost:** ***Energy equal to half of your PON min, rounded down.*** When you Illuminate a creature, you can use this ability to attempt to spread that effect to another creature within the used Mental attack range, requiring an attack roll. The spread may apply either version of the effect, whichever suits the new target. This spread cannot trigger Refraction.
+- **Refraction: Cost: *Energy equal to half of your PON min, rounded down.*** When you Illuminate a creature, you can use this ability to attempt to spread that effect to another creature within the used Mental attack range, requiring an attack roll. The spread may apply either version of the effect, whichever suits the new target. This spread cannot trigger Refraction. 
 
 **Tier 3: You gain the following passive:**
 
@@ -472,27 +482,31 @@
 
 **Tier 4: You gain the following Mode:**
 
-- **Dispersion:** Target one Manifestation or Spell within your chosen range and make your attack roll with Advantage against a dodge roll from that target’s creator. On hit, and if that target has no normal health/durability (such as a normal spell), it is destroyed if its creator’s **Scaling Stat is 15 or less**. Instead, if it has health or durability and is not sentient, it **loses** **20 health**. **Enhanced:** This single attack also affects any number of other effects of your choosing within 5ft of the target(s).
+- **Dispersion:** Target one Manifestation or Spell within your chosen range and make your attack roll with Advantage against a dodge roll from that target’s creator. On hit, and if that target has no normal health/durability (such as a normal spell), it is destroyed if its creator’s **Scaling Stat is 15 or less**. Instead, if it has health or durability and is not sentient, it **loses** **20 health**. **Enhanced:** This single attack also affects any number of other effects of your choosing within 5ft of the target(s). 
 
 **Tier 5: You gain the following action:**
 
 - **Corona:** You can, for 1 AP, make an attack roll against a creature you can sense within 100ft that is already under the effects of your Illuminate. On hit, that instance of Illuminate expands to also affect every valid target within 10ft of that creature.
 
-## **Dark (Nightmare)** {#dark-nightmare}
+# 
+
+## **Dark (Nightmare)** {#dark-(nightmare)}
 
 **Tier 1: You gain the following Mode and Tenet:**
 
-**Eclipse:** Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other. **Against an enemy:** On hit, that creature is Eclipsed until the start of your next turn. Its dodge rolls have their **die size reduced by 0.5** (this reduction is rounded up). **Against an ally:** On hit, until the start of your next turn, that ally’s attacks cause their targets’ dodge rolls to have their **die size reduced by 0.5** (this reduction is rounded up), and that ally becomes one step more obscured (none → lightly → heavily). **Enhanced:** Damage dealt by an attack affected by this Mode is Strengthened.
-
-**Shadowmark:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can make that target or yourself one more step obscured (none → lightly → heavily) until the start of your next turn.
+- **Eclipse:** Must be used on a creature. Neither version stacks with itself, nor do their effects stack with each other.  
+- **Against an enemy:** On hit, that creature is Eclipsed until the start of your next turn. Its dodge rolls have their **die size reduced by 0.5** (this reduction is rounded up).  
+- **Against an ally:** On hit, until the start of your next turn, that ally’s attacks cause their targets’ dodge rolls to have their **die size reduced by 0.5** (this reduction is rounded up), and that ally becomes one step more obscured (none → lightly → heavily).   
+  **Enhanced:** Damage dealt by an attack affected by this Mode is Strengthened.  
+- **Shadowmark:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can make that target or yourself one more step obscured (none → lightly → heavily) until the start of your next turn.
 
 **Tier 2: You gain the following ability:**
 
-- **Penumbra: Cost:** ***Energy equal to half of your SNA min, rounded down.*** When you Eclipse a creature, you can use this ability to attempt to spread that effect to another creature within the used Mental attack range, requiring an attack roll. The spread may apply either version of the effect, whichever suits the new target. This spread cannot trigger Penumbra.
+- **Penumbra: Cost: *Energy equal to half of your SNA min, rounded down.*** When you Eclipse a creature, you can use this ability to attempt to spread that effect to another creature within the used Mental attack range, requiring an attack roll. The spread may apply either version of the effect, whichever suits the new target. This spread cannot trigger Penumbra. 
 
 **Tier 3: You gain the following passive:**
 
-- **Totality:** When an ally under your Eclipse attacks a creature under your Eclipse, that attack is treated as though the ally were undetectable to it, giving them half stealth against that target.
+- **Totality:** When an ally under your Eclipse attacks a creature under your Eclipse, that attack is treated as though the ally were undetectable to it, giving them half stealth against that target. 
 
 **Tier 4: You gain the following Mode:**
 
@@ -501,6 +515,56 @@
 **Tier 5: You gain the following action:**
 
 - **Nightfall:** You can, for 1 AP, make an attack roll against a creature you can sense within 100ft that is already under the effects of your Eclipse. On hit, that instance of Eclipse expands to also affect every valid target within 10ft of that creature.
+
+# 
+
+## **Earth (Dream)** {#earth-(dream)}
+
+**Tier 1: You gain the following Mode and Tenet:**
+
+- **Accretion:** On hit, the target is encased in soft material until the start of your next turn. The encasement is an object with **50 Durability** and a Limit equal to one fifth of its Durability, working only against Physical and Elemental damage. Attacks against that creature strike the encasement first: it absorbs damage up to its Limit from each attack, reducing its Durability by that much, with any excess passing through to the creature. This Mode stacks on the same target, melding into a single encasement whose Durability and Limit are the sums of its parts. **Enhanced:** On Manifest, select a damage category (Physical, Elemental, Magical, Supernatural). Damage dealt to this instance is Weakened.  
+- **Adamant:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can lower the target’s or your own **Pain Threshold by 10**, lasting until the start of your next turn. If reapplied with a reaction the moment the effect ends, the target will not fall unconscious from the change in Pain Threshold.
+
+**Tier 2: You gain the following ability:**
+
+- **Reinforce: Cost: *Energy equal to half of your PON min, rounded down.*** When an attack would reduce one of your Accretions’ Durability, you can use this ability. For that attack instance, its Limit is equal to its full remaining Durability. 
+
+**Tier 3: You gain the following action:**
+
+- **Ejecta:** At any time, you can consume an Accretion to throw it as an attack roll against a target within 100ft of that Accretion. On a hit, deal physical damage equal to one fifth of that Accretion’s remaining Durability.
+
+**Tier 4: You gain the following passive:**
+
+- **Batholith:** Your Accretions absorb damage of any category, including Magical and Supernatural. In addition, Ejecta can target fully magical and Supernatural creatures, dealing Arcane damage to fully magical targets and Supernatural damage to Supernatural targets. 
+
+**Tier 5: You gain the following passive:**
+
+- **Bedrock:** When damage would exceed one of your Accretions’ Limit, you may choose to have the excess reduce that encasement’s Durability by twice the excess instead of passing through to the creature.
+
+# 
+
+## **Sea (Nightmare)**
+
+**Tier 1: You gain the following Mode and Tenet:**
+
+- **Undertow:** On hit, the target is engulfed in flowing water until the start of your next turn. Whenever they spend AP to move, or the target is forcefully moved by something other than your own Sea effects, it takes **1d8 physical damage**. **Enhanced:** This Mode’s damage is cold instead of physical, and removes energy from the target equal to the direct damage dealt.   
+- **Surge:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can forcefully move the target **up to** **1ft** in a direction of your choosing, ignoring Force and Lift. 
+
+**Tier 2: You gain the following ability:**
+
+- **Current: Cost: *Energy equal to your SNA min.*** Whenever a creature takes damage or loses health from one of your Sea Modes, you can use this ability to move them **up to 1.5ft** (rounded down) in a direction of your choosing.
+
+**Tier 3: You gain the following Mode:**
+
+- **Riptide:** On hit, the target is forcefully moved **up to** **2ft** toward or away from a point of your choosing within the used range, ignoring Force and Lift. **Enhanced:** Target an additional creature; the original target is pulled toward it, and if the additional target is also hit it is pulled the same distance toward the original. A creature cannot take Force Damage from both pulls of the same Manifest. 
+
+**Tier 4: You gain the following passive:**
+
+- **Shoal:** Damage and health loss from your Sea Modes is Strengthened against prone targets. This does not apply to Force Damage. 
+
+**Tier 5: You gain the following Mode:**
+
+- **Drown:** Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved **at least 4ft** during your current turn they **lose 2d10 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). **Enhanced:** You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they lose that health again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit. 
 
 # **Mental T4 Skill Trees** {#mental-t4-skill-trees}
 

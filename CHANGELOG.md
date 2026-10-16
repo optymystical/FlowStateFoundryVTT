@@ -2,6 +2,11 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.63.0:** **Earth (Dream) and Sea (Nightmare) Wonders.**
+- **Earth:** Accretion encases a creature in an object that soaks Physical and Elemental hits up to its Limit before anything else (your Accretions meld; Enhanced Weakens a chosen category against it); Adamant (Tenet) lowers a Pain Threshold; Reinforce and Bedrock are asked when a big hit strikes an Accretion; Ejecta throws an Accretion (Action List); Batholith widens both.
+- **Sea:** Undertow hurts a creature whenever it moves or something else moves it; Surge (Tenet), Current and Riptide are short forced moves that ignore Force and Lift (direction card, up to the distance); Shoal Strengthens Sea damage on prone targets; Drown knocks prone and drains health after enough forced movement this turn (Enhanced: a Concentration that keeps them down; getting up is an attack roll).
+- Forced movement (throws, knockback, pulls, drags) is now tracked per creature. The Mental snapshot is refreshed, and the tree and bold-number generators handle the doc's new bullet layout for Light and Dark; decimal bolded numbers (Eclipse's 0.5, Current's 1.5 ft) now scale with Power in the shown text.
+
 **0.62.1:** **New NPC stats start at 0** (Even spread still fills them). **Terrain regions are GM only:** players don't see rough/difficult/cleared terrain but still pay its AP; terrain already on scenes is hidden once when the GM loads the world.
 
 **0.62.0:** **Rules audit: Fear, dragging, Cut + Hex and Stab + Hex.**

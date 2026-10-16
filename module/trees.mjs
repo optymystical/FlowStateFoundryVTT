@@ -5020,103 +5020,179 @@ export const TREES = [
    "rows": [
     [
      "1–3",
-     "Deals 1d12 physical damage to the target and every creature of your choice within 20ft, each knocked prone."
+     "Deals 1d12 physical damage to the target and every creature of your choice within 20ft, each knocked prone.",
+     [
+      "1d12 physical damage"
+     ]
     ],
     [
      "4–6",
-     "Deals 1d12 cold damage to the target, and one effect they are Concentrating on ends."
+     "Deals 1d12 cold damage to the target, and one effect they are Concentrating on ends.",
+     [
+      "1d12 cold damage"
+     ]
     ],
     [
      "7–11",
-     "Deals 1d12 physical damage to the target, and they cannot benefit from advantage until the start of your next turn."
+     "Deals 1d12 physical damage to the target, and they cannot benefit from advantage until the start of your next turn.",
+     [
+      "1d12 physical damage"
+     ]
     ],
     [
      "12–16",
-     "Deals 1d10 radiation damage to the target, and their senses are each treated as one step lower until the start of your next turn (does not stack)."
+     "Deals 1d10 radiation damage to the target, and their senses are each treated as one step lower until the start of your next turn (does not stack).",
+     [
+      "1d10 radiation damage"
+     ]
     ],
     [
      "17–21",
-     "The target loses 1d10 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects)."
+     "The target loses 1d10 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).",
+     [
+      "1d10 health"
+     ]
     ],
     [
      "22–26",
-     "Deals 1d10 physical damage to the target and knocks them prone."
+     "Deals 1d10 physical damage to the target and knocks them prone.",
+     [
+      "1d10 physical damage"
+     ]
     ],
     [
      "27–31",
-     "Deals 1d8 heat damage to the target and every creature within 10ft of it."
+     "Deals 1d8 heat damage to the target and every creature within 10ft of it.",
+     [
+      "1d8 heat damage"
+     ]
     ],
     [
      "32–35",
-     "The target’s Pain Threshold is raised by 10 until the start of your next turn."
+     "The target’s Pain Threshold is raised by 10 until the start of your next turn.",
+     [
+      "raised by",
+      "10"
+     ]
     ],
     [
      "36–39",
-     "The target’s dodge rolls have their die size reduced by 0.5, rounded up, until the start of your next turn."
+     "The target’s dodge rolls have their die size reduced by 0.5, rounded up, until the start of your next turn.",
+     [
+      "die size reduced by 0.5"
+     ]
     ],
     [
      "40–43",
-     "The target’s attack rolls have their die size reduced by 1 until the start of your next turn."
+     "The target’s attack rolls have their die size reduced by 1 until the start of your next turn.",
+     [
+      "die size reduced by 1"
+     ]
     ],
     [
      "44–47",
-     "The target gains 15 Slow stacks, lasting until the start of your next turn."
+     "The target gains 15 Slow stacks, lasting until the start of your next turn.",
+     [
+      "15 Slow stacks"
+     ]
     ],
     [
      "48–50",
-     "The target loses 3 energy."
+     "The target loses 3 energy.",
+     [
+      "3 energy"
+     ]
     ],
     [
      "51–53",
-     "Apply 5d8 Force to the target in a direction of your choosing."
+     "Apply 5d8 Force to the target in a direction of your choosing.",
+     [
+      "5d8 Force"
+     ]
     ],
     [
      "54–56",
-     "The target is forcefully moved 2ft in a direction of your choosing, ignoring Force and Lift."
+     "The target is forcefully moved 2ft in a direction of your choosing, ignoring Force and Lift.",
+     [
+      "2ft"
+     ]
     ],
     [
      "57–59",
-     "Deals 1d10 Elemental damage to the target, of a type of your choice."
+     "Deals 1d10 Elemental damage to the target, of a type of your choice.",
+     [
+      "1d10 Elemental damage"
+     ]
     ],
     [
      "60–63",
-     "Restore 3 energy to the target."
+     "Restore 3 energy to the target.",
+     [
+      "3 energy"
+     ]
     ],
     [
      "64–67",
-     "Give the target 15 Haste stacks, lasting until the start of your next turn."
+     "Give the target 15 Haste stacks, lasting until the start of your next turn.",
+     [
+      "15 Haste stacks"
+     ]
     ],
     [
      "68–71",
-     "Give the target 5 Temp HP, lasting until the start of your next turn."
+     "Give the target 5 Temp HP, lasting until the start of your next turn.",
+     [
+      "5 Temp HP"
+     ]
     ],
     [
      "72–75",
-     "The target’s dodge rolls gain +0.5 die size, rounded up, until the start of your next turn."
+     "The target’s dodge rolls gain +0.5 die size, rounded up, until the start of your next turn.",
+     [
+      "+0.5 die size"
+     ]
     ],
     [
      "76–79",
-     "The target’s attack rolls gain +1 die size until the start of your next turn."
+     "The target’s attack rolls gain +1 die size until the start of your next turn.",
+     [
+      "+1 die size"
+     ]
     ],
     [
      "80–84",
-     "Restore 5 health to the target, only affecting damage taken since the start of your last turn."
+     "Restore 5 health to the target, only affecting damage taken since the start of your last turn.",
+     [
+      "5 health"
+     ]
     ],
     [
      "85–89",
-     "The target’s Pain Threshold is lowered by 10 until the start of your next turn."
+     "The target’s Pain Threshold is lowered by 10 until the start of your next turn.",
+     [
+      "lowered by",
+      "10"
+     ]
     ],
     [
      "90–94",
-     "Restore 5 energy to the target; energy above maximum becomes Temp HP at 1:1 until the start of your next turn."
+     "Restore 5 energy to the target; energy above maximum becomes Temp HP at 1:1 until the start of your next turn.",
+     [
+      "5 energy"
+     ]
     ],
     [
      "95–97",
-     "Reroll this table, applying that effect to the same target."
+     "Reroll this table, applying that effect to the same target.",
+     []
     ],
     [
      "98–100",
-     "Give the target 5 Temp HP, restore 5 health to them (only affecting damage taken since the start of your last turn), and remove one Stage 1 negative condition from them."
+     "Give the target 5 Temp HP, restore 5 health to them (only affecting damage taken since the start of your last turn), and remove one Stage 1 negative condition from them.",
+     [
+      "5 Temp HP",
+      "5 health"
+     ]
     ]
    ]
   }
@@ -5197,103 +5273,180 @@ export const TREES = [
    "rows": [
     [
      "1–4",
-     "Deals 1d12 physical to the target. If the target is at or above ¾ of its max health, this damage gains 2 stacks of Strengthened."
+     "Deals 1d12 physical to the target. If the target is at or above ¾ of its max health, this damage gains 2 stacks of Strengthened.",
+     [
+      "1d12 physical"
+     ]
     ],
     [
      "5–8",
-     "The target’s next attack after this one causes them to deal 1d10 physical to themself, hit or miss. Lasts until used or the start of your next turn."
+     "The target’s next attack after this one causes them to deal 1d10 physical to themself, hit or miss. Lasts until used or the start of your next turn.",
+     [
+      "1d10 physical"
+     ]
     ],
     [
      "9–12",
-     "Deals 1d10 physical to the target and to one creature of your choice within 10ft of it."
+     "Deals 1d10 physical to the target and to one creature of your choice within 10ft of it.",
+     [
+      "1d10 physical"
+     ]
     ],
     [
      "13–16",
-     "A fresh Jinx holding 1d8 physical passes to a creature of your choice within 10ft of the target. Lasts until used or the start of your next turn."
+     "A fresh Jinx holding 1d8 physical passes to a creature of your choice within 10ft of the target. Lasts until used or the start of your next turn.",
+     [
+      "1d8 physical"
+     ]
     ],
     [
      "17–20",
-     "Removes 1d10 Temp HP/Shielding from the target, then deals 1d10 acid damage to them."
+     "Removes 1d10 Temp HP/Shielding from the target, then deals 1d10 acid damage to them.",
+     [
+      "1d10 Temp HP/Shielding",
+      "1d10 acid damage"
+     ]
     ],
     [
      "21–24",
-     "Deals 1d10 radiation damage to the target, and the target cannot regain health until the start of your next turn."
+     "Deals 1d10 radiation damage to the target, and the target cannot regain health until the start of your next turn.",
+     [
+      "1d10 radiation"
+     ]
     ],
     [
      "25–28",
-     "Deals 1d8 heat damage to the target now, and again at the start of the target’s next turn."
+     "Deals 1d8 heat damage to the target now, and again at the start of the target’s next turn.",
+     [
+      "1d8 heat"
+     ]
     ],
     [
      "29–32",
-     "Deals 1d10 cold damage to the target and applies 10 Slow stacks to them."
+     "Deals 1d10 cold damage to the target and applies 10 Slow stacks to them.",
+     [
+      "1d10 cold",
+      "10 Slow stacks"
+     ]
     ],
     [
      "33–36",
-     "The target loses 1d10 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects)."
+     "The target loses 1d10 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).",
+     [
+      "1d10 health"
+     ]
     ],
     [
      "37–40",
-     "The target loses 3 energy. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects)."
+     "The target loses 3 energy. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).",
+     [
+      "3 energy"
+     ]
     ],
     [
      "41–44",
-     "The next time the target spends energy, it spends 3 more. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). Lasts until used or the start of your next turn."
+     "The next time the target spends energy, it spends 3 more. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). Lasts until used or the start of your next turn.",
+     [
+      "3",
+      "more"
+     ]
     ],
     [
      "45–48",
-     "The target’s Haste stacks become Slow stacks, then it gains 10 Slow stacks."
+     "The target’s Haste stacks become Slow stacks, then it gains 10 Slow stacks.",
+     [
+      "10 Slow stacks"
+     ]
     ],
     [
      "49–52",
-     "The target loses 10 Temp HP/Shielding, and one object that it is holding or wearing that has Durability loses 10 Durability."
+     "The target loses 10 Temp HP/Shielding, and one object that it is holding or wearing that has Durability loses 10 Durability.",
+     [
+      "10 Temp HP/Shielding",
+      "10 Durability"
+     ]
     ],
     [
      "53–56",
-     "Deals 1d8 physical damage to the target, and their next attack roll has Disadvantage. Lasts until used or the start of your next turn."
+     "Deals 1d8 physical damage to the target, and their next attack roll has Disadvantage. Lasts until used or the start of your next turn.",
+     [
+      "1d8 physical damage"
+     ]
     ],
     [
      "57–60",
-     "Deals 1d8 physical damage to the target, and their next dodge roll has Disadvantage. Lasts until used or the start of your next turn."
+     "Deals 1d8 physical damage to the target, and their next dodge roll has Disadvantage. Lasts until used or the start of your next turn.",
+     [
+      "1d8 physical damage"
+     ]
     ],
     [
      "61–64",
-     "Deals 1d6 physical damage to the target, and the next Jinx to resolve on the target gains 2 Strengthened stacks (if multiple, choose one). Lasts until used or the start of your next turn."
+     "Deals 1d6 physical damage to the target, and the next Jinx to resolve on the target gains 2 Strengthened stacks (if multiple, choose one). Lasts until used or the start of your next turn.",
+     [
+      "1d6 physical damage"
+     ]
     ],
     [
      "65–68",
-     "Deals 1d6 physical damage to the target, and you may flip the target’s next attack roll for free, as Reversal does. Lasts until used or the start of your next turn."
+     "Deals 1d6 physical damage to the target, and you may flip the target’s next attack roll for free, as Reversal does. Lasts until used or the start of your next turn.",
+     [
+      "1d6 physical damage"
+     ]
     ],
     [
      "69–72",
-     "Deals 1d12 physical damage to the target, ignoring up to 10 Limit."
+     "Deals 1d12 physical damage to the target, ignoring up to 10 Limit.",
+     [
+      "1d12 physical damage",
+      "10 Limit"
+     ]
     ],
     [
      "73–76",
-     "Deals 1d8 physical damage to the target, and the next time they deal damage, that damage has a stack of Weakened. Lasts until used or the start of your next turn."
+     "Deals 1d8 physical damage to the target, and the next time they deal damage, that damage has a stack of Weakened. Lasts until used or the start of your next turn.",
+     [
+      "1d8 physical damage"
+     ]
     ],
     [
      "77–80",
-     "One effect the target is Concentrating on ends, and it loses 1d8 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects)."
+     "One effect the target is Concentrating on ends, and it loses 1d8 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).",
+     [
+      "1d8 health"
+     ]
     ],
     [
      "81–84",
-     "Deals 1d8 physical damage to the target, and the next time they take non-Jinx damage, that damage has a stack of Strengthened. Lasts until used or the start of your next turn."
+     "Deals 1d8 physical damage to the target, and the next time they take non-Jinx damage, that damage has a stack of Strengthened. Lasts until used or the start of your next turn.",
+     [
+      "1d8 physical damage"
+     ]
     ],
     [
      "85–88",
-     "If the target has more than half its max energy, it loses 5 energy. Otherwise, they are dealt 1d10 physical damage."
+     "If the target has more than half its max energy, it loses 5 energy. Otherwise, they are dealt 1d10 physical damage.",
+     [
+      "5 energy",
+      "1d10 physical damage"
+     ]
     ],
     [
      "89–92",
-     "Roll again and store the new result on the target as a fresh Calamity."
+     "Roll again and store the new result on the target as a fresh Calamity.",
+     []
     ],
     [
      "93–96",
-     "Roll twice more and apply both, rerolling any 89–100."
+     "Roll twice more and apply both, rerolling any 89–100.",
+     []
     ],
     [
      "97–100",
-     "Deals 1d12 Supernatural damage to the target, and they are knocked prone."
+     "Deals 1d12 Supernatural damage to the target, and they are knocked prone.",
+     [
+      "1d12 Supernatural"
+     ]
     ]
    ]
   }

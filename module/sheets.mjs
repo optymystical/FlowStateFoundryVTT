@@ -126,10 +126,11 @@ export function wonderTable(tree, actor = null, tp = null) {
   if (!t?.rows?.length) return null;
   const tn = actor ? wonders.tenetOf(actor) : null;
   const mult = tn && tn.wonder === tree.id ? tn.mult : null;
-  const power = tp?.power ?? null;
-  const note = [power ? `Bolded values are × your Wonder Power (${power}) when a Mode rolls it` : "Bolded values are × Wonder Power when a Mode rolls it",
-    mult ? `× your Tenet multiplier (${mult}) when your Tenet does` : "× the Tenet multiplier when the Tenet does", "and scaled by the stacks it carries."].join(", ");
-  return { title: t.title, rows: t.rows.map(([roll, effect]) => ({ roll, effect })), note };
+  const power = tp?.power ?? 1;
+  const by = { "mental-fortune-dream": ["Providence", "Rig"], "mental-ruin-nightmare": ["Calamity", "Doom"] }[tree.id] ?? ["its Modes", "its Tenet"];
+  const note = [power > 1 ? `Values are worked out for your Wonder Power (${power}), as ${by[0]} rolls it.` : `Values are as printed (Wonder Power 1), as ${by[0]} rolls it.`,
+    mult && mult !== power ? `${by[1]} uses your Tenet multiplier (${mult}) instead.` : "", "The stacks a roll carries (a band, a crit) scale it further."].filter(Boolean).join(" ");
+  return { title: t.title, rows: t.rows.map(([roll, effect, spans]) => ({ roll, effect: mentalRules.scaleSpans(effect, spans, power) })), note };
 }
 
 /** Weapon trees: which weapons their abilities work with (Weapon Master adds a multi-type weapon's other types). */

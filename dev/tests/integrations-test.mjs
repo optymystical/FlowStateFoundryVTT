@@ -80,6 +80,10 @@ ok(/isn't grappling/.test(called2 ?? ""), `TAH: martial op dispatch (${called2})
   const rt = wonderTable(skills.treeById("mental-ruin-nightmare"));
   ok(ft?.rows.length === 25 && ft.rows[0].roll === "1–3" && /Wonder Power \(3\)/.test(ft.note) && rt?.rows.length === 25 && rt.title === "The Ruin Table", "Skills tab: the Fortune and Ruin Tables, with how their values scale");
   ok(wonderTable(skills.treeById("mental-life-dream")) === null, "Skills tab: no table for a tree without one");
+  const row = n => ft.rows.find(r => r.roll === n)?.effect ?? "";
+  ok(/^Deals 3d12 physical damage/.test(row("1–3")) && /raised by 30 until/.test(row("32–35")) && /45 Slow stacks/.test(row("44–47")) && /15 Temp HP, restore 15 health/.test(row("98–100")) && /within 20ft/.test(row("1–3")),
+    `Skills tab: the table's bolded values are worked out for Power 3, the rest stays (${row("98–100")})`);
+  ok(/Deals 1d12 physical/.test(rt.rows[0].effect), "…and as printed at Power 1");
   const H = (await import("handlebars")).default, fs = await import("node:fs");
   const html = H.compile(fs.readFileSync(new URL("../../templates/actor-skills.hbs", import.meta.url), "utf8"))({ tab: {}, skillView: { trees: [], archetypes: [], points: {}, tree: { tiers: [] }, table: ft } });
   ok(/fs-wonder-table/.test(html) && (html.match(/<tr>/g) ?? []).length === 26, "Skills tab: the table renders (25 rows and a header)");

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.65.7:** **The Fortune and Ruin Tables show real numbers.** Their bolded values are worked out for the character's Wonder Power in the Skills tab and the wizards (e.g. 3d12 at Power 3, not 1d12); a note says when Rig or Doom use a different Tenet multiplier.
+
 **0.65.6:** **The Fortune and Ruin Tables in the Skills tab.** A Wonder's table shows under its tree's tiers (with how its bolded values scale for you), and in the creation wizards' Skill Trees step.
 
 **0.65.5:** **Trance abilities: free Enhance, Burst with your own Energy** (the doc's update). Using a hostile Trance Mode can be Enhanced for free; Burst (RP instead of AP) is now offered and costs the user's own Energy.

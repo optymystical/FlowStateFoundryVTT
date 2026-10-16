@@ -146,7 +146,8 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         canLower: tier > 0 && !dependents.length, lowerTip: dependents.length ? "Lower the trees this Theory tier opens first" : `Refund ${tier} SP`,
         tiers: t.tiers.filter(x => x.tier > 0).map(x => ({ tier: x.tier, summary: x.summary, owned: x.tier <= tier,
           entries: x.entries.filter(e => e.name || e.text).map(e => creation.entryBlurb(e)) })),
-        table: t.table?.rows?.length ? { title: t.table.title, rows: t.table.rows.map(([roll, effect]) => ({ roll, effect })) } : null
+        // A Wonder's table, worked out for the Power these stats give (the tiers above stay as printed).
+        table: t.table?.rows?.length ? { title: t.table.title, rows: t.table.rows.map(([roll, effect, spans]) => ({ roll, effect: mentalRules.scaleSpans(effect, spans, mentalRules.wonderPower(pv.effective[mentalRules.KINDS[mentalRules.wonderById(t.id)?.kind ?? "dream"].stat]?.value ?? 0)) })) } : null
       };
     });
     const pickedTrees = Object.entries(st.trees).filter(([, t]) => t > 0).map(([id, t]) => `${skills.treeById(id)?.name} ${t}`);

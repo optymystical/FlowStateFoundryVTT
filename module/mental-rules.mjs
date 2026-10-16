@@ -264,6 +264,25 @@ export const tenetChoices = (align, state = null) => WONDERS.filter(w => w.kind 
 const scaleSpan = (span, P) => span.replace(/(\d+)d(\d+)/g, (m, n, sides) => `${n * P}d${sides}`)
   .replace(/(?<![\d.d])(\d+(?:\.\d+)?)(?!d\d|[\d.])/g, (m, n) => String(Math.round(Number(n) * P * 10) / 10));
 /**
+ * A Wonder table row's effect with its bolded values (`spans`, in order, from the doc) multiplied by `power`: each span is found after the last one, so a
+ * plain "10" can't be mistaken for an earlier number.
+ */
+export function scaleSpans(text, spans, power) {
+  const P = Math.max(1, Math.floor(power) || 1);
+  let out = String(text ?? "");
+  if (P <= 1 || !spans?.length) return out;
+  let at = 0;
+  for (const span of spans) {
+    const i = out.indexOf(span, at);
+    if (i < 0) continue;
+    const scaled = scaleSpan(span, P);
+    out = out.slice(0, i) + scaled + out.slice(i + span.length);
+    at = i + scaled.length;
+  }
+  return out;
+}
+
+/**
  * Scale a Mode / Tenet / ability's text by Wonder Power: every bolded effect in the doc grows with it (the Mental doc lists base values).
  * `name` finds the bolded spans (`mental-bold.mjs`, generated from the doc); without them the common units are scaled instead.
  */

@@ -67,10 +67,14 @@ def parse(md, arch):
         wonder = arch == "Mental" and re.search(r'\((Dream|Nightmare)\)\s*$', cur["name"])
         # A Wonder's Markdown table (Fortune's Fortune Table) belongs to the tree, not to a tier's entries: rows of cells, the header and separator dropped.
         if wonder and txt.startswith('|'):
-            cells = [clean(c) for c in txt.strip('|').split('|')]
+            raw_cells = txt.strip('|').split('|')
+            cells = [clean(c) for c in raw_cells]
             if all(re.fullmatch(r'-*', c) for c in cells): continue
             tbl = cur.setdefault("table", {"title": cells[0], "rows": []})
-            if cells[0] != tbl["title"] and not re.match(r'^Roll$', cells[0], re.I): tbl["rows"].append(cells)
+            if cells[0] != tbl["title"] and not re.match(r'^Roll$', cells[0], re.I):
+                # The effect's bolded spans, in order: the values that scale (the sheet works them out for the character's Power).
+                bold = [clean(b) for b in re.findall(r'\*\*(.+?)\*\*', raw_cells[1] if len(raw_cells) > 1 else "")]
+                tbl["rows"].append(cells + [[b for b in bold if b]])
             continue
         numbered = re.match(r'^(\d+)\.\s+(.*)$', txt)
         bullet = re.match(r'^-\s+(.*)$', txt)

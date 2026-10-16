@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.64.2:** **More offer cards can be switched off** under Reactions in the Action List: Palisade, Blade Flurry, Combo / Flow Like Water, the start-of-turn card, the Wonder ability buttons, Chant, Will of Body and Spirit, Perennial, Vice / Quicksand, Momentum, Warpath and Current. Each switch only shows for characters who can get that card.
+
 **0.64.1:** **Mark shot switch.** Rapid Weapons T3 characters get a "Mark shot" switch under Reactions in the Action List: off, a Marked creature acting uses the Mark up without posting the Shoot card (Lead Blindness still applies).
 
 **0.64.0:** **Fortune (Dream) Wonder, and Mental doc changes.**

@@ -16,6 +16,7 @@ import { applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 import * as ab from "./abilities.mjs";
 import * as concentration from "./concentration.mjs";
 import { askFor, everyActor } from "./ask.mjs";
+import { isDeclined } from "./reactions.mjs";
 import { tierOf } from "./skills.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, TURN_START, BEFORE_CLEAR, rolled, tenetOf, tryOnce, actButtons } from "./wonders.mjs";
 
@@ -256,7 +257,7 @@ const currentFt = (power, bs) => bold(bs ?? 0, 1.5 * (power ?? 1));
 
 /** Current (Sea T2): offered on the card whenever a creature takes damage or loses health from one of your Sea Modes. */
 function currentActs(caster, target, d) {
-  if (!caster || tier(caster, SEA) < 2 || !live(target)) return [];
+  if (!caster || tier(caster, SEA) < 2 || !live(target) || isDeclined(caster, "current")) return [];
   return [{ id: "current", label: `Current on ${target.name}`, tip: `Move them up to ${currentFt(d.power, d.bstacks)} ft in a direction of your choosing (ignores Force and Lift)`, cost: `⚡ ${minOf(caster, "snap")}`,
     caster: caster.uuid, target: target.uuid, power: d.power ?? 1, bstacks: d.bstacks ?? 0 }];
 }

@@ -14,6 +14,7 @@ import { resolveForce, applyStacks } from "./rules.mjs";
 import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
+import { isDeclined } from "./reactions.mjs";
 /** mental.mjs hands itself over when it loads (`setMental`): the Wonders call into it, and it calls into them. */
 export let mental = null;
 export const setMental = m => { mental = m; };
@@ -441,7 +442,7 @@ export async function afterBreakFree({ actor, held, freed }) {
   const acts = [];
   if (!freed && tier(caster, "mental-below-nightmare") >= 2) acts.push({ id: "vice", label: `Vice on ${actor.name}`, tip: `${power}d12 physical damage for a failed counter grapple check`, cost: `⚡ ${Math.floor(minOf(caster, "snap") / 2)}`, caster: caster.uuid, target: actor.uuid, power });
   if (freed && tier(caster, "mental-below-nightmare") >= 4) acts.push({ id: "quicksand", label: `Quicksand on ${actor.name}`, tip: "An attack roll: on a hit they fail their escape check instead", cost: `⚡ ${2 * minOf(caster, "snap")}`, caster: caster.uuid, target: actor.uuid, power, held });
-  if (acts.length) await post(caster, { title: `${esc(caster.name)} — Below`, body: `<div class="fs-notes">${esc(actor.name)} ${freed ? "broke free of" : "failed to break free of"} ${esc(held.name)}.</div>${actButtons(acts)}`, flags: { flowstate: { mentalAct: { acts } } } });
+  if (acts.length && !isDeclined(caster, "below")) await post(caster, { title: `${esc(caster.name)} — Below`, body: `<div class="fs-notes">${esc(actor.name)} ${freed ? "broke free of" : "failed to break free of"} ${esc(held.name)}.</div>${actButtons(acts)}`, flags: { flowstate: { mentalAct: { acts } } } });
 }
 
 /** Burden: Disadvantage on attack rolls or dodge rolls (stacking). */
@@ -509,7 +510,7 @@ export async function momentum(actor, collided = null) {
  * on a card for the caster, the way Vice is when a Below Mode's counter grapple check fails. No stacks apply: it is a response, not part of the Manifest.
  */
 export async function momentumOffer(caster, collided) {
-  if (!caster || !collided || tier(caster, "mental-beyond-dream") < 2) return;
+  if (!caster || !collided || tier(caster, "mental-beyond-dream") < 2 || isDeclined(caster, "momentum")) return;
   const acts = [{ id: "momentumNow", label: `Momentum on ${collided.name}`, tip: "5d8 Force × Power on the one that collided, in a new direction (no attack roll; it can chain)", cost: `⚡ ${minOf(caster, "pon")}`, caster: caster.uuid, target: collided.uuid }];
   await post(caster, { title: `${esc(caster.name)} — Beyond`, body: `<div class="fs-notes">${esc(collided.name)} collided after being moved by your Beyond Mode.</div>${actButtons(acts)}`, flags: { flowstate: { mentalAct: { acts } } } });
 }

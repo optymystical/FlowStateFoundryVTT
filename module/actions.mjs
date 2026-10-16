@@ -2426,7 +2426,7 @@ async function maybeFlurryCard(f) {
   const hit = m => !!findDefense(m.id, 0)?.getFlag("flowstate", "defense")?.result?.hit;
   if (!hit(root) || !hit(f)) return;
   const attacker = await fromUuid(fa.attacker);
-  if (!attacker || !ab.swiftHeld(attacker, 3).length) return;
+  if (!attacker || !ab.swiftHeld(attacker, 3).length || isDeclined(attacker, "flurry")) return;
   flurryCardInFlight.add(f.id);
   try {
     const weapons = ab.swiftHeld(attacker, 3);
@@ -2767,7 +2767,7 @@ async function startOfTurnCard(actor, kept) {
     rows.push(`<button type="button" class="fs-turn-start" data-op="properStance"><i class="fa-solid fa-person-rifle"></i> Proper Stance (⚡ ${ab.ASSAULT_COST.properStance(bestWeapon(ab.assaultHeld(actor, 5)))})</button>`);
   }
   if (ab.unarmoredT(actor, 4)) rows.push(`<button type="button" class="fs-turn-start" data-op="quicken"><i class="fa-solid fa-forward-fast"></i> Quicken (⚡ ${ab.UNARMORED_COST.quicken(actor)})</button>`);
-  if (!rows.length) return;
+  if (!rows.length || isDeclined(actor, "turnStart")) return;
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     content: `<div class="flowstate-card"><header class="fs-card-title">Start of turn — ${esc(actor.name)}</header>
@@ -2931,6 +2931,7 @@ export async function checkPalisade(token, dest) {
     const reach = (a.system.derived?.size?.melee ?? 5) * Math.max(...weapons.map(i => i.system.profile.farstrike ?? 1));
     const before = canvas.grid.measurePath([t.center, oldC]).distance, after = canvas.grid.measurePath([t.center, newC]).distance;
     if (before <= reach || after > reach) continue;
+    if (isDeclined(a, "palisade")) continue;                         // switched off in the Action List (Reactions)
     const wall = ab.reachHeld(a, 3).length > 0;
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: a }),
@@ -4531,7 +4532,7 @@ async function maybeBrawlingCard(f) {
   const solitarySet = fa.opts.setKind === "solitary" && fa.opts.unarmedWeight === "heavy" && ra.opts.unarmedWeight === "heavy";
   const combo = fastSet && ab.brawl(attacker, 3);
   const flow = (fastSet || solitarySet) && ab.brawl(attacker, 5) && !fa.opts.flowChain && !ra.opts.flowChain;
-  if (!combo && !flow) return;
+  if ((!combo && !flow) || isDeclined(attacker, "brawling")) return;
   const flowWeight = fastSet ? "heavy" : "light";
   const target = ra.targets[0];
   brawlCardInFlight.add(f.id);

@@ -12,6 +12,9 @@ ok2(R.reactionRows(actor({}), ctx({ hasPremonition: true })).some(r => r.key ===
 const war = R.reactionRows(actor({}), ctx({}, { "mental-war-nightmare": 5 })).map(r => r.key);
 ok2(war.includes("warmonger") && war.includes("bloodbond") && !war.includes("serenity"), "War T5 gives Warmonger and Bloodbond, and nothing from Peace");
 ok2(R.reactionRows(actor({}), ctx({ tenet: "gust" })).some(r => r.key === "tenet"), "A Manifest-hit Tenet gives the Tenet switch");
+const keys = (over, trees) => R.reactionRows(actor({}), ctx(over, trees)).map(r => r.key);
+ok2(keys({}, { "martial-reach-weapons": 1 }).join() === "palisade" && keys({}, { "martial-swift-weapons": 3 }).join() === "flurry" && keys({}, { "martial-brawling-methods": 3 }).join() === "brawling", "Offer cards get switches too: Palisade, Blade Flurry, Combo / Flow Like Water");
+ok2(keys({ anyWonder: true, theory: 5 }).join() === "wonderAbilities,chant,wobs" && keys({}, { "mental-sea-nightmare": 2, "mental-beyond-dream": 2 }).join() === "momentum,current", "…and the Mental ones (ability buttons, Chant, Will of Body and Spirit, Momentum, Current)");
 ok2(R.reactionRows(actor({}), ctx({}, { "martial-rapid-weapons": 3 })).map(r => r.key).join() === "mark" && !R.reactionRows(actor({}), ctx({}, { "martial-rapid-weapons": 2 })).length, "Rapid Weapons T3 gives the Mark shot switch");
 
 console.log("== the switch");

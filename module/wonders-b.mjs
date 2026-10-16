@@ -12,6 +12,7 @@ import * as ab from "./abilities.mjs";
 import * as R from "./mental-rules.mjs";
 import { askFor, runOnOwner, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
+import { isDeclined } from "./reactions.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, DAMAGE_PROVIDERS, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 
@@ -613,7 +614,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
   // Warpath (War T4): after buffed damage, the caster may carry the buffs to a recipient.
   if (attacker && buffs.length) {
     for (const caster of [...new Set(buffs.map(b => b.caster))].map(u => fromU(u)).filter(Boolean)) {
-      if (tier(caster, ids.war) < 4) continue;
+      if (tier(caster, ids.war) < 4 || isDeclined(caster, "warpath")) continue;
       const modes = [...new Set(buffs.filter(b => b.caster === caster.uuid && b.mode).map(b => b.mode))];
       if (!modes.length) continue;
       const power = buffs.find(b => b.caster === caster.uuid)?.power ?? 1;

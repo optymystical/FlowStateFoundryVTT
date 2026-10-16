@@ -25,6 +25,7 @@ import * as ab from "./abilities.mjs";
 import * as areas from "./areas.mjs";
 import * as R from "./mental-rules.mjs";
 import { tierOf } from "./skills.mjs";
+import { isDeclined } from "./reactions.mjs";
 import { damageCategories, WEAPON_TYPES } from "./martial.mjs";
 import { poolFormula, resolveAttack, DAMAGE_TYPES, applyStacks } from "./rules.mjs";
 
@@ -549,7 +550,7 @@ export async function landManifest({ attacker, target, o, m, mode, result, stack
   // Tenets pop up once the card is out (and again next time if they aren't used).
   if (hit && out.tenets?.length) { if (m.forethought) await wonders.forethoughtTenets(c, out.tenets); else setTimeout(() => wonders.offerTenets(c, out.tenets), 0); }
   const html = `<div class="fs-result"><i class="fa-solid fa-eye"></i> ${out.html}${result.crit ? " <em>(critical)</em>" : ""}${m.alignStacks ? ` <em>(Alignment: ${m.alignStacks > 0 ? "Strengthened" : "Weakened"})</em>` : ""}${tenet ? `<br>${tenet}` : ""}${grow ? `<br>${grow}` : ""}${crits ? `<br>${crits}` : ""}</div>`;
-  if (out.acts.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}: abilities`, body: wonders.actButtons(out.acts), flags: { flowstate: { mentalAct: { acts: out.acts } } } });
+  if (out.acts.length && !isDeclined(attacker, "wonderAbilities")) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}: abilities`, body: wonders.actButtons(out.acts), flags: { flowstate: { mentalAct: { acts: out.acts } } } });
   return { html, push: out.push, rolls: out.rolls, riposte };
 }
 
@@ -605,11 +606,11 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
   if (!result.hit) {
     // Mode-specific follow-ups on a miss (Instinct)
     const missActs = await wonders.missActs({ attacker, target, m, mode, power: m.power, enhanced: m.enhanced, range: m.range, hit: false });
-    if (missActs.length) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}`, body: wonders.actButtons(missActs), flags: { flowstate: { mentalAct: { acts: missActs } } } });
+    if (missActs.length && !isDeclined(attacker, "wonderAbilities")) await post(attacker, { title: `${esc(attacker.name)} — ${esc(mode.name)}`, body: wonders.actButtons(missActs), flags: { flowstate: { mentalAct: { acts: missActs } } } });
     const missAuto = await wonders.missAuto({ attacker, target, m, mode });
     // Chant (Mental T3): once per Manifest, reroll a missed attack roll for the Enhance cost (keeping its Advantage/Disadvantage).
     let extra = "";
-    if (theory(attacker) >= 3 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null) {
+    if (theory(attacker) >= 3 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null && !isDeclined(attacker, "chant")) {
       const cost = minOf(attacker, R.KINDS[R.wonderById(m.wonder).kind].stat);
       const act = { id: "chant", label: "Chant: reroll", tip: "Reroll the missed attack roll once (keeps its Advantage/Disadvantage; this does not Enhance it)", cost: `⚡ ${cost}`, caster: attacker.uuid, target: target.uuid, mode: m.mode, re: { ...reroll, keepNet: true, stacks: o.stacks ?? 0, melee: !!o.melee, msg: attackMessage, index }, m, range: m.range };
       await post(attacker, { title: `${esc(attacker.name)} — Chant`, body: wonders.actButtons([act]), flags: { flowstate: { mentalAct: { acts: [act] } } } });
@@ -860,7 +861,7 @@ const everyActor = () => charges.everyActor();
 async function beforeClear(actor) {
   for (const f of wonders.BEFORE_CLEAR) await f(actor);
   const acts = wonders.perennialActs(actor);
-  if (acts.length) await post(actor, { title: `${esc(actor.name)} — Perennial`, body: wonders.actButtons(acts), flags: { flowstate: { mentalAct: { acts } } } });
+  if (acts.length && !isDeclined(actor, "perennial")) await post(actor, { title: `${esc(actor.name)} — Perennial`, body: wonders.actButtons(acts), flags: { flowstate: { mentalAct: { acts } } } });
   // Reverie: the shielding holds between turns as long as you are still at least 2 in a Dream Alignment as your turn starts (it is kept, so there is nothing to pay).
   const rev = [];
   for (const a of everyActor()) for (const e of spellEffects(a, "shield")) { const d = e.flags.flowstate.spellEffect; if (d.reverie && d.caster === actor.uuid) rev.push(e); }
@@ -932,7 +933,7 @@ export async function dismiss(actor) {
 
 /** Will of Body and Spirit (Mental T5): after a Martial or Magic attack, a Manifest whose Range costs the same AP is free (RP attacks need Burst). */
 async function attackCost(actor, cost) {
-  if (theory(actor) < 5 || !actor.isOwner) return;
+  if (theory(actor) < 5 || !actor.isOwner || isDeclined(actor, "wobs")) return;
   if (!R.knownWonders(trees(actor)).some(w => w.modes.length)) return;
   const n = cost.ap > 0 ? cost.ap : cost.rp;
   if (![1, 2, 3].includes(n)) return;

@@ -726,7 +726,8 @@ function actionGroups(actor, weapons, stats) {
 
   // Reactions: every popup this character can be asked in someone else's turn, each with a switch to skip it (counts as "no").
   const reactionList = reactionRules.reactionRows(actor, { tenet: wonders.tenetOf(actor)?.id?.split(":")[1] ?? "", iconKind: actor.system.icon?.system.profile?.kind ?? "",
-    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, hasUmbral: actions.spellEffects(actor, "umbralCharge").length > 0, ponderance: ponderT, snappence: snapT, tier: w => skills.tierOf(sys.trees, w) });
+    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, hasUmbral: actions.spellEffects(actor, "umbralCharge").length > 0, ponderance: ponderT, snappence: snapT, tier: w => skills.tierOf(sys.trees, w),
+    theory: mTheory, anyWonder: mctx.wonders.length > 0 });
   const reactionRows = reactionList.map(r => ({ label: `${r.label}: ${r.off ? "skipped" : "asked"}`, detail: `${r.tip} ${r.off ? "You are not asked: it counts as no." : "A popup asks you when it comes up."}`,
     cost: r.off ? "Click to ask again" : "Click to skip", action: "martial", op: `reaction:${r.key}`, icon: r.off ? "fa-solid fa-bell-slash" : "fa-solid fa-bell" }));
 

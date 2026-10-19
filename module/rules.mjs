@@ -24,7 +24,7 @@ export const SIZES = {
   4: { maxMove: 100, rations: 2,    physical: 1,  melee: 10, space: "5–10 ft³",  height: 10, terminal: 3 },
   5: { maxMove: 200, rations: 4,    physical: 2,  melee: 20, space: "10–20 ft³", height: 20, terminal: 4 }
 };
-/** A creature's height in feet: the top of its Size's space (a judgment call; the world data can change it per Size). */
+/** A creature's height in feet: the top of its Size's space (the user's ruling; the world data can change it per Size). */
 export const heightFt = size => SIZES[Math.min(5, Math.max(1, Math.round(size || 3)))]?.height ?? 5;
 /** Ch10: downward Force of at least the creature's height in feet knocks it prone, as well as the damage. */
 export const downwardProne = (feet, size) => Math.floor(Number(feet) || 0) >= heightFt(size);

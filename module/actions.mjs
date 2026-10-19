@@ -4073,7 +4073,15 @@ async function seaKnockback(message, info, attacker, target) {
     dir = { x: d.x / len, y: d.y / len };
   }
   const flight = feet > 0 ? await flyThrown(target, dir, feet, { source: info.sea ? `sea:${info.sea}` : null }) : null;
-  const body = flight ? await flightHTML(target, flight, feet) : `<div class="fs-notes">${esc(target.name)} is already beside ${esc((other ?? attacker).name)}.</div>`;
+  let body = flight ? await flightHTML(target, flight, feet) : `<div class="fs-notes">${esc(target.name)} is already beside ${esc((other ?? attacker).name)}.</div>`;
+  // Riptide: a move that causes Force damage (a wall, a barrier) deals more (Power d6, scaled by the Manifest's stacks).
+  const xf = info.extraForce;
+  if (xf && flight && (flight.totalDamage ?? 0) > 0) {
+    const r = await evaluate(`${xf.dice}d${xf.sides}`);
+    const n = Math.floor(applyStacks(r.total, xf.bstacks ?? 0));
+    body += `<div class="fs-result">${esc(info.label ?? "Riptide")}: ${xf.dice}d${xf.sides} = ${r.total}${n !== r.total ? ` → ${n}` : ""} more Force damage.</div>${damageOutcomeHTML(target, n, "physical", await damageOutcome(target, n, "physical"))}`;
+    await requestDamage(target, n, "physical", 0, null, { silent: true });
+  }
   await post(attacker, { title: `${esc(info.label ?? "Sea")} — ${esc(target.name)}`, body, flags: { flowstate: { knockbackOf: message.id } } });
 }
 

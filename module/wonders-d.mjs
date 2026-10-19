@@ -22,6 +22,8 @@ import { mental, bold, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, TURN_START,
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 export const EARTH = "mental-earth-dream", SEA = "mental-sea-nightmare";
+/** Sea's moves and Drown's threshold: fixed feet (the doc no longer bolds them, so Power and stacks don't change them). */
+export const SEA_MOVE_FT = 5, DROWN_FT = 10;
 const ACCRETION = `${EARTH}:accretion`, UNDERTOW = `${SEA}:undertow`, RIPTIDE = `${SEA}:riptide`, DROWN = `${SEA}:drown`;
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
 const minOf = (a, k) => ab.statMinOf(a, k);
@@ -166,7 +168,7 @@ ACT_PROVIDERS.push(async c => {
   if (!tn || c.m.spread || c.now) return [];
   const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0, mult: tn.mult };
   if (tn.id === `${EARTH}:adamant`) return [{ tenet: true, id: "adamant", label: "Adamant", tip: `Once per round: lower the target's or your own Pain Threshold by ${bold(base.bstacks, 10 * tn.mult)} until your next turn`, cost: "once per round", ...base }];
-  if (tn.id === `${SEA}:surge`) return [{ tenet: true, id: "surge", label: "Surge", tip: `Once per round: move the target up to ${bold(base.bstacks, tn.mult)} ft in a direction of your choosing (ignores Force and Lift)`, cost: "once per round", ...base }];
+  if (tn.id === `${SEA}:surge`) return [{ tenet: true, id: "surge", label: "Surge", tip: `Once per round: move the target up to ${SEA_MOVE_FT} ft horizontally in a direction of your choosing (ignores Force and Lift)`, cost: "once per round", ...base }];
   return [];
 });
 
@@ -209,7 +211,7 @@ TURN_START.push(async actor => {
 ACTS.surge = async (x, caster, target) => {
   if (!target) return false;
   if (!(await tryOnce(caster, "surge"))) { ui.notifications.info("Surge: already used this round."); return false; }
-  await seaPush(caster, target, bold(x.bstacks ?? 0, x.mult ?? 1), "Surge");
+  await seaPush(caster, target, SEA_MOVE_FT, "Surge");
   return true;
 };
 
@@ -253,18 +255,18 @@ export async function voluntaryMove(actor) {
 
 /** Shoal (Sea T4): damage and health loss from your Sea Modes are Strengthened against a prone target (not Force damage). */
 const shoalOn = (caster, target) => !!caster && tier(caster, SEA) >= 4 && !!target?.statuses?.has("prone");
-const currentFt = (power, bs) => bold(bs ?? 0, 1.5 * (power ?? 1));
+const currentFt = () => SEA_MOVE_FT;
 
 /** Current (Sea T2): offered on the card whenever a creature takes damage or loses health from one of your Sea Modes. */
 function currentActs(caster, target, d) {
   if (!caster || tier(caster, SEA) < 2 || !live(target) || isDeclined(caster, "current")) return [];
-  return [{ id: "current", label: `Current on ${target.name}`, tip: `Move them up to ${currentFt(d.power, d.bstacks)} ft in a direction of your choosing (ignores Force and Lift)`, cost: `⚡ ${minOf(caster, "snap")}`,
+  return [{ id: "current", label: `Current on ${target.name}`, tip: `Move them up to ${currentFt()} ft in a direction of your choosing (ignores Force and Lift)`, cost: `⚡ ${minOf(caster, "snap")}`,
     caster: caster.uuid, target: target.uuid, power: d.power ?? 1, bstacks: d.bstacks ?? 0 }];
 }
 ACTS.current = async (x, caster, target) => {
   if (!target) return false;
   if (!(await mental.pay(caster, { energy: minOf(caster, "snap") }, "Current"))) return false;
-  await seaPush(caster, target, currentFt(x.power, x.bstacks), "Current");
+  await seaPush(caster, target, currentFt(), "Current");
   return true;
 };
 
@@ -303,17 +305,19 @@ async function undertowTrigger(actor, source = null) {
 /* -------------------------------------------- */
 
 /**
- * Riptide: on a hit the target can be moved up to 2 ft × Power toward or away from a point you choose. Enhanced with a second target (the Manifest's targets
+ * Riptide: on a hit the target can be moved up to 5 ft toward or away from a point you choose; if the move causes Force damage (a wall), it deals Power d6 more
+ * (scaled by the Manifest's stacks). Enhanced with a second target (the Manifest's targets
  * in the order they were picked): the first is pulled toward the second, and the second (if it's hit too) toward the first.
  */
 MODES[RIPTIDE] = async c => {
   if (!live(c.target)) return `<strong>Riptide</strong> needs a creature.`;
-  const feet = bold(c.bs, 2 * c.power);
+  const feet = SEA_MOVE_FT;
   const others = c.enhanced ? (c.m.targets ?? []).filter(u => u !== c.target.uuid) : [];
   const other = others.length ? fromU(others[0]) : null;
-  const push = { attacker: c.attacker.uuid, target: c.target.uuid, force: 0, feet, label: "Riptide", sea: c.attacker.uuid, upTo: true, ...(other ? { toward: other.uuid } : {}) };
+  const push = { attacker: c.attacker.uuid, target: c.target.uuid, force: 0, feet, label: "Riptide", sea: c.attacker.uuid, upTo: true, ...(other ? { toward: other.uuid } : {}),
+    extraForce: { dice: c.power, sides: 6, bstacks: c.bs ?? 0 } };          // "deals 1d6 more Force damage" if the move causes any
   const html = other ? `<strong>${esc(c.target.name)}</strong> is pulled up to <strong>${feet} ft</strong> toward ${esc(other.name)} (ignores Force and Lift).`
-    : `<strong>${esc(c.target.name)}</strong> can be moved up to <strong>${feet} ft</strong> toward or away from a point of your choosing (ignores Force and Lift).`;
+    : `<strong>${esc(c.target.name)}</strong> can be moved up to <strong>${feet} ft</strong> toward or away from a point of your choosing (ignores Force and Lift; if it causes Force damage, ${c.power}d6 more).`;
   return { html: `${html}${knockbackRow(c.attacker.uuid, feet, "Riptide")}`, push };
 };
 
@@ -337,7 +341,7 @@ MODES[DROWN] = async c => {
   const t = c.target, caster = c.attacker;
   if (!live(t)) return `<strong>Drown</strong> needs a creature.`;
   await setStatus(t, "prone", true);
-  const need = bold(c.bs, 4 * c.power);
+  const need = DROWN_FT;
   const moved = forcedSince(t, Number(caster.getFlag?.("flowstate", "turnStartedAt")) || 0);
   let html = `<strong>${esc(t.name)}</strong> is knocked prone as water fills their lungs.`;
   if (moved >= need) {

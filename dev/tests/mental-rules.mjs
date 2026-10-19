@@ -73,7 +73,7 @@ console.log("== Text scaling");
 ok(M.scaleMentalText("they get 20 temp HP. Herald: apply 10d8 Force", 3) === "they get 60 temp HP. Herald: apply 30d8 Force", "Dice counts and temp HP scale with Wonder Power");
 ok(M.scaleMentalText("2d10 health", 1) === "2d10 health", "Power 1 leaves it as printed");
 ok(M.scaleSpans("The next time the target spends energy, it spends 3 more.", ["3", "more"], 4) === "The next time the target spends energy, it spends 12 more." && M.scaleSpans("Loses 10 Temp HP, and an object loses 10 Durability.", ["10 Temp HP", "10 Durability"], 2) === "Loses 20 Temp HP, and an object loses 20 Durability.", "A table row's bolded values scale in order");
-ok(M.scaleMentalText("move them up to 1.5ft (rounded down)", 3, "Current") === "move them up to 4.5ft (rounded down)", "Decimals scale too (Current: 1.5 ft × 3)");
+ok(M.scaleSpans("move them up to 1.5ft (rounded down)", ["up to 1.5ft"], 3) === "move them up to 4.5ft (rounded down)", "Decimals scale too (1.5 ft × 3)");
 ok(M.scaleMentalText("Its dodge rolls have their die size reduced by 0.5 (this reduction is rounded up).", 3, "Eclipse").includes("reduced by 1.5"), "…and Eclipse's 0.5 die size");
 console.log(fails ? `\n${fails} FAILED` : "\nAll Mental rules checks passed");
 if (fails) process.exit(1);

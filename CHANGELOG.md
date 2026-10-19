@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.66.0:** **Sea update (the Mental doc).** Surge (horizontally), Current and Riptide now move up to 5 ft, fixed (they no longer scale with Power); Drown needs 10 ft of forced movement. Riptide's move deals Power d6 more Force damage when it causes Force damage (into a wall or a barrier).
+
 **0.65.13:** **Fixed: free stat points from GM edits.** A character's unspent stat points are now worked out as 3 per Skill Point (plus the carried remainder) less what's in their stats, instead of a separate count. Lowering a stat frees points, raising one uses them, and lowering then raising no longer leaves extra points behind. To take points away for good, lower Skill Points. New characters start with any leftover (stat points not a multiple of 3) carried.
 
 **0.65.12:** **Fixed: combat ending ended Concentrations.** Clearing a creature's effects when combat ends now leaves the effects its Concentrations keep going (Trance, Premeditate, an Enhanced Drown), so the Concentration carries on.

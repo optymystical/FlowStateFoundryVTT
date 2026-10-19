@@ -187,17 +187,10 @@ export const BOLD = {
  "Undertow": [
   "1d8 physical damage"
  ],
- "Surge": [
-  "1ft"
- ],
- "Current": [
-  "up to 1.5ft"
- ],
  "Riptide": [
-  "2ft"
+  "deals 1d6 more Force damage"
  ],
  "Drown": [
-  "at least 4ft",
   "lose 2d8 health"
  ],
  "Wager": [

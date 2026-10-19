@@ -554,15 +554,15 @@
 **Tier 1: You gain the following Mode and Tenet:**
 
 - **Undertow:** On hit, the target is engulfed in flowing water until the start of your next turn. Whenever they spend AP to move, or the target is forcefully moved by something other than your own Sea effects, it takes **1d8 physical damage**. **Enhanced:** This Mode’s damage is cold instead of physical, and removes energy from the target equal to the direct damage dealt.   
-- **Surge:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can forcefully move the target **up to** **1ft** in a direction of your choosing, ignoring Force and Lift. 
+- **Surge:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can forcefully move the target up to 5ft horizontally in a direction of your choosing, ignoring Force and Lift. 
 
 **Tier 2: You gain the following ability:**
 
-- **Current: Cost: *Energy equal to your SNA min.*** Whenever a creature takes damage or loses health from one of your Sea Modes, you can use this ability to move them **up to 1.5ft** (rounded down) in a direction of your choosing.
+- **Current: Cost: *Energy equal to your SNA min.*** Whenever a creature takes damage or loses health from one of your Sea Modes, you can use this ability to forcefully move them up to 5ft in a direction of your choosing.
 
 **Tier 3: You gain the following Mode:**
 
-- **Riptide:** On hit, the target is forcefully moved **up to** **2ft** toward or away from a point of your choosing within the used range, ignoring Force and Lift. **Enhanced:** Target an additional creature; the original target is pulled toward it, and if the additional target is also hit it is pulled the same distance toward the original. A creature cannot take Force Damage from both pulls of the same Manifest. 
+- **Riptide:** On hit, the target is forcefully moved up to 5ft toward or away from a point of your choosing within the used range, ignoring Force and Lift. If this movement causes Force damage, it **deals 1d6 more Force damage**. **Enhanced:** Target an additional creature; the original target is pulled toward it, and if the additional target is also hit it is pulled the same distance toward the original. A creature cannot take Force Damage from both pulls of the same Manifest. 
 
 **Tier 4: You gain the following passive:**
 
@@ -570,7 +570,7 @@
 
 **Tier 5: You gain the following Mode:**
 
-- **Drown:** Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved **at least 4ft** (downward movement does not count) during your current turn they **lose 2d8 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). **Enhanced:** You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they lose that health again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit. 
+- **Drown:** Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved at least 10ft (downward movement does not count) during your current turn they **lose 2d8 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). **Enhanced:** You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they lose that health again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit. 
 
 # **Mental T4 Skill Trees** {#mental-t4-skill-trees}
 

@@ -9,6 +9,7 @@ import * as terrain from "./terrain.mjs";
 import { register as registerMovement } from "./movement.mjs";
 import { register as registerPrompts } from "./prompts.mjs";
 import { registerCurrencySettings, register as registerCurrency } from "./currency.mjs";
+import { registerWorldData } from "./world-data.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
 import "./arcana.mjs";
@@ -173,6 +174,8 @@ class FlowStateCombat extends Combat {
 /* -------------------------------------------- */
 
 Hooks.once("init", () => {
+  // The world's own changes to the game's data go on first, before anything reads the tables.
+  registerWorldData();
   game.flowstate = { rules, martial, actions };
 
   CONFIG.Actor.documentClass = FlowStateActor;

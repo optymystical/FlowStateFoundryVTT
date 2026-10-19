@@ -126,7 +126,7 @@ const formValues = form => {
 };
 const select = (name, options, value) => `<select name="${name}">${options.map(([k, label]) => `<option value="${k}" ${String(value) === String(k) ? "selected" : ""}>${esc(label)}</option>`).join("")}</select>`;
 const field = (label, html) => `<div class="fs-field"><label>${esc(label)}</label>${html}</div>`;
-const WEAPON_CHOICES = Object.entries(WEAPON_TYPES).filter(([k]) => k !== "unarmed" && k !== "improvised").map(([k, w]) => [k, w.label]);
+const weaponChoices = () => Object.entries(WEAPON_TYPES).filter(([k, w]) => k !== "unarmed" && k !== "improvised" && !w.hidden).map(([k, w]) => [k, w.label]);
 
 /** The rarities a Make can use, and the equipment materials of that rarity for a weight. */
 function makeMaterials(kind, weight, rarities) {
@@ -140,10 +140,10 @@ function itemRowHTML(i, spec, rarities, complexity) {
   const weights = kind === "armor" ? Object.keys(ARMOR_WEIGHTS) : Object.keys(WEIGHTS);
   const weight = weights.includes(it.weight) ? it.weight : weights[0];
   const mats = makeMaterials(kind, weight, rarities);
-  const extra = Array.from({ length: complexity }, (_, k) => field(`Extra type ${k + 1}`, select(`i${i}x${k}`, [["", "—"], ...WEAPON_CHOICES], it.extra?.[k] ?? "")));
+  const extra = Array.from({ length: complexity }, (_, k) => field(`Extra type ${k + 1}`, select(`i${i}x${k}`, [["", "—"], ...weaponChoices()], it.extra?.[k] ?? "")));
   return `<fieldset><legend>Object ${i + 1}</legend>
     ${field("What", select(`i${i}kind`, [["weapon", "Weapon (Archetypal)"], ["armor", "Armor (Archetypal)"], ["object", "Other object (Non-Archetypal)"]], kind))}
-    ${field("Weapon type", select(`i${i}type`, WEAPON_CHOICES, it.type ?? "bladed"))}
+    ${field("Weapon type", select(`i${i}type`, weaponChoices(), it.type ?? "bladed"))}
     ${field("Weight", select(`i${i}weight`, weights.map(w => [w, cap(w)]), weight))}
     ${field("Material", select(`i${i}material`, mats, it.material ?? mats[0]?.[0]))}
     ${field("Object (name, material, shape)", `<input type="text" name="i${i}name" value="${esc(it.name ?? "")}">`)}
@@ -210,7 +210,7 @@ function dialogHTML(ctx, spec) {
     if (!cj.instant) out.push(field(`Body of material (at least ${ctx.bodyMin})`, `<input type="number" name="body" value="${spec.body ?? ctx.bodyMin}" min="${ctx.bodyMin}">`));
   }
   if (cj.kind === "summon") for (const [i, t] of ctx.arms.entries()) {
-    out.push(`<fieldset><legend>Arm ${i + 1} (${t === 2 ? "both arms, one weapon" : "one arm"})</legend>${field("Weapon type", select(`arm${i}type`, WEAPON_CHOICES, spec.arms?.[i]?.type ?? "bladed"))}${field("Weight", select(`arm${i}weight`, [["light", "Light"], ["heavy", "Heavy"]], spec.arms?.[i]?.weight ?? "light"))}</fieldset>`);
+    out.push(`<fieldset><legend>Arm ${i + 1} (${t === 2 ? "both arms, one weapon" : "one arm"})</legend>${field("Weapon type", select(`arm${i}type`, weaponChoices(), spec.arms?.[i]?.type ?? "bladed"))}${field("Weight", select(`arm${i}weight`, [["light", "Light"], ["heavy", "Heavy"]], spec.arms?.[i]?.weight ?? "light"))}</fieldset>`);
   }
   if (cj.kind === "make") for (let i = 0; i < 1 + ctx.armory; i++) out.push(itemRowHTML(i, spec, ctx.rarities, ctx.complexity));
   if (cj.make && cj.kind !== "make") out.push(itemRowHTML(0, { items: spec.items }, ctx.rarities, ctx.complexity));

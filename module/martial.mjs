@@ -5,50 +5,55 @@
 
 export const RARITIES = { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" };
 
-const TAGS = {
-  broad: "Broad", cleave: "Cleave", knockback: "Knockback", fast: "Fast", pierce: "Pierce",
-  farstrike: "Farstrike", solitary: "Solitary", bash: "Bash", area: "Area", pepper: "Pepper"
-};
-
-/** Tag rules text from "Flow State - Equipment" (Melee Tags, Ranged Tags). */
-const TAG_DESCRIPTIONS = {
+/** Weapon tags: name and rules text from "Flow State - Equipment" (Melee Tags, Ranged Tags). `base` is the tag, `plus` what its "+" version changes. */
+export const WEAPON_TAGS = {
   broad: {
+    label: "Broad",
     base: "This Weapon's Durability and Limit are twice as high as they normally would be.",
     plus: "Durability and Limit are three times as high instead."
   },
   cleave: {
+    label: "Cleave",
     base: "This weapon deals additional damage equal to your Scaling Stat Min against objects only (armor, a parrying weapon, an aimed-at item), applied before normal damage and using up their Limit first.",
     plus: "Deals additional object damage equal to your Scaling Stat instead."
   },
   knockback: {
+    label: "Knockback",
     base: "Any hit on a target with this Weapon can impart Force to them up to 5× your Scaling Stat in the direction of your attack.",
     plus: "Adds another 5× Scaling Stat in Force (additive: base 5×, +5× Knockback+, +5× two-handed)."
   },
   fast: {
+    label: "Fast",
     base: "When you make an attack with a Fast Weapon, you may make another attack at no AP/RP cost with a different held Weapon that has the Fast tag. The extra attack has disadvantage on its attack roll. Triggers once per AP/RP attack.",
     plus: "The extra attack has no disadvantage."
   },
   pierce: {
+    label: "Pierce",
     base: "This Weapon ignores Limit equal to a quarter of your Scaling Stat.",
     plus: "Ignores Limit equal to half of your Scaling Stat instead."
   },
   farstrike: {
+    label: "Farstrike",
     base: "This Weapon's melee attack range is double your normal melee range.",
     plus: "Quadruple your normal melee range instead."
   },
   solitary: {
+    label: "Solitary",
     base: "Once per attack, when you make an attack with a one-handed Solitary weapon, you may immediately attack again with disadvantage using no AP/RP. Can't be done at the same time as a Fast attack.",
     plus: "The extra attack has no disadvantage."
   },
   bash: {
+    label: "Bash",
     base: "When attacking through an object with Limit ≤ a quarter of your Scaling Stat, ignore its Limit and add that Limit as extra damage. Once per attack; no effect when targeting something directly.",
     plus: "Works on Limit up to half of your Scaling Stat."
   },
   area: {
+    label: "Area",
     base: "Attacks can instead be Area attacks: all targets within 5 ft of a position up to half the Weapon's range away. Area damage rolls are Weakened.",
     plus: "All targets within 10 ft, and the position can be up to the Weapon's full range away."
   },
   pepper: {
+    label: "Pepper",
     base: "Fire an additional shot at the same target: roll the attack with a disadvantage, and on hit both shots hit. On-attack effects trigger once; on-hit effects trigger per shot.",
     plus: "Up to 2 bonus shots per attack, each adding a disadvantage."
   }
@@ -57,8 +62,8 @@ const TAG_DESCRIPTIONS = {
 /** Tags as [{key, label, tooltip}] for display. */
 export function describeTags(tags = {}) {
   return Object.entries(tags).map(([key, v]) => {
-    const d = TAG_DESCRIPTIONS[key];
-    const label = `${TAGS[key] ?? key}${v === 2 ? "+" : ""}`;
+    const d = WEAPON_TAGS[key];
+    const label = `${d?.label ?? key}${v === 2 ? "+" : ""}`;
     const tooltip = d ? (v === 2 ? `${d.base} ${label}: ${d.plus}` : d.base) : "";
     return { key, label, tooltip };
   });
@@ -96,7 +101,8 @@ export const WEAPON_TYPES = {
 };
 
 export const WEIGHTS = { light: { label: "Light", stat: "dex", ap: 2 }, heavy: { label: "Heavy", stat: "str", ap: 3 } };
-const RELOAD_RP = { fast: 1, average: 2, slow: 3 };
+/** RP to reload, by a ranged weapon's reload speed. */
+export const RELOAD_RP = { fast: 1, average: 2, slow: 3 };
 export const THROW = {
   bad:     { label: "Bad",     range: 50,  net: -1 },
   average: { label: "Average", range: 100, net: 0 },

@@ -319,6 +319,14 @@
 .fs-currency-config .fs-currency-body { padding: 8px; }
 .fs-currency-config td img { border: none; }
 .fs-currency-config input[type="text"], .fs-currency-config select { width: 100%; }
+.fs-world-data .fs-world-data-body { padding: 8px; display: flex; flex-direction: column; gap: 6px; height: 100%; }
+.fs-world-data .fs-wd-buttons { display: flex; gap: 6px; }
+.fs-world-data .fs-wd-groups { overflow-y: auto; flex: 1; }
+.fs-world-data .fs-wd-groups h3 { margin: 8px 0 2px; border-bottom: 1px solid var(--color-border-light-primary, #999); }
+.fs-world-data .fs-wd-table { width: 100%; margin: 0; }
+.fs-world-data .fs-wd-table th:not(:first-child), .fs-world-data .fs-wd-table td:not(:first-child) { text-align: center; width: 64px; }
+.fs-world-data .fs-wd-table tr.changed td { font-weight: bold; }
+.fs-world-data .fs-wd-lock { opacity: 0.5; font-size: 0.8em; }
 
 /* Free movement left, in the combat tracker */
 .fs-tracker-points .fs-move-left { cursor: help; }

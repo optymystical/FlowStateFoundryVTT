@@ -67,6 +67,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `module/areas.mjs` — Area spells: shapes, pure geometry, template placement, Emplace card.
 - `module/casting.mjs` — the Cast Spell dialog, paying AP/RP/Energy, the cast card, Rituals. Design decisions are in `dev/MAGIC_DESIGN.md`.
 - `module/movement-rules.mjs` (pure) + `module/movement.mjs`: movement cost in combat (a step is paid only when you move past it or an action settles it; forced/free moves are excluded). `module/terrain.mjs`: terrain regions (scene-control buttons, Muddy/Harden). `module/currency-rules.mjs` + `module/currency.mjs`: the world's currency list and the sheet section. `module/tree-scale.mjs`: scaled numbers in skill-tree text.
+- `module/store.mjs` (pure) — the world data store: every table of game data is a collection; the system's values are the defaults and a world layers patches, new entries and hidden marks on top (`applyWorldData` resets and re-layers the live tables in place). `module/store-catalog.mjs` (pure) registers the collections (what's addable, required fields, rebuild hooks). `module/world-data.mjs` — the `worldData` world setting (applied first thing in init, and on change on every client) and the GM's World data window (export/import/clear).
 - `module/data.mjs` — TypeDataModels (actor, weapon, armor, foci, shroud, gear, pile) and derived data.
 - `module/rules.mjs` — core rules math (stats, sizes, stacks, rolls, Force). `skills.mjs` + `trees.mjs` — skill trees
   (`trees.mjs` is GENERATED from the docs; don't hand-edit).
@@ -99,7 +100,8 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - Regenerate skill trees after Martial/Magic doc changes: export the docs to `dev/docs/martial.md` and `magic.md`,
   then `cd dev && npm run trees` (Mental too: export the Mental Rework Test Ground to `dev/docs/mental.md`; the generator leaves out trees with no entries yet). After Combo Spell List changes: export it to `dev/docs/combos.md`, then `npm run combos`
   (generates `module/combos.mjs`; don't hand-edit).
-- Keep Foundry globals out of `abilities.mjs`, `martial.mjs`, `magic.mjs`, `rules.mjs`, `creation.mjs` (they're unit-tested).
+- **New game data goes in the store:** a new table of game data (equipment, statuses, anything a GM might want to change or the Codex should show) is defined in `store-catalog.mjs`. Never copy a table at load (`const X = Object.keys(TABLE)` at module scope): read it at call time, or keep the derived value in a list rebuilt by the collection's `rebuild`. Entries may carry `hidden: true` (pickers should leave those out).
+- Keep Foundry globals out of `store.mjs`, `store-catalog.mjs`, `abilities.mjs`, `martial.mjs`, `magic.mjs`, `rules.mjs`, `creation.mjs` (they're unit-tested).
 - Commit with clear messages; the user may test from `main`.
 - The user has granted standing permission to open pull requests for this project (done through the GitHub MCP tools, not the `gh` CLI). Open a PR when a branch has no open one; pushing to a branch with an open PR just updates it.
 

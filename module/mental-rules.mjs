@@ -59,7 +59,10 @@ function parseWonder(tree) {
   return out;
 }
 
-export const WONDERS = TREES.map(parseWonder).filter(Boolean);
+/** Every Wonder, parsed from the skill trees (rebuilt when the trees change: a world's own edits). */
+export const WONDERS = [];
+export function rebuildWonders() { WONDERS.length = 0; WONDERS.push(...TREES.map(parseWonder).filter(Boolean)); }
+rebuildWonders();
 export const wonderById = id => WONDERS.find(w => w.id === id) ?? null;
 export const modeById = id => WONDERS.flatMap(w => w.modes).find(m => m.id === id) ?? null;
 
@@ -228,7 +231,9 @@ export const FORMS = {
   zealot: f("Zealot", "nightmare", "rare", "When you would take damage, spend 1 RP to negate up to 6 of that damage so long as you are at 2+ Nightmare Alignment, providing 4 negation otherwise. Can be used multiple times per damage instance.", "If you are at 4+ Nightmare Alignment, the incoming damage is Weakened on crit (only applies once per damage instance).", { kind: "negate", amount: 6, other: 4, enhanced: 6, needs: "deepNightmare" }),
   echo: f("Echo", "nightmare", "very rare", "When you would take damage, spend 1 RP to negate up to 3 of that damage. Can be used multiple times per damage instance. If this fully negates the attack, this effect is now applied for free to all instances of damage you would take until the start of your next turn. This effect stacks.", "Instead provides 6 negation.", { kind: "negate", amount: 3, enhanced: 6, echo: true })
 };
-export const FORM_KEYS = Object.keys(FORMS);
+export const FORM_KEYS = [];
+export function rebuildFormKeys() { FORM_KEYS.length = 0; FORM_KEYS.push(...Object.keys(FORMS)); }
+rebuildFormKeys();
 export const formGroups = () => Object.entries(KINDS).map(([k, v]) => ({ label: `${v.label} Forms`, options: Object.fromEntries(Object.entries(FORMS).filter(([, x]) => x.align === k).map(([id, x]) => [id, `${x.name} (${x.rarity})`])) }));
 
 /** Stat that affects an Icon: scaled per 10, limited by Grade (10 per Grade). Always at least ×1. */

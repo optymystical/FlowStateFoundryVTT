@@ -1,0 +1,27 @@
+<section class="fs-world-data-body">
+  <p class="hint">The game's data comes from the system (the design docs). A world can change it on top: edit an entry's numbers or text, add entries,
+    or hide ones it doesn't use. Unchanged entries keep following the system, so its updates still arrive. Editing comes in a later version; for now
+    you can export, import and clear.</p>
+  <div class="fs-wd-buttons">
+    <button type="button" data-action="exportData"><i class="fa-solid fa-file-export"></i> Export</button>
+    <button type="button" data-action="importData"><i class="fa-solid fa-file-import"></i> Import</button>
+    <button type="button" data-action="resetData" {{#if empty}}disabled{{/if}}><i class="fa-solid fa-rotate-left"></i> Clear</button>
+  </div>
+  <p class="fs-wd-status">{{#if empty}}This world uses the system's data unchanged.{{else}}This world has changed {{changed}} table{{#unless (eq changed 1)}}s{{/unless}}.{{/if}}</p>
+  <div class="fs-wd-groups">
+    {{#each groups}}
+    <h3>{{label}}</h3>
+    <table class="fs-wd-table">
+      <thead><tr><th>Table</th><th>Entries</th><th>Edited</th><th>Added</th><th>Hidden</th></tr></thead>
+      <tbody>
+        {{#each rows}}
+        <tr class="{{#if changed}}changed{{/if}}">
+          <td>{{label}}{{#unless addable}} <i class="fa-solid fa-lock fs-wd-lock" data-tooltip="The engine works with these by name: their values can change, but nothing can be added."></i>{{/unless}}</td>
+          <td>{{total}}</td><td>{{#if edited}}{{edited}}{{else}}–{{/if}}</td><td>{{#if added}}{{added}}{{else}}–{{/if}}</td><td>{{#if hidden}}{{hidden}}{{else}}–{{/if}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    {{/each}}
+  </div>
+</section>

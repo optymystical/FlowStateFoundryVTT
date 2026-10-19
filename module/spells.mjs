@@ -36,15 +36,17 @@ function parseSpellEntry(entry, tree, tier) {
 }
 
 /** Every Core Spell and Spell Mod in the Magic trees (Theory included, for its Universal Mods). */
-export const CATALOG = (() => {
-  const out = [];
+export const CATALOG = [];
+/** (Re)build the catalog from the trees (again when a world's own edits change them). */
+export function rebuildCatalog() {
+  CATALOG.length = 0;
   for (const tree of TREES.filter(t => t.archetype === "magic"))
     for (const t of tree.tiers) for (const e of t.entries) {
       const rec = parseSpellEntry(e, tree, t.tier);
-      if (rec) out.push(rec);
+      if (rec) CATALOG.push(rec);
     }
-  return out;
-})();
+}
+rebuildCatalog();
 export const spellById = id => CATALOG.find(s => s.id === id) ?? null;
 
 /** The Core Spells and Mods a character knows (tree unlocked and tier reached). */

@@ -3,7 +3,7 @@
  * Foci: Durability/Limit = base × Grade. Power scales with the casting form's stat (Grasp / Reach / the lesser), Grade-capped.
  * Shrouds: Durability/Limit = base × floor(Build capped at Grade × 10 ÷ 10), minimum ×1 (like armor with Con).
  */
-import { armorMultiplier, cappedStat, DAMAGE_CATEGORY } from "./martial.mjs";
+import { armorMultiplier, cappedStat, DAMAGE_CATEGORY, RARITIES } from "./martial.mjs";
 
 export const CASTING_FORMS = {
   igniter: { label: "Igniter", stat: "grasp", ap: "2", tr: 1, text: "Grasp · 2 AP to cast · 1 Threshold Reduction" },
@@ -78,7 +78,8 @@ export const AFFIXES = {
   coloredDiamond: af("Colored Diamond", "veryRare", "At the start of each of your turns, declare a spell name. Any damage you would deal with that spell this turn is Strengthened, and any attack rolls for that spell have advantage.", "At the start of each of your turns, declare a source type that can deal damage (such as Bladed Weapons or Heat Spells). For that turn, damage your Shroud would take from the named source is Weakened, and attacks from that source against you have disadvantage.")
 };
 
-export const AFFIX_RARITIES = { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" };
+/** The same rarities as everything else (one table, so a renamed rarity reads the same everywhere). */
+export const AFFIX_RARITIES = RARITIES;
 export const ELEMENTS = { heat: "Heat", cold: "Cold", acid: "Acid", radiation: "Radiation" };
 
 /** Affixes are attuned on their own, to their Offensive (Foci, spells) or Defensive (Shroud) form. */

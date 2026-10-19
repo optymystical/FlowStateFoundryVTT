@@ -29,7 +29,7 @@ Put the folder `flowstate/` in `{Foundry User Data}/Data/systems/`, restart Foun
 - Works on square, hex and gridless scenes.
 
 ## Settings
-Per player: attacker/defender card colors. World: custom Strengthened/Weakened and Advantage/Disadvantage fields, roll damage automatically, movement cost, range and ammo enforcement, Ignite Spread, starting budgets for characters, and optional sheet fields.
+Per player: attacker/defender card colors. World: custom Strengthened/Weakened and Advantage/Disadvantage fields, roll damage automatically, movement cost, range and ammo enforcement, world data (export, import or clear a world's own changes to the game's data), Ignite Spread, starting budgets for characters, and optional sheet fields.
 
 ## Optional modules
 **Carousel Combat Tracker** works as is. **Token Action HUD** (install Core) mirrors the Action List with no extra system module.

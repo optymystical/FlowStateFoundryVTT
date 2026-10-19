@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.70.2:** Fixed: the Journal sidebar's Codex button spans the full width (like the Forge's), instead of sitting small at the top.
+
 **0.70.1:** **Force (the Rules doc).** Downward Force knocks a creature prone only when it's at least the creature's height (Sizes 1–5: 1, 3, 5, 10, 20 ft; shown on the Size pages in the Codex): being driven into the ground, a grapple slammed down, and a damaging fall landing (Gravity is downward Force) all check it. Forced movement (Sea's moves, the Fortune Table) already skipped Lift and half Max HP, with walls turning the feet left into Force damage; that's now written down as the doc's rule.
 
 **0.70.0:** **The Codex.** A window everyone can open with every element of the game as a page (over 1,400): the Rules and Equipment docs chapter by chapter, stats, Sizes, damage types and conditions, every skill tree and every ability, spell, Mod and Mode, the Combo spells, the Wonders, weapon types, tags, materials, armor, Foci, Shrouds, Affixes, Icon Forms, items and statuses, all linked to each other and built from this world's data (its edits show; what it hides stays hidden from players). Search it, or follow the links now on sheets (tags, skill entries, Action List rows, statuses, an item's catalog line), the wizards and chat cards. Open it from the Journal sidebar, `/codex [search]`, or a sheet's header menu; link to a page from any journal with `@Codex[name]`. The Rules doc snapshot is refreshed from the live doc.

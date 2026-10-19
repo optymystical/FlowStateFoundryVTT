@@ -395,5 +395,5 @@
 .fs-codex-icon { opacity: 0.6; font-size: 0.85em; margin-left: 2px; }
 .fs-codex-icon:hover { opacity: 1; }
 .fs-tag[data-codex] { cursor: pointer; }
-.fs-codex-btn { flex: 0 0 auto; }
+.fs-codex-btn { flex: 0 0 100%; margin-top: 4px; }                         /* its own full-width row, like the Forge's */
 a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-through; }

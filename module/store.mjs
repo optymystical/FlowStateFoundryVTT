@@ -68,16 +68,23 @@ export function merge(base, patch) {
 
 /**
  * Register a table as a collection. `table` is the live object (or array, with `list: true` and its entries' `key` field) the engine reads.
- * `addable`: the world may add entries (new ones need the `required` fields). `nameOf(entry, key)` gives an entry's display name. `rebuild()` runs
- * after the table changes, for anything derived from it.
+ * `addable`: the world may add entries (new ones need the `required` fields, and pass `validate(key, value)` if given: it returns a problem or null).
+ * `nameOf(entry, key)` gives an entry's display name. `rebuild()` runs after the table changes, for anything derived from it.
+ * `derive()`: the collection's system values are worked out from the other tables (the item catalog): they are rebuilt after those tables have the
+ * world's changes, and the world's changes to this collection go on after that.
  */
-export function defineCollection(id, { label, group = "Other", table, list = false, key = "id", addable = false, required = [], nameOf = null, rebuild = null }) {
-  const keys = list ? table.map(e => String(e[key])) : Object.keys(table);
-  const defaults = list ? Object.fromEntries(table.map(e => [String(e[key]), clone(e)])) : clone(table);
-  const c = { id, label, group, table, list, key, addable, required, rebuild, defaults, order: keys, custom: new Set(),
+export function defineCollection(id, { label, group = "Other", table, list = false, key = "id", addable = false, required = [], nameOf = null, rebuild = null, derive = null, validate = null }) {
+  const c = { id, label, group, table, list, key, addable, required, rebuild, derive, validate, defaults: {}, order: [], custom: new Set(),
     nameOf: nameOf ?? ((e, k) => e?.label ?? e?.name ?? (typeof e === "string" ? e : k)) };
+  setDefaults(c, derive ? derive() : table);
   COLLECTIONS.set(id, c);
   return c;
+}
+
+/** Take a collection's system values from `source` (a table as the system has it, or what `derive()` produced). */
+function setDefaults(c, source) {
+  c.order = c.list ? source.map(e => String(e[c.key])) : Object.keys(source);
+  c.defaults = c.list ? Object.fromEntries(source.map(e => [String(e[c.key]), clone(e)])) : clone(source);
 }
 
 /** Put a table back to its system values (in place). */
@@ -101,12 +108,13 @@ const getEntry = (c, key) => (c.list ? c.table.find(e => String(e?.[c.key]) === 
  * Check world data (a setting, or an imported file) before using it: only known collections, safe keys, plain values, and new entries only where
  * they're allowed and complete. Returns { data (cleaned), problems: [text] }.
  */
-export function sanitizeWorldData(raw) {
+export function sanitizeWorldData(raw, { only = null, skip = null } = {}) {
   const problems = [];
   const data = { version: WORLD_DATA_VERSION, collections: {} };
-  if (!isPlain(raw)) return { data, problems: raw == null || (isPlain(raw) && !Object.keys(raw).length) ? [] : ["That isn't Flow State world data."] };
-  if (raw.version && raw.version > WORLD_DATA_VERSION) problems.push(`It was made by a newer version of the system (format ${raw.version}); some of it may not apply.`);
+  if (!isPlain(raw)) return { data, problems: raw == null || only ? [] : ["That isn't Flow State world data."] };
+  if (!only && raw.version && raw.version > WORLD_DATA_VERSION) problems.push(`It was made by a newer version of the system (format ${raw.version}); some of it may not apply.`);
   for (const [id, col] of Object.entries(isPlain(raw.collections) ? raw.collections : {})) {
+    if ((only && !only.has(id)) || skip?.has(id)) continue;
     const c = COLLECTIONS.get(id);
     if (!c) { problems.push(`Unknown collection "${id}" left out.`); continue; }
     if (!isPlain(col)) continue;
@@ -118,6 +126,8 @@ export function sanitizeWorldData(raw) {
       if (!known && isPlain(c.defaults[c.order[0]]) && !isPlain(v)) { problems.push(`${c.label}: "${key}" isn't a valid entry.`); continue; }
       const missing = !known && isPlain(v) ? c.required.filter(f => v[f] === undefined || v[f] === null || v[f] === "") : [];
       if (missing.length) { problems.push(`${c.label}: "${key}" is missing ${missing.join(", ")}.`); continue; }
+      const bad = c.validate?.(key, v, known);
+      if (bad) { problems.push(`${c.label}: "${key}" ${bad}`); continue; }
       out.entries[key] = clone(v);
     }
     out.hidden = (Array.isArray(col.hidden) ? col.hidden : []).map(String).filter(k => c.order.includes(k) || k in out.entries);
@@ -131,10 +141,25 @@ export function sanitizeWorldData(raw) {
  * whatever is derived from the tables is rebuilt. Returns { data, problems }. With nothing (or {}), the tables are simply the system's.
  */
 export function applyWorldData(raw) {
-  const { data, problems } = sanitizeWorldData(raw);
-  for (const c of COLLECTIONS.values()) resetTable(c);
-  for (const [id, col] of Object.entries(data.collections)) {
-    const c = COLLECTIONS.get(id);
+  const all = [...COLLECTIONS.values()], derived = all.filter(c => c.derive), ids = new Set(derived.map(c => c.id));
+  // The tables first, then what is derived from them (worked out again from the tables as the world has them), then the world's changes to that.
+  const first = sanitizeWorldData(raw, { skip: ids }), problems = [...first.problems];
+  layer(all.filter(c => !c.derive), first.data, problems);
+  for (const c of derived) {
+    try { setDefaults(c, c.derive()); } catch (err) { problems.push(`${c.label}: ${err?.message ?? err}`); }
+  }
+  const second = sanitizeWorldData(raw, { only: ids });
+  problems.push(...second.problems);
+  layer(derived, second.data, problems);
+  return { data: { version: WORLD_DATA_VERSION, collections: { ...first.data.collections, ...second.data.collections } }, problems };
+}
+
+/** Reset these collections and layer `data` on them, then rebuild what is derived from them. */
+function layer(cols, data, problems) {
+  for (const c of cols) resetTable(c);
+  for (const c of cols) {
+    const col = data.collections[c.id];
+    if (!col) continue;
     for (const [key, v] of Object.entries(col.entries)) {
       const known = c.order.includes(key);
       putEntry(c, key, known ? merge(c.defaults[key], v) : clone(v));
@@ -142,10 +167,9 @@ export function applyWorldData(raw) {
     }
     for (const key of col.hidden) { const e = getEntry(c, key); if (isPlain(e)) e.hidden = true; }
   }
-  for (const c of COLLECTIONS.values()) {
+  for (const c of cols) {
     try { c.rebuild?.(); } catch (err) { problems.push(`${c.label}: ${err?.message ?? err}`); }
   }
-  return { data, problems };
 }
 
 /** Everything in a collection as it stands: [{ key, name, value, system (a system entry), custom, edited, hidden }]. */

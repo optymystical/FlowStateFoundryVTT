@@ -10,6 +10,8 @@ import { register as registerMovement } from "./movement.mjs";
 import { register as registerPrompts } from "./prompts.mjs";
 import { registerCurrencySettings, register as registerCurrency } from "./currency.mjs";
 import { registerWorldData } from "./world-data.mjs";
+import { register as registerItems, registerItemSettings } from "./items.mjs";
+import { CatalogApp } from "./catalog-app.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
 import "./arcana.mjs";
@@ -176,7 +178,11 @@ class FlowStateCombat extends Combat {
 Hooks.once("init", () => {
   // The world's own changes to the game's data go on first, before anything reads the tables.
   registerWorldData();
-  game.flowstate = { rules, martial, actions };
+  registerItemSettings();
+  registerItems();
+  game.flowstate = { rules, martial, actions, catalog: CatalogApp };
+  // Partials the sheets share (the catalog line on every item sheet).
+  (foundry.applications.handlebars?.loadTemplates ?? globalThis.loadTemplates)?.({ fsItemCatalog: "systems/flowstate/templates/item-catalog.hbs" });
 
   CONFIG.Actor.documentClass = FlowStateActor;
   CONFIG.Combat.documentClass = FlowStateCombat;
@@ -849,28 +855,8 @@ Hooks.once("ready", async () => {
 /*  GM tools: the Forge                         */
 /* -------------------------------------------- */
 
-/** Make a new weapon/armor/foci/shroud/misc item in the "Forge" folder and open its builder. Drag it onto a character to give it. */
-async function openForge() {
-  const type = await foundry.applications.api.DialogV2.wait({
-    window: { title: "Forge" }, rejectClose: false,
-    content: `<p>Build a new item. When it's ready, drag it from the Items sidebar onto a character.</p>`,
-    buttons: [
-      { action: "weapon", label: "Weapon", icon: "fa-solid fa-khanda", default: true },
-      { action: "armor", label: "Armor", icon: "fa-solid fa-shirt" },
-      { action: "foci", label: "Foci", icon: "fa-solid fa-wand-sparkles" },
-      { action: "shroud", label: "Shroud", icon: "fa-solid fa-ghost" },
-      { action: "icon", label: "Icon", icon: "fa-solid fa-hands-praying" },
-      { action: "affix", label: "Affix", icon: "fa-solid fa-gem" },
-      { action: "gear", label: "Misc Item", icon: "fa-solid fa-box" }
-    ]
-  });
-  if (!type) return;
-  const folder = game.folders.find(f => f.type === "Item" && f.name === "Forge") ?? await Folder.create({ name: "Forge", type: "Item" });
-  const name = { weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", icon: "New Icon", affix: "New Affix", gear: "New Item" }[type];
-  const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp", icon: "icons/magic/holy/yin-yang-balance-symbol.webp", affix: "icons/commodities/gems/gem-faceted-diamond-blue.webp" }[type];
-  const item = await Item.create({ name, type, folder: folder.id, ...(img ? { img } : {}) });
-  item?.sheet.render(true);
-}
+/** The Forge: the item catalog (catalog-app.mjs). Give items from it, drag them onto sheets, and make named entries. */
+const openForge = () => CatalogApp.open();
 
 Hooks.on("renderItemDirectory", (app, html) => {
   if (!game.user.isGM) return;

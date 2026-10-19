@@ -32,6 +32,8 @@ import * as wondersF from "./wonders-f.mjs";
 import * as concentration from "./concentration.mjs";
 import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
+import { CatalogApp, dropEntry } from "./catalog-app.mjs";
+import { carried } from "./catalog.mjs";
 
 /** What an actor's Energy costs are computed from: stats, Skill Points, and held weapons. */
 function energyContext(actor) {
@@ -1006,6 +1008,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       inCombat: actions.inActiveCombat(actor),
       creation: sys.creation,
       buildOpen: this.isEditable && (game.user.isGM || sys.creation),
+      carried: (() => { const c = carried(actor.items); return c.any ? `${c.pounds} lb · ${c.volume} ft³` : ""; })(),
       // Characters are always Size 3 until Ancestry exists; the GM can set NPC sizes.
       sizeEditable: this.isEditable && game.user.isGM && actor.type === "npc",
       canSpendStats: this.isEditable && !sys.creation && sys.unspentStats > 0,
@@ -1138,11 +1141,17 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     return sheet.document.items.get(target.closest("[data-item-id]")?.dataset.itemId);
   }
 
+  /** An item dragged from the Forge (the catalog) is given at the Grade set there; anything else drops as usual. */
+  async _onDrop(event) {
+    let data = null;
+    try { data = JSON.parse(event.dataTransfer?.getData("text/plain") || "null"); } catch (err) { data = null; }
+    if (data?.type === "FlowStateCatalog") { event.preventDefault?.(); return dropEntry(this.document, data); }
+    return super._onDrop(event);
+  }
+
+  /** The + buttons: open the Forge (the item catalog) to give this character an item of that kind. */
   static onCreateItem(event, target) {
-    const type = target.dataset.type ?? "gear";
-    const name = { gear: "New Gear", weapon: "New Weapon", armor: "New Armor", foci: "New Foci", shroud: "New Shroud", icon: "New Icon", affix: "New Affix" }[type] ?? "New Item";
-    const img = { foci: "icons/weapons/wands/wand-gem-purple.webp", shroud: "icons/magic/defensive/shield-barrier-glowing-blue.webp", icon: "icons/magic/holy/yin-yang-balance-symbol.webp", affix: "icons/commodities/gems/gem-faceted-diamond-blue.webp" }[type];
-    return this.document.createEmbeddedDocuments("Item", [{ name, type, ...(img ? { img } : {}) }], { renderSheet: type !== "gear" });
+    return CatalogApp.open({ actor: this.document, type: target.dataset.type ?? "gear" });
   }
   static onEditItem(event, target) { FlowStateActorSheet.#item(this, target)?.sheet.render(true); }
   static onDeleteItem(event, target) {
@@ -1238,12 +1247,17 @@ export class FlowStateItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
     position: { width: 480, height: 420 },
     window: { resizable: true },
     form: { submitOnChange: true },
-    actions: { editImage: pickImage }
+    actions: { editImage: pickImage, resetToEntry: FlowStateItemSheet.onResetToEntry }
   };
 
   static PARTS = {
     sheet: { template: "systems/flowstate/templates/item-sheet.hbs" }
   };
+
+  /** GM: drop this copy's changes, so it is its catalog entry again. */
+  static onResetToEntry() {
+    if (game.user.isGM) return this.document.update({ "system.overrides": [] }, { flowstateRelinked: true });
+  }
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
@@ -1256,6 +1270,13 @@ export class FlowStateItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
       nameEditable: this.isEditable,           // owners can always rename their items
       lockedNote: this.isEditable && !identityOpen ? "Only the GM can modify this item (you can rename it and change its picture)." : "",
       isGear: this.document.type === "gear",
+      cat: (() => {
+        const sys = this.document.system, c = sys.catalog;
+        if (!c) return null;
+        const names = { description: "description", pounds: "weight", volume: "volume", price: "price" };
+        const modified = (c.modified ?? []).map(p => names[p] ?? p.replace(/^system\./, "")).join(", ");
+        return { ...c, modified, canReset: game.user.isGM && !!sys.overrides?.length, pounds: sys.pounds ?? "", volume: sys.volume ?? "", price: sys.price ?? "" };
+      })(),
       densities: Object.fromEntries(Object.entries(OBJECT_DENSITY).map(([k, v]) => [k, v.label])),
       ammoTypes: Object.fromEntries(Object.entries(WEAPON_TYPES).filter(([, v]) => v.ranged).map(([k, v]) => [k, `${v.label} weapons`]))
     });

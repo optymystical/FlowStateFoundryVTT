@@ -19,7 +19,7 @@ Put the folder `flowstate/` in `{Foundry User Data}/Data/systems/`, restart Foun
 - **Combat runs in chat cards.** An attack card asks the defender to dodge or take the hit; the defense card then offers damage and follow-ups. Buttons only show for the person who can use them.
 - **The Action List** (character sheet, and Token Action HUD if installed) lists everything a character can do, with costs. The **Reaction List** tab (and the HUD's) holds the switches for everything that prompts a character: any popup that asks you something in someone else's turn (a Ward, a Tenet, Infuse...) and any offer card (a Palisade, a Mark shot...) can be switched off per character; a popup then counts as "no" and a card isn't posted.
 - **Movement** costs AP in combat and the tracker shows how much free movement is left. Speed comes from Size, less armor, attuned Affixes and Mental Alignment.
-- **Players can't edit** stats, Skill Points, size or items on their sheets; the GM grants points (`/grant`) and builds items in the Forge.
+- **Players can't edit** stats, Skill Points, size or items on their sheets; the GM grants points (`/grant`) and gives items from the Forge (the item catalog: every weapon, armor, Foci, Shroud, Icon and Affix, plus the GM's own named items).
 
 ## For the GM
 - **Open prompts** (bell button in the scene controls): every question the game is waiting on a player to answer, with a button to cancel it. Questions have no timer; the list opens by itself after 30 seconds.

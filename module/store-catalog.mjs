@@ -14,6 +14,7 @@ import { ANIM_CATEGORIES, ANIM_MATERIALS, RIDERS } from "./conjure-rules.mjs";
 import { TREES } from "./trees.mjs";
 import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combos.mjs";
 import { rebuildCatalog } from "./spells.mjs";
+import { ITEM_CATALOG, ITEM_TYPES, IDENTITY, generateCatalog } from "./catalog.mjs";
 
 const CORE = "Core rules", EQUIP = "Equipment", MAGIC = "Magic", MENTAL = "Mental", TREE = "Skill trees";
 const named = (e, k) => (typeof e === "string" ? e : e?.label ?? e?.name ?? k);
@@ -61,3 +62,15 @@ defineCollection("iconForms", { label: "Icon Forms", group: MENTAL, table: FORMS
 // Skill trees (every Archetype; the Wonders and the spell catalog are read from them)
 defineCollection("skillTrees", { label: "Skill trees", group: TREE, table: TREES, list: true, key: "id", addable: true, required: ["name", "archetype", "tiers"],
   rebuild: () => { rebuildWonders(); rebuildCatalog(); } });
+
+// Items: the catalog every sheet pulls from. Its system entries are generated from the tables above (every weapon type × weight × material, each
+// armor, Foci, Shroud, Icon Form, Affix, ammunition), so it is worked out again after they have the world's changes. Named entries are the world's own.
+defineCollection("items", { label: "Item catalog", group: "Items", table: ITEM_CATALOG, derive: generateCatalog, addable: true, required: ["type", "name", "system"],
+  nameOf: (e, k) => e?.name ?? k,
+  validate: (key, v, known) => {
+    if (known) return null;
+    if (!ITEM_TYPES[v.type]) return `has an unknown item type ("${v.type}").`;
+    if (typeof v.system !== "object" || Array.isArray(v.system)) return "has no item data.";
+    const missing = IDENTITY[v.type].filter(f => v.system[f] === undefined);
+    return missing.length ? `is missing ${missing.join(", ")}.` : null;
+  } });

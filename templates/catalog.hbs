@@ -1,0 +1,52 @@
+<section class="fs-catalog-body">
+  <nav class="fs-cat-tabs">
+    {{#each tabs}}<button type="button" class="{{#if active}}active{{/if}}" data-action="tab" data-type="{{key}}">{{label}}</button>{{/each}}
+  </nav>
+  <div class="fs-cat-bar">
+    <input type="search" name="search" value="{{filters.search}}" placeholder="Search…">
+    <select name="rarity"><option value="">Any rarity</option>{{#each rarities}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+    {{#if isWeapon}}<select name="weaponType"><option value="">Any type</option>{{#each weaponTypes}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{/if}}
+    {{#if (or isWeapon isArmor)}}
+    <select name="weight"><option value="">Any weight</option>{{#each weights}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+    <select name="material"><option value="">Any material</option>{{#each materials}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+    {{/if}}
+    <label><input type="checkbox" name="named" {{checked filters.named}}> Named only</label>
+    {{#if gm}}<label><input type="checkbox" name="hidden" {{checked filters.hidden}}> Show hidden</label>{{/if}}
+  </div>
+  <div class="fs-cat-give">
+    <label>Grade <input type="number" name="grade" value="{{grade}}" min="1" step="1"></label>
+    {{#if target}}
+      <span>Giving to <strong>{{target.name}}</strong> <a data-action="clearTarget" data-tooltip="Stop giving to them"><i class="fa-solid fa-xmark"></i></a></span>
+    {{else}}
+      <span class="hint">Drag an item onto a character's sheet to give it (at this Grade), or open the Forge from a sheet's <i class="fa-solid fa-plus"></i> button.</span>
+    {{/if}}
+    {{#if gm}}<button type="button" data-action="newEntry"><i class="fa-solid fa-plus"></i> New named entry</button>{{/if}}
+  </div>
+  <div class="fs-cat-list">
+    <table class="fs-table">
+      <thead><tr><th></th><th>Item</th><th>Rarity</th><th data-tooltip="Weight (lb)">lb</th><th data-tooltip="Volume (ft³)">ft³</th><th>Price</th><th></th></tr></thead>
+      <tbody>
+      {{#each rows}}
+      <tr data-entry-key="{{key}}" draggable="true" class="{{#if hidden}}fs-dim{{/if}}">
+        <td><img src="{{img}}" alt="" width="32" height="32"></td>
+        <td><strong>{{name}}</strong>{{#if named}} <span class="fs-tag" data-tooltip="A named entry (this world's own)">Named</span>{{/if}}{{#if hidden}} <span class="fs-tag">Hidden</span>{{/if}}
+          <div class="fs-sub">{{summary}}</div>{{#if description}}<div class="fs-sub fs-cat-desc">{{description}}</div>{{/if}}</td>
+        <td>{{rarity}}</td><td>{{pounds}}</td><td>{{volume}}</td><td>{{price}}</td>
+        <td class="fs-row-actions">
+          {{#if ../giveable}}<button type="button" data-action="give" data-tooltip="Give to {{../target.name}}"><i class="fa-solid fa-hand-holding"></i></button>{{/if}}
+          {{#if ../gm}}
+          <button type="button" data-action="editEntry" data-tooltip="Edit"><i class="fa-solid fa-pen"></i></button>
+          <button type="button" data-action="copyEntry" data-tooltip="Make a named copy"><i class="fa-solid fa-copy"></i></button>
+          <button type="button" data-action="hideEntry" data-tooltip="{{#if hidden}}Show{{else}}Hide{{/if}}"><i class="fa-solid {{#if hidden}}fa-eye{{else}}fa-eye-slash{{/if}}"></i></button>
+          {{#if named}}<button type="button" data-action="deleteEntry" data-tooltip="Delete"><i class="fa-solid fa-trash"></i></button>{{/if}}
+          {{/if}}
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="7" class="hint">Nothing matches.</td></tr>
+      {{/each}}
+      </tbody>
+    </table>
+    {{#if more}}<p class="hint">{{more}} more: narrow the search to see them.</p>{{/if}}
+  </div>
+</section>

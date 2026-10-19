@@ -8,6 +8,7 @@
   </header>
 
   {{#if lockedNote}}<p class="fs-locked"><i class="fa-solid fa-lock"></i> {{lockedNote}}</p>{{/if}}
+  {{> fsItemCatalog}}
   <section class="fs-builder">
     <div class="fs-field"><label>Affix</label>
       <select name="system.affix" {{#unless editable}}disabled{{/unless}}>

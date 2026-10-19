@@ -1,4 +1,5 @@
 <section class="tab fs-tab {{tab.cssClass}}" data-tab="equipment" data-group="primary">
+  {{#if carried}}<p class="fs-carried"><i class="fa-solid fa-weight-hanging"></i> Carrying {{carried}}</p>{{/if}}
   <details class="fs-collapse" data-section="weapons" {{#if open.weapons}}open{{/if}}>
     <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> Weapons <small class="fs-hands">{{handsLabel}}</small> {{#if buildOpen}}<button type="button" class="fs-inline" data-action="createItem" data-type="weapon" data-tooltip="New weapon"><i class="fa-solid fa-plus"></i></button>{{/if}}</summary>
     <table class="fs-table">

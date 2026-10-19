@@ -34,6 +34,7 @@ function refreshAll() {
   const actors = new Set(game.actors ?? []);
   for (const t of globalThis.canvas?.scene?.tokens ?? []) if (t.actor && !t.actorLink) actors.add(t.actor);
   for (const a of actors) { try { a.prepareData(); } catch (err) { console.error("flowstate | world data refresh", a?.name, err); } }
+  for (const i of game.items ?? []) { try { i.prepareData(); } catch (err) { console.error("flowstate | world data refresh", i?.name, err); } }
   for (const app of foundry.applications.instances?.values?.() ?? []) { try { if (app.rendered) app.render(); } catch (err) { /* a window that can't redraw keeps its old view */ } }
   ui.combat?.render?.();
 }

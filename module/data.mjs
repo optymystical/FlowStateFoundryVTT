@@ -4,11 +4,52 @@ import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } fro
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile, affixProfile, affixMultOf, affixSpeedPct, attunedAffixKeys, attunedAffixItems } from "./magic.mjs";
 import { penalizedDie } from "./spellfx.mjs";
 import { FORMS, iconProfile, alignmentSpeedPct, alignmentApLoss } from "./mental-rules.mjs";
+import { linkFor, identityFor, isGenerated } from "./catalog.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
 /** Ignite and Stain stacks on an object (armor, or a held or worn item that was aimed at). */
 const objectConditions = () => new f.SchemaField({ ignite: int(0, { min: 0 }), stain: int(0, { min: 0 }), solid: int(0, { min: 0 }), searing: int(0, { min: 0 }), frozen: int(0, { min: 0 }), electric: int(0, { min: 0 }) });
+
+/* ---- The item catalog link (catalog.mjs has the rules) ---- */
+
+/**
+ * Every item's link to its catalog entry: `base` (the entry's key), `overrides` (the GM's changes to this one copy, [{ path, value }]), and copies of
+ * the entry's weight (lb), volume (ft³) and price. The identity fields an item stores (type, weight, material, description...) are a copy too: when
+ * the item is prepared they are read from its entry with the overrides on top, and the stored copy is only used if the entry is gone.
+ */
+const catalogSchema = () => ({
+  base: new f.StringField({ initial: "" }),
+  overrides: new f.ArrayField(new f.ObjectField()),
+  pounds: new f.NumberField({ required: false, nullable: true, initial: null, min: 0 }),
+  volume: new f.NumberField({ required: false, nullable: true, initial: null, min: 0 }),
+  price: new f.NumberField({ required: false, nullable: true, initial: null, min: 0 })
+});
+/** The fields a whole stored item has (a partial update doesn't), for telling the two apart where Foundry doesn't say. */
+const KEY_FIELDS = { weapon: [["weaponType"]], armor: [["weight", "material"]], foci: [["fociType"]], shroud: [["shroudType"]], icon: [["form"]], affix: [["affix"]],
+  gear: [["description", "quantity"], ["ammoType", "quantity"]] };
+/**
+ * An item made before the catalog (or by code that doesn't name an entry) is linked as it loads: to the generated entry its identity matches, with
+ * whatever differs kept as overrides. Nothing is lost, and nothing has to be rewritten in the world.
+ */
+function migrateCatalog(type, source, options) {
+  if (!source || typeof source !== "object" || options?.partial) return;
+  if (source.base) return;
+  if (!KEY_FIELDS[type].some(set => set.every(k => k in source))) return;
+  const link = linkFor(type, source, { description: source.description });
+  if (link) { source.base = link.base; source.overrides = link.overrides; }
+}
+/** Read the item's identity from its catalog entry (and note where it came from in `catalog`). */
+function applyCatalog(sys, type) {
+  const id = sys.base ? identityFor(type, sys.base, sys.overrides) : null;
+  sys.catalog = id ? { key: sys.base, name: id.name, found: true, named: !isGenerated(sys.base), modified: id.modified }
+    : { key: sys.base ?? "", name: "", found: false, named: false, modified: [] };
+  sys.rarity = id?.rarity ?? null;
+  if (!id) return;
+  for (const [k, v] of Object.entries(id.system)) sys[k] = Array.isArray(v) ? [...v] : v;
+  sys.description = id.description;
+  sys.pounds = id.pounds; sys.volume = id.volume; sys.price = id.price;
+}
 
 /** Shared data model for characters and NPCs (Flow State has no class split). */
 export class FlowStateActorData extends foundry.abstract.TypeDataModel {
@@ -191,9 +232,17 @@ export class FlowStateGearData extends foundry.abstract.TypeDataModel {
       body: new f.NumberField({ required: true, nullable: false, integer: true, initial: 0, min: 0 }),
       density: new f.StringField({ initial: "soft", choices: () => Object.fromEntries(Object.entries(OBJECT_DENSITY).map(([k, v]) => [k, v.label])) }),
       wear: new f.NumberField({ required: true, nullable: false, integer: true, initial: 0 }),
-      description: new f.HTMLField({ initial: "" })
+      description: new f.HTMLField({ initial: "" }),
+      ...catalogSchema()
     };
   }
+
+  static migrateData(source, options) {
+    migrateCatalog("gear", source, options);
+    return super.migrateData(source, options);
+  }
+
+  prepareBaseData() { applyCatalog(this, "gear"); }
 
   prepareDerivedData() {
     const o = objectStats(this.body, this.density);
@@ -227,9 +276,17 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
       extraTypes: new f.ArrayField(new f.StringField()),
       wear: int(0, { min: 0 }),
       conditions: objectConditions(),                    // Ignite / Stain stacks, when it was aimed at
-      description: new f.HTMLField({ initial: "" })
+      description: new f.HTMLField({ initial: "" }),
+      ...catalogSchema()
     };
   }
+
+  static migrateData(source, options) {
+    migrateCatalog("weapon", source, options);
+    return super.migrateData(source, options);
+  }
+
+  prepareBaseData() { applyCatalog(this, "weapon"); }
 
   prepareDerivedData() {
     const eff = this.parent?.actor?.system?.derived?.effective;
@@ -274,9 +331,17 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
       wear: int(0, { min: 0 }),
       // Ignite and Stain stacks "on whatever is damaged" can land on the armor itself.
       conditions: objectConditions(),
-      description: new f.HTMLField({ initial: "" })
+      description: new f.HTMLField({ initial: "" }),
+      ...catalogSchema()
     };
   }
+
+  static migrateData(source, options) {
+    migrateCatalog("armor", source, options);
+    return super.migrateData(source, options);
+  }
+
+  prepareBaseData() { applyCatalog(this, "armor"); }
 
   prepareDerivedData() {
     const eff = this.parent?.actor?.system?.derived?.effective;
@@ -317,9 +382,17 @@ export class FlowStateAffixData extends foundry.abstract.TypeDataModel {
       attuned: new f.BooleanField({ initial: false }),
       element: new f.StringField({ initial: "heat" }),    // Tourmaline: the specified element
       declared: new f.StringField({ initial: "" }),       // Colored Diamond: the spell (Offensive) or source type (Defensive) declared
-      description: new f.HTMLField({ initial: "" })
+      description: new f.HTMLField({ initial: "" }),
+      ...catalogSchema()
     };
   }
+
+  static migrateData(source, options) {
+    migrateCatalog("affix", source, options);
+    return super.migrateData(source, options);
+  }
+
+  prepareBaseData() { applyCatalog(this, "affix"); }
 
   prepareDerivedData() {
     this.profile = affixProfile(this);
@@ -345,9 +418,17 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
       lush: new f.BooleanField({ initial: false }),       // Emerald: in a Lush biome
       declared: new f.StringField({ initial: "" }),     // Colored Diamond: the Core Spell declared this turn
       opalRange: new f.StringField({ initial: "targeted" }), // Black Opal (+): which range gets +50%
-      description: new f.HTMLField({ initial: "" })
+      description: new f.HTMLField({ initial: "" }),
+      ...catalogSchema()
     };
   }
+
+  static migrateData(source, options) {
+    migrateCatalog("foci", source, options);
+    return super.migrateData(source, options);
+  }
+
+  prepareBaseData() { applyCatalog(this, "foci"); }
 
   prepareDerivedData() {
     const eff = this.parent?.actor?.system?.derived?.effective;
@@ -377,9 +458,17 @@ export class FlowStateIconData extends foundry.abstract.TypeDataModel {
       attuned: new f.BooleanField({ initial: false }),
       tenet: new f.StringField({ initial: "" }),          // the Tenet's id ("mental-life-dream:verdant-soul"), chosen when attuning
       chosen: new f.StringField({ initial: "physical" }), // Bane: the damage category chosen on attuning
-      description: new f.HTMLField({ initial: "" })
+      description: new f.HTMLField({ initial: "" }),
+      ...catalogSchema()
     };
   }
+
+  static migrateData(source, options) {
+    migrateCatalog("icon", source, options);
+    return super.migrateData(source, options);
+  }
+
+  prepareBaseData() { applyCatalog(this, "icon"); }
 
   prepareDerivedData() {
     const eff = this.parent?.actor?.system?.derived?.effective;
@@ -411,16 +500,20 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
       lastType: new f.StringField({ initial: "" }),       // Alexandrite
       hitSources: new f.ArrayField(new f.StringField()),  // Diamond: "turnKey|source"
       placedOn: new f.StringField({ initial: "" }),       // Ward/Bond: the other creature's UUID
-      description: new f.HTMLField({ initial: "" })
+      description: new f.HTMLField({ initial: "" }),
+      ...catalogSchema()
     };
   }
 
   /** Shroud types renamed in the Equipment doc: Aegis → Bulwark, Ward → Mantle, Riposte → Rebuke. */
-  static migrateData(source) {
+  static migrateData(source, options) {
     const renamed = { aegis: "bulwark", ward: "mantle", riposte: "rebuke" };
     if (renamed[source.shroudType]) source.shroudType = renamed[source.shroudType];
-    return super.migrateData(source);
+    migrateCatalog("shroud", source, options);
+    return super.migrateData(source, options);
   }
+
+  prepareBaseData() { applyCatalog(this, "shroud"); }
 
   prepareDerivedData() {
     const eff = this.parent?.actor?.system?.derived?.effective;

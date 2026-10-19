@@ -36,6 +36,15 @@ A Foundry VTT game system for **Flow State**, Christopher Caplinger's setting-un
 | Rest: heals Con+Will+Build minimums; days without rest gives Dis on all rolls | Sheet |
 | d100 checks: Stealth, Perception (Spot), Persuasion, Deception, Counter Roll, Initiative | Sheet and combat tracker |
 
+## Movement cost in combat
+World setting **Movement cost in combat** (Enforce by default, Warn, Off). On a creature's own turn, moving its token is charged to its AP (Rules Ch8: a move of your speed per step, each step costing the move's AP: 1 plus slows, terrain, prone and the like, +1 while dragging a grappled creature).
+- **A step is paid only when you move past it.** The step you're in stays *pending*; it costs nothing if the turn ends there, and AP spent on an action settles it for free (**strafing**: the AP the action costs also covers moving with it). Whatever of that AP the step didn't need is banked toward the next one. Spends that are movement themselves (standing up, Leap, Dash, climbing) and Careful Steps' 2 AP upkeep don't bank. Clicking an AP pip in the combat tracker counts as an action.
+- **The distance is the path the token takes,** measured by Foundry (every waypoint you place, and any path around walls), not the straight line from start to end.
+- **Over-long moves are cut short (Enforce).** If a player moves farther than their AP can pay for (say 100 ft with AP for 50), the move stops at the last square their AP pays for, along the same path, with a note saying how far they got. To open a step you need its cost available, so a creature with 2 AP and a pending 2 AP step can only finish that step. The GM may overspend (the AP goes to 0, with a warning); Warn lets everyone overspend; Off charges nothing.
+- **Undo gives the AP back.** Undoing a move (Ctrl+Z) on your turn restores the AP and the movement it used, as long as you haven't spent AP on an action since (the action already settled it). A move from an earlier turn gives nothing back.
+- **Each turn starts fresh.** The ledger (what's banked, pending or left of a step) belongs to one creature's turn: it is cleared when the turn starts and keyed by the combatant, so nothing carries over to a later turn or round, and a creature leaving the tracker mid-turn (a downed creature is removed) doesn't start the current turn over. Quick moves in a row (the arrow keys) are each charged from where the last one left off.
+- **Not charged:** forced and free moves (throws, knockback, Force, pulls, Palisade, Redirect, being dragged), teleports, and moves made by a script, the token config, a paste or an undo. Dip and Dash's free move costs no AP but is cut short at your speed. Terrain counts as it was where the move started.
+
 ## Progression and GM control
 - **New Character wizard:** everyone sees a **New Character** button at the top of the Actors tab. It walks through these steps:
   1. Identity (name and portrait). Click the portrait or the picture button to set it with an image link or path, Browse or Upload (both go through a connected GM for players without the file permissions).

@@ -69,7 +69,8 @@ export function moveStatus(actor) {
 export const moveLeft = actor => moveStatus(actor)?.free ?? 0;
 /** Spends that are movement themselves don't cover movement. */
 // (Whole words: "removing Stain" and "putting out Ignite" are actions you can strafe with, not movement.)
-const MOVEMENT_SPEND = /\b(stand(ing)?|leap(ing)?|jump(ing)?|dash(ing)?|climb(ing)?|crawl(ing)?|move|moves|moving)\b/i;
+// Careful Steps' upkeep isn't an action either.
+const MOVEMENT_SPEND = /\b(stand(ing)?|leap(ing)?|jump(ing)?|dash(ing)?|climb(ing)?|crawl(ing)?|move|moves|moving|careful steps)\b/i;
 
 /**
  * Spend AP or RP only when in an active combat. Returns false if the actor can't afford it.
@@ -119,8 +120,11 @@ function cantAct(actor, what = "act") {
   return true;
 }
 
-/** "combat:round:turn" for the current turn (null outside a started combat). */
-export const turnKey = () => (game.combat?.started ? `${game.combat.id}:${game.combat.round}:${game.combat.turn}` : null);
+/**
+ * "combat:round:combatant" for the current turn (null outside a started combat). It names the combatant, not their place in the order, so a creature
+ * leaving the tracker (or the order changing) mid-turn doesn't start the turn over.
+ */
+export const turnKey = () => (game.combat?.started ? `${game.combat.id}:${game.combat.round}:${game.combat.combatant?.id ?? game.combat.turn}` : null);
 
 /** Current tier of an Archetype's Theory tree. */
 export const theoryTier = (actor, archetype = "martial") => Number(actor?.system?.trees?.[`${archetype}-theory`]) || 0;

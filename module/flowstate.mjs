@@ -124,7 +124,8 @@ class FlowStateCombat extends Combat {
       // AP/RP refresh, and Energy regained equal to 2 AP of Recover Energy (none while afraid or Frozen; a Cold Freeze takes its cut).
       const a = combatant.actor, e = a.system.energy;
       const regain = await actions.turnStartEnergy(a);
-      await a.update({ "system.ap.value": a.system.ap?.max ?? 6, "system.rp.value": a.system.rp?.max ?? 6, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
+      // A fresh movement ledger too: nothing banked or half-walked carries over from an earlier turn.
+      await a.update({ "system.ap.value": a.system.ap?.max ?? 6, "system.rp.value": a.system.rp?.max ?? 6, "flags.flowstate.moveLedger": null, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
       // Psych Up / Calm Down last until the start of your next turn.
       await actions.clearStances(combatant.actor);
       // Medium Armor (Limber, Versatility, Careful Steps) and Rapid Marks.
@@ -300,7 +301,7 @@ Hooks.once("init", () => {
     registerCurrencySettings();
     game.settings.register("flowstate", "movementCost", {
       name: "Movement cost in combat",
-      hint: "Moving a token on its turn costs AP, but only for distance nothing has covered: AP spent on actions covers movement too (strafing), and a move's open step can pay for an ability. Enforce refuses a move the AP can't pay (the GM may overspend); Warn lets everything through and just takes the AP.",
+      hint: "Moving a token on its turn costs AP, but only for distance nothing has covered: AP spent on actions covers movement too (strafing), and a move's open step can pay for an ability. Enforce stops a player's move where their AP runs out (the GM may overspend); Warn lets everything through and just takes the AP.",
       scope: "world", config: true, type: String, default: "enforce",
       choices: { enforce: "Enforce", warn: "Warn only", off: "Off" }
     });
@@ -1034,12 +1035,14 @@ Hooks.on("renderCombatTracker", (app, html) => {
     if (mv) el.insertAdjacentHTML("beforeend", `<span class="fs-points fs-move-left" data-tooltip="Movement you can still make without spending AP${mv.pay ? `; moving past it costs ${mv.pay} AP` : ""}${mv.bank ? ` (${mv.bank} AP banked from actions)` : ""}"><b>Move</b>${mv.free} ft</span>`);
 
     if (actor.isOwner) {
-      for (const group of el.querySelectorAll(".fs-points")) {
+      for (const group of el.querySelectorAll(".fs-points[data-resource]")) {
         const adjust = delta => async event => {
           event.preventDefault();
           event.stopPropagation();
           const key = group.dataset.resource;
-          const next = Math.clamp(actor.system[key].value + delta, 0, 6);
+          // Spending an AP pip is an action the table runs by hand, so it covers movement like any other (strafing); restoring one is a correction.
+          if (key === "ap" && delta < 0 && actor.system.ap.value > 0 && actions.inActiveCombat(actor)) return actions.spendAP(actor, 1, "an action");
+          const next = Math.clamp(actor.system[key].value + delta, 0, actor.system[key].max ?? 6);
           await actor.update({ [`system.${key}.value`]: next });
         };
         group.addEventListener("click", adjust(-1));
@@ -1320,7 +1323,7 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
         return confirmFirst(item, changes, `${equip ? "Put on" : "Remove"} ${item.name}?`,
           `This takes ${actor.name}'s <strong>whole turn</strong> (all 6 AP).`);
       }
-      actor.update({ "system.ap.value": 0 });
+      actions.spendAP(actor, actor.system.ap.value, `${equip ? "putting on" : "removing"} ${item.name}`);
       ui.notifications.info(`${actor.name} spends their turn ${equip ? "putting on" : "removing"} ${item.name}.`);
     }
     if (others.length) actor.updateEmbeddedDocuments("Item", others.map(i => ({ _id: i.id, "system.equipped": false })), { flowstateAuto: true });
@@ -1431,7 +1434,7 @@ async function stowOrDrop(item, changes) {
     rejectClose: false
   });
   if (choice === "stow") {
-    await actor.update({ "system.ap.value": actor.system.ap.value - 1 });
+    if (!(await actions.spendAP(actor, 1, `stowing ${item.name}`))) return;
     await item.update(data, { flowstatePaid: true });
     return ui.notifications.info(`${actor.name} stows ${item.name} (1 AP).`);
   }

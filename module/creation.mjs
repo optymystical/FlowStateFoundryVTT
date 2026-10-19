@@ -32,6 +32,7 @@ export function entryBlurb(entry, max = 170) {
 }
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES, AFFIX_SIDES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
+import { ITEM_CATALOG, isGenerated, itemData } from "./catalog.mjs";
 
 const RARITY_ORDER = ["common", "uncommon", "rare", "veryRare"];
 export const DEFAULT_RULES = { statPoints: 90, items: 4, maxRarity: "uncommon", grade: 10 };
@@ -53,8 +54,17 @@ export function allowedMaterials(kind, weight, maxRarity) {
     .map(([k, m]) => [k, `${m.label} (${RARITIES[m.rarity]})`]));
 }
 
+/** The GM's named catalog items a starting character may pick (within the rarity cap, not hidden). Misc items aren't equipment picks. */
+export function allowedNamed(maxRarity) {
+  return Object.fromEntries(Object.entries(ITEM_CATALOG).filter(([k, e]) => !isGenerated(k) && !e.hidden && e.type !== "gear" && rarityOk(e.rarity ?? "common", maxRarity))
+    .sort(([, a], [, b]) => a.name.localeCompare(b.name)).map(([k, e]) => [k, `${e.name} (${RARITIES[e.rarity] ?? e.rarity})`]));
+}
+/** Is this slot (or catalog entry) armor? A named entry counts as what it is. */
+export const slotIsArmor = s => s?.kind === "armor" || (s?.kind === "named" && ITEM_CATALOG[s.key]?.type === "armor");
+
 /** A fresh equipment slot, already pointing at valid choices. */
 export function newSlot(kind, maxRarity) {
+  if (kind === "named") return { kind, key: Object.keys(allowedNamed(maxRarity))[0] ?? "" };
   if (kind === "foci") return { kind, fociType: "rod" };
   if (kind === "shroud") return { kind, shroudType: "bastion" };
   if (kind === "icon") return { kind, iconForm: "aegis" };
@@ -73,6 +83,7 @@ export function allowedAffixes(maxRarity) {
 /** Keep a slot valid after a change (e.g. weight changed so the material no longer fits). */
 export function normalizeSlot(slot, maxRarity) {
   const s = { ...slot };
+  if (s.kind === "named") { const ok = allowedNamed(maxRarity); if (!ok[s.key]) s.key = Object.keys(ok)[0] ?? ""; return s; }
   if (s.kind === "foci") { if (!FOCI_TYPES[s.fociType]) s.fociType = "rod"; return s; }
   if (s.kind === "shroud") { if (!SHROUD_TYPES[s.shroudType]) s.shroudType = "bastion"; return s; }
   if (s.kind === "icon") { if (!FORMS[s.iconForm]) s.iconForm = "aegis"; return s; }
@@ -96,6 +107,7 @@ export function normalizeSlot(slot, maxRarity) {
 
 /** Display name for a starting item, e.g. "Light Bladed (Iron)". */
 export function slotName(slot) {
+  if (slot.kind === "named") return ITEM_CATALOG[slot.key]?.name ?? "Named item";
   if (slot.kind === "foci") return `${FOCI_TYPES[slot.fociType]?.label ?? "Foci"} (Foci)`;
   if (slot.kind === "shroud") return `${SHROUD_TYPES[slot.shroudType]?.label ?? "Shroud"} (Shroud)`;
   if (slot.kind === "icon") return `${FORMS[slot.iconForm]?.name ?? "Icon"} (Icon)`;
@@ -125,9 +137,15 @@ export function validate(choice, rules = DEFAULT_RULES) {
   if (spent > rules.statPoints) errors.push(`You've spent ${spent} stat points, but only ${rules.statPoints} are available.`);
   const items = choice.items ?? [];
   if (items.length > rules.items) errors.push(`You can pick at most ${rules.items} starting items.`);
-  if (items.filter(i => i.kind === "armor").length > 1) errors.push("You can start with at most one armor.");
+  if (items.filter(slotIsArmor).length > 1) errors.push("You can start with at most one armor.");
   for (const [n, slot] of items.entries()) {
     const label = `Item ${n + 1}`;
+    if (slot.kind === "named") {
+      const e = ITEM_CATALOG[slot.key];
+      if (!e || isGenerated(slot.key) || e.hidden || e.type === "gear") { errors.push(`${label}: pick a named item.`); continue; }
+      if (!rarityOk(e.rarity ?? "common", rules.maxRarity)) errors.push(`${label}: ${e.name} is above the ${RARITIES[rules.maxRarity]} limit.`);
+      continue;
+    }
     if (slot.kind === "foci") { if (!FOCI_TYPES[slot.fociType]) errors.push(`${label}: pick a Foci type.`); continue; }
     if (slot.kind === "shroud") { if (!SHROUD_TYPES[slot.shroudType]) errors.push(`${label}: pick a Shroud type.`); continue; }
     if (slot.kind === "icon") { if (!FORMS[slot.iconForm]) errors.push(`${label}: pick a Form.`); continue; }
@@ -211,6 +229,20 @@ export function startingItems(slots, rules) {
   const ammo = {};
   let fociAttuned = false, shroudAttuned = false, iconAttuned = false;
   for (const slot of slots) {
+    // A named catalog item: a copy of it at the starting Grade (the first Foci, Shroud and Icon attuned, an Affix to its Offensive form).
+    if (slot.kind === "named") {
+      const e = ITEM_CATALOG[slot.key];
+      if (!e || e.type === "gear") continue;
+      const state = e.type === "affix" ? { side: "offensive", attuned: true } : e.type === "foci" ? { attuned: !fociAttuned, equipped: false }
+        : e.type === "shroud" ? { attuned: !shroudAttuned } : e.type === "icon" ? { attuned: !iconAttuned } : { equipped: false };
+      if (e.type === "foci") fociAttuned = true;
+      if (e.type === "shroud") shroudAttuned = true;
+      if (e.type === "icon") iconAttuned = true;
+      out.push(itemData(slot.key, { grade: rules.grade, system: state }));
+      const ammoType = e.type === "weapon" ? [e.system.weaponType, ...(e.system.extraTypes ?? [])].find(k => WEAPON_TYPES[k]?.ranged) : null;
+      if (ammoType) ammo[ammoType] = Math.min(100, (ammo[ammoType] ?? 0) + STARTING_AMMO);
+      continue;
+    }
     if (slot.kind === "affix") {
       if (AFFIXES[slot.affix]) out.push({ name: AFFIXES[slot.affix].label, type: "affix", img: "icons/commodities/gems/gem-faceted-diamond-blue.webp",
         system: { affix: slot.affix, side: slot.side === "defensive" ? "defensive" : "offensive", attuned: true } });

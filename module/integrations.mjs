@@ -5,6 +5,7 @@
  *    sheet's Action List (so the HUD offers exactly what it does, at the same costs) and its Reaction List (the popup and offer card switches).
  */
 import { buildActionList, buildReactionList, weaponRows, runActionRow } from "./sheets.mjs";
+import { notCreature } from "./kinds.mjs";
 
 /* -------------------------------------------- */
 /*  Carousel Combat Tracker                     */
@@ -20,7 +21,7 @@ const CAROUSEL_ATTRIBUTES = [
 
 /** One line under the name: armor and held weapons. */
 function carouselDescription(actor) {
-  if (!actor || actor.type === "pile") return null;
+  if (!actor || notCreature(actor)) return null;
   const armor = actor.items.find(i => i.type === "armor" && i.system.equipped);
   const held = actor.items.filter(i => i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed").map(i => i.name);
   return [armor ? armor.name : "Unarmored", held.length ? held.join(", ") : "Unarmed"].join(" · ");
@@ -90,7 +91,7 @@ Hooks.once("tokenActionHudCoreApiReady", async coreModule => {
   class FlowStateActionHandler extends api.ActionHandler {
     async buildSystemActions() {
       const actor = this.actor;
-      if (!actor || actor.type === "pile" || !actor.isOwner) return;
+      if (!actor || notCreature(actor) || !actor.isOwner) return;
       for (const [key, actions] of hudActions(actor)) this.addActions(actions, { id: key, type: "system" });
     }
   }

@@ -115,5 +115,29 @@ ok(ch.system.base === "named.claymore" && ch.system.overrides.length === 1 && ch
 S.applyWorldData({});
 
 
+console.log("== Named items in the character wizard");
+{
+  const CR = await import("../../module/creation.mjs");
+  const named = (key, type, name, rarity, system) => [key, { type, name, img: "x.webp", description: "", rarity, pounds: null, volume: null, price: null, system }];
+  let wd = {};
+  for (const [k, v] of [named("named.longbow", "weapon", "Elven Longbow", "uncommon", { weaponType: "longshot", weight: "light", material: "hardwood", magazine: 1, extraTypes: [] }),
+    named("named.plate", "armor", "Royal Plate", "rare", { weight: "heavy", material: "iron" }), named("named.vest", "armor", "Padded Vest", "common", { weight: "light", material: "cloth" }),
+    named("named.rope", "gear", "Rope", "common", { ammoType: "", body: 0, density: "soft" })]) wd = S.withEntry(wd, "items", k, v);
+  S.applyWorldData(wd);
+  const rules = { ...CR.DEFAULT_RULES, grade: 4, maxRarity: "uncommon" };
+  const allowed = CR.allowedNamed("uncommon");
+  ok(allowed["named.longbow"] && allowed["named.vest"] && !allowed["named.plate"] && !allowed["named.rope"], "Named items within the rarity limit can be picked (not Rare plate, not a Misc item)");
+  const slots = [CR.newSlot("named", "uncommon"), { kind: "named", key: "named.vest" }];
+  slots[0].key = "named.longbow";
+  const choice = { name: "Ash", stats: { ...CR.emptyStats(), str: 10 }, items: slots, trees: {} };
+  ok(!CR.validate(choice, rules).some(e => /Item/.test(e)), "A pick of them is valid");
+  ok(CR.validate({ ...choice, items: [...slots, { kind: "armor", weight: "light", material: "cloth" }] }, rules).some(e => /at most one armor/.test(e)), "A named armor counts toward the one armor");
+  ok(CR.validate({ ...choice, items: [{ kind: "named", key: "named.plate" }] }, rules).some(e => /above the Uncommon limit/.test(e)), "…and one above the limit is refused");
+  const made = CR.startingItems(slots, rules);
+  const bow = made.find(i => i.system?.base === "named.longbow");
+  ok(bow && bow.name === "Elven Longbow" && bow.system.grade === 4 && made.some(i => i.type === "gear" && i.system.ammoType === "longshot" && i.system.quantity === 20), "It starts as a copy of the entry at the starting Grade, with ammunition for a ranged one");
+  S.applyWorldData({});
+}
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll catalog checks passed");
 if (fails) process.exit(1);

@@ -19,6 +19,7 @@ import { askFor, everyActor } from "./ask.mjs";
 import { isDeclined } from "./reactions.mjs";
 import { tierOf } from "./skills.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, TURN_START, BEFORE_CLEAR, rolled, tenetOf, tryOnce, actButtons } from "./wonders.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 export const EARTH = "mental-earth-dream", SEA = "mental-sea-nightmare";
@@ -29,7 +30,7 @@ const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
 const minOf = (a, k) => ab.statMinOf(a, k);
 const fromU = u => (u ? globalThis.fromUuidSync?.(u) ?? null : null);
 const dataOf = e => e.flags.flowstate.spellEffect;
-const live = a => a && a.type !== "pile";
+const live = a => a && !notCreature(a);
 const roll = formula => new Roll(formula).evaluate();
 const typeLabel = t => DAMAGE_TYPES[t] ?? t;
 export const CATEGORIES = { physical: "Physical", elemental: "Elemental", magical: "Magical", supernatural: "Supernatural" };

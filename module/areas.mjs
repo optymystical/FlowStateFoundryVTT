@@ -4,6 +4,7 @@
  *  - The geometry is pure (unit-tested). Placement drops a Measured Template on the scene that the caster drags into position,
  *    then confirms; with no scene (or no canvas) the caller falls back to the current targets.
  */
+import { notCreature } from "./kinds.mjs";
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 
 export const AREA_SHAPES = {
@@ -95,7 +96,7 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
     front = lineFront(tpl, FACINGS[pickFace ?? "away"], { x, y });
     await placed.update({ "flags.flowstate.frontX": front.x, "flags.flowstate.frontY": front.y });
   }
-  const inside = tokensInArea(tpl, globalThis.canvas.tokens.placeables.filter(t => t.actor && t.actor.type !== "pile"), { size: grid.size, distance: grid.distance });
+  const inside = tokensInArea(tpl, globalThis.canvas.tokens.placeables.filter(t => t.actor && !notCreature(t.actor)), { size: grid.size, distance: grid.distance });
   return { actors: [...new Map(inside.map(t => [t.actor.uuid, t.actor])).values()], shape: pick, templateId: placed.id, tpl, front, grid: { size: grid.size, distance: grid.distance }, sceneId: scene.id };
 }
 

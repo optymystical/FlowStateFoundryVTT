@@ -5,6 +5,7 @@
  */
 import { post, setStatus, setActorFlag, requestDamage, damageOutcome, damageOutcomeHTML, forceCap, spendPoints, canSpend, registerFlight } from "./actions.mjs";
 import { gravityForce, fallFeet, liftBand, forceDamage, TERMINAL_ROUNDS, downwardProne, heightFt } from "./rules.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const DialogV2 = () => foundry.applications.api.DialogV2;
@@ -38,7 +39,7 @@ export async function stabilize(actor) {
  * Runs on the owner's client.
  */
 export async function flightCheck(actor, reason) {
-  if (!actor || actor.type === "pile" || !(lift(actor) > 0) || isFalling(actor) || !actor.isOwner) return;
+  if (!actor || notCreature(actor) || !(lift(actor) > 0) || isFalling(actor) || !actor.isOwner) return;
   const can = canSpend(actor, "rp", 3);
   const yes = can && await DialogV2().confirm({ window: { title: "Stabilize" }, rejectClose: false, content: `<p>${esc(reason)}: spend <strong>3 RP</strong> to stabilize, or ${esc(actor.name)} begins falling?</p>` });
   if (yes && (await spendPoints(actor, "rp", 3, "stabilizing"))) return post(actor, { title: `${esc(actor.name)} — Stabilize`, body: `<div class="fs-result">${esc(actor.name)} stabilizes (3 RP).</div>` });

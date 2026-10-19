@@ -15,6 +15,7 @@ import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import { isDeclined } from "./reactions.mjs";
+import { notCreature } from "./kinds.mjs";
 /** mental.mjs hands itself over when it loads (`setMental`): the Wonders call into it, and it calls into them. */
 export let mental = null;
 export const setMental = m => { mental = m; };
@@ -26,7 +27,7 @@ const roll = formula => new Roll(formula).evaluate();
 const eff = (a, k) => a?.system?.derived?.effective?.[k]?.value ?? 0;
 const minOf = (a, k) => ab.statMinOf(a, k);
 const tier = (actor, id) => tierOf(actor.system.trees ?? {}, id);
-const living = a => a && a.type !== "pile" && !a.system?.magical;
+const living = a => a && !notCreature(a) && !a.system?.magical;
 
 /* -------------------------------------------- */
 /*  Shared: effects, once per round, Tenets     */
@@ -498,7 +499,7 @@ export async function runPerennial(x) {
 export async function momentum(actor, collided = null) {
   if (tier(actor, "mental-beyond-dream") < 2) return;
   const power = Math.max(1, R.wonderPower(eff(actor, "pon")));
-  const target = collided ?? [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.type !== "pile") ?? await mental.pickAnother(actor, { title: "Momentum: the one that collided", within: Infinity, anchors: [] });
+  const target = collided ?? [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && !notCreature(a)) ?? await mental.pickAnother(actor, { title: "Momentum: the one that collided", within: Infinity, anchors: [] });
   if (!target) return;
   if (!(await mental.pay(actor, { energy: minOf(actor, "pon") }, "Momentum"))) return;
   const f = await forceRoll({ stacks: 0, target, attacker: actor }, 5 * power, 8, "Momentum", false);
@@ -687,7 +688,7 @@ async function runChargeAct(x, caster, target) {
     const cost = Math.floor(minOf(caster, "snap") / 2);
     const cTok = globalThis.canvas?.tokens?.placeables?.find(t => t.actor?.uuid === caster.uuid);
     const reach = x.range === "melee" ? (caster.system.derived?.size?.melee ?? 5) : 100;
-    const pool = (globalThis.canvas?.tokens?.placeables ?? []).filter(t => t.actor && t.actor.type !== "pile" && t.actor.uuid !== caster.uuid && t.actor.uuid !== target?.uuid && !t.actor.statuses?.has("dead")
+    const pool = (globalThis.canvas?.tokens?.placeables ?? []).filter(t => t.actor && !notCreature(t.actor) && t.actor.uuid !== caster.uuid && t.actor.uuid !== target?.uuid && !t.actor.statuses?.has("dead")
       && (!cTok || globalThis.canvas?.grid) && (!cTok || mentalDistance(cTok, t) <= reach));
     if (!pool.length) { ui.notifications.info("Ricochet: there's no valid target in range."); return false; }
     if (!(await mental.pay(caster, { energy: cost }, "Ricochet"))) return false;

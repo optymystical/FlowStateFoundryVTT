@@ -29,6 +29,7 @@ import { tierOf } from "./skills.mjs";
 import { isDeclined } from "./reactions.mjs";
 import { damageCategories, WEAPON_TYPES } from "./martial.mjs";
 import { poolFormula, resolveAttack, DAMAGE_TYPES, applyStacks } from "./rules.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const DialogV2 = () => foundry.applications.api.DialogV2;
@@ -308,7 +309,7 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
   const reach = actor.system.derived?.size?.melee ?? 5;
   const forced = reflex?.target ? await fromUuid(reflex.target) : null;          // Reflex: the attacker or defender picked in the popup, whatever you have targeted
   const forcedTokens = forced ? [attackerToken(forced)].filter(Boolean) : null;
-  let targets = forced ? [forced] : [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
+  let targets = forced ? [forced] : [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a));
   let area = null;
   if (plan.range === "melee" && targets.length && !checkRange(actor, reach, `${plan.mode.name} (Melee)`, forcedTokens)) return null;
   if (plan.range === "ranged" && targets.length && !checkRange(actor, farSight ? 500 : 100, `${plan.mode.name} (Ranged)`, forcedTokens)) return null;
@@ -404,7 +405,7 @@ export async function activateWard(actor) {
   const innate = wt >= 3 && !mark(actor, "innateTurn") && inActiveCombat(actor);
   const enhanceCost = minOf(actor, "will");
   const wardFx = R.alignmentWard(align, p.align);          // Alignment: 1 Advantage, 2 Strengthened, 3 half stealth (dodging has Disadvantage), 4 hits regardless
-  const ally = th >= 2 ? [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.uuid !== actor.uuid && a.type !== "pile") : null;
+  const ally = th >= 2 ? [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.uuid !== actor.uuid && !notCreature(a)) : null;
   const out = await DialogV2().prompt({
     window: { title: `${p.name} Ward: ${actor.name}` },
     content: `<div class="fs-cast">
@@ -666,7 +667,7 @@ export async function rerollAct(x) {
  * attack, keeps negating for free until the start of the owner's next turn.
  */
 async function negate(actor, amount, type, { source = null, attacker = null, magic = false } = {}) {
-  if (!actor || actor.type === "pile" || amount <= 0 || !actor.isOwner) return { amount, html: "" };
+  if (!actor || notCreature(actor) || amount <= 0 || !actor.isOwner) return { amount, html: "" };
   const icon = actor.system.icon;
   const p = icon?.system.profile;
   const notes = [];
@@ -769,7 +770,7 @@ const reflectNow = (actor, r) => reflectAttack(actor, r.kind, r.amount, r.type, 
 /** Warden (Ranged, within 100 ft) / Riposte (Melee with Advantage, within melee range): an attack roll at the damage's source for the damage that was negated. */
 async function reflectAttack(actor, kind, amount, type, attackerUuid) {
   const src = await fromUuid(attackerUuid);
-  if (!src || src.uuid === actor.uuid || src.type === "pile") return;
+  if (!src || src.uuid === actor.uuid || notCreature(src)) return;
   const melee = kind === "melee";
   const reach = melee ? actor.system.derived?.size?.melee ?? 5 : 100;
   const a = attackerToken(actor), b = src.getActiveTokens?.()[0];

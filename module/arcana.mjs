@@ -12,6 +12,7 @@ import * as areas from "./areas.mjs";
 import * as terrain from "./terrain.mjs";
 import { secret } from "./afflictions.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES } from "./rules.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const DialogV2 = () => foundry.applications.api.DialogV2;
@@ -56,7 +57,7 @@ export async function prompt({ actor, plan, profile, mods, values, targets }) {
   const free = !!plan.freeFrom;
   if (k === "restore") {
     const t = target ?? actor;
-    if (t.type === "pile" || t.system.magical) { ui.notifications.warn("Restore needs a living target."); return null; }
+    if (notCreature(t) || t.system.magical) { ui.notifications.warn("Restore needs a living target."); return null; }
     const dead = t.statuses?.has("dead");
     const painless = plan.applied.find(a => a.mod.name === "Painless");
     const replaced = !!painless?.replace;
@@ -325,7 +326,7 @@ export function auraTargets(actor) {
   const out = [], seen = new Set();
   for (const t of globalThis.canvas.tokens.placeables) {
     const a = t.actor;
-    if (!a || a.type === "pile" || a.uuid === actor.uuid || seen.has(a.uuid)) continue;
+    if (!a || notCreature(a) || a.uuid === actor.uuid || seen.has(a.uuid)) continue;
     if (tokenDistance(src, t) <= 50) { seen.add(a.uuid); out.push(a); }
   }
   return out;

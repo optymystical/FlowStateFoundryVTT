@@ -14,6 +14,7 @@ import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import * as conc from "./concentration.mjs";
 import { mental, mantraHook, TURN_START, tenetOf } from "./wonders.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const trees = a => a?.system?.trees ?? {};
@@ -70,7 +71,7 @@ export const premeditatedBy = caster => everyActor().flatMap(a => spellEffects(a
 export async function trance(actor) {
   if (R.theoryTier(trees(actor)) < 2) return ui.notifications.warn("Trance is a Mental Theory Tier 2 ability.");
   if (inActiveCombat(actor)) return ui.notifications.warn("Trance takes 8 hours, so it can't be done in combat.");
-  const target = [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.type !== "pile") ?? actor;
+  const target = [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && !notCreature(a)) ?? actor;
   const known = R.knownWonders(trees(actor)).filter(w => w.modes.length);
   if (!known.length) return ui.notifications.warn(`${actor.name} doesn't know any Wonder Modes yet.`);
   const out = await foundry.applications.api.DialogV2.prompt({ window: { title: `Trance: ${actor.name}` }, rejectClose: false,
@@ -131,7 +132,7 @@ export async function useTrance(holder, effect) {
   const d = effect?.flags?.flowstate?.spellEffect;
   const mode = R.modeById(d?.mode);
   if (!mode) return false;
-  const target = [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.type !== "pile");
+  const target = [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && !notCreature(a));
   if (!target) { ui.notifications.warn("Target a creature first."); return false; }
   const wonder = R.wonderById(mode.wonder), kind = R.KINDS[wonder.kind];
   const out = await foundry.applications.api.DialogV2.prompt({ window: { title: `Trance: ${mode.name}` }, rejectClose: false,

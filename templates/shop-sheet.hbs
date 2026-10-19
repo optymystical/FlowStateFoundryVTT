@@ -1,0 +1,95 @@
+<div class="fs-sheet fs-shop-sheet">
+  <header class="fs-header">
+    <img class="fs-portrait fs-small" src="{{shop.img}}" alt="{{shop.name}}">
+    <div class="fs-header-main">
+      {{#if gm}}<input class="fs-name" type="text" name="name" value="{{shop.name}}">{{else}}<div class="fs-name">{{shop.name}}</div>{{/if}}
+      <div class="fs-subtitle">Shop · {{#if sys.open}}open{{else}}<span class="fs-warn">closed</span>{{/if}}{{#if sys.buys}} · buys at {{sys.sellRate}}%{{/if}}</div>
+    </div>
+  </header>
+
+  <div class="fs-shop-scroll">
+  <div class="fs-shop-buyer">
+    {{#if buyers.length}}
+    <label>Trading as <select data-buyer>{{#each buyers}}<option value="{{uuid}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>
+    {{#if buyer}}<span class="fs-sub"><i class="fa-solid fa-coins"></i> {{buyer.funds}}</span>{{/if}}
+    {{else}}
+    <p class="hint">You need a character of your own to trade here.</p>
+    {{/if}}
+  </div>
+
+  <h3>For sale {{#if gm}}<button type="button" class="fs-inline" data-action="openForge" data-tooltip="Add items from the Forge (or drag them in)"><i class="fa-solid fa-plus"></i></button>{{/if}}</h3>
+  <table class="fs-table fs-shop-stock">
+    <thead><tr><th></th><th>Item</th><th>Grade</th><th>Rarity</th><th>Stock</th><th>Price</th><th></th></tr></thead>
+    <tbody>
+    {{#each stock}}
+    <tr data-item-id="{{id}}">
+      <td><img src="{{img}}" alt="" width="28" height="28"></td>
+      <td>{{name}}{{#if codex}} <a class="fs-codex-link fs-codex-icon" data-codex="{{codex}}" data-tooltip="Open in the Codex"><i class="fa-solid fa-book-open"></i></a>{{/if}}</td>
+      <td>{{grade}}</td><td>{{rarity}}</td>
+      <td>{{#if ../gm}}{{#if infinite}}∞{{else}}<input type="number" data-stock-field="count" value="{{count}}" min="0" step="1" class="fs-num">{{/if}}
+        <a data-action="toggleInfinite" data-tooltip="{{#if infinite}}Limited stock{{else}}Never runs out{{/if}}"><i class="fa-solid fa-infinity {{#unless infinite}}fs-dimmed{{/unless}}"></i></a>{{else}}{{stock}}{{/if}}</td>
+      <td class="{{#unless affordable}}fs-warn{{/unless}}">{{price}}{{#if ../gm}}<br><input type="number" data-stock-field="price" value="{{ownPrice}}" min="0" step="1" placeholder="own price" class="fs-num" data-tooltip="This row's own price (blank: the usual price at the shop's markup)">{{/if}}</td>
+      <td class="fs-row-actions">
+        {{#if canBuy}}{{#if gear}}<input type="number" data-qty value="1" min="1" step="1" class="fs-num">{{/if}}<button type="button" data-action="buy" data-tooltip="Buy"><i class="fa-solid fa-cart-shopping"></i></button>{{/if}}
+        {{#if ../gm}}<button type="button" data-action="editStock" data-tooltip="Edit"><i class="fa-solid fa-pen"></i></button><button type="button" data-action="removeStock" data-tooltip="Remove from stock"><i class="fa-solid fa-trash"></i></button>{{/if}}
+      </td>
+    </tr>
+    {{else}}
+    <tr><td colspan="7" class="hint">Nothing for sale{{#if gm}}: add items from the Forge, drag them in, or Restock below{{/if}}.</td></tr>
+    {{/each}}
+    </tbody>
+  </table>
+
+  {{#if sys.buys}}{{#if buyer}}
+  <h3>Sell to {{shop.name}}</h3>
+  <table class="fs-table fs-shop-sell">
+    <thead><tr><th></th><th>{{buyer.name}}'s items</th><th>Grade</th><th>They pay</th><th></th></tr></thead>
+    <tbody>
+    {{#each sell}}
+    <tr data-item-id="{{id}}" class="{{#if why}}fs-dim{{/if}}">
+      <td><img src="{{img}}" alt="" width="28" height="28"></td>
+      <td>{{name}}{{#if gear}} <span class="fs-sub">×{{quantity}}</span>{{/if}}{{#if why}}<div class="fs-sub">Can't sell: {{why}}</div>{{/if}}</td>
+      <td>{{grade}}</td><td>{{price}}{{#if gear}} <span class="fs-sub">each</span>{{/if}}</td>
+      <td class="fs-row-actions">{{#unless why}}{{#if gear}}<input type="number" data-qty value="1" min="1" max="{{quantity}}" step="1" class="fs-num">{{/if}}<button type="button" data-action="sell" data-tooltip="Sell"><i class="fa-solid fa-hand-holding-dollar"></i></button>{{/unless}}</td>
+    </tr>
+    {{else}}
+    <tr><td colspan="5" class="hint">Nothing to sell.</td></tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{/if}}{{/if}}
+
+  {{#if gm}}
+  <details class="fs-collapse fs-shop-gm" open>
+    <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> GM: running the shop</summary>
+    <div class="fs-shop-settings">
+      <label><input type="checkbox" name="system.open" {{checked sys.open}}> Open</label>
+      <label>Markup <input type="number" name="system.markup" value="{{sys.markup}}" min="0" step="5" class="fs-num">%</label>
+      <label><input type="checkbox" name="system.buys" {{checked sys.buys}}> Buys items</label>
+      <label>at <input type="number" name="system.sellRate" value="{{sys.sellRate}}" min="0" step="5" class="fs-num">% of their price</label>
+      <button type="button" data-action="pricing"><i class="fa-solid fa-scale-balanced"></i> World prices</button>
+    </div>
+    <h4>Random stock</h4>
+    <div class="fs-shop-random">
+      <div><strong>Kinds</strong> {{#each kinds}}<label><input type="checkbox" data-random-list="types" value="{{key}}" {{checked on}}> {{label}}</label>{{/each}}</div>
+      <div><strong>Rarities</strong> {{#each rarities}}<label><input type="checkbox" data-random-list="rarities" value="{{key}}" {{checked on}}> {{label}}</label>{{/each}}</div>
+      <div>
+        <label>Items <input type="number" name="system.random.count" value="{{random.count}}" min="1" step="1" class="fs-num"></label>
+        <label>Grades <input type="number" name="system.random.gradeMin" value="{{random.gradeMin}}" min="1" step="1" class="fs-num"> to <input type="number" name="system.random.gradeMax" value="{{random.gradeMax}}" min="1" step="1" class="fs-num"></label>
+        <label>Of each <input type="number" name="system.random.quantity" value="{{random.quantity}}" min="1" step="1" class="fs-num"></label>
+        <label><input type="checkbox" name="system.random.named" {{checked random.named}}> Named items only</label>
+        <label>Name has <input type="text" name="system.random.search" value="{{random.search}}" placeholder="e.g. Steel"></label>
+      </div>
+      <div class="fs-shop-random-buttons">
+        <button type="button" data-action="restock"><i class="fa-solid fa-dice"></i> Restock (replace)</button>
+        <button type="button" data-action="addRandom"><i class="fa-solid fa-plus"></i> Add random items</button>
+      </div>
+    </div>
+    <h4>Description</h4>
+    <textarea name="system.description" rows="3">{{sys.description}}</textarea>
+  </details>
+  {{else}}
+  {{#if sys.description}}<div class="fs-shop-desc">{{sys.description}}</div>{{/if}}
+  {{/if}}
+  </div>
+</div>

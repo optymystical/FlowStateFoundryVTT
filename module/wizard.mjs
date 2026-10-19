@@ -2,6 +2,7 @@ import { askImage } from "./pictures.mjs";
 import { STATS } from "./rules.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, RARITIES, weaponProfile, armorProfile, describeTags } from "./martial.mjs";
 import * as creation from "./creation.mjs";
+import { ITEM_CATALOG, ITEM_TYPES, entrySummary } from "./catalog.mjs";
 import * as mentalRules from "./mental-rules.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile } from "./magic.mjs";
 import * as actions from "./actions.mjs";
@@ -82,6 +83,12 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const eff = { str: pv.effective.str.value, dex: pv.effective.dex.value };
     const weaponTypes = Object.fromEntries(Object.entries(WEAPON_TYPES).filter(([k]) => k !== "unarmed" && k !== "improvised").map(([k, v]) => [k, `${v.label}${v.ranged ? " (ranged)" : ""}`]));
     const items = st.items.map((slot, index) => {
+      if (slot.kind === "named") {
+        const e = ITEM_CATALOG[slot.key];
+        return { index, ...slot, namedSlot: true, name: creation.slotName(slot), namedChoices: creation.allowedNamed(rules.maxRarity),
+          summary: e ? `${ITEM_TYPES[e.type]?.one ?? e.type} · ${entrySummary(e, { CASTING_FORMS })}` : "Pick a named item.",
+          effect: e?.description ? String(e.description).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "" };
+      }
       if (slot.kind === "foci" || slot.kind === "shroud") {
         const foci = slot.kind === "foci";
         const t = foci ? FOCI_TYPES[slot.fociType] : SHROUD_TYPES[slot.shroudType];
@@ -151,7 +158,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       };
     });
     const pickedTrees = Object.entries(st.trees).filter(([, t]) => t > 0).map(([id, t]) => `${skills.treeById(id)?.name} ${t}`);
-    const armorCount = st.items.filter(i => i.kind === "armor").length;
+    const armorCount = st.items.filter(creation.slotIsArmor).length;
     const errors = creation.validate(st, rules);
 
     return {
@@ -169,6 +176,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       canAddWeapon: st.items.length < rules.items, canAddArmor: st.items.length < rules.items && armorCount < 1,
       canAddMagic: st.items.length < rules.items,
       canAddAffix: st.items.length < rules.items,
+      canAddNamed: st.items.length < rules.items && Object.keys(creation.allowedNamed(rules.maxRarity)).length > 0,
       errors, ready: !errors.length
     };
   }

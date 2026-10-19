@@ -1,6 +1,6 @@
 import * as rules from "./rules.mjs";
 import { migrateAffixes } from "./affix-migration.mjs";
-import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStateAffixData, FlowStatePileData } from "./data.mjs";
+import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStateAffixData, FlowStatePileData, FlowStateShopData } from "./data.mjs";
 import * as martial from "./martial.mjs";
 import * as actions from "./actions.mjs";
 import { relayAllowed, relayKey, makeQueue } from "./relay-guard.mjs";
@@ -13,6 +13,7 @@ import { registerWorldData } from "./world-data.mjs";
 import { register as registerItems, registerItemSettings } from "./items.mjs";
 import { CatalogApp } from "./catalog-app.mjs";
 import { registerCodex } from "./codex-app.mjs";
+import { registerShops, registerShopSettings } from "./shop.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
 import "./arcana.mjs";
@@ -27,6 +28,7 @@ import "./mental.mjs";
 import * as gravity from "./gravity.mjs";
 import * as charges from "./charges.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const relayQueue = makeQueue();                 // GM relay: one request at a time per creature
 /* -------------------------------------------- */
@@ -43,7 +45,7 @@ class FlowStateActor extends Actor {
     if (allowed === false) return false;
     // Default: token artwork doesn't rotate (unless the creator set it).
     if (!foundry.utils.hasProperty(data, "prototypeToken.lockRotation")) this.updateSource({ "prototypeToken.lockRotation": true });
-    if (this.type === "pile") return;
+    if (notCreature(this)) return;
     // Token size follows creature Size (Size 3 = 1 square, each step doubles or halves).
     if (!foundry.utils.hasProperty(data, "prototypeToken.width")) {
       const sq = tokenSquares(this.system.size);
@@ -67,14 +69,14 @@ class FlowStateActor extends Actor {
    */
   _onCreate(data, options, userId) {
     super._onCreate(data, options, userId);
-    if (game.user.id !== userId || this.type === "pile") return;
+    if (game.user.id !== userId || notCreature(this)) return;
     if (this.items.some(i => i.type === "weapon" && i.system.weaponType === "unarmed")) return;
     this.createEmbeddedDocuments("Item", [foundry.utils.deepClone(UNARMED_ITEM)], { flowstateSystem: true });
   }
 
   _onUpdate(changed, options, userId) {
     super._onUpdate(changed, options, userId);
-    if (game.user.id !== userId || this.type === "pile") return;
+    if (game.user.id !== userId || notCreature(this)) return;
     this.#syncAfterUpdate(changed);
   }
 
@@ -182,13 +184,14 @@ Hooks.once("init", () => {
   registerItemSettings();
   registerItems();
   registerCodex();
+  registerShopSettings();
   game.flowstate = { rules, martial, actions, catalog: CatalogApp };
   // Partials the sheets share (the catalog line on every item sheet).
   (foundry.applications.handlebars?.loadTemplates ?? globalThis.loadTemplates)?.({ fsItemCatalog: "systems/flowstate/templates/item-catalog.hbs" });
 
   CONFIG.Actor.documentClass = FlowStateActor;
   CONFIG.Combat.documentClass = FlowStateCombat;
-  CONFIG.Actor.dataModels = { character: FlowStateActorData, npc: FlowStateActorData, pile: FlowStatePileData };
+  CONFIG.Actor.dataModels = { character: FlowStateActorData, npc: FlowStateActorData, pile: FlowStatePileData, shop: FlowStateShopData };
   CONFIG.Item.dataModels = { gear: FlowStateGearData, weapon: FlowStateWeaponData, armor: FlowStateArmorData, foci: FlowStateFociData, shroud: FlowStateShroudData, icon: FlowStateIconData, affix: FlowStateAffixData };
   CONFIG.Actor.trackableAttributes = {
     character: { bar: ["hp", "energy", "ap", "rp"], value: [] },
@@ -352,6 +355,7 @@ Hooks.once("init", () => {
   const { DocumentSheetConfig } = foundry.applications.apps;
   DocumentSheetConfig.registerSheet(Actor, "flowstate", FlowStateActorSheet, { types: ["character", "npc"], makeDefault: true, label: "Flow State Sheet" });
   DocumentSheetConfig.registerSheet(Actor, "flowstate", FlowStatePileSheet, { types: ["pile"], makeDefault: true, label: "Dropped Items" });
+  registerShops();
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateItemSheet, { types: ["gear"], makeDefault: true, label: "Flow State Gear" });
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateWeaponSheet, { types: ["weapon"], makeDefault: true, label: "Flow State Weapon" });
   DocumentSheetConfig.registerSheet(Item, "flowstate", FlowStateArmorSheet, { types: ["armor"], makeDefault: true, label: "Flow State Armor" });
@@ -565,7 +569,7 @@ Hooks.once("ready", () => {
     if (data?.action === "uploadChunk") return pictures.receiveUpload(data);
     if (!Object.prototype.hasOwnProperty.call(actions.GM_ACTIONS, data?.action)) return;                // not a GM request (questions and answers between players go over the same socket)
     if (!relayAllowed(data?.action, data, actions.GM_ACTIONS)) return console.warn(`flowstate | refused a relayed "${data?.action}" request`, data);
-    await relayQueue(relayKey(data), () => actions.GM_ACTIONS[data.action](data));          // one request at a time per creature, so none reads a number another is about to change
+    await relayQueue(relayKey(data), () => actions.GM_ACTIONS[data.action](data, senderId));   // a handler that acts for a player (a shop) checks what they own          // one request at a time per creature, so none reads a number another is about to change
   });
   pictures.listenForBrowse();
   charges.listen();
@@ -698,7 +702,7 @@ Hooks.on("preUpdateActor", (actor, changes, options) => {
 });
 
 Hooks.on("preUpdateActor", (actor, changes, options) => {
-  if (game.user.isGM || actor.type === "pile" || options?.flowstateSpend || options?.flowstateSystem) return;
+  if (game.user.isGM || notCreature(actor) || options?.flowstateSpend || options?.flowstateSystem) return;
   const touched = guardedChanges(actor, changes, BUILD_KEYS);
   if (!touched.length) return;
   if (actor.system.creation) {
@@ -985,7 +989,7 @@ for (const hook of ["updateItem", "deleteItem"]) {
 Hooks.once("ready", async () => {
   if (!game.user.isActiveGM) return;
   for (const actor of game.actors) {
-    if (actor.type === "pile") continue;
+    if (notCreature(actor)) continue;
     if (actor.items.some(i => i.type === "weapon" && i.system.weaponType === "unarmed")) continue;
     const free = 2 - handsUsed(actor);
     const data = foundry.utils.deepClone(UNARMED_ITEM);
@@ -1587,7 +1591,7 @@ Hooks.on("createActiveEffect", effect => {
 /* -------------------------------------------- */
 
 Hooks.on("updateActor", async (actor, changes, options, userId) => {
-  if (userId !== game.user.id || actor.type === "pile") return;
+  if (userId !== game.user.id || notCreature(actor)) return;
   const size = foundry.utils.getProperty(changes, "system.size");
   if (size === undefined) return;
   const sq = tokenSquares(size);
@@ -1605,7 +1609,7 @@ const ammoTotal = (actor, type, excludeId = null) => actor.items.filter(i => i.t
 
 Hooks.on("preCreateItem", (item) => {
   const actor = item.parent;
-  if (!(actor instanceof Actor) || item.type !== "gear" || !item.system?.ammoType) return;
+  if (!(actor instanceof Actor) || notCreature(actor) || item.type !== "gear" || !item.system?.ammoType) return;          // a shop or a pile can hold more
   const have = ammoTotal(actor, item.system.ammoType);
   if (have + (item.system.quantity ?? 0) > actions.AMMO_MAX) {
     ui.notifications.warn(`${actor.name} can carry at most ${actions.AMMO_MAX} ${actions.ammoLabel(item.system.ammoType)} (has ${have}).`);
@@ -1615,7 +1619,7 @@ Hooks.on("preCreateItem", (item) => {
 
 Hooks.on("preUpdateItem", (item, changes) => {
   const actor = item.parent;
-  if (!(actor instanceof Actor) || item.type !== "gear") return;
+  if (!(actor instanceof Actor) || notCreature(actor) || item.type !== "gear") return;
   const type = changed(changes, "system.ammoType") ?? item.system.ammoType;
   const qty = changed(changes, "system.quantity") ?? item.system.quantity;
   if (!type || (qty <= item.system.quantity && type === item.system.ammoType)) return;

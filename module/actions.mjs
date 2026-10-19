@@ -11,6 +11,7 @@ import { mayHelp } from "./sides.mjs";
 import { isDeclined } from "./reactions.mjs";
 import { borderDistance, gridFor } from "./distance.mjs";
 import { pickSpot, candidateSpots } from "./placement.mjs";
+import { notCreature } from "./kinds.mjs";
 export { gridFor };
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
@@ -364,7 +365,7 @@ export async function rollD100(actor, label, { apCost = 0 } = {}) {
   let socialNet = 0;
   const social = [];
   if (label === "Persuasion" || label === "Deception") {
-    const tgt = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== actor.uuid);
+    const tgt = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== actor.uuid);
     if (tgt.length === 1) {
       const t = tgt[0];
       if (ab.dexterity(actor, 1) && ab.beatsScaled(ab.statValue(actor, "dex"), ab.statValue(t, "dex"), actor.system.size, t.system.size, { larger: "self" })) {
@@ -449,7 +450,7 @@ export function tokenDistance(a, b) {
  */
 export function checkRange(actor, maxRange, what, tokens = null, from = null) {
   if (!game.settings.get("flowstate", "enforceRange")) return true;
-  const targets = (tokens ?? [...game.user.targets]).filter(t => t.actor?.type !== "pile");
+  const targets = (tokens ?? [...game.user.targets]).filter(t => !notCreature(t.actor));
   const source = from ?? attackerToken(actor);
   if (!targets.length || !source || !canvas?.grid) return true;
   const out = targets
@@ -537,7 +538,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   // Martial Theory T0 Grappling: Light = grapple instead of damage, Heavy = damage + grapple. Your size or smaller.
   // Follow-ups (Fast, Solitary, Riposte...) can grapple too, when a target is small enough to grab.
   const grabSize = actor.system.size + (ab.grappling(actor, 3) ? 1 : 0);
-  const grabTargets = (followup?.targetActors ?? [...(game.user.targets ?? [])].map(t => t.actor)).filter(a => a && a.type !== "pile");
+  const grabTargets = (followup?.targetActors ?? [...(game.user.targets ?? [])].map(t => t.actor)).filter(a => a && !notCreature(a));
   const canGrab = !followup || (!followup.whirlwind && grabTargets.length > 0 && grabTargets.every(a => (a.system?.size ?? 3) <= grabSize));
   const grappleOpt = unarmed && canGrab
     ? `<div class="form-group"><label>Grapple (${followup?.weight === "heavy" ? "Heavy: damage + grapple" : followup?.weight === "light" ? "Light: grapple only, no damage" : "Light: grapple only · Heavy: damage + grapple"})</label><input type="checkbox" name="grapple" ${presetGrapple ? "checked" : ""}></div>` : "";
@@ -633,7 +634,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   }
 
   // T2 Martial trees: Strength Methods, Striker, Defender, Weighted, Assault.
-  const dlgTargets = (followup?.targetActors ?? [...(game.user.targets ?? [])].map(t => t.actor)).filter(a => a && a.type !== "pile");
+  const dlgTargets = (followup?.targetActors ?? [...(game.user.targets ?? [])].map(t => t.actor)).filter(a => a && !notCreature(a));
   const allProne = dlgTargets.length > 0 && dlgTargets.every(a => a.statuses?.has("prone"));
   let t2Opts = "";
   if (ab.strength(actor, 2) && (unarmed ? followup?.weight !== "light" : w.weight === "heavy")) {
@@ -748,7 +749,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   }
 
   // Targeting (Ch8): with one creature targeted, you can aim at one of its equipped items instead of the creature.
-  const aimTargets = (followup?.targetActors ?? [...(game.user.targets ?? [])].map(t => t.actor)).filter(a => a && a.type !== "pile");
+  const aimTargets = (followup?.targetActors ?? [...(game.user.targets ?? [])].map(t => t.actor)).filter(a => a && !notCreature(a));
   const aimables = aimTargets.length === 1 ? aimableItems(aimTargets[0]) : [];
   const aimField = aimables.length ? `<div class="form-group"><label>Target</label><select name="aim">
       <option value="">${esc(aimTargets[0].name)}</option>
@@ -1125,7 +1126,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   // What Goes Around (Circular T1): the thrown weapon returns with an extra attack (from half stealth with Vector Assault, T5).
   if (wga) followups.push({ kind: "return", itemId: item.id, attackType, net: 0, weight: "", label: `What Goes Around: return attack${ab.circular(actor, item, 5) ? " (half stealth)" : ""}` });
   const thrown = opts.mode === "throw" || followup?.kind === "return";
-  const landingToken = thrown ? [...game.user.targets].find(t => t.actor?.type !== "pile") ?? null : null;
+  const landingToken = thrown ? [...game.user.targets].find(t => !notCreature(t.actor)) ?? null : null;
   // Sword and Board (Defender T3): the shield attack goes first, against the same targets.
   let swordBoard = null;
   if (boardItem) {
@@ -1165,7 +1166,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   });
   await mentalHook?.attackCost?.(actor, { ap, rp: rpPaid });                                   // Will of Body and Spirit (Mental T4)
   // Weaving: the woven spell goes at the same target, free of AP/RP, once the attack is made.
-  if (opts.weave && weaveHook) await weaveHook.run(actor, { ap: p.ap, melee: opts.mode === "strike" || unarmed, targetActors: explicitTargets ?? [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile") });
+  if (opts.weave && weaveHook) await weaveHook.run(actor, { ap: p.ap, melee: opts.mode === "strike" || unarmed, targetActors: explicitTargets ?? [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a)) });
   // A thrown weapon leaves your hand and lands by what it was thrown at. A Shield Toss comes back on a hit
   // (it lands by the target on a miss, handled when the target responds).
   if (thrown && !(shieldToss && landingToken) && !wga && followup?.kind !== "return") await dropItem(actor, item, landingToken);
@@ -1418,7 +1419,7 @@ function handsHeld(actor) {
  * Weapons can be equipped immediately at no extra cost, putting away a held item of your choice if hands are full.
  */
 export async function pickUp(pile, item) {
-  const taker = canvas?.tokens?.controlled?.find(t => t.actor && t.actor.type !== "pile")?.actor ?? game.user.character;
+  const taker = canvas?.tokens?.controlled?.find(t => t.actor && !notCreature(t.actor))?.actor ?? game.user.character;
   if (!taker) return ui.notifications.warn("Select your token first, then pick the item up.");
   if (!taker.isOwner) return ui.notifications.warn(`You don't control ${taker.name}.`);
   if (cantAct(taker, "pick things up")) return;
@@ -1518,10 +1519,10 @@ export async function performAttack(actor, opts) {
     opts = { ...opts, net: (opts.net ?? 0) - 1, notes: [...(opts.notes ?? []), "Lead Blindness (Marked): Disadvantage"] };
   }
   opts = withStealthStatus(actor, opts);
-  const picked = (opts.targetActors ?? [...game.user.targets].map(t => t.actor)).filter(a => a && (a.type !== "pile" || objectOf(a)));
+  const picked = (opts.targetActors ?? [...game.user.targets].map(t => t.actor)).filter(a => a && (!notCreature(a) || objectOf(a)));
   // An object on the ground (a pile holding a Non-Archetypal object) is attacked on its own: it always hits.
   if (picked.length === 1 && objectOf(picked[0])) return attackObject(actor, opts, picked[0], objectOf(picked[0]));
-  const targets = picked.filter(a => a.type !== "pile");
+  const targets = picked.filter(a => !notCreature(a));
   if (targets.length) return startExchange(actor, (await mentalHook?.attackStart?.(actor, opts, targets)) ?? opts, targets);
   return untargetedAttack(actor, opts);
 }
@@ -1811,7 +1812,7 @@ function blockersFor(attacker, target) {
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
     const a = tok.actor;
-    if (!a || a.type === "pile" || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.has(a.uuid) || !mayHelp(a, target)) continue;
+    if (!a || notCreature(a) || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.has(a.uuid) || !mayHelp(a, target)) continue;
     const shields = ab.defenderHeld(a, 1);
     if (!shields.length) continue;
     // A Shield Toss guard Blocks on its own (see shieldGuardItem); the guard's owner can still Block normally when in reach.
@@ -1850,7 +1851,7 @@ export function adjustGuards(attacker, target) {
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
     const a = tok.actor;
-    if (!a || a.type === "pile" || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.some(x => x.uuid === a.uuid) || !mayHelp(a, target)) continue;
+    if (!a || notCreature(a) || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.some(x => x.uuid === a.uuid) || !mayHelp(a, target)) continue;
     if (!spellEffects(a, "shield").some(e => e.flags.flowstate.spellEffect.adjust && e.flags.flowstate.spellEffect.hp > 0)) continue;
     if (tTok && tokenDistance(tok, tTok) <= 10) out.push(a);
   }
@@ -2296,7 +2297,7 @@ export async function redirect(defenseMessage) {
   const attacker = await fromUuid(defense.attacker);
   if (!defender?.isOwner) return ui.notifications.warn(`Only ${defender?.name ?? "the defender"}'s owner can Redirect.`);
   if (!attacker) return;
-  const picks = [...game.user.targets].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== defender.uuid && a.uuid !== attacker.uuid);
+  const picks = [...game.user.targets].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== defender.uuid && a.uuid !== attacker.uuid);
   if (picks.length !== 1) return ui.notifications.warn("Target exactly one creature to redirect the attack into.");
   const into = picks[0];
 
@@ -2346,7 +2347,7 @@ function adjacent(a, b) {
 function adjacentSpot(anchor, mover, attackerTok, reach) {
   if (offSquare()) {
     const g = canvas.grid, box = rectOf(mover);
-    const others = (canvas.tokens?.placeables ?? []).filter(t => t.id !== mover.id && t.id !== anchor.id && t.actor?.type !== "pile").map(rectOf);
+    const others = (canvas.tokens?.placeables ?? []).filter(t => t.id !== mover.id && t.id !== anchor.id && !notCreature(t.actor)).map(rectOf);
     return pickSpot({ anchor: rectOf(anchor), mover: { w: box.w, h: box.h }, others, from: box, snap: p => snapTopLeft(mover.document, p),
       inReach: c => attackerTok ? g.measurePath([attackerTok.center, c]).distance <= reach + (g.distance ?? 5) * 0.5 : true });
   }
@@ -2354,7 +2355,7 @@ function adjacentSpot(anchor, mover, attackerTok, reach) {
   const A = footprint(anchor);
   const [mx, my, mw, mh] = footprint(mover);
   const others = (canvas.tokens?.placeables ?? [])
-    .filter(t => t.id !== mover.id && t.id !== anchor.id && t.actor?.type !== "pile")
+    .filter(t => t.id !== mover.id && t.id !== anchor.id && !notCreature(t.actor))
     .map(t => footprint(t));
   let best = null;
   for (let i = A[0] - mw; i <= A[0] + A[2]; i++) {
@@ -2555,7 +2556,7 @@ export async function markTarget(actor) {
   if (cantAct(actor, "Mark")) return;
   const weapons = ab.rapidHeld(actor, 3);
   if (!weapons.length) return ui.notifications.warn(`${actor.name} needs a held Rapid weapon (Rapid Weapons Tier 3).`);
-  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== actor.uuid);
+  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== actor.uuid);
   if (targets.length !== 1) return ui.notifications.warn("Target exactly one creature to Mark.");
   const target = targets[0];
   const weapon = weapons.sort((a, b) => (b.system.profile.range ?? 0) - (a.system.profile.range ?? 0))[0];
@@ -2860,7 +2861,7 @@ export async function bodyslam(actor) {
   if (cantAct(actor, "attack")) return;
   const info = ab.bodyslamInfo(actor);
   if (!info) return ui.notifications.warn(`${actor.name} needs Bodyslam (Heavy T3 in Heavy armor, or Titanic T2 in Titanic armor).`);
-  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== actor.uuid);
+  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== actor.uuid);
   if (targets.length !== 1) return ui.notifications.warn("Target exactly one creature to Bodyslam.");
   const armor = actor.system.armor;
   const amount = (armor?.system.profile?.limit ?? 0) + ab.statMinOf(actor, "con");
@@ -2898,7 +2899,7 @@ export async function shieldBounce(defenseMessage) {
   const o = game.messages.get(defense.attackMessage)?.getFlag("flowstate", "attack")?.opts ?? {};
   const shield = o.shieldToss ? await fromUuid(o.shieldToss.item) : null;
   if (!shield || shield.parent?.uuid !== attacker.uuid) return ui.notifications.warn("The shield isn't in hand any more.");
-  const picks = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== from?.uuid && a.uuid !== attacker.uuid);
+  const picks = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== from?.uuid && a.uuid !== attacker.uuid);
   if (picks.length !== 1) return ui.notifications.warn("Target exactly one other creature to bounce the shield to.");
   const next = picks[0];
   const range = THROW[shield.system.profile.throwType]?.range ?? 100;
@@ -2933,13 +2934,13 @@ export async function checkPalisade(token, dest) {
   const combat = game.combat;
   if (!combat?.started || !globalThis.canvas?.grid || !token?.object) return;
   const mover = token.actor;
-  if (!mover || mover.type === "pile" || !combat.combatants.some(c => c.actor?.uuid === mover.uuid)) return;
+  if (!mover || notCreature(mover) || !combat.combatants.some(c => c.actor?.uuid === mover.uuid)) return;
   const gs = canvas.grid.size;
   const w = (token.width ?? 1) * gs, h = (token.height ?? 1) * gs;
   const oldC = { x: token.x + w / 2, y: token.y + h / 2 }, newC = { x: (dest.x ?? token.x) + w / 2, y: (dest.y ?? token.y) + h / 2 };
   for (const t of canvas.tokens.placeables) {
     const a = t.actor;
-    if (!a || t.id === token.id || a.type === "pile" || helpless(a) || t.document.disposition === token.disposition) continue;
+    if (!a || t.id === token.id || notCreature(a) || helpless(a) || t.document.disposition === token.disposition) continue;
     const weapons = ab.reachHeld(a, 1);
     if (!weapons.length) continue;
     const reach = (a.system.derived?.size?.melee ?? 5) * Math.max(...weapons.map(i => i.system.profile.farstrike ?? 1));
@@ -3010,7 +3011,7 @@ export async function palisade(card, wall = false) {
 export async function spotWeakness(actor) {
   if (cantAct(actor, "do that")) return;
   if (!ab.dexterity(actor, 4)) return ui.notifications.warn("Spot Weakness requires Dexterity Methods Tier 4.");
-  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== actor.uuid);
+  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== actor.uuid);
   if (targets.length !== 1) return ui.notifications.warn("Target exactly one creature you can already sense.");
   const t = targets[0];
   const cost = ab.DEXTERITY_COST.spotWeakness(actor);
@@ -3183,7 +3184,7 @@ export async function slamGrappled(actor) {
   if (!ab.grappling(actor, 5)) return ui.notifications.warn("Living Weapon requires Grappling Methods Tier 5.");
   const victim = await pickGrappled(actor, "Living Weapon");
   if (!victim) return;
-  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== victim.uuid && a.uuid !== actor.uuid);
+  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== victim.uuid && a.uuid !== actor.uuid);
   if (targets.length !== 1) return ui.notifications.warn("Target exactly one creature to swing them into.");
   const force = 10 * actor.system.derived.effective.str.value;
   const opts = await optionsDialog(`Living Weapon: ${victim.name}`, `<p class="hint">Melee attack roll against ${esc(targets[0].name)}. On a hit, Force ${force} (10 × Str) at 0 ft: both take Force damage.</p>
@@ -3210,7 +3211,7 @@ export async function slamGrappled(actor) {
 export async function taunt(actor, { aggro = false } = {}) {
   if (cantAct(actor, "do that")) return;
   if (!ab.constitution(actor, aggro ? 4 : 2)) return ui.notifications.warn(`${aggro ? "Pull Aggro" : "Taunt"} requires Constitution Methods Tier ${aggro ? 4 : 2}.`);
-  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== actor.uuid);
+  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== actor.uuid);
   if (!targets.length || (!aggro && targets.length !== 1)) return ui.notifications.warn(aggro ? "Target every creature within 30 ft to Pull Aggro on." : "Target exactly one creature to Taunt.");
   if (!checkRange(actor, aggro ? 30 : 100, aggro ? "Pull Aggro" : "Taunt", targets.flatMap(a => a.getActiveTokens?.() ?? []))) return;
   const opts = await optionsDialog(aggro ? "Pull Aggro" : "Taunt", `<div class="form-group"><label>Check</label><select name="check"><option value="Persuasion">Persuasion</option><option value="Deception">Deception</option></select></div>${netField()}`, "Taunt");
@@ -3509,7 +3510,7 @@ export async function throwGrappled(actor) {
   let feet = forceFeet(force, victim, false);
   const crunchable = ab.strength(actor, 3);
   const crunchFeet = crunchable ? forceFeet(force, victim, true) : 0;
-  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== victim.uuid);
+  const targets = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== victim.uuid);
   if (targets.length > 1) return ui.notifications.warn("Target only one creature to throw at.");
   const target = targets[0] ?? null;
   const opts = await optionsDialog(`Throw ${victim.name}`, `
@@ -3955,7 +3956,7 @@ export async function spellForce(attacker, target, o, result, fd, label, stacksO
 async function spellDamageFacts(profile, o, attacker, target, defense, dmgOpts) {
   const sp = o.spell;
   // "Living": a creature that isn't fully Magical (constructs, spirits).
-  const living = target.type !== "pile" && !target.system.magical;
+  const living = !notCreature(target) && !target.system.magical;
   const base = profile.damage;
   const baseMax = base ? base.n * Math.max(1, sp.power) * base.sides : 0;
   const stacks = (o.stacks ?? 0) + (defense.result?.critStacks ?? 0);
@@ -3992,7 +3993,7 @@ export async function knockback(message) {
   if (!target) return ui.notifications.warn("The target no longer exists.");
   if (info.sea || info.fixed) return seaKnockback(message, info, attacker, target);
   // Knocking them into another creature is a targeted attack: target that creature first.
-  const into = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile" && a.uuid !== target.uuid);
+  const into = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== target.uuid);
   const aimAt = into.length === 1 ? into[0] : null;
   const crunchable = ab.strength(attacker, 3);
   const crunchFeet = crunchable ? forceFeet(info.force, target, true) : 0;
@@ -5275,7 +5276,7 @@ function askGM(action, payload) {
  * Returns { amount, html, reflect } or null when it can't be asked (then applyDamage asks as usual).
  */
 export async function wardNegate(target, amount, type, { source = null, attacker = null, magic = false } = {}) {
-  if (!mentalHook?.negate || amount <= 0 || target.type === "pile") return null;
+  if (!mentalHook?.negate || amount <= 0 || notCreature(target)) return null;
   if (target.isOwner) {
     const r = await mentalHook.negate(target, amount, type, { source, attacker, magic });
     return { amount: r.amount, html: r.html ?? "", reflect: r.reflect ?? null };
@@ -5658,7 +5659,7 @@ async function refundEnergy(actor, amount) {
 
 /** Outside combat, Energy is always full (and an attuned Shroud recovers fully, see `refillShroud`). */
 export async function refillEnergy(actor) {
-  if (!actor?.isOwner || actor.type === "pile" || inActiveCombat(actor) || actor.getFlag?.("flowstate", "rite")) return;   // a Rite keeps Energy at zero
+  if (!actor?.isOwner || notCreature(actor) || inActiveCombat(actor) || actor.getFlag?.("flowstate", "rite")) return;   // a Rite keeps Energy at zero
   const { value, max } = actor.system.energy ?? {};
   if (value !== undefined && value < max) await actor.update({ "system.energy.value": max });
   await refillShroud(actor);
@@ -5669,7 +5670,7 @@ export async function refillEnergy(actor) {
  * In combat it recovers at the start of its wearer's turns (`shroudTurnStart`).
  */
 export async function refillShroud(actor) {
-  if (!actor || actor.type === "pile" || inActiveCombat(actor)) return;
+  if (!actor || notCreature(actor) || inActiveCombat(actor)) return;
   const sh = actor.system?.shroud;
   if (!sh || sh.system.profile?.noRegen) return;
   const upd = {};
@@ -5928,7 +5929,7 @@ export async function pickSceneTarget(actor, { title = "Pick a target", within =
   const seen = new Set(), cands = [];
   for (const t of globalThis.canvas?.tokens?.placeables ?? []) {
     const a = t.actor;
-    if (!a || a.type === "pile" || seen.has(a.uuid) || exclude.includes(a.uuid) || helpless(a)) continue;
+    if (!a || notCreature(a) || seen.has(a.uuid) || exclude.includes(a.uuid) || helpless(a)) continue;
     if (!anchors.filter(Boolean).every(an => tokenDistance(an, t) <= within)) continue;
     seen.add(a.uuid); cands.push(a);
   }
@@ -5957,7 +5958,7 @@ export async function electricTransfer(message, preset = null) {
 /** The optional Ignite Spread rule (a world setting): Ignite grows 10% each turn up to the Pain Threshold; at it, it spreads twice to surrounding tiles. */
 const igniteSpreadOn = () => { try { return game.settings.get("flowstate", "igniteSpread") === true; } catch (err) { return false; } };
 export async function igniteSpread(actor, ignite) {
-  if (!igniteSpreadOn() || !(ignite > 0) || actor.type === "pile") return;
+  if (!igniteSpreadOn() || !(ignite > 0) || notCreature(actor)) return;
   if (actor.getFlag?.("flowstate", "ignitePutOut")) { await actor.unsetFlag("flowstate", "ignitePutOut"); return; }
   const limit = actor.system.hp?.pain ?? Infinity;
   if (ignite < limit) {
@@ -6179,7 +6180,7 @@ export async function placeShroud(actor) {
   const sh = actor.system.shroud;
   const kind = sh?.system.profile?.placed;
   if (!kind) return ui.notifications.warn(`${actor.name} needs a melded Ward or Bond Shroud.`);
-  const picks = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
+  const picks = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a));
   const target = kind === "mantle" ? (picks[0] ?? actor) : picks.find(a => a.uuid !== actor.uuid);
   if (!target) return ui.notifications.warn(kind === "mantle" ? "Target a creature (or none, for yourself)." : "Target the creature to Bond with.");
   if (picks.length > 1) return ui.notifications.warn("Target just one creature.");
@@ -6251,7 +6252,7 @@ function quartzGuards(attacker, target) {
   const tTok = target.getActiveTokens?.()[0];
   for (const tok of globalThis.canvas?.tokens?.placeables ?? []) {
     const a = tok.actor;
-    if (!a || a.type === "pile" || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.some(x => x.uuid === a.uuid) || !mayHelp(a, target)) continue;
+    if (!a || notCreature(a) || a.uuid === target.uuid || a.uuid === attacker?.uuid || helpless(a) || out.some(x => x.uuid === a.uuid) || !mayHelp(a, target)) continue;
     const sh = a.system?.shroud;
     if (!hasAffix(sh, "quartz") || sh.system.durability.value <= 0) continue;
     if (tTok && tokenDistance(tok, tTok) <= (a.system.derived?.size?.melee ?? 5)) out.push(a);

@@ -15,12 +15,13 @@ import { tierOf } from "./skills.mjs";
 import { isDeclined } from "./reactions.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, DAMAGE_PROVIDERS, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = f => new Roll(f).evaluate();
 const minOf = (a, k) => ab.statMinOf(a, k);
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
-const living = a => a && a.type !== "pile";
+const living = a => a && !notCreature(a);
 const livingTarget = a => living(a) && !a.system?.magical;                   // what the Mental doc means by a living target (no Summons, Animations or objects)
 const fromU = u => globalThis.fromUuidSync?.(u) ?? null;
 const ids = { dest: "mental-destruction-nightmare", peace: "mental-peace-dream", war: "mental-war-nightmare", adapt: "mental-adaptation-dream", perf: "mental-perfection-nightmare" };
@@ -138,8 +139,8 @@ export async function anyHit({ attacker, target, result, hitKey = null }) {
   if (hitKey) { if (infusedHits.has(hitKey)) return; infusedHits.add(hitKey); if (infusedHits.size > 200) infusedHits.delete(infusedHits.values().next().value); }
   for (const a of actorsInPlay()) {
     const tn = tenetOf(a);
-    if (tn?.id !== "mental-destruction-nightmare:infuse" || a.type === "pile") continue;
-    if (attacker.uuid !== a.uuid && attacker.type === "pile") continue;
+    if (tn?.id !== "mental-destruction-nightmare:infuse" || notCreature(a)) continue;
+    if (attacker.uuid !== a.uuid && notCreature(attacker)) continue;
     if (a.uuid === target.uuid && attacker.uuid !== a.uuid) continue;          // nobody Infuses an attack that lands on themselves
     if (!mayHelp(a, attacker)) continue;                                        // "a willing character": not across the two sides of the scene
     const ta = attackerToken(a), tb = attackerToken(attacker);
@@ -601,7 +602,7 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     const cap = bold(d.bstacks, 10 * d.power), take = Math.min(cap, n);
     const reach = d.range === "melee" ? caster.system.derived?.size?.melee ?? 5 : 100;
     const ct = attackerToken(caster);
-    const cands = (globalThis.canvas?.tokens?.placeables ?? []).filter(t => t.actor && t.actor.type !== "pile" && t.actor.uuid !== target.uuid && t.actor.uuid !== caster.uuid && (!ct || tokenDistance(ct, t) <= reach)).map(t => t.actor);
+    const cands = (globalThis.canvas?.tokens?.placeables ?? []).filter(t => t.actor && !notCreature(t.actor) && t.actor.uuid !== target.uuid && t.actor.uuid !== caster.uuid && (!ct || tokenDistance(ct, t) <= reach)).map(t => t.actor);
     if (!cands.length) continue;
     const ans = await askFor(caster, { react: "bloodbond", title: `${caster.name}: Bloodbond`, ok: "Duplicate", html: `<p>${esc(attacker.name)} deals <strong>${n}</strong> ${esc(type)} damage while Bloodbonded. Duplicate up to <strong>${take}</strong> of it onto another target (a new attack roll)?</p><div class="fs-field"><label>Onto</label><select name="who">${cands.map(a => `<option value="${a.uuid}">${esc(a.name)}</option>`).join("")}</select></div>` });
     if (!ans?.who) continue;

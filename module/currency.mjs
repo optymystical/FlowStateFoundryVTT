@@ -4,6 +4,7 @@
  */
 import { askImage } from "./pictures.mjs";
 import { sanitizeCurrencies, defaultCurrencies, normalizeCurrency, MAX_CURRENCIES, DEFAULT_IMG } from "./currency-rules.mjs";
+import { notCreature } from "./kinds.mjs";
 
 /** The world's currencies, made safe. */
 export function getCurrencies() {
@@ -91,7 +92,7 @@ export function registerCurrencySettings() {
 export function register() {
   Hooks.on("preUpdateActor", (actor, changes) => {
     const edited = foundry.utils.getProperty(changes, "system.currency");
-    if (!edited || actor.type === "pile") return;
+    if (!edited || notCreature(actor)) return;
     foundry.utils.setProperty(changes, "system.currency", normalizeCurrency(getCurrencies(), { ...(actor.system.currency ?? {}), ...edited }));
   });
 }

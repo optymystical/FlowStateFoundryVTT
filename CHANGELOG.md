@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.71.0:** **Shops.** A new Shop actor: put a merchant token on the map, stock it from the Forge, by dragging items in, or with random stock rules (kinds, rarities, Grades, how many), and players buy and sell with their characters' money. Prices come from the catalog, or the world's price per rarity, plus a flat amount per Grade above 1 (Settings → Shop prices); each shop has a markup and a sell rate, and each stock row can have its own price, a count or unlimited stock. Money changes hands in whichever linked currencies a character holds, with change. Every trade goes through the GM's client and is whispered as a receipt. The New Character wizard can now start characters with the GM's named catalog items.
+
 **0.70.2:** Fixed: the Journal sidebar's Codex button spans the full width (like the Forge's), instead of sitting small at the top.
 
 **0.70.1:** **Force (the Rules doc).** Downward Force knocks a creature prone only when it's at least the creature's height (Sizes 1–5: 1, 3, 5, 10, 20 ft; shown on the Size pages in the Codex): being driven into the ground, a grapple slammed down, and a damaging fall landing (Gravity is downward Force) all check it. Forced movement (Sea's moves, the Fortune Table) already skipped Lift and half Max HP, with walls turning the feet left into Force damage; that's now written down as the doc's rule.

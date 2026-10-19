@@ -12,6 +12,7 @@ import { askFor, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { allied, opposed } from "./sides.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, DAMAGE_PROVIDERS, TURN_START, rolled, tenetOf, tryOnce } from "./wonders.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const LIGHT = "mental-light-dream", DARK = "mental-dark-nightmare";
@@ -21,7 +22,7 @@ const minOf = (a, k) => ab.statMinOf(a, k);
 const fromU = u => globalThis.fromUuidSync?.(u) ?? null;
 const dataOf = e => e.flags.flowstate.spellEffect;
 const fx = (actor, kind) => (actor ? spellEffects(actor, kind) : []);
-const live = a => a && a.type !== "pile";
+const live = a => a && !notCreature(a);
 /** The biggest value of a spell-effect field on an actor (the derived die penalties use the same rule: the worst one applies). */
 const penOf = (actor, key) => Math.max(0, ...(actor?.effects ?? []).filter(e => !e.disabled).map(e => Number(e.flags?.flowstate?.spellEffect?.[key]) || 0));
 const near = (a, b, ft) => { const ta = attackerToken(a), tb = attackerToken(b); return !!ta && !!tb && !!globalThis.canvas?.grid && tokenDistance(ta, tb) <= ft; };

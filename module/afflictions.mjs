@@ -15,6 +15,7 @@ import {
 } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES, STATS } from "./rules.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = formula => new Roll(formula).evaluate();
@@ -325,7 +326,7 @@ export const hexFlags = (target, h) => ({ flowstate: { afflict: { acts: [{ act: 
 /** A Hex's trigger happened to this creature. kind: harm | move | roll | failsuccess | manual. */
 const firing = new Set();
 export async function hexTrigger(actor, kind, info = {}) {
-  if (!actor || actor.type === "pile") return;
+  if (!actor || notCreature(actor)) return;
   for (const e of spellEffects(actor, "hex")) {
     const d = data(e);
     const hit = kind === "manual" ? d.hid === info.hid
@@ -364,7 +365,7 @@ async function fireHex(actor, e) {
     const dmgOpts = { ...d, fromHex: true, bypassArmor: false };
     let sides = fx.hexSides(d.sides, d.fester, d.procs);
     // Cut + Hex: +12 die size against a living target the Hex would damage directly (its biggest roll reaching HP).
-    const living = actor.type !== "pile" && !actor.system?.magical;
+    const living = !notCreature(actor) && !actor.system?.magical;
     const direct = d.livingDie && living ? (await damageOutcome(actor, d.n * (sides + d.livingDie), d.type === "health" ? "arcane" : d.type, { bypass: d.type === "health", ignoreArmor: !!dmgOpts.bypassArmor, archetype: "magic" })).toHp > 0 : false;
     if (direct) sides += d.livingDie;
     const dmg = await roll(dice(d.n, sides));
@@ -505,7 +506,7 @@ export async function casterTurn(caster) {
 /** Pick a creature on the scene (within range of the anchors); with no scene tokens, the caster's current targets stand in. */
 async function pickTarget(actor, opts) {
   if (!(globalThis.canvas?.tokens?.placeables?.length)) {
-    return [...(globalThis.game.user?.targets ?? [])].map(t => t.actor).find(a => a && a.type !== "pile" && !(opts.exclude ?? []).includes(a.uuid)) ?? null;
+    return [...(globalThis.game.user?.targets ?? [])].map(t => t.actor).find(a => a && !notCreature(a) && !(opts.exclude ?? []).includes(a.uuid)) ?? null;
   }
   return pickSceneTarget(actor, opts);
 }

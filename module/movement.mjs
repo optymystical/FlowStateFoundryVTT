@@ -11,6 +11,7 @@
  */
 import { planMove, maxMove, cutPath } from "./movement-rules.mjs";
 import { movementMode, movementTracked, moveParams, moveLedger, turnKey } from "./actions.mjs";
+import { notCreature } from "./kinds.mjs";
 
 /**
  * Moves planned on this client whose update hasn't landed yet (actor uuid → { key, ledger, owed, n, at, sure }), so a quick second move (the arrow
@@ -65,7 +66,7 @@ function redoShorter(token, movement, cut) {
 function preMove(token, movement, options) {
   try {
     const actor = token.actor;
-    if (!actor || actor.type === "pile" || isForcedMove(options, movement.method)) return;
+    if (!actor || notCreature(actor) || isForcedMove(options, movement.method)) return;
     const feet = Number(movement.passed?.distance) || 0;
     if (!(feet > 0)) return;
     const enforce = movementMode() === "enforce" && !game.user.isGM;

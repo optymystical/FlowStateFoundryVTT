@@ -110,7 +110,9 @@
         <button type="button" class="fs-inline" data-action="removeItem" data-index="{{index}}" data-tooltip="Remove"><i class="fa-solid fa-xmark"></i></button>
       </header>
       <div class="fs-builder">
-        {{#if magic}}
+        {{#if namedSlot}}
+        <div class="fs-field"><label>Named item</label><select name="items.{{index}}.key">{{selectOptions namedChoices selected=key}}</select></div>
+        {{else if magic}}
         <div class="fs-field"><label>{{#if foci}}Foci{{else}}Shroud{{/if}} type</label><select name="items.{{index}}.{{#if foci}}fociType{{else}}shroudType{{/if}}">
           {{#each typeChoices}}<optgroup label="{{label}}">{{selectOptions options selected=../selected}}</optgroup>{{/each}}</select></div>
         {{else if icon}}
@@ -144,6 +146,7 @@
       <button type="button" data-action="addItem" data-kind="foci" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-wand-sparkles"></i> Add Foci</button>
       <button type="button" data-action="addItem" data-kind="shroud" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-ghost"></i> Add Shroud</button>
       <button type="button" data-action="addItem" data-kind="icon" {{#unless canAddMagic}}disabled{{/unless}} data-tooltip="A Mental user's equipment: a Form with a Ward effect"><i class="fa-solid fa-hands-praying"></i> Add Icon</button>
+      {{#if canAddNamed}}<button type="button" data-action="addItem" data-kind="named" data-tooltip="One of the GM's named items from the catalog"><i class="fa-solid fa-star"></i> Add named item</button>{{/if}}
       <button type="button" data-action="addItem" data-kind="affix" {{#unless canAddAffix}}disabled{{/unless}} data-tooltip="A gem attuned on its own, to its Offensive or Defensive form"><i class="fa-solid fa-gem"></i> Add Affix</button>
     </div>
     {{/if}}

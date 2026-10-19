@@ -17,6 +17,7 @@ import { STATS, applyStacks } from "./rules.mjs";
 /** An Emplace barrier's health: the Shield's 10 × Power (Emplace applies the Shield's effects as a one-way Shield), scaled by any Strengthened/Weakened on the caster (it has no roll to carry them). */
 const emplaceHealth = (actor, plan) => applyStacks(10 * plan.power, castStacks(actor, plan));
 import { tierOf } from "./skills.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const DialogV2 = () => foundry.applications.api.DialogV2;
@@ -41,7 +42,7 @@ export function castContext(actor, weave = null) {
   const working = actor.items.filter(i => i.type === "foci" && i.system.attuned && !i.system.broken && i.system.profile?.valid);
   // Allies: every target is you or shares your token's disposition (Scepter and Tablet).
   const mine = globalThis.canvas ? attackerToken(actor)?.document?.disposition : undefined;
-  const tgts = [...(globalThis.game?.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
+  const tgts = [...(globalThis.game?.user?.targets ?? [])].filter(t => t.actor && !notCreature(t.actor));
   const targetsAlly = tgts.length > 0 && tgts.every(t => t.actor.uuid === actor.uuid || (mine !== undefined && t.document?.disposition === mine));
   const ring = {};
   for (const i of actor.items) if (i.type === "foci" && i.system.fociType === "ring" && i.system.chosenSpell) ring[i.id] = i.system.chosenSpell;
@@ -147,7 +148,7 @@ export function afflictHTML(v, power = 1) {
   if (profile?.arcana?.kind === "mirage" && !profile.arcana.chart) out.push(`<div class="fs-field"><label>Mirage: sense</label>${sel("sense", { sight: "Sight", sound: "Sound", smell: "Smell", other: "Another sense" }, v.sense || "sight")}</div>`);
   // A damaging spell can be aimed at one of a lone target's worn or held items instead of the creature (its damage goes to the object).
   if ((profile?.damage || (profile?.effects ?? []).some(e => e.stack)) && globalThis.game && !v.strikeSpell) {
-    const lone = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
+    const lone = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a));
     const items = lone.length === 1 ? aimableItems(lone[0]) : [];
     if (items.length) out.push(`<div class="fs-field"><label>Aim at</label><select name="aim"><option value="">${esc(lone[0].name)}</option>${items.map(i => `<option value="${i.uuid}" ${v.aim === i.uuid ? "selected" : ""}>${esc(lone[0].name)}'s ${esc(i.name)}</option>`).join("")}</select></div>`);
   }
@@ -322,7 +323,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const ids = plan.cores.map(c => c.id);
   const profile = fx.profileFor(ids);
   const mods = fx.modCounts(plan.applied);
-  let targets = fire ? fire.targets.map(a => ({ actor: a })) : weave ? weave.targetActors.map(a => ({ actor: a })) : [...(game.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
+  let targets = fire ? fire.targets.map(a => ({ actor: a })) : weave ? weave.targetActors.map(a => ({ actor: a })) : [...(game.user?.targets ?? [])].filter(t => t.actor && !notCreature(t.actor));
   // Aura (Illusion T5): the Mirage surrounds you; everything within 50 ft gets the attack roll.
   if (mods.aura && !weave && !fire) { const near = arcana.auraTargets(actor); if (near.length) targets = near.map(a => ({ actor: a })); }
   // Projection (Build Arcana T5): the spell is cast from the position of a creature within 100 ft of you (willing, or hit by a Targeted attack roll: you resolve that).
@@ -594,7 +595,7 @@ export async function multicast(message) {
 
 /** Who gets the free second cast of a Duplicate? The same target by default, or anyone else on the scene. */
 async function pickDuplicateTarget(actor, current, preset) {
-  const others = (globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(a => a && a.type !== "pile" && !current.some(c => c.uuid === a.uuid));
+  const others = (globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(a => a && !notCreature(a) && !current.some(c => c.uuid === a.uuid));
   if (preset) { const a = [...current, ...others].find(x => x.uuid === preset); return a ? [a] : current; }
   if (!others.length) return current.slice(0, 1);
   const choices = [...current.slice(0, 1), ...others];
@@ -637,7 +638,7 @@ export async function useHeldSpell(actor, effectId) {
   if (helpless(actor)) return ui.notifications.warn(`${actor.name} can't act.`);
   const inCombat = inActiveCombat(actor);
   if (inCombat && game.combat.combatant?.actor?.uuid !== actor.uuid) return ui.notifications.warn("A held spell can only be used on your own turn.");
-  const targets = [...(game.user?.targets ?? [])].filter(t => t.actor && t.actor.type !== "pile");
+  const targets = [...(game.user?.targets ?? [])].filter(t => t.actor && !notCreature(t.actor));
   if (!targets.length) return ui.notifications.warn("Target someone in melee range first.");
   if (!inMeleeRange(actor, targets[0].actor)) return ui.notifications.warn("A held spell is used in melee: the target has to be within your personal melee range.");
   if (!(await spendPoints(actor, "ap", h.ap, "using a held spell"))) return;

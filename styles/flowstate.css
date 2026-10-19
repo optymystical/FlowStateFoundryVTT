@@ -397,3 +397,15 @@
 .fs-tag[data-codex] { cursor: pointer; }
 .fs-codex-btn { flex: 0 0 100%; margin-top: 4px; }                         /* its own full-width row, like the Forge's */
 a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-through; }
+
+/* ---- Shops ---- */
+.fs-shop-sheet { display: flex; flex-direction: column; height: 100%; }
+.fs-shop-sheet .fs-shop-scroll { flex: 1; overflow-y: auto; padding: 0 4px; }
+.fs-shop-sheet .fs-shop-buyer { display: flex; gap: 10px; align-items: center; margin: 6px 0; }
+.fs-shop-sheet .fs-shop-buyer select { width: auto; }
+.fs-shop-sheet .fs-num { width: 4.5em; }
+.fs-shop-sheet td img { border: none; }
+.fs-shop-sheet .fs-dimmed { opacity: 0.35; }
+.fs-shop-sheet .fs-shop-settings, .fs-shop-sheet .fs-shop-random > div { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin: 4px 0; }
+.fs-shop-sheet .fs-shop-settings button, .fs-shop-sheet .fs-shop-random button { width: auto; }
+.fs-shop-sheet textarea { width: 100%; }

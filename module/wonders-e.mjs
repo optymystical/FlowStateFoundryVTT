@@ -15,13 +15,14 @@ import { askFor, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { strike } from "./wonders-b.mjs";
 import { mental, MODES, ACTS, CHOICE_PROVIDERS, COST_PROVIDERS, rolled, tenetOf, tryOnce, runAct, heal, forceRoll } from "./wonders.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 export const FORTUNE = "mental-fortune-dream";
 const WAGER = `${FORTUNE}:wager`, WINDFALL = `${FORTUNE}:windfall`, PROVIDENCE = `${FORTUNE}:providence`, RIG = `${FORTUNE}:rig`;
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
 const minOf = (a, k) => ab.statMinOf(a, k);
-const live = a => a && a.type !== "pile";
+const live = a => a && !notCreature(a);
 const roll = formula => new Roll(formula).evaluate();
 const typeLabel = t => DAMAGE_TYPES[t] ?? t;
 const ELEMENTS = { heat: "Heat", cold: "Cold", radiation: "Radiation", acid: "Acid" };

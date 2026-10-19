@@ -15,6 +15,7 @@ import { bold } from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import { CHARGES, onceUsed, markOnce, tenetOf, mantraHook, impulseHook, mental } from "./wonders.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const minOf = (a, k) => ab.statMinOf(a, k);
@@ -66,7 +67,7 @@ const rollName = type => ({ attack: "attack roll", dodge: "dodge roll", other: "
  * ctx: { type: "attack" | "dodge" | "other", die, count, net, max (the roll's top result), label }
  */
 export async function onRoll({ actor, type, roll, die, count = 1, net = 0, max = null, label = "", attackOpts = null }) {
-  if (!actor || actor.type === "pile") return null;
+  if (!actor || notCreature(actor)) return null;
   const usable = chargesOn(actor, ["decree", "fracture", "larceny", "mandate"]);
   const stolen = actor.getFlag?.("flowstate", "stolenRoll");
   let stolenAction = false;
@@ -380,7 +381,7 @@ export async function useStolenAction(actor) {
   if (!s) { if (actor.getFlag?.("flowstate", "stolenAction")) await setActorFlag(actor, "stolenAction", null); return ui.notifications.info(`${actor.name} has no stolen action (it lasts up to a minute).`); }
   if (!(await mental.pay(actor, { rp: s.cost }, `the stolen ${s.label}`))) return;
   const victim = await fromUuid(s.from);
-  const targets = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a.type !== "pile");
+  const targets = [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a));
   await post(actor, { title: `${esc(actor.name)} — Stolen action`, body: `<div class="fs-result">${esc(actor.name)} makes a copy of ${esc(s.fromName)}'s <strong>${esc(s.label)}</strong> (${s.cost} RP), using ${esc(s.fromName)}'s dice.</div>` });
   return performAttack(actor, { ...s.opts, label: `${s.label} (stolen)`, dieOf: victim?.uuid ?? s.from, followups: [], notes: [...(s.opts.notes ?? []), `Stolen from ${s.fromName} (Larceny)`], ...(targets.length ? { targetActors: targets } : {}) });
 }

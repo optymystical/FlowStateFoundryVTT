@@ -10,6 +10,7 @@ import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, ARMOR_WEIGHTS, WEIGHTS
 import { besideTokenPosition, setActorFlag, post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, rollWeaponAttack, registerConjure, spendPoints, changeEffect, spellEffects, castStacks } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { applyStacks, DAMAGE_TYPES } from "./rules.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const DialogV2 = () => foundry.applications.api.DialogV2;
@@ -598,7 +599,7 @@ export async function riderAfter({ attacker, target, o, outcome, defense, stacks
   }
   if (o.rider && !r) r = o.rider;                       // a Geomancy Combo's Charged material
   // Muddy (Geomancy T4): the material fouls what it hits: Disadvantage on their rolls with it and/or Weakened damage, until the caster's next turn.
-  if (o.muddy && target.type !== "pile") {
+  if (o.muddy && !notCreature(target)) {
     const c = o.muddy.choice, mud = [];
     if (c === "dis" || c === "all") mud.push({ roll: "attack", text: "Disadvantage on their attack rolls" });
     if (c === "weak" || c === "all") mud.push({ roll: "damage", text: "Weakened damage" });
@@ -606,7 +607,7 @@ export async function riderAfter({ attacker, target, o, outcome, defense, stacks
     if (mud.length) await post(attacker, { title: `${esc(attacker.name)} — Muddy`, body: `<div class="fs-result">${esc(target.name)} is fouled: ${mud.map(m => m.text).join(", ")} until your next turn.</div>` });
   }
   // Illusion Combos: whoever is hit makes a coin flip or is afraid until their turn ends (success: immune while it lasts).
-  if (fear && (outcome?.toHp ?? 0) >= 0 && target.type !== "pile") {
+  if (fear && (outcome?.toHp ?? 0) >= 0 && !notCreature(target)) {
     const flip = await roll("1d2");
     const scared = flip.total === 1;
     if (scared) {
@@ -620,7 +621,7 @@ export async function riderAfter({ attacker, target, o, outcome, defense, stacks
   if (!rd) return;
   const level = r.level ?? 1;
   const caster = await fromUuid(ownerUuid);
-  const living = target.type !== "pile" && !target.system.magical;
+  const living = !notCreature(target) && !target.system.magical;
   const direct = (outcome?.toHp ?? 0) > 0;
   const html = [], rolls = [], acts = [];
   let push = null;
@@ -629,7 +630,7 @@ export async function riderAfter({ attacker, target, o, outcome, defense, stacks
     const sides = rd.dice[1] + (rd.livingDie && living && direct ? rd.livingDie : 0);
     const dmg = await roll(`${rd.dice[0] * level}d${sides}`);
     rolls.push(dmg);
-    const arcPen = (r.arcane ? "arcane" : rd.type) === "arcane" && !target.system?.magical && target.type !== "pile" ? -1 : 0;          // Arcane against something not magical is Weakened
+    const arcPen = (r.arcane ? "arcane" : rd.type) === "arcane" && !target.system?.magical && !notCreature(target) ? -1 : 0;          // Arcane against something not magical is Weakened
     const total = applyStacks(dmg.total, stacks + arcPen + (rd.critStack && defense?.result?.crit ? rd.critStack : 0));          // the attack's own stacks (a crit, the weapon...) scale the rider too
     const dtype = r.arcane ? "arcane" : rd.type;
     const out = await damageOutcome(target, total, dtype, { archetype: "magic" });

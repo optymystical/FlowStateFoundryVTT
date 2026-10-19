@@ -13,6 +13,7 @@ import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import { mental, ACTS, TURN_START, impulseHook, tenetOf } from "./wonders.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 export const snapTier = actor => tierOf(actor?.system?.trees ?? {}, "mental-snappence-arts");
@@ -49,9 +50,9 @@ export async function reflexManual(actor) {
 /** Someone is about to attack: every character who can sense it and has Reflex may Manifest first, at the attacker or at who they attack. Called from `performAttack`. */
 export async function offerReflex(attacker, opts) {
   if (opts?.mental?.reflex) return;                                       // a Reflex Manifest doesn't set off other Reflexes
-  const defenders = (opts?.targetActors ?? [...(game.user?.targets ?? [])].map(t => t.actor)).filter(t => t && t.type !== "pile" && t.uuid !== attacker.uuid);
+  const defenders = (opts?.targetActors ?? [...(game.user?.targets ?? [])].map(t => t.actor)).filter(t => t && !notCreature(t) && t.uuid !== attacker.uuid);
   for (const a of actorsInPlay()) {
-    if (a.uuid === attacker.uuid || a.type === "pile" || snapTier(a) < 1 || helpless(a) || !near100(a, attacker)) continue;
+    if (a.uuid === attacker.uuid || notCreature(a) || snapTier(a) < 1 || helpless(a) || !near100(a, attacker)) continue;
     const free = afterimageReady(a);
     if (!free && (a.system.rp?.value ?? 0) < 1) continue;
     const pickable = [attacker, ...defenders];
@@ -87,7 +88,7 @@ impulseHook.use = async (actor, label = "Tenet") => {
 /** Start of your turn: declare the character your Reflexes won't be Weakened against. */
 TURN_START.push(async actor => {
   if (snapTier(actor) < 3) return;
-  const others = actorsInPlay().filter(a => a.uuid !== actor.uuid && a.type !== "pile");
+  const others = actorsInPlay().filter(a => a.uuid !== actor.uuid && !notCreature(a));
   if (!others.length) return;
   const ans = await askFor(actor, { react: "fixation", title: "Fixation", ok: "Fixate", html: `<p>Declare a character you can sense. Reflex against their actions isn't Weakened until your next turn.</p>
     <div class="fs-field"><label>Fixate on</label><select name="who"><option value="">— No one —</option>${others.map(a => `<option value="${esc(a.uuid)}">${esc(a.name)}</option>`).join("")}</select></div>` });

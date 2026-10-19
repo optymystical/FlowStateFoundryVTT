@@ -12,6 +12,7 @@
  * The geometry and level rules are pure (unit-tested).
  */
 import { requestGM } from "./actions.mjs";
+import { notCreature } from "./kinds.mjs";
 
 const TERRAIN = {
   rough: { label: "Rough terrain", level: 1, color: "#b8863b", icon: "fa-solid fa-shoe-prints", tip: "+1 AP to move" },
@@ -66,7 +67,7 @@ export async function syncTerrain(scene = globalThis.canvas?.scene) {
   if (!scene || !globalThis.game?.user?.isActiveGM) return;
   for (const token of scene.tokens ?? []) {
     const actor = token.actor;
-    if (!actor || actor.type === "pile") continue;
+    if (!actor || notCreature(actor)) continue;
     const level = levelFor(token);
     const have = actor.getFlag?.("flowstate", "terrainLevel") ?? 0;
     if (level === have) continue;

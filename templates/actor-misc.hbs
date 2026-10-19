@@ -73,7 +73,7 @@
       {{#each activeEffects}}
       <li class="fs-effect">
         <img src="{{img}}" alt="">
-        <div class="fs-effect-text"><strong>{{name}}</strong>{{#if detail}}<span>{{detail}}</span>{{/if}}</div>
+        <div class="fs-effect-text"><strong>{{#if codex}}<a class="fs-codex-name" data-codex="{{codex}}" data-tooltip="Open in the Codex">{{name}}</a>{{else}}{{name}}{{/if}}</strong>{{#if detail}}<span>{{detail}}</span>{{/if}}</div>
         {{#if ../isGM}}<button type="button" class="fs-inline" data-action="endEffect" data-status="{{status}}" data-effect-id="{{effectId}}" data-release="{{release}}" {{#if markedBy}}data-marked="1"{{/if}} {{#if parryKey}}data-parry-key="{{parryKey}}"{{/if}} {{#if shroudOn}}data-shroud-on="1"{{/if}} data-tooltip="GM: end this now"><i class="fa-solid fa-xmark"></i></button>{{/if}}
       </li>
       {{/each}}

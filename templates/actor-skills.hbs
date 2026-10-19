@@ -18,6 +18,7 @@
         {{#each skillView.trees}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
       </select>
     </label>
+    {{#if skillView.tree.codex}}<a class="fs-codex-link fs-codex-icon" data-codex="{{skillView.tree.codex}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>{{/if}}
     {{/unless}}
   </div>
 
@@ -46,7 +47,7 @@
       </header>
       <ul class="fs-tier-entries">
         {{#each entries}}
-        <li>{{#if name}}<strong>{{name}}:</strong> {{/if}}{{#if energy}}<span class="fs-energy" data-tooltip="{{energy.tip}}"><i class="fa-solid fa-bolt"></i> {{energy.formula}}{{#if energy.value}} <span class="fs-energy-value">{{energy.value}}</span>{{/if}}</span> {{/if}}{{text}}
+        <li>{{#if name}}<strong><a class="fs-codex-name" data-codex="{{codex}}" data-tooltip="Open in the Codex">{{name}}</a>:</strong> {{/if}}{{#if energy}}<span class="fs-energy" data-tooltip="{{energy.tip}}"><i class="fa-solid fa-bolt"></i> {{energy.formula}}{{#if energy.value}} <span class="fs-energy-value">{{energy.value}}</span>{{/if}}</span> {{/if}}{{text}}
           {{#if sub}}<ul>{{#each sub}}<li>{{this}}</li>{{/each}}</ul>{{/if}}
         </li>
         {{/each}}

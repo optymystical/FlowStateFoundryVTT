@@ -12,6 +12,7 @@ import { registerCurrencySettings, register as registerCurrency } from "./curren
 import { registerWorldData } from "./world-data.mjs";
 import { register as registerItems, registerItemSettings } from "./items.mjs";
 import { CatalogApp } from "./catalog-app.mjs";
+import { registerCodex } from "./codex-app.mjs";
 import "./elemental.mjs";
 import "./afflictions.mjs";
 import "./arcana.mjs";
@@ -180,6 +181,7 @@ Hooks.once("init", () => {
   registerWorldData();
   registerItemSettings();
   registerItems();
+  registerCodex();
   game.flowstate = { rules, martial, actions, catalog: CatalogApp };
   // Partials the sheets share (the catalog line on every item sheet).
   (foundry.applications.handlebars?.loadTemplates ?? globalThis.loadTemplates)?.({ fsItemCatalog: "systems/flowstate/templates/item-catalog.hbs" });

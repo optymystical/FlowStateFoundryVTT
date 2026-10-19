@@ -9,7 +9,8 @@
     "combos": "python3 tools/build_combos.py docs/combos.md ../module/combos.mjs",
     "bold": "python3 tools/build_bold.py",
     "lint": "cd .. && eslint --max-warnings 0 module dev/run-tests.mjs dev/tests",
-    "check": "npm run lint && npm test"
+    "check": "npm run lint && npm test",
+    "rules": "python3 tools/build_rules.py docs/rules.md docs/equip.md ../module/rules-text.mjs"
   },
   "devDependencies": {
     "eslint": "^9.39.5",

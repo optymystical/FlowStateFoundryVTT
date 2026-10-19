@@ -16,6 +16,8 @@
  */
 
 export const WORLD_DATA_VERSION = 1;
+/** Goes up each time world data is applied (things built from the tables, like the Codex, rebuild when it changes). */
+export let dataVersion = 0;
 
 /** id → { id, label, group, table, list, key, addable, required, nameOf, rebuild, defaults, order, custom: Set } */
 export const COLLECTIONS = new Map();
@@ -151,6 +153,7 @@ export function applyWorldData(raw) {
   const second = sanitizeWorldData(raw, { only: ids });
   problems.push(...second.problems);
   layer(derived, second.data, problems);
+  dataVersion++;
   return { data: { version: WORLD_DATA_VERSION, collections: { ...first.data.collections, ...second.data.collections } }, problems };
 }
 

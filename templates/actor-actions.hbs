@@ -8,7 +8,7 @@
         {{#if action}}
         <button type="button" class="fs-action-btn" data-action="{{action}}" {{#if stat}}data-stat="{{stat}}"{{/if}} {{#if rollLabel}}data-label="{{rollLabel}}"{{/if}} {{#if condition}}data-condition="{{condition}}"{{/if}} {{#if op}}data-op="{{op}}"{{/if}} {{#if grapple}}data-grapple="true"{{/if}} {{#if disabled}}disabled{{/if}}><i class="{{icon}}"></i></button>
         {{else}}<span class="fs-action-btn fs-action-info"><i class="{{icon}}"></i></span>{{/if}}
-        <span class="fs-action-name">{{label}}</span>
+        <span class="fs-action-name">{{label}}{{#if codex}} <a class="fs-codex-link fs-codex-icon" data-codex="{{codex}}" data-tooltip="Open in the Codex"><i class="fa-solid fa-book-open"></i></a>{{/if}}</span>
         <span class="fs-action-detail">{{detail}}</span>
         <span class="fs-action-cost">{{cost}}{{#if energy}} <span class="fs-energy" data-tooltip="{{energyTip}} · free outside combat"><i class="fa-solid fa-bolt"></i> {{energy}}</span>{{/if}}</span>
       </li>

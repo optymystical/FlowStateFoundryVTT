@@ -126,7 +126,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         id: t.id, name: t.name, tier, theory: t.theory, open: st.openTree === t.id,
         canRaise: next <= skills.MAX_TIER && spentSP + next <= sp, nextCost: next <= skills.MAX_TIER ? next : null,
         canLower: tier > 0 && !dependents.length, lowerTip: dependents.length ? "Lower the trees this Theory tier opens first" : `Refund ${tier} SP`,
-        tiers: t.tiers.filter(x => x.tier > 0).map(x => ({ tier: x.tier, summary: x.summary, owned: x.tier <= tier, entries: x.entries.filter(e => e.name || e.text).map(e => creation.entryBlurb(e)) })),
+        tiers: t.tiers.filter(x => x.tier > 0).map(x => ({ tier: x.tier, summary: x.summary, owned: x.tier <= tier, entries: x.entries.filter(e => e.name || e.text).map(e => ({ ...creation.entryBlurb(e), codex: e.name ? `entry:${t.id}:${String(e.name).replace(/^#\s*/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}` : null })) })),
         // A Wonder's table, worked out for the Power these stats give (the tiers above stay as printed).
         table: t.table?.rows?.length ? { title: t.table.title, rows: t.table.rows.map(([roll, effect, spans]) => ({ roll, effect: mentalRules.scaleSpans(effect, spans, mentalRules.wonderPower(pv.effective[mentalRules.KINDS[mentalRules.wonderById(t.id)?.kind ?? "dream"].stat]?.value ?? 0)) })) } : null
       };

@@ -3,7 +3,7 @@
   <div class="fs-cat-line">
     <i class="fa-solid fa-book"></i>
     {{#if cat.found}}
-      <span>Catalog: <strong>{{cat.name}}</strong>{{#if cat.named}} <span class="fs-tag">Named</span>{{/if}}</span>
+      <span>Catalog: <strong>{{#if cat.codex}}<a class="fs-codex-name" data-codex="{{cat.codex}}" data-tooltip="Open in the Codex">{{cat.name}}</a>{{else}}{{cat.name}}{{/if}}</strong>{{#if cat.named}} <span class="fs-tag">Named</span>{{/if}}</span>
       {{#if cat.modified}}<span class="fs-sub" data-tooltip="Changed on this copy only (by the GM): {{cat.modified}}">· modified ({{cat.modified}})</span>{{/if}}
       {{#if cat.canReset}}<button type="button" class="fs-inline" data-action="resetToEntry" data-tooltip="Undo this copy's changes: back to the catalog entry"><i class="fa-solid fa-rotate-left"></i></button>{{/if}}
     {{else}}

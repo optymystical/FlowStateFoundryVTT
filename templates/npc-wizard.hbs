@@ -80,7 +80,7 @@
       {{#each treeRows}}
       <li class="fs-wizard-tree {{#if tier}}fs-picked{{/if}}">
         <div class="fs-wizard-tree-head">
-          <a class="fs-wizard-tree-name" data-action="treeToggle" data-tree="{{id}}"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{name}}</a>
+          <a class="fs-wizard-tree-name" data-action="treeToggle" data-tree="{{id}}"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{name}}</a> <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>
           <span class="fs-tier-badge">Tier {{tier}}/5</span>
           <button type="button" class="fs-inline" data-action="treeDown" data-tree="{{id}}" data-tooltip="{{lowerTip}}" {{#unless canLower}}disabled{{/unless}}><i class="fa-solid fa-minus"></i></button>
           <button type="button" class="fs-inline" data-action="treeUp" data-tree="{{id}}" data-tooltip="{{#if nextCost}}Tier {{nextCost}} costs {{nextCost}} SP{{else}}Maxed{{/if}}" {{#unless canRaise}}disabled{{/unless}}><i class="fa-solid fa-plus"></i>{{#if nextCost}} {{nextCost}}{{/if}}</button>
@@ -88,7 +88,7 @@
         {{#if open}}
         <ul class="fs-wizard-tree-tiers">
           {{#each tiers}}<li class="{{#if owned}}fs-owned{{/if}}"><strong>T{{tier}}</strong> <span class="fs-tier-summary">{{summary}}</span>
-            <ul class="fs-wizard-entries">{{#each entries}}<li data-tooltip="{{full}}">{{#if name}}<strong>{{name}}:</strong> {{/if}}{{text}}{{#if cost}} <span class="fs-entry-cost"><i class="fa-solid fa-bolt"></i> {{cost}}</span>{{/if}}{{#if sub.length}}<ul class="fs-wizard-sub">{{#each sub}}<li>{{this}}</li>{{/each}}</ul>{{/if}}</li>{{/each}}</ul></li>{{/each}}
+            <ul class="fs-wizard-entries">{{#each entries}}<li data-tooltip="{{full}}">{{#if name}}<strong>{{#if codex}}<a class="fs-codex-name" data-codex="{{codex}}" data-tooltip="Open in the Codex">{{name}}</a>{{else}}{{name}}{{/if}}:</strong> {{/if}}{{text}}{{#if cost}} <span class="fs-entry-cost"><i class="fa-solid fa-bolt"></i> {{cost}}</span>{{/if}}{{#if sub.length}}<ul class="fs-wizard-sub">{{#each sub}}<li>{{this}}</li>{{/each}}</ul>{{/if}}</li>{{/each}}</ul></li>{{/each}}
         </ul>
         {{#if table}}<details class="fs-wizard-table"><summary>{{table.title}} (d100)</summary>
           <table class="fs-table"><tbody>{{#each table.rows}}<tr><td class="fs-table-roll">{{roll}}</td><td>{{effect}}</td></tr>{{/each}}</tbody></table></details>{{/if}}
@@ -143,7 +143,7 @@
         {{/unless}}
       </div>
       <div class="fs-sub">{{summary}}</div>
-      {{#if tags.length}}<div class="fs-tags">{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}">{{label}}</span>{{/each}}</div>{{/if}}
+      {{#if tags.length}}<div class="fs-tags">{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}" data-codex="tag:{{key}}">{{label}}</span>{{/each}}</div>{{/if}}
       {{#if effect}}<div class="fs-sub fs-wizard-effect">{{effect}}</div>{{/if}}
     </div>
     {{else}}

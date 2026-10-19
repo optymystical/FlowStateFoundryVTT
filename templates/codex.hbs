@@ -1,0 +1,49 @@
+<section class="fs-codex-body">
+  <aside class="fs-codex-side">
+    <div class="fs-codex-tools">
+      <button type="button" data-action="back" {{#unless canBack}}disabled{{/unless}} data-tooltip="Back"><i class="fa-solid fa-arrow-left"></i></button>
+      <button type="button" data-action="forward" {{#unless canForward}}disabled{{/unless}} data-tooltip="Forward"><i class="fa-solid fa-arrow-right"></i></button>
+      <input type="search" name="codexSearch" value="{{query}}" placeholder="Search the Codex…" autocomplete="off">
+      {{#if gm}}<button type="button" data-action="toggleHidden" class="{{#if showHidden}}active{{/if}}" data-tooltip="{{#if showHidden}}Hide{{else}}Show{{/if}} what this world hides (GM)"><i class="fa-solid {{#if showHidden}}fa-eye{{else}}fa-eye-slash{{/if}}"></i></button>{{/if}}
+    </div>
+    <nav class="fs-codex-nav">
+      {{#if results}}
+      <div class="fs-codex-results">
+        <p class="fs-sub">{{results.length}} result{{#unless (eq results.length 1)}}s{{/unless}} <a data-action="home">· back to the contents</a></p>
+        <ul>{{#each results}}<li class="{{#if current}}current{{/if}}"><a data-codex="{{id}}">{{title}}</a>{{#if subtitle}} <span class="fs-sub">{{subtitle}}</span>{{/if}}</li>{{/each}}</ul>
+      </div>
+      {{else if noResults}}
+      <p class="hint">Nothing matches. <a data-action="home">Back to the contents</a></p>
+      {{else}}
+      {{#each nav}}
+      <h3><i class="{{icon}}"></i> {{label}}</h3>
+      {{#each groups}}
+      <div class="fs-codex-group {{#if open}}open{{/if}}">
+        <a class="fs-codex-group-head" data-action="toggleGroup" data-group="{{key}}"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{label}} <span class="fs-sub">{{pages.length}}</span></a>
+        {{#if open}}<ul>{{#each pages}}<li class="{{#if current}}current{{/if}} {{#if hidden}}fs-dim{{/if}}"><a data-codex="{{id}}">{{title}}</a></li>{{/each}}</ul>{{/if}}
+      </div>
+      {{/each}}
+      {{/each}}
+      {{/if}}
+    </nav>
+  </aside>
+  <article class="fs-codex-page">
+    {{#if page}}
+    <header>
+      {{#if page.img}}<img src="{{page.img}}" alt="" width="48" height="48">{{/if}}
+      <div>
+        <h2>{{page.title}}{{#if page.hidden}} <span class="fs-tag">Hidden</span>{{/if}}</h2>
+        {{#if page.subtitle}}<div class="fs-sub">{{page.subtitle}}</div>{{/if}}
+      </div>
+      <button type="button" data-action="copyLink" data-tooltip="Copy a link to this page for a journal or a description"><i class="fa-solid fa-link"></i></button>
+    </header>
+    <div class="fs-codex-content">{{{page.html}}}</div>
+    {{else}}
+    <div class="fs-codex-welcome">
+      <h2><i class="fa-solid fa-book-open"></i> The Codex</h2>
+      <p>Everything in Flow State in one place: the rules, every skill tree and ability, spells and Combos, Wonders, equipment, materials, tags, items and statuses, as this world plays them.</p>
+      <p>Search above, or open a section on the left. Book icons <i class="fa-solid fa-book-open"></i> on sheets and chat cards open their page here, and so do <code>@Codex[…]</code> links in journals (use <i class="fa-solid fa-link"></i> on a page to copy one). In chat, <code>/codex fireball</code> searches.</p>
+    </div>
+    {{/if}}
+  </article>
+</section>

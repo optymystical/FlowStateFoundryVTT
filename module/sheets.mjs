@@ -34,6 +34,8 @@ import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
 import { CatalogApp, dropEntry } from "./catalog-app.mjs";
 import { carried } from "./catalog.mjs";
+import { codexId, idForName, findPage } from "./codex.mjs";
+import { openCodex } from "./codex-app.mjs";
 
 /** What an actor's Energy costs are computed from: stats, Skill Points, and held weapons. */
 function energyContext(actor) {
@@ -92,7 +94,7 @@ export function activeEffectRows(actor) {
     }
     if (!id && (effect.flags?.flowstate?.spellEffect || effect.flags?.flowstate?.ritual)) detail = String(effect.description ?? "").replace(/<[^>]+>/g, "");
     rows.push({
-      key: id ?? effect.id, status: id ?? "", effectId: effect.id,
+      key: id ?? effect.id, status: id ?? "", effectId: effect.id, codex: id && findPage(codexId.status(id)) ? codexId.status(id) : null,
       name: globalThis.game?.i18n?.localize?.(cfg?.name ?? effect.name) ?? cfg?.name ?? effect.name, img: cfg?.img ?? effect.img, detail
     });
   }
@@ -418,10 +420,15 @@ function coreChoices(trees) {
 const collapsedSections = new Map();
 
 /** Everything the character can do right now, grouped, with costs. Each entry reuses a sheet action. */
+/** The Codex page an Action List row is about (an ability, spell or Mode by its name), or null. */
+function codexFor(label) {
+  try { return idForName(label); } catch (err) { return null; }
+}
+
 export function buildActionList(actor, weapons, stats) {
   // Only things that can be clicked to activate belong here: passives, reactions, and info rows are left out.
   return actionGroups(actor, weapons, stats)
-    .map(g => ({ ...g, actions: g.actions.filter(a => a.action) }))
+    .map(g => ({ ...g, actions: g.actions.filter(a => a.action).map(a => ({ ...a, codex: a.codex ?? codexFor(a.label) })) }))
     .filter(g => g.actions.length);
 }
 
@@ -834,10 +841,11 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   static DEFAULT_OPTIONS = {
     classes: ["flowstate", "sheet", "actor"],
     position: { width: 900, height: 860 },          // wide enough for the stat rows with their + buttons
-    window: { resizable: true },
     form: { submitOnChange: true },
+    window: { resizable: true, controls: [{ icon: "fa-solid fa-book-open", label: "Codex", action: "openCodex" }] },
     actions: {
       editImage: pickImage,
+      openCodex: () => openCodex(),
       rollStat: FlowStateActorSheet.onRollStat,
       rollD100: FlowStateActorSheet.onRollD100,
       attack: FlowStateActorSheet.onAttack,
@@ -1060,12 +1068,12 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       scaleNote: tp?.power > 1 ? `Numbers are worked out for your ${tp.kind} Power ${tp.power}.` : "",
       lockedNote: lockedCount ? `${lockedCount} more tree${lockedCount === 1 ? "" : "s"} unlock as you raise ${skills.theoryFor(arch.id)?.name}.` : "",
       tree: tree && {
-        id: tree.id, name: tree.name, current,
+        id: tree.id, name: tree.name, current, codex: codexId.tree(tree.id),
         tiers: tree.tiers.map(t => {
           const owned = t.tier <= current;
           const isNext = t.tier === current + 1;
           return {
-            ...t, entries: t.entries.map(e => scaleEntry(withEnergy(e, treeEnergyContext(ectx, tree)), tp)), owned, isNext, locked: !owned && !isNext,
+            ...t, entries: t.entries.map(e => ({ ...scaleEntry(withEnergy(e, treeEnergyContext(ectx, tree)), tp), codex: codexId.entry(tree.id, e.name) })), owned, isNext, locked: !owned && !isNext,
             free: t.tier === 0,
             cost: t.tier, canUnlock: isNext && next?.ok && this.isEditable,
             reason: isNext ? next.reason : `Unlock Tier ${t.tier - 1} first.`,
@@ -1245,14 +1253,20 @@ export class FlowStateItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
   static DEFAULT_OPTIONS = {
     classes: ["flowstate", "sheet", "item"],
     position: { width: 480, height: 420 },
-    window: { resizable: true },
+    window: { resizable: true, controls: [{ icon: "fa-solid fa-book-open", label: "Open in the Codex", action: "openCodex" }] },
     form: { submitOnChange: true },
-    actions: { editImage: pickImage, resetToEntry: FlowStateItemSheet.onResetToEntry }
+    actions: { editImage: pickImage, resetToEntry: FlowStateItemSheet.onResetToEntry, openCodex: FlowStateItemSheet.onOpenCodex }
   };
 
   static PARTS = {
     sheet: { template: "systems/flowstate/templates/item-sheet.hbs" }
   };
+
+  /** The item's page in the Codex (its catalog entry, else what it is). */
+  static onOpenCodex() {
+    const sys = this.document.system;
+    return openCodex(sys.catalog?.found ? codexId.item(sys.base) : this.document.name);
+  }
 
   /** GM: drop this copy's changes, so it is its catalog entry again. */
   static onResetToEntry() {
@@ -1275,7 +1289,7 @@ export class FlowStateItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
         if (!c) return null;
         const names = { description: "description", pounds: "weight", volume: "volume", price: "price" };
         const modified = (c.modified ?? []).map(p => names[p] ?? p.replace(/^system\./, "")).join(", ");
-        return { ...c, modified, canReset: game.user.isGM && !!sys.overrides?.length, pounds: sys.pounds ?? "", volume: sys.volume ?? "", price: sys.price ?? "" };
+        return { ...c, modified, codex: c.found ? codexId.item(c.key) : null, canReset: game.user.isGM && !!sys.overrides?.length, pounds: sys.pounds ?? "", volume: sys.volume ?? "", price: sys.price ?? "" };
       })(),
       densities: Object.fromEntries(Object.entries(OBJECT_DENSITY).map(([k, v]) => [k, v.label])),
       ammoTypes: Object.fromEntries(Object.entries(WEAPON_TYPES).filter(([, v]) => v.ranged).map(([k, v]) => [k, `${v.label} weapons`]))

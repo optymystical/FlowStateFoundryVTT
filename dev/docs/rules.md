@@ -644,10 +644,12 @@ How much damage the Object can take from each attack it blocks or attacks that a
 
 ## **Force** {#force}
 
-Force is a measure of how much kinetic force is being applied at any given time. To resolve Force:
+Force is a measure of how much kinetic force is being applied at any given time. Forced movement skips steps 1 and 2, instead going directly to Force damage. To resolve Force:
 
 1. If the target is using Lift, subtract their Lift from the total Force. If the remaining Force is zero or lower, this process ends  
 2. Subtract half their Max HP/Durability from the remaining Force unless they are falling via Gravity. Then divide the remaining Force by 10, rounded down. The result is the number of feet the target is pushed in the direction of the Force.
+
+If Force applied is downward and is an amount of feet equal to or greater to that character’s height the target is knocked prone in addition to the damage dealt.
 
 ## **Force Damage** {#force-damage}
 

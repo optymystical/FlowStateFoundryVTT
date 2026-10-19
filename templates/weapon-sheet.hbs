@@ -51,7 +51,7 @@
       <span>Damage</span><strong>{{p.display}} {{damageType}}</strong>
       <span>Scaling</span><span>{{#if unarmed}}{{scalingLabel}} {{p.stat}} (no Grade cap){{else}}{{scalingLabel}} {{p.stat}} → {{p.capped}} counts (Grade {{p.grade}}){{/if}}</span>
       <span>Attack cost</span><span>{{p.ap}} AP</span>
-      <span>Tags</span><span class="fs-tags">{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}">{{label}}</span>{{/each}}</span>
+      <span>Tags</span><span class="fs-tags">{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}" data-codex="tag:{{key}}">{{label}}</span>{{/each}}</span>
       {{#if p.cleave}}<span>Cleave</span><span>+{{p.cleave}} damage</span>{{/if}}
       {{#if p.pierce}}<span>Pierce</span><span>ignores {{p.pierce}} Limit</span>{{/if}}
       {{#if p.knockback}}<span>Knockback</span><span>up to {{p.knockback}} Force</span>{{/if}}

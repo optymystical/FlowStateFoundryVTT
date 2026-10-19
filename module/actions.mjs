@@ -1,6 +1,5 @@
 import {
-  STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS
-} from "./rules.mjs";
+  STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS, downwardProne, heightFt } from "./rules.mjs";
 import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, damageCategories } from "./martial.mjs";
 import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
 import * as skills from "./skills.mjs";
@@ -3518,7 +3517,7 @@ export async function throwGrappled(actor) {
     <p class="hint">${target ? `Ranged attack roll against ${esc(target.name)}. On a hit both collide and take Force damage.` : "No target: the creature is thrown in the direction you pick and released. Target a creature first to throw it at someone."}</p>
     ${crunchable ? `<div class="form-group"><label>Crunch Time <span class="fs-energy-inline">⚡ ${ab.STRENGTH_COST.crunchTime(actor)}</span>: match the Force against current HP (${crunchFeet} ft)</label><input type="checkbox" name="crunch"></div>` : ""}
     ${target ? netField() : `<div class="form-group"><label>Direction</label><select name="dir">${Object.entries(DIRECTIONS).map(([k, d]) => `<option value="${k}">${d.label}</option>`).join("")}
-      <option value="down">Down (into the ground: Force damage, knocked prone)</option></select></div>`}`, "Throw");
+      <option value="down">Down (into the ground: Force damage; prone if it is at least their height)</option></select></div>`}`, "Throw");
   if (!opts) return;
   if (opts.crunch) feet = crunchFeet;
   if (target && !feet) return ui.notifications.warn(`${victim.name} is too heavy to throw at anything (Force ${force} moves it 0 ft).`);
@@ -3596,7 +3595,7 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
 
 /**
  * Force straight down into the ground: all of the travel is stopped at once, so the creature takes Force damage for the
- * full distance (3 × feet, capped at its HP) and is knocked prone. Returns chat HTML.
+ * full distance (3 × feet, capped at its HP), and is knocked prone if that is at least its height (Rules, Ch10). Returns chat HTML.
  */
 async function slamDown(actor, feet) {
   const cap = await forceCap(actor);
@@ -3606,6 +3605,8 @@ async function slamDown(actor, feet) {
     html += damageOutcomeHTML(actor, damage, "physical", await damageOutcome(actor, damage, "physical"));
     await requestDamage(actor, damage, "physical", 0, null, { silent: true });
   }
+  // Downward Force knocks prone only when it is at least the creature's height (Rules, Ch10).
+  if (!downwardProne(feet, actor.system.size)) return `${html}<div class="fs-notes">Not knocked prone: ${feet} ft is less than ${esc(actor.name)}'s height (${heightFt(actor.system.size)} ft).</div>`;
   await setStatus(actor, "prone", true);
   return `${html}<div class="fs-result"><strong>${esc(actor.name)} is knocked prone.</strong></div>`;
 }
@@ -3977,7 +3978,7 @@ export function knockbackRow(ownerUuid, feet, label = "Knockback") {
 
 /**
  * Knockback or Push: the attacker picks a direction for the Force stored on this card. The target's token is moved
- * (walls stop it, dealing Force damage for the untraveled feet), or driven down into the ground (Force damage, prone).
+ * (walls stop it, dealing Force damage for the untraveled feet), or driven down into the ground (Force damage; prone if at least its height).
  */
 const knockbackUsed = id => game.messages.find(m => m.getFlag("flowstate", "knockbackOf") === id || m.getFlag("flowstate", "attack")?.opts?.knockbackOf === id);
 
@@ -4003,7 +4004,7 @@ export async function knockback(message) {
       ${aimAt ? `<option value="into" selected>Into ${esc(aimAt.name)} (ranged attack roll; on a hit both collide)</option>` : ""}
       <option value="away">Straight away from ${esc(attacker.name)}</option>
       ${Object.entries(DIRECTIONS).map(([k, d]) => `<option value="${k}">${d.label}</option>`).join("")}
-      <option value="down">Down (into the ground: Force damage, knocked prone)</option>
+      <option value="down">Down (into the ground: Force damage; prone if it is at least their height)</option>
     </select></div>`, "Push");
   if (!opts) return;
   if (knockbackUsed(message.id)) return;

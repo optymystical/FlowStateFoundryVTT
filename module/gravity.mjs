@@ -4,7 +4,7 @@
  * a big hit has to spend 3 RP to stabilize or it begins falling. There is no elevation on the scene, so the table says how far the ground is.
  */
 import { post, setStatus, setActorFlag, requestDamage, damageOutcome, damageOutcomeHTML, forceCap, spendPoints, canSpend, registerFlight } from "./actions.mjs";
-import { gravityForce, fallFeet, liftBand, forceDamage, TERMINAL_ROUNDS } from "./rules.mjs";
+import { gravityForce, fallFeet, liftBand, forceDamage, TERMINAL_ROUNDS, downwardProne, heightFt } from "./rules.mjs";
 
 const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const DialogV2 = () => foundry.applications.api.DialogV2;
@@ -80,6 +80,8 @@ export async function turnStart(actor) {
     const cap = await forceCap(actor), raw = forceDamage(untraveled), damage = Math.min(raw, cap);
     html += `<div class="fs-notes">${untraveled} ft untraveled × 3 = ${raw}${damage < raw ? ` (capped at ${cap})` : ""}.</div>${damageOutcomeHTML(actor, damage, "physical", await damageOutcome(actor, damage, "physical"))}`;
     await requestDamage(actor, damage, "physical", 0, null, { silent: true });
+    // Gravity is a downward Force: falling at least the creature's height this round knocks it prone too (Rules, Ch10).
+    if (downwardProne(feet, size)) { await setStatus(actor, "prone", true); html += `<div class="fs-result"><strong>${esc(actor.name)} is knocked prone</strong> (a ${feet} ft fall, at least their ${heightFt(size)} ft height).</div>`; }
   }
   await stopFalling(actor);
   await post(actor, { title: `${esc(actor.name)} — Landing`, body: html });

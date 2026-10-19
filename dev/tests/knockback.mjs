@@ -108,6 +108,17 @@ dialog = () => ({ dir: "down" }); await actions.knockback(messages.at(-1));
 ok(orc.statuses.has("prone") && orc.system.hp.value < hp1 && moves.length === 0, "down: Force damage, prone, no move");
 console.log("   ", text(messages.at(-1)).slice(0, 200));
 orc.statuses.delete("prone");
+{ const R = await import("../../module/rules.mjs");
+  ok(R.heightFt(3) === 5 && R.heightFt(5) === 20 && R.downwardProne(5, 3) && !R.downwardProne(4, 3) && R.downwardProne(1, 1) && !R.downwardProne(19, 5), "Downward Force knocks prone at the creature's height or more (Size 3: 5 ft, Size 5: 20 ft)"); }
+refill(hero);
+dialog = () => ({ mode: "strike", net: 0, stacks: 0, slam: "knockback" });
+seq = [30]; await actions.rollWeaponAttack(hero, maul);
+dialog = () => ({ net: 0 }); seq = [5]; await actions.defend(messages.at(-1), 0, "dodge");
+dialog = () => ({ extra: 0 }); seq = [10]; await actions.rollExchangeDamage(messages.at(-1));
+{ const kb = messages.at(-1).flags?.flowstate?.knockback; if (kb) kb.feet = 3; }
+orc.system.hp.value = 432; const hpShort = orc.system.hp.value;
+dialog = () => ({ dir: "down" }); await actions.knockback(messages.at(-1));
+ok(!orc.statuses.has("prone") && orc.system.hp.value < hpShort && /Not knocked prone/.test(text(messages.at(-1))), "Driven only 3 ft down (less than its 5 ft height): Force damage, but not prone");
 
 console.log("== Bash through armor");
 refill(hero); orcArmor.system.wear = 0; orc.system.armor = orcArmor; orc.system.hp.value = 432;

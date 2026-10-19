@@ -18,12 +18,16 @@ export const STATS = {
 
 /** Ch7 Size Categories + Ch10 Terminal Velocity. physical = Strengthened(+)/Weakened(-) stacks on physical attacks. */
 export const SIZES = {
-  1: { maxMove: 10,  rations: 0.25, physical: -2, melee: 1,  space: "< 1 ft³",   terminal: 1, noFallDamage: true },
-  2: { maxMove: 25,  rations: 0.5,  physical: -1, melee: 3,  space: "1–3 ft³",   terminal: 1 },
-  3: { maxMove: 50,  rations: 1,    physical: 0,  melee: 5,  space: "3–5 ft³",   terminal: 2 },
-  4: { maxMove: 100, rations: 2,    physical: 1,  melee: 10, space: "5–10 ft³",  terminal: 3 },
-  5: { maxMove: 200, rations: 4,    physical: 2,  melee: 20, space: "10–20 ft³", terminal: 4 }
+  1: { maxMove: 10,  rations: 0.25, physical: -2, melee: 1,  space: "< 1 ft³",   height: 1,  terminal: 1, noFallDamage: true },
+  2: { maxMove: 25,  rations: 0.5,  physical: -1, melee: 3,  space: "1–3 ft³",   height: 3,  terminal: 1 },
+  3: { maxMove: 50,  rations: 1,    physical: 0,  melee: 5,  space: "3–5 ft³",   height: 5,  terminal: 2 },
+  4: { maxMove: 100, rations: 2,    physical: 1,  melee: 10, space: "5–10 ft³",  height: 10, terminal: 3 },
+  5: { maxMove: 200, rations: 4,    physical: 2,  melee: 20, space: "10–20 ft³", height: 20, terminal: 4 }
 };
+/** A creature's height in feet: the top of its Size's space (a judgment call; the world data can change it per Size). */
+export const heightFt = size => SIZES[Math.min(5, Math.max(1, Math.round(size || 3)))]?.height ?? 5;
+/** Ch10: downward Force of at least the creature's height in feet knocks it prone, as well as the damage. */
+export const downwardProne = (feet, size) => Math.floor(Number(feet) || 0) >= heightFt(size);
 
 export const DAMAGE_TYPES = {
   physical: "Physical",

@@ -113,7 +113,7 @@ registerSection({ id: "basics", label: "Basics", icon: "fa-solid fa-dice-d20", o
         linksBlock("Rules", [{ id: ruleId("stats"), label: "Ch3: Stats" }, { id: ruleId("statMinimums"), label: "Stat Minimums" }])].filter(Boolean) });
   }
   for (const [n, z] of Object.entries(SIZES)) pages.push({ id: codexId.size(n), title: `Size ${n}`, section: "basics", group: "Sizes",
-    blocks: [fieldsBlock([["Space", z.space], ["Max move", `${z.maxMove} ft per AP`], ["Melee range", `${z.melee} ft`], ["Rations a day", z.rations],
+    blocks: [fieldsBlock([["Space", z.space], ["Height", z.height ? `${z.height} ft` : ""], ["Max move", `${z.maxMove} ft per AP`], ["Melee range", `${z.melee} ft`], ["Rations a day", z.rations],
       ["Physical attacks", z.physical > 0 ? `${z.physical === 1 ? "" : "doubly "}Strengthened` : z.physical < 0 ? `${z.physical === -1 ? "" : "doubly "}Weakened` : "normal"]]),
     linksBlock("Rules", [{ id: ruleId("sizes"), label: "Size Categories" }])] });
   for (const [k, label] of Object.entries(DAMAGE_TYPES)) pages.push({ id: codexId.damage(k), title: label, section: "basics", group: "Damage types",

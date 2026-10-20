@@ -62,6 +62,16 @@ const ls = C.renderPage(ix.pages.get("item:named.longsword"));
 ok(ix.nav.some(s => s.groups.some(g => g.label === "Items" && g.ids.includes("item:named.longsword"))) && ls.includes("A long sword.") && !ls.includes("<script") && ls.includes('data-codex="weaponMaterial:steel"'), "A named item is listed, links to what it's made of, and its text can't run markup");
 S.applyWorldData({});
 
+console.log("== Entry text, laid out for reading");
+{ const p = C.entryParts("1 Threshold, Core Spell, Ranged. Cost: Energy equal to your Scaling Stat min. Deals 2d6 damage for 2 AP. Ritual: Cast it twice. Enhanced: More.", { spell: true });
+  ok(p.main === "Deals **2d6** damage for **2 AP**." && p.extra.map(x => x.label).join() === "Ritual,Enhanced" && p.extra[0].text === "Cast it twice.", "The cost and the spell's Threshold line leave the text (they're above it); Ritual and Enhanced get their own boxes; dice and AP stand out");
+  ok(C.entryParts("At the start of the target's next turn, they get 50 temp HP.", { name: "Bloom" }).main.includes("**50 temp HP**"), "A Mode's bolded numbers (the doc's bold) stand out");
+  const cut = C.renderPage(C.findPage("entry:magic-slashing:cut"));
+  ok(cut.includes("fs-codex-fields") && cut.includes("fs-codex-callout") && cut.includes("fs-codex-chips") && !cut.includes("1 Threshold, Core Spell"), "A spell page: a stat block, its Ritual in a box, its Combos as chips, no repeated header");
+  const tree = C.renderPage(C.findPage("tree:martial-bladed-weapons"));
+  ok((tree.match(/fs-codex-entry"/g) ?? []).length >= 6 && tree.includes("fs-codex-cost") && !/Cost: Energy/.test(tree), "A tree page: each entry a card with its Energy cost as a badge");
+  ok(C.renderPage(C.findPage("weaponType:rapid")).includes("<th>Reload</th>") && C.findPage("weaponType:rapid").badge === "Weapon type" && C.findPage("status:psychedUp").badge === "Status", "Weapon types are a table; every page says what kind of thing it is"); }
+
 console.log("== The docs' Markdown");
 const html = M.renderMarkdown("**Bold** and *it*, \\- dash, <b>tag</b>\n\n- one\n- two\n  - nested\n\n1. first\n2. second\n\n| A | B |\n| :---- | :---- |\n| x | **y** |\n\nLine one  \nLine two");
 ok(html.includes("<strong>Bold</strong>") && html.includes("<em>it</em>") && html.includes("- dash") && html.includes("&lt;b&gt;tag&lt;/b&gt;"), "Bold, italic and escapes render; HTML in the text is shown, not run");

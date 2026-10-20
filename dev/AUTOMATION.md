@@ -62,6 +62,7 @@ Everything in the game, as this world plays it, in one window that players and t
 - **Built from the tables** (`module/codex.mjs`), so the world's own edits show and what it hides is hidden from players (the GM can show it). The rule pages are generated from the docs (`module/rules-text.mjs`, `npm run rules`).
 - **Open it** from the Journal sidebar's **Codex** button, the `/codex [search]` chat command, the book in any sheet's header menu, or any link to it: tags (on sheets, the wizards), skill tree names and entries (Skills tab, the wizards), Action List rows that are abilities, statuses in Active Effects, an item's catalog line, and chat cards about an ability, spell, Mode or rule (a book icon in the title).
 - **Search** looks at titles first, then text; Enter opens the first result. Back and forward step through pages.
+- **Layout:** each page has a badge for what it is and a stat block of its facts; an entry's text leaves out what the block shows (a spell's Threshold line, the Energy cost), with Enhanced and Ritual parts boxed and dice, AP/RP and a Mode's bolded numbers in bold. Tree tiers list their entries as cards with the Energy cost as a badge.
 - **Journal links:** `@Codex[<page id or name>]{label}` in any journal or description (the link button on a page copies one).
 
 ## Item catalog (the Forge)

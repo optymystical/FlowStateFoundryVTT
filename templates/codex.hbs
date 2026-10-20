@@ -32,7 +32,7 @@
     <header>
       {{#if page.img}}<img src="{{page.img}}" alt="" width="48" height="48">{{/if}}
       <div>
-        <h2>{{page.title}}{{#if page.hidden}} <span class="fs-tag">Hidden</span>{{/if}}</h2>
+        <h2>{{page.title}}{{#if page.badge}} <span class="fs-codex-badge">{{page.badge}}</span>{{/if}}{{#if page.hidden}} <span class="fs-tag">Hidden</span>{{/if}}</h2>
         {{#if page.subtitle}}<div class="fs-sub">{{page.subtitle}}</div>{{/if}}
       </div>
       <button type="button" data-action="copyLink" data-tooltip="Copy a link to this page for a journal or a description"><i class="fa-solid fa-link"></i></button>

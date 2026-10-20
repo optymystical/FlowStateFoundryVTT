@@ -21,10 +21,11 @@ import { STATS, SIZES, DAMAGE_TYPES, OBJECT_DENSITY, STAIN_VARIANTS } from "./ru
 import { RARITIES, WEAPON_TAGS, WEAPON_TYPES, WEIGHTS, THROW, RELOAD_RP, DAMAGE_CATEGORY, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS } from "./martial.mjs";
 import { CASTING_FORMS, FOCI_TYPES, SHROUD_TYPES, AFFIXES } from "./magic.mjs";
 import { FORMS, KINDS, WONDERS } from "./mental-rules.mjs";
-import { CATALOG } from "./spells.mjs";
+import { CATALOG, stripHeader } from "./spells.mjs";
 import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combos.mjs";
 import { ITEM_CATALOG, ITEM_TYPES, isGenerated, entrySummary } from "./catalog.mjs";
-import { parseEnergyCost } from "./energy.mjs";
+import { parseEnergyCost, stripEnergyCost } from "./energy.mjs";
+import { BOLD } from "./mental-bold.mjs";
 
 export const slug = s => String(s ?? "").replace(/^#\s*/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
@@ -83,6 +84,39 @@ const weaponTree = k => (k === "unarmed" ? "martial-brawling-methods" : `martial
 const armorTree = w => `martial-${w}-armor`;
 const school = treeId => treeId.replace(/^magic-/, "");
 
+/* ---------------- An entry's text, for reading ---------------- */
+
+/** What an Energy cost says ("half of your Scaling Stat min"), from an entry's text. */
+const costOf = text => (parseEnergyCost(text ?? "") ? (/Cost:\s*Energy equal to ([^.]*)\./i.exec(text)?.[1] ?? "").trim() : "");
+/** Dice (2d6) and AP/RP costs stand out in a paragraph. */
+const emphasize = t => {
+  // Already-bold spans (between the private-use marks  and ) are kept whole; dice and AP/RP costs elsewhere are bolded.
+  const parts = String(t ?? "").split(/([^]*)/);
+  return parts.map(p => (p.startsWith("") ? `**${p.slice(1, -1)}**`
+    : p.replace(/\b(\d+d\d+)\b/g, "**$1**").replace(/\b(\d+(?:\s*(?:\/|or)\s*\d+)?)\s?(AP|RP)\b/g, "**$1 $2**"))).join("");
+};
+/**
+ * A skill tree entry's text in parts: what it does, then its Enhanced and Ritual parts on their own. The Energy cost and a spell's Threshold line
+ * are left out (the page shows them above the text).
+ */
+export function entryParts(text, { spell = false, name = null } = {}) {
+  let t = stripEnergyCost(String(text ?? ""));
+  if (spell) t = stripHeader(t);
+  t = boldSpans(t, name);
+  const bits = t.split(/\s*\b(Enhanced|Ritual):\s*/);
+  return { main: emphasize(bits[0].trim()), extra: bits.slice(1).reduce((out, b, i, a) => (i % 2 ? out : [...out, { label: b, text: emphasize(String(a[i + 1] ?? "").trim()) }]), []) };
+}
+/** A Mental entry's bolded numbers (the doc's bold, kept in mental-bold.mjs), marked so they render bold; dice inside them aren't marked twice. */
+function boldSpans(text, name) {
+  let t = String(text ?? "");
+  for (const span of (name && BOLD[name]) || []) {
+    const i = t.indexOf(span);
+    if (i >= 0) t = `${t.slice(0, i)}${span}${t.slice(i + span.length)}`;
+  }
+  return t;
+}
+const isSpellText = text => /^(?:X\+1|\d+(?:-\d+)?) Threshold, [^.]*\b(Core Spell|Spell Mod)\b/.test(String(text ?? ""));
+
 /* ---------------- Sections ---------------- */
 
 registerSection({ id: "rules", label: "Rules", icon: "fa-solid fa-book", order: 0, build() {
@@ -135,9 +169,10 @@ registerSection({ id: "trees", label: "Skill trees", icon: "fa-solid fa-sitemap"
         linksBlock("Rules", [{ id: ruleId("archetypes"), label: "Ch2: Archetypes" }])].filter(Boolean) });
     for (const t of trees) {
       const tierBlocks = t.tiers.map(tier => ({ kind: "entries", label: `Tier ${tier.tier}${tier.free ? " (free)" : ""}`, summary: tier.summary ?? "",
-        items: tier.entries.map(e => ({ id: codexId.entry(t.id, e.name), name: e.name ?? "", text: e.text ?? "", sub: e.sub ?? [] })) }));
+        items: tier.entries.map(e => ({ id: codexId.entry(t.id, e.name), name: e.name ?? "", text: e.text ?? "", sub: e.sub ?? [], cost: costOf(e.text), bold: t.archetype === "mental" })) }));
       const theory = TREES.find(x => x.archetype === t.archetype && x.theory);
-      pages.push({ id: codexId.tree(t.id), title: t.name, section: "trees", group: a.label, subtitle: t.theory ? `${a.label} Theory` : t.requires ? `Needs ${theory?.name ?? "Theory"} Tier ${t.requires}` : a.label,
+      pages.push({ id: codexId.tree(t.id), title: t.name, section: "trees", group: a.label, badge: t.theory ? "Theory" : "Skill tree",
+        subtitle: t.theory ? `${a.label} Theory` : t.requires ? `Needs ${theory?.name ?? "Theory"} Tier ${t.requires}` : a.label,
         hidden: !!t.hidden, blocks: [...tierBlocks, t.table?.rows?.length ? { kind: "table", label: t.table.title, head: ["Roll", t.table.title ?? "Effect"], rows: t.table.rows.map(r => [r[0], r[1]]) } : null].filter(Boolean) });
       for (const tier of t.tiers) for (const e of tier.entries) pages.push(entryPage(t, tier, e));
     }
@@ -150,25 +185,31 @@ function entryPage(tree, tier, e) {
   const id = codexId.entry(tree.id, e.name);
   const sid = id.slice("entry:".length);
   const blocks = [];
-  const cost = parseEnergyCost(e.text ?? "") ? (/Cost:\s*Energy equal to ([^.]*)\./i.exec(e.text)?.[1] ?? "") : "";
+  const cost = costOf(e.text);
   const spell = CATALOG.find(s => s.id === sid);
   const wonder = WONDERS.find(w => w.id === tree.id);
   const mode = wonder?.modes.find(m => m.id === sid);
-  blocks.push(fieldsBlock([["Tree", tree.name, codexId.tree(tree.id)], ["Tier", tier.tier], ["Energy", cost ? `equal to ${cost}` : ""],
-    spell ? ["Spell", `${spell.kind === "core" ? "Core Spell" : "Spell Mod"} · ${spell.replicate ? "X+1" : spell.min === spell.max ? spell.min : `${spell.min}–${spell.max}`} Threshold${spell.attack ? ` · ${spell.attack}` : ""}`] : null,
-    mode ? ["Mode", `${wonder.name} (${KINDS[wonder.kind]?.label})`] : null]));
-  if (mode) { blocks.push(md(mode.base)); if (mode.enhanced) blocks.push({ kind: "md", md: `**Enhanced:** ${mode.enhanced}` }); }
-  else blocks.push(md(e.text));
-  if (e.sub?.length) blocks.push({ kind: "md", md: e.sub.map(s => `- ${s}`).join("\n") });
+  const tenet = wonder?.tenet?.id === sid;
+  const threshold = spell ? `${spell.replicate ? "X+1" : spell.min === spell.max ? spell.min : `${spell.min}–${spell.max}`}` : "";
+  blocks.push(fieldsBlock([["Tree", tree.name, codexId.tree(tree.id)], ["Tier", tier.tier], ["Energy", cost ? `Equal to ${cost}` : ""],
+    spell ? ["Threshold", threshold] : null, spell?.attack ? ["Attack", spell.attack] : null,
+    spell ? ["Tags", [spell.universal && "Universal", spell.stackable && "Stackable", spell.replacement && "Replacement", spell.uncombinable && "Uncombinable"].filter(Boolean).join(", ")] : null,
+    mode || tenet ? ["Wonder", `${KINDS[wonder.kind]?.label} · scales with ${KINDS[wonder.kind]?.statLabel}`] : null]));
+  const parts = entryParts(mode ? mode.base : e.text, { spell: !!spell, name: tree.archetype === "mental" ? e.name : null });
+  blocks.push(md(parts.main));
+  for (const x of parts.extra) blocks.push({ kind: "callout", label: x.label, md: x.text });
+  if (mode?.enhanced) blocks.push({ kind: "callout", label: "Enhanced", md: emphasize(boldSpans(mode.enhanced, e.name)) });
+  if (e.sub?.length) blocks.push({ kind: "md", md: e.sub.map(s => `- ${emphasize(s)}`).join("\n") });
   if (spell?.kind === "core") {
     const me = school(tree.id);
     const pairs = Object.keys(COMBO_PAIRS).filter(k => k.split("+").includes(me));
     blocks.push(linksBlock("Combos", [...pairs.map(k => ({ id: codexId.combo(k), label: comboTitle(k) })),
       ...Object.keys(COMBO_GENERIC).map(k => ({ id: codexId.combo(`any-${k}`), label: `${cap(me)} + ${cap(k)} (any Core)` }))]));
-    if (COMBO_BONUS[me]) blocks.push({ kind: "md", md: `**As a Combo bonus:** ${COMBO_BONUS[me]}` });
-    if (COMBO_ILLUSION[me]) blocks.push({ kind: "md", md: `**Illusion Combo:** ${COMBO_ILLUSION[me]}` });
+    if (COMBO_BONUS[me]) blocks.push({ kind: "callout", label: "As a Combo bonus", md: emphasize(COMBO_BONUS[me]) });
+    if (COMBO_ILLUSION[me]) blocks.push({ kind: "callout", label: "Illusion Combo", md: emphasize(COMBO_ILLUSION[me]) });
   }
-  return { id, title: e.name || `${tree.name}, Tier ${tier.tier}`, section: "trees", group: null, parent: codexId.tree(tree.id), subtitle: `${tree.name} · Tier ${tier.tier}`,
+  const badge = spell ? (spell.kind === "core" ? "Core Spell" : "Spell Mod") : mode ? "Mode" : tenet ? "Tenet" : cost ? "Ability" : null;
+  return { id, title: e.name || `${tree.name}, Tier ${tier.tier}`, section: "trees", group: null, parent: codexId.tree(tree.id), subtitle: `${tree.name} · Tier ${tier.tier}`, badge,
     hidden: !!tree.hidden, keywords: [tree.name], blocks: blocks.filter(Boolean) };
 }
 /** Rich text (an old item's description) as plain lines, so nothing in it runs as markup. */
@@ -205,12 +246,12 @@ registerSection({ id: "equipment", label: "Equipment", icon: "fa-solid fa-shield
     for (const [wk, wt] of Object.entries(WEIGHTS)) {
       const r = w[wk];
       if (!r) continue;
-      rows.push([`${wt.label} (${STATS[wt.stat]?.abbr}, ${wt.ap} AP)`, `d${r.die}${w.ranged ? ` · ${r.range} ft · reload ${r.reload} (${RELOAD_RP[r.reload] ?? "?"} RP)` : r.throw ? ` · throw ${THROW[r.throw]?.label ?? r.throw}` : ""}${tagText(r.tags) ? ` · ${tagText(r.tags)}` : ""}`]);
-      if (k === "unarmed") break;
+      rows.push([wt.label, `${STATS[wt.stat]?.abbr ?? ""}`, `${wt.ap} AP`, `d${r.die}`, w.ranged ? `${r.range} ft` : r.throw ? `${THROW[r.throw]?.label ?? r.throw} (${THROW[r.throw]?.range ?? "?"} ft)` : "—",
+        ...(w.ranged ? [`${cap(r.reload ?? "")} (${RELOAD_RP[r.reload] ?? "?"} RP)`] : []), tagText(r.tags) || "—"]);
     }
     const tags = [...new Map([...tagLinks(w.light?.tags), ...tagLinks(w.heavy?.tags)].map(t => [t.id, t])).values()];
     pages.push({ id: codexId.weaponType(k), title: w.label, section: "equipment", group: "Weapon types", subtitle: w.ranged ? "Ranged" : "Melee", hidden: !!w.hidden,
-      blocks: [{ kind: "fields", rows }, linksBlock("Tags", tags), treeExists(weaponTree(k)) ? linksBlock("Skill tree", [{ id: codexId.tree(weaponTree(k)), label: TREES.find(t => t.id === weaponTree(k)).name }]) : null,
+      blocks: [{ kind: "table", head: ["Weight", "Scaling", "Attack", "Die", w.ranged ? "Range" : "Throw", ...(w.ranged ? ["Reload"] : []), "Tags"], rows }, linksBlock("Tags", tags), treeExists(weaponTree(k)) ? linksBlock("Skill tree", [{ id: codexId.tree(weaponTree(k)), label: TREES.find(t => t.id === weaponTree(k)).name }]) : null,
         linksBlock("Rules", [{ id: codexId.doc("equipment", "martial-weapons", "weapon-info"), label: "Weapon Info" }])].filter(Boolean) });
   }
   for (const [k, t] of vis(WEAPON_TAGS)) {
@@ -265,7 +306,7 @@ registerSection({ id: "statuses", label: "Statuses", icon: "fa-solid fa-person-f
     const src = STATUS_SOURCES[s.id] ?? {};
     const target = src.rule ? ruleId(src.rule) : src.entry ? ctx.byName(src.entry) : null;
     return { id: codexId.status(s.id), title: s.name, section: "statuses", group: "Statuses", img: s.img, embed: target,
-      blocks: [target ? linksBlock("From", [{ id: target, label: src.entry ?? (ctx.pages.get(target)?.title ?? "Rules") }]) : md("A status a GM or an ability sets.")].filter(Boolean) };
+      blocks: target ? [] : [md("A status a GM or an ability sets.")] };
   });
 } });
 
@@ -290,6 +331,7 @@ export function codexIndex() {
   for (const sec of later) for (const p of sec.build(ctx) ?? []) add(p);
   function add(p) {
     if (!p?.id || pages.has(p.id)) return;
+    p.badge ??= p.id.startsWith("doc:") ? (p.chapter ? "Chapter" : "Rule") : p.id.startsWith("item:") ? "Item" : BADGES[p.group] ?? null;
     pages.set(p.id, p);
     const n = String(p.title ?? "").toLowerCase();
     // Names point at the most useful page: a skill tree entry over an item of the same name, a tree over a rules section.
@@ -309,6 +351,9 @@ export function codexIndex() {
   cache = { version: dataVersion, pages, names, nav };
   return cache;
 }
+const BADGES = { "Weapon types": "Weapon type", "Weapon tags": "Tag", "Weapon materials": "Weapon material", Armor: "Armor", "Armor materials": "Armor material",
+  Foci: "Foci", Shrouds: "Shroud", Affixes: "Affix", "Icon Forms": "Icon Form", "Object densities": "Density", Stats: "Stat", Sizes: "Size", "Damage types": "Damage type",
+  Conditions: "Condition", Statuses: "Status", "Combo spells": "Combo", Wonders: "Wonders" };
 const RANK = { trees: 0, equipment: 1, basics: 2, magic: 3, mental: 4, statuses: 5, rules: 6 };
 const rank = p => (p.id.startsWith("item:") ? 9 : RANK[p.section] ?? 8);
 
@@ -348,7 +393,7 @@ export function searchCodex(query, { gm = false, limit = 60 } = {}) {
 const textCache = new WeakMap();
 function pageText(p) {
   if (textCache.has(p)) return textCache.get(p);
-  const t = (p.blocks ?? []).map(b => b.kind === "md" ? plainText(b.md) : b.kind === "fields" ? b.rows.map(r => r.slice(0, 2).join(" ")).join(" ")
+  const t = (p.blocks ?? []).map(b => b.kind === "md" || b.kind === "callout" ? plainText(b.md) : b.kind === "fields" ? b.rows.map(r => r.slice(0, 2).join(" ")).join(" ")
     : b.kind === "entries" ? b.items.map(i => `${i.name} ${i.text}`).join(" ") : b.kind === "links" ? b.items.map(i => i.label).join(" ")
       : b.kind === "table" ? b.rows.flat().join(" ") : "").join(" ");
   textCache.set(p, t);
@@ -358,6 +403,13 @@ function pageText(p) {
 /* ---------------- Rendering ---------------- */
 
 const link = (id, label, cls = "fs-codex-link") => `<a class="${cls}" data-codex="${escapeHtml(id)}">${escapeHtml(label)}</a>`;
+/** One entry of a tree's tier: its name (to its page) and Energy cost, then its text in parts. */
+function entryCard(i) {
+  const p = entryParts(i.text, { spell: isSpellText(i.text), name: i.bold ? i.name : null });
+  return `<div class="fs-codex-entry"><div class="fs-codex-entry-head">${i.name ? link(i.id, i.name, "fs-codex-link fs-codex-entry-name") : ""}${i.cost ? `<span class="fs-codex-cost" data-tooltip="Energy cost"><i class="fa-solid fa-bolt"></i> ${escapeHtml(i.cost)}</span>` : ""}</div>`
+    + `${renderMarkdown(p.main)}${p.extra.map(x => `<div class="fs-codex-callout"><span class="fs-codex-callout-label">${escapeHtml(x.label)}</span>${renderMarkdown(x.text)}</div>`).join("")}`
+    + `${i.sub?.length ? `<ul class="fs-codex-list">${i.sub.map(s => `<li>${inline(emphasize(s))}</li>`).join("")}</ul>` : ""}</div>`;
+}
 /** A page as HTML (links carry data-codex; `embed` pages show the page they point to under their own). */
 export function renderPage(page, { gm = false } = {}) {
   if (!page) return `<p class="hint">That page doesn't exist (yet).</p>`;
@@ -366,12 +418,24 @@ export function renderPage(page, { gm = false } = {}) {
   const parts = [];
   for (const b of page.blocks ?? []) {
     if (b.kind === "md") parts.push(`<div class="fs-codex-text">${renderMarkdown(b.md)}</div>`);
-    else if (b.kind === "fields" && b.rows.length) parts.push(`<div class="fs-codex-fields">${b.rows.map(([l, v, id]) => `<span>${escapeHtml(l)}</span><span>${id && known(id) ? link(id, String(v)) : escapeHtml(v)}</span>`).join("")}</div>`);
-    else if (b.kind === "links" && b.items.length) parts.push(`<div class="fs-codex-links">${b.label ? `<h4>${escapeHtml(b.label)}</h4>` : ""}<ul>${b.items.filter(i => i.id && (known(i.id) || i.id === page.id)).map(i => `<li>${i.id === page.id ? escapeHtml(i.label) : link(i.id, i.label)}${i.note ? ` <span class="fs-sub">${escapeHtml(i.note)}</span>` : ""}</li>`).join("")}</ul></div>`);
-    else if (b.kind === "entries") parts.push(`<section class="fs-codex-tier"><h4>${escapeHtml(b.label)}</h4>${b.summary ? `<p class="fs-sub">${inline(b.summary)}</p>` : ""}<ul>${b.items.map(i => `<li>${i.name ? `${link(i.id, i.name)}: ` : ""}${inline(i.text)}${i.sub?.length ? `<ul>${i.sub.map(s => `<li>${inline(s)}</li>`).join("")}</ul>` : ""}</li>`).join("")}</ul></section>`);
-    else if (b.kind === "table") parts.push(`<table class="fs-codex-table"><thead><tr>${b.head.map(h => `<th>${escapeHtml(h)}</th>`).join("")}</tr></thead><tbody>${b.rows.map(r => `<tr>${r.map(c => `<td>${inline(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`);
+    else if (b.kind === "callout") parts.push(`<div class="fs-codex-callout"><span class="fs-codex-callout-label">${escapeHtml(b.label)}</span>${renderMarkdown(b.md)}</div>`);
+    else if (b.kind === "fields" && b.rows.length) parts.push(`<dl class="fs-codex-fields">${b.rows.map(([l, v, id]) => `<dt>${escapeHtml(l)}</dt><dd>${id && known(id) ? link(id, String(v)) : escapeHtml(v)}</dd>`).join("")}</dl>`);
+    else if (b.kind === "links" && b.items.length) {
+      const items = b.items.filter(i => i.id && (known(i.id) || i.id === page.id));
+      if (!items.length) continue;
+      const one = i => (i.id === page.id ? escapeHtml(i.label) : link(i.id, i.label));
+      // A plain list of names reads as chips; one with a note for each reads as a list.
+      const body = items.some(i => i.note) ? `<ul class="fs-codex-list">${items.map(i => `<li>${one(i)}${i.note ? ` <span class="fs-sub">${escapeHtml(i.note)}</span>` : ""}</li>`).join("")}</ul>`
+        : `<div class="fs-codex-chips">${items.map(i => `<span class="fs-codex-chip">${one(i)}</span>`).join("")}</div>`;
+      parts.push(`<div class="fs-codex-links">${b.label ? `<h4>${escapeHtml(b.label)}</h4>` : ""}${body}</div>`);
+    }
+    else if (b.kind === "entries") parts.push(`<section class="fs-codex-tier"><header><span class="fs-codex-tier-num">${escapeHtml(b.label)}</span>${b.summary ? `<span class="fs-codex-tier-summary">${inline(b.summary)}</span>` : ""}</header>${b.items.map(i => entryCard(i)).join("")}</section>`);
+    else if (b.kind === "table") parts.push(`<table class="fs-codex-table">${b.label ? `<caption>${escapeHtml(b.label)}</caption>` : ""}<thead><tr>${b.head.map(h => `<th>${escapeHtml(h)}</th>`).join("")}</tr></thead><tbody>${b.rows.map(r => `<tr>${r.map(c => `<td>${inline(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`);
   }
-  if (page.embed && pages.has(page.embed)) parts.push(`<div class="fs-codex-embed">${renderPage(pages.get(page.embed), { gm }).replace(/^/, "")}</div>`);
-  if (page.parent && known(page.parent)) parts.unshift(`<p class="fs-codex-up">${link(page.parent, `↑ ${pages.get(page.parent).title}`)}</p>`);
+  if (page.embed && pages.has(page.embed)) {
+    const e = pages.get(page.embed);
+    parts.push(`<div class="fs-codex-embed"><h3>${link(e.id, e.title)}${e.badge ? ` <span class="fs-codex-badge">${escapeHtml(e.badge)}</span>` : ""}</h3>${e.subtitle ? `<div class="fs-sub">${escapeHtml(e.subtitle)}</div>` : ""}${renderPage(e, { gm })}</div>`);
+  }
+  if (page.parent && known(page.parent)) parts.unshift(`<p class="fs-codex-up"><i class="fa-solid fa-arrow-turn-up"></i> ${link(page.parent, pages.get(page.parent).title)}</p>`);
   return parts.join("");
 }

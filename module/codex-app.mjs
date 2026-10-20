@@ -50,7 +50,7 @@ function codexClass() {
         nav: ix.nav.map(s => ({ id: s.id, label: s.label, icon: s.icon,
           groups: s.groups.map(g => ({ key: `${s.id}/${g.label}`, label: g.label, open: this.open.has(`${s.id}/${g.label}`),
             pages: g.ids.filter(visible).map(id => ({ id, title: ix.pages.get(id).title, current: id === this.pageId, hidden: ix.pages.get(id).hidden })) })).filter(g => g.pages.length) })),
-        page: page && (seeHidden || !page.hidden) ? { id: page.id, title: page.title, subtitle: page.subtitle ?? "", img: page.img ?? "", hidden: page.hidden, html: renderPage(page, { gm: seeHidden }) } : null
+        page: page && (seeHidden || !page.hidden) ? { id: page.id, title: page.title, subtitle: page.subtitle ?? "", badge: page.badge ?? "", img: page.img ?? "", hidden: page.hidden, html: renderPage(page, { gm: seeHidden }) } : null
       };
     }
 

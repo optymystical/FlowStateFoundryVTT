@@ -362,34 +362,69 @@
 .fs-carried { margin: 0 0 6px; opacity: 0.85; }
 
 /* ---- The Codex ---- */
+.fs-codex { --codex-line: var(--color-border-light-tertiary, rgba(127,127,127,0.35)); --codex-soft: rgba(127,127,127,0.12); --codex-softer: rgba(127,127,127,0.06); --codex-accent: var(--color-warm-2, #c9593f); }
 .fs-codex .window-content { padding: 0; }
 .fs-codex .fs-codex-body { display: flex; height: 100%; }
-.fs-codex .fs-codex-side { width: 290px; flex: 0 0 290px; display: flex; flex-direction: column; border-right: 1px solid var(--color-border-light-tertiary, #999); }
+.fs-codex .fs-codex-side { width: 290px; flex: 0 0 290px; display: flex; flex-direction: column; border-right: 1px solid var(--codex-line); }
 .fs-codex .fs-codex-tools { display: flex; gap: 4px; padding: 6px; align-items: center; }
 .fs-codex .fs-codex-tools input { flex: 1; min-width: 0; }
 .fs-codex .fs-codex-tools button { flex: 0 0 28px; width: 28px; padding: 0; }
-.fs-codex .fs-codex-tools button.active { box-shadow: inset 0 0 0 1px var(--color-warm-2, #c9593f); }
+.fs-codex .fs-codex-tools button.active { box-shadow: inset 0 0 0 1px var(--codex-accent); }
 .fs-codex .fs-codex-nav { flex: 1; overflow-y: auto; padding: 0 8px 8px; }
-.fs-codex .fs-codex-nav h3 { margin: 10px 0 4px; font-size: 1em; border-bottom: 1px solid var(--color-border-light-tertiary, #999); }
+.fs-codex .fs-codex-nav h3 { margin: 10px 0 4px; font-size: 1em; border-bottom: 1px solid var(--codex-line); }
 .fs-codex .fs-codex-nav ul { list-style: none; margin: 0 0 4px 14px; padding: 0; }
 .fs-codex .fs-codex-nav li { margin: 1px 0; }
 .fs-codex .fs-codex-nav li.current > a { font-weight: bold; }
 .fs-codex .fs-codex-group-head { display: block; cursor: pointer; }
 .fs-codex .fs-codex-results ul { margin-left: 0; }
-.fs-codex .fs-codex-page { flex: 1; overflow-y: auto; padding: 10px 16px; }
-.fs-codex .fs-codex-page header { display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--color-border-light-tertiary, #999); margin-bottom: 8px; }
-.fs-codex .fs-codex-page header h2 { margin: 0; border: none; }
-.fs-codex .fs-codex-page header > div { flex: 1; }
-.fs-codex .fs-codex-page header button { flex: 0 0 28px; width: 28px; }
-.fs-codex .fs-codex-page header img { border: none; }
-.fs-codex .fs-codex-fields { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 6px 0 10px; }
-.fs-codex .fs-codex-fields > span:nth-child(odd) { opacity: 0.75; }
-.fs-codex .fs-codex-links h4, .fs-codex .fs-codex-tier h4 { margin: 10px 0 2px; }
-.fs-codex .fs-codex-tier > ul > li { margin-bottom: 4px; }
-.fs-codex .fs-codex-up { margin: 0 0 4px; font-size: 0.9em; }
-.fs-codex .fs-codex-embed { margin-top: 10px; padding-top: 6px; border-top: 1px dashed var(--color-border-light-tertiary, #999); }
-.fs-codex-table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 0.92em; }
-.fs-codex-table th, .fs-codex-table td { border: 1px solid var(--color-border-light-tertiary, #bbb); padding: 2px 4px; vertical-align: top; }
+.fs-codex .fs-codex-page { flex: 1; overflow-y: auto; padding: 10px 18px 18px; line-height: 1.45; }
+.fs-codex .fs-codex-page > header { display: flex; gap: 10px; align-items: center; border-bottom: 2px solid var(--codex-line); margin-bottom: 10px; padding-bottom: 6px; }
+.fs-codex .fs-codex-page > header h2 { margin: 0; border: none; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fs-codex .fs-codex-page > header > div { flex: 1; }
+.fs-codex .fs-codex-page > header button { flex: 0 0 28px; width: 28px; }
+.fs-codex .fs-codex-page > header img { border: none; }
+.fs-codex-badge { font-size: 0.55em; font-weight: normal; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 10px; border: 1px solid var(--codex-accent); color: var(--codex-accent); }
+/* Up to the parent page */
+.fs-codex-content .fs-codex-up { margin: 0 0 8px; font-size: 0.9em; opacity: 0.85; }
+/* The stat block: label | value pairs in a tinted box */
+.fs-codex-content .fs-codex-fields { display: grid; grid-template-columns: max-content 1fr; gap: 3px 14px; margin: 0 0 12px; padding: 8px 12px; background: var(--codex-soft); border-left: 3px solid var(--codex-accent); border-radius: 3px; }
+.fs-codex-content .fs-codex-fields dt { margin: 0; font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.7; align-self: center; }
+.fs-codex-content .fs-codex-fields dd { margin: 0; }
+/* Text */
+.fs-codex-content .fs-codex-text p { margin: 0 0 8px; }
+.fs-codex-content .fs-codex-text h4 { margin: 14px 0 4px; border-bottom: 1px solid var(--codex-line); }
+.fs-codex-content ul, .fs-codex-content ol { margin: 4px 0 8px; padding-left: 22px; }
+.fs-codex-content li { margin: 2px 0; }
+.fs-codex-content strong { font-weight: 700; }
+/* Enhanced, Ritual and the like: a set-apart box with its label */
+.fs-codex-callout { margin: 8px 0; padding: 6px 10px; background: var(--codex-softer); border: 1px solid var(--codex-line); border-left: 3px solid var(--codex-accent); border-radius: 3px; }
+.fs-codex-callout p { margin: 2px 0 0; }
+.fs-codex-callout-label { display: block; font-size: 0.78em; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: var(--codex-accent); }
+/* Lists of links */
+.fs-codex-links h4 { margin: 14px 0 6px; font-size: 1em; }
+.fs-codex-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.fs-codex-chip { padding: 2px 9px; border: 1px solid var(--codex-line); border-radius: 12px; background: var(--codex-softer); font-size: 0.92em; }
+.fs-codex-content .fs-codex-list { list-style: none; padding-left: 0; }
+.fs-codex-list li { padding: 2px 0; border-bottom: 1px dotted var(--codex-line); }
+/* A tree's tiers, each entry as a card */
+.fs-codex-tier { margin: 14px 0; }
+.fs-codex-tier > header { display: flex; gap: 10px; align-items: baseline; padding: 4px 10px; background: var(--codex-soft); border-radius: 3px; margin-bottom: 6px; }
+.fs-codex-tier-num { font-weight: bold; white-space: nowrap; }
+.fs-codex-tier-summary { opacity: 0.8; font-size: 0.92em; }
+.fs-codex-entry { margin: 0 0 8px 10px; padding: 6px 10px; border: 1px solid var(--codex-line); border-radius: 4px; }
+.fs-codex-entry p { margin: 4px 0 0; }
+.fs-codex-entry-head { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.fs-codex-entry-name { font-weight: bold; font-size: 1.05em; }
+.fs-codex-cost { font-size: 0.85em; padding: 1px 8px; border-radius: 10px; background: var(--codex-soft); white-space: nowrap; }
+.fs-codex .fs-codex-embed { margin-top: 14px; padding: 10px 12px; border: 1px dashed var(--codex-line); border-radius: 4px; }
+.fs-codex .fs-codex-embed > h3 { margin: 0; border: none; display: flex; align-items: center; gap: 8px; }
+.fs-codex .fs-codex-embed > .fs-sub { margin-bottom: 8px; }
+/* Tables */
+.fs-codex-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 0.92em; }
+.fs-codex-table caption { text-align: left; font-weight: bold; padding: 2px 0 4px; }
+.fs-codex-table th { background: var(--codex-soft); text-align: left; }
+.fs-codex-table th, .fs-codex-table td { border: 1px solid var(--codex-line); padding: 3px 6px; vertical-align: top; }
+.fs-codex-table tbody tr:nth-child(even) td { background: var(--codex-softer); }
 .fs-codex-link, .fs-codex-name { cursor: pointer; }
 .fs-codex-name { color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; }
 .fs-codex-icon { opacity: 0.6; font-size: 0.85em; margin-left: 2px; }
@@ -397,6 +432,7 @@
 .fs-tag[data-codex] { cursor: pointer; }
 .fs-codex-btn { flex: 0 0 100%; margin-top: 4px; }                         /* its own full-width row, like the Forge's */
 a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-through; }
+.fs-codex-welcome p { margin: 0 0 8px; }
 
 /* ---- Shops ---- */
 .fs-shop-sheet { display: flex; flex-direction: column; height: 100%; }

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.71.3:** **Codex pages, laid out for reading.** Each page says what it is (a badge: Core Spell, Mode, Ability, Weapon type, Status...). Facts sit in a stat block (tree, tier, Energy, Threshold, attack); the text drops what the block already says (the spell's Threshold line, the Energy cost). Enhanced, Ritual, Combo bonus and Illusion Combo parts get their own boxes; dice, AP/RP costs and a Mode's bolded numbers stand out. Lists of links are chips; a skill tree's tiers are headed bars with each entry as a card and its Energy cost as a badge; weapon types are a table of both weights; a status shows the rule or ability it comes from under that page's own title; tables are striped.
+
 **0.71.2:** Starting Icons obey the starting rarity limit, like materials and Affixes: the wizard only offers Forms within it, and the GM's check refuses one above it.
 
 **0.71.1:** **Code audit.** Fixed: undoing a move after spending AP on an action could still give the move's AP back (Foundry merges flag data, so the cleared undo list lingered; the movement ledger is now always written whole). Fixed: a Very Rare Form or Affix was read as Common by Forge/Conjure/Consecrate's Rite timing. Names that go into dialogs and chat cards (a picked-up item's taker, Phantom Pain, the Mods tabs, armor changes, Ward and Mode lines, attack card notes) are escaped, so a name with `<` or `&` in it shows as written. Cleanup: the small helpers copied into 26 modules (escaping, dialog fields, selects, form reading) are one shared module; the rarity name and order helpers are shared; unused code removed.

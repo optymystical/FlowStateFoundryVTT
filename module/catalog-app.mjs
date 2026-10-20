@@ -3,7 +3,7 @@
  * and, as the GM, make named entries, edit any entry's picture, text, weight, volume and price, or hide entries the world doesn't use.
  * Entries are saved in the world data (store.mjs), so they export and import with it.
  */
-import { ITEM_CATALOG, ITEM_TYPES, IDENTITY, listEntries, entrySummary, namedKey, isGenerated, keyFor, entryOf } from "./catalog.mjs";
+import { ITEM_CATALOG, ITEM_TYPES, listEntries, entrySummary, namedKey, isGenerated, entryOf } from "./catalog.mjs";
 import { withEntry, withoutEntry, withHidden, systemEntry } from "./store.mjs";
 import { getWorldData, setWorldData } from "./world-data.mjs";
 import { giveEntry } from "./items.mjs";
@@ -12,8 +12,8 @@ import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, CASTING_FORMS } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 import { OBJECT_DENSITY } from "./rules.mjs";
 import { askImage } from "./pictures.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML(String(s ?? ""));
 const LIMIT = 150;
 const DRAG_TYPE = "FlowStateCatalog";
 const tables = { CASTING_FORMS, tagLabel: k => WEAPON_TAGS[k]?.label ?? k };
@@ -276,5 +276,3 @@ export const CatalogApp = {
   }
 };
 
-/** The generated entry an item's builder fields describe (the sheets use it to show what an item is). */
-export const generatedKeyOf = item => keyFor(item.type, Object.fromEntries((IDENTITY[item.type] ?? []).map(f => [f, item.system[f]])));

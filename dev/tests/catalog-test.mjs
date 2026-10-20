@@ -139,5 +139,10 @@ console.log("== Named items in the character wizard");
   S.applyWorldData({});
 }
 
+console.log("== Rarities");
+{ const MT = await import("../../module/martial.mjs");
+  ok(MT.rarityKey("very rare") === "veryRare" && MT.rarityKey("Very Rare") === "veryRare" && MT.rarityKey("veryRare") === "veryRare" && MT.rarityKey("") === "common" && MT.rarityKey(null) === "common", "Rarity names however they're written ('very rare', an Icon Form's) give their key");
+  ok(MT.rarityRank("common") === 0 && MT.rarityRank("very rare") === 3 && MT.rarityRank("nonsense") === 0, "…and their place in the order (unknown counts as Common)"); }
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll catalog checks passed");
 if (fails) process.exit(1);

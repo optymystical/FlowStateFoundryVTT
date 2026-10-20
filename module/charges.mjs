@@ -16,8 +16,8 @@ import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import { CHARGES, onceUsed, markOnce, tenetOf, mantraHook, impulseHook, mental } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const minOf = (a, k) => ab.statMinOf(a, k);
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
 const half = n => Math.floor(n / 2);

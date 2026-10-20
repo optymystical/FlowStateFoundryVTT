@@ -16,8 +16,8 @@ import { askFor, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { mental, MODES, ACTS, CHOICE_PROVIDERS, COST_PROVIDERS, DAMAGE_PROVIDERS, TURN_START, rolled, tenetOf, tryOnce, runAct } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 export const RUIN = "mental-ruin-nightmare";
 const JINX = `${RUIN}:jinx`, FORFEIT = `${RUIN}:forfeit`, CALAMITY = `${RUIN}:calamity`, DOOM = `${RUIN}:doom`;
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);

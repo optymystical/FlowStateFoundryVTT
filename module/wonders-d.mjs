@@ -20,8 +20,8 @@ import { isDeclined } from "./reactions.mjs";
 import { tierOf } from "./skills.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, TURN_START, BEFORE_CLEAR, rolled, tenetOf, tryOnce, actButtons } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 export const EARTH = "mental-earth-dream", SEA = "mental-sea-nightmare";
 /** Sea's moves and Drown's threshold: fixed feet (the doc no longer bolds them, so Power and stacks don't change them). */
 export const SEA_MOVE_FT = 5, DROWN_FT = 10;

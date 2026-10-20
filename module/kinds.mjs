@@ -5,4 +5,3 @@
  */
 export const NON_CREATURES = new Set(["pile", "shop"]);
 export const notCreature = a => !!a && NON_CREATURES.has(a.type);
-export const isShop = a => a?.type === "shop";

@@ -18,9 +18,7 @@ import { STATS, applyStacks } from "./rules.mjs";
 const emplaceHealth = (actor, plan) => applyStacks(10 * plan.power, castStacks(actor, plan));
 import { tierOf } from "./skills.mjs";
 import { notCreature } from "./kinds.mjs";
-
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
-const DialogV2 = () => foundry.applications.api.DialogV2;
+import { esc, DialogV2 } from "./html.mjs";
 
 /** Is a hand free for Raw Casting? Fists don't count as holding anything. */
 function freeHand(actor) {
@@ -106,7 +104,7 @@ export function modsHTML(ctx, v, theory, power = 0) {
   const tab = (key, label, disabled) => `<button type="button" class="fs-cast-tab" data-tab="${key}" ${disabled ? "disabled" : ""}>${esc(label)}</button>`;
   const c1 = spells.spellById(v.core1), c2 = spells.spellById(v.core2);
   const focusedHere = ctx.focused && theory >= 4 && coreIds.includes(ctx.focused);
-  return `<div class="fs-cast-tabs">${tab("universal", "Universal", false)}${tab("core1", c1 ? `${c1.name} Mods` : "Core 1 Mods", !c1)}${tab("core2", c2 ? `${c2.name} Mods` : "Core 2 Mods", !c2)}</div>
+  return `<div class="fs-cast-tabs">${tab("universal", "Universal", false)}${tab("core1", c1 ? `${esc(c1.name)} Mods` : "Core 1 Mods", !c1)}${tab("core2", c2 ? `${esc(c2.name)} Mods` : "Core 2 Mods", !c2)}</div>
     ${panel("universal", universal, "No Universal Mods yet.")}${panel("core1", c1 ? own(c1.id) : [], "No Mods for this Core yet.")}${panel("core2", c2 ? own(c2.id) : [], "No Mods for this Core yet.")}
     ${focusedHere ? `<div class="fs-field"><label>Connection (free on your Focused Spell)</label><select name="connection"><option value="">None</option>${spells.CONNECTION_MODS.map(k => `<option value="${k}" ${v.connection === k ? "selected" : ""}>${k[0].toUpperCase() + k.slice(1)}</option>`).join("")}</select></div>` : ""}`;
 }
@@ -652,7 +650,6 @@ export async function useHeldSpell(actor, effectId) {
   });
 }
 
-
 /* -------------------------------------------- */
 /*  Grasp Arcana actions                        */
 /* -------------------------------------------- */
@@ -686,7 +683,6 @@ async function swapAttuned(actor, type) {
 }
 export const swapFoci = actor => swapAttuned(actor, "foci");
 export const swapShroud = actor => swapAttuned(actor, "shroud");
-
 
 /** Trigger a Delayed spell (Restoration Arcana T4): it resolves now, with no further cost. */
 export async function fireDelayed(actor, effectId) {

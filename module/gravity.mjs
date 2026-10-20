@@ -6,9 +6,8 @@
 import { post, setStatus, setActorFlag, requestDamage, damageOutcome, damageOutcomeHTML, forceCap, spendPoints, canSpend, registerFlight } from "./actions.mjs";
 import { gravityForce, fallFeet, liftBand, forceDamage, TERMINAL_ROUNDS, downwardProne, heightFt } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc, DialogV2 } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
-const DialogV2 = () => foundry.applications.api.DialogV2;
 const gravityG = () => { try { return Number(game.settings.get("flowstate", "gravity")); } catch (err) { return 1; } };
 
 export const isFalling = actor => !!actor?.statuses?.has("falling");

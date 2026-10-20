@@ -16,8 +16,8 @@ import { isDeclined } from "./reactions.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, DAMAGE_PROVIDERS, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = f => new Roll(f).evaluate();
 const minOf = (a, k) => ab.statMinOf(a, k);
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);

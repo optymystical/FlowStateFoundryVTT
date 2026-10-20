@@ -13,18 +13,10 @@ import * as terrain from "./terrain.mjs";
 import { secret } from "./afflictions.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc, DialogV2, formValuesNumeric as formValues, select, field } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
-const DialogV2 = () => foundry.applications.api.DialogV2;
 const roll = formula => new Roll(formula).evaluate();
 const data = e => e.flags?.flowstate?.spellEffect ?? {};
-const formValues = form => {
-  const v = {};
-  for (const el of form.elements) if (el.name && !el.disabled) v[el.name] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value) : el.value;
-  return v;
-};
-const select = (name, options, value) => `<select name="${name}">${options.map(([k, label]) => `<option value="${k}" ${String(value) === String(k) ? "selected" : ""}>${esc(label)}</option>`).join("")}</select>`;
-const field = (label, html) => `<div class="fs-field"><label>${esc(label)}</label>${html}</div>`;
 
 /* -------------------------------------------- */
 /*  Time bookkeeping (Restoration)              */
@@ -269,7 +261,7 @@ async function loseMirage(actor, live, d, lost) {
     const r = await roll(`${d.phantom}d6`);
     const pp = applyStacks(r.total, d.phantomStacks ?? 0);          // the Mirage's stacks scale the bolded 1d6
     phantom += pp;
-    html += `<div class="fs-result">Phantom Pain: ${actor.name}'s Pain Threshold rises by ${pp} (${phantom} in all). It goes away when no Mirage affects them.</div>`;
+    html += `<div class="fs-result">Phantom Pain: ${esc(actor.name)}'s Pain Threshold rises by ${pp} (${phantom} in all). It goes away when no Mirage affects them.</div>`;
   }
   if (power <= 0) { if (live) await endMirage(actor, live); return { html: html + `<div class="fs-result">The Mirage is gone.</div>`, ended: true }; }
   if (live) await changeEffect(live, { description: String(live.description ?? "").replace(`${d.power} Power`, `${power} Power`), "flags.flowstate.spellEffect.power": power, "flags.flowstate.spellEffect.phantomTotal": phantom, "flags.flowstate.spellEffect.tests": (d.tests ?? 0) + 1 });
@@ -331,8 +323,6 @@ export function auraTargets(actor) {
   }
   return out;
 }
-
-
 
 /* -------------------------------------------- */
 /*  Spells as targets: Strike, Absorb, Amplify, Rip */

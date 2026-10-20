@@ -14,8 +14,8 @@ import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import { mental, ACTS, TURN_START, impulseHook, tenetOf } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 export const snapTier = actor => tierOf(actor?.system?.trees ?? {}, "mental-snappence-arts");
 const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${game.combat.round}` : "ooc");
 const usedThisRound = (actor, flag) => actor.getFlag?.("flowstate", flag) === roundKey();

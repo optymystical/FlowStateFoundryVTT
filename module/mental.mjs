@@ -30,9 +30,8 @@ import { isDeclined } from "./reactions.mjs";
 import { damageCategories, WEAPON_TYPES } from "./martial.mjs";
 import { poolFormula, resolveAttack, DAMAGE_TYPES, applyStacks } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc, DialogV2, formValues } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
-const DialogV2 = () => foundry.applications.api.DialogV2;
 const eff = (actor, k) => actor.system.derived?.effective?.[k]?.value ?? 0;
 const minOf = (actor, k) => ab.statMinOf(actor, k);
 const trees = actor => actor.system.trees ?? {};
@@ -202,12 +201,6 @@ function dialogHTML(ctx, v, plan) {
     <div class="fs-cast-preview">${previewHTML(plan)}</div>
   </div>`;
 }
-
-const formValues = form => {
-  const v = {};
-  for (const el of form.elements) if (el.name && !el.disabled) v[el.name] = el.type === "checkbox" ? el.checked : el.value;
-  return v;
-};
 
 async function manifestDialog(actor, ctx) {
   const firstRange = Object.entries(R.RANGES).find(([k, r]) => !ctx.wobs || r.ap === (ctx.wobs.ap || ctx.wobs.rp))?.[0] ?? "ranged";
@@ -465,7 +458,7 @@ async function applyWard({ attacker, target, ward }) {
         const add = Math.min(Math.max(0, (Number(d.max) || 0) - (Number(d.hp) || 0)), Math.floor(applyStacks(ward.recover ?? 0, st)));
         if (add <= 0) { lines.push(`${esc(who.name)}'s ${form.name} shielding is already full.`); return; }
         await changeEffect(e, { "flags.flowstate.spellEffect.hp": (Number(d.hp) || 0) + add, name: `${form.name} (${(Number(d.hp) || 0) + add} shielding)` });
-        lines.push(`${esc(who.name)}'s ${form.name} recovers <strong>${add} shielding</strong> (${(Number(d.hp) || 0) + add} of ${d.max}).`);
+        lines.push(`${esc(who.name)}'s ${esc(form.name)} recovers <strong>${add} shielding</strong> (${(Number(d.hp) || 0) + add} of ${d.max}).`);
         return;
       }
       if (form.cap) amt = Math.max(0, Math.min(amt, Math.floor(applyStacks(form.cap * R.iconScale(eff(caster, "will"), (ward.grade ?? 1)), st)) - mine.reduce((n, e) => n + (Number(e.flags.flowstate.spellEffect.hp) || 0), 0)));

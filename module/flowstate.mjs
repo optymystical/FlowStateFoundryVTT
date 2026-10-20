@@ -1316,7 +1316,7 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
       if (actor.system.ap.value < 6) return refuse(item, `Light armor takes a full turn (all 6 AP); ${actor.name} has ${actor.system.ap.value} AP left.`);
       if (!options?.flowstateConfirmed) {
         return confirmFirst(item, changes, `${equip ? "Put on" : "Remove"} ${item.name}?`,
-          `This takes ${actor.name}'s <strong>whole turn</strong> (all 6 AP).`);
+          `This takes ${foundry.utils.escapeHTML(actor.name)}'s <strong>whole turn</strong> (all 6 AP).`);
       }
       actions.spendAP(actor, actor.system.ap.value, `${equip ? "putting on" : "removing"} ${item.name}`);
       ui.notifications.info(`${actor.name} spends their turn ${equip ? "putting on" : "removing"} ${item.name}.`);

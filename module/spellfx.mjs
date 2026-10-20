@@ -427,7 +427,6 @@ function flareSets(n, sides) {
 }
 
 /** Crushing + Acid: 1 Stain stack plus twice the difference between your attack roll and their total dodge roll (never negative). */
-export const crushAcidStacks = (attack, dodge) => 1 + 2 * Math.max(0, attack - dodge);
 
 /** Ignition (Heat T2): triples Ignite stacks on a target with none; otherwise it triggers the stacks already there. */
 export function ignitionPlan(targetIgnite) {

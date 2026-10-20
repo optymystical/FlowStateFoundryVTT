@@ -16,13 +16,13 @@ import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import { isDeclined } from "./reactions.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 /** mental.mjs hands itself over when it loads (`setMental`): the Wonders call into it, and it calls into them. */
 export let mental = null;
 export const setMental = m => { mental = m; };
 
 export const bold = R.bold;
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = formula => new Roll(formula).evaluate();
 const eff = (a, k) => a?.system?.derived?.effective?.[k]?.value ?? 0;
 const minOf = (a, k) => ab.statMinOf(a, k);

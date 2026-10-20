@@ -5,8 +5,8 @@
  * that runs an ability (`setActRunner`).
  */
 import { isDeclined } from "./reactions.mjs";
+import { DialogV2, formValues } from "./html.mjs";
 
-const DialogV2 = () => foundry.applications.api.DialogV2;
 const SOCKET = "system.flowstate";
 
 let runActHook = null;
@@ -16,12 +16,6 @@ export const setActRunner = fn => { runActHook = fn; };
 /* -------------------------------------------- */
 /*  Asking the caster                           */
 /* -------------------------------------------- */
-
-const formValues = form => {
-  const v = {};
-  for (const el of form.elements) if (el.name && !el.disabled) v[el.name] = el.type === "checkbox" ? el.checked : el.value;
-  return v;
-};
 
 /** Show a small options dialog on this client and return its values (null if closed). `id` lets the GM's prompt list close it from outside. */
 export async function showChoices({ title, html, ok = "Use" }, id = null) {

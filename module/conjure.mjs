@@ -11,9 +11,8 @@ import { besideTokenPosition, setActorFlag, post, requestGM, GM_ACTIONS, attacke
 import { removeEnergy } from "./elemental.mjs";
 import { applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc, DialogV2, formValuesNumeric as formValues, select, field } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
-const DialogV2 = () => foundry.applications.api.DialogV2;
 const roll = formula => new Roll(formula).evaluate();
 const cap = s => s[0].toUpperCase() + s.slice(1);
 
@@ -120,13 +119,6 @@ GM_ACTIONS.deleteMade = async ({ uuids }) => {
 /*  The dialogs                                 */
 /* -------------------------------------------- */
 
-const formValues = form => {
-  const v = {};
-  for (const el of form.elements) if (el.name && !el.disabled) v[el.name] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value) : el.value;
-  return v;
-};
-const select = (name, options, value) => `<select name="${name}">${options.map(([k, label]) => `<option value="${k}" ${String(value) === String(k) ? "selected" : ""}>${esc(label)}</option>`).join("")}</select>`;
-const field = (label, html) => `<div class="fs-field"><label>${esc(label)}</label>${html}</div>`;
 const weaponChoices = () => Object.entries(WEAPON_TYPES).filter(([k, w]) => k !== "unarmed" && k !== "improvised" && !w.hidden).map(([k, w]) => [k, w.label]);
 
 /** The rarities a Make can use, and the equipment materials of that rarity for a weight. */

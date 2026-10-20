@@ -9,8 +9,8 @@ import {
 } from "./actions.mjs";
 import { applyStacks, igniteTotal, stainTotal, freezeStains } from "./rules.mjs";
 import { DAMAGE_TYPES } from "./rules.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = async formula => new Roll(formula).evaluate();
 
 /* -------------------------------------------- */

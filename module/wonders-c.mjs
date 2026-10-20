@@ -13,8 +13,8 @@ import { tierOf } from "./skills.mjs";
 import { allied, opposed } from "./sides.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, DAMAGE_PROVIDERS, TURN_START, rolled, tenetOf, tryOnce } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const LIGHT = "mental-light-dream", DARK = "mental-dark-nightmare";
 const ILLUMINATE = `${LIGHT}:illuminate`, ECLIPSE = `${DARK}:eclipse`;
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
@@ -314,7 +314,7 @@ export async function expand(caster, which) {
 
 export async function expandResolve({ attacker, target, result, m }) {
   const k = KINDS[m.expand.which];
-  if (!result.hit) return { html: `<div class="fs-notes">${k.name} misses ${esc(target.name)}.</div>` };
+  if (!result.hit) return { html: `<div class="fs-notes">${esc(k.name)} misses ${esc(target.name)}.</div>` };
   const lines = [];
   for (const a of actorsInPlay()) {
     if (a.uuid === target.uuid || !live(a) || !near(a, target, 10)) continue;

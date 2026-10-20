@@ -7,8 +7,8 @@ import * as spells from "./spells.mjs";
 import { igniteTotal } from "./rules.mjs";
 import { attunedAffixItems } from "./magic.mjs";
 import { post, requestGM, turnKey, setActorFlag, spendEnergy, giveStacks, registerFoci } from "./actions.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const stamp = () => (globalThis.game ? turnKey() : null) ?? "ooc";
 
 /** The Foci an option casts through, if it's attuned and working. */

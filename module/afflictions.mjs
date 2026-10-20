@@ -16,8 +16,8 @@ import {
 import { removeEnergy } from "./elemental.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES, STATS } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const roll = formula => new Roll(formula).evaluate();
 const data = e => e.flags?.flowstate?.spellEffect ?? {};
 const typeLabel = t => (t === "health" ? "health" : DAMAGE_TYPES[t] ?? t);

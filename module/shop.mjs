@@ -14,11 +14,10 @@ import { ITEM_TYPES, itemData, listEntries } from "./catalog.mjs";
 import { RARITIES } from "./martial.mjs";
 import { CatalogApp, dropEntry } from "./catalog-app.mjs";
 import { codexId, findPage } from "./codex.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML(String(s ?? ""));
 export const getPricing = () => { try { return sanitizePricing(game.settings.get("flowstate", "shopPricing")); } catch (err) { return sanitizePricing(DEFAULT_PRICING); } };
 const money = () => { const defs = getCurrencies(); return { defs, unit: priceCurrency(defs, getPricing()) }; };
-export const formatMoney = value => { const { defs, unit } = money(); return formatPrice(defs, value, unit); };
 
 /** Can this user trade with this shop (see it), and buy or sell for this character (own it)? */
 const canSee = (shop, user) => user.isGM || shop.testUserPermission(user, "OBSERVER");

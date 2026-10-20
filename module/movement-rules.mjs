@@ -97,7 +97,7 @@ export function planAction(ledger, amount, { cost }) {
   const a = Math.max(0, Number(amount) || 0);
   if (!(a > 0)) return { ledger: L, apCost: 0 };
   L.bank += a;
-  delete L.moves;                                                // the moves before it can no longer be undone for their AP
+  L.moves = [];                                                  // the moves before it can no longer be undone for their AP (an empty list: a missing key would keep the old one)
   if (L.pending && cost > 0 && L.bank >= cost - EPS) { L.bank -= cost; L.pending = false; }
   return { ledger: L, apCost: a };
 }

@@ -16,8 +16,8 @@ import { tierOf } from "./skills.mjs";
 import { strike } from "./wonders-b.mjs";
 import { mental, MODES, ACTS, CHOICE_PROVIDERS, COST_PROVIDERS, rolled, tenetOf, tryOnce, runAct, heal, forceRoll } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 export const FORTUNE = "mental-fortune-dream";
 const WAGER = `${FORTUNE}:wager`, WINDFALL = `${FORTUNE}:windfall`, PROVIDENCE = `${FORTUNE}:providence`, RIG = `${FORTUNE}:rig`;
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);

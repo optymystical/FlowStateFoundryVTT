@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.71.1:** **Code audit.** Fixed: undoing a move after spending AP on an action could still give the move's AP back (Foundry merges flag data, so the cleared undo list lingered; the movement ledger is now always written whole). Fixed: a Very Rare Form or Affix was read as Common by Forge/Conjure/Consecrate's Rite timing. Names that go into dialogs and chat cards (a picked-up item's taker, Phantom Pain, the Mods tabs, armor changes, Ward and Mode lines, attack card notes) are escaped, so a name with `<` or `&` in it shows as written. Cleanup: the small helpers copied into 26 modules (escaping, dialog fields, selects, form reading) are one shared module; the rarity name and order helpers are shared; unused code removed.
+
 **0.71.0:** **Shops.** A new Shop actor: put a merchant token on the map, stock it from the Forge, by dragging items in, or with random stock rules (kinds, rarities, Grades, how many), and players buy and sell with their characters' money. Prices come from the catalog, or the world's price per rarity, plus a flat amount per Grade above 1 (Settings → Shop prices); each shop has a markup and a sell rate, and each stock row can have its own price, a count or unlimited stock. Money changes hands in whichever linked currencies a character holds, with change. Every trade goes through the GM's client and is whispered as a receipt. The New Character wizard can now start characters with the GM's named catalog items.
 
 **0.70.2:** Fixed: the Journal sidebar's Codex button spans the full width (like the Forge's), instead of sitting small at the top.

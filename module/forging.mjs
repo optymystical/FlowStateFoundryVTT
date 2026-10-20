@@ -7,23 +7,18 @@ import { post, requestGM, putSpellEffect, spellEffects, attackerToken, setActorF
 import * as R from "./mental-rules.mjs";
 import * as conjure from "./conjure.mjs";
 import { AFFIXES, AFFIX_SIDES, FOCI_TYPES, SHROUD_TYPES } from "./magic.mjs";
-import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS } from "./martial.mjs";
+import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, rarityKey, rarityRank } from "./martial.mjs";
 import { tierOf } from "./skills.mjs";
 import { mental, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
+import { esc, DialogV2, formValues, select, field } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
-const DialogV2 = () => foundry.applications.api.DialogV2;
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
 const ID = "mental-creation-dream";
 export const CREATION_MODES = new Set([`${ID}:forge`, `${ID}:conjure`, `${ID}:consecrate`, `${ID}:fabricate`]);
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
-const field = (label, html) => `<div class="fs-field"><label>${esc(label)}</label>${html}</div>`;
-const select = (name, options) => `<select name="${name}">${options.map(([k, l]) => `<option value="${esc(k)}">${esc(l)}</option>`).join("")}</select>`;
-const formValues = form => { const v = {}; for (const el of form.elements) if (el.name && !el.disabled) v[el.name] = el.type === "checkbox" ? el.checked : el.value; return v; };
 
 /** The rarities this Mode can make: Common and Uncommon, plus Rare when Enhanced. */
 export const rarities = enhanced => (enhanced ? ["common", "uncommon", "rare"] : ["common", "uncommon"]);
-const rarityKey = r => String(r).replace(/\s+/g, "").replace(/^very rare$/i, "veryRare");
 
 for (const id of CREATION_MODES) {
   MODES[id] = async c => {
@@ -97,8 +92,7 @@ async function deliver(caster, recipient, item, willing) {
 const nowSeconds = () => globalThis.game?.time?.worldTime ?? Date.now() / 1000;
 /** Rite: 2 hours for a Common archetypal item or a Powder/Liquid object, 8 hours for an Uncommon one or a Soft object; Rare (and up) or Hard things can't be made permanent (null). */
 function riteHours(mode, v) {
-  const order = ["common", "uncommon", "rare", "veryRare"];
-  const rank = r => Math.max(0, order.indexOf(rarityKey(r ?? "common")));
+  const rank = rarityRank;
   if (mode === `${ID}:fabricate`) return ["powder", "liquid"].includes(v.mat) ? 2 : v.mat === "soft" ? 8 : null;
   let r = 0;
   if (mode === `${ID}:forge`) r = rank((v.kind === "armor" ? ARMOR_MATERIALS : WEAPON_MATERIALS)[v.material]?.rarity);

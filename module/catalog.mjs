@@ -13,7 +13,7 @@
  * [{ path, value }]). When it is prepared, its identity (type, weight, material, description, weight in lb...) is read from the entry with the
  * overrides on top; the identity fields it stores are a copy kept for when its entry is gone.
  */
-import { WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES } from "./martial.mjs";
+import { WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES, rarityKey } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 
@@ -38,8 +38,6 @@ export const IDENTITY = {
   affix: ["affix"],
   gear: ["ammoType", "body", "density"]
 };
-/** What every entry has besides its identity fields. `pounds` is weight in lb, `volume` ft³, `price` in the world's first currency. */
-export const COMMON = ["description", "pounds", "volume", "price", "rarity"];
 /** What a copy may override (the paths of `system.overrides`): everything but the rarity, which belongs to the entry. */
 export const overridable = type => ["description", "pounds", "volume", "price", ...(IDENTITY[type] ?? []).map(k => `system.${k}`)];
 /** An entry's identity fields (Unarmed's weight is the default attack weight, chosen on each copy, so it isn't one). */
@@ -57,7 +55,6 @@ const ARMOR_IMG = { light: "icons/equipment/chest/breastplate-banded-leather-bro
   heavy: "icons/equipment/chest/breastplate-banded-steel.webp", titanic: "icons/equipment/chest/breastplate-layered-grey.webp" };
 const AMMO_IMG = "icons/weapons/ammunition/arrows-bodkin-yellow-red.webp";
 
-const rarityKey = r => (r === "very rare" ? "veryRare" : r) || "common";
 const entry = (type, name, system, extra = {}) => ({ type, name, img: ITEM_TYPES[type].img, description: "", rarity: "common", pounds: null, volume: null, price: null, ...extra, system });
 const visible = x => !x?.hidden;
 

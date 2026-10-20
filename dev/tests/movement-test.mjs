@@ -38,7 +38,9 @@ game.settings = { get: (ns, k) => (k === "movementCost" ? mode : false) }; let m
 game.user.id = "u1"; game.user.isGM = false;
 globalThis.canvas = { grid: { size: 100, distance: 5, measurePath: pts => ({ distance: (Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y) / 100) * 5 }) } };
 const hero = mkActor("Hero", { skillPoints: 30, ap: { value: 6, max: 6 } }, {});
-hero.setFlag = async (s, k, v) => foundry.utils.setProperty(hero.flags, `${s}.${k}`, v);
+// Like Foundry, writing an object flag merges into the one there (keys left out stay), so the code has to clear what it means to clear.
+const mergeInto = (target, src) => { for (const [k, v] of Object.entries(src)) target[k] = v && typeof v === "object" && !Array.isArray(v) && target[k] && typeof target[k] === "object" && !Array.isArray(target[k]) ? mergeInto({ ...target[k] }, v) : v; return target; };
+hero.setFlag = async (s, k, v) => { const cur = foundry.utils.getProperty(hero.flags, `${s}.${k}`); foundry.utils.setProperty(hero.flags, `${s}.${k}`, v && typeof v === "object" && cur && typeof cur === "object" ? mergeInto({ ...cur }, v) : v); };
 hero.unsetFlag = async (s, k) => foundry.utils.setProperty(hero.flags, `${s}.${k}`, undefined);
 hero.getFlag = (s, k) => foundry.utils.getProperty(hero.flags, `${s}.${k}`);
 hero.system.ap.max = 6;

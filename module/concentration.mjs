@@ -9,8 +9,8 @@ import { askFor, everyActor } from "./ask.mjs";
 import * as R from "./mental-rules.mjs";
 import { tierOf } from "./skills.mjs";
 import { poolFormula } from "./rules.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const snapTier = actor => tierOf(actor?.system?.trees ?? {}, "mental-snappence-arts");
 const ponder = actor => tierOf(actor?.system?.trees ?? {}, "mental-ponderance-arts");
 

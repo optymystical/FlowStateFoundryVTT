@@ -12,12 +12,11 @@ import { isDeclined } from "./reactions.mjs";
 import { borderDistance, gridFor } from "./distance.mjs";
 import { pickSpot, candidateSpots } from "./placement.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc, DialogV2 } from "./html.mjs";
 export { gridFor };
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
 const syncUuid = u => globalThis.fromUuidSync?.(u) ?? null;
-const DialogV2 = () => foundry.applications.api.DialogV2;
 
 /* -------------------------------------------- */
 /*  Helpers                                     */
@@ -49,7 +48,9 @@ export function moveLedger(actor) {
   return key && l?.key === key ? { ...emptyLedger(), ...l } : emptyLedger();
 }
 export async function setMoveLedger(actor, ledger) {
-  try { await setActorFlag(actor, "moveLedger", { ...ledger, key: turnKey() }); } catch (err) { /* the ledger is bookkeeping: never block an action on it */ }
+  // The whole ledger every time: Foundry merges a flag object into the one there, so a key left out (the undo list) would linger.
+  const { bank = 0, ft = 0, pending = false, moves = [] } = ledger ?? {};
+  try { await setActorFlag(actor, "moveLedger", { bank, ft, pending, moves, key: turnKey() }); } catch (err) { /* the ledger is bookkeeping: never block an action on it */ }
 }
 /** Is movement being tracked for this creature right now (on its own turn in combat, the setting on)? */
 export const movementTracked = actor => movementMode() !== "off" && inActiveCombat(actor) && game.combat.combatant?.actor?.uuid === actor.uuid;
@@ -1446,7 +1447,7 @@ export async function pickUp(pile, item) {
   // Ask: keep it stowed, or equip it now (no extra AP), choosing what to put away if hands are full.
   const isWeapon = item.type === "weapon";
   let equip = false, replace = "";
-  const cost = inCombat ? ` for <strong>1 AP</strong> (${taker.name} has ${taker.system.ap.value})` : "";
+  const cost = inCombat ? ` for <strong>1 AP</strong> (${esc(taker.name)} has ${taker.system.ap.value})` : "";
   if (isWeapon) {
     const free = 2 - handsHeld(taker);
     const held = taker.items.filter(i => i.type === "weapon" && i.system.weaponType !== "unarmed" && i.system.equipped);
@@ -1598,7 +1599,7 @@ async function untargetedAttack(actor, opts) {
     dmgHTML = `${await baseDamageHTML(base, opts.type)}${hit.html}${parts.length ? `<div class="fs-notes">Stacks: ${parts.join(", ")}</div>` : ""}
       <div class="fs-notes">On a crit (attack ≥ 2× dodge): <strong>${crit.final}</strong> · ${stackLabel(critNet)}</div>`;
   }
-  const header = opts.notes?.length ? `<div class="fs-notes">${opts.notes.join(" · ")}</div>` : "";
+  const header = opts.notes?.length ? `<div class="fs-notes">${opts.notes.map(esc).join(" · ")}</div>` : "";       // plain text (names in it)
   await post(actor, {
     title: esc(opts.label || "Attack"),
     rolls,
@@ -3638,7 +3639,6 @@ function forceFeet(force, target, crunch = false) {
   const hp = crunch ? Math.max(0, target.system.hp.value) : target.system.hp.max;
   return resolveForce(force, { lift: target.system.lift, maxHp: hp });
 }
-
 
 /* -------------------------------------------- */
 /*  Spells                                      */

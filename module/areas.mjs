@@ -5,7 +5,7 @@
  *    then confirms; with no scene (or no canvas) the caller falls back to the current targets.
  */
 import { notCreature } from "./kinds.mjs";
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
+import { esc } from "./html.mjs";
 
 export const AREA_SHAPES = {
   radius: { label: "10 ft radius", t: "circle", distance: 10, angle: 360, width: 0 },

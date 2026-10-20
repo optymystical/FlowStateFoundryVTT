@@ -5,8 +5,8 @@
 import { ITEM_CATALOG, ITEM_TYPES, IDENTITY, linkFor, itemData, keyFor, namedKey, isGenerated } from "./catalog.mjs";
 import { withEntry } from "./store.mjs";
 import { getWorldData, setWorldData } from "./world-data.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML(String(s ?? ""));
 /** What an item says about itself beyond its identity fields: changed here, they become overrides on this copy. */
 const OWN = ["description", "pounds", "volume", "price"];
 

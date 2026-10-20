@@ -15,8 +15,8 @@ import { tierOf } from "./skills.mjs";
 import * as conc from "./concentration.mjs";
 import { mental, mantraHook, TURN_START, tenetOf } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
+import { esc } from "./html.mjs";
 
-const esc = s => foundry.utils.escapeHTML?.(String(s)) ?? String(s);
 const trees = a => a?.system?.trees ?? {};
 export const ponderTier = actor => tierOf(trees(actor), "mental-ponderance-arts");
 const minOf = (a, k) => ab.statMinOf(a, k);

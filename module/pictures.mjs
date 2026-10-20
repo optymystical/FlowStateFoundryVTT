@@ -5,10 +5,10 @@
  * the file is sent to a connected GM in chunks and the GM's client saves it under flowstate-art/<player>/. The GM can turn the
  * browse and upload relays off with the "Players browse for pictures" / "Players upload pictures" settings.
  */
+import { esc, DialogV2 } from "./html.mjs";
 const IMAGE_EXT = ["png", "jpg", "jpeg", "webp", "gif", "svg", "avif", "bmp"];
 const SOCKET = "system.flowstate";
-const esc = s => (foundry.utils.escapeHTML ?? (x => x))(String(s ?? ""));
-const DialogV2 = () => foundry.applications.api.DialogV2;
+
 const FP = () => foundry.applications?.apps?.FilePicker?.implementation ?? globalThis.FilePicker;
 
 const relayEnabled = () => { try { return game.settings.get("flowstate", "playerBrowse") !== false; } catch (err) { return true; } };

@@ -4,7 +4,7 @@
  */
 import { STATS, deriveCharacter } from "./rules.mjs";
 import {
-  WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES, weaponProfile, armorProfile
+  WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES, rarityRank, weaponProfile, armorProfile
 } from "./martial.mjs";
 import * as skills from "./skills.mjs";
 import { parseEnergyCost, stripEnergyCost } from "./energy.mjs";
@@ -34,7 +34,6 @@ import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES, AFFIX_SIDES } from "
 import { FORMS } from "./mental-rules.mjs";
 import { ITEM_CATALOG, isGenerated, itemData } from "./catalog.mjs";
 
-const RARITY_ORDER = ["common", "uncommon", "rare", "veryRare"];
 export const DEFAULT_RULES = { statPoints: 90, items: 4, maxRarity: "uncommon", grade: 10 };
 /** Ammunition given with each starting ranged weapon (per weapon, by its ammo type; at most 100 per type). */
 export const STARTING_AMMO = 20;
@@ -44,7 +43,7 @@ export const emptyStats = () => Object.fromEntries(Object.keys(STATS).map(k => [
 export const statTotal = stats => Object.keys(STATS).reduce((n, k) => n + (Number(stats[k]) || 0), 0);
 const skillPointsFor = statPoints => Math.floor(statPoints / 3);
 
-const rarityOk = (rarity, max) => RARITY_ORDER.indexOf(rarity) <= RARITY_ORDER.indexOf(max);
+const rarityOk = (rarity, max) => rarityRank(rarity) <= rarityRank(max);
 
 /** Materials a starting item may use: valid for the weight and within the rarity cap. */
 export function allowedMaterials(kind, weight, maxRarity) {

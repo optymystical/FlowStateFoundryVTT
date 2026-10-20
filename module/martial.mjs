@@ -4,6 +4,10 @@
  */
 
 export const RARITIES = { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" };
+/** A rarity's key, however it's written ("very rare", "Very Rare" → "veryRare"); nothing is Common. */
+export const rarityKey = r => (/^very\s*rare$/i.test(String(r ?? "")) ? "veryRare" : String(r ?? "").replace(/\s+/g, "") || "common");
+/** A rarity's place in the order (Common 0 … Very Rare 3; anything unknown counts as Common). */
+export const rarityRank = r => Math.max(0, Object.keys(RARITIES).indexOf(rarityKey(r)));
 
 /** Weapon tags: name and rules text from "Flow State - Equipment" (Melee Tags, Ranged Tags). `base` is the tag, `plus` what its "+" version changes. */
 export const WEAPON_TAGS = {

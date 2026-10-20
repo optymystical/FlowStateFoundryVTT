@@ -5,11 +5,14 @@
  *    for it), by dragging items in, or with **Restock** from the shop's random rules. Each row can have its own price, a count, or unlimited stock.
  *  - Players browse a shop they can see (Observer or more), pick which of their characters is buying, and **Buy**; if the shop buys, they can
  *    **Sell** what they carry (not what's held, worn or attuned, natural or conjured) at its sell rate. What they sell joins its stock.
+ *  - A shop can **regrade**: raise the Grade of an item a character owns, if the GM lets that shop work on its kind and rarity (nothing, by
+ *    default), up to the shop's highest Grade, for the per-Grade price of each Grade gained plus the shop's surcharge.
  */
 import { requestGM, GM_ACTIONS } from "./actions.mjs";
 import { notCreature } from "./kinds.mjs";
 import { getCurrencies } from "./currency.mjs";
-import { DEFAULT_PRICING, sanitizePricing, buyPrice, sellPrice, stockOf, hasGrade, pay, earn, wealth, formatPrice, priceCurrency, pickStock, sanitizeRandom, DEFAULT_RANDOM } from "./shop-rules.mjs";
+import { DEFAULT_PRICING, sanitizePricing, buyPrice, sellPrice, stockOf, hasGrade, pay, earn, wealth, formatPrice, priceCurrency, pickStock, sanitizeRandom, DEFAULT_RANDOM,
+  sanitizeRegrade, regradeBlock, regradeCost, REGRADE_TYPES } from "./shop-rules.mjs";
 import { ITEM_TYPES, itemData, listEntries } from "./catalog.mjs";
 import { RARITIES } from "./martial.mjs";
 import { CatalogApp, dropEntry } from "./catalog-app.mjs";
@@ -98,6 +101,25 @@ GM_ACTIONS.shopSell = async function ({ target, seller, item, quantity = 1 }, se
   return tell(user, shop, `<p><strong>${esc(who.name)}</strong> sells ${n > 1 ? `${n} × ` : ""}<strong>${esc(it.name)}</strong> for ${esc(formatPrice(defs, value, unit))}.</p>`);
 };
 
+GM_ACTIONS.shopRegrade = async function ({ target, owner, item, grade }, senderId = null) {
+  const user = (senderId && game.users.get(senderId)) || game.user;
+  const shop = await fromUuid(target), who = await fromUuid(owner);
+  if (shop?.type !== "shop" || !who || notCreature(who) || !canSee(shop, user) || !owns(who, user)) return;
+  if (!shop.system.open) return tell(user, shop, `<p>${esc(shop.name)} is closed.</p>`);
+  const it = who.items.get(item), rules = sanitizeRegrade(shop.system.regrade);
+  if (!it) return;
+  const why = regradeBlock(it, rules);
+  if (why) return tell(user, shop, `<p>${esc(it.name)} can't be regraded here: ${esc(why)}.</p>`);
+  const from = it.system.grade ?? 1, to = Math.min(rules.maxGrade, Math.max(from + 1, Math.floor(Number(grade)) || from + 1));
+  const { defs, unit } = money();
+  const cost = regradeCost(it, to, rules, getPricing());
+  const paid = pay(defs, who.system.currency ?? {}, cost, unit);
+  if (!paid.ok) return tell(user, shop, `<p>${esc(who.name)} can't afford to take ${esc(it.name)} to Grade ${to}: it costs ${esc(formatPrice(defs, cost, unit))}, and ${esc(formatPrice(defs, cost - paid.short, unit))} is all they have.</p>`);
+  await who.update({ "system.currency": paid.amounts }, { flowstateSystem: true });
+  await it.update({ "system.grade": to }, { flowstateSystem: true });
+  return tell(user, shop, `<p><strong>${esc(who.name)}</strong>'s <strong>${esc(it.name)}</strong> goes from Grade ${from} to <strong>Grade ${to}</strong> for ${esc(formatPrice(defs, cost, unit))}.</p>`);
+};
+
 /** GM: fill a shop from its random rules (replacing its stock, or adding to it). */
 export async function restock(shop, { replace = true } = {}) {
   if (!game.user.isGM) return;
@@ -146,7 +168,7 @@ function makeShopSheet() {
       window: { resizable: true },
       form: { submitOnChange: true },
       actions: { buy: ShopSheet.onBuy, sell: ShopSheet.onSell, restock: ShopSheet.onRestock, addRandom: ShopSheet.onAddRandom, openForge: ShopSheet.onForge,
-        removeStock: ShopSheet.onRemove, editStock: ShopSheet.onEditStock, pricing: () => editPricing(), toggleInfinite: ShopSheet.onInfinite }
+        removeStock: ShopSheet.onRemove, editStock: ShopSheet.onEditStock, pricing: () => editPricing(), toggleInfinite: ShopSheet.onInfinite, regrade: ShopSheet.onRegrade }
     };
     static PARTS = { sheet: { template: "systems/flowstate/templates/shop-sheet.hbs", scrollable: [".fs-shop-scroll"] } };
 
@@ -180,7 +202,18 @@ function makeShopSheet() {
           price: formatPrice(defs, sellPrice(i, sys, pricing), unit), why };
       }) : [];
       const random = sanitizeRandom(sys.random ?? DEFAULT_RANDOM);
+      // Regrading: the buyer's items of a kind this shop works on, each with the cost of one Grade (the number box picks how many).
+      const rg = sanitizeRegrade(sys.regrade);
+      const perGrade = sanitizePricing(pricing).perGrade * (100 + rg.surcharge) / 100;
+      const regrade = rg.types.length && rg.rarities.length && buyer ? buyer.items.contents.filter(i => rg.types.includes(i.type) && hasGrade(i))
+        .sort((a, b) => a.name.localeCompare(b.name)).map(i => {
+          const why = regradeBlock(i, rg), g = i.system.grade ?? 1;
+          return { id: i.id, name: i.name, img: i.img, grade: g, why, next: g + 1, max: rg.maxGrade, perGrade, cost: why ? "" : formatPrice(defs, regradeCost(i, g + 1, rg, pricing), unit) };
+        }) : [];
       return Object.assign(context, {
+        regrade, regradeOn: !!(rg.types.length && rg.rarities.length), rg,
+        regradeKinds: REGRADE_TYPES.map(k => ({ key: k, label: ITEM_TYPES[k]?.label ?? k, on: rg.types.includes(k) })),
+        regradeRarities: Object.entries(RARITIES).map(([k, l]) => ({ key: k, label: l, on: rg.rarities.includes(k) })),
         shop, sys, gm, stock, sell, buyer: buyer ? { uuid: buyer.uuid, name: buyer.name, funds: formatPrice(defs, funds, unit) } : null,
         buyers: buyers.map(a => ({ uuid: a.uuid, name: a.name, selected: a.uuid === this.buyerUuid })),
         random, kinds: Object.entries(ITEM_TYPES).map(([k, t]) => ({ key: k, label: t.label, on: random.types.includes(k) })),
@@ -193,6 +226,17 @@ function makeShopSheet() {
       super._onRender?.(context, options);
       const root = this.element;
       root.querySelector("[data-buyer]")?.addEventListener("change", ev => { this.buyerUuid = ev.currentTarget.value; this.render(); });
+      // Regrade: the cost follows the Grade picked (the GM's side works it out again when it's paid).
+      const { defs, unit } = money();
+      for (const input of root.querySelectorAll("[data-regrade-to]")) {
+        input.addEventListener("change", ev => ev.stopPropagation());
+        input.addEventListener("input", () => {
+          const row = input.closest("[data-item-id]"), from = Number(row.dataset.grade) || 1, to = Math.max(from + 1, Math.min(Number(input.max) || from + 1, Math.floor(Number(input.value)) || from + 1));
+          const cost = Math.ceil(Number(row.dataset.perGrade) * (to - from));
+          const out = row.querySelector("[data-regrade-cost]");
+          if (out) out.textContent = formatPrice(defs, cost, unit);
+        });
+      }
       if (!game.user.isGM) return;
       // A stock row's own price and count.
       for (const input of root.querySelectorAll("[data-stock-field]")) {
@@ -204,6 +248,14 @@ function makeShopSheet() {
           if (input.dataset.stockField === "price") await item.update({ "flags.flowstate.shop.price": v });
           else if (item.type === "gear") await item.update({ "system.quantity": v ?? 0 });
           else await item.update({ "flags.flowstate.shop.count": Math.max(1, v ?? 1) });
+        });
+      }
+      // The regrade rules' checkboxes (kinds, rarities) are kept as lists too.
+      for (const box of root.querySelectorAll("[data-regrade-list]")) {
+        box.addEventListener("change", ev => {
+          ev.stopPropagation();
+          const list = box.dataset.regradeList, on = [...root.querySelectorAll(`[data-regrade-list="${list}"]`)].filter(b => b.checked).map(b => b.value);
+          return this.document.update({ [`system.regrade.${list}`]: on });
         });
       }
       // The random rules' checkboxes (kinds, rarities) are kept as lists.
@@ -235,6 +287,12 @@ function makeShopSheet() {
     static onSell(event, target) {
       if (!this.buyerUuid) return ui.notifications.warn("Pick who is selling first.");
       return requestGM("shopSell", { target: this.document.uuid, seller: this.buyerUuid, item: this.#row(target), quantity: this.#qty(target) });
+    }
+    static onRegrade(event, target) {
+      if (!this.buyerUuid) return ui.notifications.warn("Pick whose item it is first.");
+      const row = target.closest("[data-item-id]");
+      const grade = Math.floor(Number(row?.querySelector("[data-regrade-to]")?.value) || 0);
+      return requestGM("shopRegrade", { target: this.document.uuid, owner: this.buyerUuid, item: this.#row(target), grade });
     }
     static onRestock() { return restock(this.document, { replace: true }); }
     static onAddRandom() { return restock(this.document, { replace: false }); }

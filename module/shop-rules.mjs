@@ -141,3 +141,32 @@ export function pickStock(entries, rawRules = {}, rng = Math.random) {
   }
   return out;
 }
+
+/* ---- Regrading ---- */
+
+/** The kinds of item that have a Grade a shop can raise. */
+export const REGRADE_TYPES = ["weapon", "armor", "foci", "shroud", "icon"];
+/** A shop's regrade rules: nothing by default; the GM picks the kinds and rarities, a surcharge (% on top of the Grade price) and the highest Grade it works to. */
+export const DEFAULT_REGRADE = { types: [], rarities: [], surcharge: 25, maxGrade: 10 };
+
+export function sanitizeRegrade(raw = {}) {
+  const r = { ...DEFAULT_REGRADE, ...(raw && typeof raw === "object" ? raw : {}) };
+  return { types: (Array.isArray(r.types) ? r.types : []).map(String).filter(t => REGRADE_TYPES.includes(t)),
+    rarities: (Array.isArray(r.rarities) ? r.rarities : []).map(String), surcharge: whole(r.surcharge, 25), maxGrade: Math.max(1, whole(r.maxGrade, 10)) };
+}
+
+/** Why this shop can't regrade this item (null if it can). */
+export function regradeBlock(item, rules = DEFAULT_REGRADE) {
+  const r = sanitizeRegrade(rules), s = item?.system ?? {};
+  if (!hasGrade(item) || !REGRADE_TYPES.includes(item?.type)) return "it has no Grade";
+  if (!r.types.includes(item.type)) return "this shop doesn't work on that kind of item";
+  if (!r.rarities.includes(s.rarity ?? "common")) return "this shop doesn't work on that rarity";
+  if (whole(s.grade, 1) >= r.maxGrade) return `this shop works up to Grade ${r.maxGrade}`;
+  return null;
+}
+
+/** What raising an item from its Grade to `to` costs: the per-Grade price for each Grade it gains, plus the shop's surcharge (rounded up). */
+export function regradeCost(item, to, rules = DEFAULT_REGRADE, pricing = DEFAULT_PRICING) {
+  const steps = Math.max(0, whole(to) - whole(item?.system?.grade, 1));
+  return Math.ceil(sanitizePricing(pricing).perGrade * steps * (100 + sanitizeRegrade(rules).surcharge) / 100);
+}

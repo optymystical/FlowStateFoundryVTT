@@ -104,5 +104,27 @@ const { relayAllowed } = await import("../../module/relay-guard.mjs");
 ok(relayAllowed("shopBuy", { target: "a", buyer: "b", item: "c", quantity: 2 }, GM_ACTIONS) && !relayAllowed("shopBuy", { target: "a", buyer: "b", item: "c", quantity: 1e9 }, GM_ACTIONS)
   && !relayAllowed("shopSell", { target: "a", seller: { x: 1 }, item: "c", quantity: 1 }, GM_ACTIONS), "The relay only takes shop requests made of ids and a sane quantity");
 
+console.log("== Regrading");
+{ const sword = { type: "weapon", system: { weaponType: "bladed", grade: 2, rarity: "uncommon" } };
+  ok(R.regradeBlock(sword, {}) && /kind of item/.test(R.regradeBlock(sword, {})), "By default a shop regrades nothing");
+  const rules = { types: ["weapon"], rarities: ["common", "uncommon"], surcharge: 25, maxGrade: 5 };
+  ok(R.regradeBlock(sword, rules) === null && /rarity/.test(R.regradeBlock({ ...sword, system: { ...sword.system, rarity: "rare" } }, rules)) && /kind/.test(R.regradeBlock({ type: "armor", system: { grade: 1, rarity: "common" } }, rules)), "It works on the kinds and rarities the GM ticks");
+  ok(/up to Grade 5/.test(R.regradeBlock({ ...sword, system: { ...sword.system, grade: 5 } }, rules)) && R.regradeBlock({ type: "affix", system: { rarity: "common" } }, { ...rules, types: ["weapon", "affix"] }) === "it has no Grade", "…up to its highest Grade; things without a Grade never");
+  ok(R.regradeCost(sword, 4, rules, P) === 25 && R.regradeCost(sword, 3, { ...rules, surcharge: 0 }, P) === 10, "Grade 2 → 4: 2 × 10 per Grade + 25% = 25 (no surcharge, one Grade: 10)");
+  shop.system.open = true;
+  shop.system.regrade = rules;
+  hero.system.currency = { c0: 0, c1: 0, c2: 30 };
+  const blade = mkItem(hero, { ...C.itemData("weapon.bladed.light.steel", { grade: 2 }) }); blade.system.rarity = "uncommon"; hero.items.push(blade);
+  await GM_ACTIONS.shopRegrade({ target: shop.uuid, owner: hero.uuid, item: blade.id, grade: 4 }, "p1");
+  ok(blade.system.grade === 4 && hero.system.currency.c2 === 5 && /Grade 2 to <strong>Grade 4/.test(messages.at(-1).content), "Hero pays 25 Copper and the blade is now Grade 4 (receipt whispered)");
+  await GM_ACTIONS.shopRegrade({ target: shop.uuid, owner: hero.uuid, item: blade.id, grade: 9 }, "p1");
+  ok(blade.system.grade === 4 && /can't afford/.test(messages.at(-1).content), "Asking past the shop's top Grade asks for Grade 5 only, and without the money nothing changes");
+  hero.system.currency.c1 = 1;
+  await GM_ACTIONS.shopRegrade({ target: shop.uuid, owner: hero.uuid, item: blade.id, grade: 9 }, "p1");
+  ok(blade.system.grade === 5, "With the money, it stops at the shop's Grade 5");
+  await GM_ACTIONS.shopRegrade({ target: shop.uuid, owner: villain.uuid, item: blade.id, grade: 6 }, "p1");
+  ok(blade.system.grade === 5, "Nobody regrades through a character they don't own");
+  ok(relayAllowed("shopRegrade", { target: "a", owner: "b", item: "c", grade: 3 }, GM_ACTIONS) && !relayAllowed("shopRegrade", { target: "a", owner: "b", item: "c", grade: "3" }, GM_ACTIONS), "The relay only takes regrade requests of ids and a whole Grade"); }
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll shop checks passed");
 if (fails) process.exit(1);

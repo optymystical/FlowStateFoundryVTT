@@ -30,6 +30,7 @@ const CHECKS = {
   moveToken: p => finite(p.x) && finite(p.y),
   wearItem: p => finite(p.amount),
   shopBuy: p => typeof p.target === "string" && typeof p.buyer === "string" && typeof p.item === "string" && Number.isInteger(p.quantity) && p.quantity >= 1 && p.quantity <= 1000,
+  shopRegrade: p => typeof p.target === "string" && typeof p.owner === "string" && typeof p.item === "string" && Number.isInteger(p.grade) && p.grade >= 0 && p.grade <= 1000,
   shopSell: p => typeof p.target === "string" && typeof p.seller === "string" && typeof p.item === "string" && Number.isInteger(p.quantity) && p.quantity >= 1 && p.quantity <= 1000,
   castChange: p => (p.power === undefined || finite(p.power)) && (p.hpLeft === undefined || finite(p.hpLeft)) && (p.damage === undefined || typeof p.damage === "string")
 };

@@ -558,7 +558,8 @@ export class FlowStatePileData extends foundry.abstract.TypeDataModel {
 
 /**
  * A shop (shop.mjs): its stock is its items (each a catalog copy at a Grade; `flags.flowstate.shop` holds a stock row's count, an own price, or
- * `infinite`). It sells at `markup` % of an item's price and, if it `buys`, buys at `sellRate` %. `random` holds the GM's random stock rules.
+ * `infinite`). It sells at `markup` % of an item's price and, if it `buys`, buys at `sellRate` %. `random` holds the GM's random stock rules,
+ * `regrade` which kinds and rarities of item it can regrade (none by default), its surcharge and its highest Grade.
  */
 export class FlowStateShopData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -568,7 +569,8 @@ export class FlowStateShopData extends foundry.abstract.TypeDataModel {
       markup: int(100, { min: 0 }),
       buys: new f.BooleanField({ initial: true }),
       sellRate: int(50, { min: 0 }),
-      random: new f.ObjectField({ initial: {} })
+      random: new f.ObjectField({ initial: {} }),
+      regrade: new f.ObjectField({ initial: {} })            // what it can regrade (shop-rules.mjs sanitizeRegrade): nothing by default
     };
   }
 }

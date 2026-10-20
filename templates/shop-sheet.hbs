@@ -59,6 +59,27 @@
   </table>
   {{/if}}{{/if}}
 
+  {{#if regradeOn}}{{#if buyer}}
+  <h3>Regrade at {{shop.name}} <span class="fs-sub">up to Grade {{rg.maxGrade}} · the per-Grade price + {{rg.surcharge}}%</span></h3>
+  <table class="fs-table fs-shop-regrade">
+    <thead><tr><th></th><th>{{buyer.name}}'s items</th><th>Grade</th><th>To</th><th>Cost</th><th></th></tr></thead>
+    <tbody>
+    {{#each regrade}}
+    <tr data-item-id="{{id}}" data-grade="{{grade}}" data-per-grade="{{perGrade}}" class="{{#if why}}fs-dim{{/if}}">
+      <td><img src="{{img}}" alt="" width="28" height="28"></td>
+      <td>{{name}}{{#if why}}<div class="fs-sub">Can't: {{why}}</div>{{/if}}</td>
+      <td>{{grade}}</td>
+      <td>{{#unless why}}<input type="number" data-regrade-to value="{{next}}" min="{{next}}" max="{{max}}" step="1" class="fs-num">{{/unless}}</td>
+      <td><span data-regrade-cost>{{cost}}</span></td>
+      <td class="fs-row-actions">{{#unless why}}<button type="button" data-action="regrade" data-tooltip="Regrade"><i class="fa-solid fa-hammer"></i></button>{{/unless}}</td>
+    </tr>
+    {{else}}
+    <tr><td colspan="6" class="hint">Nothing {{buyer.name}} carries is something this shop regrades.</td></tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{/if}}{{/if}}
+
   {{#if gm}}
   <details class="fs-collapse fs-shop-gm" open>
     <summary class="fs-block-title"><i class="fa-solid fa-chevron-down fs-caret"></i> GM: running the shop</summary>
@@ -68,6 +89,16 @@
       <label><input type="checkbox" name="system.buys" {{checked sys.buys}}> Buys items</label>
       <label>at <input type="number" name="system.sellRate" value="{{sys.sellRate}}" min="0" step="5" class="fs-num">% of their price</label>
       <button type="button" data-action="pricing"><i class="fa-solid fa-scale-balanced"></i> World prices</button>
+    </div>
+    <h4>Regrading</h4>
+    <div class="fs-shop-random">
+      <div><strong>Kinds</strong> {{#each regradeKinds}}<label><input type="checkbox" data-regrade-list="types" value="{{key}}" {{checked on}}> {{label}}</label>{{/each}}</div>
+      <div><strong>Rarities</strong> {{#each regradeRarities}}<label><input type="checkbox" data-regrade-list="rarities" value="{{key}}" {{checked on}}> {{label}}</label>{{/each}}</div>
+      <div>
+        <label>Surcharge <input type="number" name="system.regrade.surcharge" value="{{rg.surcharge}}" min="0" step="5" class="fs-num">% on the per-Grade price</label>
+        <label>Up to Grade <input type="number" name="system.regrade.maxGrade" value="{{rg.maxGrade}}" min="1" step="1" class="fs-num"></label>
+      </div>
+      <p class="hint">Players can regrade the items they own of the ticked kinds and rarities. With none ticked, this shop doesn't regrade.</p>
     </div>
     <h4>Random stock</h4>
     <div class="fs-shop-random">

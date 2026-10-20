@@ -307,7 +307,7 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
   let targets = forced ? [forced] : [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a));
   let area = null;
   // Channel (Esoteric Arts T2): the Manifest is made from your Omen's position.
-  const from = plan.choices?.channel === "yes" ? esoteric.channelFrom(actor) : null;
+  const from = plan.choices?.channel ? esoteric.channelFrom(actor, plan.choices.channel) : null;
   if (plan.range === "melee" && targets.length && !checkRange(actor, reach, `${plan.mode.name} (Melee)`, forcedTokens, from)) return null;
   if (plan.range === "ranged" && targets.length && !checkRange(actor, farSight ? 500 : 100, `${plan.mode.name} (Ranged)`, forcedTokens, from)) return null;
   if (plan.range === "area") {

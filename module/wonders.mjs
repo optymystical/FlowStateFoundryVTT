@@ -35,20 +35,22 @@ const living = a => a && !notCreature(a) && !a.system?.magical;
 
 const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${game.combat.round}` : "ooc");
 /**
- * Kinship (Esoteric Arts T4): esoteric.mjs sets `tenet(actor)` to the Omen's Tenet the actor also benefits from (or null). `tenetsOf` gives every Tenet an
- * actor has (its own first); `tenetFor` the one with that id.
+ * Kinship (Esoteric Arts T4): esoteric.mjs sets `tenets(actor)` to the Tenets of the Omens the actor also benefits from. `tenetsOf` gives every Tenet an
+ * actor has (its own first, each id once, the strongest Omen's); `tenetFor` the one with that id.
  */
-export const kinshipHook = { tenet: () => null };
+export const kinshipHook = { tenets: () => [] };
 export function tenetsOf(actor) {
-  const own = tenetOf(actor), kin = kinshipHook.tenet(actor);
-  return [own, kin && kin.id !== own?.id ? { ...kin, kinship: true } : null].filter(Boolean);
+  const own = tenetOf(actor), out = own ? [own] : [];
+  for (const k of [...kinshipHook.tenets(actor)].sort((a, b) => (b.mult ?? 1) - (a.mult ?? 1))) if (!out.some(t => t.id === k.id)) out.push({ ...k, kinship: true });
+  return out;
 }
 export const tenetFor = (actor, id) => tenetsOf(actor).find(t => t.id === id) ?? null;
 const actKey = s => String(s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
-/** A Tenet triggers once per round; Kinship: once more when the Omen's Tenet is your own selected one (`id` is the act's id: "verdantSoul"...). */
+/** A Tenet triggers once per round; Kinship: once more for each Omen near you whose Tenet is your own selected one (`id` is the act's id: "verdantSoul"...). */
 export function tenetUses(actor, id) {
-  const own = tenetOf(actor), kin = own ? kinshipHook.tenet(actor) : null;
-  return kin && kin.id === own.id && actKey(own.id.split(":")[1]) === actKey(id) ? 2 : 1;
+  const own = tenetOf(actor);
+  if (!own || actKey(own.id.split(":")[1]) !== actKey(id)) return 1;
+  return 1 + kinshipHook.tenets(actor).filter(k => k.id === own.id).length;
 }
 /** Has this actor already used this "once per round" thing this round (Tenets: as many times as they may per round)? */
 /** Mantra (Ponderance T2) is asked when a Tenet is used: ponderance.mjs sets `offer(actor, mult) -> the (possibly doubled) mult`. */

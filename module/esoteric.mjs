@@ -44,14 +44,23 @@ export function pairOf(wonderId) {
   return n && n.kind !== w.kind ? n.id : null;
 }
 
-/** Your Omen: bound to you, or fighting at your side after the Concentration was lost (not a free or hostile one). */
-export function omenOf(user) {
-  if (!user) return null;
-  return [...(globalThis.game?.actors ?? [])].find(a => { const d = omenData(a); return d?.owner === user.uuid && !d.hostile && (d.bound || d.battle); }) ?? null;
+/** Your Omens: bound to you, or fighting at your side after the Concentration was lost (not free or hostile ones). You can have as many as your Concentrations allow. */
+export function omensOf(user) {
+  if (!user) return [];
+  return [...(globalThis.game?.actors ?? [])].filter(a => { const d = omenData(a); return d?.owner === user.uuid && !d.hostile && (d.bound || d.battle); });
 }
-/** Your Omen that's free (the battle it fought at your side is over), waiting to be rebound. */
-export function strayOf(user) {
-  return [...(globalThis.game?.actors ?? [])].find(a => { const d = omenData(a); return d?.owner === user?.uuid && !d.hostile && !d.bound && !d.battle; }) ?? null;
+export const omenOf = user => omensOf(user)[0] ?? null;
+/** Your Omens that are free (the battle they fought at your side is over), waiting to be rebound. */
+export function straysOf(user) {
+  return [...(globalThis.game?.actors ?? [])].filter(a => { const d = omenData(a); return d?.owner === user?.uuid && !d.hostile && !d.bound && !d.battle; });
+}
+export const strayOf = user => straysOf(user)[0] ?? null;
+/** The one of `list` with this uuid, the only one, or the one picked in a small dialog. */
+async function whichOmen(user, list, uuid, title) {
+  if (uuid) return list.find(a => a.uuid === uuid) ?? null;
+  if (list.length <= 1) return list[0] ?? null;
+  const pick = await mental.pickChoice(user, title, list.map(a => [a.uuid, a.name]));
+  return list.find(a => a.uuid === pick) ?? null;
 }
 
 /**
@@ -134,7 +143,6 @@ async function waitFor(find, ms = 6000) {
 export async function seed(user) {
   if (tier(user) < 1) return ui.notifications.warn("Seed is an Esoteric Arts ability.");
   if (inActiveCombat(user)) return ui.notifications.warn("Seeding an Omen is an 8 hour Trance: not in combat.");
-  if (omenOf(user) || strayOf(user)) return ui.notifications.warn(`${user.name} already has an Omen.`);
   const pick = await seedDialog(user, "Seed an Omen");
   if (!pick) return null;
   const conc = `omen:${newId()}`;
@@ -147,7 +155,6 @@ export async function seed(user) {
 /** Rend (T5, 2 AP): summon an Omen at once and try to bind it: an attack roll with Disadvantage, it dodging with Advantage. A miss: it's free, full-statted and hostile. */
 export async function rend(user) {
   if (tier(user) < 5) return ui.notifications.warn("Rend is Esoteric Arts Tier 5.");
-  if (omenOf(user)) return ui.notifications.warn(`${user.name} already has an Omen.`);
   const pick = await seedDialog(user, "Rend");
   if (!pick) return null;
   if (!(await mental.pay(user, { ap: 2 }, "Rend"))) return null;
@@ -212,8 +219,8 @@ concentration.END_HOOKS.push(async (user, entry, { voluntary }) => {
 });
 
 /** Rebind (Action List, 1 hour, not in combat): your free Omen is bound again (one of your Concentrations). */
-export async function rebind(user) {
-  const omen = strayOf(user);
+export async function rebind(user, uuid = null) {
+  const omen = await whichOmen(user, straysOf(user), uuid, "Rebind which Omen");
   if (!omen) return ui.notifications.info(`${user.name} has no free Omen to rebind.`);
   if (inActiveCombat(user)) return ui.notifications.warn("Rebinding takes 1 hour of work: not in combat.");
   const conc = `omen:${newId()}`;
@@ -223,9 +230,9 @@ export async function rebind(user) {
 }
 
 /** Unbind (T3, 2 AP and your stat min in Energy): until the start of your next turn your Omen has its full stats (twice the stat points, the same skill points). */
-export async function unbind(user) {
+export async function unbind(user, uuid = null) {
   if (tier(user) < 3) return ui.notifications.warn("Unbind is Esoteric Arts Tier 3.");
-  const omen = omenOf(user);
+  const omen = await whichOmen(user, omensOf(user).filter(a => !omenData(a).unbound && !omenData(a).full), uuid, "Unbind which Omen");
   if (!omen) return ui.notifications.info(`${user.name} has no Omen.`);
   if (omenData(omen).unbound || omenData(omen).full) return ui.notifications.info(`${omen.name} already has its full stats.`);
   if (!(await mental.pay(user, { ap: 2, energy: minOf(user, statOf(omenData(omen).wonder)) }, "Unbind"))) return null;
@@ -308,27 +315,26 @@ export function attackStart(actor, opts, targets) {
 /*  Channel (T2) and Kinship (T4)               */
 /* -------------------------------------------- */
 
-/** Channel: the Omen's token a Manifest is made from (null if it can't be). */
-export function channelFrom(actor) {
-  const omen = tier(actor) >= 2 ? omenOf(actor) : null;
+/** Channel: the Omen (by uuid) a Manifest is made from, if it's yours and you have Channel. */
+const channelOmen = (actor, uuid) => (tier(actor) >= 2 && uuid ? omensOf(actor).find(a => a.uuid === uuid) ?? null : null);
+/** Channel: the token of the Omen a Manifest is made from (null if it can't be). */
+export function channelFrom(actor, uuid) {
+  const omen = channelOmen(actor, uuid);
   return omen ? attackerToken(omen) : null;
 }
-CHOICE_PROVIDERS.push(actor => (tier(actor) >= 2 && omenOf(actor)
-  ? [{ name: "channel", label: `Channel (⚡ half the Wonder's stat min): Manifest from ${omenOf(actor).name}'s position`, options: { "": "No", yes: `From ${omenOf(actor).name}` } }] : []));
+CHOICE_PROVIDERS.push(actor => (tier(actor) >= 2 && omensOf(actor).length
+  ? [{ name: "channel", label: "Channel (⚡ half the Wonder's stat min): Manifest from an Omen's position", options: { "": "No", ...Object.fromEntries(omensOf(actor).map(a => [a.uuid, `From ${a.name}`])) } }] : []));
 COST_PROVIDERS.push((actor, { mode, wonder, choices }) => {
-  if (choices?.channel !== "yes" || tier(actor) < 2) return null;
-  const omen = omenOf(actor);
+  const omen = channelOmen(actor, choices?.channel);
   if (!omen) return null;
   const own = mode?.wonder === omenData(omen).wonder;
   return { energy: Math.floor(minOf(actor, R.KINDS[wonder.kind].stat) / 2), net: own ? 1 : 0, notes: [`Channel: from ${omen.name}'s position${own ? ", Advantage (its own Wonder)" : ""}`] };
 });
 
-// Kinship (T4): within 30 ft of your Omen you also benefit from its Tenet; when it's your own selected Tenet, it triggers once more a round.
-kinshipHook.tenet = actor => {
-  if (tier(actor) < 4 || isOmen(actor)) return null;
-  const omen = omenOf(actor);
-  if (!omen || !near(actor, omen, 30)) return null;
-  return tenetOf(omen);
+// Kinship (T4): within 30 ft of an Omen of yours you also benefit from its Tenet; when it's your own selected Tenet, it triggers once more a round (per Omen).
+kinshipHook.tenets = actor => {
+  if (tier(actor) < 4 || isOmen(actor)) return [];
+  return omensOf(actor).filter(o => near(actor, o, 30)).map(o => tenetOf(o)).filter(Boolean);
 };
 
 /* -------------------------------------------- */
@@ -438,13 +444,13 @@ GM_ACTIONS.omenState = async ({ omen: omenUuid, op, conc = null, battle = null, 
 
 /** The Action List rows for Esoteric Arts (sheets.mjs adds them to the Mental group). */
 export function actionRows(actor) {
-  const rows = [], t = tier(actor), omen = omenOf(actor), stray = strayOf(actor);
+  const rows = [], t = tier(actor);
   if (isOmen(actor) && globalThis.game?.user?.isGM && !omenData(actor).hostile)
     rows.push({ label: "Turn hostile", detail: "It acted against its pole (or was otherwise angered): it turns on its binder", cost: "GM", action: "omenHostile", icon: "fa-solid fa-link-slash" });
   if (t < 1) return rows;
-  if (!omen && !stray) rows.push({ label: "Seed an Omen", detail: "An 8 hour Trance: an Omen of a Wonder you have at Tier 5, bound to you as one of your Concentrations", cost: "8 hours", action: "omenSeed", icon: "fa-solid fa-seedling", disabled: inActiveCombat(actor) });
-  if (stray) rows.push({ label: `Rebind ${stray.name}`, detail: "1 hour of work: it is bound to you again (one of your Concentrations)", cost: "1 hour", action: "omenRebind", icon: "fa-solid fa-link", disabled: inActiveCombat(actor) });
-  if (t >= 3 && omen) rows.push({ label: "Unbind", detail: `${omen.name} has its full stats (twice the stat points) until the start of your next turn`, cost: `2 AP + ⚡ ${minOf(actor, statOf(omenData(omen).wonder))}`, action: "omenUnbind", icon: "fa-solid fa-unlock", disabled: !!omenData(omen).unbound });
-  if (t >= 5 && !omen) rows.push({ label: "Rend", detail: "Summon an Omen at once: an attack roll with Disadvantage (it dodges with Advantage) binds it; a miss leaves it free, full-statted and hostile", cost: "2 AP", action: "omenRend", icon: "fa-solid fa-burst" });
+  rows.push({ label: "Seed an Omen", detail: "An 8 hour Trance: an Omen of a Wonder you have at Tier 5, bound to you as one of your Concentrations (as many as your Concentrations allow)", cost: "8 hours", action: "omenSeed", icon: "fa-solid fa-seedling", disabled: inActiveCombat(actor) });
+  for (const stray of straysOf(actor)) rows.push({ label: `Rebind ${stray.name}`, detail: "1 hour of work: it is bound to you again (one of your Concentrations)", cost: "1 hour", action: "omenRebind", itemId: stray.uuid, icon: "fa-solid fa-link", disabled: inActiveCombat(actor) });
+  if (t >= 3) for (const omen of omensOf(actor)) rows.push({ label: `Unbind ${omen.name}`, detail: `${omen.name} has its full stats (twice the stat points) until the start of your next turn`, cost: `2 AP + ⚡ ${minOf(actor, statOf(omenData(omen).wonder))}`, action: "omenUnbind", itemId: omen.uuid, icon: "fa-solid fa-unlock", disabled: !!omenData(omen).unbound || !!omenData(omen).full });
+  if (t >= 5) rows.push({ label: "Rend", detail: "Summon an Omen at once: an attack roll with Disadvantage (it dodges with Advantage) binds it; a miss leaves it free, full-statted and hostile", cost: "2 AP", action: "omenRend", icon: "fa-solid fa-burst" });
   return rows;
 }

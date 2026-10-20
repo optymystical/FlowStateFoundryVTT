@@ -50,6 +50,8 @@
 
 [Willpower Arts](#willpower-arts)
 
+[Growth (Dream)](#growth-\(dream\))
+
 [Fortune (Dream)](#fortune-\(dream\))
 
 [Ruin (Nightmare)](#ruin-\(nightmare\))
@@ -595,6 +597,63 @@
 **Tier 5: You gain the following passive:**
 
 - **Innate Mastery:** Innate also causes that Ward’s target to have Disadvantage on their roll against it.
+
+# 
+
+## **Growth (Dream)** {#growth-(dream)}
+
+**Tier 1: You gain the following Mode and Tenet:**
+
+- **Cultivate:** On hit, the target gains a Growth stack, lasting until the start of your next turn. When the target takes an action (any named thing that spends AP or RP: an attack, a Manifest, a cast Spell, or an ability with an AP/RP cost), it can spend any number of its Growth stacks on that action, each on a different Growth option you have unlocked. **Enhanced:** The target gains two Growth stacks instead.  
+  - **Flourish:** The attack deals **2d8 more damage** of its type.  
+  - **Thrift:** The action costs **3 less energy** (to a minimum of 0).  
+- **Sapling:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, the target or you gains one Growth stack.
+
+**Tier 2: Your Growth stacks gain the following options:**
+
+- **Pierce:** The attack ignores up to **10 Limit**.  
+- **Feed:** If the action applies Ignite, Stain, Slow, or Haste stacks, it applies **12 more** of each.
+
+**Tier 3: Your Growth stacks gain the following options:**
+
+- **Graft:** If the action grants Temp HP or Shielding to its target, it grants **10 more**.  
+- **Bark:** The acting creature gains **10 Temp HP** until the start of its next turn.
+
+**Tier 4: Your Growth stacks gain the following options:**
+
+- **Uproot:** The action’s target is hit with **12d8 Force** in a direction of your choosing.  
+- **Offshoot:** Copy another option spent on this action. Offshoot can only apply once per action.
+
+**Tier 5: You gain the following passive:**
+
+- **Full Bloom:** When an action spends Growth stacks on three or more options, that action and those Growth stacks damage/bolded effects are Strengthened.
+
+# 
+
+## **Stagnation (Nightmare)**
+
+**Tier 1: You gain the following Mode and Tenet:**
+
+- **Mire:** On hit, choose an action type: Martial Attack, Mental Manifest, or Magic Spell. Until the start of your next turn, whenever the target spends AP or RP on an action of a Mired type, it gains one Stagnation stack per point spent. Stagnation stacks are shared between all sources, and all are removed at the start of your next turn. A Manifest that would Mire an action type that is already Mired has no effect. As the target reaches each stack count below, that effect applies. **Enhanced:** Choose two action types.  
+- **Toll (1 Stack):** The target loses **2 energy**. Energy below 0 becomes health loss at 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).  
+- **Silt (2 Stacks):** The target gains **12 Slow stacks**.  
+- **Moss:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, the target gains one Stagnation stack.
+
+**Tier 2: Your Stagnation stacks gain the following effect:**
+
+- **Grind (3 Stacks):** The target takes **1d8 physical damage**.
+
+**Tier 3: Your Stagnation stacks gain the following effect:**
+
+- **Wane (4+ Stacks):** While the target has 4 or more Stagnation stacks, its attack rolls for Mired action types have their **die size reduced by 1**.
+
+**Tier 4: Your Stagnation stacks gain the following effect:**
+
+- **Crush (5 Stacks):** The target is hit with **12d8 downward Force**.
+
+**Tier 5: Your Stagnation stacks gain the following effect:**
+
+- **Stasis (6+ Stacks):** Each stack the target gains from 6 onward applies two of Toll, Silt, Grind, and Crush, chosen each time. The same effect can be chosen twice, and the two chosen effects combine into one (two Crushes are a single **24d8 downward Force**, two Grinds are **2d8 physical damage**, and so on).
 
 # 
 

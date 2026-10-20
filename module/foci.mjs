@@ -6,7 +6,7 @@
 import * as spells from "./spells.mjs";
 import { igniteTotal } from "./rules.mjs";
 import { attunedAffixItems } from "./magic.mjs";
-import { post, requestGM, turnKey, setActorFlag, spendEnergy, giveStacks, registerFoci } from "./actions.mjs";
+import { feedExtra, post, requestGM, turnKey, setActorFlag, spendEnergy, giveStacks, registerFoci } from "./actions.mjs";
 import { esc } from "./html.mjs";
 
 const stamp = () => (globalThis.game ? turnKey() : null) ?? "ooc";
@@ -107,7 +107,7 @@ export async function afterHit({ attacker, target, o }) {
     if (f.affixes.includes("ruby")) { const l = await giveStacks(target, "ignite", f.scalingMin * (f.doubled === "ruby" ? 2 : 1), { caster: attacker }); if (l) html += `<div class="fs-result">Ruby: ${l}</div>`; }
     if (f.affixes.includes("sapphire")) {
       const cur = target.system.conditions?.slow ?? 0;
-      const slowN = f.scalingMin * (f.doubled === "sapphire" ? 2 : 1);
+      const slowN = f.scalingMin * (f.doubled === "sapphire" ? 2 : 1) + await feedExtra(attacker, target, "slow");
       const data = { "system.conditions.slow": cur + slowN };
       if (target.isOwner) await target.update(data); else await requestGM("updateActor", { uuid: target.uuid, data });
       html += `<div class="fs-result">Sapphire: ${esc(target.name)} gets <strong>${slowN} Slow</strong> stacks.</div>`;

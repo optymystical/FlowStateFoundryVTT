@@ -4955,6 +4955,166 @@ export const TREES = [
   ]
  },
  {
+  "id": "mental-growth-dream",
+  "name": "Growth (Dream)",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 4,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following Mode and Tenet:",
+    "entries": [
+     {
+      "name": "Cultivate",
+      "text": "On hit, the target gains a Growth stack, lasting until the start of your next turn. When the target takes an action (any named thing that spends AP or RP: an attack, a Manifest, a cast Spell, or an ability with an AP/RP cost), it can spend any number of its Growth stacks on that action, each on a different Growth option you have unlocked. Enhanced: The target gains two Growth stacks instead.",
+      "sub": [
+       "Flourish: The attack deals 2d8 more damage of its type.",
+       "Thrift: The action costs 3 less energy (to a minimum of 0)."
+      ]
+     },
+     {
+      "name": "Sapling",
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, the target or you gains one Growth stack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "Your Growth stacks gain the following options:",
+    "entries": [
+     {
+      "name": "Pierce",
+      "text": "The attack ignores up to 10 Limit."
+     },
+     {
+      "name": "Feed",
+      "text": "If the action applies Ignite, Stain, Slow, or Haste stacks, it applies 12 more of each."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "Your Growth stacks gain the following options:",
+    "entries": [
+     {
+      "name": "Graft",
+      "text": "If the action grants Temp HP or Shielding to its target, it grants 10 more."
+     },
+     {
+      "name": "Bark",
+      "text": "The acting creature gains 10 Temp HP until the start of its next turn."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "Your Growth stacks gain the following options:",
+    "entries": [
+     {
+      "name": "Uproot",
+      "text": "The action’s target is hit with 12d8 Force in a direction of your choosing."
+     },
+     {
+      "name": "Offshoot",
+      "text": "Copy another option spent on this action. Offshoot can only apply once per action."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Full Bloom",
+      "text": "When an action spends Growth stacks on three or more options, that action and those Growth stacks damage/bolded effects are Strengthened."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "mental-stagnation-nightmare",
+  "name": "Stagnation (Nightmare)",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 4,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following Mode and Tenet:",
+    "entries": [
+     {
+      "name": "Mire",
+      "text": "On hit, choose an action type: Martial Attack, Mental Manifest, or Magic Spell. Until the start of your next turn, whenever the target spends AP or RP on an action of a Mired type, it gains one Stagnation stack per point spent. Stagnation stacks are shared between all sources, and all are removed at the start of your next turn. A Manifest that would Mire an action type that is already Mired has no effect. As the target reaches each stack count below, that effect applies. Enhanced: Choose two action types."
+     },
+     {
+      "name": "Toll (1 Stack)",
+      "text": "The target loses 2 energy. Energy below 0 becomes health loss at 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects)."
+     },
+     {
+      "name": "Silt (2 Stacks)",
+      "text": "The target gains 12 Slow stacks."
+     },
+     {
+      "name": "Moss",
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, the target gains one Stagnation stack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "Your Stagnation stacks gain the following effect:",
+    "entries": [
+     {
+      "name": "Grind (3 Stacks)",
+      "text": "The target takes 1d8 physical damage."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "Your Stagnation stacks gain the following effect:",
+    "entries": [
+     {
+      "name": "Wane (4+ Stacks)",
+      "text": "While the target has 4 or more Stagnation stacks, its attack rolls for Mired action types have their die size reduced by 1."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "Your Stagnation stacks gain the following effect:",
+    "entries": [
+     {
+      "name": "Crush (5 Stacks)",
+      "text": "The target is hit with 12d8 downward Force."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "Your Stagnation stacks gain the following effect:",
+    "entries": [
+     {
+      "name": "Stasis (6+ Stacks)",
+      "text": "Each stack the target gains from 6 onward applies two of Toll, Silt, Grind, and Crush, chosen each time. The same effect can be chosen twice, and the two chosen effects combine into one (two Crushes are a single 24d8 downward Force, two Grinds are 2d8 physical damage, and so on)."
+     }
+    ]
+   }
+  ]
+ },
+ {
   "id": "mental-fortune-dream",
   "name": "Fortune (Dream)",
   "archetype": "mental",

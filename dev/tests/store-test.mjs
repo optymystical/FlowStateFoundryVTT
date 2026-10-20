@@ -17,7 +17,7 @@ const wonders0 = R.WONDERS.length, catalog0 = spells.CATALOG.length;
 let res = S.applyWorldData({});
 ok(!res.problems.length && same(martial.WEAPON_MATERIALS, before.mats) && same(TREES, before.trees), "No world data: every table is exactly the system's");
 ok(martial.ARMOR_WEIGHTS.titanic.stealthDis === Infinity, "…values JSON can't hold (Titanic armor's auto-fail stealth) survive");
-ok(R.WONDERS.length === wonders0 && spells.CATALOG.length === catalog0 && wonders0 === 18, `The Wonders (${wonders0}) and the spell catalog (${catalog0}) are rebuilt the same`);
+ok(R.WONDERS.length === wonders0 && spells.CATALOG.length === catalog0 && wonders0 === 20, `The Wonders (${wonders0}) and the spell catalog (${catalog0}) are rebuilt the same`);
 ok(S.COLLECTIONS.size >= 30, `${S.COLLECTIONS.size} tables are in the store`);
 
 console.log("== Edits layer over the system's values, in place");

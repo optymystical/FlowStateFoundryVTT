@@ -4,12 +4,13 @@ Writes module/mental-bold.mjs: { "<Mode or ability name>": ["bolded text with a 
 import re, json, pathlib
 root = pathlib.Path(__file__).resolve().parents[2]
 text = (root / "dev/docs/mental.md").read_text()
-skip = re.compile(r"grade of|\bAP\b|\bRP\b|\bft\b|Skill Trees|^Cost|^Tier", re.I)
+skip = re.compile(r"grade of|\bAP\b|\bRP\b|\bft\b|Skill Trees|^Cost|^Tier|:$", re.I)   # a bolded label ("Toll (1 Stack):") isn't a number to scale
 out, cur = {}, None
 for ln in text.split("\n"):
     # "**Name:**" starts an entry, and so does an ability's "**Name: Cost: ...**"; a Mode's "Against an enemy/ally:" and "Enhanced:" lines stay with it.
-    m = re.match(r"^\s*(?:- )?\*\*([A-Z][A-Za-z' ]+?):(?:\*+| Cost:)", ln)
-    if m and not re.match(r"^(Against an? \w+|Enhanced)$", m.group(1).strip()): cur = m.group(1).strip()
+    m = re.match(r"^\s*(?:- )?\*\*([A-Z][A-Za-z0-9'+() ]+?):(?:\*+| Cost:)", ln)     # names may carry a count: "Toll (1 Stack)"
+    # An indented sub-point ("  - **Flourish:**" under Cultivate) belongs to the entry above it.
+    if m and not ln.startswith("  ") and not re.match(r"^(Against an? \w+|Enhanced)$", m.group(1).strip()): cur = m.group(1).strip()
     if ln.startswith("|"): cur = None                # a table (the Fortune Table) isn't part of the entry above it
     if not cur or ln.startswith("#"): continue
     for span in re.findall(r"\*\*(.+?)\*\*", ln):

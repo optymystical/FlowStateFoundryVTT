@@ -89,6 +89,7 @@ export async function spendPoints(actor, key, cost, what = "that") {
   }
   await actor.update({ [`system.${key}.value`]: have - cost });
   if (plan) await setMoveLedger(actor, plan.ledger);
+  if (!MOVEMENT_SPEND.test(String(what))) await mentalHook?.pointsSpent?.(actor, key, cost, what);          // Growth (Mental): spend Growth stacks on this action
   return true;
 }
 export const spendAP = (actor, cost, what) => spendPoints(actor, "ap", cost, what);
@@ -1166,6 +1167,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     targetActors: explicitTargets
   });
   await mentalHook?.attackCost?.(actor, { ap, rp: rpPaid });                                   // Will of Body and Spirit (Mental T4)
+  await actionSpent(actor, "martial", (inActiveCombat(actor) ? ap : 0) + (inActiveCombat(actor) ? rpPaid : 0));          // Mire (Stagnation)
   // Weaving: the woven spell goes at the same target, free of AP/RP, once the attack is made.
   if (opts.weave && weaveHook) await weaveHook.run(actor, { ap: p.ap, melee: opts.mode === "strike" || unarmed, targetActors: explicitTargets ?? [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a)) });
   // A thrown weapon leaves your hand and lands by what it was thrown at. A Shield Toss comes back on a hit
@@ -1496,7 +1498,7 @@ export async function pickUp(pile, item) {
 }
 
 /** Options carried through the exchange (serializable into chat message flags). */
-const EXCHANGE_KEYS = ["label", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
+const EXCHANGE_KEYS = ["label", "growth", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "statusStealth", "melee", "area", "grapple", "grappleOnly",
   "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
 
@@ -1695,7 +1697,7 @@ async function startExchange(actor, opts, targets) {
     // A stolen action (Larceny, Enhanced) is rolled with the original attacker's dice.
     const dice = opts.dieOf ? (globalThis.fromUuidSync?.(opts.dieOf)?.system?.derived ?? d) : d;
     let atkDie = opts.dieOverride ?? dice.attackDie;
-    const lightDie = mentalHook?.attackDieAgainst?.(actor, target);                 // Illuminate (Light): attacks against a warded ally have a smaller die
+    const lightDie = mentalHook?.attackDieAgainst?.(actor, target, opts);           // Illuminate (Light): attacks against a warded ally have a smaller die; Wane (Stagnation)
     if (lightDie?.pen) { atkDie = Math.max(1, atkDie - lightDie.pen); spellNotes.push(lightDie.note); }
     const ex = opts.spell?.exploit;
     if (ex?.stacks) {
@@ -2876,6 +2878,7 @@ export async function bodyslam(actor) {
   if (inActiveCombat(actor) && actor.system.energy.value < info.cost) return ui.notifications.warn(`${actor.name} needs ${info.cost} Energy for Bodyslam.`);
   if (!(await spendAP(actor, 3, "Bodyslam"))) return;
   if (!(await spendEnergy(actor, info.cost, "Bodyslam"))) return;
+  await actionSpent(actor, "martial", inActiveCombat(actor) ? 3 : 0);
   const launch = !!opts.launch && info.launch;
   return performAttack(actor, {
     label: launch ? "Bodyslam (Launch)" : "Bodyslam", net: opts.net + info.net, melee: true, push: false,
@@ -3195,6 +3198,7 @@ export async function slamGrappled(actor) {
   const ap = opts.weight === "light" ? 2 : 3;
   if (!checkRange(actor, actor.system.derived.size.melee, "Living Weapon", targets[0].getActiveTokens?.() ?? [])) return;
   if (!(await spendAP(actor, ap, "Living Weapon"))) return;
+  await actionSpent(actor, "martial", inActiveCombat(actor) ? ap : 0);
   return performAttack(actor, {
     label: `Living Weapon: ${victim.name}`, net: opts.net, stealth: "none", melee: true,
     damage: "", type: "physical", stacks: 0, physical: false, shots: 1,
@@ -3525,6 +3529,7 @@ export async function throwGrappled(actor) {
   if (target && !feet) return ui.notifications.warn(`${victim.name} is too heavy to throw at anything (Force ${force} moves it 0 ft).`);
   if (target && !checkRange(actor, feet, "this throw", target.getActiveTokens?.() ?? [])) return;
   if (!(await spendAP(actor, 2, `throwing ${victim.name}`))) return;
+  await actionSpent(actor, "martial", inActiveCombat(actor) ? 2 : 0);
   if (opts.crunch && !(await spendEnergy(actor, ab.STRENGTH_COST.crunchTime(actor), "Crunch Time"))) return;
   if (!target) {
     await setGrapple(victim, null);
@@ -3599,7 +3604,7 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
  * Force straight down into the ground: all of the travel is stopped at once, so the creature takes Force damage for the
  * full distance (3 × feet, capped at its HP), and is knocked prone if that is at least its height (Rules, Ch10). Returns chat HTML.
  */
-async function slamDown(actor, feet) {
+export async function slamDown(actor, feet) {
   const cap = await forceCap(actor);
   const damage = Math.min(forceDamage(feet), cap);
   let html = `<div class="fs-notes">Driven ${feet} ft into the ground: ${feet} ft × 3 = ${forceDamage(feet)}${damage < forceDamage(feet) ? ` (capped at ${cap}: ${esc(actor.name)}'s HP plus what its protection soaks)` : ""}.</div>`;
@@ -3677,6 +3682,10 @@ export const mentalCombatStart = actor => mentalHook?.combatStart?.(actor);
 export const mentalBeforeClear = actor => mentalHook?.beforeClear(actor);
 export const mentalAct = (message, i) => mentalHook?.act(message, i);
 export const afterAttackCost = (actor, cost) => mentalHook?.attackCost?.(actor, cost);
+/** Mire (Stagnation): `points` AP/RP were paid for an action of this type ("martial", "mental", "magic"). */
+export const actionSpent = (actor, type, points) => (points > 0 ? mentalHook?.actionSpent?.(actor, { type, points }) : null);
+/** Feed (Growth): how many more stacks of this kind the source's action applies to the target (0 if none). */
+export const feedExtra = async (source, target, kind) => (source && target ? (await mentalHook?.feed?.(source, target, kind)) ?? 0 : 0);
 export const arcanaTurnStart = actor => arc?.turnStart(actor);
 export const arcanaAct = (message, i) => arc?.act(message, i);
 export const arcanaCheckEntry = (token, changes) => arc?.checkEntry(token, changes);
@@ -3768,6 +3777,7 @@ export async function applySpellEffect(actor, effect) {
 }
 /** Ask the GM to put a spell effect on a target the caster doesn't own. */
 export async function putSpellEffect(target, effect) {
+  effect = (await mentalHook?.graft?.(target, effect)) ?? effect;          // Graft (Growth): Temp HP and shielding the action grants are bigger
   if (target.isOwner) return applySpellEffect(target, effect);
   return requestGM("spellEffect", { target: target.uuid, effect });
 }
@@ -3874,7 +3884,7 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   // Gravity Mods (the base effect may be replaced, which doubles the Mod): Slow/Haste stacks, personal fields, Hold.
   const m = sp.mods ?? {}, rp = sp.replaced ?? {};
   const conditionStacks = async (kind, label, name) => {
-    const n = applyStacks(20 * sp.power * fx.replaceFactor(rp, name), stackBonus);
+    const n = applyStacks(20 * sp.power * fx.replaceFactor(rp, name), stackBonus) + await feedExtra(attacker, target, kind);
     const cur = target.system.conditions?.[kind] ?? 0;
     const data = { [`system.conditions.${kind}`]: cur + n };
     if (target.isOwner) await target.update(data); else await requestGM("updateActor", { uuid: target.uuid, data });
@@ -4701,12 +4711,14 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (o.inflict && result.hit) {
     const c = target.system.conditions ?? {};
     const up = {};
-    for (const [k, v] of Object.entries(o.inflict)) if (v) for (const [ck, cv] of Object.entries(addStacks(c, k === "slow" || k === "haste" ? "_" : k, v))) up[`system.conditions.${ck}`] = cv;
-    for (const [k, v] of Object.entries(o.inflict)) if (v && (k === "slow" || k === "haste")) up[`system.conditions.${k}`] = (c[k] ?? 0) + v;
+    const inflict = { ...o.inflict };
+    for (const k of Object.keys(inflict)) if (inflict[k]) inflict[k] += await feedExtra(attacker, target, k);
+    for (const [k, v] of Object.entries(inflict)) if (v) for (const [ck, cv] of Object.entries(addStacks(c, k === "slow" || k === "haste" ? "_" : k, v))) up[`system.conditions.${ck}`] = cv;
+    for (const [k, v] of Object.entries(inflict)) if (v && (k === "slow" || k === "haste")) up[`system.conditions.${k}`] = (c[k] ?? 0) + v;
     if (Object.keys(up).length) {
       if (target.isOwner) await target.update(up); else await requestGM("updateActor", { uuid: target.uuid, data: up });
       if (o.inflict.electric) await setActorFlag(target, "electricBy", attacker.uuid);
-      extra.push(`<div class="fs-result">${esc(target.name)} gets ${Object.entries(o.inflict).filter(([, v]) => v).map(([k, v]) => `${v} ${k === "ignite" ? "Ignite" : k === "slow" ? "Slow" : k === "haste" ? "Haste" : STAIN_VARIANTS[k]?.label ?? k}`).join(", ")}.</div>`);
+      extra.push(`<div class="fs-result">${esc(target.name)} gets ${Object.entries(inflict).filter(([, v]) => v).map(([k, v]) => `${v} ${k === "ignite" ? "Ignite" : k === "slow" ? "Slow" : k === "haste" ? "Haste" : STAIN_VARIANTS[k]?.label ?? k}`).join(", ")}.</div>`);
     }
   }
   // Retort Shroud: 1 RP to Weaken the damage of a hit it can block.
@@ -4893,7 +4905,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (autoDamage) await rollExchangeDamage(defenseMessage, { auto: true });
   // Mental: other creatures' attacks that hit can be Infused (Destruction Tenet). Asked only now the response is on the card: while the question is open
   // the attack card would still show its response buttons, and a second response would repeat the whole attack.
-  if (result.hit && !o.mental?.ward && !o.mental?.reflect && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result, hitKey: `${attackMessage.id}:${index}` });
+  if (result.hit && !o.mental?.ward && !o.mental?.reflect && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result, o, hitKey: `${attackMessage.id}:${index}` });
   return defenseMessage;
 }
 
@@ -4995,14 +5007,17 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   // Mental: Enhanced Mandate on this damage roll, and Verdict's damage change from the attack that landed.
   const md = await mentalHook?.damageCharges?.({ actor: attacker, formula, totals: base.totals });
   if (md?.totals) { base.totals = md.totals; base.rolls.push(...(md.rolls ?? [])); }
-  const mflat = (md?.flat ?? 0) + (defense.result?.mentalDmg ?? 0);
+  const gd = await mentalHook?.growthDamage?.(o);                          // Growth: Flourish's damage and Pierce's Limit
+  if (gd?.rolls?.length) base.rolls.push(...gd.rolls);
+  const mflat = (md?.flat ?? 0) + (defense.result?.mentalDmg ?? 0) + (gd?.flat ?? 0);
   const line = damageLine(flat || mflat ? base.totals.map((t, i) => Math.max(0, t + flat + (i === 0 ? mflat : 0))) : base.totals, stacks, type, shots);
   // Omega (Swift T5): Heavy Swift attacks let Strengthened/Weakened change their Pierce value too.
-  const pierceNow = o.spell ? (o.spell.pierceBold != null ? applyStacks(o.spell.pierceBold, stacks) + (o.spell.pierceFlat ?? 0) : (o.pierce ?? 0)) : o.omega && o.pierce ? applyStacks(o.pierce, stacks) : (o.pierce ?? 0);          // a spell's Pierce and Bash are bolded: the stacks scale them
+  const pierceNow = (o.spell ? (o.spell.pierceBold != null ? applyStacks(o.spell.pierceBold, stacks) + (o.spell.pierceFlat ?? 0) : (o.pierce ?? 0)) : o.omega && o.pierce ? applyStacks(o.pierce, stacks) : (o.pierce ?? 0)) + (gd?.pierce ?? 0);          // a spell's Pierce and Bash are bolded: the stacks scale them
   const bashNow = o.spell ? applyStacks(o.bash || 0, stacks) : (o.bash || 0);
 
   let extraHTML = spellPlan?.notes.length ? `<div class="fs-notes">${spellPlan.notes.map(esc).join(" · ")}</div>` : "";
   if (flat) extraHTML += `<div class="fs-notes">Rend: +${flat} damage (Scaling Stat min)</div>`;
+  if (gd?.notes?.length) extraHTML += `<div class="fs-notes"><i class="fa-solid fa-seedling"></i> ${gd.notes.map(esc).join(" · ")}</div>`;
   if (md || mflat) extraHTML += `<div class="fs-notes fs-charge-note"><i class="fa-solid fa-link"></i> ${[...(md?.notes ?? []), defense.result?.mentalDmg ? `Verdict: ${defense.result.mentalDmg > 0 ? "+" : "−"}${Math.abs(defense.result.mentalDmg)} damage.` : ""].filter(Boolean).join(" ")}</div>`;
   extraHTML += dischargeHTML;
   let kb = null;
@@ -5640,6 +5655,8 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
  */
 export async function spendEnergy(actor, cost, what = "that") {
   if (!cost || !inActiveCombat(actor)) return true;
+  cost = mentalHook?.energyCost?.(actor, cost) ?? cost;                    // Thrift (Growth): the action costs less Energy
+  if (!cost) return true;
   const have = actor.system.energy.value;
   if (have < cost) {
     ui.notifications.warn(`${actor.name} needs ${cost} Energy for ${what} but has ${have}.`);
@@ -5900,6 +5917,7 @@ export async function clearCondition(actor, key) {
 export async function giveStacks(target, kind, amount, { outcome = null, first = false, caster = null, item = null } = {}) {
   amount = Math.floor(amount);
   if (amount <= 0) return "";
+  if (caster) amount += await feedExtra(caster, target, kind);          // Feed (Growth): the action applies more
   // A worn or held object that was aimed at directly gets the stacks itself (its Durability takes them down at the end of its holder's turn).
   if (item) {
     const upItem = addStacks(item.system.conditions ?? {}, kind, amount);

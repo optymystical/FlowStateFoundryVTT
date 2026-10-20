@@ -6,7 +6,7 @@
  * It registers into wonders.mjs (`MODES`, `ACTS`, the provider lists); mental.mjs hands `attackNetBefore`, `attackRolled`, `dodgeNext` and `energySpent` to
  * actions.mjs through `registerMental`, and calls `ruinResolve` / `doomResolve` from its resolve step.
  */
-import { post, putSpellEffect, spellEffects, changeEffect, requestGM, requestDamage, damageOutcome, setStatus, attackerToken, tokenDistance } from "./actions.mjs";
+import { feedExtra, post, putSpellEffect, spellEffects, changeEffect, requestGM, requestDamage, damageOutcome, setStatus, attackerToken, tokenDistance } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { DAMAGE_TYPES } from "./rules.mjs";
 import * as ab from "./abilities.mjs";
@@ -264,11 +264,11 @@ export const RUIN_ROWS = [
   async x => { const r = await roll(`${x.P}d10`); x.rolls.push(r); const off = await strip(x.target, R.fortuneScale(r.total, x.bs)); const d = await dmg(x, 1, 10, "acid"); return `${off} Temp HP/shielding stripped; ${d.f}: ${d.line}.`; },  // 17–20
   async x => { const d = await dmg(x, 1, 10, "radiation"); await mark(x, x.target, { kind: "ruinNoHeal", healDown: 1e9, name: "Ruin: can't regain health", description: `Can't regain health until the start of ${x.caster.name}'s next turn.` }); return `${d.f}: ${d.line}; they can't regain health until your next turn.`; },  // 21–24
   async x => { const d = await dmg(x, 1, 8, "heat"); await mark(x, x.target, { kind: "ruinBurn", stack: true, onTargetTurn: true, amount: d.n, name: `Ruin: heat again (${d.n})`, description: `${d.n} heat damage again at the start of their next turn.` }); return `${d.f}: ${d.line}; the same heat comes again at the start of their next turn.`; },  // 25–28
-  async x => { const d = await dmg(x, 1, 10, "cold"); const n = v(x, 10); await setCond(x.target, { "system.conditions.slow": (x.target.system.conditions?.slow ?? 0) + n }); return `${d.f}: ${d.line}; <strong>${n} Slow</strong>.`; },  // 29–32
+  async x => { const d = await dmg(x, 1, 10, "cold"); const n = v(x, 10) + await feedExtra(x.caster, x.target, "slow"); await setCond(x.target, { "system.conditions.slow": (x.target.system.conditions?.slow ?? 0) + n }); return `${d.f}: ${d.line}; <strong>${n} Slow</strong>.`; },  // 29–32
   async x => { const d = await dmg(x, 1, 10, "supernatural"); return `${d.f}: ${d.line} (health loss: what blocks Supernatural damage reduces it).`; },  // 33–36
   async x => drain(x.target, v(x, 3), 1, x.caster),  // 37–40
   async x => { const n = v(x, 3); await mark(x, x.target, { kind: "ruinDrainNext", amount: n, name: `Ruin: next Energy spent +${n}`, description: `The next time they spend Energy they spend ${n} more (below 0 is health lost), ${until(x)}.` }); return `The next time they spend Energy, they spend <strong>${n}</strong> more.`; },  // 41–44
-  async x => { const c = x.target.system.conditions ?? {}, n = v(x, 10); await setCond(x.target, { "system.conditions.haste": 0, "system.conditions.slow": (c.slow ?? 0) + (c.haste ?? 0) + n }); return `Their ${c.haste ?? 0} Haste becomes Slow, plus <strong>${n} Slow</strong>.`; },  // 45–48
+  async x => { const c = x.target.system.conditions ?? {}, n = v(x, 10) + await feedExtra(x.caster, x.target, "slow"); await setCond(x.target, { "system.conditions.haste": 0, "system.conditions.slow": (c.slow ?? 0) + (c.haste ?? 0) + n }); return `Their ${c.haste ?? 0} Haste becomes Slow, plus <strong>${n} Slow</strong>.`; },  // 45–48
   async x => {                                                                                    // 49–52
     const n = v(x, 10), off = await strip(x.target, n);
     const items = (x.target.items ?? []).filter(i => (i.system?.durability?.max ?? 0) > 0 && (i.system.equipped || i.system.held || i.system.attuned || i.system.secondHand));

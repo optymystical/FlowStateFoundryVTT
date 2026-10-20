@@ -45,18 +45,30 @@ function parseWonder(tree) {
   const name = tree.name.replace(/\s*\((Dream|Nightmare)\)\s*$/i, "");
   const out = { id: tree.id, name, kind, requires: tree.requires, modes: [], tenet: null, abilities: [], table: tree.table ?? null };
   for (const t of tree.tiers) {
-    const modeTier = /\bMode\b/i.test(t.summary ?? "");
+    const modeTier = /\bModes?\b/i.test(t.summary ?? "");
+    // "the following Mode" (one) makes only the first entry that isn't the Tenet a Mode: the others are what it does (Stagnation's Toll and Silt).
+    let modesLeft = /\bModes\b/i.test(t.summary ?? "") ? Infinity : 1;
     // When the tier names one kind per entry ("Mode, passive, and Tenet"), that says which entry is the Mode.
     const kinds = tierKinds(t.summary);
     for (const [i, entry] of t.entries.entries()) {
       // Sub-points (a Mode's "Against an enemy / ally" and "Enhanced" lines, Bands) are listed under the entry in the Skills tab; the game reads them as one text.
-      const e = entry.sub?.length ? { ...entry, text: [entry.text, ...entry.sub].join(" ") } : entry;
+      const e = entry.sub?.length ? { ...entry, text: withSubs(entry) } : entry;
       if (isTenet(e)) { out.tenet = { name: e.name, text: e.text, tier: t.tier, id: `${tree.id}:${slug(e.name)}` }; continue; }
-      if (kinds.length === t.entries.length ? kinds[i] === "mode" : modeTier) out.modes.push({ id: `${tree.id}:${slug(e.name)}`, wonder: tree.id, name: e.name, tier: t.tier, text: e.text, ...splitEnhanced(e.text) });
+      if (kinds.length === t.entries.length ? kinds[i] === "mode" : modeTier && modesLeft-- > 0) out.modes.push({ id: `${tree.id}:${slug(e.name)}`, wonder: tree.id, name: e.name, tier: t.tier, text: e.text, ...splitEnhanced(e.text) });
       else out.abilities.push({ id: `${tree.id}:${slug(e.name || "x")}`, wonder: tree.id, name: e.name, tier: t.tier, text: e.text });
     }
   }
   return out;
+}
+
+/**
+ * An entry's text with its sub-points. Sub-points that are options of the Mode (Cultivate's Flourish and Thrift) go before an inline "Enhanced:" clause,
+ * so they stay part of the base effect; "Against an enemy / ally" and "Enhanced" lines follow the text as they are.
+ */
+function withSubs(entry) {
+  const at = entry.text.search(/\bEnhanced:/);
+  if (at > 0 && !entry.sub.some(s => /^(Enhanced|Against an?)\b/i.test(s))) return [entry.text.slice(0, at).trim(), ...entry.sub, entry.text.slice(at)].join(" ");
+  return [entry.text, ...entry.sub].join(" ");
 }
 
 /** Every Wonder, parsed from the skill trees (rebuilt when the trees change: a world's own edits). */

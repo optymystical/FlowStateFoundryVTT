@@ -9,7 +9,9 @@
 const REACTIONS = [
   { key: "ward", label: "Ward negation", tip: "Whether to spend 1 RP to negate incoming damage with your Icon's Ward.", when: c => c.iconKind === "negate" },
   { key: "premonition", label: "Premonition charge", tip: "Whether to consume a Premonition charge to negate incoming damage.", when: c => c.iconKind === "charge" || c.hasPremonition },
-  { key: "tenet", label: "Tenet on a Manifest hit", tip: "Verdant Soul, Mortal Coil, Weight, Gust, Beacon, Shadowmark, Adamant and Surge: offered when your Manifest hits.", when: c => ["verdant-soul", "mortal-coil", "weight", "gust", "beacon", "shadowmark", "adamant", "surge"].includes(c.tenet) },
+  { key: "tenet", label: "Tenet on a Manifest hit", tip: "Verdant Soul, Mortal Coil, Weight, Gust, Beacon, Shadowmark, Adamant, Surge, Sapling and Moss: offered when your Manifest hits.", when: c => ["verdant-soul", "mortal-coil", "weight", "gust", "beacon", "shadowmark", "adamant", "surge", "sapling", "moss"].includes(c.tenet) },
+  { key: "growth", label: "Spend Growth stacks", tip: "Asked as an action pays its first AP or RP (or makes its attack) while you have Growth stacks. Switched off, arm them from the Action List instead.", when: c => !!c.hasGrowth || c.tier("mental-growth-dream") >= 1 },
+  { key: "stasis", label: "Stasis", tip: "Which two effects each Stagnation stack from 6 on applies (switched off: Crush and Grind).", when: c => c.tier("mental-stagnation-nightmare") >= 5 },
   { key: "accretion", label: "Reinforce / Bedrock", tip: "Offered when damage bigger than its Limit is about to strike one of your Accretions.", when: c => c.tier("mental-earth-dream") >= 2 },
   { key: "infuse", label: "Infuse", tip: "Offered when a willing character within 100 ft hits something.", when: c => c.tenet === "infuse" },
   { key: "empower", label: "Empower", tip: "Offered when damage is about to be dealt to a foe within 100 ft.", when: c => c.tenet === "empower" },

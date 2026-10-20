@@ -4,7 +4,7 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { aimableItems, post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost, castStacks } from "./actions.mjs";
+import { actionSpent, aimableItems, post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost, castStacks } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
@@ -534,6 +534,7 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
     await performAttack(actor, { ...attackOpts, area: true, notes: [...attackOpts.notes, "Area part"], spell: { ...attackOpts.spell, singleRoll: true, exploit: null } });
   } else first = await performAttack(actor, attackOpts);
   if (!weave && plan.ap) await afterAttackCost(actor, plan.usesRP ? { rp: plan.ap } : { ap: plan.ap });   // Will of Body and Spirit (Mental T4)
+  if (!weave && plan.ap && inActiveCombat(actor)) await actionSpent(actor, "magic", plan.ap);            // Mire (Stagnation)
   // Aura (Illusion T5): remember it, so creatures that walk in later can be checked (everyone checked now is covered).
   if (mods.aura && profile.arcana?.kind === "mirage") {
     const { targetActors: _t, ...opts } = attackOpts;
@@ -580,6 +581,7 @@ export async function multicast(message) {
   const atk = game.messages.get(mc.attackMessage)?.getFlag("flowstate", "attack");
   if (!atk) return ui.notifications.warn("The original cast can no longer be found.");
   if (!(await spendPoints(actor, mc.key, mc.cost, "Multicast"))) return;
+  if (inActiveCombat(actor)) await actionSpent(actor, "magic", mc.cost);
   const targets = (await Promise.all(mc.targets.map(u => fromUuid(u)))).filter(Boolean);
   const o = atk.opts;
   const spell = { ...o.spell, exploit: null, telegraph: null, ritualOf: null };
@@ -640,6 +642,7 @@ export async function useHeldSpell(actor, effectId) {
   if (!targets.length) return ui.notifications.warn("Target someone in melee range first.");
   if (!inMeleeRange(actor, targets[0].actor)) return ui.notifications.warn("A held spell is used in melee: the target has to be within your personal melee range.");
   if (!(await spendPoints(actor, "ap", h.ap, "using a held spell"))) return;
+  if (inCombat) await actionSpent(actor, "magic", h.ap);
   const profile = fx.profileFor(h.cores);
   const dice = fx.damageDice(profile, h.power);
   const holdRoll = (await new Roll(`${dice.n}d${dice.sides}`).evaluate()).total;

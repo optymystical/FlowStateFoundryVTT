@@ -5,14 +5,6 @@ export const BOLD = {
   "1d8 damage",
   "3d8 damage"
  ],
- "Neutral": [
-  "1 Alignment:",
-  "2 Alignment:"
- ],
- "Deepening": [
-  "3 Alignment:",
-  "4 Alignment:"
- ],
  "Bloom": [
   "50 temp HP"
  ],
@@ -192,6 +184,44 @@ export const BOLD = {
  ],
  "Drown": [
   "lose 2d8 health"
+ ],
+ "Cultivate": [
+  "2d8 more damage",
+  "3 less energy"
+ ],
+ "Pierce": [
+  "10 Limit"
+ ],
+ "Feed": [
+  "12 more"
+ ],
+ "Graft": [
+  "10 more"
+ ],
+ "Bark": [
+  "10 Temp HP"
+ ],
+ "Uproot": [
+  "12d8 Force"
+ ],
+ "Toll (1 Stack)": [
+  "2 energy"
+ ],
+ "Silt (2 Stacks)": [
+  "12 Slow stacks"
+ ],
+ "Grind (3 Stacks)": [
+  "1d8 physical damage"
+ ],
+ "Wane (4+ Stacks)": [
+  "die size reduced by 1"
+ ],
+ "Crush (5 Stacks)": [
+  "12d8 downward Force"
+ ],
+ "Stasis (6+ Stacks)": [
+  "24d8 downward Force",
+  "2d8 physical damage"
  ],
  "Wager": [
   "1d10 physical damage"

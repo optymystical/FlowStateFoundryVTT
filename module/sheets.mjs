@@ -29,6 +29,7 @@ import * as wondersC from "./wonders-c.mjs";
 import * as wondersD from "./wonders-d.mjs";
 import * as wondersE from "./wonders-e.mjs";
 import * as wondersF from "./wonders-f.mjs";
+import * as wondersG from "./wonders-g.mjs";
 import * as concentration from "./concentration.mjs";
 import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
@@ -755,6 +756,10 @@ function actionGroups(actor, weapons, stats) {
     mentalRows.push({ label: "Ejecta", detail: accs.length ? `Throw one of your Accretions (${accs.map(x => `on ${x.holder.name}`).join(", ")}) at a creature within 100 ft of it: an attack roll, ${skills.tierOf(sys.trees, wondersD.EARTH) >= 4 ? "damage" : "physical damage"} equal to a fifth of its remaining Durability` : "You have no Accretion to throw",
       cost: "Free", action: "ejecta", icon: "fa-solid fa-meteor", disabled: !accs.length });
   }
+  // Growth stacks (anyone can carry them): arm options for the next action instead of the popup.
+  const growthN = wondersG.growthCount(actor), armed = actor.getFlag?.("flowstate", "growthSpent");
+  if (growthN || armed?.armed) mentalRows.push({ label: `Growth: ${growthN} stack${growthN === 1 ? "" : "s"}${armed?.armed ? " (armed)" : ""}`, detail: armed?.armed ? `Ready for your next action: ${Object.keys(armed.opts ?? {}).map(k => wondersG.OPTIONS[k]?.label ?? k).join(", ")}` : "Pick the options your next action spends them on (or answer the popup as it pays its AP/RP)",
+    cost: "Free", action: "growth", icon: "fa-solid fa-seedling", disabled: !growthN, codex: "entry:mental-growth-dream:cultivate" });
   if (wonders.tenetOf(actor)?.id === `${wondersE.FORTUNE}:rig`) mentalRows.push({ label: "Rig", detail: `Any time, once per round: roll the Fortune Table, then an attack roll at a creature within 100 ft applies it on a hit (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "rig", icon: "fa-solid fa-dice" });
   if (wonders.tenetOf(actor)?.id === `${wondersF.RUIN}:doom`) mentalRows.push({ label: "Doom", detail: `Any time, once per round: roll the Ruin Table, then an attack roll at a creature within 100 ft applies it on a hit (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "doom", icon: "fa-solid fa-skull" });
   if (ponderT >= 5 && concs.length > 1) mentalRows.push({ label: "Daydreaming", detail: "Choose which Concentration can't be broken", cost: "Free", action: "daydream", icon: "fa-solid fa-cloud" });
@@ -792,7 +797,7 @@ function actionGroups(actor, weapons, stats) {
 export function buildReactionList(actor) {
   const sys = actor.system;
   const list = reactionRules.reactionRows(actor, { tenet: wonders.tenetOf(actor)?.id?.split(":")[1] ?? "", iconKind: sys.icon?.system.profile?.kind ?? "",
-    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, hasUmbral: actions.spellEffects(actor, "umbralCharge").length > 0,
+    hasPremonition: actions.spellEffects(actor, "premonition").length > 0, hasUmbral: actions.spellEffects(actor, "umbralCharge").length > 0, hasGrowth: wondersG.growthCount(actor) > 0,
     ponderance: skills.tierOf(sys.trees, "mental-ponderance-arts"), snappence: skills.tierOf(sys.trees, "mental-snappence-arts"), tier: w => skills.tierOf(sys.trees, w),
     theory: mentalRules.theoryTier(sys.trees), anyWonder: mental.manifestContext(actor).wonders.length > 0 });
   const row = r => ({ label: `${r.label}: ${r.off ? (r.card ? "hidden" : "skipped") : (r.card ? "shown" : "asked")}`,
@@ -864,6 +869,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       reflex: function () { return snappenceMod.reflexManual(this.document); },
       expand: function (event, target) { return wondersC.expand(this.document, target.closest("[data-op]")?.dataset.op); },
       ejecta: function () { return wondersD.ejecta(this.document); },
+      growth: function () { return wondersG.armGrowth(this.document); },
       rig: function () { return wondersE.rig(this.document); },
       doom: function () { return wondersF.doom(this.document); },
       daydream: function () { return concentration.chooseDaydream(this.document); },

@@ -18,6 +18,7 @@ import * as wondersC from "./wonders-c.mjs";
 import * as wondersD from "./wonders-d.mjs";
 import * as wondersE from "./wonders-e.mjs";
 import * as wondersF from "./wonders-f.mjs";
+import * as wondersG from "./wonders-g.mjs";
 import * as forging from "./forging.mjs";
 import * as ponderance from "./ponderance.mjs";
 import * as snappence from "./snappence.mjs";
@@ -312,6 +313,7 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
     if (area) targets = area.actors;
   }
   if (!(await pay(actor, plan.cost, `Manifesting ${plan.mode.name}`))) return null;
+  if (inActiveCombat(actor)) await wondersG.actionSpent(actor, { type: "mental", points: (plan.cost.ap ?? 0) + (plan.cost.rp ?? 0) });          // Mire (Stagnation)
   if (reflex?.afterimage) await snappence.useAfterimage(actor);
   const notes = [
     `${plan.mode.name} (${plan.wonder.name}, ${R.KINDS[plan.kind].label}) · Wonder Power ×${plan.power}`,
@@ -959,9 +961,15 @@ async function act(message, i) {
   if (done) await post(await fromUuid(x.caster), { title: "Used", body: `<div class="fs-notes">${esc(x.label)}: used.</div>`, flags: { flowstate: { mentalActDone: { card: message.id, i: Number(i) } } } });
 }
 wonders.setMental(self);
-registerMental({ attackStart: wondersC.attackStart, attackDieAgainst: wondersC.attackDieAgainst, dodgeDieAgainst: wondersC.dodgeDieAgainst, reflex: snappence.offerReflex, concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+/** Two die-size changes against one attack roll (Illuminate's and Wane's) add up. */
+function dieAgainst(actor, target, opts) {
+  const parts = [wondersC.attackDieAgainst(actor, target), wondersG.waneDie(actor, opts)].filter(x => x?.pen);
+  return parts.length ? { pen: parts.reduce((n, x) => n + x.pen, 0), note: parts.map(x => x.note).join(" · ") } : null;
+}
+registerMental({ attackStart: async (actor, opts, targets) => wondersG.attackStart(actor, (await wondersC.attackStart(actor, opts, targets)) ?? opts), attackDieAgainst: dieAgainst, dodgeDieAgainst: wondersC.dodgeDieAgainst, reflex: snappence.offerReflex, concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
-  adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: wondersB.anyHit,
+  adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: async x => { await wondersB.anyHit(x); await wondersG.anyHit(x); },
+  pointsSpent: wondersG.pointsSpent, energyCost: wondersG.energyCost, growthDamage: wondersG.growthDamage, feed: wondersG.feed, graft: wondersG.graft, actionSpent: wondersG.actionSpent,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage,
   encasements: wondersD.encasements, accretionAsk: wondersD.accretionAsk, accretionWorn: wondersD.accretionWorn, forcedMove: wondersD.forcedMove, voluntaryMove: wondersD.voluntaryMove, standUp: wondersD.standUp,
   attackNetBefore: wondersF.attackNetBefore, attackRolled: wondersF.attackRolled, dodgeNext: wondersF.dodgeNext, energySpent: wondersF.energySpent });

@@ -5,7 +5,7 @@
  * effects on the target that turn into the real effect when their turn starts (`pendingTurnStart`).
  */
 import {
-  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, damageOutcome, knockbackRow, setGrapple, gridFor
+  post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, damageOutcome, knockbackRow, setGrapple, gridFor, feedExtra
 } from "./actions.mjs";
 import { centreDistance } from "./distance.mjs";
 import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
@@ -315,7 +315,7 @@ async function abilityActs(c) {
 /** Weight (Below Tenet): 15 Slow stacks on the target. */
 ACTS.weight = async (x, caster, target) => {
   if (!(await tryOnce(caster, "weight"))) { ui.notifications.info("Weight: already used this round."); return false; }
-  const n = bold(x.bstacks, 15 * (x.mult ?? 1));
+  const n = bold(x.bstacks, 15 * (x.mult ?? 1)) + await feedExtra(caster, target, "slow");
   const data = { "system.conditions.slow": (target.system.conditions?.slow ?? 0) + n };
   if (target.isOwner) await target.update(data); else await requestGM("updateActor", { uuid: target.uuid, data });
   await post(caster, { title: `${esc(caster.name)} — Weight`, body: `<div class="fs-result">${esc(target.name)} gets <strong>${n} Slow</strong> stacks, until the start of your next turn.</div>` });

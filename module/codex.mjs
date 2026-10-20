@@ -199,7 +199,7 @@ function entryPage(tree, tier, e) {
   blocks.push(md(parts.main));
   for (const x of parts.extra) blocks.push({ kind: "callout", label: x.label, md: x.text });
   if (mode?.enhanced) blocks.push({ kind: "callout", label: "Enhanced", md: emphasize(boldSpans(mode.enhanced, e.name)) });
-  if (e.sub?.length) blocks.push({ kind: "md", md: e.sub.map(s => `- ${emphasize(s)}`).join("\n") });
+  if (e.sub?.length && !mode) blocks.push({ kind: "md", md: e.sub.map(s => `- ${emphasize(s)}`).join("\n") });          // a Mode's sub-points are in its text already
   if (spell?.kind === "core") {
     const me = school(tree.id);
     const pairs = Object.keys(COMBO_PAIRS).filter(k => k.split("+").includes(me));

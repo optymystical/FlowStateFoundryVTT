@@ -4,7 +4,7 @@
  * bands), and the Fortune Table itself (`FORTUNE_ROWS`, matched by position to the doc's table, whose text the cards show).
  * It registers into wonders.mjs (`MODES`, `ACTS`, `CHOICE_PROVIDERS`, `COST_PROVIDERS`); mental.mjs hands a Fortune Manifest's resolve to `fortuneResolve`.
  */
-import { post, putSpellEffect, requestGM, requestDamage, damageOutcome, setStatus, knockbackRow, attackerToken, tokenDistance, energyRestoreAdjust } from "./actions.mjs";
+import { feedExtra, post, putSpellEffect, requestGM, requestDamage, damageOutcome, setStatus, knockbackRow, attackerToken, tokenDistance, energyRestoreAdjust } from "./actions.mjs";
 import { reevaluate } from "./arcana.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { stackMultiplier, DAMAGE_TYPES } from "./rules.mjs";
@@ -183,7 +183,7 @@ export const FORTUNE_ROWS = [
   async x => { const n = v(x, 10); await effect(x, { kind: "fortunePain", stack: true, painUp: n, name: `Fortune (+${n} Pain Threshold)`, description: `Pain Threshold raised by ${n} ${until(x)}.` }); await reevaluate(x.target); return `Their Pain Threshold is raised by <strong>${n}</strong> ${until(x)}.`; },  // 32–35
   async x => { const n = halfUp(x, 0.5); await effect(x, { kind: "dodgeDie", dodgeDie: n, name: `Fortune (dodge −${n} die size)`, description: `Dodge rolls have their die size reduced by ${n} ${until(x)}.` }); return `Their dodge dice are <strong>${n}</strong> sizes smaller ${until(x)}.`; },  // 36–39
   async x => { const n = v(x, 1); await effect(x, { kind: "attackDie", attackDie: n, name: `Fortune (attack −${n} die size)`, description: `Attack rolls have their die size reduced by ${n} ${until(x)}.` }); return `Their attack dice are <strong>${n}</strong> sizes smaller ${until(x)}.`; },  // 40–43
-  async x => { const n = v(x, 15); await setCond(x.target, { "system.conditions.slow": (x.target.system.conditions?.slow ?? 0) + n }); return `They gain <strong>${n} Slow</strong> stacks.`; },  // 44–47
+  async x => { const n = v(x, 15) + await feedExtra(x.caster, x.target, "slow"); await setCond(x.target, { "system.conditions.slow": (x.target.system.conditions?.slow ?? 0) + n }); return `They gain <strong>${n} Slow</strong> stacks.`; },  // 44–47
   async x => { const n = v(x, 3); const r = await removeEnergy(x.target, n); return `They lose <strong>${r.removed}</strong> Energy (${r.remaining} left).`; },  // 48–50
   async x => {                                                                                 // 51–53
     const f = await forceRoll({ stacks: x.bs, target: x.target, attacker: x.caster }, 5 * x.P, 8, "Fortune", false);
@@ -203,7 +203,7 @@ export const FORTUNE_ROWS = [
     return await hurt(x, x.target, d.n, ELEMENTS[type] ? type : "heat");
   },
   async x => { const n = v(x, 3); if (x.target.statuses?.has?.("fear")) return `${esc(x.target.name)} is afraid and can't gain Energy.`; const got = await energyRestoreAdjust(x.target, n), e = x.target.system.energy ?? { value: 0, max: 0 }; const gain = Math.max(0, Math.min(got, e.max - e.value)); if (gain) await setCond(x.target, { "system.energy.value": e.value + gain }); return `They regain <strong>${gain}</strong> Energy.`; },  // 60–63
-  async x => { const n = v(x, 15); await setCond(x.target, { "system.conditions.haste": (x.target.system.conditions?.haste ?? 0) + n }); return `They gain <strong>${n} Haste</strong> stacks.`; },  // 64–67
+  async x => { const n = v(x, 15) + await feedExtra(x.caster, x.target, "haste"); await setCond(x.target, { "system.conditions.haste": (x.target.system.conditions?.haste ?? 0) + n }); return `They gain <strong>${n} Haste</strong> stacks.`; },  // 64–67
   async x => { const n = v(x, 5); await putTemp(x.target, x.caster, n); return `They get <strong>${n} Temp HP</strong> ${until(x)}.`; },  // 68–71
   async x => { const n = halfUp(x, 0.5); await effect(x, { kind: "dodgeUp", dodgeDieUp: n, name: `Fortune (+${n} dodge die size)`, description: `Dodge dice are ${n} sizes bigger ${until(x)}. Doesn't stack.` }); return `Their dodge dice are <strong>+${n}</strong> sizes ${until(x)}.`; },  // 72–75
   async x => { const n = v(x, 1); await effect(x, { kind: "attackUp", attackDieUp: n, name: `Fortune (+${n} attack die size)`, description: `Attack dice are ${n} sizes bigger ${until(x)}. Doesn't stack.` }); return `Their attack dice are <strong>+${n}</strong> sizes ${until(x)}.`; },  // 76–79

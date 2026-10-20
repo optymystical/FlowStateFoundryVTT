@@ -4,7 +4,7 @@
  */
 import { STATS, deriveCharacter } from "./rules.mjs";
 import {
-  WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES, rarityRank, weaponProfile, armorProfile
+  WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES, rarityKey, rarityRank, weaponProfile, armorProfile
 } from "./martial.mjs";
 import * as skills from "./skills.mjs";
 import { parseEnergyCost, stripEnergyCost } from "./energy.mjs";
@@ -66,12 +66,19 @@ export function newSlot(kind, maxRarity) {
   if (kind === "named") return { kind, key: Object.keys(allowedNamed(maxRarity))[0] ?? "" };
   if (kind === "foci") return { kind, fociType: "rod" };
   if (kind === "shroud") return { kind, shroudType: "bastion" };
-  if (kind === "icon") return { kind, iconForm: "aegis" };
+  if (kind === "icon") return { kind, iconForm: firstForm(maxRarity) };
   if (kind === "affix") return { kind, affix: Object.keys(allowedAffixes(maxRarity))[0] ?? "", side: "offensive" };
   const slot = kind === "armor" ? { kind, weight: "light" } : { kind, type: "bladed", weight: "light" };
   slot.material = Object.keys(allowedMaterials(kind, slot.weight, maxRarity))[0] ?? "";
   return slot;
 }
+
+/** Icon Forms a starting character may pick (within the rarity cap, not hidden). */
+export function allowedForms(maxRarity) {
+  return Object.fromEntries(Object.entries(FORMS).filter(([, f]) => !f.hidden && rarityOk(f.rarity, maxRarity))
+    .map(([k, f]) => [k, `${f.name} (${RARITIES[rarityKey(f.rarity)] ?? f.rarity})`]));
+}
+const firstForm = maxRarity => { const ok = allowedForms(maxRarity); return ok.aegis ? "aegis" : Object.keys(ok)[0] ?? ""; };
 
 /** Affixes a starting character may pick (within the rarity cap). */
 export function allowedAffixes(maxRarity) {
@@ -85,7 +92,7 @@ export function normalizeSlot(slot, maxRarity) {
   if (s.kind === "named") { const ok = allowedNamed(maxRarity); if (!ok[s.key]) s.key = Object.keys(ok)[0] ?? ""; return s; }
   if (s.kind === "foci") { if (!FOCI_TYPES[s.fociType]) s.fociType = "rod"; return s; }
   if (s.kind === "shroud") { if (!SHROUD_TYPES[s.shroudType]) s.shroudType = "bastion"; return s; }
-  if (s.kind === "icon") { if (!FORMS[s.iconForm]) s.iconForm = "aegis"; return s; }
+  if (s.kind === "icon") { if (!allowedForms(maxRarity)[s.iconForm]) s.iconForm = firstForm(maxRarity); return s; }
   if (s.kind === "affix") {
     const allowed = allowedAffixes(maxRarity);
     if (!allowed[s.affix]) s.affix = Object.keys(allowed)[0] ?? "";
@@ -147,7 +154,12 @@ export function validate(choice, rules = DEFAULT_RULES) {
     }
     if (slot.kind === "foci") { if (!FOCI_TYPES[slot.fociType]) errors.push(`${label}: pick a Foci type.`); continue; }
     if (slot.kind === "shroud") { if (!SHROUD_TYPES[slot.shroudType]) errors.push(`${label}: pick a Shroud type.`); continue; }
-    if (slot.kind === "icon") { if (!FORMS[slot.iconForm]) errors.push(`${label}: pick a Form.`); continue; }
+    if (slot.kind === "icon") {
+      const f = FORMS[slot.iconForm];
+      if (!f) errors.push(`${label}: pick a Form.`);
+      else if (!rarityOk(f.rarity, rules.maxRarity)) errors.push(`${label}: ${f.name} is above the ${RARITIES[rules.maxRarity]} limit.`);
+      continue;
+    }
     if (slot.kind === "affix") {
       const a = AFFIXES[slot.affix];
       if (!a) { errors.push(`${label}: pick an Affix.`); continue; }

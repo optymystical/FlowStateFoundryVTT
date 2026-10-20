@@ -231,7 +231,7 @@ Hooks.once("init", () => {
   worldNumber("startingItems", "Starting equipment picks", "How many items a new character picks: weapons, armor (at most one), Foci, Shrouds, and Affixes (each Affix is one pick). Unarmed is free; ranged weapons come with 20 ammunition each.", 4);
   worldNumber("startingGrade", "Starting equipment Grade", "Grade of starting weapons and armor.", 10);
   game.settings.register("flowstate", "startingMaxRarity", {
-    name: "Starting equipment rarity limit", hint: "Highest material rarity allowed for starting equipment.",
+    name: "Starting equipment rarity limit", hint: "Highest rarity allowed for starting equipment: materials, Affixes, Icon Forms and named items.",
     scope: "world", config: true, type: String, default: "uncommon",
     choices: { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" }
   });

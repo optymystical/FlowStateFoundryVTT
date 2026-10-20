@@ -88,7 +88,7 @@ World setting **Movement cost in combat** (Enforce by default, Warn, Off). On a 
   1. Identity (name and portrait). Click the portrait or the picture button to set it with an image link or path, Browse or Upload (both go through a connected GM for players without the file permissions).
   2. Stats, with a live preview of HP, Energy, move, and dice. Unspent points are banked. Below it, advice for new players: stick to one Archetype and split points between one of its offensive stats (Str/Dex, Pon/Snap, Reach/Grasp) and its defensive stat (Con, Will, Build).
   3. Skill Trees: spend the starting Skill Points (a third of the stat points). Pick an Archetype, then use + / − on each tree (tier N costs N). Only trees your Theory tier has opened are listed. A Theory can't be lowered below what your other trees need, and clicking a tree name shows what each tier grants: the tier's line from the doc, then each entry's name with its first sentence or two (its Energy cost beside it, the full text on hover). The NPC wizard shows the same. Leftover points are banked. The GM re-checks the budget and Theory requirements.
-  4. Starting Equipment, within the world budget: picks, rarity limit, Grade, and at most one armor. Unarmed is free.
+  4. Starting Equipment, within the world budget: picks, rarity limit (materials, Affixes, Icon Forms and named items all obey it), Grade, and at most one armor. Unarmed is free.
   5. Review.
 
   The GM's client re-checks the choices, then creates the character owned by that player. It also becomes their assigned character if they don't have one, and the sheet opens for them. A GM must be connected. The budgets are world settings: starting stat points (90), equipment picks (3), rarity limit (Uncommon), and Grade (10).

@@ -106,7 +106,10 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       }
       if (slot.kind === "icon") {
         const form = mentalRules.FORMS[slot.iconForm];
-        return { index, ...slot, icon: true, name: creation.slotName(slot), typeChoices: mentalRules.formGroups(), selected: slot.iconForm,
+        // Only the Forms within the starting rarity limit.
+        const allowedForms = creation.allowedForms(rules.maxRarity);
+        const typeChoices = mentalRules.formGroups().map(g => ({ ...g, options: Object.fromEntries(Object.entries(g.options).filter(([k]) => k in allowedForms)) })).filter(g => Object.keys(g.options).length);
+        return { index, ...slot, icon: true, name: creation.slotName(slot), typeChoices, selected: slot.iconForm,
           summary: `${mentalRules.KINDS[form?.align]?.label ?? ""} Form · ${form?.rarity ?? ""} · attune to it for 6 AP in combat; pick its Tenet on the item once you know a Wonder`,
           effect: form ? `Ward: ${form.ward} Enhanced: ${form.enhance}` : "" };
       }

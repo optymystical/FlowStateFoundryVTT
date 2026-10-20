@@ -144,5 +144,15 @@ console.log("== Rarities");
   ok(MT.rarityKey("very rare") === "veryRare" && MT.rarityKey("Very Rare") === "veryRare" && MT.rarityKey("veryRare") === "veryRare" && MT.rarityKey("") === "common" && MT.rarityKey(null) === "common", "Rarity names however they're written ('very rare', an Icon Form's) give their key");
   ok(MT.rarityRank("common") === 0 && MT.rarityRank("very rare") === 3 && MT.rarityRank("nonsense") === 0, "…and their place in the order (unknown counts as Common)"); }
 
+console.log("== Starting Icons and the rarity limit");
+{ const CR = await import("../../module/creation.mjs");
+  const ok2r = CR.allowedForms("uncommon");
+  ok(ok2r.aegis && ok2r.prism && !ok2r.anchor && !ok2r.premonition && !ok2r.echo, "Up to Uncommon: Aegis and Prism can be picked, not Rare Anchor or Very Rare Premonition and Echo");
+  ok(Object.keys(CR.allowedForms("veryRare")).length === 14, "…all 14 when the limit is Very Rare");
+  ok(CR.newSlot("icon", "common").iconForm === "aegis" && CR.normalizeSlot({ kind: "icon", iconForm: "echo" }, "uncommon").iconForm === "aegis", "A new or out-of-limit Icon slot falls back to an allowed Form");
+  const base = { name: "Ash", stats: CR.emptyStats(), trees: {} }, rules = { ...CR.DEFAULT_RULES, maxRarity: "uncommon" };
+  ok(CR.validate({ ...base, items: [{ kind: "icon", iconForm: "premonition" }] }, rules).some(e => /Premonition is above the Uncommon limit/.test(e))
+    && !CR.validate({ ...base, items: [{ kind: "icon", iconForm: "veil" }] }, rules).some(e => /Item/.test(e)), "The GM's check refuses a Very Rare Form and accepts a Common one"); }
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll catalog checks passed");
 if (fails) process.exit(1);

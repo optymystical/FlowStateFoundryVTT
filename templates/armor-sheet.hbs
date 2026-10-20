@@ -14,8 +14,10 @@
       <select name="system.weight" {{#unless editable}}disabled{{/unless}}>{{selectOptions weights selected=system.weight}}</select></div>
     <div class="fs-field"><label>Material</label>
       <select name="system.material" {{#unless editable}}disabled{{/unless}}>{{selectOptions materials selected=system.material}}</select></div>
+    {{#if system.natural}}<div class="fs-field"><label>Grade</label><a class="fs-sub" data-codex="equipment:natural" data-tooltip="A natural item has no Grade: it scales with the stat uncapped">Natural: no Grade</a></div>{{else}}
     <div class="fs-field"><label>Grade</label>
       <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
+    {{/if}}
     <div class="fs-field fs-checks-row">
       <label><input type="checkbox" name="system.equipped" {{checked system.equipped}} {{#unless stateEditable}}disabled{{/unless}}> Worn</label>
       <label data-tooltip="Natural armor (a Summon's skin): it can't be dropped"><input type="checkbox" name="system.natural" {{checked system.natural}} {{#unless editable}}disabled{{/unless}}> Natural</label>
@@ -26,7 +28,7 @@
   <section class="fs-profile">
     <h3>Profile {{#unless owned}}<small>(previewed at the Grade cap)</small>{{/unless}}</h3>
     <div class="fs-kv">
-      <span>Scaling</span><span>×{{p.mult}} (Constitution, Grade {{p.grade}})</span>
+      <span>Scaling</span><span>×{{p.mult}} (Constitution{{#if p.natural}}, natural: uncapped{{else}}, Grade {{p.grade}}{{/if}})</span>
       <span>Durability</span><span><input type="number" class="fs-wear" value="{{system.durability.value}}" disabled> / {{system.durability.max}} <small>(wear <input type="number" name="system.wear" value="{{system.wear}}" min="0" {{#unless editable}}disabled{{/unless}}>)</small></span>
       <span>Limit</span><span>{{p.limit}}</span>
       <span>Stealth</span><span>{{stealth}}</span>

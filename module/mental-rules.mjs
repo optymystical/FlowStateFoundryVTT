@@ -255,16 +255,19 @@ export const iconScale = (stat, grade) => Math.max(1, Math.floor(Math.min(Number
 export function iconProfile(item, stats = {}) {
   const form = FORMS[item.form];
   if (!form) return { valid: false, error: "Pick a Form." };
-  const grade = Math.max(1, item.grade || 1);
-  const wardMult = iconScale(stats.will ?? 0, grade);
+  // A natural Icon (an Omen is its own) has no Grade: its numbers scale with the stats uncapped; its Durability counts a Grade per 10 Willpower.
+  const natural = !!item.natural;
+  const cap = natural ? Infinity : Math.max(1, item.grade || 1);
+  const grade = natural ? Math.max(1, Math.floor((Number(stats.will) || 0) / 10)) : cap;
+  const wardMult = iconScale(stats.will ?? 0, cap);
   const tenetWonder = item.tenet ? wonderById(item.tenet.split(":")[0]) : null;
   const tenetStat = tenetWonder ? stats[KINDS[tenetWonder.kind].stat] ?? 0 : 0;
   return {
-    valid: true, form: item.form, name: form.name, align: form.align, rarity: form.rarity, grade, wardMult,
+    valid: true, form: item.form, name: form.name, align: form.align, rarity: form.rarity, grade, natural, wardMult,
     amount: (form.amount ?? 0) * wardMult, enhancedAmount: (form.enhanced ?? form.amount ?? 0) * wardMult, other: (form.other ?? 0) * wardMult, grows: (form.grows ?? 0) * wardMult,
     cap: form.cap ? form.cap * wardMult : null, recover: (form.recover ?? 0) * wardMult,
     ward: scaleFormText(form.ward, wardMult), enhance: scaleFormText(form.enhance, wardMult), kind: form.kind,
-    tenet: tenetWonder ? { wonder: tenetWonder.id, wonderName: tenetWonder.name, mult: iconScale(tenetStat, grade) } : null,
+    tenet: tenetWonder ? { wonder: tenetWonder.id, wonderName: tenetWonder.name, mult: iconScale(tenetStat, cap) } : null,
     durability: 20 * grade, limit: 4 * grade
   };
 }

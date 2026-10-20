@@ -18,7 +18,7 @@ import * as concentration from "./concentration.mjs";
 import { askFor, everyActor } from "./ask.mjs";
 import { isDeclined } from "./reactions.mjs";
 import { tierOf } from "./skills.mjs";
-import { mental, bold, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, TURN_START, BEFORE_CLEAR, rolled, tenetOf, tryOnce, actButtons } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, TURN_START, BEFORE_CLEAR, rolled, tenetsOf, tryOnce, actButtons } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
@@ -165,12 +165,14 @@ export async function ejectaResolve({ attacker, target, result, m }) {
 /* -------------------------------------------- */
 
 ACT_PROVIDERS.push(async c => {
-  const a = c.attacker, tn = tenetOf(a);
-  if (!tn || c.m.spread || c.now) return [];
-  const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0, mult: tn.mult };
-  if (tn.id === `${EARTH}:adamant`) return [{ tenet: true, id: "adamant", label: "Adamant", tip: `Once per round: lower the target's or your own Pain Threshold by ${bold(base.bstacks, 10 * tn.mult)} until your next turn`, cost: "once per round", ...base }];
-  if (tn.id === `${SEA}:surge`) return [{ tenet: true, id: "surge", label: "Surge", tip: `Once per round: move the target up to ${SEA_MOVE_FT} ft horizontally in a direction of your choosing (ignores Force and Lift)`, cost: "once per round", ...base }];
-  return [];
+  const a = c.attacker, out = [];
+  if (c.m.spread || c.now) return out;
+  for (const tn of tenetsOf(a)) {
+    const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0, mult: tn.mult };
+    if (tn.id === `${EARTH}:adamant`) out.push({ tenet: true, id: "adamant", label: "Adamant", tip: `Once per round: lower the target's or your own Pain Threshold by ${bold(base.bstacks, 10 * tn.mult)} until your next turn`, cost: "once per round", ...base });
+    if (tn.id === `${SEA}:surge`) out.push({ tenet: true, id: "surge", label: "Surge", tip: `Once per round: move the target up to ${SEA_MOVE_FT} ft horizontally in a direction of your choosing (ignores Force and Lift)`, cost: "once per round", ...base });
+  }
+  return out;
 });
 
 /** Adamant: −10 × the Tenet's multiplier to someone's Pain Threshold until your next turn (a lower Threshold may wake them). */

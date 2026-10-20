@@ -11,7 +11,7 @@ import * as R from "./mental-rules.mjs";
 import { askFor, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { allied, opposed } from "./sides.mjs";
-import { mental, bold, MODES, ACTS, ACT_PROVIDERS, DAMAGE_PROVIDERS, TURN_START, rolled, tenetOf, tryOnce } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, DAMAGE_PROVIDERS, TURN_START, rolled, tenetsOf, tryOnce } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
@@ -128,9 +128,9 @@ DAMAGE_PROVIDERS.push(async ({ attacker, target, n, notes }) => {
 /* -------------------------------------------- */
 
 ACT_PROVIDERS.push(async c => {
-  const a = c.attacker, tn = tenetOf(a), out = [];
+  const a = c.attacker, out = [];
   const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0 };
-  if (tn && !c.m.spread && !c.now) {
+  for (const tn of !c.m.spread && !c.now ? tenetsOf(a) : []) {
     if (tn.id === `${LIGHT}:beacon`) out.push({ tenet: true, id: "beacon", label: "Beacon", tip: "Once per round: you and your allies can see the target through any obstruction until your next turn", cost: "once per round", ...base });
     if (tn.id === `${DARK}:shadowmark`) out.push({ tenet: true, id: "shadowmark", label: "Shadowmark", tip: "Once per round: make the target or yourself one step more obscured until your next turn", cost: "once per round", ...base });
   }

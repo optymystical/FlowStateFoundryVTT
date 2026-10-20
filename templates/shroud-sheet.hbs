@@ -12,10 +12,13 @@
   <section class="fs-builder">
     <div class="fs-field"><label>Type</label>
       <select name="system.shroudType" {{#unless editable}}disabled{{/unless}}>{{selectOptions types selected=system.shroudType}}</select></div>
+    {{#if system.natural}}<div class="fs-field"><label>Grade</label><a class="fs-sub" data-codex="equipment:natural" data-tooltip="A natural item has no Grade: it scales with the stat uncapped">Natural: no Grade</a></div>{{else}}
     <div class="fs-field"><label>Grade</label>
       <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
+    {{/if}}
     <div class="fs-field fs-checks-row">
       <label><input type="checkbox" name="system.attuned" {{checked system.attuned}} {{#unless stateEditable}}disabled{{/unless}}> Attuned (melded)</label>
+      <label data-tooltip="Part of a creature: no Grade (Build counts uncapped); it can't be dropped or sold"><input type="checkbox" name="system.natural" {{checked system.natural}} {{#unless editable}}disabled{{/unless}}> Natural</label>
     </div>
   </section>
 
@@ -23,7 +26,7 @@
   <section class="fs-profile">
     <h3>Profile {{#unless owned}}<small>(previewed at the Grade cap)</small>{{/unless}}</h3>
     <div class="fs-kv">
-      <span>Scaling</span><span>×{{p.mult}} (Build {{p.scaling}}, Grade {{p.grade}})</span>
+      <span>Scaling</span><span>×{{p.mult}} (Build {{p.scaling}}{{#if p.natural}}, natural: uncapped{{else}}, Grade {{p.grade}}{{/if}})</span>
       <span>Durability</span><span>{{system.durability.value}} / {{system.durability.max}}{{#if p.fixedDur}} <small>(doesn't scale)</small>{{/if}} <small>(spent <input type="number" name="system.wear" value="{{system.wear}}" {{#unless editable}}disabled{{/unless}}>)</small></span>
       <span>Limit</span><span>{{p.limit}}{{#if limitNote}} <small>({{limitNote}})</small>{{/if}}</span>
       <span>Recovery</span><span>{{recoveryLabel}}</span>

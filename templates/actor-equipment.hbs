@@ -14,7 +14,7 @@
           <button type="button" class="fs-toggle {{#if system.equipped}}on{{/if}}" data-action="toggleField" data-field="equipped" data-tooltip="{{equipTip}}"><i class="fa-solid fa-hand-fist"></i></button>
           {{/if}}
         </td>
-        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if unarmed}}Light or Heavy, chosen per attack{{#if grappling}} · <span class="fs-warn">{{grappling}}</span>{{/if}}{{else}}{{#if profile.valid}}{{profile.label}}{{#if typesText}} · <span data-tooltip="Multi-type (Weapon Master)">{{typesText}}</span>{{/if}} · G{{system.grade}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}{{/if}}</div></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if unarmed}}Light or Heavy, chosen per attack{{#if grappling}} · <span class="fs-warn">{{grappling}}</span>{{/if}}{{else}}{{#if profile.valid}}{{profile.label}}{{#if typesText}} · <span data-tooltip="Multi-type (Weapon Master)">{{typesText}}</span>{{/if}} · {{#if system.natural}}Natural{{else}}G{{system.grade}}{{/if}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}{{/if}}</div></td>
         <td>{{formula}}<div class="fs-sub">{{damageType}}</div></td>
         <td>{{ap}}{{#if roundsText}}<div class="fs-sub">{{roundsText}}</div>{{/if}}</td>
         <td>{{#each tagGroups}}<div class="fs-tags">{{#if label}}<span class="fs-tag-label">{{label}}</span>{{/if}}{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}" data-codex="tag:{{key}}">{{label}}</span>{{/each}}</div>{{/each}}</td>
@@ -48,7 +48,7 @@
       {{#each armor}}
       <tr data-item-id="{{id}}" class="{{#unless system.equipped}}fs-dim{{/unless}}">
         <td><button type="button" class="fs-toggle {{#if system.equipped}}on{{/if}}" data-action="toggleField" data-field="equipped" data-tooltip="{{#if system.equipped}}Worn{{else}}Not worn{{/if}}"><i class="fa-solid fa-shirt"></i></button></td>
-        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · G{{system.grade}} · ×{{profile.mult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · {{#if system.natural}}Natural{{else}}G{{system.grade}}{{/if}} · ×{{profile.mult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
         <td>{{profile.limit}}</td>
         <td>{{system.durability.value}}/{{system.durability.max}}{{#if system.broken}} <span class="fs-warn">broken</span>{{/if}}</td>
         <td class="fs-sub">{{#if profile.valid}}{{#if profile.stealthDis}}Dis ×{{profile.stealthDis}}{{else}}—{{/if}} / {{profile.moveText}}{{/if}}</td>
@@ -74,7 +74,7 @@
           <button type="button" class="fs-toggle {{#if system.attuned}}on{{/if}}" data-action="toggleField" data-field="attuned" data-tooltip="{{#if system.attuned}}Attuned (click to unattune){{else}}Attune (1 hour, not in combat; one Foci at a time){{/if}}"><i class="fa-solid fa-link"></i></button>
           <button type="button" class="fs-toggle {{#if system.equipped}}on{{/if}}" data-action="toggleField" data-field="equipped" data-tooltip="{{holdTip}}"><i class="fa-solid fa-hand"></i></button>
         </td>
-        <td><a data-action="editItem" class="fs-item-link">{{name}}</a>{{#if profile.valid}} <span class="fs-tag" data-tooltip="{{profile.formLabel}} Foci">{{profile.typeLabel}}</span>{{/if}}<div class="fs-sub">{{#if profile.valid}}<strong>{{profile.label}}</strong> · G{{system.grade}} · {{statLabel}} {{profile.scaling}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a>{{#if profile.valid}} <span class="fs-tag" data-tooltip="{{profile.formLabel}} Foci">{{profile.typeLabel}}</span>{{/if}}<div class="fs-sub">{{#if profile.valid}}<strong>{{profile.label}}</strong> · {{#if system.natural}}Natural{{else}}G{{system.grade}}{{/if}} · {{statLabel}} {{profile.scaling}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
         <td>{{profile.castAP}} AP</td>
         <td>{{trText}}</td>
         <td class="fs-sub">{{#if affixText}}{{affixText}}{{else}}—{{/if}}{{#if profile.doubled}} (doubled: {{profile.doubled}}){{/if}}</td>
@@ -99,7 +99,7 @@
       {{#each shrouds}}
       <tr data-item-id="{{id}}" class="{{#unless system.attuned}}fs-dim{{/unless}}">
         <td><button type="button" class="fs-toggle {{#if system.attuned}}on{{/if}}" data-action="toggleField" data-field="attuned" data-tooltip="{{#if system.attuned}}Melded (click to unattune){{else}}Attune (1 hour, not in combat; one Shroud at a time){{/if}}"><i class="fa-solid fa-link"></i></button></td>
-        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · G{{system.grade}} · ×{{profile.mult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a><div class="fs-sub">{{#if profile.valid}}{{profile.label}} · {{#if system.natural}}Natural{{else}}G{{system.grade}}{{/if}} · ×{{profile.mult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
         <td>{{profile.limit}}</td>
         <td>{{system.durability.value}}/{{system.durability.max}}</td>
         <td class="fs-sub">{{#if affixText}}{{affixText}}{{else}}—{{/if}}{{#if profile.doubled}} (doubled: {{profile.doubled}}){{/if}}</td>
@@ -144,7 +144,7 @@
       {{#each icons}}
       <tr data-item-id="{{id}}" class="{{#unless system.attuned}}fs-dim{{/unless}}">
         <td><button type="button" class="fs-toggle {{#if system.attuned}}on{{/if}}" data-action="{{#if @root.inCombat}}attuneIcon{{else}}toggleField{{/if}}" data-field="attuned" data-tooltip="{{#if system.attuned}}Attuned (click to unattune){{else}}Attune (6 AP in combat, free outside it; one Icon at a time){{/if}}"><i class="fa-solid fa-link"></i></button></td>
-        <td><a data-action="editItem" class="fs-item-link">{{name}}</a>{{#if profile.valid}} <span class="fs-tag" data-tooltip="{{profile.align}} Form">{{profile.name}}</span>{{/if}}<div class="fs-sub">{{#if profile.valid}}<strong>{{profile.align}}</strong> · G{{system.grade}} · Ward ×{{profile.wardMult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
+        <td><a data-action="editItem" class="fs-item-link">{{name}}</a>{{#if profile.valid}} <span class="fs-tag" data-tooltip="{{profile.align}} Form">{{profile.name}}</span>{{/if}}<div class="fs-sub">{{#if profile.valid}}<strong>{{profile.align}}</strong> · {{#if system.natural}}Natural{{else}}G{{system.grade}}{{/if}} · Ward ×{{profile.wardMult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
         <td class="fs-sub">{{#if profile.valid}}{{profile.ward}}{{/if}}</td>
         <td class="fs-sub">{{#if tenetName}}{{tenetName}}{{else}}—{{/if}}</td>
         <td class="fs-row-actions">

@@ -105,7 +105,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       stats: this.stats,
       skillPoints: this.skillPoints,
       size: this.size,
-      hpLost: this.hp.lost
+      hpLost: this.hp.lost,
+      omen: !!this.parent?.flags?.flowstate?.omen          // an Omen (Esoteric Arts): its skill points only set its dice
     });
     // Summons and Animations (Tier 4 Magic) have their own health, Energy, dice, speed and physical-attack stacks, set when they're made.
     const sm = this.parent?.flags?.flowstate?.summon;
@@ -295,8 +296,8 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
   }
 
   computeProfile(stats) {
-    const { weaponType: type, weight, material, grade, twoHanded } = this;
-    this.profile = weaponProfile({ type, weight, material, grade, twoHanded }, stats);
+    const { weaponType: type, weight, material, grade, twoHanded, natural } = this;
+    this.profile = weaponProfile({ type, weight, material, grade, twoHanded, natural }, stats);
     if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);
     this._stats = stats;
     // All of this weapon's types: the main one first, then any extra (Unarmed/Improvised can't be multi-type).
@@ -314,8 +315,8 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
   /** The profile when attacking as one of this weapon's types (same weight, material, Grade, hands). */
   profileFor(type) {
     if (!type || type === this.weaponType || !this.types?.includes(type)) return this.profile;
-    const { weight, material, grade, twoHanded } = this;
-    return weaponProfile({ type, weight, material, grade, twoHanded }, this._stats ?? {});
+    const { weight, material, grade, twoHanded, natural } = this;
+    return weaponProfile({ type, weight, material, grade, twoHanded, natural }, this._stats ?? {});
   }
 }
 
@@ -349,8 +350,8 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
   }
 
   computeProfile(con) {
-    const { weight, material, grade } = this;
-    this.profile = armorProfile({ weight, material, grade }, con);
+    const { weight, material, grade, natural } = this;
+    this.profile = armorProfile({ weight, material, grade, natural }, con);
     if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);   // Harden: damage to it is Weakened
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
@@ -380,6 +381,7 @@ export class FlowStateAffixData extends foundry.abstract.TypeDataModel {
       affix: new f.StringField({ required: true, initial: "quartz", choices: () => Object.fromEntries(Object.entries(AFFIXES).map(([k, v]) => [k, v.label])) }),
       side: new f.StringField({ required: true, initial: "offensive", choices: () => AFFIX_SIDES }),
       attuned: new f.BooleanField({ initial: false }),
+      natural: new f.BooleanField({ initial: false }),    // part of a creature: can't be dropped or sold
       element: new f.StringField({ initial: "heat" }),    // Tourmaline: the specified element
       declared: new f.StringField({ initial: "" }),       // Colored Diamond: the spell (Offensive) or source type (Defensive) declared
       description: new f.HTMLField({ initial: "" }),
@@ -406,6 +408,7 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
     return {
       fociType: new f.StringField({ required: true, initial: "rod", choices: () => Object.fromEntries(Object.entries(FOCI_TYPES).map(([k, v]) => [k, v.label])) }),
       grade: int(1, { min: 1 }),
+      natural: new f.BooleanField({ initial: false }),    // no Grade: scales with Reach/Grasp uncapped; can't be dropped or sold
       attuned: new f.BooleanField({ initial: false }),
       equipped: new f.BooleanField({ initial: false }),   // held
       twoHanded: new f.BooleanField({ initial: false }),
@@ -455,6 +458,7 @@ export class FlowStateIconData extends foundry.abstract.TypeDataModel {
     return {
       form: new f.StringField({ required: true, initial: "aegis", choices: () => Object.fromEntries(Object.entries(FORMS).map(([k, v]) => [k, v.name])) }),
       grade: int(1, { min: 1 }),
+      natural: new f.BooleanField({ initial: false }),    // no Grade: scales with the stats uncapped (an Omen is its own Icon); can't be dropped or sold
       attuned: new f.BooleanField({ initial: false }),
       tenet: new f.StringField({ initial: "" }),          // the Tenet's id ("mental-life-dream:verdant-soul"), chosen when attuning
       chosen: new f.StringField({ initial: "physical" }), // Bane: the damage category chosen on attuning
@@ -487,6 +491,7 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
     return {
       shroudType: new f.StringField({ required: true, initial: "bastion", choices: () => Object.fromEntries(Object.entries(SHROUD_TYPES).map(([k, v]) => [k, v.label])) }),
       grade: int(1, { min: 1 }),
+      natural: new f.BooleanField({ initial: false }),    // no Grade: scales with Build uncapped; can't be dropped or sold
       attuned: new f.BooleanField({ initial: false }),
       wear: int(0),                                       // spent Durability (Bulwark/Lattice: charges used)
       conditions: objectConditions(),

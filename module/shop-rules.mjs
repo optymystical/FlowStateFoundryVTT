@@ -18,8 +18,8 @@ export function sanitizePricing(raw = {}) {
   return { rarity, perGrade: whole(r.perGrade, DEFAULT_PRICING.perGrade), currency: typeof r.currency === "string" ? r.currency : "" };
 }
 
-/** Does Grade change this item's price? (Misc items, Affixes and Unarmed have no Grade.) */
-export const hasGrade = item => !!item && !["gear", "affix"].includes(item.type) && item.system?.weaponType !== "unarmed";
+/** Does Grade change this item's price? (Misc items, Affixes, Unarmed and natural items have no Grade.) */
+export const hasGrade = item => !!item && !["gear", "affix"].includes(item.type) && item.system?.weaponType !== "unarmed" && !item.system?.natural;
 
 /** An item's price before a shop's markup: its own (catalog) price, else its rarity's, plus the per-Grade amount for each Grade above 1. */
 export function unitPrice(item, pricing = DEFAULT_PRICING) {

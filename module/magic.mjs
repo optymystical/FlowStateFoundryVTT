@@ -3,7 +3,7 @@
  * Foci: Durability/Limit = base × Grade. Power scales with the casting form's stat (Grasp / Reach / the lesser), Grade-capped.
  * Shrouds: Durability/Limit = base × floor(Build capped at Grade × 10 ÷ 10), minimum ×1 (like armor with Con).
  */
-import { armorMultiplier, cappedStat, DAMAGE_CATEGORY, RARITIES } from "./martial.mjs";
+import { armorMultiplier, cappedStat, naturalGrade, DAMAGE_CATEGORY, RARITIES } from "./martial.mjs";
 
 export const CASTING_FORMS = {
   igniter: { label: "Igniter", stat: "grasp", ap: "2", tr: 1, text: "Grasp · 2 AP to cast · 1 Threshold Reduction" },
@@ -139,17 +139,20 @@ export function fociProfile(sys, stats = {}) {
   const t = FOCI_TYPES[sys.fociType];
   if (!t) return { valid: false, error: "Pick a Foci type." };
   const form = CASTING_FORMS[t.form];
-  const grade = Math.max(1, sys.grade || 1);
+  // A natural Foci has no Grade: Reach and Grasp count uncapped, and its Grade (Durability, Limit, effects × Grade) is one per 10 of its scaling stat.
+  const natural = !!sys.natural;
+  let grade = natural ? Infinity : Math.max(1, sys.grade || 1);
   const reach = cappedStat(stats.reach ?? 0, grade), grasp = cappedStat(stats.grasp ?? 0, grade);
   const scalingStat = form.stat === "lesser" ? (reach <= grasp ? "reach" : "grasp") : form.stat;
   const scaling = form.stat === "lesser" ? Math.min(reach, grasp) : form.stat === "reach" ? reach : grasp;
+  if (natural) grade = naturalGrade(scaling);
   const affixes = affixList(sys);
   const doubled = doubledAffix(sys, t, affixes);
   return {
     valid: true,
     label: `${form.label} · ${t.label}`, typeLabel: t.label,
     form: t.form, formLabel: form.label, formText: form.text,
-    grade, scalingStat, scaling,
+    grade, natural, scalingStat, scaling,
     castAP: form.ap,
     tr: t.tr ?? form.tr,
     durability: t.dur * grade,
@@ -168,15 +171,16 @@ export function fociProfile(sys, stats = {}) {
 export function shroudProfile(sys, build = 0) {
   const t = SHROUD_TYPES[sys.shroudType];
   if (!t) return { valid: false, error: "Pick a Shroud type." };
-  const grade = Math.max(1, sys.grade || 1);
+  const natural = !!sys.natural;
+  const grade = natural ? naturalGrade(build) : Math.max(1, sys.grade || 1);          // a natural Shroud: no Grade, Build counts uncapped
   const mult = armorMultiplier(build, grade);
   const affixes = affixList(sys);
   const doubled = doubledAffix(sys, t, affixes);
   return {
     valid: true,
     label: t.label,
-    grade, mult,
-    scaling: cappedStat(build, grade),
+    grade, mult, natural,
+    scaling: natural ? Math.max(0, build) : cappedStat(build, grade),
     durability: t.fixedDur ? t.dur : t.dur * mult,
     baseLimit: t.limit * mult,
     limit: t.limit * mult,

@@ -14,10 +14,13 @@
       <select name="system.fociType" {{#unless editable}}disabled{{/unless}}>
         {{#each typeGroups}}<optgroup label="{{label}}">{{selectOptions options selected=../system.fociType}}</optgroup>{{/each}}
       </select></div>
+    {{#if system.natural}}<div class="fs-field"><label>Grade</label><a class="fs-sub" data-codex="equipment:natural" data-tooltip="A natural item has no Grade: it scales with the stat uncapped">Natural: no Grade</a></div>{{else}}
     <div class="fs-field"><label>Grade</label>
       <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
+    {{/if}}
     <div class="fs-field fs-checks-row">
       <label><input type="checkbox" name="system.attuned" {{checked system.attuned}} {{#unless stateEditable}}disabled{{/unless}}> Attuned</label>
+      <label data-tooltip="Part of a creature: no Grade (Reach/Grasp count uncapped); it can't be dropped or sold"><input type="checkbox" name="system.natural" {{checked system.natural}} {{#unless editable}}disabled{{/unless}}> Natural</label>
       <label><input type="checkbox" name="system.equipped" {{checked system.equipped}} {{#unless stateEditable}}disabled{{/unless}}> Held</label>
       <label><input type="checkbox" name="system.twoHanded" {{checked system.twoHanded}} {{#unless stateEditable}}disabled{{/unless}}> Two hands</label>
     </div>
@@ -28,7 +31,7 @@
     <h3>Profile {{#unless owned}}<small>(previewed at the Grade cap)</small>{{/unless}}</h3>
     <div class="fs-kv">
       <span>Casting form</span><span>{{p.formLabel}} — {{p.formText}}</span>
-      <span>Scaling</span><span>{{scalingLabel}} {{p.scaling}} (Grade {{p.grade}} caps it at {{cap}})</span>
+      <span>Scaling</span><span>{{scalingLabel}} {{p.scaling}} {{#if p.natural}}(natural: uncapped){{else}}(Grade {{p.grade}} caps it at {{cap}}){{/if}}</span>
       <span>Cast AP</span><span>{{p.castAP}}</span>
       <span>Threshold Reduction</span><span>{{#if trLabel}}{{trLabel}}{{else}}—{{/if}}</span>
       <span>Durability</span><span>{{system.durability.value}} / {{system.durability.max}} <small>(wear <input type="number" name="system.wear" value="{{system.wear}}" min="0" {{#unless editable}}disabled{{/unless}}>)</small></span>

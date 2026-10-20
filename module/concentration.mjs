@@ -39,13 +39,17 @@ export function list(actor) {
 /** The Concentration Daydreaming protects: the one you picked (else the first). */
 const protectedId = actor => (ponder(actor) >= 5 ? (actor.getFlag?.("flowstate", "daydream") && list(actor).some(c => c.id === actor.getFlag("flowstate", "daydream")) ? actor.getFlag("flowstate", "daydream") : list(actor)[0]?.id) : null);
 
-/** End one Concentration, and with it everything it was keeping going. */
-export async function end(actor, id, why = "") {
+/** Called when a Concentration ends: (actor, entry, { voluntary }) — `voluntary` when you ended it yourself, not when it was lost (an Omen's Bond, esoteric.mjs). */
+export const END_HOOKS = [];
+
+/** End one Concentration, and with it everything it was keeping going. `voluntary` is false when it was lost (damage, no RP, unconscious). */
+export async function end(actor, id, why = "", { voluntary = true } = {}) {
   const cur = actor.getFlag?.("flowstate", "concentrating") ?? [];
   const entry = cur.find(c => c.id === id);
   for (const e of effectsOf(actor, id)) await changeEffect(e, null);
   await setActorFlag(actor, "concentrating", cur.filter(c => c.id !== id));
   if (entry) await post(actor, { title: `${esc(actor.name)} — Concentration`, body: `<div class="fs-notes">${esc(actor.name)} stops concentrating on <strong>${esc(entry.label)}</strong>${why ? `: ${esc(why)}` : ""}.</div>` });
+  if (entry) for (const f of END_HOOKS) await f(actor, entry, { voluntary });
 }
 
 /** Start concentrating. At the cap, one has to go first (asked of the player). Returns false if it can't be done. */
@@ -74,10 +78,10 @@ async function lose(actor, why, { oneOnly = false } = {}) {
     const ans = await askFor(actor, { title: "Composure", ok: "Lose it", html: `<p>${esc(actor.name)} would lose their Concentration. With Composure only one goes: which?</p>
       <div class="fs-field"><label>Lose</label><select name="drop">${cur.map(c => `<option value="${esc(c.id)}">${esc(c.label)}</option>`).join("")}</select></div>` });
     const pick = cur.find(c => c.id === ans?.drop) ?? cur[0];
-    return end(actor, pick.id, why);
+    return end(actor, pick.id, why, { voluntary: false });
   }
-  if (oneOnly) return end(actor, cur[0].id, why);
-  for (const c of cur) await end(actor, c.id, why);
+  if (oneOnly) return end(actor, cur[0].id, why, { voluntary: false });
+  for (const c of cur) await end(actor, c.id, why, { voluntary: false });
 }
 
 /** Direct damage reached HP: spend 1 RP and make a Willpower check against it (a lower result loses the Concentration). Falling unconscious loses it outright. */

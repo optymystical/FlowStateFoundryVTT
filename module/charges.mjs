@@ -14,7 +14,7 @@ import { poolFormula } from "./rules.mjs";
 import { bold } from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
-import { CHARGES, onceUsed, markOnce, tenetOf, mantraHook, impulseHook, mental } from "./wonders.mjs";
+import { CHARGES, onceUsed, markOnce, tenetFor, mantraHook, impulseHook, mental } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
@@ -181,8 +181,8 @@ export async function afterResolve({ attacker, target, atk, dodge, result, attac
   const recompute = () => { res = shape(outcomeOf(atk.total, dodge.total)); };
   // Balance: once per round add 1 to your attack/dodge roll or remove 1 from the other side's, offered when it would change the outcome.
   for (const [who, mine, theirs] of [[attacker, atk, dodge], [target, dodge, atk]]) {
-    const tn = tenetOf(who);
-    if (tn?.id !== "mental-order-dream:balance") continue;
+    const tn = tenetFor(who, "mental-order-dream:balance");
+    if (!tn) continue;
     const cur = outcomeOf(atk.total, dodge.total);
     const m = tn.mult ?? 1;
     const tryOpt = (side, delta) => outcomeOf(atk.total + (side === "atk" ? delta : 0), dodge.total + (side === "dodge" ? delta : 0));

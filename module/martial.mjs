@@ -243,9 +243,12 @@ export const armorMultiplier = (con, grade) => Math.max(1, Math.floor(cappedStat
 export const materialsFor = (table, weight) =>
   Object.fromEntries(Object.entries(table).filter(([, m]) => m.weights[weight]).map(([k, m]) => [k, `${m.label} (${RARITIES[m.rarity]})`]));
 
+/** A natural item has no Grade: it scales with the stat uncapped, and its Grade-based numbers (Durability, Limit) count one Grade per 10 of the stat. */
+export const naturalGrade = stat => Math.max(1, Math.floor(Math.max(0, Number(stat) || 0) / 10));
+
 /**
  * Full weapon profile given the wielder's effective stats.
- * @param {object} w      {type, weight, material, grade, twoHanded}
+ * @param {object} w      {type, weight, material, grade, twoHanded, natural}
  * @param {object} stats  {str, dex} effective values
  */
 export function weaponProfile(w, stats) {
@@ -259,17 +262,18 @@ export function weaponProfile(w, stats) {
   const matStats = mat?.weights[w.weight];
   if (!unarmed && !improvised && !matStats) return { valid: false, error: `${mat?.label ?? "That material"} can't be made ${weight.label}.` };
 
-  // Unarmed has no material, so no Grade cap on its scaling.
-  const grade = unarmed ? Infinity : Math.max(1, w.grade || 1);
+  // Unarmed has no material, so no Grade cap on its scaling; a natural weapon has no Grade either (it scales uncapped).
+  const stat = stats[weight.stat] ?? 0;
+  const natural = !!w.natural && !unarmed;
+  const grade = unarmed ? Infinity : natural ? naturalGrade(stat) : Math.max(1, w.grade || 1);
   const twoHanded = !!w.twoHanded && !unarmed;
   const hands = twoHanded ? 2 : 1;
-  const stat = stats[weight.stat] ?? 0;
-  const capped = cappedStat(stat, grade);
+  const capped = natural ? Math.max(0, stat) : cappedStat(stat, grade);
   const statMin = Math.floor(capped / 3);
   const tags = row.tags;
   const mods = mat?.mods ?? {};
 
-  const dice = weaponDice(stat, grade);
+  const dice = natural ? Math.floor(capped / 10) : weaponDice(stat, grade);
   const cleave = tags.cleave === 2 ? capped : tags.cleave === 1 ? statMin : 0;
   // Cleave is object-only damage (Equipment: Cleave), so it isn't part of the rolled formula.
   const dieFormula = dice > 0 ? `${dice}d${row.die}` : "0";
@@ -295,6 +299,7 @@ export function weaponProfile(w, stats) {
     stat,
     capped,
     grade,
+    natural,
     hands,
     ap: weight.ap,
     die: row.die,
@@ -356,13 +361,14 @@ export function armorProfile(a, con) {
   const mat = ARMOR_MATERIALS[a.material];
   const matStats = mat?.weights[a.weight];
   if (!weight || !matStats) return { valid: false, error: `${mat?.label ?? "That material"} can't be made ${weight?.label ?? "that weight"}.` };
-  const grade = Math.max(1, a.grade || 1);
+  const grade = a.natural ? naturalGrade(con) : Math.max(1, a.grade || 1);          // natural armor: no Grade, Con counts uncapped
   const mult = armorMultiplier(con, grade);
   const pen = armorPenalties(a.weight, a.material);
   return {
     valid: true,
     label: `${weight.label} · ${mat.label}`,
     grade,
+    natural: !!a.natural,
     mult,
     durability: matStats.dur * mult,
     limit: matStats.limit * mult,

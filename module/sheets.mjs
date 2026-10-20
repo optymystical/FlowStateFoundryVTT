@@ -30,6 +30,7 @@ import * as wondersD from "./wonders-d.mjs";
 import * as wondersE from "./wonders-e.mjs";
 import * as wondersF from "./wonders-f.mjs";
 import * as wondersG from "./wonders-g.mjs";
+import * as esotericMod from "./esoteric.mjs";
 import * as concentration from "./concentration.mjs";
 import * as gravityMod from "./gravity.mjs";
 import { parseEnergyCost, stripEnergyCost, energyFor, energySummary } from "./energy.mjs";
@@ -760,8 +761,9 @@ function actionGroups(actor, weapons, stats) {
   const growthN = wondersG.growthCount(actor), armed = actor.getFlag?.("flowstate", "growthSpent");
   if (growthN || armed?.armed) mentalRows.push({ label: `Growth: ${growthN} stack${growthN === 1 ? "" : "s"}${armed?.armed ? " (armed)" : ""}`, detail: armed?.armed ? `Ready for your next action: ${Object.keys(armed.opts ?? {}).map(k => wondersG.OPTIONS[k]?.label ?? k).join(", ")}` : "Pick the options your next action spends them on (or answer the popup as it pays its AP/RP)",
     cost: "Free", action: "growth", icon: "fa-solid fa-seedling", disabled: !growthN, codex: "entry:mental-growth-dream:cultivate" });
-  if (wonders.tenetOf(actor)?.id === `${wondersE.FORTUNE}:rig`) mentalRows.push({ label: "Rig", detail: `Any time, once per round: roll the Fortune Table, then an attack roll at a creature within 100 ft applies it on a hit (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "rig", icon: "fa-solid fa-dice" });
-  if (wonders.tenetOf(actor)?.id === `${wondersF.RUIN}:doom`) mentalRows.push({ label: "Doom", detail: `Any time, once per round: roll the Ruin Table, then an attack roll at a creature within 100 ft applies it on a hit (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "doom", icon: "fa-solid fa-skull" });
+  if (wonders.tenetFor(actor, `${wondersE.FORTUNE}:rig`)) mentalRows.push({ label: "Rig", detail: `Any time, once per round: roll the Fortune Table, then an attack roll at a creature within 100 ft applies it on a hit (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "rig", icon: "fa-solid fa-dice" });
+  if (wonders.tenetFor(actor, `${wondersF.RUIN}:doom`)) mentalRows.push({ label: "Doom", detail: `Any time, once per round: roll the Ruin Table, then an attack roll at a creature within 100 ft applies it on a hit (its numbers × your Tenet's multiplier, ${wonders.tenetOf(actor).mult})`, cost: "Free (once per round)", action: "doom", icon: "fa-solid fa-skull" });
+  mentalRows.push(...esotericMod.actionRows(actor));          // Esoteric Arts: Seed, Rebind, Unbind, Rend (and the GM's "Turn hostile" on an Omen)
   if (ponderT >= 5 && concs.length > 1) mentalRows.push({ label: "Daydreaming", detail: "Choose which Concentration can't be broken", cost: "Free", action: "daydream", icon: "fa-solid fa-cloud" });
   if (psionT >= 1) mentalRows.push({ label: "Psion Sense", detail: `Spot check for mental energies within ${mctx.farSight ? 1000 : 100} ft`, cost: "Check", action: "psionSense", icon: "fa-solid fa-brain" });
   if (psionT >= 2) mentalRows.push({ label: "Far Sight", detail: "Psion Sense 1000 ft, Ranged Manifestations 500 ft, until your next turn", cost: "2 AP + ⚡ total Mind", action: "farSight", icon: "fa-solid fa-binoculars" });
@@ -870,6 +872,11 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       expand: function (event, target) { return wondersC.expand(this.document, target.closest("[data-op]")?.dataset.op); },
       ejecta: function () { return wondersD.ejecta(this.document); },
       growth: function () { return wondersG.armGrowth(this.document); },
+      omenSeed: function () { return esotericMod.seed(this.document); },
+      omenRebind: function () { return esotericMod.rebind(this.document); },
+      omenUnbind: function () { return esotericMod.unbind(this.document); },
+      omenRend: function () { return esotericMod.rend(this.document); },
+      omenHostile: function () { return esotericMod.turnHostile(this.document); },
       rig: function () { return wondersE.rig(this.document); },
       doom: function () { return wondersF.doom(this.document); },
       daydream: function () { return concentration.chooseDaydream(this.document); },

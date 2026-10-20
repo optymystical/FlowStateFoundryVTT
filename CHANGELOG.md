@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.0:** **Esoteric Arts (Mental T5) and natural items.** Seed an Omen of a Tier 5 Wonder (an NPC of its own, bound to you as a Concentration, its own natural Icon); Pole-Bound (Strengthened against its paired Wonder), Bond (dismissing it, an unwilling or lost Omen, anger, rebinding), Channel (Manifest from its position), Unbind (its full stats until your next turn), Kinship (its Tenet as well as yours, or yours twice a round) and Rend (summon one at once and try to bind it). **Natural** weapons, armor, Foci, Shrouds, Affixes and Icons have no Grade: they scale with their stat uncapped, and can't be dropped, sold or regraded.
+
 **0.74.0:** **Growth and Stagnation, the two new Mental trees.** Growth (Dream): Cultivate gives Growth stacks that the target spends on its actions (a popup as an action pays its AP/RP, or armed from the Action List): Flourish, Thrift, Pierce, Feed, Graft, Bark, Uproot and Offshoot, Full Bloom at three options, and the Sapling Tenet. Stagnation (Nightmare): Mire turns AP/RP spent on Mired action types into shared Stagnation stacks that set off Toll, Silt, Grind, Wane, Crush and Stasis as they build, and the Moss Tenet. Both are in the Codex; a Mode's sub-points no longer show twice there.
 
 **0.73.0:** **Shops can regrade.** The GM picks which kinds and rarities of item a shop works on (none by default), a surcharge and the highest Grade it works to; players then raise the Grade of items they own from the shop's Regrade list, paying the per-Grade price for each Grade gained plus the surcharge. Grades only go up.

@@ -773,21 +773,26 @@
 
 ## **Esoteric Arts** {#esoteric-arts}
 
-**Tier 1: You gain the following passive and action:**
+**Tier 1: You gain the following action and passive:**
 
-- 
+- **Seed:** Spend 8 hours in a Trance to seed an Omen of a Wonder you have at Tier 5\. It is bound to you and counts as one of your Concentrations. At Seeding, choose its Form from its Wonder’s pole (Common, Uncommon, or Rare) and its Alignment depth.  
+- **Omen:** Your Omen has its own sapience, initiative, and turn, with its own AP, RP, and an energy pool equal to 5 times its skill points. It has stat points equal to yours, with two thirds in its Wonder’s scaling stat and one third in Willpower (you can flip this split at Seeding), and skill points equal to one fifth of its stat points, which only set its dice. It always has full Mental Theory and its own Wonder at Tier 5, regardless of its skill points.  
+- **Pole-Bound:** Your Omen Manifests only its own Wonder, and that Wonder’s Tenet is always active for it. It is its own Icon, using its Form’s Ward without needing one. Attacks between it and creatures or effects of its opposite pole are Strengthened, in both directions. It never acts against its pole and never aids the opposite one.  
+- **Bond:** If you end this Concentration yourself and your Omen is willing, it is dismissed. It is willing if, since it was seeded, you have Manifested its Wonder more times than its opposite pole’s Wonder. Otherwise, make an attack roll against it; on a miss, the bond is severed and it turns hostile. If you lose this Concentration any other way, it fights on your side for the rest of that battle, but turns hostile if angered (you or an ally harming it, Manifesting its opposite pole where it can sense it, or acting against its pole). If it is not hostile when the battle ends, you can rebind it with 1 hour of work.
 
-**Tier 2: You gain the following abilities:**
+**Tier 2: You gain the following ability:**
 
-- 
+- **Channel:** **Cost: Energy equal to half your scaling stat min, rounded down.** When you Manifest a Wonder, you can use this ability to Manifest it from your Omen’s position instead of your own, using its senses. If the Mode belongs to your Omen’s Wonder, its attack roll has Advantage.
 
-**Tier 3: You gain the following actions:**
+**Tier 3: You gain the following ability:**
 
-- 
+- **Unbind:** **Cost: 2 AP and energy equal to your scaling stat min.** Until the start of your next turn, your Omen has its full stats (stat points equal to twice yours, with its skill points unchanged). Its current HP rises with its Max HP, and when this ends, its current HP is reduced to its normal Max HP if it is above it.
 
-**Tier 4: You gain the following abilities:**
+**Tier 4: You gain the following passive:**
 
-- 
+- **Kinship:** While your Omen is within 30ft of you, you also benefit from its Tenet. If it is your selected Tenet, you can trigger it one additional time per round (your Omen still triggers its own once per round).
 
-**Tier 5: You gain the following passive:**
+**Tier 5: You gain the following action:**
+
+- **Rend:** Summon an Omen of a Wonder you have at Tier 5 instantly. Make an attack roll against it with Disadvantage, with it dodging at Advantage. On a hit, it is seeded and bound to you as normal. On a miss, it arrives free with its full stats and is hostile.
 

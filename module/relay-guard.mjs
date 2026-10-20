@@ -30,6 +30,8 @@ const CHECKS = {
   moveToken: p => finite(p.x) && finite(p.y),
   wearItem: p => finite(p.amount),
   shopBuy: p => typeof p.target === "string" && typeof p.buyer === "string" && typeof p.item === "string" && Number.isInteger(p.quantity) && p.quantity >= 1 && p.quantity <= 1000,
+  omenCreate: p => ["user", "wonder", "form"].every(k => typeof p[k] === "string") && Number.isInteger(p.depth) && p.depth >= 1 && p.depth <= 4 && (p.conc === null || typeof p.conc === "string") && (p.rend === null || typeof p.rend === "string"),
+  omenState: p => typeof p.omen === "string" && ["hostile", "free", "ally", "bind", "dismiss", "unbind", "rebound", "count"].includes(p.op),
   shopRegrade: p => typeof p.target === "string" && typeof p.owner === "string" && typeof p.item === "string" && Number.isInteger(p.grade) && p.grade >= 0 && p.grade <= 1000,
   shopSell: p => typeof p.target === "string" && typeof p.seller === "string" && typeof p.item === "string" && Number.isInteger(p.quantity) && p.quantity >= 1 && p.quantity <= 1000,
   castChange: p => (p.power === undefined || finite(p.power)) && (p.hpLeft === undefined || finite(p.hpLeft)) && (p.damage === undefined || typeof p.damage === "string")

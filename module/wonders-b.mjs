@@ -14,7 +14,7 @@ import { askFor, runOnOwner, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { isDeclined } from "./reactions.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
-import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, DAMAGE_PROVIDERS, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetOf, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, DAMAGE_PROVIDERS, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetFor, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
@@ -138,8 +138,8 @@ export async function anyHit({ attacker, target, result, hitKey = null }) {
   // One hit is offered once: at 3 Alignment Infuse can be used twice a round, but not twice on the same hit.
   if (hitKey) { if (infusedHits.has(hitKey)) return; infusedHits.add(hitKey); if (infusedHits.size > 200) infusedHits.delete(infusedHits.values().next().value); }
   for (const a of actorsInPlay()) {
-    const tn = tenetOf(a);
-    if (tn?.id !== "mental-destruction-nightmare:infuse" || notCreature(a)) continue;
+    const tn = tenetFor(a, "mental-destruction-nightmare:infuse");
+    if (!tn || notCreature(a)) continue;
     if (attacker.uuid !== a.uuid && notCreature(attacker)) continue;
     if (a.uuid === target.uuid && attacker.uuid !== a.uuid) continue;          // nobody Infuses an attack that lands on themselves
     if (!mayHelp(a, attacker)) continue;                                        // "a willing character": not across the two sides of the scene
@@ -436,8 +436,8 @@ ON_CRIT.push(async c => {
 });
 /** Ego (Perfection Tenet): once per round, on a crit, regain 5 Energy. */
 ACT_PROVIDERS.push(async c => {
-  const tn = tenetOf(c.attacker);
-  return tn?.id === "mental-perfection-nightmare:ego" && c.crit && !c.m.spread ? [{ tenet: true, id: "ego", label: "Ego", tip: `Once per round, on a crit: regain ${bold(c.bs ?? c.stacks ?? 0, 5 * tn.mult)} Energy`, cost: "once per round", mult: tn.mult, bstacks: c.bs ?? c.stacks ?? 0, caster: c.attacker.uuid, target: c.target.uuid }] : [];
+  const tn = tenetFor(c.attacker, "mental-perfection-nightmare:ego");
+  return tn && c.crit && !c.m.spread ? [{ tenet: true, id: "ego", label: "Ego", tip: `Once per round, on a crit: regain ${bold(c.bs ?? c.stacks ?? 0, 5 * tn.mult)} Energy`, cost: "once per round", mult: tn.mult, bstacks: c.bs ?? c.stacks ?? 0, caster: c.attacker.uuid, target: c.target.uuid }] : [];
 });
 ACTS.ego = async (x, caster) => {
   if (!(await tryOnce(caster, "ego"))) { ui.notifications.info("Ego: already used this round."); return false; }
@@ -524,8 +524,8 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
     if (wb) { buffs.push(...wb.casters); await setActorFlag(attacker, "warBuff", null); }
     // Empower (War Tenet): a War user within 100 ft may add 1d10 (of the damage's type).
     for (const a of actorsInPlay()) {
-      const tn = tenetOf(a);
-      if (tn?.id !== "mental-war-nightmare:empower" || !near100(a, target) || !mayHarm(a, target)) continue;           // a Nightmare: never on an ally's damage
+      const tn = tenetFor(a, "mental-war-nightmare:empower");
+      if (!tn || !near100(a, target) || !mayHarm(a, target)) continue;           // a Nightmare: never on an ally's damage
       const again = onceUsed(a, "empower");
       if (!again || impulseHook.can(a)) {
         const ans = await askFor(a, { react: "empower", title: `${a.name}: Empower`, ok: "Empower", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage${attacker ? ` from ${esc(attacker.name)}` : ""}. Increase it by <strong>${tn.mult}d10</strong>?</p>` });
@@ -575,8 +575,8 @@ export async function adjust({ attacker, target, amount, type, o = null, crit = 
   for (const e of fx(target, "freezeBlock")) if (dataOf(e).enhanced) { n = applyStacks(n, 2); notes.push("Frozen (Enhanced): the damage is doubly Strengthened and lifts the Energy block"); await changeEffect(e, null); }
   // Reactions of others: Dampen (Peace Tenet) lowers it, Guard redirects a chunk.
   for (const a of actorsInPlay()) {
-    const tn = tenetOf(a);
-    if (tn?.id !== "mental-peace-dream:dampen" || !near100(a, target) || n <= 0 || !mayHelp(a, target)) continue;       // a Dream: never to a foe's benefit
+    const tn = tenetFor(a, "mental-peace-dream:dampen");
+    if (!tn || !near100(a, target) || n <= 0 || !mayHelp(a, target)) continue;       // a Dream: never to a foe's benefit
     const again = onceUsed(a, "dampen");
     if (again && !impulseHook.can(a)) continue;
     const ans = await askFor(a, { react: "dampen", title: `${a.name}: Dampen`, ok: "Dampen", html: `<p>${esc(target.name)} is about to take <strong>${n}</strong> ${esc(type)} damage. Reduce it by <strong>${tn.mult}d10</strong>?</p>` });
@@ -658,7 +658,7 @@ MISS_PROVIDERS.push(async c => {
 
 /** Adapt (Adaptation Tenet): when you would Manifest, spend a stack to make that Manifest Strengthened (once per round). Returns the extra Strengthened stacks. */
 export async function offerAdapt(actor) {
-  if (tenetOf(actor)?.id !== "mental-adaptation-dream:adapt" || !stacksOf(actor).length) return 0;
+  if (!tenetFor(actor, "mental-adaptation-dream:adapt") || !stacksOf(actor).length) return 0;
   const again = onceUsed(actor, "adapt");
   if (again && !impulseHook.can(actor)) return 0;
   const yes = await foundry.applications.api.DialogV2.confirm({ window: { title: "Adapt (Tenet)" }, rejectClose: false, content: `<p><strong>Adapt</strong>: spend one of your ${stacksOf(actor).length} Adaptation stack${stacksOf(actor).length === 1 ? "" : "s"} to make this Manifest Strengthened?</p><p class="hint">If not, it comes up again the next time you Manifest this round.</p>` });

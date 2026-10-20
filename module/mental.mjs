@@ -19,6 +19,7 @@ import * as wondersD from "./wonders-d.mjs";
 import * as wondersE from "./wonders-e.mjs";
 import * as wondersF from "./wonders-f.mjs";
 import * as wondersG from "./wonders-g.mjs";
+import * as esoteric from "./esoteric.mjs";
 import * as forging from "./forging.mjs";
 import * as ponderance from "./ponderance.mjs";
 import * as snappence from "./snappence.mjs";
@@ -267,8 +268,8 @@ export async function manifestAt(actor, mode, target, { power, enhanced, range =
 }
 
 /** An attack roll from `caster` at `target` that does something special on a hit (Dispersion, Corona, Nightfall): `flag` goes on the Manifest data for `onResolve`. */
-export async function specialAttack(caster, target, { label, net = 0, stacks = 0, notes = [], flag }) {
-  return performAttack(caster, { ...baseAttack, label, net, stacks, melee: false, area: false, notes, mental: { ...flag, caster: caster.uuid }, targetActors: [target] });
+export async function specialAttack(caster, target, { label, net = 0, stacks = 0, notes = [], flag, dodgeNet = 0 }) {
+  return performAttack(caster, { ...baseAttack, label, net, stacks, melee: false, area: false, notes, dodgeNet, mental: { ...flag, caster: caster.uuid }, targetActors: [target] });
 }
 
 /** An attack roll from `caster` at `target` that deals `amount` of `type` on a hit (Bloodbond, Masterstroke): no AP/RP. */
@@ -305,15 +306,18 @@ export async function manifest(actor, preset = null, { free = false, wobs = null
   const forcedTokens = forced ? [attackerToken(forced)].filter(Boolean) : null;
   let targets = forced ? [forced] : [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a));
   let area = null;
-  if (plan.range === "melee" && targets.length && !checkRange(actor, reach, `${plan.mode.name} (Melee)`, forcedTokens)) return null;
-  if (plan.range === "ranged" && targets.length && !checkRange(actor, farSight ? 500 : 100, `${plan.mode.name} (Ranged)`, forcedTokens)) return null;
+  // Channel (Esoteric Arts T2): the Manifest is made from your Omen's position.
+  const from = plan.choices?.channel === "yes" ? esoteric.channelFrom(actor) : null;
+  if (plan.range === "melee" && targets.length && !checkRange(actor, reach, `${plan.mode.name} (Melee)`, forcedTokens, from)) return null;
+  if (plan.range === "ranged" && targets.length && !checkRange(actor, farSight ? 500 : 100, `${plan.mode.name} (Ranged)`, forcedTokens, from)) return null;
   if (plan.range === "area") {
-    area = await areas.placeArea(actor, { title: `Manifest ${plan.mode.name}`, scale: ctx.auraSight ? 2 : 1, aim: forcedTokens?.[0] ?? [...(game.user?.targets ?? [])][0] });
+    area = await areas.placeArea(actor, { title: `Manifest ${plan.mode.name}`, scale: ctx.auraSight ? 2 : 1, aim: forcedTokens?.[0] ?? [...(game.user?.targets ?? [])][0], origin: from });
     if (area === null) return null;                                     // cancelled: nothing is spent
     if (area) targets = area.actors;
   }
   if (!(await pay(actor, plan.cost, `Manifesting ${plan.mode.name}`))) return null;
   if (inActiveCombat(actor)) await wondersG.actionSpent(actor, { type: "mental", points: (plan.cost.ap ?? 0) + (plan.cost.rp ?? 0) });          // Mire (Stagnation)
+  await esoteric.manifested(actor, plan.wonder.id);          // an Omen's Bond count, and an Omen at your side angered by its paired Wonder
   if (reflex?.afterimage) await snappence.useAfterimage(actor);
   const notes = [
     `${plan.mode.name} (${plan.wonder.name}, ${R.KINDS[plan.kind].label}) · Wonder Power ×${plan.power}`,
@@ -562,6 +566,8 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
   if (m.disperse) return wondersC.disperseResolve({ attacker, target, result, m });
   if (m.expand) return wondersC.expandResolve({ attacker, target, result, m });
   if (m.ejecta) return wondersD.ejectaResolve({ attacker, target, result, m });
+  if (m.omenBond) return esoteric.bondResolve({ attacker, target, result, m });
+  if (m.omenRend) return esoteric.rendResolve({ attacker, target, result, m });
   if (m.escape) return wondersD.escapeResolve({ attacker, target, result, m });
   if (m.rig) return wondersE.rigResolve({ attacker, target, result, m });
   if (m.doom) return wondersF.doomResolve({ attacker, target, result, m });
@@ -966,9 +972,9 @@ function dieAgainst(actor, target, opts) {
   const parts = [wondersC.attackDieAgainst(actor, target), wondersG.waneDie(actor, opts)].filter(x => x?.pen);
   return parts.length ? { pen: parts.reduce((n, x) => n + x.pen, 0), note: parts.map(x => x.note).join(" · ") } : null;
 }
-registerMental({ attackStart: async (actor, opts, targets) => wondersG.attackStart(actor, (await wondersC.attackStart(actor, opts, targets)) ?? opts), attackDieAgainst: dieAgainst, dodgeDieAgainst: wondersC.dodgeDieAgainst, reflex: snappence.offerReflex, concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
+registerMental({ attackStart: async (actor, opts, targets) => esoteric.attackStart(actor, await wondersG.attackStart(actor, (await wondersC.attackStart(actor, opts, targets)) ?? opts), targets), attackDieAgainst: dieAgainst, dodgeDieAgainst: wondersC.dodgeDieAgainst, reflex: snappence.offerReflex, concentrate: concentration.damageCheck, combatStart: wondersB.combatStart, askFor: charges.askFor, momentumOffer: wonders.momentumOffer, onResolve, negate, reflect: reflectNow, turnStart, beforeClear, act, dodgeWaste: wonders.dodgeWaste, useWaste: wonders.useWaste, burdenNet: wonders.burdenNet, checkExecute: wonders.checkExecute, afterBreakFree: wonders.afterBreakFree, rest: afterRest, attackCost, anchorStill, anchorWeak,
   rollCharges: async ctx => { const a = await wondersB.onRollBuffs(ctx); const b = await charges.onRoll(ctx); return a && b ? { notes: [...a.notes, ...b.notes], rolls: [...a.rolls, ...b.rolls] } : a ?? b; },
-  adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: async x => { await wondersB.anyHit(x); await wondersG.anyHit(x); },
+  adjust: wondersB.adjust, blocked: wondersB.blocked, alterStacks: forging.alterStacks, damageStacks: wondersB.damageStacks, anyHit: async x => { await wondersB.anyHit(x); await wondersG.anyHit(x); await esoteric.anyHit(x); },
   pointsSpent: wondersG.pointsSpent, energyCost: wondersG.energyCost, growthDamage: wondersG.growthDamage, feed: wondersG.feed, graft: wondersG.graft, actionSpent: wondersG.actionSpent,
   resolveCharges: charges.afterResolve, damageCharges: charges.onDamage,
   encasements: wondersD.encasements, accretionAsk: wondersD.accretionAsk, accretionWorn: wondersD.accretionWorn, forcedMove: wondersD.forcedMove, voluntaryMove: wondersD.voluntaryMove, standUp: wondersD.standUp,

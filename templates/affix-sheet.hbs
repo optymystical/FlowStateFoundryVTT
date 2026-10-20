@@ -18,6 +18,7 @@
       <select name="system.side" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions sides selected=system.side}}</select></div>
     <div class="fs-field fs-checks-row">
       <label><input type="checkbox" name="system.attuned" {{checked system.attuned}} {{#unless stateEditable}}disabled{{/unless}}> Attuned</label>
+      <label data-tooltip="Part of a creature: it can't be dropped or sold"><input type="checkbox" name="system.natural" {{checked system.natural}} {{#unless editable}}disabled{{/unless}}> Natural</label>
     </div>
     {{#if isTourmaline}}
     <div class="fs-field"><label>Tourmaline element <small>(can be changed when you rest)</small></label><select name="system.element" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions elements selected=system.element}}</select></div>

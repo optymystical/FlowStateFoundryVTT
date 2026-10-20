@@ -14,7 +14,7 @@ import * as R from "./mental-rules.mjs";
 import * as concentration from "./concentration.mjs";
 import { askFor, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
-import { mental, MODES, ACTS, CHOICE_PROVIDERS, COST_PROVIDERS, DAMAGE_PROVIDERS, TURN_START, rolled, tenetOf, tryOnce, runAct } from "./wonders.mjs";
+import { mental, MODES, ACTS, CHOICE_PROVIDERS, COST_PROVIDERS, DAMAGE_PROVIDERS, TURN_START, rolled, tenetFor, tryOnce, runAct } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
@@ -286,7 +286,7 @@ export const RUIN_ROWS = [
   async x => {                                                                                    // 77–80
     const conc = concentration.list(x.target);
     let ended = "They aren't concentrating on anything";
-    if (conc.length) { const id = conc.length === 1 ? conc[0].id : await mental.pickChoice(x.caster, "Ruin: which Concentration ends", conc.map(c => [c.id, c.label])); const pick = conc.find(c => c.id === id) ?? conc[0]; await concentration.end(x.target, pick.id, "the Ruin Table"); ended = `Their Concentration on ${esc(pick.label)} ends`; }
+    if (conc.length) { const id = conc.length === 1 ? conc[0].id : await mental.pickChoice(x.caster, "Ruin: which Concentration ends", conc.map(c => [c.id, c.label])); const pick = conc.find(c => c.id === id) ?? conc[0]; await concentration.end(x.target, pick.id, "the Ruin Table", { voluntary: false }); ended = `Their Concentration on ${esc(pick.label)} ends`; }
     const d = await dmg(x, 1, 8, "supernatural");
     return `${ended}; ${d.f}: ${d.line} (health loss).`;
   },
@@ -331,8 +331,8 @@ export async function applyRuin(caster, target, { P = 1, bs = 0, n }) {
 
 /** Doom (Ruin Tenet, Action List): any time, once per round: roll the Ruin Table, pick a creature within 100 ft, attack it: the result applies on a hit. */
 export async function doom(actor) {
-  const tn = tenetOf(actor);
-  if (tn?.id !== DOOM) return ui.notifications.warn("Doom is Ruin's Tenet: attune an Icon to it first.");
+  const tn = tenetFor(actor, DOOM);
+  if (!tn) return ui.notifications.warn("Doom is Ruin's Tenet: attune an Icon to it first.");
   return runAct({ id: "doom", tenet: true, label: "Doom", caster: actor.uuid, target: actor.uuid, mult: tn.mult, bstacks: 0 });
 }
 ACTS.doom = async (x, caster) => {

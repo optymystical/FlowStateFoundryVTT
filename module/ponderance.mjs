@@ -13,7 +13,7 @@ import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import * as conc from "./concentration.mjs";
-import { mental, mantraHook, TURN_START, tenetOf } from "./wonders.mjs";
+import { mental, mantraHook, TURN_START, tenetsOf } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
@@ -156,7 +156,7 @@ export async function useTrance(holder, effect) {
 /** Mantra (Ponderance T2): when a Tenet is used, pay half your Scaling Stat min in Energy to double its bolded effect. Returns the mult to use. */
 mantraHook.offer = async (actor, mult, label = "Tenet") => {
   if (ponderTier(actor) < 2 || mult == null) return mult;
-  const tn = tenetOf(actor);
+  const tn = tenetsOf(actor)[0];
   if (!tn) return mult;
   const cost = Math.floor(minOf(actor, R.KINDS[R.wonderById(tn.wonder).kind].stat) / 2);
   if ((actor.system.energy?.value ?? 0) < cost) return mult;

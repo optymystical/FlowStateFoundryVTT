@@ -12,7 +12,7 @@ import { askFor, runOnOwner, actorsInPlay } from "./ask.mjs";
 import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
-import { mental, ACTS, TURN_START, impulseHook, tenetOf } from "./wonders.mjs";
+import { mental, ACTS, TURN_START, impulseHook, tenetsOf } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
@@ -67,7 +67,7 @@ export async function offerReflex(attacker, opts) {
 /*  Impulse                                     */
 /* -------------------------------------------- */
 
-const impulseCost = actor => { const tn = tenetOf(actor); return tn ? Math.floor(ab.statMinOf(actor, R.KINDS[R.wonderById(tn.wonder).kind].stat) / 2) : null; };
+const impulseCost = actor => { const tn = tenetsOf(actor)[0]; return tn ? Math.floor(ab.statMinOf(actor, R.KINDS[R.wonderById(tn.wonder).kind].stat) / 2) : null; };
 
 impulseHook.can = actor => snapTier(actor) >= 2 && !usedThisRound(actor, "impulse") && impulseCost(actor) !== null && (actor.system.energy?.value ?? 0) >= impulseCost(actor);
 /** Pay for Impulse (asked first): the Tenet may apply once more this round. */

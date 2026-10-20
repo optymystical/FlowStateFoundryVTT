@@ -194,8 +194,9 @@ export function movementCost({ prone = false, crouch = false, stealth = false, t
 }
 
 /** Everything derivable from base stats, skill points, and size. */
-export function deriveCharacter({ stats, skillPoints, size, hpLost = 0 }) {
-  const bonus = statBonus(skillPoints);
+export function deriveCharacter({ stats, skillPoints, size, hpLost = 0, omen = false }) {
+  // An Omen's (Esoteric Arts) skill points only set its dice: no stat bonus from them, and its Energy is 5 × its skill points.
+  const bonus = omen ? 0 : statBonus(skillPoints);
   const effective = {};
   let total = 0;
   for (const key of Object.keys(STATS)) {
@@ -213,8 +214,8 @@ export function deriveCharacter({ stats, skillPoints, size, hpLost = 0 }) {
     hpMax,
     pain: painThreshold(hpFull),                       // Max HP loss doesn't lower the Pain Threshold
     restHeal: restHeal(e("con"), e("will"), e("build")),
-    energyMax: maxEnergy(skillPoints),
-    energyRecover: energyRecover(maxEnergy(skillPoints)),
+    energyMax: omen ? 5 * (Number(skillPoints) || 0) : maxEnergy(skillPoints),
+    energyRecover: energyRecover(omen ? 5 * (Number(skillPoints) || 0) : maxEnergy(skillPoints)),
     attackDie: attackDie(skillPoints),
     dodgeDie: dodgeDie(skillPoints),
     move: moveSpeed(size),

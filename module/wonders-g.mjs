@@ -17,7 +17,7 @@ import { askFor, everyActor } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { BOLD } from "./mental-bold.mjs";
 import * as R from "./mental-rules.mjs";
-import { mental, bold, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, TURN_START, BEFORE_CLEAR, tenetOf, tryOnce, forceRoll } from "./wonders.mjs";
+import { mental, bold, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, TURN_START, BEFORE_CLEAR, tenetsOf, tryOnce, forceRoll } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
@@ -447,12 +447,14 @@ ACTS.moss = async (x, caster, target) => {
 };
 
 ACT_PROVIDERS.push(async c => {
-  const a = c.attacker, tn = tenetOf(a);
-  if (!tn || c.m?.spread || c.now) return [];
-  const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0, mult: tn.mult };
-  if (tn.id === `${GROWTH}:sapling`) return [{ tenet: true, id: "sapling", label: "Sapling", tip: "Once per round: the target or you gains one Growth stack", cost: "once per round", ...base }];
-  if (tn.id === `${STAGNATION}:moss` && live(c.target)) return [{ tenet: true, id: "moss", label: "Moss", tip: "Once per round: the target gains one Stagnation stack", cost: "once per round", ...base }];
-  return [];
+  const a = c.attacker, out = [];
+  if (c.m?.spread || c.now) return out;
+  for (const tn of tenetsOf(a)) {
+    const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0, mult: tn.mult };
+    if (tn.id === `${GROWTH}:sapling`) out.push({ tenet: true, id: "sapling", label: "Sapling", tip: "Once per round: the target or you gains one Growth stack", cost: "once per round", ...base });
+    if (tn.id === `${STAGNATION}:moss` && live(c.target)) out.push({ tenet: true, id: "moss", label: "Moss", tip: "Once per round: the target gains one Stagnation stack", cost: "once per round", ...base });
+  }
+  return out;
 });
 
 /* -------------------------------------------- */

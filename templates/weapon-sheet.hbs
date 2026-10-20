@@ -26,8 +26,10 @@
       <div class="fs-checks-row">{{#each extraTypeChoices}}<label><input type="checkbox" data-extra-type="{{key}}" {{checked on}} {{#unless ../editable}}disabled{{/unless}}> {{label}}</label>{{/each}}</div></div>
     {{/if}}
     {{#unless unarmed}}
+    {{#if system.natural}}<div class="fs-field"><label>Grade</label><a class="fs-sub" data-codex="equipment:natural" data-tooltip="A natural item has no Grade: it scales with the stat uncapped">Natural: no Grade</a></div>{{else}}
     <div class="fs-field"><label>Grade</label>
       <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
+    {{/if}}
     {{/unless}}
     <div class="fs-field fs-checks-row">
       {{#if unarmed}}
@@ -49,7 +51,7 @@
     <h3>Profile {{#unless owned}}<small>(previewed at {{p.stat}} {{scalingLabel}})</small>{{/unless}}</h3>
     <div class="fs-kv">
       <span>Damage</span><strong>{{p.display}} {{damageType}}</strong>
-      <span>Scaling</span><span>{{#if unarmed}}{{scalingLabel}} {{p.stat}} (no Grade cap){{else}}{{scalingLabel}} {{p.stat}} → {{p.capped}} counts (Grade {{p.grade}}){{/if}}</span>
+      <span>Scaling</span><span>{{#if unarmed}}{{scalingLabel}} {{p.stat}} (no Grade cap){{else if p.natural}}{{scalingLabel}} {{p.stat}} (natural: no Grade cap){{else}}{{scalingLabel}} {{p.stat}} → {{p.capped}} counts (Grade {{p.grade}}){{/if}}</span>
       <span>Attack cost</span><span>{{p.ap}} AP</span>
       <span>Tags</span><span class="fs-tags">{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}" data-codex="tag:{{key}}">{{label}}</span>{{/each}}</span>
       {{#if p.cleave}}<span>Cleave</span><span>+{{p.cleave}} damage</span>{{/if}}

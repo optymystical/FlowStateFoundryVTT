@@ -34,8 +34,22 @@ const living = a => a && !notCreature(a) && !a.system?.magical;
 /* -------------------------------------------- */
 
 const roundKey = () => (globalThis.game?.combat?.started ? `${game.combat.id}:${game.combat.round}` : "ooc");
-/** A Tenet triggers once per round (the old 3 Alignment doubling is gone). */
-export const tenetUses = () => 1;
+/**
+ * Kinship (Esoteric Arts T4): esoteric.mjs sets `tenet(actor)` to the Omen's Tenet the actor also benefits from (or null). `tenetsOf` gives every Tenet an
+ * actor has (its own first); `tenetFor` the one with that id.
+ */
+export const kinshipHook = { tenet: () => null };
+export function tenetsOf(actor) {
+  const own = tenetOf(actor), kin = kinshipHook.tenet(actor);
+  return [own, kin && kin.id !== own?.id ? { ...kin, kinship: true } : null].filter(Boolean);
+}
+export const tenetFor = (actor, id) => tenetsOf(actor).find(t => t.id === id) ?? null;
+const actKey = s => String(s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+/** A Tenet triggers once per round; Kinship: once more when the Omen's Tenet is your own selected one (`id` is the act's id: "verdantSoul"...). */
+export function tenetUses(actor, id) {
+  const own = tenetOf(actor), kin = own ? kinshipHook.tenet(actor) : null;
+  return kin && kin.id === own.id && actKey(own.id.split(":")[1]) === actKey(id) ? 2 : 1;
+}
 /** Has this actor already used this "once per round" thing this round (Tenets: as many times as they may per round)? */
 /** Mantra (Ponderance T2) is asked when a Tenet is used: ponderance.mjs sets `offer(actor, mult) -> the (possibly doubled) mult`. */
 export const mantraHook = { offer: async (_actor, mult) => mult };
@@ -45,14 +59,14 @@ export const forethought = { on: false };      // Ponderance T4: a Premeditated 
 export function onceUsed(actor, id) {
   if (forethought.on) return false;
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
-  return cur?.round === roundKey() && cur.ids.filter(x => x === id).length >= tenetUses(actor);
+  return cur?.round === roundKey() && cur.ids.filter(x => x === id).length >= tenetUses(actor, id);
 }
 export async function markOnce(actor, id) {
   if (forethought.on) return;
   const cur = actor.getFlag?.("flowstate", "mentalOnce");
   const key = roundKey();
   const ids = cur?.round === key ? cur.ids : [];
-  if (ids.filter(x => x === id).length < tenetUses(actor)) await setActorFlag(actor, "mentalOnce", { round: key, ids: [...ids, id] });
+  if (ids.filter(x => x === id).length < tenetUses(actor, id)) await setActorFlag(actor, "mentalOnce", { round: key, ids: [...ids, id] });
 }
 /** "Once per round": true (and marked) the first time per round for this actor and id. */
 export async function tryOnce(actor, id) {
@@ -301,8 +315,7 @@ async function abilityActs(c) {
   if (w.id === "mental-life-dream" && wt >= 2 && !c.m.spread) acts.push({ id: "pollinate", label: "Pollinate", tip: "Spread this Mode to another target within 100 ft you can sense (an attack roll)", cost: `⚡ ${Math.floor(minOf(a, "pon") / 2)}`, ...base });
   if (w.id === "mental-death-nightmare" && wt >= 2 && !c.m.reapplied) acts.push({ id: "fester", label: "Fester", tip: "The Mode's effect applies again at the start of their next turn", cost: `⚡ ${minOf(a, "snap")}`, ...base });
   if (w.id === "mental-death-nightmare" && wt >= 4 && c.crit && living(c.target)) acts.push({ id: "reap", label: "Reap", tip: "Manifest another Death Mode of the same Range for free", cost: `⚡ ${minOf(a, "snap")}`, ...base });
-  const tn = tenetOf(a);
-  if (tn && !c.m.spread && !c.now) {
+  for (const tn of !c.m.spread && !c.now ? tenetsOf(a) : []) {
     if (tn.id === "mental-life-dream:verdant-soul") acts.push({ tenet: true, id: "verdantSoul", label: "Verdant Soul", tip: `Once per round: ${bold(base.bstacks, 10 * tn.mult)} temp HP to the target or yourself`, cost: "once per round", mult: tn.mult, ...base });
     if (tn.id === "mental-death-nightmare:mortal-coil") acts.push({ tenet: true, id: "mortalCoil", label: "Mortal Coil", tip: `Once per round: steal ${tn.mult}d8 health as temp HP${base.bstacks ? " (scaled by the Manifest's stacks)" : ""}`, cost: "once per round", mult: tn.mult, ...base });
     if (tn.id === "mental-below-nightmare:weight") acts.push({ tenet: true, id: "weight", label: "Weight", tip: `Once per round: ${bold(base.bstacks, 15 * tn.mult)} Slow stacks on the target, until your next turn`, cost: "once per round", mult: tn.mult, ...base });
@@ -667,7 +680,7 @@ export async function consumeCharge(caster, effect) {
 /** Balance (Order Tenet): once per round add 1 to your attack/dodge result, or take 1 off the opposing side's. */
 export async function balance(actor) {
   if (!(await tryOnce(actor, "balance"))) return ui.notifications.info("Balance: already used this round.");
-  const mult = tenetOf(actor)?.mult ?? 1;
+  const mult = tenetFor(actor, "mental-order-dream:balance")?.mult ?? 1;
   await post(actor, { title: `${esc(actor.name)} — Balance`, body: `<div class="fs-result">Balance: add <strong>${mult}</strong> to your attack or dodge result, or remove <strong>${mult}</strong> from the opposing side's result.</div>` });
 }
 
@@ -677,8 +690,8 @@ function chargeActs(c) {
   const w = R.wonderById(c.mode.wonder);
   const base = { target: c.target.uuid, caster: a.uuid, mode: c.mode.id, power: c.power, enhanced: !!c.enhanced, range: c.range, choices: c.choices ?? {}, crit: !!c.crit, bstacks: c.bs ?? c.stacks ?? 0 };
   if (w.id === "mental-chaos-nightmare" && tier(a, w.id) >= 2 && !c.m.spread) acts.push({ id: "ricochet", label: "Ricochet", tip: "Place a copy of this charge on a random valid target within range", cost: `⚡ ${Math.floor(minOf(a, "snap") / 2)}`, ...base });
-  const tn = tenetOf(a);
-  if (tn?.id === "mental-chaos-nightmare:unbound" && c.crit && !c.m.spread) acts.push({ tenet: true, id: "unbound", label: "Unbound", tip: "Once per round, on a crit: place a Chaos charge of your choice on the target for free", cost: "free, once per round", ...base });
+  const tn = tenetFor(a, "mental-chaos-nightmare:unbound");
+  if (tn && c.crit && !c.m.spread) acts.push({ tenet: true, id: "unbound", label: "Unbound", tip: "Once per round, on a crit: place a Chaos charge of your choice on the target for free", cost: "free, once per round", ...base });
   return acts;
 }
 

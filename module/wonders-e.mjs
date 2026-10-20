@@ -14,7 +14,7 @@ import * as concentration from "./concentration.mjs";
 import { askFor, actorsInPlay } from "./ask.mjs";
 import { tierOf } from "./skills.mjs";
 import { strike } from "./wonders-b.mjs";
-import { mental, MODES, ACTS, CHOICE_PROVIDERS, COST_PROVIDERS, rolled, tenetOf, tryOnce, runAct, heal, forceRoll } from "./wonders.mjs";
+import { mental, MODES, ACTS, CHOICE_PROVIDERS, COST_PROVIDERS, rolled, tenetFor, tryOnce, runAct, heal, forceRoll } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
@@ -159,7 +159,7 @@ export const FORTUNE_ROWS = [
     if (!conc.length) return `${line}. They aren't concentrating on anything.`;
     const id = conc.length === 1 ? conc[0].id : await mental.pickChoice(x.caster, "Fortune: which Concentration ends", conc.map(cc => [cc.id, cc.label]));
     const pick = conc.find(cc => cc.id === id) ?? conc[0];
-    await concentration.end(x.target, pick.id, "the Fortune Table");
+    await concentration.end(x.target, pick.id, "the Fortune Table", { voluntary: false });
     return `${line}. Their Concentration on ${esc(pick.label)} ends.`;
   },
   async x => {                                                                                 // 7–11
@@ -283,8 +283,8 @@ MODES[PROVIDENCE] = async c => {
 
 /** Rig (Fortune Tenet, Action List): any time, once per round, roll the Fortune Table and apply it to a creature within 100 ft (the Tenet's multiplier scales it). */
 export async function rig(actor) {
-  const tn = tenetOf(actor);
-  if (tn?.id !== RIG) return ui.notifications.warn("Rig is Fortune's Tenet: attune an Icon to it first.");
+  const tn = tenetFor(actor, RIG);
+  if (!tn) return ui.notifications.warn("Rig is Fortune's Tenet: attune an Icon to it first.");
   return runAct({ id: "rig", tenet: true, label: "Rig", caster: actor.uuid, target: actor.uuid, mult: tn.mult, bstacks: 0 });
 }
 /** Rig: roll the table, pick a creature within 100 ft, and make an attack roll at it: the rolled effect applies on a hit (a crit's stacks scale it). */

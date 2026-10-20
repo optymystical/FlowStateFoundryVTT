@@ -238,8 +238,14 @@ registerSection({ id: "mental", label: "Mental", icon: "fa-solid fa-brain", orde
   return pages;
 } });
 
+/** The page about natural items (a body part, a Summon's arms, an Omen's Icon). */
+export const NATURAL_PAGE = "equipment:natural";
 registerSection({ id: "equipment", label: "Equipment", icon: "fa-solid fa-shield-halved", order: 5, build() {
-  const pages = [];
+  const pages = [{ id: NATURAL_PAGE, title: "Natural items", section: "equipment", group: "Items", badge: "Rule", keywords: ["natural", "grade"],
+    blocks: [md("A **natural** item is part of a creature: a Summon's arms and skin, an Animation's body, an Omen's Icon, or anything the GM marks Natural on its sheet (weapons, armor, Foci, Shrouds, Affixes and Icons).\n\n"
+      + "- It has **no Grade**: it scales with its stat **uncapped** (a weapon's Strength or Dexterity, armor's Constitution, a Foci's Reach or Grasp, a Shroud's Build, an Icon's Willpower and its Tenet's stat).\n"
+      + "- Anything that counts its Grade (Durability, Limit, a Foci's effects) counts **one Grade per 10** of that stat.\n"
+      + "- It can't be dropped, sold or regraded, and a natural weapon can't be thrown unless it returns.")] }];
   const vis = t => Object.entries(t);
   for (const [k, w] of vis(WEAPON_TYPES)) {
     const rows = [];

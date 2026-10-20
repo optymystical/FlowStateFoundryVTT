@@ -19,6 +19,7 @@ import "./afflictions.mjs";
 import "./arcana.mjs";
 import * as fociEngine from "./foci.mjs";
 import * as conjure from "./conjure.mjs";
+import * as esoteric from "./esoteric.mjs";
 import * as ab from "./abilities.mjs";
 import { CharacterWizard, createCharacterForUser } from "./wizard.mjs";
 import { NpcWizard } from "./npc-wizard.mjs";
@@ -884,6 +885,7 @@ Hooks.on("renderItemDirectory", (app, html) => {
 /** When combat ends (or someone leaves it), refill their Energy. Runs on the active GM. */
 Hooks.on("deleteCombat", combat => {
   if (!game.user.isActiveGM) return;
+  setTimeout(() => esoteric.battleOver(combat), 0);          // an Omen that fought at someone's side is free now
   for (const c of combat.combatants) setTimeout(() => {
     actions.clearSpellEffects(c.actor, { all: true });
     areas.clearAreas(c.actor, { all: true });

@@ -14,8 +14,10 @@
       <select name="system.form" {{#unless editable}}disabled{{/unless}}>
         {{#each forms}}<optgroup label="{{label}}">{{selectOptions options selected=../system.form}}</optgroup>{{/each}}
       </select></div>
+    {{#if system.natural}}<div class="fs-field"><label>Grade</label><a class="fs-sub" data-codex="equipment:natural" data-tooltip="A natural item has no Grade: it scales with the stat uncapped">Natural: no Grade</a></div>{{else}}
     <div class="fs-field"><label>Grade</label>
       <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
+    {{/if}}
     <div class="fs-field"><label>Tenet <small>(only Wonders you know, of the Form's Alignment)</small></label>
       <select name="system.tenet" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions tenets selected=system.tenet}}</select></div>
     {{#if baneChoice}}
@@ -24,6 +26,7 @@
     {{/if}}
     <div class="fs-field fs-checks-row">
       <label><input type="checkbox" name="system.attuned" {{checked system.attuned}} {{#unless stateEditable}}disabled{{/unless}}> Attuned</label>
+      <label data-tooltip="Part of a creature (an Omen is its own Icon): no Grade, its numbers scale uncapped; it can't be dropped or sold"><input type="checkbox" name="system.natural" {{checked system.natural}} {{#unless editable}}disabled{{/unless}}> Natural</label>
     </div>
   </section>
 
@@ -31,7 +34,7 @@
   <section class="fs-profile">
     <h3>Ward {{#unless owned}}<small>(previewed at the Grade cap)</small>{{/unless}}</h3>
     <div class="fs-kv">
-      <span>Scaling</span><span>×{{p.wardMult}} <small>(Willpower, up to 10 per Grade)</small></span>
+      <span>Scaling</span><span>×{{p.wardMult}} <small>(Willpower, {{#if p.natural}}uncapped: natural{{else}}up to 10 per Grade{{/if}})</small></span>
       <span>Durability / Limit</span><span>{{p.durability}} / {{p.limit}}</span>
     </div>
     <p>{{p.ward}}</p>

@@ -9,7 +9,7 @@ import * as conjure from "./conjure.mjs";
 import { AFFIXES, AFFIX_SIDES, FOCI_TYPES, SHROUD_TYPES } from "./magic.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, rarityKey, rarityRank } from "./martial.mjs";
 import { tierOf } from "./skills.mjs";
-import { mental, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetOf, tryOnce } from "./wonders.mjs";
+import { mental, MODES, ACTS, ACT_PROVIDERS, CHOICE_PROVIDERS, tenetFor, tryOnce } from "./wonders.mjs";
 import { esc, DialogV2, formValues, select, field } from "./html.mjs";
 
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
@@ -158,8 +158,8 @@ export async function finishRite(actor) {
 /* ---- Alter (Creation Tenet) ---- */
 
 ACT_PROVIDERS.push(async c => {
-  const tn = tenetOf(c.attacker);
-  if (tn?.id !== "mental-creation-dream:alter" || c.m.spread || c.now || CREATION_MODES.has(c.mode.id)) return [];
+  const tn = tenetFor(c.attacker, "mental-creation-dream:alter");
+  if (!tn || c.m.spread || c.now || CREATION_MODES.has(c.mode.id)) return [];
   return [{ tenet: true, id: "alter", label: "Alter", tip: "Once per round: choose an object the target wears or holds; damage to it is Strengthened or Weakened until your next turn", cost: "once per round", target: c.target.uuid, caster: c.attacker.uuid, mult: tn.mult }];
 });
 ACTS.alter = async (x, caster, target) => {

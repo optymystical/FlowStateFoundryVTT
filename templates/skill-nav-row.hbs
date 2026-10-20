@@ -1,0 +1,5 @@
+<li class="{{#if selected}}selected{{/if}} {{#unless available}}fs-dim{{/unless}}">
+  <a data-action="selectTree" data-tree="{{id}}">{{name}}</a>
+  {{#if canRaise}}<span class="fs-skill-can" data-tooltip="You can buy its next tier"><i class="fa-solid fa-circle-up"></i></span>{{/if}}
+  <span class="fs-skill-tier {{#if tier}}has{{/if}}">{{tier}}/{{max}}</span>
+</li>

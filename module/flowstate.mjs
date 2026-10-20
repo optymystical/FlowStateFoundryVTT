@@ -187,7 +187,7 @@ Hooks.once("init", () => {
   registerShopSettings();
   game.flowstate = { rules, martial, actions, catalog: CatalogApp };
   // Partials the sheets share (the catalog line on every item sheet).
-  (foundry.applications.handlebars?.loadTemplates ?? globalThis.loadTemplates)?.({ fsItemCatalog: "systems/flowstate/templates/item-catalog.hbs" });
+  (foundry.applications.handlebars?.loadTemplates ?? globalThis.loadTemplates)?.({ fsItemCatalog: "systems/flowstate/templates/item-catalog.hbs", fsSkillNavRow: "systems/flowstate/templates/skill-nav-row.hbs" });
 
   CONFIG.Actor.documentClass = FlowStateActor;
   CONFIG.Combat.documentClass = FlowStateCombat;

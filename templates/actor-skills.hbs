@@ -6,65 +6,74 @@
     <span class="{{#if skillView.points.unspent}}fs-has-points{{/if}}"><strong>Unspent</strong> {{skillView.points.unspent}}</span>
   </div>
 
-  <div class="fs-skill-pickers">
-    <label>Archetype
-      <select class="fs-skill-arch">
-        {{#each skillView.archetypes}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}{{#if placeholder}} (coming soon){{/if}}</option>{{/each}}
-      </select>
-    </label>
-    {{#unless skillView.placeholder}}
-    <label>Skill tree
-      <select class="fs-skill-tree">
-        {{#each skillView.trees}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
-      </select>
-    </label>
-    {{#if skillView.tree.codex}}<a class="fs-codex-link fs-codex-icon" data-codex="{{skillView.tree.codex}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>{{/if}}
-    {{/unless}}
-  </div>
-
-  {{#if skillView.placeholder}}
-  <p class="hint">{{skillView.placeholder}}</p>
-  {{else}}
-  {{#if skillView.lockedNote}}<p class="hint">{{skillView.lockedNote}}</p>{{/if}}
-  {{#if skillView.scaleNote}}<p class="hint"><i class="fa-solid fa-scale-balanced"></i> {{skillView.scaleNote}}</p>{{/if}}
-  {{#if skillView.weaponNote}}<p class="hint fs-weapon-note"><i class="fa-solid fa-khanda"></i> {{skillView.weaponNote}}</p>{{/if}}
-
-  {{#with skillView.tree}}
-  <div class="fs-tree">
-    {{#each tiers}}
-    <section class="fs-tier {{#if owned}}fs-tier-owned{{/if}} {{#if isNext}}fs-tier-next{{/if}} {{#if locked}}fs-tier-locked{{/if}}">
-      <header class="fs-tier-head">
-        <span class="fs-tier-num">Tier {{tier}}</span>
-        <span class="fs-tier-summary">{{summary}}</span>
-        <span class="fs-tier-state">
-          {{#if automated}}<span class="fs-tier-badge fs-auto" data-tooltip="{{automated}}"><i class="fa-solid fa-wand-magic-sparkles"></i> {{automatedLabel}}</span>{{/if}}
-          {{#if free}}<span class="fs-tier-badge">Free</span>
-          {{else if owned}}<span class="fs-tier-badge"><i class="fa-solid fa-check"></i> Unlocked</span>
-            {{#if canLower}}<button type="button" class="fs-inline" data-action="lowerTier" data-tree="{{../id}}" data-tooltip="GM: remove this tier (refunds {{cost}} SP)"><i class="fa-solid fa-rotate-left"></i></button>{{/if}}
-          {{else if isNext}}<button type="button" class="fs-unlock" data-action="unlockTier" data-tree="{{../id}}" data-tooltip="{{reason}}" {{#unless canUnlock}}disabled{{/unless}}><i class="fa-solid fa-lock-open"></i> Unlock · {{cost}} SP</button>
-          {{else}}<span class="fs-tier-badge fs-muted" data-tooltip="{{reason}}"><i class="fa-solid fa-lock"></i> {{cost}} SP</span>{{/if}}
-        </span>
+  <div class="fs-skill-layout">
+    <nav class="fs-skill-nav">
+      <input type="search" class="fs-skill-filter" value="{{skillView.nav.filter}}" placeholder="Find a tree…" autocomplete="off">
+      {{#if skillView.nav.pinned.length}}
+      <h4><i class="fa-solid fa-thumbtack"></i> Pinned</h4>
+      <ul>{{#each skillView.nav.pinned}}{{> fsSkillNavRow}}{{/each}}</ul>
+      {{/if}}
+      {{#if skillView.nav.yours.length}}
+      <h4><i class="fa-solid fa-star"></i> Your trees</h4>
+      <ul>{{#each skillView.nav.yours}}{{> fsSkillNavRow}}{{/each}}</ul>
+      {{/if}}
+      {{#each skillView.nav.unlock}}
+      <h4><i class="fa-solid fa-lock-open"></i> {{label}}: can start</h4>
+      <ul>{{#each rows}}{{> fsSkillNavRow}}{{/each}}</ul>
+      {{/each}}
+      {{#if skillView.nav.empty}}<p class="hint">No tree matches.</p>{{/if}}
+      {{#each skillView.nav.locked}}<p class="fs-skill-locked"><i class="fa-solid fa-lock"></i> {{count}} more {{label}} tree{{#unless (eq count 1)}}s{{/unless}} open as you raise {{theory}}.</p>{{/each}}
+      {{#each skillView.nav.placeholders}}<p class="fs-skill-locked" data-tooltip="{{text}}"><i class="fa-solid fa-hourglass-half"></i> {{label}}: coming soon</p>{{/each}}
+    </nav>
+    <div class="fs-skill-main">
+      {{#with skillView.tree}}
+      <header class="fs-skill-treehead">
+        <h3>{{name}} <span class="fs-sub">{{archLabel}} · Tier {{current}}/{{max}}</span></h3>
+        <a class="fs-codex-link fs-codex-icon" data-codex="{{codex}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>
+        {{#if @root.skillView.nav.canPin}}<button type="button" class="fs-inline fs-skill-pin {{#if pinned}}on{{/if}}" data-action="pinTree" data-tree="{{id}}" data-tooltip="{{#if pinned}}Unpin it from the top of the list{{else}}Pin it to the top of the list{{/if}}"><i class="fa-solid fa-thumbtack"></i></button>{{/if}}
       </header>
-      <ul class="fs-tier-entries">
-        {{#each entries}}
-        <li>{{#if name}}<strong><a class="fs-codex-name" data-codex="{{codex}}" data-tooltip="Open in the Codex">{{name}}</a>:</strong> {{/if}}{{#if energy}}<span class="fs-energy" data-tooltip="{{energy.tip}}"><i class="fa-solid fa-bolt"></i> {{energy.formula}}{{#if energy.value}} <span class="fs-energy-value">{{energy.value}}</span>{{/if}}</span> {{/if}}{{text}}
-          {{#if sub}}<ul>{{#each sub}}<li>{{this}}</li>{{/each}}</ul>{{/if}}
-        </li>
-        {{/each}}
-      </ul>
+      {{/with}}
+      {{#if skillView.lockedNote}}<p class="hint"><i class="fa-solid fa-lock"></i> {{skillView.lockedNote}}</p>{{/if}}
+      {{#if skillView.scaleNote}}<p class="hint"><i class="fa-solid fa-scale-balanced"></i> {{skillView.scaleNote}}</p>{{/if}}
+      {{#if skillView.weaponNote}}<p class="hint fs-weapon-note"><i class="fa-solid fa-khanda"></i> {{skillView.weaponNote}}</p>{{/if}}
+    {{#with skillView.tree}}
+    <div class="fs-tree">
+      {{#each tiers}}
+      <section class="fs-tier {{#if owned}}fs-tier-owned{{/if}} {{#if isNext}}fs-tier-next{{/if}} {{#if locked}}fs-tier-locked{{/if}}">
+        <header class="fs-tier-head">
+          <span class="fs-tier-num">Tier {{tier}}</span>
+          <span class="fs-tier-summary">{{summary}}</span>
+          <span class="fs-tier-state">
+            {{#if automated}}<span class="fs-tier-badge fs-auto" data-tooltip="{{automated}}"><i class="fa-solid fa-wand-magic-sparkles"></i> {{automatedLabel}}</span>{{/if}}
+            {{#if free}}<span class="fs-tier-badge">Free</span>
+            {{else if owned}}<span class="fs-tier-badge"><i class="fa-solid fa-check"></i> Unlocked</span>
+              {{#if canLower}}<button type="button" class="fs-inline" data-action="lowerTier" data-tree="{{../id}}" data-tooltip="GM: remove this tier (refunds {{cost}} SP)"><i class="fa-solid fa-rotate-left"></i></button>{{/if}}
+            {{else if isNext}}<button type="button" class="fs-unlock" data-action="unlockTier" data-tree="{{../id}}" data-tooltip="{{reason}}" {{#unless canUnlock}}disabled{{/unless}}><i class="fa-solid fa-lock-open"></i> Unlock · {{cost}} SP</button>
+            {{else}}<span class="fs-tier-badge fs-muted" data-tooltip="{{reason}}"><i class="fa-solid fa-lock"></i> {{cost}} SP</span>{{/if}}
+          </span>
+        </header>
+        <ul class="fs-tier-entries">
+          {{#each entries}}
+          <li>{{#if name}}<strong><a class="fs-codex-name" data-codex="{{codex}}" data-tooltip="Open in the Codex">{{name}}</a>:</strong> {{/if}}{{#if energy}}<span class="fs-energy" data-tooltip="{{energy.tip}}"><i class="fa-solid fa-bolt"></i> {{energy.formula}}{{#if energy.value}} <span class="fs-energy-value">{{energy.value}}</span>{{/if}}</span> {{/if}}{{text}}
+            {{#if sub}}<ul>{{#each sub}}<li>{{this}}</li>{{/each}}</ul>{{/if}}
+          </li>
+          {{/each}}
+        </ul>
+      </section>
+      {{/each}}
+    </div>
+    {{/with}}
+    {{#with skillView.table}}
+    <section class="fs-tier fs-wonder-table">
+      <header class="fs-tier-head"><span class="fs-tier-num"><i class="fa-solid fa-dice-d20"></i> {{title}}</span><span class="fs-tier-summary">d100</span></header>
+      <p class="hint">{{note}}</p>
+      <table class="fs-table">
+        <thead><tr><th>Roll</th><th>Effect</th></tr></thead>
+        <tbody>{{#each rows}}<tr><td class="fs-table-roll">{{roll}}</td><td>{{effect}}</td></tr>{{/each}}</tbody>
+      </table>
     </section>
-    {{/each}}
+    {{/with}}
+
+    </div>
   </div>
-  {{/with}}
-  {{#with skillView.table}}
-  <section class="fs-tier fs-wonder-table">
-    <header class="fs-tier-head"><span class="fs-tier-num"><i class="fa-solid fa-dice-d20"></i> {{title}}</span><span class="fs-tier-summary">d100</span></header>
-    <p class="hint">{{note}}</p>
-    <table class="fs-table">
-      <thead><tr><th>Roll</th><th>Effect</th></tr></thead>
-      <tbody>{{#each rows}}<tr><td class="fs-table-roll">{{roll}}</td><td>{{effect}}</td></tr>{{/each}}</tbody>
-    </table>
-  </section>
-  {{/with}}
-  {{/if}}
 </section>

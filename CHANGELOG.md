@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.72.0:** **Skills tab: a tree list instead of two dropdowns.** The trees sit in a list beside the one shown: pinned trees first (pin any tree from its header), then the trees you have points in, then the ones you could start, by Archetype. A green arrow marks a tree whose next tier you can buy now, a filter box finds a tree by name, locked trees are counted, and the tab remembers the last tree you looked at.
+
 **0.71.3:** **Codex pages, laid out for reading.** Each page says what it is (a badge: Core Spell, Mode, Ability, Weapon type, Status...). Facts sit in a stat block (tree, tier, Energy, Threshold, attack); the text drops what the block already says (the spell's Threshold line, the Energy cost). Enhanced, Ritual, Combo bonus and Illusion Combo parts get their own boxes; dice, AP/RP costs and a Mode's bolded numbers stand out. Lists of links are chips; a skill tree's tiers are headed bars with each entry as a card and its Energy cost as a badge; weapon types are a table of both weights; a status shows the rule or ability it comes from under that page's own title; tables are striped.
 
 **0.71.2:** Starting Icons obey the starting rarity limit, like materials and Affixes: the wizard only offers Forms within it, and the GM's check refuses one above it.

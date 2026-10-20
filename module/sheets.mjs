@@ -837,6 +837,9 @@ async function pickImage(event, target) {
   await doc.update(update);
 }
 
+/** The tree each character's Skills tab last showed (kept while the world is open). */
+const lastTree = new Map();
+
 export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: ["flowstate", "sheet", "actor"],
@@ -901,6 +904,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       repair: FlowStateActorSheet.onRepair,
       spendStat: FlowStateActorSheet.onSpendStat,
       unlockTier: FlowStateActorSheet.onUnlockTier,
+      selectTree: FlowStateActorSheet.onSelectTree,
+      pinTree: FlowStateActorSheet.onPinTree,
       lowerTier: FlowStateActorSheet.onLowerTier,
       martial: FlowStateActorSheet.onMartial,
       endEffect: FlowStateActorSheet.onEndEffect
@@ -1042,33 +1047,35 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     });
   }
 
-  /** Which Archetype and tree the Skills tab is showing (per open sheet). */
-  skillSelection = { archetype: "martial", tree: null };
+  /** Which tree the Skills tab is showing, and the list's filter (per open sheet; the tree is remembered per character). */
+  skillSelection = { tree: null, filter: "" };
 
   #skillContext() {
     const sys = this.document.system;
     const state = sys.trees ?? {};
     const sel = this.skillSelection;
-    const arch = skills.ARCHETYPES.find(a => a.id === sel.archetype) ?? skills.ARCHETYPES[0];
-    const available = skills.treesFor(arch.id).filter(t => skills.isAvailable(state, t));
-    if (!available.some(t => t.id === sel.tree)) sel.tree = available[0]?.id ?? null;
+    const inCombat = actions.inActiveCombat(this.document);
+    const pinned = this.document.getFlag("flowstate", "pinnedTrees") ?? [];
+    const nav = skills.treeNav(state, { pinned, unspent: sys.skills.unspent, inCombat, filter: sel.filter });
+    sel.tree ??= lastTree.get(this.document.uuid) ?? null;
+    if (!skills.treeById(sel.tree)) sel.tree = nav.first ?? skills.theoryFor("martial")?.id ?? null;
+    lastTree.set(this.document.uuid, sel.tree);
     const tree = skills.treeById(sel.tree);
     const current = tree ? skills.tierOf(state, tree.id) : 0;
-    const inCombat = actions.inActiveCombat(this.document);
     const next = tree ? skills.nextTier(state, tree, sys.skills.unspent, { inCombat }) : null;
-    const lockedCount = skills.treesFor(arch.id).length - available.length;
     const ectx = energyContext(this.document);
     const tp = treePower(this.document, tree);
+    const mark = r => ({ ...r, selected: r.id === sel.tree });
     return {
-      archetypes: skills.ARCHETYPES.map(a => ({ ...a, selected: a.id === arch.id })),
-      placeholder: arch.placeholder ?? "",
-      trees: available.map(t => ({ id: t.id, selected: t.id === sel.tree,
-        label: `${t.name} — Tier ${skills.tierOf(state, t.id)}/${skills.MAX_TIER}` })),
+      nav: { pinned: nav.pinned.map(mark), yours: nav.yours.map(mark), unlock: nav.unlock.map(g => ({ ...g, rows: g.rows.map(mark) })),
+        locked: nav.locked, placeholders: nav.placeholders, filter: sel.filter, canPin: this.isEditable,
+        empty: !nav.pinned.length && !nav.yours.length && !nav.unlock.length },
       weaponNote: weaponTreeNote(tree, state),
       scaleNote: tp?.power > 1 ? `Numbers are worked out for your ${tp.kind} Power ${tp.power}.` : "",
-      lockedNote: lockedCount ? `${lockedCount} more tree${lockedCount === 1 ? "" : "s"} unlock as you raise ${skills.theoryFor(arch.id)?.name}.` : "",
+      lockedNote: tree && !skills.isAvailable(state, tree) ? `Opens at ${skills.theoryFor(tree.archetype)?.name} Tier ${tree.requires}.` : "",
       tree: tree && {
-        id: tree.id, name: tree.name, current, codex: codexId.tree(tree.id),
+        id: tree.id, name: tree.name, current, max: skills.MAX_TIER, codex: codexId.tree(tree.id), pinned: pinned.includes(tree.id),
+        archLabel: skills.ARCHETYPES.find(a => a.id === tree.archetype)?.label ?? "",
         tiers: tree.tiers.map(t => {
           const owned = t.tier <= current;
           const isNext = t.tier === current + 1;
@@ -1092,16 +1099,18 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   /** Track section collapse state; keep header buttons (e.g. +) from toggling the section. */
   _onRender(context, options) {
     super._onRender?.(context, options);
-    // Skills tab selectors: view state only (not saved to the actor).
-    this.element.querySelector(".fs-skill-arch")?.addEventListener("change", event => {
+    // The Skills tab's tree filter: view state only (not saved to the actor).
+    const filter = this.element.querySelector(".fs-skill-filter");
+    filter?.addEventListener("change", event => event.stopPropagation());
+    filter?.addEventListener("input", event => {
       event.stopPropagation();
-      this.skillSelection = { archetype: event.target.value, tree: null };
-      this.render();
-    });
-    this.element.querySelector(".fs-skill-tree")?.addEventListener("change", event => {
-      event.stopPropagation();
-      this.skillSelection.tree = event.target.value;
-      this.render();
+      this.skillSelection.filter = event.target.value;
+      clearTimeout(this._skillFilterT);
+      this._skillFilterT = setTimeout(async () => {
+        await this.render();
+        const f = this.element.querySelector(".fs-skill-filter");
+        f?.focus(); f?.setSelectionRange?.(f.value.length, f.value.length);
+      }, 200);
     });
     const uuid = this.document.uuid;
     for (const details of this.element.querySelectorAll("details.fs-collapse[data-section]")) {
@@ -1144,6 +1153,18 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   static onPosture(event, target) { return actions.setPosture(this.document, target.dataset.op); }
   static onRest() { return actions.rest(this.document); }
   static onClearCondition(event, target) { return actions.clearCondition(this.document, target.dataset.condition); }
+
+  /** Skills tab: show a tree. */
+  static onSelectTree(event, target) {
+    this.skillSelection.tree = target.dataset.tree;
+    this.render();
+  }
+  /** Skills tab: pin a tree to the top of the list, or unpin it (the character's own list). */
+  static async onPinTree(event, target) {
+    event.stopPropagation();
+    const id = target.dataset.tree, pins = this.document.getFlag("flowstate", "pinnedTrees") ?? [];
+    await this.document.setFlag("flowstate", "pinnedTrees", pins.includes(id) ? pins.filter(x => x !== id) : [...pins, id]);
+  }
 
   static #item(sheet, target) {
     return sheet.document.items.get(target.closest("[data-item-id]")?.dataset.itemId);

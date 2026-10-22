@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.2:** Skills tab: each group of the tree list (Pinned, Your trees, and each Archetype's "can start") collapses with a click on its heading, and shows how many trees it holds. The sheet remembers which are collapsed, per character; searching opens them all.
+
 **0.75.1:** A character can have several Omens, up to their Concentration cap (each is one Concentration). Channel asks which Omen to Manifest from, Unbind and Rebind have a row per Omen, and Kinship gives the Tenet of every Omen within 30 ft (your own selected Tenet triggers once more a round per Omen sharing it).
 
 **0.75.0:** **Esoteric Arts (Mental T5) and natural items.** Seed an Omen of a Tier 5 Wonder (an NPC of its own, bound to you as a Concentration, its own natural Icon); Pole-Bound (Strengthened against its paired Wonder), Bond (dismissing it, an unwilling or lost Omen, anger, rebinding), Channel (Manifest from its position), Unbind (its full stats until your next turn), Kinship (its Tenet as well as yours, or yours twice a round) and Rend (summon one at once and try to bind it). **Natural** weapons, armor, Foci, Shrouds, Affixes and Icons have no Grade: they scale with their stat uncapped, and can't be dropped, sold or regraded.

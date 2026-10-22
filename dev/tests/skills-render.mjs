@@ -30,6 +30,8 @@ ok(!nav.pinned.length && !nav.yours.length && nav.unlock.map(g => g.label).join(
 ok(nav.unlock.every(g => g.rows[0].theory && g.rows[0].canRaise) && v.ctx.skillView.tree.id === "martial-theory", "…each can be raised, and Martial Theory is shown first");
 ok(nav.locked.some(l => l.label === "Martial" && l.count > 20) && nav.placeholders.some(p => p.label === "Generic"), "Locked trees are counted per Archetype; Generic is marked coming soon");
 ok(/Find a tree/.test(tpl({ tab: {}, ...v.ctx })) && v.text.includes("Martial Theory"), "The list renders with its filter box");
+ok(nav.groups.map(g => g.key).join() === "skills:start:martial,skills:start:mental,skills:start:magic" && nav.groups.every(g => g.open), "Each group of the list is a section of its own, open to begin with");
+ok((tpl({ tab: {}, ...v.ctx }).match(/<details class="fs-collapse fs-skill-group" data-section="skills:start:mental" open/g) ?? []).length === 1, "…rendered as a collapsible section (Mental: can start)");
 
 console.log("== Theory 2, Brawling 3 (spent 3+6=9)");
 let sheet = mk({ "martial-theory": 2, "martial-brawling-methods": 3 });

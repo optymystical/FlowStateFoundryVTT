@@ -9,17 +9,11 @@
   <div class="fs-skill-layout">
     <nav class="fs-skill-nav">
       <input type="search" class="fs-skill-filter" value="{{skillView.nav.filter}}" placeholder="Find a tree…" autocomplete="off">
-      {{#if skillView.nav.pinned.length}}
-      <h4><i class="fa-solid fa-thumbtack"></i> Pinned</h4>
-      <ul>{{#each skillView.nav.pinned}}{{> fsSkillNavRow}}{{/each}}</ul>
-      {{/if}}
-      {{#if skillView.nav.yours.length}}
-      <h4><i class="fa-solid fa-star"></i> Your trees</h4>
-      <ul>{{#each skillView.nav.yours}}{{> fsSkillNavRow}}{{/each}}</ul>
-      {{/if}}
-      {{#each skillView.nav.unlock}}
-      <h4><i class="fa-solid fa-lock-open"></i> {{label}}: can start</h4>
-      <ul>{{#each rows}}{{> fsSkillNavRow}}{{/each}}</ul>
+      {{#each skillView.nav.groups}}
+      <details class="fs-collapse fs-skill-group" data-section="{{key}}" {{#if open}}open{{/if}}>
+        <summary><i class="fa-solid fa-chevron-down fs-caret"></i> <i class="{{icon}}"></i> {{label}} <span class="fs-skill-count">{{rows.length}}</span></summary>
+        <ul>{{#each rows}}{{> fsSkillNavRow}}{{/each}}</ul>
+      </details>
       {{/each}}
       {{#if skillView.nav.empty}}<p class="hint">No tree matches.</p>{{/if}}
       {{#each skillView.nav.locked}}<p class="fs-skill-locked"><i class="fa-solid fa-lock"></i> {{count}} more {{label}} tree{{#unless (eq count 1)}}s{{/unless}} open as you raise {{theory}}.</p>{{/each}}

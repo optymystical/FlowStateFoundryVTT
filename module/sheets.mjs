@@ -1079,8 +1079,16 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     const ectx = energyContext(this.document);
     const tp = treePower(this.document, tree);
     const mark = r => ({ ...r, selected: r.id === sel.tree });
+    // The list's groups collapse (remembered per character, like the sheet's other sections). A search shows every group open.
+    const collapsed = collapsedFor(this.document.uuid);
+    const group = (key, label, icon, rows) => ({ key, label, icon, rows: rows.map(mark), open: !!sel.filter || !collapsed.has(key) });
+    const groups = [
+      ...(nav.pinned.length ? [group("skills:pinned", "Pinned", "fa-solid fa-thumbtack", nav.pinned)] : []),
+      ...(nav.yours.length ? [group("skills:yours", "Your trees", "fa-solid fa-star", nav.yours)] : []),
+      ...nav.unlock.map(g => group(`skills:start:${g.id}`, `${g.label}: can start`, "fa-solid fa-lock-open", g.rows))
+    ];
     return {
-      nav: { pinned: nav.pinned.map(mark), yours: nav.yours.map(mark), unlock: nav.unlock.map(g => ({ ...g, rows: g.rows.map(mark) })),
+      nav: { groups, pinned: nav.pinned.map(mark), yours: nav.yours.map(mark), unlock: nav.unlock.map(g => ({ ...g, rows: g.rows.map(mark) })),
         locked: nav.locked, placeholders: nav.placeholders, filter: sel.filter, canPin: this.isEditable,
         empty: !nav.pinned.length && !nav.yours.length && !nav.unlock.length },
       weaponNote: weaponTreeNote(tree, state),

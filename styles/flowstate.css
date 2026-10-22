@@ -208,6 +208,10 @@
 .flowstate .fs-skill-nav .fs-skill-filter { width: 100%; margin-bottom: 4px; }
 .flowstate .fs-skill-nav h4 { margin: 8px 0 2px; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.8; border-bottom: 1px solid var(--color-border-light-tertiary, rgba(127,127,127,0.35)); }
 .flowstate .fs-skill-nav ul { list-style: none; margin: 0; padding: 0; }
+.flowstate .fs-skill-nav details.fs-skill-group { margin: 6px 0 0; }
+.flowstate .fs-skill-nav details.fs-skill-group > summary { margin-bottom: 2px; font-size: 0.85em; font-weight: bold; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.8; border-bottom: 1px solid var(--color-border-light-tertiary, rgba(127,127,127,0.35)); }
+.flowstate .fs-skill-nav details.fs-skill-group > summary:hover { opacity: 1; }
+.flowstate .fs-skill-nav .fs-skill-count { margin-left: auto; font-weight: normal; opacity: 0.7; text-transform: none; }
 .flowstate .fs-skill-nav li { display: flex; align-items: center; gap: 4px; padding: 2px 4px; border-radius: 3px; }
 .flowstate .fs-skill-nav li > a { flex: 1; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .flowstate .fs-skill-nav li.selected { background: rgba(127,127,127,0.2); font-weight: bold; }

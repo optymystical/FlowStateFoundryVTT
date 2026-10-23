@@ -404,7 +404,7 @@ async function takeTurn(actor, me) {
       }
     }
     const melee = ready.filter(w => !w.ranged && rolls(w)).sort(order)[0]
-      ?? (unarmed ? { item: unarmed, ranged: false, range: reachOf(actor), ap: 2 } : null);
+      ?? (unarmed && ab.freeFists(actor) >= 1 ? { item: unarmed, ranged: false, range: reachOf(actor), ap: 2 } : null);          // not while that fist holds a grapple
     if (!melee) {
       if (gun && !gun.loaded) return;                     // out of RP to reload: wait for the next turn
       if (gun && foes.every(f => dist(me, f) > gun.far)) { if (!(await approach(actor, me, nearest, gun.range))) return; continue; }

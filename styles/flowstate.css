@@ -219,7 +219,6 @@
 .flowstate .fs-skill-tier { font-size: 0.8em; opacity: 0.55; white-space: nowrap; }
 .flowstate .fs-skill-tier.has { opacity: 1; font-weight: bold; }
 .flowstate .fs-skill-can { color: var(--color-level-success, #3c8d3c); font-size: 0.85em; }
-.flowstate .fs-skill-locked { margin: 6px 0 0; font-size: 0.82em; opacity: 0.7; }
 .flowstate .fs-skill-main { min-width: 0; }
 .flowstate .fs-skill-treehead { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .flowstate .fs-skill-treehead h3 { margin: 0; flex: 1; border: none; }

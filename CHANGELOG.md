@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.3:** Skills tab: the notes under the tree list (how many more trees open later, Generic coming soon) are gone.
+
 **0.75.2:** Skills tab: each group of the tree list (Pinned, Your trees, and each Archetype's "can start") collapses with a click on its heading, and shows how many trees it holds. The sheet remembers which are collapsed, per character; searching opens them all.
 
 **0.75.1:** A character can have several Omens, up to their Concentration cap (each is one Concentration). Channel asks which Omen to Manifest from, Unbind and Rebind have a row per Omen, and Kinship gives the Tenet of every Omen within 30 ft (your own selected Tenet triggers once more a round per Omen sharing it).

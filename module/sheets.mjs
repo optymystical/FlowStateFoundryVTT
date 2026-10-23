@@ -1089,7 +1089,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     ];
     return {
       nav: { groups, pinned: nav.pinned.map(mark), yours: nav.yours.map(mark), unlock: nav.unlock.map(g => ({ ...g, rows: g.rows.map(mark) })),
-        locked: nav.locked, placeholders: nav.placeholders, filter: sel.filter, canPin: this.isEditable,
+        filter: sel.filter, canPin: this.isEditable,
         empty: !nav.pinned.length && !nav.yours.length && !nav.unlock.length },
       weaponNote: weaponTreeNote(tree, state),
       scaleNote: tp?.power > 1 ? `Numbers are worked out for your ${tp.kind} Power ${tp.power}.` : "",

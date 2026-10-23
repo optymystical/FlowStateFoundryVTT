@@ -16,8 +16,6 @@
       </details>
       {{/each}}
       {{#if skillView.nav.empty}}<p class="hint">No tree matches.</p>{{/if}}
-      {{#each skillView.nav.locked}}<p class="fs-skill-locked"><i class="fa-solid fa-lock"></i> {{count}} more {{label}} tree{{#unless (eq count 1)}}s{{/unless}} open as you raise {{theory}}.</p>{{/each}}
-      {{#each skillView.nav.placeholders}}<p class="fs-skill-locked" data-tooltip="{{text}}"><i class="fa-solid fa-hourglass-half"></i> {{label}}: coming soon</p>{{/each}}
     </nav>
     <div class="fs-skill-main">
       {{#with skillView.tree}}

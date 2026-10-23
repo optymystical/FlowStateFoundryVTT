@@ -69,8 +69,8 @@ export function canUseWeaponSkill(state, treeId, weaponTypes) {
 /**
  * The Skills tab's list of trees, in the order a player looks for them: **pinned** trees first (their own picks), then the trees they have
  * points in, then the trees they could start, by Archetype (Theory first, then by the Theory tier that opens them). `filter` keeps the trees
- * whose name has it. Each row says its tier and whether its next tier can be bought now (`canRaise`). Locked trees are only counted, by Archetype.
- * Returns { pinned, yours, unlock: [{ id, label, rows }], locked: [{ id, label, count, theory }], placeholders: [{ id, label, text }], first }.
+ * whose name has it. Each row says its tier and whether its next tier can be bought now (`canRaise`). Trees not open yet aren't listed.
+ * Returns { pinned, yours, unlock: [{ id, label, rows }], first }.
  */
 export function treeNav(state = {}, { pinned = [], unspent = 0, inCombat = false, filter = "" } = {}) {
   const q = String(filter ?? "").trim().toLowerCase();
@@ -80,21 +80,18 @@ export function treeNav(state = {}, { pinned = [], unspent = 0, inCombat = false
     tier: tierOf(state, t.id), max: MAX_TIER, theory: !!t.theory, pinned: pins.has(t.id), available: isAvailable(state, t),
     canRaise: nextTier(state, t, unspent, { inCombat }).ok });
   const shown = t => !t.hidden && (!q || t.name.toLowerCase().includes(q));
-  const out = { pinned: [], yours: [], unlock: [], locked: [], placeholders: [] };
+  const out = { pinned: [], yours: [], unlock: [] };
   for (const a of ARCHETYPES) {
-    if (a.placeholder) { out.placeholders.push({ id: a.id, label: a.label, text: a.placeholder }); continue; }
+    if (a.placeholder) continue;
     const trees = treesFor(a.id).filter(shown).sort(order);
     const unlock = [];
-    let locked = 0;
     for (const t of trees) {
       const r = row(t);
       if (r.pinned) out.pinned.push(r);
       else if (r.tier > 0) out.yours.push(r);
       else if (r.available) unlock.push(r);
-      else locked++;
     }
     if (unlock.length) out.unlock.push({ id: a.id, label: a.label, rows: unlock });
-    if (locked) out.locked.push({ id: a.id, label: a.label, count: locked, theory: theoryFor(a.id)?.name ?? "" });
   }
   out.first = out.pinned[0]?.id ?? out.yours[0]?.id ?? out.unlock[0]?.rows[0]?.id ?? null;
   return out;

@@ -32,6 +32,18 @@ for (const r of runs) for (const [k, v] of Object.entries(r.armor ?? {})) { cons
 out.push("", "## Armor", "", "| Armor | Hits absorbed | Total absorbed | Per hit |", "|---|---|---|---|");
 for (const [k, a] of Object.entries(AR).sort((x, y) => y[1].absorbed - x[1].absorbed)) out.push(`| ${k} | ${a.hits} | ${a.absorbed} | ${r1(a.absorbed / a.hits)} |`);
 
+// Abilities and options the AI used (tree abilities, defenses, dialog options), with who used them.
+const used = {}, by = {};
+for (const r of runs) {
+  for (const [k, v] of Object.entries(r.used ?? {})) used[k] = (used[k] ?? 0) + v;
+  for (const a of r.ai ?? []) for (const k of Object.keys(a.used ?? {})) (by[k] ??= new Set()).add(a.name.replace(/^Sim /, ""));
+}
+if (Object.keys(used).length) {
+  out.push("", "## Abilities used", "", "`opt:` = an attack-dialog option the AI ticked; `defend:` = its defense; `:skipped` = offered but not affordable.", "",
+    "| Ability | Times | By |", "|---|---|---|");
+  for (const [k, v] of Object.entries(used).sort((a, b) => a[0].localeCompare(b[0]))) out.push(`| ${k} | ${v} | ${[...(by[k] ?? [])].join(", ")} |`);
+}
+
 // Problems seen.
 const notes = {}, dialogs = {};
 for (const r of runs) {

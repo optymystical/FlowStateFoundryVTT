@@ -113,3 +113,82 @@ export const spent = o => STAT_KEYS.reduce((n, k) => n + (o[k] ?? 0), 0);
 
 /** The Grade an item needs for its user's stat to count in full (Grade × 10 ≥ stat), at least 1. */
 export const gradeFor = stat => Math.max(1, Math.ceil(Math.max(0, stat) / 10));
+
+/* -------------------------------------------- */
+/*  Pass 2: the Martial Theory T1 trees          */
+/* -------------------------------------------- */
+
+// Martial Theory T1 unlocks Brawling, Bladed, Balanced, Swift, Rapid and Medium Armor. Each character takes Martial Theory T1 (1 SP), one tree to
+// T5 (15) and another to T4 (10); 4 SP are left (Medium Armor T2 for the Duelist, banked otherwise). Two rotations put every tree at T5 at least once
+// and swap Light/Heavy weapons so both halves of each tree get used. Monsters have no trees (the baseline to compare with).
+const T = (o) => ({ "martial-theory": 1, ...o });
+const BAL = "martial-balanced-weapons", BLA = "martial-bladed-weapons", SWI = "martial-swift-weapons", RAP = "martial-rapid-weapons",
+  BRA = "martial-brawling-methods", MED = "martial-medium-armor";
+
+export const PARTY_T1 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank: Parries with a Heavy Balanced weapon (Slip Off, Deflect, Riposte) in Medium armor (Brace, Shift).",
+    stats: { con: 45, str: 30, will: 15 },
+    loadouts: [
+      { trees: T({ [BAL]: 5, [MED]: 4 }), armor: A("medium", "chitin"), weapons: [W("balanced", "heavy", "steel", { primary: true })] },
+      { trees: T({ [MED]: 5, [BAL]: 4 }), armor: A("medium", "chitin"), weapons: [W("balanced", "heavy", "steel", { primary: true })] }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Duelist", role: "melee-dex", note: "Dexterity melee: Light Swift and Light Bladed in Fast sets (Quick Strike, Blade Flurry, Whirlwind, Blender).",
+    stats: { dex: 45, con: 30, will: 15 },
+    loadouts: [
+      { trees: T({ [SWI]: 5, [BLA]: 4, [MED]: 2 }), armor: A("medium", "hardLeather"), weapons: [W("swift", "light", "steel", { primary: true }), W("bladed", "light", "steel")] },
+      { trees: T({ [BLA]: 5, [SWI]: 4, [MED]: 2 }), armor: A("medium", "hardLeather"), weapons: [W("bladed", "light", "steel", { primary: true }), W("swift", "light", "steel")] }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Breaker", role: "melee-str", note: "Strength melee: a two-handed Heavy Bladed (Remise, Titan Weapon) or Heavy Swift (Omega).",
+    stats: { str: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: T({ [BLA]: 5, [MED]: 4 }), armor: A("medium", "hide"), weapons: [W("bladed", "heavy", "steel", { primary: true, twoHanded: true })] },
+      { trees: T({ [SWI]: 5, [MED]: 4 }), armor: A("medium", "hide"), weapons: [W("swift", "heavy", "steel", { primary: true, twoHanded: true })] }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Marksman", role: "ranged", note: "Ranged: a Light Rapid (Quickload, Spin Down, Mark, Speedloader) with a Light melee backup.",
+    stats: { dex: 45, con: 25, str: 10, will: 10 },
+    loadouts: [
+      { trees: T({ [RAP]: 5, [SWI]: 4 }), armor: A("light", "softLeather"), weapons: [W("rapid", "light", "steel", { primary: true }), W("swift", "light", "steel")] },
+      { trees: T({ [RAP]: 5, [BLA]: 4 }), armor: A("light", "chitin"), weapons: [W("rapid", "light", "steel", { primary: true }), W("bladed", "light", "steel")] }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support brawler: Unarmed (Twin Fang, Jab, Dip/Shatter, Combo, Dragon Lash, Kick Out, Redirect, Flow Like Water) and grapples.",
+    stats: { str: 30, dex: 30, con: 30 },
+    loadouts: [
+      { trees: T({ [BRA]: 5, [MED]: 4 }), armor: A("medium", "hardLeather"), weapons: [], grapple: true, brawler: true },
+      { trees: T({ [BRA]: 5, [BAL]: 4 }), armor: A("medium", "softLeather"), weapons: [W("balanced", "light", "steel", { primary: true })], grapple: true, brawler: true }
+    ]
+  }
+];
+
+/** A stronger swarm: ten goblins at 20 Skill Points (1/5: 100 stat points), and a mix of weapons (the Light Weighted and Light Thrasher pass 1 missed). */
+export const MONSTERS_T1 = {
+  ...MONSTERS,
+  swarm: {
+    label: "Swarm", note: "Ten goblins (20 Skill Points, 1/5 ratio: 100 stat points): Hackers (Heavy Striker), Stabbers (Light Reach), Lashers (Light Thrasher), Bashers (Light Weighted).",
+    kinds: [
+      { id: "goblin-hacker", name: "Sim Goblin Hacker", count: 3, size: 3, sp: 20, stats: { str: 55, con: 35, dex: 10 },
+        armor: A("light", "softLeather"), weapons: [W("striker", "heavy", "iron", { primary: true })] },
+      { id: "goblin-stabber", name: "Sim Goblin Stabber", count: 3, size: 3, sp: 20, stats: { dex: 55, con: 35, str: 10 },
+        armor: A("light", "softLeather"), weapons: [W("reach", "light", "hardwood", { primary: true })] },
+      { id: "goblin-lasher", name: "Sim Goblin Lasher", count: 2, size: 3, sp: 20, stats: { dex: 55, con: 35, str: 10 },
+        armor: A("light", "softLeather"), weapons: [W("thrasher", "light", "hardwood", { primary: true })] },
+      { id: "goblin-basher", name: "Sim Goblin Basher", count: 2, size: 3, sp: 20, stats: { dex: 55, con: 35, str: 10 },
+        armor: A("light", "softLeather"), weapons: [W("weighted", "light", "hardwood", { primary: true })] }
+    ]
+  }
+};
+
+/** Every pass: its party, monsters and fights (every monster group against each of the party's loadouts). */
+const encountersFor = (monsters, rotations) => Object.keys(monsters).flatMap(group => [...Array(rotations).keys()].map(rotation => ({ id: `${group}-r${rotation + 1}`, group, rotation })));
+export const PASSES = {
+  "martial-baseline": { id: "martial-baseline", note: "Baseline Martial: no trees.", party: PARTY, monsters: MONSTERS, encounters: ENCOUNTERS },
+  "martial-t1": { id: "martial-t1", note: "Martial Theory T1 trees (Brawling, Bladed, Balanced, Swift, Rapid, Medium Armor) up to T5.", party: PARTY_T1, monsters: MONSTERS_T1, encounters: encountersFor(MONSTERS_T1, 2) }
+};

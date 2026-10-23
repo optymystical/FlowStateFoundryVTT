@@ -499,12 +499,13 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   // Impale (Reach T5) / Thrasher Grapple (T1): a weapon holding a grappled creature can't attack.
   const pinned = grappledBy(actor).find(v => v.getFlag?.("flowstate", "grappleWeapon") === item.uuid);
   if (pinned) return ui.notifications.warn(`${item.name} is holding ${pinned.name}; it can't attack until they're released.`);
-  // Rapid T1 Quickload / T5 Speedloader: attacking while out of ammo can reload instead (or reload and fire).
+  // Rapid T1 Quickload / T5 Speedloader (Assault T1 too): attacking while out of ammo can reload instead (or reload and fire). A free
+  // follow-up can be forgone the same way: it costs nothing, so the gun reloads for free (the user's ruling).
   let speedloaded = false, pepperLoad = false;
   if (base.ranged && !w.loaded) {
-    if (followup || !(ab.rapid(actor, item, 1) || ab.assault(actor, item, 1))) return ui.notifications.warn(`${item.name} needs to be reloaded (${base.reloadRP} RP${ammoRequired() && !w.natural ? `; ${ammoCount(actor, w.ammoType)} ${ammoLabel(w.ammoType)} left` : ""}).`);
+    if (!(ab.rapid(actor, item, 1) || ab.assault(actor, item, 1))) return ui.notifications.warn(`${item.name} needs to be reloaded (${base.reloadRP} RP${ammoRequired() && !w.natural ? `; ${ammoCount(actor, w.ammoType)} ${ammoLabel(w.ammoType)} left` : ""}).`);
     if (!ammoCount(actor, w.ammoType) && ammoRequired() && !w.natural) return ui.notifications.warn(`${actor.name} has no ${ammoLabel(w.ammoType)} for ${item.name}.`);
-    const r = await quickload(actor, item, base.pepper && ab.rapid(actor, item, 1));
+    const r = await quickload(actor, item, base.pepper && ab.rapid(actor, item, 1), followup);
     if (r === "pepper") pepperLoad = true;
     else if (r !== "speed") return;
     else speedloaded = true;
@@ -2512,19 +2513,21 @@ export async function delta(actor, key) {
 /* ---- Rapid Weapons ---- */
 
 /**
- * Quickload (Rapid T1): attacking with an empty Rapid weapon can instead spend the attack's AP to reload instantly.
- * Speedloader (T5): pay Energy to reload and still fire. Returns "speed" to go on with the attack, else "done"/null.
+ * Quickload (Rapid T1): attacking with an empty Rapid weapon can instead spend the attack's AP to reload instantly. On a free follow-up
+ * it costs nothing: the follow-up is forgone (and counts as used). Speedloader (T5): pay Energy to reload and still fire.
+ * Returns "speed" to go on with the attack, else "done"/null.
  */
-async function quickload(actor, item, pepperOk = false) {
+async function quickload(actor, item, pepperOk = false, followup = null) {
   const p = item.system.profile;
+  const paid = followup ? "the follow-up" : `${p.ap} AP`;
   const speed = ab.rapid(actor, item, 5);
   const cost = ab.RAPID_COST.speedloader(item);
   const choice = await DialogV2().wait({
     window: { title: `${item.name} is empty` },
     content: `<p><strong>${esc(item.name)}</strong> is out of ammo.</p>
-      <p class="hint">Quickload: spend the attack's ${p.ap} AP to reload instantly (no attack)${pepperOk ? ", or replace one Pepper shot with the reload and fire the rest (one less Disadvantage)" : ""}.${speed ? ` Speedloader: ${cost} Energy to reload and fire as normal (a Pepper attack has one less Disadvantage).` : ""}</p>`,
+      <p class="hint">Quickload: ${followup ? "forgo this free follow-up" : `spend the attack's ${p.ap} AP`} to reload instantly (no attack)${pepperOk ? ", or replace one Pepper shot with the reload and fire the rest (one less Disadvantage)" : ""}.${speed ? ` Speedloader: ${cost} Energy to reload and fire as normal (a Pepper attack has one less Disadvantage).` : ""}</p>`,
     buttons: [
-      { action: "quick", label: `Quickload (${p.ap} AP)`, icon: "fa-solid fa-rotate", default: true },
+      { action: "quick", label: `Quickload (${paid})`, icon: "fa-solid fa-rotate", default: true },
       ...(pepperOk ? [{ action: "pepper", label: "Quickload as a Pepper shot", icon: "fa-solid fa-arrows-rotate" }] : []),
       ...(speed ? [{ action: "speed", label: `Speedloader (⚡ ${cost})`, icon: "fa-solid fa-bolt" }] : []),
       { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }
@@ -2532,9 +2535,10 @@ async function quickload(actor, item, pepperOk = false) {
     rejectClose: false
   });
   if (choice === "quick") {
-    if (!(await spendAP(actor, p.ap, `Quickload with ${item.name}`))) return null;
+    if (!followup && !(await spendAP(actor, p.ap, `Quickload with ${item.name}`))) return null;
     await loadWeapon(actor, item);
-    await post(actor, { title: `${esc(actor.name)} — Quickload`, body: `<div class="fs-result">${esc(item.name)} is reloaded (${p.ap} AP, no attack).</div>` });
+    await post(actor, { title: `${esc(actor.name)} — Quickload`, body: `<div class="fs-result">${esc(item.name)} is reloaded (${paid}, no attack).</div>`,
+      flags: followup?.source ? { flowstate: { followupOf: followup.source } } : {} });
     return "done";
   }
   if (choice === "pepper") return "pepper";

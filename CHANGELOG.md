@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.19:** Quickload (Rapid and Assault T1) works on a free follow-up: when an empty gun's Fast or Solitary follow-up comes up, you can give it up to reload instantly at no cost, instead of the follow-up failing with "needs to be reloaded".
+
 **0.75.18:** A Fast or Solitary follow-up made with Pinpoint Accuracy no longer says "— Disadvantage" on its card (Pinpoint had already taken the Disadvantage away; only the label was wrong). Found by the combat sim.
 
 **0.75.17:** Ally help no longer offers "Shield Toss to guard" to an ally without the 2 RP it costs (picking it could only fail). Found by the combat sim.

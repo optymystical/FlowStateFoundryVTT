@@ -125,6 +125,11 @@ waitChoice = "quick"; const n0 = messages.length;
 await actions.rollWeaponAttack(hero, gun);
 ok(gun.loaded !== undefined || true, "");
 ok(hero.system.ap.value === 6 - gun.system.profile.ap && messages.length === n0 + 1 && text(messages.at(-1)).includes("reloaded"), "Quickload: attack AP spent, reloaded, no attack");
+// A free follow-up can be forgone to Quickload: no AP, and it counts as the follow-up.
+refill(hero); await gun.update({ "system.rounds": 0 }); waitChoice = "quick";
+await actions.rollWeaponAttack(hero, gun, { net: -1, label: "Solitary follow-up", source: "src-atk", kind: "solitary" });
+ok(hero.system.ap.value === 6 && gun.system.rounds > 0 && messages.at(-1).flags?.flowstate?.followupOf === "src-atk" && /the follow-up/.test(text(messages.at(-1))),
+  "Quickload on a free follow-up: no AP, reloaded, follow-up used");
 refill(hero); await gun.update({ "system.rounds": 0 });
 waitChoice = "speed";
 dialog = c => ({ mode: "r1", net: 0, stacks: 0, pepper: 1, spinDown: true });

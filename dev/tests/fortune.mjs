@@ -121,7 +121,7 @@ await cast(PROV, half, { after: [8, 7] });
 ok2(fxs(orc, "noAdvantage").length === 1 && actions.noAdvantage(orc, 2) === 0 && actions.noAdvantage(orc, -1) === -1, "7–11: they can't benefit from Advantage (Disadvantage still counts)");
 await cast(PROV, half, { after: [33] });
 ok2(orc.system.hp.pain === orc.system.derived.pain && fxs(orc, "fortunePain")[0]?.flags.flowstate.spellEffect.painUp === 2 * 10 * P, "32–35: Pain Threshold raised by 10 × Power");
-dialog = c => (/Providence/.test(c) ? "77" : { net: 0 });
+dialog = c => (/Providence/.test(c) ? { v: "77" } : { net: 0 });
 await cast(PROV, half, { after: [12, 77], extra: { enhance: true } });
 ok2(fxs(orc, "attackUp")[0]?.flags.flowstate.spellEffect.attackDieUp === 2 * P, "Enhanced: two d100s, the caster picks (77: +1 attack die size × Power)");
 dialog = () => ({ net: 0 });

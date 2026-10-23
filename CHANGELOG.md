@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.6:** Fix: Enhanced Providence's "which result" pick (and the other picks a Mental user makes while a Manifest resolves: Calamity, Illuminate/Eclipse's ally or enemy, Sapling, Fortune/Ruin Table choices) is asked of that character's player, not whoever answered the attack.
+
 **0.75.5:** Wards: a Dream Form's Ward (the AP ones) can no longer be Burst; the Ward dialog's Burst box is gone.
 
 **0.75.4:** Icons: the Tenet text on an Icon's sheet has its bolded numbers worked out for the Icon's Tenet multiplier (shown beside it), and the Equipment tab's Icons table shows the multiplier with the scaled text on hover.

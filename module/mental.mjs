@@ -238,11 +238,14 @@ async function manifestDialog(actor, ctx) {
 
 const NO_ATTACK = new Set(["mental-beyond-dream:redirect", "mental-light-dream:dispersion"]);
 
-/** Pick one of a list of [value, label] pairs. */
+/**
+ * Pick one of a list of [value, label] pairs. It is `actor`'s choice, so it is asked of that character's player on their own client: a Mode resolves
+ * on whoever answered the attack (the defender), and Enhanced Providence's result, Calamity's and the like are still the Mental user's to pick.
+ */
 export async function pickChoice(actor, title, pairs) {
-  const out = await DialogV2().prompt({ window: { title }, content: `<div class="fs-field"><label>${esc(title)}</label><select name="v">${pairs.map(([k, l]) => `<option value="${esc(k)}">${esc(l)}</option>`).join("")}</select></div>`,
-    ok: { label: "Pick", callback: (event, button) => button.form.elements.v.value }, rejectClose: false });
-  return out || null;
+  const html = `<div class="fs-field"><label>${esc(title)}</label><select name="v">${pairs.map(([k, l]) => `<option value="${esc(k)}">${esc(l)}</option>`).join("")}</select></div>`;
+  const out = await charges.askFor(actor, { title, ok: "Pick", html });
+  return out?.v || null;
 }
 /** Pick one of a few creatures / Modes with a small dialog. Null if cancelled. */
 export async function pickOne(actor, actors, title) {

@@ -104,10 +104,10 @@ const power = (stat) => Math.floor(hero.system.derived.effective[stat].value / 1
 console.log("== Illuminate (Light T1)");
 reset(); dialog = h => (typeof h === "string" ? h : { net: 0 });
 const atk0 = orc.system.derived.attackDie;
-dialog = () => "enemy"; await hit(ILL);
+dialog = () => ({ v: "enemy" }); await hit(ILL);
 const ie = fxs(orc, "illuminated")[0];
 ok2(ie && ie.flags.flowstate.spellEffect.attackDie === power("pon") && orc.system.derived.attackDie === atk0 - power("pon"), "Against an enemy: their attack rolls have their die size reduced by 1 × Power");
-reset(); dialog = () => "ally"; await hit(ILL);
+reset(); dialog = () => ({ v: "ally" }); await hit(ILL);
 ok2(fxs(orc, "illumWard").length === 1 && fxs(orc, "illuminated").length === 0 && orc.system.derived.attackDie === atk0, "Against an ally: the effect is on attacks against them, not their own die");
 const pw = power("pon");
 ok2(WC.attackDieAgainst(ally, orc)?.pen === pw, "An attacker who isn't on the Light user's side has a smaller attack die against the warded ally");
@@ -120,23 +120,23 @@ ok2(WC.attackDieAgainst(ally, orc)?.pen === pw, "Convergence (T3): an Illuminate
 tree("mental-light-dream", 5);
 
 console.log("== Illuminate Enhanced weakens the damage");
-reset(); dialog = () => "enemy"; await hit(ILL, { enhance: true });
+reset(); dialog = () => ({ v: "enemy" }); await hit(ILL, { enhance: true });
 const base = (await WB.adjust({ attacker: orc, target: hero, amount: 40, type: "physical" })).amount;
 ok2(base === 20, "Enhanced: damage from the Illuminated creature's attacks is Weakened");
-reset(); dialog = () => "enemy"; await hit(ILL);
+reset(); dialog = () => ({ v: "enemy" }); await hit(ILL);
 ok2((await WB.adjust({ attacker: orc, target: hero, amount: 40, type: "physical" })).amount === 40, "…not when it isn't Enhanced");
 
 console.log("== Eclipse (Dark T1)");
-reset(); dialog = () => "enemy"; await hit(ECL);
+reset(); dialog = () => ({ v: "enemy" }); await hit(ECL);
 const ee = fxs(orc, "eclipsed")[0];
 const half = Math.ceil(power("snap") * 0.5);
 ok2(ee && ee.flags.flowstate.spellEffect.dodgeDie === half && orc.system.derived.dodgeDie === ally.system.derived.dodgeDie - half, "Against an enemy: dodge die reduced by 0.5 × Power (rounded down)");
-reset(); dialog = () => "ally"; await hit(ECL);
+reset(); dialog = () => ({ v: "ally" }); await hit(ECL);
 ok2(fxs(orc, "eclipseWard").length === 1 && fxs(orc, "obscured").length === 1, "Against an ally: their attacks shrink dodge dice, and they're one step more obscured");
 ok2(WC.dodgeDieAgainst(orc, ally)?.pen === half, "…a target dodges with a smaller die against that ally");
 await putSpellEffect(ally, { kind: "eclipsed", caster: hero.uuid, name: "Eclipsed", dodgeDie: half });
 ok2(WC.dodgeDieAgainst(orc, ally) === null, "…and the two Eclipse effects don't stack");
-reset(); dialog = () => "enemy"; await hit(ECL, { enhance: true });
+reset(); dialog = () => ({ v: "enemy" }); await hit(ECL, { enhance: true });
 ok2((await WB.adjust({ attacker: ally, target: orc, amount: 20, type: "physical" })).amount === 30, "Enhanced: damage against the Eclipsed creature is Strengthened");
 
 console.log("== Totality and Umbral Strike");
@@ -148,7 +148,7 @@ ok2(o2?.stealth === "half", "Totality (T3): an Eclipsed ally attacking an Eclips
 tree("mental-dark-nightmare", 2);
 ok2(await WC.attackStart(orc, { stealth: "none", notes: [] }, [ally]) === undefined, "…not before Dark Tier 3");
 tree("mental-dark-nightmare", 5);
-reset(); clearAll(ally); dialog = () => "enemy"; await hit("mental-dark-nightmare:umbral-strike");
+reset(); clearAll(ally); dialog = () => ({ v: "enemy" }); await hit("mental-dark-nightmare:umbral-strike");
 const uc = fxs(orc, "umbralCharge")[0];
 ok2(uc?.flags.flowstate.spellEffect.count === 1, "Umbral Strike stores a charge on the target");
 dialog = () => null;
@@ -158,13 +158,13 @@ o2 = await WC.attackStart(orc, { stealth: "none", notes: [] }, [ally]);
 ok2(o2?.stealth === "half" && fxs(orc, "umbralCharge").length === 0 && !!orc.getFlag("flowstate", "umbral"), "Using it: one step deeper into stealth, the charge is spent");
 seq = [5];
 ok2((await WB.adjust({ attacker: orc, target: hero, amount: 20, type: "physical" })).amount === 25 && !orc.getFlag("flowstate", "umbral"), "…and its damage gets 1d4 × Power more, once");
-reset(); dialog = () => "enemy"; await hit("mental-dark-nightmare:umbral-strike", { enhance: true });
+reset(); dialog = () => ({ v: "enemy" }); await hit("mental-dark-nightmare:umbral-strike", { enhance: true });
 ok2(fxs(orc, "umbralCharge")[0]?.flags.flowstate.spellEffect.count === 2, "Enhanced: two charges");
 
 console.log("== Beacon, Shadowmark, Refraction and Penumbra are offered");
 const ic = mkIcon(hero, "ic", { form: "aegis", grade: 3, attuned: true, tenet: "mental-light-dream:beacon" }); hero.system.prepareDerivedData();
 ok2(W.tenetOf(hero)?.id === "mental-light-dream:beacon", "Beacon is a Tenet you can select");
-reset(); hero.flags.flowstate.mentalOnce = undefined; dialog = () => "enemy";
+reset(); hero.flags.flowstate.mentalOnce = undefined; dialog = () => ({ v: "enemy" });
 messages.length = 0; await hit(ILL);
 await new Promise(r => setTimeout(r, 30));
 const acts = messages.flatMap(m => m.flags?.flowstate?.mentalAct?.acts ?? []);
@@ -218,7 +218,7 @@ seq = [1]; await actions.defend(ic2, 0, "dodge");
 ok2(gem.system.wear === w0 + 2 * 20 * power("pon"), `On a crit it loses 20 × Power durability, doubled by the crit's stacks (wear ${gem.system.wear})`);
 
 console.log("== Corona and Nightfall (T5)");
-reset(); refresh(); dialog = () => "enemy"; await hit(ILL); refresh(); seq = [20]; dialog = () => orc.uuid;
+reset(); refresh(); dialog = () => ({ v: "enemy" }); await hit(ILL); refresh(); seq = [20]; dialog = () => orc.uuid;
 const ap0 = hero.system.ap.value;
 await WC.expand(hero, "light");
 const cc = lastAtk();

@@ -158,7 +158,7 @@ console.log("== Sapling (Tenet)");
 await reset();
 hero.system.icon = { system: { tenet: `${GROWTH}:sapling`, profile: { valid: true, tenet: { wonder: GROWTH, mult: 1 } } } };
 ok2(W.tenetOf(hero)?.id === `${GROWTH}:sapling`, "Sapling is the attuned Tenet");
-dialog = c => (/Sapling/.test(c) ? hero.uuid : {});
+dialog = c => (/Sapling/.test(c) ? { v: hero.uuid } : {});
 await W.ACTS.sapling({ mult: 1, bstacks: 0 }, hero, orc);
 ok2(WG.growthCount(hero) === 1 && WG.growthCount(orc) === 0, "Once per round: the target or you gains a Growth stack");
 ok2(!(await W.ACTS.sapling({ mult: 1, bstacks: 0 }, hero, orc)), "…only once per round");

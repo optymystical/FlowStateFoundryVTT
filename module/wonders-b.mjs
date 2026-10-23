@@ -16,7 +16,7 @@ import { isDeclined } from "./reactions.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, DAMAGE_PROVIDERS, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetFor, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
-import { esc } from "./html.mjs";
+import { esc, DialogV2 } from "./html.mjs";
 
 const roll = f => new Roll(f).evaluate();
 const minOf = (a, k) => ab.statMinOf(a, k);
@@ -661,7 +661,7 @@ export async function offerAdapt(actor) {
   if (!tenetFor(actor, "mental-adaptation-dream:adapt") || !stacksOf(actor).length) return 0;
   const again = onceUsed(actor, "adapt");
   if (again && !impulseHook.can(actor)) return 0;
-  const yes = await foundry.applications.api.DialogV2.confirm({ window: { title: "Adapt (Tenet)" }, rejectClose: false, content: `<p><strong>Adapt</strong>: spend one of your ${stacksOf(actor).length} Adaptation stack${stacksOf(actor).length === 1 ? "" : "s"} to make this Manifest Strengthened?</p><p class="hint">If not, it comes up again the next time you Manifest this round.</p>` });
+  const yes = await DialogV2().confirm({ window: { title: "Adapt (Tenet)" }, rejectClose: false, content: `<p><strong>Adapt</strong>: spend one of your ${stacksOf(actor).length} Adaptation stack${stacksOf(actor).length === 1 ? "" : "s"} to make this Manifest Strengthened?</p><p class="hint">If not, it comes up again the next time you Manifest this round.</p>` });
   if (!yes || (again && !(await impulseHook.use(actor, "Adapt")))) return 0;
   await markOnce(actor, "adapt");
   await spendStacks(actor, 1);

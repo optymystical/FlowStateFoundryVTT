@@ -1,3 +1,4 @@
+import { DialogV2 } from "./html.mjs";
 import { getCurrencies } from "./currency.mjs";
 import { currencyRows } from "./currency-rules.mjs";
 import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS, OBJECT_DENSITY } from "./rules.mjs";
@@ -929,7 +930,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     header: { template: "systems/flowstate/templates/actor-header.hbs" },
     tabs: { template: "templates/generic/tab-navigation.hbs" },
     main: { template: "systems/flowstate/templates/actor-main.hbs", scrollable: [""] },
-    skills: { template: "systems/flowstate/templates/actor-skills.hbs", scrollable: [""] },
+    skills: { template: "systems/flowstate/templates/actor-skills.hbs", scrollable: [".fs-skill-nav", ".fs-skill-main"] },          // the list and the tree scroll on their own
     actions: { template: "systems/flowstate/templates/actor-actions.hbs", scrollable: [""] },
     reactions: { template: "systems/flowstate/templates/actor-reactions.hbs", scrollable: [""] },
     equipment: { template: "systems/flowstate/templates/actor-equipment.hbs", scrollable: [""] },
@@ -1256,7 +1257,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       case "pullAggro": return actions.taunt(actor, { aggro: true });
       case "shakeTaunt": return (async () => {
         const inFightNow = actions.inActiveCombat(actor);
-        const pay = !inFightNow ? null : await foundry.applications.api.DialogV2.wait({ window: { title: "Shake off Taunt" }, rejectClose: false,
+        const pay = !inFightNow ? null : await DialogV2().wait({ window: { title: "Shake off Taunt" }, rejectClose: false,
           content: "<p>Pay with:</p>", buttons: [{ action: "ap", label: "2 AP", default: true }, { action: "rp", label: "2 RP" }] });
         if (inFightNow && !pay) return;
         return actions.shakeTaunt(actor, { pay });

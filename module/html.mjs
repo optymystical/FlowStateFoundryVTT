@@ -10,8 +10,16 @@ export const esc = s => {
   return f ? f(String(s ?? "")) : escapeHtml(s);
 };
 
-/** Foundry's dialog class (looked up when used, so modules load in tests). */
-export const DialogV2 = () => foundry.applications.api.DialogV2;
+/** The class every system dialog's window carries (styles/flowstate.css lays its options out as cards, with section headings). */
+export const DIALOG_CLASS = "fs-dialog";
+const withClass = o => ({ ...o, classes: [...(o?.classes ?? []), DIALOG_CLASS] });
+/** Foundry's dialogs (looked up when used, so modules load in tests), with the system's class on the window. */
+export const DialogV2 = () => {
+  const D = foundry.applications.api.DialogV2;
+  return { prompt: o => D.prompt(withClass(o)), confirm: o => D.confirm(withClass(o)), wait: o => D.wait(withClass(o)) };
+};
+/** A section heading inside a dialog. */
+export const dialogHead = text => `<h4 class="fs-dialog-head">${esc(text)}</h4>`;
 
 /** A labelled field for the system's dialogs. */
 export const field = (label, html) => `<div class="fs-field"><label>${esc(label)}</label>${html}</div>`;

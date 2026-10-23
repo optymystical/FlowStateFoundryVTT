@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.7:** Easier-to-read popups: every option in the system's dialogs is a card of its own (a field's label beside its control, a checkbox's description under its name; a ticked option is highlighted), and the Manifest and Ward dialogs have section headings (Mode, Options, the Mode's own choices such as Parlay and Double Down, What it does). Skills tab: the tree list and the tree scroll on their own, so the list always fits the sheet.
+
 **0.75.6:** Fix: Enhanced Providence's "which result" pick (and the other picks a Mental user makes while a Manifest resolves: Calamity, Illuminate/Eclipse's ally or enemy, Sapling, Fortune/Ruin Table choices) is asked of that character's player, not whoever answered the attack.
 
 **0.75.5:** Wards: a Dream Form's Ward (the AP ones) can no longer be Burst; the Ward dialog's Burst box is gone.

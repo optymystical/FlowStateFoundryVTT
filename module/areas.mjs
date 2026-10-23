@@ -5,7 +5,7 @@
  *    then confirms; with no scene (or no canvas) the caller falls back to the current targets.
  */
 import { notCreature } from "./kinds.mjs";
-import { esc } from "./html.mjs";
+import { esc, DialogV2 } from "./html.mjs";
 
 export const AREA_SHAPES = {
   radius: { label: "10 ft radius", t: "circle", distance: 10, angle: 360, width: 0 },
@@ -60,8 +60,7 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
   const scene = globalThis.canvas?.scene;
   const grid = globalThis.canvas?.grid;
   if (!scene || !grid) return undefined;
-  const DialogV2 = foundry.applications.api.DialogV2;
-  const pick = await DialogV2.prompt({
+  const pick = await DialogV2().prompt({
     window: { title: `${title}: shape` },
     content: `<div class="fs-field"><label>Area</label><select name="shape">${Object.entries(AREA_SHAPES).map(([k, s]) =>
       `<option value="${k}">${esc(s.label)}${scale !== 1 ? ` (×${scale} → ${s.distance * scale} ft)` : ""}</option>`).join("")}</select></div>`,

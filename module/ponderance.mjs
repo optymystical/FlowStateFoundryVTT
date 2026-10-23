@@ -15,7 +15,7 @@ import { tierOf } from "./skills.mjs";
 import * as conc from "./concentration.mjs";
 import { mental, mantraHook, TURN_START, tenetsOf } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
-import { esc } from "./html.mjs";
+import { esc, DialogV2 } from "./html.mjs";
 
 const trees = a => a?.system?.trees ?? {};
 export const ponderTier = actor => tierOf(trees(actor), "mental-ponderance-arts");
@@ -74,7 +74,7 @@ export async function trance(actor) {
   const target = [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && !notCreature(a)) ?? actor;
   const known = R.knownWonders(trees(actor)).filter(w => w.modes.length);
   if (!known.length) return ui.notifications.warn(`${actor.name} doesn't know any Wonder Modes yet.`);
-  const out = await foundry.applications.api.DialogV2.prompt({ window: { title: `Trance: ${actor.name}` }, rejectClose: false,
+  const out = await DialogV2().prompt({ window: { title: `Trance: ${actor.name}` }, rejectClose: false,
     content: `<div class="fs-cast"><p>8 hours with <strong>${esc(target.name)}</strong> (they must take part): the Mode you pick stays active on them for as long as you concentrate on it.</p>
       <div class="fs-field"><label>Mode</label><select name="mode">${known.map(w => `<optgroup label="${esc(w.name)}">${w.modes.map(x => `<option value="${esc(x.id)}">${esc(x.name)}</option>`).join("")}</optgroup>`).join("")}</select></div></div>`,
     ok: { label: "Begin the Trance", callback: (event, button) => button.form.elements.mode.value } });
@@ -135,7 +135,7 @@ export async function useTrance(holder, effect) {
   const target = [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && !notCreature(a));
   if (!target) { ui.notifications.warn("Target a creature first."); return false; }
   const wonder = R.wonderById(mode.wonder), kind = R.KINDS[wonder.kind];
-  const out = await foundry.applications.api.DialogV2.prompt({ window: { title: `Trance: ${mode.name}` }, rejectClose: false,
+  const out = await DialogV2().prompt({ window: { title: `Trance: ${mode.name}` }, rejectClose: false,
     content: `<div class="fs-cast"><p>${esc(mode.name)} at Power ${d.power} (${esc(R.wonderById(mode.wonder).name)}), with your own attack roll.</p>
       <div class="fs-field"><label>Range</label><select name="range">${Object.entries(R.RANGES).filter(([k]) => k !== "area").map(([k, r]) => `<option value="${k}">${r.label} (${r.ap} AP)</option>`).join("")}</select></div>
       <label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>free (a Trance ability is Enhanced for free if you want)</small></label>

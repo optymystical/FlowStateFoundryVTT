@@ -12,7 +12,7 @@ import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, CASTING_FORMS } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 import { OBJECT_DENSITY } from "./rules.mjs";
 import { askImage } from "./pictures.mjs";
-import { esc } from "./html.mjs";
+import { esc, DialogV2 } from "./html.mjs";
 
 const LIMIT = 150;
 const DRAG_TYPE = "FlowStateCatalog";
@@ -253,7 +253,7 @@ function catalogClass() {
       const key = target.closest("[data-entry-key]").dataset.entryKey, e = ITEM_CATALOG[key];
       if (!e || isGenerated(key)) return;
       const n = copiesOf(key);
-      const ok = await foundry.applications.api.DialogV2.confirm({ window: { title: "Delete catalog entry" }, rejectClose: false,
+      const ok = await DialogV2().confirm({ window: { title: "Delete catalog entry" }, rejectClose: false,
         content: `<p>Delete <strong>${esc(e.name)}</strong> from the catalog?${n ? ` ${n} item${n === 1 ? "" : "s"} in the world use${n === 1 ? "s" : ""} it: they keep working from their own copy of its data, but no longer follow it.` : ""}</p>` });
       if (!ok) return;
       await setWorldData(withoutEntry(getWorldData(), "items", key));

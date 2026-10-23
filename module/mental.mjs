@@ -32,7 +32,7 @@ import { isDeclined } from "./reactions.mjs";
 import { damageCategories, WEAPON_TYPES } from "./martial.mjs";
 import { poolFormula, resolveAttack, DAMAGE_TYPES, applyStacks } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
-import { esc, DialogV2, formValues } from "./html.mjs";
+import { esc, DialogV2, formValues, dialogHead } from "./html.mjs";
 
 const eff = (actor, k) => actor.system.derived?.effective?.[k]?.value ?? 0;
 const minOf = (actor, k) => ab.statMinOf(actor, k);
@@ -133,9 +133,19 @@ export function modeChoices(actor, modeId) {
   return out;
 }
 const choiceValues = v => Object.fromEntries(Object.entries(v ?? {}).filter(([k]) => k.startsWith("choice:")).map(([k, val]) => [k.slice(7), val]));
-const choicesHTML = (actor, modeId, v) => modeChoices(actor, modeId).map(c => c.number
-  ? `<div class="fs-field"><label>${esc(c.label)}</label><input type="number" name="choice:${c.name}" value="${Number(v[`choice:${c.name}`]) || 0}" min="0" step="1"></div>`
-  : `<div class="fs-field"><label>${esc(c.label)}</label><select name="choice:${c.name}">${Object.entries(c.options).map(([k, l]) => `<option value="${k}" ${v[`choice:${c.name}`] === k ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></div>`).join("");
+/** A choice's label "Name (cost): what it does" as the name with its description under it. */
+const choiceLabel = text => {
+  const m = String(text).match(/^([^:]{1,60}):\s+(.+)$/);
+  return m ? `${esc(m[1])}<small>${esc(m[2])}</small>` : esc(text);
+};
+const choicesHTML = (actor, modeId, v) => {
+  const list = modeChoices(actor, modeId);
+  if (!list.length) return "";
+  const mode = R.modeById(modeId);
+  return dialogHead(`${mode?.name ?? "Mode"} choices`) + list.map(c => c.number
+    ? `<div class="fs-field"><label>${choiceLabel(c.label)}</label><input type="number" name="choice:${c.name}" value="${Number(v[`choice:${c.name}`]) || 0}" min="0" step="1"></div>`
+    : `<div class="fs-field"><label>${choiceLabel(c.label)}</label><select name="choice:${c.name}">${Object.entries(c.options).map(([k, l]) => `<option value="${k}" ${v[`choice:${c.name}`] === k ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></div>`).join("");
+};;
 
 function manifestPlan(actor, ctx, v, { free = false } = {}) {
   const wobs = ctx.wobs ?? null;
@@ -194,12 +204,15 @@ function dialogHTML(ctx, v, plan) {
   const modes = ctx.wonders.map(w => `<optgroup label="${esc(w.name)} (${R.KINDS[w.kind].label})">${w.modes.map(m => `<option value="${esc(m.id)}" ${v.mode === m.id ? "selected" : ""}>${esc(m.name)}</option>`).join("")}</optgroup>`).join("");
   const ranges = Object.entries(R.RANGES).filter(([, r]) => !ctx.wobs || r.ap === (ctx.wobs.ap || ctx.wobs.rp)).map(([k, r]) => `<option value="${k}" ${v.range === k ? "selected" : ""}>${r.label} (${r.ap} AP): ${esc(r.text)}</option>`).join("");
   return `<div class="fs-cast">
+    ${dialogHead("Mode")}
     <div class="fs-field"><label>Mode</label><select name="mode">${modes}</select></div>
     <div class="fs-field"><label>Range</label><select name="range">${ranges}</select></div>
+    ${dialogHead("Options")}
     <label class="fs-cast-mod"><input type="checkbox" name="enhance" ${v.enhance ? "checked" : ""}> <strong>Enhance</strong> <small>${v.mode && plan?.enhanceCost !== undefined ? `${plan.enhanceCost} Energy (the Wonder's Scaling Stat min)` : "costs the Wonder's Scaling Stat min in Energy"}</small></label>
-    <div class="fs-mode-choices">${choicesHTML(ctx.actor, v.mode, v)}</div>
- ${ctx.ponder >= 1 && !ctx.wobs ? `<label class="fs-cast-mod"><input type="checkbox" name="premeditate" ${v.premeditate ? "checked" : ""}> <strong>Premeditate</strong> <small>store it on a hit (Strengthened, Concentration) for the Wonder's Scaling Stat min in Energy, to take hold on a preset action</small></label>` : ""}
+    ${ctx.ponder >= 1 && !ctx.wobs ? `<label class="fs-cast-mod"><input type="checkbox" name="premeditate" ${v.premeditate ? "checked" : ""}> <strong>Premeditate</strong> <small>store it on a hit (Strengthened, Concentration) for the Wonder's Scaling Stat min in Energy, to take hold on a preset action</small></label>` : ""}
     ${ctx.theory >= 1 && !ctx.wobs && !ctx.reflex ? `<label class="fs-cast-mod"><input type="checkbox" name="burst" ${v.burst ? "checked" : ""}> <strong>Burst</strong> <small>use RP instead of AP, and pay the Enhance cost in Energy</small></label>` : ""}
+    <div class="fs-mode-choices">${choicesHTML(ctx.actor, v.mode, v)}</div>
+    ${dialogHead("What it does")}
     <div class="fs-cast-preview">${previewHTML(plan)}</div>
   </div>`;
 }
@@ -411,7 +424,9 @@ export async function activateWard(actor) {
   const out = await DialogV2().prompt({
     window: { title: `${p.name} Ward: ${actor.name}` },
     content: `<div class="fs-cast">
+      ${dialogHead(`${p.name} Ward`)}
       <p>${esc(R.scaleFormText(R.FORMS[p.form].ward, p.wardMult, wardFx.stacks))}</p>
+      ${dialogHead("Options")}
       ${innate ? `<p class="hint"><strong>Innate:</strong> your first Ward each turn costs no AP/RP and is automatically Enhanced.</p>` : `
       ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${enhanceCost} Energy: ${esc(R.scaleFormText(R.FORMS[p.form].enhance, p.wardMult, wardFx.stacks))}</small></label>` : ""}`}
       ${wt >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="clear"> <strong>Make Clear</strong> <small>${enhanceCost} Energy: Advantage on the activation roll, and one reroll if it misses</small></label>` : ""}

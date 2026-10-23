@@ -30,6 +30,7 @@ import * as gravity from "./gravity.mjs";
 import * as charges from "./charges.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
 import { notCreature } from "./kinds.mjs";
+import { DialogV2 } from "./html.mjs";
 
 const relayQueue = makeQueue();                 // GM relay: one request at a time per creature
 /* -------------------------------------------- */
@@ -763,7 +764,7 @@ async function announceGrants(results) {
 async function grantDialog(targets) {
   if (!targets.length) return ui.notifications.warn("No player characters to grant points to.");
   const names = targets.map(a => foundry.utils.escapeHTML(a.name)).join(", ");
-  const res = await foundry.applications.api.DialogV2.prompt({
+  const res = await DialogV2().prompt({
     window: { title: "Grant Points" }, rejectClose: false,
     content: `<div class="flowstate-dialog"><p>To: <strong>${names}</strong></p>
       <div class="form-group"><label>Stat points</label><input type="number" name="stats" value="3" min="0" step="1"></div>
@@ -1272,7 +1273,7 @@ function confirmFirst(item, changes, title, text) {
   const data = foundry.utils.deepClone(changes);
   delete data._id;
   (async () => {
-    const ok = await foundry.applications.api.DialogV2.confirm({
+    const ok = await DialogV2().confirm({
       window: { title }, content: `<p>${text}</p>`, rejectClose: false
     });
     if (ok) await item.update(data, { flowstateConfirmed: true });
@@ -1419,7 +1420,7 @@ async function stowOrDrop(item, changes) {
   const esc = foundry.utils.escapeHTML;
   const canStow = isActorsTurn(actor) && actor.system.ap.value >= 1;
   const why = !isActorsTurn(actor) ? "only on your turn" : `needs 1 AP (${esc(actor.name)} has ${actor.system.ap.value})`;
-  const choice = await foundry.applications.api.DialogV2.wait({
+  const choice = await DialogV2().wait({
     window: { title: `Put away ${item.name}?` },
     content: `<p>Stowing a weapon in combat costs <strong>1 AP</strong>${canStow ? ` (${esc(actor.name)} has ${actor.system.ap.value})` : ` — ${why}`}.
       Dropping it on the ground is free.</p>`,
@@ -1457,13 +1458,12 @@ async function drawOrSwap(item, changes, swap) {
   const inCombat = actions.inActiveCombat(actor);
   const data = foundry.utils.deepClone(changes);
   delete data._id;
-  const DialogV2 = foundry.applications.api.DialogV2;
   const esc = foundry.utils.escapeHTML;
 
   if (!swap) {
     const rp = actor.system.rp.value;
     if (rp < 1) return refuse(item, `${actor.name} needs 1 RP to draw ${item.name} into an empty hand and has none.`);
-    const ok = await DialogV2.confirm({ window: { title: `Draw ${item.name}?` }, rejectClose: false,
+    const ok = await DialogV2().confirm({ window: { title: `Draw ${item.name}?` }, rejectClose: false,
       content: `<p>Drawing a weapon into an empty hand costs <strong>1 RP</strong> (${esc(actor.name)} has ${rp}).</p>` });
     if (!ok) return snapBack(item);
     await actor.update({ "system.rp.value": actor.system.rp.value - 1 });
@@ -1480,7 +1480,7 @@ async function drawOrSwap(item, changes, swap) {
   }
   const held = actor.items.filter(i => HELD_TYPES.has(i.type) && i.id !== item.id && i.system.weaponType !== "unarmed" && i.system.equipped);
   const cost = inCombat ? `<strong>1 ${key.toUpperCase()}</strong>${quick ? " (Quick Change)" : ""} (${esc(actor.name)} has ${actor.system[key].value})` : "nothing outside combat";
-  const choice = await DialogV2.prompt({
+  const choice = await DialogV2().prompt({
     window: { title: `Swap to ${item.name}?` }, rejectClose: false,
     content: `<div class="flowstate-dialog"><p>Your hands are full. Swapping weapons costs ${cost}.</p>
       <div class="form-group"><label>Put away</label><select name="putAway">

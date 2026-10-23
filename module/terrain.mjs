@@ -51,12 +51,15 @@ export function terrainRegionData(kind, { cx, cy, sidePx, name = null, flags = {
 /** The terrain kind a region carries, if it is a terrain region. */
 const kindOf = region => { const k = region?.flags?.flowstate?.terrain; return TERRAIN[k] ? k : null; };
 
+/** Does a region contain this point? Foundry v14 reads the elevation from the point; v13 took it as a second argument (both are given). */
+const contains = (r, point, elevation = 0) => !!r.testPoint?.({ ...point, elevation }, elevation);
+
 /** The Regions a token is standing in (its own list where Foundry keeps one, else tested by the token's centre). */
 function regionsOf(token, scene = token?.parent) {
   if (token?.regions) return [...token.regions];
   const w = (token?.width ?? 1) * (scene?.grid?.size ?? 100), h = (token?.height ?? 1) * (scene?.grid?.size ?? 100);
   const p = { x: (token?.x ?? 0) + w / 2, y: (token?.y ?? 0) + h / 2 };
-  return [...(scene?.regions ?? [])].filter(r => r.testPoint?.(p, token?.elevation ?? 0));
+  return [...(scene?.regions ?? [])].filter(r => contains(r, p, token?.elevation ?? 0));
 }
 
 /** The terrain level for a token from the regions it is in. */
@@ -64,7 +67,7 @@ const levelFor = token => terrainLevel(regionsOf(token).map(kindOf));
 
 /** The terrain level at a point of the scene (a token's centre there), from the terrain regions that contain it. */
 export function levelAt(scene, point, elevation = 0) {
-  return terrainLevel([...(scene?.regions ?? [])].filter(r => kindOf(r) && r.testPoint?.(point, elevation)).map(kindOf));
+  return terrainLevel([...(scene?.regions ?? [])].filter(r => kindOf(r) && contains(r, point, elevation)).map(kindOf));
 }
 
 /** Bring every token on the scene's `terrainLevel` flag in line with the terrain regions it stands in. GM only. */

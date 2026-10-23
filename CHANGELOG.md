@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.13:** Terrain regions are detected again in Foundry v14 (its region point test takes the elevation inside the point), so rough and difficult terrain raise movement costs on v14.
+
 **0.75.12:** Movement: a step costs the worst terrain it passes through. Before, it cost whatever terrain the token stood in when the step was paid, so walking through a patch of difficult terrain and out again within one step cost no extra.
 
 **0.75.11:** A Chant reroll of a Fortune Manifest reads as a hit or a miss, not "Critical Hit" (Fortune can't crit; its band decides).

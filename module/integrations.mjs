@@ -50,7 +50,7 @@ export const TAH_LAYOUT = [
   { id: "movement", name: "Movement", groups: [["act-move", "Movement"], ["act-heavy", "Armor"], ["act-medium", "Medium Armor"]] },
   { id: "methods", name: "Methods", groups: [["act-strength", "Strength Methods"], ["act-dex", "Dexterity Methods"], ["act-con", "Constitution Methods"], ["act-grappling", "Grappling Methods"]] },
   { id: "weapons", name: "Weapon Trees", groups: [["act-curved", "Curved Weapons"], ["act-striker", "Striker Weapons"], ["act-assault", "Assault Weapons"], ["act-weighted", "Weighted Weapons"], ["act-rapid", "Rapid Weapons"], ["act-swift", "Swift Weapons"]] },
-  { id: "reactions", name: "Reaction List", groups: [["react-popups", "Popups"], ["react-cards", "Offer cards"]] },
+  { id: "reactions", name: "Reaction List", groups: [["react-auto", "Automation"], ["react-popups", "Popups"], ["react-cards", "Offer cards"]] },
   { id: "checks", name: "Checks", groups: [["act-checks", "Checks"]] }
 ];
 

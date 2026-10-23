@@ -112,6 +112,9 @@ function headless(kind) {
     form.innerHTML = content;
     const dlg = { element: form, form, close: () => {} };
     try { opts.render?.(new Event("render"), dlg); } catch (err) { log.errors.push(`render ${title}: ${err.message}`); }
+    // Dialogs fill in what a player picked last time (v0.78): the AI starts from the defaults instead, so its own picks are the only ones.
+    form.reset();
+    for (const sel of form.querySelectorAll("select")) sel.dispatchEvent(new Event("change", { bubbles: true }));
     try { fillForm(form, SIM.fill?.(title, content, form)); } catch (err) { log.errors.push(`fill ${title}: ${err.message}`); }
     if (kind === "prompt") {
       const cb = opts.ok?.callback;
@@ -1112,6 +1115,8 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     SIM.status = `${id}: setting up`;
     await clearSim();
     const scene = await arena(P.arena);
+    // No canvas (a window of 0 × 0 px can't draw one): tokens can't be targeted and nobody could attack, so stop instead of running empty rounds.
+    if (!canvas.ready || canvas.scene?.id !== scene.id) throw new Error(`the canvas isn't drawn (window ${innerWidth}×${innerHeight} px)`);
     const pf = await folderFor("Sim: Party"), mf = await folderFor("Sim: Monsters");
     const party = [];
     for (const p of P.party) party.push(await makeActor(p, p.loadouts[enc.rotation], { party: true, folder: pf }));

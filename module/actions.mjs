@@ -9,10 +9,12 @@ import * as areas from "./areas.mjs";
 import { planAction, emptyLedger } from "./movement-rules.mjs";
 import { mayHelp } from "./sides.mjs";
 import { isDeclined } from "./reactions.mjs";
+import * as auto from "./automation-rules.mjs";
+import { answeringUser } from "./ask.mjs";
 import { borderDistance, gridFor, tokenPos, tokenCentre } from "./distance.mjs";
 import { pickSpot, candidateSpots } from "./placement.mjs";
 import { notCreature } from "./kinds.mjs";
-import { esc, DialogV2 } from "./html.mjs";
+import { esc, DialogV2, dialogHead } from "./html.mjs";
 export { gridFor };
 
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
@@ -254,14 +256,56 @@ async function rollBlock(roll, label) {
   return `<div class="fs-roll"><span class="fs-roll-label">${label}</span>${await roll.render()}</div>`;
 }
 
-/** Simple option dialog. Returns an object of the form values, or null if closed. */
-async function optionsDialog(title, fieldsHTML, okLabel = "Roll", { skipIfEmpty = false } = {}) {
+/**
+ * Answers for dialogs nobody sees, while an automatic response runs (Auto-Dodge): a dialog whose title starts with `prefix` answers itself with
+ * `values` (else each select's first option). Scoped by title, so a dialog someone else opens meanwhile still shows.
+ */
+let autoAnswer = null;
+export async function withAutoAnswers(prefix, values, fn) {
+  const prev = autoAnswer;
+  autoAnswer = { prefix, values: values ?? {} };
+  try { return await fn(); } finally { autoAnswer = prev; }
+}
+
+/** A dialog's remembered values (flag `remember`, by key). */
+const remembered = (actor, key) => (key ? actor?.getFlag?.("flowstate", "remember")?.[key] ?? null : null);
+async function rememberValues(actor, key, values) {
+  if (!actor?.isOwner || !key) return;
+  const keep = auto.rememberable(values);
+  if (Object.keys(keep).length) await actor.setFlag("flowstate", "remember", { [key]: keep }).catch(() => null);
+}
+/** Put remembered values back into a dialog's fields (a value that no longer fits a field is left alone). */
+function prefill(root, values) {
+  const el = root instanceof HTMLElement ? root : root?.[0];
+  if (!el?.querySelectorAll || !values) return;
+  for (const [name, v] of Object.entries(values)) {
+    for (const f of el.querySelectorAll(`[name="${String(name).replace(/"/g, "")}"]`)) {
+      if (f.type === "checkbox") f.checked = !!v;
+      else if (f.tagName === "SELECT") { if ([...f.options].some(o => o.value === String(v))) f.value = String(v); }
+      else if (f.type !== "hidden") f.value = v;
+    }
+  }
+}
+
+/**
+ * Simple option dialog. Returns an object of the form values, or null if closed. `remember` ({ actor, key }) fills the fields with what was picked
+ * last time and saves this time's picks; `preset` answers it without showing it (a follow-up planned in the first attack's dialog).
+ */
+async function optionsDialog(title, fieldsHTML, okLabel = "Roll", { skipIfEmpty = false, remember = null, preset = null } = {}) {
   // Nothing to choose (e.g. the Advantage field is turned off): roll straight away.
   if (skipIfEmpty && !/\bname="/.test(fieldsHTML)) return { net: 0, stacks: 0, extra: 0 };
-  return DialogV2().prompt({
+  if (preset) return { net: 0, stacks: 0, extra: 0, ...preset };
+  if (autoAnswer && String(title).startsWith(autoAnswer.prefix)) return auto.autoValues(fieldsHTML, autoAnswer.values);
+  const last = remember ? remembered(remember.actor, remember.key) : null;
+  const out = await DialogV2().prompt({
     window: { title },
     content: `<div class="flowstate-dialog">${fieldsHTML}</div>`,
-    render: (event, dlg) => syncWeightOptions(dlg?.element ?? dlg),
+    render: (event, dlg) => {
+      const root = dlg?.element ?? dlg;
+      prefill(root, last);
+      syncWeightOptions(root);
+      syncFollowupOptions(root);
+    },
     ok: {
       label: okLabel,
       icon: "fa-solid fa-dice",
@@ -278,6 +322,25 @@ async function optionsDialog(title, fieldsHTML, okLabel = "Roll", { skipIfEmpty 
     },
     rejectClose: false
   });
+  if (out && remember) await rememberValues(remember.actor, remember.key, out);
+  return out;
+}
+
+/** The first attack's dialog can plan a follow-up (`fu`): only the picked follow-up's own options show (and count). */
+function syncFollowupOptions(root) {
+  const el = root instanceof HTMLElement ? root : root?.[0];
+  const select = el?.querySelector?.('select[name="fu"]');
+  if (!select) return;
+  const apply = () => {
+    const idx = String(select.value).split("|")[0];
+    for (const wrap of el.querySelectorAll("[data-fs-fu]")) {
+      const on = select.value !== "" && select.value !== "none" && wrap.dataset.fsFu === idx;
+      wrap.hidden = !on;
+      for (const input of wrap.querySelectorAll("input, select")) input.disabled = !on;
+    }
+  };
+  select.addEventListener("change", apply);
+  apply();
 }
 
 /**
@@ -469,48 +532,12 @@ export function checkRange(actor, maxRange, what, tokens = null, from = null) {
 /* -------------------------------------------- */
 
 /**
- * Attack with a Martial weapon item. Dialog adapts to the weapon (range bands, throwing, Area, Pepper).
- * @param {object} [followup]  {net, label, weight} for free Fast/Solitary follow-up attacks (no AP, no further follow-ups).
+ * The attack dialog's fields for a weapon (and what the attack needs back from building them): the main attack's, or a follow-up's (also used to
+ * build a planned follow-up's own options inside the first attack's dialog).
  */
-export async function rollWeaponAttack(actor, item, followup = null, { grapple: presetGrapple = false } = {}) {
-  if (cantAct(actor, "attack")) return;
+function attackFields(actor, item, base, followup = null, { presetGrapple = false, speedloaded = false, pepperLoad = false } = {}) {
   const w = item.system;
   const unarmed = w.weaponType === "unarmed";
-  if (!w.profile?.valid) return ui.notifications.warn(`${item.name}: ${w.profile?.error ?? "invalid weapon"}`);
-  if (!w.held) return ui.notifications.warn(`${item.name} isn't held. Equip it in a hand first.`);
-  if (w.broken) return ui.notifications.warn(`${item.name} is broken.`);
-  // Multi-type weapons (Weapon Master, Martial Theory T5): pick which type this attack uses (its follow-ups keep it).
-  const typeChoices = unarmed ? [] : ab.attackTypes(actor, item);
-  let attackType = followup?.attackType && typeChoices.includes(followup.attackType) ? followup.attackType : typeChoices[0] ?? w.weaponType;
-  if (typeChoices.length > 1 && !followup?.attackType) {
-    const pick = await optionsDialog(`${item.name} — attack as`, `<div class="form-group"><label>Weapon type</label><select name="type">
-      ${typeChoices.map(k => `<option value="${k}">${esc(WEAPON_TYPES[k]?.label ?? k)}${WEAPON_TYPES[k]?.ranged ? " (ranged)" : ""}</option>`).join("")}</select></div>`, "Next");
-    if (!pick) return;
-    attackType = typeChoices.includes(pick.type) ? pick.type : typeChoices[0];
-  }
-  let base = w.profileFor ? w.profileFor(attackType) : w.profile;
-  if (!base?.valid) return ui.notifications.warn(`${item.name}: ${base?.error ?? "invalid weapon"}`);
-  // A natural weapon can't be thrown unless it returns (Geomancy Combos).
-  if (w.natural && !w.returning && base.throwType) base = { ...base, throwType: null };
-  // A grapple needs a free hand to maintain: each Unarmed grapple occupies a fist.
-  if (unarmed && ab.freeFists(actor) < 1) {
-    return ui.notifications.warn(`${actor.name}'s free hand is holding ${ab.handGrapples(actor).map(a => a.name).join(", ")} in a grapple; let go to attack Unarmed.`);
-  }
-  // Impale (Reach T5) / Thrasher Grapple (T1): a weapon holding a grappled creature can't attack.
-  const pinned = grappledBy(actor).find(v => v.getFlag?.("flowstate", "grappleWeapon") === item.uuid);
-  if (pinned) return ui.notifications.warn(`${item.name} is holding ${pinned.name}; it can't attack until they're released.`);
-  // Rapid T1 Quickload / T5 Speedloader (Assault T1 too): attacking while out of ammo can reload instead (or reload and fire). A free
-  // follow-up can be forgone the same way: it costs nothing, so the gun reloads for free (the user's ruling).
-  let speedloaded = false, pepperLoad = false;
-  if (base.ranged && !w.loaded) {
-    if (!(ab.rapid(actor, item, 1) || ab.assault(actor, item, 1))) return ui.notifications.warn(`${item.name} needs to be reloaded (${base.reloadRP} RP${ammoRequired() && !w.natural ? `; ${ammoCount(actor, w.ammoType)} ${ammoLabel(w.ammoType)} left` : ""}).`);
-    if (!ammoCount(actor, w.ammoType) && ammoRequired() && !w.natural) return ui.notifications.warn(`${actor.name} has no ${ammoLabel(w.ammoType)} for ${item.name}.`);
-    const r = await quickload(actor, item, base.pepper && ab.rapid(actor, item, 1), followup);
-    if (r === "pepper") pepperLoad = true;
-    else if (r !== "speed") return;
-    else speedloaded = true;
-  }
-
   // Unarmed: Light or Heavy is declared per attack.
   const eff = actor.system.derived.effective;
   const stats = { str: eff.str.value, dex: eff.dex.value };
@@ -759,6 +786,104 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
       <option value="">${esc(aimTargets[0].name)}</option>
       ${aimables.map(i => `<option value="${i.uuid}">${esc(aimTargets[0].name)}'s ${esc(i.name)}</option>`).join("")}</select></div>` : "";
 
+  return {
+    unarmedProfile, remiseState, board, momentum, aimables, aimField, weightField,
+    modeField: `<div class="form-group"><label>Mode</label><select name="mode">${modes.join("")}</select></div>`,
+    optionsHTML: `${pepperOpts}${areaOpt}${grappleOpt}${bladedOpts}${balancedOpts}${swiftOpts}${rapidOpts}${brawlOpts}${t2Opts}${t3Opts}${t4Opts}`
+  };
+}
+
+/**
+ * The follow-ups an attack with `item` could open (planned in its dialog): a Solitary one with the same weapon, or a Fast one with another held Fast
+ * weapon (or the other fist). Whether it really opens is decided after the attack, as always.
+ */
+function plannedFollowups(actor, item, base, attackType) {
+  const out = [];
+  const unarmed = item.system.weaponType === "unarmed";
+  const lightUnarmedFast = WEAPON_TYPES.unarmed.light.tags.fast ?? 0;
+  const stats = { str: actor.system.derived.effective.str.value, dex: actor.system.derived.effective.dex.value };
+  const solBase = unarmed ? weaponProfile({ type: "unarmed", weight: "heavy" }, stats) : base;
+  // Solitary (Controlled Swing can give a Light Weighted weapon one).
+  const sol = ab.solitaryFollowup(actor, item, solBase)
+    ?? (!unarmed && item.system.weight === "light" && ab.weighted(actor, item, 1) ? ab.solitaryFollowup(actor, item, { ...base, solitary: 1 }) : null);
+  if (sol) {
+    const label = `Solitary follow-up${sol.titan ? " (Titan Weapon, Dis)" : sol.net ? " (Dis)" : ""}`;
+    out.push({ kind: "solitary", item, itemId: item.id, base: solBase, label, followup: { kind: "solitary", net: sol.net, attackType, weight: unarmed ? "heavy" : "", label } });
+  }
+  const selfFast = unarmed ? lightUnarmedFast : ab.fastValue(actor, item);
+  if (selfFast) {
+    if (unarmed && ab.freeFists(actor) >= 2 && lightUnarmedFast) {
+      const label = `Fast follow-up: other fist${lightUnarmedFast === 2 ? "" : " (Dis)"}`;
+      out.push({ kind: "fast", item, itemId: item.id, base, label, followup: { kind: "fast", net: lightUnarmedFast === 2 ? 0 : -1, weight: "light", label } });
+    }
+    for (const other of actor.items) {
+      if (other.type !== "weapon" || other.id === item.id || !other.system.held || !other.system.profile?.valid) continue;
+      const otherUnarmed = other.system.weaponType === "unarmed";
+      const fast = !(otherUnarmed && ab.freeFists(actor) < 1) ? ab.fastValue(actor, other, lightUnarmedFast) : 0;
+      if (!fast) continue;
+      const label = `Fast follow-up: ${other.name}${fast === 2 ? "" : " (Dis)"}`;
+      out.push({ kind: "fast", item: other, itemId: other.id, base: other.system.profile, label, followup: { kind: "fast", net: fast === 2 ? 0 : -1, weight: otherUnarmed ? "light" : "", label } });
+    }
+  }
+  return out;
+}
+
+/**
+ * Attack with a Martial weapon item. Dialog adapts to the weapon (range bands, throwing, Area, Pepper).
+ * @param {object} [followup]  {net, label, weight} for free Fast/Solitary follow-up attacks (no AP, no further follow-ups).
+ */
+export async function rollWeaponAttack(actor, item, followup = null, { grapple: presetGrapple = false, preset = null } = {}) {
+  if (cantAct(actor, "attack")) return;
+  const w = item.system;
+  const unarmed = w.weaponType === "unarmed";
+  if (!w.profile?.valid) return ui.notifications.warn(`${item.name}: ${w.profile?.error ?? "invalid weapon"}`);
+  if (!w.held) return ui.notifications.warn(`${item.name} isn't held. Equip it in a hand first.`);
+  if (w.broken) return ui.notifications.warn(`${item.name} is broken.`);
+  // Multi-type weapons (Weapon Master, Martial Theory T5): pick which type this attack uses (its follow-ups keep it).
+  const typeChoices = unarmed ? [] : ab.attackTypes(actor, item);
+  let attackType = followup?.attackType && typeChoices.includes(followup.attackType) ? followup.attackType : typeChoices[0] ?? w.weaponType;
+  if (typeChoices.length > 1 && !followup?.attackType) {
+    const pick = await optionsDialog(`${item.name} — attack as`, `<div class="form-group"><label>Weapon type</label><select name="type">
+      ${typeChoices.map(k => `<option value="${k}">${esc(WEAPON_TYPES[k]?.label ?? k)}${WEAPON_TYPES[k]?.ranged ? " (ranged)" : ""}</option>`).join("")}</select></div>`, "Next",
+      { remember: { actor, key: `type:${item.id}` } });
+    if (!pick) return;
+    attackType = typeChoices.includes(pick.type) ? pick.type : typeChoices[0];
+  }
+  let base = w.profileFor ? w.profileFor(attackType) : w.profile;
+  if (!base?.valid) return ui.notifications.warn(`${item.name}: ${base?.error ?? "invalid weapon"}`);
+  // A natural weapon can't be thrown unless it returns (Geomancy Combos).
+  if (w.natural && !w.returning && base.throwType) base = { ...base, throwType: null };
+  // A grapple needs a free hand to maintain: each Unarmed grapple occupies a fist.
+  if (unarmed && ab.freeFists(actor) < 1) {
+    return ui.notifications.warn(`${actor.name}'s free hand is holding ${ab.handGrapples(actor).map(a => a.name).join(", ")} in a grapple; let go to attack Unarmed.`);
+  }
+  // Impale (Reach T5) / Thrasher Grapple (T1): a weapon holding a grappled creature can't attack.
+  const pinned = grappledBy(actor).find(v => v.getFlag?.("flowstate", "grappleWeapon") === item.uuid);
+  if (pinned) return ui.notifications.warn(`${item.name} is holding ${pinned.name}; it can't attack until they're released.`);
+  // Rapid T1 Quickload / T5 Speedloader (Assault T1 too): attacking while out of ammo can reload instead (or reload and fire). A free
+  // follow-up can be forgone the same way: it costs nothing, so the gun reloads for free (the user's ruling).
+  let speedloaded = false, pepperLoad = false;
+  if (base.ranged && !w.loaded) {
+    if (!(ab.rapid(actor, item, 1) || ab.assault(actor, item, 1))) return ui.notifications.warn(`${item.name} needs to be reloaded (${base.reloadRP} RP${ammoRequired() && !w.natural ? `; ${ammoCount(actor, w.ammoType)} ${ammoLabel(w.ammoType)} left` : ""}).`);
+    if (!ammoCount(actor, w.ammoType) && ammoRequired() && !w.natural) return ui.notifications.warn(`${actor.name} has no ${ammoLabel(w.ammoType)} for ${item.name}.`);
+    const r = await quickload(actor, item, base.pepper && ab.rapid(actor, item, 1), followup);
+    if (r === "pepper") pepperLoad = true;
+    else if (r !== "speed") return;
+    else speedloaded = true;
+  }
+
+  const { unarmedProfile, remiseState, board, momentum, aimables, aimField, weightField, modeField, optionsHTML } =
+    attackFields(actor, item, base, followup, { presetGrapple, speedloaded, pepperLoad });
+  // The first attack's dialog can plan its follow-up (Solitary, or Fast with another weapon), with that follow-up's own options: it is then made
+  // automatically once the exchange is resolved, instead of from a card.
+  const planned = followup ? [] : plannedFollowups(actor, item, base, attackType);
+  const fuHTML = planned.length ? `${dialogHead("Follow-up")}
+    <div class="form-group"><label>After this attack</label><select name="fu">
+      <option value="">Decide after the attack (card)</option><option value="none">No follow-up</option>
+      ${planned.map((f, i) => `<option value="${i}|${f.kind}:${f.itemId}">${esc(f.label)}</option>`).join("")}</select></div>
+    <p class="hint">A planned follow-up is made on its own once the exchange is resolved, if it's still available (else the card offers what is).</p>
+    ${planned.map((f, i) => { const fx2 = attackFields(actor, f.item, f.base, f.followup); return `<div data-fs-fu="${i}">${(fx2.modeField + fx2.optionsHTML).replace(/name="/g, `name="fu.${i}.`)}</div>`; }).join("")}` : "";
+
   const title = followup ? `${item.name} — ${followup.label}` : item.name;
   const summary = unarmed
     ? (followup?.weight ? `${unarmedProfile(followup.weight).label} · ${unarmedProfile(followup.weight).display}` : "Unarmed")
@@ -768,13 +893,23 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     ${followup?.riposte ? `<p class="hint"><strong>Riposte:</strong> costs ${esc(String(followup.rp ?? ""))} RP (the weapon's attack AP).</p>`
       : followup ? `<p class="hint"><strong>${esc(followup.label)}:</strong> ${followup.net < 0 ? "Disadvantage is applied automatically." : "no Disadvantage (+ tag)."} No AP/RP cost.</p>` : ""}
     ${aimField}${weightField}
-    <div class="form-group"><label>Mode</label><select name="mode">${modes.join("")}</select></div>
+    ${modeField}
     ${netField()}
     ${weaveHook && !followup && weaveHook.eligible(actor) ? `<div class="form-group"><label data-tooltip="Cast a spell alongside this attack for no extra AP/RP if its normal AP matches this attack's. Same target, still costs Energy, no TR, its own attack roll.">Weave a spell (Magic Theory T3)</label><input type="checkbox" name="weave"></div>` : ""}
-    ${pepperOpts}${areaOpt}${grappleOpt}${bladedOpts}${balancedOpts}${swiftOpts}${rapidOpts}${brawlOpts}${t2Opts}${t3Opts}${t4Opts}
+    ${optionsHTML}
     ${stacksField("stacks")}
-    <p class="hint">${followup?.riposte ? `Riposte against ${esc(followup.targetActors?.[0]?.name ?? "the attacker")}.` : "Target tokens first."} Material, size, armor, and tag effects are applied automatically.</p>`, "Attack");
+    ${fuHTML}
+    <p class="hint">${followup?.riposte ? `Riposte against ${esc(followup.targetActors?.[0]?.name ?? "the attacker")}.` : "Target tokens first."} Material, size, armor, and tag effects are applied automatically.</p>`, "Attack",
+    { remember: { actor, key: `atk:${item.id}:${followup ? (followup.kind || "fu") : "main"}` }, preset });
   if (!opts) return;
+  // The planned follow-up: its pick and its own options come off this dialog's values.
+  let autoFollowup = null;
+  if (planned.length) {
+    const sp = auto.splitFollowup(opts);
+    for (const k of Object.keys(opts)) if (k === "fu" || k.startsWith("fu.")) delete opts[k];
+    if (sp.pick === "none") autoFollowup = { pick: "none", user: game.user.id };
+    else if (sp.pick) autoFollowup = { pick: sp.pick.split("|")[1], opts: sp.fields, user: game.user.id };
+  }
 
   if (followup?.kind === "return") opts.mode = "throw";
   const p = unarmed ? unarmedProfile(followup?.weight ?? opts.weight ?? w.weight) : base;
@@ -818,6 +953,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (opts.area) { stacks -= 1; notes.push("Area (Weakened)"); }
   else if (whirl) notes.push("Area");
   // Remise (Bladed T1, Heavy): on a Solitary follow-up after the first hit landed.
+  if (preset && opts.remise && (remiseState === false || remiseState === "pending")) opts.remise = false;
   if (opts.remise) {
     if (remiseState === false || remiseState === "pending") return ui.notifications.warn("Remise needs the first attack in the chain to have hit.");
     energy += ab.BLADED_COST.remise(item); net += 1; stacks += 1; notes.push("Remise (Advantage, Strengthened)");
@@ -1095,6 +1231,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (!(await spendAP(actor, ap, `attacking with ${item.name}`))) return;
   if (pepperLoad && !(await loadWeapon(actor, item))) return;
   const rpPaid = followup?.riposte ? (shieldToss ? 2 : p.ap) : ["flurry", "mark", "palisade"].includes(followup?.kind) ? p.ap : shieldToss?.pay === "rp" ? 2 : 0;
+  if (energy && preset && Object.keys(preset).length && inActiveCombat(actor) && actor.system.energy.value < energy) return rollWeaponAttack(actor, item, followup, { grapple: presetGrapple, preset: {} });
   if (energy && !(await spendEnergy(actor, energy, notes.filter(n => /Whirlwind|Remise|Perfect/.test(n)).join(", ") || "that"))) return;
   if (rooted && inActiveCombat(actor)) await actor.setFlag("flowstate", "rootedTurn", turnKey());
   if (energy) notes.push(`${energy} Energy`);
@@ -1152,7 +1289,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     damage: shieldToss?.mode === "guard" || (opts.thrasherGrapple && !opts.getOverHere) ? "" : damage, type: p.damageType, stacks, ap: 0, apCost: ap || rpPaid,
     physical: true, shots,
     critStacks: p.critStacks, vsSupernatural: p.vsSupernatural, arcaneVsMagic: p.arcaneVsMagic,
-    smashKb, pierce, knockback, knockbackAdd: knockback ? knockbackAdd : 0, bash, notes, followups, followupOf: followup?.source ?? null,
+    smashKb, autoFollowup, pierce, knockback, knockbackAdd: knockback ? knockbackAdd : 0, bash, notes, followups, followupOf: followup?.source ?? null,
     aimItem: opts.aim && !opts.area && !whirl && !spin && !grapple ? opts.aim : null,
     aimName: opts.aim && !opts.area && !whirl && !spin && !grapple ? aimables.find(i => i.uuid === opts.aim)?.name ?? null : null,
     area: !!opts.area || !!whirl || spin, grapple, grappleOnly: grapple && p.scalingStat !== "str",
@@ -1504,7 +1641,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "growth", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "statusStealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "smashKb", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
+  "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "smashKb", "autoFollowup", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -2146,7 +2283,7 @@ export async function guardRows(target, r, o = {}) {
   html += row;
   if (r.dipZero && canSpend(target, "rp", 1)) html += `<div class="fs-brawl-row fs-dip-row" data-role="defender" data-owner="${target.uuid}">
       <button type="button" class="fs-dip-move" data-tooltip="Brawling T2: the Dip took the whole hit; spend 1 RP to move your speed right away"><i class="fa-solid fa-person-walking-arrow-right"></i> Dip: move (1 RP)</button></div>`;
-  if (r.noDamage && o.melee && ab.brawl(target, 4) && ab.fists(target)) html += `<div class="fs-brawl-row fs-redirect-row" data-role="defender" data-owner="${target.uuid}">
+  if (r.noDamage && o.melee && ab.brawl(target, 4) && ab.fists(target) && !isDeclined(target, "redirect")) html += `<div class="fs-brawl-row fs-redirect-row" data-role="defender" data-owner="${target.uuid}">
       <button type="button" class="fs-redirect" data-tooltip="Target a creature next to you first"><i class="fa-solid fa-shuffle"></i> Redirect (⚡ ${ab.BRAWLING_COST.redirect(target)})</button></div>`;
   return { html, riposte: !!row };
 }
@@ -2524,18 +2661,21 @@ async function quickload(actor, item, pepperOk = false, followup = null) {
   const paid = followup ? "the follow-up" : `${p.ap} AP`;
   const speed = ab.rapid(actor, item, 5);
   const cost = ab.RAPID_COST.speedloader(item);
-  const choice = await DialogV2().wait({
+  // Only Quickload on offer: no question. Otherwise the last pick is the default button.
+  const last = remembered(actor, `ql:${item.id}`)?.choice;
+  const choice = !pepperOk && !speed ? "quick" : await DialogV2().wait({
     window: { title: `${item.name} is empty` },
     content: `<p><strong>${esc(item.name)}</strong> is out of ammo.</p>
       <p class="hint">Quickload: ${followup ? "forgo this free follow-up" : `spend the attack's ${p.ap} AP`} to reload instantly (no attack)${pepperOk ? ", or replace one Pepper shot with the reload and fire the rest (one less Disadvantage)" : ""}.${speed ? ` Speedloader: ${cost} Energy to reload and fire as normal (a Pepper attack has one less Disadvantage).` : ""}</p>`,
     buttons: [
-      { action: "quick", label: `Quickload (${paid})`, icon: "fa-solid fa-rotate", default: true },
-      ...(pepperOk ? [{ action: "pepper", label: "Quickload as a Pepper shot", icon: "fa-solid fa-arrows-rotate" }] : []),
-      ...(speed ? [{ action: "speed", label: `Speedloader (⚡ ${cost})`, icon: "fa-solid fa-bolt" }] : []),
+      { action: "quick", label: `Quickload (${paid})`, icon: "fa-solid fa-rotate", default: !last || last === "quick" || (last === "pepper" && !pepperOk) || (last === "speed" && !speed) },
+      ...(pepperOk ? [{ action: "pepper", label: "Quickload as a Pepper shot", icon: "fa-solid fa-arrows-rotate", default: last === "pepper" }] : []),
+      ...(speed ? [{ action: "speed", label: `Speedloader (⚡ ${cost})`, icon: "fa-solid fa-bolt", default: last === "speed" }] : []),
       { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }
     ],
     rejectClose: false
   });
+  if (choice && choice !== "cancel" && (pepperOk || speed)) await rememberValues(actor, `ql:${item.id}`, { choice });
   if (choice === "quick") {
     if (!followup && !(await spendAP(actor, p.ap, `Quickload with ${item.name}`))) return null;
     await loadWeapon(actor, item);
@@ -2634,6 +2774,99 @@ export async function clearMarks(marker) {
 
 /* ---- Medium Armor ---- */
 
+/* ---- Automation: Auto-Dodge, Auto-Limber ---- */
+
+/** Warnings and notes stay quiet while an automatic response tries things that may not be affordable (they just don't fire). */
+let quietDepth = 0, quietKept = null;
+function quietNotifications() {
+  const n = globalThis.ui?.notifications;
+  if (!n) return () => {};
+  if (quietDepth++ === 0) { quietKept = { warn: n.warn, info: n.info }; n.warn = () => null; n.info = () => null; }
+  return () => { if (--quietDepth === 0 && quietKept) { n.warn = quietKept.warn; n.info = quietKept.info; quietKept = null; } };
+}
+
+/** The defense buttons an attack card offers one target (`data-choice` values). */
+function defenseChoices(message, index) {
+  const out = new Set();
+  for (const m of String(message.content ?? "").matchAll(/<button[^>]*class="[^"]*\bfs-defend\b[^"]*"[^>]*>/g)) {
+    const choice = /data-choice="([^"]+)"/.exec(m[0])?.[1], idx = /data-index="(\d+)"/.exec(m[0])?.[1];
+    if (choice && Number(idx) === index) out.add(choice);
+  }
+  return out;
+}
+
+const autoDefendInFlight = new Set();
+/**
+ * Auto-Dodge (automation): a character with it on answers an attack on its own, on its answering player's client: it tries the reactions picked
+ * in its setup (when offered and affordable; one that can't fire is skipped without a word), then dodges.
+ */
+export async function autoDefend(message) {
+  const attack = message?.getFlag("flowstate", "attack");
+  if (!attack?.targets?.length) return;
+  for (const [index, entry] of attack.targets.entries()) {
+    const key = `${message.id}|${index}`;
+    if (autoDefendInFlight.has(key) || findDefense(message.id, index)) continue;
+    const target = fromUuidSync(entry.uuid);
+    if (!target || answeringUser(target)?.id !== game.user.id) continue;
+    const settings = auto.automationOf(target);
+    if (!settings.dodge.on) continue;
+    const offered = defenseChoices(message, index);
+    if (!offered.has("dodge")) continue;
+    autoDefendInFlight.add(key);
+    const loud = quietNotifications();
+    try {
+      const prefix = `${entry.name} — `;
+      for (const choice of auto.dodgeTries(settings)) {
+        if (findDefense(message.id, index)) break;
+        if (offered.has(choice)) await withAutoAnswers(prefix, { mode: settings.dodge.shiftMode }, () => defend(message, index, choice));
+      }
+      // Then the dodge (a Sword and Board shield attack is answered first: wait for it).
+      for (let i = 0; i < 20 && !findDefense(message.id, index); i++) {
+        await withAutoAnswers(prefix, {}, () => defend(message, index, "dodge"));
+        if (!findDefense(message.id, index)) await new Promise(r => setTimeout(r, 300));
+      }
+    } catch (err) {
+      console.error("Flow State | Auto-Dodge", err);
+    } finally {
+      loud();
+      autoDefendInFlight.delete(key);
+    }
+  }
+}
+
+/** Auto-Limber (automation): Limber is taken when a card offers it and the Energy is there (else it just isn't). */
+export async function autoLimber(message) {
+  for (const m of String(message?.content ?? "").matchAll(/class="fs-limber" data-actor="([^"]+)"/g)) {
+    const actor = fromUuidSync(m[1]);
+    if (!actor || answeringUser(actor)?.id !== game.user.id || !auto.automationOf(actor).limber) continue;
+    if (inActiveCombat(actor) && actor.system.energy.value < ab.mediumCost(actor, "limber")) continue;
+    const loud = quietNotifications();
+    try { await limber(message, m[1]); } finally { loud(); }
+  }
+}
+
+/** Switch an automation on or off (sheet's Reaction List tab). Turning Auto-Dodge on asks which reactions it should try first. */
+export async function toggleAutomation(actor, key) {
+  const now = auto.automationOf(actor);
+  if (key === "dodge") {
+    if (now.dodge.on) return actor.setFlag("flowstate", "automation", { dodge: { on: false } });
+    const content = `<p class="hint">${esc(actor.name)} dodges every attack on its own. Before dodging, it tries the reactions ticked here whenever the attack offers them and the Energy/RP is there (one that can't fire is skipped, no message).</p>
+      ${auto.DODGE_TRIES.map(t => `<div class="form-group"><label data-tooltip="${esc(t.tip)}">${esc(t.label)}</label><input type="checkbox" name="try.${t.key}" ${now.dodge.tries[t.key] ? "checked" : ""}></div>`).join("")}
+      <div class="form-group"><label>Shift picks</label><select name="shiftMode">${auto.SHIFT_MODES.map(([k, l]) => `<option value="${k}" ${now.dodge.shiftMode === k ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></div>`;
+    const res = await DialogV2().prompt({
+      window: { title: `${actor.name} — Auto-Dodge` }, content: `<div class="flowstate-dialog">${content}</div>`, rejectClose: false,
+      ok: { label: "Turn on", icon: "fa-solid fa-shield", callback: (event, button) => {
+        const f = button.form.elements;
+        return { tries: Object.fromEntries(auto.DODGE_TRIES.map(t => [t.key, !!f[`try.${t.key}`]?.checked])), shiftMode: f.shiftMode?.value ?? "adv" };
+      } }
+    });
+    if (!res) return;
+    return actor.setFlag("flowstate", "automation", { dodge: { on: true, tries: res.tries, shiftMode: res.shiftMode } });
+  }
+  if (key === "limber") return actor.setFlag("flowstate", "automation", { limber: !now.limber });
+  if (key.startsWith("keep:")) return actor.setFlag("flowstate", "automation", { keep: { [key.slice(5)]: !now.keep[key.slice(5)] } });
+}
+
 /** Limber (Medium T1): from a defense card, after a successful attack or dodge/parry roll. */
 export async function limber(message, actorUuid) {
   const actor = await fromUuid(actorUuid);
@@ -2708,18 +2941,29 @@ export async function checkMediumArmor(actor) {
 /** Start of your turn: Limber ends; Careful Steps charges its 2 AP (or lapses this turn). Runs on the GM. */
 export async function mediumTurnStart(actor) {
   if (!actor?.isOwner) return;
-  if (actor.statuses.has("limber")) await actor.toggleStatusEffect("limber", { active: false });
+  if (actor.statuses.has("limber")) { await actor.toggleStatusEffect("limber", { active: false }); noteTurnStart(actor, "Limber ended (unused)."); }
   if (actor.statuses.has("carefulSteps")) {
     const lapsed = !!actor.getFlag("flowstate", "carefulLapsed");
     if (!ab.medium(actor, 3)) {
       if (!lapsed) await actor.setFlag("flowstate", "carefulLapsed", true);
     } else if (actor.system.ap.value < 2) {
       await actor.setFlag("flowstate", "carefulLapsed", true);
-      await post(actor, { title: `${esc(actor.name)} — Careful Steps lapses`, body: `<div class="fs-notes">Not enough AP this turn; the stealth penalty applies until your next turn.</div>` });
+      noteTurnStart(actor, "Careful Steps lapses: not enough AP this turn, so the stealth penalty applies until your next turn.");
     } else {
       await actor.update({ "system.ap.value": actor.system.ap.value - 2, "flags.flowstate.carefulLapsed": false });
+      noteTurnStart(actor, "Careful Steps: 2 AP.");
     }
   }
+}
+
+/* ---- Start of turn: one card ---- */
+
+/** Lines for a creature's start-of-turn card, collected while its turn starts (Energy regained, Careful Steps, what ended). */
+const turnNotes = new Map();
+export function noteTurnStart(actor, line) {
+  if (!actor?.uuid || !line) return;
+  if (!turnNotes.has(actor.uuid)) turnNotes.set(actor.uuid, []);
+  turnNotes.get(actor.uuid).push(line);
 }
 
 /* ---- T2 Martial trees: turn abilities ---- */
@@ -2782,23 +3026,29 @@ async function berserkTurnStart(actor) {
  * Start of your turn: one card with the abilities used "at the start of your turn" that you could use now:
  * Maintain Berserk or Berserk (Striker T2), Proper Stance (Assault T5), and Quicken (Unarmored T4).
  */
-async function startOfTurnCard(actor, kept) {
+async function startOfTurnCard(actor, kept, notes = []) {
+  const keep = await keepUp(actor, kept);
+  if (keep.handled.has("berserk")) kept = null;
   const rows = [];
   if (kept) rows.push(`<button type="button" class="fs-turn-start" data-op="maintain"><i class="fa-solid fa-fire"></i> Maintain Berserk (⚡ ${kept.cost}${kept.red ? " · Seeing Red continues" : ""})</button>`);
-  else if (ab.treeTier(actor, ab.STRIKER) >= 2 && ab.strikerHeld(actor, 2).length) {
+  else if (!keep.handled.has("berserk") && ab.treeTier(actor, ab.STRIKER) >= 2 && ab.strikerHeld(actor, 2).length) {
     rows.push(`<button type="button" class="fs-turn-start" data-op="berserk"><i class="fa-solid fa-fire"></i> Berserk (⚡ ${ab.STRIKER_COST.berserk(bestWeapon(ab.strikerHeld(actor, 2)))})</button>`);
   }
-  if (ab.treeTier(actor, ab.ASSAULT) >= 5 && ab.assaultHeld(actor, 5).length) {
+  if (!keep.handled.has("properStance") && ab.treeTier(actor, ab.ASSAULT) >= 5 && ab.assaultHeld(actor, 5).length) {
     rows.push(`<button type="button" class="fs-turn-start" data-op="properStance"><i class="fa-solid fa-person-rifle"></i> Proper Stance (⚡ ${ab.ASSAULT_COST.properStance(bestWeapon(ab.assaultHeld(actor, 5)))})</button>`);
   }
-  if (ab.unarmoredT(actor, 4)) rows.push(`<button type="button" class="fs-turn-start" data-op="quicken"><i class="fa-solid fa-forward-fast"></i> Quicken (⚡ ${ab.UNARMORED_COST.quicken(actor)})</button>`);
-  if (ab.treeTier(actor, "martial-weighted-weapons") >= 4 && ab.weightedHeld(actor, 4).length && !actor.statuses?.has("smashing")) rows.push(`<button type="button" class="fs-turn-start" data-op="smashing"><i class="fa-solid fa-hammer"></i> Smashing (⚡ ${ab.WEIGHTED_COST.smashing(bestWeapon(ab.weightedHeld(actor, 4)))})</button>`);
-  if (!rows.length || isDeclined(actor, "turnStart")) return;
+  if (!keep.handled.has("quicken") && ab.unarmoredT(actor, 4)) rows.push(`<button type="button" class="fs-turn-start" data-op="quicken"><i class="fa-solid fa-forward-fast"></i> Quicken (⚡ ${ab.UNARMORED_COST.quicken(actor)})</button>`);
+  if (!keep.handled.has("smashing") && ab.treeTier(actor, "martial-weighted-weapons") >= 4 && ab.weightedHeld(actor, 4).length && !actor.statuses?.has("smashing")) rows.push(`<button type="button" class="fs-turn-start" data-op="smashing"><i class="fa-solid fa-hammer"></i> Smashing (⚡ ${ab.WEIGHTED_COST.smashing(bestWeapon(ab.weightedHeld(actor, 4)))})</button>`);
+  // Every turn for a player's character (Energy and the rest); for anyone else only when there's something to use or report.
+  const report = keep.done.length || keep.failed.length;
+  if (isDeclined(actor, "turnStart") || !(rows.length || report || (actor.hasPlayerOwner && notes.length))) return;
+  const lines = [...notes, ...(keep.done.length ? [`Kept up: ${keep.done.join(", ")}.`] : []), ...(keep.failed.length ? [`<strong>Couldn't keep up:</strong> ${keep.failed.join(", ")}.`] : [])];
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     content: `<div class="flowstate-card"><header class="fs-card-title">Start of turn — ${esc(actor.name)}</header>
-      <div class="fs-notes">${kept ? "Berserk ends unless you maintain it. " : ""}Abilities you can use at the start of your turn:</div>
-      <div class="fs-brawl-row fs-turn-start-row" data-role="attacker" data-owner="${actor.uuid}">${rows.join("")}</div></div>`,
+      ${lines.map(l => `<div class="fs-notes">${l}</div>`).join("")}
+      ${rows.length ? `<div class="fs-notes">${kept ? "Berserk ends unless you maintain it. " : ""}Abilities you can use at the start of your turn:</div>
+      <div class="fs-brawl-row fs-turn-start-row" data-role="attacker" data-owner="${actor.uuid}">${rows.join("")}</div>` : ""}</div>`,
     flags: { flowstate: { startCard: { actor: actor.uuid, round: game.combat?.round ?? null, berserk: kept } } }
   });
 }
@@ -2947,14 +3197,51 @@ export async function shieldBounce(defenseMessage) {
 }
 
 /** Start of your turn for the later trees: Berserk would end, Unstoppable and Proper Stance end. Runs on the GM. */
-export async function treesTurnStart(actor) {
+export async function treesTurnStart(actor, { regain = null } = {}) {
   if (!actor?.isOwner) return;
   await clearParries(actor);
   await shroudTurnStart(actor);
   const kept = await berserkTurnStart(actor);
-  for (const st of ["unstoppable", "properStance", "quickened", "smashing"]) if (actor.statuses?.has(st)) await actor.toggleStatusEffect(st, { active: false });
+  const ended = [];
+  const names = { unstoppable: "Unstoppable", properStance: "Proper Stance", quickened: "Quickened", smashing: "Smashing" };
+  for (const st of ["unstoppable", "properStance", "quickened", "smashing"]) if (actor.statuses?.has(st)) { await actor.toggleStatusEffect(st, { active: false }); ended.push(names[st]); }
   await clearPlacedEffects(actor);
-  if (!helpless(actor)) await startOfTurnCard(actor, kept);
+  const notes = turnNotes.get(actor.uuid) ?? [];
+  turnNotes.delete(actor.uuid);
+  if (regain !== null && actor.system.energy) notes.unshift(`Energy +${regain} (${actor.system.energy.value}/${actor.system.energy.max}).`);
+  if (ended.length) notes.push(`Ended: ${ended.join(", ")}.`);
+  if (!helpless(actor)) await startOfTurnCard(actor, kept, notes);
+}
+
+/**
+ * Keep-up abilities (automation): paid at the start of the turn while Energy allows. Returns { done: [labels], failed: [labels] } and the keys it
+ * handled (their buttons aren't offered).
+ */
+async function keepUp(actor, kept) {
+  const want = auto.automationOf(actor).keep;
+  const done = [], failed = [], handled = new Set();
+  const pay = async (key, label, cost, apply) => {
+    handled.add(key);
+    if (inActiveCombat(actor) && actor.system.energy.value < cost) { failed.push(`${label} (needs ${cost} Energy)`); return; }
+    if (!(await spendEnergy(actor, cost, label))) { failed.push(label); return; }
+    await apply();
+    done.push(`${label} (${cost} Energy)`);
+  };
+  if (want.berserk) {
+    if (kept) await pay("berserk", kept.red ? "Berserk maintained (Seeing Red)" : "Berserk maintained", kept.cost, async () => { await setStatus(actor, "berserk", true); if (kept.red) await setStatus(actor, "seeingRed", true); });
+    else if (ab.treeTier(actor, ab.STRIKER) >= 2 && ab.strikerHeld(actor, 2).length) {
+      const cost = ab.STRIKER_COST.berserk(bestWeapon(ab.strikerHeld(actor, 2)));
+      await pay("berserk", "Berserk", cost, async () => { await setStatus(actor, "berserk", true); await actor.setFlag("flowstate", "berserkCost", cost); });
+    }
+  }
+  if (want.properStance && ab.treeTier(actor, ab.ASSAULT) >= 5 && ab.assaultHeld(actor, 5).length) {
+    await pay("properStance", "Proper Stance", ab.ASSAULT_COST.properStance(bestWeapon(ab.assaultHeld(actor, 5))), () => setStatus(actor, "properStance", true));
+  }
+  if (want.quicken && ab.unarmoredT(actor, 4)) await pay("quicken", "Quicken", ab.UNARMORED_COST.quicken(actor), () => setStatus(actor, "quickened", true));
+  if (want.smashing && ab.treeTier(actor, "martial-weighted-weapons") >= 4 && ab.weightedHeld(actor, 4).length) {
+    await pay("smashing", "Smashing", ab.WEIGHTED_COST.smashing(bestWeapon(ab.weightedHeld(actor, 4))), () => setStatus(actor, "smashing", true));
+  }
+  return { done, failed, handled };
 }
 
 /* ---- Reach Weapons: Palisade / Wall ---- */
@@ -4049,7 +4336,7 @@ export async function knockback(message) {
       <option value="away">Straight away from ${esc(attacker.name)}</option>
       ${Object.entries(DIRECTIONS).map(([k, d]) => `<option value="${k}">${d.label}</option>`).join("")}
       <option value="down">Down (into the ground: Force damage; prone if it is at least their height)</option>
-    </select></div>`, "Push");
+    </select></div>`, "Push", { remember: aimAt ? null : { actor: attacker, key: "kb" } });          // a targeted creature to knock into wins over the last pick
   if (!opts) return;
   if (knockbackUsed(message.id)) return;
   let feet = info.feet;
@@ -4544,6 +4831,38 @@ export function findFollowupCard(attackMessageId) {
 const followupCardInFlight = new Set();
 
 /**
+ * The follow-up planned in an attack's own dialog, if it still applies: "none" (no follow-up, no card), or the list entry to make. Only while the
+ * player who planned it is connected (they make it, on their client); otherwise the card is posted as usual.
+ */
+function plannedFollowup(msg) {
+  const plan = msg?.getFlag("flowstate", "attack")?.opts?.autoFollowup;
+  if (!plan || !game.users.get(plan.user)?.active) return null;
+  if (plan.pick === "none") return { none: true };
+  const [kind, itemId] = String(plan.pick).split(":");
+  const entry = msg.getFlag("flowstate", "followups")?.list?.find(x => x.kind === kind && x.itemId === itemId);
+  return entry ? { entry, plan } : null;
+}
+
+const autoFollowupInFlight = new Set();
+/** Make a follow-up planned in the first attack's dialog once the exchange is resolved (on the planner's client), with the options picked there. */
+export async function runAutoFollowup(msg) {
+  const planned = plannedFollowup(msg);
+  if (!planned?.entry || planned.plan.user !== game.user.id) return;
+  if (findFollowup(msg.id) || autoFollowupInFlight.has(msg.id) || !exchangeDone(msg)) return;
+  const f = msg.getFlag("flowstate", "followups");
+  const actor = await fromUuid(f.actor);
+  const item = actor?.items.get(planned.entry.itemId);
+  if (!actor?.isOwner || !item) return;
+  // The same targets as the first attack (the ones still standing).
+  const targets = (msg.getFlag("flowstate", "attack")?.targets ?? []).map(t => fromUuidSync(t.uuid)).filter(a => a && (a.system?.hp?.value ?? 1) > 0);
+  if (!targets.length) return;
+  autoFollowupInFlight.add(msg.id);
+  try {
+    await rollWeaponAttack(actor, item, { ...planned.entry, source: msg.id, targetActors: targets }, { preset: planned.plan.opts ?? {} });
+  } finally { autoFollowupInFlight.delete(msg.id); }
+}
+
+/**
  * Post an attack's follow-up buttons on their own card once its exchange is resolved. Also walks up to any attack
  * this one answers (a Riposte), since that attack's follow-ups wait for the Riposte to finish too.
  */
@@ -4553,7 +4872,7 @@ export async function postReadyFollowups(message) {
     await maybeBrawlingCard(msg);
     await maybeFlurryCard(msg);
     const f = msg.getFlag("flowstate", "followups");
-    if (f?.list?.length && !findFollowupCard(msg.id) && !followupCardInFlight.has(msg.id) && exchangeDone(msg)) {
+    if (f?.list?.length && !findFollowupCard(msg.id) && !followupCardInFlight.has(msg.id) && exchangeDone(msg) && !plannedFollowup(msg)) {
       followupCardInFlight.add(msg.id);
       try {
         const actor = await fromUuid(f.actor);
@@ -4836,7 +5155,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
       <button type="button" class="fs-dash-move" data-tooltip="Dash: move up to your speed now"><i class="fa-solid fa-person-running"></i> Dash: move (${slowedCost(target)} RP)</button></div>`);
   }
   // Brawling T4 Redirect: after a successful Parry or dodge against a melee attack.
-  if (o.melee && ab.brawl(target, 4) && ab.fists(target) && (result.parry?.success || (dodgeRoll && !result.hit && !result.parry))) {
+  if (o.melee && ab.brawl(target, 4) && ab.fists(target) && !isDeclined(target, "redirect") && (result.parry?.success || (dodgeRoll && !result.hit && !result.parry))) {
     extra.push(`<div class="fs-brawl-row fs-redirect-row" data-role="defender" data-owner="${entry.uuid}">
       <button type="button" class="fs-redirect" data-tooltip="Target a creature next to you first"><i class="fa-solid fa-shuffle"></i> Redirect (⚡ ${ab.BRAWLING_COST.redirect(target)})</button></div>`);
   }
@@ -5217,7 +5536,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   }
   if (dipZero && canSpend(target, "rp", 1)) parryRows += `<div class="fs-brawl-row fs-dip-row" data-role="defender" data-owner="${target.uuid}">
       <button type="button" class="fs-dip-move" data-tooltip="Brawling T2: the Dip took the whole hit; spend 1 RP to move your speed right away"><i class="fa-solid fa-person-walking-arrow-right"></i> Dip: move (1 RP)</button></div>`;
-  if (noDamage && o.melee && ab.brawl(target, 4) && ab.fists(target)) parryRows += `<div class="fs-brawl-row fs-redirect-row" data-role="defender" data-owner="${target.uuid}">
+  if (noDamage && o.melee && ab.brawl(target, 4) && ab.fists(target) && !isDeclined(target, "redirect")) parryRows += `<div class="fs-brawl-row fs-redirect-row" data-role="defender" data-owner="${target.uuid}">
       <button type="button" class="fs-redirect" data-tooltip="Target a creature next to you first"><i class="fa-solid fa-shuffle"></i> Redirect (⚡ ${ab.BRAWLING_COST.redirect(target)})</button></div>`;
   // Let it Rip! (Circular T3): the damage is repeated against the same target (a second hit through armor).
   let ripHTML = "";
@@ -5234,8 +5553,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (reachWeapon && outcome.toHp > 0) {
     const halfPain = Math.floor((target.system.hp?.pain ?? 0) / 2);
     reachRow = `<div class="fs-brawl-row fs-reach-row" data-role="attacker" data-owner="${attacker.uuid}">
-      ${o.pierce ? `<button type="button" class="fs-twist" data-tooltip="Reach T4: add your Pierce (${o.pierce}) as direct damage"><i class="fa-solid fa-rotate"></i> Twist +${o.pierce} (⚡ ${ab.REACH_COST.twist(reachWeapon)})</button>` : ""}
-      ${ab.reach(attacker, reachWeapon, 5) ? `<button type="button" class="fs-impale" data-tooltip="Reach T5: needs more direct damage than half of ${esc(target.name)}'s Pain Threshold (${halfPain}); grapples them on your weapon"><i class="fa-solid fa-thumbtack"></i> Impale (⚡ ${ab.REACH_COST.impale(reachWeapon)})</button>` : ""}</div>`;
+      ${o.pierce && !isDeclined(attacker, "twist") ? `<button type="button" class="fs-twist" data-tooltip="Reach T4: add your Pierce (${o.pierce}) as direct damage"><i class="fa-solid fa-rotate"></i> Twist +${o.pierce} (⚡ ${ab.REACH_COST.twist(reachWeapon)})</button>` : ""}
+      ${ab.reach(attacker, reachWeapon, 5) && !isDeclined(attacker, "impale") ? `<button type="button" class="fs-impale" data-tooltip="Reach T5: needs more direct damage than half of ${esc(target.name)}'s Pain Threshold (${halfPain}); grapples them on your weapon"><i class="fa-solid fa-thumbtack"></i> Impale (⚡ ${ab.REACH_COST.impale(reachWeapon)})</button>` : ""}</div>`;
   }
   await post(attacker, {
     title: `${esc(o.label || "Attack")} — Damage to ${esc(target.name)}`,

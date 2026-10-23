@@ -203,7 +203,16 @@ Bladed abilities work with Bladed weapons (any of a multi-type weapon's types on
 - **Ripostes now offer follow-ups:** a Riposte is an RP attack, so Fast and Solitary follow-ups trigger from it like any other attack (needed for Perfect Riposte).
 
 ## Start-of-turn card
-At the start of your turn a card lists the start-of-turn abilities you can use right then: Maintain Berserk / Berserk, Proper Stance, and Quicken. The buttons work for that turn only.
+One card at the start of each turn collects what happened: the Energy regained, Careful Steps' 2 AP (or that it lapsed), what ended (Limber, Unstoppable, Proper Stance, Quickened, Smashing), the abilities kept up automatically and the ones that couldn't be (not enough Energy), and buttons for the start-of-turn abilities you can still use (Maintain Berserk / Berserk, Proper Stance, Quicken, Smashing; that turn only). A player's character gets it every turn; a GM's creature only when there's something to use or report. Switched off in the Reaction List ("Start-of-turn abilities"), it isn't posted.
+
+## Automation and remembered picks
+- **Remembered picks:** the attack dialog (per weapon, the first attack and each kind of follow-up separately), Weapon Master's "attack as", Knockback's direction (unless a creature is targeted to knock them into) and the empty-gun choice open with what you picked last time. Not kept: the Advantage/Strengthened adjusters, aiming at an item, a Disarm pick.
+- **Empty gun:** with Quickload the only option (no Pepper, no Speedloader), it reloads without asking; otherwise the last pick is the default button.
+- **Planned follow-up:** when an attack can open a follow-up (Solitary with the same weapon, Fast with another held Fast weapon or the other fist), its dialog has a **Follow-up** section: decide after the attack (the usual card), no follow-up, or one of them, with that follow-up's own options. A planned follow-up is made on its own, by the player who planned it, once the exchange is resolved, with no card; if it isn't available after all (the first attack wasn't Fast, a Remise needs a hit), the card offers what is. A planned Remise is dropped quietly when the first attack missed, and options the Energy can't pay for are dropped (the follow-up still goes).
+- **Auto-Dodge** (Reaction List, Automation): the character answers every attack on its own, on its player's client (the GM's for a creature with no player). Turning it on asks which reactions to try first: Perfect Block, Perfect Parry, Distracting Fire, Dash, Close Quarters and Shift (with the Shift mode to use). Each is tried in that order when the attack offers it; one that can't be paid for, or doesn't apply, is skipped without a message. Then it dodges (after a Sword and Board shield attack has been answered).
+- **Auto-Limber:** Limber is taken whenever a card offers it and the Energy is there.
+- **Keep up** (Berserk, Proper Stance, Quicken, Smashing, each where the tree allows): paid at the start of each turn while the Energy is there. The start-of-turn card lists what was kept up and what couldn't be.
+- **Reaction List switches** also hide the Twist and Impale buttons (Reach) and the Redirect button (Brawling).
 
 ## Strength Methods (automated)
 - **T1 Intimidate:** a Persuasion or Deception roll with exactly one creature targeted notes when their counter roll has Disadvantage. Your Strength must beat theirs, doubled per size they're larger (halved per size smaller).

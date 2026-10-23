@@ -157,7 +157,7 @@ class FlowStateCombat extends Combat {
       // Medium Armor (Limber, Versatility, Careful Steps) and Rapid Marks.
       await actions.mediumTurnStart(combatant.actor);
       await actions.clearMarks(combatant.actor);
-      await actions.treesTurnStart(combatant.actor);
+      await actions.treesTurnStart(combatant.actor, { regain: e ? regain : null });
       // Spell effects this creature put on others end now (Shield, Slam's dodge penalty); Rituals' last until the Ritual ends.
       await actions.mentalBeforeClear(combatant.actor);
       await actions.clearSpellEffects(combatant.actor);
@@ -553,13 +553,18 @@ Hooks.on("createChatMessage", message => {
   if (card) ui.chat?.updateMessage?.(card);
 });
 
+/** Automation: Auto-Dodge answers attacks, Auto-Limber takes Limber (each on the character's answering client). */
+Hooks.on("createChatMessage", message => {
+  if (message.getFlag("flowstate", "attack")) setTimeout(() => actions.autoDefend(message), 400);
+  if (String(message.content ?? "").includes("fs-limber")) setTimeout(() => actions.autoLimber(message), 200);
+});
+
 /**
  * Follow-ups wait until the whole exchange is resolved (responses, damage, Riposte), then get their own card.
  * One client does the posting: the active GM, or the message's author when no GM is connected.
  */
 Hooks.on("createChatMessage", message => {
   const responsible = game.users.activeGM ? game.user.isActiveGM : message.author?.id === game.user.id;
-  if (!responsible) return;
   const f = k => message.getFlag("flowstate", k);
   let attackMsg = null;
   if (f("attack") || f("followups")) attackMsg = message;
@@ -570,7 +575,10 @@ Hooks.on("createChatMessage", message => {
     const def = src?.getFlag("flowstate", "defense") ?? game.messages.get(src?.getFlag("flowstate", "damage")?.defenseMessage)?.getFlag("flowstate", "defense");
     attackMsg = game.messages.get(def?.attackMessage);
   }
-  if (attackMsg) setTimeout(() => actions.postReadyFollowups(attackMsg), 0);
+  if (!attackMsg) return;
+  if (responsible) setTimeout(() => actions.postReadyFollowups(attackMsg), 0);
+  // A follow-up planned in the attack's own dialog is made by the player who planned it, on their client.
+  setTimeout(() => actions.runAutoFollowup(attackMsg), 0);
 });
 
 /** Someone went offline: questions waiting on them are answered "no", and requests waiting on a GM who left are dropped. */

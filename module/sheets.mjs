@@ -6,6 +6,7 @@ import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
 } from "./martial.mjs";
 import * as reactionRules from "./reactions.mjs";
+import * as automationRules from "./automation-rules.mjs";
 import * as actions from "./actions.mjs";
 import * as casting from "./casting.mjs";
 import * as fociEngine from "./foci.mjs";
@@ -818,7 +819,25 @@ export function buildReactionList(actor) {
     detail: `${r.tip} ${r.off ? (r.card ? "The card isn't posted." : "You are not asked: it counts as no.") : (r.card ? "The card is posted when it comes up." : "A popup asks you when it comes up.")}`,
     cost: r.off ? "Off: click to turn on" : "On: click to turn off", action: "martial", op: `reaction:${r.key}`, icon: r.off ? "fa-solid fa-bell-slash" : "fa-solid fa-bell", off: r.off });
   const popups = list.filter(r => !r.card).map(row), cards = list.filter(r => r.card).map(row);
-  return [...(popups.length ? [{ key: "react-popups", name: "Popups", actions: popups }] : []), ...(cards.length ? [{ key: "react-cards", name: "Offer cards", actions: cards }] : [])];
+  return [...automationRows(actor), ...(popups.length ? [{ key: "react-popups", name: "Popups", actions: popups }] : []), ...(cards.length ? [{ key: "react-cards", name: "Offer cards", actions: cards }] : [])];
+}
+
+/** The Reaction List's Automation group: Auto-Dodge (with its setup), Auto-Limber, and keeping start-of-turn abilities up. */
+function automationRows(actor) {
+  const a = automationRules.automationOf(actor);
+  const tier = id => skills.tierOf(actor.system.trees, id);
+  const onOff = on => ({ cost: on ? "On: click to turn off" : "Off: click to turn on", icon: on ? "fa-solid fa-toggle-on" : "fa-solid fa-toggle-off", off: !on });
+  const tries = automationRules.dodgeTries(a).map(k => automationRules.DODGE_TRIES.find(t => t.key === k).label);
+  const rows = [{ label: `Auto-Dodge: ${a.dodge.on ? "on" : "off"}`, action: "martial", op: "auto:dodge", ...onOff(a.dodge.on),
+    detail: `Dodge every attack on your own${a.dodge.on && tries.length ? `, trying ${tries.join(", ")} first when they're offered and affordable` : ""}. Turning it on asks which reactions to try.` }];
+  if (tier("martial-medium-armor") >= 1) rows.push({ label: `Auto-Limber: ${a.limber ? "on" : "off"}`, action: "martial", op: "auto:limber", ...onOff(a.limber), detail: "Take Limber whenever it's offered and the Energy is there." });
+  const can = { berserk: tier("martial-striker-weapons") >= 2, properStance: tier("martial-assault-weapons") >= 5, quicken: tier("martial-unarmored") >= 4, smashing: tier("martial-weighted-weapons") >= 4 };
+  for (const k of automationRules.KEEP_UP) {
+    if (!can[k.key]) continue;
+    rows.push({ label: `Keep up ${k.label}: ${a.keep[k.key] ? "on" : "off"}`, action: "martial", op: `auto:keep:${k.key}`, ...onOff(a.keep[k.key]),
+      detail: `${k.tip} Paid at the start of each turn while the Energy is there; the start-of-turn card says when it couldn't be.` });
+  }
+  return [{ key: "react-auto", name: "Automation", actions: rows }];
 }
 
 /**
@@ -1249,6 +1268,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   }
   static onMartial(event, target) {
     const actor = this.document;
+    if (target.dataset.op?.startsWith("auto:")) return actions.toggleAutomation(actor, target.dataset.op.slice(5));
     if (target.dataset.op?.startsWith("reaction:")) {
       const key = target.dataset.op.slice(9);
       return actor.setFlag("flowstate", "autoDecline", { [key]: reactionRules.toggledTo(actor, key) });

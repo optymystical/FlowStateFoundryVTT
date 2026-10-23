@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.78.0:** Fewer clicks. Dialogs remember what you picked last time (attacks per weapon, "attack as", Knockback direction, the empty-gun choice), and an empty gun with only Quickload reloads without asking. An attack's dialog can plan its follow-up (Solitary or Fast, with its own options): it's made on its own once the exchange is resolved, with no card. New in the Reaction List's **Automation** group: **Auto-Dodge** (dodges for you, trying the reactions you pick first when they're affordable), **Auto-Limber**, and **Keep up** for Berserk, Proper Stance, Quicken and Smashing. The start-of-turn card now comes every turn for player characters and collects the turn's start: Energy regained, Careful Steps, what ended, what was kept up and what couldn't be. Twist, Impale and Redirect buttons can be switched off.
+
 **0.77.1:** The start-of-turn card offers Smashing (it was left off: the card checked "only on your own turn" before the turn had begun).
 
 **0.77.0:** From the updated docs: Smash (Weighted T4) is now **Smashing**, a start-of-turn ability (2 × Scaling Stat min Energy; the turn card and the Action List's Weighted Weapons group). Until your next turn, each Strengthened stack on a Weighted attack adds half the base Knockback to it; Weakened never takes it below the baseline. Light Blast weapons are Area, Pierce, Cleave (Pepper is gone).

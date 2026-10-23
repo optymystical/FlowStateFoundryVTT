@@ -63,5 +63,11 @@ console.log("== A tree not open yet");
 v = await view(mk({}), { tree: "martial-titanic-armor" });
 ok(/Opens at Martial Theory Tier/.test(v.ctx.skillView.lockedNote), "Showing a locked tree says what opens it");
 
+console.log("== Icons: the Tenet's numbers are scaled");
+const { iconTenet } = await import("../../module/sheets.mjs");
+const it = iconTenet({ tenet: "mental-below-nightmare:weight", profile: { tenet: { mult: 3 } } });
+ok(it?.mult === 3 && /45 Slow stacks/.test(it.text) && !/15 Slow stacks/.test(it.text), "Weight at ×3: 45 Slow stacks on the Icon sheet and in the Equipment table");
+ok(/15 Slow stacks/.test(iconTenet({ tenet: "mental-below-nightmare:weight", profile: { tenet: { mult: 1 } } }).text) && iconTenet({ tenet: "" }) === null, "×1 reads as the doc; no Tenet, nothing");
+
 console.log(fails ? `${fails} FAILED` : "All Skills tab checks passed");
 if (fails) process.exit(1);

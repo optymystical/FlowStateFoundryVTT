@@ -42,7 +42,7 @@
     <p class="hint">Attuning takes 6 AP in combat (free outside it); only one Icon at a time. While attuned it works from anywhere on your body, and swapping the Tenet costs the Attune cost again.</p>
   </section>
   {{#if tenetInfo}}
-  <section class="fs-material"><h3>Tenet: {{tenetInfo.name}}</h3><p>{{tenetInfo.text}}</p></section>
+  <section class="fs-material"><h3>Tenet: {{tenetInfo.name}} <span class="fs-sub" data-tooltip="Its bolded numbers × this: its Wonder's stat ÷ 10{{#unless p.natural}}, capped by Grade{{/unless}}">×{{tenetInfo.mult}}</span></h3><p>{{tenetInfo.text}}</p></section>
   {{/if}}
   {{/if}}
 </div>

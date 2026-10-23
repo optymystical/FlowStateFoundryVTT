@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.4:** Icons: the Tenet text on an Icon's sheet has its bolded numbers worked out for the Icon's Tenet multiplier (shown beside it), and the Equipment tab's Icons table shows the multiplier with the scaled text on hover.
+
 **0.75.3:** Skills tab: the notes under the tree list (how many more trees open later, Generic coming soon) are gone.
 
 **0.75.2:** Skills tab: each group of the tree list (Pinned, Your trees, and each Archetype's "can start") collapses with a click on its heading, and shows how many trees it holds. The sheet remembers which are collapsed, per character; searching opens them all.

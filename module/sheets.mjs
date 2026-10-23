@@ -1006,7 +1006,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     const affixCost = lost => lost?.affix ? `Attuned Affixes cost ${lost.affix}% speed` : "Free Affixes cover every attuned Affix";
     const icons = actor.items.filter(i => i.type === "icon").map(i => {
       const p = i.system.profile;
-      return { id: i.id, name: i.name, img: i.img, system: i.system, profile: p, tenetName: i.system.tenet ? mentalRules.wonderById(i.system.tenet.split(":")[0])?.tenet?.name ?? "" : "" };
+      const tn = iconTenet(i.system);
+      return { id: i.id, name: i.name, img: i.img, system: i.system, profile: p, tenetName: tn?.name ?? "", tenetText: tn?.text ?? "", tenetMult: tn?.mult ?? 1 };
     });
     const collapsed = collapsedFor(actor.uuid);
     const actionGroups = buildActionList(actor, weapons, stats).map(g => ({ ...g, open: !collapsed.has(g.key) }));
@@ -1440,6 +1441,14 @@ export class FlowStateFociSheet extends FlowStateItemSheet {
   }
 }
 
+/** An Icon's Tenet with its bolded numbers worked out for the Icon's Tenet multiplier (its Wonder's stat ÷ 10, capped by Grade): { name, text, mult } or null. */
+export function iconTenet(sys) {
+  const tenet = sys?.tenet ? mentalRules.wonderById(sys.tenet.split(":")[0])?.tenet : null;
+  if (!tenet) return null;
+  const mult = sys.profile?.tenet?.mult ?? 1;
+  return { name: tenet.name, mult, text: mentalRules.scaleMentalText(tenet.text, mult, tenet.name) };
+}
+
 /** Mental Icon: Form (its Ward), Grade, attunement and the chosen Tenet. */
 export class FlowStateIconSheet extends FlowStateItemSheet {
   static DEFAULT_OPTIONS = { position: { width: 540, height: 600 } };
@@ -1456,7 +1465,7 @@ export class FlowStateIconSheet extends FlowStateItemSheet {
       p,
       forms: mentalRules.formGroups(),
       tenets: Object.fromEntries([["", "— No Tenet —"], ...known.map(w => [w.tenet.id, `${w.tenet.name} (${w.name})`])]),
-      tenetInfo: sys.tenet ? mentalRules.wonderById(sys.tenet.split(":")[0])?.tenet : null,
+      tenetInfo: iconTenet(sys),
       alignLabel: form ? mentalRules.KINDS[form.align].label : "",
       baneChoice: sys.form === "bane",
       categories: { physical: "Physical", elemental: "Elemental", magical: "Magical" },

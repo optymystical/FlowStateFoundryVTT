@@ -146,7 +146,7 @@
         <td><button type="button" class="fs-toggle {{#if system.attuned}}on{{/if}}" data-action="{{#if @root.inCombat}}attuneIcon{{else}}toggleField{{/if}}" data-field="attuned" data-tooltip="{{#if system.attuned}}Attuned (click to unattune){{else}}Attune (6 AP in combat, free outside it; one Icon at a time){{/if}}"><i class="fa-solid fa-link"></i></button></td>
         <td><a data-action="editItem" class="fs-item-link">{{name}}</a>{{#if profile.valid}} <span class="fs-tag" data-tooltip="{{profile.align}} Form">{{profile.name}}</span>{{/if}}<div class="fs-sub">{{#if profile.valid}}<strong>{{profile.align}}</strong> · {{#if system.natural}}Natural{{else}}G{{system.grade}}{{/if}} · Ward ×{{profile.wardMult}}{{else}}<span class="fs-warn">{{profile.error}}</span>{{/if}}</div></td>
         <td class="fs-sub">{{#if profile.valid}}{{profile.ward}}{{/if}}</td>
-        <td class="fs-sub">{{#if tenetName}}{{tenetName}}{{else}}—{{/if}}</td>
+        <td class="fs-sub">{{#if tenetName}}<span data-tooltip="{{tenetText}}">{{tenetName}} ×{{tenetMult}}</span>{{else}}—{{/if}}</td>
         <td class="fs-row-actions">
           {{#if ../editable}}<button type="button" data-action="deleteItem" data-tooltip="Drop or delete"><i class="fa-solid fa-trash"></i></button>{{/if}}
         </td>

@@ -296,6 +296,15 @@ async function attack(actor, me, plan, target, extra = {}) {
   const opts = extra.followup ? {} : treeOptions(actor, plan.item, { me, target, pepper: extra.pepper });
   if (extra.mode !== "throw") { delete opts.ho; delete opts.wga; }          // Ho! and What Goes Around are for throws only
   if (!extra.area) delete opts.cone; else stat(actor).cones = (stat(actor).cones ?? 0) + 1;
+  // An Area hits every targeted creature: a ranged Area everyone within its radius of the target, a melee one (Spin, Spin Cycle, Whirlwind)
+  // every foe in reach. (Targeting only the main creature made Area attacks look worse than they are.)
+  if (!extra.followup && (extra.area || opts.spin || opts.spinCycle || opts.whirlwind)) {
+    const foes = foesOf(me.parent, me);
+    const p = plan.item.system.profile;
+    const inArea = extra.area ? foes.filter(f => f.id !== target.id && dist(f, target) <= (p.area === 2 ? 10 : 5))
+      : foes.filter(f => f.id !== target.id && dist(me, f) <= reachOf(actor) * (p.farstrike || 1) + 0.01);
+    setTargets(target, ...inArea);
+  }
   SIM.fill = () => ({ mode: extra.mode ?? (plan.ranged ? (extra.far ? "r2" : "r1") : "strike"), pepper: extra.pepper ?? 0, area: !!extra.area,
     grapple: !!extra.grapple, weight: extra.weight ?? undefined, ...opts, ...(extra.followup ? followupOptions(actor, plan.item, target) : {}), ...(extra.extraFill ?? {}) });
   SIM.acting = actor.name;
@@ -534,7 +543,7 @@ async function answerCard() {
     const tsRow = doc.querySelector(".fs-turn-start-row");
     if (tsRow) {
       const who = ownerOf(tsRow.querySelector(".fs-turn-start") ?? tsRow);
-      for (const op of ["maintain", "berserk", "properStance", "quicken", "smashing"]) {
+      for (const op of ["maintain", "berserk", "properStance", "quicken"]) {
         if (!tsRow.querySelector(`.fs-turn-start[data-op="${op}"]`) || !once(`ts:${op}`, true)) continue;
         if (op === "berserk" && tsRow.querySelector('.fs-turn-start[data-op="maintain"]')) continue;
         if (!who || !sim(who).id || energyOf(who) < 25) { if (who) note(who, `${op}:skipped`); continue; }
@@ -720,6 +729,12 @@ const tier = (actor, tree) => Number(actor.system.trees?.[tree]) || 0;
  */
 async function stances(actor, me) {
   const s = stat(actor);
+  // Smashing (Weighted T4): a start-of-turn status, from the Action List. It is ended here first too, in case the active GM's client (which
+  // runs turn starts) has older code that doesn't end it.
+  if (tier(actor, "martial-weighted-weapons") >= 4) {
+    if (actor.statuses.has("smashing")) await actor.toggleStatusEffect("smashing", { active: false });
+    if (energyOf(actor) >= 25 && await runRow(actor, /^Smashing/)) note(actor, "smashing");
+  }
   if (tier(actor, "martial-medium-armor") >= 5 && !actor.getFlag("flowstate", "versatility")) await runRow(actor, /^Versatility/, { ability: sim(actor).role === "tank" ? "brace" : "shift" });
   const parryCost = w => w.system.profile?.capped ?? 99;
   if (tier(actor, "martial-theory") >= 1) {

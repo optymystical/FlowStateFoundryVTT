@@ -539,3 +539,9 @@ PASSES["focus-blast-nopepper"] = { id: "focus-blast-nopepper", note: "Light Blas
 
 // Smashing (start of turn: Strengthened adds to Knockback) and Light Blast as Area, Pierce, Cleave (v0.77.0).
 PASSES["focus-smash-blast-2"] = { ...PASSES["focus-smash-blast"], id: "focus-smash-blast-2", note: "Smashing (v0.77.0) and Light Blast as Area, Pierce, Cleave." };
+
+// The Blasts again after the sim fix (an Area now targets everyone in it), Light Blast as Area, Pierce, Cleave (v0.77.1).
+const B3 = RETEST.filter(b => b.id.startsWith("blast"));
+PASSES["focus-blast-3"] = { id: "focus-blast-3", note: "Blasts with the Area targeting fix; Light Blast as Area, Pierce, Cleave.",
+  party: [{ ...PARTY_BENCH[0], loadouts: B3.map(b => ({ ...b, armor: null })) }], monsters: RETEST_DUMMIES, deploy: "bench", maxRounds: 4,
+  encounters: B3.flatMap((b, rotation) => ["light", "heavy", "cluster", "bare"].flatMap(group => [1, 2].map(i => ({ id: `${b.id}~${group}~${i}`, group, rotation })))) };

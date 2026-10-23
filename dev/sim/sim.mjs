@@ -22,7 +22,9 @@ SIM.status = SIM.status ?? "idle";
 
 /* ---- Waiting without timers (a hidden tab throttles setTimeout to once a second, or once a minute) ---- */
 
-const tick = () => new Promise(r => { const c = new MessageChannel(); c.port1.onmessage = () => r(); c.port2.postMessage(0); });
+// One channel for every tick: a new MessageChannel per tick leaks (open ports aren't collected), and the tab ran out of memory in long fights.
+SIM._chan = SIM._chan ?? (() => { const c = new MessageChannel(), q = []; c.port1.onmessage = () => q.shift()?.(); return { c, q }; })();
+const tick = () => new Promise(r => { SIM._chan.q.push(r); SIM._chan.c.port2.postMessage(0); });
 const idle = async ms => { const end = Date.now() + ms; while (Date.now() < end) await tick(); };
 async function waitFor(fn, ms = 4000) {
   const end = Date.now() + ms;
@@ -247,6 +249,9 @@ async function approach(actor, me, target, range) {
   if (!spot) return 0;
   const from = { x: me._source.x, y: me._source.y };
   if (spot.x === from.x && spot.y === from.y) return 0;
+  // Trudge (Heavy Armor T2): this move ignores the armor's speed penalty.
+  const armorW = actor.items.find(i => i.type === "armor" && i.system.equipped)?.system?.weight;
+  if (["heavy", "titanic"].includes(armorW) && tier(actor, "martial-heavy-armor") >= 2 && energyOf(actor) >= 10) await runRow(actor, /^Trudge/);
   const max = MR.maxMove(Act.moveLedger(actor), { ...Act.moveParams(actor), ap: actor.system.ap.value });
   let dest = spot;
   if (feetTo(me, spot.x, spot.y) > max + 0.01) {
@@ -263,6 +268,7 @@ async function approach(actor, me, target, range) {
   await idle(150);
   const moved = Math.hypot(me._source.x - from.x, me._source.y - from.y) / me.parent.grid.size * me.parent.grid.distance;
   stat(actor).moved += moved;
+  stat(actor).turnMoved = (stat(actor).turnMoved ?? 0) + moved;
   return moved;
 }
 
@@ -281,8 +287,9 @@ async function attack(actor, me, plan, target, extra = {}) {
   setTargets(target);
   const before = new Set(game.messages.keys());
   const opts = extra.followup ? {} : treeOptions(actor, plan.item, { me, target, pepper: extra.pepper });
+  if (extra.mode !== "throw") delete opts.ho;                    // Ho! is for throws only
   SIM.fill = () => ({ mode: extra.mode ?? (plan.ranged ? (extra.far ? "r2" : "r1") : "strike"), pepper: extra.pepper ?? 0, area: !!extra.area,
-    grapple: !!extra.grapple, weight: extra.weight ?? undefined, ...opts, ...(extra.followup ? followupOptions(actor, plan.item, target) : {}) });
+    grapple: !!extra.grapple, weight: extra.weight ?? undefined, ...opts, ...(extra.followup ? followupOptions(actor, plan.item, target) : {}), ...(extra.extraFill ?? {}) });
   SIM.acting = actor.name;
   try { await Act.rollWeaponAttack(actor, plan.item, extra.followup ?? null); } catch (err) { log.errors.push(`attack ${actor.name}: ${err.stack?.slice(0, 400)}`); }
   const msg = await waitFor(() => game.messages.contents.find(m => !before.has(m.id) && m.getFlag("flowstate", "attack")?.attacker === actor.uuid), 3000);
@@ -305,19 +312,42 @@ function treeOptions(actor, item, { me = null, target = null, pepper = 0 } = {})
   let budget = (actor.system.energy?.value ?? 0) - RESERVE;
   const take = cost => (budget >= cost ? ((budget -= cost), true) : false);
   const p = item?.system?.profile ?? {};
+  const type = item?.system?.weaponType ?? "", weight = item?.system?.weight ?? "";
   const min = minOf(p.capped), dexMin = minOf(effStat(actor, "dex")), strMin = minOf(effStat(actor, "str"));
   const crowd = me ? foesOf(me.parent, me).filter(f => dist(me, f) <= reachOf(actor) * (p.farstrike || 1) + 0.01).length : 0;
   const prone = !!target?.actor?.statuses?.has("prone");
-  const o = {};
-  if (crowd >= 2) { if (take(2 * min)) o.whirlwind = ["blender", "on"]; else if (take(min)) o.whirlwind = "on"; }
-  if (crowd >= 2 && take(min)) o.spinCycle = true;
-  if (take(Math.floor(min / 2))) o.quickStrike = true;
-  if (take(2 * min)) { o.slice = ["both", "pierce"]; o.slam = ["both", "knockback"]; } else if (take(min)) { o.slice = "pierce"; o.slam = "knockback"; }
-  if (take(dexMin)) { o.twinFang = ["adv", "str"]; o.twinFangPick = "adv"; }          // Twin Fang is a choice: Advantage (or Strengthened)
   const s = F && actor ? stat(actor) : {};
-  const lash = prone || s.lastTech === "kick";
-  if (lash ? take(2 * strMin) : take(strMin)) { o.heavyTech = lash ? ["dragon", "kick"] : ["kick", "dragon"]; s.lastTech = lash ? "dragon" : "kick"; }
-  if (pepper && take(min)) o.spinDown = true;
+  const alt = (key, list) => { s[key] = ((s[key] ?? -1) + 1) % list.length; return list.slice(s[key]).concat(list.slice(0, s[key])); };          // take turns between choices
+  const o = {};
+  // Martial T1 trees.
+  if (type === "bladed" && crowd >= 2) { if (take(2 * min)) o.whirlwind = ["blender", "on"]; else if (take(min)) o.whirlwind = "on"; }
+  if (type === "balanced") {
+    if (crowd >= 2 && take(min)) o.spinCycle = true;
+    if (take(2 * min)) { o.slice = ["both", "pierce"]; o.slam = ["both", "knockback"]; } else if (take(min)) { o.slice = "pierce"; o.slam = "knockback"; }
+  }
+  if (type === "swift" && take(Math.floor(min / 2))) o.quickStrike = true;
+  if (type === "unarmed") {
+    if (take(dexMin)) { o.twinFang = ["adv", "str"]; o.twinFangPick = "adv"; }
+    const lash = prone || s.lastTech === "kick";
+    if (lash ? take(2 * strMin) : take(strMin)) { o.heavyTech = lash ? ["dragon", "kick"] : ["kick", "dragon"]; s.lastTech = lash ? "dragon" : "kick"; }
+  }
+  if (type === "rapid" && pepper && take(min)) o.spinDown = true;
+  // Martial T2 trees.
+  if (type === "striker" && take(Math.floor(min / 2))) o.rend = true;
+  if (type === "weighted") {
+    if (weight === "light" && take(min)) o.controlled = alt("ctl", [["both", "adv", "solitary"], ["both", "solitary", "adv"]])[0];
+    if (weight === "heavy" && take(min)) o.wild = alt("wild", [["both", "str2"], ["both", "bashPlus"], ["both", "bashStr"]])[0];
+    if (crowd >= 2 && take(min)) o.spin = true;
+    if (take(Math.floor(min / 2))) o.smash = true;
+  }
+  if (type === "assault") {
+    const moved = (s.turnMoved ?? 0) > 0;
+    if (!moved && sim(actor).role === "ranged") { o.takeAim = alt("aim", [["adv", "str"], ["str", "adv"]])[0]; o.coolBreath = true; }
+    else if (take(min)) o.takeAim = alt("aim", [["adv", "str"], ["str", "adv"]])[0];
+  }
+  if (weight === "heavy" && type !== "unarmed" && take(2 * strMin)) o.heave = true;
+  if (type !== "defender" && actor.items.some(i => i.type === "weapon" && i.system.held && i.system.weaponType === "defender") && take(min)) o.swordBoard = true;
+  if (take(strMin)) o.ho = ["2", "1"];
   return o;
 }
 
@@ -372,8 +402,30 @@ async function answerDefense() {
       SIM.acting = t.name;
       const has = c => !!doc.querySelector(`.fs-defend[data-choice="${c}"][data-index="${i}"]`);
       const energy = (t.system.energy?.value ?? 0) - RESERVE;
+      // Ally help (one button per target; a picker of who and how): Perfect Block first, then Block, then Shield Toss to guard, then anything else.
+      if (!handled.has(`${key}|ally`) && doc.querySelector(`.fs-ally-help[data-index="${i}"]`)) {
+        handled.add(`${key}|ally`);
+        const owners = (doc.querySelector(`.fs-ally-help[data-index="${i}"]`)?.closest(".fs-ally-row")?.dataset.owners ?? "").split(",").filter(Boolean);
+        const helper = owners.map(u => fromUuidSync(u)).find(a => a && sim(a).id && a.uuid !== t.uuid && !down(a) && sim(a).party === sim(t).party);
+        if (helper) {
+          let picked = "";
+          SIM.acting = helper.name;
+          SIM.fill = (title, content, form) => {
+            const opts = [...(form.querySelector('select[name="pick"]')?.options ?? [])];
+            const rank = o => (/perfect/i.test(o.text) ? 0 : /shield toss/i.test(o.text) ? 2 : /block/i.test(o.text) ? 1 : 3);
+            const best = opts.filter(o => !/perfect/i.test(o.text) || energyOf(helper) >= 15).sort((x, y) => rank(x) - rank(y))[0];
+            picked = best?.text ?? "";
+            return best ? { pick: best.value } : {};
+          };
+          try { await Act.allyHelp(msg, i); } catch (err) { log.errors.push(`ally help ${helper.name}: ${err.stack?.slice(0, 400)}`); }
+          note(helper, /perfect/i.test(picked) ? "allyPerfectBlock" : /shield toss/i.test(picked) ? "allyShieldToss" : /block/i.test(picked) ? "allyBlock" : picked ? `allyHelp:${picked.split(" ")[0]}` : "allyHelp:none");
+          return true;
+        }
+      }
       let choice = "dodge";
-      if (has("closeQuarters") && !handled.has(`${key}|cq`) && energy >= 10) { choice = "closeQuarters"; handled.add(`${key}|cq`); }
+      if (has("perfectBlock") && !handled.has(`${key}|pb`) && energy >= 15) { choice = "perfectBlock"; handled.add(`${key}|pb`); }
+      else if (has("distract") && !handled.has(`${key}|df`) && energy >= 10) { choice = "distract"; handled.add(`${key}|df`); }
+      else if (has("closeQuarters") && !handled.has(`${key}|cq`) && energy >= 10) { choice = "closeQuarters"; handled.add(`${key}|cq`); }
       else if (has("shift") && !handled.has(`${key}|shift`) && energy >= 10) { choice = "shift"; handled.add(`${key}|shift`); }
       else handled.add(`${key}|dodge`);
       SIM.fill = () => ({ mode: "dis" });
@@ -425,6 +477,34 @@ async function answerCard() {
           SIM.fill = () => treeOptions(who, item);
           await Act.riposte(msg, { perfect: pick.dataset.perfect === "1", itemUuid: pick.dataset.item || null });
         } else { if (who) note(who, "noRiposte"); await Act.declineRiposte(msg); }
+        return true;
+      }
+    }
+    // Start-of-turn card: Maintain Berserk (else Berserk) and Proper Stance, while Energy allows.
+    const tsRow = doc.querySelector(".fs-turn-start-row");
+    if (tsRow) {
+      const who = ownerOf(tsRow.querySelector(".fs-turn-start") ?? tsRow);
+      for (const op of ["maintain", "berserk", "properStance"]) {
+        if (!tsRow.querySelector(`.fs-turn-start[data-op="${op}"]`) || !once(`ts:${op}`, true)) continue;
+        if (op === "berserk" && tsRow.querySelector('.fs-turn-start[data-op="maintain"]')) continue;
+        if (!who || !sim(who).id || energyOf(who) < 25) { if (who) note(who, `${op}:skipped`); continue; }
+        SIM.acting = who.name; SIM.fill = () => ({});
+        note(who, op);
+        try { await Act.startOfTurn(msg, op); } catch (err) { log.errors.push(`${op} ${who.name}: ${err.stack?.slice(0, 400)}`); }
+        return true;
+      }
+    }
+    // Bounce (Defender T4): the Shield Toss goes on to another foe within throw range of the one it hit.
+    const bounce = doc.querySelector(".fs-bounce");
+    if (bounce && once("bounce", true)) {
+      const who = ownerOf(bounce), def = msg.getFlag("flowstate", "defense");
+      const hitTok = fromUuidSync(def?.target ?? "")?.getActiveTokens?.()[0]?.document;
+      const me = who?.getActiveTokens?.()[0]?.document;
+      const next = me && hitTok ? foesOf(me.parent, me).filter(f => f.id !== hitTok.id && dist(f, hitTok) <= 100).sort((a, b) => dist(a, hitTok) - dist(b, hitTok))[0] : null;
+      if (who && next) {
+        setTargets(next); SIM.acting = who.name; SIM.fill = () => ({});
+        note(who, "bounce");
+        try { await Act.shieldBounce(msg); } catch (err) { log.errors.push(`bounce ${who.name}: ${err.stack?.slice(0, 400)}`); }
         return true;
       }
     }
@@ -530,7 +610,7 @@ async function pushBack(card) {
   setTargets(other ?? null);
   const before = new Set(game.messages.keys());
   SIM.acting = attacker.name;
-  SIM.fill = () => ({ dir });
+  SIM.fill = () => ({ dir, crunch: energyOf(attacker) >= 20 });
   try { await Act.knockback(card); } catch (err) { log.errors.push(`knockback ${attacker.name}: ${err.stack?.slice(0, 400)}`); return; }
   const s = stat(attacker);
   s.knockbacks = s.knockbacks ?? {};
@@ -547,7 +627,7 @@ const actionRows = actor => Sheets.buildActionList(actor, Sheets.weaponRows(acto
 
 /** Run the first Action List row whose label matches (and isn't already active or disabled). */
 async function runRow(actor, re, fill = {}) {
-  const row = actionRows(actor).find(r => re.test(r.label) && !/\(active/.test(r.label) && !r.disabled);
+  const row = actionRows(actor).find(r => re.test(r.label) && !/\((active|ready)/.test(r.label) && !r.disabled);
   if (!row) return false;
   SIM.acting = actor.name;
   SIM.fill = () => fill;
@@ -574,7 +654,12 @@ async function stances(actor, me) {
     if (guard && energyOf(actor) >= parryCost(guard) + 20) await runRow(actor, new RegExp(`^Parry: ${guard.name.replace(/[()]/g, ".")}`));
   }
   const stancesOn = sim(actor).stances !== false;
-  if (stancesOn && tier(actor, "martial-medium-armor") >= 2) {
+  const armorW = actor.items.find(i => i.type === "armor" && i.system.equipped)?.system?.weight;
+  if (stancesOn && ["heavy", "titanic"].includes(armorW) && tier(actor, "martial-heavy-armor") >= 1 && energyOf(actor) >= effStat(actor, "con") + 30)
+    await runRow(actor, /^Brace/, { harden: tier(actor, "martial-heavy-armor") >= 4 && energyOf(actor) >= effStat(actor, "con") + minOf(effStat(actor, "con")) + 30 });
+  if (tier(actor, "martial-strength-methods") >= 5 && energyOf(actor) >= 2 * minOf(effStat(actor, "str")) + 40) await runRow(actor, /^Unstoppable/);
+  if (tier(actor, "martial-striker-weapons") >= 4 && actor.statuses.has("berserk") && energyOf(actor) >= 25) await runRow(actor, /^Seeing Red/);
+  if (stancesOn && armorW === "medium" && tier(actor, "martial-medium-armor") >= 2) {
     const free = actor.getFlag("flowstate", "versatility") === "brace";
     if (free || energyOf(actor) >= effStat(actor, "con") + 30) await runRow(actor, /^Brace/);
   }
@@ -605,6 +690,7 @@ async function endOfTurn(actor) {
 
 /** The AI's turn: stances, then act, then the end of the turn; the chat is settled after each. */
 async function takeTurn(actor, me) {
+  await settle();                                   // the start-of-turn card first (Berserk), so stances can see it (Seeing Red)
   await stances(actor, me);
   await settle();
   await actTurn(actor, me);
@@ -617,6 +703,7 @@ async function takeTurn(actor, me) {
 async function actTurn(actor, me) {
   const s = stat(actor);
   s.turns++;
+  s.turnMoved = 0;
   const role = sim(actor).role;
   for (let step = 0; step < 16; step++) {
     if (down(actor) || over(me.parent)) return;
@@ -682,6 +769,12 @@ async function actTurn(actor, me) {
       const throwRange = spare ? { bad: 50, average: 100, good: 200 }[spare.throwType] : 0;
       const speed = actor.system.movement?.speed ?? 30, stepAp = actor.system.movement?.ap ?? 1;
       const reachable = (dist(me, target) - melee.range) <= speed * Math.max(0, Math.floor((ap - cost) / stepAp));
+      // Shield Toss (Defender T2): throw the shield at a foe out of reach; it comes back (Return) and is Strengthened.
+      const shield = ready.find(w => w.item.system.weaponType === "defender");
+      if (shield && tier(actor, "martial-defender-weapons") >= 2 && !reachable && dist(me, target) <= ({ bad: 50, average: 100, good: 200 }[shield.throwType] ?? 0) && ap >= 2 && energyOf(actor) >= 10) {
+        note(actor, "shieldToss");
+        if (await attack(actor, me, shield, target, { mode: "throw", extraFill: { shieldToss: true, tossReturn: true, tossStrong: true, tossPay: "ap" } })) continue;
+      }
       if (spare && !reachable && dist(me, target) <= throwRange && ap >= 2) {
         s.threw = true;
         if (await attack(actor, me, spare, target, { mode: "throw" })) continue;
@@ -689,6 +782,16 @@ async function actTurn(actor, me) {
       const moved = await approach(actor, me, target, melee.range);
       if (!moved) return;
       continue;
+    }
+    // Bodyslam (Heavy Armor T3, 3 AP): every other attack when it's in reach and affordable (Launch, T5, every other Bodyslam).
+    if (tier(actor, "martial-heavy-armor") >= 3 && ap >= 3 && dist(me, target) <= reachOf(actor) + 0.01 && energyOf(actor) >= minOf(effStat(actor, "con")) && (s.slams ?? 0) * 2 < (s.attacks ?? 0)) {
+      s.slams = (s.slams ?? 0) + 1;
+      setTargets(target);
+      const before = new Set(game.messages.keys());
+      if (await runRow(actor, /^Bodyslam/, { launch: s.slams % 2 === 0 })) {
+        const m = await waitFor(() => game.messages.contents.find(x => !before.has(x.id) && x.getFlag("flowstate", "attack")?.attacker === actor.uuid), 3000);
+        if (m) { s.attacks++; await settle(); continue; }
+      }
     }
     if (!(await attack(actor, me, melee, target))) return;
   }
@@ -706,6 +809,17 @@ async function deploy(scene, party, monsters) {
   let n = 0;
   for (const a of monsters) { const col = 26 + (n % 3) * 2, row = 6 + Math.floor(n / 3) * 3; await place(a, col, row); n++; }
   await idle(300);
+}
+
+/**
+ * Keep only the latest cards rendered in the chat log (the messages stay: the stats are read from them). A long fight renders thousands of cards
+ * otherwise, and the browser tab has run out of memory on a big swarm.
+ */
+function trimChat(keep = 60) {
+  for (const root of document.querySelectorAll("#chat .chat-log, .chat-log, #chat-notifications")) {
+    const cards = root.querySelectorAll(":scope > .chat-message, :scope > li.message");
+    for (let i = 0; i < cards.length - keep; i++) cards[i].remove();
+  }
 }
 
 /** Run one encounter (an id from R.ENCOUNTERS) and add its results to SIM.results. */
@@ -762,6 +876,7 @@ SIM.fight = async function fight(id, { maxRounds = 20 } = {}) {
         await takeTurn(actor, me);
       }
       if (over(scene)) break;
+      trimChat();
       await combat.nextTurn();
       await idle(200);
     }
@@ -867,11 +982,29 @@ SIM.start = function start(ids = passOf().encounters.map(e => e.id), opts = {}) 
   if (SIM.busy) return "already running";
   SIM.busy = true;
   (async () => {
-    try { for (const id of ids) await SIM.fight(id, opts); } finally { SIM.busy = false; SIM.status = `finished ${ids.length} fights`; }
+    try {
+      for (const id of ids) {
+        await SIM.fight(id, opts);
+        try { await SIM.save(); } catch (err) { log.errors.push(`save: ${err.message}`); }          // after every fight, so a crash loses one fight at most
+      }
+    } finally { SIM.busy = false; SIM.status = `finished ${ids.length} fights`; }
   })();
   return `started ${ids.length} fights`;
 };
 SIM.clear = clearSim;
+
+/** Carry on with the fights of the pass that aren't in the saved results yet (after the tab crashed). */
+SIM.resume = async function resume(opts = {}) {
+  const P = passOf();
+  try {
+    const res = await fetch(`/systems/flowstate/dev/sim/results/${P.id}.json?${Date.now()}`);
+    if (res.ok) SIM.results = await res.json();
+  } catch (err) { /* nothing saved yet */ }
+  const done = new Set(SIM.results.filter(r => !r.crashed).map(r => r.id));
+  SIM.results = SIM.results.filter(r => !r.crashed);
+  await clearSim();
+  return SIM.start(P.encounters.map(e => e.id).filter(id => !done.has(id)), opts);
+};
 
 /** Write SIM.results to dev/sim/results/<name>.json in the system folder (Foundry's file upload; the GM may upload JSON). */
 SIM.save = async function save(name = passOf().id) {

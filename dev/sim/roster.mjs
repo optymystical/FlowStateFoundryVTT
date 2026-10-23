@@ -210,3 +210,58 @@ export const PARTY_T1_GAPS = [
 ];
 PASSES["martial-t1-gaps"] = { id: "martial-t1-gaps", note: "Pass 2's gaps: Blade Flurry, Delta, Twin Fang, Dragon Lash, Redirect, Perfect Riposte, plain Quickload.",
   party: PARTY_T1_GAPS, monsters: { swarm: MONSTERS_T1.swarm, raiders: MONSTERS_T1.raiders }, encounters: [{ id: "swarm-r1", group: "swarm", rotation: 0 }, { id: "raiders-r1", group: "raiders", rotation: 0 }] };
+
+/* -------------------------------------------- */
+/*  Pass 3: the Martial Theory T2 trees          */
+/* -------------------------------------------- */
+
+// Martial Theory T2 (3 SP) unlocks Strength, Striker, Defender, Weighted, Assault and Heavy Armor. Each character takes one of them to T5 (15) and
+// another to T4 (10): 28 of 30 SP. Two rotations put every T2 tree at T5 once and use both weights where the tree splits them.
+const T2 = o => ({ "martial-theory": 2, ...o });
+const STR = "martial-strength-methods", STK = "martial-striker-weapons", DEF = "martial-defender-weapons", WEI = "martial-weighted-weapons",
+  ASL = "martial-assault-weapons", HVY = "martial-heavy-armor";
+
+export const PARTY_T2 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank: a Heavy Defender (Block for allies, Shield Toss, Sword and Board, Perfect Block) in Heavy armor (Brace, Harden, Trudge, Bodyslam, Launch).",
+    stats: { con: 45, str: 30, will: 15 },
+    loadouts: [
+      { trees: T2({ [DEF]: 5, [HVY]: 4 }), armor: A("heavy", "steel"), weapons: [W("defender", "heavy", "steel", { primary: true }), W("striker", "heavy", "steel")] },
+      { trees: T2({ [HVY]: 5, [DEF]: 4 }), armor: A("heavy", "steel"), weapons: [W("defender", "heavy", "steel", { primary: true }), W("striker", "heavy", "steel")] }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Duelist", role: "melee-dex", note: "Dexterity melee: Light Weighted (Controlled Swing, Spin, Smash, Crunch) or two Light Strikers (Berserk's Fast, Seeing Red's Fast+).",
+    stats: { dex: 45, con: 30, will: 15 },
+    loadouts: [
+      { trees: T2({ [WEI]: 5, [STK]: 4 }), armor: A("medium", "hardLeather"), weapons: [W("weighted", "light", "steel", { primary: true }), W("striker", "light", "steel")] },
+      { trees: T2({ [STK]: 5, [WEI]: 4 }), armor: A("medium", "hardLeather"), weapons: [W("striker", "light", "steel", { primary: true }), W("striker", "light", "steel")] }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Breaker", role: "melee-str", note: "Strength melee: Heavy Striker (Rend, Berserk's Solitary, Shred, Blood and Iron) or a two-handed Heavy Weighted (Wild Swing, Spin, Smash) with Heave! and Crunch Time.",
+    stats: { str: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: T2({ [STK]: 5, [STR]: 4 }), armor: A("medium", "hide"), weapons: [W("striker", "heavy", "steel", { primary: true }), W("weighted", "heavy", "iron")] },
+      { trees: T2({ [WEI]: 5, [STR]: 4 }), armor: A("medium", "hide"), weapons: [W("weighted", "heavy", "iron", { primary: true, twoHanded: true })] }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Marksman", role: "ranged", note: "Ranged: a Light Assault (Quickload, Take Aim, Distracting Fire, Cool Breath, Proper Stance) with a Light Striker or Light Defender.",
+    stats: { dex: 45, con: 25, str: 10, will: 10 },
+    loadouts: [
+      { trees: T2({ [ASL]: 5, [STK]: 4 }), armor: A("light", "softLeather"), weapons: [W("assault", "light", "steel", { primary: true }), W("striker", "light", "steel")] },
+      { trees: T2({ [ASL]: 5, [DEF]: 4 }), armor: A("light", "chitin"), weapons: [W("assault", "light", "steel", { primary: true }), W("defender", "light", "steel")] }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support: a Heavy Defender to Block for allies, with a Heavy Weighted (Heave!, Crunch Time, Ho!, Unstoppable; or Perfect Block, Bounce).",
+    stats: { str: 35, con: 35, dex: 20 },
+    loadouts: [
+      { trees: T2({ [STR]: 5, [DEF]: 4 }), armor: A("medium", "hardLeather"), weapons: [W("weighted", "heavy", "iron", { primary: true }), W("defender", "heavy", "steel")] },
+      { trees: T2({ [DEF]: 5, [HVY]: 4 }), armor: A("heavy", "iron"), weapons: [W("defender", "heavy", "steel", { primary: true }), W("weighted", "heavy", "iron")] }
+    ]
+  }
+];
+PASSES["martial-t2"] = { id: "martial-t2", note: "Martial Theory T2 trees (Strength, Striker, Defender, Weighted, Assault, Heavy Armor) up to T5.",
+  party: PARTY_T2, monsters: MONSTERS_T1, encounters: encountersFor(MONSTERS_T1, 2) };

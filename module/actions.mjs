@@ -10,7 +10,6 @@ import { planAction, emptyLedger } from "./movement-rules.mjs";
 import { mayHelp } from "./sides.mjs";
 import { isDeclined } from "./reactions.mjs";
 import * as auto from "./automation-rules.mjs";
-import { answeringUser } from "./ask.mjs";
 import { borderDistance, gridFor, tokenPos, tokenCentre } from "./distance.mjs";
 import { pickSpot, candidateSpots } from "./placement.mjs";
 import { notCreature } from "./kinds.mjs";
@@ -2785,6 +2784,19 @@ function quietNotifications() {
   return () => { if (--quietDepth === 0 && quietKept) { n.warn = quietKept.warn; n.info = quietKept.info; quietKept = null; } };
 }
 
+/**
+ * The one client that runs an automation for a character: its first connected owning player (by id), else the active GM. (Every GM owns
+ * everything, and two players can share a character, so "a client that owns it" would answer twice.)
+ */
+function automationUser(actor) {
+  const users = game.users;
+  const base = actor?.token?.baseActor ?? null;
+  const owns = u => !!(actor?.testUserPermission?.(u, "OWNER") || base?.testUserPermission?.(u, "OWNER"));
+  const players = [...users].filter(u => u.active && !u.isGM && owns(u)).sort((a, b) => String(a.id).localeCompare(String(b.id)));
+  return players[0] ?? users.activeGM ?? null;
+}
+const runsHere = actor => automationUser(actor)?.id === game.user.id;
+
 /** The defense buttons an attack card offers one target (`data-choice` values). */
 function defenseChoices(message, index) {
   const out = new Set();
@@ -2807,7 +2819,7 @@ export async function autoDefend(message) {
     const key = `${message.id}|${index}`;
     if (autoDefendInFlight.has(key) || findDefense(message.id, index)) continue;
     const target = fromUuidSync(entry.uuid);
-    if (!target || answeringUser(target)?.id !== game.user.id) continue;
+    if (!target || !runsHere(target)) continue;
     const settings = auto.automationOf(target);
     if (!settings.dodge.on) continue;
     const offered = defenseChoices(message, index);
@@ -2838,7 +2850,7 @@ export async function autoDefend(message) {
 export async function autoLimber(message) {
   for (const m of String(message?.content ?? "").matchAll(/class="fs-limber" data-actor="([^"]+)"/g)) {
     const actor = fromUuidSync(m[1]);
-    if (!actor || answeringUser(actor)?.id !== game.user.id || !auto.automationOf(actor).limber) continue;
+    if (!actor || !runsHere(actor) || !auto.automationOf(actor).limber) continue;
     if (inActiveCombat(actor) && actor.system.energy.value < ab.mediumCost(actor, "limber")) continue;
     const loud = quietNotifications();
     try { await limber(message, m[1]); } finally { loud(); }

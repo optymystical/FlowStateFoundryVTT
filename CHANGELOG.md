@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.79.1:** Auto-Dodge and Auto-Limber run on exactly one client (the character's first connected player, else the active GM). With two GMs connected, both used to answer, so a GM's creature dodged twice and paid for Shift twice.
+
 **0.79.0:** From the updated Rules doc: the Pain Threshold is half of max HP (was a quarter), so creatures fall unconscious after losing half their HP and fights end sooner. Everything measured against it moves with it: Impale needs more than a quarter of max HP in direct damage, and Slow/Haste stacks need twice as many to change movement.
 
 **0.78.0:** Fewer clicks. Dialogs remember what you picked last time (attacks per weapon, "attack as", Knockback direction, the empty-gun choice), and an empty gun with only Quickload reloads without asking. An attack's dialog can plan its follow-up (Solitary or Fast, with its own options): it's made on its own once the exchange is resolved, with no card. New in the Reaction List's **Automation** group: **Auto-Dodge** (dodges for you, trying the reactions you pick first when they're affordable), **Auto-Limber**, and **Keep up** for Berserk, Proper Stance, Quicken and Smashing. The start-of-turn card now comes every turn for player characters and collects the turn's start: Energy regained, Careful Steps, what ended, what was kept up and what couldn't be. Twist, Impale and Redirect buttons can be switched off.

@@ -21,6 +21,7 @@ function mkActor(name, extra = {}, trees = {}) {
   a.unsetFlag = async (s, k) => set(a.flags, `${s}.${k}`, undefined);
   a.toggleStatusEffect = async (id, { active }) => { active ? a.statuses.add(id) : a.statuses.delete(id); };
   a.getActiveTokens = () => [];
+  a.testUserPermission = u => u.id === "p1";          // the player owns it (the GM in the mocks owns nothing)
   a.system = Object.assign(Object.create(FlowStateActorData.prototype), { stats: { str: 30, dex: 30, con: 30, pon: 10, snap: 10, will: 10, reach: 10, grasp: 10, build: 10 }, skillPoints: 30, unspentStats: 0, statCarry: 0, trees, size: 3, hp: { value: 432, lost: 0 }, energy: { value: 50 }, ap: { value: 6 }, rp: { value: 6 }, conditions: { ignite: 0, stain: 0, slow: 0, haste: 0 }, lift: 0, daysWithoutRest: 0, ...extra }, { parent: a });
   a.system.prepareDerivedData(); uuids.set(a.uuid, a); game.actors.push(a);
   combat.combatants.push({ actor: a });
@@ -99,6 +100,12 @@ seq = [25]; await actions.performAttack(orc, orcOpts);
 const a3 = messages.at(-1);
 seq = [12, 12]; await actions.autoDefend(a3);
 ok(!messages.some(m => m.flags?.flowstate?.shift?.attackMessage === a3.id) && !!actions.findDefense(a3.id, 0), "no Energy: Shift skipped silently, dodged anyway");
+// Another client (a second GM, say) leaves it to the one that runs it: no double answer.
+seq = [25]; await actions.performAttack(orc, orcOpts);
+const aOther = messages.at(-1);
+game.user.id = "gm2"; await actions.autoDefend(aOther); game.user.id = "p1";
+ok(!actions.findDefense(aOther.id, 0), "only the character's own client answers (no second Auto-Dodge from another GM)");
+await actions.autoDefend(aOther);
 await hero.setFlag("flowstate", "automation", { dodge: { on: false } });
 seq = [25]; await actions.performAttack(orc, orcOpts);
 const a4 = messages.at(-1);

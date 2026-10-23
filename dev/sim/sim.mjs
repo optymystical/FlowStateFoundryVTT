@@ -89,6 +89,7 @@ function fillForm(form, vals) {
     for (const f of form.querySelectorAll(`[name="${k}"]`)) {
       let v = v0;
       if (f.tagName === "SELECT" && Array.isArray(v0)) v = v0.find(x => [...f.options].some(o => o.value === String(x)));
+      if (f.tagName === "SELECT" && v0 === "$first") v = [...f.options].find(o => o.value)?.value;
       if (v === undefined || v === null) continue;
       if (f.type === "checkbox") f.checked = !!v;
       else if (f.type === "radio") f.checked = f.value === String(v);
@@ -96,7 +97,7 @@ function fillForm(form, vals) {
       else f.value = v;
       f.dispatchEvent(new Event("change", { bubbles: true }));
       // Tree options the AI took (for the report).
-      if (F && !NOT_OPTIONS.has(k) && (f.type === "checkbox" ? f.checked : f.value && f.value !== "0")) { F.used = F.used ?? {}; bump(F.used, `opt:${k}${f.type === "checkbox" ? "" : `=${f.value}`}`); }
+      if (F && !NOT_OPTIONS.has(k) && (f.type === "checkbox" ? f.checked : f.value && f.value !== "0")) { F.used = F.used ?? {}; bump(F.used, `opt:${k}${f.type === "checkbox" || f.value.length > 20 ? "" : `=${f.value}`}`); }          // (an id, e.g. Disarm's item, isn't worth keeping)
     }
   }
 }
@@ -252,7 +253,7 @@ async function approach(actor, me, target, range) {
   if (spot.x === from.x && spot.y === from.y) return 0;
   // Trudge (Heavy Armor T2): this move ignores the armor's speed penalty.
   const armorW = actor.items.find(i => i.type === "armor" && i.system.equipped)?.system?.weight;
-  if (["heavy", "titanic"].includes(armorW) && tier(actor, "martial-heavy-armor") >= 2 && energyOf(actor) >= 10) await runRow(actor, /^Trudge/);
+  if (((armorW === "heavy" && tier(actor, "martial-heavy-armor") >= 2) || (armorW === "titanic" && tier(actor, "martial-titanic-armor") >= 4)) && energyOf(actor) >= 10) await runRow(actor, /^Trudge/);
   // A free move (Dash) goes up to the creature's speed whatever its AP.
   const max = actor.getFlag("flowstate", "freeMove") ? (actor.system.movement?.speed ?? 30) : MR.maxMove(Act.moveLedger(actor), { ...Act.moveParams(actor), ap: actor.system.ap.value });
   let dest = spot;
@@ -363,6 +364,17 @@ function treeOptions(actor, item, { me = null, target = null, pepper = 0 } = {})
     if (prone && take(min)) o.execute = true;
     if ((s.cones ?? 0) % 2 === 1 && take(min)) o.cone = true;                                             // Cone Shot on every other Area shot
   }
+  // Martial T4 trees.
+  if (type === "curved") {
+    o.omnislash = true;                                                                                  // offered only at 4+ Momentum on the target
+    if ((s.disarms ?? 0) < 2 && take(min)) { o.disarm = "$first"; s.disarms = (s.disarms ?? 0) + 1; }      // a couple of Disarms a fight
+  }
+  if (type === "longshot") {
+    if (take(effStat(actor, weight === "heavy" ? "str" : "dex"))) o.prepared = alt("prep", [["headshot", "str"], ["str"], ["pierce"], ["cleave"]])[0];
+    else if (take(2 * min)) o.prepared = alt("prep2", [["str"], ["pierce"], ["cleave"]])[0];
+    if (take(min)) o.fish = true;
+    if (o.prepared && take(min)) o.snipe = true;                                                          // Snipe Hunt needs an Advantage (Prepared Shot gives one)
+  }
   if (weight === "heavy" && type !== "unarmed" && take(2 * strMin)) o.heave = true;
   if (type !== "defender" && actor.items.some(i => i.type === "weapon" && i.system.held && i.system.weaponType === "defender") && take(min)) o.swordBoard = true;
   if (take(strMin)) o.ho = ["2", "1"];
@@ -442,6 +454,7 @@ async function answerDefense() {
       }
       let choice = "dodge";
       if (has("perfectBlock") && !handled.has(`${key}|pb`) && energy >= 15) { choice = "perfectBlock"; handled.add(`${key}|pb`); }
+      else if (has("perfectParry") && !handled.has(`${key}|pp`)) { choice = "perfectParry"; handled.add(`${key}|pp`); }
       else if (has("distract") && !handled.has(`${key}|df`) && energy >= 10) { choice = "distract"; handled.add(`${key}|df`); }
       else if (has("closeQuarters") && !handled.has(`${key}|cq`) && energy >= 10) { choice = "closeQuarters"; handled.add(`${key}|cq`); }
       else if (has("shift") && !handled.has(`${key}|shift`) && energy >= 10) { choice = "shift"; handled.add(`${key}|shift`); }
@@ -524,6 +537,19 @@ async function answerCard() {
         setTargets(next); SIM.acting = who.name; SIM.fill = () => ({});
         note(who, "bounce");
         try { await Act.shieldBounce(msg); } catch (err) { log.errors.push(`bounce ${who.name}: ${err.stack?.slice(0, 400)}`); }
+        return true;
+      }
+    }
+    // Momentum (Curved T3): after a Curved hit, take a stack (Advantage and Strengthened in turn).
+    const mom = [...doc.querySelectorAll(".fs-momentum")];
+    if (mom.length && once("momentum", true)) {
+      const who = ownerOf(mom[0]);
+      if (who && sim(who).id) {
+        const st = stat(who); st.mom = ((st.mom ?? 0) + 1) % 2;
+        const pick = mom.find(b => b.dataset.kind === (st.mom ? "adv" : "str")) ?? mom[0];
+        SIM.acting = who.name; SIM.fill = () => ({});
+        note(who, `momentum:${pick.dataset.kind}`);
+        try { await Act.addMomentum(msg, pick.dataset.kind); } catch (err) { log.errors.push(`momentum ${who.name}: ${err.stack?.slice(0, 400)}`); }
         return true;
       }
     }
@@ -674,13 +700,24 @@ async function stances(actor, me) {
   if (tier(actor, "martial-medium-armor") >= 5 && !actor.getFlag("flowstate", "versatility")) await runRow(actor, /^Versatility/, { ability: sim(actor).role === "tank" ? "brace" : "shift" });
   const parryCost = w => w.system.profile?.capped ?? 99;
   if (tier(actor, "martial-theory") >= 1) {
-    const guard = actor.items.find(i => i.type === "weapon" && i.system.held && ["balanced", "bladed"].includes(i.system.weaponType) && (i.system.profile?.dice ?? 0) > 0);
+    const guard = actor.items.find(i => i.type === "weapon" && i.system.held && ["balanced", "bladed", "curved"].includes(i.system.weaponType) && (i.system.profile?.dice ?? 0) > 0);
     if (guard && energyOf(actor) >= parryCost(guard) + 20) await runRow(actor, new RegExp(`^Parry: ${guard.name.replace(/[()]/g, ".")}`));
   }
   const stancesOn = sim(actor).stances !== false;
   const armorW = actor.items.find(i => i.type === "armor" && i.system.equipped)?.system?.weight;
-  if (stancesOn && ["heavy", "titanic"].includes(armorW) && tier(actor, "martial-heavy-armor") >= 1 && energyOf(actor) >= effStat(actor, "con") + 30)
-    await runRow(actor, /^Brace/, { harden: tier(actor, "martial-heavy-armor") >= 4 && energyOf(actor) >= effStat(actor, "con") + minOf(effStat(actor, "con")) + 30 });
+  const giga = armorW === "titanic" && tier(actor, "martial-titanic-armor") >= 1;
+  if (stancesOn && (giga || (["heavy", "titanic"].includes(armorW) && tier(actor, "martial-heavy-armor") >= 1)) && energyOf(actor) >= effStat(actor, "con") + 30)
+    await runRow(actor, /^(Giga )?Brace/, { harden: (giga ? tier(actor, "martial-titanic-armor") >= 3 : tier(actor, "martial-heavy-armor") >= 4) && energyOf(actor) >= effStat(actor, "con") + minOf(effStat(actor, "con")) + 30 });
+  // Taunt (Constitution T2) the foe nearest an ally; Pull Aggro (T4) every foe within 30 ft once three are that close.
+  if (tier(actor, "martial-constitution-methods") >= 2 && rpOf(actor) >= 2) {
+    const close = foesOf(me.parent, me).filter(f => dist(me, f) <= 30);
+    if (tier(actor, "martial-constitution-methods") >= 4 && close.length >= 3 && energyOf(actor) >= effStat(actor, "con") + 20) { setTargets(...close); await runRow(actor, /^Pull Aggro/); }
+    else {
+      const allies = alliesOf(me.parent, me);
+      const prey = foesOf(me.parent, me).filter(f => dist(me, f) <= 100).sort((a, b) => Math.min(...allies.map(x => dist(x, a)), 999) - Math.min(...allies.map(x => dist(x, b)), 999))[0];
+      if (prey && energyOf(actor) >= minOf(effStat(actor, "con")) + 20) { setTargets(prey); await runRow(actor, /^Taunt$/); }
+    }
+  }
   if (tier(actor, "martial-strength-methods") >= 5 && energyOf(actor) >= 2 * minOf(effStat(actor, "str")) + 40) await runRow(actor, /^Unstoppable/);
   if (tier(actor, "martial-striker-weapons") >= 4 && actor.statuses.has("berserk") && energyOf(actor) >= 25) await runRow(actor, /^Seeing Red/);
   if (stancesOn && armorW === "medium" && tier(actor, "martial-medium-armor") >= 2) {
@@ -707,6 +744,7 @@ async function stances(actor, me) {
 /** End of the AI's turn: Eviscerate (Swift T4) if it's on offer, then Recover Energy with the AP left while Energy is low. */
 async function endOfTurn(actor) {
   if (tier(actor, "martial-swift-weapons") >= 4 && energyOf(actor) >= 20) await runRow(actor, /^Eviscerate/);
+  if (tier(actor, "martial-curved-weapons") >= 4 && energyOf(actor) >= 20) await runRow(actor, /^Sheath Weapon/);
   for (let i = 0; i < 6 && actor.system.ap.value >= 1 && (actor.system.energy?.value ?? 0) < (actor.system.energy?.max ?? 0) * 0.7; i++) {
     const e = actor.system.energy.value;
     SIM.acting = actor.name;
@@ -797,7 +835,8 @@ async function actTurn(actor, me) {
     }
     const cost = melee.ap ?? 2;
     if (ap < cost) return;
-    const target = role === "tank" || role === "monster" ? nearest
+    const taunter = actor.getFlag("flowstate", "tauntedBy")?.by ? foes.find(f => f.actor?.uuid === actor.getFlag("flowstate", "tauntedBy").by) : null;
+    const target = taunter ? taunter : role === "tank" || role === "monster" ? nearest
       : foes.filter(f => dist(me, f) <= melee.range + 0.01).sort((a, b) => a.actor.system.hp.value - b.actor.system.hp.value)[0] ?? nearest;
     if (dist(me, target) > melee.range + 0.01) {
       // Out of reach: throw a spare weapon if one is held and the foe is in throw range (once a fight), else walk in.
@@ -821,7 +860,7 @@ async function actTurn(actor, me) {
       continue;
     }
     // Bodyslam (Heavy Armor T3, 3 AP): every other attack when it's in reach and affordable (Launch, T5, every other Bodyslam).
-    if (tier(actor, "martial-heavy-armor") >= 3 && ap >= 3 && dist(me, target) <= reachOf(actor) + 0.01 && energyOf(actor) >= minOf(effStat(actor, "con")) && (s.slams ?? 0) * 2 < (s.attacks ?? 0)) {
+    if ((tier(actor, "martial-heavy-armor") >= 3 || tier(actor, "martial-titanic-armor") >= 2) && ap >= 3 && dist(me, target) <= reachOf(actor) + 0.01 && energyOf(actor) >= minOf(effStat(actor, "con")) && (s.slams ?? 0) * 2 < (s.attacks ?? 0)) {
       s.slams = (s.slams ?? 0) + 1;
       setTargets(target);
       const before = new Set(game.messages.keys());

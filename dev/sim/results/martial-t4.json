@@ -1,0 +1,3315 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 154,
+  "winner": "party",
+  "pass": "martial-t4",
+  "rounds": 5,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 30,
+  "knockbacks": {
+   "into": 3
+  },
+  "used": {
+   "defend:dodge": 135,
+   "Taunt": 12,
+   "opt:disarm": 6,
+   "opt:prepared=headshot": 1,
+   "opt:fish": 2,
+   "opt:snipe": 1,
+   "momentum:adv": 13,
+   "momentum:str": 11,
+   "Sheath Weapon": 9,
+   "opt:harden": 1,
+   "Giga Brace": 1,
+   "Bodyslam": 5,
+   "Pull Aggro": 4,
+   "opt:prepared=str": 1,
+   "opt:dir=into": 3,
+   "opt:omnislash": 1,
+   "opt:prepared=pierce": 1,
+   "opt:prepared=cleave": 1
+  },
+  "hp": {
+   "Sim Bulwark#iRnA": "702/702",
+   "Sim Duelist#8Y2l": "534/567",
+   "Sim Breaker#eG5q": "567/567",
+   "Sim Marksman#1edF": "477/477",
+   "Sim Warden#tm5Z": "451/477",
+   "Sim Goblin Hacker#Wdu5": "66/423",
+   "Sim Goblin Hacker#QOYm": "-156/423",
+   "Sim Goblin Hacker#bdJF": "13/423",
+   "Sim Goblin Stabber#YxLR": "89/423",
+   "Sim Goblin Stabber#V6ak": "-74/423",
+   "Sim Goblin Stabber#YfBT": "36/423",
+   "Sim Goblin Lasher#XtcS": "-139/423",
+   "Sim Goblin Lasher#Kjrr": "-59/423",
+   "Sim Goblin Basher#a6o5": "71/423",
+   "Sim Goblin Basher#mtti": "-47/423"
+  },
+  "down": [
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Lasher",
+   "Sim Goblin Lasher",
+   "Sim Goblin Basher",
+   "Sim Goblin Basher"
+  ],
+  "weapons": {
+   "Light Reach": {
+    "attacks": 6,
+    "followups": 6,
+    "hits": 1,
+    "crits": 0,
+    "misses": 11,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Heavy Striker": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 5,
+    "damage": 33,
+    "ap": 33,
+    "kills": 0,
+    "users": [
+     "Goblin Hacker"
+    ]
+   },
+   "Heavy Curved": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 14,
+    "crits": 5,
+    "misses": 10,
+    "damage": 363,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Bulwark"
+    ]
+   },
+   "Light Longshot": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 10,
+    "crits": 6,
+    "misses": 5,
+    "damage": 372,
+    "ap": 30,
+    "kills": 1,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Heavy Curved (2H)": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 7,
+    "crits": 5,
+    "misses": 3,
+    "damage": 813,
+    "ap": 30,
+    "kills": 4,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Light Thrasher": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 10,
+    "damage": 26,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Goblin Lasher"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 18,
+    "crits": 11,
+    "misses": 6,
+    "damage": 652,
+    "ap": 24,
+    "kills": 3,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Weighted": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 12,
+    "damage": 0,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Goblin Basher"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 40,
+    "absorbed": 48
+   },
+   "Titanic Armor (Iron)": {
+    "hits": 12,
+    "absorbed": 370
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 48
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 332,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 45,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 33,
+    "taken": 72,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 318,
+    "taken": 26,
+    "hits": 11,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 372,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 813,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "dealt": 6,
+    "taken": 366,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 205,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 167,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "dealt": 20,
+    "taken": 302,
+    "hits": 4,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 652,
+    "taken": 33,
+    "hits": 18,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 0,
+    "taken": 267,
+    "hits": 4,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 27,
+    "hits": 4,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 0,
+    "taken": 235,
+    "hits": 0,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 227,
+    "hits": 0,
+    "attacks": 4
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 90,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 7
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 11,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 38,
+     "Giga Brace": 1,
+     "Taunt": 4,
+     "Bodyslam": 5
+    },
+    "turnMoved": 0,
+    "disarms": 2,
+    "slams": 5
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 101.18033988749895,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 11.180339887498949,
+    "used": {
+     "defend:dodge": 7
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 35,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Taunt": 2,
+     "Pull Aggro": 3,
+     "defend:dodge": 9
+    },
+    "turnMoved": 0,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 15,
+    "prep2": 2
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 7.0710678118654755,
+    "attacks": 10,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Taunt": 2,
+     "momentum:adv": 4,
+     "momentum:str": 3,
+     "Sheath Weapon": 5,
+     "Pull Aggro": 1,
+     "defend:dodge": 5
+    },
+    "turnMoved": 0,
+    "disarms": 2,
+    "mom": 1
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.66372975210777,
+    "attacks": 5,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 5,
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 125.62001954046787,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 25.495097567963928,
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 80,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 93.38445032002582,
+    "attacks": 11,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 7.0710678118654755,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 6
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Taunt": 4,
+     "momentum:adv": 9,
+     "momentum:str": 8,
+     "Sheath Weapon": 4,
+     "defend:dodge": 6
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "disarms": 2,
+    "mom": 1
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 101.11874208078342,
+    "attacks": 11,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "ctl": 0,
+    "used": {
+     "defend:dodge": 15
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 10
+    }
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 98.50158587036384,
+    "attacks": 5,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 11.180339887498949,
+    "ctl": 0,
+    "used": {
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 105,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 105,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 6
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 4,
+    "martial-titanic-armor": 5,
+    "martial-constitution-methods": 2
+   },
+   "Sim Duelist": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 5,
+    "martial-constitution-methods": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 4,
+    "martial-constitution-methods": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 4,
+    "martial-longshot-weapons": 5,
+    "martial-curved-weapons": 2
+   },
+   "Sim Warden": {
+    "martial-theory": 4,
+    "martial-constitution-methods": 5,
+    "martial-curved-weapons": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Titanic Armor (Iron) G6",
+    "Heavy Curved (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Curved (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Curved (Steel) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Soft Leather) G4",
+    "Light Longshot (Steel) G6",
+    "Light Curved (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G5",
+    "Heavy Curved (Steel) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Hacker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Striker (Iron)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Reach (Hardwood)"
+   ],
+   "Sim Goblin Lasher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Weighted (Hardwood)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Titanic Armor (Iron): 135/800",
+    "Heavy Curved (Steel): 360/360"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 168/180",
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Medium Armor (Hide): 75/90",
+    "Heavy Curved (Steel): 540/540"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Soft Leather): 60/60",
+    "Light Longshot (Steel): 270/270",
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 177/240",
+    "Heavy Curved (Steel): 450/450"
+   ],
+   "Sim Goblin Hacker": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Heavy Striker (Iron): 300/300"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 12/60",
+    "Light Reach (Hardwood): 150/150"
+   ],
+   "Sim Goblin Lasher": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Light Thrasher (Hardwood): 150/150"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Light Weighted (Hardwood): 150/150"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Reach (Hardwood)": 6,
+    "prompt: Light Reach (Hardwood) — Solitary follow-up (Dis)": 6,
+    "prompt: Heavy Striker (Iron)": 11,
+    "prompt: Taunt": 12,
+    "prompt: Heavy Curved (Steel)": 22,
+    "prompt: Heavy Curved (Steel) — Solitary follow-up (Dis)": 12,
+    "prompt: Light Longshot (Steel)": 15,
+    "confirm: Sheath Weapon": 9,
+    "prompt: Light Thrasher (Hardwood)": 16,
+    "prompt: Giga Brace": 1,
+    "prompt: Bodyslam": 5,
+    "prompt: Light Curved (Steel)": 12,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 12,
+    "prompt: Light Weighted (Hardwood)": 16,
+    "prompt: Pull Aggro": 4,
+    "prompt: Knockback — Sim Warden": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swarm-r2",
+  "group": "swarm",
+  "rotation": 2,
+  "seconds": 227,
+  "winner": "party",
+  "pass": "martial-t4",
+  "rounds": 8,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 52,
+  "knockbacks": {
+   "down": 2,
+   "into": 1
+  },
+  "used": {
+   "defend:dodge": 237,
+   "Giga Brace": 6,
+   "Taunt": 12,
+   "Bodyslam": 11,
+   "opt:prepared=str": 8,
+   "opt:fish": 13,
+   "opt:prepared=headshot": 1,
+   "opt:harden": 3,
+   "opt:disarm": 2,
+   "opt:snipe": 2,
+   "Pull Aggro": 1,
+   "opt:prepared=pierce": 4,
+   "opt:dir=down": 2,
+   "opt:prepared=cleave": 4,
+   "Trudge": 2,
+   "opt:dir=into": 1
+  },
+  "hp": {
+   "Sim Bulwark#mkw4": "354/702",
+   "Sim Duelist#Qob9": "549/567",
+   "Sim Breaker#XLqb": "567/567",
+   "Sim Marksman#nT6w": "464/477",
+   "Sim Warden#e04u": "477/477",
+   "Sim Goblin Hacker#D28Y": "100/423",
+   "Sim Goblin Hacker#NQ1E": "98/423",
+   "Sim Goblin Hacker#DH4Y": "81/423",
+   "Sim Goblin Stabber#45ui": "82/423",
+   "Sim Goblin Stabber#Rebg": "102/423",
+   "Sim Goblin Stabber#OGE6": "-31/423",
+   "Sim Goblin Lasher#8Shm": "67/423",
+   "Sim Goblin Lasher#1742": "63/423",
+   "Sim Goblin Basher#VThR": "94/423",
+   "Sim Goblin Basher#XSF1": "98/423"
+  },
+  "down": [
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Lasher",
+   "Sim Goblin Lasher",
+   "Sim Goblin Basher",
+   "Sim Goblin Basher"
+  ],
+  "weapons": {
+   "Light Weighted": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 10,
+    "damage": 18,
+    "ap": 26,
+    "kills": 0,
+    "users": [
+     "Goblin Basher"
+    ]
+   },
+   "Heavy Curved": {
+    "attacks": 7,
+    "followups": 7,
+    "hits": 9,
+    "crits": 6,
+    "misses": 5,
+    "damage": 314,
+    "ap": 21,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 45,
+    "followups": 45,
+    "hits": 18,
+    "crits": 4,
+    "misses": 72,
+    "damage": 195,
+    "ap": 90,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Light Longshot": {
+    "attacks": 36,
+    "followups": 0,
+    "hits": 28,
+    "crits": 11,
+    "misses": 8,
+    "damage": 999,
+    "ap": 72,
+    "kills": 3,
+    "users": [
+     "Duelist",
+     "Marksman"
+    ]
+   },
+   "Light Thrasher": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 8,
+    "crits": 0,
+    "misses": 11,
+    "damage": 37,
+    "ap": 38,
+    "kills": 0,
+    "users": [
+     "Goblin Lasher"
+    ]
+   },
+   "Heavy Curved (2H)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 4,
+    "damage": 509,
+    "ap": 36,
+    "kills": 2,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Striker": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 11,
+    "crits": 1,
+    "misses": 10,
+    "damage": 129,
+    "ap": 63,
+    "kills": 0,
+    "users": [
+     "Goblin Hacker"
+    ]
+   },
+   "Heavy Longshot": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 12,
+    "crits": 7,
+    "misses": 2,
+    "damage": 624,
+    "ap": 42,
+    "kills": 3,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 4,
+    "damage": 49,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Marksman"
+    ]
+   }
+  },
+  "armor": {
+   "Titanic Armor (Iron)": {
+    "hits": 15,
+    "absorbed": 376
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 34,
+    "absorbed": 60
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 24
+   },
+   "Light Armor (Chitin)": {
+    "hits": 1,
+    "absorbed": 18
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 0,
+    "taken": 329,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 314,
+    "taken": 348,
+    "hits": 9,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 116,
+    "taken": 124,
+    "hits": 7,
+    "attacks": 40
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 618,
+    "taken": 18,
+    "hits": 18,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 177,
+    "hits": 3,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 430,
+    "taken": 13,
+    "hits": 12,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "dealt": 0,
+    "taken": 356,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 509,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 18,
+    "taken": 325,
+    "hits": 2,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 70,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 79,
+    "taken": 341,
+    "hits": 8,
+    "attacks": 34
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 158,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 59,
+    "taken": 325,
+    "hits": 6,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 624,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "dealt": 37,
+    "taken": 360,
+    "hits": 6,
+    "attacks": 14
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 101.11874208078342,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 101.11874208078342,
+    "ctl": 1,
+    "used": {
+     "defend:dodge": 10
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 23,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 116,
+     "Giga Brace": 1,
+     "Taunt": 5,
+     "Bodyslam": 9,
+     "Pull Aggro": 1
+    },
+    "turnMoved": 0,
+    "disarms": 2,
+    "slams": 9
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100.12492197250394,
+    "attacks": 40,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 0,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 21,
+    "prep2": 2,
+    "used": {
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 125.55385138137417,
+    "attacks": 16,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 7
+    }
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 25.495097567963928,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Taunt": 7,
+     "defend:dodge": 10
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 14,
+    "prep2": 0
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 75.66372975210777,
+    "attacks": 5,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 10
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 10,
+    "attacks": 14,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Giga Brace": 5,
+     "defend:dodge": 6,
+     "Bodyslam": 2,
+     "Trudge": 2
+    },
+    "turnMoved": 0,
+    "disarms": 2,
+    "slams": 2
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90.13878188659974,
+    "attacks": 11,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "ctl": 0,
+    "knockbacks": {
+     "down": 2
+    },
+    "used": {
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100,
+    "attacks": 9,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 82.46211251235322,
+    "attacks": 34,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 85,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 10
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 95.13148795220224,
+    "attacks": 9,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 3,
+    "reloads": 14,
+    "prep2": 0
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 86.31338250816034,
+    "attacks": 14,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 10
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 4,
+    "martial-constitution-methods": 5,
+    "martial-titanic-armor": 2
+   },
+   "Sim Duelist": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 5,
+    "martial-longshot-weapons": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 4,
+    "martial-titanic-armor": 5,
+    "martial-curved-weapons": 2
+   },
+   "Sim Marksman": {
+    "martial-theory": 4,
+    "martial-longshot-weapons": 5,
+    "martial-constitution-methods": 2
+   },
+   "Sim Warden": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 4,
+    "martial-longshot-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Titanic Armor (Iron) G6",
+    "Heavy Curved (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Curved (Steel) G6",
+    "Light Longshot (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Titanic Armor (Steel) G4",
+    "Heavy Curved (Steel) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Chitin) G4",
+    "Light Longshot (Steel) G6",
+    "Light Curved (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G5",
+    "Heavy Longshot (Steel) G5",
+    "Heavy Curved (Steel) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Hacker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Striker (Iron)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Reach (Hardwood)",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Lasher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Weighted (Hardwood)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Titanic Armor (Iron): 0/800 BROKEN",
+    "Heavy Curved (Steel): 360/360"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 150/180",
+    "Light Curved (Steel): 270/270",
+    "Light Longshot (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Titanic Armor (Steel): 720/720",
+    "Heavy Curved (Steel): 540/540"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Chitin): 72/90",
+    "Light Longshot (Steel): 270/270",
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 240/240",
+    "Heavy Longshot (Steel): 450/450",
+    "Heavy Curved (Steel): 450/450"
+   ],
+   "Sim Goblin Hacker": [
+    "Light Armor (Soft Leather): 48/60",
+    "Heavy Striker (Iron): 300/300"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Reach (Hardwood): 150/150",
+    "Light Armor (Soft Leather): 10/60"
+   ],
+   "Sim Goblin Lasher": [
+    "Light Armor (Soft Leather): 36/60",
+    "Light Thrasher (Hardwood): 150/150"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 34/60",
+    "Light Weighted (Hardwood): 150/150"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Weighted (Hardwood)": 13,
+    "prompt: Taunt": 12,
+    "prompt: Heavy Curved (Steel)": 19,
+    "prompt: Heavy Curved (Steel) — Solitary follow-up (Dis)": 7,
+    "prompt: Bodyslam": 11,
+    "prompt: Light Reach (Hardwood)": 45,
+    "prompt: Light Reach (Hardwood) — Solitary follow-up (Dis)": 45,
+    "prompt: Light Longshot (Steel)": 36,
+    "prompt: Light Thrasher (Hardwood)": 19,
+    "prompt: Giga Brace": 5,
+    "prompt: Heavy Striker (Iron)": 21,
+    "prompt: Heavy Longshot (Steel)": 14,
+    "prompt: Pull Aggro": 1,
+    "prompt: Light Curved (Steel)": 6,
+    "prompt: Knockback — Sim Duelist": 2,
+    "prompt: Knockback — Sim Marksman": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 170,
+  "winner": "party",
+  "pass": "martial-t4",
+  "rounds": 7,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 48,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 163,
+   "opt:pepper=1": 14,
+   "Taunt": 18,
+   "opt:disarm": 2,
+   "opt:prepared=headshot": 1,
+   "opt:fish": 2,
+   "opt:snipe": 1,
+   "momentum:adv": 17,
+   "momentum:str": 15,
+   "Sheath Weapon": 8,
+   "recoverEnergy": 3,
+   "opt:harden": 2,
+   "Giga Brace": 2,
+   "Trudge": 3,
+   "followup:noRP": 5,
+   "Pull Aggro": 7,
+   "opt:prepared=str": 2,
+   "Bodyslam": 3,
+   "opt:prepared=pierce": 2,
+   "opt:prepared=cleave": 1
+  },
+  "hp": {
+   "Sim Bulwark#nD7P": "702/702",
+   "Sim Duelist#45AY": "535/567",
+   "Sim Breaker#P6jL": "377/567",
+   "Sim Marksman#eQHt": "159/477",
+   "Sim Warden#cd1V": "477/477",
+   "Sim Raider Brute#zn2C": "57/720",
+   "Sim Raider Cutter#yHQJ": "-44/720",
+   "Sim Raider Gunner#0Arn": "48/585",
+   "Sim Raider Sniper#HQOn": "127/585",
+   "Sim Raider Bomber#9OzD": "131/585"
+  },
+  "down": [
+   "Sim Raider Brute",
+   "Sim Raider Cutter",
+   "Sim Raider Gunner",
+   "Sim Raider Sniper",
+   "Sim Raider Bomber"
+  ],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 12,
+    "followups": 7,
+    "hits": 5,
+    "crits": 2,
+    "misses": 14,
+    "damage": 262,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Raider Bomber"
+    ]
+   },
+   "Heavy Rapid": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 13,
+    "damage": 56,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Raider Gunner"
+    ]
+   },
+   "Heavy Curved": {
+    "attacks": 21,
+    "followups": 21,
+    "hits": 18,
+    "crits": 5,
+    "misses": 24,
+    "damage": 329,
+    "ap": 63,
+    "kills": 1,
+    "users": [
+     "Warden",
+     "Bulwark"
+    ]
+   },
+   "Light Longshot": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 12,
+    "crits": 2,
+    "misses": 9,
+    "damage": 310,
+    "ap": 42,
+    "kills": 1,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 20,
+    "followups": 20,
+    "hits": 27,
+    "crits": 12,
+    "misses": 13,
+    "damage": 693,
+    "ap": 40,
+    "kills": 3,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Heavy Curved (2H)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 6,
+    "damage": 288,
+    "ap": 33,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 4,
+    "damage": 212,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 10,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Sniper"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 8,
+    "absorbed": 28
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 7
+   },
+   "Heavy Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 256
+   },
+   "Medium Armor (Hide)": {
+    "hits": 14,
+    "absorbed": 82
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 67
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Bomber",
+    "dealt": 262,
+    "taken": 318,
+    "hits": 5,
+    "attacks": 19
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 310,
+    "taken": 318,
+    "hits": 12,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "dealt": 56,
+    "taken": 357,
+    "hits": 1,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 238,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 26
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "dealt": 10,
+    "taken": 300,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 693,
+    "taken": 32,
+    "hits": 27,
+    "attacks": 40
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 288,
+    "taken": 190,
+    "hits": 5,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 212,
+    "taken": 449,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 91,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 0,
+    "taken": 196,
+    "hits": 1,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Bomber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 19,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 18,
+    "used": {
+     "followup:noRP": 5,
+     "defend:dodge": 18
+    }
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 33
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 21,
+    "prep2": 1
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 14,
+    "used": {
+     "defend:dodge": 26
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 110.13878188659973,
+    "attacks": 26,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Taunt": 3,
+     "Pull Aggro": 4
+    },
+    "turnMoved": 10,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13
+    },
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 2
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 100.62257748298549,
+    "attacks": 40,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Taunt": 7,
+     "momentum:adv": 14,
+     "momentum:str": 13,
+     "Sheath Weapon": 5,
+     "defend:dodge": 5
+    },
+    "turnMoved": 0,
+    "shank": 1,
+    "disarms": 2,
+    "mom": 1
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 99.05694150420949,
+    "attacks": 11,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Taunt": 3,
+     "momentum:adv": 3,
+     "Sheath Weapon": 3,
+     "recoverEnergy": 1,
+     "Pull Aggro": 3,
+     "momentum:str": 2,
+     "defend:dodge": 6
+    },
+    "turnMoved": 10,
+    "disarms": 2,
+    "mom": 1
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 16.18033988749895,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "defend:dodge": 33
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 95,
+    "attacks": 19,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Giga Brace": 2,
+     "Taunt": 5,
+     "Trudge": 3,
+     "recoverEnergy": 2,
+     "defend:dodge": 2,
+     "Bodyslam": 3
+    },
+    "turnMoved": 10,
+    "disarms": 2,
+    "slams": 3
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 5,
+    "attacks": 2,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 27
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 4,
+    "martial-titanic-armor": 5,
+    "martial-constitution-methods": 2
+   },
+   "Sim Duelist": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 5,
+    "martial-constitution-methods": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 4,
+    "martial-constitution-methods": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 4,
+    "martial-longshot-weapons": 5,
+    "martial-curved-weapons": 2
+   },
+   "Sim Warden": {
+    "martial-theory": 4,
+    "martial-constitution-methods": 5,
+    "martial-curved-weapons": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Heavy Curved (Steel) G4",
+    "Titanic Armor (Iron) G6"
+   ],
+   "Sim Duelist": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Curved (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Curved (Steel) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Longshot (Steel) G6",
+    "Light Curved (Steel) G6",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G5",
+    "Heavy Curved (Steel) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Heavy Circular (Steel)",
+    "Medium Armor (Hide)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Raider Gunner": [
+    "Unarmed",
+    "Medium Armor (Soft Leather)",
+    "Heavy Rapid (Steel)"
+   ],
+   "Sim Raider Sniper": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Longshot (Steel)"
+   ],
+   "Sim Raider Bomber": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Assault (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Heavy Curved (Steel): 360/360",
+    "Titanic Armor (Iron): 800/800"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 161/180",
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Medium Armor (Hide): 36/90",
+    "Heavy Curved (Steel): 540/540"
+   ],
+   "Sim Marksman": [
+    "Light Longshot (Steel): 270/270",
+    "Light Curved (Steel): 270/270",
+    "Light Armor (Soft Leather): 48/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 240/240",
+    "Heavy Curved (Steel): 450/450"
+   ],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ],
+   "Sim Raider Cutter": [
+    "Heavy Circular (Steel): 630/630",
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Light Thrasher (Hardwood): 30/30"
+   ],
+   "Sim Raider Gunner": [
+    "Medium Armor (Soft Leather): 0/200 BROKEN",
+    "Heavy Rapid (Steel): 630/630"
+   ],
+   "Sim Raider Sniper": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ],
+   "Sim Raider Bomber": [
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Heavy Assault (Steel): 630/630"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 12,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 7,
+    "prompt: Heavy Rapid (Steel)": 14,
+    "prompt: Taunt": 18,
+    "prompt: Heavy Curved (Steel)": 32,
+    "prompt: Heavy Curved (Steel) — Solitary follow-up (Dis)": 21,
+    "prompt: Light Longshot (Steel)": 21,
+    "prompt: Light Curved (Steel)": 20,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 20,
+    "confirm: Sheath Weapon": 8,
+    "prompt: Heavy Circular (Steel)": 8,
+    "prompt: Giga Brace": 2,
+    "prompt: Unarmed": 3,
+    "prompt: Heavy Swift (Steel)": 2,
+    "prompt: Pull Aggro": 7,
+    "prompt: Bodyslam": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r2",
+  "group": "raiders",
+  "rotation": 2,
+  "seconds": 136,
+  "winner": "party",
+  "pass": "martial-t4",
+  "rounds": 8,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 9,
+  "knockbacks": {},
+  "used": {
+   "opt:harden": 5,
+   "Giga Brace": 8,
+   "Trudge": 3,
+   "opt:disarm": 2,
+   "defend:dodge": 111,
+   "recoverEnergy": 8,
+   "opt:prepared=str": 8,
+   "opt:fish": 9,
+   "opt:snipe": 2,
+   "Taunt": 10,
+   "opt:prepared=headshot": 1,
+   "opt:pepper=1": 14,
+   "Bodyslam": 9,
+   "opt:prepared=pierce": 4,
+   "followup:noRP": 2,
+   "opt:prepared=cleave": 4
+  },
+  "hp": {
+   "Sim Bulwark#i2qH": "702/702",
+   "Sim Duelist#a6wD": "567/567",
+   "Sim Breaker#b7Pk": "567/567",
+   "Sim Marksman#FLRO": "110/477",
+   "Sim Warden#HSSE": "272/477",
+   "Sim Raider Brute#Q8GI": "-46/720",
+   "Sim Raider Cutter#eSKV": "171/720",
+   "Sim Raider Gunner#bDqy": "122/585",
+   "Sim Raider Sniper#wfTf": "87/585",
+   "Sim Raider Bomber#Pquy": "136/585"
+  },
+  "down": [
+   "Sim Marksman",
+   "Sim Raider Brute",
+   "Sim Raider Cutter",
+   "Sim Raider Gunner",
+   "Sim Raider Sniper",
+   "Sim Raider Bomber"
+  ],
+  "weapons": {
+   "Heavy Curved (2H)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 3,
+    "damage": 682,
+    "ap": 33,
+    "kills": 1,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Longshot": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 6,
+    "damage": 291,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Light Longshot": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 20,
+    "crits": 9,
+    "misses": 8,
+    "damage": 716,
+    "ap": 56,
+    "kills": 2,
+    "users": [
+     "Duelist",
+     "Marksman"
+    ]
+   },
+   "Heavy Rapid": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 8,
+    "damage": 482,
+    "ap": 42,
+    "kills": 1,
+    "users": [
+     "Raider Gunner"
+    ]
+   },
+   "Heavy Assault": {
+    "attacks": 6,
+    "followups": 4,
+    "hits": 2,
+    "crits": 1,
+    "misses": 8,
+    "damage": 90,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Bomber"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 11,
+    "damage": 0,
+    "ap": 33,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Heavy Curved": {
+    "attacks": 5,
+    "followups": 5,
+    "hits": 4,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 15,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Marksman"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 8,
+    "absorbed": 0
+   },
+   "Light Armor (Chitin)": {
+    "hits": 4,
+    "absorbed": 56
+   },
+   "Heavy Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 288
+   },
+   "Titanic Armor (Steel)": {
+    "hits": 1,
+    "absorbed": 1
+   },
+   "Medium Armor (Hide)": {
+    "hits": 14,
+    "absorbed": 71
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 48
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 40
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Breaker",
+    "dealt": 682,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "dealt": 0,
+    "taken": 498,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 291,
+    "taken": 205,
+    "hits": 8,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 514,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 202,
+    "taken": 367,
+    "hits": 7,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "dealt": 482,
+    "taken": 463,
+    "hits": 6,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "dealt": 90,
+    "taken": 449,
+    "hits": 2,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 0,
+    "taken": 138,
+    "hits": 0,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 0,
+    "taken": 141,
+    "hits": 1,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 97.62087348130012,
+    "attacks": 14,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Giga Brace": 6,
+     "Trudge": 3,
+     "recoverEnergy": 5,
+     "defend:dodge": 2,
+     "Bodyslam": 3
+    },
+    "turnMoved": 0,
+    "disarms": 2,
+    "slams": 3
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 3,
+    "reloads": 14,
+    "prep2": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 0,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 21,
+    "prep2": 2
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 5,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Taunt": 3,
+     "defend:dodge": 13
+    },
+    "turnMoved": 5,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 6,
+    "prep2": 0
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 14,
+    "used": {
+     "defend:dodge": 14
+    }
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 10,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 9,
+    "used": {
+     "defend:dodge": 19,
+     "followup:noRP": 2
+    }
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 94.44271909999159,
+    "attacks": 11,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 27
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 116.18296436230956,
+    "attacks": 16,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Giga Brace": 2,
+     "Taunt": 7,
+     "recoverEnergy": 3,
+     "defend:dodge": 10,
+     "Bodyslam": 6
+    },
+    "turnMoved": 35.35533905932738,
+    "disarms": 2,
+    "slams": 6
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15.811388300841898,
+    "attacks": 2,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "defend:dodge": 5
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 4,
+    "martial-constitution-methods": 5,
+    "martial-titanic-armor": 2
+   },
+   "Sim Duelist": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 5,
+    "martial-longshot-weapons": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 4,
+    "martial-titanic-armor": 5,
+    "martial-curved-weapons": 2
+   },
+   "Sim Marksman": {
+    "martial-theory": 4,
+    "martial-longshot-weapons": 5,
+    "martial-constitution-methods": 2
+   },
+   "Sim Warden": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 4,
+    "martial-longshot-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Titanic Armor (Iron) G6",
+    "Heavy Curved (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Light Longshot (Steel) G6",
+    "Light Curved (Steel) G6",
+    "Medium Armor (Hard Leather) G4"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Titanic Armor (Steel) G4",
+    "Heavy Curved (Steel) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Chitin) G4",
+    "Light Longshot (Steel) G6",
+    "Light Curved (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G5",
+    "Heavy Longshot (Steel) G5",
+    "Heavy Curved (Steel) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Swift (Steel)",
+    "Heavy Armor (Iron)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Circular (Steel)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Raider Gunner": [
+    "Unarmed",
+    "Medium Armor (Soft Leather)",
+    "Heavy Rapid (Steel)"
+   ],
+   "Sim Raider Sniper": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Longshot (Steel)"
+   ],
+   "Sim Raider Bomber": [
+    "Unarmed",
+    "Heavy Assault (Steel)",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Titanic Armor (Iron): 800/800",
+    "Heavy Curved (Steel): 360/360"
+   ],
+   "Sim Duelist": [
+    "Light Longshot (Steel): 270/270",
+    "Light Curved (Steel): 270/270",
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Breaker": [
+    "Titanic Armor (Steel): 698/720",
+    "Heavy Curved (Steel): 540/540"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Chitin): 34/90",
+    "Light Longshot (Steel): 270/270",
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 192/240",
+    "Heavy Longshot (Steel): 450/450",
+    "Heavy Curved (Steel): 450/450"
+   ],
+   "Sim Raider Brute": [
+    "Heavy Swift (Steel): 630/630",
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ],
+   "Sim Raider Cutter": [
+    "Medium Armor (Hide): 30/150",
+    "Light Thrasher (Hardwood): 30/30"
+   ],
+   "Sim Raider Gunner": [
+    "Medium Armor (Soft Leather): 0/200 BROKEN",
+    "Heavy Rapid (Steel): 630/630"
+   ],
+   "Sim Raider Sniper": [
+    "Light Armor (Soft Leather): 20/100"
+   ],
+   "Sim Raider Bomber": [
+    "Heavy Assault (Steel): 630/630",
+    "Medium Armor (Hide): 0/150 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Giga Brace": 6,
+    "prompt: Heavy Curved (Steel)": 16,
+    "prompt: Heavy Longshot (Steel)": 14,
+    "prompt: Light Longshot (Steel)": 28,
+    "prompt: Taunt": 10,
+    "prompt: Heavy Rapid (Steel)": 14,
+    "prompt: Heavy Assault (Steel)": 6,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 4,
+    "prompt: Heavy Swift (Steel)": 11,
+    "prompt: Heavy Curved (Steel) — Solitary follow-up (Dis)": 5,
+    "prompt: Heavy Circular (Steel)": 2,
+    "prompt: Bodyslam": 9,
+    "prompt: Light Curved (Steel)": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 107,
+  "winner": "party",
+  "pass": "martial-t4",
+  "rounds": 6,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 34,
+  "knockbacks": {},
+  "used": {
+   "opt:harden": 2,
+   "Giga Brace": 3,
+   "Taunt": 20,
+   "Trudge": 1,
+   "defend:dodge": 105,
+   "recoverEnergy": 5,
+   "opt:prepared=headshot": 1,
+   "opt:fish": 2,
+   "opt:snipe": 1,
+   "opt:disarm": 6,
+   "momentum:adv": 11,
+   "momentum:str": 9,
+   "opt:prepared=str": 2,
+   "Sheath Weapon": 5,
+   "opt:prepared=pierce": 1,
+   "opt:prepared=cleave": 1
+  },
+  "hp": {
+   "Sim Bulwark#4O2C": "702/702",
+   "Sim Duelist#PqbJ": "546/567",
+   "Sim Breaker#dtaW": "567/567",
+   "Sim Marksman#oAWl": "477/477",
+   "Sim Warden#jEO9": "477/477",
+   "Sim Ogre Tyrant#oW1E": "498/2136"
+  },
+  "down": [
+   "Sim Ogre Tyrant"
+  ],
+  "weapons": {
+   "Heavy Curved": {
+    "attacks": 20,
+    "followups": 20,
+    "hits": 20,
+    "crits": 5,
+    "misses": 20,
+    "damage": 411,
+    "ap": 60,
+    "kills": 0,
+    "users": [
+     "Bulwark",
+     "Warden"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 6,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Ogre Tyrant"
+    ]
+   },
+   "Light Striker": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 3,
+    "damage": 21,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Ogre Tyrant"
+    ]
+   },
+   "Light Longshot": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 10,
+    "crits": 1,
+    "misses": 6,
+    "damage": 139,
+    "ap": 32,
+    "kills": 1,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 14,
+    "followups": 14,
+    "hits": 17,
+    "crits": 6,
+    "misses": 11,
+    "damage": 328,
+    "ap": 28,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Heavy Curved (2H)": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 6,
+    "damage": 216,
+    "ap": 27,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 22,
+    "absorbed": 568
+   },
+   "Titanic Armor (Iron)": {
+    "hits": 2,
+    "absorbed": 22
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 1,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bulwark",
+    "dealt": 162,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Ogre Tyrant",
+    "dealt": 21,
+    "taken": 1094,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 139,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 249,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 328,
+    "taken": 21,
+    "hits": 17,
+    "attacks": 28
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 216,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 9
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 75,
+    "attacks": 22,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Giga Brace": 3,
+     "Taunt": 5,
+     "Trudge": 1,
+     "recoverEnergy": 2,
+     "defend:dodge": 8
+    },
+    "turnMoved": 0,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Ogre Tyrant",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 93
+    },
+    "turnMoved": 0,
+    "wild": 2,
+    "shank": 2
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 0,
+    "prep": 0,
+    "reloads": 15,
+    "prep2": 0,
+    "used": {
+     "recoverEnergy": 3
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 87.4642784226795,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Taunt": 5
+    },
+    "turnMoved": 0,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 80.15609770940699,
+    "attacks": 28,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Taunt": 5,
+     "momentum:adv": 9,
+     "momentum:str": 8,
+     "Sheath Weapon": 3,
+     "defend:dodge": 4
+    },
+    "turnMoved": 0,
+    "shank": 1,
+    "disarms": 2,
+    "mom": 1
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 77.62087348130012,
+    "attacks": 9,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Taunt": 5,
+     "momentum:adv": 2,
+     "momentum:str": 1,
+     "Sheath Weapon": 2
+    },
+    "turnMoved": 0,
+    "disarms": 2,
+    "mom": 1
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 4,
+    "martial-titanic-armor": 5,
+    "martial-constitution-methods": 2
+   },
+   "Sim Duelist": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 5,
+    "martial-constitution-methods": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 4,
+    "martial-constitution-methods": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 4,
+    "martial-longshot-weapons": 5,
+    "martial-curved-weapons": 2
+   },
+   "Sim Warden": {
+    "martial-theory": 4,
+    "martial-constitution-methods": 5,
+    "martial-curved-weapons": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Titanic Armor (Iron) G6",
+    "Heavy Curved (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Curved (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Heavy Curved (Steel) G6",
+    "Medium Armor (Hide) G4"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Soft Leather) G4",
+    "Light Longshot (Steel) G6",
+    "Light Curved (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Heavy Curved (Steel) G5",
+    "Medium Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Tyrant": [
+    "Unarmed",
+    "Heavy Weighted (Iron)",
+    "Light Striker (Steel)",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Titanic Armor (Iron): 754/800",
+    "Heavy Curved (Steel): 360/360"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 168/180",
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Heavy Curved (Steel): 540/540",
+    "Medium Armor (Hide): 90/90"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Soft Leather): 60/60",
+    "Light Longshot (Steel): 270/270",
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Heavy Curved (Steel): 450/450",
+    "Medium Armor (Hard Leather): 240/240"
+   ],
+   "Sim Ogre Tyrant": [
+    "Heavy Weighted (Iron): 660/660",
+    "Light Striker (Steel): 135/135",
+    "Heavy Armor (Iron): 0/960 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Giga Brace": 3,
+    "prompt: Taunt": 20,
+    "prompt: Heavy Curved (Steel)": 29,
+    "prompt: Heavy Curved (Steel) — Solitary follow-up (Dis)": 20,
+    "prompt: Heavy Weighted (Iron)": 6,
+    "prompt: Light Striker (Steel)": 6,
+    "prompt: Light Longshot (Steel)": 16,
+    "prompt: Light Curved (Steel)": 14,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 14,
+    "confirm: Sheath Weapon": 5
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r2",
+  "group": "boss",
+  "rotation": 2,
+  "seconds": 160,
+  "winner": "party",
+  "pass": "martial-t4",
+  "rounds": 11,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 15,
+  "knockbacks": {
+   "into": 9
+  },
+  "used": {
+   "Giga Brace": 14,
+   "Taunt": 14,
+   "recoverEnergy": 6,
+   "opt:prepared=str": 11,
+   "opt:fish": 14,
+   "opt:snipe": 2,
+   "defend:dodge": 145,
+   "opt:dir=into": 9,
+   "opt:prepared=headshot": 1,
+   "opt:harden": 7,
+   "Trudge": 4,
+   "opt:disarm": 2,
+   "opt:prepared=pierce": 6,
+   "opt:prepared=cleave": 5
+  },
+  "hp": {
+   "Sim Bulwark#YCfX": "587/702",
+   "Sim Duelist#37Xi": "402/567",
+   "Sim Breaker#oRCQ": "567/567",
+   "Sim Marksman#yxqf": "-196/477",
+   "Sim Warden#cg5Y": "313/477",
+   "Sim Ogre Tyrant#C8DZ": "512/2136"
+  },
+  "down": [
+   "Sim Marksman",
+   "Sim Ogre Tyrant"
+  ],
+  "weapons": {
+   "Heavy Longshot": {
+    "attacks": 22,
+    "followups": 0,
+    "hits": 15,
+    "crits": 3,
+    "misses": 7,
+    "damage": 397,
+    "ap": 66,
+    "kills": 1,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Light Longshot": {
+    "attacks": 41,
+    "followups": 0,
+    "hits": 22,
+    "crits": 3,
+    "misses": 19,
+    "damage": 376,
+    "ap": 82,
+    "kills": 0,
+    "users": [
+     "Duelist",
+     "Marksman"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 1,
+    "damage": 541,
+    "ap": 30,
+    "kills": 1,
+    "users": [
+     "Ogre Tyrant"
+    ]
+   },
+   "Heavy Curved (2H)": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 9,
+    "crits": 2,
+    "misses": 10,
+    "damage": 556,
+    "ap": 57,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Light Striker": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 6,
+    "damage": 26,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Ogre Tyrant"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 36,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Heavy Curved": {
+    "attacks": 15,
+    "followups": 15,
+    "hits": 12,
+    "crits": 4,
+    "misses": 18,
+    "damage": 259,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 17,
+    "absorbed": 625
+   },
+   "Titanic Armor (Iron)": {
+    "hits": 7,
+    "absorbed": 589
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 1,
+    "absorbed": 12
+   },
+   "Light Armor (Chitin)": {
+    "hits": 4,
+    "absorbed": 48
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Warden",
+    "dealt": 397,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Ogre Tyrant",
+    "dealt": 567,
+    "taken": 1624,
+    "hits": 13,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 282,
+    "taken": 165,
+    "hits": 14,
+    "attacks": 30
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 259,
+    "taken": 92,
+    "hits": 12,
+    "attacks": 30
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 130,
+    "taken": 310,
+    "hits": 11,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 556,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 19
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 227.63437976515434,
+    "attacks": 30,
+    "turns": 11,
+    "kills": 0,
+    "used": {
+     "Giga Brace": 6,
+     "Taunt": 9,
+     "recoverEnergy": 4,
+     "defend:dodge": 15
+    },
+    "turnMoved": 10,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 22,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 0,
+    "reloads": 21,
+    "prep2": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Ogre Tyrant",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 243.45903006477067,
+    "attacks": 20,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 116
+    },
+    "turnMoved": 0,
+    "wild": 0,
+    "knockbacks": {
+     "into": 9
+    },
+    "threw": true,
+    "shank": 0
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 0,
+    "attacks": 30,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 30,
+    "prep2": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 167.74828382175963,
+    "attacks": 19,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5,
+     "Giga Brace": 8,
+     "Trudge": 4,
+     "recoverEnergy": 2
+    },
+    "turnMoved": 0,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 144.0798390668224,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Taunt": 5,
+     "defend:dodge": 5
+    },
+    "turnMoved": 7.0710678118654755,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 10,
+    "prep2": 0
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 4,
+    "martial-constitution-methods": 5,
+    "martial-titanic-armor": 2
+   },
+   "Sim Duelist": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 5,
+    "martial-longshot-weapons": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 4,
+    "martial-titanic-armor": 5,
+    "martial-curved-weapons": 2
+   },
+   "Sim Marksman": {
+    "martial-theory": 4,
+    "martial-longshot-weapons": 5,
+    "martial-constitution-methods": 2
+   },
+   "Sim Warden": {
+    "martial-theory": 4,
+    "martial-curved-weapons": 4,
+    "martial-longshot-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Titanic Armor (Iron) G6",
+    "Heavy Curved (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Longshot (Steel) G6",
+    "Light Curved (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Titanic Armor (Steel) G4",
+    "Heavy Curved (Steel) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Chitin) G4",
+    "Light Longshot (Steel) G6",
+    "Light Curved (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G5",
+    "Heavy Curved (Steel) G5",
+    "Heavy Longshot (Steel) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Tyrant": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Iron)",
+    "Light Striker (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Titanic Armor (Iron): 0/800 BROKEN",
+    "Heavy Curved (Steel): 360/360"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 168/180",
+    "Light Longshot (Steel): 270/270",
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Titanic Armor (Steel): 720/720",
+    "Heavy Curved (Steel): 540/540"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Chitin): 0/90 BROKEN",
+    "Light Longshot (Steel): 270/270",
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 224/240",
+    "Heavy Curved (Steel): 450/450",
+    "Heavy Longshot (Steel): 450/450"
+   ],
+   "Sim Ogre Tyrant": [
+    "Heavy Armor (Iron): 0/960 BROKEN",
+    "Heavy Weighted (Iron): 660/660",
+    "Light Striker (Steel): 135/135"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Taunt": 14,
+    "prompt: Heavy Longshot (Steel)": 22,
+    "prompt: Light Longshot (Steel)": 41,
+    "prompt: Heavy Weighted (Iron)": 10,
+    "prompt: Knockback — Sim Bulwark": 5,
+    "prompt: Knockback — Sim Duelist": 1,
+    "prompt: Giga Brace": 8,
+    "prompt: Heavy Curved (Steel)": 34,
+    "prompt: Light Striker (Steel)": 10,
+    "prompt: Light Curved (Steel)": 4,
+    "prompt: Heavy Curved (Steel) — Solitary follow-up (Dis)": 15,
+    "prompt: Knockback — Sim Marksman": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

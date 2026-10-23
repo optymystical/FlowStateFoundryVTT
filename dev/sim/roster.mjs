@@ -327,3 +327,57 @@ export const MONSTERS_T3 = {
 };
 PASSES["martial-t3"] = { id: "martial-t3", note: "Martial Theory T3 trees (Dexterity, Reach, Blast, Circular, Light Armor) up to T5, with Distracting Fire, Ho! and Wide Arc.",
   party: PARTY_T3, monsters: MONSTERS_T3, encounters: encountersFor(MONSTERS_T3, 2) };
+
+/* -------------------------------------------- */
+/*  Pass 5: the Martial Theory T4 trees          */
+/* -------------------------------------------- */
+
+// Martial Theory T4 (10 SP) unlocks Constitution, Curved, Longshot and Titanic Armor. Each character takes one tree to T5 (15) and another to T2 (3),
+// 28 SP, or two to T4 (30). Two rotations put every T4 tree at T5 at least once.
+const T4 = o => ({ "martial-theory": 4, ...o });
+const CON = "martial-constitution-methods", CUR = "martial-curved-weapons", LNG = "martial-longshot-weapons", TIT = "martial-titanic-armor";
+
+export const PARTY_T4 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank: Titanic armor (Giga Brace, Bodyslam, Giga Harden, Trudge, Chunky) or Constitution (Taunt, Pull Aggro, Imposing Presence), with a Heavy Curved.",
+    stats: { con: 45, str: 30, will: 15 },
+    loadouts: [
+      { trees: T4({ [TIT]: 5, [CON]: 2 }), armor: A("titanic", "iron"), weapons: [W("curved", "heavy", "steel", { primary: true })] },
+      { trees: T4({ [CON]: 5, [TIT]: 2 }), armor: A("titanic", "iron"), weapons: [W("curved", "heavy", "steel", { primary: true })] }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Duelist", role: "melee-dex", note: "Dexterity melee: a Light Curved (Disarm, Perfect Parry, Momentum, Sheath Weapon, Omnislash).",
+    stats: { dex: 45, con: 30, will: 15 },
+    loadouts: [
+      { trees: T4({ [CUR]: 5, [CON]: 2 }), armor: A("medium", "hardLeather"), weapons: [W("curved", "light", "steel", { primary: true })] },
+      { trees: T4({ [CUR]: 5, [LNG]: 2 }), armor: A("medium", "hardLeather"), weapons: [W("curved", "light", "steel", { primary: true }), W("longshot", "light", "steel")] }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Breaker", role: "melee-str", note: "Strength melee: a two-handed Heavy Curved, with Constitution or in Titanic armor.",
+    stats: { str: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: T4({ [CUR]: 4, [CON]: 4 }), armor: A("medium", "hide"), weapons: [W("curved", "heavy", "steel", { primary: true, twoHanded: true })] },
+      { trees: T4({ [TIT]: 5, [CUR]: 2 }), armor: A("titanic", "steel"), weapons: [W("curved", "heavy", "steel", { primary: true, twoHanded: true })] }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Marksman", role: "ranged", note: "Ranged: a Light Longshot (Prepared Shot, Like Shooting Fish, Snipe Hunt, In a Barrel, Headshot).",
+    stats: { dex: 45, con: 25, str: 10, will: 10 },
+    loadouts: [
+      { trees: T4({ [LNG]: 5, [CUR]: 2 }), armor: A("light", "softLeather"), weapons: [W("longshot", "light", "steel", { primary: true }), W("curved", "light", "steel")] },
+      { trees: T4({ [LNG]: 5, [CON]: 2 }), armor: A("light", "chitin"), weapons: [W("longshot", "light", "steel", { primary: true }), W("curved", "light", "steel")] }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support: Constitution (Taunt the foe nearest an ally, Pull Aggro) or a Heavy Curved and Heavy Longshot.",
+    stats: { str: 35, con: 35, dex: 20 },
+    loadouts: [
+      { trees: T4({ [CON]: 5, [CUR]: 2 }), armor: A("medium", "hardLeather"), weapons: [W("curved", "heavy", "steel", { primary: true })] },
+      { trees: T4({ [CUR]: 4, [LNG]: 4 }), armor: A("medium", "hardLeather"), weapons: [W("curved", "heavy", "steel", { primary: true }), W("longshot", "heavy", "steel")] }
+    ]
+  }
+];
+PASSES["martial-t4"] = { id: "martial-t4", note: "Martial Theory T4 trees (Constitution, Curved, Longshot, Titanic Armor) up to T5.",
+  party: PARTY_T4, monsters: MONSTERS_T1, encounters: encountersFor(MONSTERS_T1, 2) };

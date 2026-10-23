@@ -3,6 +3,7 @@
 import { readFileSync } from "node:fs";
 
 const load = name => { try { return JSON.parse(readFileSync(new URL(`./results/focus-${name}.json`, import.meta.url), "utf8")); } catch { return []; } };
+const RETEST_FILE = process.argv[3] ?? "retest";
 const pct = (a, b) => (b ? `${Math.round(100 * a / b)}%` : "–");
 const hpOf = (r, who) => {
   const [k, v] = Object.entries(r.hp ?? {}).find(([k]) => k.startsWith(who)) ?? [];
@@ -67,7 +68,7 @@ function kite() {
 }
 
 function retest() {
-  const rows = load("retest");
+  const rows = load(RETEST_FILE);
   const cells = {};
   for (const r of rows) {
     const [cfg, group] = r.id.split("~");

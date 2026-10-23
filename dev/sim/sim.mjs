@@ -154,7 +154,7 @@ async function makeActor(spec, loadout, { party, folder }) {
     name: spec.name, type: party ? "character" : "npc", folder: folder.id,
     system: { stats: R.statBlock(spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {} },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
-    flags: { flowstate: { sim: { id: spec.id, role: spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null } } }
+    flags: { flowstate: { sim: { id: spec.id, role: spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper } } }
   });
   const natural = !party && spec.natural !== false;
   const slots = loadout.weapons.filter(w => w.type !== "unarmed");
@@ -963,7 +963,7 @@ async function actTurn(actor, me) {
       const target = inRange[0] ?? far[0];
       if (target) {
         const area = await areaPays(actor, gun, target, foes);
-        const pepper = gun.item.system.profile.pepper ? 1 : 0;
+        const pepper = gun.item.system.profile.pepper && !sim(actor).noPepper ? 1 : 0;          // a loadout can turn Pepper off (to test it)
         if (area) s.areaShots = (s.areaShots ?? 0) + 1;
         const wasLoaded = gun.item.system.loaded, apBefore = actor.system.ap.value;
         if (await attack(actor, me, gun, target, { far: !inRange[0], area, pepper })) continue;

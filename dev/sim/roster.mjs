@@ -523,3 +523,16 @@ PASSES["focus-retest"] = { id: "focus-retest", note: "Retest: Knockback weapons 
   party: [{ ...PARTY_BENCH[0], loadouts: RETEST.map(b => ({ ...b, armor: null })) }], monsters: RETEST_DUMMIES, deploy: "bench", maxRounds: 4,
   encounters: RETEST.flatMap((b, rotation) => (b.id.startsWith("blast") ? ["light", "heavy", "cluster", "bare"] : ["light", "heavy"])
     .flatMap(group => [1, 2].map(i => ({ id: `${b.id}~${group}~${i}`, group, rotation })))) };
+
+// Smash at its new cost (Scaling Stat min) and Light Blast as Area, Pierce, Pepper (v0.76.1).
+const SB = RETEST.filter(b => /^weighted-.*-t5$|^blast-/.test(b.id));
+PASSES["focus-smash-blast"] = { id: "focus-smash-blast", note: "Smash at its new cost and the new Light Blast (Area, Pierce, Pepper).",
+  party: [{ ...PARTY_BENCH[0], loadouts: SB.map(b => ({ ...b, armor: null })) }], monsters: RETEST_DUMMIES, deploy: "bench", maxRounds: 4,
+  encounters: SB.flatMap((b, rotation) => (b.id.startsWith("blast") ? ["light", "heavy", "cluster", "bare"] : ["light", "heavy"])
+    .flatMap(group => [...Array(b.id.startsWith("blast") ? 2 : 3).keys()].map(i => ({ id: `${b.id}~${group}~${i + 1}`, group, rotation })))) };
+
+// Light Blast with Pepper off: is Pepper's Disadvantage costing more than its extra shot?
+const NP = RETEST.filter(b => /^blast-light/.test(b.id)).map(b => ({ ...b, id: `${b.id}-nopepper`, noPepper: true }));
+PASSES["focus-blast-nopepper"] = { id: "focus-blast-nopepper", note: "Light Blast (Area, Pierce, Pepper) fired without Pepper.",
+  party: [{ ...PARTY_BENCH[0], loadouts: NP.map(b => ({ ...b, armor: null })) }], monsters: RETEST_DUMMIES, deploy: "bench", maxRounds: 4,
+  encounters: NP.flatMap((b, rotation) => ["light", "heavy", "cluster", "bare"].flatMap(group => [1, 2].map(i => ({ id: `${b.id}~${group}~${i}`, group, rotation })))) };

@@ -1824,9 +1824,9 @@ function blockersFor(attacker, target) {
     const dist = tTok ? tokenDistance(tok, tTok) : Infinity;
     const perfect = ab.defenderHeld(a, 5).length > 0;
     if (dist <= reach) { out.set(a.uuid, { actor: a, perfect, guard: false }); continue; }
-    // Shield Toss (Defender T2) as a guard: throw the shield to an ally in throw range, then Block for them (2 RP).
+    // Shield Toss (Defender T2) as a guard: throw the shield to an ally in throw range, then Block for them (2 RP). Not offered without the RP.
     const toss = tossShields(a).filter(i => dist <= (THROW[i.system.profile.throwType]?.range ?? 0));
-    if (toss.length) out.set(a.uuid, { actor: a, perfect, guard: false, toss: true, cost: Math.min(...toss.map(ab.DEFENDER_COST.shieldToss)) });
+    if (toss.length && canSpend(a, "rp", 2)) out.set(a.uuid, { actor: a, perfect, guard: false, toss: true, cost: Math.min(...toss.map(ab.DEFENDER_COST.shieldToss)) });
   }
   return [...out.values()];
 }

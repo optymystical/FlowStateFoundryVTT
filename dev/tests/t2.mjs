@@ -208,6 +208,12 @@ console.log("== Collapsed Ally help button");
   dialog = html => { listed = html; const m = [...html.matchAll(/<option value="(\d+)">([^<]*)<\/option>/g)].find(x => /Knight2: Block for/.test(x[2])); return { pick: m?.[1] }; };
   await actions.allyHelp(last("attack"), 0);
   ok(/Knight2: Block for Ally2/.test(listed) && last("blockFor")?.flags.flowstate.blockFor.blocker === knight2.uuid, "the popup lists who can help; picking one Blocks");
+  ok(/Squire2: Shield Toss to guard Ally2/.test(listed), "an ally out of reach but in throw range is offered Shield Toss to guard");
+  // Without the 2 RP a Shield Toss guard costs, it isn't offered (it could only fail).
+  squire2.system.rp.value = 0; listed = "";
+  await actions.allyHelp(last("attack"), 0);
+  ok(!/Squire2: Shield Toss/.test(listed), "no Shield Toss to guard without 2 RP");
+  squire2.system.rp.value = 6;
   globalThis.canvas = null; ally2.getActiveTokens = () => []; }
 
 console.log("== Shield Toss guard Blocks automatically");

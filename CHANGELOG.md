@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.17:** Ally help no longer offers "Shield Toss to guard" to an ally without the 2 RP it costs (picking it could only fail). Found by the combat sim.
+
 **0.75.16:** Turning a status off can't fail any more when two things remove it at once (a Limber used up by a roll as the turn start clears it): the second removal waits for the first instead of erroring with "ActiveEffect … does not exist". Found by the combat sim.
 
 **0.75.15:** Range and placement read where a token is, not where its move animation has got to. Right after Knockback (or any animated move), and for as long as a window stays minimized, a creature flown 60 ft away still counted as being next to its attacker, so melee attacks reached it. Distances, Knockback directions, areas, landing spots, Palisade, auras and tile checks now use the stored position.

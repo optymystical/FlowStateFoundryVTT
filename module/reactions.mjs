@@ -27,7 +27,7 @@ const REACTIONS = [
   { key: "brawling", card: true, label: "Combo / Flow Like Water", tip: "The card offered when a whole Fast or Solitary Unarmed set lands on one target.", when: c => c.tier("martial-brawling-methods") >= 3 },
   { key: "turnStart", card: true, label: "Start-of-turn abilities", tip: "The card at the start of your turn with Berserk, Proper Stance and Quicken (switched off, Berserk can't be maintained from it).", when: c => c.tier("martial-striker-weapons") >= 2 || c.tier("martial-assault-weapons") >= 5 || c.tier("martial-unarmored") >= 4 },
   { key: "wonderAbilities", card: true, label: "Wonder ability buttons", tip: "The card of ability buttons after a Manifest (Pollinate, Fester, Refraction, Ricochet, Instinct and the like).", when: c => !!c.anyWonder },
-  { key: "chant", card: true, label: "Chant reroll", tip: "The card offering to reroll a missed Manifest (Mental Theory T3).", when: c => (c.theory ?? 0) >= 3 },
+  { key: "chant", card: true, label: "Chant reroll", tip: "The card offering to reroll a missed Manifest (Mental Theory T3), and the question before a Fortune Manifest's self hit.", when: c => (c.theory ?? 0) >= 3 },
   { key: "wobs", card: true, label: "Will of Body and Spirit", tip: "The card offering a free Manifest after your Martial or Magic attacks (Mental Theory T5).", when: c => (c.theory ?? 0) >= 5 },
   { key: "perennial", card: true, label: "Perennial", tip: "The card at the start of your turn to reapply expiring Life effects.", when: c => c.tier("mental-life-dream") >= 4 },
   { key: "below", card: true, label: "Vice / Quicksand", tip: "The card offered when someone tries to break free of your Below effects.", when: c => c.tier("mental-below-nightmare") >= 2 },

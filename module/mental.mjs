@@ -620,7 +620,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
   // Fortune: no crits; where the roll lands picks a band (a self hit under one half, Strengthened stacks above it).
   // Ruin: no crits either; a hit stores the Mode as a Jinx (the Mode does that).
   if (wondersF.isRuin(m)) { const f = await wondersF.ruinResolve({ attacker, target, o, result, m, mode, index, attackMessage }); if (f) return f; }
-  if (wondersE.isFortune(m) && !m.selfHit) { const f = await wondersE.fortuneResolve({ attacker, target, o, result, entry, m, mode, index, attackMessage }); if (f) return f; }
+  if (wondersE.isFortune(m) && !m.selfHit) { const f = await wondersE.fortuneResolve({ attacker, target, o, result, entry, m, mode, index, attackMessage, reroll }); if (f) return f; }
   if (!result.hit && wonders.MISS_MODES.has(m.mode) && !m.hubris) {
     // Perfection Modes apply even on a miss: what they do is worked out from how far it missed.
     return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, hit: false, margin: Math.max(0, (reroll.dodge ?? 0) - (entry?.total ?? 0)), index, attackMessage });
@@ -632,7 +632,7 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     const missAuto = await wonders.missAuto({ attacker, target, m, mode });
     // Chant (Mental T3): once per Manifest, reroll a missed attack roll for the Enhance cost (keeping its Advantage/Disadvantage).
     let extra = "";
-    if (theory(attacker) >= 3 && !o.area && !m.chanted && !m.spread && reroll.dodge !== null && !isDeclined(attacker, "chant")) {
+    if (chantable(attacker, o, m, reroll) && !isDeclined(attacker, "chant")) {
       const cost = minOf(attacker, R.KINDS[R.wonderById(m.wonder).kind].stat);
       const act = { id: "chant", label: "Chant: reroll", tip: "Reroll the missed attack roll once (keeps its Advantage/Disadvantage; this does not Enhance it)", cost: `⚡ ${cost}`, caster: attacker.uuid, target: target.uuid, mode: m.mode, re: { ...reroll, keepNet: true, stacks: o.stacks ?? 0, melee: !!o.melee, msg: attackMessage, index }, m, range: m.range };
       await post(attacker, { title: `${esc(attacker.name)} — Chant`, body: wonders.actButtons([act]), flags: { flowstate: { mentalAct: { acts: [act] } } } });
@@ -641,6 +641,27 @@ async function onResolve({ attacker, target, o, result, entry, dodgeRoll, index 
     return { html: `<div class="fs-notes">${esc(mode?.name ?? "The Mode")} misses ${esc(target.name)}.${extra}${missAuto}</div>` };
   }
   return landManifest({ attacker, target, o, m, mode, result, stacksBase: o.stacks ?? 0, index, attackMessage });
+}
+
+/** Can Chant (Mental T3) reroll this missed Manifest? (Once per Manifest; not an Area one, a spread one, or one with no dodge to roll against.) */
+const chantable = (attacker, o, m, reroll) => theory(attacker) >= 3 && !o.area && !m.chanted && !m.spread && reroll?.dodge !== null && reroll?.dodge !== undefined;
+
+/**
+ * Chant before Fortune's self hit: a Fortune Manifest that missed under one half would hit its caster, so they're asked first whether to Chant (pay the Enhance
+ * cost, reroll keeping its Advantage/Disadvantage). Returns { total, result } of the reroll, or null (not offered, declined, or not affordable).
+ */
+export async function chantFortune({ attacker, o, m, entry, reroll }) {
+  if (!chantable(attacker, o, m, reroll)) return null;
+  const cost = minOf(attacker, R.KINDS[R.wonderById(m.wonder)?.kind ?? "dream"].stat);
+  if (inActiveCombat(attacker) && (attacker.system.energy?.value ?? 0) < cost) return null;
+  const name = R.modeById(m.mode)?.name ?? "The Manifest";
+  const ans = await charges.askFor(attacker, { react: "chant", title: "Chant", ok: "Reroll", html: `<p><strong>${esc(name)}</strong> missed with ${entry?.total ?? "?"} on a d${reroll.die}: under one half, so it would hit you.</p>
+    <p><strong>Chant</strong> (⚡ ${cost}): reroll the attack roll (keeping its Advantage/Disadvantage). If the reroll misses, the self hit applies after all.</p>` });
+  if (!ans || !(await pay(attacker, { energy: cost }, "Chant"))) return null;
+  const r = await new Roll(poolFormula(1, reroll.die, reroll.net ?? 0)).evaluate();
+  const result = resolveAttack(r.total, reroll.dodge);
+  await post(attacker, { title: `${esc(attacker.name)} — Chant`, rolls: [r], body: `<div class="fs-notes">Chant: new attack roll <strong>${r.total}</strong> against a dodge of ${reroll.dodge}: <strong>${result.outcome}</strong>.</div>` });
+  return { total: r.total, result };
 }
 
 /** Chant and Make Clear: reroll the missed attack roll against the same dodge. */
@@ -657,7 +678,12 @@ export async function rerollAct(x) {
   const label = chant ? "Chant" : "Make Clear";
   let riposteFlags = {};
   let html = `<div class="fs-notes">${label}: new attack roll <strong>${r.total}</strong> against a dodge of ${x.re.dodge}${x.re.keepNet ? "" : " (no Advantage/Disadvantage kept)"}: <strong>${result.outcome}</strong>.</div>`;
-  if (result.hit) {
+  if (chant && wondersE.isFortune(x.m)) {
+    // Fortune can't crit: the reroll lands by its band (under one half hits you instead, whether or not it hit).
+    const o = { stacks: x.re.stacks ?? 0, area: false, melee: !!x.re.melee };
+    const f = await wondersE.fortuneResolve({ attacker: caster, target, o, result, entry: { total: r.total, die: x.re.die }, m: { ...x.m, chanted: true }, mode: R.modeById(x.m.mode), index: x.re.index ?? 0, attackMessage: x.re.msg ?? null });
+    html += f?.html ?? `<div class="fs-notes">Still a miss.</div>`;
+  } else if (result.hit) {
     if (chant) {
       const o = { stacks: x.re.stacks ?? 0, area: false, melee: !!x.re.melee };
       // The first roll was a miss: a melee miss already met Shatter, so the reroll doesn't strike the attack a second time.

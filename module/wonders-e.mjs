@@ -62,10 +62,19 @@ const selfHits = new Set();          // Manifests (by uid) that already hit thei
  * A Fortune Manifest was answered: it can't crit; its band decides. Under one half it hits you (whether or not it hit), with no stacks unless Double Down gives
  * some; otherwise a hit gets 2 / 4 (/ 8) Strengthened. Returns the resolve result, or null for a plain miss (the normal miss card).
  */
-export async function fortuneResolve({ attacker, target, o, result, entry, m, mode, index = 0, attackMessage = null }) {
+export async function fortuneResolve({ attacker, target, o, result, entry, m, mode, index = 0, attackMessage = null, reroll = null }) {
   const total = entry?.total ?? 0, die = entry?.die ?? attacker.system.derived.attackDie;
   const band = R.fortuneBand(total, die, !!m.doubleDown);
   const note = `<div class="fs-notes">Fortune's Bands: ${total} on a d${die} — ${band.label}.</div>`;
+  // Chant first (the user's ruling): a miss in the self band is offered Chant before the self hit. A reroll that hits lands by its own band; one that misses
+  // (at one half or more) leaves the self hit to apply after all.
+  if (band.self && !result.hit && reroll) {
+    const ch = await mental.chantFortune({ attacker, o, m, entry, reroll: { ...reroll, die } });
+    if (ch) {
+      const again = await fortuneResolve({ attacker, target, o, result: ch.result, entry: { ...entry, total: ch.total, die }, m: { ...m, chanted: true }, mode, index, attackMessage });
+      if (again) return { ...again, html: `${note}<div class="fs-notes">Chant rerolled it: ${ch.total}.</div>${again.html}` };
+    }
+  }
   if (band.self) {
     if (m.uid && selfHits.has(m.uid)) return { html: `${note}<div class="fs-notes">It already hit ${esc(attacker.name)}.</div>` };
     if (m.uid) selfHits.add(m.uid);

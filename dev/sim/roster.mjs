@@ -435,3 +435,70 @@ export const PARTY_T5 = [
 ];
 PASSES["martial-t5"] = { id: "martial-t5", note: "Martial Theory T5 (Weapon Master) and its trees (Grappling, Thrasher, Unarmored) to T5.",
   party: PARTY_T5, monsters: MONSTERS_T1, encounters: encountersFor(MONSTERS_T1, 2) };
+
+/* -------------------------------------------- */
+/*  Focused passes (after the balance review)    */
+/* -------------------------------------------- */
+
+// The review's open questions, each tested on its own: a weapon benchmark against still dummies, 2H against 1H + shield in mirror duels,
+// armor against speed (a gun that kites a melee chaser) and Heavy Assault with Quickload.
+
+/** A still target: it never acts, only dodges. Same body as a party member (Con 45, Dex 30). */
+const dummy = (armor, count = 1) => ({ kinds: [{ id: "dummy", name: "Sim Dummy", role: "dummy", count, size: 3, sp: 30, natural: false,
+  stats: { con: 45, dex: 30, str: 15 }, armor, weapons: [] }] });
+const MELEE_TYPES = ["bladed", "balanced", "swift", "striker", "defender", "weighted", "reach", "circular", "curved", "thrasher"];
+const RANGED_TYPES = ["rapid", "assault", "blast", "longshot"];
+/** Every weapon type and weight, one-handed and (Heavy) two-handed, no trees; plus Assault with its tree (Quickload, then T5). */
+const BENCH = [
+  { id: "unarmed", weapons: [] },
+  ...MELEE_TYPES.flatMap(t => [
+    { id: `${t}-light`, weapons: [W(t, "light", "steel", { primary: true })] },
+    { id: `${t}-heavy`, weapons: [W(t, "heavy", "steel", { primary: true })] },
+    { id: `${t}-heavy-2h`, weapons: [W(t, "heavy", "steel", { primary: true, twoHanded: true })] }]),
+  ...RANGED_TYPES.flatMap(t => [
+    { id: `${t}-light`, weapons: [W(t, "light", "steel", { primary: true })], ranged: true },
+    { id: `${t}-heavy`, weapons: [W(t, "heavy", "steel", { primary: true })], ranged: true },
+    { id: `${t}-heavy-2h`, weapons: [W(t, "heavy", "steel", { primary: true, twoHanded: true })], ranged: true }]),
+  { id: "assault-heavy-q", trees: T2({ [ASL]: 1 }), weapons: [W("assault", "heavy", "steel", { primary: true })], ranged: true },
+  { id: "assault-heavy-t5", trees: T2({ [ASL]: 5 }), weapons: [W("assault", "heavy", "steel", { primary: true })], ranged: true },
+  { id: "assault-light-q", trees: T2({ [ASL]: 1 }), weapons: [W("assault", "light", "steel", { primary: true })], ranged: true },
+  { id: "assault-light-t5", trees: T2({ [ASL]: 5 }), weapons: [W("assault", "light", "steel", { primary: true })], ranged: true }
+];
+export const PARTY_BENCH = [{ id: "tester", name: "Sim Tester", role: "bench", note: "Str 45 and Dex 45: every weapon at full scaling.",
+  stats: { str: 45, dex: 45 }, loadouts: BENCH.map(b => ({ ...b, armor: null })) }];
+const BENCH_DUMMIES = { light: dummy(A("light", "softLeather")), heavy: dummy(A("heavy", "iron")), cluster: dummy(A("light", "softLeather"), 3) };
+PASSES["focus-bench"] = { id: "focus-bench", note: "Weapon benchmark: each weapon against a still dummy in Light or Heavy armor for 4 rounds; Blasts also into a cluster of 3.",
+  party: PARTY_BENCH, monsters: BENCH_DUMMIES, deploy: "bench", maxRounds: 4,
+  encounters: [
+    ...BENCH.flatMap((b, rotation) => ["light", "heavy"].map(group => ({ id: `${b.id}-${group}`, group, rotation }))),
+    ...BENCH.map((b, rotation) => ({ b, rotation })).filter(x => x.b.id.startsWith("blast")).map(({ b, rotation }) => ({ id: `${b.id}-cluster`, group: "cluster", rotation }))
+  ] };
+
+// Mirror duels: the same Strength build (Weighted or Bladed to T5) with a two-handed weapon and Strength T4, or the one-handed weapon and a
+// Heavy Defender shield with Defender T4 (Block, Shield Toss, Sword and Board, Bounce). Both in Medium armor.
+const DUELIST_STATS = { str: 45, con: 30, build: 15 };
+const SHIELD_LOADOUTS = {
+  w2h: { trees: T2({ [WEI]: 5, [STR]: 4 }), armor: A("medium", "hide"), weapons: [W("weighted", "heavy", "steel", { primary: true, twoHanded: true })] },
+  wsh: { trees: T2({ [WEI]: 5, [DEF]: 4 }), armor: A("medium", "hide"), weapons: [W("weighted", "heavy", "steel", { primary: true }), W("defender", "heavy", "steel")] },
+  b2h: { trees: T2({ [BLA]: 5, [STR]: 4 }), armor: A("medium", "hide"), weapons: [W("bladed", "heavy", "steel", { primary: true, twoHanded: true })] },
+  bsh: { trees: T2({ [BLA]: 5, [DEF]: 4 }), armor: A("medium", "hide"), weapons: [W("bladed", "heavy", "steel", { primary: true }), W("defender", "heavy", "steel")] }
+};
+const SHIELD_KEYS = Object.keys(SHIELD_LOADOUTS);
+export const PARTY_SHIELD = [{ id: "breaker", name: "Sim Breaker", role: "melee-str", note: "Strength melee, one loadout per duel.",
+  stats: DUELIST_STATS, loadouts: SHIELD_KEYS.map(k => SHIELD_LOADOUTS[k]) }];
+const RIVALS = Object.fromEntries(SHIELD_KEYS.map(k => [k, { kinds: [{ id: "rival", name: "Sim Rival", count: 1, size: 3, sp: 30, natural: false, stats: DUELIST_STATS, ...SHIELD_LOADOUTS[k] }] }]));
+const duels = (mine, theirs, reps) => [...Array(reps).keys()].map(i => ({ id: `${mine}-v-${theirs}-${i + 1}`, group: theirs, rotation: SHIELD_KEYS.indexOf(mine) }));
+PASSES["focus-shield"] = { id: "focus-shield", note: "Mirror duels: two-handed (Strength T4) against one-handed + Heavy Defender (Defender T4), Weighted and Bladed.",
+  party: PARTY_SHIELD, monsters: RIVALS,
+  encounters: [...duels("w2h", "wsh", 3), ...duels("wsh", "w2h", 3), ...duels("b2h", "bsh", 3), ...duels("bsh", "b2h", 3)] };
+
+// Armor against speed: a Light Assault gunner (no trees) that keeps out of a melee chaser's reach, in Light, Medium or Heavy armor, against a
+// two-handed Heavy Weighted chaser in each of the three. A big open field (400 ft square).
+const KITE_ARMOR = { light: A("light", "softLeather"), medium: A("medium", "hide"), heavy: A("heavy", "iron") };
+export const PARTY_KITE = [{ id: "kiter", name: "Sim Kiter", role: "kiter", note: "Shoots, and steps back out of the chaser's reach when it can still shoot after.",
+  stats: { dex: 45, con: 25, str: 10, will: 10 }, loadouts: Object.values(KITE_ARMOR).map(armor => ({ armor, weapons: [W("assault", "light", "steel", { primary: true })] })) }];
+const CHASERS = Object.fromEntries(Object.entries(KITE_ARMOR).map(([k, armor]) => [k, { kinds: [{ id: "chaser", name: "Sim Chaser", count: 1, size: 3, sp: 30, natural: false,
+  stats: DUELIST_STATS, armor, weapons: [W("weighted", "heavy", "steel", { primary: true, twoHanded: true })] }] }]));
+PASSES["focus-kite"] = { id: "focus-kite", note: "Armor vs speed: a Light Assault kiter in Light/Medium/Heavy armor against a 2H Heavy Weighted chaser in each.",
+  party: PARTY_KITE, monsters: CHASERS, deploy: "kite", arena: { name: "Sim Field", width: 8000, height: 8000 },
+  encounters: Object.keys(KITE_ARMOR).flatMap((mine, rotation) => Object.keys(KITE_ARMOR).flatMap(theirs => [1, 2].map(i => ({ id: `${mine}-v-${theirs}-${i}`, group: theirs, rotation })))) };

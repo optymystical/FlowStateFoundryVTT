@@ -179,16 +179,18 @@ async function makeActor(spec, loadout, { party, folder }) {
 
 /** Delete the sim's actors, tokens, piles and combats. */
 async function clearSim() {
-  const scene = game.scenes.getName("Sim Arena");
-  for (const c of game.combats.filter(c => c.scene?.id === scene?.id)) await c.delete();
-  if (scene?.tokens.size) await scene.deleteEmbeddedDocuments("Token", scene.tokens.map(t => t.id));
+  for (const scene of game.scenes.filter(s => ["Sim Arena", "Sim Field"].includes(s.name))) await clearScene(scene);
   const ids = game.actors.filter(a => a.getFlag("flowstate", "sim") || a.name.startsWith("Sim ") || (a.type === "pile" && a.getFlag("flowstate", "simPile"))).map(a => a.id);
   if (ids.length) await Actor.deleteDocuments(ids);
 }
+async function clearScene(scene) {
+  for (const c of game.combats.filter(c => c.scene?.id === scene?.id)) await c.delete();
+  if (scene?.tokens.size) await scene.deleteEmbeddedDocuments("Token", scene.tokens.map(t => t.id));
+}
 
-async function arena() {
-  let scene = game.scenes.getName("Sim Arena");
-  if (!scene) scene = await Scene.create({ name: "Sim Arena", width: 4800, height: 2800, padding: 0, grid: { type: 1, size: 100, distance: 5, units: "ft" }, backgroundColor: "#2b2f2b" });
+async function arena({ name = "Sim Arena", width = 4800, height = 2800 } = {}) {
+  let scene = game.scenes.getName(name);
+  if (!scene) scene = await Scene.create({ name, width, height, padding: 0, grid: { type: 1, size: 100, distance: 5, units: "ft" }, backgroundColor: "#2b2f2b" });
   if (canvas.scene?.id !== scene.id) { await scene.view(); await waitFor(() => canvas.ready && canvas.scene?.id === scene.id, 15000); await idle(500); }
   return scene;
 }
@@ -638,19 +640,24 @@ async function takeFollowup(card, doc) {
   const item = attacker.items.get(btn.dataset.item);
   const plan = item ? weaponPlan(attacker, item) ?? (item.system.weaponType === "unarmed" ? { item, ranged: false, range: reachOf(attacker) } : null) : null;
   if (!plan || !me) return false;
+  // An empty gun: reload with RP and fire, else (Quickload, Rapid/Assault T1) give the follow-up up to reload for free.
+  let quickFu = false;
   if (plan.ranged && !item.system.loaded) {
-    if (rpOf(attacker) < plan.reloadRP) { note(attacker, "followup:noRP"); return false; }
-    SIM.acting = attacker.name;
-    await Act.reloadWeapon(attacker, item);
-    stat(attacker).reloads = (stat(attacker).reloads ?? 0) + 1;
-    if (!item.system.loaded) return false;
+    const ql = ab.rapid(attacker, item, 1) || ab.assault(attacker, item, 1);
+    if (rpOf(attacker) >= plan.reloadRP) {
+      SIM.acting = attacker.name;
+      await Act.reloadWeapon(attacker, item);
+      stat(attacker).reloads = (stat(attacker).reloads ?? 0) + 1;
+      if (!item.system.loaded) return false;
+    } else if (ql) { quickFu = true; note(attacker, "followup:quickload"); }
+    else { note(attacker, "followup:noRP"); return false; }
   }
   const src = game.messages.get(card.getFlag("flowstate", "followupCard"))?.getFlag("flowstate", "attack");
   const first = src?.targets?.[0] ? fromUuidSync(src.targets[0].uuid)?.getActiveTokens?.()[0]?.document : null;
   const inReach = t => t && !down(t.actor) && dist(me, t) <= plan.range + 0.01;
   const target = inReach(first) ? first : foesOf(me.parent, me).filter(inReach).sort((a, b) => dist(me, a) - dist(me, b))[0];
   if (!target) return false;
-  F.followups = (F.followups ?? 0) + 1;
+  if (!quickFu) F.followups = (F.followups ?? 0) + 1;
   await attack(attacker, me, plan, target, {
     mode: src?.opts?.melee === false && !plan.ranged ? "throw" : undefined,
     followup: { net: Number(btn.dataset.net) || 0, label: btn.dataset.label, weight: btn.dataset.weight || null, source: btn.dataset.source || card.getFlag("flowstate", "followupCard"),
@@ -786,6 +793,15 @@ async function endOfTurn(actor) {
 
 /** The AI's turn: stances, then act, then the end of the turn; the chat is settled after each. */
 async function takeTurn(actor, me) {
+  if (sim(actor).role === "dummy") return;          // a bench dummy never acts (it still dodges)
+  if (passOf().deploy === "kite" && !sim(actor).party) {
+    const tr = { who: "chaser", round: SIM.combat?.round, gap: Math.min(...foesOf(me.parent, me).map(f => walkGap(me, f))), ap: actor.system.ap.value };
+    (F.kiteLog ??= []).push(tr);
+    await settle(); await stances(actor, me); await settle(); await actTurn(actor, me); await settle();
+    tr.end = Math.min(...foesOf(me.parent, me).map(f => walkGap(me, f))); tr.moved = Math.round(stat(actor).turnMoved ?? 0); tr.attacks = stat(actor).attacks;
+    if (!down(actor)) await endOfTurn(actor);
+    return settle();
+  }
   await settle();                                   // the start-of-turn card first (Berserk), so stances can see it (Seeing Red)
   await stances(actor, me);
   await settle();
@@ -795,12 +811,100 @@ async function takeTurn(actor, me) {
   await settle();
 }
 
+/**
+ * Kiting (role "kiter"): stay out of the chaser's reach. Strafing (Rules doc) lets AP spent on an action also pay for movement, so the kiter shoots
+ * first (that AP is banked toward its steps), then walks back on the bank until it is past every foe's threat line: what the foe can reach next
+ * turn and still attack (its reach, the steps its spare AP pays for, and one more step that its attack settles).
+ */
+const threatOf = f => {
+  const a = f.actor, held = a.items.filter(i => i.type === "weapon" && i.system.held);
+  const atk = Math.min(...held.map(i => i.system.profile?.ap ?? 2), 6);
+  const spare = Math.max(0, (a.system.ap.max ?? 6) - atk), step = a.system.movement?.ap ?? 1;
+  const reach = reachOf(a) * Math.max(1, ...held.map(i => i.system.profile?.farstrike || 1));
+  return reach + (a.system.movement?.speed ?? 30) * (Math.floor(spare / step) + 1);
+};
+/** Feet a creature must walk (5 ft diagonals) from box `a` to touch token `b`: the gap between them in whole squares. */
+const walkGap = (a, b) => {
+  const g = canvas.scene.grid.size, pa = a._source ? pos(a) : a, pb = pos(b);
+  const gx = Math.max(0, pb.x - (pa.x + a.width * g), pa.x - (pb.x + b.width * g)), gy = Math.max(0, pb.y - (pa.y + a.height * g), pa.y - (pb.y + b.height * g));
+  return Math.round(Math.max(gx, gy) / g) * canvas.scene.grid.distance;
+};
+async function kiteTurn(actor, me) {
+  const s = stat(actor);
+  const gunOf = () => actor.items.filter(i => i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed").map(i => weaponPlan(actor, i)).find(w => w?.ranged);
+  for (let k = 0; k < 14; k++) {
+    if (down(actor) || over(me.parent)) return;
+    const foes = foesOf(me.parent, me), gun = gunOf();
+    if (!foes.length || !gun) return;
+    if (!gun.loaded) { if (actor.system.rp.value < gun.reloadRP) break; SIM.acting = actor.name; await Act.reloadWeapon(actor, gun.item); s.reloads = (s.reloads ?? 0) + 1; continue; }
+    if (actor.system.ap.value < gun.ap) break;
+    const target = foes.sort((a, b) => dist(me, a) - dist(me, b))[0];
+    if (dist(me, target) > gun.far + 0.01) break;
+    if (!(await attack(actor, me, gun, target, { far: dist(me, target) > gun.range + 0.01 }))) break;
+  }
+  if (down(actor) || over(me.parent)) return;
+  const foes = foesOf(me.parent, me);
+  const trace = { round: SIM.combat?.round, at: Math.min(...foes.map(f => walkGap(me, f))), prone: actor.statuses.has("prone"), ap: actor.system.ap.value,
+    speed: actor.system.movement?.speed, foeSpeed: foes[0]?.actor.system.movement?.speed, threat: Math.round(threatOf(foes[0])) };
+  (F.kiteLog ??= []).push(trace);
+  if (Math.max(...foes.map(f => threatOf(f) - walkGap(me, f))) < 0) return;
+  trace.max = Math.round(MR.maxMove(Act.moveLedger(actor), { ...Act.moveParams(actor), ap: actor.system.ap.value }));
+  const spot = fleeSpot(actor, me, foes, actor.system.ap.value);
+  trace.spot = !!spot;
+  if (spot) { s.kites = (s.kites ?? 0) + 1; note(actor, "kite:stepBack"); trace.to = await stepTo(actor, me, spot); trace.after = walkGap(me, foes[0]); }
+  else {
+    // Can't get clear: back off as far as it can anyway.
+    note(actor, "kite:cornered");
+    const far = fleeSpot(actor, me, foes, actor.system.ap.value, { anyGap: true });
+    if (far) trace.to = await stepTo(actor, me, far);
+  }
+}
+
+/** The cell to flee to: past every foe's threat line (in the gun's normal range if it can be), reachable with `apBudget` AP; else null. */
+function fleeSpot(actor, me, foes, apBudget, { anyGap = false } = {}) {
+  const scene = me.parent, g = scene.grid.size, at = pos(me);
+  const maxFeet = MR.maxMove(Act.moveLedger(actor), { ...Act.moveParams(actor), ap: apBudget });
+  const r = Math.floor(maxFeet / scene.grid.distance);
+  const gun = actor.items.find(i => i.type === "weapon" && i.system.held && i.system.profile?.ranged)?.system?.profile;
+  const others = scene.tokens.contents.filter(t => t.id !== me.id && sim(t.actor).id && !down(t.actor));
+  const cands = [];
+  for (let dx = -r; dx <= r; dx++) for (let dy = -r; dy <= r; dy++) {
+    const x = at.x + dx * g, y = at.y + dy * g;
+    if (x < 0 || y < 0 || x + me.width * g > scene.width || y + me.height * g > scene.height) continue;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) * scene.grid.distance > maxFeet + 0.01) continue;
+    if (others.some(o => { const p = pos(o); return x < p.x + o.width * g - 1 && p.x < x + me.width * g - 1 && y < p.y + o.height * g - 1 && p.y < y + me.height * g - 1; })) continue;
+    const box = { x, y, width: me.width, height: me.height };
+    const margin = Math.min(...foes.map(f => walkGap(box, f) - threatOf(f)));
+    if (margin <= 0 && !anyGap) continue;
+    const near = Math.min(...foes.map(f => dist(box, f)));
+    // Prefer staying in normal range, then the shortest move (AP left to shoot), then room behind (away from the edges).
+    const edge = Math.min(x, y, scene.width - x, scene.height - y) / g;
+    cands.push({ x, y, score: anyGap ? -margin - Math.min(edge, 12) : (gun && near <= gun.range ? 0 : 1000) + Math.hypot(dx, dy) - Math.min(edge, 12) * 0.5 });
+  }
+  cands.sort((a, b) => a.score - b.score);
+  for (const c of cands.slice(0, 40)) if (feetTo(me, c.x, c.y) <= maxFeet + 0.01) return c;
+  return null;
+}
+
+/** Move to a spot (a player's drag: the move costs AP). Returns the feet moved. */
+async function stepTo(actor, me, dest) {
+  const from = { x: me._source.x, y: me._source.y };
+  try { await me.move([{ x: dest.x, y: dest.y }], { method: "dragging", animate: false }); } catch (err) { log.errors.push(`move ${actor.name}: ${err.message}`); return 0; }
+  await waitFor(() => me._source.x !== from.x || me._source.y !== from.y, 1500);
+  await idle(150);
+  const moved = Math.hypot(me._source.x - from.x, me._source.y - from.y) / me.parent.grid.size * me.parent.grid.distance;
+  stat(actor).moved += moved;
+  stat(actor).turnMoved = (stat(actor).turnMoved ?? 0) + moved;
+  return moved;
+}
+
 /** Reload, grapple, close in, attack, and throw a spare weapon at a foe out of reach. */
 async function actTurn(actor, me) {
   const s = stat(actor);
   s.turns++;
   s.turnMoved = 0;
   const role = sim(actor).role;
+  if (role === "kiter") return kiteTurn(actor, me);
   for (let step = 0; step < 16; step++) {
     if (down(actor) || over(me.parent)) return;
     const ap = actor.system.ap.value, rp = actor.system.rp.value;
@@ -923,9 +1027,23 @@ function over(scene) {
   return !t.some(x => sideOf(x) === "party" && !down(x.actor)) || !t.some(x => sideOf(x) === "monsters" && !down(x.actor));
 }
 
-/** Place the party on the left and the monsters on the right. */
-async function deploy(scene, party, monsters) {
+/**
+ * Place the party on the left and the monsters on the right. "bench": the dummy right beside a melee tester, 15 ft from a gun (a cluster of
+ * three touching); "kite": the two 90 ft apart in the middle of the field.
+ */
+async function deploy(scene, party, monsters, mode = null, loadout = null) {
   const place = async (a, x, y) => { const td = await a.getTokenDocument({ x: x * 100, y: y * 100 }); return (await scene.createEmbeddedDocuments("Token", [td.toObject()]))[0]; };
+  if (mode === "bench") {
+    await place(party[0], 8, 7);
+    const x0 = loadout?.ranged ? 12 : 9;
+    for (const [i, a] of monsters.entries()) await place(a, x0 + (i === 1 ? 1 : 0), 7 + (i === 2 ? 1 : 0));
+    return idle(300);
+  }
+  if (mode === "kite") {
+    await place(party[0], 30, 40);
+    for (const a of monsters) await place(a, 49, 40);
+    return idle(300);
+  }
   for (const [i, a] of party.entries()) await place(a, 8, 7 + i * 3);
   let n = 0;
   for (const a of monsters) { const col = 26 + (n % 3) * 2, row = 6 + Math.floor(n / 3) * 3; await place(a, col, row); n++; }
@@ -946,8 +1064,9 @@ function trimChat(keep = 60) {
 /** Run one encounter (an id from R.ENCOUNTERS) and add its results to SIM.results. */
 SIM.passId = SIM.passId ?? R.PASS;
 const passOf = () => R.PASSES[SIM.passId] ?? R.PASSES[R.PASS];
-SIM.fight = async function fight(id, { maxRounds = 20 } = {}) {
+SIM.fight = async function fight(id, { maxRounds } = {}) {
   const P = passOf();
+  maxRounds ??= P.maxRounds ?? 20;
   const enc = P.encounters.find(e => e.id === id);
   if (!enc) throw new Error(`No encounter ${id}`);
   watch();
@@ -958,16 +1077,16 @@ SIM.fight = async function fight(id, { maxRounds = 20 } = {}) {
   try {
     SIM.status = `${id}: setting up`;
     await clearSim();
-    const scene = await arena();
+    const scene = await arena(P.arena);
     const pf = await folderFor("Sim: Party"), mf = await folderFor("Sim: Monsters");
     const party = [];
     for (const p of P.party) party.push(await makeActor(p, p.loadouts[enc.rotation], { party: true, folder: pf }));
     const monsterActors = [];
     for (const k of P.monsters[enc.group].kinds) {
-      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons }, { party: false, folder: mf });
+      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple }, { party: false, folder: mf });
       for (let i = 0; i < k.count; i++) monsterActors.push(a);
     }
-    await deploy(scene, party, monsterActors);
+    await deploy(scene, party, monsterActors, P.deploy, P.party[0].loadouts[enc.rotation]);
     // Item keys (a thrown weapon leaves the actor, so they're read now).
     F.items = {};
     for (const t of tokensOf(scene)) for (const i of t.actor.items) if (i.type === "weapon") F.items[i.uuid] = weaponKey(i);
@@ -1031,10 +1150,11 @@ function collect(scene, combat, msgs) {
   const dmgByDef = new Map(msgs.filter(m => m.getFlag("flowstate", "damage")).map(m => [m.getFlag("flowstate", "damage").defenseMessage, m]));
   const per = {};
   const P = (uuid, name) => (per[uuid] ??= { name, dealt: 0, taken: 0, hits: 0, attacks: 0 });
+  const bySource = new Map();          // damage/defense card id → the weapon and attacker behind it (for the Knockback that hit causes)
   for (const m of msgs) {
     const a = m.getFlag("flowstate", "attack");
     if (!a || !a.opts) continue;
-    const key = a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
+    const key = a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
     if (!key) continue;
     const attackerName = fromUuidSync(a.attacker)?.name ?? a.attacker;
     const w = W(key);
@@ -1050,11 +1170,21 @@ function collect(scene, combat, msgs) {
       if (r.hit) { w.hits++; P(a.attacker, attackerName).hits++; } else w.misses++;
       if (r.crit) w.crits++;
       const dm = dmgByDef.get(def.id);
+      const src = { key, attacker: a.attacker, attackerName };
+      bySource.set(def.id, src); if (dm) bySource.set(dm.id, src);
       const toHp = Number(dm?.getFlag("flowstate", "damage")?.toHp) || 0;
       w.damage += toHp;
       P(a.attacker, attackerName).dealt += toHp;
       P(t.uuid, t.name).taken += toHp;
     });
+  }
+  // Knockback driven into the ground (or into a wall) deals Force damage on its own card: count it for the weapon whose hit caused it.
+  for (const m of msgs.filter(m => m.getFlag("flowstate", "knockbackOf") && !m.getFlag("flowstate", "attack"))) {
+    const src = bySource.get(m.getFlag("flowstate", "knockbackOf"));
+    if (!src) continue;
+    const n = [...(m.content ?? "").matchAll(/<strong>(\d+)<\/strong> damage to HP/g)].reduce((t, x) => t + Number(x[1]), 0);
+    W(src.key).damage += n; W(src.key).force = (W(src.key).force ?? 0) + n;
+    P(src.attacker, src.attackerName).dealt += n;
   }
   // Armor (and anything else in the way) absorbing hits, from the damage cards' text: "Medium Armor (Hide) absorbed 30 (−30 Durability)".
   const absorbed = {};
@@ -1093,7 +1223,7 @@ function collect(scene, combat, msgs) {
     armor: absorbed,
     creatures: Object.values(per),
     ai: Object.values(F.actors),
-    trees: F.trees, gear: F.gear, monsterGear: F.monsterGear, gearState,
+    trees: F.trees, gear: F.gear, monsterGear: F.monsterGear, gearState, kiteLog: F.kiteLog,
     log: { dialogs: { ...log.dialogs }, notes: [...log.notes], errors: [...log.errors] }
   };
 }

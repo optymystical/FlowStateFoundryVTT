@@ -1,0 +1,2203 @@
+[
+ {
+  "id": "w2h-v-wsh-1",
+  "group": "wsh",
+  "rotation": 1,
+  "seconds": 21,
+  "winner": "monsters",
+  "pass": "focus-shield",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {
+   "down": 2,
+   "away": 1
+  },
+  "used": {
+   "opt:wild=str2": 3,
+   "opt:smash": 10,
+   "opt:strafe": 1,
+   "opt:swordBoard": 4,
+   "defend:dodge": 18,
+   "opt:heave": 5,
+   "opt:wild=bashPlus": 3,
+   "opt:wild=bashStr": 2,
+   "opt:dir=down": 2,
+   "opt:crunch": 1,
+   "riposte": 1,
+   "opt:wild": 2,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Breaker#Xmm2": "103/567",
+   "Sim Rival#71tU": "366/567"
+  },
+  "down": [
+   "Sim Breaker"
+  ],
+  "weapons": {
+   "Heavy Defender": {
+    "attacks": 7,
+    "followups": 1,
+    "hits": 6,
+    "crits": 2,
+    "misses": 2,
+    "damage": 211,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 127,
+    "ap": 12,
+    "kills": 1,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Weighted (2H)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 4,
+    "absorbed": 21
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Rival",
+    "dealt": 338,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 0,
+    "taken": 338,
+    "hits": 1,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 0,
+    "used": {
+     "defend:dodge": 6,
+     "riposte": 1
+    },
+    "knockbacks": {
+     "down": 1,
+     "away": 1
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    },
+    "turnMoved": 0,
+    "wild": 2,
+    "knockbacks": {
+     "down": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-weighted-weapons": 5,
+    "martial-strength-methods": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Heavy Weighted (Steel)",
+    "Medium Armor (Hide)",
+    "Heavy Defender (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 0/90 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ],
+   "Sim Rival": [
+    "Heavy Weighted (Steel): 540/540",
+    "Medium Armor (Hide): 72/90",
+    "Heavy Defender (Steel): 1524/1620"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 10,
+    "prompt: Heavy Defender (Steel)": 3,
+    "prompt: Knockback — Sim Breaker": 2,
+    "prompt: Knockback — Sim Rival": 1,
+    "prompt: Heavy Defender (Steel) — Riposte": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "w2h-v-wsh-2",
+  "group": "wsh",
+  "rotation": 1,
+  "seconds": 12,
+  "winner": "party",
+  "pass": "focus-shield",
+  "rounds": 2,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "down": 3
+  },
+  "used": {
+   "opt:wild=str2": 2,
+   "opt:smash": 5,
+   "opt:strafe": 1,
+   "opt:swordBoard": 2,
+   "defend:dodge": 9,
+   "opt:heave": 3,
+   "opt:wild=bashPlus": 2,
+   "opt:dir=down": 3,
+   "riposte": 2,
+   "opt:wild": 1,
+   "opt:crunch": 1,
+   "recoverEnergy": 3
+  },
+  "hp": {
+   "Sim Breaker#5TSZ": "314/567",
+   "Sim Rival#N7Ji": "135/567"
+  },
+  "down": [
+   "Sim Rival"
+  ],
+  "weapons": {
+   "Heavy Defender": {
+    "attacks": 3,
+    "followups": 1,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 61,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 66,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Weighted (2H)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 9,
+    "kills": 1,
+    "users": [
+     "Breaker"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 3,
+    "absorbed": 3
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Rival",
+    "dealt": 127,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 0,
+    "taken": 127,
+    "hits": 2,
+    "attacks": 3
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 1,
+    "used": {
+     "defend:dodge": 3,
+     "riposte": 2
+    },
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "recoverEnergy": 3
+    },
+    "turnMoved": 0,
+    "wild": 2,
+    "knockbacks": {
+     "down": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-weighted-weapons": 5,
+    "martial-strength-methods": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Defender (Steel)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 18/90",
+    "Heavy Weighted (Steel): 540/540"
+   ],
+   "Sim Rival": [
+    "Medium Armor (Hide): 54/90",
+    "Heavy Defender (Steel): 1401/1620",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 5,
+    "prompt: Knockback — Sim Rival": 2,
+    "prompt: Heavy Defender (Steel) — Riposte": 1,
+    "prompt: Heavy Defender (Steel)": 1,
+    "prompt: Knockback — Sim Breaker": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Rival is unconscious and can't attack.",
+     "who": "Sim Rival"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "w2h-v-wsh-3",
+  "group": "wsh",
+  "rotation": 1,
+  "seconds": 23,
+  "winner": "party",
+  "pass": "focus-shield",
+  "rounds": 4,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "down": 3
+  },
+  "used": {
+   "opt:wild=str2": 3,
+   "opt:smash": 11,
+   "opt:strafe": 1,
+   "opt:swordBoard": 4,
+   "defend:dodge": 19,
+   "opt:heave": 7,
+   "opt:wild=bashPlus": 3,
+   "opt:wild=bashStr": 3,
+   "opt:dir=down": 3,
+   "riposte": 2,
+   "opt:wild": 2,
+   "opt:crunch": 1,
+   "recoverEnergy": 3
+  },
+  "hp": {
+   "Sim Breaker#9HSR": "167/567",
+   "Sim Rival#WiCf": "135/567"
+  },
+  "down": [
+   "Sim Rival"
+  ],
+  "weapons": {
+   "Heavy Defender": {
+    "attacks": 7,
+    "followups": 1,
+    "hits": 7,
+    "crits": 2,
+    "misses": 1,
+    "damage": 243,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 13,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Weighted (2H)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 21,
+    "kills": 1,
+    "users": [
+     "Breaker"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 5,
+    "absorbed": 22
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Rival",
+    "dealt": 256,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 0,
+    "taken": 256,
+    "hits": 2,
+    "attacks": 7
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 0,
+    "used": {
+     "defend:dodge": 7,
+     "riposte": 2
+    },
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12,
+     "recoverEnergy": 3
+    },
+    "turnMoved": 0,
+    "wild": 0,
+    "knockbacks": {
+     "down": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-weighted-weapons": 5,
+    "martial-strength-methods": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Heavy Weighted (Steel)",
+    "Heavy Defender (Steel)",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 0/90 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ],
+   "Sim Rival": [
+    "Heavy Weighted (Steel): 540/540",
+    "Heavy Defender (Steel): 1422/1620",
+    "Medium Armor (Hide): 54/90"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 11,
+    "prompt: Heavy Defender (Steel)": 3,
+    "prompt: Knockback — Sim Breaker": 1,
+    "prompt: Knockback — Sim Rival": 2,
+    "prompt: Heavy Defender (Steel) — Riposte": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Rival is unconscious and can't attack.",
+     "who": "Sim Rival"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "wsh-v-w2h-1",
+  "group": "w2h",
+  "rotation": 2,
+  "seconds": 14,
+  "winner": "party",
+  "pass": "focus-shield",
+  "rounds": 3,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "down": 2,
+   "away": 1
+  },
+  "used": {
+   "opt:wild=str2": 3,
+   "opt:smash": 7,
+   "opt:strafe": 1,
+   "opt:swordBoard": 3,
+   "defend:dodge": 12,
+   "opt:dir=down": 2,
+   "opt:heave": 4,
+   "opt:wild=bashPlus": 1,
+   "opt:wild": 2,
+   "opt:wild=bashStr": 1,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Breaker#7Vlk": "567/567",
+   "Sim Rival#VcRx": "87/567"
+  },
+  "down": [
+   "Sim Rival"
+  ],
+  "weapons": {
+   "Heavy Defender": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 2,
+    "damage": 120,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 0,
+    "damage": 90,
+    "ap": 9,
+    "kills": 1,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Weighted (2H)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 4,
+    "absorbed": 38
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Breaker",
+    "dealt": 210,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Rival",
+    "dealt": 0,
+    "taken": 210,
+    "hits": 0,
+    "attacks": 4
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 80,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 2,
+    "knockbacks": {
+     "down": 2,
+     "away": 1
+    },
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    },
+    "turnMoved": 0,
+    "wild": 0
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-weighted-weapons": 5,
+    "martial-defender-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Defender (Steel) G6",
+    "Heavy Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 90/90",
+    "Heavy Defender (Steel): 1620/1620",
+    "Heavy Weighted (Steel): 540/540"
+   ],
+   "Sim Rival": [
+    "Medium Armor (Hide): 0/90 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 7,
+    "prompt: Knockback — Sim Rival": 3,
+    "prompt: Heavy Defender (Steel)": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "wsh-v-w2h-2",
+  "group": "w2h",
+  "rotation": 2,
+  "seconds": 26,
+  "winner": "monsters",
+  "pass": "focus-shield",
+  "rounds": 5,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "opt:wild=str2": 5,
+   "opt:smash": 12,
+   "opt:strafe": 1,
+   "opt:heave": 8,
+   "defend:dodge": 21,
+   "recoverEnergy": 4,
+   "opt:swordBoard": 4,
+   "opt:wild=bashPlus": 3,
+   "opt:wild=bashStr": 3,
+   "opt:dir=down": 2,
+   "riposte": 2,
+   "opt:wild": 1,
+   "opt:crunch": 1
+  },
+  "hp": {
+   "Sim Breaker#bsEQ": "135/567",
+   "Sim Rival#juWK": "497/567"
+  },
+  "down": [
+   "Sim Breaker"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 6,
+    "damage": 0,
+    "ap": 24,
+    "kills": 1,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Defender": {
+    "attacks": 8,
+    "followups": 1,
+    "hits": 3,
+    "crits": 1,
+    "misses": 6,
+    "damage": 70,
+    "ap": 15,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 3,
+    "absorbed": 3
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Rival",
+    "dealt": 0,
+    "taken": 70,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 70,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 13
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 8,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 1,
+    "used": {
+     "recoverEnergy": 4,
+     "defend:dodge": 13
+    },
+    "knockbacks": {
+     "down": 2
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "riposte": 2
+    },
+    "turnMoved": 0,
+    "wild": 0
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-weighted-weapons": 5,
+    "martial-defender-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Heavy Weighted (Steel) G6",
+    "Medium Armor (Hide) G4",
+    "Heavy Defender (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Heavy Weighted (Steel)",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Heavy Weighted (Steel): 540/540",
+    "Medium Armor (Hide): 54/90",
+    "Heavy Defender (Steel): 1305/1620"
+   ],
+   "Sim Rival": [
+    "Heavy Weighted (Steel): 540/540",
+    "Medium Armor (Hide): 36/90"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 12,
+    "prompt: Heavy Defender (Steel)": 4,
+    "prompt: Knockback — Sim Breaker": 2,
+    "prompt: Heavy Defender (Steel) — Riposte": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Breaker is unconscious and can't attack.",
+     "who": "Sim Breaker"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "wsh-v-w2h-3",
+  "group": "w2h",
+  "rotation": 2,
+  "seconds": 15,
+  "winner": "monsters",
+  "pass": "focus-shield",
+  "rounds": 3,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "opt:wild=str2": 2,
+   "opt:smash": 6,
+   "opt:strafe": 1,
+   "opt:heave": 3,
+   "defend:dodge": 11,
+   "recoverEnergy": 4,
+   "opt:swordBoard": 2,
+   "opt:wild=bashPlus": 2,
+   "opt:dir=down": 2,
+   "opt:crunch": 2,
+   "riposte": 2,
+   "opt:wild": 2
+  },
+  "hp": {
+   "Sim Breaker#XJWr": "135/567",
+   "Sim Rival#sIet": "423/567"
+  },
+  "down": [
+   "Sim Breaker"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 12,
+    "kills": 1,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Defender": {
+    "attacks": 4,
+    "followups": 1,
+    "hits": 3,
+    "crits": 2,
+    "misses": 2,
+    "damage": 144,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 3,
+    "absorbed": 3
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Rival",
+    "dealt": 0,
+    "taken": 144,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 144,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 7
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 4,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 0,
+    "used": {
+     "recoverEnergy": 4,
+     "defend:dodge": 7
+    },
+    "knockbacks": {
+     "down": 2
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "riposte": 2
+    },
+    "turnMoved": 0,
+    "wild": 1
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-weighted-weapons": 5,
+    "martial-defender-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Defender (Steel) G6",
+    "Heavy Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 54/90",
+    "Heavy Defender (Steel): 1452/1620",
+    "Heavy Weighted (Steel): 540/540"
+   ],
+   "Sim Rival": [
+    "Medium Armor (Hide): 36/90",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 6,
+    "prompt: Heavy Defender (Steel)": 2,
+    "prompt: Knockback — Sim Breaker": 2,
+    "prompt: Heavy Defender (Steel) — Riposte": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Breaker is unconscious and can't attack.",
+     "who": "Sim Breaker"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "b2h-v-bsh-1",
+  "group": "bsh",
+  "rotation": 3,
+  "seconds": 137,
+  "winner": "party",
+  "pass": "focus-shield",
+  "rounds": 15,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 43,
+  "knockbacks": {},
+  "used": {
+   "Parry": 22,
+   "opt:heave": 26,
+   "defend:closeQuarters": 47,
+   "defend:dodge": 136,
+   "riposte": 29,
+   "opt:remise": 6,
+   "recoverEnergy": 4,
+   "opt:swordBoard": 7,
+   "perfectRiposte": 5
+  },
+  "hp": {
+   "Sim Breaker#90kQ": "567/567",
+   "Sim Rival#cWat": "109/567"
+  },
+  "down": [
+   "Sim Rival"
+  ],
+  "weapons": {
+   "Heavy Bladed (2H)": {
+    "attacks": 28,
+    "followups": 59,
+    "hits": 24,
+    "crits": 8,
+    "misses": 63,
+    "damage": 458,
+    "ap": 132,
+    "kills": 1,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Defender": {
+    "attacks": 26,
+    "followups": 10,
+    "hits": 12,
+    "crits": 2,
+    "misses": 24,
+    "damage": 0,
+    "ap": 87,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Bladed": {
+    "attacks": 7,
+    "followups": 6,
+    "hits": 6,
+    "crits": 3,
+    "misses": 7,
+    "damage": 0,
+    "ap": 39,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 2,
+    "absorbed": 3
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Breaker",
+    "dealt": 458,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 87
+   },
+   {
+    "name": "Sim Rival",
+    "dealt": 0,
+    "taken": 458,
+    "hits": 18,
+    "attacks": 49
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 80,
+    "attacks": 71,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Parry": 15,
+     "defend:closeQuarters": 18,
+     "defend:dodge": 49,
+     "recoverEnergy": 4,
+     "riposte": 16,
+     "perfectRiposte": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 26,
+    "turns": 14,
+    "kills": 0,
+    "used": {
+     "defend:closeQuarters": 29,
+     "defend:dodge": 87,
+     "riposte": 13,
+     "Parry": 7,
+     "perfectRiposte": 4
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-bladed-weapons": 5,
+    "martial-strength-methods": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Defender (Steel)",
+    "Heavy Bladed (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 90/90",
+    "Heavy Bladed (Steel): 111/1080"
+   ],
+   "Sim Rival": [
+    "Medium Armor (Hide): 54/90",
+    "Heavy Defender (Steel): 0/1620 BROKEN",
+    "Heavy Bladed (Steel): 0/1080 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 35,
+    "prompt: Heavy Defender (Steel) — Riposte": 10,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up (Titan Weapon, Dis)": 43,
+    "prompt: Heavy Defender (Steel)": 19,
+    "prompt: Heavy Bladed (Steel) — Riposte": 18,
+    "prompt: Heavy Bladed (Steel) — Perfect Riposte": 5
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Breaker needs 68 Energy for that but has 57.",
+     "who": "Sim Breaker"
+    },
+    {
+     "level": "warn",
+     "msg": "Heavy Bladed (Steel) is broken.",
+     "who": "Sim Rival"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "b2h-v-bsh-2",
+  "group": "bsh",
+  "rotation": 3,
+  "seconds": 116,
+  "winner": "party",
+  "pass": "focus-shield",
+  "rounds": 13,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 34,
+  "knockbacks": {},
+  "used": {
+   "Parry": 21,
+   "opt:heave": 20,
+   "defend:closeQuarters": 57,
+   "defend:dodge": 110,
+   "riposte": 19,
+   "opt:remise": 8,
+   "recoverEnergy": 4,
+   "opt:swordBoard": 8,
+   "perfectRiposte": 3
+  },
+  "hp": {
+   "Sim Breaker#ekSz": "567/567",
+   "Sim Rival#sK8m": "65/567"
+  },
+  "down": [
+   "Sim Rival"
+  ],
+  "weapons": {
+   "Heavy Bladed (2H)": {
+    "attacks": 24,
+    "followups": 44,
+    "hits": 22,
+    "crits": 7,
+    "misses": 46,
+    "damage": 502,
+    "ap": 102,
+    "kills": 1,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Defender": {
+    "attacks": 22,
+    "followups": 6,
+    "hits": 8,
+    "crits": 2,
+    "misses": 20,
+    "damage": 0,
+    "ap": 60,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Bladed": {
+    "attacks": 8,
+    "followups": 6,
+    "hits": 4,
+    "crits": 2,
+    "misses": 10,
+    "damage": 0,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 3,
+    "absorbed": 18
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Breaker",
+    "dealt": 502,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 68
+   },
+   {
+    "name": "Sim Rival",
+    "dealt": 0,
+    "taken": 502,
+    "hits": 12,
+    "attacks": 42
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 80,
+    "attacks": 58,
+    "turns": 13,
+    "kills": 0,
+    "used": {
+     "Parry": 13,
+     "defend:closeQuarters": 19,
+     "defend:dodge": 42,
+     "recoverEnergy": 4,
+     "riposte": 10
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 22,
+    "turns": 12,
+    "kills": 0,
+    "used": {
+     "defend:closeQuarters": 38,
+     "defend:dodge": 68,
+     "riposte": 9,
+     "Parry": 8,
+     "perfectRiposte": 3
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-bladed-weapons": 5,
+    "martial-strength-methods": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Bladed (Steel)",
+    "Heavy Defender (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 90/90",
+    "Heavy Bladed (Steel): 410/1080"
+   ],
+   "Sim Rival": [
+    "Medium Armor (Hide): 36/90",
+    "Heavy Bladed (Steel): 0/1080 BROKEN",
+    "Heavy Defender (Steel): 0/1620 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 32,
+    "prompt: Heavy Defender (Steel) — Riposte": 6,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up (Titan Weapon, Dis)": 34,
+    "prompt: Heavy Defender (Steel)": 14,
+    "prompt: Heavy Bladed (Steel) — Riposte": 13,
+    "prompt: Heavy Bladed (Steel) — Perfect Riposte": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "b2h-v-bsh-3",
+  "group": "bsh",
+  "rotation": 3,
+  "seconds": 154,
+  "winner": "unfinished",
+  "pass": "focus-shield",
+  "rounds": 21,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 33,
+  "knockbacks": {},
+  "used": {
+   "Parry": 18,
+   "opt:heave": 17,
+   "defend:closeQuarters": 52,
+   "defend:dodge": 126,
+   "recoverEnergy": 4,
+   "opt:swordBoard": 7,
+   "perfectRiposte": 4,
+   "riposte": 22,
+   "opt:remise": 3
+  },
+  "hp": {
+   "Sim Breaker#u8AU": "162/567",
+   "Sim Rival#fkg8": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Bladed (2H)": {
+    "attacks": 20,
+    "followups": 47,
+    "hits": 15,
+    "crits": 4,
+    "misses": 52,
+    "damage": 0,
+    "ap": 102,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Defender": {
+    "attacks": 40,
+    "followups": 4,
+    "hits": 22,
+    "crits": 8,
+    "misses": 22,
+    "damage": 405,
+    "ap": 111,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Bladed": {
+    "attacks": 7,
+    "followups": 8,
+    "hits": 8,
+    "crits": 4,
+    "misses": 7,
+    "damage": 0,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "Rival"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 5,
+    "absorbed": 6
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Breaker",
+    "dealt": 0,
+    "taken": 405,
+    "hits": 15,
+    "attacks": 67
+   },
+   {
+    "name": "Sim Rival",
+    "dealt": 405,
+    "taken": 0,
+    "hits": 30,
+    "attacks": 59
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 80,
+    "attacks": 53,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "Parry": 11,
+     "recoverEnergy": 4,
+     "defend:closeQuarters": 19,
+     "defend:dodge": 59,
+     "riposte": 14
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:closeQuarters": 33,
+     "defend:dodge": 67,
+     "Parry": 7,
+     "perfectRiposte": 4,
+     "riposte": 8
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-bladed-weapons": 5,
+    "martial-strength-methods": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Heavy Bladed (Steel)",
+    "Medium Armor (Hide)",
+    "Heavy Defender (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 0/90 BROKEN",
+    "Heavy Bladed (Steel): 0/1080 BROKEN"
+   ],
+   "Sim Rival": [
+    "Heavy Bladed (Steel): 0/1080 BROKEN",
+    "Medium Armor (Hide): 90/90",
+    "Heavy Defender (Steel): 801/1620"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 27,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up (Titan Weapon, Dis)": 33,
+    "prompt: Heavy Defender (Steel)": 33,
+    "prompt: Heavy Bladed (Steel) — Perfect Riposte": 4,
+    "prompt: Heavy Bladed (Steel) — Riposte": 18,
+    "prompt: Heavy Defender (Steel) — Riposte": 4
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bsh-v-b2h-1",
+  "group": "b2h",
+  "rotation": 4,
+  "seconds": 145,
+  "winner": "monsters",
+  "pass": "focus-shield",
+  "rounds": 16,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 41,
+  "knockbacks": {},
+  "used": {
+   "Parry": 24,
+   "opt:heave": 27,
+   "defend:closeQuarters": 61,
+   "defend:dodge": 126,
+   "recoverEnergy": 1,
+   "opt:swordBoard": 8,
+   "riposte": 21,
+   "perfectRiposte": 4,
+   "opt:remise": 6
+  },
+  "hp": {
+   "Sim Breaker#xfg0": "13/567",
+   "Sim Rival#p5mu": "567/567"
+  },
+  "down": [
+   "Sim Breaker"
+  ],
+  "weapons": {
+   "Heavy Bladed (2H)": {
+    "attacks": 31,
+    "followups": 52,
+    "hits": 24,
+    "crits": 8,
+    "misses": 59,
+    "damage": 554,
+    "ap": 126,
+    "kills": 1,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Defender": {
+    "attacks": 24,
+    "followups": 5,
+    "hits": 7,
+    "crits": 1,
+    "misses": 22,
+    "damage": 0,
+    "ap": 63,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Bladed": {
+    "attacks": 8,
+    "followups": 6,
+    "hits": 5,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 4,
+    "absorbed": 13
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Rival",
+    "dealt": 554,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 83
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 0,
+    "taken": 554,
+    "hits": 12,
+    "attacks": 43
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 72,
+    "turns": 16,
+    "kills": 0,
+    "used": {
+     "Parry": 16,
+     "recoverEnergy": 1,
+     "defend:closeQuarters": 22,
+     "defend:dodge": 43,
+     "riposte": 11,
+     "perfectRiposte": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:closeQuarters": 39,
+     "defend:dodge": 83,
+     "Parry": 8,
+     "perfectRiposte": 3,
+     "riposte": 10
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-bladed-weapons": 5,
+    "martial-defender-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Defender (Steel) G6",
+    "Heavy Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Bladed (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 23/90",
+    "Heavy Defender (Steel): 0/1620 BROKEN",
+    "Heavy Bladed (Steel): 0/1080 BROKEN"
+   ],
+   "Sim Rival": [
+    "Medium Armor (Hide): 90/90",
+    "Heavy Bladed (Steel): 396/1080"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 39,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up (Titan Weapon, Dis)": 41,
+    "prompt: Heavy Defender (Steel)": 16,
+    "prompt: Heavy Bladed (Steel) — Riposte": 14,
+    "prompt: Heavy Bladed (Steel) — Perfect Riposte": 4,
+    "prompt: Heavy Defender (Steel) — Riposte": 5
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Rival needs 68 Energy for that but has 57.",
+     "who": "Sim Rival"
+    },
+    {
+     "level": "warn",
+     "msg": "Heavy Bladed (Steel) is broken.",
+     "who": "Sim Breaker"
+    },
+    {
+     "level": "warn",
+     "msg": "Heavy Defender (Steel) is broken.",
+     "who": "Sim Breaker"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bsh-v-b2h-2",
+  "group": "b2h",
+  "rotation": 4,
+  "seconds": 159,
+  "winner": "monsters",
+  "pass": "focus-shield",
+  "rounds": 16,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 46,
+  "knockbacks": {},
+  "used": {
+   "Parry": 26,
+   "opt:heave": 27,
+   "defend:closeQuarters": 74,
+   "defend:dodge": 145,
+   "recoverEnergy": 1,
+   "opt:swordBoard": 10,
+   "perfectRiposte": 5,
+   "opt:remise": 7,
+   "riposte": 27
+  },
+  "hp": {
+   "Sim Breaker#8UNs": "94/567",
+   "Sim Rival#dSs2": "567/567"
+  },
+  "down": [
+   "Sim Breaker"
+  ],
+  "weapons": {
+   "Heavy Bladed (2H)": {
+    "attacks": 31,
+    "followups": 62,
+    "hits": 25,
+    "crits": 7,
+    "misses": 68,
+    "damage": 473,
+    "ap": 141,
+    "kills": 1,
+    "users": [
+     "Rival"
+    ]
+   },
+   "Heavy Defender": {
+    "attacks": 28,
+    "followups": 6,
+    "hits": 14,
+    "crits": 3,
+    "misses": 20,
+    "damage": 0,
+    "ap": 72,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Bladed": {
+    "attacks": 10,
+    "followups": 8,
+    "hits": 3,
+    "crits": 1,
+    "misses": 15,
+    "damage": 0,
+    "ap": 54,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 4,
+    "absorbed": 18
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Rival",
+    "dealt": 473,
+    "taken": 0,
+    "hits": 25,
+    "attacks": 93
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 0,
+    "taken": 473,
+    "hits": 17,
+    "attacks": 52
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 77,
+    "turns": 16,
+    "kills": 0,
+    "used": {
+     "Parry": 16,
+     "recoverEnergy": 1,
+     "defend:closeQuarters": 22,
+     "defend:dodge": 52,
+     "perfectRiposte": 1,
+     "riposte": 16
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 28,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:closeQuarters": 52,
+     "defend:dodge": 93,
+     "Parry": 10,
+     "perfectRiposte": 4,
+     "riposte": 11
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-bladed-weapons": 5,
+    "martial-defender-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Bladed (Steel) G6",
+    "Heavy Defender (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Bladed (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 18/90",
+    "Heavy Bladed (Steel): 0/1080 BROKEN",
+    "Heavy Defender (Steel): 0/1620 BROKEN"
+   ],
+   "Sim Rival": [
+    "Medium Armor (Hide): 90/90",
+    "Heavy Bladed (Steel): 202/1080"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 41,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up (Titan Weapon, Dis)": 46,
+    "prompt: Heavy Bladed (Steel) — Perfect Riposte": 5,
+    "prompt: Heavy Defender (Steel)": 18,
+    "prompt: Heavy Bladed (Steel) — Riposte": 20,
+    "prompt: Heavy Defender (Steel) — Riposte": 6
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Rival needs 68 Energy for that but has 64.",
+     "who": "Sim Rival"
+    },
+    {
+     "level": "warn",
+     "msg": "Heavy Bladed (Steel) is broken.",
+     "who": "Sim Breaker"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bsh-v-b2h-3",
+  "group": "b2h",
+  "rotation": 4,
+  "seconds": 141,
+  "winner": "monsters",
+  "pass": "focus-shield",
+  "rounds": 15,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 36,
+  "knockbacks": {},
+  "used": {
+   "Parry": 23,
+   "opt:swordBoard": 8,
+   "defend:closeQuarters": 60,
+   "defend:dodge": 121,
+   "recoverEnergy": 1,
+   "opt:heave": 22,
+   "riposte": 19,
+   "perfectRiposte": 5,
+   "opt:remise": 11
+  },
+  "hp": {
+   "Sim Breaker#ttME": "77/567",
+   "Sim Rival#TWdl": "567/567"
+  },
+  "down": [
+   "Sim Breaker"
+  ],
+  "weapons": {
+   "Heavy Defender": {
+    "attacks": 25,
+    "followups": 7,
+    "hits": 6,
+    "crits": 1,
+    "misses": 26,
+    "damage": 0,
+    "ap": 72,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Bladed": {
+    "attacks": 8,
+    "followups": 6,
+    "hits": 4,
+    "crits": 0,
+    "misses": 10,
+    "damage": 0,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Bladed (2H)": {
+    "attacks": 30,
+    "followups": 45,
+    "hits": 27,
+    "crits": 4,
+    "misses": 48,
+    "damage": 490,
+    "ap": 117,
+    "kills": 1,
+    "users": [
+     "Rival"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 3,
+    "absorbed": 18
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Breaker",
+    "dealt": 0,
+    "taken": 490,
+    "hits": 10,
+    "attacks": 46
+   },
+   {
+    "name": "Sim Rival",
+    "dealt": 490,
+    "taken": 0,
+    "hits": 27,
+    "attacks": 75
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 80,
+    "attacks": 25,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Parry": 8,
+     "recoverEnergy": 1,
+     "defend:closeQuarters": 34,
+     "defend:dodge": 75,
+     "perfectRiposte": 4,
+     "riposte": 10
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Rival",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 66,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:closeQuarters": 26,
+     "defend:dodge": 46,
+     "Parry": 15,
+     "riposte": 9,
+     "perfectRiposte": 1
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Breaker": {
+    "martial-theory": 2,
+    "martial-bladed-weapons": 5,
+    "martial-defender-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Defender (Steel) G6",
+    "Heavy Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Rival": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Bladed (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Breaker": [
+    "Medium Armor (Hide): 36/90",
+    "Heavy Defender (Steel): 0/1620 BROKEN",
+    "Heavy Bladed (Steel): 0/1080 BROKEN"
+   ],
+   "Sim Rival": [
+    "Medium Armor (Hide): 90/90",
+    "Heavy Bladed (Steel): 570/1080"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 38,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up (Titan Weapon, Dis)": 36,
+    "prompt: Heavy Defender (Steel)": 17,
+    "prompt: Heavy Bladed (Steel) — Riposte": 11,
+    "prompt: Heavy Bladed (Steel) — Perfect Riposte": 5,
+    "prompt: Heavy Defender (Steel) — Riposte": 7
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Rival needs 68 Energy for that but has 57.",
+     "who": "Sim Rival"
+    },
+    {
+     "level": "warn",
+     "msg": "Heavy Bladed (Steel) is broken.",
+     "who": "Sim Breaker"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

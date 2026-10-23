@@ -1,0 +1,5034 @@
+[
+ {
+  "id": "light-v-light-1",
+  "group": "light",
+  "rotation": 1,
+  "seconds": 36,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 6,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 16,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 33,
+   "kite:stepBack": 5
+  },
+  "hp": {
+   "Sim Kiter#8HzM": "477/477",
+   "Sim Chaser#OAmx": "139/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Chaser"
+    ]
+   },
+   "Light Assault": {
+    "attacks": 16,
+    "followups": 16,
+    "hits": 18,
+    "crits": 2,
+    "misses": 14,
+    "damage": 428,
+    "ap": 32,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 60
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 428,
+    "hits": 0,
+    "attacks": 1
+   },
+   {
+    "name": "Sim Kiter",
+    "dealt": 428,
+    "taken": 0,
+    "hits": 18,
+    "attacks": 32
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 910,
+    "attacks": 1,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 165,
+    "wild": 0,
+    "used": {
+     "defend:dodge": 32
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 925,
+    "attacks": 32,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 1,
+     "kite:stepBack": 5
+    },
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 0,
+    "reloads": 31,
+    "kites": 5
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6",
+    "Light Armor (Soft Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Light Assault (Steel): 270/270",
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Chaser": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 1
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 1
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 1
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 1
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 1
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 1
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 1,
+    "prompt: Light Assault (Steel)": 16,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 16
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "light-v-light-2",
+  "group": "light",
+  "rotation": 1,
+  "seconds": 72,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 11,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 30,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 61,
+   "kite:stepBack": 10
+  },
+  "hp": {
+   "Sim Kiter#uYUO": "477/477",
+   "Sim Chaser#WQZ8": "103/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 31,
+    "followups": 30,
+    "hits": 21,
+    "crits": 4,
+    "misses": 40,
+    "damage": 464,
+    "ap": 62,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 60
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 464,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 61
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 464,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 1745,
+    "attacks": 61,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 0,
+    "shank": 0,
+    "reloads": 61,
+    "kites": 10,
+    "used": {
+     "kite:stepBack": 10
+    }
+   },
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 1650,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 61
+    },
+    "turnMoved": 165
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Weighted (Steel)",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Light Armor (Soft Leather): 60/60",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Heavy Weighted (Steel): 540/540",
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ]
+  },
+  "kiteLog": [
+   {
+    "round": 1,
+    "at": 90,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 80,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 7,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 7,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 8,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 8,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 9,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 9,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 10,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 240,
+    "spot": true,
+    "to": 185,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 10,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 31,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 30
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "light-v-medium-1",
+  "group": "medium",
+  "rotation": 1,
+  "seconds": 10,
+  "winner": "monsters",
+  "pass": "focus-kite",
+  "rounds": 2,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 3,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "defend:dodge": 8,
+   "opt:dir=down": 2,
+   "kite:cornered": 1
+  },
+  "hp": {
+   "Sim Kiter#BQ33": "47/477",
+   "Sim Chaser#sDzz": "559/567"
+  },
+  "down": [
+   "Sim Kiter"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 142,
+    "ap": 6,
+    "kills": 1,
+    "users": [
+     "Chaser"
+    ]
+   },
+   "Light Assault": {
+    "attacks": 3,
+    "followups": 3,
+    "hits": 3,
+    "crits": 0,
+    "misses": 3,
+    "damage": 8,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 24
+   },
+   "Medium Armor (Hide)": {
+    "hits": 3,
+    "absorbed": 53
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Chaser",
+    "dealt": 142,
+    "taken": 8,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Kiter",
+    "dealt": 8,
+    "taken": 142,
+    "hits": 3,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 191.3014581273465,
+    "attacks": 2,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 106.3014581273465,
+    "wild": 1,
+    "knockbacks": {
+     "down": 2
+    },
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 113.13708498984761,
+    "attacks": 6,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "kite:cornered": 1
+    },
+    "turnMoved": 113.13708498984761,
+    "aim": 0,
+    "shank": 2,
+    "reloads": 6
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6",
+    "Light Armor (Soft Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Light Assault (Steel): 270/270",
+    "Light Armor (Soft Leather): 12/60"
+   ],
+   "Sim Chaser": [
+    "Medium Armor (Hide): 37/90",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 1
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 80,
+    "spot": false,
+    "to": 113.13708498984761
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 85,
+    "ap": 6,
+    "end": null,
+    "moved": 106,
+    "attacks": 2
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 2,
+    "prompt: Knockback — Sim Kiter": 2,
+    "prompt: Light Assault (Steel)": 3,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "light-v-medium-2",
+  "group": "medium",
+  "rotation": 1,
+  "seconds": 39,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 6,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 16,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 33,
+   "kite:stepBack": 5
+  },
+  "hp": {
+   "Sim Kiter#GgMo": "477/477",
+   "Sim Chaser#ZNwH": "132/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 17,
+    "followups": 16,
+    "hits": 18,
+    "crits": 3,
+    "misses": 15,
+    "damage": 435,
+    "ap": 34,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 5,
+    "absorbed": 90
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 435,
+    "taken": 0,
+    "hits": 18,
+    "attacks": 33
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 435,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 590,
+    "attacks": 33,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 0,
+    "shank": 1,
+    "reloads": 33,
+    "kites": 5,
+    "used": {
+     "kite:stepBack": 5
+    }
+   },
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 625,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 33
+    },
+    "turnMoved": 125
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Weighted (Steel)",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Light Armor (Soft Leather): 60/60",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Heavy Weighted (Steel): 540/540",
+    "Medium Armor (Hide): 0/90 BROKEN"
+   ]
+  },
+  "kiteLog": [
+   {
+    "round": 1,
+    "at": 90,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 240,
+    "spot": true,
+    "to": 40,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 240,
+    "spot": true,
+    "to": 135,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 240,
+    "spot": true,
+    "to": 145,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 240,
+    "spot": true,
+    "to": 125,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 240,
+    "spot": true,
+    "to": 145,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 17,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 16
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "light-v-heavy-1",
+  "group": "heavy",
+  "rotation": 1,
+  "seconds": 63,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 9,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 26,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 53,
+   "kite:stepBack": 8
+  },
+  "hp": {
+   "Sim Kiter#kGuX": "477/477",
+   "Sim Chaser#sV0v": "136/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 27,
+    "followups": 26,
+    "hits": 23,
+    "crits": 7,
+    "misses": 30,
+    "damage": 431,
+    "ap": 54,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 240
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 431,
+    "taken": 0,
+    "hits": 23,
+    "attacks": 53
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 431,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 765,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 85,
+    "used": {
+     "defend:dodge": 53
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 730,
+    "attacks": 53,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 0,
+    "shank": 2,
+    "reloads": 53,
+    "kites": 8,
+    "used": {
+     "kite:stepBack": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Light Armor (Soft Leather): 60/60",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Heavy Armor (Iron): 0/240 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 95,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 7,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 7,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 8,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 8,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 9,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 27,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 26
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "light-v-heavy-2",
+  "group": "heavy",
+  "rotation": 1,
+  "seconds": 70,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 10,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 29,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 58,
+   "kite:stepBack": 9
+  },
+  "hp": {
+   "Sim Kiter#MFlj": "477/477",
+   "Sim Chaser#0I0R": "119/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 29,
+    "followups": 29,
+    "hits": 22,
+    "crits": 8,
+    "misses": 36,
+    "damage": 448,
+    "ap": 58,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 7,
+    "absorbed": 240
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 448,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 58
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 448,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 850,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 85,
+    "used": {
+     "defend:dodge": 58
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 815,
+    "attacks": 58,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 0,
+    "shank": 1,
+    "reloads": 57,
+    "kites": 9,
+    "used": {
+     "kite:stepBack": 9
+    }
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6",
+    "Light Armor (Soft Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Light Assault (Steel): 270/270",
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Chaser": [
+    "Heavy Armor (Iron): 0/240 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 95,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 7,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 7,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 8,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 8,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 9,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 9,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 40,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 240,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 10,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 29,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 29
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "medium-v-light-1",
+  "group": "light",
+  "rotation": 2,
+  "seconds": 19,
+  "winner": "monsters",
+  "pass": "focus-kite",
+  "rounds": 3,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 6,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "defend:dodge": 15,
+   "opt:dir=down": 2,
+   "kite:cornered": 2
+  },
+  "hp": {
+   "Sim Kiter#sT0H": "33/477",
+   "Sim Chaser#zDv4": "465/567"
+  },
+  "down": [
+   "Sim Kiter"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 168,
+    "ap": 9,
+    "kills": 1,
+    "users": [
+     "Chaser"
+    ]
+   },
+   "Light Assault": {
+    "attacks": 6,
+    "followups": 6,
+    "hits": 7,
+    "crits": 0,
+    "misses": 5,
+    "damage": 102,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 2,
+    "absorbed": 36
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 60
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Chaser",
+    "dealt": 168,
+    "taken": 102,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Kiter",
+    "dealt": 102,
+    "taken": 168,
+    "hits": 7,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 230.18453608406026,
+    "attacks": 3,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 67.0820393249937,
+    "wild": 2,
+    "knockbacks": {
+     "down": 2
+    },
+    "used": {
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 151.9348530673794,
+    "attacks": 12,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "kite:cornered": 2
+    },
+    "turnMoved": 67.0820393249937,
+    "aim": 1,
+    "shank": 2,
+    "reloads": 12
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6",
+    "Medium Armor (Hide) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Weighted (Steel)",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Light Assault (Steel): 270/270",
+    "Medium Armor (Hide): 18/90"
+   ],
+   "Sim Chaser": [
+    "Heavy Weighted (Steel): 540/540",
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 1
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 60,
+    "spot": false,
+    "to": 84.8528137423857
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 65,
+    "ap": 6,
+    "end": 5,
+    "moved": 78,
+    "attacks": 2
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 60,
+    "spot": false,
+    "to": 67.0820393249937
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 65,
+    "ap": 6,
+    "end": null,
+    "moved": 67,
+    "attacks": 3
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 3,
+    "prompt: Knockback — Sim Kiter": 2,
+    "prompt: Light Assault (Steel)": 6,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 6
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "medium-v-light-2",
+  "group": "light",
+  "rotation": 2,
+  "seconds": 26,
+  "winner": "monsters",
+  "pass": "focus-kite",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 9,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "defend:dodge": 21,
+   "kite:stepBack": 1,
+   "kite:cornered": 2,
+   "opt:dir=down": 2
+  },
+  "hp": {
+   "Sim Kiter#8nn7": "29/477",
+   "Sim Chaser#n74b": "435/567"
+  },
+  "down": [
+   "Sim Kiter"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 1,
+    "damage": 172,
+    "ap": 9,
+    "kills": 1,
+    "users": [
+     "Chaser"
+    ]
+   },
+   "Light Assault": {
+    "attacks": 9,
+    "followups": 9,
+    "hits": 7,
+    "crits": 2,
+    "misses": 11,
+    "damage": 132,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 60
+   },
+   "Medium Armor (Hide)": {
+    "hits": 2,
+    "absorbed": 36
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Chaser",
+    "dealt": 172,
+    "taken": 132,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Kiter",
+    "dealt": 132,
+    "taken": 172,
+    "hits": 7,
+    "attacks": 18
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 493.57559750685823,
+    "attacks": 3,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 60,
+    "wild": 2,
+    "used": {
+     "defend:dodge": 18
+    },
+    "knockbacks": {
+     "down": 2
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 436.2461179749811,
+    "attacks": 18,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "kite:stepBack": 1,
+     "kite:cornered": 2
+    },
+    "turnMoved": 60,
+    "aim": 0,
+    "shank": 2,
+    "reloads": 18,
+    "kites": 1
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6",
+    "Medium Armor (Hide) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Light Assault (Steel): 270/270",
+    "Medium Armor (Hide): 18/90"
+   ],
+   "Sim Chaser": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 1
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 180,
+    "spot": true,
+    "to": 175,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 1
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 180,
+    "spot": false,
+    "to": 201.24611797498108
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 165,
+    "ap": 6,
+    "end": 5,
+    "moved": 184,
+    "attacks": 2
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 60,
+    "spot": false,
+    "to": 60
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 65,
+    "ap": 6,
+    "end": null,
+    "moved": 60,
+    "attacks": 3
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 3,
+    "prompt: Light Assault (Steel)": 9,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 9,
+    "prompt: Knockback — Sim Kiter": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "medium-v-medium-1",
+  "group": "medium",
+  "rotation": 2,
+  "seconds": 75,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 10,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 30,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 60,
+   "kite:stepBack": 9
+  },
+  "hp": {
+   "Sim Kiter#Q7kc": "477/477",
+   "Sim Chaser#McKN": "114/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 30,
+    "followups": 30,
+    "hits": 22,
+    "crits": 5,
+    "misses": 38,
+    "damage": 453,
+    "ap": 60,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 6,
+    "absorbed": 90
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 453,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 60
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 453,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 1130,
+    "attacks": 60,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 2,
+    "reloads": 59,
+    "kites": 9,
+    "used": {
+     "kite:stepBack": 9
+    }
+   },
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 1125,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 60
+    },
+    "turnMoved": 125
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Weighted (Steel)",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Medium Armor (Hide): 90/90",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Heavy Weighted (Steel): 540/540",
+    "Medium Armor (Hide): 0/90 BROKEN"
+   ]
+  },
+  "kiteLog": [
+   {
+    "round": 1,
+    "at": 90,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 180,
+    "spot": true,
+    "to": 40,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 180,
+    "spot": true,
+    "to": 135,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 180,
+    "spot": true,
+    "to": 145,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 180,
+    "spot": true,
+    "to": 125,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 180,
+    "spot": true,
+    "to": 145,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 180,
+    "spot": true,
+    "to": 125,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 7,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 180,
+    "spot": true,
+    "to": 145,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 7,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 8,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 180,
+    "spot": true,
+    "to": 125,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 8,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 9,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 180,
+    "spot": true,
+    "to": 145,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 9,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 30,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 30
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "medium-v-medium-2",
+  "group": "medium",
+  "rotation": 2,
+  "seconds": 12,
+  "winner": "monsters",
+  "pass": "focus-kite",
+  "rounds": 2,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 3,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "defend:dodge": 8,
+   "opt:dir=down": 2,
+   "kite:cornered": 1
+  },
+  "hp": {
+   "Sim Kiter#oRe6": "1/477",
+   "Sim Chaser#hQcf": "561/567"
+  },
+  "down": [
+   "Sim Kiter"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 200,
+    "ap": 6,
+    "kills": 1,
+    "users": [
+     "Chaser"
+    ]
+   },
+   "Light Assault": {
+    "attacks": 3,
+    "followups": 3,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 6,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 4,
+    "absorbed": 71
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Chaser",
+    "dealt": 200,
+    "taken": 6,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Kiter",
+    "dealt": 6,
+    "taken": 200,
+    "hits": 2,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 163.10249675906655,
+    "attacks": 2,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 78.10249675906655,
+    "wild": 1,
+    "knockbacks": {
+     "down": 2
+    },
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 84.8528137423857,
+    "attacks": 6,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "kite:cornered": 1
+    },
+    "turnMoved": 84.8528137423857,
+    "aim": 0,
+    "shank": 2,
+    "reloads": 6
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Medium Armor (Hide): 18/90",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Medium Armor (Hide): 55/90",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 1
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 60,
+    "spot": false,
+    "to": 84.8528137423857
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 65,
+    "ap": 6,
+    "end": null,
+    "moved": 78,
+    "attacks": 2
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 2,
+    "prompt: Knockback — Sim Kiter": 2,
+    "prompt: Light Assault (Steel)": 3,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "medium-v-heavy-1",
+  "group": "heavy",
+  "rotation": 2,
+  "seconds": 91,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 12,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 36,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 72,
+   "kite:stepBack": 10
+  },
+  "hp": {
+   "Sim Kiter#QfQL": "477/477",
+   "Sim Chaser#8Ehr": "136/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 36,
+    "followups": 36,
+    "hits": 24,
+    "crits": 7,
+    "misses": 48,
+    "damage": 431,
+    "ap": 72,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 10,
+    "absorbed": 240
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 431,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 72
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 431,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 920,
+    "attacks": 72,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 2,
+    "reloads": 71,
+    "kites": 10,
+    "used": {
+     "kite:stepBack": 10
+    }
+   },
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 935,
+    "attacks": 0,
+    "turns": 11,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 72
+    },
+    "turnMoved": 85
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Medium Armor (Hide): 90/90",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Heavy Armor (Iron): 0/240 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "round": 1,
+    "at": 90,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85
+   },
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 95,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 7,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 7,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 8,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 8,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 9,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 9,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 10,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 10,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 11,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 11,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 36,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 36
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "medium-v-heavy-2",
+  "group": "heavy",
+  "rotation": 2,
+  "seconds": 82,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 11,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 32,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 64,
+   "kite:stepBack": 9
+  },
+  "hp": {
+   "Sim Kiter#Upu8": "477/477",
+   "Sim Chaser#DdLR": "112/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 32,
+    "followups": 32,
+    "hits": 22,
+    "crits": 7,
+    "misses": 42,
+    "damage": 455,
+    "ap": 64,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 8,
+    "absorbed": 240
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 455,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 64
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 455,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 815,
+    "attacks": 64,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 1,
+    "reloads": 63,
+    "kites": 9,
+    "used": {
+     "kite:stepBack": 9
+    }
+   },
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 850,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 64
+    },
+    "turnMoved": 85
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Medium Armor (Hide): 90/90",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Heavy Armor (Iron): 0/240 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "round": 1,
+    "at": 90,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85
+   },
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 95,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 7,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 7,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 8,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 8,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 9,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 9,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 10,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 30,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 180,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 10,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 32,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 32
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "heavy-v-light-1",
+  "group": "light",
+  "rotation": 3,
+  "seconds": 51,
+  "winner": "monsters",
+  "pass": "focus-kite",
+  "rounds": 6,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 18,
+  "knockbacks": {
+   "down": 3
+  },
+  "used": {
+   "defend:dodge": 42,
+   "kite:stepBack": 1,
+   "kite:cornered": 5,
+   "opt:dir=down": 3
+  },
+  "hp": {
+   "Sim Kiter#83N2": "33/477",
+   "Sim Chaser#OFxB": "163/567"
+  },
+  "down": [
+   "Sim Kiter"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 18,
+    "followups": 18,
+    "hits": 16,
+    "crits": 6,
+    "misses": 20,
+    "damage": 404,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Kiter"
+    ]
+   },
+   "Heavy Weighted (2H)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 3,
+    "damage": 72,
+    "ap": 18,
+    "kills": 1,
+    "users": [
+     "Chaser"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 60
+   },
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 144
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 404,
+    "taken": 72,
+    "hits": 16,
+    "attacks": 36
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 72,
+    "taken": 404,
+    "hits": 3,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 541.7058478328426,
+    "attacks": 36,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 56.568542494923804,
+    "aim": 1,
+    "shank": 2,
+    "reloads": 36,
+    "kites": 1,
+    "used": {
+     "kite:stepBack": 1,
+     "kite:cornered": 5,
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 584.8963292718643,
+    "attacks": 6,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 36
+    },
+    "turnMoved": 44.721359549995796,
+    "wild": 2,
+    "knockbacks": {
+     "down": 3
+    }
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Heavy Armor (Iron) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Heavy Armor (Iron): 0/240 BROKEN",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "round": 1,
+    "at": 90,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 120,
+    "spot": true,
+    "to": 80,
+    "after": 170
+   },
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 170,
+    "ap": 6,
+    "end": 5,
+    "moved": 165,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 120,
+    "spot": false,
+    "to": 120.41594578792294
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 115,
+    "ap": 6,
+    "end": 5,
+    "moved": 110,
+    "attacks": 1
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 120,
+    "spot": false,
+    "to": 120
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 105,
+    "ap": 6,
+    "end": 5,
+    "moved": 100,
+    "attacks": 2
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 120,
+    "spot": false,
+    "to": 120
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 125,
+    "ap": 6,
+    "end": 5,
+    "moved": 120,
+    "attacks": 3
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 40,
+    "spot": false,
+    "to": 44.721359549995796
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 45,
+    "ap": 6,
+    "end": 5,
+    "moved": 45,
+    "attacks": 5
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 40,
+    "spot": false,
+    "to": 56.568542494923804
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 45,
+    "ap": 6,
+    "end": null,
+    "moved": 45,
+    "attacks": 6
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 18,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 18,
+    "prompt: Heavy Weighted (Steel)": 6,
+    "prompt: Knockback — Sim Kiter": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "heavy-v-light-2",
+  "group": "light",
+  "rotation": 3,
+  "seconds": 12,
+  "winner": "monsters",
+  "pass": "focus-kite",
+  "rounds": 2,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 3,
+  "knockbacks": {
+   "down": 2,
+   "away": 1
+  },
+  "used": {
+   "defend:dodge": 9,
+   "opt:dir=down": 2,
+   "kite:cornered": 1,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Kiter#AnjJ": "89/477",
+   "Sim Chaser#HmYw": "487/567"
+  },
+  "down": [
+   "Sim Kiter"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 0,
+    "damage": 172,
+    "ap": 9,
+    "kills": 1,
+    "users": [
+     "Chaser"
+    ]
+   },
+   "Light Assault": {
+    "attacks": 3,
+    "followups": 3,
+    "hits": 4,
+    "crits": 1,
+    "misses": 2,
+    "damage": 80,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 144
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 48
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Chaser",
+    "dealt": 172,
+    "taken": 80,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Kiter",
+    "dealt": 80,
+    "taken": 172,
+    "hits": 4,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 135,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 50,
+    "wild": 2,
+    "knockbacks": {
+     "down": 2,
+     "away": 1
+    },
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 56.568542494923804,
+    "attacks": 6,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "kite:cornered": 1
+    },
+    "turnMoved": 56.568542494923804,
+    "aim": 0,
+    "shank": 2,
+    "reloads": 6
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Heavy Armor (Iron) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Heavy Armor (Iron): 0/240 BROKEN",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Light Armor (Soft Leather): 12/60",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 1
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 40,
+    "threat": 165,
+    "max": 40,
+    "spot": false,
+    "to": 56.568542494923804
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 45,
+    "ap": 6,
+    "end": null,
+    "moved": 50,
+    "attacks": 3
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 3,
+    "prompt: Knockback — Sim Kiter": 3,
+    "prompt: Light Assault (Steel)": 3,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "heavy-v-medium-1",
+  "group": "medium",
+  "rotation": 3,
+  "seconds": 48,
+  "winner": "monsters",
+  "pass": "focus-kite",
+  "rounds": 6,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 18,
+  "knockbacks": {
+   "down": 3
+  },
+  "used": {
+   "defend:dodge": 41,
+   "kite:stepBack": 1,
+   "kite:cornered": 5,
+   "opt:dir=down": 3
+  },
+  "hp": {
+   "Sim Kiter#sTgS": "25/477",
+   "Sim Chaser#k5US": "300/567"
+  },
+  "down": [
+   "Sim Kiter"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 18,
+    "followups": 18,
+    "hits": 14,
+    "crits": 2,
+    "misses": 22,
+    "damage": 267,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Kiter"
+    ]
+   },
+   "Heavy Weighted (2H)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 2,
+    "damage": 80,
+    "ap": 15,
+    "kills": 1,
+    "users": [
+     "Chaser"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 5,
+    "absorbed": 90
+   },
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 144
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 267,
+    "taken": 80,
+    "hits": 14,
+    "attacks": 36
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 80,
+    "taken": 267,
+    "hits": 3,
+    "attacks": 5
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 511.2899020449196,
+    "attacks": 36,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 56.568542494923804,
+    "aim": 1,
+    "shank": 2,
+    "reloads": 36,
+    "kites": 1,
+    "used": {
+     "kite:stepBack": 1,
+     "kite:cornered": 5,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 555.2731788359373,
+    "attacks": 5,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 36
+    },
+    "turnMoved": 44.721359549995796,
+    "wild": 1,
+    "knockbacks": {
+     "down": 3
+    }
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Heavy Armor (Iron) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Heavy Armor (Iron): 0/240 BROKEN",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Medium Armor (Hide): 0/90 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "round": 1,
+    "at": 90,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": true,
+    "to": 40,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": false,
+    "to": 130
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 115,
+    "ap": 6,
+    "end": 5,
+    "moved": 121,
+    "attacks": 1
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": false,
+    "to": 120
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 105,
+    "ap": 6,
+    "end": 5,
+    "moved": 100,
+    "attacks": 2
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": false,
+    "to": 120
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 125,
+    "ap": 6,
+    "end": 5,
+    "moved": 120,
+    "attacks": 3
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 40,
+    "spot": false,
+    "to": 44.721359549995796
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 45,
+    "ap": 6,
+    "end": 5,
+    "moved": 45,
+    "attacks": 4
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 40,
+    "spot": false,
+    "to": 56.568542494923804
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 45,
+    "ap": 6,
+    "end": null,
+    "moved": 45,
+    "attacks": 5
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 18,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 18,
+    "prompt: Heavy Weighted (Steel)": 5,
+    "prompt: Knockback — Sim Kiter": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "heavy-v-medium-2",
+  "group": "medium",
+  "rotation": 3,
+  "seconds": 58,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 8,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 21,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "defend:dodge": 49,
+   "kite:stepBack": 1,
+   "kite:cornered": 6,
+   "opt:dir=down": 2
+  },
+  "hp": {
+   "Sim Kiter#SNAB": "247/477",
+   "Sim Chaser#06Q5": "116/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 22,
+    "followups": 21,
+    "hits": 18,
+    "crits": 5,
+    "misses": 25,
+    "damage": 451,
+    "ap": 44,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   },
+   "Heavy Weighted (2H)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 14,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Chaser"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hide)": {
+    "hits": 6,
+    "absorbed": 90
+   },
+   "Heavy Armor (Iron)": {
+    "hits": 2,
+    "absorbed": 96
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 451,
+    "taken": 14,
+    "hits": 18,
+    "attacks": 43
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 14,
+    "taken": 451,
+    "hits": 2,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 694.7213595499958,
+    "attacks": 43,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 0,
+    "reloads": 43,
+    "kites": 1,
+    "used": {
+     "kite:stepBack": 1,
+     "kite:cornered": 6,
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 730.5518192859415,
+    "attacks": 6,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 43
+    },
+    "turnMoved": 44.721359549995796,
+    "wild": 2,
+    "knockbacks": {
+     "down": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Heavy Armor (Iron) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Weighted (Steel)",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Heavy Armor (Iron): 48/240",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Heavy Weighted (Steel): 540/540",
+    "Medium Armor (Hide): 0/90 BROKEN"
+   ]
+  },
+  "kiteLog": [
+   {
+    "round": 1,
+    "at": 90,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": true,
+    "to": 40,
+    "after": 130
+   },
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 130,
+    "ap": 6,
+    "end": 5,
+    "moved": 125,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": false,
+    "to": 130
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 115,
+    "ap": 6,
+    "end": 5,
+    "moved": 121,
+    "attacks": 1
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": false,
+    "to": 120
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 105,
+    "ap": 6,
+    "end": 5,
+    "moved": 100,
+    "attacks": 2
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": false,
+    "to": 120
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 125,
+    "ap": 6,
+    "end": 5,
+    "moved": 120,
+    "attacks": 3
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": false,
+    "to": 120
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 105,
+    "ap": 6,
+    "end": 5,
+    "moved": 100,
+    "attacks": 4
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 120,
+    "spot": false,
+    "to": 120
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 125,
+    "ap": 6,
+    "end": 5,
+    "moved": 120,
+    "attacks": 5
+   },
+   {
+    "round": 7,
+    "at": 5,
+    "prone": true,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 30,
+    "threat": 125,
+    "max": 40,
+    "spot": false,
+    "to": 44.721359549995796
+   },
+   {
+    "who": "chaser",
+    "round": 7,
+    "gap": 45,
+    "ap": 6,
+    "end": 5,
+    "moved": 45,
+    "attacks": 6
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 22,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 21,
+    "prompt: Heavy Weighted (Steel)": 6,
+    "prompt: Knockback — Sim Kiter": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "heavy-v-heavy-1",
+  "group": "heavy",
+  "rotation": 3,
+  "seconds": 58,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 8,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 22,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 44,
+   "kite:stepBack": 7
+  },
+  "hp": {
+   "Sim Kiter#0jDR": "477/477",
+   "Sim Chaser#LbDh": "128/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 22,
+    "followups": 22,
+    "hits": 22,
+    "crits": 7,
+    "misses": 22,
+    "damage": 439,
+    "ap": 44,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 8,
+    "absorbed": 240
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 439,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 44
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 439,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 680,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 85,
+    "used": {
+     "defend:dodge": 44
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 645,
+    "attacks": 44,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 0,
+    "reloads": 43,
+    "kites": 7,
+    "used": {
+     "kite:stepBack": 7
+    }
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Heavy Armor (Iron) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Heavy Armor (Iron): 240/240",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Heavy Armor (Iron): 0/240 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 95,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 7,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 7,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 8,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 22,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 22
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "heavy-v-heavy-2",
+  "group": "heavy",
+  "rotation": 3,
+  "seconds": 68,
+  "winner": "party",
+  "pass": "focus-kite",
+  "rounds": 9,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 26,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 53,
+   "kite:stepBack": 8
+  },
+  "hp": {
+   "Sim Kiter#ExZU": "477/477",
+   "Sim Chaser#pgDj": "100/567"
+  },
+  "down": [
+   "Sim Chaser"
+  ],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 27,
+    "followups": 26,
+    "hits": 24,
+    "crits": 7,
+    "misses": 29,
+    "damage": 467,
+    "ap": 54,
+    "kills": 1,
+    "users": [
+     "Kiter"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 240
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Kiter",
+    "dealt": 467,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 53
+   },
+   {
+    "name": "Sim Chaser",
+    "dealt": 0,
+    "taken": 467,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Chaser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 765,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 85,
+    "used": {
+     "defend:dodge": 53
+    }
+   },
+   {
+    "name": "Sim Kiter",
+    "side": "party",
+    "role": "kiter",
+    "moved": 730,
+    "attacks": 53,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 0,
+    "shank": 2,
+    "reloads": 53,
+    "kites": 8,
+    "used": {
+     "kite:stepBack": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Kiter": {}
+  },
+  "gear": {
+   "Sim Kiter": [
+    "Unarmed G1",
+    "Heavy Armor (Iron) G4",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Chaser": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Kiter": [
+    "Heavy Armor (Iron): 240/240",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Chaser": [
+    "Heavy Armor (Iron): 0/240 BROKEN",
+    "Heavy Weighted (Steel): 540/540"
+   ]
+  },
+  "kiteLog": [
+   {
+    "who": "chaser",
+    "round": 1,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 1,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 2,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 2,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 95,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 3,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 3,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 4,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 4,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 5,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 5,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 6,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 6,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 7,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 7,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 105,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 8,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   },
+   {
+    "round": 8,
+    "at": 5,
+    "prone": false,
+    "ap": 0,
+    "speed": 20,
+    "foeSpeed": 20,
+    "threat": 85,
+    "max": 120,
+    "spot": true,
+    "to": 85,
+    "after": 90
+   },
+   {
+    "who": "chaser",
+    "round": 9,
+    "gap": 90,
+    "ap": 6,
+    "end": 5,
+    "moved": 85,
+    "attacks": 0
+   }
+  ],
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 27,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 26
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

@@ -109,7 +109,7 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
   <header>
     <span class="eyebrow">Flow State · Combat sim · Martial</span>
     <h1>Martial balance review</h1>
-    <p class="lede">What 42 simulated fights say about weapons, armor, the Martial trees and the monsters, before the Magic passes begin.</p>
+    <p class="lede">What 42 simulated fights say about weapons, armor, the Martial trees and the monsters, before the Magic passes begin. Updated with 127 follow-up test fights.</p>
     <div class="meta">
       <span><b>42</b> fights · <b>354</b> rounds</span>
       <span><b>7</b> runs (6 passes + a gap pass)</span>
@@ -168,6 +168,59 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
   </section>
 
   <section>
+    <span class="eyebrow">Follow-up tests · 23 Oct</span>
+    <h2>What the focused sims found</h2>
+    <p class="prose muted">Three runs after the review, 127 fights: mirror duels for 2H against 1H + shield (12), a kiting test for armor against speed (18), and a weapon benchmark against a dummy that only dodges (97: every type and weight, no trees, 4 rounds each, one fight per cell, so single cells are noisy).</p>
+    <div class="block">
+      <h3>Correction: Knockback damage was missing from the weapon tables</h3>
+      <p class="small">Driving a target into the ground deals Force damage on its own card, and the sim's weapon tables never counted it. Heavy Weighted, Thrasher and Heavy Unarmed are understated everywhere above. In the benchmark, scored by the HP the dummy actually lost, the Knockback weapons are the best against Heavy armor: Heavy Weighted 2H <span class="num">34.4</span> per AP and Heavy Thrasher 2H <span class="num">19.3</span>, against a two-handed average of <span class="num">4.7</span> for the rest. The sim now counts it.</p>
+    </div>
+    <div class="block">
+      <div class="block-head"><h3>Benchmark: HP lost per AP, by weapon class</h3><span class="small muted">No trees · vs one still dummy</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Class</th><th class="n">Configs</th><th class="n">vs Light armor</th><th class="n">vs Heavy armor</th></tr></thead>
+        <tbody>
+          <tr class="lead"><td>Heavy, two-handed</td><td class="n">14</td><td class="n">13.7</td><td class="n">7.1</td></tr>
+          <tr><td>Heavy, one-handed</td><td class="n">14</td><td class="n">8.9</td><td class="n">1.5</td></tr>
+          <tr><td>Light</td><td class="n">15</td><td class="n">5.0</td><td class="n">0.8</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted">Two hands give about 1.5× the one-handed output against Light armor, not 2×, because one-handed Heavy weapons keep their Solitary follow-ups. Against Heavy armor the gap is far wider: almost nothing one-handed or Light gets through Heavy Iron, except by Knockback.</p>
+    </div>
+    <div class="findings">
+      <div class="finding"><span class="chip look">2H vs shield</span><div>
+        <h3>Two-handed won 9 of 12 mirror duels (1 went to the round cap)</h3>
+        <p>Same Strength build, Weighted or Bladed at T5, with Strength T4 and a two-handed weapon, or Defender T4 and a Heavy Defender. <b>Bladed:</b> 2H won 5 of 6. A one-handed Bladed weapon loses its Solitary+ follow-up while anything else is held (Equipment doc), so the shield costs it its signature chain. The 2H side made 45–62 free follow-ups a duel, and its Parry stopped the shield user's hits. <b>Weighted:</b> the shield's Block soaked every 2H hit (0 to HP from hits), yet 2H still won 4 of 6 through Knockback Force, which goes around the shield.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Armor vs speed</span><div>
+        <h3>Speed decides a fight against melee, because of Strafing</h3>
+        <p>A Light Assault kiter (no trees) against a 2H Heavy Weighted chaser on a 400 ft field. Strafing lets the kiter shoot first and then walk back on the same AP, while the chaser's walk has to leave AP for its swing. A kiter <b>at least as fast</b> as the chaser won 10 of 12, mostly untouched. It lost only when the chaser won initiative, closed 85 ft and knocked it prone. A <b>slower</b> kiter lost 5 of 6. Heavy against Heavy: the kiter won both without a scratch. So armor's speed cost is real, and a melee build with no gap-closer (Dash, Leap, throws, Get Over Here!) can't touch an equally fast gun.</p>
+        <div class="scroll"><table>
+          <thead><tr><th>Kiter ↓ / Chaser →</th><th class="n">Light (40 ft/AP)</th><th class="n">Medium (30)</th><th class="n">Heavy (20)</th></tr></thead>
+          <tbody>
+            <tr><td>Light (40 ft/AP)</td><td class="n">2–0</td><td class="n">1–1</td><td class="n">2–0</td></tr>
+            <tr><td>Medium (30)</td><td class="n">0–2</td><td class="n">1–1</td><td class="n">2–0</td></tr>
+            <tr><td>Heavy (20)</td><td class="n">0–2</td><td class="n">1–1</td><td class="n">2–0</td></tr>
+          </tbody>
+        </table></div>
+        <p class="small muted">Kiter wins–losses, two fights each.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Light Reach / Blast</span><div>
+        <h3>Light Reach is the rules; Light Blast was the AI</h3>
+        <p>Light Reach did <span class="num">4.7</span> per AP against Light armor, in the middle of the Light weapons (average <span class="num">5.0</span>): its d6 and Disadvantaged Solitary follow-up are simply low. Single-target Light Blast did <span class="num">7.4</span>, among the best Light weapons. Fired as an Area into three clustered dummies it did <span class="num">5.5</span> in total: the Weakened damage is mostly soaked by armor. The passes' low Light Blast number came from the AI choosing Area whenever two foes stood close. Area only pays off against unarmored crowds.</p>
+      </div></div>
+      <div class="finding"><span class="chip fine">Assault + Quickload</span><div>
+        <h3>Quickload now covers the empty Solitary follow-up</h3>
+        <p>Your ruling is in (v0.75.19): an empty gun's free follow-up can be given up to reload at no cost. In the benchmark, Heavy Assault with Quickload turned its 3 failed follow-ups per 4 rounds into 2 free reloads and 1 extra shot, and started each turn loaded.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Rapid</span><div>
+        <h3>Rapid without its tree barely hits</h3>
+        <p>With Pepper's Disadvantage and no Rapid tree, Rapid hit 8–13% against a Dex 30 dummy. Light Rapid managed <span class="num">0.7</span> per AP. In the passes it did well only with the Rapid tree, whose Quickload shot removes a Disadvantage.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section>
     <span class="eyebrow">Outcomes</span>
     <h2>Damage dealt by each side, per pass</h2>
     <div class="block">
@@ -208,7 +261,7 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
     <div class="block">
       <div class="block-head"><h3>Damage to HP per AP spent on attacks</h3><span class="small muted">Weapons with 30+ paid attacks · dark bars are two-handed</span></div>
       <div class="hbars" id="wbars"></div>
-      <p class="axis-note">Scale 0 to 41.5. Free follow-ups add damage but no AP, which lifts weapons that chain (Bladed, Swift, Unarmed Light, Balanced).</p>
+      <p class="axis-note">Scale 0 to 41.5. Free follow-ups add damage but no AP, which lifts weapons that chain (Bladed, Swift, Unarmed Light, Balanced). Knockback Force damage is not included, so Weighted, Thrasher and Heavy Unarmed are understated (see the follow-up tests).</p>
     </div>
     <div class="block">
       <div class="block-head"><h3>Every weapon, pooled</h3><span class="small muted">Hit % counts follow-ups; crit % is a share of hits</span></div>

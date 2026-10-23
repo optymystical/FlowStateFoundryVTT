@@ -1,0 +1,11274 @@
+[
+ {
+  "id": "unarmed-light",
+  "group": "light",
+  "rotation": 1,
+  "seconds": 27,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#tcLJ": "162/162",
+   "Sim Dummy#vP31": "404/567"
+  },
+  "down": [],
+  "weapons": {
+   "Unarmed Light": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 7,
+    "crits": 1,
+    "misses": 17,
+    "damage": 163,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 7,
+    "absorbed": 56
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 163,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 163,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 44/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Unarmed": 12,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "unarmed-heavy",
+  "group": "heavy",
+  "rotation": 1,
+  "seconds": 26,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#8MDk": "162/162",
+   "Sim Dummy#qbWx": "498/567"
+  },
+  "down": [],
+  "weapons": {
+   "Unarmed Light": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 17,
+    "crits": 2,
+    "misses": 7,
+    "damage": 69,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 15,
+    "absorbed": 400
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 69,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 69,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Unarmed": 12,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bladed-light-light",
+  "group": "light",
+  "rotation": 2,
+  "seconds": 25,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#CPZI": "162/162",
+   "Sim Dummy#ipdp": "400/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Bladed": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 8,
+    "crits": 2,
+    "misses": 4,
+    "damage": 113,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 12,
+    "hits": 1,
+    "crits": 1,
+    "misses": 11,
+    "damage": 54,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 100
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 167,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 167,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Bladed (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Bladed (Steel)": 12,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bladed-light-heavy",
+  "group": "heavy",
+  "rotation": 2,
+  "seconds": 26,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#EtqL": "162/162",
+   "Sim Dummy#UBKJ": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Bladed": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 8,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 12,
+    "hits": 4,
+    "crits": 1,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 8,
+    "absorbed": 201
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Bladed (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 199/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Bladed (Steel)": 12,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bladed-heavy-light",
+  "group": "light",
+  "rotation": 3,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#WAA2": "162/162",
+   "Sim Dummy#OkgF": "320/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Bladed": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 7,
+    "crits": 1,
+    "misses": 9,
+    "damage": 247,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 15
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 247,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 247,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Bladed (Steel): 1080/1080"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 8,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bladed-heavy-heavy",
+  "group": "heavy",
+  "rotation": 3,
+  "seconds": 21,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#T5Jp": "162/162",
+   "Sim Dummy#Bfjr": "415/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Bladed": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 9,
+    "crits": 3,
+    "misses": 7,
+    "damage": 152,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 8,
+    "absorbed": 277
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 152,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 152,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Bladed (Steel): 1080/1080"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 8,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bladed-heavy-2h-light",
+  "group": "light",
+  "rotation": 4,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#x7nT": "162/162",
+   "Sim Dummy#Lmet": "145/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Bladed (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 2,
+    "damage": 422,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 422,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 422,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Bladed (Steel): 1080/1080"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bladed-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 4,
+  "seconds": 12,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#3Zh1": "162/162",
+   "Sim Dummy#qq5t": "473/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Bladed (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 7,
+    "damage": 94,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 1,
+    "absorbed": 46
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 94,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 94,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Bladed (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Bladed (Steel): 1080/1080"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 320/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "balanced-light-light",
+  "group": "light",
+  "rotation": 5,
+  "seconds": 26,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#PFQ9": "162/162",
+   "Sim Dummy#VpE3": "437/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Balanced": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 8,
+    "crits": 4,
+    "misses": 16,
+    "damage": 130,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 100
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 130,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 130,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Balanced (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Balanced (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Balanced (Steel)": 12,
+    "prompt: Light Balanced (Steel) — Solitary follow-up (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "balanced-light-heavy",
+  "group": "heavy",
+  "rotation": 5,
+  "seconds": 26,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#DZZM": "162/162",
+   "Sim Dummy#anmK": "485/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Balanced": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 15,
+    "crits": 5,
+    "misses": 9,
+    "damage": 82,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 12,
+    "absorbed": 400
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 82,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 82,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Balanced (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Balanced (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Balanced (Steel)": 12,
+    "prompt: Light Balanced (Steel) — Solitary follow-up (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "balanced-heavy-light",
+  "group": "light",
+  "rotation": 6,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#CAu7": "162/162",
+   "Sim Dummy#spvo": "354/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 8,
+    "crits": 2,
+    "misses": 8,
+    "damage": 213,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 100
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 213,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 213,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Balanced (Steel): 1080/1080"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Balanced (Steel)": 8,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "balanced-heavy-heavy",
+  "group": "heavy",
+  "rotation": 6,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#YQJK": "162/162",
+   "Sim Dummy#NjcW": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 4,
+    "crits": 3,
+    "misses": 12,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 240
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Balanced (Steel): 1080/1080"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 160/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Balanced (Steel)": 8,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "balanced-heavy-2h-light",
+  "group": "light",
+  "rotation": 7,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#1H8n": "162/162",
+   "Sim Dummy#0Rar": "415/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Balanced (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 152,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 3,
+    "absorbed": 60
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 152,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 152,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Balanced (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Balanced (Steel): 1080/1080"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 40/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Balanced (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "balanced-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 7,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#uZgv": "162/162",
+   "Sim Dummy#KMSd": "519/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Balanced (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 48,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 186
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 48,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 48,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Balanced (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Balanced (Steel): 1080/1080"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 214/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Balanced (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swift-light-light",
+  "group": "light",
+  "rotation": 8,
+  "seconds": 27,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#r2Er": "162/162",
+   "Sim Dummy#21re": "426/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Swift": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 4,
+    "damage": 53,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 12,
+    "hits": 3,
+    "crits": 1,
+    "misses": 9,
+    "damage": 88,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 11,
+    "absorbed": 88
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 141,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 141,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Swift (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Swift (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 12/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Swift (Steel)": 12,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swift-light-heavy",
+  "group": "heavy",
+  "rotation": 8,
+  "seconds": 26,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#Z1IL": "162/162",
+   "Sim Dummy#ZhGx": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Swift": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 12,
+    "hits": 3,
+    "crits": 0,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 185
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Swift (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Swift (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 215/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Swift (Steel)": 12,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swift-heavy-light",
+  "group": "light",
+  "rotation": 9,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#k5lc": "162/162",
+   "Sim Dummy#l241": "324/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Swift": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 3,
+    "damage": 201,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 42,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 16
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 243,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 243,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Swift (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Swift (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 84/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Swift (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swift-heavy-heavy",
+  "group": "heavy",
+  "rotation": 9,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#h2h6": "162/162",
+   "Sim Dummy#OtCZ": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Swift": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 1,
+    "crits": 0,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 6,
+    "absorbed": 175
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Swift (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Swift (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 225/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Swift (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swift-heavy-2h-light",
+  "group": "light",
+  "rotation": 10,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#fJYt": "162/162",
+   "Sim Dummy#px25": "355/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Swift (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 212,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 212,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 212,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Swift (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Swift (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 100/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Swift (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swift-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 10,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#ScJF": "162/162",
+   "Sim Dummy#1r8c": "491/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Swift (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 76,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 90
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 76,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 76,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Swift (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Swift (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 310/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Swift (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "striker-light-light",
+  "group": "light",
+  "rotation": 11,
+  "seconds": 16,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#HFwQ": "162/162",
+   "Sim Dummy#tOjh": "369/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Striker": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 7,
+    "crits": 3,
+    "misses": 5,
+    "damage": 198,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 15
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 198,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 198,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Striker (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Striker (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Striker (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "striker-light-heavy",
+  "group": "heavy",
+  "rotation": 11,
+  "seconds": 15,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#7rGb": "162/162",
+   "Sim Dummy#MXzC": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Striker": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 8,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 86
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Striker (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Striker (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 246/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Striker (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "striker-heavy-light",
+  "group": "light",
+  "rotation": 12,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#9KJH": "162/162",
+   "Sim Dummy#jnEP": "378/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Striker": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 189,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 189,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 189,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Striker (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Striker (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 20/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Striker (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "striker-heavy-heavy",
+  "group": "heavy",
+  "rotation": 12,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#w24l": "162/162",
+   "Sim Dummy#LRCk": "554/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Striker": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 13,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 87
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 13,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 13,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Striker (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Striker (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 160/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Striker (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "striker-heavy-2h-light",
+  "group": "light",
+  "rotation": 13,
+  "seconds": 13,
+  "winner": "party",
+  "pass": "focus-bench",
+  "rounds": 4,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 7
+  },
+  "hp": {
+   "Sim Tester#Iey3": "162/162",
+   "Sim Dummy#vATV": "69/567"
+  },
+  "down": [
+   "Sim Dummy"
+  ],
+  "weapons": {
+   "Heavy Striker (2H)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 2,
+    "damage": 498,
+    "ap": 21,
+    "kills": 1,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 498,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 498,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 7
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Striker (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Striker (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Striker (Steel)": 7
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "striker-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 13,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#PsFy": "162/162",
+   "Sim Dummy#fcgN": "331/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Striker (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 236,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 236,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 236,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Striker (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Striker (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 160/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Striker (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "defender-light-light",
+  "group": "light",
+  "rotation": 14,
+  "seconds": 16,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#eB2e": "162/162",
+   "Sim Dummy#3mb1": "517/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Defender": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 7,
+    "crits": 3,
+    "misses": 5,
+    "damage": 50,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 100
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 50,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 50,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Defender (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Defender (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Defender (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "defender-light-heavy",
+  "group": "heavy",
+  "rotation": 14,
+  "seconds": 15,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#miAR": "162/162",
+   "Sim Dummy#DqTW": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Defender": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 9,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 65
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Defender (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Defender (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 335/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Defender (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "defender-heavy-light",
+  "group": "light",
+  "rotation": 15,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#28PK": "162/162",
+   "Sim Dummy#rpr4": "412/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Defender": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 4,
+    "damage": 155,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 12
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 155,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 155,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Defender (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Defender (Steel): 1620/1620"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 20/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Defender (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "defender-heavy-heavy",
+  "group": "heavy",
+  "rotation": 15,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#AQ1k": "162/162",
+   "Sim Dummy#hJAa": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Defender": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 131
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Defender (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Defender (Steel): 1620/1620"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 218/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Defender (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "defender-heavy-2h-light",
+  "group": "light",
+  "rotation": 16,
+  "seconds": 14,
+  "winner": "party",
+  "pass": "focus-bench",
+  "rounds": 4,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#3uXu": "162/162",
+   "Sim Dummy#lGAr": "-9/567"
+  },
+  "down": [
+   "Sim Dummy"
+  ],
+  "weapons": {
+   "Heavy Defender (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 2,
+    "damage": 576,
+    "ap": 24,
+    "kills": 1,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 576,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 576,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Defender (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Defender (Steel): 1620/1620"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Defender (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "defender-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 16,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#cgmN": "162/162",
+   "Sim Dummy#GAre": "503/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Defender (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 64,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 184
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 64,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 64,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Defender (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Defender (Steel): 1620/1620"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 80/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Defender (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "weighted-light-light",
+  "group": "light",
+  "rotation": 17,
+  "seconds": 16,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#jmUt": "162/162",
+   "Sim Dummy#G0RZ": "524/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Weighted": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 8,
+    "damage": 43,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 79
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 43,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 43,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "ctl": 1,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Weighted (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 21/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Weighted (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "weighted-light-heavy",
+  "group": "heavy",
+  "rotation": 17,
+  "seconds": 16,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#YmFk": "162/162",
+   "Sim Dummy#fxC3": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Weighted": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 10,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 2,
+    "absorbed": 104
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "ctl": 1,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Weighted (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 296/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Weighted (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "weighted-heavy-light",
+  "group": "light",
+  "rotation": 18,
+  "seconds": 12,
+  "winner": "party",
+  "pass": "focus-bench",
+  "rounds": 3,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "down": 4,
+   "away": 1
+  },
+  "used": {
+   "defend:dodge": 6,
+   "opt:dir=down": 4,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Tester#QeTm": "162/162",
+   "Sim Dummy#CtuW": "134/567"
+  },
+  "down": [
+   "Sim Dummy"
+  ],
+  "weapons": {
+   "Heavy Weighted": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 1,
+    "damage": 209,
+    "ap": 18,
+    "kills": 1,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 3,
+    "absorbed": 60
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 209,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 209,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 2,
+    "knockbacks": {
+     "down": 4,
+     "away": 1
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Weighted (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 6,
+    "prompt: Knockback — Sim Dummy": 5
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "weighted-heavy-heavy",
+  "group": "heavy",
+  "rotation": 18,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {
+   "down": 5
+  },
+  "used": {
+   "defend:dodge": 8,
+   "opt:dir=down": 5
+  },
+  "hp": {
+   "Sim Tester#FJYy": "162/162",
+   "Sim Dummy#gvtU": "374/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Weighted": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 61,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 202
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 61,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 61,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 1,
+    "knockbacks": {
+     "down": 5
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Weighted (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 8,
+    "prompt: Knockback — Sim Dummy": 5
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "weighted-heavy-2h-light",
+  "group": "light",
+  "rotation": 19,
+  "seconds": 13,
+  "winner": "party",
+  "pass": "focus-bench",
+  "rounds": 4,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "down": 2,
+   "away": 1
+  },
+  "used": {
+   "defend:dodge": 7,
+   "opt:dir=down": 2,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Tester#ld8k": "162/162",
+   "Sim Dummy#rXAQ": "119/567"
+  },
+  "down": [
+   "Sim Dummy"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 4,
+    "damage": 200,
+    "ap": 21,
+    "kills": 1,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 3,
+    "absorbed": 60
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 200,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 200,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 0,
+    "knockbacks": {
+     "down": 2,
+     "away": 1
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 7
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Weighted (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 7,
+    "prompt: Knockback — Sim Dummy": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "weighted-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 19,
+  "seconds": 10,
+  "winner": "party",
+  "pass": "focus-bench",
+  "rounds": 3,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "down": 4
+  },
+  "used": {
+   "defend:dodge": 5,
+   "opt:dir=down": 4
+  },
+  "hp": {
+   "Sim Tester#M7QW": "162/162",
+   "Sim Dummy#UKRA": "51/567"
+  },
+  "down": [
+   "Sim Dummy"
+  ],
+  "weapons": {
+   "Heavy Weighted (2H)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 1,
+    "damage": 138,
+    "ap": 15,
+    "kills": 1,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 202
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 138,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 138,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 1,
+    "knockbacks": {
+     "down": 4
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Weighted (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Weighted (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 5,
+    "prompt: Knockback — Sim Dummy": 4
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "reach-light-light",
+  "group": "light",
+  "rotation": 20,
+  "seconds": 27,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#qwBK": "162/162",
+   "Sim Dummy#mzad": "455/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Reach": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 10,
+    "crits": 1,
+    "misses": 14,
+    "damage": 112,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 10,
+    "absorbed": 80
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 112,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 112,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Reach (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Reach (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 20/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Reach (Steel)": 12,
+    "prompt: Light Reach (Steel) — Solitary follow-up (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "reach-light-heavy",
+  "group": "heavy",
+  "rotation": 20,
+  "seconds": 27,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#Zgud": "162/162",
+   "Sim Dummy#tU2Q": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Reach": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 6,
+    "crits": 3,
+    "misses": 18,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 6,
+    "absorbed": 183
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Reach (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Reach (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 217/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Reach (Steel)": 12,
+    "prompt: Light Reach (Steel) — Solitary follow-up (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "reach-heavy-light",
+  "group": "light",
+  "rotation": 21,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#VtKT": "162/162",
+   "Sim Dummy#ELHu": "477/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Reach": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 90,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 90,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 90,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Reach (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Reach (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 100/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Reach (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "reach-heavy-heavy",
+  "group": "heavy",
+  "rotation": 21,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#LzLD": "162/162",
+   "Sim Dummy#UBon": "550/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Reach": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 2,
+    "damage": 17,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 6,
+    "absorbed": 214
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 17,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 17,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Reach (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Reach (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 186/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Reach (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "reach-heavy-2h-light",
+  "group": "light",
+  "rotation": 22,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#0rLB": "162/162",
+   "Sim Dummy#dpv9": "275/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Reach (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 292,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 292,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 292,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Reach (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Reach (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 100/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Reach (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "reach-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 22,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#b3gH": "162/162",
+   "Sim Dummy#J5UW": "465/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Reach (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 102,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 90
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 102,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 102,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Reach (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Reach (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 310/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Reach (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "circular-light-light",
+  "group": "light",
+  "rotation": 23,
+  "seconds": 27,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#wsz4": "162/162",
+   "Sim Dummy#0nCU": "431/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Circular": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 5,
+    "damage": 107,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 12,
+    "hits": 1,
+    "crits": 0,
+    "misses": 11,
+    "damage": 29,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 8,
+    "absorbed": 64
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 136,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 136,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 1
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Circular (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Circular (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 36/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Circular (Steel)": 12,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "circular-light-heavy",
+  "group": "heavy",
+  "rotation": 23,
+  "seconds": 29,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#j16r": "162/162",
+   "Sim Dummy#O071": "544/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Circular": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 10,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 12,
+    "hits": 8,
+    "crits": 4,
+    "misses": 4,
+    "damage": 23,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 10,
+    "absorbed": 400
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 23,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 23,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 1
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Circular (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Circular (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Circular (Steel)": 12,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "circular-heavy-light",
+  "group": "light",
+  "rotation": 24,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#fteu": "162/162",
+   "Sim Dummy#lnYt": "373/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Circular": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 3,
+    "damage": 170,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 1,
+    "crits": 0,
+    "misses": 7,
+    "damage": 24,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 20
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 194,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 194,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Circular (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Circular (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Circular (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "circular-heavy-heavy",
+  "group": "heavy",
+  "rotation": 24,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#B0Y9": "162/162",
+   "Sim Dummy#ZIHX": "509/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Circular": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 2,
+    "damage": 17,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 2,
+    "crits": 2,
+    "misses": 6,
+    "damage": 41,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 8,
+    "absorbed": 298
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 58,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 58,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Circular (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Circular (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Circular (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "circular-heavy-2h-light",
+  "group": "light",
+  "rotation": 25,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#8pYc": "162/162",
+   "Sim Dummy#xrPK": "195/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Circular (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 372,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 372,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 372,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Circular (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Circular (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Circular (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "circular-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 25,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#fN7b": "162/162",
+   "Sim Dummy#5BCL": "525/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Circular (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 42,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 2,
+    "absorbed": 92
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 42,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 42,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Circular (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Circular (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 240/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Circular (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "curved-light-light",
+  "group": "light",
+  "rotation": 26,
+  "seconds": 28,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#7bDq": "162/162",
+   "Sim Dummy#f786": "366/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Curved": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 10,
+    "crits": 2,
+    "misses": 14,
+    "damage": 201,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 15
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 201,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 201,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Curved (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Curved (Steel)": 12,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "curved-light-heavy",
+  "group": "heavy",
+  "rotation": 26,
+  "seconds": 28,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#B7gQ": "162/162",
+   "Sim Dummy#etGJ": "511/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Curved": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 15,
+    "crits": 1,
+    "misses": 9,
+    "damage": 56,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 13,
+    "absorbed": 192
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 56,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 56,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Curved (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Curved (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Curved (Steel)": 12,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "curved-heavy-light",
+  "group": "light",
+  "rotation": 27,
+  "seconds": 21,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#Ki3R": "162/162",
+   "Sim Dummy#d0tG": "296/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Curved": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 6,
+    "crits": 2,
+    "misses": 10,
+    "damage": 271,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 15
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 271,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 271,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Curved (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Curved (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Curved (Steel)": 8,
+    "prompt: Heavy Curved (Steel) — Solitary follow-up (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "curved-heavy-heavy",
+  "group": "heavy",
+  "rotation": 27,
+  "seconds": 21,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 16
+  },
+  "hp": {
+   "Sim Tester#NJ1V": "162/162",
+   "Sim Dummy#GbM8": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Curved": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 5,
+    "crits": 2,
+    "misses": 11,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 5,
+    "absorbed": 180
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Curved (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Curved (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 135/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Curved (Steel)": 8,
+    "prompt: Heavy Curved (Steel) — Solitary follow-up (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "curved-heavy-2h-light",
+  "group": "light",
+  "rotation": 28,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#7Vaj": "162/162",
+   "Sim Dummy#QT9d": "331/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Curved (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 4,
+    "damage": 236,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 236,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 236,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Curved (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Curved (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 20/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Curved (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "curved-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 28,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#Ctp5": "162/162",
+   "Sim Dummy#OeGn": "541/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Curved (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 26,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 2,
+    "absorbed": 92
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 26,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 26,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "disarms": 2
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Curved (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Curved (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 240/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Curved (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "thrasher-light-light",
+  "group": "light",
+  "rotation": 29,
+  "seconds": 16,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#gj1o": "162/162",
+   "Sim Dummy#l6fs": "564/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Thrasher": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 8,
+    "damage": 3,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 72
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 3,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 3,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Thrasher (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Thrasher (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 28/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Thrasher (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "thrasher-light-heavy",
+  "group": "heavy",
+  "rotation": 29,
+  "seconds": 17,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#7tNP": "162/162",
+   "Sim Dummy#EJda": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Thrasher": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 9,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 204
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Thrasher (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Thrasher (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 196/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Thrasher (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "thrasher-heavy-light",
+  "group": "light",
+  "rotation": 30,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#BJLs": "162/162",
+   "Sim Dummy#xTYR": "514/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Thrasher": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 4,
+    "damage": 53,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 79
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 53,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 53,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Thrasher (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Thrasher (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 21/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Thrasher (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "thrasher-heavy-heavy",
+  "group": "heavy",
+  "rotation": 30,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#fEVz": "162/162",
+   "Sim Dummy#Vw33": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Thrasher": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 2,
+    "absorbed": 41
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Thrasher (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Thrasher (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 359/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Thrasher (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "thrasher-heavy-2h-light",
+  "group": "light",
+  "rotation": 31,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {
+   "down": 3
+  },
+  "used": {
+   "defend:dodge": 8,
+   "opt:dir=down": 3
+  },
+  "hp": {
+   "Sim Tester#cE7g": "162/162",
+   "Sim Dummy#qlOZ": "257/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Thrasher (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 152,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 3,
+    "absorbed": 60
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 152,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 152,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 8,
+    "knockbacks": {
+     "down": 3
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Thrasher (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Thrasher (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Thrasher (Steel)": 8,
+    "prompt: Knockback — Sim Dummy": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "thrasher-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 31,
+  "seconds": 15,
+  "winner": "party",
+  "pass": "focus-bench",
+  "rounds": 4,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "down": 6,
+   "away": 1
+  },
+  "used": {
+   "defend:dodge": 8,
+   "opt:dir=down": 6,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Tester#jiVT": "162/162",
+   "Sim Dummy#Pvvr": "103/567"
+  },
+  "down": [
+   "Sim Dummy"
+  ],
+  "weapons": {
+   "Heavy Thrasher (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 1,
+    "damage": 256,
+    "ap": 24,
+    "kills": 1,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 212
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 256,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 256,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 8,
+    "knockbacks": {
+     "down": 6,
+     "away": 1
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Thrasher (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Thrasher (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Thrasher (Steel)": 8,
+    "prompt: Knockback — Sim Dummy": 7
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "rapid-light-light",
+  "group": "light",
+  "rotation": 32,
+  "seconds": 18,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:pepper=1": 12,
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#0QxX": "162/162",
+   "Sim Dummy#6QHK": "551/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Rapid": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 11,
+    "damage": 16,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 1,
+    "absorbed": 20
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 16,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 16,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "reloads": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Rapid (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Rapid (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 80/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Rapid (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "rapid-light-heavy",
+  "group": "heavy",
+  "rotation": 32,
+  "seconds": 18,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:pepper=1": 12,
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#VomB": "162/162",
+   "Sim Dummy#bGJb": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Rapid": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 9,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 141
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "reloads": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Rapid (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Rapid (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 259/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Rapid (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "rapid-heavy-light",
+  "group": "light",
+  "rotation": 33,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:pepper=1": 8,
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#pauR": "162/162",
+   "Sim Dummy#z7xB": "463/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Rapid": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 7,
+    "damage": 104,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 1,
+    "absorbed": 20
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 104,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 104,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Rapid (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Rapid (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 80/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Rapid (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "rapid-heavy-heavy",
+  "group": "heavy",
+  "rotation": 33,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:pepper=1": 8,
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#ysLk": "162/162",
+   "Sim Dummy#ZCms": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Rapid": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 273
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Rapid (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Rapid (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 127/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Rapid (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "rapid-heavy-2h-light",
+  "group": "light",
+  "rotation": 34,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:pepper=1": 8,
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#Frg9": "162/162",
+   "Sim Dummy#L6vS": "435/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Rapid (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 7,
+    "damage": 132,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 1,
+    "absorbed": 20
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 132,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 132,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Rapid (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Rapid (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 80/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Rapid (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "rapid-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 34,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:pepper=1": 8,
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#zI7y": "162/162",
+   "Sim Dummy#fQhV": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Rapid (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 8,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Rapid (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Rapid (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 400/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Rapid (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-light-light",
+  "group": "light",
+  "rotation": 35,
+  "seconds": 29,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#IKRc": "162/162",
+   "Sim Dummy#4wDZ": "416/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 10,
+    "crits": 0,
+    "misses": 14,
+    "damage": 151,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 100
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 151,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 151,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 2,
+    "reloads": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 12,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-light-heavy",
+  "group": "heavy",
+  "rotation": 35,
+  "seconds": 29,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#CGdw": "162/162",
+   "Sim Dummy#Pii9": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 6,
+    "crits": 2,
+    "misses": 18,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 6,
+    "absorbed": 179
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 2,
+    "reloads": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 221/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 12,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-heavy-light",
+  "group": "light",
+  "rotation": 36,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 5,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 13,
+   "followup:noRP": 3
+  },
+  "hp": {
+   "Sim Tester#LB6l": "162/162",
+   "Sim Dummy#CHR9": "327/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 8,
+    "followups": 5,
+    "hits": 7,
+    "crits": 3,
+    "misses": 6,
+    "damage": 240,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 7,
+    "absorbed": 56
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 240,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 13
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 240,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 13,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 12,
+    "used": {
+     "followup:noRP": 3
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Assault (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 44/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 8,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 5
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-heavy-heavy",
+  "group": "heavy",
+  "rotation": 36,
+  "seconds": 19,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 5,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 13,
+   "followup:noRP": 3
+  },
+  "hp": {
+   "Sim Tester#02xa": "162/162",
+   "Sim Dummy#e0iO": "531/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 8,
+    "followups": 5,
+    "hits": 5,
+    "crits": 1,
+    "misses": 8,
+    "damage": 36,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 5,
+    "absorbed": 198
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 36,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 13
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 36,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 13,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 12,
+    "used": {
+     "followup:noRP": 3
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Assault (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 202/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 8,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 5
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-heavy-2h-light",
+  "group": "light",
+  "rotation": 37,
+  "seconds": 14,
+  "winner": "party",
+  "pass": "focus-bench",
+  "rounds": 4,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 7
+  },
+  "hp": {
+   "Sim Tester#RUDZ": "162/162",
+   "Sim Dummy#Ljfm": "129/567"
+  },
+  "down": [
+   "Sim Dummy"
+  ],
+  "weapons": {
+   "Heavy Assault (2H)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 2,
+    "damage": 438,
+    "ap": 21,
+    "kills": 1,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 438,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 438,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 0,
+    "reloads": 6
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 7
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Assault (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 100/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 7
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 37,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#Y293": "162/162",
+   "Sim Dummy#EdGn": "421/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Assault (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 4,
+    "damage": 146,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 224
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 146,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 146,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Assault (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 176/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "blast-light-light",
+  "group": "light",
+  "rotation": 38,
+  "seconds": 17,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#DJtx": "162/162",
+   "Sim Dummy#hH1i": "390/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Blast": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 7,
+    "damage": 177,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 15
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 177,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 177,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "reloads": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Blast (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Blast (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Blast (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "blast-light-heavy",
+  "group": "heavy",
+  "rotation": 38,
+  "seconds": 17,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#7Mke": "162/162",
+   "Sim Dummy#uOIp": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Blast": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 8,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 150
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "reloads": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Blast (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Blast (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 182/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Blast (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "blast-heavy-light",
+  "group": "light",
+  "rotation": 39,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#5WvT": "162/162",
+   "Sim Dummy#Xrw6": "346/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Blast": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 221,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 15
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 221,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 221,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Blast (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Blast (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Blast (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "blast-heavy-heavy",
+  "group": "heavy",
+  "rotation": 39,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#MrRu": "162/162",
+   "Sim Dummy#aBzu": "546/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Blast": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 21,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 152
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 21,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 21,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Blast (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Blast (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 197/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Blast (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "blast-heavy-2h-light",
+  "group": "light",
+  "rotation": 40,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#Qua4": "162/162",
+   "Sim Dummy#QjrI": "399/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Blast (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 168,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 3,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 168,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 168,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Blast (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Blast (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 40/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Blast (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "blast-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 40,
+  "seconds": 16,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#8uRL": "162/162",
+   "Sim Dummy#PC3C": "405/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Blast (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 3,
+    "damage": 162,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 5,
+    "absorbed": 230
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 162,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 162,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Blast (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Blast (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Blast (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "longshot-light-light",
+  "group": "light",
+  "rotation": 41,
+  "seconds": 17,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#oMI6": "162/162",
+   "Sim Dummy#itSC": "467/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Longshot": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 7,
+    "damage": 100,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 100,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 100,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 3,
+    "reloads": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Longshot (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Longshot (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 60/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Longshot (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "longshot-light-heavy",
+  "group": "heavy",
+  "rotation": 41,
+  "seconds": 18,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#dV4l": "162/162",
+   "Sim Dummy#36v0": "518/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Longshot": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 3,
+    "damage": 49,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 8,
+    "absorbed": 264
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 49,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 49,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 3,
+    "reloads": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Longshot (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Longshot (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Longshot (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "longshot-heavy-light",
+  "group": "light",
+  "rotation": 42,
+  "seconds": 15,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#jSQD": "162/162",
+   "Sim Dummy#K4Wm": "289/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Longshot": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 3,
+    "damage": 278,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 278,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 278,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 3,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Longshot (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Longshot (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 60/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Longshot (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "longshot-heavy-heavy",
+  "group": "heavy",
+  "rotation": 42,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#hz05": "162/162",
+   "Sim Dummy#sAEd": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Longshot": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 138
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 3,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Longshot (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Longshot (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 194/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Longshot (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "longshot-heavy-2h-light",
+  "group": "light",
+  "rotation": 43,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#crUB": "162/162",
+   "Sim Dummy#BInz": "337/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Longshot (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 230,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 230,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 230,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 3,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Longshot (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Longshot (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 100/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Longshot (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "longshot-heavy-2h-heavy",
+  "group": "heavy",
+  "rotation": 43,
+  "seconds": 15,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#4vOr": "162/162",
+   "Sim Dummy#a0rb": "221/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Longshot (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 346,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 5,
+    "absorbed": 110
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 346,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 346,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 3,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Longshot (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Longshot (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 120/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Longshot (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-heavy-q-light",
+  "group": "light",
+  "rotation": 44,
+  "seconds": 28,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 6,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 14,
+   "followup:quickload": 2,
+   "quickload:quick": 2
+  },
+  "hp": {
+   "Sim Tester#ajqZ": "162/162",
+   "Sim Dummy#L50w": "433/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 8,
+    "followups": 6,
+    "hits": 6,
+    "crits": 0,
+    "misses": 8,
+    "damage": 134,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 48
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 134,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 134,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 12,
+    "used": {
+     "followup:quickload": 2
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {
+    "martial-theory": 2,
+    "martial-assault-weapons": 1
+   }
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Assault (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 52/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 8,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 6,
+    "wait: Heavy Assault (Steel) is empty": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-heavy-q-heavy",
+  "group": "heavy",
+  "rotation": 44,
+  "seconds": 27,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 6,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 14,
+   "followup:quickload": 2,
+   "quickload:quick": 2
+  },
+  "hp": {
+   "Sim Tester#WF5N": "162/162",
+   "Sim Dummy#KIKs": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 8,
+    "followups": 6,
+    "hits": 7,
+    "crits": 1,
+    "misses": 7,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 7,
+    "absorbed": 281
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 12,
+    "used": {
+     "followup:quickload": 2
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {
+    "martial-theory": 2,
+    "martial-assault-weapons": 1
+   }
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Assault (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 119/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 8,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 6,
+    "wait: Heavy Assault (Steel) is empty": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-heavy-t5-light",
+  "group": "light",
+  "rotation": 45,
+  "seconds": 29,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 6,
+  "knockbacks": {},
+  "used": {
+   "properStance": 4,
+   "opt:takeAim=adv": 3,
+   "defend:dodge": 14,
+   "opt:takeAim=str": 2,
+   "followup:quickload": 2,
+   "quickload:quick": 2
+  },
+  "hp": {
+   "Sim Tester#ha9i": "162/162",
+   "Sim Dummy#Bab5": "372/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 8,
+    "followups": 6,
+    "hits": 5,
+    "crits": 2,
+    "misses": 9,
+    "damage": 195,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 40
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 195,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 195,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "properStance": 4,
+     "followup:quickload": 2
+    },
+    "turnMoved": 0,
+    "aim": 0,
+    "reloads": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {
+    "martial-theory": 2,
+    "martial-assault-weapons": 5
+   }
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Assault (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 60/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 8,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 6,
+    "wait: Heavy Assault (Steel) is empty": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-heavy-t5-heavy",
+  "group": "heavy",
+  "rotation": 45,
+  "seconds": 28,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 6,
+  "knockbacks": {},
+  "used": {
+   "properStance": 4,
+   "opt:takeAim=adv": 3,
+   "defend:dodge": 14,
+   "opt:takeAim=str": 2,
+   "followup:quickload": 2,
+   "quickload:quick": 2
+  },
+  "hp": {
+   "Sim Tester#OpMC": "162/162",
+   "Sim Dummy#gV5C": "557/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 8,
+    "followups": 6,
+    "hits": 6,
+    "crits": 4,
+    "misses": 8,
+    "damage": 10,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 6,
+    "absorbed": 253
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 10,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 10,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "properStance": 4,
+     "followup:quickload": 2
+    },
+    "turnMoved": 0,
+    "aim": 0,
+    "reloads": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {
+    "martial-theory": 2,
+    "martial-assault-weapons": 5
+   }
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Assault (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 147/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 8,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 6,
+    "wait: Heavy Assault (Steel) is empty": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-light-q-light",
+  "group": "light",
+  "rotation": 46,
+  "seconds": 31,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#EiB7": "162/162",
+   "Sim Dummy#BbC9": "388/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 10,
+    "crits": 3,
+    "misses": 14,
+    "damage": 179,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 100
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 179,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 179,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 2,
+    "reloads": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {
+    "martial-theory": 2,
+    "martial-assault-weapons": 1
+   }
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 12,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-light-q-heavy",
+  "group": "heavy",
+  "rotation": 46,
+  "seconds": 30,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 24
+  },
+  "hp": {
+   "Sim Tester#LmM8": "162/162",
+   "Sim Dummy#jt2a": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 12,
+    "crits": 3,
+    "misses": 12,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 12,
+    "absorbed": 307
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "shank": 2,
+    "reloads": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {
+    "martial-theory": 2,
+    "martial-assault-weapons": 1
+   }
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 93/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 12,
+    "prompt: Light Assault (Steel) — Solitary follow-up (Dis)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-light-t5-light",
+  "group": "light",
+  "rotation": 47,
+  "seconds": 32,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "properStance": 4,
+   "opt:takeAim=adv": 3,
+   "defend:dodge": 24,
+   "opt:takeAim=str": 2
+  },
+  "hp": {
+   "Sim Tester#RpmG": "162/162",
+   "Sim Dummy#QFzd": "396/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 9,
+    "crits": 2,
+    "misses": 15,
+    "damage": 171,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 100
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 171,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 171,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "properStance": 4
+    },
+    "turnMoved": 0,
+    "aim": 0,
+    "shank": 2,
+    "reloads": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {
+    "martial-theory": 2,
+    "martial-assault-weapons": 5
+   }
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 12,
+    "prompt: Light Assault (Steel) — Solitary follow-up": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "assault-light-t5-heavy",
+  "group": "heavy",
+  "rotation": 47,
+  "seconds": 30,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "properStance": 4,
+   "opt:takeAim=adv": 3,
+   "defend:dodge": 24,
+   "opt:takeAim=str": 2
+  },
+  "hp": {
+   "Sim Tester#oJKC": "162/162",
+   "Sim Dummy#sbSU": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Assault": {
+    "attacks": 12,
+    "followups": 12,
+    "hits": 11,
+    "crits": 1,
+    "misses": 13,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 11,
+    "absorbed": 312
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "properStance": 4
+    },
+    "turnMoved": 0,
+    "aim": 0,
+    "shank": 2,
+    "reloads": 24
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {
+    "martial-theory": 2,
+    "martial-assault-weapons": 5
+   }
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Assault (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Heavy Armor (Iron): 88/400"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Assault (Steel)": 12,
+    "prompt: Light Assault (Steel) — Solitary follow-up": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "blast-light-cluster",
+  "group": "cluster",
+  "rotation": 38,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:area": 12,
+   "defend:dodge": 12
+  },
+  "hp": {
+   "Sim Tester#TsmM": "162/162",
+   "Sim Dummy#zMYL": "436/567",
+   "Sim Dummy#fTXV": "567/567",
+   "Sim Dummy#g645": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Light Blast": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 9,
+    "crits": 2,
+    "misses": 3,
+    "damage": 131,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 15
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 131,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 131,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "areaShots": 12,
+    "shank": 2,
+    "cones": 12,
+    "reloads": 12
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Light Blast (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Light Blast (Steel): 270/270"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 100/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Blast (Steel)": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "blast-heavy-cluster",
+  "group": "cluster",
+  "rotation": 39,
+  "seconds": 17,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:area": 8,
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#6EKs": "162/162",
+   "Sim Dummy#SFBF": "492/567",
+   "Sim Dummy#TbmE": "567/567",
+   "Sim Dummy#zdQc": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Blast": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 3,
+    "damage": 75,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 15
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 75,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 75,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "areaShots": 8,
+    "cones": 8,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed G1",
+    "Heavy Blast (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Blast (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 100/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Blast (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "blast-heavy-2h-cluster",
+  "group": "cluster",
+  "rotation": 40,
+  "seconds": 16,
+  "winner": "unfinished",
+  "pass": "focus-bench",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:area": 8,
+   "defend:dodge": 8
+  },
+  "hp": {
+   "Sim Tester#Le0t": "162/162",
+   "Sim Dummy#DefV": "515/567",
+   "Sim Dummy#21vW": "567/567",
+   "Sim Dummy#r2SM": "567/567"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Blast (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 52,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Tester"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 0
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Tester",
+    "dealt": 52,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 52,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Tester",
+    "side": "party",
+    "role": "bench",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "areaShots": 8,
+    "cones": 8,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Tester": {}
+  },
+  "gear": {
+   "Sim Tester": [
+    "Unarmed (not held) G1",
+    "Heavy Blast (Steel) G6"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Tester": [
+    "Heavy Blast (Steel): 540/540"
+   ],
+   "Sim Dummy": [
+    "Light Armor (Soft Leather): 100/100"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Blast (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

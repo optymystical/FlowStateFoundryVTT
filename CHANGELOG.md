@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.12:** Movement: a step costs the worst terrain it passes through. Before, it cost whatever terrain the token stood in when the step was paid, so walking through a patch of difficult terrain and out again within one step cost no extra.
+
 **0.75.11:** A Chant reroll of a Fortune Manifest reads as a hit or a miss, not "Critical Hit" (Fortune can't crit; its band decides).
 
 **0.75.10:** Fixes from live testing in Foundry: placing an Area (Area Manifests and spells, barriers) failed at the "place the area" step since 0.75.7; dragging a creature you grapple now pulls it along (it never followed); a dismissed Omen or an expiring Summon leaves the combat tracker instead of staying as an empty combatant; Flourish's dice show as their own roll on the damage card, not a second shot; shielding named with its amount ("Aegis (60 shielding)") shows what is left.

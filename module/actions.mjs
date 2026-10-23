@@ -49,8 +49,8 @@ export function moveLedger(actor) {
 }
 export async function setMoveLedger(actor, ledger) {
   // The whole ledger every time: Foundry merges a flag object into the one there, so a key left out (the undo list) would linger.
-  const { bank = 0, ft = 0, pending = false, moves = [] } = ledger ?? {};
-  try { await setActorFlag(actor, "moveLedger", { bank, ft, pending, moves, key: turnKey() }); } catch (err) { /* the ledger is bookkeeping: never block an action on it */ }
+  const { bank = 0, ft = 0, pending = false, step = 0, due = 0, moves = [] } = ledger ?? {};
+  try { await setActorFlag(actor, "moveLedger", { bank, ft, pending, step, due, moves, key: turnKey() }); } catch (err) { /* the ledger is bookkeeping: never block an action on it */ }
 }
 /** Is movement being tracked for this creature right now (on its own turn in combat, the setting on)? */
 export const movementTracked = actor => movementMode() !== "off" && inActiveCombat(actor) && game.combat.combatant?.actor?.uuid === actor.uuid;
@@ -63,7 +63,8 @@ export function moveStatus(actor) {
   if (!actor || !movementTracked(actor)) return null;
   const { speedFt, cost } = moveParams(actor), L = moveLedger(actor);
   const free = L.ft > 0 ? L.ft : (L.pending ? 0 : speedFt);
-  const pay = L.pending ? Math.max(0, cost - Math.min(L.bank, cost)) : 0;
+  const due = L.pending ? (L.due > 0 ? L.due : cost) : 0;                // what the step you're in still owes (its worst terrain so far)
+  const pay = Math.max(0, due - Math.min(L.bank, due));
   return { free: Math.round(free), pay: Math.round(pay * 100) / 100, bank: Math.round(L.bank * 100) / 100, speed: Math.round(speedFt) };
 }
 /** Feet of movement it can still make without spending AP (shown beside the AP). */

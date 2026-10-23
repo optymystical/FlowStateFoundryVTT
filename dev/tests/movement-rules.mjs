@@ -49,5 +49,28 @@ ok(m.ok && m.apCost === 0, "Not moving costs nothing, with any AP");
 m = M.planMove(M.emptyLedger(), 100, { speedFt: 105, cost: 1, ap: 1 });
 ok(m.ok && m.apCost === 0 && m.ledger.ft === 5, "Haste (105 ft for 1 AP): 100 ft is one pending step");
 
+console.log("== A step costs the worst terrain it passes through");
+// A 30 ft path: plain, then difficult terrain (cost 3) at 10-20 ft, then plain again.
+const path = [{ d: 0, cost: 1 }, { d: 5, cost: 1 }, { d: 10, cost: 3 }, { d: 15, cost: 3 }, { d: 20, cost: 1 }, { d: 25, cost: 1 }, { d: 30, cost: 1 }];
+const along = (a, b) => M.stepCostAlong(path, a, b, 1);
+ok(along(0, 30) === 3 && along(0, 5) === 1 && along(20, 30) === 1 && along(12, 14) === 3, "stepCostAlong: the worst cost standing anywhere in the span (where it starts included)");
+m = M.planMove(M.emptyLedger(), 30, { speedFt: 30, cost: 1, ap: 6, between: along });
+ok(m.ok && m.ledger.pending && m.ledger.step === 3 && m.ledger.due === 3, "Walking through difficult terrain and out again in one step: the step costs 3, not 1");
+let L1 = M.planMove(M.emptyLedger(), 5, { speedFt: 30, cost: 1, ap: 6, between: along }).ledger;
+ok(L1.step === 1 && L1.due === 1, "In three moves: the first 5 ft (plain) open a 1 AP step…");
+const later = d0 => (a, b) => M.stepCostAlong(path, a + d0, b + d0, 1);
+L1 = M.planMove(L1, 10, { speedFt: 30, cost: 1, ap: 6, between: later(5) }).ledger;
+ok(L1.step === 3 && L1.due === 3 && L1.ft === 15, "…walking into the difficult terrain raises that step to 3…");
+L1 = M.planMove(L1, 15, { speedFt: 30, cost: 3, ap: 6, between: later(15) }).ledger;
+ok(L1.step === 3 && L1.due === 3, "…and walking back out doesn't lower it");
+m = M.planMove(L1, 5, { speedFt: 30, cost: 1, ap: 6 });
+ok(m.ok && m.apCost === 3, "Moving past it pays the 3 AP it came to");
+m = M.planMove({ bank: 0, ft: 20, pending: true, step: 1, due: 1 }, 10, { speedFt: 30, cost: 1, ap: 1, between: () => 3 });
+ok(!m.ok, "Walking into terrain you couldn't pay for (3 AP owed, 1 AP left) isn't allowed");
+m = M.planAction({ bank: 0, ft: 15, pending: true, step: 3, due: 3 }, 3, { cost: 1 });
+ok(!m.ledger.pending && m.ledger.bank === 0, "An action settles the raised step: its whole 3 AP");
+ok(M.maxMove(M.emptyLedger(), { speedFt: 30, cost: 1, ap: 2, between: (a, b) => (b > 40 ? 3 : 1), limit: 60 }) >= 40 - 1e-6
+  && !M.planMove(M.emptyLedger(), 60, { speedFt: 30, cost: 1, ap: 2, between: (a, b) => (b > 40 ? 3 : 1) }).ok, "maxMove along a path stops where the terrain makes it unaffordable");
+
 console.log(fails ? `${fails} FAILED` : "all passed");
 process.exit(fails ? 1 : 0);

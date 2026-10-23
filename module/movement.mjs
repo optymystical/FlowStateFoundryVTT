@@ -9,7 +9,8 @@
  *    (Dip, Dash) is cut short at your speed.
  *    Terrain counts as it was where the move started.
  */
-import { planMove, maxMove, cutPath } from "./movement-rules.mjs";
+import { planMove, maxMove, cutPath, stepCostAlong } from "./movement-rules.mjs";
+import { levelAt } from "./terrain.mjs";
 import { movementMode, movementTracked, moveParams, moveLedger, turnKey } from "./actions.mjs";
 import { notCreature } from "./kinds.mjs";
 
@@ -62,6 +63,27 @@ function redoShorter(token, movement, cut) {
   return false;
 }
 
+/**
+ * The cost of standing at each point of a move (by the terrain regions there), as [{ d, cost }] from the start: a step costs the worst terrain it
+ * passes through (stepCostAlong). Null when nothing on the path is terrain (the plain cost then).
+ */
+function pathCosts(token, movement, actor) {
+  const costAt = actor.system?.movement?.costAt;
+  const scene = token.parent, size = scene?.grid?.size ?? 100;
+  if (typeof costAt !== "function" || !scene?.regions?.some?.(r => r.flags?.flowstate?.terrain)) return null;
+  const pts = movement.passed?.waypoints ?? [];
+  const centre = p => ({ x: p.x + ((p.width ?? token.width ?? 1) * size) / 2, y: p.y + ((p.height ?? token.height ?? 1) * size) / 2 });
+  const measure = k => { try { return token.measureMovementPath(pts.slice(0, k)).distance; } catch (err) { return NaN; } };
+  const origin = movement.origin ?? token._source;
+  const out = [{ d: 0, cost: costAt(levelAt(scene, centre(origin), origin.elevation ?? token.elevation ?? 0)) }];
+  for (let k = 0; k < pts.length; k++) {
+    const d = measure(k + 1);
+    if (!Number.isFinite(d)) return null;
+    out.push({ d, cost: costAt(levelAt(scene, centre(pts[k]), pts[k].elevation ?? token.elevation ?? 0)) });
+  }
+  return out;
+}
+
 /** preMoveToken: price the path the token is about to take, cut it short if the AP can't pay for all of it, and stash the plan for updateToken. */
 function preMove(token, movement, options) {
   try {
@@ -80,10 +102,14 @@ function preMove(token, movement, options) {
       return cut.length ? redoShorter(token, movement, cut) : false;
     }
     if (movementMode() === "off" || !movementTracked(actor)) return;
-    const params = moveParams(actor), now = current(actor);
+    // Each step costs the worst terrain it passes through on this path (plus the extra AP of dragging someone, already in params.cost).
+    const samples = pathCosts(token, movement, actor);
+    const extra = params0 => params0.cost - (actor.system?.movement?.ap ?? params0.cost);          // dragging a grappled creature: +1 a step
+    const p0 = moveParams(actor);
+    const params = samples ? { ...p0, between: (a, b) => stepCostAlong(samples, a, b, p0.cost) + extra(p0) } : p0, now = current(actor);
     let plan = planMove(now.ledger, feet, { ...params, ap: now.ap });
     if (!plan.ok) {
-      const max = maxMove(now.ledger, { ...params, ap: now.ap });
+      const max = maxMove(now.ledger, { ...params, ap: now.ap, limit: feet });
       if (enforce) {
         const cut = !options.flowstateCapped && max > 0 ? cutMove(token, movement, max) : [];
         if (!cut.length) {
@@ -98,9 +124,9 @@ function preMove(token, movement, options) {
       plan = full;
     }
     // Remember the move so Ctrl+Z can give it back.
-    const before = { bank: now.ledger.bank, ft: now.ledger.ft, pending: now.ledger.pending };
+    const before = { bank: now.ledger.bank, ft: now.ledger.ft, pending: now.ledger.pending, step: now.ledger.step ?? 0, due: now.ledger.due ?? 0 };
     const moves = [...(now.ledger.moves ?? []), { id: movement.id, before, ap: Math.min(plan.apCost, now.ap) }].slice(-30);
-    const ledger = { bank: plan.ledger.bank, ft: plan.ledger.ft, pending: plan.ledger.pending, moves };
+    const ledger = { bank: plan.ledger.bank, ft: plan.ledger.ft, pending: plan.ledger.pending, step: plan.ledger.step, due: plan.ledger.due, moves };
     options.flowstateMove = { ledger, apCost: plan.apCost, feet, key: turnKey() };
     const f = now.f ?? { owed: 0, n: 0 };
     inFlight.set(actor.uuid, { key: turnKey(), ledger, owed: f.owed + plan.apCost, n: f.n + 1, at: Date.now(), sure: false });

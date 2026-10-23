@@ -197,26 +197,30 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     };
     speedLoss.total = sm ? 0 : speedLoss.armor + speedLoss.affix + speedLoss.alignment;
     const walk = speedFt(d.move, speedLoss.total);
+    // Terrain regions (rough +1, difficult +2; Zircon ignores rough terrain).
+    const ground = lvl => (zircon && lvl === 1 ? 0 : lvl);
+    const costArgs = {
+      prone: statuses.has("prone"),
+      // Like Shooting Fish (Longshot T2): moves as if in rough terrain.
+      crouch: statuses.has("crouch") || (statuses.has("fishy") && !unfettered && !zircon),
+      stealth: statuses.has("stealth"),
+      tempo,
+      // Trudge (Heavy T2 / Titanic T4): the next move ignores the armor's movement penalty.
+      base: (trudge ? 1 : penalties.moveAP)
+        // Slice (Balanced T3): +1 AP per move (a Martial source, so Unfettered ignores it).
+        + (statuses.has("sliced") && !unfettered ? 1 : 0)
+        // Freeze (Mental, Destruction T4): +1 AP per move
+        + bonus("moveUp")
+    };
     this.movement = {
       // Quicken (Unarmored T4): double speed.
       speed: statuses.has("quickened") ? walk * 2 : walk,
       speedLoss,
       tempo,
-      ...movementCost({
-        // Terrain regions the creature stands in (rough +1, difficult +2; Zircon ignores rough terrain).
-        terrain: (lvl => (zircon && lvl === 1 ? 0 : lvl))(Number(this.parent?.getFlag?.("flowstate", "terrainLevel")) || 0),
-        prone: statuses.has("prone"),
-        // Like Shooting Fish (Longshot T2): moves as if in rough terrain.
-        crouch: statuses.has("crouch") || (statuses.has("fishy") && !unfettered && !zircon),
-        stealth: statuses.has("stealth"),
-        tempo,
-        // Trudge (Heavy T2 / Titanic T4): the next move ignores the armor's movement penalty.
-        base: (trudge ? 1 : penalties.moveAP)
-          // Slice (Balanced T3): +1 AP per move (a Martial source, so Unfettered ignores it).
-          + (statuses.has("sliced") && !unfettered ? 1 : 0)
-          // Freeze (Mental, Destruction T4): +1 AP per move
-          + bonus("moveUp")
-      })
+      // Where the creature stands now (the GM keeps its `terrainLevel` flag in step with the regions).
+      ...movementCost({ ...costArgs, terrain: ground(Number(this.parent?.getFlag?.("flowstate", "terrainLevel")) || 0) }),
+      // What a step costs in terrain of this level (movement.mjs prices a move by the terrain along its path).
+      costAt: lvl => movementCost({ ...costArgs, terrain: ground(Number(lvl) || 0) }).ap
     };
     // Ch7 Rest: after 1 day without rest, disadvantage on all rolls.
     this.exhausted = this.daysWithoutRest >= 1;

@@ -62,6 +62,11 @@ function regionsOf(token, scene = token?.parent) {
 /** The terrain level for a token from the regions it is in. */
 const levelFor = token => terrainLevel(regionsOf(token).map(kindOf));
 
+/** The terrain level at a point of the scene (a token's centre there), from the terrain regions that contain it. */
+export function levelAt(scene, point, elevation = 0) {
+  return terrainLevel([...(scene?.regions ?? [])].filter(r => kindOf(r) && r.testPoint?.(point, elevation)).map(kindOf));
+}
+
 /** Bring every token on the scene's `terrainLevel` flag in line with the terrain regions it stands in. GM only. */
 export async function syncTerrain(scene = globalThis.canvas?.scene) {
   if (!scene || !globalThis.game?.user?.isActiveGM) return;

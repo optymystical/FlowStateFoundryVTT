@@ -18,6 +18,7 @@ import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import { itemData } from "./catalog.mjs";
+import { leaveCombats } from "./conjure.mjs";
 import { deriveCharacter } from "./rules.mjs";
 import { allied } from "./sides.mjs";
 import { mental, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, kinshipHook, tenetOf } from "./wonders.mjs";
@@ -408,6 +409,7 @@ GM_ACTIONS.omenState = async ({ omen: omenUuid, op, conc = null, battle = null, 
   const set = v => omen.update({ "flags.flowstate.omen": { ...d, ...v } });
   if (op === "count") return set({ [side === "own" ? "own" : "opp"]: (d[side === "own" ? "own" : "opp"] ?? 0) + 1 });
   if (op === "dismiss") {
+    await leaveCombats(omen.id);
     for (const scene of globalThis.game?.scenes ?? []) { const ids = scene.tokens.filter(t => t.actorId === omen.id).map(t => t.id); if (ids.length) await scene.deleteEmbeddedDocuments("Token", ids); }
     return omen.delete();
   }

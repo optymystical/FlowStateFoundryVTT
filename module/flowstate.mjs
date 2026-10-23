@@ -661,13 +661,17 @@ Hooks.on("preUpdateToken", (token, changes, options) => {
 });
 
 /** Remember where a token started so the creatures it holds can follow by the same step. */
+// Foundry v14 moves tokens through preMoveToken, and the move's start is `movement.origin` (by preUpdateToken the stored position is already the new one).
+Hooks.on("preMoveToken", (token, movement, options) => {
+  if (!options?.flowstateDrag && movement?.origin) options.flowstateFrom = { x: movement.origin.x, y: movement.origin.y };
+});
 Hooks.on("preUpdateToken", (token, changes, options) => {
-  if (("x" in changes || "y" in changes) && !options?.flowstateDrag) options.flowstateFrom = { x: token.x, y: token.y };
+  if (("x" in changes || "y" in changes) && !options?.flowstateDrag && !options.flowstateFrom) options.flowstateFrom = { x: token._source.x, y: token._source.y };
 });
 Hooks.on("updateToken", (token, changes, options, userId) => {
   if (userId !== game.user.id || !options?.flowstateFrom || options.flowstateDrag || !token.actor) return;
   if (!("x" in changes || "y" in changes)) return;
-  actions.dragGrappled(token.actor, token, options.flowstateFrom);
+  actions.dragGrappled(token.actor, token, options.flowstateFrom, { x: changes.x ?? token._source.x, y: changes.y ?? token._source.y });
 });
 
 /* -------------------------------------------- */

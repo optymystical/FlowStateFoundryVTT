@@ -3411,15 +3411,18 @@ export function grappleMoveBlock(actor, token, x, y) {
 }
 
 /** When a creature moves, the creatures it holds (not pinned in place) follow by the same step. */
-export async function dragGrappled(actor, token, from) {
-  const dx = token.x - from.x, dy = token.y - from.y;
+export async function dragGrappled(actor, token, from, to = null) {
+  // Foundry v14: a token's x/y can be where its move animation has got to; the stored position (`_source`) is where it ends up.
+  const at = to ?? { x: token._source?.x ?? token.x, y: token._source?.y ?? token.y };
+  const dx = at.x - from.x, dy = at.y - from.y;
   if (!dx && !dy) return;
   for (const victim of grappledBy(actor)) {
     const hold = grappleHold(victim);
     if (!hold || hold.static) continue;
     const vTok = victim.getActiveTokens?.()[0];
-    if (!vTok || vTok.parent?.id !== token.parent?.id) continue;
-    await requestGM("moveToken", { uuid: vTok.document?.uuid ?? vTok.uuid, x: (vTok.document?.x ?? vTok.x) + dx, y: (vTok.document?.y ?? vTok.y) + dy });
+    const vd = vTok?.document ?? vTok;                                   // getActiveTokens gives canvas Tokens: their scene is the document's parent
+    if (!vd || vd.parent?.id !== (token.document ?? token).parent?.id) continue;
+    await requestGM("moveToken", { uuid: vd.uuid, x: (vd._source?.x ?? vd.x) + dx, y: (vd._source?.y ?? vd.y) + dy });
     // Being dragged along is a forced move for the victim (Mental: Drown, Undertow).
     if (globalThis.canvas?.grid) await noteForced(victim, Math.round((Math.hypot(dx, dy) / canvas.grid.size) * (canvas.grid.distance ?? 5)));
   }
@@ -5008,7 +5011,6 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const md = await mentalHook?.damageCharges?.({ actor: attacker, formula, totals: base.totals });
   if (md?.totals) { base.totals = md.totals; base.rolls.push(...(md.rolls ?? [])); }
   const gd = await mentalHook?.growthDamage?.(o);                          // Growth: Flourish's damage and Pierce's Limit
-  if (gd?.rolls?.length) base.rolls.push(...gd.rolls);
   const mflat = (md?.flat ?? 0) + (defense.result?.mentalDmg ?? 0) + (gd?.flat ?? 0);
   const line = damageLine(flat || mflat ? base.totals.map((t, i) => Math.max(0, t + flat + (i === 0 ? mflat : 0))) : base.totals, stacks, type, shots);
   // Omega (Swift T5): Heavy Swift attacks let Strengthened/Weakened change their Pierce value too.
@@ -5017,6 +5019,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
 
   let extraHTML = spellPlan?.notes.length ? `<div class="fs-notes">${spellPlan.notes.map(esc).join(" · ")}</div>` : "";
   if (flat) extraHTML += `<div class="fs-notes">Rend: +${flat} damage (Scaling Stat min)</div>`;
+  // Flourish's dice are its own roll, not another shot of the attack's damage.
+  for (const r of gd?.rolls ?? []) extraHTML += await rollBlock(r, "Flourish (Growth)");
   if (gd?.notes?.length) extraHTML += `<div class="fs-notes"><i class="fa-solid fa-seedling"></i> ${gd.notes.map(esc).join(" · ")}</div>`;
   if (md || mflat) extraHTML += `<div class="fs-notes fs-charge-note"><i class="fa-solid fa-link"></i> ${[...(md?.notes ?? []), defense.result?.mentalDmg ? `Verdict: ${defense.result.mentalDmg > 0 ? "+" : "−"}${Math.abs(defense.result.mentalDmg)} damage.` : ""].filter(Boolean).join(" ")}</div>`;
   extraHTML += dischargeHTML;
@@ -5203,7 +5207,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   }
   await post(attacker, {
     title: `${esc(o.label || "Attack")} — Damage to ${esc(target.name)}`,
-    rolls: [...base.rolls, ...shatterRolls, ...spellRolls],
+    rolls: [...base.rolls, ...(gd?.rolls ?? []), ...shatterRolls, ...spellRolls],
     body: `${await baseDamageHTML(base, type)}${line.html}
       ${parts.length ? `<div class="fs-notes">Stacks: ${parts.join(", ")}</div>` : ""}${extraHTML}
       ${damageOutcomeHTML(target, incoming, type, outcome)}${spellHTML}${chainFlag && elem ? elem.chainRow(attacker, chainFlag, o.spell?.chain?.depth ?? 0) : ""}${reflectRows(outcome)}${ripHTML}${parryRows}${deflectRow}${reachRow}${kb ? knockbackRow(attacker.uuid, kb.feet, kb.label) : ""}${shroudCounterRows(target, attacker, outcome)}`,
@@ -5602,7 +5606,8 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
       await post(actor, { title: `${esc(actor.name)} — Taaffeite`, body: `<div class="fs-result">The Ritual Shield would have been destroyed: ${esc(tshroud.name)} gives up all its Durability to keep it at 1 health.</div>` });
     }
     if (hp <= 0) await changeEffect(effect, null);
-    else await changeEffect(effect, { "flags.flowstate.spellEffect.hp": hp, description: `Absorbs the next ${hp} damage.` });
+    // A name that carries the amount ("Aegis (60 shielding)") shows what is left.
+    else await changeEffect(effect, { "flags.flowstate.spellEffect.hp": hp, description: `Absorbs the next ${hp} damage.`, ...(/\(\d+ shielding\)/.test(effect.name ?? "") ? { name: effect.name.replace(/\(\d+ shielding\)/, `(${hp} shielding)`) } : {}) });
   }
   // Cinder Shroud: damage types taken since the start of your turn.
   if (amount > 0 && actor.setFlag) {

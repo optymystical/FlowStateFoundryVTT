@@ -98,9 +98,18 @@ GM_ACTIONS.createCreation = async ({ sceneId, x, y, data, items, owners, initiat
   }
   return actor.id;
 };
+/** Take a creature that is going away out of every combat first (deleting its token or actor leaves its combatant behind in the tracker). */
+export async function leaveCombats(actorId) {
+  for (const combat of globalThis.game?.combats ?? []) {
+    const ids = combat.combatants.filter(c => c.actorId === actorId).map(c => c.id);
+    if (ids.length) await combat.deleteEmbeddedDocuments("Combatant", ids);
+  }
+}
+
 GM_ACTIONS.deleteCreation = async ({ actorId }) => {
   const actor = globalThis.game.actors.get(actorId);
   if (!actor) return;
+  await leaveCombats(actorId);
   for (const scene of globalThis.game.scenes) {
     const ids = scene.tokens.filter(t => t.actorId === actorId).map(t => t.id);
     if (ids.length) await scene.deleteEmbeddedDocuments("Token", ids);

@@ -76,7 +76,7 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
     flags: { flowstate: { areaOf: actor.uuid, casterX: x, casterY: y, ...flags } } };
   const [doc] = await scene.createEmbeddedDocuments("MeasuredTemplate", [data]);
   try { globalThis.canvas.templates?.activate?.(); } catch (err) { /* layer switch is a convenience only */ }
-  const ok = await DialogV2.confirm({
+  const ok = await DialogV2().confirm({
     window: { title: `${title}: place the area` },
     content: `<p>Drag the template into place (move it with the Templates tool; rotate it with Ctrl + the middle mouse wheel, or by dragging its handle), then press <strong>Confirm</strong>. Everything it touches is targeted.</p>`,
     yes: { label: "Confirm" }, no: { label: "Cancel" }, rejectClose: false
@@ -87,7 +87,7 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
   // A barrier line also needs a facing: which side attacks and movement are blocked from.
   let front = null;
   if (facing && tpl.t === "ray") {
-    const pickFace = await DialogV2.prompt({
+    const pickFace = await DialogV2().prompt({
       window: { title: `${title}: facing` },
       content: `<p>Which side does it block things coming from?</p><div class="fs-field"><label>Faces</label><select name="face">${Object.entries(FACINGS).map(([k, f]) => `<option value="${k}">${f.label}</option>`).join("")}</select></div>`,
       ok: { label: "Set", callback: (event, button) => button.form.elements.face.value }, rejectClose: false

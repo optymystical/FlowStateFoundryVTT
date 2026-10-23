@@ -82,7 +82,9 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `module/integrations.mjs` — Carousel Combat Tracker defaults and a built-in Token Action HUD system integration.
 - `README.md` — short front page. `CHANGELOG.md` — one short entry per version (newest first). `dev/AUTOMATION.md` — every automated rule and judgment call in detail; update it when a rule changes.
 - `dev/` — not loaded by Foundry: `tests/` (Node harnesses with Foundry mocks), `run-tests.mjs`, `tools/build_trees.py`,
-  `docs/` (doc snapshots).
+  `docs/` (doc snapshots), `live/` (the live-test kit for the Test World), `sim/` (the combat sim: `roster.mjs` holds the party archetypes,
+  monster groups and loadout rotations of a pass; `sim.mjs` runs them in the Test World with an AI through the real actions and chat cards,
+  answering dialogs headlessly; results are saved to `sim/results/<pass>.json` and `node dev/sim/report.mjs` tabulates them).
 
 ## Key mechanics in code
 

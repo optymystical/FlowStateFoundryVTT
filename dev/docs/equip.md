@@ -134,7 +134,7 @@
 |  | Heavy | 1d12 | Pepper+ | Average | 150ft |
 | Assault | Light | 1d8 | Solitary | Fast | 100ft |
 |  | Heavy | 1d12 | Pierce, Solitary | Average | 200ft |
-| Blast | Light | 1d8 | Area, Cleave | Average | 25ft |
+| Blast | Light | 1d8 | Area, Pierce, Pepper | Average | 25ft |
 |  | Heavy | 1d12 | Area+, Cleave | Average | 50ft |
 | Longshot | Light | 1d8 | Cleave, Pierce | Average | 150ft |
 |  | Heavy | 1d14 | Cleave, Pierce | Slow | 300ft |

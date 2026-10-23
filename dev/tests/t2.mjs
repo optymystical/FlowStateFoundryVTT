@@ -147,6 +147,7 @@ orc.statuses.add("prone"); hero.system.ap.value = 6;
 seq = [20]; await attack(flail, { wild: "both", smash: true });
 o = last("attack").flags.flowstate.attack.opts;
 ok(o.bash === Math.floor(flail.system.profile.capped / 2) && o.stacks === flail.system.profile.stacks + 2 && o.knockback === 10 * flail.system.profile.capped && o.knockbackAdd === 5 * flail.system.profile.capped, "Bash+, two Strengthened, Smash adds base Knockback");
+ok(ab.WEIGHTED_COST.smash(flail) === ab.scalingMin(flail) && ab.scalingMin(flail) > 0, "Smash costs Energy equal to the Scaling Stat min");
 orc.statuses.delete("prone");
 
 console.log("== Take Aim + Cool Breath (Assault T2/T4)");

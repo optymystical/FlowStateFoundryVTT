@@ -2,7 +2,7 @@
   "id": "flowstate",
   "title": "Flow State",
   "description": "Flow State, a Setting Universal, Digital Only, Open Ended TTRPG by Christopher Caplinger: the core rules, all Martial equipment and skill trees, Magic (Foci, Shrouds, Affixes and every spell group with its Combos) and Mental (Manifest, Alignment, Icons, Wards and the Wonders), with chat-card combat, movement cost, terrain and a character wizard. Flow State © 2019 by Christopher Caplinger, CC BY 4.0.",
-  "version": "0.76.0",
+  "version": "0.76.1",
   "compatibility": {
     "minimum": "13",
     "verified": "14"

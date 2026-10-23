@@ -747,7 +747,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Smash",
-      "text": "Cost: Energy equal to half of your Scaling Stat min, rounded down. Prior to making a Weighted Weapon attack, you can choose to use this ability. Your attack gets extra Knockback equal to its base Knockback value (before multiplying or adding from other effects)."
+      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Weighted Weapon attack, you can choose to use this ability. Your attack gets extra Knockback equal to its base Knockback value (before multiplying or adding from other effects)."
      }
     ]
    },

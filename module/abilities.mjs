@@ -304,7 +304,7 @@ export const weighted = weightedT.can;
 export const WEIGHTED_COST = {
   swing: item => scalingMin(item),                 // T1 Controlled (Light) / Wild (Heavy)
   spin: item => scalingMin(item),                  // T2
-  smash: item => Math.floor(scalingMin(item) / 2)  // T4
+  smash: item => scalingMin(item)                   // T4, Scaling Stat min
 };
 
 /* -------------------------------------------- */

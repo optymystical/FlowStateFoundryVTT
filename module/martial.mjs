@@ -100,7 +100,7 @@ export const WEAPON_TYPES = {
   improvised: melee("Improvised", { die: 6, tags: {}, throw: "average" }, { die: 6, tags: {}, throw: "average" }),
   rapid:    ranged("Rapid",    { die: 6,  tags: t("Fast, Pepper"),   reload: "fast",    range: 75 },  { die: 12, tags: t("Pepper+"),        reload: "average", range: 150 }),
   assault:  ranged("Assault",  { die: 8,  tags: t("Solitary"),       reload: "fast",    range: 100 }, { die: 12, tags: t("Pierce, Solitary"), reload: "average", range: 200 }),
-  blast:    ranged("Blast",    { die: 8,  tags: t("Area, Cleave"),   reload: "average", range: 25 },  { die: 12, tags: t("Area+, Cleave"),  reload: "average", range: 50 }),
+  blast:    ranged("Blast",    { die: 8,  tags: t("Area, Pierce, Pepper"), reload: "average", range: 25 },  { die: 12, tags: t("Area+, Cleave"),  reload: "average", range: 50 }),
   longshot: ranged("Longshot", { die: 8,  tags: t("Cleave, Pierce"), reload: "average", range: 150 }, { die: 14, tags: t("Cleave, Pierce"), reload: "slow",    range: 300 })
 };
 

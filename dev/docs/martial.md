@@ -293,7 +293,7 @@
 - **Wide Arc:** Your Weighted Weapon attacks gain Farstrike so long as they are made while Strafing (moving and attacking at the same time).  
     
   **Tier 4: You gain the following ability:**  
-- **Smash: Cost: *Energy equal to half of your Scaling Stat min, rounded down.*** Prior to making a Weighted Weapon attack, you can choose to use this ability. Your attack gets extra Knockback equal to its base Knockback value (before multiplying or adding from other effects).  
+- **Smash: Cost: *Energy equal to your Scaling Stat min.*** Prior to making a Weighted Weapon attack, you can choose to use this ability. Your attack gets extra Knockback equal to its base Knockback value (before multiplying or adding from other effects).  
     
   **Tier 5: You gain the following passive:**  
 - **Crunch:** When you use Controlled or Wild Swing against a prone target, you instead get both effects. Wild Swing specifically gives Bash+ and two stacks of Strengthened.

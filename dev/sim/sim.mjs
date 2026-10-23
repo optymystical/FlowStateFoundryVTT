@@ -346,7 +346,7 @@ function treeOptions(actor, item, { me = null, target = null, pepper = 0 } = {})
     if (weight === "light" && take(min)) o.controlled = alt("ctl", [["both", "adv", "solitary"], ["both", "solitary", "adv"]])[0];
     if (weight === "heavy" && take(min)) o.wild = alt("wild", [["both", "str2"], ["both", "bashPlus"], ["both", "bashStr"]])[0];
     if (crowd >= 2 && take(min)) o.spin = true;
-    if (take(Math.floor(min / 2))) o.smash = true;
+    if (take(min)) o.smash = true;                                       // Smash: Scaling Stat min
   }
   if (type === "assault") {
     const moved = (s.turnMoved ?? 0) > 0;

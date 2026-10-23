@@ -441,7 +441,7 @@ Health Points (HP) are a measure of how beat up and broken your character is. Yo
 
 ## **Pain Threshold** {#pain-threshold}
 
-Your Pain Threshold is a value that shows when your character would fall unconscious if their current HP dropped below that value, staying unconscious until they rise back above that value. Your Pain Threshold is always equal to a quarter of your Maximum HP, rounded down.
+Your Pain Threshold is a value that shows when your character would fall unconscious if their current HP dropped below that value, staying unconscious until they rise back above that value. Your Pain Threshold is always equal to half of your Maximum HP, rounded down.
 
 ## **Energy** {#energy}
 

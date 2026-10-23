@@ -295,7 +295,7 @@ export const RULE_DOCS = [
      {
       "id": "pain-threshold",
       "title": "Pain Threshold",
-      "md": "Your Pain Threshold is a value that shows when your character would fall unconscious if their current HP dropped below that value, staying unconscious until they rise back above that value. Your Pain Threshold is always equal to a quarter of your Maximum HP, rounded down."
+      "md": "Your Pain Threshold is a value that shows when your character would fall unconscious if their current HP dropped below that value, staying unconscious until they rise back above that value. Your Pain Threshold is always equal to half of your Maximum HP, rounded down."
      },
      {
       "id": "energy",

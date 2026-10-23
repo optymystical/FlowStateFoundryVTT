@@ -62,7 +62,7 @@ export const dodgeDie = sp => Math.max(1, Math.floor(sp / 2));
 export const maxHP = (con, will, build, size) => (con + will + build) * (clampSize(size) * 3);
 
 /** Ch8 Pain Threshold: 1/4 of max HP, rounded down. */
-export const painThreshold = max => Math.floor(max / 4);
+export const painThreshold = max => Math.floor(max / 2);          // half of max HP (Rules: Pain Threshold)
 
 /** Ch8 HP regen per 8 hr rest: Con, Will, and Build minimums combined. */
 export const restHeal = (con, will, build) => statMin(con) + statMin(will) + statMin(build);

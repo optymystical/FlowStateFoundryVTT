@@ -8,7 +8,7 @@ assert.equal(r.statBonus(30), 6);                 // 30 SP -> +6 floor
 assert.equal(r.attackDie(30), 30);                // d30
 assert.equal(r.dodgeDie(30), 15);                 // 2d15
 assert.equal(r.maxEnergy(30), 150); assert.equal(r.energyRecover(150), 15);
-assert.equal(r.maxHP(16,16,16,3), 432); assert.equal(r.painThreshold(432), 108);
+assert.equal(r.maxHP(16,16,16,3), 432); assert.equal(r.painThreshold(432), 216);
 // Strengthened/Weakened examples from the doc
 assert.equal(r.applyStacks(10, 3), 25);
 assert.equal(r.applyStacks(10, -3), 1);
@@ -41,6 +41,6 @@ assert.deepEqual(r.movementCost({prone:true, stealth:true, tempo:1}), {ap:4, mul
 // Derived default character
 const d = r.deriveCharacter({stats:{str:10,dex:10,con:10,pon:10,snap:10,will:10,reach:10,grasp:10,build:10}, skillPoints:30, size:3});
 const dl = r.deriveCharacter({stats:{str:10,dex:10,con:10,pon:10,snap:10,will:10,reach:10,grasp:10,build:10}, skillPoints:30, size:3, hpLost:100});
-assert.equal(dl.hpMax,332); assert.equal(dl.pain,108, "Max HP loss doesn't lower the Pain Threshold");
+assert.equal(dl.hpMax,332); assert.equal(dl.pain,216, "Max HP loss doesn't lower the Pain Threshold");
 assert.equal(d.effective.str.value,16); assert.equal(d.hpMax,432); assert.equal(d.restHeal,15); assert.equal(d.move,50, "base speed is the Size maximum, whatever the stats");
 console.log("all rules tests passed", d.hpMax, d.pain, d.move);

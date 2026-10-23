@@ -131,7 +131,7 @@
 - **Blender (Light):** Your Light Bladed Weapons can now benefit from Fast+. If Whirlwind is used with this, it costs twice as much energy but all attacks made this way gain the Cleave tag.  
     
   **Tier 4: You gain the following passive:**  
-- **Titan Weapon (Heavy):** Your Two Handed Bladed Weapon attacks can now benefit from Solitary+, but get Disadvantage on their extra attack roll if this is used.  
+- **Titan Weapon (Heavy):** Your Two Handed Bladed Weapon attacks can now benefit from Solitary+, but get Disadvantage on their extra attack roll if this is used. Remise costs twice as much energy to use with a Two Handed heavy Bladed Weapon.  
     
   **Tier 5: You gain the following ability:**  
 - **Perfect Riposte:** **Cost: *Energy equal to double your Scaling Stat min*.** You can use this ability whenever you Riposte with a Bladed Weapon. The Riposte is made with Advantage on its attack roll and is Strengthened. If used with Fast or Solitary, that extra attack also gets this benefit.

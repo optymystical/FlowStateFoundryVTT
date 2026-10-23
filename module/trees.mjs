@@ -218,7 +218,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Titan Weapon (Heavy)",
-      "text": "Your Two Handed Bladed Weapon attacks can now benefit from Solitary+, but get Disadvantage on their extra attack roll if this is used."
+      "text": "Your Two Handed Bladed Weapon attacks can now benefit from Solitary+, but get Disadvantage on their extra attack roll if this is used. Remise costs twice as much energy to use with a Two Handed heavy Bladed Weapon."
      }
     ]
    },

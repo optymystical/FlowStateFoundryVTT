@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.76.0:** Two-handed weapons follow the updated Equipment doc: two hands give the damage one stack of Strengthened instead of doubling it (Knockback, Cleave, Pierce and Bash still double). Titan Weapon (Bladed T4): Remise costs twice the Energy with a two-handed Heavy Bladed weapon.
+
 **0.75.19:** Quickload (Rapid and Assault T1) works on a free follow-up: when an empty gun's Fast or Solitary follow-up comes up, you can give it up to reload instantly at no cost, instead of the follow-up failing with "needs to be reloaded".
 
 **0.75.18:** A Fast or Solitary follow-up made with Pinpoint Accuracy no longer says "— Disadvantage" on its card (Pinpoint had already taken the Disadvantage away; only the label was wrong). Found by the combat sim.

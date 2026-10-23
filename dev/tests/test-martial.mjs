@@ -7,7 +7,7 @@ let p = m.weaponProfile({type:"bladed",weight:"light",material:"hardwood",grade:
 assert.equal(p.formula,"1d8"); assert.equal(p.ap,2); assert.equal(p.durability,90); assert.equal(p.limit,18);
 // Heavy Bladed Iron g3, 30 str: 3d12 + Cleave (min 10), Broad x2 limit, 2H doubles
 p = m.weaponProfile({type:"bladed",weight:"heavy",material:"iron",grade:3,twoHanded:true},{dex:16,str:30});
-assert.equal(p.formula,"(3d12) * 2"); assert.equal(p.display,"(3d12) * 2 (+20 Cleave vs objects)"); assert.equal(p.ap,3); assert.equal(p.limit,12*3*2); assert.equal(p.solitary,2); assert.equal(p.cleave,20);
+assert.equal(p.formula,"3d12"); assert.equal(p.display,"3d12 Strengthened (+20 Cleave vs objects)"); assert.equal(p.stacks,1); assert.equal(p.ap,3); assert.equal(p.limit,12*3*2); assert.equal(p.solitary,2); assert.equal(p.cleave,20);
 // Striker heavy Cleave+ = full stat; knockback weighted heavy 10x
 assert.equal(m.weaponProfile({type:"striker",weight:"heavy",material:"iron",grade:2},{str:30}).formula,"2d12");
 { const kp = m.weaponProfile({type:"weighted",weight:"heavy",material:"iron",grade:2},{str:30}); assert.equal(kp.knockback,200); }

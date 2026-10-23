@@ -44,7 +44,7 @@ export const bladedHeld = (actor, tier, weight = null) =>
 /** Energy costs (Bladed Weapons tree). */
 export const BLADED_COST = {
   whirlwind: item => scalingMin(item),                       // T1, Scaling Stat min (×2 with Blender)
-  remise: item => scalingMin(item),                          // T1, Scaling Stat min
+  remise: item => scalingMin(item) * (item?.system?.twoHanded && item.system.weight === "heavy" ? 2 : 1),   // T1, Scaling Stat min (×2 two-handed Heavy: Titan Weapon)
   closeQuarters: item => Math.floor(scalingMin(item) / 2),   // T2, half Scaling Stat min
   perfectRiposte: item => 2 * scalingMin(item)               // T5, double Scaling Stat min
 };

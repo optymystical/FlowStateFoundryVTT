@@ -90,6 +90,8 @@ await blade.update({ "system.twoHanded": true }); hero.system.ap.value = 6;
 dialog = c => ({ mode: "strike", net: 0, stealth: "none", stacks: 0 });
 seq = [25]; await actions.rollWeaponAttack(hero, blade);
 ok(lastFlags().followups?.list?.some(f => f.kind === "solitary" && f.net === -1 && /Titan/.test(f.label)), "2H heavy gets Solitary follow-up (Titan, Dis)");
+ok(ab.BLADED_COST.remise(blade) === 2 * ab.scalingMin(blade), "Remise costs double Energy with a two-handed Heavy Bladed weapon (Titan Weapon)");
+ok(blade.system.profile.stacks === 1 && !/\* 2/.test(blade.system.profile.formula), "two hands: one Strengthened stack, no doubled dice");
 hero.system.trees["martial-bladed-weapons"] = 3; hero.system.ap.value = 6;
 seq = [25]; await actions.rollWeaponAttack(hero, blade);
 ok(!lastFlags().followups, "without T4: no follow-up for 2H");

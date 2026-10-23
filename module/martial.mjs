@@ -277,8 +277,9 @@ export function weaponProfile(w, stats) {
   const cleave = tags.cleave === 2 ? capped : tags.cleave === 1 ? statMin : 0;
   // Cleave is object-only damage (Equipment: Cleave), so it isn't part of the rolled formula.
   const dieFormula = dice > 0 ? `${dice}d${row.die}` : "0";
-  const formula = twoHanded ? `(${dieFormula}) * 2` : dieFormula;
-  const display = cleave ? `${formula} (+${cleave * (twoHanded ? 2 : 1)} Cleave vs objects)` : formula;
+  // Two hands give the damage a stack of Strengthened (Equipment: One vs Two Hands); the tags below are doubled.
+  const formula = dieFormula;
+  const display = `${formula}${twoHanded ? " Strengthened" : ""}${cleave ? ` (+${cleave * (twoHanded ? 2 : 1)} Cleave vs objects)` : ""}`;
 
   // Broad: Durability/Limit ×2 (Broad+ ×3). Material stats scale with Grade.
   const broad = tags.broad === 2 ? 3 : tags.broad === 1 ? 2 : 1;
@@ -309,7 +310,7 @@ export function weaponProfile(w, stats) {
     display,
     damageType: mods.damageType ?? "physical",
     arcaneVsMagic: !!mods.arcaneVsMagic,
-    stacks: mods.stacks ?? 0,
+    stacks: (mods.stacks ?? 0) + (twoHanded ? 1 : 0),
     critStacks: mods.critStacks ?? 0,
     vsSupernatural: mods.vsSupernatural ?? 0,
     tags,

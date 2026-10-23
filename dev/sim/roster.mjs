@@ -502,3 +502,24 @@ const CHASERS = Object.fromEntries(Object.entries(KITE_ARMOR).map(([k, armor]) =
 PASSES["focus-kite"] = { id: "focus-kite", note: "Armor vs speed: a Light Assault kiter in Light/Medium/Heavy armor against a 2H Heavy Weighted chaser in each.",
   party: PARTY_KITE, monsters: CHASERS, deploy: "kite", arena: { name: "Sim Field", width: 8000, height: 8000 },
   encounters: Object.keys(KITE_ARMOR).flatMap((mine, rotation) => Object.keys(KITE_ARMOR).flatMap(theirs => [1, 2].map(i => ({ id: `${mine}-v-${theirs}-${i}`, group: theirs, rotation })))) };
+
+// Retest (after the review's follow-ups): Knockback weapons with Force damage now counted, Light Reach at Reach T5 beside other Light
+// weapons at their T5, and Blasts with the AI firing Area only when it pays (single targets, an armored cluster, a bare cluster).
+// Two-handed weapons now give a Strengthened stack instead of double damage (v0.76.0). Two fights per cell.
+const RT = (id, type, weight, trees, o = {}) => ({ id, trees, ranged: ["blast"].includes(type), weapons: [W(type, weight, "steel", { primary: true, ...o })] });
+const RETEST = [
+  RT("weighted-light", "weighted", "light", {}), RT("weighted-heavy", "weighted", "heavy", {}), RT("weighted-heavy-2h", "weighted", "heavy", {}, { twoHanded: true }),
+  RT("weighted-light-t5", "weighted", "light", T2({ [WEI]: 5 })), RT("weighted-heavy-t5", "weighted", "heavy", T2({ [WEI]: 5 })), RT("weighted-heavy-2h-t5", "weighted", "heavy", T2({ [WEI]: 5 }), { twoHanded: true }),
+  RT("thrasher-light", "thrasher", "light", {}), RT("thrasher-heavy", "thrasher", "heavy", {}), RT("thrasher-heavy-2h", "thrasher", "heavy", {}, { twoHanded: true }),
+  RT("thrasher-light-t5", "thrasher", "light", T5({ [THR]: 5 })), RT("thrasher-heavy-t5", "thrasher", "heavy", T5({ [THR]: 5 })), RT("thrasher-heavy-2h-t5", "thrasher", "heavy", T5({ [THR]: 5 }), { twoHanded: true }),
+  RT("bladed-heavy-2h", "bladed", "heavy", {}, { twoHanded: true }), RT("striker-heavy-2h", "striker", "heavy", {}, { twoHanded: true }), RT("curved-heavy-2h", "curved", "heavy", {}, { twoHanded: true }),
+  RT("reach-light-t5", "reach", "light", T3({ [RCH]: 5 })), RT("reach-heavy-t5", "reach", "heavy", T3({ [RCH]: 5 })), RT("reach-heavy-2h-t5", "reach", "heavy", T3({ [RCH]: 5 }), { twoHanded: true }),
+  RT("bladed-light-t5", "bladed", "light", T({ [BLA]: 5 })), RT("curved-light-t5", "curved", "light", T4({ [CUR]: 5 })), RT("striker-light-t5", "striker", "light", T2({ [STK]: 5 })),
+  RT("blast-light", "blast", "light", {}), RT("blast-heavy", "blast", "heavy", {}),
+  RT("blast-light-t5", "blast", "light", T3({ [BLS]: 5 })), RT("blast-heavy-t5", "blast", "heavy", T3({ [BLS]: 5 }))
+];
+const RETEST_DUMMIES = { ...BENCH_DUMMIES, bare: { kinds: [{ ...dummy(null, 3).kinds[0] }] } };
+PASSES["focus-retest"] = { id: "focus-retest", note: "Retest: Knockback weapons (Force counted), Light Reach at T5, Blasts with Area only when it pays; 2H = Strengthened.",
+  party: [{ ...PARTY_BENCH[0], loadouts: RETEST.map(b => ({ ...b, armor: null })) }], monsters: RETEST_DUMMIES, deploy: "bench", maxRounds: 4,
+  encounters: RETEST.flatMap((b, rotation) => (b.id.startsWith("blast") ? ["light", "heavy", "cluster", "bare"] : ["light", "heavy"])
+    .flatMap(group => [1, 2].map(i => ({ id: `${b.id}~${group}~${i}`, group, rotation })))) };

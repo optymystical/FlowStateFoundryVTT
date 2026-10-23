@@ -898,6 +898,25 @@ async function stepTo(actor, me, dest) {
   return moved;
 }
 
+/**
+ * Should an Area-tag gun fire as an Area? Only when the average hit, Weakened (halved) on every target in the area, gets more through their
+ * armor in total than one full-strength hit on the main target. (Each target dodges on its own; the hit chance is taken as the same.)
+ */
+async function areaPays(actor, gun, target, foes) {
+  const p = gun.item.system.profile;
+  if (!p.area) return false;
+  const radius = p.area === 2 ? 10 : 5;
+  const others = foes.filter(f => f.id !== target.id && dist(f, target) <= radius);
+  if (!others.length) return false;
+  const avg = Math.floor(p.dice * (p.die + 1) / 2 * (1 + 0.5 * (p.stacks ?? 0)));
+  const through = async (t, n) => { try { return (await Act.damageOutcome(t.actor, n, p.damageType ?? "physical", { pierce: p.pierce ?? 0 })).toHp; } catch (err) { return n; } };
+  const single = await through(target, avg);
+  let spread = 0;
+  for (const t of [target, ...others]) spread += await through(t, Math.floor(avg / 2));
+  F.areaChecks = (F.areaChecks ?? 0) + 1;
+  return spread > single;
+}
+
 /** Reload, grapple, close in, attack, and throw a spare weapon at a foe out of reach. */
 async function actTurn(actor, me) {
   const s = stat(actor);
@@ -943,7 +962,7 @@ async function actTurn(actor, me) {
       const far = foes.filter(f => dist(me, f) <= gun.far + 0.01).sort((a, b) => dist(me, a) - dist(me, b));
       const target = inRange[0] ?? far[0];
       if (target) {
-        const area = !!gun.item.system.profile.area && foes.filter(f => f.id !== target.id && dist(f, target) <= (gun.item.system.profile.area === 2 ? 10 : 5)).length > 0;
+        const area = await areaPays(actor, gun, target, foes);
         const pepper = gun.item.system.profile.pepper ? 1 : 0;
         if (area) s.areaShots = (s.areaShots ?? 0) + 1;
         const wasLoaded = gun.item.system.loaded, apBefore = actor.system.ap.value;

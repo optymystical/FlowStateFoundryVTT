@@ -66,6 +66,27 @@ function kite() {
   return [...out, "", ...errs(rows)].join("\n");
 }
 
+function retest() {
+  const rows = load("retest");
+  const cells = {};
+  for (const r of rows) {
+    const [cfg, group] = r.id.split("~");
+    const lost = Object.entries(r.hp ?? {}).filter(([k]) => k.startsWith("Sim Dummy")).reduce((t, [, v]) => { const [a, b] = v.split("/").map(Number); return t + b - Math.max(0, a); }, 0);
+    const w = Object.values(r.weapons ?? {});
+    const c = ((cells[cfg] ??= {})[group] ??= { lost: 0, ap: 0, force: 0, attacks: 0, hits: 0, free: 0, area: 0, n: 0 });
+    c.lost += lost; c.ap += sum(w, v => v.ap); c.force += sum(w, v => v.force ?? 0); c.attacks += sum(w, v => v.attacks); c.free += sum(w, v => v.followups);
+    c.hits += sum(w, v => v.hits); c.area += r.used?.["opt:area"] ?? 0; c.n++;
+  }
+  const per = c => (c?.ap ? (c.lost / c.ap).toFixed(1) : "–");
+  const out = ["# Retest", "", "HP the dummies lost per AP of paid attacks (Knockback Force included), 4 rounds, 2 fights per cell. Two-handed = one Strengthened stack (v0.76.0).", "",
+    "| Weapon | vs Light | vs Heavy | Force share | Hit | Cluster (armored) | Cluster (bare) | Area shots |", "|---|---|---|---|---|---|---|---|"];
+  for (const [cfg, g] of Object.entries(cells)) {
+    const all = Object.values(g);
+    out.push(`| ${cfg} | ${per(g.light)} | ${per(g.heavy)} | ${pct(sum(all, c => c.force), sum(all, c => c.lost))} | ${pct(sum(all, c => c.hits), sum(all, c => c.attacks + c.free))} | ${per(g.cluster)} | ${per(g.bare)} | ${sum(all, c => c.area)} |`);
+  }
+  return [...out, "", ...errs(rows)].join("\n");
+}
+
 const which = process.argv[2];
-const parts = { bench, shield, kite };
+const parts = { bench, shield, kite, retest };
 console.log((which ? [parts[which]] : Object.values(parts)).map(f => f()).join("\n\n"));

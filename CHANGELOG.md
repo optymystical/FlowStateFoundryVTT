@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.18:** A Fast or Solitary follow-up made with Pinpoint Accuracy no longer says "— Disadvantage" on its card (Pinpoint had already taken the Disadvantage away; only the label was wrong). Found by the combat sim.
+
 **0.75.17:** Ally help no longer offers "Shield Toss to guard" to an ally without the 2 RP it costs (picking it could only fail). Found by the combat sim.
 
 **0.75.16:** Turning a status off can't fail any more when two things remove it at once (a Limber used up by a roll as the turn start clears it): the second removal waits for the first instead of erroring with "ActiveEffect … does not exist". Found by the combat sim.

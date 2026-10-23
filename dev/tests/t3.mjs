@@ -69,6 +69,13 @@ const smg = mkWeapon(hero, "SMG", { weaponType: "rapid", weight: "light", materi
 hero.system.ap.value = 6; seq = [20]; await attack(smg, { mode: "r1", pepper: "1", pinpoint: true });
 o = last("attack").flags.flowstate.attack.opts;
 ok(o.shots === 2 && o.net === 0, "two shots, no Pepper Disadvantage");
+{ // On a follow-up the card mustn't still say "— Disadvantage" once Pinpoint has removed it.
+  hero.system.ap.value = 6; seq = [20];
+  dialog = () => ({ net: 0, stacks: 0, mode: "strike", pinpoint: true }); game.user.targets = new Set([{ actor: orc }]);
+  await actions.rollWeaponAttack(hero, dagger, { net: -1, label: "Fast follow-up: Dagger (Dis)", kind: "fast", source: "pinpoint-test" });
+  const fa = last("attack");
+  ok(fa.flags.flowstate.attack.opts.net === 0 && !/— Disadvantage/.test(fa.content) && /Pinpoint Accuracy/.test(fa.content), "Pinpoint on a follow-up: no Disadvantage, and the card doesn't claim one");
+}
 
 console.log("== Thrust / Twist / Impale (Reach T2/T4/T5)");
 const spear = mkWeapon(hero, "Spear", { weaponType: "reach", weight: "heavy", material: "iron", grade: 3 });

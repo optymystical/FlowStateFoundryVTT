@@ -1053,7 +1053,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (energy && inActiveCombat(actor) && actor.system.energy.value < energy) {
     return ui.notifications.warn(`${actor.name} needs ${energy} Energy for that but has ${actor.system.energy.value}.`);
   }
-  if (followup && !followup.riposte) notes.push(`${followup.label}${followup.net < 0 ? " — Disadvantage" : ""}`);
+  if (followup && !followup.riposte) notes.push(`${followup.label}${followup.net < 0 && !pinpointPepper ? " — Disadvantage" : ""}`);          // Pinpoint took it away
 
   // Range: melee reach (× Farstrike), throw range, or the chosen range band (Area extends to its radius).
   let maxRange, what;

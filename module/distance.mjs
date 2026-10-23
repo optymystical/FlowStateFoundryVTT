@@ -28,6 +28,27 @@ export function centreDistance(a, b, grid = {}) {
   return Math.round((Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y)) / size) * ft * 100) / 100;
 }
 
+/**
+ * Where a token really is: its stored top-left. In Foundry v14 a token's x/y (and its placeable's centre) follow its move animation, which can lag
+ * a second behind (or never finish in a hidden window); `_source` is where the move ends. Anything with only a `center` falls back to it.
+ */
+export function tokenPos(t) {
+  const d = t?.document ?? t;
+  return { x: d?._source?.x ?? d?.x ?? t?.center?.x ?? 0, y: d?._source?.y ?? d?.y ?? t?.center?.y ?? 0 };
+}
+
+/** A token's centre at its stored position (Foundry's own centre for that spot when there is one, so hexes are right). */
+export function tokenCentre(t) {
+  const d = t?.document ?? t;
+  const x = d?._source?.x ?? d?.x, y = d?._source?.y ?? d?.y;
+  if (x === undefined || y === undefined) return t?.center ?? { x: 0, y: 0 };
+  if (typeof d.getCenterPoint === "function") {
+    try { const c = d.getCenterPoint({ x, y }); if (Number.isFinite(c?.x)) return { x: c.x, y: c.y }; } catch (err) { /* below */ }
+  }
+  const size = globalThis.canvas?.grid?.size ?? 100;
+  return { x: x + ((d.width ?? 1) * size) / 2, y: y + ((d.height ?? 1) * size) / 2 };
+}
+
 /** The scene grid as `distance.mjs` wants it (square, hex or gridless; hexes are measured by Foundry's own path measure). */
 export function gridFor(grid = globalThis.canvas?.grid) {
   const kind = grid?.isGridless ? "gridless" : grid?.isHexagonal ? "hex" : "square";

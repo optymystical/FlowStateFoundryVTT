@@ -6,6 +6,7 @@
  *    then confirms; with no scene (or no canvas) the caller falls back to the current targets.
  */
 import { notCreature } from "./kinds.mjs";
+import { tokenPos, tokenCentre } from "./distance.mjs";
 import { esc, DialogV2 } from "./html.mjs";
 
 export const AREA_SHAPES = {
@@ -47,7 +48,7 @@ export function tokensInArea(tpl, tokens, grid = { size: 100, distance: 5 }) {
   return tokens.filter(t => {
     const d = t.document ?? t;
     const w = (d.width ?? 1) * grid.size, h = (d.height ?? 1) * grid.size;
-    const x = d.x ?? 0, y = d.y ?? 0;
+    const { x, y } = tokenPos(t);
     const pts = [[0, 0], [w / 2, 0], [w, 0], [0, h / 2], [w / 2, h / 2], [w, h / 2], [0, h], [w / 2, h], [w, h]];
     return pts.some(([ox, oy]) => pointInArea(tpl, x + ox, y + oy, grid));
   });
@@ -82,8 +83,9 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
   // Start on the caster, pointing at the first target if there is one.
   const src = globalThis.canvas.tokens?.controlled?.find(t => t.actor?.uuid === actor.uuid) ?? actor.getActiveTokens?.()[0];
   // Lob / Explode: the area starts where the ranged part lands (the `origin` token), not on the caster.
-  const x = (origin ?? src)?.center?.x ?? 0, y = (origin ?? src)?.center?.y ?? 0;
-  const direction = aim && src && !origin ? (Math.atan2(aim.center.y - y, aim.center.x - x) * 180) / Math.PI : src && origin ? (Math.atan2(origin.center.y - src.center.y, origin.center.x - src.center.x) * 180) / Math.PI : 0;
+  const start = origin ?? src ? tokenCentre(origin ?? src) : { x: 0, y: 0 }, x = start.x, y = start.y;
+  const aimC = aim ? tokenCentre(aim) : null, srcC = src ? tokenCentre(src) : null, originC = origin ? tokenCentre(origin) : null;
+  const direction = aim && src && !origin ? (Math.atan2(aimC.y - y, aimC.x - x) * 180) / Math.PI : src && origin ? (Math.atan2(originC.y - srcC.y, originC.x - srcC.x) * 180) / Math.PI : 0;
   const data = { ...areaTemplate(pick, { x, y, direction, scale }), fillColor: game.user.color?.css ?? "#a050ff", borderColor: "#a050ff",
     flags: { flowstate: { areaOf: actor.uuid, casterX: x, casterY: y, ...flags } } };
   const [doc] = await scene.createEmbeddedDocuments("MeasuredTemplate", [data]);
@@ -230,7 +232,7 @@ export function barriersBetween(attackerToken, targetToken) {
   const scene = globalThis.canvas?.scene, grid = globalThis.canvas?.grid;
   if (!scene || !grid || !attackerToken || !targetToken) return [];
   const g = { size: grid.size, distance: grid.distance };
-  const a = attackerToken.center, t = targetToken.center;
+  const a = tokenCentre(attackerToken), t = tokenCentre(targetToken);
   const out = [];
   for (const d of scene.templates ?? []) {
     const f = d.flags?.flowstate;

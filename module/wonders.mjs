@@ -7,7 +7,7 @@
 import {
   post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, damageOutcome, knockbackRow, setGrapple, gridFor, feedExtra
 } from "./actions.mjs";
-import { centreDistance } from "./distance.mjs";
+import { centreDistance, tokenCentre } from "./distance.mjs";
 import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
 import { askFor, runOnOwner, setActRunner } from "./ask.mjs";
 import { resolveForce, applyStacks } from "./rules.mjs";
@@ -726,7 +726,7 @@ async function runChargeAct(x, caster, target) {
   }
   return false;
 }
-const mentalDistance = (a, b) => (globalThis.canvas?.grid ? centreDistance(a.center, b.center, gridFor(canvas.grid)) : 0);
+const mentalDistance = (a, b) => (globalThis.canvas?.grid ? centreDistance(tokenCentre(a), tokenCentre(b), gridFor(canvas.grid)) : 0);
 
 /** Preordained (Order T4): when you finish a rest, roll one of your dodge dice: that is your Preordained Number. */
 export async function afterRest(actor) {

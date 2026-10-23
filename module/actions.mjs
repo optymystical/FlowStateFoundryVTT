@@ -9,7 +9,7 @@ import * as areas from "./areas.mjs";
 import { planAction, emptyLedger } from "./movement-rules.mjs";
 import { mayHelp } from "./sides.mjs";
 import { isDeclined } from "./reactions.mjs";
-import { borderDistance, gridFor } from "./distance.mjs";
+import { borderDistance, gridFor, tokenPos, tokenCentre } from "./distance.mjs";
 import { pickSpot, candidateSpots } from "./placement.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, DialogV2 } from "./html.mjs";
@@ -441,7 +441,7 @@ export function tokenDistance(a, b) {
   const grid = gridFor(canvas?.grid);
   const box = t => {
     const d = t.document ?? t;
-    const x = d.x ?? (t.center?.x ?? 0), y = d.y ?? (t.center?.y ?? 0);
+    const { x, y } = tokenPos(t);                                     // where it is, not where its move animation has got to
     return { x, y, w: (d.width ?? 0) * grid.size, h: (d.height ?? 0) * grid.size };
   };
   return borderDistance(box(a), box(b), grid);
@@ -1186,8 +1186,8 @@ const offSquare = () => !!(globalThis.canvas?.grid?.isGridless || globalThis.can
 
 /** A token's box on the canvas, { x, y, w, h } in pixels. */
 function rectOf(tok) {
-  const d = tok.document ?? tok, gs = canvas.grid.size;
-  return { x: d.x, y: d.y, w: (d.width ?? 1) * gs, h: (d.height ?? 1) * gs };
+  const d = tok.document ?? tok, gs = canvas.grid.size, p = tokenPos(tok);
+  return { x: p.x, y: p.y, w: (d.width ?? 1) * gs, h: (d.height ?? 1) * gs };
 }
 
 /**
@@ -1219,7 +1219,7 @@ export function besideTokenPosition(tok) {
 function landingPosition(near, from) {
   if (offSquare()) {
     // Hexes and gridless scenes: a spot touching the token on the side facing `from`, snapped the way Foundry snaps a token.
-    const pref = from ? { x: from.center.x - near.center.x, y: from.center.y - near.center.y } : { x: 1, y: 0 };
+    const pref = from ? { x: tokenCentre(from).x - tokenCentre(near).x, y: tokenCentre(from).y - tokenCentre(near).y } : { x: 1, y: 0 };
     const [first] = candidateSpots(rectOf(near), { w: canvas.grid.size, h: canvas.grid.size }, pref);
     return snapTopLeft({ width: 1, height: 1 }, first);
   }
@@ -1228,8 +1228,8 @@ function landingPosition(near, from) {
   const w = (d.width ?? 1) * gs, h = (d.height ?? 1) * gs;
   let dx = 1, dy = 0;
   if (from) {
-    dx = Math.sign(from.center.x - near.center.x);
-    dy = Math.sign(from.center.y - near.center.y);
+    dx = Math.sign(tokenCentre(from).x - tokenCentre(near).x);
+    dy = Math.sign(tokenCentre(from).y - tokenCentre(near).y);
     if (!dx && !dy) dx = 1;
   }
   return {
@@ -2331,7 +2331,7 @@ export async function redirect(defenseMessage) {
 function footprint(token, at = null) {
   const gs = canvas.grid.size;
   const d = token.document;
-  const pos = at ?? { x: d.x, y: d.y };
+  const pos = at ?? tokenPos(token);
   return [Math.round(pos.x / gs), Math.round(pos.y / gs), Math.max(1, Math.round(d.width ?? 1)), Math.max(1, Math.round(d.height ?? 1))];
 }
 const overlaps = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
@@ -2353,7 +2353,7 @@ function adjacentSpot(anchor, mover, attackerTok, reach) {
     const g = canvas.grid, box = rectOf(mover);
     const others = (canvas.tokens?.placeables ?? []).filter(t => t.id !== mover.id && t.id !== anchor.id && !notCreature(t.actor)).map(rectOf);
     return pickSpot({ anchor: rectOf(anchor), mover: { w: box.w, h: box.h }, others, from: box, snap: p => snapTopLeft(mover.document, p),
-      inReach: c => attackerTok ? g.measurePath([attackerTok.center, c]).distance <= reach + (g.distance ?? 5) * 0.5 : true });
+      inReach: c => attackerTok ? g.measurePath([tokenCentre(attackerTok), c]).distance <= reach + (g.distance ?? 5) * 0.5 : true });
   }
   const gs = canvas.grid.size;
   const A = footprint(anchor);
@@ -2367,7 +2367,7 @@ function adjacentSpot(anchor, mover, attackerTok, reach) {
       const cand = [i, j, mw, mh];
       if (!touches(cand, A) || others.some(o => overlaps(cand, o))) continue;
       const center = { x: (i + mw / 2) * gs, y: (j + mh / 2) * gs };
-      const inReach = attackerTok ? canvas.grid.measurePath([attackerTok.center, center]).distance <= reach + (canvas.grid.distance ?? 5) * 0.5 : true;
+      const inReach = attackerTok ? canvas.grid.measurePath([tokenCentre(attackerTok), center]).distance <= reach + (canvas.grid.distance ?? 5) * 0.5 : true;
       const pull = Math.hypot(i - mx, j - my);
       const score = (inReach ? 0 : 1000) + pull;
       if (!best || score < best.score) best = { score, x: i * gs, y: j * gs };
@@ -2949,7 +2949,7 @@ export async function checkPalisade(token, dest) {
     const weapons = ab.reachHeld(a, 1);
     if (!weapons.length) continue;
     const reach = (a.system.derived?.size?.melee ?? 5) * Math.max(...weapons.map(i => i.system.profile.farstrike ?? 1));
-    const before = canvas.grid.measurePath([t.center, oldC]).distance, after = canvas.grid.measurePath([t.center, newC]).distance;
+    const before = canvas.grid.measurePath([tokenCentre(t), oldC]).distance, after = canvas.grid.measurePath([tokenCentre(t), newC]).distance;
     if (before <= reach || after > reach) continue;
     if (isDeclined(a, "palisade")) continue;                         // switched off in the Action List (Reactions)
     const wall = ab.reachHeld(a, 3).length > 0;
@@ -2976,11 +2976,12 @@ function palisadeSpot(tokenDoc, from, wielder, weapon) {
   if (!wTok) return { x: from.x, y: from.y };
   const reach = (wielder.system.derived?.size?.melee ?? 5) * (weapon?.system?.profile?.farstrike ?? 1);
   const start = { x: from.x + w / 2, y: from.y + h / 2 };
-  const dx = wTok.center.x - start.x, dy = wTok.center.y - start.y, len = Math.hypot(dx, dy) || 1;
+  const wc = tokenCentre(wTok);
+  const dx = wc.x - start.x, dy = wc.y - start.y, len = Math.hypot(dx, dy) || 1;
   const step = { x: (dx / len) * gs, y: (dy / len) * gs };
   // Walk from the start toward the wielder, one grid space at a time, keeping the last snapped spot still outside reach.
   const snap = c => snapTopLeft(tokenDoc, { x: c.x - w / 2, y: c.y - h / 2 });
-  const outside = tl => canvas.grid.measurePath([wTok.center, { x: tl.x + w / 2, y: tl.y + h / 2 }]).distance > reach;
+  const outside = tl => canvas.grid.measurePath([wc, { x: tl.x + w / 2, y: tl.y + h / 2 }]).distance > reach;
   let best = { x: from.x, y: from.y };
   for (let i = 1; i < 200; i++) {
     const tl = snap({ x: start.x + step.x * i, y: start.y + step.y * i });
@@ -3568,7 +3569,7 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
     // A miss: it flies past the target, the full distance (unless a wall stops it).
     let flight = null;
     if (from && to) {
-      const dx = to.center.x - from.center.x, dy = to.center.y - from.center.y, len = Math.hypot(dx, dy) || 1;
+      const dx = tokenCentre(to).x - tokenCentre(from).x, dy = tokenCentre(to).y - tokenCentre(from).y, len = Math.hypot(dx, dy) || 1;
       flight = await flyThrown(thrown, { x: dx / len, y: dy / len }, feet);
     }
     return `<div class="fs-notes">${esc(thrown.name)} misses ${esc(target.name)}${released}, flying past (through anyone else in the way).</div>${await flightHTML(thrown, flight, feet)}`;
@@ -3576,8 +3577,8 @@ async function resolveGrappleThrow(thrower, thrown, target, hit, force, { releas
   // An Emplace barrier between the thrown creature and its target is struck first: it holds (the creature stops short) or breaks
   // (the creature carries on, with the distance the barrier used up taken off).
   let reach = feet, barrierHTML = "";
-  if (from && to && !slam && globalThis.canvas?.grid && areas.emplaceBarriers().some(b => areas.barrierBlocks(b.tpl, b.caster, from.center, to.center, { size: canvas.grid.size, distance: canvas.grid.distance }, b.front))) {
-    const dx = to.center.x - from.center.x, dy = to.center.y - from.center.y, len = Math.hypot(dx, dy) || 1;
+  if (from && to && !slam && globalThis.canvas?.grid && areas.emplaceBarriers().some(b => areas.barrierBlocks(b.tpl, b.caster, tokenCentre(from), tokenCentre(to), { size: canvas.grid.size, distance: canvas.grid.distance }, b.front))) {
+    const dx = tokenCentre(to).x - tokenCentre(from).x, dy = tokenCentre(to).y - tokenCentre(from).y, len = Math.hypot(dx, dy) || 1;
     const flight = await flyThrown(thrown, { x: dx / len, y: dy / len }, feet);
     barrierHTML = await flightHTML(thrown, flight, feet);
     const bars = (flight.events ?? []).filter(e => e.kind === "barrier");
@@ -4047,7 +4048,7 @@ export async function knockback(message) {
     let dir;
     if (opts.dir === "away") {
       const a = attackerToken(attacker), t = target.getActiveTokens?.()[0];
-      const dx = t && a ? t.center.x - a.center.x : 1, dy = t && a ? t.center.y - a.center.y : 0, len = Math.hypot(dx, dy) || 1;
+      const dx = t && a ? tokenCentre(t).x - tokenCentre(a).x : 1, dy = t && a ? tokenCentre(t).y - tokenCentre(a).y : 0, len = Math.hypot(dx, dy) || 1;
       dir = { x: dx / len, y: dy / len };
     } else {
       const d = DIRECTIONS[opts.dir] ?? DIRECTIONS.n, len = Math.hypot(d.x, d.y);
@@ -4085,7 +4086,7 @@ async function seaKnockback(message, info, attacker, target) {
   let dir;
   if (anchor && tok) {
     const sign = opts.dir === "away" ? 1 : -1;
-    const dx = (tok.center.x - anchor.center.x) * sign, dy = (tok.center.y - anchor.center.y) * sign, len = Math.hypot(dx, dy) || 1;
+    const dx = (tokenCentre(tok).x - tokenCentre(anchor).x) * sign, dy = (tokenCentre(tok).y - tokenCentre(anchor).y) * sign, len = Math.hypot(dx, dy) || 1;
     dir = { x: dx / len, y: dy / len };
     if (sign < 0 && globalThis.canvas?.grid) feet = Math.min(feet, Math.floor(tokenDistance(tok, anchor)));          // a pull stops beside them
   } else {
@@ -4131,7 +4132,7 @@ async function moveTokenTopLeft(token, pos, { feet = null, source = null } = {})
   const d = canvas.dimensions;
   x = Math.min(Math.max(x, d.sceneX ?? 0), (d.sceneX ?? 0) + (d.sceneWidth ?? d.width) - (doc.width ?? 1) * gs);
   y = Math.min(Math.max(y, d.sceneY ?? 0), (d.sceneY ?? 0) + (d.sceneHeight ?? d.height) - (doc.height ?? 1) * gs);
-  const moved = feet ?? Math.round((Math.hypot(x - (doc.x ?? 0), y - (doc.y ?? 0)) / gs) * (canvas.grid.distance ?? 5));
+  const moved = feet ?? Math.round((Math.hypot(x - tokenPos(doc).x, y - tokenPos(doc).y) / gs) * (canvas.grid.distance ?? 5));
   if (doc.isOwner) await doc.update({ x, y }, { flowstateThrow: true });
   else await requestGM("moveToken", { uuid: doc.uuid, x, y });
   await noteForced(token.actor, moved, source);
@@ -4147,7 +4148,7 @@ async function flyThrown(thrown, dir, feet, { source = null } = {}) {
   const tok = thrown.getActiveTokens?.()[0];
   const dims = globalThis.canvas?.dimensions;
   if (!tok || !dims || !feet) { await noteForced(thrown, feet, source); return { moved: false, traveled: feet, wall: false, damage: 0 }; }
-  const start = tok.center;
+  const start = tokenCentre(tok);
   // Emplace barriers are objects: a creature thrown through one damages it and itself (3 × the untraveled feet each, capped by what the
   // other has left), is stopped by it if it holds, and carries on with the leftover distance if it breaks.
   const plan = areas.planFlight({ start, dir, feet, barriers: areas.emplaceBarriers(), grid: { size: dims.size, distance: dims.distance },

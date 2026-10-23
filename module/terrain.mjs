@@ -13,6 +13,7 @@
  */
 import { requestGM } from "./actions.mjs";
 import { notCreature } from "./kinds.mjs";
+import { tokenCentre } from "./distance.mjs";
 
 const TERRAIN = {
   rough: { label: "Rough terrain", level: 1, color: "#b8863b", icon: "fa-solid fa-shoe-prints", tip: "+1 AP to move" },
@@ -122,7 +123,7 @@ export async function placeSpellTerrain({ actor, kind, body, target = null, ritu
   if (!at) return "";
   const gridFt = scene.grid?.distance ?? 5, size = scene.grid?.size ?? 100;
   const side = squareSideFt(body, gridFt);
-  const data = terrainRegionData(kind, { cx: at.center?.x ?? at.x, cy: at.center?.y ?? at.y, sidePx: (side / gridFt) * size, name: `${label ?? TERRAIN[kind].label} (${actor.name})`,
+  const data = terrainRegionData(kind, { cx: tokenCentre(at).x, cy: tokenCentre(at).y, sidePx: (side / gridFt) * size, name: `${label ?? TERRAIN[kind].label} (${actor.name})`,
     flags: { terrainOf: actor.uuid, ritualOf: ritualOf ?? null } });
   await requestGM("createTerrain", { sceneId: scene.id, data });
   return `${TERRAIN[kind].label}: a ${side} ft square${target ? ` around ${target.name}` : ` around ${actor.name}`} (drag and resize it with the Regions tools)${ritualOf ? ", until the Ritual ends" : ", until the start of your next turn"}.`;

@@ -14,6 +14,7 @@ import { secret } from "./afflictions.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, DialogV2, formValuesNumeric as formValues, select, field } from "./html.mjs";
+import { tokenCentre } from "./distance.mjs";
 
 const roll = formula => new Roll(formula).evaluate();
 const data = e => e.flags?.flowstate?.spellEffect ?? {};
@@ -562,14 +563,14 @@ export async function checkEntry(token, changes) {
     const tpl = { t: t.t, x: t.x, y: t.y, direction: t.direction, distance: t.distance, angle: t.angle, width: t.width };
     if (areas.tokensInArea(tpl, [after], grid).length && !areas.tokensInArea(tpl, [before], grid).length) await antimagicDamage(actor, t.flags.flowstate.power ?? 1, (await fromUuid(t.flags.flowstate.casterUuid))?.name ?? "a caster");
   }
-  const centre = p => ({ x: p.document.x + p.document.width * grid.size / 2, y: p.document.y + p.document.height * grid.size / 2 });
+  const centre = p => tokenCentre(p);
   for (const a of allActors()) for (const e of spellEffects(a, "aura")) {
     const d = data(e);
     if (d.expiresAt != null && globalThis.game?.time?.worldTime >= d.expiresAt) continue;
     if ((d.affected ?? []).includes(actor.uuid) || actor.uuid === a.uuid) continue;
     const src = attackerToken(a);
     if (!src) continue;
-    const dist = p => canvas.grid.measurePath([src.center, centre(p)]).distance;
+    const dist = p => canvas.grid.measurePath([tokenCentre(src), centre(p)]).distance;
     if (dist(after) <= 50 && dist(before) > 50) {
       await secret(actor, a, { title: `${esc(a.name)} — Aura`, body: `<div class="fs-result">${esc(actor.name)} enters the aura: make the attack roll against them.</div>`, flags: { flowstate: { arcana: { acts: [{ act: "aura", target: actor.uuid, caster: a.uuid }] } } },
         });

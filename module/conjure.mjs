@@ -12,6 +12,7 @@ import { removeEnergy } from "./elemental.mjs";
 import { applyStacks, DAMAGE_TYPES } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, DialogV2, formValuesNumeric as formValues, select, field } from "./html.mjs";
+import { tokenPos, tokenCentre } from "./distance.mjs";
 
 const roll = formula => new Roll(formula).evaluate();
 const cap = s => s[0].toUpperCase() + s.slice(1);
@@ -49,11 +50,11 @@ function pickTile(actor, { range = 100, squares = 1, title = "Pick a tile" } = {
   const gs = canvas.grid.size, n = Math.max(1, Math.ceil(squares));
   const problem = pt => {
     const cx = pt.x + gs * n / 2, cy = pt.y + gs * n / 2;
-    const d = canvas.grid.measurePath([src.center, { x: cx, y: cy }]).distance - ((src.document.width ?? 1) + n) / 2 * canvas.grid.distance;
+    const d = canvas.grid.measurePath([tokenCentre(src), { x: cx, y: cy }]).distance - ((src.document.width ?? 1) + n) / 2 * canvas.grid.distance;
     if (d > range) return `That tile is ${Math.round(d)} ft away (range ${range} ft).`;
     for (const t of canvas.tokens.placeables) {
-      const w = (t.document.width ?? 1) * gs, h = (t.document.height ?? 1) * gs;
-      if (t.document.x < pt.x + n * gs && pt.x < t.document.x + w && t.document.y < pt.y + n * gs && pt.y < t.document.y + h) return "That tile isn't empty.";
+      const w = (t.document.width ?? 1) * gs, h = (t.document.height ?? 1) * gs, p = tokenPos(t);
+      if (p.x < pt.x + n * gs && pt.x < p.x + w && p.y < pt.y + n * gs && pt.y < p.y + h) return "That tile isn't empty.";
     }
     return "";
   };

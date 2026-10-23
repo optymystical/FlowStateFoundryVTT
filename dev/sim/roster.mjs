@@ -265,3 +265,65 @@ export const PARTY_T2 = [
 ];
 PASSES["martial-t2"] = { id: "martial-t2", note: "Martial Theory T2 trees (Strength, Striker, Defender, Weighted, Assault, Heavy Armor) up to T5.",
   party: PARTY_T2, monsters: MONSTERS_T1, encounters: encountersFor(MONSTERS_T1, 2) };
+
+/* -------------------------------------------- */
+/*  Pass 4: the Martial Theory T3 trees          */
+/* -------------------------------------------- */
+
+// Martial Theory T3 (6 SP) unlocks Dexterity, Reach, Blast, Circular and Light Armor. Each character takes one tree to T5 (15), one to T3 (6) and one
+// to T2 (3): all 30 SP. Folded in from pass 3: Distracting Fire (the Marksman keeps Assault T3, and the Raider Bomber now fires an Area Blast at the
+// party), Ho! (the Breaker keeps Strength T4 and throws a Heavy Weighted, an Average throw) and Wide Arc (the Warden keeps Weighted T3 and strafes).
+const T3 = o => ({ "martial-theory": 3, ...o });
+const DEX = "martial-dexterity-methods", RCH = "martial-reach-weapons", BLS = "martial-blast-weapons", CIR = "martial-circular-weapons", LGT = "martial-light-armor";
+
+export const PARTY_T3 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank: a two-handed Heavy Reach (Palisade, Thrust, Wall, Twist, Impale) in Light armor (Shift, Dash, Leap, Evade, Breathing Room).",
+    stats: { con: 45, str: 30, will: 15 },
+    loadouts: [
+      { trees: T3({ [LGT]: 5, [RCH]: 3, [CIR]: 2 }), armor: A("light", "chitin"), weapons: [W("reach", "heavy", "steel", { primary: true, twoHanded: true })] },
+      { trees: T3({ [RCH]: 5, [LGT]: 3, [DEX]: 2 }), armor: A("light", "chitin"), weapons: [W("reach", "heavy", "steel", { primary: true, twoHanded: true })] }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Duelist", role: "melee-dex", note: "Dexterity melee: a Light Circular (Pierce Through, Let it Rip!, What Goes Around) and a Light Reach, with Shank and Pinpoint Accuracy.",
+    stats: { dex: 45, con: 30, will: 15 },
+    loadouts: [
+      { trees: T3({ [DEX]: 5, [CIR]: 3, [RCH]: 2 }), armor: A("light", "hardLeather"), weapons: [W("circular", "light", "steel", { primary: true }), W("reach", "light", "steel")] },
+      { trees: T3({ [CIR]: 5, [DEX]: 3, [RCH]: 2 }), armor: A("light", "hardLeather"), weapons: [W("circular", "light", "steel", { primary: true }), W("reach", "light", "steel")] }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Breaker", role: "melee-str", note: "Strength melee: a Heavy Circular (Cut Through, Let it Rip!) with a Heavy Weighted to throw with Ho!.",
+    stats: { str: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: T3({ [CIR]: 4, "martial-strength-methods": 4 }), armor: A("light", "softLeather"), weapons: [W("circular", "heavy", "steel", { primary: true }), W("weighted", "heavy", "iron")] },
+      { trees: T3({ [CIR]: 5, [LGT]: 3, [RCH]: 2 }), armor: A("light", "softLeather"), weapons: [W("circular", "heavy", "steel", { primary: true }), W("reach", "heavy", "steel")] }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Marksman", role: "ranged", note: "Ranged: a Light Blast (Point Blank, Cone Shot, Rip and Tear, Punch, Execute) and a Light Assault (Distracting Fire against Area attacks).",
+    stats: { dex: 45, con: 25, str: 10, will: 10 },
+    loadouts: [
+      { trees: T3({ [BLS]: 5, "martial-assault-weapons": 3, [LGT]: 2 }), armor: A("light", "softLeather"), weapons: [W("blast", "light", "steel", { primary: true }), W("assault", "light", "steel")] },
+      { trees: T3({ [BLS]: 5, [DEX]: 3, [LGT]: 2 }), armor: A("light", "chitin"), weapons: [W("blast", "light", "steel", { primary: true }), W("assault", "light", "steel")] }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support: a Heavy Reach to hold the line (Palisade, Wall) and a Heavy Weighted that strafes (Wide Arc).",
+    stats: { str: 35, con: 35, dex: 20 },
+    loadouts: [
+      { trees: T3({ [RCH]: 5, "martial-weighted-weapons": 3, [LGT]: 2 }), armor: A("light", "hardLeather"), weapons: [W("reach", "heavy", "steel", { primary: true }), W("weighted", "heavy", "iron")] },
+      { trees: T3({ [LGT]: 5, [RCH]: 3, "martial-weighted-weapons": 2 }), armor: A("light", "hardLeather"), weapons: [W("reach", "heavy", "steel", { primary: true }), W("weighted", "heavy", "iron")] }
+    ]
+  }
+];
+
+/** The Raider Bomber fires an Area Blast at the party (for Distracting Fire). */
+export const MONSTERS_T3 = {
+  ...MONSTERS_T1,
+  raiders: { ...MONSTERS_T1.raiders, note: `${MONSTERS_T1.raiders.note} The Bomber fires a Heavy Blast (Area+).`,
+    kinds: MONSTERS_T1.raiders.kinds.map(k => (k.id === "raider-bomber" ? { ...k, weapons: [W("blast", "heavy", "steel", { primary: true })] } : k)) }
+};
+PASSES["martial-t3"] = { id: "martial-t3", note: "Martial Theory T3 trees (Dexterity, Reach, Blast, Circular, Light Armor) up to T5, with Distracting Fire, Ho! and Wide Arc.",
+  party: PARTY_T3, monsters: MONSTERS_T3, encounters: encountersFor(MONSTERS_T3, 2) };

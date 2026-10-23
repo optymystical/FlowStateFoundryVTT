@@ -212,6 +212,7 @@ function setTargets(...docs) {
 function weaponPlan(actor, item) {
   const p = item.system.profile;
   if (!p?.valid || item.system.broken || !item.system.held) return null;
+  if (Act.grappledBy(actor).some(v => v.getFlag?.("flowstate", "grappleWeapon") === item.uuid)) return null;          // holding someone (Impale): it can't attack
   if (p.ranged) return { item, ap: p.ap, ranged: true, range: p.range, far: p.range * 2, loaded: item.system.loaded, reloadRP: p.reloadRP };
   return { item, ap: p.ap, ranged: false, range: reachOf(actor) * (p.farstrike || 1), throwType: p.throwType };
 }
@@ -252,7 +253,8 @@ async function approach(actor, me, target, range) {
   // Trudge (Heavy Armor T2): this move ignores the armor's speed penalty.
   const armorW = actor.items.find(i => i.type === "armor" && i.system.equipped)?.system?.weight;
   if (["heavy", "titanic"].includes(armorW) && tier(actor, "martial-heavy-armor") >= 2 && energyOf(actor) >= 10) await runRow(actor, /^Trudge/);
-  const max = MR.maxMove(Act.moveLedger(actor), { ...Act.moveParams(actor), ap: actor.system.ap.value });
+  // A free move (Dash) goes up to the creature's speed whatever its AP.
+  const max = actor.getFlag("flowstate", "freeMove") ? (actor.system.movement?.speed ?? 30) : MR.maxMove(Act.moveLedger(actor), { ...Act.moveParams(actor), ap: actor.system.ap.value });
   let dest = spot;
   if (feetTo(me, spot.x, spot.y) > max + 0.01) {
     const g = me.parent.grid.size, n = Math.ceil(Math.max(Math.abs(spot.x - from.x), Math.abs(spot.y - from.y)) / g);
@@ -287,7 +289,8 @@ async function attack(actor, me, plan, target, extra = {}) {
   setTargets(target);
   const before = new Set(game.messages.keys());
   const opts = extra.followup ? {} : treeOptions(actor, plan.item, { me, target, pepper: extra.pepper });
-  if (extra.mode !== "throw") delete opts.ho;                    // Ho! is for throws only
+  if (extra.mode !== "throw") { delete opts.ho; delete opts.wga; }          // Ho! and What Goes Around are for throws only
+  if (!extra.area) delete opts.cone; else stat(actor).cones = (stat(actor).cones ?? 0) + 1;
   SIM.fill = () => ({ mode: extra.mode ?? (plan.ranged ? (extra.far ? "r2" : "r1") : "strike"), pepper: extra.pepper ?? 0, area: !!extra.area,
     grapple: !!extra.grapple, weight: extra.weight ?? undefined, ...opts, ...(extra.followup ? followupOptions(actor, plan.item, target) : {}), ...(extra.extraFill ?? {}) });
   SIM.acting = actor.name;
@@ -344,6 +347,21 @@ function treeOptions(actor, item, { me = null, target = null, pepper = 0 } = {})
     const moved = (s.turnMoved ?? 0) > 0;
     if (!moved && sim(actor).role === "ranged") { o.takeAim = alt("aim", [["adv", "str"], ["str", "adv"]])[0]; o.coolBreath = true; }
     else if (take(min)) o.takeAim = alt("aim", [["adv", "str"], ["str", "adv"]])[0];
+  }
+  // Martial T3 trees.
+  if (type === "weighted" && (s.turnMoved ?? 0) > 0) o.strafe = true;                                   // Wide Arc: it moved this turn, so it's strafing
+  if (weight === "light" && take(2 * dexMin)) { const picks = alt("shank", [["adv", "dodge", "pierce"], ["pierce", "cleave", "adv"], ["dodge", "dodge", "adv"]])[0]; o.shank1 = picks[0]; o.shank2 = picks[1]; o.shank3 = picks[2]; }
+  if (weight === "light" && take(Math.floor(dexMin / 4))) o.pinpoint = true;
+  if (type === "reach" && take(Math.floor(min / 2))) o.thrust = true;
+  if (type === "circular") {
+    if (take(Math.floor(min / 2))) o.through = alt("thr", [["adv", "str"], ["pierce", "cleave"]])[0];
+    if (take(Math.floor(min / 2))) o.letItRip = true;
+    if (take(min)) o.wga = true;                                                                          // What Goes Around (throws only)
+  }
+  if (type === "blast") {
+    if (take(min)) o.punch = true;
+    if (prone && take(min)) o.execute = true;
+    if ((s.cones ?? 0) % 2 === 1 && take(min)) o.cone = true;                                             // Cone Shot on every other Area shot
   }
   if (weight === "heavy" && type !== "unarmed" && take(2 * strMin)) o.heave = true;
   if (type !== "defender" && actor.items.some(i => i.type === "weapon" && i.system.held && i.system.weaponType === "defender") && take(min)) o.swordBoard = true;
@@ -427,6 +445,7 @@ async function answerDefense() {
       else if (has("distract") && !handled.has(`${key}|df`) && energy >= 10) { choice = "distract"; handled.add(`${key}|df`); }
       else if (has("closeQuarters") && !handled.has(`${key}|cq`) && energy >= 10) { choice = "closeQuarters"; handled.add(`${key}|cq`); }
       else if (has("shift") && !handled.has(`${key}|shift`) && energy >= 10) { choice = "shift"; handled.add(`${key}|shift`); }
+      else if (has("shift") && !handled.has(`${key}|shift2`) && energy >= 20 && tier(t, "martial-light-armor") >= 4) { choice = "shift"; handled.add(`${key}|shift2`); }
       else handled.add(`${key}|dodge`);
       SIM.fill = () => ({ mode: "dis" });
       note(t, `defend:${choice}`);
@@ -517,6 +536,11 @@ async function answerCard() {
       [".fs-brawl-extra[data-kind='flow']", "flowLikeWater", (who) => energyOf(who) >= 15, () => Act.brawlingExtra(msg, "flow")],
       [".fs-mark-shot", "markShot", (who) => rpOf(who) >= 2 + emptyRapidRP(who), async () => { await reloadRapid(fromUuidSync(msg.getFlag("flowstate", "markCard")?.marker ?? "")); return Act.markShot(msg); }],
       [".fs-redirect", "redirect", (who) => energyOf(who) >= 10, null],
+      [".fs-palisade[data-wall='1']", "wall", (who) => energyOf(who) >= 10, () => Act.palisade(msg, true)],
+      [".fs-palisade:not([data-wall='1'])", "palisade", (who) => rpOf(who) >= 3, () => Act.palisade(msg, false)],
+      [".fs-twist", "twist", (who) => energyOf(who) >= 15, () => Act.reachFinisher(msg, "twist")],
+      // Impale is offered on every Reach T5 hit (a Twist may still push it over); only take it when the hit beat half the Pain Threshold.
+      [".fs-impale", "impale", (who) => energyOf(who) >= 30 && (Number(msg.getFlag("flowstate", "damage")?.toHp) || 0) > Math.floor((fromUuidSync(msg.getFlag("flowstate", "damage")?.target ?? "")?.system?.hp?.pain ?? 0) / 2), () => Act.reachFinisher(msg, "impale")],
       [".fs-dip-move", "dipMoveOffered", () => false, null]
     ];
     for (const [sel, what, ok, run] of simple) {
@@ -668,6 +692,11 @@ async function stances(actor, me) {
     const cost = effStat(actor, s.fist === "Dip" ? "dex" : "str");
     if (energyOf(actor) >= cost + 20) await runRow(actor, new RegExp(`^${s.fist}`));
   }
+  if (tier(actor, "martial-light-armor") >= 3 && !s.leapt && energyOf(actor) >= 20 && actor.system.ap.value >= 3) { s.leapt = true; await runRow(actor, /^Leap/); }
+  if (tier(actor, "martial-dexterity-methods") >= 4 && !s.spotted && energyOf(actor) >= 20) {
+    const prey = foesOf(me.parent, me).sort((a, b) => dist(me, a) - dist(me, b))[0];
+    if (prey) { s.spotted = true; setTargets(prey); await runRow(actor, /^Spot Weakness/); }
+  }
   if (tier(actor, "martial-rapid-weapons") >= 3) {
     const gun = actor.items.find(i => i.type === "weapon" && i.system.held && i.system.weaponType === "rapid");
     const prey = gun ? foesOf(me.parent, me).filter(f => dist(me, f) <= (gun.system.profile?.range ?? 0)).sort((a, b) => dist(me, a) - dist(me, b))[0] : null;
@@ -754,6 +783,13 @@ async function actTurn(actor, me) {
     }
     const melee = ready.filter(w => !w.ranged && rolls(w)).sort(order)[0]
       ?? (unarmed && ab.freeFists(actor) >= 1 ? { item: unarmed, ranged: false, range: reachOf(actor), ap: 2 } : null);          // not while that fist holds a grapple
+    if (!melee && Act.grappledBy(actor).some(v => v.getFlag?.("flowstate", "grappleWeapon"))) {
+      SIM.acting = actor.name;
+      note(actor, "releaseImpaled");
+      await Act.releaseGrapple(actor);
+      await quiet(200, 2000);
+      continue;
+    }
     if (!melee) {
       if (gun && !gun.loaded) return;                     // out of RP to reload: wait for the next turn
       if (gun && foes.every(f => dist(me, f) > gun.far)) { if (!(await approach(actor, me, nearest, gun.range))) return; continue; }
@@ -779,6 +815,7 @@ async function actTurn(actor, me) {
         s.threw = true;
         if (await attack(actor, me, spare, target, { mode: "throw" })) continue;
       }
+      if (!reachable && tier(actor, "martial-light-armor") >= 2 && rpOf(actor) >= 1 && !actor.getFlag("flowstate", "freeMove") && energyOf(actor) >= 10) await runRow(actor, /^Dash/);
       const moved = await approach(actor, me, target, melee.range);
       if (!moved) return;
       continue;

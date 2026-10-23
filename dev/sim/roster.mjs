@@ -192,3 +192,21 @@ export const PASSES = {
   "martial-baseline": { id: "martial-baseline", note: "Baseline Martial: no trees.", party: PARTY, monsters: MONSTERS, encounters: ENCOUNTERS },
   "martial-t1": { id: "martial-t1", note: "Martial Theory T1 trees (Brawling, Bladed, Balanced, Swift, Rapid, Medium Armor) up to T5.", party: PARTY_T1, monsters: MONSTERS_T1, encounters: encountersFor(MONSTERS_T1, 2) }
 };
+
+/* -------------------------------------------- */
+/*  Pass 2b: filling pass 2's gaps               */
+/* -------------------------------------------- */
+
+// Abilities pass 2 never saw: Blade Flurry and Delta (two Light Swift weapons), Twin Fang / Dragon Lash / Redirect (a Light brawler that keeps its
+// Energy: no Dip, Shatter or Brace stances), Perfect Riposte (a Bladed parrier), and plain Quickload (the AI cycles Quickload, Pepper, Speedloader).
+export const PARTY_T1_GAPS = [
+  { ...PARTY_T1[0], loadouts: [PARTY_T1[0].loadouts[0]] },
+  { ...PARTY_T1[1], note: "Two Light Swift weapons: Fast Swift sets for Blade Flurry and Delta.",
+    loadouts: [{ trees: T({ [SWI]: 5, [BLA]: 4, [MED]: 2 }), armor: A("medium", "hardLeather"), weapons: [W("swift", "light", "steel", { primary: true }), W("swift", "light", "steel")] }] },
+  { ...PARTY_T1[2], note: "Parries with a two-handed Heavy Bladed weapon (Perfect Riposte); no Brace, so the Energy goes there.", loadouts: [{ ...PARTY_T1[2].loadouts[0], stances: false }] },
+  { ...PARTY_T1[3], loadouts: [PARTY_T1[3].loadouts[0]], quickload: "cycle" },
+  { ...PARTY_T1[4], note: "A Light brawler that spends its Energy on Twin Fang, Dragon Lash/Kick Out and Redirect instead of stances.",
+    stats: { dex: 40, str: 25, con: 25 }, loadouts: [{ ...PARTY_T1[4].loadouts[0], stances: false, grapple: false }] }
+];
+PASSES["martial-t1-gaps"] = { id: "martial-t1-gaps", note: "Pass 2's gaps: Blade Flurry, Delta, Twin Fang, Dragon Lash, Redirect, Perfect Riposte, plain Quickload.",
+  party: PARTY_T1_GAPS, monsters: { swarm: MONSTERS_T1.swarm, raiders: MONSTERS_T1.raiders }, encounters: [{ id: "swarm-r1", group: "swarm", rotation: 0 }, { id: "raiders-r1", group: "raiders", rotation: 0 }] };

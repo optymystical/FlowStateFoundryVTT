@@ -71,7 +71,11 @@ SIM.choose = (title, buttons) => {
   if (!/is empty$/.test(title)) return null;
   const by = a => buttons.find(b => b.action === a);
   const who = game.actors.getName(SIM.acting ?? "") ?? null;
-  const pick = (by("speed") && (who?.system?.energy?.value ?? 0) > 30 ? by("speed") : null) ?? by("pepper") ?? by("quick");
+  let pick = (by("speed") && (who?.system?.energy?.value ?? 0) > 30 ? by("speed") : null) ?? by("pepper") ?? by("quick");
+  if (who?.getFlag("flowstate", "sim")?.quickload === "cycle") {
+    SIM._ql = ((SIM._ql ?? -1) + 1) % 3;
+    pick = by(["quick", "pepper", "speed"][SIM._ql]) ?? by("quick");
+  }
   if (pick && F) { F.used = F.used ?? {}; bump(F.used, `quickload:${pick.action}`); }
   return pick;
 };
@@ -145,7 +149,7 @@ async function makeActor(spec, loadout, { party, folder }) {
     name: spec.name, type: party ? "character" : "npc", folder: folder.id,
     system: { stats: R.statBlock(spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {} },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
-    flags: { flowstate: { sim: { id: spec.id, role: spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple } } }
+    flags: { flowstate: { sim: { id: spec.id, role: spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null } } }
   });
   const natural = !party && spec.natural !== false;
   const slots = loadout.weapons.filter(w => w.type !== "unarmed");
@@ -309,8 +313,10 @@ function treeOptions(actor, item, { me = null, target = null, pepper = 0 } = {})
   if (crowd >= 2 && take(min)) o.spinCycle = true;
   if (take(Math.floor(min / 2))) o.quickStrike = true;
   if (take(2 * min)) { o.slice = ["both", "pierce"]; o.slam = ["both", "knockback"]; } else if (take(min)) { o.slice = "pierce"; o.slam = "knockback"; }
-  if (take(dexMin)) { o.twinFang = true; o.twinFangPick = "adv"; }
-  if (prone ? take(2 * strMin) : take(strMin)) o.heavyTech = prone ? ["dragon", "kick"] : ["kick", "dragon"];
+  if (take(dexMin)) { o.twinFang = ["adv", "str"]; o.twinFangPick = "adv"; }          // Twin Fang is a choice: Advantage (or Strengthened)
+  const s = F && actor ? stat(actor) : {};
+  const lash = prone || s.lastTech === "kick";
+  if (lash ? take(2 * strMin) : take(strMin)) { o.heavyTech = lash ? ["dragon", "kick"] : ["kick", "dragon"]; s.lastTech = lash ? "dragon" : "kick"; }
   if (pepper && take(min)) o.spinDown = true;
   return o;
 }
@@ -567,11 +573,12 @@ async function stances(actor, me) {
     const guard = actor.items.find(i => i.type === "weapon" && i.system.held && ["balanced", "bladed"].includes(i.system.weaponType) && (i.system.profile?.dice ?? 0) > 0);
     if (guard && energyOf(actor) >= parryCost(guard) + 20) await runRow(actor, new RegExp(`^Parry: ${guard.name.replace(/[()]/g, ".")}`));
   }
-  if (tier(actor, "martial-medium-armor") >= 2) {
+  const stancesOn = sim(actor).stances !== false;
+  if (stancesOn && tier(actor, "martial-medium-armor") >= 2) {
     const free = actor.getFlag("flowstate", "versatility") === "brace";
     if (free || energyOf(actor) >= effStat(actor, "con") + 30) await runRow(actor, /^Brace/);
   }
-  if (tier(actor, "martial-brawling-methods") >= 2) {
+  if (stancesOn && tier(actor, "martial-brawling-methods") >= 2) {
     s.fist = s.fist === "Shatter" ? "Dip" : "Shatter";
     const cost = effStat(actor, s.fist === "Dip" ? "dex" : "str");
     if (energyOf(actor) >= cost + 20) await runRow(actor, new RegExp(`^${s.fist}`));

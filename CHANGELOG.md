@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.79.3:** A hidden world setting for the Pain Threshold divisor (the rule stays half of max HP), so the combat sim can compare values on the same code.
+
 **0.79.2:** An attack dialog that planned a follow-up now remembers its picks too (the follow-up's fields broke the save).
 
 **0.79.1:** Auto-Dodge and Auto-Limber run on exactly one client (the character's first connected player, else the active GM). With two GMs connected, both used to answer, so a GM's creature dodged twice and paid for Shift twice.

@@ -315,6 +315,7 @@ async function attack(actor, me, plan, target, extra = {}) {
   const msg = await waitFor(() => game.messages.contents.find(m => !before.has(m.id) && m.getFlag("flowstate", "attack")?.attacker === actor.uuid), 3000);
   if (!msg) return null;
   stat(actor).attacks++;
+  (F.firstAttack ??= {})[sim(actor).party ? "party" : "monsters"] ??= SIM.combat?.round ?? null;
   F.uses = F.uses ?? {};
   F.uses[plan.item.id] = (F.uses[plan.item.id] ?? 0) + 1;
   await settle();
@@ -1140,8 +1141,15 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     await combat.rollAll();
     await combat.startCombat();
     SIM.combat = combat;
-    let lastKey = null;
+    let lastKey = null, lastRound = 0;
+    const snap = () => {
+      const side = k => tokensOf(scene).filter(t => sideOf(t) === k);
+      const hp = k => side(k).reduce((n, t) => n + Math.max(0, t.actor.system.hp.value), 0);
+      return { round: combat.round, partyHp: hp("party"), monsterHp: hp("monsters"), partyDown: side("party").filter(t => down(t.actor)).length, monstersDown: side("monsters").filter(t => down(t.actor)).length };
+    };
+    F.roundLog = [];
     for (let guard = 0; guard < 600; guard++) {
+      if (combat.round !== lastRound) { lastRound = combat.round; F.roundLog.push(snap()); }
       if (over(scene) || combat.round > maxRounds) break;
       const c = combat.combatant;
       if (!c) { await combat.nextTurn(); continue; }
@@ -1161,6 +1169,7 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     }
     // Results.
     await idle(800);
+    F.roundLog.push({ ...snap(), end: true });
     SIM.status = `${id}: collecting`;
     const msgs = game.messages.contents.filter(m => !firstIds.has(m.id));
     const result = collect(scene, combat, msgs);
@@ -1262,7 +1271,8 @@ function collect(scene, combat, msgs) {
     armor: absorbed,
     creatures: Object.values(per),
     ai: Object.values(F.actors),
-    trees: F.trees, gear: F.gear, monsterGear: F.monsterGear, gearState, kiteLog: F.kiteLog,
+    trees: F.trees, gear: F.gear, monsterGear: F.monsterGear, gearState, kiteLog: F.kiteLog, roundLog: F.roundLog, firstAttack: F.firstAttack ?? {},
+    painDivisor: game.settings.get("flowstate", "painDivisor"),
     log: { dialogs: { ...log.dialogs }, notes: [...log.notes], errors: [...log.errors] }
   };
 }

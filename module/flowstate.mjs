@@ -350,6 +350,9 @@ Hooks.once("init", () => {
     hint: "Let the New Character wizard make starting weapons with more than one weapon type (usable as such with Weapon Master, Martial Theory Tier 5).",
     scope: "world", config: true, type: Boolean, default: false
   });
+    // Pain Threshold divisor (hidden; the rule is 2 = half of max HP). For testing other values in the combat sim.
+    game.settings.register("flowstate", "painDivisor", { scope: "world", config: false, type: Number, default: 2,
+      onChange: () => { for (const a of game.actors) a.reset?.(); } });
     game.settings.register("flowstate", "enforceRange", {
     name: "Enforce attack range",
     hint: "Block attacks when a targeted token is beyond melee reach, throw range, or the chosen range band.",

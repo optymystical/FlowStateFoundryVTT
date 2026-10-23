@@ -62,7 +62,7 @@ export const dodgeDie = sp => Math.max(1, Math.floor(sp / 2));
 export const maxHP = (con, will, build, size) => (con + will + build) * (clampSize(size) * 3);
 
 /** Ch8 Pain Threshold: 1/4 of max HP, rounded down. */
-export const painThreshold = max => Math.floor(max / 2);          // half of max HP (Rules: Pain Threshold)
+export const painThreshold = (max, divisor = 2) => Math.floor(max / (Number(divisor) > 0 ? Number(divisor) : 2));          // half of max HP (Rules: Pain Threshold); the divisor is a hidden setting for testing
 
 /** Ch8 HP regen per 8 hr rest: Con, Will, and Build minimums combined. */
 export const restHeal = (con, will, build) => statMin(con) + statMin(will) + statMin(build);
@@ -194,7 +194,7 @@ export function movementCost({ prone = false, crouch = false, stealth = false, t
 }
 
 /** Everything derivable from base stats, skill points, and size. */
-export function deriveCharacter({ stats, skillPoints, size, hpLost = 0, omen = false }) {
+export function deriveCharacter({ stats, skillPoints, size, hpLost = 0, omen = false, painDivisor = 2 }) {
   // An Omen's (Esoteric Arts) skill points only set its dice: no stat bonus from them, and its Energy is 5 × its skill points.
   const bonus = omen ? 0 : statBonus(skillPoints);
   const effective = {};
@@ -212,7 +212,7 @@ export function deriveCharacter({ stats, skillPoints, size, hpLost = 0, omen = f
     effective,
     totalStats: total,
     hpMax,
-    pain: painThreshold(hpFull),                       // Max HP loss doesn't lower the Pain Threshold
+    pain: painThreshold(hpFull, painDivisor),          // Max HP loss doesn't lower the Pain Threshold
     restHeal: restHeal(e("con"), e("will"), e("build")),
     energyMax: omen ? 5 * (Number(skillPoints) || 0) : maxEnergy(skillPoints),
     energyRecover: energyRecover(omen ? 5 * (Number(skillPoints) || 0) : maxEnergy(skillPoints)),

@@ -52,6 +52,11 @@ function applyCatalog(sys, type) {
 }
 
 /** Shared data model for characters and NPCs (Flow State has no class split). */
+/** The Pain Threshold divisor (hidden world setting, for testing; the rule is 2, half of max HP). */
+function painDivisor() {
+  try { return Number(game.settings.get("flowstate", "painDivisor")) || 2; } catch { return 2; }
+}
+
 export class FlowStateActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     const stats = {};
@@ -106,7 +111,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       skillPoints: this.skillPoints,
       size: this.size,
       hpLost: this.hp.lost,
-      omen: !!this.parent?.flags?.flowstate?.omen          // an Omen (Esoteric Arts): its skill points only set its dice
+      omen: !!this.parent?.flags?.flowstate?.omen,         // an Omen (Esoteric Arts): its skill points only set its dice
+      painDivisor: painDivisor()
     });
     // Summons and Animations (Tier 4 Magic) have their own health, Energy, dice, speed and physical-attack stacks, set when they're made.
     const sm = this.parent?.flags?.flowstate?.summon;

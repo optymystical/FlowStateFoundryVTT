@@ -553,3 +553,9 @@ for (const id of ["martial-t1", "martial-t1-gaps", "martial-t2", "martial-t3", "
 // Pain Threshold at half of max HP (v0.79.0): the T1 and T5 parties against the Raiders and the Ogre, to compare rounds with the ¼ runs.
 PASSES["pain-t1"] = { ...PASSES["martial-t1"], id: "pain-t1", note: "Pain Threshold ½ (v0.79.0), T1 trees." };
 PASSES["pain-t5"] = { ...PASSES["martial-t5"], id: "pain-t5", note: "Pain Threshold ½ (v0.79.0), T5 trees." };
+
+// Pain Threshold A/B on the same code (the hidden painDivisor setting: 4 = a quarter, 2 = half): the T1 party against every group, both
+// rotations, two fights each. The sim sets the divisor before each pass.
+const PAIN_AB = Object.keys(MONSTERS_T1).flatMap(group => [0, 1].flatMap(rotation => [1, 2].map(i => ({ id: `${group}-r${rotation + 1}-${i}`, group, rotation }))));
+PASSES["pain-ab-quarter"] = { ...PASSES["martial-t1"], id: "pain-ab-quarter", painDivisor: 4, encounters: PAIN_AB, note: "Pain Threshold ¼ (A/B)." };
+PASSES["pain-ab-half"] = { ...PASSES["martial-t1"], id: "pain-ab-half", painDivisor: 2, encounters: PAIN_AB, note: "Pain Threshold ½ (A/B)." };

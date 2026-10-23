@@ -1,0 +1,371 @@
+<title>Martial Balance Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column of findings, with wide data blocks (charts, tables) that scroll inside themselves. */
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --ink: #14181f; --ink-2: #4a5361; --ink-3: #7a8494;
+  --rule: #dde1e7; --accent: #2b5b84; --accent-soft: #e3ecf5;
+  --party: #2a78d6; --mon: #eb6834; --bar: #2b5b84; --bar-dim: #b7c4d2;
+  --look: #b3261e; --look-bg: #fbe9e7; --watch: #8a5a00; --watch-bg: #fbf0d9; --fine: #1e6b36; --fine-bg: #e3f2e7;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151b; --panel: #181d25; --ink: #e9edf2; --ink-2: #b3bcc8; --ink-3: #848f9e;
+  --rule: #2a313c; --accent: #8fb6dc; --accent-soft: #1f2d3c;
+  --party: #3987e5; --mon: #d95926; --bar: #6f9cc8; --bar-dim: #3a4656;
+  --look: #f28b82; --look-bg: #3a1f1d; --watch: #e8b55a; --watch-bg: #33290f; --fine: #7fcf96; --fine-bg: #15301f;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #11151b; --panel: #181d25; --ink: #e9edf2; --ink-2: #b3bcc8; --ink-3: #848f9e;
+  --rule: #2a313c; --accent: #8fb6dc; --accent-soft: #1f2d3c;
+  --party: #3987e5; --mon: #d95926; --bar: #6f9cc8; --bar-dim: #3a4656;
+  --look: #f28b82; --look-bg: #3a1f1d; --watch: #e8b55a; --watch-bg: #33290f; --fine: #7fcf96; --fine-bg: #15301f;
+  color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.6 var(--body); }
+.wrap { max-width: 60rem; margin: 0 auto; padding-block: 2.5rem 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 3rem; }
+.prose { max-width: 42rem; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2.1rem, 6vw, 3.2rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.01em; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+p { margin: 0; }
+section { display: grid; gap: 1rem; min-width: 0; }
+.eyebrow { font: 600 0.75rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); }
+.lede { font-size: 1.2rem; color: var(--ink-2); max-width: 42rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font: 400 0.85rem/1.4 var(--mono); color: var(--ink-3); }
+.meta b { color: var(--ink); font-weight: 600; }
+header { display: grid; gap: 1rem; border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; }
+.muted { color: var(--ink-2); }
+.small { font-size: 0.9rem; }
+code, .num { font-family: var(--mono); font-size: 0.88em; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* findings */
+.findings { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.finding { display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.25rem 1.25rem; padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+.finding > div { min-width: 0; display: grid; gap: 0.35rem; }
+.finding h3 { font-size: 1.08rem; }
+.chip { align-self: start; justify-self: start; font: 600 0.72rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.35rem 0.55rem; border-radius: 4px; white-space: nowrap; }
+.chip::before { content: ""; display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 50%; margin-right: 0.4rem; background: currentColor; vertical-align: 0.02rem; }
+.chip.look { color: var(--look); background: var(--look-bg); }
+.chip.watch { color: var(--watch); background: var(--watch-bg); }
+.chip.fine { color: var(--fine); background: var(--fine-bg); }
+@media (max-width: 560px) { .finding { grid-template-columns: 1fr; } }
+
+/* data blocks */
+.block { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 1.25rem; display: grid; gap: 0.9rem; min-width: 0; }
+.block-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.5rem 1rem; }
+.legend { display: flex; gap: 1rem; font-size: 0.85rem; color: var(--ink-2); }
+.legend span::before { content: ""; display: inline-block; width: 0.7rem; height: 0.7rem; border-radius: 2px; margin-right: 0.35rem; vertical-align: -0.05rem; background: var(--c); }
+.scroll { overflow-x: auto; min-width: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 600 0.72rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); white-space: nowrap; }
+td.n, th.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.lead td { font-weight: 600; }
+td .tag { font: 400 0.75rem/1 var(--mono); color: var(--ink-3); }
+
+/* bar charts (built by script) */
+.hbars { display: grid; grid-template-columns: minmax(8rem, 11rem) 1fr; gap: 4px 0.75rem; align-items: center; font-size: 0.88rem; }
+.hbars .lab { color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hbars .track { position: relative; height: 1.15rem; }
+.hbars .bar { position: absolute; left: 0; top: 0.15rem; height: 0.85rem; background: var(--bar); border-radius: 0 4px 4px 0; min-width: 2px; }
+.hbars .bar.dim { background: var(--bar-dim); }
+.hbars .val { position: absolute; top: 0; font: 400 0.78rem/1.15rem var(--mono); color: var(--ink-2); padding-left: 0.4rem; white-space: nowrap; }
+.hbars .row-hit { display: contents; }
+.hbars .track:hover .bar, .hbars .track:focus-visible .bar { filter: brightness(1.15); }
+.axis-note { font: 400 0.78rem/1.4 var(--mono); color: var(--ink-3); }
+.pairs { display: grid; grid-template-columns: repeat(7, minmax(5.2rem, 1fr)); gap: 0.75rem; align-items: end; min-width: 38rem; }
+.pair { display: grid; gap: 0.4rem; justify-items: center; }
+.pair .cols { display: flex; gap: 2px; align-items: flex-end; height: 11rem; }
+.pair .col { width: 1.3rem; border-radius: 4px 4px 0 0; position: relative; outline: none; }
+.pair .col.p { background: var(--party); } .pair .col.m { background: var(--mon); }
+.pair .col:hover, .pair .col:focus-visible { filter: brightness(1.12); }
+.pair .cap { font: 600 0.74rem/1.25 var(--mono); text-align: center; color: var(--ink); }
+.pair .sub { font: 400 0.72rem/1.25 var(--mono); text-align: center; color: var(--ink-3); }
+.tip { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--bg); font: 400 0.8rem/1.35 var(--mono);
+  padding: 0.45rem 0.6rem; border-radius: 4px; max-width: 18rem; box-shadow: 0 4px 14px rgb(0 0 0 / 0.18); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1.25rem; }
+.two > * { min-width: 0; }
+ul.plain { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.4rem; }
+.callout { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 0.9rem 1rem; border-radius: 0 6px 6px 0; display: grid; gap: 0.4rem; }
+footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.88rem; color: var(--ink-3); }
+@media (prefers-reduced-motion: no-preference) { .bar, .col { transition: filter 0.12s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Flow State · Combat sim · Martial</span>
+    <h1>Martial balance review</h1>
+    <p class="lede">What 42 simulated fights say about weapons, armor, the Martial trees and the monsters, before the Magic passes begin.</p>
+    <div class="meta">
+      <span><b>42</b> fights · <b>354</b> rounds</span>
+      <span><b>7</b> runs (6 passes + a gap pass)</span>
+      <span>System <b>v0.75.18</b></span>
+      <span><b>23 Oct 2026</b></span>
+    </div>
+  </header>
+
+  <section class="prose">
+    <span class="eyebrow">How the sim ran</span>
+    <p>Every fight ran live in the Test World through the real actions, chat cards and Action List, with an AI choosing attacks, options and defenses. The party is five characters on equal footing: 90 stat points and 30 Skill Points each, Common and Uncommon materials, Grade matching the stat. <b>Bulwark</b> is the tank, <b>Warden</b> the support, with <b>Duelist</b>, <b>Breaker</b> and <b>Marksman</b>. Each pass gave them the trees one Martial Theory tier unlocks (T1 through T5), taken up to T5.</p>
+    <p class="muted">They fought three groups: a <b>Swarm</b> of ten goblins (20 SP, 1/5), five <b>Raiders</b> with real gear (25 SP, 1/5) and an <b>Ogre Tyrant</b> boss (Size 4, 30 SP, 1/10). Monsters had no skill trees in any pass.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Summary</span>
+    <h2>Nine findings</h2>
+    <div class="findings">
+      <div class="finding"><span class="chip look">Look at</span><div>
+        <h3>Two-handed Heavy weapons lead by a wide margin</h3>
+        <p>Pooled over every pass, the four two-handed Heavy weapons are the top four in damage per AP: Heavy Bladed 2H <span class="num">41.5</span>, Heavy Swift 2H <span class="num">19.0</span>, Heavy Weighted 2H <span class="num">16.9</span>, Heavy Curved 2H <span class="num">14.2</span>. The party median is about <span class="num">8</span>. The Breaker carried one of these in every pass and out-damaged the rest of the party in five of seven runs. Heavy Bladed 2H's figure leans on free follow-ups (66 free next to 63 paid attacks), so it is the most inflated of the four.</p>
+      </div></div>
+      <div class="finding"><span class="chip look">Look at</span><div>
+        <h3>Armor tiers jump at Heavy</h3>
+        <p>Absorbed per hit: Light <span class="num">4–13</span>, Medium <span class="num">10–17</span>, Heavy <span class="num">22–37</span>, Titanic Iron <span class="num">42</span>. The Medium-to-Heavy step is the biggest, and it is enough to make a Heavy wearer close to immune to Light weapons that hit for 10–20. A Bulwark in Heavy Steel took no damage at all in some fights. Light Soft Leather (60 Durability) broke mid-fight more than once.</p>
+      </div></div>
+      <div class="finding"><span class="chip look">Look at</span><div>
+        <h3>Free blocking for allies shut the monsters out in the T2 pass</h3>
+        <p>With Defender and Heavy Armor trees, the party blocked for allies 159 times, plus Shield Toss, Perfect Block and Brace/Harden. The monsters dealt <span class="num">62</span> damage across six fights, against roughly <span class="num">2,000–5,000</span> in other passes. Free, unlimited ally Blocks are a settled ruling; this is the size of its effect, in case it matters to you.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Light Reach, Light Blast and Light Weighted trail</h3>
+        <p>For the party, Light Reach managed <span class="num">3.8</span> per AP, Light Blast <span class="num">4.1</span> and Light Weighted <span class="num">4.2</span>. Light Reach hit 27% of the time: much of its volume is free follow-ups that miss, and its 9–18 damage per hit is mostly soaked. Heavy Defender (<span class="num">4.8</span>) is low too, but it is a shield, so that is expected.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Rapid wins on volume; Assault's Solitary follow-up runs out of RP</h3>
+        <p>Light Rapid hits only 44% (Pepper adds a Disadvantage), yet it scored the most kills of any party weapon (<span class="num">26</span>) at <span class="num">8.6</span> per AP. Heavy Assault's last follow-up could not fire for lack of RP <span class="num">40</span> times. Three reloads at 2 RP each use up a whole turn's 6 RP.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Grappling locks a lone boss down completely</h3>
+        <p>In the T5 pass, the party grappled the Ogre and held it with Lock Down and Disrupt. It spent its turns on Break Free and dealt <span class="num">0</span> damage in both boss fights. A single large creature has no answer to it. Size limits help (weapon grapples take your size or smaller), but Unarmed grapples with Big Hands reach Size 4.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Defensive trees make fights longer, not safer</h3>
+        <p>The T3 pass (Dexterity, Light Armor) used Shift 322 times and had the longest fights: 11.3 rounds on average, and one Raider fight ran 19 rounds with four of five party members down. Both sides' armor out-soaked the damage, and the fights turned into attrition.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Some abilities almost never fire</h3>
+        <p>Riposte fired 2–3 times a pass with the T1 trees: it needs a fully stopped hit and spare RP. With Defender it fired 31 times. Omnislash fired once (it needs 4 Momentum on one target), Impale 2 times in 40 offers, Snipe Hunt 9 times. Part of this is the AI's own gating, so treat these as hints rather than proof. Limber is the opposite: 366 uses in one pass, and 255 more times it was wanted but unaffordable. It soaks up Energy.</p>
+      </div></div>
+      <div class="finding"><span class="chip fine">Fine</span><div>
+        <h3>Monsters without trees are no test for a party with them</h3>
+        <p>The party won 39 of 42 fights. All three non-wins came in the baseline pass, before anyone had trees: one Raider loss and two boss fights that hit the 20-round cap. Once the party had trees, the goblins dealt 1–2 damage per AP into armor, and only the Raiders did real harm. This is the expected result, but it means passes 2–6 measure the party's trees against each other, not against a fair threat.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Outcomes</span>
+    <h2>Damage dealt by each side, per pass</h2>
+    <div class="block">
+      <div class="block-head">
+        <h3>Damage to HP, summed over each pass's fights</h3>
+        <div class="legend"><span style="--c: var(--party)">Party</span><span style="--c: var(--mon)">Monsters</span></div>
+      </div>
+      <div class="scroll"><div class="pairs" id="pairs"></div></div>
+      <p class="axis-note">Bar heights share one scale (0 to 15,299). The baseline ran 9 fights and the gap pass 3; the others ran 6.</p>
+    </div>
+    <div class="block">
+      <div class="scroll"><table>
+        <thead><tr><th>Pass</th><th>Trees</th><th class="n">Fights</th><th class="n">Party won</th><th class="n">Avg rounds</th><th class="n">Party downs</th><th class="n">Party : monster damage</th></tr></thead>
+        <tbody id="passRows"></tbody>
+      </table></div>
+    </div>
+    <div class="block">
+      <div class="block-head"><h3>Party HP left at the end, by group</h3><span class="small muted">Average share of the party's total HP</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Pass</th><th class="n">Swarm</th><th class="n">Raiders</th><th class="n">Boss</th></tr></thead>
+        <tbody>
+          <tr><td>Baseline</td><td class="n">98%</td><td class="n">55%</td><td class="n">42%</td></tr>
+          <tr><td>T1</td><td class="n">86%</td><td class="n">72%</td><td class="n">83%</td></tr>
+          <tr><td>T1 gaps</td><td class="n">90%</td><td class="n">81%</td><td class="n">–</td></tr>
+          <tr><td>T2</td><td class="n">99%</td><td class="n">100%</td><td class="n">93%</td></tr>
+          <tr><td>T3</td><td class="n">83%</td><td class="n">53%</td><td class="n">74%</td></tr>
+          <tr><td>T4</td><td class="n">92%</td><td class="n">80%</td><td class="n">80%</td></tr>
+          <tr><td>T5</td><td class="n">83%</td><td class="n">80%</td><td class="n">100%</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted">The Raiders are the one group that keeps hurting the party. The Swarm became harmless once trees came in, even after it was buffed to ten goblins at 20 SP.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Weapons</span>
+    <h2>Damage per AP, party weapons, all passes pooled</h2>
+    <div class="block">
+      <div class="block-head"><h3>Damage to HP per AP spent on attacks</h3><span class="small muted">Weapons with 30+ paid attacks · dark bars are two-handed</span></div>
+      <div class="hbars" id="wbars"></div>
+      <p class="axis-note">Scale 0 to 41.5. Free follow-ups add damage but no AP, which lifts weapons that chain (Bladed, Swift, Unarmed Light, Balanced).</p>
+    </div>
+    <div class="block">
+      <div class="block-head"><h3>Every weapon, pooled</h3><span class="small muted">Hit % counts follow-ups; crit % is a share of hits</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Weapon</th><th>Side</th><th class="n">Attacks</th><th class="n">Free</th><th class="n">Hit</th><th class="n">Crit</th><th class="n">Dmg to HP</th><th class="n">Per AP</th><th class="n">Kills</th></tr></thead>
+        <tbody id="wRows"></tbody>
+      </table></div>
+    </div>
+    <div class="two">
+      <div class="callout"><h3>What the numbers say</h3>
+        <ul class="plain small">
+          <li>Two hands on a Heavy weapon roughly doubles output over the one-handed version: Heavy Weighted <span class="num">7.5</span> vs <span class="num">16.9</span> two-handed, Heavy Curved <span class="num">7.0</span> vs <span class="num">14.2</span>.</li>
+          <li>Light Curved (<span class="num">13.7</span>) is the best one-handed weapon, mostly from Momentum stacks in the T4 pass.</li>
+          <li>Unarmed holds up well with its trees: Light <span class="num">13.3</span>, Heavy <span class="num">10.1</span>, with a 79% hit rate on Heavy.</li>
+        </ul>
+      </div>
+      <div class="callout"><h3>Read with care</h3>
+        <ul class="plain small">
+          <li>A weapon on a stat under 10 rolls no dice (settled ruling), so the AI skipped those weapons.</li>
+          <li>Monster weapon numbers come from tree-less monsters hitting armored characters, so they are low across the board.</li>
+          <li>Users differ in stats and trees between passes; a weapon's pooled number mixes those builds.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Armor</span>
+    <h2>Absorbed per hit, all passes pooled</h2>
+    <div class="block">
+      <div class="block-head"><h3>Damage soaked per hit that reached the armor</h3><span class="small muted">Armor with 20+ hits</span></div>
+      <div class="hbars" id="abars"></div>
+      <p class="axis-note">Scale 0 to 41.9. Limits set these numbers more than material does: Heavy Iron and Heavy Steel sit close together, and well above any Medium armor.</p>
+    </div>
+    <div class="prose small muted">
+      <p>Light armor's value is speed and stealth, not soak: at about 6 per hit it barely changes a fight, and its low Durability means it can break before the fight ends. Medium sits in a narrow band (10–17). If the gap to Heavy is intended, the sim confirms it is large; if Medium is meant to be a real middle ground, it currently isn't.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Trees</span>
+    <h2>Each pass's trees in play</h2>
+    <div class="block">
+      <div class="scroll"><table>
+        <thead><tr><th>Pass</th><th>Trees</th><th>Most used</th><th>What stood out</th></tr></thead>
+        <tbody>
+          <tr><td>T1</td><td>Brawling, Bladed, Balanced, Swift, Rapid, Medium Armor</td><td>Limber 366, Quickload 120, Quick Strike 88, Cut Back 58</td><td>Heavy Bladed 2H hit 41 per AP. Riposte fired twice. Limber eats the Energy budget.</td></tr>
+          <tr><td>T1 gaps</td><td>Two Swift weapons, light Brawler, Bladed parrier, Quickload</td><td>Blade Flurry 17, Combo 10, Redirect 8</td><td>Unarmed Light reached 24 per AP with the Brawler's chains. Redirect was unaffordable 26 times.</td></tr>
+          <tr><td>T2</td><td>Strength, Striker, Defender, Weighted, Assault, Heavy Armor</td><td>Ally Block 159, Cool Breath 90, Rend 66, Maintain 57</td><td>Monsters dealt 62 damage in six fights. Riposte rose to 31.</td></tr>
+          <tr><td>T3</td><td>Dexterity, Reach, Blast, Circular, Light Armor</td><td>Shift 322, Thrust 218, Area 75, Let It Rip 69</td><td>Longest fights (11.3 rounds); one 19-round attrition fight. Impale fired 2 of 40 times.</td></tr>
+          <tr><td>T4</td><td>Constitution, Curved, Longshot, Titanic Armor</td><td>Taunt 86, Momentum 76, Fish 42, Giga Brace 34</td><td>Taunt kept monsters on the tank. Omnislash fired once.</td></tr>
+          <tr><td>T5</td><td>Grappling, Thrasher, Unarmored</td><td>Quicken 71, Overshield 38, Windup 43, Break Free 28 (monsters)</td><td>Weapon Master cycled all ten types. The Ogre was grappled into doing nothing.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="block">
+      <div class="block-head"><h3>Damage dealt by each character, per pass</h3><span class="small muted">Highest in each run in bold</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Character</th><th class="n">Base</th><th class="n">T1</th><th class="n">Gaps</th><th class="n">T2</th><th class="n">T3</th><th class="n">T4</th><th class="n">T5</th></tr></thead>
+        <tbody id="charRows"></tbody>
+      </table></div>
+      <p class="small muted">The Breaker (Strength build, two-handed Heavy weapon) leads in five of seven runs. The Bulwark only topped T3, with a Heavy Reach 2H and Reach T5's Thrust.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Monsters</span>
+    <h2>How the three groups fared</h2>
+    <div class="two">
+      <div class="block"><h3>Swarm</h3><p class="small">Ten goblins at 20 SP (buffed from eight at 15 after the baseline). Their Light weapons hit 18–27% and did 1–1.4 damage per AP against the party. They only threaten through numbers on an unarmored character.</p></div>
+      <div class="block"><h3>Raiders</h3><p class="small">The only real fight. They won one baseline fight and took four of five party members down in a T3 fight. Heavy Rapid and Heavy Swift 2H did the damage; the Heavy Blast bomber hit 10% of the time.</p></div>
+      <div class="block"><h3>Ogre Tyrant</h3><p class="small">Strong before trees: two of three baseline fights went 20 rounds with the Ogre at about 30% HP. With trees it fell in 5–11 rounds. Grappling (T5) and ally Blocks (T2) shut it down. Its Light Striker natural weapon did 1.5 per AP.</p></div>
+    </div>
+  </section>
+
+  <section class="prose">
+    <span class="eyebrow">Before Magic</span>
+    <h2>Questions for the designer</h2>
+    <ul class="plain">
+      <li><b>Two-handed Heavy weapons.</b> Is roughly double the one-handed output intended, given the shield or off-hand weapon you give up?</li>
+      <li><b>Medium armor.</b> Should it sit closer to Heavy, or is the big step at Heavy the point?</li>
+      <li><b>Light Reach and Light Blast.</b> Their damage per hit is too low to get through armor. Is that their role (reach and areas), or do they need more?</li>
+      <li><b>Assault's Solitary follow-up.</b> Three reloads use the whole 6 RP, so the last follow-up rarely fires. Intended?</li>
+      <li><b>Grappling a lone boss.</b> Should large or boss creatures get a better way out of Lock Down?</li>
+      <li><b>Monster trees.</b> For the Magic passes, should the monsters get trees too? Without them, every pass will look like a party sweep.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Source: the sim's saved results in <code>dev/sim/results/</code> (martial-baseline, martial-t1, martial-t1-gaps, martial-t2 to martial-t5), tabulated by <code>dev/sim/report.mjs</code> and pooled for this page. Damage counts only what reached HP after armor. Per AP divides by the AP of paid attacks. Each group fought two or three times per pass, so single-pass numbers swing; the pooled ones are steadier.</p>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const passes = [
+    ["Baseline", "None", 9, 6, 11.3, 14, 14428, 5299],
+    ["T1", "MT T1 group", 6, 6, 7.2, 4, 15299, 2623],
+    ["T1 gaps", "MT T1 gaps", 3, 3, 5.3, 1, 9301, 1422],
+    ["T2", "MT T2 group", 6, 6, 5.5, 0, 8129, 62],
+    ["T3", "MT T3 group", 6, 6, 11.3, 8, 11080, 4769],
+    ["T4", "MT T4 group", 6, 6, 7.5, 2, 10722, 2138],
+    ["T5", "MT T5 group", 6, 6, 7.8, 3, 11941, 2096],
+  ];
+  const weapons = [["Heavy Bladed (2H)","p",63,66,60,46,8085,41.5,14],["Heavy Swift (2H)","p",50,24,69,37,4224,19,9],["Heavy Weighted (2H)","p",101,0,68,41,5128,16.9,24],["Heavy Curved (2H)","p",126,0,58,38,5355,14.2,10],["Light Curved","p",77,46,67,48,2110,13.7,7],["Unarmed Light","p",151,112,62,49,4017,13.3,8],["Light Striker","p",69,31,60,30,1791,13,2],["Light Bladed","p",146,121,68,48,3730,12.7,10],["Unarmed Heavy","p",37,10,79,70,1121,10.1,2],["Light Longshot","p",180,0,63,35,3226,9,8],["Heavy Reach (2H)","p",181,9,61,38,4898,9,11],["Light Rapid","p",386,28,44,41,6680,8.6,26],["Heavy Weighted","m",82,0,41,26,2124,8.6,7],["Light Swift","p",109,203,69,35,2919,8.2,9],["Light Circular","p",53,0,77,59,859,8.1,3],["Light Assault","p",262,0,63,43,4216,8,14],["Heavy Longshot","p",63,0,65,32,1506,8,4],["Heavy Weighted","p",188,0,52,31,4213,7.5,15],["Heavy Circular","p",82,0,44,28,1847,7.5,3],["Light Thrasher","p",38,0,74,68,569,7.5,0],["Heavy Swift (2H)","m",107,0,34,33,2270,7.1,3],["Heavy Curved","p",80,80,48,35,1676,7,1],["Heavy Balanced","p",172,171,60,39,3441,6.6,5],["Heavy Reach","p",74,8,61,30,1477,6.6,4],["Heavy Thrasher","p",92,0,75,61,1640,5.9,1],["Heavy Longshot","m",61,0,38,13,999,5.5,2],["Heavy Assault","m",151,88,25,28,2459,5.4,4],["Heavy Striker","p",110,0,40,48,1753,5.3,8],["Light Balanced","p",78,54,51,37,854,5.3,0],["Heavy Blast","p",73,0,47,47,1114,5.1,3],["Heavy Defender","p",111,30,58,44,1849,4.8,3],["Heavy Rapid","m",245,0,21,15,3443,4.7,8],["Light Weighted","p",46,0,67,23,389,4.2,2],["Light Blast","p",139,0,59,38,1149,4.1,5],["Light Reach","p",197,134,27,32,1482,3.8,3],["Heavy Circular","m",92,0,41,13,638,2.3,1],["Heavy Striker","m",224,0,24,22,1308,1.9,0],["Light Striker","m",102,0,36,16,296,1.5,1],["Light Thrasher","m",280,0,27,25,810,1.4,0],["Light Weighted","m",213,0,22,30,509,1.2,1],["Light Reach","m",298,298,18,21,679,1.1,0],["Heavy Blast","m",40,0,10,0,92,0.8,0]];
+  const armor = [["Titanic (Iron)",57,2391,41.9],["Heavy (Steel)",74,2736,37.0],["Heavy (Iron)",419,13599,32.5],["Medium (Chitin)",23,383,16.7],["Medium (Soft Leather)",111,1771,16.0],["Medium (Hide)",180,2346,13.0],["Light (Chitin)",27,348,12.9],["Medium (Hard Leather)",54,513,9.5],["Light (Soft Leather)",666,4083,6.1],["Light (Hard Leather)",26,98,3.8]];
+  const chars = {"Breaker":[4106,7903,4012,2626,2203,3064,4364],"Duelist":[2938,1955,1511,2148,1109,3087,3381],"Marksman":[2787,2449,1273,1562,2198,1583,1887],"Warden":[1865,1514,1834,1296,1810,2117,1355],"Bulwark":[2732,1478,671,497,3760,871,954]};
+  const fmt = n => n.toLocaleString("en-US");
+
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; document.body.append(tip);
+  const showTip = (el, html) => {
+    const move = e => { const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + "px"; tip.style.top = (e.clientY + 14) + "px"; };
+    el.addEventListener("pointerenter", e => { tip.innerHTML = html; tip.hidden = false; move(e); });
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerleave", () => { tip.hidden = true; });
+    el.addEventListener("focus", () => { tip.innerHTML = html; tip.hidden = false; const r = el.getBoundingClientRect(); tip.style.left = Math.min(r.left, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = (r.bottom + 6) + "px"; });
+    el.addEventListener("blur", () => { tip.hidden = true; });
+    el.tabIndex = 0;
+  };
+
+  // paired columns: party vs monsters per pass
+  const max = Math.max(...passes.flatMap(p => [p[6], p[7]]));
+  const pairs = document.getElementById("pairs");
+  for (const [name, , fights, , , , pd, md] of passes) {
+    const el = document.createElement("div"); el.className = "pair";
+    el.innerHTML = `<div class="cols"><div class="col p" style="height:${(pd / max * 100).toFixed(1)}%"></div><div class="col m" style="height:${Math.max(md / max * 100, 0.6).toFixed(1)}%"></div></div>
+      <div class="cap">${name}</div><div class="sub">${fmt(pd)} / ${fmt(md)}</div>`;
+    const [p, m] = el.querySelectorAll(".col");
+    showTip(p, `<b>${name}</b> · Party<br>${fmt(pd)} damage to HP<br>${fights} fights`);
+    showTip(m, `<b>${name}</b> · Monsters<br>${fmt(md)} damage to HP<br>${fights} fights`);
+    pairs.append(el);
+  }
+  document.getElementById("passRows").innerHTML = passes.map(([n, t, f, w, r, d, pd, md]) =>
+    `<tr><td>${n}</td><td>${t}</td><td class="n">${f}</td><td class="n">${w}</td><td class="n">${r.toFixed(1)}</td><td class="n">${d}</td><td class="n">${(pd / md).toFixed(1)} : 1</td></tr>`).join("");
+
+  const hbars = (id, rows, label, value, dim, tipFor) => {
+    const host = document.getElementById(id), top = Math.max(...rows.map(value));
+    for (const r of rows) {
+      const lab = document.createElement("div"); lab.className = "lab"; lab.textContent = label(r);
+      const track = document.createElement("div"); track.className = "track";
+      const pct = value(r) / top * 100;
+      track.innerHTML = `<div class="bar${dim(r) ? " dim" : ""}" style="width:${pct.toFixed(1)}%"></div><span class="val" style="left:${pct.toFixed(1)}%">${value(r).toFixed(1)}</span>`;
+      const val = track.querySelector(".val"); if (pct > 82) { val.style.left = "auto"; val.style.right = (100 - pct) + "%"; val.style.paddingRight = "0.4rem"; val.style.color = "var(--panel)"; }
+      showTip(track, tipFor(r));
+      host.append(lab, track);
+    }
+  };
+  hbars("wbars", weapons.filter(w => w[1] === "p"), w => w[0], w => w[7], w => !w[0].includes("2H"),
+    w => `<b>${w[0]}</b><br>${w[7]} per AP · ${fmt(w[6])} to HP<br>${w[2]} attacks + ${w[3]} free · hit ${w[4]}% · ${w[8]} kills`);
+  hbars("abars", armor, a => a[0], a => a[3], a => !/^(Heavy|Titanic)/.test(a[0]),
+    a => `<b>${a[0]}</b><br>${a[3]} per hit<br>${fmt(a[2])} absorbed over ${a[1]} hits`);
+
+  document.getElementById("wRows").innerHTML = weapons.map(w =>
+    `<tr${w[7] >= 14 ? ' class="lead"' : ""}><td>${w[0]}</td><td><span class="tag">${w[1] === "p" ? "party" : "monster"}</span></td><td class="n">${w[2]}</td><td class="n">${w[3]}</td><td class="n">${w[4]}%</td><td class="n">${w[5]}%</td><td class="n">${fmt(w[6])}</td><td class="n">${w[7].toFixed(1)}</td><td class="n">${w[8]}</td></tr>`).join("");
+
+  const tops = [0, 1, 2, 3, 4, 5, 6].map(i => Math.max(...Object.values(chars).map(v => v[i])));
+  document.getElementById("charRows").innerHTML = Object.entries(chars).map(([n, v]) =>
+    `<tr><td>${n}</td>${v.map((x, i) => `<td class="n">${x === tops[i] ? `<b>${fmt(x)}</b>` : fmt(x)}</td>`).join("")}</tr>`).join("");
+})();
+</script>

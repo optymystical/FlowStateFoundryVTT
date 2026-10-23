@@ -2792,7 +2792,7 @@ async function startOfTurnCard(actor, kept) {
     rows.push(`<button type="button" class="fs-turn-start" data-op="properStance"><i class="fa-solid fa-person-rifle"></i> Proper Stance (⚡ ${ab.ASSAULT_COST.properStance(bestWeapon(ab.assaultHeld(actor, 5)))})</button>`);
   }
   if (ab.unarmoredT(actor, 4)) rows.push(`<button type="button" class="fs-turn-start" data-op="quicken"><i class="fa-solid fa-forward-fast"></i> Quicken (⚡ ${ab.UNARMORED_COST.quicken(actor)})</button>`);
-  if (!smashingBlocked(actor)) rows.push(`<button type="button" class="fs-turn-start" data-op="smashing"><i class="fa-solid fa-hammer"></i> Smashing (⚡ ${ab.WEIGHTED_COST.smashing(bestWeapon(ab.weightedHeld(actor, 4)))})</button>`);
+  if (ab.treeTier(actor, "martial-weighted-weapons") >= 4 && ab.weightedHeld(actor, 4).length && !actor.statuses?.has("smashing")) rows.push(`<button type="button" class="fs-turn-start" data-op="smashing"><i class="fa-solid fa-hammer"></i> Smashing (⚡ ${ab.WEIGHTED_COST.smashing(bestWeapon(ab.weightedHeld(actor, 4)))})</button>`);
   if (!rows.length || isDeclined(actor, "turnStart")) return;
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),

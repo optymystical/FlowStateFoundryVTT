@@ -152,6 +152,8 @@ o = last("attack").flags.flowstate.attack.opts;
 ok(o.bash === Math.floor(flail.system.profile.capped / 2) && o.stacks === flail.system.profile.stacks + 2 && o.knockback === 10 * flail.system.profile.capped && o.smashKb === 5 * flail.system.profile.capped && !o.knockbackAdd, "Bash+, two Strengthened; Smashing carries the base Knockback for the hit");
 ok(ab.smashingForce(100, 2) === 100 && ab.smashingForce(100, 1) === 50 && ab.smashingForce(100, -2) === 0, "Smashing: +half the base per net Strengthened stack, never below the baseline");
 await hero.toggleStatusEffect("smashing", { active: false });
+await actions.treesTurnStart(hero);
+ok(/data-op="smashing"/.test(last("startCard")?.content ?? ""), "the start-of-turn card offers Smashing");
 orc.statuses.delete("prone");
 
 console.log("== Take Aim + Cool Breath (Assault T2/T4)");

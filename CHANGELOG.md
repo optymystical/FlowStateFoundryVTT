@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.77.1:** The start-of-turn card offers Smashing (it was left off: the card checked "only on your own turn" before the turn had begun).
+
 **0.77.0:** From the updated docs: Smash (Weighted T4) is now **Smashing**, a start-of-turn ability (2 × Scaling Stat min Energy; the turn card and the Action List's Weighted Weapons group). Until your next turn, each Strengthened stack on a Weighted attack adds half the base Knockback to it; Weakened never takes it below the baseline. Light Blast weapons are Area, Pierce, Cleave (Pepper is gone).
 
 **0.76.1:** From the updated docs: Light Blast weapons are Area, Pierce, Pepper (no longer Cleave), and Smash (Weighted T4) costs Energy equal to your Scaling Stat min (was half). An Area attack with Pepper gives every target it hits all the shots.

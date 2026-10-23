@@ -536,3 +536,6 @@ const NP = RETEST.filter(b => /^blast-light/.test(b.id)).map(b => ({ ...b, id: `
 PASSES["focus-blast-nopepper"] = { id: "focus-blast-nopepper", note: "Light Blast (Area, Pierce, Pepper) fired without Pepper.",
   party: [{ ...PARTY_BENCH[0], loadouts: NP.map(b => ({ ...b, armor: null })) }], monsters: RETEST_DUMMIES, deploy: "bench", maxRounds: 4,
   encounters: NP.flatMap((b, rotation) => ["light", "heavy", "cluster", "bare"].flatMap(group => [1, 2].map(i => ({ id: `${b.id}~${group}~${i}`, group, rotation })))) };
+
+// Smashing (start of turn: Strengthened adds to Knockback) and Light Blast as Area, Pierce, Cleave (v0.77.0).
+PASSES["focus-smash-blast-2"] = { ...PASSES["focus-smash-blast"], id: "focus-smash-blast-2", note: "Smashing (v0.77.0) and Light Blast as Area, Pierce, Cleave." };

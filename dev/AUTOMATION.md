@@ -628,6 +628,7 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 ## Judgment calls (confirm or correct)
 - **Two-handed doubles the total damage** (dice plus Cleave, then ×2). It doesn't double the number of dice.
 - **Weapon and tag scaling use the capped stat** (Grade × 10). That covers Cleave's Stat Min, Pierce, and Knockback.
+- **A weapon rolls one die per full 10 of its scaling stat**, so under 10 it rolls none and deals no damage (the user's ruling; unlike armor and Shrouds, there's no ×1 minimum).
 - **Ignite and Stain ticks are ordinary damage** (Rules doc): armor, Shields, a Shroud and temp HP all take their share, and a Ward may be asked about it. 
 - **Taking the hit without dodging** counts as a hit that can't crit (designer ruling; Parry-style forced hits will use the same path).
 - **Energy outside combat:** Energy use is free and Energy is always full (designer ruling). It refills when combat ends, when you leave combat, and whenever the max changes. Recover Energy only matters in combat.

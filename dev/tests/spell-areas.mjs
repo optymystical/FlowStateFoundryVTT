@@ -28,6 +28,11 @@ ok(!A.pointInArea(T("line", { direction: 90 }), 100, 300, grid) && A.pointInArea
 const tok = (x, y) => ({ document: { x, y, width: 1, height: 1 } });
 const hit = A.tokensInArea(T("radius"), [tok(0, 0), tok(150, 0), tok(900, 900)], grid);
 ok(hit.length === 2, "tokensInArea: tokens touching the circle count, far ones don't");
+{ const me = { uuid: "Actor.me" }, foe = { uuid: "Actor.foe" };
+  const touched = [{ actor: me }, { actor: foe }, { actor: foe }, { actor: null }];
+  const got = A.areaTargets(touched, me);
+  ok(got.length === 1 && got[0] === foe, "An area leaves the caster out of its targets (once per creature, tokens with no actor skipped)");
+  ok(A.areaTargets(touched, me, { self: true }).length === 2, "…unless they ticked Include yourself"); }
 
 console.log("== Emplace barrier");
 const wall = { t: "ray", x: 500, y: -500, direction: 90, distance: 30, angle: 0, width: 5 };   // a vertical line, x = 500, from y = -500 to 100

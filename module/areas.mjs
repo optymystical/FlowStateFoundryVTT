@@ -1,5 +1,6 @@
 /**
- * Area spells (Magic Theory: Spell Attack Types): pick an Area shape, place it on the scene, and everything inside it is targeted.
+ * Area spells (Magic Theory: Spell Attack Types): pick an Area shape, place it on the scene, and everything inside it is targeted
+ *  (the caster only if they tick Include yourself).
  *  - 10 ft radius, 20 ft 90° cone, or 30 ft × 5 ft line. Snipe doubles the dimensions and Agate adds 50%.
  *  - The geometry is pure (unit-tested). Placement drops a Measured Template on the scene that the caster drags into position,
  *    then confirms; with no scene (or no canvas) the caller falls back to the current targets.
@@ -53,20 +54,31 @@ export function tokensInArea(tpl, tokens, grid = { size: 100, distance: 5 }) {
 }
 
 /**
- * Let the caster choose a shape, drop the template, drag it into place, and confirm. Returns
- * { actors, shape, templateId } (actors may include the caster), or null if cancelled, or undefined when there's no scene to place on.
+ * The creatures an area targets, from the tokens it touches (one entry per actor). The caster is left out unless they chose to be
+ * included (the docs: "This Area can include yourself if desired"; the user's ruling: not by default). Pure.
+ */
+export function areaTargets(tokens, caster, { self = false } = {}) {
+  const actors = [...new Map(tokens.filter(t => t.actor).map(t => [t.actor.uuid, t.actor])).values()];
+  return self ? actors : actors.filter(a => a.uuid !== caster?.uuid);
+}
+
+/**
+ * Let the caster choose a shape (and whether they're in it), drop the template, drag it into place, and confirm. Returns
+ * { actors, shape, templateId } (the caster only if they ticked Include yourself), or null if cancelled, or undefined when there's no scene to place on.
  */
 export async function placeArea(actor, { title = "Area", scale = 1, aim = null, flags = {}, facing = false, origin = null } = {}) {
   const scene = globalThis.canvas?.scene;
   const grid = globalThis.canvas?.grid;
   if (!scene || !grid) return undefined;
-  const pick = await DialogV2().prompt({
+  const picked = await DialogV2().prompt({
     window: { title: `${title}: shape` },
     content: `<div class="fs-field"><label>Area</label><select name="shape">${Object.entries(AREA_SHAPES).map(([k, s]) =>
-      `<option value="${k}">${esc(s.label)}${scale !== 1 ? ` (×${scale} → ${s.distance * scale} ft)` : ""}</option>`).join("")}</select></div>`,
-    ok: { label: "Place it", callback: (event, button) => button.form.elements.shape.value }, rejectClose: false
+      `<option value="${k}">${esc(s.label)}${scale !== 1 ? ` (×${scale} → ${s.distance * scale} ft)` : ""}</option>`).join("")}</select></div>
+      <div class="fs-field"><label>Include yourself</label><input type="checkbox" name="self"></div>`,
+    ok: { label: "Place it", callback: (event, button) => ({ shape: button.form.elements.shape.value, self: !!button.form.elements.self?.checked }) }, rejectClose: false
   });
-  if (!pick) return null;
+  if (!picked) return null;
+  const { shape: pick, self } = picked;
   // Start on the caster, pointing at the first target if there is one.
   const src = globalThis.canvas.tokens?.controlled?.find(t => t.actor?.uuid === actor.uuid) ?? actor.getActiveTokens?.()[0];
   // Lob / Explode: the area starts where the ranged part lands (the `origin` token), not on the caster.
@@ -96,7 +108,7 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
     await placed.update({ "flags.flowstate.frontX": front.x, "flags.flowstate.frontY": front.y });
   }
   const inside = tokensInArea(tpl, globalThis.canvas.tokens.placeables.filter(t => t.actor && !notCreature(t.actor)), { size: grid.size, distance: grid.distance });
-  return { actors: [...new Map(inside.map(t => [t.actor.uuid, t.actor])).values()], shape: pick, templateId: placed.id, tpl, front, grid: { size: grid.size, distance: grid.distance }, sceneId: scene.id };
+  return { actors: areaTargets(inside, actor, { self }), shape: pick, templateId: placed.id, tpl, front, grid: { size: grid.size, distance: grid.distance }, sceneId: scene.id };
 }
 
 /** Drop the caster's spell templates (they last until the start of the caster's next turn). */

@@ -40,7 +40,25 @@ const relayQueue = makeQueue();                 // GM relay: one request at a ti
 /** Grid squares a token of this creature Size takes (Size 3 = 1). */
 const tokenSquares = size => ({ 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 }[Math.round(size || 3)] ?? 1);
 
+/** Status removals on their way, by actor and status (so two quick calls don't both delete the same effect). */
+const statusOffInFlight = new Map();
+
 class FlowStateActor extends Actor {
+  /**
+   * Turning a status off is safe to repeat: a second call while the first is on its way waits for it, and an effect something else already
+   * removed (a Limber used up by a roll as the turn start clears it) counts as removed instead of failing on the server.
+   */
+  async toggleStatusEffect(statusId, options = {}) {
+    if (options.active !== false) return super.toggleStatusEffect(statusId, options);
+    const key = `${this.uuid}|${statusId}`;
+    if (statusOffInFlight.has(key)) return statusOffInFlight.get(key);
+    const off = super.toggleStatusEffect(statusId, options)
+      .catch(err => { if (/does not exist/i.test(err?.message ?? "")) return false; throw err; })
+      .finally(() => statusOffInFlight.delete(key));
+    statusOffInFlight.set(key, off);
+    return off;
+  }
+
   /** New actors start at full HP and Energy. */
   async _preCreate(data, options, user) {
     const allowed = await super._preCreate(data, options, user);

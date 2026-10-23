@@ -145,6 +145,12 @@ const sh = hero.effects.filter(e => e.flags.flowstate.spellEffect?.kind === "shi
 ok2(sh.length === 1 && sh[0].flags.flowstate.spellEffect.hp === 8 * R.iconScale(30, 3), `Aegis puts ${sh[0]?.flags.flowstate.spellEffect.hp} shielding on you (8 × the Ward scale)`);
 refresh(); dialog = () => ({}); await M.activateWard(hero); seq = [2]; await actions.defend(lastAtk(), 0, "none");
 ok2(hero.effects.filter(e => e.flags.flowstate.spellEffect?.kind === "shield").length === 2, "Ward shielding stacks");
+refresh(); let wardHtml = ""; const rp0 = hero.system.rp.value;
+dialog = c => { wardHtml = c; return { burst: true }; };
+await M.activateWard(hero);
+ok2(!/Burst/.test(wardHtml) && hero.system.ap.value === 5 && hero.system.rp.value === rp0, "A Dream Form's Ward can't be Burst: no Burst box, and it still costs 1 AP (no RP)");
+dialog = () => ({}); seq = [2]; await actions.defend(lastAtk(), 0, "none");
+for (const e of hero.effects.filter(e => e.flags.flowstate.spellEffect?.kind === "shield").slice(2)) await e.delete();
 const out = await actions.damageOutcome(hero, 50, "physical");
 ok2(out.toHp === 0 || out.toHp < 50, "…and soaks damage like a Shield");
 await actions.clearSpellEffects(hero);

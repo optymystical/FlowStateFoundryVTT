@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.75.5:** Wards: a Dream Form's Ward (the AP ones) can no longer be Burst; the Ward dialog's Burst box is gone.
+
 **0.75.4:** Icons: the Tenet text on an Icon's sheet has its bolded numbers worked out for the Icon's Tenet multiplier (shown beside it), and the Equipment tab's Icons table shows the multiplier with the scaled text on hover.
 
 **0.75.3:** Skills tab: the notes under the tree list (how many more trees open later, Generic coming soon) are gone.

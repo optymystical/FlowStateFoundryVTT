@@ -410,8 +410,7 @@ export async function activateWard(actor) {
     content: `<div class="fs-cast">
       <p>${esc(R.scaleFormText(R.FORMS[p.form].ward, p.wardMult, wardFx.stacks))}</p>
       ${innate ? `<p class="hint"><strong>Innate:</strong> your first Ward each turn costs no AP/RP and is automatically Enhanced.</p>` : `
-      ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${enhanceCost} Energy: ${esc(R.scaleFormText(R.FORMS[p.form].enhance, p.wardMult, wardFx.stacks))}</small></label>
-      <label class="fs-cast-mod"><input type="checkbox" name="burst"> <strong>Burst</strong> <small>RP instead of AP, and ${enhanceCost} Energy</small></label>` : ""}`}
+      ${th >= 1 ? `<label class="fs-cast-mod"><input type="checkbox" name="enhance"> <strong>Enhance</strong> <small>${enhanceCost} Energy: ${esc(R.scaleFormText(R.FORMS[p.form].enhance, p.wardMult, wardFx.stacks))}</small></label>` : ""}`}
       ${wt >= 2 ? `<label class="fs-cast-mod"><input type="checkbox" name="clear"> <strong>Make Clear</strong> <small>${enhanceCost} Energy: Advantage on the activation roll, and one reroll if it misses</small></label>` : ""}
       ${ally && wt >= 4 ? `<label class="fs-cast-mod"><input type="checkbox" name="recur"> <strong>Recur</strong> <small>${Math.floor(enhanceCost / 2)} Energy: it chains to you as well on a hit</small></label>` : ""}
       ${th >= 4 ? `<label class="fs-cast-mod"><input type="checkbox" name="expand"> <strong>Expansion</strong> <small>${2 * enhanceCost} Energy: an Area attack (10 ft radius, 20 ft cone or 30×5 ft line) instead</small></label>` : ""}
@@ -424,10 +423,9 @@ export async function activateWard(actor) {
   });
   if (!out) return;
   const enhanced = innate || !!out.enhance;
-  const burst = !innate && !!out.burst;
-  const enhEnergy = enhanceCost;
-  let energy = (out.enhance && !innate ? enhEnergy : 0) + (burst ? enhEnergy : 0) + (out.clear ? enhanceCost : 0) + (out.recur ? Math.floor(enhanceCost / 2) : 0) + (out.expand ? 2 * enhanceCost : 0);
-  const costs = innate ? { ap: 0, rp: 0, energy } : burst ? { ap: 0, rp: form.ap ?? 1, energy } : { ap: form.ap ?? 1, rp: 0, energy };
+  // A Dream Form's Ward costs AP: it can't be Burst (paid in RP instead).
+  let energy = (out.enhance && !innate ? enhanceCost : 0) + (out.clear ? enhanceCost : 0) + (out.recur ? Math.floor(enhanceCost / 2) : 0) + (out.expand ? 2 * enhanceCost : 0);
+  const costs = innate ? { ap: 0, rp: 0, energy } : { ap: form.ap ?? 1, rp: 0, energy };
   // Expansion places the area first, so cancelling it spends nothing.
   let area = null;
   if (out.expand) {
@@ -441,7 +439,7 @@ export async function activateWard(actor) {
   const adv = wardFx.net + (out.clear ? 1 : 0);
   const mental = { ward: { form: p.form, enhanced, types: out.types ? [out.types, ...(enhanced && out.types2 && out.types2 !== out.types ? [out.types2] : [])] : null, recur: !!out.recur, clear: !!out.clear, caster: actor.uuid, icon: icon.uuid,
     declared: enhanced && out.declared ? out.declared : "", amount: enhanced ? p.enhancedAmount : p.amount, recover: p.recover ?? 0, alignStacks: wardFx.stacks + areaWeak, autoHit: wardFx.autoHit } };
-  const notes = [`${p.name} Ward`, enhanced ? "Enhanced" : "", burst ? "Burst (RP)" : "", innate ? "Innate (free)" : "", wardFx.net > 0 ? `${R.alignmentLabel(align)}: ${[ "Advantage", wardFx.stacks ? "Strengthened" : "", wardFx.dodgeNet < 0 ? "half stealth (Disadvantage dodging)" : "", wardFx.autoHit ? "hits regardless (the roll decides a crit)" : ""].filter(Boolean).join(", ")}` : "", out.clear ? "Make Clear: Advantage" : "", out.expand ? "Expansion (Area)" : "",
+  const notes = [`${p.name} Ward`, enhanced ? "Enhanced" : "", innate ? "Innate (free)" : "", wardFx.net > 0 ? `${R.alignmentLabel(align)}: ${[ "Advantage", wardFx.stacks ? "Strengthened" : "", wardFx.dodgeNet < 0 ? "half stealth (Disadvantage dodging)" : "", wardFx.autoHit ? "hits regardless (the roll decides a crit)" : ""].filter(Boolean).join(", ")}` : "", out.clear ? "Make Clear: Advantage" : "", out.expand ? "Expansion (Area)" : "",
     wt >= 5 && innate ? "Innate Mastery: the target has Disadvantage on their roll against it" : ""].filter(Boolean);
   return performAttack(actor, { ...baseAttack, label: `${p.name} Ward`, net: adv, melee: false, area: !!area, singleRoll: !!area, notes, mental, targetActors: targets, dodgeNet: (wt >= 5 && innate ? -1 : 0) + wardFx.dodgeNet,
     stacks: wardFx.stacks + areaWeak });

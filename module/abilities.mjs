@@ -301,11 +301,17 @@ export const DEFENDER_COST = {
 const WEIGHTED = "martial-weighted-weapons";
 const weightedT = weaponTree(WEIGHTED);
 export const weighted = weightedT.can;
+export const weightedHeld = weightedT.held;
 export const WEIGHTED_COST = {
   swing: item => scalingMin(item),                 // T1 Controlled (Light) / Wild (Heavy)
   spin: item => scalingMin(item),                  // T2
-  smash: item => scalingMin(item)                   // T4, Scaling Stat min
+  smashing: item => 2 * scalingMin(item)           // T4, double Scaling Stat min
 };
+/**
+ * Smashing (Weighted T4): Strengthened applies to the Knockback, additively: each net Strengthened stack adds half the base Knockback
+ * (the user's ruling); Weakened can cancel stacks but never takes the Knockback below what it would be without Smashing.
+ */
+export const smashingForce = (baseKnockback, stacks) => Math.max(0, stacks) * Math.floor(baseKnockback / 2);
 
 /* -------------------------------------------- */
 /*  Assault Weapons                             */

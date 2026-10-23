@@ -75,6 +75,7 @@ const STATUS_DETAIL = {
   fishy: "Moves as if in rough terrain (+1 AP) until the shooter's next turn (Like Shooting Fish).",
   taunted: "Compelled to attack the taunter until the start of their next turn. Repeat the check at the end of your turn or for 2 AP/RP.",
   quickened: "Movement speed doubled until the start of your next turn. Ends if you put armor on.",
+  smashing: "Strengthened on your Weighted attacks also adds to their Knockback (half the base per stack) until the start of your next turn.",
   dead: "HP at 0 or below (set automatically from HP)."
 };
 
@@ -614,6 +615,15 @@ function actionGroups(actor, weapons, stats) {
       cost: "Start of turn", energy: `${ab.ASSAULT_COST.properStance(best)} Energy`, energyTip: "2 × Scaling Stat min", action: "martial", op: "properStance",
       icon: "fa-solid fa-person-rifle", disabled: !!blocked, tooltip: blocked });
   }
+  const weightedRows = [];
+  const weightedW = ab.weightedHeld(actor, 4);
+  if (ab.treeTier(actor, "martial-weighted-weapons") >= 4 && weightedW.length) {
+    const blocked = actions.smashingBlocked(actor);
+    const best = weightedW.sort((a, b) => ab.scalingMin(b) - ab.scalingMin(a))[0];
+    weightedRows.push({ label: `Smashing${st.has("smashing") ? " (active)" : ""}`, detail: "Strengthened adds to your Weighted attacks' Knockback until your next turn",
+      cost: "Start of turn", energy: `${ab.WEIGHTED_COST.smashing(best)} Energy`, energyTip: "2 × Scaling Stat min", action: "martial", op: "smashing",
+      icon: "fa-solid fa-hammer", disabled: !!blocked, tooltip: blocked });
+  }
   const armorRows = [];
   const trudge = ab.trudgeCost(actor);
   if (trudge !== null) {
@@ -785,6 +795,7 @@ function actionGroups(actor, weapons, stats) {
     ...(strengthRows.length ? [{ key: "act-strength", name: "Strength Methods", actions: strengthRows }] : []),
     ...(strikerRows.length ? [{ key: "act-striker", name: "Striker Weapons", actions: strikerRows }] : []),
     ...(assaultRows.length ? [{ key: "act-assault", name: "Assault Weapons", actions: assaultRows }] : []),
+    ...(weightedRows.length ? [{ key: "act-weighted", name: "Weighted Weapons", actions: weightedRows }] : []),
     ...(mediumRows.length ? [{ key: "act-medium", name: "Medium Armor", actions: mediumRows }] : []),
     ...(rapidRows.length ? [{ key: "act-rapid", name: "Rapid Weapons", actions: rapidRows }] : []),
     ...(swiftRows.length ? [{ key: "act-swift", name: "Swift Weapons", actions: swiftRows }] : []),
@@ -1259,6 +1270,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       case "bodyslam": return actions.bodyslam(actor);
       case "spotWeakness": return actions.spotWeakness(actor);
       case "quicken": return actions.quicken(actor);
+      case "smashing": return actions.smashing(actor);
       case "taunt": return actions.taunt(actor);
       case "pullAggro": return actions.taunt(actor, { aggro: true });
       case "shakeTaunt": return (async () => {

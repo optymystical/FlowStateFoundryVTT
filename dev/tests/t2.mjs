@@ -144,10 +144,14 @@ ok(hero.statuses.has("berserk") && hero.statuses.has("seeingRed"), "maintained (
 console.log("== Wild Swing + Crunch vs prone (Weighted T1/T5)");
 const flail = mkWeapon(hero, "Flail", { weaponType: "weighted", weight: "heavy", material: "iron", grade: 3 });
 orc.statuses.add("prone"); hero.system.ap.value = 6;
-seq = [20]; await attack(flail, { wild: "both", smash: true });
+const eSm = hero.system.energy.value;
+await actions.smashing(hero);
+ok(hero.statuses.has("smashing") && hero.system.energy.value === eSm - 2 * ab.scalingMin(flail), "Smashing (start of turn): double Scaling Stat min Energy, status on");
+seq = [20]; await attack(flail, { wild: "both" });
 o = last("attack").flags.flowstate.attack.opts;
-ok(o.bash === Math.floor(flail.system.profile.capped / 2) && o.stacks === flail.system.profile.stacks + 2 && o.knockback === 10 * flail.system.profile.capped && o.knockbackAdd === 5 * flail.system.profile.capped, "Bash+, two Strengthened, Smash adds base Knockback");
-ok(ab.WEIGHTED_COST.smash(flail) === ab.scalingMin(flail) && ab.scalingMin(flail) > 0, "Smash costs Energy equal to the Scaling Stat min");
+ok(o.bash === Math.floor(flail.system.profile.capped / 2) && o.stacks === flail.system.profile.stacks + 2 && o.knockback === 10 * flail.system.profile.capped && o.smashKb === 5 * flail.system.profile.capped && !o.knockbackAdd, "Bash+, two Strengthened; Smashing carries the base Knockback for the hit");
+ok(ab.smashingForce(100, 2) === 100 && ab.smashingForce(100, 1) === 50 && ab.smashingForce(100, -2) === 0, "Smashing: +half the base per net Strengthened stack, never below the baseline");
+await hero.toggleStatusEffect("smashing", { active: false });
 orc.statuses.delete("prone");
 
 console.log("== Take Aim + Cool Breath (Assault T2/T4)");

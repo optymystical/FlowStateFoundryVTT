@@ -746,8 +746,8 @@ export const TREES = [
     "summary": "You gain the following ability:",
     "entries": [
      {
-      "name": "Smash",
-      "text": "Cost: Energy equal to your Scaling Stat min. Prior to making a Weighted Weapon attack, you can choose to use this ability. Your attack gets extra Knockback equal to its base Knockback value (before multiplying or adding from other effects)."
+      "name": "Smashing",
+      "text": "Cost: Energy equal to double your Scaling Stat min. At the start of your turn, you can use this ability. Strengthened now applies to your Weighted Attack’s Knockback additively with other boosts, lasting until the start of your next turn."
      }
     ]
    },

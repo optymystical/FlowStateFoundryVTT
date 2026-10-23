@@ -242,7 +242,8 @@ Hooks.once("init", () => {
     { id: "fishy", name: "Like Shooting Fish", img: "icons/svg/net.svg" },
     { id: "sliced", name: "Sliced (+1 AP movement)", img: "icons/svg/blood.svg" },
     { id: "taunted", name: "Taunted", img: "icons/svg/hazard.svg" },
-    { id: "quickened", name: "Quickened", img: "icons/svg/wingfoot.svg" }
+    { id: "quickened", name: "Quickened", img: "icons/svg/wingfoot.svg" },
+    { id: "smashing", name: "Smashing", img: "icons/svg/thrust.svg" }
   ];
 
   // Character creation budgets (used by the New Character wizard and re-checked by the GM).
@@ -504,8 +505,8 @@ function decorateExchange(message, html) {
     if (row.classList.contains("fs-turn-start-row")) {
       const sc = message.getFlag("flowstate", "startCard");
       const who = fromUuidSync(sc?.actor);
-      const status = { maintain: "berserk", berserk: "berserk", properStance: "properStance", quicken: "quickened" };
-      const label = { maintain: "Berserk maintained", berserk: "Berserk", properStance: "Proper Stance", quicken: "Quickened" };
+      const status = { maintain: "berserk", berserk: "berserk", properStance: "properStance", quicken: "quickened", smashing: "smashing" };
+      const label = { maintain: "Berserk maintained", berserk: "Berserk", properStance: "Proper Stance", quicken: "Quickened", smashing: "Smashing" };
       for (const b of row.querySelectorAll(".fs-turn-start")) {
         if (who?.statuses?.has(status[b.dataset.op])) b.replaceWith(Object.assign(document.createElement("div"), { className: "fs-waiting", textContent: `${label[b.dataset.op]} ✓` }));
       }

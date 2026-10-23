@@ -121,7 +121,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - Blocking for an ally is free and gives the blocker no Riposte; Brace on armor gets no Riposte.
 - Shatter: Heavy Unarmed damage to the incoming attack, no Solitary; works on melee misses; vs projectiles lowers the
   damage; if it breaks the weapon the attack deals no damage.
-- Knockback is additive: base 5×, +5× Knockback+, +5× two-handed, +5× Smash. Weapon tags ignore Strengthened/Weakened.
+- Knockback is additive: base 5×, +5× Knockback+, +5× two-handed. Weapon tags ignore Strengthened/Weakened, except Smashing (Weighted T4, start of turn): each net Strengthened stack adds half the base Knockback (2.5×); Weakened never takes it below the baseline.
 - Fast follow-ups only come from Fast attacks (Fast weapon or Light Unarmed); a Light grapple opening the chain still
   gets the other fist's Fast follow-up; a Heavy grapple offers only Solitary. Each Unarmed grapple occupies a fist.
 - Forced re-rolls (Dash, Shift, Close Quarters, Distracting Fire) keep the lower result. Speedy (Unarmored T3) applies
@@ -136,7 +136,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - Strengthened/Weakened stacks, from any source (a crit's two, Alignment, an Area spread, Adapt, a Mod, anything on the caster), scale the **bolded** numbers of what they carry, not only damage: Mental Modes (`bold(stacks, n)` in `mental-rules.mjs`; effects that last, Fester, charges and Tenet acts keep `bstacks`; Vice, Quicksand and Momentum are responses that use fresh Power and no stacks) and Magic spell hits (`stackBonus` in `spellHit`/`elemental.mjs`). Spells with no roll use `castStacks(actor, plan)`. Martial has no bolded numbers and is unchanged. Alignment no longer scales Modes (it shapes the Form's Ward only).
 - Mental Alignment is Dream/Nightmare 1-4 (Neutral 0; 3-4 need Deepening, Mental T3), set with a 1 hour activity, 20% speed a point, 1 AP a turn per point past 2. It only changes your own type's Form Ward: 1 Advantage, 2 Strengthened bolded effect, 3 half stealth, 4 hits regardless (roll decides a crit). Fluidity (T4) swaps the type for half Skill Points × the Alignment number in Energy (0 from Neutral). No Equilibrium, no Tenet doubling. Reverie needs Dream 2 (Enhanced growth: 4); Zealot negates 6 at Nightmare 2+.
 - Heavy armor has two stealth Disadvantages.
-- An Area attack with Pepper (Light Blast): every target it hits takes all the Pepper shots.
+- An Area attack with Pepper: every target it hits takes all the Pepper shots.
 - Quickload (Rapid/Assault T1) can replace a free follow-up: the follow-up is forgone and the gun reloads at no cost.
 - A weapon rolls one die per full 10 of its scaling stat: under 10 it rolls no dice (no minimum of 1, unlike armor).
 - An Area (spell, Manifest, Expansion) leaves the caster out of its targets unless they tick Include yourself in the shape picker.

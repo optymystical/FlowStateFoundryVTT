@@ -346,7 +346,7 @@ function treeOptions(actor, item, { me = null, target = null, pepper = 0 } = {})
     if (weight === "light" && take(min)) o.controlled = alt("ctl", [["both", "adv", "solitary"], ["both", "solitary", "adv"]])[0];
     if (weight === "heavy" && take(min)) o.wild = alt("wild", [["both", "str2"], ["both", "bashPlus"], ["both", "bashStr"]])[0];
     if (crowd >= 2 && take(min)) o.spin = true;
-    if (take(min)) o.smash = true;                                       // Smash: Scaling Stat min
+    // (Smashing, Weighted T4, is a start-of-turn status: the turn card.)
   }
   if (type === "assault") {
     const moved = (s.turnMoved ?? 0) > 0;
@@ -534,7 +534,7 @@ async function answerCard() {
     const tsRow = doc.querySelector(".fs-turn-start-row");
     if (tsRow) {
       const who = ownerOf(tsRow.querySelector(".fs-turn-start") ?? tsRow);
-      for (const op of ["maintain", "berserk", "properStance", "quicken"]) {
+      for (const op of ["maintain", "berserk", "properStance", "quicken", "smashing"]) {
         if (!tsRow.querySelector(`.fs-turn-start[data-op="${op}"]`) || !once(`ts:${op}`, true)) continue;
         if (op === "berserk" && tsRow.querySelector('.fs-turn-start[data-op="maintain"]')) continue;
         if (!who || !sim(who).id || energyOf(who) < 25) { if (who) note(who, `${op}:skipped`); continue; }

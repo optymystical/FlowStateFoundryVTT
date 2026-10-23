@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.77.0:** From the updated docs: Smash (Weighted T4) is now **Smashing**, a start-of-turn ability (2 × Scaling Stat min Energy; the turn card and the Action List's Weighted Weapons group). Until your next turn, each Strengthened stack on a Weighted attack adds half the base Knockback to it; Weakened never takes it below the baseline. Light Blast weapons are Area, Pierce, Cleave (Pepper is gone).
+
 **0.76.1:** From the updated docs: Light Blast weapons are Area, Pierce, Pepper (no longer Cleave), and Smash (Weighted T4) costs Energy equal to your Scaling Stat min (was half). An Area attack with Pepper gives every target it hits all the shots.
 
 **0.76.0:** Two-handed weapons follow the updated Equipment doc: two hands give the damage one stack of Strengthened instead of doubling it (Knockback, Cleave, Pierce and Bash still double). Titan Weapon (Bladed T4): Remise costs twice the Energy with a two-handed Heavy Bladed weapon.

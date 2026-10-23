@@ -670,7 +670,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     }
     if (ab.weighted(actor, item, 2) && !followup) t2Opts += `<div class="form-group"><label>Spin <span class="fs-energy-inline">⚡ ${ab.WEIGHTED_COST.spin(item)}</span>: Area attack on every target in melee range</label><input type="checkbox" name="spin"></div>`;
     if (ab.weighted(actor, item, 3) && base.farstrike < 2) t2Opts += `<div class="form-group"><label>Strafing (moving while attacking): Wide Arc gives Farstrike</label><input type="checkbox" name="strafe"></div>`;
-    if (ab.weighted(actor, item, 4) && base.knockback) t2Opts += `<div class="form-group"><label>Smash <span class="fs-energy-inline">⚡ ${ab.WEIGHTED_COST.smash(item)}</span>: +${5 * base.capped} Knockback Force</label><input type="checkbox" name="smash"></div>`;
+    if (ab.weighted(actor, item, 4) && base.knockback && actor.statuses?.has("smashing")) t2Opts += `<p class="hint">Smashing: this attack's Strengthened stacks also add to its Knockback.</p>`;
   }
   if (!unarmed && base.ranged && ab.assault(actor, item, 2)) {
     const free = ab.assault(actor, item, 4) && inActiveCombat(actor) && actor.getFlag("flowstate", "movedTurn") !== turnKey();
@@ -896,7 +896,9 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   }
   let farstrike = p.farstrike;
   if (opts.strafe && opts.mode === "strike") { farstrike = Math.max(farstrike, 2); notes.push("Wide Arc (Strafing: Farstrike)"); }
-  if (opts.smash && knockback) { knockbackAdd += 5 * p.capped; energy += ab.WEIGHTED_COST.smash(item); notes.push(`Smash (+${5 * p.capped} Knockback)`); }
+  // Smashing (Weighted T4, a start-of-turn status): the hit's Strengthened stacks add to the Knockback (worked out per target on the hit).
+  const smashKb = knockback && ab.weighted(actor, item, 4) && actor.statuses?.has("smashing") ? 5 * p.capped : 0;
+  if (smashKb) notes.push("Smashing (Strengthened adds to Knockback)");
   let rooted = false;
   if (opts.takeAim) {
     if (opts.coolBreath) { rooted = true; notes.push("Cool Breath (Take Aim free; no more movement this turn)"); }
@@ -1150,7 +1152,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     damage: shieldToss?.mode === "guard" || (opts.thrasherGrapple && !opts.getOverHere) ? "" : damage, type: p.damageType, stacks, ap: 0, apCost: ap || rpPaid,
     physical: true, shots,
     critStacks: p.critStacks, vsSupernatural: p.vsSupernatural, arcaneVsMagic: p.arcaneVsMagic,
-    pierce, knockback, knockbackAdd: knockback ? knockbackAdd : 0, bash, notes, followups, followupOf: followup?.source ?? null,
+    smashKb, pierce, knockback, knockbackAdd: knockback ? knockbackAdd : 0, bash, notes, followups, followupOf: followup?.source ?? null,
     aimItem: opts.aim && !opts.area && !whirl && !spin && !grapple ? opts.aim : null,
     aimName: opts.aim && !opts.area && !whirl && !spin && !grapple ? aimables.find(i => i.uuid === opts.aim)?.name ?? null : null,
     area: !!opts.area || !!whirl || spin, grapple, grappleOnly: grapple && p.scalingStat !== "str",
@@ -1502,7 +1504,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "growth", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "statusStealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
+  "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "smashKb", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -2790,6 +2792,7 @@ async function startOfTurnCard(actor, kept) {
     rows.push(`<button type="button" class="fs-turn-start" data-op="properStance"><i class="fa-solid fa-person-rifle"></i> Proper Stance (⚡ ${ab.ASSAULT_COST.properStance(bestWeapon(ab.assaultHeld(actor, 5)))})</button>`);
   }
   if (ab.unarmoredT(actor, 4)) rows.push(`<button type="button" class="fs-turn-start" data-op="quicken"><i class="fa-solid fa-forward-fast"></i> Quicken (⚡ ${ab.UNARMORED_COST.quicken(actor)})</button>`);
+  if (!smashingBlocked(actor)) rows.push(`<button type="button" class="fs-turn-start" data-op="smashing"><i class="fa-solid fa-hammer"></i> Smashing (⚡ ${ab.WEIGHTED_COST.smashing(bestWeapon(ab.weightedHeld(actor, 4)))})</button>`);
   if (!rows.length || isDeclined(actor, "turnStart")) return;
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
@@ -2816,6 +2819,7 @@ export async function startOfTurn(card, op) {
   } else if (op === "berserk") await berserk(actor);
   else if (op === "properStance") await properStance(actor);
   else if (op === "quicken") await quicken(actor);
+  else if (op === "smashing") await smashing(actor);
   ui.chat?.updateMessage?.(card);
 }
 
@@ -2848,6 +2852,26 @@ export async function properStance(actor) {
   if (!(await spendEnergy(actor, cost, "Proper Stance"))) return;
   await setStatus(actor, "properStance", true);
   await post(actor, { title: `${esc(actor.name)} — Proper Stance`, body: `<div class="fs-result">Assault weapon attacks have Solitary+ until the start of ${esc(actor.name)}'s next turn. Swapping weapons ends it.</div><div class="fs-notes">${cost} Energy</div>` });
+}
+
+/** Why Smashing can't be used now ("" if it can). */
+export function smashingBlocked(actor) {
+  if (ab.treeTier(actor, "martial-weighted-weapons") < 4) return "Requires Weighted Weapons Tier 4.";
+  if (actor.statuses?.has("smashing")) return "Already Smashing.";
+  if (!ab.weightedHeld(actor, 4).length) return "Hold a Weighted weapon.";
+  if (inActiveCombat(actor) && !onOwnTurn(actor)) return "Only at the start of your turn.";
+  return "";
+}
+
+/** Smashing (Weighted T4): at the start of your turn, Strengthened applies to your Weighted attacks' Knockback until your next turn. */
+export async function smashing(actor) {
+  if (cantAct(actor, "do that")) return;
+  const blocked = smashingBlocked(actor);
+  if (blocked) return ui.notifications.warn(`Smashing: ${blocked}`);
+  const cost = ab.WEIGHTED_COST.smashing(bestWeapon(ab.weightedHeld(actor, 4)));
+  if (!(await spendEnergy(actor, cost, "Smashing"))) return;
+  await setStatus(actor, "smashing", true);
+  await post(actor, { title: `${esc(actor.name)} — Smashing`, body: `<div class="fs-result">Until the start of ${esc(actor.name)}'s next turn, Strengthened on a Weighted attack also adds to its Knockback (half the base Knockback per stack).</div><div class="fs-notes">${cost} Energy</div>` });
 }
 
 /** Trudge (Heavy T2 / Titanic T4): the next move ignores the armor's movement penalty. */
@@ -2928,7 +2952,7 @@ export async function treesTurnStart(actor) {
   await clearParries(actor);
   await shroudTurnStart(actor);
   const kept = await berserkTurnStart(actor);
-  for (const st of ["unstoppable", "properStance", "quickened"]) if (actor.statuses?.has(st)) await actor.toggleStatusEffect(st, { active: false });
+  for (const st of ["unstoppable", "properStance", "quickened", "smashing"]) if (actor.statuses?.has(st)) await actor.toggleStatusEffect(st, { active: false });
   await clearPlacedEffects(actor);
   if (!helpless(actor)) await startOfTurnCard(actor, kept);
 }
@@ -5033,11 +5057,13 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   let kb = null;
   if (o.knockback && !o.aimItem) {
     const lash = o.dragonLash ? (target.statuses?.has("prone") ? 4 : 2) : 1;
-    // Weapon tags ignore Strengthened/Weakened. Knockback adds up (base, Knockback+, two-handed, Smash); Dragon Lash multiplies the total.
-    const force = (o.knockback + (o.knockbackAdd ?? 0)) * lash;
+    // Weapon tags ignore Strengthened/Weakened, except Smashing (Weighted T4): each net Strengthened stack adds half the base Knockback.
+    // Knockback adds up (base, Knockback+, two-handed, Smashing); Dragon Lash multiplies the total.
+    const smashed = o.smashKb ? ab.smashingForce(o.smashKb, stacks) : 0;
+    const force = (o.knockback + (o.knockbackAdd ?? 0) + smashed) * lash;
     const feet = forceFeet(force, target, false);
     const crunchFeet = ab.strength(attacker, 3) ? forceFeet(force, target, true) : 0;
-    extraHTML += `<div class="fs-notes">Knockback: up to ${force} Force → ${feet} ft${crunchFeet > feet ? ` (${crunchFeet} ft with Crunch Time)` : ""}${lash > 1 ? ` (Dragon Lash ×${lash})` : ""}</div>`;
+    extraHTML += `<div class="fs-notes">Knockback: up to ${force} Force → ${feet} ft${crunchFeet > feet ? ` (${crunchFeet} ft with Crunch Time)` : ""}${smashed ? ` (Smashing +${smashed})` : ""}${lash > 1 ? ` (Dragon Lash ×${lash})` : ""}</div>`;
     if (Math.max(feet, crunchFeet) > 0) kb = { attacker: attacker.uuid, target: target.uuid, force, feet, label: "Knockback" };
   }
   if (pierceNow) extraHTML += `<div class="fs-notes">Pierce ${pierceNow}${pierceNow !== o.pierce ? ` (${o.pierce} ${o.omega ? "with Omega" : "base"}: ${stackLabel(stacks)})` : ""}: ignores that much armor Limit</div>`;

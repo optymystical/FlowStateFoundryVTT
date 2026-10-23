@@ -381,3 +381,57 @@ export const PARTY_T4 = [
 ];
 PASSES["martial-t4"] = { id: "martial-t4", note: "Martial Theory T4 trees (Constitution, Curved, Longshot, Titanic Armor) up to T5.",
   party: PARTY_T4, monsters: MONSTERS_T1, encounters: encountersFor(MONSTERS_T1, 2) };
+
+/* -------------------------------------------- */
+/*  Pass 6: the Martial Theory T5 trees          */
+/* -------------------------------------------- */
+
+// Martial Theory T5 (15 SP: Weapon Master) unlocks Grappling, Thrasher and Unarmored; each character takes one of them to T5 (15): all 30 SP.
+// Weapon Master is exercised with multi-type weapons (`extraTypes`; the AI attacks as each type in turn). Unarmored characters wear no armor.
+const T5 = o => ({ "martial-theory": 5, ...o });
+const GRP = "martial-grappling-methods", THR = "martial-thrasher-weapons", UNA = "martial-unarmored";
+
+export const PARTY_T5 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank: a Heavy Thrasher that is also a Reach weapon (Windup, Overshield Strike, Thrasher Grapple, Get Over Here!), or a grappler (Lock Down, Disrupt, Living Weapon).",
+    stats: { con: 45, str: 30, will: 15 },
+    loadouts: [
+      { trees: T5({ [THR]: 5 }), armor: A("heavy", "steel"), weapons: [W("thrasher", "heavy", "steel", { primary: true, extraTypes: ["reach"] })] },
+      { trees: T5({ [GRP]: 5 }), armor: A("heavy", "steel"), weapons: [W("defender", "heavy", "steel", { primary: true })], grapple: true }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Duelist", role: "melee-dex", note: "Dexterity melee, unarmored (Dash, Leap, Speedy, Quicken, Unfettered), with a Light Bladed that is also Swift and Curved; or a Light Thrasher.",
+    stats: { dex: 45, con: 30, will: 15 },
+    loadouts: [
+      { trees: T5({ [UNA]: 5 }), armor: null, weapons: [W("bladed", "light", "steel", { primary: true, extraTypes: ["swift", "curved"] })] },
+      { trees: T5({ [THR]: 5 }), armor: A("medium", "hardLeather"), weapons: [W("thrasher", "light", "steel", { primary: true, extraTypes: ["circular"] })] }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Breaker", role: "melee-str", note: "Strength melee: a grappler with a Heavy Weighted that is also a Striker (Big Hands takes Size 4), or unarmored with it two-handed.",
+    stats: { str: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: T5({ [GRP]: 5 }), armor: A("medium", "hide"), weapons: [W("weighted", "heavy", "iron", { primary: true, extraTypes: ["striker"] })], grapple: true },
+      { trees: T5({ [UNA]: 5 }), armor: null, weapons: [W("weighted", "heavy", "iron", { primary: true, twoHanded: true, extraTypes: ["striker"] })] }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Marksman", role: "ranged", note: "Ranged, unarmored: a Light Rapid that is also an Assault weapon (Weapon Master), with Dash and Quicken; or a Light Thrasher backup.",
+    stats: { dex: 45, con: 25, str: 10, will: 10 },
+    loadouts: [
+      { trees: T5({ [UNA]: 5 }), armor: null, weapons: [W("rapid", "light", "steel", { primary: true, extraTypes: ["assault"] })] },
+      { trees: T5({ [THR]: 5 }), armor: A("light", "softLeather"), weapons: [W("rapid", "light", "steel", { primary: true, extraTypes: ["assault"] }), W("thrasher", "light", "steel")] }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support: a grappler holding the foe nearest an ally (Lock Down, Disrupt, Stunlock, Living Weapon), or a Heavy Thrasher that pulls foes in.",
+    stats: { str: 35, con: 35, dex: 20 },
+    loadouts: [
+      { trees: T5({ [GRP]: 5 }), armor: A("medium", "hardLeather"), weapons: [W("thrasher", "heavy", "copper", { primary: true })], grapple: true },
+      { trees: T5({ [THR]: 5 }), armor: A("medium", "hardLeather"), weapons: [W("thrasher", "heavy", "copper", { primary: true, extraTypes: ["weighted"] })] }
+    ]
+  }
+];
+PASSES["martial-t5"] = { id: "martial-t5", note: "Martial Theory T5 (Weapon Master) and its trees (Grappling, Thrasher, Unarmored) to T5.",
+  party: PARTY_T5, monsters: MONSTERS_T1, encounters: encountersFor(MONSTERS_T1, 2) };

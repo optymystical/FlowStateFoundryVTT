@@ -134,7 +134,9 @@ const bonusOf = sp => Math.floor(sp / 5);
 function weaponData(slot, stats, sp, natural) {
   const stat = (slot.weight === "heavy" ? stats.str : stats.dex) ?? 0;
   const grade = R.gradeFor(stat + bonusOf(sp));
-  const d = Cat.itemData(`weapon.${slot.type}.${slot.weight}.${slot.material}`, { grade, system: { equipped: false, twoHanded: !!slot.twoHanded, natural: !!natural } });
+  const d = Cat.itemData(`weapon.${slot.type}.${slot.weight}.${slot.material}`, { grade, system: { equipped: false, twoHanded: !!slot.twoHanded, natural: !!natural,
+    // Extra types (Weapon Master) are an identity field: they stick on a copy as an override of its catalog entry.
+    overrides: slot.extraTypes?.length ? [{ path: "system.extraTypes", value: slot.extraTypes }] : [] } });
   if (!d) throw new Error(`No catalog entry weapon.${slot.type}.${slot.weight}.${slot.material}`);
   return d;
 }
@@ -156,7 +158,7 @@ async function makeActor(spec, loadout, { party, folder }) {
   });
   const natural = !party && spec.natural !== false;
   const slots = loadout.weapons.filter(w => w.type !== "unarmed");
-  const items = [armorData(loadout.armor, spec.stats, sp, natural),
+  const items = [loadout.armor ? armorData(loadout.armor, spec.stats, sp, natural) : null,          // no armor: Unarmored
     ...slots.map(w => foundry.utils.mergeObject(weaponData(w, spec.stats, sp, natural), { "flags.flowstate.simPrimary": !!w.primary })),
     // Ammunition for guns (natural ones need none).
     ...(natural ? [] : slots.filter(w => WEAPON_TYPES[w.type]?.ranged).map(w => Cat.itemData(`ammo.${w.type}`, { system: { quantity: 100 } })))];
@@ -375,6 +377,19 @@ function treeOptions(actor, item, { me = null, target = null, pepper = 0 } = {})
     if (take(min)) o.fish = true;
     if (o.prepared && take(min)) o.snipe = true;                                                          // Snipe Hunt needs an Advantage (Prepared Shot gives one)
   }
+  // Martial T5 trees.
+  if (type === "thrasher") {
+    s.thr = (s.thr ?? 0) + 1;
+    const far = me && target ? dist(me, target) > reachOf(actor) + 0.01 : false;
+    const grabbable = (target?.actor?.system?.size ?? 3) <= (actor.system.size ?? 3);                     // a weapon grapple only takes your size or smaller
+    if (far && grabbable && take(2 * min)) o.getOverHere = true;                                      // pull them in from Farstrike reach
+    else if (grabbable && s.thr % 4 === 0) o.thrasherGrapple = true;                                  // every fourth swing holds them instead
+    o.windup = budget >= 2 * min + 10 ? "2" : budget >= min + 10 ? "1" : "0";
+    if (o.windup !== "0") take(Number(o.windup) * min);
+    if (take(min)) o.overshield = true;
+  }
+  const types = item?.system?.types ?? [];
+  if (types.length > 1) o.type = alt("wm", types)[0];                                               // Weapon Master: attack as each of its types in turn
   if (weight === "heavy" && type !== "unarmed" && take(2 * strMin)) o.heave = true;
   if (type !== "defender" && actor.items.some(i => i.type === "weapon" && i.system.held && i.system.weaponType === "defender") && take(min)) o.swordBoard = true;
   if (take(strMin)) o.ho = ["2", "1"];
@@ -456,6 +471,7 @@ async function answerDefense() {
       if (has("perfectBlock") && !handled.has(`${key}|pb`) && energy >= 15) { choice = "perfectBlock"; handled.add(`${key}|pb`); }
       else if (has("perfectParry") && !handled.has(`${key}|pp`)) { choice = "perfectParry"; handled.add(`${key}|pp`); }
       else if (has("distract") && !handled.has(`${key}|df`) && energy >= 10) { choice = "distract"; handled.add(`${key}|df`); }
+      else if (has("dash") && !handled.has(`${key}|dash`) && energy >= 5) { choice = "dash"; handled.add(`${key}|dash`); }
       else if (has("closeQuarters") && !handled.has(`${key}|cq`) && energy >= 10) { choice = "closeQuarters"; handled.add(`${key}|cq`); }
       else if (has("shift") && !handled.has(`${key}|shift`) && energy >= 10) { choice = "shift"; handled.add(`${key}|shift`); }
       else if (has("shift") && !handled.has(`${key}|shift2`) && energy >= 20 && tier(t, "martial-light-armor") >= 4) { choice = "shift"; handled.add(`${key}|shift2`); }
@@ -516,7 +532,7 @@ async function answerCard() {
     const tsRow = doc.querySelector(".fs-turn-start-row");
     if (tsRow) {
       const who = ownerOf(tsRow.querySelector(".fs-turn-start") ?? tsRow);
-      for (const op of ["maintain", "berserk", "properStance"]) {
+      for (const op of ["maintain", "berserk", "properStance", "quicken"]) {
         if (!tsRow.querySelector(`.fs-turn-start[data-op="${op}"]`) || !once(`ts:${op}`, true)) continue;
         if (op === "berserk" && tsRow.querySelector('.fs-turn-start[data-op="maintain"]')) continue;
         if (!who || !sim(who).id || energyOf(who) < 25) { if (who) note(who, `${op}:skipped`); continue; }
@@ -729,16 +745,29 @@ async function stances(actor, me) {
     const cost = effStat(actor, s.fist === "Dip" ? "dex" : "str");
     if (energyOf(actor) >= cost + 20) await runRow(actor, new RegExp(`^${s.fist}`));
   }
-  if (tier(actor, "martial-light-armor") >= 3 && !s.leapt && energyOf(actor) >= 20 && actor.system.ap.value >= 3) { s.leapt = true; await runRow(actor, /^Leap/); }
+  const bare = !actor.items.some(i => i.type === "armor" && i.system.equipped);
+  if ((tier(actor, "martial-light-armor") >= 3 || (bare && tier(actor, "martial-unarmored") >= 2)) && !s.leapt && energyOf(actor) >= 20 && actor.system.ap.value >= 3) { s.leapt = true; await runRow(actor, /^Leap/); }
   if (tier(actor, "martial-dexterity-methods") >= 4 && !s.spotted && energyOf(actor) >= 20) {
     const prey = foesOf(me.parent, me).sort((a, b) => dist(me, a) - dist(me, b))[0];
     if (prey) { s.spotted = true; setTargets(prey); await runRow(actor, /^Spot Weakness/); }
   }
+  await holdTight(actor);
+  if (!sim(actor).party && actor.getFlag("flowstate", "grappledBy") && actor.system.ap.value >= 2) { note(actor, "breakFree"); await runRow(actor, /^Break Free/); }
   if (tier(actor, "martial-rapid-weapons") >= 3) {
     const gun = actor.items.find(i => i.type === "weapon" && i.system.held && i.system.weaponType === "rapid");
     const prey = gun ? foesOf(me.parent, me).filter(f => dist(me, f) <= (gun.system.profile?.range ?? 0)).sort((a, b) => dist(me, a) - dist(me, b))[0] : null;
     if (prey && energyOf(actor) >= minOf(gun.system.profile?.capped) + 10) { setTargets(prey); await runRow(actor, /^Mark$/); }
   }
+}
+
+/** Lock Down (Grappling T1) and Disrupt (T2) what this creature holds, while Energy allows (any time: right after the grapple lands too). */
+async function holdTight(actor) {
+  const v = Act.grappledBy(actor).find(x => !down(x));
+  if (!v || tier(actor, "martial-grappling-methods") < 1) return;
+  const vTok = v.getActiveTokens?.()[0]?.document;
+  if (!vTok) return;
+  if (v.getFlag?.("flowstate", "lockedDown") !== actor.uuid && energyOf(actor) >= effStat(v, "str") + 10) { setTargets(vTok); await runRow(actor, /^Lock Down/); }
+  if (tier(actor, "martial-grappling-methods") >= 2 && !v.getFlag?.("flowstate", "disrupted") && energyOf(actor) >= minOf(effStat(v, "str")) + 10) { setTargets(vTok); await runRow(actor, /^Disrupt/); }
 }
 
 /** End of the AI's turn: Eviscerate (Swift T4) if it's on offer, then Recover Energy with the AP left while Energy is low. */
@@ -789,12 +818,12 @@ async function actTurn(actor, me) {
     // Support: grapple the foe nearest an ally (Heavy Unarmed: damage + grapple), once nothing is held.
     if (sim(actor).grapple && unarmed && ap >= 3 && ab.freeFists(actor) >= 1 && !Act.grappledBy(actor).length) {
       const allies = alliesOf(me.parent, me);
-      const prey = foes.filter(f => (f.actor.system.size ?? 3) <= (actor.system.size ?? 3))
+      const prey = foes.filter(f => (f.actor.system.size ?? 3) <= (actor.system.size ?? 3) + (tier(actor, "martial-grappling-methods") >= 3 ? 1 : 0))          // Big Hands
         .sort((a, b) => Math.min(...allies.map(x => dist(x, a)), 999) - Math.min(...allies.map(x => dist(x, b)), 999))[0];
       if (prey) {
         const reach = reachOf(actor);
         if (dist(me, prey) > reach + 0.01) { if (!(await approach(actor, me, prey, reach))) { /* fall through to weapons */ } else continue; }
-        if (dist(me, prey) <= reach + 0.01) { s.grapples = (s.grapples ?? 0) + 1; if (await attack(actor, me, { item: unarmed, ranged: false, range: reach }, prey, { grapple: true, weight: "heavy" })) continue; }
+        if (dist(me, prey) <= reach + 0.01) { s.grapples = (s.grapples ?? 0) + 1; if (await attack(actor, me, { item: unarmed, ranged: false, range: reach }, prey, { grapple: true, weight: "heavy" })) { await holdTight(actor); continue; } }
       }
     }
 
@@ -854,10 +883,25 @@ async function actTurn(actor, me) {
         s.threw = true;
         if (await attack(actor, me, spare, target, { mode: "throw" })) continue;
       }
-      if (!reachable && tier(actor, "martial-light-armor") >= 2 && rpOf(actor) >= 1 && !actor.getFlag("flowstate", "freeMove") && energyOf(actor) >= 10) await runRow(actor, /^Dash/);
+      const bare = !actor.items.some(i => i.type === "armor" && i.system.equipped);
+      if (!reachable && (tier(actor, "martial-light-armor") >= 2 || (bare && tier(actor, "martial-unarmored") >= 1)) && rpOf(actor) >= 1 && !actor.getFlag("flowstate", "freeMove") && energyOf(actor) >= 10) await runRow(actor, /^Dash/);
       const moved = await approach(actor, me, target, melee.range);
       if (!moved) return;
       continue;
+    }
+    // Living Weapon (Grappling T5): swing what you hold at another foe in reach, every other attack.
+    const victim = Act.grappledBy(actor).find(v => !down(v) && !v.getFlag?.("flowstate", "grappleWeapon"));
+    if (victim && tier(actor, "martial-grappling-methods") >= 5 && ap >= 3 && (s.living ?? 0) * 2 <= (s.attacks ?? 0)) {
+      const other = foes.filter(f => f.actor?.uuid !== victim.uuid && dist(me, f) <= reachOf(actor) + 0.01)[0];
+      if (other) {
+        s.living = (s.living ?? 0) + 1;
+        setTargets(other);
+        const before = new Set(game.messages.keys());
+        if (await runRow(actor, /^Living Weapon/)) {
+          const m = await waitFor(() => game.messages.contents.find(x => !before.has(x.id) && x.getFlag("flowstate", "attack")?.attacker === actor.uuid), 3000);
+          if (m) { s.attacks++; await settle(); continue; }
+        }
+      }
     }
     // Bodyslam (Heavy Armor T3, 3 AP): every other attack when it's in reach and affordable (Launch, T5, every other Bodyslam).
     if ((tier(actor, "martial-heavy-armor") >= 3 || tier(actor, "martial-titanic-armor") >= 2) && ap >= 3 && dist(me, target) <= reachOf(actor) + 0.01 && energyOf(actor) >= minOf(effStat(actor, "con")) && (s.slams ?? 0) * 2 < (s.attacks ?? 0)) {
@@ -870,6 +914,7 @@ async function actTurn(actor, me) {
       }
     }
     if (!(await attack(actor, me, melee, target))) return;
+    await holdTight(actor);                                   // a Thrasher Grapple or Get Over Here! may have just grabbed them
   }
 }
 

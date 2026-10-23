@@ -660,7 +660,8 @@ export async function chantFortune({ attacker, o, m, entry, reroll }) {
   if (!ans || !(await pay(attacker, { energy: cost }, "Chant"))) return null;
   const r = await new Roll(poolFormula(1, reroll.die, reroll.net ?? 0)).evaluate();
   const result = resolveAttack(r.total, reroll.dodge);
-  await post(attacker, { title: `${esc(attacker.name)} — Chant`, rolls: [r], body: `<div class="fs-notes">Chant: new attack roll <strong>${r.total}</strong> against a dodge of ${reroll.dodge}: <strong>${result.outcome}</strong>.</div>` });
+  // Fortune can't crit: its band decides what a hit does, so the reroll is only a hit or a miss.
+  await post(attacker, { title: `${esc(attacker.name)} — Chant`, rolls: [r], body: `<div class="fs-notes">Chant: new attack roll <strong>${r.total}</strong> against a dodge of ${reroll.dodge}: <strong>${result.hit ? "Hit" : "Miss"}</strong> (Fortune's Bands decide the rest).</div>` });
   return { total: r.total, result };
 }
 
@@ -677,7 +678,8 @@ export async function rerollAct(x) {
   const result = resolveAttack(r.total, x.re.dodge);
   const label = chant ? "Chant" : "Make Clear";
   let riposteFlags = {};
-  let html = `<div class="fs-notes">${label}: new attack roll <strong>${r.total}</strong> against a dodge of ${x.re.dodge}${x.re.keepNet ? "" : " (no Advantage/Disadvantage kept)"}: <strong>${result.outcome}</strong>.</div>`;
+  const outcome = chant && wondersE.isFortune(x.m) ? (result.hit ? "Hit (Fortune's Bands decide the rest)" : "Miss") : result.outcome;          // Fortune can't crit
+  let html = `<div class="fs-notes">${label}: new attack roll <strong>${r.total}</strong> against a dodge of ${x.re.dodge}${x.re.keepNet ? "" : " (no Advantage/Disadvantage kept)"}: <strong>${outcome}</strong>.</div>`;
   if (chant && wondersE.isFortune(x.m)) {
     // Fortune can't crit: the reroll lands by its band (under one half hits you instead, whether or not it hit).
     const o = { stacks: x.re.stacks ?? 0, area: false, melee: !!x.re.melee };

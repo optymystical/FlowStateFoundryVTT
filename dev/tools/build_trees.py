@@ -11,6 +11,7 @@ def clean(s):
     s = s.replace('\\*', '*').replace('\\[', '[').replace('\\]', ']').replace('\\#', '#').replace('\\\\', '')
     s = re.sub(r'\\([!*\[\]#_.()+=<>~`|{}-])', r'\1', s)   # any other Markdown escape (e.g. "Heave\!")
     s = re.sub(r'\*+', '', s)            # drop bold/italic markers (the doc's bolding is inconsistent)
+    s = re.sub(r'\[([^\]]+)\]\(https?://[^)]*\)', r'\1', s)   # a link to another doc ("[Combo Spell](https://docs...)") keeps only its words
     s = s.replace('&#10;', ' ')
     s = re.sub(r'\s+', ' ', s).strip()
     return re.sub(r'^#+\s*', '', s)     # some doc bullets are heading-styled ("# Minigun:")

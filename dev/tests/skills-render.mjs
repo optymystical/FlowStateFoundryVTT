@@ -69,5 +69,14 @@ const it = iconTenet({ tenet: "mental-below-nightmare:weight", profile: { tenet:
 ok(it?.mult === 3 && /45 Slow stacks/.test(it.text) && !/15 Slow stacks/.test(it.text), "Weight at ×3: 45 Slow stacks on the Icon sheet and in the Equipment table");
 ok(/15 Slow stacks/.test(iconTenet({ tenet: "mental-below-nightmare:weight", profile: { tenet: { mult: 1 } } }).text) && iconTenet({ tenet: "" }) === null, "×1 reads as the doc; no Tenet, nothing");
 
+console.log("== A Wonder's Tenet in the Skills tab");
+const below = mk({ "mental-theory": 1, "mental-below-nightmare": 1 });
+let tv = await view(below, { tree: "mental-below-nightmare" });
+const weightOf = ctx => ctx.skillView.tree.tiers.flatMap(t => t.entries).find(e => e.name === "Weight")?.text ?? "";
+ok(/15 Slow/.test(weightOf(tv.ctx)) && /shown as printed/.test(tv.ctx.skillView.scaleNote), "Not your active Tenet: shown as printed");
+below.document.system.icon = { system: { tenet: "mental-below-nightmare:weight", profile: { valid: true, kind: "negate", tenet: { wonder: "mental-below-nightmare", mult: 3 } } } };
+tv = await view(below);
+ok(/45 Slow/.test(weightOf(tv.ctx)) && /Tenet multiplier \(×3\)/.test(tv.ctx.skillView.scaleNote), "Your Icon's Tenet: its numbers × the Tenet multiplier, not Wonder Power");
+
 console.log(fails ? `${fails} FAILED` : "All Skills tab checks passed");
 if (fails) process.exit(1);

@@ -1080,6 +1080,12 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     const next = tree ? skills.nextTier(state, tree, sys.skills.unspent, { inCombat }) : null;
     const ectx = energyContext(this.document);
     const tp = treePower(this.document, tree);
+    // A Wonder's Tenet scales with the Tenet multiplier of the Icon that carries it (its Wonder's stat ÷ 10, capped by the Icon's Grade), not Wonder Power;
+    // a Tenet you don't have active is shown as printed.
+    const tenet = tree ? mentalRules.wonderById(tree.id)?.tenet ?? null : null;
+    const tenetName = tenet?.name ?? null;
+    const tenetMult = tenet ? wonders.tenetFor(this.document, tenet.id)?.mult ?? null : null;
+    const tenetTp = tenetMult ? { kind: "Tenet", power: tenetMult } : null;
     const mark = r => ({ ...r, selected: r.id === sel.tree });
     // The list's groups collapse (remembered per character, like the sheet's other sections). A search shows every group open.
     const collapsed = collapsedFor(this.document.uuid);
@@ -1094,7 +1100,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         filter: sel.filter, canPin: this.isEditable,
         empty: !nav.pinned.length && !nav.yours.length && !nav.unlock.length },
       weaponNote: weaponTreeNote(tree, state),
-      scaleNote: tp?.power > 1 ? `Numbers are worked out for your ${tp.kind} Power ${tp.power}.` : "",
+      scaleNote: [tp?.power > 1 ? `Numbers are worked out for your ${tp.kind} Power ${tp.power}.` : "", tenetName ? (tenetMult ? `${tenetName} uses your Icon's Tenet multiplier (×${tenetMult}).` : `${tenetName} is shown as printed (it isn't your active Tenet).`) : ""].filter(Boolean).join(" "),
       lockedNote: tree && !skills.isAvailable(state, tree) ? `Opens at ${skills.theoryFor(tree.archetype)?.name} Tier ${tree.requires}.` : "",
       tree: tree && {
         id: tree.id, name: tree.name, current, max: skills.MAX_TIER, codex: codexId.tree(tree.id), pinned: pinned.includes(tree.id),
@@ -1103,7 +1109,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
           const owned = t.tier <= current;
           const isNext = t.tier === current + 1;
           return {
-            ...t, entries: t.entries.map(e => ({ ...scaleEntry(withEnergy(e, treeEnergyContext(ectx, tree)), tp), codex: codexId.entry(tree.id, e.name) })), owned, isNext, locked: !owned && !isNext,
+            ...t, entries: t.entries.map(e => ({ ...scaleEntry(withEnergy(e, treeEnergyContext(ectx, tree)), e.name && e.name === tenetName ? tenetTp : tp), codex: codexId.entry(tree.id, e.name) })), owned, isNext, locked: !owned && !isNext,
             free: t.tier === 0,
             cost: t.tier, canUnlock: isNext && next?.ok && this.isEditable,
             reason: isNext ? next.reason : `Unlock Tier ${t.tier - 1} first.`,

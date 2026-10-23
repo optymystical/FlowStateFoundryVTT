@@ -1689,7 +1689,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Core Spells",
-      "text": "Every Magic Skill Tree (aka Spell School) is built around one Core Spell. As you advance, you learn Spell Mods that reshape that Core Spell. If you branch into another School, you can combine their Core Spells into a unique [Combo Spell](https://docs.google.com/document/u/0/d/1lyNQtEPZWuIpjxqvD3BIa_ZPFD25iTxi3YMp78hVAGY/edit), which can then use Mods from either parent School."
+      "text": "Every Magic Skill Tree (aka Spell School) is built around one Core Spell. As you advance, you learn Spell Mods that reshape that Core Spell. If you branch into another School, you can combine their Core Spells into a unique Combo Spell, which can then use Mods from either parent School."
      },
      {
       "name": "Spell Mods",

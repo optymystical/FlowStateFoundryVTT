@@ -195,11 +195,13 @@ function entryPage(tree, tier, e) {
     spell ? ["Threshold", threshold] : null, spell?.attack ? ["Attack", spell.attack] : null,
     spell ? ["Tags", [spell.universal && "Universal", spell.stackable && "Stackable", spell.replacement && "Replacement", spell.uncombinable && "Uncombinable"].filter(Boolean).join(", ")] : null,
     mode || tenet ? ["Wonder", `${KINDS[wonder.kind]?.label} · scales with ${KINDS[wonder.kind]?.statLabel}`] : null]));
-  const parts = entryParts(mode ? mode.base : e.text, { spell: !!spell, name: tree.archetype === "mental" ? e.name : null });
+  // A Mode's text holds its sub-points (Cultivate's Flourish and Thrift): they're listed under it instead.
+  const modeBase = mode ? (e.sub ?? []).reduce((t, s) => t.replace(s, ""), mode.base).replace(/\s{2,}/g, " ").trim() : null;
+  const parts = entryParts(mode ? modeBase : e.text, { spell: !!spell, name: tree.archetype === "mental" ? e.name : null });
   blocks.push(md(parts.main));
+  if (e.sub?.length) blocks.push({ kind: "md", md: e.sub.map(s => `- ${emphasize(boldSpans(s, tree.archetype === "mental" ? e.name : null))}`).join("\n") });
   for (const x of parts.extra) blocks.push({ kind: "callout", label: x.label, md: x.text });
   if (mode?.enhanced) blocks.push({ kind: "callout", label: "Enhanced", md: emphasize(boldSpans(mode.enhanced, e.name)) });
-  if (e.sub?.length && !mode) blocks.push({ kind: "md", md: e.sub.map(s => `- ${emphasize(s)}`).join("\n") });          // a Mode's sub-points are in its text already
   if (spell?.kind === "core") {
     const me = school(tree.id);
     const pairs = Object.keys(COMBO_PAIRS).filter(k => k.split("+").includes(me));

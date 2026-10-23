@@ -22,7 +22,7 @@
 .flowstate .fs-res-sub { font-size: .8em; opacity: .75; }
 .flowstate .fs-warn { color: #c0392b; font-weight: bold; font-size: .85em; margin: 4px 0; }
 
-.flowstate .fs-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.flowstate .fs-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
 .flowstate .fs-stat-group { padding: 6px 10px; }
 .flowstate .fs-stat-group:first-child { padding-left: 0; }
 .flowstate .fs-stat-group:last-child { padding-right: 0; }
@@ -48,8 +48,8 @@
 .flowstate .fs-builder { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
 .flowstate .fs-field { display: flex; flex-direction: column; gap: 2px; }
 .flowstate .fs-field label { font-size: .85em; font-weight: 600; }
-.flowstate .fs-checks-row { flex-direction: row; gap: 12px; align-items: center; grid-column: 1 / -1; }
-.flowstate .fs-checks-row label { font-weight: normal; }
+.flowstate .fs-checks-row { flex-direction: row; flex-wrap: wrap; gap: 4px 12px; align-items: center; grid-column: 1 / -1; }
+.flowstate .fs-checks-row label { font-weight: normal; white-space: nowrap; }          /* a label ("Rapid (ranged)") never splits from its box */
 .flowstate .fs-kv { display: grid; grid-template-columns: 8em 1fr; gap: 3px 10px; align-items: center; }
 .flowstate .fs-kv > span:nth-child(odd) { font-weight: 600; opacity: .8; }
 .flowstate .fs-wear { width: 4em; }
@@ -147,7 +147,7 @@
 .flowstate .fs-action-btn { width: 30px; height: 26px; padding: 0; line-height: 24px; text-align: center; }
 .flowstate .fs-action-info { display: inline-block; opacity: .5; }
 .flowstate .fs-action-name { font-weight: 600; }
-.flowstate .fs-action-detail { font-size: .85em; opacity: .75; }
+.flowstate .fs-action-detail { font-size: .85em; opacity: .9; }
 .flowstate .fs-action-cost { font-size: .85em; text-align: right; font-weight: 600; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px; }
 .flowstate .fs-action.fs-dim { opacity: .5; }
 
@@ -189,7 +189,7 @@
 .flowstate .fs-inline-row input { flex: 1; }
 .flowstate .fs-budget { margin: 0; padding: 6px 10px; border-radius: 6px; background: rgba(46, 204, 113, .15); }
 .flowstate .fs-budget.fs-over { background: rgba(192, 57, 43, .2); }
-.flowstate .fs-wizard-stat { display: grid; grid-template-columns: 1fr 4.5em 4.5em; gap: 4px; align-items: center; margin-bottom: 4px; }
+.flowstate .fs-wizard-stat { display: grid; grid-template-columns: minmax(0, 1fr) 4.2em max-content; gap: 4px; align-items: center; margin-bottom: 4px; }
 .flowstate .fs-wizard-item { border: 1px solid var(--color-border, #999); border-radius: 6px; padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; }
 .flowstate .fs-wizard-item header { display: flex; justify-content: space-between; align-items: center; }
 .flowstate .fs-wizard-effect { font-style: italic; }
@@ -406,7 +406,7 @@
 .fs-codex .fs-codex-page > header > div { flex: 1; }
 .fs-codex .fs-codex-page > header button { flex: 0 0 28px; width: 28px; }
 .fs-codex .fs-codex-page > header img { border: none; }
-.fs-codex-badge { font-size: 0.55em; font-weight: normal; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 10px; border: 1px solid var(--codex-accent); color: var(--codex-accent); }
+.fs-codex-badge { display: inline-block; line-height: 1.3; vertical-align: middle; font-size: 0.55em; font-weight: normal; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 10px; border: 1px solid var(--codex-accent); color: var(--codex-accent); }
 /* Up to the parent page */
 .fs-codex-content .fs-codex-up { margin: 0 0 8px; font-size: 0.9em; opacity: 0.85; }
 /* The stat block: label | value pairs in a tinted box */
@@ -496,3 +496,5 @@ a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-throug
 .fs-dialog .fs-cast-panel .fs-cast-mod:has(> input:checked) { background: rgba(201,89,63,.08); }
 .fs-dialog .fs-cast-preview { padding: 6px 9px; border: none; border-left: 3px solid var(--color-border-highlight, #c9593f); border-radius: 0 5px 5px 0; background: rgba(127,127,127,.08); }
 .fs-dialog .hint { margin: 2px 0 0; font-size: .85em; opacity: .75; }
+/* Foundry draws an unticked checkbox in the background colour: on the option cards it vanished, so it gets an outline. */
+.fs-dialog input[type="checkbox"]:not(:checked) { box-shadow: inset 0 0 0 1px var(--color-border-light-1, rgba(220,220,220,.55)); border-radius: 3px; }

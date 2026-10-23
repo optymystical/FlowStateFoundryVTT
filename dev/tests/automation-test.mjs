@@ -64,6 +64,7 @@ seq = [30]; await actions.rollWeaponAttack(duel, blade);
 const atk = messages.at(-1);
 ok(/name="fu"/.test(seen) && /Solitary follow-up/.test(seen), "the dialog offers the Solitary follow-up to plan");
 ok(duel.getFlag("flowstate", "remember")?.["atk:Blade:main"]?.mode === "strike" && duel.getFlag("flowstate", "remember")["atk:Blade:main"].fu === "0|solitary:Blade", "this attack's picks are remembered (the follow-up plan too)");
+ok(Object.keys(duel.getFlag("flowstate", "remember")["atk:Blade:main"]).includes("fu~0~mode") && !Object.keys(duel.getFlag("flowstate", "remember")["atk:Blade:main"]).some(k => k.includes(".")), "…stored without dots in the keys (Foundry would nest them)");
 ok(atk.flags.flowstate.attack.opts.autoFollowup?.pick === "solitary:Blade" && atk.flags.flowstate.attack.opts.autoFollowup.user === "p1", "the planned follow-up rides on the attack");
 
 console.log("== The planned follow-up is made once the exchange is resolved");

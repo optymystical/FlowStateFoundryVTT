@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.79.2:** An attack dialog that planned a follow-up now remembers its picks too (the follow-up's fields broke the save).
+
 **0.79.1:** Auto-Dodge and Auto-Limber run on exactly one client (the character's first connected player, else the active GM). With two GMs connected, both used to answer, so a GM's creature dodged twice and paid for Shift twice.
 
 **0.79.0:** From the updated Rules doc: the Pain Threshold is half of max HP (was a quarter), so creatures fall unconscious after losing half their HP and fights end sooner. Everything measured against it moves with it: Impale needs more than a quarter of max HP in direct damage, and Slow/Haste stacks need twice as many to change movement.

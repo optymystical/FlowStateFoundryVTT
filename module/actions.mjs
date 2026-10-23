@@ -270,15 +270,17 @@ export async function withAutoAnswers(prefix, values, fn) {
 const remembered = (actor, key) => (key ? actor?.getFlag?.("flowstate", "remember")?.[key] ?? null : null);
 async function rememberValues(actor, key, values) {
   if (!actor?.isOwner || !key) return;
-  const keep = auto.rememberable(values);
-  if (Object.keys(keep).length) await actor.setFlag("flowstate", "remember", { [key]: keep }).catch(() => null);
+  // Field names with dots (a planned follow-up's "fu.0.mode") are stored with "~": Foundry reads a dot in a flag key as nesting.
+  const keep = Object.fromEntries(Object.entries(auto.rememberable(values)).map(([k, v]) => [k.replaceAll(".", "~"), v]));
+  if (Object.keys(keep).length) await actor.setFlag("flowstate", "remember", { [key]: keep }).catch(err => console.warn("Flow State | remembering a dialog", err));
 }
 /** Put remembered values back into a dialog's fields (a value that no longer fits a field is left alone). */
 function prefill(root, values) {
   const el = root instanceof HTMLElement ? root : root?.[0];
   if (!el?.querySelectorAll || !values) return;
-  for (const [name, v] of Object.entries(values)) {
-    for (const f of el.querySelectorAll(`[name="${String(name).replace(/"/g, "")}"]`)) {
+  for (const [stored, v] of Object.entries(values)) {
+    const name = String(stored).replaceAll("~", ".");
+    for (const f of el.querySelectorAll(`[name="${name.replace(/"/g, "")}"]`)) {
       if (f.type === "checkbox") f.checked = !!v;
       else if (f.tagName === "SELECT") { if ([...f.options].some(o => o.value === String(v))) f.value = String(v); }
       else if (f.type !== "hidden") f.value = v;

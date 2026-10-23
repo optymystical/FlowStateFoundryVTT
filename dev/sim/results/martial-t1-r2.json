@@ -1,0 +1,3895 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 220,
+  "winner": "party",
+  "pass": "martial-t1-r2",
+  "rounds": 5,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 64,
+  "knockbacks": {
+   "into": 12
+  },
+  "used": {
+   "opt:pepper=1": 15,
+   "opt:spinDown": 12,
+   "defend:dodge": 235,
+   "quickload:speed": 12,
+   "Parry": 3,
+   "Brace": 4,
+   "limber": 43,
+   "opt:remise": 3,
+   "recoverEnergy": 3,
+   "defend:closeQuarters": 2,
+   "defend:shift": 2,
+   "limber:skipped": 123,
+   "riposte": 4,
+   "opt:spinCycle": 3,
+   "opt:slam=both": 3,
+   "Shatter": 1,
+   "opt:grapple": 1,
+   "opt:twinFang=adv": 6,
+   "opt:heavyTech=kick": 2,
+   "opt:jab": 1,
+   "flowLikeWater": 1,
+   "opt:quickStrike": 6,
+   "cutBack": 10,
+   "opt:dir=into": 12,
+   "opt:heavyTech=dragon": 1,
+   "opt:whirlwind=blender": 1,
+   "opt:slam=knockback": 1,
+   "quickload:pepper": 2
+  },
+  "hp": {
+   "Sim Bulwark#CDSZ": "702/702",
+   "Sim Duelist#otmq": "486/567",
+   "Sim Breaker#4qq0": "530/567",
+   "Sim Marksman#yVm4": "477/477",
+   "Sim Warden#35if": "432/432",
+   "Sim Goblin Hacker#AWut": "53/423",
+   "Sim Goblin Hacker#uU5y": "82/423",
+   "Sim Goblin Hacker#s5Hn": "99/423",
+   "Sim Goblin Stabber#26J4": "87/423",
+   "Sim Goblin Stabber#WCBw": "67/423",
+   "Sim Goblin Stabber#1plh": "103/423",
+   "Sim Goblin Lasher#R9kr": "70/423",
+   "Sim Goblin Lasher#0Zhs": "83/423",
+   "Sim Goblin Basher#dO9m": "99/423",
+   "Sim Goblin Basher#zY65": "98/423"
+  },
+  "down": [
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Lasher",
+   "Sim Goblin Lasher",
+   "Sim Goblin Basher",
+   "Sim Goblin Basher"
+  ],
+  "weapons": {
+   "Light Rapid": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 7,
+    "damage": 788,
+    "ap": 30,
+    "kills": 2,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Heavy Bladed (2H)": {
+    "attacks": 9,
+    "followups": 11,
+    "hits": 17,
+    "crits": 7,
+    "misses": 12,
+    "damage": 1098,
+    "ap": 33,
+    "kills": 3,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Light Thrasher": {
+    "attacks": 29,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 24,
+    "damage": 53,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "Goblin Lasher"
+    ]
+   },
+   "Heavy Striker": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Goblin Hacker"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 7,
+    "followups": 7,
+    "hits": 15,
+    "crits": 8,
+    "misses": 7,
+    "damage": 292,
+    "ap": 21,
+    "kills": 1,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 25,
+    "followups": 24,
+    "hits": 8,
+    "crits": 0,
+    "misses": 41,
+    "damage": 26,
+    "ap": 50,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 1,
+    "followups": 1,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 76,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 6,
+    "followups": 1,
+    "hits": 5,
+    "crits": 4,
+    "misses": 2,
+    "damage": 151,
+    "ap": 12,
+    "kills": 1,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 9,
+    "followups": 14,
+    "hits": 15,
+    "crits": 8,
+    "misses": 8,
+    "damage": 274,
+    "ap": 38,
+    "kills": 1,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 2,
+    "followups": 21,
+    "hits": 25,
+    "crits": 12,
+    "misses": 4,
+    "damage": 710,
+    "ap": 8,
+    "kills": 2,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Weighted": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 18,
+    "damage": 39,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Goblin Basher"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 49,
+    "absorbed": 339
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 84
+   },
+   "Medium Armor (Hide)": {
+    "hits": 2,
+    "absorbed": 36
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Marksman",
+    "dealt": 788,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 370,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 1098,
+    "taken": 37,
+    "hits": 17,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 336,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "dealt": 16,
+    "taken": 353,
+    "hits": 3,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 324,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 292,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 17,
+    "taken": 320,
+    "hits": 4,
+    "attacks": 19
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 9,
+    "taken": 356,
+    "hits": 1,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 227,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 984,
+    "taken": 81,
+    "hits": 40,
+    "attacks": 46
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 0,
+    "taken": 325,
+    "hits": 3,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 341,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "dealt": 37,
+    "taken": 340,
+    "hits": 2,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 39,
+    "taken": 324,
+    "hits": 4,
+    "attacks": 10
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 94.99561295870001,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 12,
+     "recoverEnergy": 1,
+     "defend:closeQuarters": 1,
+     "defend:shift": 2,
+     "defend:dodge": 43,
+     "limber:skipped": 41,
+     "riposte": 2
+    },
+    "turnMoved": 11.180339887498949
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14
+    },
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 5,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 12,
+    "used": {
+     "defend:dodge": 14
+    },
+    "knockbacks": {
+     "into": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 20.615528128088304,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 20.615528128088304,
+    "used": {
+     "defend:dodge": 10
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 75,
+    "attacks": 14,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 12,
+     "limber:skipped": 5,
+     "recoverEnergy": 1,
+     "defend:dodge": 2
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 20.615528128088304,
+    "attacks": 19,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 0,
+    "used": {
+     "defend:dodge": 19
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 18,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "used": {
+     "defend:dodge": 10
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 100,
+    "attacks": 8,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 6,
+     "flowLikeWater": 1,
+     "limber:skipped": 1,
+     "recoverEnergy": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "grapples": 1,
+    "lastTech": "kick",
+    "shank": 0
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 80.15609770940699,
+    "attacks": 34,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 13,
+     "defend:closeQuarters": 1,
+     "defend:dodge": 64,
+     "cutBack": 10,
+     "limber:skipped": 76,
+     "riposte": 2
+    },
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 20.615528128088304,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "ctl": 1,
+    "shank": 2,
+    "used": {
+     "defend:dodge": 15
+    },
+    "knockbacks": {
+     "into": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15.811388300841898,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 15.811388300841898,
+    "used": {
+     "defend:dodge": 17
+    }
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 5,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 12,
+    "used": {
+     "defend:dodge": 9
+    },
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 26.925824035672523,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "ctl": 1,
+    "shank": 2,
+    "knockbacks": {
+     "into": 4
+    },
+    "used": {
+     "defend:dodge": 9
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 1,
+    "martial-balanced-weapons": 5,
+    "martial-medium-armor": 4
+   },
+   "Sim Duelist": {
+    "martial-theory": 1,
+    "martial-swift-weapons": 5,
+    "martial-bladed-weapons": 4,
+    "martial-medium-armor": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 1,
+    "martial-bladed-weapons": 5,
+    "martial-medium-armor": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 1,
+    "martial-rapid-weapons": 5,
+    "martial-swift-weapons": 4
+   },
+   "Sim Warden": {
+    "martial-theory": 1,
+    "martial-brawling-methods": 5,
+    "martial-medium-armor": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Chitin) G6",
+    "Heavy Balanced (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Swift (Steel) G6",
+    "Light Bladed (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Bladed (Steel) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Soft Leather) G4",
+    "Light Rapid (Steel) G6",
+    "Light Swift (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Hacker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Striker (Iron)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Reach (Hardwood)"
+   ],
+   "Sim Goblin Lasher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Weighted (Hardwood)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Chitin): 300/300",
+    "Heavy Balanced (Steel): 720/720"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 96/180",
+    "Light Swift (Steel): 270/270",
+    "Light Bladed (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Medium Armor (Hide): 54/90",
+    "Heavy Bladed (Steel): 958/1080"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Soft Leather): 60/60",
+    "Light Rapid (Steel): 270/270",
+    "Light Swift (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Goblin Hacker": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Heavy Striker (Iron): 300/300"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Light Reach (Hardwood): 150/150"
+   ],
+   "Sim Goblin Lasher": [
+    "Light Armor (Soft Leather): 24/60",
+    "Light Thrasher (Hardwood): 150/150"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Light Weighted (Hardwood): 150/150"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Light Rapid (Steel)": 15,
+    "wait: Light Rapid (Steel) is empty": 14,
+    "prompt: Heavy Bladed (Steel)": 9,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up (Titan Weapon, Dis)": 9,
+    "prompt: Light Thrasher (Hardwood)": 24,
+    "prompt: Shift": 2,
+    "prompt: Heavy Striker (Iron)": 6,
+    "prompt: Heavy Bladed (Steel) — Riposte": 2,
+    "prompt: Heavy Balanced (Steel)": 7,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 7,
+    "prompt: Light Reach (Hardwood)": 25,
+    "prompt: Light Reach (Hardwood) — Solitary follow-up (Dis)": 24,
+    "prompt: Unarmed": 7,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 1,
+    "prompt: Unarmed — Flow Like Water": 1,
+    "prompt: Light Swift (Steel)": 9,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel)": 19,
+    "prompt: Light Weighted (Hardwood)": 12,
+    "prompt: Light Swift (Steel) — Cut Back": 10,
+    "prompt: Knockback — Sim Duelist": 10,
+    "prompt: Light Bladed (Steel) — Riposte": 2,
+    "prompt: Light Swift (Steel) — Fast follow-up: Light Swift (Steel)": 3,
+    "prompt: Light Bladed (Steel)": 2,
+    "prompt: Light Swift (Steel) — Fast follow-up: Light Swift (Steel) · Whirlwind": 1,
+    "prompt: Knockback — Sim Breaker": 2
+   },
+   "notes": [],
+   "errors": [
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)",
+    "TypeError: Cannot set properties of null (setting 'hidden')\n    at #postNotification (http://localhost:30000/scripts/foundry.mjs:131642:20)"
+   ]
+  }
+ },
+ {
+  "id": "swarm-r2",
+  "group": "swarm",
+  "rotation": 2,
+  "seconds": 305,
+  "winner": "party",
+  "pass": "martial-t1-r2",
+  "rounds": 6,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 75,
+  "knockbacks": {
+   "into": 10
+  },
+  "used": {
+   "opt:ability=brace": 1,
+   "Versatility": 1,
+   "Parry": 5,
+   "Brace": 9,
+   "opt:spinCycle": 11,
+   "opt:slam=knockback": 6,
+   "defend:dodge": 319,
+   "limber": 54,
+   "recoverEnergy": 3,
+   "defend:shift": 6,
+   "limber:skipped": 111,
+   "Shatter": 1,
+   "opt:grapple": 1,
+   "opt:twinFang=adv": 1,
+   "opt:heavyTech=kick": 1,
+   "opt:quickStrike": 13,
+   "Eviscerate": 4,
+   "opt:pepper=1": 15,
+   "opt:spinDown": 8,
+   "quickload:speed": 8,
+   "opt:dir=into": 10,
+   "riposte": 3,
+   "opt:slice=pierce": 9,
+   "deflect": 3,
+   "opt:whirlwind=blender": 1,
+   "Mark": 2,
+   "quickload:pepper": 6,
+   "opt:whirlwind=on": 1,
+   "markShot": 1,
+   "cutBack": 3
+  },
+  "hp": {
+   "Sim Bulwark#7ks2": "586/702",
+   "Sim Duelist#d6jj": "567/567",
+   "Sim Breaker#lHPX": "567/567",
+   "Sim Marksman#i337": "477/477",
+   "Sim Warden#zwTW": "431/432",
+   "Sim Goblin Hacker#5X8t": "102/423",
+   "Sim Goblin Hacker#cDaC": "37/423",
+   "Sim Goblin Hacker#04xX": "68/423",
+   "Sim Goblin Stabber#FSg7": "97/423",
+   "Sim Goblin Stabber#fG8u": "78/423",
+   "Sim Goblin Stabber#RTHg": "102/423",
+   "Sim Goblin Lasher#sKT2": "30/423",
+   "Sim Goblin Lasher#8Ul1": "96/423",
+   "Sim Goblin Basher#6dgW": "88/423",
+   "Sim Goblin Basher#EZKo": "92/423"
+  },
+  "down": [
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Lasher",
+   "Sim Goblin Lasher",
+   "Sim Goblin Basher",
+   "Sim Goblin Basher"
+  ],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 11,
+    "followups": 11,
+    "hits": 28,
+    "crits": 14,
+    "misses": 19,
+    "damage": 590,
+    "ap": 33,
+    "kills": 1,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Light Weighted": {
+    "attacks": 32,
+    "followups": 0,
+    "hits": 17,
+    "crits": 1,
+    "misses": 33,
+    "damage": 42,
+    "ap": 46,
+    "kills": 0,
+    "users": [
+     "Goblin Basher",
+     "Warden"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 30,
+    "followups": 30,
+    "hits": 12,
+    "crits": 2,
+    "misses": 48,
+    "damage": 0,
+    "ap": 60,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Light Thrasher": {
+    "attacks": 35,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 28,
+    "damage": 0,
+    "ap": 68,
+    "kills": 0,
+    "users": [
+     "Goblin Lasher",
+     "Warden"
+    ]
+   },
+   "Heavy Striker": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 6,
+    "damage": 116,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Goblin Hacker"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 34,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 10,
+    "crits": 7,
+    "misses": 1,
+    "damage": 658,
+    "ap": 33,
+    "kills": 4,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Light Rapid": {
+    "attacks": 15,
+    "followups": 1,
+    "hits": 10,
+    "crits": 5,
+    "misses": 6,
+    "damage": 480,
+    "ap": 32,
+    "kills": 1,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Light Balanced": {
+    "attacks": 15,
+    "followups": 21,
+    "hits": 33,
+    "crits": 20,
+    "misses": 23,
+    "damage": 639,
+    "ap": 36,
+    "kills": 2,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 11,
+    "followups": 6,
+    "hits": 15,
+    "crits": 8,
+    "misses": 4,
+    "damage": 464,
+    "ap": 22,
+    "kills": 2,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 3,
+    "followups": 13,
+    "hits": 11,
+    "crits": 6,
+    "misses": 5,
+    "damage": 195,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 55,
+    "absorbed": 519
+   },
+   "Medium Armor (Chitin)": {
+    "hits": 7,
+    "absorbed": 128
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 96
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bulwark",
+    "dealt": 590,
+    "taken": 116,
+    "hits": 28,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 274,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 302,
+    "hits": 5,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 1,
+    "taken": 335,
+    "hits": 9,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 303,
+    "hits": 5,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "dealt": 0,
+    "taken": 393,
+    "hits": 2,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 714,
+    "taken": 1,
+    "hits": 38,
+    "attacks": 42
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 658,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 480,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "dealt": 0,
+    "taken": 327,
+    "hits": 5,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 89,
+    "taken": 250,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 659,
+    "taken": 0,
+    "hits": 26,
+    "attacks": 33
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 236,
+    "hits": 2,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 27,
+    "taken": 386,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 0,
+    "taken": 295,
+    "hits": 4,
+    "attacks": 8
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 75,
+    "attacks": 22,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Brace": 6,
+     "limber": 24,
+     "recoverEnergy": 1,
+     "defend:shift": 6,
+     "defend:dodge": 124,
+     "limber:skipped": 102
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 5,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9
+    },
+    "turnMoved": 5
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 18,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 22
+    },
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 29.1547594742265,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "ctl": 0,
+    "shank": 2,
+    "used": {
+     "defend:dodge": 20
+    },
+    "knockbacks": {
+     "into": 5
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15.811388300841898,
+    "attacks": 24,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "used": {
+     "defend:dodge": 18
+    }
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 18,
+    "used": {
+     "defend:dodge": 21
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 100.07644400055683,
+    "attacks": 34,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Parry": 2,
+     "Shatter": 1,
+     "recoverEnergy": 1,
+     "defend:dodge": 21,
+     "riposte": 3,
+     "deflect": 3
+    },
+    "fist": "Dip",
+    "turnMoved": 7.0710678118654755,
+    "grapples": 1,
+    "lastTech": "kick",
+    "shank": 2,
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 99.83579459809971,
+    "attacks": 11,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Brace": 2,
+     "limber": 10,
+     "Eviscerate": 3,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 10
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Mark": 2,
+     "markShot": 1
+    },
+    "turnMoved": 0,
+    "shank": 1,
+    "reloads": 1
+   },
+   {
+    "name": "Sim Goblin Lasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 18.027756377319946,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 15,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 16
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 25,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 25,
+    "used": {
+     "defend:dodge": 13
+    }
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 98.19907712794044,
+    "attacks": 30,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 20,
+     "limber:skipped": 9,
+     "Eviscerate": 1,
+     "defend:dodge": 3,
+     "cutBack": 3
+    },
+    "turnMoved": 12.071067811865476,
+    "shank": 0
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 26.925824035672523,
+    "attacks": 18,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "used": {
+     "defend:dodge": 16
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15.811388300841898,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 22
+    }
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 33.54101966249685,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "ctl": 1,
+    "shank": 2,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 14
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 1,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 4
+   },
+   "Sim Duelist": {
+    "martial-theory": 1,
+    "martial-bladed-weapons": 5,
+    "martial-swift-weapons": 4,
+    "martial-medium-armor": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 1,
+    "martial-swift-weapons": 5,
+    "martial-medium-armor": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 1,
+    "martial-rapid-weapons": 5,
+    "martial-bladed-weapons": 4
+   },
+   "Sim Warden": {
+    "martial-theory": 1,
+    "martial-brawling-methods": 5,
+    "martial-balanced-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Chitin) G6",
+    "Heavy Balanced (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Bladed (Steel) G6",
+    "Light Swift (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Heavy Swift (Steel) G6",
+    "Medium Armor (Hide) G4"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Chitin) G4",
+    "Light Rapid (Steel) G6",
+    "Light Bladed (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4",
+    "Light Balanced (Steel) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Hacker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Striker (Iron)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Reach (Hardwood)"
+   ],
+   "Sim Goblin Lasher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Weighted (Hardwood)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Chitin): 33/300",
+    "Heavy Balanced (Steel): 720/720"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 180/180",
+    "Light Bladed (Steel): 270/270",
+    "Light Swift (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Heavy Swift (Steel): 540/540",
+    "Medium Armor (Hide): 90/90"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Chitin): 90/90",
+    "Light Rapid (Steel): 270/270",
+    "Light Bladed (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Soft Leather): 3/120",
+    "Light Balanced (Steel): 302/360"
+   ],
+   "Sim Goblin Hacker": [
+    "Light Armor (Soft Leather): 21/60",
+    "Heavy Striker (Iron): 300/300"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Light Reach (Hardwood): 150/150"
+   ],
+   "Sim Goblin Lasher": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Light Thrasher (Hardwood): 150/150"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 0/60 BROKEN",
+    "Light Weighted (Hardwood): 150/150"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Versatility": 1,
+    "prompt: Heavy Balanced (Steel)": 11,
+    "prompt: Light Weighted (Hardwood)": 21,
+    "prompt: Shift": 6,
+    "prompt: Light Reach (Hardwood)": 30,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 11,
+    "prompt: Light Reach (Hardwood) — Solitary follow-up (Dis)": 30,
+    "prompt: Light Thrasher (Hardwood)": 33,
+    "prompt: Heavy Striker (Iron)": 8,
+    "prompt: Unarmed": 1,
+    "prompt: Heavy Swift (Steel)": 11,
+    "confirm: Eviscerate": 4,
+    "prompt: Light Rapid (Steel)": 15,
+    "wait: Light Rapid (Steel) is empty": 14,
+    "prompt: Knockback — Sim Warden": 8,
+    "prompt: Light Balanced (Steel) — Riposte": 3,
+    "prompt: Light Balanced (Steel) — Solitary follow-up (Dis)": 18,
+    "prompt: Light Bladed (Steel)": 11,
+    "prompt: Light Swift (Steel) — Fast follow-up: Light Swift (Steel) · Whirlwind": 2,
+    "prompt: Light Swift (Steel) — Fast follow-up: Light Swift (Steel)": 8,
+    "prompt: Knockback — Sim Goblin Basher": 2,
+    "prompt: Light Balanced (Steel)": 15,
+    "prompt: Light Swift (Steel)": 3,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel)": 6,
+    "prompt: Light Rapid (Steel) — Mark shot": 1,
+    "prompt: Light Swift (Steel) — Cut Back": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 249,
+  "winner": "party",
+  "pass": "martial-t1-r2",
+  "rounds": 7,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 56,
+  "knockbacks": {},
+  "used": {
+   "defend:shift": 9,
+   "defend:dodge": 187,
+   "limber": 63,
+   "Parry": 3,
+   "Brace": 4,
+   "opt:spinCycle": 4,
+   "opt:slam=both": 4,
+   "limber:skipped": 37,
+   "recoverEnergy": 4,
+   "opt:quickStrike": 15,
+   "opt:pepper=1": 33,
+   "opt:spinDown": 14,
+   "quickload:speed": 16,
+   "opt:remise": 5,
+   "Shatter": 1,
+   "opt:grapple": 2,
+   "opt:twinFang=adv": 8,
+   "opt:heavyTech=kick": 1,
+   "opt:jab": 2,
+   "redirect:skipped": 4,
+   "riposte": 2,
+   "followup:noRP": 5,
+   "opt:slam=knockback": 3,
+   "Eviscerate": 1,
+   "flowLikeWater": 1,
+   "breakFree": 2,
+   "Break Free": 2,
+   "defend:closeQuarters": 1,
+   "quickload:pepper": 3,
+   "cutBack": 2
+  },
+  "hp": {
+   "Sim Bulwark#QYNf": "702/702",
+   "Sim Duelist#1x1j": "483/567",
+   "Sim Breaker#8RAb": "567/567",
+   "Sim Marksman#kBXI": "266/477",
+   "Sim Warden#YGje": "100/432",
+   "Sim Raider Brute#oa97": "129/720",
+   "Sim Raider Cutter#lQ2z": "167/720",
+   "Sim Raider Gunner#NM7D": "144/585",
+   "Sim Raider Sniper#MhVo": "145/585",
+   "Sim Raider Bomber#dJTo": "144/585"
+  },
+  "down": [
+   "Sim Warden",
+   "Sim Raider Brute",
+   "Sim Raider Cutter",
+   "Sim Raider Gunner",
+   "Sim Raider Sniper",
+   "Sim Raider Bomber"
+  ],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 12,
+    "followups": 7,
+    "hits": 6,
+    "crits": 2,
+    "misses": 13,
+    "damage": 249,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Raider Bomber"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 13,
+    "followups": 13,
+    "hits": 17,
+    "crits": 8,
+    "misses": 14,
+    "damage": 215,
+    "ap": 39,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 18,
+    "followups": 4,
+    "hits": 17,
+    "crits": 6,
+    "misses": 5,
+    "damage": 236,
+    "ap": 40,
+    "kills": 0,
+    "users": [
+     "Duelist",
+     "Marksman"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 2,
+    "followups": 18,
+    "hits": 12,
+    "crits": 3,
+    "misses": 8,
+    "damage": 248,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Rapid": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 13,
+    "crits": 2,
+    "misses": 8,
+    "damage": 882,
+    "ap": 42,
+    "kills": 2,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Heavy Bladed (2H)": {
+    "attacks": 13,
+    "followups": 12,
+    "hits": 13,
+    "crits": 5,
+    "misses": 12,
+    "damage": 733,
+    "ap": 39,
+    "kills": 2,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Longshot": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 84,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Sniper"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 2,
+    "followups": 2,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Heavy Rapid": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 9,
+    "damage": 210,
+    "ap": 36,
+    "kills": 1,
+    "users": [
+     "Raider Gunner"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 84,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 10,
+    "followups": 5,
+    "hits": 8,
+    "crits": 3,
+    "misses": 7,
+    "damage": 96,
+    "ap": 24,
+    "kills": 1,
+    "users": [
+     "Warden"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 10,
+    "absorbed": 308
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 9,
+    "absorbed": 124
+   },
+   "Medium Armor (Hide)": {
+    "hits": 14,
+    "absorbed": 270
+   },
+   "Medium Armor (Chitin)": {
+    "hits": 1,
+    "absorbed": 33
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 1,
+    "absorbed": 12
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 98
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Bomber",
+    "dealt": 249,
+    "taken": 441,
+    "hits": 6,
+    "attacks": 19
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 96,
+    "taken": 332,
+    "hits": 10,
+    "attacks": 19
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 215,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 26
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 84,
+    "taken": 591,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "dealt": 84,
+    "taken": 440,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 0,
+    "taken": 497,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 460,
+    "taken": 84,
+    "hits": 27,
+    "attacks": 40
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 906,
+    "taken": 211,
+    "hits": 15,
+    "attacks": 23
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 733,
+    "taken": 0,
+    "hits": 13,
+    "attacks": 25
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "dealt": 210,
+    "taken": 441,
+    "hits": 3,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Bomber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 19,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 18,
+    "used": {
+     "defend:dodge": 36,
+     "followup:noRP": 5
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 107.082439194738,
+    "attacks": 16,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:shift": 8,
+     "defend:dodge": 38,
+     "limber": 18,
+     "Brace": 1,
+     "Shatter": 1,
+     "recoverEnergy": 2,
+     "redirect:skipped": 4,
+     "limber:skipped": 21,
+     "riposte": 2,
+     "flowLikeWater": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "grapples": 2,
+    "lastTech": "kick"
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 96.18033988749895,
+    "attacks": 26,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 12,
+     "limber:skipped": 8,
+     "recoverEnergy": 1,
+     "defend:shift": 1,
+     "defend:dodge": 4
+    },
+    "turnMoved": 10
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 35,
+     "breakFree": 2,
+     "Break Free": 2
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 20
+    },
+    "turnMoved": 0,
+    "prep": 3,
+    "reloads": 8
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "defend:dodge": 25
+    }
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 103.91513745147219,
+    "attacks": 40,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 22,
+     "Eviscerate": 1,
+     "limber:skipped": 5,
+     "defend:dodge": 1
+    },
+    "turnMoved": 11.180339887498949,
+    "shank": 0
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 0,
+    "used": {
+     "defend:dodge": 5,
+     "cutBack": 2
+    },
+    "reloads": 1
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 109.83579459809971,
+    "attacks": 25,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 11,
+     "recoverEnergy": 1,
+     "defend:closeQuarters": 1,
+     "defend:dodge": 1,
+     "limber:skipped": 3
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 12,
+    "used": {
+     "defend:dodge": 22
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 1,
+    "martial-balanced-weapons": 5,
+    "martial-medium-armor": 4
+   },
+   "Sim Duelist": {
+    "martial-theory": 1,
+    "martial-swift-weapons": 5,
+    "martial-bladed-weapons": 4,
+    "martial-medium-armor": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 1,
+    "martial-bladed-weapons": 5,
+    "martial-medium-armor": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 1,
+    "martial-rapid-weapons": 5,
+    "martial-swift-weapons": 4
+   },
+   "Sim Warden": {
+    "martial-theory": 1,
+    "martial-brawling-methods": 5,
+    "martial-medium-armor": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G4",
+    "Medium Armor (Chitin) G6"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Bladed (Steel) G6",
+    "Light Swift (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Heavy Bladed (Steel) G6",
+    "Medium Armor (Hide) G4"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Soft Leather) G4",
+    "Light Rapid (Steel) G6",
+    "Light Swift (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Swift (Steel)",
+    "Heavy Armor (Iron)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Circular (Steel)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Raider Gunner": [
+    "Unarmed",
+    "Medium Armor (Soft Leather)",
+    "Heavy Rapid (Steel)"
+   ],
+   "Sim Raider Sniper": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Longshot (Steel)"
+   ],
+   "Sim Raider Bomber": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Assault (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Heavy Balanced (Steel): 720/720",
+    "Medium Armor (Chitin): 246/300"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 180/180",
+    "Light Bladed (Steel): 270/270",
+    "Light Swift (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Heavy Bladed (Steel): 1080/1080",
+    "Medium Armor (Hide): 90/90"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Soft Leather): 36/60",
+    "Light Rapid (Steel): 270/270",
+    "Light Swift (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 168/180"
+   ],
+   "Sim Raider Brute": [
+    "Heavy Swift (Steel): 563/630",
+    "Heavy Armor (Iron): 0/400 BROKEN"
+   ],
+   "Sim Raider Cutter": [
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Heavy Circular (Steel): 630/630",
+    "Light Thrasher (Hardwood): 30/30"
+   ],
+   "Sim Raider Gunner": [
+    "Medium Armor (Soft Leather): 0/200 BROKEN",
+    "Heavy Rapid (Steel): 630/630"
+   ],
+   "Sim Raider Sniper": [
+    "Light Armor (Soft Leather): 0/100 BROKEN",
+    "Heavy Longshot (Steel): 630/630"
+   ],
+   "Sim Raider Bomber": [
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Heavy Assault (Steel): 630/630"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Assault (Steel)": 12,
+    "prompt: Shift": 9,
+    "prompt: Heavy Balanced (Steel)": 13,
+    "prompt: Heavy Circular (Steel)": 4,
+    "prompt: Light Swift (Steel)": 18,
+    "prompt: Light Bladed (Steel)": 2,
+    "prompt: Light Rapid (Steel)": 21,
+    "wait: Light Rapid (Steel) is empty": 19,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 7,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 13,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel)": 18,
+    "prompt: Light Swift (Steel) — Fast follow-up: Light Swift (Steel)": 2,
+    "prompt: Heavy Bladed (Steel)": 13,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up (Titan Weapon, Dis)": 12,
+    "prompt: Heavy Longshot (Steel)": 8,
+    "prompt: Unarmed": 12,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 2,
+    "prompt: Heavy Rapid (Steel)": 12,
+    "prompt: Heavy Swift (Steel)": 4,
+    "prompt: Unarmed — Riposte": 2,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 2,
+    "confirm: Eviscerate": 1,
+    "prompt: Unarmed — Flow Like Water": 1,
+    "prompt: Break Free": 2,
+    "prompt: Light Swift (Steel) — Cut Back": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r2",
+  "group": "raiders",
+  "rotation": 2,
+  "seconds": 241,
+  "winner": "party",
+  "pass": "martial-t1-r2",
+  "rounds": 8,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 50,
+  "knockbacks": {},
+  "used": {
+   "Parry": 6,
+   "Shatter": 1,
+   "opt:grapple": 1,
+   "opt:twinFang=adv": 1,
+   "opt:heavyTech=kick": 1,
+   "defend:dodge": 183,
+   "recoverEnergy": 2,
+   "Brace": 11,
+   "opt:whirlwind=blender": 1,
+   "limber": 40,
+   "opt:ability=brace": 1,
+   "Versatility": 1,
+   "opt:spinCycle": 6,
+   "opt:slam=knockback": 14,
+   "opt:pepper=1": 35,
+   "riposte": 2,
+   "opt:slice=pierce": 10,
+   "deflect": 1,
+   "limber:skipped": 36,
+   "opt:spinDown": 12,
+   "quickload:speed": 12,
+   "cutBack": 11,
+   "opt:quickStrike": 16,
+   "breakFree": 2,
+   "Break Free": 1,
+   "quickload:pepper": 8,
+   "Eviscerate": 3,
+   "followup:noRP": 4,
+   "defend:shift": 3
+  },
+  "hp": {
+   "Sim Bulwark#MLxP": "702/702",
+   "Sim Duelist#ZAJ5": "111/567",
+   "Sim Breaker#UsfZ": "567/567",
+   "Sim Marksman#7YGj": "418/477",
+   "Sim Warden#5vLB": "106/432",
+   "Sim Raider Brute#S9Yc": "170/720",
+   "Sim Raider Cutter#hp0D": "142/720",
+   "Sim Raider Gunner#ksI3": "93/585",
+   "Sim Raider Sniper#tDM8": "133/585",
+   "Sim Raider Bomber#t6VW": "140/585"
+  },
+  "down": [
+   "Sim Duelist",
+   "Sim Warden",
+   "Sim Raider Brute",
+   "Sim Raider Cutter",
+   "Sim Raider Gunner",
+   "Sim Raider Sniper",
+   "Sim Raider Bomber"
+  ],
+  "weapons": {
+   "Unarmed Heavy": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 1,
+    "followups": 16,
+    "hits": 14,
+    "crits": 9,
+    "misses": 4,
+    "damage": 345,
+    "ap": 2,
+    "kills": 1,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 7,
+    "followups": 10,
+    "hits": 16,
+    "crits": 3,
+    "misses": 1,
+    "damage": 106,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 15,
+    "followups": 13,
+    "hits": 24,
+    "crits": 14,
+    "misses": 10,
+    "damage": 461,
+    "ap": 45,
+    "kills": 2,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Rapid": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 9,
+    "damage": 278,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "Raider Gunner",
+     "Warden"
+    ]
+   },
+   "Light Balanced": {
+    "attacks": 12,
+    "followups": 16,
+    "hits": 14,
+    "crits": 8,
+    "misses": 16,
+    "damage": 182,
+    "ap": 28,
+    "kills": 1,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Light Rapid": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 10,
+    "crits": 3,
+    "misses": 11,
+    "damage": 519,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 168,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Heavy Longshot": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 3,
+    "damage": 110,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Sniper"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 14,
+    "followups": 2,
+    "hits": 11,
+    "crits": 5,
+    "misses": 5,
+    "damage": 710,
+    "ap": 48,
+    "kills": 1,
+    "users": [
+     "Breaker",
+     "Raider Brute"
+    ]
+   },
+   "Heavy Assault": {
+    "attacks": 10,
+    "followups": 6,
+    "hits": 4,
+    "crits": 3,
+    "misses": 12,
+    "damage": 240,
+    "ap": 30,
+    "kills": 2,
+    "users": [
+     "Raider Bomber"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 13,
+    "absorbed": 371
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 8,
+    "absorbed": 75
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 16,
+    "absorbed": 294
+   },
+   "Medium Armor (Hide)": {
+    "hits": 15,
+    "absorbed": 300
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 0
+   },
+   "Light Armor (Chitin)": {
+    "hits": 1,
+    "absorbed": 18
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Warden",
+    "dealt": 270,
+    "taken": 326,
+    "hits": 16,
+    "attacks": 30
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 133,
+    "taken": 400,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 451,
+    "taken": 456,
+    "hits": 30,
+    "attacks": 34
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "dealt": 110,
+    "taken": 452,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 461,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 28
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "dealt": 190,
+    "taken": 442,
+    "hits": 5,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 519,
+    "taken": 59,
+    "hits": 10,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 168,
+    "taken": 539,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 577,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 13
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "dealt": 240,
+    "taken": 445,
+    "hits": 4,
+    "attacks": 16
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 102.082439194738,
+    "attacks": 27,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Parry": 2,
+     "Shatter": 1,
+     "recoverEnergy": 1,
+     "defend:dodge": 23,
+     "riposte": 2,
+     "deflect": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "grapples": 1,
+    "lastTech": "kick",
+    "shank": 2
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24,
+     "breakFree": 2,
+     "Break Free": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 81.39410298049853,
+    "attacks": 25,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 10,
+     "limber:skipped": 30,
+     "defend:dodge": 18,
+     "cutBack": 9
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 34
+    },
+    "turnMoved": 0,
+    "prep": 1,
+    "reloads": 5
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 95,
+    "attacks": 28,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 2,
+     "Brace": 8,
+     "limber": 18,
+     "recoverEnergy": 1,
+     "limber:skipped": 6
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 18
+    },
+    "reloads": 14
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "defend:dodge": 4
+    },
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "defend:dodge": 41
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 108.50158587036384,
+    "attacks": 11,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Brace": 2,
+     "limber": 12,
+     "Eviscerate": 3,
+     "defend:shift": 3,
+     "defend:dodge": 3,
+     "cutBack": 2
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 15,
+    "used": {
+     "defend:dodge": 18,
+     "followup:noRP": 4
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 1,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 4
+   },
+   "Sim Duelist": {
+    "martial-theory": 1,
+    "martial-bladed-weapons": 5,
+    "martial-swift-weapons": 4,
+    "martial-medium-armor": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 1,
+    "martial-swift-weapons": 5,
+    "martial-medium-armor": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 1,
+    "martial-rapid-weapons": 5,
+    "martial-bladed-weapons": 4
+   },
+   "Sim Warden": {
+    "martial-theory": 1,
+    "martial-brawling-methods": 5,
+    "martial-balanced-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Chitin) G6",
+    "Heavy Balanced (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Bladed (Steel) G6",
+    "Light Swift (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Heavy Swift (Steel) G6",
+    "Medium Armor (Hide) G4"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Rapid (Steel) G6",
+    "Light Bladed (Steel) G6",
+    "Light Armor (Chitin) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4",
+    "Light Balanced (Steel) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Circular (Steel)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Raider Gunner": [
+    "Unarmed",
+    "Medium Armor (Soft Leather)",
+    "Heavy Rapid (Steel)"
+   ],
+   "Sim Raider Sniper": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Longshot (Steel)"
+   ],
+   "Sim Raider Bomber": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Assault (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Chitin): 300/300",
+    "Heavy Balanced (Steel): 720/720"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 144/180",
+    "Light Bladed (Steel): 270/270",
+    "Light Swift (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Heavy Swift (Steel): 540/540",
+    "Medium Armor (Hide): 90/90"
+   ],
+   "Sim Marksman": [
+    "Light Rapid (Steel): 270/270",
+    "Light Bladed (Steel): 270/270",
+    "Light Armor (Chitin): 72/90"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Soft Leather): 18/120",
+    "Light Balanced (Steel): 191/360"
+   ],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 0/400 BROKEN",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Heavy Circular (Steel): 630/630",
+    "Light Thrasher (Hardwood): 30/30"
+   ],
+   "Sim Raider Gunner": [
+    "Medium Armor (Soft Leather): 0/200 BROKEN",
+    "Heavy Rapid (Steel): 630/630"
+   ],
+   "Sim Raider Sniper": [
+    "Light Armor (Soft Leather): 0/100 BROKEN",
+    "Heavy Longshot (Steel): 630/630"
+   ],
+   "Sim Raider Bomber": [
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Heavy Assault (Steel): 630/630"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Unarmed": 1,
+    "prompt: Light Bladed (Steel)": 1,
+    "prompt: Light Swift (Steel)": 7,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Balanced (Steel)": 15,
+    "prompt: Heavy Rapid (Steel)": 14,
+    "prompt: Light Balanced (Steel) — Riposte": 2,
+    "prompt: Light Swift (Steel) — Fast follow-up: Light Swift (Steel) · Whirlwind": 1,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel)": 16,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 13,
+    "prompt: Light Balanced (Steel) — Solitary follow-up (Dis)": 14,
+    "prompt: Light Rapid (Steel)": 21,
+    "wait: Light Rapid (Steel) is empty": 20,
+    "prompt: Heavy Circular (Steel)": 8,
+    "prompt: Light Swift (Steel) — Cut Back": 9,
+    "prompt: Heavy Longshot (Steel)": 6,
+    "prompt: Heavy Swift (Steel)": 14,
+    "prompt: Break Free": 1,
+    "prompt: Heavy Assault (Steel)": 10,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 6,
+    "prompt: Light Balanced (Steel)": 12,
+    "confirm: Eviscerate": 3,
+    "prompt: Shift": 3,
+    "prompt: Heavy Swift (Steel) — Cut Back": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 99,
+  "winner": "monsters",
+  "pass": "martial-t1-r2",
+  "rounds": 5,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 18,
+  "knockbacks": {
+   "into": 4,
+   "down": 2
+  },
+  "used": {
+   "Parry": 3,
+   "Brace": 4,
+   "defend:dodge": 72,
+   "limber": 16,
+   "recoverEnergy": 2,
+   "opt:slam=both": 3,
+   "opt:pepper=1": 15,
+   "opt:spinDown": 10,
+   "quickload:speed": 9,
+   "opt:quickStrike": 4,
+   "opt:remise": 2,
+   "defend:closeQuarters": 3,
+   "defend:shift": 2,
+   "cutBack": 4,
+   "opt:dir=into": 4,
+   "limber:skipped": 10,
+   "Shatter": 1,
+   "opt:twinFang=adv": 1,
+   "opt:heavyTech=kick": 1,
+   "combo": 1,
+   "flowLikeWater": 1,
+   "combo:skipped": 1,
+   "flowLikeWater:skipped": 1,
+   "opt:dir=down": 2,
+   "Mark": 2,
+   "quickload:pepper": 5,
+   "markShot": 2
+  },
+  "hp": {
+   "Sim Bulwark#v8Rg": "-8/702",
+   "Sim Duelist#55gm": "-9/567",
+   "Sim Breaker#CSmz": "52/567",
+   "Sim Marksman#Ispr": "53/477",
+   "Sim Warden#mPo3": "107/432",
+   "Sim Ogre Tyrant#YxxQ": "1998/2136"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Duelist",
+   "Sim Breaker",
+   "Sim Marksman",
+   "Sim Warden"
+  ],
+  "weapons": {
+   "Heavy Bladed (2H)": {
+    "attacks": 3,
+    "followups": 3,
+    "hits": 3,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 3,
+    "followups": 3,
+    "hits": 3,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Light Rapid": {
+    "attacks": 15,
+    "followups": 4,
+    "hits": 7,
+    "crits": 3,
+    "misses": 12,
+    "damage": 128,
+    "ap": 34,
+    "kills": 0,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 4,
+    "followups": 5,
+    "hits": 6,
+    "crits": 3,
+    "misses": 3,
+    "damage": 10,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Duelist",
+     "Marksman"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 1,
+    "followups": 6,
+    "hits": 4,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 9,
+    "crits": 2,
+    "misses": 5,
+    "damage": 1178,
+    "ap": 15,
+    "kills": 5,
+    "users": [
+     "Ogre Tyrant"
+    ],
+    "force": 507
+   },
+   "Light Striker": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 3,
+    "damage": 52,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Ogre Tyrant"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 2,
+    "followups": 3,
+    "hits": 4,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 0,
+    "followups": 2,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 23,
+    "absorbed": 846
+   },
+   "Medium Armor (Chitin)": {
+    "hits": 1,
+    "absorbed": 60
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 24
+   },
+   "Medium Armor (Hide)": {
+    "hits": 2,
+    "absorbed": 36
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 12
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Breaker",
+    "dealt": 0,
+    "taken": 272,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Ogre Tyrant",
+    "dealt": 1230,
+    "taken": 138,
+    "hits": 10,
+    "attacks": 13
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 122,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 128,
+    "taken": 160,
+    "hits": 7,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 10,
+    "taken": 99,
+    "hits": 10,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 70,
+    "hits": 5,
+    "attacks": 7
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 82.46211251235322,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 3,
+     "recoverEnergy": 1,
+     "defend:closeQuarters": 1,
+     "defend:shift": 1,
+     "defend:dodge": 3,
+     "limber:skipped": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Ogre Tyrant",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.77747210701757,
+    "attacks": 9,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 54
+    },
+    "turnMoved": 0,
+    "wild": 1,
+    "knockbacks": {
+     "into": 4,
+     "down": 2
+    },
+    "shank": 0,
+    "threw": true
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 75,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 2,
+     "recoverEnergy": 1,
+     "defend:shift": 1,
+     "defend:dodge": 4,
+     "limber:skipped": 2
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 17,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 0,
+    "used": {
+     "defend:dodge": 5,
+     "cutBack": 2,
+     "Mark": 2,
+     "markShot": 2
+    },
+    "reloads": 4
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 80.62257748298549,
+    "attacks": 12,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Brace": 1,
+     "limber": 9,
+     "defend:closeQuarters": 2,
+     "defend:dodge": 4,
+     "cutBack": 2,
+     "limber:skipped": 3
+    },
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 98.6154146165801,
+    "attacks": 5,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 2,
+     "combo": 1,
+     "flowLikeWater": 1,
+     "limber:skipped": 4,
+     "combo:skipped": 1,
+     "flowLikeWater:skipped": 1,
+     "defend:dodge": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 98.6154146165801,
+    "lastTech": "kick",
+    "shank": 0
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 1,
+    "martial-balanced-weapons": 5,
+    "martial-medium-armor": 4
+   },
+   "Sim Duelist": {
+    "martial-theory": 1,
+    "martial-swift-weapons": 5,
+    "martial-bladed-weapons": 4,
+    "martial-medium-armor": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 1,
+    "martial-bladed-weapons": 5,
+    "martial-medium-armor": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 1,
+    "martial-rapid-weapons": 5,
+    "martial-swift-weapons": 4
+   },
+   "Sim Warden": {
+    "martial-theory": 1,
+    "martial-brawling-methods": 5,
+    "martial-medium-armor": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Chitin) G6",
+    "Heavy Balanced (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Light Bladed (Steel) G6",
+    "Light Swift (Steel) G6",
+    "Medium Armor (Hard Leather) G4"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Bladed (Steel) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Soft Leather) G4",
+    "Light Rapid (Steel) G6",
+    "Light Swift (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Tyrant": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Iron)",
+    "Light Striker (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Chitin): 60/300",
+    "Heavy Balanced (Steel): 720/720"
+   ],
+   "Sim Duelist": [
+    "Light Bladed (Steel): 270/270",
+    "Light Swift (Steel): 270/270",
+    "Medium Armor (Hard Leather): 144/180"
+   ],
+   "Sim Breaker": [
+    "Medium Armor (Hide): 36/90",
+    "Heavy Bladed (Steel): 1080/1080"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Soft Leather): 24/60",
+    "Light Rapid (Steel): 270/270",
+    "Light Swift (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 156/180"
+   ],
+   "Sim Ogre Tyrant": [
+    "Heavy Armor (Iron): 0/960 BROKEN",
+    "Heavy Weighted (Iron): 627/660",
+    "Light Striker (Steel): 135/135"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Bladed (Steel)": 3,
+    "prompt: Heavy Balanced (Steel)": 3,
+    "prompt: Light Rapid (Steel)": 15,
+    "wait: Light Rapid (Steel) is empty": 14,
+    "prompt: Light Swift (Steel)": 4,
+    "prompt: Light Bladed (Steel)": 1,
+    "prompt: Heavy Bladed (Steel) — Solitary follow-up (Titan Weapon, Dis)": 3,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 3,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel)": 6,
+    "prompt: Light Swift (Steel) — Fast follow-up: Light Swift (Steel)": 1,
+    "prompt: Heavy Weighted (Iron)": 5,
+    "prompt: Shift": 2,
+    "prompt: Light Swift (Steel) — Cut Back": 4,
+    "prompt: Knockback — Sim Bulwark": 1,
+    "prompt: Light Striker (Steel)": 4,
+    "prompt: Unarmed": 2,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 2,
+    "prompt: Unarmed — Combo (Advantage)": 1,
+    "prompt: Unarmed — Flow Like Water": 1,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 1,
+    "prompt: Knockback — Sim Duelist": 1,
+    "prompt: Knockback — Sim Breaker": 2,
+    "prompt: Knockback — Sim Warden": 1,
+    "prompt: Light Rapid (Steel) — Fast follow-up: Light Rapid (Steel) (Dis)": 2,
+    "prompt: Light Rapid (Steel) — Mark shot": 2,
+    "prompt: Knockback — Sim Marksman": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r2",
+  "group": "boss",
+  "rotation": 2,
+  "seconds": 203,
+  "winner": "party",
+  "pass": "martial-t1-r2",
+  "rounds": 7,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 53,
+  "knockbacks": {
+   "into": 4
+  },
+  "used": {
+   "defend:shift": 7,
+   "defend:dodge": 177,
+   "defend:closeQuarters": 4,
+   "limber": 47,
+   "cutBack": 13,
+   "Parry": 6,
+   "Shatter": 1,
+   "opt:slice=pierce": 18,
+   "recoverEnergy": 6,
+   "opt:ability=brace": 1,
+   "Versatility": 1,
+   "Brace": 7,
+   "opt:slam=knockback": 8,
+   "opt:quickStrike": 21,
+   "Mark": 7,
+   "opt:pepper=1": 19,
+   "opt:spinDown": 6,
+   "quickload:speed": 9,
+   "markShot": 6,
+   "redirect:noTarget": 1,
+   "quickload:pepper": 9,
+   "limber:skipped": 16,
+   "opt:dir=into": 4,
+   "redirect:skipped": 5,
+   "Eviscerate": 1
+  },
+  "hp": {
+   "Sim Bulwark#ghRz": "59/702",
+   "Sim Duelist#6dxK": "420/567",
+   "Sim Breaker#5Bek": "-217/567",
+   "Sim Marksman#8Cjs": "477/477",
+   "Sim Warden#24pD": "432/432",
+   "Sim Ogre Tyrant#vUnn": "406/2136"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Breaker",
+   "Sim Ogre Tyrant"
+  ],
+  "weapons": {
+   "Heavy Weighted": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 19,
+    "damage": 260,
+    "ap": 21,
+    "kills": 2,
+    "users": [
+     "Ogre Tyrant"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 14,
+    "followups": 12,
+    "hits": 14,
+    "crits": 1,
+    "misses": 12,
+    "damage": 112,
+    "ap": 46,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Striker": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 5,
+    "damage": 18,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Ogre Tyrant"
+    ]
+   },
+   "Light Balanced": {
+    "attacks": 20,
+    "followups": 20,
+    "hits": 20,
+    "crits": 6,
+    "misses": 20,
+    "damage": 279,
+    "ap": 40,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 6,
+    "crits": 0,
+    "misses": 10,
+    "damage": 78,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 8,
+    "followups": 4,
+    "hits": 10,
+    "crits": 6,
+    "misses": 2,
+    "damage": 351,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Breaker"
+    ]
+   },
+   "Light Rapid": {
+    "attacks": 19,
+    "followups": 6,
+    "hits": 17,
+    "crits": 9,
+    "misses": 8,
+    "damage": 544,
+    "ap": 50,
+    "kills": 1,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 3,
+    "followups": 22,
+    "hits": 15,
+    "crits": 5,
+    "misses": 10,
+    "damage": 302,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 29,
+    "absorbed": 960
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 12
+   },
+   "Medium Armor (Chitin)": {
+    "hits": 3,
+    "absorbed": 120
+   },
+   "Medium Armor (Hide)": {
+    "hits": 1,
+    "absorbed": 18
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Ogre Tyrant",
+    "dealt": 278,
+    "taken": 1666,
+    "hits": 9,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 78,
+    "taken": 85,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 414,
+    "taken": 81,
+    "hits": 29,
+    "attacks": 51
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 279,
+    "taken": 0,
+    "hits": 20,
+    "attacks": 40
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 351,
+    "taken": 112,
+    "hits": 10,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 544,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 25
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Ogre Tyrant",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 75,
+    "attacks": 14,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 0,
+    "used": {
+     "defend:dodge": 144
+    },
+    "shank": 0,
+    "knockbacks": {
+     "into": 4
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:shift": 4,
+     "defend:dodge": 9,
+     "limber": 10,
+     "Versatility": 1,
+     "Parry": 2,
+     "Brace": 4,
+     "limber:skipped": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 55.90169943749474,
+    "attacks": 42,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:closeQuarters": 4,
+     "defend:dodge": 11,
+     "limber": 25,
+     "cutBack": 9,
+     "Parry": 1,
+     "Brace": 1,
+     "limber:skipped": 13,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 50.24937810560445,
+    "attacks": 40,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Parry": 2,
+     "Shatter": 1,
+     "recoverEnergy": 1,
+     "defend:dodge": 6,
+     "redirect:noTarget": 1,
+     "redirect:skipped": 5
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 22.360679774997898,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Brace": 2,
+     "limber": 12,
+     "defend:shift": 3,
+     "defend:dodge": 7,
+     "cutBack": 4,
+     "Eviscerate": 1,
+     "limber:skipped": 2
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 19,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Mark": 7,
+     "markShot": 6,
+     "recoverEnergy": 4
+    },
+    "turnMoved": 0,
+    "shank": 0,
+    "reloads": 6
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 1,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 4
+   },
+   "Sim Duelist": {
+    "martial-theory": 1,
+    "martial-bladed-weapons": 5,
+    "martial-swift-weapons": 4,
+    "martial-medium-armor": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 1,
+    "martial-swift-weapons": 5,
+    "martial-medium-armor": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 1,
+    "martial-rapid-weapons": 5,
+    "martial-bladed-weapons": 4
+   },
+   "Sim Warden": {
+    "martial-theory": 1,
+    "martial-brawling-methods": 5,
+    "martial-balanced-weapons": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Chitin) G6",
+    "Heavy Balanced (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hard Leather) G4",
+    "Light Swift (Steel) G6",
+    "Light Bladed (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Medium Armor (Hide) G4",
+    "Heavy Swift (Steel) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Chitin) G4",
+    "Light Rapid (Steel) G6",
+    "Light Bladed (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4",
+    "Light Balanced (Steel) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Tyrant": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Light Striker (Steel)",
+    "Heavy Weighted (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Chitin): 0/300 BROKEN",
+    "Heavy Balanced (Steel): 720/720"
+   ],
+   "Sim Duelist": [
+    "Medium Armor (Hard Leather): 144/180",
+    "Light Swift (Steel): 270/270",
+    "Light Bladed (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Medium Armor (Hide): 18/90",
+    "Heavy Swift (Steel): 540/540"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Chitin): 90/90",
+    "Light Rapid (Steel): 270/270",
+    "Light Bladed (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Soft Leather): 120/120",
+    "Light Balanced (Steel): 360/360"
+   ],
+   "Sim Ogre Tyrant": [
+    "Heavy Armor (Iron): 0/960 BROKEN",
+    "Light Striker (Steel): 135/135",
+    "Heavy Weighted (Iron): 660/660"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Iron)": 7,
+    "prompt: Shift": 7,
+    "prompt: Light Swift (Steel) — Cut Back": 9,
+    "prompt: Light Striker (Steel)": 7,
+    "prompt: Light Balanced (Steel)": 20,
+    "prompt: Light Balanced (Steel) — Solitary follow-up (Dis)": 20,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Balanced (Steel)": 8,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8,
+    "prompt: Heavy Swift (Steel)": 8,
+    "prompt: Light Rapid (Steel)": 19,
+    "wait: Light Rapid (Steel) is empty": 18,
+    "prompt: Light Bladed (Steel)": 3,
+    "prompt: Light Swift (Steel) — Fast follow-up: Light Swift (Steel)": 3,
+    "prompt: Light Rapid (Steel) — Mark shot": 6,
+    "prompt: Heavy Swift (Steel) — Cut Back": 4,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel)": 22,
+    "prompt: Light Swift (Steel)": 14,
+    "prompt: Knockback — Sim Duelist": 1,
+    "confirm: Eviscerate": 1,
+    "prompt: Knockback — Sim Bulwark": 2,
+    "prompt: Knockback — Sim Breaker": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

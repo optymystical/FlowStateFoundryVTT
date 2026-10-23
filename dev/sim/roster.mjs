@@ -545,3 +545,11 @@ const B3 = RETEST.filter(b => b.id.startsWith("blast"));
 PASSES["focus-blast-3"] = { id: "focus-blast-3", note: "Blasts with the Area targeting fix; Light Blast as Area, Pierce, Cleave.",
   party: [{ ...PARTY_BENCH[0], loadouts: B3.map(b => ({ ...b, armor: null })) }], monsters: RETEST_DUMMIES, deploy: "bench", maxRounds: 4,
   encounters: B3.flatMap((b, rotation) => ["light", "heavy", "cluster", "bare"].flatMap(group => [1, 2].map(i => ({ id: `${b.id}~${group}~${i}`, group, rotation })))) };
+
+// Re-run of the Martial passes with every fix in (v0.77.1): two hands = Strengthened, Remise ×2 on 2H Heavy Bladed, Smashing, Light Blast
+// (Area, Pierce, Cleave), Quickload on follow-ups, Area attacks targeting everyone in them, Knockback Force counted. Same rosters as before.
+for (const id of ["martial-t1", "martial-t1-gaps", "martial-t2", "martial-t3", "martial-t4", "martial-t5"]) PASSES[`${id}-r2`] = { ...PASSES[id], id: `${id}-r2`, note: `${PASSES[id].note} (re-run, v0.77.1)` };
+
+// Pain Threshold at half of max HP (v0.79.0): the T1 and T5 parties against the Raiders and the Ogre, to compare rounds with the ¼ runs.
+PASSES["pain-t1"] = { ...PASSES["martial-t1"], id: "pain-t1", note: "Pain Threshold ½ (v0.79.0), T1 trees." };
+PASSES["pain-t5"] = { ...PASSES["martial-t5"], id: "pain-t5", note: "Pain Threshold ½ (v0.79.0), T5 trees." };

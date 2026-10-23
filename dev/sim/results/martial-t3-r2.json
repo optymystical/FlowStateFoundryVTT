@@ -1,0 +1,1304 @@
+[
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 295,
+  "winner": "party",
+  "pass": "martial-t3-r2",
+  "rounds": 14,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "into": 6
+  },
+  "used": {
+   "opt:pepper=1": 28,
+   "defend:shift": 25,
+   "defend:dodge": 212,
+   "opt:area": 2,
+   "Spot Weakness": 1,
+   "opt:shank1=adv": 2,
+   "opt:shank2=dodge": 3,
+   "opt:shank3=pierce": 2,
+   "opt:through=adv": 2,
+   "opt:letItRip": 23,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 2,
+   "opt:thrust": 36,
+   "recoverEnergy": 3,
+   "twist": 4,
+   "impale:skipped": 7,
+   "opt:punch": 11,
+   "opt:takeAim=adv": 10,
+   "Leap": 1,
+   "opt:through=str": 11,
+   "opt:heave": 3,
+   "opt:shank1=dodge": 1,
+   "opt:through=pierce": 1,
+   "opt:wild=str2": 3,
+   "opt:spin": 6,
+   "opt:strafe": 1,
+   "opt:dir=into": 6,
+   "opt:takeAim=str": 10,
+   "opt:crunch": 4,
+   "opt:through=cleave": 11,
+   "opt:wild=bashPlus": 2,
+   "opt:wild=bashStr": 2,
+   "twist:skipped": 3
+  },
+  "hp": {
+   "Sim Bulwark#M088": "702/702",
+   "Sim Duelist#u8gU": "76/567",
+   "Sim Breaker#mv21": "164/567",
+   "Sim Marksman#eqkc": "477/477",
+   "Sim Warden#csiJ": "91/477",
+   "Sim Raider Brute#tw3k": "168/720",
+   "Sim Raider Cutter#v8OB": "160/720",
+   "Sim Raider Gunner#uxxR": "124/585",
+   "Sim Raider Sniper#bD4I": "45/585",
+   "Sim Raider Bomber#TorV": "143/585"
+  },
+  "down": [
+   "Sim Duelist",
+   "Sim Warden",
+   "Sim Raider Brute",
+   "Sim Raider Cutter",
+   "Sim Raider Gunner",
+   "Sim Raider Sniper",
+   "Sim Raider Bomber"
+  ],
+  "weapons": {
+   "Heavy Rapid": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 23,
+    "damage": 348,
+    "ap": 84,
+    "kills": 1,
+    "users": [
+     "Raider Gunner"
+    ]
+   },
+   "Heavy Blast": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 16,
+    "damage": 297,
+    "ap": 60,
+    "kills": 0,
+    "users": [
+     "Raider Bomber"
+    ]
+   },
+   "Light Circular": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 0,
+    "damage": 49,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 64,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Heavy Reach": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 1,
+    "damage": 160,
+    "ap": 24,
+    "kills": 1,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 7,
+    "damage": 399,
+    "ap": 42,
+    "kills": 1,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Light Blast": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 13,
+    "crits": 5,
+    "misses": 8,
+    "damage": 379,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Light Assault": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 11,
+    "crits": 5,
+    "misses": 9,
+    "damage": 218,
+    "ap": 40,
+    "kills": 0,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 38,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 26,
+    "damage": 480,
+    "ap": 114,
+    "kills": 3,
+    "users": [
+     "Raider Cutter",
+     "Breaker"
+    ]
+   },
+   "Heavy Reach (2H)": {
+    "attacks": 26,
+    "followups": 0,
+    "hits": 18,
+    "crits": 5,
+    "misses": 8,
+    "damage": 552,
+    "ap": 78,
+    "kills": 1,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Longshot": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 99,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Sniper"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 9,
+    "crits": 2,
+    "misses": 16,
+    "damage": 145,
+    "ap": 29,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Breaker"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 11,
+    "absorbed": 16
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 11,
+    "absorbed": 84
+   },
+   "Heavy Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 135
+   },
+   "Medium Armor (Hide)": {
+    "hits": 11,
+    "absorbed": 174
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 8,
+    "absorbed": 137
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Gunner",
+    "dealt": 348,
+    "taken": 421,
+    "hits": 5,
+    "attacks": 28
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 597,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 41
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "dealt": 297,
+    "taken": 245,
+    "hits": 6,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 552,
+    "taken": 0,
+    "hits": 18,
+    "attacks": 26
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 113,
+    "taken": 491,
+    "hits": 7,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "dealt": 99,
+    "taken": 329,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 232,
+    "taken": 386,
+    "hits": 10,
+    "attacks": 17
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 399,
+    "taken": 491,
+    "hits": 7,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 137,
+    "taken": 424,
+    "hits": 4,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 416,
+    "taken": 403,
+    "hits": 14,
+    "attacks": 29
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Gunner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 28,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 28,
+    "used": {
+     "defend:dodge": 25
+    }
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 63.24555320336759,
+    "attacks": 41,
+    "turns": 14,
+    "kills": 0,
+    "used": {
+     "defend:shift": 2,
+     "defend:dodge": 2
+    },
+    "turnMoved": 0,
+    "shank": 1,
+    "aim": 1,
+    "reloads": 28
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "areaShots": 2,
+    "cones": 2,
+    "reloads": 20,
+    "used": {
+     "defend:dodge": 18
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 102.07106781186548,
+    "attacks": 26,
+    "turns": 14,
+    "kills": 0,
+    "used": {
+     "defend:shift": 4,
+     "defend:dodge": 2,
+     "Leap": 1
+    },
+    "leapt": true,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 80.62257748298549,
+    "attacks": 8,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 20,
+     "Spot Weakness": 1,
+     "recoverEnergy": 1
+    },
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0,
+    "thr": 0
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    },
+    "turnMoved": 0,
+    "prep": 1,
+    "reloads": 2
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 101.31912177409868,
+    "attacks": 15,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "twist": 4,
+     "impale:skipped": 7,
+     "defend:shift": 19,
+     "defend:dodge": 37,
+     "twist:skipped": 3
+    },
+    "wild": 0,
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 5,
+    "attacks": 14,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 38
+    }
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 33.54101966249685,
+    "attacks": 16,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "defend:dodge": 33
+    }
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 107.51110526504078,
+    "attacks": 25,
+    "turns": 13,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "recoverEnergy": 2,
+     "defend:dodge": 21
+    },
+    "wild": 2,
+    "knockbacks": {
+     "into": 4
+    },
+    "threw": true
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 3,
+    "martial-light-armor": 5,
+    "martial-reach-weapons": 3,
+    "martial-circular-weapons": 2
+   },
+   "Sim Duelist": {
+    "martial-theory": 3,
+    "martial-dexterity-methods": 5,
+    "martial-circular-weapons": 3,
+    "martial-reach-weapons": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 3,
+    "martial-circular-weapons": 4,
+    "martial-strength-methods": 4
+   },
+   "Sim Marksman": {
+    "martial-theory": 3,
+    "martial-blast-weapons": 5,
+    "martial-assault-weapons": 3,
+    "martial-light-armor": 2
+   },
+   "Sim Warden": {
+    "martial-theory": 3,
+    "martial-reach-weapons": 5,
+    "martial-weighted-weapons": 3,
+    "martial-light-armor": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed (not held) G1",
+    "Light Armor (Chitin) G6",
+    "Heavy Reach (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Light Armor (Hard Leather) G4",
+    "Light Circular (Steel) G6",
+    "Light Reach (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Heavy Circular (Steel) G6",
+    "Light Armor (Soft Leather) G4",
+    "Heavy Weighted (Iron) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Soft Leather) G4",
+    "Light Blast (Steel) G6",
+    "Light Assault (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed (not held) G1",
+    "Light Armor (Hard Leather) G5",
+    "Heavy Reach (Steel) G5",
+    "Heavy Weighted (Iron) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Circular (Steel)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Raider Gunner": [
+    "Unarmed",
+    "Medium Armor (Soft Leather)",
+    "Heavy Rapid (Steel)"
+   ],
+   "Sim Raider Sniper": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Longshot (Steel)"
+   ],
+   "Sim Raider Bomber": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Blast (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Light Armor (Chitin): 150/150",
+    "Heavy Reach (Steel): 360/360"
+   ],
+   "Sim Duelist": [
+    "Light Armor (Hard Leather): 72/90",
+    "Light Circular (Steel): 270/270",
+    "Light Reach (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Heavy Circular (Steel): 540/540",
+    "Light Armor (Soft Leather): 12/60"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Soft Leather): 60/60",
+    "Light Blast (Steel): 270/270",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Light Armor (Hard Leather): 56/120",
+    "Heavy Reach (Steel): 450/450",
+    "Heavy Weighted (Iron): 300/300"
+   ],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 0/400 BROKEN",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Heavy Circular (Steel): 630/630",
+    "Light Thrasher (Hardwood): 30/30"
+   ],
+   "Sim Raider Gunner": [
+    "Medium Armor (Soft Leather): 0/200 BROKEN",
+    "Heavy Rapid (Steel): 630/630"
+   ],
+   "Sim Raider Sniper": [
+    "Light Armor (Soft Leather): 0/100 BROKEN",
+    "Heavy Longshot (Steel): 630/630"
+   ],
+   "Sim Raider Bomber": [
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Heavy Blast (Steel): 630/630"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Rapid (Steel)": 28,
+    "prompt: Shift": 25,
+    "prompt: Heavy Blast (Steel)": 20,
+    "prompt: Light Circular (Steel)": 4,
+    "prompt: Light Reach (Steel)": 4,
+    "prompt: Heavy Reach (Steel)": 34,
+    "prompt: Heavy Swift (Steel)": 14,
+    "prompt: Light Blast (Steel)": 21,
+    "prompt: Light Assault (Steel)": 20,
+    "prompt: Heavy Circular (Steel)": 38,
+    "prompt: Heavy Longshot (Steel)": 2,
+    "prompt: Heavy Weighted (Iron)": 10,
+    "prompt: Knockback — Sim Raider Cutter": 2,
+    "prompt: Knockback — Sim Raider Sniper": 1,
+    "prompt: Knockback — Sim Raider Brute": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r2",
+  "group": "raiders",
+  "rotation": 2,
+  "seconds": 223,
+  "winner": "party",
+  "pass": "martial-t3-r2",
+  "rounds": 11,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "away": 4,
+   "into": 2
+  },
+  "used": {
+   "defend:shift": 43,
+   "defend:dodge": 148,
+   "Leap": 3,
+   "opt:thrust": 38,
+   "opt:through=str": 8,
+   "opt:letItRip": 19,
+   "opt:shank1=adv": 4,
+   "opt:shank2=dodge": 7,
+   "opt:shank3=pierce": 4,
+   "opt:through=adv": 2,
+   "opt:shank1=pierce": 3,
+   "opt:shank2=cleave": 3,
+   "opt:shank3=adv": 6,
+   "recoverEnergy": 3,
+   "opt:punch": 3,
+   "opt:pepper=1": 20,
+   "twist": 14,
+   "impale:skipped": 14,
+   "opt:through=cleave": 7,
+   "opt:shank1=dodge": 3,
+   "opt:through=pierce": 2,
+   "opt:wild=str2": 4,
+   "opt:wild=bashPlus": 3,
+   "opt:wild=bashStr": 3,
+   "opt:dir=away": 4,
+   "wall": 1,
+   "palisade": 1,
+   "Dash": 1,
+   "opt:dir=into": 2
+  },
+  "hp": {
+   "Sim Bulwark#mwTc": "702/702",
+   "Sim Duelist#qMfM": "118/567",
+   "Sim Breaker#p9uQ": "534/567",
+   "Sim Marksman#W4AL": "113/477",
+   "Sim Warden#HbUD": "449/477",
+   "Sim Raider Brute#vW5q": "166/720",
+   "Sim Raider Cutter#pp2s": "157/720",
+   "Sim Raider Gunner#z84S": "88/585",
+   "Sim Raider Sniper#aU5d": "143/585",
+   "Sim Raider Bomber#pUyM": "131/585"
+  },
+  "down": [
+   "Sim Duelist",
+   "Sim Marksman",
+   "Sim Raider Brute",
+   "Sim Raider Cutter",
+   "Sim Raider Gunner",
+   "Sim Raider Sniper",
+   "Sim Raider Bomber"
+  ],
+  "weapons": {
+   "Heavy Longshot": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 154,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Sniper"
+    ]
+   },
+   "Heavy Reach (2H)": {
+    "attacks": 21,
+    "followups": 1,
+    "hits": 14,
+    "crits": 5,
+    "misses": 8,
+    "damage": 431,
+    "ap": 63,
+    "kills": 1,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 27,
+    "followups": 0,
+    "hits": 14,
+    "crits": 3,
+    "misses": 13,
+    "damage": 525,
+    "ap": 81,
+    "kills": 1,
+    "users": [
+     "Breaker",
+     "Raider Cutter"
+    ]
+   },
+   "Heavy Blast": {
+    "attacks": 18,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 13,
+    "damage": 206,
+    "ap": 54,
+    "kills": 1,
+    "users": [
+     "Raider Bomber"
+    ]
+   },
+   "Light Circular": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 7,
+    "crits": 5,
+    "misses": 2,
+    "damage": 207,
+    "ap": 18,
+    "kills": 2,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 77,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Duelist"
+    ]
+   },
+   "Light Blast": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 0,
+    "damage": 102,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Light Assault": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 27,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Marksman"
+    ]
+   },
+   "Heavy Reach": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 8,
+    "damage": 231,
+    "ap": 41,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Breaker"
+    ]
+   },
+   "Heavy Rapid": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 17,
+    "damage": 186,
+    "ap": 60,
+    "kills": 1,
+    "users": [
+     "Raider Gunner"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 5,
+    "damage": 120,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 6,
+    "damage": 140,
+    "ap": 29,
+    "kills": 1,
+    "users": [
+     "Warden"
+    ],
+    "force": 0
+   }
+  },
+  "armor": {
+   "Light Armor (Chitin)": {
+    "hits": 6,
+    "absorbed": 36
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 22
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 8,
+    "absorbed": 6
+   },
+   "Heavy Armor (Iron)": {
+    "hits": 8,
+    "absorbed": 171
+   },
+   "Medium Armor (Hide)": {
+    "hits": 16,
+    "absorbed": 170
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 11,
+    "absorbed": 77
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Sniper",
+    "dealt": 154,
+    "taken": 289,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Marksman",
+    "dealt": 129,
+    "taken": 364,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 431,
+    "taken": 0,
+    "hits": 14,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 120,
+    "taken": 368,
+    "hits": 1,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Breaker",
+    "dealt": 415,
+    "taken": 33,
+    "hits": 11,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "dealt": 206,
+    "taken": 264,
+    "hits": 5,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Duelist",
+    "dealt": 284,
+    "taken": 449,
+    "hits": 11,
+    "attacks": 17
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 273,
+    "taken": 28,
+    "hits": 10,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "dealt": 186,
+    "taken": 265,
+    "hits": 3,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 208,
+    "taken": 346,
+    "hits": 5,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Sniper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 3,
+    "reloads": 4,
+    "used": {
+     "defend:dodge": 11
+    }
+   },
+   {
+    "name": "Sim Marksman",
+    "side": "party",
+    "role": "ranged",
+    "moved": 63.24555320336759,
+    "attacks": 8,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:shift": 9,
+     "defend:dodge": 16,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 0,
+    "shank": 0,
+    "aim": 1,
+    "reloads": 4
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 116.79586801558725,
+    "attacks": 21,
+    "turns": 11,
+    "kills": 0,
+    "leapt": true,
+    "used": {
+     "Leap": 1,
+     "twist": 14,
+     "impale:skipped": 14,
+     "defend:shift": 2,
+     "defend:dodge": 2,
+     "wall": 1,
+     "palisade": 1,
+     "Dash": 1
+    },
+    "turnMoved": 20.615528128088304
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Breaker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 139.9956129587,
+    "attacks": 20,
+    "turns": 11,
+    "kills": 0,
+    "leapt": true,
+    "used": {
+     "Leap": 1,
+     "defend:shift": 4,
+     "defend:dodge": 4
+    },
+    "turnMoved": 25,
+    "thr": 0,
+    "threw": true
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 18,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 18,
+    "used": {
+     "defend:dodge": 20
+    }
+   },
+   {
+    "name": "Sim Duelist",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 81.39410298049853,
+    "attacks": 17,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 1,
+    "used": {
+     "recoverEnergy": 1,
+     "defend:dodge": 24
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 123.39018958596415,
+    "attacks": 19,
+    "turns": 10,
+    "kills": 0,
+    "leapt": true,
+    "used": {
+     "Leap": 1,
+     "defend:shift": 28,
+     "defend:dodge": 14,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 5,
+    "wild": 0,
+    "knockbacks": {
+     "away": 4,
+     "into": 2
+    },
+    "threw": true
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "reloads": 20,
+    "used": {
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 18.251407699364425,
+    "attacks": 12,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "defend:dodge": 22
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "martial-theory": 3,
+    "martial-reach-weapons": 5,
+    "martial-light-armor": 3,
+    "martial-dexterity-methods": 2
+   },
+   "Sim Duelist": {
+    "martial-theory": 3,
+    "martial-circular-weapons": 5,
+    "martial-dexterity-methods": 3,
+    "martial-reach-weapons": 2
+   },
+   "Sim Breaker": {
+    "martial-theory": 3,
+    "martial-circular-weapons": 5,
+    "martial-light-armor": 3,
+    "martial-reach-weapons": 2
+   },
+   "Sim Marksman": {
+    "martial-theory": 3,
+    "martial-blast-weapons": 5,
+    "martial-dexterity-methods": 3,
+    "martial-light-armor": 2
+   },
+   "Sim Warden": {
+    "martial-theory": 3,
+    "martial-light-armor": 5,
+    "martial-reach-weapons": 3,
+    "martial-weighted-weapons": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed (not held) G1",
+    "Light Armor (Chitin) G6",
+    "Heavy Reach (Steel) G4"
+   ],
+   "Sim Duelist": [
+    "Unarmed (not held) G1",
+    "Light Armor (Hard Leather) G4",
+    "Light Circular (Steel) G6",
+    "Light Reach (Steel) G6"
+   ],
+   "Sim Breaker": [
+    "Unarmed (not held) G1",
+    "Light Armor (Soft Leather) G4",
+    "Heavy Reach (Steel) G6",
+    "Heavy Circular (Steel) G6"
+   ],
+   "Sim Marksman": [
+    "Unarmed (not held) G1",
+    "Light Armor (Chitin) G4",
+    "Light Blast (Steel) G6",
+    "Light Assault (Steel) G6"
+   ],
+   "Sim Warden": [
+    "Unarmed (not held) G1",
+    "Heavy Reach (Steel) G5",
+    "Light Armor (Hard Leather) G5",
+    "Heavy Weighted (Iron) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Circular (Steel)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Raider Gunner": [
+    "Unarmed",
+    "Heavy Rapid (Steel)",
+    "Medium Armor (Soft Leather)"
+   ],
+   "Sim Raider Sniper": [
+    "Unarmed",
+    "Heavy Longshot (Steel)",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Raider Bomber": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Blast (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Light Armor (Chitin): 150/150",
+    "Heavy Reach (Steel): 360/360"
+   ],
+   "Sim Duelist": [
+    "Light Armor (Hard Leather): 48/90",
+    "Light Circular (Steel): 270/270",
+    "Light Reach (Steel): 270/270"
+   ],
+   "Sim Breaker": [
+    "Light Armor (Soft Leather): 48/60",
+    "Heavy Circular (Steel): 540/540"
+   ],
+   "Sim Marksman": [
+    "Light Armor (Chitin): 14/90",
+    "Light Blast (Steel): 270/270",
+    "Light Assault (Steel): 270/270"
+   ],
+   "Sim Warden": [
+    "Heavy Reach (Steel): 450/450",
+    "Light Armor (Hard Leather): 112/120"
+   ],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 0/400 BROKEN",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Heavy Circular (Steel): 630/630",
+    "Light Thrasher (Hardwood): 30/30"
+   ],
+   "Sim Raider Gunner": [
+    "Heavy Rapid (Steel): 630/630",
+    "Medium Armor (Soft Leather): 0/200 BROKEN"
+   ],
+   "Sim Raider Sniper": [
+    "Heavy Longshot (Steel): 630/630",
+    "Light Armor (Soft Leather): 36/100"
+   ],
+   "Sim Raider Bomber": [
+    "Medium Armor (Hide): 0/150 BROKEN",
+    "Heavy Blast (Steel): 630/630"
+   ]
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Longshot (Steel)": 4,
+    "prompt: Shift": 43,
+    "prompt: Heavy Reach (Steel)": 35,
+    "prompt: Heavy Circular (Steel)": 27,
+    "prompt: Heavy Blast (Steel)": 18,
+    "prompt: Light Circular (Steel)": 9,
+    "prompt: Light Reach (Steel)": 8,
+    "prompt: Light Blast (Steel)": 4,
+    "prompt: Light Assault (Steel)": 4,
+    "prompt: Heavy Rapid (Steel)": 20,
+    "prompt: Heavy Swift (Steel)": 6,
+    "prompt: Heavy Weighted (Iron)": 10,
+    "prompt: Knockback — Sim Raider Cutter": 2,
+    "prompt: Heavy Reach (Steel) — Wall": 1,
+    "prompt: Knockback — Sim Raider Bomber": 2,
+    "prompt: Knockback — Sim Raider Gunner": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

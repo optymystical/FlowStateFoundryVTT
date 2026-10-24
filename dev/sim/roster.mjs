@@ -979,7 +979,7 @@ PASSES["magic-t5"] = { id: "magic-t5", note: "Magic Theory T5 schools (Restorati
 // afflictions and burns included). Every caster has the same stats (Grasp 45, Con 30, Build 15, a Rod, a Bastion, Medium Hide) and takes Magic
 // Theory to its school's tier, the school to T5 (T4 for the T5 schools, which cost 15 SP of Theory) and Cut at T2 as a shared damage carrier
 // (Slashing itself takes Stab instead), so every caster has a damage spell and Poison has something to ride on. A "Cut only" caster is the
-// baseline. The raiders walk into a punching bag (a lightly armored ally with a lot of HP that only dodges) standing between them and the caster; what they deal
+// baseline. The raiders walk into a punching bag (an unarmored ally with a lot of HP that only dodges) standing between them and the caster; what they deal
 // it shows what control and support schools prevent. Each config runs twice.
 const MB = (tier, school, lvl = 5, carrier = SLA) => ({ "magic-theory": tier, [school]: lvl, ...(school === carrier ? {} : { [carrier]: 2 }) });
 const BENCH_SCHOOLS = [
@@ -996,8 +996,8 @@ const BENCH_CASTER_STATS = { grasp: 45, con: 30, build: 15 };
 export const PARTY_MBENCH = [
   { id: "caster", name: "Sim Caster", role: "caster", note: "One loadout per school.", stats: BENCH_CASTER_STATS,
     loadouts: BENCH_SCHOOLS.map(([id, label, trees, role, conj]) => ({ id, label, trees, role: role ?? "caster", conj: conj ?? null, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") })) },
-  { id: "bag", name: "Sim Bag", role: "dummy", note: "Light Soft Leather (so hits get through), only dodges; Con 400 so it stays standing all 4 rounds.", stats: { con: 400 },
-    loadouts: BENCH_SCHOOLS.map(() => ({ trees: {}, armor: A("light", "softLeather"), weapons: [] })) }
+  { id: "bag", name: "Sim Bag", role: "dummy", note: "No armor (its Grade would follow Con and soak everything), only dodges; Con 400 so it stays standing all 4 rounds.", stats: { con: 400 },
+    loadouts: BENCH_SCHOOLS.map(() => ({ trees: {}, armor: null, weapons: [] })) }
 ];
 const BENCH_RAIDERS = { raiders: { label: "Raiders", note: "Three tree-less raiders with Heavy weapons (25 Skill Points).",
   kinds: [

@@ -1126,20 +1126,26 @@ function armorSoak(target, type, { pierce = 0, magic = false } = {}) {
 }
 
 /**
- * The hybrid's best weapon attack right now: a held weapon that rolls dice (a gun loaded) and a foe within its reach or range. Value = mean damage
- * (Strengthened stacks included) less the target's armor, times its free follow-ups (Fast ~½ an attack, Solitary ~0.6), per AP.
+ * The hybrid's best weapon attack this turn: a held weapon that rolls dice (a gun loaded) and a foe within its reach or range, or one it can walk
+ * into reach of and still attack with the AP left. Value = mean damage (Strengthened stacks included) less the target's armor, times its free
+ * follow-ups (Fast ~½ an attack, Solitary ~0.6), per AP (the steps to get there count as AP too).
  */
 function weaponNow(actor, me) {
   const foes = foesOf(me.parent, me);
+  const ap = actor.system.ap.value, speed = actor.system.movement?.speed ?? 30, stepAp = actor.system.movement?.ap ?? 1;
   let best = null;
   for (const i of actor.items.filter(i => i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed")) {
     const w = weaponPlan(actor, i), p = i.system.profile;
     if (!w || !(p?.dice > 0) || (w.ranged && !w.loaded)) continue;
-    const t = foes.filter(f => dist(me, f) <= w.range + 0.01).sort((a, b) => a.actor.system.hp.value - b.actor.system.hp.value)[0];
+    // AP to walk into reach: whole steps of `speed` ft for `stepAp` each.
+    const steps = f => Math.max(0, Math.ceil((dist(me, f) - w.range) / speed));
+    const t = foes.filter(f => steps(f) * stepAp + w.ap <= ap).sort((a, b) => steps(a) - steps(b) || a.actor.system.hp.value - b.actor.system.hp.value)[0];
     if (!t) continue;
     const mean = p.dice * (p.die + 1) / 2 * Rules.stackMultiplier(p.stacks ?? 0);
     const hit = Math.max(0, mean - armorSoak(t, p.damageType ?? "physical", { pierce: p.pierce ?? 0 }));
-    const value = hit * (1 + (p.fast ? 0.5 : 0) + (p.solitary ? 0.6 : 0)) / Math.max(1, w.ap);
+    // Spread over the walk and the attacks the rest of the AP pays for.
+    const walk = steps(t) * stepAp, attacks = Math.max(1, Math.floor((ap - walk) / Math.max(1, w.ap)));
+    const value = hit * (1 + (p.fast ? 0.5 : 0) + (p.solitary ? 0.6 : 0)) * attacks / Math.max(1, walk + attacks * w.ap);
     if (!best || value > best.value) best = { value, target: t, item: i };
   }
   return best;

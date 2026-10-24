@@ -1,0 +1,330 @@
+<title>Magic Balance Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: the Martial review's sister page. One reading column of findings, wide data blocks that scroll inside themselves. Magic's accent is violet. */
+:root {
+  --bg: #f7f6fa; --panel: #ffffff; --ink: #16141d; --ink-2: #4c4859; --ink-3: #7c778b;
+  --rule: #e0dde8; --accent: #5b3f9e; --accent-soft: #ece6f7;
+  --party: #2a78d6; --mon: #eb6834; --bar: #5b3f9e; --bar-dim: #c4bbd8;
+  --look: #b3261e; --look-bg: #fbe9e7; --watch: #8a5a00; --watch-bg: #fbf0d9; --fine: #1e6b36; --fine-bg: #e3f2e7;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #13111a; --panel: #1b1824; --ink: #ece9f3; --ink-2: #b8b2c8; --ink-3: #8b8599;
+  --rule: #2d2938; --accent: #b9a2ec; --accent-soft: #2a2140;
+  --party: #3987e5; --mon: #d95926; --bar: #9d84d8; --bar-dim: #3f3852;
+  --look: #f28b82; --look-bg: #3a1f1d; --watch: #e8b55a; --watch-bg: #33290f; --fine: #7fcf96; --fine-bg: #15301f;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #13111a; --panel: #1b1824; --ink: #ece9f3; --ink-2: #b8b2c8; --ink-3: #8b8599;
+  --rule: #2d2938; --accent: #b9a2ec; --accent-soft: #2a2140;
+  --party: #3987e5; --mon: #d95926; --bar: #9d84d8; --bar-dim: #3f3852;
+  --look: #f28b82; --look-bg: #3a1f1d; --watch: #e8b55a; --watch-bg: #33290f; --fine: #7fcf96; --fine-bg: #15301f;
+  color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.6 var(--body); }
+.wrap { max-width: 60rem; margin: 0 auto; padding-block: 2.5rem 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 3rem; }
+.prose { max-width: 42rem; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2.1rem, 6vw, 3.2rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.01em; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+p { margin: 0; }
+section { display: grid; gap: 1rem; min-width: 0; }
+.eyebrow { font: 600 0.75rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); }
+.lede { font-size: 1.2rem; color: var(--ink-2); max-width: 42rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font: 400 0.85rem/1.4 var(--mono); color: var(--ink-3); }
+.meta b { color: var(--ink); font-weight: 600; }
+header { display: grid; gap: 1rem; border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; }
+.muted { color: var(--ink-2); }
+.small { font-size: 0.9rem; }
+code, .num { font-family: var(--mono); font-size: 0.88em; }
+.num { font-variant-numeric: tabular-nums; }
+
+.findings { display: grid; border-top: 1px solid var(--rule); }
+.finding { display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.25rem 1.25rem; padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+.finding > div { min-width: 0; display: grid; gap: 0.35rem; }
+.finding h3 { font-size: 1.08rem; }
+.chip { align-self: start; justify-self: start; font: 600 0.72rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.35rem 0.55rem; border-radius: 4px; white-space: nowrap; }
+.chip::before { content: ""; display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 50%; margin-right: 0.4rem; background: currentColor; vertical-align: 0.02rem; }
+.chip.look { color: var(--look); background: var(--look-bg); }
+.chip.watch { color: var(--watch); background: var(--watch-bg); }
+.chip.fine { color: var(--fine); background: var(--fine-bg); }
+@media (max-width: 560px) { .finding { grid-template-columns: 1fr; } }
+
+.block { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 1.25rem; display: grid; gap: 0.9rem; min-width: 0; }
+.block-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.5rem 1rem; }
+.legend { display: flex; gap: 1rem; font-size: 0.85rem; color: var(--ink-2); }
+.legend span::before { content: ""; display: inline-block; width: 0.7rem; height: 0.7rem; border-radius: 2px; margin-right: 0.35rem; vertical-align: -0.05rem; background: var(--c); }
+.scroll { overflow-x: auto; min-width: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 600 0.72rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); white-space: nowrap; }
+td.n, th.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.lead td { font-weight: 600; }
+td .tag { font: 400 0.75rem/1 var(--mono); color: var(--ink-3); }
+.res { font-family: var(--mono); font-size: 0.85rem; white-space: nowrap; }
+.res .w { color: var(--fine); font-weight: 600; } .res .l { color: var(--look); }
+
+.pairs { display: grid; grid-template-columns: repeat(5, minmax(5.6rem, 1fr)); gap: 0.75rem; align-items: end; min-width: 30rem; }
+.pair { display: grid; gap: 0.4rem; justify-items: center; }
+.pair .cols { display: flex; gap: 2px; align-items: flex-end; height: 11rem; }
+.pair .col { width: 1.4rem; border-radius: 4px 4px 0 0; outline: none; }
+.pair .col.p { background: var(--party); } .pair .col.m { background: var(--mon); }
+.pair .col:hover, .pair .col:focus-visible { filter: brightness(1.12); }
+.pair .cap { font: 600 0.74rem/1.25 var(--mono); text-align: center; color: var(--ink); }
+.pair .sub { font: 400 0.72rem/1.25 var(--mono); text-align: center; color: var(--ink-3); }
+.axis-note { font: 400 0.78rem/1.4 var(--mono); color: var(--ink-3); }
+.tip { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--bg); font: 400 0.8rem/1.35 var(--mono);
+  padding: 0.45rem 0.6rem; border-radius: 4px; max-width: 18rem; box-shadow: 0 4px 14px rgb(0 0 0 / 0.18); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tabs button { font: 600 0.8rem/1 var(--mono); padding: 0.5rem 0.75rem; border-radius: 4px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink-2); cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.spellbar { display: inline-block; height: 0.6rem; border-radius: 0 3px 3px 0; background: var(--bar); vertical-align: 0.05rem; margin-right: 0.4rem; min-width: 2px; }
+.spellbar.m { background: var(--mon); }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1.25rem; }
+.two > * { min-width: 0; }
+ul.plain, ol.plain { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.5rem; }
+.callout { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 0.9rem 1rem; border-radius: 0 6px 6px 0; display: grid; gap: 0.4rem; }
+footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.88rem; color: var(--ink-3); }
+@media (prefers-reduced-motion: no-preference) { .col, .tabs button { transition: filter 0.12s, background 0.12s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Flow State · Combat sim · Magic</span>
+    <h1>Magic balance review</h1>
+    <p class="lede">Five passes, one per Magic Theory tier: pure casters against caster monsters built from the same schools. What won, what did the damage, and what looks off.</p>
+    <div class="meta">
+      <span><b>30</b> fights</span>
+      <span><b>5</b> passes (T1–T5)</span>
+      <span>Pain Threshold <b>½</b></span>
+      <span><b>24 Oct 2026</b></span>
+    </div>
+  </header>
+
+  <section class="prose">
+    <span class="eyebrow">How the sim ran</span>
+    <p>The same five-character party as the Martial passes (90 stat points and 30 Skill Points each), now as pure casters: Magic trees only, an attuned Foci and Shroud, armor, no weapons. <b>Bulwark</b> is the tank, <b>Warden</b> the support, the others casters on Grasp, Reach or both (the Raw caster has no Foci). Each pass took the schools one Magic Theory tier unlocks up to T5. The <b>Swarm</b> (ten goblins), <b>Raiders</b> (five) and <b>Ogre Magus</b> boss cast from the same schools, scaled to their Skill Points.</p>
+    <p class="muted">The AI casts through the real Cast Spell path: one support spell a turn (Shield, Burden, Repulsion), then its best spell per AP on the weakest foe in range, adding Mods while the Energy lasts. Tier 3 adds Poison coats, Charm and Hex; Tier 4 keeps one creation up each turn; Tier 5 adds Restore, Mirage and Shift.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Outcomes</span>
+    <h2>Pass by pass</h2>
+    <div class="block">
+      <div class="block-head">
+        <h3>HP each side lost, summed over the pass</h3>
+        <div class="legend"><span style="--c: var(--party)">Party lost</span><span style="--c: var(--mon)">Monsters lost</span></div>
+      </div>
+      <div class="scroll"><div class="pairs" id="pairs"></div></div>
+      <p class="axis-note">Bars share one scale (0 to 10,958). Creatures go down at half their HP (the Pain Threshold), so a wiped side loses about half its total.</p>
+    </div>
+    <div class="block">
+      <div class="scroll"><table>
+        <thead><tr><th>Pass</th><th>Schools</th><th class="n">Party won</th><th class="n">Avg rounds</th><th>Swarm</th><th>Raiders</th><th>Boss</th></tr></thead>
+        <tbody id="passRows"></tbody>
+      </table></div>
+      <p class="small muted">W/L and rounds per fight; each group fought twice, once per loadout rotation.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Summary</span>
+    <h2>Nine findings</h2>
+    <div class="findings">
+      <div class="finding"><span class="chip look">Look at</span><div>
+        <h3>Animations grow with the square of their points</h3>
+        <p>An Animation's health is the material's HP per point × its points × its Size, and its Size comes from the Body of the pile, which must be at least the points. So more points also means a bigger Size. The T4 Animator's Stone Animate (Expanded Animation) came out at <span class="num">2,643</span> HP per cast, renewed every turn: about the whole party's HP (2,835). Make + Animate with Clay made <span class="num">882</span> HP ones. They hit for <span class="num">80–90</span> a swing, against <span class="num">13</span> for a Form Summon (<span class="num">212–342</span> HP).</p>
+        <p class="small muted">Monsters attacked them first, so in 3 of 6 T4 fights the party took no damage at all. The party won all three fights where its Animators used rotation 2 (Make + Animate, Form + Animate).</p>
+      </div></div>
+      <div class="finding"><span class="chip look">Look at</span><div>
+        <h3>Tier 2 fights are won by stacks, not hits</h3>
+        <p>In T2 the party lost <span class="num">8,078</span> HP and only about <span class="num">1,940</span> of it was direct spell damage: the rest was Ignite, Stain and Electric Stain burning at the end of turns. Flame + Frost and Crackle + Glob deal no direct damage at all and still carried the goblin swarm, ten casters stacking on the same targets. The party won only the boss fights (2 of 6), and fights averaged <span class="num">8</span> rounds.</p>
+      </div></div>
+      <div class="finding"><span class="chip look">Look at</span><div>
+        <h3>Tier 3 schools can't finish a fight</h3>
+        <p>Grasp Arcana, Venomancy, Charm and Witchery have no direct-damage Core, so each caster carried a T1 school at T2 (a judgment call; see below). The party won <span class="num">0</span> of 6 and averaged <span class="num">9.5</span> rounds. Against the Ogre Magus they dealt <span class="num">83</span> and <span class="num">443</span> damage in 14 and 13 rounds: its Heavy Iron and Carapace soaked the carrier spells, and its Hexes hurt every party member who attacked. The afflictions themselves are strong: Poison, Charm and Hex checks took <span class="num">560–1,204</span> HP off the monsters per non-boss fight, more than direct hits did.</p>
+      </div></div>
+      <div class="finding"><span class="chip look">Look at</span><div>
+        <h3>Restore heals 8 a cast, and its time window reads oddly</h3>
+        <p>Restore heals 2 × Power: <span class="num">8</span> per cast at Power 4. The Mender cast it 56 times for <span class="num">448</span> HP in all, while a single Strike averaged <span class="num">56</span> damage. Two code questions sit under it. The system reads "since the start of your last turn" as the start of the caster's <em>current</em> turn, so a Restore on your own turn heals only what was lost during it (the sim used the start of the previous turn instead). And heals aren't taken off the loss, so two Restores can heal more than was lost in the window.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Combos lead Tier 1</h3>
+        <p>Force + Cut averaged <span class="num">42.4</span> per cast, Force + Slam <span class="num">31.5</span> and Force + Stab <span class="num">25.3</span>, against <span class="num">20.7</span> for Cut alone. Once a caster knows two schools, the AI never cast a single Core except as a fallback. T1 was the most even pass: 4 of 6 wins in <span class="num">4.7</span> rounds.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Strike is the strongest damage spell in the passes</h3>
+        <p>Arcanomancy's Strike averaged <span class="num">56</span> per cast for both sides, and the party hit <span class="num">88%</span> of the time. Shift with Toss came next at <span class="num">37–39</span>. Monster Strikers made the T5 swarm and raider fights short losses (4–8 rounds). What Mirage + Strike does to monster casters (Disadvantage and Weakened on Magic) isn't measured separately.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Squishy casters die before they act</h3>
+        <p>Monsters go for the lowest HP in range, and the Raw caster (Con 30, Light armor, no Foci) often went down in round 1 before its first turn: 0 turns in the first fight of T3, T4 and T5. The Grasp and Reach casters in Light armor followed. A pure caster party has no one to hold the line except Shields and creations.</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Afflictions and burns go uncredited at the table too</h3>
+        <p>Poison ticks, Charm and Hex self-damage and stack burns land on their own cards, separate from the spell that caused them. In the sim they only show as HP lost outside direct hits. At the table that makes it hard to see what a Venomancer or a Heat caster contributed.</p>
+      </div></div>
+      <div class="finding"><span class="chip fine">Fine</span><div>
+        <h3>Bosses are beatable, as intended</h3>
+        <p>The party won all 8 boss fights outside T3, in 2–6 rounds. A lone Ogre Magus casting the same schools can't keep up with five casters. The one exception is T3, where the party had no way through its armor.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Spells</span>
+    <h2>Damage per cast, by pass</h2>
+    <div class="block">
+      <div class="block-head">
+        <div class="tabs" role="tablist" id="tabs"></div>
+        <div class="legend"><span style="--c: var(--bar)">Party</span><span style="--c: var(--mon)">Monsters</span></div>
+      </div>
+      <div class="scroll"><table>
+        <thead><tr><th>Spell</th><th>Side</th><th class="n">Casts</th><th class="n">Hit</th><th class="n">Dmg to HP</th><th>Per cast</th></tr></thead>
+        <tbody id="spellRows"></tbody>
+      </table></div>
+      <p class="small muted" id="spellNote"></p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Tier 4</span>
+    <h2>What the casters kept in the fight</h2>
+    <div class="block">
+      <div class="scroll"><table>
+        <thead><tr><th>Caster</th><th>Creation</th><th class="n">Made</th><th class="n">HP each</th></tr></thead>
+        <tbody>
+          <tr class="lead"><td>Animator</td><td>Animate (Stone, Expanded) · Make + Animate (Clay)</td><td class="n">21</td><td class="n">2,643</td></tr>
+          <tr><td>Maker</td><td>Form + Make (Mk2/Mk3 weapon) · Make + Animate (Clay)</td><td class="n">15</td><td class="n">882</td></tr>
+          <tr><td>Summoner</td><td>Form + Make · Form + Animate</td><td class="n">18</td><td class="n">342</td></tr>
+          <tr><td>Warden</td><td>Form with Skin and Layered</td><td class="n">24</td><td class="n">239</td></tr>
+          <tr><td>Bulwark</td><td>Form with Arm, Layered and Reactive, plus a Shield</td><td class="n">17</td><td class="n">212</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted">Each creation lasts until its caster's next turn, so the AI recast it every turn at the highest Threshold that fit 60% of its Energy. The pile is assumed to be there (its Body at the minimum the points allow).</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Read with care</span>
+    <h2>Sim judgment calls and gaps</h2>
+    <div class="two">
+      <div class="callout"><h3>Choices the sim made</h3>
+        <ul class="plain small">
+          <li><b>T3 carrier school:</b> every T3 caster spent its last 3 SP on Cut, Stab or Slam at T2, so Poison had something to ride on.</li>
+          <li><b>Restore's window:</b> the start of the caster's previous turn, not the current one.</li>
+          <li><b>Creations:</b> one two-handed Heavy natural weapon for Arm, Skin at Medium, Strength-heavy points, the best Heavy weapon Make allows.</li>
+          <li><b>Shift:</b> material always at hand; Harden (Strengthened) and Muddy (their attacks at Disadvantage) added on when affordable.</li>
+          <li><b>Mirage:</b> Mirage + Strike when known, otherwise Fidelity for Disadvantage on attack rolls. Aura was left out (it would catch allies).</li>
+        </ul>
+      </div>
+      <div class="callout"><h3>Gaps in the numbers</h3>
+        <ul class="plain small">
+          <li>Burns and afflictions aren't credited to a spell; they show as HP lost outside direct hits.</li>
+          <li>T1 and T2 can't split spells by side (both sides used the same ones), so their table is pooled.</li>
+          <li>The AI spends AP on afflictions even when they do little (Charm on an Ogre that never attacks), so T3's damage is a floor.</li>
+          <li>A harmless server error (an update to a token that was already gone) showed up in a few fights; none changed the outcome.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="prose">
+    <span class="eyebrow">For the designer</span>
+    <h2>Questions</h2>
+    <ol class="plain">
+      <li><b>Restore's window.</b> Cast on your own turn, does "since the start of your last turn" mean the start of this turn or the previous one?</li>
+      <li><b>Restore stacking.</b> Should what Restore already healed count against the window, so two casts can't heal more than was lost?</li>
+      <li><b>Restore's size.</b> 2 × Power (8 at Power 4) is a fraction of what one damage spell deals. Intended for a T5 school?</li>
+      <li><b>Animation health.</b> Is health meant to grow with points × Size, when Size itself grows with the points? A Stone Animation at T4 outlasts a whole party.</li>
+      <li><b>Tier 2 stacks.</b> Are burns meant to out-damage direct hits this much, especially from a swarm stacking one target?</li>
+      <li><b>Tier 3 damage.</b> Should a T3 school be able to deal damage on its own, or is pairing it with a damage school the intended build?</li>
+    </ol>
+  </section>
+
+  <footer>
+    <p>Source: <code>dev/sim/results/magic-t1.json</code> to <code>magic-t5.json</code>, tabulated with <code>dev/sim/magic-report.mjs</code>. Damage counts only what reached HP after soak. "Per cast" for creations is per attack the creation made. Two fights per group per pass, so single numbers swing.</p>
+  </footer>
+</div>
+
+<script>
+(() => {
+  // [pass, schools, wins, fights, avg rounds, party HP lost, monster HP lost, swarm, raiders, boss]
+  const passes = [
+    ["T1", "Slashing, Piercing, Crushing, Protection Arcana, Gravity", 4, 6, 4.7, 5527, 10958, ["W5", "L8"], ["L4", "W4"], ["W3", "W4"]],
+    ["T2", "Reach Arcana, Heat, Cold, Radiation, Acid", 2, 6, 8.0, 8078, 9774, ["L9", "L13"], ["L7", "L10"], ["W6", "W3"]],
+    ["T3", "Grasp Arcana, Venomancy, Charm, Witchery", 0, 6, 9.5, 10384, 5468, ["L5", "L6"], ["L12", "L7"], ["L14", "L13"]],
+    ["T4", "Build Arcana, Summoning, Creation, Animation", 4, 6, 4.7, 3083, 7883, ["L10", "W4"], ["L6", "W2"], ["W4", "W2"]],
+    ["T5", "Restoration Arcana, Geomancy, Illusion, Arcanomancy", 2, 6, 5.7, 7905, 5453, ["L4", "L5"], ["L8", "L7"], ["W4", "W6"]]
+  ];
+  // [spell, side (p party, m monsters, b both), casts, hit %, damage, per cast]
+  const spells = {"T1":[["Force + Cut","b",80,68,3391,42.4],["Slam","b",18,56,584,32.4],["Force + Slam","b",91,56,2870,31.5],["Force + Stab","b",111,59,2805,25.3],["Cut + Stab","b",70,36,1655,23.6],["Cut","b",35,54,723,20.7],["Cut + Slam","b",26,42,496,19.1],["Force","b",81,40,0,0],["Shield","b",53,85,0,0]],"T2":[["Crackle","b",151,59,4017,26.6],["Glob","b",362,54,2558,7.1],["Flame","b",133,38,754,5.7],["Frost","b",8,50,39,4.9],["Flame + Frost","b",50,38,0,0],["Crackle + Glob","b",120,35,0,0],["Flame + Glob","b",52,50,0,0]],"T3":[["Slam","m",74,43,1648,22.3],["Cut","m",154,35,2652,17.2],["Cut","p",56,70,779,13.9],["Stab","m",80,43,969,12.1],["Slam","p",61,64,599,9.8],["Stab","p",11,82,58,5.3],["Charm + Hex","p",37,89,0,0],["Force","p",85,71,0,0],["Charm","p",44,86,0,0],["Hex","m",40,70,0,0],["Poison","m",49,98,0,0],["Charm","m",24,54,0,0],["Poison","p",52,92,0,0],["Hex","p",12,92,0,0]],"T4":[["Make + Animate (creation)","p",51,47,4574,89.7],["Animate (creation)","p",31,52,2463,79.5],["Animate (creation)","m",27,41,1459,54],["Slam","m",5,80,269,53.8],["Form + Animate (creation)","p",32,69,833,26],["Stab","p",27,63,622,23],["Cut","p",81,52,1615,19.9],["Form + Make (creation)","p",77,77,1374,17.8],["Form (creation)","p",170,55,2237,13.2],["Form + Animate (creation)","m",21,24,219,10.4],["Cut","m",253,31,2605,10.3],["Form (creation)","m",212,25,1909,9],["Form + Make (creation)","m",112,31,987,8.8],["Force","p",54,50,0,0],["Shield","p",17,88,0,0]],"T5":[["Strike","m",92,71,5218,56.7],["Strike","p",90,88,5018,55.8],["Shift (Toss)","m",50,38,1947,38.9],["Shift (Toss)","p",15,47,554,36.9],["Cut","m",48,31,884,18.4],["Shift (no Toss)","m",6,17,106,17.7],["Stab","m",31,39,161,5.2],["Slam","m",24,25,38,1.6],["Mirage","m",11,73,0,0],["Mirage","p",5,80,0,0],["Mirage + Strike","p",11,73,0,0],["Shield","p",16,88,0,0],["Force","p",11,64,0,0]]};
+  const notes = {
+    T1: "Both sides pooled. Force deals Force, not damage, unless it drives someone into the ground; its value is in the Combos.",
+    T2: "Both sides pooled. Direct damage only: Glob, Flame and the Combos do most of their work through Stain and Ignite stacks, which burn later and aren't counted here.",
+    T3: "Poison, Charm and Hex deal their damage through checks on later turns, so they show 0 here. In non-boss fights those checks took 560–1,204 HP off the monsters per fight.",
+    T4: "For creations, “casts” are the attacks the creation made.",
+    T5: "Restore (56 casts, 448 HP healed) isn't a damage spell, so it isn't listed. Mirage's effects are Disadvantage and Weakened, not damage."
+  };
+  const fmt = n => n.toLocaleString("en-US");
+
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; document.body.append(tip);
+  const showTip = (el, html) => {
+    const move = e => { const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + "px"; tip.style.top = (e.clientY + 14) + "px"; };
+    el.addEventListener("pointerenter", e => { tip.innerHTML = html; tip.hidden = false; move(e); });
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerleave", () => { tip.hidden = true; });
+    el.addEventListener("focus", () => { tip.innerHTML = html; tip.hidden = false; const r = el.getBoundingClientRect(); tip.style.left = Math.min(r.left, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = (r.bottom + 6) + "px"; });
+    el.addEventListener("blur", () => { tip.hidden = true; });
+    el.tabIndex = 0;
+  };
+
+  const max = Math.max(...passes.flatMap(p => [p[5], p[6]]));
+  const pairs = document.getElementById("pairs");
+  for (const [name, , wins, fights, , pl, ml] of passes) {
+    const el = document.createElement("div"); el.className = "pair";
+    el.innerHTML = `<div class="cols"><div class="col p" style="height:${(pl / max * 100).toFixed(1)}%"></div><div class="col m" style="height:${(ml / max * 100).toFixed(1)}%"></div></div>
+      <div class="cap">${name}</div><div class="sub">${wins}/${fights} won</div>`;
+    const [p, m] = el.querySelectorAll(".col");
+    showTip(p, `<b>${name}</b> · Party lost<br>${fmt(pl)} HP over ${fights} fights`);
+    showTip(m, `<b>${name}</b> · Monsters lost<br>${fmt(ml)} HP over ${fights} fights`);
+    pairs.append(el);
+  }
+  const res = list => `<span class="res">${list.map(x => `<span class="${x[0] === "W" ? "w" : "l"}">${x}</span>`).join(" · ")}</span>`;
+  document.getElementById("passRows").innerHTML = passes.map(([n, s, w, f, r, , , sw, ra, bo]) =>
+    `<tr><td><b>${n}</b></td><td class="small">${s}</td><td class="n">${w} / ${f}</td><td class="n">${r.toFixed(1)}</td><td>${res(sw)}</td><td>${res(ra)}</td><td>${res(bo)}</td></tr>`).join("");
+
+  const tabs = document.getElementById("tabs"), rows = document.getElementById("spellRows"), note = document.getElementById("spellNote");
+  const top = Math.max(...Object.values(spells).flat().map(s => s[5]));
+  const show = pass => {
+    for (const b of tabs.children) b.setAttribute("aria-selected", String(b.dataset.pass === pass));
+    rows.innerHTML = spells[pass].map(([n, s, c, h, d, pc]) =>
+      `<tr><td>${n}</td><td><span class="tag">${s === "p" ? "party" : s === "m" ? "monsters" : "both"}</span></td><td class="n">${c}</td><td class="n">${h}%</td><td class="n">${fmt(d)}</td>
+       <td class="n" style="text-align:left"><span class="spellbar${s === "m" ? " m" : ""}" style="width:${(pc / top * 7).toFixed(2)}rem"></span>${pc.toFixed(1)}</td></tr>`).join("");
+    note.textContent = notes[pass];
+    try { localStorage.setItem("magic-review-pass", pass); } catch (e) { /* not available */ }
+  };
+  for (const pass of Object.keys(spells)) {
+    const b = document.createElement("button"); b.type = "button"; b.role = "tab"; b.dataset.pass = pass; b.id = `tab-${pass}`; b.textContent = pass;
+    b.addEventListener("click", () => show(pass));
+    tabs.append(b);
+  }
+  let start = "T1";
+  try { const saved = localStorage.getItem("magic-review-pass"); if (saved && spells[saved]) start = saved; } catch (e) { /* not available */ }
+  show(start);
+})();
+</script>

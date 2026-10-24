@@ -2041,5 +2041,1379 @@
    "notes": [],
    "errors": []
   }
+ },
+ {
+  "id": "raiders-r2",
+  "group": "raiders",
+  "rotation": 2,
+  "seconds": 177,
+  "winner": "monsters",
+  "pass": "magic-t2",
+  "rounds": 10,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "opt:shape=radius": 5,
+   "cast:Crackle": 26,
+   "mod:Explode": 5,
+   "mod:Electrify": 26,
+   "mod:Lightning Rod": 15,
+   "mod:Charge": 15,
+   "defend:dodge": 154,
+   "cast:Glob": 71,
+   "mod:Melt": 82,
+   "mod:Catalyst": 7,
+   "cast:Frost": 2,
+   "mod:Frostbite": 4,
+   "mod:Chill": 2,
+   "mod:Pinpoint": 10,
+   "cast:Flame + Glob": 27,
+   "mod:Ignition": 12,
+   "mod:Multicast": 10,
+   "multicast": 10,
+   "cast:Flame": 9
+  },
+  "hp": {
+   "Sim Bulwark#yfsV": "155/702",
+   "Sim Pyro#ZRIu": "235/567",
+   "Sim Storm#9Fuy": "229/567",
+   "Sim Frostfire#snjo": "183/432",
+   "Sim Warden#wpsk": "10/567",
+   "Sim Raider Pyro#fT8m": "374/765",
+   "Sim Raider Froster#JrVH": "340/765",
+   "Sim Raider Storm#qGPp": "765/765",
+   "Sim Raider Spitter#FziL": "765/765",
+   "Sim Raider Echo#x23s": "226/540"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Pyro",
+   "Sim Storm",
+   "Sim Frostfire",
+   "Sim Warden",
+   "Sim Raider Pyro",
+   "Sim Raider Froster",
+   "Sim Raider Echo"
+  ],
+  "weapons": {
+   "Spell: Crackle": {
+    "attacks": 37,
+    "followups": 0,
+    "hits": 19,
+    "crits": 4,
+    "misses": 20,
+    "damage": 808,
+    "ap": 102,
+    "kills": 0,
+    "users": [
+     "Storm",
+     "Raider Pyro",
+     "Pyro",
+     "Raider Storm"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 74,
+    "followups": 0,
+    "hits": 39,
+    "crits": 14,
+    "misses": 37,
+    "damage": 472,
+    "ap": 148,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Bulwark",
+     "Raider Froster"
+    ]
+   },
+   "Spell: Frost": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 30,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Raider Echo"
+    ]
+   },
+   "Spell: Flame + Glob": {
+    "attacks": 27,
+    "followups": 0,
+    "hits": 13,
+    "crits": 1,
+    "misses": 14,
+    "damage": 0,
+    "ap": 54,
+    "kills": 0,
+    "users": [
+     "Raider Spitter"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 7,
+    "damage": 5,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Pyro"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 7,
+    "absorbed": 104
+   },
+   "Medium Armor (Hide)": {
+    "hits": 15,
+    "absorbed": 224
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 42
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 107
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Storm",
+    "dealt": 336,
+    "taken": 108,
+    "hits": 7,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Raider Echo",
+    "dealt": 30,
+    "taken": 253,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Raider Spitter",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 13,
+    "attacks": 27
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "dealt": 5,
+    "taken": 343,
+    "hits": 2,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Frostfire",
+    "dealt": 0,
+    "taken": 30,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 176,
+    "taken": 173,
+    "hits": 17,
+    "attacks": 23
+   },
+   {
+    "name": "Sim Pyro",
+    "dealt": 103,
+    "taken": 94,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 140,
+    "taken": 155,
+    "hits": 17,
+    "attacks": 30
+   },
+   {
+    "name": "Sim Raider Froster",
+    "dealt": 156,
+    "taken": 159,
+    "hits": 5,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Raider Storm",
+    "dealt": 369,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 18
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Storm",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Crackle": 8,
+     "mod:Explode": 2,
+     "mod:Electrify": 8,
+     "mod:Lightning Rod": 8,
+     "mod:Charge": 8,
+     "defend:dodge": 17
+    }
+   },
+   {
+    "name": "Sim Raider Echo",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 17,
+     "cast:Frost": 2,
+     "mod:Frostbite": 4,
+     "mod:Chill": 2,
+     "mod:Explode": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "Sim Raider Spitter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Flame + Glob": 27,
+     "mod:Ignition": 3,
+     "mod:Melt": 20,
+     "mod:Catalyst": 1
+    },
+    "turnMoved": 0,
+    "casts": 27
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Crackle": 3,
+     "mod:Electrify": 3,
+     "mod:Lightning Rod": 3,
+     "cast:Flame": 9,
+     "mod:Ignition": 9,
+     "defend:dodge": 23,
+     "mod:Pinpoint": 2
+    }
+   },
+   {
+    "name": "Sim Frostfire",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 20,
+    "used": {
+     "cast:Glob": 20,
+     "mod:Explode": 2,
+     "mod:Melt": 20,
+     "mod:Catalyst": 6,
+     "mod:Multicast": 1,
+     "multicast": 1,
+     "defend:dodge": 23
+    }
+   },
+   {
+    "name": "Sim Pyro",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 19,
+     "cast:Crackle": 6,
+     "mod:Electrify": 6,
+     "mod:Lightning Rod": 3,
+     "mod:Charge": 6
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Glob": 30,
+     "mod:Pinpoint": 1,
+     "mod:Melt": 25,
+     "defend:dodge": 18
+    }
+   },
+   {
+    "name": "Sim Raider Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Glob": 21,
+     "mod:Pinpoint": 2,
+     "mod:Melt": 17,
+     "defend:dodge": 20
+    }
+   },
+   {
+    "name": "Sim Raider Storm",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Crackle": 9,
+     "mod:Multicast": 9,
+     "mod:Electrify": 9,
+     "mod:Lightning Rod": 1,
+     "mod:Charge": 1,
+     "multicast": 9,
+     "mod:Pinpoint": 5,
+     "defend:dodge": 9
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 2,
+    "magic-cold": 5,
+    "magic-acid": 4
+   },
+   "Sim Pyro": {
+    "magic-theory": 2,
+    "magic-radiation": 5,
+    "magic-heat": 4
+   },
+   "Sim Storm": {
+    "magic-theory": 2,
+    "magic-reach-arcana": 5,
+    "magic-radiation": 4
+   },
+   "Sim Frostfire": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-cold": 4
+   },
+   "Sim Warden": {
+    "magic-theory": 2,
+    "magic-acid": 5,
+    "magic-reach-arcana": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Pyro": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Storm": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Frostfire": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Pyro": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Froster": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Storm": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Spitter": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Echo": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): -390/120 BROKEN"
+   ],
+   "Sim Pyro": [
+    "Light Armor (Hard Leather): -619/90 BROKEN"
+   ],
+   "Sim Storm": [
+    "Medium Armor (Soft Leather): -259/120 BROKEN"
+   ],
+   "Sim Frostfire": [
+    "Light Armor (Soft Leather): 36/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): -738/180 BROKEN"
+   ],
+   "Sim Raider Pyro": [
+    "Medium Armor (Hide): -244/150 BROKEN"
+   ],
+   "Sim Raider Froster": [
+    "Medium Armor (Hide): -150/150 BROKEN"
+   ],
+   "Sim Raider Storm": [
+    "Medium Armor (Hide): 87/150"
+   ],
+   "Sim Raider Spitter": [
+    "Medium Armor (Hide): -144/150 BROKEN"
+   ],
+   "Sim Raider Echo": [
+    "Light Armor (Soft Leather): -42/100 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2382,
+    "monsterHp": 3368,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2219,
+    "monsterHp": 3183,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 2101,
+    "monsterHp": 3079,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 1916,
+    "monsterHp": 2895,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 1814,
+    "monsterHp": 2895,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 1645,
+    "monsterHp": 2738,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 1334,
+    "monsterHp": 2470,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 9,
+    "partyHp": 1297,
+    "monsterHp": 2470,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 1150,
+    "monsterHp": 2470,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 812,
+    "monsterHp": 2470,
+    "partyDown": 5,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {
+    "prompt: Gravity Field: shape": 5,
+    "confirm: Gravity Field: place the area": 5
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 91,
+  "winner": "party",
+  "pass": "magic-t2",
+  "rounds": 6,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Glob": 28,
+   "mod:Pinpoint": 9,
+   "mod:Melt": 40,
+   "defend:dodge": 74,
+   "cast:Flame + Glob": 12,
+   "mod:Ignition": 29,
+   "cast:Flame": 15,
+   "cast:Flame + Frost": 4,
+   "mod:Frostbite": 8,
+   "mod:Chill": 2,
+   "cast:Crackle": 5,
+   "mod:Multicast": 10,
+   "mod:Electrify": 5,
+   "multicast": 10,
+   "mod:Catalyst": 7
+  },
+  "hp": {
+   "Sim Bulwark#elcS": "702/702",
+   "Sim Pyro#bHbg": "355/567",
+   "Sim Storm#Fl4E": "567/567",
+   "Sim Frostfire#bLc7": "70/432",
+   "Sim Warden#pfFe": "567/567",
+   "Sim Ogre Magus#rGlu": "914/2376"
+  },
+  "down": [
+   "Sim Frostfire",
+   "Sim Ogre Magus"
+  ],
+  "weapons": {
+   "Spell: Glob": {
+    "attacks": 33,
+    "followups": 0,
+    "hits": 17,
+    "crits": 4,
+    "misses": 16,
+    "damage": 99,
+    "ap": 66,
+    "kills": 0,
+    "users": [
+     "Bulwark",
+     "Warden"
+    ]
+   },
+   "Spell: Flame + Glob": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 8,
+    "damage": 155,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "Pyro"
+    ]
+   },
+   "Spell: Flame + Frost": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Frostfire"
+    ]
+   },
+   "Spell: Crackle": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 4,
+    "damage": 102,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "Storm"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 15,
+    "absorbed": 436
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bulwark",
+    "dealt": 45,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 0,
+    "taken": 356,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Frostfire",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Pyro",
+    "dealt": 155,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Storm",
+    "dealt": 102,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 54,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 15
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Glob": 18,
+     "mod:Pinpoint": 2,
+     "mod:Melt": 18,
+     "mod:Catalyst": 7
+    }
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 62,
+     "cast:Flame + Glob": 12,
+     "mod:Pinpoint": 1,
+     "mod:Ignition": 10,
+     "mod:Melt": 12
+    },
+    "turnMoved": 0,
+    "casts": 12
+   },
+   {
+    "name": "Sim Frostfire",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Flame + Frost": 4,
+     "mod:Ignition": 4,
+     "mod:Frostbite": 8,
+     "mod:Chill": 2
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "Sim Pyro",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Flame": 15,
+     "mod:Pinpoint": 1,
+     "mod:Ignition": 15,
+     "defend:dodge": 8
+    }
+   },
+   {
+    "name": "Sim Storm",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 5,
+    "used": {
+     "cast:Crackle": 5,
+     "mod:Pinpoint": 4,
+     "mod:Multicast": 5,
+     "mod:Electrify": 5,
+     "multicast": 5
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 10,
+    "used": {
+     "cast:Glob": 10,
+     "mod:Multicast": 5,
+     "mod:Melt": 10,
+     "multicast": 5,
+     "mod:Pinpoint": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 2,
+    "magic-acid": 5,
+    "magic-cold": 4
+   },
+   "Sim Pyro": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-radiation": 4
+   },
+   "Sim Storm": {
+    "magic-theory": 2,
+    "magic-radiation": 5,
+    "magic-reach-arcana": 4
+   },
+   "Sim Frostfire": {
+    "magic-theory": 2,
+    "magic-cold": 5,
+    "magic-heat": 4
+   },
+   "Sim Warden": {
+    "magic-theory": 2,
+    "magic-reach-arcana": 5,
+    "magic-acid": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Pyro": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Storm": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Frostfire": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Pyro": [
+    "Light Armor (Hard Leather): -1002/90 BROKEN"
+   ],
+   "Sim Storm": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Frostfire": [
+    "Light Armor (Soft Leather): -988/60 BROKEN"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): -780/880 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2473,
+    "monsterHp": 2376,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2473,
+    "monsterHp": 2376,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2367,
+    "monsterHp": 2164,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2261,
+    "monsterHp": 1293,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2261,
+    "monsterHp": 914,
+    "partyDown": 1,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r2",
+  "group": "boss",
+  "rotation": 2,
+  "seconds": 42,
+  "winner": "party",
+  "pass": "magic-t2",
+  "rounds": 3,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Crackle": 3,
+   "mod:Pinpoint": 7,
+   "mod:Multicast": 4,
+   "mod:Electrify": 3,
+   "defend:dodge": 36,
+   "multicast": 4,
+   "cast:Glob": 11,
+   "mod:Melt": 15,
+   "mod:Catalyst": 3,
+   "cast:Flame + Frost": 4,
+   "mod:Ignition": 13,
+   "mod:Frostbite": 8,
+   "mod:Chill": 2,
+   "cast:Flame": 6,
+   "cast:Flame + Glob": 4
+  },
+  "hp": {
+   "Sim Bulwark#ZWUI": "702/702",
+   "Sim Pyro#RVd0": "567/567",
+   "Sim Storm#hMfI": "567/567",
+   "Sim Frostfire#mfvF": "432/432",
+   "Sim Warden#EOer": "567/567",
+   "Sim Ogre Magus#hqb6": "1161/2376"
+  },
+  "down": [
+   "Sim Ogre Magus"
+  ],
+  "weapons": {
+   "Spell: Crackle": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 0,
+    "damage": 226,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Storm"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 6,
+    "crits": 0,
+    "misses": 6,
+    "damage": 37,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Bulwark"
+    ]
+   },
+   "Spell: Flame + Frost": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Frostfire"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 0,
+    "damage": 117,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Pyro"
+    ]
+   },
+   "Spell: Flame + Glob": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 5,
+    "absorbed": 242
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Storm",
+    "dealt": 226,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 0,
+    "taken": 380,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 17,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Frostfire",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Pyro",
+    "dealt": 117,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 20,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Storm",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Crackle": 3,
+     "mod:Pinpoint": 3,
+     "mod:Multicast": 3,
+     "mod:Electrify": 3,
+     "multicast": 3
+    }
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 32,
+     "cast:Flame + Glob": 4,
+     "mod:Pinpoint": 1,
+     "mod:Ignition": 3,
+     "mod:Melt": 4
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 5,
+    "used": {
+     "cast:Glob": 5,
+     "mod:Multicast": 1,
+     "mod:Melt": 5,
+     "multicast": 1,
+     "mod:Pinpoint": 1,
+     "mod:Catalyst": 3
+    }
+   },
+   {
+    "name": "Sim Frostfire",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Flame + Frost": 4,
+     "mod:Ignition": 4,
+     "mod:Frostbite": 8,
+     "mod:Chill": 2,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Pyro",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Flame": 6,
+     "mod:Pinpoint": 1,
+     "mod:Ignition": 6
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Glob": 6,
+     "mod:Pinpoint": 1,
+     "mod:Melt": 6
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 2,
+    "magic-cold": 5,
+    "magic-acid": 4
+   },
+   "Sim Pyro": {
+    "magic-theory": 2,
+    "magic-radiation": 5,
+    "magic-heat": 4
+   },
+   "Sim Storm": {
+    "magic-theory": 2,
+    "magic-reach-arcana": 5,
+    "magic-radiation": 4
+   },
+   "Sim Frostfire": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-cold": 4
+   },
+   "Sim Warden": {
+    "magic-theory": 2,
+    "magic-acid": 5,
+    "magic-reach-arcana": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Pyro": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Storm": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Frostfire": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Pyro": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Storm": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Frostfire": [
+    "Light Armor (Soft Leather): -270/60 BROKEN"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): -624/880 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2835,
+    "monsterHp": 2352,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2835,
+    "monsterHp": 1258,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2835,
+    "monsterHp": 1161,
+    "partyDown": 0,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
  }
 ]

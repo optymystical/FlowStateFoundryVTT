@@ -340,8 +340,9 @@ async function attack(actor, me, plan, target, extra = {}) {
       : foes.filter(f => f.id !== target.id && dist(me, f) <= reachOf(actor) * (p.farstrike || 1) + 0.01);
     setTargets(target, ...inArea);
   }
-  SIM.fill = () => ({ mode: extra.mode ?? (plan.ranged ? (extra.far ? "r2" : "r1") : "strike"), pepper: extra.pepper ?? 0, area: !!extra.area,
-    grapple: !!extra.grapple, weight: extra.weight ?? undefined, ...opts, ...(extra.followup ? followupOptions(actor, plan.item, target) : {}), ...(extra.extraFill ?? {}) });
+  const attackFill = { mode: extra.mode ?? (plan.ranged ? (extra.far ? "r2" : "r1") : "strike"), pepper: extra.pepper ?? 0, area: !!extra.area,
+    grapple: !!extra.grapple, weight: extra.weight ?? undefined, ...opts, ...(extra.followup ? followupOptions(actor, plan.item, target) : {}), ...(extra.extraFill ?? {}) };
+  SIM.fill = () => attackFill;
   SIM.acting = actor.name;
   try { await Act.rollWeaponAttack(actor, plan.item, extra.followup ?? null); } catch (err) { log.errors.push(`attack ${actor.name}: ${err.stack?.slice(0, 400)}`); }
   const msg = await waitFor(() => game.messages.contents.find(m => !before.has(m.id) && m.getFlag("flowstate", "attack")?.attacker === actor.uuid), 3000);
@@ -351,6 +352,17 @@ async function attack(actor, me, plan, target, extra = {}) {
   F.uses = F.uses ?? {};
   F.uses[plan.item.id] = (F.uses[plan.item.id] ?? 0) + 1;
   await settle();
+  // Weaving: the spell goes off alongside the attack through the same entry point the attack dialog's Weave box uses (no AP, no TR, at the attack's target).
+  if (extra.weave && !down(actor) && !down(target.actor)) {
+    setTargets(target);
+    SIM.fill = title => (/: shape$/.test(title) ? { shape: "radius" } : {});
+    try {
+      const woven = await Cast.castSpell(actor, extra.weave.values, { weave: extra.weave.weave });
+      if (woven) { note(actor, `weave:${extra.weave.name}`); const s = stat(actor); s.weaves = (s.weaves ?? 0) + 1; }
+      else note(actor, "weave:refused");
+    } catch (err) { log.errors.push(`weave ${actor.name}: ${err.stack?.slice(0, 300)}`); }
+    await settle();
+  }
   return msg;
 }
 
@@ -1005,7 +1017,7 @@ function spellValue(plan, target = null, me = null) {
   if (profile.needsEnergyZero && (target?.actor?.system?.energy?.value ?? 1) > 0) return -1;
   const dmg = profile.damage ? meanDice(Fx.damageDice(profile, plan.power)) : profile.arcana?.kind === "shift" ? Math.floor(Fx.shiftBody(profile.arcana.body, plan.power) / 2) * 3.5 : 0;
   let v = dmg;
-  if (profile.force) v += 0.25 * 5.5 * profile.force.n * P;
+  if (profile.force) v += 0.03 * 5.5 * profile.force.n * P;          // Force pushes; it only hurts when it drives them into the ground or a wall
   const burn = { ignite: 1.5, stain: 1.5, searing: 3, electric: 2.5 };
   const others = target && me ? foesOf(me.parent, me).filter(f => f.id !== target.id && dist(f, target) <= 30).length : 0;
   let stacks = 0;
@@ -1150,6 +1162,30 @@ function weaponNow(actor, me) {
   }
   return best;
 }
+/**
+ * Weaving (Magic Theory T3): the spell to carry on this weapon attack, as preset values for the cast dialog, or null. Only ways to cast whose
+ * normal AP equals the attack's qualify; the woven spell costs no AP and gets no Threshold Reduction, so it's limited to half the spare Energy.
+ */
+function weavePlan(actor, me, w, target) {
+  if (tierOf(actor, "magic-theory") < 3 || !isCaster(actor)) return null;
+  const weave = { ap: w.item.system.profile.ap, melee: !w.ranged, targetActors: [target.actor] };
+  if (weave.melee && dist(me, target) > reachOf(actor) + 0.01) return null;
+  const { ctx, known } = Cast.castSummary(actor, weave);
+  const opt = castOption(ctx);
+  if (!opt) return null;
+  const budget = Math.floor(0.5 * Math.max(0, actor.system.energy.value - Math.floor(0.1 * actor.system.energy.max)));
+  let best = null;
+  for (const c of known.cores) {
+    const r = planSpell(ctx, opt, [c.id]);
+    if (!r?.plan?.ok || r.plan.energy > budget || !Fx.profileFor([c.id])?.damage) continue;
+    const value = spellNow(r.plan, target, me);
+    if (value > 0 && (!best || value > best.value)) best = { ids: [c.id], value };
+  }
+  if (!best) return null;
+  const r = withMods(ctx, opt, best.ids, damageMods(actor, target, planSpell(ctx, opt, best.ids).plan, me), budget);
+  return r?.plan?.ok ? { values: r.values, weave, name: best.ids.map(id => Sp.spellById(id)?.name ?? id).join(" + ") } : null;
+}
+
 /** A damage spell's value per AP against `target`, after its armor (spell damage is Magical as well as its type). */
 function spellNow(plan, target, me) {
   const profile = Fx.profileFor(plan.cores.map(c => c.id));
@@ -1375,7 +1411,8 @@ async function casterTurn(actor, me, { hybrid = false } = {}) {
     // A hybrid compares the spell with its best weapon attack on a foe already in reach (after armor, per AP), each action.
     if (hybrid) {
       const w = weaponNow(actor, me);
-      if (w && w.value >= spellNow(r.plan, target, me)) { note(actor, "hybrid:weapon"); return; }
+      // With Weaving (Magic Theory T3) each weapon attack carries a spell for free, so a reachable weapon target always wins.
+      if (w && (tierOf(actor, "magic-theory") >= 3 || w.value >= spellNow(r.plan, target, me))) { note(actor, "hybrid:weapon"); return; }
       note(actor, "hybrid:spell");
     }
     const name = best.ids.map(id => Sp.spellById(id)?.name ?? id).join(" + ");
@@ -1441,7 +1478,7 @@ async function actTurn(actor, me) {
         const pepper = gun.item.system.profile.pepper && !sim(actor).noPepper ? 1 : 0;          // a loadout can turn Pepper off (to test it)
         if (area) s.areaShots = (s.areaShots ?? 0) + 1;
         const wasLoaded = gun.item.system.loaded, apBefore = actor.system.ap.value;
-        if (await attack(actor, me, gun, target, { far: !inRange[0], area, pepper })) continue;
+        if (await attack(actor, me, gun, target, { far: !inRange[0], area, pepper, weave: weavePlan(actor, me, gun, target) })) continue;
         if (!wasLoaded && (gun.item.system.loaded || actor.system.ap.value < apBefore)) continue;          // Quickload reloaded it (no attack)
         return;
       }
@@ -1513,7 +1550,7 @@ async function actTurn(actor, me) {
     }
     // A creation fights Unarmed with its better stat (Heavy: Strength, Light: Dexterity); everyone else keeps the dialog's default.
     const weight = role === "creation" && melee.item.system.weaponType === "unarmed" ? (effStat(actor, "str") >= effStat(actor, "dex") ? "heavy" : "light") : undefined;
-    if (!(await attack(actor, me, melee, target, { weight }))) return;
+    if (!(await attack(actor, me, melee, target, { weight, weave: weavePlan(actor, me, melee, target) }))) return;
     await holdTight(actor);                                   // a Thrasher Grapple or Get Over Here! may have just grabbed them
   }
 }

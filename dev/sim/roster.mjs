@@ -1129,3 +1129,18 @@ PASSES["magic-vs-martial"] = { id: "magic-vs-martial", note: "Magic vs Martial: 
 // The hybrid rotation again, once hybrids choose weapon or spell by expected damage per AP each action (they used to cast one damage spell first).
 PASSES["magic-vs-martial-hybrid"] = { ...PASSES["magic-vs-martial"], id: "magic-vs-martial-hybrid", note: "Magic vs Martial, the hybrid rotation only, with hybrids choosing weapon or spell by value.",
   encounters: PASSES["magic-vs-martial"].encounters.filter(e => e.rotation === 1) };
+
+// The hybrids rebuilt around Weaving (Magic Theory T3: a weapon attack carries a spell of the same AP for no extra AP). Light weapons (2 AP) weave
+// through an Igniter Foci (2 AP: Wand), Heavy ones (3 AP) through a Channeler (3 AP: an Orb, cast from Reach). Each weaves a damage Core.
+const WEAVE_LOADOUTS = {
+  bulwark: { label: "Hybrid", stats: { con: 40, str: 30, reach: 20 }, trees: MIX(2, 3, { [HVY]: 4, [PRO]: 3, [CRU]: 2 }), armor: A("heavy", "steel"),
+    weapons: [W("defender", "heavy", "steel", { primary: true })], foci: FO("orb"), shroud: FO("bastion") },
+  duelist: { label: "Hybrid", stats: { dex: 30, grasp: 30, con: 30 }, trees: MIX(1, 3, { [BLA]: 5, [HEA]: 3 }), armor: A("medium", "hardLeather"),
+    weapons: [W("bladed", "light", "steel", { primary: true })], foci: FO("wand"), shroud: FO("cinder") },
+  breaker: { label: "Hybrid", stats: { str: 35, reach: 25, con: 30 }, trees: MIX(2, 3, { [WEI]: 4, [CRU]: 4 }), armor: A("medium", "hide"),
+    weapons: [W("weighted", "heavy", "iron", { primary: true })], foci: FO("orb"), shroud: FO("bastion") }
+};
+export const PARTY_MIX_WEAVE = PARTY_MIX.map(p => (WEAVE_LOADOUTS[p.id] ? { ...p, loadouts: [p.loadouts[0], WEAVE_LOADOUTS[p.id]] } : p));
+PASSES["magic-vs-martial-weave"] = { ...PASSES["magic-vs-martial"], id: "magic-vs-martial-weave", party: PARTY_MIX_WEAVE,
+  note: "Magic vs Martial, the hybrid rotation with the hybrids rebuilt around Weaving (Magic Theory T3).",
+  encounters: PASSES["magic-vs-martial"].encounters.filter(e => e.rotation === 1) };

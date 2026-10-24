@@ -1126,3 +1126,6 @@ export const MONSTERS_MIX = {
 };
 PASSES["magic-vs-martial"] = { id: "magic-vs-martial", note: "Magic vs Martial: the party in two rotations (a Martial frontline with Magic behind; mostly hybrids) against every group as all Martial, all Magic and mixed.",
   party: PARTY_MIX, monsters: MONSTERS_MIX, encounters: encountersFor(MONSTERS_MIX, 2) };
+// The hybrid rotation again, once hybrids choose weapon or spell by expected damage per AP each action (they used to cast one damage spell first).
+PASSES["magic-vs-martial-hybrid"] = { ...PASSES["magic-vs-martial"], id: "magic-vs-martial-hybrid", note: "Magic vs Martial, the hybrid rotation only, with hybrids choosing weapon or spell by value.",
+  encounters: PASSES["magic-vs-martial"].encounters.filter(e => e.rotation === 1) };

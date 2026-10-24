@@ -19,6 +19,7 @@ const Fx = await import("/systems/flowstate/module/spellfx.mjs");
 const Mg = await import("/systems/flowstate/module/magic.mjs");
 const CR = await import("/systems/flowstate/module/conjure-rules.mjs");
 const Arc = await import("/systems/flowstate/module/arcana.mjs");
+const Mart = await import("/systems/flowstate/module/martial.mjs");
 const Rules = await import("/systems/flowstate/module/rules.mjs");
 
 const SIM = (window.SIM = window.SIM ?? {});
@@ -1115,6 +1116,41 @@ async function adoptCreations(actor, label) {
   }
 }
 
+/* ---- Hybrids: weapon or spell, by expected damage per AP ---- */
+
+/** What the target's armor takes off one hit of this damage type (its Limit; spell damage is Magical too, so armor lets Arcane through). */
+function armorSoak(target, type, { pierce = 0, magic = false } = {}) {
+  const armor = target?.actor?.system?.armor;
+  if (!armor?.system?.profile?.valid || (armor.system.durability?.value ?? 0) <= 0) return 0;
+  return Mart.effectiveLimit(armor.system.profile, type, pierce, magic);
+}
+
+/**
+ * The hybrid's best weapon attack right now: a held weapon that rolls dice (a gun loaded) and a foe within its reach or range. Value = mean damage
+ * (Strengthened stacks included) less the target's armor, times its free follow-ups (Fast ~½ an attack, Solitary ~0.6), per AP.
+ */
+function weaponNow(actor, me) {
+  const foes = foesOf(me.parent, me);
+  let best = null;
+  for (const i of actor.items.filter(i => i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed")) {
+    const w = weaponPlan(actor, i), p = i.system.profile;
+    if (!w || !(p?.dice > 0) || (w.ranged && !w.loaded)) continue;
+    const t = foes.filter(f => dist(me, f) <= w.range + 0.01).sort((a, b) => a.actor.system.hp.value - b.actor.system.hp.value)[0];
+    if (!t) continue;
+    const mean = p.dice * (p.die + 1) / 2 * Rules.stackMultiplier(p.stacks ?? 0);
+    const hit = Math.max(0, mean - armorSoak(t, p.damageType ?? "physical", { pierce: p.pierce ?? 0 }));
+    const value = hit * (1 + (p.fast ? 0.5 : 0) + (p.solitary ? 0.6 : 0)) / Math.max(1, w.ap);
+    if (!best || value > best.value) best = { value, target: t, item: i };
+  }
+  return best;
+}
+/** A damage spell's value per AP against `target`, after its armor (spell damage is Magical as well as its type). */
+function spellNow(plan, target, me) {
+  const profile = Fx.profileFor(plan.cores.map(c => c.id));
+  const soak = profile?.damage ? armorSoak(target, profile.damage.type, { magic: true }) : 0;
+  return Math.max(0, spellValue(plan, target, me) - soak) / Math.max(1, plan.ap);
+}
+
 /** Foes within `range` ft, the weakest first. */
 const foesWithin = (me, range) => foesOf(me.parent, me).filter(f => dist(me, f) <= range + 0.01).sort((a, b) => a.actor.system.hp.value - b.actor.system.hp.value);
 /** The ally (or self) most at risk: the most foes within 30 ft, then the lowest HP. */
@@ -1330,9 +1366,14 @@ async function casterTurn(actor, me, { hybrid = false } = {}) {
     if (!best) { note(actor, "cast:nothingAffordable"); return; }
     const r = withMods(ctx, opt, best.ids, damageMods(actor, target, best.r.plan, me), budget) ?? best.r;
     if (!fits(r)) return;
+    // A hybrid compares the spell with its best weapon attack on a foe already in reach (after armor, per AP), each action.
+    if (hybrid) {
+      const w = weaponNow(actor, me);
+      if (w && w.value >= spellNow(r.plan, target, me)) { note(actor, "hybrid:weapon"); return; }
+      note(actor, "hybrid:spell");
+    }
     const name = best.ids.map(id => Sp.spellById(id)?.name ?? id).join(" + ");
     if (!(await castAt(actor, target, r.values, name))) return;
-    if (hybrid) return;                        // a hybrid casts one damage spell, then fights with its weapons
   }
 }
 

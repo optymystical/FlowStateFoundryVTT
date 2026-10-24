@@ -1099,7 +1099,7 @@ async function adoptCreations(actor, label) {
     const sm = t.actor?.getFlag("flowstate", "summon");
     if (!sm || sm.owner !== actor.uuid || sim(t.actor).id) continue;
     await t.actor.setFlag("flowstate", "sim", { id: "creation", role: "creation", party: !!sim(actor).party, stances: false });
-    if (!sim(actor).party) await t.update({ disposition: -1 });
+    if (!sim(actor).party) { await t.update({ disposition: -1 }); F.monsterSide?.add(t.actor.uuid); }
     (F.creations ??= {})[t.actor.uuid] = `Creation: ${label}`;
     F.hpMax[t.actor.uuid] = t.actor.system.hp.max;
     note(actor, `made:${sm.kind}`);
@@ -1516,6 +1516,7 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     F.gear = Object.fromEntries(party.map(a => [a.name, a.items.filter(i => ["weapon", "armor"].includes(i.type)).map(i => `${i.name}${i.system.equipped ? "" : " (not held)"} G${i.system.grade}`)]));
     F.monsterGear = Object.fromEntries(P.monsters[enc.group].kinds.map(k => { const a = monsterActors.find(m => m.name === k.name); return [k.name, a.items.filter(i => ["weapon", "armor"].includes(i.type)).map(i => i.name)]; }));
     F.hpMax = Object.fromEntries(tokensOf(scene).map(t => [t.actor.uuid, t.actor.system.hp.max]));
+    F.monsterSide = new Set(tokensOf(scene).filter(t => sideOf(t) === "monsters").map(t => t.actor.uuid));
     const firstIds = new Set(game.messages.keys());
     // Combat.
     const combat = await Combat.create({ scene: scene.id, active: true });
@@ -1584,8 +1585,10 @@ function collect(scene, combat, msgs) {
   for (const m of msgs) {
     const a = m.getFlag("flowstate", "attack");
     if (!a || !a.opts) continue;
-    const key = F.creations?.[a.attacker] ? F.creations[a.attacker] : a.opts.spell ? `Spell: ${a.opts.label ?? "?"}` : a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
+    let key = F.creations?.[a.attacker] ? F.creations[a.attacker] : a.opts.spell ? `Spell: ${a.opts.label ?? "?"}` : a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
     if (!key) continue;
+    // Spells and creations are shared by both sides: the monsters' get their own rows.
+    if (/^(Spell|Creation): /.test(key) && F.monsterSide?.has(a.attacker)) key += " [M]";
     const attackerName = fromUuidSync(a.attacker)?.name ?? a.attacker;
     const w = W(key);
     w.users.add(attackerName.replace(/^Sim /, ""));

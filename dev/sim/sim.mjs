@@ -1625,6 +1625,19 @@ function collect(scene, combat, msgs) {
       a.hits++; a.absorbed += Number(n);
     }
   }
+  // Burning stacks (Ignite, Stain, Electric Stain, Brand) tick on the creature's End of Turn card: the HP each side lost to them (the other side's
+  // spells put them there). Everything else a side lost beyond its direct damage taken (Poison, Hex and Charm checks, Force) is `otherLoss`.
+  const burn = { party: 0, monsters: 0 };
+  const sideByName = name => (tokensOf(scene).find(t => t.actor?.name === name || t.name === name) ? sideOf(tokensOf(scene).find(t => t.actor?.name === name || t.name === name)) : /Goblin|Raider|Ogre/.test(name ?? "") ? "monsters" : "party");
+  for (const m of msgs.filter(m => (m.content ?? "").includes(">End of Turn<"))) {
+    const tok = scene.tokens.get(m.speaker?.token);
+    const side = tok?.actor && sim(tok.actor).id ? sideOf(tok) : sideByName(m.speaker?.alias);
+    for (const [, amount, , reached] of (m.content ?? "").matchAll(/(\d+) [A-Za-z]+ from (Ignite|Stain|Electric Stain|Brand)(?: \((\d+) reached HP\))?/g)) burn[side] += Number(reached ?? amount);
+  }
+  const lostBy = { party: 0, monsters: 0 }, directTaken = { party: 0, monsters: 0 };
+  for (const t of tokensOf(scene)) if (F.hpMax[t.actor.uuid] !== undefined) lostBy[sideOf(t)] += Math.max(0, F.hpMax[t.actor.uuid] - Math.max(0, t.actor.system.hp.value));
+  for (const c of Object.values(per)) directTaken[/Goblin|Raider|Ogre/.test(c.name) ? "monsters" : "party"] += c.taken;
+  const otherLoss = { party: Math.max(0, lostBy.party - directTaken.party - burn.party), monsters: Math.max(0, lostBy.monsters - directTaken.monsters - burn.monsters) };
   // Kills: the last damage card against a creature that ended the fight down.
   const order = msgs.filter(m => m.getFlag("flowstate", "damage"));
   const creatures = tokensOf(scene).map(t => t.actor);
@@ -1654,7 +1667,7 @@ function collect(scene, combat, msgs) {
     creatures: Object.values(per),
     ai: Object.values(F.actors),
     trees: F.trees, gear: F.gear, monsterGear: F.monsterGear, gearState, kiteLog: F.kiteLog, roundLog: F.roundLog, firstAttack: F.firstAttack ?? {},
-    painDivisor: game.settings.get("flowstate", "painDivisor"),
+    painDivisor: game.settings.get("flowstate", "painDivisor"), burn, otherLoss, lostBy, directTaken, creations: F.creations ?? {},
     log: { dialogs: { ...log.dialogs }, notes: [...log.notes], errors: [...log.errors] }
   };
 }

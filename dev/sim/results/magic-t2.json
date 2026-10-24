@@ -1,48 +1,53 @@
 [
  {
-  "id": "raiders-r1",
-  "group": "raiders",
+  "id": "swarm-r1",
+  "group": "swarm",
   "rotation": 1,
-  "seconds": 142,
+  "seconds": 237,
   "winner": "monsters",
   "pass": "magic-t2",
-  "rounds": 11,
+  "rounds": 9,
   "partyLeft": 0,
-  "monstersLeft": 1,
+  "monstersLeft": 4,
   "followups": 0,
   "knockbacks": {},
   "used": {
-   "cast:Crackle": 28,
-   "mod:Electrify": 25,
-   "mod:Lightning Rod": 14,
-   "defend:dodge": 155,
-   "mod:Multicast": 14,
-   "mod:Charge": 13,
-   "multicast": 13,
-   "cast:Frost": 2,
-   "mod:Frostbite": 4,
-   "mod:Chill": 2,
-   "opt:shape=radius": 6,
-   "mod:Explode": 6,
-   "cast:Glob": 74,
-   "mod:Pinpoint": 12,
-   "mod:Melt": 75,
-   "cast:Flame + Glob": 9,
-   "mod:Ignition": 18,
+   "cast:Flame + Frost": 16,
+   "mod:Ignition": 36,
+   "mod:Frostbite": 16,
+   "defend:dodge": 226,
+   "mod:Chill": 3,
+   "cast:Crackle": 26,
+   "mod:Electrify": 29,
+   "mod:Lightning Rod": 25,
+   "mod:Charge": 23,
+   "opt:shape=radius": 5,
+   "cast:Glob": 79,
+   "mod:Explode": 5,
+   "mod:Melt": 112,
+   "mod:Pinpoint": 3,
+   "cast:Crackle + Glob": 48,
    "mod:Catalyst": 11,
-   "cast:Flame": 15
+   "cast:Flame": 36,
+   "mod:Multicast": 5,
+   "multicast": 5
   },
   "hp": {
-   "Sim Bulwark#qySu": "292/702",
-   "Sim Pyro#AHD8": "93/567",
-   "Sim Storm#eyuR": "113/567",
-   "Sim Frostfire#f9v2": "-15/432",
-   "Sim Warden#SRsx": "251/567",
-   "Sim Raider Pyro#rnjs": "351/765",
-   "Sim Raider Froster#gmBU": "376/765",
-   "Sim Raider Storm#JtUY": "765/765",
-   "Sim Raider Spitter#ozLq": "370/765",
-   "Sim Raider Echo#sjGu": "165/540"
+   "Sim Bulwark#nJ9U": "165/702",
+   "Sim Pyro#57ZY": "99/567",
+   "Sim Storm#hrwi": "201/567",
+   "Sim Frostfire#8XKi": "213/432",
+   "Sim Warden#IssY": "270/567",
+   "Sim Goblin Pyro#6B32": "-75/513",
+   "Sim Goblin Pyro#tiWu": "66/513",
+   "Sim Goblin Pyro#SzPc": "208/513",
+   "Sim Goblin Froster#pZMy": "189/513",
+   "Sim Goblin Froster#t7VZ": "255/513",
+   "Sim Goblin Froster#NPap": "203/513",
+   "Sim Goblin Sparker#2odg": "359/513",
+   "Sim Goblin Sparker#20Gf": "513/513",
+   "Sim Goblin Spitter#0S3L": "513/513",
+   "Sim Goblin Spitter#oeNW": "513/513"
   },
   "down": [
    "Sim Bulwark",
@@ -50,180 +55,356 @@
    "Sim Storm",
    "Sim Frostfire",
    "Sim Warden",
-   "Sim Raider Pyro",
-   "Sim Raider Froster",
-   "Sim Raider Spitter",
-   "Sim Raider Echo"
+   "Sim Goblin Pyro",
+   "Sim Goblin Pyro",
+   "Sim Goblin Pyro",
+   "Sim Goblin Froster",
+   "Sim Goblin Froster",
+   "Sim Goblin Froster"
   ],
   "weapons": {
-   "Spell: Crackle": {
-    "attacks": 44,
+   "Spell: Flame + Frost": {
+    "attacks": 16,
     "followups": 0,
-    "hits": 29,
-    "crits": 10,
-    "misses": 18,
-    "damage": 1173,
-    "ap": 123,
+    "hits": 6,
+    "crits": 1,
+    "misses": 10,
+    "damage": 0,
+    "ap": 36,
     "kills": 0,
     "users": [
-     "Raider Pyro",
-     "Raider Storm",
+     "Frostfire",
+     "Goblin Pyro"
+    ]
+   },
+   "Spell: Crackle": {
+    "attacks": 33,
+    "followups": 0,
+    "hits": 22,
+    "crits": 14,
+    "misses": 17,
+    "damage": 1449,
+    "ap": 81,
+    "kills": 0,
+    "users": [
+     "Goblin Sparker",
      "Pyro",
      "Storm"
     ]
    },
-   "Spell: Frost": {
-    "attacks": 3,
-    "followups": 0,
-    "hits": 2,
-    "crits": 1,
-    "misses": 1,
-    "damage": 47,
-    "ap": 9,
-    "kills": 0,
-    "users": [
-     "Raider Echo"
-    ]
-   },
    "Spell: Glob": {
-    "attacks": 81,
+    "attacks": 87,
     "followups": 0,
-    "hits": 51,
-    "crits": 19,
-    "misses": 33,
-    "damage": 661,
-    "ap": 162,
+    "hits": 45,
+    "crits": 18,
+    "misses": 45,
+    "damage": 583,
+    "ap": 174,
     "kills": 0,
     "users": [
-     "Raider Froster",
-     "Bulwark",
-     "Warden"
+     "Warden",
+     "Goblin Froster",
+     "Bulwark"
     ]
    },
-   "Spell: Flame + Glob": {
-    "attacks": 9,
+   "Spell: Crackle + Glob": {
+    "attacks": 48,
     "followups": 0,
-    "hits": 3,
-    "crits": 0,
-    "misses": 6,
+    "hits": 16,
+    "crits": 1,
+    "misses": 32,
     "damage": 0,
-    "ap": 18,
+    "ap": 96,
     "kills": 0,
     "users": [
-     "Raider Spitter"
+     "Goblin Spitter"
     ]
    },
    "Spell: Flame": {
-    "attacks": 15,
+    "attacks": 36,
     "followups": 0,
-    "hits": 6,
-    "crits": 1,
-    "misses": 9,
-    "damage": 175,
-    "ap": 30,
+    "hits": 17,
+    "crits": 4,
+    "misses": 19,
+    "damage": 262,
+    "ap": 72,
     "kills": 0,
     "users": [
-     "Raider Pyro"
+     "Goblin Sparker"
     ]
    }
   },
   "armor": {
    "Light Armor (Soft Leather)": {
-    "hits": 12,
-    "absorbed": 149
+    "hits": 26,
+    "absorbed": 294
    },
    "Light Armor (Hard Leather)": {
     "hits": 1,
-    "absorbed": 8
-   },
-   "Medium Armor (Hide)": {
-    "hits": 21,
-    "absorbed": 367
+    "absorbed": 16
    },
    "Medium Armor (Soft Leather)": {
-    "hits": 4,
-    "absorbed": 58
+    "hits": 3,
+    "absorbed": 28
    },
    "Medium Armor (Hard Leather)": {
-    "hits": 3,
-    "absorbed": 95
+    "hits": 2,
+    "absorbed": 22
    }
   },
   "creatures": [
    {
-    "name": "Sim Raider Pyro",
-    "dealt": 237,
-    "taken": 193,
-    "hits": 8,
-    "attacks": 18
-   },
-   {
     "name": "Sim Frostfire",
     "dealt": 0,
-    "taken": 167,
-    "hits": 0,
-    "attacks": 0
+    "taken": 177,
+    "hits": 3,
+    "attacks": 4
    },
    {
-    "name": "Sim Raider Storm",
-    "dealt": 537,
-    "taken": 0,
-    "hits": 11,
-    "attacks": 20
-   },
-   {
-    "name": "Sim Raider Echo",
-    "dealt": 47,
-    "taken": 375,
+    "name": "Sim Goblin Pyro",
+    "dealt": 0,
+    "taken": 521,
     "hits": 2,
     "attacks": 3
    },
    {
-    "name": "Sim Raider Froster",
-    "dealt": 209,
-    "taken": 143,
-    "hits": 14,
-    "attacks": 30
+    "name": "Sim Goblin Sparker",
+    "dealt": 132,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 248,
+    "taken": 104,
+    "hits": 17,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Goblin Pyro",
+    "dealt": 0,
+    "taken": 404,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Sparker",
+    "dealt": 275,
+    "taken": 42,
+    "hits": 11,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "dealt": 32,
+    "taken": 258,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Goblin Spitter",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "dealt": 42,
+    "taken": 116,
+    "hits": 8,
+    "attacks": 18
    },
    {
     "name": "Sim Pyro",
-    "dealt": 44,
-    "taken": 188,
+    "dealt": 203,
+    "taken": 90,
     "hits": 3,
     "attacks": 6
    },
    {
-    "name": "Sim Raider Spitter",
+    "name": "Sim Goblin Spitter",
     "dealt": 0,
-    "taken": 315,
-    "hits": 3,
-    "attacks": 9
+    "taken": 0,
+    "hits": 9,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "dealt": 40,
+    "taken": 217,
+    "hits": 1,
+    "attacks": 12
    },
    {
     "name": "Sim Bulwark",
-    "dealt": 302,
-    "taken": 292,
-    "hits": 24,
-    "attacks": 30
+    "dealt": 221,
+    "taken": 65,
+    "hits": 14,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Goblin Pyro",
+    "dealt": 0,
+    "taken": 215,
+    "hits": 0,
+    "attacks": 6
    },
    {
     "name": "Sim Storm",
-    "dealt": 530,
-    "taken": 155,
-    "hits": 13,
+    "dealt": 1101,
+    "taken": 85,
+    "hits": 15,
     "attacks": 15
-   },
-   {
-    "name": "Sim Warden",
-    "dealt": 150,
-    "taken": 228,
-    "hits": 13,
-    "attacks": 21
    }
   ],
   "ai": [
    {
-    "name": "Sim Raider Pyro",
+    "name": "Sim Frostfire",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Flame + Frost": 4,
+     "mod:Ignition": 4,
+     "mod:Frostbite": 4,
+     "mod:Chill": 3,
+     "defend:dodge": 37
+    }
+   },
+   {
+    "name": "Sim Goblin Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13,
+     "cast:Flame + Frost": 3,
+     "mod:Ignition": 1
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Sparker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Crackle": 6,
+     "mod:Electrify": 6,
+     "mod:Lightning Rod": 5,
+     "mod:Charge": 6,
+     "cast:Flame": 18,
+     "mod:Ignition": 12
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 16,
+    "used": {
+     "cast:Glob": 16,
+     "mod:Explode": 3,
+     "mod:Melt": 16,
+     "mod:Multicast": 5,
+     "multicast": 5,
+     "defend:dodge": 36
+    }
+   },
+   {
+    "name": "Sim Goblin Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "cast:Flame + Frost": 3,
+     "mod:Ignition": 3,
+     "mod:Frostbite": 6
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Sparker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Crackle": 6,
+     "mod:Electrify": 6,
+     "mod:Lightning Rod": 5,
+     "mod:Charge": 6,
+     "cast:Flame": 18,
+     "mod:Ignition": 12,
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Glob": 9,
+     "mod:Pinpoint": 1,
+     "mod:Melt": 9,
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Goblin Spitter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Crackle + Glob": 24,
+     "mod:Electrify": 3,
+     "mod:Lightning Rod": 3,
+     "mod:Melt": 17
+    }
+   },
+   {
+    "name": "Sim Goblin Froster",
     "side": "monsters",
     "role": "monster",
     "moved": 0,
@@ -233,81 +414,10 @@
     "turnMoved": 0,
     "casts": 18,
     "used": {
-     "cast:Crackle": 3,
-     "mod:Electrify": 3,
-     "mod:Lightning Rod": 3,
-     "cast:Flame": 15,
-     "mod:Ignition": 15,
-     "mod:Pinpoint": 4,
-     "defend:dodge": 22
-    }
-   },
-   {
-    "name": "Sim Frostfire",
-    "side": "party",
-    "role": "caster",
-    "moved": 0,
-    "attacks": 0,
-    "turns": 0,
-    "kills": 0,
-    "used": {
-     "defend:dodge": 8
-    }
-   },
-   {
-    "name": "Sim Raider Storm",
-    "side": "monsters",
-    "role": "monster",
-    "moved": 0,
-    "attacks": 0,
-    "turns": 10,
-    "kills": 0,
-    "turnMoved": 0,
-    "casts": 11,
-    "used": {
-     "cast:Crackle": 11,
-     "mod:Multicast": 10,
-     "mod:Electrify": 11,
-     "mod:Lightning Rod": 2,
-     "mod:Charge": 2,
-     "multicast": 9,
-     "mod:Pinpoint": 4,
-     "defend:dodge": 1
-    }
-   },
-   {
-    "name": "Sim Raider Echo",
-    "side": "monsters",
-    "role": "monster",
-    "moved": 0,
-    "attacks": 0,
-    "turns": 1,
-    "kills": 0,
-    "turnMoved": 0,
-    "casts": 2,
-    "used": {
-     "cast:Frost": 2,
-     "mod:Frostbite": 4,
-     "mod:Chill": 2,
-     "mod:Explode": 1,
-     "defend:dodge": 12
-    }
-   },
-   {
-    "name": "Sim Raider Froster",
-    "side": "monsters",
-    "role": "monster",
-    "moved": 0,
-    "attacks": 0,
-    "turns": 10,
-    "kills": 0,
-    "turnMoved": 0,
-    "casts": 30,
-    "used": {
-     "cast:Glob": 30,
-     "mod:Pinpoint": 2,
-     "mod:Melt": 23,
-     "defend:dodge": 16
+     "cast:Glob": 18,
+     "mod:Pinpoint": 1,
+     "mod:Melt": 17,
+     "defend:dodge": 9
     }
    },
    {
@@ -318,32 +428,48 @@
     "attacks": 0,
     "turns": 2,
     "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
     "used": {
-     "defend:dodge": 19,
      "cast:Crackle": 6,
      "mod:Electrify": 3,
      "mod:Charge": 3,
-     "mod:Lightning Rod": 1
-    },
-    "turnMoved": 0,
-    "casts": 6
+     "mod:Lightning Rod": 1,
+     "defend:dodge": 23
+    }
    },
    {
-    "name": "Sim Raider Spitter",
+    "name": "Sim Goblin Spitter",
     "side": "monsters",
     "role": "monster",
     "moved": 0,
     "attacks": 0,
-    "turns": 3,
+    "turns": 8,
     "kills": 0,
     "turnMoved": 0,
-    "casts": 9,
+    "casts": 24,
     "used": {
-     "cast:Flame + Glob": 9,
-     "mod:Ignition": 3,
-     "mod:Melt": 8,
-     "mod:Catalyst": 1,
-     "defend:dodge": 24
+     "cast:Crackle + Glob": 24,
+     "mod:Electrify": 3,
+     "mod:Lightning Rod": 3,
+     "mod:Melt": 17
+    }
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Glob": 12,
+     "mod:Pinpoint": 1,
+     "mod:Melt": 12,
+     "defend:dodge": 9
     }
    },
    {
@@ -352,16 +478,32 @@
     "role": "tank",
     "moved": 0,
     "attacks": 0,
-    "turns": 10,
+    "turns": 8,
     "kills": 0,
     "turnMoved": 0,
-    "casts": 30,
+    "casts": 24,
     "used": {
-     "cast:Glob": 30,
-     "mod:Pinpoint": 2,
-     "mod:Melt": 30,
-     "mod:Catalyst": 10,
-     "defend:dodge": 19
+     "cast:Glob": 24,
+     "mod:Melt": 24,
+     "mod:Catalyst": 11,
+     "defend:dodge": 18
+    }
+   },
+   {
+    "name": "Sim Goblin Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Flame + Frost": 6,
+     "mod:Ignition": 4,
+     "mod:Frostbite": 6,
+     "defend:dodge": 14
     }
    },
    {
@@ -380,7 +522,1314 @@
      "mod:Electrify": 8,
      "mod:Lightning Rod": 8,
      "mod:Charge": 8,
-     "defend:dodge": 19
+     "defend:dodge": 33
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 2,
+    "magic-acid": 5,
+    "magic-cold": 4
+   },
+   "Sim Pyro": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-radiation": 4
+   },
+   "Sim Storm": {
+    "magic-theory": 2,
+    "magic-radiation": 5,
+    "magic-reach-arcana": 4
+   },
+   "Sim Frostfire": {
+    "magic-theory": 2,
+    "magic-cold": 5,
+    "magic-heat": 4
+   },
+   "Sim Warden": {
+    "magic-theory": 2,
+    "magic-reach-arcana": 5,
+    "magic-acid": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Pyro": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Storm": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Frostfire": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Pyro": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Froster": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Sparker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Spitter": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): -572/120 BROKEN"
+   ],
+   "Sim Pyro": [
+    "Light Armor (Hard Leather): 0/90 BROKEN"
+   ],
+   "Sim Storm": [
+    "Medium Armor (Soft Leather): -105/120 BROKEN"
+   ],
+   "Sim Frostfire": [
+    "Light Armor (Soft Leather): -440/60 BROKEN"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): -389/180 BROKEN"
+   ],
+   "Sim Goblin Pyro": [
+    "Light Armor (Soft Leather): -36/60 BROKEN"
+   ],
+   "Sim Goblin Froster": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Sparker": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Spitter": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2817,
+    "monsterHp": 4077,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 3,
+    "partyHp": 2610,
+    "monsterHp": 3865,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 4,
+    "partyHp": 2148,
+    "monsterHp": 3541,
+    "partyDown": 2,
+    "monstersDown": 4
+   },
+   {
+    "round": 5,
+    "partyHp": 1782,
+    "monsterHp": 3283,
+    "partyDown": 3,
+    "monstersDown": 5
+   },
+   {
+    "round": 6,
+    "partyHp": 1782,
+    "monsterHp": 3173,
+    "partyDown": 3,
+    "monstersDown": 5
+   },
+   {
+    "round": 7,
+    "partyHp": 1760,
+    "monsterHp": 2973,
+    "partyDown": 3,
+    "monstersDown": 6
+   },
+   {
+    "round": 8,
+    "partyHp": 1485,
+    "monsterHp": 2897,
+    "partyDown": 4,
+    "monstersDown": 6
+   },
+   {
+    "round": 9,
+    "partyHp": 948,
+    "monsterHp": 2819,
+    "partyDown": 5,
+    "monstersDown": 6
+   },
+   {
+    "round": 9,
+    "partyHp": 948,
+    "monsterHp": 2819,
+    "partyDown": 5,
+    "monstersDown": 6,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {
+    "prompt: Gravity Field: shape": 5,
+    "confirm: Gravity Field: place the area": 5
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swarm-r2",
+  "group": "swarm",
+  "rotation": 2,
+  "seconds": 296,
+  "winner": "monsters",
+  "pass": "magic-t2",
+  "rounds": 13,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Flame + Frost": 16,
+   "mod:Ignition": 51,
+   "mod:Frostbite": 14,
+   "defend:dodge": 270,
+   "cast:Crackle": 26,
+   "mod:Electrify": 32,
+   "mod:Lightning Rod": 25,
+   "mod:Charge": 23,
+   "mod:Chill": 3,
+   "cast:Crackle + Glob": 72,
+   "mod:Melt": 135,
+   "cast:Glob": 94,
+   "mod:Pinpoint": 4,
+   "opt:shape=radius": 4,
+   "mod:Explode": 4,
+   "mod:Catalyst": 5,
+   "cast:Flame": 48,
+   "mod:Multicast": 2,
+   "multicast": 2
+  },
+  "hp": {
+   "Sim Bulwark#7xjX": "261/702",
+   "Sim Pyro#SfPf": "199/567",
+   "Sim Storm#5zt0": "260/567",
+   "Sim Frostfire#s5ie": "159/432",
+   "Sim Warden#U2NF": "230/567",
+   "Sim Goblin Pyro#7NTo": "181/513",
+   "Sim Goblin Pyro#sZlX": "241/513",
+   "Sim Goblin Pyro#JWfl": "228/513",
+   "Sim Goblin Froster#iauh": "252/513",
+   "Sim Goblin Froster#V0il": "206/513",
+   "Sim Goblin Froster#mttY": "206/513",
+   "Sim Goblin Sparker#pIS0": "234/513",
+   "Sim Goblin Sparker#vUrm": "141/513",
+   "Sim Goblin Spitter#uSO0": "399/513",
+   "Sim Goblin Spitter#F383": "513/513"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Pyro",
+   "Sim Storm",
+   "Sim Frostfire",
+   "Sim Warden",
+   "Sim Goblin Pyro",
+   "Sim Goblin Pyro",
+   "Sim Goblin Pyro",
+   "Sim Goblin Froster",
+   "Sim Goblin Froster",
+   "Sim Goblin Froster",
+   "Sim Goblin Sparker",
+   "Sim Goblin Sparker"
+  ],
+  "weapons": {
+   "Spell: Flame + Frost": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 13,
+    "damage": 0,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "Goblin Pyro",
+     "Frostfire"
+    ]
+   },
+   "Spell: Crackle": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 15,
+    "crits": 4,
+    "misses": 15,
+    "damage": 717,
+    "ap": 66,
+    "kills": 0,
+    "users": [
+     "Pyro",
+     "Storm",
+     "Goblin Sparker"
+    ]
+   },
+   "Spell: Crackle + Glob": {
+    "attacks": 72,
+    "followups": 0,
+    "hits": 26,
+    "crits": 2,
+    "misses": 46,
+    "damage": 0,
+    "ap": 144,
+    "kills": 0,
+    "users": [
+     "Goblin Spitter"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 98,
+    "followups": 0,
+    "hits": 54,
+    "crits": 24,
+    "misses": 47,
+    "damage": 818,
+    "ap": 196,
+    "kills": 0,
+    "users": [
+     "Goblin Froster",
+     "Warden",
+     "Bulwark"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 48,
+    "followups": 0,
+    "hits": 10,
+    "crits": 3,
+    "misses": 38,
+    "damage": 42,
+    "ap": 96,
+    "kills": 0,
+    "users": [
+     "Goblin Sparker"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 34,
+    "absorbed": 382
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 47
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 3,
+    "absorbed": 39
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 39
+   },
+   "Medium Armor (Hide)": {
+    "hits": 2,
+    "absorbed": 9
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Pyro",
+    "dealt": 0,
+    "taken": 159,
+    "hits": 3,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Frostfire",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Pyro",
+    "dealt": 377,
+    "taken": 48,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Pyro",
+    "dealt": 0,
+    "taken": 332,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Spitter",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 36
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "dealt": 32,
+    "taken": 108,
+    "hits": 3,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Storm",
+    "dealt": 340,
+    "taken": 28,
+    "hits": 7,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Goblin Pyro",
+    "dealt": 0,
+    "taken": 164,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 432,
+    "taken": 14,
+    "hits": 20,
+    "attacks": 23
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "dealt": 0,
+    "taken": 261,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Spitter",
+    "dealt": 0,
+    "taken": 80,
+    "hits": 11,
+    "attacks": 36
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "dealt": 16,
+    "taken": 199,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Sparker",
+    "dealt": 24,
+    "taken": 89,
+    "hits": 3,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 338,
+    "taken": 0,
+    "hits": 26,
+    "attacks": 36
+   },
+   {
+    "name": "Sim Goblin Sparker",
+    "dealt": 18,
+    "taken": 95,
+    "hits": 7,
+    "attacks": 30
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Flame + Frost": 9,
+     "mod:Ignition": 6,
+     "mod:Frostbite": 6,
+     "defend:dodge": 15
+    }
+   },
+   {
+    "name": "Sim Frostfire",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 30,
+     "cast:Flame + Frost": 4,
+     "mod:Ignition": 4,
+     "mod:Chill": 3,
+     "mod:Frostbite": 2
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "Sim Pyro",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Crackle": 12,
+     "mod:Electrify": 12,
+     "mod:Lightning Rod": 5,
+     "mod:Charge": 9,
+     "defend:dodge": 42
+    }
+   },
+   {
+    "name": "Sim Goblin Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14
+    }
+   },
+   {
+    "name": "Sim Goblin Spitter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 36,
+    "used": {
+     "cast:Crackle + Glob": 36,
+     "mod:Electrify": 3,
+     "mod:Lightning Rod": 3,
+     "mod:Melt": 25
+    }
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Glob": 21,
+     "mod:Pinpoint": 1,
+     "mod:Melt": 19,
+     "defend:dodge": 15
+    }
+   },
+   {
+    "name": "Sim Storm",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Crackle": 8,
+     "mod:Explode": 2,
+     "mod:Electrify": 8,
+     "mod:Lightning Rod": 8,
+     "mod:Charge": 8,
+     "defend:dodge": 17
+    }
+   },
+   {
+    "name": "Sim Goblin Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9,
+     "cast:Flame + Frost": 3,
+     "mod:Ignition": 3,
+     "mod:Frostbite": 6
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 19,
+    "used": {
+     "cast:Glob": 19,
+     "mod:Explode": 2,
+     "mod:Melt": 19,
+     "mod:Catalyst": 5,
+     "defend:dodge": 37,
+     "mod:Multicast": 2,
+     "multicast": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Glob": 6,
+     "mod:Pinpoint": 1,
+     "mod:Melt": 6,
+     "defend:dodge": 8
+    }
+   },
+   {
+    "name": "Sim Goblin Spitter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 36,
+    "used": {
+     "cast:Crackle + Glob": 36,
+     "mod:Electrify": 3,
+     "mod:Lightning Rod": 3,
+     "mod:Melt": 25,
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Goblin Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Glob": 12,
+     "mod:Pinpoint": 1,
+     "mod:Melt": 12,
+     "defend:dodge": 11
+    }
+   },
+   {
+    "name": "Sim Goblin Sparker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Crackle": 3,
+     "mod:Electrify": 3,
+     "mod:Lightning Rod": 3,
+     "mod:Charge": 3,
+     "cast:Flame": 21,
+     "mod:Ignition": 17,
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 36,
+    "used": {
+     "cast:Glob": 36,
+     "mod:Pinpoint": 1,
+     "mod:Melt": 29,
+     "defend:dodge": 51
+    }
+   },
+   {
+    "name": "Sim Goblin Sparker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Crackle": 3,
+     "mod:Electrify": 3,
+     "mod:Lightning Rod": 3,
+     "mod:Charge": 3,
+     "cast:Flame": 27,
+     "mod:Ignition": 21,
+     "defend:dodge": 9
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 2,
+    "magic-cold": 5,
+    "magic-acid": 4
+   },
+   "Sim Pyro": {
+    "magic-theory": 2,
+    "magic-radiation": 5,
+    "magic-heat": 4
+   },
+   "Sim Storm": {
+    "magic-theory": 2,
+    "magic-reach-arcana": 5,
+    "magic-radiation": 4
+   },
+   "Sim Frostfire": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-cold": 4
+   },
+   "Sim Warden": {
+    "magic-theory": 2,
+    "magic-acid": 5,
+    "magic-reach-arcana": 4
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Pyro": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Storm": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Frostfire": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Pyro": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Froster": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Sparker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Spitter": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): -1567/120 BROKEN"
+   ],
+   "Sim Pyro": [
+    "Light Armor (Hard Leather): -1069/90 BROKEN"
+   ],
+   "Sim Storm": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Frostfire": [
+    "Light Armor (Soft Leather): -72/60 BROKEN"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): -689/180 BROKEN"
+   ],
+   "Sim Goblin Pyro": [
+    "Light Armor (Soft Leather): -147/60 BROKEN"
+   ],
+   "Sim Goblin Froster": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Sparker": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Spitter": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2835,
+    "monsterHp": 4550,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 2562,
+    "monsterHp": 4339,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 2508,
+    "monsterHp": 3956,
+    "partyDown": 1,
+    "monstersDown": 4
+   },
+   {
+    "round": 5,
+    "partyHp": 1887,
+    "monsterHp": 3673,
+    "partyDown": 3,
+    "monstersDown": 5
+   },
+   {
+    "round": 6,
+    "partyHp": 1887,
+    "monsterHp": 3662,
+    "partyDown": 3,
+    "monstersDown": 5
+   },
+   {
+    "round": 7,
+    "partyHp": 1873,
+    "monsterHp": 3514,
+    "partyDown": 3,
+    "monstersDown": 5
+   },
+   {
+    "round": 8,
+    "partyHp": 1550,
+    "monsterHp": 3212,
+    "partyDown": 4,
+    "monstersDown": 6
+   },
+   {
+    "round": 9,
+    "partyHp": 1550,
+    "monsterHp": 2991,
+    "partyDown": 4,
+    "monstersDown": 7
+   },
+   {
+    "round": 10,
+    "partyHp": 1487,
+    "monsterHp": 2885,
+    "partyDown": 4,
+    "monstersDown": 7
+   },
+   {
+    "round": 11,
+    "partyHp": 1374,
+    "monsterHp": 2715,
+    "partyDown": 4,
+    "monstersDown": 8
+   },
+   {
+    "round": 12,
+    "partyHp": 1374,
+    "monsterHp": 2693,
+    "partyDown": 4,
+    "monstersDown": 8
+   },
+   {
+    "round": 13,
+    "partyHp": 1109,
+    "monsterHp": 2601,
+    "partyDown": 5,
+    "monstersDown": 8
+   },
+   {
+    "round": 13,
+    "partyHp": 1109,
+    "monsterHp": 2601,
+    "partyDown": 5,
+    "monstersDown": 8,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {
+    "prompt: Gravity Field: shape": 4,
+    "confirm: Gravity Field: place the area": 4
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 150,
+  "winner": "monsters",
+  "pass": "magic-t2",
+  "rounds": 7,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Glob": 52,
+   "mod:Pinpoint": 12,
+   "mod:Melt": 56,
+   "defend:dodge": 136,
+   "cast:Frost": 4,
+   "mod:Frostbite": 10,
+   "mod:Chill": 5,
+   "opt:shape=radius": 6,
+   "mod:Explode": 6,
+   "cast:Crackle": 23,
+   "mod:Electrify": 21,
+   "mod:Lightning Rod": 14,
+   "mod:Charge": 13,
+   "mod:Multicast": 10,
+   "multicast": 10,
+   "cast:Flame + Frost": 2,
+   "mod:Ignition": 25,
+   "cast:Flame + Glob": 9,
+   "mod:Catalyst": 8,
+   "cast:Flame": 19,
+   "recoverEnergy": 4
+  },
+  "hp": {
+   "Sim Bulwark#CsvH": "306/702",
+   "Sim Pyro#KfPj": "81/567",
+   "Sim Storm#UiNK": "158/567",
+   "Sim Frostfire#mnkG": "152/432",
+   "Sim Warden#2jtX": "270/567",
+   "Sim Raider Pyro#KQih": "414/765",
+   "Sim Raider Froster#BTQ9": "765/765",
+   "Sim Raider Storm#VppE": "765/765",
+   "Sim Raider Spitter#C58y": "360/765",
+   "Sim Raider Echo#kCZ2": "169/540"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Pyro",
+   "Sim Storm",
+   "Sim Frostfire",
+   "Sim Warden",
+   "Sim Raider Spitter",
+   "Sim Raider Echo"
+  ],
+  "weapons": {
+   "Spell: Glob": {
+    "attacks": 58,
+    "followups": 0,
+    "hits": 34,
+    "crits": 12,
+    "misses": 27,
+    "damage": 549,
+    "ap": 116,
+    "kills": 0,
+    "users": [
+     "Bulwark",
+     "Warden",
+     "Raider Froster"
+    ]
+   },
+   "Spell: Frost": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 9,
+    "ap": 15,
+    "kills": 0,
+    "users": [
+     "Raider Echo"
+    ]
+   },
+   "Spell: Crackle": {
+    "attacks": 37,
+    "followups": 0,
+    "hits": 21,
+    "crits": 11,
+    "misses": 19,
+    "damage": 715,
+    "ap": 103,
+    "kills": 0,
+    "users": [
+     "Raider Pyro",
+     "Pyro",
+     "Storm",
+     "Raider Storm"
+    ]
+   },
+   "Spell: Flame + Frost": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Frostfire"
+    ]
+   },
+   "Spell: Flame + Glob": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Spitter"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 9,
+    "crits": 3,
+    "misses": 10,
+    "damage": 173,
+    "ap": 38,
+    "kills": 0,
+    "users": [
+     "Raider Pyro",
+     "Pyro"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 11,
+    "absorbed": 138
+   },
+   "Medium Armor (Hide)": {
+    "hits": 12,
+    "absorbed": 261
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 92
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 7,
+    "absorbed": 112
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 144
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bulwark",
+    "dealt": 110,
+    "taken": 247,
+    "hits": 9,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Raider Echo",
+    "dealt": 9,
+    "taken": 221,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Frostfire",
+    "dealt": 0,
+    "taken": 178,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "dealt": 173,
+    "taken": 123,
+    "hits": 9,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Pyro",
+    "dealt": 61,
+    "taken": 109,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Storm",
+    "dealt": 291,
+    "taken": 61,
+    "hits": 10,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Raider Spitter",
+    "dealt": 0,
+    "taken": 334,
+    "hits": 4,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Raider Storm",
+    "dealt": 363,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 216,
+    "taken": 173,
+    "hits": 13,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Raider Froster",
+    "dealt": 223,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 19
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Glob": 21,
+     "mod:Pinpoint": 2,
+     "mod:Melt": 21,
+     "mod:Catalyst": 8,
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "Sim Raider Echo",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23,
+     "cast:Frost": 4,
+     "mod:Frostbite": 8,
+     "mod:Chill": 4,
+     "mod:Explode": 1
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "Sim Frostfire",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14,
+     "cast:Flame + Frost": 2,
+     "mod:Ignition": 2,
+     "mod:Chill": 1,
+     "mod:Frostbite": 2
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Crackle": 3,
+     "mod:Electrify": 3,
+     "mod:Lightning Rod": 3,
+     "cast:Flame": 18,
+     "mod:Ignition": 18,
+     "mod:Pinpoint": 5,
+     "defend:dodge": 22
+    }
+   },
+   {
+    "name": "Sim Pyro",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Crackle": 5,
+     "mod:Electrify": 3,
+     "mod:Charge": 3,
+     "mod:Lightning Rod": 1,
+     "defend:dodge": 16,
+     "cast:Flame": 1
+    }
+   },
+   {
+    "name": "Sim Storm",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Crackle": 8,
+     "mod:Explode": 2,
+     "mod:Electrify": 8,
+     "mod:Lightning Rod": 8,
+     "mod:Charge": 8,
+     "defend:dodge": 11
+    }
+   },
+   {
+    "name": "Sim Raider Spitter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23,
+     "cast:Flame + Glob": 9,
+     "mod:Ignition": 5,
+     "mod:Melt": 8
+    },
+    "turnMoved": 0,
+    "casts": 9
+   },
+   {
+    "name": "Sim Raider Storm",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 7,
+    "used": {
+     "cast:Crackle": 7,
+     "mod:Multicast": 7,
+     "mod:Electrify": 7,
+     "mod:Lightning Rod": 2,
+     "mod:Charge": 2,
+     "multicast": 7,
+     "mod:Pinpoint": 3
     }
    },
    {
@@ -389,17 +1838,34 @@
     "role": "support",
     "moved": 0,
     "attacks": 0,
-    "turns": 6,
+    "turns": 5,
     "kills": 0,
     "turnMoved": 0,
-    "casts": 14,
+    "casts": 12,
     "used": {
-     "cast:Glob": 14,
+     "cast:Glob": 12,
      "mod:Explode": 3,
-     "mod:Melt": 14,
-     "mod:Multicast": 4,
-     "multicast": 4,
-     "defend:dodge": 15
+     "mod:Melt": 12,
+     "mod:Multicast": 3,
+     "multicast": 3,
+     "defend:dodge": 18
+    }
+   },
+   {
+    "name": "Sim Raider Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 19,
+    "used": {
+     "cast:Glob": 19,
+     "mod:Pinpoint": 2,
+     "mod:Melt": 15,
+     "recoverEnergy": 4
     }
    }
   ],
@@ -476,34 +1942,34 @@
   },
   "gearState": {
    "Sim Bulwark": [
-    "Medium Armor (Hide): -145/120 BROKEN"
+    "Medium Armor (Hide): -10/120 BROKEN"
    ],
    "Sim Pyro": [
-    "Light Armor (Hard Leather): -530/90 BROKEN"
+    "Light Armor (Hard Leather): 0/90 BROKEN"
    ],
    "Sim Storm": [
-    "Medium Armor (Soft Leather): -452/120 BROKEN"
+    "Medium Armor (Soft Leather): -337/120 BROKEN"
    ],
    "Sim Frostfire": [
     "Light Armor (Soft Leather): 0/60 BROKEN"
    ],
    "Sim Warden": [
-    "Medium Armor (Hard Leather): -173/180 BROKEN"
+    "Medium Armor (Hard Leather): 0/180 BROKEN"
    ],
    "Sim Raider Pyro": [
-    "Medium Armor (Hide): -44/150 BROKEN"
+    "Medium Armor (Hide): -107/150 BROKEN"
    ],
    "Sim Raider Froster": [
-    "Medium Armor (Hide): -325/150 BROKEN"
+    "Medium Armor (Hide): 150/150"
    ],
    "Sim Raider Storm": [
-    "Medium Armor (Hide): 147/150"
+    "Medium Armor (Hide): 150/150"
    ],
    "Sim Raider Spitter": [
-    "Medium Armor (Hide): -14/150 BROKEN"
+    "Medium Armor (Hide): -38/150 BROKEN"
    ],
    "Sim Raider Echo": [
-    "Light Armor (Soft Leather): 0/100 BROKEN"
+    "Light Armor (Soft Leather): -13/100 BROKEN"
    ]
   },
   "roundLog": [
@@ -516,80 +1982,52 @@
    },
    {
     "round": 2,
-    "partyHp": 2387,
-    "monsterHp": 3190,
+    "partyHp": 2555,
+    "monsterHp": 3367,
     "partyDown": 1,
-    "monstersDown": 1
+    "monstersDown": 0
    },
    {
     "round": 3,
-    "partyHp": 2155,
-    "monsterHp": 2956,
+    "partyHp": 2444,
+    "monsterHp": 3033,
     "partyDown": 1,
     "monstersDown": 1
    },
    {
     "round": 4,
-    "partyHp": 1878,
-    "monsterHp": 2815,
+    "partyHp": 2056,
+    "monsterHp": 2824,
     "partyDown": 2,
     "monstersDown": 2
    },
    {
     "round": 5,
-    "partyHp": 1757,
-    "monsterHp": 2748,
-    "partyDown": 2,
+    "partyHp": 1596,
+    "monsterHp": 2789,
+    "partyDown": 3,
     "monstersDown": 2
    },
    {
     "round": 6,
-    "partyHp": 1425,
-    "monsterHp": 2601,
+    "partyHp": 1428,
+    "monsterHp": 2717,
     "partyDown": 3,
     "monstersDown": 2
    },
    {
     "round": 7,
-    "partyHp": 1225,
-    "monsterHp": 2416,
-    "partyDown": 3,
-    "monstersDown": 3
-   },
-   {
-    "round": 8,
-    "partyHp": 1159,
-    "monsterHp": 2378,
+    "partyHp": 1363,
+    "monsterHp": 2621,
     "partyDown": 4,
-    "monstersDown": 3
+    "monstersDown": 2
    },
    {
-    "round": 9,
-    "partyHp": 1148,
-    "monsterHp": 2292,
-    "partyDown": 4,
-    "monstersDown": 3
-   },
-   {
-    "round": 10,
-    "partyHp": 968,
-    "monsterHp": 2169,
-    "partyDown": 4,
-    "monstersDown": 3
-   },
-   {
-    "round": 11,
-    "partyHp": 749,
-    "monsterHp": 2027,
+    "round": 7,
+    "partyHp": 967,
+    "monsterHp": 2473,
     "partyDown": 5,
-    "monstersDown": 4
-   },
-   {
-    "round": 11,
-    "partyHp": 749,
-    "monsterHp": 2027,
-    "partyDown": 5,
-    "monstersDown": 4,
+    "monstersDown": 2,
     "end": true
    }
   ],

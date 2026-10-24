@@ -1027,3 +1027,9 @@ for (const v of ["multi", "halfpass", "hit"]) {
   PASSES[`magic-bench-venom-${v}`] = { ...PASSES["magic-bench-venom"], id: `magic-bench-venom-${v}`, settings: { venomVariant: v },
     note: `${PASSES["magic-bench-venom"].note} Variant: ${v}.` };
 }
+
+// More armored fights for the rules as written and the halfpass variant (the two the first runs couldn't separate).
+for (const [id, v] of [["magic-bench-venom-armored", ""], ["magic-bench-venom-halfpass-armored", "halfpass"]]) {
+  PASSES[id] = { ...PASSES["magic-bench-venom"], id, settings: { venomVariant: v }, note: `Venomancy against armored raiders, six more fights${v ? ` (variant ${v})` : ""}.`,
+    encounters: [4, 5, 6, 7, 8, 9].map(rep => ({ id: `venomancy-armored-${rep}`, group: "armored", rotation: BENCH_SCHOOLS.findIndex(s => s[0] === "venomancy") })) };
+}

@@ -1,0 +1,7875 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 470,
+  "winner": "monsters",
+  "pass": "magic-t4-rerun",
+  "rounds": 7,
+  "partyLeft": 0,
+  "monstersLeft": 10,
+  "followups": 55,
+  "knockbacks": {
+   "away": 3,
+   "into": 18
+  },
+  "used": {
+   "cast:Form": 28,
+   "mod:Arm": 3,
+   "made:summon": 43,
+   "cast:Cut": 129,
+   "mod:Bleed": 50,
+   "defend:dodge": 306,
+   "cast:Animate": 7,
+   "mod:Expanded Animation": 7,
+   "made:animation": 7,
+   "cast:Shield": 1,
+   "mod:Layered": 5,
+   "mod:Reactive": 3,
+   "cast:nothingAffordable": 1,
+   "recoverEnergy": 2,
+   "opt:dir=away": 3,
+   "opt:dir=into": 18,
+   "cast:Form + Make": 15,
+   "cast:Burden": 6,
+   "mod:Burden": 6,
+   "cast:Force": 6,
+   "cast:Stab": 6,
+   "mod:Empower": 1
+  },
+  "hp": {
+   "Sim Bulwark#FGsk": "327/702",
+   "Sim Summoner#mci2": "275/567",
+   "Sim Animator#QsuA": "256/567",
+   "Sim Maker#g03m": "104/432",
+   "Sim Warden#7WQg": "278/567",
+   "Sim Goblin Summoner#eloL": "217/513",
+   "Sim Goblin Summoner#SA6H": "240/513",
+   "Sim Goblin Summoner#nHwv": "236/513",
+   "Sim Goblin Animator#liz4": "492/513",
+   "Sim Goblin Animator#fxcz": "480/513",
+   "Sim Goblin Animator#zdGh": "513/513",
+   "Sim Goblin Maker#x5Vq": "513/513",
+   "Sim Goblin Maker#L2u1": "513/513",
+   "Sim Goblin Builder#1gmV": "513/513",
+   "Sim Goblin Builder#r2Mj": "513/513",
+   "Sim Goblin Summoner's Summon#jR4C": "107/144",
+   "Sim Goblin Summoner's Summon#YzUg": "133/144",
+   "Sim Summoner's Summon#cXL8": "112/180",
+   "Sim Goblin Summoner's Summon#1F2c": "111/144",
+   "Sim Goblin Builder's Summon#L05f": "144/144",
+   "Sim Goblin Builder's Summon#IwvX": "144/144",
+   "Sim Goblin Maker's Summon#LTLz": "96/96"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Summoner",
+   "Sim Animator",
+   "Sim Maker",
+   "Sim Warden",
+   "Sim Goblin Summoner",
+   "Sim Goblin Summoner",
+   "Sim Goblin Summoner",
+   "Sim Goblin Summoner's Summon",
+   "Sim Goblin Summoner's Summon",
+   "Sim Summoner's Summon",
+   "Sim Goblin Summoner's Summon"
+  ],
+  "weapons": {
+   "Spell: Cut [M]": {
+    "attacks": 125,
+    "followups": 0,
+    "hits": 28,
+    "crits": 7,
+    "misses": 97,
+    "damage": 1034,
+    "ap": 250,
+    "kills": 0,
+    "users": [
+     "Goblin Summoner",
+     "Goblin Animator",
+     "Goblin Builder",
+     "Goblin Maker"
+    ]
+   },
+   "Creation: Form [M]": {
+    "attacks": 29,
+    "followups": 18,
+    "hits": 8,
+    "crits": 1,
+    "misses": 39,
+    "damage": 128,
+    "ap": 81,
+    "kills": 0,
+    "users": [
+     "Actor.hr1g2wf7I7dDNXfr",
+     "Actor.fLke6g5MlxGUMmW3",
+     "Actor.MdWsrvTZgcCujvvZ",
+     "Actor.s6qIO3sXZyupD1J9",
+     "Actor.oO7r7PuTdDBMzyWD",
+     "Actor.H2E3ReEKIy5nVycA",
+     "Goblin Summoner's Summon",
+     "Actor.xgSzNcRfIifuf8Cw",
+     "Actor.9yAToqKk52iuVJ6f",
+     "Actor.udeib5cQihyQYSF7",
+     "Actor.Tt9oavtU2t45cIe8",
+     "Actor.k8AYDOVcIySJ8nfW",
+     "Goblin Builder's Summon"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Creation: Form": {
+    "attacks": 21,
+    "followups": 10,
+    "hits": 15,
+    "crits": 4,
+    "misses": 16,
+    "damage": 195,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Actor.fqGvB5S7ZbWSWjdX",
+     "Actor.1afvTp02wWJywGua",
+     "Actor.hDnMc7TAIbh8gj45",
+     "Actor.C0UeXyRsvVGAmk83",
+     "Actor.wRYUfqannhpkAv8i",
+     "Actor.UiJWtBhIcX2OhL3k",
+     "Actor.QBy0PYruE5a7Vjh6"
+    ],
+    "force": 0
+   },
+   "Creation: Form + Make [M]": {
+    "attacks": 25,
+    "followups": 22,
+    "hits": 19,
+    "crits": 4,
+    "misses": 31,
+    "damage": 94,
+    "ap": 75,
+    "kills": 0,
+    "users": [
+     "Actor.lJ1eeqHE62sg5bhf",
+     "Actor.BiUZkU61zqRjI3xj",
+     "Actor.Q1l0ypJc1GIQI7Qo",
+     "Actor.T7Av0su2pZZ5A98q",
+     "Actor.mdWqN0BcllRf5PqV",
+     "Actor.5I0MANd2PjIpyGeG",
+     "Actor.NMjIKP0BJks1imeY",
+     "Actor.uoa4BecYlsxlhY9L",
+     "Actor.lYjrTvhqthOfZ2jv",
+     "Actor.vqal2CqywEujb5Kj",
+     "Actor.VQVK0db28OUWbaBF",
+     "Actor.5KlJqUGzjuXbOOkd",
+     "Goblin Maker's Summon"
+    ]
+   },
+   "Creation: Animate [M]": {
+    "attacks": 4,
+    "followups": 1,
+    "hits": 2,
+    "crits": 1,
+    "misses": 3,
+    "damage": 303,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Actor.RyYvhcIlovut5c17",
+     "Actor.CKf4n58e8DPSKFwR"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 80,
+    "ap": 8,
+    "kills": 6,
+    "users": [
+     "Summoner"
+    ]
+   },
+   "Creation: Form + Make": {
+    "attacks": 4,
+    "followups": 1,
+    "hits": 9,
+    "crits": 5,
+    "misses": 1,
+    "damage": 468,
+    "ap": 12,
+    "kills": 2,
+    "users": [
+     "Actor.YmvLCv8T4OZhLQRv",
+     "Summoner's Summon"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 13,
+    "crits": 3,
+    "misses": 4,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 2,
+    "damage": 261,
+    "ap": 21,
+    "kills": 2,
+    "users": [
+     "Animator"
+    ]
+   },
+   "Creation: Animate": {
+    "attacks": 6,
+    "followups": 3,
+    "hits": 5,
+    "crits": 2,
+    "misses": 4,
+    "damage": 525,
+    "ap": 12,
+    "kills": 2,
+    "users": [
+     "Actor.wglhV3sn6WMEKexx",
+     "Actor.cYZBRfS4Jnt5KSSs",
+     "Actor.y1wNzqYfuDDwpPMS",
+     "Actor.TiCMoeFSVWIONFn8"
+    ],
+    "force": 9
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 10,
+    "absorbed": 74
+   },
+   "Medium Armor (Hide)": {
+    "hits": 6,
+    "absorbed": 89
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 39
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 7,
+    "absorbed": 113
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 8,
+    "absorbed": 81
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Summoner",
+    "dealt": 95,
+    "taken": 196,
+    "hits": 2,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Maker",
+    "dealt": 0,
+    "taken": 164,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.hr1g2wf7I7dDNXfr",
+    "dealt": 0,
+    "taken": 44,
+    "hits": 0,
+    "attacks": 1
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 344,
+    "hits": 0,
+    "attacks": 1
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "dealt": 229,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Summoner",
+    "dealt": 80,
+    "taken": 257,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Builder",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "dealt": 44,
+    "taken": 38,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.fLke6g5MlxGUMmW3",
+    "dealt": 38,
+    "taken": 88,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Maker",
+    "dealt": 35,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 14
+   },
+   {
+    "name": "Actor.lJ1eeqHE62sg5bhf",
+    "dealt": 19,
+    "taken": 44,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "dealt": 18,
+    "taken": 111,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.MdWsrvTZgcCujvvZ",
+    "dealt": 39,
+    "taken": 29,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "dealt": 38,
+    "taken": 215,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.s6qIO3sXZyupD1J9",
+    "dealt": 0,
+    "taken": 118,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "dealt": 265,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 20
+   },
+   {
+    "name": "Actor.RyYvhcIlovut5c17",
+    "dealt": 209,
+    "taken": 39,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.YmvLCv8T4OZhLQRv",
+    "dealt": 374,
+    "taken": 21,
+    "hits": 5,
+    "attacks": 3
+   },
+   {
+    "name": "Stone Animation",
+    "dealt": 0,
+    "taken": 100,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 205,
+    "hits": 13,
+    "attacks": 17
+   },
+   {
+    "name": "Actor.1afvTp02wWJywGua",
+    "dealt": 0,
+    "taken": 29,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Animator",
+    "dealt": 261,
+    "taken": 258,
+    "hits": 5,
+    "attacks": 7
+   },
+   {
+    "name": "Actor.wglhV3sn6WMEKexx",
+    "dealt": 0,
+    "taken": 10,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Maker",
+    "dealt": 187,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "Actor.BiUZkU61zqRjI3xj",
+    "dealt": 21,
+    "taken": 15,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Builder",
+    "dealt": 62,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 12
+   },
+   {
+    "name": "Actor.oO7r7PuTdDBMzyWD",
+    "dealt": 0,
+    "taken": 32,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.H2E3ReEKIy5nVycA",
+    "dealt": 10,
+    "taken": 37,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.Q1l0ypJc1GIQI7Qo",
+    "dealt": 0,
+    "taken": 36,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "dealt": 0,
+    "taken": 37,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "dealt": 0,
+    "taken": 11,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "dealt": 105,
+    "taken": 21,
+    "hits": 3,
+    "attacks": 17
+   },
+   {
+    "name": "Actor.CKf4n58e8DPSKFwR",
+    "dealt": 94,
+    "taken": 31,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "dealt": 94,
+    "taken": 68,
+    "hits": 4,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.hDnMc7TAIbh8gj45",
+    "dealt": 37,
+    "taken": 3,
+    "hits": 1,
+    "attacks": 5
+   },
+   {
+    "name": "Actor.cYZBRfS4Jnt5KSSs",
+    "dealt": 326,
+    "taken": 19,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.T7Av0su2pZZ5A98q",
+    "dealt": 22,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.xgSzNcRfIifuf8Cw",
+    "dealt": 0,
+    "taken": 190,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.mdWqN0BcllRf5PqV",
+    "dealt": 0,
+    "taken": 22,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.C0UeXyRsvVGAmk83",
+    "dealt": 29,
+    "taken": 62,
+    "hits": 3,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "dealt": 0,
+    "taken": 7,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.y1wNzqYfuDDwpPMS",
+    "dealt": 199,
+    "taken": 10,
+    "hits": 1,
+    "attacks": 1
+   },
+   {
+    "name": "Actor.5I0MANd2PjIpyGeG",
+    "dealt": 10,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.9yAToqKk52iuVJ6f",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.NMjIKP0BJks1imeY",
+    "dealt": 0,
+    "taken": 12,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.wRYUfqannhpkAv8i",
+    "dealt": 31,
+    "taken": 31,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "dealt": 0,
+    "taken": 19,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.TiCMoeFSVWIONFn8",
+    "dealt": 0,
+    "taken": 10,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.uoa4BecYlsxlhY9L",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.udeib5cQihyQYSF7",
+    "dealt": 41,
+    "taken": 13,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.Tt9oavtU2t45cIe8",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.lYjrTvhqthOfZ2jv",
+    "dealt": 16,
+    "taken": 12,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.UiJWtBhIcX2OhL3k",
+    "dealt": 25,
+    "taken": 2,
+    "hits": 3,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "dealt": 0,
+    "taken": 33,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.vqal2CqywEujb5Kj",
+    "dealt": 2,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.k8AYDOVcIySJ8nfW",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.VQVK0db28OUWbaBF",
+    "dealt": 0,
+    "taken": 8,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.QBy0PYruE5a7Vjh6",
+    "dealt": 29,
+    "taken": 28,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.5KlJqUGzjuXbOOkd",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "dealt": 4,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Summoner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Form": 5,
+     "mod:Arm": 1,
+     "made:summon": 5,
+     "cast:Cut": 10,
+     "mod:Bleed": 4,
+     "defend:dodge": 5
+    },
+    "creations": 5,
+    "creationHp": 936
+   },
+   {
+    "name": "Sim Maker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 105,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 105,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 20,
+     "cast:Shield": 1,
+     "mod:Layered": 2,
+     "mod:Reactive": 1,
+     "cast:Form": 1,
+     "made:summon": 1,
+     "cast:nothingAffordable": 1,
+     "recoverEnergy": 2
+    },
+    "turnMoved": 0,
+    "casts": 2,
+    "creations": 1,
+    "creationHp": 296
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Animate": 1,
+     "mod:Expanded Animation": 1,
+     "made:animation": 1,
+     "cast:Cut": 20,
+     "mod:Bleed": 8
+    },
+    "creations": 1,
+    "creationHp": 1500
+   },
+   {
+    "name": "Stone Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 30,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 30,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Summoner",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 44,
+     "cast:Form + Make": 2,
+     "made:summon": 2,
+     "cast:Cut": 4
+    },
+    "turnMoved": 0,
+    "casts": 6,
+    "creations": 2,
+    "creationHp": 630
+   },
+   {
+    "name": "Sim Goblin Builder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Form": 6,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "made:summon": 6,
+     "cast:Cut": 12,
+     "mod:Bleed": 5
+    },
+    "creations": 6,
+    "creationHp": 1142
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5
+    },
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "away": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Maker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Form + Make": 7,
+     "made:summon": 7,
+     "cast:Cut": 14,
+     "mod:Bleed": 5
+    },
+    "creations": 7,
+    "creationHp": 936
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Form": 2,
+     "mod:Arm": 1,
+     "made:summon": 2,
+     "cast:Cut": 4,
+     "mod:Bleed": 2,
+     "defend:dodge": 5
+    },
+    "creations": 2,
+    "creationHp": 504
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Form": 2,
+     "mod:Arm": 1,
+     "made:summon": 2,
+     "cast:Cut": 4,
+     "mod:Bleed": 2,
+     "defend:dodge": 10
+    },
+    "creations": 2,
+    "creationHp": 504
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Animate": 1,
+     "mod:Expanded Animation": 1,
+     "made:animation": 1,
+     "cast:Cut": 20,
+     "mod:Bleed": 8,
+     "defend:dodge": 2
+    },
+    "creations": 1,
+    "creationHp": 1500
+   },
+   {
+    "name": "Stone Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 65,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 65,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Burden": 6,
+     "mod:Burden": 6,
+     "cast:Form": 6,
+     "mod:Layered": 1,
+     "made:summon": 6,
+     "cast:Force": 6,
+     "defend:dodge": 43
+    },
+    "creations": 6,
+    "creationHp": 1317,
+    "knockbacks": {
+     "into": 5
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Animator",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 10,
+    "used": {
+     "cast:Animate": 4,
+     "mod:Expanded Animation": 4,
+     "made:animation": 4,
+     "cast:Stab": 6,
+     "mod:Empower": 1,
+     "defend:dodge": 69
+    },
+    "creations": 4,
+    "creationHp": 7500
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "Sim Goblin Maker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Form + Make": 6,
+     "made:summon": 6,
+     "cast:Cut": 12,
+     "mod:Bleed": 5
+    },
+    "creations": 6,
+    "creationHp": 840
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 5,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 5,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Builder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Form": 6,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "made:summon": 6,
+     "cast:Cut": 12,
+     "mod:Bleed": 4
+    },
+    "creations": 6,
+    "creationHp": 1094
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Animate": 1,
+     "mod:Expanded Animation": 1,
+     "made:animation": 1,
+     "cast:Cut": 17,
+     "mod:Bleed": 7,
+     "defend:dodge": 7
+    },
+    "creations": 1,
+    "creationHp": 1500
+   },
+   {
+    "name": "Stone Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 70.71067811865476,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 70.71067811865476,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 9.013878188659973,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 9.013878188659973,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 110.1135777277262,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 110.1135777277262,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 117.04699910719626,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 117.04699910719626,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 10,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 10,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "knockbacks": {
+     "away": 1
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 7.5,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 7.5,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 110.1135777277262,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 110.1135777277262,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 117.04699910719626,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 117.04699910719626,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1,
+     "away": 1
+    },
+    "used": {
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 92.19544457292889,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 92.19544457292889,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 114.01754250991377,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 114.01754250991377,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 2.5,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 2.5,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 7.5,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 7.5,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 110,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 110,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 89.61724164467462,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 89.61724164467462,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 91.68560410446125,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 91.68560410446125
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 115.43396380615195,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 115.43396380615195,
+    "lastTech": "kick",
+    "shank": 0
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 5,
+    "magic-summoning": 2,
+    "magic-protection-arcana": 1
+   },
+   "Sim Summoner": {
+    "magic-theory": 4,
+    "magic-summoning": 5,
+    "magic-creation": 2,
+    "magic-slashing": 1
+   },
+   "Sim Animator": {
+    "magic-theory": 4,
+    "magic-animation": 5,
+    "magic-summoning": 2,
+    "magic-piercing": 1
+   },
+   "Sim Maker": {
+    "magic-theory": 4,
+    "magic-creation": 5,
+    "magic-summoning": 2,
+    "magic-slashing": 1
+   },
+   "Sim Warden": {
+    "magic-theory": 4,
+    "magic-summoning": 4,
+    "magic-build-arcana": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Summoner": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Animator": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Maker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Summoner": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Animator": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Maker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Builder": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 0/120 BROKEN"
+   ],
+   "Sim Summoner": [
+    "Light Armor (Hard Leather): 48/90"
+   ],
+   "Sim Animator": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Maker": [
+    "Light Armor (Soft Leather): 24/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 91/180"
+   ],
+   "Sim Goblin Summoner": [
+    "Light Armor (Soft Leather): 12/60"
+   ],
+   "Sim Goblin Animator": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Maker": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Builder": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Summoner's Summon": [],
+   "Sim Summoner's Summon": [
+    "Iron Bladed: 1200/1200"
+   ],
+   "Sim Goblin Builder's Summon": [],
+   "Sim Goblin Maker's Summon": [
+    "Iron Bladed: 960/960"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5154,
+    "monsterHp": 9944,
+    "partyDown": 4,
+    "monstersDown": 6
+   },
+   {
+    "round": 3,
+    "partyHp": 4275,
+    "monsterHp": 6489,
+    "partyDown": 5,
+    "monstersDown": 6
+   },
+   {
+    "round": 4,
+    "partyHp": 3899,
+    "monsterHp": 5034,
+    "partyDown": 6,
+    "monstersDown": 6
+   },
+   {
+    "round": 5,
+    "partyHp": 3930,
+    "monsterHp": 5058,
+    "partyDown": 6,
+    "monstersDown": 6
+   },
+   {
+    "round": 6,
+    "partyHp": 1906,
+    "monsterHp": 4998,
+    "partyDown": 5,
+    "monstersDown": 8
+   },
+   {
+    "round": 7,
+    "partyHp": 1670,
+    "monsterHp": 4981,
+    "partyDown": 6,
+    "monstersDown": 8
+   },
+   {
+    "round": 7,
+    "partyHp": 1352,
+    "monsterHp": 4965,
+    "partyDown": 6,
+    "monstersDown": 6,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "painDivisor": 2,
+  "skips": [
+   "1:14 Sim Maker: down",
+   "2:3 Sim Bulwark: down"
+  ],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 331
+  },
+  "lostBy": {
+   "party": 1663,
+   "monsters": 981
+  },
+  "directTaken": {
+   "party": 2429,
+   "monsters": 650
+  },
+  "creations": {
+   "Actor.hr1g2wf7I7dDNXfr": "Creation: Form",
+   "Actor.obnZWfMmAcio8ZuH": "Creation: Animate",
+   "Actor.fqGvB5S7ZbWSWjdX": "Creation: Form",
+   "Actor.fLke6g5MlxGUMmW3": "Creation: Form",
+   "Actor.lJ1eeqHE62sg5bhf": "Creation: Form + Make",
+   "Actor.MdWsrvTZgcCujvvZ": "Creation: Form",
+   "Actor.s6qIO3sXZyupD1J9": "Creation: Form",
+   "Actor.RyYvhcIlovut5c17": "Creation: Animate",
+   "Actor.YmvLCv8T4OZhLQRv": "Creation: Form + Make",
+   "Actor.1afvTp02wWJywGua": "Creation: Form",
+   "Actor.wglhV3sn6WMEKexx": "Creation: Animate",
+   "Actor.BiUZkU61zqRjI3xj": "Creation: Form + Make",
+   "Actor.oO7r7PuTdDBMzyWD": "Creation: Form",
+   "Actor.H2E3ReEKIy5nVycA": "Creation: Form",
+   "Actor.Q1l0ypJc1GIQI7Qo": "Creation: Form + Make",
+   "Actor.CSs3wb8nLsZUjGMF": "Creation: Form",
+   "Actor.VtuIYUuZ6ykMZhM6": "Creation: Form",
+   "Actor.CKf4n58e8DPSKFwR": "Creation: Animate",
+   "Actor.9OR13NeGvOywbjzl": "Creation: Form + Make",
+   "Actor.hDnMc7TAIbh8gj45": "Creation: Form",
+   "Actor.cYZBRfS4Jnt5KSSs": "Creation: Animate",
+   "Actor.T7Av0su2pZZ5A98q": "Creation: Form + Make",
+   "Actor.tbDHyXxXoleFUDTT": "Creation: Form",
+   "Actor.0nr1fmLVwBHMf0ak": "Creation: Form",
+   "Actor.xgSzNcRfIifuf8Cw": "Creation: Form",
+   "Actor.mdWqN0BcllRf5PqV": "Creation: Form + Make",
+   "Actor.C0UeXyRsvVGAmk83": "Creation: Form",
+   "Actor.y1wNzqYfuDDwpPMS": "Creation: Animate",
+   "Actor.5I0MANd2PjIpyGeG": "Creation: Form + Make",
+   "Actor.HJYVaWSjsBnkK6UG": "Creation: Form",
+   "Actor.Y5pmMPkCESc6K3qr": "Creation: Form",
+   "Actor.9yAToqKk52iuVJ6f": "Creation: Form",
+   "Actor.NMjIKP0BJks1imeY": "Creation: Form + Make",
+   "Actor.wRYUfqannhpkAv8i": "Creation: Form",
+   "Actor.TiCMoeFSVWIONFn8": "Creation: Animate",
+   "Actor.uoa4BecYlsxlhY9L": "Creation: Form + Make",
+   "Actor.udeib5cQihyQYSF7": "Creation: Form",
+   "Actor.ChWuVA4yMd7KgQf2": "Creation: Form",
+   "Actor.Tt9oavtU2t45cIe8": "Creation: Form",
+   "Actor.lYjrTvhqthOfZ2jv": "Creation: Form + Make",
+   "Actor.UiJWtBhIcX2OhL3k": "Creation: Form",
+   "Actor.vqal2CqywEujb5Kj": "Creation: Form + Make",
+   "Actor.WomLRbqbUw5I7KfW": "Creation: Form",
+   "Actor.k8AYDOVcIySJ8nfW": "Creation: Form",
+   "Actor.VQVK0db28OUWbaBF": "Creation: Form + Make",
+   "Actor.QBy0PYruE5a7Vjh6": "Creation: Form",
+   "Actor.5KlJqUGzjuXbOOkd": "Creation: Form + Make",
+   "Actor.s9VBrN7yInaRvWs2": "Creation: Form",
+   "Actor.JC2YP0KrnH4JFSPY": "Creation: Form",
+   "Actor.lyrPS1rgLNKko8he": "Creation: Form + Make"
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Natural Bladed (Heavy)": 5,
+    "prompt: Unarmed": 49,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 32,
+    "prompt: Knockback — Sim Goblin Summoner's Summon": 4,
+    "prompt: Knockback — Sim Bulwark's Summon": 1,
+    "prompt: Iron Bladed": 29,
+    "prompt: Iron Bladed — Solitary follow-up": 23,
+    "prompt: Knockback — Sim Bulwark": 1,
+    "prompt: Knockback — Sim Summoner": 1,
+    "prompt: Force — Sim Goblin Summoner's Summon": 1,
+    "prompt: Knockback — Sim Goblin Summoner": 2,
+    "prompt: Force — Sim Goblin Maker's Summon": 4,
+    "prompt: Knockback — Sim Goblin Maker's Summon": 4,
+    "prompt: Knockback — Sim Goblin Builder's Summon": 2,
+    "prompt: Knockback — Sim Warden's Summon": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Goblin Builder's Summon needs 3 AP for attacking with Unarmed but has 2.",
+     "who": "Sim Goblin Builder's Summon"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Goblin Summoner's Summon needs 3 AP for attacking with Unarmed but has 2.",
+     "who": "Sim Goblin Summoner's Summon"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Goblin Builder's Summon needs 3 AP for attacking with Unarmed but has 2.",
+     "who": "Sim Goblin Builder's Summon"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Goblin Summoner's Summon needs 3 AP for attacking with Unarmed but has 2.",
+     "who": "Sim Goblin Summoner's Summon"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Goblin Summoner's Summon needs 3 AP for attacking with Unarmed but has 2.",
+     "who": "Sim Goblin Summoner's Summon"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Goblin Builder's Summon needs 3 AP for attacking with Unarmed but has 2.",
+     "who": "Sim Goblin Builder's Summon"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Goblin Builder's Summon needs 3 AP for attacking with Unarmed but has 2.",
+     "who": "Sim Goblin Builder's Summon"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    },
+    {
+     "level": "warn",
+     "msg": "Stone is a Hard material: Animate needs Expanded Animation for it.",
+     "who": "Sim Goblin Animator"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "swarm-r2",
+  "group": "swarm",
+  "rotation": 2,
+  "seconds": 203,
+  "winner": "party",
+  "pass": "magic-t4-rerun",
+  "rounds": 3,
+  "partyLeft": 9,
+  "monstersLeft": 0,
+  "followups": 30,
+  "knockbacks": {
+   "into": 20,
+   "away": 3,
+   "down": 4
+  },
+  "used": {
+   "cast:Make + Animate": 5,
+   "made:animation": 10,
+   "cast:Stab": 3,
+   "mod:Empower": 1,
+   "defend:dodge": 143,
+   "cast:Burden": 2,
+   "mod:Burden": 2,
+   "cast:Form": 12,
+   "mod:Layered": 6,
+   "made:summon": 14,
+   "cast:Force": 2,
+   "opt:dir=into": 20,
+   "mod:Arm": 3,
+   "cast:Cut": 32,
+   "mod:Bleed": 16,
+   "mod:Make Mk2": 2,
+   "mod:Make Mk3": 2,
+   "cast:Form + Animate": 2,
+   "mod:Reactive": 4,
+   "opt:dir=away": 3,
+   "cast:Animate": 1,
+   "mod:Expanded Animation": 1,
+   "cast:Form + Make": 2,
+   "cast:Shield": 2,
+   "cast:nothingAffordable": 2,
+   "recoverEnergy": 4,
+   "opt:dir=down": 4
+  },
+  "hp": {
+   "Sim Bulwark#Crrs": "658/702",
+   "Sim Summoner#ejgI": "567/567",
+   "Sim Animator#7qkk": "567/567",
+   "Sim Maker#bBVI": "218/432",
+   "Sim Warden#uaJM": "567/567",
+   "Sim Goblin Summoner#EfaT": "171/513",
+   "Sim Goblin Summoner#hTjD": "56/513",
+   "Sim Goblin Summoner#kxru": "-117/513",
+   "Sim Goblin Animator#Kcpv": "59/513",
+   "Sim Goblin Animator#UDRF": "-84/513",
+   "Sim Goblin Animator#KMQa": "235/513",
+   "Sim Goblin Maker#dq9I": "238/513",
+   "Sim Goblin Maker#SZMf": "180/513",
+   "Sim Goblin Builder#z6XS": "-117/513",
+   "Sim Goblin Builder#PIXD": "231/513",
+   "Sim Goblin Summoner's Summon#mUzT": "287/360",
+   "Sim Goblin Builder's Summon#DCXN": "332/374",
+   "Stone Animation#orqV": "1020/1500",
+   "Sim Goblin Maker's Summon#y5x1": "342/360",
+   "Sim Goblin Maker's Summon#pSOi": "-250/360",
+   "Sim Warden's Summon#3sIZ": "352/360",
+   "Clay Animation#t58U": "1350/1350",
+   "Clay Animation#uxEV": "1350/1350",
+   "Clay Animation#e6os": "443/450",
+   "Sim Goblin Summoner's Summon#Audj": "71/144",
+   "Sim Goblin Summoner's Summon#Ngdf": "111/144",
+   "Sim Goblin Builder's Summon#bH3e": "120/144",
+   "Sim Bulwark's Summon#DuhI": "270/270",
+   "Clay Animation#P1OX": "2250/2250"
+  },
+  "down": [
+   "Sim Goblin Summoner",
+   "Sim Goblin Summoner",
+   "Sim Goblin Summoner",
+   "Sim Goblin Animator",
+   "Sim Goblin Animator",
+   "Sim Goblin Animator",
+   "Sim Goblin Maker",
+   "Sim Goblin Maker",
+   "Sim Goblin Builder",
+   "Sim Goblin Builder",
+   "Sim Goblin Summoner's Summon",
+   "Sim Goblin Builder's Summon",
+   "Stone Animation",
+   "Sim Goblin Maker's Summon",
+   "Sim Goblin Maker's Summon",
+   "Sim Warden's Summon",
+   "Clay Animation",
+   "Sim Goblin Summoner's Summon",
+   "Sim Goblin Summoner's Summon",
+   "Sim Goblin Builder's Summon"
+  ],
+  "weapons": {
+   "Spell: Stab": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 58,
+    "ap": 9,
+    "kills": 2,
+    "users": [
+     "Animator"
+    ]
+   },
+   "Creation: Make + Animate": {
+    "attacks": 23,
+    "followups": 8,
+    "hits": 17,
+    "crits": 5,
+    "misses": 14,
+    "damage": 2200,
+    "ap": 42,
+    "kills": 8,
+    "users": [
+     "Actor.Q37oN9kYneLUuPw0",
+     "Actor.up7ypQZuv283WpCO",
+     "Actor.mk3HY0W6XvhzEa0O",
+     "Actor.zZWn5DLwCVfzpnU1",
+     "Clay Animation"
+    ],
+    "force": 174
+   },
+   "Spell: Force": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Creation: Form": {
+    "attacks": 12,
+    "followups": 7,
+    "hits": 14,
+    "crits": 6,
+    "misses": 5,
+    "damage": 490,
+    "ap": 24,
+    "kills": 4,
+    "users": [
+     "Actor.W9X8LivxXhsGnIvo",
+     "Actor.fo1vBiLvtY0JiE3O",
+     "Warden's Summon",
+     "Bulwark's Summon"
+    ],
+    "force": 12
+   },
+   "Spell: Cut [M]": {
+    "attacks": 22,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 19,
+    "damage": 143,
+    "ap": 44,
+    "kills": 0,
+    "users": [
+     "Goblin Summoner",
+     "Goblin Builder",
+     "Goblin Animator",
+     "Goblin Maker"
+    ]
+   },
+   "Creation: Form [M]": {
+    "attacks": 14,
+    "followups": 7,
+    "hits": 8,
+    "crits": 3,
+    "misses": 15,
+    "damage": 365,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Goblin Summoner's Summon",
+     "Goblin Builder's Summon",
+     "Actor.ZqrAba2NqEuKm4xM",
+     "Actor.URduUTFbDhk36HAV",
+     "Actor.SlGvF0j730dD8lZK"
+    ],
+    "force": 0
+   },
+   "Spell: Cut": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 10,
+    "crits": 2,
+    "misses": 6,
+    "damage": 367,
+    "ap": 20,
+    "kills": 4,
+    "users": [
+     "Maker",
+     "Summoner"
+    ]
+   },
+   "Creation: Form + Animate": {
+    "attacks": 9,
+    "followups": 4,
+    "hits": 8,
+    "crits": 4,
+    "misses": 5,
+    "damage": 416,
+    "ap": 12,
+    "kills": 1,
+    "users": [
+     "Actor.aixQqtNsQ5TtfBXP",
+     "Clay Animation"
+    ]
+   },
+   "Creation: Form + Make [M]": {
+    "attacks": 4,
+    "followups": 4,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 66,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Goblin Maker's Summon"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 26,
+    "absorbed": 78
+   },
+   "Medium Armor (Hide)": {
+    "hits": 3,
+    "absorbed": 72
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Animator",
+    "dealt": 58,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "dealt": 0,
+    "taken": 216,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.Q37oN9kYneLUuPw0",
+    "dealt": 0,
+    "taken": 97,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "dealt": 42,
+    "taken": 202,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.W9X8LivxXhsGnIvo",
+    "dealt": 109,
+    "taken": 85,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "dealt": 182,
+    "taken": 73,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Maker",
+    "dealt": 292,
+    "taken": 143,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Actor.up7ypQZuv283WpCO",
+    "dealt": 0,
+    "taken": 58,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "dealt": 0,
+    "taken": 199,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.mk3HY0W6XvhzEa0O",
+    "dealt": 421,
+    "taken": 57,
+    "hits": 6,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "dealt": 0,
+    "taken": 222,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "dealt": 0,
+    "taken": 125,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Summoner",
+    "dealt": 75,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.aixQqtNsQ5TtfBXP",
+    "dealt": 214,
+    "taken": 29,
+    "hits": 5,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Goblin Maker",
+    "dealt": 0,
+    "taken": 248,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Maker",
+    "dealt": 0,
+    "taken": 186,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Builder",
+    "dealt": 0,
+    "taken": 270,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "dealt": 29,
+    "taken": 85,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.ZqrAba2NqEuKm4xM",
+    "dealt": 115,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "dealt": 72,
+    "taken": 435,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.URduUTFbDhk36HAV",
+    "dealt": 0,
+    "taken": 38,
+    "hits": 0,
+    "attacks": 1
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 44,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Builder",
+    "dealt": 29,
+    "taken": 300,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.SlGvF0j730dD8lZK",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "dealt": 25,
+    "taken": 18,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.fo1vBiLvtY0JiE3O",
+    "dealt": 56,
+    "taken": 22,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "dealt": 41,
+    "taken": 304,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.zZWn5DLwCVfzpnU1",
+    "dealt": 664,
+    "taken": 24,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Stone Animation",
+    "dealt": 0,
+    "taken": 360,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "dealt": 220,
+    "taken": 8,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 85,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 5
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 186,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 202,
+    "taken": 7,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "dealt": 7,
+    "taken": 40,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "dealt": 24,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "dealt": 8,
+    "taken": 24,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "dealt": 105,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 844,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 3
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Animator",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Make + Animate": 3,
+     "made:animation": 3,
+     "cast:Stab": 3,
+     "mod:Empower": 1
+    },
+    "creations": 3,
+    "creationHp": 6750
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16,
+     "cast:Form": 1,
+     "mod:Arm": 1,
+     "made:summon": 1,
+     "cast:Cut": 2,
+     "mod:Bleed": 2
+    },
+    "turnMoved": 0,
+    "casts": 3,
+    "creations": 1,
+    "creationHp": 360
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Burden": 2,
+     "mod:Burden": 2,
+     "cast:Form": 2,
+     "mod:Layered": 1,
+     "made:summon": 2,
+     "cast:Force": 2
+    },
+    "creations": 2,
+    "creationHp": 741,
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Form": 2,
+     "mod:Arm": 1,
+     "made:summon": 2,
+     "cast:Cut": 4,
+     "mod:Bleed": 2
+    },
+    "turnMoved": 0,
+    "casts": 6,
+    "creations": 2,
+    "creationHp": 504
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Maker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Make + Animate": 2,
+     "mod:Make Mk2": 2,
+     "mod:Make Mk3": 2,
+     "made:animation": 4,
+     "cast:Cut": 6,
+     "defend:dodge": 18
+    },
+    "creations": 4,
+    "creationHp": 5400
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 7
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 3
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Animator",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "cast:Animate": 1,
+     "mod:Expanded Animation": 1,
+     "made:animation": 1,
+     "cast:Cut": 2,
+     "mod:Bleed": 2
+    },
+    "turnMoved": 0,
+    "casts": 3,
+    "creations": 1,
+    "creationHp": 1500
+   },
+   {
+    "name": "Sim Summoner",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Form + Animate": 2,
+     "made:animation": 2,
+     "cast:Cut": 4,
+     "defend:dodge": 3
+    },
+    "creations": 2,
+    "creationHp": 900
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 3
+    },
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Maker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5,
+     "cast:Form + Make": 1,
+     "made:summon": 1,
+     "cast:Cut": 2,
+     "mod:Bleed": 2
+    },
+    "turnMoved": 0,
+    "casts": 3,
+    "creations": 1,
+    "creationHp": 360
+   },
+   {
+    "name": "Sim Goblin Maker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Form + Make": 1,
+     "made:summon": 1,
+     "cast:Cut": 2,
+     "mod:Bleed": 2
+    },
+    "turnMoved": 0,
+    "casts": 3,
+    "creations": 1,
+    "creationHp": 360
+   },
+   {
+    "name": "Sim Goblin Builder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Form": 1,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "made:summon": 1,
+     "cast:Cut": 2,
+     "mod:Bleed": 2,
+     "defend:dodge": 8
+    },
+    "creations": 1,
+    "creationHp": 374
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "away": 1
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Form": 2,
+     "mod:Arm": 1,
+     "made:summon": 2,
+     "cast:Cut": 4,
+     "mod:Bleed": 2,
+     "defend:dodge": 5
+    },
+    "creations": 2,
+    "creationHp": 504
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 105,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 105,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 7,
+     "cast:Shield": 2,
+     "mod:Layered": 3,
+     "mod:Reactive": 2,
+     "cast:Form": 2,
+     "made:summon": 2,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 4
+    },
+    "turnMoved": 0,
+    "casts": 4,
+    "creations": 2,
+    "creationHp": 566
+   },
+   {
+    "name": "Stone Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 30,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 30,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Builder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Form": 2,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "made:summon": 2,
+     "cast:Cut": 4,
+     "mod:Bleed": 2,
+     "defend:dodge": 4
+    },
+    "creations": 2,
+    "creationHp": 518
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 106.06601717798215,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 106.06601717798215,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1,
+     "away": 1
+    },
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Goblin Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 5,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 5,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 60,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 60,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "down": 4
+    },
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 5,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 5,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 14.142135623730951,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 14.142135623730951,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 31.622776601683796,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 31.622776601683796,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 17.5,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 17.5,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 36.003982595240565,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 36.003982595240565,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1,
+     "away": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-summoning": 5,
+    "magic-build-arcana": 2,
+    "magic-protection-arcana": 1
+   },
+   "Sim Summoner": {
+    "magic-theory": 4,
+    "magic-summoning": 5,
+    "magic-animation": 2,
+    "magic-slashing": 1
+   },
+   "Sim Animator": {
+    "magic-theory": 4,
+    "magic-animation": 5,
+    "magic-creation": 2,
+    "magic-piercing": 1
+   },
+   "Sim Maker": {
+    "magic-theory": 4,
+    "magic-creation": 5,
+    "magic-animation": 2,
+    "magic-slashing": 1
+   },
+   "Sim Warden": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-summoning": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Summoner": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Animator": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Maker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Summoner": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Animator": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Maker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Builder": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 48/120"
+   ],
+   "Sim Summoner": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Animator": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Maker": [
+    "Light Armor (Soft Leather): 24/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Goblin Summoner": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Animator": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Maker": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Builder": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Summoner's Summon": [],
+   "Sim Goblin Builder's Summon": [],
+   "Stone Animation": [],
+   "Sim Goblin Maker's Summon": [
+    "Iron Bladed: 960/960"
+   ],
+   "Sim Warden's Summon": [],
+   "Clay Animation": [],
+   "Sim Bulwark's Summon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 6296,
+    "monsterHp": 7466,
+    "partyDown": 5,
+    "monstersDown": 5
+   },
+   {
+    "round": 3,
+    "partyHp": 6342,
+    "monsterHp": 4519,
+    "partyDown": 2,
+    "monstersDown": 14
+   },
+   {
+    "round": 3,
+    "partyHp": 8592,
+    "monsterHp": 3453,
+    "partyDown": 2,
+    "monstersDown": 18,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 2116
+  },
+  "lostBy": {
+   "party": 273,
+   "monsters": 5063
+  },
+  "directTaken": {
+   "party": 972,
+   "monsters": 2947
+  },
+  "creations": {
+   "Actor.Q37oN9kYneLUuPw0": "Creation: Make + Animate",
+   "Actor.W9X8LivxXhsGnIvo": "Creation: Form",
+   "Actor.y30JxJ51r1k3Y2Q2": "Creation: Form",
+   "Actor.up7ypQZuv283WpCO": "Creation: Make + Animate",
+   "Actor.mk3HY0W6XvhzEa0O": "Creation: Make + Animate",
+   "Actor.aixQqtNsQ5TtfBXP": "Creation: Form + Animate",
+   "Actor.KxC0AxBTejwgfB57": "Creation: Form",
+   "Actor.ZqrAba2NqEuKm4xM": "Creation: Form",
+   "Actor.URduUTFbDhk36HAV": "Creation: Form",
+   "Actor.W3NDA8OCpXLkTLL1": "Creation: Animate",
+   "Actor.SlGvF0j730dD8lZK": "Creation: Form",
+   "Actor.El6vgmfaIEXEtaC1": "Creation: Form + Make",
+   "Actor.fo1vBiLvtY0JiE3O": "Creation: Form",
+   "Actor.rs1YaqrotOhHmpdw": "Creation: Form + Make",
+   "Actor.zZWn5DLwCVfzpnU1": "Creation: Make + Animate",
+   "Actor.c1UGhxGno8zYvtpT": "Creation: Form",
+   "Actor.uxXUJqsxj4hT40dx": "Creation: Make + Animate",
+   "Actor.8c880RCHf9gOguaA": "Creation: Make + Animate",
+   "Actor.Hbbu2YAIcPCKkmUb": "Creation: Form + Animate",
+   "Actor.2LZ2MBHTEqnRmAnY": "Creation: Form",
+   "Actor.OUXkI4IliVBrDArz": "Creation: Form",
+   "Actor.QbQq2b2LWAu8W1ox": "Creation: Form",
+   "Actor.SLKEZANJIHMhEdol": "Creation: Form",
+   "Actor.RLzXByabWJ7XmRjc": "Creation: Make + Animate"
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Unarmed": 35,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 26,
+    "prompt: Force — Sim Goblin Summoner": 1,
+    "prompt: Knockback — Sim Goblin Summoner": 5,
+    "prompt: Natural Bladed (Heavy)": 5,
+    "prompt: Knockback — Sim Goblin Animator": 3,
+    "prompt: Knockback — Sim Goblin Maker": 5,
+    "prompt: Knockback — Clay Animation": 1,
+    "prompt: Iron Bladed": 4,
+    "prompt: Iron Bladed — Solitary follow-up": 4,
+    "prompt: Knockback — Sim Goblin Summoner's Summon": 2,
+    "prompt: Knockback — Sim Goblin Maker's Summon": 2,
+    "prompt: Knockback — Stone Animation": 1,
+    "prompt: Force — Sim Goblin Summoner's Summon": 1,
+    "prompt: Knockback — Sim Goblin Builder": 5,
+    "prompt: Knockback — Sim Goblin Builder's Summon": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 172,
+  "winner": "monsters",
+  "pass": "magic-t4-rerun",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 8,
+  "followups": 23,
+  "knockbacks": {
+   "down": 8,
+   "into": 9,
+   "away": 1
+  },
+  "used": {
+   "cast:Form": 10,
+   "mod:Arm": 6,
+   "made:summon": 15,
+   "cast:nothingAffordable": 7,
+   "recoverEnergy": 18,
+   "defend:dodge": 95,
+   "mod:Layered": 2,
+   "mod:Reactive": 1,
+   "cast:Cut": 17,
+   "opt:dir=down": 8,
+   "cast:Form + Make": 5,
+   "mod:Make Mk2": 2,
+   "cast:Form + Animate": 3,
+   "made:animation": 8,
+   "mod:Bleed": 3,
+   "cast:Animate": 5,
+   "mod:Expanded Animation": 5,
+   "cast:Stab": 2,
+   "mod:Empower": 1,
+   "opt:dir=into": 9,
+   "cast:Burden": 2,
+   "mod:Burden": 2,
+   "cast:Force": 2,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Bulwark#75xr": "321/702",
+   "Sim Summoner#K0xb": "112/567",
+   "Sim Animator#DiQt": "229/567",
+   "Sim Maker#SfoY": "150/432",
+   "Sim Warden#fknz": "202/567",
+   "Sim Raider Summoner#fouH": "765/765",
+   "Sim Raider Animator#6Usb": "765/765",
+   "Sim Raider Maker#kNdC": "765/765",
+   "Sim Raider Builder#kKVJ": "765/765",
+   "Sim Raider Binder#YQEO": "442/540",
+   "Sim Summoner's Summon#9bNc": "409/450",
+   "Stone Animation#B46C": "1818/1875",
+   "Clay Animation#RtcF": "298/360",
+   "Stone Animation#mDOV": "2217/2250",
+   "Sim Warden's Summon#FggY": "258/360",
+   "Sim Raider Summoner's Summon#wsoC": "540/540",
+   "Sim Raider Builder's Summon#zvKF": "288/288",
+   "Sim Raider Maker's Summon#Vg1y": "432/432"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Summoner",
+   "Sim Animator",
+   "Sim Maker",
+   "Sim Warden",
+   "Sim Summoner's Summon",
+   "Stone Animation",
+   "Clay Animation",
+   "Stone Animation",
+   "Sim Warden's Summon"
+  ],
+  "weapons": {
+   "Creation: Form [M]": {
+    "attacks": 17,
+    "followups": 7,
+    "hits": 12,
+    "crits": 5,
+    "misses": 14,
+    "damage": 809,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "Actor.smXAkk9RItcPybmm",
+     "Actor.E7LZqNpfrJi1ipf9",
+     "Actor.ln0hWXp9OMDHDgPm",
+     "Actor.L6gguwa9pe8lZ9Ex",
+     "Actor.TsLrJXSFQeOawQTb",
+     "Actor.W3bgJlE4kZwH4XeD",
+     "Raider Summoner's Summon",
+     "Raider Builder's Summon"
+    ],
+    "force": 12
+   },
+   "Spell: Cut [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 11,
+    "damage": 242,
+    "ap": 37,
+    "kills": 0,
+    "users": [
+     "Raider Builder",
+     "Raider Maker",
+     "Raider Binder"
+    ]
+   },
+   "Creation: Form + Make [M]": {
+    "attacks": 5,
+    "followups": 3,
+    "hits": 7,
+    "crits": 2,
+    "misses": 1,
+    "damage": 375,
+    "ap": 15,
+    "kills": 0,
+    "users": [
+     "Actor.FG9v3LR7Fr8h1JTS",
+     "Actor.y9u0g9oKh4ybjXFT",
+     "Actor.7PHROv9Yy5QWx6aS",
+     "Raider Maker's Summon"
+    ]
+   },
+   "Creation: Form + Animate [M]": {
+    "attacks": 7,
+    "followups": 5,
+    "hits": 5,
+    "crits": 0,
+    "misses": 7,
+    "damage": 71,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Actor.E2ZdElN8PvKxnh4K",
+     "Actor.7ugyEFnxLOGdCuWa",
+     "Clay Animation"
+    ],
+    "force": 3
+   },
+   "Creation: Animate [M]": {
+    "attacks": 5,
+    "followups": 2,
+    "hits": 4,
+    "crits": 1,
+    "misses": 3,
+    "damage": 366,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Actor.90ewqEpnVTZ1slZ0",
+     "Actor.18jMahrM9O2t8nPJ",
+     "Stone Animation"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 60,
+    "ap": 4,
+    "kills": 2,
+    "users": [
+     "Summoner"
+    ]
+   },
+   "Creation: Form + Make": {
+    "attacks": 2,
+    "followups": 1,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 64,
+    "ap": 6,
+    "kills": 1,
+    "users": [
+     "Summoner's Summon"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 74,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Animator"
+    ]
+   },
+   "Creation: Animate": {
+    "attacks": 2,
+    "followups": 1,
+    "hits": 1,
+    "crits": 1,
+    "misses": 2,
+    "damage": 217,
+    "ap": 6,
+    "kills": 2,
+    "users": [
+     "Actor.4gZH6vGhLYIzqqyC",
+     "Stone Animation"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Creation: Form": {
+    "attacks": 9,
+    "followups": 4,
+    "hits": 9,
+    "crits": 1,
+    "misses": 4,
+    "damage": 247,
+    "ap": 12,
+    "kills": 3,
+    "users": [
+     "Actor.XyZCJcCh0q0w2Pt5",
+     "Warden's Summon"
+    ],
+    "force": 0
+   },
+   "Creation: Form + Animate": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 84
+   },
+   "Medium Armor (Hide)": {
+    "hits": 4,
+    "absorbed": 45
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 5,
+    "absorbed": 18
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 90
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 5,
+    "absorbed": 18
+   }
+  },
+  "creatures": [
+   {
+    "name": "Actor.smXAkk9RItcPybmm",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 378,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Builder",
+    "dealt": 150,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Maker",
+    "dealt": 0,
+    "taken": 190,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.E7LZqNpfrJi1ipf9",
+    "dealt": 200,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Maker",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.FG9v3LR7Fr8h1JTS",
+    "dealt": 149,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Raider Binder",
+    "dealt": 92,
+    "taken": 98,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.E2ZdElN8PvKxnh4K",
+    "dealt": 32,
+    "taken": 36,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Summoner",
+    "dealt": 60,
+    "taken": 353,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.90ewqEpnVTZ1slZ0",
+    "dealt": 0,
+    "taken": 64,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "dealt": 64,
+    "taken": 41,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Animator",
+    "dealt": 74,
+    "taken": 198,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.4gZH6vGhLYIzqqyC",
+    "dealt": 0,
+    "taken": 49,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.ln0hWXp9OMDHDgPm",
+    "dealt": 0,
+    "taken": 26,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.L6gguwa9pe8lZ9Ex",
+    "dealt": 51,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "Actor.y9u0g9oKh4ybjXFT",
+    "dealt": 124,
+    "taken": 44,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.7ugyEFnxLOGdCuWa",
+    "dealt": 12,
+    "taken": 88,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "Actor.18jMahrM9O2t8nPJ",
+    "dealt": 215,
+    "taken": 217,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 325,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.XyZCJcCh0q0w2Pt5",
+    "dealt": 158,
+    "taken": 155,
+    "hits": 4,
+    "attacks": 7
+   },
+   {
+    "name": "Stone Animation",
+    "dealt": 217,
+    "taken": 57,
+    "hits": 1,
+    "attacks": 1
+   },
+   {
+    "name": "Actor.TsLrJXSFQeOawQTb",
+    "dealt": 155,
+    "taken": 34,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.W3bgJlE4kZwH4XeD",
+    "dealt": 57,
+    "taken": 26,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Actor.7PHROv9Yy5QWx6aS",
+    "dealt": 12,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 27,
+    "taken": 29,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Stone Animation",
+    "dealt": 151,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "dealt": 89,
+    "taken": 102,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Raider Summoner's Summon",
+    "dealt": 207,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Raider Builder's Summon",
+    "dealt": 139,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Maker's Summon",
+    "dealt": 90,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 1
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Summoner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Form": 4,
+     "mod:Arm": 4,
+     "made:summon": 4,
+     "cast:nothingAffordable": 4,
+     "recoverEnergy": 12
+    },
+    "creations": 4,
+    "creationHp": 2160
+   },
+   {
+    "name": "Sim Raider Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "Sim Raider Builder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Form": 4,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "made:summon": 4,
+     "cast:Cut": 8
+    },
+    "creations": 4,
+    "creationHp": 1933
+   },
+   {
+    "name": "Sim Maker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Raider Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "down": 3
+    }
+   },
+   {
+    "name": "Sim Raider Maker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Form + Make": 4,
+     "mod:Make Mk2": 2,
+     "made:summon": 4,
+     "cast:Cut": 4
+    },
+    "creations": 4,
+    "creationHp": 1944
+   },
+   {
+    "name": "Sim Raider Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 105,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 105
+   },
+   {
+    "name": "Sim Raider Binder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Form + Animate": 3,
+     "mod:Arm": 2,
+     "made:animation": 3,
+     "cast:Cut": 3,
+     "mod:Bleed": 3,
+     "defend:dodge": 3
+    },
+    "creations": 3,
+    "creationHp": 1080
+   },
+   {
+    "name": "Clay Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 5,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 5,
+    "lastTech": "kick",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Summoner",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 17,
+     "cast:Form + Make": 1,
+     "made:summon": 1,
+     "cast:Cut": 2
+    },
+    "turnMoved": 0,
+    "casts": 3,
+    "creations": 1,
+    "creationHp": 450
+   },
+   {
+    "name": "Sim Raider Animator",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Animate": 3,
+     "mod:Expanded Animation": 3,
+     "made:animation": 3,
+     "cast:nothingAffordable": 3,
+     "recoverEnergy": 6
+    },
+    "creations": 3,
+    "creationHp": 6750
+   },
+   {
+    "name": "Stone Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Animator",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Animate": 2,
+     "mod:Expanded Animation": 2,
+     "made:animation": 2,
+     "cast:Stab": 2,
+     "mod:Empower": 1,
+     "defend:dodge": 15
+    },
+    "creations": 2,
+    "creationHp": 3750
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Raider Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Raider Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 5,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 5,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Raider Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 18.027756377319946,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 18.027756377319946,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Stone Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Burden": 2,
+     "mod:Burden": 2,
+     "cast:Form": 2,
+     "mod:Layered": 1,
+     "made:summon": 2,
+     "cast:Force": 2,
+     "defend:dodge": 10
+    },
+    "creations": 2,
+    "creationHp": 741
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 3
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Raider Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Raider Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Raider Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 107.9351657246145,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 107.9351657246145,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "down": 2
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Stone Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 5,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 5,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2,
+     "away": 1
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Raider Summoner's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 25.495097567963928,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 25.495097567963928
+   },
+   {
+    "name": "Sim Raider Builder's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "down": 3
+    }
+   },
+   {
+    "name": "Sim Raider Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 120.93386622447824,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 120.93386622447824
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 5,
+    "magic-summoning": 2,
+    "magic-protection-arcana": 1
+   },
+   "Sim Summoner": {
+    "magic-theory": 4,
+    "magic-summoning": 5,
+    "magic-creation": 2,
+    "magic-slashing": 1
+   },
+   "Sim Animator": {
+    "magic-theory": 4,
+    "magic-animation": 5,
+    "magic-summoning": 2,
+    "magic-piercing": 1
+   },
+   "Sim Maker": {
+    "magic-theory": 4,
+    "magic-creation": 5,
+    "magic-summoning": 2,
+    "magic-slashing": 1
+   },
+   "Sim Warden": {
+    "magic-theory": 4,
+    "magic-summoning": 4,
+    "magic-build-arcana": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Summoner": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Animator": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Maker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Summoner": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Animator": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Maker": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Builder": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Binder": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 0/120 BROKEN"
+   ],
+   "Sim Summoner": [
+    "Light Armor (Hard Leather): 54/90"
+   ],
+   "Sim Animator": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Maker": [
+    "Light Armor (Soft Leather): 36/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 94/180"
+   ],
+   "Sim Raider Summoner": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Animator": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Maker": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Builder": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Binder": [
+    "Light Armor (Soft Leather): 40/100"
+   ],
+   "Sim Summoner's Summon": [
+    "Iron Bladed: 1200/1200"
+   ],
+   "Stone Animation": [],
+   "Clay Animation": [],
+   "Sim Warden's Summon": [],
+   "Sim Raider Summoner's Summon": [
+    "Natural Bladed (Heavy): 960/960"
+   ],
+   "Sim Raider Builder's Summon": [],
+   "Sim Raider Maker's Summon": [
+    "Iron Bladed: 1440/1440"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 4497,
+    "monsterHp": 7709,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 3,
+    "partyHp": 4288,
+    "monsterHp": 6837,
+    "partyDown": 4,
+    "monstersDown": 4
+   },
+   {
+    "round": 4,
+    "partyHp": 3935,
+    "monsterHp": 6957,
+    "partyDown": 6,
+    "monstersDown": 4
+   },
+   {
+    "round": 4,
+    "partyHp": 3499,
+    "monsterHp": 7277,
+    "partyDown": 8,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "painDivisor": 2,
+  "skips": [
+   "1:10 Sim Maker: down"
+  ],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 95
+  },
+  "lostBy": {
+   "party": 2021,
+   "monsters": 193
+  },
+  "directTaken": {
+   "party": 2412,
+   "monsters": 98
+  },
+  "creations": {
+   "Actor.smXAkk9RItcPybmm": "Creation: Form",
+   "Actor.E7LZqNpfrJi1ipf9": "Creation: Form",
+   "Actor.FG9v3LR7Fr8h1JTS": "Creation: Form + Make",
+   "Actor.E2ZdElN8PvKxnh4K": "Creation: Form + Animate",
+   "Actor.90ewqEpnVTZ1slZ0": "Creation: Animate",
+   "Actor.RZ8QBxBXbcFmzbIT": "Creation: Form + Make",
+   "Actor.4gZH6vGhLYIzqqyC": "Creation: Animate",
+   "Actor.ln0hWXp9OMDHDgPm": "Creation: Form",
+   "Actor.L6gguwa9pe8lZ9Ex": "Creation: Form",
+   "Actor.y9u0g9oKh4ybjXFT": "Creation: Form + Make",
+   "Actor.7ugyEFnxLOGdCuWa": "Creation: Form + Animate",
+   "Actor.18jMahrM9O2t8nPJ": "Creation: Animate",
+   "Actor.XyZCJcCh0q0w2Pt5": "Creation: Form",
+   "Actor.rdRpY8vjxHI8lOZM": "Creation: Animate",
+   "Actor.TsLrJXSFQeOawQTb": "Creation: Form",
+   "Actor.W3bgJlE4kZwH4XeD": "Creation: Form",
+   "Actor.7PHROv9Yy5QWx6aS": "Creation: Form + Make",
+   "Actor.8sG7D7haHFmOL18k": "Creation: Form + Animate",
+   "Actor.lrLao6IvC4mEAXzi": "Creation: Animate",
+   "Actor.c87UICnOpa8qJcRg": "Creation: Form",
+   "Actor.rg4po44YPw5koYJI": "Creation: Form",
+   "Actor.7K7fArq7MZpmCdyF": "Creation: Form",
+   "Actor.j0N1KlzpIyemvEkO": "Creation: Form + Make"
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Natural Bladed (Heavy)": 8,
+    "prompt: Unarmed": 23,
+    "prompt: Knockback — Sim Bulwark": 3,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 19,
+    "prompt: Cold Iron Bladed": 3,
+    "prompt: Cold Iron Bladed — Solitary follow-up": 2,
+    "prompt: Iron Bladed": 4,
+    "prompt: Iron Bladed — Solitary follow-up": 2,
+    "prompt: Knockback — Sim Summoner": 3,
+    "prompt: Knockback — Clay Animation": 2,
+    "prompt: Knockback — Sim Raider Summoner's Summon": 2,
+    "prompt: Knockback — Sim Raider Maker's Summon": 1,
+    "prompt: Knockback — Sim Animator": 3,
+    "prompt: Knockback — Sim Raider Builder's Summon": 1,
+    "prompt: Knockback — Sim Warden": 3
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "Token \"uxEVdbnUIQglZGZx\" does not exist!",
+     "who": "Clay Animation"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r2",
+  "group": "raiders",
+  "rotation": 2,
+  "seconds": 121,
+  "winner": "party",
+  "pass": "magic-t4-rerun",
+  "rounds": 2,
+  "partyLeft": 10,
+  "monstersLeft": 0,
+  "followups": 15,
+  "knockbacks": {
+   "away": 1,
+   "into": 7
+  },
+  "used": {
+   "cast:Form + Animate": 3,
+   "mod:Arm": 1,
+   "made:animation": 10,
+   "cast:Cut": 13,
+   "mod:Bleed": 1,
+   "defend:dodge": 71,
+   "cast:Burden": 2,
+   "mod:Burden": 2,
+   "cast:Form": 4,
+   "mod:Layered": 4,
+   "made:summon": 6,
+   "cast:Force": 2,
+   "opt:dir=away": 1,
+   "cast:Form + Make": 2,
+   "mod:Make Mk2": 4,
+   "cast:Make + Animate": 4,
+   "cast:Stab": 2,
+   "mod:Empower": 1,
+   "opt:dir=into": 7,
+   "cast:Shield": 2,
+   "mod:Reactive": 2,
+   "cast:nothingAffordable": 3,
+   "recoverEnergy": 6,
+   "cast:Animate": 1,
+   "mod:Expanded Animation": 1,
+   "mod:Make Mk3": 2
+  },
+  "hp": {
+   "Sim Bulwark#zUOb": "630/702",
+   "Sim Summoner#TVpH": "567/567",
+   "Sim Animator#4mBr": "567/567",
+   "Sim Maker#cO5n": "354/432",
+   "Sim Warden#kjdL": "567/567",
+   "Sim Raider Summoner#OrHr": "375/765",
+   "Sim Raider Animator#PEou": "336/765",
+   "Sim Raider Maker#f3WJ": "332/765",
+   "Sim Raider Builder#HgXD": "340/765",
+   "Sim Raider Binder#ajbK": "264/540",
+   "Clay Animation#fkLb": "328/360",
+   "Stone Animation#t33q": "2172/2250",
+   "Sim Warden's Summon#yjrD": "238/360",
+   "Sim Raider Maker's Summon#Rn0n": "486/540",
+   "Clay Animation#aSb1": "2250/2250",
+   "Sim Bulwark's Summon#PEmq": "270/270",
+   "Clay Animation#CUro": "450/450",
+   "Clay Animation#vAD7": "1350/1350",
+   "Clay Animation#vccq": "1350/1350"
+  },
+  "down": [
+   "Sim Raider Summoner",
+   "Sim Raider Animator",
+   "Sim Raider Maker",
+   "Sim Raider Builder",
+   "Sim Raider Binder",
+   "Clay Animation",
+   "Stone Animation",
+   "Sim Warden's Summon",
+   "Sim Raider Maker's Summon"
+  ],
+  "weapons": {
+   "Spell: Cut [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 39,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Raider Binder",
+     "Raider Maker"
+    ]
+   },
+   "Creation: Form + Animate [M]": {
+    "attacks": 2,
+    "followups": 2,
+    "hits": 0,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Clay Animation"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Creation: Form": {
+    "attacks": 6,
+    "followups": 4,
+    "hits": 7,
+    "crits": 3,
+    "misses": 3,
+    "damage": 157,
+    "ap": 18,
+    "kills": 3,
+    "users": [
+     "Actor.RAxgUIow31mEcrE4",
+     "Actor.kPbN7QzL64W88o51",
+     "Warden's Summon",
+     "Bulwark's Summon"
+    ],
+    "force": 0
+   },
+   "Creation: Form + Make [M]": {
+    "attacks": 4,
+    "followups": 3,
+    "hits": 6,
+    "crits": 1,
+    "misses": 2,
+    "damage": 373,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Actor.xcnBCSdGKV3dYixM",
+     "Raider Maker's Summon"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 22,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Animator"
+    ]
+   },
+   "Creation: Make + Animate": {
+    "attacks": 13,
+    "followups": 4,
+    "hits": 11,
+    "crits": 0,
+    "misses": 6,
+    "damage": 864,
+    "ap": 18,
+    "kills": 2,
+    "users": [
+     "Actor.BqMyViu7Q145Vgmt",
+     "Actor.WRle8k8FYyK5ta19",
+     "Actor.n71oTQshD9B4mf9t"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 12,
+    "crits": 4,
+    "misses": 4,
+    "damage": 218,
+    "ap": 20,
+    "kills": 1,
+    "users": [
+     "Summoner",
+     "Maker"
+    ]
+   },
+   "Creation: Form + Animate": {
+    "attacks": 2,
+    "followups": 1,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 80,
+    "ap": 6,
+    "kills": 1,
+    "users": [
+     "Actor.IDtABcM0np23Ul9V"
+    ]
+   },
+   "Creation: Animate [M]": {
+    "attacks": 1,
+    "followups": 1,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Stone Animation"
+    ]
+   },
+   "Creation: Form + Make": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 3,
+    "absorbed": 44
+   },
+   "Medium Armor (Hide)": {
+    "hits": 20,
+    "absorbed": 328
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Binder",
+    "dealt": 39,
+    "taken": 63,
+    "hits": 1,
+    "attacks": 1
+   },
+   {
+    "name": "Sim Maker",
+    "dealt": 169,
+    "taken": 39,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 0,
+    "taken": 32,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 72,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Summoner",
+    "dealt": 0,
+    "taken": 178,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.RAxgUIow31mEcrE4",
+    "dealt": 40,
+    "taken": 57,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Raider Maker",
+    "dealt": 0,
+    "taken": 405,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.xcnBCSdGKV3dYixM",
+    "dealt": 129,
+    "taken": 141,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Animator",
+    "dealt": 22,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.BqMyViu7Q145Vgmt",
+    "dealt": 459,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Raider Animator",
+    "dealt": 0,
+    "taken": 236,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Builder",
+    "dealt": 0,
+    "taken": 232,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Actor.kPbN7QzL64W88o51",
+    "dealt": 63,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Summoner",
+    "dealt": 49,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.IDtABcM0np23Ul9V",
+    "dealt": 80,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Stone Animation",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.WRle8k8FYyK5ta19",
+    "dealt": 216,
+    "taken": 67,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Actor.n71oTQshD9B4mf9t",
+    "dealt": 189,
+    "taken": 55,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "dealt": 0,
+    "taken": 122,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Raider Maker's Summon",
+    "dealt": 244,
+    "taken": 54,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "dealt": 54,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 1
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Binder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Form + Animate": 1,
+     "mod:Arm": 1,
+     "made:animation": 1,
+     "cast:Cut": 1,
+     "mod:Bleed": 1,
+     "defend:dodge": 6
+    },
+    "creations": 1,
+    "creationHp": 360
+   },
+   {
+    "name": "Sim Maker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 1,
+     "cast:Make + Animate": 2,
+     "mod:Make Mk2": 2,
+     "mod:Make Mk3": 2,
+     "made:animation": 4,
+     "cast:Cut": 6
+    },
+    "turnMoved": 0,
+    "casts": 8,
+    "creations": 4,
+    "creationHp": 5400
+   },
+   {
+    "name": "Clay Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "cast:Shield": 2,
+     "mod:Layered": 3,
+     "mod:Reactive": 2,
+     "cast:Form": 2,
+     "made:summon": 2,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 4
+    },
+    "turnMoved": 0,
+    "casts": 4,
+    "creations": 2,
+    "creationHp": 566
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Burden": 2,
+     "mod:Burden": 2,
+     "cast:Form": 2,
+     "mod:Layered": 1,
+     "made:summon": 2,
+     "cast:Force": 2
+    },
+    "creations": 2,
+    "creationHp": 741
+   },
+   {
+    "name": "Sim Raider Summoner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 70,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 70,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "away": 1
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Raider Maker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Form + Make": 2,
+     "mod:Make Mk2": 2,
+     "made:summon": 2,
+     "cast:Cut": 2,
+     "defend:dodge": 19
+    },
+    "creations": 2,
+    "creationHp": 1080
+   },
+   {
+    "name": "Sim Raider Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 75,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 75,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Animator",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Make + Animate": 2,
+     "made:animation": 2,
+     "cast:Stab": 2,
+     "mod:Empower": 1
+    },
+    "creations": 2,
+    "creationHp": 4500
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 65,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 65,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 3
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Raider Animator",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 11,
+     "cast:Animate": 1,
+     "mod:Expanded Animation": 1,
+     "made:animation": 1,
+     "cast:nothingAffordable": 1,
+     "recoverEnergy": 2
+    },
+    "turnMoved": 0,
+    "casts": 1,
+    "creations": 1,
+    "creationHp": 2250
+   },
+   {
+    "name": "Sim Raider Builder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Summoner",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Form + Animate": 2,
+     "made:animation": 2,
+     "cast:Cut": 4
+    },
+    "creations": 2,
+    "creationHp": 900
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "Stone Animation",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 20,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 20,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 136.56500283747664,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 136.56500283747664,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Raider Maker's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 20,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 20,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 101.11874208078342,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 101.11874208078342,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 125,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 125,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 120.41594578792294,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 120.41594578792294
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-summoning": 5,
+    "magic-build-arcana": 2,
+    "magic-protection-arcana": 1
+   },
+   "Sim Summoner": {
+    "magic-theory": 4,
+    "magic-summoning": 5,
+    "magic-animation": 2,
+    "magic-slashing": 1
+   },
+   "Sim Animator": {
+    "magic-theory": 4,
+    "magic-animation": 5,
+    "magic-creation": 2,
+    "magic-piercing": 1
+   },
+   "Sim Maker": {
+    "magic-theory": 4,
+    "magic-creation": 5,
+    "magic-animation": 2,
+    "magic-slashing": 1
+   },
+   "Sim Warden": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-summoning": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Summoner": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Animator": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Maker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Summoner": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Animator": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Maker": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Builder": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Binder": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 72/120"
+   ],
+   "Sim Summoner": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Animator": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Maker": [
+    "Light Armor (Soft Leather): 48/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Raider Summoner": [
+    "Medium Armor (Hide): 3/150"
+   ],
+   "Sim Raider Animator": [
+    "Medium Armor (Hide): 0/150 BROKEN"
+   ],
+   "Sim Raider Maker": [
+    "Medium Armor (Hide): 0/150 BROKEN"
+   ],
+   "Sim Raider Builder": [
+    "Medium Armor (Hide): 0/150 BROKEN"
+   ],
+   "Sim Raider Binder": [
+    "Light Armor (Soft Leather): 40/100"
+   ],
+   "Clay Animation": [],
+   "Stone Animation": [],
+   "Sim Warden's Summon": [],
+   "Sim Raider Maker's Summon": [
+    "Cold Iron Bladed: 2880/2880"
+   ],
+   "Sim Bulwark's Summon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 8381,
+    "monsterHp": 4682,
+    "partyDown": 0,
+    "monstersDown": 7
+   },
+   {
+    "round": 2,
+    "partyHp": 8593,
+    "monsterHp": 4633,
+    "partyDown": 1,
+    "monstersDown": 8,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 949
+  },
+  "lostBy": {
+   "party": 272,
+   "monsters": 2117
+  },
+  "directTaken": {
+   "party": 585,
+   "monsters": 1168
+  },
+  "creations": {
+   "Actor.94z53xjkWM223K4b": "Creation: Form + Animate",
+   "Actor.RAxgUIow31mEcrE4": "Creation: Form",
+   "Actor.xcnBCSdGKV3dYixM": "Creation: Form + Make",
+   "Actor.BqMyViu7Q145Vgmt": "Creation: Make + Animate",
+   "Actor.kPbN7QzL64W88o51": "Creation: Form",
+   "Actor.IDtABcM0np23Ul9V": "Creation: Form + Animate",
+   "Actor.t2v7rvFc0c8tTIF3": "Creation: Animate",
+   "Actor.n71oTQshD9B4mf9t": "Creation: Make + Animate",
+   "Actor.WRle8k8FYyK5ta19": "Creation: Make + Animate",
+   "Actor.R4v4UNmwhNnWy3pv": "Creation: Form",
+   "Actor.rSVyRgx9JN4VfMIV": "Creation: Form + Make",
+   "Actor.ZY0VgwVdZ3eam8bt": "Creation: Make + Animate",
+   "Actor.lNljwRigYLO4FaHv": "Creation: Form",
+   "Actor.9p00iZbU9FyQKoQg": "Creation: Form + Animate",
+   "Actor.VGD5VhSuOOSk2xT5": "Creation: Make + Animate",
+   "Actor.LAifSo8yjHvmRtXA": "Creation: Make + Animate"
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Unarmed": 19,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 12,
+    "prompt: Knockback — Clay Animation": 1,
+    "prompt: Cold Iron Bladed": 4,
+    "prompt: Cold Iron Bladed — Solitary follow-up": 3,
+    "prompt: Knockback — Sim Raider Maker's Summon": 1,
+    "prompt: Knockback — Sim Raider Summoner": 1,
+    "prompt: Knockback — Sim Raider Builder": 1,
+    "prompt: Knockback — Sim Raider Animator": 2,
+    "prompt: Knockback — Sim Raider Maker": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Clay Animation needs 3 AP for attacking with Unarmed but has 2.",
+     "who": "Clay Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Bulwark's Summon needs 3 AP for attacking with Unarmed but has 2.",
+     "who": "Sim Bulwark's Summon"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 217,
+  "winner": "party",
+  "pass": "magic-t4-rerun",
+  "rounds": 5,
+  "partyLeft": 8,
+  "monstersLeft": 0,
+  "followups": 44,
+  "knockbacks": {
+   "into": 3,
+   "away": 1
+  },
+  "used": {
+   "cast:Burden": 5,
+   "mod:Burden": 5,
+   "defend:dodge": 145,
+   "cast:Form": 13,
+   "mod:Layered": 9,
+   "made:summon": 22,
+   "cast:Force": 5,
+   "cast:Form + Make": 9,
+   "mod:Make Mk2": 3,
+   "mod:Make Mk3": 2,
+   "cast:Cut": 23,
+   "cast:Animate": 4,
+   "mod:Expanded Animation": 4,
+   "made:animation": 4,
+   "cast:Stab": 4,
+   "mod:Empower": 1,
+   "cast:Shield": 4,
+   "mod:Reactive": 4,
+   "cast:nothingAffordable": 4,
+   "recoverEnergy": 8,
+   "mod:Arm": 1,
+   "cast:Slam": 4,
+   "opt:dir=into": 3,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Bulwark#ztY6": "702/702",
+   "Sim Summoner#oP97": "567/567",
+   "Sim Animator#kKgf": "567/567",
+   "Sim Maker#ZHw5": "432/432",
+   "Sim Warden#NXjZ": "567/567",
+   "Sim Ogre Magus#S5NY": "1180/2376",
+   "Stone Animation#fhFq": "1875/1875",
+   "Sim Bulwark's Summon#cLoO": "71/144",
+   "Sim Summoner's Summon#x05F": "-100/60",
+   "Sim Ogre Magus's Summon#begM": "689/720",
+   "Sim Warden's Summon#lByz": "144/144",
+   "Sim Maker's Summon#ipT7": "270/270"
+  },
+  "down": [
+   "Sim Ogre Magus",
+   "Sim Bulwark's Summon",
+   "Sim Summoner's Summon",
+   "Sim Ogre Magus's Summon"
+  ],
+  "weapons": {
+   "Spell: Force": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ],
+    "force": 0
+   },
+   "Creation: Form": {
+    "attacks": 18,
+    "followups": 18,
+    "hits": 12,
+    "crits": 5,
+    "misses": 24,
+    "damage": 214,
+    "ap": 54,
+    "kills": 2,
+    "users": [
+     "Actor.7ZipBxvvedVgk1gy",
+     "Actor.QnGpXGYB2QPfjtGO",
+     "Actor.8Ksg409wLzh0M1Ur",
+     "Actor.w4UmV6ZP6SXEje7E",
+     "Actor.6QnM4obWaluO6L07",
+     "Actor.7hShqjoNIhL2F8kS",
+     "Actor.KlDZwMXgmpM6eL6b",
+     "Bulwark's Summon",
+     "Warden's Summon"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 9,
+    "crits": 3,
+    "misses": 14,
+    "damage": 141,
+    "ap": 31,
+    "kills": 0,
+    "users": [
+     "Maker",
+     "Summoner"
+    ]
+   },
+   "Creation: Form + Make": {
+    "attacks": 17,
+    "followups": 16,
+    "hits": 17,
+    "crits": 5,
+    "misses": 16,
+    "damage": 164,
+    "ap": 51,
+    "kills": 1,
+    "users": [
+     "Actor.xnTk0toSPpwK3a6a",
+     "Actor.GYt8I8WNvORJlLwM",
+     "Actor.PZTnwV0MJzUKFn5m",
+     "Actor.XbNEHxCfEMGbFxKL",
+     "Actor.1yPO3QJ82WNzMWrj",
+     "Actor.3i25YOgEID6untBQ",
+     "Actor.rdmYwuaUY2psXwp1",
+     "Summoner's Summon",
+     "Maker's Summon"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 32,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Animator"
+    ]
+   },
+   "Creation: Animate": {
+    "attacks": 4,
+    "followups": 4,
+    "hits": 5,
+    "crits": 4,
+    "misses": 3,
+    "damage": 747,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Actor.Rs1YNp97brbaeVoa",
+     "Actor.1zYZAXpk4GdCMkup",
+     "Actor.5dcS4pVVQ09RmhKR",
+     "Stone Animation"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 254,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Creation: Form [M]": {
+    "attacks": 11,
+    "followups": 6,
+    "hits": 8,
+    "crits": 2,
+    "misses": 15,
+    "damage": 532,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Actor.74vZUrqZFLzRw3Dj",
+     "Actor.tq7nHUq0tjzn57gv",
+     "Actor.k4ldUD6W1y5Lc97v",
+     "Ogre Magus's Summon"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 15,
+    "absorbed": 722
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 254,
+    "taken": 1196,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.7ZipBxvvedVgk1gy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Maker",
+    "dealt": 66,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 15
+   },
+   {
+    "name": "Actor.xnTk0toSPpwK3a6a",
+    "dealt": 0,
+    "taken": 34,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Animator",
+    "dealt": 32,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.Rs1YNp97brbaeVoa",
+    "dealt": 0,
+    "taken": 91,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Summoner",
+    "dealt": 75,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Actor.QnGpXGYB2QPfjtGO",
+    "dealt": 0,
+    "taken": 124,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.GYt8I8WNvORJlLwM",
+    "dealt": 0,
+    "taken": 147,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.74vZUrqZFLzRw3Dj",
+    "dealt": 396,
+    "taken": 22,
+    "hits": 4,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.8Ksg409wLzh0M1Ur",
+    "dealt": 22,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.PZTnwV0MJzUKFn5m",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.1zYZAXpk4GdCMkup",
+    "dealt": 125,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.w4UmV6ZP6SXEje7E",
+    "dealt": 46,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.XbNEHxCfEMGbFxKL",
+    "dealt": 67,
+    "taken": 50,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.tq7nHUq0tjzn57gv",
+    "dealt": 0,
+    "taken": 9,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "Actor.6QnM4obWaluO6L07",
+    "dealt": 9,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.1yPO3QJ82WNzMWrj",
+    "dealt": 12,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.5dcS4pVVQ09RmhKR",
+    "dealt": 172,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.3i25YOgEID6untBQ",
+    "dealt": 10,
+    "taken": 44,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.7hShqjoNIhL2F8kS",
+    "dealt": 8,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.k4ldUD6W1y5Lc97v",
+    "dealt": 0,
+    "taken": 40,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.KlDZwMXgmpM6eL6b",
+    "dealt": 91,
+    "taken": 63,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.rdmYwuaUY2psXwp1",
+    "dealt": 22,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Stone Animation",
+    "dealt": 450,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "dealt": 7,
+    "taken": 73,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "dealt": 16,
+    "taken": 160,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Ogre Magus's Summon",
+    "dealt": 136,
+    "taken": 31,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "dealt": 31,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Maker's Summon",
+    "dealt": 37,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 1
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Burden": 5,
+     "mod:Burden": 5,
+     "cast:Form": 5,
+     "mod:Layered": 1,
+     "made:summon": 5,
+     "cast:Force": 5
+    },
+    "creations": 5,
+    "creationHp": 1173,
+    "knockbacks": {
+     "away": 1
+    }
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 104,
+     "cast:Form": 4,
+     "mod:Layered": 3,
+     "mod:Arm": 1,
+     "made:summon": 4,
+     "cast:Slam": 4
+    },
+    "turnMoved": 0,
+    "casts": 8,
+    "creations": 4,
+    "creationHp": 3018
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Maker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 20,
+    "used": {
+     "cast:Form + Make": 5,
+     "mod:Make Mk2": 3,
+     "mod:Make Mk3": 2,
+     "made:summon": 5,
+     "cast:Cut": 15
+    },
+    "creations": 5,
+    "creationHp": 1350
+   },
+   {
+    "name": "Sim Maker's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Animator",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Animate": 4,
+     "mod:Expanded Animation": 4,
+     "made:animation": 4,
+     "cast:Stab": 4,
+     "mod:Empower": 1
+    },
+    "creations": 4,
+    "creationHp": 7500
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Shield": 4,
+     "mod:Layered": 5,
+     "mod:Reactive": 4,
+     "cast:Form": 4,
+     "made:summon": 4,
+     "cast:nothingAffordable": 4,
+     "recoverEnergy": 8
+    },
+    "creations": 4,
+    "creationHp": 854
+   },
+   {
+    "name": "Sim Summoner",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Form + Make": 4,
+     "made:summon": 4,
+     "cast:Cut": 8
+    },
+    "creations": 4,
+    "creationHp": 750
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Ogre Magus's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Maker's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Ogre Magus's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    },
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Maker's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "Sim Ogre Magus's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Maker's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Stone Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Summoner's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Ogre Magus's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "Sim Maker's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 5,
+    "magic-summoning": 2,
+    "magic-protection-arcana": 1
+   },
+   "Sim Summoner": {
+    "magic-theory": 4,
+    "magic-summoning": 5,
+    "magic-creation": 2,
+    "magic-slashing": 1
+   },
+   "Sim Animator": {
+    "magic-theory": 4,
+    "magic-animation": 5,
+    "magic-summoning": 2,
+    "magic-piercing": 1
+   },
+   "Sim Maker": {
+    "magic-theory": 4,
+    "magic-creation": 5,
+    "magic-summoning": 2,
+    "magic-slashing": 1
+   },
+   "Sim Warden": {
+    "magic-theory": 4,
+    "magic-summoning": 4,
+    "magic-build-arcana": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Summoner": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Animator": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Maker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Summoner": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Animator": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Maker": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 0/880 BROKEN"
+   ],
+   "Stone Animation": [],
+   "Sim Bulwark's Summon": [],
+   "Sim Summoner's Summon": [
+    "Iron Bladed: 1200/1200"
+   ],
+   "Sim Ogre Magus's Summon": [],
+   "Sim Warden's Summon": [],
+   "Sim Maker's Summon": [
+    "Iron Bladed: 720/720"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5711,
+    "monsterHp": 3142,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5319,
+    "monsterHp": 2890,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 5140,
+    "monsterHp": 2627,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 5051,
+    "monsterHp": 1967,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 5195,
+    "monsterHp": 1869,
+    "partyDown": 2,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 133,
+   "monsters": 1227
+  },
+  "directTaken": {
+   "party": 857,
+   "monsters": 1227
+  },
+  "creations": {
+   "Actor.7ZipBxvvedVgk1gy": "Creation: Form",
+   "Actor.xnTk0toSPpwK3a6a": "Creation: Form + Make",
+   "Actor.Rs1YNp97brbaeVoa": "Creation: Animate",
+   "Actor.QnGpXGYB2QPfjtGO": "Creation: Form",
+   "Actor.GYt8I8WNvORJlLwM": "Creation: Form + Make",
+   "Actor.74vZUrqZFLzRw3Dj": "Creation: Form",
+   "Actor.8Ksg409wLzh0M1Ur": "Creation: Form",
+   "Actor.PZTnwV0MJzUKFn5m": "Creation: Form + Make",
+   "Actor.1zYZAXpk4GdCMkup": "Creation: Animate",
+   "Actor.w4UmV6ZP6SXEje7E": "Creation: Form",
+   "Actor.XbNEHxCfEMGbFxKL": "Creation: Form + Make",
+   "Actor.tq7nHUq0tjzn57gv": "Creation: Form",
+   "Actor.6QnM4obWaluO6L07": "Creation: Form",
+   "Actor.1yPO3QJ82WNzMWrj": "Creation: Form + Make",
+   "Actor.5dcS4pVVQ09RmhKR": "Creation: Animate",
+   "Actor.7hShqjoNIhL2F8kS": "Creation: Form",
+   "Actor.3i25YOgEID6untBQ": "Creation: Form + Make",
+   "Actor.k4ldUD6W1y5Lc97v": "Creation: Form",
+   "Actor.KlDZwMXgmpM6eL6b": "Creation: Form",
+   "Actor.rdmYwuaUY2psXwp1": "Creation: Form + Make",
+   "Actor.VFYzId26WRmZNiRX": "Creation: Animate",
+   "Actor.yfC2rulB8Ld8rygk": "Creation: Form",
+   "Actor.6OBF3gNmZYUHLTNd": "Creation: Form + Make",
+   "Actor.uC4afkT14zrqhPKT": "Creation: Form",
+   "Actor.9c2ZNnzjcG54KCc1": "Creation: Form",
+   "Actor.WHm4kBm4pFrcWYbC": "Creation: Form + Make"
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Unarmed": 28,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 28,
+    "prompt: Scarletite Bladed": 4,
+    "prompt: Scarletite Bladed — Solitary follow-up": 4,
+    "prompt: Iron Bladed": 11,
+    "prompt: Iron Bladed — Solitary follow-up": 10,
+    "prompt: Natural Bladed (Heavy)": 2,
+    "prompt: Knockback — Sim Maker's Summon": 1,
+    "prompt: Cold Iron Bladed": 2,
+    "prompt: Cold Iron Bladed — Solitary follow-up": 2,
+    "prompt: Knockback — Sim Warden's Summon": 1,
+    "prompt: Knockback — Sim Bulwark's Summon": 1,
+    "prompt: Force — Sim Ogre Magus's Summon": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "Token \"vccqMt4UD8vNrdyW\" does not exist!",
+     "who": "Sim Raider Maker"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r2",
+  "group": "boss",
+  "rotation": 2,
+  "seconds": 125,
+  "winner": "party",
+  "pass": "magic-t4-rerun",
+  "rounds": 3,
+  "partyLeft": 10,
+  "monstersLeft": 0,
+  "followups": 27,
+  "knockbacks": {
+   "down": 3,
+   "into": 2,
+   "away": 1
+  },
+  "used": {
+   "cast:Make + Animate": 5,
+   "made:animation": 9,
+   "cast:Stab": 3,
+   "mod:Empower": 1,
+   "defend:dodge": 87,
+   "opt:dir=down": 3,
+   "mod:Make Mk2": 2,
+   "mod:Make Mk3": 2,
+   "cast:Cut": 10,
+   "cast:Burden": 2,
+   "mod:Burden": 2,
+   "cast:Form": 6,
+   "mod:Layered": 6,
+   "made:summon": 6,
+   "cast:Force": 2,
+   "mod:Arm": 1,
+   "cast:Slam": 2,
+   "cast:Form + Animate": 2,
+   "cast:Shield": 2,
+   "mod:Reactive": 2,
+   "cast:nothingAffordable": 2,
+   "recoverEnergy": 4,
+   "opt:dir=into": 2,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Bulwark#WEIv": "702/702",
+   "Sim Summoner#SKw5": "567/567",
+   "Sim Animator#V98j": "567/567",
+   "Sim Maker#RSf1": "432/432",
+   "Sim Warden#1QKk": "567/567",
+   "Sim Ogre Magus#JjZr": "1048/2376",
+   "Clay Animation#BeL9": "1350/1350",
+   "Clay Animation#BPlC": "1350/1350",
+   "Sim Warden's Summon#KhDL": "161/360",
+   "Sim Ogre Magus's Summon#rBUs": "684/766",
+   "Clay Animation#bIsh": "450/450",
+   "Sim Bulwark's Summon#ocpm": "270/270",
+   "Clay Animation#lSUo": "2250/2250"
+  },
+  "down": [
+   "Sim Ogre Magus",
+   "Sim Warden's Summon",
+   "Sim Ogre Magus's Summon"
+  ],
+  "weapons": {
+   "Spell: Stab": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 26,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Animator"
+    ]
+   },
+   "Creation: Make + Animate": {
+    "attacks": 13,
+    "followups": 13,
+    "hits": 9,
+    "crits": 5,
+    "misses": 17,
+    "damage": 1088,
+    "ap": 39,
+    "kills": 1,
+    "users": [
+     "Actor.fzcpL5A8aiyAgWIg",
+     "Actor.2OaNv9Ugs4yJH5lh",
+     "Actor.MDgVN8aeGz8bX3Wt",
+     "Actor.NUycCwtiix7jZr9u",
+     "Clay Animation"
+    ],
+    "force": 36
+   },
+   "Spell: Cut": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 10,
+    "damage": 130,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Maker",
+     "Summoner"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Creation: Form": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 6,
+    "crits": 0,
+    "misses": 10,
+    "damage": 84,
+    "ap": 24,
+    "kills": 1,
+    "users": [
+     "Actor.GWggoZeQZUNTPqqO",
+     "Actor.2cF5kBTELKIof29F",
+     "Warden's Summon",
+     "Bulwark's Summon"
+    ]
+   },
+   "Spell: Slam [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 104,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Creation: Form [M]": {
+    "attacks": 6,
+    "followups": 2,
+    "hits": 6,
+    "crits": 3,
+    "misses": 4,
+    "damage": 554,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Actor.fftIR8KV9ovoKhD5",
+     "Ogre Magus's Summon"
+    ]
+   },
+   "Creation: Form + Animate": {
+    "attacks": 4,
+    "followups": 4,
+    "hits": 2,
+    "crits": 1,
+    "misses": 6,
+    "damage": 128,
+    "ap": 12,
+    "kills": 1,
+    "users": [
+     "Actor.45LNvINHb2X9dXwZ",
+     "Clay Animation"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 600
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Animator",
+    "dealt": 26,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 104,
+    "taken": 1292,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.fzcpL5A8aiyAgWIg",
+    "dealt": 187,
+    "taken": 120,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Maker",
+    "dealt": 130,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "Actor.2OaNv9Ugs4yJH5lh",
+    "dealt": 60,
+    "taken": 157,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.MDgVN8aeGz8bX3Wt",
+    "dealt": 70,
+    "taken": 140,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.GWggoZeQZUNTPqqO",
+    "dealt": 0,
+    "taken": 104,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.fftIR8KV9ovoKhD5",
+    "dealt": 417,
+    "taken": 46,
+    "hits": 3,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Summoner",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.45LNvINHb2X9dXwZ",
+    "dealt": 46,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Actor.2cF5kBTELKIof29F",
+    "dealt": 0,
+    "taken": 61,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Actor.NUycCwtiix7jZr9u",
+    "dealt": 423,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 186,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "dealt": 78,
+    "taken": 76,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Ogre Magus's Summon",
+    "dealt": 137,
+    "taken": 82,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 82,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "dealt": 6,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Clay Animation",
+    "dealt": 162,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Animator",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Make + Animate": 3,
+     "made:animation": 3,
+     "cast:Stab": 3,
+     "mod:Empower": 1
+    },
+    "creations": 3,
+    "creationHp": 6750
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 67,
+     "cast:Form": 2,
+     "mod:Layered": 2,
+     "mod:Arm": 1,
+     "made:summon": 2,
+     "cast:Slam": 2
+    },
+    "turnMoved": 0,
+    "casts": 4,
+    "creations": 2,
+    "creationHp": 1532
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "down": 1
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Maker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Make + Animate": 2,
+     "mod:Make Mk2": 2,
+     "mod:Make Mk3": 2,
+     "made:animation": 4,
+     "cast:Cut": 6
+    },
+    "creations": 4,
+    "creationHp": 5400
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Burden": 2,
+     "mod:Burden": 2,
+     "cast:Form": 2,
+     "mod:Layered": 1,
+     "made:summon": 2,
+     "cast:Force": 2
+    },
+    "creations": 2,
+    "creationHp": 741
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Ogre Magus's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Summoner",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Form + Animate": 2,
+     "made:animation": 2,
+     "cast:Cut": 4
+    },
+    "creations": 2,
+    "creationHp": 900
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Shield": 2,
+     "mod:Layered": 3,
+     "mod:Reactive": 2,
+     "cast:Form": 2,
+     "made:summon": 2,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 4
+    },
+    "creations": 2,
+    "creationHp": 566
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "down": 2
+    },
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "Sim Warden's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Ogre Magus's Summon",
+    "side": "monsters",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "knockbacks": {
+     "into": 2
+    },
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark's Summon",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "Clay Animation",
+    "side": "party",
+    "role": "creation",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0,
+    "knockbacks": {
+     "away": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-summoning": 5,
+    "magic-build-arcana": 2,
+    "magic-protection-arcana": 1
+   },
+   "Sim Summoner": {
+    "magic-theory": 4,
+    "magic-summoning": 5,
+    "magic-animation": 2,
+    "magic-slashing": 1
+   },
+   "Sim Animator": {
+    "magic-theory": 4,
+    "magic-animation": 5,
+    "magic-creation": 2,
+    "magic-piercing": 1
+   },
+   "Sim Maker": {
+    "magic-theory": 4,
+    "magic-creation": 5,
+    "magic-animation": 2,
+    "magic-slashing": 1
+   },
+   "Sim Warden": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-summoning": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Summoner": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Animator": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Maker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Summoner": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Animator": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Maker": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 0/880 BROKEN"
+   ],
+   "Clay Animation": [],
+   "Sim Warden's Summon": [],
+   "Sim Ogre Magus's Summon": [],
+   "Sim Bulwark's Summon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 6261,
+    "monsterHp": 2779,
+    "partyDown": 3,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 8666,
+    "monsterHp": 1920,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 8666,
+    "monsterHp": 1732,
+    "partyDown": 1,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 36
+  },
+  "lostBy": {
+   "party": 199,
+   "monsters": 1410
+  },
+  "directTaken": {
+   "party": 704,
+   "monsters": 1374
+  },
+  "creations": {
+   "Actor.fzcpL5A8aiyAgWIg": "Creation: Make + Animate",
+   "Actor.2OaNv9Ugs4yJH5lh": "Creation: Make + Animate",
+   "Actor.MDgVN8aeGz8bX3Wt": "Creation: Make + Animate",
+   "Actor.GWggoZeQZUNTPqqO": "Creation: Form",
+   "Actor.fftIR8KV9ovoKhD5": "Creation: Form",
+   "Actor.45LNvINHb2X9dXwZ": "Creation: Form + Animate",
+   "Actor.2cF5kBTELKIof29F": "Creation: Form",
+   "Actor.NUycCwtiix7jZr9u": "Creation: Make + Animate",
+   "Actor.BR8YB4RLO5FWe6wA": "Creation: Make + Animate",
+   "Actor.MfrTMUiMrU097yia": "Creation: Make + Animate",
+   "Actor.uo7BxJ9oZCDzY3nk": "Creation: Form",
+   "Actor.kcay60V63z8YBMNK": "Creation: Form",
+   "Actor.SbiYaT5p5XgE9eOQ": "Creation: Form + Animate",
+   "Actor.qVF2N05i5kPX5rPP": "Creation: Form",
+   "Actor.rDQ6trgKzVnV4kag": "Creation: Make + Animate"
+  },
+  "log": {
+   "dialogs": {
+    "prompt: Unarmed": 27,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 27,
+    "prompt: Knockback — Sim Ogre Magus": 4,
+    "prompt: Natural Bladed (Heavy)": 2,
+    "prompt: Knockback — Sim Bulwark's Summon": 1,
+    "prompt: Knockback — Sim Warden's Summon": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

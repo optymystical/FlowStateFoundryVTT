@@ -108,10 +108,10 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
     <h1>Magic balance review</h1>
     <p class="lede">Five passes, one per Magic Theory tier: pure casters against caster monsters built from the same schools. What won, what did the damage, and what looks off.</p>
     <div class="meta">
-      <span><b>30</b> fights</span>
+      <span><b>30</b> pass fights, <b>12</b> re-run, <b>94</b> benchmark</span>
       <span><b>5</b> passes (T1–T5)</span>
       <span>Pain Threshold <b>½</b></span>
-      <span><b>24 Oct 2026</b></span>
+      <span><b>24 Oct 2026</b>, updated after the re-runs (v0.80.3)</span>
     </div>
   </header>
 
@@ -137,51 +137,81 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
         <thead><tr><th>Pass</th><th>Schools</th><th class="n">Party won</th><th class="n">Avg rounds</th><th>Swarm</th><th>Raiders</th><th>Boss</th></tr></thead>
         <tbody id="passRows"></tbody>
       </table></div>
-      <p class="small muted">W/L and rounds per fight; each group fought twice, once per loadout rotation.</p>
+      <p class="small muted">W/L and rounds per fight; each group fought twice, once per loadout rotation. T3 and T4 show the re-runs (Poison passed on; Animation Size capped). The first T3 run went 0 of 6 in 9.5 rounds.</p>
     </div>
   </section>
 
   <section>
-    <span class="eyebrow">Summary</span>
-    <h2>Nine findings</h2>
+    <span class="eyebrow">Where Magic stands</span>
+    <h2>Findings and what happened to them</h2>
     <div class="findings">
-      <div class="finding"><span class="chip look">Look at</span><div>
-        <h3>Animations grow with the square of their points</h3>
-        <p>An Animation's health is the material's HP per point × its points × its Size, and its Size comes from the Body of the pile, which must be at least the points. So more points also means a bigger Size. The T4 Animator's Stone Animate (Expanded Animation) came out at <span class="num">2,643</span> HP per cast, renewed every turn: about the whole party's HP (2,835). Make + Animate with Clay made <span class="num">882</span> HP ones. They hit for <span class="num">80–90</span> a swing, against <span class="num">13</span> for a Form Summon (<span class="num">212–342</span> HP).</p>
-        <p class="small muted">Monsters attacked them first, so in 3 of 6 T4 fights the party took no damage at all. The party won all three fights where its Animators used rotation 2 (Make + Animate, Form + Animate).</p>
+      <div class="finding"><span class="chip fine">Changed</span><div>
+        <h3>Animation Size is capped by the Threshold (v0.80.0)</h3>
+        <p>An Animation's health is material HP per point × points × Size, and its Size came from the pile, which had to hold at least the points, so Size grew with the points. The first T4 run had Stone Animations at <span class="num">2,643</span> HP. Now Size follows the pile but needs Threshold 5 for Size 3 and 10 for Size 4, as a Summon's does, and there is no Size 5 (Magic doc and code).</p>
+        <p class="small muted">T4 re-run: Animations average <span class="num">2,042</span> HP and the party still wins 4 of 6, in 4.0 rounds. They remain about six times a Summon: Make + Animate gets 10 points per Threshold (Animate gets 5), so a Clay one reaches about 2,250 HP at Size 3. The points are the next lever if they still feel too strong.</p>
       </div></div>
-      <div class="finding"><span class="chip look">Look at</span><div>
-        <h3>Tier 2 fights are won by stacks, not hits</h3>
-        <p>In T2 the party lost <span class="num">8,078</span> HP and only about <span class="num">1,940</span> of it was direct spell damage: the rest was Ignite, Stain and Electric Stain burning at the end of turns. Flame + Frost and Crackle + Glob deal no direct damage at all and still carried the goblin swarm, ten casters stacking on the same targets. The party won only the boss fights (2 of 6), and fights averaged <span class="num">8</span> rounds.</p>
+      <div class="finding"><span class="chip fine">Fixed</span><div>
+        <h3>Restore's window and stacking (v0.79.5), Renewal too (v0.79.6)</h3>
+        <p>Cast on your own turn, "since the start of your last turn" now reaches back to your previous turn (never before the fight began), and health Restore or Renewal already gave back counts against the window. The heal itself (2 × Power) stays small by design: health damage is meant to be deadly, and Restore is for patching up after a fight.</p>
       </div></div>
-      <div class="finding"><span class="chip look">Look at</span><div>
-        <h3>Tier 3 schools can't finish a fight</h3>
-        <p>Grasp Arcana, Venomancy, Charm and Witchery have no direct-damage Core, so each caster carried a T1 school at T2 (a judgment call; see below). The party won <span class="num">0</span> of 6 and averaged <span class="num">9.5</span> rounds. Against the Ogre Magus they dealt <span class="num">83</span> and <span class="num">443</span> damage in 14 and 13 rounds: its Heavy Iron and Carapace soaked the carrier spells, and its Hexes hurt every party member who attacked. The afflictions themselves are strong: Poison, Charm and Hex checks took <span class="num">560–1,204</span> HP off the monsters per non-boss fight, more than direct hits did.</p>
+      <div class="finding"><span class="chip fine">Sim fix</span><div>
+        <h3>Venomancy's Poison never passed on in the first T3 run</h3>
+        <p>A coating passes on through its Pass the Poison button, which the sim never pressed, so the first T3 pass (0 of 6) measured Venomancy as nothing. With the button pressed, the T3 re-run won both boss fights (<span class="num">2 of 6</span>, 7.2 rounds): Cut + Poison and Stab + Poison ignore armor and took <span class="num">806–1,249</span> HP off the Ogre Magus, which the carrier spells alone barely scratched. The swarm and raider fights are still losses.</p>
       </div></div>
-      <div class="finding"><span class="chip look">Look at</span><div>
-        <h3>Restore heals 8 a cast, and its time window reads oddly</h3>
-        <p>Restore heals 2 × Power: <span class="num">8</span> per cast at Power 4. The Mender cast it 56 times for <span class="num">448</span> HP in all, while a single Strike averaged <span class="num">56</span> damage. Two code questions sit under it. The system reads "since the start of your last turn" as the start of the caster's <em>current</em> turn, so a Restore on your own turn heals only what was lost during it (the sim used the start of the previous turn instead). And heals aren't taken off the loss, so two Restores can heal more than was lost in the window.</p>
+      <div class="finding"><span class="chip fine">Fixed</span><div>
+        <h3>Summons are fully Magical (v0.80.2)</h3>
+        <p>A Summon is made of Spirit, so Arcane isn't Weakened against it and Strike has Advantage. Animations stay non-Magical. Neither is a living target: Restore, Cut's living die and Mental's living-target checks skip both.</p>
       </div></div>
-      <div class="finding"><span class="chip watch">Watch</span><div>
-        <h3>Combos lead Tier 1</h3>
-        <p>Force + Cut averaged <span class="num">42.4</span> per cast, Force + Slam <span class="num">31.5</span> and Force + Stab <span class="num">25.3</span>, against <span class="num">20.7</span> for Cut alone. Once a caster knows two schools, the AI never cast a single Core except as a fallback. T1 was the most even pass: 4 of 6 wins in <span class="num">4.7</span> rounds.</p>
+      <div class="finding"><span class="chip fine">By design</span><div>
+        <h3>Tier 2 fights are won by stacks</h3>
+        <p>In T2 the party lost <span class="num">8,078</span> HP and only about <span class="num">1,940</span> of it was direct spell damage: the rest was Ignite, Stain and Electric Stain burning. Stacks are meant to matter more as effects than as damage, so this is the intent.</p>
       </div></div>
-      <div class="finding"><span class="chip watch">Watch</span><div>
-        <h3>Strike is the strongest damage spell in the passes</h3>
-        <p>Arcanomancy's Strike averaged <span class="num">56</span> per cast for both sides, and the party hit <span class="num">88%</span> of the time. Shift with Toss came next at <span class="num">37–39</span>. Monster Strikers made the T5 swarm and raider fights short losses (4–8 rounds). What Mirage + Strike does to monster casters (Disadvantage and Weakened on Magic) isn't measured separately.</p>
+      <div class="finding"><span class="chip fine">By design</span><div>
+        <h3>Strike is strongest against armor</h3>
+        <p>Arcane passes through non-magical armor and Strike is Targeted (Advantage), so against Heavy armor it out-damages everything (about <span class="num">56</span> a cast, 88% hits). Against unarmored foes the Weakened stack puts it at parity with the Tier 1 Cores. Shields, Shrouds and magical materials answer it in play.</p>
+      </div></div>
+      <div class="finding"><span class="chip fine">Kept</span><div>
+        <h3>Venomancy is held back by armor, and Poison stays as written</h3>
+        <p>Against unarmored raiders Venomancy keeps up with the best (about <span class="num">904</span> HP in 4 rounds); against armor it lags (about <span class="num">146</span> over 9 fights), because its carrier must deal direct damage before the coating passes and the targets pass most Constitution checks. Three variants were tested (below); a passed check halving the damage was the only one that helped against armor. You chose to keep Poison as written.</p>
       </div></div>
       <div class="finding"><span class="chip watch">Watch</span><div>
         <h3>Squishy casters die before they act</h3>
-        <p>Monsters go for the lowest HP in range, and the Raw caster (Con 30, Light armor, no Foci) often went down in round 1 before its first turn: 0 turns in the first fight of T3, T4 and T5. The Grasp and Reach casters in Light armor followed. A pure caster party has no one to hold the line except Shields and creations.</p>
+        <p>Monsters go for the lowest HP in range, and the Raw caster (Con 30, Light armor, no Foci) often went down in round 1 before its first turn. A pure caster party has no one to hold the line except Shields and creations.</p>
       </div></div>
       <div class="finding"><span class="chip watch">Watch</span><div>
-        <h3>Afflictions and burns go uncredited at the table too</h3>
-        <p>Poison ticks, Charm and Hex self-damage and stack burns land on their own cards, separate from the spell that caused them. In the sim they only show as HP lost outside direct hits. At the table that makes it hard to see what a Venomancer or a Heat caster contributed.</p>
+        <h3>Combos lead Tier 1; burns and afflictions go uncredited</h3>
+        <p>Force + Cut averaged <span class="num">42.4</span> per cast against <span class="num">20.7</span> for Cut alone. Poison ticks, Hex and Charm damage and stack burns land on their own cards, separate from the spell that caused them, so at the table it's hard to see what a Venomancer or a Heat caster contributed.</p>
       </div></div>
       <div class="finding"><span class="chip fine">Fine</span><div>
         <h3>Bosses are beatable, as intended</h3>
-        <p>The party won all 8 boss fights outside T3, in 2–6 rounds. A lone Ogre Magus casting the same schools can't keep up with five casters. The one exception is T3, where the party had no way through its armor.</p>
+        <p>With the re-runs the party won all 10 boss fights outside the first T3 run, in 2–10 rounds.</p>
       </div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">School benchmark</span>
+    <h2>Every school against the same three raiders</h2>
+    <p class="prose muted">One caster per school (Grasp 45, Con 30, Build 15, a Rod, Medium Hide), with Magic Theory at its school's tier, the school at T5 (T4 for the T5 schools) and Cut at T2 as a shared carrier, against three tree-less raiders for 4 rounds. The raiders walk into an unarmored punching bag in front of the caster. The caster targets the weakest raider first, the Brute in Heavy Iron. Two fights per school (Venomancy: nine), so differences under about 150 are noise.</p>
+    <div class="block">
+      <div class="scroll"><table>
+        <thead><tr><th>School</th><th>Tier</th><th class="n">HP the raiders lost</th><th class="n">Bag lost</th><th>Read</th></tr></thead>
+        <tbody id="benchRows"></tbody>
+      </table></div>
+      <p class="small muted">Grasp Arcana, Build Arcana and Creation cast only Cut here (the AI doesn't use their Mods), so their rows measure Cut, not the school. Higher-tier casters also have more of Magic Theory (Empower at T3), which the lower tiers can't use.</p>
+    </div>
+    <div class="block">
+      <div class="block-head"><h3>Venomancy variants tested (not adopted)</h3><span class="small muted">HP the raiders lost in 4 rounds</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Variant</th><th class="n">Armored</th><th class="n">Unarmored</th></tr></thead>
+        <tbody>
+          <tr class="lead"><td>As written</td><td class="n">~146 (9 fights)</td><td class="n">~904</td></tr>
+          <tr><td>A coating poisons every hit until it wears off</td><td class="n">~76</td><td class="n">~1,088</td></tr>
+          <tr><td>A passed check halves the damage</td><td class="n">~300 (9 fights)</td><td class="n">~1,038</td></tr>
+          <tr><td>A coating passes on any hit, even a soaked one</td><td class="n">~103</td><td class="n">~874</td></tr>
+          <tr><td><span class="tag">Reference: Cut only</span></td><td class="n">~273</td><td class="n">~1,044</td></tr>
+        </tbody>
+      </table></div>
     </div>
   </section>
 
@@ -215,7 +245,7 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
           <tr><td>Bulwark</td><td>Form with Arm, Layered and Reactive, plus a Shield</td><td class="n">17</td><td class="n">212</td></tr>
         </tbody>
       </table></div>
-      <p class="small muted">Each creation lasts until its caster's next turn, so the AI recast it every turn at the highest Threshold that fit 60% of its Energy. The pile is assumed to be there (its Body at the minimum the points allow).</p>
+      <p class="small muted">These are the first T4 run's numbers. In the re-run (Size capped by the Threshold) the Animator's creations averaged 2,042 HP and the Maker's 1,032; Summons stayed at 259–348. Each creation lasts until its caster's next turn, so the AI recast it every turn at the highest Threshold that fit 60% of its Energy. The pile is assumed to be there (its Body at the minimum the points allow).</p>
     </div>
   </section>
 
@@ -236,7 +266,7 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
         <ul class="plain small">
           <li>Burns and afflictions aren't credited to a spell; they show as HP lost outside direct hits.</li>
           <li>T1 and T2 can't split spells by side (both sides used the same ones), so their table is pooled.</li>
-          <li>The AI spends AP on afflictions even when they do little (Charm on an Ogre that never attacks), so T3's damage is a floor.</li>
+          <li>The AI spends AP on afflictions even when they do little (Charm on an Ogre that never attacks), so T3's damage is a floor. Until the re-run the sim never pressed Pass the Poison.</li>
           <li>A harmless server error (an update to a token that was already gone) showed up in a few fights; none changed the outcome.</li>
         </ul>
       </div>
@@ -244,16 +274,17 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
   </section>
 
   <section class="prose">
-    <span class="eyebrow">For the designer</span>
-    <h2>Questions</h2>
-    <ol class="plain">
-      <li><b>Restore's window.</b> Answered and fixed in v0.79.5: on your own turn the window starts at your previous turn.</li>
-      <li><b>Restore stacking.</b> Answered and fixed in v0.79.5: what Restore already healed counts against the window.</li>
-      <li><b>Restore's size.</b> 2 × Power (8 at Power 4) is a fraction of what one damage spell deals. Intended for a T5 school?</li>
-      <li><b>Animation health.</b> Is health meant to grow with points × Size, when Size itself grows with the points? A Stone Animation at T4 outlasts a whole party.</li>
-      <li><b>Tier 2 stacks.</b> Are burns meant to out-damage direct hits this much, especially from a swarm stacking one target?</li>
-      <li><b>Tier 3 damage.</b> Should a T3 school be able to deal damage on its own, or is pairing it with a damage school the intended build?</li>
-    </ol>
+    <span class="eyebrow">Decisions</span>
+    <h2>The questions, answered</h2>
+    <ul class="plain">
+      <li><b>Restore's window and stacking:</b> on your own turn the window starts at your previous turn; heals count against it (v0.79.5, Renewal v0.79.6).</li>
+      <li><b>Restore's size:</b> small by design. Health damage is meant to be deadly.</li>
+      <li><b>Animation health:</b> Size capped by the Threshold like Form, no Size 5 (v0.80.0).</li>
+      <li><b>Tier 2 stacks:</b> meant to matter more as effects than as damage.</li>
+      <li><b>Tier 3 damage:</b> Charm is meant to be weak (mostly out of combat); Witchery is strong; Venomancy is held back by armor and Poison stays as written.</li>
+      <li><b>Arcane:</b> strong against armor is its intent; shields, Shrouds and magical materials answer it.</li>
+      <li><b>Summons:</b> fully Magical; Animations aren't; neither is living (v0.80.2).</li>
+    </ul>
   </section>
 
   <footer>
@@ -267,20 +298,34 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
   const passes = [
     ["T1", "Slashing, Piercing, Crushing, Protection Arcana, Gravity", 4, 6, 4.7, 5527, 10958, ["W5", "L8"], ["L4", "W4"], ["W3", "W4"]],
     ["T2", "Reach Arcana, Heat, Cold, Radiation, Acid", 2, 6, 8.0, 8078, 9774, ["L9", "L13"], ["L7", "L10"], ["W6", "W3"]],
-    ["T3", "Grasp Arcana, Venomancy, Charm, Witchery", 0, 6, 9.5, 10384, 5468, ["L5", "L6"], ["L12", "L7"], ["L14", "L13"]],
-    ["T4", "Build Arcana, Summoning, Creation, Animation", 4, 6, 4.7, 3083, 7883, ["L10", "W4"], ["L6", "W2"], ["W4", "W2"]],
+    ["T3", "Grasp Arcana, Venomancy, Charm, Witchery (re-run)", 2, 6, 7.2, 9312, 7607, ["L5", "L5"], ["L7", "L8"], ["W10", "W8"]],
+    ["T4", "Build Arcana, Summoning, Creation, Animation (re-run)", 4, 6, 4.0, 3077, 6887, ["L7", "W3"], ["L4", "W2"], ["W5", "W3"]],
     ["T5", "Restoration Arcana, Geomancy, Illusion, Arcanomancy", 2, 6, 5.7, 7905, 5453, ["L4", "L5"], ["L8", "L7"], ["W4", "W6"]]
   ];
   // [spell, side (p party, m monsters, b both), casts, hit %, damage, per cast]
-  const spells = {"T1":[["Force + Cut","b",80,68,3391,42.4],["Slam","b",18,56,584,32.4],["Force + Slam","b",91,56,2870,31.5],["Force + Stab","b",111,59,2805,25.3],["Cut + Stab","b",70,36,1655,23.6],["Cut","b",35,54,723,20.7],["Cut + Slam","b",26,42,496,19.1],["Force","b",81,40,0,0],["Shield","b",53,85,0,0]],"T2":[["Crackle","b",151,59,4017,26.6],["Glob","b",362,54,2558,7.1],["Flame","b",133,38,754,5.7],["Frost","b",8,50,39,4.9],["Flame + Frost","b",50,38,0,0],["Crackle + Glob","b",120,35,0,0],["Flame + Glob","b",52,50,0,0]],"T3":[["Slam","m",74,43,1648,22.3],["Cut","m",154,35,2652,17.2],["Cut","p",56,70,779,13.9],["Stab","m",80,43,969,12.1],["Slam","p",61,64,599,9.8],["Stab","p",11,82,58,5.3],["Charm + Hex","p",37,89,0,0],["Force","p",85,71,0,0],["Charm","p",44,86,0,0],["Hex","m",40,70,0,0],["Poison","m",49,98,0,0],["Charm","m",24,54,0,0],["Poison","p",52,92,0,0],["Hex","p",12,92,0,0]],"T4":[["Make + Animate (creation)","p",51,47,4574,89.7],["Animate (creation)","p",31,52,2463,79.5],["Animate (creation)","m",27,41,1459,54],["Slam","m",5,80,269,53.8],["Form + Animate (creation)","p",32,69,833,26],["Stab","p",27,63,622,23],["Cut","p",81,52,1615,19.9],["Form + Make (creation)","p",77,77,1374,17.8],["Form (creation)","p",170,55,2237,13.2],["Form + Animate (creation)","m",21,24,219,10.4],["Cut","m",253,31,2605,10.3],["Form (creation)","m",212,25,1909,9],["Form + Make (creation)","m",112,31,987,8.8],["Force","p",54,50,0,0],["Shield","p",17,88,0,0]],"T5":[["Strike","m",92,71,5218,56.7],["Strike","p",90,88,5018,55.8],["Shift (Toss)","m",50,38,1947,38.9],["Shift (Toss)","p",15,47,554,36.9],["Cut","m",48,31,884,18.4],["Shift (no Toss)","m",6,17,106,17.7],["Stab","m",31,39,161,5.2],["Slam","m",24,25,38,1.6],["Mirage","m",11,73,0,0],["Mirage","p",5,80,0,0],["Mirage + Strike","p",11,73,0,0],["Shield","p",16,88,0,0],["Force","p",11,64,0,0]]};
+  const spells = {"T1":[["Force + Cut","b",80,68,3391,42.4],["Slam","b",18,56,584,32.4],["Force + Slam","b",91,56,2870,31.5],["Force + Stab","b",111,59,2805,25.3],["Cut + Stab","b",70,36,1655,23.6],["Cut","b",35,54,723,20.7],["Cut + Slam","b",26,42,496,19.1],["Force","b",81,40,0,0],["Shield","b",53,85,0,0]],"T2":[["Crackle","b",151,59,4017,26.6],["Glob","b",362,54,2558,7.1],["Flame","b",133,38,754,5.7],["Frost","b",8,50,39,4.9],["Flame + Frost","b",50,38,0,0],["Crackle + Glob","b",120,35,0,0],["Flame + Glob","b",52,50,0,0]],"T3":[["Slam","m",61,56,1608,26.4],["Cut","p",56,73,1420,25.4],["Cut","m",126,37,2135,16.9],["Stab","m",79,35,1153,14.6],["Slam","p",43,65,341,7.9],["Stab","p",9,67,28,3.1],["Cut + Poison","m",22,95,0,0],["Charm","m",24,54,0,0],["Cut + Poison","p",23,78,0,0],["Charm","p",37,89,0,0],["Charm + Hex","p",26,85,0,0],["Stab + Poison","p",28,93,0,0],["Hex","p",18,72,0,0],["Force","p",71,73,0,0],["Hex","m",35,49,0,0],["Slam + Poison","m",16,94,0,0]],"T4":[["Animate (creation)","p",20,55,1489,74.5],["Slam","m",6,67,358,59.7],["Make + Animate (creation)","p",74,50,4152,56.1],["Animate (creation)","m",14,43,669,47.8],["Form + Animate (creation)","p",24,50,624,26],["Stab","p",21,67,473,22.5],["Form (creation)","m",117,36,2388,20.4],["Form + Make (creation)","p",41,66,696,17],["Form + Make (creation)","m",70,51,908,13],["Cut","p",77,53,996,12.9],["Form (creation)","p",125,50,1387,11.1],["Cut","m",165,22,1458,8.8],["Form + Animate (creation)","m",16,31,71,4.4],["Shield","p",11,91,0,0],["Force","p",45,62,0,0]],"T5":[["Strike","m",92,71,5218,56.7],["Strike","p",90,88,5018,55.8],["Shift (Toss)","m",50,38,1947,38.9],["Shift (Toss)","p",15,47,554,36.9],["Cut","m",48,31,884,18.4],["Shift (no Toss)","m",6,17,106,17.7],["Stab","m",31,39,161,5.2],["Slam","m",24,25,38,1.6],["Mirage","m",11,73,0,0],["Mirage","p",5,80,0,0],["Mirage + Strike","p",11,73,0,0],["Shield","p",16,88,0,0],["Force","p",11,64,0,0]]};
   const notes = {
     T1: "Both sides pooled. Force deals Force, not damage, unless it drives someone into the ground; its value is in the Combos.",
     T2: "Both sides pooled. Direct damage only: Glob, Flame and the Combos do most of their work through Stain and Ignite stacks, which burn later and aren't counted here.",
-    T3: "Poison, Charm and Hex deal their damage through checks on later turns, so they show 0 here. In non-boss fights those checks took 560–1,204 HP off the monsters per fight.",
-    T4: "For creations, “casts” are the attacks the creation made.",
+    T3: "The re-run, with Poison coatings passed on. Poison, Charm and Hex deal their damage through checks on later turns, so they show 0 here; against the Ogre Magus the Poison Combos took 806–1,249 HP that way.",
+    T4: "The re-run, with Animation Size capped by the Threshold. For creations, “casts” are the attacks the creation made.",
     T5: "Restore (56 casts, 448 HP healed) isn't a damage spell, so it isn't listed. Mirage's effects are Disadvantage and Weakened, not damage."
   };
   const fmt = n => n.toLocaleString("en-US");
+  // [school, tier, HP the raiders lost, bag lost, read]
+  const bench = [
+    ["Arcanomancy", "T5", 1154, 244, "Strike through Heavy Iron, Empowered"], ["Heat", "T2", 669, 397, "Ignite burns"], ["Witchery", "T3", 428, 534, "Hex fires on every attack"],
+    ["Animation", "T4", 390, 666, "A Stone Animation"], ["Summoning", "T4", 361, 441, "A Summon each turn"], ["Reach Arcana", "T2", 356, 404, ""],
+    ["Piercing", "T1", 304, 415, ""], ["Grasp Arcana", "T3", 300, 665, "Cut only (Mods unused)"], ["Cut only", "T1", 273, 391, "Baseline"],
+    ["Creation", "T4", 260, 516, "Cut only (Mods unused)"], ["Slashing", "T1", 256, 423, ""], ["Geomancy", "T5", 197, 686, "Toss into Heavy Iron"],
+    ["Acid", "T2", 190, 629, "Stain burns"], ["Gravity", "T1", 170, 828, "Repulsion on the bag"], ["Protection Arcana", "T1", 158, 555, "Shields on the bag"],
+    ["Venomancy", "T3", 146, 450, "Unarmored: ~904"], ["Crushing", "T1", 142, 632, ""], ["Cold", "T2", 140, 556, "Energy drain not counted"],
+    ["Charm", "T3", 138, 486, "Mostly out of combat"], ["Illusion", "T5", 94, 388, ""], ["Radiation", "T2", 68, 557, "Chains need more targets"],
+    ["Build Arcana", "T4", 36, 639, "Cut only (Mods unused)"], ["Restoration Arcana", "T5", 17, 307, "Healing the bag: least bag damage"]
+  ];
+  const benchTop = Math.max(...bench.map(b => b[2]));
+  document.getElementById("benchRows").innerHTML = bench.map(([n, t, l, b, r]) =>
+    `<tr${n === "Cut only" ? ' class="lead"' : ""}><td>${n}</td><td><span class="tag">${t}</span></td><td class="n" style="text-align:left"><span class="spellbar" style="width:${(l / benchTop * 7).toFixed(2)}rem"></span>${fmt(l)}</td><td class="n">${fmt(b)}</td><td class="small muted">${r}</td></tr>`).join("");
 
   const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; document.body.append(tip);
   const showTip = (el, html) => {

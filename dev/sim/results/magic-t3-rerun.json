@@ -1,0 +1,4365 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 170,
+  "winner": "monsters",
+  "pass": "magic-t3-rerun",
+  "rounds": 5,
+  "partyLeft": 0,
+  "monstersLeft": 8,
+  "followups": 0,
+  "knockbacks": {
+   "into": 3
+  },
+  "used": {
+   "cast:Poison (coat self)": 14,
+   "mod:Prolong": 6,
+   "mod:Lethality": 9,
+   "mod:Potency": 7,
+   "defend:dodge": 155,
+   "cast:Cut": 43,
+   "mod:Bleed": 27,
+   "opt:who": 4,
+   "passPoison": 4,
+   "cast:Charm": 14,
+   "mod:Ingrained": 8,
+   "mod:Convince": 16,
+   "mod:Cloud": 9,
+   "cast:Stab": 34,
+   "mod:Empower": 15,
+   "cast:Charm + Hex": 2,
+   "cast:Slam": 22,
+   "mod:Crush": 22,
+   "cast:Hex": 13,
+   "mod:Linger": 5,
+   "mod:Fester": 9,
+   "mod:Unravel": 10,
+   "mod:Consume": 1,
+   "cast:Burden": 5,
+   "mod:Burden": 5,
+   "cast:Force": 5,
+   "opt:dir=into": 3,
+   "recoverEnergy": 2
+  },
+  "hp": {
+   "Sim Bulwark#mgiT": "85/702",
+   "Sim Venom#YhJ9": "254/567",
+   "Sim Hexer#eIsx": "276/567",
+   "Sim Charmer#HF1C": "201/432",
+   "Sim Warden#LP4W": "275/567",
+   "Sim Goblin Venomer#E5Kf": "145/513",
+   "Sim Goblin Venomer#A6XG": "194/513",
+   "Sim Goblin Venomer#6OS8": "513/513",
+   "Sim Goblin Charmer#bxGG": "425/513",
+   "Sim Goblin Charmer#Reee": "510/513",
+   "Sim Goblin Charmer#Ljre": "513/513",
+   "Sim Goblin Hexer#d5HD": "513/513",
+   "Sim Goblin Hexer#alk2": "513/513",
+   "Sim Goblin Grasper#Glmf": "513/513",
+   "Sim Goblin Grasper#2XTT": "513/513"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Venom",
+   "Sim Hexer",
+   "Sim Charmer",
+   "Sim Warden",
+   "Sim Goblin Venomer",
+   "Sim Goblin Venomer"
+  ],
+  "weapons": {
+   "Spell: Cut + Poison [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 8,
+    "crits": 7,
+    "misses": 0,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Goblin Venomer"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 41,
+    "followups": 0,
+    "hits": 12,
+    "crits": 6,
+    "misses": 29,
+    "damage": 571,
+    "ap": 82,
+    "kills": 0,
+    "users": [
+     "Goblin Venomer",
+     "Goblin Grasper"
+    ]
+   },
+   "Spell: Charm [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Goblin Charmer"
+    ]
+   },
+   "Spell: Stab [M]": {
+    "attacks": 34,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 26,
+    "damage": 208,
+    "ap": 68,
+    "kills": 0,
+    "users": [
+     "Goblin Charmer"
+    ]
+   },
+   "Spell: Cut + Poison": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 5,
+    "kills": 0,
+    "users": [
+     "Charmer",
+     "Venom"
+    ]
+   },
+   "Spell: Charm": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 13,
+    "kills": 0,
+    "users": [
+     "Charmer",
+     "Warden"
+    ]
+   },
+   "Spell: Charm + Hex": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 1,
+    "damage": 200,
+    "ap": 8,
+    "kills": 1,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Stab + Poison": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Hex": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 10,
+    "crits": 8,
+    "misses": 3,
+    "damage": 0,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 198,
+    "ap": 4,
+    "kills": 4,
+    "users": [
+     "Venom"
+    ]
+   },
+   "Spell: Hex [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 3,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Goblin Hexer"
+    ]
+   },
+   "Spell: Slam [M]": {
+    "attacks": 18,
+    "followups": 0,
+    "hits": 11,
+    "crits": 3,
+    "misses": 7,
+    "damage": 253,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Goblin Hexer"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 2,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 8,
+    "absorbed": 96
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 40
+   },
+   "Medium Armor (Hide)": {
+    "hits": 7,
+    "absorbed": 120
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 120
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 69
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Venomer",
+    "dealt": 247,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Charmer",
+    "dealt": 0,
+    "taken": 151,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 200,
+    "taken": 139,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Venomer",
+    "dealt": 0,
+    "taken": 368,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Venomer",
+    "dealt": 0,
+    "taken": 30,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Hexer",
+    "dealt": 0,
+    "taken": 192,
+    "hits": 7,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 237,
+    "hits": 14,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "dealt": 81,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Venom",
+    "dealt": 198,
+    "taken": 313,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Grasper",
+    "dealt": 56,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Hexer",
+    "dealt": 137,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Goblin Grasper",
+    "dealt": 268,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Goblin Hexer",
+    "dealt": 116,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "dealt": 127,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Venomer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Poison (coat self)": 5,
+     "mod:Prolong": 1,
+     "mod:Lethality": 1,
+     "mod:Potency": 3,
+     "defend:dodge": 8,
+     "cast:Cut": 10,
+     "mod:Bleed": 6,
+     "passPoison": 3
+    }
+   },
+   {
+    "name": "Sim Charmer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9,
+     "cast:Poison (coat self)": 1,
+     "mod:Prolong": 1,
+     "mod:Lethality": 1,
+     "cast:Charm": 1,
+     "mod:Ingrained": 1,
+     "mod:Convince": 1,
+     "mod:Cloud": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Charm": 4,
+     "mod:Ingrained": 1,
+     "mod:Convince": 4,
+     "mod:Cloud": 4,
+     "cast:Stab": 11,
+     "mod:Empower": 3,
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23,
+     "cast:Charm + Hex": 2,
+     "mod:Ingrained": 1,
+     "mod:Convince": 2,
+     "cast:Slam": 4,
+     "mod:Empower": 1,
+     "mod:Crush": 4
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "Sim Goblin Venomer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9,
+     "cast:Poison (coat self)": 1,
+     "mod:Prolong": 1,
+     "mod:Lethality": 1,
+     "mod:Potency": 1,
+     "cast:Cut": 2,
+     "mod:Bleed": 2
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Venomer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "cast:Poison (coat self)": 2,
+     "mod:Prolong": 1,
+     "mod:Lethality": 1,
+     "mod:Potency": 2,
+     "cast:Cut": 3,
+     "mod:Bleed": 2
+    },
+    "turnMoved": 0,
+    "casts": 5
+   },
+   {
+    "name": "Sim Hexer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Poison (coat self)": 4,
+     "mod:Prolong": 2,
+     "mod:Lethality": 4,
+     "defend:dodge": 42,
+     "cast:Hex": 4,
+     "mod:Linger": 3,
+     "mod:Fester": 4,
+     "mod:Unravel": 4,
+     "mod:Consume": 1
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Burden": 5,
+     "mod:Burden": 5,
+     "cast:Charm": 5,
+     "mod:Ingrained": 4,
+     "mod:Convince": 5,
+     "cast:Force": 5,
+     "mod:Empower": 1,
+     "defend:dodge": 26
+    },
+    "knockbacks": {
+     "into": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Stab": 15,
+     "mod:Empower": 6
+    }
+   },
+   {
+    "name": "Sim Venom",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16,
+     "cast:Poison (coat self)": 1,
+     "mod:Lethality": 1,
+     "mod:Potency": 1,
+     "cast:Cut": 2,
+     "mod:Bleed": 2,
+     "passPoison": 1
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Grasper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Cut": 12,
+     "mod:Bleed": 8
+    }
+   },
+   {
+    "name": "Sim Goblin Hexer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Hex": 5,
+     "mod:Linger": 1,
+     "mod:Fester": 3,
+     "mod:Unravel": 3,
+     "cast:Slam": 10,
+     "mod:Empower": 1,
+     "mod:Crush": 10
+    }
+   },
+   {
+    "name": "Sim Goblin Grasper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 14,
+    "used": {
+     "cast:Cut": 14,
+     "mod:Bleed": 7,
+     "recoverEnergy": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Hexer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Hex": 4,
+     "mod:Linger": 1,
+     "mod:Fester": 2,
+     "mod:Unravel": 3,
+     "cast:Slam": 8,
+     "mod:Empower": 1,
+     "mod:Crush": 8
+    }
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Charm": 4,
+     "mod:Ingrained": 1,
+     "mod:Convince": 4,
+     "mod:Cloud": 4,
+     "cast:Stab": 8,
+     "mod:Empower": 2,
+     "defend:dodge": 3
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 3,
+    "magic-witchery": 5,
+    "magic-charm": 3,
+    "magic-crushing": 2
+   },
+   "Sim Venom": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-grasp-arcana": 3,
+    "magic-slashing": 2
+   },
+   "Sim Hexer": {
+    "magic-theory": 3,
+    "magic-witchery": 5,
+    "magic-venomancy": 3,
+    "magic-piercing": 2
+   },
+   "Sim Charmer": {
+    "magic-theory": 3,
+    "magic-charm": 5,
+    "magic-venomancy": 3,
+    "magic-slashing": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 3,
+    "magic-grasp-arcana": 5,
+    "magic-charm": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Venom": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Hexer": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Charmer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Venomer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Charmer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Hexer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Grasper": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 0/120 BROKEN"
+   ],
+   "Sim Venom": [
+    "Light Armor (Hard Leather): 50/90"
+   ],
+   "Sim Hexer": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Charmer": [
+    "Light Armor (Soft Leather): 24/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 111/180"
+   ],
+   "Sim Goblin Venomer": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Charmer": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Hexer": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Grasper": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2291,
+    "monsterHp": 4655,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 2116,
+    "monsterHp": 4443,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 1633,
+    "monsterHp": 4443,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 1383,
+    "monsterHp": 4443,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 1091,
+    "monsterHp": 4352,
+    "partyDown": 5,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 712,
+   "monsters": 380
+  },
+  "lostBy": {
+   "party": 1744,
+   "monsters": 778
+  },
+  "directTaken": {
+   "party": 1032,
+   "monsters": 398
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: The Poison passes from Sim Goblin Venomer to": 3,
+    "prompt: Force — Sim Goblin Venomer": 2,
+    "prompt: The Poison passes from Sim Venom to": 1,
+    "prompt: Force — Sim Goblin Charmer": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swarm-r2",
+  "group": "swarm",
+  "rotation": 2,
+  "seconds": 145,
+  "winner": "monsters",
+  "pass": "magic-t3-rerun",
+  "rounds": 5,
+  "partyLeft": 0,
+  "monstersLeft": 5,
+  "followups": 0,
+  "knockbacks": {
+   "away": 3
+  },
+  "used": {
+   "cast:Poison (coat self)": 11,
+   "mod:Prolong": 7,
+   "mod:Lethality": 7,
+   "mod:Potency": 8,
+   "defend:dodge": 126,
+   "cast:Cut": 39,
+   "mod:Bleed": 26,
+   "cast:Hex": 12,
+   "mod:Linger": 6,
+   "mod:Fester": 9,
+   "mod:Unravel": 7,
+   "cast:Slam": 20,
+   "mod:Empower": 13,
+   "mod:Crush": 20,
+   "mod:Virality": 1,
+   "cast:Charm + Hex": 4,
+   "mod:Convince": 11,
+   "mod:Cloud": 12,
+   "mod:Ingrained": 6,
+   "cast:Stab": 21,
+   "cast:Charm": 9,
+   "opt:who": 3,
+   "passPoison": 3,
+   "cast:Burden": 4,
+   "mod:Burden": 4,
+   "cast:Force": 4,
+   "opt:dir=away": 3
+  },
+  "hp": {
+   "Sim Bulwark#4Bzf": "279/702",
+   "Sim Venom#tQBt": "121/567",
+   "Sim Hexer#3SJG": "191/567",
+   "Sim Charmer#vQb2": "132/432",
+   "Sim Warden#QoRS": "267/567",
+   "Sim Goblin Venomer#JsXO": "44/513",
+   "Sim Goblin Venomer#nT6E": "-129/513",
+   "Sim Goblin Venomer#N649": "513/513",
+   "Sim Goblin Charmer#KyCz": "152/513",
+   "Sim Goblin Charmer#KDux": "236/513",
+   "Sim Goblin Charmer#ktOo": "513/513",
+   "Sim Goblin Hexer#lHzL": "176/513",
+   "Sim Goblin Hexer#EGlr": "513/513",
+   "Sim Goblin Grasper#GGEM": "513/513",
+   "Sim Goblin Grasper#DkwM": "513/513"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Venom",
+   "Sim Hexer",
+   "Sim Charmer",
+   "Sim Warden",
+   "Sim Goblin Venomer",
+   "Sim Goblin Venomer",
+   "Sim Goblin Charmer",
+   "Sim Goblin Charmer",
+   "Sim Goblin Hexer"
+  ],
+  "weapons": {
+   "Spell: Cut + Poison [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Goblin Venomer"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 36,
+    "followups": 0,
+    "hits": 14,
+    "crits": 2,
+    "misses": 22,
+    "damage": 274,
+    "ap": 72,
+    "kills": 0,
+    "users": [
+     "Goblin Venomer",
+     "Goblin Grasper"
+    ]
+   },
+   "Spell: Hex [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Goblin Hexer"
+    ]
+   },
+   "Spell: Slam [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 9,
+    "damage": 259,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Goblin Hexer"
+    ]
+   },
+   "Spell: Stab + Poison": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Hex": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Charm + Hex": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 0,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Bulwark",
+     "Charmer"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 13,
+    "ap": 8,
+    "kills": 1,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 0,
+    "damage": 405,
+    "ap": 10,
+    "kills": 5,
+    "users": [
+     "Charmer",
+     "Venom"
+    ]
+   },
+   "Spell: Stab [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 11,
+    "crits": 10,
+    "misses": 10,
+    "damage": 654,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Goblin Charmer"
+    ]
+   },
+   "Spell: Charm [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Goblin Charmer"
+    ]
+   },
+   "Spell: Cut + Poison": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "Venom"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 4,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ],
+    "force": 0
+   },
+   "Spell: Charm": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 0,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 9,
+    "absorbed": 108
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 42
+   },
+   "Medium Armor (Hide)": {
+    "hits": 5,
+    "absorbed": 111
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 120
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 8,
+    "absorbed": 96
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Venomer",
+    "dealt": 14,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Charmer",
+    "dealt": 228,
+    "taken": 300,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Venomer",
+    "dealt": 0,
+    "taken": 177,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Hexer",
+    "dealt": 31,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 13,
+    "taken": 94,
+    "hits": 4,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Goblin Hexer",
+    "dealt": 228,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Venom",
+    "dealt": 177,
+    "taken": 145,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Hexer",
+    "dealt": 0,
+    "taken": 353,
+    "hits": 7,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Goblin Venomer",
+    "dealt": 0,
+    "taken": 241,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "dealt": 530,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "dealt": 81,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 295,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "dealt": 43,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Goblin Grasper",
+    "dealt": 218,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Grasper",
+    "dealt": 42,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Venomer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Poison (coat self)": 5,
+     "mod:Prolong": 1,
+     "mod:Lethality": 1,
+     "mod:Potency": 3,
+     "defend:dodge": 12,
+     "cast:Cut": 10,
+     "mod:Bleed": 6,
+     "passPoison": 2
+    }
+   },
+   {
+    "name": "Sim Charmer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "cast:Charm + Hex": 1,
+     "mod:Ingrained": 1,
+     "mod:Convince": 1,
+     "cast:Cut": 1,
+     "mod:Empower": 1,
+     "mod:Bleed": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "Sim Goblin Venomer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Poison (coat self)": 1,
+     "mod:Prolong": 1,
+     "mod:Lethality": 1,
+     "mod:Potency": 1,
+     "defend:dodge": 6,
+     "cast:Cut": 2,
+     "mod:Bleed": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Hexer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Hex": 4,
+     "mod:Linger": 1,
+     "mod:Fester": 2,
+     "mod:Unravel": 4,
+     "cast:Slam": 8,
+     "mod:Empower": 1,
+     "mod:Crush": 8,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16,
+     "cast:Charm + Hex": 3,
+     "mod:Convince": 1,
+     "mod:Cloud": 3,
+     "mod:Fester": 1,
+     "cast:Slam": 4,
+     "mod:Empower": 1,
+     "mod:Crush": 4
+    },
+    "turnMoved": 0,
+    "casts": 7
+   },
+   {
+    "name": "Sim Goblin Hexer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Hex": 4,
+     "mod:Linger": 1,
+     "mod:Fester": 2,
+     "mod:Unravel": 3,
+     "cast:Slam": 8,
+     "mod:Empower": 1,
+     "mod:Crush": 8,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Venom",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 25,
+     "cast:Poison (coat self)": 1,
+     "mod:Prolong": 1,
+     "mod:Lethality": 1,
+     "cast:Cut": 2,
+     "mod:Bleed": 2,
+     "passPoison": 1
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Hexer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Poison (coat self)": 4,
+     "mod:Prolong": 4,
+     "mod:Lethality": 4,
+     "mod:Potency": 4,
+     "mod:Virality": 1,
+     "defend:dodge": 23,
+     "cast:Hex": 4,
+     "mod:Linger": 4,
+     "mod:Fester": 4
+    }
+   },
+   {
+    "name": "Sim Goblin Venomer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Stab": 12,
+     "mod:Empower": 6,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Charm": 2,
+     "mod:Ingrained": 1,
+     "mod:Convince": 2,
+     "mod:Cloud": 2,
+     "cast:Stab": 4,
+     "mod:Empower": 1,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Burden": 4,
+     "mod:Burden": 4,
+     "cast:Charm": 4,
+     "mod:Ingrained": 3,
+     "mod:Convince": 4,
+     "mod:Cloud": 4,
+     "cast:Force": 4,
+     "defend:dodge": 17
+    },
+    "knockbacks": {
+     "away": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Charmer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Charm": 3,
+     "mod:Ingrained": 1,
+     "mod:Convince": 3,
+     "mod:Cloud": 3,
+     "cast:Stab": 5,
+     "mod:Empower": 2,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Grasper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Cut": 12,
+     "mod:Bleed": 8
+    }
+   },
+   {
+    "name": "Sim Goblin Grasper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Cut": 12,
+     "mod:Bleed": 7
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 3,
+    "magic-charm": 5,
+    "magic-witchery": 3,
+    "magic-crushing": 2
+   },
+   "Sim Venom": {
+    "magic-theory": 3,
+    "magic-grasp-arcana": 5,
+    "magic-venomancy": 3,
+    "magic-slashing": 2
+   },
+   "Sim Hexer": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-witchery": 3,
+    "magic-piercing": 2
+   },
+   "Sim Charmer": {
+    "magic-theory": 3,
+    "magic-witchery": 5,
+    "magic-charm": 3,
+    "magic-slashing": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 3,
+    "magic-charm": 5,
+    "magic-grasp-arcana": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Venom": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Hexer": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Charmer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Venomer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Charmer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Hexer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Grasper": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 9/120"
+   ],
+   "Sim Venom": [
+    "Light Armor (Hard Leather): 48/90"
+   ],
+   "Sim Hexer": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Charmer": [
+    "Light Armor (Soft Leather): 12/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 84/180"
+   ],
+   "Sim Goblin Venomer": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Charmer": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Hexer": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Grasper": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2279,
+    "monsterHp": 4484,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 1852,
+    "monsterHp": 3787,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 4,
+    "partyHp": 1643,
+    "monsterHp": 3510,
+    "partyDown": 3,
+    "monstersDown": 4
+   },
+   {
+    "round": 5,
+    "partyHp": 1286,
+    "monsterHp": 3510,
+    "partyDown": 4,
+    "monstersDown": 4
+   },
+   {
+    "round": 5,
+    "partyHp": 990,
+    "monsterHp": 3173,
+    "partyDown": 5,
+    "monstersDown": 5,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [
+   "2:1 Sim Goblin Venomer: down"
+  ],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 658,
+   "monsters": 1539
+  },
+  "lostBy": {
+   "party": 1845,
+   "monsters": 1957
+  },
+  "directTaken": {
+   "party": 1187,
+   "monsters": 418
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: The Poison passes from Sim Venom to": 1,
+    "prompt: The Poison passes from Sim Goblin Venomer to": 2,
+    "prompt: Force — Sim Goblin Venomer": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 119,
+  "winner": "monsters",
+  "pass": "magic-t3-rerun",
+  "rounds": 7,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {
+   "away": 1
+  },
+  "used": {
+   "cast:Cut": 32,
+   "mod:Bleed": 17,
+   "defend:dodge": 98,
+   "cast:Poison (coat self)": 10,
+   "mod:Prolong": 3,
+   "mod:Lethality": 5,
+   "mod:Potency": 5,
+   "opt:who": 3,
+   "passPoison": 4,
+   "cast:Slam": 22,
+   "mod:Pinpoint": 2,
+   "mod:Empower": 12,
+   "mod:Crush": 22,
+   "cast:Hex": 4,
+   "mod:Linger": 4,
+   "mod:Fester": 4,
+   "mod:Unravel": 4,
+   "cast:Stab": 7,
+   "cast:Charm": 8,
+   "mod:Ingrained": 6,
+   "mod:Convince": 11,
+   "mod:Cloud": 3,
+   "mod:Consume": 1,
+   "cast:Charm + Hex": 5,
+   "cast:Burden": 5,
+   "mod:Burden": 5,
+   "cast:Force": 5,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Bulwark#8Q8V": "76/702",
+   "Sim Venom#t0lL": "256/567",
+   "Sim Hexer#3V30": "208/567",
+   "Sim Charmer#eokP": "177/432",
+   "Sim Warden#YTKT": "233/567",
+   "Sim Raider Venomer#ccYm": "657/765",
+   "Sim Raider Charmer#3duJ": "278/765",
+   "Sim Raider Hexer#lX5h": "765/765",
+   "Sim Raider Grasper#sbXD": "765/765",
+   "Sim Raider Witch#7f6a": "237/540"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Venom",
+   "Sim Hexer",
+   "Sim Charmer",
+   "Sim Warden",
+   "Sim Raider Charmer",
+   "Sim Raider Witch"
+  ],
+  "weapons": {
+   "Spell: Cut [M]": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 10,
+    "crits": 6,
+    "misses": 20,
+    "damage": 713,
+    "ap": 60,
+    "kills": 0,
+    "users": [
+     "Raider Grasper",
+     "Raider Venomer"
+    ]
+   },
+   "Spell: Cut + Poison [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 6,
+    "crits": 6,
+    "misses": 0,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Venomer"
+    ]
+   },
+   "Spell: Slam [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 9,
+    "crits": 5,
+    "misses": 3,
+    "damage": 670,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Raider Hexer"
+    ]
+   },
+   "Spell: Hex [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Raider Witch"
+    ]
+   },
+   "Spell: Stab [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 5,
+    "damage": 41,
+    "ap": 15,
+    "kills": 0,
+    "users": [
+     "Raider Witch",
+     "Raider Charmer"
+    ]
+   },
+   "Spell: Charm [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Charmer"
+    ]
+   },
+   "Spell: Stab + Poison": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Hex": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Charm + Hex": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 7,
+    "crits": 3,
+    "misses": 3,
+    "damage": 10,
+    "ap": 20,
+    "kills": 4,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Cut + Poison": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "Venom"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 58,
+    "ap": 4,
+    "kills": 3,
+    "users": [
+     "Venom"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 7,
+    "crits": 6,
+    "misses": 3,
+    "damage": 0,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ],
+    "force": 0
+   },
+   "Spell: Charm": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 4,
+    "misses": 1,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 56
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 5,
+    "absorbed": 28
+   },
+   "Medium Armor (Hide)": {
+    "hits": 10,
+    "absorbed": 216
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 120
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 48
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Grasper",
+    "dealt": 474,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Charmer",
+    "dealt": 0,
+    "taken": 255,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Venomer",
+    "dealt": 239,
+    "taken": 10,
+    "hits": 9,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Raider Hexer",
+    "dealt": 670,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Venom",
+    "dealt": 58,
+    "taken": 311,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Raider Witch",
+    "dealt": 41,
+    "taken": 58,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 10,
+    "taken": 193,
+    "hits": 11,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Raider Charmer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Hexer",
+    "dealt": 0,
+    "taken": 331,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 334,
+    "hits": 11,
+    "attacks": 15
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Grasper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Cut": 18,
+     "mod:Bleed": 9,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Charmer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Raider Venomer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Poison (coat self)": 6,
+     "mod:Prolong": 1,
+     "mod:Lethality": 1,
+     "mod:Potency": 4,
+     "defend:dodge": 24,
+     "cast:Cut": 12,
+     "mod:Bleed": 6,
+     "passPoison": 3
+    }
+   },
+   {
+    "name": "Sim Raider Hexer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Slam": 12,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 6,
+     "mod:Crush": 12
+    }
+   },
+   {
+    "name": "Sim Venom",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12,
+     "cast:Poison (coat self)": 1,
+     "mod:Lethality": 1,
+     "mod:Potency": 1,
+     "cast:Cut": 2,
+     "mod:Bleed": 2,
+     "passPoison": 1
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Raider Witch",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Hex": 1,
+     "mod:Linger": 1,
+     "mod:Fester": 1,
+     "mod:Unravel": 1,
+     "cast:Stab": 1,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 1,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9,
+     "cast:Charm + Hex": 5,
+     "mod:Ingrained": 1,
+     "mod:Convince": 3,
+     "cast:Slam": 10,
+     "mod:Empower": 1,
+     "mod:Crush": 10
+    },
+    "turnMoved": 0,
+    "casts": 15
+   },
+   {
+    "name": "Sim Raider Charmer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Charm": 3,
+     "mod:Ingrained": 1,
+     "mod:Convince": 3,
+     "mod:Cloud": 3,
+     "cast:Stab": 6,
+     "mod:Empower": 3,
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "Sim Hexer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Poison (coat self)": 3,
+     "mod:Prolong": 2,
+     "mod:Lethality": 3,
+     "defend:dodge": 25,
+     "cast:Hex": 3,
+     "mod:Linger": 3,
+     "mod:Fester": 3,
+     "mod:Unravel": 3,
+     "mod:Consume": 1
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Burden": 5,
+     "mod:Burden": 5,
+     "cast:Charm": 5,
+     "mod:Ingrained": 4,
+     "mod:Convince": 5,
+     "cast:Force": 5,
+     "mod:Empower": 1,
+     "defend:dodge": 5
+    },
+    "knockbacks": {
+     "away": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 3,
+    "magic-witchery": 5,
+    "magic-charm": 3,
+    "magic-crushing": 2
+   },
+   "Sim Venom": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-grasp-arcana": 3,
+    "magic-slashing": 2
+   },
+   "Sim Hexer": {
+    "magic-theory": 3,
+    "magic-witchery": 5,
+    "magic-venomancy": 3,
+    "magic-piercing": 2
+   },
+   "Sim Charmer": {
+    "magic-theory": 3,
+    "magic-charm": 5,
+    "magic-venomancy": 3,
+    "magic-slashing": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 3,
+    "magic-grasp-arcana": 5,
+    "magic-charm": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Venom": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Hexer": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Charmer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Venomer": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Charmer": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Hexer": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Grasper": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Witch": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 48/120"
+   ],
+   "Sim Venom": [
+    "Light Armor (Hard Leather): 62/90"
+   ],
+   "Sim Hexer": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Charmer": [
+    "Light Armor (Soft Leather): 24/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 132/180"
+   ],
+   "Sim Raider Venomer": [
+    "Medium Armor (Hide): 53/150"
+   ],
+   "Sim Raider Charmer": [
+    "Medium Armor (Hide): 103/150"
+   ],
+   "Sim Raider Hexer": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Grasper": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Witch": [
+    "Light Armor (Soft Leather): 80/100"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2539,
+    "monsterHp": 3542,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2269,
+    "monsterHp": 3189,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 2269,
+    "monsterHp": 3006,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 2166,
+    "monsterHp": 2702,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 1772,
+    "monsterHp": 2702,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 950,
+    "monsterHp": 2702,
+    "partyDown": 5,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 950,
+    "monsterHp": 2702,
+    "partyDown": 5,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 461,
+   "monsters": 830
+  },
+  "lostBy": {
+   "party": 1885,
+   "monsters": 898
+  },
+  "directTaken": {
+   "party": 1424,
+   "monsters": 68
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: The Poison passes from Sim Raider Venomer to": 3,
+    "prompt: The Poison passes from Sim Venom to": 1,
+    "prompt: Force — Sim Raider Witch": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r2",
+  "group": "raiders",
+  "rotation": 2,
+  "seconds": 139,
+  "winner": "monsters",
+  "pass": "magic-t3-rerun",
+  "rounds": 8,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {
+   "into": 1,
+   "away": 1
+  },
+  "used": {
+   "cast:Charm + Hex": 5,
+   "mod:Ingrained": 4,
+   "mod:Convince": 14,
+   "defend:dodge": 114,
+   "cast:Cut": 24,
+   "mod:Empower": 15,
+   "mod:Bleed": 16,
+   "cast:Poison (coat self)": 8,
+   "mod:Prolong": 6,
+   "mod:Lethality": 7,
+   "mod:Potency": 6,
+   "mod:Virality": 1,
+   "cast:Hex": 5,
+   "mod:Linger": 5,
+   "mod:Fester": 6,
+   "mod:Unravel": 1,
+   "cast:Stab": 17,
+   "mod:Pinpoint": 2,
+   "mod:Cloud": 15,
+   "cast:Slam": 32,
+   "mod:Crush": 31,
+   "cast:Burden": 4,
+   "mod:Burden": 4,
+   "cast:Charm": 12,
+   "cast:Force": 4,
+   "opt:dir=into": 1,
+   "opt:who": 2,
+   "passPoison": 2,
+   "opt:dir=away": 1,
+   "recoverEnergy": 2
+  },
+  "hp": {
+   "Sim Bulwark#zAhc": "316/702",
+   "Sim Venom#c88E": "232/567",
+   "Sim Hexer#lLaA": "272/567",
+   "Sim Charmer#k3eQ": "136/432",
+   "Sim Warden#QfKP": "173/567",
+   "Sim Raider Venomer#SYGu": "312/765",
+   "Sim Raider Charmer#nWym": "531/765",
+   "Sim Raider Hexer#w5rk": "765/765",
+   "Sim Raider Grasper#sxyF": "248/765",
+   "Sim Raider Witch#VGoy": "220/540"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Venom",
+   "Sim Hexer",
+   "Sim Charmer",
+   "Sim Warden",
+   "Sim Raider Venomer",
+   "Sim Raider Grasper",
+   "Sim Raider Witch"
+  ],
+  "weapons": {
+   "Spell: Charm + Hex": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Charmer",
+     "Bulwark"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 0,
+    "damage": 392,
+    "ap": 14,
+    "kills": 3,
+    "users": [
+     "Charmer",
+     "Venom"
+    ]
+   },
+   "Spell: Stab + Poison": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Hex": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 11,
+    "crits": 2,
+    "misses": 8,
+    "damage": 577,
+    "ap": 38,
+    "kills": 0,
+    "users": [
+     "Raider Grasper",
+     "Raider Venomer"
+    ]
+   },
+   "Spell: Hex [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Raider Witch"
+    ]
+   },
+   "Spell: Stab [M]": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 10,
+    "damage": 250,
+    "ap": 35,
+    "kills": 0,
+    "users": [
+     "Raider Witch",
+     "Raider Charmer"
+    ]
+   },
+   "Spell: Cut + Poison [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Raider Venomer"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 13,
+    "crits": 6,
+    "misses": 4,
+    "damage": 118,
+    "ap": 34,
+    "kills": 2,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 8,
+    "crits": 6,
+    "misses": 1,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ],
+    "force": 0
+   },
+   "Spell: Charm": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Cut + Poison": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Venom"
+    ]
+   },
+   "Spell: Charm [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 3,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Raider Charmer"
+    ]
+   },
+   "Spell: Slam [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 7,
+    "crits": 3,
+    "misses": 8,
+    "damage": 426,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "Raider Hexer"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 2,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 8,
+    "absorbed": 134
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 24
+   },
+   "Medium Armor (Hide)": {
+    "hits": 15,
+    "absorbed": 355
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 120
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 36
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Charmer",
+    "dealt": 58,
+    "taken": 166,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Venomer",
+    "dealt": 16,
+    "taken": 206,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Raider Witch",
+    "dealt": 36,
+    "taken": 262,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Hexer",
+    "dealt": 0,
+    "taken": 295,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Raider Charmer",
+    "dealt": 214,
+    "taken": 42,
+    "hits": 11,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Raider Grasper",
+    "dealt": 561,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 118,
+    "taken": 265,
+    "hits": 15,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 394,
+    "hits": 11,
+    "attacks": 13
+   },
+   {
+    "name": "Sim Venom",
+    "dealt": 334,
+    "taken": 133,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Raider Hexer",
+    "dealt": 426,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 15
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Charmer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Charm + Hex": 1,
+     "mod:Ingrained": 1,
+     "mod:Convince": 1,
+     "cast:Cut": 1,
+     "mod:Empower": 1,
+     "mod:Bleed": 1,
+     "defend:dodge": 10
+    }
+   },
+   {
+    "name": "Sim Raider Venomer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13,
+     "cast:Poison (coat self)": 2,
+     "mod:Prolong": 1,
+     "mod:Lethality": 1,
+     "mod:Potency": 2,
+     "cast:Cut": 4,
+     "mod:Bleed": 3,
+     "passPoison": 1
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "Sim Raider Witch",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 7,
+     "cast:Hex": 1,
+     "mod:Linger": 1,
+     "mod:Fester": 1,
+     "mod:Unravel": 1,
+     "cast:Stab": 1,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "Sim Hexer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Poison (coat self)": 4,
+     "mod:Prolong": 4,
+     "mod:Lethality": 4,
+     "mod:Potency": 4,
+     "mod:Virality": 1,
+     "defend:dodge": 16,
+     "cast:Hex": 4,
+     "mod:Linger": 4,
+     "mod:Fester": 4
+    }
+   },
+   {
+    "name": "Sim Raider Charmer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23,
+     "cast:Charm": 8,
+     "mod:Ingrained": 1,
+     "mod:Convince": 8,
+     "mod:Cloud": 8,
+     "cast:Stab": 16,
+     "mod:Empower": 4
+    },
+    "turnMoved": 0,
+    "casts": 24
+   },
+   {
+    "name": "Sim Raider Grasper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Cut": 15,
+     "mod:Bleed": 8,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 26,
+     "cast:Charm + Hex": 4,
+     "mod:Convince": 1,
+     "mod:Cloud": 3,
+     "mod:Fester": 1,
+     "cast:Slam": 17,
+     "mod:Empower": 1,
+     "mod:Crush": 16
+    },
+    "turnMoved": 0,
+    "casts": 21
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Burden": 4,
+     "mod:Burden": 4,
+     "cast:Charm": 4,
+     "mod:Ingrained": 2,
+     "mod:Convince": 4,
+     "mod:Cloud": 4,
+     "cast:Force": 4,
+     "defend:dodge": 3
+    },
+    "knockbacks": {
+     "into": 1,
+     "away": 1
+    }
+   },
+   {
+    "name": "Sim Venom",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Poison (coat self)": 2,
+     "mod:Prolong": 1,
+     "mod:Lethality": 2,
+     "defend:dodge": 11,
+     "cast:Cut": 4,
+     "mod:Bleed": 4,
+     "passPoison": 1
+    }
+   },
+   {
+    "name": "Sim Raider Hexer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Slam": 15,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 8,
+     "mod:Crush": 15,
+     "recoverEnergy": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 3,
+    "magic-charm": 5,
+    "magic-witchery": 3,
+    "magic-crushing": 2
+   },
+   "Sim Venom": {
+    "magic-theory": 3,
+    "magic-grasp-arcana": 5,
+    "magic-venomancy": 3,
+    "magic-slashing": 2
+   },
+   "Sim Hexer": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-witchery": 3,
+    "magic-piercing": 2
+   },
+   "Sim Charmer": {
+    "magic-theory": 3,
+    "magic-witchery": 5,
+    "magic-charm": 3,
+    "magic-slashing": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 3,
+    "magic-charm": 5,
+    "magic-grasp-arcana": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Venom": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Hexer": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Charmer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Venomer": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Charmer": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Hexer": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Grasper": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Witch": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 0/120 BROKEN"
+   ],
+   "Sim Venom": [
+    "Light Armor (Hard Leather): 66/90"
+   ],
+   "Sim Hexer": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Charmer": [
+    "Light Armor (Soft Leather): 24/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 144/180"
+   ],
+   "Sim Raider Venomer": [
+    "Medium Armor (Hide): 50/150"
+   ],
+   "Sim Raider Charmer": [
+    "Medium Armor (Hide): 15/150"
+   ],
+   "Sim Raider Hexer": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Grasper": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Witch": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2588,
+    "monsterHp": 3060,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 2159,
+    "monsterHp": 2636,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 2040,
+    "monsterHp": 2635,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 1550,
+    "monsterHp": 2496,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 1333,
+    "monsterHp": 2114,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 7,
+    "partyHp": 1333,
+    "monsterHp": 2114,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 8,
+    "partyHp": 1292,
+    "monsterHp": 2114,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 8,
+    "partyHp": 1129,
+    "monsterHp": 2076,
+    "partyDown": 5,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 453,
+   "monsters": 1014
+  },
+  "lostBy": {
+   "party": 1706,
+   "monsters": 1524
+  },
+  "directTaken": {
+   "party": 1253,
+   "monsters": 510
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Raider Witch": 1,
+    "prompt: The Poison passes from Sim Venom to": 1,
+    "prompt: The Poison passes from Sim Raider Venomer to": 1,
+    "prompt: Force — Sim Raider Charmer": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 104,
+  "winner": "party",
+  "pass": "magic-t3-rerun",
+  "rounds": 10,
+  "partyLeft": 2,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Poison (coat self)": 25,
+   "mod:Prolong": 15,
+   "mod:Lethality": 23,
+   "defend:dodge": 81,
+   "cast:Hex": 11,
+   "mod:Linger": 6,
+   "mod:Fester": 11,
+   "mod:Unravel": 11,
+   "mod:Consume": 3,
+   "cast:Burden": 8,
+   "mod:Burden": 8,
+   "cast:Charm": 11,
+   "mod:Ingrained": 11,
+   "mod:Convince": 13,
+   "cast:Force": 9,
+   "mod:Empower": 5,
+   "mod:Potency": 1,
+   "cast:Cut": 8,
+   "mod:Bleed": 5,
+   "cast:Charm + Hex": 2,
+   "cast:Slam": 4,
+   "mod:Crush": 4,
+   "mod:Cloud": 4,
+   "cast:Stab": 3
+  },
+  "hp": {
+   "Sim Bulwark#fd4P": "193/702",
+   "Sim Venom#VrPF": "242/567",
+   "Sim Hexer#YSXS": "242/567",
+   "Sim Charmer#CJAB": "345/432",
+   "Sim Warden#Ondc": "460/567",
+   "Sim Ogre Magus#dBxl": "1127/2376"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Venom",
+   "Sim Hexer",
+   "Sim Ogre Magus"
+  ],
+  "weapons": {
+   "Spell: Stab + Poison": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 0,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Hex": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 14,
+    "crits": 14,
+    "misses": 3,
+    "damage": 0,
+    "ap": 34,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Charm": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 11,
+    "crits": 10,
+    "misses": 0,
+    "damage": 0,
+    "ap": 26,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Charmer"
+    ]
+   },
+   "Spell: Cut + Poison": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 9,
+    "crits": 7,
+    "misses": 1,
+    "damage": 0,
+    "ap": 27,
+    "kills": 0,
+    "users": [
+     "Venom",
+     "Charmer"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 19,
+    "kills": 1,
+    "users": [
+     "Venom",
+     "Charmer"
+    ]
+   },
+   "Spell: Charm + Hex": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam + Poison [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 9,
+    "crits": 8,
+    "misses": 0,
+    "damage": 0,
+    "ap": 27,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Spell: Hex [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 4,
+    "damage": 0,
+    "ap": 27,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 10,
+    "absorbed": 482
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Hexer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 14,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Venom",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Charmer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 13,
+    "attacks": 14
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Hexer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 11,
+    "used": {
+     "cast:Poison (coat self)": 6,
+     "mod:Prolong": 5,
+     "mod:Lethality": 6,
+     "defend:dodge": 8,
+     "cast:Hex": 2,
+     "mod:Linger": 2,
+     "mod:Fester": 2,
+     "mod:Unravel": 2,
+     "mod:Consume": 1,
+     "cast:Stab": 3
+    }
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 56,
+     "cast:Poison (coat self)": 9,
+     "mod:Prolong": 3,
+     "mod:Lethality": 9,
+     "cast:Hex": 9,
+     "mod:Linger": 4,
+     "mod:Fester": 9,
+     "mod:Unravel": 9,
+     "mod:Consume": 2
+    },
+    "turnMoved": 0,
+    "casts": 18
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Burden": 8,
+     "mod:Burden": 8,
+     "cast:Charm": 7,
+     "mod:Ingrained": 6,
+     "mod:Convince": 7,
+     "cast:Force": 9,
+     "mod:Empower": 1,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Venom",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Poison (coat self)": 3,
+     "mod:Lethality": 1,
+     "mod:Potency": 1,
+     "defend:dodge": 4,
+     "cast:Cut": 5,
+     "mod:Bleed": 2
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Charm + Hex": 2,
+     "mod:Ingrained": 1,
+     "mod:Convince": 2,
+     "cast:Slam": 4,
+     "mod:Empower": 1,
+     "mod:Crush": 4,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Charmer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 14,
+    "used": {
+     "cast:Poison (coat self)": 7,
+     "mod:Prolong": 7,
+     "mod:Lethality": 7,
+     "defend:dodge": 8,
+     "cast:Charm": 4,
+     "mod:Ingrained": 4,
+     "mod:Convince": 4,
+     "mod:Cloud": 4,
+     "cast:Cut": 3,
+     "mod:Empower": 3,
+     "mod:Bleed": 3
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 3,
+    "magic-witchery": 5,
+    "magic-charm": 3,
+    "magic-crushing": 2
+   },
+   "Sim Venom": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-grasp-arcana": 3,
+    "magic-slashing": 2
+   },
+   "Sim Hexer": {
+    "magic-theory": 3,
+    "magic-witchery": 5,
+    "magic-venomancy": 3,
+    "magic-piercing": 2
+   },
+   "Sim Charmer": {
+    "magic-theory": 3,
+    "magic-charm": 5,
+    "magic-venomancy": 3,
+    "magic-slashing": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 3,
+    "magic-grasp-arcana": 5,
+    "magic-charm": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Venom": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Hexer": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Charmer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Venom": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Hexer": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Charmer": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 398/880"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2326,
+    "monsterHp": 2309,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2001,
+    "monsterHp": 2309,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2001,
+    "monsterHp": 2214,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1815,
+    "monsterHp": 2214,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1676,
+    "monsterHp": 2094,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 1482,
+    "monsterHp": 1914,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 1482,
+    "monsterHp": 1459,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 1482,
+    "monsterHp": 1127,
+    "partyDown": 3,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 1353,
+   "monsters": 1249
+  },
+  "lostBy": {
+   "party": 1353,
+   "monsters": 1249
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r2",
+  "group": "boss",
+  "rotation": 2,
+  "seconds": 116,
+  "winner": "party",
+  "pass": "magic-t3-rerun",
+  "rounds": 8,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Poison (coat self)": 21,
+   "mod:Prolong": 10,
+   "mod:Lethality": 16,
+   "defend:dodge": 100,
+   "cast:Hex": 8,
+   "mod:Linger": 4,
+   "mod:Fester": 9,
+   "mod:Unravel": 7,
+   "mod:Consume": 1,
+   "cast:Burden": 7,
+   "mod:Burden": 7,
+   "cast:Charm": 7,
+   "mod:Ingrained": 4,
+   "mod:Convince": 10,
+   "mod:Cloud": 9,
+   "cast:Force": 7,
+   "cast:Cut": 24,
+   "mod:Bleed": 19,
+   "cast:Charm + Hex": 4,
+   "cast:Slam": 4,
+   "mod:Empower": 7,
+   "mod:Crush": 4,
+   "mod:Potency": 7,
+   "mod:Virality": 1,
+   "cast:Stab": 6,
+   "opt:who": 2,
+   "passPoison": 2
+  },
+  "hp": {
+   "Sim Bulwark#dC15": "43/702",
+   "Sim Venom#z8GF": "447/567",
+   "Sim Hexer#DfZG": "567/567",
+   "Sim Charmer#w3A9": "432/432",
+   "Sim Warden#rpmq": "567/567",
+   "Sim Ogre Magus#DPFT": "1175/2376"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Ogre Magus"
+  ],
+  "weapons": {
+   "Spell: Slam + Poison [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 21,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Spell: Hex [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 21,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 9,
+    "crits": 6,
+    "misses": 5,
+    "damage": 0,
+    "ap": 28,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Charm": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 6,
+    "crits": 6,
+    "misses": 1,
+    "damage": 0,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Cut + Poison": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Venom"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 34,
+    "followups": 0,
+    "hits": 22,
+    "crits": 11,
+    "misses": 12,
+    "damage": 367,
+    "ap": 88,
+    "kills": 1,
+    "users": [
+     "Venom",
+     "Charmer"
+    ]
+   },
+   "Spell: Charm + Hex": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 6,
+    "crits": 6,
+    "misses": 0,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Bulwark",
+     "Charmer"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Stab + Poison": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 21,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Hex": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 2,
+    "damage": 28,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Hexer"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 21,
+    "absorbed": 880
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 0,
+    "taken": 395,
+    "hits": 8,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Venom",
+    "dealt": 84,
+    "taken": 0,
+    "hits": 13,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Charmer",
+    "dealt": 283,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Hexer",
+    "dealt": 28,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 14
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 14,
+    "used": {
+     "cast:Poison (coat self)": 7,
+     "mod:Prolong": 2,
+     "mod:Lethality": 7,
+     "defend:dodge": 79,
+     "cast:Hex": 7,
+     "mod:Linger": 3,
+     "mod:Fester": 7,
+     "mod:Unravel": 7,
+     "mod:Consume": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "cast:Charm + Hex": 2,
+     "mod:Convince": 1,
+     "mod:Cloud": 2,
+     "mod:Fester": 1,
+     "cast:Slam": 4,
+     "mod:Empower": 1,
+     "mod:Crush": 4
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Burden": 7,
+     "mod:Burden": 7,
+     "cast:Charm": 7,
+     "mod:Ingrained": 2,
+     "mod:Convince": 7,
+     "mod:Cloud": 7,
+     "cast:Force": 7
+    }
+   },
+   {
+    "name": "Sim Venom",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Poison (coat self)": 7,
+     "mod:Prolong": 1,
+     "mod:Lethality": 2,
+     "defend:dodge": 12,
+     "cast:Cut": 14,
+     "mod:Bleed": 9,
+     "passPoison": 1
+    }
+   },
+   {
+    "name": "Sim Charmer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Charm + Hex": 2,
+     "mod:Ingrained": 2,
+     "mod:Convince": 2,
+     "cast:Cut": 10,
+     "mod:Empower": 6,
+     "mod:Bleed": 10
+    }
+   },
+   {
+    "name": "Sim Hexer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 14,
+    "used": {
+     "cast:Poison (coat self)": 7,
+     "mod:Prolong": 7,
+     "mod:Lethality": 7,
+     "mod:Potency": 7,
+     "mod:Virality": 1,
+     "defend:dodge": 7,
+     "cast:Hex": 1,
+     "mod:Linger": 1,
+     "mod:Fester": 1,
+     "cast:Stab": 6,
+     "passPoison": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 3,
+    "magic-charm": 5,
+    "magic-witchery": 3,
+    "magic-crushing": 2
+   },
+   "Sim Venom": {
+    "magic-theory": 3,
+    "magic-grasp-arcana": 5,
+    "magic-venomancy": 3,
+    "magic-slashing": 2
+   },
+   "Sim Hexer": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-witchery": 3,
+    "magic-piercing": 2
+   },
+   "Sim Charmer": {
+    "magic-theory": 3,
+    "magic-witchery": 5,
+    "magic-charm": 3,
+    "magic-slashing": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 3,
+    "magic-charm": 5,
+    "magic-grasp-arcana": 3,
+    "magic-gravity": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Venom": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Hexer": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Charmer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Venom": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Hexer": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Charmer": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 0/880 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2176,
+    "monsterHp": 2274,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2176,
+    "monsterHp": 2274,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2176,
+    "monsterHp": 2152,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2056,
+    "monsterHp": 2152,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2056,
+    "monsterHp": 1754,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 2056,
+    "monsterHp": 1345,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 2056,
+    "monsterHp": 1175,
+    "partyDown": 1,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 779,
+   "monsters": 806
+  },
+  "lostBy": {
+   "party": 779,
+   "monsters": 1201
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 395
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: The Poison passes from Sim Hexer to": 1,
+    "prompt: The Poison passes from Sim Venom to": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

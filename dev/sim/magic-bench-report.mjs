@@ -1,6 +1,7 @@
 /**
  * The Magic school benchmark (`magic-bench`): per school, HP the three raiders lost in 4 rounds (direct hits, burns and the rest: afflictions,
- * Force), what they dealt the punching bag, and what the caster spent its turns on. `node dev/sim/magic-bench-report.mjs [--json]`.
+ * Force), what they dealt the punching bag, and what the caster spent its turns on. `node dev/sim/magic-bench-report.mjs [pass] [--json]`
+ * (pass: magic-bench by default, or magic-bench-soft).
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -8,8 +9,9 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const R = await import("./roster.mjs");
-const runs = JSON.parse(readFileSync(join(here, "results", "magic-bench.json"), "utf8")).filter(r => !r.crashed);
-const configs = R.PASSES["magic-bench"].party[0].loadouts;
+const pass = process.argv.slice(2).find(a => !a.startsWith("--")) ?? "magic-bench";
+const runs = JSON.parse(readFileSync(join(here, "results", `${pass}.json`), "utf8")).filter(r => !r.crashed);
+const configs = R.PASSES[pass].party[0].loadouts;
 const MONSTER = /Raider/;
 const rows = [];
 for (const c of configs) {

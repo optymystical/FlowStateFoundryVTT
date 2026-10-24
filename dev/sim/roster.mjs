@@ -1008,3 +1008,10 @@ const BENCH_RAIDERS = { raiders: { label: "Raiders", note: "Three tree-less raid
 PASSES["magic-bench"] = { id: "magic-bench", note: "School benchmark: one caster per Magic school (with Cut T2) against three tree-less raiders hitting a punching bag, 4 rounds.",
   party: PARTY_MBENCH, monsters: BENCH_RAIDERS, deploy: "magicbench", maxRounds: 4,
   encounters: BENCH_SCHOOLS.flatMap(([id], rotation) => [1, 2].map(rep => ({ id: `${id}-${rep}`, group: "raiders", rotation }))) };
+
+// The same benchmark against unarmored raiders, for the T3 schools: does Poison fail on its delivery (a carrier soaked by armor) or on the check?
+const SOFT_RAIDERS = { raiders: { ...BENCH_RAIDERS.raiders, note: "The benchmark's three raiders without armor.", kinds: BENCH_RAIDERS.raiders.kinds.map(k => ({ ...k, armor: null })) } };
+const SOFT_IDS = ["cut-only", "venomancy", "witchery", "charm"];
+PASSES["magic-bench-soft"] = { id: "magic-bench-soft", note: "School benchmark against unarmored raiders: Cut only and the T3 schools, three fights each.",
+  party: PARTY_MBENCH, monsters: SOFT_RAIDERS, deploy: "magicbench", maxRounds: 4,
+  encounters: SOFT_IDS.flatMap(id => [1, 2, 3].map(rep => ({ id: `${id}-${rep}`, group: "raiders", rotation: BENCH_SCHOOLS.findIndex(s => s[0] === id) }))) };

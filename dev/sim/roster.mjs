@@ -1031,3 +1031,98 @@ PASSES["magic-bench-venom-armored"] = { ...PASSES["magic-bench-venom"], id: "mag
 // Re-runs on 24 Oct 2026: T3 now that the sim passes Poison coatings on, T4 with Animation Size capped by the Threshold (v0.80.0).
 PASSES["magic-t3-rerun"] = { ...PASSES["magic-t3"], id: "magic-t3-rerun", note: `${PASSES["magic-t3"].note} Re-run with Poison coatings passed on.` };
 PASSES["magic-t4-rerun"] = { ...PASSES["magic-t4"], id: "magic-t4-rerun", note: `${PASSES["magic-t4"].note} Re-run with Animation Size capped by the Threshold.` };
+
+/* -------------------------------------------- */
+/*  Magic vs Martial                              */
+/* -------------------------------------------- */
+
+// Party A: the dungeon-crawl party (tank, support, two damage dealers and a ranged one), each a real 30 Skill Point build somewhere between all
+// Martial and all Magic, same stat and gear rules as before. Two rotations: (1) a Martial frontline with Magic in the back, (2) mostly hybrids
+// (Martial trees and Magic schools on one character) with a pure Arcanomancer and a Martial support. Hybrids cast their spells first (support,
+// then one damage spell) and fight with their weapons for the rest of the turn.
+const MAG = (tier, o) => ({ "magic-theory": tier, ...o });
+const MIX = (mt, mg, o) => ({ "martial-theory": mt, "magic-theory": mg, ...o });
+export const PARTY_MIX = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank: Martial (Heavy Armor, Defender) or a hybrid holding a Heavy Defender behind its own Shields (Protection Arcana).",
+    stats: { con: 40, str: 30, grasp: 20 },
+    loadouts: [
+      { label: "Martial", stats: { con: 45, str: 30, will: 15 }, trees: T2({ [HVY]: 5, [DEF]: 4 }), armor: A("heavy", "steel"), weapons: [W("defender", "heavy", "steel", { primary: true }), W("striker", "heavy", "steel")] },
+      { label: "Hybrid", trees: MIX(2, 1, { [HVY]: 4, [PRO]: 5 }), armor: A("heavy", "steel"), weapons: [W("defender", "heavy", "steel", { primary: true })], foci: FO("rod"), shroud: FO("bastion") }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support: Magic (Shields, Burden, Repulsion) or Martial (a Heavy Defender to Block for allies, a Heavy Weighted).",
+    stats: { grasp: 35, con: 30, reach: 10, build: 15 },
+    loadouts: [
+      { label: "Magic", trees: MAG(1, { [PRO]: 5, [GRA]: 4, [SLA]: 2 }), armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") },
+      { label: "Martial", stats: { str: 35, con: 35, dex: 20 }, trees: T2({ [DEF]: 5, [STR]: 4 }), armor: A("medium", "hardLeather"), weapons: [W("weighted", "heavy", "iron", { primary: true }), W("defender", "heavy", "steel")] }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Duelist", role: "melee-dex", note: "Dexterity melee: Martial (two Light weapons, Bladed and Swift) or a spellblade (Light Bladed with Flame from a Wand).",
+    stats: { dex: 45, con: 30, will: 15 },
+    loadouts: [
+      { label: "Martial", trees: T({ [BLA]: 5, [SWI]: 4 }), armor: A("medium", "hardLeather"), weapons: [W("bladed", "light", "steel", { primary: true }), W("swift", "light", "steel")] },
+      { label: "Hybrid", stats: { dex: 30, grasp: 30, con: 30 }, trees: MIX(1, 2, { [BLA]: 5, [HEA]: 4 }), armor: A("medium", "hardLeather"), weapons: [W("bladed", "light", "steel", { primary: true })], foci: FO("wand"), shroud: FO("cinder") }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Breaker", role: "melee-str", note: "Heavy hitter: Magic (Heat and Reach Arcana from a Tome) or a hybrid (a two-handed Heavy Weighted with Gravity, Raw cast).",
+    stats: { reach: 45, con: 30, build: 15 },
+    loadouts: [
+      { label: "Magic", role: "caster", trees: MAG(2, { [HEA]: 5, [RCH2]: 4 }), armor: A("medium", "softLeather"), weapons: [], foci: FO("tome", { twoHanded: true }), shroud: FO("bastion") },
+      { label: "Hybrid", stats: { str: 35, grasp: 25, con: 30 }, trees: MIX(2, 1, { [WEI]: 5, [GRA]: 4 }), armor: A("medium", "hide"), weapons: [W("weighted", "heavy", "iron", { primary: true, twoHanded: true })], foci: null, shroud: FO("bastion") }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Marksman", role: "ranged", note: "Ranged: Martial (a Light Assault with Striker) or a pure Arcanomancer (Strike).",
+    stats: { dex: 45, con: 25, str: 10, will: 10 },
+    loadouts: [
+      { label: "Martial", trees: T2({ [ASL]: 5, [STK]: 4 }), armor: A("light", "softLeather"), weapons: [W("assault", "light", "steel", { primary: true }), W("striker", "light", "steel")] },
+      { label: "Magic", role: "caster", stats: { grasp: 45, con: 30, build: 15 }, trees: MAG(5, { [ARC]: 5 }), armor: A("light", "softLeather"), weapons: [], foci: FO("rod"), shroud: FO("lattice") }
+    ]
+  }
+];
+
+// Party B: the three groups, each as all Martial, all Magic and mixed. Martial monsters get Martial trees for their weapons now (they had none in the
+// Martial passes); the Magic groups are the Magic passes' own (Swarm from T1, Raiders from T2, the Ogre Magus from T5); the mixed groups take half
+// of each. Same Skill Points as before (goblins 20, raiders 25, the Ogre 30).
+const GOB_MARTIAL = [
+  { id: "goblin-hacker", name: "Sim Goblin Hacker", count: 5, size: 3, sp: 20, stats: { str: 50, con: 40, dex: 10 }, trees: T2({ [STK]: 4, [STR]: 3 }),
+    armor: A("light", "softLeather"), weapons: [W("striker", "heavy", "iron", { primary: true })] },
+  { id: "goblin-lancer", name: "Sim Goblin Lancer", count: 5, size: 3, sp: 20, stats: { dex: 50, con: 40, str: 10 }, trees: T3({ [RCH]: 4, [DEX]: 2 }),
+    armor: A("light", "softLeather"), weapons: [W("reach", "light", "hardwood", { primary: true })] }
+];
+const RAIDERS_MARTIAL = [
+  { id: "raider-brute", name: "Sim Raider Brute", count: 1, size: 3, sp: 25, natural: false, stats: { str: 60, con: 50, will: 15 }, trees: T2({ [SWI]: 5, [HVY]: 3 }),
+    armor: A("heavy", "iron"), weapons: [W("swift", "heavy", "steel", { primary: true, twoHanded: true })] },
+  { id: "raider-cutter", name: "Sim Raider Cutter", count: 1, size: 3, sp: 25, natural: false, stats: { str: 60, con: 50, will: 15 }, trees: T3({ [CIR]: 5, [MED]: 2 }),
+    armor: A("medium", "hide"), weapons: [W("circular", "heavy", "steel", { primary: true }), W("thrasher", "light", "hardwood")] },
+  { id: "raider-gunner", name: "Sim Raider Gunner", count: 1, size: 3, sp: 25, natural: false, stats: { str: 60, con: 50, dex: 15 }, trees: T({ [RAP]: 5, [MED]: 3 }),
+    armor: A("medium", "softLeather"), weapons: [W("rapid", "heavy", "steel", { primary: true })] },
+  { id: "raider-sniper", name: "Sim Raider Sniper", count: 1, size: 3, sp: 25, natural: false, stats: { str: 60, con: 50, dex: 15 }, trees: T4({ [LNG]: 5 }),
+    armor: A("light", "softLeather"), weapons: [W("longshot", "heavy", "steel", { primary: true })] },
+  { id: "raider-bomber", name: "Sim Raider Bomber", count: 1, size: 3, sp: 25, natural: false, stats: { str: 60, con: 50, dex: 15 }, trees: T2({ [ASL]: 5, [MED]: 3 }),
+    armor: A("medium", "hide"), weapons: [W("assault", "heavy", "steel", { primary: true })] }
+];
+const OGRE_MARTIAL = { id: "ogre", name: "Sim Ogre Tyrant", count: 1, size: 4, sp: 30, stats: { str: 110, con: 120, dex: 30, will: 40 }, trees: T2({ [WEI]: 5, [STR]: 4 }),
+  armor: A("heavy", "iron"), weapons: [W("weighted", "heavy", "iron", { primary: true }), W("striker", "light", "steel")] };
+const OGRE_MIXED = { id: "ogre-warlock", name: "Sim Ogre Warlock", count: 1, size: 4, sp: 30, stats: { str: 90, con: 110, grasp: 60, will: 40 }, trees: MIX(2, 2, { [WEI]: 4, [HEA]: 4 }),
+  focus: "magic-heat:flame", armor: A("heavy", "iron"), weapons: [W("weighted", "heavy", "iron", { primary: true })], foci: FO("orb"), shroud: FO("carapace") };
+const pick = (kinds, counts) => kinds.filter(k => counts[k.id]).map(k => ({ ...k, count: counts[k.id] }));
+export const MONSTERS_MIX = {
+  "swarm-martial": { label: "Swarm (Martial)", note: "Ten goblins with Martial trees: five Heavy Striker hackers, five Light Reach lancers.", kinds: GOB_MARTIAL },
+  "swarm-magic": { label: "Swarm (Magic)", note: MONSTERS_M1.swarm.note, kinds: MONSTERS_M1.swarm.kinds },
+  "swarm-mixed": { label: "Swarm (mixed)", note: "Five Martial goblins and five T1 casters.",
+    kinds: [...pick(GOB_MARTIAL, { "goblin-hacker": 3, "goblin-lancer": 2 }), ...pick(MONSTERS_M1.swarm.kinds, { "goblin-cutter": 2, "goblin-stabber": 1, "goblin-basher": 1, "goblin-pusher": 1 })] },
+  "raiders-martial": { label: "Raiders (Martial)", note: "The five Martial raiders, now with trees for their weapons.", kinds: RAIDERS_MARTIAL },
+  "raiders-magic": { label: "Raiders (Magic)", note: MONSTERS_M2.raiders.note, kinds: MONSTERS_M2.raiders.kinds },
+  "raiders-mixed": { label: "Raiders (mixed)", note: "The Brute and the Cutter with three T2 casters (Pyro, Storm, Froster).",
+    kinds: [...pick(RAIDERS_MARTIAL, { "raider-brute": 1, "raider-cutter": 1 }), ...pick(MONSTERS_M2.raiders.kinds, { "raider-pyro": 1, "raider-storm": 1, "raider-froster": 1 })] },
+  "boss-martial": { label: "Boss (Martial)", note: "The Ogre Tyrant with Weighted T5 and Strength T4.", kinds: [OGRE_MARTIAL] },
+  "boss-magic": { label: "Boss (Magic)", note: MONSTERS_M5.boss.note, kinds: MONSTERS_M5.boss.kinds },
+  "boss-mixed": { label: "Boss (mixed)", note: "An Ogre Warlock: a natural Heavy Weighted (Weighted T4) and Flame from a natural Orb (Heat T4).", kinds: [OGRE_MIXED] }
+};
+PASSES["magic-vs-martial"] = { id: "magic-vs-martial", note: "Magic vs Martial: the party in two rotations (a Martial frontline with Magic behind; mostly hybrids) against every group as all Martial, all Magic and mixed.",
+  party: PARTY_MIX, monsters: MONSTERS_MIX, encounters: encountersFor(MONSTERS_MIX, 2) };

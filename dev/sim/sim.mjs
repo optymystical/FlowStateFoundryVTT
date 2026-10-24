@@ -178,15 +178,16 @@ async function makeActor(spec, loadout, { party, folder }) {
   const sp = spec.sp ?? 30;
   const a = await Actor.create({
     name: spec.name, type: party ? "character" : "npc", folder: folder.id,
-    system: { stats: R.statBlock(spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {} },
+    system: { stats: R.statBlock(loadout.stats ?? spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {} },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
     flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null } } }
   });
   const natural = !party && spec.natural !== false;
   const slots = loadout.weapons.filter(w => w.type !== "unarmed");
-  const items = [loadout.armor ? armorData(loadout.armor, spec.stats, sp, natural) : null,          // no armor: Unarmored
-    loadout.foci ? fociData(loadout.foci, spec.stats, sp, natural) : null, loadout.shroud ? shroudData(loadout.shroud, spec.stats, sp, natural) : null,
-    ...slots.map(w => foundry.utils.mergeObject(weaponData(w, spec.stats, sp, natural), { "flags.flowstate.simPrimary": !!w.primary })),
+  const stats = loadout.stats ?? spec.stats;          // a loadout can split the stats its own way (a hybrid build)
+  const items = [loadout.armor ? armorData(loadout.armor, stats, sp, natural) : null,          // no armor: Unarmored
+    loadout.foci ? fociData(loadout.foci, stats, sp, natural) : null, loadout.shroud ? shroudData(loadout.shroud, stats, sp, natural) : null,
+    ...slots.map(w => foundry.utils.mergeObject(weaponData(w, stats, sp, natural), { "flags.flowstate.simPrimary": !!w.primary })),
     // Ammunition for guns (natural ones need none).
     ...(natural ? [] : slots.filter(w => WEAPON_TYPES[w.type]?.ranged).map(w => Cat.itemData(`ammo.${w.type}`, { system: { quantity: 100 } })))];
   const made = await a.createEmbeddedDocuments("Item", items.filter(Boolean));
@@ -1180,7 +1181,7 @@ async function castAt(actor, targetTok, values, label) {
  * Field on a crowd next to it, in that order), then the rest on its best damage spell (a Combo when it knows two schools), adding Mods while the Energy lasts.
  * It keeps its distance: it only walks when nothing is in range.
  */
-async function casterTurn(actor, me) {
+async function casterTurn(actor, me, { hybrid = false } = {}) {
   const s = stat(actor);
   s.turns++;
   s.turnMoved = 0;
@@ -1331,6 +1332,7 @@ async function casterTurn(actor, me) {
     if (!fits(r)) return;
     const name = best.ids.map(id => Sp.spellById(id)?.name ?? id).join(" + ");
     if (!(await castAt(actor, target, r.values, name))) return;
+    if (hybrid) return;                        // a hybrid casts one damage spell, then fights with its weapons
   }
 }
 
@@ -1341,7 +1343,15 @@ async function actTurn(actor, me) {
   s.turnMoved = 0;
   const role = sim(actor).role;
   if (role === "kiter") return kiteTurn(actor, me);
-  if (isCaster(actor)) { s.turns--; return casterTurn(actor, me); }
+  // A caster casts. A hybrid (spells and a weapon that rolls dice) casts first, its support and one damage spell, then fights with the weapon.
+  if (isCaster(actor)) {
+    const armed = actor.items.some(i => i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed" && (i.system.profile?.dice ?? 0) > 0);
+    s.turns--;
+    if (!armed) return casterTurn(actor, me);
+    note(actor, "hybridTurn");
+    await casterTurn(actor, me, { hybrid: true });
+    if (down(actor) || over(me.parent)) return;
+  }
   for (let step = 0; step < 16; step++) {
     if (down(actor) || over(me.parent)) return;
     const ap = actor.system.ap.value, rp = actor.system.rp.value;

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.80.2:** Summons are fully Magical (made of Spirit): Arcane damage isn't Weakened against them and Strike has Advantage. Animations stay non-Magical. Neither is a living target: Restore, Cut's living die and Mental's living-target checks skip both (they used to treat any non-Magical creature as living).
+
 **0.80.1:** A hidden world setting for Venomancy variants under test in the combat sim (off by default: the rules are unchanged).
 
 **0.80.0:** From the updated Magic doc: an Animation's Size is capped by its Threshold, as a Summon's is (Size 3 needs Threshold 5, Size 4 needs 10, no Size 5). A big pile no longer makes a low-Threshold Animation huge (the sim's Stone Animations reached 2,500 HP).

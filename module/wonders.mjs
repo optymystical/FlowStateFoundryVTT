@@ -15,7 +15,7 @@ import * as R from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
 import { isDeclined } from "./reactions.mjs";
-import { notCreature } from "./kinds.mjs";
+import { notCreature, isLiving } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 /** mental.mjs hands itself over when it loads (`setMental`): the Wonders call into it, and it calls into them. */
 export let mental = null;
@@ -27,7 +27,7 @@ const roll = formula => new Roll(formula).evaluate();
 const eff = (a, k) => a?.system?.derived?.effective?.[k]?.value ?? 0;
 const minOf = (a, k) => ab.statMinOf(a, k);
 const tier = (actor, id) => tierOf(actor.system.trees ?? {}, id);
-const living = a => a && !notCreature(a) && !a.system?.magical;
+const living = isLiving;
 
 /* -------------------------------------------- */
 /*  Shared: effects, once per round, Tenets     */

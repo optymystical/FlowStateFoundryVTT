@@ -15,14 +15,13 @@ import { tierOf } from "./skills.mjs";
 import { isDeclined } from "./reactions.mjs";
 import { mayHelp, mayHarm } from "./sides.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, DAMAGE_PROVIDERS, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetFor, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
-import { notCreature } from "./kinds.mjs";
+import { notCreature, isLiving } from "./kinds.mjs";
 import { esc, DialogV2 } from "./html.mjs";
 
 const roll = f => new Roll(f).evaluate();
 const minOf = (a, k) => ab.statMinOf(a, k);
 const tier = (actor, id) => tierOf(actor?.system?.trees ?? {}, id);
-const living = a => a && !notCreature(a);
-const livingTarget = a => living(a) && !a.system?.magical;                   // what the Mental doc means by a living target (no Summons, Animations or objects)
+const livingTarget = isLiving;                                              // what the Mental doc means by a living target (no Summons, Animations or objects)
 const fromU = u => globalThis.fromUuidSync?.(u) ?? null;
 const ids = { dest: "mental-destruction-nightmare", peace: "mental-peace-dream", war: "mental-war-nightmare", adapt: "mental-adaptation-dream", perf: "mental-perfection-nightmare" };
 const fx = (actor, kind) => (actor ? spellEffects(actor, kind) : []);

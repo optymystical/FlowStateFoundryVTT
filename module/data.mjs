@@ -125,6 +125,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       if (sm.dodgeDie) d.dodgeDie = sm.dodgeDie;
       if (sm.speed) d.move = sm.speed;
       if (sm.physical) d.size = { ...d.size, physical: (d.size?.physical ?? 0) + sm.physical };
+      // A Summon is made entirely of its caster's Spirit: fully Magical (Arcane isn't Weakened against it, Strike has Advantage). An Animation isn't.
+      if (sm.kind === "summon") this.magical = true;
     }
     Object.assign(this, { derived: d });
     const spent = spentPoints(this.trees);

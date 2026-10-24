@@ -180,6 +180,14 @@ ok2(!plan, "The pile must hold at least as much Body as the points");
 clean4(); plan = await cast("magic-animation:animate", { base: 5, conj: { material: "Water", body: 75 } });
 sm = summons()[0];
 ok2(sm && sm.system.size === 3 && sm.system.hp.max === 1 * 75 * 3, `Threshold 5: a 75-point Animation reaches Size 3 (health ${sm?.system.hp.max})`);
+// Fully Magical and living: a Summon is made of Spirit (fully Magical: Arcane isn't Weakened against it); an Animation is a physical pile, so it
+// isn't Magical, but neither is alive (Restore and "living target" bonuses skip both).
+const K = await import("../../module/kinds.mjs");
+ok2(!sm.system.magical && !K.isLiving(sm), "An Animation isn't fully Magical, and isn't a living target");
+clean4(); plan = await cast("magic-summoning:form", { base: 3, conj: body(5, 5, 5) });
+sm = summons()[0];
+ok2(sm?.system.magical === true && !K.isLiving(sm), "A Summon is fully Magical (made of Spirit) and not a living target");
+ok2(K.isLiving(orc) && !orc.system.magical, "…an ordinary creature is living and not Magical");
 await J.turnStart(hero);
 
 console.log("== Make");

@@ -12,7 +12,7 @@ import * as areas from "./areas.mjs";
 import * as terrain from "./terrain.mjs";
 import { secret } from "./afflictions.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES } from "./rules.mjs";
-import { notCreature } from "./kinds.mjs";
+import { notCreature, isLiving } from "./kinds.mjs";
 import { esc, DialogV2, formValuesNumeric as formValues, select, field } from "./html.mjs";
 import { tokenCentre } from "./distance.mjs";
 
@@ -69,7 +69,7 @@ export async function prompt({ actor, plan, profile, mods, values, targets }) {
   const free = !!plan.freeFrom;
   if (k === "restore") {
     const t = target ?? actor;
-    if (notCreature(t) || t.system.magical) { ui.notifications.warn("Restore needs a living target."); return null; }
+    if (!isLiving(t)) { ui.notifications.warn("Restore needs a living target (not a Summon, an Animation or an object)."); return null; }
     const dead = t.statuses?.has("dead");
     const painless = plan.applied.find(a => a.mod.name === "Painless");
     const replaced = !!painless?.replace;

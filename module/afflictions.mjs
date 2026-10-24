@@ -15,7 +15,7 @@ import {
 } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { poolFormula, applyStacks, DAMAGE_TYPES, STATS } from "./rules.mjs";
-import { notCreature } from "./kinds.mjs";
+import { notCreature, isLiving } from "./kinds.mjs";
 import { esc } from "./html.mjs";
 
 const roll = formula => new Roll(formula).evaluate();
@@ -251,7 +251,7 @@ async function poisonTick(actor, e) {
   const half = c.passed && venomVariant("halfpass") && !d.force;
   if (!c.passed || half) {
     const sides = fx.poisonSides(d.sides, d.lethality, d.procs);
-    const living = !actor.system.magical;
+    const living = isLiving(actor);
     const die = sides + (d.livingDie && living ? d.livingDie : 0);
     if (d.force) {
       html.push(`<div class="fs-result">${esc(actor.name)} fails and the Poison applies Force instead of health loss.</div>`);
@@ -377,7 +377,7 @@ async function fireHex(actor, e) {
     const dmgOpts = { ...d, fromHex: true, bypassArmor: false };
     let sides = fx.hexSides(d.sides, d.fester, d.procs);
     // Cut + Hex: +12 die size against a living target the Hex would damage directly (its biggest roll reaching HP).
-    const living = !notCreature(actor) && !actor.system?.magical;
+    const living = isLiving(actor);
     const direct = d.livingDie && living ? (await damageOutcome(actor, d.n * (sides + d.livingDie), d.type === "health" ? "arcane" : d.type, { bypass: d.type === "health", ignoreArmor: !!dmgOpts.bypassArmor, archetype: "magic" })).toHp > 0 : false;
     if (direct) sides += d.livingDie;
     const dmg = await roll(dice(d.n, sides));

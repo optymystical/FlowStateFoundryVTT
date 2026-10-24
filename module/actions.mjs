@@ -12,7 +12,7 @@ import { isDeclined } from "./reactions.mjs";
 import * as auto from "./automation-rules.mjs";
 import { borderDistance, gridFor, tokenPos, tokenCentre } from "./distance.mjs";
 import { pickSpot, candidateSpots } from "./placement.mjs";
-import { notCreature } from "./kinds.mjs";
+import { notCreature, isLiving } from "./kinds.mjs";
 import { esc, DialogV2, dialogHead } from "./html.mjs";
 export { gridFor };
 
@@ -4300,7 +4300,7 @@ export async function spellForce(attacker, target, o, result, fd, label, stacksO
 async function spellDamageFacts(profile, o, attacker, target, defense, dmgOpts) {
   const sp = o.spell;
   // "Living": a creature that isn't fully Magical (constructs, spirits).
-  const living = !notCreature(target) && !target.system.magical;
+  const living = isLiving(target);
   const base = profile.damage;
   const baseMax = base ? base.n * Math.max(1, sp.power) * base.sides : 0;
   const stacks = (o.stacks ?? 0) + (defense.result?.critStacks ?? 0);

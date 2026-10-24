@@ -10,7 +10,7 @@ import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, ARMOR_WEIGHTS, WEIGHTS
 import { besideTokenPosition, setActorFlag, post, requestGM, GM_ACTIONS, attackerToken, requestDamage, damageOutcome, giveStacks, putSpellEffect, spellForce, knockbackRow, performAttack, rollWeaponAttack, registerConjure, spendPoints, changeEffect, spellEffects, castStacks } from "./actions.mjs";
 import { removeEnergy } from "./elemental.mjs";
 import { applyStacks, DAMAGE_TYPES } from "./rules.mjs";
-import { notCreature } from "./kinds.mjs";
+import { notCreature, isLiving } from "./kinds.mjs";
 import { esc, DialogV2, formValuesNumeric as formValues, select, field } from "./html.mjs";
 import { tokenPos, tokenCentre } from "./distance.mjs";
 
@@ -623,7 +623,7 @@ export async function riderAfter({ attacker, target, o, outcome, defense, stacks
   if (!rd) return;
   const level = r.level ?? 1;
   const caster = await fromUuid(ownerUuid);
-  const living = !notCreature(target) && !target.system.magical;
+  const living = isLiving(target);
   const direct = (outcome?.toHp ?? 0) > 0;
   const html = [], rolls = [], acts = [];
   let push = null;

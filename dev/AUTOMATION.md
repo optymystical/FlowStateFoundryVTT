@@ -273,7 +273,7 @@ One card at the start of each turn collects what happened: the Energy regained, 
 - **T2 Thrust:** Light attacks get Cleave, Heavy attacks get Cleave+.
 - **T3 Wall:** the same strike with no RP (½ Scaling Stat min).
 - **T4 Twist:** a damage-card button after direct damage. It adds your Pierce value as direct damage.
-- **T5 Impale:** a damage-card button when the direct damage (Twist included) is more than half the target's Pain Threshold. The target is grappled on your weapon, and that weapon can't attack until they're released.
+- **T5 Impale:** a damage-card button after any direct damage from a Reach weapon (it used to need more than half the target's Pain Threshold). The target is grappled on your weapon, and that weapon can't attack until they're released.
 
 ## Circular Weapons (automated)
 - **T1 What Goes Around:** a Throw-mode option. The weapon stays in hand, and a return attack joins the follow-ups (it's tracked separately from Fast/Solitary).

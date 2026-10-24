@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.79.4:** From the updated Martial doc: Impale (Reach T5) works after any direct damage from a Reach weapon; it no longer needs more than half the target's Pain Threshold.
+
 **0.79.3:** A hidden world setting for the Pain Threshold divisor (the rule stays half of max HP), so the combat sim can compare values on the same code.
 
 **0.79.2:** An attack dialog that planned a follow-up now remembers its picks too (the follow-up's fields broke the save).

@@ -381,7 +381,7 @@
 - **Twist: Cost: *Energy equal to your Scaling Stat min.*** When you deal direct damage to a target with a Reach Weapon attack, you can use this ability. Add additional damage equal to your Weapon’s Pierce value to the attack (since this is triggered by direct damage, this would result in the added damage also being direct).  
     
   **Tier 5: You gain the following ability:**  
-- **Impale: Cost: *Energy equal to double your Scaling Stat min.*** When you deal more direct damage to a target than half of their Pain Threshold with a Reach Weapon attack, you can use this ability. The target becomes grappled at the end of your Weapon. While they are grappled, you cannot make more attacks with that Reach Weapon.
+- **Impale: Cost: *Energy equal to double your Scaling Stat min.*** When you deal direct damage to a target with a Reach Weapon attack, you can use this ability. The target becomes grappled at the end of your Weapon. While they are grappled, you cannot make more attacks with that Reach Weapon.
 
 # 
 

@@ -93,6 +93,14 @@ ok(orc.getFlag("flowstate", "grappledBy") === hero.uuid && orc.getFlag("flowstat
 hero.system.ap.value = 6;
 const before = messages.length; await attack(spear);
 ok(messages.length === before, "the spear can't attack while holding Orc");
+// Impale works after any direct damage (no Pain Threshold requirement any more).
+await actions.releaseGrapple(hero);
+hero.system.ap.value = 6; hero.system.energy.value = 500; seq = [30]; await attack(spear);
+dialog = () => ({ net: 0 }); seq = [2, 1]; await actions.defend(last("attack"), 0, "dodge"); await actions.rollExchangeDamage(last("defense"), { auto: true });
+const small = last("damage");
+const smallHit = Number(small.flags.flowstate.damage.toHp) || 0;
+await actions.reachFinisher(small, "impale");
+ok(smallHit > 0 && smallHit <= Math.floor(orc.system.hp.pain / 2) && orc.getFlag("flowstate", "grappleWeapon") === spear.uuid, `Impale after a small hit (${smallHit} direct damage, under half the Pain Threshold)`);
 await actions.setGrapple(orc, null);
 
 console.log("== What Goes Around + Let it Rip (Circular T1/T3/T5)");

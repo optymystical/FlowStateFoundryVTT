@@ -5565,10 +5565,9 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   let reachRow = "";
   const reachWeapon = o.reachItem ? await fromUuid(o.reachItem) : null;
   if (reachWeapon && outcome.toHp > 0) {
-    const halfPain = Math.floor((target.system.hp?.pain ?? 0) / 2);
     reachRow = `<div class="fs-brawl-row fs-reach-row" data-role="attacker" data-owner="${attacker.uuid}">
       ${o.pierce && !isDeclined(attacker, "twist") ? `<button type="button" class="fs-twist" data-tooltip="Reach T4: add your Pierce (${o.pierce}) as direct damage"><i class="fa-solid fa-rotate"></i> Twist +${o.pierce} (⚡ ${ab.REACH_COST.twist(reachWeapon)})</button>` : ""}
-      ${ab.reach(attacker, reachWeapon, 5) && !isDeclined(attacker, "impale") ? `<button type="button" class="fs-impale" data-tooltip="Reach T5: needs more direct damage than half of ${esc(target.name)}'s Pain Threshold (${halfPain}); grapples them on your weapon"><i class="fa-solid fa-thumbtack"></i> Impale (⚡ ${ab.REACH_COST.impale(reachWeapon)})</button>` : ""}</div>`;
+      ${ab.reach(attacker, reachWeapon, 5) && !isDeclined(attacker, "impale") ? `<button type="button" class="fs-impale" data-tooltip="Reach T5: grapples them on your weapon (after any direct damage)"><i class="fa-solid fa-thumbtack"></i> Impale (⚡ ${ab.REACH_COST.impale(reachWeapon)})</button>` : ""}</div>`;
   }
   await post(attacker, {
     title: `${esc(o.label || "Attack")} — Damage to ${esc(target.name)}`,
@@ -5611,14 +5610,13 @@ export async function reachFinisher(damageMessage, kind) {
     return post(attacker, { title: `${esc(attacker.name)} — Twist`, body: `<div class="fs-notes">${cost} Energy · +${amount} direct damage (Pierce)</div>${body}`,
       flags: { flowstate: { reachOf: `${damageMessage.id}:twist` } } });
   }
-  const halfPain = Math.floor((target.system.hp?.pain ?? 0) / 2);
   const dealt = (d.toHp ?? 0) + (twisted ? (o.pierce ?? 0) : 0);
-  if (dealt <= halfPain) return ui.notifications.warn(`Impale needs more direct damage (${dealt}) than half of ${target.name}'s Pain Threshold (${halfPain}).`);
+  if (dealt <= 0) return ui.notifications.warn("Impale needs the attack to have dealt direct damage.");
   const cost = ab.REACH_COST.impale(weapon);
   if (!(await spendEnergy(attacker, cost, "Impale"))) return;
   await setGrapple(target, attacker.uuid);
   await setActorFlag(target, "grappleWeapon", weapon.uuid);
-  return post(attacker, { title: `${esc(attacker.name)} — Impale`, body: `<div class="fs-result"><strong>${esc(target.name)} is impaled</strong> on ${esc(weapon.name)} (grappled). ${esc(weapon.name)} can't attack while they're held.</div><div class="fs-notes">${cost} Energy · ${dealt} direct damage > half Pain Threshold ${halfPain}</div>`,
+  return post(attacker, { title: `${esc(attacker.name)} — Impale`, body: `<div class="fs-result"><strong>${esc(target.name)} is impaled</strong> on ${esc(weapon.name)} (grappled). ${esc(weapon.name)} can't attack while they're held.</div><div class="fs-notes">${cost} Energy · ${dealt} direct damage</div>`,
     flags: { flowstate: { reachOf: `${damageMessage.id}:impale` } } });
 }
 

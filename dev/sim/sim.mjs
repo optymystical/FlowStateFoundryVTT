@@ -597,7 +597,7 @@ async function answerCard() {
       [".fs-palisade:not([data-wall='1'])", "palisade", (who) => rpOf(who) >= 3, () => Act.palisade(msg, false)],
       [".fs-twist", "twist", (who) => energyOf(who) >= 15, () => Act.reachFinisher(msg, "twist")],
       // Impale is offered on every Reach T5 hit (a Twist may still push it over); only take it when the hit beat half the Pain Threshold.
-      [".fs-impale", "impale", (who) => energyOf(who) >= 30 && (Number(msg.getFlag("flowstate", "damage")?.toHp) || 0) > Math.floor((fromUuidSync(msg.getFlag("flowstate", "damage")?.target ?? "")?.system?.hp?.pain ?? 0) / 2), () => Act.reachFinisher(msg, "impale")],
+      [".fs-impale", "impale", (who) => energyOf(who) >= 30 && (Number(msg.getFlag("flowstate", "damage")?.toHp) || 0) > 0, () => Act.reachFinisher(msg, "impale")],
       [".fs-dip-move", "dipMoveOffered", () => false, null]
     ];
     for (const [sel, what, ok, run] of simple) {

@@ -1020,7 +1020,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Impale",
-      "text": "Cost: Energy equal to double your Scaling Stat min. When you deal more direct damage to a target than half of their Pain Threshold with a Reach Weapon attack, you can use this ability. The target becomes grappled at the end of your Weapon. While they are grappled, you cannot make more attacks with that Reach Weapon."
+      "text": "Cost: Energy equal to double your Scaling Stat min. When you deal direct damage to a target with a Reach Weapon attack, you can use this ability. The target becomes grappled at the end of your Weapon. While they are grappled, you cannot make more attacks with that Reach Weapon."
      }
     ]
    }

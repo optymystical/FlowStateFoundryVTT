@@ -1,0 +1,3450 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 100,
+  "winner": "monsters",
+  "pass": "magic-t5",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 8,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Strike": 23,
+   "mod:Pinpoint": 5,
+   "mod:Empower": 36,
+   "defend:dodge": 75,
+   "cast:Slam": 9,
+   "cast:Cut": 21,
+   "cast:Shift": 3,
+   "mod:Toss": 3,
+   "mod:Tier Up": 3,
+   "mod:Tier Up, Again": 3,
+   "mod:Harden": 1,
+   "cast:Restore": 12,
+   "mod:Painless": 12,
+   "cast:nothingAffordable": 4,
+   "recoverEnergy": 1,
+   "cast:Mirage": 5,
+   "mod:Phantom Pain": 5,
+   "cast:Stab": 14,
+   "mod:Fidelity": 1,
+   "mod:Pervasive": 1
+  },
+  "hp": {
+   "Sim Bulwark#4bxD": "491/702",
+   "Sim Geomancer#kDlw": "210/567",
+   "Sim Illusionist#Hv7k": "278/567",
+   "Sim Striker#bsjg": "178/432",
+   "Sim Mender#rIZa": "151/567",
+   "Sim Goblin Geomancer#BNf0": "207/513",
+   "Sim Goblin Geomancer#TCmJ": "238/513",
+   "Sim Goblin Geomancer#asWA": "513/513",
+   "Sim Goblin Striker#q65q": "513/513",
+   "Sim Goblin Striker#EJDN": "513/513",
+   "Sim Goblin Striker#kxPn": "513/513",
+   "Sim Goblin Illusionist#5xp6": "513/513",
+   "Sim Goblin Illusionist#aKFW": "513/513",
+   "Sim Goblin Mender#ymF7": "513/513",
+   "Sim Goblin Mender#9akJ": "513/513"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Geomancer",
+   "Sim Illusionist",
+   "Sim Striker",
+   "Sim Mender",
+   "Sim Goblin Geomancer",
+   "Sim Goblin Geomancer"
+  ],
+  "weapons": {
+   "Spell: Strike [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 14,
+    "crits": 7,
+    "misses": 7,
+    "damage": 990,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Goblin Striker"
+    ]
+   },
+   "Spell: Slam [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 6,
+    "damage": 38,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Goblin Geomancer"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 14,
+    "damage": 445,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Goblin Mender",
+     "Goblin Striker"
+    ]
+   },
+   "Spell: Shift (Toss)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 1,
+    "damage": 354,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Geomancer"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 275,
+    "ap": 4,
+    "kills": 5,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Mirage [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Goblin Illusionist"
+    ]
+   },
+   "Spell: Stab [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 9,
+    "damage": 102,
+    "ap": 28,
+    "kills": 0,
+    "users": [
+     "Goblin Illusionist"
+    ]
+   },
+   "Spell: Mirage": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Illusionist"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 24
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 24
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 48
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 30
+   },
+   "Medium Armor (Hide)": {
+    "hits": 4,
+    "absorbed": 78
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Striker",
+    "dealt": 607,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Striker",
+    "dealt": 0,
+    "taken": 278,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "dealt": 38,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Geomancer",
+    "dealt": 354,
+    "taken": 381,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Mender",
+    "dealt": 242,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "dealt": 203,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Goblin Mender",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "dealt": 0,
+    "taken": 354,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "dealt": 0,
+    "taken": 275,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "dealt": 383,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 275,
+    "taken": 211,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Illusionist",
+    "dealt": 81,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Goblin Illusionist",
+    "dealt": 21,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Illusionist",
+    "dealt": 0,
+    "taken": 289,
+    "hits": 1,
+    "attacks": 1
+   },
+   {
+    "name": "Sim Mender",
+    "dealt": 0,
+    "taken": 416,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Striker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Strike": 12,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 8,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Striker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Slam": 9,
+     "mod:Empower": 4
+    }
+   },
+   {
+    "name": "Sim Geomancer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 20,
+     "cast:Shift": 3,
+     "mod:Toss": 3,
+     "mod:Tier Up": 3,
+     "mod:Tier Up, Again": 3,
+     "mod:Harden": 1
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Mender",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Cut": 6,
+     "mod:Empower": 4,
+     "cast:Restore": 3,
+     "mod:Painless": 3
+    },
+    "healed": 24
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Cut": 9,
+     "mod:Empower": 4
+    }
+   },
+   {
+    "name": "Sim Goblin Mender",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Cut": 6,
+     "mod:Empower": 4,
+     "cast:Restore": 3,
+     "mod:Painless": 3
+    },
+    "healed": 24
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Restore": 6,
+     "mod:Painless": 6,
+     "defend:dodge": 14
+    },
+    "healed": 48
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Strike": 9,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 6
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Strike": 2,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 2,
+     "cast:nothingAffordable": 3,
+     "recoverEnergy": 1,
+     "defend:dodge": 22
+    }
+   },
+   {
+    "name": "Sim Goblin Illusionist",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Mirage": 2,
+     "mod:Phantom Pain": 2,
+     "cast:Stab": 7,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Illusionist",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Mirage": 2,
+     "mod:Phantom Pain": 2,
+     "cast:Stab": 7,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 2
+    }
+   },
+   {
+    "name": "Sim Illusionist",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 1,
+    "used": {
+     "cast:Mirage": 1,
+     "mod:Phantom Pain": 1,
+     "mod:Fidelity": 1,
+     "mod:Pervasive": 1,
+     "cast:nothingAffordable": 1,
+     "defend:dodge": 9
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 5
+   },
+   "Sim Geomancer": {
+    "magic-theory": 5,
+    "magic-geomancy": 5
+   },
+   "Sim Illusionist": {
+    "magic-theory": 5,
+    "magic-illusion": 5
+   },
+   "Sim Striker": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 5
+   },
+   "Sim Mender": {
+    "magic-theory": 5,
+    "magic-restoration-arcana": 5
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Geomancer": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Illusionist": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Striker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Mender": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Geomancer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Striker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Illusionist": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Mender": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 42/120"
+   ],
+   "Sim Geomancer": [
+    "Light Armor (Hard Leather): 66/90"
+   ],
+   "Sim Illusionist": [
+    "Medium Armor (Soft Leather): 72/120"
+   ],
+   "Sim Striker": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Mender": [
+    "Medium Armor (Hard Leather): 150/180"
+   ],
+   "Sim Goblin Geomancer": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Striker": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Illusionist": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Mender": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2367,
+    "monsterHp": 4501,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 3,
+    "partyHp": 1886,
+    "monsterHp": 4549,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 1370,
+    "monsterHp": 4549,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 1308,
+    "monsterHp": 4549,
+    "partyDown": 5,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 1527,
+   "monsters": 581
+  },
+  "directTaken": {
+   "party": 1575,
+   "monsters": 629
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [
+    {
+     "level": "error",
+     "msg": "The Actor ZTnHUpD0PjbSWMv9 does not exist in actors",
+     "who": null
+    }
+   ],
+   "errors": [
+    "Error: The Actor ZTnHUpD0PjbSWMv9 does not exist in actors\n    at Actor.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/database/backend/server-document.mjs:1:10936)\n    at async fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:291)\n    at async #configureOperation (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:231:24)\n    at async #configureUpdate (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:147:5)\n    at"
+   ]
+  }
+ },
+ {
+  "id": "swarm-r2",
+  "group": "swarm",
+  "rotation": 2,
+  "seconds": 172,
+  "winner": "monsters",
+  "pass": "magic-t5",
+  "rounds": 5,
+  "partyLeft": 0,
+  "monstersLeft": 8,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Mirage + Strike": 3,
+   "mod:Phantom Pain": 10,
+   "defend:dodge": 119,
+   "cast:Strike": 35,
+   "mod:Pinpoint": 9,
+   "mod:Empower": 54,
+   "cast:Shift": 6,
+   "cast:Shield": 5,
+   "cast:Restore": 30,
+   "mod:Painless": 30,
+   "cast:Cut": 27,
+   "cast:Slam": 15,
+   "mod:Pervasive": 2,
+   "cast:Stab": 19,
+   "cast:Mirage": 7,
+   "cast:nothingAffordable": 4,
+   "recoverEnergy": 1
+  },
+  "hp": {
+   "Sim Bulwark#g8Iw": "579/702",
+   "Sim Geomancer#GCu3": "114/567",
+   "Sim Illusionist#aUmk": "202/567",
+   "Sim Striker#LDor": "168/432",
+   "Sim Mender#rxXp": "240/567",
+   "Sim Goblin Geomancer#lOVF": "271/513",
+   "Sim Goblin Geomancer#3U4z": "243/513",
+   "Sim Goblin Geomancer#dmW9": "396/513",
+   "Sim Goblin Striker#MrRs": "513/513",
+   "Sim Goblin Striker#CZmb": "513/513",
+   "Sim Goblin Striker#ACCf": "513/513",
+   "Sim Goblin Illusionist#1V4G": "513/513",
+   "Sim Goblin Illusionist#oUPN": "513/513",
+   "Sim Goblin Mender#WeDg": "513/513",
+   "Sim Goblin Mender#P3EH": "513/513"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Geomancer",
+   "Sim Illusionist",
+   "Sim Striker",
+   "Sim Mender",
+   "Sim Goblin Geomancer",
+   "Sim Goblin Geomancer"
+  ],
+  "weapons": {
+   "Spell: Mirage + Strike": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 0,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Striker",
+     "Illusionist"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 1,
+    "damage": 560,
+    "ap": 16,
+    "kills": 5,
+    "users": [
+     "Striker",
+     "Geomancer",
+     "Bulwark"
+    ]
+   },
+   "Spell: Shift (Shift) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 5,
+    "damage": 106,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Goblin Geomancer"
+    ]
+   },
+   "Spell: Strike [M]": {
+    "attacks": 29,
+    "followups": 0,
+    "hits": 21,
+    "crits": 10,
+    "misses": 8,
+    "damage": 1024,
+    "ap": 58,
+    "kills": 0,
+    "users": [
+     "Goblin Striker"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 27,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 19,
+    "damage": 439,
+    "ap": 54,
+    "kills": 0,
+    "users": [
+     "Goblin Striker",
+     "Goblin Mender"
+    ]
+   },
+   "Spell: Slam [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 12,
+    "damage": 0,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "Goblin Geomancer"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 213,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Illusionist"
+    ]
+   },
+   "Spell: Mirage [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Goblin Illusionist"
+    ]
+   },
+   "Spell: Stab [M]": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 10,
+    "damage": 59,
+    "ap": 34,
+    "kills": 0,
+    "users": [
+     "Goblin Illusionist"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 2,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 18
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 24
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 120
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 33
+   },
+   "Medium Armor (Hide)": {
+    "hits": 2,
+    "absorbed": 44
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Striker",
+    "dealt": 110,
+    "taken": 288,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "dealt": 0,
+    "taken": 290,
+    "hits": 0,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "dealt": 478,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Geomancer",
+    "dealt": 209,
+    "taken": 477,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "dealt": 106,
+    "taken": 270,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 241,
+    "taken": 123,
+    "hits": 6,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "dealt": 380,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "dealt": 0,
+    "taken": 213,
+    "hits": 3,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Illusionist",
+    "dealt": 213,
+    "taken": 413,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "dealt": 546,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Goblin Illusionist",
+    "dealt": 19,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Illusionist",
+    "dealt": 40,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Mender",
+    "dealt": 0,
+    "taken": 327,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Mender",
+    "dealt": 10,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Mender",
+    "dealt": 49,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Striker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Mirage + Strike": 1,
+     "mod:Phantom Pain": 1,
+     "cast:Strike": 1,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 1,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "cast:Shift": 3,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 2
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Strike": 15,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 10,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Geomancer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 15,
+     "cast:Strike": 3,
+     "mod:Empower": 2
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "cast:Shift": 3,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 2
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 7,
+    "used": {
+     "cast:Shield": 5,
+     "cast:Strike": 2,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 2,
+     "defend:dodge": 20,
+     "cast:nothingAffordable": 4
+    }
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Restore": 12,
+     "mod:Painless": 12,
+     "defend:dodge": 45
+    },
+    "healed": 96
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Cut": 15,
+     "mod:Empower": 6
+    }
+   },
+   {
+    "name": "Sim Goblin Mender",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Restore": 9,
+     "mod:Painless": 9,
+     "cast:Cut": 6,
+     "mod:Empower": 3
+    },
+    "healed": 72
+   },
+   {
+    "name": "Sim Goblin Mender",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Restore": 9,
+     "mod:Painless": 9,
+     "cast:Cut": 6,
+     "mod:Empower": 3
+    },
+    "healed": 72
+   },
+   {
+    "name": "Sim Goblin Geomancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Slam": 15,
+     "mod:Empower": 6,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Illusionist",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Mirage + Strike": 2,
+     "mod:Phantom Pain": 2,
+     "mod:Pervasive": 2,
+     "cast:Stab": 2,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 2,
+     "defend:dodge": 21
+    }
+   },
+   {
+    "name": "Sim Goblin Striker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 14,
+    "used": {
+     "cast:Strike": 14,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 10,
+     "defend:dodge": 1,
+     "recoverEnergy": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Illusionist",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Mirage": 3,
+     "mod:Phantom Pain": 3,
+     "cast:Stab": 9,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Illusionist",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Mirage": 4,
+     "mod:Phantom Pain": 4,
+     "cast:Stab": 8,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 4,
+    "magic-geomancy": 2,
+    "magic-protection-arcana": 1
+   },
+   "Sim Geomancer": {
+    "magic-theory": 5,
+    "magic-geomancy": 4,
+    "magic-arcanomancy": 2,
+    "magic-slashing": 1
+   },
+   "Sim Illusionist": {
+    "magic-theory": 5,
+    "magic-illusion": 4,
+    "magic-arcanomancy": 2,
+    "magic-piercing": 1
+   },
+   "Sim Striker": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 4,
+    "magic-illusion": 2,
+    "magic-slashing": 1
+   },
+   "Sim Mender": {
+    "magic-theory": 5,
+    "magic-restoration-arcana": 4,
+    "magic-geomancy": 2,
+    "magic-gravity": 1
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Geomancer": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Illusionist": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Striker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Mender": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Geomancer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Striker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Illusionist": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Mender": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 76/120"
+   ],
+   "Sim Geomancer": [
+    "Light Armor (Hard Leather): 72/90"
+   ],
+   "Sim Illusionist": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Striker": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Mender": [
+    "Medium Armor (Hard Leather): 147/180"
+   ],
+   "Sim Goblin Geomancer": [
+    "Light Armor (Soft Leather): 36/60"
+   ],
+   "Sim Goblin Striker": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Illusionist": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Mender": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2247,
+    "monsterHp": 4503,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 3,
+    "partyHp": 1833,
+    "monsterHp": 4453,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 1639,
+    "monsterHp": 4501,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 1573,
+    "monsterHp": 4501,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 1303,
+    "monsterHp": 4501,
+    "partyDown": 5,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 1532,
+   "monsters": 629
+  },
+  "directTaken": {
+   "party": 1628,
+   "monsters": 773
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 125,
+  "winner": "monsters",
+  "pass": "magic-t5",
+  "rounds": 8,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:nothingAffordable": 11,
+   "cast:Shift": 15,
+   "mod:Toss": 15,
+   "mod:Tier Up": 13,
+   "mod:Muddy": 5,
+   "defend:dodge": 64,
+   "cast:Strike": 46,
+   "mod:Pinpoint": 3,
+   "mod:Empower": 29,
+   "mod:Tier Up, Again": 3,
+   "mod:Harden": 1,
+   "cast:Mirage": 3,
+   "mod:Phantom Pain": 3,
+   "mod:Fidelity": 3,
+   "mod:Pervasive": 3,
+   "cast:Restore": 33,
+   "mod:Painless": 33,
+   "recoverEnergy": 1
+  },
+  "hp": {
+   "Sim Bulwark#ZT94": "141/702",
+   "Sim Geomancer#kZQd": "185/567",
+   "Sim Illusionist#MNWt": "247/567",
+   "Sim Striker#Dn4d": "155/432",
+   "Sim Mender#G1Q0": "132/567",
+   "Sim Raider Geomancer#GPur": "369/765",
+   "Sim Raider Striker#2OJr": "447/765",
+   "Sim Raider Illusionist#tXoJ": "765/765",
+   "Sim Raider Mender#WKex": "765/765",
+   "Sim Raider Witch#GuWJ": "188/540"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Geomancer",
+   "Sim Illusionist",
+   "Sim Striker",
+   "Sim Mender",
+   "Sim Raider Geomancer",
+   "Sim Raider Witch"
+  ],
+  "weapons": {
+   "Spell: Shift (Toss) [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 7,
+    "damage": 449,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Raider Geomancer"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 20,
+    "crits": 12,
+    "misses": 4,
+    "damage": 1118,
+    "ap": 48,
+    "kills": 6,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Strike [M]": {
+    "attacks": 22,
+    "followups": 0,
+    "hits": 13,
+    "crits": 7,
+    "misses": 9,
+    "damage": 1622,
+    "ap": 44,
+    "kills": 0,
+    "users": [
+     "Raider Striker"
+    ]
+   },
+   "Spell: Shift (Toss)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 200,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Geomancer"
+    ]
+   },
+   "Spell: Mirage": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Illusionist"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 32
+   },
+   "Medium Armor (Hide)": {
+    "hits": 1,
+    "absorbed": 30
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 24
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Geomancer",
+    "dealt": 449,
+    "taken": 456,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Striker",
+    "dealt": 0,
+    "taken": 301,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 1118,
+    "taken": 561,
+    "hits": 20,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Raider Witch",
+    "dealt": 0,
+    "taken": 436,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Striker",
+    "dealt": 1622,
+    "taken": 426,
+    "hits": 13,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Geomancer",
+    "dealt": 200,
+    "taken": 414,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Illusionist",
+    "dealt": 0,
+    "taken": 360,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Mender",
+    "dealt": 0,
+    "taken": 435,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "cast:nothingAffordable": 1,
+     "cast:Restore": 12,
+     "mod:Painless": 12,
+     "defend:dodge": 3
+    },
+    "casts": 12,
+    "healed": 96
+   },
+   {
+    "name": "Sim Raider Geomancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Shift": 12,
+     "mod:Toss": 12,
+     "mod:Tier Up": 10,
+     "mod:Muddy": 5,
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "Sim Striker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Strike": 24,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 16,
+     "defend:dodge": 8
+    }
+   },
+   {
+    "name": "Sim Raider Witch",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Raider Striker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 22,
+    "used": {
+     "cast:Strike": 22,
+     "mod:Pinpoint": 2,
+     "mod:Empower": 13,
+     "defend:dodge": 15,
+     "recoverEnergy": 1
+    }
+   },
+   {
+    "name": "Sim Geomancer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12,
+     "cast:Shift": 3,
+     "mod:Toss": 3,
+     "mod:Tier Up": 3,
+     "mod:Tier Up, Again": 3,
+     "mod:Harden": 1
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Raider Illusionist",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "cast:nothingAffordable": 7
+    }
+   },
+   {
+    "name": "Sim Illusionist",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Mirage": 3,
+     "mod:Phantom Pain": 3,
+     "mod:Fidelity": 3,
+     "mod:Pervasive": 3,
+     "cast:nothingAffordable": 3,
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Raider Mender",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Restore": 21,
+     "mod:Painless": 21
+    },
+    "healed": 252
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 5
+   },
+   "Sim Geomancer": {
+    "magic-theory": 5,
+    "magic-geomancy": 5
+   },
+   "Sim Illusionist": {
+    "magic-theory": 5,
+    "magic-illusion": 5
+   },
+   "Sim Striker": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 5
+   },
+   "Sim Mender": {
+    "magic-theory": 5,
+    "magic-restoration-arcana": 5
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Geomancer": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Illusionist": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Striker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Mender": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Geomancer": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Striker": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Illusionist": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Mender": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Witch": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Geomancer": [
+    "Light Armor (Hard Leather): 66/90"
+   ],
+   "Sim Illusionist": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Striker": [
+    "Light Armor (Soft Leather): 48/60"
+   ],
+   "Sim Mender": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Raider Geomancer": [
+    "Medium Armor (Hide): 120/150"
+   ],
+   "Sim Raider Striker": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Illusionist": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Mender": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Witch": [
+    "Light Armor (Soft Leather): 80/100"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2534,
+    "monsterHp": 3191,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2268,
+    "monsterHp": 3089,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2136,
+    "monsterHp": 2980,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 1832,
+    "monsterHp": 2852,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 1421,
+    "monsterHp": 2746,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 1421,
+    "monsterHp": 2748,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 1095,
+    "monsterHp": 2619,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 860,
+    "monsterHp": 2534,
+    "partyDown": 5,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 1975,
+   "monsters": 1066
+  },
+  "directTaken": {
+   "party": 2071,
+   "monsters": 1318
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r2",
+  "group": "raiders",
+  "rotation": 2,
+  "seconds": 109,
+  "winner": "monsters",
+  "pass": "magic-t5",
+  "rounds": 7,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {
+   "into": 1
+  },
+  "used": {
+   "cast:Force": 4,
+   "mod:Empower": 25,
+   "defend:dodge": 69,
+   "opt:dir=into": 1,
+   "cast:Mirage + Strike": 3,
+   "mod:Phantom Pain": 3,
+   "cast:Strike": 35,
+   "mod:Pinpoint": 9,
+   "cast:Restore": 18,
+   "mod:Painless": 18,
+   "cast:Shift": 18,
+   "mod:Toss": 18,
+   "mod:Tier Up": 14,
+   "mod:Muddy": 6,
+   "mod:Pervasive": 2,
+   "cast:nothingAffordable": 6,
+   "cast:Shield": 6,
+   "recoverEnergy": 2
+  },
+  "hp": {
+   "Sim Bulwark#ZQTI": "172/702",
+   "Sim Geomancer#EbPA": "269/567",
+   "Sim Illusionist#C4XR": "260/567",
+   "Sim Striker#DMSm": "203/432",
+   "Sim Mender#9FPb": "191/567",
+   "Sim Raider Geomancer#BTnX": "527/765",
+   "Sim Raider Striker#8q6T": "765/765",
+   "Sim Raider Illusionist#glij": "765/765",
+   "Sim Raider Mender#xvEl": "509/765",
+   "Sim Raider Witch#bgQe": "229/540"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Geomancer",
+   "Sim Illusionist",
+   "Sim Striker",
+   "Sim Mender",
+   "Sim Raider Mender",
+   "Sim Raider Witch"
+  ],
+  "weapons": {
+   "Spell: Force": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Mender"
+    ]
+   },
+   "Spell: Mirage + Strike": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Striker",
+     "Illusionist"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 13,
+    "crits": 7,
+    "misses": 3,
+    "damage": 693,
+    "ap": 36,
+    "kills": 7,
+    "users": [
+     "Striker",
+     "Illusionist",
+     "Bulwark"
+    ]
+   },
+   "Spell: Shift (Toss) [M]": {
+    "attacks": 18,
+    "followups": 0,
+    "hits": 7,
+    "crits": 0,
+    "misses": 11,
+    "damage": 270,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Raider Geomancer"
+    ]
+   },
+   "Spell: Strike [M]": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 17,
+    "crits": 7,
+    "misses": 3,
+    "damage": 1582,
+    "ap": 40,
+    "kills": 0,
+    "users": [
+     "Raider Striker"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 5,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 3,
+    "absorbed": 36
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 1,
+    "absorbed": 9
+   },
+   "Medium Armor (Hide)": {
+    "hits": 2,
+    "absorbed": 48
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Mender",
+    "dealt": 0,
+    "taken": 392,
+    "hits": 3,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Raider Witch",
+    "dealt": 0,
+    "taken": 269,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Mender",
+    "dealt": 0,
+    "taken": 186,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Striker",
+    "dealt": 224,
+    "taken": 261,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Geomancer",
+    "dealt": 270,
+    "taken": 238,
+    "hits": 7,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Raider Striker",
+    "dealt": 1582,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Geomancer",
+    "dealt": 0,
+    "taken": 314,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Illusionist",
+    "dealt": 45,
+    "taken": 355,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 424,
+    "taken": 530,
+    "hits": 15,
+    "attacks": 18
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Force": 4,
+     "mod:Empower": 3,
+     "cast:Restore": 14,
+     "mod:Painless": 14,
+     "defend:dodge": 16,
+     "mod:Pinpoint": 1
+    },
+    "knockbacks": {
+     "into": 1
+    },
+    "healed": 112
+   },
+   {
+    "name": "Sim Raider Witch",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Raider Mender",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "cast:Restore": 4,
+     "mod:Painless": 4
+    },
+    "turnMoved": 0,
+    "casts": 4,
+    "healed": 48
+   },
+   {
+    "name": "Sim Striker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Mirage + Strike": 1,
+     "mod:Phantom Pain": 1,
+     "cast:Strike": 1,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 1,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Raider Geomancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Shift": 18,
+     "mod:Toss": 18,
+     "mod:Tier Up": 14,
+     "mod:Muddy": 6,
+     "defend:dodge": 13
+    }
+   },
+   {
+    "name": "Sim Raider Striker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 20,
+    "used": {
+     "cast:Strike": 20,
+     "mod:Pinpoint": 2,
+     "mod:Empower": 12,
+     "recoverEnergy": 2
+    }
+   },
+   {
+    "name": "Sim Geomancer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Illusionist",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13,
+     "cast:Mirage + Strike": 2,
+     "mod:Phantom Pain": 2,
+     "mod:Pervasive": 2,
+     "cast:Strike": 2,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 2
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "Sim Raider Illusionist",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "cast:nothingAffordable": 6
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Shield": 6,
+     "cast:Strike": 12,
+     "mod:Pinpoint": 4,
+     "mod:Empower": 7,
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 4,
+    "magic-geomancy": 2,
+    "magic-protection-arcana": 1
+   },
+   "Sim Geomancer": {
+    "magic-theory": 5,
+    "magic-geomancy": 4,
+    "magic-arcanomancy": 2,
+    "magic-slashing": 1
+   },
+   "Sim Illusionist": {
+    "magic-theory": 5,
+    "magic-illusion": 4,
+    "magic-arcanomancy": 2,
+    "magic-piercing": 1
+   },
+   "Sim Striker": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 4,
+    "magic-illusion": 2,
+    "magic-slashing": 1
+   },
+   "Sim Mender": {
+    "magic-theory": 5,
+    "magic-restoration-arcana": 4,
+    "magic-geomancy": 2,
+    "magic-gravity": 1
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Geomancer": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Illusionist": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Striker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Mender": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Geomancer": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Striker": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Illusionist": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Mender": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Witch": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 72/120"
+   ],
+   "Sim Geomancer": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Illusionist": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Striker": [
+    "Light Armor (Soft Leather): 24/60"
+   ],
+   "Sim Mender": [
+    "Medium Armor (Hard Leather): 171/180"
+   ],
+   "Sim Raider Geomancer": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Striker": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Illusionist": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Mender": [
+    "Medium Armor (Hide): 120/150"
+   ],
+   "Sim Raider Witch": [
+    "Light Armor (Soft Leather): 80/100"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2279,
+    "monsterHp": 3021,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 2208,
+    "monsterHp": 3010,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 1999,
+    "monsterHp": 2961,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 1828,
+    "monsterHp": 2854,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 1839,
+    "monsterHp": 2816,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 1466,
+    "monsterHp": 2795,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 1095,
+    "monsterHp": 2795,
+    "partyDown": 5,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 112
+  },
+  "lostBy": {
+   "party": 1740,
+   "monsters": 805
+  },
+  "directTaken": {
+   "party": 1852,
+   "monsters": 693
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Raider Witch": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 62,
+  "winner": "party",
+  "pass": "magic-t5",
+  "rounds": 4,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Mirage": 1,
+   "mod:Phantom Pain": 1,
+   "mod:Fidelity": 1,
+   "mod:Pervasive": 1,
+   "defend:dodge": 40,
+   "cast:nothingAffordable": 7,
+   "cast:Shift": 20,
+   "mod:Toss": 17,
+   "mod:Tier Up": 14,
+   "mod:Tier Up, Again": 11,
+   "mod:Harden": 4,
+   "mod:Muddy": 2,
+   "mod:Empower": 16,
+   "cast:Strike": 19,
+   "mod:Pinpoint": 8
+  },
+  "hp": {
+   "Sim Bulwark#vF8I": "702/702",
+   "Sim Geomancer#pU4L": "567/567",
+   "Sim Illusionist#VVtR": "567/567",
+   "Sim Striker#MsKY": "432/432",
+   "Sim Mender#MrLv": "567/567",
+   "Sim Ogre Magus#6JiX": "1181/2376"
+  },
+  "down": [
+   "Sim Ogre Magus"
+  ],
+  "weapons": {
+   "Spell: Mirage": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Illusionist"
+    ]
+   },
+   "Spell: Shift (Toss)": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Geomancer"
+    ]
+   },
+   "Spell: Shift (Toss) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 19,
+    "crits": 12,
+    "misses": 0,
+    "damage": 1195,
+    "ap": 45,
+    "kills": 1,
+    "users": [
+     "Bulwark",
+     "Striker"
+    ]
+   },
+   "Spell: Shift (Shift)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Geomancer"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 234
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Illusionist",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 1
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 0,
+    "taken": 1195,
+    "hits": 0,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Geomancer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Striker",
+    "dealt": 664,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 531,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Illusionist",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 1,
+    "used": {
+     "cast:Mirage": 1,
+     "mod:Phantom Pain": 1,
+     "mod:Fidelity": 1,
+     "mod:Pervasive": 1,
+     "cast:nothingAffordable": 4
+    }
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 32,
+     "cast:Shift": 8,
+     "mod:Toss": 8,
+     "mod:Tier Up": 8,
+     "mod:Muddy": 2,
+     "mod:Harden": 3,
+     "mod:Tier Up, Again": 8,
+     "mod:Empower": 1
+    },
+    "turnMoved": 0,
+    "casts": 8
+   },
+   {
+    "name": "Sim Geomancer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Shift": 12,
+     "mod:Toss": 9,
+     "mod:Tier Up": 6,
+     "mod:Tier Up, Again": 3,
+     "mod:Harden": 1
+    }
+   },
+   {
+    "name": "Sim Striker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Strike": 7,
+     "mod:Pinpoint": 7,
+     "mod:Empower": 7
+    },
+    "turnMoved": 0,
+    "casts": 7
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Strike": 12,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 8
+    }
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "cast:nothingAffordable": 3
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 5
+   },
+   "Sim Geomancer": {
+    "magic-theory": 5,
+    "magic-geomancy": 5
+   },
+   "Sim Illusionist": {
+    "magic-theory": 5,
+    "magic-illusion": 5
+   },
+   "Sim Striker": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 5
+   },
+   "Sim Mender": {
+    "magic-theory": 5,
+    "magic-restoration-arcana": 5
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Geomancer": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Illusionist": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Striker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Mender": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Geomancer": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Illusionist": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Striker": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Mender": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 646/880"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2835,
+    "monsterHp": 2266,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2835,
+    "monsterHp": 1868,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2835,
+    "monsterHp": 1453,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2835,
+    "monsterHp": 1181,
+    "partyDown": 0,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 1195
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 1195
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r2",
+  "group": "boss",
+  "rotation": 2,
+  "seconds": 75,
+  "winner": "party",
+  "pass": "magic-t5",
+  "rounds": 6,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Shift": 12,
+   "mod:Toss": 12,
+   "mod:Tier Up": 12,
+   "mod:Muddy": 2,
+   "mod:Harden": 3,
+   "mod:Tier Up, Again": 12,
+   "defend:dodge": 48,
+   "mod:Empower": 17,
+   "cast:Force": 6,
+   "mod:Pinpoint": 8,
+   "cast:Mirage + Strike": 3,
+   "mod:Phantom Pain": 3,
+   "mod:Pervasive": 3,
+   "cast:Strike": 22,
+   "cast:Shield": 5,
+   "cast:Restore": 12,
+   "mod:Painless": 12
+  },
+  "hp": {
+   "Sim Bulwark#BxGO": "702/702",
+   "Sim Geomancer#5Np4": "40/567",
+   "Sim Illusionist#KZMF": "395/567",
+   "Sim Striker#xv8U": "-1/432",
+   "Sim Mender#5P0u": "567/567",
+   "Sim Ogre Magus#jRUG": "1199/2376"
+  },
+  "down": [
+   "Sim Geomancer",
+   "Sim Striker",
+   "Sim Ogre Magus"
+  ],
+  "weapons": {
+   "Spell: Shift (Toss) [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 5,
+    "damage": 1228,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Mender"
+    ]
+   },
+   "Spell: Mirage + Strike": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Illusionist"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 22,
+    "followups": 0,
+    "hits": 19,
+    "crits": 8,
+    "misses": 3,
+    "damage": 1177,
+    "ap": 53,
+    "kills": 1,
+    "users": [
+     "Illusionist",
+     "Geomancer",
+     "Bulwark"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 1,
+    "absorbed": 12
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 24
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 48
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 1228,
+    "taken": 1177,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Striker",
+    "dealt": 0,
+    "taken": 433,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Mender",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Illusionist",
+    "dealt": 618,
+    "taken": 196,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Geomancer",
+    "dealt": 180,
+    "taken": 599,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 379,
+    "taken": 0,
+    "hits": 14,
+    "attacks": 15
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Shift": 12,
+     "mod:Toss": 12,
+     "mod:Tier Up": 12,
+     "mod:Muddy": 2,
+     "mod:Harden": 3,
+     "mod:Tier Up, Again": 12,
+     "mod:Empower": 1,
+     "defend:dodge": 31
+    }
+   },
+   {
+    "name": "Sim Striker",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Force": 6,
+     "mod:Pinpoint": 2,
+     "mod:Empower": 2,
+     "cast:Restore": 12,
+     "mod:Painless": 12
+    },
+    "healed": 96
+   },
+   {
+    "name": "Sim Illusionist",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Mirage + Strike": 3,
+     "mod:Phantom Pain": 3,
+     "mod:Pervasive": 3,
+     "cast:Strike": 9,
+     "mod:Pinpoint": 3,
+     "mod:Empower": 6,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Geomancer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Strike": 3,
+     "mod:Empower": 2,
+     "defend:dodge": 10
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Shield": 5,
+     "cast:Strike": 10,
+     "mod:Pinpoint": 3,
+     "mod:Empower": 6
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 4,
+    "magic-geomancy": 2,
+    "magic-protection-arcana": 1
+   },
+   "Sim Geomancer": {
+    "magic-theory": 5,
+    "magic-geomancy": 4,
+    "magic-arcanomancy": 2,
+    "magic-slashing": 1
+   },
+   "Sim Illusionist": {
+    "magic-theory": 5,
+    "magic-illusion": 4,
+    "magic-arcanomancy": 2,
+    "magic-piercing": 1
+   },
+   "Sim Striker": {
+    "magic-theory": 5,
+    "magic-arcanomancy": 4,
+    "magic-illusion": 2,
+    "magic-slashing": 1
+   },
+   "Sim Mender": {
+    "magic-theory": 5,
+    "magic-restoration-arcana": 4,
+    "magic-geomancy": 2,
+    "magic-gravity": 1
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Geomancer": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Illusionist": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Striker": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Mender": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Geomancer": [
+    "Light Armor (Hard Leather): 66/90"
+   ],
+   "Sim Illusionist": [
+    "Medium Armor (Soft Leather): 72/120"
+   ],
+   "Sim Striker": [
+    "Light Armor (Soft Leather): 48/60"
+   ],
+   "Sim Mender": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 880/880"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2403,
+    "monsterHp": 2034,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2119,
+    "monsterHp": 1750,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2119,
+    "monsterHp": 1705,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2112,
+    "monsterHp": 1472,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1876,
+    "monsterHp": 1272,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1704,
+    "monsterHp": 1199,
+    "partyDown": 2,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 1131,
+   "monsters": 1177
+  },
+  "directTaken": {
+   "party": 1228,
+   "monsters": 1177
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Striker is dead: Restore needs Resuscitate for that.",
+     "who": "Sim Mender"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

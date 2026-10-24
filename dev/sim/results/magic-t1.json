@@ -3,67 +3,61 @@
   "id": "swarm-r1",
   "group": "swarm",
   "rotation": 1,
-  "seconds": 109,
+  "seconds": 126,
   "winner": "party",
   "pass": "magic-t1",
   "rounds": 5,
-  "partyLeft": 4,
+  "partyLeft": 3,
   "monstersLeft": 0,
   "followups": 0,
   "knockbacks": {
-   "into": 9,
-   "down": 3,
-   "away": 1
+   "into": 13,
+   "down": 4,
+   "away": 2
   },
   "used": {
-   "cast:Burden": 19,
-   "mod:Burden": 19,
-   "defend:dodge": 120,
-   "cast:Force + Slam": 16,
+   "cast:Burden": 12,
+   "mod:Burden": 12,
+   "defend:dodge": 130,
+   "cast:Force + Slam": 14,
    "mod:Crush": 6,
    "mod:Bash": 6,
    "mod:Beatdown": 4,
-   "cast:Force + Stab": 16,
-   "mod:Weakpoint": 2,
-   "opt:dir=into": 9,
-   "mod:Setup": 1,
+   "opt:dir=into": 13,
+   "cast:Cut + Slam": 9,
+   "mod:Bleed": 25,
+   "cast:Cut + Stab": 21,
    "cast:Shield": 9,
-   "mod:Reflect": 6,
-   "cast:Personal Repulsion": 5,
-   "mod:Personal Repulsion": 5,
-   "cast:Force + Cut": 10,
-   "mod:Pinpoint": 1,
-   "mod:Bleed": 17,
-   "cast:Cut + Slam": 10,
-   "mod:Rend": 3,
-   "cast:Cut + Stab": 13,
+   "mod:Reflect": 5,
+   "cast:Force + Stab": 26,
+   "mod:Pinpoint": 2,
    "mod:Pierce": 8,
+   "opt:dir=down": 4,
+   "opt:dir=away": 2,
+   "cast:Force + Cut": 10,
    "mod:Dampen": 1,
-   "cast:Force": 6,
-   "cast:nothingAffordable": 2,
-   "recoverEnergy": 10,
-   "cast:Cut": 2,
-   "opt:dir=down": 3,
-   "opt:dir=away": 1
+   "cast:Force": 5,
+   "cast:Cut": 6
   },
   "hp": {
-   "Sim Bulwark#sOJ3": "702/702",
-   "Sim Slasher#jrdl": "456/567",
-   "Sim Crusher#KZVI": "567/567",
-   "Sim Piercer#smRT": "71/432",
-   "Sim Warden#scxr": "567/567",
-   "Sim Goblin Cutter#IfWu": "179/513",
-   "Sim Goblin Cutter#pFwJ": "204/513",
-   "Sim Goblin Cutter#Il7t": "238/513",
-   "Sim Goblin Stabber#ZNll": "159/513",
-   "Sim Goblin Stabber#Q69s": "226/513",
-   "Sim Goblin Stabber#cpBu": "25/513",
-   "Sim Goblin Basher#rRgx": "225/513",
-   "Sim Goblin Basher#Dt6M": "230/513",
-   "Sim Goblin Pusher#Kk5v": "221/513",
-   "Sim Goblin Pusher#EX4e": "214/513"
+   "Sim Bulwark#oScv": "702/702",
+   "Sim Slasher#og16": "258/567",
+   "Sim Crusher#yaKd": "298/567",
+   "Sim Piercer#2kIX": "167/432",
+   "Sim Warden#dOEC": "567/567",
+   "Sim Goblin Cutter#wziP": "140/513",
+   "Sim Goblin Cutter#pF8i": "214/513",
+   "Sim Goblin Cutter#e5hI": "250/513",
+   "Sim Goblin Stabber#qaNc": "198/513",
+   "Sim Goblin Stabber#gl1s": "78/513",
+   "Sim Goblin Stabber#3pzm": "214/513",
+   "Sim Goblin Basher#Ao4b": "228/513",
+   "Sim Goblin Basher#GeKn": "200/513",
+   "Sim Goblin Pusher#sbaj": "217/513",
+   "Sim Goblin Pusher#SwHs": "160/513"
   },
   "down": [
+   "Sim Slasher",
    "Sim Piercer",
    "Sim Goblin Cutter",
    "Sim Goblin Cutter",
@@ -78,28 +72,27 @@
   ],
   "weapons": {
    "Spell: Force": {
-    "attacks": 31,
+    "attacks": 17,
     "followups": 0,
-    "hits": 13,
-    "crits": 7,
-    "misses": 18,
+    "hits": 5,
+    "crits": 2,
+    "misses": 12,
     "damage": 0,
-    "ap": 60,
+    "ap": 34,
     "kills": 0,
     "users": [
      "Goblin Basher",
-     "Warden",
      "Goblin Pusher"
     ]
    },
    "Spell: Force + Slam": {
-    "attacks": 16,
+    "attacks": 15,
     "followups": 0,
-    "hits": 7,
-    "crits": 3,
-    "misses": 9,
-    "damage": 342,
-    "ap": 32,
+    "hits": 10,
+    "crits": 9,
+    "misses": 5,
+    "damage": 784,
+    "ap": 28,
     "kills": 0,
     "users": [
      "Goblin Basher",
@@ -107,26 +100,38 @@
     ],
     "force": 0
    },
-   "Spell: Force + Stab": {
-    "attacks": 17,
+   "Spell: Cut + Slam": {
+    "attacks": 9,
     "followups": 0,
-    "hits": 4,
+    "hits": 1,
     "crits": 1,
-    "misses": 13,
-    "damage": 117,
-    "ap": 34,
+    "misses": 8,
+    "damage": 112,
+    "ap": 18,
     "kills": 0,
     "users": [
-     "Piercer",
-     "Goblin Pusher"
+     "Goblin Cutter"
+    ]
+   },
+   "Spell: Cut + Stab": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 17,
+    "damage": 199,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
     ]
    },
    "Spell: Shield": {
     "attacks": 9,
     "followups": 0,
-    "hits": 7,
-    "crits": 2,
-    "misses": 2,
+    "hits": 5,
+    "crits": 3,
+    "misses": 4,
     "damage": 0,
     "ap": 18,
     "kills": 0,
@@ -135,54 +140,42 @@
      "Bulwark"
     ]
    },
-   "Spell: Force + Cut": {
-    "attacks": 22,
+   "Spell: Force + Stab": {
+    "attacks": 33,
     "followups": 0,
-    "hits": 18,
-    "crits": 9,
-    "misses": 4,
-    "damage": 1350,
+    "hits": 17,
+    "crits": 7,
+    "misses": 16,
+    "damage": 689,
+    "ap": 52,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Goblin Pusher"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 14,
+    "crits": 7,
+    "misses": 6,
+    "damage": 1305,
     "ap": 45,
     "kills": 0,
     "users": [
      "Crusher"
     ],
-    "force": 42
-   },
-   "Spell: Cut + Slam": {
-    "attacks": 10,
-    "followups": 0,
-    "hits": 9,
-    "crits": 3,
-    "misses": 1,
-    "damage": 763,
-    "ap": 20,
-    "kills": 0,
-    "users": [
-     "Slasher"
-    ]
-   },
-   "Spell: Cut + Stab": {
-    "attacks": 13,
-    "followups": 0,
-    "hits": 3,
-    "crits": 2,
-    "misses": 10,
-    "damage": 242,
-    "ap": 26,
-    "kills": 0,
-    "users": [
-     "Goblin Stabber"
-    ]
+    "force": 39
    },
    "Spell: Cut": {
-    "attacks": 2,
+    "attacks": 6,
     "followups": 0,
-    "hits": 1,
-    "crits": 0,
-    "misses": 1,
-    "damage": 19,
-    "ap": 4,
+    "hits": 4,
+    "crits": 1,
+    "misses": 2,
+    "damage": 78,
+    "ap": 12,
     "kills": 0,
     "users": [
      "Goblin Stabber"
@@ -191,119 +184,123 @@
   },
   "armor": {
    "Light Armor (Soft Leather)": {
-    "hits": 30,
-    "absorbed": 342
+    "hits": 27,
+    "absorbed": 324
    },
    "Light Armor (Hard Leather)": {
-    "hits": 2,
-    "absorbed": 12
+    "hits": 3,
+    "absorbed": 18
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 120
    }
   },
   "creatures": [
    {
     "name": "Sim Goblin Basher",
-    "dealt": 24,
-    "taken": 220,
+    "dealt": 147,
+    "taken": 162,
     "hits": 3,
-    "attacks": 10
+    "attacks": 7
    },
    {
     "name": "Sim Bulwark",
-    "dealt": 318,
+    "dealt": 432,
     "taken": 0,
     "hits": 9,
     "attacks": 12
    },
    {
     "name": "Sim Piercer",
-    "dealt": 80,
-    "taken": 211,
-    "hits": 3,
-    "attacks": 3
-   },
-   {
-    "name": "Sim Goblin Cutter",
     "dealt": 0,
-    "taken": 232,
+    "taken": 259,
     "hits": 0,
     "attacks": 0
-   },
-   {
-    "name": "Sim Goblin Cutter",
-    "dealt": 0,
-    "taken": 171,
-    "hits": 0,
-    "attacks": 0
-   },
-   {
-    "name": "Sim Warden",
-    "dealt": 0,
-    "taken": 0,
-    "hits": 11,
-    "attacks": 15
    },
    {
     "name": "Sim Crusher",
-    "dealt": 1350,
+    "dealt": 1305,
+    "taken": 269,
+    "hits": 14,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 112,
+    "taken": 316,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Slasher",
+    "dealt": 0,
+    "taken": 309,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 0,
+    "taken": 206,
+    "hits": 0,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 182,
+    "taken": 153,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 593,
     "taken": 0,
-    "hits": 18,
+    "hits": 15,
     "attacks": 22
    },
    {
     "name": "Sim Goblin Cutter",
     "dealt": 0,
-    "taken": 239,
-    "hits": 0,
-    "attacks": 0
-   },
-   {
-    "name": "Sim Slasher",
-    "dealt": 763,
-    "taken": 111,
-    "hits": 9,
-    "attacks": 10
-   },
-   {
-    "name": "Sim Goblin Stabber",
-    "dealt": 0,
-    "taken": 256,
+    "taken": 212,
     "hits": 0,
     "attacks": 3
    },
    {
     "name": "Sim Goblin Stabber",
-    "dealt": 138,
-    "taken": 134,
+    "dealt": 95,
+    "taken": 258,
     "hits": 3,
-    "attacks": 6
-   },
-   {
-    "name": "Sim Goblin Stabber",
-    "dealt": 123,
-    "taken": 380,
-    "hits": 1,
-    "attacks": 6
+    "attacks": 9
    },
    {
     "name": "Sim Goblin Pusher",
     "dealt": 0,
-    "taken": 257,
+    "taken": 314,
     "hits": 1,
-    "attacks": 12
-   },
-   {
-    "name": "Sim Goblin Pusher",
-    "dealt": 37,
-    "taken": 292,
-    "hits": 3,
-    "attacks": 12
+    "attacks": 15
    },
    {
     "name": "Sim Goblin Basher",
+    "dealt": 205,
+    "taken": 244,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "dealt": 96,
+    "taken": 172,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Stabber",
     "dealt": 0,
-    "taken": 288,
+    "taken": 254,
     "hits": 1,
-    "attacks": 9
+    "attacks": 6
    }
   ],
   "ai": [
@@ -313,19 +310,19 @@
     "role": "monster",
     "moved": 0,
     "attacks": 0,
-    "turns": 3,
+    "turns": 2,
     "kills": 0,
     "turnMoved": 0,
-    "casts": 9,
+    "casts": 6,
     "used": {
-     "cast:Burden": 3,
-     "mod:Burden": 3,
-     "cast:Force + Slam": 4,
+     "cast:Burden": 2,
+     "mod:Burden": 2,
+     "cast:Force + Slam": 3,
      "mod:Crush": 2,
      "mod:Bash": 2,
      "mod:Beatdown": 2,
-     "cast:Force": 2,
-     "defend:dodge": 7
+     "cast:Force": 1,
+     "defend:dodge": 5
     },
     "knockbacks": {
      "into": 1
@@ -340,7 +337,7 @@
     "turns": 4,
     "kills": 0,
     "used": {
-     "defend:dodge": 6,
+     "defend:dodge": 8,
      "cast:Shield": 4,
      "mod:Reflect": 1,
      "mod:Dampen": 1,
@@ -360,18 +357,32 @@
     "role": "caster",
     "moved": 0,
     "attacks": 0,
-    "turns": 1,
+    "turns": 0,
     "kills": 0,
     "used": {
-     "defend:dodge": 22,
-     "cast:Force + Stab": 2,
-     "mod:Weakpoint": 2,
-     "mod:Setup": 1
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Crusher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 53,
+     "cast:Force + Cut": 10,
+     "mod:Pinpoint": 1,
+     "mod:Bleed": 7
     },
     "turnMoved": 0,
-    "casts": 2,
+    "casts": 10,
     "knockbacks": {
-     "into": 1
+     "into": 5,
+     "down": 1,
+     "away": 1
     }
    },
    {
@@ -380,21 +391,58 @@
     "role": "monster",
     "moved": 0,
     "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Slam": 3,
+     "mod:Bleed": 3,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Slasher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
     "turns": 0,
     "kills": 0,
     "used": {
+     "defend:dodge": 19
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Slam": 3,
+     "mod:Bleed": 3,
      "defend:dodge": 4
     }
    },
    {
-    "name": "Sim Goblin Cutter",
+    "name": "Sim Goblin Stabber",
     "side": "monsters",
     "role": "monster",
     "moved": 0,
     "attacks": 0,
-    "turns": 0,
+    "turns": 4,
     "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
     "used": {
+     "cast:Cut + Stab": 9,
+     "mod:Bleed": 3,
+     "cast:Cut": 3,
      "defend:dodge": 4
     }
    },
@@ -410,34 +458,13 @@
     "casts": 15,
     "used": {
      "cast:Shield": 5,
-     "mod:Reflect": 5,
-     "cast:Personal Repulsion": 5,
-     "mod:Personal Repulsion": 5,
-     "cast:Burden": 5,
-     "mod:Burden": 5,
-     "defend:dodge": 5
-    }
-   },
-   {
-    "name": "Sim Crusher",
-    "side": "party",
-    "role": "caster",
-    "moved": 0,
-    "attacks": 0,
-    "turns": 5,
-    "kills": 0,
-    "turnMoved": 0,
-    "casts": 10,
-    "used": {
-     "cast:Force + Cut": 10,
+     "mod:Reflect": 4,
+     "cast:Force + Stab": 10,
      "mod:Pinpoint": 1,
-     "mod:Bleed": 7,
-     "defend:dodge": 4
+     "defend:dodge": 2
     },
     "knockbacks": {
-     "into": 7,
-     "away": 1,
-     "down": 1
+     "into": 7
     }
    },
    {
@@ -446,42 +473,11 @@
     "role": "monster",
     "moved": 0,
     "attacks": 0,
-    "turns": 0,
-    "kills": 0,
-    "used": {
-     "defend:dodge": 3
-    }
-   },
-   {
-    "name": "Sim Slasher",
-    "side": "party",
-    "role": "caster",
-    "moved": 0,
-    "attacks": 0,
-    "turns": 5,
-    "kills": 0,
-    "turnMoved": 0,
-    "casts": 10,
-    "used": {
-     "cast:Cut + Slam": 10,
-     "mod:Rend": 3,
-     "mod:Bleed": 1,
-     "defend:dodge": 35,
-     "cast:nothingAffordable": 2,
-     "recoverEnergy": 10
-    }
-   },
-   {
-    "name": "Sim Goblin Stabber",
-    "side": "monsters",
-    "role": "monster",
-    "moved": 0,
-    "attacks": 0,
     "turns": 1,
     "kills": 0,
     "used": {
-     "defend:dodge": 5,
-     "cast:Cut + Stab": 3,
+     "defend:dodge": 6,
+     "cast:Cut + Slam": 3,
      "mod:Bleed": 3
     },
     "turnMoved": 0,
@@ -493,15 +489,78 @@
     "role": "monster",
     "moved": 0,
     "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Cut + Stab": 7,
+     "mod:Bleed": 3,
+     "cast:Cut": 2,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Burden": 4,
+     "mod:Burden": 4,
+     "cast:Force + Stab": 9,
+     "mod:Pierce": 4,
+     "cast:Force": 2,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
     "turns": 2,
     "kills": 0,
     "turnMoved": 0,
     "casts": 6,
     "used": {
-     "cast:Cut + Stab": 5,
-     "mod:Bleed": 3,
+     "cast:Burden": 2,
+     "mod:Burden": 2,
+     "cast:Force + Slam": 3,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Beatdown": 2,
+     "cast:Force": 1,
+     "defend:dodge": 4
+    },
+    "knockbacks": {
+     "down": 1,
+     "away": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Burden": 4,
+     "mod:Burden": 4,
+     "cast:Force + Stab": 7,
+     "mod:Pierce": 4,
      "defend:dodge": 6,
-     "cast:Cut": 1
+     "cast:Force": 1
     }
    },
    {
@@ -517,67 +576,8 @@
     "used": {
      "cast:Cut + Stab": 5,
      "mod:Bleed": 3,
-     "defend:dodge": 5,
-     "cast:Cut": 1
-    }
-   },
-   {
-    "name": "Sim Goblin Pusher",
-    "side": "monsters",
-    "role": "monster",
-    "moved": 0,
-    "attacks": 0,
-    "turns": 4,
-    "kills": 0,
-    "turnMoved": 0,
-    "casts": 12,
-    "used": {
-     "cast:Burden": 4,
-     "mod:Burden": 4,
-     "cast:Force + Stab": 7,
-     "mod:Pierce": 4,
-     "cast:Force": 1,
+     "cast:Cut": 1,
      "defend:dodge": 4
-    }
-   },
-   {
-    "name": "Sim Goblin Pusher",
-    "side": "monsters",
-    "role": "monster",
-    "moved": 0,
-    "attacks": 0,
-    "turns": 4,
-    "kills": 0,
-    "turnMoved": 0,
-    "casts": 12,
-    "used": {
-     "cast:Burden": 4,
-     "mod:Burden": 4,
-     "cast:Force + Stab": 7,
-     "mod:Pierce": 4,
-     "defend:dodge": 4,
-     "cast:Force": 1
-    }
-   },
-   {
-    "name": "Sim Goblin Basher",
-    "side": "monsters",
-    "role": "monster",
-    "moved": 0,
-    "attacks": 0,
-    "turns": 3,
-    "kills": 0,
-    "turnMoved": 0,
-    "casts": 9,
-    "used": {
-     "cast:Burden": 3,
-     "mod:Burden": 3,
-     "cast:Force + Slam": 4,
-     "mod:Crush": 2,
-     "mod:Bash": 2,
-     "mod:Beatdown": 2,
-     "cast:Force": 2,
-     "defend:dodge": 6
     }
    }
   ],
@@ -658,13 +658,13 @@
     "Medium Armor (Hide): 120/120"
    ],
    "Sim Slasher": [
-    "Light Armor (Hard Leather): 78/90"
+    "Light Armor (Hard Leather): 72/90"
    ],
    "Sim Crusher": [
-    "Medium Armor (Soft Leather): 120/120"
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
    ],
    "Sim Piercer": [
-    "Light Armor (Soft Leather): 24/60"
+    "Light Armor (Soft Leather): 36/60"
    ],
    "Sim Warden": [
     "Medium Armor (Hard Leather): 180/180"
@@ -692,37 +692,37 @@
    },
    {
     "round": 2,
-    "partyHp": 2648,
-    "monsterHp": 4044,
-    "partyDown": 0,
-    "monstersDown": 3
+    "partyHp": 2212,
+    "monsterHp": 4406,
+    "partyDown": 2,
+    "monstersDown": 2
    },
    {
     "round": 3,
-    "partyHp": 2363,
-    "monsterHp": 3544,
-    "partyDown": 1,
-    "monstersDown": 5
+    "partyHp": 2185,
+    "monsterHp": 3788,
+    "partyDown": 2,
+    "monstersDown": 4
    },
    {
     "round": 4,
-    "partyHp": 2363,
-    "monsterHp": 2761,
-    "partyDown": 1,
-    "monstersDown": 7
+    "partyHp": 2067,
+    "monsterHp": 3115,
+    "partyDown": 2,
+    "monstersDown": 6
    },
    {
     "round": 5,
-    "partyHp": 2363,
-    "monsterHp": 2378,
-    "partyDown": 1,
-    "monstersDown": 8
+    "partyHp": 1992,
+    "monsterHp": 2252,
+    "partyDown": 2,
+    "monstersDown": 9
    },
    {
     "round": 5,
-    "partyHp": 2363,
-    "monsterHp": 1921,
-    "partyDown": 1,
+    "partyHp": 1992,
+    "monsterHp": 1899,
+    "partyDown": 2,
     "monstersDown": 10,
     "end": true
    }
@@ -731,10 +731,2920 @@
   "painDivisor": 2,
   "log": {
    "dialogs": {
-    "prompt: Force — Sim Goblin Cutter": 3,
     "prompt: Force — Sim Piercer": 1,
-    "prompt: Force — Sim Goblin Stabber": 5,
-    "prompt: Force — Sim Goblin Pusher": 4
+    "prompt: Force — Sim Goblin Cutter": 7,
+    "prompt: Force — Sim Slasher": 2,
+    "prompt: Force — Sim Goblin Basher": 4,
+    "prompt: Force — Sim Goblin Stabber": 3,
+    "prompt: Force — Sim Goblin Pusher": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swarm-r2",
+  "group": "swarm",
+  "rotation": 2,
+  "seconds": 196,
+  "winner": "monsters",
+  "pass": "magic-t1",
+  "rounds": 8,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {
+   "into": 9,
+   "away": 1,
+   "down": 6
+  },
+  "used": {
+   "cast:Cut + Stab": 31,
+   "mod:Bleed": 20,
+   "defend:dodge": 176,
+   "cast:Burden": 22,
+   "mod:Burden": 22,
+   "cast:Force + Stab": 23,
+   "mod:Pierce": 8,
+   "cast:Cut + Slam": 9,
+   "cast:Force + Slam": 32,
+   "mod:Crush": 6,
+   "mod:Bash": 6,
+   "mod:Beatdown": 5,
+   "mod:Pinpoint": 3,
+   "opt:dir=into": 9,
+   "cast:Shield": 12,
+   "mod:Reflect": 3,
+   "mod:Weakpoint": 3,
+   "mod:Dampen": 2,
+   "cast:Force + Cut": 10,
+   "cast:Cut": 11,
+   "cast:Force": 17,
+   "opt:dir=away": 1,
+   "opt:dir=down": 6,
+   "recoverEnergy": 4
+  },
+  "hp": {
+   "Sim Bulwark#qQST": "228/702",
+   "Sim Slasher#nljH": "240/567",
+   "Sim Crusher#gowe": "266/567",
+   "Sim Piercer#bXrE": "173/432",
+   "Sim Warden#nRQx": "216/567",
+   "Sim Goblin Cutter#TulK": "185/513",
+   "Sim Goblin Cutter#jgxV": "229/513",
+   "Sim Goblin Cutter#9HEK": "88/513",
+   "Sim Goblin Stabber#iahf": "124/513",
+   "Sim Goblin Stabber#NcGV": "117/513",
+   "Sim Goblin Stabber#JqLB": "244/513",
+   "Sim Goblin Basher#tNmF": "513/513",
+   "Sim Goblin Basher#hGeh": "513/513",
+   "Sim Goblin Pusher#51D7": "513/513",
+   "Sim Goblin Pusher#VU7L": "252/513"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Slasher",
+   "Sim Crusher",
+   "Sim Piercer",
+   "Sim Warden",
+   "Sim Goblin Cutter",
+   "Sim Goblin Cutter",
+   "Sim Goblin Cutter",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Pusher"
+  ],
+  "weapons": {
+   "Spell: Cut + Stab": {
+    "attacks": 31,
+    "followups": 0,
+    "hits": 10,
+    "crits": 6,
+    "misses": 21,
+    "damage": 617,
+    "ap": 62,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 39,
+    "followups": 0,
+    "hits": 16,
+    "crits": 5,
+    "misses": 23,
+    "damage": 0,
+    "ap": 78,
+    "kills": 0,
+    "users": [
+     "Goblin Pusher",
+     "Goblin Basher"
+    ],
+    "force": 0
+   },
+   "Spell: Force + Stab": {
+    "attacks": 26,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 14,
+    "damage": 805,
+    "ap": 50,
+    "kills": 0,
+    "users": [
+     "Goblin Pusher",
+     "Crusher",
+     "Slasher"
+    ],
+    "force": 257
+   },
+   "Spell: Cut + Slam": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 6,
+    "damage": 150,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Goblin Cutter"
+    ]
+   },
+   "Spell: Force + Slam": {
+    "attacks": 33,
+    "followups": 0,
+    "hits": 15,
+    "crits": 7,
+    "misses": 18,
+    "damage": 599,
+    "ap": 64,
+    "kills": 0,
+    "users": [
+     "Goblin Basher",
+     "Bulwark"
+    ],
+    "force": 26
+   },
+   "Spell: Shield": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 10,
+    "crits": 7,
+    "misses": 2,
+    "damage": 0,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Bulwark",
+     "Warden"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 12,
+    "crits": 6,
+    "misses": 3,
+    "damage": 667,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 5,
+    "damage": 153,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 22,
+    "absorbed": 240
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 12
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 5,
+    "absorbed": 120
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 84
+   },
+   "Medium Armor (Hide)": {
+    "hits": 4,
+    "absorbed": 96
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 23,
+    "taken": 347,
+    "hits": 1,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Piercer",
+    "dealt": 0,
+    "taken": 259,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "dealt": 75,
+    "taken": 72,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 392,
+    "taken": 217,
+    "hits": 15,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 112,
+    "taken": 100,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 40,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Slasher",
+    "dealt": 134,
+    "taken": 211,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "dealt": 394,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Crusher",
+    "dealt": 202,
+    "taken": 275,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 38,
+    "taken": 56,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 747,
+    "taken": 251,
+    "hits": 13,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 0,
+    "taken": 236,
+    "hits": 0,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 333,
+    "hits": 2,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 167,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 667,
+    "taken": 351,
+    "hits": 16,
+    "attacks": 20
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Cut + Stab": 7,
+     "mod:Bleed": 3,
+     "cast:Cut": 2,
+     "defend:dodge": 7
+    }
+   },
+   {
+    "name": "Sim Piercer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 17
+    }
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Burden": 2,
+     "mod:Burden": 2,
+     "cast:Force + Stab": 4,
+     "mod:Pierce": 4,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 39,
+     "cast:Shield": 7,
+     "mod:Reflect": 1,
+     "cast:Force + Slam": 14,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Beatdown": 1
+    },
+    "turnMoved": 0,
+    "casts": 21,
+    "knockbacks": {
+     "away": 1,
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Slam": 3,
+     "mod:Bleed": 3,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Burden": 7,
+     "mod:Burden": 7,
+     "cast:Force + Slam": 10,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Beatdown": 2,
+     "cast:Force": 7,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Slasher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5,
+     "cast:Force + Stab": 3,
+     "mod:Weakpoint": 3
+    },
+    "turnMoved": 0,
+    "casts": 3,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 22,
+    "used": {
+     "cast:Burden": 6,
+     "mod:Burden": 6,
+     "cast:Force + Stab": 12,
+     "mod:Pierce": 4,
+     "cast:Force": 4,
+     "recoverEnergy": 4
+    },
+    "knockbacks": {
+     "down": 2
+    }
+   },
+   {
+    "name": "Sim Crusher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 21,
+     "cast:Force + Stab": 4,
+     "mod:Pinpoint": 3
+    },
+    "turnMoved": 0,
+    "casts": 4,
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Slam": 3,
+     "mod:Bleed": 3,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Cut + Stab": 15,
+     "mod:Bleed": 3,
+     "cast:Cut": 6,
+     "defend:dodge": 7
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Cut + Slam": 3,
+     "mod:Bleed": 3
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "cast:Cut + Stab": 9,
+     "mod:Bleed": 3,
+     "cast:Cut": 3
+    },
+    "turnMoved": 0,
+    "casts": 12
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Burden": 7,
+     "mod:Burden": 7,
+     "cast:Force + Slam": 8,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Beatdown": 2,
+     "cast:Force": 6,
+     "defend:dodge": 1
+    },
+    "knockbacks": {
+     "down": 4
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Shield": 5,
+     "mod:Reflect": 2,
+     "mod:Dampen": 2,
+     "defend:dodge": 54,
+     "cast:Force + Cut": 10,
+     "mod:Bleed": 2
+    },
+    "knockbacks": {
+     "into": 5
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 1,
+    "magic-crushing": 5,
+    "magic-protection-arcana": 4,
+    "magic-gravity": 2
+   },
+   "Sim Slasher": {
+    "magic-theory": 1,
+    "magic-piercing": 5,
+    "magic-slashing": 4,
+    "magic-gravity": 2
+   },
+   "Sim Crusher": {
+    "magic-theory": 1,
+    "magic-gravity": 5,
+    "magic-crushing": 4,
+    "magic-piercing": 2
+   },
+   "Sim Piercer": {
+    "magic-theory": 1,
+    "magic-slashing": 5,
+    "magic-piercing": 4,
+    "magic-crushing": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 1,
+    "magic-protection-arcana": 5,
+    "magic-gravity": 4,
+    "magic-slashing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Slasher": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Crusher": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Piercer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Cutter": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Pusher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 0/120 BROKEN"
+   ],
+   "Sim Slasher": [
+    "Light Armor (Hard Leather): 78/90"
+   ],
+   "Sim Crusher": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Piercer": [
+    "Light Armor (Soft Leather): 12/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 96/180"
+   ],
+   "Sim Goblin Cutter": [
+    "Light Armor (Soft Leather): 24/60"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 57/60"
+   ],
+   "Sim Goblin Pusher": [
+    "Light Armor (Soft Leather): 36/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2249,
+    "monsterHp": 4384,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 3,
+    "partyHp": 1948,
+    "monsterHp": 3706,
+    "partyDown": 3,
+    "monstersDown": 4
+   },
+   {
+    "round": 4,
+    "partyHp": 1807,
+    "monsterHp": 3413,
+    "partyDown": 3,
+    "monstersDown": 5
+   },
+   {
+    "round": 5,
+    "partyHp": 1787,
+    "monsterHp": 3251,
+    "partyDown": 3,
+    "monstersDown": 5
+   },
+   {
+    "round": 6,
+    "partyHp": 1667,
+    "monsterHp": 2935,
+    "partyDown": 3,
+    "monstersDown": 6
+   },
+   {
+    "round": 7,
+    "partyHp": 1592,
+    "monsterHp": 2821,
+    "partyDown": 4,
+    "monstersDown": 6
+   },
+   {
+    "round": 8,
+    "partyHp": 1389,
+    "monsterHp": 2778,
+    "partyDown": 4,
+    "monstersDown": 7
+   },
+   {
+    "round": 8,
+    "partyHp": 1123,
+    "monsterHp": 2778,
+    "partyDown": 5,
+    "monstersDown": 7,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Goblin Cutter": 3,
+    "prompt: Force — Sim Goblin Pusher": 1,
+    "prompt: Force — Sim Crusher": 1,
+    "prompt: Force — Sim Goblin Stabber": 6,
+    "prompt: Force — Sim Warden": 2,
+    "prompt: Force — Sim Bulwark": 3
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [e5hIKR2txdh8RBuc] does not exist in the EmbeddedCollection collection.",
+     "who": "Sim Crusher"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [e5hIKR2txdh8RBuc] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 88,
+  "winner": "monsters",
+  "pass": "magic-t1",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 4,
+  "followups": 0,
+  "knockbacks": {
+   "down": 2,
+   "into": 3,
+   "away": 2
+  },
+  "used": {
+   "cast:Slam": 12,
+   "mod:Crush": 16,
+   "mod:Bash": 14,
+   "defend:dodge": 75,
+   "mod:Pinpoint": 6,
+   "cast:Cut + Stab": 9,
+   "mod:Bleed": 10,
+   "cast:Burden": 8,
+   "mod:Burden": 8,
+   "cast:Force + Cut": 11,
+   "cast:Shield": 9,
+   "mod:Reflect": 4,
+   "mod:Dampen": 3,
+   "cast:Cut + Slam": 3,
+   "mod:Rend": 2,
+   "cast:Force + Slam": 10,
+   "mod:Beatdown": 4,
+   "cast:Force + Stab": 4,
+   "opt:dir=down": 2,
+   "cast:Cut": 3,
+   "opt:dir=into": 3,
+   "opt:dir=away": 2,
+   "cast:Force": 1
+  },
+  "hp": {
+   "Sim Bulwark#xbOO": "224/702",
+   "Sim Slasher#4o8V": "235/567",
+   "Sim Crusher#quro": "230/567",
+   "Sim Piercer#5maL": "44/432",
+   "Sim Warden#RYLw": "274/567",
+   "Sim Raider Crusher#RK7f": "745/765",
+   "Sim Raider Slasher#i2N2": "765/765",
+   "Sim Raider Piercer#b3Mg": "196/540",
+   "Sim Raider Gravitic#ZUiN": "765/765",
+   "Sim Raider Warder#IUWQ": "765/765"
+  },
+  "down": [
+   "Sim Bulwark",
+   "Sim Slasher",
+   "Sim Crusher",
+   "Sim Piercer",
+   "Sim Warden",
+   "Sim Raider Piercer"
+  ],
+  "weapons": {
+   "Spell: Slam": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 4,
+    "damage": 492,
+    "ap": 28,
+    "kills": 0,
+    "users": [
+     "Raider Piercer",
+     "Raider Warder"
+    ]
+   },
+   "Spell: Cut + Stab": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 3,
+    "damage": 637,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Slasher"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "Raider Gravitic",
+     "Raider Crusher"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 7,
+    "damage": 224,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Raider Gravitic",
+     "Crusher"
+    ],
+    "force": 10
+   },
+   "Spell: Shield": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 9,
+    "crits": 7,
+    "misses": 0,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Warder",
+     "Warden",
+     "Bulwark"
+    ]
+   },
+   "Spell: Cut + Slam": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Slasher"
+    ]
+   },
+   "Spell: Force + Slam": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 3,
+    "damage": 614,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Crusher",
+     "Bulwark"
+    ],
+    "force": 0
+   },
+   "Spell: Force + Stab": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 3,
+    "damage": 188,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 37,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Slasher"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 8,
+    "absorbed": 124
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 18
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 48
+   },
+   "Medium Armor (Hide)": {
+    "hits": 5,
+    "absorbed": 126
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 36
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Piercer",
+    "dealt": 276,
+    "taken": 344,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Piercer",
+    "dealt": 0,
+    "taken": 388,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Slasher",
+    "dealt": 674,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Slasher",
+    "dealt": 0,
+    "taken": 332,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Raider Gravitic",
+    "dealt": 154,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 106,
+    "taken": 468,
+    "hits": 7,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Raider Warder",
+    "dealt": 216,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Crusher",
+    "dealt": 70,
+    "taken": 337,
+    "hits": 5,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Raider Crusher",
+    "dealt": 508,
+    "taken": 20,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 188,
+    "taken": 293,
+    "hits": 5,
+    "attacks": 8
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Piercer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Slam": 4,
+     "mod:Crush": 4,
+     "mod:Bash": 4,
+     "mod:Pinpoint": 2,
+     "defend:dodge": 17
+    }
+   },
+   {
+    "name": "Sim Piercer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Raider Slasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Cut + Stab": 9,
+     "mod:Bleed": 3,
+     "cast:Cut": 3,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Slasher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "cast:Cut + Slam": 3,
+     "mod:Rend": 2,
+     "mod:Bleed": 1
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Raider Gravitic",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Burden": 4,
+     "mod:Burden": 4,
+     "cast:Force + Cut": 7,
+     "mod:Bleed": 2,
+     "cast:Force": 1
+    },
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14,
+     "cast:Shield": 3,
+     "mod:Reflect": 1,
+     "mod:Dampen": 1,
+     "cast:Force + Slam": 6,
+     "mod:Crush": 2,
+     "mod:Bash": 2
+    },
+    "turnMoved": 0,
+    "casts": 9,
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "Sim Raider Warder",
+    "side": "monsters",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Shield": 4,
+     "mod:Reflect": 1,
+     "mod:Dampen": 2,
+     "cast:Slam": 8,
+     "mod:Pinpoint": 1,
+     "mod:Crush": 6,
+     "mod:Bash": 4
+    }
+   },
+   {
+    "name": "Sim Crusher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Force + Cut": 4,
+     "mod:Pinpoint": 1,
+     "mod:Bleed": 4,
+     "defend:dodge": 9
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Raider Crusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Burden": 4,
+     "mod:Burden": 4,
+     "cast:Force + Slam": 4,
+     "mod:Pinpoint": 1,
+     "mod:Crush": 4,
+     "mod:Bash": 4,
+     "mod:Beatdown": 4,
+     "defend:dodge": 8
+    },
+    "knockbacks": {
+     "away": 2
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Shield": 2,
+     "mod:Reflect": 2,
+     "defend:dodge": 12,
+     "cast:Force + Stab": 4,
+     "mod:Pinpoint": 1
+    },
+    "knockbacks": {
+     "into": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 1,
+    "magic-protection-arcana": 5,
+    "magic-crushing": 4,
+    "magic-gravity": 2
+   },
+   "Sim Slasher": {
+    "magic-theory": 1,
+    "magic-slashing": 5,
+    "magic-piercing": 4,
+    "magic-crushing": 2
+   },
+   "Sim Crusher": {
+    "magic-theory": 1,
+    "magic-crushing": 5,
+    "magic-gravity": 4,
+    "magic-slashing": 2
+   },
+   "Sim Piercer": {
+    "magic-theory": 1,
+    "magic-piercing": 5,
+    "magic-slashing": 4,
+    "magic-gravity": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 1,
+    "magic-gravity": 5,
+    "magic-protection-arcana": 4,
+    "magic-piercing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Slasher": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Crusher": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Piercer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Crusher": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Slasher": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Piercer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Raider Gravitic": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Warder": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 0/120 BROKEN"
+   ],
+   "Sim Slasher": [
+    "Light Armor (Hard Leather): 72/90"
+   ],
+   "Sim Crusher": [
+    "Medium Armor (Soft Leather): 72/120"
+   ],
+   "Sim Piercer": [
+    "Light Armor (Soft Leather): 36/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 144/180"
+   ],
+   "Sim Raider Crusher": [
+    "Medium Armor (Hide): 120/150"
+   ],
+   "Sim Raider Slasher": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Piercer": [
+    "Light Armor (Soft Leather): 0/100 BROKEN"
+   ],
+   "Sim Raider Gravitic": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Warder": [
+    "Medium Armor (Hide): 150/150"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2447,
+    "monsterHp": 3508,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1778,
+    "monsterHp": 3236,
+    "partyDown": 3,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 1485,
+    "monsterHp": 3236,
+    "partyDown": 4,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 1007,
+    "monsterHp": 3236,
+    "partyDown": 5,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Raider Piercer": 4,
+    "prompt: Force — Sim Crusher": 1,
+    "prompt: Force — Sim Bulwark": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r2",
+  "group": "raiders",
+  "rotation": 2,
+  "seconds": 90,
+  "winner": "party",
+  "pass": "magic-t1",
+  "rounds": 4,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "into": 11,
+   "down": 1,
+   "away": 1
+  },
+  "used": {
+   "cast:Slam": 6,
+   "mod:Crush": 10,
+   "mod:Bash": 9,
+   "defend:dodge": 81,
+   "mod:Pinpoint": 7,
+   "cast:Burden": 4,
+   "mod:Burden": 4,
+   "cast:Force + Slam": 10,
+   "mod:Beatdown": 3,
+   "opt:dir=into": 11,
+   "cast:Force + Stab": 14,
+   "cast:Force + Cut": 12,
+   "mod:Bleed": 7,
+   "cast:Shield": 10,
+   "mod:Reflect": 4,
+   "mod:Dampen": 3,
+   "cast:Cut + Stab": 9,
+   "mod:Weakpoint": 3,
+   "cast:Cut": 3,
+   "cast:Force": 2,
+   "opt:dir=down": 1,
+   "opt:dir=away": 1,
+   "recoverEnergy": 4
+  },
+  "hp": {
+   "Sim Bulwark#7Ohu": "702/702",
+   "Sim Slasher#uPLr": "491/567",
+   "Sim Crusher#Zhhl": "270/567",
+   "Sim Piercer#6LsT": "178/432",
+   "Sim Warden#UV22": "567/567",
+   "Sim Raider Crusher#KyV3": "181/765",
+   "Sim Raider Slasher#D0b3": "327/765",
+   "Sim Raider Piercer#kqLq": "250/540",
+   "Sim Raider Gravitic#dyZB": "91/765",
+   "Sim Raider Warder#4F3S": "199/765"
+  },
+  "down": [
+   "Sim Crusher",
+   "Sim Piercer",
+   "Sim Raider Crusher",
+   "Sim Raider Slasher",
+   "Sim Raider Piercer",
+   "Sim Raider Gravitic",
+   "Sim Raider Warder"
+  ],
+  "weapons": {
+   "Spell: Slam": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 92,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Raider Piercer",
+     "Raider Warder"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Raider Crusher",
+     "Raider Gravitic",
+     "Slasher"
+    ],
+    "force": 0
+   },
+   "Spell: Force + Slam": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 9,
+    "crits": 1,
+    "misses": 2,
+    "damage": 282,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "Raider Crusher",
+     "Bulwark"
+    ]
+   },
+   "Spell: Force + Stab": {
+    "attacks": 22,
+    "followups": 0,
+    "hits": 18,
+    "crits": 9,
+    "misses": 4,
+    "damage": 796,
+    "ap": 34,
+    "kills": 0,
+    "users": [
+     "Crusher",
+     "Slasher"
+    ],
+    "force": 0
+   },
+   "Spell: Force + Cut": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 9,
+    "crits": 5,
+    "misses": 5,
+    "damage": 467,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Gravitic",
+     "Warden"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 10,
+    "crits": 6,
+    "misses": 0,
+    "damage": 0,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Bulwark",
+     "Raider Warder"
+    ]
+   },
+   "Spell: Cut + Stab": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 4,
+    "damage": 202,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Slasher"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 11,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Slasher"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 80
+   },
+   "Medium Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 96
+   },
+   "Medium Armor (Hide)": {
+    "hits": 15,
+    "absorbed": 345
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 12
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Piercer",
+    "dealt": 42,
+    "taken": 290,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Piercer",
+    "dealt": 0,
+    "taken": 212,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Crusher",
+    "dealt": 170,
+    "taken": 415,
+    "hits": 3,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 112,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Crusher",
+    "dealt": 95,
+    "taken": 232,
+    "hits": 8,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Raider Gravitic",
+    "dealt": 45,
+    "taken": 272,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 422,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Raider Slasher",
+    "dealt": 213,
+    "taken": 175,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Slasher",
+    "dealt": 701,
+    "taken": 76,
+    "hits": 12,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Raider Warder",
+    "dealt": 50,
+    "taken": 178,
+    "hits": 3,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Piercer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Slam": 2,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Pinpoint": 1,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Piercer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Raider Crusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Burden": 2,
+     "mod:Burden": 2,
+     "cast:Force + Slam": 2,
+     "mod:Pinpoint": 1,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Beatdown": 2,
+     "defend:dodge": 7
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "cast:Shield": 4,
+     "mod:Reflect": 1,
+     "cast:Force + Slam": 8,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Beatdown": 1
+    },
+    "turnMoved": 0,
+    "casts": 12
+   },
+   {
+    "name": "Sim Crusher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 22,
+     "cast:Force + Stab": 6,
+     "mod:Pinpoint": 4
+    },
+    "turnMoved": 0,
+    "casts": 6,
+    "knockbacks": {
+     "into": 3
+    }
+   },
+   {
+    "name": "Sim Raider Gravitic",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Burden": 2,
+     "mod:Burden": 2,
+     "cast:Force + Cut": 4,
+     "mod:Bleed": 2,
+     "defend:dodge": 8
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Shield": 4,
+     "mod:Reflect": 2,
+     "mod:Dampen": 1,
+     "cast:Force + Cut": 8,
+     "mod:Bleed": 2,
+     "defend:dodge": 1
+    },
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "Sim Raider Slasher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13,
+     "cast:Cut + Stab": 9,
+     "mod:Bleed": 3,
+     "cast:Cut": 3
+    },
+    "turnMoved": 0,
+    "casts": 12
+   },
+   {
+    "name": "Sim Slasher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Force + Stab": 8,
+     "mod:Weakpoint": 3,
+     "cast:Force": 2,
+     "recoverEnergy": 4
+    },
+    "turnMoved": 0,
+    "casts": 10,
+    "knockbacks": {
+     "into": 5,
+     "down": 1,
+     "away": 1
+    }
+   },
+   {
+    "name": "Sim Raider Warder",
+    "side": "monsters",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Shield": 2,
+     "mod:Reflect": 1,
+     "mod:Dampen": 2,
+     "cast:Slam": 4,
+     "mod:Pinpoint": 1,
+     "mod:Crush": 4,
+     "mod:Bash": 3,
+     "defend:dodge": 11
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 1,
+    "magic-crushing": 5,
+    "magic-protection-arcana": 4,
+    "magic-gravity": 2
+   },
+   "Sim Slasher": {
+    "magic-theory": 1,
+    "magic-piercing": 5,
+    "magic-slashing": 4,
+    "magic-gravity": 2
+   },
+   "Sim Crusher": {
+    "magic-theory": 1,
+    "magic-gravity": 5,
+    "magic-crushing": 4,
+    "magic-piercing": 2
+   },
+   "Sim Piercer": {
+    "magic-theory": 1,
+    "magic-slashing": 5,
+    "magic-piercing": 4,
+    "magic-crushing": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 1,
+    "magic-protection-arcana": 5,
+    "magic-gravity": 4,
+    "magic-slashing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Slasher": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Crusher": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Piercer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Crusher": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Slasher": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Piercer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Raider Gravitic": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Warder": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Slasher": [
+    "Light Armor (Hard Leather): 78/90"
+   ],
+   "Sim Crusher": [
+    "Medium Armor (Soft Leather): 0/120 BROKEN"
+   ],
+   "Sim Piercer": [
+    "Light Armor (Soft Leather): 48/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Raider Crusher": [
+    "Medium Armor (Hide): 45/150"
+   ],
+   "Sim Raider Slasher": [
+    "Medium Armor (Hide): 0/150 BROKEN"
+   ],
+   "Sim Raider Piercer": [
+    "Light Armor (Soft Leather): 20/100"
+   ],
+   "Sim Raider Gravitic": [
+    "Medium Armor (Hide): 0/150 BROKEN"
+   ],
+   "Sim Raider Warder": [
+    "Medium Armor (Hide): 0/150 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2516,
+    "monsterHp": 2951,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 2388,
+    "monsterHp": 1886,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 4,
+    "partyHp": 2284,
+    "monsterHp": 1223,
+    "partyDown": 2,
+    "monstersDown": 4
+   },
+   {
+    "round": 4,
+    "partyHp": 2208,
+    "monsterHp": 1048,
+    "partyDown": 2,
+    "monstersDown": 5,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Piercer": 1,
+    "prompt: Force — Sim Raider Piercer": 2,
+    "prompt: Force — Sim Raider Crusher": 5,
+    "prompt: Force — Sim Raider Gravitic": 1,
+    "prompt: Force — Sim Raider Warder": 3,
+    "prompt: Force — Sim Raider Slasher": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 51,
+  "winner": "party",
+  "pass": "magic-t1",
+  "rounds": 3,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "into": 2
+  },
+  "used": {
+   "cast:Burden": 3,
+   "mod:Burden": 3,
+   "defend:dodge": 42,
+   "cast:Force + Slam": 9,
+   "mod:Pinpoint": 3,
+   "mod:Crush": 5,
+   "mod:Bash": 5,
+   "mod:Beatdown": 3,
+   "opt:dir=into": 2,
+   "cast:Shield": 6,
+   "mod:Reflect": 3,
+   "mod:Dampen": 1,
+   "cast:Force + Stab": 8,
+   "mod:Weakpoint": 2,
+   "mod:Setup": 1,
+   "cast:Force + Cut": 6,
+   "mod:Bleed": 6,
+   "cast:Cut + Slam": 5,
+   "mod:Rend": 2,
+   "cast:nothingAffordable": 1,
+   "recoverEnergy": 6
+  },
+  "hp": {
+   "Sim Bulwark#U19B": "702/702",
+   "Sim Slasher#SjqM": "567/567",
+   "Sim Crusher#TYgi": "567/567",
+   "Sim Piercer#UV3P": "44/432",
+   "Sim Warden#yEhz": "567/567",
+   "Sim Ogre Magus#m8wg": "1130/2376"
+  },
+  "down": [
+   "Sim Piercer",
+   "Sim Ogre Magus"
+  ],
+  "weapons": {
+   "Spell: Force": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Spell: Force + Slam": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 4,
+    "damage": 462,
+    "ap": 21,
+    "kills": 0,
+    "users": [
+     "Ogre Magus",
+     "Bulwark"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 4,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Bulwark",
+     "Warden"
+    ]
+   },
+   "Spell: Force + Stab": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 2,
+    "damage": 92,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Piercer",
+     "Warden"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 8,
+    "crits": 7,
+    "misses": 1,
+    "damage": 638,
+    "ap": 27,
+    "kills": 0,
+    "users": [
+     "Crusher"
+    ]
+   },
+   "Spell: Cut + Slam": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 0,
+    "damage": 234,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Slasher"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 12,
+    "absorbed": 880
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 1,
+    "absorbed": 12
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 382,
+    "taken": 1044,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 80,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Piercer",
+    "dealt": 0,
+    "taken": 382,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Crusher",
+    "dealt": 638,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 92,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Slasher",
+    "dealt": 234,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 5
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Burden": 3,
+     "mod:Burden": 3,
+     "cast:Force + Slam": 3,
+     "mod:Pinpoint": 1,
+     "mod:Crush": 3,
+     "mod:Bash": 3,
+     "mod:Beatdown": 3,
+     "defend:dodge": 28
+    },
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 1,
+     "cast:Shield": 3,
+     "mod:Reflect": 1,
+     "mod:Dampen": 1,
+     "cast:Force + Slam": 6,
+     "mod:Crush": 2,
+     "mod:Bash": 2
+    },
+    "turnMoved": 0,
+    "casts": 9
+   },
+   {
+    "name": "Sim Piercer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "cast:Force + Stab": 2,
+     "mod:Weakpoint": 2,
+     "mod:Setup": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "Sim Crusher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "cast:Force + Cut": 6,
+     "mod:Pinpoint": 1,
+     "mod:Bleed": 5
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Shield": 3,
+     "mod:Reflect": 2,
+     "defend:dodge": 3,
+     "cast:Force + Stab": 6,
+     "mod:Pinpoint": 1
+    }
+   },
+   {
+    "name": "Sim Slasher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 5,
+    "used": {
+     "cast:Cut + Slam": 5,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "defend:dodge": 4,
+     "cast:nothingAffordable": 1,
+     "recoverEnergy": 6
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 1,
+    "magic-protection-arcana": 5,
+    "magic-crushing": 4,
+    "magic-gravity": 2
+   },
+   "Sim Slasher": {
+    "magic-theory": 1,
+    "magic-slashing": 5,
+    "magic-piercing": 4,
+    "magic-crushing": 2
+   },
+   "Sim Crusher": {
+    "magic-theory": 1,
+    "magic-crushing": 5,
+    "magic-gravity": 4,
+    "magic-slashing": 2
+   },
+   "Sim Piercer": {
+    "magic-theory": 1,
+    "magic-piercing": 5,
+    "magic-slashing": 4,
+    "magic-gravity": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 1,
+    "magic-gravity": 5,
+    "magic-protection-arcana": 4,
+    "magic-piercing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Slasher": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Crusher": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Piercer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Slasher": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Crusher": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Piercer": [
+    "Light Armor (Soft Leather): 36/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 0/880 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2705,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2447,
+    "monsterHp": 2052,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2447,
+    "monsterHp": 1130,
+    "partyDown": 1,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Piercer": 2
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [kqLqcDifsLyS3gsi] does not exist in the EmbeddedCollection collection.",
+     "who": "Sim Slasher"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [kqLqcDifsLyS3gsi] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ },
+ {
+  "id": "boss-r2",
+  "group": "boss",
+  "rotation": 2,
+  "seconds": 69,
+  "winner": "party",
+  "pass": "magic-t1",
+  "rounds": 4,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "into": 1
+  },
+  "used": {
+   "cast:Burden": 4,
+   "mod:Burden": 4,
+   "defend:dodge": 61,
+   "cast:Force + Slam": 10,
+   "mod:Pinpoint": 6,
+   "mod:Crush": 6,
+   "mod:Bash": 6,
+   "mod:Beatdown": 5,
+   "cast:Force + Stab": 16,
+   "mod:Weakpoint": 3,
+   "cast:Shield": 7,
+   "mod:Reflect": 2,
+   "mod:Dampen": 4,
+   "cast:Force + Cut": 8,
+   "mod:Bleed": 8,
+   "cast:Cut": 6,
+   "mod:Rend": 6,
+   "opt:dir=into": 1,
+   "cast:Force": 3,
+   "recoverEnergy": 1
+  },
+  "hp": {
+   "Sim Bulwark#fWk1": "702/702",
+   "Sim Slasher#J6Is": "567/567",
+   "Sim Crusher#6ulW": "567/567",
+   "Sim Piercer#EkeP": "303/432",
+   "Sim Warden#BqgB": "567/567",
+   "Sim Ogre Magus#OaNu": "1163/2376"
+  },
+  "down": [
+   "Sim Ogre Magus"
+  ],
+  "weapons": {
+   "Spell: Force": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 5,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Ogre Magus",
+     "Slasher"
+    ]
+   },
+   "Spell: Force + Slam": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 8,
+    "damage": 129,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Ogre Magus",
+     "Bulwark"
+    ]
+   },
+   "Spell: Force + Stab": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 10,
+    "crits": 6,
+    "misses": 6,
+    "damage": 235,
+    "ap": 39,
+    "kills": 0,
+    "users": [
+     "Slasher",
+     "Crusher"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 1,
+    "damage": 0,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Bulwark"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 4,
+    "damage": 90,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Warden"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 7,
+    "crits": 6,
+    "misses": 5,
+    "damage": 444,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "Piercer"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 12,
+    "absorbed": 880
+   },
+   "Light Armor (Soft Leather)": {
+    "hits": 1,
+    "absorbed": 12
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 129,
+    "taken": 769,
+    "hits": 2,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Piercer",
+    "dealt": 444,
+    "taken": 129,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Slasher",
+    "dealt": 15,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 90,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Crusher",
+    "dealt": 220,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 7
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Burden": 4,
+     "mod:Burden": 4,
+     "cast:Force + Slam": 4,
+     "mod:Pinpoint": 1,
+     "mod:Crush": 4,
+     "mod:Bash": 4,
+     "mod:Beatdown": 4,
+     "defend:dodge": 45
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Shield": 3,
+     "mod:Reflect": 1,
+     "cast:Force + Slam": 6,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Beatdown": 1
+    },
+    "turnMoved": 0,
+    "casts": 9
+   },
+   {
+    "name": "Sim Piercer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Cut": 6,
+     "mod:Bleed": 6,
+     "mod:Rend": 6
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "Sim Slasher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Force + Stab": 9,
+     "mod:Weakpoint": 3,
+     "defend:dodge": 3,
+     "cast:Force": 3
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Shield": 4,
+     "mod:Reflect": 1,
+     "mod:Dampen": 4,
+     "cast:Force + Cut": 8,
+     "mod:Bleed": 2
+    }
+   },
+   {
+    "name": "Sim Crusher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 7,
+    "used": {
+     "cast:Force + Stab": 7,
+     "mod:Pinpoint": 5,
+     "defend:dodge": 1,
+     "recoverEnergy": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 1,
+    "magic-crushing": 5,
+    "magic-protection-arcana": 4,
+    "magic-gravity": 2
+   },
+   "Sim Slasher": {
+    "magic-theory": 1,
+    "magic-piercing": 5,
+    "magic-slashing": 4,
+    "magic-gravity": 2
+   },
+   "Sim Crusher": {
+    "magic-theory": 1,
+    "magic-gravity": 5,
+    "magic-crushing": 4,
+    "magic-piercing": 2
+   },
+   "Sim Piercer": {
+    "magic-theory": 1,
+    "magic-slashing": 5,
+    "magic-piercing": 4,
+    "magic-crushing": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 1,
+    "magic-protection-arcana": 5,
+    "magic-gravity": 4,
+    "magic-slashing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Slasher": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Crusher": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Piercer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Slasher": [
+    "Light Armor (Hard Leather): 90/90"
+   ],
+   "Sim Crusher": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Piercer": [
+    "Light Armor (Soft Leather): 48/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 0/880 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2835,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2706,
+    "monsterHp": 2074,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2706,
+    "monsterHp": 1507,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2706,
+    "monsterHp": 1163,
+    "partyDown": 0,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Piercer": 1
    },
    "notes": [],
    "errors": []

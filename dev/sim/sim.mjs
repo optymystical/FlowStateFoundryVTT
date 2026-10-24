@@ -1044,8 +1044,8 @@ async function castAt(actor, targetTok, values, label) {
 }
 
 /**
- * A caster's turn: protect (Shield, Personal Repulsion) when it's a tank or support, slow the biggest threat (Burden), Gravity Field a crowd
- * next to it, then spend the rest on its best damage spell (a Combo when it knows two schools), adding Mods while the Energy lasts.
+ * A caster's turn: one protective or control spell (Shield or Personal Repulsion for a tank or support, Burden on the biggest threat, Gravity
+ * Field on a crowd next to it, in that order), then the rest on its best damage spell (a Combo when it knows two schools), adding Mods while the Energy lasts.
  * It keeps its distance: it only walks when nothing is in range.
  */
 async function casterTurn(actor, me) {
@@ -1071,33 +1071,33 @@ async function casterTurn(actor, me) {
     const fits = r => r && r.plan.ap <= ap && r.plan.energy <= Math.max(0, energy - reserve);
 
     // Shield (Protection Arcana): the ally (or yourself) most at risk who has none.
-    if ((role === "tank" || role === "support") && has("magic-protection-arcana:shield") && !done.has("shield")) {
+    if ((role === "tank" || role === "support") && has("magic-protection-arcana:shield") && !done.has("shield") && !done.has("support")) {
       done.add("shield");
       const who = mostThreatened(me, allies.filter(t => !Act.spellEffects(t.actor, "shield").length && dist(me, t) <= 100));
       const wanted = [["magic-protection-arcana:reflect", true], ["magic-protection-arcana:dampen", 1]];
       const r = who ? withMods(ctx, opt, ["magic-protection-arcana:shield"], wanted, budget, { "dampen:0": "magic" }) : null;
-      if (fits(r) && await castAt(actor, who, r.values, "Shield")) continue;
+      if (fits(r) && await castAt(actor, who, r.values, "Shield")) { done.add("support"); continue; }
     }
     // Personal Repulsion (Gravity T3, replacing Force): attacks with a low Scaling Stat against the ally most at risk have Disadvantage.
-    if (role === "support" && tierOf(actor, "magic-gravity") >= 3 && !done.has("repulse")) {
+    if (role === "support" && tierOf(actor, "magic-gravity") >= 3 && !done.has("repulse") && !done.has("support")) {
       done.add("repulse");
       const who = mostThreatened(me, allies.filter(t => !Act.spellEffects(t.actor, "field").length && dist(me, t) <= 100));
       const r = who ? planSpell(ctx, opt, ["magic-gravity:force"], { "magic-gravity:personal-repulsion": true }, { "replace:magic-gravity:personal-repulsion": true }) : null;
-      if (fits(r) && await castAt(actor, who, r.values, "Personal Repulsion")) continue;
+      if (fits(r) && await castAt(actor, who, r.values, "Personal Repulsion")) { done.add("support"); continue; }
     }
     // Burden (Gravity T2, replacing Force): Slow the strongest foe in range that isn't Slowed yet.
-    if ((role === "support" || role === "monster") && tierOf(actor, "magic-gravity") >= 2 && !done.has("burden")) {
+    if ((role === "support" || role === "monster") && tierOf(actor, "magic-gravity") >= 2 && !done.has("burden") && !done.has("support")) {
       done.add("burden");
       const prey = foesWithin(me, 200).filter(f => !(f.actor.system.conditions?.slow > 0)).sort((a, b) => b.actor.system.hp.max - a.actor.system.hp.max)[0];
       const r = prey ? planSpell(ctx, opt, ["magic-gravity:force"], { "magic-gravity:burden": true }, { "replace:magic-gravity:burden": true }) : null;
-      if (fits(r) && await castAt(actor, prey, r.values, "Burden")) continue;
+      if (fits(r) && await castAt(actor, prey, r.values, "Burden")) { done.add("support"); continue; }
     }
     // Gravity Field (Gravity T5): Force on every foe within 10 ft of you when two or more are that close (the area starts on you).
-    if (tierOf(actor, "magic-gravity") >= 5 && !done.has("field")) {
+    if (tierOf(actor, "magic-gravity") >= 5 && !done.has("field") && !done.has("support")) {
       done.add("field");
       const close = foesWithin(me, 10);
       const r = close.length >= 2 ? planSpell(ctx, opt, ["magic-gravity:force"], { "magic-gravity:gravity-field": true }) : null;
-      if (fits(r) && await castAt(actor, close[0], r.values, "Gravity Field")) continue;
+      if (fits(r) && await castAt(actor, close[0], r.values, "Gravity Field")) { done.add("support"); continue; }
     }
 
     // Damage: the best spell per AP among the Cores and Combos it knows, at the weakest foe in range.

@@ -1123,12 +1123,32 @@ function mostThreatened(me, list) {
   return [...list].sort((a, b) => near(b) - near(a) || a.actor.system.hp.value - b.actor.system.hp.value)[0] ?? null;
 }
 
+/**
+ * Venomancy: a coating passes on when the coated creature deals direct damage, through the coating card's Pass the Poison button (the caster
+ * picks the victim). After a creature with its own coating hits someone with a spell or weapon, press it for the first creature it hurt.
+ */
+async function passCoat(actor, since) {
+  const coat = Act.spellEffects(actor, "coat").find(e => e.flags.flowstate.spellEffect.caster === actor.uuid);
+  if (!coat) return;
+  const attackOf = m => { const def = game.messages.get(m.getFlag("flowstate", "damage").defenseMessage)?.getFlag("flowstate", "defense"); return game.messages.get(def?.attackMessage)?.getFlag("flowstate", "attack"); };
+  const hit = game.messages.contents.filter(m => !since.has(m.id) && (Number(m.getFlag("flowstate", "damage")?.toHp) || 0) > 0).find(m => attackOf(m)?.attacker === actor.uuid);
+  if (!hit) return;
+  const card = game.messages.contents.slice().reverse().find(m => (m.getFlag("flowstate", "afflict")?.acts ?? []).some(x => x.act === "pass" && x.coated === actor.uuid));
+  if (!card) return;
+  const i = card.getFlag("flowstate", "afflict").acts.findIndex(x => x.act === "pass" && x.coated === actor.uuid);
+  SIM.acting = actor.name;
+  SIM.fill = () => ({ who: hit.getFlag("flowstate", "damage").target });
+  try { await Act.afflictAct(card, i); note(actor, "passPoison"); } catch (err) { log.errors.push(`pass poison ${actor.name}: ${err.stack?.slice(0, 300)}`); }
+  await settle();
+}
+
 /** Cast `values` at `targetTok` through the real Cast Spell path (no dialog). Returns true if a spell went off. */
 async function castAt(actor, targetTok, values, label) {
   setTargets(...(Array.isArray(targetTok) ? targetTok : [targetTok]).filter(Boolean));
   SIM.acting = actor.name;
   SIM.fill = title => (/: shape$/.test(title) ? { shape: "radius" } : {});          // Gravity Field on the caster; Lob/Explode where the spell lands
   const apBefore = actor.system.ap.value;
+  const since = new Set(game.messages.keys());
   if (Fx.profileFor([values.core1, values.core2].filter(Boolean))?.arcana?.kind === "shift") values = { ...values, arcanaSpec: { muddy: "dis", harden: "strong" } };
   let plan = null;
   try { plan = await Cast.castSpell(actor, values); } catch (err) { log.errors.push(`cast ${actor.name}: ${err.stack?.slice(0, 400)}`); }
@@ -1148,6 +1168,7 @@ async function castAt(actor, targetTok, values, label) {
     try { await Cast.multicast(card); } catch (err) { log.errors.push(`multicast ${actor.name}: ${err.stack?.slice(0, 300)}`); break; }
     await settle();
   }
+  await passCoat(actor, since);
   return true;
 }
 
@@ -1259,7 +1280,11 @@ async function casterTurn(actor, me) {
     const hasDamage = known.cores.some(c => Fx.profileFor([c.id])?.damage);
     if (has("magic-venomancy:poison") && hasDamage && !done.has("poison") && !Act.spellEffects(actor, "coat").length) {
       done.add("poison");
-      const r = withMods(ctx, opt, ["magic-venomancy:poison"], [["magic-venomancy:potency", true], ["magic-venomancy:lethality", true], ["magic-venomancy:prolong", 1], ["magic-venomancy:virality", true]], budget);
+      const meanPoison = ids => { const a = Fx.profileFor(ids)?.afflict; return a?.dice ? a.dice[0] * (a.dice[1] + 1) / 2 * (a.bypassArmor || a.type === "health" ? 1 : 0.5) : 0; };
+      const partner = known.cores.filter(c => c.id !== "magic-venomancy:poison" && Fx.profileFor([c.id, "magic-venomancy:poison"])?.afflict?.kind === "poison")
+        .map(c => [c.id, "magic-venomancy:poison"]).sort((x, y) => meanPoison(y) - meanPoison(x))[0];
+      const coatIds = partner && planSpell(ctx, opt, partner) && meanPoison(partner) > meanPoison(["magic-venomancy:poison"]) ? partner : ["magic-venomancy:poison"];
+      const r = withMods(ctx, opt, coatIds, [["magic-venomancy:potency", true], ["magic-venomancy:lethality", true], ["magic-venomancy:prolong", 1], ["magic-venomancy:virality", true]], budget);
       if (fits(r) && await castAt(actor, me, r.values, "Poison (coat self)")) continue;
     }
     const strongest = foesWithin(me, 100).sort((a, b) => b.actor.system.hp.max - a.actor.system.hp.max);

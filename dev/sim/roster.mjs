@@ -1015,3 +1015,8 @@ const SOFT_IDS = ["cut-only", "venomancy", "witchery", "charm"];
 PASSES["magic-bench-soft"] = { id: "magic-bench-soft", note: "School benchmark against unarmored raiders: Cut only and the T3 schools, three fights each.",
   party: PARTY_MBENCH, monsters: SOFT_RAIDERS, deploy: "magicbench", maxRounds: 4,
   encounters: SOFT_IDS.flatMap(id => [1, 2, 3].map(rep => ({ id: `${id}-${rep}`, group: "raiders", rotation: BENCH_SCHOOLS.findIndex(s => s[0] === id) }))) };
+
+// Venomancy re-run once the sim passes coatings on (before, the Pass the Poison button was never pressed): against armored and unarmored raiders.
+PASSES["magic-bench-venom"] = { id: "magic-bench-venom", note: "Venomancy with its coatings passed on, against the benchmark's raiders with and without armor, three fights each.",
+  party: PARTY_MBENCH, monsters: { armored: BENCH_RAIDERS.raiders, soft: SOFT_RAIDERS.raiders }, deploy: "magicbench", maxRounds: 4,
+  encounters: ["armored", "soft"].flatMap(group => [1, 2, 3].map(rep => ({ id: `venomancy-${group}-${rep}`, group, rotation: BENCH_SCHOOLS.findIndex(s => s[0] === "venomancy") }))) };

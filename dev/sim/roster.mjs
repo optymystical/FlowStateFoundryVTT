@@ -970,3 +970,41 @@ export const MONSTERS_M5 = {
 };
 PASSES["magic-t5"] = { id: "magic-t5", note: "Magic Theory T5 schools (Restoration Arcana, Geomancy, Illusion, Arcanomancy) up to T5, or T4 with Combos; caster monsters the same.",
   party: PARTY_M5, monsters: MONSTERS_M5, encounters: encountersFor(MONSTERS_M5, 2) };
+
+/* -------------------------------------------- */
+/*  Magic school benchmark                        */
+/* -------------------------------------------- */
+
+// One caster per Magic school against the same three tree-less raiders for 4 rounds, so the schools compare on one scale (HP the raiders lose,
+// afflictions and burns included). Every caster has the same stats (Grasp 45, Con 30, Build 15, a Rod, a Bastion, Medium Hide) and takes Magic
+// Theory to its school's tier, the school to T5 (T4 for the T5 schools, which cost 15 SP of Theory) and Cut at T2 as a shared damage carrier
+// (Slashing itself takes Stab instead), so every caster has a damage spell and Poison has something to ride on. A "Cut only" caster is the
+// baseline. The raiders walk into a punching bag (a Heavy-armored ally that only dodges) standing between them and the caster; what they deal
+// it shows what control and support schools prevent. Each config runs twice.
+const MB = (tier, school, lvl = 5, carrier = SLA) => ({ "magic-theory": tier, [school]: lvl, ...(school === carrier ? {} : { [carrier]: 2 }) });
+const BENCH_SCHOOLS = [
+  ["cut-only", "Cut only (baseline)", { "magic-theory": 1, [SLA]: 2 }],
+  ["slashing", "Slashing", MB(1, SLA, 5, PIE)], ["piercing", "Piercing", MB(1, PIE)], ["crushing", "Crushing", MB(1, CRU)],
+  ["protection", "Protection Arcana", MB(1, PRO), "support"], ["gravity", "Gravity", MB(1, GRA), "support"],
+  ["reach", "Reach Arcana", MB(2, RCH2)], ["heat", "Heat", MB(2, HEA)], ["cold", "Cold", MB(2, COL)], ["radiation", "Radiation", MB(2, RAD)], ["acid", "Acid", MB(2, ACI)],
+  ["grasp", "Grasp Arcana", MB(3, GRS)], ["venomancy", "Venomancy", MB(3, VEN)], ["charm", "Charm", MB(3, CHA)], ["witchery", "Witchery", MB(3, WIT)],
+  ["build", "Build Arcana", MB(4, BUI)], ["summoning", "Summoning", MB(4, SUM), null, { cores: [FORM] }], ["creation", "Creation", MB(4, CRE)],
+  ["animation", "Animation", MB(4, ANI), null, { cores: [ANIMATE], material: "Stone" }],
+  ["restoration", "Restoration Arcana", MB(5, RES, 4)], ["geomancy", "Geomancy", MB(5, GEO, 4)], ["illusion", "Illusion", MB(5, ILL, 4)], ["arcanomancy", "Arcanomancy", MB(5, ARC, 4)]
+];
+const BENCH_CASTER_STATS = { grasp: 45, con: 30, build: 15 };
+export const PARTY_MBENCH = [
+  { id: "caster", name: "Sim Caster", role: "caster", note: "One loadout per school.", stats: BENCH_CASTER_STATS,
+    loadouts: BENCH_SCHOOLS.map(([id, label, trees, role, conj]) => ({ id, label, trees, role: role ?? "caster", conj: conj ?? null, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") })) },
+  { id: "bag", name: "Sim Bag", role: "dummy", note: "Heavy Iron, only dodges.", stats: { con: 90 },
+    loadouts: BENCH_SCHOOLS.map(() => ({ trees: {}, armor: A("heavy", "iron"), weapons: [] })) }
+];
+const BENCH_RAIDERS = { raiders: { label: "Raiders", note: "Three tree-less raiders with Heavy weapons (25 Skill Points).",
+  kinds: [
+    { id: "bench-brute", name: "Sim Raider Brute", count: 1, size: 3, sp: 25, natural: false, stats: { str: 60, con: 50, will: 15 }, armor: A("heavy", "iron"), weapons: [W("swift", "heavy", "steel", { primary: true, twoHanded: true })] },
+    { id: "bench-cutter", name: "Sim Raider Cutter", count: 1, size: 3, sp: 25, natural: false, stats: { str: 60, con: 50, will: 15 }, armor: A("medium", "hide"), weapons: [W("circular", "heavy", "steel", { primary: true })] },
+    { id: "bench-bruiser", name: "Sim Raider Bruiser", count: 1, size: 3, sp: 25, natural: false, stats: { str: 60, con: 50, build: 15 }, armor: A("medium", "hide"), weapons: [W("weighted", "heavy", "steel", { primary: true })] }
+  ] } };
+PASSES["magic-bench"] = { id: "magic-bench", note: "School benchmark: one caster per Magic school (with Cut T2) against three tree-less raiders hitting a punching bag, 4 rounds.",
+  party: PARTY_MBENCH, monsters: BENCH_RAIDERS, deploy: "magicbench", maxRounds: 4,
+  encounters: BENCH_SCHOOLS.flatMap(([id], rotation) => [1, 2].map(rep => ({ id: `${id}-${rep}`, group: "raiders", rotation }))) };

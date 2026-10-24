@@ -180,7 +180,7 @@ async function makeActor(spec, loadout, { party, folder }) {
     name: spec.name, type: party ? "character" : "npc", folder: folder.id,
     system: { stats: R.statBlock(spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {} },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
-    flags: { flowstate: { sim: { id: spec.id, role: spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null } } }
+    flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null } } }
   });
   const natural = !party && spec.natural !== false;
   const slots = loadout.weapons.filter(w => w.type !== "unarmed");
@@ -1449,6 +1449,13 @@ async function deploy(scene, party, monsters, mode = null, loadout = null) {
     await place(party[0], 8, 7);
     const x0 = loadout?.ranged ? 12 : 9;
     for (const [i, a] of monsters.entries()) await place(a, x0 + (i === 1 ? 1 : 0), 7 + (i === 2 ? 1 : 0));
+    return idle(300);
+  }
+  // Magic school benchmark: the caster 20 ft behind a punching bag, the three raiders 15 ft beyond it (the bag is the nearest foe).
+  if (mode === "magicbench") {
+    await place(party[0], 5, 10);
+    await place(party[1], 10, 10);
+    for (const [i, a] of monsters.entries()) await place(a, 14 + (i === 2 ? 1 : 0), 9 + i);
     return idle(300);
   }
   if (mode === "kite") {

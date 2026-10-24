@@ -1,6 +1,6 @@
 /**
  * The Magic vs Martial pass (`magic-vs-martial`): wins by monster group and type, by party rotation, and each party member's output tagged with its
- * build (Martial, Magic, Hybrid). `node dev/sim/mix-report.mjs`.
+ * build (Martial, Magic, Hybrid). `node dev/sim/mix-report.mjs [--hybrid]`.
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -9,7 +9,9 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const R = await import("./roster.mjs");
 const P = R.PASSES["magic-vs-martial"];
-const runs = JSON.parse(readFileSync(join(here, "results", "magic-vs-martial.json"), "utf8")).filter(r => !r.crashed);
+// `--hybrid`: the hybrid rotation from the re-run (magic-vs-martial-hybrid), the rest from the first pass.
+const read = id => JSON.parse(readFileSync(join(here, "results", `${id}.json`), "utf8")).filter(r => !r.crashed);
+const runs = process.argv.includes("--hybrid") ? [...read("magic-vs-martial").filter(r => r.rotation !== 2), ...read("magic-vs-martial-hybrid")] : read("magic-vs-martial");
 const MONSTER = /Goblin|Raider|Ogre/, CREATION = /Summon|Animation/;
 const pad = (v, n) => String(v).padEnd(n), num = (v, n) => String(v).padStart(n);
 

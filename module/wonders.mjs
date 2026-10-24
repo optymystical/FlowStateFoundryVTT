@@ -8,7 +8,7 @@ import {
   post, requestGM, putSpellEffect, spellEffects, changeEffect, setActorFlag, requestDamage, damageOutcome, knockbackRow, setGrapple, gridFor, feedExtra
 } from "./actions.mjs";
 import { centreDistance, tokenCentre } from "./distance.mjs";
-import { lossSince, setHp, reevaluate, healingDown } from "./arcana.mjs";
+import { setHp, reevaluate, healingDown, restoreSince, restorable } from "./arcana.mjs";
 import { askFor, runOnOwner, setActRunner } from "./ask.mjs";
 import { resolveForce, applyStacks } from "./rules.mjs";
 import * as R from "./mental-rules.mjs";
@@ -129,19 +129,23 @@ export async function pendingTurnStart(actor) {
   }
 }
 
-/** Heal with the "only health lost since the start of the caster's last turn" rule; the dead come back if they died since. */
+/**
+ * Heal with the "only health lost since the start of the caster's last turn" rule (Restore's window: on the caster's own turn it reaches back to their
+ * previous turn); health already given back in the window counts against it. The dead come back if they died since.
+ */
 export async function heal(target, caster, n) {
-  const stamp = caster.getFlag?.("flowstate", "turnStartedAt") ?? 0;
+  const stamp = restoreSince(caster);
   const dead = target.statuses?.has("dead");
   const diedSince = !stamp || (target.getFlag?.("flowstate", "diedAt") ?? 0) >= stamp;
   if (dead && !diedSince) return `${esc(target.name)} died before the start of your last turn: Renewal can't reach them.`;
   const hp = target.system.hp.value, max = target.system.hp.max;
   const room = Math.max(0, max - hp);
-  const lost = dead ? Infinity : lossSince(target, stamp);
+  const lost = dead ? Infinity : restorable(target, stamp);
   const cut = healingDown(target);
   n = Math.max(0, n - cut);
   const amount = Math.max(0, Math.min(n, lost, room));
-  await setHp(target, { "system.hp.value": hp + amount });
+  const restoreLog = [...(target.getFlag?.("flowstate", "restoreLog") ?? []).slice(-24), ...(amount > 0 ? [{ at: Date.now(), n: amount }] : [])];
+  await setHp(target, { "system.hp.value": hp + amount, ...(amount > 0 ? { "flags.flowstate.restoreLog": restoreLog } : {}) });
   await reevaluate(target);
   return `${esc(target.name)} regains <strong>${amount}</strong> health (${hp + amount}/${max})${amount < n ? " (only health lost since the start of your last turn)" : ""}.${dead && hp + amount > 0 ? ` <strong>${esc(target.name)} is resurrected.</strong>` : ""}`;
 }

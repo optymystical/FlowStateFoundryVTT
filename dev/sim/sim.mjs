@@ -1027,6 +1027,7 @@ function damageMods(actor, target, plan, me = null) {
   if (actor.system.ap.value >= 2 * Math.max(1, plan.ap)) out.push(["magic-reach-arcana:multicast", 1]);          // AP left to pay for the recast
   out.push("magic-piercing:setup", "magic-crushing:beatdown", "magic-slashing:gash");
   if (big) out.push("magic-slashing:chop");
+  if (actor.system.energy.value > 0.6 * actor.system.energy.max) out.push("magic-theory:empower");
   if (actor.system.energy.value > 0.7 * actor.system.energy.max) out.push("magic-theory:pinpoint");
   return out.map(m => (Array.isArray(m) ? m : [m, true]));
 }
@@ -1135,6 +1136,31 @@ async function casterTurn(actor, me) {
       const close = foesWithin(me, 10);
       const r = close.length >= 2 ? planSpell(ctx, opt, ["magic-gravity:force"], { "magic-gravity:gravity-field": true }) : null;
       if (fits(r) && await castAt(actor, close[0], r.values, "Gravity Field")) { done.add("support"); continue; }
+    }
+
+    // Tier 3 afflictions (each once a turn): coat yourself with Poison before your damage spell (it passes to whoever you next deal direct damage
+    // to), Charm the biggest threat's attack rolls, Hex a foe to trigger when it attacks (Charm + Hex when you know both).
+    const hasDamage = known.cores.some(c => Fx.profileFor([c.id])?.damage);
+    if (has("magic-venomancy:poison") && hasDamage && !done.has("poison") && !Act.spellEffects(actor, "coat").length) {
+      done.add("poison");
+      const r = withMods(ctx, opt, ["magic-venomancy:poison"], [["magic-venomancy:potency", true], ["magic-venomancy:lethality", true], ["magic-venomancy:prolong", 1], ["magic-venomancy:virality", true]], budget);
+      if (fits(r) && await castAt(actor, me, r.values, "Poison (coat self)")) continue;
+    }
+    const strongest = foesWithin(me, 100).sort((a, b) => b.actor.system.hp.max - a.actor.system.hp.max);
+    if (has("magic-charm:charm") && !done.has("charm")) {
+      done.add("charm");
+      const prey = strongest.find(f => !Act.spellEffects(f.actor, "charm").length);
+      const both = has("magic-witchery:hex");
+      const ids = both ? ["magic-charm:charm", "magic-witchery:hex"] : ["magic-charm:charm"];
+      const extra = { charmRoll: "attack", hexTrigger: "roll", hexRoll: "attack" };
+      const r = prey ? withMods(ctx, opt, ids, [["magic-charm:cloud", true], ["magic-charm:convince", true], ["magic-charm:ingrained", true], ["magic-witchery:unravel", true], ["magic-witchery:fester", true], ["magic-witchery:linger", 1]], budget, extra) : null;
+      if (fits(r) && await castAt(actor, prey, r.values, both ? "Charm + Hex" : "Charm")) continue;
+    }
+    if (has("magic-witchery:hex") && !has("magic-charm:charm") && !done.has("hex")) {
+      done.add("hex");
+      const prey = strongest.find(f => !Act.spellEffects(f.actor, "hex").length);
+      const r = prey ? withMods(ctx, opt, ["magic-witchery:hex"], [["magic-witchery:unravel", true], ["magic-witchery:fester", true], ["magic-witchery:linger", 1], ["magic-witchery:consume", true]], budget, { hexTrigger: "roll", hexRoll: "attack" }) : null;
+      if (fits(r) && await castAt(actor, prey, r.values, "Hex")) continue;
     }
 
     // Damage: the best spell per AP among the Cores and Combos it knows, at the weakest foe in range.

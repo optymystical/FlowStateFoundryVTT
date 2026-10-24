@@ -724,3 +724,86 @@ export const MONSTERS_M2 = {
 };
 PASSES["magic-t2"] = { id: "magic-t2", note: "Magic Theory T2 schools (Reach Arcana, Heat, Cold, Radiation, Acid) up to T5; caster monsters with the same schools.",
   party: PARTY_M2.map(p => ({ ...p, loadouts: p.loadouts.map(l => ({ ...l })) })), monsters: MONSTERS_M2, encounters: encountersFor(MONSTERS_M2, 2) };
+
+/* -------------------------------------------- */
+/*  Magic pass 3: the Magic Theory T3 schools     */
+/* -------------------------------------------- */
+
+// Magic Theory T3 (6 SP: Empower, Weaving) unlocks Grasp Arcana, Venomancy, Charm and Witchery. The T3 schools have no direct-damage spell (Grasp Arcana
+// has no Core at all, and a Poison only passes on when its coated carrier deals direct damage), so each caster spends its last 3 SP on a T1 damage
+// school at T2 (Cut, Stab or Slam) as the carrier (a judgment call for the sim): Magic Theory T3 (6) + a T3 school at T5 (15) + another at T3 (6) +
+// the carrier at T2 (3) = 30. The monsters are built the same way.
+const M3 = o => ({ "magic-theory": 3, ...o });
+const GRS = "magic-grasp-arcana", VEN = "magic-venomancy", CHA = "magic-charm", WIT = "magic-witchery";
+const POISON = "magic-venomancy:poison", CHARM = "magic-charm:charm", HEX = "magic-witchery:hex";
+export const PARTY_M3 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank caster: Hex and Charm (Charm + Hex), Slam as the carrier, from a Rod.",
+    stats: { con: 40, grasp: 30, build: 20 },
+    loadouts: [
+      { trees: M3({ [WIT]: 5, [CHA]: 3, [CRU]: 2 }), focus: HEX, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { trees: M3({ [CHA]: 5, [WIT]: 3, [CRU]: 2 }), focus: CHARM, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Venom", role: "caster", note: "Grasp caster: Poison coats (Prolong, Lethality, Potency, Virality) carried by Cut, with Grasp Arcana (Foresight, Replicate, Instant Ritual).",
+    stats: { grasp: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M3({ [VEN]: 5, [GRS]: 3, [SLA]: 2 }), focus: POISON, armor: A("light", "hardLeather"), weapons: [], foci: FO("wand"), shroud: FO("cinder") },
+      { trees: M3({ [GRS]: 5, [VEN]: 3, [SLA]: 2 }), focus: POISON, armor: A("light", "hardLeather"), weapons: [], foci: FO("rod"), shroud: FO("cinder") }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Hexer", role: "caster", note: "Reach caster: Hex (Linger, Fester, Unravel, Consume) and Poison, Stab as the carrier, from a Tome or Scroll.",
+    stats: { reach: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M3({ [WIT]: 5, [VEN]: 3, [PIE]: 2 }), focus: HEX, armor: A("medium", "softLeather"), weapons: [], foci: FO("tome", { twoHanded: true }), shroud: FO("bastion") },
+      { trees: M3({ [VEN]: 5, [WIT]: 3, [PIE]: 2 }), focus: POISON, armor: A("medium", "softLeather"), weapons: [], foci: FO("scroll"), shroud: FO("ember") }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Charmer", role: "caster", note: "Raw caster: Charm (Ingrained, Convince, Cloud, Propagandize) or Hex, Cut as the carrier.",
+    stats: { reach: 30, grasp: 30, con: 30 },
+    loadouts: [
+      { trees: M3({ [CHA]: 5, [VEN]: 3, [SLA]: 2 }), focus: CHARM, armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("lattice") },
+      { trees: M3({ [WIT]: 5, [CHA]: 3, [SLA]: 2 }), focus: HEX, armor: A("light", "softLeather"), weapons: [], foci: FO("gauntlet"), shroud: FO("lattice") }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support caster: Grasp Arcana and Charm, Burden (Gravity T2) on the biggest threat, from a Scepter.",
+    stats: { grasp: 35, con: 30, reach: 10, build: 15 },
+    loadouts: [
+      { trees: M3({ [GRS]: 5, [CHA]: 3, [GRA]: 2 }), focus: CHARM, armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") },
+      { trees: M3({ [CHA]: 5, [GRS]: 3, [GRA]: 2 }), focus: CHARM, armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") }
+    ]
+  }
+];
+
+export const MONSTERS_M3 = {
+  swarm: {
+    label: "Swarm", note: "Ten goblin casters (20 Skill Points, 1/5): Magic Theory T3, a T3 school at T4 and a T1 carrier at T2, a natural Rod.",
+    kinds: [
+      { id: "goblin-venomer", name: "Sim Goblin Venomer", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M3({ [VEN]: 4, [SLA]: 2 }), focus: POISON, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-charmer", name: "Sim Goblin Charmer", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M3({ [CHA]: 4, [PIE]: 2 }), focus: CHARM, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-hexer", name: "Sim Goblin Hexer", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M3({ [WIT]: 4, [CRU]: 2 }), focus: HEX, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-grasper", name: "Sim Goblin Grasper", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M3({ [GRS]: 4, [SLA]: 2 }), armor: A("light", "softLeather"), weapons: [], foci: FO("rod") }
+    ]
+  },
+  raiders: {
+    label: "Raiders", note: "Five caster raiders (25 Skill Points, 1/5): Magic Theory T3, one T3 school at T5 and a T1 carrier at T2, natural Foci and a Bastion Shroud.",
+    kinds: [
+      { id: "raider-venomer", name: "Sim Raider Venomer", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M3({ [VEN]: 5, [SLA]: 2 }), focus: POISON, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-charmer", name: "Sim Raider Charmer", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M3({ [CHA]: 5, [PIE]: 2 }), focus: CHARM, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-hexer", name: "Sim Raider Hexer", count: 1, size: 3, sp: 25, stats: { reach: 55, con: 50, build: 20 }, trees: M3({ [WIT]: 5, [CRU]: 2 }), focus: HEX, armor: A("medium", "hide"), weapons: [], foci: FO("scroll"), shroud: FO("bastion") },
+      { id: "raider-grasper", name: "Sim Raider Grasper", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M3({ [GRS]: 5, [SLA]: 2 }), armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-witch", name: "Sim Raider Witch", count: 1, size: 3, sp: 25, stats: { reach: 40, grasp: 40, con: 45 }, trees: M3({ [WIT]: 5, [PIE]: 2 }), focus: HEX, armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("bastion") }
+    ]
+  },
+  boss: {
+    label: "Boss", note: "An Ogre Magus (Size 4, 30 Skill Points, 1/10): Witchery T5, Venomancy T3 and Crushing T2 through a natural Orb, natural Heavy armor and a Carapace Shroud.",
+    kinds: [{ id: "ogre-magus", name: "Sim Ogre Magus", count: 1, size: 4, sp: 30, stats: { con: 110, reach: 80, grasp: 40, build: 40, will: 30 }, trees: M3({ [WIT]: 5, [VEN]: 3, [CRU]: 2 }), focus: HEX,
+      armor: A("heavy", "iron"), weapons: [], foci: FO("orb"), shroud: FO("carapace") }]
+  }
+};
+PASSES["magic-t3"] = { id: "magic-t3", note: "Magic Theory T3 schools (Grasp Arcana, Venomancy, Charm, Witchery) up to T5, each caster with a T1 carrier at T2; caster monsters the same.",
+  party: PARTY_M3, monsters: MONSTERS_M3, encounters: encountersFor(MONSTERS_M3, 2) };

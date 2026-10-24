@@ -1595,7 +1595,9 @@ function collect(scene, combat, msgs) {
   for (const m of msgs) {
     const a = m.getFlag("flowstate", "attack");
     if (!a || !a.opts) continue;
-    let key = F.creations?.[a.attacker] ? F.creations[a.attacker] : a.opts.spell ? `Spell: ${a.opts.label ?? "?"}` : a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
+    // Shift / Toss (Geomancy) attack with no spell data on the card: they're counted under Shift.
+    const geo = !a.opts.spell && !a.opts.itemUuid && ["Shift", "Toss"].includes(a.opts.label);
+    let key = F.creations?.[a.attacker] ? F.creations[a.attacker] : a.opts.spell ? `Spell: ${a.opts.label ?? "?"}` : geo ? `Spell: Shift (${a.opts.label})` : a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
     if (!key) continue;
     // Spells and creations are shared by both sides: the monsters' get their own rows.
     if (/^(Spell|Creation): /.test(key) && F.monsterSide?.has(a.attacker)) key += " [M]";

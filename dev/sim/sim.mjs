@@ -1169,10 +1169,10 @@ function weaponNow(actor, me) {
 function weavePlan(actor, me, w, target) {
   if (tierOf(actor, "magic-theory") < 3 || !isCaster(actor)) return null;
   const weave = { ap: w.item.system.profile.ap, melee: !w.ranged, targetActors: [target.actor] };
-  if (weave.melee && dist(me, target) > reachOf(actor) + 0.01) return null;
+  if (weave.melee && dist(me, target) > reachOf(actor) + 0.01) { note(actor, "weave:outOfReach"); return null; }
   const { ctx, known } = Cast.castSummary(actor, weave);
   const opt = castOption(ctx);
-  if (!opt) return null;
+  if (!opt) { note(actor, `weave:noOption(${ctx.options.map(o => o.reason).join("|").slice(0, 80)})`); return null; }
   const budget = Math.floor(0.5 * Math.max(0, actor.system.energy.value - Math.floor(0.1 * actor.system.energy.max)));
   let best = null;
   for (const c of known.cores) {
@@ -1181,7 +1181,7 @@ function weavePlan(actor, me, w, target) {
     const value = spellNow(r.plan, target, me);
     if (value > 0 && (!best || value > best.value)) best = { ids: [c.id], value };
   }
-  if (!best) return null;
+  if (!best) { note(actor, `weave:noSpell(budget ${budget}; ${known.cores.map(c => { const r = planSpell(ctx, opt, [c.id]); return `${c.name}:${r?.plan?.ok ? r.plan.energy : r ? r.plan.errors?.[0]?.slice(0, 40) : "none"}`; }).join(",")})`); return null; }
   const r = withMods(ctx, opt, best.ids, damageMods(actor, target, planSpell(ctx, opt, best.ids).plan, me), budget);
   return r?.plan?.ok ? { values: r.values, weave, name: best.ids.map(id => Sp.spellById(id)?.name ?? id).join(" + ") } : null;
 }

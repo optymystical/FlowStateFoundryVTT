@@ -643,3 +643,84 @@ export const MONSTERS_M1 = {
 };
 PASSES["magic-t1"] = { id: "magic-t1", note: "Magic Theory T1 schools (Protection Arcana, Gravity, Slashing, Piercing, Crushing) up to T5; caster monsters with the same schools.",
   party: PARTY_M1, monsters: MONSTERS_M1, encounters: encountersFor(MONSTERS_M1, 2) };
+
+/* -------------------------------------------- */
+/*  Magic pass 2: the Magic Theory T2 schools     */
+/* -------------------------------------------- */
+
+// Magic Theory T2 (3 SP: Focus and Ritual Casting) unlocks Reach Arcana, Heat, Cold, Radiation and Acid. Each caster takes one school to T5 (15) and
+// another to T4 (10): 28 of 30 SP, and Focuses its main school's Core (+1 TR). Pure casters as in pass 1; the monsters cast the same tier.
+const M2 = o => ({ "magic-theory": 2, ...o });
+const RCH2 = "magic-reach-arcana", HEA = "magic-heat", COL = "magic-cold", RAD = "magic-radiation", ACI = "magic-acid";
+const FLAME = "magic-heat:flame", FROST = "magic-cold:frost", CRACKLE = "magic-radiation:crackle", GLOB = "magic-acid:glob";
+export const PARTY_M2 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank caster: Glob and Frost (Melt, Solidify, Sticky, Catalyst / Frostbite, Chill, Freeze, Shatter) from a Rod.",
+    stats: { con: 40, grasp: 30, build: 20 },
+    loadouts: [
+      { trees: M2({ [ACI]: 5, [COL]: 4 }), focus: GLOB, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { trees: M2({ [COL]: 5, [ACI]: 4 }), focus: FROST, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Pyro", role: "caster", note: "Grasp caster: Flame and Crackle (Ignition, Brand, Flare, Cook / Electrify, Lightning Rod, Charge, Discharge) from a Wand or Rod.",
+    stats: { grasp: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M2({ [HEA]: 5, [RAD]: 4 }), focus: FLAME, armor: A("light", "hardLeather"), weapons: [], foci: FO("wand"), shroud: FO("cinder") },
+      { trees: M2({ [RAD]: 5, [HEA]: 4 }), focus: CRACKLE, armor: A("light", "hardLeather"), weapons: [], foci: FO("rod"), shroud: FO("cinder") }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Storm", role: "caster", note: "Reach caster: Crackle with Reach Arcana (Multicast, Lob, Mold, Explode, Minigun) from a Tome or Scroll.",
+    stats: { reach: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M2({ [RAD]: 5, [RCH2]: 4 }), focus: CRACKLE, armor: A("medium", "softLeather"), weapons: [], foci: FO("tome", { twoHanded: true }), shroud: FO("bastion") },
+      { trees: M2({ [RCH2]: 5, [RAD]: 4 }), focus: CRACKLE, armor: A("medium", "softLeather"), weapons: [], foci: FO("scroll"), shroud: FO("ember") }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Frostfire", role: "caster", note: "Raw caster: Frost and Flame with no Foci, or through a Gauntlet.",
+    stats: { reach: 30, grasp: 30, con: 30 },
+    loadouts: [
+      { trees: M2({ [COL]: 5, [HEA]: 4 }), focus: FROST, armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("lattice") },
+      { trees: M2({ [HEA]: 5, [COL]: 4 }), focus: FLAME, armor: A("light", "softLeather"), weapons: [], foci: FO("gauntlet"), shroud: FO("lattice") }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support caster: Glob with Reach Arcana (Multicast, Explode), from a Scepter.",
+    stats: { grasp: 35, con: 30, reach: 10, build: 15 },
+    loadouts: [
+      { trees: M2({ [RCH2]: 5, [ACI]: 4 }), focus: GLOB, armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") },
+      { trees: M2({ [ACI]: 5, [RCH2]: 4 }), focus: GLOB, armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") }
+    ]
+  }
+];
+
+export const MONSTERS_M2 = {
+  swarm: {
+    label: "Swarm", note: "Ten goblin casters (20 Skill Points, 1/5): Magic Theory T2 and two T2 schools (T4 and T3), a natural Rod.",
+    kinds: [
+      { id: "goblin-pyro", name: "Sim Goblin Pyro", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M2({ [HEA]: 4, [COL]: 3 }), focus: FLAME, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-froster", name: "Sim Goblin Froster", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M2({ [COL]: 4, [ACI]: 3 }), focus: FROST, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-sparker", name: "Sim Goblin Sparker", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M2({ [RAD]: 4, [HEA]: 3 }), focus: CRACKLE, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-spitter", name: "Sim Goblin Spitter", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M2({ [ACI]: 4, [RAD]: 3 }), focus: GLOB, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") }
+    ]
+  },
+  raiders: {
+    label: "Raiders", note: "Five caster raiders (25 Skill Points, 1/5): Magic Theory T2, one T2 school at T5 and another at T3, natural Foci and a Bastion Shroud.",
+    kinds: [
+      { id: "raider-pyro", name: "Sim Raider Pyro", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M2({ [HEA]: 5, [RAD]: 3 }), focus: FLAME, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-froster", name: "Sim Raider Froster", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M2({ [COL]: 5, [ACI]: 3 }), focus: FROST, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-storm", name: "Sim Raider Storm", count: 1, size: 3, sp: 25, stats: { reach: 55, con: 50, build: 20 }, trees: M2({ [RAD]: 5, [RCH2]: 3 }), focus: CRACKLE, armor: A("medium", "hide"), weapons: [], foci: FO("scroll"), shroud: FO("bastion") },
+      { id: "raider-spitter", name: "Sim Raider Spitter", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M2({ [ACI]: 5, [HEA]: 3 }), focus: GLOB, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-caster", name: "Sim Raider Echo", count: 1, size: 3, sp: 25, stats: { reach: 40, grasp: 40, con: 45 }, trees: M2({ [RCH2]: 5, [COL]: 3 }), focus: FROST, armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("bastion") }
+    ]
+  },
+  boss: {
+    label: "Boss", note: "An Ogre Magus (Size 4, 30 Skill Points, 1/10): Heat T5 and Acid T4 through a natural Orb, natural Heavy armor and a Carapace Shroud.",
+    kinds: [{ id: "ogre-magus", name: "Sim Ogre Magus", count: 1, size: 4, sp: 30, stats: { con: 110, reach: 80, grasp: 40, build: 40, will: 30 }, trees: M2({ [HEA]: 5, [ACI]: 4 }), focus: FLAME,
+      armor: A("heavy", "iron"), weapons: [], foci: FO("orb"), shroud: FO("carapace") }]
+  }
+};
+PASSES["magic-t2"] = { id: "magic-t2", note: "Magic Theory T2 schools (Reach Arcana, Heat, Cold, Radiation, Acid) up to T5; caster monsters with the same schools.",
+  party: PARTY_M2.map(p => ({ ...p, loadouts: p.loadouts.map(l => ({ ...l })) })), monsters: MONSTERS_M2, encounters: encountersFor(MONSTERS_M2, 2) };

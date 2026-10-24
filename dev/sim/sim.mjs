@@ -197,7 +197,8 @@ async function makeActor(spec, loadout, { party, folder }) {
     if (!it.system.equipped) { log.notes.push({ level: "setup", msg: `${a.name}: ${it.name} couldn't be held`, who: a.name }); continue; }
     hands -= need;
   }
-  await a.update({ "system.hp.value": a.system.hp.max, "system.energy.value": a.system.energy.max, "system.ap.value": 6, "system.rp.value": 6 });
+  await a.update({ "system.hp.value": a.system.hp.max, "system.energy.value": a.system.energy.max, "system.ap.value": 6, "system.rp.value": 6,
+    ...(loadout.focus ? { "system.focusedSpell": loadout.focus } : {}) });
   return a;
 }
 
@@ -983,20 +984,47 @@ function planSpell(ctx, opt, coreIds, mods = {}, extra = {}) {
   return best;
 }
 
-/** Spell damage the AI expects from a plan (its dice; a Combo's Force adds a little). */
-function spellValue(plan) {
+/**
+ * What a spell is worth to the AI against `target`: its damage dice, plus the stacks it leaves (Ignite, Stain, Searing and Electric Stains burn on
+ * later turns), Energy it drains, its chain to other foes, and Force. Negative when it can't be used on them (a Cold + Radiation on someone with Energy).
+ */
+function spellValue(plan, target = null, me = null) {
   const profile = Fx.profileFor(plan.cores.map(c => c.id));
   if (!profile) return 0;
+  const P = Math.max(1, plan.power);
+  if (profile.needsEnergyZero && (target?.actor?.system?.energy?.value ?? 1) > 0) return -1;
   const dmg = profile.damage ? meanDice(Fx.damageDice(profile, plan.power)) : 0;
-  return dmg + (profile.force ? 0.25 * 5.5 * profile.force.n * Math.max(1, plan.power) : 0);
+  let v = dmg;
+  if (profile.force) v += 0.25 * 5.5 * profile.force.n * P;
+  const burn = { ignite: 1.5, stain: 1.5, searing: 3, electric: 2.5 };
+  const others = target && me ? foesOf(me.parent, me).filter(f => f.id !== target.id && dist(f, target) <= 30).length : 0;
+  let stacks = 0;
+  for (const e of profile.effects ?? []) {
+    if (e.stack) { stacks = e.stack.dice ? e.stack.dice[0] * (e.stack.dice[1] + 1) / 2 * P : dmg * (e.stack.per ?? 1); v += stacks * (burn[e.stack.kind] ?? 1); }
+    if (e.energy) v += 0.3 * (e.energy.sameAsStacks ? stacks : dmg * (e.energy.per ?? 1));
+    if (e.chain) v += dmg * 0.6 * Math.min(3, others);
+    if (e.heatRad) v += 0.5 * e.heatRad.dice[0] * (e.heatRad.dice[1] + 1) / 2 * P;
+    if (e.freezeAll) v += 4 * P;
+  }
+  return v;
 }
 
-/** Mods worth adding to a damage spell, best first (each one only if it applies and the Energy is there). */
-function damageMods(actor, target, plan) {
-  const armored = (target?.actor?.items ?? []).some(i => i.type === "armor" && i.system.equipped);
-  const big = (target?.actor?.system?.hp?.max ?? 0) > 1000;
+/** Mods worth adding to a damage spell, best first (each one only if its school applies and the Energy is there). */
+function damageMods(actor, target, plan, me = null) {
+  const t = target?.actor;
+  const armored = (t?.items ?? []).some(i => i.type === "armor" && i.system.equipped);
+  const big = (t?.system?.hp?.max ?? 0) > 1000;
+  const near = target && me ? foesOf(me.parent, me).filter(f => f.id !== target.id && dist(f, target) <= 10).length : 0;
   const out = ["magic-slashing:bleed", "magic-slashing:rend", "magic-crushing:crush"];
-  if (armored) out.push("magic-piercing:weakpoint", ["magic-piercing:pierce", 2], ["magic-crushing:bash", 1]);
+  if (armored) out.push("magic-piercing:weakpoint", ["magic-piercing:pierce", 2], ["magic-crushing:bash", 1], "magic-acid:melt");
+  // Tier 2 schools.
+  out.push("magic-heat:ignition", "magic-radiation:electrify", ["magic-cold:frostbite", 2], "magic-cold:chill", "magic-cold:freeze");
+  if ((t?.system?.energy?.value ?? 1) <= 0) out.push("magic-cold:shatter");
+  if (near >= 1) out.push("magic-radiation:charge", "magic-radiation:lightning-rod");
+  if ((t?.system?.conditions?.stain ?? 0) > 0) out.push("magic-acid:catalyst");
+  if ((t?.system?.conditions?.stain ?? 0) >= (t?.system?.hp?.pain ?? Infinity)) out.push("magic-acid:sticky");
+  if (near >= 2 && plan.attack === "Ranged") out.push("magic-reach-arcana:explode");
+  if (actor.system.ap.value >= 2 * Math.max(1, plan.ap)) out.push(["magic-reach-arcana:multicast", 1]);          // AP left to pay for the recast
   out.push("magic-piercing:setup", "magic-crushing:beatdown", "magic-slashing:gash");
   if (big) out.push("magic-slashing:chop");
   if (actor.system.energy.value > 0.7 * actor.system.energy.max) out.push("magic-theory:pinpoint");
@@ -1029,7 +1057,7 @@ function mostThreatened(me, list) {
 async function castAt(actor, targetTok, values, label) {
   setTargets(...(Array.isArray(targetTok) ? targetTok : [targetTok]).filter(Boolean));
   SIM.acting = actor.name;
-  SIM.fill = title => (/: shape$/.test(title) ? { shape: "radius" } : {});
+  SIM.fill = title => (/: shape$/.test(title) ? { shape: "radius" } : {});          // Gravity Field on the caster; Lob/Explode where the spell lands
   const apBefore = actor.system.ap.value;
   let plan = null;
   try { plan = await Cast.castSpell(actor, values); } catch (err) { log.errors.push(`cast ${actor.name}: ${err.stack?.slice(0, 400)}`); }
@@ -1040,6 +1068,15 @@ async function castAt(actor, targetTok, values, label) {
   for (const a of plan.applied ?? []) note(actor, `mod:${a.mod.name}`);
   if (actor.system.ap.value === apBefore && !plan.ap) note(actor, "cast:free");
   await settle();
+  // Multicast (Reach Arcana): recast for its AP/RP while there's enough left and a target still stands.
+  for (let i = 0; i < 6; i++) {
+    const card = game.messages.contents.slice(-15).reverse().find(m => m.getFlag("flowstate", "multicast")?.caster === actor.uuid && m.getFlag("flowstate", "multicast").remaining > 0);
+    const mc = card?.getFlag("flowstate", "multicast");
+    if (!mc || (actor.system[mc.key]?.value ?? 0) < mc.cost || !mc.targets.some(u => !down(fromUuidSync(u)))) break;
+    note(actor, "multicast");
+    try { await Cast.multicast(card); } catch (err) { log.errors.push(`multicast ${actor.name}: ${err.stack?.slice(0, 300)}`); break; }
+    await settle();
+  }
   return true;
 }
 
@@ -1101,26 +1138,26 @@ async function casterTurn(actor, me) {
     }
 
     // Damage: the best spell per AP among the Cores and Combos it knows, at the weakest foe in range.
-    const dmgCores = known.cores.filter(c => !c.uncombinable && Fx.profileFor([c.id])?.damage || (Fx.profileFor([c.id])?.force && !c.uncombinable));
+    const dmgCores = known.cores.filter(c => !c.uncombinable && Fx.profileFor([c.id]));
     const combos = [];
-    for (let i = 0; i < dmgCores.length; i++) for (let j = i + 1; j < dmgCores.length; j++) combos.push([dmgCores[i].id, dmgCores[j].id]);
+    for (let i = 0; i < dmgCores.length; i++) for (let j = i + 1; j < dmgCores.length; j++) if (Fx.profileFor([dmgCores[i].id, dmgCores[j].id])) combos.push([dmgCores[i].id, dmgCores[j].id]);
     const choices = [...dmgCores.map(c => [c.id]), ...combos];
+    let target = foesWithin(me, 200)[0];
+    if (!target) {
+      const nearest = foesOf(me.parent, me).sort((a, b) => dist(me, a) - dist(me, b))[0];
+      if (!nearest || !(await approach(actor, me, nearest, 195))) return;
+      continue;
+    }
     let best = null;
     for (const ids of choices) {
       const r = planSpell(ctx, opt, ids);
       if (!fits(r)) continue;
-      const value = spellValue(r.plan) / Math.max(1, r.plan.ap);
-      if (!best || value > best.value) best = { ids, r, value };
+      if (r.plan.attack === "Targeted" && dist(me, target) > 100.01) continue;
+      const value = spellValue(r.plan, target, me) / Math.max(1, r.plan.ap);
+      if (value > 0 && (!best || value > best.value)) best = { ids, r, value };
     }
     if (!best) { note(actor, "cast:nothingAffordable"); return; }
-    const range = best.r.plan.attack === "Targeted" ? 100 : 200;
-    let target = foesWithin(me, range)[0];
-    if (!target) {
-      const nearest = foesOf(me.parent, me).sort((a, b) => dist(me, a) - dist(me, b))[0];
-      if (!nearest || !(await approach(actor, me, nearest, range - 5))) return;
-      continue;
-    }
-    const r = withMods(ctx, opt, best.ids, damageMods(actor, target, best.r.plan), budget) ?? best.r;
+    const r = withMods(ctx, opt, best.ids, damageMods(actor, target, best.r.plan, me), budget) ?? best.r;
     if (!fits(r)) return;
     const name = best.ids.map(id => Sp.spellById(id)?.name ?? id).join(" + ");
     if (!(await castAt(actor, target, r.values, name))) return;
@@ -1315,7 +1352,7 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     for (const p of P.party) party.push(await makeActor(p, p.loadouts[enc.rotation], { party: true, folder: pf }));
     const monsterActors = [];
     for (const k of P.monsters[enc.group].kinds) {
-      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud }, { party: false, folder: mf });
+      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud, focus: k.focus }, { party: false, folder: mf });
       for (let i = 0; i < k.count; i++) monsterActors.push(a);
     }
     await deploy(scene, party, monsterActors, P.deploy, P.party[0].loadouts[enc.rotation]);

@@ -356,8 +356,6 @@ Hooks.once("init", () => {
     // Pain Threshold divisor (hidden; the rule is 2 = half of max HP). For testing other values in the combat sim.
     game.settings.register("flowstate", "painDivisor", { scope: "world", config: false, type: Number, default: 2,
       onChange: () => { for (const a of game.actors) a.reset?.(); } });
-    // Hidden: Venomancy variants under test in the combat sim ("" = the rules as written; "multi", "halfpass", "both" or "hit"). Not a rule.
-    game.settings.register("flowstate", "venomVariant", { scope: "world", config: false, type: String, default: "" });
     game.settings.register("flowstate", "enforceRange", {
     name: "Enforce attack range",
     hint: "Block attacks when a targeted token is beyond melee reach, throw range, or the chosen range band.",

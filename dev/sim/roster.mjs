@@ -1021,15 +1021,13 @@ PASSES["magic-bench-venom"] = { id: "magic-bench-venom", note: "Venomancy with i
   party: PARTY_MBENCH, monsters: { armored: BENCH_RAIDERS.raiders, soft: SOFT_RAIDERS.raiders }, deploy: "magicbench", maxRounds: 4,
   encounters: ["armored", "soft"].flatMap(group => [1, 2, 3].map(rep => ({ id: `venomancy-${group}-${rep}`, group, rotation: BENCH_SCHOOLS.findIndex(s => s[0] === "venomancy") }))) };
 
-// Venomancy variants under test (hidden world setting venomVariant; not rules): a coating that poisons every hit until it wears off ("multi"),
-// a passed Constitution check that halves the damage ("halfpass"), and a coating that passes on any hit, even one armor soaks ("hit").
-for (const v of ["multi", "halfpass", "hit"]) {
-  PASSES[`magic-bench-venom-${v}`] = { ...PASSES["magic-bench-venom"], id: `magic-bench-venom-${v}`, settings: { venomVariant: v },
-    note: `${PASSES["magic-bench-venom"].note} Variant: ${v}.` };
-}
+// (Venomancy variants were tested on 24 Oct 2026 behind a temporary setting, since removed: a coating that poisons every hit, a passed check that
+// halves the damage, and a coating passed on any hit. Their results stay in results/magic-bench-venom-*.json; Poison stays as written.)
 
-// More armored fights for the rules as written and the halfpass variant (the two the first runs couldn't separate).
-for (const [id, v] of [["magic-bench-venom-armored", ""], ["magic-bench-venom-halfpass-armored", "halfpass"]]) {
-  PASSES[id] = { ...PASSES["magic-bench-venom"], id, settings: { venomVariant: v }, note: `Venomancy against armored raiders, six more fights${v ? ` (variant ${v})` : ""}.`,
-    encounters: [4, 5, 6, 7, 8, 9].map(rep => ({ id: `venomancy-armored-${rep}`, group: "armored", rotation: BENCH_SCHOOLS.findIndex(s => s[0] === "venomancy") })) };
-}
+// More armored fights for the rules as written.
+PASSES["magic-bench-venom-armored"] = { ...PASSES["magic-bench-venom"], id: "magic-bench-venom-armored", note: "Venomancy against armored raiders, six more fights.",
+  encounters: [4, 5, 6, 7, 8, 9].map(rep => ({ id: `venomancy-armored-${rep}`, group: "armored", rotation: BENCH_SCHOOLS.findIndex(s => s[0] === "venomancy") })) };
+
+// Re-runs on 24 Oct 2026: T3 now that the sim passes Poison coatings on, T4 with Animation Size capped by the Threshold (v0.80.0).
+PASSES["magic-t3-rerun"] = { ...PASSES["magic-t3"], id: "magic-t3-rerun", note: `${PASSES["magic-t3"].note} Re-run with Poison coatings passed on.` };
+PASSES["magic-t4-rerun"] = { ...PASSES["magic-t4"], id: "magic-t4-rerun", note: `${PASSES["magic-t4"].note} Re-run with Animation Size capped by the Threshold.` };

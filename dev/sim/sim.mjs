@@ -1131,10 +1131,8 @@ async function passCoat(actor, since) {
   const coat = Act.spellEffects(actor, "coat").find(e => e.flags.flowstate.spellEffect.caster === actor.uuid);
   if (!coat) return;
   const attackOf = m => { const def = game.messages.get(m.getFlag("flowstate", "damage").defenseMessage)?.getFlag("flowstate", "defense"); return game.messages.get(def?.attackMessage)?.getFlag("flowstate", "attack"); };
-  // Every hit that dealt direct damage, in order (a coating that stays on, the "multi" variant under test, passes with each).
-  // The "hit" variant under test passes it on any hit, even one armor soaks completely.
-  const onHit = game.settings.get("flowstate", "venomVariant") === "hit";
-  const hits = game.messages.contents.filter(m => !since.has(m.id) && m.getFlag("flowstate", "damage") && (onHit || (Number(m.getFlag("flowstate", "damage")?.toHp) || 0) > 0) && attackOf(m)?.attacker === actor.uuid);
+  // Every hit that dealt direct damage, in order: the first one takes the coating (the loop stops once it's gone).
+  const hits = game.messages.contents.filter(m => !since.has(m.id) && (Number(m.getFlag("flowstate", "damage")?.toHp) || 0) > 0 && attackOf(m)?.attacker === actor.uuid);
   for (const hit of hits) {
     if (!Act.spellEffects(actor, "coat").some(e => e.flags.flowstate.spellEffect.caster === actor.uuid)) return;
     const card = game.messages.contents.slice().reverse().find(m => (m.getFlag("flowstate", "afflict")?.acts ?? []).some(x => x.act === "pass" && x.coated === actor.uuid));

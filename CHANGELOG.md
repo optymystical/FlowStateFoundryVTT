@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.80.3:** Removed the hidden Venomancy test setting (Poison stays as written).
+
 **0.80.2:** Summons are fully Magical (made of Spirit): Arcane damage isn't Weakened against them and Strike has Advantage. Animations stay non-Magical. Neither is a living target: Restore, Cut's living die and Mental's living-target checks skip both (they used to treat any non-Magical creature as living).
 
 **0.80.1:** A hidden world setting for Venomancy variants under test in the combat sim (off by default: the rules are unchanged).

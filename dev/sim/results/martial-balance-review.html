@@ -109,14 +109,65 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
   <header>
     <span class="eyebrow">Flow State · Combat sim · Martial</span>
     <h1>Martial balance review</h1>
-    <p class="lede">What 42 simulated fights say about weapons, armor, the Martial trees and the monsters, before the Magic passes begin. Updated with 127 follow-up test fights.</p>
+    <p class="lede">What the combat sim found in the Martial trees, what changed because of it, and where Martial stands before the Magic passes.</p>
     <div class="meta">
-      <span><b>42</b> fights · <b>354</b> rounds</span>
-      <span><b>7</b> runs (6 passes + a gap pass)</span>
-      <span>System <b>v0.75.18</b></span>
+      <span><b>42</b> fights in the first passes</span>
+      <span><b>~330</b> follow-up and re-run fights</span>
+      <span>Now at <b>v0.79.4</b></span>
       <span><b>23 Oct 2026</b></span>
     </div>
   </header>
+
+  <section>
+    <span class="eyebrow">Where Martial ended up</span>
+    <h2>The fixes, and what's left</h2>
+    <p class="prose muted">The sections further down are the original review (v0.75.18) and the first follow-up tests, kept as they were. This is the state after every change that came out of them.</p>
+    <div class="block">
+      <div class="block-head"><h3>What changed</h3><span class="small muted">Rule changes from the docs, plus system and sim fixes</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Change</th><th>Why</th><th>Result in the sim</th></tr></thead>
+        <tbody>
+          <tr><td><b>Two hands:</b> one stack of Strengthened instead of double damage (tags still double)</td><td>Two-handed Heavy weapons led everything; 2H won 9 of 12 mirror duels</td><td>Non-Knockback 2H weapons now 7.6–12.6 per AP vs Light armor, next to one-handed Heavy (~9)</td></tr>
+          <tr><td><b>Titan Weapon:</b> Remise costs double Energy on a 2H Heavy Bladed</td><td>Heavy Bladed 2H at 41.5 per AP, the biggest outlier</td><td>27.8 per AP in the T1 re-run</td></tr>
+          <tr><td><b>Smash → Smashing</b> (start of turn, 2 × min; each Strengthened stack adds half the base Knockback)</td><td>Weighted with Smash on every swing hit 35–47 per AP</td><td>Weighted at T5 averages ~20 per AP: top group, no longer above it</td></tr>
+          <tr><td><b>Light Blast:</b> Area, Pierce, Cleave</td><td>Weakest Light weapon with its tree</td><td>A crowd weapon: 13–16 per AP into unarmored groups, ~7–8 single target</td></tr>
+          <tr><td><b>Quickload</b> can replace a free follow-up</td><td>Heavy Assault's last follow-up ran out of RP</td><td>Empty follow-ups reload for free</td></tr>
+          <tr><td><b>Impale</b> works after any direct damage</td><td>Fired 2 times in 40 offers</td><td>Not yet run in a sim fight</td></tr>
+          <tr><td><b>Pain Threshold</b> is half of max HP</td><td>Fights ran 6–8 rounds; the target was 3–5</td><td>A/B on the same code: <b>8.2 → 4.8 rounds</b> (range 3–6), party wins 10 → 11 of 12</td></tr>
+          <tr><td>Sim: Area attacks target everyone in them; Knockback Force damage counted</td><td>Both made weapons look worse than they are</td><td>Area and Knockback weapons measured properly from the re-runs on</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="block">
+      <div class="block-head"><h3>Pain Threshold A/B</h3><span class="small muted">Same code and party, 12 fights each</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th></th><th class="n">Pain ¼</th><th class="n">Pain ½</th></tr></thead>
+        <tbody>
+          <tr class="lead"><td>All fights (rounds)</td><td class="n">8.2 (5–17)</td><td class="n">4.8 (3–6)</td></tr>
+          <tr><td>Swarm</td><td class="n">5.8</td><td class="n">4.3</td></tr>
+          <tr><td>Raiders</td><td class="n">6.5</td><td class="n">5.0</td></tr>
+          <tr><td>Boss (Ogre)</td><td class="n">12.3</td><td class="n">5.3</td></tr>
+          <tr><td>Party wins</td><td class="n">10 / 12</td><td class="n">11 / 12</td></tr>
+          <tr><td>Party HP left at the end</td><td class="n">64%</td><td class="n">83%</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted">The party attacked in round 1 in every fight, so closing in costs no time in the sim. At ¼ the Ogre's hide soaked about 4.5 rounds of hits before damage got through; at ½ the boss fights take 5–6 rounds.</p>
+    </div>
+    <div class="findings">
+      <div class="finding"><span class="chip fine">Settled</span><div>
+        <h3>By ruling or by design</h3>
+        <p>Heavy armor shutting out Light weapons (tanks over many turns). The free ally Block. Speed deciding melee-against-gun fights. A lone boss being locked down by Grappling. Light Curved at T5 stays high but in the top group, with strong defense of its own (Perfect Parry).</p>
+      </div></div>
+      <div class="finding"><span class="chip watch">Watch</span><div>
+        <h3>Still worth an eye</h3>
+        <p>Slow and Haste thresholds are measured against the Pain Threshold, so they now need twice the stacks: check in the Magic passes (Gravity). Big monsters with natural armor (which scales with their stat, uncapped) can shut out two-handed weapons now that two hands give Strengthened rather than double damage. The T4 trees and the Swarm and Ogre fights of T2, T3 and T5 weren't re-run with every fix in place. Abilities that rarely fire (Riposte, Omnislash) are noted for play.</p>
+      </div></div>
+      <div class="finding"><span class="chip fine">Play</span><div>
+        <h3>Fewer clicks</h3>
+        <p>Dialogs remember the last picks, an attack can plan its follow-up in its own dialog, and the Reaction List has an Automation group: Auto-Dodge (tries the reactions you pick when affordable), Auto-Limber, and Keep up for Berserk, Proper Stance, Quicken and Smashing. The start-of-turn card collects the turn's start in one place.</p>
+      </div></div>
+    </div>
+  </section>
 
   <section class="prose">
     <span class="eyebrow">How the sim ran</span>

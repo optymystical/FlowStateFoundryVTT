@@ -17,6 +17,9 @@ const Cast = await import("/systems/flowstate/module/casting.mjs");
 const Sp = await import("/systems/flowstate/module/spells.mjs");
 const Fx = await import("/systems/flowstate/module/spellfx.mjs");
 const Mg = await import("/systems/flowstate/module/magic.mjs");
+const CR = await import("/systems/flowstate/module/conjure-rules.mjs");
+const Arc = await import("/systems/flowstate/module/arcana.mjs");
+const Rules = await import("/systems/flowstate/module/rules.mjs");
 
 const SIM = (window.SIM = window.SIM ?? {});
 SIM.results = SIM.results ?? [];
@@ -177,7 +180,7 @@ async function makeActor(spec, loadout, { party, folder }) {
     name: spec.name, type: party ? "character" : "npc", folder: folder.id,
     system: { stats: R.statBlock(spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {} },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
-    flags: { flowstate: { sim: { id: spec.id, role: spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper } } }
+    flags: { flowstate: { sim: { id: spec.id, role: spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null } } }
   });
   const natural = !party && spec.natural !== false;
   const slots = loadout.weapons.filter(w => w.type !== "unarmed");
@@ -205,7 +208,7 @@ async function makeActor(spec, loadout, { party, folder }) {
 /** Delete the sim's actors, tokens, piles and combats. */
 async function clearSim() {
   for (const scene of game.scenes.filter(s => ["Sim Arena", "Sim Field"].includes(s.name))) await clearScene(scene);
-  const ids = game.actors.filter(a => a.getFlag("flowstate", "sim") || a.name.startsWith("Sim ") || (a.type === "pile" && a.getFlag("flowstate", "simPile"))).map(a => a.id);
+  const ids = game.actors.filter(a => a.getFlag("flowstate", "sim") || a.getFlag("flowstate", "summon") || a.name.startsWith("Sim ") || (a.type === "pile" && a.getFlag("flowstate", "simPile"))).map(a => a.id);
   if (ids.length) await Actor.deleteDocuments(ids);
 }
 async function clearScene(scene) {
@@ -973,7 +976,7 @@ const meanDice = d => (d ? d.n * (d.sides + 1) / 2 : 0);
  */
 function planSpell(ctx, opt, coreIds, mods = {}, extra = {}) {
   const v = { via: opt.key, core1: coreIds[0], core2: coreIds[1] ?? "", ...extra };
-  v.base = Sp.baseThreshold(coreIds).min;
+  v.base = extra.base ?? Sp.baseThreshold(coreIds).min;
   for (const [id, n] of Object.entries(mods)) v[`mod:${id}`] = n;
   let best = null;
   for (const ap of opt.ap) {
@@ -993,7 +996,7 @@ function spellValue(plan, target = null, me = null) {
   if (!profile) return 0;
   const P = Math.max(1, plan.power);
   if (profile.needsEnergyZero && (target?.actor?.system?.energy?.value ?? 1) > 0) return -1;
-  const dmg = profile.damage ? meanDice(Fx.damageDice(profile, plan.power)) : 0;
+  const dmg = profile.damage ? meanDice(Fx.damageDice(profile, plan.power)) : profile.arcana?.kind === "shift" ? Math.floor(Fx.shiftBody(profile.arcana.body, plan.power) / 2) * 3.5 : 0;
   let v = dmg;
   if (profile.force) v += 0.25 * 5.5 * profile.force.n * P;
   const burn = { ignite: 1.5, stain: 1.5, searing: 3, electric: 2.5 };
@@ -1015,7 +1018,8 @@ function damageMods(actor, target, plan, me = null) {
   const armored = (t?.items ?? []).some(i => i.type === "armor" && i.system.equipped);
   const big = (t?.system?.hp?.max ?? 0) > 1000;
   const near = target && me ? foesOf(me.parent, me).filter(f => f.id !== target.id && dist(f, target) <= 10).length : 0;
-  const out = ["magic-slashing:bleed", "magic-slashing:rend", "magic-crushing:crush"];
+  const out = ["magic-geomancy:toss", "magic-geomancy:tier-up", "magic-geomancy:tier-up-again", "magic-geomancy:harden", "magic-geomancy:muddy",
+    "magic-slashing:bleed", "magic-slashing:rend", "magic-crushing:crush"];
   if (armored) out.push("magic-piercing:weakpoint", ["magic-piercing:pierce", 2], ["magic-crushing:bash", 1], "magic-acid:melt");
   // Tier 2 schools.
   out.push("magic-heat:ignition", "magic-radiation:electrify", ["magic-cold:frostbite", 2], "magic-cold:chill", "magic-cold:freeze");
@@ -1045,6 +1049,66 @@ function withMods(ctx, opt, coreIds, wanted, budget, extra = {}) {
   return cur;
 }
 
+/* ---- Tier 4: creations ---- */
+
+/** The caster's creations still standing (Summons, Animations). */
+const creationsOf = (scene, actor) => scene.tokens.contents.filter(t => t.actor?.getFlag("flowstate", "summon")?.owner === actor.uuid && !down(t.actor));
+
+/**
+ * What a Form / Animate / Make Combo makes, for the cast's dialog (values.conj): the whole point pool on Body (Constitution 40%, the rest Strength,
+ * Dexterity 1), the biggest Size allowed, one two-handed Heavy natural weapon for Arm, the best Heavy weapon Make may create, the pile's Body at its minimum.
+ */
+function conjSpec(actor, plan, conj) {
+  const profile = Fx.profileFor(plan.cores.map(c => c.id));
+  const cj = profile.conjure;
+  const mult = CR.conjureMultiplier(plan.base, plan.combo, cj.fear ? 2 : 1);
+  const scale = n => Rules.applyStacks(n, Act.castStacks(actor, plan));
+  const pw = Math.max(1, plan.power);
+  const pool = scale(pw * (cj.instant ? 10 * mult : CR.summonPool(mult)));
+  const bodyMin = scale(pw * (cj.instant ? 10 * mult : CR.formPool(mult)));
+  const con = Math.max(1, Math.round(pool * 0.4)), str = Math.max(1, pool - con - 1);
+  const arms = (plan.applied ?? []).filter(a => a.mod.name === "Arm").map(() => ({ type: conj.arm ?? "bladed", weight: "heavy" }));
+  const mods = new Set((plan.applied ?? []).map(a => a.mod.name));
+  const rarity = mods.has("Make Mk3") ? "rare" : mods.has("Make Mk2") ? "uncommon" : "common";
+  const material = { common: "iron", uncommon: "coldIron", rare: "scarletite" }[rarity];
+  const items = cj.kind === "make" || cj.make ? [{ kind: "weapon", type: conj.arm ?? "bladed", weight: "heavy", material, name: "", extra: [] }] : [];
+  return { name: "", size: Math.max(...CR.formSizes(plan.gross ?? plan.threshold)), str, dex: 1, con, skill: 0, material: conj.material ?? "Clay", body: bodyMin,
+    recipient: "self", command: "", harden: "strong", arms, items, tile: null };
+}
+
+/** Plan the loadout's creation: the highest base Threshold that fits the Energy, with Build Arcana and the school's Mods while they fit too. */
+function conjurePlan(actor, ctx, opt, conj, budget) {
+  const bt = Sp.baseThreshold(conj.cores);
+  if (!bt.ok) return null;
+  const make = conj.cores.includes("magic-creation:make");
+  const wanted = [["magic-build-arcana:layered", true], ...(make ? [] : [["magic-summoning:arm", 1]]), ["magic-summoning:skin", true], ["magic-build-arcana:reactive", true],
+    ...(["hard", "powder"].includes(CR.animMaterial(conj.material)?.category) ? [["magic-animation:expanded-animation", true]] : []), ["magic-creation:make-mk2", true], ["magic-creation:make-mk3", true]];
+  for (let base = bt.max; base >= bt.min; base--) {
+    const extra = { base, "modT:magic-summoning:arm": 2, "modT:magic-summoning:skin": 2 };
+    const r = withMods(ctx, opt, conj.cores, wanted, budget, extra);
+    if (!r || r.plan.energy > budget) continue;
+    r.values.conj = conjSpec(actor, r.plan, conj);
+    return r;
+  }
+  return null;
+}
+
+/** Put the caster's new creations on its side: the sim plays them (they act right after the caster) and they defend like any creature. */
+async function adoptCreations(actor, label) {
+  for (const t of canvas.scene.tokens.contents) {
+    const sm = t.actor?.getFlag("flowstate", "summon");
+    if (!sm || sm.owner !== actor.uuid || sim(t.actor).id) continue;
+    await t.actor.setFlag("flowstate", "sim", { id: "creation", role: "creation", party: !!sim(actor).party, stances: false });
+    if (!sim(actor).party) await t.update({ disposition: -1 });
+    (F.creations ??= {})[t.actor.uuid] = `Creation: ${label}`;
+    F.hpMax[t.actor.uuid] = t.actor.system.hp.max;
+    note(actor, `made:${sm.kind}`);
+    const s = stat(actor);
+    s.creations = (s.creations ?? 0) + 1;
+    s.creationHp = (s.creationHp ?? 0) + (t.actor.system.hp.max ?? 0);
+  }
+}
+
 /** Foes within `range` ft, the weakest first. */
 const foesWithin = (me, range) => foesOf(me.parent, me).filter(f => dist(me, f) <= range + 0.01).sort((a, b) => a.actor.system.hp.value - b.actor.system.hp.value);
 /** The ally (or self) most at risk: the most foes within 30 ft, then the lowest HP. */
@@ -1054,12 +1118,23 @@ function mostThreatened(me, list) {
   return [...list].sort((a, b) => near(b) - near(a) || a.actor.system.hp.value - b.actor.system.hp.value)[0] ?? null;
 }
 
+/**
+ * Restore through castAt, reading "since the start of your last turn" as the start of the caster's previous turn: the system checks its current
+ * turn's stamp (so a Restore on your own turn heals only what was lost during it), so the stamp is set back for the cast and put back after.
+ */
+async function restoreAt(actor, who, values) {
+  const now = actor.getFlag("flowstate", "turnStartedAt");
+  await actor.setFlag("flowstate", "turnStartedAt", SIM.prevStamp?.[actor.uuid] || 1);
+  try { return await castAt(actor, who, values, "Restore"); } finally { await actor.setFlag("flowstate", "turnStartedAt", now); }
+}
+
 /** Cast `values` at `targetTok` through the real Cast Spell path (no dialog). Returns true if a spell went off. */
 async function castAt(actor, targetTok, values, label) {
   setTargets(...(Array.isArray(targetTok) ? targetTok : [targetTok]).filter(Boolean));
   SIM.acting = actor.name;
   SIM.fill = title => (/: shape$/.test(title) ? { shape: "radius" } : {});          // Gravity Field on the caster; Lob/Explode where the spell lands
   const apBefore = actor.system.ap.value;
+  if (Fx.profileFor([values.core1, values.core2].filter(Boolean))?.arcana?.kind === "shift") values = { ...values, arcanaSpec: { muddy: "dis", harden: "strong" } };
   let plan = null;
   try { plan = await Cast.castSpell(actor, values); } catch (err) { log.errors.push(`cast ${actor.name}: ${err.stack?.slice(0, 400)}`); }
   if (!plan) return false;
@@ -1092,6 +1167,11 @@ async function casterTurn(actor, me) {
   s.turnMoved = 0;
   const role = sim(actor).role;
   const done = new Set();
+  // The Restore window: the start of this caster's previous turn (the system stamps the current one; see restoreAt).
+  SIM.prevStamp ??= {};
+  SIM.lastStamp ??= {};
+  const stamp = Number(actor.getFlag("flowstate", "turnStartedAt")) || 0;
+  if (SIM.lastStamp[actor.uuid] !== stamp) { SIM.prevStamp[actor.uuid] = SIM.lastStamp[actor.uuid] ?? 0; SIM.lastStamp[actor.uuid] = stamp; }
   for (let step = 0; step < 12; step++) {
     if (down(actor) || over(me.parent)) return;
     const { ctx, known } = Cast.castSummary(actor);
@@ -1112,7 +1192,7 @@ async function casterTurn(actor, me) {
     if ((role === "tank" || role === "support") && has("magic-protection-arcana:shield") && !done.has("shield") && !done.has("support")) {
       done.add("shield");
       const who = mostThreatened(me, allies.filter(t => !Act.spellEffects(t.actor, "shield").length && dist(me, t) <= 100));
-      const wanted = [["magic-protection-arcana:reflect", true], ["magic-protection-arcana:dampen", 1]];
+      const wanted = [["magic-protection-arcana:reflect", true], ["magic-protection-arcana:dampen", 1], ["magic-build-arcana:layered", true], ["magic-build-arcana:reactive", true]];
       const r = who ? withMods(ctx, opt, ["magic-protection-arcana:shield"], wanted, budget, { "dampen:0": "magic" }) : null;
       if (fits(r) && await castAt(actor, who, r.values, "Shield")) { done.add("support"); continue; }
     }
@@ -1136,6 +1216,52 @@ async function casterTurn(actor, me) {
       const close = foesWithin(me, 10);
       const r = close.length >= 2 ? planSpell(ctx, opt, ["magic-gravity:force"], { "magic-gravity:gravity-field": true }) : null;
       if (fits(r) && await castAt(actor, close[0], r.values, "Gravity Field")) { done.add("support"); continue; }
+    }
+
+    // Restore (Restoration Arcana): the ally (or yourself, or a downed ally) who lost the most since the start of your previous turn, with Painless
+    // (it lowers their Pain Threshold: it can wake them) and Resuscitate for the dead. Up to three a turn.
+    if (has("magic-restoration-arcana:restore") && (done.restores ?? 0) < 3) {
+      const since = SIM.prevStamp?.[actor.uuid] ?? 0;
+      const healed = (done.healed ??= {});
+      const side = tokensOf(me.parent).filter(t => sideOf(t) === sideOf(me) && sim(t.actor).role !== "creation" && dist(me, t) <= 100);
+      const need = t => Arc.lossSince(t.actor, since) - (healed[t.id] ?? 0);
+      const who = side.filter(t => need(t) > 0).sort((a, b) => down(b.actor) - down(a.actor) || need(b) - need(a))[0];
+      if (who) {
+        done.restores = (done.restores ?? 0) + 1;
+        const dead = who.actor.statuses.has("dead");
+        const r = withMods(ctx, opt, ["magic-restoration-arcana:restore"], [...(dead ? [["magic-restoration-arcana:resuscitate", true]] : []), ["magic-restoration-arcana:painless", true]], budget);
+        const before = who.actor.system.hp.value;
+        if (fits(r) && await restoreAt(actor, who, r.values)) {
+          const gain = Math.max(0, who.actor.system.hp.value - before);
+          healed[who.id] = (healed[who.id] ?? 0) + Math.max(1, gain);
+          s.healed = (s.healed ?? 0) + gain;
+          continue;
+        }
+        healed[who.id] = Infinity;
+      }
+    }
+    // Mirage (Illusion), once a turn, on the biggest foe in range that has none of yours: Mirage + Strike (their Magic fails them) when you know
+    // Strike, else a Mirage whose Fidelity gives them Disadvantage on attack rolls; Phantom Pain and Pervasive when they fit.
+    if (has("magic-illusion:mirage") && !done.has("mirage")) {
+      done.add("mirage");
+      const prey = foesWithin(me, 100).sort((a, b) => b.actor.system.hp.max - a.actor.system.hp.max).find(f => !Act.spellEffects(f.actor, "mirage").some(e => e.flags.flowstate.spellEffect.caster === actor.uuid));
+      const strike = has("magic-arcanomancy:strike");
+      const ids = strike ? ["magic-illusion:mirage", "magic-arcanomancy:strike"] : ["magic-illusion:mirage"];
+      const extra = strike ? {} : { "replace:magic-illusion:fidelity": true, fidelityKind: "dis", fidelityRoll: "attack" };
+      const wanted = [...(strike ? [] : [["magic-illusion:fidelity", true]]), ["magic-illusion:phantom-pain", true], ["magic-illusion:pervasive", true]];
+      const r = prey ? withMods(ctx, opt, ids, wanted, budget, extra) : null;
+      if (fits(r) && await castAt(actor, prey, r.values, strike ? "Mirage + Strike" : "Mirage")) continue;
+    }
+
+    // Tier 4: keep the loadout's creation in the fight (it lasts until the start of the caster's next turn), beside the nearest foe in range,
+    // as big as up to 60% of the Energy left allows.
+    const conj = sim(actor).conj;
+    if (conj && !done.has("conj") && !creationsOf(me.parent, actor).length) {
+      done.add("conj");
+      const near = foesOf(me.parent, me).sort((a, b) => dist(me, a) - dist(me, b))[0];
+      const r = near ? conjurePlan(actor, ctx, opt, conj, Math.floor(0.6 * Math.max(0, energy - reserve))) : null;
+      const label = conj.cores.map(id => Sp.spellById(id)?.name ?? id).join(" + ");
+      if (fits(r) && await castAt(actor, near && dist(me, near) <= 100 ? near : me, r.values, label)) { await adoptCreations(actor, label); continue; }
     }
 
     // Tier 3 afflictions (each once a turn): coat yourself with Poison before your damage spell (it passes to whoever you next deal direct damage
@@ -1317,7 +1443,8 @@ async function actTurn(actor, me) {
 
 function over(scene) {
   const t = tokensOf(scene);
-  return !t.some(x => sideOf(x) === "party" && !down(x.actor)) || !t.some(x => sideOf(x) === "monsters" && !down(x.actor));
+  const real = t.filter(x => sim(x.actor).role !== "creation");
+  return !real.some(x => sideOf(x) === "party" && !down(x.actor)) || !real.some(x => sideOf(x) === "monsters" && !down(x.actor));
 }
 
 /**
@@ -1378,7 +1505,7 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     for (const p of P.party) party.push(await makeActor(p, p.loadouts[enc.rotation], { party: true, folder: pf }));
     const monsterActors = [];
     for (const k of P.monsters[enc.group].kinds) {
-      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud, focus: k.focus }, { party: false, folder: mf });
+      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud, focus: k.focus, conj: k.conj }, { party: false, folder: mf });
       for (let i = 0; i < k.count; i++) monsterActors.push(a);
     }
     await deploy(scene, party, monsterActors, P.deploy, P.party[0].loadouts[enc.rotation]);
@@ -1457,7 +1584,7 @@ function collect(scene, combat, msgs) {
   for (const m of msgs) {
     const a = m.getFlag("flowstate", "attack");
     if (!a || !a.opts) continue;
-    const key = a.opts.spell ? `Spell: ${a.opts.label ?? "?"}` : a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
+    const key = F.creations?.[a.attacker] ? F.creations[a.attacker] : a.opts.spell ? `Spell: ${a.opts.label ?? "?"}` : a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
     if (!key) continue;
     const attackerName = fromUuidSync(a.attacker)?.name ?? a.attacker;
     const w = W(key);
@@ -1509,7 +1636,7 @@ function collect(scene, combat, msgs) {
     if (!last) continue;
     const def = game.messages.get(last.getFlag("flowstate", "damage").defenseMessage)?.getFlag("flowstate", "defense");
     const atk = def ? game.messages.get(def.attackMessage)?.getFlag("flowstate", "attack") : null;
-    const key = atk?.opts?.itemUuid ? F.items[atk.opts.itemUuid] : atk?.opts?.unarmedWeight ? `Unarmed ${atk.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
+    const key = F.creations?.[atk?.attacker] ? F.creations[atk.attacker] : atk?.opts?.spell ? `Spell: ${atk.opts.label ?? "?"}` : atk?.opts?.itemUuid ? F.items[atk.opts.itemUuid] : atk?.opts?.unarmedWeight ? `Unarmed ${atk.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
     if (key) W(key).kills++;
   }
   const partyLeft = tokensOf(scene).filter(t => sideOf(t) === "party" && !down(t.actor)).length;

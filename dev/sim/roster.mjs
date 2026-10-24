@@ -807,3 +807,166 @@ export const MONSTERS_M3 = {
 };
 PASSES["magic-t3"] = { id: "magic-t3", note: "Magic Theory T3 schools (Grasp Arcana, Venomancy, Charm, Witchery) up to T5, each caster with a T1 carrier at T2; caster monsters the same.",
   party: PARTY_M3, monsters: MONSTERS_M3, encounters: encountersFor(MONSTERS_M3, 2) };
+
+/* -------------------------------------------- */
+/*  Magic pass 4: the Magic Theory T4 schools     */
+/* -------------------------------------------- */
+
+// Magic Theory T4 (10 SP: Connection, Snipe) unlocks Build Arcana, Summoning, Creation and Animation. Each caster takes its main T4 school to T5 (15),
+// a second one to T2 (3) and a T1 damage school at T1 (1): 29 of 30 SP. `conj` names what the caster keeps in the fight each turn (the Cores, and
+// for an Animation the material): Creation alone only makes gear, so Creation casters make it for a Summon (Form + Make) or animate it (Make + Animate).
+const M4 = o => ({ "magic-theory": 4, ...o });
+const BUI = "magic-build-arcana", SUM = "magic-summoning", CRE = "magic-creation", ANI = "magic-animation";
+const FORM = "magic-summoning:form", MAKE = "magic-creation:make", ANIMATE = "magic-animation:animate";
+export const PARTY_M4 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank caster: Build Arcana (Layered, Reactive) on its Shields and an armed Summon, from a Rod.",
+    stats: { con: 40, grasp: 30, build: 20 },
+    loadouts: [
+      { trees: M4({ [BUI]: 5, [SUM]: 2, [PRO]: 1 }), focus: FORM, conj: { cores: [FORM] }, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { trees: M4({ [SUM]: 5, [BUI]: 2, [PRO]: 1 }), focus: FORM, conj: { cores: [FORM] }, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Summoner", role: "caster", note: "Grasp caster: Summons (Arm, Skin, Size by Threshold) given a Made weapon (Form + Make) or built as an Animation (Form + Animate), Cut on the side.",
+    stats: { grasp: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M4({ [SUM]: 5, [CRE]: 2, [SLA]: 1 }), focus: FORM, conj: { cores: [FORM, MAKE] }, armor: A("light", "hardLeather"), weapons: [], foci: FO("wand"), shroud: FO("cinder") },
+      { trees: M4({ [SUM]: 5, [ANI]: 2, [SLA]: 1 }), focus: FORM, conj: { cores: [FORM, ANIMATE], material: "Clay" }, armor: A("light", "hardLeather"), weapons: [], foci: FO("rod"), shroud: FO("cinder") }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Animator", role: "caster", note: "Reach caster: Animate (Expanded Animation: Stone) or Make + Animate, Stab on the side, from a Tome or Scroll.",
+    stats: { reach: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M4({ [ANI]: 5, [SUM]: 2, [PIE]: 1 }), focus: ANIMATE, conj: { cores: [ANIMATE], material: "Stone" }, armor: A("medium", "softLeather"), weapons: [], foci: FO("tome", { twoHanded: true }), shroud: FO("bastion") },
+      { trees: M4({ [ANI]: 5, [CRE]: 2, [PIE]: 1 }), focus: ANIMATE, conj: { cores: [MAKE, ANIMATE], material: "Clay" }, armor: A("medium", "softLeather"), weapons: [], foci: FO("scroll"), shroud: FO("ember") }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Maker", role: "caster", note: "Raw caster: Creation (Make Mk2/Mk3, Complexity) arming a Summon (Form + Make) or animating its gear (Make + Animate), Cut on the side.",
+    stats: { reach: 30, grasp: 30, con: 30 },
+    loadouts: [
+      { trees: M4({ [CRE]: 5, [SUM]: 2, [SLA]: 1 }), focus: MAKE, conj: { cores: [FORM, MAKE] }, armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("lattice") },
+      { trees: M4({ [CRE]: 5, [ANI]: 2, [SLA]: 1 }), focus: MAKE, conj: { cores: [MAKE, ANIMATE], material: "Clay" }, armor: A("light", "softLeather"), weapons: [], foci: FO("gauntlet"), shroud: FO("lattice") }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support caster: a Skinned Summon with Layered and Reactive, Burden (Gravity T2) on the biggest threat, from a Scepter.",
+    stats: { grasp: 35, con: 30, reach: 10, build: 15 },
+    loadouts: [
+      { trees: M4({ [SUM]: 4, [BUI]: 3, [GRA]: 2 }), focus: FORM, conj: { cores: [FORM] }, armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") },
+      { trees: M4({ [BUI]: 4, [SUM]: 3, [GRA]: 2 }), focus: FORM, conj: { cores: [FORM] }, armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") }
+    ]
+  }
+];
+
+export const MONSTERS_M4 = {
+  swarm: {
+    label: "Swarm", note: "Ten goblin casters (20 Skill Points, 1/5): Magic Theory T4, T4 schools worth 6 SP and Cut at T2, a natural Rod.",
+    kinds: [
+      { id: "goblin-summoner", name: "Sim Goblin Summoner", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M4({ [SUM]: 3, [SLA]: 2 }), focus: FORM, conj: { cores: [FORM] }, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-animator", name: "Sim Goblin Animator", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M4({ [ANI]: 3, [SLA]: 2 }), focus: ANIMATE, conj: { cores: [ANIMATE], material: "Stone" }, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-maker", name: "Sim Goblin Maker", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M4({ [CRE]: 2, [SUM]: 2, [SLA]: 2 }), focus: FORM, conj: { cores: [FORM, MAKE] }, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-builder", name: "Sim Goblin Builder", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M4({ [BUI]: 2, [SUM]: 2, [SLA]: 2 }), focus: FORM, conj: { cores: [FORM] }, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") }
+    ]
+  },
+  raiders: {
+    label: "Raiders", note: "Five caster raiders (25 Skill Points, 1/5): Magic Theory T4 and T4 schools (a Summoner and an Animator at T5, the rest mixed with Cut), natural Foci and a Bastion Shroud.",
+    kinds: [
+      { id: "raider-summoner", name: "Sim Raider Summoner", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M4({ [SUM]: 5 }), focus: FORM, conj: { cores: [FORM] }, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-animator", name: "Sim Raider Animator", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M4({ [ANI]: 5 }), focus: ANIMATE, conj: { cores: [ANIMATE], material: "Stone" }, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-maker", name: "Sim Raider Maker", count: 1, size: 3, sp: 25, stats: { reach: 55, con: 50, build: 20 }, trees: M4({ [CRE]: 4, [SUM]: 2, [SLA]: 1 }), focus: FORM, conj: { cores: [FORM, MAKE] }, armor: A("medium", "hide"), weapons: [], foci: FO("scroll"), shroud: FO("bastion") },
+      { id: "raider-builder", name: "Sim Raider Builder", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M4({ [BUI]: 4, [SUM]: 2, [SLA]: 1 }), focus: FORM, conj: { cores: [FORM] }, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-binder", name: "Sim Raider Binder", count: 1, size: 3, sp: 25, stats: { reach: 40, grasp: 40, con: 45 }, trees: M4({ [SUM]: 3, [ANI]: 2, [SLA]: 2 }), focus: FORM, conj: { cores: [FORM, ANIMATE], material: "Clay" }, armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("bastion") }
+    ]
+  },
+  boss: {
+    label: "Boss", note: "An Ogre Magus (Size 4, 30 Skill Points, 1/10): Summoning T5, Build Arcana T2 and Crushing T1 through a natural Orb, natural Heavy armor and a Carapace Shroud.",
+    kinds: [{ id: "ogre-magus", name: "Sim Ogre Magus", count: 1, size: 4, sp: 30, stats: { con: 110, reach: 80, grasp: 40, build: 40, will: 30 }, trees: M4({ [SUM]: 5, [BUI]: 2, [CRU]: 1 }), focus: FORM, conj: { cores: [FORM] },
+      armor: A("heavy", "iron"), weapons: [], foci: FO("orb"), shroud: FO("carapace") }]
+  }
+};
+PASSES["magic-t4"] = { id: "magic-t4", note: "Magic Theory T4 schools (Build Arcana, Summoning, Creation, Animation) up to T5, each caster keeping a creation in the fight, with a T1 damage school; caster monsters the same.",
+  party: PARTY_M4, monsters: MONSTERS_M4, encounters: encountersFor(MONSTERS_M4, 2) };
+
+/* -------------------------------------------- */
+/*  Magic pass 5: the Magic Theory T5 schools     */
+/* -------------------------------------------- */
+
+// Magic Theory T5 (15 SP) unlocks Restoration Arcana, Geomancy, Illusion and Arcanomancy. Each caster's first loadout takes one T5 school to T5 (15:
+// 30 SP); the second takes it to T4 (10), another T5 school to T2 (3) and a T1 school at T1 (1), for its Combos (29 SP).
+const M5 = o => ({ "magic-theory": 5, ...o });
+const RES = "magic-restoration-arcana", GEO = "magic-geomancy", ILL = "magic-illusion", ARC = "magic-arcanomancy";
+const RESTORE = "magic-restoration-arcana:restore", SHIFT = "magic-geomancy:shift", MIRAGE = "magic-illusion:mirage", STRIKE = "magic-arcanomancy:strike";
+export const PARTY_M5 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank caster: Arcanomancy (Strike; Absorb, Amplify) or Strike with Geomancy and a Shield, from a Rod.",
+    stats: { con: 40, grasp: 30, build: 20 },
+    loadouts: [
+      { trees: M5({ [ARC]: 5 }), focus: STRIKE, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { trees: M5({ [ARC]: 4, [GEO]: 2, [PRO]: 1 }), focus: STRIKE, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Geomancer", role: "caster", note: "Grasp caster: Shift with Toss, Tier Up, Muddy and Harden; or Shift + Strike and Cut + Shift.",
+    stats: { grasp: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M5({ [GEO]: 5 }), focus: SHIFT, armor: A("light", "hardLeather"), weapons: [], foci: FO("wand"), shroud: FO("cinder") },
+      { trees: M5({ [GEO]: 4, [ARC]: 2, [SLA]: 1 }), focus: SHIFT, armor: A("light", "hardLeather"), weapons: [], foci: FO("rod"), shroud: FO("cinder") }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Illusionist", role: "caster", note: "Reach caster: Mirage (Phantom Pain, Fidelity, Pervasive) on the biggest threat, or Mirage + Strike (their Magic fails), Stab on the side.",
+    stats: { reach: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M5({ [ILL]: 5 }), focus: MIRAGE, armor: A("medium", "softLeather"), weapons: [], foci: FO("tome", { twoHanded: true }), shroud: FO("bastion") },
+      { trees: M5({ [ILL]: 4, [ARC]: 2, [PIE]: 1 }), focus: MIRAGE, armor: A("medium", "softLeather"), weapons: [], foci: FO("scroll"), shroud: FO("ember") }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Striker", role: "caster", note: "Raw caster: Strike (Arcanomancy T5), or Strike with Illusion (Mirage + Strike) and Cut + Strike.",
+    stats: { reach: 30, grasp: 30, con: 30 },
+    loadouts: [
+      { trees: M5({ [ARC]: 5 }), focus: STRIKE, armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("lattice") },
+      { trees: M5({ [ARC]: 4, [ILL]: 2, [SLA]: 1 }), focus: STRIKE, armor: A("light", "softLeather"), weapons: [], foci: FO("gauntlet"), shroud: FO("lattice") }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Mender", role: "support", note: "Support caster: Restore (Painless, Resuscitate) on whoever lost the most since its last turn; or Restore with Geomancy and Force.",
+    stats: { grasp: 35, con: 30, reach: 10, build: 15 },
+    loadouts: [
+      { trees: M5({ [RES]: 5 }), focus: RESTORE, armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") },
+      { trees: M5({ [RES]: 4, [GEO]: 2, [GRA]: 1 }), focus: RESTORE, armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") }
+    ]
+  }
+];
+
+export const MONSTERS_M5 = {
+  swarm: {
+    label: "Swarm", note: "Ten goblin casters (20 Skill Points, 1/5): Magic Theory T5, a T5 school at T2 and a T1 school at T1, a natural Rod.",
+    kinds: [
+      { id: "goblin-geomancer", name: "Sim Goblin Geomancer", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M5({ [GEO]: 2, [CRU]: 1 }), focus: SHIFT, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-striker", name: "Sim Goblin Striker", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M5({ [ARC]: 2, [SLA]: 1 }), focus: STRIKE, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-illusionist", name: "Sim Goblin Illusionist", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M5({ [ILL]: 2, [PIE]: 1 }), focus: MIRAGE, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-mender", name: "Sim Goblin Mender", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M5({ [RES]: 2, [SLA]: 1 }), focus: RESTORE, armor: A("light", "softLeather"), weapons: [], foci: FO("rod") }
+    ]
+  },
+  raiders: {
+    label: "Raiders", note: "Five caster raiders (25 Skill Points, 1/5): Magic Theory T5 and one T5 school at T4 (the Witch mixes Geomancy, Arcanomancy and Cut), natural Foci and a Bastion Shroud.",
+    kinds: [
+      { id: "raider-geomancer", name: "Sim Raider Geomancer", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M5({ [GEO]: 4 }), focus: SHIFT, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-striker", name: "Sim Raider Striker", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M5({ [ARC]: 4 }), focus: STRIKE, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-illusionist", name: "Sim Raider Illusionist", count: 1, size: 3, sp: 25, stats: { reach: 55, con: 50, build: 20 }, trees: M5({ [ILL]: 4 }), focus: MIRAGE, armor: A("medium", "hide"), weapons: [], foci: FO("scroll"), shroud: FO("bastion") },
+      { id: "raider-mender", name: "Sim Raider Mender", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M5({ [RES]: 4 }), focus: RESTORE, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-witch", name: "Sim Raider Witch", count: 1, size: 3, sp: 25, stats: { reach: 40, grasp: 40, con: 45 }, trees: M5({ [GEO]: 3, [ARC]: 2, [SLA]: 1 }), focus: SHIFT, armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("bastion") }
+    ]
+  },
+  boss: {
+    label: "Boss", note: "An Ogre Magus (Size 4, 30 Skill Points, 1/10): Geomancy T5 through a natural Orb, natural Heavy armor and a Carapace Shroud.",
+    kinds: [{ id: "ogre-magus", name: "Sim Ogre Magus", count: 1, size: 4, sp: 30, stats: { con: 110, reach: 80, grasp: 40, build: 40, will: 30 }, trees: M5({ [GEO]: 5 }), focus: SHIFT,
+      armor: A("heavy", "iron"), weapons: [], foci: FO("orb"), shroud: FO("carapace") }]
+  }
+};
+PASSES["magic-t5"] = { id: "magic-t5", note: "Magic Theory T5 schools (Restoration Arcana, Geomancy, Illusion, Arcanomancy) up to T5, or T4 with Combos; caster monsters the same.",
+  party: PARTY_M5, monsters: MONSTERS_M5, encounters: encountersFor(MONSTERS_M5, 2) };

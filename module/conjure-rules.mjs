@@ -54,10 +54,14 @@ export function naturalArmor({ threshold, con }) {
 
 /* ---- Animation ---- */
 
-/** Size from the Body of material used: 1; 2 at 5 Body; 3 at 25; 4 at 125; 5 at 625. */
-export function animationSize(body) {
+/**
+ * Size from the Body of material used (1; 2 at 5 Body; 3 at 25; 4 at 125), capped by the cast's Threshold, Mods included, as Form's is: Size 3 needs
+ * 5, Size 4 needs 10. A bigger pile under a low Threshold makes the largest Size the Threshold allows. There is no Size 5.
+ */
+export function animationSize(body, gross = Infinity) {
   const b = Math.max(0, +body || 0);
-  return b >= 625 ? 5 : b >= 125 ? 4 : b >= 25 ? 3 : b >= 5 ? 2 : 1;
+  const bySize = b >= 125 ? 4 : b >= 25 ? 3 : b >= 5 ? 2 : 1;
+  return Math.min(bySize, gross >= 10 ? 4 : gross >= 5 ? 3 : 2);
 }
 
 /** The four material categories: health = hpPer × points × size; speed as a percentage of the Size's maximum; physical attack stacks. */

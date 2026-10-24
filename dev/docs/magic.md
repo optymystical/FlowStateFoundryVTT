@@ -477,7 +477,7 @@
 
 - **Animate: *1-5 Threshold, Core Spell, Targeted.*** Animates a pile of inanimate materials that are Soft or Liquid (such as a pile of wood, plastic, a pool of water, a corpse, etc), infusing it with up to **5 points** of magical energy (the effect binding it counts as a Spell). This Spell's Threshold can be manually raised on cast to multiply its point count by that much, up to a maximum of 5 Threshold (stacks additively with similar sources). It has the following effects/requirements:  
   - **Body:** The pile must be at least X Body to be targeted, with X being the points used in its animation.   
-  - **Size:** Its size is by default 1, increasing to 2 if at least 5 Body of materials were used, to 3 if at least 25 Body were used, to 4 with 125, and to 5 with 625\. Multiply its eventual health value by this size.  
+  - **Size:** Its size is by default 1, increasing to 2 if at least 5 Body of materials were used, to 3 if at least 25 Body were used, and to 4 with 125\. Size 3 also needs this Core Spell's Threshold (including Animation Spell Mods) to be at least 5, and Size 4 needs it to reach 10; with a lower Threshold, a larger pile still makes an Animation of the largest size its Threshold allows. Multiply its eventual health value by this size.  
   - **Material:** The created Animation has stats and features based on its primary material category (see the tables below this tree).  
   - **Duration:** Lasts until the start of your next turn.  
   - **Skills:** Can use any Martial skills that you know.   

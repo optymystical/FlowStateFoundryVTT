@@ -3044,7 +3044,7 @@ export const TREES = [
      },
      {
       "name": "Size",
-      "text": "Its size is by default 1, increasing to 2 if at least 5 Body of materials were used, to 3 if at least 25 Body were used, to 4 with 125, and to 5 with 625. Multiply its eventual health value by this size."
+      "text": "Its size is by default 1, increasing to 2 if at least 5 Body of materials were used, to 3 if at least 25 Body were used, and to 4 with 125. Size 3 also needs this Core Spell's Threshold (including Animation Spell Mods) to be at least 5, and Size 4 needs it to reach 10; with a lower Threshold, a larger pile still makes an Animation of the largest size its Threshold allows. Multiply its eventual health value by this size."
      },
      {
       "name": "Material",

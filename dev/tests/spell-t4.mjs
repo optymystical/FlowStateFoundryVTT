@@ -121,7 +121,8 @@ ok2(R.summonPool(3) === 15 && R.summonPool(1) === 5 && R.formPool(3) === 15 && R
 ok2(R.formStats({ str: 5, dex: 5, con: 5 }, 15).ok && !R.formStats({ str: 0, dex: 5, con: 5 }, 15).ok && !R.formStats({ str: 8, dex: 5, con: 5 }, 15).ok && R.formStats({ str: 3, dex: 3, con: 3, skill: 3 }, 15).ok, "Body points need at least 1 in each stat; Skill costs 2 each; no overspending");
 ok2(R.formSize(3, 4) === 2 && R.formSize(3, 5) === 3 && R.formSize(4, 10) === 4 && R.formSize(1, 1) === 1, "Summon size: 1–2, 3 at Threshold 5, 4 at 10");
 ok2(R.summonHealth(5, 2) === 30 && R.summonEnergy(5) === 25, "Health 3 × Con × size; Energy 5 × Con");
-ok2(R.animationSize(4) === 1 && R.animationSize(5) === 2 && R.animationSize(25) === 3 && R.animationSize(125) === 4 && R.animationSize(625) === 5, "Animation size by Body");
+ok2(R.animationSize(4) === 1 && R.animationSize(5) === 2 && R.animationSize(25) === 3 && R.animationSize(125) === 4 && R.animationSize(625) === 4, "Animation size by Body (no Size 5)");
+ok2(R.animationSize(125, 4) === 2 && R.animationSize(125, 5) === 3 && R.animationSize(125, 10) === 4 && R.animationSize(4, 10) === 1, "…capped by the Threshold, as Form is: 2, 3 at Threshold 5, 4 at 10");
 ok2(R.animationStats({ points: 10, category: "hard", size: 2 }).hp === 100 && R.animationStats({ points: 10, category: "liquid", size: 1 }).hp === 10, "Animation health: Hard 5×, Liquid 1× points × size");
 ok2(R.naturalArmor({ threshold: 3, con: 25 }).material === "iron" && R.naturalArmor({ threshold: 1, con: 5 }).weight === "light" && R.naturalWeapon({ weaponType: "bladed", weight: "heavy", scaling: 24 }).grade === 2, "Natural armor and weapons by Threshold and stat");
 const planOk = (core, extra = {}) => S.planCast(C.castContext(hero), { via: "foci:rod", ap: 2, core1: core, core2: extra.core2 ?? "", base: extra.base ?? 1, ...extra });
@@ -167,15 +168,18 @@ console.log("== Animate");
 const wat = { material: "Water", body: 30, arms: [], items: [] };
 clean4(); plan = await cast("magic-animation:animate", { base: 2, conj: wat });
 sm = summons()[0];
-ok2(sm && sm.system.size === R.animationSize(30) && sm.system.hp.max === 1 * 30 * R.animationSize(30) && sm.flags.flowstate.summon.speed === R4.moveSpeed(R.animationSize(30), 0), `Water Animation: 30 points (10 × Spell Power 3), Size ${R.animationSize(30)}, health 1 × 30 × size (${sm?.system.hp.max}), 100% of the Size's speed`);
-ok2(sm.system.derived.move === R4.moveSpeed(R.animationSize(30), 0) && sm.system.derived.size.physical < 0, "…its speed and Weakened physical attacks are in its derived stats");
+ok2(sm && sm.system.size === 2 && sm.system.hp.max === 1 * 30 * 2 && sm.flags.flowstate.summon.speed === R4.moveSpeed(2, 0), `Water Animation: 30 points (10 × Spell Power 3); a 30-Body pile is Size 3, but Threshold 2 caps it at Size 2; health 1 × 30 × 2 (${sm?.system.hp.max}), 100% of the Size's speed`);
+ok2(sm.system.derived.move === R4.moveSpeed(2, 0) && sm.system.derived.size.physical < 0, "…its speed and Weakened physical attacks are in its derived stats");
 clean4(); plan = await cast("magic-animation:animate", { base: 2, conj: { material: "Stone", body: 30 } });
 ok2(!plan, "Stone needs Expanded Animation (Hard material)");
 clean4(); plan = await cast("magic-animation:animate", { base: 2, [M("magic-animation:expanded-animation")]: true, conj: { material: "Stone", body: 30 } });
 sm = summons()[0];
-ok2(sm.system.hp.max === 5 * 30 * R.animationSize(30) && sm.system.ap.max === 3 && sm.system.rp.max === 3 && sm.flags.flowstate.summon.physical === 1, "Stone: health 5×, only 3 AP / 3 RP, Strengthened physical attacks");
+ok2(sm.system.hp.max === 5 * 30 * 2 && sm.system.ap.max === 3 && sm.system.rp.max === 3 && sm.flags.flowstate.summon.physical === 1, "Stone: health 5×, only 3 AP / 3 RP, Strengthened physical attacks");
 clean4(); plan = await cast("magic-animation:animate", { base: 2, conj: { material: "Water", body: 9 } });
 ok2(!plan, "The pile must hold at least as much Body as the points");
+clean4(); plan = await cast("magic-animation:animate", { base: 5, conj: { material: "Water", body: 75 } });
+sm = summons()[0];
+ok2(sm && sm.system.size === 3 && sm.system.hp.max === 1 * 75 * 3, `Threshold 5: a 75-point Animation reaches Size 3 (health ${sm?.system.hp.max})`);
 await J.turnStart(hero);
 
 console.log("== Make");
@@ -212,10 +216,10 @@ sm = summons()[0]; const held = sm?.items.find(i => i.type === "weapon" && !i.sy
 ok2(held?.system.equipped && held.system.grade === 6, "Form + Make: the Summon holds a Made weapon (Threshold 4 → 3 × 5 points)");
 clean4(); plan = await cast("magic-animation:animate", { core2: "magic-creation:make", base: 3, conj: { material: "Hardwood" } });
 sm = summons()[0];
-ok2(sm && sm.system.stats.str === 60 && sm.system.size === R.animationSize(60), `Make + Animate: instantly a 60-point Animation (10 × the multiplier of 2 × Spell Power 3), size ${R.animationSize(60)}`);
+ok2(sm && sm.system.stats.str === 60 && sm.system.size === 2, `Make + Animate: instantly a 60-point Animation (10 × the multiplier of 2 × Spell Power 3), Size 2 at Threshold 3 (${sm?.system.size})`);
 clean4(); plan = await cast("magic-summoning:form", { core2: "magic-animation:animate", base: 3, conj: { material: "Hardwood", body: 30, str: 3, dex: 3, con: 4, skill: 0 } });
 sm = summons()[0];
-ok2(sm && sm.system.stats.con === 4 && sm.system.hp.max === 3 * 4 * R.animationSize(30) && sm.system.size === R.animationSize(30), `Form + Animate: points allocated like Form; health = Con × Material scaling (Soft 3×) × size (${sm?.system.hp.max})`);
+ok2(sm && sm.system.stats.con === 4 && sm.system.hp.max === 3 * 4 * 2 && sm.system.size === 2, `Form + Animate: points allocated like Form; health = Con × Material scaling (Soft 3×) × size (${sm?.system.hp.max})`);
 
 console.log("== Riders (Any T1/T2/T3 + Summoning / Creation)");
 clean4(); plan = await cast("magic-slashing:cut", { core2: "magic-summoning:form", base: 3, conj: body(3, 3, 4) });

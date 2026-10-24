@@ -173,7 +173,7 @@ export async function prompt({ actor, plan, profile, mods, values, targets }) {
   // Summons and Animations appear on an empty tile in range you click; so do Made objects left on the ground.
   const needsTile = cj.kind === "summon" || cj.kind === "animate" ? !ctx.equipment : spec.recipient === "drop";
   if (needsTile && spec.tile === undefined) {
-    const size = cj.kind === "summon" ? R.formSize(spec.size, ctx.gross) : cj.kind === "animate" ? R.animationSize(cj.instant ? ctx.pool : Number(spec.body) || ctx.bodyMin) : 1;
+    const size = cj.kind === "summon" ? R.formSize(spec.size, ctx.gross) : cj.kind === "animate" ? R.animationSize(cj.instant ? ctx.pool : Number(spec.body) || ctx.bodyMin, ctx.gross) : 1;
     const squares = { 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 }[size] ?? 1;
     const tile = await pickTile(actor, { range: 100 * (mods.snipe ? 2 : 1), squares, title: profile.name });
     if (tile === null) return null;
@@ -367,7 +367,7 @@ async function makeAnimation({ actor, plan, profile, spec, mods, ritualOf, targe
   const mat = R.animMaterial(spec.material);
   const points = cj.summonStats ? ctx.bodyMin : ctx.pool;
   const body = cj.instant ? points : Number(spec.body) || points;
-  const size = R.animationSize(body);
+  const size = R.animationSize(body, ctx.gross);
   const f = cj.summonStats ? R.formStats(spec, ctx.pool) : null;
   const st = R.animationStats({ points, category: mat.category, size, stats: f?.stats ?? null });
   const eff = actor.system.derived.effective;

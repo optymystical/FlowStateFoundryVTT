@@ -1068,11 +1068,11 @@ export const PARTY_MIX = [
     ]
   },
   {
-    id: "breaker", name: "Sim Breaker", role: "melee-str", note: "Heavy hitter: Magic (Heat and Reach Arcana from a Tome) or a hybrid (a two-handed Heavy Weighted with Gravity, Raw cast).",
+    id: "breaker", name: "Sim Breaker", role: "melee-str", note: "Heavy hitter: Magic (Heat and Reach Arcana from a Tome) or a hybrid (a Heavy Weighted with Gravity from a Rod in the other hand).",
     stats: { reach: 45, con: 30, build: 15 },
     loadouts: [
       { label: "Magic", role: "caster", trees: MAG(2, { [HEA]: 5, [RCH2]: 4 }), armor: A("medium", "softLeather"), weapons: [], foci: FO("tome", { twoHanded: true }), shroud: FO("bastion") },
-      { label: "Hybrid", stats: { str: 35, grasp: 25, con: 30 }, trees: MIX(2, 1, { [WEI]: 5, [GRA]: 4 }), armor: A("medium", "hide"), weapons: [W("weighted", "heavy", "iron", { primary: true, twoHanded: true })], foci: null, shroud: FO("bastion") }
+      { label: "Hybrid", stats: { str: 35, grasp: 25, con: 30 }, trees: MIX(2, 1, { [WEI]: 5, [GRA]: 4 }), armor: A("medium", "hide"), weapons: [W("weighted", "heavy", "iron", { primary: true })], foci: FO("rod"), shroud: FO("bastion") }
     ]
   },
   {
@@ -1109,7 +1109,7 @@ const RAIDERS_MARTIAL = [
 const OGRE_MARTIAL = { id: "ogre", name: "Sim Ogre Tyrant", count: 1, size: 4, sp: 30, stats: { str: 110, con: 120, dex: 30, will: 40 }, trees: T2({ [WEI]: 5, [STR]: 4 }),
   armor: A("heavy", "iron"), weapons: [W("weighted", "heavy", "iron", { primary: true }), W("striker", "light", "steel")] };
 const OGRE_MIXED = { id: "ogre-warlock", name: "Sim Ogre Warlock", count: 1, size: 4, sp: 30, stats: { str: 90, con: 110, grasp: 60, will: 40 }, trees: MIX(2, 2, { [WEI]: 4, [HEA]: 4 }),
-  focus: "magic-heat:flame", armor: A("heavy", "iron"), weapons: [W("weighted", "heavy", "iron", { primary: true })], foci: FO("orb"), shroud: FO("carapace") };
+  focus: "magic-heat:flame", armor: A("heavy", "iron"), weapons: [W("weighted", "heavy", "iron", { primary: true })], foci: FO("rod"), shroud: FO("carapace") };
 const pick = (kinds, counts) => kinds.filter(k => counts[k.id]).map(k => ({ ...k, count: counts[k.id] }));
 export const MONSTERS_MIX = {
   "swarm-martial": { label: "Swarm (Martial)", note: "Ten goblins with Martial trees: five Heavy Striker hackers, five Light Reach lancers.", kinds: GOB_MARTIAL },
@@ -1122,7 +1122,7 @@ export const MONSTERS_MIX = {
     kinds: [...pick(RAIDERS_MARTIAL, { "raider-brute": 1, "raider-cutter": 1 }), ...pick(MONSTERS_M2.raiders.kinds, { "raider-pyro": 1, "raider-storm": 1, "raider-froster": 1 })] },
   "boss-martial": { label: "Boss (Martial)", note: "The Ogre Tyrant with Weighted T5 and Strength T4.", kinds: [OGRE_MARTIAL] },
   "boss-magic": { label: "Boss (Magic)", note: MONSTERS_M5.boss.note, kinds: MONSTERS_M5.boss.kinds },
-  "boss-mixed": { label: "Boss (mixed)", note: "An Ogre Warlock: a natural Heavy Weighted (Weighted T4) and Flame from a natural Orb (Heat T4).", kinds: [OGRE_MIXED] }
+  "boss-mixed": { label: "Boss (mixed)", note: "An Ogre Warlock: a natural Heavy Weighted (Weighted T4) and Flame from a natural Rod (Heat T4).", kinds: [OGRE_MIXED] }
 };
 PASSES["magic-vs-martial"] = { id: "magic-vs-martial", note: "Magic vs Martial: the party in two rotations (a Martial frontline with Magic behind; mostly hybrids) against every group as all Martial, all Magic and mixed.",
   party: PARTY_MIX, monsters: MONSTERS_MIX, encounters: encountersFor(MONSTERS_MIX, 2) };

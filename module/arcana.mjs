@@ -31,6 +31,25 @@ export function lossSince(actor, since) {
 const turnStamp = actor => (actor.getFlag?.("flowstate", "turnStartedAt") ?? 0) || 0;
 const diedAt = actor => actor.getFlag?.("flowstate", "diedAt") ?? 0;
 
+/**
+ * Where Restore's "since the start of your last turn" begins. Between your turns that's the start of your latest turn; cast on your own turn it's
+ * the turn before this one (the current one only just began), and not before this combat started. 0 (no stamp, out of combat): all recent loss counts.
+ */
+export function restoreSince(caster) {
+  const now = turnStamp(caster);
+  const combat = globalThis.game?.combat;
+  if (!combat?.started || combat.combatant?.actor?.uuid !== caster.uuid) return now;
+  const began = Number(combat.getFlag?.("flowstate", "startedAt")) || 0;
+  return Math.max(Number(caster.getFlag?.("flowstate", "prevTurnStartedAt")) || 0, began) || now;
+}
+/** Health Restore already gave back to this creature since `since`: it counts against the window, so casts can't heal more than was lost. */
+export function restoredSince(actor, since) {
+  const log = actor.getFlag?.("flowstate", "restoreLog") ?? [];
+  return log.filter(e => !since || e.at >= since).reduce((n, e) => n + (e.n || 0), 0);
+}
+/** What Restore can still heal on this creature within the caster's window. */
+export const restorable = (actor, since) => Math.max(0, lossSince(actor, since) - restoredSince(actor, since));
+
 /** Recompute dead / unconscious after something changed Pain Threshold or HP. */
 export async function reevaluate(actor) {
   const hp = actor.system.hp.value, pain = actor.system.hp.pain;
@@ -55,8 +74,9 @@ export async function prompt({ actor, plan, profile, mods, values, targets }) {
     const painless = plan.applied.find(a => a.mod.name === "Painless");
     const replaced = !!painless?.replace;
     if (dead && !mods.resuscitate) { ui.notifications.warn(`${t.name} is dead: Restore needs Resuscitate for that.`); return null; }
-    if (dead && !free && diedAt(t) < turnStamp(actor)) { ui.notifications.warn(`${t.name} died before the start of your last turn: Resuscitate can't reach them (a Ritual can).`); return null; }
-    if (!replaced && !free && !dead && lossSince(t, turnStamp(actor)) <= 0 && !(mods.regenerate)) { ui.notifications.warn(`${t.name} hasn't lost any health since the start of your last turn: there's nothing to restore.`); return null; }
+    const since = restoreSince(actor);
+    if (dead && !free && diedAt(t) < since) { ui.notifications.warn(`${t.name} died before the start of your last turn: Resuscitate can't reach them (a Ritual can).`); return null; }
+    if (!replaced && !free && !dead && restorable(t, since) <= 0 && !(mods.regenerate)) { ui.notifications.warn(`${t.name} hasn't lost any health since the start of your last turn that Restore hasn't already given back: there's nothing to restore.`); return null; }
     return { target: t.uuid };
   }
   if (k === "shift") {
@@ -129,9 +149,11 @@ async function restore({ actor, plan, profile, spec, mods, targets, ritualOf }) 
       await setHp(t, { "system.hp.lost": lost - back });
       lines.push(`Regenerate: ${esc(t.name)} regains <strong>${back}</strong> maximum health.`);
     } else {
-      const limit = free || dead ? Infinity : lossSince(t, turnStamp(actor));
+      const limit = free || dead ? Infinity : restorable(t, restoreSince(actor));
       const heal = Math.max(0, Math.min(raw, limit, max - hp));
-      await setHp(t, { "system.hp.value": hp + heal });
+      // The heal is logged so later Restores in the same window only reach what's still missing.
+      const restoreLog = [...(t.getFlag?.("flowstate", "restoreLog") ?? []).slice(-24), ...(heal > 0 ? [{ at: Date.now(), n: heal }] : [])];
+      await setHp(t, { "system.hp.value": hp + heal, ...(heal > 0 ? { "flags.flowstate.restoreLog": restoreLog } : {}) });
       lines.push(`${esc(t.name)} regains <strong>${heal}</strong> health (${hp + heal}/${max})${heal < raw && !free ? " — only health lost since the start of your last turn" : ""}.`);
       if (dead && hp + heal > 0) lines.push(`<strong>${esc(t.name)} is resurrected.</strong>`);
     }

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.79.5:** Restore's window: cast on your own turn, "since the start of your last turn" reaches back to the start of your previous turn (never before the fight began); between your turns it starts at your latest one. Health Restore already gave back counts against the window, so several casts can't heal more than was lost.
+
 **0.79.4:** From the updated Martial doc: Impale (Reach T5) works after any direct damage from a Reach weapon; it no longer needs more than half the target's Pain Threshold.
 
 **0.79.3:** A hidden world setting for the Pain Threshold divisor (the rule stays half of max HP), so the combat sim can compare values on the same code.

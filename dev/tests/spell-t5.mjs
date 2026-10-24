@@ -151,6 +151,31 @@ ok2(gob.system.hp.value === 432, "…and never heals more than was lost (2 lost 
 clean5(); await dmg(gob, 20); hero.flags = { flowstate: { turnStartedAt: Date.now() + 1000 } }; target(gob);
 r5 = await cast("magic-restoration-arcana:restore", { base: 1 });
 ok2(!r5, "Damage from before the start of your last turn can't be restored");
+// Cast on your own turn, "your last turn" is the one before this (the current one only just began).
+clean5(); await dmg(gob, 20); hero.flags = { flowstate: { turnStartedAt: Date.now() + 1000, prevTurnStartedAt: Date.now() - 1000 } }; target(gob);
+await cast("magic-restoration-arcana:restore", { base: 1 });
+ok2(gob.system.hp.value === 432 - 20 + 6, `On your own turn the window starts at your previous turn (HP ${gob.system.hp.value})`);
+combat.combatant = { actor: orc };
+clean5(); await dmg(gob, 20); hero.flags = { flowstate: { turnStartedAt: Date.now() + 1000, prevTurnStartedAt: Date.now() - 1000 } }; target(gob);
+r5 = await cast("magic-restoration-arcana:restore", { base: 1, [M("magic-theory:react")]: true });
+ok2(gob.system.hp.value === 412, "…between your turns it starts at your latest turn (damage before it can't be restored)");
+clean5(); hero.flags = { flowstate: { turnStartedAt: Date.now() - 1000, prevTurnStartedAt: Date.now() - 5000 } }; await dmg(gob, 20); target(gob);
+await cast("magic-restoration-arcana:restore", { base: 1, [M("magic-theory:react")]: true });
+ok2(gob.system.hp.value === 432 - 20 + 6, `…and damage since it can (React, HP ${gob.system.hp.value})`);
+combat.combatant = { actor: hero };
+// The window never reaches back past the start of the fight.
+clean5(); gob.system.hp.value = 412; gob.flags = { flowstate: { lossLog: [{ at: Date.now() - 50000, n: 20 }] } };
+hero.flags = { flowstate: { turnStartedAt: Date.now() + 1000, prevTurnStartedAt: Date.now() - 100000 } }; combat.getFlag = (s, k) => (k === "startedAt" ? Date.now() - 1000 : undefined); target(gob);
+r5 = await cast("magic-restoration-arcana:restore", { base: 1 });
+ok2(!r5 && gob.system.hp.value === 412, "…and not before the combat started");
+delete combat.getFlag;
+// What Restore already healed counts against the window: two casts can't give back more than was lost.
+clean5(); gob.system.hp.value = 400; await dmg(gob, 8); target(gob);
+await cast("magic-restoration-arcana:restore", { base: 1 });
+await cast("magic-restoration-arcana:restore", { base: 1 });
+ok2(gob.system.hp.value === 400, `Two Restores heal 6 then 2: only the 8 lost in the window (HP ${gob.system.hp.value})`);
+r5 = await cast("magic-restoration-arcana:restore", { base: 1 });
+ok2(!r5, "…a third finds nothing left to restore");
 clean5(); await dmg(gob, 20); target(gob);
 await cast("magic-restoration-arcana:restore", { base: 2, [M("magic-restoration-arcana:painless")]: true, "replace:magic-restoration-arcana:painless": true });
 const pe = eff(gob, "painless")[0];

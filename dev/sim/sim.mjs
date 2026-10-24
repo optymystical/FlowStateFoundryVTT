@@ -1123,16 +1123,6 @@ function mostThreatened(me, list) {
   return [...list].sort((a, b) => near(b) - near(a) || a.actor.system.hp.value - b.actor.system.hp.value)[0] ?? null;
 }
 
-/**
- * Restore through castAt, reading "since the start of your last turn" as the start of the caster's previous turn: the system checks its current
- * turn's stamp (so a Restore on your own turn heals only what was lost during it), so the stamp is set back for the cast and put back after.
- */
-async function restoreAt(actor, who, values) {
-  const now = actor.getFlag("flowstate", "turnStartedAt");
-  await actor.setFlag("flowstate", "turnStartedAt", SIM.prevStamp?.[actor.uuid] || 1);
-  try { return await castAt(actor, who, values, "Restore"); } finally { await actor.setFlag("flowstate", "turnStartedAt", now); }
-}
-
 /** Cast `values` at `targetTok` through the real Cast Spell path (no dialog). Returns true if a spell went off. */
 async function castAt(actor, targetTok, values, label) {
   setTargets(...(Array.isArray(targetTok) ? targetTok : [targetTok]).filter(Boolean));
@@ -1172,11 +1162,6 @@ async function casterTurn(actor, me) {
   s.turnMoved = 0;
   const role = sim(actor).role;
   const done = new Set();
-  // The Restore window: the start of this caster's previous turn (the system stamps the current one; see restoreAt).
-  SIM.prevStamp ??= {};
-  SIM.lastStamp ??= {};
-  const stamp = Number(actor.getFlag("flowstate", "turnStartedAt")) || 0;
-  if (SIM.lastStamp[actor.uuid] !== stamp) { SIM.prevStamp[actor.uuid] = SIM.lastStamp[actor.uuid] ?? 0; SIM.lastStamp[actor.uuid] = stamp; }
   for (let step = 0; step < 12; step++) {
     if (down(actor) || over(me.parent)) return;
     const { ctx, known } = Cast.castSummary(actor);
@@ -1223,20 +1208,20 @@ async function casterTurn(actor, me) {
       if (fits(r) && await castAt(actor, close[0], r.values, "Gravity Field")) { done.add("support"); continue; }
     }
 
-    // Restore (Restoration Arcana): the ally (or yourself, or a downed ally) who lost the most since the start of your previous turn, with Painless
+    // Restore (Restoration Arcana): the ally (or yourself, or a downed ally) with the most it can still give back in its window, with Painless
     // (it lowers their Pain Threshold: it can wake them) and Resuscitate for the dead. Up to three a turn.
     if (has("magic-restoration-arcana:restore") && (done.restores ?? 0) < 3) {
-      const since = SIM.prevStamp?.[actor.uuid] ?? 0;
+      const since = Arc.restoreSince(actor);
       const healed = (done.healed ??= {});
       const side = tokensOf(me.parent).filter(t => sideOf(t) === sideOf(me) && sim(t.actor).role !== "creation" && dist(me, t) <= 100);
-      const need = t => Arc.lossSince(t.actor, since) - (healed[t.id] ?? 0);
+      const need = t => (healed[t.id] === Infinity ? 0 : Arc.restorable(t.actor, since));
       const who = side.filter(t => need(t) > 0).sort((a, b) => down(b.actor) - down(a.actor) || need(b) - need(a))[0];
       if (who) {
         done.restores = (done.restores ?? 0) + 1;
         const dead = who.actor.statuses.has("dead");
         const r = withMods(ctx, opt, ["magic-restoration-arcana:restore"], [...(dead ? [["magic-restoration-arcana:resuscitate", true]] : []), ["magic-restoration-arcana:painless", true]], budget);
         const before = who.actor.system.hp.value;
-        if (fits(r) && await restoreAt(actor, who, r.values)) {
+        if (fits(r) && await castAt(actor, who, r.values, "Restore")) {
           const gain = Math.max(0, who.actor.system.hp.value - before);
           healed[who.id] = (healed[who.id] ?? 0) + Math.max(1, gain);
           s.healed = (s.healed ?? 0) + gain;

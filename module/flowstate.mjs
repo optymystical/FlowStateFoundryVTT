@@ -140,6 +140,7 @@ class FlowStateCombat extends Combat {
       if (c.actor?.isOwner) await c.actor.update({ "system.ap.value": c.actor.system.ap?.max ?? 6, "system.rp.value": c.actor.system.rp?.max ?? 6 });
     }
     for (const c of this.combatants) if (c.actor) await actions.mentalCombatStart(c.actor);          // Instinct (Adaptation T2): 4 stacks banked
+    await this.setFlag("flowstate", "startedAt", Date.now());          // Restore's window never reaches back before the fight
     return super.startCombat();
   }
 
@@ -173,7 +174,9 @@ class FlowStateCombat extends Combat {
       await conjure.autonomyTurn(combatant.actor);
       await actions.mentalTurnStart(combatant.actor);
       await gravity.turnStart(combatant.actor);
-      await combatant.actor.setFlag?.("flowstate", "turnStartedAt", Date.now());
+      // The start of this turn, and of the one before (Restore, cast on your own turn, reaches back to it).
+      const prevStart = Number(combatant.actor.getFlag?.("flowstate", "turnStartedAt")) || 0;
+      if (combatant.actor.setFlag) await combatant.actor.update({ "flags.flowstate.prevTurnStartedAt": prevStart, "flags.flowstate.turnStartedAt": Date.now() });
       // Tier 4: Reform, then the caster's temporary Summons, Animations and Made objects end.
       await conjure.turnStart(combatant.actor);
       await actions.afflictCasterTurn(combatant.actor);

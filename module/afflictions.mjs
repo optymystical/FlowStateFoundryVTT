@@ -189,7 +189,8 @@ export async function placeCharm(caster, target, { rollType, ritualOf = null, in
 
 /**
  * Venomancy variants the combat sim can test (hidden world setting `venomVariant`; empty = the rules as written): "multi" keeps a coating on
- * until it wears off, poisoning every direct-damage hit; "halfpass" makes a passed Constitution check halve the damage instead of stopping it.
+ * until it wears off, poisoning every direct-damage hit; "halfpass" makes a passed Constitution check halve the damage instead of stopping it;
+ * "hit" (the sim's side) passes a coating on any hit, even one armor soaks completely.
  */
 function venomVariant(k) {
   let v = "";

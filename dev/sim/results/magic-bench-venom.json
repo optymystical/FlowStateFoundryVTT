@@ -704,5 +704,1401 @@
    "notes": [],
    "errors": []
   }
+ },
+ {
+  "id": "venomancy-armored-3",
+  "group": "armored",
+  "rotation": 13,
+  "seconds": 52,
+  "winner": "unfinished",
+  "pass": "magic-bench-venom",
+  "rounds": 5,
+  "partyLeft": 2,
+  "monstersLeft": 3,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 44,
+   "cast:Poison (coat self)": 4,
+   "mod:Lethality": 1,
+   "mod:Potency": 1,
+   "cast:Cut": 8,
+   "mod:Bleed": 4
+  },
+  "hp": {
+   "Sim Caster#rUF1": "567/567",
+   "Sim Bag#Nud9": "3160/3762",
+   "Sim Raider Brute#bnPU": "720/720",
+   "Sim Raider Cutter#rBpM": "720/720",
+   "Sim Raider Bruiser#5HQp": "720/720"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Circular": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 112,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 1,
+    "crits": 0,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 236,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 254,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Bruiser"
+    ]
+   },
+   "Spell: Cut + Poison": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 0,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Caster"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Caster"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 5,
+    "absorbed": 177
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 112,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Bag",
+    "dealt": 0,
+    "taken": 602,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 236,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Raider Bruiser",
+    "dealt": 254,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Caster",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1
+   },
+   {
+    "name": "Sim Bag",
+    "side": "party",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 32
+    }
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   },
+   {
+    "name": "Sim Raider Bruiser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 1
+   },
+   {
+    "name": "Sim Caster",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Poison (coat self)": 4,
+     "mod:Lethality": 1,
+     "mod:Potency": 1,
+     "defend:dodge": 4,
+     "cast:Cut": 8,
+     "mod:Bleed": 4
+    }
+   }
+  ],
+  "trees": {
+   "Sim Caster": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-slashing": 2
+   },
+   "Sim Bag": {}
+  },
+  "gear": {
+   "Sim Caster": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G4"
+   ],
+   "Sim Bag": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Circular (Steel)"
+   ],
+   "Sim Raider Bruiser": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Caster": [
+    "Medium Armor (Hide): 90/90"
+   ],
+   "Sim Bag": [],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 223/400",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Medium Armor (Hide): 150/150",
+    "Heavy Circular (Steel): 630/630"
+   ],
+   "Sim Raider Bruiser": [
+    "Medium Armor (Hide): 150/150",
+    "Heavy Weighted (Steel): 630/630"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 4329,
+    "monsterHp": 2160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 4167,
+    "monsterHp": 2160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 4028,
+    "monsterHp": 2160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3784,
+    "monsterHp": 2160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3727,
+    "monsterHp": 2160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3727,
+    "monsterHp": 2160,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 602,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 602,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Circular (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8,
+    "prompt: Heavy Swift (Steel)": 8,
+    "prompt: Heavy Weighted (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "venomancy-soft-1",
+  "group": "soft",
+  "rotation": 13,
+  "seconds": 38,
+  "winner": "unfinished",
+  "pass": "magic-bench-venom",
+  "rounds": 5,
+  "partyLeft": 2,
+  "monstersLeft": 1,
+  "followups": 4,
+  "knockbacks": {},
+  "used": {
+   "cast:Poison (coat self)": 4,
+   "mod:Lethality": 1,
+   "mod:Potency": 1,
+   "defend:dodge": 30,
+   "cast:Cut": 8,
+   "mod:Bleed": 4,
+   "opt:who": 3,
+   "passPoison": 4
+  },
+  "hp": {
+   "Sim Caster#xJFh": "567/567",
+   "Sim Bag#TYK4": "3427/3762",
+   "Sim Raider Brute#Xp12": "344/720",
+   "Sim Raider Cutter#8ANB": "266/720",
+   "Sim Raider Bruiser#H7D2": "367/720"
+  },
+  "down": [
+   "Sim Raider Brute",
+   "Sim Raider Cutter"
+  ],
+  "weapons": {
+   "Spell: Cut + Poison": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Caster"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 2,
+    "damage": 598,
+    "ap": 16,
+    "kills": 2,
+    "users": [
+     "Caster"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 99,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 4,
+    "hits": 0,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 0,
+    "misses": 2,
+    "damage": 236,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Bruiser"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Caster",
+    "dealt": 598,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 0,
+    "taken": 248,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 99,
+    "taken": 279,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Bag",
+    "dealt": 0,
+    "taken": 335,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Bruiser",
+    "dealt": 236,
+    "taken": 71,
+    "hits": 6,
+    "attacks": 8
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Caster",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Poison (coat self)": 4,
+     "mod:Lethality": 1,
+     "mod:Potency": 1,
+     "defend:dodge": 4,
+     "cast:Cut": 8,
+     "mod:Bleed": 4,
+     "passPoison": 4
+    }
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3
+    },
+    "turnMoved": 10
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 8,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Bag",
+    "side": "party",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 18
+    }
+   },
+   {
+    "name": "Sim Raider Bruiser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 1,
+    "used": {
+     "defend:dodge": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Caster": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-slashing": 2
+   },
+   "Sim Bag": {}
+  },
+  "gear": {
+   "Sim Caster": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G4"
+   ],
+   "Sim Bag": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Heavy Circular (Steel)"
+   ],
+   "Sim Raider Bruiser": [
+    "Unarmed",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Caster": [
+    "Medium Armor (Hide): 90/90"
+   ],
+   "Sim Bag": [],
+   "Sim Raider Brute": [
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Heavy Circular (Steel): 630/630"
+   ],
+   "Sim Raider Bruiser": [
+    "Heavy Weighted (Steel): 630/630"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 4329,
+    "monsterHp": 2160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 4211,
+    "monsterHp": 1904,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 4087,
+    "monsterHp": 1662,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 4046,
+    "monsterHp": 1330,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 3994,
+    "monsterHp": 977,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 3994,
+    "monsterHp": 977,
+    "partyDown": 0,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 585
+  },
+  "lostBy": {
+   "party": 335,
+   "monsters": 1183
+  },
+  "directTaken": {
+   "party": 335,
+   "monsters": 598
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: The Poison passes from Sim Caster to": 4,
+    "prompt: Heavy Circular (Steel)": 4,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 4,
+    "prompt: Heavy Swift (Steel)": 2,
+    "prompt: Heavy Weighted (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "venomancy-soft-2",
+  "group": "soft",
+  "rotation": 13,
+  "seconds": 48,
+  "winner": "unfinished",
+  "pass": "magic-bench-venom",
+  "rounds": 5,
+  "partyLeft": 2,
+  "monstersLeft": 2,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "cast:Poison (coat self)": 4,
+   "mod:Lethality": 1,
+   "mod:Potency": 1,
+   "defend:dodge": 40,
+   "cast:Cut": 8,
+   "mod:Bleed": 4,
+   "opt:who": 3,
+   "passPoison": 4
+  },
+  "hp": {
+   "Sim Caster#CN19": "567/567",
+   "Sim Bag#MeyX": "3250/3762",
+   "Sim Raider Brute#zhrY": "278/720",
+   "Sim Raider Cutter#vdP1": "624/720",
+   "Sim Raider Bruiser#qC07": "720/720"
+  },
+  "down": [
+   "Sim Raider Brute"
+  ],
+  "weapons": {
+   "Spell: Cut + Poison": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Caster"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 4,
+    "damage": 392,
+    "ap": 16,
+    "kills": 1,
+    "users": [
+     "Caster"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 3,
+    "damage": 182,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 179,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 151,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Bruiser"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Caster",
+    "dealt": 392,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 179,
+    "taken": 296,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 182,
+    "taken": 96,
+    "hits": 8,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Bag",
+    "dealt": 0,
+    "taken": 512,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Bruiser",
+    "dealt": 151,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Caster",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Poison (coat self)": 4,
+     "mod:Lethality": 1,
+     "mod:Potency": 1,
+     "defend:dodge": 4,
+     "cast:Cut": 8,
+     "mod:Bleed": 4,
+     "passPoison": 4
+    }
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Bag",
+    "side": "party",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 28
+    }
+   },
+   {
+    "name": "Sim Raider Bruiser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 1
+   }
+  ],
+  "trees": {
+   "Sim Caster": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-slashing": 2
+   },
+   "Sim Bag": {}
+  },
+  "gear": {
+   "Sim Caster": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G4"
+   ],
+   "Sim Bag": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Heavy Circular (Steel)"
+   ],
+   "Sim Raider Bruiser": [
+    "Unarmed",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Caster": [
+    "Medium Armor (Hide): 90/90"
+   ],
+   "Sim Bag": [],
+   "Sim Raider Brute": [
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Heavy Circular (Steel): 630/630"
+   ],
+   "Sim Raider Bruiser": [
+    "Heavy Weighted (Steel): 630/630"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 4329,
+    "monsterHp": 2160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 4172,
+    "monsterHp": 1980,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3985,
+    "monsterHp": 1868,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3921,
+    "monsterHp": 1718,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 3817,
+    "monsterHp": 1622,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 3817,
+    "monsterHp": 1622,
+    "partyDown": 0,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 146
+  },
+  "lostBy": {
+   "party": 512,
+   "monsters": 538
+  },
+  "directTaken": {
+   "party": 512,
+   "monsters": 392
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: The Poison passes from Sim Caster to": 4,
+    "prompt: Heavy Circular (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8,
+    "prompt: Heavy Swift (Steel)": 4,
+    "prompt: Heavy Weighted (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "venomancy-soft-3",
+  "group": "soft",
+  "rotation": 13,
+  "seconds": 46,
+  "winner": "unfinished",
+  "pass": "magic-bench-venom",
+  "rounds": 5,
+  "partyLeft": 2,
+  "monstersLeft": 2,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 38,
+   "cast:Poison (coat self)": 4,
+   "mod:Lethality": 1,
+   "mod:Potency": 1,
+   "cast:Cut": 8,
+   "mod:Bleed": 4,
+   "opt:who": 4,
+   "passPoison": 4
+  },
+  "hp": {
+   "Sim Caster#RVja": "567/567",
+   "Sim Bag#li01": "3391/3762",
+   "Sim Raider Brute#WNxh": "-33/720",
+   "Sim Raider Cutter#McYR": "449/720",
+   "Sim Raider Bruiser#5man": "720/720"
+  },
+  "down": [
+   "Sim Raider Brute"
+  ],
+  "weapons": {
+   "Heavy Weighted": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 4,
+    "damage": 146,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Bruiser"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 161,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 2,
+    "crits": 1,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Spell: Cut + Poison": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 4,
+    "misses": 0,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Caster"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 2,
+    "damage": 466,
+    "ap": 16,
+    "kills": 1,
+    "users": [
+     "Caster"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 64,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Raider Bruiser",
+    "dealt": 146,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Bag",
+    "dealt": 0,
+    "taken": 371,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 161,
+    "taken": 209,
+    "hits": 5,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Caster",
+    "dealt": 466,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 64,
+    "taken": 257,
+    "hits": 1,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Bruiser",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "wild": 1
+   },
+   {
+    "name": "Sim Bag",
+    "side": "party",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 26
+    }
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "thr": 1,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Caster",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Poison (coat self)": 4,
+     "mod:Lethality": 1,
+     "mod:Potency": 1,
+     "defend:dodge": 4,
+     "cast:Cut": 8,
+     "mod:Bleed": 4,
+     "passPoison": 4
+    }
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4
+    },
+    "turnMoved": 10
+   }
+  ],
+  "trees": {
+   "Sim Caster": {
+    "magic-theory": 3,
+    "magic-venomancy": 5,
+    "magic-slashing": 2
+   },
+   "Sim Bag": {}
+  },
+  "gear": {
+   "Sim Caster": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G4"
+   ],
+   "Sim Bag": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Heavy Circular (Steel)"
+   ],
+   "Sim Raider Bruiser": [
+    "Unarmed",
+    "Heavy Weighted (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Caster": [
+    "Medium Armor (Hide): 90/90"
+   ],
+   "Sim Bag": [],
+   "Sim Raider Brute": [
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Heavy Circular (Steel): 630/630"
+   ],
+   "Sim Raider Bruiser": [
+    "Heavy Weighted (Steel): 630/630"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 4329,
+    "monsterHp": 2160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 4184,
+    "monsterHp": 1956,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 4184,
+    "monsterHp": 1440,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 4032,
+    "monsterHp": 1315,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 3958,
+    "monsterHp": 1169,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 3958,
+    "monsterHp": 1169,
+    "partyDown": 0,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [
+   "2:4 Sim Raider Brute: down"
+  ],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 525
+  },
+  "lostBy": {
+   "party": 371,
+   "monsters": 991
+  },
+  "directTaken": {
+   "party": 371,
+   "monsters": 466
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Steel)": 8,
+    "prompt: Heavy Circular (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8,
+    "prompt: The Poison passes from Sim Caster to": 4,
+    "prompt: Heavy Swift (Steel)": 2
+   },
+   "notes": [],
+   "errors": []
+  }
  }
 ]

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.80.1:** A hidden world setting for Venomancy variants under test in the combat sim (off by default: the rules are unchanged).
+
 **0.80.0:** From the updated Magic doc: an Animation's Size is capped by its Threshold, as a Summon's is (Size 3 needs Threshold 5, Size 4 needs 10, no Size 5). A big pile no longer makes a low-Threshold Animation huge (the sim's Stone Animations reached 2,500 HP).
 
 **0.79.6:** Renewal (Life) and the Fortune Table's heals use Restore's window: on the caster's own turn it reaches back to their previous turn, and health already given back in the window (by Restore or Renewal) counts against it.

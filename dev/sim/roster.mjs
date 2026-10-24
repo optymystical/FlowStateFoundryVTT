@@ -1020,3 +1020,10 @@ PASSES["magic-bench-soft"] = { id: "magic-bench-soft", note: "School benchmark a
 PASSES["magic-bench-venom"] = { id: "magic-bench-venom", note: "Venomancy with its coatings passed on, against the benchmark's raiders with and without armor, three fights each.",
   party: PARTY_MBENCH, monsters: { armored: BENCH_RAIDERS.raiders, soft: SOFT_RAIDERS.raiders }, deploy: "magicbench", maxRounds: 4,
   encounters: ["armored", "soft"].flatMap(group => [1, 2, 3].map(rep => ({ id: `venomancy-${group}-${rep}`, group, rotation: BENCH_SCHOOLS.findIndex(s => s[0] === "venomancy") }))) };
+
+// Venomancy variants under test (hidden world setting venomVariant; not rules): a coating that poisons every hit until it wears off ("multi"),
+// a passed Constitution check that halves the damage ("halfpass"), and both.
+for (const v of ["multi", "halfpass", "both"]) {
+  PASSES[`magic-bench-venom-${v}`] = { ...PASSES["magic-bench-venom"], id: `magic-bench-venom-${v}`, settings: { venomVariant: v },
+    note: `${PASSES["magic-bench-venom"].note} Variant: ${v}.` };
+}

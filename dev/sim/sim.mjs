@@ -1131,15 +1131,18 @@ async function passCoat(actor, since) {
   const coat = Act.spellEffects(actor, "coat").find(e => e.flags.flowstate.spellEffect.caster === actor.uuid);
   if (!coat) return;
   const attackOf = m => { const def = game.messages.get(m.getFlag("flowstate", "damage").defenseMessage)?.getFlag("flowstate", "defense"); return game.messages.get(def?.attackMessage)?.getFlag("flowstate", "attack"); };
-  const hit = game.messages.contents.filter(m => !since.has(m.id) && (Number(m.getFlag("flowstate", "damage")?.toHp) || 0) > 0).find(m => attackOf(m)?.attacker === actor.uuid);
-  if (!hit) return;
-  const card = game.messages.contents.slice().reverse().find(m => (m.getFlag("flowstate", "afflict")?.acts ?? []).some(x => x.act === "pass" && x.coated === actor.uuid));
-  if (!card) return;
-  const i = card.getFlag("flowstate", "afflict").acts.findIndex(x => x.act === "pass" && x.coated === actor.uuid);
-  SIM.acting = actor.name;
-  SIM.fill = () => ({ who: hit.getFlag("flowstate", "damage").target });
-  try { await Act.afflictAct(card, i); note(actor, "passPoison"); } catch (err) { log.errors.push(`pass poison ${actor.name}: ${err.stack?.slice(0, 300)}`); }
-  await settle();
+  // Every hit that dealt direct damage, in order (a coating that stays on, the "multi" variant under test, passes with each).
+  const hits = game.messages.contents.filter(m => !since.has(m.id) && (Number(m.getFlag("flowstate", "damage")?.toHp) || 0) > 0 && attackOf(m)?.attacker === actor.uuid);
+  for (const hit of hits) {
+    if (!Act.spellEffects(actor, "coat").some(e => e.flags.flowstate.spellEffect.caster === actor.uuid)) return;
+    const card = game.messages.contents.slice().reverse().find(m => (m.getFlag("flowstate", "afflict")?.acts ?? []).some(x => x.act === "pass" && x.coated === actor.uuid));
+    if (!card) return;
+    const i = card.getFlag("flowstate", "afflict").acts.findIndex(x => x.act === "pass" && x.coated === actor.uuid);
+    SIM.acting = actor.name;
+    SIM.fill = () => ({ who: hit.getFlag("flowstate", "damage").target });
+    try { await Act.afflictAct(card, i); note(actor, "passPoison"); } catch (err) { log.errors.push(`pass poison ${actor.name}: ${err.stack?.slice(0, 300)}`); }
+    await settle();
+  }
 }
 
 /** Cast `values` at `targetTok` through the real Cast Spell path (no dialog). Returns true if a spell went off. */
@@ -1518,7 +1521,9 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
   log.dialogs = {}; log.notes = []; log.errors = [];
   F = { id, pass: P.id, group: enc.group, rotation: enc.rotation + 1, actors: {}, started: Date.now(), msgIds: new Set() };
   handled.clear();
+  const restore = {};
   try {
+    for (const [k, v] of Object.entries(P.settings ?? {})) { restore[k] = game.settings.get("flowstate", k); await game.settings.set("flowstate", k, v); }
     SIM.status = `${id}: setting up`;
     await clearSim();
     const scene = await arena(P.arena);
@@ -1598,6 +1603,7 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
   } finally {
     SIM.running = false;
     SIM.fill = null;
+    for (const [k, v] of Object.entries(restore)) await game.settings.set("flowstate", k, v);
   }
 };
 

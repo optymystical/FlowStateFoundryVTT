@@ -187,6 +187,16 @@ export async function placeCharm(caster, target, { rollType, ritualOf = null, in
 /*  Poison                                      */
 /* -------------------------------------------- */
 
+/**
+ * Venomancy variants the combat sim can test (hidden world setting `venomVariant`; empty = the rules as written): "multi" keeps a coating on
+ * until it wears off, poisoning every direct-damage hit; "halfpass" makes a passed Constitution check halve the damage instead of stopping it.
+ */
+function venomVariant(k) {
+  let v = "";
+  try { v = String(globalThis.game?.settings?.get("flowstate", "venomVariant") ?? ""); } catch { v = ""; }
+  return v === "both" || v === k;
+}
+
 /** What a Poison carries around (as the coat, then as the Poison on the victim). */
 function poisonData(a, sp, base, ch = {}) {
   const m = sp.mods ?? {}, p = base.power;
@@ -237,7 +247,8 @@ async function poisonTick(actor, e) {
   const html = [checkLine(actor, c)];
   const rolls = [c.roll];
   let push = null, acts = [];
-  if (!c.passed) {
+  const half = c.passed && venomVariant("halfpass") && !d.force;
+  if (!c.passed || half) {
     const sides = fx.poisonSides(d.sides, d.lethality, d.procs);
     const living = !actor.system.magical;
     const die = sides + (d.livingDie && living ? d.livingDie : 0);
@@ -249,8 +260,8 @@ async function poisonTick(actor, e) {
       const dmg = await roll(dice(d.n, die));
       rolls.push(dmg);
       const stacks = (d.halfStrength && fx.halfOrLower(c.total, req) ? 1 : 0) + (d.stacks ?? 0) + arcanePen(actor, d.type);
-      const total = applyStacks(dmg.total, stacks);
-      html.push(`<div class="fs-result">${esc(actor.name)} fails: ${dice(d.n, die)} = ${dmg.total}${stacks ? ` (${stacks > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(stacks)} → ${total})` : ""} ${typeLabel(d.type)}${d.livingDie && living ? ` (+${d.livingDie} die size: living)` : ""}${d.lethality && d.procs ? ` (Lethality: d${sides})` : ""}.</div>`);
+      const total = Math.floor(applyStacks(dmg.total, stacks) / (half ? 2 : 1));
+      html.push(`<div class="fs-result">${esc(actor.name)} ${half ? "passes (half)" : "fails"}: ${dice(d.n, die)} = ${dmg.total}${stacks ? ` (${stacks > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(stacks)} → ${total})` : ""} ${typeLabel(d.type)}${d.livingDie && living ? ` (+${d.livingDie} die size: living)` : ""}${d.lethality && d.procs ? ` (Lethality: d${sides})` : ""}.</div>`);
       const extra = await dealDamage(actor, total, d, html);
       if (d.ignite) html.push(await stackLine(actor, "ignite", extra.dealt, extra.outcome, caster));
       if (d.stain) html.push(await stackLine(actor, "stain", extra.dealt, extra.outcome, caster));
@@ -568,7 +579,7 @@ async function passPoison(x) {
   const victim = await pickTarget(caster, { title: `The Poison passes from ${coated.name} to`, exclude: [coated.uuid] });
   if (!victim) return;
   const d = data(coat).poison;
-  await changeEffect(coat, null);
+  if (!venomVariant("multi")) await changeEffect(coat, null);
   await applyPoison(victim, d, caster);
 }
 

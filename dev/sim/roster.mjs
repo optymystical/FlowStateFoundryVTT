@@ -559,3 +559,87 @@ PASSES["pain-t5"] = { ...PASSES["martial-t5"], id: "pain-t5", note: "Pain Thresh
 const PAIN_AB = Object.keys(MONSTERS_T1).flatMap(group => [0, 1].flatMap(rotation => [1, 2].map(i => ({ id: `${group}-r${rotation + 1}-${i}`, group, rotation }))));
 PASSES["pain-ab-quarter"] = { ...PASSES["martial-t1"], id: "pain-ab-quarter", painDivisor: 4, encounters: PAIN_AB, note: "Pain Threshold ¼ (A/B)." };
 PASSES["pain-ab-half"] = { ...PASSES["martial-t1"], id: "pain-ab-half", painDivisor: 2, encounters: PAIN_AB, note: "Pain Threshold ½ (A/B)." };
+
+/* -------------------------------------------- */
+/*  Magic pass 1: the Magic Theory T1 schools     */
+/* -------------------------------------------- */
+
+// Pure casters (the user's choice): Magic Theory T1 (1 SP) unlocks Protection Arcana, Gravity, Slashing, Piercing and Crushing. Each character takes
+// one school to T5 (15), another to T4 (10) and a third to T2 (3): 29 of 30 SP. Foci and Shroud Graded to the stat (no Affixes this pass), armor, no
+// weapon trees. Two rotations put every T1 school at T5 at least once and try different Foci (Igniters, Channelers, Raw and Multi casting).
+// The monsters cast too, with the same T1 schools (natural Foci and Shrouds).
+const M1 = o => ({ "magic-theory": 1, ...o });
+const PRO = "magic-protection-arcana", GRA = "magic-gravity", SLA = "magic-slashing", PIE = "magic-piercing", CRU = "magic-crushing";
+const FO = (type, o = {}) => ({ type, ...o });
+export const PARTY_M1 = [
+  {
+    id: "bulwark", name: "Sim Bulwark", role: "tank", note: "Tank caster: Shields (Reflect, Adjust, Emplace, Dampen) and Slams from a Rod, in Medium armor with a Bastion Shroud.",
+    stats: { con: 40, grasp: 30, build: 20 },
+    loadouts: [
+      { trees: M1({ [PRO]: 5, [CRU]: 4, [GRA]: 2 }), armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { trees: M1({ [CRU]: 5, [PRO]: 4, [GRA]: 2 }), armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") }
+    ]
+  },
+  {
+    id: "duelist", name: "Sim Slasher", role: "caster", note: "Grasp caster: Cut and Stab (Bleed, Gash, Rend, Chop / Exploit, Pierce, Setup, Weakpoint) from a Wand or Rod.",
+    stats: { grasp: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M1({ [SLA]: 5, [PIE]: 4, [CRU]: 2 }), armor: A("light", "hardLeather"), weapons: [], foci: FO("wand"), shroud: FO("cinder") },
+      { trees: M1({ [PIE]: 5, [SLA]: 4, [GRA]: 2 }), armor: A("light", "hardLeather"), weapons: [], foci: FO("rod"), shroud: FO("carapace") }
+    ]
+  },
+  {
+    id: "breaker", name: "Sim Crusher", role: "caster", note: "Reach caster: Slam and Force (Crush, Bash, Beatdown, Telegraph / Hold, Gravity Field) from a Tome or Scroll.",
+    stats: { reach: 45, con: 30, build: 15 },
+    loadouts: [
+      { trees: M1({ [CRU]: 5, [GRA]: 4, [SLA]: 2 }), armor: A("medium", "softLeather"), weapons: [], foci: FO("tome", { twoHanded: true }), shroud: FO("bastion") },
+      { trees: M1({ [GRA]: 5, [CRU]: 4, [PIE]: 2 }), armor: A("medium", "softLeather"), weapons: [], foci: FO("scroll"), shroud: FO("ember") }
+    ]
+  },
+  {
+    id: "marksman", name: "Sim Piercer", role: "caster", note: "Raw caster (Reach and Grasp): Stab and Cut with no Foci, or through a Gauntlet (casts twice).",
+    stats: { reach: 30, grasp: 30, con: 30 },
+    loadouts: [
+      { trees: M1({ [PIE]: 5, [SLA]: 4, [GRA]: 2 }), armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("lattice") },
+      { trees: M1({ [SLA]: 5, [PIE]: 4, [CRU]: 2 }), armor: A("light", "softLeather"), weapons: [], foci: FO("gauntlet"), shroud: FO("lattice") }
+    ]
+  },
+  {
+    id: "warden", name: "Sim Warden", role: "support", note: "Support caster: Burden/Lighten, Personal Repulsion, Hold and Gravity Field, or Shields, from a Scepter (+1 TR on allies).",
+    stats: { grasp: 35, con: 30, reach: 10, build: 15 },
+    loadouts: [
+      { trees: M1({ [GRA]: 5, [PRO]: 4, [PIE]: 2 }), armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") },
+      { trees: M1({ [PRO]: 5, [GRA]: 4, [SLA]: 2 }), armor: A("medium", "hardLeather"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") }
+    ]
+  }
+];
+
+/** Caster monsters: the same five schools, natural Foci (scale uncapped) and Shrouds. */
+export const MONSTERS_M1 = {
+  swarm: {
+    label: "Swarm", note: "Ten goblin casters (20 Skill Points, 1/5): Cutters, Stabbers, Bashers and Pushers, each with two T1 schools (T4 and T3) and a natural Rod.",
+    kinds: [
+      { id: "goblin-cutter", name: "Sim Goblin Cutter", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M1({ [SLA]: 4, [CRU]: 3 }), armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-stabber", name: "Sim Goblin Stabber", count: 3, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M1({ [PIE]: 4, [SLA]: 3 }), armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-basher", name: "Sim Goblin Basher", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M1({ [CRU]: 4, [GRA]: 3 }), armor: A("light", "softLeather"), weapons: [], foci: FO("rod") },
+      { id: "goblin-pusher", name: "Sim Goblin Pusher", count: 2, size: 3, sp: 20, stats: { grasp: 45, con: 35, build: 10, reach: 10 }, trees: M1({ [GRA]: 4, [PIE]: 3 }), armor: A("light", "softLeather"), weapons: [], foci: FO("rod") }
+    ]
+  },
+  raiders: {
+    label: "Raiders", note: "Five caster raiders (25 Skill Points, 1/5): one school each at T5 and another at T3, natural Foci and a Bastion Shroud; the Warder Shields its crew.",
+    kinds: [
+      { id: "raider-crusher", name: "Sim Raider Crusher", count: 1, size: 3, sp: 25, stats: { reach: 55, con: 50, build: 20 }, trees: M1({ [CRU]: 5, [GRA]: 3 }), armor: A("medium", "hide"), weapons: [], foci: FO("scroll"), shroud: FO("bastion") },
+      { id: "raider-slasher", name: "Sim Raider Slasher", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M1({ [SLA]: 5, [PIE]: 3 }), armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-piercer", name: "Sim Raider Piercer", count: 1, size: 3, sp: 25, stats: { reach: 40, grasp: 40, con: 45 }, trees: M1({ [PIE]: 5, [CRU]: 3 }), armor: A("light", "softLeather"), weapons: [], foci: null, shroud: FO("bastion") },
+      { id: "raider-gravitic", name: "Sim Raider Gravitic", count: 1, size: 3, sp: 25, stats: { grasp: 55, con: 50, build: 20 }, trees: M1({ [GRA]: 5, [SLA]: 3 }), armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") },
+      { id: "raider-warder", name: "Sim Raider Warder", count: 1, size: 3, sp: 25, role: "support", stats: { grasp: 55, con: 50, build: 20 }, trees: M1({ [PRO]: 5, [CRU]: 3 }), armor: A("medium", "hide"), weapons: [], foci: FO("scepter"), shroud: FO("bastion") }
+    ]
+  },
+  boss: {
+    label: "Boss", note: "An Ogre Magus (Size 4, 30 Skill Points, 1/10): Crushing T5 and Gravity T4 through a natural Orb, with natural Heavy armor and a Carapace Shroud.",
+    kinds: [{ id: "ogre-magus", name: "Sim Ogre Magus", count: 1, size: 4, sp: 30, stats: { con: 110, reach: 80, grasp: 40, build: 40, will: 30 }, trees: M1({ [CRU]: 5, [GRA]: 4 }),
+      armor: A("heavy", "iron"), weapons: [], foci: FO("orb"), shroud: FO("carapace") }]
+  }
+};
+PASSES["magic-t1"] = { id: "magic-t1", note: "Magic Theory T1 schools (Protection Arcana, Gravity, Slashing, Piercing, Crushing) up to T5; caster monsters with the same schools.",
+  party: PARTY_M1, monsters: MONSTERS_M1, encounters: encountersFor(MONSTERS_M1, 2) };

@@ -1,0 +1,743 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 109,
+  "winner": "party",
+  "pass": "magic-t1",
+  "rounds": 5,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "into": 9,
+   "down": 3,
+   "away": 1
+  },
+  "used": {
+   "cast:Burden": 19,
+   "mod:Burden": 19,
+   "defend:dodge": 120,
+   "cast:Force + Slam": 16,
+   "mod:Crush": 6,
+   "mod:Bash": 6,
+   "mod:Beatdown": 4,
+   "cast:Force + Stab": 16,
+   "mod:Weakpoint": 2,
+   "opt:dir=into": 9,
+   "mod:Setup": 1,
+   "cast:Shield": 9,
+   "mod:Reflect": 6,
+   "cast:Personal Repulsion": 5,
+   "mod:Personal Repulsion": 5,
+   "cast:Force + Cut": 10,
+   "mod:Pinpoint": 1,
+   "mod:Bleed": 17,
+   "cast:Cut + Slam": 10,
+   "mod:Rend": 3,
+   "cast:Cut + Stab": 13,
+   "mod:Pierce": 8,
+   "mod:Dampen": 1,
+   "cast:Force": 6,
+   "cast:nothingAffordable": 2,
+   "recoverEnergy": 10,
+   "cast:Cut": 2,
+   "opt:dir=down": 3,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "Sim Bulwark#sOJ3": "702/702",
+   "Sim Slasher#jrdl": "456/567",
+   "Sim Crusher#KZVI": "567/567",
+   "Sim Piercer#smRT": "71/432",
+   "Sim Warden#scxr": "567/567",
+   "Sim Goblin Cutter#IfWu": "179/513",
+   "Sim Goblin Cutter#pFwJ": "204/513",
+   "Sim Goblin Cutter#Il7t": "238/513",
+   "Sim Goblin Stabber#ZNll": "159/513",
+   "Sim Goblin Stabber#Q69s": "226/513",
+   "Sim Goblin Stabber#cpBu": "25/513",
+   "Sim Goblin Basher#rRgx": "225/513",
+   "Sim Goblin Basher#Dt6M": "230/513",
+   "Sim Goblin Pusher#Kk5v": "221/513",
+   "Sim Goblin Pusher#EX4e": "214/513"
+  },
+  "down": [
+   "Sim Piercer",
+   "Sim Goblin Cutter",
+   "Sim Goblin Cutter",
+   "Sim Goblin Cutter",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Stabber",
+   "Sim Goblin Basher",
+   "Sim Goblin Basher",
+   "Sim Goblin Pusher",
+   "Sim Goblin Pusher"
+  ],
+  "weapons": {
+   "Spell: Force": {
+    "attacks": 31,
+    "followups": 0,
+    "hits": 13,
+    "crits": 7,
+    "misses": 18,
+    "damage": 0,
+    "ap": 60,
+    "kills": 0,
+    "users": [
+     "Goblin Basher",
+     "Warden",
+     "Goblin Pusher"
+    ]
+   },
+   "Spell: Force + Slam": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 7,
+    "crits": 3,
+    "misses": 9,
+    "damage": 342,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Goblin Basher",
+     "Bulwark"
+    ],
+    "force": 0
+   },
+   "Spell: Force + Stab": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 13,
+    "damage": 117,
+    "ap": 34,
+    "kills": 0,
+    "users": [
+     "Piercer",
+     "Goblin Pusher"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Warden",
+     "Bulwark"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 22,
+    "followups": 0,
+    "hits": 18,
+    "crits": 9,
+    "misses": 4,
+    "damage": 1350,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "Crusher"
+    ],
+    "force": 42
+   },
+   "Spell: Cut + Slam": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 9,
+    "crits": 3,
+    "misses": 1,
+    "damage": 763,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Slasher"
+    ]
+   },
+   "Spell: Cut + Stab": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 10,
+    "damage": 242,
+    "ap": 26,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 19,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 30,
+    "absorbed": 342
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 12
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 24,
+    "taken": 220,
+    "hits": 3,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 318,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Piercer",
+    "dealt": 80,
+    "taken": 211,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 0,
+    "taken": 232,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 0,
+    "taken": 171,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Crusher",
+    "dealt": 1350,
+    "taken": 0,
+    "hits": 18,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 0,
+    "taken": 239,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Slasher",
+    "dealt": 763,
+    "taken": 111,
+    "hits": 9,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 256,
+    "hits": 0,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 138,
+    "taken": 134,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 123,
+    "taken": 380,
+    "hits": 1,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "dealt": 0,
+    "taken": 257,
+    "hits": 1,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "dealt": 37,
+    "taken": 292,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 0,
+    "taken": 288,
+    "hits": 1,
+    "attacks": 9
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Burden": 3,
+     "mod:Burden": 3,
+     "cast:Force + Slam": 4,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Beatdown": 2,
+     "cast:Force": 2,
+     "defend:dodge": 7
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "cast:Shield": 4,
+     "mod:Reflect": 1,
+     "mod:Dampen": 1,
+     "cast:Force + Slam": 8,
+     "mod:Crush": 2,
+     "mod:Bash": 2
+    },
+    "turnMoved": 0,
+    "casts": 12,
+    "knockbacks": {
+     "down": 2
+    }
+   },
+   {
+    "name": "Sim Piercer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 22,
+     "cast:Force + Stab": 2,
+     "mod:Weakpoint": 2,
+     "mod:Setup": 1
+    },
+    "turnMoved": 0,
+    "casts": 2,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Shield": 5,
+     "mod:Reflect": 5,
+     "cast:Personal Repulsion": 5,
+     "mod:Personal Repulsion": 5,
+     "cast:Burden": 5,
+     "mod:Burden": 5,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "Sim Crusher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 10,
+    "used": {
+     "cast:Force + Cut": 10,
+     "mod:Pinpoint": 1,
+     "mod:Bleed": 7,
+     "defend:dodge": 4
+    },
+    "knockbacks": {
+     "into": 7,
+     "away": 1,
+     "down": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "Sim Slasher",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 10,
+    "used": {
+     "cast:Cut + Slam": 10,
+     "mod:Rend": 3,
+     "mod:Bleed": 1,
+     "defend:dodge": 35,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 10
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5,
+     "cast:Cut + Stab": 3,
+     "mod:Bleed": 3
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Stab": 5,
+     "mod:Bleed": 3,
+     "defend:dodge": 6,
+     "cast:Cut": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Stab": 5,
+     "mod:Bleed": 3,
+     "defend:dodge": 5,
+     "cast:Cut": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Burden": 4,
+     "mod:Burden": 4,
+     "cast:Force + Stab": 7,
+     "mod:Pierce": 4,
+     "cast:Force": 1,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Burden": 4,
+     "mod:Burden": 4,
+     "cast:Force + Stab": 7,
+     "mod:Pierce": 4,
+     "defend:dodge": 4,
+     "cast:Force": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Burden": 3,
+     "mod:Burden": 3,
+     "cast:Force + Slam": 4,
+     "mod:Crush": 2,
+     "mod:Bash": 2,
+     "mod:Beatdown": 2,
+     "cast:Force": 2,
+     "defend:dodge": 6
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 1,
+    "magic-protection-arcana": 5,
+    "magic-crushing": 4,
+    "magic-gravity": 2
+   },
+   "Sim Slasher": {
+    "magic-theory": 1,
+    "magic-slashing": 5,
+    "magic-piercing": 4,
+    "magic-crushing": 2
+   },
+   "Sim Crusher": {
+    "magic-theory": 1,
+    "magic-crushing": 5,
+    "magic-gravity": 4,
+    "magic-slashing": 2
+   },
+   "Sim Piercer": {
+    "magic-theory": 1,
+    "magic-piercing": 5,
+    "magic-slashing": 4,
+    "magic-gravity": 2
+   },
+   "Sim Warden": {
+    "magic-theory": 1,
+    "magic-gravity": 5,
+    "magic-protection-arcana": 4,
+    "magic-piercing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1",
+    "Medium Armor (Hide) G5"
+   ],
+   "Sim Slasher": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G4"
+   ],
+   "Sim Crusher": [
+    "Unarmed G1",
+    "Medium Armor (Soft Leather) G4"
+   ],
+   "Sim Piercer": [
+    "Unarmed G1",
+    "Light Armor (Soft Leather) G4"
+   ],
+   "Sim Warden": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G4"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Cutter": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Pusher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [
+    "Medium Armor (Hide): 120/120"
+   ],
+   "Sim Slasher": [
+    "Light Armor (Hard Leather): 78/90"
+   ],
+   "Sim Crusher": [
+    "Medium Armor (Soft Leather): 120/120"
+   ],
+   "Sim Piercer": [
+    "Light Armor (Soft Leather): 24/60"
+   ],
+   "Sim Warden": [
+    "Medium Armor (Hard Leather): 180/180"
+   ],
+   "Sim Goblin Cutter": [
+    "Light Armor (Soft Leather): 24/60"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 0/60 BROKEN"
+   ],
+   "Sim Goblin Pusher": [
+    "Light Armor (Soft Leather): 12/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2835,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2648,
+    "monsterHp": 4044,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 3,
+    "partyHp": 2363,
+    "monsterHp": 3544,
+    "partyDown": 1,
+    "monstersDown": 5
+   },
+   {
+    "round": 4,
+    "partyHp": 2363,
+    "monsterHp": 2761,
+    "partyDown": 1,
+    "monstersDown": 7
+   },
+   {
+    "round": 5,
+    "partyHp": 2363,
+    "monsterHp": 2378,
+    "partyDown": 1,
+    "monstersDown": 8
+   },
+   {
+    "round": 5,
+    "partyHp": 2363,
+    "monsterHp": 1921,
+    "partyDown": 1,
+    "monstersDown": 10,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Goblin Cutter": 3,
+    "prompt: Force — Sim Piercer": 1,
+    "prompt: Force — Sim Goblin Stabber": 5,
+    "prompt: Force — Sim Goblin Pusher": 4
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

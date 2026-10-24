@@ -13,6 +13,10 @@ const ab = await import("/systems/flowstate/module/abilities.mjs");
 const { WEAPON_TYPES } = await import("/systems/flowstate/module/martial.mjs");
 const MR = await import("/systems/flowstate/module/movement-rules.mjs");
 const Sheets = await import("/systems/flowstate/module/sheets.mjs");
+const Cast = await import("/systems/flowstate/module/casting.mjs");
+const Sp = await import("/systems/flowstate/module/spells.mjs");
+const Fx = await import("/systems/flowstate/module/spellfx.mjs");
+const Mg = await import("/systems/flowstate/module/magic.mjs");
 
 const SIM = (window.SIM = window.SIM ?? {});
 SIM.results = SIM.results ?? [];
@@ -150,6 +154,22 @@ function armorData(slot, stats, sp, natural) {
   return d;
 }
 
+/** A Foci for a caster, Graded to the stat it casts with (Igniter: Grasp, Channeler: Reach, Multi: the lesser), attuned and held. */
+function fociData(slot, stats, sp, natural) {
+  const form = Mg.FOCI_TYPES[slot.type]?.form;
+  const v = k => (stats[k] ?? 0) + bonusOf(sp);
+  const stat = form === "igniter" ? v("grasp") : form === "channeler" ? v("reach") : Math.min(v("reach"), v("grasp"));
+  const d = Cat.itemData(`foci.${slot.type}`, { grade: R.gradeFor(stat), system: { equipped: true, attuned: true, twoHanded: !!slot.twoHanded, natural: !!natural } });
+  if (!d) throw new Error(`No catalog entry foci.${slot.type}`);
+  return d;
+}
+/** A Shroud, Graded to Build (it scales with Build), attuned. */
+function shroudData(slot, stats, sp, natural) {
+  const d = Cat.itemData(`shroud.${slot.type}`, { grade: R.gradeFor((stats.build ?? 0) + bonusOf(sp)), system: { attuned: true, natural: !!natural } });
+  if (!d) throw new Error(`No catalog entry shroud.${slot.type}`);
+  return d;
+}
+
 /** One actor from a spec and a loadout. Weapons are held in order while hands last; a grappler keeps a fist free. */
 async function makeActor(spec, loadout, { party, folder }) {
   const sp = spec.sp ?? 30;
@@ -162,6 +182,7 @@ async function makeActor(spec, loadout, { party, folder }) {
   const natural = !party && spec.natural !== false;
   const slots = loadout.weapons.filter(w => w.type !== "unarmed");
   const items = [loadout.armor ? armorData(loadout.armor, spec.stats, sp, natural) : null,          // no armor: Unarmored
+    loadout.foci ? fociData(loadout.foci, spec.stats, sp, natural) : null, loadout.shroud ? shroudData(loadout.shroud, spec.stats, sp, natural) : null,
     ...slots.map(w => foundry.utils.mergeObject(weaponData(w, spec.stats, sp, natural), { "flags.flowstate.simPrimary": !!w.primary })),
     // Ammunition for guns (natural ones need none).
     ...(natural ? [] : slots.filter(w => WEAPON_TYPES[w.type]?.ranged).map(w => Cat.itemData(`ammo.${w.type}`, { system: { quantity: 100 } })))];
@@ -936,6 +957,176 @@ async function areaPays(actor, gun, target, foes) {
   return spread > single;
 }
 
+/* ---- Casting (the Magic passes) ---- */
+
+/** A creature that knows Core Spells is played as a caster. */
+const isCaster = actor => Sp.knownSpells(actor.system.trees ?? {}).cores.length > 0;
+const tierOf = (actor, id) => Number(actor.system.trees?.[id]) || 0;
+/** The way to cast: an attuned Foci when there is one, else Raw Casting. */
+const castOption = ctx => ctx.options.filter(o => o.ok).sort((a, b) => (b.key !== "raw") - (a.key !== "raw") || b.scaling - a.scaling)[0] ?? null;
+const meanDice = d => (d ? d.n * (d.sides + 1) / 2 : 0);
+
+/**
+ * Plan a cast: Cores, Mods ({ id: true | count }), the AP to cast with (for Raw/Multi casting, the cheapest in Energy, then the fewest AP),
+ * extra dialog values. Returns { values, plan } or null if it can't be cast.
+ */
+function planSpell(ctx, opt, coreIds, mods = {}, extra = {}) {
+  const v = { via: opt.key, core1: coreIds[0], core2: coreIds[1] ?? "", ...extra };
+  v.base = Sp.baseThreshold(coreIds).min;
+  for (const [id, n] of Object.entries(mods)) v[`mod:${id}`] = n;
+  let best = null;
+  for (const ap of opt.ap) {
+    const plan = Sp.planCast(ctx, { ...v, ap });
+    if (!plan.ok) continue;
+    if (!best || plan.energy < best.plan.energy) best = { values: { ...v, ap }, plan };
+  }
+  return best;
+}
+
+/** Spell damage the AI expects from a plan (its dice; a Combo's Force adds a little). */
+function spellValue(plan) {
+  const profile = Fx.profileFor(plan.cores.map(c => c.id));
+  if (!profile) return 0;
+  const dmg = profile.damage ? meanDice(Fx.damageDice(profile, plan.power)) : 0;
+  return dmg + (profile.force ? 0.25 * 5.5 * profile.force.n * Math.max(1, plan.power) : 0);
+}
+
+/** Mods worth adding to a damage spell, best first (each one only if it applies and the Energy is there). */
+function damageMods(actor, target, plan) {
+  const armored = (target?.actor?.items ?? []).some(i => i.type === "armor" && i.system.equipped);
+  const big = (target?.actor?.system?.hp?.max ?? 0) > 1000;
+  const out = ["magic-slashing:bleed", "magic-slashing:rend", "magic-crushing:crush"];
+  if (armored) out.push("magic-piercing:weakpoint", ["magic-piercing:pierce", 2], ["magic-crushing:bash", 1]);
+  out.push("magic-piercing:setup", "magic-crushing:beatdown", "magic-slashing:gash");
+  if (big) out.push("magic-slashing:chop");
+  if (actor.system.energy.value > 0.7 * actor.system.energy.max) out.push("magic-theory:pinpoint");
+  return out.map(m => (Array.isArray(m) ? m : [m, true]));
+}
+
+/** Pick Mods for a plan, cheapest-first in the AI's order, while they stay within `budget` Energy. */
+function withMods(ctx, opt, coreIds, wanted, budget, extra = {}) {
+  const known = new Set(Sp.applicableMods(ctx.trees, coreIds).map(m => m.id));
+  let mods = {}, cur = planSpell(ctx, opt, coreIds, mods, extra);
+  if (!cur) return null;
+  for (const [id, n] of wanted) {
+    if (!known.has(id)) continue;
+    const next = planSpell(ctx, opt, coreIds, { ...mods, [id]: n }, extra);
+    if (next && next.plan.energy <= budget) { mods = { ...mods, [id]: n }; cur = next; }
+  }
+  return cur;
+}
+
+/** Foes within `range` ft, the weakest first. */
+const foesWithin = (me, range) => foesOf(me.parent, me).filter(f => dist(me, f) <= range + 0.01).sort((a, b) => a.actor.system.hp.value - b.actor.system.hp.value);
+/** The ally (or self) most at risk: the most foes within 30 ft, then the lowest HP. */
+function mostThreatened(me, list) {
+  const foes = foesOf(me.parent, me);
+  const near = t => foes.filter(f => dist(t, f) <= 30).length;
+  return [...list].sort((a, b) => near(b) - near(a) || a.actor.system.hp.value - b.actor.system.hp.value)[0] ?? null;
+}
+
+/** Cast `values` at `targetTok` through the real Cast Spell path (no dialog). Returns true if a spell went off. */
+async function castAt(actor, targetTok, values, label) {
+  setTargets(...(Array.isArray(targetTok) ? targetTok : [targetTok]).filter(Boolean));
+  SIM.acting = actor.name;
+  SIM.fill = title => (/: shape$/.test(title) ? { shape: "radius" } : {});
+  const apBefore = actor.system.ap.value;
+  let plan = null;
+  try { plan = await Cast.castSpell(actor, values); } catch (err) { log.errors.push(`cast ${actor.name}: ${err.stack?.slice(0, 400)}`); }
+  if (!plan) return false;
+  const s = stat(actor);
+  s.casts = (s.casts ?? 0) + 1;
+  note(actor, `cast:${label}`);
+  for (const a of plan.applied ?? []) note(actor, `mod:${a.mod.name}`);
+  if (actor.system.ap.value === apBefore && !plan.ap) note(actor, "cast:free");
+  await settle();
+  return true;
+}
+
+/**
+ * A caster's turn: protect (Shield, Personal Repulsion) when it's a tank or support, slow the biggest threat (Burden), Gravity Field a crowd
+ * next to it, then spend the rest on its best damage spell (a Combo when it knows two schools), adding Mods while the Energy lasts.
+ * It keeps its distance: it only walks when nothing is in range.
+ */
+async function casterTurn(actor, me) {
+  const s = stat(actor);
+  s.turns++;
+  s.turnMoved = 0;
+  const role = sim(actor).role;
+  const done = new Set();
+  for (let step = 0; step < 12; step++) {
+    if (down(actor) || over(me.parent)) return;
+    const { ctx, known } = Cast.castSummary(actor);
+    const opt = castOption(ctx);
+    if (!opt) { note(actor, "cast:noOption"); return; }
+    const ap = actor.system.ap.value;
+    const minAp = Math.min(...opt.ap);
+    if (ap < minAp) return;
+    const energy = actor.system.energy.value;
+    const reserve = Math.floor(0.1 * actor.system.energy.max);
+    const castsLeft = Math.max(1, Math.floor(ap / Math.max(1, Math.min(...opt.ap.filter(x => x <= ap)))));
+    const budget = Math.max(0, Math.floor((energy - reserve) / castsLeft));
+    const has = id => known.cores.some(c => c.id === id);
+    const allies = [me, ...alliesOf(me.parent, me)];
+    const fits = r => r && r.plan.ap <= ap && r.plan.energy <= Math.max(0, energy - reserve);
+
+    // Shield (Protection Arcana): the ally (or yourself) most at risk who has none.
+    if ((role === "tank" || role === "support") && has("magic-protection-arcana:shield") && !done.has("shield")) {
+      done.add("shield");
+      const who = mostThreatened(me, allies.filter(t => !Act.spellEffects(t.actor, "shield").length && dist(me, t) <= 100));
+      const wanted = [["magic-protection-arcana:reflect", true], ["magic-protection-arcana:dampen", 1]];
+      const r = who ? withMods(ctx, opt, ["magic-protection-arcana:shield"], wanted, budget, { "dampen:0": "magic" }) : null;
+      if (fits(r) && await castAt(actor, who, r.values, "Shield")) continue;
+    }
+    // Personal Repulsion (Gravity T3, replacing Force): attacks with a low Scaling Stat against the ally most at risk have Disadvantage.
+    if (role === "support" && tierOf(actor, "magic-gravity") >= 3 && !done.has("repulse")) {
+      done.add("repulse");
+      const who = mostThreatened(me, allies.filter(t => !Act.spellEffects(t.actor, "field").length && dist(me, t) <= 100));
+      const r = who ? planSpell(ctx, opt, ["magic-gravity:force"], { "magic-gravity:personal-repulsion": true }, { "replace:magic-gravity:personal-repulsion": true }) : null;
+      if (fits(r) && await castAt(actor, who, r.values, "Personal Repulsion")) continue;
+    }
+    // Burden (Gravity T2, replacing Force): Slow the strongest foe in range that isn't Slowed yet.
+    if ((role === "support" || role === "monster") && tierOf(actor, "magic-gravity") >= 2 && !done.has("burden")) {
+      done.add("burden");
+      const prey = foesWithin(me, 200).filter(f => !(f.actor.system.conditions?.slow > 0)).sort((a, b) => b.actor.system.hp.max - a.actor.system.hp.max)[0];
+      const r = prey ? planSpell(ctx, opt, ["magic-gravity:force"], { "magic-gravity:burden": true }, { "replace:magic-gravity:burden": true }) : null;
+      if (fits(r) && await castAt(actor, prey, r.values, "Burden")) continue;
+    }
+    // Gravity Field (Gravity T5): Force on every foe within 10 ft of you when two or more are that close (the area starts on you).
+    if (tierOf(actor, "magic-gravity") >= 5 && !done.has("field")) {
+      done.add("field");
+      const close = foesWithin(me, 10);
+      const r = close.length >= 2 ? planSpell(ctx, opt, ["magic-gravity:force"], { "magic-gravity:gravity-field": true }) : null;
+      if (fits(r) && await castAt(actor, close[0], r.values, "Gravity Field")) continue;
+    }
+
+    // Damage: the best spell per AP among the Cores and Combos it knows, at the weakest foe in range.
+    const dmgCores = known.cores.filter(c => !c.uncombinable && Fx.profileFor([c.id])?.damage || (Fx.profileFor([c.id])?.force && !c.uncombinable));
+    const combos = [];
+    for (let i = 0; i < dmgCores.length; i++) for (let j = i + 1; j < dmgCores.length; j++) combos.push([dmgCores[i].id, dmgCores[j].id]);
+    const choices = [...dmgCores.map(c => [c.id]), ...combos];
+    let best = null;
+    for (const ids of choices) {
+      const r = planSpell(ctx, opt, ids);
+      if (!fits(r)) continue;
+      const value = spellValue(r.plan) / Math.max(1, r.plan.ap);
+      if (!best || value > best.value) best = { ids, r, value };
+    }
+    if (!best) { note(actor, "cast:nothingAffordable"); return; }
+    const range = best.r.plan.attack === "Targeted" ? 100 : 200;
+    let target = foesWithin(me, range)[0];
+    if (!target) {
+      const nearest = foesOf(me.parent, me).sort((a, b) => dist(me, a) - dist(me, b))[0];
+      if (!nearest || !(await approach(actor, me, nearest, range - 5))) return;
+      continue;
+    }
+    const r = withMods(ctx, opt, best.ids, damageMods(actor, target, best.r.plan), budget) ?? best.r;
+    if (!fits(r)) return;
+    const name = best.ids.map(id => Sp.spellById(id)?.name ?? id).join(" + ");
+    if (!(await castAt(actor, target, r.values, name))) return;
+  }
+}
+
 /** Reload, grapple, close in, attack, and throw a spare weapon at a foe out of reach. */
 async function actTurn(actor, me) {
   const s = stat(actor);
@@ -943,6 +1134,7 @@ async function actTurn(actor, me) {
   s.turnMoved = 0;
   const role = sim(actor).role;
   if (role === "kiter") return kiteTurn(actor, me);
+  if (isCaster(actor)) { s.turns--; return casterTurn(actor, me); }
   for (let step = 0; step < 16; step++) {
     if (down(actor) || over(me.parent)) return;
     const ap = actor.system.ap.value, rp = actor.system.rp.value;
@@ -1123,7 +1315,7 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     for (const p of P.party) party.push(await makeActor(p, p.loadouts[enc.rotation], { party: true, folder: pf }));
     const monsterActors = [];
     for (const k of P.monsters[enc.group].kinds) {
-      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple }, { party: false, folder: mf });
+      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud }, { party: false, folder: mf });
       for (let i = 0; i < k.count; i++) monsterActors.push(a);
     }
     await deploy(scene, party, monsterActors, P.deploy, P.party[0].loadouts[enc.rotation]);
@@ -1202,7 +1394,7 @@ function collect(scene, combat, msgs) {
   for (const m of msgs) {
     const a = m.getFlag("flowstate", "attack");
     if (!a || !a.opts) continue;
-    const key = a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
+    const key = a.opts.spell ? `Spell: ${a.opts.label ?? "?"}` : a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
     if (!key) continue;
     const attackerName = fromUuidSync(a.attacker)?.name ?? a.attacker;
     const w = W(key);

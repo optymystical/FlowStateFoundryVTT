@@ -996,7 +996,7 @@ const BENCH_CASTER_STATS = { grasp: 45, con: 30, build: 15 };
 export const PARTY_MBENCH = [
   { id: "caster", name: "Sim Caster", role: "caster", note: "One loadout per school.", stats: BENCH_CASTER_STATS,
     loadouts: BENCH_SCHOOLS.map(([id, label, trees, role, conj]) => ({ id, label, trees, role: role ?? "caster", conj: conj ?? null, armor: A("medium", "hide"), weapons: [], foci: FO("rod"), shroud: FO("bastion") })) },
-  { id: "bag", name: "Sim Bag", role: "dummy", note: "Heavy Iron, only dodges.", stats: { con: 90 },
+  { id: "bag", name: "Sim Bag", role: "dummy", note: "Heavy Iron, only dodges; Con 250 so it stays standing all 4 rounds.", stats: { con: 250 },
     loadouts: BENCH_SCHOOLS.map(() => ({ trees: {}, armor: A("heavy", "iron"), weapons: [] })) }
 ];
 const BENCH_RAIDERS = { raiders: { label: "Raiders", note: "Three tree-less raiders with Heavy weapons (25 Skill Points).",

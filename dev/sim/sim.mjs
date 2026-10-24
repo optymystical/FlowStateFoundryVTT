@@ -208,12 +208,17 @@ async function makeActor(spec, loadout, { party, folder }) {
 /** Delete the sim's actors, tokens, piles and combats. */
 async function clearSim() {
   for (const scene of game.scenes.filter(s => ["Sim Arena", "Sim Field"].includes(s.name))) await clearScene(scene);
-  const ids = game.actors.filter(a => a.getFlag("flowstate", "sim") || a.getFlag("flowstate", "summon") || a.name.startsWith("Sim ") || (a.type === "pile" && a.getFlag("flowstate", "simPile"))).map(a => a.id);
-  if (ids.length) await Actor.deleteDocuments(ids);
+  const doomed = () => game.actors.filter(a => a.getFlag("flowstate", "sim") || a.getFlag("flowstate", "summon") || a.name.startsWith("Sim ") || (a.type === "pile" && a.getFlag("flowstate", "simPile"))).map(a => a.id);
+  for (let i = 0; i < 4 && doomed().length; i++) {
+    try { await Actor.deleteDocuments(doomed()); } catch (err) { await idle(600); }
+  }
 }
 async function clearScene(scene) {
   for (const c of game.combats.filter(c => c.scene?.id === scene?.id)) await c.delete();
-  if (scene?.tokens.size) await scene.deleteEmbeddedDocuments("Token", scene.tokens.map(t => t.id));
+  // Ending a combat removes its temporary creations on its own: a token can go while this deletes it, so try again on what's left.
+  for (let i = 0; i < 4 && scene?.tokens.size; i++) {
+    try { await scene.deleteEmbeddedDocuments("Token", scene.tokens.map(t => t.id)); } catch (err) { await idle(600); }
+  }
 }
 
 async function arena({ name = "Sim Arena", width = 4800, height = 2800 } = {}) {
@@ -1533,25 +1538,28 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
       return { round: combat.round, partyHp: hp("party"), monsterHp: hp("monsters"), partyDown: side("party").filter(t => down(t.actor)).length, monstersDown: side("monsters").filter(t => down(t.actor)).length };
     };
     F.roundLog = [];
-    for (let guard = 0; guard < 600; guard++) {
+    F.skips = [];
+    const skip = why => { F.skips.push(`${combat.round}:${combat.turn} ${why}`); if (F.skips.length > 40) F.skips.shift(); };
+    for (let guard = 0; guard < 1500; guard++) {
       if (combat.round !== lastRound) { lastRound = combat.round; F.roundLog.push(snap()); }
       if (over(scene) || combat.round > maxRounds) break;
       const c = combat.combatant;
-      if (!c) { await combat.nextTurn(); continue; }
+      if (!c) { skip(`no combatant (${combat.turns.length} turns)`); await combat.nextTurn(); await idle(50); continue; }
       const key = `${combat.round}:${combat.turn}:${c.id}`;
-      if (key === lastKey) { await combat.nextTurn(); continue; }
+      if (key === lastKey) { skip(`same turn again: ${c.name}`); await combat.nextTurn(); await idle(50); continue; }
       lastKey = key;
       const actor = c.actor, me = c.token;
       SIM.status = `${id}: round ${combat.round}, ${actor?.name}`;
       if (actor && me && !down(actor)) {
         await waitFor(() => (Number(actor.getFlag("flowstate", "turnStartedAt")) || 0) >= F.started && actor.system.ap.value > 0, 4000);
         await takeTurn(actor, me);
-      }
+      } else skip(`${c.name}: ${!actor ? "no actor" : !me ? "no token" : "down"}`);
       if (over(scene)) break;
       trimChat();
       await combat.nextTurn();
       await idle(200);
     }
+    if (!over(scene) && combat.round <= maxRounds) log.notes.push({ level: "sim", msg: `the turn loop gave up in round ${combat.round}: ${F.skips.slice(-8).join(" | ")}` });
     // Results.
     await idle(800);
     F.roundLog.push({ ...snap(), end: true });
@@ -1672,7 +1680,7 @@ function collect(scene, combat, msgs) {
     creatures: Object.values(per),
     ai: Object.values(F.actors),
     trees: F.trees, gear: F.gear, monsterGear: F.monsterGear, gearState, kiteLog: F.kiteLog, roundLog: F.roundLog, firstAttack: F.firstAttack ?? {},
-    painDivisor: game.settings.get("flowstate", "painDivisor"), burn, otherLoss, lostBy, directTaken, creations: F.creations ?? {},
+    painDivisor: game.settings.get("flowstate", "painDivisor"), skips: F.skips ?? [], burn, otherLoss, lostBy, directTaken, creations: F.creations ?? {},
     log: { dialogs: { ...log.dialogs }, notes: [...log.notes], errors: [...log.errors] }
   };
 }

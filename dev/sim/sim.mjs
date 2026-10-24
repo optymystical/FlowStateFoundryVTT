@@ -1436,7 +1436,9 @@ async function actTurn(actor, me) {
         if (m) { s.attacks++; await settle(); continue; }
       }
     }
-    if (!(await attack(actor, me, melee, target))) return;
+    // A creation fights Unarmed with its better stat (Heavy: Strength, Light: Dexterity); everyone else keeps the dialog's default.
+    const weight = role === "creation" && melee.item.system.weaponType === "unarmed" ? (effStat(actor, "str") >= effStat(actor, "dex") ? "heavy" : "light") : undefined;
+    if (!(await attack(actor, me, melee, target, { weight }))) return;
     await holdTight(actor);                                   // a Thrasher Grapple or Get Over Here! may have just grabbed them
   }
 }

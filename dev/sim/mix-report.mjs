@@ -1,6 +1,6 @@
 /**
  * The Magic vs Martial pass (`magic-vs-martial`): wins by monster group and type, by party rotation, and each party member's output tagged with its
- * build (Martial, Magic, Hybrid). `node dev/sim/mix-report.mjs [--hybrid | --weave]`.
+ * build (Martial, Magic, Hybrid). `node dev/sim/mix-report.mjs [--hybrid | --weave | --join]`.
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -12,7 +12,8 @@ const P = R.PASSES["magic-vs-martial"];
 // `--hybrid`: the hybrid rotation from the re-run (magic-vs-martial-hybrid), the rest from the first pass.
 const read = id => JSON.parse(readFileSync(join(here, "results", `${id}.json`), "utf8")).filter(r => !r.crashed);
 // `--weave`: the hybrid rotation rebuilt around Weaving (magic-vs-martial-weave).
-const rerun = process.argv.includes("--weave") ? "magic-vs-martial-weave" : process.argv.includes("--hybrid") ? "magic-vs-martial-hybrid" : null;
+// `--join`: the Weaving hybrids with the woven spell's damage joining the weapon hit (the prototype, magic-vs-martial-weave-join).
+const rerun = process.argv.includes("--join") ? "magic-vs-martial-weave-join" : process.argv.includes("--weave") ? "magic-vs-martial-weave" : process.argv.includes("--hybrid") ? "magic-vs-martial-hybrid" : null;
 const runs = rerun ? [...read("magic-vs-martial").filter(r => r.rotation !== 2), ...read(rerun)] : read("magic-vs-martial");
 const MONSTER = /Goblin|Raider|Ogre/, CREATION = /Summon|Animation/;
 const pad = (v, n) => String(v).padEnd(n), num = (v, n) => String(v).padStart(n);

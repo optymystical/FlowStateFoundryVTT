@@ -1,6 +1,6 @@
 /**
  * The Magic vs Martial pass (`magic-vs-martial`): wins by monster group and type, by party rotation, and each party member's output tagged with its
- * build (Martial, Magic, Hybrid). `node dev/sim/mix-report.mjs [--hybrid | --weave | --join | --t5 | --woven]` (--t5: Magic Theory T5 hybrids, joined damage;
+ * build (Martial, Magic, Hybrid). `node dev/sim/mix-report.mjs [--hybrid | --weave | --join | --t5 | --woven | --v2]` (--t5: Magic Theory T5 hybrids, joined damage;
  * --woven: the joined-Weaving rule with Fused Foci).
  */
 import { readFileSync } from "node:fs";
@@ -9,13 +9,15 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const R = await import("./roster.mjs");
-const P = R.PASSES["magic-vs-martial"];
+// `--v2`: the re-run with a back line, spread monster targeting and a third rotation with a Magic tank (magic-vs-martial-2), on its own.
+const V2 = process.argv.includes("--v2");
+const P = R.PASSES[V2 ? "magic-vs-martial-2" : "magic-vs-martial"];
 // `--hybrid`: the hybrid rotation from the re-run (magic-vs-martial-hybrid), the rest from the first pass.
 const read = id => JSON.parse(readFileSync(join(here, "results", `${id}.json`), "utf8")).filter(r => !r.crashed);
 // `--weave`: the hybrid rotation rebuilt around Weaving (magic-vs-martial-weave).
 // `--join`: the Weaving hybrids with the woven spell's damage joining the weapon hit (the prototype, magic-vs-martial-weave-join).
 const rerun = process.argv.includes("--woven") ? "magic-vs-martial-woven" : process.argv.includes("--t5") ? "magic-vs-martial-weave5" : process.argv.includes("--join") ? "magic-vs-martial-weave-join" : process.argv.includes("--weave") ? "magic-vs-martial-weave" : process.argv.includes("--hybrid") ? "magic-vs-martial-hybrid" : null;
-const runs = rerun ? [...read("magic-vs-martial").filter(r => r.rotation !== 2), ...read(rerun)] : read("magic-vs-martial");
+const runs = V2 ? read("magic-vs-martial-2") : rerun ? [...read("magic-vs-martial").filter(r => r.rotation !== 2), ...read(rerun)] : read("magic-vs-martial");
 const MONSTER = /Goblin|Raider|Ogre/, CREATION = /Summon|Animation/;
 const pad = (v, n) => String(v).padEnd(n), num = (v, n) => String(v).padStart(n);
 
@@ -53,4 +55,4 @@ for (const r of runs) {
     if ((r.down ?? []).includes(p.name)) row.down++;
   }
 }
-for (const [k, v] of Object.entries(rows)) console.log(`  ${pad(k, 22)}${num(Math.round(v.dealt / v.fights), 6)} dealt${num(Math.round(v.taken / v.fights), 6)} taken${num((v.turns / v.fights).toFixed(1), 6)} turns  down ${v.down}/${v.fights}${v.weaves ? `  ${(v.weaves / v.fights).toFixed(1)} weaves` : ""}`);
+for (const [k, v] of Object.entries(rows)) console.log(`  ${pad(k, 22)}${num(v.turns ? Math.round(v.dealt / v.turns) : 0, 5)}/turn${num(Math.round(v.dealt / v.fights), 6)} dealt${num(Math.round(v.taken / v.fights), 6)} taken${num((v.turns / v.fights).toFixed(1), 6)} turns  down ${v.down}/${v.fights}${v.weaves ? `  ${(v.weaves / v.fights).toFixed(1)} weaves` : ""}`);

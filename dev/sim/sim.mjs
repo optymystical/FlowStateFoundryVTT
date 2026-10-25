@@ -1197,6 +1197,17 @@ function spellNow(plan, target, me) {
   return Math.max(0, spellValue(plan, target, me) - soak) / Math.max(1, plan.ap);
 }
 
+/**
+ * The foe to shoot or cast at from `list` (sorted weakest first). The party focuses the weakest; in a pass with `spreadTargets`, monsters pick at
+ * random, leaning towards the hurt (by the share of HP lost) and the near, so the lowest-HP character isn't everyone's first target.
+ */
+function pickFoe(actor, me, list) {
+  if (!list.length || sim(actor).party || !passOf().spreadTargets) return list[0];
+  const weight = f => (1 + 2 * Math.max(0, 1 - f.actor.system.hp.value / Math.max(1, f.actor.system.hp.max))) * 30 / (30 + dist(me, f));
+  let roll = Math.random() * list.reduce((n, f) => n + weight(f), 0);
+  for (const f of list) { roll -= weight(f); if (roll <= 0) return f; }
+  return list[list.length - 1];
+}
 /** Foes within `range` ft, the weakest first. */
 const foesWithin = (me, range) => foesOf(me.parent, me).filter(f => dist(me, f) <= range + 0.01).sort((a, b) => a.actor.system.hp.value - b.actor.system.hp.value);
 /** The ally (or self) most at risk: the most foes within 30 ft, then the lowest HP. */
@@ -1395,20 +1406,22 @@ async function casterTurn(actor, me, { hybrid = false } = {}) {
     const combos = [];
     for (let i = 0; i < dmgCores.length; i++) for (let j = i + 1; j < dmgCores.length; j++) if (Fx.profileFor([dmgCores[i].id, dmgCores[j].id])) combos.push([dmgCores[i].id, dmgCores[j].id]);
     const choices = [...dmgCores.map(c => [c.id]), ...combos];
-    let target = foesWithin(me, 200)[0];
+    let target = pickFoe(actor, me, foesWithin(me, 200));
     if (!target) {
       const nearest = foesOf(me.parent, me).sort((a, b) => dist(me, a) - dist(me, b))[0];
       if (!nearest || !(await approach(actor, me, nearest, 195))) return;
       continue;
     }
-    let best = null;
+    let best = null, tooFar = false;
     for (const ids of choices) {
       const r = planSpell(ctx, opt, ids);
       if (!fits(r)) continue;
-      if (r.plan.attack === "Targeted" && dist(me, target) > 100.01) continue;
+      if (r.plan.attack === "Targeted" && dist(me, target) > 100.01) { tooFar = true; continue; }
       const value = spellValue(r.plan, target, me) / Math.max(1, r.plan.ap);
       if (value > 0 && (!best || value > best.value)) best = { ids, r, value };
     }
+    // Only Targeted spells (100 ft) and the target past that: step into range first (a caster on the back line starts farther out).
+    if (!best && tooFar && !done.has("closeIn")) { done.add("closeIn"); note(actor, "cast:closeIn"); if (await approach(actor, me, target, 95)) continue; }
     if (!best) { note(actor, "cast:nothingAffordable"); return; }
     const r = withMods(ctx, opt, best.ids, damageMods(actor, target, best.r.plan, me), budget) ?? best.r;
     if (!fits(r)) return;
@@ -1476,7 +1489,7 @@ async function actTurn(actor, me) {
     if (gun && ap >= gun.ap) {
       const inRange = foes.filter(f => dist(me, f) <= gun.range + 0.01).sort((a, b) => a.actor.system.hp.value - b.actor.system.hp.value);
       const far = foes.filter(f => dist(me, f) <= gun.far + 0.01).sort((a, b) => dist(me, a) - dist(me, b));
-      const target = inRange[0] ?? far[0];
+      const target = pickFoe(actor, me, inRange) ?? far[0];
       if (target) {
         const area = await areaPays(actor, gun, target, foes);
         const pepper = gun.item.system.profile.pepper && !sim(actor).noPepper ? 1 : 0;          // a loadout can turn Pepper off (to test it)
@@ -1589,7 +1602,10 @@ async function deploy(scene, party, monsters, mode = null, loadout = null) {
     for (const a of monsters) await place(a, 49, 40);
     return idle(300);
   }
-  for (const [i, a] of party.entries()) await place(a, 8, 7 + i * 3);
+  // A pass with `backLine`: ranged characters and casters with no weapon start 20 ft behind the front line.
+  const back = a => passOf().backLine && (sim(a).role === "ranged" || sim(a).role === "caster"
+    || (sim(a).role !== "tank" && isCaster(a) && !a.items.some(i => i.type === "weapon" && i.system.equipped && i.system.weaponType !== "unarmed")));
+  for (const [i, a] of party.entries()) await place(a, back(a) ? 4 : 8, 7 + i * 3);
   let n = 0;
   for (const a of monsters) { const col = 26 + (n % 3) * 2, row = 6 + Math.floor(n / 3) * 3; await place(a, col, row); n++; }
   await idle(300);

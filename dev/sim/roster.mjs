@@ -1173,3 +1173,13 @@ const WOVEN_LOADOUTS = {
 PASSES["magic-vs-martial-woven"] = { ...PASSES["magic-vs-martial-weave"], id: "magic-vs-martial-woven",
   party: PARTY_MIX.map(p => (WOVEN_LOADOUTS[p.id] ? { ...p, loadouts: [p.loadouts[0], WOVEN_LOADOUTS[p.id]] } : p)),
   note: "Magic vs Martial, the T5 hybrids with the joined-Weaving rule and Fused Foci (the duelist's off-hand Swift is back)." };
+
+// The Magic vs Martial pass again, with ranged characters and casters starting on a back line and monsters spreading their shots and spells (they
+// all used to shoot the lowest-HP character). Rotation 2 is the woven hybrids (joined Weaving, Fused Foci). Rotation 3 is rotation 1 with a pure
+// Magic tank in place of the Martial Bulwark: Constitution and Build (HP and the Shroud), Shields and Gravity from a Scepter, a Keystone Shroud.
+const MAGIC_TANK = { label: "Magic", stats: { con: 40, build: 30, grasp: 20 }, trees: MAG(1, { [PRO]: 5, [GRA]: 4, [CRU]: 2 }), armor: A("medium", "hardLeather"),
+  weapons: [], foci: FO("scepter"), shroud: FO("keystone") };
+export const PARTY_MIX3 = PARTY_MIX.map(p => ({ ...p,
+  loadouts: [p.loadouts[0], WOVEN_LOADOUTS[p.id] ?? p.loadouts[1], p.id === "bulwark" ? MAGIC_TANK : p.loadouts[0]] }));
+PASSES["magic-vs-martial-2"] = { id: "magic-vs-martial-2", party: PARTY_MIX3, monsters: MONSTERS_MIX, encounters: encountersFor(MONSTERS_MIX, 3), backLine: true, spreadTargets: true,
+  note: "Magic vs Martial with a back line and spread monster targeting: (1) Martial front, Magic behind; (2) the woven hybrids; (3) as (1) with a Magic tank." };

@@ -1790,7 +1790,7 @@ export const TREES = [
      },
      {
       "name": "Weaving",
-      "text": "Whenever you make a non-Magical attack, you may cast a Spell alongside it for no additional AP or RP cost, as long as the Spell’s normal AP/RP cost equals the non-Magical attack’s AP/RP cost. The Spell must have the same attack type and primary target as the non-Magical attack. The Spell still costs Energy, does not benefit from TR, requires its own attack roll, and resolves its damage/effects separately."
+      "text": "Whenever you make a non-Magical attack, you may weave a Spell into it for no additional AP or RP cost, as long as the Spell’s normal AP/RP cost equals the non-Magical attack’s AP/RP cost. The Spell must have the same attack type and primary target as the non-Magical attack, and it can’t be woven into follow-up attacks. The woven Spell doesn’t make its own attack roll: on a hit, its damage joins the attack’s damage as one hit, and its effects apply as if the Spell had hit. A crit and any Strengthened/Weakened on the attack apply to the whole hit, while the Spell’s own stacks apply only to its part. Each part keeps its damage type: an object’s Limit applies once to the hit, spent first on the part it blocks best, with each part counting at its type’s rate. The Spell still costs Energy and does not benefit from TR."
      }
     ]
    },

@@ -526,6 +526,8 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
   const aimed = !area && !plan.hold && targetActors.length === 1 && values?.aim ? aimableItems(targetActors[0]).find(i => i.uuid === values.aim) : null;
   if (aimed && (attackOpts.damage || (profile.effects ?? []).some(e => e.stack))) { attackOpts.aimItem = aimed.uuid; attackOpts.aimName = aimed.name; attackOpts.notes.push(`Aimed at ${targetActors[0].name}'s ${aimed.name}: the damage goes to the object, and its Ignite / Stain stacks too`); }
   if (plan.hold) await areasHeld(actor, plan, profile, ids, mods, ritualOf);
+  // Weaving: the woven spell makes no attack of its own. Its attack is handed to the weapon attack it rides (damage joins the hit, effects apply on a hit).
+  if (weave?.capture) { if (!weave.captured) weave.captured = { ...attackOpts, notes: attackOpts.notes.filter(n => !/Woven into an attack|Cast in melee range/.test(n)) }; return; }
   let first;
   if (rangedPlusArea) {
     // Lob / Explode: the Ranged part hits the primary target; the Area part goes off where it lands, whether or not that hit.
@@ -609,8 +611,14 @@ async function pickDuplicateTarget(actor, current, preset) {
 }
 
 /* Weaving (Magic Theory T3): the attack dialog offers a free spell alongside a non-Magical attack of the same AP cost. */
-export async function weaveSpell(actor, { ap, melee, targetActors }) {
-  return castSpell(actor, null, { weave: { ap, melee: !!melee, targetActors } });
+/**
+ * Weaving (Magic Theory T3): cast the woven spell (it costs Energy, no AP/RP). With `capture` (a weapon attack weaving it) the spell's attack is
+ * returned instead of rolled: the weapon attack carries it, its damage joining the hit. `preset` skips the cast dialog (the combat sim).
+ */
+export async function weaveSpell(actor, { ap, melee, targetActors, capture = false }, preset = null) {
+  const weave = { ap, melee: !!melee, targetActors, capture };
+  const plan = await castSpell(actor, preset, { weave });
+  return capture ? (plan ? weave.captured ?? null : null) : plan;
 }
 setWeaveHook({
   eligible: actor => tierOf(actor.system.trees ?? {}, "magic-theory") >= 3 && castSummary(actor).any,

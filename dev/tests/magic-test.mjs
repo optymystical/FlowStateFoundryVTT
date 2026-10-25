@@ -65,6 +65,11 @@ out = await actions.damageOutcome(hero, 25, "supernatural", {});
 ok2(out.toHp === 25 && !out.shrouds.length, "Supernatural isn't blocked");
 out = await actions.damageOutcome(hero, 25, "arcane", {});
 ok2(out.toHp === 25 - 10 * mult, "Arcane (Magical) is blocked");
+// Weaving: a woven hit's two parts share one Limit (spent first on the weapon's part here), and the Shroud's Durability with it.
+const spentL = { limit: {}, dur: {} };
+const part1 = await actions.damageOutcome(hero, 6, "physical", { limitSpent: spentL });
+const part2 = await actions.damageOutcome(hero, 25, "heat", { limitSpent: spentL, archetype: "magic" });
+ok2(part1.toHp === 0 && part2.toHp === 25 - (10 * mult - 6), `A woven hit's parts share one Limit: 6 of the weapon's, then ${25 - part2.toHp} of the spell's (Limit ${10 * mult})`);
 out = await actions.damageOutcome(hero, 25, "physical", { pierce: 5 });
 ok2(out.toHp === 25 - (10 * mult - 5), "Pierce lowers the Shroud's Limit");
 await sh.update({ "system.affixes": ["painite", "jasper"] });

@@ -1,6 +1,6 @@
 import {
   STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS, downwardProne, heightFt } from "./rules.mjs";
-import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, damageCategories } from "./martial.mjs";
+import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, damageCategories, limitFactor } from "./martial.mjs";
 import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
@@ -833,7 +833,7 @@ function plannedFollowups(actor, item, base, attackType) {
  * Attack with a Martial weapon item. Dialog adapts to the weapon (range bands, throwing, Area, Pepper).
  * @param {object} [followup]  {net, label, weight} for free Fast/Solitary follow-up attacks (no AP, no further follow-ups).
  */
-export async function rollWeaponAttack(actor, item, followup = null, { grapple: presetGrapple = false, preset = null } = {}) {
+export async function rollWeaponAttack(actor, item, followup = null, { grapple: presetGrapple = false, preset = null, weavePreset = null } = {}) {
   if (cantAct(actor, "attack")) return;
   const w = item.system;
   const unarmed = w.weaponType === "unarmed";
@@ -939,9 +939,6 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   // Whirlwind (Bladed T1): the set of Fast attacks become Area attacks on targets in melee range (not Weakened).
   const whirl = followup ? (followup.whirlwind || "") : (opts.whirlwind || "");
   let damage = p.formula;
-  // Prototype under test in the combat sim (not a rule): a woven spell's damage dice join this attack's damage, one roll and one soak.
-  const woven = followup ? null : takeWovenDamage(actor);
-  if (woven) { damage = damage && damage !== "0" ? `${damage} + ${woven.formula}` : woven.formula; notes.push(`Woven ${woven.label}: ${woven.formula} joins the hit`); }
   // Cleave (Equipment): object-only damage, carried separately from the rolled dice.
   let cleave = p.cleave ?? 0;
   if (whirl) {
@@ -1287,6 +1284,17 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     });
     swordBoard = shieldMsg?.id ?? null;
   }
+  // Weaving (Magic Theory T3): the woven spell is cast now (Energy only, no AP/RP) at the attack's target. It makes no attack roll of its own: its
+  // damage joins this attack's damage as one hit, and its effects apply on a hit (rollExchangeDamage, resolveDefense). Not on follow-ups.
+  let woven = null;
+  if (opts.weave && !followup && weaveHook) {
+    const wTargets = explicitTargets ?? [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a));
+    const cap = await weaveHook.run(actor, { ap: p.ap, melee: opts.mode === "strike" || unarmed, targetActors: wTargets.slice(0, 1), capture: true }, weavePreset);
+    if (cap?.spell) {
+      woven = { spell: cap.spell, damage: cap.damage, type: cap.type, pierce: cap.pierce ?? 0, bash: cap.bash ?? 0, label: cap.label };
+      notes.push(`Woven ${cap.label}${cap.damage ? `: ${cap.damage} ${DAMAGE_TYPES[cap.type] ?? cap.type} joins the hit` : ": its effects ride the hit"}`);
+    }
+  }
   const result = await performAttack(actor, {
     label: followup ? `${item.name} — ${followup.label}` : unarmed ? `${item.name} (${WEAPON_TYPES.unarmed.label} ${p.scalingStat === "str" ? "Heavy" : "Light"})` : item.name,
     net, stealth: followup?.kind === "return" && ab.circular(actor, item, 5) ? "half" : opts.stealth, melee: opts.mode === "strike", push: false,
@@ -1309,12 +1317,11 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     thrasherGrapple: thrasherGrapple ? item.uuid : null, thrasherThrown: thrasherGrapple && thrown ? "pinned by a thrown weapon" : null, getOverHere: !!opts.getOverHere,
     pointBlank: !unarmed && ab.blast(actor, item, 1),
     reachItem: !unarmed && ab.reach(actor, item, 4) ? item.uuid : null,
+    woven,
     targetActors: explicitTargets
   });
   await mentalHook?.attackCost?.(actor, { ap, rp: rpPaid });                                   // Will of Body and Spirit (Mental T4)
   await actionSpent(actor, "martial", (inActiveCombat(actor) ? ap : 0) + (inActiveCombat(actor) ? rpPaid : 0));          // Mire (Stagnation)
-  // Weaving: the woven spell goes at the same target, free of AP/RP, once the attack is made.
-  if (opts.weave && weaveHook) await weaveHook.run(actor, { ap: p.ap, melee: opts.mode === "strike" || unarmed, targetActors: explicitTargets ?? [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a)) });
   // A thrown weapon leaves your hand and lands by what it was thrown at. A Shield Toss comes back on a hit
   // (it lands by the target on a miss, handled when the target responds).
   if (thrown && !(shieldToss && landingToken) && !wga && followup?.kind !== "return") await dropItem(actor, item, landingToken);
@@ -1453,9 +1460,9 @@ export const GM_ACTIONS = {
     const actor = await fromUuid(target);
     if (actor) await flightForceHook?.(actor, reason);
   },
-  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, reply }) {
+  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, reply }) {
     const actor = await fromUuid(target);
-    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect }) : null;
+    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent }) : null;
     if (reply) game.socket.emit("system.flowstate", { action: "damageResult", to: reply.to, reqId: reply.reqId, result: summarizeDamage(out) });
     return out;
   },
@@ -1645,7 +1652,7 @@ export async function pickUp(pile, item) {
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "growth", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "statusStealth", "melee", "area", "grapple", "grappleOnly",
-  "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "smashKb", "autoFollowup", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride"];
+  "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "smashKb", "autoFollowup", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride", "woven"];
 
 /**
  * Ch8 attack. With targets, starts a step-by-step exchange:
@@ -4054,10 +4061,6 @@ export const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.ha
 
 /** Weaving (Magic Theory T3): casting.mjs registers this so the weapon attack dialog can offer a spell. */
 let weaveHook = null;
-/** Prototype under test in the combat sim (not a rule): queue a woven spell's damage dice to join this creature's next weapon attack. */
-const wovenQueue = new Map();
-export const queueWovenDamage = (actor, woven) => wovenQueue.set(actor.uuid, woven);
-const takeWovenDamage = actor => { const w = wovenQueue.get(actor.uuid) ?? null; wovenQueue.delete(actor.uuid); return w; };
 export const setWeaveHook = hook => { weaveHook = hook; };
 
 /** Update or delete an Active Effect that may belong to someone else (through the GM). */
@@ -4088,6 +4091,16 @@ function mergeOutcomes(list) {
     afterWeapon: list.reduce((n, x) => n + (x.afterWeapon ?? 0), 0), shroudTook: list.reduce((n, x) => n + (x.shroudTook ?? 0), 0),
     lines: [`<strong>${list.reduce((n, x) => n + x.toHp, 0)}</strong> damage to HP across ${list.length} separate instances`, ...list.flatMap((x, i) => x.lines.slice(1).map(l => `(${i + 1}) ${l}`))],
     tempHp: list.flatMap(x => x.tempHp ?? []), weapons: list.flatMap(x => x.weapons ?? []), reactive: list.flatMap(x => x.reactive ?? []), shields: list.flatMap(x => x.shields ?? []), barriers: list.flatMap(x => x.barriers ?? []), accretions: list.flatMap(x => x.accretions ?? []), shrouds: list.flatMap(x => x.shrouds ?? []) };
+}
+
+/**
+ * A woven spell (Weaving) as an attack of its own, for the code that resolves spells: its spell data, damage, type, Pierce and Bash, with the weapon
+ * attack's stacks (a crit and every Strengthened/Weakened on the attack apply to the whole hit). It never rolls an attack: the weapon's hit is its hit.
+ */
+function wovenOpts(o) {
+  const w = o.woven;
+  return { ...o, spell: w.spell, damage: w.damage, type: w.type, pierce: w.pierce ?? 0, bash: w.bash ?? 0, label: w.label, physical: false, knockback: 0, knockbackAdd: 0, smashKb: 0,
+    cleave: 0, rend: null, omega: false, letItRip: false, reachItem: null, woven: null };
 }
 
 /** A cast's automated profile after Replacement Mods (or null when the GM resolves it). */
@@ -5234,6 +5247,11 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     const sh = await spellHit(attacker, target, o, result, entry, dodgeRoll?.total ?? null);
     if (sh) { extra.push(sh.html); spellRolls = sh.rolls; if (sh.push) pushInfo = sh.push; defenseChain = sh.chain; }
   }
+  // Weaving: the woven spell's effects ride the weapon's hit, as if the spell had hit (its damage joins the hit when the damage is rolled).
+  if (result.hit && o.woven?.spell && !o.aimItem) {
+    const sh = await spellHit(attacker, target, wovenOpts(o), result, entry, dodgeRoll?.total ?? null);
+    if (sh) { extra.push(sh.html); spellRolls = [...spellRolls, ...sh.rolls]; if (sh.push && !pushInfo) pushInfo = sh.push; defenseChain ??= sh.chain; }
+  }
   // Mental: a Manifest's Mode or a Ward's effect, once the attack is answered.
   let guardRiposte = false;
   if (o.mental && mentalHook) {
@@ -5386,6 +5404,23 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   // Omega (Swift T5): Heavy Swift attacks let Strengthened/Weakened change their Pierce value too.
   const pierceNow = (o.spell ? (o.spell.pierceBold != null ? applyStacks(o.spell.pierceBold, stacks) + (o.spell.pierceFlat ?? 0) : (o.pierce ?? 0)) : o.omega && o.pierce ? applyStacks(o.pierce, stacks) : (o.pierce ?? 0)) + (gd?.pierce ?? 0);          // a spell's Pierce and Bash are bolded: the stacks scale them
   const bashNow = o.spell ? applyStacks(o.bash || 0, stacks) : (o.bash || 0);
+  // Weaving: the woven spell's damage is its own part of this hit (its dice and type; the attack's stacks, a crit included, and Arcane's Weakened against a
+  // non-magical target). It meets the Limits together with the weapon's part (one Limit for the whole hit) and keeps its riders.
+  let wv = null;
+  if (o.woven?.damage && !o.aimItem) {
+    const wo = wovenOpts(o), wprofile = spellProfile(wo);
+    if (wprofile?.damage) {
+      const wfacts = await spellDamageFacts(wprofile, wo, attacker, target, defense, { pierce: wo.pierce ?? 0, halfLimit: !!wo.spell?.mods?.weakpoint, parryItems: guard.items, bash: wo.bash ?? 0,
+        shroudCtx: { source: sourceOf(wo), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), barriers: barriersFor(attacker, target) } });
+      const wplan = fx.damageDice(wprofile, wo.spell.power, wfacts, wo.spell.mods ?? {});
+      const wroll = await evaluate(`${wplan.n}d${wplan.sides}`);
+      const ws = targetStacks(attacker, wo, target, defense.result, (opts.extra ?? 0) + (wplan.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0), ctx);
+      const wflat = wo.spell?.mods?.rend ? statMin(wo.spell.scaling ?? 0) : 0;
+      wv = { o: wo, profile: wprofile, facts: wfacts, plan: wplan, roll: wroll, stacks: ws.stacks, parts: ws.parts, type: ws.type, final: Math.max(0, applyStacks(wroll.total + wflat, ws.stacks)),
+        pierce: (wo.spell.pierceBold != null ? applyStacks(wo.spell.pierceBold, ws.stacks) + (wo.spell.pierceFlat ?? 0) : wo.pierce ?? 0), bash: applyStacks(wo.bash || 0, ws.stacks) };
+      wv.incoming = wv.final;
+    }
+  }
 
   let extraHTML = spellPlan?.notes.length ? `<div class="fs-notes">${spellPlan.notes.map(esc).join(" · ")}</div>` : "";
   if (flat) extraHTML += `<div class="fs-notes">Rend: +${flat} damage (Scaling Stat min)</div>`;
@@ -5471,7 +5506,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     }
     // Brace / Dip: flat reductions before any Limit.
     for (const r of guard.reductions) {
-      const cut = Math.min(incoming, r.amount);
+      const cut = Math.min(incoming, Math.max(0, r.amount - (r.used ?? 0)));
+      r.used = (r.used ?? 0) + cut;
       incoming -= cut;
       extraHTML += `<div class="fs-notes">${tag(i)}${r.label}: −${cut} → ${incoming}</div>`;
       if (r.label.startsWith("Dip") && incoming === 0 && inst > 0) dipZero = true;
@@ -5490,6 +5526,25 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     amounts.push(incoming); wards.push(w);
   }
   let incoming = amounts.reduce((a, b) => a + b, 0);
+  // The woven part of the hit: what's left of Brace / Dip, then Wonders and Wards, as for any damage. A Shatter that broke the weapon stops it too.
+  if (wv) {
+    let inc = shattered ? 0 : wv.final;
+    for (const r of guard.reductions) {
+      const cut = Math.min(inc, Math.max(0, r.amount - (r.used ?? 0)));
+      if (!cut) continue;
+      r.used = (r.used ?? 0) + cut; inc -= cut;
+      extraHTML += `<div class="fs-notes">Woven ${esc(wv.o.label)}: ${r.label} −${cut} → ${inc}</div>`;
+    }
+    if (mentalHook?.adjust && inc > 0) {
+      const adj = await mentalHook.adjust({ attacker, target, amount: inc, type: wv.type, o: wv.o, crit: !!defense.result?.crit });
+      if (adj.amount !== inc || adj.html) { inc = adj.amount; extraHTML += adj.html; }
+    }
+    if (mentalHook?.negate && inc > 0) {
+      wv.ward = await wardNegate(target, inc, wv.type, { source: sourceOf(wv.o), attacker: attacker.uuid, magic: true });
+      if (wv.ward) { inc = wv.ward.amount; extraHTML += wv.ward.html ?? ""; }
+    }
+    wv.incoming = inc;
+  }
   const cleave = shattered ? 0 : o.cleave ?? 0;
   if (cleave) extraHTML += `<div class="fs-notes">Cleave ${cleave}: object damage, hits Limits first${o.striker ? "; what gets past them hits the creature (Blood and Iron)" : ""}</div>`;
 
@@ -5500,45 +5555,29 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
       barriers: barriersFor(attacker, target), ...(accretion ? { accretion } : {}) }, mentalDone: true };
   // Limits apply to each instance on its own.
-  const outcome = instances.length > 1 ? mergeOutcomes(await Promise.all(amounts.map(a => damageOutcome(target, a, type, dmgOpts)))) : await damageOutcome(target, incoming, type, dmgOpts);
+  let outcome, wOutcome = null, wDmgOpts = null, firstSpent = null, wovenFirst = false;
+  if (wv) {
+    // A woven hit is one instance with two parts: each object's Limit (and Durability) is shared, spent first on the part the armor blocks best.
+    wDmgOpts = { ...dmgOpts, pierce: wv.pierce, bash: wv.bash, halfLimit: !!wv.o.spell?.mods?.weakpoint, maxHpLoss: !!wv.o.spell?.mods?.chop, archetype: "magic",
+      rend: wv.o.spell?.mods?.melt ? { stacks: 1 } : null, cleave: 0, cleaveToCreature: false };
+    const armorProfile = target.system.armor?.system?.profile;
+    wovenFirst = limitFactor(wv.type, armorProfile?.focus, true) > limitFactor(type, armorProfile?.focus, false);
+    const spent = { limit: {}, dur: {} };
+    const order = wovenFirst ? [[wv.incoming, wv.type, wDmgOpts], [incoming, type, dmgOpts]] : [[incoming, type, dmgOpts], [wv.incoming, wv.type, wDmgOpts]];
+    const first = await damageOutcome(target, order[0][0], order[0][1], { ...order[0][2], limitSpent: spent });
+    firstSpent = { limit: { ...spent.limit } };
+    const second = await damageOutcome(target, order[1][0], order[1][1], { ...order[1][2], limitSpent: spent });
+    [outcome, wOutcome] = wovenFirst ? [second, first] : [first, second];
+  } else outcome = instances.length > 1 ? mergeOutcomes(await Promise.all(amounts.map(a => damageOutcome(target, a, type, dmgOpts)))) : await damageOutcome(target, incoming, type, dmgOpts);
   // Spell riders that need the damage to have got through to HP (direct damage): Force, attack-die penalties.
   let spellHTML = "", spellRolls = [], chainFlag = null;
   if (profile) {
-    const direct = outcome.toHp > 0;
-    if (profile.force?.when === "direct" && direct) {
-      const f = await spellForce(attacker, target, o, defense.result, fx.forceDice(profile, o.spell.power, { direct }), "Force", stacks);
-      spellHTML += f.html; spellRolls.push(...f.rolls); kb = f.push;
-    }
-    const m = o.spell.mods ?? {};
-    if (direct && m.bleed) {
-      await putSpellEffect(target, { kind: "bleed", stack: true, onTargetTurn: true, caster: attacker.uuid, name: `Bleed (${outcome.toHp})`, amount: outcome.toHp, dmgType: "physical", chop: !!m.chop,
-        description: `Takes ${outcome.toHp} direct physical damage${m.chop ? " as Max HP loss" : ""} at the start of their next turn.` });
-      spellHTML += `<div class="fs-notes">Bleed: ${esc(target.name)} takes ${outcome.toHp} direct physical damage again at the start of their next turn.</div>`;
-    }
-    if (direct && m.gash) {
-      await putSpellEffect(target, { kind: "gash", stack: true, caster: attacker.uuid, name: `Gash (${outcome.toHp})`, amount: outcome.toHp, dmgType: type, chop: !!m.chop,
-        description: `Takes ${outcome.toHp} damage${m.chop ? " as Max HP loss" : ""} every time they spend AP or RP to voluntarily move, until the start of the caster's next turn.` });
-      spellHTML += `<div class="fs-notes">Gash: ${esc(target.name)} takes ${outcome.toHp} damage again each time they voluntarily move, until the start of your next turn.</div>`;
-    }
-    if (direct && m.setup) {
-      await setActorFlag(attacker, "setup", { target: target.uuid, count: m.setup });
-      spellHTML += `<div class="fs-notes">Setup: ${m.setup} Advantage on your next attack roll at ${esc(target.name)} before your next turn.</div>`;
-    }
-    if (outcome.toHp > 0 && m.chop) spellHTML += `<div class="fs-notes">Chop: the ${outcome.toHp} direct damage is Max HP loss instead.</div>`;
-    // Tier 2: Brand, Ignite/Stain stacks, Energy removal, chains, Catalyst, counters.
-    if (elem) {
-      spellHTML += await elem.beforeApply({ attacker, target, o, baseTotal: applyStacks(base.totals.reduce((a, b) => a + b, 0), stacks) });          // the Core spell's own damage, with its Strengthened/Weakened stacks (not Mod flats)
-      // `dealt`: Shatter, Brace, Dip, Wonders and Wards all take it down before Stains, Energy loss and the like are worked out.
-      const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: Math.min(line.final, incoming), type, profile, facts: spellFacts ?? {}, dmgOpts, stacks });
-      spellHTML += er.html; spellRolls.push(...er.rolls); if (er.kb) kb = er.kb; chainFlag = er.chain;
-    }
-    const pen = fx.diePenalties(profile, o.spell.power, { direct });
-    if (pen.attack) pen.attack = applyStacks(pen.attack, stacks);        // scaled by every Strengthened/Weakened stack on the damage
-    if (pen.attack) {
-      await putSpellEffect(target, { kind: "attackDie", caster: attacker.uuid, name: `Attack −${pen.attack} die size`, attackDie: pen.attack, ritualOf: o.spell.ritualOf ?? null,
-        description: `Attack dice are ${pen.attack} sizes smaller until the start of the caster's next turn (doesn't stack).` });
-      spellHTML += `<div class="fs-notes">${esc(target.name)}'s attack rolls suffer <strong>−${pen.attack} die size</strong> until the start of your next turn.</div>`;
-    }
+    const sr = await spellRiders({ attacker, target, o, profile, outcome, defense, baseTotal: applyStacks(base.totals.reduce((a, b) => a + b, 0), stacks), dealt: Math.min(line.final, incoming), type, stacks, facts: spellFacts ?? {}, dmgOpts });
+    spellHTML += sr.html; spellRolls.push(...sr.rolls); if (sr.kb) kb = sr.kb; chainFlag = sr.chain;
+  }
+  if (wv) {
+    const sr = await spellRiders({ attacker, target, o: wv.o, profile: wv.profile, outcome: wOutcome, defense, baseTotal: applyStacks(wv.roll.total, wv.stacks), dealt: wv.incoming, type: wv.type, stacks: wv.stacks, facts: wv.facts ?? {}, dmgOpts: wDmgOpts });
+    spellHTML += sr.html; spellRolls.push(...sr.rolls); if (sr.kb && !kb) kb = sr.kb; chainFlag ??= sr.chain;
   }
   // Balanced T4 Deflect: a Parry with a Balanced weapon that took all of the damage.
   const balancedParry = outcome.weapons?.find(w => ab.balanced(target, w.item, 4)) ?? null;
@@ -5546,7 +5585,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const deflectRow = canDeflect ? `<div class="fs-brawl-row fs-deflect-row" data-role="defender" data-owner="${target.uuid}">
     <button type="button" class="fs-deflect" data-tooltip="Balanced T4: send the attack back at ${esc(attacker.name)} with their own weapon's attack"><i class="fa-solid fa-rotate-left"></i> Deflect (1 RP)</button></div>` : "";
   // Riposte (Martial Theory T1): a Parry that took no direct damage. Redirect (Brawling T4) and Dip's move too.
-  const noDamage = outcome.toHp === 0 && guard.any;
+  const noDamage = outcome.toHp + (wOutcome?.toHp ?? 0) === 0 && guard.any;
   const riposteItems = noDamage ? (await Promise.all(guard.riposteItems.map(u => fromUuid(u)))).filter(i => i && i.parent?.uuid === target.uuid && canSpend(target, "rp", i.system.profile?.unarmed ? 2 : i.system.profile?.ap ?? 2)) : [];
   let parryRows = "";
   if (riposteItems.length) {
@@ -5578,20 +5617,70 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   }
   await post(attacker, {
     title: `${esc(o.label || "Attack")} — Damage to ${esc(target.name)}`,
-    rolls: [...base.rolls, ...(gd?.rolls ?? []), ...shatterRolls, ...spellRolls],
+    rolls: [...base.rolls, ...(gd?.rolls ?? []), ...shatterRolls, ...(wv ? [wv.roll] : []), ...spellRolls],
     body: `${await baseDamageHTML(base, type)}${line.html}
       ${parts.length ? `<div class="fs-notes">Stacks: ${parts.join(", ")}</div>` : ""}${extraHTML}
-      ${damageOutcomeHTML(target, incoming, type, outcome)}${spellHTML}${chainFlag && elem ? elem.chainRow(attacker, chainFlag, o.spell?.chain?.depth ?? 0) : ""}${reflectRows(outcome)}${ripHTML}${parryRows}${deflectRow}${reachRow}${kb ? knockbackRow(attacker.uuid, kb.feet, kb.label) : ""}${shroudCounterRows(target, attacker, outcome)}`,
+      ${wv ? `<div class="fs-result">Weapon part</div>` : ""}${damageOutcomeHTML(target, incoming, type, outcome)}
+      ${wv ? `<div class="fs-result">Woven ${esc(wv.o.label)}: ${wv.plan.n}d${wv.plan.sides} = ${wv.roll.total} → <strong>${wv.final}</strong> ${DAMAGE_TYPES[wv.type] ?? wv.type}${wv.parts.length ? ` (${wv.parts.join(", ")})` : ""}, sharing the hit's Limits${wovenFirst ? " (it meets them first)" : ""}</div>${damageOutcomeHTML(target, wv.incoming, wv.type, wOutcome)}` : ""}${spellHTML}${chainFlag && elem ? elem.chainRow(attacker, chainFlag, o.spell?.chain?.depth ?? 0) : ""}${reflectRows(outcome)}${ripHTML}${parryRows}${deflectRow}${reachRow}${kb ? knockbackRow(attacker.uuid, kb.feet, kb.label) : ""}${shroudCounterRows(target, attacker, outcome)}`,
     flags: { flowstate: { damage: { defenseMessage: defenseMessage.id, swift: !!o.swift, curved: !!o.curved, turnKey: o.turnKey ?? null,
-      attacker: attacker.uuid, target: target.uuid, toHp: outcome.toHp, type, riposte: riposteItems.length > 0 }, knockback: kb,
+      attacker: attacker.uuid, target: target.uuid, toHp: outcome.toHp + (wOutcome?.toHp ?? 0), type, riposte: riposteItems.length > 0 }, knockback: kb,
       deflect: canDeflect ? { defender: target.uuid, attacker: attacker.uuid, attackMessage: defense.attackMessage } : null,
       chain: chainFlag ? { ...chainFlag, affected: o.spell?.chain?.affected ?? [target.uuid], depth: o.spell?.chain?.depth ?? 0, primary: o.spell?.chain?.primary ?? target.uuid } : null } }
   });
-  for (const [i, amt] of amounts.entries()) await requestDamage(target, amt, type, pierceNow, null, { silent: true, ...dmgOpts, wardDone: !!wards[i], wardReflect: wards[i]?.reflect ?? null });
+  const applyWoven = (limitSpent = null) => (wv && wv.incoming > 0 ? requestDamage(target, wv.incoming, wv.type, wv.pierce, null, { silent: true, ...wDmgOpts, wardDone: !!wv.ward, wardReflect: wv.ward?.reflect ?? null, ...(limitSpent ? { limitSpent } : {}) }) : null);
+  if (wv && wovenFirst) await applyWoven();
+  for (const [i, amt] of amounts.entries()) await requestDamage(target, amt, type, pierceNow, null, { silent: true, ...dmgOpts, wardDone: !!wards[i], wardReflect: wards[i]?.reflect ?? null, ...(wv && wovenFirst ? { limitSpent: firstSpent } : {}) });
+  if (wv && !wovenFirst) await applyWoven(firstSpent);
   if (ripHTML) await requestDamage(target, incoming + wardCut, type, pierceNow, null, { silent: true, ...dmgOpts });                       // a second instance: a Ward may answer it again
   // A Summon's or Animation's attacks carry the Core they were Combo'd with (Any T1/T2/T3 + Summoning / Animation).
   if (conj && !o.spell) await conj.riderAfter({ attacker, target, o, outcome, defense, stacks });
   if (foci && o.spell?.fociFx) await foci.afterDamage({ attacker, o, type });
+  if (foci && wv?.o.spell?.fociFx) await foci.afterDamage({ attacker, o: wv.o, type: wv.type });
+}
+
+/**
+ * A spell's riders once its damage is worked out: Force on direct damage, Bleed / Gash / Setup / Chop, the Tier 2 stacks, chains and Energy loss,
+ * and die-size penalties. Used for a spell's own damage card and for a woven spell's part of a weapon hit. Returns { html, rolls, kb, chain }.
+ */
+async function spellRiders({ attacker, target, o, profile, outcome, defense, baseTotal, dealt, type, stacks, facts = {}, dmgOpts }) {
+  let html = "", kb = null, chain = null;
+  const rolls = [];
+  const direct = outcome.toHp > 0;
+  if (profile.force?.when === "direct" && direct) {
+    const f = await spellForce(attacker, target, o, defense.result, fx.forceDice(profile, o.spell.power, { direct }), "Force", stacks);
+    html += f.html; rolls.push(...f.rolls); kb = f.push;
+  }
+  const m = o.spell.mods ?? {};
+  if (direct && m.bleed) {
+    await putSpellEffect(target, { kind: "bleed", stack: true, onTargetTurn: true, caster: attacker.uuid, name: `Bleed (${outcome.toHp})`, amount: outcome.toHp, dmgType: "physical", chop: !!m.chop,
+      description: `Takes ${outcome.toHp} direct physical damage${m.chop ? " as Max HP loss" : ""} at the start of their next turn.` });
+    html += `<div class="fs-notes">Bleed: ${esc(target.name)} takes ${outcome.toHp} direct physical damage again at the start of their next turn.</div>`;
+  }
+  if (direct && m.gash) {
+    await putSpellEffect(target, { kind: "gash", stack: true, caster: attacker.uuid, name: `Gash (${outcome.toHp})`, amount: outcome.toHp, dmgType: type, chop: !!m.chop,
+      description: `Takes ${outcome.toHp} damage${m.chop ? " as Max HP loss" : ""} every time they spend AP or RP to voluntarily move, until the start of the caster's next turn.` });
+    html += `<div class="fs-notes">Gash: ${esc(target.name)} takes ${outcome.toHp} damage again each time they voluntarily move, until the start of your next turn.</div>`;
+  }
+  if (direct && m.setup) {
+    await setActorFlag(attacker, "setup", { target: target.uuid, count: m.setup });
+    html += `<div class="fs-notes">Setup: ${m.setup} Advantage on your next attack roll at ${esc(target.name)} before your next turn.</div>`;
+  }
+  if (outcome.toHp > 0 && m.chop) html += `<div class="fs-notes">Chop: the ${outcome.toHp} direct damage is Max HP loss instead.</div>`;
+  // Tier 2: Brand, Ignite/Stain stacks, Energy removal, chains, Catalyst, counters.
+  if (elem) {
+    html += await elem.beforeApply({ attacker, target, o, baseTotal: baseTotal });          // the Core spell's own damage, with its Strengthened/Weakened stacks (not Mod flats)
+    // `dealt`: Shatter, Brace, Dip, Wonders and Wards all take it down before Stains, Energy loss and the like are worked out.
+    const er = await elem.afterDamage({ o, attacker, target, defense, outcome, dealt: dealt, type, profile, facts, dmgOpts, stacks });
+    html += er.html; rolls.push(...er.rolls); if (er.kb) kb = er.kb; chain = er.chain;
+  }
+  const pen = fx.diePenalties(profile, o.spell.power, { direct });
+  if (pen.attack) pen.attack = applyStacks(pen.attack, stacks);        // scaled by every Strengthened/Weakened stack on the damage
+  if (pen.attack) {
+    await putSpellEffect(target, { kind: "attackDie", caster: attacker.uuid, name: `Attack −${pen.attack} die size`, attackDie: pen.attack, ritualOf: o.spell.ritualOf ?? null,
+      description: `Attack dice are ${pen.attack} sizes smaller until the start of the caster's next turn (doesn't stack).` });
+    html += `<div class="fs-notes">${esc(target.name)}'s attack rolls suffer <strong>−${pen.attack} die size</strong> until the start of your next turn.</div>`;
+  }
+  return { html, rolls, kb, chain };
 }
 
 /** Twist (Reach T4) and Impale (Reach T5) from a damage card. */
@@ -5632,8 +5721,8 @@ export async function reachFinisher(damageMessage, kind) {
  * { toHp, armorLoss, reduced } (waits for the GM; for effects that go by the damage dealt, after anything that negated or reduced it).
  */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
-  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, wantResult = false } = {}) {
-  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect };
+  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null, wantResult = false } = {}) {
+  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent };
   if (target.isOwner) return applyDamage(target, amount, type, o);
   const payload = { target: target.uuid, amount, type, ...o };
   return wantResult ? askGMDamage(payload) : requestGM("applyDamage", payload);
@@ -5747,7 +5836,7 @@ async function loadWeapon(actor, item) {
  * Every client has the data, so the rolling client can show the result on its damage card while the owner applies it.
  */
 export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, archetype = "martial", ignoreArmor = false } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, archetype = "martial", ignoreArmor = false, limitSpent = null } = {}) {
   const magic = archetype === "magic";                    // spell damage is Magical as well as its own type
   if (bypass) {
     const lines = [], tempHp = [];
@@ -5780,9 +5869,12 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     // An object can't absorb more than its remaining Durability (it doesn't go negative unless targeted directly).
     const alter = mentalHook?.alterStacks?.(actor, obj) ?? 0;            // Alter (Creation Tenet): damage to this object is Strengthened or Weakened
     const lossFactor = (profile.selfWeakened ? Math.pow(0.5, profile.selfWeakened) : 1) * (rend ? stackMultiplier(rend.stacks) : 1) * stackMultiplier(alter);
+    // Weaving: a woven hit's parts share one Limit (and the object's Durability); what the parts before this one used is in `limitSpent`.
+    const spentKey = obj.uuid ?? obj.name, spentLimit = limitSpent?.limit?.[spentKey] ?? 0, spentDur = limitSpent?.dur?.[spentKey] ?? 0;
+    const shared = spentLimit ? { ...profile, limit: Math.max(0, profile.limit - spentLimit) } : profile;
     // Weakpoint (Piercing T5): only half the object's Limit applies to this spell's damage.
-    const baseLimit = effectiveLimit(profile, type, objPierce, magic);
-    const L = Math.min(halfLimit ? Math.floor(baseLimit / 2) : baseLimit, Math.floor(durability / lossFactor));
+    const baseLimit = effectiveLimit(shared, type, objPierce, magic);
+    const L = Math.min(halfLimit ? Math.floor(baseLimit / 2) : baseLimit, Math.floor(Math.max(0, durability - spentDur) / lossFactor));
     const cAbs = Math.min(cleaveLeft, L);
     const rAbs = Math.min(remaining, L - cAbs);
     cleaveLeft -= cAbs; remaining -= rAbs;
@@ -5791,7 +5883,12 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     let loss = profile.selfWeakened ? Math.floor(absorbed * Math.pow(0.5, profile.selfWeakened)) : absorbed;
     if (rend) loss = applyStacks(loss, rend.stacks);
     if (alter) loss = applyStacks(loss, alter);
-    loss = Math.min(loss, durability);
+    loss = Math.min(loss, Math.max(0, durability - spentDur));
+    if (limitSpent) {
+      const rate = limitFactor(type, profile.focus, magic) || 1;
+      limitSpent.limit[spentKey] = spentLimit + Math.ceil(absorbed / rate);
+      limitSpent.dur[spentKey] = spentDur + loss;
+    }
     lines.push(`${obj.name}${label} absorbed ${rAbs}${cAbs ? ` (+${cAbs} Cleave)` : ""} (−${loss} Durability)`);
     if (durability - loss <= 0) lines.push(`${obj.name} is broken`);
     return loss;
@@ -5875,7 +5972,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   // Magic Shrouds soak next (before armor): the creature's own melded Shroud, Wards/Bonds placed on it, Quartz extensions.
   const shrouds = [];
   for (const sh of shroudsFor(actor, shroudCtx?.extra ?? [])) {
-    const r = shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce, rend, source: shroudCtx?.source ?? null, halfLimit, magic });
+    const r = shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce, rend, source: shroudCtx?.source ?? null, halfLimit, magic, limitSpent });
     remaining = r.remaining; cleaveLeft = r.cleaveLeft;
     lines.push(...r.lines);
     if (r.update) shrouds.push({ item: sh, loss: r.loss, absorbed: r.absorbed, update: r.update });
@@ -5917,7 +6014,7 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
  * @param {boolean} silent  don't post a card (the caller already shows the outcome on its own card)
  */
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
   // Reactive: a Summon or Animation of a caster with the Mod gets a Weakened stack on each instance (1 RP).
   let reduced = 0;                                                            // everything that took damage off before it reached the soak (Reactive, Wonders, Wards)
@@ -5950,7 +6047,9 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   }
   // Mental (Earth): Reinforce / Bedrock for an Accretion this damage is about to strike (asked here unless the attack's damage card already did).
   if (mentalHook?.accretionAsk && amount > 0 && !bypass && !shroudCtx?.accretion) shroudCtx = { ...(shroudCtx ?? {}), accretion: await mentalHook.accretionAsk(actor, amount, type, archetype === "magic") };
-  const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor });
+  // A woven hit's second part: the Limit the first part used (counted before any of it was applied). Its Durability is already worn, so only the Limit carries over.
+  const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor,
+    limitSpent: limitSpent ? { limit: { ...(limitSpent.limit ?? {}) }, dur: {} } : null });
   // Accretions lose the Durability they absorbed (and crumble at 0).
   for (const { effect, hp } of out.accretions ?? []) await mentalHook?.accretionWorn?.(effect, hp);
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.
@@ -6463,7 +6562,7 @@ const hasAffix = (sh, k) => !!sh?.system?.profile?.affixes?.includes(k);
  * One Shroud's soak (no changes made; returns the update to apply).
  * Order: Agate/Jasper/Obsidian negation → Diamond/Alexandrite/Colored Diamond Weakened → Limit (Cleave first, then damage).
  */
-function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null, halfLimit = false, magic = false }) {
+function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend = null, source = null, halfLimit = false, magic = false, limitSpent = null }) {
   const P = sh.system.profile;
   const lines = [];
   const update = {};
@@ -6502,10 +6601,13 @@ function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend =
   if (sh.system.shroudType === "cinder" && (sh.parent?.getFlag?.("flowstate", "takenTypes") ?? []).includes(type)) L = P.baseLimit * 3;
   // Emerald: doubled in a Lush biome, halved anywhere else.
   if (hasAffix(sh, "emerald")) L = sh.system.lush || sceneLush() ? L * 2 : Math.floor(L / 2);
+  // Weaving: a woven hit's parts share one Limit and the Durability left (a Shroud blocks every category at the same rate).
+  const spentLimit = limitSpent?.limit?.[sh.uuid] ?? 0, spentDur = limitSpent?.dur?.[sh.uuid] ?? 0;
+  L = Math.max(0, L - spentLimit);
   if (!hasAffix(sh, "painite")) L = Math.max(0, L - Math.max(0, pierce));
   if (halfLimit) L = Math.floor(L / 2);
   // It can't absorb more than its remaining Durability (Tourmaline / Rend change how fast that runs out).
-  const durLeft = sh.system.durability.value;
+  const durLeft = Math.max(0, sh.system.durability.value - spentDur);
   if (!P.negator) {
     const f = (hasAffix(sh, "tourmaline") && sh.system.element === type ? stackMultiplier(-affixMultOf(P, "tourmaline")) : 1) * (rend ? stackMultiplier(rend.stacks) : 1);
     L = Math.min(L, Math.floor(durLeft / f));
@@ -6527,6 +6629,7 @@ function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend =
     if (rAbs || cAbs) lines.push(`${sh.name} (Shroud) absorbed ${rAbs}${cAbs ? ` (+${cAbs} Cleave)` : ""} (−${loss} Durability)`);
   }
   const absorbed = rAbs + cAbs;
+  if (limitSpent && absorbed) { limitSpent.limit[sh.uuid] = spentLimit + absorbed; limitSpent.dur[sh.uuid] = spentDur + loss; }
   if (absorbed > 0) {
     update["system.wear"] = sh.system.wear + loss;
     if (sh.system.shroudType === "carapace") update["system.carapace"] = (sh.system.carapace ?? 0) + 1;

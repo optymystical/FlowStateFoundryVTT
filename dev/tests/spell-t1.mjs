@@ -475,6 +475,26 @@ dialog = () => ({ ...baseVals, core1: "magic-slashing:cut", "mod:magic-theory:pi
 res = await C.weaveSpell(hero, { ap: 2, melee: false, targetActors: [orc] });
 ok2(res?.tr === 1 && res.energy === 30, "Webmaster (Magic Theory T5): Weaving keeps its TR");
 
+console.log("== Weaving: the woven spell joins the hit");
+// A Light Assault shot (2 AP, Ranged) weaving Cut with Bleed through the Rod (2 AP): one attack roll, the spell's damage joins the weapon's, its riders apply.
+hero.system.trees["magic-theory"] = 3;
+const blade = mkWeapon(hero, "gun", { weaponType: "assault", weight: "light", material: "hardwood", grade: 3, loaded: true });
+hero.system.prepareDerivedData();
+combat.combatant = { actor: hero }; hero.system.ap.value = 6; hero.system.energy.value = 150; orc.effects.splice(0, orc.effects.length);
+orc.system.hp.value = 400; messages.length = 0; target(orc);
+dialog = () => ({ net: 0, stacks: 0, mode: "r1", weave: true });
+seq = [25];
+await actions.rollWeaponAttack(hero, blade, null, { weavePreset: { ...baseVals, core1: "magic-slashing:cut", "mod:magic-slashing:bleed": true } });
+const wovenAtk = lastAtk();
+ok2(wovenAtk?.flags.flowstate.attack.opts.woven?.label === "Cut" && hero.system.energy.value < 150, `The attack carries the woven Cut (Energy ${hero.system.energy.value}), no AP for it (AP ${hero.system.ap.value})`);
+ok2(messages.filter(m => m.flags?.flowstate?.attack).length === 1, "…and the spell makes no attack roll of its own");
+seq = [1]; await actions.defend(wovenAtk, 0, "dodge");
+const hp0 = orc.system.hp.value;
+seq = [5, 7]; formulas.length = 0; await actions.rollExchangeDamage(last());
+ok2(hp0 - orc.system.hp.value === 2 * 5 + 2 * 7, `A crit Strengthens both parts (two stacks): the weapon's 5 and the woven Cut's 7 land as one hit of ${hp0 - orc.system.hp.value}`);
+ok2(orc.effects.find(e => e.flags?.flowstate?.spellEffect?.kind === "bleed")?.flags.flowstate.spellEffect.amount === 14, "…and Cut's Bleed rider applies to its own part");
+ok2(/Woven Cut/.test(text(last())), "…the damage card shows the woven part");
+
 console.log("== Rituals");
 combat.started = false; hero.system.energy.value = 200;
 const msgsBeforeRitual = messages.length;

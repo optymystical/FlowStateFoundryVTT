@@ -182,9 +182,9 @@ export function shroudProfile(sys, build = 0) {
     label: t.label,
     grade, mult, natural,
     scaling: natural ? Math.max(0, build) : cappedStat(build, grade),
-    durability: t.fixedDur ? t.dur : t.dur * mult * shroudTestFactor(),
-    baseLimit: t.limit * mult * shroudTestFactor(),
-    limit: t.limit * mult * shroudTestFactor(),
+    durability: t.fixedDur ? t.dur : Math.floor(t.dur * mult * shroudTestFactor()),
+    baseLimit: Math.floor(t.limit * mult * shroudTestFactor()),
+    limit: Math.floor(t.limit * mult * shroudTestFactor()),
     freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
     negator: !!t.negator, placed: t.placed ?? null, fixedDur: !!t.fixedDur, noRegen: !!t.noRegen,
     effect: t.effect

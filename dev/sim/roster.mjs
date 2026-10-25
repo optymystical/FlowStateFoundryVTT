@@ -1208,3 +1208,6 @@ PASSES["balance-c"] = { ...PASSES["magic-vs-martial-2"], id: "balance-c", settin
 // (D) Shrouds adjusted as a whole (their scaled Durability and Limit ×2 or ×3), on top of C's fixes; rotation 3 only (the Shroud-only tank).
 for (const x of [2, 3]) PASSES[`balance-d${x}`] = { ...PASSES["balance-c"], id: `balance-d${x}`, settings: { balanceTest: `assaultD12,strike2d8,strikeRanged,shroudX${x}` },
   encounters: PASSES["balance-c"].encounters.filter(e => e.rotation === 2), note: `Balance test D: C's fixes with Shrouds ×${x}, the Shroud-only tank's rotation.` };
+// (E) Shrouds ×1.5: pure Shroud (rotation 3's Shroud-only Magic tank) against pure armor (rotation 1's Martial Heavy-armor tank), no hybrids.
+PASSES["balance-e"] = { ...PASSES["balance-c"], id: "balance-e", settings: { balanceTest: "assaultD12,strike2d8,strikeRanged,shroudX1.5" },
+  encounters: PASSES["balance-c"].encounters.filter(e => e.rotation !== 1), note: "Balance test E: C's fixes with Shrouds ×1.5; the Martial Heavy-armor tank vs the Shroud-only tank." };

@@ -1225,3 +1225,6 @@ for (const [id, x] of [["tank-shroud25", 2.5], ["tank-shroud3", 3]]) PASSES[id] 
 // Reactive Shields, Seep, Reform, Shroud Master), Protection Arcana T3 (Shield, Reflect, Adjust) and Crushing T2 (Slam): 29 Skill Points.
 const BUILD_TANK = { ...SHROUD_TANK, label: "Build", trees: MAG(4, { "magic-build-arcana": 4, [PRO]: 3, [CRU]: 2 }) };
 for (const [id, x] of [["tank-build1", 1], ["tank-build2", 2], ["tank-build3", 3]]) PASSES[id] = BENCH_TANK(id, BUILD_TANK, x);
+// The tank benches again with the damage cards kept (`cardLog`), to see what the Shield, the Shroud, its Affixes and armor absorb.
+PASSES["tank-cards-armor"] = { ...PASSES["tank-armor"], id: "tank-cards-armor", cardLog: true };
+PASSES["tank-cards-build2"] = { ...PASSES["tank-build2"], id: "tank-cards-build2", cardLog: true };

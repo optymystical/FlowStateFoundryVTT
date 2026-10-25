@@ -1705,6 +1705,13 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     SIM.status = `${id}: collecting`;
     const msgs = game.messages.contents.filter(m => !firstIds.has(m.id));
     const result = collect(scene, combat, msgs);
+    // A pass with `cardLog`: keep the text of every damage card against the party (to see what absorbed what).
+    if (P.cardLog) {
+      const party = new Set(Object.values(F.actors).filter(a => a.side === "party").map(a => a.name));
+      const plain = m => m.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      result.cards = msgs.filter(m => m.getFlag("flowstate", "damage")).map(plain).filter(t => [...party].some(n => t.includes(`Damage to ${n}`))).slice(0, 300);
+      result.casts = msgs.filter(m => /casts/.test(m.content) && [...party].some(n => m.content.includes(n))).map(plain).map(t => t.slice(0, 300)).slice(0, 120);
+    }
     SIM.results.push(result);
     await combat.delete();
     const del = msgs.map(m => m.id).filter(i => game.messages.has(i));

@@ -1230,3 +1230,37 @@ PASSES["tank-cards-armor"] = { ...PASSES["tank-armor"], id: "tank-cards-armor", 
 PASSES["tank-cards-build2"] = { ...PASSES["tank-build2"], id: "tank-cards-build2", cardLog: true };
 // The Build tank at Shrouds ×2 with Reactive also working on its own Shroud (balance test `reactiveShroud`).
 PASSES["tank-build2-react"] = { ...BENCH_TANK("tank-build2-react", BUILD_TANK, 2), cardLog: true, settings: { balanceTest: "assaultD12,strike2d8,strikeRanged,shroudX2,reactiveShroud" } };
+
+// The confirming pass on the adopted rules (v0.83: Light Assault d12 and 2 shots a reload, Strike 2d8 Ranged, Shrouds doubled, Reactive on your own
+// Shroud, Arcane meeting Shrouds at full strength). The user's guidance: armor is for Martial builds only, so pure Magic builds wear none and put their
+// defense in Build (the Shroud); hybrids split 30/30/30 and pick one defense: Constitution and armor, or Build and a Shroud (not both).
+const noArmor = (l, stats) => ({ ...l, armor: null, stats });
+const MAGIC3 = {
+  warden: noArmor(PARTY_MIX.find(p => p.id === "warden").loadouts[0], { grasp: 35, build: 30, reach: 10, con: 15 }),
+  breaker: noArmor(PARTY_MIX.find(p => p.id === "breaker").loadouts[0], { reach: 45, build: 30, con: 15 }),
+  marksman: noArmor(PARTY_MIX.find(p => p.id === "marksman").loadouts[1], { grasp: 45, build: 30, con: 15 })
+};
+const HYBRID3 = {
+  bulwark: { ...WOVEN_LOADOUTS.bulwark, stats: { str: 30, reach: 30, con: 30 }, shroud: null },                                   // Constitution and Heavy armor
+  duelist: { ...WOVEN_LOADOUTS.duelist, stats: { dex: 30, grasp: 30, build: 30 }, armor: null },                                  // Build and its Shroud
+  breaker: { ...WOVEN_LOADOUTS.breaker, stats: { str: 30, reach: 30, con: 30 }, shroud: null }                                    // Constitution and Medium armor
+};
+const TANK3 = { ...BUILD_TANK, stats: { build: 40, con: 30, grasp: 20 } };
+const r1of = p => (p.id === "marksman" ? SOLO_ASSAULT : MAGIC3[p.id] && p.loadouts[0].label === "Magic" ? MAGIC3[p.id] : p.loadouts[0]);
+export const PARTY_MIX4 = PARTY_MIX.map(p => {
+  const r1 = r1of(p);
+  const r2 = p.id === "marksman" ? MAGIC3.marksman : HYBRID3[p.id] ?? (p.loadouts[1].label === "Magic" ? MAGIC3[p.id] : p.loadouts[1]);
+  return { ...p, loadouts: [r1, r2, p.id === "bulwark" ? TANK3 : r1] };
+});
+PASSES["magic-vs-martial-3"] = { id: "magic-vs-martial-3", party: PARTY_MIX4, monsters: MONSTERS_MIX, encounters: encountersFor(MONSTERS_MIX, 3), backLine: true, spreadTargets: true,
+  note: "Magic vs Martial on the adopted rules (v0.83): Magic builds without armor (Build and Shrouds), hybrids with one defense, a Build Arcana Shroud tank in rotation 3." };
+
+// Magic-only school benchmark against Shroud users (the user's ask: armor is for Martial sims; see how Arcane fares against something built against
+// it). The caster wears no armor (Build for its Bastion); the three raiders swap their armor for Build and a Shroud (Keystone, Bastion, Carapace) and
+// keep their Heavy weapons for the punching bag. Shrouds are fully magical: Arcane meets them at full strength, only what gets past is Weakened.
+const SHROUD_RAIDERS = { raiders: { ...BENCH_RAIDERS.raiders, note: "The benchmark's three raiders with Build and a Shroud instead of armor.",
+  kinds: BENCH_RAIDERS.raiders.kinds.map((k, i) => ({ ...k, stats: { str: 60, build: 50, will: 15 }, armor: null, shroud: FO(["keystone", "bastion", "carapace"][i]) })) } };
+const PARTY_MBENCH_SHROUD = [{ ...PARTY_MBENCH[0], stats: { grasp: 45, build: 30, con: 15 }, loadouts: PARTY_MBENCH[0].loadouts.map(l => ({ ...l, armor: null })) }, PARTY_MBENCH[1]];
+PASSES["magic-bench-shroud"] = { id: "magic-bench-shroud", note: "School benchmark, Magic only: an unarmored caster against three raiders protected by Shrouds (no armor), 4 rounds, two fights each.",
+  party: PARTY_MBENCH_SHROUD, monsters: SHROUD_RAIDERS, deploy: "magicbench", maxRounds: 4,
+  encounters: BENCH_SCHOOLS.flatMap(([id], rotation) => [1, 2].map(rep => ({ id: `${id}-${rep}`, group: "raiders", rotation }))) };

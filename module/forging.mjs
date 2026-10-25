@@ -1,5 +1,5 @@
 /**
- * Creation (Dream) Wonders (Mental Rework Test Ground): Forge, Conjure, Consecrate and Fabricate make real items that last until the start of your
+ * Creation (Dream) Wonders (Mental Stage 1 doc): Forge, Conjure, Consecrate and Fabricate make real items that last until the start of your
  * next turn (like Build Arcana's Make), Rite makes them permanent, and Alter (the Tenet) changes damage dealt to an object.
  * The Manifest's attack roll is made against yourself; on a hit a "Create" button on the follow-up card asks what to make.
  */

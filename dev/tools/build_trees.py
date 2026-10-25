@@ -104,10 +104,10 @@ out = []
 for path, arch in [(sys.argv[1], "Martial"), (sys.argv[2], "Magic"), (sys.argv[3], "Mental")]:
     trees = parse(open(path).read(), arch)
     if arch == "Mental":
-        # The Mental Rework Test Ground still has empty trees (Ponderance / Snappence / Esoteric Arts): leave those out until they're written.
+        # The Mental Stage 1 doc still has empty trees (Ponderance / Snappence / Esoteric Arts): leave those out until they're written.
         trees = [t for t in trees if any(x["entries"] for x in t["tiers"])]
     out += trees
-js = "// Generated from the Martial and Magic Stage 1 docs and the Mental Rework Test Ground by tools/build_trees.py. Don't edit by hand; re-run the converter.\n"
+js = "// Generated from the Martial and Magic Stage 1 docs and the Mental Stage 1 doc by tools/build_trees.py. Don't edit by hand; re-run the converter.\n"
 js += "export const TREES = " + json.dumps(out, indent=1, ensure_ascii=False) + ";\n"
 open(sys.argv[4], 'w').write(js)
 for t in out:

@@ -1,4 +1,4 @@
-// Generated from the Martial and Magic Stage 1 docs and the Mental Rework Test Ground by tools/build_trees.py. Don't edit by hand; re-run the converter.
+// Generated from the Martial and Magic Stage 1 docs and the Mental Stage 1 doc by tools/build_trees.py. Don't edit by hand; re-run the converter.
 export const TREES = [
  {
   "id": "martial-theory",

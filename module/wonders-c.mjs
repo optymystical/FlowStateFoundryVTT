@@ -1,5 +1,5 @@
 /**
- * Light (Dream) and Dark (Nightmare) (Mental Rework Test Ground): Illuminate and Eclipse (an enemy version and an ally version, picked by the target's side),
+ * Light (Dream) and Dark (Nightmare) (Mental Stage 1 doc): Illuminate and Eclipse (an enemy version and an ally version, picked by the target's side),
  * their Tenets (Beacon, Shadowmark), Refraction / Penumbra (spread), Convergence, Totality, Dispersion, Umbral Strike and Corona / Nightfall.
  * They register into wonders.mjs (`MODES`, `ACTS`, the provider lists); mental.mjs calls `attackStart`, `attackDieAgainst`, `dodgeDieAgainst`,
  * `disperseResolve` and `expandResolve` through `registerMental` / its resolve step.

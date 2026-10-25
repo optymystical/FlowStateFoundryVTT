@@ -1,5 +1,5 @@
 /**
- * Fortune (Dream) (Mental Rework Test Ground): Wager, Windfall and Providence, Fortune's Bands (no crits: where the attack roll lands decides; under one half it
+ * Fortune (Dream) (Mental Stage 1 doc): Wager, Windfall and Providence, Fortune's Bands (no crits: where the attack roll lands decides; under one half it
  * hits you instead), Rig (Tenet: roll the Fortune Table any time, once per round), Parlay (Strengthened stacks multiply) and Double Down (Disadvantage, wider
  * bands), and the Fortune Table itself (`FORTUNE_ROWS`, matched by position to the doc's table, whose text the cards show).
  * It registers into wonders.mjs (`MODES`, `ACTS`, `CHOICE_PROVIDERS`, `COST_PROVIDERS`); mental.mjs hands a Fortune Manifest's resolve to `fortuneResolve`.

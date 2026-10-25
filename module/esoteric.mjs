@@ -1,5 +1,5 @@
 /**
- * Esoteric Arts (Mental T5 tree, Mental Rework Test Ground): the Omen.
+ * Esoteric Arts (Mental T5 tree, Mental Stage 1 doc): the Omen.
  *  Seed (T1): 8 hours of work seed an Omen of a Wonder you have at Tier 5: an NPC of its own (its own turn, AP, RP, and 5 × its skill points of Energy) with
  *  stat points equal to yours (two thirds in its Wonder's stat, one third Willpower, or flipped), a fifth of that in skill points (they only set its dice),
  *  full Mental Theory and its Wonder at Tier 5. It is its own Icon (a natural Icon of the Form picked at Seeding, its Tenet always on) and keeps the

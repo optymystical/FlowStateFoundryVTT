@@ -1,4 +1,4 @@
-// Mental rules: Wonders and Modes parsed from the Rework Test Ground trees, Wonder Power, Manifest costs, Alignment, Icons and Forms.
+// Mental rules: Wonders and Modes parsed from the Mental Stage 1 trees, Wonder Power, Manifest costs, Alignment, Icons and Forms.
 const M = await import("../../module/mental-rules.mjs");
 let fails = 0; const ok = (c, m) => { console.log(`  ${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
 

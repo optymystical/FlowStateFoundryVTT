@@ -1,5 +1,5 @@
 /**
- * Mental rules (Mental Rework Test Ground + Equipment doc). Pure: no Foundry globals, so it's unit-tested outside Foundry.
+ * Mental rules (Mental Stage 1 doc + Equipment doc). Pure: no Foundry globals, so it's unit-tested outside Foundry.
  * Wonders are the Mental skill trees named "<Name> (Dream)" or "<Name> (Nightmare)"; each has Modes (Manifested as attacks), a Tenet,
  * and abilities/passives. Icons are the Mental equipment: a Form with a Ward effect and a Tenet.
  */

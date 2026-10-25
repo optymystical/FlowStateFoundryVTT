@@ -19,7 +19,7 @@ export as markdown) whenever a rule matters; snapshots in `dev/docs/` go stale.
 | Flow State - Equipment | authoritative (Mental Equipment section in flux) | `1bjinhIrPGJr0Ss4M9fjlCRSZrteX5r9yjsSuhYkMuag` |
 | Flow State - Magic Stage 1 | authoritative | `10yfXGyX5-dTUYCJzsGw1DOTd7qpGaeD5ZlNF7mMbWI8` |
 | Combo Spell List (linked from Magic Theory) | authoritative | `1lyNQtEPZWuIpjxqvD3BIa_ZPFD25iTxi3YMp78hVAGY` |
-| Mental Rework Test Ground | in-dev: the source for Mental (Mental Stage 1 holds the old system); snapshot in `dev/docs/mental.md` | `1vyo3biYzh4smTOMmNM5OK7uqLXxKlrse6M-zHbnC0YI` |
+| Flow State - Mental Stage 1 | authoritative (the source for Mental since 25 Oct 2026; it replaced the Mental Rework Test Ground) | `1AYDPICDPXz1TGjQquEX4k-PvXxxbRmncSZc4rkZ2nR4` |
 
 If an ID read fails, search by exact title. "[Discipline] Rework Test Ground" docs are scratchpads; "Stage 1" docs are
 the stable versions. When the user says "I updated the doc", diff the live doc against `dev/docs/*.md`, summarize
@@ -31,7 +31,7 @@ all five Magic groups (T1: Magic Theory, Slashing, Piercing, Crushing, Protectio
 Cold, Radiation, Acid; T3: Grasp Arcana, Venomancy, Charm, Witchery; T4: Build Arcana, Summoning, Creation, Animation; T5:
 Restoration Arcana, Geomancy, Illusion, Arcanomancy, with all their Combos) are automated; "tier" in Magic means the group of
 trees a Magic Theory tier unlocks. Muddy/Harden place terrain regions (rough/difficult/cleared); only Mixed Animations are left to the GM.
-Mental is in progress (built from the Mental Rework Test Ground): the framework is in (Manifest, Alignment, Icons and Wards, Concentration, Trance, Willpower, Ponderance, Snappence and Psion Arts) and the Wonders' Modes are being added Wonder by Wonder (all twenty written Wonders are in) and Esoteric Arts (Omens, Mental T5) is in. Mental Theory, Forms/Wards and Willpower Arts are complete. Ancestries are not yet implemented.
+Mental is in progress (built from Flow State - Mental Stage 1): the framework is in (Manifest, Alignment, Icons and Wards, Concentration, Trance, Willpower, Ponderance, Snappence and Psion Arts) and the Wonders' Modes are being added Wonder by Wonder (all twenty written Wonders are in) and Esoteric Arts (Omens, Mental T5) is in. Mental Theory, Forms/Wards and Willpower Arts are complete. Ancestries are not yet implemented.
 
 ## Layout
 
@@ -107,7 +107,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
 - `node --check module/<file>.mjs` catches syntax errors fast. `cd dev && npm run lint` (ESLint, config in `eslint.config.mjs`) catches undefined names and unused code; `npm run check` runs lint and the tests, and is what CI (`.github/workflows/ci.yml`) runs on every push. Keep both clean.
 - Bump `system.json` `version` (patch for fixes, minor for features) and add a short `CHANGELOG.md` entry with each change (and update `dev/AUTOMATION.md` if a rule or judgment call changed).
 - Regenerate skill trees after Martial/Magic doc changes: export the docs to `dev/docs/martial.md` and `magic.md`,
-  then `cd dev && npm run trees` (Mental too: export the Mental Rework Test Ground to `dev/docs/mental.md`; the generator leaves out trees with no entries yet). After Combo Spell List changes: export it to `dev/docs/combos.md`, then `npm run combos`
+  then `cd dev && npm run trees` (Mental too: export Flow State - Mental Stage 1 to `dev/docs/mental.md`; the generator leaves out trees with no entries yet). After Combo Spell List changes: export it to `dev/docs/combos.md`, then `npm run combos`
   (generates `module/combos.mjs`; don't hand-edit).
 - **Link new things into the Codex:** a new table or system gets pages (a section in `codex.mjs`, or `registerSection` from its module: the A.B.C.s will add theirs), and UI that shows a rule, ability, tag, material or status links to its page with `data-codex="<id>"` (or `codexLink(...)`). `codex-test.mjs` fails on any dead link. After a Rules or Equipment doc update, re-export to `dev/docs/` and run `npm run rules`.
 - **New items come from the catalog:** make them with `itemData(key, { grade, system })` (or with the identity fields, which `migrateData` links). A new item identity field goes in `IDENTITY` (catalog.mjs) and the type's schema; a new item type needs an `ITEM_TYPES` entry, generated entries, `KEY_FIELDS` and `migrateData`/`prepareBaseData` in data.mjs. Code reading an item's identity (`item.system.material`...) gets the entry's value; never write identity straight to a copy's source expecting it to stick past the entry (the preUpdateItem hook turns it into an override).

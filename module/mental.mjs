@@ -1,5 +1,5 @@
 /**
- * Mental (Rework Test Ground): Manifesting Wonder Modes, Alignment, Icons and their Wards, Psion Arts and Willpower Arts.
+ * Mental (Mental Stage 1 doc): Manifesting Wonder Modes, Alignment, Icons and their Wards, Psion Arts and Willpower Arts.
  * Pure numbers live in mental-rules.mjs. actions.mjs calls in through `registerMental()`:
  *   onResolve   after a Manifest or Ward attack is answered (the Mode's text, or the Ward's effect),
  *   negate      before damage is applied (Nightmare Wards that spend RP to negate damage),

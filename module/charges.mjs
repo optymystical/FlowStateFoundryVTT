@@ -1,5 +1,5 @@
 /**
- * Order and Chaos charges, live on dice rolls (Mental Rework Test Ground).
+ * Order and Chaos charges, live on dice rolls (Mental Stage 1 doc).
  *
  * A Mode leaves a charge (an effect of kind "charge") on its target. Whenever that creature makes a roll, `onRoll` finds the charges on them
  * and asks the creature that placed them (over the socket if that is somebody else) which to spend, as selectable options:

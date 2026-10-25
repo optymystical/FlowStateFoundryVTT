@@ -1,5 +1,5 @@
 /**
- * What each Wonder's Modes, Tenets and abilities do (Mental Rework Test Ground). mental.mjs calls `resolveMode` when a Manifest is answered;
+ * What each Wonder's Modes, Tenets and abilities do (Mental Stage 1 doc). mental.mjs calls `resolveMode` when a Manifest is answered;
  * the optional bits ("you can...", Tenets, abilities that cost energy) come as buttons on a follow-up card owned by the Mental user
  * (`acts`, run by `runAct`), the same way Poison and Hex do it. Things that happen "at the start of the target's next turn" are `pending`
  * effects on the target that turn into the real effect when their turn starts (`pendingTurnStart`).

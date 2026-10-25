@@ -1,5 +1,5 @@
 /**
- * Ruin (Nightmare) (Mental Rework Test Ground): Ruin Modes (Jinx, Forfeit, Calamity) can't crit; on a hit they store a **Jinx** on the target until the start of
+ * Ruin (Nightmare) (Mental Stage 1 doc): Ruin Modes (Jinx, Forfeit, Calamity) can't crit; on a hit they store a **Jinx** on the target until the start of
  * your next turn. The target's next attack roll resolves every Jinx on it at once by Ruin's Bands (where that roll lands against its die's max: half or higher
  * they fizzle, under one half 2 Strengthened, under one quarter 4). Gild (T2) gives that roll Disadvantage; Reversal (T4) flips the roll afterwards (only their attack uses the flipped
  * number: the user's ruling). Doom (Tenet) rolls the Ruin Table and applies it on a hit; Calamity (T5) stores a Ruin Table result as a Jinx.

@@ -1,5 +1,5 @@
 /**
- * The second batch of Wonders (Mental Rework Test Ground): Destruction, Peace, War, Adaptation and Perfection. Creation is in forging.mjs.
+ * The second batch of Wonders (Mental Stage 1 doc): Destruction, Peace, War, Adaptation and Perfection. Creation is in forging.mjs.
  * They register into wonders.mjs (`MODES`, `ACTS`, the provider lists) and mental.mjs calls `adjust` (damage dealt and taken), `onRollBuffs`
  * (Hone, Serenity, Provoke) and `damageStacks` (Hone) through `registerMental`.
  */

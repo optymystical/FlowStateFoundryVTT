@@ -1,5 +1,5 @@
 /**
- * Growth (Dream) and Stagnation (Nightmare) (Mental Rework Test Ground).
+ * Growth (Dream) and Stagnation (Nightmare) (Mental Stage 1 doc).
  *  Growth: Cultivate puts Growth stacks on the target (until the start of your next turn). When it takes an action (anything that spends AP or RP), it can
  *  spend them, each on a different option its Cultivator has unlocked: Thorn (more damage), Thrift (less Energy), Pierce, Feed (more Ignite / Stain /
  *  Slow / Haste), Graft (more Temp HP / shielding granted), Bark (Temp HP for itself), Uproot (Force on its target), Offshoot (copy another option); Full

@@ -1,5 +1,5 @@
 /**
- * Earth (Dream) and Sea (Nightmare) (Mental Rework Test Ground).
+ * Earth (Dream) and Sea (Nightmare) (Mental Stage 1 doc).
  *  Earth: Accretion (an encasement: an object with Durability and a Limit that soaks Physical and Elemental damage before the creature, melding with your
  *  own Accretions on the same target), Adamant (Tenet: Pain Threshold lowered), Reinforce and Bedrock (asked when damage is about to hit one of your
  *  Accretions), Ejecta (throw an Accretion), Batholith (any damage category; Ejecta reaches magical and Supernatural creatures).

@@ -1229,4 +1229,4 @@ for (const [id, x] of [["tank-build1", 1], ["tank-build2", 2], ["tank-build3", 3
 PASSES["tank-cards-armor"] = { ...PASSES["tank-armor"], id: "tank-cards-armor", cardLog: true };
 PASSES["tank-cards-build2"] = { ...PASSES["tank-build2"], id: "tank-cards-build2", cardLog: true };
 // The Build tank at Shrouds ×2 with Reactive also working on its own Shroud (balance test `reactiveShroud`).
-PASSES["tank-build2-react"] = { ...BENCH_TANK("tank-build2-react", BUILD_TANK, 2), settings: { balanceTest: "assaultD12,strike2d8,strikeRanged,shroudX2,reactiveShroud" } };
+PASSES["tank-build2-react"] = { ...BENCH_TANK("tank-build2-react", BUILD_TANK, 2), cardLog: true, settings: { balanceTest: "assaultD12,strike2d8,strikeRanged,shroudX2,reactiveShroud" } };

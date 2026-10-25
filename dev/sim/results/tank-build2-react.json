@@ -1,0 +1,3906 @@
+[
+ {
+  "id": "swarm-martial-r1",
+  "group": "swarm-martial",
+  "rotation": 1,
+  "seconds": 287,
+  "winner": "monsters",
+  "pass": "tank-build2-react",
+  "rounds": 6,
+  "partyLeft": 0,
+  "monstersLeft": 10,
+  "followups": 114,
+  "knockbacks": {},
+  "used": {
+   "opt:shank1=adv": 5,
+   "opt:shank2=dodge": 5,
+   "opt:shank3=pierce": 5,
+   "opt:thrust": 48,
+   "defend:dodge": 263,
+   "berserk": 10,
+   "Seeing Red": 5,
+   "opt:rend": 36,
+   "recoverEnergy": 6,
+   "cast:Shield": 5,
+   "mod:Reflect": 3,
+   "mod:Layered": 3,
+   "mod:Reactive": 1,
+   "cast:Slam": 10,
+   "mod:Empower": 1,
+   "mod:Crush": 10,
+   "opt:shank1=pierce": 5,
+   "opt:shank2=cleave": 5,
+   "opt:shank3=adv": 5,
+   "maintain": 10,
+   "opt:heave": 5,
+   "maintain:skipped": 6,
+   "twist:skipped": 4,
+   "berserk:skipped": 4,
+   "twist": 2
+  },
+  "hp": {
+   "Sim Bulwark#A35q": "378/792",
+   "Sim Goblin Hacker#aG2d": "341/468",
+   "Sim Goblin Hacker#aNzv": "468/468",
+   "Sim Goblin Hacker#peug": "468/468",
+   "Sim Goblin Hacker#bxH6": "468/468",
+   "Sim Goblin Hacker#229z": "468/468",
+   "Sim Goblin Lancer#oXnj": "468/468",
+   "Sim Goblin Lancer#UfGF": "468/468",
+   "Sim Goblin Lancer#6G4T": "468/468",
+   "Sim Goblin Lancer#wZKS": "468/468",
+   "Sim Goblin Lancer#02SF": "468/468"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Light Reach": {
+    "attacks": 79,
+    "followups": 79,
+    "hits": 16,
+    "crits": 4,
+    "misses": 142,
+    "damage": 129,
+    "ap": 158,
+    "kills": 0,
+    "users": [
+     "Goblin Lancer"
+    ]
+   },
+   "Heavy Striker": {
+    "attacks": 55,
+    "followups": 35,
+    "hits": 16,
+    "crits": 2,
+    "misses": 74,
+    "damage": 259,
+    "ap": 165,
+    "kills": 1,
+    "users": [
+     "Goblin Hacker"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 0,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 9,
+    "crits": 6,
+    "misses": 1,
+    "damage": 127,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 6,
+    "absorbed": 80
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 34
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 127,
+    "taken": 388,
+    "hits": 14,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 34
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 28,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 58,
+    "taken": 127,
+    "hits": 5,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 41,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 34
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 46,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 127,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 88,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 28
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 28
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 91.24143795447327,
+    "attacks": 34,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 253,
+     "cast:Shield": 5,
+     "mod:Reflect": 3,
+     "mod:Layered": 3,
+     "mod:Reactive": 1,
+     "cast:Slam": 10,
+     "mod:Empower": 1,
+     "mod:Crush": 10
+    },
+    "turnMoved": 0,
+    "casts": 15
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90.13878188659973,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "berserk": 2,
+     "Seeing Red": 1,
+     "recoverEnergy": 1,
+     "maintain": 2,
+     "maintain:skipped": 1,
+     "berserk:skipped": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100.4987562112089,
+    "attacks": 34,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "berserk": 2,
+     "Seeing Red": 1,
+     "recoverEnergy": 1,
+     "maintain": 2,
+     "maintain:skipped": 1,
+     "berserk:skipped": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "berserk": 2,
+     "Seeing Red": 1,
+     "recoverEnergy": 2,
+     "defend:dodge": 10,
+     "maintain": 2,
+     "maintain:skipped": 2
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90.13878188659974,
+    "attacks": 34,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1,
+    "used": {
+     "twist:skipped": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 95,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "berserk": 2,
+     "Seeing Red": 1,
+     "recoverEnergy": 1,
+     "maintain": 2,
+     "maintain:skipped": 1,
+     "berserk:skipped": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 85.14693182963201,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "berserk": 2,
+     "Seeing Red": 1,
+     "recoverEnergy": 1,
+     "maintain": 2,
+     "maintain:skipped": 1,
+     "berserk:skipped": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 88.60022573334676,
+    "attacks": 28,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1,
+    "used": {
+     "twist": 2,
+     "twist:skipped": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 110.67971810589329,
+    "attacks": 28,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Hacker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Striker (Iron)"
+   ],
+   "Sim Goblin Lancer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Reach (Hardwood)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Goblin Hacker": [
+    "Light Armor (Soft Leather): 80/80",
+    "Heavy Striker (Iron): 300/300"
+   ],
+   "Sim Goblin Lancer": [
+    "Light Armor (Soft Leather): 80/80",
+    "Light Reach (Hardwood): 150/150"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 4680,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 781,
+    "monsterHp": 4680,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 748,
+    "monsterHp": 4623,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 716,
+    "monsterHp": 4623,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 605,
+    "monsterHp": 4593,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 504,
+    "monsterHp": 4553,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 378,
+    "monsterHp": 4553,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 26,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 414,
+   "monsters": 127
+  },
+  "directTaken": {
+   "party": 388,
+   "monsters": 127
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Light Reach (Hardwood)": 79,
+    "prompt: Light Reach (Hardwood) — Solitary follow-up (Dis)": 79,
+    "prompt: Heavy Striker (Iron)": 55,
+    "prompt: Heavy Striker (Iron) — Solitary follow-up": 15,
+    "prompt: Heavy Striker (Iron) — Solitary follow-up (Dis)": 20
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 20 1 3 4 6 6 20 Damage: 20 Physical no Strengthened/Weakened Pierce 27: ignores that much armor Limit Cleave 18: object damage, hits Limits first Sim Bulwark takes 20 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −10 physical damage Keystone (Shroud) (Shroud) absorbed 0 (+18 Cleave) (−18 Durability)",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 35 11 2 6 10 6 35 Damage: 35 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 35 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 17 (+54 Cleave) (−142 Durability)",
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 24 5 4 6 3 6 24 Damage: 24 Physical no Strengthened/Weakened Pierce 27: ignores that much armor Limit Cleave 18: object damage, hits Limits first Sim Bulwark takes 24 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 12 (+18 Cleave) (−30 Durability)",
+   "Heavy Striker (Iron) — Solitary follow-up — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 41 5 4 10 10 12 41 Damage: 41 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 41 Physical 2 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 18 (+54 Cleave) (−72 Durability)",
+   "Heavy Striker (Iron) — Solitary follow-up — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 27 10 3 4 3 7 27 Damage: 27 → 54 Physical Strengthened ×2 (×2) Stacks: +2 crit Cleave 54: object damage, hits Limits first Sim Bulwark takes 54 Physical 9 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 18 (+54 Cleave) (−72 Durability)",
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 17 4 1 3 5 4 17 Damage: 17 → 34 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 27: ignores that much armor Limit Cleave 18: object damage, hits Limits first Sim Bulwark takes 34 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Shield absorbed 11 (+18 Cleave) (−29 Durability) Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −3 physical damage Reflect: 11 back",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 33 3 2 9 10 9 33 Damage: 33 → 49 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Cleave 54: object damage, hits Limits first Sim Bulwark takes 49 Physical 4 damage to HP Bash: Shield's Limit 56 is above 13, no effect Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Shield absorbed 0 (+13 Cleave) (−26 Durability) Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 8 (+41 Cleave) (−98 Durability) Keystone (Shroud) is spent (0 Durability)",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 39 11 5 11 6 6 39 Damage: 39 → 58 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Cleave 54: object damage, hits Limits first Sim Bulwark takes 58 Physical 29 damage to HP Bash: Shield's Limit 56 is above 13, no effect Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Keystone (Shroud) has no Durability left Cleave: no object in the way",
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 18 3 4 2 4 5 18 Damage: 18 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Sim Bulwark takes 18 Physical 0 damage to HP Shield absorbed 18 (−18 Durability) Reflect: 18 back",
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 14 5 4 3 1 1 14 Damage: 14 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Sim Bulwark takes 14 Physical 0 damage to HP Shield absorbed 14 (−14 Durability) Reflect: 14 back",
+   "Light Reach (Hardwood) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 10 3 1 3 2 1 10 Damage: 10 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Sim Bulwark takes 10 Physical 0 damage to HP Shield absorbed 8 (−8 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −1 physical damage Reflect: 8 back",
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 18 3 4 3 4 4 18 Damage: 18 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Sim Bulwark takes 18 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 9 (−9 Durability)",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 28 7 3 7 4 7 28 Damage: 28 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 28 Physical 14 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 0 (+31 Cleave) (−62 Durability)",
+   "Light Reach (Hardwood) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 19 4 5 1 6 3 19 Damage: 19 → 38 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 13: ignores that much armor Limit Sim Bulwark takes 38 Physical 18 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 1 (−1 Durability) Keystone (Shroud) is spent (0 Durability) Twist +13 (⚡ 18)",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 29 1 8 8 11 1 29 Damage: 29 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 29 Physical 0 damage to HP Shield absorbed 0 (+20 Cleave) (−40 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −14 physical damage Keystone (Shroud) (Shroud) absorbed 0 (+34 Cleave) (−68 Durability)",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 27 12 8 2 1 4 27 Damage: 27 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 27 Physical 13 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 0 (+4 Cleave) (−4 Durability) Keystone (Shroud) is spent (0 Durability)",
+   "Light Reach (Hardwood) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 23 6 5 4 4 4 23 Damage: 23 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Sim Bulwark takes 23 Physical 23 damage to HP Keystone (Shroud) has no Durability left Twist +13 (⚡ 18)",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 44 11 8 12 3 10 44 Damage: 44 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 44 Physical 44 damage to HP Keystone (Shroud) has no Durability left Cleave: no object in the way",
+   "Light Reach (Hardwood) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 18 3 5 4 1 5 18 Damage: 18 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Sim Bulwark takes 18 Physical 18 damage to HP Keystone (Shroud) has no Durability left Twist +13 (⚡ 18)",
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 20 4 4 4 5 3 20 Damage: 20 → 40 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 13: ignores that much armor Limit Cleave 18: object damage, hits Limits first Sim Bulwark takes 40 Physical 0 damage to HP Shield absorbed 25 (+18 Cleave) (−43 Durability) Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −7 physical damage",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 40 5 8 11 5 11 40 Damage: 40 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 40 Physical 0 damage to HP Shield absorbed 0 (+13 Cleave) (−13 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 20 (+41 Cleave) (−61 Durability)",
+   "Heavy Striker (Iron) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 36 4 10 3 7 12 36 Damage: 36 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 36 Physical 18 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 0 (+11 Cleave) (−11 Durability) Keystone (Shroud) is spent (0 Durability)",
+   "Light Reach (Hardwood) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 20 5 5 1 4 5 20 Damage: 20 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Sim Bulwark takes 20 Physical 20 damage to HP Keystone (Shroud) has no Durability left Twist +13 (⚡ 18)",
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 16 5 1 4 2 4 16 Damage: 16 → 32 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 13: ignores that much armor Limit Sim Bulwark takes 32 Physical 32 damage to HP Keystone (Shroud) has no Durability left Twist +13 (⚡ 18)",
+   "Light Reach (Hardwood) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 18 3 2 3 6 4 18 Damage: 18 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Sim Bulwark takes 18 Physical 18 damage to HP Keystone (Shroud) has no Durability left Twist +13 (⚡ 18)",
+   "Light Reach (Hardwood) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 16 2 6 2 3 3 16 Damage: 16 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Sim Bulwark takes 16 Physical 0 damage to HP Shield absorbed 16 (−16 Durability)",
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 18 1 5 5 4 3 18 Damage: 18 Physical no Strengthened/Weakened Pierce 13: ignores that much armor Limit Cleave 18: object damage, hits Limits first Sim Bulwark takes 18 Physical 0 damage to HP Shield absorbed 18 (+18 Cleave) (−36 Durability)",
+   "Heavy Striker (Iron) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 34 6 5 6 11 6 34 Damage: 34 → 68 Physical Strengthened ×2 (×2) Stacks: +2 crit Cleave 54: object damage, hits Limits first Sim Bulwark takes 68 Physical 0 damage to HP Shield absorbed 0 (+24 Cleave) (−24 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −34 physical damage Keystone (Shroud) (Shroud) absorbed 0 (+30 Cleave) (−30 Durability)",
+   "Heavy Striker (Iron) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 49 12 6 11 11 9 49 Damage: 49 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 49 Physical 24 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 0 (+42 Cleave) (−42 Durability) Keystone (Shroud) is spent (0 Durability)",
+   "Heavy Striker (Iron) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 37 10 6 2 12 7 37 Damage: 37 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 37 Physical 37 damage to HP Keystone (Shroud) has no Durability left Cleave: no object in the way",
+   "Heavy Striker (Iron) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 29 9 9 4 2 5 29 Damage: 29 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 29 Physical 29 damage to HP Keystone (Shroud) has no Durability left Cleave: no object in the way",
+   "Heavy Striker (Iron) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 36 8 6 6 5 11 36 Damage: 36 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 36 Physical 36 damage to HP Keystone (Shroud) has no Durability left Cleave: no object in the way"
+  ],
+  "casts": [
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Reflect 2 + Layered 1 + Reactive 1 − TR 2) · 45 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range unt",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Empower 2 + Crush 1 − TR 1) · 45 Energy Spell Power ×4 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 4d12 physical damage to them. In addition, the target’s",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls"
+  ]
+ },
+ {
+  "id": "swarm-magic-r1",
+  "group": "swarm-magic",
+  "rotation": 1,
+  "seconds": 29,
+  "winner": "monsters",
+  "pass": "tank-build2-react",
+  "rounds": 1,
+  "partyLeft": 0,
+  "monstersLeft": 10,
+  "followups": 0,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "cast:Cut + Slam": 4,
+   "mod:Bleed": 13,
+   "defend:dodge": 22,
+   "cast:Cut + Stab": 9,
+   "cast:Burden": 2,
+   "mod:Burden": 2,
+   "cast:Force + Slam": 5,
+   "mod:Crush": 5,
+   "mod:Beatdown": 5,
+   "cast:Force + Stab": 2,
+   "mod:Pinpoint": 1,
+   "opt:dir=down": 2
+  },
+  "hp": {
+   "Sim Bulwark#eLau": "376/792",
+   "Sim Goblin Cutter#FZ48": "513/513",
+   "Sim Goblin Cutter#ydML": "513/513",
+   "Sim Goblin Cutter#g0ix": "513/513",
+   "Sim Goblin Stabber#V7kz": "513/513",
+   "Sim Goblin Stabber#2UkA": "513/513",
+   "Sim Goblin Stabber#2fSl": "513/513",
+   "Sim Goblin Basher#LRBh": "513/513",
+   "Sim Goblin Basher#7GAt": "513/513",
+   "Sim Goblin Pusher#Bpru": "513/513",
+   "Sim Goblin Pusher#eAUY": "513/513"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Cut + Slam [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 110,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Goblin Cutter"
+    ]
+   },
+   "Spell: Cut + Stab [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Spell: Force [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Basher",
+     "Goblin Pusher"
+    ]
+   },
+   "Spell: Force + Slam [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 3,
+    "damage": 122,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Goblin Basher"
+    ]
+   },
+   "Spell: Force + Stab [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 184,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Pusher"
+    ],
+    "force": 156
+   },
+   "Spell: Cut + Slam": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 260,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "dealt": 184,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 122,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 110,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 1
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Slam": 3,
+     "mod:Bleed": 3
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 22
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Stab": 3,
+     "mod:Bleed": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Stab": 3,
+     "mod:Bleed": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Burden": 1,
+     "mod:Burden": 1,
+     "cast:Force + Slam": 2,
+     "mod:Crush": 2,
+     "mod:Beatdown": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Stab": 3,
+     "mod:Bleed": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Burden": 1,
+     "mod:Burden": 1,
+     "cast:Force + Stab": 2,
+     "mod:Pinpoint": 1
+    },
+    "knockbacks": {
+     "down": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Force + Slam": 3,
+     "mod:Crush": 3,
+     "mod:Beatdown": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 1,
+    "used": {
+     "cast:Cut + Slam": 1,
+     "mod:Bleed": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Cutter": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Pusher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Goblin Cutter": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Pusher": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 1,
+    "partyHp": 376,
+    "monsterHp": 5130,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 156,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 416,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 260,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Bulwark": 2
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Cut + Slam — Damage to Sim Bulwark Base damage · Physical 8d12 8d12 30 2 3 3 5 5 2 7 3 30 Damage: 30 Physical no Strengthened/Weakened Sim Bulwark takes 30 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −15 physical damage",
+   "Cut + Stab — Damage to Sim Bulwark Base damage · Physical 12d6 12d6 45 6 4 5 5 2 5 1 5 5 3 3 1 45 Damage: 45 Physical no Strengthened/Weakened Sim Bulwark takes 45 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 22 (−22 Durability)",
+   "Cut + Stab — Damage to Sim Bulwark Base damage · Physical 12d6 12d6 46 3 4 3 5 2 6 4 4 3 3 3 6 46 Damage: 46 → 115 Physical Strengthened ×3 (×2.5) Stacks: +1 added, +2 crit +1 Strengthened (crit) Sim Bulwark takes 115 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 57 → 28 Keystone (Shroud) (Shroud) absorbed 28 (−28 Durability)",
+   "Force + Slam — Damage to Sim Bulwark Base damage · Physical 8d12 8d12 64 2 3 9 12 10 7 11 10 64 Damage: 64 Physical no Strengthened/Weakened Sim Bulwark takes 64 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 32 (−32 Durability)",
+   "Cut + Stab — Damage to Sim Bulwark Base damage · Physical 12d6 12d6 36 2 1 5 3 4 5 2 1 5 5 2 1 36 Damage: 36 Physical no Strengthened/Weakened Sim Bulwark takes 36 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 18 (−18 Durability)",
+   "Cut + Stab — Damage to Sim Bulwark Base damage · Physical 12d6 12d6 39 6 1 5 2 5 4 2 2 1 1 5 5 39 Damage: 39 → 97 Physical Strengthened ×3 (×2.5) Stacks: +1 added, +2 crit +1 Strengthened (crit) Sim Bulwark takes 97 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 48 → 24 Keystone (Shroud) (Shroud) absorbed 24 (−24 Durability)",
+   "Force + Stab — Damage to Sim Bulwark Base damage · Physical 8d10 8d10 50 9 9 4 10 6 1 5 6 50 Damage: 50 → 100 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 100 Physical 28 damage to HP Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Force + Stab — Damage to Sim Bulwark Base damage · Physical 8d10 8d10 23 4 2 4 2 8 1 1 1 23 Damage: 23 → 46 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 46 Physical 0 damage to HP Diamond: Weakened 46 → 23 Keystone (Shroud) (Shroud) absorbed 23 (−23 Durability)",
+   "Force + Slam — Damage to Sim Bulwark Base damage · Physical 8d12 8d12 49 5 2 9 10 8 5 9 1 49 Damage: 49 → 122 Physical Strengthened ×3 (×2.5) Stacks: +1 added, +2 crit Crush: +1 Strengthened (low dodge) Sim Bulwark takes 122 Physical 122 damage to HP Keystone (Shroud) has no Durability left",
+   "Cut + Slam — Damage to Sim Bulwark Base damage · Physical 8d12 8d12 55 6 3 8 8 5 10 3 12 55 Damage: 55 → 110 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 110 Physical 110 damage to HP Keystone (Shroud) has no Durability left Bleed: Sim Bulwark takes 110 direct physical damage again at the start of their next turn. Sim Bulwark's attack rolls suffer −40 die size until the start of your next turn."
+  ],
+  "casts": []
+ },
+ {
+  "id": "swarm-mixed-r1",
+  "group": "swarm-mixed",
+  "rotation": 1,
+  "seconds": 39,
+  "winner": "monsters",
+  "pass": "tank-build2-react",
+  "rounds": 1,
+  "partyLeft": 0,
+  "monstersLeft": 10,
+  "followups": 5,
+  "knockbacks": {
+   "down": 1
+  },
+  "used": {
+   "berserk": 3,
+   "Seeing Red": 3,
+   "opt:rend": 3,
+   "defend:dodge": 26,
+   "recoverEnergy": 4,
+   "cast:Burden": 2,
+   "mod:Burden": 2,
+   "cast:Force + Slam": 2,
+   "mod:Crush": 4,
+   "mod:Beatdown": 2,
+   "cast:Cut + Slam": 4,
+   "mod:Bleed": 7,
+   "cast:Shield": 1,
+   "mod:Reflect": 1,
+   "mod:Layered": 1,
+   "mod:Reactive": 1,
+   "cast:Slam": 2,
+   "mod:Empower": 1,
+   "cast:Cut + Stab": 3,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 1,
+   "opt:shank3=pierce": 1,
+   "opt:thrust": 2,
+   "cast:Force + Stab": 2,
+   "mod:Pinpoint": 1,
+   "opt:dir=down": 1
+  },
+  "hp": {
+   "Sim Bulwark#mgWw": "302/792",
+   "Sim Goblin Hacker#FsNH": "444/468",
+   "Sim Goblin Hacker#EfrF": "468/468",
+   "Sim Goblin Hacker#55pn": "468/468",
+   "Sim Goblin Lancer#URdk": "468/468",
+   "Sim Goblin Lancer#4EWJ": "468/468",
+   "Sim Goblin Cutter#RUJH": "513/513",
+   "Sim Goblin Cutter#z35r": "513/513",
+   "Sim Goblin Stabber#J5ck": "513/513",
+   "Sim Goblin Basher#YSe6": "513/513",
+   "Sim Goblin Pusher#E5Od": "513/513"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Heavy Striker": {
+    "attacks": 3,
+    "followups": 3,
+    "hits": 4,
+    "crits": 3,
+    "misses": 2,
+    "damage": 130,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Goblin Hacker"
+    ]
+   },
+   "Spell: Force [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Basher",
+     "Goblin Pusher"
+    ]
+   },
+   "Spell: Force + Slam [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Basher"
+    ]
+   },
+   "Spell: Cut + Slam [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 4,
+    "misses": 0,
+    "damage": 96,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Goblin Cutter"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 24,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Cut + Stab [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 2,
+    "followups": 2,
+    "hits": 2,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Lancer"
+    ]
+   },
+   "Spell: Force + Stab [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 264,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Pusher"
+    ],
+    "force": 135
+   },
+   "Spell: Cut + Slam": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 31
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 24,
+    "taken": 355,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 130,
+    "taken": 24,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "dealt": 264,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 96,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 1
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 90
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24,
+     "cast:Shield": 1,
+     "mod:Reflect": 1,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "cast:Slam": 2,
+     "mod:Empower": 1,
+     "mod:Crush": 2
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Goblin Basher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Burden": 1,
+     "mod:Burden": 1,
+     "cast:Force + Slam": 2,
+     "mod:Crush": 2,
+     "mod:Beatdown": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Slam": 3,
+     "mod:Bleed": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 2
+    },
+    "turnMoved": 80.15609770940699
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Stab": 3,
+     "mod:Bleed": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 90,
+    "shank": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100.12492197250394,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 100.12492197250394
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Burden": 1,
+     "mod:Burden": 1,
+     "cast:Force + Stab": 2,
+     "mod:Pinpoint": 1
+    },
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 1,
+    "used": {
+     "cast:Cut + Slam": 1,
+     "mod:Bleed": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Hacker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Striker (Iron)"
+   ],
+   "Sim Goblin Lancer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Reach (Hardwood)"
+   ],
+   "Sim Goblin Cutter": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Pusher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Goblin Hacker": [
+    "Light Armor (Soft Leather): 80/80",
+    "Heavy Striker (Iron): 300/300"
+   ],
+   "Sim Goblin Lancer": [
+    "Light Armor (Soft Leather): 80/80",
+    "Light Reach (Hardwood): 150/150"
+   ],
+   "Sim Goblin Cutter": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Pusher": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 4905,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 1,
+    "partyHp": 302,
+    "monsterHp": 4881,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 135,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 490,
+   "monsters": 24
+  },
+  "directTaken": {
+   "party": 355,
+   "monsters": 24
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Striker (Iron)": 3,
+    "prompt: Heavy Striker (Iron) — Solitary follow-up": 3,
+    "prompt: Light Reach (Hardwood)": 2,
+    "prompt: Light Reach (Hardwood) — Solitary follow-up (Dis)": 2,
+    "prompt: Force — Sim Bulwark": 1
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Force + Slam — Damage to Sim Bulwark Base damage · Physical 8d12 8d12 61 6 9 4 6 9 6 12 9 61 Damage: 61 Physical no Strengthened/Weakened Sim Bulwark takes 61 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −30 physical damage",
+   "Cut + Slam — Damage to Sim Bulwark Base damage · Physical 8d12 8d12 67 12 11 8 5 3 11 12 5 67 Damage: 67 → 134 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 134 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 67 (−67 Durability)",
+   "Cut + Slam — Damage to Sim Bulwark Base damage · Physical 8d12 8d12 50 6 2 12 7 5 3 11 4 50 Damage: 50 → 100 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 100 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 50 → 25 Keystone (Shroud) (Shroud) absorbed 25 (−25 Durability)",
+   "Cut + Slam — Damage to Sim Bulwark Base damage · Physical 8d12 8d12 48 12 4 3 11 4 1 1 12 48 Damage: 48 → 96 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 96 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 48 → 24 Keystone (Shroud) (Shroud) absorbed 24 (−24 Durability)",
+   "Cut + Stab — Damage to Sim Bulwark Base damage · Physical 12d6 12d6 36 5 3 1 3 2 4 5 3 5 1 3 1 36 Damage: 36 → 90 Physical Strengthened ×3 (×2.5) Stacks: +1 added, +2 crit +1 Strengthened (crit) Sim Bulwark takes 90 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Shield absorbed 45 (−45 Durability) Reflect: 45 back",
+   "Cut + Stab — Damage to Sim Bulwark Base damage · Physical 12d6 12d6 41 3 6 4 1 3 2 2 4 5 3 5 3 41 Damage: 41 → 102 Physical Strengthened ×3 (×2.5) Stacks: +1 added, +2 crit +1 Strengthened (crit) Sim Bulwark takes 102 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Shield absorbed 31 (−31 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −10 physical damage Reflect: 31 back",
+   "Light Reach (Hardwood) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 12 1 5 3 2 1 12 Damage: 12 → 24 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 27: ignores that much armor Limit Cleave 18: object damage, hits Limits first Sim Bulwark takes 24 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 12 (+18 Cleave) (−30 Durability)",
+   "Light Reach (Hardwood) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 5d6 5d6 17 6 3 1 1 6 17 Damage: 17 → 34 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 13: ignores that much armor Limit Sim Bulwark takes 34 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 17 → 8 Keystone (Shroud) (Shroud) absorbed 8 (−8 Durability)",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 21 9 2 3 5 2 21 Damage: 21 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Bulwark takes 21 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 10 (+54 Cleave) (−128 Durability)",
+   "Heavy Striker (Iron) — Solitary follow-up — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 14 1 2 6 2 3 14 Damage: 14 → 28 Physical Strengthened ×2 (×2) Stacks: +2 crit Cleave 54: object damage, hits Limits first Sim Bulwark takes 28 Physical 0 damage to HP Diamond: Weakened 28 → 14 Keystone (Shroud) (Shroud) absorbed 14 (+54 Cleave) (−68 Durability)",
+   "Heavy Striker (Iron) — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 32 8 5 4 8 7 32 Damage: 32 → 64 Physical Strengthened ×2 (×2) Stacks: +2 crit Cleave 54: object damage, hits Limits first Sim Bulwark takes 64 Physical 64 damage to HP Keystone (Shroud) (Shroud) absorbed 0 (+41 Cleave) (−82 Durability) Keystone (Shroud) is spent (0 Durability)",
+   "Heavy Striker (Iron) — Solitary follow-up — Damage to Sim Bulwark Base damage · Physical 5d12 5d12 33 6 8 1 9 9 33 Damage: 33 → 66 Physical Strengthened ×2 (×2) Stacks: +2 crit Cleave 54: object damage, hits Limits first Sim Bulwark takes 66 Physical 66 damage to HP Keystone (Shroud) has no Durability left Cleave: no object in the way",
+   "Force + Stab — Damage to Sim Bulwark Base damage · Physical 8d10 8d10 42 1 7 7 4 10 6 4 3 42 Damage: 42 → 84 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 84 Physical 84 damage to HP Keystone (Shroud) has no Durability left",
+   "Force + Stab — Damage to Sim Bulwark Base damage · Physical 8d10 8d10 45 5 10 1 4 2 9 7 7 45 Damage: 45 Physical no Strengthened/Weakened Sim Bulwark takes 45 Physical 45 damage to HP Keystone (Shroud) has no Durability left",
+   "Cut + Slam — Damage to Sim Bulwark Base damage · Physical 8d12 8d12 48 9 2 8 2 9 10 2 6 48 Damage: 48 → 96 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 96 Physical 96 damage to HP Keystone (Shroud) has no Durability left Bleed: Sim Bulwark takes 96 direct physical damage again at the start of their next turn. Sim Bulwark's attack rolls suffer −40 die size until the start of your next turn."
+  ],
+  "casts": [
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Reflect 2 + Layered 1 + Reactive 1 − TR 2) · 45 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range unt",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Empower 2 + Crush 1 − TR 1) · 45 Energy Spell Power ×4 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 4d12 physical damage to them. In addition, the target’s",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls"
+  ]
+ },
+ {
+  "id": "raiders-martial-r1",
+  "group": "raiders-martial",
+  "rotation": 1,
+  "seconds": 179,
+  "winner": "unfinished",
+  "pass": "tank-build2-react",
+  "rounds": 9,
+  "partyLeft": 1,
+  "monstersLeft": 5,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "Brace": 3,
+   "Mark": 2,
+   "opt:pepper=1": 16,
+   "opt:spinDown": 4,
+   "defend:dodge": 116,
+   "quickload:speed": 15,
+   "limber:skipped": 15,
+   "opt:through=str": 6,
+   "opt:letItRip": 10,
+   "limber": 14,
+   "recoverEnergy": 3,
+   "Trudge": 1,
+   "opt:quickStrike": 7,
+   "Eviscerate": 1,
+   "properStance": 5,
+   "opt:takeAim=adv": 1,
+   "opt:takeAim=str": 1,
+   "cast:Shield": 8,
+   "mod:Reflect": 3,
+   "mod:Layered": 6,
+   "mod:Reactive": 1,
+   "markShot": 2,
+   "cast:Slam": 16,
+   "mod:Empower": 1,
+   "mod:Crush": 16,
+   "opt:prepared=headshot": 1,
+   "opt:fish": 7,
+   "opt:through=cleave": 6,
+   "Bodyslam": 7,
+   "followup:quickload": 4,
+   "opt:prepared=str": 1,
+   "properStance:skipped": 3
+  },
+  "hp": {
+   "Sim Bulwark#MJEs": "460/792",
+   "Sim Raider Brute#zKiS": "720/720",
+   "Sim Raider Cutter#NKrx": "720/720",
+   "Sim Raider Gunner#PkI8": "515/585",
+   "Sim Raider Sniper#314M": "585/585",
+   "Sim Raider Bomber#nmE9": "585/585"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Rapid": {
+    "attacks": 16,
+    "followups": 2,
+    "hits": 13,
+    "crits": 4,
+    "misses": 5,
+    "damage": 4,
+    "ap": 54,
+    "kills": 0,
+    "users": [
+     "Raider Gunner"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 12,
+    "damage": 14,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 92,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Heavy Assault": {
+    "attacks": 16,
+    "followups": 12,
+    "hits": 9,
+    "crits": 3,
+    "misses": 19,
+    "damage": 121,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "Raider Bomber"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 12,
+    "crits": 8,
+    "misses": 4,
+    "damage": 70,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Longshot": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 10,
+    "damage": 39,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "Raider Sniper"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Soft Leather)": {
+    "hits": 9,
+    "absorbed": 200
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Gunner",
+    "dealt": 4,
+    "taken": 70,
+    "hits": 13,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 70,
+    "taken": 270,
+    "hits": 18,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 14,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 92,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "dealt": 121,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 28
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "dealt": 39,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 16
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Gunner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "Mark": 2,
+     "limber:skipped": 13,
+     "markShot": 2,
+     "defend:dodge": 16,
+     "limber": 4
+    },
+    "turnMoved": 0,
+    "reloads": 2
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 100,
+     "cast:Shield": 8,
+     "mod:Reflect": 3,
+     "mod:Layered": 6,
+     "mod:Reactive": 1,
+     "cast:Slam": 16,
+     "mod:Empower": 1,
+     "mod:Crush": 16
+    },
+    "turnMoved": 0,
+    "casts": 24
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90,
+    "attacks": 15,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "limber": 2,
+     "recoverEnergy": 1,
+     "limber:skipped": 1
+    },
+    "turnMoved": 0,
+    "thr": 1
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 15,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "Trudge": 1,
+     "Eviscerate": 1,
+     "recoverEnergy": 2,
+     "Bodyslam": 7
+    },
+    "turnMoved": 0,
+    "slams": 7
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 28,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "properStance": 5,
+     "limber": 8,
+     "limber:skipped": 1,
+     "followup:quickload": 4,
+     "properStance:skipped": 3
+    },
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 24
+   },
+   {
+    "name": "Sim Raider Sniper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 0,
+    "reloads": 16,
+    "prep2": 0
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Heavy Circular (Steel)",
+    "Medium Armor (Hide)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Raider Gunner": [
+    "Unarmed",
+    "Medium Armor (Soft Leather)",
+    "Heavy Rapid (Steel)"
+   ],
+   "Sim Raider Sniper": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Longshot (Steel)"
+   ],
+   "Sim Raider Bomber": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Assault (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 400/400",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Heavy Circular (Steel): 630/630",
+    "Medium Armor (Hide): 150/150",
+    "Light Thrasher (Hardwood): 30/30"
+   ],
+   "Sim Raider Gunner": [
+    "Medium Armor (Soft Leather): 0/200 BROKEN",
+    "Heavy Rapid (Steel): 630/630"
+   ],
+   "Sim Raider Sniper": [
+    "Light Armor (Soft Leather): 100/100",
+    "Heavy Longshot (Steel): 630/630"
+   ],
+   "Sim Raider Bomber": [
+    "Medium Armor (Hide): 150/150",
+    "Heavy Assault (Steel): 630/630"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 3195,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 681,
+    "monsterHp": 3195,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 677,
+    "monsterHp": 3195,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 677,
+    "monsterHp": 3188,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 677,
+    "monsterHp": 3183,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 530,
+    "monsterHp": 3183,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 530,
+    "monsterHp": 3160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 493,
+    "monsterHp": 3125,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 460,
+    "monsterHp": 3125,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 460,
+    "monsterHp": 3125,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 62,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 332,
+   "monsters": 70
+  },
+  "directTaken": {
+   "party": 270,
+   "monsters": 70
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Rapid (Steel)": 16,
+    "wait: Heavy Rapid (Steel) is empty": 15,
+    "prompt: Heavy Circular (Steel)": 15,
+    "prompt: Heavy Swift (Steel)": 8,
+    "confirm: Eviscerate": 1,
+    "prompt: Heavy Assault (Steel)": 16,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 6,
+    "prompt: Heavy Rapid (Steel) — Mark shot": 2,
+    "prompt: Heavy Longshot (Steel)": 16,
+    "prompt: Bodyslam": 7,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 6
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 43 12 8 4 5 9 5 43 Base damage (shot 2) · Physical 6d12 6d12 48 6 12 8 1 9 12 48 Damage: 91 Physical (2 shots) no Strengthened/Weakened Sim Bulwark takes 91 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −45 physical damage",
+   "Heavy Circular (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 48 8 9 5 12 2 12 48 Damage: 48 → 72 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Cleave 21: object damage, hits Limits first Sim Bulwark takes 72 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 36 (+21 Cleave) (−57 Durability) Let it Rip! — the damage repeats Sim Bulwark takes 72 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 36 (+21 Cleave) (−57 Durability)",
+   "Heavy Swift (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 48 11 8 7 7 9 6 48 Damage: 48 → 72 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Bulwark takes 72 Physical 36 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened",
+   "Heavy Assault (Steel) — Solitary follow-up — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 43 6 9 7 8 10 3 43 Damage: 43 Physical no Strengthened/Weakened Pierce 16: ignores that much armor Limit Sim Bulwark takes 43 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 21 (−21 Durability)",
+   "Heavy Assault (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 40 9 9 6 4 4 8 40 Damage: 40 → 60 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 16: ignores that much armor Limit Sim Bulwark takes 60 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 30 → 15 Keystone (Shroud) (Shroud) absorbed 15 (−15 Durability)",
+   "Heavy Assault (Steel) — Solitary follow-up — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 26 8 5 5 2 3 3 26 Damage: 26 Physical no Strengthened/Weakened Pierce 16: ignores that much armor Limit Sim Bulwark takes 26 Physical 0 damage to HP Diamond: Weakened 26 → 13 Keystone (Shroud) (Shroud) absorbed 13 (−13 Durability)",
+   "Heavy Rapid (Steel) — Mark shot — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 58 7 10 11 6 12 12 58 Damage: 58 → 116 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 116 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −58 physical damage",
+   "Heavy Longshot (Steel) — Damage to Sim Bulwark Base damage · Physical 6d14 6d14 52 14 2 13 8 10 5 52 Damage: 52 → 78 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 32: ignores that much armor Limit Cleave 65: object damage, hits Limits first Sim Bulwark takes 78 Physical 39 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 0 (+40 Cleave) (−40 Durability)",
+   "Heavy Longshot (Steel) — Damage to Sim Bulwark Base damage · Physical 6d14 6d14 45 4 12 14 5 3 7 45 Damage: 45 Physical no Strengthened/Weakened Pierce 16: ignores that much armor Limit Cleave 21: object damage, hits Limits first Sim Bulwark takes 45 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 22 → 11 Keystone (Shroud) (Shroud) absorbed 11 (+21 Cleave) (−32 Durability)",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 34 11 1 7 5 3 7 34 Base damage (shot 2) · Physical 6d12 6d12 36 4 2 7 10 7 6 36 Base damage (shot 3) · Physical 6d12 6d12 36 5 3 4 6 9 9 36 Base damage (shot 4) · Physical 6d12 6d12 46 11 6 10 11 3 5 46 Damage: 152 Physical (4 shots) no Strengthened/Weakened Sim Bulwark takes 152 Physical 4 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 39 5 6 9 1 9 9 39 Base damage (shot 2) · Physical 6d12 6d12 22 1 7 3 1 3 7 22 Damage: 61 → 122 Physical (2 shots) Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 122 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 61 → 30 Keystone (Shroud) (Shroud) absorbed 30 (−30 Durability)",
+   "Heavy Assault (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 42 4 9 3 11 10 5 42 Damage: 42 → 84 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 16: ignores that much armor Limit Sim Bulwark takes 84 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 42 (−42 Durability)",
+   "Heavy Longshot (Steel) — Damage to Sim Bulwark Base damage · Physical 6d14 6d14 49 4 8 6 13 13 5 49 Damage: 49 → 73 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 16: ignores that much armor Limit Cleave 21: object damage, hits Limits first Sim Bulwark takes 73 Physical 0 damage to HP Shield absorbed 0 (+4 Cleave) (−4 Durability) Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −36 physical damage Keystone (Shroud) (Shroud) absorbed 0 (+17 Cleave) (−17 Durability)",
+   "Heavy Circular (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 35 7 6 5 11 5 1 35 Damage: 35 → 52 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Cleave 21: object damage, hits Limits first Sim Bulwark takes 52 Physical 0 damage to HP Shield absorbed 0 (+16 Cleave) (−16 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 26 (+5 Cleave) (−31 Durability) Let it Rip! — the damage repeats Sim Bulwark takes 52 Physical 0 damage to HP Shield absorbed 0 (+16 Cleave) (−16 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 26 (+5 Cleave) (−31 Durability)",
+   "Heavy Assault (Steel) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 25 2 7 8 2 5 1 25 Damage: 25 Physical no Strengthened/Weakened Pierce 16: ignores that much armor Limit Sim Bulwark takes 25 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 12 (−12 Durability)",
+   "Heavy Longshot (Steel) — Damage to Sim Bulwark Base damage · Physical 6d14 6d14 46 9 1 13 10 12 1 46 Damage: 46 Physical no Strengthened/Weakened Pierce 16: ignores that much armor Limit Cleave 21: object damage, hits Limits first Sim Bulwark takes 46 Physical 0 damage to HP Shield absorbed 0 (+4 Cleave) (−4 Durability) Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −23 physical damage Keystone (Shroud) (Shroud) absorbed 0 (+17 Cleave) (−17 Durability)",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 39 7 3 12 8 8 1 39 Base damage (shot 2) · Physical 6d12 6d12 35 5 3 9 6 5 7 35 Damage: 74 Physical (2 shots) no Strengthened/Weakened Sim Bulwark takes 74 Physical 0 damage to HP Shield absorbed 16 (−16 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 29 (−29 Durability) Reflect: 16 back",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 25 9 6 1 1 5 3 25 Base damage (shot 2) · Physical 6d12 6d12 28 5 3 1 8 6 5 28 Damage: 53 Physical (2 shots) no Strengthened/Weakened Sim Bulwark takes 53 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 26 → 13 Keystone (Shroud) (Shroud) absorbed 13 (−13 Durability)",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 45 7 11 5 6 9 7 45 Base damage (shot 2) · Physical 6d12 6d12 39 5 12 2 8 4 8 39 Base damage (shot 3) · Physical 6d12 6d12 46 10 1 3 9 12 11 46 Base damage (shot 4) · Physical 6d12 6d12 26 4 8 4 3 3 4 26 Damage: 156 Physical (4 shots) no Strengthened/Weakened Sim Bulwark takes 156 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −72 physical damage Keystone (Shroud) (Shroud) absorbed 6 (−6 Durability)",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 36 3 1 9 11 4 8 36 Base damage (shot 2) · Physical 6d12 6d12 44 12 6 10 1 3 12 44 Damage: 80 → 160 Physical (2 shots) Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 160 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 80 → 40 Keystone (Shroud) (Shroud) absorbed 40 (−40 Durability)",
+   "Bodyslam — Damage to Sim Bulwark Base damage · Physical 98 98 Damage: 98 → 196 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 196 Physical 26 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Heavy Assault (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 27 1 1 10 3 9 3 27 Damage: 27 → 54 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 16: ignores that much armor Limit Sim Bulwark takes 54 Physical 11 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 16 (−16 Durability) Keystone (Shroud) is spent (0 Durability)",
+   "Heavy Assault (Steel) — Solitary follow-up (Dis) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 34 3 8 4 5 6 8 34 Damage: 34 → 68 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 16: ignores that much armor Limit Sim Bulwark takes 68 Physical 68 damage to HP Keystone (Shroud) has no Durability left",
+   "Heavy Assault (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 42 5 3 12 7 5 10 42 Damage: 42 Physical no Strengthened/Weakened Pierce 16: ignores that much armor Limit Sim Bulwark takes 42 Physical 42 damage to HP Keystone (Shroud) has no Durability left",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 31 7 6 8 2 7 1 31 Base damage (shot 2) · Physical 6d12 6d12 40 10 8 5 3 11 3 40 Damage: 71 Physical (2 shots) no Strengthened/Weakened Sim Bulwark takes 71 Physical 0 damage to HP Shield absorbed 71 (−71 Durability)",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 35 5 12 1 3 2 12 35 Base damage (shot 2) · Physical 6d12 6d12 51 6 8 12 7 7 11 51 Damage: 86 Physical (2 shots) no Strengthened/Weakened Sim Bulwark takes 86 Physical 0 damage to HP Shield absorbed 5 (−5 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −40 physical damage",
+   "Heavy Longshot (Steel) — Damage to Sim Bulwark Base damage · Physical 6d14 6d14 36 9 10 1 4 8 4 36 Damage: 36 Physical no Strengthened/Weakened Pierce 16: ignores that much armor Limit Cleave 21: object damage, hits Limits first Sim Bulwark takes 36 Physical 0 damage to HP Shield absorbed 36 (+21 Cleave) (−57 Durability)",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 53 12 3 11 10 7 10 53 Base damage (shot 2) · Physical 6d12 6d12 49 1 11 11 7 10 9 49 Damage: 102 → 204 Physical (2 shots) Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 204 Physical 0 damage to HP Shield absorbed 19 (−19 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −72 physical damage Keystone (Shroud) (Shroud) absorbed 20 (−20 Durability)",
+   "Heavy Swift (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 50 6 10 8 12 9 5 50 Damage: 50 → 75 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Bulwark takes 75 Physical 37 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened",
+   "Heavy Assault (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 43 4 12 1 8 10 8 43 Damage: 43 Physical no Strengthened/Weakened Pierce 16: ignores that much armor Limit Sim Bulwark takes 43 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 21 (−21 Durability)",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 39 6 9 2 8 8 6 39 Base damage (shot 2) · Physical 6d12 6d12 46 4 6 12 12 11 1 46 Damage: 85 Physical (2 shots) no Strengthened/Weakened Sim Bulwark takes 85 Physical 0 damage to HP Shield absorbed 76 (−76 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −4 physical damage",
+   "Heavy Rapid (Steel) — Damage to Sim Bulwark Base damage (shot 1) · Physical 6d12 6d12 39 7 11 12 3 3 3 39 Base damage (shot 2) · Physical 6d12 6d12 36 5 5 10 10 3 3 36 Damage: 75 Physical (2 shots) no Strengthened/Weakened Sim Bulwark takes 75 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 37 (−37 Durability)",
+   "Heavy Circular (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 42 2 12 11 8 5 4 42 Damage: 42 Physical no Strengthened/Weakened Cleave 65: object damage, hits Limits first Sim Bulwark takes 42 Physical 14 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 7 (+65 Cleave) (−72 Durability)",
+   "Heavy Swift (Steel) — Damage to Sim Bulwark Base damage · Physical 6d12 6d12 26 9 1 5 4 4 3 26 Damage: 26 → 39 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Bulwark takes 39 Physical 19 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened",
+   "Heavy Longshot (Steel) — Damage to Sim Bulwark Base damage · Physical 6d14 6d14 49 9 3 10 10 8 9 49 Damage: 49 → 98 Physical Strengthened ×2 (×2) Stacks: +2 crit Pierce 16: ignores that much armor Limit Cleave 21: object damage, hits Limits first Sim Bulwark takes 98 Physical 0 damage to HP Shield absorbed 19 (+21 Cleave) (−40 Durability) Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −39 physical damage"
+  ],
+  "casts": [
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Reflect 2 + Layered 1 + Reactive 1 − TR 2) · 45 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range unt",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Empower 2 + Crush 1 − TR 1) · 45 Energy Spell Power ×4 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 4d12 physical damage to them. In addition, the target’s",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls"
+  ]
+ },
+ {
+  "id": "raiders-magic-r1",
+  "group": "raiders-magic",
+  "rotation": 1,
+  "seconds": 42,
+  "winner": "monsters",
+  "pass": "tank-build2-react",
+  "rounds": 2,
+  "partyLeft": 0,
+  "monstersLeft": 5,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Glob": 6,
+   "mod:Pinpoint": 9,
+   "defend:dodge": 31,
+   "cast:Flame + Glob": 6,
+   "mod:Ignition": 11,
+   "mod:Catalyst": 1,
+   "cast:Crackle": 2,
+   "mod:Multicast": 4,
+   "mod:Electrify": 2,
+   "multicast": 2,
+   "cast:Shield": 2,
+   "mod:Reflect": 1,
+   "mod:Layered": 2,
+   "mod:Reactive": 1,
+   "cast:Slam": 4,
+   "mod:Empower": 1,
+   "mod:Crush": 3,
+   "cast:Frost": 4,
+   "mod:Frostbite": 8,
+   "mod:Chill": 4,
+   "cast:Flame": 5,
+   "recoverEnergy": 2
+  },
+  "hp": {
+   "Sim Bulwark#JHIw": "357/792",
+   "Sim Raider Pyro#EetN": "765/765",
+   "Sim Raider Froster#2Q77": "765/765",
+   "Sim Raider Storm#DWqX": "765/765",
+   "Sim Raider Spitter#UizH": "765/765",
+   "Sim Raider Echo#Uy28": "538/540"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Glob [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Froster"
+    ]
+   },
+   "Spell: Flame + Glob [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Spitter"
+    ]
+   },
+   "Spell: Crackle [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 10,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Storm"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 2,
+    "damage": 2,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Frost [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Echo"
+    ]
+   },
+   "Spell: Flame [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 2,
+    "damage": 100,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "Raider Pyro"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 1,
+    "absorbed": 20
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Froster",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 2,
+    "taken": 110,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Raider Spitter",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Raider Storm",
+    "dealt": 10,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Echo",
+    "dealt": 0,
+    "taken": 2,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "dealt": 100,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 5
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Glob": 6,
+     "mod:Pinpoint": 3
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 27,
+     "cast:Shield": 2,
+     "mod:Reflect": 1,
+     "mod:Layered": 2,
+     "mod:Reactive": 1,
+     "cast:Slam": 4,
+     "mod:Empower": 1,
+     "mod:Crush": 3
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "Sim Raider Spitter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Flame + Glob": 6,
+     "mod:Ignition": 6,
+     "mod:Catalyst": 1,
+     "mod:Pinpoint": 1
+    }
+   },
+   {
+    "name": "Sim Raider Storm",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Crackle": 2,
+     "mod:Pinpoint": 2,
+     "mod:Multicast": 2,
+     "mod:Electrify": 2,
+     "multicast": 2
+    }
+   },
+   {
+    "name": "Sim Raider Echo",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Frost": 4,
+     "mod:Frostbite": 8,
+     "mod:Chill": 4,
+     "mod:Multicast": 2
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 5,
+    "used": {
+     "cast:Flame": 5,
+     "mod:Pinpoint": 3,
+     "mod:Ignition": 5,
+     "recoverEnergy": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Pyro": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Froster": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Storm": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Spitter": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Echo": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Raider Pyro": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Froster": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Storm": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Spitter": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Echo": [
+    "Light Armor (Soft Leather): 80/100"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 792,
+    "monsterHp": 3598,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 357,
+    "monsterHp": 3598,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 325,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 435,
+   "monsters": 2
+  },
+  "directTaken": {
+   "party": 110,
+   "monsters": 2
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Glob — Damage to Sim Bulwark Base damage · Acid 6d8 6d8 31 8 1 8 4 8 2 31 Damage: 31 Acid no Strengthened/Weakened Sim Bulwark takes 31 Acid 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Obsidian): −15 elemental damage Sim Bulwark gets 31 Stain stacks.",
+   "Crackle — Damage to Sim Bulwark Base damage · Radiation 6d12 6d12 39 10 5 2 2 10 10 39 Damage: 39 → 58 Radiation Strengthened ×1 (×1.5) Stacks: +1 added Electrify: Strengthened (first damage to them this turn) Sim Bulwark takes 58 Radiation 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 29 (−29 Durability) Chain (1 Disadvantage)",
+   "Frost — Damage to Sim Bulwark Base damage · Cold 4d8 4d8 17 8 2 2 5 17 Damage: 17 Cold no Strengthened/Weakened Sim Bulwark takes 17 Cold 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Shield absorbed 8 (−8 Durability) Frostbite: +78 Energy removed (8d12 = 78) Sim Bulwark loses 45 Energy (0 left). Sim Bulwark takes 142 Cold 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Shield absorbed 16 (−16 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Obsidian): −27 elemental damage Reflect: 8 back",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 47 10 1 11 12 5 8 47 Damage: 47 Heat no Strengthened/Weakened Sim Bulwark takes 47 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 23 (−23 Durability) Sim Bulwark gets 47 Ignite stacks. Ignition: 108 Ignite stacks trigger. Sim Bulwark takes 108 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 54 (−54 Durability)",
+   "Glob — Damage to Sim Bulwark Base damage · Acid 6d8 6d8 28 8 5 2 4 5 4 28 Damage: 28 → 56 Acid Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 56 Acid 0 damage to HP Keystone (Shroud) (Shroud) absorbed 56 (−56 Durability) Sim Bulwark gets 56 Stain stacks.",
+   "Crackle — Damage to Sim Bulwark Base damage · Radiation 6d12 6d12 55 12 6 11 8 8 10 55 Damage: 55 → 82 Radiation Strengthened ×1 (×1.5) Stacks: +1 added Electrify: Strengthened (first damage to them this turn) Sim Bulwark takes 82 Radiation 10 damage to HP Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability) Chain (1 Disadvantage)",
+   "Crackle — Damage to Sim Bulwark Base damage · Radiation 6d12 6d12 42 2 3 6 10 12 9 42 Damage: 42 → 63 Radiation Strengthened ×1 (×1.5) Stacks: +1 added Electrify: Strengthened (first damage to them this turn) Sim Bulwark takes 63 Radiation 0 damage to HP Diamond: Weakened 63 → 31 Keystone (Shroud) (Shroud) absorbed 31 (−31 Durability) Chain (1 Disadvantage)",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 30 2 2 6 6 5 9 30 Damage: 30 Heat no Strengthened/Weakened Sim Bulwark takes 30 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 15 (−15 Durability) Sim Bulwark gets 30 Ignite stacks. Ignition: 197 Ignite stacks trigger. Sim Bulwark takes 197 Heat 26 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 50 3 8 10 7 11 11 50 Damage: 50 → 100 Heat Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 100 Heat 100 damage to HP Keystone (Shroud) has no Durability left Sim Bulwark gets 100 Ignite stacks. Ignition: 297 Ignite stacks trigger. Sim Bulwark takes 297 Heat 297 damage to HP Keystone (Shroud) has no Durability left"
+  ],
+  "casts": [
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Reflect 2 + Layered 1 + Reactive 1 − TR 2) · 45 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range unt",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Empower 2 + Crush 1 − TR 1) · 45 Energy Spell Power ×4 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 4d12 physical damage to them. In addition, the target’s",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls suffer -4 "
+  ]
+ },
+ {
+  "id": "raiders-mixed-r1",
+  "group": "raiders-mixed",
+  "rotation": 1,
+  "seconds": 58,
+  "winner": "monsters",
+  "pass": "tank-build2-react",
+  "rounds": 3,
+  "partyLeft": 0,
+  "monstersLeft": 5,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Crackle": 3,
+   "mod:Pinpoint": 10,
+   "mod:Multicast": 3,
+   "mod:Electrify": 3,
+   "defend:dodge": 41,
+   "multicast": 3,
+   "Brace": 2,
+   "opt:through=str": 3,
+   "opt:letItRip": 5,
+   "recoverEnergy": 3,
+   "Trudge": 1,
+   "opt:quickStrike": 3,
+   "cast:Glob": 9,
+   "cast:Shield": 3,
+   "mod:Reflect": 3,
+   "mod:Layered": 1,
+   "mod:Reactive": 1,
+   "cast:Slam": 6,
+   "mod:Empower": 1,
+   "mod:Crush": 6,
+   "cast:Flame": 6,
+   "mod:Ignition": 6,
+   "opt:through=cleave": 2,
+   "Bodyslam": 2,
+   "cutBack": 1
+  },
+  "hp": {
+   "Sim Bulwark#8ib9": "269/792",
+   "Sim Raider Brute#Ax3U": "720/720",
+   "Sim Raider Cutter#XOMo": "720/720",
+   "Sim Raider Pyro#NfPc": "765/765",
+   "Sim Raider Froster#9ZSY": "765/765",
+   "Sim Raider Storm#mvmv": "765/765"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Crackle [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 2,
+    "damage": 150,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Storm"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 15,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 3,
+    "followups": 1,
+    "hits": 0,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Spell: Glob [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 5,
+    "damage": 27,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Froster"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Flame [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Pyro"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 48
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Storm",
+    "dealt": 150,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 177,
+    "hits": 8,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Froster",
+    "dealt": 27,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Storm",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Crackle": 3,
+     "mod:Pinpoint": 3,
+     "mod:Multicast": 3,
+     "mod:Electrify": 3,
+     "multicast": 3
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 35,
+     "cast:Shield": 3,
+     "mod:Reflect": 3,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "cast:Slam": 6,
+     "mod:Empower": 1,
+     "mod:Crush": 6
+    },
+    "turnMoved": 0,
+    "casts": 9
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 0,
+    "thr": 0
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "Trudge": 1,
+     "recoverEnergy": 2,
+     "defend:dodge": 6,
+     "Bodyslam": 2,
+     "cutBack": 1
+    },
+    "turnMoved": 0,
+    "slams": 2
+   },
+   {
+    "name": "Sim Raider Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Glob": 9,
+     "mod:Pinpoint": 4
+    }
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Flame": 6,
+     "mod:Pinpoint": 3,
+     "mod:Ignition": 6
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Circular (Steel)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Raider Pyro": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Froster": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Storm": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 352/400",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Medium Armor (Hide): 150/150",
+    "Heavy Circular (Steel): 630/630",
+    "Light Thrasher (Hardwood): 30/30"
+   ],
+   "Sim Raider Pyro": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Froster": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Storm": [
+    "Medium Armor (Hide): 150/150"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 3735,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 778,
+    "monsterHp": 3735,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 614,
+    "monsterHp": 3735,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 269,
+    "monsterHp": 3735,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 142,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 204,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 523,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 177,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Circular (Steel)": 5,
+    "prompt: Heavy Swift (Steel)": 3,
+    "prompt: Bodyslam": 2,
+    "prompt: Heavy Swift (Steel) — Cut Back": 1
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Crackle — Damage to Sim Bulwark Base damage · Radiation 6d12 6d12 43 2 9 12 8 8 4 43 Damage: 43 → 107 Radiation Strengthened ×3 (×2.5) Stacks: +1 added, +2 crit Electrify: Strengthened (first damage to them this turn) Sim Bulwark takes 107 Radiation 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Obsidian): −36 elemental damage Keystone (Shroud) (Shroud) absorbed 17 (−17 Durability) Chain (1 Disadvantage)",
+   "Glob — Damage to Sim Bulwark Base damage · Acid 6d8 6d8 24 3 4 3 6 1 7 24 Damage: 24 Acid no Strengthened/Weakened Sim Bulwark takes 24 Acid 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 12 (−12 Durability) Sim Bulwark gets 24 Stain stacks.",
+   "Glob — Damage to Sim Bulwark Base damage · Acid 6d8 6d8 33 5 5 8 7 2 6 33 Damage: 33 → 66 Acid Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 66 Acid 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 33 → 16 Keystone (Shroud) (Shroud) absorbed 16 (−16 Durability) Sim Bulwark gets 66 Stain stacks.",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 28 6 1 12 1 3 5 28 Damage: 28 Heat no Strengthened/Weakened Sim Bulwark takes 28 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Shield absorbed 11 (−11 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Obsidian): −1 elemental damage Sim Bulwark gets 84 Ignite stacks. Reflect: 11 back",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 39 3 11 1 12 3 9 39 Damage: 39 Heat no Strengthened/Weakened Sim Bulwark takes 39 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 19 (−19 Durability) Sim Bulwark gets 39 Ignite stacks. Ignition: 123 Ignite stacks trigger. Sim Bulwark takes 123 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 61 (−61 Durability)",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 49 6 12 6 12 10 3 49 Damage: 49 Heat no Strengthened/Weakened Sim Bulwark takes 49 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 24 → 12 Keystone (Shroud) (Shroud) absorbed 12 (−12 Durability) Sim Bulwark gets 49 Ignite stacks. Ignition: 172 Ignite stacks trigger. Sim Bulwark takes 172 Heat 14 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Crackle — Damage to Sim Bulwark Base damage · Radiation 6d12 6d12 28 5 10 4 5 1 3 28 Damage: 28 → 42 Radiation Strengthened ×1 (×1.5) Stacks: +1 added Electrify: Strengthened (first damage to them this turn) Sim Bulwark takes 42 Radiation 0 damage to HP Keystone (Shroud) (Shroud) absorbed 42 (−42 Durability) Chain (1 Disadvantage)",
+   "Glob — Damage to Sim Bulwark Base damage · Acid 6d8 6d8 19 1 3 2 6 1 6 19 Damage: 19 Acid no Strengthened/Weakened Sim Bulwark takes 19 Acid 0 damage to HP Keystone (Shroud) (Shroud) absorbed 19 (−19 Durability) Sim Bulwark gets 19 Stain stacks.",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 23 2 7 1 3 5 5 23 Damage: 23 → 46 Heat Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 46 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 23 → 11 Keystone (Shroud) (Shroud) absorbed 11 (−11 Durability) Sim Bulwark gets 46 Ignite stacks. Ignition: 218 Ignite stacks trigger. Sim Bulwark takes 218 Heat 37 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 31 4 3 3 9 7 5 31 Damage: 31 Heat no Strengthened/Weakened Sim Bulwark takes 31 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 15 → 7 Keystone (Shroud) (Shroud) absorbed 7 (−7 Durability) Sim Bulwark gets 31 Ignite stacks. Ignition: 249 Ignite stacks trigger. Sim Bulwark takes 249 Heat 96 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 28 (−28 Durability) Keystone (Shroud) is spent (0 Durability)",
+   "Crackle — Damage to Sim Bulwark Base damage · Radiation 6d12 6d12 47 4 11 1 12 8 11 47 Damage: 47 → 70 Radiation Strengthened ×1 (×1.5) Stacks: +1 added Electrify: Strengthened (first damage to them this turn) Sim Bulwark takes 70 Radiation 70 damage to HP Keystone (Shroud) has no Durability left Chain (1 Disadvantage)",
+   "Crackle — Damage to Sim Bulwark Base damage · Radiation 6d12 6d12 32 5 2 2 9 3 11 32 Damage: 32 → 80 Radiation Strengthened ×3 (×2.5) Stacks: +1 added, +2 crit Electrify: Strengthened (first damage to them this turn) Sim Bulwark takes 80 Radiation 80 damage to HP Keystone (Shroud) has no Durability left Chain (1 Disadvantage)",
+   "Bodyslam — Damage to Sim Bulwark Base damage · Physical 98 98 Damage: 98 Physical no Strengthened/Weakened Sim Bulwark takes 98 Physical 26 damage to HP Keystone (Shroud) (Jasper): −72 physical damage Keystone (Shroud) has no Durability left",
+   "Glob — Damage to Sim Bulwark Base damage · Acid 6d8 6d8 27 2 4 6 4 6 5 27 Damage: 27 Acid no Strengthened/Weakened Sim Bulwark takes 27 Acid 27 damage to HP Keystone (Shroud) has no Durability left Sim Bulwark gets 27 Stain stacks."
+  ],
+  "casts": [
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Reflect 2 + Layered 1 + Reactive 1 − TR 2) · 45 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range unt",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Empower 2 + Crush 1 − TR 1) · 45 Energy Spell Power ×4 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 4d12 physical damage to them. In addition, the target’s",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls"
+  ]
+ },
+ {
+  "id": "boss-martial-r1",
+  "group": "boss-martial",
+  "rotation": 1,
+  "seconds": 59,
+  "winner": "unfinished",
+  "pass": "tank-build2-react",
+  "rounds": 9,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {
+   "down": 5
+  },
+  "used": {
+   "Smashing": 8,
+   "smashing": 8,
+   "opt:wild=str2": 1,
+   "opt:strafe": 1,
+   "defend:dodge": 40,
+   "cast:Shield": 8,
+   "mod:Reflect": 3,
+   "mod:Layered": 6,
+   "mod:Reactive": 1,
+   "cast:Slam": 16,
+   "mod:Empower": 1,
+   "mod:Crush": 16,
+   "opt:wild=bashPlus": 1,
+   "recoverEnergy": 7,
+   "opt:wild=bashStr": 1,
+   "opt:dir=down": 5,
+   "opt:crunch": 2,
+   "opt:wild": 2
+  },
+  "hp": {
+   "Sim Bulwark#AUFs": "583/792",
+   "Sim Ogre Tyrant#ZXCF": "2136/2136"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Weighted": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 209,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Ogre Tyrant"
+    ],
+    "force": 209
+   },
+   "Light Striker": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Ogre Tyrant"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 8,
+    "crits": 5,
+    "misses": 0,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 11,
+    "crits": 8,
+    "misses": 5,
+    "damage": 0,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 11,
+    "absorbed": 344
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Ogre Tyrant",
+    "dealt": 209,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 19,
+    "attacks": 24
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Ogre Tyrant",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 75,
+    "attacks": 16,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Smashing": 8,
+     "smashing": 8,
+     "defend:dodge": 16,
+     "recoverEnergy": 7
+    },
+    "turnMoved": 0,
+    "wild": 1,
+    "knockbacks": {
+     "down": 5
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24,
+     "cast:Shield": 8,
+     "mod:Reflect": 3,
+     "mod:Layered": 6,
+     "mod:Reactive": 1,
+     "cast:Slam": 16,
+     "mod:Empower": 1,
+     "mod:Crush": 16
+    },
+    "turnMoved": 0,
+    "casts": 24
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Tyrant": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Iron)",
+    "Light Striker (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Ogre Tyrant": [
+    "Heavy Armor (Iron): 616/960",
+    "Heavy Weighted (Iron): 660/660",
+    "Light Striker (Steel): 135/135"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 792,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 792,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 760,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 760,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 715,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 667,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 625,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 583,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 583,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 209,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 209,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Iron)": 8,
+    "prompt: Light Striker (Steel)": 8,
+    "prompt: Knockback — Sim Bulwark": 5
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Ogre Tyrant needs 76 Energy for Smashing but has 66.",
+     "who": "Sim Ogre Tyrant"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Ogre Tyrant needs 76 Energy for Smashing but has 73.",
+     "who": "Sim Ogre Tyrant"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Ogre Tyrant needs 76 Energy for Smashing but has 49.",
+     "who": "Sim Ogre Tyrant"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Ogre Tyrant needs 76 Energy for Smashing but has 56.",
+     "who": "Sim Ogre Tyrant"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Ogre Tyrant needs 76 Energy for Smashing but has 63.",
+     "who": "Sim Ogre Tyrant"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Ogre Tyrant needs 76 Energy for Smashing but has 70.",
+     "who": "Sim Ogre Tyrant"
+    }
+   ],
+   "errors": []
+  },
+  "cards": [
+   "Light Striker (Steel) — Damage to Sim Bulwark Base damage · Physical 3d8 3d8 20 7 6 7 20 Damage: 20 → 30 Physical Strengthened ×1 (×1.5) Stacks: +1 size Cleave 12: object damage, hits Limits first Sim Bulwark takes 30 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Shield absorbed 15 (+12 Cleave) (−27 Durability) Reflect: 15 back",
+   "Heavy Weighted (Iron) — Damage to Sim Bulwark Base damage · Physical 11d12 11d12 68 1 1 10 9 9 8 10 3 8 2 7 68 Damage: 68 → 204 Physical Strengthened ×4 (×3) Stacks: +1 weapon/attack, +2 crit, +1 size Knockback: up to 1160 Force → 76 ft Sim Bulwark takes 204 Physical 0 damage to HP Bash: broke through Shield (Limit 20 ignored, +20 damage) Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −72 physical damage Keystone (Shroud) (Shroud) absorbed 40 (−40 Durability) Knockback (76 ft)",
+   "Light Striker (Steel) — Damage to Sim Bulwark Base damage · Physical 3d8 3d8 13 6 2 5 13 Damage: 13 → 19 Physical Strengthened ×1 (×1.5) Stacks: +1 size Cleave 12: object damage, hits Limits first Sim Bulwark takes 19 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 9 (+12 Cleave) (−21 Durability)",
+   "Light Striker (Steel) — Damage to Sim Bulwark Base damage · Physical 3d8 3d8 14 4 4 6 14 Damage: 14 → 35 Physical Strengthened ×3 (×2.5) Stacks: +2 crit, +1 size Cleave 12: object damage, hits Limits first Sim Bulwark takes 35 Physical 0 damage to HP Shield absorbed 28 (+12 Cleave) (−40 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −3 physical damage Reflect: 28 back",
+   "Heavy Weighted (Iron) — Damage to Sim Bulwark Base damage · Physical 11d12 11d12 72 10 3 8 6 9 1 7 11 9 1 7 72 Damage: 72 → 108 Physical Strengthened ×1 (×1.5) Stacks: +1 size Knockback: up to 1160 Force → 76 ft (78 ft with Crunch Time) Sim Bulwark takes 108 Physical 0 damage to HP Shield absorbed 76 (−76 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −16 physical damage Knockback (76 ft)",
+   "Light Striker (Steel) — Damage to Sim Bulwark Base damage · Physical 3d8 3d8 11 1 7 3 11 Damage: 11 → 27 Physical Strengthened ×3 (×2.5) Stacks: +2 crit, +1 size Cleave 12: object damage, hits Limits first Sim Bulwark takes 27 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 13 (+12 Cleave) (−25 Durability)",
+   "Heavy Weighted (Iron) — Damage to Sim Bulwark Base damage · Physical 11d12 11d12 65 4 2 10 6 7 10 10 4 6 4 2 65 Damage: 65 → 162 Physical Strengthened ×3 (×2.5) Stacks: +2 crit, +1 size Knockback: up to 1160 Force → 76 ft (80 ft with Crunch Time) Sim Bulwark takes 162 Physical 0 damage to HP Shield absorbed 56 (−56 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −53 physical damage Knockback (76 ft)",
+   "Light Striker (Steel) — Damage to Sim Bulwark Base damage · Physical 3d8 3d8 13 2 4 7 13 Damage: 13 → 19 Physical Strengthened ×1 (×1.5) Stacks: +1 size Cleave 12: object damage, hits Limits first Sim Bulwark takes 19 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 9 (+12 Cleave) (−21 Durability)",
+   "Heavy Weighted (Iron) — Damage to Sim Bulwark Base damage · Physical 11d12 11d12 60 4 11 7 3 8 8 4 1 9 4 1 60 Damage: 60 → 90 Physical Strengthened ×1 (×1.5) Stacks: +1 size Knockback: up to 1160 Force → 76 ft (82 ft with Crunch Time) Sim Bulwark takes 90 Physical 0 damage to HP Shield absorbed 76 (−76 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −7 physical damage Knockback (76 ft)",
+   "Light Striker (Steel) — Damage to Sim Bulwark Base damage · Physical 3d8 3d8 11 2 2 7 11 Damage: 11 → 16 Physical Strengthened ×1 (×1.5) Stacks: +1 size Cleave 12: object damage, hits Limits first Sim Bulwark takes 16 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 8 (+12 Cleave) (−20 Durability)",
+   "Heavy Weighted (Iron) — Damage to Sim Bulwark Base damage · Physical 11d12 11d12 72 8 3 9 12 3 6 7 12 2 7 3 72 Damage: 72 → 108 Physical Strengthened ×1 (×1.5) Stacks: +1 size Knockback: up to 1160 Force → 76 ft (84 ft with Crunch Time) Sim Bulwark takes 108 Physical 0 damage to HP Shield absorbed 76 (−76 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −16 physical damage Knockback (76 ft)",
+   "Light Striker (Steel) — Damage to Sim Bulwark Base damage · Physical 3d8 3d8 12 4 4 4 12 Damage: 12 → 18 Physical Strengthened ×1 (×1.5) Stacks: +1 size Cleave 12: object damage, hits Limits first Sim Bulwark takes 18 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 9 (+12 Cleave) (−21 Durability)"
+  ],
+  "casts": [
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Reflect 2 + Layered 1 + Reactive 1 − TR 2) · 45 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range unt",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Empower 2 + Crush 1 − TR 1) · 45 Energy Spell Power ×4 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 4d12 physical damage to them. In addition, the target’s",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls"
+  ]
+ },
+ {
+  "id": "boss-magic-r1",
+  "group": "boss-magic",
+  "rotation": 1,
+  "seconds": 54,
+  "winner": "unfinished",
+  "pass": "tank-build2-react",
+  "rounds": 9,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Shift": 16,
+   "mod:Toss": 16,
+   "mod:Tier Up": 16,
+   "mod:Muddy": 2,
+   "mod:Harden": 3,
+   "mod:Tier Up, Again": 16,
+   "defend:dodge": 40,
+   "mod:Empower": 2,
+   "cast:Shield": 8,
+   "mod:Reflect": 3,
+   "mod:Layered": 6,
+   "mod:Reactive": 1,
+   "cast:Slam": 16,
+   "mod:Crush": 16
+  },
+  "hp": {
+   "Sim Bulwark#HUJ6": "585/792",
+   "Sim Ogre Magus#BAlA": "2376/2376"
+  },
+  "down": [],
+  "weapons": {
+   "Spell: Shift (Toss) [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 11,
+    "crits": 2,
+    "misses": 5,
+    "damage": 207,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 8,
+    "crits": 6,
+    "misses": 0,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 10,
+    "crits": 4,
+    "misses": 6,
+    "damage": 0,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 1,
+    "absorbed": 37
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 207,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 207,
+    "hits": 18,
+    "attacks": 24
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 16,
+    "used": {
+     "cast:Shift": 16,
+     "mod:Toss": 16,
+     "mod:Tier Up": 16,
+     "mod:Muddy": 2,
+     "mod:Harden": 3,
+     "mod:Tier Up, Again": 16,
+     "mod:Empower": 1,
+     "defend:dodge": 16
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24,
+     "cast:Shield": 8,
+     "mod:Reflect": 3,
+     "mod:Layered": 6,
+     "mod:Reactive": 1,
+     "cast:Slam": 16,
+     "mod:Empower": 1,
+     "mod:Crush": 16
+    },
+    "turnMoved": 0,
+    "casts": 24
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 843/880"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 723,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 693,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 693,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 693,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 693,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 693,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 693,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 585,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 585,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 207,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 207,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Toss — Damage to Sim Bulwark Base damage · Physical 48d12 48d12 285 2 9 8 5 7 1 5 5 1 5 8 4 11 3 8 3 2 11 2 6 5 1 6 8 2 2 9 4 9 3 12 8 7 5 1 9 9 8 4 11 9 2 2 9 3 10 9 12 285 Damage: 285 → 427 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Sim Bulwark takes 427 Physical 69 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −72 physical damage Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 165 12 5 10 3 6 1 10 12 8 7 10 6 11 6 3 1 8 6 9 8 2 8 5 8 165 Damage: 165 Physical no Strengthened/Weakened Sim Bulwark takes 165 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shield is Weakened Shield absorbed 76 (−76 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −3 physical damage Reflect: 76 back",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 137 1 10 6 10 4 2 1 4 5 1 2 6 3 12 3 12 12 7 10 5 10 8 2 1 137 Damage: 137 → 205 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Sim Bulwark takes 205 Physical 30 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 165 9 11 8 12 8 6 11 6 4 7 9 10 5 4 1 6 7 1 9 12 1 2 8 8 165 Damage: 165 Physical no Strengthened/Weakened Sim Bulwark takes 165 Physical 0 damage to HP Shield absorbed 40 (−40 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −62 physical damage Reflect: 40 back",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 157 2 6 12 4 8 2 9 2 6 10 7 1 3 2 1 11 6 10 12 10 2 10 12 9 157 Damage: 157 Physical no Strengthened/Weakened Sim Bulwark takes 157 Physical 0 damage to HP Shield absorbed 40 (−40 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −58 physical damage Reflect: 40 back",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 151 9 11 4 5 5 5 11 2 12 8 12 6 10 4 5 8 6 1 8 11 4 1 1 2 151 Damage: 151 Physical no Strengthened/Weakened Sim Bulwark takes 151 Physical 0 damage to HP Shield absorbed 76 (−76 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −37 physical damage",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 148 8 1 6 7 2 12 11 1 4 1 1 10 2 10 6 8 1 5 10 8 12 9 5 8 148 Damage: 148 → 296 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 296 Physical 0 damage to HP Shield absorbed 76 (−76 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −72 physical damage Keystone (Shroud) (Shroud) absorbed 38 (−38 Durability)",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 133 5 1 4 3 1 10 9 7 7 5 5 11 2 7 2 6 7 1 2 4 9 6 9 10 133 Damage: 133 Physical no Strengthened/Weakened Sim Bulwark takes 133 Physical 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 66 → 33 Keystone (Shroud) (Shroud) absorbed 33 (−33 Durability)",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 150 2 5 12 2 8 12 9 12 3 1 5 12 1 7 8 5 9 9 6 4 5 3 3 7 150 Damage: 150 Physical no Strengthened/Weakened Sim Bulwark takes 150 Physical 0 damage to HP Shield absorbed 76 (−76 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −37 physical damage",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 144 6 4 3 1 1 4 11 5 11 12 6 12 11 6 6 3 7 11 6 6 2 1 2 7 144 Damage: 144 Physical no Strengthened/Weakened Sim Bulwark takes 144 Physical 0 damage to HP Shield absorbed 56 (−56 Durability) Shield is broken Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Jasper): −44 physical damage",
+   "Toss — Damage to Sim Bulwark Base damage · Physical 24d12 24d12 180 10 5 1 10 9 5 11 3 5 6 11 12 10 7 10 12 11 1 11 4 4 2 12 8 180 Damage: 180 → 360 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 360 Physical 108 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)"
+  ],
+  "casts": [
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Reflect 2 + Layered 1 + Reactive 1 − TR 2) · 45 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range unt",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Empower 2 + Crush 1 − TR 1) · 45 Energy Spell Power ×4 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 4d12 physical damage to them. In addition, the target’s",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 0 (1 + Layered 1 − TR 2) · 0 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next ",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls"
+  ]
+ },
+ {
+  "id": "boss-mixed-r1",
+  "group": "boss-mixed",
+  "rotation": 1,
+  "seconds": 16,
+  "winner": "monsters",
+  "pass": "tank-build2-react",
+  "rounds": 3,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "Smashing": 2,
+   "smashing": 2,
+   "hybridTurn": 2,
+   "hybrid:spell": 6,
+   "cast:Flame": 6,
+   "mod:Ignition": 6,
+   "defend:dodge": 12,
+   "cast:Shield": 2,
+   "mod:Reflect": 2,
+   "mod:Layered": 1,
+   "mod:Reactive": 1,
+   "cast:Slam": 4,
+   "mod:Empower": 1,
+   "mod:Crush": 4
+  },
+  "hp": {
+   "Sim Bulwark#u3hX": "377/792",
+   "Sim Ogre Warlock#jb6E": "2016/2016"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Flame [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Ogre Warlock"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 1,
+    "absorbed": 12
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Ogre Warlock",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Ogre Warlock",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "Smashing": 2,
+     "smashing": 2,
+     "hybridTurn": 2,
+     "hybrid:spell": 6,
+     "cast:Flame": 6,
+     "mod:Ignition": 6,
+     "defend:dodge": 4
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Shield": 2,
+     "mod:Reflect": 2,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "cast:Slam": 4,
+     "mod:Empower": 1,
+     "mod:Crush": 4
+    },
+    "turnMoved": 0,
+    "casts": 6
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Warlock": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Ogre Warlock": [
+    "Heavy Armor (Iron): 868/880",
+    "Heavy Weighted (Iron): 540/540"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 681,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 377,
+    "monsterHp": 2016,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 377,
+    "monsterHp": 2016,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 80,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 335,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 415,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 27 4 4 1 11 4 3 27 Damage: 27 → 54 Heat Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 54 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Obsidian): −27 elemental damage Sim Bulwark gets 162 Ignite stacks.",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 39 8 3 10 7 9 2 39 Damage: 39 → 78 Heat Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 78 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 39 (−39 Durability) Sim Bulwark gets 78 Ignite stacks. Ignition: 240 Ignite stacks trigger. Sim Bulwark takes 240 Heat 48 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 31 7 7 6 2 5 4 31 Damage: 31 Heat no Strengthened/Weakened Sim Bulwark takes 31 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 15 → 7 Keystone (Shroud) (Shroud) absorbed 7 (−7 Durability) Sim Bulwark gets 31 Ignite stacks. Ignition: 271 Ignite stacks trigger. Sim Bulwark takes 271 Heat 63 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 35 10 5 7 11 1 1 35 Damage: 35 → 70 Heat Strengthened ×2 (×2) Stacks: +2 crit Sim Bulwark takes 70 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 35 (−35 Durability) Sim Bulwark gets 70 Ignite stacks. Ignition: 341 Ignite stacks trigger. Sim Bulwark takes 341 Heat 98 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)",
+   "Flame — Damage to Sim Bulwark Base damage · Heat 6d12 6d12 55 7 12 7 11 8 10 55 Damage: 55 Heat no Strengthened/Weakened Sim Bulwark takes 55 Heat 0 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Diamond: Weakened 27 → 13 Keystone (Shroud) (Shroud) absorbed 13 (−13 Durability) Sim Bulwark gets 55 Ignite stacks. Ignition: 396 Ignite stacks trigger. Sim Bulwark takes 396 Heat 126 damage to HP Reactive: Sim Bulwark spends 1 RP, so the damage to the Shroud is Weakened Keystone (Shroud) (Shroud) absorbed 72 (−72 Durability)"
+  ],
+  "casts": [
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Reflect 2 + Layered 1 + Reactive 1 − TR 2) · 45 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range unt",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 3 (1 + Empower 2 + Crush 1 − TR 1) · 45 Energy Spell Power ×4 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 4d12 physical damage to them. In addition, the target’s",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Shield Sim Bulwark casts Shield . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Reflect 2 − TR 2) · 15 Energy Spell Power ×2 (Grasp 26) · Targeted Shield: This Spell can be used to project a shield of energy on a target within range until the start of your next",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls",
+   "Sim Bulwark casts Slam Sim Bulwark casts Slam . Through Scepter (Foci) (Igniter · Scepter) · 2 AP Threshold 1 (1 + Crush 1 − TR 1) · 15 Energy Spell Power ×2 (Grasp 26) · Ranged Slam: This Spell can be used to slam a target, dealing 2d12 physical damage to them. In addition, the target’s dodge rolls"
+  ]
+ }
+]

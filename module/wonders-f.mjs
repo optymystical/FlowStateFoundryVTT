@@ -1,7 +1,7 @@
 /**
  * Ruin (Nightmare) (Mental Rework Test Ground): Ruin Modes (Jinx, Forfeit, Calamity) can't crit; on a hit they store a **Jinx** on the target until the start of
- * your next turn. The target's next attack roll resolves every Jinx on it at once by Ruin's Bands (where that roll lands against its die's max: under one half
- * they fizzle, then 2 or 4 Strengthened). Gild (T2) gives that roll Advantage; Reversal (T4) flips the roll afterwards (only their attack uses the flipped
+ * your next turn. The target's next attack roll resolves every Jinx on it at once by Ruin's Bands (where that roll lands against its die's max: half or higher
+ * they fizzle, under one half 2 Strengthened, under one quarter 4). Gild (T2) gives that roll Disadvantage; Reversal (T4) flips the roll afterwards (only their attack uses the flipped
  * number: the user's ruling). Doom (Tenet) rolls the Ruin Table and applies it on a hit; Calamity (T5) stores a Ruin Table result as a Jinx.
  * It registers into wonders.mjs (`MODES`, `ACTS`, the provider lists); mental.mjs hands `attackNetBefore`, `attackRolled`, `dodgeNext` and `energySpent` to
  * actions.mjs through `registerMental`, and calls `ruinResolve` / `doomResolve` from its resolve step.
@@ -37,9 +37,9 @@ let jinxDamage = 0;                       // > 0 while a Jinx is dealing its dam
 /* -------------------------------------------- */
 
 CHOICE_PROVIDERS.push((actor, modeId) => (String(modeId).startsWith(`${RUIN}:`) && tier(actor, RUIN) >= 2
-  ? [{ name: "gild", label: `Gild (⚡ ${halfSnap(actor)}): the roll that resolves their Jinxes has Advantage`, options: { no: "No", yes: "Yes" } }] : []));
+  ? [{ name: "gild", label: `Gild (⚡ ${minOf(actor, "snap")}): the roll that resolves their Jinxes has Disadvantage`, options: { no: "No", yes: "Yes" } }] : []));
 COST_PROVIDERS.push((actor, { wonder, choices }) => (wonder?.id === RUIN && choices?.gild === "yes" && tier(actor, RUIN) >= 2
-  ? { energy: halfSnap(actor), flags: { gild: true }, notes: ["Gild: the roll that resolves their Jinxes has Advantage"] } : null));
+  ? { energy: minOf(actor, "snap"), flags: { gild: true }, notes: ["Gild: the roll that resolves their Jinxes has Disadvantage"] } : null));
 
 /* -------------------------------------------- */
 /*  Ruin Modes store Jinxes                     */
@@ -54,19 +54,19 @@ export async function ruinResolve({ attacker, target, o, result, m, mode, index 
 /** Store a Jinx on `target`: `payload` = { type: "damage", n, sides, dtype } | { type: "forfeit", n, ratio } | { type: "calamity", roll }. */
 async function storeJinx(caster, target, payload, { power = 1, bs = 0, enhanced = false, gild = false, label = "Jinx" } = {}) {
   await putSpellEffect(target, { kind: "jinx", stack: true, caster: caster.uuid, mode: JINX, payload, power, bstacks: bs, enhanced: !!enhanced, gild: !!gild, waited: false, name: `${label} (${caster.name})`,
-    description: `A Jinx from ${caster.name}: ${jinxText(payload, power)}. Their next attack roll resolves it (under one half of the die it fizzles${enhanced ? ", once it waits instead" : ""}; higher rolls Strengthen it)${gild ? "; that roll has Advantage (Gild)" : ""}. Until the start of ${caster.name}'s next turn.` });
+    description: `A Jinx from ${caster.name}: ${jinxText(payload, power)}. Their next attack roll resolves it (half of the die or higher it fizzles${enhanced ? ", once it waits instead" : ""}; lower rolls Strengthen it)${gild ? "; that roll has Disadvantage (Gild)" : ""}. Until the start of ${caster.name}'s next turn; with no attack roll by then it ends with no effect.` });
 }
 const jinxText = (p, power) => (p.type === "damage" ? `${p.n * power}d${p.sides} ${p.dtype}` : p.type === "forfeit" ? `${p.n * power} Energy removed` : `Ruin Table ${p.roll}`);
 
 MODES[JINX] = async c => {
   if (!live(c.target)) return `<strong>Jinx</strong> needs a creature.`;
-  await storeJinx(c.attacker, c.target, { type: "damage", n: 1, sides: 10, dtype: "physical" }, { power: c.power, bs: c.bs, enhanced: c.enhanced, gild: c.m.gild });
-  return `<strong>${esc(c.target.name)}</strong> carries a <strong>Jinx</strong> (${c.power}d10 physical) until your next turn: their next attack roll resolves it${c.enhanced ? " (the first time it would fizzle it waits instead)" : ""}.`;
+  await storeJinx(c.attacker, c.target, { type: "damage", n: 1, sides: 12, dtype: "physical" }, { power: c.power, bs: c.bs, enhanced: c.enhanced, gild: c.m.gild });
+  return `<strong>${esc(c.target.name)}</strong> carries a <strong>Jinx</strong> (${c.power}d12 physical) until your next turn: their next attack roll resolves it${c.enhanced ? " (the first time it would fizzle it waits instead)" : ""}.`;
 };
 MODES[FORFEIT] = async c => {
   if (!live(c.target)) return `<strong>Forfeit</strong> needs a creature.`;
   await storeJinx(c.attacker, c.target, { type: "forfeit", n: 4, ratio: c.enhanced ? 2 : 1 }, { power: c.power, bs: c.bs, gild: c.m.gild, label: "Forfeit" });
-  return `<strong>${esc(c.target.name)}</strong> carries a <strong>Forfeit</strong> Jinx: ${4 * c.power} Energy removed when it resolves (below 0, health lost ${c.enhanced ? "1:2" : "1:1"}).`;
+  return `<strong>${esc(c.target.name)}</strong> carries a <strong>Forfeit</strong> Jinx: ${4 * c.power} Energy removed when it resolves (below 0, ${c.enhanced ? "2 Supernatural damage per point" : "Supernatural damage 1:1"}).`;
 };
 MODES[CALAMITY] = async c => {
   if (!live(c.target)) return `<strong>Calamity</strong> needs a creature.`;
@@ -84,11 +84,11 @@ MODES[CALAMITY] = async c => {
 /*  Resolving: the Jinxed creature's attack roll */
 /* -------------------------------------------- */
 
-/** Before a creature's attack roll: Gild's Advantage (it resolves their Jinxes) and 53–56's Disadvantage (used up). Returns { net, notes }. */
+/** Before a creature's attack roll: Gild's Disadvantage (it resolves their Jinxes) and 53–56's Disadvantage (used up). Returns { net, notes }. */
 export async function attackNetBefore(actor) {
   let net = 0;
   const notes = [];
-  if (spellEffects(actor, "jinx").some(e => dataOf(e).gild)) { net += 1; notes.push("Gild: Advantage (this roll resolves their Jinxes)"); }
+  if (spellEffects(actor, "jinx").some(e => dataOf(e).gild)) { net -= 1; notes.push("Gild: Disadvantage (this roll resolves their Jinxes)"); }
   const dis = spellEffects(actor, "ruinAttackDis");
   if (dis.length) { net -= 1; notes.push("Ruin: Disadvantage on this attack roll"); for (const e of dis) await changeEffect(e, null); }
   return { net, notes };
@@ -265,7 +265,7 @@ export const RUIN_ROWS = [
   async x => { const d = await dmg(x, 1, 10, "radiation"); await mark(x, x.target, { kind: "ruinNoHeal", healDown: 1e9, name: "Ruin: can't regain health", description: `Can't regain health until the start of ${x.caster.name}'s next turn.` }); return `${d.f}: ${d.line}; they can't regain health until your next turn.`; },  // 21–24
   async x => { const d = await dmg(x, 1, 8, "heat"); await mark(x, x.target, { kind: "ruinBurn", stack: true, onTargetTurn: true, amount: d.n, name: `Ruin: heat again (${d.n})`, description: `${d.n} heat damage again at the start of their next turn.` }); return `${d.f}: ${d.line}; the same heat comes again at the start of their next turn.`; },  // 25–28
   async x => { const d = await dmg(x, 1, 10, "cold"); const n = v(x, 10) + await feedExtra(x.caster, x.target, "slow"); await setCond(x.target, { "system.conditions.slow": (x.target.system.conditions?.slow ?? 0) + n }); return `${d.f}: ${d.line}; <strong>${n} Slow</strong>.`; },  // 29–32
-  async x => { const d = await dmg(x, 1, 10, "supernatural"); return `${d.f}: ${d.line} (health loss: what blocks Supernatural damage reduces it).`; },  // 33–36
+  async x => { const d = await dmg(x, 1, 10, "supernatural"); return `${d.f}: ${d.line}.`; },  // 33–36
   async x => drain(x.target, v(x, 3), 1, x.caster),  // 37–40
   async x => { const n = v(x, 3); await mark(x, x.target, { kind: "ruinDrainNext", amount: n, name: `Ruin: next Energy spent +${n}`, description: `The next time they spend Energy they spend ${n} more (below 0 is health lost), ${until(x)}.` }); return `The next time they spend Energy, they spend <strong>${n}</strong> more.`; },  // 41–44
   async x => { const c = x.target.system.conditions ?? {}, n = v(x, 10) + await feedExtra(x.caster, x.target, "slow"); await setCond(x.target, { "system.conditions.haste": 0, "system.conditions.slow": (c.slow ?? 0) + (c.haste ?? 0) + n }); return `Their ${c.haste ?? 0} Haste becomes Slow, plus <strong>${n} Slow</strong>.`; },  // 45–48
@@ -288,7 +288,7 @@ export const RUIN_ROWS = [
     let ended = "They aren't concentrating on anything";
     if (conc.length) { const id = conc.length === 1 ? conc[0].id : await mental.pickChoice(x.caster, "Ruin: which Concentration ends", conc.map(c => [c.id, c.label])); const pick = conc.find(c => c.id === id) ?? conc[0]; await concentration.end(x.target, pick.id, "the Ruin Table", { voluntary: false }); ended = `Their Concentration on ${esc(pick.label)} ends`; }
     const d = await dmg(x, 1, 8, "supernatural");
-    return `${ended}; ${d.f}: ${d.line} (health loss).`;
+    return `${ended}; ${d.f}: ${d.line}.`;
   },
   async x => { const d = await dmg(x, 1, 8, "physical"); await mark(x, x.target, { kind: "ruinStrNext", name: "Ruin: next damage taken Strengthened", description: `The next non-Jinx damage they take is Strengthened, ${until(x)}.` }); return `${d.f}: ${d.line}; the next non-Jinx damage they take is Strengthened.`; },  // 81–84
   async x => { const e = x.target.system.energy ?? { value: 0, max: 0 }; if (e.value > e.max / 2) { const r = await removeEnergy(x.target, v(x, 5)); return `They lose <strong>${r.removed}</strong> Energy (${r.remaining} left).`; } const d = await dmg(x, 1, 10, "physical"); return `${d.f}: ${d.line}.`; },  // 85–88

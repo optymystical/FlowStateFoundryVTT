@@ -62,7 +62,7 @@ ok2(hero.system.shroud === sh && sh.system.profile.limit === 10 * mult, `melded 
 let out = await actions.damageOutcome(hero, 25, "physical", {});
 ok2(out.toHp === 25 - 10 * mult && out.shrouds[0].update["system.wear"] === 10 * mult, `Shroud absorbs its Limit (${25 - out.toHp})`);
 out = await actions.damageOutcome(hero, 25, "supernatural", {});
-ok2(out.toHp === 25 && !out.shrouds.length, "Supernatural isn't blocked");
+ok2(out.toHp === 25 - 10 * mult, "Supernatural is blocked by a Shroud (Rules: Shrouds reduce it as normal)");
 out = await actions.damageOutcome(hero, 25, "arcane", {});
 ok2(out.toHp === 25 - 10 * mult, "Arcane (Magical) is blocked");
 // Weaving: a woven hit's two parts share one Limit (spent first on the weapon's part here), and the Shroud's Durability with it.

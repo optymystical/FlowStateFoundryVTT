@@ -191,8 +191,8 @@ export function shroudProfile(sys, build = 0) {
   };
 }
 
-/** Shrouds block Physical, Elemental, and Magical damage. */
-export const shroudBlocks = type => ["physical", "elemental", "magical"].includes(DAMAGE_CATEGORY[type] ?? "physical");
+/** Shrouds block Physical, Elemental, and Magical damage, and Supernatural damage too (Rules doc: Shrouds reduce it as normal). */
+export const shroudBlocks = type => ["physical", "elemental", "magical", "supernatural"].includes(DAMAGE_CATEGORY[type] ?? "physical");
 
 /**
  * Damage "source types" for Diamond / Colored Diamond: weapon types (Unarmed included), else the damage type.

@@ -1,6 +1,6 @@
 /**
  * Esoteric Arts (Mental T5 tree, Mental Rework Test Ground): the Omen.
- *  Seed (T1): an 8 hour Trance seeds an Omen of a Wonder you have at Tier 5: an NPC of its own (its own turn, AP, RP, and 5 × its skill points of Energy) with
+ *  Seed (T1): 8 hours of work seed an Omen of a Wonder you have at Tier 5: an NPC of its own (its own turn, AP, RP, and 5 × its skill points of Energy) with
  *  stat points equal to yours (two thirds in its Wonder's stat, one third Willpower, or flipped), a fifth of that in skill points (they only set its dice),
  *  full Mental Theory and its Wonder at Tier 5. It is its own Icon (a natural Icon of the Form picked at Seeding, its Tenet always on) and keeps the
  *  Alignment depth picked. It is one of your Concentrations, kept by a "Bound Omen" effect on it.
@@ -140,17 +140,17 @@ async function waitFor(find, ms = 6000) {
   }
 }
 
-/** Seed (T1): an 8 hour Trance, out of combat; the Omen is one of your Concentrations. */
+/** Seed (T1): 8 hours, out of combat; the Omen is one of your Concentrations. */
 export async function seed(user) {
   if (tier(user) < 1) return ui.notifications.warn("Seed is an Esoteric Arts ability.");
-  if (inActiveCombat(user)) return ui.notifications.warn("Seeding an Omen is an 8 hour Trance: not in combat.");
+  if (inActiveCombat(user)) return ui.notifications.warn("Seeding an Omen takes 8 hours: not in combat.");
   const pick = await seedDialog(user, "Seed an Omen");
   if (!pick) return null;
   const conc = `omen:${newId()}`;
   const w = R.wonderById(pick.wonder);
   if (!(await concentration.begin(user, { id: conc, label: `${w.name} Omen`, omen: true }))) return null;
   await requestGM("omenCreate", { user: user.uuid, ...pick, full: false, conc, rend: null, ...spot(user) });
-  return post(user, { title: `${esc(user.name)} — Seed`, body: `<div class="fs-result"><i class="fa-solid fa-seedling"></i> After 8 hours in a Trance, ${esc(user.name)} seeds an <strong>Omen of ${esc(w.name)}</strong> (${esc(R.FORMS[pick.form].name)}, ${R.KINDS[w.kind].label} ${pick.depth}). It is bound to them as one of their Concentrations.</div>` });
+  return post(user, { title: `${esc(user.name)} — Seed`, body: `<div class="fs-result"><i class="fa-solid fa-seedling"></i> After 8 hours, ${esc(user.name)} seeds an <strong>Omen of ${esc(w.name)}</strong> (${esc(R.FORMS[pick.form].name)}, ${R.KINDS[w.kind].label} ${pick.depth}). It is bound to them as one of their Concentrations.</div>` });
 }
 
 /** Rend (T5, 2 AP): summon an Omen at once and try to bind it: an attack roll with Disadvantage, it dodging with Advantage. A miss: it's free, full-statted and hostile. */
@@ -450,7 +450,7 @@ export function actionRows(actor) {
   if (isOmen(actor) && globalThis.game?.user?.isGM && !omenData(actor).hostile)
     rows.push({ label: "Turn hostile", detail: "It acted against its pole (or was otherwise angered): it turns on its binder", cost: "GM", action: "omenHostile", icon: "fa-solid fa-link-slash" });
   if (t < 1) return rows;
-  rows.push({ label: "Seed an Omen", detail: "An 8 hour Trance: an Omen of a Wonder you have at Tier 5, bound to you as one of your Concentrations (as many as your Concentrations allow)", cost: "8 hours", action: "omenSeed", icon: "fa-solid fa-seedling", disabled: inActiveCombat(actor) });
+  rows.push({ label: "Seed an Omen", detail: "8 hours: an Omen of a Wonder you have at Tier 5, bound to you as one of your Concentrations (as many as your Concentrations allow)", cost: "8 hours", action: "omenSeed", icon: "fa-solid fa-seedling", disabled: inActiveCombat(actor) });
   for (const stray of straysOf(actor)) rows.push({ label: `Rebind ${stray.name}`, detail: "1 hour of work: it is bound to you again (one of your Concentrations)", cost: "1 hour", action: "omenRebind", itemId: stray.uuid, icon: "fa-solid fa-link", disabled: inActiveCombat(actor) });
   if (t >= 3) for (const omen of omensOf(actor)) rows.push({ label: `Unbind ${omen.name}`, detail: `${omen.name} has its full stats (twice the stat points) until the start of your next turn`, cost: `2 AP + ⚡ ${minOf(actor, statOf(omenData(omen).wonder))}`, action: "omenUnbind", itemId: omen.uuid, icon: "fa-solid fa-unlock", disabled: !!omenData(omen).unbound || !!omenData(omen).full });
   if (t >= 5) rows.push({ label: "Rend", detail: "Summon an Omen at once: an attack roll with Disadvantage (it dodges with Advantage) binds it; a miss leaves it free, full-statted and hostile", cost: "2 AP", action: "omenRend", icon: "fa-solid fa-burst" });

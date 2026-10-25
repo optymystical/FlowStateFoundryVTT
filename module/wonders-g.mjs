@@ -1,7 +1,7 @@
 /**
  * Growth (Dream) and Stagnation (Nightmare) (Mental Rework Test Ground).
  *  Growth: Cultivate puts Growth stacks on the target (until the start of your next turn). When it takes an action (anything that spends AP or RP), it can
- *  spend them, each on a different option its Cultivator has unlocked: Flourish (more damage), Thrift (less Energy), Pierce, Feed (more Ignite / Stain /
+ *  spend them, each on a different option its Cultivator has unlocked: Thorn (more damage), Thrift (less Energy), Pierce, Feed (more Ignite / Stain /
  *  Slow / Haste), Graft (more Temp HP / shielding granted), Bark (Temp HP for itself), Uproot (Force on its target), Offshoot (copy another option); Full
  *  Bloom Strengthens an action that spends three or more. Sapling (Tenet) hands out a stack. Spending is a popup as the action pays its first AP/RP
  *  (switchable in the Reaction List), or armed in advance from the Action List.
@@ -39,7 +39,7 @@ const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
  * Offshoot (T4) has no number of its own: it copies another option spent on the same action.
  */
 export const OPTIONS = {
-  flourish: { label: "Flourish", tier: 1, text: (p, bs, n = 1) => `the attack deals ${2 * p * n}d8 more damage of its type${bs ? ` (${bs > 0 ? "Strengthened" : "Weakened"})` : ""}` },
+  flourish: { label: "Thorn", tier: 1, text: (p, bs, n = 1) => `the attack deals ${2 * p * n}d8 more damage of its type${bs ? ` (${bs > 0 ? "Strengthened" : "Weakened"})` : ""}` },
   thrift: { label: "Thrift", tier: 1, value: (p, bs, n = 1) => bold(bs, 3 * p * n), text: (p, bs, n = 1) => `the action costs ${bold(bs, 3 * p * n)} less Energy` },
   pierce: { label: "Pierce", tier: 2, value: (p, bs, n = 1) => bold(bs, 10 * p * n), text: (p, bs, n = 1) => `the attack ignores up to ${bold(bs, 10 * p * n)} Limit` },
   feed: { label: "Feed", tier: 2, value: (p, bs, n = 1) => bold(bs, 12 * p * n), text: (p, bs, n = 1) => `Ignite, Stain, Slow or Haste it applies: ${bold(bs, 12 * p * n)} more of each` },
@@ -221,7 +221,7 @@ export function energyCost(actor, cost) {
   return Math.max(0, cost - t.amount);
 }
 
-/** An attack is starting: it carries the action's Flourish, Pierce and Uproot (asked now if nothing was paid for it, as outside combat); Full Bloom Strengthens it. */
+/** An attack is starting: it carries the action's Thorn, Pierce and Uproot (asked now if nothing was paid for it, as outside combat); Full Bloom Strengthens it. */
 export async function attackStart(actor, opts) {
   if (!live(actor) || opts.mental?.ward || opts.mental?.reflect) return opts;
   let s = spentOf(actor);
@@ -237,7 +237,7 @@ export async function attackStart(actor, opts) {
   return { ...opts, growth: g, stacks: (opts.stacks ?? 0) + (s.bloom ? 1 : 0), notes: [...(opts.notes ?? []), `Growth: ${Object.keys(g).map(k => OPTIONS[k].label).join(", ") || "spent"}${s.bloom ? " (Full Bloom: Strengthened)" : ""}`] };
 }
 
-/** The exchange's damage roll (weapons and spells; a Manifest's Flourish is dealt on its hit): Flourish's dice and Pierce's Limit. */
+/** The exchange's damage roll (weapons and spells; a Manifest's Thorn is dealt on its hit): Thorn's dice and Pierce's Limit. */
 export async function growthDamage(o) {
   const g = o?.growth;
   if (!g || o.mental) return null;
@@ -245,7 +245,7 @@ export async function growthDamage(o) {
   if (g.flourish) {
     const r = await roll(`${2 * g.flourish.p * g.flourish.n}d8`);
     out.flat = bold(g.flourish.bs, r.total); out.rolls.push(r);
-    out.notes.push(`Flourish: +${out.flat} damage (${2 * g.flourish.p * g.flourish.n}d8 = ${r.total})`);
+    out.notes.push(`Thorn: +${out.flat} damage (${2 * g.flourish.p * g.flourish.n}d8 = ${r.total})`);
   }
   if (g.pierce) { out.pierce = OPTIONS.pierce.value(g.pierce.p, g.pierce.bs, g.pierce.n); out.notes.push(`Pierce (Growth): ignores up to ${out.pierce} more Limit`); }
   return out;
@@ -262,7 +262,7 @@ function modeDamageType(modeId) {
 }
 
 const hitsDone = new Set();
-/** An attack hit: Uproot's Force on its target, and a Manifest's Flourish (the Mode's own damage type). */
+/** An attack hit: Uproot's Force on its target, and a Manifest's Thorn (the Mode's own damage type). */
 export async function anyHit({ attacker, target, result, o, hitKey = null }) {
   const g = o?.growth;
   if (!g || !result?.hit || !live(target)) return;
@@ -274,7 +274,7 @@ export async function anyHit({ attacker, target, result, o, hitKey = null }) {
       const n = bold(g.flourish.bs, r.total);
       const outcome = await damageOutcome(target, n, type);
       await requestDamage(target, n, type, 0, null, { silent: true, shroudCtx: { attacker: attacker.uuid } });
-      await post(attacker, { title: `${esc(attacker.name)} — Flourish`, rolls: [r], body: `<div class="fs-result"><i class="fa-solid fa-seedling"></i> Flourish: <strong>${n}</strong> more ${esc(DAMAGE_TYPES[type])} damage to ${esc(target.name)}.</div>${damageOutcomeHTML(target, n, type, outcome)}` });
+      await post(attacker, { title: `${esc(attacker.name)} — Thorn`, rolls: [r], body: `<div class="fs-result"><i class="fa-solid fa-seedling"></i> Thorn: <strong>${n}</strong> more ${esc(DAMAGE_TYPES[type])} damage to ${esc(target.name)}.</div>${damageOutcomeHTML(target, n, type, outcome)}` });
     }
   }
   if (g.uproot) {

@@ -496,7 +496,8 @@ async function applyWard({ attacker, target, ward }) {
         lines.push(`Enhanced Anchor: <em>all</em> damage ${esc(who.name)} takes is Weakened until your next turn, as long as you don't move.`);
       }
     } else if (form.kind === "charge") {
-      await putSpellEffect(who, { kind: "premonition", caster: caster.uuid, name: `Premonition (negates ${amount})`, charge: amount, ward: ward.form, ritualOf: null, declared: ward.declared || "",
+      // Charges (Rules doc): several Premonition charges can be stored at once; each lasts until the start of the caster's next turn.
+      await putSpellEffect(who, { kind: "premonition", stack: true, caster: caster.uuid, name: `Premonition (negates ${amount})`, charge: amount, ward: ward.form, ritualOf: null, declared: ward.declared || "",
         description: `One charge: when damage would be dealt, negate up to ${amount} of it. Until the start of the caster's next turn.${ward.declared ? ` Declared source: ${sourceChoices()[ward.declared] ?? ward.declared}: damage from it gets a stack of Weakened first.` : ""}` });
       lines.push(`${esc(who.name)} stores a <strong>Premonition</strong> charge (negates up to ${amount})${ward.declared ? `, declaring ${esc(sourceChoices()[ward.declared] ?? ward.declared)} as the source` : ""}.`);
     }
@@ -717,7 +718,8 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
   const p = icon?.system.profile;
   const notes = [];
   let left = amount;
-  // Premonition (Dream): one stored charge negates a lump of damage. Enhanced, it declared a source: damage from it is Weakened first.
+  // Premonition (Dream): one stored charge negates a lump of damage (at most one charge per damage instance: Charges, Rules doc). Enhanced, it declared
+  // a source: damage from it is Weakened first.
   for (const e of spellEffects(actor, "premonition")) {
     if (left <= 0) break;
     const d = e.flags.flowstate.spellEffect;
@@ -732,6 +734,7 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
     left -= n;
     notes.push(`Premonition negates ${n}`);
     await e.delete();
+    break;
   }
   if (!p?.valid || p.kind !== "negate" || left <= 0) return { amount: left, html: notes.length ? `<div class="fs-notes">${notes.join(" · ")}</div>` : "" };
   const startLeft = left;

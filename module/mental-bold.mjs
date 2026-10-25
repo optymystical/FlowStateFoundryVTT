@@ -18,10 +18,10 @@ export const BOLD = {
   "4 health"
  ],
  "Wither": [
-  "1d12 health"
+  "1d12 Supernatural damage"
  ],
  "Mortal Coil": [
-  "1d8"
+  "1d8 Supernatural damage"
  ],
  "Waste": [
   "die size by 2"
@@ -41,7 +41,7 @@ export const BOLD = {
   "plus or minus 10"
  ],
  "Verdict": [
-  "add/subtract 5"
+  "add or subtract 5 damage"
  ],
  "Fracture": [
   "increased or decreased by 3"
@@ -53,13 +53,13 @@ export const BOLD = {
   "increased or decreased by 3"
  ],
  "Herald": [
-  "6d8 Force"
+  "10d8 Force"
  ],
  "Gust": [
-  "5d8 Force"
+  "12d8 Force"
  ],
  "Momentum": [
-  "5d8 Force"
+  "12d8 Force"
  ],
  "Redirect": [
   "20 less damage",
@@ -131,6 +131,19 @@ export const BOLD = {
  "Bloodbond": [
   "10 of the damage they dealt"
  ],
+ "Illuminate": [
+  "die size reduced by 1"
+ ],
+ "Dispersion": [
+  "Scaling Stat is 15 or less",
+  "20 health"
+ ],
+ "Eclipse": [
+  "die size reduced by 0.5"
+ ],
+ "Umbral Strike": [
+  "1d4"
+ ],
  "Crescendo": [
   "1d10 physical damage"
  ],
@@ -157,19 +170,6 @@ export const BOLD = {
   "1d8 damage of your choice",
   "1d8"
  ],
- "Illuminate": [
-  "die size reduced by 1"
- ],
- "Dispersion": [
-  "Scaling Stat is 15 or less",
-  "20 health"
- ],
- "Eclipse": [
-  "die size reduced by 0.5"
- ],
- "Umbral Strike": [
-  "1d4"
- ],
  "Accretion": [
   "50 Durability"
  ],
@@ -183,7 +183,7 @@ export const BOLD = {
   "deals 1d6 more Force damage"
  ],
  "Drown": [
-  "lose 2d8 health"
+  "take 2d8 Supernatural damage"
  ],
  "Cultivate": [
   "2d8 more damage",
@@ -230,7 +230,7 @@ export const BOLD = {
   "4 energy"
  ],
  "Jinx": [
-  "1d10 physical damage"
+  "1d12 physical damage"
  ],
  "Forfeit": [
   "4 energy"

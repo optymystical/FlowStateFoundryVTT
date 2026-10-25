@@ -195,7 +195,7 @@ function entryPage(tree, tier, e) {
     spell ? ["Threshold", threshold] : null, spell?.attack ? ["Attack", spell.attack] : null,
     spell ? ["Tags", [spell.universal && "Universal", spell.stackable && "Stackable", spell.replacement && "Replacement", spell.uncombinable && "Uncombinable"].filter(Boolean).join(", ")] : null,
     mode || tenet ? ["Wonder", `${KINDS[wonder.kind]?.label} · scales with ${KINDS[wonder.kind]?.statLabel}`] : null]));
-  // A Mode's text holds its sub-points (Cultivate's Flourish and Thrift): they're listed under it instead.
+  // A Mode's text holds its sub-points (Cultivate's Thorn and Thrift): they're listed under it instead.
   const modeBase = mode ? (e.sub ?? []).reduce((t, s) => t.replace(s, ""), mode.base).replace(/\s{2,}/g, " ").trim() : null;
   const parts = entryParts(mode ? modeBase : e.text, { spell: !!spell, name: tree.archetype === "mental" ? e.name : null });
   blocks.push(md(parts.main));

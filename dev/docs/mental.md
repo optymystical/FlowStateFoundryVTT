@@ -30,10 +30,6 @@
 
 [War (Nightmare)](#war-\(nightmare\))
 
-[Adaptation (Dream)](#adaptation-\(dream\))
-
-[Perfection (Nightmare)](#perfection-\(nightmare\))
-
 [**Mental T3 Skill Trees**](#mental-t3-skill-trees)
 
 [Snappence Arts](#snappence-arts)
@@ -42,23 +38,29 @@
 
 [Dark (Nightmare)](#dark-\(nightmare\))
 
-[Earth (Dream)](#earth-\(dream\))
+[Adaptation (Dream)](#adaptation-\(dream\))
 
-[Sea (Nightmare)](#sea-\(nightmare\))
+[Perfection (Nightmare)](#perfection-\(nightmare\))
 
 [**Mental T4 Skill Trees**](#mental-t4-skill-trees)
 
 [Willpower Arts](#willpower-arts)
 
+[Earth (Dream)](#earth-\(dream\))
+
+[Sea (Nightmare)](#sea-\(nightmare\))
+
 [Growth (Dream)](#growth-\(dream\))
 
-[Fortune (Dream)](#fortune-\(dream\))
-
-[Ruin (Nightmare)](#ruin-\(nightmare\))
+[Stagnation (Nightmare)](#stagnation-\(nightmare\))
 
 [**Mental T5 Skill Trees**](#mental-t5-skill-trees)
 
 [Esoteric Arts](#esoteric-arts)
+
+[Fortune (Dream)](#fortune-\(dream\))
+
+[Ruin (Nightmare)](#ruin-\(nightmare\))
 
 # 
 
@@ -87,14 +89,14 @@
 
   **2 Alignment:** Your Dream/Nightmare Form’s Ward bolded effect is Strengthened.
 
-- **Concentration:** Some abilities and actions in Mental Theory require Concentration to maintain. When you take direct damage while Concentrating on something, you must expend 1 RP to make a Willpower check against the direct damage taken as a target number; if the result is lower, all of your Concentrations end at that moment. You can Concentrate on a number of things equal to your Mental Theory tier, any more must require you losing Concentration on something else. You can end Concentrations freely, and going unconscious removes all active Concentrations.
+- **Concentration:** Some abilities and actions in Mental Theory require Concentration to maintain. When you take direct damage while Concentrating on something, you must expend 1 RP to make a Willpower check against the direct damage taken as a target number; if the result is lower, all of your Concentrations end at that moment. If you have no RP to spend, you automatically fail the check. You can Concentrate on a number of things equal to your Mental Theory tier, any more must require you losing Concentration on something else. You can end Concentrations freely, and going unconscious removes all active Concentrations.
 
 **Tier 1: You unlock the Psion Arts, Life, Death, Order, Chaos, Beyond, and Below trees. You also gain the following action and passive:**
 
 - **Burst:** You can Manifest a Wonder using RP equal to your chosen Range’s Manifest AP cost if you additionally spend energy equal to its Enhance cost. This can be done in conjunction with Enhance by combining the costs. This also can apply to Form’s Wards and their Enhance Costs.  
 - **Defensive Enhance:** You can now Enhance your Form’s Ward, working the same as normal Wonder Modes Enhance actions do.
 
-**Tier 2: You unlock the Ponderance Arts, Creation, Destruction, Peace, War, Adaptation, and Perfection trees. You also gain the following actions:**
+**Tier 2: You unlock the Ponderance Arts, Creation, Destruction, Peace, and War trees. You also gain the following actions:**
 
 - **Trance:** You can spend 8 hours attempting to make permanent a Mode of your choice on a willing target (they must participate in the 8 hours as well). Upon completion, the effect of the Mode is permanently active on them, so long as you maintain Concentration on it (this counts towards your cap).   
   - Modes with a normal lingering effect require a successful self attack roll (crits do apply) at the start of the target’s turns, with a failure meaning it doesn't apply that round.  
@@ -103,7 +105,7 @@
 - **Project:** Your Form’s Ward can now be applied to an ally as a Ranged attack with a range of 100ft, still requiring whatever AP/RP/energy the Action normally would take.
 
 
-**Tier 3: You unlock the Snappence Arts, Light, Dark, Earth, and Sea trees. You also gain the following action and passive:**
+**Tier 3: You unlock the Snappence Arts, Light, Dark, Adaptation, and Perfection trees. You also gain the following action and passive:**
 
 - **Chant:** If you miss the attack roll on a Manifest, you can, once per Manifest, reroll that attack roll by spending energy equal to its Enhance effect’s cost (this does not Enhance it). The new roll keeps any Disadvantages/Advantages the first attempt had, but does not re-proc effects.  
 - **Deepening:** You unlock two new Alignment depths, seen below. While these Alignments are set, you additionally have \-1 AP per turn for each Alignment past 2 (so \-1 AP at Alignment 3, and \-2 AP at Alignment 4).
@@ -112,12 +114,12 @@
 
   **4 Alignment:** Your Dream/Nightmare Form’s Ward hits regardless of roll, the roll now being used to determine if a crit occurs.
 
-**Tier 4: You unlock the Willpower Arts, Growth, Stagnation, Fortune, and Ruin trees. You also gain the following actions:**
+**Tier 4: You unlock the Willpower Arts, Earth, Sea, Growth, and Stagnation trees. You also gain the following actions:**
 
 - **Expansion:** If you expend energy equal to double your Form’s Ward Enhance cost, you can now treat it as an Area attack, which can either be a 10ft radius around you, a 20ft 90 degree cone in front of you, or a 30ft by 5ft line in one cardinal direction.  
 - **Fluidity:** You can now spend energy equal to half of your Skill Points multiplied by your current Alignment number to swap your Alignment type.
 
-**Tier 5: You unlock the Esoteric Arts, Truth, Mystery, Zeal, and Serenity trees. You also gain the following passives:**
+**Tier 5: You unlock the Esoteric Arts, Fortune, and Ruin trees. You also gain the following passives:**
 
 - **Will of Body and Spirit:** Whenever you make a Martial or Magic attack using AP, you can Manifest a Wonder at no extra AP cost so long as that Wonder’s normal AP cost matches that of the initial attack. This can also be done with RP based Martial/Magic attacks if Burst is used. The target(s) of your Wonder does not need to be the same as the Martial/Magic attack.  
 - **Patron:** Whenever you rest, you can select one Wonder to become your Patron Wonder (or change your currently selected Patron Wonder). Whenever you Manifest that Wonder, you can choose to Enhance or Burst it completely for free.
@@ -173,8 +175,8 @@
 ## **Death (Nightmare)** {#death-(nightmare)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Wither:** Removes **1d12 health** from a living target. This effect is reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects. **Enhanced:** This damage also removes that much Max HP from the target.  
-**Mortal Coil:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can steal **1d8** **health** from the target(s), becoming Temp HP for yourself that lasts until the start of your next turn.
+**Wither:** Deals **1d12 Supernatural damage** to a living target. **Enhanced:** This damage also removes that much Max HP from the target.  
+**Mortal Coil:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can deal **1d8 Supernatural damage** to that target, gaining the direct damage dealt as Temp HP that lasts until the start of your next turn.
 
 **Tier 2: You gain the following ability:**
 
@@ -182,7 +184,7 @@
 
 **Tier 3: You gain the following Mode:**
 
-- **Waste:** Store a Waste charge on the target, lasting until the start of your next turn. Whenever the target makes a dodge roll, you can consume up to one Waste charge on them to reduce that roll’s **die size by 2**. **Enhanced:** The affected dodge roll also has Disadvantage for this charge.
+- **Waste:** Store a Waste charge on the target. Whenever the target makes a dodge roll, you can consume a Waste charge on them to reduce that roll’s **die size by 2**. **Enhanced:** The affected dodge roll also has Disadvantage for this charge.
 
 **Tier 4: You gain the following ability:**
 
@@ -195,7 +197,7 @@
 ## **Order (Dream)** {#order-(dream)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Decree:** Store a Decree charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Decree charge on them to change that roll to instead be a static result, equal to half of their roll’s max result, **plus or minus 1** (your choice on Manifest). **Enhanced:** The baseline is set from your relevant die’s halfway point, instead of the target’s.  
+**Decree:** Store a Decree charge on the target. When the target makes a roll, you can consume a Decree charge on them to change that roll to instead be a static result, equal to half of their roll’s max result, **plus or minus 1** (your choice on Manifest). **Enhanced:** The static result is set from half of your own maximum for that kind of roll (your attack die for an attack roll, your dodge dice for a dodge roll) instead of theirs.  
 **Balance:** Only active while this is your selected Tenet. Once per round when you make an attack or dodge roll, you can **add 1** to the result, or **remove 1** from the opposing side’s result.
 
 **Tier 2: You gain the following passive:**
@@ -204,20 +206,20 @@
 
 **Tier 3: You gain the following Mode:**
 
-- **Mandate:** Store a Mandate charge on the target, lasting until the start of your next turn. When the target gets a result (from a roll or from Decree), you can consume any number of Mandate charges on them to give that result **plus or minus 1** (your choice on Manifest) per charge consumed. **Enhanced:** This effect is instead activated on a damage roll, changing its damage to be **plus or minus 10** **damage** of its type if it does so.
+- **Mandate:** Store a Mandate charge on the target. When the target gets a result (from a roll or from Decree), you can consume any number of Mandate charges on them to give that result **plus or minus 1** (your choice on Manifest) per charge consumed. **Enhanced:** These charges are instead consumed when the target rolls damage, changing that damage by **plus or minus 10** per charge consumed.
 
 **Tier 4: You gain the following ability:**
 
-- **Preordained:** **Cost: *Energy equal to your PON min.*** When you finish a rest, roll one of your dodge dice, that result is your Preordained Number. Whenever you consume an Order charge, you can use this ability to additionally increase/decrease that effect by your Preordained Number (Mandate’s Enhance 10x’s this effect as damage instead).
+- **Preordained:** **Cost: *Energy equal to your PON min.*** When you finish a rest, roll one of your dodge dice, that result is your Preordained Number. Whenever you consume an Order charge, you can use this ability to add or subtract your Preordained Number to that charge’s effect. For an Enhanced Mandate, add or subtract 10 times your Preordained Number in damage instead.
 
 **Tier 5: You gain the following Mode:**
 
-- **Verdict:** Store a Verdict charge on the target, lasting until the start of your next turn. When the target lands a regular hit or a crit, you can consume up to one Verdict charge on them to swap the result to be the other, and **add/subtract 5** **damage** to the result (this doubles if the result is a crit). **Enhanced:** Also apply a stack of Strengthened or Weakened to that attack.
+- **Verdict:** Store a Verdict charge on the target. When the target lands a regular hit or a crit, you can consume a Verdict charge on them to turn a regular hit into a crit or a crit into a regular hit, then **add or subtract 5 damage** (doubled if the final result is a crit). **Enhanced:** Also apply a stack of Strengthened or Weakened to that attack.
 
 ## **Chaos (Nightmare)** {#chaos-(nightmare)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Fracture:** Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size **increased or decreased by 3** (your choice on Manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). **Enhanced:** The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage.  
+**Fracture:** Store a Fracture charge on the target. When the target makes a roll, you can consume a Fracture charge on them to force a reroll, with the new roll’s die size **increased or decreased by 3** (your choice on Manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). **Enhanced:** The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage.  
 **Unbound:** Only active while this is your selected Tenet. Once per round when you get a crit on a Manifest, you can instantly for free apply one Chaos Mode charge of your choice onto that Manifest’s target.
 
 **Tier 2: You gain the following ability:**
@@ -226,29 +228,29 @@
 
 **Tier 3: You gain the following Mode:**
 
-- **Larceny:** Store a Larceny charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Larceny charge on them to steal that roll and any effects it would have, forcing them to roll a die whose size is **increased or decreased by 1** (dodge dice are affected by half). You can use their roll, including its effects, to replace any roll you would make prior to the start of your next turn. **Enhanced:** You now instead steal the action they were doing itself, lasting up to a minute. Their side functions the same (forced reroll), but now you can do their action exactly as they were attempting to by spending RP equal to its AP/RP cost, following the same rules they would as well as using their stats/dice.
+- **Larceny:** Store a Larceny charge on the target. When the target makes a roll, you can consume a Larceny charge on them to steal that roll and any effects it would have, forcing them to roll a die whose size is **increased or decreased by 1** (dodge dice are affected by half). You can use their roll, including its effects, to replace any roll you would make prior to the start of your next turn. **Enhanced:** You now instead steal the action they were doing itself, lasting up to a minute. Their side functions the same (forced reroll), but now you can do their action exactly as they were attempting to by spending RP equal to its AP/RP cost, following the same rules they would as well as using their stats/dice.
 
 **Tier 4: You gain the following passive:**
 
-- **Control:** Once per charge, you can reroll one extra roll made by a Chaos Mode. If you do, you must use that new result.
+- **Control:** When one of your Chaos charges forces a roll, you can have that forced roll rolled once more. You must use the new result.
 
 **Tier 5: You gain the following passive:**
 
-- **Entropy:** Fracture charges can now be used for the following effect: when the target would crit or be crit (can still occur on things with no crit effect), you can consume up to one Fracture charge on them to give them an additional roll (if critting, the additional roll is either an extra attack, or forcing them to redo the attack. If being crit, the additional roll is a new attempt to dodge. Either way, the roll does not inherit any effects from the original roll) with its die size **increased or decreased by 3** (dodge dice are affected by half). **Enhanced:** The extra reroll retains any effects the original roll had, such as Advantage/Disadvantage.
+- **Entropy:** Fracture charges can also be consumed when the target would crit or be crit (even with effects that cannot normally crit). If the target is critting, you choose whether it makes an extra attack or must redo the attack; if it is being crit, it makes a new dodge roll. Either way, the new roll’s die size is **increased or decreased by 3** (dodge dice are affected by half) and does not inherit any effects from the original roll. **Enhanced:** The extra reroll retains any effects the original roll had, such as Advantage/Disadvantage.
 
 ## **Beyond (Dream)** {#beyond-(dream)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Herald:** On hit, apply **6d8 Force** to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead converting directly into feet pushed after being divided by 10\. **Enhanced:** The Force also ignores Lift, treating it as if it were 0\.  
-**Gust:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can apply **5d8 Force** to whatever the target(s) of the Manifest are in any direction of your choosing. This Force adds up with any Force the Manifest itself would produce.
+**Herald:** On hit, apply **10d8 Force** to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead only removing half of their current HP (not counting Temp HP, also applies to Durability for objects) for the calculation. **Enhanced:** The Force ignores Lift, treating it as if it were 0\.  
+**Gust:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can apply **12d8 Force** to whatever the target(s) of the Manifest are in any direction of your choosing. This Force adds up with any Force the Manifest itself would produce.
 
 **Tier 2: You gain the following ability:**
 
-- **Momentum:** **Cost: *Energy equal to your PON min.*** Whenever a creature or object you moved with a Beyond Mode collides with something, you can use this ability. Apply **5d8 Force** to the target again in a different direction of your choosing, requiring no attack roll. This can chain with itself.
+- **Momentum:** **Cost: *Energy equal to your PON min.*** Whenever a creature or object you moved with a Beyond Mode collides with something, you can use this ability. Apply **12d8 Force** to the target again in a different direction of your choosing, requiring no attack roll. This can chain with itself.
 
 **Tier 3: You gain the following Mode:**
 
-- **Redirect:** Store a Redirect charge (no attack roll needed) with the range of the AP/RP you spent (Melee, Ranged, Area), lasting until the start of your next turn. When an attack hits within that range that you can sense, you can consume up to one Redirect charge of that range to make an attack roll against that attack’s result. On hit, that attack deals **20 less damage**. If reduced to 0, you can redirect it to another target within that charge’s range, requiring a new attack roll, repeating that attack's effect on hit. **Enhanced:** The intercept roll automatically hits, but only **reduces damage by 10**.
+- **Redirect:** Store a Redirect charge (no attack roll needed) with the range of the AP/RP you spent (Melee, Ranged, Area). When an attack hits within that range that you can sense, you can consume a Redirect charge of that range to make an attack roll against that attack’s result. On hit, that attack deals **20 less damage**. If reduced to 0, you can redirect it to another target within that charge’s range, requiring a new attack roll, repeating that attack's effect on hit. **Enhanced:** The intercept roll automatically hits, but only **reduces damage by 10**.
 
 **Tier 4: You gain the following ability:**
 
@@ -310,7 +312,7 @@
 
 **Tier 1: You gain the following Mode and Tenet:**  
 **Forge:** The attack roll for this Manifest is made against yourself. On hit, create a real Martial Weapon or set of Armor of a single type, with a material rarity of either Common or Uncommon, and a **grade of 1**. The item is created at a place within your chosen range (Area creates multiple per target, each requiring a separate dodge roll from yourself against the same attack roll), and it appears either in a willing target's free hand, or at the feet of an unwilling target/a target that cannot wield it. The item lasts until the start of your next turn. **Enhanced:** The created Weapon/Armor can be of Rare rarity instead.  
-**Alter:** Only active while this is your selected Tenet. Once per round when you hit a Manifest, choose an object the target is wearing or holding. All damage dealt to it is either Strengthened or Weakened, lasting until the start of your next turn.
+**Alter:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, choose an object the target is wearing or holding. All damage dealt to it is either Strengthened or Weakened, lasting until the start of your next turn.
 
 **Tier 2: You gain the following Mode:**
 
@@ -396,52 +398,6 @@
 
 - **Bloodbond:** On hit, the target gains a stack of Bloodbond lasting until the start of your next turn. Whenever a creature with a Bloodbond stack deals damage, you can consume up to one stack of Bloodbond to duplicate up to **10 of the damage they dealt** (same type), applying it to a different target (or targets if Area was used) within the Range used by this Manifest (requiring a new attack roll). Bloodbond cannot trigger itself. **Enhanced:** If the damage that triggered this Mode exceeds the cap of Bloodbond, the stack of Bloodbond is not consumed (still applying its effect).
 
-## **Adaptation (Dream)** {#adaptation-(dream)}
-
-**Tier 1: You gain the following Mode and Tenet:**
-
-- **Crescendo:** On hit, deals **1d10 physical damage** to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 4 more than the stack before it. **Enhanced:** This Manifest's damage can be of a type of your choice, from among physical, heat, cold, radiation and acid, and it is resolved as though you consumed one additional Adaptation stack.   
-- **Adapt:** Only active while this is your selected Tenet. Once per round when you would Manifest, you can expend one of your Adaptation stacks to give that Manifest Strengthened.
-
-**Tier 2: You gain the following passive:**
-
-- **Instinct:** You keep up to 4 stacks of Adaptation between turns (overrides the duration listed in each mode). In addition, when combat starts, you start with 4 stacks of Adaptation already banked.
-
-**Tier 3: You gain the following Mode:**
-
-- **Adaptive Skin:** On hit, the target gains an instance of Adaptive Skin until the start of your next turn, **reducing all damage they take by 1**. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. Whenever a creature with Adaptive Skin would take damage, you can consume any number of your Adaptation stacks to give them additional damage reduction against that damage's type until the start of your next turn: the first stack consumed **grants 1 damage reduction**, and each stack after that **grants 1 more damage reduction** than the stack before it. **Enhanced:** This instance's damage reduction applies only against a single damage type of your choice, but is resolved as though one Adaptation stack had already been consumed for it. 
-
-**Tier 4: You gain the following ability:**
-
-- **Memory:** **Cost: *Energy equal to your PON min.*** Whenever an Adaptation stack of yours would be removed, whether by being used or lost, you can use this ability. Keep that stack instead of consuming it. Any effect that stack was used for still applies as normal. If multiple stacks would be removed at once, you can do this for each one affected. 
-
-**Tier 5: You gain the following Mode:**
-
-- **Second Wind:** On hit, **restores 5 energy** to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you can consume 2 of your Adaptation stacks to remove one negative condition affecting the target. **Enhanced:** Until the start of your next turn, the condition(s) removed by this Manifest cannot be applied to that target again by the same effect.
-
-## **Perfection (Nightmare)** {#perfection-(nightmare)}
-
-**Tier 1: You gain the following Mode and Tenet:**
-
-- **Exact:** Deals **1d12 physical damage** to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. **Enhanced:** The damage from this gains **5 Pierce**, which is affected by the Strengthened from the on hit bonus.  
-- **Ego:** Only active while this is your selected Tenet. Once per round when you crit on a Manifest, you can regain **5 energy**.
-
-**Tier 2: You gain the following ability:**
-
-- **Hubris:** **Cost: *Energy equal to half of your SNA min, rounded down.*** Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits (assuming it can crit).
-
-**Tier 3: You gain the following Mode:**
-
-- **Hone:** Increases the target's **attack roll results by 1**, up to a total of their normal roll maximum, lasting until the start of your next turn, applying regardless of if you hit after the attack roll is made. On hit the target’s damage rolls are Strengthened for the duration, and on miss the bonus applied is Weakened. Does not stack. **Enhanced:** Instead, their attack roll results are no longer rolled, and are set to their roll's possible average rounded down, then **increased by** **1** up to their normal roll maximum. 
-
-**Tier 4: You gain the following passive:**
-
-- **Pride:** Whenever you crit against a living target with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests Advantage on their attack rolls.
-
-**Tier 5: You gain the following Mode:**
-
-- **Masterstroke:** Deals **1d8 damage of your choice** from among physical, heat, cold, radiation and acid to the target, applying regardless of if you hit after the attack roll is made. On hit any direct damage dealt by this reapplies on another target within the Manifest range that you can sense, no extra attack roll needed, while on miss the damage is reduced by how much you missed by. **Enhanced:** When you Manifest this Mode, you can consume any number of Pride stacks. For each consumed, increase the **damage dealt by this Mode by** **1d8**.
-
 # 
 
 # **Mental T3 Skill Trees** {#mental-t3-skill-trees}
@@ -518,11 +474,81 @@
 
 **Tier 4: You gain the following Mode:**
 
-- **Umbral Strike:** Store an Umbral Strike charge on the target, lasting until the start of your next turn. When a creature with an Umbral Strike charge makes an attack, it can consume up to one Umbral Strike charge to treat that attack as being made from one step further into stealth (none → half → full) and increase its **damage by** **1d4** of that attack’s damage type. **Enhanced:** Gives two charges of Umbral Strike instead.
+- **Umbral Strike:** Store an Umbral Strike charge on the target. When a creature with an Umbral Strike charge makes an attack, it can consume an Umbral Strike charge to treat that attack as being made from one step further into stealth (none → half → full) and increase its **damage by** **1d4** of that attack’s damage type. **Enhanced:** Gives two charges of Umbral Strike instead.
 
 **Tier 5: You gain the following action:**
 
 - **Nightfall:** You can, for 1 AP, make an attack roll against a creature you can sense within 100ft that is already under the effects of your Eclipse. On hit, that instance of Eclipse expands to also affect every valid target within 10ft of that creature.
+
+## **Adaptation (Dream)** {#adaptation-(dream)}
+
+**Tier 1: You gain the following Mode and Tenet:**
+
+- **Crescendo:** On hit, deals **1d10 physical damage** to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 4 more than the stack before it. **Enhanced:** This Manifest's damage can be of a type of your choice, from among physical, heat, cold, radiation and acid, and it is resolved as though you consumed one additional Adaptation stack.   
+- **Adapt:** Only active while this is your selected Tenet. Once per round when you would Manifest, you can expend one of your Adaptation stacks to give that Manifest Strengthened.
+
+**Tier 2: You gain the following passive:**
+
+- **Instinct:** You keep up to 4 stacks of Adaptation between turns (overrides the duration listed in each mode). In addition, when combat starts, you start with 4 stacks of Adaptation already banked.
+
+**Tier 3: You gain the following Mode:**
+
+- **Adaptive Skin:** On hit, the target gains an instance of Adaptive Skin until the start of your next turn, **reducing all damage they take by 1**. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. Whenever a creature with Adaptive Skin would take damage, you can consume any number of your Adaptation stacks to give them additional damage reduction against that damage's type until the start of your next turn: the first stack consumed **grants 1 damage reduction**, and each stack after that **grants 1 more damage reduction** than the stack before it. **Enhanced:** This instance's damage reduction applies only against a single damage type of your choice, but is resolved as though one Adaptation stack had already been consumed for it. 
+
+**Tier 4: You gain the following ability:**
+
+- **Memory:** **Cost: *Energy equal to your PON min.*** Whenever an Adaptation stack of yours would be removed, whether by being used or lost, you can use this ability. Keep that stack instead of consuming it. Any effect that stack was used for still applies as normal. If multiple stacks would be removed at once, you can do this for each one affected. 
+
+**Tier 5: You gain the following Mode:**
+
+- **Second Wind:** On hit, **restores 5 energy** to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you can consume 2 of your Adaptation stacks to remove one Stage 1 negative condition affecting the target. **Enhanced:** Until the start of your next turn, the condition(s) removed by this Manifest cannot be applied to that target again by the same effect.
+
+## **Perfection (Nightmare)** {#perfection-(nightmare)}
+
+**Tier 1: You gain the following Mode and Tenet:**
+
+- **Exact:** Deals **1d12 physical damage** to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. **Enhanced:** The damage from this gains **5 Pierce**, which is affected by the Strengthened from the on hit bonus.  
+- **Ego:** Only active while this is your selected Tenet. Once per round when you crit on a Manifest, you can regain **5 energy**.
+
+**Tier 2: You gain the following ability:**
+
+- **Hubris:** **Cost: *Energy equal to half of your SNA min, rounded down.*** Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits (assuming it can crit).
+
+**Tier 3: You gain the following Mode:**
+
+- **Hone:** Increases the target's **attack roll results by 1**, up to a total of their normal roll maximum, lasting until the start of your next turn, applying regardless of if you hit after the attack roll is made. On hit the target’s damage rolls are Strengthened for the duration, and on miss the bonus applied is Weakened. Does not stack. **Enhanced:** Instead, their attack roll results are no longer rolled, and are set to their roll's possible average rounded down, then **increased by** **1** up to their normal roll maximum. 
+
+**Tier 4: You gain the following passive:**
+
+- **Pride:** Whenever you crit against a living target with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests Advantage on their attack rolls.
+
+**Tier 5: You gain the following Mode:**
+
+- **Masterstroke:** Deals **1d8 damage of your choice** from among physical, heat, cold, radiation and acid to the target, applying regardless of if you hit after the attack roll is made. On hit any direct damage dealt by this reapplies on another target within the Manifest range that you can sense, no extra attack roll needed, while on miss the damage is reduced by how much you missed by. **Enhanced:** When you Manifest this Mode, you can consume any number of Pride stacks. For each consumed, increase the **damage dealt by this Mode by** **1d8**.
+
+# **Mental T4 Skill Trees** {#mental-t4-skill-trees}
+
+## **Willpower Arts** {#willpower-arts}
+
+**Tier 1: You gain the following action:**
+
+- **Attuned*:*** You can swap your Icon attunement for **2 AP** instead of the normal 6 AP. Once per turn, you can swap it for **2 RP** instead.
+
+**Tier 2: You gain the following ability:**
+
+- **Make Clear:** **Cost: *Energy equal to your WIL min.*** Whenever you activate your Form’s Ward effect, you can use this ability. You get Advantage on the Ward’s activation attack roll. In addition, if you still end up missing the Ward activation attack roll, you can reroll it once, not keeping any Advantages/Disadvantages the original roll had.
+
+**Tier 3: You gain the following passive:**
+
+- **Innate*:*** Your first usage of your Form’s Ward effect each turn costs no AP/RP, and is automatically Enhanced.
+
+**Tier 4: You gain the following ability:**
+
+- **Recur:** **Cost: *Energy equal to half of your WIL min, rounded down.*** Whenever you activate your Form’s Ward effect on a target other than yourself, you can use this ability. If you hit the Ward effect, it chains to you as well for free, no additional hit required (including its Enhance effect if it was initially Enhanced, and its crit bonus if the initial activation crit).
+
+**Tier 5: You gain the following passive:**
+
+- **Innate Mastery:** Innate also causes that Ward’s target to have Disadvantage on their roll against it.
 
 # 
 
@@ -560,7 +586,7 @@
 
 **Tier 2: You gain the following ability:**
 
-- **Current: Cost: *Energy equal to your SNA min.*** Whenever a creature takes damage or loses health from one of your Sea Modes, you can use this ability to forcefully move them up to 5ft in a direction of your choosing.
+- **Current: Cost: *Energy equal to your SNA min.*** Whenever a creature takes damage from one of your Sea Modes, you can use this ability to forcefully move them up to 5ft in a direction of your choosing.
 
 **Tier 3: You gain the following Mode:**
 
@@ -568,35 +594,11 @@
 
 **Tier 4: You gain the following passive:**
 
-- **Shoal:** Damage and health loss from your Sea Modes is Strengthened against prone targets. This does not apply to Force Damage. 
+- **Shoal:** Damage from your Sea Modes is Strengthened against prone targets. This does not apply to Force Damage. 
 
 **Tier 5: You gain the following Mode:**
 
-- **Drown:** Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved at least 10ft (downward movement does not count) during your current turn they **lose 2d8 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). **Enhanced:** You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they lose that health again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit. 
-
-# **Mental T4 Skill Trees** {#mental-t4-skill-trees}
-
-## **Willpower Arts** {#willpower-arts}
-
-**Tier 1: You gain the following action:**
-
-- **Attuned*:*** You can swap your Icon attunement for **2 AP** instead of the normal 6 AP. Once per turn, you can swap it for **2 RP** instead.
-
-**Tier 2: You gain the following ability:**
-
-- **Make Clear:** **Cost: *Energy equal to your WIL min.*** Whenever you activate your Form’s Ward effect, you can use this ability. You get Advantage on the Ward’s activation attack roll. In addition, if you still end up missing the Ward activation attack roll, you can reroll it once, not keeping any Advantages/Disadvantages the original roll had.
-
-**Tier 3: You gain the following passive:**
-
-- **Innate*:*** Your first usage of your Form’s Ward effect each turn costs no AP/RP, and is automatically Enhanced.
-
-**Tier 4: You gain the following ability:**
-
-- **Recur:** **Cost: *Energy equal to half of your WIL min, rounded down.*** Whenever you activate your Form’s Ward effect on a target other than yourself, you can use this ability. If you hit the Ward effect, it chains to you as well for free, no additional hit required (including its Enhance effect if it was initially Enhanced, and its crit bonus if the initial activation crit).
-
-**Tier 5: You gain the following passive:**
-
-- **Innate Mastery:** Innate also causes that Ward’s target to have Disadvantage on their roll against it.
+- **Drown:** Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved at least 10ft (downward movement does not count) during your current turn they **take 2d8 Supernatural damage**. **Enhanced:** You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they take that damage again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit. 
 
 # 
 
@@ -605,7 +607,7 @@
 **Tier 1: You gain the following Mode and Tenet:**
 
 - **Cultivate:** On hit, the target gains a Growth stack, lasting until the start of your next turn. When the target takes an action (any named thing that spends AP or RP: an attack, a Manifest, a cast Spell, or an ability with an AP/RP cost), it can spend any number of its Growth stacks on that action, each on a different Growth option you have unlocked. **Enhanced:** The target gains two Growth stacks instead.  
-  - **Flourish:** The attack deals **2d8 more damage** of its type.  
+  - **Thorn:** The attack deals **2d8 more damage** of its type.  
   - **Thrift:** The action costs **3 less energy** (to a minimum of 0).  
 - **Sapling:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, the target or you gains one Growth stack.
 
@@ -626,16 +628,16 @@
 
 **Tier 5: You gain the following passive:**
 
-- **Full Bloom:** When an action spends Growth stacks on three or more options, that action and those Growth stacks damage/bolded effects are Strengthened.
+- **Full Bloom:** When an action spends Growth stacks on three or more options, that action and those Growth stacks’ damage/bolded effects are Strengthened.
 
 # 
 
-## **Stagnation (Nightmare)**
+## **Stagnation (Nightmare)** {#stagnation-(nightmare)}
 
 **Tier 1: You gain the following Mode and Tenet:**
 
 - **Mire:** On hit, choose an action type: Martial Attack, Mental Manifest, or Magic Spell. Until the start of your next turn, whenever the target spends AP or RP on an action of a Mired type, it gains one Stagnation stack per point spent. Stagnation stacks are shared between all sources, and all are removed at the start of your next turn. A Manifest that would Mire an action type that is already Mired has no effect. As the target reaches each stack count below, that effect applies. **Enhanced:** Choose two action types.  
-- **Toll (1 Stack):** The target loses **2 energy**. Energy below 0 becomes health loss at 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).  
+- **Toll (1 Stack):** The target loses **2 energy**. Energy below 0 becomes Supernatural damage at 1:1.  
 - **Silt (2 Stacks):** The target gains **12 Slow stacks**.  
 - **Moss:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, the target gains one Stagnation stack.
 
@@ -654,6 +656,33 @@
 **Tier 5: Your Stagnation stacks gain the following effect:**
 
 - **Stasis (6+ Stacks):** Each stack the target gains from 6 onward applies two of Toll, Silt, Grind, and Crush, chosen each time. The same effect can be chosen twice, and the two chosen effects combine into one (two Crushes are a single **24d8 downward Force**, two Grinds are **2d8 physical damage**, and so on).
+
+# **Mental T5 Skill Trees** {#mental-t5-skill-trees}
+
+## **Esoteric Arts** {#esoteric-arts}
+
+**Tier 1: You gain the following action and passive:**
+
+- **Seed:** Spend 8 hours to seed an Omen of a Wonder you have at Tier 5\. It is bound to you and counts as one of your Concentrations. At Seeding, choose its Form from its Wonder’s pole (Common, Uncommon, or Rare) and its Alignment depth.  
+- **Omen:** Your Omen has its own sapience, initiative, and turn, with its own AP, RP, and an energy pool equal to 5 times its skill points. It has stat points equal to yours, with two thirds in its Wonder’s scaling stat and one third in Willpower (you can flip this split at Seeding), and skill points equal to one fifth of its stat points, which only set its dice. It always has full Mental Theory and its own Wonder at Tier 5, regardless of its skill points.  
+- **Pole-Bound:** Your Omen Manifests only its own Wonder, and that Wonder’s Tenet is always active for it. It is its own Icon, using its Form’s Ward without needing one. Attacks between it and creatures or effects of its opposite pole are Strengthened, in both directions. It never acts against its pole and never aids the opposite one.  
+- **Bond:** If you end this Concentration yourself and your Omen is willing, it is dismissed. It is willing if, since it was seeded, you have Manifested its Wonder more times than its opposite pole’s Wonder. Otherwise, make an attack roll against it; on a miss, the bond is severed and it turns hostile. If you lose this Concentration any other way, it fights on your side for the rest of that battle, but turns hostile if angered (you or an ally harming it, Manifesting its opposite pole where it can sense it, or acting against its pole). If it is not hostile when the battle ends, you can rebind it with 1 hour of work.
+
+**Tier 2: You gain the following ability:**
+
+- **Channel:** **Cost: Energy equal to half your scaling stat min, rounded down.** When you Manifest a Wonder, you can use this ability to Manifest it from your Omen’s position instead of your own, using its senses. If the Mode belongs to your Omen’s Wonder, its attack roll has Advantage.
+
+**Tier 3: You gain the following ability:**
+
+- **Unbind:** **Cost: 2 AP and energy equal to your scaling stat min.** Until the start of your next turn, your Omen has its full stats (stat points equal to twice yours, with its skill points unchanged). Its current HP rises with its Max HP, and when this ends, its current HP is reduced to its normal Max HP if it is above it.
+
+**Tier 4: You gain the following passive:**
+
+- **Kinship:** While your Omen is within 30ft of you, you also benefit from its Tenet. If your Omen’s Tenet is also your selected Tenet, you can trigger it one additional time per round (your Omen still triggers its own once per round).
+
+**Tier 5: You gain the following action:**
+
+- **Rend:** On your turn, you can spend 2 AP to summon an Omen of a Wonder you have at Tier 5 instantly. Make an attack roll against it with Disadvantage, with it dodging at Advantage. On a hit, it is seeded and bound to you as normal. On a miss, it arrives free with its full stats and is hostile.
 
 # 
 
@@ -674,7 +703,7 @@
 
 **Tier 3: You gain the following Mode:**
 
-- **Windfall:** On hit, restore **4 energy** to the target. Energy restored above their maximum becomes Temp HP at 1:1, lasting until the start of your next turn. If this Manifest self hits from the bands, you instead lose that energy, and energy lost below 0 becomes health loss at 1:1. **Enhanced:** Both Energy conversion ratios become 1:2.
+- **Windfall:** On hit, restore **4 energy** to the target. Energy restored above their maximum becomes Temp HP at 1:1, lasting until the start of your next turn. If this Manifest self hits from the bands, you instead lose that energy, and energy lost below 0 becomes Supernatural damage at 1:1. **Enhanced:** Both conversions become 2 per point of energy instead of 1\.
 
 **Tier 4: You gain the following ability:**
 
@@ -691,7 +720,7 @@
 | 4–6 | Deals **1d12 cold damage** to the target, and one effect they are Concentrating on ends. |
 | 7–11 | Deals **1d12 physical damage** to the target, and they cannot benefit from advantage until the start of your next turn. |
 | 12–16 | Deals **1d10 radiation damage** to the target, and their senses are each treated as one step lower until the start of your next turn (does not stack). |
-| 17–21 | The target loses **1d10 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). |
+| 17–21 | Deals **1d10 Supernatural damage** to the target. |
 | 22–26 | Deals **1d10 physical damage** to the target and knocks them prone. |
 | 27–31 | Deals **1d8 heat damage** to the target and every creature within 10ft of it. |
 | 32–35 | The target’s Pain Threshold is **raised by** **10** until the start of your next turn. |
@@ -699,8 +728,8 @@
 | 40–43 | The target’s attack rolls have their **die size reduced by 1** until the start of your next turn. |
 | 44–47 | The target gains **15 Slow stacks**, lasting until the start of your next turn. |
 | 48–50 | The target loses **3 energy**. |
-| 51–53 | Apply **5d8 Force** to the target in a direction of your choosing. |
-| 54–56 | The target is forcefully moved **2ft** in a direction of your choosing, ignoring Force and Lift. |
+| 51–53 | Apply **12d8 Force** to the target in a direction of your choosing. |
+| 54–56 | The target is forcefully moved 5ft in a direction of your choosing, ignoring Force and Lift. |
 | 57–59 | Deals **1d10 Elemental damage** to the target, of a type of your choice. |
 | 60–63 | Restore **3 energy** to the target. |
 | 64–67 | Give the target **15 Haste stacks**, lasting until the start of your next turn. |
@@ -717,20 +746,20 @@
 
 **Tier 1: You gain the following Mode, passive, and Tenet:**
 
-- **Jinx:** On hit, store a Jinx of **1d10 physical damage** on the target. **Enhanced:** The first time this Jinx would fizzle, it waits for the target’s next attack roll instead.  
-- **Ruin’s Bands:** Ruin Modes cannot crit. Instead, on hit, they store their effect on the target as a Jinx, lasting until the start of your next turn. The target’s next attack roll resolves every Jinx on it at once. The result depends on where that roll lands relative to its maximum:   
-  - **Under one half:** All the Jinxes fizzle.  
-  - **One half to under three quarters:** The Jinxes’ effects gain 2 stacks of Strengthened  
-  - **Three quarters or higher:** The Jinxes’ effects gain 4 stacks of Strengthened  
+- **Jinx:** On hit, store a Jinx of **1d12 physical damage** on the target. **Enhanced:** The first time this Jinx would fizzle, it waits for the target’s next attack roll instead.  
+- **Ruin’s Bands:** Ruin Modes cannot crit. Instead, on hit, they store their effect on the target as a Jinx, lasting until the start of your next turn. The target’s next attack roll resolves every Jinx on it at once. If it makes no attack roll before they expire, they end with no effect. The result depends on where that roll lands relative to its maximum:   
+  - **Half or higher:** All the Jinxes fizzle.  
+  - **One quarter to under one half:** The Jinxes’ effects gain 2 stacks of Strengthened.  
+  - **Under one quarter:** The Jinxes’ effects gain 4 stacks of Strengthened.   
 - **Doom:** Only active while this is your selected Tenet. Once per round at any time as a free reaction you can roll the Ruin Table found at the end of this tree, then select a target you can sense within 100ft of you to apply the rolled effect to on a successful attack roll.
 
 **Tier 2: You gain the following ability:**
 
-- **Gild: Cost: *Energy equal to half your SNA min, rounded down.*** When you Manifest a Ruin Mode, you can use this ability. If that Manifest hits, the roll that resolves the target’s Jinxes has Advantage. 
+- **Gild: Cost: *Energy equal to your SNA min.*** When you Manifest a Ruin Mode, you can use this ability. If that Manifest hits, the roll that resolves the target’s Jinxes has Disadvantage. 
 
 **Tier 3: You gain the following Mode:**
 
-- **Forfeit:** On hit, store a Jinx that **removes** **4 energy** from the target. Any energy that would go below 0 becomes health loss at 1:1 instead (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). **Enhanced:** That conversion becomes 1:2. 
+- **Forfeit:** On hit, store a Jinx that **removes** **4 energy** from the target. Any energy that would go below 0 becomes Supernatural damage at 1:1 instead. **Enhanced:** Each point of energy below 0 becomes 2 Supernatural damage instead of 1\. 
 
 **Tier 4: You gain the following ability:**
 
@@ -751,9 +780,9 @@
 | 21–24 | Deals **1d10 radiation** damage to the target, and the target cannot regain health until the start of your next turn. |
 | 25–28 | Deals **1d8 heat** damage to the target now, and again at the start of the target’s next turn. |
 | 29–32 | Deals **1d10 cold** damage to the target and applies **10 Slow stacks** to them. |
-| 33–36 | The target loses **1d10 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). |
-| 37–40 | The target loses **3 energy**. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). |
-| 41–44 | The next time the target spends energy, it spends **3** **more**. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). Lasts until used or the start of your next turn. |
+| 33–36 | Deals **1d10 Supernatural damage** to the target. |
+| 37–40 | The target loses **3 energy**. Any amount below 0 becomes Supernatural damage at 1:1. |
+| 41–44 | The next time the target spends energy, it spends **3** **more**. Any amount below 0 becomes Supernatural damage at 1:1. Lasts until used or the start of your next turn. |
 | 45–48 | The target’s Haste stacks become Slow stacks, then it gains **10 Slow stacks**. |
 | 49–52 | The target loses **10 Temp HP/Shielding**, and one object that it is holding or wearing that has Durability loses **10 Durability**. |
 | 53–56 | Deals **1d8 physical damage** to the target, and their next attack roll has Disadvantage. Lasts until used or the start of your next turn. |
@@ -762,37 +791,10 @@
 | 65–68 | Deals **1d6 physical damage** to the target, and you may flip the target’s next attack roll for free, as Reversal does. Lasts until used or the start of your next turn. |
 | 69–72 | Deals **1d12 physical damage** to the target, ignoring up to **10 Limit**. |
 | 73–76 | Deals **1d8 physical damage** to the target, and the next time they deal damage, that damage has a stack of Weakened. Lasts until used or the start of your next turn. |
-| 77–80 | One effect the target is Concentrating on ends, and it loses **1d8 health** (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). |
+| 77–80 | One effect the target is Concentrating on ends, and it takes **1d8 Supernatural damage**. |
 | 81–84 | Deals **1d8 physical damage** to the target, and the next time they take non-Jinx damage, that damage has a stack of Strengthened. Lasts until used or the start of your next turn. |
 | 85–88 | If the target has more than half its max energy, it loses **5 energy**. Otherwise, they are dealt **1d10 physical damage**. |
 | 89–92 | Roll again and store the new result on the target as a fresh Calamity. |
 | 93–96 | Roll twice more and apply both, rerolling any 89–100. |
 | 97–100 | Deals **1d12 Supernatural** damage to the target, and they are knocked prone. |
-
-# **Mental T5 Skill Trees** {#mental-t5-skill-trees}
-
-## **Esoteric Arts** {#esoteric-arts}
-
-**Tier 1: You gain the following action and passive:**
-
-- **Seed:** Spend 8 hours in a Trance to seed an Omen of a Wonder you have at Tier 5\. It is bound to you and counts as one of your Concentrations. At Seeding, choose its Form from its Wonder’s pole (Common, Uncommon, or Rare) and its Alignment depth.  
-- **Omen:** Your Omen has its own sapience, initiative, and turn, with its own AP, RP, and an energy pool equal to 5 times its skill points. It has stat points equal to yours, with two thirds in its Wonder’s scaling stat and one third in Willpower (you can flip this split at Seeding), and skill points equal to one fifth of its stat points, which only set its dice. It always has full Mental Theory and its own Wonder at Tier 5, regardless of its skill points.  
-- **Pole-Bound:** Your Omen Manifests only its own Wonder, and that Wonder’s Tenet is always active for it. It is its own Icon, using its Form’s Ward without needing one. Attacks between it and creatures or effects of its opposite pole are Strengthened, in both directions. It never acts against its pole and never aids the opposite one.  
-- **Bond:** If you end this Concentration yourself and your Omen is willing, it is dismissed. It is willing if, since it was seeded, you have Manifested its Wonder more times than its opposite pole’s Wonder. Otherwise, make an attack roll against it; on a miss, the bond is severed and it turns hostile. If you lose this Concentration any other way, it fights on your side for the rest of that battle, but turns hostile if angered (you or an ally harming it, Manifesting its opposite pole where it can sense it, or acting against its pole). If it is not hostile when the battle ends, you can rebind it with 1 hour of work.
-
-**Tier 2: You gain the following ability:**
-
-- **Channel:** **Cost: Energy equal to half your scaling stat min, rounded down.** When you Manifest a Wonder, you can use this ability to Manifest it from your Omen’s position instead of your own, using its senses. If the Mode belongs to your Omen’s Wonder, its attack roll has Advantage.
-
-**Tier 3: You gain the following ability:**
-
-- **Unbind:** **Cost: 2 AP and energy equal to your scaling stat min.** Until the start of your next turn, your Omen has its full stats (stat points equal to twice yours, with its skill points unchanged). Its current HP rises with its Max HP, and when this ends, its current HP is reduced to its normal Max HP if it is above it.
-
-**Tier 4: You gain the following passive:**
-
-- **Kinship:** While your Omen is within 30ft of you, you also benefit from its Tenet. If it is your selected Tenet, you can trigger it one additional time per round (your Omen still triggers its own once per round).
-
-**Tier 5: You gain the following action:**
-
-- **Rend:** Summon an Omen of a Wonder you have at Tier 5 instantly. Make an attack roll against it with Disadvantage, with it dodging at Advantage. On a hit, it is seeded and bound to you as normal. On a miss, it arrives free with its full stats and is hostile.
 

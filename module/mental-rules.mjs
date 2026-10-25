@@ -62,7 +62,7 @@ function parseWonder(tree) {
 }
 
 /**
- * An entry's text with its sub-points. Sub-points that are options of the Mode (Cultivate's Flourish and Thrift) go before an inline "Enhanced:" clause,
+ * An entry's text with its sub-points. Sub-points that are options of the Mode (Cultivate's Thorn and Thrift) go before an inline "Enhanced:" clause,
  * so they stay part of the base effect; "Against an enemy / ally" and "Enhanced" lines follow the text as they are.
  */
 function withSubs(entry) {
@@ -148,8 +148,9 @@ export function fortuneBand(total, die, doubleDown = false) {
  */
 export function ruinBand(total, die) {
   const f = (Number(total) || 0) / Math.max(1, Number(die) || 1);
-  if (f < 0.5) return { fizzle: true, stacks: 0, label: "under one half: the Jinxes fizzle" };
-  return f >= 0.75 ? { fizzle: false, stacks: 4, label: "three quarters or higher: 4 Strengthened" } : { fizzle: false, stacks: 2, label: "one half to under three quarters: 2 Strengthened" };
+  // Low rolls are good for the Jinxes: half or higher fizzles them, a quarter to under half gives 2 Strengthened, under a quarter 4.
+  if (f >= 0.5) return { fizzle: true, stacks: 0, label: "half or higher: the Jinxes fizzle" };
+  return f < 0.25 ? { fizzle: false, stacks: 4, label: "under one quarter: 4 Strengthened" } : { fizzle: false, stacks: 2, label: "one quarter to under one half: 2 Strengthened" };
 }
 /** Reversal (Ruin T4): a die's result flipped: its size + 1 − the result. */
 export const flipRoll = (total, die) => Math.max(1, (Number(die) || 1) + 1 - (Number(total) || 0));

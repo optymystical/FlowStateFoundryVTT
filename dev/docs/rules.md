@@ -420,12 +420,12 @@ Strafing refers to moving while performing an action. So long as your Movement c
 
 ## **Damage Rolls/Types** {#damage-rolls/types}
 
-Damage rolls themselves can never benefit from Advantage and Disadvantage, instead using the Strengthened/Weakened system which is below. In total, there are 7 damage types and 4 overall damage categories. These types have no meaning on their own (aside from Arcane), instead they are for both flavor and setup.
+Damage rolls themselves can never benefit from Advantage and Disadvantage, instead using the Strengthened/Weakened system which is below. In total, there are 7 damage types and 4 overall damage categories. These types have no meaning on their own (aside from Arcane and Supernatural), instead they are for both flavor and setup.
 
 **Physical Category**: Entirely made up of just the Physical damage type, to keep things simple.  
 **Elemental Category**: Made up of the Heat, Cold, Acid, and Radiation damage types, typically found as environmental effects usually with bonus effects (nothing innate).  
 **Magical Category:** Made up mainly of Arcane damage, which is Weakened against targets that are not fully Magical and passes through (is not blocked by) non-magical things. Any damage produced by Magic is also Magical in addition to its own type (e.g. a Heat spell is Heat and Magical), allowing it to be blocked by protections that are either Magical or whatever type it is.  
-**Supernatural Category:** Damage dealt by Supernatural Sources (such as creatures made with Esoteric Arts in Mental) is treated as both Supernatural and whatever its normal damage type is, if it has a normal damage type (it can just be pure Supernatural).
+**Supernatural Category:** Made up of the Supernatural damage type, dealt by Supernatural sources (such as Omens made with Esoteric Arts in Mental) and by Mental effects that drain the body directly. Supernatural damage passes through (is not blocked by) protections that are not specifically against Supernatural damage, except for Temp HP, Shielding, Shrouds, and Ward effects, which reduce it as normal. Damage from a Supernatural source that also has a normal damage type is treated as both, allowing it to be blocked by protections that are either Supernatural or whatever type it is.
 
 ## **Strengthened/Weakened** {#strengthened/weakened}
 
@@ -538,6 +538,10 @@ Slow is a stacking value that applies to a creature. While a creature has at lea
 ## **Haste** {#haste}
 
 Haste is a stacking value that applies to a creature. While a creature has at least half their Pain Threshold in Haste stacks, their movement costs are decreased by 1 AP (if already 1, they move twice as fast). If instead they have Haste stacks greater than or equal to their Pain Threshold, their movement costs are decreased by 2 AP (if already 1, they move three times as fast. If at 2, they cost 1 and they move twice as fast). At the end of a creature with Haste stack’s turn, it reduces its Haste stacks by half of its Pain Threshold, rounded down. Haste and Slow stacks cancel each other out equal to their values.
+
+## **Charges**
+
+A Charge is an effect stored on a creature (or held by yourself, such as with Redirect), named after the effect that created it, such as a Decree charge. Unless stated otherwise, a Charge lasts until the start of its creator's next turn, does nothing until it is consumed, and can only be consumed by its creator when its listed trigger occurs, consuming at most one Charge of that name per trigger. Multiple Charges of the same name can be stored on the same creature, and consuming a Charge removes it.
 
 # **Ch10 \- Objects and Force** {#ch10---objects-and-force}
 

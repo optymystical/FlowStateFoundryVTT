@@ -3503,7 +3503,7 @@ export const TREES = [
      },
      {
       "name": "Concentration",
-      "text": "Some abilities and actions in Mental Theory require Concentration to maintain. When you take direct damage while Concentrating on something, you must expend 1 RP to make a Willpower check against the direct damage taken as a target number; if the result is lower, all of your Concentrations end at that moment. You can Concentrate on a number of things equal to your Mental Theory tier, any more must require you losing Concentration on something else. You can end Concentrations freely, and going unconscious removes all active Concentrations."
+      "text": "Some abilities and actions in Mental Theory require Concentration to maintain. When you take direct damage while Concentrating on something, you must expend 1 RP to make a Willpower check against the direct damage taken as a target number; if the result is lower, all of your Concentrations end at that moment. If you have no RP to spend, you automatically fail the check. You can Concentrate on a number of things equal to your Mental Theory tier, any more must require you losing Concentration on something else. You can end Concentrations freely, and going unconscious removes all active Concentrations."
      }
     ]
    },
@@ -3525,7 +3525,7 @@ export const TREES = [
    {
     "tier": 2,
     "free": false,
-    "summary": "You unlock the Ponderance Arts, Creation, Destruction, Peace, War, Adaptation, and Perfection trees. You also gain the following actions:",
+    "summary": "You unlock the Ponderance Arts, Creation, Destruction, Peace, and War trees. You also gain the following actions:",
     "entries": [
      {
       "name": "Trance",
@@ -3552,7 +3552,7 @@ export const TREES = [
    {
     "tier": 3,
     "free": false,
-    "summary": "You unlock the Snappence Arts, Light, Dark, Earth, and Sea trees. You also gain the following action and passive:",
+    "summary": "You unlock the Snappence Arts, Light, Dark, Adaptation, and Perfection trees. You also gain the following action and passive:",
     "entries": [
      {
       "name": "Chant",
@@ -3571,7 +3571,7 @@ export const TREES = [
    {
     "tier": 4,
     "free": false,
-    "summary": "You unlock the Willpower Arts, Growth, Stagnation, Fortune, and Ruin trees. You also gain the following actions:",
+    "summary": "You unlock the Willpower Arts, Earth, Sea, Growth, and Stagnation trees. You also gain the following actions:",
     "entries": [
      {
       "name": "Expansion",
@@ -3586,7 +3586,7 @@ export const TREES = [
    {
     "tier": 5,
     "free": false,
-    "summary": "You unlock the Esoteric Arts, Truth, Mystery, Zeal, and Serenity trees. You also gain the following passives:",
+    "summary": "You unlock the Esoteric Arts, Fortune, and Ruin trees. You also gain the following passives:",
     "entries": [
      {
       "name": "Will of Body and Spirit",
@@ -3746,11 +3746,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Wither",
-      "text": "Removes 1d12 health from a living target. This effect is reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects. Enhanced: This damage also removes that much Max HP from the target."
+      "text": "Deals 1d12 Supernatural damage to a living target. Enhanced: This damage also removes that much Max HP from the target."
      },
      {
       "name": "Mortal Coil",
-      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can steal 1d8 health from the target(s), becoming Temp HP for yourself that lasts until the start of your next turn."
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can deal 1d8 Supernatural damage to that target, gaining the direct damage dealt as Temp HP that lasts until the start of your next turn."
      }
     ]
    },
@@ -3772,7 +3772,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Waste",
-      "text": "Store a Waste charge on the target, lasting until the start of your next turn. Whenever the target makes a dodge roll, you can consume up to one Waste charge on them to reduce that roll’s die size by 2. Enhanced: The affected dodge roll also has Disadvantage for this charge."
+      "text": "Store a Waste charge on the target. Whenever the target makes a dodge roll, you can consume a Waste charge on them to reduce that roll’s die size by 2. Enhanced: The affected dodge roll also has Disadvantage for this charge."
      }
     ]
    },
@@ -3814,7 +3814,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Decree",
-      "text": "Store a Decree charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Decree charge on them to change that roll to instead be a static result, equal to half of their roll’s max result, plus or minus 1 (your choice on Manifest). Enhanced: The baseline is set from your relevant die’s halfway point, instead of the target’s."
+      "text": "Store a Decree charge on the target. When the target makes a roll, you can consume a Decree charge on them to change that roll to instead be a static result, equal to half of their roll’s max result, plus or minus 1 (your choice on Manifest). Enhanced: The static result is set from half of your own maximum for that kind of roll (your attack die for an attack roll, your dodge dice for a dodge roll) instead of theirs."
      },
      {
       "name": "Balance",
@@ -3840,7 +3840,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Mandate",
-      "text": "Store a Mandate charge on the target, lasting until the start of your next turn. When the target gets a result (from a roll or from Decree), you can consume any number of Mandate charges on them to give that result plus or minus 1 (your choice on Manifest) per charge consumed. Enhanced: This effect is instead activated on a damage roll, changing its damage to be plus or minus 10 damage of its type if it does so."
+      "text": "Store a Mandate charge on the target. When the target gets a result (from a roll or from Decree), you can consume any number of Mandate charges on them to give that result plus or minus 1 (your choice on Manifest) per charge consumed. Enhanced: These charges are instead consumed when the target rolls damage, changing that damage by plus or minus 10 per charge consumed."
      }
     ]
    },
@@ -3851,7 +3851,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Preordained",
-      "text": "Cost: Energy equal to your PON min. When you finish a rest, roll one of your dodge dice, that result is your Preordained Number. Whenever you consume an Order charge, you can use this ability to additionally increase/decrease that effect by your Preordained Number (Mandate’s Enhance 10x’s this effect as damage instead)."
+      "text": "Cost: Energy equal to your PON min. When you finish a rest, roll one of your dodge dice, that result is your Preordained Number. Whenever you consume an Order charge, you can use this ability to add or subtract your Preordained Number to that charge’s effect. For an Enhanced Mandate, add or subtract 10 times your Preordained Number in damage instead."
      }
     ]
    },
@@ -3862,7 +3862,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Verdict",
-      "text": "Store a Verdict charge on the target, lasting until the start of your next turn. When the target lands a regular hit or a crit, you can consume up to one Verdict charge on them to swap the result to be the other, and add/subtract 5 damage to the result (this doubles if the result is a crit). Enhanced: Also apply a stack of Strengthened or Weakened to that attack."
+      "text": "Store a Verdict charge on the target. When the target lands a regular hit or a crit, you can consume a Verdict charge on them to turn a regular hit into a crit or a crit into a regular hit, then add or subtract 5 damage (doubled if the final result is a crit). Enhanced: Also apply a stack of Strengthened or Weakened to that attack."
      }
     ]
    }
@@ -3882,7 +3882,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Fracture",
-      "text": "Store a Fracture charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Fracture charge on them to force a reroll, with the new roll’s die size increased or decreased by 3 (your choice on Manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). Enhanced: The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage."
+      "text": "Store a Fracture charge on the target. When the target makes a roll, you can consume a Fracture charge on them to force a reroll, with the new roll’s die size increased or decreased by 3 (your choice on Manifest, dodge dice are affected by half, the new roll does not inherit any effects the original roll had such as Advantage/Disadvantage). Enhanced: The forced reroll retains any effects the original roll had, such as Advantage/Disadvantage."
      },
      {
       "name": "Unbound",
@@ -3908,7 +3908,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Larceny",
-      "text": "Store a Larceny charge on the target, lasting until the start of your next turn. When the target makes a roll, you can consume up to one Larceny charge on them to steal that roll and any effects it would have, forcing them to roll a die whose size is increased or decreased by 1 (dodge dice are affected by half). You can use their roll, including its effects, to replace any roll you would make prior to the start of your next turn. Enhanced: You now instead steal the action they were doing itself, lasting up to a minute. Their side functions the same (forced reroll), but now you can do their action exactly as they were attempting to by spending RP equal to its AP/RP cost, following the same rules they would as well as using their stats/dice."
+      "text": "Store a Larceny charge on the target. When the target makes a roll, you can consume a Larceny charge on them to steal that roll and any effects it would have, forcing them to roll a die whose size is increased or decreased by 1 (dodge dice are affected by half). You can use their roll, including its effects, to replace any roll you would make prior to the start of your next turn. Enhanced: You now instead steal the action they were doing itself, lasting up to a minute. Their side functions the same (forced reroll), but now you can do their action exactly as they were attempting to by spending RP equal to its AP/RP cost, following the same rules they would as well as using their stats/dice."
      }
     ]
    },
@@ -3919,7 +3919,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Control",
-      "text": "Once per charge, you can reroll one extra roll made by a Chaos Mode. If you do, you must use that new result."
+      "text": "When one of your Chaos charges forces a roll, you can have that forced roll rolled once more. You must use the new result."
      }
     ]
    },
@@ -3930,7 +3930,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Entropy",
-      "text": "Fracture charges can now be used for the following effect: when the target would crit or be crit (can still occur on things with no crit effect), you can consume up to one Fracture charge on them to give them an additional roll (if critting, the additional roll is either an extra attack, or forcing them to redo the attack. If being crit, the additional roll is a new attempt to dodge. Either way, the roll does not inherit any effects from the original roll) with its die size increased or decreased by 3 (dodge dice are affected by half). Enhanced: The extra reroll retains any effects the original roll had, such as Advantage/Disadvantage."
+      "text": "Fracture charges can also be consumed when the target would crit or be crit (even with effects that cannot normally crit). If the target is critting, you choose whether it makes an extra attack or must redo the attack; if it is being crit, it makes a new dodge roll. Either way, the new roll’s die size is increased or decreased by 3 (dodge dice are affected by half) and does not inherit any effects from the original roll. Enhanced: The extra reroll retains any effects the original roll had, such as Advantage/Disadvantage."
      }
     ]
    }
@@ -3950,11 +3950,11 @@ export const TREES = [
     "entries": [
      {
       "name": "Herald",
-      "text": "On hit, apply 6d8 Force to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead converting directly into feet pushed after being divided by 10. Enhanced: The Force also ignores Lift, treating it as if it were 0."
+      "text": "On hit, apply 10d8 Force to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead only removing half of their current HP (not counting Temp HP, also applies to Durability for objects) for the calculation. Enhanced: The Force ignores Lift, treating it as if it were 0."
      },
      {
       "name": "Gust",
-      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can apply 5d8 Force to whatever the target(s) of the Manifest are in any direction of your choosing. This Force adds up with any Force the Manifest itself would produce."
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can apply 12d8 Force to whatever the target(s) of the Manifest are in any direction of your choosing. This Force adds up with any Force the Manifest itself would produce."
      }
     ]
    },
@@ -3965,7 +3965,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Momentum",
-      "text": "Cost: Energy equal to your PON min. Whenever a creature or object you moved with a Beyond Mode collides with something, you can use this ability. Apply 5d8 Force to the target again in a different direction of your choosing, requiring no attack roll. This can chain with itself."
+      "text": "Cost: Energy equal to your PON min. Whenever a creature or object you moved with a Beyond Mode collides with something, you can use this ability. Apply 12d8 Force to the target again in a different direction of your choosing, requiring no attack roll. This can chain with itself."
      }
     ]
    },
@@ -3976,7 +3976,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Redirect",
-      "text": "Store a Redirect charge (no attack roll needed) with the range of the AP/RP you spent (Melee, Ranged, Area), lasting until the start of your next turn. When an attack hits within that range that you can sense, you can consume up to one Redirect charge of that range to make an attack roll against that attack’s result. On hit, that attack deals 20 less damage. If reduced to 0, you can redirect it to another target within that charge’s range, requiring a new attack roll, repeating that attack's effect on hit. Enhanced: The intercept roll automatically hits, but only reduces damage by 10."
+      "text": "Store a Redirect charge (no attack roll needed) with the range of the AP/RP you spent (Melee, Ranged, Area). When an attack hits within that range that you can sense, you can consume a Redirect charge of that range to make an attack roll against that attack’s result. On hit, that attack deals 20 less damage. If reduced to 0, you can redirect it to another target within that charge’s range, requiring a new attack roll, repeating that attack's effect on hit. Enhanced: The intercept roll automatically hits, but only reduces damage by 10."
      }
     ]
    },
@@ -4154,7 +4154,7 @@ export const TREES = [
      },
      {
       "name": "Alter",
-      "text": "Only active while this is your selected Tenet. Once per round when you hit a Manifest, choose an object the target is wearing or holding. All damage dealt to it is either Strengthened or Weakened, lasting until the start of your next turn."
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, choose an object the target is wearing or holding. All damage dealt to it is either Strengthened or Weakened, lasting until the start of your next turn."
      }
     ]
    },
@@ -4409,142 +4409,6 @@ export const TREES = [
   ]
  },
  {
-  "id": "mental-adaptation-dream",
-  "name": "Adaptation (Dream)",
-  "archetype": "mental",
-  "theory": false,
-  "requires": 2,
-  "tiers": [
-   {
-    "tier": 1,
-    "free": false,
-    "summary": "You gain the following Mode and Tenet:",
-    "entries": [
-     {
-      "name": "Crescendo",
-      "text": "On hit, deals 1d10 physical damage to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 4 more than the stack before it. Enhanced: This Manifest's damage can be of a type of your choice, from among physical, heat, cold, radiation and acid, and it is resolved as though you consumed one additional Adaptation stack."
-     },
-     {
-      "name": "Adapt",
-      "text": "Only active while this is your selected Tenet. Once per round when you would Manifest, you can expend one of your Adaptation stacks to give that Manifest Strengthened."
-     }
-    ]
-   },
-   {
-    "tier": 2,
-    "free": false,
-    "summary": "You gain the following passive:",
-    "entries": [
-     {
-      "name": "Instinct",
-      "text": "You keep up to 4 stacks of Adaptation between turns (overrides the duration listed in each mode). In addition, when combat starts, you start with 4 stacks of Adaptation already banked."
-     }
-    ]
-   },
-   {
-    "tier": 3,
-    "free": false,
-    "summary": "You gain the following Mode:",
-    "entries": [
-     {
-      "name": "Adaptive Skin",
-      "text": "On hit, the target gains an instance of Adaptive Skin until the start of your next turn, reducing all damage they take by 1. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. Whenever a creature with Adaptive Skin would take damage, you can consume any number of your Adaptation stacks to give them additional damage reduction against that damage's type until the start of your next turn: the first stack consumed grants 1 damage reduction, and each stack after that grants 1 more damage reduction than the stack before it. Enhanced: This instance's damage reduction applies only against a single damage type of your choice, but is resolved as though one Adaptation stack had already been consumed for it."
-     }
-    ]
-   },
-   {
-    "tier": 4,
-    "free": false,
-    "summary": "You gain the following ability:",
-    "entries": [
-     {
-      "name": "Memory",
-      "text": "Cost: Energy equal to your PON min. Whenever an Adaptation stack of yours would be removed, whether by being used or lost, you can use this ability. Keep that stack instead of consuming it. Any effect that stack was used for still applies as normal. If multiple stacks would be removed at once, you can do this for each one affected."
-     }
-    ]
-   },
-   {
-    "tier": 5,
-    "free": false,
-    "summary": "You gain the following Mode:",
-    "entries": [
-     {
-      "name": "Second Wind",
-      "text": "On hit, restores 5 energy to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you can consume 2 of your Adaptation stacks to remove one negative condition affecting the target. Enhanced: Until the start of your next turn, the condition(s) removed by this Manifest cannot be applied to that target again by the same effect."
-     }
-    ]
-   }
-  ]
- },
- {
-  "id": "mental-perfection-nightmare",
-  "name": "Perfection (Nightmare)",
-  "archetype": "mental",
-  "theory": false,
-  "requires": 2,
-  "tiers": [
-   {
-    "tier": 1,
-    "free": false,
-    "summary": "You gain the following Mode and Tenet:",
-    "entries": [
-     {
-      "name": "Exact",
-      "text": "Deals 1d12 physical damage to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. Enhanced: The damage from this gains 5 Pierce, which is affected by the Strengthened from the on hit bonus."
-     },
-     {
-      "name": "Ego",
-      "text": "Only active while this is your selected Tenet. Once per round when you crit on a Manifest, you can regain 5 energy."
-     }
-    ]
-   },
-   {
-    "tier": 2,
-    "free": false,
-    "summary": "You gain the following ability:",
-    "entries": [
-     {
-      "name": "Hubris",
-      "text": "Cost: Energy equal to half of your SNA min, rounded down. Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits (assuming it can crit)."
-     }
-    ]
-   },
-   {
-    "tier": 3,
-    "free": false,
-    "summary": "You gain the following Mode:",
-    "entries": [
-     {
-      "name": "Hone",
-      "text": "Increases the target's attack roll results by 1, up to a total of their normal roll maximum, lasting until the start of your next turn, applying regardless of if you hit after the attack roll is made. On hit the target’s damage rolls are Strengthened for the duration, and on miss the bonus applied is Weakened. Does not stack. Enhanced: Instead, their attack roll results are no longer rolled, and are set to their roll's possible average rounded down, then increased by 1 up to their normal roll maximum."
-     }
-    ]
-   },
-   {
-    "tier": 4,
-    "free": false,
-    "summary": "You gain the following passive:",
-    "entries": [
-     {
-      "name": "Pride",
-      "text": "Whenever you crit against a living target with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests Advantage on their attack rolls."
-     }
-    ]
-   },
-   {
-    "tier": 5,
-    "free": false,
-    "summary": "You gain the following Mode:",
-    "entries": [
-     {
-      "name": "Masterstroke",
-      "text": "Deals 1d8 damage of your choice from among physical, heat, cold, radiation and acid to the target, applying regardless of if you hit after the attack roll is made. On hit any direct damage dealt by this reapplies on another target within the Manifest range that you can sense, no extra attack roll needed, while on miss the damage is reduced by how much you missed by. Enhanced: When you Manifest this Mode, you can consume any number of Pride stacks. For each consumed, increase the damage dealt by this Mode by 1d8."
-     }
-    ]
-   }
-  ]
- },
- {
   "id": "mental-snappence-arts",
   "name": "Snappence Arts",
   "archetype": "mental",
@@ -4737,7 +4601,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Umbral Strike",
-      "text": "Store an Umbral Strike charge on the target, lasting until the start of your next turn. When a creature with an Umbral Strike charge makes an attack, it can consume up to one Umbral Strike charge to treat that attack as being made from one step further into stealth (none → half → full) and increase its damage by 1d4 of that attack’s damage type. Enhanced: Gives two charges of Umbral Strike instead."
+      "text": "Store an Umbral Strike charge on the target. When a creature with an Umbral Strike charge makes an attack, it can consume an Umbral Strike charge to treat that attack as being made from one step further into stealth (none → half → full) and increase its damage by 1d4 of that attack’s damage type. Enhanced: Gives two charges of Umbral Strike instead."
      }
     ]
    },
@@ -4755,8 +4619,8 @@ export const TREES = [
   ]
  },
  {
-  "id": "mental-earth-dream",
-  "name": "Earth (Dream)",
+  "id": "mental-adaptation-dream",
+  "name": "Adaptation (Dream)",
   "archetype": "mental",
   "theory": false,
   "requires": 3,
@@ -4767,64 +4631,64 @@ export const TREES = [
     "summary": "You gain the following Mode and Tenet:",
     "entries": [
      {
-      "name": "Accretion",
-      "text": "On hit, the target is encased in soft material until the start of your next turn. The encasement is an object with 50 Durability and a Limit equal to one fifth of its Durability, working only against Physical and Elemental damage. Attacks against that creature strike the encasement first: it absorbs damage up to its Limit from each attack, reducing its Durability by that much, with any excess passing through to the creature. This Mode stacks on the same target, melding into a single encasement whose Durability and Limit are the sums of its parts. Enhanced: On Manifest, select a damage category (Physical, Elemental, Magical, Supernatural). Damage of that category dealt to this instance is Weakened."
+      "name": "Crescendo",
+      "text": "On hit, deals 1d10 physical damage to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you may consume any number of your Adaptation stacks: the first stack consumed increases this Manifest's damage die size by 2, and each stack after that increases it by 4 more than the stack before it. Enhanced: This Manifest's damage can be of a type of your choice, from among physical, heat, cold, radiation and acid, and it is resolved as though you consumed one additional Adaptation stack."
      },
      {
-      "name": "Adamant",
-      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can lower the target’s or your own Pain Threshold by 10, lasting until the start of your next turn. If reapplied with a reaction the moment the effect ends, the target will not fall unconscious from the change in Pain Threshold."
+      "name": "Adapt",
+      "text": "Only active while this is your selected Tenet. Once per round when you would Manifest, you can expend one of your Adaptation stacks to give that Manifest Strengthened."
      }
     ]
    },
    {
     "tier": 2,
     "free": false,
-    "summary": "You gain the following ability:",
+    "summary": "You gain the following passive:",
     "entries": [
      {
-      "name": "Reinforce",
-      "text": "Cost: Energy equal to half of your PON min, rounded down. When an attack would reduce one of your Accretions’ Durability, you can use this ability. For that attack instance, its Limit is equal to its full remaining Durability."
+      "name": "Instinct",
+      "text": "You keep up to 4 stacks of Adaptation between turns (overrides the duration listed in each mode). In addition, when combat starts, you start with 4 stacks of Adaptation already banked."
      }
     ]
    },
    {
     "tier": 3,
     "free": false,
-    "summary": "You gain the following action:",
+    "summary": "You gain the following Mode:",
     "entries": [
      {
-      "name": "Ejecta",
-      "text": "At any time, you can consume an Accretion to throw it as an attack roll against a target within 100ft of that Accretion. On a hit, deal physical damage equal to one fifth of that Accretion’s remaining Durability."
+      "name": "Adaptive Skin",
+      "text": "On hit, the target gains an instance of Adaptive Skin until the start of your next turn, reducing all damage they take by 1. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. Whenever a creature with Adaptive Skin would take damage, you can consume any number of your Adaptation stacks to give them additional damage reduction against that damage's type until the start of your next turn: the first stack consumed grants 1 damage reduction, and each stack after that grants 1 more damage reduction than the stack before it. Enhanced: This instance's damage reduction applies only against a single damage type of your choice, but is resolved as though one Adaptation stack had already been consumed for it."
      }
     ]
    },
    {
     "tier": 4,
     "free": false,
-    "summary": "You gain the following passive:",
+    "summary": "You gain the following ability:",
     "entries": [
      {
-      "name": "Batholith",
-      "text": "Your Accretions absorb damage of any category, including Magical and Supernatural. In addition, Ejecta can target fully magical and Supernatural creatures, dealing Arcane damage to fully magical targets and Supernatural damage to Supernatural targets."
+      "name": "Memory",
+      "text": "Cost: Energy equal to your PON min. Whenever an Adaptation stack of yours would be removed, whether by being used or lost, you can use this ability. Keep that stack instead of consuming it. Any effect that stack was used for still applies as normal. If multiple stacks would be removed at once, you can do this for each one affected."
      }
     ]
    },
    {
     "tier": 5,
     "free": false,
-    "summary": "You gain the following passive:",
+    "summary": "You gain the following Mode:",
     "entries": [
      {
-      "name": "Bedrock",
-      "text": "When damage would exceed one of your Accretions’ Limit, you may choose to have the excess reduce that encasement’s Durability by twice the excess instead of passing through to the creature."
+      "name": "Second Wind",
+      "text": "On hit, restores 5 energy to the target. Regardless of hit, you gain a stack of Adaptation, lasting until the start of your next turn. On hit, you can consume 2 of your Adaptation stacks to remove one Stage 1 negative condition affecting the target. Enhanced: Until the start of your next turn, the condition(s) removed by this Manifest cannot be applied to that target again by the same effect."
      }
     ]
    }
   ]
  },
  {
-  "id": "mental-sea-nightmare",
-  "name": "Sea (Nightmare)",
+  "id": "mental-perfection-nightmare",
+  "name": "Perfection (Nightmare)",
   "archetype": "mental",
   "theory": false,
   "requires": 3,
@@ -4835,12 +4699,12 @@ export const TREES = [
     "summary": "You gain the following Mode and Tenet:",
     "entries": [
      {
-      "name": "Undertow",
-      "text": "On hit, the target is engulfed in flowing water until the start of your next turn. Whenever they spend AP to move, or the target is forcefully moved by something other than your own Sea effects, it takes 1d8 physical damage. Enhanced: This Mode’s damage is cold instead of physical, and removes energy from the target equal to the direct damage dealt."
+      "name": "Exact",
+      "text": "Deals 1d12 physical damage to the target, applying regardless of if you hit after the attack roll is made. On hit the damage dealt from this is Strengthened, while on miss the damage is reduced by how much you missed by. Enhanced: The damage from this gains 5 Pierce, which is affected by the Strengthened from the on hit bonus."
      },
      {
-      "name": "Surge",
-      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can forcefully move the target up to 5ft horizontally in a direction of your choosing, ignoring Force and Lift."
+      "name": "Ego",
+      "text": "Only active while this is your selected Tenet. Once per round when you crit on a Manifest, you can regain 5 energy."
      }
     ]
    },
@@ -4850,8 +4714,8 @@ export const TREES = [
     "summary": "You gain the following ability:",
     "entries": [
      {
-      "name": "Current",
-      "text": "Cost: Energy equal to your SNA min. Whenever a creature takes damage or loses health from one of your Sea Modes, you can use this ability to forcefully move them up to 5ft in a direction of your choosing."
+      "name": "Hubris",
+      "text": "Cost: Energy equal to half of your SNA min, rounded down. Whenever you would attempt to Manifest a Perfection Mode, you can use this ability. The entire effect of that Mode is now on hit, but if it hits it automatically crits (assuming it can crit)."
      }
     ]
    },
@@ -4861,8 +4725,8 @@ export const TREES = [
     "summary": "You gain the following Mode:",
     "entries": [
      {
-      "name": "Riptide",
-      "text": "On hit, the target is forcefully moved up to 5ft toward or away from a point of your choosing within the used range, ignoring Force and Lift. If this movement causes Force damage, it deals 1d6 more Force damage. Enhanced: Target an additional creature; the original target is pulled toward it, and if the additional target is also hit it is pulled the same distance toward the original. A creature cannot take Force Damage from both pulls of the same Manifest."
+      "name": "Hone",
+      "text": "Increases the target's attack roll results by 1, up to a total of their normal roll maximum, lasting until the start of your next turn, applying regardless of if you hit after the attack roll is made. On hit the target’s damage rolls are Strengthened for the duration, and on miss the bonus applied is Weakened. Does not stack. Enhanced: Instead, their attack roll results are no longer rolled, and are set to their roll's possible average rounded down, then increased by 1 up to their normal roll maximum."
      }
     ]
    },
@@ -4872,8 +4736,8 @@ export const TREES = [
     "summary": "You gain the following passive:",
     "entries": [
      {
-      "name": "Shoal",
-      "text": "Damage and health loss from your Sea Modes is Strengthened against prone targets. This does not apply to Force Damage."
+      "name": "Pride",
+      "text": "Whenever you crit against a living target with a Perfection Mode you gain a stack of Pride, lasting until the start of your next turn. Each stack gives all of your Perfection Manifests Advantage on their attack rolls."
      }
     ]
    },
@@ -4883,8 +4747,8 @@ export const TREES = [
     "summary": "You gain the following Mode:",
     "entries": [
      {
-      "name": "Drown",
-      "text": "Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved at least 10ft (downward movement does not count) during your current turn they lose 2d8 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). Enhanced: You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they lose that health again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit."
+      "name": "Masterstroke",
+      "text": "Deals 1d8 damage of your choice from among physical, heat, cold, radiation and acid to the target, applying regardless of if you hit after the attack roll is made. On hit any direct damage dealt by this reapplies on another target within the Manifest range that you can sense, no extra attack roll needed, while on miss the damage is reduced by how much you missed by. Enhanced: When you Manifest this Mode, you can consume any number of Pride stacks. For each consumed, increase the damage dealt by this Mode by 1d8."
      }
     ]
    }
@@ -4955,6 +4819,142 @@ export const TREES = [
   ]
  },
  {
+  "id": "mental-earth-dream",
+  "name": "Earth (Dream)",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 4,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following Mode and Tenet:",
+    "entries": [
+     {
+      "name": "Accretion",
+      "text": "On hit, the target is encased in soft material until the start of your next turn. The encasement is an object with 50 Durability and a Limit equal to one fifth of its Durability, working only against Physical and Elemental damage. Attacks against that creature strike the encasement first: it absorbs damage up to its Limit from each attack, reducing its Durability by that much, with any excess passing through to the creature. This Mode stacks on the same target, melding into a single encasement whose Durability and Limit are the sums of its parts. Enhanced: On Manifest, select a damage category (Physical, Elemental, Magical, Supernatural). Damage of that category dealt to this instance is Weakened."
+     },
+     {
+      "name": "Adamant",
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can lower the target’s or your own Pain Threshold by 10, lasting until the start of your next turn. If reapplied with a reaction the moment the effect ends, the target will not fall unconscious from the change in Pain Threshold."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Reinforce",
+      "text": "Cost: Energy equal to half of your PON min, rounded down. When an attack would reduce one of your Accretions’ Durability, you can use this ability. For that attack instance, its Limit is equal to its full remaining Durability."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You gain the following action:",
+    "entries": [
+     {
+      "name": "Ejecta",
+      "text": "At any time, you can consume an Accretion to throw it as an attack roll against a target within 100ft of that Accretion. On a hit, deal physical damage equal to one fifth of that Accretion’s remaining Durability."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Batholith",
+      "text": "Your Accretions absorb damage of any category, including Magical and Supernatural. In addition, Ejecta can target fully magical and Supernatural creatures, dealing Arcane damage to fully magical targets and Supernatural damage to Supernatural targets."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Bedrock",
+      "text": "When damage would exceed one of your Accretions’ Limit, you may choose to have the excess reduce that encasement’s Durability by twice the excess instead of passing through to the creature."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "mental-sea-nightmare",
+  "name": "Sea (Nightmare)",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 4,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following Mode and Tenet:",
+    "entries": [
+     {
+      "name": "Undertow",
+      "text": "On hit, the target is engulfed in flowing water until the start of your next turn. Whenever they spend AP to move, or the target is forcefully moved by something other than your own Sea effects, it takes 1d8 physical damage. Enhanced: This Mode’s damage is cold instead of physical, and removes energy from the target equal to the direct damage dealt."
+     },
+     {
+      "name": "Surge",
+      "text": "Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can forcefully move the target up to 5ft horizontally in a direction of your choosing, ignoring Force and Lift."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Current",
+      "text": "Cost: Energy equal to your SNA min. Whenever a creature takes damage from one of your Sea Modes, you can use this ability to forcefully move them up to 5ft in a direction of your choosing."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You gain the following Mode:",
+    "entries": [
+     {
+      "name": "Riptide",
+      "text": "On hit, the target is forcefully moved up to 5ft toward or away from a point of your choosing within the used range, ignoring Force and Lift. If this movement causes Force damage, it deals 1d6 more Force damage. Enhanced: Target an additional creature; the original target is pulled toward it, and if the additional target is also hit it is pulled the same distance toward the original. A creature cannot take Force Damage from both pulls of the same Manifest."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Shoal",
+      "text": "Damage from your Sea Modes is Strengthened against prone targets. This does not apply to Force Damage."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following Mode:",
+    "entries": [
+     {
+      "name": "Drown",
+      "text": "Begin to drown the target by attempting to fill their lungs with water. On hit, they are knocked prone, and if they have been forcefully moved at least 10ft (downward movement does not count) during your current turn they take 2d8 Supernatural damage. Enhanced: You can Concentrate on this Mode to keep it active and force them to stay prone. At the start of each of your turns they take that damage again so long as they have been forcefully moved at least that distance since the start of your last turn. The effect ends if that distance was not met, or if they get up successfully. Standing up costs 1 AP and prompts an attack roll from them targeting you, which deals no damage and only ends the effect on a hit."
+     }
+    ]
+   }
+  ]
+ },
+ {
   "id": "mental-growth-dream",
   "name": "Growth (Dream)",
   "archetype": "mental",
@@ -4970,7 +4970,7 @@ export const TREES = [
       "name": "Cultivate",
       "text": "On hit, the target gains a Growth stack, lasting until the start of your next turn. When the target takes an action (any named thing that spends AP or RP: an attack, a Manifest, a cast Spell, or an ability with an AP/RP cost), it can spend any number of its Growth stacks on that action, each on a different Growth option you have unlocked. Enhanced: The target gains two Growth stacks instead.",
       "sub": [
-       "Flourish: The attack deals 2d8 more damage of its type.",
+       "Thorn: The attack deals 2d8 more damage of its type.",
        "Thrift: The action costs 3 less energy (to a minimum of 0)."
       ]
      },
@@ -5032,7 +5032,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Full Bloom",
-      "text": "When an action spends Growth stacks on three or more options, that action and those Growth stacks damage/bolded effects are Strengthened."
+      "text": "When an action spends Growth stacks on three or more options, that action and those Growth stacks’ damage/bolded effects are Strengthened."
      }
     ]
    }
@@ -5056,7 +5056,7 @@ export const TREES = [
      },
      {
       "name": "Toll (1 Stack)",
-      "text": "The target loses 2 energy. Energy below 0 becomes health loss at 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects)."
+      "text": "The target loses 2 energy. Energy below 0 becomes Supernatural damage at 1:1."
      },
      {
       "name": "Silt (2 Stacks)",
@@ -5115,11 +5115,87 @@ export const TREES = [
   ]
  },
  {
+  "id": "mental-esoteric-arts",
+  "name": "Esoteric Arts",
+  "archetype": "mental",
+  "theory": false,
+  "requires": 5,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You gain the following action and passive:",
+    "entries": [
+     {
+      "name": "Seed",
+      "text": "Spend 8 hours to seed an Omen of a Wonder you have at Tier 5. It is bound to you and counts as one of your Concentrations. At Seeding, choose its Form from its Wonder’s pole (Common, Uncommon, or Rare) and its Alignment depth."
+     },
+     {
+      "name": "Omen",
+      "text": "Your Omen has its own sapience, initiative, and turn, with its own AP, RP, and an energy pool equal to 5 times its skill points. It has stat points equal to yours, with two thirds in its Wonder’s scaling stat and one third in Willpower (you can flip this split at Seeding), and skill points equal to one fifth of its stat points, which only set its dice. It always has full Mental Theory and its own Wonder at Tier 5, regardless of its skill points."
+     },
+     {
+      "name": "Pole-Bound",
+      "text": "Your Omen Manifests only its own Wonder, and that Wonder’s Tenet is always active for it. It is its own Icon, using its Form’s Ward without needing one. Attacks between it and creatures or effects of its opposite pole are Strengthened, in both directions. It never acts against its pole and never aids the opposite one."
+     },
+     {
+      "name": "Bond",
+      "text": "If you end this Concentration yourself and your Omen is willing, it is dismissed. It is willing if, since it was seeded, you have Manifested its Wonder more times than its opposite pole’s Wonder. Otherwise, make an attack roll against it; on a miss, the bond is severed and it turns hostile. If you lose this Concentration any other way, it fights on your side for the rest of that battle, but turns hostile if angered (you or an ally harming it, Manifesting its opposite pole where it can sense it, or acting against its pole). If it is not hostile when the battle ends, you can rebind it with 1 hour of work."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Channel",
+      "text": "Cost: Energy equal to half your scaling stat min, rounded down. When you Manifest a Wonder, you can use this ability to Manifest it from your Omen’s position instead of your own, using its senses. If the Mode belongs to your Omen’s Wonder, its attack roll has Advantage."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You gain the following ability:",
+    "entries": [
+     {
+      "name": "Unbind",
+      "text": "Cost: 2 AP and energy equal to your scaling stat min. Until the start of your next turn, your Omen has its full stats (stat points equal to twice yours, with its skill points unchanged). Its current HP rises with its Max HP, and when this ends, its current HP is reduced to its normal Max HP if it is above it."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You gain the following passive:",
+    "entries": [
+     {
+      "name": "Kinship",
+      "text": "While your Omen is within 30ft of you, you also benefit from its Tenet. If your Omen’s Tenet is also your selected Tenet, you can trigger it one additional time per round (your Omen still triggers its own once per round)."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You gain the following action:",
+    "entries": [
+     {
+      "name": "Rend",
+      "text": "On your turn, you can spend 2 AP to summon an Omen of a Wonder you have at Tier 5 instantly. Make an attack roll against it with Disadvantage, with it dodging at Advantage. On a hit, it is seeded and bound to you as normal. On a miss, it arrives free with its full stats and is hostile."
+     }
+    ]
+   }
+  ]
+ },
+ {
   "id": "mental-fortune-dream",
   "name": "Fortune (Dream)",
   "archetype": "mental",
   "theory": false,
-  "requires": 4,
+  "requires": 5,
   "tiers": [
    {
     "tier": 1,
@@ -5163,7 +5239,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Windfall",
-      "text": "On hit, restore 4 energy to the target. Energy restored above their maximum becomes Temp HP at 1:1, lasting until the start of your next turn. If this Manifest self hits from the bands, you instead lose that energy, and energy lost below 0 becomes health loss at 1:1. Enhanced: Both Energy conversion ratios become 1:2."
+      "text": "On hit, restore 4 energy to the target. Energy restored above their maximum becomes Temp HP at 1:1, lasting until the start of your next turn. If this Manifest self hits from the bands, you instead lose that energy, and energy lost below 0 becomes Supernatural damage at 1:1. Enhanced: Both conversions become 2 per point of energy instead of 1."
      }
     ]
    },
@@ -5223,9 +5299,9 @@ export const TREES = [
     ],
     [
      "17–21",
-     "The target loses 1d10 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).",
+     "Deals 1d10 Supernatural damage to the target.",
      [
-      "1d10 health"
+      "1d10 Supernatural damage"
      ]
     ],
     [
@@ -5280,17 +5356,15 @@ export const TREES = [
     ],
     [
      "51–53",
-     "Apply 5d8 Force to the target in a direction of your choosing.",
+     "Apply 12d8 Force to the target in a direction of your choosing.",
      [
-      "5d8 Force"
+      "12d8 Force"
      ]
     ],
     [
      "54–56",
-     "The target is forcefully moved 2ft in a direction of your choosing, ignoring Force and Lift.",
-     [
-      "2ft"
-     ]
+     "The target is forcefully moved 5ft in a direction of your choosing, ignoring Force and Lift.",
+     []
     ],
     [
      "57–59",
@@ -5377,7 +5451,7 @@ export const TREES = [
   "name": "Ruin (Nightmare)",
   "archetype": "mental",
   "theory": false,
-  "requires": 4,
+  "requires": 5,
   "tiers": [
    {
     "tier": 1,
@@ -5386,15 +5460,15 @@ export const TREES = [
     "entries": [
      {
       "name": "Jinx",
-      "text": "On hit, store a Jinx of 1d10 physical damage on the target. Enhanced: The first time this Jinx would fizzle, it waits for the target’s next attack roll instead."
+      "text": "On hit, store a Jinx of 1d12 physical damage on the target. Enhanced: The first time this Jinx would fizzle, it waits for the target’s next attack roll instead."
      },
      {
       "name": "Ruin’s Bands",
-      "text": "Ruin Modes cannot crit. Instead, on hit, they store their effect on the target as a Jinx, lasting until the start of your next turn. The target’s next attack roll resolves every Jinx on it at once. The result depends on where that roll lands relative to its maximum:",
+      "text": "Ruin Modes cannot crit. Instead, on hit, they store their effect on the target as a Jinx, lasting until the start of your next turn. The target’s next attack roll resolves every Jinx on it at once. If it makes no attack roll before they expire, they end with no effect. The result depends on where that roll lands relative to its maximum:",
       "sub": [
-       "Under one half: All the Jinxes fizzle.",
-       "One half to under three quarters: The Jinxes’ effects gain 2 stacks of Strengthened",
-       "Three quarters or higher: The Jinxes’ effects gain 4 stacks of Strengthened"
+       "Half or higher: All the Jinxes fizzle.",
+       "One quarter to under one half: The Jinxes’ effects gain 2 stacks of Strengthened.",
+       "Under one quarter: The Jinxes’ effects gain 4 stacks of Strengthened."
       ]
      },
      {
@@ -5410,7 +5484,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Gild",
-      "text": "Cost: Energy equal to half your SNA min, rounded down. When you Manifest a Ruin Mode, you can use this ability. If that Manifest hits, the roll that resolves the target’s Jinxes has Advantage."
+      "text": "Cost: Energy equal to your SNA min. When you Manifest a Ruin Mode, you can use this ability. If that Manifest hits, the roll that resolves the target’s Jinxes has Disadvantage."
      }
     ]
    },
@@ -5421,7 +5495,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Forfeit",
-      "text": "On hit, store a Jinx that removes 4 energy from the target. Any energy that would go below 0 becomes health loss at 1:1 instead (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). Enhanced: That conversion becomes 1:2."
+      "text": "On hit, store a Jinx that removes 4 energy from the target. Any energy that would go below 0 becomes Supernatural damage at 1:1 instead. Enhanced: Each point of energy below 0 becomes 2 Supernatural damage instead of 1."
      }
     ]
    },
@@ -5511,21 +5585,21 @@ export const TREES = [
     ],
     [
      "33–36",
-     "The target loses 1d10 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).",
+     "Deals 1d10 Supernatural damage to the target.",
      [
-      "1d10 health"
+      "1d10 Supernatural damage"
      ]
     ],
     [
      "37–40",
-     "The target loses 3 energy. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).",
+     "The target loses 3 energy. Any amount below 0 becomes Supernatural damage at 1:1.",
      [
       "3 energy"
      ]
     ],
     [
      "41–44",
-     "The next time the target spends energy, it spends 3 more. Any amount below 0 becomes health loss 1:1 (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects). Lasts until used or the start of your next turn.",
+     "The next time the target spends energy, it spends 3 more. Any amount below 0 becomes Supernatural damage at 1:1. Lasts until used or the start of your next turn.",
      [
       "3",
       "more"
@@ -5591,9 +5665,9 @@ export const TREES = [
     ],
     [
      "77–80",
-     "One effect the target is Concentrating on ends, and it loses 1d8 health (reduced by anything that blocks Supernatural damage, Temp HP, Shielding, Shrouds, and Ward effects).",
+     "One effect the target is Concentrating on ends, and it takes 1d8 Supernatural damage.",
      [
-      "1d8 health"
+      "1d8 Supernatural damage"
      ]
     ],
     [
@@ -5630,81 +5704,5 @@ export const TREES = [
     ]
    ]
   }
- },
- {
-  "id": "mental-esoteric-arts",
-  "name": "Esoteric Arts",
-  "archetype": "mental",
-  "theory": false,
-  "requires": 5,
-  "tiers": [
-   {
-    "tier": 1,
-    "free": false,
-    "summary": "You gain the following action and passive:",
-    "entries": [
-     {
-      "name": "Seed",
-      "text": "Spend 8 hours in a Trance to seed an Omen of a Wonder you have at Tier 5. It is bound to you and counts as one of your Concentrations. At Seeding, choose its Form from its Wonder’s pole (Common, Uncommon, or Rare) and its Alignment depth."
-     },
-     {
-      "name": "Omen",
-      "text": "Your Omen has its own sapience, initiative, and turn, with its own AP, RP, and an energy pool equal to 5 times its skill points. It has stat points equal to yours, with two thirds in its Wonder’s scaling stat and one third in Willpower (you can flip this split at Seeding), and skill points equal to one fifth of its stat points, which only set its dice. It always has full Mental Theory and its own Wonder at Tier 5, regardless of its skill points."
-     },
-     {
-      "name": "Pole-Bound",
-      "text": "Your Omen Manifests only its own Wonder, and that Wonder’s Tenet is always active for it. It is its own Icon, using its Form’s Ward without needing one. Attacks between it and creatures or effects of its opposite pole are Strengthened, in both directions. It never acts against its pole and never aids the opposite one."
-     },
-     {
-      "name": "Bond",
-      "text": "If you end this Concentration yourself and your Omen is willing, it is dismissed. It is willing if, since it was seeded, you have Manifested its Wonder more times than its opposite pole’s Wonder. Otherwise, make an attack roll against it; on a miss, the bond is severed and it turns hostile. If you lose this Concentration any other way, it fights on your side for the rest of that battle, but turns hostile if angered (you or an ally harming it, Manifesting its opposite pole where it can sense it, or acting against its pole). If it is not hostile when the battle ends, you can rebind it with 1 hour of work."
-     }
-    ]
-   },
-   {
-    "tier": 2,
-    "free": false,
-    "summary": "You gain the following ability:",
-    "entries": [
-     {
-      "name": "Channel",
-      "text": "Cost: Energy equal to half your scaling stat min, rounded down. When you Manifest a Wonder, you can use this ability to Manifest it from your Omen’s position instead of your own, using its senses. If the Mode belongs to your Omen’s Wonder, its attack roll has Advantage."
-     }
-    ]
-   },
-   {
-    "tier": 3,
-    "free": false,
-    "summary": "You gain the following ability:",
-    "entries": [
-     {
-      "name": "Unbind",
-      "text": "Cost: 2 AP and energy equal to your scaling stat min. Until the start of your next turn, your Omen has its full stats (stat points equal to twice yours, with its skill points unchanged). Its current HP rises with its Max HP, and when this ends, its current HP is reduced to its normal Max HP if it is above it."
-     }
-    ]
-   },
-   {
-    "tier": 4,
-    "free": false,
-    "summary": "You gain the following passive:",
-    "entries": [
-     {
-      "name": "Kinship",
-      "text": "While your Omen is within 30ft of you, you also benefit from its Tenet. If it is your selected Tenet, you can trigger it one additional time per round (your Omen still triggers its own once per round)."
-     }
-    ]
-   },
-   {
-    "tier": 5,
-    "free": false,
-    "summary": "You gain the following action:",
-    "entries": [
-     {
-      "name": "Rend",
-      "text": "Summon an Omen of a Wonder you have at Tier 5 instantly. Make an attack roll against it with Disadvantage, with it dodging at Advantage. On a hit, it is seeded and bound to you as normal. On a miss, it arrives free with its full stats and is hostile."
-     }
-    ]
-   }
-  ]
  }
 ];

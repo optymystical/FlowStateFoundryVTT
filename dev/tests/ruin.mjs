@@ -64,6 +64,7 @@ const reset = () => {
 };
 const P = Math.floor(hero.system.derived.effective.snap.value / 10);
 const OD = orc.system.derived.attackDie;
+const A2 = Math.ceil(OD * 0.3);                    // a roll between one quarter and one half of the die: 2 Strengthened
 const RU = "mental-ruin-nightmare", JINX = `${RU}:jinx`, FORFEIT = `${RU}:forfeit`, CAL = `${RU}:calamity`;
 /** Manifest a Ruin Mode at the Orc (a hit); `after` = rolls after the dodge. */
 async function jinx(mode, { extra = {}, after = [] } = {}) {
@@ -82,52 +83,52 @@ const decline = c => (/Reversal|flip/.test(c) ? null : { net: 0 });
 dialog = decline;
 
 console.log("== Ruin's Bands and Reversal maths");
-ok2(R.ruinBand(9, 20).fizzle && R.ruinBand(10, 20).stacks === 2 && R.ruinBand(14, 20).stacks === 2 && R.ruinBand(15, 20).stacks === 4, "Under one half the Jinxes fizzle; then 2, then 4 Strengthened");
+ok2(R.ruinBand(10, 20).fizzle && R.ruinBand(20, 20).fizzle && R.ruinBand(9, 20).stacks === 2 && R.ruinBand(5, 20).stacks === 2 && R.ruinBand(4, 20).stacks === 4 && R.ruinBand(1, 20).stacks === 4, "Half or higher the Jinxes fizzle; under one half 2, under one quarter 4 Strengthened");
 ok2(R.flipRoll(15, 20) === 6 && R.flipRoll(1, 20) === 20, "A flip is the die's size + 1 − the result");
 
 console.log("== Jinx");
 reset(); await jinx(JINX);
 const jx = fxs(orc, "jinx")[0];
 ok2(jx && jx.flags.flowstate.spellEffect.payload.type === "damage" && orc.system.hp.value === 432, "On a hit: a Jinx is stored, nothing happens yet (no crit, though the roll was high)");
-await orcAttacks(OD, [7]);
-ok2(fxs(orc, "jinx").length === 0 && orc.system.hp.value === 432 - 21, `Their next attack roll resolves it: at three quarters or more, 4 Strengthened (${P}d10 = 7 → 21)`);
+await orcAttacks(1, [7]);
+ok2(fxs(orc, "jinx").length === 0 && orc.system.hp.value === 432 - 21, `Their next attack roll resolves it: under one quarter, 4 Strengthened (${P}d12 = 7 → 21)`);
+reset(); await jinx(JINX);
+await orcAttacks(A2, [7]);
+ok2(orc.system.hp.value === 432 - 14, "One quarter to under one half: 2 Strengthened (7 → 14)");
 reset(); await jinx(JINX);
 await orcAttacks(Math.ceil(OD / 2), [7]);
-ok2(orc.system.hp.value === 432 - 14, "One half to three quarters: 2 Strengthened (7 → 14)");
-reset(); await jinx(JINX);
-await orcAttacks(1, [7]);
-ok2(fxs(orc, "jinx").length === 0 && orc.system.hp.value === 432, "Under one half: it fizzles");
+ok2(fxs(orc, "jinx").length === 0 && orc.system.hp.value === 432, "Half or higher: it fizzles");
 reset(); await jinx(JINX, { extra: { enhance: true } });
-await orcAttacks(1);
+await orcAttacks(OD);
 ok2(fxs(orc, "jinx").length === 1 && fxs(orc, "jinx")[0].flags.flowstate.spellEffect.waited, "Enhanced: the first time it would fizzle it waits for their next attack roll");
-await orcAttacks(1);
+await orcAttacks(OD);
 ok2(fxs(orc, "jinx").length === 0, "…the second time it fizzles");
 
 console.log("== Gild (T2) and Reversal (T4)");
 reset(); await jinx(JINX, { extra: { "choice:gild": "yes" } });
-ok2(fxs(orc, "jinx")[0]?.flags.flowstate.spellEffect.gild && hero.system.energy.value < 200, "Gild (half SNA min) marks the Jinx");
-let entry = await orcAttacks(OD, [7]);
-ok2(entry.net === 1, "…and the roll that resolves it has Advantage");
+ok2(fxs(orc, "jinx")[0]?.flags.flowstate.spellEffect.gild && hero.system.energy.value < 200, "Gild (SNA min) marks the Jinx");
+let entry = await orcAttacks(1, [7]);
+ok2(entry.net === -1, "…and the roll that resolves it has Disadvantage");
 reset(); await jinx(JINX);
 dialog = c => (/Reversal/.test(c) ? {} : { net: 0 });
 const e0 = hero.system.energy.value;
-entry = await orcAttacks(OD, [7]);
-ok2(orc.system.hp.value === 432 - 21 && entry.total === 1 && hero.system.energy.value < e0, `Reversal: the Jinx resolves on the original ${OD}, then their attack uses the flipped ${entry.total}`);
+entry = await orcAttacks(1, [7]);
+ok2(orc.system.hp.value === 432 - 21 && entry.total === OD && hero.system.energy.value < e0, `Reversal: the Jinx resolves on the original 1, then their attack uses the flipped ${entry.total}`);
 dialog = decline;
 
 console.log("== Forfeit (T3)");
 reset(); await jinx(FORFEIT);
-await orcAttacks(Math.ceil(OD / 2));
+await orcAttacks(A2);
 ok2(orc.system.energy.value === 100 - 2 * 4 * P, `It removes 4 × Power Energy (here 2 Strengthened: ${100 - orc.system.energy.value})`);
 reset(); await jinx(FORFEIT, { extra: { enhance: true } }); orc.system.energy.value = 5;
-await orcAttacks(Math.ceil(OD / 2));
-ok2(orc.system.energy.value === 0 && orc.system.hp.value === 432 - 2 * (8 * P - 5), "What goes below 0 is health lost (Enhanced: 1:2)");
+await orcAttacks(A2);
+ok2(orc.system.energy.value === 0 && orc.system.hp.value === 432 - 2 * (8 * P - 5), "What goes below 0 is Supernatural damage (Enhanced: 2 a point)");
 
 console.log("== Calamity (T5) and the Ruin Table");
 ok2((R.wonderById(RU).table?.rows ?? []).length === 25 && WF.RUIN_ROWS.length === 25 && WF.ruinRow(1).index === 0 && WF.ruinRow(30).index === 7 && WF.ruinRow(100).index === 24, "The table's 25 rows, found by the doc's ranges");
 reset(); await jinx(CAL, { after: [30] });
 ok2(fxs(orc, "jinx")[0]?.flags.flowstate.spellEffect.payload.roll === 30, "Calamity stores a Ruin Table result as a Jinx (30)");
-await orcAttacks(Math.ceil(OD / 2), [7]);
+await orcAttacks(A2, [7]);
 ok2(orc.system.hp.value < 432 && orc.system.conditions.slow === 2 * 10 * P, `It resolves like any Jinx (29–32: cold and 10 × Power Slow, ×2 stacks = ${orc.system.conditions.slow})`);
 reset();
 await WF.applyRuin(hero, orc, { P, n: 54 });

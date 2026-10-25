@@ -353,7 +353,7 @@ MODES[DROWN] = async c => {
     html += ` They were forcefully moved ${moved} ft this turn (${need} needed).${loss.html}`;
     const acts = currentActs(caster, t, { power: c.power, bstacks: c.bs });
     if (acts.length && loss.lost > 0) await post(caster, { title: `${esc(caster.name)} — Drown`, body: actButtons(acts), flags: { flowstate: { mentalAct: { acts } } } });
-  } else html += ` They were forcefully moved ${moved} ft this turn, short of the ${need} ft it needs: no health lost.`;
+  } else html += ` They were forcefully moved ${moved} ft this turn, short of the ${need} ft it needs: no damage.`;
   if (c.enhanced) {
     const id = `drown:${foundry.utils.randomID?.() ?? String(Math.random()).slice(2)}`;
     if (await concentration.begin(caster, { id, label: `Drown on ${t.name}` })) {

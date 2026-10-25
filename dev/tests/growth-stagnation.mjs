@@ -83,7 +83,7 @@ let asked = "";
 dialog = c => { asked = c; return /Growth stack/.test(c) ? { opt_flourish: true, opt_thrift: true, opt_pierce: true } : {}; };
 await actions.spendPoints(ally, "ap", 2, "casting");
 const rec = ally.getFlag("flowstate", "growthSpent");
-ok2(/Flourish/.test(asked) && /Thrift/.test(asked) && !/Pierce/.test(asked), "The popup lists only the options the Cultivator has unlocked (T1: Flourish, Thrift)");
+ok2(/Thorn/.test(asked) && /Thrift/.test(asked) && !/Pierce/.test(asked), "The popup lists only the options the Cultivator has unlocked (T1: Thorn, Thrift)");
 ok2(rec?.opts?.flourish && rec.opts.thrift && !rec.opts.pierce && WG.growthCount(ally) === 1, "Two stacks spent, one per option; a locked option isn't spent");
 asked = "";
 await actions.spendPoints(ally, "rp", 1, "casting");

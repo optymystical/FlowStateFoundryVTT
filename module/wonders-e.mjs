@@ -110,12 +110,12 @@ async function giveEnergy(target, caster, n, ratio = 1) {
   if (over) await putTemp(target, caster, over * ratio);
   return `${esc(target.name)} regains <strong>${gain}</strong> Energy${over ? `; the ${over} over their maximum become <strong>${over * ratio} Temp HP</strong>` : ""}.`;
 }
-/** Lose Energy; what it would take below 0 is lost as health instead (× `ratio`). */
+/** Lose Energy; what it would take below 0 becomes Supernatural damage instead (× `ratio`; Temp HP, shielding, Shrouds and Wards reduce it). */
 async function takeEnergy(actor, n, ratio = 1) {
   const have = actor.system.energy?.value ?? 0, off = Math.min(have, n), deficit = n - off;
   if (off) await removeEnergy(actor, off);
-  if (deficit) await requestDamage(actor, deficit * ratio, "arcane", 0, null, { silent: true, bypass: true });
-  return `${esc(actor.name)} loses <strong>${off}</strong> Energy${deficit ? ` and <strong>${deficit * ratio}</strong> health (the ${deficit} below 0)` : ""}.`;
+  if (deficit) await requestDamage(actor, deficit * ratio, "supernatural", 0, null, { silent: true, archetype: "magic", shroudCtx: { source: "type:supernatural", attacker: actor.uuid } });
+  return `${esc(actor.name)} loses <strong>${off}</strong> Energy${deficit ? ` and takes <strong>${deficit * ratio}</strong> Supernatural damage (the ${deficit} below 0)` : ""}.`;
 }
 const putTemp = (who, caster, n, why = "Fortune") => putSpellEffect(who, { kind: "tempHP", caster: caster.uuid, mode: FORTUNE, name: `Temp HP (${n})`, hp: n, max: n,
   description: `Absorbs the next ${n} damage that would reach HP (${why}). Until the start of ${caster.name}'s next turn.` });
@@ -181,7 +181,7 @@ export const FORTUNE_ROWS = [
     await effect(x, { kind: "dimmed", name: "Senses dimmed (Fortune)", description: `Each of their senses is treated as one step lower ${until(x)} (the GM applies it; doesn't stack).` });
     return `${await hurt(x, x.target, d.n, "radiation")}; their senses are each one step lower ${until(x)}.`;
   },
-  async x => { const d = await dice(x, 1, 10); return `${await hurt(x, x.target, d.n, "supernatural")} (health loss: what blocks Supernatural damage reduces it).`; },          // 17–21
+  async x => { const d = await dice(x, 1, 10); return `${await hurt(x, x.target, d.n, "supernatural")}.`; },          // 17–21
   async x => { const d = await dice(x, 1, 10); const l = await hurt(x, x.target, d.n, "physical"); await setStatus(x.target, "prone", true); return `${l}; knocked prone.`; },  // 22–26
   async x => {                                                                                 // 27–31
     const d = await dice(x, 1, 8);
@@ -195,13 +195,13 @@ export const FORTUNE_ROWS = [
   async x => { const n = v(x, 15) + await feedExtra(x.caster, x.target, "slow"); await setCond(x.target, { "system.conditions.slow": (x.target.system.conditions?.slow ?? 0) + n }); return `They gain <strong>${n} Slow</strong> stacks.`; },  // 44–47
   async x => { const n = v(x, 3); const r = await removeEnergy(x.target, n); return `They lose <strong>${r.removed}</strong> Energy (${r.remaining} left).`; },  // 48–50
   async x => {                                                                                 // 51–53
-    const f = await forceRoll({ stacks: x.bs, target: x.target, attacker: x.caster }, 5 * x.P, 8, "Fortune", false);
+    const f = await forceRoll({ stacks: x.bs, target: x.target, attacker: x.caster }, 12 * x.P, 8, "Fortune", false, { normal: true });
     x.rolls.push(f.r);
     if (f.push) x.cards.push({ body: `<div class="fs-result">${f.html}</div>${knockbackRow(x.caster.uuid, f.feet, "Fortune")}`, flags: { flowstate: { knockback: f.push } } });
     return f.html;
   },
   async x => {                                                                                 // 54–56
-    const feet = v(x, 2);
+    const feet = 5;                                                                            // a fixed 5 ft (not bolded in the doc)
     x.cards.push({ body: `<div class="fs-result">Fortune: ${esc(x.target.name)} is moved <strong>${feet} ft</strong> in a direction of your choosing (ignores Force and Lift).</div>${knockbackRow(x.caster.uuid, feet, "Fortune")}`,
       flags: { flowstate: { knockback: { attacker: x.caster.uuid, target: x.target.uuid, force: 0, feet, label: "Fortune", fixed: true } } } });
     return `They're forcefully moved <strong>${feet} ft</strong> (a direction card for ${esc(x.caster.name)}).`;

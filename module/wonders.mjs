@@ -150,13 +150,16 @@ export async function heal(target, caster, n) {
   return `${esc(target.name)} regains <strong>${amount}</strong> health (${hp + amount}/${max})${amount < n ? " (only health lost since the start of your last turn)" : ""}.${dead && hp + amount > 0 ? ` <strong>${esc(target.name)} is resurrected.</strong>` : ""}`;
 }
 
-const forceFeet = (force, target, ignoreLift) => resolveForce(force, { lift: ignoreLift ? 0 : target.system.lift ?? 0, maxHp: 0 });
+// What comes off the Force before it turns into feet: `normal` Force loses half the maximum HP (Gust, Momentum, the Fortune Table: the user's ruling);
+// Herald (`halfCurrent`) loses half the current HP instead (not Temp HP); with neither, nothing (it goes straight into feet).
+const forceFeet = (force, target, ignoreLift, { halfCurrent = false, normal = false } = {}) => resolveForce(force, { lift: ignoreLift ? 0 : target.system.lift ?? 0,
+  maxHp: halfCurrent ? Math.max(0, target.system.hp?.value ?? 0) : normal ? Math.max(0, target.system.hp?.max ?? 0) : 0 });
 
-/** Roll `n`d`sides` Force with the Manifest's Strengthened/Weakened and turn it into feet pushed, ignoring the half-max-HP threshold. */
-export async function forceRoll(ctx, n, sides, label, ignoreLift = false) {
+/** Roll `n`d`sides` Force with the Manifest's Strengthened/Weakened and turn it into feet pushed (see `forceFeet` for what comes off it first). */
+export async function forceRoll(ctx, n, sides, label, ignoreLift = false, { halfCurrent = false, normal = false } = {}) {
   const r = await roll(`${n}d${sides}`);
   const force = Math.floor(applyStacks(r.total, ctx.stacks));
-  const feet = forceFeet(force, ctx.target, ignoreLift);
+  const feet = forceFeet(force, ctx.target, ignoreLift, { halfCurrent, normal });
   return { r, force, feet, html: `${label}: ${n}d${sides} = ${r.total}${ctx.stacks ? ` → ${force}` : ""} Force → up to <strong>${feet} ft</strong>${ignoreLift ? " (ignores Lift)" : ""}`, push: feet > 0 ? { attacker: ctx.attacker.uuid, target: ctx.target.uuid, force, feet, label, beyond: ["Herald", "Gust", "Momentum"].includes(label) } : null };
 }
 
@@ -210,7 +213,7 @@ export const MODES = {
     const outcome = await damageOutcome(c.target, n, "supernatural", { archetype: "magic" });
     const res = await requestDamage(c.target, n, "supernatural", 0, null, { wantResult: true, silent: true, archetype: "magic", maxHpLoss: !!c.enhanced, shroudCtx: { source: "type:supernatural", attacker: c.attacker.uuid } });
     const lost = res?.toHp ?? outcome.toHp;
-    return `Wither removes <strong>${lost}</strong> health from ${esc(c.target.name)} (${c.power}d12 = ${r.total}${c.stacks ? ` → ${n}` : ""}${lost < n ? `, ${n - lost} blocked` : ""})${c.enhanced ? ", and that much Max HP too" : ""}.`;
+    return `Wither deals <strong>${lost}</strong> Supernatural damage to ${esc(c.target.name)} (${c.power}d12 = ${r.total}${c.stacks ? ` → ${n}` : ""}${lost < n ? `, ${n - lost} blocked` : ""})${c.enhanced ? ", and that much Max HP too" : ""}.`;
   },
   async "mental-death-nightmare:waste"(c) {
     const size = bold(c.bs, 2 * c.power);
@@ -229,7 +232,7 @@ export const MODES = {
 
   /* ---- Beyond (Dream) ---- */
   async "mental-beyond-dream:herald"(c) {
-    const f = await forceRoll(c, 6 * c.power, 8, "Herald", !!c.enhanced);
+    const f = await forceRoll(c, 10 * c.power, 8, "Herald", !!c.enhanced, { halfCurrent: true });
     rolled.push(f.r);
     return { html: `${f.html}${f.push ? knockbackRow(c.attacker.uuid, f.feet, "Herald") : ""}`, push: f.push };
   },
@@ -325,7 +328,7 @@ async function abilityActs(c) {
     if (tn.id === "mental-life-dream:verdant-soul") acts.push({ tenet: true, id: "verdantSoul", label: "Verdant Soul", tip: `Once per round: ${bold(base.bstacks, 10 * tn.mult)} temp HP to the target or yourself`, cost: "once per round", mult: tn.mult, ...base });
     if (tn.id === "mental-death-nightmare:mortal-coil") acts.push({ tenet: true, id: "mortalCoil", label: "Mortal Coil", tip: `Once per round: steal ${tn.mult}d8 health as temp HP${base.bstacks ? " (scaled by the Manifest's stacks)" : ""}`, cost: "once per round", mult: tn.mult, ...base });
     if (tn.id === "mental-below-nightmare:weight") acts.push({ tenet: true, id: "weight", label: "Weight", tip: `Once per round: ${bold(base.bstacks, 15 * tn.mult)} Slow stacks on the target, until your next turn`, cost: "once per round", mult: tn.mult, ...base });
-    if (tn.id === "mental-beyond-dream:gust") acts.push({ tenet: true, id: "gust", label: "Gust", tip: `Once per round: ${5 * tn.mult}d8 Force on the target${base.bstacks ? " (scaled by the Manifest's stacks)" : ""}`, cost: "once per round", mult: tn.mult, ...base });
+    if (tn.id === "mental-beyond-dream:gust") acts.push({ tenet: true, id: "gust", label: "Gust", tip: `Once per round: ${12 * tn.mult}d8 Force on the target${base.bstacks ? " (scaled by the Manifest's stacks)" : ""}`, cost: "once per round", mult: tn.mult, ...base });
   }
   for (const f of ACT_PROVIDERS) acts.push(...(await f(c) ?? []));
   return acts;
@@ -424,15 +427,18 @@ async function runActOnce(x) {
   }
   if (x.id === "mortalCoil") {
     const r = await roll(`${x.mult}d8`);
-    const took = bold(x.bstacks, r.total);
+    const n = bold(x.bstacks, r.total);
     if (!living(target)) { ui.notifications.warn("Mortal Coil needs a living target."); return false; }
-    await requestDamage(target, took, "supernatural", 0, null, { silent: true, bypass: true });
-    await putTemp(caster, caster, took, "mortal-coil");
-    await post(caster, { title: `${esc(caster.name)} — Mortal Coil`, rolls: [r], body: `<div class="fs-result">${esc(caster.name)} steals <strong>${took}</strong> health from ${esc(target.name)}, becoming temp HP until the start of their next turn.</div>` });
+    // 1d8 Supernatural damage (Temp HP, shielding, Shrouds and Wards reduce it); the direct damage dealt becomes your Temp HP.
+    const outcome = await damageOutcome(target, n, "supernatural", { archetype: "magic" });
+    const res = await requestDamage(target, n, "supernatural", 0, null, { wantResult: true, silent: true, archetype: "magic", shroudCtx: { source: "type:supernatural", attacker: caster.uuid } });
+    const took = res?.toHp ?? outcome.toHp;
+    if (took > 0) await putTemp(caster, caster, took, "mortal-coil");
+    await post(caster, { title: `${esc(caster.name)} — Mortal Coil`, rolls: [r], body: `<div class="fs-result">${esc(target.name)} takes <strong>${took}</strong> Supernatural damage${took < n ? ` (${n - took} blocked)` : ""}${took > 0 ? `; ${esc(caster.name)} gains that much temp HP until the start of their next turn` : ""}.</div>` });
     return true;
   }
   if (x.id === "gust") {
-    const f = await forceRoll({ stacks: x.bstacks ?? 0, target, attacker: caster }, 5 * x.mult, 8, "Gust", false);
+    const f = await forceRoll({ stacks: x.bstacks ?? 0, target, attacker: caster }, 12 * x.mult, 8, "Gust", false, { normal: true });
     await post(caster, { title: `${esc(caster.name)} — Gust`, rolls: [f.r], body: `<div class="fs-result">${f.html}${f.push ? knockbackRow(caster.uuid, f.feet, "Gust") : ""}</div>`, flags: f.push ? { flowstate: { knockback: f.push } } : {} });
     return true;
   }
@@ -514,14 +520,14 @@ export async function runPerennial(x) {
 /*  Action List abilities                       */
 /* -------------------------------------------- */
 
-/** Momentum (Beyond T2): a creature or object you moved with a Beyond Mode collided: apply 5d8 Force again in a new direction, no attack roll. */
+/** Momentum (Beyond T2): a creature or object you moved with a Beyond Mode collided: apply 12d8 Force again in a new direction, no attack roll. */
 export async function momentum(actor, collided = null) {
   if (tier(actor, "mental-beyond-dream") < 2) return;
   const power = Math.max(1, R.wonderPower(eff(actor, "pon")));
   const target = collided ?? [...(game.user?.targets ?? [])].map(t => t.actor).find(a => a && !notCreature(a)) ?? await mental.pickAnother(actor, { title: "Momentum: the one that collided", within: Infinity, anchors: [] });
   if (!target) return;
   if (!(await mental.pay(actor, { energy: minOf(actor, "pon") }, "Momentum"))) return;
-  const f = await forceRoll({ stacks: 0, target, attacker: actor }, 5 * power, 8, "Momentum", false);
+  const f = await forceRoll({ stacks: 0, target, attacker: actor }, 12 * power, 8, "Momentum", false, { normal: true });
   await post(actor, { title: `${esc(actor.name)} — Momentum`, rolls: [f.r], body: `<div class="fs-result">${esc(target.name)}: ${f.html}${f.push ? knockbackRow(actor.uuid, f.feet, "Momentum") : ""} <small>(Momentum can chain with itself)</small></div>`, flags: f.push ? { flowstate: { knockback: f.push } } : {} });
 }
 
@@ -531,7 +537,7 @@ export async function momentum(actor, collided = null) {
  */
 export async function momentumOffer(caster, collided) {
   if (!caster || !collided || tier(caster, "mental-beyond-dream") < 2 || isDeclined(caster, "momentum")) return;
-  const acts = [{ id: "momentumNow", label: `Momentum on ${collided.name}`, tip: "5d8 Force × Power on the one that collided, in a new direction (no attack roll; it can chain)", cost: `⚡ ${minOf(caster, "pon")}`, caster: caster.uuid, target: collided.uuid }];
+  const acts = [{ id: "momentumNow", label: `Momentum on ${collided.name}`, tip: "12d8 Force × Power on the one that collided, in a new direction (no attack roll; it can chain)", cost: `⚡ ${minOf(caster, "pon")}`, caster: caster.uuid, target: collided.uuid }];
   await post(caster, { title: `${esc(caster.name)} — Beyond`, body: `<div class="fs-notes">${esc(collided.name)} collided after being moved by your Beyond Mode.</div>${actButtons(acts)}`, flags: { flowstate: { mentalAct: { acts } } } });
 }
 ACTS.momentumNow = async (x, caster, target) => { await momentum(caster, target); return true; };

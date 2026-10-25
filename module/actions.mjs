@@ -1,6 +1,6 @@
 import {
   STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS, downwardProne, heightFt } from "./rules.mjs";
-import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, damageCategories, limitFactor } from "./martial.mjs";
+import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, damageCategories, limitFactor, DAMAGE_CATEGORY } from "./martial.mjs";
 import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
@@ -5402,7 +5402,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   // Mental: Enhanced Mandate on this damage roll, and Verdict's damage change from the attack that landed.
   const md = await mentalHook?.damageCharges?.({ actor: attacker, formula, totals: base.totals });
   if (md?.totals) { base.totals = md.totals; base.rolls.push(...(md.rolls ?? [])); }
-  const gd = await mentalHook?.growthDamage?.(o);                          // Growth: Flourish's damage and Pierce's Limit
+  const gd = await mentalHook?.growthDamage?.(o);                          // Growth: Thorn's damage and Pierce's Limit
   const mflat = (md?.flat ?? 0) + (defense.result?.mentalDmg ?? 0) + (gd?.flat ?? 0);
   const line = damageLine(flat || mflat ? base.totals.map((t, i) => Math.max(0, t + flat + (i === 0 ? mflat : 0))) : base.totals, stacks, type, shots);
   // Omega (Swift T5): Heavy Swift attacks let Strengthened/Weakened change their Pierce value too.
@@ -5428,8 +5428,8 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
 
   let extraHTML = spellPlan?.notes.length ? `<div class="fs-notes">${spellPlan.notes.map(esc).join(" · ")}</div>` : "";
   if (flat) extraHTML += `<div class="fs-notes">Rend: +${flat} damage (Scaling Stat min)</div>`;
-  // Flourish's dice are its own roll, not another shot of the attack's damage.
-  for (const r of gd?.rolls ?? []) extraHTML += await rollBlock(r, "Flourish (Growth)");
+  // Thorn's dice are its own roll, not another shot of the attack's damage.
+  for (const r of gd?.rolls ?? []) extraHTML += await rollBlock(r, "Thorn (Growth)");
   if (gd?.notes?.length) extraHTML += `<div class="fs-notes"><i class="fa-solid fa-seedling"></i> ${gd.notes.map(esc).join(" · ")}</div>`;
   if (md || mflat) extraHTML += `<div class="fs-notes fs-charge-note"><i class="fa-solid fa-link"></i> ${[...(md?.notes ?? []), defense.result?.mentalDmg ? `Verdict: ${defense.result.mentalDmg > 0 ? "+" : "−"}${Math.abs(defense.result.mentalDmg)} damage.` : ""].filter(Boolean).join(" ")}</div>`;
   extraHTML += dischargeHTML;
@@ -5902,6 +5902,8 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     return loss;
   };
   const shields = [];
+  // Shielding (spell Shields, Ward shielding, Emplace barriers) blocks Supernatural damage as normal (Rules doc), and Magical with everything else.
+  const shieldFocus = { key: DAMAGE_CATEGORY[type] === "supernatural" ? "supernatural" : "magical", factor: 1 };
   // Reactive (Build Arcana T2): the caster may spend 1 RP to give a damage instance that hits their Spell a stack of Weakened (automatic, unless they turn it off).
   const reactive = [];
   const reactiveFor = casterUuid => {
@@ -5922,7 +5924,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
       if (f.types?.length && !damageCategories(type, magic).some(c => f.types.includes(c))) continue;      // Prism: only the chosen damage types (spell damage is also Magical)
       const damped = (f.dampen ?? []).includes(archetype);
       const anchored = f.anchor && mentalHook?.anchorStill?.(f.caster);              // Anchor: damage to this shielding is Weakened while its caster hasn't moved
-      const obj = { name: "Shield", system: { profile: { valid: true, limit: Number(f.max) || hp, focus: { key: "magical", factor: 1 }, selfWeakened: damped || anchored ? 1 : 0 }, durability: { value: hp } } };
+      const obj = { name: "Shield", system: { profile: { valid: true, limit: Number(f.max) || hp, focus: shieldFocus, selfWeakened: damped || anchored ? 1 : 0 }, durability: { value: hp } } };
       if (tryBash(obj, obj.system.profile, hp, pierce)) { shields.push({ effect: e, hp, absorbed: 0, reflect: !!f.reflect, caster: f.caster }); continue; }
       if (f.reactive) { const rc = reactiveFor(f.caster); if (rc) weaken(rc, "the Shield"); }
       const before = remaining;
@@ -5935,7 +5937,7 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   // per attack and their remaining health, so Pierce, Bash, Cleave, Weakpoint and Rend all apply to them.
   const barriers = [];
   for (const b of shroudCtx?.barriers ?? []) {
-    const obj = { name: "Emplace barrier", system: { profile: { valid: true, limit: b.limit ?? b.hp, focus: { key: "magical", factor: 1 } }, durability: { value: b.hp } } };
+    const obj = { name: "Emplace barrier", system: { profile: { valid: true, limit: b.limit ?? b.hp, focus: shieldFocus }, durability: { value: b.hp } } };
     if (tryBash(obj, obj.system.profile, b.hp, pierce)) { barriers.push({ ...b, absorbed: 0 }); continue; }
     if (b.reactive) { const rc = reactiveFor(b.caster); if (rc) weaken(rc, "the barrier"); }
     const before = remaining;

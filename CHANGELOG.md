@@ -2,6 +2,15 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.82.0:** Doc updates (Mental, Rules, Equipment).
+- **Supernatural damage:** it passes through anything not made against it, except Temp HP, shielding, Shrouds and Wards. Shrouds and Shields now reduce it, which they didn't before.
+- **Supernatural instead of health loss:** Wither, Mortal Coil (its Temp HP is the damage dealt), Drown, Toll, Windfall, Forfeit and the Fortune/Ruin Table rows.
+- **Charges:** several of one name can be stored, at most one used per trigger; Premonition charges now stack.
+- **Mental tree tiers moved:** Adaptation and Perfection to T3, Earth and Sea to T4, Fortune and Ruin to T5.
+- **Ruin's Bands inverted:** half or higher fizzles, under one half 2 Strengthened, under one quarter 4. Gild costs your SNA min and gives Disadvantage; Jinx is 1d12.
+- **Force:** Herald is 10d8 Force, less half the target's current HP. Gust, Momentum and Fortune Table 51–53 are 12d8 normal Force; 54–56 moves 5 ft.
+- **Smaller changes:** Growth's Flourish option is now Thorn, and Seed no longer needs a Trance.
+
 **0.81.2:** A hidden world setting for balance variants under test in the combat sim (Assault, Strike, Shrouds; off by default: the rules are unchanged).
 
 **0.81.1:** A Bash that breaks through an object's Limit on a woven hit lets the woven spell's part through that object too (one hit; no second Bash bonus).

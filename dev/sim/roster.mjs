@@ -1196,3 +1196,15 @@ PASSES["balance-b"] = { ...PASSES["magic-vs-martial-2"], id: "balance-b", settin
   party: PARTY_MIX3.map(p => p.id === "marksman" ? { ...p, loadouts: [SOLO_ASSAULT, p.loadouts[1], SOLO_ASSAULT] }
     : p.id === "bulwark" ? { ...p, loadouts: [p.loadouts[0], p.loadouts[1], HEAVY_MAGIC_TANK] } : p),
   note: "Balance test B: Strike Ranged; a lone Light Assault with 2 shots a reload (Solitary); the Magic tank in Heavy armor." };
+
+// (C) the combined fixes: Light Assault d12 held alone with 2 shots a reload (Solitary), Strike 2d8 and Ranged. Rotation 3's tank is a Magic tank
+// on its Shroud alone: no armor, a Keystone with four Defensive Affixes (Jasper doubled, Obsidian, Black Opal, Diamond), against rotation 1's
+// Martial Bulwark in Heavy armor.
+const SHROUD_TANK = { ...MAGIC_TANK, label: "Shroud", armor: null, shroud: FO("keystone", { doubled: "jasper" }), affixes: ["jasper", "obsidian", "blackOpal", "diamond"] };
+PASSES["balance-c"] = { ...PASSES["magic-vs-martial-2"], id: "balance-c", settings: { balanceTest: "assaultD12,strike2d8,strikeRanged" },
+  party: PARTY_MIX3.map(p => p.id === "marksman" ? { ...p, loadouts: [SOLO_ASSAULT, p.loadouts[1], SOLO_ASSAULT] }
+    : p.id === "bulwark" ? { ...p, loadouts: [p.loadouts[0], p.loadouts[1], SHROUD_TANK] } : p),
+  note: "Balance test C: Light Assault d12 alone with 2 shots a reload, Strike 2d8 and Ranged; a Shroud-only Magic tank with four Defensive Affixes." };
+// (D) Shrouds adjusted as a whole (their scaled Durability and Limit ×2 or ×3), on top of C's fixes; rotation 3 only (the Shroud-only tank).
+for (const x of [2, 3]) PASSES[`balance-d${x}`] = { ...PASSES["balance-c"], id: `balance-d${x}`, settings: { balanceTest: `assaultD12,strike2d8,strikeRanged,shroudX${x}` },
+  encounters: PASSES["balance-c"].encounters.filter(e => e.rotation === 2), note: `Balance test D: C's fixes with Shrouds ×${x}, the Shroud-only tank's rotation.` };

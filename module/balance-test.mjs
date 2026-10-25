@@ -4,7 +4,9 @@
  *   assaultD12  — a Light Assault rolls d12s instead of d8s.
  *   strike2d8   — Strike deals 2d8 arcane instead of 2d12.
  *   strikeRanged — Strike is a Ranged spell instead of Targeted (no half stealth).
- *   shroudX2    — a Shroud's scaled Durability and Limit are doubled.
+ *   shroudX<n>  — a Shroud's scaled Durability and Limit are multiplied by n (shroudX2, shroudX2.5, shroudX3...).
  */
 export const BALANCE_TEST = new Set();
 export const setBalanceTest = text => { BALANCE_TEST.clear(); for (const k of String(text ?? "").split(",").map(s => s.trim()).filter(Boolean)) BALANCE_TEST.add(k); };
+/** The Shroud multiplier under test (1 when none is on). */
+export const shroudTestFactor = () => { for (const k of BALANCE_TEST) if (k.startsWith("shroudX")) return Number(k.slice(7)) || 1; return 1; };

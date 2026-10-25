@@ -170,7 +170,7 @@ function fociData(slot, stats, sp, natural) {
 }
 /** A Shroud, Graded to Build (it scales with Build), attuned. */
 function shroudData(slot, stats, sp, natural) {
-  const d = Cat.itemData(`shroud.${slot.type}`, { grade: R.gradeFor((stats.build ?? 0) + bonusOf(sp)), system: { attuned: true, natural: !!natural } });
+  const d = Cat.itemData(`shroud.${slot.type}`, { grade: R.gradeFor((stats.build ?? 0) + bonusOf(sp)), system: { attuned: true, natural: !!natural, ...(slot.doubled ? { doubled: slot.doubled } : {}) } });
   if (!d) throw new Error(`No catalog entry shroud.${slot.type}`);
   return d;
 }
@@ -189,6 +189,8 @@ async function makeActor(spec, loadout, { party, folder }) {
   const stats = loadout.stats ?? spec.stats;          // a loadout can split the stats its own way (a hybrid build)
   const items = [loadout.armor ? armorData(loadout.armor, stats, sp, natural) : null,          // no armor: Unarmored
     loadout.foci ? fociData(loadout.foci, stats, sp, natural) : null, loadout.shroud ? shroudData(loadout.shroud, stats, sp, natural) : null,
+    // Affixes (each its own item), attuned to the side given (`defensive:jasper` / `offensive:quartz`; Defensive by default).
+    ...(loadout.affixes ?? []).map(a => { const [side, key] = a.includes(":") ? a.split(":") : ["defensive", a]; return Cat.itemData(`affix.${key}`, { system: { side, attuned: true } }); }),
     ...slots.map(w => foundry.utils.mergeObject(weaponData(w, stats, sp, natural), { "flags.flowstate.simPrimary": !!w.primary })),
     // Ammunition for guns (natural ones need none).
     ...(natural ? [] : slots.filter(w => WEAPON_TYPES[w.type]?.ranged).map(w => Cat.itemData(`ammo.${w.type}`, { system: { quantity: 100 } })))];

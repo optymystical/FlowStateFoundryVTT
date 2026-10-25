@@ -4,6 +4,7 @@
  *   assaultD12  — a Light Assault rolls d12s instead of d8s.
  *   strike2d8   — Strike deals 2d8 arcane instead of 2d12.
  *   strikeRanged — Strike is a Ranged spell instead of Targeted (no half stealth).
+ *   reactiveShroud — Build Arcana's Reactive (T2) also works on the wearer's own Shroud: 1 RP to Weaken a damage instance that hits it.
  *   shroudX<n>  — a Shroud's scaled Durability and Limit are multiplied by n (shroudX2, shroudX2.5, shroudX3...).
  */
 export const BALANCE_TEST = new Set();

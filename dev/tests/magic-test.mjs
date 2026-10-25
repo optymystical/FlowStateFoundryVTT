@@ -63,6 +63,13 @@ let out = await actions.damageOutcome(hero, 25, "physical", {});
 ok2(out.toHp === 25 - 10 * mult && out.shrouds[0].update["system.wear"] === 10 * mult, `Shroud absorbs its Limit (${25 - out.toHp})`);
 out = await actions.damageOutcome(hero, 25, "supernatural", {});
 ok2(out.toHp === 25 - 10 * mult, "Supernatural is blocked by a Shroud (Rules: Shrouds reduce it as normal)");
+// Balance test switch (reactiveShroud): Build Arcana T2's Reactive also Weakens a hit on your own Shroud for 1 RP.
+{ const { setBalanceTest } = await import("../../module/balance-test.mjs");
+  setBalanceTest("reactiveShroud"); hero.system.trees["magic-build-arcana"] = 2; hero.system.rp.value = 3;
+  const big = 10 * mult + 30;
+  const rx = await actions.damageOutcome(hero, big, "physical", {});
+  ok2(rx.toHp === Math.max(0, Math.floor(big / 2) - 10 * mult) && rx.reactive?.includes(hero.uuid), `Reactive on the Shroud: ${big} is Weakened to ${Math.floor(big / 2)} before the Shroud's Limit (${rx.toHp} to HP)`);
+  setBalanceTest(""); delete hero.system.trees["magic-build-arcana"]; }
 out = await actions.damageOutcome(hero, 25, "arcane", {});
 ok2(out.toHp === 25 - 10 * mult, "Arcane (Magical) is blocked");
 // Weaving: a woven hit's two parts share one Limit (spent first on the weapon's part here), and the Shroud's Durability with it.

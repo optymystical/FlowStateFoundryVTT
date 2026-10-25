@@ -2,7 +2,6 @@
  * Martial equipment tables and math, from "Flow State - Equipment" (Martial Weapons, Martial Armor).
  * Pure data + functions (no Foundry globals) so they can be unit-tested outside Foundry.
  */
-import { BALANCE_TEST } from "./balance-test.mjs";
 
 export const RARITIES = { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" };
 /** A rarity's key, however it's written ("very rare", "Very Rare" → "veryRare"); nothing is Common. */
@@ -100,7 +99,7 @@ export const WEAPON_TYPES = {
   // Improvised (Martial Theory T4 text): 1d6 per Grade, no tags or effects. Characters with T4 use real weapons instead.
   improvised: melee("Improvised", { die: 6, tags: {}, throw: "average" }, { die: 6, tags: {}, throw: "average" }),
   rapid:    ranged("Rapid",    { die: 6,  tags: t("Fast, Pepper"),   reload: "fast",    range: 75 },  { die: 12, tags: t("Pepper+"),        reload: "average", range: 150 }),
-  assault:  ranged("Assault",  { die: 8,  tags: t("Solitary"),       reload: "fast",    range: 100 }, { die: 12, tags: t("Pierce, Solitary"), reload: "average", range: 200 }),
+  assault:  ranged("Assault",  { die: 12, tags: t("Solitary"),       reload: "fast",    range: 100, shots: 2 }, { die: 12, tags: t("Pierce, Solitary"), reload: "average", range: 200 }),
   blast:    ranged("Blast",    { die: 8,  tags: t("Area, Pierce, Cleave"), reload: "average", range: 25 },  { die: 12, tags: t("Area+, Cleave"),  reload: "average", range: 50 }),
   longshot: ranged("Longshot", { die: 8,  tags: t("Cleave, Pierce"), reload: "average", range: 150 }, { die: 14, tags: t("Cleave, Pierce"), reload: "slow",    range: 300 })
 };
@@ -256,7 +255,7 @@ export function weaponProfile(w, stats) {
   const type = WEAPON_TYPES[w.type];
   const weight = WEIGHTS[w.weight];
   if (!type || !weight) return { valid: false, error: "Pick a weapon type and weight." };
-  const row = BALANCE_TEST.has("assaultD12") && w.type === "assault" && w.weight === "light" ? { ...type.light, die: 12 } : type[w.weight];
+  const row = type[w.weight];
   const unarmed = w.type === "unarmed";
   const improvised = w.type === "improvised";
   const mat = unarmed || improvised ? null : WEAPON_MATERIALS[w.material];

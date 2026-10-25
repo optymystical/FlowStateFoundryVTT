@@ -285,7 +285,8 @@ ok2(rme?.flags.flowstate.ritualOf === mr.uuid && rme.flags.flowstate.spellEffect
 
 console.log("== Strike");
 clean5(); target(orc); seq = [20]; await cast("magic-arcanomancy:strike", { base: 1 });
-ok2(lastAtk().flags.flowstate.attack.opts.damage === "6d12" && lastAtk().flags.flowstate.attack.opts.type === "arcane", "Strike: 2d12 × Power arcane");
+ok2(lastAtk().flags.flowstate.attack.opts.damage === "6d8" && lastAtk().flags.flowstate.attack.opts.type === "arcane", "Strike: 2d8 × Power arcane");
+ok2(lastAtk().flags.flowstate.attack.opts.stealth !== "half", "Strike is Ranged: no Targeted half stealth");
 clean5(); orc.system.magical = true; target(orc); seq = [20]; await cast("magic-arcanomancy:strike", { base: 1 });
 ok2(/Advantage against a fully magical/.test(text(lastAtk())), "…with Advantage against fully magical targets");
 orc.system.magical = false;

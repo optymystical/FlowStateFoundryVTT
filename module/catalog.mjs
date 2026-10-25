@@ -68,7 +68,8 @@ export function generateCatalog() {
       if (t === "improvised") { out[`weapon.improvised.${wk}`] = entry("weapon", `${wt.label} Improvised`, { weaponType: t, weight: wk, material: "", magazine: 1, extraTypes: [] }, { img }); continue; }
       for (const [mk, m] of Object.entries(WEAPON_MATERIALS)) {
         if (!m.weights?.[wk]) continue;
-        out[`weapon.${t}.${wk}.${mk}`] = entry("weapon", `${wt.label} ${w.label} (${m.label})`, { weaponType: t, weight: wk, material: mk, magazine: 1, extraTypes: [] },
+        // Shots per reload: 1, or the weapon's own (Light Assault: 2, Equipment doc).
+        out[`weapon.${t}.${wk}.${mk}`] = entry("weapon", `${wt.label} ${w.label} (${m.label})`, { weaponType: t, weight: wk, material: mk, magazine: w[wk]?.shots ?? 1, extraTypes: [] },
           { img, rarity: m.rarity, ...(w.hidden || m.hidden ? { hidden: true } : {}) });
       }
     }

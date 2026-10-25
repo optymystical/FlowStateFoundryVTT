@@ -3,7 +3,6 @@
  * Foci: Durability/Limit = base × Grade. Power scales with the casting form's stat (Grasp / Reach / the lesser), Grade-capped.
  * Shrouds: Durability/Limit = base × floor(Build capped at Grade × 10 ÷ 10), minimum ×1 (like armor with Con).
  */
-import { shroudTestFactor } from "./balance-test.mjs";
 import { armorMultiplier, cappedStat, naturalGrade, DAMAGE_CATEGORY, RARITIES } from "./martial.mjs";
 
 export const CASTING_FORMS = {
@@ -182,9 +181,10 @@ export function shroudProfile(sys, build = 0) {
     label: t.label,
     grade, mult, natural,
     scaling: natural ? Math.max(0, build) : cappedStat(build, grade),
-    durability: t.fixedDur ? t.dur : Math.floor(t.dur * mult * shroudTestFactor()),
-    baseLimit: Math.floor(t.limit * mult * shroudTestFactor()),
-    limit: Math.floor(t.limit * mult * shroudTestFactor()),
+    // Twice the listed Durability and Limit per 10 Build (Equipment doc); a fixed Durability doesn't scale.
+    durability: t.fixedDur ? t.dur : t.dur * mult * 2,
+    baseLimit: t.limit * mult * 2,
+    limit: t.limit * mult * 2,
     freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
     negator: !!t.negator, placed: t.placed ?? null, fixedDur: !!t.fixedDur, noRegen: !!t.noRegen,
     effect: t.effect

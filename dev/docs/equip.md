@@ -93,7 +93,7 @@
 
 ## **Ranged Tags** {#ranged-tags}
 
-**Reload:** Ranged Weapons by default need to be reloaded after each shot. This can be modified to be “per X shots” reload types, but those are not covered here.  
+**Reload:** Ranged Weapons by default need to be reloaded after each shot, except Light Assault Weapons, which are reloaded every 2 shots. This can be modified to be “per X shots” reload types, but those are not covered here.  
 	**Slow:** Reloading a slow ranged Weapon takes 3 RP.  
 	**Average:** Reloading an average ranged Weapon takes 2 RP.  
 	**Fast:** Reloading a fast ranged Weapon takes 1 RP.  
@@ -132,7 +132,7 @@
 | **Name** | **Weight** | **Damage** | **Tags** | **Reload** | **Range** |
 | Rapid | Light | 1d6 | Fast, Pepper | Fast | 75ft |
 |  | Heavy | 1d12 | Pepper+ | Average | 150ft |
-| Assault | Light | 1d8 | Solitary | Fast | 100ft |
+| Assault | Light | 1d12 | Solitary | Fast | 100ft |
 |  | Heavy | 1d12 | Pierce, Solitary | Average | 200ft |
 | Blast | Light | 1d8 | Area, Pierce, Cleave | Average | 25ft |
 |  | Heavy | 1d12 | Area+, Cleave | Average | 50ft |
@@ -379,7 +379,7 @@ Very Rare \- 8x cost and scarcity of 0.05
 ## **Shroud Info** {#shroud-info}
 
 **Shroud Design:** Pick a Shroud type from the list, and pick Affixes if your Shroud type can utilize them. To use a Shroud, you need to Attune to it by spending one hour magically connecting to it (you can only Attune to one Shroud at a time). Once Attuned it becomes melded into your Spirit, meaning its Stats and Affixes are now active on your person, allowing it to protect you as Martial Armor would. Shrouds are considered Magical objects, both while melded and while not melded.  
-**Scaling and Grade:** The Stats of your Shroud increases for every 10 points you have in its Scaling Stat, which is Build by default. This is limited by the Grade of the Shroud, which denotes how much Stat can actually affect the Stats of the Shroud, where every 1 grade represents a max of 10 Stat scaling. So, a grade 3 Shroud allows for up to 30 Build to affect its Stats, any higher would do nothing until the Grade is increased.  
+**Scaling and Grade:** The Stats of your Shroud increase by twice their listed amount (Durability and Limit) for every 10 points you have in its Scaling Stat, which is Build by default. This is limited by the Grade of the Shroud, which denotes how much Stat can actually affect the Stats of the Shroud, where every 1 grade represents a max of 10 Stat scaling. So, a grade 3 Shroud allows for up to 30 Build to affect its Stats, any higher would do nothing until the Grade is increased.  
 **Affixes:** Affixes are your weight equivalent for armor, also requiring attunement to either their Offensive or Defensive form. For every Affix attuned your speed is lowered by 20% (not counting free ones). This is shared with Foci’s Affixes.  
 **Shroud Recovery:** Attuned Shrouds naturally recover their spent durability, by default recovering durability equal to its Limit at the start of each of your turns. This can vary, and would be stated in a Shroud’s passive if it is anything else.  
 **Durability:** The overall “health” of the Shroud. Reaching 0 or lower means the Shroud is unable to block any more damage, but it can still recover. Shrouds cannot be destroyed unless they are unmelded, or they are directly targeted by arcane damage or similar effects, with durability in the negatives exceeding its normal max resulting in its destruction.  

@@ -49,27 +49,26 @@ ok2(p.valid && p.durability === 90 && p.limit === 18 && p.scalingStat === "grasp
 p = M.fociProfile({ fociType: "band", grade: 2 }, { reach: 12, grasp: 30 });
 ok2(p.scalingStat === "reach" && p.scaling === 12 && p.doubles && p.tr === null, "Band: Multi uses the lesser stat, 1+ Affix");
 p = M.shroudProfile({ shroudType: "bastion", grade: 3, affixes: [] }, 25);
-ok2(p.durability === 100 && p.limit === 20 && p.mult === 2, "Bastion: ×floor(Build/10) Grade-capped");
+ok2(p.durability === 200 && p.limit === 40 && p.mult === 2, "Bastion: twice its listed numbers ×floor(Build/10), Grade-capped");
 p = M.shroudProfile({ shroudType: "bulwark", grade: 5 }, 50);
-ok2(p.durability === 3 && p.limit === 60 && p.negator, "Aegis: fixed Durability, scaling Limit");
+ok2(p.durability === 3 && p.limit === 120 && p.negator, "Aegis: fixed Durability, scaling Limit (twice its listed Limit)");
 
 console.log("== Shroud soaks before armor");
 const hero = mkActor("Mage", {}, {});   // Build 10 + bonus
 const b = hero.system.derived.effective.build.value;
-const mult = Math.max(1, Math.floor(Math.min(b, 30) / 10));
+const mult = 2 * Math.max(1, Math.floor(Math.min(b, 30) / 10));        // Shrouds: twice the listed numbers per 10 Build
 const sh = mkShroud(hero, "Veil", { shroudType: "bastion", grade: 3 });
 ok2(hero.system.shroud === sh && sh.system.profile.limit === 10 * mult, `melded Shroud found (Limit ${sh.system.profile.limit})`);
 let out = await actions.damageOutcome(hero, 25, "physical", {});
 ok2(out.toHp === 25 - 10 * mult && out.shrouds[0].update["system.wear"] === 10 * mult, `Shroud absorbs its Limit (${25 - out.toHp})`);
 out = await actions.damageOutcome(hero, 25, "supernatural", {});
 ok2(out.toHp === 25 - 10 * mult, "Supernatural is blocked by a Shroud (Rules: Shrouds reduce it as normal)");
-// Balance test switch (reactiveShroud): Build Arcana T2's Reactive also Weakens a hit on your own Shroud for 1 RP.
-{ const { setBalanceTest } = await import("../../module/balance-test.mjs");
-  setBalanceTest("reactiveShroud"); hero.system.trees["magic-build-arcana"] = 2; hero.system.rp.value = 3;
+// Build Arcana T2's Reactive also Weakens a hit on your own Shroud for 1 RP.
+{ hero.system.trees["magic-build-arcana"] = 2; hero.system.rp.value = 3;
   const big = 10 * mult + 30;
   const rx = await actions.damageOutcome(hero, big, "physical", {});
   ok2(rx.toHp === Math.max(0, Math.floor(big / 2) - 10 * mult) && rx.reactive?.includes(hero.uuid), `Reactive on the Shroud: ${big} is Weakened to ${Math.floor(big / 2)} before the Shroud's Limit (${rx.toHp} to HP)`);
-  setBalanceTest(""); delete hero.system.trees["magic-build-arcana"]; }
+  delete hero.system.trees["magic-build-arcana"]; }
 out = await actions.damageOutcome(hero, 25, "arcane", {});
 ok2(out.toHp === 25 - 10 * mult, "Arcane (Magical) is blocked");
 // Weaving: a woven hit's two parts share one Limit (spent first on the weapon's part here), and the Shroud's Durability with it.

@@ -4,7 +4,6 @@
  * - Threshold: sum of the Core(s) and Mods, minus Threshold Reduction (TR), minimum 0. Energy = floor(Threshold × Skill Points ÷ 2).
  * - Casting options: Igniter Foci (Grasp, 2 AP, 1 TR), Channeler Foci (Reach, 3 AP, 2 TR), Raw Casting (lesser of Reach/Grasp, 1/2/3 AP = 1/2/3 TR).
  */
-import { BALANCE_TEST } from "./balance-test.mjs";
 import { TREES } from "./trees.mjs";
 import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combos.mjs";
 import { tierOf, isAvailable, treeById } from "./skills.mjs";
@@ -283,7 +282,7 @@ export function planCast(ctx, v) {
   const hasMod = n => applied.some(a => !a.free && a.mod.name === n);
   if (hasMod("Lob") && !areaSpell) errors.push("Lob can only be added to a spell whose attack type is Area (Gravity Field, Emplace).");
   // A Combo is Targeted if either Core is (Arcanomancy keeps the other Core's type).
-  const attack = !bt.ok ? null : cores.length === 1 ? (BALANCE_TEST.has("strikeRanged") && cores[0].id === "magic-arcanomancy:strike" ? "Ranged" : cores[0].attack)
+  const attack = !bt.ok ? null : cores.length === 1 ? cores[0].attack
     : cores.filter(c => c.treeId !== "magic-arcanomancy").some(c => c.attack === "Targeted") ? "Targeted" : "Ranged";
   if (hasMod("Explode") && attack !== "Ranged") errors.push("Explode can only be added to a Ranged spell.");
   return {

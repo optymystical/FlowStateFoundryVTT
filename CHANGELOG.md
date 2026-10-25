@@ -2,6 +2,13 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.83.0:** Magic vs Martial balance (Equipment and Magic docs):
+- **Light Assault:** rolls d12s and reloads every 2 shots.
+- **Strike:** 2d8 arcane, and Ranged instead of Targeted.
+- **Shrouds:** twice their listed Durability and Limit per 10 Build.
+- **Build Arcana's Reactive:** also works on your own attuned Shroud.
+- The hidden balance test setting is gone.
+
 **0.82.0:** Doc updates (Mental, Rules, Equipment).
 - **Supernatural damage:** it passes through anything not made against it, except Temp HP, shielding, Shrouds and Wards. Shrouds and Shields now reduce it, which they didn't before.
 - **Supernatural instead of health loss:** Wither, Mortal Coil (its Temp HP is the damage dealt), Drown, Toll, Windfall, Forfeit and the Fortune/Ruin Table rows.

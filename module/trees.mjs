@@ -2798,7 +2798,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Reactive",
-      "text": "1 Threshold, Spell Mod, Universal. Whenever this Spell would take damage, you can spend 1 RP to give that damage instance a stack of Weakened. This can be done once per instance of damage."
+      "text": "1 Threshold, Spell Mod, Universal. Whenever this Spell would take damage, you can spend 1 RP to give that damage instance a stack of Weakened. This can be done once per instance of damage. You can also do this whenever your Attuned Shroud would take damage."
      }
     ]
    },
@@ -3401,7 +3401,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Strike",
-      "text": "1 Threshold, Core Spell, Targeted. Deals 2d12 arcane damage. This Spell has advantage targeting fully magical targets, and can target and destroy Spells (they have health equal to their caster’s Scaling Stat unless specified, if they are mid cast your attack roll must beat their attack roll to hit). Arcane damage is Weakened against targets that are not fully magical. Ritual: While the Ritual is active, you may cast this Spell up to two times without spending Energy. These casts still require AP/RP. Once both casts are used, the Ritual ends."
+      "text": "1 Threshold, Core Spell, Ranged. Deals 2d8 arcane damage. This Spell has advantage targeting fully magical targets, and can target and destroy Spells (they have health equal to their caster’s Scaling Stat unless specified, if they are mid cast your attack roll must beat their attack roll to hit). Arcane damage is Weakened against targets that are not fully magical. Ritual: While the Ritual is active, you may cast this Spell up to two times without spending Energy. These casts still require AP/RP. Once both casts are used, the Ritual ends."
      }
     ]
    },

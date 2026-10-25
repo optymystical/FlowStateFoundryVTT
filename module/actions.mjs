@@ -3,7 +3,6 @@ import {
 import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, damageCategories, limitFactor, DAMAGE_CATEGORY } from "./martial.mjs";
 import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
 import * as skills from "./skills.mjs";
-import { BALANCE_TEST } from "./balance-test.mjs";
 import * as ab from "./abilities.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
@@ -5983,8 +5982,8 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   // Magic Shrouds soak next (before armor): the creature's own melded Shroud, Wards/Bonds placed on it, Quartz extensions.
   const shrouds = [];
   for (const sh of shroudsFor(actor, shroudCtx?.extra ?? [])) {
-    // Balance test (`reactiveShroud`): Build Arcana's Reactive also works on the wearer's own melded Shroud (1 RP: the damage instance is Weakened).
-    if (BALANCE_TEST.has("reactiveShroud") && sh.actor?.uuid === actor.uuid && remaining > 0 && shroudBlocks(type) && sh.system.durability.value > 0
+    // Reactive (Build Arcana T2) also works on the wearer's own attuned Shroud: 1 RP, and the damage instance is Weakened.
+    if (sh.actor?.uuid === actor.uuid && remaining > 0 && shroudBlocks(type) && sh.system.durability.value > 0
       && skills.tierOf(actor.system.trees ?? {}, "magic-build-arcana") >= 2) { const rc = reactiveFor(actor.uuid); if (rc) weaken(rc, "the Shroud"); }
     const r = shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce, rend, source: shroudCtx?.source ?? null, halfLimit, magic, limitSpent });
     remaining = r.remaining; cleaveLeft = r.cleaveLeft;

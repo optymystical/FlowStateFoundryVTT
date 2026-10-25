@@ -1640,7 +1640,10 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
   handled.clear();
   const restore = {};
   try {
-    for (const [k, v] of Object.entries(P.settings ?? {})) { restore[k] = game.settings.get("flowstate", k); await game.settings.set("flowstate", k, v); }
+    for (const [k, v] of Object.entries(P.settings ?? {})) {
+      if (!game.settings.settings.has(`flowstate.${k}`)) continue;            // a test setting that has since been removed (balanceTest)
+      restore[k] = game.settings.get("flowstate", k); await game.settings.set("flowstate", k, v);
+    }
     SIM.status = `${id}: setting up`;
     await clearSim();
     const scene = await arena(P.arena);

@@ -3,7 +3,6 @@
  * Bolded numbers in the docs scale by Spell Power (dice counts, health, die-size changes, Force); `power` is that multiplier.
  * Tier 1: Shield, Force, Cut, Stab, Slam and the six pure Tier 1 Combos.
  */
-import { BALANCE_TEST } from "./balance-test.mjs";
 
 /** Key for a cast's Core(s): one id, or two ids sorted and joined with "+". */
 const profileKey = coreIds => [...coreIds].sort().join("+");
@@ -160,7 +159,7 @@ Object.assign(PROFILES, {
   [RS]: { name: "Restore", arcana: { kind: "restore", heal: 2 } },
   [SF]: { name: "Shift", arcana: { kind: "shift", body: 6 } },
   [MR]: { name: "Mirage", arcana: { kind: "mirage", power: 10 } },
-  [ST]: { name: "Strike", damage: dmg(2, 12, "arcane"), strike: true },
+  [ST]: { name: "Strike", damage: dmg(2, 8, "arcane"), strike: true },
   [profileKey([SF, MR])]: { name: "Shift + Mirage", arcana: { kind: "shift", body: 6, stealth: true } },
   [profileKey([SF, ST])]: { name: "Shift + Strike", arcana: { kind: "shift", body: 6, arcane: true } },
   [profileKey([MR, ST])]: { name: "Mirage + Strike", arcana: { kind: "mirage", power: 10, chart: ST } },
@@ -234,10 +233,7 @@ export function afflictNeeds(profile) {
 }
 
 /** The automated profile for these Cores, or null (the GM resolves it from the card). */
-export const profileFor = coreIds => {
-  const p = PROFILES[profileKey(coreIds)] ?? null;
-  return p && BALANCE_TEST.has("strike2d8") && p.strike && coreIds.length === 1 ? { ...p, damage: { ...p.damage, sides: 8 } } : p;
-};
+export const profileFor = coreIds => PROFILES[profileKey(coreIds)] ?? null;
 
 /**
  * The damage dice for a hit.

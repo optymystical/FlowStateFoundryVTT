@@ -17,6 +17,11 @@ ok(!C.ITEM_CATALOG["weapon.bladed.heavy.hardwood"] && !C.ITEM_CATALOG["armor.tit
 ok(C.ITEM_CATALOG["weapon.unarmed"] && C.ITEM_CATALOG["weapon.improvised.heavy"] && C.ITEM_CATALOG["ammo.longshot"]?.system.ammoType === "longshot" && C.ITEM_CATALOG["gear.misc"], "Unarmed, Improvised, ammunition for each ranged type, and a plain Misc item");
 ok(keys.filter(k => k.startsWith("weapon.") && k !== "weapon.unarmed").every(k => C.keyFor("weapon", C.ITEM_CATALOG[k].system) === k), "Every weapon entry's identity leads back to its own key");
 
+ok(C.ITEM_CATALOG["weapon.assault.light.steel"]?.system.magazine === 2 && C.ITEM_CATALOG["weapon.assault.heavy.iron"]?.system.magazine === 1 && C.ITEM_CATALOG["weapon.bladed.light.steel"]?.system.magazine === 1,
+  "A Light Assault reloads every 2 shots (Equipment doc); other guns every shot");
+{ const { weaponProfile } = await import("../../module/martial.mjs");
+  ok(weaponProfile({ type: "assault", weight: "light", material: "steel", grade: 3 }, { dex: 30 }).die === 12, "A Light Assault rolls d12s"); }
+
 console.log("== Linking items to entries");
 const legacy = { weaponType: "reach", weight: "light", material: "steel", magazine: 1, extraTypes: [], grade: 3, description: "" };
 ok(C.linkFor("weapon", legacy)?.base === "weapon.reach.light.steel" && !C.linkFor("weapon", legacy).overrides.length, "An old item matches its generated entry, with nothing different");

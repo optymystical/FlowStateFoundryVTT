@@ -402,7 +402,7 @@
 - **Layered: *1 Threshold, Spell Mod, Universal.*** This Spell’s health is increased by two times your Build stat if it uses default Spell health. If it does not use default Spell health (such as summons or shields), instead its health/durability is increased by your Build stat.  
     
   **Tier 2: You unlock the following Spell Mod:**  
-- **Reactive: *1 Threshold, Spell Mod, Universal.*** Whenever this Spell would take damage, you can spend 1 RP to give that damage instance a stack of Weakened. This can be done once per instance of damage.  
+- **Reactive: *1 Threshold, Spell Mod, Universal.*** Whenever this Spell would take damage, you can spend 1 RP to give that damage instance a stack of Weakened. This can be done once per instance of damage. You can also do this whenever your Attuned Shroud would take damage.  
     
   **Tier 3: You unlock the following Passive:**  
 - **Seep:** Whenever you spend AP to regain energy, you can forgo half of the energy gained (rounded down) to activate the recovery of your Shroud once.  
@@ -629,7 +629,7 @@
 
 **Tier 1: You unlock the following Core Spell:**
 
-- **Strike: *1 Threshold, Core Spell, Targeted.*** Deals **2d12 arcane** damage. This Spell has advantage targeting fully magical targets, and can target and destroy Spells (they have health equal to their caster’s Scaling Stat unless specified, if they are mid cast your attack roll must beat their attack roll to hit). Arcane damage is Weakened against targets that are not fully magical. **Ritual:** While the Ritual is active, you may cast this Spell up to two times without spending Energy. These casts still require AP/RP. Once both casts are used, the Ritual ends.  
+- **Strike: *1 Threshold, Core Spell, Ranged.*** Deals **2d8 arcane** damage. This Spell has advantage targeting fully magical targets, and can target and destroy Spells (they have health equal to their caster’s Scaling Stat unless specified, if they are mid cast your attack roll must beat their attack roll to hit). Arcane damage is Weakened against targets that are not fully magical. **Ritual:** While the Ritual is active, you may cast this Spell up to two times without spending Energy. These casts still require AP/RP. Once both casts are used, the Ritual ends.  
     
   **Tier 2: You unlock the following Spell Mod:**  
 - **Blast: *2 Threshold, Spell Mod.*** The Spell changes its attack type to Area, applying its effect to all targets within the area. In addition, the Ritual effect changes to create an Anti-Magic field in the specified Area, which applies the arcane damage to all magical things whenever they enter the field and whenever your turn starts, lasting until it is dispelled or the Ritual ends.

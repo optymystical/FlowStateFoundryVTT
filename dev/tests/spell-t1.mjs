@@ -495,6 +495,23 @@ ok2(hp0 - orc.system.hp.value === 2 * 5 + 2 * 7, `A crit Strengthens both parts 
 ok2(orc.effects.find(e => e.flags?.flowstate?.spellEffect?.kind === "bleed")?.flags.flowstate.spellEffect.amount === 14, "…and Cut's Bleed rider applies to its own part");
 ok2(/Woven Cut/.test(text(last())), "…the damage card shows the woven part");
 
+console.log("== Fused Foci");
+// The Rod fused into the gun (a 1 hour Ritual): one hand holds both, the gun gains the Rod's Durability and Limit, and it can't be dropped.
+const rod = hero.items.find(i => i.id === "rod");
+const gunDur = blade.system.profile.durability, gunLimit = blade.system.profile.limit, rodDur = rod.system.profile.durability, rodLimit = rod.system.profile.limit;
+Object.assign(rod.system, { fusedInto: blade.id, equipped: false }); rod.system.prepareDerivedData(); blade.system.prepareDerivedData();
+ok2(blade.system.profile.durability === gunDur + rodDur && blade.system.profile.limit === gunLimit + rodLimit && blade.system.durability.max === gunDur + rodDur,
+  `The gun's Durability ${gunDur} + ${rodDur} and Limit ${gunLimit} + ${rodLimit} merge (${blade.system.profile.durability} / ${blade.system.profile.limit})`);
+const fusedCtx = C.castContext(hero);
+ok2(rod.system.fused && rod.system.held && fusedCtx.options.find(o => o.key === "foci:rod")?.ok, "The fused Rod casts while the gun is held");
+ok2(fusedCtx.options.some(o => o.key.startsWith("raw") && o.ok), "…and it takes no hand of its own (a hand is free for Raw Casting)");
+ok2(await actions.dropItem(hero, blade) === false && hero.items.includes(blade), "A fused weapon can't be dropped or disarmed");
+blade.system.equipped = false; rod.system.prepareDerivedData();
+ok2(!rod.system.held && !C.castContext(hero).options.find(o => o.key === "foci:rod"), "Stowing the gun puts the fused Rod away with it");
+Object.assign(rod.system, { attuned: false }); blade.system.prepareDerivedData();
+ok2(blade.system.profile.durability === gunDur, "An unattuned Foci no longer merges into the weapon");
+Object.assign(rod.system, { attuned: true, fusedInto: "", equipped: true }); blade.system.equipped = true; rod.system.prepareDerivedData(); blade.system.prepareDerivedData();
+
 console.log("== Rituals");
 combat.started = false; hero.system.energy.value = 200;
 const msgsBeforeRitual = messages.length;

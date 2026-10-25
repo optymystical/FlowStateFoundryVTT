@@ -1284,6 +1284,7 @@ const HELD_TYPES = new Set(["weapon", "foci"]);
 
 /** Hands a weapon occupies. Unarmed takes one hand per raised fist; other weapons 1, or 2 if two-handed. */
 function handsFor(data) {
+  if (data.fusedInto && data.attuned) return 0;                         // a Fused Foci is held by its weapon's hand
   if (data.weaponType === "unarmed") return (data.equipped ? 1 : 0) + (data.secondHand ? 1 : 0);
   if (!data.equipped) return 0;
   return data.twoHanded ? 2 : 1;
@@ -1375,8 +1376,23 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
         if (others.length) actor.updateEmbeddedDocuments("Item", others.map(i => ({ _id: i.id, "system.attuned": false })), { flowstateAuto: true });
       }
       if (!attune && item.type === "shroud") setTimeout(() => actions.endShroudPlacement(actor, item), 0);
+      // Unattuning a Fused Foci separates it from its weapon.
+      if (!attune && item.system.fusedInto) foundry.utils.setProperty(changes, "system.fusedInto", "");
     }
     if (item.type === "shroud") return;
+    // Fused Foci (Equipment doc): a 1 hour Ritual fuses the attuned Foci into a weapon; the weapon's hand holds both.
+    const into = changed(changes, "system.fusedInto");
+    if (into !== undefined && into !== item.system.fusedInto && !auto) {
+      if (inCombat) return refuse(item, `Fusing or separating ${item.name} is a 1 hour Ritual, so it can't be done in combat.`);
+      if (into) {
+        const weapon = actor.items.get(into);
+        if (!(changed(changes, "system.attuned") ?? item.system.attuned)) return refuse(item, `Only an attuned Foci can be fused into a weapon.`);
+        if (weapon?.type !== "weapon" || ["unarmed", "improvised"].includes(weapon.system.weaponType)) return refuse(item, `${item.name} can only be fused into one of ${actor.name}'s weapons.`);
+        foundry.utils.setProperty(changes, "system.equipped", false);
+      }
+    }
+    if (item.system.fusedInto && item.system.attuned && changed(changes, "system.equipped") && (changed(changes, "system.fusedInto") ?? item.system.fusedInto))
+      return refuse(item, `${item.name} is fused into a weapon: it's held while that weapon is.`);
   }
 
   /* ---- Affixes: attuned on their own, taking an hour (not in combat), any number of them; each costs speed past the free ones ---- */

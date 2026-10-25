@@ -11,3 +11,9 @@ export const notCreature = a => !!a && NON_CREATURES.has(a.type);
  * living-target checks use this.
  */
 export const isLiving = a => !!a && !notCreature(a) && !a.system?.magical && !a.flags?.flowstate?.summon;
+
+/** The attuned Foci fused into this weapon (Fused Foci, Equipment doc), or null. */
+export function fusedFociOf(weapon) {
+  if (!weapon?.id || weapon.type !== "weapon") return null;
+  return weapon.actor?.items?.find?.(i => i.type === "foci" && i.system.attuned && i.system.fusedInto === weapon.id) ?? null;
+}

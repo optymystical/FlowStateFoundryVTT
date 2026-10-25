@@ -163,7 +163,7 @@ function fociData(slot, stats, sp, natural) {
   const form = Mg.FOCI_TYPES[slot.type]?.form;
   const v = k => (stats[k] ?? 0) + bonusOf(sp);
   const stat = form === "igniter" ? v("grasp") : form === "channeler" ? v("reach") : Math.min(v("reach"), v("grasp"));
-  const d = Cat.itemData(`foci.${slot.type}`, { grade: R.gradeFor(stat), system: { equipped: true, attuned: true, twoHanded: !!slot.twoHanded, natural: !!natural } });
+  const d = Cat.itemData(`foci.${slot.type}`, { grade: R.gradeFor(stat), system: { equipped: !slot.fuse, attuned: true, twoHanded: !!slot.twoHanded, natural: !!natural } });
   if (!d) throw new Error(`No catalog entry foci.${slot.type}`);
   return d;
 }
@@ -201,6 +201,13 @@ async function makeActor(spec, loadout, { party, folder }) {
     await it.update({ "system.equipped": true });
     if (!it.system.equipped) { log.notes.push({ level: "setup", msg: `${a.name}: ${it.name} couldn't be held`, who: a.name }); continue; }
     hands -= need;
+  }
+  // A Fused Foci (`fuse`): fused into the primary weapon, so that hand holds both.
+  const primary = made.find(i => i.type === "weapon" && isPrimary(i));
+  const foci = made.find(i => i.type === "foci");
+  if (loadout.foci?.fuse && foci && primary) {
+    await foci.update({ "system.fusedInto": primary.id });
+    if (!foci.system.fused) log.notes.push({ level: "setup", msg: `${a.name}: ${foci.name} couldn't be fused into ${primary.name}`, who: a.name });
   }
   await a.update({ "system.hp.value": a.system.hp.max, "system.energy.value": a.system.energy.max, "system.ap.value": 6, "system.rp.value": 6,
     ...(loadout.focus ? { "system.focusedSpell": loadout.focus } : {}) });
@@ -342,39 +349,23 @@ async function attack(actor, me, plan, target, extra = {}) {
   }
   const attackFill = { mode: extra.mode ?? (plan.ranged ? (extra.far ? "r2" : "r1") : "strike"), pepper: extra.pepper ?? 0, area: !!extra.area,
     grapple: !!extra.grapple, weight: extra.weight ?? undefined, ...opts, ...(extra.followup ? followupOptions(actor, plan.item, target) : {}), ...(extra.extraFill ?? {}) };
+  // Weaving: the attack dialog's Weave box with the spell preset; the woven spell joins the weapon hit (one attack roll, its damage part of the hit).
+  const weave = extra.weave && !extra.followup ? extra.weave : null;
+  if (weave) attackFill.weave = true;
   SIM.fill = () => attackFill;
-  // The joined-damage prototype (a pass with `weaveJoin`): the woven spell's Energy is paid now and its dice join the weapon's damage roll.
-  let joined = false;
-  if (extra.weave && passOf().weaveJoin) {
-    const { ctx } = Cast.castSummary(actor, extra.weave.weave);
-    const plan = Sp.planCast(ctx, extra.weave.values);
-    const dice = plan.ok ? Fx.damageDice(Fx.profileFor(plan.cores.map(c => c.id)), plan.power) : null;
-    if (dice && await Act.spendEnergy(actor, plan.energy, "woven spell")) {
-      Act.queueWovenDamage(actor, { formula: `${dice.n}d${dice.sides}`, label: extra.weave.name });
-      joined = true;
-      note(actor, `weave:${extra.weave.name}`); const s = stat(actor); s.weaves = (s.weaves ?? 0) + 1;
-    } else note(actor, "weave:refused");
-  }
   SIM.acting = actor.name;
-  try { await Act.rollWeaponAttack(actor, plan.item, extra.followup ?? null); } catch (err) { log.errors.push(`attack ${actor.name}: ${err.stack?.slice(0, 400)}`); }
+  try { await Act.rollWeaponAttack(actor, plan.item, extra.followup ?? null, weave ? { weavePreset: weave.values } : {}); } catch (err) { log.errors.push(`attack ${actor.name}: ${err.stack?.slice(0, 400)}`); }
   const msg = await waitFor(() => game.messages.contents.find(m => !before.has(m.id) && m.getFlag("flowstate", "attack")?.attacker === actor.uuid), 3000);
   if (!msg) return null;
+  if (weave) {
+    if (msg.getFlag("flowstate", "attack")?.opts?.woven) { note(actor, `weave:${weave.name}`); const s = stat(actor); s.weaves = (s.weaves ?? 0) + 1; }
+    else note(actor, "weave:refused");
+  }
   stat(actor).attacks++;
   (F.firstAttack ??= {})[sim(actor).party ? "party" : "monsters"] ??= SIM.combat?.round ?? null;
   F.uses = F.uses ?? {};
   F.uses[plan.item.id] = (F.uses[plan.item.id] ?? 0) + 1;
   await settle();
-  // Weaving: the spell goes off alongside the attack through the same entry point the attack dialog's Weave box uses (no AP, no TR, at the attack's target).
-  if (extra.weave && !joined && !passOf().weaveJoin && !down(actor) && !down(target.actor)) {
-    setTargets(target);
-    SIM.fill = title => (/: shape$/.test(title) ? { shape: "radius" } : {});
-    try {
-      const woven = await Cast.castSpell(actor, extra.weave.values, { weave: extra.weave.weave });
-      if (woven) { note(actor, `weave:${extra.weave.name}`); const s = stat(actor); s.weaves = (s.weaves ?? 0) + 1; }
-      else note(actor, "weave:refused");
-    } catch (err) { log.errors.push(`weave ${actor.name}: ${err.stack?.slice(0, 300)}`); }
-    await settle();
-  }
   return msg;
 }
 
@@ -1190,8 +1181,8 @@ function weavePlan(actor, me, w, target) {
   for (const c of known.cores) {
     const r = planSpell(ctx, opt, [c.id]);
     if (!r?.plan?.ok || r.plan.energy > budget || !Fx.profileFor([c.id])?.damage) continue;
-    // Joined damage (the prototype under test): the spell's dice add to the weapon's before the one soak, so they count in full.
-    const value = passOf().weaveJoin ? meanDice(Fx.damageDice(Fx.profileFor([c.id]), r.plan.power)) : spellNow(r.plan, target, me);
+    // Joined damage: the spell's dice join the weapon's hit and share its Limits, so they count in full.
+    const value = meanDice(Fx.damageDice(Fx.profileFor([c.id]), r.plan.power));
     if (value > 0 && (!best || value > best.value)) best = { ids: [c.id], value };
   }
   if (!best) { note(actor, `weave:noSpell(budget ${budget}; ${known.cores.map(c => { const r = planSpell(ctx, opt, [c.id]); return `${c.name}:${r?.plan?.ok ? r.plan.energy : r ? r.plan.errors?.[0]?.slice(0, 40) : "none"}`; }).join(",")})`); return null; }

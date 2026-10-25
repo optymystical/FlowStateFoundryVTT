@@ -25,6 +25,7 @@ function freeHand(actor) {
   const used = actor.items.reduce((n, i) => {
     if (i.type === "weapon" && i.system.weaponType === "unarmed") return n;
     if (i.type !== "weapon" && i.type !== "foci") return n;
+    if (i.type === "foci" && i.system.fused) return n;                    // a fused Foci is held by its weapon's hand
     return n + (i.system.equipped ? (i.system.twoHanded ? 2 : 1) : 0);
   }, 0);
   return used < 2;
@@ -33,7 +34,7 @@ function freeHand(actor) {
 /** Everything planCast() needs from an actor. */
 export function castContext(actor, weave = null) {
   const eff = actor.system.derived?.effective ?? {};
-  const foci = actor.items.filter(i => i.type === "foci" && i.system.equipped).map(i => ({
+  const foci = actor.items.filter(i => i.type === "foci" && (i.system.equipped || i.system.fused && i.system.held)).map(i => ({
     id: i.id, name: i.name, profile: i.system.profile, opalRange: i.system.opalRange || "targeted", attuned: !!i.system.attuned, broken: !!i.system.broken, twoHanded: !!i.system.twoHanded,
     hand: i.system.profile?.deck ? fociFx.handOf(actor) : undefined
   }));

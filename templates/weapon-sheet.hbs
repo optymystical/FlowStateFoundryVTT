@@ -67,6 +67,7 @@
       {{#unless p.unarmed}}{{#unless p.improvised}}
       <span>Durability</span><span><input type="number" class="fs-wear" value="{{system.durability.value}}" disabled> / {{system.durability.max}} <small>(wear <input type="number" name="system.wear" value="{{system.wear}}" min="0" {{#unless editable}}disabled{{/unless}}>)</small></span>
       <span>Limit</span><span>{{p.limit}}</span>
+      {{#if p.fusedFoci}}<span><a data-codex="doc:equipment/magic-foci/foci-info">Fused Foci</a></span><span>{{p.fusedName}} <small>(its Durability and Limit are included; can't be dropped or disarmed)</small></span>{{/if}}
       {{/unless}}{{/unless}}
     </div>
   </section>

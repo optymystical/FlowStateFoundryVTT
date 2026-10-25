@@ -5,6 +5,7 @@ import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES, fociProfile, shroudProf
 import { penalizedDie } from "./spellfx.mjs";
 import { FORMS, iconProfile, alignmentSpeedPct, alignmentApLoss } from "./mental-rules.mjs";
 import { linkFor, identityFor, isGenerated } from "./catalog.mjs";
+import { fusedFociOf } from "./kinds.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
@@ -319,6 +320,15 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
     // Ranged ammunition: the weapon's ranged type (main first) and its loaded shots.
     this.ammoType = this.types.find(k => WEAPON_TYPES[k]?.ranged) ?? null;
     this.loaded = (this.rounds ?? 0) > 0;
+    // Fused Foci: the attuned Foci's Durability and Limit are added to the weapon's (each keeps its own Grade), and Affixes that change how the Foci
+    // takes damage (Zircon) protect the weapon too.
+    const fused = fusedFociOf(this.parent);
+    if (fused && this.profile?.valid) {
+      if (!fused.system.profile) fused.system.prepareDerivedData?.();
+      const fp = fused.system.profile;
+      if (fp?.valid) this.profile = { ...this.profile, durability: (this.profile.durability ?? 0) + (fp.durability ?? 0), limit: (this.profile.limit ?? 0) + (fp.limit ?? 0),
+        selfWeakened: Math.max(this.profile.selfWeakened ?? 0, fp.selfWeakened ?? 0), fusedFoci: fused.id, fusedName: fused.name };
+    }
     this.durability = { max: this.profile.durability ?? 0, value: (this.profile.durability ?? 0) - this.wear };
     this.broken = this.profile.valid && !this.profile.unarmed && !this.profile.improvised && this.profile.durability - this.wear <= 0;
     this.held = this.equipped || (this.weaponType === "unarmed" && this.secondHand);
@@ -433,6 +443,7 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
       lush: new f.BooleanField({ initial: false }),       // Emerald: in a Lush biome
       declared: new f.StringField({ initial: "" }),     // Colored Diamond: the Core Spell declared this turn
       opalRange: new f.StringField({ initial: "targeted" }), // Black Opal (+): which range gets +50%
+      fusedInto: new f.StringField({ initial: "" }),     // Fused Foci (Equipment doc): the id of the weapon it's fused into, by a 1 hour Ritual
       description: new f.HTMLField({ initial: "" }),
       ...catalogSchema()
     };
@@ -457,9 +468,13 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
     this.broken = this.profile.valid && max - this.wear <= 0;
-    this.held = this.equipped;
+    // Fused into a weapon: it counts as held while that weapon is held (one hand holds both).
+    const into = this.attuned && this.fusedInto ? this.parent?.actor?.items?.get?.(this.fusedInto) : null;   // (equipped, not held: the weapon may not be prepared yet)
+    this.fused = into?.type === "weapon";
+    this.held = this.equipped || (this.fused && !!into.system.equipped);
   }
 }
+
 
 /**
  * Mental Icon: an object of devotion with a Form (its Ward effect) and a Tenet. Attuned (one at a time, 6 AP in combat) it works from anywhere on your

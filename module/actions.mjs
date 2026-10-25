@@ -12,7 +12,7 @@ import { isDeclined } from "./reactions.mjs";
 import * as auto from "./automation-rules.mjs";
 import { borderDistance, gridFor, tokenPos, tokenCentre } from "./distance.mjs";
 import { pickSpot, candidateSpots } from "./placement.mjs";
-import { notCreature, isLiving } from "./kinds.mjs";
+import { notCreature, isLiving, fusedFociOf } from "./kinds.mjs";
 import { esc, DialogV2, dialogHead } from "./html.mjs";
 export { gridFor };
 
@@ -933,6 +933,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     notes.push(`Ho! (${THROW[p.throwType].label} → ${THROW[throwType].label})`);
   }
   // Martial Theory T0 Throw: throwing a held weapon takes 2 AP.
+  if (opts.mode === "throw" && fusedFociOf(item)) return ui.notifications.warn(`${item.name} is fused with ${fusedFociOf(item).name}: it can't leave your hand while the Foci stays attuned.`);
   if (opts.mode === "throw") { net += THROW[throwType].net; ap = followup ? 0 : 2; notes.push(`Thrown (${THROW[throwType].label})`); }
   if (opts.mode === "r2") { net -= 1; notes.push("2× range"); }
   if (opts.mode === "r4") { net -= 2; ap = followup ? 0 : 6; notes.push("4× range"); }
@@ -1394,6 +1395,9 @@ function landingPosition(near, from) {
  * (or beside the actor's own token). If there's no token on the scene, the item just stays unequipped.
  */
 export async function dropItem(actor, item, nearToken = null, { thrown = true } = {}) {
+  // A weapon fused with the attuned Foci (Fused Foci) can't be dropped or disarmed.
+  const fusedWith = fusedFociOf(item);
+  if (fusedWith) { ui.notifications.warn(`${item.name} is fused with ${fusedWith.name}: it can't be dropped or disarmed while the Foci stays attuned.`); return false; }
   // Natural weapons and armor are part of a Summon or Animation: never dropped. One that returns comes straight back after a throw.
   if (item.system?.returning && thrown && !item.system.natural) return false;            // returns to its user when thrown (Geomancy Combos)
   if (item.system?.natural) {

@@ -36,8 +36,10 @@
       <span>Threshold Reduction</span><span>{{#if trLabel}}{{trLabel}}{{else}}—{{/if}}</span>
       <span>Durability</span><span>{{system.durability.value}} / {{system.durability.max}} <small>(wear <input type="number" name="system.wear" value="{{system.wear}}" min="0" {{#unless editable}}disabled{{/unless}}>)</small></span>
       <span>Limit</span><span>{{p.limit}}</span>
-      <span>Hands</span><span>{{#if p.twoHandCast}}Two hands to cast{{else}}One hand (a held item){{/if}}</span>
+      <span>Hands</span><span>{{#if system.fused}}Held by its weapon's hand (fused){{else if p.twoHandCast}}Two hands to cast{{else}}One hand (a held item){{/if}}</span>
+      {{#if fuseChoices}}<span><a data-codex="doc:equipment/magic-foci/foci-info">Fused into</a></span><span><select name="system.fusedInto" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions fuseChoices selected=system.fusedInto}}</select></span>{{/if}}
     </div>
+    {{#if fuseChoices}}<p class="hint">Fusing is a 1 hour Ritual (not in combat): the weapon also counts as this Foci, so one hand holds both; the Foci's Durability and Limit join the weapon's, and the weapon can't be dropped or disarmed. Unattuning separates them.</p>{{/if}}
     <p class="hint">Attuning takes an hour (not in combat); only one Foci can be attuned at a time. Affixes and passives only work while attuned, for spells cast through it.</p>
   </section>
 

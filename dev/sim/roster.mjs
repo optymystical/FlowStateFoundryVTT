@@ -1145,8 +1145,8 @@ PASSES["magic-vs-martial-weave"] = { ...PASSES["magic-vs-martial"], id: "magic-v
   note: "Magic vs Martial, the hybrid rotation with the hybrids rebuilt around Weaving (Magic Theory T3).",
   encounters: PASSES["magic-vs-martial"].encounters.filter(e => e.rotation === 1) };
 
-// Prototype under test: the woven spell's damage joins the weapon hit (one attack roll, one soak; the weapon's damage type; the spell's riders left out).
-PASSES["magic-vs-martial-weave-join"] = { ...PASSES["magic-vs-martial-weave"], id: "magic-vs-martial-weave-join", weaveJoin: true,
+// Ran with a prototype (since replaced by the joined-Weaving rule): the woven spell's damage joined the weapon hit (one soak; the weapon's type; no riders).
+PASSES["magic-vs-martial-weave-join"] = { ...PASSES["magic-vs-martial-weave"], id: "magic-vs-martial-weave-join",
   note: "Magic vs Martial, the Weaving hybrids, with the woven spell's damage joining the weapon hit (prototype)." };
 
 // The Weaving hybrids at Magic Theory T5 (Webmaster: woven spells get Threshold Reduction, so they cost less Energy), with the joined-damage
@@ -1162,3 +1162,14 @@ const WEAVE5_LOADOUTS = {
 PASSES["magic-vs-martial-weave5"] = { ...PASSES["magic-vs-martial-weave-join"], id: "magic-vs-martial-weave5",
   party: PARTY_MIX.map(p => (WEAVE5_LOADOUTS[p.id] ? { ...p, loadouts: [p.loadouts[0], WEAVE5_LOADOUTS[p.id]] } : p)),
   note: "Magic vs Martial, the hybrids at Magic Theory T5 (Webmaster) with the joined-damage prototype." };
+
+// The joined-Weaving rule (Magic doc) with Fused Foci (Equipment doc): the T5 hybrids fuse their Foci into the primary weapon, so the duelist
+// gets its off-hand Swift back (Fast follow-ups), and the woven spell keeps its own type and riders while sharing the hit's Limit.
+const WOVEN_LOADOUTS = {
+  bulwark: { ...WEAVE5_LOADOUTS.bulwark, foci: FO("orb", { fuse: true }) },
+  duelist: { ...WEAVE5_LOADOUTS.duelist, weapons: [W("bladed", "light", "steel", { primary: true }), W("swift", "light", "steel")], foci: FO("wand", { fuse: true }) },
+  breaker: { ...WEAVE5_LOADOUTS.breaker, foci: FO("orb", { fuse: true }) }
+};
+PASSES["magic-vs-martial-woven"] = { ...PASSES["magic-vs-martial-weave"], id: "magic-vs-martial-woven",
+  party: PARTY_MIX.map(p => (WOVEN_LOADOUTS[p.id] ? { ...p, loadouts: [p.loadouts[0], WOVEN_LOADOUTS[p.id]] } : p)),
+  note: "Magic vs Martial, the T5 hybrids with the joined-Weaving rule and Fused Foci (the duelist's off-hand Swift is back)." };

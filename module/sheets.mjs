@@ -1475,6 +1475,8 @@ export class FlowStateFociSheet extends FlowStateItemSheet {
       hasOpal: p.valid && p.doubled === "blackOpal", opalChoices: { targeted: "Targeted", ranged: "Ranged" }, hasEmerald: p.valid && p.affixes?.includes("emerald"),
       spellChoices: coreChoices(this.document.actor?.system?.trees),
       owned: !!this.document.actor,
+      // Fused Foci: the actor's weapons it can be fused into (attuned only).
+      fuseChoices: this.document.actor && sys.attuned ? { "": "Not fused", ...Object.fromEntries(this.document.actor.items.filter(i => i.type === "weapon" && !["unarmed", "improvised"].includes(i.system.weaponType)).map(i => [i.id, i.name])) } : null,
       ...(p.valid ? affixContext(sys, p, "offensive") : {})
     });
   }

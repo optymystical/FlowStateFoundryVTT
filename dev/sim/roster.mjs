@@ -1220,3 +1220,8 @@ const BENCH_TANK = (id, loadout, x) => ({ id, party: [{ ...PARTY_MIX[0], loadout
 PASSES["tank-armor"] = BENCH_TANK("tank-armor", PARTY_MIX[0].loadouts[0], null);
 for (const [id, x] of [["tank-shroud1", 1], ["tank-shroud15", 1.5], ["tank-shroud2", 2]]) PASSES[id] = BENCH_TANK(id, SHROUD_TANK, x);
 for (const [id, x] of [["tank-shroud25", 2.5], ["tank-shroud3", 3]]) PASSES[id] = BENCH_TANK(id, SHROUD_TANK, x);
+
+// The Shroud-only tank rebuilt around Build Arcana (the Magic counterpart of the Heavy Armor tree): Magic Theory T4, Build Arcana T4 (Layered and
+// Reactive Shields, Seep, Reform, Shroud Master), Protection Arcana T3 (Shield, Reflect, Adjust) and Crushing T2 (Slam): 29 Skill Points.
+const BUILD_TANK = { ...SHROUD_TANK, label: "Build", trees: MAG(4, { "magic-build-arcana": 4, [PRO]: 3, [CRU]: 2 }) };
+for (const [id, x] of [["tank-build1", 1], ["tank-build2", 2], ["tank-build3", 3]]) PASSES[id] = BENCH_TANK(id, BUILD_TANK, x);

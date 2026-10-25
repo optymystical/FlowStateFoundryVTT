@@ -1,0 +1,3038 @@
+[
+ {
+  "id": "swarm-martial-r1",
+  "group": "swarm-martial",
+  "rotation": 1,
+  "seconds": 88,
+  "winner": "monsters",
+  "pass": "tank-build1",
+  "rounds": 2,
+  "partyLeft": 0,
+  "monstersLeft": 10,
+  "followups": 40,
+  "knockbacks": {},
+  "used": {
+   "opt:shank1=adv": 5,
+   "opt:shank2=dodge": 5,
+   "opt:shank3=pierce": 5,
+   "opt:thrust": 15,
+   "defend:dodge": 86,
+   "twist": 4,
+   "berserk": 5,
+   "Seeing Red": 5,
+   "opt:rend": 11,
+   "recoverEnergy": 6,
+   "cast:Shield": 2,
+   "mod:Reflect": 2,
+   "mod:Layered": 1,
+   "mod:Reactive": 1,
+   "cast:Slam": 4,
+   "mod:Empower": 1,
+   "mod:Crush": 4,
+   "maintain": 5,
+   "opt:heave": 5,
+   "twist:skipped": 3,
+   "opt:shank1=pierce": 2,
+   "opt:shank2=cleave": 2,
+   "opt:shank3=adv": 2
+  },
+  "hp": {
+   "Sim Bulwark#cSnx": "383/792",
+   "Sim Goblin Hacker#hU6g": "396/468",
+   "Sim Goblin Hacker#SxGS": "468/468",
+   "Sim Goblin Hacker#wkSU": "468/468",
+   "Sim Goblin Hacker#4Orn": "468/468",
+   "Sim Goblin Hacker#CSzs": "468/468",
+   "Sim Goblin Lancer#orxB": "468/468",
+   "Sim Goblin Lancer#R03F": "468/468",
+   "Sim Goblin Lancer#1ODb": "468/468",
+   "Sim Goblin Lancer#iiRL": "468/468",
+   "Sim Goblin Lancer#cOHW": "468/468"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Light Reach": {
+    "attacks": 25,
+    "followups": 25,
+    "hits": 10,
+    "crits": 1,
+    "misses": 40,
+    "damage": 84,
+    "ap": 50,
+    "kills": 1,
+    "users": [
+     "Goblin Lancer"
+    ]
+   },
+   "Heavy Striker": {
+    "attacks": 15,
+    "followups": 15,
+    "hits": 8,
+    "crits": 4,
+    "misses": 22,
+    "damage": 259,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "Goblin Hacker"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 0,
+    "damage": 72,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 4,
+    "absorbed": 60
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 14,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 72,
+    "taken": 343,
+    "hits": 6,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 74,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 27,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 97,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 27,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 40,
+    "taken": 72,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 21,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 43,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 10
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 91.24143795447327,
+    "attacks": 10,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 0,
+    "used": {
+     "twist": 2
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 82,
+     "cast:Shield": 2,
+     "mod:Reflect": 2,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "cast:Slam": 4,
+     "mod:Empower": 1,
+     "mod:Crush": 4
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 2,
+     "maintain": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100.4987562112089,
+    "attacks": 10,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 0,
+    "used": {
+     "twist": 1,
+     "twist:skipped": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 1,
+     "maintain": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 92.19544457292889,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 1,
+     "maintain": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 85.14693182963201,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 1,
+     "maintain": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 95,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 1,
+     "maintain": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 86.31338250816034,
+    "attacks": 10,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 106.88779163215976,
+    "attacks": 10,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 93.94147114027966,
+    "attacks": 10,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 0,
+    "used": {
+     "twist": 1,
+     "twist:skipped": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Hacker": [
+    "Unarmed",
+    "Heavy Striker (Iron)",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Lancer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Reach (Hardwood)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Goblin Hacker": [
+    "Heavy Striker (Iron): 300/300",
+    "Light Armor (Soft Leather): 80/80"
+   ],
+   "Sim Goblin Lancer": [
+    "Light Armor (Soft Leather): 80/80",
+    "Light Reach (Hardwood): 150/150"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 4680,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 668,
+    "monsterHp": 4627,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 383,
+    "monsterHp": 4608,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 66,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 409,
+   "monsters": 72
+  },
+  "directTaken": {
+   "party": 343,
+   "monsters": 72
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Light Reach (Hardwood)": 25,
+    "prompt: Light Reach (Hardwood) — Solitary follow-up (Dis)": 25,
+    "prompt: Heavy Striker (Iron)": 15,
+    "prompt: Heavy Striker (Iron) — Solitary follow-up": 15
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swarm-magic-r1",
+  "group": "swarm-magic",
+  "rotation": 1,
+  "seconds": 15,
+  "winner": "monsters",
+  "pass": "tank-build1",
+  "rounds": 1,
+  "partyLeft": 0,
+  "monstersLeft": 10,
+  "followups": 0,
+  "knockbacks": {
+   "down": 1
+  },
+  "used": {
+   "cast:Cut + Stab": 6,
+   "mod:Bleed": 9,
+   "defend:dodge": 12,
+   "cast:Cut + Slam": 3,
+   "cast:Burden": 1,
+   "mod:Burden": 1,
+   "cast:Force + Stab": 2,
+   "mod:Pinpoint": 1,
+   "opt:dir=down": 1
+  },
+  "hp": {
+   "Sim Bulwark#ypiW": "239/792",
+   "Sim Goblin Cutter#iyY1": "513/513",
+   "Sim Goblin Cutter#rbzR": "513/513",
+   "Sim Goblin Cutter#GOIp": "513/513",
+   "Sim Goblin Stabber#jupR": "513/513",
+   "Sim Goblin Stabber#BNvg": "513/513",
+   "Sim Goblin Stabber#wdTG": "513/513",
+   "Sim Goblin Basher#HOin": "513/513",
+   "Sim Goblin Basher#UgRj": "513/513",
+   "Sim Goblin Pusher#GS5J": "513/513",
+   "Sim Goblin Pusher#sFoD": "513/513"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Cut + Stab [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 3,
+    "damage": 105,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Spell: Cut + Slam [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 96,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Goblin Cutter"
+    ]
+   },
+   "Spell: Force [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "Goblin Pusher"
+    ]
+   },
+   "Spell: Force + Stab [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 151,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Pusher"
+    ],
+    "force": 111
+   },
+   "Spell: Force + Stab": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 241,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 105,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 96,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "dealt": 151,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 3
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Stab": 3,
+     "mod:Bleed": 3
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Stab": 3,
+     "mod:Bleed": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Slam": 3,
+     "mod:Bleed": 3
+    }
+   },
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Burden": 1,
+     "mod:Burden": 1,
+     "cast:Force + Stab": 2,
+     "mod:Pinpoint": 1
+    },
+    "knockbacks": {
+     "down": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Cutter": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Pusher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Goblin Cutter": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Pusher": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 5130,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 1,
+    "partyHp": 239,
+    "monsterHp": 5130,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 312,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 553,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 241,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Bulwark": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "swarm-mixed-r1",
+  "group": "swarm-mixed",
+  "rotation": 1,
+  "seconds": 21,
+  "winner": "monsters",
+  "pass": "tank-build1",
+  "rounds": 1,
+  "partyLeft": 0,
+  "monstersLeft": 10,
+  "followups": 4,
+  "knockbacks": {
+   "down": 1
+  },
+  "used": {
+   "cast:Burden": 1,
+   "mod:Burden": 1,
+   "defend:dodge": 14,
+   "cast:Force + Stab": 2,
+   "mod:Pinpoint": 1,
+   "opt:dir=down": 1,
+   "berserk": 2,
+   "Seeing Red": 2,
+   "opt:rend": 2,
+   "recoverEnergy": 4,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 1,
+   "opt:shank3=pierce": 1,
+   "opt:thrust": 2,
+   "twist": 1,
+   "cast:Cut + Stab": 3,
+   "mod:Bleed": 3
+  },
+  "hp": {
+   "Sim Bulwark#ZNFn": "323/792",
+   "Sim Goblin Hacker#QouK": "468/468",
+   "Sim Goblin Hacker#Qv7l": "468/468",
+   "Sim Goblin Hacker#a8jp": "468/468",
+   "Sim Goblin Lancer#avrE": "468/468",
+   "Sim Goblin Lancer#xJS7": "468/468",
+   "Sim Goblin Cutter#yOm7": "513/513",
+   "Sim Goblin Cutter#vVE1": "513/513",
+   "Sim Goblin Stabber#WwZo": "513/513",
+   "Sim Goblin Basher#RLki": "513/513",
+   "Sim Goblin Pusher#rw9q": "513/513"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Force [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "Goblin Pusher"
+    ]
+   },
+   "Spell: Force + Stab [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 117,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Pusher"
+    ],
+    "force": 117
+   },
+   "Heavy Striker": {
+    "attacks": 2,
+    "followups": 2,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 58,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Goblin Hacker"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 2,
+    "followups": 2,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 17,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Goblin Lancer"
+    ]
+   },
+   "Spell: Cut + Stab [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 2,
+    "damage": 132,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Spell: Cut + Stab": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Goblin Pusher",
+    "dealt": 117,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 207,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 58,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "dealt": 17,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 132,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 3
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Burden": 1,
+     "mod:Burden": 1,
+     "cast:Force + Stab": 2,
+     "mod:Pinpoint": 1
+    },
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 90
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 2
+    },
+    "turnMoved": 80.15609770940699
+   },
+   {
+    "name": "Sim Goblin Lancer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 80,
+    "shank": 0,
+    "used": {
+     "twist": 1,
+     "recoverEnergy": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Stab": 3,
+     "mod:Bleed": 3
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Hacker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Striker (Iron)"
+   ],
+   "Sim Goblin Lancer": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Light Reach (Hardwood)"
+   ],
+   "Sim Goblin Cutter": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Basher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Pusher": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Goblin Hacker": [
+    "Light Armor (Soft Leather): 80/80",
+    "Heavy Striker (Iron): 300/300"
+   ],
+   "Sim Goblin Lancer": [
+    "Light Armor (Soft Leather): 80/80",
+    "Light Reach (Hardwood): 150/150"
+   ],
+   "Sim Goblin Cutter": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Basher": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Pusher": [
+    "Light Armor (Soft Leather): 60/60"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 4905,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 1,
+    "partyHp": 323,
+    "monsterHp": 4905,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 262,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 469,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 207,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Force — Sim Bulwark": 1,
+    "prompt: Heavy Striker (Iron)": 2,
+    "prompt: Heavy Striker (Iron) — Solitary follow-up": 2,
+    "prompt: Light Reach (Hardwood)": 2,
+    "prompt: Light Reach (Hardwood) — Solitary follow-up (Dis)": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-martial-r1",
+  "group": "raiders-martial",
+  "rotation": 1,
+  "seconds": 66,
+  "winner": "monsters",
+  "pass": "tank-build1",
+  "rounds": 3,
+  "partyLeft": 0,
+  "monstersLeft": 5,
+  "followups": 5,
+  "knockbacks": {},
+  "used": {
+   "opt:prepared=headshot": 1,
+   "opt:fish": 2,
+   "defend:dodge": 42,
+   "cast:Shield": 3,
+   "mod:Reflect": 3,
+   "mod:Layered": 1,
+   "mod:Reactive": 1,
+   "cast:Slam": 6,
+   "mod:Empower": 1,
+   "mod:Crush": 6,
+   "properStance": 3,
+   "opt:takeAim=adv": 1,
+   "opt:takeAim=str": 1,
+   "Brace": 3,
+   "opt:through=str": 3,
+   "opt:letItRip": 4,
+   "limber": 5,
+   "recoverEnergy": 6,
+   "Trudge": 1,
+   "opt:quickStrike": 3,
+   "Mark": 1,
+   "opt:pepper=1": 5,
+   "opt:spinDown": 2,
+   "quickload:speed": 4,
+   "limber:skipped": 7,
+   "opt:prepared=str": 1,
+   "markShot": 1,
+   "followup:quickload": 1,
+   "opt:through=cleave": 2,
+   "Bodyslam": 2
+  },
+  "hp": {
+   "Sim Bulwark#Cr3N": "322/792",
+   "Sim Raider Brute#P7Xq": "720/720",
+   "Sim Raider Cutter#KSkI": "720/720",
+   "Sim Raider Gunner#opJl": "585/585",
+   "Sim Raider Sniper#20E5": "585/585",
+   "Sim Raider Bomber#ETCt": "585/585"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Heavy Longshot": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 46,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Sniper"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Assault": {
+    "attacks": 6,
+    "followups": 5,
+    "hits": 3,
+    "crits": 2,
+    "misses": 8,
+    "damage": 54,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Raider Bomber"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 2,
+    "damage": 52,
+    "ap": 15,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Heavy Rapid": {
+    "attacks": 5,
+    "followups": 1,
+    "hits": 3,
+    "crits": 3,
+    "misses": 3,
+    "damage": 212,
+    "ap": 18,
+    "kills": 1,
+    "users": [
+     "Raider Gunner"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Soft Leather)": {
+    "hits": 3,
+    "absorbed": 37
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Sniper",
+    "dealt": 46,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 364,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "dealt": 212,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "dealt": 54,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 52,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 5
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 3
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Sniper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "prep": 0,
+    "reloads": 6,
+    "prep2": 0
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 36,
+     "cast:Shield": 3,
+     "mod:Reflect": 3,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "cast:Slam": 6,
+     "mod:Empower": 1,
+     "mod:Crush": 6
+    },
+    "turnMoved": 0,
+    "casts": 9
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "Brace": 1,
+     "Mark": 1,
+     "limber": 2,
+     "limber:skipped": 4,
+     "markShot": 1,
+     "recoverEnergy": 3
+    },
+    "turnMoved": 0,
+    "reloads": 1
+   },
+   {
+    "name": "Sim Raider Bomber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 11,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "properStance": 3,
+     "limber:skipped": 3,
+     "followup:quickload": 1
+    },
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 9
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "limber": 3,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 0,
+    "thr": 0
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "Trudge": 1,
+     "recoverEnergy": 2,
+     "Bodyslam": 2
+    },
+    "turnMoved": 0,
+    "slams": 2
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Heavy Circular (Steel)",
+    "Light Thrasher (Hardwood)",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Gunner": [
+    "Unarmed",
+    "Medium Armor (Soft Leather)",
+    "Heavy Rapid (Steel)"
+   ],
+   "Sim Raider Sniper": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Longshot (Steel)"
+   ],
+   "Sim Raider Bomber": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Assault (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 400/400",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Heavy Circular (Steel): 630/630",
+    "Light Thrasher (Hardwood): 30/30",
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Gunner": [
+    "Medium Armor (Soft Leather): 163/200",
+    "Heavy Rapid (Steel): 630/630"
+   ],
+   "Sim Raider Sniper": [
+    "Light Armor (Soft Leather): 100/100",
+    "Heavy Longshot (Steel): 630/630"
+   ],
+   "Sim Raider Bomber": [
+    "Medium Armor (Hide): 150/150",
+    "Heavy Assault (Steel): 630/630"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 3195,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 714,
+    "monsterHp": 3195,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 626,
+    "monsterHp": 3195,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 322,
+    "monsterHp": 3195,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 106,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 470,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 364,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Longshot (Steel)": 6,
+    "prompt: Heavy Assault (Steel)": 6,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 5,
+    "prompt: Heavy Circular (Steel)": 5,
+    "prompt: Heavy Swift (Steel)": 3,
+    "prompt: Heavy Rapid (Steel)": 5,
+    "wait: Heavy Rapid (Steel) is empty": 4,
+    "prompt: Heavy Rapid (Steel) — Mark shot": 1,
+    "prompt: Bodyslam": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-magic-r1",
+  "group": "raiders-magic",
+  "rotation": 1,
+  "seconds": 14,
+  "winner": "monsters",
+  "pass": "tank-build1",
+  "rounds": 1,
+  "partyLeft": 0,
+  "monstersLeft": 5,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Flame + Glob": 3,
+   "mod:Pinpoint": 4,
+   "mod:Ignition": 3,
+   "defend:dodge": 10,
+   "cast:Glob": 3,
+   "cast:Shield": 1,
+   "mod:Reflect": 1,
+   "mod:Layered": 1,
+   "mod:Reactive": 1,
+   "cast:Slam": 2,
+   "mod:Empower": 1,
+   "mod:Crush": 2,
+   "cast:Frost": 1,
+   "mod:Frostbite": 2,
+   "mod:Chill": 1
+  },
+  "hp": {
+   "Sim Bulwark#osTB": "371/792",
+   "Sim Raider Pyro#GF1G": "765/765",
+   "Sim Raider Froster#pC4n": "765/765",
+   "Sim Raider Storm#scYM": "765/765",
+   "Sim Raider Spitter#1Ohm": "765/765",
+   "Sim Raider Echo#dthT": "484/540"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Flame + Glob [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Spitter"
+    ]
+   },
+   "Spell: Glob [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Raider Froster"
+    ]
+   },
+   "Spell: Shield": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 56,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Frost [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "Raider Echo"
+    ]
+   },
+   "Spell: Frost": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Soft Leather)": {
+    "hits": 2,
+    "absorbed": 40
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Raider Spitter",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Bulwark",
+    "dealt": 56,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Raider Froster",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Raider Echo",
+    "dealt": 0,
+    "taken": 56,
+    "hits": 1,
+    "attacks": 1
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Raider Spitter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Flame + Glob": 3,
+     "mod:Pinpoint": 2,
+     "mod:Ignition": 3
+    }
+   },
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Shield": 1,
+     "mod:Reflect": 1,
+     "mod:Layered": 1,
+     "mod:Reactive": 1,
+     "cast:Slam": 2,
+     "mod:Empower": 1,
+     "mod:Crush": 2
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "Sim Raider Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Glob": 3,
+     "mod:Pinpoint": 2
+    }
+   },
+   {
+    "name": "Sim Raider Echo",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "cast:Frost": 1,
+     "mod:Frostbite": 2,
+     "mod:Chill": 1
+    },
+    "turnMoved": 0,
+    "casts": 1
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Pyro": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Froster": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Storm": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Spitter": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Echo": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Raider Pyro": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Froster": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Storm": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Spitter": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Echo": [
+    "Light Armor (Soft Leather): 60/100"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 1,
+    "partyHp": 371,
+    "monsterHp": 3544,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 342,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 79,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 421,
+   "monsters": 56
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 56
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-mixed-r1",
+  "group": "raiders-mixed",
+  "rotation": 1,
+  "seconds": 45,
+  "winner": "monsters",
+  "pass": "tank-build1",
+  "rounds": 3,
+  "partyLeft": 0,
+  "monstersLeft": 5,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Shield": 3,
+   "mod:Reflect": 3,
+   "mod:Layered": 1,
+   "defend:dodge": 33,
+   "cast:Slam": 6,
+   "mod:Empower": 1,
+   "mod:Crush": 6,
+   "cutBack": 2,
+   "Brace": 2,
+   "opt:through=str": 2,
+   "opt:letItRip": 3,
+   "recoverEnergy": 3,
+   "cast:Glob": 6,
+   "mod:Pinpoint": 8,
+   "cast:Crackle": 2,
+   "mod:Multicast": 2,
+   "mod:Electrify": 2,
+   "multicast": 2,
+   "Trudge": 1,
+   "opt:quickStrike": 2,
+   "cast:Flame": 6,
+   "mod:Ignition": 6,
+   "opt:through=cleave": 1,
+   "limber": 1,
+   "Bodyslam": 1
+  },
+  "hp": {
+   "Sim Bulwark#ldCk": "272/792",
+   "Sim Raider Brute#cRla": "720/720",
+   "Sim Raider Cutter#LxAK": "720/720",
+   "Sim Raider Pyro#AEUo": "765/765",
+   "Sim Raider Froster#FMsQ": "765/765",
+   "Sim Raider Storm#ox3W": "765/765"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Shield": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 2,
+    "followups": 2,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Heavy Circular": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "Raider Cutter"
+    ]
+   },
+   "Spell: Glob [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Froster"
+    ]
+   },
+   "Spell: Crackle [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 111,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Storm"
+    ]
+   },
+   "Spell: Flame [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 5,
+    "damage": 30,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Raider Pyro"
+    ]
+   },
+   "Spell: Crackle": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 3,
+    "absorbed": 66
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 141,
+    "hits": 7,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Raider Froster",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Raider Storm",
+    "dealt": 111,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "dealt": 30,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Shield": 3,
+     "mod:Reflect": 3,
+     "mod:Layered": 1,
+     "defend:dodge": 27,
+     "cast:Slam": 6,
+     "mod:Empower": 1,
+     "mod:Crush": 6
+    }
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "cutBack": 2,
+     "Brace": 1,
+     "Trudge": 1,
+     "recoverEnergy": 2,
+     "Bodyslam": 1
+    },
+    "turnMoved": 0,
+    "slams": 1
+   },
+   {
+    "name": "Sim Raider Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "limber": 1
+    },
+    "turnMoved": 0,
+    "thr": 0
+   },
+   {
+    "name": "Sim Raider Froster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Glob": 6,
+     "mod:Pinpoint": 3
+    }
+   },
+   {
+    "name": "Sim Raider Storm",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Crackle": 2,
+     "mod:Pinpoint": 2,
+     "mod:Multicast": 2,
+     "mod:Electrify": 2,
+     "multicast": 2
+    }
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Flame": 6,
+     "mod:Pinpoint": 3,
+     "mod:Ignition": 6
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Cutter": [
+    "Unarmed",
+    "Medium Armor (Hide)",
+    "Heavy Circular (Steel)",
+    "Light Thrasher (Hardwood)"
+   ],
+   "Sim Raider Pyro": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Froster": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Storm": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 334/400",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Cutter": [
+    "Medium Armor (Hide): 150/150",
+    "Heavy Circular (Steel): 630/630",
+    "Light Thrasher (Hardwood): 30/30"
+   ],
+   "Sim Raider Pyro": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Froster": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Storm": [
+    "Medium Armor (Hide): 150/150"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 3735,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 762,
+    "monsterHp": 3735,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 480,
+    "monsterHp": 3735,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 272,
+    "monsterHp": 3735,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 371,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 8,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 520,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 141,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Swift (Steel) — Cut Back": 2,
+    "prompt: Heavy Circular (Steel)": 3,
+    "prompt: Heavy Swift (Steel)": 2,
+    "prompt: Bodyslam": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-martial-r1",
+  "group": "boss-martial",
+  "rotation": 1,
+  "seconds": 21,
+  "winner": "monsters",
+  "pass": "tank-build1",
+  "rounds": 3,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "cast:Shield": 3,
+   "mod:Reflect": 3,
+   "mod:Layered": 1,
+   "defend:dodge": 14,
+   "cast:Slam": 6,
+   "mod:Empower": 1,
+   "mod:Crush": 6,
+   "Smashing": 3,
+   "smashing": 3,
+   "opt:wild=str2": 1,
+   "opt:strafe": 1,
+   "opt:wild=bashPlus": 1,
+   "opt:dir=down": 2,
+   "recoverEnergy": 4,
+   "opt:wild": 1
+  },
+  "hp": {
+   "Sim Bulwark#nUhu": "392/792",
+   "Sim Ogre Tyrant#U5g4": "2136/2136"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Shield": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 400,
+    "ap": 9,
+    "kills": 1,
+    "users": [
+     "Ogre Tyrant"
+    ],
+    "force": 344
+   },
+   "Light Striker": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Ogre Tyrant"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 2,
+    "absorbed": 52
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 56,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Ogre Tyrant",
+    "dealt": 400,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 5
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Shield": 3,
+     "mod:Reflect": 3,
+     "mod:Layered": 1,
+     "defend:dodge": 8,
+     "cast:Slam": 6,
+     "mod:Empower": 1,
+     "mod:Crush": 6
+    }
+   },
+   {
+    "name": "Sim Ogre Tyrant",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 75,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "Smashing": 3,
+     "smashing": 3,
+     "recoverEnergy": 4
+    },
+    "turnMoved": 0,
+    "wild": 2,
+    "knockbacks": {
+     "down": 2
+    }
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Tyrant": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Iron)",
+    "Light Striker (Steel)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Ogre Tyrant": [
+    "Heavy Armor (Iron): 908/960",
+    "Heavy Weighted (Iron): 660/660",
+    "Light Striker (Steel): 135/135"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 792,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 621,
+    "monsterHp": 2136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 392,
+    "monsterHp": 2136,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 344,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 400,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 56,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Weighted (Iron)": 3,
+    "prompt: Light Striker (Steel)": 2,
+    "prompt: Knockback — Sim Bulwark": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Ogre Tyrant needs 76 Energy for Smashing but has 66.",
+     "who": "Sim Ogre Tyrant"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Ogre Tyrant needs 76 Energy for Smashing but has 73.",
+     "who": "Sim Ogre Tyrant"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-magic-r1",
+  "group": "boss-magic",
+  "rotation": 1,
+  "seconds": 7,
+  "winner": "monsters",
+  "pass": "tank-build1",
+  "rounds": 1,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Shield": 1,
+   "mod:Reflect": 1,
+   "mod:Layered": 1,
+   "defend:dodge": 5,
+   "cast:Slam": 2,
+   "mod:Empower": 2,
+   "mod:Crush": 2,
+   "cast:Shift": 2,
+   "mod:Toss": 2,
+   "mod:Tier Up": 2,
+   "mod:Muddy": 2,
+   "mod:Harden": 2,
+   "mod:Tier Up, Again": 2
+  },
+  "hp": {
+   "Sim Bulwark#6aid": "369/792",
+   "Sim Ogre Magus#YAGh": "2376/2376"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Shield": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Shift (Toss) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 423,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Ogre Magus"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 423,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "dealt": 423,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Shield": 1,
+     "mod:Reflect": 1,
+     "mod:Layered": 1,
+     "defend:dodge": 3,
+     "cast:Slam": 2,
+     "mod:Empower": 1,
+     "mod:Crush": 2
+    }
+   },
+   {
+    "name": "Sim Ogre Magus",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "cast:Shift": 2,
+     "mod:Toss": 2,
+     "mod:Tier Up": 2,
+     "mod:Muddy": 2,
+     "mod:Harden": 2,
+     "mod:Tier Up, Again": 2,
+     "mod:Empower": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Magus": [
+    "Unarmed",
+    "Heavy Armor (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Ogre Magus": [
+    "Heavy Armor (Iron): 880/880"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 2376,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 1,
+    "partyHp": 369,
+    "monsterHp": 2376,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 423,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 423,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-mixed-r1",
+  "group": "boss-mixed",
+  "rotation": 1,
+  "seconds": 15,
+  "winner": "monsters",
+  "pass": "tank-build1",
+  "rounds": 2,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Shield": 2,
+   "mod:Reflect": 2,
+   "mod:Layered": 1,
+   "defend:dodge": 10,
+   "cast:Slam": 4,
+   "mod:Empower": 1,
+   "mod:Crush": 4,
+   "Smashing": 2,
+   "smashing": 2,
+   "hybridTurn": 2,
+   "hybrid:spell": 4,
+   "cast:Flame": 4,
+   "mod:Ignition": 4,
+   "recoverEnergy": 4
+  },
+  "hp": {
+   "Sim Bulwark#QJD2": "365/792",
+   "Sim Ogre Warlock#NFbW": "2016/2016"
+  },
+  "down": [
+   "Sim Bulwark"
+  ],
+  "weapons": {
+   "Spell: Shield": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Bulwark"
+    ]
+   },
+   "Spell: Flame [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Ogre Warlock"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Heavy Armor (Iron)": {
+    "hits": 4,
+    "absorbed": 52
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bulwark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Ogre Warlock",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bulwark",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Shield": 2,
+     "mod:Reflect": 2,
+     "mod:Layered": 1,
+     "defend:dodge": 6,
+     "cast:Slam": 4,
+     "mod:Empower": 1,
+     "mod:Crush": 4
+    }
+   },
+   {
+    "name": "Sim Ogre Warlock",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "Smashing": 2,
+     "smashing": 2,
+     "hybridTurn": 2,
+     "hybrid:spell": 4,
+     "cast:Flame": 4,
+     "mod:Ignition": 4,
+     "recoverEnergy": 4
+    },
+    "turnMoved": 0,
+    "casts": 4
+   }
+  ],
+  "trees": {
+   "Sim Bulwark": {
+    "magic-theory": 4,
+    "magic-build-arcana": 4,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 2
+   }
+  },
+  "gear": {
+   "Sim Bulwark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Warlock": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Weighted (Iron)"
+   ]
+  },
+  "gearState": {
+   "Sim Bulwark": [],
+   "Sim Ogre Warlock": [
+    "Heavy Armor (Iron): 828/880",
+    "Heavy Weighted (Iron): 540/540"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 792,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 792,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 365,
+    "monsterHp": 2016,
+    "partyDown": 1,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 158,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 269,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 427,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ }
+]

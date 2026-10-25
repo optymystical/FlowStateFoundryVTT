@@ -5565,11 +5565,12 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     wDmgOpts = { ...dmgOpts, pierce: wv.pierce, bash: wv.bash, halfLimit: !!wv.o.spell?.mods?.weakpoint, maxHpLoss: !!wv.o.spell?.mods?.chop, archetype: "magic",
       rend: wv.o.spell?.mods?.melt ? { stacks: 1 } : null, cleave: 0, cleaveToCreature: false };
     const armorProfile = target.system.armor?.system?.profile;
-    wovenFirst = limitFactor(wv.type, armorProfile?.focus, true) > limitFactor(type, armorProfile?.focus, false);
+    // (A Bash on the attack goes with the weapon's part, first, so what it breaks through lets the woven part through as well.)
+    wovenFirst = !(dmgOpts.bash > 0) && limitFactor(wv.type, armorProfile?.focus, true) > limitFactor(type, armorProfile?.focus, false);
     const spent = { limit: {}, dur: {} };
     const order = wovenFirst ? [[wv.incoming, wv.type, wDmgOpts], [incoming, type, dmgOpts]] : [[incoming, type, dmgOpts], [wv.incoming, wv.type, wDmgOpts]];
     const first = await damageOutcome(target, order[0][0], order[0][1], { ...order[0][2], limitSpent: spent });
-    firstSpent = { limit: { ...spent.limit } };
+    firstSpent = { limit: { ...spent.limit }, bashed: spent.bashed ?? null };
     const second = await damageOutcome(target, order[1][0], order[1][1], { ...order[1][2], limitSpent: spent });
     [outcome, wOutcome] = wovenFirst ? [second, first] : [first, second];
   } else outcome = instances.length > 1 ? mergeOutcomes(await Promise.all(amounts.map(a => damageOutcome(target, a, type, dmgOpts)))) : await damageOutcome(target, incoming, type, dmgOpts);
@@ -5855,14 +5856,17 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
   // Cleave (Equipment): object-only damage that hits first and uses up each object's Limit before the normal damage.
   let cleaveLeft = Math.max(0, cleave);
   // Bash: the first object in the way (a parrying weapon, else armor) with a Limit of at most `bash` is ignored,
-  // and its Limit is added as extra damage. Once per attack.
+  // and its Limit is added as extra damage. Once per attack. A woven hit is one hit: the object the weapon's part Bashed through lets the woven part
+  // through too (`limitSpent.bashed`), with no second bonus.
   let bashLeft = bash > 0;
   const tryBash = (obj, profile, durability, objPierce) => {
+    if (limitSpent?.bashed && limitSpent.bashed === (obj.uuid ?? obj.name)) { lines.push(`Bash: the hit already broke through ${obj.name}`); return true; }
     if (!bashLeft || !profile?.valid || durability <= 0) return false;
     bashLeft = false;
     const lim = effectiveLimit(profile, type, objPierce, magic);
     if (lim > bash) { lines.push(`Bash: ${obj.name}'s Limit ${lim} is above ${bash}, no effect`); return false; }
     remaining += lim;
+    if (limitSpent) limitSpent.bashed = obj.uuid ?? obj.name;
     lines.push(`Bash: broke through ${obj.name} (Limit ${lim} ignored, +${lim} damage)`);
     return true;
   };
@@ -6053,7 +6057,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (mentalHook?.accretionAsk && amount > 0 && !bypass && !shroudCtx?.accretion) shroudCtx = { ...(shroudCtx ?? {}), accretion: await mentalHook.accretionAsk(actor, amount, type, archetype === "magic") };
   // A woven hit's second part: the Limit the first part used (counted before any of it was applied). Its Durability is already worn, so only the Limit carries over.
   const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor,
-    limitSpent: limitSpent ? { limit: { ...(limitSpent.limit ?? {}) }, dur: {} } : null });
+    limitSpent: limitSpent ? { limit: { ...(limitSpent.limit ?? {}) }, dur: {}, bashed: limitSpent.bashed ?? null } : null });
   // Accretions lose the Durability they absorbed (and crumble at 0).
   for (const { effect, hp } of out.accretions ?? []) await mentalHook?.accretionWorn?.(effect, hp);
   // Shrouds (possibly someone else's Ward/Bond/Quartz) lose Durability and record what hit them.

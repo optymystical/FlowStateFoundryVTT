@@ -70,6 +70,13 @@ const spentL = { limit: {}, dur: {} };
 const part1 = await actions.damageOutcome(hero, 6, "physical", { limitSpent: spentL });
 const part2 = await actions.damageOutcome(hero, 25, "heat", { limitSpent: spentL, archetype: "magic" });
 ok2(part1.toHp === 0 && part2.toHp === 25 - (10 * mult - 6), `A woven hit's parts share one Limit: 6 of the weapon's, then ${25 - part2.toHp} of the spell's (Limit ${10 * mult})`);
+// A Bash on the weapon's part breaks through a parrying weapon for the whole hit: the woven part passes it too, with no second bonus.
+const tank = mkActor("Tank"), parry = mkWeapon(tank, "parry", { weaponType: "defender", weight: "heavy", material: "steel", grade: 2 });
+const pL = parry.system.profile.limit, spentB = { limit: {}, dur: {} };
+const bashed1 = await actions.damageOutcome(tank, 6, "physical", { limitSpent: spentB, bash: pL, parryItems: [parry.uuid] });
+const bashed2 = await actions.damageOutcome(tank, 25, "heat", { limitSpent: spentB, archetype: "magic", parryItems: [parry.uuid] });
+const unbashed = await actions.damageOutcome(tank, 25, "heat", { limitSpent: { limit: {}, dur: {} }, archetype: "magic", parryItems: [parry.uuid] });
+ok2(bashed1.toHp === 6 + pL && bashed2.toHp === 25 && unbashed.toHp < 25, `A Bash lets the whole woven hit through (${bashed1.toHp} + ${bashed2.toHp})`);
 out = await actions.damageOutcome(hero, 25, "physical", { pierce: 5 });
 ok2(out.toHp === 25 - (10 * mult - 5), "Pierce lowers the Shroud's Limit");
 await sh.update({ "system.affixes": ["painite", "jasper"] });

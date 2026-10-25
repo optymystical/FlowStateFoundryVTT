@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.81.1:** A Bash that breaks through an object's Limit on a woven hit lets the woven spell's part through that object too (one hit; no second Bash bonus).
+
 **0.81.0:** Weaving now joins the woven spell to the weapon hit (Magic doc): one attack roll, and the spell's damage lands as its own part of the hit (its own type, the attack's stacks and crit) sharing one Limit with the weapon's part; its riders (Bleed, Ignite...) apply on a hit; only the main attack weaves. New: **Fused Foci** (Equipment doc). On the Foci's sheet, an attuned Foci can be fused into one of your weapons (a 1 hour Ritual, not in combat): one hand holds both, the Foci casts while the weapon is held, the weapon gains the Foci's Durability and Limit (and Zircon), and it can't be dropped, disarmed or thrown. Unattuning separates them. The prototype test hook is gone.
 
 **0.80.4:** A test hook for the combat sim: a woven spell's damage can be queued to join the next weapon hit (a prototype under test; nothing in play uses it).

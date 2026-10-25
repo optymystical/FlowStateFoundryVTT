@@ -146,6 +146,7 @@ function weaponData(slot, stats, sp, natural) {
   const stat = (slot.weight === "heavy" ? stats.str : stats.dex) ?? 0;
   const grade = R.gradeFor(stat + bonusOf(sp));
   const d = Cat.itemData(`weapon.${slot.type}.${slot.weight}.${slot.material}`, { grade, system: { equipped: false, twoHanded: !!slot.twoHanded, natural: !!natural,
+    ...(slot.magazine ? { magazine: slot.magazine, rounds: slot.magazine } : {}),          // shots per reload (a weapon setting)
     // Extra types (Weapon Master) are an identity field: they stick on a copy as an override of its catalog entry.
     overrides: slot.extraTypes?.length ? [{ path: "system.extraTypes", value: slot.extraTypes }] : [] } });
   if (!d) throw new Error(`No catalog entry weapon.${slot.type}.${slot.weight}.${slot.material}`);

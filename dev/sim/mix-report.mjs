@@ -10,14 +10,16 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const R = await import("./roster.mjs");
 // `--v2`: the re-run with a back line, spread monster targeting and a third rotation with a Magic tank (magic-vs-martial-2), on its own.
-const V2 = process.argv.includes("--v2");
-const P = R.PASSES[V2 ? "magic-vs-martial-2" : "magic-vs-martial"];
+// `--pass <id>`: any pass of the same party (magic-vs-martial-2, balance-a, balance-b...), on its own.
+const passArg = process.argv.includes("--pass") ? process.argv[process.argv.indexOf("--pass") + 1] : null;
+const V2 = process.argv.includes("--v2") || !!passArg;
+const P = R.PASSES[passArg ?? (V2 ? "magic-vs-martial-2" : "magic-vs-martial")];
 // `--hybrid`: the hybrid rotation from the re-run (magic-vs-martial-hybrid), the rest from the first pass.
 const read = id => JSON.parse(readFileSync(join(here, "results", `${id}.json`), "utf8")).filter(r => !r.crashed);
 // `--weave`: the hybrid rotation rebuilt around Weaving (magic-vs-martial-weave).
 // `--join`: the Weaving hybrids with the woven spell's damage joining the weapon hit (the prototype, magic-vs-martial-weave-join).
 const rerun = process.argv.includes("--woven") ? "magic-vs-martial-woven" : process.argv.includes("--t5") ? "magic-vs-martial-weave5" : process.argv.includes("--join") ? "magic-vs-martial-weave-join" : process.argv.includes("--weave") ? "magic-vs-martial-weave" : process.argv.includes("--hybrid") ? "magic-vs-martial-hybrid" : null;
-const runs = V2 ? read("magic-vs-martial-2") : rerun ? [...read("magic-vs-martial").filter(r => r.rotation !== 2), ...read(rerun)] : read("magic-vs-martial");
+const runs = V2 ? read(P.id) : rerun ? [...read("magic-vs-martial").filter(r => r.rotation !== 2), ...read(rerun)] : read("magic-vs-martial");
 const MONSTER = /Goblin|Raider|Ogre/, CREATION = /Summon|Animation/;
 const pad = (v, n) => String(v).padEnd(n), num = (v, n) => String(v).padStart(n);
 

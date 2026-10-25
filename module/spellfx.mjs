@@ -3,6 +3,7 @@
  * Bolded numbers in the docs scale by Spell Power (dice counts, health, die-size changes, Force); `power` is that multiplier.
  * Tier 1: Shield, Force, Cut, Stab, Slam and the six pure Tier 1 Combos.
  */
+import { BALANCE_TEST } from "./balance-test.mjs";
 
 /** Key for a cast's Core(s): one id, or two ids sorted and joined with "+". */
 const profileKey = coreIds => [...coreIds].sort().join("+");
@@ -233,7 +234,10 @@ export function afflictNeeds(profile) {
 }
 
 /** The automated profile for these Cores, or null (the GM resolves it from the card). */
-export const profileFor = coreIds => PROFILES[profileKey(coreIds)] ?? null;
+export const profileFor = coreIds => {
+  const p = PROFILES[profileKey(coreIds)] ?? null;
+  return p && BALANCE_TEST.has("strike2d8") && p.strike && coreIds.length === 1 ? { ...p, damage: { ...p.damage, sides: 8 } } : p;
+};
 
 /**
  * The damage dice for a hit.

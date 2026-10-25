@@ -1183,3 +1183,16 @@ export const PARTY_MIX3 = PARTY_MIX.map(p => ({ ...p,
   loadouts: [p.loadouts[0], WOVEN_LOADOUTS[p.id] ?? p.loadouts[1], p.id === "bulwark" ? MAGIC_TANK : p.loadouts[0]] }));
 PASSES["magic-vs-martial-2"] = { id: "magic-vs-martial-2", party: PARTY_MIX3, monsters: MONSTERS_MIX, encounters: encountersFor(MONSTERS_MIX, 3), backLine: true, spreadTargets: true,
   note: "Magic vs Martial with a back line and spread monster targeting: (1) Martial front, Magic behind; (2) the woven hybrids; (3) as (1) with a Magic tank." };
+
+// Balance fixes under test (the hidden `balanceTest` setting, module/balance-test.mjs), on the magic-vs-martial-2 setup. Rotation 1 and 3 carry the
+// Martial Marksman (Assault), rotation 2 the Arcanomancer (Strike), rotation 3 the Magic tank.
+// (A) rule tweaks: Light Assault d12, Strike 2d8, Shrouds ×2 Durability and Limit.
+PASSES["balance-a"] = { ...PASSES["magic-vs-martial-2"], id: "balance-a", settings: { balanceTest: "assaultD12,strike2d8,shroudX2" },
+  note: "Balance test A: Light Assault d12, Strike 2d8, Shrouds ×2 (Durability and Limit)." };
+// (B) Strike is Ranged (no half stealth); the Marksman holds its Assault alone with 2 shots a reload (so Solitary fires); the Magic tank wears Heavy armor.
+const SOLO_ASSAULT = { label: "Martial", trees: T2({ [ASL]: 5, [STK]: 4 }), armor: A("light", "softLeather"), weapons: [W("assault", "light", "steel", { primary: true, magazine: 2 })] };
+const HEAVY_MAGIC_TANK = { ...MAGIC_TANK, armor: A("heavy", "steel") };
+PASSES["balance-b"] = { ...PASSES["magic-vs-martial-2"], id: "balance-b", settings: { balanceTest: "strikeRanged" },
+  party: PARTY_MIX3.map(p => p.id === "marksman" ? { ...p, loadouts: [SOLO_ASSAULT, p.loadouts[1], SOLO_ASSAULT] }
+    : p.id === "bulwark" ? { ...p, loadouts: [p.loadouts[0], p.loadouts[1], HEAVY_MAGIC_TANK] } : p),
+  note: "Balance test B: Strike Ranged; a lone Light Assault with 2 shots a reload (Solitary); the Magic tank in Heavy armor." };

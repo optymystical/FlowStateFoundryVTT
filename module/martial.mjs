@@ -2,6 +2,7 @@
  * Martial equipment tables and math, from "Flow State - Equipment" (Martial Weapons, Martial Armor).
  * Pure data + functions (no Foundry globals) so they can be unit-tested outside Foundry.
  */
+import { BALANCE_TEST } from "./balance-test.mjs";
 
 export const RARITIES = { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" };
 /** A rarity's key, however it's written ("very rare", "Very Rare" → "veryRare"); nothing is Common. */
@@ -255,7 +256,7 @@ export function weaponProfile(w, stats) {
   const type = WEAPON_TYPES[w.type];
   const weight = WEIGHTS[w.weight];
   if (!type || !weight) return { valid: false, error: "Pick a weapon type and weight." };
-  const row = type[w.weight];
+  const row = BALANCE_TEST.has("assaultD12") && w.type === "assault" && w.weight === "light" ? { ...type.light, die: 12 } : type[w.weight];
   const unarmed = w.type === "unarmed";
   const improvised = w.type === "improvised";
   const mat = unarmed || improvised ? null : WEAPON_MATERIALS[w.material];

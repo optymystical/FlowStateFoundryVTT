@@ -1,4 +1,5 @@
 import * as rules from "./rules.mjs";
+import { setBalanceTest } from "./balance-test.mjs";
 import { migrateAffixes } from "./affix-migration.mjs";
 import { FlowStateActorData, FlowStateGearData, FlowStateWeaponData, FlowStateArmorData, FlowStateFociData, FlowStateShroudData, FlowStateIconData, FlowStateAffixData, FlowStatePileData, FlowStateShopData } from "./data.mjs";
 import * as martial from "./martial.mjs";
@@ -356,6 +357,10 @@ Hooks.once("init", () => {
     // Pain Threshold divisor (hidden; the rule is 2 = half of max HP). For testing other values in the combat sim.
     game.settings.register("flowstate", "painDivisor", { scope: "world", config: false, type: Number, default: 2,
       onChange: () => { for (const a of game.actors) a.reset?.(); } });
+    // Hidden: balance variants under test in the combat sim (balance-test.mjs; "" = the rules as written). Not a rule.
+    game.settings.register("flowstate", "balanceTest", { scope: "world", config: false, type: String, default: "",
+      onChange: v => { setBalanceTest(v); for (const a of game.actors) a.reset?.(); } });
+    setBalanceTest(game.settings.get("flowstate", "balanceTest"));
     game.settings.register("flowstate", "enforceRange", {
     name: "Enforce attack range",
     hint: "Block attacks when a targeted token is beyond melee reach, throw range, or the chosen range band.",

@@ -1190,7 +1190,8 @@ function weavePlan(actor, me, w, target) {
   for (const c of known.cores) {
     const r = planSpell(ctx, opt, [c.id]);
     if (!r?.plan?.ok || r.plan.energy > budget || !Fx.profileFor([c.id])?.damage) continue;
-    const value = spellNow(r.plan, target, me);
+    // Joined damage (the prototype under test): the spell's dice add to the weapon's before the one soak, so they count in full.
+    const value = passOf().weaveJoin ? meanDice(Fx.damageDice(Fx.profileFor([c.id]), r.plan.power)) : spellNow(r.plan, target, me);
     if (value > 0 && (!best || value > best.value)) best = { ids: [c.id], value };
   }
   if (!best) { note(actor, `weave:noSpell(budget ${budget}; ${known.cores.map(c => { const r = planSpell(ctx, opt, [c.id]); return `${c.name}:${r?.plan?.ok ? r.plan.energy : r ? r.plan.errors?.[0]?.slice(0, 40) : "none"}`; }).join(",")})`); return null; }

@@ -1211,3 +1211,11 @@ for (const x of [2, 3]) PASSES[`balance-d${x}`] = { ...PASSES["balance-c"], id: 
 // (E) Shrouds ×1.5: pure Shroud (rotation 3's Shroud-only Magic tank) against pure armor (rotation 1's Martial Heavy-armor tank), no hybrids.
 PASSES["balance-e"] = { ...PASSES["balance-c"], id: "balance-e", settings: { balanceTest: "assaultD12,strike2d8,strikeRanged,shroudX1.5" },
   encounters: PASSES["balance-c"].encounters.filter(e => e.rotation !== 1), note: "Balance test E: C's fixes with Shrouds ×1.5; the Martial Heavy-armor tank vs the Shroud-only tank." };
+
+// Tank bench: the tank alone against each Magic vs Martial monster group, so every monster attacks it (8 rounds at most). Heavy armor (the Martial
+// Bulwark) against the Shroud-only Magic tank at Shrouds ×1, ×1.5 and ×2. Same fixes as pass C for everything else.
+const BENCH_TANK = (id, loadout, x) => ({ id, party: [{ ...PARTY_MIX[0], loadouts: [loadout] }], monsters: MONSTERS_MIX, encounters: encountersFor(MONSTERS_MIX, 1),
+  maxRounds: 8, backLine: true, spreadTargets: true, settings: { balanceTest: `assaultD12,strike2d8,strikeRanged${x ? `,shroudX${x}` : ""}` },
+  note: `Tank bench: ${loadout.label} tank alone against every group${x ? ` (Shrouds ×${x})` : ""}.` });
+PASSES["tank-armor"] = BENCH_TANK("tank-armor", PARTY_MIX[0].loadouts[0], null);
+for (const [id, x] of [["tank-shroud1", 1], ["tank-shroud15", 1.5], ["tank-shroud2", 2]]) PASSES[id] = BENCH_TANK(id, SHROUD_TANK, x);

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.80.4:** A test hook for the combat sim: a woven spell's damage can be queued to join the next weapon hit (a prototype under test; nothing in play uses it).
+
 **0.80.3:** Removed the hidden Venomancy test setting (Poison stays as written).
 
 **0.80.2:** Summons are fully Magical (made of Spirit): Arcane damage isn't Weakened against them and Strike has Advantage. Animations stay non-Magical. Neither is a living target: Restore, Cut's living die and Mental's living-target checks skip both (they used to treat any non-Magical creature as living).

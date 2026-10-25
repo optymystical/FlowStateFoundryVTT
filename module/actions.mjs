@@ -939,6 +939,9 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   // Whirlwind (Bladed T1): the set of Fast attacks become Area attacks on targets in melee range (not Weakened).
   const whirl = followup ? (followup.whirlwind || "") : (opts.whirlwind || "");
   let damage = p.formula;
+  // Prototype under test in the combat sim (not a rule): a woven spell's damage dice join this attack's damage, one roll and one soak.
+  const woven = followup ? null : takeWovenDamage(actor);
+  if (woven) { damage = damage && damage !== "0" ? `${damage} + ${woven.formula}` : woven.formula; notes.push(`Woven ${woven.label}: ${woven.formula} joins the hit`); }
   // Cleave (Equipment): object-only damage, carried separately from the rolled dice.
   let cleave = p.cleave ?? 0;
   if (whirl) {
@@ -4051,6 +4054,10 @@ export const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.ha
 
 /** Weaving (Magic Theory T3): casting.mjs registers this so the weapon attack dialog can offer a spell. */
 let weaveHook = null;
+/** Prototype under test in the combat sim (not a rule): queue a woven spell's damage dice to join this creature's next weapon attack. */
+const wovenQueue = new Map();
+export const queueWovenDamage = (actor, woven) => wovenQueue.set(actor.uuid, woven);
+const takeWovenDamage = actor => { const w = wovenQueue.get(actor.uuid) ?? null; wovenQueue.delete(actor.uuid); return w; };
 export const setWeaveHook = hook => { weaveHook = hook; };
 
 /** Update or delete an Active Effect that may belong to someone else (through the GM). */

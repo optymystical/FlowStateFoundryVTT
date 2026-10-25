@@ -1144,3 +1144,7 @@ export const PARTY_MIX_WEAVE = PARTY_MIX.map(p => (WEAVE_LOADOUTS[p.id] ? { ...p
 PASSES["magic-vs-martial-weave"] = { ...PASSES["magic-vs-martial"], id: "magic-vs-martial-weave", party: PARTY_MIX_WEAVE,
   note: "Magic vs Martial, the hybrid rotation with the hybrids rebuilt around Weaving (Magic Theory T3).",
   encounters: PASSES["magic-vs-martial"].encounters.filter(e => e.rotation === 1) };
+
+// Prototype under test: the woven spell's damage joins the weapon hit (one attack roll, one soak; the weapon's damage type; the spell's riders left out).
+PASSES["magic-vs-martial-weave-join"] = { ...PASSES["magic-vs-martial-weave"], id: "magic-vs-martial-weave-join", weaveJoin: true,
+  note: "Magic vs Martial, the Weaving hybrids, with the woven spell's damage joining the weapon hit (prototype)." };

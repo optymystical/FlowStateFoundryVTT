@@ -343,6 +343,18 @@ async function attack(actor, me, plan, target, extra = {}) {
   const attackFill = { mode: extra.mode ?? (plan.ranged ? (extra.far ? "r2" : "r1") : "strike"), pepper: extra.pepper ?? 0, area: !!extra.area,
     grapple: !!extra.grapple, weight: extra.weight ?? undefined, ...opts, ...(extra.followup ? followupOptions(actor, plan.item, target) : {}), ...(extra.extraFill ?? {}) };
   SIM.fill = () => attackFill;
+  // The joined-damage prototype (a pass with `weaveJoin`): the woven spell's Energy is paid now and its dice join the weapon's damage roll.
+  let joined = false;
+  if (extra.weave && passOf().weaveJoin) {
+    const { ctx } = Cast.castSummary(actor, extra.weave.weave);
+    const plan = Sp.planCast(ctx, extra.weave.values);
+    const dice = plan.ok ? Fx.damageDice(Fx.profileFor(plan.cores.map(c => c.id)), plan.power) : null;
+    if (dice && await Act.spendEnergy(actor, plan.energy, "woven spell")) {
+      Act.queueWovenDamage(actor, { formula: `${dice.n}d${dice.sides}`, label: extra.weave.name });
+      joined = true;
+      note(actor, `weave:${extra.weave.name}`); const s = stat(actor); s.weaves = (s.weaves ?? 0) + 1;
+    } else note(actor, "weave:refused");
+  }
   SIM.acting = actor.name;
   try { await Act.rollWeaponAttack(actor, plan.item, extra.followup ?? null); } catch (err) { log.errors.push(`attack ${actor.name}: ${err.stack?.slice(0, 400)}`); }
   const msg = await waitFor(() => game.messages.contents.find(m => !before.has(m.id) && m.getFlag("flowstate", "attack")?.attacker === actor.uuid), 3000);
@@ -353,7 +365,7 @@ async function attack(actor, me, plan, target, extra = {}) {
   F.uses[plan.item.id] = (F.uses[plan.item.id] ?? 0) + 1;
   await settle();
   // Weaving: the spell goes off alongside the attack through the same entry point the attack dialog's Weave box uses (no AP, no TR, at the attack's target).
-  if (extra.weave && !down(actor) && !down(target.actor)) {
+  if (extra.weave && !joined && !passOf().weaveJoin && !down(actor) && !down(target.actor)) {
     setTargets(target);
     SIM.fill = title => (/: shape$/.test(title) ? { shape: "radius" } : {});
     try {

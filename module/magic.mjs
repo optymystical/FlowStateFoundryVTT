@@ -40,18 +40,18 @@ export const FOCI_TYPES = {
 
 const sh = (label, dur, limit, free, plus, effect = "", extra = {}) => ({ label, dur, limit, free, plus, effect, ...extra });
 export const SHROUD_TYPES = {
-  bastion: sh("Bastion", 50, 10, 1, false),
-  keystone: sh("Keystone", 60, 12, 0, true, "While attuned, select one Defensive Affix, its effects are doubled (this can be changed by attuning again)."),
-  cinder: sh("Cinder", 80, 5, 0, false, "The Limit of this Shroud is three times as high against damage types you have already taken since the start of your turn."),
-  cistern: sh("Cistern", 60, 5, 0, false, "The Limit of this Shroud is three times as high while you are at full Energy, two times as high if you are instead above half Energy, and normal if you are at or below half Energy. Recovery scales with this varying limit."),
-  ember: sh("Ember", 60, 5, 0, false, "The Limit of this Shroud is three times as high while you are at or below half of your max HP, two times as high if you are instead above half of your max HP, and normal if you are at full HP. Recovery scales with this varying limit."),
-  bulwark: sh("Bulwark", 3, 12, -1, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
-  lattice: sh("Lattice", 6, 6, -1, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
-  mantle: sh("Mantle", 30, 8, 0, false, "Instead of blocking damage as normal, this Shroud must be activated with 2 RP to be placed on a target within 100ft (no attack roll, only one application at a time, can target yourself). Durability restores to full on usage, effect lasts until the start of your next turn or until reactivated.", { placed: "mantle" }),
-  bond: sh("Bond", 80, 8, 0, false, "This Shroud applies to both you and a single other target within 100ft you may declare for 3 RP at any time. Doing so refreshes the durability of this Shroud. This effect goes away if the target goes more than 1000ft away from you, or the Shroud's durability reaches 0.", { placed: "bond" }),
-  carapace: sh("Carapace", 50, 5, 0, false, "Every time this Shroud takes damage, its Limit increases by what it is at a baseline post scaling. Resets at the start of your turn (before recovery)."),
-  rebuke: sh("Rebuke", 40, 8, 0, false, "When this Shroud takes damage from a source within 100ft, you can spend 1 RP to make a ranged attack roll against that target, dealing the damage that the Shroud took back at them on hit."),
-  retort: sh("Retort", 40, 8, 0, false, "While you are melded with this Shroud, if you would take damage from an attack that this Shroud can block, you may spend 1 RP to give that attack's damage a stack of Weakened.")
+  bastion: sh("Bastion", 100, 20, 1, false),
+  keystone: sh("Keystone", 120, 24, 0, true, "While attuned, select one Defensive Affix, its effects are doubled (this can be changed by attuning again)."),
+  cinder: sh("Cinder", 160, 10, 0, false, "The Limit of this Shroud is three times as high against damage types you have already taken since the start of your turn."),
+  cistern: sh("Cistern", 120, 10, 0, false, "The Limit of this Shroud is three times as high while you are at full Energy, two times as high if you are instead above half Energy, and normal if you are at or below half Energy. Recovery scales with this varying limit."),
+  ember: sh("Ember", 120, 10, 0, false, "The Limit of this Shroud is three times as high while you are at or below half of your max HP, two times as high if you are instead above half of your max HP, and normal if you are at full HP. Recovery scales with this varying limit."),
+  bulwark: sh("Bulwark", 3, 24, -1, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
+  lattice: sh("Lattice", 6, 12, -1, false, "The Durability of this Shroud does not scale, and fully restores at the start of your turn. Does not block damage as normal, instead any damage up to but not exceeding the Limit removes 1 durability instead and gets fully negated.", { fixedDur: true, negator: true }),
+  mantle: sh("Mantle", 60, 16, 0, false, "Instead of blocking damage as normal, this Shroud must be activated with 2 RP to be placed on a target within 100ft (no attack roll, only one application at a time, can target yourself). Durability restores to full on usage, effect lasts until the start of your next turn or until reactivated.", { placed: "mantle" }),
+  bond: sh("Bond", 160, 16, 0, false, "This Shroud applies to both you and a single other target within 100ft you may declare for 3 RP at any time. Doing so refreshes the durability of this Shroud. This effect goes away if the target goes more than 1000ft away from you, or the Shroud's durability reaches 0.", { placed: "bond" }),
+  carapace: sh("Carapace", 100, 10, 0, false, "Every time this Shroud takes damage, its Limit increases by what it is at a baseline post scaling. Resets at the start of your turn (before recovery)."),
+  rebuke: sh("Rebuke", 80, 16, 0, false, "When this Shroud takes damage from a source within 100ft, you can spend 1 RP to make a ranged attack roll against that target, dealing the damage that the Shroud took back at them on hit."),
+  retort: sh("Retort", 80, 16, 0, false, "While you are melded with this Shroud, if you would take damage from an attack that this Shroud can block, you may spend 1 RP to give that attack's damage a stack of Weakened.")
 };
 
 const af = (label, rarity, foci, shroud) => ({ label, rarity, foci, shroud });
@@ -181,10 +181,9 @@ export function shroudProfile(sys, build = 0) {
     label: t.label,
     grade, mult, natural,
     scaling: natural ? Math.max(0, build) : cappedStat(build, grade),
-    // Twice the listed Durability and Limit per 10 Build (Equipment doc); a fixed Durability doesn't scale.
-    durability: t.fixedDur ? t.dur : t.dur * mult * 2,
-    baseLimit: t.limit * mult * 2,
-    limit: t.limit * mult * 2,
+    durability: t.fixedDur ? t.dur : t.dur * mult,
+    baseLimit: t.limit * mult,
+    limit: t.limit * mult,
     freeAffixes: t.free, doubles: !!t.plus, doubled, affixes,
     negator: !!t.negator, placed: t.placed ?? null, fixedDur: !!t.fixedDur, noRegen: !!t.noRegen,
     effect: t.effect

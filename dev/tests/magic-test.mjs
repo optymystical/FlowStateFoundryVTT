@@ -49,14 +49,14 @@ ok2(p.valid && p.durability === 90 && p.limit === 18 && p.scalingStat === "grasp
 p = M.fociProfile({ fociType: "band", grade: 2 }, { reach: 12, grasp: 30 });
 ok2(p.scalingStat === "reach" && p.scaling === 12 && p.doubles && p.tr === null, "Band: Multi uses the lesser stat, 1+ Affix");
 p = M.shroudProfile({ shroudType: "bastion", grade: 3, affixes: [] }, 25);
-ok2(p.durability === 200 && p.limit === 40 && p.mult === 2, "Bastion: twice its listed numbers ×floor(Build/10), Grade-capped");
+ok2(p.durability === 200 && p.limit === 40 && p.mult === 2, "Bastion: ×floor(Build/10) Grade-capped");
 p = M.shroudProfile({ shroudType: "bulwark", grade: 5 }, 50);
-ok2(p.durability === 3 && p.limit === 120 && p.negator, "Aegis: fixed Durability, scaling Limit (twice its listed Limit)");
+ok2(p.durability === 3 && p.limit === 120 && p.negator, "Aegis: fixed Durability, scaling Limit");
 
 console.log("== Shroud soaks before armor");
 const hero = mkActor("Mage", {}, {});   // Build 10 + bonus
 const b = hero.system.derived.effective.build.value;
-const mult = 2 * Math.max(1, Math.floor(Math.min(b, 30) / 10));        // Shrouds: twice the listed numbers per 10 Build
+const mult = 2 * Math.max(1, Math.floor(Math.min(b, 30) / 10));        // the Bastion's listed Limit is 20: 10 × this
 const sh = mkShroud(hero, "Veil", { shroudType: "bastion", grade: 3 });
 ok2(hero.system.shroud === sh && sh.system.profile.limit === 10 * mult, `melded Shroud found (Limit ${sh.system.profile.limit})`);
 let out = await actions.damageOutcome(hero, 25, "physical", {});

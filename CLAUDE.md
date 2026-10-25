@@ -127,7 +127,7 @@ Mental is in progress (built from the Mental Rework Test Ground): the framework 
   gets the other fist's Fast follow-up; a Heavy grapple offers only Solitary. Each Unarmed grapple occupies a fist.
 - Forced re-rolls (Dash, Shift, Close Quarters, Distracting Fire) keep the lower result. Speedy (Unarmored T3) applies
   Dash's Disadvantage automatically. Dash reaction costs Energy only; the move after costs 1 RP.
-- Shroud scaling: twice the listed base × floor(Build capped at Grade×10 ÷ 10), min ×1 (Equipment doc, after the Magic vs Martial tank bench); Foci: base × Grade. Shroud soaks before armor.
+- Shroud scaling: base × floor(Build capped at Grade×10 ÷ 10), min ×1 (the table's Durability and Limit were doubled after the Magic vs Martial tank bench); Foci: base × Grade. Shroud soaks before armor.
   Affixes are items of their own (type `affix`: key + Offensive/Defensive form + attuned). Offensive ones work through the attuned Foci and Raw Casting, Defensive ones through the Shroud; the actor feeds them into the Foci/Shroud profiles (`attunedAffixKeys` in `magic.mjs`), so effect code still reads `profile.affixes`. Attuning takes an hour (not in combat).
 - Ammo: X shots per reload (weapon setting, default 1; a Light Assault 2, and it rolls d12s) using X ammo; 1 shot per attack; max 100 per type.
 - The starting rarity limit covers materials, Affixes, Icon Forms and named items alike.

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.83.1:** Shrouds: the Equipment doc's table now lists the doubled Durability and Limit (Bastion 100 / 20...), and the scaling is back to the usual base × Build ÷ 10. Same numbers in play.
+
 **0.83.0:** Magic vs Martial balance (Equipment and Magic docs):
 - **Light Assault:** rolls d12s and reloads every 2 shots.
 - **Strike:** 2d8 arcane, and Ranged instead of Targeted.

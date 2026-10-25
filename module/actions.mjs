@@ -1464,9 +1464,9 @@ export const GM_ACTIONS = {
     const actor = await fromUuid(target);
     if (actor) await flightForceHook?.(actor, reason);
   },
-  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, reply }) {
+  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, arcaneWeak, reply }) {
     const actor = await fromUuid(target);
-    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent }) : null;
+    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, arcaneWeak }) : null;
     if (reply) game.socket.emit("system.flowstate", { action: "damageResult", to: reply.to, reqId: reply.reqId, result: summarizeDamage(out) });
     return out;
   },
@@ -5326,7 +5326,12 @@ function targetStacks(attacker, o, target, result, extra = 0, ctx = {}) {
   }
   if (o.physical && d.size.physical) { stacks += d.size.physical; parts.push(`${signed(d.size.physical)} size`); }
   if (o.vsSupernatural && t.supernatural) { stacks += o.vsSupernatural; parts.push(`+${o.vsSupernatural} vs supernatural`); }
-  if (type === "arcane" && !t.magical) { stacks -= 1; parts.push("−1 Arcane vs non-magical"); }
+  let arcaneWeak = false;
+  if (type === "arcane" && !t.magical) {
+    // Applied after its Shields and Shroud (they're fully magical) when the caller can (`deferArcane`); otherwise to the whole hit.
+    if (ctx.deferArcane) { arcaneWeak = true; parts.push("−1 Arcane vs non-magical (on what gets past its Shield and Shroud)"); }
+    else { stacks -= 1; parts.push("−1 Arcane vs non-magical"); }
+  }
   // Slip Off (Balanced T1) and Harden (Heavy T4 / Titanic T3) Weaken attacks against an active Parry/Brace.
   for (const w of ctx.weaken ?? []) { stacks -= 1; parts.push(`−1 ${w}`); }
   if (ctx.distracted) { stacks -= 1; parts.push("−1 Distracting Fire"); }
@@ -5344,7 +5349,7 @@ function targetStacks(attacker, o, target, result, extra = 0, ctx = {}) {
   }
   // Dragon Lash (Brawling T3): Strengthened, doubled against a prone target.
   if (o.dragonLash) { const d = target.statuses?.has("prone") ? 2 : 1; stacks += d; parts.push(`+${d} Dragon Lash${d === 2 ? " (prone)" : ""}`); }
-  return { stacks, parts, type };
+  return { stacks, parts, type, arcaneWeak };
 }
 
 /** Attacker clicks Roll Damage on the defense card. */
@@ -5387,7 +5392,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (!base) return;
   // Cook (Heat T5): extra d4s for the heat damage you've already dealt them this turn.
   if (spellPlan?.extraDice) { const r = await evaluate(`${spellPlan.extraDice.n}d${spellPlan.extraDice.sides}`); base.rolls.push(r); base.totals.push(r.total); }
-  let { stacks, parts, type } = targetStacks(attacker, o, target, defense.result, (opts.extra ?? 0) + (spellPlan?.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0), ctx);
+  let { stacks, parts, type, arcaneWeak } = targetStacks(attacker, o, target, defense.result, (opts.extra ?? 0) + (spellPlan?.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0), { ...ctx, deferArcane: true });
   // Discharge (Radiation T5): trade two Strengthened stacks for Advantage on your next attack before your next turn.
   let dischargeHTML = "";
   if (o.spell?.mods?.discharge && stacks >= 2 && (attacker.isOwner || mentalHook?.askFor)) {
@@ -5418,9 +5423,9 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
         shroudCtx: { source: sourceOf(wo), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), barriers: barriersFor(attacker, target) } });
       const wplan = fx.damageDice(wprofile, wo.spell.power, wfacts, wo.spell.mods ?? {});
       const wroll = await evaluate(`${wplan.n}d${wplan.sides}`);
-      const ws = targetStacks(attacker, wo, target, defense.result, (opts.extra ?? 0) + (wplan.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0), ctx);
+      const ws = targetStacks(attacker, wo, target, defense.result, (opts.extra ?? 0) + (wplan.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0), { ...ctx, deferArcane: true });
       const wflat = wo.spell?.mods?.rend ? statMin(wo.spell.scaling ?? 0) : 0;
-      wv = { o: wo, profile: wprofile, facts: wfacts, plan: wplan, roll: wroll, stacks: ws.stacks, parts: ws.parts, type: ws.type, final: Math.max(0, applyStacks(wroll.total + wflat, ws.stacks)),
+      wv = { o: wo, profile: wprofile, facts: wfacts, plan: wplan, roll: wroll, stacks: ws.stacks, arcaneWeak: ws.arcaneWeak, parts: ws.parts, type: ws.type, final: Math.max(0, applyStacks(wroll.total + wflat, ws.stacks)),
         pierce: (wo.spell.pierceBold != null ? applyStacks(wo.spell.pierceBold, ws.stacks) + (wo.spell.pierceFlat ?? 0) : wo.pierce ?? 0), bash: applyStacks(wo.bash || 0, ws.stacks) };
       wv.incoming = wv.final;
     }
@@ -5555,14 +5560,16 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   // Mental (Earth): Reinforce / Bedrock are asked once, before the outcome, so the card shows what really happens.
   const accretion = mentalHook?.accretionAsk && incoming > 0 ? await mentalHook.accretionAsk(target, incoming, type, !!o.spell) : null;
   // The outcome (soak, HP lost) goes on this card; the owner (or GM) applies it without a separate card.
-  const dmgOpts = { pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: bashNow, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
+  // Arcane vs a non-magical creature: its Weakened stack comes off only what gets past its Shields and Shroud (see damageOutcome).
+  const arcaneRatio = (n, deferred) => (deferred ? stackMultiplier(n - 1) / stackMultiplier(n) : 0);
+  const dmgOpts = { arcaneWeak: arcaneRatio(stacks, arcaneWeak), pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: bashNow, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
     shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
       barriers: barriersFor(attacker, target), ...(accretion ? { accretion } : {}) }, mentalDone: true };
   // Limits apply to each instance on its own.
   let outcome, wOutcome = null, wDmgOpts = null, firstSpent = null, wovenFirst = false;
   if (wv) {
     // A woven hit is one instance with two parts: each object's Limit (and Durability) is shared, spent first on the part the armor blocks best.
-    wDmgOpts = { ...dmgOpts, pierce: wv.pierce, bash: wv.bash, halfLimit: !!wv.o.spell?.mods?.weakpoint, maxHpLoss: !!wv.o.spell?.mods?.chop, archetype: "magic",
+    wDmgOpts = { ...dmgOpts, arcaneWeak: arcaneRatio(wv.stacks, wv.arcaneWeak), pierce: wv.pierce, bash: wv.bash, halfLimit: !!wv.o.spell?.mods?.weakpoint, maxHpLoss: !!wv.o.spell?.mods?.chop, archetype: "magic",
       rend: wv.o.spell?.mods?.melt ? { stacks: 1 } : null, cleave: 0, cleaveToCreature: false };
     const armorProfile = target.system.armor?.system?.profile;
     // (A Bash on the attack goes with the weapon's part, first, so what it breaks through lets the woven part through as well.)
@@ -5577,11 +5584,13 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   // Spell riders that need the damage to have got through to HP (direct damage): Force, attack-die penalties.
   let spellHTML = "", spellRolls = [], chainFlag = null;
   if (profile) {
-    const sr = await spellRiders({ attacker, target, o, profile, outcome, defense, baseTotal: applyStacks(base.totals.reduce((a, b) => a + b, 0), stacks), dealt: Math.min(line.final, incoming), type, stacks, facts: spellFacts ?? {}, dmgOpts });
+    const rs = stacks - (arcaneWeak ? 1 : 0);                                  // riders go by what the creature takes: Arcane's Weakened included
+    const sr = await spellRiders({ attacker, target, o, profile, outcome, defense, baseTotal: applyStacks(base.totals.reduce((a, b) => a + b, 0), rs), dealt: Math.min(line.final, incoming), type, stacks: rs, facts: spellFacts ?? {}, dmgOpts });
     spellHTML += sr.html; spellRolls.push(...sr.rolls); if (sr.kb) kb = sr.kb; chainFlag = sr.chain;
   }
   if (wv) {
-    const sr = await spellRiders({ attacker, target, o: wv.o, profile: wv.profile, outcome: wOutcome, defense, baseTotal: applyStacks(wv.roll.total, wv.stacks), dealt: wv.incoming, type: wv.type, stacks: wv.stacks, facts: wv.facts ?? {}, dmgOpts: wDmgOpts });
+    const wrs = wv.stacks - (wv.arcaneWeak ? 1 : 0);
+    const sr = await spellRiders({ attacker, target, o: wv.o, profile: wv.profile, outcome: wOutcome, defense, baseTotal: applyStacks(wv.roll.total, wrs), dealt: wv.incoming, type: wv.type, stacks: wrs, facts: wv.facts ?? {}, dmgOpts: wDmgOpts });
     spellHTML += sr.html; spellRolls.push(...sr.rolls); if (sr.kb && !kb) kb = sr.kb; chainFlag ??= sr.chain;
   }
   // Balanced T4 Deflect: a Parry with a Balanced weapon that took all of the damage.
@@ -5726,8 +5735,8 @@ export async function reachFinisher(damageMessage, kind) {
  * { toHp, armorLoss, reduced } (waits for the GM; for effects that go by the damage dealt, after anything that negated or reduced it).
  */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
-  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null, wantResult = false } = {}) {
-  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent };
+  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null, arcaneWeak = 0, wantResult = false } = {}) {
+  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, arcaneWeak };
   if (target.isOwner) return applyDamage(target, amount, type, o);
   const payload = { target: target.uuid, amount, type, ...o };
   return wantResult ? askGMDamage(payload) : requestGM("applyDamage", payload);
@@ -5841,7 +5850,7 @@ async function loadWeapon(actor, item) {
  * Every client has the data, so the rolling client can show the result on its damage card while the owner applies it.
  */
 export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, archetype = "martial", ignoreArmor = false, limitSpent = null } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, archetype = "martial", ignoreArmor = false, limitSpent = null, arcaneWeak = 0 } = {}) {
   const magic = archetype === "magic";                    // spell damage is Magical as well as its own type
   if (bypass) {
     const lines = [], tempHp = [];
@@ -5991,6 +6000,9 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     if (r.update) shrouds.push({ item: sh, loss: r.loss, absorbed: r.absorbed, update: r.update });
   }
   absorbWith("afterShroud");
+  // Arcane against a creature that isn't fully Magical: its Shields and Shroud are fully magical and took the hit at full strength; what gets past them
+  // is Weakened (`arcaneWeak`: the ratio between the hit's stacks with and without that Weakened stack).
+  if (arcaneWeak > 0 && arcaneWeak < 1 && remaining > 0) { const was = remaining; remaining = Math.floor(remaining * arcaneWeak); lines.push(`Arcane vs non-magical: what gets past its Shield and Shroud is Weakened (${was} → ${remaining})`); }
   let armor = ignoreArmor ? null : actor.system.armor;                       // (Venomancy Combos ignore armor, but not Shrouds)
   // Chunky (Titanic Armor T5): Pierce affects worn Titanic armor half as much.
   const armorPierce = armor?.system.weight === "titanic" && ab.titanic(actor, 5) ? Math.floor(pierce / 2) : pierce;
@@ -6027,7 +6039,7 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
  * @param {boolean} silent  don't post a card (the caller already shows the outcome on its own card)
  */
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null, arcaneWeak = 0 } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
   // Reactive: a Summon or Animation of a caster with the Mod gets a Weakened stack on each instance (1 RP).
   let reduced = 0;                                                            // everything that took damage off before it reached the soak (Reactive, Wonders, Wards)
@@ -6061,7 +6073,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   // Mental (Earth): Reinforce / Bedrock for an Accretion this damage is about to strike (asked here unless the attack's damage card already did).
   if (mentalHook?.accretionAsk && amount > 0 && !bypass && !shroudCtx?.accretion) shroudCtx = { ...(shroudCtx ?? {}), accretion: await mentalHook.accretionAsk(actor, amount, type, archetype === "magic") };
   // A woven hit's second part: the Limit the first part used (counted before any of it was applied). Its Durability is already worn, so only the Limit carries over.
-  const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor,
+  const out = await damageOutcome(actor, amount, type, { pierce, parryItem, parryItems, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, archetype, ignoreArmor, arcaneWeak,
     limitSpent: limitSpent ? { limit: { ...(limitSpent.limit ?? {}) }, dur: {}, bashed: limitSpent.bashed ?? null } : null });
   // Accretions lose the Durability they absorbed (and crumble at 0).
   for (const { effect, hp } of out.accretions ?? []) await mentalHook?.accretionWorn?.(effect, hp);

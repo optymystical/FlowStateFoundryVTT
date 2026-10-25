@@ -71,6 +71,9 @@ ok2(out.toHp === 25 - 10 * mult, "Supernatural is blocked by a Shroud (Rules: Sh
   delete hero.system.trees["magic-build-arcana"]; }
 out = await actions.damageOutcome(hero, 25, "arcane", {});
 ok2(out.toHp === 25 - 10 * mult, "Arcane (Magical) is blocked");
+// Arcane on a creature that isn't fully Magical: the Shroud (fully magical) takes it at full strength; what gets past it is Weakened.
+out = await actions.damageOutcome(hero, 10 * mult + 30, "arcane", { archetype: "magic", arcaneWeak: 0.5 });
+ok2(out.toHp === 15 && out.shrouds[0].absorbed === 10 * mult, `Arcane: the Shroud takes its full Limit (${out.shrouds[0]?.absorbed}), the 30 past it is Weakened to ${out.toHp}`);
 // Weaving: a woven hit's two parts share one Limit (spent first on the weapon's part here), and the Shroud's Durability with it.
 const spentL = { limit: {}, dur: {} };
 const part1 = await actions.damageOutcome(hero, 6, "physical", { limitSpent: spentL });

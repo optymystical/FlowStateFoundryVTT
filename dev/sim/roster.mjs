@@ -1148,3 +1148,17 @@ PASSES["magic-vs-martial-weave"] = { ...PASSES["magic-vs-martial"], id: "magic-v
 // Prototype under test: the woven spell's damage joins the weapon hit (one attack roll, one soak; the weapon's damage type; the spell's riders left out).
 PASSES["magic-vs-martial-weave-join"] = { ...PASSES["magic-vs-martial-weave"], id: "magic-vs-martial-weave-join", weaveJoin: true,
   note: "Magic vs Martial, the Weaving hybrids, with the woven spell's damage joining the weapon hit (prototype)." };
+
+// The Weaving hybrids at Magic Theory T5 (Webmaster: woven spells get Threshold Reduction, so they cost less Energy), with the joined-damage
+// prototype. Magic Theory T5 is 15 SP, so the Martial side and the damage school are smaller.
+const WEAVE5_LOADOUTS = {
+  bulwark: { label: "Hybrid", stats: { con: 40, str: 30, reach: 20 }, trees: MIX(2, 5, { [HVY]: 4, [PRO]: 1, [CRU]: 1 }), armor: A("heavy", "steel"),
+    weapons: [W("defender", "heavy", "steel", { primary: true })], foci: FO("orb"), shroud: FO("bastion") },
+  duelist: { label: "Hybrid", stats: { dex: 30, grasp: 30, con: 30 }, trees: MIX(1, 5, { [BLA]: 4, [HEA]: 2 }), armor: A("medium", "hardLeather"),
+    weapons: [W("bladed", "light", "steel", { primary: true })], foci: FO("wand"), shroud: FO("cinder") },
+  breaker: { label: "Hybrid", stats: { str: 35, reach: 25, con: 30 }, trees: MIX(2, 5, { [WEI]: 4, [CRU]: 1 }), armor: A("medium", "hide"),
+    weapons: [W("weighted", "heavy", "iron", { primary: true })], foci: FO("orb"), shroud: FO("bastion") }
+};
+PASSES["magic-vs-martial-weave5"] = { ...PASSES["magic-vs-martial-weave-join"], id: "magic-vs-martial-weave5",
+  party: PARTY_MIX.map(p => (WEAVE5_LOADOUTS[p.id] ? { ...p, loadouts: [p.loadouts[0], WEAVE5_LOADOUTS[p.id]] } : p)),
+  note: "Magic vs Martial, the hybrids at Magic Theory T5 (Webmaster) with the joined-damage prototype." };

@@ -624,6 +624,19 @@ async function answerCard() {
     }
     const doc = buttonsIn(msg);
     const once = (what, fn) => { const k = `${msg.id}|${what}`; if (handled.has(k)) return null; handled.add(k); return fn; };
+    // Mental ability buttons worth pressing whenever they're offered: Vice (damage on a failed escape), Quicksand (the escape fails), Momentum (Force again).
+    const macts = msg.getFlag("flowstate", "mentalAct")?.acts ?? [];
+    const mi = macts.findIndex((x, i) => ["vice", "quicksand", "momentumNow"].includes(x.id) && !handled.has(`${msg.id}|mact${i}`));
+    if (mi >= 0) {
+      handled.add(`${msg.id}|mact${mi}`);
+      const who = fromUuidSync(macts[mi].caster);
+      if (who && sim(who).id && !down(who)) {
+        SIM.acting = who.name;
+        note(who, `act:${macts[mi].id}`);
+        try { await Act.mentalAct(msg, mi); } catch (err) { log.errors.push(`mental act ${who.name}: ${err.stack?.slice(0, 300)}`); }
+        return true;
+      }
+    }
     // Riposte: take it (Perfect when it's offered and affordable) if the RP is there, else pass so the attacker's follow-ups can go.
     const rip = [...doc.querySelectorAll(".fs-riposte")];
     if (rip.length || doc.querySelector(".fs-no-riposte")) {
@@ -791,7 +804,8 @@ async function pushBack(card) {
   if (!attacker || !target || !me || !tt || down(attacker)) return;
   const role = sim(attacker).role;
   const other = foesOf(me.parent, me).filter(f => f.id !== tt.id && dist(f, tt) <= info.feet).sort((a, b) => dist(a, tt) - dist(b, tt))[0];
-  const dir = other ? "into" : down(target) ? "away" : ["ranged", "support"].includes(role) ? "away" : "down";
+  // Beyond's Force (Herald, Gust, Momentum) always goes straight down: the ground stops it, so all of it is Force damage (and prone at their height).
+  const dir = info.beyond ? "down" : other ? "into" : down(target) ? "away" : ["ranged", "support"].includes(role) ? "away" : "down";
   setTargets(other ?? null);
   const before = new Set(game.messages.keys());
   SIM.acting = attacker.name;
@@ -1837,7 +1851,9 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     if (P.cardLog) {
       const party = new Set(Object.values(F.actors).filter(a => a.side === "party").map(a => a.name));
       const plain = m => m.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-      result.cards = msgs.filter(m => m.getFlag("flowstate", "damage")).map(plain).filter(t => [...party].some(n => t.includes(`Damage to ${n}`))).slice(0, 300);
+      // ("all": every card that hurt anyone, Mental results and Force included, for a damage breakdown by source.)
+      result.cards = P.cardLog === "all" ? msgs.map(plain).filter(t => /damage to HP|Supernatural damage|Force damage|takes \d+/.test(t)).slice(0, 1500)
+        : msgs.filter(m => m.getFlag("flowstate", "damage")).map(plain).filter(t => [...party].some(n => t.includes(`Damage to ${n}`))).slice(0, 300);
       result.casts = msgs.filter(m => /casts/.test(m.content) && [...party].some(n => m.content.includes(n))).map(plain).map(t => t.slice(0, 300)).slice(0, 120);
     }
     SIM.results.push(result);

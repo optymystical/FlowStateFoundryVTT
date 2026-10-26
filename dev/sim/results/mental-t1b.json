@@ -1,0 +1,1874 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 870,
+  "winner": "unfinished",
+  "pass": "mental-t1b",
+  "rounds": 21,
+  "partyLeft": 5,
+  "monstersLeft": 7,
+  "followups": 0,
+  "knockbacks": {
+   "down": 24
+  },
+  "used": {
+   "manifest:Sink": 119,
+   "defend:dodge": 624,
+   "manifest:Wither": 173,
+   "manifest:Herald": 20,
+   "manifest:Decree": 40,
+   "manifest:Burden": 20,
+   "charge:Sim Herald": 17,
+   "opt:replace=QxThytdmUUEoiIXN": 1,
+   "manifest:Fracture": 94,
+   "manifest:Bloom": 40,
+   "manifest:Flourish": 20,
+   "ward": 40,
+   "manifest:Wither+": 20,
+   "manifest:Waste": 20,
+   "breakFree": 12,
+   "Break Free": 12,
+   "act:quicksand": 2,
+   "charge:Sim Binder": 14,
+   "opt:replace=67DffZ5CUJ8w4OSl": 1,
+   "charge:Sim Goblin Witherer": 21,
+   "opt:replace=wr2dmeuNxBrWJtmC": 1,
+   "opt:dir=down": 24,
+   "act:momentumNow": 24,
+   "opt:replace=AkJ4stxfBQ14pKeG": 1,
+   "opt:replace=MNYkXpILl1T7q4Nd": 1,
+   "charge:Sim Warden": 16,
+   "opt:replace=40Q0G6RjaERL57QU": 1,
+   "opt:replace=h3DeMqW2FtzyCrG9": 1,
+   "opt:replace=wQjf27GkL6n7Yb6q": 1,
+   "act:vice": 10,
+   "opt:replace=VOEagD9OLwN3jssk": 1,
+   "opt:replace=u3RISIikMwL0OLn4": 1,
+   "opt:replace=qA2oaIMIojhSXMBp": 1,
+   "opt:replace=sZck3Jv2r9uUnazF": 1,
+   "manifest:Renewal": 16,
+   "opt:replace=fok0yJe9izDDmUcu": 1,
+   "opt:replace=JEWuG3gMxEnKs4lB": 1,
+   "recoverEnergy": 4,
+   "opt:replace=5Na7EAknC266hCK7": 1,
+   "opt:replace=6tibIr9mEGpxcCYl": 1,
+   "opt:replace=nhd9IHTGSHfAKJXp": 1,
+   "opt:replace=in5zHyzjhViP5f5C": 1,
+   "opt:replace=2ZM8teXIaIK7Ttx1": 1,
+   "opt:replace=Adk83RmnMsDeXz5N": 1,
+   "opt:replace=CG4FwQjXXQSmUf2R": 1,
+   "opt:replace=ZT9Bc3MahA8Ce38r": 1,
+   "opt:replace=rrzM8PLsio7D5Ngg": 1,
+   "opt:replace=SyOc2ClpMRVXfKEd": 1,
+   "opt:replace=eOlGv03eKSwUeTdc": 1,
+   "opt:replace=57SDf1RhS9yOEpYV": 1,
+   "opt:replace=7WHlNC1CktfvXRiy": 1,
+   "opt:replace=ImtS2QoHEJ8rkCof": 1,
+   "opt:replace=UcPSxyutSe3rQxPV": 1,
+   "opt:replace=jYPtmVmCudWzTGVD": 1,
+   "opt:replace=0hUMybJhlqp9C7fO": 1,
+   "opt:replace=Dm7BazimIrXMRrNl": 1,
+   "opt:replace=rtPMSbXpWLMEh5Rq": 1,
+   "opt:replace=EQDi6iiar8b5hf2v": 1,
+   "opt:replace=Szmz71h94o27lPpr": 1,
+   "opt:replace=gDS4EbM6HfJe9VFK": 1,
+   "opt:replace=zgm7fXzBW3Xk8PZx": 1,
+   "opt:replace=L2WpPLD5mPrUChak": 1,
+   "opt:replace=XyvUGk40iPgIBs5x": 1,
+   "opt:replace=ycMSqwThq0xfvyqo": 1,
+   "opt:replace=mTubEzqvJPS8ef6i": 1,
+   "opt:replace=sgXLbWsn75GgCiGX": 1,
+   "opt:replace=3zcCh7O8JSHUQhGu": 1,
+   "opt:replace=TV55lSO6ltMXDKoj": 1,
+   "opt:replace=vB16VPSIrFfx2Jow": 1,
+   "opt:replace=TkjsPmPGrDLJDEvY": 1,
+   "opt:replace=sJIeDQkZ5mHCnvo7": 1,
+   "opt:replace=EUAQc3KPGEJQ3NVd": 1,
+   "opt:replace=ZTOhszSp2OpvFtFn": 1,
+   "opt:replace=1eVTjp5o7iCc1auC": 1,
+   "opt:replace=RKGeNa75jGkAmyu0": 1,
+   "opt:replace=jkm3OvVNdKTn6une": 1,
+   "opt:replace=TKkJdmMuo3XPWiGd": 1,
+   "opt:replace=hOzGkBPyBrqgAF98": 1,
+   "opt:replace=4lkIwTwsvcES95J1": 1,
+   "opt:replace=1TyeqV3SFIr19DvD": 1,
+   "opt:replace=iPDoryBWjhrdZma0": 1,
+   "opt:replace=Uon3dOTk5RLyRTOn": 1,
+   "opt:replace=oDVjsAbcFRiEyOS0": 1,
+   "opt:replace=XUBNmFxZ3SJ8ec9O": 1,
+   "opt:replace=AZwJxJnisvF0MDVr": 1,
+   "opt:replace=sv0lNnI2pZBgtCJa": 1,
+   "opt:replace=xZ9m3ZVG1McwAjrd": 1,
+   "opt:replace=uAGqesGuEbQOQcsv": 1,
+   "opt:replace=58sdjBycHqs7cHRp": 1,
+   "opt:replace=BErog3j5xkmzWJQi": 1,
+   "opt:replace=thMQuhEIPgsKej44": 1,
+   "opt:replace=HNEF3Vv82FNoTRHw": 1
+  },
+  "hp": {
+   "Sim Warden#Dky9": "566/792",
+   "Sim Mender#nWNR": "429/567",
+   "Sim Reaper#QI7B": "567/567",
+   "Sim Binder#Vk1G": "567/567",
+   "Sim Herald#XuDv": "567/567",
+   "Sim Goblin Witherer#UGUo": "273/455",
+   "Sim Goblin Witherer#VAPE": "288/298",
+   "Sim Goblin Witherer#SEmt": "596/603",
+   "Sim Goblin Witherer#zEYR": "292/533",
+   "Sim Goblin Witherer#izvj": "603/603",
+   "Sim Goblin Sinker#YcQT": "603/603",
+   "Sim Goblin Sinker#ICtP": "477/556",
+   "Sim Goblin Sinker#yYWD": "603/603",
+   "Sim Goblin Sinker#PcrN": "603/603",
+   "Sim Goblin Sinker#NMEs": "603/603"
+  },
+  "down": [
+   "Sim Goblin Witherer",
+   "Sim Goblin Witherer",
+   "Sim Goblin Witherer"
+  ],
+  "weapons": {},
+  "armor": {},
+  "creatures": [],
+  "ai": [
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 198,
+     "ward": 20,
+     "manifest:Bloom": 20,
+     "manifest:Decree": 20
+    },
+    "turnMoved": 0,
+    "manifests": 40
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 264,
+     "manifest:Bloom": 20,
+     "manifest:Flourish": 20,
+     "ward": 20,
+     "manifest:Renewal": 16
+    },
+    "turnMoved": 0,
+    "manifests": 56
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20,
+     "defend:dodge": 14,
+     "breakFree": 4,
+     "Break Free": 4
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20
+    }
+   },
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Herald": 20,
+     "manifest:Decree": 20,
+     "act:momentumNow": 24,
+     "recoverEnergy": 4
+    },
+    "knockbacks": {
+     "down": 24
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 10,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 25,
+     "breakFree": 2,
+     "Break Free": 2,
+     "manifest:Wither": 5,
+     "manifest:Fracture": 5
+    },
+    "turnMoved": 0,
+    "manifests": 10
+   },
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 60,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 60,
+    "used": {
+     "manifest:Burden": 20,
+     "manifest:Sink": 20,
+     "manifest:Fracture": 20,
+     "act:quicksand": 2,
+     "act:vice": 10
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20,
+     "defend:dodge": 73
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20
+    }
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither+": 20,
+     "manifest:Waste": 20
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 28,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 28,
+    "used": {
+     "manifest:Wither": 14,
+     "manifest:Fracture": 14,
+     "defend:dodge": 22,
+     "breakFree": 6,
+     "Break Free": 6
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 38,
+    "turns": 19,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 38,
+    "used": {
+     "manifest:Sink": 19,
+     "manifest:Wither": 19
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 30,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 30,
+    "used": {
+     "manifest:Wither": 15,
+     "manifest:Fracture": 15,
+     "defend:dodge": 28
+    }
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Witherer": [
+    "Unarmed"
+   ],
+   "Sim Goblin Sinker": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Goblin Witherer": [],
+   "Sim Goblin Sinker": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 6030,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3037,
+    "monsterHp": 6000,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3037,
+    "monsterHp": 5972,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3037,
+    "monsterHp": 5901,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3036,
+    "monsterHp": 5827,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2952,
+    "monsterHp": 5827,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2893,
+    "monsterHp": 5618,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 2832,
+    "monsterHp": 5546,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 2778,
+    "monsterHp": 5546,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 2761,
+    "monsterHp": 5516,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 2723,
+    "monsterHp": 5394,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 12,
+    "partyHp": 2723,
+    "monsterHp": 5345,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 13,
+    "partyHp": 2723,
+    "monsterHp": 5227,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 14,
+    "partyHp": 2718,
+    "monsterHp": 5129,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 15,
+    "partyHp": 2675,
+    "monsterHp": 5120,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 2704,
+    "monsterHp": 5111,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 17,
+    "partyHp": 2704,
+    "monsterHp": 5067,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 18,
+    "partyHp": 2696,
+    "monsterHp": 5067,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 19,
+    "partyHp": 2696,
+    "monsterHp": 5043,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 20,
+    "partyHp": 2696,
+    "monsterHp": 5019,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 21,
+    "partyHp": 2696,
+    "monsterHp": 4941,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 21,
+    "partyHp": 2696,
+    "monsterHp": 4941,
+    "partyDown": 0,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 364,
+   "monsters": 1089
+  },
+  "lostBy": {
+   "party": 364,
+   "monsters": 1089
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Weight (Tenet)": 61,
+    "prompt: Gust (Tenet)": 18,
+    "prompt: Sim Herald's charges on Sim Goblin Witherer": 17,
+    "prompt: Verdant Soul (Tenet)": 34,
+    "prompt: Verdant Soul: give # temp HP to": 34,
+    "prompt: Sanctum Ward: Sim Mender": 20,
+    "prompt: Sim Binder's charges on Sim Goblin Witherer": 32,
+    "prompt: Mortal Coil (Tenet)": 45,
+    "prompt: Veil Ward": 112,
+    "prompt: Aegis Ward: Sim Warden": 20,
+    "prompt: Sim Goblin Witherer's charges on Sim Warden": 105,
+    "prompt: Herald — Sim Goblin Witherer": 6,
+    "prompt: Gust — Sim Goblin Witherer": 8,
+    "prompt: Sim Warden's charges on Sim Goblin Witherer": 19,
+    "prompt: Momentum — Sim Goblin Witherer": 8,
+    "prompt: Warden Ward": 19,
+    "prompt: Herald — Sim Goblin Sinker": 1,
+    "prompt: Gust — Sim Goblin Sinker": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Herald needs 17 Energy for Momentum but has 14.",
+     "who": "Sim Herald"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Herald needs 17 Energy for Momentum but has 14.",
+     "who": "Sim Herald"
+    }
+   ],
+   "errors": []
+  },
+  "cards": [
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 19 Dodge (2d15) 2d15 2d15 17 6 11 17 Hit Wither deals 23 Supernatural damage to Sim Mender (4d12 = 23).",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 30 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 20 Dodge (2d15) 2d15 2d15 13 12 1 13 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 26, 26 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (24 blocked).",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 21 Dodge (2d10) 2d10 2d10 7 6 1 7 Critical Hit Wither deals 46 Supernatural damage to Sim Goblin Witherer (5d12 = 27 → 54, 8 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 12 Supernatural damage (16 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 0 Supernatural damage (23 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 8 Dodge (2d25) 2d25 2d25 4 2 2 4 Critical Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 8 → 16, 16 blocked). (critical)",
+   "Herald — Sim Goblin Witherer Force 490 Driven 21 ft into the ground: 21 ft × 3 = 63. Sim Goblin Witherer takes 63 Physical 63 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Gust — Sim Goblin Witherer Force 360 Driven 8 ft into the ground: 8 ft × 3 = 24. Sim Goblin Witherer takes 24 Physical 24 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 0 Supernatural damage (13 blocked).",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 29 Dodge (2d10) 3d10kl2 3d10kl2 15 8 7 9 15 1× Disadvantage · prone Hit Wither deals 10 Supernatural damage to Sim Goblin Witherer (5d12 = 26, 16 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 0 Supernatural damage (11 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 16 Dodge (2d20) 2d20 2d20 14 5 9 14 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 28, 28 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (21 blocked).",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 30 Dodge (2d10) 3d10kl2 3d10kl2 7 9 4 3 7 1× Disadvantage · prone Critical Hit Wither deals 92 Supernatural damage to Sim Goblin Witherer (5d12 = 54 → 108, 16 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 20 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 16 Dodge (2d15) 2d15 2d15 4 1 3 4 Critical Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 20 → 40, 40 blocked). (critical)",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (44 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 20 Dodge (2d15) 2d15 2d15 13 10 3 13 Hit Wither deals 1 Supernatural damage to Sim Mender (4d12 = 33, 32 blocked).",
+   "Sim Binder — Vice Sim Goblin Witherer takes 43 physical damage (5d12) for failing to break free.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 0 Supernatural damage (22 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 8 Dodge (2d15) 2d15 2d15 4 3 1 4 Critical Hit Wither deals 70 Supernatural damage to Sim Mender (4d12 = 35 → 70). (critical)",
+   "Gust — Sim Goblin Witherer Force 386 Driven 8 ft into the ground: 8 ft × 3 = 24. Sim Goblin Witherer takes 24 Physical 0 damage to HP Temp HP absorbs 24 (36 left) Sim Goblin Witherer is knocked prone.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 15 Dodge (2d15) 2d15 2d15 14 9 5 14 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 17, 17 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (14 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 14 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 5 Dodge (2d15) 2d15 2d15 2 1 1 2 Critical Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 29 → 58, 58 blocked). (critical)",
+   "Herald — Sim Goblin Witherer Force 450 Driven 25 ft into the ground: 25 ft × 3 = 75. Sim Goblin Witherer takes 75 Physical 75 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Gust — Sim Goblin Witherer Force 336 Driven 10 ft into the ground: 10 ft × 3 = 30. Sim Goblin Witherer takes 30 Physical 30 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Momentum — Sim Goblin Witherer Force 262 Driven 3 ft into the ground: 3 ft × 3 = 9. Sim Goblin Witherer takes 9 Physical 9 damage to HP Not knocked prone: 3 ft is less than Sim Goblin Witherer's height (5 ft).",
+   "Momentum — Sim Goblin Witherer Force 303 Driven 7 ft into the ground: 7 ft × 3 = 21. Sim Goblin Witherer takes 21 Physical 21 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Momentum — Sim Goblin Witherer Force 314 Driven 8 ft into the ground: 8 ft × 3 = 24. Sim Goblin Witherer takes 24 Physical 24 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Momentum — Sim Goblin Witherer Force 253 Driven 2 ft into the ground: 2 ft × 3 = 6. Sim Goblin Witherer takes 6 Physical 6 damage to HP Not knocked prone: 2 ft is less than Sim Goblin Witherer's height (5 ft).",
+   "Momentum — Sim Goblin Witherer Force 270 Driven 4 ft into the ground: 4 ft × 3 = 12. Sim Goblin Witherer takes 12 Physical 12 damage to HP Not knocked prone: 4 ft is less than Sim Goblin Witherer's height (5 ft).",
+   "Momentum — Sim Goblin Witherer Force 312 Driven 8 ft into the ground: 8 ft × 3 = 24. Sim Goblin Witherer takes 24 Physical 24 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Momentum — Sim Goblin Witherer Force 267 Driven 4 ft into the ground: 4 ft × 3 = 12. Sim Goblin Witherer takes 12 Physical 12 damage to HP Not knocked prone: 4 ft is less than Sim Goblin Witherer's height (5 ft).",
+   "Momentum — Sim Goblin Witherer Force 269 Driven 4 ft into the ground: 4 ft × 3 = 12. Sim Goblin Witherer takes 12 Physical 12 damage to HP Not knocked prone: 4 ft is less than Sim Goblin Witherer's height (5 ft).",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 22 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 24 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 26 Dodge (2d10) 3d10kl2 3d10kl2 6 3 5 3 6 1× Disadvantage · prone Critical Hit Wither deals 62 Supernatural damage to Sim Goblin Witherer (5d12 = 42 → 84, 22 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 20 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 13 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Gust — Sim Goblin Witherer Force 324 Driven 2 ft into the ground: 2 ft × 3 = 6. Sim Goblin Witherer takes 6 Physical 0 damage to HP Temp HP absorbs 6 (16 left) Not knocked prone: 2 ft is less than Sim Goblin Witherer's height (5 ft).",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 25 Dodge (2d10) 3d10kl2 3d10kl2 10 10 3 7 10 1× Disadvantage · prone Critical Hit Wither deals 46 Supernatural damage to Sim Goblin Witherer (5d12 = 31 → 62, 16 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 18 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Binder — Vice Sim Goblin Witherer takes 36 physical damage (5d12) for failing to break free.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 27 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 34 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 27 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 0 Supernatural damage (9 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 11 Dodge (2d15) 2d15 2d15 10 4 6 10 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 22, 22 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (16 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 20 Dodge (2d15) 2d15 2d15 11 10 1 11 Hit Wither deals 15 Supernatural damage to Sim Mender (4d12 = 37, 22 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 12 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 16 Dodge (2d15) 2d15 2d15 16 8 8 16 Hit Wither deals 17 Supernatural damage to Sim Mender (4d12 = 17).",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 0 Supernatural damage (7 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 0 Supernatural damage (24 blocked).",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 20 Dodge (2d10) 3d10kl2 3d10kl2 7 4 3 4 7 1× Disadvantage · prone Critical Hit Wither deals 42 Supernatural damage to Sim Goblin Witherer (5d12 = 35 → 70, 28 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 6 Supernatural damage (16 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 12 Dodge (2d15) 2d15 2d15 10 7 3 10 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 16, 16 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (19 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 19 Dodge (2d15) 2d15 2d15 15 4 11 15 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 25, 25 blocked).",
+   "Herald — Sim Goblin Witherer Force 444 Driven 15 ft into the ground: 15 ft × 3 = 45. Sim Goblin Witherer takes 45 Physical 45 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 21 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 26 Dodge (2d10) 3d10kl2 3d10kl2 10 8 2 9 10 1× Disadvantage · prone Critical Hit Wither deals 46 Supernatural damage to Sim Goblin Witherer (5d12 = 31 → 62, 16 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 12 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Binder — Vice Sim Goblin Witherer takes 41 physical damage (5d12) for failing to break free.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 17 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Herald — Sim Goblin Witherer Force 420 Driven 16 ft into the ground: 16 ft × 3 = 48. Sim Goblin Witherer takes 48 Physical 31 damage to HP Temp HP absorbs 17 (0 left) Sim Goblin Witherer is knocked prone.",
+   "Gust — Sim Goblin Witherer Force 370 Driven 6 ft into the ground: 6 ft × 3 = 18. Sim Goblin Witherer takes 18 Physical 18 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 7 Dodge (2d10) 3d10kl2 3d10kl2 5 10 1 4 5 1× Disadvantage · prone Hit Wither deals 19 Supernatural damage to Sim Goblin Witherer (5d12 = 35, 16 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 0 Supernatural damage (16 blocked).",
+   "Sim Binder — Vice Sim Goblin Witherer takes 25 physical damage (5d12) for failing to break free.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 14 Dodge (2d15) 2d15 2d15 9 1 8 9 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 19, 19 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (25 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 20 Dodge (2d15) 2d15 2d15 5 3 2 5 Critical Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 22 → 44, 44 blocked). (critical)",
+   "Herald — Sim Goblin Witherer Force 490 Driven 25 ft into the ground: 25 ft × 3 = 75. Sim Goblin Witherer takes 75 Physical 75 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Gust — Sim Goblin Witherer Force 316 Driven 1 ft into the ground: 1 ft × 3 = 3. Sim Goblin Witherer takes 3 Physical 3 damage to HP Not knocked prone: 1 ft is less than Sim Goblin Witherer's height (5 ft).",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 13 Dodge (2d10) 3d10kl2 3d10kl2 5 2 3 9 5 1× Disadvantage · prone Critical Hit Wither deals 40 Supernatural damage to Sim Goblin Witherer (5d12 = 24 → 48, 8 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 16 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 17 Dodge (2d20) 2d20 2d20 10 9 1 10 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 25, 25 blocked).",
+   "Herald — Sim Goblin Witherer Force 486 Driven 28 ft into the ground: 28 ft × 3 = 84. Sim Goblin Witherer takes 84 Physical 84 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Gust — Sim Goblin Witherer Force 318 Driven 1 ft into the ground: 1 ft × 3 = 3. Sim Goblin Witherer takes 3 Physical 3 damage to HP Not knocked prone: 1 ft is less than Sim Goblin Witherer's height (5 ft).",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 0 Supernatural damage (20 blocked).",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 28 Dodge (2d10) 3d10kl2 3d10kl2 8 5 9 3 8 1× Disadvantage · prone Critical Hit Wither deals 70 Supernatural damage to Sim Goblin Witherer (5d12 = 39 → 78, 8 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 8 Supernatural damage (16 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Binder — Vice Sim Goblin Witherer takes 27 physical damage (5d12) for failing to break free.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 13 Dodge (2d15) 2d15 2d15 11 6 5 11 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 26, 26 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 5 Supernatural damage (10 blocked); Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 11 Dodge (2d15) 2d15 2d15 3 2 1 3 Critical Hit Wither deals 24 Supernatural damage to Sim Mender (4d12 = 27 → 54, 30 blocked). (critical)",
+   "Gust — Sim Goblin Witherer Force 352 Driven 5 ft into the ground: 5 ft × 3 = 15. Sim Goblin Witherer takes 15 Physical 15 damage to HP Sim Goblin Witherer is knocked prone.",
+   "Sim Binder — Vice Sim Goblin Witherer takes 18 physical damage (5d12) for failing to break free.",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 19 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Binder — Vice Sim Goblin Witherer takes 25 physical damage (5d12) for failing to break free.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 20 Dodge (2d20) 2d20 2d20 19 10 9 19 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 16, 16 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 20 Dodge (2d20) 2d20 2d20 20 10 10 20 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 33, 33 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 0 Supernatural damage (29 blocked).",
+   "Sim Goblin Witherer dodges — Wither (Manifest) Attack roll: 14 Dodge (2d10) 3d10kl2 3d10kl2 4 3 4 1 4 1× Disadvantage · prone Critical Hit Wither deals 50 Supernatural damage to Sim Goblin Witherer (5d12 = 33 → 66, 16 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 10 Supernatural damage (16 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 17 Dodge (2d20) 2d20 2d20 11 4 7 11 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 22, 22 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 8 Supernatural damage (40 blocked); Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Reaper — Mortal Coil Sim Goblin Witherer takes 0 Supernatural damage (38 blocked).",
+   "Sim Binder — Vice Sim Goblin Sinker takes 28 physical damage (5d12) for failing to break free.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 11 Dodge (2d15) 2d15 2d15 8 2 6 8 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 35, 35 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (13 blocked).",
+   "Sim Goblin Sinker dodges — Wither (Manifest) Attack roll: 17 Dodge (2d10) 2d10 2d10 14 6 8 14 Hit Wither deals 23 Supernatural damage to Sim Goblin Sinker (5d12 = 33, 10 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Goblin Sinker takes 1 Supernatural damage (10 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 9 Dodge (2d15) 2d15 2d15 9 5 4 9 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 28, 28 blocked).",
+   "Sim Binder — Vice Sim Goblin Sinker takes 44 physical damage (5d12) for failing to break free.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 14 Dodge (2d15) 2d15 2d15 8 2 6 8 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 24, 24 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 13 Dodge (2d15) 2d15 2d15 7 4 3 7 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 23, 23 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (20 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 19 Dodge (2d20) 2d20 2d20 14 5 9 14 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 22, 22 blocked).",
+   "Sim Binder — Vice Sim Goblin Sinker takes 36 physical damage (5d12) for failing to break free.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 16 Dodge (2d20) 2d20 2d20 5 4 1 5 Critical Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 29 → 58, 58 blocked). (critical)",
+   "Herald — Sim Goblin Sinker Force 450 Driven 18 ft into the ground: 18 ft × 3 = 54. Sim Goblin Sinker takes 54 Physical 54 damage to HP Sim Goblin Sinker is knocked prone.",
+   "Gust — Sim Goblin Sinker Force 312 Driven 2 ft into the ground: 2 ft × 3 = 6. Sim Goblin Sinker takes 6 Physical 6 damage to HP Not knocked prone: 2 ft is less than Sim Goblin Sinker's height (5 ft).",
+   "Sim Goblin Sinker dodges — Wither (Manifest) Attack roll: 9 Dodge (2d10) 3d10kl2 3d10kl2 4 2 7 2 4 1× Disadvantage · prone Critical Hit Wither deals 24 Supernatural damage to Sim Goblin Sinker (5d12 = 22 → 44, 20 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Sinker takes 8 Supernatural damage (10 blocked); Sim Reaper gains that much temp HP until the start of their next turn."
+  ],
+  "casts": []
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 666,
+  "winner": "unfinished",
+  "pass": "mental-t1b",
+  "rounds": 21,
+  "partyLeft": 5,
+  "monstersLeft": 5,
+  "followups": 0,
+  "knockbacks": {
+   "down": 15
+  },
+  "used": {
+   "manifest:Bloom": 60,
+   "defend:dodge": 458,
+   "manifest:Flourish": 49,
+   "ward": 31,
+   "manifest:Wither+": 40,
+   "manifest:Waste": 40,
+   "manifest:Herald": 40,
+   "manifest:Decree": 40,
+   "manifest:Burden": 40,
+   "manifest:Sink": 40,
+   "manifest:Fracture": 40,
+   "manifest:Larceny": 20,
+   "charge:Sim Raider Trickster": 18,
+   "opt:replace=MTPbZEmiKlN2vhKm": 1,
+   "charge:Sim Binder": 9,
+   "opt:replace=AO6HEOwjktSnSDKt": 1,
+   "opt:replace=ojFAIA8XEonkd6oO": 1,
+   "opt:replace=3ch0CpGxbBa24ePn": 1,
+   "breakFree": 14,
+   "Break Free": 14,
+   "act:quicksand": 6,
+   "charge:Sim Herald": 17,
+   "opt:replace=A7oovTOh5hUftWaL": 1,
+   "opt:replace=Yaz9aHc573bUGT9l": 1,
+   "opt:replace=CGYGHYa2iIJ9mcNZ": 1,
+   "opt:replace=a3ixXbfcg6kw1xRk": 1,
+   "opt:replace=QWlkd8JIJWj52NaM": 1,
+   "opt:replace=VdpmJtFoMaNNQIT4": 1,
+   "act:vice": 8,
+   "charge:Sim Warden": 9,
+   "opt:replace=SUzBHV8QOpgoMNXY": 1,
+   "opt:replace=OpDRxaRq3u2gPtHr": 1,
+   "opt:replace=7dbc1VRbPFixHfLO": 1,
+   "opt:replace=hEhhfgQZ95J6Qkfr": 1,
+   "opt:replace=ZJLrpcTnuXrZs2pf": 1,
+   "opt:replace=ZmJz654rSJdT3PaU": 1,
+   "opt:dir=down": 15,
+   "act:momentumNow": 15,
+   "recoverEnergy": 5,
+   "manifest:Renewal": 12,
+   "opt:replace=4cIaxJzuv3hCSuY0": 1,
+   "opt:replace=7ny2YUxqrICTsVle": 1,
+   "opt:replace=pXPGLPEOHjwB4edT": 1,
+   "opt:replace=1BOZBpNylKAPGNzs": 1,
+   "opt:replace=e7gB0crdsanMS5sv": 1,
+   "opt:replace=tF3A05gerBjg0bpG": 1,
+   "opt:replace=YeJIhEMwJi0n3QDY": 1,
+   "opt:replace=GjEjeDXkgFjGhPPJ": 1,
+   "opt:replace=agm66qU0iqNgpoul": 1,
+   "opt:replace=PphDXA8hEXqi9br2": 1,
+   "opt:replace=XVsyki76qpLD407I": 1,
+   "opt:replace=DQgeZhL8RX9SG1si": 1,
+   "opt:replace=8ege2O587DVXvnaZ": 1,
+   "opt:replace=k9KF6IKs7ztn3H2L": 1,
+   "opt:replace=eU11AFKnA4Y1b8BC": 1,
+   "opt:replace=W4j7JG5P21ptyRrK": 1,
+   "opt:replace=waqGMCdSkX3d0Xlh": 1,
+   "opt:replace=dAvOBqFLyFpJSzPR": 1,
+   "opt:replace=CspDCULnXi5XWy6g": 1,
+   "opt:replace=5lxXk08ZalewmwEN": 1,
+   "opt:replace=SOg3KkFu8EQJMgpR": 1,
+   "opt:replace=Ty6DvjOmHVV3cEwb": 1,
+   "opt:replace=He6XuHdwywRsZvsm": 1,
+   "opt:replace=a85XbCC4J2gFtvpJ": 1,
+   "opt:replace=FO8SkKPaXnW6Bbsy": 1,
+   "opt:replace=EiS9LbdCEECHBRKQ": 1,
+   "opt:replace=5TQjmQADvojFFfgb": 1,
+   "opt:replace=0mTXKNJLv2VpHW4p": 1,
+   "opt:replace=jpAqKSJzY4bKh3mo": 1,
+   "opt:replace=KsJRaJ6J7XIcJGTx": 1,
+   "opt:replace=GfhHEa4T8pgfE2A5": 1,
+   "opt:replace=mpPGRkNbJ8l5CDcO": 1,
+   "opt:replace=X3ydgLKjrfrt0JgS": 1,
+   "opt:replace=Al4KzYsezhzLeBjV": 1,
+   "opt:replace=3ZpsGzlXfmKiEJ7t": 1,
+   "opt:replace=zGvv4xfE5zJoy7NO": 1,
+   "opt:replace=HJKKKMqzt1U5y7vx": 1
+  },
+  "hp": {
+   "Sim Warden#YJVa": "464/792",
+   "Sim Mender#DlIJ": "567/567",
+   "Sim Reaper#9afm": "567/567",
+   "Sim Binder#un5S": "567/567",
+   "Sim Herald#eXci": "567/567",
+   "Sim Raider Reaper#Rbwu": "563/620",
+   "Sim Raider Binder#0lQn": "762/765",
+   "Sim Raider Trickster#6PfG": "765/765",
+   "Sim Raider Pusher#WF7J": "765/765",
+   "Sim Raider Tender#JR8t": "765/765"
+  },
+  "down": [],
+  "weapons": {},
+  "armor": {},
+  "creatures": [],
+  "ai": [
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 52,
+    "used": {
+     "manifest:Bloom": 20,
+     "defend:dodge": 55,
+     "manifest:Flourish": 20,
+     "ward": 11,
+     "manifest:Renewal": 12
+    }
+   },
+   {
+    "name": "Sim Raider Reaper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither+": 20,
+     "manifest:Waste": 20,
+     "defend:dodge": 117,
+     "breakFree": 14,
+     "Break Free": 14
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 177,
+     "ward": 20,
+     "manifest:Bloom": 20,
+     "manifest:Decree": 20,
+     "manifest:Flourish": 9
+    },
+    "turnMoved": 0,
+    "manifests": 49
+   },
+   {
+    "name": "Sim Raider Tender",
+    "side": "monsters",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Bloom": 20,
+     "defend:dodge": 6,
+     "manifest:Flourish": 20
+    }
+   },
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Herald": 20,
+     "manifest:Decree": 20,
+     "act:momentumNow": 3
+    },
+    "knockbacks": {
+     "down": 3
+    }
+   },
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 60,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 60,
+    "used": {
+     "manifest:Burden": 20,
+     "manifest:Sink": 20,
+     "manifest:Fracture": 20,
+     "act:quicksand": 6,
+     "act:vice": 8
+    }
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither+": 20,
+     "manifest:Waste": 20
+    }
+   },
+   {
+    "name": "Sim Raider Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 20,
+    "used": {
+     "manifest:Herald": 20,
+     "act:momentumNow": 12,
+     "recoverEnergy": 5
+    },
+    "knockbacks": {
+     "down": 12
+    }
+   },
+   {
+    "name": "Sim Raider Binder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Burden": 20,
+     "manifest:Sink": 20,
+     "defend:dodge": 103
+    }
+   },
+   {
+    "name": "Sim Raider Trickster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Fracture": 20,
+     "manifest:Larceny": 20
+    }
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Reaper": [
+    "Unarmed"
+   ],
+   "Sim Raider Binder": [
+    "Unarmed"
+   ],
+   "Sim Raider Trickster": [
+    "Unarmed"
+   ],
+   "Sim Raider Pusher": [
+    "Unarmed"
+   ],
+   "Sim Raider Tender": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Raider Reaper": [],
+   "Sim Raider Binder": [],
+   "Sim Raider Trickster": [],
+   "Sim Raider Pusher": [],
+   "Sim Raider Tender": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 3825,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3060,
+    "monsterHp": 3825,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3060,
+    "monsterHp": 3825,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3060,
+    "monsterHp": 3818,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3060,
+    "monsterHp": 3740,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 3060,
+    "monsterHp": 3740,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 3035,
+    "monsterHp": 3740,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 3035,
+    "monsterHp": 3740,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 2891,
+    "monsterHp": 3726,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 2869,
+    "monsterHp": 3704,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 2869,
+    "monsterHp": 3704,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 2766,
+    "monsterHp": 3684,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 2766,
+    "monsterHp": 3667,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 2732,
+    "monsterHp": 3637,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 2732,
+    "monsterHp": 3623,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 2732,
+    "monsterHp": 3623,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 17,
+    "partyHp": 2732,
+    "monsterHp": 3623,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 18,
+    "partyHp": 2732,
+    "monsterHp": 3623,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 19,
+    "partyHp": 2732,
+    "monsterHp": 3620,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 20,
+    "partyHp": 2732,
+    "monsterHp": 3620,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2732,
+    "monsterHp": 3620,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2732,
+    "monsterHp": 3620,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 328,
+   "monsters": 205
+  },
+  "lostBy": {
+   "party": 328,
+   "monsters": 205
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Verdant Soul (Tenet)": 44,
+    "prompt: Verdant Soul: give # temp HP to": 44,
+    "prompt: Sanctum Ward: Sim Mender": 11,
+    "prompt: Mortal Coil (Tenet)": 28,
+    "prompt: Weight (Tenet)": 26,
+    "prompt: Aegis Ward: Sim Warden": 20,
+    "prompt: Gust (Tenet)": 28,
+    "prompt: Sim Raider Trickster's charges on Sim Warden": 95,
+    "prompt: Sim Binder's charges on Sim Raider Reaper": 5,
+    "prompt: Unbound (Tenet)": 4,
+    "prompt: Unbound: place a Chaos charge": 4,
+    "prompt: Veil Ward": 66,
+    "prompt: Sim Herald's charges on Sim Raider Binder": 18,
+    "prompt: Sim Binder's charges on Sim Raider Binder": 59,
+    "prompt: Warden Ward": 18,
+    "prompt: Sim Warden's charges on Sim Raider Binder": 17,
+    "prompt: Herald — Sim Warden": 7,
+    "prompt: Gust — Sim Warden": 5,
+    "prompt: Herald — Sim Raider Reaper": 3
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 23 Dodge (2d15) 2d15 2d15 13 2 11 13 Hit Wither deals 0 Supernatural damage to Sim Mender (6d12 = 27, 27 blocked), and that much Max HP too.",
+   "Sim Raider Reaper — Mortal Coil Sim Mender takes 0 Supernatural damage (28 blocked).",
+   "Sim Raider Reaper dodges — Wither (Manifest) Attack roll: 14 Dodge (2d12) 2d12 2d12 8 5 3 8 Hit Wither deals 7 Supernatural damage to Sim Raider Reaper (5d12 = 23, 16 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Reaper takes 0 Supernatural damage (13 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 9 Dodge (2d20) 2d20 2d20 7 1 6 7 Hit Wither deals 0 Supernatural damage to Sim Mender (6d12 = 51, 51 blocked), and that much Max HP too.",
+   "Sim Raider Reaper — Mortal Coil Sim Mender takes 0 Supernatural damage (29 blocked).",
+   "Sim Raider Reaper dodges — Wither (Manifest) Attack roll: 26 Dodge (2d12) 2d12 2d12 7 6 1 7 Critical Hit Wither deals 50 Supernatural damage to Sim Raider Reaper (5d12 = 29 → 58, 8 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Raider Reaper takes 28 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Reaper — Mortal Coil Sim Raider Binder takes 0 Supernatural damage (20 blocked).",
+   "Sim Raider Reaper — Mortal Coil Sim Warden takes 25 Supernatural damage; Sim Raider Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Binder — Vice Sim Raider Reaper takes 42 physical damage (5d12) for failing to break free.",
+   "Sim Reaper — Mortal Coil Sim Raider Binder takes 0 Supernatural damage (16 blocked).",
+   "Sim Binder — Vice Sim Raider Reaper takes 35 physical damage (5d12) for failing to break free.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 24 Dodge (2d15) 2d15 2d15 13 3 10 13 Hit Wither deals 0 Supernatural damage to Sim Mender (6d12 = 33, 33 blocked), and that much Max HP too.",
+   "Sim Raider Reaper — Mortal Coil Sim Mender takes 0 Supernatural damage (28 blocked).",
+   "Sim Raider Reaper dodges — Wither (Manifest) Attack roll: 10 Dodge (2d12) 2d12 2d12 5 2 3 5 Critical Hit Wither deals 12 Supernatural damage to Sim Raider Reaper (5d12 = 14 → 28, 16 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Raider Reaper takes 14 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Herald — Sim Warden Force 560 Driven 17 ft into the ground: 17 ft × 3 = 51. Sim Warden takes 51 Physical 51 damage to HP Sim Warden is knocked prone.",
+   "Gust — Sim Warden Force 714 Driven 31 ft into the ground: 31 ft × 3 = 93. Sim Warden takes 93 Physical 93 damage to HP Sim Warden is knocked prone.",
+   "Sim Binder — Vice Sim Raider Reaper takes 30 physical damage (5d12) for failing to break free.",
+   "Sim Raider Reaper — Mortal Coil Sim Warden takes 22 Supernatural damage; Sim Raider Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Reaper — Mortal Coil Sim Raider Binder takes 0 Supernatural damage (20 blocked).",
+   "Sim Reaper — Mortal Coil Sim Raider Binder takes 0 Supernatural damage (34 blocked).",
+   "Sim Binder — Vice Sim Raider Reaper takes 39 physical damage (5d12) for failing to break free.",
+   "Sim Raider Reaper — Mortal Coil Sim Warden takes 0 Supernatural damage (27 blocked).",
+   "Sim Raider Reaper dodges — Wither (Manifest) Attack roll: 22 Dodge (2d12) 2d12 2d12 8 6 2 8 Critical Hit Wither deals 50 Supernatural damage to Sim Raider Reaper (5d12 = 29 → 58, 8 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Raider Reaper takes 20 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Herald — Sim Warden Force 542 Driven 24 ft into the ground: 24 ft × 3 = 72. Sim Warden takes 72 Physical 19 damage to HP Temp HP absorbs 53 (0 left) Sim Warden is knocked prone.",
+   "Gust — Sim Warden Force 676 Driven 28 ft into the ground: 28 ft × 3 = 84. Sim Warden takes 84 Physical 84 damage to HP Sim Warden is knocked prone.",
+   "Sim Binder — Vice Sim Raider Reaper takes 33 physical damage (5d12) for failing to break free.",
+   "Sim Raider Reaper dodges — Wither (Manifest) Attack roll: 21 Dodge (2d12) 2d12 2d12 20 9 11 20 Hit Wither deals 0 Supernatural damage to Sim Raider Reaper (5d12 = 31, 31 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Reaper takes 0 Supernatural damage (12 blocked).",
+   "Sim Warden dodges — Wither (Manifest) Attack roll: 13 Dodge (2d15) 3d15kl2 3d15kl2 6 4 2 6 6 1× Disadvantage · prone Critical Hit Wither deals 0 Supernatural damage to Sim Warden (6d12 = 33 → 66, 66 blocked), and that much Max HP too. (critical)",
+   "Sim Raider Reaper — Mortal Coil Sim Warden takes 54 Supernatural damage (4 blocked); Sim Raider Reaper gains that much temp HP until the start of their next turn.",
+   "Herald — Sim Raider Reaper Force 472 Driven 16 ft into the ground: 16 ft × 3 = 48. Sim Raider Reaper takes 48 Physical 0 damage to HP Temp HP absorbs 48 (6 left) Sim Raider Reaper is knocked prone.",
+   "Sim Raider Reaper dodges — Wither (Manifest) Attack roll: 15 Dodge (2d12) 3d12kl2 3d12kl2 3 9 2 1 3 1× Disadvantage · prone Critical Hit Wither deals 26 Supernatural damage to Sim Raider Reaper (5d12 = 28 → 56, 30 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Raider Reaper takes 30 Supernatural damage (8 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Binder — Vice Sim Raider Reaper takes 22 physical damage (5d12) for failing to break free.",
+   "Sim Reaper — Mortal Coil Sim Raider Binder takes 0 Supernatural damage (6 blocked).",
+   "Herald — Sim Warden Force 248 Driven 1 ft into the ground: 1 ft × 3 = 3. Sim Warden takes 3 Physical 0 damage to HP Temp HP absorbs 3 (77 left) Not knocked prone: 1 ft is less than Sim Warden's height (5 ft).",
+   "Sim Binder — Vice Sim Raider Reaper takes 32 physical damage (5d12) for failing to break free.",
+   "Sim Raider Reaper — Mortal Coil Sim Warden takes 0 Supernatural damage (24 blocked).",
+   "Sim Raider Reaper dodges — Wither (Manifest) Attack roll: 14 Dodge (2d12) 3d12kl2 3d12kl2 13 4 12 9 13 1× Disadvantage · prone Hit Wither deals 0 Supernatural damage to Sim Raider Reaper (5d12 = 18, 18 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Reaper takes 0 Supernatural damage (13 blocked).",
+   "Herald — Sim Warden Force 578 Driven 34 ft into the ground: 34 ft × 3 = 102. Sim Warden takes 102 Physical 0 damage to HP Temp HP absorbs 80 (0 left) Temp HP absorbs 22 (228 left) Sim Warden is knocked prone.",
+   "Gust — Sim Warden Force 656 Driven 26 ft into the ground: 26 ft × 3 = 78. Sim Warden takes 78 Physical 0 damage to HP Temp HP absorbs 78 (150 left) Sim Warden is knocked prone.",
+   "Sim Warden dodges — Wither (Manifest) Attack roll: 21 Dodge (2d18) 3d18kl2 3d18kl2 4 7 3 1 4 1× Disadvantage · prone Critical Hit Wither deals 0 Supernatural damage to Sim Warden (6d12 = 34 → 68, 68 blocked), and that much Max HP too. (critical)",
+   "Sim Raider Reaper — Mortal Coil Sim Warden takes 20 Supernatural damage (32 blocked); Sim Raider Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Raider Reaper dodges — Wither (Manifest) Attack roll: 14 Dodge (2d12) 3d12kl2 3d12kl2 3 1 6 2 3 1× Disadvantage · prone Critical Hit Wither deals 0 Supernatural damage to Sim Raider Reaper (5d12 = 38 → 76, 76 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Raider Reaper takes 0 Supernatural damage (18 blocked).",
+   "Sim Binder — Vice Sim Raider Reaper takes 28 physical damage (5d12) for failing to break free.",
+   "Herald — Sim Raider Reaper Force 454 Driven 17 ft into the ground: 17 ft × 3 = 51. Sim Raider Reaper takes 51 Physical 0 damage to HP Temp HP absorbs 51 (69 left) Sim Raider Reaper is knocked prone.",
+   "Sim Raider Reaper dodges — Wither (Manifest) Attack roll: 12 Dodge (2d12) 3d12kl2 3d12kl2 8 8 5 3 8 1× Disadvantage · prone Hit Wither deals 0 Supernatural damage to Sim Raider Reaper (5d12 = 44, 44 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Reaper takes 0 Supernatural damage (6 blocked).",
+   "Herald — Sim Warden Force 576 Driven 34 ft into the ground: 34 ft × 3 = 102. Sim Warden takes 102 Physical 0 damage to HP Temp HP absorbs 40 (0 left) Temp HP absorbs 62 (438 left) Sim Warden is knocked prone.",
+   "Gust — Sim Warden Force 734 Driven 33 ft into the ground: 33 ft × 3 = 99. Sim Warden takes 99 Physical 0 damage to HP Temp HP absorbs 99 (339 left) Sim Warden is knocked prone.",
+   "Sim Raider Reaper — Mortal Coil Sim Warden takes 0 Supernatural damage (56 blocked).",
+   "Herald — Sim Raider Reaper Force 464 Driven 18 ft into the ground: 18 ft × 3 = 54. Sim Raider Reaper takes 54 Physical 0 damage to HP Temp HP absorbs 54 (6 left) Sim Raider Reaper is knocked prone.",
+   "Sim Reaper — Mortal Coil Sim Raider Binder takes 3 Supernatural damage (15 blocked); Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Herald — Sim Warden Force 310 Driven 7 ft into the ground: 7 ft × 3 = 21. Sim Warden takes 21 Physical 0 damage to HP Temp HP absorbs 21 (19 left) Sim Warden is knocked prone.",
+   "Sim Reaper — Mortal Coil Sim Raider Binder takes 0 Supernatural damage (36 blocked).",
+   "Sim Warden dodges — Wither (Manifest) Attack roll: 14 Dodge (2d18) 3d18kl2 3d18kl2 8 6 2 11 8 1× Disadvantage · prone Hit Wither deals 0 Supernatural damage to Sim Warden (6d12 = 35, 35 blocked), and that much Max HP too.",
+   "Sim Raider Reaper — Mortal Coil Sim Warden takes 0 Supernatural damage (25 blocked).",
+   "Sim Reaper — Mortal Coil Sim Raider Binder takes 0 Supernatural damage (7 blocked).",
+   "Herald — Sim Warden Force 494 Driven 26 ft into the ground: 26 ft × 3 = 78. Sim Warden takes 78 Physical 0 damage to HP Temp HP absorbs 10 (0 left) Temp HP absorbs 68 (432 left) Sim Warden is knocked prone.",
+   "Gust — Sim Warden Force 590 Driven 19 ft into the ground: 19 ft × 3 = 57. Sim Warden takes 57 Physical 0 damage to HP Temp HP absorbs 57 (375 left) Sim Warden is knocked prone."
+  ],
+  "casts": []
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 437,
+  "winner": "unfinished",
+  "pass": "mental-t1b",
+  "rounds": 21,
+  "partyLeft": 5,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Burden": 20,
+   "defend:dodge": 295,
+   "manifest:Sink": 20,
+   "manifest:Fracture": 20,
+   "manifest:Bloom": 40,
+   "manifest:Flourish": 20,
+   "ward": 40,
+   "manifest:Wither+": 40,
+   "manifest:Waste": 29,
+   "manifest:Decree": 40,
+   "manifest:Herald": 20,
+   "charge:Sim Warden": 9,
+   "opt:replace=rZhx9qkl08AGg87t": 1,
+   "charge:Sim Binder": 9,
+   "opt:replace=0m1SECxWDsTJQk8F": 1,
+   "charge:Sim Herald": 10,
+   "opt:replace=G5XACe57trX0nAlJ": 1,
+   "opt:replace=MVZI0kTxNdblh4EQ": 1,
+   "opt:replace=FOeIfclMaEVpKQdu": 1,
+   "opt:replace=BK1DznbUNG2R34G9": 1,
+   "breakFree": 11,
+   "Break Free": 11,
+   "act:quicksand": 6,
+   "opt:replace=YXe6CNh3WytuJU7g": 1,
+   "opt:replace=5P3g9a23RRnkxhn1": 1,
+   "act:vice": 5,
+   "opt:replace=JCig3SjBqOt1YcDG": 1,
+   "opt:replace=3BSQy9YBPT24QzsC": 1,
+   "opt:replace=ULW9uBqZCdE9scgh": 1,
+   "opt:replace=GYYtW5FfZGk92NX2": 1,
+   "opt:replace=PgdeGtju16v9vO2n": 1,
+   "opt:replace=CyjY42dNrxJ8ZnEg": 1,
+   "opt:replace=c7b8DXadgspISwnW": 1,
+   "opt:replace=x4hMJpByQHJEDFeT": 1,
+   "opt:replace=6Vg0eqK5PpJaVuyU": 1,
+   "opt:replace=3gwkWtLDY9EZHTpO": 1,
+   "opt:replace=VXKUMGAcdqWYazzu": 1,
+   "opt:replace=OvEzi0tzQQFI8lob": 1,
+   "opt:replace=4A1l2S83TWQdKFCR": 1,
+   "opt:replace=ZqR7kCSM6lqCPvLR": 1,
+   "opt:replace=g4GQBh1Oj6qdjKBB": 1,
+   "opt:replace=g9SvuJDFfEQpN0Va": 1,
+   "opt:replace=1FZOZI5OnwgmhAgY": 1,
+   "opt:replace=dwNhqOKppO8PdB9b": 1,
+   "opt:replace=hlYOWHOU38MRuw7A": 1,
+   "opt:replace=cJoa7RIjPKKYZ5kz": 1
+  },
+  "hp": {
+   "Sim Warden#fRZA": "724/792",
+   "Sim Mender#PpMl": "567/567",
+   "Sim Reaper#EB1U": "567/567",
+   "Sim Binder#XQDn": "567/567",
+   "Sim Herald#9PvK": "567/567",
+   "Sim Ogre Dreadmind#y9kB": "2001/2001"
+  },
+  "down": [],
+  "weapons": {},
+  "armor": {},
+  "creatures": [],
+  "ai": [
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 60,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 60,
+    "used": {
+     "manifest:Burden": 20,
+     "manifest:Sink": 20,
+     "manifest:Fracture": 20,
+     "act:quicksand": 6,
+     "act:vice": 5
+    }
+   },
+   {
+    "name": "Sim Ogre Dreadmind",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 29,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 186,
+     "manifest:Wither+": 20,
+     "manifest:Waste": 9,
+     "breakFree": 11,
+     "Break Free": 11
+    },
+    "turnMoved": 0,
+    "manifests": 29
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Bloom": 20,
+     "defend:dodge": 100,
+     "manifest:Flourish": 20,
+     "ward": 20
+    }
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither+": 20,
+     "manifest:Waste": 20
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 20,
+     "manifest:Bloom": 20,
+     "manifest:Decree": 20,
+     "defend:dodge": 9
+    },
+    "manifests": 40
+   },
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Herald": 20,
+     "manifest:Decree": 20
+    }
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Dreadmind": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Ogre Dreadmind": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3060,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 17,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 18,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 19,
+    "partyHp": 3025,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 20,
+    "partyHp": 2992,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2992,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2992,
+    "monsterHp": 2001,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 68,
+   "monsters": 15
+  },
+  "lostBy": {
+   "party": 68,
+   "monsters": 15
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Weight (Tenet)": 18,
+    "prompt: Verdant Soul (Tenet)": 26,
+    "prompt: Verdant Soul: give # temp HP to": 26,
+    "prompt: Sanctum Ward: Sim Mender": 20,
+    "prompt: Sim Binder's charges on Sim Ogre Dreadmind": 74,
+    "prompt: Riposte Ward": 46,
+    "prompt: Mortal Coil (Tenet)": 17,
+    "prompt: Aegis Ward: Sim Warden": 20,
+    "prompt: Sim Warden's charges on Sim Ogre Dreadmind": 12,
+    "prompt: Gust (Tenet)": 15,
+    "prompt: Sim Herald's charges on Sim Ogre Dreadmind": 18
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [0lQn1IREBkECfMB5] does not exist in the EmbeddedCollection collection.",
+     "who": "Sim Warden"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [0lQn1IREBkECfMB5] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  },
+  "cards": [
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 28 Dodge (2d15) 2d15 2d15 28 14 14 28 Hit Wither deals 15 Supernatural damage to Sim Ogre Dreadmind (5d12 = 39, 24 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (15 blocked).",
+   "Sim Ogre Dreadmind — Mortal Coil Sim Warden takes 35 Supernatural damage; Sim Ogre Dreadmind gains that much temp HP until the start of their next turn.",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (8 blocked).",
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 26 Dodge (2d15) 2d15 2d15 15 10 5 15 Hit Wither deals 0 Supernatural damage to Sim Ogre Dreadmind (5d12 = 15, 15 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (13 blocked).",
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 28 Dodge (2d15) 2d15 2d15 15 13 2 15 Hit Wither deals 0 Supernatural damage to Sim Ogre Dreadmind (5d12 = 26, 26 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (11 blocked).",
+   "Sim Binder — Vice Sim Ogre Dreadmind takes 27 physical damage (5d12) for failing to break free.",
+   "Sim Binder — Vice Sim Ogre Dreadmind takes 24 physical damage (5d12) for failing to break free.",
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 21 Dodge (2d15) 2d15 2d15 15 7 8 15 Hit Wither deals 0 Supernatural damage to Sim Ogre Dreadmind (5d12 = 48, 48 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (13 blocked).",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (18 blocked).",
+   "Sim Binder — Vice Sim Ogre Dreadmind takes 20 physical damage (5d12) for failing to break free.",
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 26 Dodge (2d15) 2d15 2d15 10 3 7 10 Critical Hit Wither deals 0 Supernatural damage to Sim Ogre Dreadmind (5d12 = 27 → 54, 54 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (18 blocked).",
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 14 Dodge (2d15) 2d15 2d15 6 2 4 6 Critical Hit Wither deals 0 Supernatural damage to Sim Ogre Dreadmind (5d12 = 39 → 78, 78 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (10 blocked).",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (13 blocked).",
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 21 Dodge (2d15) 2d15 2d15 18 12 6 18 Hit Wither deals 0 Supernatural damage to Sim Ogre Dreadmind (5d12 = 23, 23 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (13 blocked).",
+   "Sim Binder — Vice Sim Ogre Dreadmind takes 36 physical damage (5d12) for failing to break free.",
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 21 Dodge (2d15) 2d15 2d15 11 3 8 11 Hit Wither deals 0 Supernatural damage to Sim Ogre Dreadmind (5d12 = 36, 36 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (9 blocked).",
+   "Sim Binder — Vice Sim Ogre Dreadmind takes 34 physical damage (5d12) for failing to break free.",
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 30 Dodge (2d15) 2d15 2d15 5 4 1 5 Critical Hit Wither deals 0 Supernatural damage to Sim Ogre Dreadmind (5d12 = 26 → 52, 52 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (28 blocked).",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (13 blocked).",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (15 blocked).",
+   "Sim Ogre Dreadmind — Mortal Coil Sim Warden takes 33 Supernatural damage; Sim Ogre Dreadmind gains that much temp HP until the start of their next turn.",
+   "Sim Ogre Dreadmind dodges — Wither (Manifest) Attack roll: 25 Dodge (2d15) 2d15 2d15 13 1 12 13 Hit Wither deals 0 Supernatural damage to Sim Ogre Dreadmind (5d12 = 30, 30 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (19 blocked)."
+  ],
+  "casts": []
+ }
+]

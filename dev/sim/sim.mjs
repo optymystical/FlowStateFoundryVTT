@@ -1307,7 +1307,8 @@ async function passCoat(actor, since) {
 
 /** Cast `values` at `targetTok` through the real Cast Spell path (no dialog). Returns true if a spell went off. */
 /**
- * A Mental character's turn: its `mind` (roster) in order, each entry once a turn while AP lasts. "ward" activates a shielding Ward (Dream Forms;
+ * A Mental character's turn: its `mind` (roster) in order while AP lasts. The Ward and Modes on allies go once a turn; Modes on foes come round
+ * again in turn (each one once per pass through the list) until the AP runs out. "ward" activates a shielding Ward (Dream Forms;
  * Nightmare Wards negate on their own, asked when damage comes). A Mode entry "<mode>[+]@<target>" Manifests at Melee (1 AP) when the target is in
  * reach, else Ranged (2 AP, 100 ft), walking closer if nothing is in range; "+" Enhances it while the Energy stays above a third.
  */
@@ -1316,14 +1317,15 @@ async function mentalTurn(actor, me) {
   s.turns++;
   s.turnMoved = 0;
   const mind = sim(actor).mind ?? [];
-  const done = new Set();
+  const done = new Set();          // used up for this turn: the Ward, Modes on allies, and anything that couldn't be done
+  let pass = new Set();             // Modes on foes used in this pass through the list: they come round again while AP lasts
   for (let step = 0; step < 12; step++) {
     if (down(actor) || over(me.parent)) return;
     const ap = actor.system.ap.value;
     if (ap < 1) return;
     let acted = false;
     for (const entry of mind) {
-      if (done.has(entry)) continue;
+      if (done.has(entry) || pass.has(entry)) continue;
       if (entry === "ward") {
         done.add(entry);
         const p = actor.system.icon?.system?.profile;
@@ -1360,7 +1362,7 @@ async function mentalTurn(actor, me) {
       if (ap < MRu.RANGES[range].ap) { done.add(entry); continue; }
       const stat0 = actor.system.derived?.effective?.[MRu.KINDS[MRu.wonderById(mode.wonder).kind].stat]?.value ?? 0;
       const enhance = enhanceWanted && actor.system.energy.value - Rules.statMin(stat0) > actor.system.energy.max / 3;
-      done.add(entry);
+      (allies.includes(pick) ? done : pass).add(entry);
       setTargets(pick);
       SIM.acting = actor.name;
       SIM.fill = () => ({});
@@ -1377,7 +1379,10 @@ async function mentalTurn(actor, me) {
       acted = true;
       break;
     }
-    if (!acted) return;
+    if (!acted) {
+      if (!pass.size) return;
+      pass = new Set();              // every Mode on foes had its go: start the list again with the AP left
+    }
   }
 }
 

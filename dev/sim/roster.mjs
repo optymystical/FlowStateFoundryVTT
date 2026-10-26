@@ -1329,3 +1329,5 @@ PASSES["mental-t1"] = { id: "mental-t1", note: "Mental T1 Wonders (Life, Death, 
   party: PARTY_MENTAL1, monsters: MONSTERS_MENTAL1, encounters: encountersFor(MONSTERS_MENTAL1, 1), backLine: true, spreadTargets: true };
 // T1 again once the AI presses Vice / Quicksand / Momentum and drives Beyond's Force straight down, with every damage card kept for a breakdown.
 PASSES["mental-t1b"] = { ...PASSES["mental-t1"], id: "mental-t1b", cardLog: "all" };
+// T1 once Modes on foes repeat while AP lasts (they were once a turn).
+PASSES["mental-t1c"] = { ...PASSES["mental-t1b"], id: "mental-t1c" };

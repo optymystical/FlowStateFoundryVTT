@@ -1,0 +1,1602 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 882,
+  "winner": "unfinished",
+  "pass": "mental-t1",
+  "rounds": 21,
+  "partyLeft": 5,
+  "monstersLeft": 9,
+  "followups": 0,
+  "knockbacks": {
+   "into": 12,
+   "down": 1
+  },
+  "used": {
+   "manifest:Sink": 120,
+   "defend:dodge": 673,
+   "manifest:Wither": 191,
+   "manifest:Fracture": 111,
+   "manifest:Wither+": 20,
+   "manifest:Waste": 20,
+   "manifest:Burden": 20,
+   "breakFree": 14,
+   "Break Free": 14,
+   "charge:Sim Binder": 11,
+   "opt:replace=ZS68sToLYRrgEiyt": 1,
+   "ward": 40,
+   "charge:Sim Goblin Witherer": 16,
+   "opt:replace=s7UG1bwBsl9vkKf8": 1,
+   "manifest:Bloom": 40,
+   "manifest:Decree": 40,
+   "manifest:Herald": 20,
+   "manifest:Flourish": 20,
+   "charge:Sim Warden": 11,
+   "opt:replace=IyC2cKu91xS6Nyj1": 1,
+   "opt:replace=hAkeOvFJZrD901eM": 1,
+   "opt:replace=37VMLN1nmXecQH73": 1,
+   "opt:dir=into": 12,
+   "manifest:Renewal": 19,
+   "opt:replace=TyHlifNmFzZ2Ygki": 1,
+   "opt:replace=2T6Z8eRTLx0y4EnZ": 1,
+   "opt:replace=loCz25kHdl1ccTBw": 1,
+   "opt:replace=ekcKtnl49SN2Ix3X": 1,
+   "opt:replace=uHPZvumkeBMTF3yF": 1,
+   "charge:Sim Herald": 14,
+   "opt:replace=tJnsVButH8nKyztp": 1,
+   "opt:replace=gVi05txthYM8HOgy": 1,
+   "opt:replace=NN64mil1VMDRA2hr": 1,
+   "opt:replace=G34VUN1yZBpOVXOH": 1,
+   "opt:replace=a1jV8CpNMsQOZsVP": 1,
+   "opt:replace=KedIxBsXHEyatm9v": 1,
+   "opt:replace=EyO1BSrwigN6BzTS": 1,
+   "opt:replace=OJbO8fc8DG4FgR48": 1,
+   "opt:replace=JcPpdnYuTHZRu8Uz": 1,
+   "opt:replace=dubSiQFsCHSAej81": 1,
+   "opt:replace=krdI3K89XHPd2nyW": 1,
+   "opt:replace=m8PSUTK6zSHIgZLo": 1,
+   "opt:replace=E9OzGxD988C92KlE": 1,
+   "opt:replace=mObuhdxQKkqmi57v": 1,
+   "opt:replace=DCPfz8fDW1HaUTnD": 1,
+   "opt:replace=K1XrPP7sRBeJqXzO": 1,
+   "opt:replace=4N709OybhSWFafdv": 1,
+   "opt:replace=VsXIRuXf9aUyD92m": 1,
+   "opt:replace=Bd7sPo2IMdYIyTqH": 1,
+   "opt:replace=ut1j7TgmQ5FQtn5T": 1,
+   "opt:replace=ddOW2evHo4LYKwzy": 1,
+   "opt:replace=FLhATm2SwsItGeQ5": 1,
+   "opt:replace=u3pbuhIlQJgd9oEj": 1,
+   "opt:replace=aRZ6vHmdSrqg9aRZ": 1,
+   "opt:replace=96KNG2OQqdDgRq2O": 1,
+   "opt:replace=VLUkGPunaN5VUBW3": 1,
+   "opt:replace=vOOsyrMMZaYYIjoB": 1,
+   "opt:replace=5d7Bzd3FqAXcJZmX": 1,
+   "opt:replace=HlOklPitMrNgoT2T": 1,
+   "opt:replace=ppm6sDg7Gm8o8GYR": 1,
+   "opt:replace=6ieTmtGReiYbL2vq": 1,
+   "opt:replace=AcNDnrJHc3AF1UhL": 1,
+   "opt:replace=gw71eXWXqp26prlN": 1,
+   "opt:replace=sMa7MiENYP3lUi9m": 1,
+   "opt:replace=vFzkwhMaVB1PTt3I": 1,
+   "opt:replace=XpPupXHrvriDl2zF": 1,
+   "opt:replace=mnRfBHe3Ptnd8h87": 1,
+   "opt:replace=uTxO3f1uml8V6Yi1": 1,
+   "opt:replace=6n6xcGL4NDyLCiWp": 1,
+   "opt:replace=hxBrehKlHleyqXQz": 1,
+   "opt:replace=Dc1vSYSVUHcDMoDW": 1,
+   "opt:replace=OqR5rFDU1MWURDFC": 1,
+   "opt:dir=down": 1
+  },
+  "hp": {
+   "Sim Warden#c85b": "625/792",
+   "Sim Mender#dhUz": "324/567",
+   "Sim Reaper#NI3f": "567/567",
+   "Sim Binder#QKaR": "567/567",
+   "Sim Herald#pKiQ": "567/567",
+   "Sim Goblin Witherer#d2DF": "255/281",
+   "Sim Goblin Witherer#bgtN": "485/529",
+   "Sim Goblin Witherer#h7Oz": "535/603",
+   "Sim Goblin Witherer#7mS9": "603/603",
+   "Sim Goblin Witherer#4LJ0": "574/603",
+   "Sim Goblin Sinker#4Wb9": "603/603",
+   "Sim Goblin Sinker#cpiU": "585/603",
+   "Sim Goblin Sinker#XWLi": "577/603",
+   "Sim Goblin Sinker#5Uam": "603/603",
+   "Sim Goblin Sinker#wAsp": "601/603"
+  },
+  "down": [
+   "Sim Goblin Witherer"
+  ],
+  "weapons": {},
+  "armor": {},
+  "creatures": [],
+  "ai": [
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 211,
+     "ward": 20,
+     "manifest:Bloom": 20,
+     "manifest:Decree": 20
+    },
+    "turnMoved": 0,
+    "manifests": 40
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 290,
+     "manifest:Bloom": 20,
+     "manifest:Flourish": 20,
+     "ward": 20,
+     "manifest:Renewal": 19
+    },
+    "turnMoved": 0,
+    "manifests": 59
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20,
+     "defend:dodge": 4,
+     "breakFree": 1,
+     "Break Free": 1
+    }
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither+": 20,
+     "manifest:Waste": 20
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 22,
+    "turns": 11,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 17,
+     "breakFree": 2,
+     "Break Free": 2,
+     "manifest:Wither": 11,
+     "manifest:Fracture": 11
+    },
+    "turnMoved": 0,
+    "manifests": 22
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 90,
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20,
+     "breakFree": 5,
+     "Break Free": 5
+    },
+    "turnMoved": 0,
+    "manifests": 40
+   },
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 60,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 60,
+    "used": {
+     "manifest:Burden": 20,
+     "manifest:Sink": 20,
+     "manifest:Fracture": 20
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20,
+     "defend:dodge": 12,
+     "breakFree": 5,
+     "Break Free": 5
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20,
+     "defend:dodge": 8,
+     "breakFree": 1,
+     "Break Free": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20,
+     "defend:dodge": 37
+    }
+   },
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Herald": 20,
+     "manifest:Decree": 20
+    },
+    "knockbacks": {
+     "into": 12,
+     "down": 1
+    }
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Witherer": [
+    "Unarmed"
+   ],
+   "Sim Goblin Sinker": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Goblin Witherer": [],
+   "Sim Goblin Sinker": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 6030,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3010,
+    "monsterHp": 6003,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2901,
+    "monsterHp": 5926,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2893,
+    "monsterHp": 5898,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2863,
+    "monsterHp": 5849,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2863,
+    "monsterHp": 5849,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2845,
+    "monsterHp": 5845,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 2845,
+    "monsterHp": 5767,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 2845,
+    "monsterHp": 5764,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 2825,
+    "monsterHp": 5695,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 2822,
+    "monsterHp": 5675,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 2822,
+    "monsterHp": 5629,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 2800,
+    "monsterHp": 5531,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 14,
+    "partyHp": 2782,
+    "monsterHp": 5528,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 15,
+    "partyHp": 2770,
+    "monsterHp": 5528,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 2770,
+    "monsterHp": 5512,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 17,
+    "partyHp": 2770,
+    "monsterHp": 5488,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 18,
+    "partyHp": 2760,
+    "monsterHp": 5488,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 19,
+    "partyHp": 2718,
+    "monsterHp": 5478,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 20,
+    "partyHp": 2718,
+    "monsterHp": 5440,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 21,
+    "partyHp": 2650,
+    "monsterHp": 5421,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 21,
+    "partyHp": 2650,
+    "monsterHp": 5421,
+    "partyDown": 0,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 410,
+   "monsters": 609
+  },
+  "lostBy": {
+   "party": 410,
+   "monsters": 609
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Weight (Tenet)": 60,
+    "prompt: Veil Ward": 110,
+    "prompt: Mortal Coil (Tenet)": 47,
+    "prompt: Sim Binder's charges on Sim Goblin Witherer": 30,
+    "prompt: Sim Goblin Witherer's charges on Sim Warden": 66,
+    "prompt: Aegis Ward: Sim Warden": 20,
+    "prompt: Verdant Soul (Tenet)": 29,
+    "prompt: Verdant Soul: give # temp HP to": 29,
+    "prompt: Gust (Tenet)": 18,
+    "prompt: Sim Warden's charges on Sim Goblin Witherer": 21,
+    "prompt: Sanctum Ward: Sim Mender": 20,
+    "prompt: Herald — Sim Goblin Witherer": 3,
+    "prompt: Gust — Sim Goblin Witherer": 6,
+    "prompt: Sim Herald's charges on Sim Goblin Witherer": 15,
+    "prompt: Herald — Sim Goblin Sinker": 3,
+    "prompt: Warden Ward": 9,
+    "prompt: Gust — Sim Goblin Sinker": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 626,
+  "winner": "unfinished",
+  "pass": "mental-t1",
+  "rounds": 21,
+  "partyLeft": 5,
+  "monstersLeft": 5,
+  "followups": 0,
+  "knockbacks": {
+   "into": 1,
+   "down": 2
+  },
+  "used": {
+   "manifest:Burden": 40,
+   "defend:dodge": 441,
+   "manifest:Sink": 40,
+   "manifest:Fracture": 40,
+   "manifest:Bloom": 60,
+   "manifest:Flourish": 40,
+   "ward": 40,
+   "charge:Sim Binder": 12,
+   "opt:replace=qAunkiqHfXLuw1yH": 1,
+   "manifest:Wither+": 40,
+   "manifest:Waste": 40,
+   "manifest:Larceny": 20,
+   "manifest:Herald": 40,
+   "manifest:Decree": 40,
+   "charge:Sim Herald": 13,
+   "opt:replace=uKfbc5j4hMmdnxss": 1,
+   "opt:replace=PcAqbM9DIyjPhAtb": 1,
+   "breakFree": 14,
+   "Break Free": 14,
+   "charge:Sim Raider Trickster": 22,
+   "opt:replace=M30NGLx8P4sZVrjK": 1,
+   "opt:replace=9bCtdlrEVJ8zfQc3": 1,
+   "opt:replace=XAQzz8S7DmRqXubL": 1,
+   "opt:replace=7TGa9yVtEJ85NMUg": 1,
+   "opt:replace=KP2ZOYrK915TnH6t": 1,
+   "opt:replace=z0zvep5cRDdf5J4Z": 1,
+   "opt:replace=IwR8uQq07QJf2ZQm": 1,
+   "opt:replace=mJJciXI1eiJVpczs": 1,
+   "opt:replace=aIQnCvsZBPA0IXO8": 1,
+   "opt:replace=m7UFmM1lR1xl45Sw": 1,
+   "opt:replace=TZ1TfCPE6qWoiM1s": 1,
+   "opt:replace=oHHCSepNtgzvab7R": 1,
+   "opt:replace=dtxRsnbadPjerscu": 1,
+   "opt:replace=YcTp2PwXaSC9Gdh9": 1,
+   "opt:replace=gxujByfxBAQh20ud": 1,
+   "charge:Sim Warden": 9,
+   "opt:replace=hnGwjAcVpXSaL0yQ": 1,
+   "opt:replace=QkELrilIrh8nlfUW": 1,
+   "opt:replace=frpqkNJ7yFZclDw9": 1,
+   "opt:replace=MJSC0INeASkcawFv": 1,
+   "opt:dir=into": 1,
+   "opt:replace=suQXqkmIj98dt825": 1,
+   "opt:replace=WmC8xcWu5p7JoR3Y": 1,
+   "opt:replace=oKBOEOGSK6DJdoFi": 1,
+   "opt:replace=MCfPEngph9XVN2fx": 1,
+   "opt:replace=1FQ790Xyo6H3EXkN": 1,
+   "opt:replace=tJkib9pJg7n37rEi": 1,
+   "opt:replace=FuDmuOOmCBJ0RQoB": 1,
+   "opt:replace=520sb5M7Dj62Kfx9": 1,
+   "opt:replace=KU9zqinfqBOa0k8W": 1,
+   "opt:replace=1mvRHtejSzwdKMMq": 1,
+   "opt:replace=WsbEvBbLtLJlAry3": 1,
+   "opt:replace=lqCN72TtmCehtazU": 1,
+   "opt:replace=CJomX5zVRafyrDez": 1,
+   "opt:replace=eTrKsCM1TLXtwp62": 1,
+   "opt:replace=O1km5Z9yeHgmVlFm": 1,
+   "opt:replace=mgTIYEFpy1AKPdRF": 1,
+   "opt:replace=5K3glTlaId4fiPQZ": 1,
+   "opt:replace=kLfD2I5ftwEcq8Nw": 1,
+   "opt:replace=cCOueOX4xPMwOkY6": 1,
+   "opt:replace=ILp21btoGBbDBGsE": 1,
+   "opt:replace=FM6dhZtwkpf27JNe": 1,
+   "opt:replace=zLjoM0slDUQrbE6N": 1,
+   "opt:dir=down": 2,
+   "opt:replace=uPzMN7d33Njr3Xed": 1,
+   "opt:replace=TDZpZ1tMtTbc5mIq": 1,
+   "opt:replace=Y05fUbTiqBg7JiQT": 1,
+   "opt:replace=y0iBn2YEllEaXb5d": 1,
+   "opt:replace=ojdXuSfDp1JpH3gX": 1,
+   "opt:replace=PvhOHzkXAjiUjHs1": 1,
+   "opt:replace=oqZqRymaP1NnsBpb": 1,
+   "opt:replace=ZqN1Y6G1hSpy656K": 1,
+   "opt:replace=o4zYhVYkQVOXucu4": 1,
+   "opt:replace=V5GdiQd7zNGSkvaX": 1,
+   "opt:replace=zO1tJlQsgXK1oWzt": 1,
+   "opt:replace=f5lTDuY8wVyyjPGg": 1
+  },
+  "hp": {
+   "Sim Warden#6BLQ": "726/792",
+   "Sim Mender#8MZ0": "477/512",
+   "Sim Reaper#RsPY": "567/567",
+   "Sim Binder#CnKP": "567/567",
+   "Sim Herald#YhfM": "567/567",
+   "Sim Raider Reaper#6br7": "641/647",
+   "Sim Raider Binder#yd0V": "724/765",
+   "Sim Raider Trickster#Of7z": "765/765",
+   "Sim Raider Pusher#MkU7": "747/765",
+   "Sim Raider Tender#YBvy": "765/765"
+  },
+  "down": [],
+  "weapons": {},
+  "armor": {},
+  "creatures": [],
+  "ai": [
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 60,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 60,
+    "used": {
+     "manifest:Burden": 20,
+     "manifest:Sink": 20,
+     "manifest:Fracture": 20
+    }
+   },
+   {
+    "name": "Sim Raider Reaper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 78,
+     "manifest:Wither+": 20,
+     "manifest:Waste": 20,
+     "breakFree": 5,
+     "Break Free": 5
+    },
+    "turnMoved": 0,
+    "manifests": 40
+   },
+   {
+    "name": "Sim Raider Binder",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Burden": 20,
+     "manifest:Sink": 20,
+     "defend:dodge": 97
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 140,
+     "ward": 20,
+     "manifest:Bloom": 20,
+     "manifest:Decree": 20
+    },
+    "turnMoved": 0,
+    "manifests": 40
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Bloom": 20,
+     "defend:dodge": 100,
+     "manifest:Flourish": 20,
+     "ward": 20
+    }
+   },
+   {
+    "name": "Sim Raider Tender",
+    "side": "monsters",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Bloom": 20,
+     "defend:dodge": 2,
+     "manifest:Flourish": 20
+    }
+   },
+   {
+    "name": "Sim Raider Trickster",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Fracture": 20,
+     "manifest:Larceny": 20
+    }
+   },
+   {
+    "name": "Sim Raider Pusher",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 20,
+    "used": {
+     "manifest:Herald": 20,
+     "defend:dodge": 24,
+     "breakFree": 9,
+     "Break Free": 9
+    }
+   },
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Herald": 20,
+     "manifest:Decree": 20
+    },
+    "knockbacks": {
+     "into": 1,
+     "down": 2
+    }
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither+": 20,
+     "manifest:Waste": 20
+    }
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Reaper": [
+    "Unarmed"
+   ],
+   "Sim Raider Binder": [
+    "Unarmed"
+   ],
+   "Sim Raider Trickster": [
+    "Unarmed"
+   ],
+   "Sim Raider Pusher": [
+    "Unarmed"
+   ],
+   "Sim Raider Tender": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Raider Reaper": [],
+   "Sim Raider Binder": [],
+   "Sim Raider Trickster": [],
+   "Sim Raider Pusher": [],
+   "Sim Raider Tender": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 3825,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3060,
+    "monsterHp": 3755,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3060,
+    "monsterHp": 3755,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3060,
+    "monsterHp": 3755,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3040,
+    "monsterHp": 3755,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 3040,
+    "monsterHp": 3755,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2994,
+    "monsterHp": 3750,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 2906,
+    "monsterHp": 3750,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 2904,
+    "monsterHp": 3750,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 2904,
+    "monsterHp": 3750,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 2904,
+    "monsterHp": 3733,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 2904,
+    "monsterHp": 3733,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 2904,
+    "monsterHp": 3679,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 2904,
+    "monsterHp": 3679,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 2904,
+    "monsterHp": 3679,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 2904,
+    "monsterHp": 3670,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 17,
+    "partyHp": 2904,
+    "monsterHp": 3670,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 18,
+    "partyHp": 2904,
+    "monsterHp": 3670,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 19,
+    "partyHp": 2904,
+    "monsterHp": 3661,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 20,
+    "partyHp": 2904,
+    "monsterHp": 3661,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2904,
+    "monsterHp": 3642,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2904,
+    "monsterHp": 3642,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 156,
+   "monsters": 183
+  },
+  "lostBy": {
+   "party": 156,
+   "monsters": 183
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Weight (Tenet)": 27,
+    "prompt: Verdant Soul (Tenet)": 39,
+    "prompt: Verdant Soul: give # temp HP to": 39,
+    "prompt: Sanctum Ward: Sim Mender": 20,
+    "prompt: Sim Binder's charges on Sim Raider Reaper": 1,
+    "prompt: Aegis Ward: Sim Warden": 20,
+    "prompt: Gust (Tenet)": 23,
+    "prompt: Sim Herald's charges on Sim Raider Reaper": 1,
+    "prompt: Veil Ward": 35,
+    "prompt: Mortal Coil (Tenet)": 27,
+    "prompt: Sim Binder's charges on Sim Raider Binder": 22,
+    "prompt: Sim Raider Trickster's charges on Sim Warden": 66,
+    "prompt: Sim Herald's charges on Sim Raider Binder": 12,
+    "prompt: Warden Ward": 21,
+    "prompt: Unbound (Tenet)": 5,
+    "prompt: Unbound: place a Chaos charge": 5,
+    "prompt: Sim Warden's charges on Sim Raider Binder": 12,
+    "prompt: Herald — Sim Raider Reaper": 1,
+    "prompt: Herald — Sim Raider Pusher": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 397,
+  "winner": "unfinished",
+  "pass": "mental-t1",
+  "rounds": 21,
+  "partyLeft": 5,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Burden": 20,
+   "defend:dodge": 290,
+   "manifest:Sink": 20,
+   "manifest:Fracture": 20,
+   "manifest:Bloom": 40,
+   "manifest:Flourish": 20,
+   "ward": 40,
+   "manifest:Herald": 20,
+   "manifest:Decree": 40,
+   "manifest:Wither+": 40,
+   "manifest:Waste": 30,
+   "charge:Sim Binder": 11,
+   "opt:replace=t126kJcLzU3m9a1I": 1,
+   "charge:Sim Warden": 8,
+   "opt:replace=Et15uWoAFrtr0jvU": 1,
+   "charge:Sim Herald": 10,
+   "opt:replace=OZi1sdPeSxAc55Nf": 1,
+   "opt:replace=gY1qsWOw6LhM2QLA": 1,
+   "breakFree": 10,
+   "Break Free": 10,
+   "opt:replace=Qk4HicACGbPy88Be": 1,
+   "opt:replace=xlFGZOWaVRCGT8Zt": 1,
+   "opt:replace=gQcyPwswpSrUcH1q": 1,
+   "opt:replace=a8va3tqCh9HWKAnT": 1,
+   "opt:replace=4JLxUpIW06ygtSbc": 1,
+   "opt:replace=tTCZrWInqKxtX8r5": 1,
+   "opt:replace=OVSW2Tv1D5xON2lH": 1,
+   "opt:replace=BzjMJrsu3hz2tQYO": 1,
+   "opt:replace=BKu1ILDzcPLQ0epU": 1,
+   "opt:replace=RrdLoZxBC6bRud9u": 1,
+   "opt:replace=OzxonGXIGIN3kKoT": 1,
+   "opt:replace=CBRGsaxSSr2yfguu": 1,
+   "opt:replace=kLF9pikqAmSPPkP0": 1,
+   "opt:replace=7fFtANa0zSqeqlcv": 1,
+   "opt:replace=dGQtrWyYD1aWSk3b": 1,
+   "opt:replace=zdZ6vNGFzApB1R4R": 1,
+   "opt:replace=wfcSm0JQF4y61NYh": 1,
+   "opt:replace=HMpSIeL1Vyxbki1J": 1,
+   "opt:replace=IWEqBtna0Lz9pfTi": 1,
+   "opt:replace=NfLILFOxKFbHgCZb": 1,
+   "opt:replace=k7N640gnXapTV7uJ": 1,
+   "opt:replace=AcKev7nRimksWVf1": 1,
+   "opt:replace=GONvyQppRwrdLMsc": 1,
+   "opt:replace=s9WjfcII5UenUiNR": 1,
+   "opt:replace=TzlacpoLLrtDYjBZ": 1
+  },
+  "hp": {
+   "Sim Warden#ByZP": "766/792",
+   "Sim Mender#Ddxq": "507/543",
+   "Sim Reaper#mYza": "567/567",
+   "Sim Binder#ZvA7": "567/567",
+   "Sim Herald#OPrt": "567/567",
+   "Sim Ogre Dreadmind#yBlS": "2016/2016"
+  },
+  "down": [],
+  "weapons": {},
+  "armor": {},
+  "creatures": [],
+  "ai": [
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 60,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 60,
+    "used": {
+     "manifest:Burden": 20,
+     "manifest:Sink": 20,
+     "manifest:Fracture": 20
+    }
+   },
+   {
+    "name": "Sim Ogre Dreadmind",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 30,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 180,
+     "manifest:Wither+": 20,
+     "manifest:Waste": 10,
+     "breakFree": 10,
+     "Break Free": 10
+    },
+    "turnMoved": 0,
+    "manifests": 30
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Bloom": 20,
+     "defend:dodge": 100,
+     "manifest:Flourish": 20,
+     "ward": 20
+    }
+   },
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Herald": 20,
+     "manifest:Decree": 20
+    }
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither+": 20,
+     "manifest:Waste": 20
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 20,
+     "manifest:Bloom": 20,
+     "manifest:Decree": 20,
+     "defend:dodge": 10
+    },
+    "manifests": 40
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Dreadmind": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Ogre Dreadmind": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3034,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3034,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3034,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3034,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 17,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 18,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 19,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 20,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2974,
+    "monsterHp": 2016,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 86,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 86,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Weight (Tenet)": 19,
+    "prompt: Sanctum Ward: Sim Mender": 20,
+    "prompt: Sim Binder's charges on Sim Ogre Dreadmind": 94,
+    "prompt: Mortal Coil (Tenet)": 21,
+    "prompt: Riposte Ward": 59,
+    "prompt: Aegis Ward: Sim Warden": 20,
+    "prompt: Verdant Soul (Tenet)": 29,
+    "prompt: Verdant Soul: give # temp HP to": 29,
+    "prompt: Sim Warden's charges on Sim Ogre Dreadmind": 19,
+    "prompt: Gust (Tenet)": 16,
+    "prompt: Sim Herald's charges on Sim Ogre Dreadmind": 12
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

@@ -125,7 +125,10 @@ function headless(kind) {
     // Dialogs fill in what a player picked last time (v0.78): the AI starts from the defaults instead, so its own picks are the only ones.
     form.reset();
     for (const sel of form.querySelectorAll("select")) sel.dispatchEvent(new Event("change", { bubbles: true }));
-    try { fillForm(form, SIM.fill?.(title, content, form)); } catch (err) { log.errors.push(`fill ${title}: ${err.message}`); }
+    let auto = null;
+    try { auto = SIM.auto?.(title, content, form) ?? null; } catch (err) { log.errors.push(`auto ${title}: ${err.message}`); }
+    if (auto === "decline") return null;
+    try { fillForm(form, auto ?? SIM.fill?.(title, content, form)); } catch (err) { log.errors.push(`fill ${title}: ${err.message}`); }
     if (kind === "prompt") {
       const cb = opts.ok?.callback;
       return cb ? cb(new Event("submit"), { form, dataset: { action: "ok" } }, dlg) : true;
@@ -137,6 +140,47 @@ function headless(kind) {
   };
 }
 D.prompt = headless("prompt"); D.confirm = headless("confirm"); D.wait = headless("wait");
+
+/**
+ * Popups the AI answers the same way whoever is acting (Mental reactions):
+ * - A Nightmare Ward's "damage is coming: spend 1 RP to negate": once per damage instance, when the hit is worth it (at least 5, and at least half
+ *   of what the Ward negates), so the RP isn't all spent on one swing and some is left for dodging.
+ * - Charges at a roll ("<caster>'s charges on <roller>"): against a foe, replace the roll when Decree's static result or a Fracture / Larceny reroll
+ *   is expected to come out lower (higher for an ally); Mandate charges push the result the helpful way.
+ */
+SIM.auto = (title, content, form) => {
+  if (/ Ward$/.test(title) && /damage is coming/.test(content)) {
+    if (/Used \d+ time/.test(content)) return "decline";
+    const m = content.match(/<strong>(\d+)<\/strong>[^<]*damage is coming\. Spend 1 RP to negate up to <strong>(\d+)<\/strong>/);
+    const left = Number(m?.[1] ?? 0), n = Number(m?.[2] ?? 0);
+    return left >= 5 && left >= n / 2 ? {} : "decline";
+  }
+  const cm = title.match(/^(.+)'s charges on (.+)$/);
+  if (cm) {
+    const side = name => (game.actors.getName(name)?.getFlag("flowstate", "sim")?.party ? "party" : "monsters");
+    const foe = side(cm[1]) !== side(cm[2]);
+    const total = Number(content.match(/:\s*<strong>(\d+)<\/strong>/)?.[1] ?? NaN);
+    const out = {};
+    const sel = form.querySelector('select[name="replace"]');
+    let best = null;
+    for (const o of sel ? [...sel.options] : []) {
+      if (!o.value) continue;
+      const dec = o.textContent.match(/the roll becomes (\d+)/), rr = o.textContent.match(/reroll at (?:(\d+)d)?d(\d+)/);
+      const expect = dec ? Number(dec[1]) : rr ? (Number(rr[1] ?? 1) * (Number(rr[2]) + 1)) / 2 : null;
+      if (expect === null || Number.isNaN(total)) continue;
+      const gain = foe ? total - expect : expect - total;
+      if (gain >= 2 && (!best || gain > best.gain)) best = { value: o.value, gain };
+    }
+    if (best) out.replace = best.value;
+    for (const b of form.querySelectorAll('input[name^="m:"]')) {
+      const minus = /Mandate<\/strong>\s*−/.test(b.closest("label")?.innerHTML ?? "");
+      if (minus === foe) out[b.name] = true;
+    }
+    if (Object.keys(out).length && F) { F.used = F.used ?? {}; bump(F.used, `charge:${cm[1]}`); }
+    return Object.keys(out).length ? out : "decline";
+  }
+  return null;
+};
 
 /* ---- Building the actors ---- */
 
@@ -1308,7 +1352,9 @@ async function mentalTurn(actor, me) {
       SIM.fill = () => ({});
       const before = new Set(game.messages.keys());
       let ok = null;
-      try { ok = await Mn.manifest(actor, { mode: modeId, range, enhance, burst: false }); } catch (err) { log.errors.push(`manifest ${actor.name}: ${err.stack?.slice(0, 400)}`); }
+      const foeTarget = !allies.includes(pick);
+      const choices = { "choice:sign": foeTarget ? "minus" : "plus", "choice:size": foeTarget ? "down" : "up" };
+      try { ok = await Mn.manifest(actor, { mode: modeId, range, enhance, burst: false, ...choices }); } catch (err) { log.errors.push(`manifest ${actor.name}: ${err.stack?.slice(0, 400)}`); }
       if (!ok) { note(actor, `manifest:refused(${mode.name})`); continue; }
       s.manifests = (s.manifests ?? 0) + 1;
       if (!allies.includes(pick)) s.attacks++;

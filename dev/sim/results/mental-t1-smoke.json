@@ -1,0 +1,573 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 842,
+  "winner": "unfinished",
+  "pass": "mental-t1",
+  "rounds": 21,
+  "partyLeft": 3,
+  "monstersLeft": 10,
+  "followups": 0,
+  "knockbacks": {
+   "into": 12,
+   "down": 1
+  },
+  "used": {
+   "manifest:Wither": 200,
+   "defend:dodge": 622,
+   "manifest:Fracture": 120,
+   "manifest:Herald": 20,
+   "opt:dir=into": 12,
+   "manifest:Decree": 37,
+   "manifest:Sink": 120,
+   "manifest:Wither+": 20,
+   "manifest:Waste": 20,
+   "ward": 23,
+   "manifest:Bloom": 23,
+   "manifest:Flourish": 6,
+   "manifest:Burden": 20,
+   "breakFree": 15,
+   "Break Free": 15,
+   "manifest:Renewal": 2,
+   "opt:dir=down": 1
+  },
+  "hp": {
+   "Sim Warden#qmco": "385/792",
+   "Sim Mender#982Z": "278/567",
+   "Sim Reaper#q4zM": "291/567",
+   "Sim Binder#Z3EV": "567/567",
+   "Sim Herald#eCEU": "567/567",
+   "Sim Goblin Witherer#21SH": "385/455",
+   "Sim Goblin Witherer#QXRv": "595/603",
+   "Sim Goblin Witherer#SrxK": "603/603",
+   "Sim Goblin Witherer#NXCf": "603/603",
+   "Sim Goblin Witherer#jNta": "603/603",
+   "Sim Goblin Sinker#JQEm": "603/603",
+   "Sim Goblin Sinker#661g": "603/603",
+   "Sim Goblin Sinker#Rmij": "603/603",
+   "Sim Goblin Sinker#fZfA": "603/603",
+   "Sim Goblin Sinker#mdKv": "588/603"
+  },
+  "down": [
+   "Sim Warden",
+   "Sim Mender"
+  ],
+  "weapons": {},
+  "armor": {},
+  "creatures": [],
+  "ai": [
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 97,
+     "manifest:Bloom": 6,
+     "manifest:Flourish": 6,
+     "ward": 6,
+     "manifest:Renewal": 2
+    },
+    "turnMoved": 0,
+    "manifests": 14
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 17,
+    "turns": 17,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 175,
+     "ward": 17,
+     "manifest:Bloom": 17,
+     "manifest:Decree": 17
+    },
+    "turnMoved": 0,
+    "manifests": 34
+   },
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Herald": 20,
+     "manifest:Decree": 20
+    },
+    "knockbacks": {
+     "into": 12,
+     "down": 1
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 26,
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20
+    },
+    "turnMoved": 0,
+    "manifests": 40
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 98,
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20
+    },
+    "turnMoved": 0,
+    "manifests": 40
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20,
+     "defend:dodge": 27,
+     "breakFree": 11,
+     "Break Free": 11
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20,
+     "defend:dodge": 12,
+     "breakFree": 2,
+     "Break Free": 2
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 15,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither+": 20,
+     "manifest:Waste": 20,
+     "defend:dodge": 167
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20
+    }
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 20
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 40,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 40,
+    "used": {
+     "manifest:Wither": 20,
+     "manifest:Fracture": 20,
+     "defend:dodge": 4,
+     "breakFree": 2,
+     "Break Free": 2
+    }
+   },
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 60,
+    "turns": 20,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 60,
+    "used": {
+     "manifest:Burden": 20,
+     "manifest:Sink": 20,
+     "manifest:Fracture": 20,
+     "defend:dodge": 14
+    }
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Witherer": [
+    "Unarmed"
+   ],
+   "Sim Goblin Sinker": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Goblin Witherer": [],
+   "Sim Goblin Sinker": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 6030,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3031,
+    "monsterHp": 6008,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2991,
+    "monsterHp": 6008,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2974,
+    "monsterHp": 6008,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2961,
+    "monsterHp": 5923,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2901,
+    "monsterHp": 5915,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2839,
+    "monsterHp": 5915,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 2541,
+    "monsterHp": 5915,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 2502,
+    "monsterHp": 5890,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 2461,
+    "monsterHp": 5890,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 2461,
+    "monsterHp": 5890,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 2444,
+    "monsterHp": 5890,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 2377,
+    "monsterHp": 5878,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 2371,
+    "monsterHp": 5876,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 2319,
+    "monsterHp": 5863,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 2302,
+    "monsterHp": 5835,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 17,
+    "partyHp": 2263,
+    "monsterHp": 5818,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 18,
+    "partyHp": 2142,
+    "monsterHp": 5805,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 19,
+    "partyHp": 2115,
+    "monsterHp": 5805,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 20,
+    "partyHp": 2115,
+    "monsterHp": 5796,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2088,
+    "monsterHp": 5789,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 21,
+    "partyHp": 2088,
+    "monsterHp": 5789,
+    "partyDown": 2,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 972,
+   "monsters": 241
+  },
+  "lostBy": {
+   "party": 972,
+   "monsters": 241
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Gust (Tenet)": 19,
+    "prompt: Herald — Sim Goblin Witherer": 2,
+    "prompt: Veil Ward": 184,
+    "prompt: Gust — Sim Goblin Witherer": 5,
+    "prompt: Weight (Tenet)": 63,
+    "prompt: Sim Herald's charges on Sim Goblin Witherer": 193,
+    "prompt: Mortal Coil (Tenet)": 69,
+    "prompt: Aegis Ward: Sim Warden": 17,
+    "prompt: Verdant Soul (Tenet)": 20,
+    "prompt: Verdant Soul: give # temp HP to": 20,
+    "prompt: Sanctum Ward: Sim Mender": 6,
+    "prompt: Sim Warden's charges on Sim Goblin Witherer": 132,
+    "prompt: Sim Binder's charges on Sim Goblin Witherer": 78,
+    "prompt: Sim Goblin Witherer's charges on Sim Warden": 296,
+    "prompt: Herald — Sim Goblin Sinker": 4,
+    "prompt: Warden Ward": 25,
+    "prompt: Gust — Sim Goblin Sinker": 2,
+    "prompt: Sim Goblin Witherer's charges on Sim Reaper": 45
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

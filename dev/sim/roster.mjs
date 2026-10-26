@@ -1264,3 +1264,66 @@ const PARTY_MBENCH_SHROUD = [{ ...PARTY_MBENCH[0], stats: { grasp: 45, build: 30
 PASSES["magic-bench-shroud"] = { id: "magic-bench-shroud", note: "School benchmark, Magic only: an unarmored caster against three raiders protected by Shrouds (no armor), 4 rounds, two fights each.",
   party: PARTY_MBENCH_SHROUD, monsters: SHROUD_RAIDERS, deploy: "magicbench", maxRounds: 4,
   encounters: BENCH_SCHOOLS.flatMap(([id], rotation) => [1, 2].map(rep => ({ id: `${id}-${rep}`, group: "raiders", rotation }))) };
+
+/* -------------------------------------------- */
+/*  Mental passes: tier by tier                   */
+/* -------------------------------------------- */
+
+// The user's setup (26 Oct 2026): Mental only, same-tier Mental monsters, no prep. Everyone has Mental Theory T5 from the start (15 SP); the Wonder trees
+// are the pass's tier group only. No armor (that's Martial): Mental defense is the Icon's Ward and HP. Alignment matches the Wonder's kind (Dream /
+// Nightmare), deeper the tankier the build (tank 3, middle 2, damage 1). `mind` is the AI's priority list: "ward" (activate a shielding Ward), then
+// Modes as "<mode id>@<target>" (target: weakest, strongest, nearest foe; threatened, hurt ally; self), "+" to Enhance when the Energy allows.
+const MT = (o) => ({ "mental-theory": 5, ...o });
+const LIFE = "mental-life-dream", DEATH = "mental-death-nightmare", ORDER = "mental-order-dream", CHAOS = "mental-chaos-nightmare", BEYOND = "mental-beyond-dream", BELOW = "mental-below-nightmare";
+const ICON = (form, tenet) => ({ form, tenet });
+const AL = (kind, level) => ({ kind, level });
+export const PARTY_MENTAL1 = [
+  { id: "warden", name: "Sim Warden", role: "tank", note: "Tank: Life T4 and Order T2, an Aegis Icon (Verdant Soul), Dream 3.", stats: { will: 40, con: 30, pon: 25 },
+    loadouts: [{ label: "Life/Order", trees: MT({ [LIFE]: 4, [ORDER]: 2 }), armor: null, weapons: [], icon: ICON("aegis", `${LIFE}:verdant-soul`), alignment: AL("dream", 3),
+      mind: ["ward", `${LIFE}:bloom@threatened`, `${ORDER}:decree@strongest`, `${LIFE}:flourish@self`] }] },
+  { id: "mender", name: "Sim Mender", role: "support", note: "Healer: Life T5 (Bloom, Flourish, Renewal), a Sanctum Icon (Verdant Soul), Dream 2.", stats: { pon: 45, will: 25, con: 20 },
+    loadouts: [{ label: "Life", trees: MT({ [LIFE]: 5 }), armor: null, weapons: [], icon: ICON("sanctum", `${LIFE}:verdant-soul`), alignment: AL("dream", 2),
+      mind: [`${LIFE}:renewal@hurt`, `${LIFE}:bloom@threatened`, `${LIFE}:flourish@threatened`, "ward"] }] },
+  { id: "reaper", name: "Sim Reaper", role: "caster", note: "Damage: Death T5 (Wither, Waste, Execute), a Veil Icon (Mortal Coil), Nightmare 1.", stats: { snap: 45, con: 25, will: 20 },
+    loadouts: [{ label: "Death", trees: MT({ [DEATH]: 5 }), armor: null, weapons: [], icon: ICON("veil", `${DEATH}:mortal-coil`), alignment: AL("nightmare", 1),
+      mind: [`${DEATH}:wither+@weakest`, `${DEATH}:waste@strongest`] }] },
+  { id: "binder", name: "Sim Binder", role: "caster", note: "Control: Below T4 (Sink, Burden) and Chaos T2 (Fracture), a Warden Icon (Weight), Nightmare 2.", stats: { snap: 45, will: 25, con: 20 },
+    loadouts: [{ label: "Below/Chaos", trees: MT({ [BELOW]: 4, [CHAOS]: 2 }), armor: null, weapons: [], icon: ICON("warden", `${BELOW}:weight`), alignment: AL("nightmare", 2),
+      mind: [`${BELOW}:burden@strongest`, `${BELOW}:sink@nearest`, `${CHAOS}:fracture@strongest`] }] },
+  { id: "herald", name: "Sim Herald", role: "caster", note: "Force: Beyond T4 (Herald, Redirect) and Order T2 (Decree), an Aegis Icon (Gust), Dream 1.", stats: { pon: 45, con: 25, will: 20 },
+    loadouts: [{ label: "Beyond/Order", trees: MT({ [BEYOND]: 4, [ORDER]: 2 }), armor: null, weapons: [], icon: ICON("aegis", `${BEYOND}:gust`), alignment: AL("dream", 1),
+      mind: [`${BEYOND}:herald@nearest`, `${ORDER}:decree@strongest`] }] }
+];
+export const MONSTERS_MENTAL1 = {
+  swarm: {
+    label: "Swarm", note: "Ten goblin mystics (20 Skill Points: Mental Theory T5 and a T1 Wonder at T2 with another at T1): Witherers and Sinkers.",
+    kinds: [
+      { id: "goblin-witherer", name: "Sim Goblin Witherer", count: 5, size: 3, sp: 20, stats: { snap: 45, con: 35, will: 20 }, trees: MT({ [DEATH]: 2, [CHAOS]: 1 }), armor: null, weapons: [],
+        icon: ICON("veil", `${DEATH}:mortal-coil`), alignment: AL("nightmare", 1), mind: [`${DEATH}:wither@weakest`, `${CHAOS}:fracture@strongest`] },
+      { id: "goblin-sinker", name: "Sim Goblin Sinker", count: 5, size: 3, sp: 20, stats: { snap: 45, con: 35, will: 20 }, trees: MT({ [BELOW]: 2, [DEATH]: 1 }), armor: null, weapons: [],
+        icon: ICON("warden", `${BELOW}:weight`), alignment: AL("nightmare", 1), mind: [`${BELOW}:sink@nearest`, `${DEATH}:wither@weakest`] }
+    ]
+  },
+  raiders: {
+    label: "Raiders", note: "Five mystic raiders (25 Skill Points: Mental Theory T5 and one T1 Wonder at T4), Nightmare and Dream.",
+    kinds: [
+      { id: "raider-reaper", name: "Sim Raider Reaper", count: 1, size: 3, sp: 25, stats: { snap: 55, con: 50, will: 20 }, trees: MT({ [DEATH]: 4 }), armor: null, weapons: [],
+        icon: ICON("veil", `${DEATH}:mortal-coil`), alignment: AL("nightmare", 1), mind: [`${DEATH}:wither+@weakest`, `${DEATH}:waste@strongest`] },
+      { id: "raider-binder", name: "Sim Raider Binder", count: 1, size: 3, sp: 25, stats: { snap: 55, con: 50, will: 20 }, trees: MT({ [BELOW]: 4 }), armor: null, weapons: [],
+        icon: ICON("warden", `${BELOW}:weight`), alignment: AL("nightmare", 2), mind: [`${BELOW}:burden@strongest`, `${BELOW}:sink@nearest`] },
+      { id: "raider-trickster", name: "Sim Raider Trickster", count: 1, size: 3, sp: 25, stats: { snap: 55, con: 50, will: 20 }, trees: MT({ [CHAOS]: 4 }), armor: null, weapons: [],
+        icon: ICON("veil", `${CHAOS}:unbound`), alignment: AL("nightmare", 1), mind: [`${CHAOS}:fracture@strongest`, `${CHAOS}:larceny@strongest`] },
+      { id: "raider-pusher", name: "Sim Raider Pusher", count: 1, size: 3, sp: 25, stats: { pon: 55, con: 50, will: 20 }, trees: MT({ [BEYOND]: 4 }), armor: null, weapons: [],
+        icon: ICON("aegis", `${BEYOND}:gust`), alignment: AL("dream", 1), mind: [`${BEYOND}:herald@nearest`] },
+      { id: "raider-tender", name: "Sim Raider Tender", count: 1, size: 3, sp: 25, role: "support", stats: { pon: 55, con: 50, will: 20 }, trees: MT({ [LIFE]: 4 }), armor: null, weapons: [],
+        icon: ICON("sanctum", `${LIFE}:verdant-soul`), alignment: AL("dream", 2), mind: [`${LIFE}:bloom@threatened`, `${LIFE}:flourish@threatened`] }
+    ]
+  },
+  boss: {
+    label: "Boss", note: "An Ogre Dreadmind (Size 4, 30 Skill Points: Mental Theory T5 and Death T5), a natural Riposte Icon, Nightmare 3.",
+    kinds: [{ id: "ogre-dreadmind", name: "Sim Ogre Dreadmind", count: 1, size: 4, sp: 30, stats: { con: 110, snap: 80, will: 40 }, trees: MT({ [DEATH]: 5 }), armor: null, weapons: [],
+      icon: ICON("riposte", `${DEATH}:mortal-coil`), alignment: AL("nightmare", 3), mind: [`${DEATH}:wither+@weakest`, `${DEATH}:waste@strongest`, `${DEATH}:execute@weakest`] }]
+  }
+};
+PASSES["mental-t1"] = { id: "mental-t1", note: "Mental T1 Wonders (Life, Death, Order, Chaos, Beyond, Below); Mental Theory T5 for everyone; Mental monsters of the same Wonders.",
+  party: PARTY_MENTAL1, monsters: MONSTERS_MENTAL1, encounters: encountersFor(MONSTERS_MENTAL1, 1), backLine: true, spreadTargets: true };

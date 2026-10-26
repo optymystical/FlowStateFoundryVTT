@@ -21,6 +21,8 @@ const CR = await import("/systems/flowstate/module/conjure-rules.mjs");
 const Arc = await import("/systems/flowstate/module/arcana.mjs");
 const Mart = await import("/systems/flowstate/module/martial.mjs");
 const Rules = await import("/systems/flowstate/module/rules.mjs");
+const Mn = await import("/systems/flowstate/module/mental.mjs");
+const MRu = await import("/systems/flowstate/module/mental-rules.mjs");
 
 const SIM = (window.SIM = window.SIM ?? {});
 SIM.results = SIM.results ?? [];
@@ -182,13 +184,16 @@ async function makeActor(spec, loadout, { party, folder }) {
     name: spec.name, type: party ? "character" : "npc", folder: folder.id,
     system: { stats: R.statBlock(loadout.stats ?? spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {} },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
-    flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null } } }
+    flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null, mind: loadout.mind ?? null },
+      ...(loadout.alignment ? { alignment: loadout.alignment } : {}) } }
   });
   const natural = !party && spec.natural !== false;
   const slots = loadout.weapons.filter(w => w.type !== "unarmed");
   const stats = loadout.stats ?? spec.stats;          // a loadout can split the stats its own way (a hybrid build)
   const items = [loadout.armor ? armorData(loadout.armor, stats, sp, natural) : null,          // no armor: Unarmored
     loadout.foci ? fociData(loadout.foci, stats, sp, natural) : null, loadout.shroud ? shroudData(loadout.shroud, stats, sp, natural) : null,
+    // A Mental Icon (`icon: { form, tenet }`): attuned, with its Tenet; Graded to Willpower (its Ward's stat).
+    ...(loadout.icon ? [Cat.itemData(`icon.${loadout.icon.form}`, { grade: R.gradeFor((stats.will ?? 0) + bonusOf(sp)), system: { attuned: true, tenet: loadout.icon.tenet ?? "", natural: !!natural } })] : []),
     // Affixes (each its own item), attuned to the side given (`defensive:jasper` / `offensive:quartz`; Defensive by default).
     ...(loadout.affixes ?? []).map(a => { const [side, key] = a.includes(":") ? a.split(":") : ["defensive", a]; return Cat.itemData(`affix.${key}`, { system: { side, attuned: true } }); }),
     ...slots.map(w => foundry.utils.mergeObject(weaponData(w, stats, sp, natural), { "flags.flowstate.simPrimary": !!w.primary })),
@@ -1243,6 +1248,79 @@ async function passCoat(actor, since) {
 }
 
 /** Cast `values` at `targetTok` through the real Cast Spell path (no dialog). Returns true if a spell went off. */
+/**
+ * A Mental character's turn: its `mind` (roster) in order, each entry once a turn while AP lasts. "ward" activates a shielding Ward (Dream Forms;
+ * Nightmare Wards negate on their own, asked when damage comes). A Mode entry "<mode>[+]@<target>" Manifests at Melee (1 AP) when the target is in
+ * reach, else Ranged (2 AP, 100 ft), walking closer if nothing is in range; "+" Enhances it while the Energy stays above a third.
+ */
+async function mentalTurn(actor, me) {
+  const s = stat(actor);
+  s.turns++;
+  s.turnMoved = 0;
+  const mind = sim(actor).mind ?? [];
+  const done = new Set();
+  for (let step = 0; step < 12; step++) {
+    if (down(actor) || over(me.parent)) return;
+    const ap = actor.system.ap.value;
+    if (ap < 1) return;
+    let acted = false;
+    for (const entry of mind) {
+      if (done.has(entry)) continue;
+      if (entry === "ward") {
+        done.add(entry);
+        const p = actor.system.icon?.system?.profile;
+        if (!p?.valid || p.kind === "negate" || p.kind === "persistent") continue;
+        if (Act.spellEffects(actor, "shield").some(e => e.flags.flowstate.spellEffect.caster === actor.uuid)) continue;
+        SIM.acting = actor.name; SIM.fill = () => ({});
+        const before = actor.system.ap.value;
+        try { await Mn.activateWard(actor); } catch (err) { log.errors.push(`ward ${actor.name}: ${err.stack?.slice(0, 300)}`); }
+        await settle();
+        if (actor.system.ap.value < before) { note(actor, "ward"); acted = true; break; }
+        continue;
+      }
+      const [head, who] = entry.split("@");
+      const enhanceWanted = head.endsWith("+"), modeId = head.replace(/\+$/, "");
+      const mode = MRu.modeById(modeId);
+      if (!mode || !MRu.knownWonders(actor.system.trees ?? {}).some(w => w.modes.some(m => m.id === modeId))) { done.add(entry); continue; }
+      const foes = foesOf(me.parent, me), allies = [me, ...alliesOf(me.parent, me)];
+      const hp = t => t.actor.system.hp.value, frac = t => t.actor.system.hp.value / Math.max(1, t.actor.system.hp.max);
+      const pick = who === "self" ? me
+        : who === "threatened" ? mostThreatened(me, allies)
+        : who === "hurt" ? [...allies].filter(t => frac(t) < 0.85).sort((a, b) => frac(a) - frac(b))[0]
+        : who === "strongest" ? [...foes].sort((a, b) => b.actor.system.hp.max - a.actor.system.hp.max)[0]
+        : who === "nearest" ? [...foes].sort((a, b) => dist(me, a) - dist(me, b))[0]
+        : [...foes].sort((a, b) => hp(a) - hp(b))[0];
+      if (!pick) { done.add(entry); continue; }
+      const reach = actor.system.derived?.size?.melee ?? 5;
+      const d = pick === me ? 0 : dist(me, pick);
+      if (d > 100.01) {
+        if (allies.includes(pick)) { done.add(entry); continue; }
+        if (!(await approach(actor, me, pick, 95))) { done.add(entry); continue; }
+        acted = true; break;
+      }
+      const range = d <= reach + 0.01 ? "melee" : "ranged";
+      if (ap < MRu.RANGES[range].ap) { done.add(entry); continue; }
+      const stat0 = actor.system.derived?.effective?.[MRu.KINDS[MRu.wonderById(mode.wonder).kind].stat]?.value ?? 0;
+      const enhance = enhanceWanted && actor.system.energy.value - Rules.statMin(stat0) > actor.system.energy.max / 3;
+      done.add(entry);
+      setTargets(pick);
+      SIM.acting = actor.name;
+      SIM.fill = () => ({});
+      const before = new Set(game.messages.keys());
+      let ok = null;
+      try { ok = await Mn.manifest(actor, { mode: modeId, range, enhance, burst: false }); } catch (err) { log.errors.push(`manifest ${actor.name}: ${err.stack?.slice(0, 400)}`); }
+      if (!ok) { note(actor, `manifest:refused(${mode.name})`); continue; }
+      s.manifests = (s.manifests ?? 0) + 1;
+      if (!allies.includes(pick)) s.attacks++;
+      note(actor, `manifest:${mode.name}${enhance ? "+" : ""}`);
+      await settle();
+      acted = true;
+      break;
+    }
+    if (!acted) return;
+  }
+}
+
 async function castAt(actor, targetTok, values, label) {
   setTargets(...(Array.isArray(targetTok) ? targetTok : [targetTok]).filter(Boolean));
   SIM.acting = actor.name;
@@ -1447,6 +1525,7 @@ async function actTurn(actor, me) {
   s.turnMoved = 0;
   const role = sim(actor).role;
   if (role === "kiter") return kiteTurn(actor, me);
+  if (sim(actor).mind?.length) { s.turns--; return mentalTurn(actor, me); }
   // A caster casts. A hybrid (spells and a weapon that rolls dice) casts first, its support and one damage spell, then fights with the weapon.
   if (isCaster(actor)) {
     const armed = actor.items.some(i => i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed" && (i.system.profile?.dice ?? 0) > 0);
@@ -1654,7 +1733,7 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     for (const p of P.party) party.push(await makeActor(p, p.loadouts[enc.rotation], { party: true, folder: pf }));
     const monsterActors = [];
     for (const k of P.monsters[enc.group].kinds) {
-      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud, focus: k.focus, conj: k.conj }, { party: false, folder: mf });
+      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud, focus: k.focus, conj: k.conj, icon: k.icon, alignment: k.alignment, mind: k.mind }, { party: false, folder: mf });
       for (let i = 0; i < k.count; i++) monsterActors.push(a);
     }
     await deploy(scene, party, monsterActors, P.deploy, P.party[0].loadouts[enc.rotation]);

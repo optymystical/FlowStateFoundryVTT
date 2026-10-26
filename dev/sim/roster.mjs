@@ -1331,3 +1331,19 @@ PASSES["mental-t1"] = { id: "mental-t1", note: "Mental T1 Wonders (Life, Death, 
 PASSES["mental-t1b"] = { ...PASSES["mental-t1"], id: "mental-t1b", cardLog: "all" };
 // T1 once Modes on foes repeat while AP lasts (they were once a turn).
 PASSES["mental-t1c"] = { ...PASSES["mental-t1b"], id: "mental-t1c" };
+
+// Mental T1 against mixed enemy groups (the user's ask): each group mixes pure Martial, Magic and Mental builds, from the Magic vs Martial groups and
+// the Mental T1 ones. The boss fight is the Mental Ogre with a Martial and a Magic raider beside it.
+const pickKind = (groups, group, id, count) => ({ ...groups[group].kinds.find(k => k.id === id), count });
+const MONSTERS_MENTAL1_MIX = {
+  swarm: { label: "Swarm (mixed)", note: "Ten goblins: 3 Martial Hackers, 2 Magic Cutters and a Stabber, 2 Mental Witherers and 2 Sinkers.",
+    kinds: [pickKind(MONSTERS_MIX, "swarm-martial", "goblin-hacker", 3), pickKind(MONSTERS_MIX, "swarm-magic", "goblin-cutter", 2), pickKind(MONSTERS_MIX, "swarm-magic", "goblin-stabber", 1),
+      pickKind(MONSTERS_MENTAL1, "swarm", "goblin-witherer", 2), pickKind(MONSTERS_MENTAL1, "swarm", "goblin-sinker", 2)] },
+  raiders: { label: "Raiders (mixed)", note: "Five raiders: a Martial Brute and Gunner, a Magic Pyro, a Mental Reaper and Tender.",
+    kinds: [pickKind(MONSTERS_MIX, "raiders-martial", "raider-brute", 1), pickKind(MONSTERS_MIX, "raiders-martial", "raider-gunner", 1), pickKind(MONSTERS_MIX, "raiders-magic", "raider-pyro", 1),
+      pickKind(MONSTERS_MENTAL1, "raiders", "raider-reaper", 1), pickKind(MONSTERS_MENTAL1, "raiders", "raider-tender", 1)] },
+  boss: { label: "Boss (mixed)", note: "The Mental Ogre Dreadmind with a Martial Raider Brute and a Magic Raider Pyro beside it.",
+    kinds: [pickKind(MONSTERS_MENTAL1, "boss", "ogre-dreadmind", 1), pickKind(MONSTERS_MIX, "raiders-martial", "raider-brute", 1), pickKind(MONSTERS_MIX, "raiders-magic", "raider-pyro", 1)] }
+};
+PASSES["mental-t1-mix"] = { ...PASSES["mental-t1c"], id: "mental-t1-mix", monsters: MONSTERS_MENTAL1_MIX, encounters: encountersFor(MONSTERS_MENTAL1_MIX, 1),
+  note: "Mental T1 party against mixed enemy groups (pure Martial, Magic and Mental builds together)." };

@@ -1,0 +1,2200 @@
+[
+ {
+  "id": "swarm-r1",
+  "group": "swarm",
+  "rotation": 1,
+  "seconds": 461,
+  "winner": "monsters",
+  "pass": "mental-t1-mix",
+  "rounds": 11,
+  "partyLeft": 0,
+  "monstersLeft": 7,
+  "followups": 12,
+  "knockbacks": {
+   "down": 10
+  },
+  "used": {
+   "cast:Cut + Stab": 23,
+   "mod:Bleed": 9,
+   "defend:dodge": 380,
+   "manifest:Wither": 64,
+   "manifest:Fracture": 32,
+   "manifest:Bloom": 17,
+   "manifest:Flourish": 11,
+   "ward": 16,
+   "cast:Cut + Slam": 45,
+   "manifest:Sink": 50,
+   "manifest:Burden": 10,
+   "manifest:Herald": 6,
+   "manifest:Decree": 11,
+   "berserk": 5,
+   "Seeing Red": 5,
+   "opt:rend": 14,
+   "recoverEnergy": 10,
+   "breakFree": 6,
+   "Break Free": 6,
+   "act:vice": 5,
+   "charge:Sim Goblin Witherer": 2,
+   "opt:replace=jgCzFkyuD4sMhDGF": 1,
+   "charge:Sim Herald": 3,
+   "opt:replace=rqQlH2AbTSlEEmHH": 1,
+   "manifest:Wither+": 18,
+   "manifest:Waste": 9,
+   "cast:Cut": 27,
+   "charge:Sim Binder": 4,
+   "opt:replace=Nh3RPeKlBvFzMypm": 1,
+   "manifest:Renewal": 8,
+   "opt:dir=down": 10,
+   "act:momentumNow": 10,
+   "maintain": 3,
+   "opt:heave": 2,
+   "opt:replace=CX9TEXgmMvbFImdH": 1,
+   "charge:Sim Warden": 6,
+   "opt:replace=0tzujzMdRclwPcXU": 1,
+   "maintain:skipped": 3,
+   "opt:replace=mvVc18gN8nRG1D3Q": 1,
+   "opt:replace=EjGY8cKY6wDR5y9c": 1,
+   "berserk:skipped": 2,
+   "opt:replace=rhfwLUSJUXQBykxh": 1,
+   "opt:replace=S6g9RJqgLXWU1Kld": 1,
+   "act:quicksand": 1,
+   "opt:replace=xL7pozwKnMl5zgDM": 1,
+   "opt:replace=N4KDXElmEIsujWX6": 1,
+   "opt:replace=kFp5HUR914hOOxNe": 1,
+   "opt:replace=d4zs3LHOs9HXAqI1": 1,
+   "opt:replace=Y5rSUk24yziqz6uI": 1,
+   "opt:replace=hS4DH8Ku8E7B6oQP": 1
+  },
+  "hp": {
+   "Sim Warden#HtnB": "360/792",
+   "Sim Mender#pHiC": "270/567",
+   "Sim Reaper#dj9p": "259/567",
+   "Sim Binder#Fs18": "246/567",
+   "Sim Herald#w6jj": "199/567",
+   "Sim Goblin Hacker#lwhr": "194/403",
+   "Sim Goblin Hacker#pQXC": "189/189",
+   "Sim Goblin Hacker#hitj": "228/228",
+   "Sim Goblin Cutter#ozxe": "422/493",
+   "Sim Goblin Cutter#O2Tq": "513/513",
+   "Sim Goblin Stabber#IVzp": "513/513",
+   "Sim Goblin Witherer#NQFs": "603/603",
+   "Sim Goblin Witherer#WRfy": "603/603",
+   "Sim Goblin Sinker#BtJa": "603/603",
+   "Sim Goblin Sinker#lMiD": "603/603"
+  },
+  "down": [
+   "Sim Warden",
+   "Sim Mender",
+   "Sim Reaper",
+   "Sim Binder",
+   "Sim Herald",
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker",
+   "Sim Goblin Hacker"
+  ],
+  "weapons": {
+   "Spell: Cut + Stab [M]": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 18,
+    "damage": 335,
+    "ap": 46,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber"
+    ]
+   },
+   "Spell: Cut + Slam [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 11,
+    "crits": 2,
+    "misses": 34,
+    "damage": 455,
+    "ap": 90,
+    "kills": 0,
+    "users": [
+     "Goblin Cutter"
+    ]
+   },
+   "Heavy Striker": {
+    "attacks": 20,
+    "followups": 12,
+    "hits": 7,
+    "crits": 1,
+    "misses": 25,
+    "damage": 181,
+    "ap": 60,
+    "kills": 0,
+    "users": [
+     "Goblin Hacker"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 27,
+    "followups": 0,
+    "hits": 13,
+    "crits": 2,
+    "misses": 14,
+    "damage": 421,
+    "ap": 54,
+    "kills": 0,
+    "users": [
+     "Goblin Stabber",
+     "Goblin Cutter"
+    ]
+   },
+   "Spell: Cut + Slam": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 3,
+    "users": []
+   },
+   "Spell: Cut": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 2,
+    "users": []
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Goblin Stabber",
+    "dealt": 471,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 33
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 364,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Herald",
+    "dealt": 0,
+    "taken": 368,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 512,
+    "taken": 0,
+    "hits": 13,
+    "attacks": 31
+   },
+   {
+    "name": "Sim Mender",
+    "dealt": 0,
+    "taken": 98,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Binder",
+    "dealt": 0,
+    "taken": 321,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "dealt": 228,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 31
+   },
+   {
+    "name": "Sim Reaper",
+    "dealt": 0,
+    "taken": 241,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 77,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 60,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "dealt": 44,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Goblin Stabber",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 33,
+    "used": {
+     "cast:Cut + Stab": 23,
+     "mod:Bleed": 3,
+     "cast:Cut": 10
+    }
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 133,
+     "ward": 8,
+     "manifest:Bloom": 8,
+     "manifest:Decree": 8,
+     "manifest:Flourish": 2
+    },
+    "turnMoved": 0,
+    "manifests": 18
+   },
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "manifest:Herald": 6,
+     "manifest:Decree": 3,
+     "act:momentumNow": 10
+    },
+    "turnMoved": 0,
+    "manifests": 9,
+    "knockbacks": {
+     "down": 10
+    }
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 33,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 33,
+    "used": {
+     "manifest:Wither": 22,
+     "manifest:Fracture": 11,
+     "defend:dodge": 40
+    }
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 102,
+     "manifest:Bloom": 9,
+     "manifest:Flourish": 9,
+     "ward": 8,
+     "manifest:Renewal": 8
+    },
+    "turnMoved": 0,
+    "manifests": 26
+   },
+   {
+    "name": "Sim Goblin Witherer",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 11.180339887498949,
+    "attacks": 33,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 33,
+    "used": {
+     "manifest:Wither": 22,
+     "manifest:Fracture": 11
+    }
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 31,
+    "used": {
+     "cast:Cut + Slam": 23,
+     "mod:Bleed": 3,
+     "cast:Cut": 8,
+     "defend:dodge": 4,
+     "breakFree": 2,
+     "Break Free": 2
+    }
+   },
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 30,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24,
+     "manifest:Burden": 10,
+     "manifest:Sink": 10,
+     "manifest:Fracture": 10,
+     "act:vice": 5,
+     "act:quicksand": 1
+    },
+    "turnMoved": 0,
+    "manifests": 30
+   },
+   {
+    "name": "Sim Goblin Cutter",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 31,
+    "used": {
+     "cast:Cut + Slam": 22,
+     "mod:Bleed": 3,
+     "cast:Cut": 9,
+     "recoverEnergy": 4
+    }
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 27,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 38,
+     "manifest:Wither+": 18,
+     "manifest:Waste": 9
+    },
+    "turnMoved": 0,
+    "manifests": 27
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 21.18033988749895,
+    "attacks": 30,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 30,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 10
+    }
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "berserk": 1,
+     "Seeing Red": 1,
+     "breakFree": 1,
+     "Break Free": 1,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 80.15609770940699
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100,
+    "attacks": 20,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "berserk": 3,
+     "Seeing Red": 3,
+     "recoverEnergy": 4,
+     "maintain": 2,
+     "defend:dodge": 17,
+     "maintain:skipped": 2,
+     "breakFree": 3,
+     "Break Free": 3,
+     "berserk:skipped": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Hacker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90.13878188659973,
+    "attacks": 10,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Seeing Red": 1,
+     "recoverEnergy": 1,
+     "maintain": 1,
+     "defend:dodge": 6,
+     "maintain:skipped": 1,
+     "berserk:skipped": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Goblin Sinker",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 30,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 30,
+    "used": {
+     "manifest:Sink": 20,
+     "manifest:Wither": 10
+    }
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Goblin Hacker": [
+    "Unarmed",
+    "Light Armor (Soft Leather)",
+    "Heavy Striker (Iron)"
+   ],
+   "Sim Goblin Cutter": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Stabber": [
+    "Unarmed",
+    "Light Armor (Soft Leather)"
+   ],
+   "Sim Goblin Witherer": [
+    "Unarmed"
+   ],
+   "Sim Goblin Sinker": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Goblin Hacker": [
+    "Light Armor (Soft Leather): 52/80",
+    "Heavy Striker (Iron): 300/300"
+   ],
+   "Sim Goblin Cutter": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Stabber": [
+    "Light Armor (Soft Leather): 60/60"
+   ],
+   "Sim Goblin Witherer": [],
+   "Sim Goblin Sinker": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 5355,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2680,
+    "monsterHp": 5290,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2605,
+    "monsterHp": 4969,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 2453,
+    "monsterHp": 4910,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 2076,
+    "monsterHp": 4802,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 2004,
+    "monsterHp": 4762,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 1971,
+    "monsterHp": 4692,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 1940,
+    "monsterHp": 4664,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 1915,
+    "monsterHp": 4562,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 1774,
+    "monsterHp": 4523,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 11,
+    "partyHp": 1567,
+    "monsterHp": 4499,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 11,
+    "partyHp": 1334,
+    "monsterHp": 4471,
+    "partyDown": 5,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 334,
+   "monsters": 884
+  },
+  "lostBy": {
+   "party": 1726,
+   "monsters": 884
+  },
+  "directTaken": {
+   "party": 1392,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Sanctum Ward: Sim Mender": 8,
+    "prompt: Mortal Coil (Tenet)": 16,
+    "prompt: Sim Goblin Witherer's charges on Sim Warden": 16,
+    "prompt: Weight (Tenet)": 23,
+    "prompt: Gust (Tenet)": 3,
+    "prompt: Sim Binder's charges on Sim Goblin Witherer": 27,
+    "prompt: Heavy Striker (Iron)": 20,
+    "prompt: Heavy Striker (Iron) — Solitary follow-up": 12,
+    "prompt: Aegis Ward: Sim Warden": 8,
+    "prompt: Sim Herald's charges on Sim Goblin Witherer": 4,
+    "prompt: Verdant Soul (Tenet)": 11,
+    "prompt: Verdant Soul: give # temp HP to": 11,
+    "prompt: Veil Ward": 14,
+    "prompt: Herald — Sim Goblin Hacker": 2,
+    "prompt: Momentum — Sim Goblin Hacker": 8,
+    "prompt: Sim Warden's charges on Sim Goblin Witherer": 16,
+    "prompt: Warden Ward": 20
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Herald needs 17 Energy for Momentum but has 14.",
+     "who": "Sim Herald"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Herald needs 17 Energy for Momentum but has 14.",
+     "who": "Sim Herald"
+    }
+   ],
+   "errors": []
+  },
+  "cards": [
+   "Cut + Stab — Damage to Sim Warden Base damage · Physical 12d6 12d6 48 1 4 6 5 1 5 3 6 5 1 6 5 48 Damage: 48 → 72 Physical Strengthened ×1 (×1.5) Stacks: +1 added +1 Strengthened (direct damage) Sim Warden takes 72 Physical 72 damage to HP Bleed: Sim Warden takes 72 direct physical damage again at the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 17 Dodge (2d15) 2d15 2d15 13 7 6 13 Hit Wither deals 37 Supernatural damage to Sim Mender (4d12 = 37).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 11 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 14 Dodge (2d15) 2d15 2d15 11 10 1 11 Hit Wither deals 19 Supernatural damage to Sim Mender (4d12 = 19).",
+   "Cut + Slam — Damage to Sim Warden Base damage · Physical 8d12 8d12 36 3 6 6 1 1 6 11 2 36 Damage: 36 Physical no Strengthened/Weakened Sim Warden takes 36 Physical 36 damage to HP Bleed: Sim Warden takes 36 direct physical damage again at the start of their next turn. Sim Warden's attack rolls suffer −20 die size until the start of your next turn.",
+   "Heavy Striker (Iron) — Damage to Sim Warden Base damage · Physical 5d12 5d12 19 6 3 7 2 1 19 Damage: 19 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Warden takes 19 Physical 19 damage to HP Cleave: no object in the way",
+   "Heavy Striker (Iron) — Damage to Sim Warden Base damage · Physical 5d12 5d12 34 6 2 11 10 5 34 Damage: 34 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Warden takes 34 Physical 34 damage to HP Cleave: no object in the way",
+   "Sim Binder — Vice Sim Goblin Hacker takes 29 physical damage (5d12) for failing to break free.",
+   "Heavy Striker (Iron) — Solitary follow-up — Damage to Sim Warden Base damage · Physical 5d12 5d12 44 9 10 2 12 11 44 Damage: 44 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Warden takes 44 Physical 44 damage to HP Cleave: no object in the way",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 29 Dodge (2d10) 3d10kl2 3d10kl2 11 4 8 7 11 1× Disadvantage · Seeing Red Critical Hit Wither deals 40 Supernatural damage to Sim Goblin Hacker (5d12 = 20 → 40), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Hacker takes 18 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 6 Dodge (2d10) 3d10kl2 3d10kl2 4 6 2 2 4 1× Disadvantage · Seeing Red Hit Wither deals 25 Supernatural damage to Sim Goblin Hacker (5d12 = 25), and that much Max HP too.",
+   "Cut — Damage to Sim Herald Base damage · Physical 8d10 8d10 54 1 9 3 9 8 9 7 8 54 Damage: 54 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Herald takes 54 Physical 54 damage to HP",
+   "Cut — Damage to Sim Reaper Base damage · Physical 8d10 8d10 47 4 7 8 3 4 8 6 7 47 Damage: 47 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Veil negates 8 (1 RP) Sim Reaper takes 39 Physical 21 damage to HP Temp HP absorbs 18 (0 left)",
+   "Herald — Sim Goblin Hacker Force 224 Driven 2 ft into the ground: 2 ft × 3 = 6. Sim Goblin Hacker takes 6 Physical 0 damage to HP Light Armor (Soft Leather) absorbed 6 (−6 Durability) Not knocked prone: 2 ft is less than Sim Goblin Hacker's height (5 ft).",
+   "Momentum — Sim Goblin Hacker Force 282 Driven 8 ft into the ground: 8 ft × 3 = 24. Sim Goblin Hacker takes 24 Physical 8 damage to HP Light Armor (Soft Leather) absorbed 16 (−16 Durability) Sim Goblin Hacker is knocked prone.",
+   "Momentum — Sim Goblin Hacker Force 259 Driven 5 ft into the ground: 5 ft × 3 = 15. Sim Goblin Hacker takes 15 Physical 0 damage to HP Light Armor (Soft Leather) absorbed 15 (−15 Durability) Sim Goblin Hacker is knocked prone.",
+   "Momentum — Sim Goblin Hacker Force 269 Driven 6 ft into the ground: 6 ft × 3 = 18. Sim Goblin Hacker takes 18 Physical 2 damage to HP Light Armor (Soft Leather) absorbed 16 (−16 Durability) Sim Goblin Hacker is knocked prone.",
+   "Momentum — Sim Goblin Hacker Force 302 Driven 10 ft into the ground: 10 ft × 3 = 30. Sim Goblin Hacker takes 30 Physical 19 damage to HP Light Armor (Soft Leather) absorbed 11 (−11 Durability) Light Armor (Soft Leather) is broken Sim Goblin Hacker is knocked prone.",
+   "Momentum — Sim Goblin Hacker Force 299 Driven 9 ft into the ground: 9 ft × 3 = 27. Sim Goblin Hacker takes 27 Physical 27 damage to HP Sim Goblin Hacker is knocked prone.",
+   "Momentum — Sim Goblin Hacker Force 258 Driven 5 ft into the ground: 5 ft × 3 = 15. Sim Goblin Hacker takes 15 Physical 15 damage to HP Sim Goblin Hacker is knocked prone.",
+   "Momentum — Sim Goblin Hacker Force 309 Driven 10 ft into the ground: 10 ft × 3 = 30. Sim Goblin Hacker takes 30 Physical 30 damage to HP Sim Goblin Hacker is knocked prone.",
+   "Momentum — Sim Goblin Hacker Force 241 Driven 4 ft into the ground: 4 ft × 3 = 12. Sim Goblin Hacker takes 12 Physical 12 damage to HP Not knocked prone: 4 ft is less than Sim Goblin Hacker's height (5 ft).",
+   "Herald — Sim Goblin Hacker Force 470 Driven 32 ft into the ground: 32 ft × 3 = 96. Sim Goblin Hacker takes 96 Physical 96 damage to HP Sim Goblin Hacker is knocked prone.",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 26 Dodge (2d10) 3d10kl2 3d10kl2 6 10 5 1 6 1× Disadvantage · Seeing Red Critical Hit Wither deals 54 Supernatural damage to Sim Goblin Hacker (5d12 = 27 → 54), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Hacker takes 32 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 21 Dodge (2d10) 3d10kl2 3d10kl2 8 3 5 8 8 1× Disadvantage · Seeing Red Critical Hit Wither deals 58 Supernatural damage to Sim Goblin Hacker (5d12 = 29 → 58), and that much Max HP too. (critical)",
+   "Cut — Damage to Sim Mender Base damage · Physical 8d10 8d10 50 1 7 6 7 9 6 4 10 50 Damage: 50 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Mender takes 50 Physical 50 damage to HP",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 9 Dodge (2d15) 2d15 2d15 9 8 1 9 Hit Wither deals 30 Supernatural damage to Sim Mender (4d12 = 30).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 12 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Cut — Damage to Sim Warden Base damage · Physical 8d6 8d6 30 1 3 5 3 3 6 6 3 30 Damage: 30 Physical no Strengthened/Weakened Sim Warden takes 30 Physical 0 damage to HP Shield absorbed 30 (−30 Durability)",
+   "Cut + Slam — Damage to Sim Herald Base damage · Physical 8d12 8d12 60 10 11 3 8 2 3 11 12 60 Damage: 60 Physical no Strengthened/Weakened Sim Herald takes 60 Physical 60 damage to HP Sim Herald's attack rolls suffer −20 die size until the start of your next turn.",
+   "Sim Binder — Vice Sim Goblin Hacker takes 12 physical damage (5d12) for failing to break free.",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 22 Dodge (2d10) 2d10 2d10 17 10 7 17 Hit Wither deals 36 Supernatural damage to Sim Goblin Hacker (5d12 = 36), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Goblin Hacker takes 4 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 23 Dodge (2d10) 2d10 2d10 15 6 9 15 Hit Wither deals 23 Supernatural damage to Sim Goblin Hacker (5d12 = 23), and that much Max HP too.",
+   "Cut + Stab — Damage to Sim Mender Base damage · Physical 12d6 12d6 43 6 1 3 3 5 4 1 4 6 1 5 4 43 Damage: 43 → 64 Physical Strengthened ×1 (×1.5) Stacks: +1 added +1 Strengthened (direct damage) Sim Mender takes 64 Physical 0 damage to HP Shield absorbed 36 (−36 Durability) Shield is broken Temp HP absorbs 28 (2 left)",
+   "Cut + Stab — Damage to Sim Herald Base damage · Physical 12d6 12d6 56 5 3 5 6 4 3 4 6 6 6 6 2 56 Damage: 56 → 168 Physical Strengthened ×4 (×3) Stacks: +2 added, +2 crit +1 Strengthened (crit) · +1 Strengthened (direct damage) Sim Herald takes 168 Physical 168 damage to HP",
+   "Cut — Damage to Sim Herald Base damage · Physical 8d10 8d10 43 5 3 7 6 1 10 10 1 43 Damage: 43 → 86 Physical Strengthened ×2 (×2) Stacks: +2 crit Living target, direct damage: dice are d10 Sim Herald takes 86 Physical 86 damage to HP",
+   "Cut + Slam — Damage to Sim Binder Base damage · Physical 8d12 8d12 49 9 2 5 12 6 7 1 7 49 Damage: 49 Physical no Strengthened/Weakened Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden negates 22 (1 RP) Sim Binder takes 27 Physical 27 damage to HP Sim Binder's attack rolls suffer −20 die size until the start of your next turn.",
+   "Cut — Damage to Sim Reaper Base damage · Physical 8d10 8d10 50 1 9 4 3 8 10 6 9 50 Damage: 50 → 100 Physical Strengthened ×2 (×2) Stacks: +2 crit Living target, direct damage: dice are d10 Veil negates 8 (1 RP) Sim Reaper takes 92 Physical 88 damage to HP Temp HP absorbs 4 (0 left)",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 10 Dodge (2d15) 2d15 2d15 7 6 1 7 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 24, 24 blocked).",
+   "Heavy Striker (Iron) — Damage to Sim Warden Base damage · Physical 5d12 5d12 28 3 5 7 10 3 28 Damage: 28 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Warden takes 28 Physical 0 damage to HP Shield absorbed 26 (+54 Cleave) (−80 Durability) Shield is broken Temp HP absorbs 2 (38 left)",
+   "Heavy Striker (Iron) — Damage to Sim Warden Base damage · Physical 5d12 5d12 32 10 5 3 2 12 32 Damage: 32 → 64 Physical Strengthened ×2 (×2) Stacks: +2 crit Cleave 54: object damage, hits Limits first Sim Warden takes 64 Physical 26 damage to HP Cleave: no object in the way Temp HP absorbs 38 (0 left)",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 15 Dodge (2d15) 2d15 2d15 8 3 5 8 Hit Wither deals 2 Supernatural damage to Sim Mender (4d12 = 32, 30 blocked).",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 27 Dodge (2d10) 2d10 2d10 18 10 8 18 Hit Wither deals 40 Supernatural damage to Sim Goblin Hacker (5d12 = 40), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Goblin Hacker takes 12 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 22 Dodge (2d10) 2d10 2d10 9 2 7 9 Critical Hit Wither deals 68 Supernatural damage to Sim Goblin Hacker (5d12 = 34 → 68), and that much Max HP too. (critical)",
+   "Cut — Damage to Sim Warden Base damage · Physical 8d6 8d6 24 5 2 5 6 2 1 2 1 24 Damage: 24 Physical no Strengthened/Weakened Sim Warden takes 24 Physical 0 damage to HP Shield absorbed 24 (−24 Durability)",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 9 Dodge (2d15) 2d15 2d15 6 2 4 6 Hit Wither deals 33 Supernatural damage to Sim Mender (4d12 = 33).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 15 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 10 Dodge (2d20) 2d20 2d20 6 2 4 6 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 37, 37 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (23 blocked).",
+   "Cut + Slam — Damage to Sim Mender Base damage · Physical 8d12 8d12 53 12 9 5 4 3 9 9 2 53 Damage: 53 Physical no Strengthened/Weakened Sim Mender takes 53 Physical 0 damage to HP Temp HP absorbs 53 (137 left)",
+   "Cut — Damage to Sim Reaper Base damage · Physical 8d10 8d10 42 7 10 5 9 1 3 2 5 42 Damage: 42 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Veil negates 8 (1 RP) Sim Reaper takes 34 Physical 22 damage to HP Temp HP absorbs 12 (0 left)",
+   "Cut + Slam — Damage to Sim Warden Base damage · Physical 8d12 8d12 72 9 8 12 10 8 8 8 9 72 Damage: 72 Physical no Strengthened/Weakened Sim Warden takes 72 Physical 0 damage to HP Shield absorbed 56 (−56 Durability) Shield is broken Temp HP absorbs 16 (24 left)",
+   "Cut — Damage to Sim Warden Base damage · Physical 8d10 8d10 46 4 7 4 8 1 8 7 7 46 Damage: 46 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Warden takes 46 Physical 22 damage to HP Temp HP absorbs 24 (0 left)",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 26 Dodge (2d10) 3d10kl2 3d10kl2 15 8 9 7 15 1× Disadvantage · Seeing Red Hit Wither deals 27 Supernatural damage to Sim Goblin Hacker (5d12 = 27), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Goblin Hacker takes 11 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 16 Dodge (2d10) 3d10kl2 3d10kl2 9 9 3 6 9 1× Disadvantage · Seeing Red Hit Wither deals 13 Supernatural damage to Sim Goblin Hacker (5d12 = 13), and that much Max HP too.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 14 Dodge (2d15) 2d15 2d15 11 8 3 11 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 35, 35 blocked).",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 0 Supernatural damage (22 blocked).",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 17 Dodge (2d15) 2d15 2d15 13 5 8 13 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 31, 31 blocked).",
+   "Cut — Damage to Sim Mender Base damage · Physical 8d6 8d6 27 5 5 6 1 3 4 1 2 27 Damage: 27 Physical no Strengthened/Weakened Sim Mender takes 27 Physical 0 damage to HP Temp HP absorbs 27 (171 left)",
+   "Heavy Striker (Iron) — Damage to Sim Warden Base damage · Physical 5d12 5d12 33 9 3 8 12 1 33 Damage: 33 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Warden takes 33 Physical 33 damage to HP Shield absorbed 0 (+40 Cleave) (−80 Durability) Shield is broken",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 21 Dodge (2d10) 2d10 2d10 10 2 8 10 Critical Hit Wither deals 50 Supernatural damage to Sim Goblin Hacker (5d12 = 25 → 50), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Hacker takes 20 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Cut + Slam — Damage to Sim Binder Base damage · Physical 8d12 8d12 53 9 3 5 10 2 10 7 7 53 Damage: 53 Physical no Strengthened/Weakened Warden negates 22 (1 RP) Sim Binder takes 31 Physical 31 damage to HP Sim Binder's attack rolls suffer −20 die size until the start of your next turn.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 13 Dodge (2d15) 2d15 2d15 12 9 3 12 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 34, 34 blocked).",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 14 Dodge (2d10) 2d10 2d10 11 6 5 11 Hit Wither deals 26 Supernatural damage to Sim Goblin Hacker (5d12 = 26), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Goblin Hacker takes 22 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Cut + Stab — Damage to Sim Mender Base damage · Physical 12d6 12d6 45 5 1 6 2 4 5 5 4 4 4 1 4 45 Damage: 45 Physical no Strengthened/Weakened Sim Mender takes 45 Physical 0 damage to HP Shield absorbed 2 (−2 Durability) Shield is broken Temp HP absorbs 43 (37 left)",
+   "Sim Goblin Witherer — Mortal Coil Sim Warden takes 0 Supernatural damage (17 blocked).",
+   "Cut + Slam — Damage to Sim Mender Base damage · Physical 8d12 8d12 69 12 4 7 8 10 12 11 5 69 Damage: 69 Physical no Strengthened/Weakened Sim Mender takes 69 Physical 0 damage to HP Temp HP absorbs 30 (0 left) Temp HP absorbs 39 (461 left)",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 20 Dodge (2d25) 2d25 2d25 20 13 7 20 Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 15, 15 blocked).",
+   "Sim Binder — Vice Sim Goblin Hacker takes 19 physical damage (5d12) for failing to break free.",
+   "Heavy Striker (Iron) — Damage to Sim Warden Base damage · Physical 5d12 5d12 34 6 9 11 4 4 34 Damage: 34 Physical no Strengthened/Weakened Cleave 54: object damage, hits Limits first Sim Warden takes 34 Physical 25 damage to HP Shield absorbed 9 (+54 Cleave) (−63 Durability) Shield is broken",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 12 Dodge (2d25) 2d25 2d25 6 1 5 6 Critical Hit Wither deals 0 Supernatural damage to Sim Mender (4d12 = 24 → 48, 48 blocked). (critical)",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 20 Dodge (2d10) 3d10kl2 3d10kl2 9 5 4 7 9 1× Disadvantage · Seeing Red Critical Hit Wither deals 62 Supernatural damage to Sim Goblin Hacker (5d12 = 31 → 62), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Goblin Hacker takes 36 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Goblin Hacker dodges — Wither (Manifest) Attack roll: 20 Dodge (2d10) 3d10kl2 3d10kl2 6 4 8 2 6 1× Disadvantage · Seeing Red Critical Hit Wither deals 62 Supernatural damage to Sim Goblin Hacker (5d12 = 31 → 62), and that much Max HP too. (critical)",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 12 Dodge (2d15) 2d15 2d15 3 1 2 3 Critical Hit Wither deals 20 Supernatural damage to Sim Mender (4d12 = 30 → 60, 40 blocked). (critical)",
+   "Sim Goblin Witherer — Mortal Coil Sim Mender takes 20 Supernatural damage; Sim Goblin Witherer gains that much temp HP until the start of their next turn.",
+   "Cut — Damage to Sim Mender Base damage · Physical 8d10 8d10 48 5 3 3 1 9 9 10 8 48 Damage: 48 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Mender takes 48 Physical 48 damage to HP",
+   "Cut + Slam — Damage to Sim Warden Base damage · Physical 8d12 8d12 53 8 3 11 6 2 12 8 3 53 Damage: 53 Physical no Strengthened/Weakened Sim Warden takes 53 Physical 53 damage to HP Sim Warden's attack rolls suffer −20 die size until the start of your next turn.",
+   "Sim Goblin Cutter dodges — Wither (Manifest) Attack roll: 21 Dodge (2d10) 2d10 2d10 19 10 9 19 Hit Wither deals 20 Supernatural damage to Sim Goblin Cutter (5d12 = 20), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Goblin Cutter takes 19 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Cut — Damage to Sim Reaper Base damage · Physical 8d10 8d10 33 4 2 4 8 7 3 1 4 33 Damage: 33 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Veil negates 16 (1 RP) Sim Reaper takes 17 Physical 0 damage to HP Temp HP absorbs 17 (2 left)",
+   "Sim Binder — Vice Sim Goblin Cutter takes 36 physical damage (5d12) for failing to break free.",
+   "Cut + Slam — Damage to Sim Reaper Base damage · Physical 8d12 8d12 60 12 4 1 12 6 2 11 12 60 Damage: 60 → 120 Physical Strengthened ×2 (×2) Stacks: +2 crit Veil misses (1 RP spent, nothing negated) · Veil negates 8 (1 RP) Sim Reaper takes 112 Physical 110 damage to HP Temp HP absorbs 2 (0 left) Sim Reaper's attack rolls suffer −40 die size until the start of your next turn.",
+   "Cut — Damage to Sim Binder Base damage · Physical 8d10 8d10 52 1 10 10 7 9 9 4 2 52 Damage: 52 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden negates 22 (1 RP) Sim Binder takes 30 Physical 30 damage to HP",
+   "Sim Reaper dodges — Wither (Manifest) Attack roll: 17 Dodge (2d15) 2d15 2d15 10 9 1 10 Hit Wither deals 33 Supernatural damage to Sim Reaper (4d12 = 33).",
+   "Sim Reaper dodges — Wither (Manifest) Attack roll: 19 Dodge (2d15) 2d15 2d15 10 2 8 10 Hit Wither deals 34 Supernatural damage to Sim Reaper (4d12 = 34).",
+   "Cut + Stab — Damage to Sim Binder Base damage · Physical 12d6 12d6 39 4 3 2 3 3 5 1 3 3 4 5 3 39 Damage: 39 → 117 Physical Strengthened ×4 (×3) Stacks: +2 added, +2 crit +1 Strengthened (crit) · +1 Strengthened (direct damage) Warden negates 22 (1 RP) Sim Binder takes 95 Physical 95 damage to HP",
+   "Sim Binder — Vice Sim Goblin Cutter takes 40 physical damage (5d12) for failing to break free.",
+   "Cut + Slam — Damage to Sim Binder Base damage · Physical 8d12 8d12 59 4 3 1 11 12 6 12 10 59 Damage: 59 → 118 Physical Strengthened ×2 (×2) Stacks: +2 crit Warden negates 22 (1 RP) Sim Binder takes 96 Physical 96 damage to HP Sim Binder's attack rolls suffer −40 die size until the start of your next turn.",
+   "Cut + Slam — Damage to Sim Binder Base damage · Physical 8d12 8d12 42 6 8 4 10 1 3 7 3 42 Damage: 42 Physical no Strengthened/Weakened Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) Sim Binder takes 42 Physical 42 damage to HP Sim Binder's attack rolls suffer −20 die size until the start of your next turn."
+  ],
+  "casts": []
+ },
+ {
+  "id": "raiders-r1",
+  "group": "raiders",
+  "rotation": 1,
+  "seconds": 303,
+  "winner": "monsters",
+  "pass": "mental-t1-mix",
+  "rounds": 10,
+  "partyLeft": 0,
+  "monstersLeft": 5,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Bloom": 24,
+   "defend:dodge": 240,
+   "manifest:Flourish": 19,
+   "ward": 9,
+   "cast:Crackle": 7,
+   "mod:Electrify": 7,
+   "mod:Lightning Rod": 5,
+   "cast:Flame": 23,
+   "mod:Ignition": 23,
+   "Brace": 5,
+   "Mark": 1,
+   "opt:pepper=1": 20,
+   "opt:spinDown": 6,
+   "limber": 5,
+   "quickload:speed": 19,
+   "limber:skipped": 14,
+   "manifest:Wither+": 23,
+   "manifest:Waste": 14,
+   "manifest:Herald": 18,
+   "manifest:Decree": 14,
+   "cutBack": 14,
+   "Trudge": 2,
+   "opt:quickStrike": 5,
+   "recoverEnergy": 9,
+   "manifest:Burden": 9,
+   "charge:Sim Herald": 8,
+   "opt:replace=o9qMVyJ7CBkYiapE": 1,
+   "manifest:Sink": 9,
+   "manifest:Fracture": 9,
+   "markShot": 1,
+   "manifest:Renewal": 9,
+   "charge:Sim Warden": 5,
+   "opt:replace=f3zfMXKtoCIyjSu1": 1,
+   "breakFree": 7,
+   "Break Free": 7,
+   "act:vice": 4,
+   "Bodyslam": 5,
+   "opt:replace=uMjyzQZD2d7LjiHV": 1,
+   "mod:Pinpoint": 5,
+   "opt:replace=vEvQZVdDFJ7Sd0mK": 1,
+   "opt:replace=AwESv7XYPDnIVwcx": 1,
+   "charge:Sim Binder": 6,
+   "opt:replace=UmCOgyeZkDyZ1Azl": 1,
+   "manifest:Wither": 5,
+   "opt:replace=UGRRA9ZMyPCbOcHU": 1,
+   "opt:replace=Bs8XDqVKdfKKsCDI": 1,
+   "opt:replace=2Vk9o5WWdaDmBDzi": 1,
+   "opt:replace=aQvidxI6RrOtCIgU": 1,
+   "act:quicksand": 3,
+   "opt:replace=TqFoEuFXCuGp4XCp": 1,
+   "opt:replace=hP9oHvla6rVoYQlA": 1,
+   "opt:replace=Hz1UBVgstYJ3m4LP": 1,
+   "opt:replace=hbpWnhzF43Ubi9PQ": 1,
+   "opt:replace=lmZVx7UJXlrfZFC2": 1,
+   "opt:replace=bkRMVfHcnzOKoCVN": 1,
+   "opt:replace=QhllidSUNW1kqk2k": 1,
+   "opt:replace=bMP2rHmoLKv9Lpjn": 1,
+   "opt:replace=kn5vhMvFS0mWzio1": 1
+  },
+  "hp": {
+   "Sim Warden#wOo6": "331/792",
+   "Sim Mender#ocj6": "192/567",
+   "Sim Reaper#ebck": "228/515",
+   "Sim Binder#1Gu3": "268/567",
+   "Sim Herald#ljZ7": "175/567",
+   "Sim Raider Brute#AaN0": "720/720",
+   "Sim Raider Gunner#Bc6C": "333/333",
+   "Sim Raider Pyro#gP8c": "765/765",
+   "Sim Raider Reaper#lBKO": "765/765",
+   "Sim Raider Tender#2AtA": "549/765"
+  },
+  "down": [
+   "Sim Warden",
+   "Sim Mender",
+   "Sim Reaper",
+   "Sim Binder",
+   "Sim Herald"
+  ],
+  "weapons": {
+   "Spell: Crackle [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 7,
+    "damage": 0,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Raider Pyro"
+    ]
+   },
+   "Spell: Flame [M]": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 22,
+    "damage": 37,
+    "ap": 46,
+    "kills": 0,
+    "users": [
+     "Raider Pyro"
+    ]
+   },
+   "Heavy Rapid": {
+    "attacks": 20,
+    "followups": 1,
+    "hits": 14,
+    "crits": 8,
+    "misses": 7,
+    "damage": 1641,
+    "ap": 63,
+    "kills": 3,
+    "users": [
+     "Raider Gunner"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 5,
+    "followups": 14,
+    "hits": 8,
+    "crits": 0,
+    "misses": 11,
+    "damage": 267,
+    "ap": 57,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Raider Pyro",
+    "dealt": 37,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 30
+   },
+   {
+    "name": "Sim Mender",
+    "dealt": 0,
+    "taken": 375,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Binder",
+    "dealt": 0,
+    "taken": 299,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 419,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "dealt": 1641,
+    "taken": 0,
+    "hits": 14,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Reaper",
+    "dealt": 0,
+    "taken": 244,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 267,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 19
+   },
+   {
+    "name": "Sim Herald",
+    "dealt": 0,
+    "taken": 392,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Tender",
+    "dealt": 0,
+    "taken": 216,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 29,
+    "used": {
+     "manifest:Bloom": 10,
+     "defend:dodge": 41,
+     "manifest:Flourish": 10,
+     "ward": 4,
+     "manifest:Renewal": 9
+    }
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Crackle": 7,
+     "mod:Electrify": 7,
+     "mod:Lightning Rod": 5,
+     "cast:Flame": 23,
+     "mod:Ignition": 23,
+     "defend:dodge": 42,
+     "mod:Pinpoint": 5
+    }
+   },
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 27,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24,
+     "manifest:Burden": 9,
+     "manifest:Sink": 9,
+     "manifest:Fracture": 9,
+     "act:vice": 4,
+     "act:quicksand": 3
+    },
+    "turnMoved": 0,
+    "manifests": 27
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 10,
+    "attacks": 5,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14,
+     "ward": 5,
+     "manifest:Bloom": 5,
+     "manifest:Decree": 5
+    },
+    "turnMoved": 0,
+    "manifests": 10
+   },
+   {
+    "name": "Sim Raider Gunner",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 20,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "Mark": 1,
+     "limber": 5,
+     "limber:skipped": 14,
+     "defend:dodge": 10,
+     "markShot": 1
+    },
+    "turnMoved": 0,
+    "reloads": 1
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 38,
+     "manifest:Wither+": 10,
+     "manifest:Waste": 5
+    },
+    "turnMoved": 0,
+    "manifests": 15
+   },
+   {
+    "name": "Sim Raider Reaper",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 27,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 27,
+    "used": {
+     "manifest:Wither+": 13,
+     "manifest:Waste": 9,
+     "manifest:Wither": 5
+    }
+   },
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 27,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 27,
+    "used": {
+     "manifest:Herald": 18,
+     "manifest:Decree": 9,
+     "defend:dodge": 16
+    }
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 84.33034373659252,
+    "attacks": 10,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 48,
+     "cutBack": 14,
+     "Brace": 4,
+     "Trudge": 2,
+     "recoverEnergy": 9,
+     "breakFree": 7,
+     "Break Free": 7,
+     "Bodyslam": 5
+    },
+    "turnMoved": 0,
+    "slams": 5
+   },
+   {
+    "name": "Sim Raider Tender",
+    "side": "monsters",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 18,
+    "used": {
+     "manifest:Bloom": 9,
+     "defend:dodge": 7,
+     "manifest:Flourish": 9
+    }
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Gunner": [
+    "Unarmed",
+    "Heavy Rapid (Steel)",
+    "Medium Armor (Soft Leather)"
+   ],
+   "Sim Raider Pyro": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ],
+   "Sim Raider Reaper": [
+    "Unarmed"
+   ],
+   "Sim Raider Tender": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 247/400",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Gunner": [
+    "Heavy Rapid (Steel): 630/630",
+    "Medium Armor (Soft Leather): 200/200"
+   ],
+   "Sim Raider Pyro": [
+    "Medium Armor (Hide): 150/150"
+   ],
+   "Sim Raider Reaper": [],
+   "Sim Raider Tender": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 3600,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2792,
+    "monsterHp": 3533,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2783,
+    "monsterHp": 3435,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2721,
+    "monsterHp": 3435,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2639,
+    "monsterHp": 3386,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2520,
+    "monsterHp": 3226,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2104,
+    "monsterHp": 3192,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 1851,
+    "monsterHp": 3192,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 1669,
+    "monsterHp": 3192,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 1507,
+    "monsterHp": 3132,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 1194,
+    "monsterHp": 3132,
+    "partyDown": 5,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 137,
+   "monsters": 252
+  },
+  "lostBy": {
+   "party": 1866,
+   "monsters": 468
+  },
+  "directTaken": {
+   "party": 1729,
+   "monsters": 216
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Sanctum Ward: Sim Mender": 4,
+    "prompt: Heavy Rapid (Steel)": 20,
+    "prompt: Veil Ward": 29,
+    "wait: Heavy Rapid (Steel) is empty": 19,
+    "prompt: Mortal Coil (Tenet)": 10,
+    "prompt: Gust (Tenet)": 9,
+    "prompt: Heavy Swift (Steel) — Cut Back": 14,
+    "prompt: Heavy Swift (Steel)": 5,
+    "prompt: Verdant Soul (Tenet)": 23,
+    "prompt: Verdant Soul: give # temp HP to": 23,
+    "prompt: Sim Herald's charges on Sim Raider Pyro": 10,
+    "prompt: Weight (Tenet)": 8,
+    "prompt: Aegis Ward: Sim Warden": 5,
+    "prompt: Heavy Rapid (Steel) — Mark shot": 1,
+    "prompt: Sim Warden's charges on Sim Raider Pyro": 23,
+    "prompt: Bodyslam": 5,
+    "prompt: Warden Ward": 9,
+    "prompt: Sim Binder's charges on Sim Raider Pyro": 15
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Heavy Rapid (Steel) — Damage to Sim Reaper Base damage (shot 1) · Physical 6d12 6d12 49 9 12 12 2 10 4 49 Base damage (shot 2) · Physical 6d12 6d12 44 4 6 6 10 8 10 44 Base damage (shot 3) · Physical 6d12 6d12 55 2 11 12 10 11 9 55 Base damage (shot 4) · Physical 6d12 6d12 36 7 2 10 2 12 3 36 Damage: 184 Physical (4 shots) no Strengthened/Weakened Veil negates 8 (1 RP) Sim Reaper takes 176 Physical 176 damage to HP",
+   "Heavy Rapid (Steel) — Damage to Sim Mender Base damage (shot 1) · Physical 6d12 6d12 46 10 12 12 9 2 1 46 Base damage (shot 2) · Physical 6d12 6d12 43 6 9 3 3 11 11 43 Damage: 89 Physical (2 shots) no Strengthened/Weakened Sim Mender takes 89 Physical 29 damage to HP Shield absorbed 60 (−60 Durability) Shield is broken",
+   "Sim Reaper dodges — Wither (Manifest) Attack roll: 24 Dodge (2d15) 2d15 2d15 23 12 11 23 Hit Wither deals 15 Supernatural damage to Sim Reaper (6d12 = 31, 16 blocked), and that much Max HP too.",
+   "Sim Raider Reaper — Mortal Coil Sim Reaper takes 18 Supernatural damage (8 blocked); Sim Raider Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Reaper dodges — Wither (Manifest) Attack roll: 19 Dodge (2d15) 2d15 2d15 17 11 6 17 Hit Wither deals 37 Supernatural damage to Sim Reaper (6d12 = 45, 8 blocked), and that much Max HP too.",
+   "Heavy Swift (Steel) — Cut Back — Damage to Sim Raider Tender Base damage · Physical 6d12 6d12 45 11 3 12 7 8 4 45 Damage: 45 → 67 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Raider Tender takes 67 Physical 67 damage to HP",
+   "Heavy Rapid (Steel) — Mark shot — Damage to Sim Warden Base damage · Physical 6d12 6d12 45 7 3 11 7 6 11 45 Damage: 45 Physical no Strengthened/Weakened Sim Warden takes 45 Physical 45 damage to HP",
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Sim Raider Gunner dodges — Wither (Manifest) Attack roll: 24 Dodge (2d12) 2d12 2d12 11 10 1 11 Critical Hit Wither deals 74 Supernatural damage to Sim Raider Gunner (5d12 = 37 → 74), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Raider Gunner takes 24 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Reaper dodges — Wither (Manifest) Attack roll: 24 Dodge (2d15) 2d15 2d15 15 12 3 15 Hit Wither deals 0 Supernatural damage to Sim Reaper (6d12 = 24, 24 blocked), and that much Max HP too.",
+   "Sim Raider Reaper — Mortal Coil Sim Reaper takes 0 Supernatural damage (24 blocked).",
+   "Sim Binder — Vice Sim Raider Brute takes 31 physical damage (5d12) for failing to break free.",
+   "Heavy Swift (Steel) — Cut Back — Damage to Sim Binder Base damage · Physical 6d12 6d12 31 3 10 11 1 4 2 31 Damage: 31 → 46 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Warden negates 37 (1 RP) Sim Binder takes 9 Physical 9 damage to HP",
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Heavy Rapid (Steel) — Damage to Sim Reaper Base damage (shot 1) · Physical 6d12 6d12 51 8 11 7 5 10 10 51 Base damage (shot 2) · Physical 6d12 6d12 46 8 11 10 5 3 9 46 Damage: 97 → 194 Physical (2 shots) Strengthened ×2 (×2) Stacks: +2 crit Veil negates 8 (1 RP) Sim Reaper takes 186 Physical 62 damage to HP Temp HP absorbs 24 (0 left) Temp HP absorbs 60 (0 left) Temp HP absorbs 40 (0 left)",
+   "Sim Reaper — Mortal Coil Sim Raider Pyro takes 0 Supernatural damage (38 blocked).",
+   "Sim Reaper dodges — Wither (Manifest) Attack roll: 21 Dodge (2d15) 2d15 2d15 7 2 5 7 Critical Hit Wither deals 0 Supernatural damage to Sim Reaper (6d12 = 45 → 90, 90 blocked), and that much Max HP too. (critical)",
+   "Sim Raider Reaper — Mortal Coil Sim Reaper takes 0 Supernatural damage (72 blocked).",
+   "Heavy Swift (Steel) — Damage to Sim Reaper Base damage · Physical 6d12 6d12 43 6 12 4 7 6 8 43 Damage: 43 → 64 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Reaper takes 64 Physical 0 damage to HP Temp HP absorbs 64 (98 left)",
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Heavy Rapid (Steel) — Damage to Sim Reaper Base damage (shot 1) · Physical 6d12 6d12 33 9 4 1 9 6 4 33 Base damage (shot 2) · Physical 6d12 6d12 30 6 1 7 5 4 7 30 Base damage (shot 3) · Physical 6d12 6d12 39 3 9 12 6 1 8 39 Base damage (shot 4) · Physical 6d12 6d12 44 5 11 5 5 8 10 44 Damage: 146 Physical (4 shots) no Strengthened/Weakened Sim Reaper takes 146 Physical 6 damage to HP Temp HP absorbs 60 (0 left) Temp HP absorbs 80 (0 left)",
+   "Heavy Rapid (Steel) — Damage to Sim Mender Base damage (shot 1) · Physical 6d12 6d12 42 8 3 2 8 11 10 42 Base damage (shot 2) · Physical 6d12 6d12 34 4 1 9 3 8 9 34 Damage: 76 Physical (2 shots) no Strengthened/Weakened Sim Mender takes 76 Physical 76 damage to HP",
+   "Sim Raider Gunner dodges — Wither (Manifest) Attack roll: 7 Dodge (2d12) 2d12 2d12 7 6 1 7 Hit Wither deals 44 Supernatural damage to Sim Raider Gunner (5d12 = 44), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Gunner takes 15 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Raider Gunner dodges — Wither (Manifest) Attack roll: 25 Dodge (2d12) 2d12 2d12 16 5 11 16 Hit Wither deals 29 Supernatural damage to Sim Raider Gunner (5d12 = 29), and that much Max HP too.",
+   "Sim Binder — Vice Sim Raider Brute takes 34 physical damage (5d12) for failing to break free.",
+   "Heavy Rapid (Steel) — Damage to Sim Reaper Base damage (shot 1) · Physical 6d12 6d12 58 12 10 10 11 4 11 58 Base damage (shot 2) · Physical 6d12 6d12 53 11 3 12 10 11 6 53 Damage: 111 Physical (2 shots) no Strengthened/Weakened Veil negates 16 (1 RP) Sim Reaper takes 95 Physical 0 damage to HP Temp HP absorbs 15 (0 left) Temp HP absorbs 80 (0 left)",
+   "Sim Raider Gunner dodges — Wither (Manifest) Attack roll: 24 Dodge (2d12) 3d12kh2 3d12kh2 19 3 7 12 19 1× Advantage · Limber Hit Wither deals 23 Supernatural damage to Sim Raider Gunner (5d12 = 23), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Gunner takes 13 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Raider Gunner dodges — Wither (Manifest) Attack roll: 28 Dodge (2d12) 2d12 2d12 12 2 10 12 Critical Hit Wither deals 82 Supernatural damage to Sim Raider Gunner (5d12 = 41 → 82), and that much Max HP too. (critical)",
+   "Sim Raider Reaper — Mortal Coil Sim Warden takes 42 Supernatural damage; Sim Raider Reaper gains that much temp HP until the start of their next turn.",
+   "Bodyslam — Damage to Sim Reaper Base damage · Physical 98 98 Damage: 98 Physical no Strengthened/Weakened Veil misses (1 RP spent, nothing negated) · Veil negates 8 (1 RP) Sim Reaper takes 90 Physical 77 damage to HP Temp HP absorbs 13 (0 left)",
+   "Heavy Swift (Steel) — Cut Back — Damage to Sim Raider Tender Base damage · Physical 6d12 6d12 37 12 3 8 1 8 5 37 Damage: 37 → 55 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Raider Tender takes 55 Physical 55 damage to HP",
+   "Heavy Rapid (Steel) — Damage to Sim Warden Base damage (shot 1) · Physical 6d12 6d12 41 4 9 1 11 6 10 41 Base damage (shot 2) · Physical 6d12 6d12 52 12 10 6 11 8 5 52 Base damage (shot 3) · Physical 6d12 6d12 48 12 2 12 12 3 7 48 Base damage (shot 4) · Physical 6d12 6d12 46 9 10 3 11 9 4 46 Damage: 187 → 374 Physical (4 shots) Strengthened ×2 (×2) Stacks: +2 crit Sim Warden takes 374 Physical 374 damage to HP",
+   "Heavy Rapid (Steel) — Damage to Sim Mender Base damage (shot 1) · Physical 6d12 6d12 40 4 4 10 8 7 7 40 Base damage (shot 2) · Physical 6d12 6d12 39 6 10 4 10 6 3 39 Damage: 79 → 158 Physical (2 shots) Strengthened ×2 (×2) Stacks: +2 crit Sim Mender takes 158 Physical 0 damage to HP Shield absorbed 36 (−36 Durability) Shield is broken Temp HP absorbs 60 (0 left) Temp HP absorbs 62 (238 left)",
+   "Heavy Swift (Steel) — Cut Back — Damage to Sim Herald Base damage · Physical 6d12 6d12 28 4 1 9 1 1 12 28 Damage: 28 → 42 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Herald takes 42 Physical 42 damage to HP",
+   "Heavy Swift (Steel) — Cut Back — Damage to Sim Raider Tender Base damage · Physical 6d12 6d12 23 5 8 3 1 3 3 23 Damage: 23 → 34 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Raider Tender takes 34 Physical 34 damage to HP",
+   "Heavy Rapid (Steel) — Damage to Sim Binder Base damage (shot 1) · Physical 6d12 6d12 26 4 4 2 6 2 8 26 Base damage (shot 2) · Physical 6d12 6d12 48 9 3 12 7 6 11 48 Base damage (shot 3) · Physical 6d12 6d12 37 1 9 2 7 8 10 37 Base damage (shot 4) · Physical 6d12 6d12 34 9 3 3 1 6 12 34 Damage: 145 → 290 Physical (4 shots) Strengthened ×2 (×2) Stacks: +2 crit Warden negates 37 (1 RP) Sim Binder takes 253 Physical 253 damage to HP",
+   "Sim Raider Reaper — Mortal Coil Sim Mender takes 0 Supernatural damage (60 blocked).",
+   "Bodyslam — Damage to Sim Mender Base damage · Physical 98 98 Damage: 98 → 196 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Mender takes 196 Physical 0 damage to HP Temp HP absorbs 178 (0 left) Temp HP absorbs 18 (22 left)",
+   "Heavy Rapid (Steel) — Damage to Sim Herald Base damage (shot 1) · Physical 6d12 6d12 52 1 8 10 10 11 12 52 Base damage (shot 2) · Physical 6d12 6d12 39 8 5 3 3 10 10 39 Damage: 91 → 182 Physical (2 shots) Strengthened ×2 (×2) Stacks: +2 crit Sim Herald takes 182 Physical 182 damage to HP",
+   "Sim Raider Reaper — Mortal Coil Sim Mender takes 0 Supernatural damage (21 blocked).",
+   "Sim Binder — Vice Sim Raider Brute takes 46 physical damage (5d12) for failing to break free.",
+   "Heavy Swift (Steel) — Damage to Sim Mender Base damage · Physical 6d12 6d12 41 8 1 5 10 10 7 41 Damage: 41 → 61 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Mender takes 61 Physical 0 damage to HP Temp HP absorbs 61 (168 left)",
+   "Heavy Rapid (Steel) — Damage to Sim Mender Base damage (shot 1) · Physical 6d12 6d12 46 9 6 11 2 12 6 46 Base damage (shot 2) · Physical 6d12 6d12 35 3 2 8 11 6 5 35 Damage: 81 → 162 Physical (2 shots) Strengthened ×2 (×2) Stacks: +2 crit Sim Mender takes 162 Physical 162 damage to HP",
+   "Sim Binder — Vice Sim Raider Brute takes 42 physical damage (5d12) for failing to break free.",
+   "Heavy Swift (Steel) — Cut Back — Damage to Sim Raider Tender Base damage · Physical 6d12 6d12 40 1 12 7 2 9 9 40 Damage: 40 → 60 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Raider Tender takes 60 Physical 60 damage to HP",
+   "Flame — Damage to Sim Binder Base damage · Heat 6d12 6d12 37 12 1 10 4 2 8 37 Damage: 37 → 74 Heat Strengthened ×2 (×2) Stacks: +2 crit Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden negates 37 (1 RP) Sim Binder takes 37 Heat 37 damage to HP Sim Binder gets 111 Ignite stacks.",
+   "Heavy Rapid (Steel) — Damage to Sim Mender Base damage (shot 1) · Physical 6d12 6d12 50 2 12 12 7 8 9 50 Base damage (shot 2) · Physical 6d12 6d12 42 10 6 10 5 6 5 42 Damage: 92 → 184 Physical (2 shots) Strengthened ×2 (×2) Stacks: +2 crit Sim Mender takes 184 Physical 108 damage to HP Shield absorbed 36 (−36 Durability) Shield is broken Temp HP absorbs 40 (0 left)",
+   "Heavy Rapid (Steel) — Damage to Sim Herald Base damage (shot 1) · Physical 6d12 6d12 43 12 5 12 1 12 1 43 Base damage (shot 2) · Physical 6d12 6d12 41 7 1 12 5 5 11 41 Damage: 84 → 168 Physical (2 shots) Strengthened ×2 (×2) Stacks: +2 crit Sim Herald takes 168 Physical 168 damage to HP"
+  ],
+  "casts": []
+ },
+ {
+  "id": "boss-r1",
+  "group": "boss",
+  "rotation": 1,
+  "seconds": 325,
+  "winner": "monsters",
+  "pass": "mental-t1-mix",
+  "rounds": 16,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {
+   "down": 17
+  },
+  "used": {
+   "manifest:Herald": 24,
+   "defend:dodge": 252,
+   "manifest:Decree": 17,
+   "charge:Sim Herald": 7,
+   "opt:replace=bwX2wnhhFEo305yy": 1,
+   "cast:Crackle": 19,
+   "mod:Electrify": 16,
+   "mod:Lightning Rod": 6,
+   "manifest:Bloom": 13,
+   "manifest:Flourish": 10,
+   "ward": 7,
+   "Brace": 1,
+   "Trudge": 1,
+   "opt:quickStrike": 3,
+   "recoverEnergy": 7,
+   "manifest:Wither+": 45,
+   "manifest:Waste": 26,
+   "manifest:Burden": 14,
+   "manifest:Sink": 14,
+   "cutBack": 7,
+   "manifest:Fracture": 14,
+   "Bodyslam": 3,
+   "Eviscerate": 2,
+   "opt:replace=OagOpIRJ64dfYQ01": 1,
+   "charge:Sim Warden": 2,
+   "opt:replace=iWQTutb2wL1YyskB": 1,
+   "opt:dir=down": 17,
+   "act:momentumNow": 17,
+   "cast:Flame": 27,
+   "mod:Ignition": 27,
+   "manifest:Renewal": 6,
+   "breakFree": 7,
+   "Break Free": 7,
+   "act:vice": 4,
+   "opt:replace=6dcF443srxg69Gnm": 1,
+   "charge:Sim Binder": 6,
+   "opt:replace=YhdN9E1p7BWng5LZ": 1,
+   "act:quicksand": 3,
+   "opt:replace=7WOmYZI3mvZIhcjF": 1,
+   "opt:replace=V5eJlLQ98fM6ZYEN": 1,
+   "opt:replace=Zo6cOtPzwVTSzzIC": 1,
+   "opt:replace=oWmgOXhJOesLcfnI": 1,
+   "opt:replace=Q7KXePr1vvJfr8SP": 1,
+   "opt:replace=2BlHBc6vnIUvCGYx": 1,
+   "opt:replace=Kahsth4jKfdZbGtF": 1,
+   "mod:Pinpoint": 6,
+   "opt:replace=TANKxcUl5XAohGWi": 1,
+   "opt:replace=S4GxR9FR5aXrmhfY": 1,
+   "opt:replace=2DcX05pE7OY5yfuY": 1
+  },
+  "hp": {
+   "Sim Warden#zzVC": "376/792",
+   "Sim Mender#r3t7": "188/567",
+   "Sim Reaper#8m4r": "109/567",
+   "Sim Binder#CRIB": "257/515",
+   "Sim Herald#5IdY": "280/567",
+   "Sim Ogre Dreadmind#4j5F": "2002/2016",
+   "Sim Raider Brute#WkxR": "257/381",
+   "Sim Raider Pyro#eWas": "677/677"
+  },
+  "down": [
+   "Sim Warden",
+   "Sim Mender",
+   "Sim Reaper",
+   "Sim Binder",
+   "Sim Herald",
+   "Sim Raider Brute"
+  ],
+  "weapons": {
+   "Spell: Crackle [M]": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 16,
+    "damage": 72,
+    "ap": 38,
+    "kills": 0,
+    "users": [
+     "Raider Pyro"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 3,
+    "followups": 7,
+    "hits": 5,
+    "crits": 1,
+    "misses": 5,
+    "damage": 174,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "Raider Brute"
+    ]
+   },
+   "Spell: Flame [M]": {
+    "attacks": 27,
+    "followups": 0,
+    "hits": 9,
+    "crits": 1,
+    "misses": 18,
+    "damage": 271,
+    "ap": 54,
+    "kills": 0,
+    "users": [
+     "Raider Pyro"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 4,
+    "users": []
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Raider Pyro",
+    "dealt": 343,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 46
+   },
+   {
+    "name": "Sim Binder",
+    "dealt": 0,
+    "taken": 156,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Reaper",
+    "dealt": 0,
+    "taken": 153,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Mender",
+    "dealt": 0,
+    "taken": 82,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Raider Brute",
+    "dealt": 174,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Warden",
+    "dealt": 0,
+    "taken": 60,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Herald",
+    "dealt": 0,
+    "taken": 66,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Herald",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 36,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 36,
+    "used": {
+     "manifest:Herald": 24,
+     "manifest:Decree": 12,
+     "act:momentumNow": 17,
+     "defend:dodge": 7
+    },
+    "knockbacks": {
+     "down": 17
+    }
+   },
+   {
+    "name": "Sim Ogre Dreadmind",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 26,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 86,
+     "manifest:Wither+": 15,
+     "manifest:Waste": 11,
+     "breakFree": 4,
+     "Break Free": 4
+    },
+    "turnMoved": 0,
+    "manifests": 26
+   },
+   {
+    "name": "Sim Raider Pyro",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 16,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 46,
+    "used": {
+     "cast:Crackle": 19,
+     "mod:Electrify": 16,
+     "mod:Lightning Rod": 6,
+     "cast:Flame": 27,
+     "mod:Ignition": 27,
+     "defend:dodge": 20,
+     "mod:Pinpoint": 6,
+     "recoverEnergy": 2
+    }
+   },
+   {
+    "name": "Sim Binder",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 42,
+    "turns": 14,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 41,
+     "manifest:Burden": 14,
+     "manifest:Sink": 14,
+     "manifest:Fracture": 14,
+     "act:vice": 4,
+     "act:quicksand": 3
+    },
+    "turnMoved": 0,
+    "manifests": 42
+   },
+   {
+    "name": "Sim Reaper",
+    "side": "party",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 30,
+     "manifest:Wither+": 30,
+     "manifest:Waste": 15
+    },
+    "turnMoved": 0,
+    "manifests": 45
+   },
+   {
+    "name": "Sim Mender",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 20,
+     "manifest:Bloom": 8,
+     "manifest:Flourish": 8,
+     "ward": 2,
+     "manifest:Renewal": 6
+    },
+    "turnMoved": 0,
+    "manifests": 22
+   },
+   {
+    "name": "Sim Raider Brute",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90,
+    "attacks": 6,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Brace": 1,
+     "Trudge": 1,
+     "recoverEnergy": 5,
+     "defend:dodge": 25,
+     "cutBack": 7,
+     "Bodyslam": 3,
+     "Eviscerate": 2,
+     "breakFree": 3,
+     "Break Free": 3
+    },
+    "turnMoved": 0,
+    "slams": 3
+   },
+   {
+    "name": "Sim Warden",
+    "side": "party",
+    "role": "tank",
+    "moved": 0,
+    "attacks": 5,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23,
+     "ward": 5,
+     "manifest:Bloom": 5,
+     "manifest:Decree": 5,
+     "manifest:Flourish": 2
+    },
+    "turnMoved": 0,
+    "manifests": 12
+   }
+  ],
+  "trees": {
+   "Sim Warden": {
+    "mental-theory": 5,
+    "mental-life-dream": 4,
+    "mental-order-dream": 2
+   },
+   "Sim Mender": {
+    "mental-theory": 5,
+    "mental-life-dream": 5
+   },
+   "Sim Reaper": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 5
+   },
+   "Sim Binder": {
+    "mental-theory": 5,
+    "mental-below-nightmare": 4,
+    "mental-chaos-nightmare": 2
+   },
+   "Sim Herald": {
+    "mental-theory": 5,
+    "mental-beyond-dream": 4,
+    "mental-order-dream": 2
+   }
+  },
+  "gear": {
+   "Sim Warden": [
+    "Unarmed G1"
+   ],
+   "Sim Mender": [
+    "Unarmed G1"
+   ],
+   "Sim Reaper": [
+    "Unarmed G1"
+   ],
+   "Sim Binder": [
+    "Unarmed G1"
+   ],
+   "Sim Herald": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Ogre Dreadmind": [
+    "Unarmed"
+   ],
+   "Sim Raider Brute": [
+    "Unarmed",
+    "Heavy Armor (Iron)",
+    "Heavy Swift (Steel)"
+   ],
+   "Sim Raider Pyro": [
+    "Unarmed",
+    "Medium Armor (Hide)"
+   ]
+  },
+  "gearState": {
+   "Sim Warden": [],
+   "Sim Mender": [],
+   "Sim Reaper": [],
+   "Sim Binder": [],
+   "Sim Herald": [],
+   "Sim Ogre Dreadmind": [],
+   "Sim Raider Brute": [
+    "Heavy Armor (Iron): 0/400 BROKEN",
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Raider Pyro": [
+    "Medium Armor (Hide): 150/150"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3060,
+    "monsterHp": 3501,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3040,
+    "monsterHp": 3360,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2714,
+    "monsterHp": 3360,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2714,
+    "monsterHp": 3360,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2713,
+    "monsterHp": 3258,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2458,
+    "monsterHp": 3162,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2431,
+    "monsterHp": 3038,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 2431,
+    "monsterHp": 3038,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 2214,
+    "monsterHp": 3038,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 2007,
+    "monsterHp": 3038,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 1972,
+    "monsterHp": 2991,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 12,
+    "partyHp": 1941,
+    "monsterHp": 2977,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 13,
+    "partyHp": 1685,
+    "monsterHp": 2977,
+    "partyDown": 3,
+    "monstersDown": 1
+   },
+   {
+    "round": 14,
+    "partyHp": 1685,
+    "monsterHp": 2939,
+    "partyDown": 3,
+    "monstersDown": 1
+   },
+   {
+    "round": 15,
+    "partyHp": 1685,
+    "monsterHp": 2939,
+    "partyDown": 3,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 1429,
+    "monsterHp": 2936,
+    "partyDown": 4,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 1210,
+    "monsterHp": 2936,
+    "partyDown": 5,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 411,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 922,
+   "monsters": 565
+  },
+  "lostBy": {
+   "party": 1850,
+   "monsters": 565
+  },
+  "directTaken": {
+   "party": 517,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Gust (Tenet)": 12,
+    "prompt: Sim Herald's charges on Sim Ogre Dreadmind": 10,
+    "prompt: Verdant Soul (Tenet)": 8,
+    "prompt: Verdant Soul: give # temp HP to": 8,
+    "prompt: Sanctum Ward: Sim Mender": 2,
+    "prompt: Heavy Swift (Steel)": 3,
+    "prompt: Aegis Ward: Sim Warden": 5,
+    "prompt: Mortal Coil (Tenet)": 12,
+    "prompt: Weight (Tenet)": 11,
+    "prompt: Heavy Swift (Steel) — Cut Back": 7,
+    "prompt: Warden Ward": 31,
+    "prompt: Bodyslam": 3,
+    "confirm: Eviscerate": 2,
+    "prompt: Sim Warden's charges on Sim Ogre Dreadmind": 2,
+    "prompt: Veil Ward": 16,
+    "prompt: Herald — Sim Raider Brute": 4,
+    "prompt: Gust — Sim Raider Brute": 3,
+    "prompt: Sim Binder's charges on Sim Ogre Dreadmind": 39,
+    "prompt: Momentum — Sim Raider Brute": 10,
+    "prompt: Riposte Ward": 4
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Herald needs 17 Energy for Momentum but has 14.",
+     "who": "Sim Herald"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Herald needs 17 Energy for Momentum but has 14.",
+     "who": "Sim Herald"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Herald needs 17 Energy for Momentum but has 14.",
+     "who": "Sim Herald"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Herald needs 17 Energy for Momentum but has 10.",
+     "who": "Sim Herald"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Herald needs 17 Energy for Momentum but has 10.",
+     "who": "Sim Herald"
+    }
+   ],
+   "errors": []
+  },
+  "cards": [
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Sim Mender dodges — Wither (Manifest) Attack roll: 16 Dodge (2d15) 2d15 2d15 15 1 14 15 Hit Wither deals 0 Supernatural damage to Sim Mender (8d12 = 63, 63 blocked), and that much Max HP too.",
+   "Sim Ogre Dreadmind — Mortal Coil Sim Mender takes 0 Supernatural damage (44 blocked).",
+   "Sim Raider Brute dodges — Wither (Manifest) Attack roll: 16 Dodge (2d12) 2d12 2d12 16 6 10 16 Hit Wither deals 51 Supernatural damage to Sim Raider Brute (5d12 = 51), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Brute takes 8 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Raider Brute dodges — Wither (Manifest) Attack roll: 28 Dodge (2d12) 2d12 2d12 8 2 6 8 Critical Hit Wither deals 90 Supernatural damage to Sim Raider Brute (5d12 = 45 → 90), and that much Max HP too. (critical)",
+   "Heavy Swift (Steel) — Cut Back — Damage to Sim Binder Base damage · Physical 6d12 6d12 38 9 4 10 3 5 7 38 Damage: 38 → 57 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden negates 37 (1 RP) Sim Binder takes 20 Physical 20 damage to HP",
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Bodyslam — Damage to Sim Warden Base damage · Physical 98 98 Damage: 98 → 196 Physical Strengthened ×2 (×2) Stacks: +2 crit Sim Warden takes 196 Physical 116 damage to HP Shield absorbed 80 (−80 Durability) Shield is broken",
+   "Heavy Swift (Steel) — Damage to Sim Warden Base damage · Physical 6d12 6d12 40 6 10 12 3 6 3 40 Damage: 40 → 60 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Warden takes 60 Physical 60 damage to HP",
+   "Sim Raider Brute — Eviscerate 42 Energy · repeats this turn's Swift damage, bypassing objects Sim Warden takes 60 Physical 60 damage to HP (bypasses armor)",
+   "Sim Binder dodges — Wither (Manifest) Attack roll: 12 Dodge (2d15) 2d15 2d15 9 6 3 9 Hit Wither deals 52 Supernatural damage to Sim Binder (8d12 = 74, 22 blocked), and that much Max HP too.",
+   "Sim Ogre Dreadmind — Mortal Coil Sim Binder takes 2 Supernatural damage (22 blocked); Sim Ogre Dreadmind gains that much temp HP until the start of their next turn.",
+   "Heavy Swift (Steel) — Cut Back — Damage to Sim Reaper Base damage · Physical 6d12 6d12 43 11 4 11 1 7 9 43 Damage: 43 → 64 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Veil negates 8 (1 RP) Sim Reaper takes 56 Physical 56 damage to HP",
+   "Herald — Sim Raider Brute Force 406 Driven 11 ft into the ground: 11 ft × 3 = 33. Sim Raider Brute takes 33 Physical 0 damage to HP Heavy Armor (Iron) absorbed 33 (−33 Durability) Sim Raider Brute is knocked prone.",
+   "Gust — Sim Raider Brute Force 346 Driven 5 ft into the ground: 5 ft × 3 = 15. Sim Raider Brute takes 15 Physical 0 damage to HP Heavy Armor (Iron) absorbed 15 (−15 Durability) Sim Raider Brute is knocked prone.",
+   "Flame — Damage to Sim Warden Base damage · Heat 6d12 6d12 27 2 8 8 4 2 3 27 Damage: 27 Heat no Strengthened/Weakened Sim Warden takes 27 Heat 0 damage to HP Shield absorbed 27 (−27 Durability) Sim Warden gets 81 Ignite stacks.",
+   "Sim Binder — Vice Sim Raider Brute takes 33 physical damage (5d12) for failing to break free.",
+   "Bodyslam — Damage to Sim Warden Base damage · Physical 98 98 Damage: 98 Physical no Strengthened/Weakened Sim Warden takes 98 Physical 0 damage to HP Shield absorbed 53 (−53 Durability) Shield is broken Temp HP absorbs 45 (15 left)",
+   "Sim Binder — Vice Sim Raider Brute takes 38 physical damage (5d12) for failing to break free.",
+   "Heavy Swift (Steel) — Damage to Sim Warden Base damage · Physical 6d12 6d12 59 12 10 12 12 9 4 59 Damage: 59 → 88 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 96 (64 with Omega: Strengthened ×1 (×1.5)): ignores that much armor Limit Sim Warden takes 88 Physical 0 damage to HP Temp HP absorbs 88 (212 left)",
+   "Sim Raider Brute dodges — Wither (Manifest) Attack roll: 12 Dodge (2d12) 3d12kl2 3d12kl2 9 6 8 3 9 1× Disadvantage · prone Hit Wither deals 32 Supernatural damage to Sim Raider Brute (5d12 = 32), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Brute takes 12 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Raider Brute dodges — Wither (Manifest) Attack roll: 25 Dodge (2d12) 3d12kl2 3d12kl2 6 4 2 8 6 1× Disadvantage · prone Critical Hit Wither deals 70 Supernatural damage to Sim Raider Brute (5d12 = 35 → 70), and that much Max HP too. (critical)",
+   "Herald — Sim Raider Brute Force 434 Driven 19 ft into the ground: 19 ft × 3 = 57. Sim Raider Brute takes 57 Physical 0 damage to HP Heavy Armor (Iron) absorbed 57 (−57 Durability) Sim Raider Brute is knocked prone.",
+   "Gust — Sim Raider Brute Force 330 Driven 9 ft into the ground: 9 ft × 3 = 27. Sim Raider Brute takes 27 Physical 0 damage to HP Heavy Armor (Iron) absorbed 27 (−27 Durability) Sim Raider Brute is knocked prone.",
+   "Momentum — Sim Raider Brute Force 272 Driven 3 ft into the ground: 3 ft × 3 = 9. Sim Raider Brute takes 9 Physical 0 damage to HP Heavy Armor (Iron) absorbed 9 (−9 Durability) Not knocked prone: 3 ft is less than Sim Raider Brute's height (5 ft).",
+   "Momentum — Sim Raider Brute Force 255 Driven 1 ft into the ground: 1 ft × 3 = 3. Sim Raider Brute takes 3 Physical 0 damage to HP Heavy Armor (Iron) absorbed 3 (−3 Durability) Not knocked prone: 1 ft is less than Sim Raider Brute's height (5 ft).",
+   "Momentum — Sim Raider Brute Force 253 Driven 1 ft into the ground: 1 ft × 3 = 3. Sim Raider Brute takes 3 Physical 0 damage to HP Heavy Armor (Iron) absorbed 3 (−3 Durability) Not knocked prone: 1 ft is less than Sim Raider Brute's height (5 ft).",
+   "Momentum — Sim Raider Brute Force 266 Driven 2 ft into the ground: 2 ft × 3 = 6. Sim Raider Brute takes 6 Physical 0 damage to HP Heavy Armor (Iron) absorbed 6 (−6 Durability) Not knocked prone: 2 ft is less than Sim Raider Brute's height (5 ft).",
+   "Momentum — Sim Raider Brute Force 321 Driven 8 ft into the ground: 8 ft × 3 = 24. Sim Raider Brute takes 24 Physical 0 damage to HP Heavy Armor (Iron) absorbed 24 (−24 Durability) Sim Raider Brute is knocked prone.",
+   "Momentum — Sim Raider Brute Force 250 Driven 1 ft into the ground: 1 ft × 3 = 3. Sim Raider Brute takes 3 Physical 0 damage to HP Heavy Armor (Iron) absorbed 3 (−3 Durability) Not knocked prone: 1 ft is less than Sim Raider Brute's height (5 ft).",
+   "Momentum — Sim Raider Brute Force 296 Driven 5 ft into the ground: 5 ft × 3 = 15. Sim Raider Brute takes 15 Physical 0 damage to HP Heavy Armor (Iron) absorbed 15 (−15 Durability) Sim Raider Brute is knocked prone.",
+   "Momentum — Sim Raider Brute Force 255 Driven 1 ft into the ground: 1 ft × 3 = 3. Sim Raider Brute takes 3 Physical 0 damage to HP Heavy Armor (Iron) absorbed 3 (−3 Durability) Not knocked prone: 1 ft is less than Sim Raider Brute's height (5 ft).",
+   "Herald — Sim Raider Brute Force 450 Driven 21 ft into the ground: 21 ft × 3 = 63. Sim Raider Brute takes 63 Physical 0 damage to HP Heavy Armor (Iron) absorbed 63 (−63 Durability) Sim Raider Brute is knocked prone.",
+   "Heavy Swift (Steel) — Cut Back — Damage to Sim Binder Base damage · Physical 6d12 6d12 30 8 7 2 11 1 1 30 Damage: 30 → 75 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 160 (64 with Omega: Strengthened ×3 (×2.5)): ignores that much armor Limit Warden negates 37 (1 RP) Sim Binder takes 38 Physical 38 damage to HP",
+   "Bodyslam — Damage to Sim Warden Base damage · Physical 98 98 Damage: 98 Physical no Strengthened/Weakened Sim Warden takes 98 Physical 98 damage to HP",
+   "Sim Raider Brute — Eviscerate 42 Energy · repeats this turn's Swift damage, bypassing objects Sim Binder takes 38 Physical 38 damage to HP (bypasses armor)",
+   "Sim Raider Brute dodges — Wither (Manifest) Attack roll: 22 Dodge (2d12) 3d12kl2 3d12kl2 9 8 10 1 9 1× Disadvantage · prone Critical Hit Wither deals 68 Supernatural damage to Sim Raider Brute (5d12 = 34 → 68), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Raider Brute takes 24 Supernatural damage; Sim Reaper gains that much temp HP until the start of their next turn.",
+   "Sim Raider Brute dodges — Wither (Manifest) Attack roll: 17 Dodge (2d12) 3d12kl2 3d12kl2 10 12 4 6 10 1× Disadvantage · prone Hit Wither deals 28 Supernatural damage to Sim Raider Brute (5d12 = 28), and that much Max HP too.",
+   "Herald — Sim Raider Brute Force 496 Driven 30 ft into the ground: 30 ft × 3 = 90. Sim Raider Brute takes 90 Physical 22 damage to HP Heavy Armor (Iron) absorbed 68 (−68 Durability) Heavy Armor (Iron) is broken Sim Raider Brute is knocked prone.",
+   "Gust — Sim Raider Brute Force 358 Driven 16 ft into the ground: 16 ft × 3 = 48. Sim Raider Brute takes 48 Physical 48 damage to HP Sim Raider Brute is knocked prone.",
+   "Momentum — Sim Raider Brute Force 277 Driven 8 ft into the ground: 8 ft × 3 = 24. Sim Raider Brute takes 24 Physical 24 damage to HP Sim Raider Brute is knocked prone.",
+   "Momentum — Sim Raider Brute Force 299 Driven 10 ft into the ground: 10 ft × 3 = 30. Sim Raider Brute takes 30 Physical 30 damage to HP Sim Raider Brute is knocked prone.",
+   "Crackle — Damage to Sim Binder Base damage · Radiation 6d12 6d12 33 9 1 6 4 7 6 33 Damage: 33 → 49 Radiation Strengthened ×1 (×1.5) Stacks: +1 added Electrify: Strengthened (first damage to them this turn) Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden negates 22 (1 RP) Sim Binder takes 27 Radiation 27 damage to HP Chain (1 Disadvantage)",
+   "Crackle — Damage to Sim Reaper Base damage · Radiation 6d12 6d12 25 4 3 1 7 6 4 25 Damage: 25 → 37 Radiation Strengthened ×1 (×1.5) Stacks: +1 added Electrify: Strengthened (first damage to them this turn) Veil misses (1 RP spent, nothing negated) · Veil negates 8 (1 RP) Sim Reaper takes 29 Radiation 0 damage to HP Temp HP absorbs 29 (11 left) Chain (1 Disadvantage)",
+   "Sim Raider Pyro dodges — Wither (Manifest) Attack roll: 24 Dodge (2d12) 2d12 2d12 17 9 8 17 Hit Wither deals 0 Supernatural damage to Sim Raider Pyro (5d12 = 30, 30 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Pyro takes 0 Supernatural damage (10 blocked).",
+   "Flame — Damage to Sim Mender Base damage · Heat 6d12 6d12 43 8 9 4 2 11 9 43 Damage: 43 Heat no Strengthened/Weakened Sim Mender takes 43 Heat 43 damage to HP Sim Mender gets 129 Ignite stacks.",
+   "Sim Raider Pyro casts Crackle Sim Raider Pyro casts Crackle . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Electrify 1 + Lightning Rod 1 − TR 1) · 25 Energy Spell Power ×6 (Grasp 60) · Ranged Crackle: This Spell can be used to produce electricity which can be launched at a target, dealing 6d12 radiation damage to them and then chaining to a target unaffected by this Spell chain within range with a disadvantage stack on its attack roll (repeating endlessly, stacking disadvantages until you miss or no other targets can be hit). If done in melee, the Spell can instead have no advantage on its attack roll from the melee to keep it available to use until the start of your next turn. This can be repeated using the same amount of AP each time as was used to cast this Spell. Ritual: The crackle no longer goes out naturally so long as it is being used for melee attacks only. This lasts until used as any other attack type or the Ritual ends. Electrify: Whenever this Spell deals damage to a target, if this is the first time this Spell has dealt damage to that target since the start of your turn, the damage this Spell deals to them is Strengthened. Lightning Rod: The primary target of this Spell takes 6d10 radiation damage whenever another target takes damage from this Spell.",
+   "Crackle — Damage to Sim Binder Base damage · Radiation 6d12 6d12 45 12 1 3 10 10 9 45 Damage: 45 → 67 Radiation Strengthened ×1 (×1.5) Stacks: +1 added Electrify: Strengthened (first damage to them this turn) Warden misses (1 RP spent, nothing negated) · Warden negates 22 (1 RP) Sim Binder takes 45 Radiation 45 damage to HP Chain (1 Disadvantage)",
+   "Sim Binder — Vice Sim Ogre Dreadmind takes 22 physical damage (5d12) for failing to break free.",
+   "Flame — Damage to Sim Mender Base damage · Heat 6d12 6d12 39 7 4 8 8 11 1 39 Damage: 39 Heat no Strengthened/Weakened Sim Mender takes 39 Heat 39 damage to HP Sim Mender gets 39 Ignite stacks. Ignition: 168 Ignite stacks trigger. Sim Mender takes 168 Heat 168 damage to HP",
+   "Sim Raider Pyro dodges — Wither (Manifest) Attack roll: 16 Dodge (2d12) 2d12 2d12 10 6 4 10 Hit Wither deals 0 Supernatural damage to Sim Raider Pyro (5d12 = 37, 37 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Pyro takes 0 Supernatural damage (11 blocked).",
+   "Sim Ogre Dreadmind — Mortal Coil Sim Reaper takes 35 Supernatural damage (8 blocked); Sim Ogre Dreadmind gains that much temp HP until the start of their next turn.",
+   "Sim Raider Pyro dodges — Wither (Manifest) Attack roll: 23 Dodge (2d12) 2d12 2d12 15 8 7 15 Hit Wither deals 7 Supernatural damage to Sim Raider Pyro (5d12 = 47, 40 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Pyro takes 0 Supernatural damage (16 blocked).",
+   "Sim Raider Pyro dodges — Wither (Manifest) Attack roll: 29 Dodge (2d12) 2d12 2d12 14 4 10 14 Critical Hit Wither deals 40 Supernatural damage to Sim Raider Pyro (5d12 = 40 → 80, 40 blocked), and that much Max HP too. (critical)",
+   "Flame — Damage to Sim Herald Base damage · Heat 6d12 6d12 31 1 5 10 4 6 5 31 Damage: 31 Heat no Strengthened/Weakened Sim Herald takes 31 Heat 31 damage to HP Sim Herald gets 93 Ignite stacks.",
+   "Sim Binder — Vice Sim Ogre Dreadmind takes 38 physical damage (5d12) for failing to break free.",
+   "Sim Reaper — Mortal Coil Sim Ogre Dreadmind takes 0 Supernatural damage (14 blocked).",
+   "Sim Raider Pyro dodges — Wither (Manifest) Attack roll: 25 Dodge (2d12) 2d12 2d12 15 9 6 15 Hit Wither deals 0 Supernatural damage to Sim Raider Pyro (5d12 = 37, 37 blocked), and that much Max HP too.",
+   "Flame — Damage to Sim Herald Base damage · Heat 6d12 6d12 35 2 8 4 1 12 8 35 Damage: 35 Heat no Strengthened/Weakened Sim Herald takes 35 Heat 35 damage to HP Sim Herald gets 35 Ignite stacks. Ignition: 128 Ignite stacks trigger. Sim Herald takes 128 Heat 128 damage to HP",
+   "Flame — Damage to Sim Binder Base damage · Heat 6d12 6d12 39 12 10 6 6 2 3 39 Damage: 39 Heat no Strengthened/Weakened Warden misses (1 RP spent, nothing negated) · Warden negates 22 (1 RP) Sim Binder takes 17 Heat 0 damage to HP Temp HP absorbs 17 (63 left) Sim Binder gets 51 Ignite stacks.",
+   "Sim Raider Pyro dodges — Wither (Manifest) Attack roll: 26 Dodge (2d12) 2d12 2d12 10 3 7 10 Critical Hit Wither deals 38 Supernatural damage to Sim Raider Pyro (5d12 = 39 → 78, 40 blocked), and that much Max HP too. (critical)",
+   "Sim Reaper — Mortal Coil Sim Raider Pyro takes 0 Supernatural damage (20 blocked).",
+   "Flame — Damage to Sim Binder Base damage · Heat 6d12 6d12 53 6 9 9 11 6 12 53 Damage: 53 Heat no Strengthened/Weakened Warden misses (1 RP spent, nothing negated) · Warden misses (1 RP spent, nothing negated) · Warden negates 22 (1 RP) Sim Binder takes 31 Heat 26 damage to HP Temp HP absorbs 5 (0 left) Sim Binder gets 31 Ignite stacks. Ignition: 82 Ignite stacks trigger. Sim Binder takes 82 Heat 77 damage to HP Temp HP absorbs 5 (0 left)",
+   "Flame — Damage to Sim Reaper Base damage · Heat 6d12 6d12 49 4 12 7 11 3 12 49 Damage: 49 Heat no Strengthened/Weakened Veil misses (1 RP spent, nothing negated) · Veil negates 8 (1 RP) Sim Reaper takes 41 Heat 41 damage to HP Sim Reaper gets 123 Ignite stacks.",
+   "Sim Raider Pyro dodges — Wither (Manifest) Attack roll: 27 Dodge (2d12) 2d12 2d12 18 8 10 18 Hit Wither deals 3 Supernatural damage to Sim Raider Pyro (5d12 = 43, 40 blocked), and that much Max HP too.",
+   "Sim Reaper — Mortal Coil Sim Raider Pyro takes 0 Supernatural damage (15 blocked).",
+   "Sim Raider Pyro dodges — Wither (Manifest) Attack roll: 15 Dodge (2d12) 2d12 2d12 10 3 7 10 Hit Wither deals 0 Supernatural damage to Sim Raider Pyro (5d12 = 18, 18 blocked), and that much Max HP too.",
+   "Flame — Damage to Sim Reaper Base damage · Heat 6d12 6d12 32 5 8 8 6 1 4 32 Damage: 32 → 64 Heat Strengthened ×2 (×2) Stacks: +2 crit Veil negates 8 (1 RP) Sim Reaper takes 56 Heat 56 damage to HP Sim Reaper gets 56 Ignite stacks. Ignition: 179 Ignite stacks trigger. Sim Reaper takes 179 Heat 179 damage to HP"
+  ],
+  "casts": []
+ }
+]

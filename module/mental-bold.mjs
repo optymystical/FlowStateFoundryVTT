@@ -6,7 +6,7 @@ export const BOLD = {
   "3d8 damage"
  ],
  "Bloom": [
-  "50 temp HP"
+  "20 temp HP"
  ],
  "Verdant Soul": [
   "10 temp HP"

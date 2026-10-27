@@ -3678,7 +3678,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Bloom",
-      "text": "At the start of the target’s next turn, they get 50 temp HP, lasting until the start of your next turn (can stack with itself). Enhanced: The temp HP applies immediately instead."
+      "text": "At the start of the target’s next turn, they get 20 temp HP, lasting until the start of your next turn (can stack with itself). Enhanced: The temp HP applies immediately instead."
      },
      {
       "name": "Verdant Soul",
@@ -3950,7 +3950,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Herald",
-      "text": "On hit, apply 10d8 Force to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead only removing half of their current HP (not counting Temp HP, also applies to Durability for objects) for the calculation. Enhanced: The Force ignores Lift, treating it as if it were 0."
+      "text": "On hit, apply 10d8 Force to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead only removing a quarter of their current HP (not counting Temp HP, also applies to Durability for objects) for the calculation. Enhanced: The Force ignores Lift, treating it as if it were 0."
      },
      {
       "name": "Gust",

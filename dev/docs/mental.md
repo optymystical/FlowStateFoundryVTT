@@ -153,7 +153,7 @@
 ## **Life (Dream)** {#life-(dream)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Bloom:** At the start of the target’s next turn, they get **50 temp HP**, lasting until the start of your next turn (can stack with itself). **Enhanced:** The temp HP applies immediately instead.  
+**Bloom:** At the start of the target’s next turn, they get **20 temp HP**, lasting until the start of your next turn (can stack with itself). **Enhanced:** The temp HP applies immediately instead.  
 **Verdant Soul:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can give either the target or yourself **10 temp HP**, lasting until the start of your next turn.
 
 **Tier 2: You gain the following ability:**
@@ -241,7 +241,7 @@
 ## **Beyond (Dream)** {#beyond-(dream)}
 
 **Tier 1: You gain the following Mode and Tenet:**  
-**Herald:** On hit, apply **10d8 Force** to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead only removing half of their current HP (not counting Temp HP, also applies to Durability for objects) for the calculation. **Enhanced:** The Force ignores Lift, treating it as if it were 0\.  
+**Herald:** On hit, apply **10d8 Force** to the target in a direction of your choice. This Force ignores the half-max HP subtraction, instead only removing a quarter of their current HP (not counting Temp HP, also applies to Durability for objects) for the calculation. **Enhanced:** The Force ignores Lift, treating it as if it were 0\.  
 **Gust:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can apply **12d8 Force** to whatever the target(s) of the Manifest are in any direction of your choosing. This Force adds up with any Force the Manifest itself would produce.
 
 **Tier 2: You gain the following ability:**

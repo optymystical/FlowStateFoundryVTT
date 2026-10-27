@@ -211,7 +211,7 @@ if (SH) {
   ok2(tp?.kind === "Wonder" && tp.power === R.wonderPower(hero.system.derived.effective.pon.value), "A Wonder tree's numbers use that Wonder's Power");
   const bloom = lifeTree.tiers.flatMap(t => t.entries).find(e => e.name === "Bloom");
   const scaled = SH.scaleEntry(bloom, tp);
-  ok2(new RegExp(`${50 * tp.power} temp HP`).test(scaled.text), `Bloom reads ${50 * tp.power} temp HP at Power ${tp.power}`);
+  ok2(new RegExp(`${20 * tp.power} temp HP`).test(scaled.text), `Bloom reads ${20 * tp.power} temp HP at Power ${tp.power}`);
   const decree = SK.treeById("mental-order-dream").tiers.flatMap(t => t.entries).find(e => e.name === "Decree");
   ok2(new RegExp(`plus or minus ${tp.power}`).test(SH.scaleEntry(decree, tp).text), "Decree's bolded ±1 scales too");
   ok2(SH.treePower(hero, SK.treeById("martial-theory")) === null, "Martial trees show their own numbers (nothing to scale)");

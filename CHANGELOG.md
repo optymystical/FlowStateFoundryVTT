@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.84.0:** Mental doc updates: Bloom gives 20 × Power temp HP (was 50; still stacks), and Herald's Force loses a quarter of the target's current HP (was half).
+
 **0.83.2:** Arcane against a creature that isn't fully Magical: its Shroud and Shields (fully magical) take the hit at full strength, and only what gets past them is Weakened.
 
 **0.83.1:** Shrouds: the Equipment doc's table now lists the doubled Durability and Limit (Bastion 100 / 20...), and the scaling is back to the usual base × Build ÷ 10. Same numbers in play.

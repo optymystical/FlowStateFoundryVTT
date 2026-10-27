@@ -151,15 +151,15 @@ export async function heal(target, caster, n) {
 }
 
 // What comes off the Force before it turns into feet: `normal` Force loses half the maximum HP (Gust, Momentum, the Fortune Table: the user's ruling);
-// Herald (`halfCurrent`) loses half the current HP instead (not Temp HP); with neither, nothing (it goes straight into feet).
-const forceFeet = (force, target, ignoreLift, { halfCurrent = false, normal = false } = {}) => resolveForce(force, { lift: ignoreLift ? 0 : target.system.lift ?? 0,
-  maxHp: halfCurrent ? Math.max(0, target.system.hp?.value ?? 0) : normal ? Math.max(0, target.system.hp?.max ?? 0) : 0 });
+// Herald (`quarterCurrent`) loses a quarter of the current HP instead (not Temp HP); with neither, nothing (it goes straight into feet).
+const forceFeet = (force, target, ignoreLift, { quarterCurrent = false, normal = false } = {}) => resolveForce(force, { lift: ignoreLift ? 0 : target.system.lift ?? 0,
+  maxHp: quarterCurrent ? Math.floor(Math.max(0, target.system.hp?.value ?? 0) / 2) : normal ? Math.max(0, target.system.hp?.max ?? 0) : 0 });
 
 /** Roll `n`d`sides` Force with the Manifest's Strengthened/Weakened and turn it into feet pushed (see `forceFeet` for what comes off it first). */
-export async function forceRoll(ctx, n, sides, label, ignoreLift = false, { halfCurrent = false, normal = false } = {}) {
+export async function forceRoll(ctx, n, sides, label, ignoreLift = false, { quarterCurrent = false, normal = false } = {}) {
   const r = await roll(`${n}d${sides}`);
   const force = Math.floor(applyStacks(r.total, ctx.stacks));
-  const feet = forceFeet(force, ctx.target, ignoreLift, { halfCurrent, normal });
+  const feet = forceFeet(force, ctx.target, ignoreLift, { quarterCurrent, normal });
   return { r, force, feet, html: `${label}: ${n}d${sides} = ${r.total}${ctx.stacks ? ` → ${force}` : ""} Force → up to <strong>${feet} ft</strong>${ignoreLift ? " (ignores Lift)" : ""}`, push: feet > 0 ? { attacker: ctx.attacker.uuid, target: ctx.target.uuid, force, feet, label, beyond: ["Herald", "Gust", "Momentum"].includes(label) } : null };
 }
 
@@ -185,7 +185,7 @@ export const ON_CRIT = [];
 export const MODES = {
   /* ---- Life (Dream) ---- */
   async "mental-life-dream:bloom"(c) {
-    const n = bold(c.bs, 50 * c.power);
+    const n = bold(c.bs, 20 * c.power);
     if (c.enhanced || c.now) { await putTemp(c.target, c.attacker, n, c.mode.id); return `${esc(c.target.name)} gets <strong>${n} temp HP</strong> now.`; }
     await putPending(c.target, c.attacker, "Bloom", { type: "tempHP", n, mode: c.mode.id });
     return `${esc(c.target.name)} gets <strong>${n} temp HP</strong> at the start of their next turn (until the start of your next turn).`;
@@ -232,7 +232,7 @@ export const MODES = {
 
   /* ---- Beyond (Dream) ---- */
   async "mental-beyond-dream:herald"(c) {
-    const f = await forceRoll(c, 10 * c.power, 8, "Herald", !!c.enhanced, { halfCurrent: true });
+    const f = await forceRoll(c, 10 * c.power, 8, "Herald", !!c.enhanced, { quarterCurrent: true });
     rolled.push(f.r);
     return { html: `${f.html}${f.push ? knockbackRow(c.attacker.uuid, f.feet, "Herald") : ""}`, push: f.push };
   },

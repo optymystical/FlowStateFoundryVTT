@@ -163,7 +163,7 @@ ok2(pre.length === 1 && effs(orc, "pending").length === 0 && effs(orc, "tempHP")
 ok2(hero.system.energy.value === e0 - (await import("../../module/abilities.mjs")).statMinOf(hero, "pon") && live().length === 1, "…for the Wonder's Scaling Stat min in Energy, and you concentrate on it");
 ok2(pre[0].flags.flowstate.spellEffect.stored.stacks === 1, "…Strengthened");
 await P.triggerPremeditated(hero, pre[0]);
-ok2(effs(orc, "premeditated").length === 0 && effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === Math.floor(150 * 1.5), "Triggering it applies the Mode (Strengthened: Bloom 150 → 225)");
+ok2(effs(orc, "premeditated").length === 0 && effs(orc, "pending")[0]?.flags.flowstate.spellEffect.then.n === Math.floor(60 * 1.5), "Triggering it applies the Mode (Strengthened: Bloom 60 → 90)");
 ok2(live().length === 0, "…and the Concentration is over");
 tree("mental-ponderance-arts", 0);
 

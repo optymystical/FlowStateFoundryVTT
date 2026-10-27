@@ -65,7 +65,7 @@ S.applyWorldData({});
 console.log("== Entry text, laid out for reading");
 { const p = C.entryParts("1 Threshold, Core Spell, Ranged. Cost: Energy equal to your Scaling Stat min. Deals 2d6 damage for 2 AP. Ritual: Cast it twice. Enhanced: More.", { spell: true });
   ok(p.main === "Deals **2d6** damage for **2 AP**." && p.extra.map(x => x.label).join() === "Ritual,Enhanced" && p.extra[0].text === "Cast it twice.", "The cost and the spell's Threshold line leave the text (they're above it); Ritual and Enhanced get their own boxes; dice and AP stand out");
-  ok(C.entryParts("At the start of the target's next turn, they get 50 temp HP.", { name: "Bloom" }).main.includes("**50 temp HP**"), "A Mode's bolded numbers (the doc's bold) stand out");
+  ok(C.entryParts("At the start of the target's next turn, they get 20 temp HP.", { name: "Bloom" }).main.includes("**20 temp HP**"), "A Mode's bolded numbers (the doc's bold) stand out");
   const cut = C.renderPage(C.findPage("entry:magic-slashing:cut"));
   ok(cut.includes("fs-codex-fields") && cut.includes("fs-codex-callout") && cut.includes("fs-codex-chips") && !cut.includes("1 Threshold, Core Spell"), "A spell page: a stat block, its Ritual in a box, its Combos as chips, no repeated header");
   const tree = C.renderPage(C.findPage("tree:martial-bladed-weapons"));

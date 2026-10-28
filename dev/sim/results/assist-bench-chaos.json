@@ -1,0 +1,955 @@
+[
+ {
+  "id": "chaos-1",
+  "group": "target",
+  "rotation": 3,
+  "seconds": 44,
+  "winner": "unfinished",
+  "pass": "assist-bench-chaos",
+  "rounds": 5,
+  "partyLeft": 4,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither": 12,
+   "defend:dodge": 44,
+   "cast:Cut": 12,
+   "mod:Bleed": 7,
+   "manifest:Fracture": 8,
+   "manifest:Larceny": 4,
+   "charge:Sim Caster": 8,
+   "opt:replace=Q8lkTr7SELCbHlV3": 1,
+   "opt:replace=UxStyFJrM94PAOFB": 1,
+   "opt:replace=QSzD4nDVHsvz53Ym": 1,
+   "opt:replace=HkUrrh5ptz0R5Yyl": 1,
+   "opt:replace=naXzsvAdMN85IWgH": 1,
+   "opt:replace=7MczdAVTK2LkmIPm": 1,
+   "opt:replace=qRounkUqbAFLiGBc": 1,
+   "opt:replace=hSfPcCOQ2i0QMOEL": 1
+  },
+  "hp": {
+   "Sim Caster#SzbT": "567/567",
+   "Sim Striker#1WkC": "747/747",
+   "Sim Cutter#yqHb": "567/567",
+   "Sim Witherer#RAnZ": "567/567",
+   "Sim Target#4v7l": "2896/3762"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Swift (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 401,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Striker"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 10,
+    "damage": 91,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Cutter"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Striker",
+    "dealt": 401,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Target",
+    "dealt": 0,
+    "taken": 492,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Cutter",
+    "dealt": 91,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Witherer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Wither": 12
+    }
+   },
+   {
+    "name": "Sim Target",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 44
+    }
+   },
+   {
+    "name": "Sim Striker",
+    "side": "party",
+    "role": "striker",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Cutter",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Cut": 12,
+     "mod:Bleed": 7
+    }
+   },
+   {
+    "name": "Sim Caster",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Fracture": 8,
+     "manifest:Larceny": 4
+    }
+   }
+  ],
+  "trees": {
+   "Sim Caster": {
+    "mental-theory": 5,
+    "mental-chaos-nightmare": 5
+   },
+   "Sim Striker": {},
+   "Sim Cutter": {
+    "magic-theory": 1,
+    "magic-slashing": 2
+   },
+   "Sim Witherer": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 1
+   }
+  },
+  "gear": {
+   "Sim Caster": [
+    "Unarmed G1"
+   ],
+   "Sim Striker": [
+    "Unarmed (not held) G1",
+    "Heavy Swift (Steel) G7"
+   ],
+   "Sim Cutter": [
+    "Unarmed G1"
+   ],
+   "Sim Witherer": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Target": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Caster": [],
+   "Sim Striker": [
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Cutter": [],
+   "Sim Witherer": [],
+   "Sim Target": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2448,
+    "monsterHp": 3762,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2448,
+    "monsterHp": 3633,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2448,
+    "monsterHp": 3472,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2448,
+    "monsterHp": 3119,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2448,
+    "monsterHp": 2896,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2448,
+    "monsterHp": 2896,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 866
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 866
+  },
+  "directTaken": {
+   "party": 492,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Heavy Swift (Steel)": 8,
+    "prompt: Sim Caster's charges on Sim Target": 8,
+    "prompt: Mortal Coil (Tenet)": 3,
+    "prompt: Unbound (Tenet)": 2,
+    "prompt: Unbound: place a Chaos charge": 2
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 41 11 11 2 6 7 4 41 Damage: 41 → 61 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 66: ignores that much armor Limit Sim Target takes 61 Physical 61 damage to HP",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 34 3 3 1 5 2 3 3 4 2 8 34 Damage: 34 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 34 Physical 34 damage to HP Bleed: Sim Target takes 34 direct physical damage again at the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 5 Dodge (2d15) 2d15 2d15 28 15 13 4 Hit Wither deals 31 Supernatural damage to Sim Target (5d12 = 31). Fracture: Sim Target rerolls (no effects carried over): 2d7 = 4.",
+   "Sim Witherer — Mortal Coil Sim Target takes 18 Supernatural damage; Sim Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 27 Dodge (2d15) 2d15 2d15 16 12 4 16 Hit Wither deals 34 Supernatural damage to Sim Target (5d12 = 34).",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 52 12 9 10 8 4 9 52 Damage: 52 → 78 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 66: ignores that much armor Limit Sim Target takes 78 Physical 78 damage to HP",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 27 Dodge (2d15) 2d15 2d15 23 13 10 23 Hit Wither deals 29 Supernatural damage to Sim Target (5d12 = 29).",
+   "Sim Witherer — Mortal Coil Sim Target takes 10 Supernatural damage; Sim Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 27 Dodge (2d15) 2d15 2d15 14 8 6 14 Hit Wither deals 33 Supernatural damage to Sim Target (5d12 = 33).",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 50 11 6 12 8 10 3 50 Damage: 50 → 75 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 66: ignores that much armor Limit Sim Target takes 75 Physical 75 damage to HP",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 37 3 3 10 9 6 6 37 Damage: 37 → 92 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 92 Physical 92 damage to HP",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 57 6 3 1 8 9 7 7 4 5 7 57 Damage: 57 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 57 Physical 57 damage to HP Bleed: Sim Target takes 57 direct physical damage again at the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 10 Dodge (2d15) 2d15 2d15 5 3 2 2 Critical Hit Wither deals 64 Supernatural damage to Sim Target (5d12 = 32 → 64). (critical) Fracture: Sim Target rerolls (no effects carried over): 2d1 = 2.",
+   "Sim Witherer — Mortal Coil Sim Target takes 24 Supernatural damage; Sim Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 21 Dodge (2d15) 2d15 2d15 21 11 10 21 Hit Wither deals 40 Supernatural damage to Sim Target (5d12 = 40).",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 38 2 1 10 9 6 10 38 Damage: 38 → 95 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 95 Physical 95 damage to HP"
+  ],
+  "casts": [
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea"
+  ]
+ },
+ {
+  "id": "chaos-2",
+  "group": "target",
+  "rotation": 3,
+  "seconds": 44,
+  "winner": "unfinished",
+  "pass": "assist-bench-chaos",
+  "rounds": 5,
+  "partyLeft": 4,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither": 12,
+   "defend:dodge": 44,
+   "manifest:Fracture": 8,
+   "manifest:Larceny": 4,
+   "charge:Sim Caster": 8,
+   "opt:replace=VIhYM6NzgWo9fRN8": 1,
+   "cast:Cut": 12,
+   "mod:Bleed": 7,
+   "opt:replace=0Dl6nh2SLNQCwPyP": 1,
+   "opt:replace=XeL3cKJM7tw5GXYA": 1,
+   "opt:replace=5fMM5YvfhM41TzsT": 1,
+   "opt:replace=8sPKUg4FH2Bxh0E8": 1,
+   "opt:replace=gUkJsybmRUF98XtJ": 1,
+   "opt:replace=VgPv9NlgJ22qk1tI": 1,
+   "opt:replace=1RqzUcydnd6P0kdQ": 1
+  },
+  "hp": {
+   "Sim Caster#1LVz": "567/567",
+   "Sim Striker#CbZS": "747/747",
+   "Sim Cutter#7kgu": "567/567",
+   "Sim Witherer#MNnU": "567/567",
+   "Sim Target#sFc1": "1965/3762"
+  },
+  "down": [],
+  "weapons": {
+   "Spell: Cut": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 3,
+    "damage": 748,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Cutter"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 3,
+    "damage": 421,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Striker"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Cutter",
+    "dealt": 748,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Target",
+    "dealt": 0,
+    "taken": 1169,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Striker",
+    "dealt": 421,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Witherer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Wither": 12
+    }
+   },
+   {
+    "name": "Sim Target",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 44
+    }
+   },
+   {
+    "name": "Sim Caster",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Fracture": 8,
+     "manifest:Larceny": 4
+    }
+   },
+   {
+    "name": "Sim Cutter",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Cut": 12,
+     "mod:Bleed": 7
+    }
+   },
+   {
+    "name": "Sim Striker",
+    "side": "party",
+    "role": "striker",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Caster": {
+    "mental-theory": 5,
+    "mental-chaos-nightmare": 5
+   },
+   "Sim Striker": {},
+   "Sim Cutter": {
+    "magic-theory": 1,
+    "magic-slashing": 2
+   },
+   "Sim Witherer": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 1
+   }
+  },
+  "gear": {
+   "Sim Caster": [
+    "Unarmed G1"
+   ],
+   "Sim Striker": [
+    "Unarmed (not held) G1",
+    "Heavy Swift (Steel) G7"
+   ],
+   "Sim Cutter": [
+    "Unarmed G1"
+   ],
+   "Sim Witherer": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Target": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Caster": [],
+   "Sim Striker": [
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Cutter": [],
+   "Sim Witherer": [],
+   "Sim Target": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2448,
+    "monsterHp": 3762,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2448,
+    "monsterHp": 2918,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2448,
+    "monsterHp": 2559,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2448,
+    "monsterHp": 2129,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2448,
+    "monsterHp": 1965,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2448,
+    "monsterHp": 1965,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1797
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 1797
+  },
+  "directTaken": {
+   "party": 1169,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Mortal Coil (Tenet)": 2,
+    "prompt: Sim Caster's charges on Sim Target": 9,
+    "prompt: Entropy on Sim Target": 2,
+    "prompt: Heavy Swift (Steel)": 8,
+    "prompt: Unbound (Tenet)": 1,
+    "prompt: Unbound: place a Chaos charge": 1
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Sim Target dodges — Wither (Manifest) Attack roll: 23 Dodge (2d15) 2d15 2d15 22 14 8 22 Hit Wither deals 27 Supernatural damage to Sim Target (5d12 = 27).",
+   "Sim Witherer — Mortal Coil Sim Target takes 7 Supernatural damage; Sim Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 24 Dodge (2d15) 2d15 2d15 7 4 3 7 Critical Hit Wither deals 58 Supernatural damage to Sim Target (5d12 = 29 → 58). (critical)",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 15 Dodge (2d15) 2d15 2d15 9 7 2 9 Hit Wither deals 32 Supernatural damage to Sim Target (5d12 = 32).",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 46 5 4 2 10 4 6 10 3 1 1 46 Damage: 46 → 92 Physical Strengthened ×2 (×2) Stacks: +2 crit Living target, direct damage: dice are d10 Sim Target takes 92 Physical 92 damage to HP Bleed: Sim Target takes 92 direct physical damage again at the start of their next turn.",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 79 6 9 7 9 10 4 8 6 10 10 79 Damage: 79 → 158 Physical Strengthened ×2 (×2) Stacks: +2 crit Living target, direct damage: dice are d10 Sim Target takes 158 Physical 158 damage to HP Bleed: Sim Target takes 158 direct physical damage again at the start of their next turn.",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 59 3 7 6 10 1 3 2 9 8 10 59 Damage: 59 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 59 Physical 59 damage to HP Bleed: Sim Target takes 59 direct physical damage again at the start of their next turn.",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 32 10 1 4 5 11 1 32 Damage: 32 → 48 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 66: ignores that much armor Limit Sim Target takes 48 Physical 48 damage to HP",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 36 7 11 2 9 3 4 36 Damage: 36 → 54 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 66: ignores that much armor Limit Sim Target takes 54 Physical 54 damage to HP",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 18 Dodge (2d15) 2d15 2d15 12 5 7 12 Hit Wither deals 34 Supernatural damage to Sim Target (5d12 = 34).",
+   "Sim Witherer — Mortal Coil Sim Target takes 22 Supernatural damage; Sim Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 21 Dodge (2d15) 2d15 2d15 11 7 4 11 Hit Wither deals 41 Supernatural damage to Sim Target (5d12 = 41).",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 57 3 4 8 6 10 6 3 7 3 7 57 Damage: 57 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 57 Physical 57 damage to HP",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 49 3 1 7 2 5 8 9 6 7 1 49 Damage: 49 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 49 Physical 49 damage to HP Bleed: Sim Target takes 49 direct physical damage again at the start of their next turn.",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 43 1 8 7 10 6 11 43 Damage: 43 → 107 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 107 Physical 107 damage to HP",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 57 5 3 10 2 9 10 2 7 7 2 57 Damage: 57 → 114 Physical Strengthened ×2 (×2) Stacks: +2 crit Living target, direct damage: dice are d10 Sim Target takes 114 Physical 114 damage to HP",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 52 1 5 6 5 10 5 6 1 6 7 52 Damage: 52 → 104 Physical Strengthened ×2 (×2) Stacks: +2 crit Living target, direct damage: dice are d10 Sim Target takes 104 Physical 104 damage to HP",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 51 9 2 11 10 9 10 51 Damage: 51 → 127 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 127 Physical 127 damage to HP",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 34 10 1 5 2 9 7 34 Damage: 34 → 85 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 85 Physical 85 damage to HP",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 66 1 10 10 5 10 10 9 3 5 3 66 Damage: 66 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 66 Physical 66 damage to HP",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 49 1 10 10 5 6 9 2 1 3 2 49 Damage: 49 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 49 Physical 49 damage to HP Bleed: Sim Target takes 49 direct physical damage again at the start of their next turn."
+  ],
+  "casts": [
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea"
+  ]
+ },
+ {
+  "id": "chaos-3",
+  "group": "target",
+  "rotation": 3,
+  "seconds": 44,
+  "winner": "unfinished",
+  "pass": "assist-bench-chaos",
+  "rounds": 5,
+  "partyLeft": 4,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither": 12,
+   "defend:dodge": 44,
+   "cast:Cut": 12,
+   "mod:Bleed": 7,
+   "manifest:Fracture": 8,
+   "manifest:Larceny": 4,
+   "charge:Sim Caster": 10,
+   "opt:replace=CIold1R5nuiSW5AJ": 1,
+   "opt:replace=gE5Kmv64glPNj2ZP": 1,
+   "opt:replace=IZZTRJGZPqbPj5Qj": 1,
+   "opt:replace=wL7jeKRDT4JzvlkW": 1,
+   "opt:replace=6MXWPYI0n8Mj6jUj": 1,
+   "opt:replace=FD26hQ38QxRMlbLR": 1,
+   "opt:replace=Jzm49O1LKe4cWQb0": 1,
+   "opt:replace=SxyM9UT1go1iQwMT": 1,
+   "opt:replace=MwfN62sNN0I9O6GN": 1,
+   "opt:replace=zsen8lOKDg9TpqIF": 1
+  },
+  "hp": {
+   "Sim Caster#b11J": "567/567",
+   "Sim Striker#wp38": "747/747",
+   "Sim Cutter#UFXb": "567/567",
+   "Sim Witherer#YPy9": "567/567",
+   "Sim Target#nhjj": "2179/3762"
+  },
+  "down": [],
+  "weapons": {
+   "Spell: Cut": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 7,
+    "damage": 362,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Cutter"
+    ]
+   },
+   "Heavy Swift (2H)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 5,
+    "misses": 2,
+    "damage": 545,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Striker"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "Sim Cutter",
+    "dealt": 362,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Target",
+    "dealt": 0,
+    "taken": 907,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "Sim Striker",
+    "dealt": 545,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 8
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Witherer",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Wither": 12
+    }
+   },
+   {
+    "name": "Sim Target",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 44
+    }
+   },
+   {
+    "name": "Sim Cutter",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Cut": 12,
+     "mod:Bleed": 7
+    }
+   },
+   {
+    "name": "Sim Caster",
+    "side": "party",
+    "role": "support",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Fracture": 8,
+     "manifest:Larceny": 4
+    }
+   },
+   {
+    "name": "Sim Striker",
+    "side": "party",
+    "role": "striker",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "Sim Caster": {
+    "mental-theory": 5,
+    "mental-chaos-nightmare": 5
+   },
+   "Sim Striker": {},
+   "Sim Cutter": {
+    "magic-theory": 1,
+    "magic-slashing": 2
+   },
+   "Sim Witherer": {
+    "mental-theory": 5,
+    "mental-death-nightmare": 1
+   }
+  },
+  "gear": {
+   "Sim Caster": [
+    "Unarmed G1"
+   ],
+   "Sim Striker": [
+    "Unarmed (not held) G1",
+    "Heavy Swift (Steel) G7"
+   ],
+   "Sim Cutter": [
+    "Unarmed G1"
+   ],
+   "Sim Witherer": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Target": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "Sim Caster": [],
+   "Sim Striker": [
+    "Heavy Swift (Steel): 630/630"
+   ],
+   "Sim Cutter": [],
+   "Sim Witherer": [],
+   "Sim Target": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 2448,
+    "monsterHp": 3762,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2448,
+    "monsterHp": 3380,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2448,
+    "monsterHp": 3010,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2448,
+    "monsterHp": 2408,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2448,
+    "monsterHp": 2179,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2448,
+    "monsterHp": 2179,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1583
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 1583
+  },
+  "directTaken": {
+   "party": 907,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: Mortal Coil (Tenet)": 4,
+    "prompt: Unbound (Tenet)": 2,
+    "prompt: Unbound: place a Chaos charge": 2,
+    "prompt: Sim Caster's charges on Sim Target": 12,
+    "prompt: Entropy on Sim Target": 2,
+    "prompt: Heavy Swift (Steel)": 8
+   },
+   "notes": [],
+   "errors": []
+  },
+  "cards": [
+   "Sim Target dodges — Wither (Manifest) Attack roll: 20 Dodge (2d15) 2d15 2d15 20 13 7 20 Hit Wither deals 43 Supernatural damage to Sim Target (5d12 = 43).",
+   "Sim Witherer — Mortal Coil Sim Target takes 12 Supernatural damage; Sim Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 24 Dodge (2d15) 2d15 2d15 11 5 6 11 Critical Hit Wither deals 70 Supernatural damage to Sim Target (5d12 = 35 → 70). (critical)",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 31 5 4 2 1 4 5 4 3 2 1 31 Damage: 31 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 31 Physical 31 damage to HP Bleed: Sim Target takes 31 direct physical damage again at the start of their next turn.",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 46 6 12 8 11 1 8 46 Damage: 46 → 115 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 115 Physical 115 damage to HP",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 32 2 1 9 6 10 4 32 Damage: 32 → 80 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 80 Physical 80 damage to HP",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 13 Dodge (2d15) 2d15 2d15 11 6 5 11 Hit Wither deals 24 Supernatural damage to Sim Target (5d12 = 24).",
+   "Sim Witherer — Mortal Coil Sim Target takes 15 Supernatural damage; Sim Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 23 Dodge (2d15) 2d15 2d15 29 14 15 11 Critical Hit Wither deals 68 Supernatural damage to Sim Target (5d12 = 34 → 68). (critical) Larceny: Sim Caster steals Sim Target's dodge roll (29) and its effects, and Sim Target rerolls: 2d10 = 11. Sim Caster can use the stolen 29 in place of any roll before their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 22 Dodge (2d15) 2d15 2d15 11 4 7 11 Critical Hit Wither deals 40 Supernatural damage to Sim Target (5d12 = 20 → 40). (critical)",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 50 4 1 6 3 10 7 1 6 8 4 50 Damage: 50 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 50 Physical 50 damage to HP",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 49 6 8 3 5 3 3 8 6 3 4 49 Damage: 49 Physical no Strengthened/Weakened Living target, direct damage: dice are d10 Sim Target takes 49 Physical 49 damage to HP Bleed: Sim Target takes 49 direct physical damage again at the start of their next turn.",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 50 4 10 11 3 12 10 50 Damage: 50 → 75 Physical Strengthened ×1 (×1.5) Stacks: +1 weapon/attack Pierce 66: ignores that much armor Limit Sim Target takes 75 Physical 75 damage to HP",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 17 Dodge (2d15) 2d15 2d15 2 1 1 2 Critical Hit Wither deals 100 Supernatural damage to Sim Target (5d12 = 50 → 100). (critical)",
+   "Sim Witherer — Mortal Coil Sim Target takes 34 Supernatural damage; Sim Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 30 Dodge (2d15) 2d15 2d15 15 14 1 15 Critical Hit Wither deals 66 Supernatural damage to Sim Target (5d12 = 33 → 66). (critical)",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 65 7 9 9 10 3 7 10 4 2 4 65 Damage: 65 → 130 Physical Strengthened ×2 (×2) Stacks: +2 crit Living target, direct damage: dice are d10 Sim Target takes 130 Physical 130 damage to HP",
+   "Cut — Damage to Sim Target Base damage · Physical 10d10 10d10 51 7 9 4 7 2 7 1 7 6 1 51 Damage: 51 → 102 Physical Strengthened ×2 (×2) Stacks: +2 crit Living target, direct damage: dice are d10 Sim Target takes 102 Physical 102 damage to HP",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 40 8 5 1 12 10 4 40 Damage: 40 → 100 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 100 Physical 100 damage to HP",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 28 4 2 2 9 8 3 28 Damage: 28 → 70 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 70 Physical 70 damage to HP",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 18 Dodge (2d15) 2d15 2d15 6 3 3 6 Critical Hit Wither deals 58 Supernatural damage to Sim Target (5d12 = 29 → 58). (critical)",
+   "Sim Witherer — Mortal Coil Sim Target takes 30 Supernatural damage; Sim Witherer gains that much temp HP until the start of their next turn.",
+   "Sim Target dodges — Wither (Manifest) Attack roll: 16 Dodge (2d15) 2d15 2d15 9 3 6 9 Hit Wither deals 36 Supernatural damage to Sim Target (5d12 = 36).",
+   "Heavy Swift (Steel) — Damage to Sim Target Base damage · Physical 6d12 6d12 42 11 4 8 5 12 2 42 Damage: 42 → 105 Physical Strengthened ×3 (×2.5) Stacks: +1 weapon/attack, +2 crit Pierce 66: ignores that much armor Limit Sim Target takes 105 Physical 105 damage to HP"
+  ],
+  "casts": [
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 0 (1 − TR 1) · 0 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would deal direct da",
+   "Sim Cutter casts Cut Sim Cutter casts Cut . Through Rod (Foci) (Igniter · Rod) · 2 AP Threshold 2 (1 + Bleed 2 − TR 1) · 30 Energy Spell Power ×5 (Grasp 51) · Ranged Cut: This Spell can be used to cut at a target, dealing 10d6 physical damage to them. If the target is living and this Spell would dea"
+  ]
+ }
+]

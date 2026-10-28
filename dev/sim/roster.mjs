@@ -1373,3 +1373,47 @@ PASSES["control-bench"] = { id: "control-bench", note: "Control bench: each cont
 // Order again once the AI answers Verdict (a foe's crit becomes a regular hit, an ally's hit a crit) and Balance (the better outcome) instead of accepting every popup.
 PASSES["control-bench-order"] = { ...PASSES["control-bench"], id: "control-bench-order", note: "Control bench, Order only, after the Verdict/Balance AI fix: five fights.",
   encounters: [1, 2, 3, 4, 5].map(rep => ({ id: `order-${rep}`, group: "raiders", rotation: CB_CONFIGS.findIndex(c => c.id === "order") })) };
+
+// Assist bench (27 Oct 2026): how much each Mental T1 tree helps allies hit and hurt a target. A support caster (the tree at T5, Mental Theory T5)
+// backs three tree-less attackers (Martial, Magic, Mental) against one durable target that only dodges, 4 rounds. The measure is the allies' hit
+// rate and damage against a baseline caster who does nothing. Life is left out: its Modes are defensive (Bloom, Flourish, Renewal).
+const AB_MENTAL = (id, label, tree, kind, mind, icon, mindChoices = null) => ({ ...CB_MENTAL(id, label, tree, kind, mind, icon), mindChoices });
+const AB_CONFIGS = [
+  CB_CONFIGS[0],
+  AB_MENTAL("order", "Order (Decree on the target, Enhanced Mandate and Verdict on the striker)", ORDER, "dream",
+    [`${ORDER}:verdict@ally`, `${ORDER}:mandate+@ally`, `${ORDER}:decree@strongest`], ICON("aegis", `${ORDER}:balance`)),
+  AB_MENTAL("chaos", "Chaos (Fracture and Larceny on the target, die size down)", CHAOS, "nightmare",
+    [`${CHAOS}:fracture@strongest`, `${CHAOS}:larceny@strongest`], ICON("veil", `${CHAOS}:unbound`)),
+  AB_MENTAL("death", "Death (Enhanced Waste and Execute on the target)", DEATH, "nightmare",
+    [`${DEATH}:waste+@strongest`, `${DEATH}:execute+@strongest`], ICON("veil", `${DEATH}:mortal-coil`)),
+  AB_MENTAL("below", "Below (Burden on dodge rolls, Sink)", BELOW, "nightmare",
+    [`${BELOW}:burden@strongest`, `${BELOW}:sink@strongest`], ICON("warden", `${BELOW}:weight`), { "choice:dis": "dodge" }),
+  AB_MENTAL("beyond", "Beyond (Herald straight down: prone)", BEYOND, "dream", [`${BEYOND}:herald@strongest`], ICON("aegis", `${BEYOND}:gust`))
+];
+const AB_SAME = l => AB_CONFIGS.map(() => l);
+export const PARTY_ABENCH = [
+  { id: "caster", name: "Sim Caster", role: "support", note: "One support tree per config.", stats: { pon: 45, will: 25, con: 20 }, loadouts: AB_CONFIGS },
+  { id: "striker", name: "Sim Striker", role: "striker", note: "Martial: a two-handed Heavy Swift steel weapon, no trees.", stats: { str: 60, con: 50, will: 15 },
+    loadouts: AB_SAME({ trees: {}, armor: null, weapons: [W("swift", "heavy", "steel", { primary: true, twoHanded: true })] }) },
+  { id: "cutter", name: "Sim Cutter", role: "caster", note: "Magic: Cut (Slashing T2) through a Rod.", stats: { grasp: 45, con: 30, build: 15 },
+    loadouts: AB_SAME({ trees: { "magic-theory": 1, [SLA]: 2 }, armor: null, weapons: [], foci: FO("rod") }) },
+  { id: "witherer", name: "Sim Witherer", role: "caster", note: "Mental: Wither (Death T1), a Veil Icon (Mortal Coil), Nightmare 1.", stats: { snap: 45, con: 25, will: 20 },
+    loadouts: AB_SAME({ trees: MT({ [DEATH]: 1 }), armor: null, weapons: [], icon: ICON("veil", `${DEATH}:mortal-coil`), alignment: AL("nightmare", 1), mind: [`${DEATH}:wither@weakest`] }) }
+];
+const AB_TARGET = { target: { label: "Target", note: "One durable target (30 Skill Points, Con 400, no armor) that only dodges.",
+  kinds: [{ id: "bench-target", name: "Sim Target", count: 1, size: 3, sp: 30, natural: false, role: "dummy", stats: { con: 400 }, armor: null, weapons: [] }] } };
+PASSES["assist-bench"] = { id: "assist-bench", note: "Assist bench: each Mental T1 tree helping three tree-less allies (Martial, Magic, Mental) hit one durable target, 4 rounds, three fights each.",
+  party: PARTY_ABENCH, monsters: AB_TARGET, deploy: "assistbench", maxRounds: 4, cardLog: "all",
+  encounters: AB_CONFIGS.flatMap((c, rotation) => [1, 2, 3].map(rep => ({ id: `${c.id}-${rep}`, group: "target", rotation }))) };
+// Chaos again once the AI reads Fracture/Larceny reroll options (its text match missed "reroll at 2d12", so no Chaos charge was ever spent) and answers Entropy.
+PASSES["assist-bench-chaos"] = { ...PASSES["assist-bench"], id: "assist-bench-chaos", note: "Assist bench, Chaos only, after the Fracture/Larceny/Entropy AI fix.",
+  encounters: [1, 2, 3].map(rep => ({ id: `chaos-${rep}`, group: "target", rotation: AB_CONFIGS.findIndex(c => c.id === "chaos") })) };
+PASSES["control-bench-chaos"] = { ...PASSES["control-bench"], id: "control-bench-chaos", note: "Control bench, Chaos only, after the Fracture/Larceny/Entropy AI fix.",
+  encounters: [1, 2, 3].map(rep => ({ id: `chaos-${rep}`, group: "raiders", rotation: CB_CONFIGS.findIndex(c => c.id === "chaos") })) };
+// The same with a target of normal HP (Con 60): Herald's Force takes off a quarter of the target's current HP, so the Con 400 target never moved
+// (never knocked prone), and Execute's kill line was out of reach. The fight ends when the target drops; compare per round.
+const AB_TARGET_REAL = { target: { ...AB_TARGET.target, note: "One target of normal HP (30 Skill Points, Con 60, no armor) that only dodges.",
+  kinds: [{ ...AB_TARGET.target.kinds[0], stats: { con: 60 } }] } };
+PASSES["assist-bench-real"] = { ...PASSES["assist-bench"], id: "assist-bench-real", monsters: AB_TARGET_REAL,
+  note: "Assist bench against a normal-HP target (Con 60): Baseline, Order, Death, Below and Beyond, three fights each.",
+  encounters: ["baseline", "order", "death", "below", "beyond"].flatMap(id => [1, 2, 3].map(rep => ({ id: `${id}-${rep}`, group: "target", rotation: AB_CONFIGS.findIndex(c => c.id === id) }))) };

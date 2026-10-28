@@ -174,6 +174,30 @@ SIM.auto = (title, content, form) => {
     if (F) { F.used = F.used ?? {}; bump(F.used, "balance"); }
     return { b: best.b };
   }
+  // Charges on a damage roll: Decree when its static number beats the roll for our side; Enhanced Mandates whose sign helps (plus on an ally, minus on a foe).
+  const dm = title.match(/^(.+): charges on (.+)'s damage$/);
+  if (dm) {
+    const foe = side(dm[1]) !== side(dm[2]), out = {};
+    const total = (content.match(/:\s*<strong>([\d +]+)<\/strong>/)?.[1] ?? "").split("+").reduce((n, x) => n + Number(x.trim() || 0), 0);
+    for (const o of [...(form.querySelector('select[name="replace"]')?.options ?? [])]) {
+      const dec = o.textContent.match(/the damage becomes (\d+)/);
+      if (dec && (foe ? total - Number(dec[1]) : Number(dec[1]) - total) >= 2) out.replace = o.value;
+    }
+    for (const b of form.querySelectorAll('input[name^="m:"]')) {
+      const minus = /Mandate<\/strong>\s*−/.test(b.closest("label")?.innerHTML ?? "");
+      if (minus === foe) out[b.name] = true;
+    }
+    if (Object.keys(out).length && F) { F.used = F.used ?? {}; bump(F.used, `dmgcharge:${foe ? "foe" : "ally"}`); }
+    return Object.keys(out).length ? out : "decline";
+  }
+  // Entropy (Chaos T5): only worth it against a foe who would crit (the attack is redone); a foe being crit or an ally critting stays as it is.
+  const em = title.match(/^(.+): Entropy on (.+)$/);
+  if (em) {
+    const foe = side(em[1]) !== side(em[2]);
+    if (!foe || !/would crit/.test(content)) return "decline";
+    if (F) { F.used = F.used ?? {}; bump(F.used, "entropy"); }
+    return { how: "redo", control: true };
+  }
   const cm = title.match(/^(.+)'s charges on (.+)$/);
   if (cm) {
     const foe = side(cm[1]) !== side(cm[2]);
@@ -183,7 +207,7 @@ SIM.auto = (title, content, form) => {
     let best = null;
     for (const o of sel ? [...sel.options] : []) {
       if (!o.value) continue;
-      const dec = o.textContent.match(/the roll becomes (\d+)/), rr = o.textContent.match(/reroll at (?:(\d+)d)?d(\d+)/);
+      const dec = o.textContent.match(/the roll becomes (\d+)/), rr = o.textContent.match(/reroll at (\d+)?d(\d+)/);
       const expect = dec ? Number(dec[1]) : rr ? (Number(rr[1] ?? 1) * (Number(rr[2]) + 1)) / 2 : null;
       if (expect === null || Number.isNaN(total)) continue;
       const gain = foe ? total - expect : expect - total;
@@ -246,7 +270,7 @@ async function makeActor(spec, loadout, { party, folder }) {
     name: spec.name, type: party ? "character" : "npc", folder: folder.id,
     system: { stats: R.statBlock(loadout.stats ?? spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {} },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
-    flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null, mind: loadout.mind ?? null },
+    flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null, mind: loadout.mind ?? null, mindChoices: loadout.mindChoices ?? null },
       ...(loadout.alignment ? { alignment: loadout.alignment } : {}) } }
   });
   const natural = !party && spec.natural !== false;
@@ -1363,6 +1387,7 @@ async function mentalTurn(actor, me) {
       const foes = foesOf(me.parent, me), allies = [me, ...alliesOf(me.parent, me)];
       const hp = t => t.actor.system.hp.value, frac = t => t.actor.system.hp.value / Math.max(1, t.actor.system.hp.max);
       const pick = who === "self" ? me
+        : who === "ally" ? allies.filter(t => t !== me && !["dummy", "support"].includes(sim(t.actor).role)).sort((a, b) => (sim(b.actor).id === "striker") - (sim(a.actor).id === "striker"))[0]
         : who === "threatened" ? mostThreatened(me, allies)
         : who === "hurt" ? [...allies].filter(t => frac(t) < 0.85).sort((a, b) => frac(a) - frac(b))[0]
         : who === "strongest" ? [...foes].sort((a, b) => b.actor.system.hp.max - a.actor.system.hp.max)[0]
@@ -1387,7 +1412,7 @@ async function mentalTurn(actor, me) {
       const before = new Set(game.messages.keys());
       let ok = null;
       const foeTarget = !allies.includes(pick);
-      const choices = { "choice:sign": foeTarget ? "minus" : "plus", "choice:size": foeTarget ? "down" : "up" };
+      const choices = { "choice:sign": foeTarget ? "minus" : "plus", "choice:size": foeTarget ? "down" : "up", ...(sim(actor).mindChoices ?? {}) };
       try { ok = await Mn.manifest(actor, { mode: modeId, range, enhance, burst: false, ...choices }); } catch (err) { log.errors.push(`manifest ${actor.name}: ${err.stack?.slice(0, 400)}`); }
       if (!ok) { note(actor, `manifest:refused(${mode.name})`); continue; }
       s.manifests = (s.manifests ?? 0) + 1;
@@ -1760,6 +1785,14 @@ async function deploy(scene, party, monsters, mode = null, loadout = null) {
     await place(party[0], 5, 10);
     await place(party[1], 10, 10);
     for (const [i, a] of monsters.entries()) await place(a, 14 + (i === 2 ? 1 : 0), 9 + i);
+    return idle(300);
+  }
+  // Assist benchmark: the support caster 25 ft back, a melee striker beside the target, two ranged allies 15 ft from it.
+  if (mode === "assistbench") {
+    await place(party[0], 5, 10);
+    await place(party[1], 11, 10);
+    for (const [i, a] of party.slice(2).entries()) await place(a, 8, 8 + i * 4);
+    for (const [i, a] of monsters.entries()) await place(a, 12, 10 + i * 2);
     return idle(300);
   }
   if (mode === "kite") {

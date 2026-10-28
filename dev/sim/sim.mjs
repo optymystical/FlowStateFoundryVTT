@@ -155,9 +155,27 @@ SIM.auto = (title, content, form) => {
     const left = Number(m?.[1] ?? 0), n = Number(m?.[2] ?? 0);
     return left >= 5 && left >= n / 2 ? {} : "decline";
   }
+  const side = name => (game.actors.getName(name)?.getFlag("flowstate", "sim")?.party ? "party" : "monsters");
+  // Verdict (Order T5): a foe's crit becomes a regular hit with damage removed (and Weakened); an ally's regular hit becomes a crit with damage added.
+  const vm = title.match(/^(.+): Verdict on (.+)$/);
+  if (vm) {
+    const foe = side(vm[1]) !== side(vm[2]), crit = /landed as <strong>a crit<\/strong>/.test(content);
+    if (foe !== crit) return "decline";
+    if (F) { F.used = F.used ?? {}; bump(F.used, `verdict:${foe ? "foe" : "ally"}`); }
+    return foe ? { adj: "-1", stack: "-1" } : { adj: "1", stack: "1" };
+  }
+  // Balance (Order Tenet): pick whichever option gives the better outcome for its user (attacker: crit > hit > miss; defender: the reverse).
+  if (title === "Balance" && /name="b"/.test(content)) {
+    const attacking = /to your attack result/.test(content), rank = { miss: 0, hit: 1, crit: 2 };
+    const cur = content.match(/\((miss|hit|crit)\)\.<\/p>/)?.[1];
+    const opts = [...content.matchAll(/value="(mine|opp)">[^<]*→ (miss|hit|crit)\)/g)].map(m => ({ b: m[1], score: attacking ? rank[m[2]] : -rank[m[2]] }));
+    const best = opts.sort((a, b) => b.score - a.score)[0];
+    if (!best || cur == null || best.score <= (attacking ? rank[cur] : -rank[cur])) return "decline";
+    if (F) { F.used = F.used ?? {}; bump(F.used, "balance"); }
+    return { b: best.b };
+  }
   const cm = title.match(/^(.+)'s charges on (.+)$/);
   if (cm) {
-    const side = name => (game.actors.getName(name)?.getFlag("flowstate", "sim")?.party ? "party" : "monsters");
     const foe = side(cm[1]) !== side(cm[2]);
     const total = Number(content.match(/:\s*<strong>(\d+)<\/strong>/)?.[1] ?? NaN);
     const out = {};

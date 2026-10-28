@@ -1347,3 +1347,29 @@ const MONSTERS_MENTAL1_MIX = {
 };
 PASSES["mental-t1-mix"] = { ...PASSES["mental-t1c"], id: "mental-t1-mix", monsters: MONSTERS_MENTAL1_MIX, encounters: encountersFor(MONSTERS_MENTAL1_MIX, 1),
   note: "Mental T1 party against mixed enemy groups (pure Martial, Magic and Mental builds together)." };
+
+// Control bench (27 Oct 2026): how much each control tree protects a punching bag from three tree-less raiders over 4 rounds (the Magic school
+// bench's layout). The measure is what the raiders deal to the bag and how often they hit; the caster's own damage doesn't count. A baseline
+// caster does nothing. Mental T1 trees at T5 (with Mental Theory T5), Life for a defensive reference, and two Magic schools for a cross-Archetype one.
+const CB_MENTAL = (id, label, tree, kind, mind, icon) => ({ id, label, role: "support", trees: MT({ [tree]: 5 }), armor: null, weapons: [],
+  stats: kind === "dream" ? { pon: 45, will: 25, con: 20 } : { snap: 45, will: 25, con: 20 }, icon, alignment: AL(kind, 1), mind });
+const CB_CONFIGS = [
+  { id: "baseline", label: "Baseline (does nothing)", role: "support", trees: MT({}), armor: null, weapons: [], stats: { pon: 45, will: 25, con: 20 }, mind: ["none"] },
+  CB_MENTAL("below", "Below (Sink, Burden, Entomb)", BELOW, "nightmare", [`${BELOW}:entomb@strongest`, `${BELOW}:burden@strongest`, `${BELOW}:sink@strongest`], ICON("warden", `${BELOW}:weight`)),
+  CB_MENTAL("order", "Order (Decree, Mandate, Verdict)", ORDER, "dream", [`${ORDER}:decree@strongest`, `${ORDER}:verdict@strongest`, `${ORDER}:mandate@strongest`], ICON("aegis", `${ORDER}:balance`)),
+  CB_MENTAL("chaos", "Chaos (Fracture, Larceny)", CHAOS, "nightmare", [`${CHAOS}:fracture@strongest`, `${CHAOS}:larceny@strongest`], ICON("veil", `${CHAOS}:unbound`)),
+  CB_MENTAL("beyond", "Beyond (Herald, Ascend)", BEYOND, "dream", [`${BEYOND}:herald@strongest`], ICON("aegis", `${BEYOND}:gust`)),
+  CB_MENTAL("life", "Life (Bloom, Flourish, Renewal) on the bag", LIFE, "dream", [`${LIFE}:bloom@threatened`, `${LIFE}:flourish@threatened`, `${LIFE}:renewal@hurt`], ICON("sanctum", `${LIFE}:verdant-soul`)),
+  ...BENCH_SCHOOLS.filter(s => ["protection", "gravity"].includes(s[0])).map(([id, label, trees, role]) => ({ id: `magic-${id}`, label: `Magic: ${label}`, trees, role: role ?? "caster",
+    armor: null, weapons: [], foci: FO("rod"), shroud: FO("bastion"), stats: { grasp: 45, build: 30, con: 15 } }))
+];
+export const PARTY_CBENCH = [
+  { id: "caster", name: "Sim Caster", role: "support", note: "One control tree per config.", stats: { pon: 45, will: 25, con: 20 }, loadouts: CB_CONFIGS },
+  { ...PARTY_MBENCH[1], loadouts: CB_CONFIGS.map(() => ({ trees: {}, armor: null, weapons: [] })) }
+];
+PASSES["control-bench"] = { id: "control-bench", note: "Control bench: each control tree protecting a punching bag from three tree-less raiders, 4 rounds, three fights each.",
+  party: PARTY_CBENCH, monsters: BENCH_RAIDERS, deploy: "magicbench", maxRounds: 4,
+  encounters: CB_CONFIGS.flatMap((c, rotation) => [1, 2, 3].map(rep => ({ id: `${c.id}-${rep}`, group: "raiders", rotation }))) };
+// Order again once the AI answers Verdict (a foe's crit becomes a regular hit, an ally's hit a crit) and Balance (the better outcome) instead of accepting every popup.
+PASSES["control-bench-order"] = { ...PASSES["control-bench"], id: "control-bench-order", note: "Control bench, Order only, after the Verdict/Balance AI fix: five fights.",
+  encounters: [1, 2, 3, 4, 5].map(rep => ({ id: `order-${rep}`, group: "raiders", rotation: CB_CONFIGS.findIndex(c => c.id === "order") })) };

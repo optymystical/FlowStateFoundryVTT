@@ -1417,3 +1417,5 @@ const AB_TARGET_REAL = { target: { ...AB_TARGET.target, note: "One target of nor
 PASSES["assist-bench-real"] = { ...PASSES["assist-bench"], id: "assist-bench-real", monsters: AB_TARGET_REAL,
   note: "Assist bench against a normal-HP target (Con 60): Baseline, Order, Death, Below and Beyond, three fights each.",
   encounters: ["baseline", "order", "death", "below", "beyond"].flatMap(id => [1, 2, 3].map(rep => ({ id: `${id}-${rep}`, group: "target", rotation: AB_CONFIGS.findIndex(c => c.id === id) }))) };
+// Mental T1 against the mixed groups again once Chaos charges are spent (the AI never read Fracture/Larceny reroll options before) and Entropy is answered.
+PASSES["mental-t1-mix-b"] = { ...PASSES["mental-t1-mix"], id: "mental-t1-mix-b", note: "Mental T1 party against mixed enemy groups, after the Chaos charge AI fix." };

@@ -97,7 +97,7 @@ export function actionRows(actor) {
     if (tree.archetype !== "generic") continue;
     const have = tier(actor, tree.id);
     for (const t of tree.tiers) {
-      if (t.tier > have || (t.tier === 0 && !tree.core)) continue;
+      if (t.tier > have || t.tier === 0) continue;          // Tier 0 is the base rules (Spot, Stealthing, Jumping...), handled on their own
       for (const e of t.entries) {
         if (!e.name || AUTOMATED.has(e.name) || !isActive(e.text)) continue;
         const pts = pointsIn(e.text), energy = energyOf(actor, e.text);

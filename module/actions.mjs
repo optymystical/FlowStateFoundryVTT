@@ -5446,8 +5446,9 @@ async function punishOnHit(attacker, target, result) {
       ${siphon ? `<label><input type="checkbox" name="siphon"> Siphon: raise your own by as much (${half} more Energy)</label>` : ""}` });
     if (ans && (await spendEnergy(attacker, half, "Stall"))) {
       await setActorFlag(attacker, "stallTurn", key);
-      await requestGM("setInitiative", { actor: target.uuid, initiative: Number(tc.initiative) - drop });
-      let line = `Stall: ${esc(target.name)}'s initiative drops by ${drop} to <strong>${Number(tc.initiative) - drop}</strong>.`;
+      const lowered = Number(tc.initiative) - drop;
+      await requestGM("setInitiative", { actor: target.uuid, initiative: lowered });
+      let line = `Stall: ${esc(target.name)}'s initiative drops by ${drop} to <strong>${lowered}</strong>.`;
       const mine = combatantFor(attacker);
       if (siphon && ans.siphon && mine && (await spendEnergy(attacker, half, "Siphon"))) {
         // Never a second turn this round (and none skipped): before your turn, the raise stops at the creature acting now.

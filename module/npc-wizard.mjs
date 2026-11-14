@@ -114,8 +114,9 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     // Skill trees: spend the Skill Points (Theory first; it opens that Archetype's other trees).
     const sp = b.skillPoints;
     const spentSP = skills.spentPoints(st.trees);
-    const arch = skills.ARCHETYPES.find(a => a.id === st.skillArch) ?? skills.ARCHETYPES[0];
-    const available = skills.treesFor(arch.id).filter(t => skills.isAvailable(st.trees, t));
+    const treeGroups = skills.skillGroups();
+    const arch = treeGroups.find(a => a.id === st.skillArch) ?? treeGroups[0];
+    const available = arch.trees.filter(t => skills.isAvailable(st.trees, t));
     const treeRows = available.map(t => {
       const tier = skills.tierOf(st.trees, t.id), next = tier + 1;
       const dependents = t.theory ? Object.keys(st.trees).filter(id => {
@@ -144,8 +145,8 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       statGroups: Object.values(groups), spent: b.spent, remaining: b.remaining, overspent: b.remaining < 0,
       preview: pv, items, weaponTypes,
       skillPoints: sp, spentSP, remainingSP: sp - spentSP, treeRows, pickedTrees,
-      archetypes: skills.ARCHETYPES.map(a => ({ ...a, selected: a.id === arch.id })), archPlaceholder: arch.placeholder ?? "",
-      lockedTrees: skills.treesFor(arch.id).length - available.length, theoryName: arch.id === "generic" ? "its Core tree" : skills.theoryFor(arch.id)?.name ?? "",
+      archetypes: treeGroups.map(a => ({ id: a.id, label: a.label, selected: a.id === arch.id })), archPlaceholder: "",
+      lockedTrees: arch.trees.length - available.length, theoryName: arch.coreName,
       errors, ready: !errors.length
     };
   }

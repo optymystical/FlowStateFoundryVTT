@@ -35,6 +35,14 @@ export function requiredTier(tree, { senses } = {}) {
   if (!r || !senses) return tree?.requires ?? 0;
   return r[senses[r.sense]] ?? r.secondary;
 }
+/**
+ * The lists trees are picked from (the Skills tab, the wizards): each Archetype, then each Generic Group. { id, label, trees, coreName }; a Group's id is
+ * "generic-<group>".
+ */
+export function skillGroups() {
+  return [...ARCHETYPES.filter(a => !a.placeholder && a.id !== "generic").map(a => ({ id: a.id, label: a.label, trees: treesFor(a.id), coreName: theoryFor(a.id)?.name ?? "" })),
+    ...coreTrees().map(c => ({ id: `generic-${c.group}`, label: `${c.name} (Generic)`, trees: TREES.filter(t => t.group === c.group), coreName: c.name }))];
+}
 /** "Requires Stealth Tier 2" / "Requires Martial Theory Tier 3". */
 export const requirementText = (tree, ctx) => `${coreFor(tree)?.name ?? "Theory"} Tier ${requiredTier(tree, ctx)}`;
 
@@ -100,9 +108,7 @@ export function treeNav(state = {}, { pinned = [], unspent = 0, inCombat = false
   const shown = t => !t.hidden && (!q || t.name.toLowerCase().includes(q));
   const out = { pinned: [], yours: [], unlock: [] };
   // The Archetypes, then each Generic Group (its Core tree first, then the trees it opens by the tier they need).
-  const lists = [...ARCHETYPES.filter(a => !a.placeholder && a.id !== "generic").map(a => ({ id: a.id, label: a.label, trees: treesFor(a.id) })),
-    ...coreTrees().map(c => ({ id: `generic-${c.group}`, label: `${c.name} (Generic)`, trees: TREES.filter(t => t.group === c.group) }))];
-  for (const a of lists) {
+  for (const a of skillGroups()) {
     const trees = a.trees.filter(shown).sort(order);
     const unlock = [];
     for (const t of trees) {

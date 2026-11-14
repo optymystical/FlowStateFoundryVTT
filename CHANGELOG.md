@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.88.1:** The character and creature wizards list each Generic Group as its own choice (as the Skills tab does). Turns the tracker jumps over are no longer processed (the surprise round's waiting creatures kept their Surprised status removed and got RP before). Tier 0 rules (Energy, Climbing) no longer get Use rows. Stall's card shows the right new initiative.
+
 **0.88.0:** Generic Groups, part 4:
 - **Surprise round:** beginning a combat with anyone Surprised (or after a Sneak Attack outside combat) asks who was unaware, offers Vigilance, and picks each side's opener. Only the openers act in round 0 (the tracker shows it), the Surprised have no RP until their first turn, and RP refills for everyone else when round 1 starts. A Sneak Attack's AP come out of its opener's turn; Poised can move with RP.
 - **Load:** too much Load stops a token from moving; Encumbered can't Jump or Leap; Overburdened can't Dash, Leap or Scramble. Equipment bigger than you can't be used (Heavy Lifter: one Size larger, at Disadvantage). Jump (and Running Start) is in the Action List. The Size picker lists Usual first.

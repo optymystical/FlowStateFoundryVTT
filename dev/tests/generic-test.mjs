@@ -33,6 +33,8 @@ ok(labels(plain).includes("Start Stealthing") && !labels(plain).includes("Glimps
 const sneak = mkActor("Sneak", { "generic-perception": 1, "generic-sleight": 1, "generic-infiltration": 1, "generic-concealment": 2, "generic-barter": 1 });
 ok(["Glimpse", "Lift", "Pick", "Hunker Down", "Stash"].every(l => labels(sneak).includes(l)), "Glimpse, Lift and Pick are automated rows; Hunker Down and Stash (with costs in their text) get Use rows");
 ok(!labels(sneak).includes("Haggle"), "…a passive or plain check (Haggle) doesn't get a row");
+const veteran = mkActor("Veteran", { "generic-endurance": 1, "generic-athletics": 1 });
+ok(!labels(veteran).some(l => ["Energy", "Climbing", "Swimming", "Rest", "Movement"].includes(l)), "Tier 0 rules (Energy, Climbing...) don't get Use rows of their own");
 const row = generic.actionRows(sneak).find(r => r.label === "Hunker Down");
 ok(row.cost === "1 AP" && row.op === "use:generic-concealment:Hunker Down", "A Use row shows the AP its text asks for");
 

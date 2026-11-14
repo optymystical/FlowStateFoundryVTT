@@ -36,4 +36,9 @@ assert.equal(k.isAvailable({ "generic-perception": 4 }, sight, { senses: { sight
 assert.match(k.nextTier({ "generic-perception": 1 }, sight, 30, { senses: { sight: "primary" } }).reason, /Perception Tier 3/);
 // Lowering a Core tree only locks its own Group's trees.
 assert.equal(k.sameGroup(infil, stealth), true); assert.equal(k.sameGroup(tempo, stealth), false); assert.equal(k.sameGroup(brawl, theory), true); assert.equal(k.sameGroup(brawl, stealth), false);
+// The lists the Skills tab and the wizards pick from: the three Archetypes, then each Generic Group with its own trees.
+const sg = k.skillGroups();
+assert.deepEqual(sg.slice(0, 3).map(g => g.id), ["martial", "mental", "magic"]);
+assert.equal(sg.find(g => g.id === "generic-stealth").trees.map(t => t.name).join(), "Stealth,Concealment,Sleight,Infiltration,Ambush");
+assert.equal(sg.find(g => g.id === "generic-stealth").coreName, "Stealth");
 console.log("skills tests passed");

@@ -141,8 +141,9 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     // Skill trees: spend the starting Skill Points (Theory first; it opens that Archetype's other trees).
     const sp = pv.skillPoints;
     const spentSP = skills.spentPoints(st.trees);
-    const arch = skills.ARCHETYPES.find(a => a.id === st.skillArch) ?? skills.ARCHETYPES[0];
-    const available = skills.treesFor(arch.id).filter(t => skills.isAvailable(st.trees, t));
+    const treeGroups = skills.skillGroups();
+    const arch = treeGroups.find(a => a.id === st.skillArch) ?? treeGroups[0];
+    const available = arch.trees.filter(t => skills.isAvailable(st.trees, t));
     const treeRows = available.map(t => {
       const tier = skills.tierOf(st.trees, t.id);
       const next = tier + 1;
@@ -174,8 +175,8 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       preview: pv,
       items, weaponTypes, slotsLeft: rules.items - st.items.length,
       skillPoints: sp, spentSP, remainingSP: sp - spentSP, treeRows, pickedTrees,
-      archetypes: skills.ARCHETYPES.map(a => ({ ...a, selected: a.id === arch.id })), archPlaceholder: arch.placeholder ?? "",
-      lockedTrees: skills.treesFor(arch.id).length - available.length, theoryName: arch.id === "generic" ? "its Core tree" : skills.theoryFor(arch.id)?.name ?? "",
+      archetypes: treeGroups.map(a => ({ id: a.id, label: a.label, selected: a.id === arch.id })), archPlaceholder: "",
+      lockedTrees: arch.trees.length - available.length, theoryName: arch.coreName,
       canAddWeapon: st.items.length < rules.items, canAddArmor: st.items.length < rules.items && armorCount < 1,
       canAddMagic: st.items.length < rules.items,
       canAddAffix: st.items.length < rules.items,

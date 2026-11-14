@@ -209,6 +209,8 @@ class FlowStateCombat extends Combat {
   /** Ch8: AP and RP refill at the start of your turn. Runs on the active GM only. */
   async _onStartTurn(combatant, context) {
     await super._onStartTurn(combatant, context);
+    // A turn the tracker jumped over (the surprise round's waiting creatures, or skipped defeated ones) isn't taken: nothing starts or ends.
+    if (context?.skipped) return;
     if (combatant.actor) {
       // AP/RP refresh, and Energy regained equal to 2 AP of Recover Energy (none while afraid or Frozen; a Cold Freeze takes its cut).
       const a = combatant.actor, e = a.system.energy;
@@ -253,7 +255,7 @@ class FlowStateCombat extends Combat {
   /** Ch8/Ch9: unused AP expires; Ignite/Stain tick; Slow/Haste decay. Runs on the active GM only. */
   async _onEndTurn(combatant, context) {
     await super._onEndTurn(combatant, context);
-    if (!combatant.actor) return;
+    if (!combatant.actor || context?.skipped) return;
     // Delta (Swift T5): 12+ Swift attacks landed this turn → regain 6 RP.
     const round = context?.round ?? this.previous?.round ?? this.round;
     const turn = context?.turn ?? this.previous?.turn ?? this.turn;

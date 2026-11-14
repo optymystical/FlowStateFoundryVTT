@@ -259,16 +259,17 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
 
 /**
  * An item's own Size (Equipment doc): set on the item, or one below its user's (gear: two below). Each Size above 2 is a Strengthened stack on its values,
- * each below a Weakened one. Natural items (and Unarmed/Improvised strikes) have none: the creature's own Size applies to those attacks.
+ * each below a Weakened one. A natural item has no Size of its own: the usual one for its creature is built in (so it follows the creature's Size, and
+ * it carries no Load). Unarmed and Improvised strikes aren't equipment: the creature's own Size applies to them (`unsized`).
  */
 function itemSize(sys, below = 1) {
-  const size = equipSize(sys.size, sys.parent?.actor?.system?.size ?? 3, below);
-  return { size, stacks: sys.natural ? 0 : equipStacks(size) };
+  const size = equipSize(sys.natural ? null : sys.size, sys.parent?.actor?.system?.size ?? 3, below);
+  return { size, stacks: equipStacks(size) };
 }
 /** A profile with its Size's stacks on its Durability and Limit (and `sizeStacks` for what else they scale). */
-function sized(profile, stacks, { natural = false } = {}) {
+function sized(profile, stacks, { unsized = false } = {}) {
   if (!profile?.valid) return profile;
-  if (natural || !stacks) return { ...profile, sizeStacks: natural ? null : 0 };
+  if (unsized || !stacks) return { ...profile, sizeStacks: unsized ? null : 0 };
   return { ...profile, durability: applyStacks(profile.durability ?? 0, stacks), limit: applyStacks(profile.limit ?? 0, stacks), sizeStacks: stacks };
 }
 
@@ -353,7 +354,9 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
     this.sizeValue = sz.size;
     this.profile = weaponProfile({ type, weight, material, grade, twoHanded, natural }, stats);
     // Unarmed and Improvised strikes aren't equipment: the creature's Size applies to them (as to natural weapons).
-    this.profile = sized(this.profile, sz.stacks, { natural: !!natural || type === "unarmed" || type === "improvised" });
+    this.profile = sized(this.profile, sz.stacks, { unsized: type === "unarmed" || type === "improvised" });
+    // A natural weapon's attacks take the creature's Size stacks (Rules doc), which also carry a Summon's or Animation's own physical modifier.
+    if (natural && this.profile?.valid) this.profile.sizeStacks = null;
     if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);
     this._stats = stats;
     // All of this weapon's types: the main one first, then any extra (Unarmed/Improvised can't be multi-type).
@@ -381,7 +384,7 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
   profileFor(type) {
     if (!type || type === this.weaponType || !this.types?.includes(type)) return this.profile;
     const { weight, material, grade, twoHanded, natural } = this;
-    return sized(weaponProfile({ type, weight, material, grade, twoHanded, natural }, this._stats ?? {}), itemSize(this).stacks, { natural: !!natural });
+    return sized(weaponProfile({ type, weight, material, grade, twoHanded, natural }, this._stats ?? {}), itemSize(this).stacks);
   }
 }
 
@@ -419,7 +422,7 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
     const { weight, material, grade, natural } = this;
     const sz = itemSize(this);
     this.sizeValue = sz.size;
-    this.profile = sized(armorProfile({ weight, material, grade, natural }, con), sz.stacks, { natural: !!natural });
+    this.profile = sized(armorProfile({ weight, material, grade, natural }, con), sz.stacks);
     if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);   // Harden: damage to it is Weakened
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
@@ -513,7 +516,7 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
     applyAffixSettings(this, "offensive");
     const sz = itemSize(this);
     this.sizeValue = sz.size;
-    this.profile = sized(fociProfile(this, stats), sz.stacks, { natural: !!this.natural });
+    this.profile = sized(fociProfile(this, stats), sz.stacks);
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
     this.broken = this.profile.valid && max - this.wear <= 0;
@@ -609,11 +612,11 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
     const sz = itemSize(this);
     this.sizeValue = sz.size;
     const p = shroudProfile(this, build);
-    if (p.valid && sz.stacks && !this.natural) {
+    if (p.valid && sz.stacks) {
       p.durability = applyStacks(p.durability ?? 0, sz.stacks);
       p.baseLimit = applyStacks(p.baseLimit ?? 0, sz.stacks);
     }
-    if (p.valid) p.sizeStacks = this.natural ? null : sz.stacks;
+    if (p.valid) p.sizeStacks = sz.stacks;
     if (p.valid) {
       let factor = 1;
       const t = this.shroudType;

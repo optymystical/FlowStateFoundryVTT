@@ -81,5 +81,24 @@ await tough.update({ "system.energy.value": 100 });
 await actions.recoverEnergy(tough);
 ok(tough.system.energy.value === 100 + Math.min(50, 2 * tough.system.derived.energyRecover), "Catch Your Breath (Stamina T1): the first Recover Energy each turn recovers twice as much");
 
+console.log("== Load");
+const mule = mkActor("Mule");
+mule.system.load = { state: "encumbered", value: 8, limit: 12, label: "Encumbered" };
+const jumpRow = generic.actionRows(mule).find(r => r.label === "Jump");
+ok(jumpRow?.disabled && /can't jump/.test(actions.loadBlocks(mule, "jump")), "Encumbered: the Jump row is disabled (can't jump)");
+ok(actions.loadBlocks(mule, "ability") === null, "…but Dash and Leap's movement still works while only Encumbered");
+mule.system.load = { state: "overburdened", value: 14, limit: 18, label: "Overburdened" };
+ok(!!actions.loadBlocks(mule, "ability"), "Overburdened (Pack Mule): no abilities that move you");
+mule.system.load = { state: "immobile", value: 20, limit: 12, label: "Can't move" };
+ok(/too much to move/.test(actions.loadBlocks(mule, "ability")), "Too much Load: can't move at all");
+
+console.log("== The surprise round");
+const S = await import("../../module/surprise.mjs");
+const turns = ["a", "b", "c", "d"].map(id => ({ id, isDefeated: false }));
+const sc = { round: 1, turns, getFlag: () => ({ round: 1, openers: ["b", "d"] }) };
+ok(S.firstOpenerIndex(sc, { openers: ["b", "d"] }) === 1 && S.nextOpenerIndex(sc, 1) === 3 && S.nextOpenerIndex(sc, 3) === null, "Only the openers take turns in the surprise round; after the last one the round ends");
+ok(S.displayRound(sc) === 0 && S.displayRound({ ...sc, round: 3 }) === 2, "The tracker shows it as round 0, and the rounds after it one lower");
+ok(S.nextOpenerIndex({ ...sc, round: 2 }, 0) === undefined, "After the surprise round, turns go as usual");
+
 console.log(fails ? `${fails} failed` : "all passed");
 if (fails) process.exitCode = 1;

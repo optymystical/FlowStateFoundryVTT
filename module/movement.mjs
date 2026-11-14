@@ -91,6 +91,11 @@ function preMove(token, movement, options) {
     if (!actor || notCreature(actor) || isForcedMove(options, movement.method)) return;
     const feet = Number(movement.passed?.distance) || 0;
     if (!(feet > 0)) return;
+    // Carrying (Athletics Tier 0): with more Load than you can move with, you can't move (players are stopped; the GM is only warned).
+    if (actor.system.load?.state === "immobile") {
+      ui.notifications.warn(`${token.name} is carrying ${actor.system.load.value} Load (over ${actor.system.load.limit}) and can't move.`);
+      if (!game.user.isGM) return false;
+    }
     const enforce = movementMode() === "enforce" && !game.user.isGM;
     // Dip and Dash: one free move of up to your speed, even off-turn (flowstate.mjs uses the flag up).
     if (actor.getFlag("flowstate", "freeMove")) {

@@ -497,6 +497,8 @@ export async function rollStatCheck(actor, key) {
 /** Ch7 Non Stat Checks (Stealth, Perception, Persuasion, Deception, counter, Athletics): the plain attack die; checks.mjs rolls them. */
 let checkHook = null;
 export const registerChecks = h => { checkHook = h; };
+let surpriseHook = null;
+export const registerSurprise = h => { surpriseHook = h; };
 export async function rollCheck(actor, label, opts = {}) {
   return checkHook?.rollCheck(actor, checkHook.kindOf(label), { ...opts, label: opts.label ?? label }) ?? null;
 }
@@ -960,10 +962,12 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (followup?.kind === "return") opts.mode = "throw";
   const p = unarmed ? unarmedProfile(followup?.weight ?? opts.weight ?? w.weight) : base;
   let ap = followup ? 0 : p.ap;
-  let net = opts.net + (followup?.net ?? 0);
+  // Heavy Lifter (Hauling T5): a weapon one Size larger than you attacks with Disadvantage.
+  const oversized = unarmed ? 0 : ab.oversizedNet(actor, item);
+  let net = opts.net + (followup?.net ?? 0) + oversized;
   const explicitTargets = followup?.targetActors ?? null;
   let stacks = opts.stacks + p.stacks;
-  const notes = unarmed ? [p.label] : [];
+  const notes = unarmed ? [p.label] : oversized ? ["Heavy Lifter: Disadvantage (a weapon one Size larger than you)"] : [];
   // Ho! (Strength T4): a thrown Heavy weapon's throw is one step better per use (Bad → Average → Good).
   let throwType = p.throwType;
   let energy = 0;
@@ -1730,6 +1734,8 @@ export async function performAttack(actor, opts) {
   const picked = (opts.targetActors ?? [...game.user.targets].map(t => t.actor)).filter(a => a && (!notCreature(a) || objectOf(a)));
   opts = withStealthStatus(actor, opts, picked.filter(a => !notCreature(a)));
   await noteAttacked(actor, picked.filter(a => !notCreature(a)));
+  // A Sneak Attack outside combat starts the next combat (surprise.mjs: its attacker opens the surprise round, its targets start out Surprised).
+  if (!inActiveCombat(actor) && !opts.followupOf) await surpriseHook?.opening?.(actor, opts, picked.filter(a => !notCreature(a)));
   // An object on the ground (a pile holding a Non-Archetypal object) is attacked on its own: it always hits.
   if (picked.length === 1 && objectOf(picked[0])) return attackObject(actor, opts, picked[0], objectOf(picked[0]));
   const targets = picked.filter(a => !notCreature(a));
@@ -2187,11 +2193,11 @@ export async function defend(message, index, choice) {
   const shiftAdv = findShifts(message.id, index).filter(f => f.mode === "adv").length;
   const stealthImmune = spellStealthImmune(o, target);
   const net = opts.net + (o.stealth === "half" && !stealthImmune ? -1 : 0) + (prone ? -1 : 0) + (t.exhausted ? -1 : 0) + (calmed(target) ? 1 : 0)
-    + limberNet(target) + shiftAdv + leadBlindNet(o) + boardNet + seeingRedNet(target) + (o.dodgeNet ?? 0) + pointBlankNet - (entry.snipe ?? 0) + disruptNet(target) + unfetteredNet(target) + dodgeDisNet(target) + charmNet(target, "dodge") + feintNet(target);
+    + limberNet(target) + shiftAdv + leadBlindNet(o) + boardNet + seeingRedNet(target) + (o.dodgeNet ?? 0) + pointBlankNet - (entry.snipe ?? 0) + disruptNet(target) + unfetteredNet(target) + dodgeDisNet(target) + charmNet(target, "dodge") + feintNet(target) + oversizedDodgeNet(target);
   const reasons = [netLabel(net), o.stealth === "half" && !stealthImmune ? "attacker in half stealth" : "", prone ? "prone" : "", t.exhausted ? "exhausted" : "",
     calmed(target) ? "Calm Down" : "", limberNet(target) ? "Limber" : "", shiftAdv ? "Shift" : "", o.leadBlind ? "Lead Blindness" : "",
     boardNet ? "Sword and Board" : "", seeingRedNet(target) ? "Seeing Red" : "", o.dodgeNet ? "Shank" : "", pointBlankNet ? "Point Blank" : "", entry.snipe ? `Snipe Hunt (−${entry.snipe})` : "",
-    disruptNet(target) ? "Disrupted" : "", feintNet(target) ? "Feinted" : "", unfetteredNet(target) ? "Unfettered" : "", dodgeDisNet(target) ? "spell: dodge Disadvantage" : "", charmNet(target, "dodge") ? "Charm/Hex: dodge Disadvantage" : ""].filter(Boolean);
+    disruptNet(target) ? "Disrupted" : "", feintNet(target) ? "Feinted" : "", oversizedDodgeNet(target) ? "Heavy Lifter: oversized armor/Shroud" : "", unfetteredNet(target) ? "Unfettered" : "", dodgeDisNet(target) ? "spell: dodge Disadvantage" : "", charmNet(target, "dodge") ? "Charm/Hex: dodge Disadvantage" : ""].filter(Boolean);
   await consumeDisrupt(target);
   if (feintNet(target)) await setActorFlag(target, "feinted", null);
   await consumeLimber(target);
@@ -4120,9 +4126,11 @@ export const afflictAct = (message, i) => aff?.act(message, i);
 const dodgeDisNet = actor => (spellEffects(actor, "dodgeDis").length ? -1 : 0);
 /** Feint (Diversion T2): the next dodge roll before the feinter's next turn has Disadvantage. */
 const feintNet = actor => (actor?.getFlag?.("flowstate", "feinted") ? -1 : 0);
+/** Heavy Lifter (Hauling T5): armor or a Shroud one Size larger than you gives Disadvantage on dodge rolls. */
+const oversizedDodgeNet = actor => Math.min(ab.oversizedNet(actor, actor?.system?.armor), ab.oversizedNet(actor, actor?.system?.shroud), 0) < 0 ? -1 : 0;
 /** The Advantage/Disadvantage this creature's dodge rolls are known to carry (for Foresight). */
 export const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.has("prone") ? -1 : 0) + seeingRedNet(actor) + disruptNet(actor)
-  + dodgeDisNet(actor) + feintNet(actor) + charmNet(actor, "dodge") + unfetteredNet(actor) + limberNet(actor) + (calmed(actor) ? 1 : 0);
+  + dodgeDisNet(actor) + feintNet(actor) + oversizedDodgeNet(actor) + charmNet(actor, "dodge") + unfetteredNet(actor) + limberNet(actor) + (calmed(actor) ? 1 : 0);
 
 /** Weaving (Magic Theory T3): casting.mjs registers this so the weapon attack dialog can offer a spell. */
 let weaveHook = null;
@@ -4801,10 +4809,35 @@ function dashBlocked(actor) {
 }
 /** RP/AP for a move-based ability: 1, plus any movement slow (tempo). */
 const slowedCost = actor => Math.max(1, 1 + Math.max(0, actor.system.movement?.tempo ?? 0));
+/**
+ * Carrying (Athletics Tier 0): Encumbered (and worse) can't jump; Overburdened (Pack Mule, Hauling T4) can't use abilities that move you or change your
+ * movement (Dash, Leap, Scramble, Wall Run); too much Load and you can't move at all. Returns why not, or null.
+ */
+export function loadBlocks(actor, what = "jump") {
+  const st = actor?.system?.load?.state;
+  if (st === "immobile") return `${actor.name} is carrying too much to move (${actor.system.load.value} Load).`;
+  if (what === "jump" && (st === "encumbered" || st === "overburdened")) return `${actor.name} is ${actor.system.load.label} and can't jump.`;
+  if (what === "ability" && st === "overburdened") return `${actor.name} is Overburdened and can't use abilities that move them.`;
+  return null;
+}
+/** Jumping (Athletics Tier 0): 2 AP, movement slows doubly effective; 1/5 of your speed up, your speed across (Running Start, Athletics T1: twice that). */
+export async function jump(actor, { runningStart = false } = {}) {
+  if (cantAct(actor, "move")) return;
+  const no = loadBlocks(actor, "jump");
+  if (no) return ui.notifications.warn(no);
+  const slow = Math.max(0, (actor.system.movement?.ap ?? 1) - 1);
+  const ap = 2 + 2 * slow;
+  if (!(await spendAP(actor, ap, "jumping"))) return;
+  const run = runningStart && ab.treeTier(actor, "generic-athletics") >= 1 ? 2 : 1;
+  const speed = actor.system.movement?.speed ?? 0;
+  await post(actor, { title: `${esc(actor.name)} — Jump`, body: `<div class="fs-result">Jump: up to <strong>${Math.floor(speed / 5) * run} ft</strong> up and <strong>${speed * run} ft</strong> across (the peak is at the midpoint)${run > 1 ? " (Running Start: twice as far)" : ""}.</div>
+    <div class="fs-notes">${ap} AP${slow ? ` (2, plus ${2 * slow} for slows, doubly effective)` : ""}</div>` });
+}
 
 /** Dash (Light Armor T2 / Unarmored T1): 1 RP (+ slows): move up to your speed right away, even off-turn. */
 export async function dash(actor) {
   if (cantAct(actor, "move")) return;
+  if (loadBlocks(actor, "ability")) return ui.notifications.warn(loadBlocks(actor, "ability"));
   const info = ab.dashInfo(actor);
   if (!info) return ui.notifications.warn(`${actor.name}: ${dashBlocked(actor)}`);
   const rp = slowedCost(actor);
@@ -4822,6 +4855,7 @@ export async function dash(actor) {
 /** Leap (Light Armor T3 / Unarmored T2): 1 AP (+ slows, not doubled): Jump. */
 export async function leap(actor) {
   if (cantAct(actor, "move")) return;
+  if (loadBlocks(actor, "jump") || loadBlocks(actor, "ability")) return ui.notifications.warn(loadBlocks(actor, "jump") ?? loadBlocks(actor, "ability"));
   const info = ab.leapInfo(actor);
   if (!info) return ui.notifications.warn(`${actor.name} needs Leap (Light Armor T3 in Light armor, or Unarmored T2 with no armor).`);
   const ap = slowedCost(actor);

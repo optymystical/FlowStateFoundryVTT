@@ -30,6 +30,7 @@ import * as gravity from "./gravity.mjs";
 import * as charges from "./charges.mjs";
 import { registerCheckHooks, prepareInitiative, initiativeRoll, breakTies, tieOrder } from "./checks.mjs";
 import * as generic from "./generic.mjs";
+import * as surprise from "./surprise.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
 import { notCreature } from "./kinds.mjs";
 import { DialogV2 } from "./html.mjs";
@@ -165,6 +166,8 @@ class FlowStateCombat extends Combat {
    * Collected (Initiative T3).
    */
   async startCombat() {
+    // The surprise round (surprise.mjs): who's Surprised, Vigilance, and each side's opener. Foundry's round 1 is then the surprise round.
+    const sr = game.user.isGM ? await surprise.beginCombat(this) : null;
     for (const c of this.combatants) {
       const a = c.actor;
       if (!a?.isOwner) continue;
@@ -173,7 +176,34 @@ class FlowStateCombat extends Combat {
     }
     for (const c of this.combatants) if (c.actor) await actions.mentalCombatStart(c.actor);          // Instinct (Adaptation T2): 4 stacks banked
     await this.setFlag("flowstate", "startedAt", Date.now());          // Restore's window never reaches back before the fight
-    return super.startCombat();
+    if (!sr) return super.startCombat();
+    await this.setFlag("flowstate", "surprise", sr);
+    this.setupTurns();
+    const updateData = { round: 1, turn: surprise.firstOpenerIndex(this, sr) };
+    try { this._playCombatSound?.("startEncounter"); } catch (err) { /* no sound */ }
+    Hooks.callAll("combatStart", this, updateData);
+    await this.update(updateData);
+    await globalThis.ActiveEffect?.registry?.refresh?.("combatStart", { combat: this });
+    await ChatMessage.create({ content: `<div class="flowstate-card"><header class="fs-card-title">Surprise round (round 0)</header><div class="fs-notes">Openers: ${sr.openers.map(id => foundry.utils.escapeHTML(this.combatants.get(id)?.name ?? "?")).join(", ")}. Everyone else waits for round 1; the Surprised have no RP until their first turn.</div></div>` });
+    return this;
+  }
+
+  /** In the surprise round only the openers take turns. */
+  async nextTurn() {
+    const i = surprise.nextOpenerIndex(this, this.turn ?? -1);
+    if (i === undefined) return super.nextTurn();
+    if (i === null) return this.nextRound();
+    const updateData = { round: this.round, turn: i };
+    const updateOptions = { direction: 1 };
+    Hooks.callAll("combatTurn", this, updateData, updateOptions);
+    await this.update(updateData, updateOptions);
+    return this;
+  }
+
+  /** Round 1 after a surprise round: RP for everyone who isn't Surprised (surprise.mjs). Runs on the active GM only. */
+  async _onStartRound(context) {
+    await super._onStartRound(context);
+    await surprise.roundStart(this);
   }
 
   /** Ch8: AP and RP refill at the start of your turn. Runs on the active GM only. */
@@ -185,8 +215,9 @@ class FlowStateCombat extends Combat {
       const regain = await actions.turnStartEnergy(a);
       // A fresh movement ledger too: nothing banked or half-walked carries over from an earlier turn.
       await a.update({ "system.ap.value": a.system.ap?.max ?? 6, "system.rp.value": a.system.rp?.max ?? 6, "flags.flowstate.moveLedger": null, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
-      // Surge (Tempo T3): AP carried from the last turn.
+      // Surge (Tempo T3): AP carried from the last turn. An opener's Sneak Attack already spent part of its surprise turn.
       await generic.turnStart(a);
+      await surprise.turnStart(this, combatant);
       // Surprise ends at your first turn.
       if (a.statuses?.has("surprised")) await a.toggleStatusEffect("surprised", { active: false });
       // Psych Up / Calm Down last until the start of your next turn.
@@ -246,6 +277,7 @@ Hooks.once("init", () => {
   registerCodex();
   registerCheckHooks();
   generic.registerGenericHooks();
+  surprise.registerSurpriseHooks();
   registerShopSettings();
   game.flowstate = { rules, martial, actions, catalog: CatalogApp };
   // Partials the sheets share (the catalog line on every item sheet).
@@ -764,7 +796,23 @@ Hooks.on("updateToken", (token, changes, options, userId) => {
 const BUILD_KEYS = ["system.stats", "system.skillPoints", "system.size", "system.unspentStats", "system.statCarry", "system.creation", "system.trees"];
 // Players may rename their own items and change their pictures; everything else about an item's identity is GM-only.
 const ITEM_IDENTITY_KEYS = ["system.weaponType", "system.weight", "system.material", "system.grade",
-  "system.description", "system.quantity", "system.wear", "system.fociType", "system.shroudType", "system.affixes", "system.affix", "system.magazine", "system.extraTypes", "system.ammoType"];
+  "system.description", "system.quantity", "system.wear", "system.fociType", "system.shroudType", "system.affixes", "system.affix", "system.magazine", "system.extraTypes", "system.ammoType", "system.size"];
+
+/**
+ * Carrying (Athletics Tier 0): equipment bigger than you can't be lifted, so it can't be held or worn; Heavy Lifter (Hauling T5) lets you use it one Size
+ * larger than you (at Disadvantage: abilities.oversizedNet).
+ */
+Hooks.on("preUpdateItem", (item, changes) => {
+  const actor = item.parent;
+  if (!(actor instanceof Actor) || !["weapon", "armor", "foci", "shroud"].includes(item.type) || item.system.natural) return;
+  const on = foundry.utils.getProperty(changes, "system.equipped") === true || foundry.utils.getProperty(changes, "system.secondHand") === true || foundry.utils.getProperty(changes, "system.attuned") === true;
+  if (!on) return;
+  const size = Number(item.system.sizeValue), mine = Math.round(Number(actor.system.size) || 3);
+  if (!(size > mine)) return;
+  if (size === mine + 1 && ab.treeTier(actor, "generic-hauling") >= 5) return;
+  ui.notifications.warn(`${item.name} is Size ${size}, bigger than ${actor.name} (Size ${mine}): too big to use${size === mine + 1 ? " without Heavy Lifter (Hauling T5)" : ""}.`);
+  return false;
+});
 
 /** Keys in `changes` that match a guarded prefix AND actually differ from the document's current value. */
 function guardedChanges(doc, changes, keys) {

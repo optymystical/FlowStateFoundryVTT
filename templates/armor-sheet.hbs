@@ -19,7 +19,7 @@
       <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
     {{/if}}
     {{#if sizeChoices}}<div class="fs-field"><label><a class="fs-sub" data-codex="{{sizeCodex}}" data-tooltip="An item's own Size: Size 2 is neutral, each Size above is a Strengthened stack on its values, each below a Weakened one. It also sets its Load.">Size</a></label>
-      <select name="system.size" data-dtype="Number" {{#unless editable}}disabled{{/unless}}>{{selectOptions sizeChoices selected=sizeSelected}}</select></div>{{/if}}
+      <select name="system.size" data-dtype="Number" {{#unless editable}}disabled{{/unless}}>{{selectOptions sizeChoices selected=sizeSelected valueAttr="value" labelAttr="label"}}</select></div>{{/if}}
     <div class="fs-field fs-checks-row">
       <label><input type="checkbox" name="system.equipped" {{checked system.equipped}} {{#unless stateEditable}}disabled{{/unless}}> Worn</label>
       <label data-tooltip="Natural armor (a Summon's skin): it can't be dropped"><input type="checkbox" name="system.natural" {{checked system.natural}} {{#unless editable}}disabled{{/unless}}> Natural</label>

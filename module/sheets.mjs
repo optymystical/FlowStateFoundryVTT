@@ -874,8 +874,8 @@ function itemSizeContext(item) {
   if (!["weapon", "armor", "foci", "shroud", "gear"].includes(item.type) || s?.natural || (item.type === "weapon" && ["unarmed", "improvised"].includes(s?.weaponType))) return {};
   const userSize = item.actor?.system?.size ?? 3;
   const usual = Math.max(0, Math.round(userSize) - (item.type === "gear" ? 2 : 1));
-  return { sizeChoices: { "": `Usual (Size ${usual})`, ...Object.fromEntries([0, 1, 2, 3, 4, 5].map(n => [String(n), `Size ${n}${n === 2 ? " (neutral)" : n > 2 ? ` (Strengthened ×${n - 2})` : ` (Weakened ×${2 - n})`}`])) },
-    sizeSelected: s.size ?? "", sizeCodex: "entry:generic-athletics:carrying" };
+  return { sizeChoices: [{ value: "", label: `Usual (Size ${usual})` }, ...[0, 1, 2, 3, 4, 5].map(n => ({ value: String(n), label: `Size ${n}${n === 2 ? " (neutral)" : n > 2 ? ` (Strengthened ×${n - 2})` : ` (Weakened ×${2 - n})`}` }))],
+    sizeSelected: s.size === null || s.size === undefined ? "" : String(s.size), sizeCodex: "entry:generic-athletics:carrying" };
 }
 
 /** Change a sheet's picture (owners only; see `askImage`: players browse through a connected GM). */

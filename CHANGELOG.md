@@ -2,6 +2,11 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.88.0:** Generic Groups, part 4:
+- **Surprise round:** beginning a combat with anyone Surprised (or after a Sneak Attack outside combat) asks who was unaware, offers Vigilance, and picks each side's opener. Only the openers act in round 0 (the tracker shows it), the Surprised have no RP until their first turn, and RP refills for everyone else when round 1 starts. A Sneak Attack's AP come out of its opener's turn; Poised can move with RP.
+- **Load:** too much Load stops a token from moving; Encumbered can't Jump or Leap; Overburdened can't Dash, Leap or Scramble. Equipment bigger than you can't be used (Heavy Lifter: one Size larger, at Disadvantage). Jump (and Running Start) is in the Action List. The Size picker lists Usual first.
+- **Natural items** have their creature's usual Size built in (no picker, no Load).
+
 **0.87.0:** Generic Groups, part 3: Feint (the target's next dodge has Disadvantage), Exploit Opening, Stall and Siphon (offered when you hit), Grit (rerolls Constitution/Willpower/Build checks), Kip Up, Breakfall and Brace. Taunt's contest uses each side's attack die, ties to the taunter. The rules as implemented are in `dev/AUTOMATION.md` (Generic Groups).
 
 **0.86.0:** Generic Groups, part 2 (the rules and the abilities that change a fight):

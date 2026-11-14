@@ -498,3 +498,6 @@ a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-throug
 .fs-dialog .hint { margin: 2px 0 0; font-size: .85em; opacity: .75; }
 /* Foundry draws an unticked checkbox in the background colour: on the option cards it vanished, so it gets an outline. */
 .fs-dialog input[type="checkbox"]:not(:checked) { box-shadow: inset 0 0 0 1px var(--color-border-light-1, rgba(220,220,220,.55)); border-radius: 3px; }
+
+/* Surprise round: the combatants who wait for round 1. */
+.combat-tracker .fs-waiting-round, #combat-tracker .fs-waiting-round { opacity: 0.45; }

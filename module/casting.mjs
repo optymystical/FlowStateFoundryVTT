@@ -12,6 +12,7 @@ import "./afflictions.mjs";
 import * as conjure from "./conjure.mjs";
 import * as arcana from "./arcana.mjs";
 import * as fociFx from "./foci.mjs";
+import { oversizedNet } from "./abilities.mjs";
 import { castsTwice, attunedAffixKeys } from "./magic.mjs";
 import { STATS, applyStacks } from "./rules.mjs";
 /** An Emplace barrier's health: the Shield's 10 × Power (Emplace applies the Shield's effects as a one-way Shield), scaled by any Strengthened/Weakened on the caster (it has no roll to carry them). */
@@ -515,7 +516,7 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
   // Bash (Crushing T3): Bash 10 × Power per stack (an object with that much Limit or less is ignored for extra damage).
   const bash = mods.bash ? mods.bash * 10 * plan.power : 0;
   const attackOpts = { apCost: plan.ap,
-    label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
+    label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet + (plan.option?.fociId ? oversizedNet(actor, actor.items.get(plan.option.fociId)) : 0), stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
     damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: fociSizeStacks(actor, plan), physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: 0,
     notes: [...notes, fociSizeStacks(actor, plan) ? `${plan.option?.label ?? "Foci"} Size: ${fociSizeStacks(actor, plan) > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(fociSizeStacks(actor, plan))}` : "", plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
     spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, pierceBold: mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0, pierceFlat: plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin * (plan.fociFx.doubled === "painite" ? 2 : 1) : 0, singleRoll: area && !mods.absorb, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,

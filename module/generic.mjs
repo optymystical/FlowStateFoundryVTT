@@ -4,7 +4,7 @@
  * Glimpse, Lift, Pick, Vigilance, Cover Story, Tempo's initiative abilities, Surge, Scramble, Adrenaline Rush, Overexert, Rallying Cry, First Aid,
  * Patch Up, resisting Fear). Checks are checks.mjs; passives live where they apply (actions.mjs, data.mjs).
  */
-import { post, spendPoints, spendEnergy, inActiveCombat, turnKey, setActorFlag, setStatus, requestGM, energyTracked, tokenDistance, attackerToken, rollKit } from "./actions.mjs";
+import { post, spendPoints, spendEnergy, inActiveCombat, turnKey, setActorFlag, setStatus, requestGM, energyTracked, tokenDistance, attackerToken, rollKit, jump, loadBlocks } from "./actions.mjs";
 import { rollCheck as checkRoll, delayTurn, initiativeRoll } from "./checks.mjs";
 import { halfSP } from "./checks-rules.mjs";
 import * as ab from "./abilities.mjs";
@@ -13,6 +13,7 @@ import { parseEnergyCost, energyFor, stripEnergyCost } from "./energy.mjs";
 import { codexId } from "./codex.mjs";
 import { allied } from "./sides.mjs";
 import { heal } from "./wonders.mjs";
+import { surpriseOf, isOpener, poisedMove } from "./surprise.mjs";
 import { STATS, poolFormula } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, select } from "./html.mjs";
@@ -62,11 +63,19 @@ export function actionRows(actor) {
     rows.push({ label: fade ? "Fade" : "Start Stealthing", detail: fade ? "Begin Stealthing outside your turn" : "Moves cost +1 AP; attacks from an unspotted Stealth Value", cost: fade ? `${st >= 3 ? 1 : 2} RP` : "Free",
       action: "generic", op: "stealthOn", icon: "fa-solid fa-user-ninja", disabled: fade && st < 1, tooltip: fade && st < 1 ? "Needs Fade (Stealth T1) outside your turn" : "" });
   } else rows.push({ label: "Stop Stealthing", detail: `Spotted by ${(actor.getFlag?.("flowstate", "spottedBy") ?? []).length || "nobody"}`, cost: "Free", action: "generic", op: "stealthOff", icon: "fa-solid fa-user" });
+  // Jumping (Athletics Tier 0); Running Start (Athletics T1) is a choice when you've moved your full speed in a straight line.
+  const slow = Math.max(0, (actor.system.movement?.ap ?? 1) - 1);
+  rows.push({ label: "Jump", detail: `${Math.floor((actor.system.movement?.speed ?? 0) / 5)} ft up, ${actor.system.movement?.speed ?? 0} ft across${loadBlocks(actor, "jump") ? " (too loaded)" : ""}`, cost: `${2 + 2 * slow} AP`,
+    action: "generic", op: "jump", icon: "fa-solid fa-person-running", disabled: !!loadBlocks(actor, "jump"), tooltip: loadBlocks(actor, "jump") ?? "" });
+  if (tier(actor, "generic-athletics") >= 1) rows.push({ label: "Jump (Running Start)", detail: "After moving your full speed in a straight line: twice as far", cost: `${2 + 2 * slow} AP`,
+    action: "generic", op: "jumpRun", icon: "fa-solid fa-person-running", disabled: !!loadBlocks(actor, "jump") });
   if (inCombat) {
     const c = combatantOf(actor);
     const before = c && game.combat.turns.findIndex(t => t.id === c.id) > game.combat.turn;
     if (before) rows.push({ label: "Delay", detail: "Lower your initiative (before your turn starts)", cost: "Free", action: "generic", op: "delay", icon: "fa-solid fa-hourglass-half" });
   }
+  if (inCombat && tier(actor, "generic-initiative") >= 2 && surpriseOf(game.combat) && !actor.statuses?.has?.("surprised") && !isOpener(game.combat, combatantOf(actor)))
+    rows.push({ label: "Poised move", detail: "Surprise round: move (1 RP each, up to 2)", cost: "1 RP", action: "generic", op: "poised", icon: "fa-solid fa-shoe-prints" });
   if (tier(actor, "generic-perception") >= 1) rows.push({ label: "Glimpse", detail: "Spot a hidden creature that alerted you this round (target it)", cost: `${tier(actor, "generic-perception") >= 3 ? 1 : 2} RP`, action: "generic", op: "glimpse", icon: "fa-solid fa-eye" });
   if (tier(actor, "generic-perception") >= 2 && actor.statuses?.has?.("surprised")) rows.push({ label: "Vigilance", detail: `Become aware: not surprised${tier(actor, "generic-perception") >= 4 ? " (Alert: and your targeted allies)" : ""}`, cost: `${sp(actor)} Energy`, action: "generic", op: "vigilance", icon: "fa-solid fa-bell" });
   if (tier(actor, "generic-sleight") >= 1) rows.push({ label: "Lift", detail: "Take a hand-sized object: Stealth against the targeted creature's Perception", cost: `${tier(actor, "generic-sleight") >= 3 ? 1 : 2} AP`, action: "generic", op: "lift", icon: "fa-solid fa-hand-sparkles" });
@@ -127,6 +136,9 @@ async function useEntry(actor, treeId, name) {
 
 const OPS = {
   delay: actor => delayTurn(actor),
+  jump: actor => jump(actor),
+  poised: actor => poisedMove(actor),
+  jumpRun: actor => jump(actor, { runningStart: true }),
 
   /** Stealthing (Stealth Tier 0) on your turn; Fade (Stealth T1) outside it for 2 RP (Practiced, T3: 1 RP). */
   async stealthOn(actor) {
@@ -227,6 +239,7 @@ const OPS = {
     return card(actor, "Surge", `<div class="fs-result">${esc(actor.name)} carries <strong>${ap} AP</strong> into their next turn.</div>`);
   },
   async scramble(actor) {
+    if (loadBlocks(actor, "ability")) return ui.notifications.warn(loadBlocks(actor, "ability"));
     if (!(await pay(actor, { energy: halfSP(sp(actor)) }, "Scramble"))) return;
     await setActorFlag(actor, "scramble", true);
     return card(actor, "Scramble", `<div class="fs-result">Until the end of ${esc(actor.name)}'s turn, terrain doesn't raise their movement cost.</div>`);

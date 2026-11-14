@@ -8,6 +8,8 @@ const BLADED = "martial-bladed-weapons";
 
 /** Tier the actor has in a tree. */
 export const treeTier = (actor, id) => skills.tierOf(actor?.system?.trees, id);
+/** Heavy Lifter (Hauling T5, Generic): an item one Size larger than you can be used, with Disadvantage on the rolls made with it (-1, or 0). */
+export const oversizedNet = (actor, item) => (item && !item.system?.natural && Number(item.system?.sizeValue) > Math.round(Number(actor?.system?.size) || 3) ? -1 : 0);
 
 /** Scaling Stat min for a weapon: a third of the Grade-capped Scaling Stat, rounded down. */
 export const scalingMin = item => Math.floor((item?.system?.profile?.capped ?? 0) / 3);

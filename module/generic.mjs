@@ -18,6 +18,7 @@ import { STATS, poolFormula } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, select } from "./html.mjs";
 import { takeEdge } from "./edge.mjs";
+import { ancestryNet } from "./ancestry-net.mjs";
 import { energyHave } from "./consumables-rules.mjs";
 
 const tier = (actor, id) => ab.treeTier(actor, id);
@@ -314,7 +315,8 @@ export async function resistFear(actor, { need = null } = {}) {
   if (!vals) return null;
   const stat = vals.stat || best, die = eff[stat].die, target = Math.max(0, Number(vals.need) || 0);
   const brave = tier(actor, "generic-courage") >= 1 ? 1 : 0;
-  const net = (vals.net ?? 0) + brave + rollKit.net(actor, "stat") + (await takeEdge(actor, "fear"));   // a Festival Token set to resisting Fear
+  const net = (vals.net ?? 0) + brave + rollKit.net(actor, "stat") + (await takeEdge(actor, "fear"))   // a Festival Token set to resisting Fear, Good Spirits
+    + (await takeEdge(actor, "check")) + ancestryNet.fear(actor);                                     // Lucky; Unbowed (Draken Legacy T2)
   const floor = tier(actor, "generic-resolve") >= 5 ? Math.floor(2 * sp(actor) / 3) : tier(actor, "generic-resolve") >= 2 ? Math.floor(sp(actor) / 3) : 0;
   const roll = await rollKit.evaluate(poolFormula(1, die, rollKit.noAdvantage(actor, net)));
   const rolls = [roll];

@@ -14,6 +14,7 @@
 import { requestGM } from "./actions.mjs";
 import { notCreature } from "./kinds.mjs";
 import { tokenCentre } from "./distance.mjs";
+import { tools as envTools } from "./environment.mjs";
 
 const TERRAIN = {
   rough: { label: "Rough terrain", level: 1, color: "#b8863b", icon: "fa-solid fa-shoe-prints", tip: "+1 AP to move" },
@@ -67,8 +68,18 @@ function regionsOf(token, scene = token?.parent) {
 const levelFor = token => terrainLevel(regionsOf(token).map(kindOf));
 
 /** The terrain level at a point of the scene (a token's centre there), from the terrain regions that contain it. */
-export function levelAt(scene, point, elevation = 0) {
-  return terrainLevel([...(scene?.regions ?? [])].filter(r => kindOf(r) && contains(r, point, elevation)).map(kindOf));
+export function levelAt(scene, point, elevation = 0, except = null) {
+  return terrainLevel([...(scene?.regions ?? [])].filter(r => kindOf(r) && !(except && except(r)) && contains(r, point, elevation)).map(kindOf));
+}
+/**
+ * The terrain regions a creature ignores: its own Overgrowth (Orc T3), and with Wild Heart (Orc T5) natural rough terrain (the GM's, not a spell's).
+ * Null when it ignores none.
+ */
+export function ignoredTerrain(actor) {
+  if (!actor) return null;
+  const orc = Number(actor.system?.trees?.["ancestry-orc-tree"]) || 0;
+  if (orc < 3) return null;
+  return r => r.flags?.flowstate?.overgrowthOf === actor.uuid || (orc >= 5 && kindOf(r) === "rough" && !r.flags?.flowstate?.terrainOf);
 }
 
 /** Bring every token on the scene's `terrainLevel` flag in line with the terrain regions it stands in. GM only. */
@@ -174,6 +185,7 @@ export function register() {
     tools.fsTenseScene = { name: "fsTenseScene", title: tense ? "Tense scene: on (Energy is spent and regained as in combat). Click to end it." : "Start a tense scene (Energy is spent and regained as in combat, outside combat)",
       icon: "fa-solid fa-heart-pulse", order: order++, toggle: true, active: tense, visible: true, onChange: () => game.settings.set("flowstate", "tenseScene", !tense) };
     if (tense) tools.fsTensePass = { name: "fsTensePass", title: "Tense scene: a turn passes (everyone on the scene regains their start-of-turn Energy)", icon: "fa-solid fa-forward-step", order: order++, button: true, visible: true, onChange: () => game.flowstate?.actions?.passTenseTurn() };
+    Object.assign(tools, envTools(order));                       // Environments (biome, Hazard, Shelter, an hour passes)
     const group = { name: "flowstate", title: "Flow State terrain and scenes", icon: "fa-solid fa-mountain-sun", order: 99, visible: true, tools, activeTool: "" };
     if (Array.isArray(controls)) controls.push({ ...group, tools: Object.values(tools) });
     else controls.flowstate = group;

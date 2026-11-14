@@ -21,6 +21,7 @@ function abcView(actor) {
   };
 }
 import * as consumables from "./consumables.mjs";
+import * as ancestry from "./ancestry.mjs";
 import { TOKEN, TOKEN_CHECKS, tokenUses } from "./consumables-rules.mjs";
 import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
@@ -503,6 +504,8 @@ function actionGroups(actor, weapons, stats) {
   const genericRows = generic.actionRows(actor);
   // Potions and Festival Tokens (consumables.mjs).
   const itemRows = consumables.actionRows(actor);
+  // Ancestry abilities (ancestry.mjs).
+  const ancestryRows = ancestry.actionRows(actor);
 
   const checks = [
     { label: "Attack roll", detail: "Just the attack die", cost: `d${d.attackDie}`, action: "attack", icon: "fa-solid fa-hand-back-fist" },
@@ -829,6 +832,7 @@ function actionGroups(actor, weapons, stats) {
     ...(swiftRows.length ? [{ key: "act-swift", name: "Swift Weapons", actions: swiftRows }] : []),
     ...(martial.length ? [{ key: "act-martial", name: "Martial Theory", actions: martial }] : []),
     ...(genericRows.length ? [{ key: "act-generic", name: "Generic", actions: genericRows }] : []),
+    ...(ancestryRows.length ? [{ key: "act-ancestry", name: "Ancestry", actions: ancestryRows }] : []),
     ...(itemRows.length ? [{ key: "act-items", name: "Items", actions: itemRows }] : []),
     { key: "act-checks", name: "Checks", actions: checks }
   ];
@@ -995,6 +999,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       lowerTier: FlowStateActorSheet.onLowerTier,
       martial: FlowStateActorSheet.onMartial,
       generic: function (event, target) { return generic.run(this.document, target.dataset.op); },
+      ancestry: function (event, target) { return ancestry.run(this.document, target.dataset.op); },
       consumable: function (event, target) { return consumables.run(this.document, target.dataset.op, target.dataset.itemId ?? target.closest?.("[data-item-id]")?.dataset?.itemId); },
       endEffect: FlowStateActorSheet.onEndEffect,
       changeAbc: function () { if (game.user.isGM) return import("./wizard.mjs").then(w => w.CharacterWizard.openFor(this.document)); }

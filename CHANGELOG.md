@@ -2,6 +2,14 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.91.0:** ABCs part 2: the ancestry abilities, and Environments.
+- **Action List (Ancestry group):** Shed the Heat, Acclimated, Territorial, Lucky (and Charmed Life), Good Spirits, Duelist, Topple, Overgrowth, Ward of the Hold, Elemental Wings, Mob Rule, Shadow Spirit (a spirit token you move and cast Spells from) and Transference, the Drakenblood breath attack (ranged 15 ft, the gland's element, fists free) and Elemental Diversity. Every other active ancestry ability pays its cost and posts its text.
+- **In the exchange:** Small Target, Home Ground, Mob Rule (attack Advantage); Mindful of Fragility, Awakened Scales, Underdog (dodge Advantage); Underfoot and Neutral Party (buttons on the attack card: the attack is re-rolled, the lower stands); Unlucky (and Jinx) and Indomitable after the dodge; Searing Zeal and Elemental Mastery as damage is rolled; Grudgebearer.
+- **Damage:** Elemental Ward, Flamekin, Curse-Hardened, Ward of the Hold and Spirit Shell Weaken it; Lingering Spirit leaves you at 1 HP once per rest; Elemental Absorption; Immovable ignores Force or being knocked Prone.
+- **Passives:** Keen Instincts, Quick Feet, Big Gear, Slip Through, Unassuming, Territorial (no Surprise, perception Advantage), Unbowed, Magic Boost (a Cast Spell option), Wild Heart and your own Overgrowth (no terrain cost).
+- **Environments** (Generic Groups, a GM option in the Flow State scene controls): a scene's biome (Extreme: Athletics Disadvantage, half rest outside Shelter) and Hazard (a tenth of Max HP an hour outside Shelter), Shelter regions, and "an hour passes". Acclimated, Hardy Constitution and Endless Adaptation use them.
+- New reaction switches for the popups (Unlucky, Indomitable, Immovable, Grudgebearer, Spirit Shell, Searing Zeal, Elemental Mastery, Elemental Absorption).
+
 **0.90.0:** Ancestry, Background and Culture (Flow State - ABCs), part 1:
 - **Ancestry trees:** the Wusonian core (free Tier 0), Commonkin and Bestial, Smallfolk, and each Ancestry's own trees, open only to their Ancestries. Ancestry trees can't be lowered.
 - **Backgrounds** give 15 free points of starting trees (with their choices, foci and each Ancestry's differences; the Outsider spends them on the Ancestry's trees). Free tiers unlock trees and count for requirements, not for Skill Points.

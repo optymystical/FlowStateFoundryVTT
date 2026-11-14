@@ -275,6 +275,8 @@ export function planCast(ctx, v) {
   const taaffeiteDiv = taaffeite ? ((ctx.taaffeiteDoubled ?? []).includes(affixKey) ? 4 : 2) : 1;
   // Delay (Restoration Arcana T4) also gives +100% Power.
   const empower = applied.filter(a => ["Empower", "Delay"].includes(a.mod.name) || (a.replicates && ["Empower", "Delay"].includes(spellById(a.replicates)?.name))).length;
+  // Magic Boost (Elf T4): +100% Power without raising the Threshold; it stacks with Empower.
+  const boost = v.magicBoost && ctx.magicBoost ? 1 : 0;
   const cost = castCost({ base, mods: applied, tr, skillPoints: ctx.skillPoints });
   const grossEnergy = Math.floor(cost.gross * ctx.skillPoints / 2);
   // Lob needs an Area spell and Explode a Ranged one; Mold and the rest apply anywhere.
@@ -292,7 +294,7 @@ export function planCast(ctx, v) {
     ritualHours: ritual && !instant ? cost.gross : 0,
     ritualLoss: ritual ? Math.floor(grossEnergy / 2 / taaffeiteDiv) : 0,
     spellPower: option ? spellPower(option.scaling) : 0,
-    power: option ? spellPower(option.scaling) * (1 + empower + hematiteBonus) : 0, hematite, hematiteBonus, hematiteCost: hematite && option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
+    power: option ? spellPower(option.scaling) * (1 + empower + hematiteBonus + boost) : 0, magicBoost: !!boost, hematite, hematiteBonus, hematiteCost: hematite && option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
     attack
   };
 }

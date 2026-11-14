@@ -25,6 +25,15 @@ const REACTIONS = [
   { key: "alacrity", label: "Alacrity", tip: "Asked before initiative is rolled: Advantage for half your Skill Points in Energy (Initiative T1).", when: c => c.tier("generic-initiative") >= 1 },
   { key: "exploitOpening", label: "Exploit Opening", tip: "Offered when you hit a creature that hasn't taken its turn this round (Punish T1).", when: c => c.tier("generic-punish") >= 1 },
   { key: "stall", label: "Stall / Siphon", tip: "Offered when you hit a creature in combat (Delay T1; Siphon at T2).", when: c => c.tier("generic-delay") >= 1 },
+  // Ancestry (Flow State - ABCs).
+  { key: "unlucky", label: "Unlucky", tip: "Offered when an attack would hit you (Goblin T1), or an ally within 30 ft (Jinx, T5).", when: c => c.tier("ancestry-goblin-tree") >= 1 },
+  { key: "indomitable", label: "Indomitable", tip: "Offered when your attack misses or your dodge fails (Human T5): re-roll it, once per round.", when: c => c.tier("ancestry-human-tree") >= 5 },
+  { key: "immovable", label: "Immovable", tip: "Offered when Force would move you or you'd be knocked Prone (Dwarf T4): 1 RP to ignore it, once per round.", when: c => c.tier("ancestry-dwarf-tree") >= 4 },
+  { key: "grudge", label: "Grudgebearer", tip: "Offered when a creature damages you (Dwarf T5): mark it as your Grudge, once per combat.", when: c => c.tier("ancestry-dwarf-tree") >= 5 },
+  { key: "spiritShell", label: "Spirit Shell", tip: "Offered when a Spell's damage is about to hit you (Dusken Spirit T3): 2 RP for a Weakened stack.", when: c => c.tier("ancestry-dusken-spirit") >= 3 },
+  { key: "searingZeal", label: "Searing Zeal", tip: "Offered when you hit (Firelander T3): make the damage Heat with a Strengthened stack.", when: c => c.tier("ancestry-firelander") >= 3 },
+  { key: "elementalMastery", label: "Elemental Mastery", tip: "Offered when you deal damage of your gland's element (Draken Elements T3): a Strengthened stack.", when: c => c.tier("ancestry-draken-elements") >= 3 },
+  { key: "elementalAbsorption", label: "Elemental Absorption", tip: "Offered when you take damage of your gland's element (Draken Elements T4): 2 RP for Energy.", when: c => c.tier("ancestry-draken-elements") >= 4 },
   { key: "fixation", label: "Fixation", tip: "The question at the start of your turn about whom to fixate on.", when: c => c.snappence >= 3 },
   // Offer cards: optional buttons the system posts on their own card. Switched off, the card isn't posted (nothing is spent).
   { key: "palisade", card: true, label: "Palisade", tip: "The card to strike a creature that moves into your Reach weapon's range.", when: c => c.tier("martial-reach-weapons") >= 1 },

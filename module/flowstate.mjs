@@ -32,6 +32,8 @@ import { registerCheckHooks, prepareInitiative, initiativeRoll, breakTies, tieOr
 import * as generic from "./generic.mjs";
 import * as surprise from "./surprise.mjs";
 import * as consumables from "./consumables.mjs";
+import * as ancestry from "./ancestry.mjs";
+import * as environment from "./environment.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
 import { notCreature } from "./kinds.mjs";
 import { DialogV2 } from "./html.mjs";
@@ -241,6 +243,7 @@ class FlowStateCombat extends Combat {
       await generic.turnStart(a);
       await surprise.turnStart(this, combatant);
       await consumables.turnStart(this, a);                       // an Energy potion's bonus pool runs out 10 rounds on
+      await ancestry.turnStart(this, a);                          // Ward of the Hold, Mob Rule, Underdog, Elemental Wings end; a downed spirit recombines
       // Surprise ends at your first turn.
       if (a.statuses?.has("surprised")) await a.toggleStatusEffect("surprised", { active: false });
       // Psych Up / Calm Down last until the start of your next turn.
@@ -301,6 +304,8 @@ Hooks.once("init", () => {
   registerCheckHooks();
   generic.registerGenericHooks();
   consumables.register();
+  actions.registerAncestry(ancestry.hooks);
+  environment.register();
   surprise.registerSurpriseHooks();
   registerShopSettings();
   game.flowstate = { rules, martial, actions, catalog: CatalogApp };
@@ -645,7 +650,7 @@ Hooks.on("createChatMessage", message => {
   const ref = message.getFlag("flowstate", "defense")?.attackMessage ?? message.getFlag("flowstate", "damage")?.defenseMessage
     ?? message.getFlag("flowstate", "closeQuarters")?.attackMessage ?? message.getFlag("flowstate", "shift")?.attackMessage
     ?? message.getFlag("flowstate", "distract")?.attackMessage ?? message.getFlag("flowstate", "reachOf") ?? message.getFlag("flowstate", "momentumOf")
-    ?? message.getFlag("flowstate", "dash")?.attackMessage ?? message.getFlag("flowstate", "blockFor")?.attackMessage
+    ?? message.getFlag("flowstate", "dash")?.attackMessage ?? message.getFlag("flowstate", "lowered")?.attackMessage ?? message.getFlag("flowstate", "blockFor")?.attackMessage
     ?? message.getFlag("flowstate", "perfect")?.attackMessage ?? message.getFlag("flowstate", "dipOf") ?? message.getFlag("flowstate", "dashMoveOf")
     ?? message.getFlag("flowstate", "riposteDeclined") ?? message.getFlag("flowstate", "quartzFor")?.attackMessage ?? message.getFlag("flowstate", "adjustFor")?.attackMessage ?? message.getFlag("flowstate", "retortOf") ?? message.getFlag("flowstate", "limberOf")
     ?? message.getFlag("flowstate", "spellCancelled")?.attackMessage ?? message.getFlag("flowstate", "mentalActDone")?.card

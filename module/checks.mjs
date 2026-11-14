@@ -13,6 +13,8 @@ import { askFor } from "./ask.mjs";
 import { esc, select } from "./html.mjs";
 import { CHECK_KINDS, CHECK_DIFFICULTIES, ATTITUDES, kindOf, actingWins, meetsTarget, underHalf, halfSP, socialCounter, actingNet, alacrityStacks } from "./checks-rules.mjs";
 import { takeEdge } from "./edge.mjs";
+import { ancestryNet } from "./ancestry-net.mjs";
+import { envFor } from "./environment-rules.mjs";
 import { energyHave } from "./consumables-rules.mjs";
 
 const SOCIAL = new Set(["persuasion", "deception"]);
@@ -59,7 +61,10 @@ export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = n
   const own = actingNet({ kind, attitude, tiers: tiersOf(actor) });
   const coverStory = kind === "deception" && !contest && !!actor.getFlag?.("flowstate", "coverStory");
   const steady = kind === "stealth" && glimpse && ab.treeTier(actor, "generic-stealth") >= 2 ? 1 : 0;
-  const edge = ["perception", "athletics", "deception", "persuasion", "stealth"].includes(kind) ? await takeEdge(actor, kind) : 0;   // a Festival Token's use
+  const edge = (["perception", "athletics", "deception", "persuasion", "stealth"].includes(kind) ? await takeEdge(actor, kind) : 0)   // a Festival Token's use
+    + (await takeEdge(actor, "check"))                                                                                         // Lucky (Halfling)
+    + (kind === "perception" ? ancestryNet.perception(actor) : 0) + (kind === "stealth" ? ancestryNet.stealth(actor) : 0)     // Territorial, Unassuming
+    + (kind === "athletics" ? envFor(actor).athleticsNet : 0);                                                                 // an Extreme biome; Acclimated
   const net = (opts.net ?? 0) + extraNet + rollKit.net(actor) - stealthDis + (kind === "perception" ? senseNet(actor) : 0) + own.net + (contest?.net ?? 0) + (coverStory ? 1 : 0) + steady + edge;
   await rollKit.consumeDisrupt(actor);
   if (coverStory) await setActorFlag(actor, "coverStory", null);

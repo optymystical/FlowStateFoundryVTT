@@ -212,6 +212,9 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       alignment: alignmentSpeedPct(this.parent?.getFlag?.("flowstate", "alignment"))
     };
     speedLoss.total = sm ? 0 : speedLoss.armor + speedLoss.affix + speedLoss.alignment;
+    // Quick Feet (Smallfolk T2): a Size 2 creature's maximum speed is 40 ft per AP instead of 25.
+    const anc = id => Number(this.trees?.[id]) || 0;
+    if (anc("ancestry-smallfolk") >= 2 && Math.round(this.size) === 2 && !sm) d.move = Math.max(d.move, 40);
     const walk = speedFt(d.move, speedLoss.total);
     // Carrying (Athletics Tier 0): Load by each item's Size against yours. Natural items, Unarmed and Improvised, Icons and Affixes carry nothing.
     const tier = id => Number(this.trees?.[id]) || 0;
@@ -220,13 +223,21 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     for (const i of this.parent?.items ?? []) {
       const s = i.system;
       if (!["weapon", "armor", "foci", "shroud", "gear"].includes(i.type) || s?.natural || (i.type === "weapon" && ["unarmed", "improvised"].includes(s.weaponType))) continue;
-      const l = loadFor(s.sizeValue ?? equipSize(s.size, this.size, i.type === "gear" ? 2 : 1), this.size);
+      const isz = s.sizeValue ?? equipSize(s.size, this.size, i.type === "gear" ? 2 : 1);
+      // Big Gear (Smallfolk T3): a Size 2 creature carries Size 2 equipment (made for Size 3 creatures) as 1 Load.
+      const l = anc("ancestry-smallfolk") >= 3 && Math.round(this.size) === 2 && isz === 2 ? 1 : loadFor(isz, this.size);
       // Heavy Lifter (Hauling T5): one Size larger than you can be lifted, at 12 Load.
       const each = l === null && tier("generic-hauling") >= 5 && (s.sizeValue ?? 0) === Math.round(this.size) + 1 ? 12 : l;
       if (each === null) drag.push(i.name);
       else load += each * (i.type === "gear" ? Math.max(0, Number(s.quantity) || 0) : 1);
     }
     const enc = encumbrance(load, { strongBack: tier("generic-athletics") >= 4, packMule: tier("generic-hauling") >= 4 });
+    // Big Gear: wielding a Size 2 weapon gives a Size 2 creature a 5 ft melee range.
+    if (anc("ancestry-smallfolk") >= 3 && Math.round(this.size) === 2 && (this.parent?.items ?? []).some(i => i.type === "weapon" && i.system.equipped && i.system.sizeValue === 2)) {
+      this.derived.size = { ...this.derived.size, melee: Math.max(this.derived.size?.melee ?? 0, 5) };
+    }
+    // Keen Instincts (Bestial T1): Smell is a Primary sense.
+    if (anc("ancestry-bestial") >= 1 && this.senses?.smell === "secondary") this.senses.smell = "primary";
     this.load = { value: load, drag, ...enc };
     // Terrain regions (rough +1, difficult +2; Zircon ignores rough terrain). Sure Footing (Mobility T1): actual rough terrain costs nothing extra;
     // Scramble (Mobility T3, this turn): no terrain costs anything extra.

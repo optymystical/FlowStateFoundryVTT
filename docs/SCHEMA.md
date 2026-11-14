@@ -158,7 +158,8 @@ Set them with `actor.toggleStatusEffect(id, { active: true })`. The ids: `dead`,
 | Tense scene | `flowstate.tenseScene` (boolean): Energy is spent and regained outside combat as in combat. |
 | Shop prices | The Shop prices setting (GM menu): price per rarity and per Grade above 1. |
 | World data | World setting `flowstate.worldData`: the GM's changes to the system's tables (materials, Foci, potions...). It's easiest to leave alone, or to import it through the World data window. |
-| Actor flags | `flags.flowstate.alignment` (see Mental). The system writes the rest itself; don't preset them. |
+| Actor flags | `flags.flowstate.alignment` (see Mental); `flags.flowstate.biomes` (Acclimated: biome names, Wusonian), `flags.flowstate.territory` (Territorial: a scene uuid), `flags.flowstate.gland2` (Elemental Diversity's second element). The system writes the rest itself; don't preset them. |
+| Environments | Scene flag `flags.flowstate.environment` = `{ type: "lush" \| "fertile" \| "extreme" \| "", biome: "desert", hazard: true, hazardName: "a sandstorm" }` (optional, GM-managed). Regions with `flags.flowstate.shelter: true` are Shelter. |
 
 ## System packs
 

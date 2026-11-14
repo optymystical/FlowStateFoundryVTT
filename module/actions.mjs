@@ -15,6 +15,7 @@ import { pickSpot, candidateSpots } from "./placement.mjs";
 import { notCreature, isLiving, fusedFociOf } from "./kinds.mjs";
 import { esc, DialogV2, dialogHead } from "./html.mjs";
 import { takeEdge } from "./edge.mjs";
+import { envFor } from "./environment-rules.mjs";
 import { energyHave } from "./consumables-rules.mjs";
 export { gridFor };
 
@@ -465,7 +466,8 @@ export async function rollStatCheck(actor, key) {
   }
 
   const net = opts.net + res.net + exhaustionNet(actor) + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0)
-    + (key === "con" || key === "str" ? await takeEdge(actor, key) : 0);           // a Festival Token set to Constitution or Strength checks
+    + (key === "con" || key === "str" ? await takeEdge(actor, key) : 0)           // a Festival Token set to Constitution or Strength checks
+    + (await takeEdge(actor, "check"));                                          // Lucky (Halfling): the next check
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, stat.die, noAdvantage(actor, net)));
   const cr = await mentalHook?.rollCharges?.({ actor, type: "other", roll, die: stat.die, count: 1, net, max: stat.die, label: `${STATS[key].label} Check` });
@@ -501,6 +503,9 @@ export async function rollStatCheck(actor, key) {
 let checkHook = null;
 export const registerChecks = h => { checkHook = h; };
 let surpriseHook = null;
+/** Ancestry abilities (ancestry.mjs registers itself: attack and dodge Advantage, the defender's buttons, re-rolls, damage). */
+let ancestryHook = null;
+export function registerAncestry(h) { ancestryHook = h; }
 export const registerSurprise = h => { surpriseHook = h; };
 export async function rollCheck(actor, label, opts = {}) {
   return checkHook?.rollCheck(actor, checkHook.kindOf(label), { ...opts, label: opts.label ?? label }) ?? null;
@@ -1711,7 +1716,7 @@ export async function pickUp(pile, item) {
 }
 
 /** Options carried through the exchange (serializable into chat message flags). */
-const EXCHANGE_KEYS = ["label", "growth", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
+const EXCHANGE_KEYS = ["label", "natural", "growth", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "sizeStacks", "pierce", "knockback", "knockbackAdd", "push", "stealth", "statusStealth", "melee", "area", "grapple", "grappleOnly",
   "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "smashKb", "autoFollowup", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride", "woven"];
 
@@ -1888,6 +1893,7 @@ async function startExchange(actor, opts, targets) {
       - (autoDash(target, opts) ? 1 : 0);
     const spellNotes = [];
     if (index === 0 && ruinNet.net) { atkNet += ruinNet.net; spellNotes.push(...ruinNet.notes); }
+    if (ancestryHook) { const an = await ancestryHook.attackNet(actor, target, opts); atkNet += an.net; spellNotes.push(...an.notes); }
     const burdenAtk = mentalHook?.burdenNet(actor, "attackDis") ?? 0;
     if (burdenAtk) spellNotes.push(`Burden ×${-burdenAtk}: ${-burdenAtk} Disadvantage on the attack`);
     // Personal Repulsion / Personal Well (Gravity T3): attacks with a small Scaling Stat get Disadvantage / Advantage.
@@ -1976,6 +1982,7 @@ async function startExchange(actor, opts, targets) {
            ${distract.length ? `<button type="button" class="fs-defend fs-distract" data-choice="distract" data-index="${index}" data-tooltip="Assault T3: attack roll against this attack; on a hit it's re-rolled with Disadvantage and Weakened"><i class="fa-solid fa-crosshairs"></i> Distracting Fire (⚡ ${Math.min(...distract.map(ab.ASSAULT_COST.distractingFire))})</button>` : ""}
            ${canShift ? `<button type="button" class="fs-defend fs-shift" data-choice="shift" data-index="${index}" data-tooltip="${shiftI.tree}: Advantage on your dodge, or Disadvantage on this attack (re-rolled); then respond${shiftI.uses > 1 ? ". Evade: twice" : ""}"><i class="fa-solid fa-arrows-left-right"></i> Shift (⚡ ${breathingFree(target, "shift", shiftI) ? 0 : shiftI.cost})</button>` : ""}
            ${cq.length ? `<button type="button" class="fs-defend fs-close-quarters" data-choice="closeQuarters" data-index="${index}" data-tooltip="Bladed T2: re-roll this attack at double Disadvantage, then respond"><i class="fa-solid fa-compress"></i> Close Quarters (⚡ ${cqCost})</button>` : ""}
+           ${ancestryHook?.defendButtons?.(target, actor, opts, index) ?? ""}
            <button type="button" class="fs-defend" data-choice="none" data-index="${index}"><i class="fa-solid fa-shield-halved"></i> Take the hit</button>
          </div>`;
     // Allies who can help (Block, Shield Toss, Perfect Block, Quartz) share one button; the popup lets you pick who and how.
@@ -2155,6 +2162,7 @@ export async function defend(message, index, choice) {
   if (!target.isOwner) return ui.notifications.warn(`Only ${entry.name}'s owner can respond.`);
   const o = attack.opts;
   if (choice === "closeQuarters") return closeQuarters(message, index, target, entry);
+  if (String(choice).startsWith("anc:")) return ancestryHook?.react(choice, message, index, target, entry, { effectiveEntry, rerollNet });
   // Close Quarters / Shift may have re-rolled this attack.
   entry = effectiveEntry(message.id, index, entry);
 
@@ -2212,7 +2220,10 @@ export async function defend(message, index, choice) {
   if (eclipse?.pen) reasons.push(eclipse.note);
   const ruinDodge = (await mentalHook?.dodgeNext?.(target)) ?? 0;          // Ruin Table: "their next dodge roll has Disadvantage" (used up)
   if (ruinDodge) reasons.push("Ruin: Disadvantage on this dodge");
-  const net2 = net + (waste?.net ?? 0) + burden + ruinDodge;
+  const anc = ancestryHook ? await ancestryHook.dodgeNet(target, await fromUuid(attack.attacker), o) : { net: 0, notes: [] };
+  const luck = await takeEdge(target, "dodge");                            // Lucky (Halfling): Advantage armed for the next dodge
+  reasons.push(...anc.notes, ...(luck ? ["Lucky"] : []));
+  const net2 = net + (waste?.net ?? 0) + burden + ruinDodge + anc.net + luck;
   if (waste) reasons.push(waste.note);
   if (burden) reasons.push(`Burden ×${-burden}: ${-burden} Disadvantage on the dodge`);
   const dodge = await evaluate(poolFormula(2, dieNow, noAdvantage(target, net2)));
@@ -2224,6 +2235,13 @@ export async function defend(message, index, choice) {
   let result = resolveAttack(entry.total, dodge.total);
   if ((o.mental?.ward?.autoHit || o.mental?.autoHit) && !result.hit) result = { ...result, hit: true, outcome: "Hit" };       // Alignment 4: a Ward hits regardless; the roll only decides a crit
   const attackerActor = await fromUuid(attack.attacker);
+  // Ancestry: Unlucky (the attack re-rolled, the lower stands), Indomitable (a failed dodge or a miss re-rolled).
+  if (ancestryHook && !o.mental?.ward?.autoHit && !o.mental?.autoHit) {
+    const ad = await ancestryHook.afterDodge({ attacker: attackerActor, target, entry, dodge, die: dieNow, net: net2, result });
+    result = ad.weak ? { ...ad.result, ancWeak: ad.weak } : ad.result;
+    chargeRolls.push(...ad.rolls); chargeNotes.push(...ad.notes);
+    if (ad.attackTotal !== entry.total) entry = { ...entry, total: ad.attackTotal };
+  }
   const atkBox = { total: entry.total };
   const ar = await mentalHook?.resolveCharges?.({ attacker: attackerActor, target, atk: atkBox, dodge, result, attackDie: entry.die, o });
   if (ar) {
@@ -3763,6 +3781,8 @@ export async function setStatus(actor, status, active) {
   if (!actor) return;
   if (active && mentalHook?.blocked?.(actor, status)) return;
   if (!actor.isOwner) return requestGM("setStatus", { target: actor.uuid, status, active });
+  // Immovable (Dwarf T4): 1 RP to ignore being knocked Prone.
+  if (status === "prone" && active && !actor.statuses.has("prone") && ancestryHook && await ancestryHook.immovable(actor, "You're about to be knocked Prone")) return;
   if (actor.statuses.has(status) !== !!active) await actor.toggleStatusEffect(status, { active: !!active });
 }
 
@@ -4558,6 +4578,8 @@ function wallHit(a, b) {
  */
 async function moveTokenTopLeft(token, pos, { feet = null, source = null } = {}) {
   const doc = token.document;
+  // Immovable (Dwarf T4): 1 RP to ignore Force that would move you (asked when it isn't your own turn's move).
+  if (ancestryHook && token.actor && game.combat?.combatant?.actor?.uuid !== token.actor.uuid && await ancestryHook.immovable(token.actor, "Force is about to move you")) return;
   const gs = canvas.grid.size;
   let { x, y } = snapTopLeft(doc, pos);
   const d = canvas.dimensions;
@@ -4666,19 +4688,20 @@ export function findShifts(attackMessageId, index) {
 function rerollNet(attackMessageId, index, entry) {
   const shiftDis = findShifts(attackMessageId, index).filter(f => f.mode === "dis").length;
   const distracted = !!findDistract(attackMessageId, index)?.getFlag("flowstate", "distract")?.hit;
-  return (entry.net ?? 0) + (findCloseQuarters(attackMessageId, index) ? -2 : 0) - shiftDis + (distracted ? -1 : 0) + (findDash(attackMessageId, index) ? -1 : 0);
+  const lowered = game.messages.filter(m => { const f = m.getFlag("flowstate", "lowered"); return f?.attackMessage === attackMessageId && f.index === index; }).length;
+  return (entry.net ?? 0) + (findCloseQuarters(attackMessageId, index) ? -2 : 0) - shiftDis + (distracted ? -1 : 0) + (findDash(attackMessageId, index) ? -1 : 0) - lowered;
 }
 
 /** The attack entry with its latest re-rolled total (Close Quarters or Shift), if any. */
 export function effectiveEntry(attackMessageId, index, entry) {
   const rerolls = game.messages.filter(m => {
     const f = m.getFlag("flowstate", "closeQuarters") ?? (m.getFlag("flowstate", "shift")?.total !== undefined ? m.getFlag("flowstate", "shift") : null)
-      ?? (m.getFlag("flowstate", "distract")?.total !== undefined ? m.getFlag("flowstate", "distract") : null) ?? m.getFlag("flowstate", "dash");
+      ?? (m.getFlag("flowstate", "distract")?.total !== undefined ? m.getFlag("flowstate", "distract") : null) ?? m.getFlag("flowstate", "dash") ?? m.getFlag("flowstate", "lowered");
     return f?.attackMessage === attackMessageId && f.index === index;
   });
   const last = rerolls.at(-1);
   if (!last) return entry;
-  const f = last.getFlag("flowstate", "closeQuarters") ?? last.getFlag("flowstate", "shift") ?? last.getFlag("flowstate", "distract") ?? last.getFlag("flowstate", "dash");
+  const f = last.getFlag("flowstate", "closeQuarters") ?? last.getFlag("flowstate", "shift") ?? last.getFlag("flowstate", "distract") ?? last.getFlag("flowstate", "dash") ?? last.getFlag("flowstate", "lowered");
   return { ...entry, total: f.total };
 }
 
@@ -5491,6 +5514,9 @@ function targetStacks(attacker, o, target, result, extra = 0, ctx = {}) {
   // Slip Off (Balanced T1) and Harden (Heavy T4 / Titanic T3) Weaken attacks against an active Parry/Brace.
   for (const w of ctx.weaken ?? []) { stacks -= 1; parts.push(`−1 ${w}`); }
   if (ctx.distracted) { stacks -= 1; parts.push("−1 Distracting Fire"); }
+  if (ctx.unlucky) { stacks -= ctx.unlucky; parts.push(`−${ctx.unlucky} Jinx`); }
+  const ancStacks = ancestryHook?.damageStacks?.({ attacker, target, o }) ?? { stacks: 0, parts: [] };
+  if (ancStacks.stacks) { stacks += ancStacks.stacks; parts.push(...ancStacks.parts); }
   // Harden (Geomancy T5): a hardened creation's weapon deals Strengthened damage.
   if (o.itemUuid && syncUuid(o.itemUuid)?.flags?.flowstate?.made?.harden?.strong) { stacks += 1; parts.push("+1 Harden"); }
   if (o.spell && foci) { const fs = foci.damageStacks({ attacker, o, type }); if (fs.stacks) { stacks += fs.stacks; parts.push(...fs.parts); } }
@@ -5519,19 +5545,20 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   const target = await fromUuid(defense.target);
   if (!attack || !attacker || !target) return ui.notifications.warn("This attack can no longer be resolved.");
   if (!auto && !attacker.isOwner) return ui.notifications.warn(`Only ${attacker.name}'s owner can roll this damage.`);
-  const o = attack.opts;
+  // Ancestry: Searing Zeal and Elemental Mastery can change this hit's damage (type, Strengthened).
+  const o = ancestryHook ? await ancestryHook.beforeDamage(attacker, target, attack.opts) : attack.opts;
   await hexRoll(attacker, "damage");
 
   const guard = guardFor(target, o, defense.attackMessage, defense.index);
   const ctx = { distracted: !!findDistract(defense.attackMessage, defense.index)?.getFlag("flowstate", "distract")?.hit, weaken: guard.weaken,
-    retort: !!findRetort(defenseMessage.id) };
+    retort: !!findRetort(defenseMessage.id), unlucky: defense.result?.ancWeak ?? 0 };
   const preview = targetStacks(attacker, o, target, defense.result, 0, ctx);
   // Spells: the damage dice can depend on the target (living, direct damage, low dodge), so settle them now.
   const profile = spellProfile(o);
   let spellPlan = null, spellFacts = null;
   if (profile?.damage) {
     spellFacts = await spellDamageFacts(profile, o, attacker, target, defense, { pierce: o.spell?.pierceBold != null ? applyStacks(o.spell.pierceBold, (o.stacks ?? 0) + (defense.result.critStacks ?? 0)) + (o.spell.pierceFlat ?? 0) : (o.pierce ?? 0), halfLimit: !!o.spell?.mods?.weakpoint, parryItems: guard.items, bash: o.spell ? applyStacks(o.bash || 0, (o.stacks ?? 0) + (defense.result.critStacks ?? 0)) : (o.bash || 0),
-      shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), barriers: barriersFor(attacker, target) } });
+      shroudCtx: { source: sourceOf(o), natural: naturalHit(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), barriers: barriersFor(attacker, target) } });
     spellPlan = fx.damageDice(profile, o.spell.power, spellFacts, o.spell.mods ?? {});
   }
   const flare = spellPlan?.flare ?? null;
@@ -5578,7 +5605,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
     const wo = wovenOpts(o), wprofile = spellProfile(wo);
     if (wprofile?.damage) {
       const wfacts = await spellDamageFacts(wprofile, wo, attacker, target, defense, { pierce: wo.pierce ?? 0, halfLimit: !!wo.spell?.mods?.weakpoint, parryItems: guard.items, bash: wo.bash ?? 0,
-        shroudCtx: { source: sourceOf(wo), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), barriers: barriersFor(attacker, target) } });
+        shroudCtx: { source: sourceOf(wo), natural: naturalHit(wo), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), barriers: barriersFor(attacker, target) } });
       const wplan = fx.damageDice(wprofile, wo.spell.power, wfacts, wo.spell.mods ?? {});
       const wroll = await evaluate(`${wplan.n}d${wplan.sides}`);
       const ws = targetStacks(attacker, wo, target, defense.result, (opts.extra ?? 0) + (wplan.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0), { ...ctx, deferArcane: true });
@@ -5721,7 +5748,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   // Arcane vs a non-magical creature: its Weakened stack comes off only what gets past its Shields and Shroud (see damageOutcome).
   const arcaneRatio = (n, deferred) => (deferred ? stackMultiplier(n - 1) / stackMultiplier(n) : 0);
   const dmgOpts = { arcaneWeak: arcaneRatio(stacks, arcaneWeak), pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: bashNow, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
-    shroudCtx: { source: sourceOf(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
+    shroudCtx: { source: sourceOf(o), natural: naturalHit(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
       barriers: barriersFor(attacker, target), ...(accretion ? { accretion } : {}) }, mentalDone: true };
   // Limits apply to each instance on its own.
   let outcome, wOutcome = null, wDmgOpts = null, firstSpent = null, wovenFirst = false;
@@ -6218,6 +6245,12 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
       await post(actor, { title: `${esc(actor.name)} — Reactive`, body: `<div class="fs-result">${esc(c.name)} spends 1 RP: the damage is Weakened (${amount}).</div>` });
     }
   }
+  // Ancestry: Elemental Ward, Flamekin, Curse-Hardened, Ward of the Hold, Spirit Shell (Weakened stacks before anything soaks it).
+  if (ancestryHook && amount > 0 && !bypass) {
+    const was = amount, an = await ancestryHook.incoming(actor, amount, type, { archetype, attacker: shroudCtx?.attacker ?? null, natural: !!shroudCtx?.natural });
+    amount = an.amount; reduced += Math.max(0, was - amount);
+    if (an.notes.length && !silent) await post(actor, { title: `${esc(actor.name)} — ${an.notes.join(", ")}`, body: `<div class="fs-result">The damage is Weakened (${was} → ${amount}).</div>` });
+  }
   // Mental: Wonder effects on whoever takes damage that didn't come through an attack's damage roll (those were settled there).
   if (mentalHook?.adjust && amount > 0 && !bypass && !mentalDone) {
     const adj = await mentalHook.adjust({ attacker: shroudCtx?.attacker ? syncUuid(shroudCtx.attacker) : null, target: actor, amount, type, o: null });
@@ -6289,11 +6322,13 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
     update["system.hp.value"] = Math.min(actor.system.hp.value, actor.system.hp.max - out.toHp);
     update["system.hp.lost"] = (actor.system.hp.lost ?? 0) + out.toHp;
   }
+  if (ancestryHook) update["system.hp.value"] = ancestryHook.lethal(actor, update["system.hp.value"]);       // Lingering Spirit: 1 HP instead
   if (type === "cold" && actor.system.conditions.ignite > 0) update["system.conditions.ignite"] = 0;
   if (type === "cold" && actor.system.armor?.system.conditions?.ignite > 0 && out.armorLoss) await actor.system.armor.update({ "system.conditions.ignite": 0 }, { flowstateSystem: true });
   await actor.update(update);
   if (mentalHook && out.toHp > 0) await mentalHook.checkExecute(actor);        // Execute (Enhanced): below half the raised Pain Threshold they die
   if (mentalHook?.concentrate && out.toHp > 0) await mentalHook.concentrate(actor, out.toHp, update["system.hp.value"]);          // Concentration: 1 RP and a Willpower check against the direct damage
+  if (ancestryHook) await ancestryHook.afterDamage(actor, out.toHp ?? 0, type, { attacker: shroudCtx?.attacker ?? null });
   if (neg?.after) await neg.after();
   else if (wardReflect && mentalHook?.reflect) await mentalHook.reflect(actor, wardReflect);          // a Warden / Riposte the pre-damage Ward earned
   if (flightHook && out.toHp > 0 && actor.isOwner) await flightHook(actor, out.toHp);   // a flyer hit hard enough must stabilize                                            // Warden / Riposte (Enhanced): strike back at the source
@@ -6553,7 +6588,9 @@ export async function recoverEnergy(actor) {
 /** Ch8 8-hour rest: regain Con+Will+Build minimums; clears days without rest. Max HP lost is not healed. */
 export async function rest(actor) {
   const { value, max } = actor.system.hp;
-  const heal = actor.system.derived.restHeal;
+  // Environments (Generic Groups): an Extreme biome without shelter halves it; Hardy Constitution (Wusonian T2) restores full HP there.
+  const env = envFor(actor);
+  const heal = env.restFull ? max : env.restHalf ? Math.floor(actor.system.derived.restHeal / 2) : actor.system.derived.restHeal;
   const next = Math.min(max, value + heal);
   const days = actor.system.daysWithoutRest ?? 0;
   const ok = await DialogV2().confirm({
@@ -6566,7 +6603,7 @@ export async function rest(actor) {
   });
   if (!ok) return;
   // A rest makes First Aid (Recovery T1), Overexert (Stamina T5) and the one potion per rest available again.
-  await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0, "flags.flowstate.firstAided": false, "flags.flowstate.overexertUsed": false, "flags.flowstate.potionUsed": false });
+  await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0, "flags.flowstate.firstAided": false, "flags.flowstate.overexertUsed": false, "flags.flowstate.potionUsed": false, "flags.flowstate.ancRest": null });
   await post(actor, { title: "8 Hour Rest", body: `<div class="fs-result">+${next - value} HP (${next}/${max})</div>` });
   await mentalHook?.rest(actor);                     // Preordained (Mental, Order T4) rolls its number after a rest
 }
@@ -6776,6 +6813,8 @@ export async function endOfTurn(actor) {
 /* -------------------------------------------- */
 
 /** Damage source type for Diamond / Colored Diamond: the weapon type, else the damage type. */
+/** Was the hit made with a natural weapon (a creature's own claws, a breath)? */
+const naturalHit = o => !!o?.natural || !!(o?.itemUuid && syncUuid(o.itemUuid)?.system?.natural);
 function sourceOf(o) {
   if (o?.attackType && WEAPON_TYPES[o.attackType]) return `weapon:${o.attackType}`;
   const item = o?.itemUuid ? syncUuid(o.itemUuid) : null;

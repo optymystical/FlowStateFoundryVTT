@@ -13,6 +13,7 @@ import * as ab from "./abilities.mjs";
 import { askFor } from "./ask.mjs";
 import { esc, DialogV2 } from "./html.mjs";
 import { energyHave } from "./consumables-rules.mjs";
+import { inTerritory } from "./ancestry-net.mjs";
 
 /** How long a Sneak Attack outside combat counts as the one that starts the next combat. */
 const OPENING_MS = 5 * 60 * 1000;
@@ -62,6 +63,10 @@ export async function beginCombat(combat) {
       <table class="fs-table"><thead><tr><th>Creature</th><th>Side</th><th>Surprised</th></tr></thead><tbody>${rows}</tbody></table></div>`,
     ok: { label: "Next", callback: (event, button) => Object.fromEntries(list.map(c => [c.id, !!button.form.elements[`s.${c.id}`]?.checked])) } });
   if (!marked) return null;
+  // Territorial (Bestial T2): a creature in its territory can't be Surprised (Tribe, T5: nor its allies near it).
+  const home = list.filter(c => marked[c.id] && inTerritory(c.actor));
+  for (const c of home) marked[c.id] = false;
+  if (home.length) await ChatMessage.create({ content: `<div class="flowstate-card"><header class="fs-card-title">Territorial</header><div class="fs-notes">${home.map(c => esc(c.name)).join(", ")} ${home.length === 1 ? "is" : "are"} in their territory and can't be Surprised.</div></div>` });
   for (const c of list) await setStatus(c.actor, "surprised", !!marked[c.id]);
 
   // 2. Vigilance (Perception T2): a surprised creature that has it may pay to be aware; Alert (T4) brings its allies within 100 ft along.

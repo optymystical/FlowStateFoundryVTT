@@ -10,7 +10,8 @@
  *    Terrain counts as it was where the move started.
  */
 import { planMove, maxMove, cutPath, stepCostAlong } from "./movement-rules.mjs";
-import { levelAt } from "./terrain.mjs";
+import { levelAt, ignoredTerrain } from "./terrain.mjs";
+import { spiritOwner } from "./spirit.mjs";
 import { movementMode, movementTracked, moveParams, moveLedger, turnKey, inActiveCombat } from "./actions.mjs";
 import { notCreature } from "./kinds.mjs";
 import { blockerOnPath, hostileDispositions } from "./passage.mjs";
@@ -77,11 +78,12 @@ function pathCosts(token, movement, actor) {
   const centre = p => ({ x: p.x + ((p.width ?? token.width ?? 1) * size) / 2, y: p.y + ((p.height ?? token.height ?? 1) * size) / 2 });
   const measure = k => { try { return token.measureMovementPath(pts.slice(0, k)).distance; } catch (err) { return NaN; } };
   const origin = movement.origin ?? token._source;
-  const out = [{ d: 0, cost: costAt(levelAt(scene, centre(origin), origin.elevation ?? token.elevation ?? 0)) }];
+  const skip = ignoredTerrain(actor);                     // Overgrowth / Wild Heart (Orc)
+  const out = [{ d: 0, cost: costAt(levelAt(scene, centre(origin), origin.elevation ?? token.elevation ?? 0, skip)) }];
   for (let k = 0; k < pts.length; k++) {
     const d = measure(k + 1);
     if (!Number.isFinite(d)) return null;
-    out.push({ d, cost: costAt(levelAt(scene, centre(pts[k]), pts[k].elevation ?? token.elevation ?? 0)) });
+    out.push({ d, cost: costAt(levelAt(scene, centre(pts[k]), pts[k].elevation ?? token.elevation ?? 0, skip)) });
   }
   return out;
 }
@@ -103,7 +105,18 @@ function hostileInTheWay(token, movement, actor) {
 /** preMoveToken: price the path the token is about to take, cut it short if the AP can't pay for all of it, and stash the plan for updateToken. */
 function preMove(token, movement, options) {
   try {
-    const actor = token.actor;
+    // A Shadow Spirit (Dusken Shadow T3) moves with its body's movement, within 30 ft of it (100 ft with Mastered Tether).
+    const body = spiritOwner(token);
+    if (body && !isForcedMove(options, movement.method)) {
+      const me = body.getActiveTokens?.()[0], last = movement.passed?.waypoints?.at?.(-1) ?? movement.destination;
+      const range = (Number(body.system?.trees?.["ancestry-dusken-shadow"]) || 0) >= 5 ? 100 : 30;
+      const size = token.parent?.grid?.size ?? 100, ft = token.parent?.grid?.distance ?? 5;
+      if (me && last && Math.hypot(last.x - me.document.x, last.y - me.document.y) / size * ft > range + 1) {
+        ui.notifications.warn(`${token.name} can't go more than ${range} ft from ${body.name}.`);
+        if (!game.user.isGM) return false;
+      }
+    }
+    const actor = body ?? token.actor;
     if (!actor || notCreature(actor) || isForcedMove(options, movement.method)) return;
     const feet = Number(movement.passed?.distance) || 0;
     if (!(feet > 0)) return;
@@ -114,7 +127,7 @@ function preMove(token, movement, options) {
     }
     // You can't move through a hostile creature's space (Generic Groups, Movement); Slip Through (Smallfolk T1) passes creatures a Size or more larger.
     // Players are always stopped; the GM only in combat (setting up a scene stays free).
-    const block = hostileInTheWay(token, movement, actor);
+    const block = body ? null : hostileInTheWay(token, movement, actor);        // a spirit passes through
     if (block) {
       ui.notifications.warn(`${token.name} can't move through ${block.name}'s space.`);
       if (!game.user.isGM || inActiveCombat(actor)) return false;

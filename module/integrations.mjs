@@ -47,7 +47,7 @@ export const TAH_LAYOUT = [
   { id: "combat", name: "Combat", groups: [["act-combat", "Combat"], ["act-parry", "Parry"], ["act-shroud", "Shroud"], ["act-martial", "Martial Theory"]] },
   { id: "magic", name: "Magic", groups: [["act-magic", "Magic"]] },
   { id: "mental", name: "Mental", groups: [["act-mental", "Mental"]] },
-  { id: "generic", name: "Generic", groups: [["act-generic", "Generic"], ["act-items", "Items"]] },
+  { id: "generic", name: "Generic", groups: [["act-ancestry", "Ancestry"], ["act-generic", "Generic"], ["act-items", "Items"]] },
   { id: "movement", name: "Movement", groups: [["act-move", "Movement"], ["act-heavy", "Armor"], ["act-medium", "Medium Armor"]] },
   { id: "methods", name: "Methods", groups: [["act-strength", "Strength Methods"], ["act-dex", "Dexterity Methods"], ["act-con", "Constitution Methods"], ["act-grappling", "Grappling Methods"]] },
   { id: "weapons", name: "Weapon Trees", groups: [["act-curved", "Curved Weapons"], ["act-striker", "Striker Weapons"], ["act-assault", "Assault Weapons"], ["act-weighted", "Weighted Weapons"], ["act-rapid", "Rapid Weapons"], ["act-swift", "Swift Weapons"]] },

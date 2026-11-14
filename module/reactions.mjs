@@ -22,6 +22,9 @@ const REACTIONS = [
   { key: "impulse", label: "Impulse", tip: "Whether to pay Energy to apply your Tenet once more after it has already triggered this round.", when: c => c.snappence >= 2 && !!c.tenet },
   { key: "checkReroll", label: "Check rerolls", tip: "Focus, Still Breath, Rephrase, Double Down and Hold Firm (Tier 3 of Perception, Stealth, Persuasion, Deception and Resolve): offered when a check rolls under half its die; Push Through (Athletics T3) when an Athletics check fails.",
     when: c => ["generic-perception", "generic-stealth", "generic-persuasion", "generic-deception", "generic-resolve", "generic-athletics"].some(id => c.tier(id) >= 3) },
+  { key: "alacrity", label: "Alacrity", tip: "Asked before initiative is rolled: Advantage for half your Skill Points in Energy (Initiative T1).", when: c => c.tier("generic-initiative") >= 1 },
+  { key: "exploitOpening", label: "Exploit Opening", tip: "Offered when you hit a creature that hasn't taken its turn this round (Punish T1).", when: c => c.tier("generic-punish") >= 1 },
+  { key: "stall", label: "Stall / Siphon", tip: "Offered when you hit a creature in combat (Delay T1; Siphon at T2).", when: c => c.tier("generic-delay") >= 1 },
   { key: "fixation", label: "Fixation", tip: "The question at the start of your turn about whom to fixate on.", when: c => c.snappence >= 3 },
   // Offer cards: optional buttons the system posts on their own card. Switched off, the card isn't posted (nothing is spent).
   { key: "palisade", card: true, label: "Palisade", tip: "The card to strike a creature that moves into your Reach weapon's range.", when: c => c.tier("martial-reach-weapons") >= 1 },

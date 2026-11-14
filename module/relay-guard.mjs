@@ -27,6 +27,7 @@ const CHECKS = {
   changeEffect: p => p.data === null || p.data === undefined || onlyPaths(p.data, EFFECT_PATH),
   setActorFlag: p => word(p.key),
   setStatus: p => typeof p.status === "string" && !GM_ONLY.has(p.status) && typeof p.active === "boolean",
+  setInitiative: p => typeof p.actor === "string" && finite(p.initiative) && p.initiative >= 0,
   moveToken: p => finite(p.x) && finite(p.y),
   wearItem: p => finite(p.amount),
   shopBuy: p => typeof p.target === "string" && typeof p.buyer === "string" && typeof p.item === "string" && Number.isInteger(p.quantity) && p.quantity >= 1 && p.quantity <= 1000,

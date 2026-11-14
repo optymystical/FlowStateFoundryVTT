@@ -31,7 +31,7 @@ function contestTarget(actor, kind) {
  * Roll a Non Stat Check. `contest`: this is the other side of a contested check ({ message, result, kind, actorName, net, notes }). `glimpse`: a
  * Glimpse's Spot (Steady Nerves gives the hider Advantage). Returns { result, message } (null if cancelled).
  */
-export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = null, contest = null, net: extraNet = 0, notes: extraNotes = [], glimpse = false } = {}) {
+export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = null, contest = null, net: extraNet = 0, notes: extraNotes = [], glimpse = false, effect = null } = {}) {
   const K = CHECK_KINDS[kind] ?? CHECK_KINDS.perception;
   const title = label ?? K.label;
   const die = Math.max(1, sp(actor));
@@ -107,7 +107,11 @@ export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = n
     const won = actingWins(contest.result, result);
     // A Spot or Glimpse that wins finds the hider (Stealth Tier 0: Spotted): it no longer has a Stealth Value against the spotter.
     if (won && contest.kind === "perception" && contest.actorUuid && actor.statuses?.has?.("stealth")) await setActorFlag(actor, "spottedBy", [...new Set([...spottedBy(actor), contest.actorUuid])]);
-    outcome = `<div class="fs-outcome fs-${won ? "miss" : "hit"}">${won ? `${esc(contest.actorName)} wins` : `${esc(actor.name)} wins`} (${contest.result} against ${result}${contest.result === result ? ", a tie goes to the acting side" : ""})</div>`;
+    // Feint (Diversion T2): the loser's next dodge roll has Disadvantage.
+    const feinted = won && contest.effect === "feint";
+    if (feinted) await setActorFlag(actor, "feinted", true);
+    outcome = `<div class="fs-outcome fs-${won ? "miss" : "hit"}">${won ? `${esc(contest.actorName)} wins` : `${esc(actor.name)} wins`} (${contest.result} against ${result}${contest.result === result ? ", a tie goes to the acting side" : ""})</div>`
+      + (feinted ? `<div class="fs-result">Feinted: ${esc(actor.name)}'s next dodge roll has Disadvantage.</div>` : "");
   }
   const counterRow = contested ? `<div class="fs-exchange-buttons fs-check-row" data-role="defender" data-owner="${target.uuid}">
       <button type="button" class="fs-counter-check"><i class="fa-solid fa-dice-d20"></i> ${esc(target.name)}: roll ${esc(CHECK_KINDS[K.against].label)}</button></div>` : "";
@@ -119,7 +123,7 @@ export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = n
       <div class="fs-result">Result: <strong>${result}</strong>${contested ? ` against ${esc(target.name)}` : ""}</div>
       ${outcome}${notes ? `<div class="fs-notes">${notes}</div>` : ""}${counterRow}`,
     flags: { flowstate: {
-      check: { actor: actor.uuid, kind, label: title, result, die, target: contested ? target.uuid : null, attitude, against: contested ? K.against : null, inCombat: inActiveCombat(actor), glimpse },
+      check: { actor: actor.uuid, kind, label: title, result, die, target: contested ? target.uuid : null, attitude, against: contested ? K.against : null, inCombat: inActiveCombat(actor), glimpse, effect },
       ...(contest ? { checkOf: contest.message } : {})
     } }
   });
@@ -137,7 +141,7 @@ export async function counterCheck(message) {
   const social = SOCIAL.has(f.kind) ? socialCounter({ kind: f.kind, attitude: f.attitude, inCombat: f.inCombat, tiers: tiersOf(target), actorTiers: tiersOf(actor) }) : { net: 0, notes: [] };
   if (social.blocked) return post(target, { title: `${esc(target.name)} — ${esc(f.label)}`, body: `<div class="fs-notes">${esc(social.blocked)}</div>`, flags: { flowstate: { checkOf: message.id } } });
   return rollCheck(target, f.against, { label: `${CHECK_KINDS[f.against].label} against ${actor?.name ?? "them"}`, glimpse: !!f.glimpse,
-    contest: { message: message.id, result: f.result, kind: f.kind, actorUuid: f.actor, actorName: actor?.name ?? "The acting side", net: social.net, notes: social.notes } });
+    contest: { message: message.id, result: f.result, kind: f.kind, actorUuid: f.actor, effect: f.effect ?? null, actorName: actor?.name ?? "The acting side", net: social.net, notes: social.notes } });
 }
 
 const findReply = id => game.messages.find(m => m.getFlag("flowstate", "checkOf") === id) ?? null;

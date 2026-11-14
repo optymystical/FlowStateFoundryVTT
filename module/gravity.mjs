@@ -77,8 +77,10 @@ export async function turnStart(actor) {
   let html = `<div class="fs-result"><i class="fa-solid fa-arrow-down"></i> ${esc(actor.name)} falls ${feet} ft and lands after ${ground} ft.</div>`;
   if (slow || size <= 1 || untraveled <= 0) html += `<div class="fs-notes">${slow ? "A slow, safe landing" : size <= 1 ? "Size 1 creatures take no fall damage" : "No distance left over"}: no damage.</div>`;
   else {
-    const cap = await forceCap(actor), raw = forceDamage(untraveled), damage = Math.min(raw, cap);
-    html += `<div class="fs-notes">${untraveled} ft untraveled × 3 = ${raw}${damage < raw ? ` (capped at ${cap})` : ""}.</div>${damageOutcomeHTML(actor, damage, "physical", await damageOutcome(actor, damage, "physical"))}`;
+    // Breakfall (Acrobatics T1): Force damage from falling is Weakened.
+    const breakfall = (Number(actor.system?.trees?.["generic-acrobatics"]) || 0) >= 1;
+    const cap = await forceCap(actor), raw = forceDamage(untraveled), damage = Math.min(breakfall ? Math.floor(raw / 2) : raw, cap);
+    html += `<div class="fs-notes">${untraveled} ft untraveled × 3 = ${raw}${breakfall ? ", Weakened by Breakfall" : ""}${damage < (breakfall ? Math.floor(raw / 2) : raw) ? ` (capped at ${cap})` : ""}.</div>${damageOutcomeHTML(actor, damage, "physical", await damageOutcome(actor, damage, "physical"))}`;
     await requestDamage(actor, damage, "physical", 0, null, { silent: true });
     // Gravity is a downward Force: falling at least the creature's height this round knocks it prone too (Rules, Ch10).
     if (downwardProne(feet, size)) { await setStatus(actor, "prone", true); html += `<div class="fs-result"><strong>${esc(actor.name)} is knocked prone</strong> (a ${feet} ft fall, at least their ${heightFt(size)} ft height).</div>`; }

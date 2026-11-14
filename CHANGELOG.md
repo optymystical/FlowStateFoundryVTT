@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.87.0:** Generic Groups, part 3: Feint (the target's next dodge has Disadvantage), Exploit Opening, Stall and Siphon (offered when you hit), Grit (rerolls Constitution/Willpower/Build checks), Kip Up, Breakfall and Brace. Taunt's contest uses each side's attack die, ties to the taunter. The rules as implemented are in `dev/AUTOMATION.md` (Generic Groups).
+
 **0.86.0:** Generic Groups, part 2 (the rules and the abilities that change a fight):
 - **Non Stat Checks:** Stealth, Perception (Spot), Persuasion, Deception, counter checks and Athletics roll the plain attack die (d your total Skill Points), not a d100. Pick the GM's static target (Easy 5 … Legendary 60) or target one creature to contest it: the card has a button for its player to roll the other side, and the acting side wins ties. Persuade/Deceive ask the target's attitude (neutral counters with Advantage; hostile can't be persuaded). The Tier 3 rerolls (Focus, Still Breath, Rephrase, Double Down, Hold Firm) and Push Through are offered after the roll.
 - **Initiative** is the same die: Alacrity is asked first, ties are rerolled (Poised wins them), Delay is in the Action List, and a Surprised status gives no RP until your first turn (Collected keeps it). Tempo's Rebound, Quickening, Seize and Surge are in the Action List.

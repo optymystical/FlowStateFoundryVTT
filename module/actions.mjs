@@ -466,13 +466,27 @@ export async function rollStatCheck(actor, key) {
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, stat.die, noAdvantage(actor, net)));
   const cr = await mentalHook?.rollCharges?.({ actor, type: "other", roll, die: stat.die, count: 1, net, max: stat.die, label: `${STATS[key].label} Check` });
-  const floored = opts.applyMin && roll.total < stat.min;
-  const result = floored ? stat.min : roll.total;
-  const notes = [netLabel(net), ...res.notes, floored ? `raised to Stat Minimum` : ""].filter(Boolean).join(" · ");
+  // Grit (Endurance T3, Generic): a Constitution, Willpower or Build result under half the die can be rerolled for half your Skill Points in Energy;
+  // once, or again while it's still under half with Iron Body (T5).
+  let total = roll.total;
+  const extra = [], gritLines = [];
+  const grit = ["con", "will", "build"].includes(key) ? ab.treeTier(actor, "generic-endurance") : 0;
+  for (let n = 0; grit >= 3 && total < stat.die / 2 && (n === 0 || grit >= 5); n++) {
+    const cost = Math.floor((Number(actor.system.skillPoints) || 0) / 2);
+    if (energyTracked(actor) && actor.system.energy.value < cost) break;
+    const yes = await DialogV2().confirm({ window: { title: "Grit" }, rejectClose: false,
+      content: `<p>${esc(actor.name)}'s ${STATS[key].label} check is <strong>${total}</strong>, under half of d${stat.die}. Reroll for <strong>${cost} Energy</strong>? The new result stands.</p>` });
+    if (!yes || !(await spendEnergy(actor, cost, "Grit"))) break;
+    const r = await evaluate(poolFormula(1, stat.die, noAdvantage(actor, net)));
+    extra.push(r); gritLines.push(`Grit: rerolled ${total} → ${r.total}`); total = r.total;
+  }
+  const floored = opts.applyMin && total < stat.min;
+  const result = floored ? stat.min : total;
+  const notes = [netLabel(net), ...res.notes, ...gritLines, floored ? `raised to Stat Minimum` : ""].filter(Boolean).join(" · ");
 
   await post(actor, {
     title: `${STATS[key].label} Check (d${stat.die})`,
-    rolls: [roll, ...(cr?.rolls ?? [])],
+    rolls: [roll, ...(cr?.rolls ?? []), ...extra],
     body: `${await rollBlock(roll, "Roll")}${chargeNotesHTML(cr)}
       <div class="fs-result">Result: <strong>${result}</strong></div>
       ${notes ? `<div class="fs-notes">${notes}</div>` : ""}`
@@ -1491,6 +1505,11 @@ async function pileFolder() {
 }
 
 export const GM_ACTIONS = {
+  /** A creature's initiative in the running combat (Stall, Siphon: Delay, Generic). */
+  async setInitiative({ actor, initiative }) {
+    const c = game.combat?.combatants?.find(x => x.actor?.uuid === actor);
+    if (c) await c.update({ initiative: Math.max(0, Math.floor(initiative)) });
+  },
   async flightCheck({ target, reason }) {
     const actor = await fromUuid(target);
     if (actor) await flightForceHook?.(actor, reason);
@@ -2168,12 +2187,13 @@ export async function defend(message, index, choice) {
   const shiftAdv = findShifts(message.id, index).filter(f => f.mode === "adv").length;
   const stealthImmune = spellStealthImmune(o, target);
   const net = opts.net + (o.stealth === "half" && !stealthImmune ? -1 : 0) + (prone ? -1 : 0) + (t.exhausted ? -1 : 0) + (calmed(target) ? 1 : 0)
-    + limberNet(target) + shiftAdv + leadBlindNet(o) + boardNet + seeingRedNet(target) + (o.dodgeNet ?? 0) + pointBlankNet - (entry.snipe ?? 0) + disruptNet(target) + unfetteredNet(target) + dodgeDisNet(target) + charmNet(target, "dodge");
+    + limberNet(target) + shiftAdv + leadBlindNet(o) + boardNet + seeingRedNet(target) + (o.dodgeNet ?? 0) + pointBlankNet - (entry.snipe ?? 0) + disruptNet(target) + unfetteredNet(target) + dodgeDisNet(target) + charmNet(target, "dodge") + feintNet(target);
   const reasons = [netLabel(net), o.stealth === "half" && !stealthImmune ? "attacker in half stealth" : "", prone ? "prone" : "", t.exhausted ? "exhausted" : "",
     calmed(target) ? "Calm Down" : "", limberNet(target) ? "Limber" : "", shiftAdv ? "Shift" : "", o.leadBlind ? "Lead Blindness" : "",
     boardNet ? "Sword and Board" : "", seeingRedNet(target) ? "Seeing Red" : "", o.dodgeNet ? "Shank" : "", pointBlankNet ? "Point Blank" : "", entry.snipe ? `Snipe Hunt (−${entry.snipe})` : "",
-    disruptNet(target) ? "Disrupted" : "", unfetteredNet(target) ? "Unfettered" : "", dodgeDisNet(target) ? "spell: dodge Disadvantage" : "", charmNet(target, "dodge") ? "Charm/Hex: dodge Disadvantage" : ""].filter(Boolean);
+    disruptNet(target) ? "Disrupted" : "", feintNet(target) ? "Feinted" : "", unfetteredNet(target) ? "Unfettered" : "", dodgeDisNet(target) ? "spell: dodge Disadvantage" : "", charmNet(target, "dodge") ? "Charm/Hex: dodge Disadvantage" : ""].filter(Boolean);
   await consumeDisrupt(target);
+  if (feintNet(target)) await setActorFlag(target, "feinted", null);
   await consumeLimber(target);
   // Mental: a Waste charge shrinks this dodge (and may give it Disadvantage), Burden gives Disadvantage; the charge is used up.
   const waste = mentalHook?.dodgeWaste(target) ?? null;
@@ -3612,11 +3632,15 @@ export async function taunt(actor, { aggro = false } = {}) {
   await post(actor, { title: `${esc(actor.name)} — ${aggro ? "Pull Aggro" : "Taunt"}`, rolls, body });
 }
 
-/** One Taunt contest: the taunter's d100 (with `dis` stacking Disadvantage) against the target's d100 counter roll. */
+/**
+ * One Taunt contest: the taunter's Persuasion or Deception (with `dis` stacking Disadvantage) against the target's counter check, each a Non Stat Check
+ * on its own plain attack die (total Skill Points); the acting side (the taunter) wins ties.
+ */
 async function tauntContest(actor, target, check, net = 0, dis = 0) {
-  const mine = await evaluate(poolFormula(1, 100, net - dis + exhaustionNet(actor) + seeingRedNet(actor)));
-  const theirs = await evaluate(poolFormula(1, 100, exhaustionNet(target) + seeingRedNet(target)));
-  const won = mine.total > theirs.total;
+  const die = a => Math.max(1, Number(a.system.skillPoints) || 1);
+  const mine = await evaluate(poolFormula(1, die(actor), net - dis + exhaustionNet(actor) + seeingRedNet(actor)));
+  const theirs = await evaluate(poolFormula(1, die(target), exhaustionNet(target) + seeingRedNet(target)));
+  const won = mine.total >= theirs.total;
   if (won) {
     await setActorFlag(target, "tauntedBy", { by: actor.uuid, name: actor.name, check, repeats: dis });
     await setStatus(target, "taunted", true);
@@ -4016,11 +4040,14 @@ export async function forceCap(actor, type = "physical") {
   return lo;
 }
 
+/** Brace (Fortitude T4): Force applied to you is halved (the user may choose not to; it's taken whenever it applies). */
+export const braced = (target, force) => (ab.treeTier(target, "generic-fortitude") >= 4 ? Math.floor(force / 2) : force);
+
 /**
  * Feet a Force pushes this creature. Crunch Time (Strength T3) matches the Force against current HP instead of max HP.
  */
 function forceFeet(force, target, crunch = false) {
-  force = Math.max(0, force - musgraviteNegate(target));
+  force = braced(target, Math.max(0, force - musgraviteNegate(target)));
   const hp = crunch ? Math.max(0, target.system.hp.value) : target.system.hp.max;
   return resolveForce(force, { lift: target.system.lift, maxHp: hp });
 }
@@ -4091,9 +4118,11 @@ export const noAdvantage = (actor, net) => (net > 0 && spellEffects(actor, "noAd
 export const seaMove = actor => (inActiveCombat(actor) ? mentalHook?.voluntaryMove?.(actor) : null);
 export const afflictAct = (message, i) => aff?.act(message, i);
 const dodgeDisNet = actor => (spellEffects(actor, "dodgeDis").length ? -1 : 0);
+/** Feint (Diversion T2): the next dodge roll before the feinter's next turn has Disadvantage. */
+const feintNet = actor => (actor?.getFlag?.("flowstate", "feinted") ? -1 : 0);
 /** The Advantage/Disadvantage this creature's dodge rolls are known to carry (for Foresight). */
 export const dodgeNetKnown = actor => exhaustionNet(actor) + (actor.statuses?.has("prone") ? -1 : 0) + seeingRedNet(actor) + disruptNet(actor)
-  + dodgeDisNet(actor) + charmNet(actor, "dodge") + unfetteredNet(actor) + limberNet(actor) + (calmed(actor) ? 1 : 0);
+  + dodgeDisNet(actor) + feintNet(actor) + charmNet(actor, "dodge") + unfetteredNet(actor) + limberNet(actor) + (calmed(actor) ? 1 : 0);
 
 /** Weaving (Magic Theory T3): casting.mjs registers this so the weapon attack dialog can offer a spell. */
 let weaveHook = null;
@@ -5350,6 +5379,56 @@ function autoDamageOn() {
 
 /* ---- Step 3: attacker rolls damage (auto-applied) ---- */
 
+/** Has this creature yet to take its turn this round? */
+function yetToAct(actor) {
+  const c = game.combat?.started ? game.combat.combatants.find(x => x.actor?.uuid === actor.uuid) : null;
+  return !!c && game.combat.turns.findIndex(t => t.id === c.id) > game.combat.turn;
+}
+const combatantFor = actor => game.combat?.combatants?.find(x => x.actor?.uuid === actor.uuid) ?? null;
+async function askAttacker(attacker, spec) {
+  if (mentalHook?.askFor) return mentalHook.askFor(attacker, spec);
+  return attacker.isOwner ? DialogV2().confirm({ window: { title: spec.title }, rejectClose: false, content: spec.html }) : null;
+}
+/**
+ * On a hit, before the damage: Exploit Opening (Punish T1: once per turn, a target that hasn't taken its turn this round, one Strengthened stack for half
+ * your Skill Points in Energy), then Stall (Delay T1: once per turn, again on a crit with Staggering Blow, T3: its initiative drops by a quarter of your
+ * Skill Points for the rest of combat) and Siphon (Delay T2: yours rises by as much, never a second turn this round). Returns { stacks }.
+ */
+async function punishOnHit(attacker, target, result) {
+  const out = { stacks: 0 };
+  if (!inActiveCombat(attacker) || !result?.hit || notCreature(target)) return out;
+  const sp = Number(attacker.system.skillPoints) || 0, half = Math.floor(sp / 2), key = turnKey();
+  const energy = () => attacker.system.energy?.value ?? 0;
+  if (ab.treeTier(attacker, "generic-punish") >= 1 && yetToAct(target) && attacker.getFlag?.("flowstate", "exploitTurn") !== key && energy() >= half) {
+    const yes = await askAttacker(attacker, { title: "Exploit Opening", react: "exploitOpening", ok: "Use it", html: `<p>${esc(target.name)} hasn't taken their turn yet this round. Give this hit's damage <strong>one stack of Strengthened</strong> for <strong>${half} Energy</strong>?</p>` });
+    if (yes && (await spendEnergy(attacker, half, "Exploit Opening"))) { await setActorFlag(attacker, "exploitTurn", key); out.stacks += 1; }
+  }
+  const delay = ab.treeTier(attacker, "generic-delay"), tc = combatantFor(target);
+  const fresh = attacker.getFlag?.("flowstate", "stallTurn") !== key || (result.crit && delay >= 3);
+  if (delay >= 1 && tc && Number(tc.initiative) > 0 && fresh && energy() >= half) {
+    const drop = Math.min(Number(tc.initiative), Math.floor(sp / 4));
+    const siphon = delay >= 2 && energy() >= 2 * half;
+    const ans = await askAttacker(attacker, { title: "Stall", react: "stall", ok: "Stall", html: `<p>Lower ${esc(target.name)}'s initiative by <strong>${drop}</strong> (to ${Number(tc.initiative) - drop}) for the rest of combat, for <strong>${half} Energy</strong>?</p>
+      ${siphon ? `<label><input type="checkbox" name="siphon"> Siphon: raise your own by as much (${half} more Energy)</label>` : ""}` });
+    if (ans && (await spendEnergy(attacker, half, "Stall"))) {
+      await setActorFlag(attacker, "stallTurn", key);
+      await requestGM("setInitiative", { actor: target.uuid, initiative: Number(tc.initiative) - drop });
+      let line = `Stall: ${esc(target.name)}'s initiative drops by ${drop} to <strong>${Number(tc.initiative) - drop}</strong>.`;
+      const mine = combatantFor(attacker);
+      if (siphon && ans.siphon && mine && (await spendEnergy(attacker, half, "Siphon"))) {
+        // Never a second turn this round (and none skipped): before your turn, the raise stops at the creature acting now.
+        const acted = game.combat.turns.findIndex(t => t.id === mine.id) <= game.combat.turn;
+        const now = Number(game.combat.combatant?.initiative);
+        const top = acted || !Number.isFinite(now) ? Number(mine.initiative) + drop : Math.min(Number(mine.initiative) + drop, now);
+        await requestGM("setInitiative", { actor: attacker.uuid, initiative: top });
+        line += ` Siphon: ${esc(attacker.name)}'s rises to <strong>${top}</strong>.`;
+      }
+      await post(attacker, { title: `${esc(attacker.name)} — Stall`, body: `<div class="fs-result">${line}</div>` });
+    }
+  }
+  return out;
+}
+
 /** Net Strengthened/Weakened against one target. */
 function targetStacks(attacker, o, target, result, extra = 0, ctx = {}) {
   const d = attacker.system.derived;
@@ -5431,7 +5510,9 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   if (!base) return;
   // Cook (Heat T5): extra d4s for the heat damage you've already dealt them this turn.
   if (spellPlan?.extraDice) { const r = await evaluate(`${spellPlan.extraDice.n}d${spellPlan.extraDice.sides}`); base.rolls.push(r); base.totals.push(r.total); }
-  let { stacks, parts, type, arcaneWeak } = targetStacks(attacker, o, target, defense.result, (opts.extra ?? 0) + (spellPlan?.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0), { ...ctx, deferArcane: true });
+  // Punish and Delay (Generic): Exploit Opening's Strengthened stack, and Stall / Siphon on the hit.
+  const punish = await punishOnHit(attacker, target, defense.result);
+  let { stacks, parts, type, arcaneWeak } = targetStacks(attacker, o, target, defense.result, (opts.extra ?? 0) + (spellPlan?.extraStacks ?? 0) + (mentalHook?.damageStacks?.(attacker) ?? 0) + punish.stacks, { ...ctx, deferArcane: true });
   // Discharge (Radiation T5): trade two Strengthened stacks for Advantage on your next attack before your next turn.
   let dischargeHTML = "";
   if (o.spell?.mods?.discharge && stacks >= 2 && (attacker.isOwner || mentalHook?.askFor)) {
@@ -6350,7 +6431,10 @@ export async function setPosture(actor, posture) {
   } else if (posture === "stand") {
     if (!prone && !crouch) return;
     if (prone && await mentalHook?.standUp?.(actor)) return;          // Drowning (Sea T5, Enhanced): getting up is an attack roll against the drowner
-    if (prone && !(await spendAP(actor, 1, "standing up"))) return;
+    // Kip Up (Acrobatics T2): the first time you stand from prone each turn costs no AP.
+    const kip = prone && inCombat && ab.treeTier(actor, "generic-acrobatics") >= 2 && actor.getFlag?.("flowstate", "kipUp") !== turnKey();
+    if (kip) await setActorFlag(actor, "kipUp", turnKey());
+    else if (prone && !(await spendAP(actor, 1, "standing up"))) return;
     if (prone) await actor.toggleStatusEffect("prone", { active: false });
     if (crouch) await actor.toggleStatusEffect("crouch", { active: false });
   }

@@ -39,7 +39,7 @@ const entryOf = (treeId, name) => TREES.find(t => t.id === treeId)?.tiers.flatMa
 /** Abilities with their own row (an op below), or that are automatic (the Tier 3 rerolls, Alacrity, passives with a cost line). */
 const AUTOMATED = new Set(["Spot", "Glimpse", "Focus", "Hyperfocus", "Vigilance", "Stealthing", "Fade", "Still Breath", "Lift", "Pick", "Alacrity", "Delaying",
   "Rebound", "Quickening", "Seize", "Surge", "Rephrase", "Double Down", "Cover Story", "Hold Firm", "Grit", "Push Through", "Scramble", "Adrenaline Rush",
-  "Overexert", "Rallying Cry", "First Aid", "Patch Up", "Fear", "Face Your Fear"]);
+  "Overexert", "Rallying Cry", "First Aid", "Patch Up", "Fear", "Face Your Fear", "Feint"]);
 
 /** The AP or RP an entry's text says to spend ("spend 2 AP", "This takes 2 AP"); RP "equal to an attack's AP cost" isn't a number. */
 const POINTS_RE = /\b(?:spend|takes?) (?:up to )?(\d+) (AP|RP)\b/i;
@@ -78,6 +78,7 @@ export function actionRows(actor) {
   if (inCombat && tier(actor, "generic-mobility") >= 3 && myTurn(actor) && !actor.getFlag?.("flowstate", "scramble")) rows.push({ label: "Scramble", detail: "This turn, terrain doesn't raise your movement cost", cost: `${halfSP(sp(actor))} Energy`, action: "generic", op: "scramble", icon: "fa-solid fa-person-hiking" });
   if (inCombat && tier(actor, "generic-stamina") >= 3 && myTurn(actor) && actor.getFlag?.("flowstate", "adrenaline") !== game.combat?.id) rows.push({ label: "Adrenaline Rush", detail: `Regain ${2 * sp(actor)} Energy (once per combat)`, cost: "Free", action: "generic", op: "adrenaline", icon: "fa-solid fa-bolt-lightning" });
   if (inCombat && tier(actor, "generic-stamina") >= 5 && myTurn(actor) && !actor.getFlag?.("flowstate", "overexertUsed")) rows.push({ label: "Overexert", detail: "This turn, Energy can go down to minus its maximum (once per rest)", cost: "Free", action: "generic", op: "overexert", icon: "fa-solid fa-fire-flame-curved" });
+  if (inCombat && tier(actor, "generic-diversion") >= 2) rows.push({ label: "Feint", detail: "Deception against the targeted creature's counter check: its next dodge has Disadvantage (once per turn)", cost: `${halfSP(sp(actor))} Energy`, action: "generic", op: "feint", icon: "fa-solid fa-person-walking-arrow-loop-left" });
   if (inCombat && tier(actor, "generic-command") >= 2) rows.push({ label: "Rallying Cry", detail: "Allies within 100 ft end their Fear (once per round)", cost: `2 AP · ${halfSP(sp(actor))} Energy`, action: "generic", op: "rallyingCry", icon: "fa-solid fa-bullhorn" });
   if (tier(actor, "generic-recovery") >= 1 && !inCombat) rows.push({ label: "First Aid", detail: "Tend yourself or the targeted creature (10 minutes; once between rests)", cost: "10 minutes", action: "generic", op: "firstAid", icon: "fa-solid fa-kit-medical" });
   if (inCombat && tier(actor, "generic-recovery") >= 3) rows.push({ label: "Patch Up", detail: "Heal a creature in melee range (health lost since the start of your last turn)", cost: `3 AP · ${sp(actor)} Energy`, action: "generic", op: "patchUp", icon: "fa-solid fa-bandage" });
@@ -154,6 +155,15 @@ const OPS = {
   /** Pick (Infiltration T1): Stealth against the GM's static target, 2 AP (Soft Touch, T3: 1 AP, and no noise on a failure). */
   pick: actor => checkRoll(actor, "stealth", { label: "Pick", apCost: tier(actor, "generic-infiltration") >= 3 ? 1 : 2,
     notes: [tier(actor, "generic-infiltration") >= 3 ? "Soft Touch: a failure makes no noise" : "A failure makes a medium noise"] }),
+
+  /** Feint (Diversion T2): once per turn, a deception check against the target's counter check; won, its next dodge roll has Disadvantage. */
+  async feint(actor) {
+    const key = turnKey();
+    if (key && actor.getFlag?.("flowstate", "feintTurn") === key) return ui.notifications.warn(`${actor.name} has already Feinted this turn.`);
+    if (!(await pay(actor, { energy: halfSP(sp(actor)) }, "Feint"))) return;
+    if (key) await setActorFlag(actor, "feintTurn", key);
+    return checkRoll(actor, "deception", { label: "Feint", effect: "feint" });
+  },
 
   /** Vigilance (Perception T2): not surprised after all; Alert (T4) does the same for your targeted creatures. */
   async vigilance(actor) {

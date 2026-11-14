@@ -152,7 +152,8 @@ export async function heal(target, caster, n) {
 
 // What comes off the Force before it turns into feet: `normal` Force loses half the maximum HP (Gust, Momentum, the Fortune Table: the user's ruling);
 // Herald (`quarterCurrent`) loses a quarter of the current HP instead (not Temp HP); with neither, nothing (it goes straight into feet).
-const forceFeet = (force, target, ignoreLift, { quarterCurrent = false, normal = false } = {}) => resolveForce(force, { lift: ignoreLift ? 0 : target.system.lift ?? 0,
+// Brace (Fortitude T4, Generic): Force applied to the target is halved first.
+const forceFeet = (force, target, ignoreLift, { quarterCurrent = false, normal = false } = {}) => resolveForce(tierOf(target.system?.trees, "generic-fortitude") >= 4 ? Math.floor(force / 2) : force, { lift: ignoreLift ? 0 : target.system.lift ?? 0,
   maxHp: quarterCurrent ? Math.floor(Math.max(0, target.system.hp?.value ?? 0) / 2) : normal ? Math.max(0, target.system.hp?.max ?? 0) : 0 });
 
 /** Roll `n`d`sides` Force with the Manifest's Strengthened/Weakened and turn it into feet pushed (see `forceFeet` for what comes off it first). */

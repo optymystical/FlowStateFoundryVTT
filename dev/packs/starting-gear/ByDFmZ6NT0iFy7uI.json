@@ -1,0 +1,35 @@
+{
+  "_id": "ByDFmZ6NT0iFy7uI",
+  "_key": "!items!ByDFmZ6NT0iFy7uI",
+  "name": "Longshot Ammunition",
+  "type": "gear",
+  "img": "icons/weapons/ammunition/arrows-bodkin-yellow-red.webp",
+  "system": {
+    "ammoType": "longshot",
+    "body": 0,
+    "density": "soft",
+    "description": "",
+    "base": "ammo.longshot",
+    "overrides": [],
+    "quantity": 20
+  },
+  "folder": "07hsdJdAsttpuOMF",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "ammo.longshot"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "hghymeoWi9SOd9Ws",
+  "_key": "!items!hghymeoWi9SOd9Ws",
+  "name": "Heavy Defender (Copper)",
+  "type": "weapon",
+  "img": "icons/equipment/shield/heater-steel-gray.webp",
+  "system": {
+    "weaponType": "defender",
+    "weight": "heavy",
+    "material": "copper",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.defender.heavy.copper",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.defender.heavy.copper"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

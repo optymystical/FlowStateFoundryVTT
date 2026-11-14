@@ -1,0 +1,33 @@
+{
+  "_id": "ebaYEA8t6rGoWY8X",
+  "_key": "!items!ebaYEA8t6rGoWY8X",
+  "name": "Chime (Foci)",
+  "type": "foci",
+  "img": "icons/weapons/wands/wand-gem-purple.webp",
+  "system": {
+    "fociType": "chime",
+    "description": "",
+    "base": "foci.chime",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "bPEvRRQAyF2s18X5",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "foci.chime"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

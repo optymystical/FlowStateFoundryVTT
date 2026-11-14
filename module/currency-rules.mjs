@@ -2,6 +2,7 @@
  * Currencies (pure, no Foundry globals): the world's list of currencies and what a character carries of each.
  *  - A currency has a name, a picture, and optionally one other currency it automatically merges into: once a character has `mergeAmount` of it,
  *    each batch of that many becomes one of the other (100 copper → 1 silver). Merges chain (silver → gold).
+ *  - A currency has a starting amount (`start`): what a character made in the New Character wizard carries of it.
  *  - Currencies are positional: they are `c0`, `c1`, ... in the order the GM set them up, so renaming one never loses what characters hold.
  */
 
@@ -9,7 +10,7 @@ export const MAX_CURRENCIES = 12;
 export const DEFAULT_IMG = "icons/commodities/currency/coin-embossed-crown-gold.webp";
 
 /** The currency list a new world starts with: one currency. */
-export const defaultCurrencies = () => [{ id: "c0", name: "Currency", img: DEFAULT_IMG, mergeInto: "", mergeAmount: 0 }];
+export const defaultCurrencies = () => [{ id: "c0", name: "Currency", img: DEFAULT_IMG, mergeInto: "", mergeAmount: 0, start: 0 }];
 
 /**
  * Make any stored list safe: 1 to MAX_CURRENCIES entries with positional ids, names, and merge rules that point at another currency and can't
@@ -20,7 +21,8 @@ export function sanitizeCurrencies(raw, count = null) {
   const n = Math.max(1, Math.min(MAX_CURRENCIES, Math.floor(Number(count ?? list.length)) || 1));
   const out = Array.from({ length: n }, (_, i) => {
     const c = list[i] ?? {};
-    return { id: `c${i}`, name: String(c.name ?? "").trim() || `Currency ${i + 1}`, img: String(c.img ?? "") || DEFAULT_IMG, mergeInto: String(c.mergeInto ?? ""), mergeAmount: Math.floor(Number(c.mergeAmount)) || 0 };
+    return { id: `c${i}`, name: String(c.name ?? "").trim() || `Currency ${i + 1}`, img: String(c.img ?? "") || DEFAULT_IMG, mergeInto: String(c.mergeInto ?? ""), mergeAmount: Math.floor(Number(c.mergeAmount)) || 0,
+      start: Math.max(0, Math.floor(Number(c.start)) || 0) };
   });
   const ids = new Set(out.map(c => c.id));
   for (const c of out) {
@@ -72,4 +74,11 @@ export function currencyRows(defs, amounts) {
     const into = c.mergeInto ? defs.find(x => x.id === c.mergeInto) : null;
     return { ...c, amount: clean[c.id], note: into ? `${c.mergeAmount} = 1 ${into.name}` : "" };
   });
+}
+
+/** What a new character starts with: each currency's starting amount (only the ones above 0), merged like any other amounts. */
+export function startingPurse(defs) {
+  const raw = Object.fromEntries(defs.filter(c => c.start > 0).map(c => [c.id, c.start]));
+  const all = normalizeCurrency(defs, raw);
+  return Object.fromEntries(Object.entries(all).filter(([, n]) => n > 0));
 }

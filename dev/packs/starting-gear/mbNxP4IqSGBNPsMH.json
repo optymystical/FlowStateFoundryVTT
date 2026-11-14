@@ -1,0 +1,37 @@
+{
+  "_id": "mbNxP4IqSGBNPsMH",
+  "_key": "!items!mbNxP4IqSGBNPsMH",
+  "name": "Light Balanced (Bone)",
+  "type": "weapon",
+  "img": "icons/weapons/staves/staff-animal-bird.webp",
+  "system": {
+    "weaponType": "balanced",
+    "weight": "light",
+    "material": "bone",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.balanced.light.bone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.balanced.light.bone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

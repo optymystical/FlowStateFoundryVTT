@@ -1,0 +1,34 @@
+{
+  "_id": "Gt2YcTyM6zT36UGg",
+  "_key": "!items!Gt2YcTyM6zT36UGg",
+  "name": "Medium Armor (Hide)",
+  "type": "armor",
+  "img": "icons/equipment/chest/breastplate-collared-leather-brown.webp",
+  "system": {
+    "weight": "medium",
+    "material": "hide",
+    "description": "",
+    "base": "armor.medium.hide",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "F6wv2lpVVynnbn2O",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "armor.medium.hide"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

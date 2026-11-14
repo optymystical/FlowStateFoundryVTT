@@ -1,0 +1,33 @@
+{
+  "_id": "IM9a0k6QbNdYSHGm",
+  "_key": "!items!IM9a0k6QbNdYSHGm",
+  "name": "Veil (Icon)",
+  "type": "icon",
+  "img": "icons/magic/holy/yin-yang-balance-symbol.webp",
+  "system": {
+    "form": "veil",
+    "description": "",
+    "base": "icon.veil",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "hvVRmCIbfvMkR1rE",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "icon.veil"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

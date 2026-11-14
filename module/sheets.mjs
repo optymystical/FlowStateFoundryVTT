@@ -3,6 +3,8 @@ import { getCurrencies } from "./currency.mjs";
 import { currencyRows } from "./currency-rules.mjs";
 import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS, OBJECT_DENSITY } from "./rules.mjs";
 import * as generic from "./generic.mjs";
+import * as consumables from "./consumables.mjs";
+import { TOKEN, TOKEN_CHECKS, tokenUses } from "./consumables-rules.mjs";
 import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
 } from "./martial.mjs";
@@ -482,6 +484,8 @@ function actionGroups(actor, weapons, stats) {
 
   // Generic Groups: Stealthing, Delay, Glimpse... and every other active Generic ability (generic.mjs).
   const genericRows = generic.actionRows(actor);
+  // Potions and Festival Tokens (consumables.mjs).
+  const itemRows = consumables.actionRows(actor);
 
   const checks = [
     { label: "Attack roll", detail: "Just the attack die", cost: `d${d.attackDie}`, action: "attack", icon: "fa-solid fa-hand-back-fist" },
@@ -808,6 +812,7 @@ function actionGroups(actor, weapons, stats) {
     ...(swiftRows.length ? [{ key: "act-swift", name: "Swift Weapons", actions: swiftRows }] : []),
     ...(martial.length ? [{ key: "act-martial", name: "Martial Theory", actions: martial }] : []),
     ...(genericRows.length ? [{ key: "act-generic", name: "Generic", actions: genericRows }] : []),
+    ...(itemRows.length ? [{ key: "act-items", name: "Items", actions: itemRows }] : []),
     { key: "act-checks", name: "Checks", actions: checks }
   ];
 }
@@ -973,6 +978,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       lowerTier: FlowStateActorSheet.onLowerTier,
       martial: FlowStateActorSheet.onMartial,
       generic: function (event, target) { return generic.run(this.document, target.dataset.op); },
+      consumable: function (event, target) { return consumables.run(this.document, target.dataset.op, target.dataset.itemId ?? target.closest?.("[data-item-id]")?.dataset?.itemId); },
       endEffect: FlowStateActorSheet.onEndEffect
     }
   };
@@ -1390,6 +1396,9 @@ export class FlowStateItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
       lockedNote: this.isEditable && !identityOpen ? "Only the GM can modify this item (you can rename it and change its picture)." : "",
       isGear: this.document.type === "gear",
       ...itemSizeContext(this.document),
+      // Consumables (consumables-rules.mjs): a Festival Token's roll and uses; a potion's use line.
+      token: this.document.system?.use === "token" ? { checks: TOKEN_CHECKS, uses: tokenUses(this.document.system), max: TOKEN.uses } : null,
+      potion: this.document.system?.use === "potion" ? "Drink or give it from the Action List (Items): 1 AP in combat, one potion per rest." : "",
       cat: (() => {
         const sys = this.document.system, c = sys.catalog;
         if (!c) return null;

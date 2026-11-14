@@ -1,0 +1,33 @@
+{
+  "_id": "mq2mD8b4mc1nImce",
+  "_key": "!items!mq2mD8b4mc1nImce",
+  "name": "Scepter (Foci)",
+  "type": "foci",
+  "img": "icons/weapons/wands/wand-gem-purple.webp",
+  "system": {
+    "fociType": "scepter",
+    "description": "",
+    "base": "foci.scepter",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "bPEvRRQAyF2s18X5",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "foci.scepter"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

@@ -6,7 +6,7 @@
  */
 
 /** Fields the system writes on a creature it doesn't own: health, the pools, conditions, and the system's own flags. */
-const ACTOR_PATH = /^(system\.(hp\.(value|lost)|ap\.value|rp\.value|energy\.value|conditions\.[A-Za-z]+)|flags\.flowstate\.[\w.]+)$/;
+const ACTOR_PATH = /^(system\.(hp\.(value|lost)|ap\.value|rp\.value|energy\.(value|bonus)|conditions\.[A-Za-z]+)|flags\.flowstate\.[\w.]+)$/;
 /** ...on an item: Durability, a Carapace, where a Ward is placed, conditions on it, and the system's own flags. */
 const ITEM_PATH = /^(system\.(wear|carapace|placedOn|conditions\.[A-Za-z]+)|flags\.flowstate\.[\w.]+)$/;
 /** ...on an Active Effect the system made: its numbers, its name and its description. */

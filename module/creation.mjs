@@ -221,7 +221,8 @@ export function buildActorData(choice, rules, userId) {
       statCarry: rules.statPoints - 3 * skillPointsFor(rules.statPoints),          // so 3 × Skill Points + carry is the full total
       creation: false,
       size: 3,
-      trees: cleanTrees(choice.trees)
+      trees: cleanTrees(choice.trees),
+      currency: { ...(rules.currency ?? {}) }                       // the starting purse (each currency's starting amount)
     },
     items: startingItems(choice.items ?? [], rules),
     flags: { flowstate: { createdBy: userId } }

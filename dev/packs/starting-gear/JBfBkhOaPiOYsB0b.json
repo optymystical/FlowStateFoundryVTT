@@ -1,0 +1,37 @@
+{
+  "_id": "JBfBkhOaPiOYsB0b",
+  "_key": "!items!JBfBkhOaPiOYsB0b",
+  "name": "Heavy Striker (Stone)",
+  "type": "weapon",
+  "img": "icons/weapons/hammers/hammer-war-spiked.webp",
+  "system": {
+    "weaponType": "striker",
+    "weight": "heavy",
+    "material": "stone",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.striker.heavy.stone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.striker.heavy.stone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

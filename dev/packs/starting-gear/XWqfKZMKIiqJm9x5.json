@@ -1,0 +1,37 @@
+{
+  "_id": "XWqfKZMKIiqJm9x5",
+  "_key": "!items!XWqfKZMKIiqJm9x5",
+  "name": "Light Longshot (Bone)",
+  "type": "weapon",
+  "img": "icons/weapons/bows/longbow-recurve.webp",
+  "system": {
+    "weaponType": "longshot",
+    "weight": "light",
+    "material": "bone",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.longshot.light.bone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.longshot.light.bone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

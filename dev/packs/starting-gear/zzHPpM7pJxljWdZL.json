@@ -1,0 +1,32 @@
+{
+  "_id": "zzHPpM7pJxljWdZL",
+  "_key": "!items!zzHPpM7pJxljWdZL",
+  "name": "Obsidian",
+  "type": "affix",
+  "img": "icons/commodities/gems/gem-faceted-diamond-blue.webp",
+  "system": {
+    "affix": "obsidian",
+    "description": "",
+    "base": "affix.obsidian",
+    "overrides": []
+  },
+  "folder": "fTTE4vwTgNmD4ba3",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "affix.obsidian"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

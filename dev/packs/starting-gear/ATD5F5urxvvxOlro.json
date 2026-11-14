@@ -1,0 +1,37 @@
+{
+  "_id": "ATD5F5urxvvxOlro",
+  "_key": "!items!ATD5F5urxvvxOlro",
+  "name": "Light Balanced (Hardwood)",
+  "type": "weapon",
+  "img": "icons/weapons/staves/staff-animal-bird.webp",
+  "system": {
+    "weaponType": "balanced",
+    "weight": "light",
+    "material": "hardwood",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.balanced.light.hardwood",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.balanced.light.hardwood"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

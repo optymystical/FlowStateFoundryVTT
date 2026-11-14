@@ -1,0 +1,32 @@
+{
+  "_id": "6QWnYXqOBc40iEJz",
+  "_key": "!items!6QWnYXqOBc40iEJz",
+  "name": "Agate",
+  "type": "affix",
+  "img": "icons/commodities/gems/gem-faceted-diamond-blue.webp",
+  "system": {
+    "affix": "agate",
+    "description": "",
+    "base": "affix.agate",
+    "overrides": []
+  },
+  "folder": "fTTE4vwTgNmD4ba3",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "affix.agate"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

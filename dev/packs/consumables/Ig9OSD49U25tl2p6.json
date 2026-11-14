@@ -1,0 +1,37 @@
+{
+  "_id": "Ig9OSD49U25tl2p6",
+  "_key": "!items!Ig9OSD49U25tl2p6",
+  "name": "Lesser Energy Potion",
+  "type": "gear",
+  "img": "icons/consumables/potions/potion-tube-corked-blue.webp",
+  "system": {
+    "ammoType": "",
+    "body": 0,
+    "density": "soft",
+    "use": "potion",
+    "potion": "energyLesser",
+    "description": "<p>Gives half your maximum Energy as bonus Energy, which can take you past your maximum. It lasts 1 minute (10 rounds) or until used, and is spent before your own Energy.</p><p>1 AP to drink, or to give to a creature within your reach. One potion (Health or Energy) per rest.</p>",
+    "base": "potion.energyLesser",
+    "overrides": [],
+    "quantity": 1
+  },
+  "folder": null,
+  "sort": 300,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "potion.energyLesser"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "_id": "fTTE4vwTgNmD4ba3",
+  "_key": "!folders!fTTE4vwTgNmD4ba3",
+  "name": "Affixes",
+  "type": "Item",
+  "folder": null,
+  "sorting": "a",
+  "sort": 500,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

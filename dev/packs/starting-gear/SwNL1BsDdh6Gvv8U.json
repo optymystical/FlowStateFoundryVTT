@@ -1,0 +1,33 @@
+{
+  "_id": "SwNL1BsDdh6Gvv8U",
+  "_key": "!items!SwNL1BsDdh6Gvv8U",
+  "name": "Carapace (Shroud)",
+  "type": "shroud",
+  "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
+  "system": {
+    "shroudType": "carapace",
+    "description": "",
+    "base": "shroud.carapace",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "xAOGv5wfmSDcB6O8",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "shroud.carapace"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

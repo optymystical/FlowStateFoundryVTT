@@ -1,0 +1,37 @@
+{
+  "_id": "31Utr6MwoK2aMWmF",
+  "_key": "!items!31Utr6MwoK2aMWmF",
+  "name": "Heavy Curved (Iron)",
+  "type": "weapon",
+  "img": "icons/weapons/swords/scimitar-guard.webp",
+  "system": {
+    "weaponType": "curved",
+    "weight": "heavy",
+    "material": "iron",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.curved.heavy.iron",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.curved.heavy.iron"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "_id": "fPrnlchrLDKrufHa",
+  "_key": "!items!fPrnlchrLDKrufHa",
+  "name": "Hematite",
+  "type": "affix",
+  "img": "icons/commodities/gems/gem-faceted-diamond-blue.webp",
+  "system": {
+    "affix": "hematite",
+    "description": "",
+    "base": "affix.hematite",
+    "overrides": []
+  },
+  "folder": "fTTE4vwTgNmD4ba3",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "affix.hematite"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

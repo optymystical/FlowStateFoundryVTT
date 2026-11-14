@@ -1,0 +1,37 @@
+{
+  "_id": "ZJLGnDgLDG2eBJjy",
+  "_key": "!items!ZJLGnDgLDG2eBJjy",
+  "name": "Heavy Striker (Copper)",
+  "type": "weapon",
+  "img": "icons/weapons/hammers/hammer-war-spiked.webp",
+  "system": {
+    "weaponType": "striker",
+    "weight": "heavy",
+    "material": "copper",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.striker.heavy.copper",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.striker.heavy.copper"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

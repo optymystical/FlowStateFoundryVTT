@@ -55,7 +55,7 @@ function makeCurrencyConfig() {
       const count = Number(form.querySelector("[name=count]")?.value) || this.draft?.length || 1;
       this.draft = sanitizeCurrencies(Array.from({ length: Math.max(1, Math.min(MAX_CURRENCIES, count)) }, (_, i) => ({
         id: `c${i}`, name: get("name", i) ?? this.draft?.[i]?.name, img: get("img", i) ?? this.draft?.[i]?.img ?? DEFAULT_IMG,
-        mergeInto: get("into", i) ?? "", mergeAmount: get("amt", i) ?? 0
+        mergeInto: get("into", i) ?? "", mergeAmount: get("amt", i) ?? 0, start: get("start", i) ?? this.draft?.[i]?.start ?? 0
       })));
       return this.draft;
     }
@@ -83,7 +83,7 @@ export function registerCurrencySettings() {
   game.settings.registerMenu("flowstate", "currencyMenu", {
     name: "Currencies",
     label: "Set up currencies",
-    hint: "How many currencies there are, and for each a name, a picture, and whether it merges into another one (and how many it takes). Characters carry them in their Misc items; they can't be deleted.",
+    hint: "How many currencies there are, and for each a name, a picture, whether it merges into another one (and how many it takes), and how much of it a new character starts with. Characters carry them in their Misc items; they can't be deleted.",
     icon: "fa-solid fa-coins", type: makeCurrencyConfig(), restricted: true
   });
 }

@@ -1,0 +1,19 @@
+{
+  "_id": "F6wv2lpVVynnbn2O",
+  "_key": "!folders!F6wv2lpVVynnbn2O",
+  "name": "Armor",
+  "type": "Item",
+  "folder": null,
+  "sorting": "a",
+  "sort": 100,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

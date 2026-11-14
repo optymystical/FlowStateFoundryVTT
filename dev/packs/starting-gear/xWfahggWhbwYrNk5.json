@@ -1,0 +1,37 @@
+{
+  "_id": "xWfahggWhbwYrNk5",
+  "_key": "!items!xWfahggWhbwYrNk5",
+  "name": "Heavy Thrasher (Stone)",
+  "type": "weapon",
+  "img": "icons/weapons/maces/flail-spiked.webp",
+  "system": {
+    "weaponType": "thrasher",
+    "weight": "heavy",
+    "material": "stone",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.thrasher.heavy.stone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.thrasher.heavy.stone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "_id": "NSTnQzeqThxllRXI",
+  "_key": "!items!NSTnQzeqThxllRXI",
+  "name": "Tome (Foci)",
+  "type": "foci",
+  "img": "icons/weapons/wands/wand-gem-purple.webp",
+  "system": {
+    "fociType": "tome",
+    "description": "",
+    "base": "foci.tome",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "bPEvRRQAyF2s18X5",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "foci.tome"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

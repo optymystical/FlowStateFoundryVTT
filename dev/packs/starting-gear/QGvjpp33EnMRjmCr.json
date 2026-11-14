@@ -1,0 +1,37 @@
+{
+  "_id": "QGvjpp33EnMRjmCr",
+  "_key": "!items!QGvjpp33EnMRjmCr",
+  "name": "Light Thrasher (Hardwood)",
+  "type": "weapon",
+  "img": "icons/weapons/maces/flail-spiked.webp",
+  "system": {
+    "weaponType": "thrasher",
+    "weight": "light",
+    "material": "hardwood",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.thrasher.light.hardwood",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.thrasher.light.hardwood"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

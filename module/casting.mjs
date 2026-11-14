@@ -20,6 +20,7 @@ const emplaceHealth = (actor, plan) => applyStacks(10 * plan.power, castStacks(a
 import { tierOf } from "./skills.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, DialogV2 } from "./html.mjs";
+import { energyHave } from "./consumables-rules.mjs";
 
 /** Is a hand free for Raw Casting? Fists don't count as holding anything. */
 function freeHand(actor) {
@@ -386,7 +387,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const key = plan.usesRP ? "rp" : "ap";
   if (!fire) {
     if (inCombat && plan.ap && actor.system[key].value < plan.ap) { ui.notifications.warn(`${actor.name} needs ${plan.ap} ${key.toUpperCase()} to cast this but has ${actor.system[key].value}.`); return null; }
-    if (inCombat && plan.energy && actor.system.energy.value < plan.energy) { ui.notifications.warn(`${actor.name} needs ${plan.energy} Energy to cast this but has ${actor.system.energy.value}.`); return null; }
+    if (inCombat && plan.energy && energyHave(actor) < plan.energy) { ui.notifications.warn(`${actor.name} needs ${plan.energy} Energy to cast this but has ${actor.system.energy.value}.`); return null; }
     if (!(await spendPoints(actor, key, plan.ap, "casting"))) return null;
     if (!(await spendEnergy(actor, plan.energy, "casting"))) return null;
     // Hematite (Foci Affix): the doubled Power costs Health equal to the Power.

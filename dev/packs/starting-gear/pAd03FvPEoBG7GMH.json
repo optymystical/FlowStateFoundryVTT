@@ -1,0 +1,37 @@
+{
+  "_id": "pAd03FvPEoBG7GMH",
+  "_key": "!items!pAd03FvPEoBG7GMH",
+  "name": "Heavy Reach (Iron)",
+  "type": "weapon",
+  "img": "icons/weapons/polearms/spear-flared-steel.webp",
+  "system": {
+    "weaponType": "reach",
+    "weight": "heavy",
+    "material": "iron",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.reach.heavy.iron",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.reach.heavy.iron"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

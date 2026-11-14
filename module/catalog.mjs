@@ -3,7 +3,7 @@
  *
  * An *entry* says what an item is: { type, name, img, description, rarity, pounds, volume, price, system: { identity fields } }.
  *  - **Generated entries** exist for every valid combination the tables allow (each weapon type × weight × material, each armor weight × material,
- *    every Foci, Shroud, Icon Form and Affix, ammunition for each ranged type, a plain Misc item), built from the tables, so a new material in the
+ *    every Foci, Shroud, Icon Form and Affix, ammunition for each ranged type, the potions, the Festival Token, a plain Misc item), built from the tables, so a new material in the
  *    world data has its weapons at once. Their keys spell them out: `weapon.bladed.light.iron`, `armor.heavy.iron`, `foci.rod`, `ammo.rapid`.
  *  - **Named entries** are added by the GM ("Longsword": a Light Bladed in Steel with its own picture, text and weight). Keys start `named.`.
  * The catalog is the store's `items` collection (derived: rebuilt from the tables, then the world's edits and named entries layered on).
@@ -16,6 +16,7 @@
 import { WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, RARITIES, rarityKey } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
+import { POTIONS, TOKEN, TOKEN_KEY, potionKey } from "./consumables-rules.mjs";
 
 /** The kinds of item, with their default picture. */
 export const ITEM_TYPES = {
@@ -36,8 +37,10 @@ export const IDENTITY = {
   shroud: ["shroudType"],
   icon: ["form"],
   affix: ["affix"],
-  gear: ["ammoType", "body", "density"]
+  gear: ["ammoType", "body", "density", "use", "potion"]
 };
+/** Identity fields an entry may leave out (added after worlds had named entries without them: a Misc item that isn't a potion or token). */
+export const OPTIONAL_IDENTITY = new Set(["use", "potion"]);
 /** What a copy may override (the paths of `system.overrides`): everything but the rarity, which belongs to the entry. */
 export const overridable = type => ["description", "pounds", "volume", "price", ...(IDENTITY[type] ?? []).map(k => `system.${k}`)];
 /** An entry's identity fields (Unarmed's weight is the default attack weight, chosen on each copy, so it isn't one). */
@@ -57,6 +60,12 @@ const AMMO_IMG = "icons/weapons/ammunition/arrows-bodkin-yellow-red.webp";
 
 const entry = (type, name, system, extra = {}) => ({ type, name, img: ITEM_TYPES[type].img, description: "", rarity: "common", pounds: null, volume: null, price: null, ...extra, system });
 const visible = x => !x?.hidden;
+
+const times = n => (n === 0.5 ? "half" : n === 1 ? "all" : n === 2 ? "twice" : `${n} ×`);
+/** A potion's text: what it does, what it costs, and the one-per-rest limit. */
+const potionText = x => `<p>${x.kind === "energy"
+  ? `Gives ${times(x.potency) === "all" ? "your maximum Energy" : `${times(x.potency)} your maximum Energy`} as bonus Energy, which can take you past your maximum. It lasts 1 minute (10 rounds) or until used, and is spent before your own Energy.`
+  : `Restores ${times(x.potency)} the health an 8 hour rest restores (up to your maximum).`}</p><p>1 AP to drink, or to give to a creature within your reach. One potion (Health or Energy) per rest.</p>`;
 
 /** Every generated entry, from the tables as they stand. */
 export function generateCatalog() {
@@ -85,6 +94,13 @@ export function generateCatalog() {
   for (const [k, x] of Object.entries(FORMS)) out[`icon.${k}`] = entry("icon", `${x.name} (Icon)`, { form: k }, { rarity: rarityKey(x.rarity), ...(x.hidden ? { hidden: true } : {}) });
   for (const [k, x] of Object.entries(AFFIXES)) out[`affix.${k}`] = entry("affix", x.label, { affix: k }, { rarity: x.rarity ?? "common", ...(x.hidden ? { hidden: true } : {}) });
   for (const [k, w] of Object.entries(WEAPON_TYPES)) if (w.ranged) out[`ammo.${k}`] = entry("gear", `${w.label} Ammunition`, { ammoType: k, body: 0, density: "soft" }, { img: AMMO_IMG, ...(w.hidden ? { hidden: true } : {}) });
+  // Consumables (consumables-rules.mjs): the potions and the Festival Token.
+  for (const [k, x] of Object.entries(POTIONS)) {
+    out[potionKey(k)] = entry("gear", x.label, { ammoType: "", body: 0, density: "soft", use: "potion", potion: k },
+      { img: x.img || ITEM_TYPES.gear.img, rarity: x.rarity ?? "common", price: x.price ?? null, pounds: 0.5, description: potionText(x), ...(x.hidden ? { hidden: true } : {}) });
+  }
+  out[TOKEN_KEY] = entry("gear", TOKEN.label, { ammoType: "", body: 0, density: "soft", use: "token", potion: "" }, { img: TOKEN.img, pounds: 0,
+    description: `<p>${TOKEN.uses} uses, set to one kind of roll. Spending a use gives Advantage on your next roll of that kind. At 0 uses it stays with you as a keepsake.</p>` });
   out["gear.misc"] = entry("gear", "Misc item", { ammoType: "", body: 0, density: "soft" });
   return out;
 }
@@ -104,7 +120,7 @@ export function keyFor(type, sys = {}) {
   else if (type === "shroud") key = `shroud.${sys.shroudType}`;
   else if (type === "icon") key = `icon.${sys.form}`;
   else if (type === "affix") key = `affix.${sys.affix}`;
-  else if (type === "gear") key = sys.ammoType ? `ammo.${sys.ammoType}` : "gear.misc";
+  else if (type === "gear") key = sys.use === "potion" ? potionKey(sys.potion) : sys.use === "token" ? TOKEN_KEY : sys.ammoType ? `ammo.${sys.ammoType}` : "gear.misc";
   return key && ITEM_CATALOG[key]?.type === type ? key : null;
 }
 

@@ -31,6 +31,7 @@ import * as charges from "./charges.mjs";
 import { registerCheckHooks, prepareInitiative, initiativeRoll, breakTies, tieOrder } from "./checks.mjs";
 import * as generic from "./generic.mjs";
 import * as surprise from "./surprise.mjs";
+import * as consumables from "./consumables.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
 import { notCreature } from "./kinds.mjs";
 import { DialogV2 } from "./html.mjs";
@@ -46,7 +47,26 @@ const tokenSquares = size => ({ 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 }[Math.round(s
 /** Status removals on their way, by actor and status (so two quick calls don't both delete the same effect). */
 const statusOffInFlight = new Map();
 
+/** A token's Energy bar shows the bonus pool on top of the creature's own Energy (it can go past the maximum). */
+class FlowStateTokenDocument extends TokenDocument {
+  getBarAttribute(barName, options = {}) {
+    const bar = super.getBarAttribute(barName, options);
+    const bonus = this.actor?.system?.energy?.bonus ?? 0;
+    if (bar?.attribute === "energy" && bonus > 0) bar.value = (bar.value ?? 0) + bonus;
+    return bar;
+  }
+}
+
 class FlowStateActor extends Actor {
+  /** Editing the Energy bar edits your own Energy: a drop takes the bonus pool first, a rise stops at the maximum. */
+  async modifyTokenAttribute(attribute, value, isDelta = false, isBar = true) {
+    const e = this.system?.energy, bonus = e?.bonus ?? 0;
+    if (attribute !== "energy" || !bonus) return super.modifyTokenAttribute(attribute, value, isDelta, isBar);
+    const total = e.value + bonus, delta = (isDelta ? total + value : value) - total;
+    const next = delta < 0 ? e.value + delta : Math.min(e.max, e.value + delta);
+    return this.update({ "system.energy.value": next });
+  }
+
   /**
    * Turning a status off is safe to repeat: a second call while the first is on its way waits for it, and an effect something else already
    * removed (a Limber used up by a roll as the turn start clears it) counts as removed instead of failing on the server.
@@ -220,6 +240,7 @@ class FlowStateCombat extends Combat {
       // Surge (Tempo T3): AP carried from the last turn. An opener's Sneak Attack already spent part of its surprise turn.
       await generic.turnStart(a);
       await surprise.turnStart(this, combatant);
+      await consumables.turnStart(this, a);                       // an Energy potion's bonus pool runs out 10 rounds on
       // Surprise ends at your first turn.
       if (a.statuses?.has("surprised")) await a.toggleStatusEffect("surprised", { active: false });
       // Psych Up / Calm Down last until the start of your next turn.
@@ -279,6 +300,7 @@ Hooks.once("init", () => {
   registerCodex();
   registerCheckHooks();
   generic.registerGenericHooks();
+  consumables.register();
   surprise.registerSurpriseHooks();
   registerShopSettings();
   game.flowstate = { rules, martial, actions, catalog: CatalogApp };
@@ -286,6 +308,7 @@ Hooks.once("init", () => {
   (foundry.applications.handlebars?.loadTemplates ?? globalThis.loadTemplates)?.({ fsItemCatalog: "systems/flowstate/templates/item-catalog.hbs", fsSkillNavRow: "systems/flowstate/templates/skill-nav-row.hbs" });
 
   CONFIG.Actor.documentClass = FlowStateActor;
+  CONFIG.Token.documentClass = FlowStateTokenDocument;
   CONFIG.Combat.documentClass = FlowStateCombat;
   CONFIG.Combatant.documentClass = FlowStateCombatant;
   CONFIG.Actor.dataModels = { character: FlowStateActorData, npc: FlowStateActorData, pile: FlowStatePileData, shop: FlowStateShopData };
@@ -322,7 +345,8 @@ Hooks.once("init", () => {
     { id: "sliced", name: "Sliced (+1 AP movement)", img: "icons/svg/blood.svg" },
     { id: "taunted", name: "Taunted", img: "icons/svg/hazard.svg" },
     { id: "quickened", name: "Quickened", img: "icons/svg/wingfoot.svg" },
-    { id: "smashing", name: "Smashing", img: "icons/svg/thrust.svg" }
+    { id: "smashing", name: "Smashing", img: "icons/svg/thrust.svg" },
+    { id: "infected", name: "Infected", img: "icons/svg/poison.svg" }      // lasts a day; heat damage clears it (consumables.mjs)
   ];
 
   // Character creation budgets (used by the New Character wizard and re-checked by the GM).

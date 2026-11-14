@@ -1,0 +1,34 @@
+{
+  "_id": "rTXZ3msKQAjU0ssi",
+  "_key": "!items!rTXZ3msKQAjU0ssi",
+  "name": "Titanic Armor (Copper)",
+  "type": "armor",
+  "img": "icons/equipment/chest/breastplate-layered-grey.webp",
+  "system": {
+    "weight": "titanic",
+    "material": "copper",
+    "description": "",
+    "base": "armor.titanic.copper",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "F6wv2lpVVynnbn2O",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "armor.titanic.copper"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

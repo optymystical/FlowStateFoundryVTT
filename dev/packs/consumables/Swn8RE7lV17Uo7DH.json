@@ -1,0 +1,37 @@
+{
+  "_id": "Swn8RE7lV17Uo7DH",
+  "_key": "!items!Swn8RE7lV17Uo7DH",
+  "name": "Lesser Health Potion",
+  "type": "gear",
+  "img": "icons/consumables/potions/potion-tube-corked-red.webp",
+  "system": {
+    "ammoType": "",
+    "body": 0,
+    "density": "soft",
+    "use": "potion",
+    "potion": "healthLesser",
+    "description": "<p>Restores half the health an 8 hour rest restores (up to your maximum).</p><p>1 AP to drink, or to give to a creature within your reach. One potion (Health or Energy) per rest.</p>",
+    "base": "potion.healthLesser",
+    "overrides": [],
+    "quantity": 1
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "potion.healthLesser"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "3uqEIyUOCG9BAdQy",
+  "_key": "!items!3uqEIyUOCG9BAdQy",
+  "name": "Light Swift (Hardwood)",
+  "type": "weapon",
+  "img": "icons/weapons/daggers/dagger-black.webp",
+  "system": {
+    "weaponType": "swift",
+    "weight": "light",
+    "material": "hardwood",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.swift.light.hardwood",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.swift.light.hardwood"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

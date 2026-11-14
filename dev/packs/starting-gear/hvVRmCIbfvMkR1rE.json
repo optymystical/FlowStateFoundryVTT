@@ -1,0 +1,19 @@
+{
+  "_id": "hvVRmCIbfvMkR1rE",
+  "_key": "!folders!hvVRmCIbfvMkR1rE",
+  "name": "Icons",
+  "type": "Item",
+  "folder": null,
+  "sorting": "a",
+  "sort": 400,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

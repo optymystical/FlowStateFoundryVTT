@@ -1,4 +1,6 @@
 import { askImage } from "./pictures.mjs";
+import { getCurrencies } from "./currency.mjs";
+import { startingPurse } from "./currency-rules.mjs";
 import { STATS } from "./rules.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, RARITIES, weaponProfile, armorProfile, describeTags } from "./martial.mjs";
 import * as creation from "./creation.mjs";
@@ -25,7 +27,8 @@ function creationRules() {
     items: game.settings.get("flowstate", "startingItems"),
     maxRarity: game.settings.get("flowstate", "startingMaxRarity"),
     grade: game.settings.get("flowstate", "startingGrade"),
-    multiType: game.settings.get("flowstate", "startingMultiType") === true
+    multiType: game.settings.get("flowstate", "startingMultiType") === true,
+    currency: startingPurse(getCurrencies())                        // each currency's starting amount (the Currencies settings)
   };
 }
 
@@ -170,6 +173,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       step, isFirst: st.step === 0, isLast: st.step === STEPS.length - 1,
       [`is_${step}`]: true,
       rules, rarityLabel: RARITIES[rules.maxRarity],
+      purse: getCurrencies().filter(c => rules.currency?.[c.id] > 0).map(c => `${rules.currency[c.id]} ${c.name}`).join(", "),
       name: st.name, img: st.img, canBrowse: game.user.can?.("FILES_BROWSE") ?? false,
       statGroups: Object.values(groups), spent, remaining, overspent: remaining < 0,
       preview: pv,

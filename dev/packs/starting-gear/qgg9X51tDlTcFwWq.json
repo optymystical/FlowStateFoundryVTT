@@ -1,0 +1,33 @@
+{
+  "_id": "qgg9X51tDlTcFwWq",
+  "_key": "!items!qgg9X51tDlTcFwWq",
+  "name": "Orb (Foci)",
+  "type": "foci",
+  "img": "icons/weapons/wands/wand-gem-purple.webp",
+  "system": {
+    "fociType": "orb",
+    "description": "",
+    "base": "foci.orb",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "bPEvRRQAyF2s18X5",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "foci.orb"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

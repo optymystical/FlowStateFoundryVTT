@@ -1,0 +1,37 @@
+{
+  "_id": "y3Zvr5Gef3snyCr4",
+  "_key": "!items!y3Zvr5Gef3snyCr4",
+  "name": "Heavy Bladed (Iron)",
+  "type": "weapon",
+  "img": "icons/weapons/swords/greatsword-crossguard-steel.webp",
+  "system": {
+    "weaponType": "bladed",
+    "weight": "heavy",
+    "material": "iron",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.bladed.heavy.iron",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.bladed.heavy.iron"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

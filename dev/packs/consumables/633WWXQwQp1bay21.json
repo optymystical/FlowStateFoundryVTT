@@ -1,0 +1,37 @@
+{
+  "_id": "633WWXQwQp1bay21",
+  "_key": "!items!633WWXQwQp1bay21",
+  "name": "Greater Energy Potion",
+  "type": "gear",
+  "img": "icons/consumables/potions/potion-flask-corked-blue.webp",
+  "system": {
+    "ammoType": "",
+    "body": 0,
+    "density": "soft",
+    "use": "potion",
+    "potion": "energyGreater",
+    "description": "<p>Gives twice your maximum Energy as bonus Energy, which can take you past your maximum. It lasts 1 minute (10 rounds) or until used, and is spent before your own Energy.</p><p>1 AP to drink, or to give to a creature within your reach. One potion (Health or Energy) per rest.</p>",
+    "base": "potion.energyGreater",
+    "overrides": [],
+    "quantity": 1
+  },
+  "folder": null,
+  "sort": 500,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "potion.energyGreater"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

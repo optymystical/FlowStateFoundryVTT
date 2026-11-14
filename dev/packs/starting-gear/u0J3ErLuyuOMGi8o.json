@@ -1,0 +1,34 @@
+{
+  "_id": "u0J3ErLuyuOMGi8o",
+  "_key": "!items!u0J3ErLuyuOMGi8o",
+  "name": "Heavy Armor (Titanium)",
+  "type": "armor",
+  "img": "icons/equipment/chest/breastplate-banded-steel.webp",
+  "system": {
+    "weight": "heavy",
+    "material": "titanium",
+    "description": "",
+    "base": "armor.heavy.titanium",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "F6wv2lpVVynnbn2O",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "armor.heavy.titanium"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

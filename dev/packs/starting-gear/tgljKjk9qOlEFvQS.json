@@ -1,0 +1,37 @@
+{
+  "_id": "tgljKjk9qOlEFvQS",
+  "_key": "!items!tgljKjk9qOlEFvQS",
+  "name": "Heavy Circular (Iron)",
+  "type": "weapon",
+  "img": "icons/weapons/thrown/boomerang.webp",
+  "system": {
+    "weaponType": "circular",
+    "weight": "heavy",
+    "material": "iron",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.circular.heavy.iron",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.circular.heavy.iron"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

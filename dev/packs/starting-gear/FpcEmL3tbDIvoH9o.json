@@ -1,0 +1,37 @@
+{
+  "_id": "FpcEmL3tbDIvoH9o",
+  "_key": "!items!FpcEmL3tbDIvoH9o",
+  "name": "Light Curved (Bone)",
+  "type": "weapon",
+  "img": "icons/weapons/swords/scimitar-guard.webp",
+  "system": {
+    "weaponType": "curved",
+    "weight": "light",
+    "material": "bone",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.curved.light.bone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.curved.light.bone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

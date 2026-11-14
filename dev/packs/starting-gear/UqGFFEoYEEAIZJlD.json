@@ -1,0 +1,37 @@
+{
+  "_id": "UqGFFEoYEEAIZJlD",
+  "_key": "!items!UqGFFEoYEEAIZJlD",
+  "name": "Light Blast (Softwood)",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-steel.webp",
+  "system": {
+    "weaponType": "blast",
+    "weight": "light",
+    "material": "softwood",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.blast.light.softwood",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.blast.light.softwood"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

@@ -11,7 +11,7 @@
   <div class="fs-vitals">
     <div class="fs-vital">
       <span class="fs-res-label"><i class="fa-solid fa-bolt"></i> Energy</span>
-      <span class="fs-res-values"><input type="number" name="system.energy.value" value="{{system.energy.value}}" {{#unless editable}}disabled{{/unless}}> / {{system.energy.max}}</span>
+      <span class="fs-res-values"><input type="number" name="system.energy.value" value="{{system.energy.value}}" {{#unless editable}}disabled{{/unless}}> / {{system.energy.max}}{{#if system.energy.bonus}} <span class="fs-energy-bonus" data-tooltip="An Energy potion's bonus pool: it can go past your maximum, is spent before your own Energy, and lasts 1 minute (10 rounds) or until used">+{{system.energy.bonus}} bonus</span>{{/if}}</span>
       <button type="button" class="fs-res-btn" data-action="recoverEnergy" data-tooltip="Spend 1 AP to recover {{d.energyRecover}} Energy"><i class="fa-solid fa-bolt"></i> Recover +{{d.energyRecover}} <small>1 AP</small></button>
     </div>
     {{#if inCombat}}

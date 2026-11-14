@@ -1,0 +1,19 @@
+{
+  "_id": "6yin2HxnygFrTYhr",
+  "_key": "!folders!6yin2HxnygFrTYhr",
+  "name": "Weapons",
+  "type": "Item",
+  "folder": null,
+  "sorting": "a",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

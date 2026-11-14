@@ -5,7 +5,7 @@ const flatten = (o, p = "") => Object.entries(o).reduce((a, [k, v]) => (v && typ
 globalThis.foundry = { data: { fields: { NumberField: Field, StringField: Field, BooleanField: Field, HTMLField: Field, SchemaField: Field } }, abstract: { TypeDataModel: class {} },
   utils: { debounce: f => f, escapeHTML: s => s, deepClone: o => structuredClone(o), flattenObject: flatten, getProperty: (o, k) => k.split(".").reduce((a, b) => a?.[b], o) },
   applications: { api: { ApplicationV2: class {}, HandlebarsApplicationMixin: C => C, DialogV2: {} }, sheets: { ActorSheetV2: class {}, ItemSheetV2: class {} }, apps: { DocumentSheetConfig: { registerSheet() {} } }, instances: new Map() } };
-globalThis.canvas = null; globalThis.Actor = class {}; globalThis.Combat = class {}; globalThis.Combatant = class {}; globalThis.CONFIG = { Actor: {}, Item: {}, Combat: {}, Combatant: {} };
+globalThis.canvas = null; globalThis.Actor = class {}; globalThis.Combat = class {}; globalThis.Combatant = class {}; globalThis.TokenDocument = class {}; globalThis.CONFIG = { Actor: {}, Item: {}, Combat: {}, Combatant: {}, Token: {} };
 const warns = []; globalThis.ui = { notifications: { warn: m => warns.push(m), info: () => {} } };
 globalThis.game = { combat: null, user: { id: "u", isGM: false }, settings: { get: () => true } };
 await import("../../module/flowstate.mjs");

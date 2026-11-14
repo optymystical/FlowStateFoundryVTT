@@ -1,0 +1,37 @@
+{
+  "_id": "LKBeIn69USgaiGfe",
+  "_key": "!items!LKBeIn69USgaiGfe",
+  "name": "Light Curved (Softwood)",
+  "type": "weapon",
+  "img": "icons/weapons/swords/scimitar-guard.webp",
+  "system": {
+    "weaponType": "curved",
+    "weight": "light",
+    "material": "softwood",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.curved.light.softwood",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.curved.light.softwood"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "_id": "1jMa7XgTRD4pTOaM",
+  "_key": "!items!1jMa7XgTRD4pTOaM",
+  "name": "Light Armor (Soft Leather)",
+  "type": "armor",
+  "img": "icons/equipment/chest/breastplate-banded-leather-brown.webp",
+  "system": {
+    "weight": "light",
+    "material": "softLeather",
+    "description": "",
+    "base": "armor.light.softLeather",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "F6wv2lpVVynnbn2O",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "armor.light.softLeather"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

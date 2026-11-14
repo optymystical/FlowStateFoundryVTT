@@ -1,0 +1,35 @@
+{
+  "_id": "SByBZuDppmhSQ8vp",
+  "_key": "!items!SByBZuDppmhSQ8vp",
+  "name": "Blast Ammunition",
+  "type": "gear",
+  "img": "icons/weapons/ammunition/arrows-bodkin-yellow-red.webp",
+  "system": {
+    "ammoType": "blast",
+    "body": 0,
+    "density": "soft",
+    "description": "",
+    "base": "ammo.blast",
+    "overrides": [],
+    "quantity": 20
+  },
+  "folder": "07hsdJdAsttpuOMF",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "ammo.blast"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

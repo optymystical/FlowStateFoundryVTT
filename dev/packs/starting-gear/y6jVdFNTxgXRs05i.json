@@ -1,0 +1,33 @@
+{
+  "_id": "y6jVdFNTxgXRs05i",
+  "_key": "!items!y6jVdFNTxgXRs05i",
+  "name": "Warden (Icon)",
+  "type": "icon",
+  "img": "icons/magic/holy/yin-yang-balance-symbol.webp",
+  "system": {
+    "form": "warden",
+    "description": "",
+    "base": "icon.warden",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "hvVRmCIbfvMkR1rE",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "icon.warden"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

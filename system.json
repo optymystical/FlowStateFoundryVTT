@@ -2,7 +2,7 @@
   "id": "flowstate",
   "title": "Flow State",
   "description": "Flow State, a Setting Universal, Digital Only, Open Ended TTRPG by Christopher Caplinger: the core rules, all Martial equipment and skill trees, Magic (Foci, Shrouds, Affixes and every spell group with its Combos) and Mental (Manifest, Alignment, Icons, Wards and the Wonders), with chat-card combat, movement cost, terrain and a character wizard. Flow State © 2019 by Christopher Caplinger, CC BY 4.0.",
-  "version": "0.88.2",
+  "version": "0.89.0",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
@@ -97,5 +97,43 @@
   },
   "primaryTokenAttribute": "hp",
   "secondaryTokenAttribute": "energy",
-  "socket": true
+  "socket": true,
+  "packs": [
+    {
+      "name": "consumables",
+      "label": "Flow State: Consumables",
+      "path": "packs/consumables",
+      "type": "Item",
+      "system": "flowstate",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "name": "starting-gear",
+      "label": "Flow State: Starting Gear (Common, Grade 3)",
+      "path": "packs/starting-gear",
+      "type": "Item",
+      "system": "flowstate",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Flow State",
+      "sorting": "m",
+      "color": "#3a2a5a",
+      "packs": [
+        "consumables",
+        "starting-gear"
+      ],
+      "folders": []
+    }
+  ]
 }

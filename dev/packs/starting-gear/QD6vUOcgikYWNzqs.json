@@ -1,0 +1,37 @@
+{
+  "_id": "QD6vUOcgikYWNzqs",
+  "_key": "!items!QD6vUOcgikYWNzqs",
+  "name": "Heavy Blast (Stone)",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-steel.webp",
+  "system": {
+    "weaponType": "blast",
+    "weight": "heavy",
+    "material": "stone",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.blast.heavy.stone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.blast.heavy.stone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

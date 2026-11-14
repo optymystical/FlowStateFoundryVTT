@@ -9,7 +9,7 @@ globalThis.foundry = { data: { fields: { NumberField: Field, StringField: Field,
       wait: async ({ content, buttons }) => { lastText = content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " "); lastButtons = buttons.map(b => b.label); return waitAnswer; },
       prompt: async ({ content }) => { lastText = content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " "); return promptAnswer; } } },
     sheets: { ActorSheetV2: class {}, ItemSheetV2: class {} }, apps: { DocumentSheetConfig: { registerSheet() {} } }, instances: new Map() } };
-globalThis.canvas = null; globalThis.Actor = class {}; globalThis.Combat = class {}; globalThis.Combatant = class {}; globalThis.CONFIG = { Actor: {}, Item: {}, Combat: {}, Combatant: {} };
+globalThis.canvas = null; globalThis.Actor = class {}; globalThis.Combat = class {}; globalThis.Combatant = class {}; globalThis.TokenDocument = class {}; globalThis.CONFIG = { Actor: {}, Item: {}, Combat: {}, Combatant: {}, Token: {} };
 globalThis.ui = { notifications: { warn: m => log("WARN", m), info: m => log("INFO", m) } };
 globalThis.game = { combat: null, user: { id: "u" }, settings: { get: () => true } };
 await import("../../module/flowstate.mjs");

@@ -1,0 +1,33 @@
+{
+  "_id": "wfE5oJlbdMwVvI0I",
+  "_key": "!items!wfE5oJlbdMwVvI0I",
+  "name": "Ember (Shroud)",
+  "type": "shroud",
+  "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
+  "system": {
+    "shroudType": "ember",
+    "description": "",
+    "base": "shroud.ember",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "xAOGv5wfmSDcB6O8",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "shroud.ember"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

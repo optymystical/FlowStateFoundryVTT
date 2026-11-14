@@ -14,6 +14,8 @@ import { borderDistance, gridFor, tokenPos, tokenCentre } from "./distance.mjs";
 import { pickSpot, candidateSpots } from "./placement.mjs";
 import { notCreature, isLiving, fusedFociOf } from "./kinds.mjs";
 import { esc, DialogV2, dialogHead } from "./html.mjs";
+import { takeEdge } from "./edge.mjs";
+import { energyHave } from "./consumables-rules.mjs";
 export { gridFor };
 
 /** Synchronous uuid lookup (Foundry's fromUuidSync), null outside Foundry. */
@@ -462,7 +464,8 @@ export async function rollStatCheck(actor, key) {
     return post(actor, { title: `${STATS[key].label} Check`, body: `<div class="fs-outcome fs-hit">Automatic success</div><div class="fs-notes">${res.notes.map(esc).join(" · ")}</div>` });
   }
 
-  const net = opts.net + res.net + exhaustionNet(actor) + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0);
+  const net = opts.net + res.net + exhaustionNet(actor) + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, "stat") + (["reach", "grasp", "build"].includes(key) ? magicDisNet(actor) : 0)
+    + (key === "con" || key === "str" ? await takeEdge(actor, key) : 0);           // a Festival Token set to Constitution or Strength checks
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, stat.die, noAdvantage(actor, net)));
   const cr = await mentalHook?.rollCharges?.({ actor, type: "other", roll, die: stat.die, count: 1, net, max: stat.die, label: `${STATS[key].label} Check` });
@@ -473,7 +476,7 @@ export async function rollStatCheck(actor, key) {
   const grit = ["con", "will", "build"].includes(key) ? ab.treeTier(actor, "generic-endurance") : 0;
   for (let n = 0; grit >= 3 && total < stat.die / 2 && (n === 0 || grit >= 5); n++) {
     const cost = Math.floor((Number(actor.system.skillPoints) || 0) / 2);
-    if (energyTracked(actor) && actor.system.energy.value < cost) break;
+    if (energyTracked(actor) && energyHave(actor) < cost) break;
     const yes = await DialogV2().confirm({ window: { title: "Grit" }, rejectClose: false,
       content: `<p>${esc(actor.name)}'s ${STATS[key].label} check is <strong>${total}</strong>, under half of d${stat.die}. Reroll for <strong>${cost} Energy</strong>? The new result stands.</p>` });
     if (!yes || !(await spendEnergy(actor, cost, "Grit"))) break;
@@ -507,7 +510,7 @@ export async function rollCheck(actor, label, opts = {}) {
 export async function rollAttackCheck(actor) {
   const opts = await optionsDialog("Attack Roll", netField(), "Roll", { skipIfEmpty: true });
   if (!opts) return;
-  const net = opts.net + exhaustionNet(actor) + attackStanceNet(actor) + limberNet(actor) + charmNet(actor, "attack");
+  const net = opts.net + exhaustionNet(actor) + attackStanceNet(actor) + limberNet(actor) + charmNet(actor, "attack") + (await takeEdge(actor, "attack"));
   await consumeLimber(actor);
   const size = actor.system.derived.attackDie;
   const roll = await evaluate(poolFormula(1, size, net));
@@ -1240,7 +1243,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     if (!pepper) return ui.notifications.warn("Quickload with Pepper replaces one of the Pepper shots: pick at least 1.");
     shots -= 1; net += 1; notes.push("Quickload replaces one Pepper shot (reloads; −1 Disadvantage)");
   }
-  if (energy && inActiveCombat(actor) && actor.system.energy.value < energy) {
+  if (energy && inActiveCombat(actor) && energyHave(actor) < energy) {
     return ui.notifications.warn(`${actor.name} needs ${energy} Energy for that but has ${actor.system.energy.value}.`);
   }
   if (followup && !followup.riposte) notes.push(`${followup.label}${followup.net < 0 && !pinpointPepper ? " — Disadvantage" : ""}`);          // Pinpoint took it away
@@ -1282,7 +1285,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   if (!(await spendAP(actor, ap, `attacking with ${item.name}`))) return;
   if (pepperLoad && !(await loadWeapon(actor, item))) return;
   const rpPaid = followup?.riposte ? (shieldToss ? 2 : p.ap) : ["flurry", "mark", "palisade"].includes(followup?.kind) ? p.ap : shieldToss?.pay === "rp" ? 2 : 0;
-  if (energy && preset && Object.keys(preset).length && inActiveCombat(actor) && actor.system.energy.value < energy) return rollWeaponAttack(actor, item, followup, { grapple: presetGrapple, preset: {} });
+  if (energy && preset && Object.keys(preset).length && inActiveCombat(actor) && energyHave(actor) < energy) return rollWeaponAttack(actor, item, followup, { grapple: presetGrapple, preset: {} });
   if (energy && !(await spendEnergy(actor, energy, notes.filter(n => /Whirlwind|Remise|Perfect/.test(n)).join(", ") || "that"))) return;
   if (rooted && inActiveCombat(actor)) await actor.setFlag("flowstate", "rootedTurn", turnKey());
   if (energy) notes.push(`${energy} Energy`);
@@ -1753,7 +1756,7 @@ const objectOf = actor => (actor?.type === "pile" ? (actor.items?.find?.(i => i.
 async function attackObject(actor, opts, target, item) {
   const d = actor.system.derived;
   const shots = Math.max(1, opts.shots ?? 1);
-  const baseNet = opts.net + exhaustionNet(actor) + attackStanceNet(actor) + limberNet(actor);
+  const baseNet = opts.net + exhaustionNet(actor) + attackStanceNet(actor) + limberNet(actor) + (await takeEdge(actor, "attack"));
   await consumeLimber(actor);
   const atk = await evaluate(poolFormula(1, d.attackDie, baseNet));
   const crit = objectCrit(atk.total, item.system.body, item.system.grade ?? 1);
@@ -1794,7 +1797,7 @@ async function untargetedAttack(actor, opts) {
     if (!base) return;
     rolls.push(...base.rolls);
   }
-  const baseNet = opts.net + exhaustionNet(actor) + (opts.stealth === "half" ? 1 : 0) + attackStanceNet(actor) + limberNet(actor) + (mentalHook?.burdenNet(actor, "attackDis") ?? 0);
+  const baseNet = opts.net + exhaustionNet(actor) + (opts.stealth === "half" ? 1 : 0) + attackStanceNet(actor) + limberNet(actor) + (mentalHook?.burdenNet(actor, "attackDis") ?? 0) + (await takeEdge(actor, "attack"));
   await consumeLimber(actor);
   const atk = await evaluate(poolFormula(1, d.attackDie, baseNet));
   rolls.unshift(atk);
@@ -1866,7 +1869,7 @@ const followupsFlag = (actor, opts) => (opts.followups?.length ? { actor: actor.
 
 async function startExchange(actor, opts, targets) {
   const d = actor.system.derived;
-  const baseNet = opts.net + exhaustionNet(actor) + (opts.stealth === "half" ? 1 : 0) + attackStanceNet(actor) + limberNet(actor) + (mentalHook?.burdenNet(actor, "attackDis") ?? 0);
+  const baseNet = opts.net + exhaustionNet(actor) + (opts.stealth === "half" ? 1 : 0) + attackStanceNet(actor) + limberNet(actor) + (mentalHook?.burdenNet(actor, "attackDis") ?? 0) + (await takeEdge(actor, "attack"));
   await consumeLimber(actor);
   const disrupted = disruptNet(actor);
   const rolls = [];
@@ -2442,7 +2445,7 @@ export async function blockFor(message, index, blockerUuid, perfect = false, tos
     if (!shields.length) return ui.notifications.warn(`${blocker.name} needs a throwable Defender weapon with ${target.name} in throw range.`);
     shield = shields.sort((a, b) => ab.DEFENDER_COST.shieldToss(a) - ab.DEFENDER_COST.shieldToss(b))[0];
     const cost = ab.DEFENDER_COST.shieldToss(shield);
-    if (inActiveCombat(blocker) && blocker.system.energy.value < cost) return ui.notifications.warn(`${blocker.name} needs ${cost} Energy for Shield Toss.`);
+    if (inActiveCombat(blocker) && energyHave(blocker) < cost) return ui.notifications.warn(`${blocker.name} needs ${cost} Energy for Shield Toss.`);
     if (!(await spendPoints(blocker, "rp", 2, "Shield Toss"))) return;
     if (!(await spendEnergy(blocker, cost, "Shield Toss"))) return;
     tossNote = `<div class="fs-notes">Shield Toss: ${esc(shield.name)} is thrown to ${esc(target.name)} and returns afterwards · 2 RP · ${cost} Energy</div>`;
@@ -2758,7 +2761,7 @@ async function quickload(actor, item, pepperOk = false, followup = null) {
   }
   if (choice === "pepper") return "pepper";
   if (choice === "speed") {
-    if (inActiveCombat(actor) && actor.system.energy.value < cost) { ui.notifications.warn(`${actor.name} needs ${cost} Energy for Speedloader.`); return null; }
+    if (inActiveCombat(actor) && energyHave(actor) < cost) { ui.notifications.warn(`${actor.name} needs ${cost} Energy for Speedloader.`); return null; }
     if (!(await spendEnergy(actor, cost, "Speedloader"))) return null;
     if (!(await loadWeapon(actor, item))) return null;
     return "speed";
@@ -2925,7 +2928,7 @@ export async function autoLimber(message) {
   for (const m of String(message?.content ?? "").matchAll(/class="fs-limber" data-actor="([^"]+)"/g)) {
     const actor = fromUuidSync(m[1]);
     if (!actor || !runsHere(actor) || !auto.automationOf(actor).limber) continue;
-    if (inActiveCombat(actor) && actor.system.energy.value < ab.mediumCost(actor, "limber")) continue;
+    if (inActiveCombat(actor) && energyHave(actor) < ab.mediumCost(actor, "limber")) continue;
     const loud = quietNotifications();
     try { await limber(message, m[1]); } finally { loud(); }
   }
@@ -3240,7 +3243,7 @@ export async function bodyslam(actor) {
     ${netField()}`, "Bodyslam");
   if (!opts) return;
   if (!checkRange(actor, actor.system.derived.size.melee, "a Bodyslam", targets[0].getActiveTokens?.() ?? [])) return;
-  if (inActiveCombat(actor) && actor.system.energy.value < info.cost) return ui.notifications.warn(`${actor.name} needs ${info.cost} Energy for Bodyslam.`);
+  if (inActiveCombat(actor) && energyHave(actor) < info.cost) return ui.notifications.warn(`${actor.name} needs ${info.cost} Energy for Bodyslam.`);
   if (!(await spendAP(actor, 3, "Bodyslam"))) return;
   if (!(await spendEnergy(actor, info.cost, "Bodyslam"))) return;
   await actionSpent(actor, "martial", inActiveCombat(actor) ? 3 : 0);
@@ -3308,7 +3311,7 @@ async function keepUp(actor, kept) {
   const done = [], failed = [], handled = new Set();
   const pay = async (key, label, cost, apply) => {
     handled.add(key);
-    if (inActiveCombat(actor) && actor.system.energy.value < cost) { failed.push(`${label} (needs ${cost} Energy)`); return; }
+    if (inActiveCombat(actor) && energyHave(actor) < cost) { failed.push(`${label} (needs ${cost} Energy)`); return; }
     if (!(await spendEnergy(actor, cost, label))) { failed.push(label); return; }
     await apply();
     done.push(`${label} (${cost} Energy)`);
@@ -3422,7 +3425,7 @@ export async function spotWeakness(actor) {
   if (targets.length !== 1) return ui.notifications.warn("Target exactly one creature you can already sense.");
   const t = targets[0];
   const cost = ab.DEXTERITY_COST.spotWeakness(actor);
-  if (inActiveCombat(actor) && actor.system.energy.value < cost) return ui.notifications.warn(`${actor.name} needs ${cost} Energy for Spot Weakness.`);
+  if (inActiveCombat(actor) && energyHave(actor) < cost) return ui.notifications.warn(`${actor.name} needs ${cost} Energy for Spot Weakness.`);
   if (!(await spendAP(actor, 1, "Spot Weakness"))) return;
   if (!(await spendEnergy(actor, cost, "Spot Weakness"))) return;
   const armor = t.system.armor;
@@ -3625,7 +3628,7 @@ export async function taunt(actor, { aggro = false } = {}) {
   const opts = await optionsDialog(aggro ? "Pull Aggro" : "Taunt", `<div class="form-group"><label>Check</label><select name="check"><option value="Persuasion">Persuasion</option><option value="Deception">Deception</option></select></div>${netField()}`, "Taunt");
   if (!opts) return;
   const cost = aggro ? ab.CONSTITUTION_COST.pullAggro(actor) : ab.CONSTITUTION_COST.taunt(actor);
-  if (inActiveCombat(actor) && actor.system.energy.value < cost) return ui.notifications.warn(`${actor.name} needs ${cost} Energy.`);
+  if (inActiveCombat(actor) && energyHave(actor) < cost) return ui.notifications.warn(`${actor.name} needs ${cost} Energy.`);
   if (!(await spendPoints(actor, "rp", 2, aggro ? "Pull Aggro" : "Taunt"))) return;
   if (!(await spendEnergy(actor, cost, aggro ? "Pull Aggro" : "Taunt"))) return;
   let body = `<div class="fs-notes">${opts.check} vs each target's counter roll · 2 RP · ${cost} Energy</div>`;
@@ -4705,7 +4708,7 @@ async function dashReaction(message, index, target, entry) {
   if (!info?.reaction) return ui.notifications.warn(`${entry.name} needs Unarmored Tier 1 and no armor.`);
   if (findDash(message.id, index)) return ui.notifications.info("Dash was already used against this attack.");
   if (findDefense(message.id, index)) return;
-  if (inActiveCombat(target) && target.system.energy.value < info.cost) return ui.notifications.warn(`${entry.name} needs ${info.cost} Energy for Dash.`);
+  if (inActiveCombat(target) && energyHave(target) < info.cost) return ui.notifications.warn(`${entry.name} needs ${info.cost} Energy for Dash.`);
   if (!(await spendEnergy(target, info.cost, "Dash"))) return;
   const cur = effectiveEntry(message.id, index, entry);
   const net = rerollNet(message.id, index, entry) - 1;
@@ -4843,7 +4846,7 @@ export async function dash(actor) {
   const rp = slowedCost(actor);
   const free = breathingFree(actor, "dash", info);
   const cost = free ? 0 : info.cost;
-  if (inActiveCombat(actor) && actor.system.energy.value < cost) return ui.notifications.warn(`${actor.name} needs ${cost} Energy for Dash.`);
+  if (inActiveCombat(actor) && energyHave(actor) < cost) return ui.notifications.warn(`${actor.name} needs ${cost} Energy for Dash.`);
   if (!(await spendPoints(actor, "rp", rp, "Dash"))) return;
   if (!(await spendEnergy(actor, cost, "Dash"))) return;
   if (free) await useBreathing(actor, "dash");
@@ -4861,7 +4864,7 @@ export async function leap(actor) {
   const ap = slowedCost(actor);
   const free = breathingFree(actor, "leap", info);
   const cost = free ? 0 : info.cost;
-  if (inActiveCombat(actor) && actor.system.energy.value < cost) return ui.notifications.warn(`${actor.name} needs ${cost} Energy for Leap.`);
+  if (inActiveCombat(actor) && energyHave(actor) < cost) return ui.notifications.warn(`${actor.name} needs ${cost} Energy for Leap.`);
   if (!(await spendAP(actor, ap, "Leap"))) return;
   if (!(await spendEnergy(actor, cost, "Leap"))) return;
   if (free) await useBreathing(actor, "leap");
@@ -6196,6 +6199,11 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
   cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null, arcaneWeak = 0 } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
+  // Infected (a timed condition, consumables.mjs) is cleared by any heat damage.
+  if (type === "heat" && amount > 0 && actor.statuses?.has?.("infected")) {
+    await actor.toggleStatusEffect("infected", { active: false });
+    if (!silent) await post(actor, { title: `${esc(actor.name)} — Infected`, body: `<div class="fs-result">The heat burns the infection out.</div>` });
+  }
   // Reactive: a Summon or Animation of a caster with the Mod gets a Weakened stack on each instance (1 RP).
   let reduced = 0;                                                            // everything that took damage off before it reached the soak (Reactive, Wonders, Wards)
   const smr = actor.flags?.flowstate?.summon;
@@ -6311,13 +6319,13 @@ export async function spendEnergy(actor, cost, what = "that") {
   if (!cost || !energyTracked(actor)) return true;
   cost = mentalHook?.energyCost?.(actor, cost) ?? cost;                    // Thrift (Growth): the action costs less Energy
   if (!cost) return true;
-  const have = actor.system.energy.value;
+  const have = energyHave(actor), own = actor.system.energy.value;       // the bonus pool counts (and is spent first: consumables.mjs)
   // Pace Yourself (Stamina T2) watches whether you spent any Energy this turn.
   if (game.combat?.combatant?.actor?.uuid === actor.uuid && ab.treeTier(actor, "generic-stamina") >= 2) await setActorFlag(actor, "energySpentTurn", turnKey());
   // Overexert (Stamina T5, this turn): Energy can go as low as minus your maximum.
   const over = actor.getFlag?.("flowstate", "overexert") === turnKey() && !!turnKey();
   if (over && have - cost >= -actor.system.energy.max) {
-    await actor.update({ "system.energy.value": have - cost });
+    await actor.update({ "system.energy.value": own - cost });
     await mentalHook?.energySpent?.(actor, cost);
     return true;
   }
@@ -6325,7 +6333,7 @@ export async function spendEnergy(actor, cost, what = "that") {
     ui.notifications.warn(`${actor.name} needs ${cost} Energy for ${what} but has ${have}.`);
     return false;
   }
-  await actor.update({ "system.energy.value": have - cost });
+  await actor.update({ "system.energy.value": own - cost });
   await mentalHook?.energySpent?.(actor, cost);                            // Ruin Table: the next Energy spent costs more
   return true;
 }
@@ -6554,8 +6562,8 @@ export async function rest(actor) {
       </ul>${inActiveCombat(actor) ? `<p class="fs-warn">${esc(actor.name)} is in an active combat.</p>` : ""}</div>`
   });
   if (!ok) return;
-  // A rest makes First Aid (Recovery T1) and Overexert (Stamina T5) available again.
-  await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0, "flags.flowstate.firstAided": false, "flags.flowstate.overexertUsed": false });
+  // A rest makes First Aid (Recovery T1), Overexert (Stamina T5) and the one potion per rest available again.
+  await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0, "flags.flowstate.firstAided": false, "flags.flowstate.overexertUsed": false, "flags.flowstate.potionUsed": false });
   await post(actor, { title: "8 Hour Rest", body: `<div class="fs-result">+${next - value} HP (${next}/${max})</div>` });
   await mentalHook?.rest(actor);                     // Preordained (Mental, Order T4) rolls its number after a rest
 }

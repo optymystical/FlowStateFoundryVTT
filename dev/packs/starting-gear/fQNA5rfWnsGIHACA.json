@@ -1,0 +1,37 @@
+{
+  "_id": "fQNA5rfWnsGIHACA",
+  "_key": "!items!fQNA5rfWnsGIHACA",
+  "name": "Light Thrasher (Bone)",
+  "type": "weapon",
+  "img": "icons/weapons/maces/flail-spiked.webp",
+  "system": {
+    "weaponType": "thrasher",
+    "weight": "light",
+    "material": "bone",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.thrasher.light.bone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.thrasher.light.bone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

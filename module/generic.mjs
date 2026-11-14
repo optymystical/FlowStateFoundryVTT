@@ -17,6 +17,8 @@ import { surpriseOf, isOpener, poisedMove } from "./surprise.mjs";
 import { STATS, poolFormula } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, select } from "./html.mjs";
+import { takeEdge } from "./edge.mjs";
+import { energyHave } from "./consumables-rules.mjs";
 
 const tier = (actor, id) => ab.treeTier(actor, id);
 const sp = actor => Number(actor.system.skillPoints) || 0;
@@ -25,7 +27,7 @@ const combatantOf = actor => game.combat?.combatants?.find(c => c.actor?.uuid ==
 /** Energy for one of the doc's "Energy equal to (half of / twice) your total skill points" costs. */
 const energyOf = (actor, text) => energyFor(parseEnergyCost(text), { skillPoints: sp(actor), effective: actor.system.derived?.effective ?? {} })?.value ?? 0;
 async function pay(actor, { ap = 0, rp = 0, energy = 0 }, what) {
-  if ((energy && energyTracked(actor) && (actor.system.energy?.value ?? 0) < energy)) { ui.notifications.warn(`${actor.name} needs ${energy} Energy for ${what}.`); return false; }
+  if ((energy && energyTracked(actor) && energyHave(actor) < energy)) { ui.notifications.warn(`${actor.name} needs ${energy} Energy for ${what}.`); return false; }
   if (ap && !(await spendPoints(actor, "ap", ap, what))) return false;
   if (rp && !(await spendPoints(actor, "rp", rp, what))) return false;
   return !energy || spendEnergy(actor, energy, what);
@@ -312,7 +314,7 @@ export async function resistFear(actor, { need = null } = {}) {
   if (!vals) return null;
   const stat = vals.stat || best, die = eff[stat].die, target = Math.max(0, Number(vals.need) || 0);
   const brave = tier(actor, "generic-courage") >= 1 ? 1 : 0;
-  const net = (vals.net ?? 0) + brave + rollKit.net(actor, "stat");
+  const net = (vals.net ?? 0) + brave + rollKit.net(actor, "stat") + (await takeEdge(actor, "fear"));   // a Festival Token set to resisting Fear
   const floor = tier(actor, "generic-resolve") >= 5 ? Math.floor(2 * sp(actor) / 3) : tier(actor, "generic-resolve") >= 2 ? Math.floor(sp(actor) / 3) : 0;
   const roll = await rollKit.evaluate(poolFormula(1, die, rollKit.noAdvantage(actor, net)));
   const rolls = [roll];

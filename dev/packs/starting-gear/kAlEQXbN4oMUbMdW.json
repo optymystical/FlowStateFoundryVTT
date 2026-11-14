@@ -1,0 +1,34 @@
+{
+  "_id": "kAlEQXbN4oMUbMdW",
+  "_key": "!items!kAlEQXbN4oMUbMdW",
+  "name": "Titanic Armor (Iron)",
+  "type": "armor",
+  "img": "icons/equipment/chest/breastplate-layered-grey.webp",
+  "system": {
+    "weight": "titanic",
+    "material": "iron",
+    "description": "",
+    "base": "armor.titanic.iron",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "F6wv2lpVVynnbn2O",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "armor.titanic.iron"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

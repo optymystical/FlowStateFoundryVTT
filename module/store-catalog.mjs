@@ -15,7 +15,8 @@ import { TREES } from "./trees.mjs";
 import { CHECK_DIFFICULTIES } from "./checks-rules.mjs";
 import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combos.mjs";
 import { rebuildCatalog } from "./spells.mjs";
-import { ITEM_CATALOG, ITEM_TYPES, IDENTITY, generateCatalog } from "./catalog.mjs";
+import { POTIONS } from "./consumables-rules.mjs";
+import { ITEM_CATALOG, ITEM_TYPES, IDENTITY, OPTIONAL_IDENTITY, generateCatalog } from "./catalog.mjs";
 
 const CORE = "Core rules", EQUIP = "Equipment", MAGIC = "Magic", MENTAL = "Mental", TREE = "Skill trees";
 const named = (e, k) => (typeof e === "string" ? e : e?.label ?? e?.name ?? k);
@@ -40,6 +41,7 @@ defineCollection("throwQualities", { label: "Throw qualities", group: EQUIP, tab
 defineCollection("reloadSpeeds", { label: "Reload speeds (RP)", group: EQUIP, table: RELOAD_RP, nameOf: (e, k) => k });
 defineCollection("weaponMaterials", { label: "Weapon materials", group: EQUIP, table: WEAPON_MATERIALS, addable: true, required: ["label", "rarity", "weights"] });
 defineCollection("armorWeights", { label: "Armor weights", group: EQUIP, table: ARMOR_WEIGHTS });
+defineCollection("potions", { label: "Potions", group: EQUIP, table: POTIONS, addable: true, required: ["label", "kind", "potency"] });
 defineCollection("armorMaterials", { label: "Armor materials", group: EQUIP, table: ARMOR_MATERIALS, addable: true, required: ["label", "rarity", "weights"] });
 
 // Magic
@@ -73,6 +75,6 @@ defineCollection("items", { label: "Item catalog", group: "Items", table: ITEM_C
     if (known) return null;
     if (!ITEM_TYPES[v.type]) return `has an unknown item type ("${v.type}").`;
     if (typeof v.system !== "object" || Array.isArray(v.system)) return "has no item data.";
-    const missing = IDENTITY[v.type].filter(f => v.system[f] === undefined);
+    const missing = IDENTITY[v.type].filter(f => v.system[f] === undefined && !OPTIONAL_IDENTITY.has(f));
     return missing.length ? `is missing ${missing.join(", ")}.` : null;
   } });

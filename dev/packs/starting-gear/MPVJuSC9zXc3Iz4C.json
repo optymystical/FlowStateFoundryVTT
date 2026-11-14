@@ -1,0 +1,34 @@
+{
+  "_id": "MPVJuSC9zXc3Iz4C",
+  "_key": "!items!MPVJuSC9zXc3Iz4C",
+  "name": "Medium Armor (Soft Leather)",
+  "type": "armor",
+  "img": "icons/equipment/chest/breastplate-collared-leather-brown.webp",
+  "system": {
+    "weight": "medium",
+    "material": "softLeather",
+    "description": "",
+    "base": "armor.medium.softLeather",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "F6wv2lpVVynnbn2O",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "armor.medium.softLeather"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

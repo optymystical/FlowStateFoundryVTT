@@ -1,0 +1,33 @@
+{
+  "_id": "Y31CaBlWuDGBO09t",
+  "_key": "!items!Y31CaBlWuDGBO09t",
+  "name": "Aegis (Icon)",
+  "type": "icon",
+  "img": "icons/magic/holy/yin-yang-balance-symbol.webp",
+  "system": {
+    "form": "aegis",
+    "description": "",
+    "base": "icon.aegis",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "hvVRmCIbfvMkR1rE",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "icon.aegis"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

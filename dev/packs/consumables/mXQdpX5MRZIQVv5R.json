@@ -1,0 +1,37 @@
+{
+  "_id": "mXQdpX5MRZIQVv5R",
+  "_key": "!items!mXQdpX5MRZIQVv5R",
+  "name": "Festival Token",
+  "type": "gear",
+  "img": "icons/commodities/currency/coin-engraved-sun-smile-copper.webp",
+  "system": {
+    "ammoType": "",
+    "body": 0,
+    "density": "soft",
+    "use": "token",
+    "potion": "",
+    "description": "<p>3 uses, set to one kind of roll. Spending a use gives Advantage on your next roll of that kind. At 0 uses it stays with you as a keepsake.</p>",
+    "base": "gear.festivalToken",
+    "overrides": [],
+    "quantity": 1
+  },
+  "folder": null,
+  "sort": 1000,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "gear.festivalToken"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

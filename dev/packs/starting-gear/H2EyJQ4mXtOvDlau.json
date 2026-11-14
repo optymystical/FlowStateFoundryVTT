@@ -1,0 +1,37 @@
+{
+  "_id": "H2EyJQ4mXtOvDlau",
+  "_key": "!items!H2EyJQ4mXtOvDlau",
+  "name": "Light Defender (Softwood)",
+  "type": "weapon",
+  "img": "icons/equipment/shield/heater-steel-gray.webp",
+  "system": {
+    "weaponType": "defender",
+    "weight": "light",
+    "material": "softwood",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.defender.light.softwood",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.defender.light.softwood"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

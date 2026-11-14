@@ -16,6 +16,7 @@ import * as conc from "./concentration.mjs";
 import { mental, mantraHook, TURN_START, tenetsOf } from "./wonders.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, DialogV2 } from "./html.mjs";
+import { energyHave } from "./consumables-rules.mjs";
 
 const trees = a => a?.system?.trees ?? {};
 export const ponderTier = actor => tierOf(trees(actor), "mental-ponderance-arts");
@@ -159,7 +160,7 @@ mantraHook.offer = async (actor, mult, label = "Tenet") => {
   const tn = tenetsOf(actor)[0];
   if (!tn) return mult;
   const cost = Math.floor(minOf(actor, R.KINDS[R.wonderById(tn.wonder).kind].stat) / 2);
-  if ((actor.system.energy?.value ?? 0) < cost) return mult;
+  if (energyHave(actor) < cost) return mult;
   const ans = await askFor(actor, { react: "mantra", title: "Mantra", ok: "Use Mantra", html: `<p><strong>Mantra</strong>: pay <strong>⚡ ${cost}</strong> to double the bolded effect of ${esc(label)}?</p>` });
   if (!ans) return mult;
   if (!(await mental.pay(actor, { energy: cost }, "Mantra"))) return mult;

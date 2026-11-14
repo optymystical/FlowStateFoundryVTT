@@ -66,7 +66,8 @@ export const STATUS_SOURCES = {
   stealth: { rule: "stealth" }, halfStealth: { rule: "stealthValue" }, fullStealth: { rule: "stealthValue" }, fear: { rule: "fear" }, surprised: { rule: "surprise" }, grappled: { rule: "grappling" },
   psychedUp: { entry: "Psych Up" }, calmedDown: { entry: "Calm Down" }, limber: { entry: "Limber" }, carefulSteps: { entry: "Careful Steps" },
   berserk: { entry: "Berserk" }, seeingRed: { entry: "Seeing Red" }, unstoppable: { entry: "Unstoppable" }, properStance: { entry: "Proper Stance" },
-  fishy: { entry: "Like Shooting Fish" }, sliced: { entry: "Slice" }, taunted: { entry: "Taunt" }, quickened: { entry: "Quicken" }
+  fishy: { entry: "Like Shooting Fish" }, sliced: { entry: "Slice" }, taunted: { entry: "Taunt" }, quickened: { entry: "Quicken" },
+  infected: { text: "Infected: a marker for an infection (a Bloomrot Omen's, for one). It lasts a day of world time, and any heat damage the creature takes clears it. How it spreads is up to the GM." }
 };
 /** The stacking conditions on a character (not token statuses). */
 const CONDITIONS = { ignite: { name: "Ignite", rule: "ignite" }, stain: { name: "Stain", rule: "stain" }, slow: { name: "Slow", rule: "slow" }, haste: { name: "Haste", rule: "haste" } };
@@ -330,7 +331,7 @@ registerSection({ id: "statuses", label: "Statuses", icon: "fa-solid fa-person-f
     const src = STATUS_SOURCES[s.id] ?? {};
     const target = src.rule ? ruleId(src.rule) : src.entry ? ctx.byName(src.entry) : null;
     return { id: codexId.status(s.id), title: s.name, section: "statuses", group: "Statuses", img: s.img, embed: target,
-      blocks: target ? [] : [md("A status a GM or an ability sets.")] };
+      blocks: target ? [] : [md(src.text ?? "A status a GM or an ability sets.")] };
   });
 } });
 

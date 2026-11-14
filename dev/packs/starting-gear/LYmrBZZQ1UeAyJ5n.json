@@ -1,0 +1,33 @@
+{
+  "_id": "LYmrBZZQ1UeAyJ5n",
+  "_key": "!items!LYmrBZZQ1UeAyJ5n",
+  "name": "Keystone (Shroud)",
+  "type": "shroud",
+  "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
+  "system": {
+    "shroudType": "keystone",
+    "description": "",
+    "base": "shroud.keystone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "xAOGv5wfmSDcB6O8",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "shroud.keystone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

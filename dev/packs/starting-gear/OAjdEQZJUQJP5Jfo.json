@@ -1,0 +1,37 @@
+{
+  "_id": "OAjdEQZJUQJP5Jfo",
+  "_key": "!items!OAjdEQZJUQJP5Jfo",
+  "name": "Light Assault (Bone)",
+  "type": "weapon",
+  "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+  "system": {
+    "weaponType": "assault",
+    "weight": "light",
+    "material": "bone",
+    "magazine": 2,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.assault.light.bone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.assault.light.bone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

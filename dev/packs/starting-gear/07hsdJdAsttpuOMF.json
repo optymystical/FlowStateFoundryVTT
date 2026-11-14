@@ -1,0 +1,19 @@
+{
+  "_id": "07hsdJdAsttpuOMF",
+  "_key": "!folders!07hsdJdAsttpuOMF",
+  "name": "Ammunition",
+  "type": "Item",
+  "folder": null,
+  "sorting": "a",
+  "sort": 600,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

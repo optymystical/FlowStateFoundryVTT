@@ -1,0 +1,37 @@
+{
+  "_id": "9bFIM2FUsxmKPH8Q",
+  "_key": "!items!9bFIM2FUsxmKPH8Q",
+  "name": "Heavy Balanced (Iron)",
+  "type": "weapon",
+  "img": "icons/weapons/staves/staff-animal-bird.webp",
+  "system": {
+    "weaponType": "balanced",
+    "weight": "heavy",
+    "material": "iron",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.balanced.heavy.iron",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.balanced.heavy.iron"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

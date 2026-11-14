@@ -80,7 +80,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         value: int(0),        // may go negative: below 0 is Overkill
         lost: int(0, { min: 0 }) // Max HP lost (chunks of body removed)
       }),
-      energy: new f.SchemaField({ value: int(0) }),                       // can go below 0 only while Overexerting (Stamina T5)
+      energy: new f.SchemaField({ value: int(0),                          // can go below 0 only while Overexerting (Stamina T5)
+        bonus: int(0, { min: 0 }) }),                                     // an Energy potion's bonus pool: past the maximum, spent first, lasts 1 minute
       ap: new f.SchemaField({ value: int(6, { min: 0 }) }),
       rp: new f.SchemaField({ value: int(6, { min: 0 }) }),
       conditions: new f.SchemaField({
@@ -154,6 +155,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     // Active Rituals lower max Energy until they end (the Ritual effect carries the amount).
     this.ritualLoss = effects.reduce((n, e) => n + (Number(e.flags?.flowstate?.ritual?.energyLost) || 0), 0);
     this.energy.max = Math.max(0, d.energyMax - this.ritualLoss);
+    this.energy.total = (this.energy.value ?? 0) + (this.energy.bonus ?? 0);
     // Deepening (Mental T3): Alignment past 2 costs 1 AP a turn per point.
     this.ap.max = Math.max(0, (sm?.ap ?? 6) - alignmentApLoss(this.parent?.getFlag?.("flowstate", "alignment")));
     this.rp.max = sm?.rp ?? 6;
@@ -284,6 +286,11 @@ export class FlowStateGearData extends foundry.abstract.TypeDataModel {
       density: new f.StringField({ initial: "soft", choices: () => Object.fromEntries(Object.entries(OBJECT_DENSITY).map(([k, v]) => [k, v.label])) }),
       wear: new f.NumberField({ required: true, nullable: false, integer: true, initial: 0 }),
       size: new f.NumberField({ required: false, nullable: true, integer: true, initial: null, min: 0, max: 5 }),   // its own Size (Equipment doc); empty = the usual for its user
+      // Consumables (consumables-rules.mjs): "potion" (which one: `potion`, a key of the potions table) or "token" (a Festival Token).
+      use: new f.StringField({ initial: "" }),
+      potion: new f.StringField({ initial: "" }),
+      charges: new f.NumberField({ required: false, nullable: true, integer: true, initial: null, min: 0 }),   // a Festival Token's uses left (empty: all 3)
+      checkType: new f.StringField({ initial: "" }),                                                          // ...and the roll it's set to
       description: new f.HTMLField({ initial: "" }),
       ...catalogSchema()
     };

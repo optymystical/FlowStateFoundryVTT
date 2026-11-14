@@ -17,6 +17,7 @@ import { mayHelp, mayHarm } from "./sides.mjs";
 import { mental, bold, MODES, ACTS, ACT_PROVIDERS, MISS_PROVIDERS, MISS_AUTO, MISS_MODES, DAMAGE_PROVIDERS, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, BEFORE_CLEAR, ON_CRIT, rolled, tenetFor, mantraHook, impulseHook, tryOnce, onceUsed, markOnce, actButtons } from "./wonders.mjs";
 import { notCreature, isLiving } from "./kinds.mjs";
 import { esc, DialogV2 } from "./html.mjs";
+import { energyHave } from "./consumables-rules.mjs";
 
 const roll = f => new Roll(f).evaluate();
 const minOf = (a, k) => ab.statMinOf(a, k);
@@ -281,7 +282,7 @@ async function spendStacks(actor, n) {
   n = Math.min(n, have.length);
   if (n <= 0) return 0;
   let keep = 0;
-  if (tier(actor, ids.adapt) >= 4 && actor.isOwner && (actor.system.energy?.value ?? 0) >= minOf(actor, "pon")) {
+  if (tier(actor, ids.adapt) >= 4 && actor.isOwner && energyHave(actor) >= minOf(actor, "pon")) {
     const cost = minOf(actor, "pon");
     const ans = await askFor(actor, { title: "Memory", ok: "Keep", html: `<p>${n} Adaptation stack${n === 1 ? " is" : "s are"} being used. Keep how many for <strong>⚡ ${cost}</strong> each?</p><div class="fs-field"><label>Keep</label><input type="number" name="keep" value="0" min="0" max="${n}"></div>` });
     keep = Math.max(0, Math.min(n, Math.floor(num(ans?.keep)), Math.floor((actor.system.energy.value) / cost)));

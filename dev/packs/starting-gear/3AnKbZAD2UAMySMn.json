@@ -1,0 +1,37 @@
+{
+  "_id": "3AnKbZAD2UAMySMn",
+  "_key": "!items!3AnKbZAD2UAMySMn",
+  "name": "Heavy Circular (Copper)",
+  "type": "weapon",
+  "img": "icons/weapons/thrown/boomerang.webp",
+  "system": {
+    "weaponType": "circular",
+    "weight": "heavy",
+    "material": "copper",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.circular.heavy.copper",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.circular.heavy.copper"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

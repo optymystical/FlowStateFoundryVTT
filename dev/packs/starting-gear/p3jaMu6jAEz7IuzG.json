@@ -1,0 +1,37 @@
+{
+  "_id": "p3jaMu6jAEz7IuzG",
+  "_key": "!items!p3jaMu6jAEz7IuzG",
+  "name": "Light Reach (Bone)",
+  "type": "weapon",
+  "img": "icons/weapons/polearms/spear-flared-steel.webp",
+  "system": {
+    "weaponType": "reach",
+    "weight": "light",
+    "material": "bone",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.reach.light.bone",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.reach.light.bone"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

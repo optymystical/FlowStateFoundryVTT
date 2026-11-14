@@ -1,0 +1,37 @@
+{
+  "_id": "v7BFCWELPsoqlBaT",
+  "_key": "!items!v7BFCWELPsoqlBaT",
+  "name": "Heavy Longshot (Iron)",
+  "type": "weapon",
+  "img": "icons/weapons/bows/longbow-recurve.webp",
+  "system": {
+    "weaponType": "longshot",
+    "weight": "heavy",
+    "material": "iron",
+    "magazine": 1,
+    "extraTypes": [],
+    "description": "",
+    "base": "weapon.longshot.heavy.iron",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "6yin2HxnygFrTYhr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "weapon.longshot.heavy.iron"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

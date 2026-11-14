@@ -12,6 +12,8 @@ import { notCreature } from "./kinds.mjs";
 import { askFor } from "./ask.mjs";
 import { esc, select } from "./html.mjs";
 import { CHECK_KINDS, CHECK_DIFFICULTIES, ATTITUDES, kindOf, actingWins, meetsTarget, underHalf, halfSP, socialCounter, actingNet, alacrityStacks } from "./checks-rules.mjs";
+import { takeEdge } from "./edge.mjs";
+import { energyHave } from "./consumables-rules.mjs";
 
 const SOCIAL = new Set(["persuasion", "deception"]);
 const tiersOf = actor => id => ab.treeTier(actor, id);
@@ -57,7 +59,8 @@ export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = n
   const own = actingNet({ kind, attitude, tiers: tiersOf(actor) });
   const coverStory = kind === "deception" && !contest && !!actor.getFlag?.("flowstate", "coverStory");
   const steady = kind === "stealth" && glimpse && ab.treeTier(actor, "generic-stealth") >= 2 ? 1 : 0;
-  const net = (opts.net ?? 0) + extraNet + rollKit.net(actor) - stealthDis + (kind === "perception" ? senseNet(actor) : 0) + own.net + (contest?.net ?? 0) + (coverStory ? 1 : 0) + steady;
+  const edge = ["perception", "athletics", "deception", "persuasion", "stealth"].includes(kind) ? await takeEdge(actor, kind) : 0;   // a Festival Token's use
+  const net = (opts.net ?? 0) + extraNet + rollKit.net(actor) - stealthDis + (kind === "perception" ? senseNet(actor) : 0) + own.net + (contest?.net ?? 0) + (coverStory ? 1 : 0) + steady + edge;
   await rollKit.consumeDisrupt(actor);
   if (coverStory) await setActorFlag(actor, "coverStory", null);
   const formula = () => poolFormula(1, die, rollKit.noAdvantage(actor, net));
@@ -71,7 +74,7 @@ export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = n
   const tier = K.reroll ? ab.treeTier(actor, K.tree) : 0;
   for (let n = 0; K.reroll && tier >= 3 && underHalf(result, die) && (n === 0 || tier >= 5); n++) {
     const cost = halfSP(sp(actor));
-    if ((actor.system.energy?.value ?? 0) < cost) break;
+    if (energyHave(actor) < cost) break;
     const ans = await askFor(actor, { title: `${K.reroll}: reroll?`, react: "checkReroll", ok: "Reroll",
       html: `<p>${esc(actor.name)}'s ${esc(title)} is <strong>${result}</strong>, under half of d${die}. Reroll for <strong>${cost} Energy</strong>? The new result stands${tier >= 5 ? ` (${K.repeat}: again while it's still under half)` : ""}.</p>` });
     if (!ans || !(await spendEnergy(actor, cost, K.reroll))) break;
@@ -86,7 +89,7 @@ export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = n
     const key = turnKey();
     const fresh = !inActiveCombat(actor) || actor.getFlag?.("flowstate", "pushThroughTurn") !== key;
     const cost = athletics >= 5 ? 0 : halfSP(sp(actor));
-    if (fresh && (actor.system.energy?.value ?? 0) >= cost) {
+    if (fresh && energyHave(actor) >= cost) {
       const ans = await askFor(actor, { title: "Push Through: reroll?", react: "checkReroll", ok: "Reroll",
         html: `<p>${esc(actor.name)}'s Athletics check (<strong>${result}</strong>) fails against ${vs.target}. Reroll it${cost ? ` for <strong>${cost} Energy</strong>` : " (free: Peak Condition)"}?</p>` });
       if (ans && (!cost || (await spendEnergy(actor, cost, "Push Through")))) {
@@ -182,13 +185,15 @@ export async function prepareInitiative(combat, ids) {
   for (const id of ids) {
     const c = combat.combatants.get(id), a = c?.actor;
     initNet.delete(id);
+    const edge = a ? await takeEdge(a, "initiative") : 0;          // a Festival Token set to Initiative
+    if (edge) initNet.set(id, edge);
     const stacks = a ? alacrityStacks(ab.treeTier(a, "generic-initiative")) : 0;
     if (!stacks) continue;
     const cost = halfSP(sp(a));
-    if ((a.system.energy?.value ?? 0) < cost) continue;
+    if (energyHave(a) < cost) continue;
     const ans = await askFor(a, { title: `${a.name}: Alacrity?`, react: "alacrity", ok: "Use Alacrity",
       html: `<p>Roll ${esc(a.name)}'s initiative with <strong>${stacks === 2 ? "two stacks of Advantage (Lightning Reflexes)" : "Advantage"}</strong> for <strong>${cost} Energy</strong>?</p>` });
-    if (ans && (await spendEnergy(a, cost, "Alacrity"))) initNet.set(id, stacks);
+    if (ans && (await spendEnergy(a, cost, "Alacrity"))) initNet.set(id, stacks + edge);
   }
 }
 /** An initiative check: the plain attack die (total Skill Points), with Alacrity's Advantage and whatever else every roll takes. */

@@ -1,0 +1,33 @@
+{
+  "_id": "QkAQYHiv9GhEXe4L",
+  "_key": "!items!QkAQYHiv9GhEXe4L",
+  "name": "Sanctum (Icon)",
+  "type": "icon",
+  "img": "icons/magic/holy/yin-yang-balance-symbol.webp",
+  "system": {
+    "form": "sanctum",
+    "description": "",
+    "base": "icon.sanctum",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "hvVRmCIbfvMkR1rE",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "icon.sanctum"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

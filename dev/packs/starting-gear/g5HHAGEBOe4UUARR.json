@@ -1,0 +1,34 @@
+{
+  "_id": "g5HHAGEBOe4UUARR",
+  "_key": "!items!g5HHAGEBOe4UUARR",
+  "name": "Light Armor (Cloth)",
+  "type": "armor",
+  "img": "icons/equipment/chest/breastplate-banded-leather-brown.webp",
+  "system": {
+    "weight": "light",
+    "material": "cloth",
+    "description": "",
+    "base": "armor.light.cloth",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "F6wv2lpVVynnbn2O",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "armor.light.cloth"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "wbDU6cAiDVMT8uUc",
+  "_key": "!items!wbDU6cAiDVMT8uUc",
+  "name": "Health Potion",
+  "type": "gear",
+  "img": "icons/consumables/potions/bottle-round-corked-red.webp",
+  "system": {
+    "ammoType": "",
+    "body": 0,
+    "density": "soft",
+    "use": "potion",
+    "potion": "health",
+    "description": "<p>Restores all the health an 8 hour rest restores (up to your maximum).</p><p>1 AP to drink, or to give to a creature within your reach. One potion (Health or Energy) per rest.</p>",
+    "base": "potion.health",
+    "overrides": [],
+    "quantity": 1
+  },
+  "folder": null,
+  "sort": 100,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "potion.health"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

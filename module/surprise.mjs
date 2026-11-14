@@ -12,6 +12,7 @@ import { post, setActorFlag, setStatus, spendPoints, tokenDistance, registerSurp
 import * as ab from "./abilities.mjs";
 import { askFor } from "./ask.mjs";
 import { esc, DialogV2 } from "./html.mjs";
+import { energyHave } from "./consumables-rules.mjs";
 
 /** How long a Sneak Attack outside combat counts as the one that starts the next combat. */
 const OPENING_MS = 5 * 60 * 1000;
@@ -68,7 +69,7 @@ export async function beginCombat(combat) {
     const a = c.actor;
     if (!a.statuses?.has?.("surprised") || tier(a, "generic-perception") < 2) continue;
     const cost = Number(a.system.skillPoints) || 0;
-    if ((a.system.energy?.value ?? 0) < cost) continue;
+    if (energyHave(a) < cost) continue;
     const allies = tier(a, "generic-perception") >= 4 ? list.filter(o => o !== c && o.actor.statuses?.has?.("surprised") && sideOf(o) === sideOf(c) && near(c, o)) : [];
     const ans = await askFor(a, { title: `${a.name}: Vigilance?`, react: "vigilance", ok: "Use Vigilance",
       html: `<p>Combat begins and ${esc(a.name)} is unaware. Become aware (not surprised) for <strong>${cost} Energy</strong>?</p>${allies.length ? `<p>Alert: also alert</p>${allies.map(o => `<label><input type="checkbox" name="al.${o.id}" checked> ${esc(o.name)}</label>`).join("<br>")}` : ""}` });

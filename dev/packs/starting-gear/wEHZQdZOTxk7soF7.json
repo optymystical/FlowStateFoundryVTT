@@ -1,0 +1,35 @@
+{
+  "_id": "wEHZQdZOTxk7soF7",
+  "_key": "!items!wEHZQdZOTxk7soF7",
+  "name": "Assault Ammunition",
+  "type": "gear",
+  "img": "icons/weapons/ammunition/arrows-bodkin-yellow-red.webp",
+  "system": {
+    "ammoType": "assault",
+    "body": 0,
+    "density": "soft",
+    "description": "",
+    "base": "ammo.assault",
+    "overrides": [],
+    "quantity": 20
+  },
+  "folder": "07hsdJdAsttpuOMF",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "ammo.assault"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

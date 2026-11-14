@@ -10,9 +10,11 @@
     "bold": "python3 tools/build_bold.py",
     "lint": "cd .. && eslint --max-warnings 0 module dev/run-tests.mjs dev/tests",
     "check": "npm run lint && npm test",
-    "rules": "python3 tools/build_rules.py docs/rules.md docs/equip.md ../module/rules-text.mjs"
+    "rules": "python3 tools/build_rules.py docs/rules.md docs/equip.md ../module/rules-text.mjs",
+    "packs": "node tools/build-packs.mjs"
   },
   "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "^3.0.5",
     "eslint": "^9.39.5",
     "globals": "^17.13.0",
     "handlebars": "^4.7.8"

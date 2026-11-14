@@ -1,0 +1,33 @@
+{
+  "_id": "PjjyaFokI4Kl2Fq2",
+  "_key": "!items!PjjyaFokI4Kl2Fq2",
+  "name": "Mantle (Shroud)",
+  "type": "shroud",
+  "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
+  "system": {
+    "shroudType": "mantle",
+    "description": "",
+    "base": "shroud.mantle",
+    "overrides": [],
+    "grade": 3
+  },
+  "folder": "xAOGv5wfmSDcB6O8",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "effects": [],
+  "flags": {
+    "flowstate": {
+      "catalogKey": "shroud.mantle"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14",
+    "systemId": "flowstate",
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  }
+}

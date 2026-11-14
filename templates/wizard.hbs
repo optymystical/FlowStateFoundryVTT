@@ -169,6 +169,7 @@
     <div class="fs-facts">{{#each pickedTrees}}<span>{{this}}</span>{{else}}<span>None yet ({{remainingSP}} SP banked)</span>{{/each}}</div>
     <h3>Equipment</h3>
     <ul class="fs-list">{{#each items}}<li>{{name}} — {{summary}}</li>{{else}}<li>Unarmed only</li>{{/each}}</ul>
+    {{#if purse}}<p><strong>Starting purse:</strong> {{purse}}</p>{{/if}}
     {{#if errors.length}}
     <div class="fs-wizard-errors"><strong>Fix these first:</strong><ul>{{#each errors}}<li>{{this}}</li>{{/each}}</ul></div>
     {{else}}

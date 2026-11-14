@@ -33,6 +33,7 @@ import { damageCategories, WEAPON_TYPES } from "./martial.mjs";
 import { poolFormula, resolveAttack, DAMAGE_TYPES, applyStacks } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, DialogV2, formValues, dialogHead } from "./html.mjs";
+import { energyHave } from "./consumables-rules.mjs";
 
 const eff = (actor, k) => actor.system.derived?.effective?.[k]?.value ?? 0;
 const minOf = (actor, k) => ab.statMinOf(actor, k);
@@ -58,7 +59,7 @@ export async function pay(actor, { ap = 0, rp = 0, energy = 0 }, what) {
     const s = actor.system;
     if (s.ap.value < ap) { ui.notifications.warn(`${actor.name} needs ${ap} AP for ${what} but has ${s.ap.value}.`); return false; }
     if (s.rp.value < rp) { ui.notifications.warn(`${actor.name} needs ${rp} RP for ${what} but has ${s.rp.value}.`); return false; }
-    if (s.energy.value < energy) { ui.notifications.warn(`${actor.name} needs ${energy} Energy for ${what} but has ${s.energy.value}.`); return false; }
+    if (energyHave(actor) < energy) { ui.notifications.warn(`${actor.name} needs ${energy} Energy for ${what} but has ${s.energy.value}.`); return false; }
   }
   // Paying for someone else's character (a charge's caster answering on another client): the GM applies it.
   if (!actor.isOwner) {
@@ -654,7 +655,7 @@ const chantable = (attacker, o, m, reroll) => theory(attacker) >= 3 && !o.area &
 export async function chantFortune({ attacker, o, m, entry, reroll }) {
   if (!chantable(attacker, o, m, reroll)) return null;
   const cost = minOf(attacker, R.KINDS[R.wonderById(m.wonder)?.kind ?? "dream"].stat);
-  if (inActiveCombat(attacker) && (attacker.system.energy?.value ?? 0) < cost) return null;
+  if (inActiveCombat(attacker) && energyHave(attacker) < cost) return null;
   const name = R.modeById(m.mode)?.name ?? "The Manifest";
   const ans = await charges.askFor(attacker, { react: "chant", title: "Chant", ok: "Reroll", html: `<p><strong>${esc(name)}</strong> missed with ${entry?.total ?? "?"} on a d${reroll.die}: under one half, so it would hit you.</p>
     <p><strong>Chant</strong> (⚡ ${cost}): reroll the attack roll (keeping its Advantage/Disadvantage). If the reroll misses, the self hit applies after all.</p>` });
@@ -900,7 +901,7 @@ export async function turnStart(actor) {
   if (psion.farSight) {
     const cost = mind(actor);
     // Turn start runs on the client that advanced the combat (usually the GM's): ask the character's own player, not whoever is running this.
-    const keep = psionTier(actor) >= 2 && (actor.system.energy?.value ?? 0) >= cost
+    const keep = psionTier(actor) >= 2 && energyHave(actor) >= cost
       ? !!(await charges.askFor(actor, { title: "Far Sight", ok: "Pay", html: `<p>${esc(actor.name)}: pay <strong>${cost}</strong> Energy to keep Far Sight for another turn?</p>` })) : false;
     if (keep && (await pay(actor, { energy: cost }, "Far Sight"))) next.farSight = true; else next.farSight = false;
   }

@@ -14,5 +14,9 @@
     {{#if system.isObject}}<span class="hint">Durability {{system.durability.value}}/{{system.durability.max}} · Limit {{system.objectLimit}}</span>{{/if}}</div>{{/if}}
   {{#if isGear}}<div class="fs-field-row">{{#if sizeChoices}}<div class="fs-field"><label><a class="fs-sub" data-codex="{{sizeCodex}}" data-tooltip="An item's own Size: Size 2 is neutral, each Size above is a Strengthened stack on its values, each below a Weakened one. It also sets its Load.">Size</a></label>
       <select name="system.size" data-dtype="Number" {{#unless editable}}disabled{{/unless}}>{{selectOptions sizeChoices selected=sizeSelected valueAttr="value" labelAttr="label"}}</select></div>{{/if}}</div>{{/if}}
+  {{#if token}}<div class="fs-field-row"><label>Set to <select name="system.checkType" {{#unless stateEditable}}disabled{{/unless}}><option value="">— Pick when used —</option>{{selectOptions token.checks selected=system.checkType}}</select></label>
+    <label>Uses left <input type="number" name="system.charges" value="{{token.uses}}" min="0" max="{{token.max}}" step="1" {{#unless editable}}disabled{{/unless}}></label>
+    <span class="hint">Each use: Advantage on your next roll of this kind. At 0 it's a keepsake.</span></div>{{/if}}
+  {{#if potion}}<p class="hint"><i class="fa-solid fa-flask"></i> {{potion}}</p>{{/if}}
   <textarea name="system.description" rows="10" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
 </div>

@@ -3,6 +3,23 @@ import { getCurrencies } from "./currency.mjs";
 import { currencyRows } from "./currency-rules.mjs";
 import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS, OBJECT_DENSITY } from "./rules.mjs";
 import * as generic from "./generic.mjs";
+import { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES, GLAND_ELEMENTS } from "./abc-rules.mjs";
+import { DETAIL_FIELDS } from "./creation.mjs";
+import { notCreature } from "./kinds.mjs";
+
+/** The Notes tab's Ancestry, Background and Culture, and the wizard's roleplay details (editable by the owner). */
+function abcView(actor) {
+  const sys = actor.system, abc = sys.abc ?? {}, a = ANCESTRIES[abc.ancestry];
+  const name = id => skills.treeById(id)?.name ?? id;
+  return {
+    canChange: game.user.isGM, ancestryId: abc.ancestry, ancestry: a?.name ?? "", languages: a?.languages ?? "",
+    backgroundId: abc.background, background: BACKGROUNDS[abc.background]?.name ?? "", focus: abc.focus ?? "",
+    homeland: HOMELANDS.find(h => h.id === abc.homeland)?.name ?? "", circle: CIRCLES.find(c => c.id === abc.circle)?.name ?? "",
+    element: [GLAND_ELEMENTS[abc.element], GLAND_ELEMENTS[abc.element2]].filter(Boolean).join(" / "),
+    free: Object.entries(sys.freeTrees ?? {}).map(([id, t]) => `${name(id)} ${t}`).join(", "),
+    details: actor.type === "character" ? Object.entries(DETAIL_FIELDS).map(([k, label]) => ({ k, label, value: sys.details?.[k] ?? "", long: ["appearance", "personality", "goals", "backstory"].includes(k) })) : []
+  };
+}
 import * as consumables from "./consumables.mjs";
 import { TOKEN, TOKEN_CHECKS, tokenUses } from "./consumables-rules.mjs";
 import {
@@ -979,7 +996,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       martial: FlowStateActorSheet.onMartial,
       generic: function (event, target) { return generic.run(this.document, target.dataset.op); },
       consumable: function (event, target) { return consumables.run(this.document, target.dataset.op, target.dataset.itemId ?? target.closest?.("[data-item-id]")?.dataset?.itemId); },
-      endEffect: FlowStateActorSheet.onEndEffect
+      endEffect: FlowStateActorSheet.onEndEffect,
+      changeAbc: function () { if (game.user.isGM) return import("./wizard.mjs").then(w => w.CharacterWizard.openFor(this.document)); }
     }
   };
 
@@ -1023,6 +1041,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     context.tabs = this._prepareTabs("primary");
     const actor = this.document;
     const sys = actor.system;
+    context.abcView = notCreature(actor) ? null : abcView(actor);
+    context.isOwner = actor.isOwner;
     const d = sys.derived;
 
     const groups = {};
@@ -1128,14 +1148,16 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     const sel = this.skillSelection;
     const inCombat = actions.inActiveCombat(this.document);
     const pinned = this.document.getFlag("flowstate", "pinnedTrees") ?? [];
-    const senses = sys.senses;
-    const nav = skills.treeNav(state, { pinned, unspent: sys.skills.unspent, inCombat, filter: sel.filter, senses });
+    const senses = sys.senses, ancestry = sys.abc?.ancestry || null;
+    const free = sys.freeTrees ?? {};
+    const nav = skills.treeNav(state, { pinned, unspent: sys.skills.unspent, inCombat, filter: sel.filter, senses, ancestry, ancestryName: ANCESTRIES[ancestry]?.name ?? "" });
     sel.tree ??= lastTree.get(this.document.uuid) ?? null;
     if (!skills.treeById(sel.tree)) sel.tree = nav.first ?? skills.theoryFor("martial")?.id ?? null;
     lastTree.set(this.document.uuid, sel.tree);
     const tree = skills.treeById(sel.tree);
     const current = tree ? skills.tierOf(state, tree.id) : 0;
-    const next = tree ? skills.nextTier(state, tree, sys.skills.unspent, { inCombat, senses }) : null;
+    const next = tree ? skills.nextTier(state, tree, sys.skills.unspent, { inCombat, senses, ancestry }) : null;
+    const freeTier = tree ? skills.tierOf(free, tree.id) : 0;
     const ectx = energyContext(this.document);
     const tp = treePower(this.document, tree);
     // A Wonder's Tenet scales with the Tenet multiplier of the Icon that carries it (its Wonder's stat ÷ 10, capped by the Icon's Grade), not Wonder Power;
@@ -1159,19 +1181,20 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         empty: !nav.pinned.length && !nav.yours.length && !nav.unlock.length },
       weaponNote: weaponTreeNote(tree, state),
       scaleNote: [tp?.power > 1 ? `Numbers are worked out for your ${tp.kind} Power ${tp.power}.` : "", tenetName ? (tenetMult ? `${tenetName} uses your Icon's Tenet multiplier (×${tenetMult}).` : `${tenetName} is shown as printed (it isn't your active Tenet).`) : ""].filter(Boolean).join(" "),
-      lockedNote: tree && !skills.isAvailable(state, tree, { senses }) ? `Opens at ${skills.requirementText(tree, { senses })}.` : "",
+      lockedNote: tree && !skills.isAvailable(state, tree, { senses, ancestry }) ? `Opens at ${skills.requirementText(tree, { senses })}.` : "",
+      freeNote: freeTier ? `Tiers 1–${freeTier} come free with your Background (they aren't Skill Points).` : "",
       tree: tree && {
         id: tree.id, name: tree.name, current, max: skills.MAX_TIER, codex: codexId.tree(tree.id), pinned: pinned.includes(tree.id),
-        archLabel: tree.group ? `${skills.coreFor(tree)?.name ?? ""} (Generic)` : skills.ARCHETYPES.find(a => a.id === tree.archetype)?.label ?? "",
+        archLabel: tree.group ? `${skills.coreFor(tree)?.name ?? ""} (Generic)` : tree.archetype === "ancestry" ? `${ANCESTRIES[ancestry]?.name ?? ""} (Ancestry)` : skills.ARCHETYPES.find(a => a.id === tree.archetype)?.label ?? "",
         tiers: tree.tiers.map(t => {
           const owned = t.tier <= current;
           const isNext = t.tier === current + 1;
           return {
             ...t, entries: t.entries.map(e => ({ ...scaleEntry(withEnergy(e, treeEnergyContext(ectx, tree)), e.name && e.name === tenetName ? tenetTp : tp), codex: codexId.entry(tree.id, e.name) })), owned, isNext, locked: !owned && !isNext,
-            free: t.tier === 0,
+            free: t.tier === 0, background: t.tier > 0 && t.tier <= freeTier,
             cost: t.tier, canUnlock: isNext && next?.ok && this.isEditable,
             reason: isNext ? next.reason : `Unlock Tier ${t.tier - 1} first.`,
-            canLower: game.user.isGM && owned && t.tier === current && t.tier > 0,
+            canLower: game.user.isGM && owned && t.tier === current && t.tier > 0 && t.tier > freeTier && tree.archetype !== "ancestry",
             automated: AUTOMATED[tree.id]?.[t.tier] ?? "",
             automatedLabel: AUTOMATED[tree.id]?.[t.tier]?.startsWith("Passive") ? "Passive" : "Automated"
           };

@@ -5725,7 +5725,7 @@ export const TREES = [
      },
      {
       "name": "Sight (Default Primary)",
-      "text": "Your ability to physically see targets. Dim light lightly obscures what you see, while darkness or harsh, blinding light heavily obscures it. After 1 hour of uninterrupted time in the same lighting, your eyes adjust, treating it as one step less obscured (heavily → lightly → none) until you leave it. While Blinded, your Sight does not -work.",
+      "text": "Your ability to physically see targets. Dim light lightly obscures what you see, while darkness or harsh, blinding light heavily obscures it. After 1 hour of uninterrupted time in the same lighting, your eyes adjust, treating it as one step less obscured (heavily → lightly → none) until you leave it. While Blinded, your Sight does not work.",
       "tables": [
        {
         "title": "Sight Table",
@@ -7448,6 +7448,22 @@ export const TREES = [
      {
       "name": "Energy",
       "text": "Energy is used by all Archetypes to use various abilities and actions. Your maximum energy is equal to 5x your skill points, and you can spend 1 AP to recover 1/10th of your max energy, rounded down. In addition, you regain energy equal to 2 AP of recovery at the start of each of your turns. Outside of combat, your energy is always full. However, during tense scenes outside of combat (such as sneaking past guards, or escaping a collapsing building), energy does not automatically refill, and is instead spent and regained just as it is in combat, with the GM deciding when each turn passes."
+     },
+     {
+      "name": "Environments",
+      "text": "Every region is a Lush, Fertile, or Extreme biome (the same biome types used by the Gathering Professions). Lush and Fertile biomes impose nothing on their own."
+     },
+     {
+      "name": "Extreme Biomes",
+      "text": "Harsh places such as deserts, tundra, high peaks, deep jungle, and blighted wastes. While you are in one without shelter, your Athletics checks have Disadvantage, and resting restores only half of the usual HP."
+     },
+     {
+      "name": "Hazards",
+      "text": "The GM can mark severe conditions in any biome as a Hazard (such as a blizzard, a sandstorm, thin air at the peaks, the Firelands, or the curse of the Wastes). For each hour you are exposed to a Hazard without shelter, you lose health equal to 1/10th of your Max HP, rounded down."
+     },
+     {
+      "name": "Shelter",
+      "text": "A proper camp, building, or cave removes these penalties while you are in it, as the GM decides."
      }
     ]
    },
@@ -7730,7 +7746,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Movement",
-      "text": "During their turn, characters can move using 1 AP in any direction they choose for their Movement Speed. Movement Speed itself increments in values of 5ft rounding down, and its value is based on various equipment/abilities that give benefits at the cost of speed, having a minimum of 5ft after all reductions. This is also represented in the game by grid spaces, a grid space equalling 5ft. Base movespeed cannot exceed your size limitations unless you are using specified features to increase it (see size for more info), and is by default equal to your Size’s maximum movespeed. All movement speed percentage effects are additive, so two 20%s result in a 40% decrease."
+      "text": "During their turn, characters can move using 1 AP in any direction they choose for their Movement Speed. Movement Speed itself increments in values of 5ft rounding down, and its value is based on various equipment/abilities that give benefits at the cost of speed, having a minimum of 5ft after all reductions. This is also represented in the game by grid spaces, a grid space equalling 5ft. Base movespeed cannot exceed your size limitations unless you are using specified features to increase it (see size for more info), and is by default equal to your Size’s maximum movespeed. All movement speed percentage effects are additive, so two 20%s result in a 40% decrease. You cannot move through a hostile creature’s space."
      },
      {
       "name": "Rough/Difficult Terrain",
@@ -8375,5 +8391,1253 @@ export const TREES = [
     ]
    }
   ]
+ },
+ {
+  "id": "ancestry-abc-rules",
+  "name": "ABC Rules",
+  "archetype": "ancestry",
+  "rulesOnly": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Ancestry, Background, and Culture",
+      "text": "Every character of high sapience is defined by three choices, made in order. You first pick an Ancestry, then a Background from that Ancestry’s list, then your Culture: one Homeland, from your Ancestry’s list or the Shared Homelands, and one Circle, from your Background’s list or the Shared Circles."
+     },
+     {
+      "name": "Ancestry",
+      "text": "Your Ancestry is the people you are born to. Each Ancestry is a group, with a core tree shared by the wider kind it belongs to (all Wuson-descended peoples share the Wusonian core) and one or more meat trees unique to it, or shared with closely related Ancestries. You start with the Tier 0 of your Ancestry’s core, and buy its other tiers as normal."
+     },
+     {
+      "name": "Background",
+      "text": "Your Background is how you were raised and what you did before the story began. It grants 15 free points of starting skill trees at normal tier costs, including any Theory or core tiers those trees require. Free points unlock trees and count toward their requirements, but toward nothing else: not dice, not the Stat Bonus, and not Energy. Any points a Background cannot place go into your Ancestry’s trees instead. Some Backgrounds are shared across several Ancestries, with small differences for each."
+     },
+     {
+      "name": "Culture",
+      "text": "Your Culture has two parts: your Homeland, the people and place you come from, and your Circle, the group you came up in through your Background. Together they set your values, customs, outlook, and ties in the world. Cultures are purely roleplay, and have no mechanical effect."
+     },
+     {
+      "name": "Sapience",
+      "text": "Every creature sits in one of three bands of sapience. Sapience sets what a creature can draw on; age and experience set how far it has grown within that, adding stat and skill points over time.",
+      "sub": [
+       "High sapience (band 3): Peoples such as Humans and Orcs. They have full access to Ancestry, Background, and Culture, and start at about 3 stat points per skill point.",
+       "Mid sapience (band 2): Creatures capable of some higher learning, perhaps tool use or social life, but far more limited. They have an Ancestry and a Background but no Culture, meaning no defined cultural roleplay of their own, and they keep the free skill trees their Background grants. Their ratio is about 5:1, sometimes wider.",
+       "Low sapience (band 1): Creatures with no real intelligence, unable to use tools in any meaningful way and hard-pressed to learn tactics. This covers most animals, such as cats, deer, and most dogs. They have only their Ancestry and get no free trees. Their ratio is about 10:1 or worse, widening the lower their sapience."
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ancestry-wusonian",
+  "name": "Wusonian",
+  "archetype": "ancestry",
+  "core": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Size",
+      "text": "Wuson-descended peoples are Size 3, unless their Ancestry says otherwise."
+     },
+     {
+      "name": "Body",
+      "text": "Upright on two legs, with two arms ending in grasping hands."
+     },
+     {
+      "name": "Regeneration",
+      "text": "Heals naturally through rest (see Rest in Flow State - Generic Groups), but cannot regrow lost Max HP or limbs."
+     },
+     {
+      "name": "Needs",
+      "text": "Breathes air (see Swimming in Flow State - Generic Groups), and needs food, water, and sleep. Omnivorous."
+     },
+     {
+      "name": "Senses",
+      "text": "Sight (Primary), Hearing (Primary), and Smell (Secondary) (see Senses in Flow State - Generic Groups)."
+     },
+     {
+      "name": "Warm-Blooded",
+      "text": "Your body holds its own temperature, so hot or cold biomes that are not Extreme never hinder you, even where they would slow a cold-blooded creature (see Environments in Flow State - Generic Groups)."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Acclimated",
+      "text": "Choose one biome you were raised in (such as jungle, desert, mountains, sea, or tundra). While you are in it, its Extreme penalties do not apply to you, and you have Advantage on Athletics checks. Living in a different biome for a month changes your choice to that biome."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Hardy Constitution",
+      "text": "Resting in an Extreme biome restores your full HP, and health you lose to Hazards is halved (rounded down)."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Shed the Heat",
+      "text": "Once per turn, after you move, you can spend 2 RP to regain energy as though you had spent 1 AP recovering."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Adaptive Lineage",
+      "text": "Acclimated now covers two biomes, and changing one takes a week instead of a month."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Endless Adaptation",
+      "text": "You are Acclimated to every biome you have lived in for at least a week, and you do not lose health to Hazards in them."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "human",
+   "dwarf",
+   "halfling",
+   "elf",
+   "dusken",
+   "drakenblood",
+   "orc",
+   "fire-walker",
+   "goblin"
+  ]
+ },
+ {
+  "id": "ancestry-commonkin",
+  "name": "Commonkin",
+  "archetype": "ancestry",
+  "requires": 1,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Inquisitive",
+      "text": "When you spend at least 10 minutes examining an unfamiliar object, creature, or place, the GM tells you one useful thing your character could reasonably work out about it."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Watch and Learn",
+      "text": "Once per day, after you see an ally succeed on a Non Stat Check, your next check of the same kind that day has Advantage."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Pass It On",
+      "text": "Once per day, you can spend 10 minutes teaching an ally. Choose one kind of Non Stat Check (such as Athletics or perception checks). Until that ally’s next rest, their checks of that kind cannot be lower than a third of your total skill points, rounded down."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Wanderer’s Sense",
+      "text": "You always know which way is north, you can retrace any route you have traveled in the past month, and you cannot become lost except through magical or similar effects."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Ever Learning",
+      "text": "Watch and Learn can now be used once per hour instead of once per day, and Pass It On can teach up to 5 allies at once."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "human",
+   "dwarf",
+   "halfling",
+   "elf",
+   "dusken",
+   "drakenblood"
+  ],
+  "requiresTree": {
+   "id": "ancestry-wusonian",
+   "tier": 1
+  },
+  "lineage": true,
+  "note": "Requires Wusonian 1. Lineage tree of the Human line: Human, Dwarf, Halfling, Elf, Dusken, and Drakenblood.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-bestial",
+  "name": "Bestial",
+  "archetype": "ancestry",
+  "requires": 1,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Keen Instincts",
+      "text": "Smell is a Primary sense for you instead of Secondary."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Territorial",
+      "text": "Choose a territory you have lived in for at least a week (a settlement, a camp, or a wild area up to about 1,000ft across). While you are in it, you have Advantage on perception checks and cannot be Surprised. Living somewhere else for a week changes your territory to that place."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Beast Kinship",
+      "text": "Once per day, you can spend 1 minute calming a low-sapience creature that is not already attacking you. If the GM permits, it treats you as non-threatening until you or your allies harm it."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Iron Gut",
+      "text": "You can eat raw or spoiled food and drink unclean water without ill effect."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Tribe",
+      "text": "Allies within 100ft of you inside your territory also gain the benefits of Territorial. In addition, you can hold two territories at once."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "orc",
+   "fire-walker",
+   "goblin"
+  ],
+  "requiresTree": {
+   "id": "ancestry-wusonian",
+   "tier": 1
+  },
+  "lineage": true,
+  "note": "Requires Wusonian 1. Lineage tree of the Orc line: Orc, Fire Walker, and Goblin.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-smallfolk",
+  "name": "Smallfolk",
+  "archetype": "ancestry",
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Slip Through",
+      "text": "You can move through the space of any creature at least one Size larger than you."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Quick Feet",
+      "text": "Your maximum movement speed is 40ft per AP instead of 25ft."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Big Gear",
+      "text": "Equipment made for Size 3 creatures (Size 2 items) counts as 1 Load for you. While you wield one of these weapons, your melee attack range is 5ft."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Underfoot",
+      "text": "Once per round, when a creature larger than you attacks you in melee, you can spend 1 RP to give that attack Disadvantage."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Small Target",
+      "text": "Attacks against you from creatures two or more Sizes larger than you have Disadvantage. In addition, Underfoot can now be used once per turn instead of once per round."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "halfling",
+   "goblin"
+  ],
+  "note": "Halfling or Goblin only. Shared ancestry tree of the Size 2 peoples, available without a lineage requirement.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-human-tree",
+  "name": "Human",
+  "archetype": "ancestry",
+  "requires": 2,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Determined",
+      "text": "Once per day, when you fail a Non Stat Check, you can try it again even when you normally could not (such as a failed persuasion), as long as you take a different approach (GM’s call)."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Known Faces",
+      "text": "In any settlement with a Human presence, you can find lodging, work, or a useful contact within an hour (GM’s call)."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Make Do",
+      "text": "Once per day, you can spend 10 minutes improvising a tool or replacement part from what is around you. You can then attempt a task as though you had the proper tool (GM’s call). (Placeholder: tasks belonging to trade professions to be defined once those docs exist.)"
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Unrelenting",
+      "text": "Determined can now be used once per hour instead of once per day."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Indomitable",
+      "text": "Once per round, when you fail an attack roll, dodge roll, or check, you can reroll it. You must take the new result."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "human"
+  ],
+  "requiresTree": {
+   "id": "ancestry-commonkin",
+   "tier": 2
+  },
+  "note": "Requires Commonkin 2.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-dwarf-tree",
+  "name": "Dwarf",
+  "archetype": "ancestry",
+  "requires": 2,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Compact",
+      "text": "Though you are Size 3, you are short and stocky for it. You can move through spaces built for Size 2 creatures (low tunnels, crawlspaces, narrow passages) as though they were built for you."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Sea-Hardened",
+      "text": "You have Advantage on checks to resist poisons and diseases."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Stone Reader",
+      "text": "Once per round, you can spend 1 AP to study a stone, ore, metal, or gem within 5ft. You learn its material, Rarity, Density, Durability, and Limit, whether it is natural or worked, and whether a gem is genuine or a fake. If it is an Affix, you also learn its Grade and its Offensive and Defensive effects without needing to Attune to it. (Placeholder: Gathering profession uses to be defined once that doc is active.)"
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Immovable",
+      "text": "Once per round, when an effect would move you with Force or knock you Prone, you can spend 1 RP to ignore it."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Grudgebearer",
+      "text": "Once per combat, when a creature deals damage to you, you can mark it as your Grudge for the rest of the combat. Your attacks against your Grudge gain one Strengthened stack."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "dwarf"
+  ],
+  "requiresTree": {
+   "id": "ancestry-commonkin",
+   "tier": 2
+  },
+  "note": "Requires Commonkin 2.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-halfling-tree",
+  "name": "Halfling",
+  "archetype": "ancestry",
+  "requires": 2,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Lucky",
+      "text": "Once per rest, before you roll, you can give yourself Advantage on a check, attack roll, or dodge roll of your choice."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Good Spirits",
+      "text": "Once per rest, when you rest alongside allies, you can lead a celebration (food, music, stories). Until your next rest, each creature who took part, including you, has Advantage on its first check to resist Fear."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Unassuming",
+      "text": "You have Advantage on stealth checks."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Neutral Party",
+      "text": "Once per combat, when a creature targets you with an attack and you have not dealt damage this combat, you can spend 1 RP to make a persuasion check against its counter check. On a success, it must choose a different target if it can; if it cannot, the attack has Disadvantage."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Charmed Life",
+      "text": "Lucky can now be used once per combat instead of once per rest. When you use it, you can give the Advantage to an ally within 30ft that you can see instead of yourself."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "halfling"
+  ],
+  "requiresTree": {
+   "id": "ancestry-commonkin",
+   "tier": 2
+  },
+  "note": "Requires Commonkin 2.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-elf-tree",
+  "name": "Elf",
+  "archetype": "ancestry",
+  "requires": 3,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Mindful of Fragility",
+      "text": "You have Advantage on your dodge roll against the first attack made against you each combat."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Attuned Blood",
+      "text": "Attuning to Foci, Shrouds, and Affixes takes you half the usual time."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Acuity",
+      "text": "If you have Spirit Sense, it counts as one level higher. If you do not, you gain Spirit Sense (see Grasp Arcana) as a Secondary sense."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Magic Boost",
+      "text": "Once per rest, when you cast a Spell, it gains +100% Power to its Core or Combo bolded effect(s) without increasing its Threshold. This stacks with Empower."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Overflowing Magic",
+      "text": "Magic Boost can now be used once per combat instead of once per rest."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "elf"
+  ],
+  "requiresTree": {
+   "id": "ancestry-commonkin",
+   "tier": 3
+  },
+  "note": "Requires Commonkin 3.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-dusken-shadow",
+  "name": "Dusken Shadow",
+  "archetype": "ancestry",
+  "requires": 3,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Veilborn",
+      "text": "Darkness only lightly obscures your Sight instead of heavily."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Gloom-Walker",
+      "text": "While you are in dim light or darkness, you have Advantage on stealth checks."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Shadow Spirit",
+      "text": "You can spend 3 AP to separate your spirit from your body, placing it in a space within 30ft. Your spirit passes through solid non-magical objects, moves when you spend movement (you choose whether your body or your spirit moves), and is pulled along if your body leaves its range. While separated, you can perceive from your spirit’s location instead of your own, and you can cast Spells as if from its location. You can spend 1 AP to recombine, and you recombine automatically if you fall unconscious."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Transference",
+      "text": "Once per round, while your spirit is separated, you can spend 2 AP to swap your body’s position with your spirit’s, then recombine."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Mastered Tether",
+      "text": "Shadow Spirit’s range becomes 100ft and separating costs 1 AP. In addition, Transference can be used by spending 2 RP instead of 2 AP."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "dusken"
+  ],
+  "requiresTree": {
+   "id": "ancestry-commonkin",
+   "tier": 3
+  },
+  "note": "Requires Commonkin 3.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-dusken-spirit",
+  "name": "Dusken Spirit",
+  "archetype": "ancestry",
+  "requires": 2,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Anchored",
+      "text": "You have Advantage on checks to resist effects that would move, bind, or take control of your body."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Curse-Hardened",
+      "text": "Supernatural damage you take gets one Weakened stack."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Spirit Shell",
+      "text": "Once per combat, when a Spell hits you, you can spend 2 RP to give its damage against you one Weakened stack."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Lingering Spirit",
+      "text": "Once per rest, when damage would reduce you to 0 HP or below, your spirit holds on and you drop to 1 HP instead."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Unbroken Spirit",
+      "text": "Spirit Shell can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "dusken"
+  ],
+  "requiresTree": {
+   "id": "ancestry-commonkin",
+   "tier": 2
+  },
+  "note": "Requires Commonkin 2.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-draken-elements",
+  "name": "Draken Elements",
+  "archetype": "ancestry",
+  "requires": 2,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Elemental Ward",
+      "text": "Damage of your Elemental Gland’s element that you take gets one Weakened stack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Elemental Diversity",
+      "text": "Choose a second element. Your Elemental Gland can deal either element, chosen each time you use it, and Elemental Ward covers both."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Elemental Mastery",
+      "text": "Once per combat, when you deal damage of one of your elements, you can give that damage one Strengthened stack."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Elemental Absorption",
+      "text": "Once per combat, when you take damage of one of your elements, you can spend 2 RP to regain Energy equal to 2 AP of recovery."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Elemental Attunement",
+      "text": "Elemental Mastery can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "drakenblood"
+  ],
+  "requiresTree": {
+   "id": "ancestry-commonkin",
+   "tier": 2
+  },
+  "note": "Requires Commonkin 2.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-draken-legacy",
+  "name": "Draken Legacy",
+  "archetype": "ancestry",
+  "requires": 3,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Trapwise",
+      "text": "You have Advantage on perception checks to notice traps and magical wards."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Unbowed",
+      "text": "You have Advantage on counter checks against intimidation, and on checks to resist forced mental effects that try to make you feel something, such as Fear and Charm."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Ward of the Hold",
+      "text": "Once per combat, you can spend 2 AP to raise a barrier ward. Until the start of your next turn, Spell damage dealt to you and allies within 10ft of you gets one Weakened stack."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Awakened Scales",
+      "text": "You have Advantage on your dodge roll against the first Spell attack made against you each round."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Elemental Wings",
+      "text": "Once per rest, you can spend 2 AP to manifest wings of your gland’s element from your back. For 1 minute, or until you dismiss them, they give you Lift equal to your Current Gravity Force, letting you fly at your ground movement speed (see Flight in Flow State - Rules)."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "drakenblood"
+  ],
+  "requiresTree": {
+   "id": "ancestry-commonkin",
+   "tier": 3
+  },
+  "note": "Requires Commonkin 3.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-orc-tree",
+  "name": "Orc",
+  "archetype": "ancestry",
+  "requires": 2,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Careful Steps",
+      "text": "Traps and other effects that trigger from your movement have Disadvantage on their attacks and checks against you."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Distrustful",
+      "text": "You have Advantage on counter checks against creatures you have known for less than a day."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Overgrowth",
+      "text": "Once per round, you can spend 2 AP to coax growth from natural ground, turning a 10ft square within 30ft into rough terrain until the end of combat. You ignore rough terrain you create this way, and you can have up to three of these squares at once."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Home Ground",
+      "text": "Your first attack each turn against a creature standing in rough or difficult terrain has Advantage."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Wild Heart",
+      "text": "Overgrowth now creates difficult terrain instead of rough terrain. In addition, natural rough terrain (brush, roots, mud, undergrowth) no longer increases your movement cost."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "orc"
+  ],
+  "requiresTree": {
+   "id": "ancestry-bestial",
+   "tier": 2
+  },
+  "note": "Requires Bestial 2.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-dirtborn",
+  "name": "Dirtborn",
+  "archetype": "ancestry",
+  "requires": 2,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Desert Born",
+      "text": "While you are in a desert, savanna, or other hot biome, natural rough terrain (sand, scrub, loose rock) does not increase your movement cost, sandstorms and heat haze only lightly obscure your Sight instead of heavily, you cannot become lost while navigating, and you need only half as much water each day."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Underdog",
+      "text": "When a third different creature attacks you in the same round, you have Advantage on your dodge rolls until the start of your next turn, including against that attack."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Topple",
+      "text": "Once per round, when a creature within your melee range would have Disadvantage on a dodge roll, you can spend 2 RP to make an attack roll against it, which it dodges without that Disadvantage. On a hit, it is knocked Prone instead of taking damage."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Duelist",
+      "text": "Once per round, when you make an attack, you can spend RP equal to its AP cost to give it Advantage."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Proven Strength",
+      "text": "Topple no longer requires the target to have Disadvantage on a dodge roll."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "fire-walker"
+  ],
+  "requiresTree": {
+   "id": "ancestry-bestial",
+   "tier": 2
+  },
+  "note": "Requires Bestial 2.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-firelander",
+  "name": "Firelander",
+  "archetype": "ancestry",
+  "requires": 3,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Lakewater Rites",
+      "text": "You can spend 10 minutes purifying water with flame and prayer, making up to a day’s worth of water for your group safe to drink."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Faith of the Flame",
+      "text": "While you can see a fire or other bright light, you have Advantage on checks to resist Fear."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Searing Zeal",
+      "text": "Once per combat, when you hit with an attack, you can make its damage Heat damage with one Strengthened stack."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Pilgrim’s Eye",
+      "text": "Once per round, you can spend 1 AP to study a creature within 100ft that you can see. You learn whether it was transformed by a Rift or an Anomaly (such as the Firelands lake), and one notable ability or weakness of the GM’s choice."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Flamekin",
+      "text": "Heat damage you take gets one Weakened stack, and Searing Zeal can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "fire-walker"
+  ],
+  "requiresTree": {
+   "id": "ancestry-bestial",
+   "tier": 3
+  },
+  "note": "Requires Bestial 3.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-goblin-tree",
+  "name": "Goblin",
+  "archetype": "ancestry",
+  "requires": 2,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Unlucky",
+      "text": "Once per rest, when a creature would hit you with an attack, you can force it to reroll the attack and use the lower result."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Magic-Wary",
+      "text": "You have Advantage on your first check each combat to resist the effects of a Spell."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Street Smarts",
+      "text": "While in a settlement, you have Advantage on perception checks to notice threats, ambushes, and pickpockets."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Mob Rule",
+      "text": "Once per combat, you can spend 2 AP to mark a creature within 100ft for your allies who can hear you. Until the start of your next turn, each ally’s first attack against it has Advantage."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Jinx",
+      "text": "Unlucky can now be used once per combat instead of once per rest, including when a creature would hit an ally within 30ft of you. If the rerolled attack still hits, its damage gets one Weakened stack."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "goblin"
+  ],
+  "requiresTree": {
+   "id": "ancestry-bestial",
+   "tier": 2
+  },
+  "note": "Requires Bestial 2.",
+  "core": false,
+  "coreId": "ancestry-wusonian"
  }
 ];

@@ -8,21 +8,82 @@
   </nav>
 
   <div class="fs-wizard-body">
-    {{#if is_identity}}
-    <h2>Who are you?</h2>
-    <div class="fs-wizard-identity">
-      <img class="fs-portrait" src="{{img}}" alt="" data-action="pickImage" data-tooltip="Click to change the portrait">
-      <div class="fs-field-stack">
-        <label>Name <input type="text" name="name" value="{{name}}" placeholder="Character name" autofocus></label>
-        <label>Portrait
-          <span class="fs-inline-row">
-            <input type="text" name="img" value="{{img}}">
-            <button type="button" class="fs-inline" data-action="pickImage" data-tooltip="Change the portrait"><i class="fa-solid fa-image"></i></button>
-          </span>
-        </label>
-        <p class="hint">Ancestry, Background, and Culture will be chosen here once the A.B.C. rules are ready. For now they're flavor only.</p>
+    {{#if is_ancestry}}
+    <h2>Ancestry</h2>
+    <p class="hint">The people you are born to. It sets your Size and opens your Ancestry's skill trees (its core tree's Tier 0 is free). Then you pick a Background from its list.</p>
+    <div class="fs-abc-list">
+      {{#each ancestries}}
+      <div class="fs-abc-card {{#if selected}}fs-picked{{/if}}">
+        <header><button type="button" class="fs-abc-pick" data-action="pickAncestry" data-id="{{id}}">{{#if selected}}<i class="fa-solid fa-circle-check"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}} {{name}}</button>
+          <span class="fs-sub">Size {{size}} · {{lifespan}}</span></header>
+        <div class="fs-sub">{{#each profile}}<p><strong>{{name}}:</strong> {{text}}</p>{{/each}}</div>
+        <div class="fs-sub"><strong>Languages:</strong> {{languages}} · <strong>Trees:</strong> {{trees}}</div>
       </div>
+      {{/each}}
     </div>
+    {{#if glandChoices}}
+    <div class="fs-field"><label>Elemental Gland</label><select name="abc.element"><option value="">— Pick an element —</option>{{#each glandChoices}}<option value="{{k}}" {{#if selected}}selected{{/if}}>{{v}}</option>{{/each}}</select></div>
+    {{/if}}
+    {{/if}}
+
+    {{#if is_background}}
+    <h2>Background</h2>
+    {{#unless anc}}<p class="hint">Pick an Ancestry first.</p>{{else}}
+    <p class="hint">How you were raised and what you did before the story began. It gives <strong>15 free points</strong> of starting skill trees: they unlock the trees and count toward requirements, but not toward your Skill Points (dice, the Stat Bonus, Energy).</p>
+    <div class="fs-abc-list">
+      {{#each backgrounds}}
+      <div class="fs-abc-card {{#if selected}}fs-picked{{/if}}">
+        <header><button type="button" class="fs-abc-pick" data-action="pickBackground" data-id="{{id}}">{{#if selected}}<i class="fa-solid fa-circle-check"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}} {{name}}</button></header>
+        <div class="fs-sub">{{trees}}{{#if trade}} <em>Trade slot: {{trade}}</em>{{/if}}{{#if differences}} <strong>For you:</strong> {{differences}}{{/if}}</div>
+      </div>
+      {{/each}}
+    </div>
+    {{#if pkg}}
+    <h3>{{pkg.name}}: your choices</h3>
+    {{#if focusChoices.length}}
+    <div class="fs-field"><label>Focus</label><select name="abc.focus"><option value="">— Pick one —</option>{{#each focusChoices}}<option value="{{name}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></div>
+    {{/if}}
+    {{#each slots}}
+    <div class="fs-field"><label>{{label}}</label><select name="abc.picks.{{key}}"><option value="">— Pick one —</option>{{#each choices}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></div>
+    {{/each}}
+    {{#if owed}}
+    <p class="fs-budget"><strong>{{allocCost}}</strong> of {{owed}} points spent on your Ancestry's trees. <span class="hint">Tier N costs N; requirements apply.</span></p>
+    <ul class="fs-wizard-trees">
+      {{#each allocRows}}
+      <li class="fs-wizard-tree {{#if tier}}fs-picked{{/if}}"><div class="fs-wizard-tree-head">
+        <span class="fs-wizard-tree-name">{{name}}</span> <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>
+        <span class="fs-tier-badge">Tier {{tier}}/5</span>{{#if need}} <span class="hint">{{need}}</span>{{/if}}
+        <button type="button" class="fs-inline" data-action="allocDown" data-tree="{{id}}" {{#unless canLower}}disabled{{/unless}}><i class="fa-solid fa-minus"></i></button>
+        <button type="button" class="fs-inline" data-action="allocUp" data-tree="{{id}}" {{#unless canRaise}}disabled{{/unless}}><i class="fa-solid fa-plus"></i>{{#if nextCost}} {{nextCost}}{{/if}}</button>
+      </div></li>
+      {{/each}}
+    </ul>
+    {{/if}}
+    <p><strong>Free trees:</strong> {{#each freeList}}<span class="fs-tag">{{this}}</span> {{else}}<span class="hint">none yet</span>{{/each}}</p>
+    {{#if freeErrors.length}}<p class="hint">{{#each freeErrors}}{{this}} {{/each}}</p>{{/if}}
+    {{/if}}
+    {{/unless}}
+    {{/if}}
+
+    {{#if is_culture}}
+    <h2>Culture</h2>
+    {{#unless pkg}}<p class="hint">Pick an Ancestry and a Background first.</p>{{else}}
+    <p class="hint">Purely roleplay: your Homeland is the people and place you come from, your Circle the group you came up in through your Background. They set your values, customs and ties, with no game effect.</p>
+    <h3>Homeland</h3>
+    <div class="fs-abc-list">
+      {{#each homelands}}
+      <label class="fs-abc-card fs-abc-radio {{#if selected}}fs-picked{{/if}}"><input type="radio" name="abc.homeland" value="{{id}}" {{#if selected}}checked{{/if}}>
+        <strong>{{name}}</strong>{{#if shared}} <span class="fs-sub">(Shared)</span>{{/if}}<span class="fs-sub">{{text}}</span></label>
+      {{/each}}
+    </div>
+    <h3>Circle</h3>
+    <div class="fs-abc-list">
+      {{#each circles}}
+      <label class="fs-abc-card fs-abc-radio {{#if selected}}fs-picked{{/if}}"><input type="radio" name="abc.circle" value="{{id}}" {{#if selected}}checked{{/if}}>
+        <strong>{{name}}</strong>{{#if shared}} <span class="fs-sub">(Shared)</span>{{/if}}<span class="fs-sub">{{text}}</span></label>
+      {{/each}}
+    </div>
+    {{/unless}}
     {{/if}}
 
     {{#if is_stats}}
@@ -67,8 +128,8 @@
 
     {{#if is_skills}}
     <h2>Skill Trees</h2>
-    <p class="fs-budget {{#unless remainingSP}}{{/unless}}"><strong>{{remainingSP}}</strong> of {{skillPoints}} Skill Points left.
-      <span class="hint">Tier N costs N. Unspent points stay banked for later.</span></p>
+    <p class="fs-budget"><strong>{{remainingSP}}</strong> of {{skillPoints}} Skill Points left.
+      <span class="hint">Tier N costs N; your Background's free tiers cost nothing. Unspent points stay banked for later.</span></p>
     <div class="fs-skill-pickers">
       <label>Archetype or Group
         <select name="skillArch">{{#each archetypes}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}{{#if placeholder}} (coming soon){{/if}}</option>{{/each}}</select>
@@ -80,7 +141,7 @@
       <li class="fs-wizard-tree {{#if tier}}fs-picked{{/if}}">
         <div class="fs-wizard-tree-head">
           <a class="fs-wizard-tree-name" data-action="treeToggle" data-tree="{{id}}"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{name}}</a> <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>
-          <span class="fs-tier-badge">Tier {{tier}}/5</span>
+          <span class="fs-tier-badge">Tier {{tier}}/5{{#if freeTier}} · {{freeTier}} free{{/if}}</span>
           <button type="button" class="fs-inline" data-action="treeDown" data-tree="{{id}}" data-tooltip="{{lowerTip}}" {{#unless canLower}}disabled{{/unless}}><i class="fa-solid fa-minus"></i></button>
           <button type="button" class="fs-inline" data-action="treeUp" data-tree="{{id}}" data-tooltip="{{#if nextCost}}Tier {{nextCost}} costs {{nextCost}} SP{{else}}Maxed{{/if}}" {{#unless canRaise}}disabled{{/unless}}><i class="fa-solid fa-plus"></i>{{#if nextCost}} {{nextCost}}{{/if}}</button>
         </div>
@@ -151,23 +212,36 @@
     </div>
     {{/if}}
 
-    {{#if is_review}}
-    <h2>Review</h2>
+    {{#if is_notes}}
+    <h2>Notes</h2>
     <div class="fs-wizard-identity">
-      <img class="fs-portrait" src="{{img}}" alt="">
-      <div>
-        <h3>{{#if name}}{{name}}{{else}}<em>Unnamed</em>{{/if}}</h3>
-        <div class="fs-facts">
-          <span><strong>HP</strong> {{preview.hp}}</span><span><strong>Energy</strong> {{preview.energy}}</span>
-          <span><strong>Skill Points</strong> {{preview.skillPoints}}</span><span><strong>Banked stat points</strong> {{remaining}}</span>
-        </div>
+      <img class="fs-portrait" src="{{img}}" alt="" data-action="pickImage" data-tooltip="Click to change the portrait">
+      <div class="fs-field-stack">
+        <label>Name <input type="text" name="name" value="{{name}}" placeholder="Character name"></label>
+        <label>Portrait
+          <span class="fs-inline-row">
+            <input type="text" name="img" value="{{img}}">
+            <button type="button" class="fs-inline" data-action="pickImage" data-tooltip="Change the portrait"><i class="fa-solid fa-image"></i></button>
+          </span>
+        </label>
+        <p class="fs-sub">{{anc.name}}{{#if backgroundName}} · {{backgroundName}}{{/if}}{{#if homelandName}} · {{homelandName}}{{/if}}{{#if circleName}} · {{circleName}}{{/if}}</p>
       </div>
     </div>
-    <h3>Stats</h3>
+    <p class="hint">Anything else about your character, if you want: it goes on your sheet's Notes tab.</p>
+    <div class="fs-wizard-details">
+      {{#each details}}
+      <label class="{{#if long}}fs-detail-long{{/if}}">{{label}}
+        {{#if long}}<textarea name="details.{{k}}" rows="3">{{value}}</textarea>{{else}}<input type="text" name="details.{{k}}" value="{{value}}">{{/if}}
+      </label>
+      {{/each}}
+    </div>
+    <h3>Summary</h3>
+    <div class="fs-facts">
+      <span><strong>HP</strong> {{preview.hp}}</span><span><strong>Energy</strong> {{preview.energy}}</span>
+      <span><strong>Skill Points</strong> {{preview.skillPoints}}</span><span><strong>Banked stat points</strong> {{remaining}}</span>
+    </div>
     <div class="fs-facts">{{#each statGroups}}{{#each stats}}<span><strong>{{label}}</strong> {{value}}</span>{{/each}}{{/each}}</div>
-    <h3>Skill Trees</h3>
-    <div class="fs-facts">{{#each pickedTrees}}<span>{{this}}</span>{{else}}<span>None yet ({{remainingSP}} SP banked)</span>{{/each}}</div>
-    <h3>Equipment</h3>
+    <div class="fs-facts">{{#each pickedTrees}}<span>{{this}}</span>{{else}}<span>No trees yet ({{remainingSP}} SP banked)</span>{{/each}}</div>
     <ul class="fs-list">{{#each items}}<li>{{name}} — {{summary}}</li>{{else}}<li>Unarmed only</li>{{/each}}</ul>
     {{#if purse}}<p><strong>Starting purse:</strong> {{purse}}</p>{{/if}}
     {{#if errors.length}}
@@ -181,7 +255,7 @@
   <footer class="fs-wizard-footer">
     <button type="button" data-action="back" {{#if isFirst}}disabled{{/if}}><i class="fa-solid fa-arrow-left"></i> Back</button>
     {{#if isLast}}
-    <button type="button" class="fs-primary" data-action="finish" {{#unless ready}}disabled{{/unless}}><i class="fa-solid fa-check"></i> Create character</button>
+    <button type="button" class="fs-primary" data-action="finish" {{#unless ready}}disabled{{/unless}}><i class="fa-solid fa-check"></i> {{#if editing}}Apply{{else}}Create character{{/if}}</button>
     {{else}}
     <button type="button" class="fs-primary" data-action="next">Next <i class="fa-solid fa-arrow-right"></i></button>
     {{/if}}

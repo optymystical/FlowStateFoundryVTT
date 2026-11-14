@@ -1,4 +1,30 @@
 <section class="tab fs-tab {{tab.cssClass}}" data-tab="notes" data-group="primary">
+  {{#if abcView}}
+  <section class="fs-abc-view">
+    <h3>Ancestry, Background and Culture
+      {{#if abcView.canChange}}<button type="button" class="fs-inline" data-action="changeAbc" data-tooltip="GM: change the Ancestry, Background or Culture (the Background's free trees are worked out again)"><i class="fa-solid fa-pen"></i></button>{{/if}}</h3>
+    {{#if abcView.ancestry}}
+    <div class="fs-facts">
+      <span><strong>Ancestry</strong> <a class="fs-codex-name" data-codex="abc:ancestry:{{abcView.ancestryId}}">{{abcView.ancestry}}</a></span>
+      {{#if abcView.background}}<span><strong>Background</strong> <a class="fs-codex-name" data-codex="abc:background:{{abcView.backgroundId}}">{{abcView.background}}</a>{{#if abcView.focus}} ({{abcView.focus}}){{/if}}</span>{{/if}}
+      {{#if abcView.homeland}}<span><strong>Homeland</strong> {{abcView.homeland}}</span>{{/if}}
+      {{#if abcView.circle}}<span><strong>Circle</strong> {{abcView.circle}}</span>{{/if}}
+      {{#if abcView.element}}<span><strong>Elemental Gland</strong> {{abcView.element}}</span>{{/if}}
+      {{#if abcView.languages}}<span><strong>Languages</strong> {{abcView.languages}}</span>{{/if}}
+    </div>
+    {{#if abcView.free}}<p class="hint"><i class="fa-solid fa-scroll"></i> Free with the Background: {{abcView.free}}</p>{{/if}}
+    {{else}}<p class="hint">No Ancestry yet.{{#if abcView.canChange}} Use the pen to pick one.{{/if}}</p>{{/if}}
+    {{#if abcView.details.length}}
+    <div class="fs-wizard-details">
+      {{#each abcView.details}}
+      <label class="{{#if long}}fs-detail-long{{/if}}">{{label}}
+        {{#if long}}<textarea name="system.details.{{k}}" rows="3" {{#unless @root.isOwner}}disabled{{/unless}}>{{value}}</textarea>{{else}}<input type="text" name="system.details.{{k}}" value="{{value}}" {{#unless @root.isOwner}}disabled{{/unless}}>{{/if}}
+      </label>
+      {{/each}}
+    </div>
+    {{/if}}
+  </section>
+  {{/if}}
   <section class="fs-bio">
     <h3>Notes</h3>
     <textarea name="system.biography" rows="20" {{#unless editable}}disabled{{/unless}}>{{system.biography}}</textarea>

@@ -33,8 +33,21 @@ export function entryBlurb(entry, max = 170) {
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_RARITIES, AFFIX_SIDES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 import { ITEM_CATALOG, isGenerated, itemData } from "./catalog.mjs";
+import { freeTreesFor, cultureErrors, ancestrySize, GLAND_ELEMENTS } from "./abc-rules.mjs";
 
-export const DEFAULT_RULES = { statPoints: 90, items: 4, maxRarity: "uncommon", grade: 10 };
+// 45 stat points (15 Skill Points) plus the Background's 15 free points of trees (Flow State - ABCs).
+export const DEFAULT_RULES = { statPoints: 45, items: 4, maxRarity: "uncommon", grade: 10 };
+/** The Notes step's roleplay details (all optional), kept in `system.details`. */
+export const DETAIL_FIELDS = { age: "Age", pronouns: "Pronouns", height: "Height", appearance: "Appearance", personality: "Personality", goals: "Goals", backstory: "Backstory" };
+/** A choice's ABC part made safe: only known keys, as strings (picks and alloc as maps). */
+export function cleanAbc(abc = {}) {
+  const str = v => String(v ?? "").slice(0, 80);
+  const picks = Object.fromEntries(Object.entries(abc.picks ?? {}).map(([k, v]) => [str(k), str(v)]));
+  const alloc = Object.fromEntries(Object.entries(abc.alloc ?? {}).map(([k, v]) => [str(k), Math.max(0, Math.min(5, Math.trunc(Number(v) || 0)))]).filter(([, v]) => v > 0));
+  return { ancestry: str(abc.ancestry), background: str(abc.background), focus: str(abc.focus), picks, alloc, homeland: str(abc.homeland), circle: str(abc.circle),
+    element: GLAND_ELEMENTS[abc.element] ? abc.element : "", element2: GLAND_ELEMENTS[abc.element2] ? abc.element2 : "" };
+}
+export const cleanDetails = (details = {}) => Object.fromEntries(Object.keys(DETAIL_FIELDS).map(k => [k, String(details?.[k] ?? "").slice(0, 4000)]).filter(([, v]) => v.trim()));
 /** Ammunition given with each starting ranged weapon (per weapon, by its ammo type; at most 100 per type). */
 export const STARTING_AMMO = 20;
 export const DEFAULT_IMG = "icons/svg/mystery-man.svg";
@@ -141,6 +154,10 @@ export function validate(choice, rules = DEFAULT_RULES) {
   }
   const spent = statTotal(choice.stats ?? {});
   if (spent > rules.statPoints) errors.push(`You've spent ${spent} stat points, but only ${rules.statPoints} are available.`);
+  // Ancestry, Background and Culture (the free trees are worked out again from the choices, never taken from the client).
+  const abc = cleanAbc(choice.abc);
+  const free = freeTreesFor(abc);
+  errors.push(...free.errors, ...cultureErrors(abc));
   const items = choice.items ?? [];
   if (items.length > rules.items) errors.push(`You can pick at most ${rules.items} starting items.`);
   if (items.filter(slotIsArmor).length > 1) errors.push("You can start with at most one armor.");
@@ -178,7 +195,7 @@ export function validate(choice, rules = DEFAULT_RULES) {
     if (slot.kind === "weapon" && slot.type === "unarmed") errors.push(`${label}: Unarmed comes free; pick a different weapon.`);
     if (slot.kind === "weapon" && slot.extraTypes?.length && !rules.multiType) errors.push(`${label}: starting weapons can't have extra types in this world.`);
   }
-  errors.push(...validateTrees(choice.trees, skillPointsFor(rules.statPoints)));
+  errors.push(...validateTrees(choice.trees, skillPointsFor(rules.statPoints), { free: free.trees, ancestry: abc.ancestry }));
   return errors;
 }
 
@@ -192,15 +209,21 @@ export function cleanTrees(trees = {}) {
   return out;
 }
 
-/** Problems with the starting skill trees: budget and Theory requirements. */
-export function validateTrees(trees, skillPoints) {
+/** The starting trees: the Background's free tiers, raised by what the player bought. */
+export const withFree = (trees, free = {}) => {
+  const out = cleanTrees(trees);
+  for (const [id, t] of Object.entries(free ?? {})) out[id] = Math.max(out[id] ?? 0, t);
+  return out;
+};
+/** Problems with the starting skill trees: budget (free tiers cost nothing) and requirements (an ancestry tree needs the character's Ancestry). */
+export function validateTrees(trees, skillPoints, { free = {}, ancestry = null } = {}) {
   const errors = [];
-  const t = cleanTrees(trees);
-  const spent = skills.spentPoints(t);
+  const t = withFree(trees, free);
+  const spent = skills.spentPoints(t, free);
   if (spent > skillPoints) errors.push(`Your skill trees cost ${spent} Skill Points, but you only have ${skillPoints}.`);
   for (const id of Object.keys(t)) {
     const tree = skills.treeById(id);
-    if (!skills.isAvailable(t, tree)) errors.push(`${tree.name} needs ${skills.requirementText(tree)}.`);
+    if (!skills.isAvailable(t, tree, { ancestry })) errors.push(`${tree.name} needs ${skills.requirementText(tree)}.`);
   }
   return errors;
 }
@@ -210,6 +233,9 @@ export function buildActorData(choice, rules, userId) {
   const img = String(choice.img || DEFAULT_IMG);
   const name = String(choice.name).trim();
   const spent = statTotal(choice.stats);
+  const abc = cleanAbc(choice.abc);
+  const free = freeTreesFor(abc).trees;
+  const size = abc.ancestry ? ancestrySize(abc.ancestry) : 3;
   return {
     name, img, type: "character",
     ownership: { default: 0, [userId]: 3 },
@@ -220,8 +246,10 @@ export function buildActorData(choice, rules, userId) {
       unspentStats: rules.statPoints - spent,
       statCarry: rules.statPoints - 3 * skillPointsFor(rules.statPoints),          // so 3 × Skill Points + carry is the full total
       creation: false,
-      size: 3,
-      trees: cleanTrees(choice.trees),
+      size,
+      trees: withFree(choice.trees, free),
+      abc, freeTrees: free,
+      details: cleanDetails(choice.details),
       currency: { ...(rules.currency ?? {}) }                       // the starting purse (each currency's starting amount)
     },
     items: startingItems(choice.items ?? [], rules),

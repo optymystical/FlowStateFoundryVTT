@@ -16,7 +16,8 @@ import { dataVersion } from "./store.mjs";
 import { renderMarkdown, inline, escapeHtml, plainText } from "./codex-md.mjs";
 import { RULE_DOCS } from "./rules-text.mjs";
 import { TREES } from "./trees.mjs";
-import { ARCHETYPES, coreFor, requiredTier } from "./skills.mjs";
+import { ARCHETYPES, coreFor, requiredTier, treeById } from "./skills.mjs";
+import { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES, ABC_RULES, packageFor } from "./abc-rules.mjs";
 import { STATS, SIZES, DAMAGE_TYPES, OBJECT_DENSITY, STAIN_VARIANTS } from "./rules.mjs";
 import { RARITIES, WEAPON_TAGS, WEAPON_TYPES, WEIGHTS, THROW, RELOAD_RP, DAMAGE_CATEGORY, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS } from "./martial.mjs";
 import { CASTING_FORMS, FOCI_TYPES, SHROUD_TYPES, AFFIXES } from "./magic.mjs";
@@ -178,8 +179,10 @@ registerSection({ id: "trees", label: "Skill trees", icon: "fa-solid fa-sitemap"
     for (const t of trees) {
       const tierBlocks = t.tiers.map(tier => ({ kind: "entries", label: `Tier ${tier.tier}${tier.free ? " (free)" : ""}`, summary: tier.summary ?? "",
         items: tier.entries.map(e => ({ id: codexId.entry(t.id, e.name), name: e.name ?? "", text: e.text ?? "", sub: e.sub ?? [], cost: costOf(e.text), bold: t.archetype === "mental" })) }));
-      pages.push({ id: codexId.tree(t.id), title: t.name, section: "trees", group: t.group ? `Generic: ${coreFor(t)?.name}` : a.label, badge: t.core ? "Core tree" : t.theory ? "Theory" : "Skill tree",
-        subtitle: t.core ? "Generic Group Core tree (Tier 0 is free)" : t.theory ? `${a.label} Theory` : needs(t) ? `Needs ${needs(t)}` : a.label,
+      const anc = t.archetype === "ancestry";
+      pages.push({ id: codexId.tree(t.id), title: t.name, section: "trees", group: t.group ? `Generic: ${coreFor(t)?.name}` : a.label, badge: t.rulesOnly ? "Rules" : t.core ? "Core tree" : t.theory ? "Theory" : "Skill tree",
+        subtitle: anc ? `${t.core ? "Ancestry core tree (Tier 0 is free)" : needs(t) ? `Needs ${needs(t)}` : "Ancestry tree"} · ${(t.ancestries ?? []).map(x => ANCESTRIES[x]?.name ?? x).join(", ")}`
+          : t.core ? "Generic Group Core tree (Tier 0 is free)" : t.theory ? `${a.label} Theory` : needs(t) ? `Needs ${needs(t)}` : a.label,
         hidden: !!t.hidden, blocks: [...tierBlocks, t.table?.rows?.length ? { kind: "table", label: t.table.title, head: ["Roll", t.table.title ?? "Effect"], rows: t.table.rows.map(r => [r[0], r[1]]) } : null].filter(Boolean) });
       for (const tier of t.tiers) for (const e of tier.entries) pages.push(entryPage(t, tier, e));
     }
@@ -187,8 +190,44 @@ registerSection({ id: "trees", label: "Skill trees", icon: "fa-solid fa-sitemap"
   return pages;
 } });
 
+/* ---------------- Ancestry, Background and Culture (Flow State - ABCs) ---------------- */
+
+registerSection({ id: "abcs", label: "Ancestries", icon: "fa-solid fa-people-group", order: 3, build() {
+  const pages = [];
+  const tree = id => ({ id: codexId.tree(id), label: treeById(id)?.name ?? id });
+  const rules = ABC_RULES?.tiers?.[0]?.entries ?? [];
+  pages.push({ id: "abc:rules", title: "Ancestry, Background and Culture", section: "abcs", group: "Rules", badge: "Rules",
+    blocks: [{ kind: "entries", label: "Tier 0 (free)", items: rules.map(e => ({ id: codexId.entry("ancestry-abc-rules", e.name), name: e.name, text: e.text, sub: e.sub ?? [] })) },
+      linksBlock("Ancestries", Object.values(ANCESTRIES).filter(x => !x.hidden).map(x => ({ id: `abc:ancestry:${x.id}`, label: x.name })))] });
+  for (const a of Object.values(ANCESTRIES)) {
+    pages.push({ id: `abc:ancestry:${a.id}`, title: a.name, section: "abcs", group: "Ancestries", badge: "Ancestry", hidden: !!a.hidden, subtitle: `Size ${a.size}`,
+      blocks: [fieldsBlock(a.profile.filter(p => !["Backgrounds", "Homelands"].includes(p.name)).map(p => [p.name, p.text])),
+        linksBlock("Skill trees", a.trees.map(tree)),
+        linksBlock("Backgrounds", (a.backgrounds ?? []).filter(b => BACKGROUNDS[b]).map(b => ({ id: `abc:background:${b}`, label: BACKGROUNDS[b].name }))),
+        linksBlock("Homelands", HOMELANDS.filter(h => h.ancestry === a.id).map(h => ({ id: `abc:homeland:${h.id}`, label: h.name })))] });
+  }
+  for (const b of Object.values(BACKGROUNDS)) {
+    const avail = b.available === "all" ? "Every Ancestry" : (b.available ?? []).map(x => ANCESTRIES[x]?.name ?? x).join(", ");
+    const pkg = packageFor(b.id, null);
+    pages.push({ id: `abc:background:${b.id}`, title: b.name, section: "abcs", group: "Backgrounds", badge: "Background", hidden: !!b.hidden, subtitle: avail,
+      blocks: [fieldsBlock(Object.entries(b.text ?? {}).map(([k, v]) => [k, v])),
+        pkg?.items?.length ? linksBlock("Starting trees", pkg.items.filter(i => i.tree).map(i => ({ ...tree(treeByNameSafe(i.tree)), note: `Tier ${i.tier}` }))) : null,
+        linksBlock("Circles", CIRCLES.filter(c => c.background === b.id).map(c => ({ id: `abc:circle:${c.id}`, label: c.name })))].filter(Boolean) });
+  }
+  for (const h of HOMELANDS) pages.push({ id: `abc:homeland:${h.id}`, title: h.name, section: "abcs", group: h.ancestry ? `Homelands: ${ANCESTRIES[h.ancestry]?.name ?? h.ancestry}` : "Homelands: Shared", badge: "Homeland", hidden: !!h.hidden, blocks: [md(h.text)] });
+  for (const c of CIRCLES) pages.push({ id: `abc:circle:${c.id}`, title: c.name, section: "abcs", group: c.background ? "Circles: Backgrounds" : "Circles: Shared", badge: "Circle", hidden: !!c.hidden,
+    subtitle: c.background ? BACKGROUNDS[c.background]?.name ?? "" : "", blocks: [md(c.text)] });
+  return pages;
+} });
+/** A Background's tree name → its id (the Codex only links trees it knows). */
+function treeByNameSafe(name) {
+  const n = String(name).toLowerCase();
+  return TREES.find(t => t.archetype !== "ancestry" && (t.name.toLowerCase() === n || t.name.toLowerCase().replace(/\s*\((dream|nightmare)\)$/, "") === n))?.id ?? "";
+}
+
 /** What opens a tree: "Theory Tier 2", "Stealth Tier 1", "Perception Tier 1, 3 or 5 (Heightened, Primary or Secondary Sight)". */
 function needs(t) {
+  if (t.archetype === "ancestry") return t.requiresTree ? `${treeById(t.requiresTree.id)?.name} Tier ${t.requiresTree.tier}` : t.core ? "Core" : (t.ancestries ?? []).map(a => ANCESTRIES[a]?.name ?? a).join(" or ");
   if (t.core) return "Core";
   if (t.theory) return "Theory";
   const r = t.senseRequires;

@@ -26,6 +26,7 @@
       </header>
       {{/with}}
       {{#if skillView.lockedNote}}<p class="hint"><i class="fa-solid fa-lock"></i> {{skillView.lockedNote}}</p>{{/if}}
+      {{#if skillView.freeNote}}<p class="hint"><i class="fa-solid fa-scroll"></i> {{skillView.freeNote}}</p>{{/if}}
       {{#if skillView.scaleNote}}<p class="hint"><i class="fa-solid fa-scale-balanced"></i> {{skillView.scaleNote}}</p>{{/if}}
       {{#if skillView.weaponNote}}<p class="hint fs-weapon-note"><i class="fa-solid fa-khanda"></i> {{skillView.weaponNote}}</p>{{/if}}
     {{#with skillView.tree}}
@@ -38,6 +39,7 @@
           <span class="fs-tier-state">
             {{#if automated}}<span class="fs-tier-badge fs-auto" data-tooltip="{{automated}}"><i class="fa-solid fa-wand-magic-sparkles"></i> {{automatedLabel}}</span>{{/if}}
             {{#if free}}<span class="fs-tier-badge">Free</span>
+            {{else if background}}<span class="fs-tier-badge" data-tooltip="Free with your Background: it unlocks the tier and counts toward requirements, not toward your Skill Points"><i class="fa-solid fa-scroll"></i> Background</span>
             {{else if owned}}<span class="fs-tier-badge"><i class="fa-solid fa-check"></i> Unlocked</span>
               {{#if canLower}}<button type="button" class="fs-inline" data-action="lowerTier" data-tree="{{../id}}" data-tooltip="GM: remove this tier (refunds {{cost}} SP)"><i class="fa-solid fa-rotate-left"></i></button>{{/if}}
             {{else if isNext}}<button type="button" class="fs-unlock" data-action="unlockTier" data-tree="{{../id}}" data-tooltip="{{reason}}" {{#unless canUnlock}}disabled{{/unless}}><i class="fa-solid fa-lock-open"></i> Unlock · {{cost}} SP</button>

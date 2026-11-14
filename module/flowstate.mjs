@@ -351,7 +351,7 @@ Hooks.once("init", () => {
 
   // Character creation budgets (used by the New Character wizard and re-checked by the GM).
   const worldNumber = (key, name, hint, def) => game.settings.register("flowstate", key, { name, hint, scope: "world", config: true, type: Number, default: def });
-  worldNumber("startingStatPoints", "Starting stat points", "Stat points a new character spends in the New Character wizard. Skill Points are a third of this.", 90);
+  worldNumber("startingStatPoints", "Starting stat points", "Stat points a new character spends in the New Character wizard. Skill Points are a third of this; the Background adds 15 free points of skill trees on top.", 45);
   worldNumber("startingItems", "Starting equipment picks", "How many items a new character picks: weapons, armor (at most one), Foci, Shrouds, and Affixes (each Affix is one pick). Unarmed is free; ranged weapons come with 20 ammunition each.", 4);
   worldNumber("startingGrade", "Starting equipment Grade", "Grade of starting weapons and armor.", 10);
   game.settings.register("flowstate", "startingMaxRarity", {
@@ -819,7 +819,7 @@ Hooks.on("updateToken", (token, changes, options, userId) => {
  * and change item state (equip, 2H, loaded). Foundry has no server-side field checks, so this guards the
  * interface and normal play; it isn't anti-cheat.
  */
-const BUILD_KEYS = ["system.stats", "system.skillPoints", "system.size", "system.unspentStats", "system.statCarry", "system.creation", "system.trees"];
+const BUILD_KEYS = ["system.stats", "system.skillPoints", "system.size", "system.unspentStats", "system.statCarry", "system.creation", "system.trees", "system.abc", "system.freeTrees"];
 // Players may rename their own items and change their pictures; everything else about an item's identity is GM-only.
 const ITEM_IDENTITY_KEYS = ["system.weaponType", "system.weight", "system.material", "system.grade",
   "system.description", "system.quantity", "system.wear", "system.fociType", "system.shroudType", "system.affixes", "system.affix", "system.magazine", "system.extraTypes", "system.ammoType", "system.size"];
@@ -850,11 +850,11 @@ function guardedChanges(doc, changes, keys) {
 /** Is this actor's build open to its players (GM always can)? */
 const buildOpen = actor => !actor || actor.type === "pile" || actor.system?.creation;
 
-/** Characters stay Size 3 until Ancestry exists (only NPCs have other sizes). */
+/** A character's Size comes from its Ancestry (Halflings and Goblins are Size 2): it changes only with the Ancestry. */
 Hooks.on("preUpdateActor", (actor, changes, options) => {
-  if (actor.type !== "character" || options?.flowstateAncestry) return;
+  if (actor.type !== "character" || options?.flowstateAncestry || !actor.system.abc?.ancestry) return;
   if (!guardedChanges(actor, changes, ["system.size"]).length) return;
-  ui.notifications.warn("Character size is set by Ancestry, which isn't in the system yet. It stays at Size 3.");
+  ui.notifications.warn(`${actor.name}'s Size comes from their Ancestry.`);
   setTimeout(() => actor.sheet?.rendered && actor.sheet.render(), 0);
   return false;
 });

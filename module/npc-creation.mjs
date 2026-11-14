@@ -11,6 +11,8 @@ import * as creation from "./creation.mjs";
 export const NPC_DEFAULTS = { statPoints: 90, ratio: 3, skillManual: false, skillPoints: 30, grade: 1, size: 3, disposition: -1, ammo: creation.STARTING_AMMO };
 export const ANY_RARITY = "veryRare";
 export const DISPOSITIONS = { "-1": "Hostile", 0: "Neutral", 1: "Friendly" };
+/** Sapience (Flow State - ABCs): high, mid or low, and the stat points per Skill Point it starts a creature at. */
+export const SAPIENCE = { 3: { label: "High (3:1)", ratio: 3 }, 2: { label: "Mid (5:1)", ratio: 5 }, 1: { label: "Low (10:1)", ratio: 10 } };
 const TOKEN_SQUARES = { 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 };
 
 const int = v => Math.trunc(Number(v) || 0);
@@ -102,7 +104,7 @@ export function validate(choice) {
   if (ready("shroud") > 1) errors.push("Only one Shroud can be attuned at a time.");
   if (ready("icon") > 1) errors.push("Only one Icon can be attuned at a time.");
   if (ready("weapon") > 2) errors.push("At most two weapons can be ready (two hands).");
-  errors.push(...creation.validateTrees(choice.trees, b.skillPoints));
+  errors.push(...creation.validateTrees(choice.trees, b.skillPoints, { ancestry: choice.ancestry || null }));
   return errors;
 }
 
@@ -144,7 +146,8 @@ export function buildNpcData(choice) {
     name, img, type: "npc",
     ownership: { default: 0 },
     prototypeToken: { name, actorLink: false, disposition: int(choice.disposition), texture: { src: img }, width: sq, height: sq },
-    system: { stats: { ...creation.emptyStats(), ...choice.stats }, skillPoints: b.skillPoints, unspentStats: Math.max(0, b.remaining), statCarry: 0, creation: false, size, trees: creation.cleanTrees(choice.trees) },
+    system: { stats: { ...creation.emptyStats(), ...choice.stats }, skillPoints: b.skillPoints, unspentStats: Math.max(0, b.remaining), statCarry: 0, creation: false, size, trees: creation.cleanTrees(choice.trees),
+      abc: choice.ancestry ? { ancestry: String(choice.ancestry) } : {}, details: { sapience: String(choice.sapience ?? 3) } },
     items: npcItems(choice.items ?? [], choice),
     flags: { flowstate: { npcWizard: true } }
   };

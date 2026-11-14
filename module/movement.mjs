@@ -11,8 +11,10 @@
  */
 import { planMove, maxMove, cutPath, stepCostAlong } from "./movement-rules.mjs";
 import { levelAt } from "./terrain.mjs";
-import { movementMode, movementTracked, moveParams, moveLedger, turnKey } from "./actions.mjs";
+import { movementMode, movementTracked, moveParams, moveLedger, turnKey, inActiveCombat } from "./actions.mjs";
 import { notCreature } from "./kinds.mjs";
+import { blockerOnPath, hostileDispositions } from "./passage.mjs";
+import { tierOf } from "./skills.mjs";
 
 /**
  * Moves planned on this client whose update hasn't landed yet (actor uuid → { key, ledger, owed, n, at, sure }), so a quick second move (the arrow
@@ -84,6 +86,20 @@ function pathCosts(token, movement, actor) {
   return out;
 }
 
+/** The hostile creature a walk would pass through, or null (the token's footprint along every waypoint; tokens it already overlaps don't count). */
+function hostileInTheWay(token, movement, actor) {
+  const scene = token.parent, size = scene?.grid?.size ?? 100;
+  const slip = tierOf(actor.system?.trees, "ancestry-smallfolk") >= 1, mySize = actor.system?.size ?? 3;
+  const others = (scene?.tokens?.contents ?? Array.from(scene?.tokens ?? [])).filter(t => t.id !== token.id && t.actor && !notCreature(t.actor) && !t.hidden
+    && !t.actor.statuses?.has?.("dead") && hostileDispositions(token.disposition, t.disposition)
+    && !(slip && (t.actor.system?.size ?? 3) >= mySize + 1))
+    .map(t => ({ id: t.id, name: t.name, x: t.x, y: t.y, w: t.width, h: t.height }));
+  if (!others.length) return null;
+  const origin = movement.origin ?? token._source;
+  const path = [{ x: origin.x, y: origin.y }, ...(movement.passed?.waypoints ?? []).map(p => ({ x: p.x, y: p.y }))];
+  return blockerOnPath(path, { w: token.width, h: token.height, size }, others);
+}
+
 /** preMoveToken: price the path the token is about to take, cut it short if the AP can't pay for all of it, and stash the plan for updateToken. */
 function preMove(token, movement, options) {
   try {
@@ -95,6 +111,13 @@ function preMove(token, movement, options) {
     if (actor.system.load?.state === "immobile") {
       ui.notifications.warn(`${token.name} is carrying ${actor.system.load.value} Load (over ${actor.system.load.limit}) and can't move.`);
       if (!game.user.isGM) return false;
+    }
+    // You can't move through a hostile creature's space (Generic Groups, Movement); Slip Through (Smallfolk T1) passes creatures a Size or more larger.
+    // Players are always stopped; the GM only in combat (setting up a scene stays free).
+    const block = hostileInTheWay(token, movement, actor);
+    if (block) {
+      ui.notifications.warn(`${token.name} can't move through ${block.name}'s space.`);
+      if (!game.user.isGM || inActiveCombat(actor)) return false;
     }
     const enforce = movementMode() === "enforce" && !game.user.isGM;
     // Dip and Dash: one free move of up to your speed, even off-turn (flowstate.mjs uses the flag up).

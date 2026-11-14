@@ -7,26 +7,9 @@ Structure relied on:
 """
 import json, re, sys
 
-def clean(s):
-    s = s.replace('\\*', '*').replace('\\[', '[').replace('\\]', ']').replace('\\#', '#').replace('\\\\', '')
-    s = re.sub(r'\\([!*\[\]#_.()+=<>~`|{}-])', r'\1', s)   # any other Markdown escape (e.g. "Heave\!")
-    s = re.sub(r'\*+', '', s)            # drop bold/italic markers (the doc's bolding is inconsistent)
-    s = re.sub(r'\[([^\]]+)\]\(https?://[^)]*\)', r'\1', s)   # a link to another doc ("[Combo Spell](https://docs...)") keeps only its words
-    s = s.replace('&#10;', ' ')
-    s = re.sub(r'\s+', ' ', s).strip()
-    return re.sub(r'^#+\s*', '', s)     # some doc bullets are heading-styled ("# Minigun:")
-
-def slug(s):
-    return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
-
-TIER_RE = re.compile(r'^\**\s*Tier\s+(\d)\s*(\(Free\))?\s*:\s*(.*?)\**\s*$')
-
-def normalize(md):
-    """Newer Drive exports add {#anchors} and indent headings/tier lines; strip both."""
-    md = re.sub(r'\s*\{#[^}]*\}', '', md)
-    md = re.sub(r'(?m)^[ \t]+(#|\*\*Tier)', r'\1', md)
-    md = re.sub(r'(?m)^[ \t]+(\d+\.\s)', r'\1', md)
-    return md
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from build_trees_helpers import clean, slug, TIER_RE, normalize
 
 def parse(md, arch):
     md = normalize(md)
@@ -169,6 +152,10 @@ for path, arch in [(sys.argv[1], "Martial"), (sys.argv[2], "Magic"), (sys.argv[3
     out += trees
 if len(sys.argv) > 5:
     out += parse_generic(open(sys.argv[5], encoding='utf-8').read())
+if len(sys.argv) > 6:
+    # Flow State - ABCs: the Ancestry trees (build_abcs.py also writes module/abcs.mjs from the same doc).
+    from build_abcs import parse_trees_and_data
+    out += parse_trees_and_data(open(sys.argv[6], encoding='utf-8').read())[0]
 js = "// Generated from the Martial and Magic Stage 1 docs, the Mental Stage 1 doc and the Generic Groups doc by tools/build_trees.py. Don't edit by hand; re-run the converter.\n"
 js += "export const TREES = " + json.dumps(out, indent=1, ensure_ascii=False) + ";\n"
 open(sys.argv[4], 'w', encoding='utf-8', newline='\n').write(js)

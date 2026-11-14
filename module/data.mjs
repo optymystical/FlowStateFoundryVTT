@@ -73,6 +73,11 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       unspentStats: int(0, { min: 0 }),
       statCarry: int(0, { min: 0 }),           // stat points granted toward the next skill point (3:1)
       trees: new f.ObjectField({ initial: {} }), // skill tree id → current tier
+      // Flow State - ABCs (abc-rules.mjs): { ancestry, background, focus, picks, alloc, homeland, circle, element, element2 }, and the trees the
+      // Background gives for free (tree id → tier; part of `trees`, but not paid for with Skill Points).
+      abc: new f.ObjectField({ initial: {} }),
+      freeTrees: new f.ObjectField({ initial: {} }),
+      details: new f.ObjectField({ initial: {} }),      // the wizard's Notes: age, pronouns, appearance, personality... (roleplay)
       currency: new f.ObjectField({ initial: {} }), // currency id (c0, c1, ...; see currency-rules.mjs) → amount
       creation: new f.BooleanField({ initial: false }), // legacy unlock flag; creation now happens in the New Character wizard
       size: int(3, { min: 1, max: 5 }),
@@ -131,8 +136,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       if (sm.kind === "summon") this.magical = true;
     }
     Object.assign(this, { derived: d });
-    const spent = spentPoints(this.trees);
-    this.skills = { total: this.skillPoints, spent, unspent: this.skillPoints - spent };
+    const spent = spentPoints(this.trees, this.freeTrees ?? {});
+    this.skills = { total: this.skillPoints, spent, unspent: this.skillPoints - spent, free: spentPoints(this.freeTrees ?? {}) };
     this.hp.max = d.hpMax;
     this.hp.pain = d.pain;
     this.hp.overkill = Math.max(0, -this.hp.value);

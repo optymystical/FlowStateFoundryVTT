@@ -31,8 +31,11 @@ Types: `character` and `npc` (the same data model), plus `pile` (dropped items, 
 | `stats.str/dex/con/pon/snap/will/reach/grasp/build` | integer | The nine stats, before the Stat Bonus. Body = Str/Dex/Con, Mind = Pon/Snap/Will, Spirit = Reach/Grasp/Build. A starting character spreads 90 points. |
 | `skillPoints` | integer | Total Skill Points (a character: a third of its stat points). Sets the attack die (d SP), the dodge dice (2d(SP/2)), max Energy (5 × SP) and the Stat Bonus (+1 to every stat per 5 SP). |
 | `unspentStats`, `statCarry` | integer | Banked stat points. For a character these are worked out from its stats; an NPC keeps its own. |
-| `trees` | object | `{ treeId: tier }`. See "Skill trees". |
-| `size` | 1–5 | Size 3 is human-sized. Tokens are ¼, ½, 1, 2 or 4 squares. |
+| `trees` | object | `{ treeId: tier }`, the Background's free tiers included. See "Skill trees". |
+| `abc` | object | Ancestry, Background and Culture: `{ ancestry, background, focus, picks: { slot: treeId }, alloc: { treeId: tier }, homeland, circle, element, element2 }` (ids from `module/abcs.mjs`: `human`, `recruit`, `shared.wanderer`, `recruit.barracks-raised`...). |
+| `freeTrees` | object | `{ treeId: tier }`: what the Background gives for free (15 points). Free tiers count for requirements, not toward Skill Points. Set it with the trees; `abc-rules.mjs freeTreesFor(abc)` works it out. |
+| `details` | object | Roleplay notes from the wizard: `age`, `pronouns`, `height`, `appearance`, `personality`, `goals`, `backstory` (all optional text). |
+| `size` | 1–5 | Size 3 is human-sized. Tokens are ¼, ½, 1, 2 or 4 squares. A character's Size comes from its Ancestry (Halfling, Goblin: 2). |
 | `hp.value` | integer | Current HP, which can go negative (Overkill). Leave it out to start at full. |
 | `hp.lost` | integer | Max HP lost (body removed). Usually 0. |
 | `energy.value` | integer | Current Energy. Leave it out to start full. Outside combat Energy is always full, unless the scene is a tense scene. |
@@ -89,7 +92,9 @@ Neither is a creature: they have no stats, HP or turn.
   `mental-theory`, `mental-psion-arts`, `mental-ponderance-arts`, `mental-snappence-arts`, `mental-willpower-arts`, `mental-esoteric-arts`,
   `mental-<wonder>-<dream|nightmare>` (for example `mental-life-dream`, `mental-dark-nightmare`); `generic-<tree>` (for example
   `generic-perception`, `generic-stealth`, `generic-hauling`). The full list is `module/trees.mjs` (`TREES`, each with `id`, `archetype`, `tiers`).
-- Ancestries aren't implemented yet. Until they are, give a creature's racial or monster abilities as plain items or as text in its biography.
+- **Ancestry trees** (archetype `ancestry`): `ancestry-wusonian` (the core: free Tier 0), `ancestry-commonkin`, `ancestry-bestial`, `ancestry-smallfolk`, and each Ancestry's own (`ancestry-human-tree`, `ancestry-dwarf-tree`, `ancestry-halfling-tree`, `ancestry-elf-tree`, `ancestry-dusken-shadow`, `ancestry-dusken-spirit`, `ancestry-draken-elements`, `ancestry-draken-legacy`, `ancestry-orc-tree`, `ancestry-dirtborn`, `ancestry-firelander`, `ancestry-goblin-tree`). They open only for a creature whose `system.abc.ancestry` is one of theirs, and can't be lowered.
+- **Backgrounds** give 15 free points (`freeTrees`). Starting characters have 45 stat points (15 Skill Points) by default plus those 15.
+- The Bestiary Ancestries (Wonderborn, Dreamborn, Nightmareborn...) aren't in yet: give a monster's abilities as plain items or as biography text until they are.
 
 ## Items
 
@@ -149,7 +154,7 @@ Set them with `actor.toggleStatusEffect(id, { active: true })`. The ids: `dead`,
 | What | How |
 | --- | --- |
 | Currencies | World setting `flowstate.currencies`: a list of `{ id: "c0", name, img, mergeInto, mergeAmount, start }`. Ids are positional (`c0`, `c1`...). `start` is what a character made in the New Character wizard starts with. Example, a one-currency world of Shards with a 100 starting purse: `game.settings.set("flowstate", "currencies", [{ id: "c0", name: "Shards", img: "icons/commodities/gems/gem-shattered-violet.webp", mergeInto: "", mergeAmount: 0, start: 100 }])`. Actors written by hand set `system.currency.c0` themselves. |
-| Starting equipment | `flowstate.startingStatPoints` (90), `startingItems` (4 picks), `startingGrade` (10), `startingMaxRarity` (`uncommon`), `startingMultiType`. For a Common Grade 3 start: `startingGrade` 3, `startingMaxRarity` `"common"`. |
+| Starting equipment | `flowstate.startingStatPoints` (45, plus the Background's 15 free points), `startingItems` (4 picks), `startingGrade` (10), `startingMaxRarity` (`uncommon`), `startingMultiType`. For a Common Grade 3 start: `startingGrade` 3, `startingMaxRarity` `"common"`. |
 | Tense scene | `flowstate.tenseScene` (boolean): Energy is spent and regained outside combat as in combat. |
 | Shop prices | The Shop prices setting (GM menu): price per rarity and per Grade above 1. |
 | World data | World setting `flowstate.worldData`: the GM's changes to the system's tables (materials, Foci, potions...). It's easiest to leave alone, or to import it through the World data window. |

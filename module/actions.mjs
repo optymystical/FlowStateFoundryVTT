@@ -6395,7 +6395,7 @@ export async function grantPoints(actor, stats = 0, skills = null) {
 export async function unlockTier(actor, treeId) {
   const tree = skills.treeById(treeId);
   if (!tree) return;
-  const check = skills.nextTier(actor.system.trees, tree, actor.system.skills.unspent, { inCombat: inActiveCombat(actor), senses: actor.system.senses });
+  const check = skills.nextTier(actor.system.trees, tree, actor.system.skills.unspent, { inCombat: inActiveCombat(actor), ...skills.ctxOf(actor.system) });
   if (!check.ok) return ui.notifications.warn(check.reason);
   const tier = tree.tiers.find(t => t.tier === check.next);
   const gains = (tier?.entries ?? []).map(e => e.name).filter(Boolean);
@@ -6421,13 +6421,16 @@ export async function lowerTier(actor, treeId) {
   const tree = skills.treeById(treeId);
   const current = skills.tierOf(actor.system.trees, treeId);
   if (!tree || current < 1) return;
+  // Ancestry trees are never lowered (they change only with the character's Background), and nothing goes below what the Background gave for free.
+  if (tree.archetype === "ancestry") return ui.notifications.warn(`Ancestry trees can't be lowered. Change ${actor.name}'s Background instead (the sheet's ABCs).`);
+  if (current <= skills.tierOf(actor.system.freeTrees ?? {}, treeId)) return ui.notifications.warn(`${tree.name} Tier ${current} comes free with ${actor.name}'s Background: change the Background instead.`);
   const next = current - 1;
   const update = { [`system.trees.${treeId}`]: next };
   // Lowering a Theory can lock trees that need a higher Theory tier: confirm, then those trees lose all their tiers.
   if (tree.theory) {
     const state = { ...actor.system.trees, [treeId]: next };
     const senses = actor.system.senses;
-    const locked = skills.treesFor(tree.archetype).filter(t => !t.theory && skills.sameGroup(t, tree) && skills.tierOf(state, t.id) > 0 && !skills.isAvailable(state, t, { senses }));
+    const locked = skills.treesFor(tree.archetype).filter(t => !t.theory && skills.sameGroup(t, tree) && skills.tierOf(state, t.id) > 0 && !skills.isAvailable(state, t, { senses, ancestry: actor.system.abc?.ancestry }));
     if (locked.length) {
       const refund = locked.reduce((n, t) => { const k = skills.tierOf(state, t.id); return n + (k * (k + 1)) / 2; }, 0);
       const ok = await DialogV2().confirm({ window: { title: `Lower ${tree.name}?` }, rejectClose: false,

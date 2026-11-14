@@ -2,6 +2,14 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.90.0:** Ancestry, Background and Culture (Flow State - ABCs), part 1:
+- **Ancestry trees:** the Wusonian core (free Tier 0), Commonkin and Bestial, Smallfolk, and each Ancestry's own trees, open only to their Ancestries. Ancestry trees can't be lowered.
+- **Backgrounds** give 15 free points of starting trees (with their choices, foci and each Ancestry's differences; the Outsider spends them on the Ancestry's trees). Free tiers unlock trees and count for requirements, not for Skill Points.
+- **The New Character wizard** is now Ancestry → Background → Culture (Homeland and Circle) → Stats → Skill Trees → Equipment → Notes (name, portrait, and optional details). Starting stat points default to 45 (15 Skill Points) plus the Background's 15.
+- The sheet's Notes tab shows the ABCs and details; the GM can change them (the free trees are worked out again). The creature wizard has an optional Ancestry and a Sapience pick (3:1, 5:1, 10:1).
+- **Movement:** you can't move through a hostile creature's space (Generic Groups); Slip Through (Smallfolk) passes creatures a Size or more larger. Players are stopped; the GM only in combat.
+- The Codex has the ABC rules, every Ancestry, Background, Homeland and Circle. The ancestry abilities themselves come in part 2.
+
 **0.89.0:** Consumables and content support:
 - **Potions:** Lesser, regular and Greater Health (½, 1, 2 × an 8 hour rest's healing) and Energy (½, 1, 2 × max Energy as **bonus Energy**: it can go past your maximum, is spent first, and lasts 1 minute or 10 rounds). One potion per rest. 1 AP to drink, or to give one to a creature within reach. They're in the Action List's new **Items** group.
 - **Festival Token:** 3 uses, each Advantage on your next roll of the kind it's set to (Spot, Athletics, Deception, Persuasion, Stealth, Initiative, resisting Fear, Constitution or Strength checks, attack rolls); a keepsake at 0.

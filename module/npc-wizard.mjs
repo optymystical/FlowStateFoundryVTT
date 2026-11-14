@@ -10,6 +10,7 @@ import * as npc from "./npc-creation.mjs";
 import * as mentalRules from "./mental-rules.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile } from "./magic.mjs";
 import * as skills from "./skills.mjs";
+import { ANCESTRIES } from "./abc-rules.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
@@ -49,7 +50,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
   state = {
     step: 0, name: "", img: creation.DEFAULT_IMG, size: npc.NPC_DEFAULTS.size, disposition: npc.NPC_DEFAULTS.disposition,
-    statPoints: npc.NPC_DEFAULTS.statPoints, ratio: npc.NPC_DEFAULTS.ratio, skillManual: false, skillPoints: npc.NPC_DEFAULTS.skillPoints,
+    statPoints: npc.NPC_DEFAULTS.statPoints, ratio: npc.NPC_DEFAULTS.ratio, skillManual: false, skillPoints: npc.NPC_DEFAULTS.skillPoints, ancestry: "", sapience: 3,
     grade: npc.NPC_DEFAULTS.grade, ammo: npc.NPC_DEFAULTS.ammo,
     stats: creation.emptyStats(), items: [], trees: {}, skillArch: "martial", openTree: null
   };
@@ -114,9 +115,10 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     // Skill trees: spend the Skill Points (Theory first; it opens that Archetype's other trees).
     const sp = b.skillPoints;
     const spentSP = skills.spentPoints(st.trees);
-    const treeGroups = skills.skillGroups();
+    const ctx = { ancestry: st.ancestry || null };
+    const treeGroups = skills.skillGroups({ ancestry: ctx.ancestry, ancestryName: ANCESTRIES[st.ancestry]?.name ?? "" });
     const arch = treeGroups.find(a => a.id === st.skillArch) ?? treeGroups[0];
-    const available = arch.trees.filter(t => skills.isAvailable(st.trees, t));
+    const available = arch.trees.filter(t => skills.isAvailable(st.trees, t, ctx));
     const treeRows = available.map(t => {
       const tier = skills.tierOf(st.trees, t.id), next = tier + 1;
       const dependents = t.theory ? Object.keys(st.trees).filter(id => {
@@ -141,6 +143,8 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       name: st.name, img: st.img, canBrowse: game.user.can?.("FILES_BROWSE") ?? false,
       sizes: Object.fromEntries([1, 2, 3, 4, 5].map(n => [n, `Size ${n}`])), size: st.size,
       dispositions: npc.DISPOSITIONS, disposition: String(st.disposition),
+      ancestries: { "": "None", ...Object.fromEntries(Object.values(ANCESTRIES).filter(a => !a.hidden).map(a => [a.id, `${a.name} (Size ${a.size})`])) }, ancestry: st.ancestry,
+      sapiences: Object.fromEntries(Object.entries(npc.SAPIENCE).map(([k, v]) => [k, v.label])), sapience: String(st.sapience),
       statPoints: b.statPoints, ratio: b.ratio, skillManual: st.skillManual, skillPointsField: st.skillManual ? st.skillPoints : b.skillPoints, grade: st.grade, ammo: st.ammo,
       statGroups: Object.values(groups), spent: b.spent, remaining: b.remaining, overspent: b.remaining < 0,
       preview: pv, items, weaponTypes,
@@ -160,6 +164,13 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     if ("img" in data) st.img = data.img || creation.DEFAULT_IMG;
     if ("size" in data) st.size = Math.min(5, num(data.size, 3, 1));
     if ("disposition" in data) st.disposition = Math.trunc(Number(data.disposition)) || 0;
+    // An Ancestry sets the Size and opens its trees; Sapience sets the starting ratio (Flow State - ABCs).
+    if ("ancestry" in data && data.ancestry !== st.ancestry) {
+      st.ancestry = ANCESTRIES[data.ancestry] ? data.ancestry : "";
+      if (st.ancestry) st.size = ANCESTRIES[st.ancestry].size;
+      for (const id of Object.keys(st.trees)) if (skills.treeById(id)?.archetype === "ancestry") delete st.trees[id];
+    }
+    if ("sapience" in data && String(data.sapience) !== String(st.sapience) && npc.SAPIENCE[data.sapience]) { st.sapience = Number(data.sapience); st.ratio = npc.SAPIENCE[data.sapience].ratio; }
     if ("statPoints" in data) st.statPoints = num(data.statPoints, 0);
     if ("ratio" in data) { const r = Number(data.ratio); st.ratio = r > 0 ? r : st.ratio; }
     if ("skillManual" in data) st.skillManual = data.skillManual === true || data.skillManual === "true" || data.skillManual === "on";
@@ -199,7 +210,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   static onTreeUp(event, target) {
     const st = this.state, id = target.dataset.tree, tree = skills.treeById(id);
     const sp = npc.budget(st).skillPoints, next = skills.tierOf(st.trees, id) + 1;
-    if (!tree || next > skills.MAX_TIER || !skills.isAvailable(st.trees, tree)) return;
+    if (!tree || next > skills.MAX_TIER || !skills.isAvailable(st.trees, tree, { ancestry: st.ancestry || null })) return;
     if (skills.spentPoints(st.trees) + next > sp) return ui.notifications.warn(`Tier ${next} costs ${next} Skill Points; ${sp - skills.spentPoints(st.trees)} are left.`);
     st.trees[id] = next;
     this.render();
@@ -208,7 +219,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const st = this.state, id = target.dataset.tree, tier = skills.tierOf(st.trees, id);
     if (tier < 1) return;
     if (tier === 1) delete st.trees[id]; else st.trees[id] = tier - 1;
-    if (creation.validateTrees(st.trees, Infinity).length) { st.trees[id] = tier; return ui.notifications.warn("Lower the trees this Theory tier opens first."); }
+    if (creation.validateTrees(st.trees, Infinity, { ancestry: st.ancestry || null }).length) { st.trees[id] = tier; return ui.notifications.warn("Lower the trees this Theory tier opens first."); }
     this.render();
   }
   static onTreeToggle(event, target) { this.state.openTree = this.state.openTree === target.dataset.tree ? null : target.dataset.tree; this.render(); }

@@ -16,6 +16,7 @@ import { CHECK_DIFFICULTIES } from "./checks-rules.mjs";
 import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combos.mjs";
 import { rebuildCatalog } from "./spells.mjs";
 import { POTIONS } from "./consumables-rules.mjs";
+import { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES } from "./abcs.mjs";
 import { ITEM_CATALOG, ITEM_TYPES, IDENTITY, OPTIONAL_IDENTITY, generateCatalog } from "./catalog.mjs";
 
 const CORE = "Core rules", EQUIP = "Equipment", MAGIC = "Magic", MENTAL = "Mental", TREE = "Skill trees";
@@ -62,6 +63,14 @@ defineCollection("comboIllusion", { label: "Illusion Combo effects", group: MAGI
 defineCollection("wonderKinds", { label: "Wonder types", group: MENTAL, table: KINDS });
 defineCollection("manifestRanges", { label: "Manifest ranges", group: MENTAL, table: RANGES });
 defineCollection("iconForms", { label: "Icon Forms", group: MENTAL, table: FORMS, addable: true, required: ["name", "align", "rarity", "kind"], rebuild: rebuildFormKeys });
+
+// Ancestry, Background and Culture (Flow State - ABCs; abc-rules.mjs). A world can add its own Homelands and Circles (roleplay only), and its own
+// Ancestries and Backgrounds (an Ancestry's trees are skill trees; a Background's `trees` are { tree: "<name>", tier } items).
+const ABC = "Ancestries";
+defineCollection("ancestries", { label: "Ancestries", group: ABC, table: ANCESTRIES, addable: true, required: ["name", "size", "trees"], nameOf: (e, k) => e?.name ?? k });
+defineCollection("backgrounds", { label: "Backgrounds", group: ABC, table: BACKGROUNDS, addable: true, required: ["name", "available", "trees"], nameOf: (e, k) => e?.name ?? k });
+defineCollection("homelands", { label: "Homelands", group: ABC, table: HOMELANDS, list: true, key: "id", addable: true, required: ["name", "text"] });
+defineCollection("circles", { label: "Circles", group: ABC, table: CIRCLES, list: true, key: "id", addable: true, required: ["name", "text"] });
 
 // Skill trees (every Archetype; the Wonders and the spell catalog are read from them)
 defineCollection("skillTrees", { label: "Skill trees", group: TREE, table: TREES, list: true, key: "id", addable: true, required: ["name", "archetype", "tiers"],

@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import * as c from "../../module/creation.mjs";
-const R = c.DEFAULT_RULES;
+const R = { ...c.DEFAULT_RULES, statPoints: 90 };
+const abc = { ancestry: "human", background: "laborer", homeland: "shared.wanderer", circle: "shared.self-made" };
 const stats = { str: 30, dex: 10, con: 20, pon: 0, snap: 5, will: 10, reach: 0, grasp: 5, build: 10 }; // 90
-const good = { name: "Kara", stats, items: [c.newSlot("weapon", "uncommon"), c.newSlot("armor", "uncommon")] };
+const good = { name: "Kara", stats, abc, items: [c.newSlot("weapon", "uncommon"), c.newSlot("armor", "uncommon")] };
 assert.deepEqual(c.validate(good, R), []);
 assert.equal(c.statTotal(stats), 90);
 // Materials filtered by weight AND rarity cap
@@ -12,13 +13,13 @@ assert.deepEqual(Object.keys(c.allowedMaterials("weapon", "light", "common")), [
 // Changing weight fixes an invalid material
 assert.equal(c.normalizeSlot({ kind: "weapon", type: "bladed", weight: "heavy", material: "hardwood" }, "uncommon").material, "iron");
 // Errors
-const bad = c.validate({ name: " ", stats: { ...stats, str: 31 }, items: [
+const bad = c.validate({ name: " ", stats: { ...stats, str: 31 }, abc, items: [
   { kind: "weapon", type: "bladed", weight: "light", material: "scarletite" },
   { kind: "armor", weight: "light", material: "cloth" }, { kind: "armor", weight: "light", material: "cloth" },
   { kind: "weapon", type: "unarmed", weight: "light", material: "hardwood" } ] }, { ...R, items: 3 });
 console.log(bad.join("\n"));
 assert.equal(bad.length, 6);
-assert.ok(c.validate({ name: "x", stats: { ...stats, str: -1 }, items: [] }, R).some(e => e.includes("0 or more")));
+assert.ok(c.validate({ name: "x", stats: { ...stats, str: -1 }, abc, items: [] }, R).some(e => e.includes("0 or more")));
 // Actor data
 const data = c.buildActorData({ ...good, stats: { ...stats, str: 20 } }, R, "U1");
 assert.equal(data.system.unspentStats, 10); assert.equal(data.system.skillPoints, 30); assert.equal(data.system.creation, false);

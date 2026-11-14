@@ -20,6 +20,8 @@ const REACTIONS = [
   { key: "mantra", label: "Mantra", tip: "Whether to pay Energy to double a Tenet's bolded effect (or, for Infuse and Adapt, its extra stack) as it triggers.", when: c => !!c.tenet && c.ponderance >= 2 },
   { key: "reflex", label: "Reflex", tip: "Offered when a character you can sense is about to attack.", when: c => c.snappence >= 1 },
   { key: "impulse", label: "Impulse", tip: "Whether to pay Energy to apply your Tenet once more after it has already triggered this round.", when: c => c.snappence >= 2 && !!c.tenet },
+  { key: "checkReroll", label: "Check rerolls", tip: "Focus, Still Breath, Rephrase, Double Down and Hold Firm (Tier 3 of Perception, Stealth, Persuasion, Deception and Resolve): offered when a check rolls under half its die; Push Through (Athletics T3) when an Athletics check fails.",
+    when: c => ["generic-perception", "generic-stealth", "generic-persuasion", "generic-deception", "generic-resolve", "generic-athletics"].some(id => c.tier(id) >= 3) },
   { key: "fixation", label: "Fixation", tip: "The question at the start of your turn about whom to fixate on.", when: c => c.snappence >= 3 },
   // Offer cards: optional buttons the system posts on their own card. Switched off, the card isn't posted (nothing is spent).
   { key: "palisade", card: true, label: "Palisade", tip: "The card to strike a creature that moves into your Reach weapon's range.", when: c => c.tier("martial-reach-weapons") >= 1 },

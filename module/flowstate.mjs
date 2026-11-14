@@ -28,6 +28,8 @@ import * as pictures from "./pictures.mjs";
 import "./mental.mjs";
 import * as gravity from "./gravity.mjs";
 import * as charges from "./charges.mjs";
+import { registerCheckHooks, prepareInitiative, initiativeRoll, breakTies, tieOrder } from "./checks.mjs";
+import * as generic from "./generic.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
 import { notCreature } from "./kinds.mjs";
 import { DialogV2 } from "./html.mjs";
@@ -106,8 +108,8 @@ class FlowStateActor extends Actor {
     // Martial Theory T4 (Improvise): improvised weapons are removed once it's reached.
     if ((Number(foundry.utils.getProperty(changed, "system.trees.martial-theory")) || 0) >= 4) await actions.removeImprovised(this);
 
-    // Outside combat, Energy stays full (including when Skill Points raise the max).
-    if (sys.energy.value < sys.energy.max && !actions.inActiveCombat(this)) {
+    // Outside combat, Energy stays full (including when Skill Points raise the max), except in a tense scene.
+    if (sys.energy.value < sys.energy.max && !actions.energyTracked(this)) {
       await this.update({ "system.energy.value": sys.energy.max });
       return;
     }
@@ -133,11 +135,41 @@ class FlowStateActor extends Actor {
   }
 }
 
+/** Initiative is a Non Stat Check: the plain attack die (total Skill Points), with Alacrity's Advantage (checks.mjs). */
+class FlowStateCombatant extends Combatant {
+  getInitiativeRoll() { return initiativeRoll(this); }
+}
+
 class FlowStateCombat extends Combat {
-  /** Round 1: every combatant gets their full AP and RP. */
+  /** Alacrity is asked before the roll; ties are settled after it (rerolled, or won by Poised). */
+  async rollInitiative(ids, options = {}) {
+    const list = typeof ids === "string" ? [ids] : [...ids];
+    await prepareInitiative(this, list);
+    const out = await super.rollInitiative(list, options);
+    // Rebound (Tempo T1) goes back to the check as rolled.
+    for (const id of list) { const c = this.combatants.get(id); if (c?.isOwner && c.initiative != null) await c.setFlag("flowstate", "origInit", c.initiative); }
+    if (game.user.isGM) await breakTies(this);
+    return out;
+  }
+
+  /** Turn order: initiative, then a settled tie (Initiative Tier 0). */
+  _sortCombatants(a, b) {
+    const num = v => (v === null || v === undefined || v === "" || Number.isNaN(Number(v)) ? -Infinity : Number(v));
+    const ia = num(a.initiative), ib = num(b.initiative);
+    if (ia !== ib) return ib - ia;
+    return tieOrder(a, b) || super._sortCombatants(a, b);
+  }
+
+  /**
+   * Round 1: every combatant gets their full AP and RP, except a Surprised one (Initiative Tier 0): no RP until its first turn, unless it has
+   * Collected (Initiative T3).
+   */
   async startCombat() {
     for (const c of this.combatants) {
-      if (c.actor?.isOwner) await c.actor.update({ "system.ap.value": c.actor.system.ap?.max ?? 6, "system.rp.value": c.actor.system.rp?.max ?? 6 });
+      const a = c.actor;
+      if (!a?.isOwner) continue;
+      const surprised = a.statuses?.has("surprised") && ab.treeTier(a, "generic-initiative") < 3;
+      await a.update({ "system.ap.value": a.system.ap?.max ?? 6, "system.rp.value": surprised ? 0 : a.system.rp?.max ?? 6 });
     }
     for (const c of this.combatants) if (c.actor) await actions.mentalCombatStart(c.actor);          // Instinct (Adaptation T2): 4 stacks banked
     await this.setFlag("flowstate", "startedAt", Date.now());          // Restore's window never reaches back before the fight
@@ -153,6 +185,10 @@ class FlowStateCombat extends Combat {
       const regain = await actions.turnStartEnergy(a);
       // A fresh movement ledger too: nothing banked or half-walked carries over from an earlier turn.
       await a.update({ "system.ap.value": a.system.ap?.max ?? 6, "system.rp.value": a.system.rp?.max ?? 6, "flags.flowstate.moveLedger": null, ...(e && regain ? { "system.energy.value": Math.min(e.max, e.value + regain) } : {}) });
+      // Surge (Tempo T3): AP carried from the last turn.
+      await generic.turnStart(a);
+      // Surprise ends at your first turn.
+      if (a.statuses?.has("surprised")) await a.toggleStatusEffect("surprised", { active: false });
       // Psych Up / Calm Down last until the start of your next turn.
       await actions.clearStances(combatant.actor);
       // Medium Armor (Limber, Versatility, Careful Steps) and Rapid Marks.
@@ -194,6 +230,7 @@ class FlowStateCombat extends Combat {
     // Taunt (Constitution T2): a Taunted creature repeats the check at the end of its turn.
     if (combatant.actor.getFlag?.("flowstate", "tauntedBy")) await actions.shakeTaunt(combatant.actor);
     await actions.endOfTurn(combatant.actor);
+    await generic.turnEnd(combatant.actor);
   }
 }
 
@@ -207,6 +244,8 @@ Hooks.once("init", () => {
   registerItemSettings();
   registerItems();
   registerCodex();
+  registerCheckHooks();
+  generic.registerGenericHooks();
   registerShopSettings();
   game.flowstate = { rules, martial, actions, catalog: CatalogApp };
   // Partials the sheets share (the catalog line on every item sheet).
@@ -214,13 +253,15 @@ Hooks.once("init", () => {
 
   CONFIG.Actor.documentClass = FlowStateActor;
   CONFIG.Combat.documentClass = FlowStateCombat;
+  CONFIG.Combatant.documentClass = FlowStateCombatant;
   CONFIG.Actor.dataModels = { character: FlowStateActorData, npc: FlowStateActorData, pile: FlowStatePileData, shop: FlowStateShopData };
   CONFIG.Item.dataModels = { gear: FlowStateGearData, weapon: FlowStateWeaponData, armor: FlowStateArmorData, foci: FlowStateFociData, shroud: FlowStateShroudData, icon: FlowStateIconData, affix: FlowStateAffixData };
   CONFIG.Actor.trackableAttributes = {
     character: { bar: ["hp", "energy", "ap", "rp"], value: [] },
     npc: { bar: ["hp", "energy", "ap", "rp"], value: [] }
   };
-  CONFIG.Combat.initiative = { formula: "1d100", decimals: 0 };
+  // Initiative: a Non Stat Check on the plain attack die (FlowStateCombatant rolls it; the formula is only Foundry's fallback).
+  CONFIG.Combat.initiative = { formula: "1d20", decimals: 0 };
 
   CONFIG.statusEffects = [
     { id: "dead", name: "Dead", img: "icons/svg/skull.svg" },
@@ -232,6 +273,7 @@ Hooks.once("init", () => {
     { id: "halfStealth", name: "Half Stealth (GM)", img: "icons/svg/eye.svg" },
     { id: "fullStealth", name: "Full Stealth (GM)", img: "icons/svg/blind.svg" },
     { id: "fear", name: "Fear", img: "icons/svg/terror.svg" },
+    { id: "surprised", name: "Surprised", img: "icons/svg/hazard.svg" },
     { id: "grappled", name: "Grappled", img: "icons/svg/net.svg" },
     { id: "flying", name: "Flying", img: "icons/svg/wing.svg" },
     { id: "psychedUp", name: "Psyched Up", img: "icons/svg/upgrade.svg" },
@@ -259,6 +301,9 @@ Hooks.once("init", () => {
     scope: "world", config: true, type: String, default: "uncommon",
     choices: { common: "Common", uncommon: "Uncommon", rare: "Rare", veryRare: "Very Rare" }
   });
+  // Endurance Tier 0: outside combat Energy is always full, except in a tense scene (the GM's toggle), where it's spent and regained as in combat.
+  game.settings.register("flowstate", "tenseScene", { scope: "world", config: false, type: Boolean, default: false,
+    onChange: on => { if (!on && game.user.isActiveGM) actions.endTenseScene(); ui.controls?.render?.(); } });
   game.settings.register("flowstate", "migratedCreationLock", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("flowstate", "migratedTerrainVisibility", { scope: "world", config: false, type: Boolean, default: false });
 
@@ -287,7 +332,7 @@ Hooks.once("init", () => {
   });
   game.settings.register("flowstate", "customAdvantage", {
     name: "Custom Advantage/Disadvantage",
-    hint: "Show a field in roll and attack dialogs for adding extra Advantage (+) or Disadvantage (−) stacks by hand. Automatic sources (Psych Up, prone, armor, range, and so on) apply either way. When off, plain rolls like Dodge and d100 checks skip their dialog.",
+    hint: "Show a field in roll and attack dialogs for adding extra Advantage (+) or Disadvantage (−) stacks by hand. Automatic sources (Psych Up, prone, armor, range, and so on) apply either way. When off, plain rolls like Dodge and Non Stat Checks skip their dialog when they have nothing else to ask.",
     scope: "world",
     config: true,
     type: Boolean,

@@ -12,6 +12,7 @@ import { CASTING_FORMS, FOCI_TYPES, SHROUD_TYPES, AFFIXES, ELEMENTS } from "./ma
 import { KINDS, RANGES, FORMS, rebuildWonders, rebuildFormKeys } from "./mental-rules.mjs";
 import { ANIM_CATEGORIES, ANIM_MATERIALS, RIDERS } from "./conjure-rules.mjs";
 import { TREES } from "./trees.mjs";
+import { CHECK_DIFFICULTIES } from "./checks-rules.mjs";
 import { COMBO_PAIRS, COMBO_GENERIC, COMBO_BONUS, COMBO_ILLUSION } from "./combos.mjs";
 import { rebuildCatalog } from "./spells.mjs";
 import { ITEM_CATALOG, ITEM_TYPES, IDENTITY, generateCatalog } from "./catalog.mjs";
@@ -29,6 +30,7 @@ defineCollection("senseLevels", { label: "Sense levels", group: CORE, table: SEN
 defineCollection("rarities", { label: "Rarities", group: CORE, table: RARITIES, nameOf: named });
 defineCollection("objectDensity", { label: "Object densities", group: CORE, table: OBJECT_DENSITY, addable: true, required: ["label", "durability", "limit"] });
 defineCollection("stainVariants", { label: "Stain variants", group: CORE, table: STAIN_VARIANTS });
+defineCollection("checkDifficulties", { label: "Check difficulties (static targets)", group: CORE, table: CHECK_DIFFICULTIES, addable: true, required: ["label", "target"] });
 
 // Equipment
 defineCollection("weaponTypes", { label: "Weapon types", group: EQUIP, table: WEAPON_TYPES, addable: true, required: ["label", "light", "heavy"] });

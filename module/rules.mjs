@@ -43,6 +43,31 @@ export const SENSE_LEVELS = { none: "None", secondary: "Secondary", primary: "Pr
 
 const clampSize = size => Math.min(5, Math.max(1, Math.round(size || 3)));
 
+/**
+ * Equipment Size (Equipment doc; Carrying, Athletics Tier 0): an item has a Size like a creature's (0 for things made for Size 1 creatures). Weapons,
+ * armor, Foci and Shrouds are generally one Size below their user, which is what an item with no Size of its own counts as; gear, two below (0 Load).
+ * Size 2 is neutral: each Size above it is a Strengthened stack on the item's values (damage, Durability, Limit, a Foci's spells), each below a Weakened one.
+ */
+export const equipSize = (size, userSize = 3, below = 1) => (size === null || size === undefined || size === "" || Number.isNaN(Number(size))
+  ? Math.max(0, clampSize(userSize) - below) : Math.max(0, Math.min(5, Math.round(Number(size)))));
+export const equipStacks = size => size - 2;
+/** Load (Carrying): two or more Sizes smaller than you 0, one smaller 1, your Size 6; larger can't be lifted, only dragged (null). */
+export function loadFor(itemSize, carrierSize) {
+  const d = clampSize(carrierSize) - itemSize;
+  return d >= 2 ? 0 : d === 1 ? 1 : d === 0 ? 6 : null;
+}
+/**
+ * Encumbrance (Athletics Tier 0): over 6 Load (8 with Strong Back, Athletics T4) you're Encumbered (+1 AP a move, no jumping); over 12 (16) you can't
+ * move, unless Pack Mule (Hauling T4) makes you Overburdened instead (+2 AP a move, no movement abilities) up to 18 (24).
+ */
+export function encumbrance(load, { strongBack = false, packMule = false } = {}) {
+  const enc = strongBack ? 8 : 6, stop = strongBack ? 16 : 12, mule = strongBack ? 24 : 18;
+  if (load > stop && !(packMule && load <= mule)) return { state: "immobile", moveAP: 0, label: "Can't move", limit: stop };
+  if (load > stop) return { state: "overburdened", moveAP: 2, label: "Overburdened", limit: mule };
+  if (load > enc) return { state: "encumbered", moveAP: 1, label: "Encumbered", limit: stop };
+  return { state: "free", moveAP: 0, label: "", limit: enc };
+}
+
 /** Ch3 Stat Bonus: +1 to every stat per 5 skill points. */
 export const statBonus = sp => Math.floor(Math.max(0, sp) / 5);
 

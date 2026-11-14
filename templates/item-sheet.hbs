@@ -12,5 +12,7 @@
   {{#if isGear}}<div class="fs-field-row"><label>Body <small>(0 = not an object; ~1 per cubic foot)</small> <input type="number" name="system.body" value="{{system.body}}" min="0" {{#unless editable}}disabled{{/unless}}></label>
     <label>Material <select name="system.density" {{#unless editable}}disabled{{/unless}}>{{selectOptions densities selected=system.density}}</select></label>
     {{#if system.isObject}}<span class="hint">Durability {{system.durability.value}}/{{system.durability.max}} · Limit {{system.objectLimit}}</span>{{/if}}</div>{{/if}}
+  {{#if isGear}}<div class="fs-field-row">{{#if sizeChoices}}<div class="fs-field"><label><a class="fs-sub" data-codex="{{sizeCodex}}" data-tooltip="An item's own Size: Size 2 is neutral, each Size above is a Strengthened stack on its values, each below a Weakened one. It also sets its Load.">Size</a></label>
+      <select name="system.size" data-dtype="Number" {{#unless editable}}disabled{{/unless}}>{{selectOptions sizeChoices selected=sizeSelected}}</select></div>{{/if}}</div>{{/if}}
   <textarea name="system.description" rows="10" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
 </div>

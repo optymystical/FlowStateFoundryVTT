@@ -1,4 +1,4 @@
-import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats, statPointsLeft } from "./rules.mjs";
+import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats, statPointsLeft, equipSize, equipStacks, applyStacks, loadFor, encumbrance } from "./rules.mjs";
 import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile, affixProfile, affixMultOf, affixSpeedPct, attunedAffixKeys, attunedAffixItems } from "./magic.mjs";
@@ -80,7 +80,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         value: int(0),        // may go negative: below 0 is Overkill
         lost: int(0, { min: 0 }) // Max HP lost (chunks of body removed)
       }),
-      energy: new f.SchemaField({ value: int(0, { min: 0 }) }),
+      energy: new f.SchemaField({ value: int(0) }),                       // can go below 0 only while Overexerting (Stamina T5)
       ap: new f.SchemaField({ value: int(6, { min: 0 }) }),
       rp: new f.SchemaField({ value: int(6, { min: 0 }) }),
       conditions: new f.SchemaField({
@@ -206,13 +206,32 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     };
     speedLoss.total = sm ? 0 : speedLoss.armor + speedLoss.affix + speedLoss.alignment;
     const walk = speedFt(d.move, speedLoss.total);
-    // Terrain regions (rough +1, difficult +2; Zircon ignores rough terrain).
-    const ground = lvl => (zircon && lvl === 1 ? 0 : lvl);
+    // Carrying (Athletics Tier 0): Load by each item's Size against yours. Natural items, Unarmed and Improvised, Icons and Affixes carry nothing.
+    const tier = id => Number(this.trees?.[id]) || 0;
+    let load = 0;
+    const drag = [];
+    for (const i of this.parent?.items ?? []) {
+      const s = i.system;
+      if (!["weapon", "armor", "foci", "shroud", "gear"].includes(i.type) || s?.natural || (i.type === "weapon" && ["unarmed", "improvised"].includes(s.weaponType))) continue;
+      const l = loadFor(s.sizeValue ?? equipSize(s.size, this.size, i.type === "gear" ? 2 : 1), this.size);
+      // Heavy Lifter (Hauling T5): one Size larger than you can be lifted, at 12 Load.
+      const each = l === null && tier("generic-hauling") >= 5 && (s.sizeValue ?? 0) === Math.round(this.size) + 1 ? 12 : l;
+      if (each === null) drag.push(i.name);
+      else load += each * (i.type === "gear" ? Math.max(0, Number(s.quantity) || 0) : 1);
+    }
+    const enc = encumbrance(load, { strongBack: tier("generic-athletics") >= 4, packMule: tier("generic-hauling") >= 4 });
+    this.load = { value: load, drag, ...enc };
+    // Terrain regions (rough +1, difficult +2; Zircon ignores rough terrain). Sure Footing (Mobility T1): actual rough terrain costs nothing extra;
+    // Scramble (Mobility T3, this turn): no terrain costs anything extra.
+    const scramble = !!this.parent?.getFlag?.("flowstate", "scramble");
+    const sureFooting = tier("generic-mobility") >= 1;
+    const ground = lvl => (scramble ? 0 : (zircon || sureFooting) && lvl === 1 ? 0 : lvl);
     const costArgs = {
       prone: statuses.has("prone"),
       // Like Shooting Fish (Longshot T2): moves as if in rough terrain.
       crouch: statuses.has("crouch") || (statuses.has("fishy") && !unfettered && !zircon),
-      stealth: statuses.has("stealth"),
+      // Ghost Step (Infiltration T4): Stealthing doesn't cost the extra AP.
+      stealth: statuses.has("stealth") && tier("generic-infiltration") < 4,
       tempo,
       // Trudge (Heavy T2 / Titanic T4): the next move ignores the armor's movement penalty.
       base: (trudge ? 1 : penalties.moveAP)
@@ -220,10 +239,12 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
         + (statuses.has("sliced") && !unfettered ? 1 : 0)
         // Freeze (Mental, Destruction T4): +1 AP per move
         + bonus("moveUp")
+        // Encumbered +1 AP a move (Overburdened +2).
+        + enc.moveAP
     };
     this.movement = {
-      // Quicken (Unarmored T4): double speed.
-      speed: statuses.has("quickened") ? walk * 2 : walk,
+      // Quicken (Unarmored T4): double speed. Carrying more than you can move with: none.
+      speed: enc.state === "immobile" ? 0 : statuses.has("quickened") ? walk * 2 : walk,
       speedLoss,
       tempo,
       // Where the creature stands now (the GM keeps its `terrainLevel` flag in step with the regions).
@@ -236,6 +257,21 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
   }
 }
 
+/**
+ * An item's own Size (Equipment doc): set on the item, or one below its user's (gear: two below). Each Size above 2 is a Strengthened stack on its values,
+ * each below a Weakened one. Natural items (and Unarmed/Improvised strikes) have none: the creature's own Size applies to those attacks.
+ */
+function itemSize(sys, below = 1) {
+  const size = equipSize(sys.size, sys.parent?.actor?.system?.size ?? 3, below);
+  return { size, stacks: sys.natural ? 0 : equipStacks(size) };
+}
+/** A profile with its Size's stacks on its Durability and Limit (and `sizeStacks` for what else they scale). */
+function sized(profile, stacks, { natural = false } = {}) {
+  if (!profile?.valid) return profile;
+  if (natural || !stacks) return { ...profile, sizeStacks: natural ? null : 0 };
+  return { ...profile, durability: applyStacks(profile.durability ?? 0, stacks), limit: applyStacks(profile.limit ?? 0, stacks), sizeStacks: stacks };
+}
+
 export class FlowStateGearData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
@@ -246,6 +282,7 @@ export class FlowStateGearData extends foundry.abstract.TypeDataModel {
       body: new f.NumberField({ required: true, nullable: false, integer: true, initial: 0, min: 0 }),
       density: new f.StringField({ initial: "soft", choices: () => Object.fromEntries(Object.entries(OBJECT_DENSITY).map(([k, v]) => [k, v.label])) }),
       wear: new f.NumberField({ required: true, nullable: false, integer: true, initial: 0 }),
+      size: new f.NumberField({ required: false, nullable: true, integer: true, initial: null, min: 0, max: 5 }),   // its own Size (Equipment doc); empty = the usual for its user
       description: new f.HTMLField({ initial: "" }),
       ...catalogSchema()
     };
@@ -259,6 +296,7 @@ export class FlowStateGearData extends foundry.abstract.TypeDataModel {
   prepareBaseData() { applyCatalog(this, "gear"); }
 
   prepareDerivedData() {
+    this.sizeValue = itemSize(this, 2).size;
     const o = objectStats(this.body, this.density);
     this.isObject = o.body > 0;
     this.objectLimit = o.limit;
@@ -289,6 +327,7 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
       // Multi-type weapons (Weapon Master, Martial Theory T5): extra weapon types besides the main one.
       extraTypes: new f.ArrayField(new f.StringField()),
       wear: int(0, { min: 0 }),
+      size: new f.NumberField({ required: false, nullable: true, integer: true, initial: null, min: 0, max: 5 }),   // its own Size (Equipment doc); empty = the usual for its user
       conditions: objectConditions(),                    // Ignite / Stain stacks, when it was aimed at
       description: new f.HTMLField({ initial: "" }),
       ...catalogSchema()
@@ -310,7 +349,11 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
 
   computeProfile(stats) {
     const { weaponType: type, weight, material, grade, twoHanded, natural } = this;
+    const sz = itemSize(this);
+    this.sizeValue = sz.size;
     this.profile = weaponProfile({ type, weight, material, grade, twoHanded, natural }, stats);
+    // Unarmed and Improvised strikes aren't equipment: the creature's Size applies to them (as to natural weapons).
+    this.profile = sized(this.profile, sz.stacks, { natural: !!natural || type === "unarmed" || type === "improvised" });
     if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);
     this._stats = stats;
     // All of this weapon's types: the main one first, then any extra (Unarmed/Improvised can't be multi-type).
@@ -338,7 +381,7 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
   profileFor(type) {
     if (!type || type === this.weaponType || !this.types?.includes(type)) return this.profile;
     const { weight, material, grade, twoHanded, natural } = this;
-    return weaponProfile({ type, weight, material, grade, twoHanded, natural }, this._stats ?? {});
+    return sized(weaponProfile({ type, weight, material, grade, twoHanded, natural }, this._stats ?? {}), itemSize(this).stacks, { natural: !!natural });
   }
 }
 
@@ -352,6 +395,7 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
       equipped: new f.BooleanField({ initial: false }),
       natural: new f.BooleanField({ initial: false }),    // natural armor (Summoning Skin): can't be dropped
       wear: int(0, { min: 0 }),
+      size: new f.NumberField({ required: false, nullable: true, integer: true, initial: null, min: 0, max: 5 }),   // its own Size (Equipment doc); empty = the usual for its user
       // Ignite and Stain stacks "on whatever is damaged" can land on the armor itself.
       conditions: objectConditions(),
       description: new f.HTMLField({ initial: "" }),
@@ -373,7 +417,9 @@ export class FlowStateArmorData extends foundry.abstract.TypeDataModel {
 
   computeProfile(con) {
     const { weight, material, grade, natural } = this;
-    this.profile = armorProfile({ weight, material, grade, natural }, con);
+    const sz = itemSize(this);
+    this.sizeValue = sz.size;
+    this.profile = sized(armorProfile({ weight, material, grade, natural }, con), sz.stacks, { natural: !!natural });
     if (this.parent?.flags?.flowstate?.made?.harden?.armor && this.profile) this.profile.selfWeakened = Math.max(this.profile.selfWeakened ?? 0, 1);   // Harden: damage to it is Weakened
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
@@ -435,6 +481,7 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
       equipped: new f.BooleanField({ initial: false }),   // held
       twoHanded: new f.BooleanField({ initial: false }),
       wear: int(0, { min: 0 }),
+      size: new f.NumberField({ required: false, nullable: true, integer: true, initial: null, min: 0, max: 5 }),   // its own Size (Equipment doc); empty = the usual for its user
       conditions: objectConditions(),                    // Ignite / Stain stacks, when it was aimed at
       affixes: new f.ArrayField(new f.StringField()),
       doubled: new f.StringField({ initial: "" }),        // Shard / Orb / Band: the Offensive Affix whose effects are doubled
@@ -464,7 +511,9 @@ export class FlowStateFociData extends foundry.abstract.TypeDataModel {
   computeProfile(stats) {
     this.attached = attunedAffixKeys(this.parent?.actor, "offensive");
     applyAffixSettings(this, "offensive");
-    this.profile = fociProfile(this, stats);
+    const sz = itemSize(this);
+    this.sizeValue = sz.size;
+    this.profile = sized(fociProfile(this, stats), sz.stacks, { natural: !!this.natural });
     const max = this.profile.durability ?? 0;
     this.durability = { max, value: max - this.wear };
     this.broken = this.profile.valid && max - this.wear <= 0;
@@ -521,6 +570,7 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
       natural: new f.BooleanField({ initial: false }),    // no Grade: scales with Build uncapped; can't be dropped or sold
       attuned: new f.BooleanField({ initial: false }),
       wear: int(0),                                       // spent Durability (Bulwark/Lattice: charges used)
+      size: new f.NumberField({ required: false, nullable: true, integer: true, initial: null, min: 0, max: 5 }),   // its own Size (Equipment doc); empty = the usual for its user
       conditions: objectConditions(),
       affixes: new f.ArrayField(new f.StringField()),
       doubled: new f.StringField({ initial: "" }),        // Keystone: the Defensive Affix whose effects are doubled
@@ -556,7 +606,14 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
   computeProfile(build, owner = null) {
     this.attached = attunedAffixKeys(this.parent?.actor, "defensive");
     applyAffixSettings(this, "defensive");
+    const sz = itemSize(this);
+    this.sizeValue = sz.size;
     const p = shroudProfile(this, build);
+    if (p.valid && sz.stacks && !this.natural) {
+      p.durability = applyStacks(p.durability ?? 0, sz.stacks);
+      p.baseLimit = applyStacks(p.baseLimit ?? 0, sz.stacks);
+    }
+    if (p.valid) p.sizeStacks = this.natural ? null : sz.stacks;
     if (p.valid) {
       let factor = 1;
       const t = this.shroudType;

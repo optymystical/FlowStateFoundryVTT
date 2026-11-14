@@ -8,7 +8,7 @@
  * card shows the Mode's numbers worked out for your Wonder Power for the GM to resolve.
  */
 import {
-  post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless, rollD100, turnKey, registerMental, spellEffects, pickSceneTarget, setGrapple, requestDamage, changeEffect, tokenDistance, attackGuard, guardRows, dodgeNetKnown
+  post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless, rollCheck, turnKey, registerMental, spellEffects, pickSceneTarget, setGrapple, requestDamage, changeEffect, tokenDistance, attackGuard, guardRows, dodgeNetKnown
 } from "./actions.mjs";
 import * as self from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
@@ -842,7 +842,7 @@ export async function psionSense(actor) {
   if (t < 1) return;
   const far = !!actor.getFlag("flowstate", "psion")?.farSight;
   const range = far ? 1000 : 100;
-  await rollD100(actor, "Psion Sense");
+  await rollCheck(actor, "Psion Sense");
   const detail = t >= 5 ? "the individual mental stats and mental abilities (of stages you've reached) of those you detect, with direction and total Mind"
     : t >= 3 ? "the direction of a chosen mental energy and its total Mind" : "only how many mental energies are around you, not where";
   await post(actor, { title: `${esc(actor.name)} — Psion Sense`, body: `<div class="fs-notes">${t >= 3 ? "Primary" : "Secondary"} Psion within <strong>${range} ft</strong>${far ? " (Far Sight)" : ""}: on a success you learn ${detail}.</div>` });
@@ -865,7 +865,7 @@ export async function auraSight(actor) {
   if (!(await pay(actor, cost, "Aura Sight"))) return;
   const cur = actor.getFlag("flowstate", "psion") ?? {};
   await setActorFlag(actor, "psion", { ...cur, auraSight: true });
-  await rollD100(actor, "Aura Sight (Spot)");
+  await rollCheck(actor, "Aura Sight (Spot)");
   await post(actor, { title: `${esc(actor.name)} — Aura Sight`, body: `<div class="fs-result">A Spot check against everything within Psion range. Area Manifestations are <strong>doubled</strong> until the start of ${esc(actor.name)}'s next turn.</div>` });
 }
 

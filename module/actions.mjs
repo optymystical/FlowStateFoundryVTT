@@ -30,6 +30,31 @@ export function inActiveCombat(actor) {
   return combat.combatants.some(c => c.actor?.uuid === actor.uuid);
 }
 
+/** A tense scene (Endurance Tier 0, the GM's toggle): outside combat, Energy is spent and regained as in combat, the GM passing the turns. */
+export function tenseScene() {
+  try { return !!globalThis.game?.settings?.get?.("flowstate", "tenseScene"); } catch (err) { return false; }
+}
+/** Energy counts (it's spent, and doesn't refill by itself) in combat and in a tense scene. */
+export const energyTracked = actor => inActiveCombat(actor) || tenseScene();
+/** The tense scene is over: everyone's Energy is full again (GM). */
+export async function endTenseScene() {
+  for (const a of game.actors ?? []) await refillEnergy(a);
+  for (const t of globalThis.canvas?.scene?.tokens ?? []) if (t.actor && !t.actorLink) await refillEnergy(t.actor);
+}
+/** A turn passes in a tense scene (GM): every creature on the scene outside combat regains its start-of-turn Energy (2 AP of Recover Energy). */
+export async function passTenseTurn() {
+  const seen = new Set(), lines = [];
+  for (const t of globalThis.canvas?.scene?.tokens ?? []) {
+    const a = t.actor;
+    if (!a?.system?.energy || seen.has(a.uuid) || inActiveCombat(a) || notCreature(a)) continue;
+    seen.add(a.uuid);
+    const { value, max } = a.system.energy;
+    const regain = Math.min(max - value, await turnStartEnergy(a));
+    if (regain > 0) { await a.update({ "system.energy.value": value + regain }); lines.push(`${esc(a.name)} +${regain}`); }
+  }
+  await ChatMessage.create({ content: `<div class="flowstate-card"><header class="fs-card-title">A turn passes (tense scene)</header><div class="fs-notes">${lines.length ? `Energy regained: ${lines.join(", ")}.` : "Nobody regains Energy."}</div></div>` });
+}
+
 /* ---- Movement cost in combat: the ledger (movement-rules.mjs has the rules, movement.mjs the token hooks) ---- */
 
 /** World setting: how movement is charged in combat: "enforce" (default), "warn" or "off". */
@@ -152,14 +177,44 @@ export const GM_ONLY_STATUSES = new Set(Object.keys(STEALTH_STATUSES));
  * `opts` with the attacker's stealth status applied. Stealth values don't stack: Full beats Half, and Half from the status and Half from the attack itself
  * (a Targeted spell, Vector Assault) is still a single Half. Escapes, throws and Ward rolls aren't attacks from stealth.
  */
-export function withStealthStatus(actor, opts) {
+export function withStealthStatus(actor, opts, targets = []) {
   const set = actor?.statuses;
   if (!set || opts.breakFree || opts.throwGrappled || opts.mental?.reflect || opts.mental?.ward || opts.mental?.quicksand || opts.mental?.disperse || opts.mental?.expand) return opts;
-  const st = set.has("fullStealth") ? "full" : set.has("halfStealth") ? "half" : null;
+  const st = set.has("fullStealth") ? "full" : set.has("halfStealth") ? "half" : stealthValue(actor, targets);
   if (!st) return opts;
+  if (!set.has("fullStealth") && !set.has("halfStealth")) {
+    // The Stealth Value (Stealth Tier 0) from Stealthing: Half against targets that haven't spotted you, Full when they're also unaware of combat.
+    const stealth = st === "full" || opts.stealth === "full" ? "full" : "half";
+    const note = stealth === "full" ? (inActiveCombat(actor) ? "Full stealth (Blindside: unspotted and not yet attacked)" : "Full stealth (unspotted, unaware of combat)") : opts.stealth === "half" ? null : "Half stealth (Stealthing, unspotted)";
+    return { ...opts, stealth, statusStealth: true, notes: note ? [...(opts.notes ?? []), note] : opts.notes };
+  }
   const stealth = st === "full" || opts.stealth === "full" ? "full" : "half";
   const note = stealth === "full" ? "Full stealth (GM)" : opts.stealth === "half" ? null : "Half stealth (GM)";
   return { ...opts, stealth, statusStealth: true, notes: note ? [...(opts.notes ?? []), note] : opts.notes };
+}
+
+/** Who has spotted a Stealthing creature (Stealth Tier 0): the spotters' uuids, kept on the hider until it stops Stealthing. */
+export const spottedBy = actor => actor?.getFlag?.("flowstate", "spottedBy") ?? [];
+/**
+ * A Stealthing attacker's Stealth Value against its targets (Stealth Tier 0): none if any of them has spotted it; else Half, or Full when they're unaware
+ * of combat (outside a combat; in one, Blindside, Ambush T5, counts a target it hasn't attacked yet this combat as unaware). Null when not Stealthing.
+ */
+export function stealthValue(actor, targets = []) {
+  if (!actor?.statuses?.has?.("stealth") || !targets.length) return null;
+  const seen = new Set(spottedBy(actor));
+  if (targets.some(t => seen.has(t.uuid))) return null;
+  if (!inActiveCombat(actor)) return "full";
+  const blind = ab.treeTier(actor, "generic-ambush") >= 5;
+  const hit = actor.getFlag?.("flowstate", "attackedThisCombat");
+  const fresh = blind && targets.every(t => !(hit?.combat === game.combat?.id && hit.uuids?.includes(t.uuid)));
+  return fresh ? "full" : "half";
+}
+/** Blindside's memory: whom this creature has attacked in the current combat. */
+async function noteAttacked(actor, targets) {
+  if (!inActiveCombat(actor) || ab.treeTier(actor, "generic-ambush") < 5 || !targets.length) return;
+  const cur = actor.getFlag?.("flowstate", "attackedThisCombat");
+  const uuids = cur?.combat === game.combat.id ? [...new Set([...(cur.uuids ?? []), ...targets.map(t => t.uuid)])] : targets.map(t => t.uuid);
+  await setActorFlag(actor, "attackedThisCombat", { combat: game.combat.id, uuids });
 }
 
 /** Where an attack roll's Advantage/Disadvantage came from, as "Psych Up +1, target Psych Up +1" style parts. */
@@ -182,6 +237,12 @@ function attackNetParts(actor, opts, target = null) {
   return parts;
 }
 const netNote = (net, parts) => (net || parts.length ? `<div class="fs-notes">${net ? netLabel(net) : "No net Advantage"}${parts.length ? ` (${parts.join(", ")})` : ""}</div>` : "");
+
+/**
+ * The Strengthened/Weakened stacks Size gives a physical attack: a weapon's own Size (Equipment doc: Size 2 neutral, one stack per Size above or
+ * below), or the creature's Size for Unarmed and natural attacks (Rules doc, Size Categories). `sizeStacks` is the weapon's, carried on the attack.
+ */
+const sizeNet = (derived, o) => (o?.sizeStacks ?? derived?.size?.physical ?? 0);
 
 /** A weapon's normal attack AP (for RP costs like Riposte and Blade Flurry). */
 const p0Ap = (item, unarmed) => (unarmed ? 2 : item.system.profile?.ap ?? 2);
@@ -419,27 +480,11 @@ export async function rollStatCheck(actor, key) {
   await hexRoll(actor, "stat");
 }
 
-/** Ch7 Non Stat Checks: d100 (Stealth, Perception, Persuasion, Deception, counter rolls). */
-export async function rollD100(actor, label, { apCost = 0 } = {}) {
-  const stealthDis = label === "Stealth" ? actor.system.penalties.stealthDis : 0;
-  if (stealthDis === Infinity) {
-    return post(actor, { title: "Stealth (d100)", body: `<div class="fs-outcome fs-miss">Automatically fails</div><div class="fs-notes">Titanic armor</div>` });
-  }
-  const opts = await optionsDialog(`${label} (d100)`, netField(), "Roll", { skipIfEmpty: true });
-  if (!opts) return;
-  if (!(await spendAP(actor, apCost, label))) return;
-  const socialNet = 0, social = [];
-  const net = opts.net + exhaustionNet(actor) - stealthDis + seeingRedNet(actor) + socialNet + disruptNet(actor) + charmNet(actor, "noncombat");
-  await consumeDisrupt(actor);
-  const roll = await evaluate(poolFormula(1, 100, net));
-  const cr = await mentalHook?.rollCharges?.({ actor, type: "other", roll, die: 100, count: 1, net, max: 100, label });
-  const notes = [netLabel(net), stealthDis ? "armor penalty" : "", seeingRedNet(actor) ? "Seeing Red" : "", ...social].filter(Boolean).join(" · ");
-  await post(actor, {
-    title: `${label} (d100)`,
-    rolls: [roll, ...(cr?.rolls ?? [])],
-    body: `${await rollBlock(roll, "Roll")}${chargeNotesHTML(cr)}${notes ? `<div class="fs-notes">${notes}</div>` : ""}`
-  });
-  await hexRoll(actor, "noncombat");
+/** Ch7 Non Stat Checks (Stealth, Perception, Persuasion, Deception, counter, Athletics): the plain attack die; checks.mjs rolls them. */
+let checkHook = null;
+export const registerChecks = h => { checkHook = h; };
+export async function rollCheck(actor, label, opts = {}) {
+  return checkHook?.rollCheck(actor, checkHook.kindOf(label), { ...opts, label: opts.label ?? label }) ?? null;
 }
 
 /** Ch8 Attack roll as a plain check: d(SP), no AP, no target resolution. */
@@ -1264,7 +1309,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     const bp = boardItem.system.profile;
     const shieldMsg = await performAttack(actor, {
       label: `${boardItem.name} — Sword and Board`, net: 0, melee: true, push: false,
-      damage: bp.formula, cleave: bp.cleave ?? 0, type: bp.damageType, stacks: bp.stacks, physical: true, shots: 1,
+      damage: bp.formula, cleave: bp.cleave ?? 0, type: bp.damageType, stacks: bp.stacks, physical: true, sizeStacks: bp.sizeStacks ?? null, shots: 1,
       critStacks: bp.critStacks, vsSupernatural: bp.vsSupernatural, arcaneVsMagic: bp.arcaneVsMagic, pierce: bp.pierce, knockback: bp.knockback,
       notes: [`Sword and Board (${ab.DEFENDER_COST.swordAndBoard(boardItem)} Energy): if this hits, the dodge against ${item.name} has Disadvantage`],
       followups: [], itemUuid: boardItem.uuid, turnKey: turnKey(), targetActors: explicitTargets
@@ -1286,7 +1331,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     label: followup ? `${item.name} — ${followup.label}` : unarmed ? `${item.name} (${WEAPON_TYPES.unarmed.label} ${p.scalingStat === "str" ? "Heavy" : "Light"})` : item.name,
     net, stealth: followup?.kind === "return" && ab.circular(actor, item, 5) ? "half" : opts.stealth, melee: opts.mode === "strike", push: false,
     damage: shieldToss?.mode === "guard" || (opts.thrasherGrapple && !opts.getOverHere) ? "" : damage, type: p.damageType, stacks, ap: 0, apCost: ap || rpPaid,
-    physical: true, shots,
+    physical: true, sizeStacks: p.sizeStacks ?? null, shots,
     critStacks: p.critStacks, vsSupernatural: p.vsSupernatural, arcaneVsMagic: p.arcaneVsMagic,
     smashKb, autoFollowup, pierce, knockback, knockbackAdd: knockback ? knockbackAdd : 0, bash, notes, followups, followupOf: followup?.source ?? null,
     aimItem: opts.aim && !opts.area && !whirl && !spin && !grapple ? opts.aim : null,
@@ -1641,7 +1686,7 @@ export async function pickUp(pile, item) {
 
 /** Options carried through the exchange (serializable into chat message flags). */
 const EXCHANGE_KEYS = ["label", "growth", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
-  "arcaneVsMagic", "pierce", "knockback", "knockbackAdd", "push", "stealth", "statusStealth", "melee", "area", "grapple", "grappleOnly",
+  "arcaneVsMagic", "sizeStacks", "pierce", "knockback", "knockbackAdd", "push", "stealth", "statusStealth", "melee", "area", "grapple", "grappleOnly",
   "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "smashKb", "autoFollowup", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride", "woven"];
 
 /**
@@ -1663,8 +1708,9 @@ export async function performAttack(actor, opts) {
   if (await triggerMark(actor, `attacks (${opts.label || "Attack"})`)) {
     opts = { ...opts, net: (opts.net ?? 0) - 1, notes: [...(opts.notes ?? []), "Lead Blindness (Marked): Disadvantage"] };
   }
-  opts = withStealthStatus(actor, opts);
   const picked = (opts.targetActors ?? [...game.user.targets].map(t => t.actor)).filter(a => a && (!notCreature(a) || objectOf(a)));
+  opts = withStealthStatus(actor, opts, picked.filter(a => !notCreature(a)));
+  await noteAttacked(actor, picked.filter(a => !notCreature(a)));
   // An object on the ground (a pile holding a Non-Archetypal object) is attacked on its own: it always hits.
   if (picked.length === 1 && objectOf(picked[0])) return attackObject(actor, opts, picked[0], objectOf(picked[0]));
   const targets = picked.filter(a => !notCreature(a));
@@ -1694,7 +1740,7 @@ async function attackObject(actor, opts, target, item) {
     rolls.push(...base.rolls);
     let net = opts.stacks ?? 0;
     if (crit) net += 2 + (opts.critStacks ?? 0);
-    if (opts.physical && d.size.physical) net += d.size.physical;
+    if (opts.physical && sizeNet(d, opts)) net += sizeNet(d, opts);
     if (opts.rend) net += opts.rend.stacks;
     const line = damageLine(base.totals, net, opts.type, shots);
     const amount = line.final + (opts.cleave ?? 0);
@@ -1736,7 +1782,7 @@ async function untargetedAttack(actor, opts) {
     let net = opts.stacks ?? 0;
     if (net) parts.push(`${signed(net)} weapon/manual`);
     if (opts.dragonLash) { net += 1; parts.push("+1 Dragon Lash (+2 if the target is prone)"); }
-    if (opts.physical && d.size.physical) { net += d.size.physical; parts.push(`${signed(d.size.physical)} size`); }
+    if (opts.physical && sizeNet(d, opts)) { net += sizeNet(d, opts); parts.push(`${signed(sizeNet(d, opts))} size`); }
     const hit = damageLine(base.totals, net, opts.type, shots);
     const critNet = net + 2 + (opts.critStacks ?? 0);
     const crit = damageLine(base.totals, critNet, opts.type, shots);
@@ -4188,7 +4234,13 @@ export function aimableItems(actor) {
  */
 export function castStacks(actor, plan = null) {
   const fromEffects = Array.from(actor?.effects ?? []).reduce((n, e) => n + (e.disabled ? 0 : Number(e.flags?.flowstate?.spellEffect?.strengthened) || 0), 0);
-  return (Number(plan?.stacks) || 0) + fromEffects;
+  return (Number(plan?.stacks) || 0) + fromEffects + fociSizeStacks(actor, plan);
+}
+/** A Foci's own Size (Equipment doc): each Size above 2 Strengthens the spells cast through it, each below Weakens them. Raw Casting has none. */
+export function fociSizeStacks(actor, plan) {
+  const o = plan?.option;
+  if (!o?.fociId || o.form === "raw") return 0;
+  return Number(actor?.items?.get?.(o.fociId)?.system?.profile?.sizeStacks) || 0;
 }
 
 async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = null) {
@@ -5200,7 +5252,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     if (o.launchForce) {
       // Launch (Heavy Armor T5): Bodyslam applies 10× its damage as Force instead of damage.
       const d = attacker.system.derived;
-      const stacks = (o.stacks ?? 0) + (result.critStacks ?? 0) + (o.physical ? d.size.physical : 0);
+      const stacks = (o.stacks ?? 0) + (result.critStacks ?? 0) + (o.physical ? sizeNet(d, o) : 0);
       const force = applyStacks(o.launchForce, stacks);
       const feet = forceFeet(force, target, false);
       const crunchFeet = ab.strength(attacker, 3) ? forceFeet(force, target, true) : 0;
@@ -5208,7 +5260,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
       pushInfo = Math.max(feet, crunchFeet) > 0 ? { attacker: attack.attacker, target: target.uuid, force, feet, label: "Launch" } : null;
     } else if (o.push) {
       const d = attacker.system.derived;
-      const stacks = (o.stacks ?? 0) + (result.critStacks ?? 0) + (o.physical ? d.size.physical : 0);
+      const stacks = (o.stacks ?? 0) + (result.critStacks ?? 0) + (o.physical ? sizeNet(d, o) : 0);
       const shove = ab.strength(attacker, 1);
       const force = applyStacks(pushForce(d.effective.str.value, shove), stacks);
       const feet = forceFeet(force, target, false);
@@ -5311,7 +5363,7 @@ function targetStacks(attacker, o, target, result, extra = 0, ctx = {}) {
     const c = result.critStacks + (o.critStacks ?? 0);
     stacks += c; parts.push(`+${c} ${result.doubleCrit ? "double crit" : "crit"}`);
   }
-  if (o.physical && d.size.physical) { stacks += d.size.physical; parts.push(`${signed(d.size.physical)} size`); }
+  if (o.physical && sizeNet(d, o)) { stacks += sizeNet(d, o); parts.push(`${signed(sizeNet(d, o))} size`); }
   if (o.vsSupernatural && t.supernatural) { stacks += o.vsSupernatural; parts.push(`+${o.vsSupernatural} vs supernatural`); }
   let arcaneWeak = false;
   if (type === "arcane" && !t.magical) {
@@ -6140,10 +6192,19 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
  * Returns false if the actor can't afford it in combat.
  */
 export async function spendEnergy(actor, cost, what = "that") {
-  if (!cost || !inActiveCombat(actor)) return true;
+  if (!cost || !energyTracked(actor)) return true;
   cost = mentalHook?.energyCost?.(actor, cost) ?? cost;                    // Thrift (Growth): the action costs less Energy
   if (!cost) return true;
   const have = actor.system.energy.value;
+  // Pace Yourself (Stamina T2) watches whether you spent any Energy this turn.
+  if (game.combat?.combatant?.actor?.uuid === actor.uuid && ab.treeTier(actor, "generic-stamina") >= 2) await setActorFlag(actor, "energySpentTurn", turnKey());
+  // Overexert (Stamina T5, this turn): Energy can go as low as minus your maximum.
+  const over = actor.getFlag?.("flowstate", "overexert") === turnKey() && !!turnKey();
+  if (over && have - cost >= -actor.system.energy.max) {
+    await actor.update({ "system.energy.value": have - cost });
+    await mentalHook?.energySpent?.(actor, cost);
+    return true;
+  }
   if (have < cost) {
     ui.notifications.warn(`${actor.name} needs ${cost} Energy for ${what} but has ${have}.`);
     return false;
@@ -6160,9 +6221,9 @@ async function refundEnergy(actor, amount) {
   await actor.update({ "system.energy.value": Math.min(e.max, e.value + amount) });
 }
 
-/** Outside combat, Energy is always full (and an attuned Shroud recovers fully, see `refillShroud`). */
+/** Outside combat, Energy is always full (and an attuned Shroud recovers fully, see `refillShroud`); a tense scene keeps counting it. */
 export async function refillEnergy(actor) {
-  if (!actor?.isOwner || notCreature(actor) || inActiveCombat(actor) || actor.getFlag?.("flowstate", "rite")) return;   // a Rite keeps Energy at zero
+  if (!actor?.isOwner || notCreature(actor) || energyTracked(actor) || actor.getFlag?.("flowstate", "rite")) return;   // a Rite keeps Energy at zero
   const { value, max } = actor.system.energy ?? {};
   if (value !== undefined && value < max) await actor.update({ "system.energy.value": max });
   await refillShroud(actor);
@@ -6321,20 +6382,28 @@ export async function energyRestoreAdjust(actor, restore) {
  */
 export async function turnStartEnergy(actor) {
   const blocked = await freezeBlockTurnStart(actor);
-  if (actor.statuses?.has?.("fear")) return 0;
-  const regain = blocked ? 0 : 2 * (actor.system.derived?.energyRecover ?? 0);
-  return regain ? energyRestoreAdjust(actor, regain) : 0;
+  const courage = ab.treeTier(actor, "generic-courage");
+  if (actor.statuses?.has?.("fear") && courage < 2) return 0;
+  const afraid = actor.statuses?.has?.("fear") ? (courage >= 5 ? 1 : 0.5) : 1;
+  // Inexhaustible (Stamina T4): 3 AP of recovery instead of 2. Fight Through It (Courage T2): half of it while afraid (all of it with Fearless, T5).
+  const aps = ab.treeTier(actor, "generic-stamina") >= 4 ? 3 : 2;
+  const regain = blocked ? 0 : aps * (actor.system.derived?.energyRecover ?? 0);
+  return regain ? energyRestoreAdjust(actor, Math.floor(regain * afraid)) : 0;
 }
 
 export async function recoverEnergy(actor) {
   if (cantAct(actor, "recover Energy")) return;
   await triggerMark(actor, `recovers Energy`);
-  if (!inActiveCombat(actor)) return ui.notifications.info("Outside combat, Energy is always full.");
+  if (!energyTracked(actor)) return ui.notifications.info("Outside combat (and tense scenes), Energy is always full.");
   if (actor.statuses.has("fear")) return ui.notifications.warn(`${actor.name} is afraid and can't gain Energy.`);
   const { value, max } = actor.system.energy;
   if (value >= max) return ui.notifications.info(`${actor.name} is already at full Energy.`);
   if (!(await spendAP(actor, 1, "recovering Energy"))) return;
-  let gain = await energyRestoreAdjust(actor, Math.min(actor.system.derived.energyRecover, max - value));
+  // Catch Your Breath (Stamina T1): the first AP spent recovering Energy each turn recovers twice as much.
+  const key = turnKey();
+  const breath = ab.treeTier(actor, "generic-stamina") >= 1 && !!key && actor.getFlag?.("flowstate", "catchBreath") !== key;
+  if (breath) await setActorFlag(actor, "catchBreath", key);
+  let gain = await energyRestoreAdjust(actor, Math.min(actor.system.derived.energyRecover * (breath ? 2 : 1), max - value));
   // Seep (Build Arcana T3): forgo half of the Energy to make your Shroud recover once.
   let seep = "";
   const sh = actor.system.shroud;
@@ -6366,7 +6435,8 @@ export async function rest(actor) {
       </ul>${inActiveCombat(actor) ? `<p class="fs-warn">${esc(actor.name)} is in an active combat.</p>` : ""}</div>`
   });
   if (!ok) return;
-  await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0 });
+  // A rest makes First Aid (Recovery T1) and Overexert (Stamina T5) available again.
+  await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0, "flags.flowstate.firstAided": false, "flags.flowstate.overexertUsed": false });
   await post(actor, { title: "8 Hour Rest", body: `<div class="fs-result">+${next - value} HP (${next}/${max})</div>` });
   await mentalHook?.rest(actor);                     // Preordained (Mental, Order T4) rolls its number after a rest
 }
@@ -6385,8 +6455,10 @@ export async function freezeBlockTurnStart(actor) {
 
 /** Ch9 Ignite: put out (2 AP, anyone in melee). Stain: clean (3 AP). */
 export async function clearCondition(actor, key) {
-  const cost = key === "ignite" ? 2 : STAIN_VARIANTS[key]?.ap;
-  if (cost === null || cost === undefined) return ui.notifications.warn(`${STAIN_VARIANTS[key]?.label ?? key} can't be removed.`);
+  const base = key === "ignite" ? 2 : STAIN_VARIANTS[key]?.ap;
+  if (base === null || base === undefined) return ui.notifications.warn(`${STAIN_VARIANTS[key]?.label ?? key} can't be removed.`);
+  // Shake It Off (Fortitude T1): removing Ignite or Stain from yourself costs 1 AP less.
+  const cost = ab.treeTier(actor, "generic-fortitude") >= 1 ? Math.max(0, base - 1) : base;
   const armor = actor.system.armor;
   const burning = aimableItems(actor).filter(i => i.system.conditions?.[key]);
   if (!actor.system.conditions[key] && !armor?.system.conditions?.[key] && !burning.length) return;
@@ -6478,12 +6550,38 @@ export async function igniteSpread(actor, ignite) {
     body: `<div class="fs-result"><i class="fa-solid fa-fire"></i> ${esc(actor.name)}'s Ignite (${ignite}) is at its limit: it spreads twice to surrounding tiles, <strong>${DIRS[r1.total - 1] ?? r1.total}</strong> and <strong>${DIRS[r2.total - 1] ?? r2.total}</strong>. Each tile gets <strong>${each} Ignite</strong> (10%); anything standing there is lit, an already burning tile adds it.</div>` });
 }
 
+/** Stamina at the end of your turn: Pace Yourself (T2) regains half your Skill Points if you spent no Energy; Overexert (T5) settles its debt. */
+async function staminaEndOfTurn(actor) {
+  const key = turnKey(), st = ab.treeTier(actor, "generic-stamina");
+  if (!key || st < 2) return;
+  const e = actor.system.energy;
+  if (actor.getFlag?.("flowstate", "overexert") === key) {
+    await setActorFlag(actor, "overexert", null);
+    if (e.value < 0) {
+      const loss = Math.floor(-e.value / 5);
+      await actor.update({ "system.energy.value": 0, "system.hp.value": actor.system.hp.value - loss });
+      await post(actor, { title: `${esc(actor.name)} — Overexert`, body: `<div class="fs-result">Energy ended at ${e.value}: ${esc(actor.name)} loses <strong>${loss}</strong> health (a fifth of it), and Energy returns to 0.</div>` });
+      return;
+    }
+  }
+  if (actor.getFlag?.("flowstate", "energySpentTurn") !== key && !actor.statuses?.has?.("fear") && e.value < e.max) {
+    const gain = Math.min(e.max - e.value, Math.floor((Number(actor.system.skillPoints) || 0) / 2));
+    if (gain > 0) {
+      await actor.update({ "system.energy.value": e.value + gain });
+      await post(actor, { title: `${esc(actor.name)} — Pace Yourself`, body: `<div class="fs-result">No Energy spent this turn: ${esc(actor.name)} regains <strong>${gain}</strong> Energy.</div>` });
+    }
+  }
+}
+
 export async function endOfTurn(actor) {
+  await staminaEndOfTurn(actor);
   // Fear from an Illusion Combo's creation ends when the afraid creature's turn ends.
   for (const e of spellEffects(actor, "fearTimed")) { await changeEffect(e, null); if (actor.statuses?.has("fear")) await setStatus(actor, "fear", false); }
   const sys = actor.system;
   const { slow, haste } = sys.conditions;
-  const decay = Math.floor(sys.hp.pain / 2);
+  // Thick Skin (Fortitude T2): Slow stacks go down by your full Pain Threshold, and Ignite/Stain damage is Weakened.
+  const thick = ab.treeTier(actor, "generic-fortitude") >= 2;
+  const decay = thick ? Math.floor(sys.hp.pain) : Math.floor(sys.hp.pain / 2);
   const update = { "system.ap.value": 0 };
   const lines = [];
 
@@ -6495,7 +6593,8 @@ export async function endOfTurn(actor) {
   let wear = 0;
   for (const [amount, type, label] of [[t.heat, "heat", "Ignite"], [t.acid, "acid", "Stain"], [t.radiation, "radiation", "Electric Stain"]]) {
     if (!amount) continue;
-    ticks.push({ amount, type, label });
+    const weak = thick && type !== "radiation";
+    ticks.push({ amount: weak ? applyStacks(amount, -1) : amount, type, label: weak ? `${label}, Weakened by Thick Skin` : label });
   }
   if (t.energy) { update["system.energy.value"] = Math.max(0, sys.energy.value - t.energy); lines.push(`Frozen Stains drain ${t.energy} Energy`); }
   if (armor) {
@@ -6518,7 +6617,7 @@ export async function endOfTurn(actor) {
   if (brandTick) { ticks.push({ amount: brandTick, type: "heat", label: "Brand" }); }
 
   if (slow) { update["system.conditions.slow"] = Math.max(0, slow - decay); lines.push(`Slow ${slow} → ${update["system.conditions.slow"]}`); }
-  if (haste) { update["system.conditions.haste"] = Math.max(0, haste - decay); lines.push(`Haste ${haste} → ${update["system.conditions.haste"]}`); }
+  if (haste) { update["system.conditions.haste"] = Math.max(0, haste - Math.floor(sys.hp.pain / 2)); lines.push(`Haste ${haste} → ${update["system.conditions.haste"]}`); }
   // Electric Stains trigger no matter what, then the caster may try to pass them on (or they go away).
   const electric = sys.conditions.electric;
   if (electric) update["system.conditions.electric"] = 0;
@@ -6863,3 +6962,11 @@ export async function shroudCounter(damageMessage, kind, amount) {
     inflict: kind === "ruby" ? { ignite: amount } : kind === "sapphire" ? { slow: amount } : null
   });
 }
+
+/** What checks.mjs (Non Stat Checks) rolls with: the dialog, the roll card's parts, and the roll modifiers every roll takes. */
+export const rollKit = {
+  optionsDialog, netField, rollBlock, chargeNotesHTML, netLabel, evaluate, noAdvantage, consumeDisrupt,
+  net: (actor, type = "noncombat") => exhaustionNet(actor) + seeingRedNet(actor) + disruptNet(actor) + charmNet(actor, type),
+  charges: args => mentalHook?.rollCharges?.(args) ?? null,
+  hex: (actor, type = "noncombat") => hexRoll(actor, type)
+};

@@ -2,6 +2,7 @@ import { DialogV2 } from "./html.mjs";
 import { getCurrencies } from "./currency.mjs";
 import { currencyRows } from "./currency-rules.mjs";
 import { STATS, SIZES, SENSE_LEVELS, DAMAGE_TYPES, STAIN_VARIANTS, OBJECT_DENSITY } from "./rules.mjs";
+import * as generic from "./generic.mjs";
 import {
   WEAPON_TYPES, WEIGHTS, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS, THROW, RARITIES, materialsFor, describeTags, weaponProfile
 } from "./martial.mjs";
@@ -479,11 +480,16 @@ function actionGroups(actor, weapons, stats) {
     disabled: sys.energy.value >= sys.energy.max });
 
 
+  // Generic Groups: Stealthing, Delay, Glimpse... and every other active Generic ability (generic.mjs).
+  const genericRows = generic.actionRows(actor);
+
   const checks = [
     { label: "Attack roll", detail: "Just the attack die", cost: `d${d.attackDie}`, action: "attack", icon: "fa-solid fa-hand-back-fist" },
     { label: "Dodge roll", detail: "Just the dodge dice", cost: `2d${d.dodgeDie}`, action: "dodge", icon: "fa-solid fa-person-running" },
-    ...["Stealth", "Perception", "Persuasion", "Deception"].map(label => ({
-      label, detail: label === "Perception" ? "Spot" : "", cost: "d100", action: "rollD100", rollLabel: label, icon: "fa-solid fa-dice-d20"
+    // Non Stat Checks: the plain attack die (total Skill Points). Spot is Perception against a targeted creature's Stealth, for 1 AP in combat.
+    ...[["Spot", "Perception against a targeted creature's Stealth", actions.inActiveCombat(actor) ? "1 AP" : ""], ["Perception", "", ""], ["Stealth", "", ""], ["Persuasion", "Persuade: target the creature to contest it", ""],
+      ["Deception", "Deceive: target the creature to contest it", ""], ["Counter check", "Resisting persuasion, deception or intimidation", ""], ["Athletics", "Climbing, swimming and other physical feats", ""]].map(([label, detail, ap]) => ({
+      label, detail, cost: `d${sys.skillPoints}${ap ? ` · ${ap}` : ""}`, action: "rollD100", rollLabel: label, icon: label === "Spot" ? "fa-solid fa-eye" : "fa-solid fa-dice-d20"
     }))
   ];
 
@@ -801,6 +807,7 @@ function actionGroups(actor, weapons, stats) {
     ...(rapidRows.length ? [{ key: "act-rapid", name: "Rapid Weapons", actions: rapidRows }] : []),
     ...(swiftRows.length ? [{ key: "act-swift", name: "Swift Weapons", actions: swiftRows }] : []),
     ...(martial.length ? [{ key: "act-martial", name: "Martial Theory", actions: martial }] : []),
+    ...(genericRows.length ? [{ key: "act-generic", name: "Generic", actions: genericRows }] : []),
     { key: "act-checks", name: "Checks", actions: checks }
   ];
 }
@@ -856,6 +863,19 @@ export function runActionRow(actor, row) {
   if (row.itemId) dataset.itemId = row.itemId;
   const target = { dataset, closest: sel => (sel === "[data-item-id]" && row.itemId ? { dataset: { itemId: row.itemId } } : null) };
   return handler.call({ document: actor, actor }, new Event("click"), target);
+}
+
+/**
+ * The Size picker of an item sheet (Equipment doc): empty is the usual Size for its user (one below; gear two below), which it then follows if the
+ * item changes hands. Natural items and Unarmed/Improvised strikes have none (the creature's Size applies).
+ */
+function itemSizeContext(item) {
+  const s = item.system;
+  if (!["weapon", "armor", "foci", "shroud", "gear"].includes(item.type) || s?.natural || (item.type === "weapon" && ["unarmed", "improvised"].includes(s?.weaponType))) return {};
+  const userSize = item.actor?.system?.size ?? 3;
+  const usual = Math.max(0, Math.round(userSize) - (item.type === "gear" ? 2 : 1));
+  return { sizeChoices: { "": `Usual (Size ${usual})`, ...Object.fromEntries([0, 1, 2, 3, 4, 5].map(n => [String(n), `Size ${n}${n === 2 ? " (neutral)" : n > 2 ? ` (Strengthened ×${n - 2})` : ` (Weakened ×${2 - n})`}`])) },
+    sizeSelected: s.size ?? "", sizeCodex: "entry:generic-athletics:carrying" };
 }
 
 /** Change a sheet's picture (owners only; see `askImage`: players browse through a connected GM). */
@@ -952,6 +972,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       pinTree: FlowStateActorSheet.onPinTree,
       lowerTier: FlowStateActorSheet.onLowerTier,
       martial: FlowStateActorSheet.onMartial,
+      generic: function (event, target) { return generic.run(this.document, target.dataset.op); },
       endEffect: FlowStateActorSheet.onEndEffect
     }
   };
@@ -1188,7 +1209,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
 
   static onRollStat(event, target) { return actions.rollStatCheck(this.document, target.dataset.stat); }
   static onRollD100(event, target) {
-    return actions.rollD100(this.document, target.dataset.label, { apCost: Number(target.dataset.ap) || 0 });
+    const label = target.dataset.label;
+    return actions.rollCheck(this.document, label, { apCost: label === "Spot" && actions.inActiveCombat(this.document) ? 1 : 0 });
   }
   static onAttack() { return actions.rollAttackCheck(this.document); }
   static onDodge() { return actions.rollDodge(this.document); }
@@ -1367,6 +1389,7 @@ export class FlowStateItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
       nameEditable: this.isEditable,           // owners can always rename their items
       lockedNote: this.isEditable && !identityOpen ? "Only the GM can modify this item (you can rename it and change its picture)." : "",
       isGear: this.document.type === "gear",
+      ...itemSizeContext(this.document),
       cat: (() => {
         const sys = this.document.system, c = sys.catalog;
         if (!c) return null;

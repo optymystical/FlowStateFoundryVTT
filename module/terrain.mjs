@@ -169,7 +169,12 @@ export function register() {
     for (const [kind, t] of Object.entries(TERRAIN)) {
       tools[`fsTerrain-${kind}`] = { name: `fsTerrain-${kind}`, title: `${t.label}: drop on the view`, icon: t.icon, order: order++, button: true, visible: true, onChange: () => dropTerrain(kind) };
     }
-    const group = { name: "flowstate", title: "Flow State terrain", icon: "fa-solid fa-mountain-sun", order: 99, visible: true, tools, activeTool: "" };
+    // Endurance Tier 0: a tense scene keeps Energy counted outside combat; the GM passes its turns.
+    const tense = (() => { try { return !!game.settings.get("flowstate", "tenseScene"); } catch (err) { return false; } })();
+    tools.fsTenseScene = { name: "fsTenseScene", title: tense ? "Tense scene: on (Energy is spent and regained as in combat). Click to end it." : "Start a tense scene (Energy is spent and regained as in combat, outside combat)",
+      icon: "fa-solid fa-heart-pulse", order: order++, toggle: true, active: tense, visible: true, onChange: () => game.settings.set("flowstate", "tenseScene", !tense) };
+    if (tense) tools.fsTensePass = { name: "fsTensePass", title: "Tense scene: a turn passes (everyone on the scene regains their start-of-turn Energy)", icon: "fa-solid fa-forward-step", order: order++, button: true, visible: true, onChange: () => game.flowstate?.actions?.passTenseTurn() };
+    const group = { name: "flowstate", title: "Flow State terrain and scenes", icon: "fa-solid fa-mountain-sun", order: 99, visible: true, tools, activeTool: "" };
     if (Array.isArray(controls)) controls.push({ ...group, tools: Object.values(tools) });
     else controls.flowstate = group;
   });

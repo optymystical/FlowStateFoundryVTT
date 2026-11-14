@@ -4,7 +4,7 @@
  * until then the card states the effect for the GM to resolve.
  */
 import * as spells from "./spells.mjs";
-import { actionSpent, aimableItems, post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollD100, pickSceneTarget, afterAttackCost, castStacks } from "./actions.mjs";
+import { actionSpent, aimableItems, post, inActiveCombat, helpless, spendPoints, spendEnergy, performAttack, checkRange, attackerToken, tokenDistance, setWeaveHook, requestGM, applySpellEffect, rollCheck, pickSceneTarget, afterAttackCost, castStacks, fociSizeStacks } from "./actions.mjs";
 import * as fx from "./spellfx.mjs";
 import * as areas from "./areas.mjs";
 import "./elemental.mjs";
@@ -516,8 +516,8 @@ async function resolveSpell(actor, plan, profile, ids, ritualOf, targets, melee,
   const bash = mods.bash ? mods.bash * 10 * plan.power : 0;
   const attackOpts = { apCost: plan.ap,
     label: profile.name + (plan.hold ? " (held)" : ""), net: (pinpoint ? 1 : 0) + (melee && !plan.hold ? 1 : 0) + farNet, stealth: plan.attack === "Targeted" ? "half" : "none", melee, area, push: false,
-    damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: 0, physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: 0,
-    notes: [...notes, plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
+    damage: dice && !plan.hold ? `${dice.n}d${dice.sides}` : "", type: profile.damage?.type ?? "physical", stacks: fociSizeStacks(actor, plan), physical: false, shots: 1, critStacks: 0, pierce, bash, knockback: 0, cleave: 0,
+    notes: [...notes, fociSizeStacks(actor, plan) ? `${plan.option?.label ?? "Foci"} Size: ${fociSizeStacks(actor, plan) > 0 ? "Strengthened" : "Weakened"} ×${Math.abs(fociSizeStacks(actor, plan))}` : "", plan.hold ? `Held: no damage, ${holdRoll} worth of effect` : "", pierce ? `Pierce ${pierce} (ignores that much Limit)` : "", bash ? `Bash ${bash}` : "", area ? "Area: everything targeted is in the area" : ""].filter(Boolean), followups: [], ...(targetActors.length ? { targetActors } : {}),
     spell: { cores: ids, power: plan.power, ritualOf, scaling: plan.scaling, mods, exploit, replaced, dampen, pierceBold: mods.pierce ? mods.pierce * fx.piercePerStack(plan.power) : 0, pierceFlat: plan.fociFx?.affixes?.includes("painite") ? plan.fociFx.scalingMin * (plan.fociFx.doubled === "painite" ? 2 : 1) : 0, singleRoll: area && !mods.absorb, telegraph: plan.telegraph && mods.telegraph ? { guess: plan.telegraph } : null, hold: plan.hold, holdRoll,
       ...(plan.fociFx ? { fociFx: plan.fociFx } : {}),
       ...(profile.arcana?.kind === "mirage" ? { ritualFree: plan.t3Free ?? null, arcana: { sense: values?.sense, fidelity: values?.fidelityKind, fidelityRoll: values?.fidelityRoll } } : {}),
@@ -671,7 +671,7 @@ export async function spiritSense(actor) {
   const tier = tierOf(actor.system.trees ?? {}, "magic-grasp-arcana");
   const primary = tier >= 4;
   const range = primary ? 100 : 10;
-  await rollD100(actor, "Spirit Sense");
+  await rollCheck(actor, "Spirit Sense");
   await post(actor, { title: `${esc(actor.name)} — Spirit Sense`, body: `<div class="fs-notes">${primary ? "Primary" : "Secondary"} Spirit Sense: on a success you sense the direction and amount of magical energy within <strong>${range} ft</strong> (for creatures, their total Spirit), regardless of obstacles, but not their exact location.${primary ? " You auto succeed on targets within melee range and are immune to a Targeted attack roll's stealth bonus." : ""} The GM decides the check's difficulty. (Heightened Spirit Sense, if you have it: 1000 ft and exact compositions.)</div>` });
 }
 

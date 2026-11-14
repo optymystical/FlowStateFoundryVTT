@@ -18,6 +18,8 @@
     <div class="fs-field"><label>Grade</label>
       <input type="number" name="system.grade" value="{{system.grade}}" min="1" {{#unless editable}}disabled{{/unless}}></div>
     {{/if}}
+    {{#if sizeChoices}}<div class="fs-field"><label><a class="fs-sub" data-codex="{{sizeCodex}}" data-tooltip="An item's own Size: Size 2 is neutral, each Size above is a Strengthened stack on its values, each below a Weakened one. It also sets its Load.">Size</a></label>
+      <select name="system.size" data-dtype="Number" {{#unless editable}}disabled{{/unless}}>{{selectOptions sizeChoices selected=sizeSelected}}</select></div>{{/if}}
     <div class="fs-field fs-checks-row">
       <label><input type="checkbox" name="system.attuned" {{checked system.attuned}} {{#unless stateEditable}}disabled{{/unless}}> Attuned</label>
       <label data-tooltip="Part of a creature: no Grade (Reach/Grasp count uncapped); it can't be dropped or sold"><input type="checkbox" name="system.natural" {{checked system.natural}} {{#unless editable}}disabled{{/unless}}> Natural</label>

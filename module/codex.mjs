@@ -63,7 +63,7 @@ const ruleId = key => (RULE[key] ? codexId.doc("rules", ...RULE[key]) : RULE_ENT
 /** Statuses (token conditions): what each one is, as a rule or the tree ability that gives it. */
 export const STATUS_SOURCES = {
   dead: { rule: "hp" }, unconscious: { rule: "pain" }, prone: { rule: "crouch" }, crouch: { rule: "crouch" }, falling: { rule: "gravity" }, flying: { rule: "flight" },
-  stealth: { rule: "stealth" }, halfStealth: { rule: "stealthValue" }, fullStealth: { rule: "stealthValue" }, fear: { rule: "fear" }, grappled: { rule: "grappling" },
+  stealth: { rule: "stealth" }, halfStealth: { rule: "stealthValue" }, fullStealth: { rule: "stealthValue" }, fear: { rule: "fear" }, surprised: { rule: "surprise" }, grappled: { rule: "grappling" },
   psychedUp: { entry: "Psych Up" }, calmedDown: { entry: "Calm Down" }, limber: { entry: "Limber" }, carefulSteps: { entry: "Careful Steps" },
   berserk: { entry: "Berserk" }, seeingRed: { entry: "Seeing Red" }, unstoppable: { entry: "Unstoppable" }, properStance: { entry: "Proper Stance" },
   fishy: { entry: "Like Shooting Fish" }, sliced: { entry: "Slice" }, taunted: { entry: "Taunt" }, quickened: { entry: "Quicken" }

@@ -16,7 +16,7 @@ export function parseEnergyCost(text = "") {
   if (!m) return null;
   const phrase = m[1].trim();
   const p = phrase.toLowerCase();
-  const mult = /\bdouble\b/.test(p) ? 2 : /\bquarter\b/.test(p) ? 0.25 : /\bhalf\b/.test(p) ? 0.5 : 1;
+  const mult = /\b(double|twice)\b/.test(p) ? 2 : /\bquarter\b/.test(p) ? 0.25 : /\bhalf\b/.test(p) ? 0.5 : 1;
   const target = /grappled target/.test(p);
   let base, stat = null;
   if (/skill points/.test(p)) base = "skillPoints";

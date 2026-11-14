@@ -100,15 +100,77 @@ def parse(md, arch):
             cur_tier["entries"].append(entry)
     return trees
 
+SENSE_REQ = re.compile(r'^\*Requires (\w+) (\d)(?:, (\d), or (\d), depending on if your base (\w+) is Heightened, Primary, or Secondary)?')
+
+def parse_generic(md):
+    """Flow State - Generic Groups: every tree is a `# **<Name>**` heading. A Group's Core tree (its namesake) has a free Tier 0 and stands alone;
+    the rest say "*Requires <Core> N.*" under their heading (the sense trees: "Perception 1, 3, or 5, depending on if your base <Sense> is
+    Heightened, Primary, or Secondary"). A Markdown table under an entry (the sense tables, Stealth States) is kept on that entry."""
+    md = normalize(md)
+    trees, cur, cur_tier, table = [], None, None, None
+    for raw in md.split('\n'):
+        line = raw.rstrip()
+        h1 = re.match(r'^#\s+\*\*(.+?)\*\*\s*$', line.strip())
+        if h1:
+            name = clean(h1.group(1))
+            cur = {"id": f"generic-{slug(name)}", "name": name, "archetype": "generic", "group": slug(name), "core": True, "theory": True, "requires": 0, "tiers": []}
+            trees.append(cur); cur_tier = None
+            continue
+        if cur is None: continue
+        req = SENSE_REQ.match(line.strip().replace('\\', ''))
+        if req and not cur["tiers"]:
+            cur.update({"group": slug(req.group(1)), "core": False, "theory": False, "requires": int(req.group(2))})
+            if req.group(3):
+                # The default base sense's tier (Sight and Hearing start Primary, Smell Secondary); the sheet reads the character's own.
+                cur["senseRequires"] = {"sense": req.group(5).lower(), "heightened": int(req.group(2)), "primary": int(req.group(3)), "secondary": int(req.group(4))}
+                cur["requires"] = int(req.group(4) if req.group(5).lower() == "smell" else req.group(3))
+            continue
+        t = TIER_RE.match(line.strip().replace('\\*', '*'))
+        if t:
+            cur_tier = {"tier": int(t.group(1)), "free": bool(t.group(2)), "summary": clean(t.group(3)), "entries": []}
+            cur["tiers"].append(cur_tier); table = None
+            continue
+        if cur_tier is None: continue
+        txt = line.strip()
+        if not txt: continue
+        if txt.startswith('|'):
+            cells = [clean(c) for c in txt.strip('|').split('|')]
+            if all(re.fullmatch(r'[-: ]*', c) for c in cells) or not cur_tier["entries"]: continue
+            if table is None:
+                # A table's first row is its title when only the first cell is filled ("Sight Table"), else its header.
+                table = {"title": cells[0] if not any(cells[1:]) else "", "head": [] if not any(cells[1:]) else cells, "rows": []}
+                cur_tier["entries"][-1].setdefault("tables", []).append(table)
+            elif not table["head"]:
+                table["head"] = cells
+            else:
+                table["rows"].append(cells)
+            continue
+        table = None
+        bullet = re.match(r'^[-*]\s+(.*)$', txt)
+        body = clean(bullet.group(1) if bullet else txt)
+        if not body or body == "-": continue
+        # A bullet at the left margin ("- ") is an entry; an indented bullet or a "* " bullet is a sub-point of the entry above it.
+        top = bullet and txt.startswith('-') and raw[:1] not in (" ", "\t")
+        m = re.match(r'^([^:]{1,60}?):\s*(.*)$', body)
+        if top and m:
+            cur_tier["entries"].append({"name": m.group(1).strip(), "text": m.group(2).strip()})
+        elif cur_tier["entries"]:
+            cur_tier["entries"][-1].setdefault("sub", []).append(body)
+        else:
+            cur_tier["entries"].append({"name": "", "text": body})
+    return trees
+
 out = []
 for path, arch in [(sys.argv[1], "Martial"), (sys.argv[2], "Magic"), (sys.argv[3], "Mental")]:
-    trees = parse(open(path).read(), arch)
+    trees = parse(open(path, encoding='utf-8').read(), arch)
     if arch == "Mental":
         # The Mental Stage 1 doc still has empty trees (Ponderance / Snappence / Esoteric Arts): leave those out until they're written.
         trees = [t for t in trees if any(x["entries"] for x in t["tiers"])]
     out += trees
-js = "// Generated from the Martial and Magic Stage 1 docs and the Mental Stage 1 doc by tools/build_trees.py. Don't edit by hand; re-run the converter.\n"
+if len(sys.argv) > 5:
+    out += parse_generic(open(sys.argv[5], encoding='utf-8').read())
+js = "// Generated from the Martial and Magic Stage 1 docs, the Mental Stage 1 doc and the Generic Groups doc by tools/build_trees.py. Don't edit by hand; re-run the converter.\n"
 js += "export const TREES = " + json.dumps(out, indent=1, ensure_ascii=False) + ";\n"
-open(sys.argv[4], 'w').write(js)
+open(sys.argv[4], 'w', encoding='utf-8', newline='\n').write(js)
 for t in out:
     print(f"{t['archetype']:8} req T{t['requires']}  {t['name']:24} tiers {[x['tier'] for x in t['tiers']]}  entries {[len(x['entries']) for x in t['tiers']]}")

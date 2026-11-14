@@ -254,19 +254,6 @@ export const STRENGTH_COST = {
   unstoppable: a => 2 * statMinOf(a, "str") // T5
 };
 
-/**
- * Intimidate (Strength T1) / Fast Lips (Dexterity T1): compare a stat against a target's, scaled by size.
- * Each size the target is larger doubles what you need; each size smaller halves it.
- * Returns true if `mine` beats the target's (scaled) stat.
- */
-export function beatsScaled(mine, theirs, mySize, theirSize, { larger = "target" } = {}) {
-  const diff = (theirSize ?? 3) - (mySize ?? 3);
-  // Intimidate: bigger targets need more Strength. Fast Lips: smaller targets need more Dexterity.
-  const steps = larger === "target" ? diff : -diff;
-  const need = theirs * Math.pow(2, steps);
-  return mine > need;
-}
-
 /* -------------------------------------------- */
 /*  Striker Weapons                             */
 /* -------------------------------------------- */

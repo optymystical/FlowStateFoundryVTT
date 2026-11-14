@@ -556,7 +556,7 @@
 
 **Tier 1: You gain the following Mode and Tenet:**
 
-- **Accretion:** On hit, the target is encased in soft material until the start of your next turn. The encasement is an object with **50 Durability** and a Limit equal to one fifth of its Durability, working only against Physical and Elemental damage. Attacks against that creature strike the encasement first: it absorbs damage up to its Limit from each attack, reducing its Durability by that much, with any excess passing through to the creature. This Mode stacks on the same target, melding into a single encasement whose Durability and Limit are the sums of its parts. **Enhanced:** On Manifest, select a damage category (Physical, Elemental, Magical, Supernatural). Damage of that category dealt to this instance is Weakened.  
+- **Accretion:** On hit, the target is encased in soft material until the start of your next turn. The encasement is an object with **50 Durability** and a Limit equal to one fifth of its Durability, working only against Physical and Elemental damage. Attacks against that target strike the encasement first: it absorbs damage up to its Limit from each attack, reducing its Durability by that much, with any excess passing through to the target. This Mode stacks on the same target, melding into a single encasement whose Durability and Limit are the sums of its parts. **Enhanced:** On Manifest, select a damage category (Physical, Elemental, Magical, Supernatural). Damage of that category dealt to this instance is Weakened.  
 - **Adamant:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, you can lower the target’s or your own **Pain Threshold by 10**, lasting until the start of your next turn. If reapplied with a reaction the moment the effect ends, the target will not fall unconscious from the change in Pain Threshold.
 
 **Tier 2: You gain the following ability:**
@@ -573,7 +573,7 @@
 
 **Tier 5: You gain the following passive:**
 
-- **Bedrock:** When damage would exceed one of your Accretions’ Limit, you may choose to have the excess reduce that encasement’s Durability by twice the excess instead of passing through to the creature.
+- **Bedrock:** When damage would exceed one of your Accretions’ Limit, you may choose to have the excess reduce that encasement’s Durability by twice the excess instead of passing through to the target.
 
 # 
 

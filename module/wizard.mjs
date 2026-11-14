@@ -148,7 +148,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       const next = tier + 1;
       const dependents = t.theory ? Object.keys(st.trees).filter(id => {
         const other = skills.treeById(id);
-        return other && !other.theory && other.archetype === t.archetype && skills.tierOf(st.trees, id) > 0 && other.requires >= tier;
+        return other && !other.theory && skills.sameGroup(other, t) && skills.tierOf(st.trees, id) > 0 && skills.requiredTier(other) >= tier;
       }) : [];
       return {
         id: t.id, name: t.name, tier, theory: t.theory, open: st.openTree === t.id,
@@ -175,7 +175,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       items, weaponTypes, slotsLeft: rules.items - st.items.length,
       skillPoints: sp, spentSP, remainingSP: sp - spentSP, treeRows, pickedTrees,
       archetypes: skills.ARCHETYPES.map(a => ({ ...a, selected: a.id === arch.id })), archPlaceholder: arch.placeholder ?? "",
-      lockedTrees: skills.treesFor(arch.id).length - available.length, theoryName: skills.theoryFor(arch.id)?.name ?? "",
+      lockedTrees: skills.treesFor(arch.id).length - available.length, theoryName: arch.id === "generic" ? "its Core tree" : skills.theoryFor(arch.id)?.name ?? "",
       canAddWeapon: st.items.length < rules.items, canAddArmor: st.items.length < rules.items && armorCount < 1,
       canAddMagic: st.items.length < rules.items,
       canAddAffix: st.items.length < rules.items,

@@ -220,7 +220,7 @@
 
 **Tier 1: You gain the following passive:**
 
-- **Intimidate:** Your persuasion and deception rolls impose Disadvantage against their target’s counter rolls so long as your Strength is higher than theirs. If they are a size larger than you, your Strength needs to be twice as high to trigger this effect (scaling for each size larger they are). Works inversely against smaller sizes.  
+- **Shove:** When you push a target, you impart force equal to 10x your Strength stat instead of 5x.  
     
   **Tier 2: You gain the following ability:**   
 - **Heave\!: Cost: *Energy equal to double your STR min*.** Prior to making a Heavy attack, you can use this ability. That attack is Strengthened and gets the Bash tag for that attack (if it already has Bash, it instead gets Bash+).  
@@ -343,7 +343,7 @@
   ## **Dexterity Methods** {#dexterity-methods}
 
   **Tier 1: You gain the following passive:**  
-- **Fast Lips:** Your persuasion and deception rolls have Advantage against targets with less Dexterity than you. If they are a size smaller than you, your Dexterity needs to be twice as high to trigger this effect (scaling for each size smaller they are). Works inversely against larger sizes.  
+- **Quick Change:** Changing your held item can now be done with 1 RP.  
     
   **Tier 2: You gain the following ability:**   
 - **Shank: Cost: *Energy equal to double your DEX min.*** Prior to making a Light attack, you can use this ability. That attack gets three of the following (your choice, repeated effects are in parentheses):  
@@ -353,7 +353,7 @@
 4. Advantage on the attack roll (two Advantages, then three Advantages).  
      
    **Tier 3: You gain the following passive:**  
-- **Quick Change:** Changing your held item can now be done with 1 RP.  
+- **Quick Draw:** The first time you use **Quick Change** each turn, it costs no RP.  
     
   **Tier 4: You gain the following ability:**  
 - **Spot Weakness: Cost: *Energy equal to half of your DEX min, rounded down*.** Can be used as an alternative to a Spot action. Follows the standard rules of the Spot action, but can only target already sensed characters, and instead automatically reveals to you what armor they are wearing (if any), and its stats.  

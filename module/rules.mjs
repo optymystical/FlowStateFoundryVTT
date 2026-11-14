@@ -166,7 +166,8 @@ export const liftBand = (lift, gForce) => (lift >= gForce && gForce > 0 ? "full"
 export const forceDamage = untraveledFeet => 3 * Math.floor(Math.max(0, untraveledFeet));
 
 /** Ch8 Pushing: force = 5 × Strength. */
-export const pushForce = str => 5 * str;
+/** Pushing: Force = 5 × Strength (Shove, Strength T1: 10 ×). */
+export const pushForce = (str, shove = false) => (shove ? 10 : 5) * str;
 
 /**
  * Ch9 Slow/Haste tempo. Stacks cancel each other; ≥ ½ Pain Threshold = ±1 AP, ≥ Pain Threshold = ±2 AP.

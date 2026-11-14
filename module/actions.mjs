@@ -428,21 +428,7 @@ export async function rollD100(actor, label, { apCost = 0 } = {}) {
   const opts = await optionsDialog(`${label} (d100)`, netField(), "Roll", { skipIfEmpty: true });
   if (!opts) return;
   if (!(await spendAP(actor, apCost, label))) return;
-  // Persuasion/Deception against one targeted creature: Fast Lips (Dexterity T1) and Intimidate (Strength T1).
-  let socialNet = 0;
-  const social = [];
-  if (label === "Persuasion" || label === "Deception") {
-    const tgt = [...(game.user.targets ?? [])].map(t => t.actor).filter(a => a && !notCreature(a) && a.uuid !== actor.uuid);
-    if (tgt.length === 1) {
-      const t = tgt[0];
-      if (ab.dexterity(actor, 1) && ab.beatsScaled(ab.statValue(actor, "dex"), ab.statValue(t, "dex"), actor.system.size, t.system.size, { larger: "self" })) {
-        socialNet += 1; social.push(`Fast Lips: Advantage (more Dexterity than ${t.name})`);
-      }
-      if (ab.strength(actor, 1) && ab.beatsScaled(ab.statValue(actor, "str"), ab.statValue(t, "str"), actor.system.size, t.system.size, { larger: "target" })) {
-        social.push(`Intimidate: ${t.name}'s counter roll has Disadvantage`);
-      }
-    }
-  }
+  const socialNet = 0, social = [];
   const net = opts.net + exhaustionNet(actor) - stealthDis + seeingRedNet(actor) + socialNet + disruptNet(actor) + charmNet(actor, "noncombat");
   await consumeDisrupt(actor);
   const roll = await evaluate(poolFormula(1, 100, net));
@@ -5223,10 +5209,11 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
     } else if (o.push) {
       const d = attacker.system.derived;
       const stacks = (o.stacks ?? 0) + (result.critStacks ?? 0) + (o.physical ? d.size.physical : 0);
-      const force = applyStacks(pushForce(d.effective.str.value), stacks);
+      const shove = ab.strength(attacker, 1);
+      const force = applyStacks(pushForce(d.effective.str.value, shove), stacks);
       const feet = forceFeet(force, target, false);
       const crunchFeet = ab.strength(attacker, 3) ? forceFeet(force, target, true) : 0;
-      action = `<div class="fs-result">Push: Force ${force} → up to <strong>${feet} ft</strong>${crunchFeet > feet ? ` (${crunchFeet} ft with Crunch Time)` : ""}</div>${Math.max(feet, crunchFeet) > 0 ? knockbackRow(attack.attacker, feet, "Push") : ""}`;
+      action = `<div class="fs-result">Push${shove ? " (Shove: 10 × Strength)" : ""}: Force ${force} → up to <strong>${feet} ft</strong>${crunchFeet > feet ? ` (${crunchFeet} ft with Crunch Time)` : ""}</div>${Math.max(feet, crunchFeet) > 0 ? knockbackRow(attack.attacker, feet, "Push") : ""}`;
       pushInfo = Math.max(feet, crunchFeet) > 0 ? { attacker: attack.attacker, target: target.uuid, force, feet, label: "Push" } : null;
     } else if (o.damage && o.damage.trim() !== "0") {
       action = `<div class="fs-exchange-buttons" data-role="attacker" data-owner="${attack.attacker}">
@@ -6223,7 +6210,7 @@ export async function grantPoints(actor, stats = 0, skills = null) {
 export async function unlockTier(actor, treeId) {
   const tree = skills.treeById(treeId);
   if (!tree) return;
-  const check = skills.nextTier(actor.system.trees, tree, actor.system.skills.unspent, { inCombat: inActiveCombat(actor) });
+  const check = skills.nextTier(actor.system.trees, tree, actor.system.skills.unspent, { inCombat: inActiveCombat(actor), senses: actor.system.senses });
   if (!check.ok) return ui.notifications.warn(check.reason);
   const tier = tree.tiers.find(t => t.tier === check.next);
   const gains = (tier?.entries ?? []).map(e => e.name).filter(Boolean);
@@ -6254,12 +6241,13 @@ export async function lowerTier(actor, treeId) {
   // Lowering a Theory can lock trees that need a higher Theory tier: confirm, then those trees lose all their tiers.
   if (tree.theory) {
     const state = { ...actor.system.trees, [treeId]: next };
-    const locked = skills.treesFor(tree.archetype).filter(t => !t.theory && skills.tierOf(state, t.id) > 0 && !skills.isAvailable(state, t));
+    const senses = actor.system.senses;
+    const locked = skills.treesFor(tree.archetype).filter(t => !t.theory && skills.sameGroup(t, tree) && skills.tierOf(state, t.id) > 0 && !skills.isAvailable(state, t, { senses }));
     if (locked.length) {
       const refund = locked.reduce((n, t) => { const k = skills.tierOf(state, t.id); return n + (k * (k + 1)) / 2; }, 0);
       const ok = await DialogV2().confirm({ window: { title: `Lower ${tree.name}?` }, rejectClose: false,
         content: `<p>Lowering <strong>${esc(tree.name)}</strong> to Tier ${next} locks these trees, and ${esc(actor.name)} loses every tier in them:</p>
-          <ul>${locked.map(t => `<li>${esc(t.name)} (Tier ${skills.tierOf(state, t.id)}, needs ${esc(tree.name)} Tier ${t.requires})</li>`).join("")}</ul>
+          <ul>${locked.map(t => `<li>${esc(t.name)} (Tier ${skills.tierOf(state, t.id)}, needs ${esc(tree.name)} Tier ${skills.requiredTier(t, { senses })})</li>`).join("")}</ul>
           <p>Their ${refund} Skill Point${refund === 1 ? "" : "s"} go back to the unspent pool.</p>` });
       if (!ok) return;
       for (const t of locked) update[`system.trees.${t.id}`] = 0;

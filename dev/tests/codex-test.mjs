@@ -26,6 +26,7 @@ ok(["tag:fast", "weaponType:bladed", "weaponMaterial:iron", "armorWeight:titanic
   "stat:str", "size:3", "damage:heat", "combo:gravity+slashing", "item:weapon.bladed.heavy.iron", "status:ignite", "archetype:martial"].every(id => ix.pages.has(id)), "Equipment, materials, tags, stats, sizes, damage types, Combos, items and conditions too");
 ok(ix.pages.has(C.codexId.doc("rules", "ch5-a-b-c-s")), "The A.B.C.s chapter is there, waiting for its pages");
 ok(Object.keys(C.RULE).every(k => ix.pages.has(C.codexId.doc("rules", ...C.RULE[k]))), "Every rule the Codex points at by name exists in the Rules doc (no stale section names)");
+ok(Object.keys(C.RULE_ENTRIES).every(k => ix.pages.has(C.codexId.entry(...C.RULE_ENTRIES[k]))), "Every rule that moved to the Generic Groups doc has its tree entry page");
 
 console.log("== No dead links");
 let dead = [];

@@ -150,7 +150,8 @@ Rare \- 4x cost and scarcity of 0.1
 Very Rare \- 8x cost and scarcity of 0.05  
 **Material Scaling:** Material Stats do not scale with your Scaling Stat, instead they scale with the grade of the Weapon. For example, a grade 3 Weapon would multiply its Durability and Limit by 3\.  
 **Durability:** The overall “health” of the Weapon. Reaching 0 or lower means the Weapon is broken and can no longer be used, but it is still fixable. Negative durability equal to or exceeding the normal max means the Weapon is completely destroyed.  
-**Limit:** How much damage the Weapon can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Weapon is the target of the attack. Only blocks Physical and Elemental damage normally.
+**Limit:** How much damage the Weapon can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Weapon is the target of the attack. Only blocks Physical and Elemental damage normally.  
+**Size:** Weapons are generally one Size lower than the creature using them (a Size 3 character uses Size 2 Weapons). A Size 2 Weapon is neutral. Each Size above 2 gives its damage, Durability, Limit, and other values a stack of Strengthened, while each Size below 2 gives a stack of Weakened. See Carrying in Flow State \- Generic Groups for how Size affects Load.
 
 | Common Weapon Materials |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: |
@@ -217,7 +218,8 @@ Uncommon \- 2x cost and scarcity of 0.25
 Rare \- 4x cost and scarcity of 0.1  
 Very Rare \- 8x cost and scarcity of 0.05  
 **Durability:** The overall “health” of the Armor. Reaching 0 or lower means the Armor is broken and can no longer be used, but it is still fixable. Negative durability equal to or exceeding the normal max means the Armor is completely destroyed.  
-**Limit:** How much damage the Armor can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Armor is the target of the attack. Only blocks Physical and Elemental damage normally.
+**Limit:** How much damage the Armor can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Armor is the target of the attack. Only blocks Physical and Elemental damage normally.  
+**Size:** Armor is generally one Size lower than the creature wearing it (a Size 3 character uses Size 2 Armor). A Size 2 Armor is neutral. Each Size above 2 gives its Durability, Limit, and other values a stack of Strengthened, while each Size below 2 gives a stack of Weakened. See Carrying in Flow State \- Generic Groups for how Size affects Load.
 
 | Common Armor Materials |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: |
@@ -298,7 +300,8 @@ Common \- 1x cost and scarcity of 1 (meaning this is found in 100% of normal sto
 Uncommon \- 2x cost and scarcity of 0.25   
 Rare \- 4x cost and scarcity of 0.1  
 Very Rare \- 8x cost and scarcity of 0.05  
-**Durability and Limit:** Since Forms are intended to be small objects with not much Stats that are often concealed, their Durability and Limit are generally unimportant. All Forms can be treated as having 20 Durability and 4 Limit per Grade (this can be altered by the GM if it makes sense to do so).
+**Durability and Limit:** Since Forms are intended to be small objects with not much Stats that are often concealed, their Durability and Limit are generally unimportant. All Forms can be treated as having 20 Durability and 4 Limit per Grade (this can be altered by the GM if it makes sense to do so).  
+**Size:** Icons are unaffected by Size and count as 0 Load.
 
 # 
 
@@ -344,7 +347,8 @@ Very Rare \- 8x cost and scarcity of 0.05
 **One vs Two Hands:** How many hands hold a Foci or are used to cast a spell has no effect on how the spells perform outside of specific Foci Types. Foci do still count as a held item, however, and cannot be used in the same hand as another held item unless it is fused into a Weapon (see Fused Foci).  
 **Fused Foci:** With a 1 hour Ritual, your Attuned Foci can be fused into a Weapon. While fused, the Weapon also counts as that Foci, so the same hand holds both. The Foci’s Durability and Limit are added to the Weapon’s (each keeps its own Grade), Affixes that change how the Foci takes damage now affect the Weapon too, and the Weapon can’t be disarmed or dropped while the Foci stays Attuned. Unattuning the Foci separates them.  
 **Durability:** The overall “health” of the Foci. Reaching 0 or lower means the Foci is broken and can no longer be used, but it is still fixable. Negative durability equal to or exceeding the normal max means the Foci is completely destroyed.  
-**Limit:** How much damage the Foci can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Foci is the target of the attack. Only blocks Physical and Elemental damage normally.
+**Limit:** How much damage the Foci can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Foci is the target of the attack. Only blocks Physical and Elemental damage normally.  
+**Size:** Foci are generally one Size lower than the creature using them (a Size 3 character uses Size 2 Foci). A Size 2 Foci is neutral. Each Size above 2 gives its spell Power, Durability, Limit, and other values a stack of Strengthened, while each Size below 2 gives a stack of Weakened. See Carrying in Flow State \- Generic Groups for how Size affects Load.
 
 | Igniter Foci Types |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
@@ -381,9 +385,10 @@ Very Rare \- 8x cost and scarcity of 0.05
 **Shroud Design:** Pick a Shroud type from the list, and pick Affixes if your Shroud type can utilize them. To use a Shroud, you need to Attune to it by spending one hour magically connecting to it (you can only Attune to one Shroud at a time). Once Attuned it becomes melded into your Spirit, meaning its Stats and Affixes are now active on your person, allowing it to protect you as Martial Armor would. Shrouds are considered Magical objects, both while melded and while not melded.  
 **Scaling and Grade:** The Stats of your Shroud increases for every 10 points you have in its Scaling Stat, which is Build by default. This is limited by the Grade of the Shroud, which denotes how much Stat can actually affect the Stats of the Shroud, where every 1 grade represents a max of 10 Stat scaling. So, a grade 3 Shroud allows for up to 30 Build to affect its Stats, any higher would do nothing until the Grade is increased.  
 **Affixes:** Affixes are your weight equivalent for armor, also requiring attunement to either their Offensive or Defensive form. For every Affix attuned your speed is lowered by 20% (not counting free ones). This is shared with Foci’s Affixes.  
-**Shroud Recovery:** Attuned Shrouds naturally recover their spent durability, by default recovering durability equal to its Limit at the start of each of your turns. This can vary, and would be stated in a Shroud’s passive if it is anything else.  
+**Shroud Recovery:** Attuned Shrouds naturally recover their spent durability, by default recovering Durability equal to its Limit at the start of each of your turns. This can vary, and would be stated in a Shroud’s passive if it is anything else.  
 **Durability:** The overall “health” of the Shroud. Reaching 0 or lower means the Shroud is unable to block any more damage, but it can still recover. Shrouds cannot be destroyed unless they are unmelded, or they are directly targeted by arcane damage or similar effects, with durability in the negatives exceeding its normal max resulting in its destruction.  
-**Limit:** How much damage the Shroud can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Shroud is the target of the attack. Only blocks Physical, Elemental, and Magical damage normally.
+**Limit:** How much damage the Shroud can take from each attack it blocks or attacks that are hitting through it. This is ignored if the Shroud is the target of the attack. Only blocks Physical, Elemental, and Magical damage normally.  
+**Size:** Shrouds are generally one Size lower than the creature using them (a Size 3 character uses Size 2 Shrouds). A Size 2 Shroud is neutral. Each Size above 2 gives its Durability, Limit, and other values a stack of Strengthened, while each Size below 2 gives a stack of Weakened. See Carrying in Flow State \- Generic Groups for how Size affects Load.
 
 | Shroud Types |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
@@ -410,7 +415,8 @@ Common \- 5x cost and scarcity of 0.20 (meaning this is found in 20% of normal s
 Uncommon \- 10x cost and scarcity of 0.05   
 Rare \- 20x cost and scarcity of 0.01  
 Very Rare \- 40x cost and scarcity of 0.0025  
-**Durability and Limit:** Since Affixes are intended to be held in a bag or hidden on a person, their Durability and Limit are generally unimportant. All Affixes can be treated as having 20 Durability and 4 Limit per Grade (this can be altered by the GM if it makes sense to do so).
+**Durability and Limit:** Since Affixes are intended to be held in a bag or hidden on a person, their Durability and Limit are generally unimportant. All Affixes can be treated as having 20 Durability and 4 Limit per Grade (this can be altered by the GM if it makes sense to do so).  
+**Size:** Affixes are unaffected by Size and count as 0 Load.
 
 | Affixes |  |  |  |  |  |
 | :---: | :---: | :---: | ----- | :---: | ----- |

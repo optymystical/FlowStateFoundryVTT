@@ -16,7 +16,7 @@ import { dataVersion } from "./store.mjs";
 import { renderMarkdown, inline, escapeHtml, plainText } from "./codex-md.mjs";
 import { RULE_DOCS } from "./rules-text.mjs";
 import { TREES } from "./trees.mjs";
-import { ARCHETYPES } from "./skills.mjs";
+import { ARCHETYPES, coreFor, requiredTier } from "./skills.mjs";
 import { STATS, SIZES, DAMAGE_TYPES, OBJECT_DENSITY, STAIN_VARIANTS } from "./rules.mjs";
 import { RARITIES, WEAPON_TAGS, WEAPON_TYPES, WEIGHTS, THROW, RELOAD_RP, DAMAGE_CATEGORY, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS } from "./martial.mjs";
 import { CASTING_FORMS, FOCI_TYPES, SHROUD_TYPES, AFFIXES } from "./magic.mjs";
@@ -45,13 +45,20 @@ export const codexId = {
 export const RULE = {
   stats: ["ch3-stats"], statMinimums: ["ch3-stats", "stat-minimums"], sizes: ["ch7-non-combat-rules", "size-categories"],
   damage: ["ch8-combat-rules", "damage-rolls-types"], strengthened: ["ch8-combat-rules", "strengthened-weakened"],
-  crouch: ["ch9-conditions", "crouch-prone"], fear: ["ch9-conditions", "fear"], ignite: ["ch9-conditions", "ignite"], stain: ["ch9-conditions", "stain"],
-  slow: ["ch9-conditions", "slow"], haste: ["ch9-conditions", "haste"], grappling: ["ch8-combat-rules", "grappling"], stealth: ["ch8-combat-rules", "stealthing"],
-  stealthValue: ["ch8-combat-rules", "stealth-value"], hp: ["ch8-combat-rules", "health-points"], pain: ["ch8-combat-rules", "pain-threshold"],
+  crouch: ["ch9-conditions", "crouch-prone"], ignite: ["ch9-conditions", "ignite"], stain: ["ch9-conditions", "stain"],
+  slow: ["ch9-conditions", "slow"], haste: ["ch9-conditions", "haste"], grappling: ["ch8-combat-rules", "grappling"],
   gravity: ["ch10-objects-and-force", "gravity"], flight: ["ch10-objects-and-force", "flight"], objects: ["ch10-objects-and-force", "objects"],
-  movement: ["ch8-combat-rules", "movement"], archetypes: ["ch2-archetypes"], abcs: ["ch5-a-b-c-s"]
+  archetypes: ["ch2-archetypes"], abcs: ["ch5-a-b-c-s"]
 };
-const ruleId = key => (RULE[key] ? codexId.doc("rules", ...RULE[key]) : null);
+/** Rules that moved to the Generic Groups doc: they live in the Tier 0 of a Group's Core tree. */
+export const RULE_ENTRIES = {
+  stealth: ["generic-stealth", "Stealthing"], stealthValue: ["generic-stealth", "Stealth Value"], sneakAttack: ["generic-stealth", "Sneak Attack"],
+  fear: ["generic-resolve", "Fear"], hp: ["generic-endurance", "Health Points"], pain: ["generic-endurance", "Pain Threshold"],
+  energy: ["generic-endurance", "Energy"], rest: ["generic-endurance", "Rest"], movement: ["generic-athletics", "Movement"],
+  terrain: ["generic-athletics", "Rough/Difficult Terrain"], jumping: ["generic-athletics", "Jumping"], carrying: ["generic-athletics", "Carrying"],
+  senses: ["generic-perception", "Senses"], spot: ["generic-perception", "Spot"], initiative: ["generic-initiative", "Initiative"], surprise: ["generic-initiative", "Surprise"]
+};
+const ruleId = key => (RULE[key] ? codexId.doc("rules", ...RULE[key]) : RULE_ENTRIES[key] ? codexId.entry(...RULE_ENTRIES[key]) : null);
 
 /** Statuses (token conditions): what each one is, as a rule or the tree ability that gives it. */
 export const STATUS_SOURCES = {
@@ -164,21 +171,29 @@ registerSection({ id: "trees", label: "Skill trees", icon: "fa-solid fa-sitemap"
   const pages = [];
   for (const a of ARCHETYPES) {
     const trees = TREES.filter(t => t.archetype === a.id);
-    pages.push({ id: codexId.archetype(a.id), title: a.label, section: "trees", group: a.label, archetypePage: true,
-      blocks: [a.placeholder ? md(a.placeholder) : null, linksBlock("Skill trees", trees.map(t => ({ id: codexId.tree(t.id), label: t.name, note: t.theory ? "Theory" : t.requires ? `Theory Tier ${t.requires}` : "" }))),
+    pages.push({ id: codexId.archetype(a.id), title: a.id === "generic" ? "Generic Groups" : a.label, section: "trees", group: a.label, archetypePage: true,
+      blocks: [a.placeholder ? md(a.placeholder) : null, linksBlock("Skill trees", trees.map(t => ({ id: codexId.tree(t.id), label: t.name, note: needs(t) }))),
         linksBlock("Rules", [{ id: ruleId("archetypes"), label: "Ch2: Archetypes" }])].filter(Boolean) });
     for (const t of trees) {
       const tierBlocks = t.tiers.map(tier => ({ kind: "entries", label: `Tier ${tier.tier}${tier.free ? " (free)" : ""}`, summary: tier.summary ?? "",
         items: tier.entries.map(e => ({ id: codexId.entry(t.id, e.name), name: e.name ?? "", text: e.text ?? "", sub: e.sub ?? [], cost: costOf(e.text), bold: t.archetype === "mental" })) }));
-      const theory = TREES.find(x => x.archetype === t.archetype && x.theory);
-      pages.push({ id: codexId.tree(t.id), title: t.name, section: "trees", group: a.label, badge: t.theory ? "Theory" : "Skill tree",
-        subtitle: t.theory ? `${a.label} Theory` : t.requires ? `Needs ${theory?.name ?? "Theory"} Tier ${t.requires}` : a.label,
+      pages.push({ id: codexId.tree(t.id), title: t.name, section: "trees", group: t.group ? `Generic: ${coreFor(t)?.name}` : a.label, badge: t.core ? "Core tree" : t.theory ? "Theory" : "Skill tree",
+        subtitle: t.core ? "Generic Group Core tree (Tier 0 is free)" : t.theory ? `${a.label} Theory` : needs(t) ? `Needs ${needs(t)}` : a.label,
         hidden: !!t.hidden, blocks: [...tierBlocks, t.table?.rows?.length ? { kind: "table", label: t.table.title, head: ["Roll", t.table.title ?? "Effect"], rows: t.table.rows.map(r => [r[0], r[1]]) } : null].filter(Boolean) });
       for (const tier of t.tiers) for (const e of tier.entries) pages.push(entryPage(t, tier, e));
     }
   }
   return pages;
 } });
+
+/** What opens a tree: "Theory Tier 2", "Stealth Tier 1", "Perception Tier 1, 3 or 5 (Heightened, Primary or Secondary Sight)". */
+function needs(t) {
+  if (t.core) return "Core";
+  if (t.theory) return "Theory";
+  const r = t.senseRequires;
+  if (r) return `${coreFor(t)?.name} Tier ${r.heightened}, ${r.primary} or ${r.secondary} (Heightened, Primary or Secondary ${cap(r.sense)})`;
+  return t.group ? `${coreFor(t)?.name} Tier ${requiredTier(t)}` : t.requires ? `Theory Tier ${t.requires}` : "";
+}
 
 /** A skill tree entry: its text, cost, and (spells, Wonders) what it is in play. */
 function entryPage(tree, tier, e) {
@@ -201,6 +216,7 @@ function entryPage(tree, tier, e) {
   blocks.push(md(parts.main));
   if (e.sub?.length) blocks.push({ kind: "md", md: e.sub.map(s => `- ${emphasize(boldSpans(s, tree.archetype === "mental" ? e.name : null))}`).join("\n") });
   for (const x of parts.extra) blocks.push({ kind: "callout", label: x.label, md: x.text });
+  for (const tb of e.tables ?? []) blocks.push({ kind: "table", label: tb.title, head: tb.head, rows: tb.rows });
   if (mode?.enhanced) blocks.push({ kind: "callout", label: "Enhanced", md: emphasize(boldSpans(mode.enhanced, e.name)) });
   if (spell?.kind === "core") {
     const me = school(tree.id);

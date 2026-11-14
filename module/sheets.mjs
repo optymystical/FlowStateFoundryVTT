@@ -215,9 +215,9 @@ const AUTOMATED = {
     5: "Unfettered: Advantage on dodges and no movement slows while unarmored (automatic)."
   },
   "martial-dexterity-methods": {
-    1: "Fast Lips: Persuasion and Deception rolls against one targeted creature get Advantage automatically when your (size-scaled) Dexterity is higher.",
+    1: "Quick Change: swapping weapons costs 1 RP instead of 1 AP (automatic).",
     2: "Shank is an option in the attack dialog of Light attacks (pick three).",
-    3: "Quick Change: swapping weapons costs 1 RP instead of 1 AP (automatic).",
+    3: "Quick Draw: the first Quick Change each turn costs nothing (automatic).",
     4: "Spot Weakness is in the Action List (Dexterity Methods).",
     5: "Pinpoint Accuracy is an option on Light attacks with Pepper and on Fast/Solitary follow-ups with Disadvantage."
   },
@@ -250,7 +250,7 @@ const AUTOMATED = {
     5: "Breathing Room: the first Shift, Dash, and Leap each round are free (automatic)."
   },
   "martial-strength-methods": {
-    1: "Intimidate: a Persuasion or Deception roll against one targeted creature notes when their counter roll has Disadvantage (size-scaled Strength check).",
+    1: "Shove: a Push imparts 10 × your Strength as Force instead of 5 × (automatic).",
     2: "Heave! is an option in the attack dialog of any Heavy attack.",
     3: "Crunch Time is an option when you Knockback, Push, Launch, or throw a grappled creature: the Force is matched against current HP.",
     4: "Ho! is an option when throwing a Heavy weapon that isn't a Good throw.",
@@ -1101,13 +1101,14 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     const sel = this.skillSelection;
     const inCombat = actions.inActiveCombat(this.document);
     const pinned = this.document.getFlag("flowstate", "pinnedTrees") ?? [];
-    const nav = skills.treeNav(state, { pinned, unspent: sys.skills.unspent, inCombat, filter: sel.filter });
+    const senses = sys.senses;
+    const nav = skills.treeNav(state, { pinned, unspent: sys.skills.unspent, inCombat, filter: sel.filter, senses });
     sel.tree ??= lastTree.get(this.document.uuid) ?? null;
     if (!skills.treeById(sel.tree)) sel.tree = nav.first ?? skills.theoryFor("martial")?.id ?? null;
     lastTree.set(this.document.uuid, sel.tree);
     const tree = skills.treeById(sel.tree);
     const current = tree ? skills.tierOf(state, tree.id) : 0;
-    const next = tree ? skills.nextTier(state, tree, sys.skills.unspent, { inCombat }) : null;
+    const next = tree ? skills.nextTier(state, tree, sys.skills.unspent, { inCombat, senses }) : null;
     const ectx = energyContext(this.document);
     const tp = treePower(this.document, tree);
     // A Wonder's Tenet scales with the Tenet multiplier of the Icon that carries it (its Wonder's stat ÷ 10, capped by the Icon's Grade), not Wonder Power;
@@ -1131,10 +1132,10 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         empty: !nav.pinned.length && !nav.yours.length && !nav.unlock.length },
       weaponNote: weaponTreeNote(tree, state),
       scaleNote: [tp?.power > 1 ? `Numbers are worked out for your ${tp.kind} Power ${tp.power}.` : "", tenetName ? (tenetMult ? `${tenetName} uses your Icon's Tenet multiplier (×${tenetMult}).` : `${tenetName} is shown as printed (it isn't your active Tenet).`) : ""].filter(Boolean).join(" "),
-      lockedNote: tree && !skills.isAvailable(state, tree) ? `Opens at ${skills.theoryFor(tree.archetype)?.name} Tier ${tree.requires}.` : "",
+      lockedNote: tree && !skills.isAvailable(state, tree, { senses }) ? `Opens at ${skills.requirementText(tree, { senses })}.` : "",
       tree: tree && {
         id: tree.id, name: tree.name, current, max: skills.MAX_TIER, codex: codexId.tree(tree.id), pinned: pinned.includes(tree.id),
-        archLabel: skills.ARCHETYPES.find(a => a.id === tree.archetype)?.label ?? "",
+        archLabel: tree.group ? `${skills.coreFor(tree)?.name ?? ""} (Generic)` : skills.ARCHETYPES.find(a => a.id === tree.archetype)?.label ?? "",
         tiers: tree.tiers.map(t => {
           const owned = t.tier <= current;
           const isNext = t.tier === current + 1;

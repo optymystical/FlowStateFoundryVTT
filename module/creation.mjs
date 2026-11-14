@@ -200,7 +200,7 @@ export function validateTrees(trees, skillPoints) {
   if (spent > skillPoints) errors.push(`Your skill trees cost ${spent} Skill Points, but you only have ${skillPoints}.`);
   for (const id of Object.keys(t)) {
     const tree = skills.treeById(id);
-    if (!skills.isAvailable(t, tree)) errors.push(`${tree.name} needs ${skills.theoryFor(tree.archetype)?.name} Tier ${tree.requires}.`);
+    if (!skills.isAvailable(t, tree)) errors.push(`${tree.name} needs ${skills.requirementText(tree)}.`);
   }
   return errors;
 }

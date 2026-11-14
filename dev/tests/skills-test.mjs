@@ -21,4 +21,19 @@ assert.equal(k.nextTier({ "martial-theory": 1 }, brawl, 30, { inCombat: true }).
 assert.equal(k.nextTier({ "martial-theory": 5 }, theory, 30).reason, "Fully unlocked.");
 // 30 starting SP: two trees to 5 (Rules doc) = 30
 assert.equal(k.spentPoints({ "martial-theory": 5, "martial-brawling-methods": 5 }), 30);
+// Generic Groups: each Group's Core tree is free at Tier 0 and opens its own trees ("Requires Stealth 2"), not other Groups'.
+const stealth = k.treeById("generic-stealth"), infil = k.treeById("generic-infiltration"), sleight = k.treeById("generic-sleight"), tempo = k.treeById("generic-tempo");
+assert.equal(k.isAvailable({}, stealth), true); assert.equal(k.coreFor(infil), stealth);
+assert.equal(k.isAvailable({ "generic-stealth": 1 }, sleight), true); assert.equal(k.isAvailable({ "generic-stealth": 1 }, infil), false);
+assert.equal(k.isAvailable({ "generic-stealth": 2 }, infil), true); assert.equal(k.isAvailable({ "generic-stealth": 5 }, tempo), false);
+assert.match(k.nextTier({}, infil, 30).reason, /Stealth Tier 2/);
+assert.equal(k.spentPoints({ "generic-stealth": 2, "generic-infiltration": 1 }), 3 + 1);
+// The sense trees: Perception 1, 3 or 5 by the base sense (Heightened, Primary, Secondary); defaults Sight/Hearing Primary, Smell Secondary.
+const sight = k.treeById("generic-sight"), smell = k.treeById("generic-smell");
+assert.equal(k.isAvailable({ "generic-perception": 3 }, sight), true); assert.equal(k.isAvailable({ "generic-perception": 3 }, smell), false);
+assert.equal(k.isAvailable({ "generic-perception": 1 }, sight, { senses: { sight: "heightened" } }), true);
+assert.equal(k.isAvailable({ "generic-perception": 4 }, sight, { senses: { sight: "secondary" } }), false);
+assert.match(k.nextTier({ "generic-perception": 1 }, sight, 30, { senses: { sight: "primary" } }).reason, /Perception Tier 3/);
+// Lowering a Core tree only locks its own Group's trees.
+assert.equal(k.sameGroup(infil, stealth), true); assert.equal(k.sameGroup(tempo, stealth), false); assert.equal(k.sameGroup(brawl, theory), true); assert.equal(k.sameGroup(brawl, stealth), false);
 console.log("skills tests passed");

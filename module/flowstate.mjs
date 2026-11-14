@@ -1524,15 +1524,19 @@ async function drawOrSwap(item, changes, swap) {
     return ui.notifications.info(`${actor.name} draws ${item.name} (1 RP).`);
   }
 
-  // Quick Change (Dexterity T3): swapping costs 1 RP instead of 1 AP (so it works off-turn too).
-  const quick = ab.dexterity(actor, 3);
+  // Quick Change (Dexterity T1): swapping costs 1 RP instead of 1 AP (so it works off-turn too). Quick Draw (Dexterity T3): the first Quick Change
+  // each turn (anyone's turn) costs nothing.
+  const quick = ab.dexterity(actor, 1);
   const key = quick ? "rp" : "ap";
-  if (inCombat) {
+  const turn = actions.turnKey();
+  const quickDraw = inCombat && quick && ab.dexterity(actor, 3) && !!turn && actor.getFlag("flowstate", "quickDrawTurn") !== turn;
+  if (inCombat && !quickDraw) {
     if (!quick && !isActorsTurn(actor)) return refuse(item, `Swapping weapons costs 1 AP, so ${actor.name} can only do it on their turn.`);
     if (actor.system[key].value < 1) return refuse(item, `${actor.name} needs 1 ${key.toUpperCase()} to swap weapons and has none.`);
   }
   const held = actor.items.filter(i => HELD_TYPES.has(i.type) && i.id !== item.id && i.system.weaponType !== "unarmed" && i.system.equipped);
-  const cost = inCombat ? `<strong>1 ${key.toUpperCase()}</strong>${quick ? " (Quick Change)" : ""} (${esc(actor.name)} has ${actor.system[key].value})` : "nothing outside combat";
+  const cost = !inCombat ? "nothing outside combat" : quickDraw ? "<strong>nothing</strong> (Quick Draw: the first Quick Change this turn)"
+    : `<strong>1 ${key.toUpperCase()}</strong>${quick ? " (Quick Change)" : ""} (${esc(actor.name)} has ${actor.system[key].value})`;
   const choice = await DialogV2().prompt({
     window: { title: `Swap to ${item.name}?` }, rejectClose: false,
     content: `<div class="flowstate-dialog"><p>Your hands are full. Swapping weapons costs ${cost}.</p>
@@ -1543,7 +1547,8 @@ async function drawOrSwap(item, changes, swap) {
     ok: { label: "Swap", icon: "fa-solid fa-right-left", callback: (event, button) => button.form.elements.putAway.value }
   });
   if (!choice) return snapBack(item);
-  if (inCombat) await actor.update({ [`system.${key}.value`]: actor.system[key].value - 1 });
+  if (quickDraw) await actor.setFlag("flowstate", "quickDrawTurn", turn);
+  else if (inCombat) await actor.update({ [`system.${key}.value`]: actor.system[key].value - 1 });
 
   // Put away the chosen weapon, then anything else still in the way.
   const quiet = { flowstateAuto: true };
@@ -1554,7 +1559,7 @@ async function drawOrSwap(item, changes, swap) {
     if (other.system.equipped) await other.update({ "system.equipped": false }, quiet);
   }
   await item.update(data, { flowstatePaid: true });
-  ui.notifications.info(`${actor.name} swaps to ${item.name}${inCombat ? ` (1 ${key.toUpperCase()})` : ""}.`);
+  ui.notifications.info(`${actor.name} swaps to ${item.name}${quickDraw ? " (Quick Draw: free)" : inCombat ? ` (1 ${key.toUpperCase()})` : ""}.`);
 }
 
 const ARMOR_LABEL = item => martial.ARMOR_WEIGHTS[item.system.weight]?.label ?? "That";

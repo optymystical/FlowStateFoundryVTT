@@ -1,8 +1,4 @@
-# Flow State \- Rules
-
-# **Table of Contents** {#table-of-contents}
-
-[**Table of Contents**](#table-of-contents)
+# **Table of Contents**
 
 [**Ch1 \- What is Flow State?**](#ch1---what-is-flow-state?)
 
@@ -12,7 +8,7 @@
 
 [So, how do I play?](#so,-how-do-i-play?)
 
-[Character Sheet](#foundry-vtt)
+[Foundry VTT](#foundry-vtt)
 
 [CC-BY](#cc-by)
 
@@ -74,9 +70,7 @@
 
 [Non Stat Checks](#non-stat-checks)
 
-[Persuasion/Deception](#persuasion/deception)
-
-[Rest](#rest)
+[Rest](#heading=h.77xpzajlagt)
 
 [Traveling Speeds](#traveling-speeds)
 
@@ -88,11 +82,11 @@
 
 [Reaction Points (RP)](#reaction-points-\(rp\))
 
-[Movement](#movement)
+[Movement](#heading=h.skhmv75gpors)
 
-[Rough/Difficult Terrain](#rough/difficult-terrain)
+[Rough/Difficult Terrain](#heading=h.ditm4nbdjn81)
 
-[Jumping](#jumping)
+[Jumping](#heading=h.pbq5thulmt8p)
 
 [Targeting](#targeting)
 
@@ -112,11 +106,11 @@
 
 [Critical Hits](#critical-hits)
 
-[Health Points](#health-points)
+[Health Points](#heading=h.7y3ng1nvmpie)
 
-[Pain Threshold](#pain-threshold)
+[Pain Threshold](#heading=h.6j0gr0ids3sh)
 
-[Energy](#energy)
+[Energy](#heading=h.xglbqug5yw9)
 
 [Grappling](#grappling)
 
@@ -124,21 +118,11 @@
 
 [Cover](#cover)
 
-[Stealthing](#stealthing)
-
-[Stealth Value](#stealth-value)
-
-[Sneak Attack](#sneak-attack)
-
-[Perception and Senses](#perception-and-senses)
-
-[Senses Table](#senses-table)
-
 [**Ch9 \- Conditions**](#ch9---conditions)
 
 [Crouch/Prone](#crouch/prone)
 
-[Fear](#fear)
+[Fear](#heading=h.6ddncicvpsze)
 
 [Ignite](#ignite)
 
@@ -149,6 +133,8 @@
 [Slow](#slow)
 
 [Haste](#haste)
+
+[Charges](#charges)
 
 [**Ch10 \- Objects and Force**](#ch10---objects-and-force)
 
@@ -297,7 +283,8 @@ Skill points are spent unlocking the various tiers of skill trees. Tiers cost an
 
 ## **What is a Group?** {#what-is-a-group?}
 
-You’ve already been acquainted with the three Archetypes; Martial, Mental, and Magic. These are examples of Groups, which are essentially bundles of skill trees that have both a common structural tree (like the Theories for the Archetypes) as well as an overarching theme. Groups can be as small as just three skill trees, or as large as even 30 or more. Generally speaking, most characters will stick to just knowing 1-2 Groups until much further into a campaign, however you are not restricted in their acquisition in any way.
+You’ve already been acquainted with the three Archetypes; Martial, Mental, and Magic. These are examples of Groups, which are essentially bundles of skill trees that have both a common structural tree (like the Theories for the Archetypes) as well as an overarching theme. Groups can be as small as just three skill trees, or as large as even 30 or more. Generally speaking, most characters will stick to just knowing 1-2 Groups until much further into a campaign, however you are not restricted in their acquisition in any way.  
+Every Group is built from up to three kinds of skill trees. Its Core tree (an Archetype’s Theory, or a Generic Group’s namesake tree, such as Perception) binds the Group together: it defines what the Group is about, holds its base rules, and unlocks the rest of the Group. Spine trees (such as Mental’s Arts, Magic’s Arcanas, and Martial’s Methods) are optional supplemental trees that sit at the top of each tier, adding to how the rest of the Group works rather than introducing a focus of their own. Meat trees make up the body of the Group (such as Perception’s Sight, or Mental’s Wonders), and a Group can have any number of them. Each Group states what unlocks its trees, which is usually a tier of its Core tree.
 
 ## **The Theories** {#the-theories}
 
@@ -305,7 +292,7 @@ Each archetype has a titular Theory skill tree, outlining how the archetype itse
 
 ## **Generic** {#generic}
 
-Each Archetype's skill trees function exclusively within that Archetype, with specific abilities to help them synergize with the other Archetypes (Magic’s Weaving for example). The Generic Groups however are much broader with their applications. Generic Groups focus on things like Perception, Stealth, Speech, Energy, and many more concepts.
+Each Archetype's skill trees function exclusively within that Archetype, with specific abilities to help them synergize with the other Archetypes (Magic’s Weaving for example). The Generic Groups however are much broader with their applications. Generic Groups focus on things like Perception, Stealth, Persuasion, Deception, Energy, and many more concepts, and can be found in Flow State \- Generic Groups. Each Generic Group’s namesake tree has a free Tier 0 that every character has, holding the base rules for that group (such as Spot, Stealthing, and Sneak Attack).
 
 ## 
 
@@ -339,25 +326,27 @@ Advantage and Disadvantage are stacking keywords that affect checks, attack roll
 
 ## **Size Categories** {#size-categories}
 
-All creatures fall into a size category, which affects things such as how much space your character takes up, maximum movement speed, hunger rate, max HP, and melee attack range. All playable characters have a default size of 3 unless stated otherwise. Aside from what is listed below, your size also affects your Max Health, Pain Threshold, and Grappling rules (see those sections for more details).
+All creatures fall into a size category, which affects things such as how much space your character takes up, maximum movement speed, hunger rate, max HP, and melee attack range. All playable characters have a default size of 3 unless stated otherwise. Aside from what is listed below, your size also affects your Max Health, Pain Threshold, Grappling, and Carrying rules (see those sections for more details). Equipment has its own Size, which determines its power in place of yours (see Carrying in Flow State \- Generic Groups).
 
-**Size 1:** Takes up less than a 1 ft cube of space, has a max movespeed of 10ft/AP, eats ¼ of a ration a day, has doubly Weakened physical attacks, and has a 1ft melee attack range.  
-**Size 2:** Takes up a 1-3 ft cube of space, has a max movespeed of 25ft/AP, eats ½ of a ration a day, has Weakened physical attacks, and has a 3ft melee attack range.  
+**Size 1:** Takes up less than a 1 ft cube of space, has a max movespeed of 10ft/AP, eats ¼ of a ration a day, has doubly Weakened unarmed and natural attacks, and has a 1ft melee attack range.  
+**Size 2:** Takes up a 1-3 ft cube of space, has a max movespeed of 25ft/AP, eats ½ of a ration a day, has Weakened unarmed and natural attacks, and has a 3ft melee attack range.  
 **Size 3:** Takes up a 3-5 ft cube of space, has a max movespeed of 50ft/AP, eats 1 ration a day, and has a 5ft melee attack range.  
-**Size 4:** Takes up a 5-10 ft cube of space, has a max movespeed of 100ft/AP, eats 2 rations a day, has Strengthened physical attacks, and has a 10ft melee attack range.  
-**Size 5:** Takes up a 10-20 ft cube of space, has a max movespeed of 200ft/AP, eats 4 rations a day, has doubly Strengthened physical attacks, and has a 20ft melee attack range.
+**Size 4:** Takes up a 5-10 ft cube of space, has a max movespeed of 100ft/AP, eats 2 rations a day, has Strengthened unarmed and natural attacks, and has a 10ft melee attack range.  
+**Size 5:** Takes up a 10-20 ft cube of space, has a max movespeed of 200ft/AP, eats 4 rations a day, has doubly Strengthened unarmed and natural attacks, and has a 20ft melee attack range.
 
 ## **Non Stat Checks** {#non-stat-checks}
 
-Most checks made that are not tied to any stat and are not attack/dodge checks are simply done by rolling a d100. This includes things such as Stealth, Perception, Persuasion, Deception, counter Persuasion/Deception, and Initiative.
+Most checks that are not tied to any stat and are not attack/dodge checks are Non Stat Checks, such as Stealth, Perception, Persuasion, Deception, and Initiative. They are rolled using your plain attack die (a die equal in size to your total skill points), unaffected by effects that modify attack rolls unless those effects state otherwise. When two Non Stat Checks are contested, the acting side (such as the spotter or the persuader) wins ties. The rules for each of these checks are found in the Tier 0 of their group’s namesake tree in Flow State \- Generic Groups.  
+When a Non Stat Check is not contested, the GM instead sets a static target number from the table below, and the check succeeds if its result is equal to or higher than that number.
 
-## **Persuasion/Deception** {#persuasion/deception}
-
-During roleplay, one can attempt to persuade or even deceive a target. Doing so will require a d100 persuasion/deception roll, going up against a “counter roll” by the target, which is also a d100 (though this rarely gets any bonuses to it). If the target is friendly, all rolls are made normally. If the target is neutral, their counter roll for persuasion has Advantage. If hostile, they cannot be persuaded and deception counter rolls have Advantage.
-
-## **Rest** {#rest}
-
-Characters must rest 8 hours each day. You can go without rest for up to 3 days, but the amount of rest you’d need to recover is cumulative. After 1 day, you have Disadvantage on all rolls. At 3 days, you fall unconscious until a full 24 hours of rest is completed.
+| Difficulty | Target |
+| :---- | :---: |
+| Easy | 5 |
+| Moderate | 10 |
+| Hard | 15 |
+| Very Hard | 25 |
+| Heroic | 40 |
+| Legendary | 60 |
 
 ## **Traveling Speeds** {#traveling-speeds}
 
@@ -370,7 +359,7 @@ When traveling, base party speed equals the slowest member’s speed, halved (ro
 
 ## **Turn Order** {#turn-order}
 
-At the start of combat, all characters whether they are surprised or not roll their initiative die (normally a d100). When round 1 starts (after the surprise round of round 0), all non-surprised characters get access to all of their RP, and can react just as combat is beginning if desired. From here, the person with the highest initiative goes, then the next highest, continuing until the final person has gone, then resetting back to the top for round 2 using the same scores. 
+At the start of combat, all characters whether they are surprised or not make an initiative check (see Initiative in Flow State \- Generic Groups). When round 1 starts (after the surprise round of round 0, see Surprise in Flow State \- Generic Groups), all non-surprised characters get access to all of their RP, and can react just as combat is beginning if desired. From here, the person with the highest initiative goes, then the next highest, continuing until the final person has gone, then resetting back to the top for round 2 using the same scores. 
 
 ## **Action Points (AP)** {#action-points-(ap)}
 
@@ -379,20 +368,6 @@ Whether you're swinging a sword, casting a spell, or manifesting the essence of 
 ## **Reaction Points (RP)** {#reaction-points-(rp)}
 
 Just the same as AP, every character gets 6 RP at the start of their turn, however it only goes away when you would start your turn again. This means that the RP persists beyond your turn, up until it's your turn again in which it goes away. RP are often used for interrupt based abilities that require some kind of condition to be met (like being attacked, being hit, an ally being attacked, etc), but not all Reactions are like this. Some can just be done at any time (such as a spell cast with the React mod for magic), in these cases you must declare the very moment they are occurring. When this happens, other characters may also react with their reactions, which will occur before yours, then once everyone is finished declaring, you follow down the chain of reactions until they're all finished. If a reaction is made invalid for some reason, it's treated as if it never happened, so no resources or RP are lost.
-
-## **Movement** {#movement}
-
-During their turn, characters can move using 1 AP in any direction they choose for their Movement Speed. Movement Speed itself increments in values of 5ft rounding down, and its value is based on various equipment/abilities that give benefits at the cost of speed, having a minimum of 5ft after all reductions. This is also represented in the game by grid spaces, a grid space equalling 5ft. Base movespeed cannot exceed your size limitations unless you are using specified features to increase it (see size for more info), and is by default equal to your Size’s maximum movespeed. All movement speed percentage effects are additive, so two 20%s result in a 40% decrease.
-
-## **Rough/Difficult Terrain** {#rough/difficult-terrain}
-
-Rough terrain (swamps, thick brush, rubble) increases movement cost by 1 AP. Difficult terrain (water, steep climbs) increases movement cost by 2 AP. These penalties stack with other forms of movement penalties and slows, but do not stack with each other.
-
-## **Jumping** {#jumping}
-
-You can jump up to 1/5th of your movement speed vertically, and your full movement speed horizontally. The midpoint of the jump is the jump's peak. Jumping costs 2 AP, and any movement slowing effects are doubly effective on this cost.
-
-## 
 
 ## **Targeting** {#targeting}
 
@@ -412,7 +387,7 @@ When you target an ally, willing target, or yourself with an effect, you must st
 
 ## **Attacking Objects/Nothing** {#attacking-objects/nothing}
 
-An attack against an inanimate object, or against a point in empty space, automatically hits. Against objects, your attack roll is instead rolled to determine a critical hit, with rolls higher than or equal to the target’s Body (or Grade\*10 if it has no Body) being a crit. An attack against empty space cannot crit. An object being worn or held by a creature uses that creature's dodge roll instead. This does not override effects that state their own required result against objects. 
+An attack against an inanimate object, or against a point in empty space, automatically hits. Against objects, your attack roll is instead rolled to determine a critical hit, with rolls higher than or equal to the target’s Body (or Grade\*10 if it has no Body) being a crit. An attack against empty space cannot crit. An object being worn or held by a creature uses that creature's dodge roll instead. A projectile fired or launched from a source (such as an arrow from a bow) uses that source's attack roll as its dodge roll. This does not override effects that state their own required result against objects. 
 
 ## **Strafing** {#strafing}
 
@@ -435,18 +410,6 @@ Damage dice cannot be rolled with Advantage or Disadvantage, instead they get th
 
 To achieve a critical hit (crit), you must be attacking a target and roll double or more the result of the defender’s dodge dice for your attack result. Critical hits are doubly Strengthened (two stacks of Strengthened). Double Crits (happen rarely with abilities, and with Full Stealth later) give four Strengthened Stacks instead.
 
-## **Health Points** {#health-points}
-
-Health Points (HP) are a measure of how beat up and broken your character is. Your HP is determined by (Con+Will+Build)\*(Size\*3), and you regain HP equal to your Con, Will, and Build minimums combined every time you complete an 8hr rest. If your HP drops to 0 or below, you die, and any excess damage is tracked as Overkill damage. Overkill damage is tracked up to your max HP; at that point, your body is destroyed. In addition, one can also lose Max HP, representing actual chunks of your body being taken off. Natural regeneration does not heal Max HP.
-
-## **Pain Threshold** {#pain-threshold}
-
-Your Pain Threshold is a value that shows when your character would fall unconscious if their current HP dropped below that value, staying unconscious until they rise back above that value. Your Pain Threshold is always equal to half of your Maximum HP, rounded down.
-
-## **Energy** {#energy}
-
-Energy is used by all Archetypes to use various abilities and actions. Your maximum energy is equal to 5x your skill points, and you can spend 1 AP to recover 1/10th of your max energy, rounded down. In addition, you regain energy equal to 2 AP of recovery at the start of each of your turns.
-
 ## **Grappling** {#grappling}
 
 Grappling is an involuntary capturing of one creature by another, typically requiring at least one free hand to maintain, and requiring you to be the same size or larger than the target you are grappling. While Grappled, a creature cannot move outside of the range of whatever is grappling them. The various ways grappling can be achieved are outlined in the Martial, Mental, and Magic documents. Once a creature is grappled, it can spend 2 AP to make a counter grapple check. This involves it making an attack roll against its grappler (who rolls dodge), with a success meaning it breaks free (some rules may vary by archetype, such as Magic’s Hold being rolled against a fixed value). If its grappler is an object, instead it makes that attack roll against the Limit of that object (they can also break the object to free themselves, if possible). Dragging a grappled target costs \+1 AP per move.
@@ -459,51 +422,6 @@ Similarly to grappling, you can choose to instead simply push a target. This can
 
 Cover is determined by if part of your body is open: if none of your body is open you have full cover; if up to half of your body is open you have half cover; if more than half is open you have no cover. While in full cover, attacks are treated as if the cover is in the way, in addition having Disadvantage on their attack rolls if the attacker cannot easily sense you, with the cover also being hit on a miss. While in half cover, only ranged and area attacks have Disadvantage hitting you, but the cover is no longer in the way, with the cover only being hit on a miss.
 
-## **Stealthing** {#stealthing}
-
-On your turns (whether in or out of combat), you can choose to begin acting stealthily. Doing so causes your movement to be affected as if you were in rough terrain (+1 AP per movement). While stealthing, the volume of sounds you produce is treated as soft instead of medium, and you count as lightly obscured except in well lit environments. Whenever you would be targeted with a spot check, you will need to roll your stealth check, which is normally a d100.
-
-## **Stealth Value** {#stealth-value}
-
-Your stealth value for each target you would interact with while stealthed can either be “half” or “full”, depending on whether or not one or both of the following are active (if only one is active, you are in half stealth to that character, and if both are active you are in full stealth):
-
-- The target is unable to sense you, or if they can, they have not spotted you (assuming you are trying to hide from them).  
-- The target is unaware of combat occurring. This will always be inactive during combat.
-
-## **Sneak Attack** {#sneak-attack}
-
-Attacking from stealth can either be done from half stealth or full stealth. Half stealth gives you Advantage on the attack roll, and the target(s) Disadvantage on their dodge roll. Full stealth completely prevents the target(s) from reacting, meaning they roll no dodge roll. Your attack roll is instead rolled to determine if you crit, requiring a roll equal to or higher than the size of one of their dodge dice. If you roll double or more than this value, you instead deal a Double Crit.
-
-## **Perception and Senses** {#perception-and-senses}
-
-Counter to stealth, perception is one's ability to sense the world around them in various ways, and they use perception through one of three main senses (more can be found in Mental/Magic). Each one of your senses can be Secondary, Primary, or Heightened. If you have no Primary or Heightened senses, all actions that rely on senses are made with Disadvantage, and if all of your senses are none of the three, then you cannot make any actions that require senses. At any time a target is within your senses, you can spend 1 AP to use the Spot action, which lets you roll your perception die (normally a d100) against their stealth roll. The three main senses and their default state are as follows:
-
-- Sight (Default Primary): Your ability to physically see targets.  
-- Hearing (Default Primary): Your ability to physically hear targets.  
-- Smell (Default Secondary): Your ability to physically smell targets.
-
-| Senses Table |  |  |  |
-| ----- | :---- | ----- | ----- |
-| Sense Type | Obstacle | Requires a Check | Auto Pass |
-| Sight | Unobscured (Line of Sight) | Secondary | Primary |
-| Sight | Light Obscure (Melee) | Secondary | Primary |
-| Sight | Light Obscure (100ft) | Primary | Heightened |
-| Sight | Light Obscure (1,000ft) | Heightened | \- |
-| Sight | Heavy Obscure (Melee) | Primary | Heightened |
-| Sight | Heavy Obscure (100ft) | Heightened | \- |
-| Hearing | Loud Noise (1,000ft) | \- | Secondary |
-| Hearing | Medium Noise (100ft) | Secondary | Primary |
-| Hearing | Medium Noise (1,000ft) | Primary | Heightened |
-| Hearing | Soft Noise (Melee) | Secondary | Primary |
-| Hearing | Soft Noise (100ft) | Primary | Heightened |
-| Hearing | Soft Noise (1,000ft) | Heightened | \- |
-| Smell | Strong Odor (1,000ft) | Secondary | Primary |
-| Smell | Normal Odor (100ft) | Secondary | Primary |
-| Smell | Normal Odor (1,000ft) | Primary | Heightened |
-| Smell | Weak Odor (Melee) | Secondary | Primary |
-| Smell | Weak Odor (100ft) | Primary | Heightened |
-| Smell | Weak Odor (1,000ft) | Heightened | \- |
-
 # **Ch9 \- Conditions** {#ch9---conditions}
 
 ## **Crouch/Prone** {#crouch/prone}
@@ -511,10 +429,6 @@ Counter to stealth, perception is one's ability to sense the world around them i
 Crouching makes you 50% your size for hiding behind cover, and can be done at any time while it is your turn. While crouching you are treated as if in rough terrain, but have no other benefits or drawbacks. Being prone makes you count as 25% of your size for hiding behind cover, and can be done by spending 1 AP, with standing up also requiring 1 AP. While prone you have Disadvantage on dodging attacks unless you have some kind of method of dodging while prone, enemies have Advantage when attacking you in melee, and you are treated as if you are in difficult terrain.
 
 ## 
-
-## **Fear** {#fear}
-
-Fear can be applied in a variety of ways, but can also occur naturally in situations where your character is experiencing fear, such as being intimidated, experiencing a horror beyond your imagination, coming face to face with a phobia, etc. *To resist the effects of Fear when applied this way, roll Constitution, Willpower, or Build, requiring a result at least equal to the fear source’s Skill Points multiplied by its Size.* If the source of fear is not a creature, the result required is up to the GM. While affected by Fear, a character may not gain Energy from any source, including regen.
 
 ## **Ignite** {#ignite}
 
@@ -539,7 +453,7 @@ Slow is a stacking value that applies to a creature. While a creature has at lea
 
 Haste is a stacking value that applies to a creature. While a creature has at least half their Pain Threshold in Haste stacks, their movement costs are decreased by 1 AP (if already 1, they move twice as fast). If instead they have Haste stacks greater than or equal to their Pain Threshold, their movement costs are decreased by 2 AP (if already 1, they move three times as fast. If at 2, they cost 1 and they move twice as fast). At the end of a creature with Haste stack’s turn, it reduces its Haste stacks by half of its Pain Threshold, rounded down. Haste and Slow stacks cancel each other out equal to their values.
 
-## **Charges**
+## **Charges** {#charges}
 
 A Charge is an effect stored on a creature (or held by yourself, such as with Redirect), named after the effect that created it, such as a Decree charge. Unless stated otherwise, a Charge lasts until the start of its creator's next turn, does nothing until it is consumed, and can only be consumed by its creator when its listed trigger occurs, consuming at most one Charge of that name per trigger. Multiple Charges of the same name can be stored on the same creature, and consuming a Charge removes it.
 

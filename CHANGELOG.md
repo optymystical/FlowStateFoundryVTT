@@ -2,6 +2,11 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.85.0:** Generic Groups (the new Flow State - Generic Groups doc), part 1:
+- **Skill trees:** the eight Groups (Perception, Stealth, Initiative, Persuasion, Deception, Endurance, Athletics, Resolve) and their 33 trees are on the Skills tab and in the Codex. Each Group's Core tree has a free Tier 0 and opens its own trees; Sight, Hearing and Smell need Perception 1, 3 or 5 by your base sense.
+- **Rules doc:** Stealth, Senses, Persuasion/Deception, Rest, HP, Pain Threshold, Energy, Movement, terrain, Jumping and Fear moved to the Generic Groups' Tier 0s; the Codex links there now.
+- **Martial:** Strength T1 is Shove (a Push is 10 × Strength); Dexterity T1 is Quick Change (moved from T3) and T3 is Quick Draw (the first Quick Change each turn is free). Intimidate and Fast Lips are gone.
+
 **0.84.0:** Mental doc updates: Bloom gives 20 × Power temp HP (was 50; still stacks), and Herald's Force loses a quarter of the target's current HP (was half).
 
 **0.83.2:** Arcane against a creature that isn't fully Magical: its Shroud and Shields (fully magical) take the hit at full strength, and only what gets past them is Weakened.

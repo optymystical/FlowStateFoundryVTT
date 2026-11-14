@@ -2,7 +2,9 @@
  * Skill tree rules (Rules doc Ch4). Pure functions so they can be unit-tested outside Foundry.
  * - A tree's tiers are unlocked in order; tier N costs N Skill Points (so 0 → 5 costs 15).
  * - Each Archetype's Theory unlocks its trees: Theory tier N makes the "T<N> Skill Trees" available.
- * - Theory Tier 0 is free and always known.
+ * - Each Generic Group's Core tree (its namesake: Perception, Stealth...) unlocks the Group's other trees ("Requires Stealth 2").
+ *   The sense trees (Sight, Hearing, Smell) need Perception 1, 3 or 5 when the character's base sense is Heightened, Primary or Secondary.
+ * - Theory and Core Tier 0 is free and always known.
  * - Unspent Skill Points stay banked and still count toward total Skill Points.
  */
 import { TREES } from "./trees.mjs";
@@ -11,13 +13,30 @@ export const ARCHETYPES = [
   { id: "martial", label: "Martial" },
   { id: "mental", label: "Mental" },
   { id: "magic", label: "Magic" },
-  { id: "generic", label: "Generic", placeholder: "Generic Groups (Perception, Stealth, Speech, Energy, and more) will be added once that document is ready." }
+  { id: "generic", label: "Generic" }
 ];
 
 export const MAX_TIER = 5;
 export const treeById = id => TREES.find(t => t.id === id);
 export const treesFor = archetype => TREES.filter(t => t.archetype === archetype);
 export const theoryFor = archetype => TREES.find(t => t.archetype === archetype && t.theory);
+/** The Generic Groups' Core trees, in the doc's order. */
+export const coreTrees = () => TREES.filter(t => t.core);
+/** The tree that opens this one: its Generic Group's Core tree, or its Archetype's Theory. */
+export const coreFor = tree => (tree?.group ? TREES.find(t => t.core && t.group === tree.group) : theoryFor(tree?.archetype));
+/** Trees that share a Theory/Core: the same Generic Group, or the same Archetype. */
+export const sameGroup = (a, b) => (a?.group || b?.group ? a?.group === b?.group : a?.archetype === b?.archetype);
+/**
+ * The Theory/Core tier a tree needs. A sense tree needs Perception 1, 3 or 5 by the character's base sense (Heightened, Primary, Secondary;
+ * a sense with no level counts as Secondary); without the character's senses, the sense's default (Sight and Hearing Primary, Smell Secondary).
+ */
+export function requiredTier(tree, { senses } = {}) {
+  const r = tree?.senseRequires;
+  if (!r || !senses) return tree?.requires ?? 0;
+  return r[senses[r.sense]] ?? r.secondary;
+}
+/** "Requires Stealth Tier 2" / "Requires Martial Theory Tier 3". */
+export const requirementText = (tree, ctx) => `${coreFor(tree)?.name ?? "Theory"} Tier ${requiredTier(tree, ctx)}`;
 
 /** Current tier in a tree (Theory is at least 0; other trees are 0 = not started). */
 export const tierOf = (state, id) => Math.max(0, Number(state?.[id]) || 0);
@@ -27,21 +46,20 @@ export function spentPoints(state = {}) {
   return Object.entries(state).reduce((n, [id, t]) => (treeById(id) ? n + (tierOf(state, id) * (tierOf(state, id) + 1)) / 2 : n), 0);
 }
 
-/** A tree is available once its Archetype's Theory reaches the tree's group tier. */
-export function isAvailable(state, tree) {
+/** A tree is available once its Theory (or Generic Core tree) reaches the tier it needs. `ctx.senses`: the character's base senses (sense trees). */
+export function isAvailable(state, tree, ctx = {}) {
   if (!tree) return false;
   if (tree.theory) return true;
-  const theory = theoryFor(tree.archetype);
-  return tierOf(state, theory?.id) >= tree.requires;
+  return tierOf(state, coreFor(tree)?.id) >= requiredTier(tree, ctx);
 }
 
 /** Can the next tier of this tree be bought? Returns { ok, next, cost, reason }. */
-export function nextTier(state, tree, unspent, { inCombat = false } = {}) {
+export function nextTier(state, tree, unspent, { inCombat = false, senses } = {}) {
   const current = tierOf(state, tree.id);
   const next = current + 1;
   if (next > MAX_TIER) return { ok: false, next: null, cost: 0, reason: "Fully unlocked." };
   const cost = next;
-  if (!isAvailable(state, tree)) return { ok: false, next, cost, reason: `Requires ${theoryFor(tree.archetype)?.name} Tier ${tree.requires}.` };
+  if (!isAvailable(state, tree, { senses })) return { ok: false, next, cost, reason: `Requires ${requirementText(tree, { senses })}.` };
   if (inCombat) return { ok: false, next, cost, reason: "Skill Points can only be spent outside combat." };
   if (unspent < cost) return { ok: false, next, cost, reason: `Costs ${cost} Skill Point${cost === 1 ? "" : "s"}; you have ${unspent}.` };
   return { ok: true, next, cost, reason: `Costs ${cost} Skill Point${cost === 1 ? "" : "s"}.` };
@@ -72,18 +90,20 @@ export function canUseWeaponSkill(state, treeId, weaponTypes) {
  * whose name has it. Each row says its tier and whether its next tier can be bought now (`canRaise`). Trees not open yet aren't listed.
  * Returns { pinned, yours, unlock: [{ id, label, rows }], first }.
  */
-export function treeNav(state = {}, { pinned = [], unspent = 0, inCombat = false, filter = "" } = {}) {
+export function treeNav(state = {}, { pinned = [], unspent = 0, inCombat = false, filter = "", senses } = {}) {
   const q = String(filter ?? "").trim().toLowerCase();
   const pins = new Set(pinned);
   const order = (a, b) => (b.theory - a.theory) || ((a.requires ?? 0) - (b.requires ?? 0)) || a.name.localeCompare(b.name);
   const row = t => ({ id: t.id, name: t.name, archetype: t.archetype, archLabel: ARCHETYPES.find(a => a.id === t.archetype)?.label ?? t.archetype,
-    tier: tierOf(state, t.id), max: MAX_TIER, theory: !!t.theory, pinned: pins.has(t.id), available: isAvailable(state, t),
-    canRaise: nextTier(state, t, unspent, { inCombat }).ok });
+    tier: tierOf(state, t.id), max: MAX_TIER, theory: !!t.theory, pinned: pins.has(t.id), available: isAvailable(state, t, { senses }),
+    canRaise: nextTier(state, t, unspent, { inCombat, senses }).ok });
   const shown = t => !t.hidden && (!q || t.name.toLowerCase().includes(q));
   const out = { pinned: [], yours: [], unlock: [] };
-  for (const a of ARCHETYPES) {
-    if (a.placeholder) continue;
-    const trees = treesFor(a.id).filter(shown).sort(order);
+  // The Archetypes, then each Generic Group (its Core tree first, then the trees it opens by the tier they need).
+  const lists = [...ARCHETYPES.filter(a => !a.placeholder && a.id !== "generic").map(a => ({ id: a.id, label: a.label, trees: treesFor(a.id) })),
+    ...coreTrees().map(c => ({ id: `generic-${c.group}`, label: `${c.name} (Generic)`, trees: TREES.filter(t => t.group === c.group) }))];
+  for (const a of lists) {
+    const trees = a.trees.filter(shown).sort(order);
     const unlock = [];
     for (const t of trees) {
       const r = row(t);

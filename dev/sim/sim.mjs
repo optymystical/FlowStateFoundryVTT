@@ -78,6 +78,8 @@ function watch() {
 const D = foundry.applications.api.DialogV2;
 SIM._dlg = SIM._dlg ?? (window.LT?._orig ?? { prompt: D.prompt.bind(D), confirm: D.confirm.bind(D), wait: D.wait.bind(D) });
 SIM.fill = null;         // (title, content, form) => { name: value } for the dialog being answered
+// Areas: the sim answers dialogs, so an area is dropped on the caster and confirmed instead of placed with the mouse.
+(await import("/systems/flowstate/module/areas.mjs")).setAreaPlacement("drop");
 // (title, buttons) => the button to press in a wait() dialog. An empty gun: Speedloader if it's affordable, else Quickload as a Pepper shot, else Quickload.
 SIM.choose = (title, buttons) => {
   if (!/is empty$/.test(title)) return null;

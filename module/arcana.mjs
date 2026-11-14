@@ -387,7 +387,7 @@ export function listSpells() {
       hp: sp.hpLeft ?? casterScaling(caster), power: sp.power ?? spellPowerOf(caster), scaling: sp.scaling, ritualOf: sp.ritualOf ?? null, amplified: !!sp.amplified,
       message: m, attackTotal: Math.max(...open.map(t => t.total ?? 0)), opts: at.opts });
   }
-  for (const t of globalThis.canvas?.scene?.templates ?? []) {
+  for (const t of areas.areaRegions(globalThis.canvas?.scene)) {
     const f = t.flags?.flowstate;
     if (f?.spell !== "emplace" || !(f.health > 0)) continue;
     const caster = globalThis.fromUuidSync?.(f.casterUuid ?? f.areaOf);
@@ -484,7 +484,7 @@ async function ripSpell(entry, caster, mode, newTarget, ritualOf, limit = 5) {
 }
 
 GM_ACTIONS.tplFlags = async ({ sceneId, id, flags }) => {
-  const d = globalThis.game.scenes.get(sceneId)?.templates?.get(id);
+  const d = areas.areaRegion(globalThis.game.scenes.get(sceneId), id);
   if (d) await d.update(Object.fromEntries(Object.entries(flags).map(([k, v]) => [`flags.flowstate.${k}`, v])));
 };
 GM_ACTIONS.takeControl = async ({ actor, caster }) => {
@@ -554,7 +554,7 @@ export async function resolveStrike({ actor, plan, profile, mods, spec, ritualOf
 /* -------------------------------------------- */
 
 const isMagical = a => !!(a && (a.system?.magical || a.flags?.flowstate?.summon));
-const antimagic = () => Array.from(globalThis.canvas?.scene?.templates ?? []).filter(t => t.flags?.flowstate?.spell === "antimagic");
+const antimagic = () => areas.areaRegions(globalThis.canvas?.scene).filter(t => t.flags?.flowstate?.spell === "antimagic");
 async function antimagicDamage(actor, power, casterName) {
   const p = fx.PROFILES["magic-arcanomancy:strike"].damage;
   const r = await roll(`${p.n * Math.max(1, power)}d${p.sides}`);
@@ -566,7 +566,8 @@ export async function antimagicTurn(caster) {
   const grid = globalThis.canvas?.grid;
   if (!grid) return;
   for (const t of antimagic().filter(x => x.flags.flowstate.casterUuid === caster.uuid)) {
-    const tpl = { t: t.t, x: t.x, y: t.y, direction: t.direction, distance: t.distance, angle: t.angle, width: t.width };
+    const tpl = areas.regionTpl(t, { size: grid.size, distance: grid.distance });
+    if (!tpl) continue;
     const inside = areas.tokensInArea(tpl, globalThis.canvas.tokens.placeables.filter(k => isMagical(k.actor)), { size: grid.size, distance: grid.distance });
     for (const tok of inside) await antimagicDamage(tok.actor, t.flags.flowstate.power ?? 1, caster.name);
   }
@@ -582,8 +583,8 @@ export async function checkEntry(token, changes) {
   const actor = token.actor;
   if (!actor) return;
   if (isMagical(actor)) for (const t of antimagic()) {
-    const tpl = { t: t.t, x: t.x, y: t.y, direction: t.direction, distance: t.distance, angle: t.angle, width: t.width };
-    if (areas.tokensInArea(tpl, [after], grid).length && !areas.tokensInArea(tpl, [before], grid).length) await antimagicDamage(actor, t.flags.flowstate.power ?? 1, (await fromUuid(t.flags.flowstate.casterUuid))?.name ?? "a caster");
+    const tpl = areas.regionTpl(t, grid);
+    if (tpl && areas.tokensInArea(tpl, [after], grid).length && !areas.tokensInArea(tpl, [before], grid).length) await antimagicDamage(actor, t.flags.flowstate.power ?? 1, (await fromUuid(t.flags.flowstate.casterUuid))?.name ?? "a caster");
   }
   const centre = p => tokenCentre(p);
   for (const a of allActors()) for (const e of spellEffects(a, "aura")) {

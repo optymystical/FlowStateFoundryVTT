@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.88.2:** Areas are Regions now (Foundry v14 merged Measured Templates into Regions, and the old API goes away in v16): placing one uses Foundry's own Region placement (it follows the mouse, Ctrl/Shift + wheel turns it, click to place, Esc to cancel). Emplace barriers, anti-magic fields and clearing work on them, as on areas placed before. Fixed: a line Area's width was read back in pixels, so it could catch creatures well off the line. No more v14 deprecation warnings from the system.
+
 **0.88.1:** The character and creature wizards list each Generic Group as its own choice (as the Skills tab does). Turns the tracker jumps over are no longer processed (the surprise round's waiting creatures kept their Surprised status removed and got RP before). Tier 0 rules (Energy, Climbing) no longer get Use rows. Stall's card shows the right new initiative.
 
 **0.88.0:** Generic Groups, part 4:

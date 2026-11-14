@@ -2,8 +2,11 @@
  * Area spells (Magic Theory: Spell Attack Types): pick an Area shape, place it on the scene, and everything inside it is targeted
  *  (the caster only if they tick Include yourself).
  *  - 10 ft radius, 20 ft 90° cone, or 30 ft × 5 ft line. Snipe doubles the dimensions and Agate adds 50%.
- *  - The geometry is pure (unit-tested). Placement drops a Measured Template on the scene that the caster drags into position,
- *    then confirms; with no scene (or no canvas) the caller falls back to the current targets.
+ *  - The geometry is pure (unit-tested). Placement drops a Region on the scene (Foundry v14 merged Measured Templates into Regions) that the
+ *    caster drags into position, then confirms; with no scene (or no canvas) the caller falls back to the current targets.
+ *  - The math works on a template-like shape in feet (`tpl`: { t: circle|cone|ray, x, y, direction, distance, angle, width }); `areaRegionData`
+ *    turns one into Region data and `regionTpl` reads it back. The system's Regions are the ones with `flags.flowstate` (areaOf / spell), which
+ *    also covers templates placed before (v14 stored those as Regions with the same flags).
  */
 import { notCreature } from "./kinds.mjs";
 import { tokenPos, tokenCentre } from "./distance.mjs";
@@ -20,6 +23,48 @@ export function areaTemplate(shape, { x = 0, y = 0, direction = 0, scale = 1 } =
   const s = AREA_SHAPES[shape] ?? AREA_SHAPES.radius;
   return { t: s.t, x, y, direction, distance: s.distance * scale, angle: s.angle, width: s.width * scale };
 }
+
+/* -------------------------------------------- */
+/*  Areas as Regions                            */
+/* -------------------------------------------- */
+
+const REGION_SHAPE = { circle: "circle", cone: "cone", ray: "line" };
+const TPL_SHAPE = { circle: "circle", cone: "cone", line: "ray" };
+
+/**
+ * Region data for an area shape (feet) on a grid: one circle, cone or line shape in pixels, not grid-based (a true circle, cone or line), plus the
+ * Region's look and who owns it (`userId`, so a player can drag and delete their own). Pure.
+ */
+export function areaRegionData(tpl, { grid = { size: 100, distance: 5 }, name = "Area", color = "#a050ff", flags = {}, userId = null, visibility = 2, elevation = 0 } = {}) {
+  const ppf = grid.size / grid.distance;
+  const x = Math.round(tpl.x || 0), y = Math.round(tpl.y || 0), rotation = ((Number(tpl.direction) || 0) % 360 + 360) % 360;
+  const kind = REGION_SHAPE[tpl.t] ?? "circle";
+  const shape = kind === "circle" ? { type: "circle", x, y, radius: tpl.distance * ppf, gridBased: false }
+    : kind === "cone" ? { type: "cone", x, y, radius: tpl.distance * ppf, angle: tpl.angle || 90, rotation, curvature: "round", gridBased: false }
+      : { type: "line", x, y, length: tpl.distance * ppf, width: (tpl.width || 5) * ppf, rotation, gridBased: false };
+  const ownership = { default: 0, ...(userId ? { [userId]: 3 } : {}) };
+  return { name, color, shapes: [shape], elevation: { bottom: elevation, top: null }, visibility, displayMeasurements: true, highlightMode: "coverage", ownership, flags: { flowstate: flags } };
+}
+
+/** The area shape (feet) of one of our Regions, from its first shape (pixels). Null if it has none we understand. Pure. */
+export function regionTpl(region, grid = { size: 100, distance: 5 }) {
+  const s = region?.shapes?.[0] ?? region?.shapes?.contents?.[0] ?? null;
+  const t = s && TPL_SHAPE[s.type];
+  if (!t) return null;
+  const ppf = grid.size / grid.distance;
+  if (t === "circle") return { t, x: s.x, y: s.y, direction: 0, distance: s.radius / ppf, angle: 360, width: 0 };
+  if (t === "cone") return { t, x: s.x, y: s.y, direction: s.rotation ?? 0, distance: s.radius / ppf, angle: s.angle ?? 90, width: 0 };
+  return { t, x: s.x, y: s.y, direction: s.rotation ?? 0, distance: s.length / ppf, angle: 0, width: s.width / ppf };
+}
+
+/** The system's area Regions on a scene (Area spells and Manifests, Emplace barriers, anti-magic fields): the ones carrying `flags.flowstate`. */
+export function areaRegions(scene) {
+  const all = scene?.regions?.contents ?? Array.from(scene?.regions ?? []);
+  return all.filter(r => { const f = r.flags?.flowstate; return !!f && !!(f.areaOf || f.spell); });
+}
+/** One of them by id. */
+export const areaRegion = (scene, id) => (scene?.regions?.get?.(id) ?? areaRegions(scene).find(r => r.id === id) ?? null);
+const gridOf = scene => { const g = scene?.grid ?? globalThis.canvas?.grid; return { size: g?.size ?? 100, distance: g?.distance ?? 5 }; };
 
 /**
  * Is a point inside a template? Everything in pixels except `distance`/`width` (feet): `grid` = { size, distance } converts.
@@ -63,8 +108,12 @@ export function areaTargets(tokens, caster, { self = false } = {}) {
   return self ? actors : actors.filter(a => a.uuid !== caster?.uuid);
 }
 
+/** How an area is put down: "interactive" (Foundry's Region placement at the mouse) or "drop" (on the caster, then a Confirm dialog; the sim). */
+let placement = "interactive";
+export const setAreaPlacement = mode => { placement = mode === "drop" ? "drop" : "interactive"; };
+
 /**
- * Let the caster choose a shape (and whether they're in it), drop the template, drag it into place, and confirm. Returns
+ * Let the caster choose a shape (and whether they're in it), place the area (a Region), and confirm. Returns
  * { actors, shape, templateId } (the caster only if they ticked Include yourself), or null if cancelled, or undefined when there's no scene to place on.
  */
 export async function placeArea(actor, { title = "Area", scale = 1, aim = null, flags = {}, facing = false, origin = null } = {}) {
@@ -86,18 +135,28 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
   const start = origin ?? src ? tokenCentre(origin ?? src) : { x: 0, y: 0 }, x = start.x, y = start.y;
   const aimC = aim ? tokenCentre(aim) : null, srcC = src ? tokenCentre(src) : null, originC = origin ? tokenCentre(origin) : null;
   const direction = aim && src && !origin ? (Math.atan2(aimC.y - y, aimC.x - x) * 180) / Math.PI : src && origin ? (Math.atan2(originC.y - srcC.y, originC.x - srcC.x) * 180) / Math.PI : 0;
-  const data = { ...areaTemplate(pick, { x, y, direction, scale }), fillColor: game.user.color?.css ?? "#a050ff", borderColor: "#a050ff",
-    flags: { flowstate: { areaOf: actor.uuid, casterX: x, casterY: y, ...flags } } };
-  const [doc] = await scene.createEmbeddedDocuments("MeasuredTemplate", [data]);
-  try { globalThis.canvas.templates?.activate?.(); } catch (err) { /* layer switch is a convenience only */ }
-  const ok = await DialogV2().confirm({
-    window: { title: `${title}: place the area` },
-    content: `<p>Drag the template into place (move it with the Templates tool; rotate it with Ctrl + the middle mouse wheel, or by dragging its handle), then press <strong>Confirm</strong>. Everything it touches is targeted.</p>`,
-    yes: { label: "Confirm" }, no: { label: "Cancel" }, rejectClose: false
-  });
-  const placed = scene.templates?.get?.(doc?.id) ?? doc;
-  if (!ok || !placed) { await placed?.delete?.(); return null; }
-  const tpl = { t: placed.t, x: placed.x, y: placed.y, direction: placed.direction, distance: placed.distance, angle: placed.angle, width: placed.width };
+  const g = { size: grid.size, distance: grid.distance };
+  const data = areaRegionData(areaTemplate(pick, { x, y, direction, scale }), { grid: g, name: `${title} (${actor.name})`, color: game.user.color?.css ?? "#a050ff",
+    userId: game.user.id, visibility: globalThis.CONST?.REGION_VISIBILITY?.ALWAYS ?? 2, flags: { areaOf: actor.uuid, casterX: x, casterY: y, ...flags } });
+  let placed = null;
+  if (placement === "interactive" && typeof globalThis.canvas.regions?.placeRegion === "function") {
+    // Foundry v14's own Region placement: the area follows the mouse, the wheel turns it, a left click places it, Esc cancels.
+    globalThis.ui?.notifications?.info?.(`${title}: move the area with the mouse (Ctrl or Shift + the mouse wheel turns it), left-click to place it, Esc to cancel. Everything it touches is targeted.`);
+    try { placed = await globalThis.canvas.regions.placeRegion(data, { create: true }); } catch (err) { console.error("flowstate | area placement", err); placed = null; }
+    if (!placed) return null;
+  } else {
+    // Drop and confirm (the combat sim, tests, or a Foundry without placeRegion): the area starts on the caster, aimed at the target.
+    const [doc] = await scene.createEmbeddedDocuments("Region", [data]);
+    try { globalThis.canvas.regions?.activate?.(); } catch (err) { /* layer switch is a convenience only */ }
+    const ok = await DialogV2().confirm({
+      window: { title: `${title}: place the area` },
+      content: `<p>Drag the area into place on the Regions layer, then press <strong>Confirm</strong>. Everything it touches is targeted.</p>`,
+      yes: { label: "Confirm" }, no: { label: "Cancel" }, rejectClose: false
+    });
+    placed = scene.regions?.get?.(doc?.id) ?? doc;
+    if (!ok || !placed) { await placed?.delete?.(); return null; }
+  }
+  const tpl = regionTpl(placed, g) ?? areaTemplate(pick, { x, y, direction, scale });
   // A barrier line also needs a facing: which side attacks and movement are blocked from.
   let front = null;
   if (facing && tpl.t === "ray") {
@@ -117,7 +176,7 @@ export async function placeArea(actor, { title = "Area", scale = 1, aim = null, 
 export async function clearAreas(caster, { all = false } = {}) {
   const scene = globalThis.canvas?.scene;
   if (!scene) return;
-  const mine = scene.templates.filter(t => t.flags?.flowstate?.areaOf === caster.uuid && (all || !t.flags.flowstate.ritualOf));
+  const mine = areaRegions(scene).filter(t => t.flags?.flowstate?.areaOf === caster.uuid && (all || !t.flags.flowstate.ritualOf));
   for (const t of mine) {
     const walls = scene.walls?.filter(w => w.flags?.flowstate?.barrierOf === t.id).map(w => w.id) ?? [];
     if (walls.length) await scene.deleteEmbeddedDocuments("Wall", walls);
@@ -234,18 +293,18 @@ export function barriersBetween(attackerToken, targetToken) {
   const g = { size: grid.size, distance: grid.distance };
   const a = tokenCentre(attackerToken), t = tokenCentre(targetToken);
   const out = [];
-  for (const d of scene.templates ?? []) {
+  for (const d of areaRegions(scene)) {
     const f = d.flags?.flowstate;
-    if (f?.spell !== "emplace" || !(f.health > 0)) continue;
-    const tpl = { t: d.t, x: d.x, y: d.y, direction: d.direction, distance: d.distance, angle: d.angle, width: d.width };
-    if (barrierBlocks(tpl, { x: f.casterX ?? d.x, y: f.casterY ?? d.y }, a, t, g, f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null)) out.push({ id: d.id, sceneId: scene.id, hp: f.health, limit: f.limit ?? f.health, reactive: !!f.reactive, caster: f.casterUuid ?? null });
+    const tpl = regionTpl(d, g);
+    if (f?.spell !== "emplace" || !(f.health > 0) || !tpl) continue;
+    if (barrierBlocks(tpl, { x: f.casterX ?? tpl.x, y: f.casterY ?? tpl.y }, a, t, g, f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null)) out.push({ id: d.id, sceneId: scene.id, hp: f.health, limit: f.limit ?? f.health, reactive: !!f.reactive, caster: f.casterUuid ?? null });
   }
   return out;
 }
 
 /** Set a barrier's remaining health (or remove it at 0). The scene's templates belong to whoever placed them, so the GM does this. */
 export async function setBarrierHealth(sceneId, id, hp) {
-  const d = globalThis.game?.scenes?.get?.(sceneId)?.templates?.get?.(id);
+  const d = areaRegion(globalThis.game?.scenes?.get?.(sceneId), id);
   if (!d) return;
   if (hp <= 0) {
     const scene = globalThis.game.scenes.get(sceneId);
@@ -264,7 +323,7 @@ export async function createBarrierWalls(sceneId, walls) {
 /** (GM) Flip a barrier: which side it blocks from, for its Walls and for the damage check. */
 export async function flipBarrier(sceneId, templateId) {
   const scene = globalThis.game.scenes.get(sceneId);
-  const d = scene?.templates?.get(templateId);
+  const d = areaRegion(scene, templateId);
   if (!d) return;
   const f = d.flags?.flowstate ?? {};
   if (f.frontX !== undefined) await d.update({ "flags.flowstate.frontX": -f.frontX, "flags.flowstate.frontY": -f.frontY });
@@ -335,13 +394,12 @@ export function planFlight({ start, dir, feet, barriers = [], wallAt = () => nul
 export function emplaceBarriers() {
   const scene = globalThis.canvas?.scene;
   if (!scene) return [];
-  const out = [];
-  for (const d of scene.templates ?? []) {
-    const f = d.flags?.flowstate;
-    if (f?.spell !== "emplace" || !(f.health > 0)) continue;
-    out.push({ id: d.id, sceneId: scene.id, hp: f.health, caster: { x: f.casterX ?? d.x, y: f.casterY ?? d.y },
-      front: f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null,
-      tpl: { t: d.t, x: d.x, y: d.y, direction: d.direction, distance: d.distance, angle: d.angle, width: d.width } });
+  const out = [], g = gridOf(scene);
+  for (const d of areaRegions(scene)) {
+    const f = d.flags?.flowstate, tpl = regionTpl(d, g);
+    if (f?.spell !== "emplace" || !(f.health > 0) || !tpl) continue;
+    out.push({ id: d.id, sceneId: scene.id, hp: f.health, caster: { x: f.casterX ?? tpl.x, y: f.casterY ?? tpl.y },
+      front: f.frontX !== undefined ? { x: f.frontX, y: f.frontY } : null, tpl });
   }
   return out;
 }

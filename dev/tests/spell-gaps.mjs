@@ -242,8 +242,9 @@ console.log("== Anti-Magic field (Blast Ritual) and Aura entrants");
 {
   const tok = (a, x, y) => ({ actor: a, document: { x, y, width: 1, height: 1, actorId: a.id }, x, y, width: 1, height: 1, center: { x: x + 50, y: y + 50 }, id: a.id });
   const tOrc = tok(orc, 0, 0), tHero = tok(hero, 2000, 2000), tGob = tok(gob, 3000, 0);
-  const tpl = { id: "T1", t: "circle", x: 50, y: 50, direction: 0, distance: 20, angle: 360, width: 0, flags: { flowstate: { spell: "antimagic", casterUuid: hero.uuid, power: 3 } } };
-  const scene = { id: "S1", templates: [tpl], getFlag: () => false };
+  // A Region (Foundry v14 keeps areas as Regions): a 20 ft circle is 400 px across at 100 px per 5 ft.
+  const region = { id: "T1", shapes: [{ type: "circle", x: 50, y: 50, radius: 400 }], flags: { flowstate: { spell: "antimagic", casterUuid: hero.uuid, power: 3 } } };
+  const scene = { id: "S1", regions: [region], getFlag: () => false };
   globalThis.canvas = { scene, grid: { size: 100, distance: 5, measurePath: ([a, b]) => ({ distance: Math.hypot(a.x - b.x, a.y - b.y) / 20 }) }, tokens: { placeables: [tOrc, tHero, tGob], controlled: [] } };
   clean6(); orc.system.magical = true; gob.system.magical = true;
   hero.getActiveTokens = () => [tHero]; orc.getActiveTokens = () => [tOrc]; gob.getActiveTokens = () => [tGob];

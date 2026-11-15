@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.92.0:** The New Character wizard shows every tree before you pick: on the Ancestry and Background steps each tree a card names (Ancestry trees, Generic Groups, Martial/Magic/Mental, "one of" choices and focus trees) is a chip that opens its tiers under the card, like the Skill Trees step (the tiers you'd get are highlighted). The Background's Ancestry-point rows open the same way.
+
 **0.91.1:** Fixes from the live test of the new content.
 - **Emerald** reads the scene's Environment: a Lush biome counts (the old Scene Configuration checkbox is folded into the Environment tool; a scene that had it opens as Lush). Its Shroud side was doubling or halving the Limit twice (×4/÷4); now once.
 - **Shadow Spirit:** the spirit's moves are paid by its body (they were charged to the spirit token, so they cost nothing).

@@ -24,9 +24,26 @@ const change = obj => CharacterWizard.onChange.call(w, null, null, { object: obj
 console.log("== Step 1: Ancestry"); let v = await view(); log(v.text.slice(0, 160));
 CharacterWizard.onPickAncestry.call(w, null, { dataset: { id: "dwarf" } });
 v = await view(); log("Ancestries offered:", v.ctx.ancestries.length, "| picked:", v.ctx.anc?.name);
+// Tree chips: a click opens the tree's tiers under the card, as on the Skill Trees step.
+{ const dw = v.ctx.ancestries.find(x => x.id === "dwarf");
+  if (!dw.chips.length || dw.openTree) throw new Error("FAIL the Dwarf card has no tree chips, or one is open already");
+  CharacterWizard.onTreeToggle.call(w, null, { dataset: { key: dw.chips.at(-1).key } });
+  const v2 = await view(), open = v2.ctx.ancestries.find(x => x.id === "dwarf").openTree;
+  if (!open?.tiers.length || !/T5/.test(v2.text)) throw new Error("FAIL the opened ancestry tree shows no tiers");
+  log("Dwarf trees:", dw.chips.map(c => c.label).join(", "), "| opened:", open.name, open.tiers.map(t => `T${t.tier}`).join(" "));
+  CharacterWizard.onTreeToggle.call(w, null, { dataset: { key: dw.chips.at(-1).key } });
+  if ((await view()).ctx.ancestries.find(x => x.id === "dwarf").openTree) throw new Error("FAIL a second click doesn't close it"); }
 CharacterWizard.onNext.call(w);
 console.log("== Step 2: Background (Recruit: a Dwarf takes Heavy Armor for Medium Armor)");
 v = await view(); log("Backgrounds for a Dwarf:", v.ctx.backgrounds.map(b => b.name).join(", "));
+{ const rec = v.ctx.backgrounds.find(b => b.id === "recruit"), chips = rec.groups.flatMap(g => g.chips);
+  const gen = chips.find(c => c.id.startsWith("generic-"));
+  if (!gen) throw new Error("FAIL the Recruit card has no Generic Group chips");
+  CharacterWizard.onTreeToggle.call(w, null, { dataset: { key: gen.key } });
+  const open = (await view()).ctx.backgrounds.find(b => b.id === "recruit").openTree;
+  if (!open || open.tiers.filter(t => t.owned).length !== gen.tier) throw new Error("FAIL the Generic tree's tiers (the Background's tiers marked owned)");
+  log("Recruit trees:", rec.groups.map(g => g.chips.map(c => c.label).join(g.choice ? " / " : ", ")).join(" | "), "| opened:", open.name);
+  CharacterWizard.onTreeToggle.call(w, null, { dataset: { key: gen.key } }); }
 CharacterWizard.onPickBackground.call(w, null, { dataset: { id: "recruit" } });
 v = await view(); log("choices:", v.ctx.slots.map(x => `${x.label} [${x.choices.map(c => c.name).join("/")}]`).join(" | "));
 change({ "abc.picks.2": "martial-bladed-weapons", "abc.picks.4": "generic-courage" });

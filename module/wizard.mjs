@@ -177,27 +177,57 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         effect: p.valid ? p.effect : ""
       };
     });
+    // A tree's tiers as the Skill Trees step shows them (entries, costs, Codex links; a Wonder's table worked out for these stats).
+    const tierList = (t, owned, from = 1) => t.tiers.filter(x => x.tier >= from && (x.tier > 0 || x.entries.some(e => e.name || e.text))).map(x => ({ tier: x.tier, summary: x.summary, owned: x.tier <= owned,
+      entries: x.entries.filter(e => e.name || e.text).map(e => ({ ...creation.entryBlurb(e), codex: e.name ? `entry:${t.id}:${String(e.name).replace(/^#\s*/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}` : null })) }));
+    const tableOf = t => (t.table?.rows?.length ? { title: t.table.title, rows: t.table.rows.map(([roll, effect, spans]) => ({ roll, effect: mentalRules.scaleSpans(effect, spans, mentalRules.wonderPower(pv.effective[mentalRules.KINDS[mentalRules.wonderById(t.id)?.kind ?? "dream"].stat]?.value ?? 0)) })) } : null);
+    // A clickable tree name on an Ancestry or Background card ("Persuasion T2"); the open one shows its tiers under the card.
+    const chip = (scope, id, tier = 0, label = null) => {
+      const t = skills.treeById(id);
+      if (!t) return null;
+      const key = `${scope}:${id}`;
+      return { key, id, label: label ?? `${t.name}${tier ? ` T${tier}` : ""}`, open: st.openTree === key, tier };
+    };
+    const opened = chips => {
+      const c = chips.flat().find(x => x?.open);
+      const t = c && skills.treeById(c.id);
+      return t ? { id: t.id, name: t.name, tier: c.tier, ancestry: t.archetype === "ancestry", tiers: tierList(t, c.tier, t.archetype === "ancestry" ? 0 : 1), table: tableOf(t) } : null;
+    };
+
     // Ancestry, Background and Culture.
     const abc = st.abc, anc = abcRules.ANCESTRIES[abc.ancestry] ?? null;
     const free = this.free();
     const freeTrees = free.trees;
     const ctx = { ancestry: abc.ancestry || null };
     const treeName = id => skills.treeById(id)?.name ?? id;
-    const ancestries = Object.values(abcRules.ANCESTRIES).filter(a => !a.hidden).map(a => ({ id: a.id, name: a.name, size: a.size, selected: a.id === abc.ancestry,
-      lifespan: a.lifespan, languages: a.languages,
-      profile: a.profile.filter(p => !["Size", "Languages", "Lifespan", "Backgrounds", "Homelands", "Homeland"].includes(p.name)),
-      trees: a.trees.map(treeName).join(", ") }));
+    const ancestries = Object.values(abcRules.ANCESTRIES).filter(a => !a.hidden).map(a => {
+      const chips = skills.ancestryTrees(a.id).map(t => chip(`anc-${a.id}`, t.id)).filter(Boolean);
+      return { id: a.id, name: a.name, size: a.size, selected: a.id === abc.ancestry, lifespan: a.lifespan, languages: a.languages,
+        profile: a.profile.filter(p => !["Size", "Languages", "Lifespan", "Backgrounds", "Homelands", "Homeland"].includes(p.name)),
+        trees: a.trees.map(treeName).join(", "), chips, openTree: opened(chips) };
+    });
     const pkg = abc.background ? abcRules.packageFor(abc.background, abc.ancestry) : null;
-    const backgrounds = anc ? abcRules.backgroundsFor(abc.ancestry).map(b => ({ id: b.id, name: b.name, selected: b.id === abc.background,
-      trees: b.text?.["Starting Trees"] ?? "", trade: b.text?.["Trade Slot"] ?? "",
-      differences: (b.differences ?? []).filter(d => d.ancestry === abc.ancestry).map(d => d.text).join(" ") })) : [];
+    // A Background's starting trees as chips: fixed trees, "one of" choices, and each focus's trees.
+    const itemChips = (scope, items) => items.map(it => it.tree ? [chip(scope, abcRules.treeByName(it.tree)?.id, it.tier)]
+      : (it.choose ?? []).map(n => chip(scope, abcRules.treeByName(n)?.id, it.tier))).map(list => list.filter(Boolean)).filter(l => l.length)
+      .map(list => ({ choice: list.length > 1, tier: list[0].tier, chips: list }));
+    const backgrounds = anc ? abcRules.backgroundsFor(abc.ancestry).map(b => {
+      const p = abcRules.packageFor(b.id, abc.ancestry), scope = `bg-${b.id}`;
+      const groups = itemChips(scope, p?.items ?? []);
+      const focuses = (p?.options ?? []).map(o => ({ name: o.name, groups: itemChips(scope, o.trees ?? []) }));
+      return { id: b.id, name: b.name, selected: b.id === abc.background,
+        trees: b.text?.["Starting Trees"] ?? "", trade: b.text?.["Trade Slot"] ?? "",
+        differences: (b.differences ?? []).filter(d => d.ancestry === abc.ancestry).map(d => d.text).join(" "),
+        groups, focuses, openTree: opened([...groups, ...focuses.flatMap(f => f.groups)].map(g => g.chips)) };
+    }) : [];
     const slots = pkg ? abcRules.choiceSlots(pkg, abc.focus).map(s => ({ ...s, choices: s.choices.map(c => ({ ...c, selected: c.id === abc.picks?.[s.key] })) })) : [];
     const allocState = { ...(abc.alloc ?? {}) };
     const allocRows = pkg && free.owed ? skills.ancestryTrees(abc.ancestry).map(t => {
       const tier = Number(abc.alloc?.[t.id]) || 0, next = tier + 1, open = skills.isAvailable(allocState, t, ctx);
-      return { id: t.id, name: t.name, tier, nextCost: next <= skills.MAX_TIER ? next : null,
+      const key = `alloc:${t.id}`;
+      return { id: t.id, key, name: t.name, tier, nextCost: next <= skills.MAX_TIER ? next : null,
         canRaise: open && next <= skills.MAX_TIER && (free.allocCost ?? 0) + next <= free.owed, canLower: tier > 0,
-        need: open ? "" : `needs ${skills.requirementText(t, ctx)}` };
+        need: open ? "" : `needs ${skills.requirementText(t, ctx)}`, open: st.openTree === key, tiers: st.openTree === key ? tierList(t, tier, 0) : [] };
     }) : [];
     const homelands = anc ? abcRules.homelandsFor(abc.ancestry).map(h => ({ ...h, selected: h.id === abc.homeland, shared: !h.ancestry })) : [];
     const circles = pkg ? abcRules.circlesFor(abc.background).map(c => ({ ...c, selected: c.id === abc.circle, shared: !c.background })) : [];
@@ -221,10 +251,9 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         canRaise: next <= skills.MAX_TIER && spentSP + next <= sp, nextCost: next <= skills.MAX_TIER ? next : null,
         canLower: tier > freeTier && !dependents.length,
         lowerTip: tier > 0 && tier <= freeTier ? "Free with your Background" : dependents.length ? "Lower the trees this tier opens first" : `Refund ${tier} SP`,
-        tiers: t.tiers.filter(x => x.tier > 0).map(x => ({ tier: x.tier, summary: x.summary, owned: x.tier <= tier,
-          entries: x.entries.filter(e => e.name || e.text).map(e => ({ ...creation.entryBlurb(e), codex: e.name ? `entry:${t.id}:${String(e.name).replace(/^#\s*/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}` : null })) })),
+        tiers: tierList(t, tier, t.archetype === "ancestry" ? 0 : 1),
         // A Wonder's table, worked out for the Power these stats give (the tiers above stay as printed).
-        table: t.table?.rows?.length ? { title: t.table.title, rows: t.table.rows.map(([roll, effect, spans]) => ({ roll, effect: mentalRules.scaleSpans(effect, spans, mentalRules.wonderPower(pv.effective[mentalRules.KINDS[mentalRules.wonderById(t.id)?.kind ?? "dream"].stat]?.value ?? 0)) })) } : null
+        table: tableOf(t)
       };
     });
     const pickedTrees = Object.entries(st.trees).filter(([, t]) => t > 0).map(([id, t]) => `${skills.treeById(id)?.name} ${t}${freeTrees[id] ? ` (${freeTrees[id] >= t ? "free" : `${freeTrees[id]} free`})` : ""}`);
@@ -366,7 +395,8 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     this.syncFree(); this.render();
   }
   static onTreeToggle(event, target) {
-    this.state.openTree = this.state.openTree === target.dataset.tree ? null : target.dataset.tree;
+    const key = target.dataset.key ?? target.dataset.tree;
+    this.state.openTree = this.state.openTree === key ? null : key;
     this.render();
   }
 

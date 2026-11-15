@@ -508,6 +508,16 @@ a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-throug
 .flowstate .fs-abc-card.fs-picked { border-color: var(--fs-accent, #7a5cc0); background: rgba(122, 92, 192, 0.08); }
 .flowstate .fs-abc-card header { display: flex; align-items: baseline; gap: 8px; }
 .flowstate .fs-abc-card .fs-sub p { margin: 2px 0; }
+/* Tree chips on the Ancestry and Background cards: click one to see its tiers under the card (the Skill Trees step's view). */
+.fs-wizard .fs-tree-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 4px; font-size: .9em; }
+.fs-wizard .fs-tree-chip { flex: 0 0 auto; width: auto; line-height: 1.4; padding: 0 7px; margin: 0; border: 1px solid var(--color-border-light-tertiary, #8886); border-radius: 10px; background: transparent; font-size: .95em; cursor: pointer; }
+.fs-wizard .fs-tree-chip i { font-size: .75em; opacity: .7; }
+.fs-wizard .fs-tree-chip:hover { border-color: var(--fs-accent, #7a5cc0); }
+.fs-wizard .fs-tree-chip.fs-open { border-color: var(--fs-accent, #7a5cc0); background: rgba(122, 92, 192, 0.15); font-weight: 600; }
+.fs-wizard .fs-chip-choice { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 1px 6px; border: 1px dashed var(--color-border-light-tertiary, #8886); border-radius: 10px; font-style: italic; }
+.fs-wizard .fs-chip-tree { margin-top: 6px; padding: 4px 8px; border-left: 3px solid var(--fs-accent, #7a5cc0); background: rgba(122, 92, 192, 0.05); border-radius: 0 4px 4px 0; }
+.fs-wizard .fs-chip-tree-head { display: flex; align-items: center; gap: 6px; }
+.fs-wizard .fs-chip-tree .fs-wizard-tree-tiers { margin-left: 4px; }
 .flowstate .fs-abc-pick { width: auto; flex: 0 0 auto; font-weight: 600; }
 .flowstate .fs-abc-radio { cursor: pointer; }
 .flowstate .fs-abc-radio input { margin-right: 6px; }

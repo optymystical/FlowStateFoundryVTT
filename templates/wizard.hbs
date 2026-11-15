@@ -1,3 +1,16 @@
+{{#*inline "fsTreeTiers"}}
+<ul class="fs-wizard-tree-tiers">
+  {{#each tiers}}<li class="{{#if owned}}fs-owned{{/if}}"><strong>T{{tier}}</strong> <span class="fs-tier-summary">{{summary}}</span>
+    <ul class="fs-wizard-entries">{{#each entries}}<li data-tooltip="{{full}}">{{#if name}}<strong>{{#if codex}}<a class="fs-codex-name" data-codex="{{codex}}" data-tooltip="Open in the Codex">{{name}}</a>{{else}}{{name}}{{/if}}:</strong> {{/if}}{{text}}{{#if cost}} <span class="fs-entry-cost"><i class="fa-solid fa-bolt"></i> {{cost}}</span>{{/if}}{{#if sub.length}}<ul class="fs-wizard-sub">{{#each sub}}<li>{{this}}</li>{{/each}}</ul>{{/if}}</li>{{/each}}</ul></li>{{/each}}
+</ul>
+{{#if table}}<details class="fs-wizard-table"><summary>{{table.title}} (d100)</summary>
+  <table class="fs-table"><tbody>{{#each table.rows}}<tr><td class="fs-table-roll">{{roll}}</td><td>{{effect}}</td></tr>{{/each}}</tbody></table></details>{{/if}}
+{{/inline}}
+{{#*inline "fsTreeChip"}}<button type="button" class="fs-tree-chip {{#if open}}fs-open{{/if}}" data-action="treeToggle" data-key="{{key}}" data-tooltip="{{#if open}}Hide{{else}}Show{{/if}} this tree's tiers"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{label}}</button>{{/inline}}
+{{#*inline "fsOpenTree"}}{{#if openTree}}<div class="fs-chip-tree">
+  <div class="fs-chip-tree-head"><strong>{{openTree.name}}</strong>{{#if openTree.tier}} <span class="fs-tier-badge">Tier {{openTree.tier}} from this</span>{{/if}} <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{openTree.id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a></div>
+  {{#with openTree}}{{> fsTreeTiers}}{{/with}}
+</div>{{/if}}{{/inline}}
 <div class="fs-wizard-wrap">
   <nav class="fs-wizard-steps">
     {{#each steps}}
@@ -17,7 +30,9 @@
         <header><button type="button" class="fs-abc-pick" data-action="pickAncestry" data-id="{{id}}">{{#if selected}}<i class="fa-solid fa-circle-check"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}} {{name}}</button>
           <span class="fs-sub">Size {{size}} · {{lifespan}}</span></header>
         <div class="fs-sub">{{#each profile}}<p><strong>{{name}}:</strong> {{text}}</p>{{/each}}</div>
-        <div class="fs-sub"><strong>Languages:</strong> {{languages}} · <strong>Trees:</strong> {{trees}}</div>
+        <div class="fs-sub"><strong>Languages:</strong> {{languages}}</div>
+        <div class="fs-tree-chips"><strong>Trees:</strong> {{#each chips}}{{> fsTreeChip}}{{/each}}</div>
+        {{> fsOpenTree}}
       </div>
       {{/each}}
     </div>
@@ -35,6 +50,9 @@
       <div class="fs-abc-card {{#if selected}}fs-picked{{/if}}">
         <header><button type="button" class="fs-abc-pick" data-action="pickBackground" data-id="{{id}}">{{#if selected}}<i class="fa-solid fa-circle-check"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}} {{name}}</button></header>
         <div class="fs-sub">{{trees}}{{#if trade}} <em>Trade slot: {{trade}}</em>{{/if}}{{#if differences}} <strong>For you:</strong> {{differences}}{{/if}}</div>
+        <div class="fs-tree-chips">{{#each groups}}{{#if choice}}<span class="fs-chip-choice">one of (T{{tier}}): {{#each chips}}{{> fsTreeChip}}{{/each}}</span>{{else}}{{#each chips}}{{> fsTreeChip}}{{/each}}{{/if}}{{/each}}</div>
+        {{#each focuses}}<div class="fs-tree-chips"><strong>{{name}}:</strong> {{#each groups}}{{#if choice}}<span class="fs-chip-choice">one of (T{{tier}}): {{#each chips}}{{> fsTreeChip}}{{/each}}</span>{{else}}{{#each chips}}{{> fsTreeChip}}{{/each}}{{/if}}{{/each}}</div>{{/each}}
+        {{> fsOpenTree}}
       </div>
       {{/each}}
     </div>
@@ -51,11 +69,11 @@
     <ul class="fs-wizard-trees">
       {{#each allocRows}}
       <li class="fs-wizard-tree {{#if tier}}fs-picked{{/if}}"><div class="fs-wizard-tree-head">
-        <span class="fs-wizard-tree-name">{{name}}</span> <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>
+        <a class="fs-wizard-tree-name" data-action="treeToggle" data-key="{{key}}"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{name}}</a> <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>
         <span class="fs-tier-badge">Tier {{tier}}/5</span>{{#if need}} <span class="hint">{{need}}</span>{{/if}}
         <button type="button" class="fs-inline" data-action="allocDown" data-tree="{{id}}" {{#unless canLower}}disabled{{/unless}}><i class="fa-solid fa-minus"></i></button>
         <button type="button" class="fs-inline" data-action="allocUp" data-tree="{{id}}" {{#unless canRaise}}disabled{{/unless}}><i class="fa-solid fa-plus"></i>{{#if nextCost}} {{nextCost}}{{/if}}</button>
-      </div></li>
+      </div>{{#if open}}{{> fsTreeTiers}}{{/if}}</li>
       {{/each}}
     </ul>
     {{/if}}
@@ -146,12 +164,7 @@
           <button type="button" class="fs-inline" data-action="treeUp" data-tree="{{id}}" data-tooltip="{{#if nextCost}}Tier {{nextCost}} costs {{nextCost}} SP{{else}}Maxed{{/if}}" {{#unless canRaise}}disabled{{/unless}}><i class="fa-solid fa-plus"></i>{{#if nextCost}} {{nextCost}}{{/if}}</button>
         </div>
         {{#if open}}
-        <ul class="fs-wizard-tree-tiers">
-          {{#each tiers}}<li class="{{#if owned}}fs-owned{{/if}}"><strong>T{{tier}}</strong> <span class="fs-tier-summary">{{summary}}</span>
-            <ul class="fs-wizard-entries">{{#each entries}}<li data-tooltip="{{full}}">{{#if name}}<strong>{{#if codex}}<a class="fs-codex-name" data-codex="{{codex}}" data-tooltip="Open in the Codex">{{name}}</a>{{else}}{{name}}{{/if}}:</strong> {{/if}}{{text}}{{#if cost}} <span class="fs-entry-cost"><i class="fa-solid fa-bolt"></i> {{cost}}</span>{{/if}}{{#if sub.length}}<ul class="fs-wizard-sub">{{#each sub}}<li>{{this}}</li>{{/each}}</ul>{{/if}}</li>{{/each}}</ul></li>{{/each}}
-        </ul>
-        {{#if table}}<details class="fs-wizard-table"><summary>{{table.title}} (d100)</summary>
-          <table class="fs-table"><tbody>{{#each table.rows}}<tr><td class="fs-table-roll">{{roll}}</td><td>{{effect}}</td></tr>{{/each}}</tbody></table></details>{{/if}}
+        {{> fsTreeTiers}}
         {{/if}}
       </li>
       {{/each}}

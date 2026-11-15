@@ -253,7 +253,7 @@ p = S.planCast(ctx, { via: "foci:chime", ap: 2, core1: card1, core2: other, base
 ok2(p.ok && p.tr === 4, "Two cards combined: the Combo TR (4)");
 const notIn = S.knownSpells(hero.system.trees).cores.map(c => c.id).find(id => !deck.hand.includes(id));
 p = S.planCast(ctx, { via: "foci:chime", ap: 2, core1: notIn, core2: "", base: 1 });
-ok2(!p.ok && /isn't in your hand/.test(p.errors.join(" ")), "A Core that isn't in your hand can't be cast");
+ok2(!p.ok && /isn't one of the cards in your hand/.test(p.errors.join(" ")), "A Core that isn't in your hand can't be cast");
 hero.system.energy.value = 100; await F.drawCard(hero);
 ok2(hero.flags.flowstate.deck.hand.length === 8 && hero.system.energy.value === 90, "Drawing a card costs 1/10 of your max Energy");
 await F.mulligan(hero);

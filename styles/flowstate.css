@@ -217,6 +217,7 @@
 .fs-wizard .fs-wizard-add { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
 .fs-wizard .fs-wizard-add-label { font-weight: 600; }
 .fs-wizard .fs-wizard-add-buttons { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; }
+.fs-wizard .fs-npc-add { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); margin-top: 8px; }
 .fs-wizard .fs-wizard-add-buttons button { margin: 0; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.2; min-height: 30px; }
 .fs-wizard .fs-wizard-add-buttons button i { margin: 0; }
 .flowstate .fs-wizard-errors { padding: 6px 10px; border-radius: 6px; background: rgba(192, 57, 43, .18); }
@@ -232,7 +233,7 @@
 /* The tab itself doesn't scroll: the list and the tree each scroll on their own, so the list always fits the sheet. */
 .flowstate.actor .fs-tab.active[data-tab="skills"] { overflow: hidden; }
 .flowstate.actor .fs-tab.active[data-tab="skills"] > .fs-skill-layout { flex: 1 1 auto; min-height: 0; }
-.flowstate .fs-skill-layout { display: grid; grid-template-columns: 210px 1fr; grid-template-rows: minmax(0, 1fr); gap: 12px; align-items: stretch; }
+.flowstate .fs-skill-layout { display: grid; grid-template-columns: 232px 1fr; grid-template-rows: minmax(0, 1fr); gap: 12px; align-items: stretch; }
 .flowstate .fs-skill-nav { min-height: 0; overflow-y: auto; padding: 6px; border: 1px solid var(--color-border-light-tertiary, rgba(127,127,127,0.35)); border-radius: 4px; background: rgba(127,127,127,0.06); }
 .flowstate .fs-skill-nav .fs-skill-filter { width: 100%; margin-bottom: 4px; }
 .flowstate .fs-skill-nav h4 { margin: 8px 0 2px; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.8; border-bottom: 1px solid var(--color-border-light-tertiary, rgba(127,127,127,0.35)); }

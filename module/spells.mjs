@@ -253,7 +253,7 @@ export function planCast(ctx, v) {
       form = cores.length === 2 ? option.deck.tr[1] : option.deck.tr[0];
       label = `Deck (${cores.length === 2 ? "Combo" : "Core"})`;
       const hand = [...option.deck.hand];
-      for (const id of coreIds) { const i = hand.indexOf(id); if (i < 0) { errors.push(`${spellById(id)?.name ?? id} isn't in your hand.`); break; } hand.splice(i, 1); }
+      for (const id of coreIds) { const i = hand.indexOf(id); if (i < 0) { errors.push(`${spellById(id)?.name ?? id} isn't one of the cards in your hand (Deck: draw from the Action List).`); break; } hand.splice(i, 1); }
     }
     // Foci passives: Wand, Lens, Scepter, Tablet.
     const own = !(weave && !weave.keepTR) && option.fociType ? fociTR(option.fociType, form, { casts: ctx.fociState?.[option.fociId]?.casts ?? 0, allies: !!ctx.targetsAlly }) : null;

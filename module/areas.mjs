@@ -179,8 +179,9 @@ export async function clearAreas(caster, { all = false } = {}) {
   const mine = areaRegions(scene).filter(t => t.flags?.flowstate?.areaOf === caster.uuid && (all || !t.flags.flowstate.ritualOf));
   for (const t of mine) {
     const walls = scene.walls?.filter(w => w.flags?.flowstate?.barrierOf === t.id).map(w => w.id) ?? [];
-    if (walls.length) await scene.deleteEmbeddedDocuments("Wall", walls);
-    await t.delete();
+    if (walls.length) await scene.deleteEmbeddedDocuments("Wall", walls).catch(() => null);
+    // Another turn start (or a broken barrier) may have removed it already: a double delete is harmless, not an error.
+    if (!scene.regions?.has || scene.regions.has(t.id)) await t.delete().catch(() => null);
   }
 }
 
@@ -309,8 +310,8 @@ export async function setBarrierHealth(sceneId, id, hp) {
   if (hp <= 0) {
     const scene = globalThis.game.scenes.get(sceneId);
     const walls = scene.walls.filter(w => w.flags?.flowstate?.barrierOf === id).map(w => w.id);
-    if (walls.length) await scene.deleteEmbeddedDocuments("Wall", walls);
-    await d.delete();
+    if (walls.length) await scene.deleteEmbeddedDocuments("Wall", walls).catch(() => null);
+    if (!scene.regions?.has || scene.regions.has(d.id)) await d.delete().catch(() => null);
   } else await d.update({ "flags.flowstate.health": hp });
 }
 

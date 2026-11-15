@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.98.4:** Sim-found fix: an Area spell's region removed twice in the same moment (a turn start and a broken barrier) logged a "does not exist" error; a region that's already gone is now skipped.
+
 **0.98.3:** Sim-found fix: the Manifest dialog (and Reflex, which opens it) started on the first Wonder you know even when its stat is under 10, so it couldn't be Manifested (a Snappence character with Life from the Novice Background). Such a Wonder is now listed but greyed out ("needs Ponderance 10"), and the dialog starts on one you can use. Dormant creatures leave the tracker the way downed ones do.
 
 **0.98.2:** Visual audit fixes: the NPC wizard's Gear step's Add buttons were squashed onto two lines each (now a wrapping grid, as in the player wizard); the Skills tab's tree list is a little wider so long names ("Destruction (Nightmare)") aren't cut off beside the "can buy" mark; a Deck Foci's "isn't in your hand" now says it means the cards in your hand.

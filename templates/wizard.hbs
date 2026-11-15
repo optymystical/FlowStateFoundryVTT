@@ -7,6 +7,8 @@
   <table class="fs-table"><tbody>{{#each table.rows}}<tr><td class="fs-table-roll">{{roll}}</td><td>{{effect}}</td></tr>{{/each}}</tbody></table></details>{{/if}}
 {{/inline}}
 {{#*inline "fsTreeChip"}}<button type="button" class="fs-tree-chip {{#if open}}fs-open{{/if}}" data-action="treeToggle" data-key="{{key}}" data-tooltip="{{#if open}}Hide{{else}}Show{{/if}} this tree's tiers"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{label}}</button>{{/inline}}
+{{#*inline "fsChoiceRow"}}<div class="fs-bg-row {{#if pickable}}fs-bg-pickable{{/if}}"><span class="fs-bg-label">{{#if pickable}}{{#if picked}}<i class="fa-solid fa-circle-check fs-done"></i>{{else}}<i class="fa-solid fa-circle-exclamation fs-todo"></i>{{/if}} {{/if}}{{label}}</span>
+  <div class="fs-tree-chips">{{#each chips}}{{#if ../pickable}}<span class="fs-pick-opt {{#if picked}}fs-on{{/if}}"><button type="button" class="fs-pick-radio" data-action="pickChoice" data-slot="{{slot}}" data-id="{{id}}" data-tooltip="{{#if picked}}Unpick{{else}}Pick{{/if}} {{label}}"><i class="fa-{{#if picked}}solid fa-circle-check{{else}}regular fa-circle{{/if}}"></i></button>{{> fsTreeChip}}</span>{{else}}{{> fsTreeChip}}{{/if}}{{/each}}</div></div>{{/inline}}
 {{#*inline "fsOpenTree"}}{{#if openTree}}<div class="fs-chip-tree">
   <div class="fs-chip-tree-head"><strong>{{openTree.name}}</strong>{{#if openTree.tier}} <span class="fs-tier-badge">Tier {{openTree.tier}} from this</span>{{/if}} <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{openTree.id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a></div>
   {{#with openTree}}{{> fsTreeTiers}}{{/with}}
@@ -53,37 +55,35 @@
       <div class="fs-abc-card {{#if selected}}fs-picked{{/if}}">
         <header><button type="button" class="fs-abc-pick" data-action="pickBackground" data-id="{{id}}" data-tooltip="{{#if selected}}Unpick it (shows every Background again){{else}}Pick {{name}}{{/if}}">{{#if selected}}<i class="fa-solid fa-circle-check"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}} {{name}}</button>
           {{#if selected}}<button type="button" class="fs-abc-change" data-action="pickBackground" data-id="{{id}}"><i class="fa-solid fa-rotate-left"></i> Change</button>{{/if}}</header>
-        <div class="fs-sub">{{trees}}{{#if trade}} <em>Trade slot: {{trade}}</em>{{/if}}{{#if differences}} <strong>For you:</strong> {{differences}}{{/if}}</div>
-        <div class="fs-tree-chips">{{#each groups}}{{#if choice}}<span class="fs-chip-choice">one of (T{{tier}}): {{#each chips}}{{> fsTreeChip}}{{/each}}</span>{{else}}{{#each chips}}{{> fsTreeChip}}{{/each}}{{/if}}{{/each}}</div>
-        {{#each focuses}}<div class="fs-tree-chips"><strong>{{name}}:</strong> {{#each groups}}{{#if choice}}<span class="fs-chip-choice">one of (T{{tier}}): {{#each chips}}{{> fsTreeChip}}{{/each}}</span>{{else}}{{#each chips}}{{> fsTreeChip}}{{/each}}{{/if}}{{/each}}</div>{{/each}}
+        <div class="fs-bg-trees">
+          {{#if fixed.length}}<div class="fs-bg-row"><span class="fs-bg-label">Trees</span><div class="fs-tree-chips">{{#each fixed}}{{> fsTreeChip}}{{/each}}</div></div>{{/if}}
+          {{#each rows}}{{> fsChoiceRow}}{{/each}}
+          {{#if focuses.length}}<div class="fs-bg-row"><span class="fs-bg-label">{{#if selected}}{{#if focusPicked}}<i class="fa-solid fa-circle-check fs-done"></i>{{else}}<i class="fa-solid fa-circle-exclamation fs-todo"></i>{{/if}} {{/if}}Pick a focus</span></div>{{/if}}
+          {{#each focuses}}<div class="fs-bg-focus {{#if picked}}fs-on{{/if}}">
+            <div class="fs-bg-row"><span class="fs-bg-label">{{#if pickable}}<button type="button" class="fs-pick-radio" data-action="pickFocus" data-focus="{{name}}" data-tooltip="{{#if picked}}Unpick{{else}}Pick{{/if}} {{name}}"><i class="fa-{{#if picked}}solid fa-circle-check{{else}}regular fa-circle{{/if}}"></i></button> {{/if}}<strong>{{name}}</strong></span>
+              <div class="fs-tree-chips">{{#each fixed}}{{> fsTreeChip}}{{/each}}</div></div>
+            {{#each rows}}{{> fsChoiceRow}}{{/each}}
+          </div>{{/each}}
+        </div>
         {{> fsOpenTree}}
+        {{#if selected}}{{#if ../owed}}
+        <div class="fs-bg-alloc">
+          <p class="fs-budget"><strong>{{../allocCost}}</strong> of {{../owed}} points spent on your Ancestry's trees. <span class="hint">Tier N costs N; requirements apply.</span></p>
+          <ul class="fs-wizard-trees">
+            {{#each ../allocRows}}
+            <li class="fs-wizard-tree {{#if tier}}fs-picked{{/if}}"><div class="fs-wizard-tree-head">
+              <a class="fs-wizard-tree-name" data-action="treeToggle" data-key="{{key}}"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{name}}</a> <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>
+              <span class="fs-tier-badge">Tier {{tier}}/5</span>{{#if need}} <span class="hint">{{need}}</span>{{/if}}
+              <button type="button" class="fs-inline" data-action="allocDown" data-tree="{{id}}" {{#unless canLower}}disabled{{/unless}}><i class="fa-solid fa-minus"></i></button>
+              <button type="button" class="fs-inline" data-action="allocUp" data-tree="{{id}}" {{#unless canRaise}}disabled{{/unless}}><i class="fa-solid fa-plus"></i>{{#if nextCost}} {{nextCost}}{{/if}}</button>
+            </div>{{#if open}}{{> fsTreeTiers}}{{/if}}</li>
+            {{/each}}
+          </ul>
+        </div>
+        {{/if}}{{/if}}
       </div>
       {{/unless}}{{/each}}
     </div>
-    {{#if pkg}}
-    <h3>{{pkg.name}}: your choices</h3>
-    {{#if focusChoices.length}}
-    <div class="fs-field"><label>Focus</label><select name="abc.focus"><option value="">— Pick one —</option>{{#each focusChoices}}<option value="{{name}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></div>
-    {{/if}}
-    {{#each slots}}
-    <div class="fs-field"><label>{{label}}</label><select name="abc.picks.{{key}}"><option value="">— Pick one —</option>{{#each choices}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></div>
-    {{/each}}
-    {{#if owed}}
-    <p class="fs-budget"><strong>{{allocCost}}</strong> of {{owed}} points spent on your Ancestry's trees. <span class="hint">Tier N costs N; requirements apply.</span></p>
-    <ul class="fs-wizard-trees">
-      {{#each allocRows}}
-      <li class="fs-wizard-tree {{#if tier}}fs-picked{{/if}}"><div class="fs-wizard-tree-head">
-        <a class="fs-wizard-tree-name" data-action="treeToggle" data-key="{{key}}"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{name}}</a> <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>
-        <span class="fs-tier-badge">Tier {{tier}}/5</span>{{#if need}} <span class="hint">{{need}}</span>{{/if}}
-        <button type="button" class="fs-inline" data-action="allocDown" data-tree="{{id}}" {{#unless canLower}}disabled{{/unless}}><i class="fa-solid fa-minus"></i></button>
-        <button type="button" class="fs-inline" data-action="allocUp" data-tree="{{id}}" {{#unless canRaise}}disabled{{/unless}}><i class="fa-solid fa-plus"></i>{{#if nextCost}} {{nextCost}}{{/if}}</button>
-      </div>{{#if open}}{{> fsTreeTiers}}{{/if}}</li>
-      {{/each}}
-    </ul>
-    {{/if}}
-    <p><strong>Free trees:</strong> {{#each freeList}}<span class="fs-tag">{{this}}</span> {{else}}<span class="hint">none yet</span>{{/each}}</p>
-    {{#if freeErrors.length}}<p class="hint">{{#each freeErrors}}{{this}} {{/each}}</p>{{/if}}
-    {{/if}}
     {{/unless}}
     {{/if}}
 
@@ -136,15 +136,6 @@
       <span><strong>Attack</strong> d{{preview.attackDie}}</span>
       <span><strong>Dodge</strong> 2d{{preview.dodgeDie}}</span>
       <span><strong>Skill Points</strong> {{preview.skillPoints}}</span>
-    </div>
-    <div class="fs-wizard-advice">
-      <p><i class="fa-solid fa-lightbulb"></i> <strong>New to Flow State?</strong> Stick to one Archetype for your first character, and split your points between one of its <strong>offensive</strong> stats and its <strong>defensive</strong> stat:</p>
-      <ul>
-        <li><strong>Martial</strong> (Body): Strength <em>or</em> Dexterity, plus Constitution.</li>
-        <li><strong>Mental</strong> (Mind): Ponderance <em>or</em> Snappence, plus Willpower.</li>
-        <li><strong>Magic</strong> (Spirit): Reach <em>or</em> Grasp, plus Build.</li>
-      </ul>
-      <p class="hint">The offensive stat powers your attacks and abilities; the defensive one keeps you standing. Spreading points over many stats leaves you weak at everything.</p>
     </div>
     {{/if}}
 

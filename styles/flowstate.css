@@ -322,9 +322,6 @@
 .fs-wizard .fs-wizard-entries { margin: 2px 0 0 14px; padding: 0; list-style: disc; }
 .fs-wizard .fs-wizard-entries li { margin: 1px 0; cursor: help; }
 .fs-wizard .fs-entry-cost { font-size: .85em; opacity: .8; white-space: nowrap; }
-.fs-wizard .fs-wizard-advice { margin-top: 10px; padding: 6px 10px; border-left: 3px solid #c9a227; background: rgba(201,162,39,.08); border-radius: 3px; }
-.fs-wizard .fs-wizard-advice p { margin: 2px 0; }
-.fs-wizard .fs-wizard-advice ul { margin: 4px 0 4px 18px; padding: 0; }
 
 /* Token Action HUD: rows the Action List shows greyed out. */
 .tah-action-button.fs-tah-disabled { opacity: 0.45; cursor: not-allowed; }
@@ -542,6 +539,25 @@ a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-throug
 .fs-wizard .fs-tree-chip:hover { border-color: var(--fs-accent, #7a5cc0); }
 .fs-wizard .fs-tree-chip.fs-open { border-color: var(--fs-accent, #7a5cc0); background: rgba(122, 92, 192, 0.15); font-weight: 600; }
 .fs-wizard .fs-chip-choice { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 1px 6px; border: 1px dashed var(--color-border-light-tertiary, #8886); border-radius: 10px; font-style: italic; }
+/* A Background card's trees: a labelled row each (its fixed trees, then each choice), the picks made right on the picked card. */
+.fs-wizard .fs-bg-trees { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+.fs-wizard .fs-bg-row { display: grid; grid-template-columns: 9.5em 1fr; align-items: start; gap: 8px; }
+.fs-wizard .fs-bg-row > .fs-bg-label { padding-top: 2px; font-size: .85em; font-weight: 600; opacity: .85; white-space: nowrap; }
+.fs-wizard .fs-bg-row .fs-tree-chips { margin-top: 0; gap: 5px 6px; }
+.fs-wizard .fs-bg-pickable { padding: 4px 6px; border-radius: 6px; background: rgba(122, 92, 192, 0.06); }
+.fs-wizard .fs-bg-label .fs-todo { color: #e0b040; }
+.fs-wizard .fs-bg-label .fs-done { color: #5cb87a; }
+.fs-wizard .fs-pick-opt { display: inline-flex; align-items: center; gap: 2px; padding: 1px 2px 1px 1px; border-radius: 12px; }
+.fs-wizard .fs-pick-opt.fs-on { background: rgba(92, 184, 122, 0.18); box-shadow: 0 0 0 1px rgba(92, 184, 122, 0.7) inset; }
+.fs-wizard .fs-pick-opt.fs-on .fs-tree-chip { font-weight: 600; }
+.fs-wizard .fs-pick-radio { flex: 0 0 auto; width: 22px; height: 22px; min-height: 0; padding: 0; margin: 0; line-height: 1; border: none; background: transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.fs-wizard .fs-pick-opt.fs-on .fs-pick-radio,
+.fs-wizard .fs-bg-focus.fs-on > .fs-bg-row > .fs-bg-label .fs-pick-radio { color: #5cb87a; }
+.fs-wizard .fs-bg-focus { margin-left: 12px; padding: 4px 6px; border-left: 2px solid var(--color-border-light-tertiary, #8884); display: flex; flex-direction: column; gap: 6px; }
+.fs-wizard .fs-bg-focus.fs-on { border-left-color: #5cb87a; }
+.fs-wizard .fs-bg-focus > .fs-bg-row > .fs-bg-label { display: inline-flex; align-items: center; gap: 4px; opacity: 1; }
+.fs-wizard .fs-bg-alloc { margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--color-border-light-tertiary, #8884); }
+@media (max-width: 560px) { .fs-wizard .fs-bg-row { grid-template-columns: 1fr; gap: 3px; } }
 .fs-wizard .fs-chip-tree { margin-top: 6px; padding: 4px 8px; border-left: 3px solid var(--fs-accent, #7a5cc0); background: rgba(122, 92, 192, 0.05); border-radius: 0 4px 4px 0; }
 .fs-wizard .fs-chip-tree-head { display: flex; align-items: center; gap: 6px; }
 .fs-wizard .fs-chip-tree .fs-wizard-tree-tiers { margin-left: 4px; }
@@ -567,5 +583,3 @@ a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-throug
 .fs-tutorial-popup .fs-tut-head { margin: 10px 0 2px; font-size: 1em; border: none; }
 .fs-tutorial-popup .fs-tut-tip { padding: 6px 8px; border-radius: 4px; background: rgba(224, 176, 64, 0.14); }
 .fs-tutorial-popup .fs-tut-warn { padding: 6px 8px; border-radius: 4px; background: rgba(200, 80, 60, 0.14); }
-.fs-tutorial-popup .fs-tut-ask { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: .92em; }
-.fs-tutorial-popup .fs-tut-ask input { margin: 0; flex: 0 0 auto; width: auto; height: auto; }

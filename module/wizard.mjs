@@ -44,7 +44,8 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     id: "flowstate-character-wizard",
     tag: "form",
     classes: ["flowstate", "fs-wizard"],
-    window: { title: "New Character", icon: "fa-solid fa-user-plus", resizable: true },
+    window: { title: "New Character", icon: "fa-solid fa-user-plus", resizable: true,
+      controls: [{ icon: "fa-solid fa-graduation-cap", label: "Start over with the tutorial", action: "restartTutorial" }] },
     position: { width: 720, height: 760 },
     form: { handler: CharacterWizard.onChange, submitOnChange: true, closeOnSubmit: false },
     actions: {
@@ -59,6 +60,9 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       treeToggle: CharacterWizard.onTreeToggle,
       pickAncestry: CharacterWizard.onPickAncestry,
       pickBackground: CharacterWizard.onPickBackground,
+      pickChoice: CharacterWizard.onPickChoice,
+      pickFocus: CharacterWizard.onPickFocus,
+      restartTutorial: CharacterWizard.onRestartTutorial,
       clearCulture: CharacterWizard.onClearCulture,
       allocUp: CharacterWizard.onAllocUp,
       allocDown: CharacterWizard.onAllocDown,
@@ -250,20 +254,29 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         trees: a.trees.map(treeName).join(", "), chips, openTree: opened(chips) };
     });
     const pkg = abc.background ? abcRules.packageFor(abc.background, abc.ancestry) : null;
-    // A Background's starting trees as chips: fixed trees, "one of" choices, and each focus's trees.
-    const itemChips = (scope, items) => items.map(it => it.tree ? [chip(scope, abcRules.treeByName(it.tree)?.id, it.tier)]
-      : (it.choose ?? []).map(n => chip(scope, abcRules.treeByName(n)?.id, it.tier))).map(list => list.filter(Boolean)).filter(l => l.length)
-      .map(list => ({ choice: list.length > 1, tier: list[0].tier, chips: list }));
+    // A Background's starting trees as chips: its fixed trees in one row, then a row per choice ("one of", a Magic school, either/or). On the picked
+    // Background each choice's chips get a pick button (the picks live on the card), and so does each focus.
+    const slotMap = (p, focus) => Object.fromEntries(abcRules.choiceSlots(p, focus).map(x => [x.key, x]));
+    const bgRows = (scope, items, prefix, slots, pickable) => {
+      const fixed = [], rows = [];
+      items.forEach((it, i) => {
+        if (it.tree) { const c = chip(scope, abcRules.treeByName(it.tree)?.id, it.tier); if (c) fixed.push(c); return; }
+        const slot = slots[prefix + i];
+        if (!slot) return;
+        const chips = slot.choices.map(c => { const x = chip(scope, c.id, c.tier, slot.tier ? skills.treeById(c.id)?.name : null); return x && { ...x, slot: slot.key, picked: pickable && abc.picks?.[slot.key] === c.id }; }).filter(Boolean);
+        rows.push({ label: slot.tier ? `Pick one (Tier ${slot.tier})` : "Pick one", pickable, picked: chips.some(c => c.picked), chips });
+      });
+      return { fixed, rows };
+    };
     const backgrounds = anc ? abcRules.backgroundsFor(abc.ancestry).map(b => {
-      const p = abcRules.packageFor(b.id, abc.ancestry), scope = `bg-${b.id}`;
-      const groups = itemChips(scope, p?.items ?? []);
-      const focuses = (p?.options ?? []).map(o => ({ name: o.name, groups: itemChips(scope, o.trees ?? []) }));
-      return { id: b.id, name: b.name, selected: b.id === abc.background, hidden: !!abc.background && b.id !== abc.background,
-        trees: b.text?.["Starting Trees"] ?? "", trade: b.text?.["Trade Slot"] ?? "",
-        differences: (b.differences ?? []).filter(d => d.ancestry === abc.ancestry).map(d => d.text).join(" "),
-        groups, focuses, openTree: opened([...groups, ...focuses.flatMap(f => f.groups)].map(g => g.chips)) };
+      const p = abcRules.packageFor(b.id, abc.ancestry), scope = `bg-${b.id}`, selected = b.id === abc.background;
+      const main = p ? bgRows(scope, p.items, "", slotMap(p, ""), selected) : { fixed: [], rows: [] };
+      const focuses = (p?.options ?? []).map(o => ({ name: o.name, pickable: selected, picked: selected && abc.focus === o.name,
+        ...bgRows(scope, o.trees ?? [], `focus:${o.name}:`, slotMap(p, o.name), selected && abc.focus === o.name) }));
+      const all = [main, ...focuses].flatMap(g => [g.fixed, ...g.rows.map(x => x.chips)]);
+      return { id: b.id, name: b.name, selected, hidden: !!abc.background && !selected, ...main, focuses,
+        focusPicked: focuses.some(f => f.picked), openTree: opened(all) };
     }) : [];
-    const slots = pkg ? abcRules.choiceSlots(pkg, abc.focus).map(s => ({ ...s, choices: s.choices.map(c => ({ ...c, selected: c.id === abc.picks?.[s.key] })) })) : [];
     const allocState = { ...(abc.alloc ?? {}) };
     const allocRows = pkg && free.owed ? skills.ancestryTrees(abc.ancestry).map(t => {
       const tier = Number(abc.alloc?.[t.id]) || 0, next = tier + 1, open = skills.isAvailable(allocState, t, ctx);
@@ -274,7 +287,6 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     }) : [];
     const homelands = anc ? abcRules.homelandsFor(abc.ancestry).map(h => ({ ...h, selected: h.id === abc.homeland, hidden: !!abc.homeland && h.id !== abc.homeland, shared: !h.ancestry })) : [];
     const circles = pkg ? abcRules.circlesFor(abc.background).map(c => ({ ...c, selected: c.id === abc.circle, hidden: !!abc.circle && c.id !== abc.circle, shared: !c.background })) : [];
-    const freeList = Object.entries(freeTrees).map(([id, t]) => `${treeName(id)} ${t}`);
 
     // Skill trees: spend the starting Skill Points (Theory first; it opens that Archetype's other trees). The Background's tiers are free.
     const sp = pv.skillPoints;
@@ -311,8 +323,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       purse: getCurrencies().filter(c => rules.currency?.[c.id] > 0).map(c => `${rules.currency[c.id]} ${c.name}`).join(", "),
       name: st.name, img: st.img, canBrowse: game.user.can?.("FILES_BROWSE") ?? false,
       abc, ancestries, anc, backgrounds, pkg,
-      focusChoices: pkg?.options?.map(o => ({ name: o.name, selected: o.name === abc.focus })) ?? [],
-      slots, allocRows, owed: free.owed ?? 0, allocCost: free.allocCost ?? 0, freeList, freeErrors: free.errors,
+      allocRows, owed: free.owed ?? 0, allocCost: free.allocCost ?? 0,
       glandChoices: abc.ancestry === "drakenblood" ? Object.entries(abcRules.GLAND_ELEMENTS).map(([k, v]) => ({ k, v, selected: k === abc.element })) : null,
       homelands, circles,
       details: Object.entries(creation.DETAIL_FIELDS).map(([k, label]) => ({ k, label, value: st.details?.[k] ?? "", long: ["appearance", "personality", "goals", "backstory"].includes(k) })),
@@ -417,6 +428,32 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     st.freeTrees = {}; st.trees = {};
     this.syncFree();
     this.render();
+  }
+  /** Pick a tree for one of the Background's choices, on its card (the same tree again unpicks it). */
+  static onPickChoice(event, target) {
+    const a = this.state.abc, { slot, id } = target.dataset;
+    const picks = { ...(a.picks ?? {}) };
+    if (picks[slot] === id) delete picks[slot]; else picks[slot] = id;
+    a.picks = picks;
+    this.syncFree();
+    this.render();
+  }
+  /** Pick the Background's focus (again: unpick it); the old focus's picks go. */
+  static onPickFocus(event, target) {
+    const a = this.state.abc, f = target.dataset.focus;
+    a.focus = a.focus === f ? "" : f;
+    a.picks = Object.fromEntries(Object.entries(a.picks ?? {}).filter(([k]) => !k.startsWith("focus:")));
+    this.syncFree();
+    this.render();
+  }
+  /** The menu's "Start over with the tutorial" (tutorial.mjs imports this file, so it's loaded when used). */
+  static async onRestartTutorial() {
+    const { restartWithTutorial } = await import("./tutorial.mjs");
+    return restartWithTutorial(this);
+  }
+  _getHeaderControls() {
+    const controls = super._getHeaderControls();
+    return this.editActor ? controls.filter(c => c.action !== "restartTutorial") : controls;
   }
   /** Unpick the Homeland or the Circle (its full list shows again). */
   static onClearCulture(event, target) {

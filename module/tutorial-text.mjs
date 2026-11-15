@@ -50,9 +50,9 @@ export const POPUPS = {
     p("Like before, picking one hides the others; click it again (or <strong>Change</strong>) to see the whole list.")
   ].join("") }),
   choices: c => ({ title: `${esc(c.background)}: your choices`, html: [
-    p(`${esc(c.background)} lets you choose part of what it gives you. The boxes under its card are those choices:`),
+    p(`${esc(c.background)} lets you choose part of what it gives you. Those choices are the <strong>Pick one</strong> rows on its card:`),
     ul(c.lines),
-    p("Click a tree's name on the card to read it before you choose. You'll be able to hit Next once every choice is made.")
+    p("Click the circle beside a tree to pick it (click it again to unpick). Click a tree's name to read it before you choose. You'll be able to hit Next once every row has a pick.")
   ].join("") }),
 
   culture: c => ({ title: "Step 3: Culture", html: [
@@ -163,7 +163,7 @@ export function adviceLine(a, L) {
 /** The Background's choices, worded for the choices popup. */
 export function choiceLines({ focus = [], slots = [], owed = 0 } = {}) {
   const out = [];
-  if (focus.length) out.push(`<strong>Focus:</strong> pick one of ${list(focus.map(f => `<strong>${esc(f)}</strong>`))}. Each gives different trees (the rows on the card show which).`);
+  if (focus.length) out.push(`<strong>Focus:</strong> pick one of ${list(focus.map(f => `<strong>${esc(f)}</strong>`))}. Each gives different trees (the rows under it on the card show which); click the circle beside its name.`);
   for (const s of slots) out.push(`<strong>${esc(s.label)}:</strong> ${list(s.choices.map(ch => esc(ch.name)))}.`);
   if (owed) out.push(`<strong>${owed} points</strong> to spend on your Ancestry's own trees, with the + and − buttons.`);
   return out;

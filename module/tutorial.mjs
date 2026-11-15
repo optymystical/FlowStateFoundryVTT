@@ -1,5 +1,6 @@
 /**
- * The character tutorial: New Character asks whether to walk through it (world setting `tutorialOffer`, the player's own `tutorialAsk`). The tutorial
+ * The character tutorial: New Character asks whether to walk through it (Yes/No each time, if the world setting `tutorialOffer` is on; the wizard's
+ * menu also has "Start over with the tutorial"). The tutorial
  * is the same wizard (TutorialWizard extends CharacterWizard; the character it makes is the same) with popups over it that explain each step, a banner
  * that says what to do now, ★ on the equipment that fits, and a railroad: it only goes forward, and Next locks a step in once it's complete.
  * The words are tutorial-text.mjs; the advice (archetype, equipment) is tutorial-rules.mjs.
@@ -16,15 +17,11 @@ import { DialogV2, esc } from "./html.mjs";
 import { POPUPS, LOCK, BANNER, adviceLine, choiceLines } from "./tutorial-text.mjs";
 import { presetArchetypes, suggestedArchetype, equipmentAdvice } from "./tutorial-rules.mjs";
 
-/** World: offer the tutorial at all. User: ask me (off once a player says No without ticking "ask me again"). */
+/** World: offer the tutorial at New Character. */
 export function register() {
   game.settings.register("flowstate", "tutorialOffer", {
     name: "Offer the character tutorial", hint: "When someone makes a New Character, ask whether they'd like the tutorial that walks them through it.",
     scope: "world", config: true, type: Boolean, default: true
-  });
-  game.settings.register("flowstate", "tutorialAsk", {
-    name: "Ask about the character tutorial", hint: "Ask whether you'd like the character tutorial each time you make a New Character.",
-    scope: "user", config: true, type: Boolean, default: true
   });
 }
 
@@ -39,27 +36,32 @@ export async function popup(app, { title, html, buttons = null, width = 580 }) {
   } finally { el?.classList?.remove("fs-tutorial-blocked"); }
 }
 
-/** New Character: ask about the tutorial (if the world offers it and this player still wants to be asked), then open the right wizard. */
+/** New Character: ask about the tutorial (if the world offers it), then open the right wizard. */
 export async function openNewCharacter() {
   for (const id of ["flowstate-character-wizard", "flowstate-tutorial-wizard"]) {
     const open = foundry.applications.instances.get(id);
     if (open) return open.bringToFront?.() ?? open.render(true);
   }
-  const offer = game.settings.get("flowstate", "tutorialOffer") !== false, ask = game.settings.get("flowstate", "tutorialAsk") !== false;
-  if (!offer || !ask) return CharacterWizard.open();
+  if (game.settings.get("flowstate", "tutorialOffer") === false) return CharacterWizard.open();
   const answer = await DialogV2().wait({ window: { title: "New Character", icon: "fa-solid fa-graduation-cap" }, classes: ["fs-tutorial-popup"], position: { width: 460 },
     rejectClose: false, modal: true,
     content: `<p>Would you like to see the tutorial for character creation and how to use the character sheet?</p>
-      <p class="hint">It walks you through every step and explains what your choices mean. Good for a first character.</p>
-      <label class="fs-tut-ask"><input type="checkbox" name="again"> Ask me again next time I make a character</label>`,
+      <p class="hint">It walks you through every step and explains what your choices mean. Good for a first character.</p>`,
     buttons: [
-      { action: "yes", label: "Yes, show me", icon: "fa-solid fa-graduation-cap", default: true },
-      { action: "no", label: "No thanks", icon: "fa-solid fa-forward", callback: (event, button) => (button.form?.elements?.again?.checked ? "no-again" : "no") }
+      { action: "yes", label: "Yes", icon: "fa-solid fa-graduation-cap", default: true },
+      { action: "no", label: "No", icon: "fa-solid fa-forward" }
     ] });
   if (!answer) return null;
-  if (answer === "yes") return TutorialWizard.open();
-  if (answer === "no") await game.settings.set("flowstate", "tutorialAsk", false);
-  return CharacterWizard.open();
+  return answer === "yes" ? TutorialWizard.open() : CharacterWizard.open();
+}
+
+/** The wizard's menu: throw away this character and start again in the tutorial. */
+export async function restartWithTutorial(app) {
+  const ok = await DialogV2().confirm({ window: { title: "Start over with the tutorial?", icon: "fa-solid fa-graduation-cap" }, position: { width: 420 },
+    content: "<p>This clears everything picked so far and starts again from the first step, with the tutorial.</p>", rejectClose: false, modal: true });
+  if (!ok) return null;
+  await app?.close();
+  return TutorialWizard.open();
 }
 
 const star = (label, on) => (on ? `★ ${String(label).replace(/^★ /, "")}` : label);

@@ -36,18 +36,42 @@ v = await view(); log("Ancestries offered:", v.ctx.ancestries.length, "| picked:
 CharacterWizard.onNext.call(w);
 console.log("== Step 2: Background (Recruit: a Dwarf takes Heavy Armor for Medium Armor)");
 v = await view(); log("Backgrounds for a Dwarf:", v.ctx.backgrounds.map(b => b.name).join(", "));
-{ const rec = v.ctx.backgrounds.find(b => b.id === "recruit"), chips = rec.groups.flatMap(g => g.chips);
+{ const rec = v.ctx.backgrounds.find(b => b.id === "recruit"), chips = [...rec.fixed, ...rec.rows.flatMap(g => g.chips)];
+  if (/Starting Trees|Martial Theory T2, Medium/.test(v.text)) throw new Error("FAIL the Background card still prints its trees as text");
+  if (rec.rows.some(x => x.pickable)) throw new Error("FAIL an unpicked Background's choices are pickable");
   const gen = chips.find(c => c.id.startsWith("generic-"));
   if (!gen) throw new Error("FAIL the Recruit card has no Generic Group chips");
   CharacterWizard.onTreeToggle.call(w, null, { dataset: { key: gen.key } });
   const open = (await view()).ctx.backgrounds.find(b => b.id === "recruit").openTree;
   if (!open || open.tiers.filter(t => t.owned).length !== gen.tier) throw new Error("FAIL the Generic tree's tiers (the Background's tiers marked owned)");
-  log("Recruit trees:", rec.groups.map(g => g.chips.map(c => c.label).join(g.choice ? " / " : ", ")).join(" | "), "| opened:", open.name);
+  log("Recruit trees:", rec.fixed.map(c => c.label).join(", "), "|", rec.rows.map(g => `${g.label}: ${g.chips.map(c => c.label).join(" / ")}`).join(" | "), "| opened:", open.name);
   CharacterWizard.onTreeToggle.call(w, null, { dataset: { key: gen.key } }); }
 CharacterWizard.onPickBackground.call(w, null, { dataset: { id: "recruit" } });
-v = await view(); log("choices:", v.ctx.slots.map(x => `${x.label} [${x.choices.map(c => c.name).join("/")}]`).join(" | "));
-change({ "abc.picks.2": "martial-bladed-weapons", "abc.picks.4": "generic-courage" });
-v = await view(); log("free trees:", v.ctx.freeList.join(", "), "| errors:", v.ctx.freeErrors.length ? v.ctx.freeErrors : "none");
+{ v = await view(); const rec = v.ctx.backgrounds.find(b => b.selected);
+  if (!rec.rows.length || !rec.rows.every(x => x.pickable && !x.picked) || (tpl(v.ctx).match(/data-action="pickChoice"/g) ?? []).length !== rec.rows.reduce((n, x) => n + x.chips.length, 0))
+    throw new Error("FAIL the picked Background's choices aren't pick buttons on its card");
+  if (/your choices|Free trees:/.test(v.text)) throw new Error("FAIL the old choices section is still under the cards");
+  log("choices:", rec.rows.map(x => `${x.label} [${x.chips.map(c => c.label).join("/")}]`).join(" | "));
+  const pick = (slot, id) => CharacterWizard.onPickChoice.call(w, null, { dataset: { slot, id } });
+  pick("2", "martial-swift-weapons"); pick("2", "martial-swift-weapons");
+  if (w.state.abc.picks["2"]) throw new Error("FAIL picking a choice again doesn't unpick it");
+  pick("2", "martial-bladed-weapons"); pick("4", "generic-courage");
+  v = await view(); const done = v.ctx.backgrounds.find(b => b.selected);
+  if (!done.rows.every(x => x.picked)) throw new Error("FAIL the picks don't show on the card");
+  log("free trees:", Object.entries(w.free().trees).map(([id, t]) => `${id} ${t}`).join(", "), "| errors:", w.free().errors.length ? w.free().errors : "none"); }
+// A focus is picked on the card too (its own choices then become pickable).
+{ const fw = new CharacterWizard(); CharacterWizard.onPickAncestry.call(fw, null, { dataset: { id: "human" } });
+  const withFocus = (await fw._prepareContext({})).backgrounds.find(b => b.focuses.length);
+  if (withFocus) {
+    CharacterWizard.onPickBackground.call(fw, null, { dataset: { id: withFocus.id } });
+    const f0 = withFocus.focuses[0].name;
+    CharacterWizard.onPickFocus.call(fw, null, { dataset: { focus: f0 } });
+    const card = (await fw._prepareContext({})).backgrounds.find(b => b.selected);
+    if (fw.state.abc.focus !== f0 || !card.focusPicked || !card.focuses.find(f => f.name === f0).picked) throw new Error("FAIL picking a focus on the card");
+    CharacterWizard.onPickFocus.call(fw, null, { dataset: { focus: f0 } });
+    if (fw.state.abc.focus) throw new Error("FAIL picking the focus again doesn't unpick it");
+    log("focus picked on the card:", withFocus.name, "→", f0);
+  } }
 CharacterWizard.onNext.call(w);
 console.log("== Step 3: Culture");
 v = await view(); log("Homelands:", v.ctx.homelands.map(h => h.name).join(", ")); log("Circles:", v.ctx.circles.map(c => c.name).join(", "));

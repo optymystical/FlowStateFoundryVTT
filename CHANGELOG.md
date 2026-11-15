@@ -2,6 +2,11 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.95.0:** New Character wizard rework.
+- **Background cards** drop the text list of trees (the chips show them) and lay the trees out in labelled rows: the fixed trees, then one row per "Pick one" choice, spaced so the options don't wrap into each other. The picked Background's choices are made right on its card (a circle beside each option or focus; a mark on each row still to pick); the separate "your choices" and "Free trees" section below the cards is gone, and an Outsider's Ancestry points sit inside its card.
+- **Stats:** the "New to Flow State?" box is gone (the tutorial explains it).
+- **Tutorial prompt:** a plain Yes / No every time (no "ask me again" box, nothing that stops it asking; the GM's world setting still turns it off). The wizard's menu (⋮) has **Start over with the tutorial**.
+
 **0.94.1:** Live-test fix (New Character): a Background with choices no longer shows "spend 6 points on your Ancestry's trees" before its choices are picked (an unpicked choice isn't unplaced points), and Ancestry points spent before the picks no longer count as free trees once the picks fill the 15. The tutorial's choices popup no longer mentions those phantom points.
 
 **0.94.0:** The character tutorial (part 1: character creation).

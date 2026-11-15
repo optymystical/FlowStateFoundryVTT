@@ -203,5 +203,11 @@ ok2(!flag(hero, "psion"), "Far Sight lapses at your next turn unless you pay aga
 refresh(); await M.auraSight(hero);
 ok2(flag(hero, "psion").auraSight && hero.system.energy.value === 200 - Math.floor(103 / 2), "Aura Sight: 2 AP and half your total Mind");
 
+{ // A Wonder whose stat is under 10 (one a Background gave, say) is listed but can't be picked: the dialog starts on one that can.
+  const snapper = addEffects(mkActor("Snapper", { stats: { ...stats, pon: 0, snap: 30 }, skillPoints: 30 }, { "mental-theory": 1, "mental-life-dream": 2, "mental-death-nightmare": 2 }));
+  const ctx = M.manifestContext(snapper);
+  ok2(ctx.wonders.find(w => w.id === "mental-life-dream")?.usable === false && ctx.wonders.find(w => w.id === "mental-death-nightmare")?.usable === true,
+    "Manifest: a Wonder with its stat under 10 is marked unusable (Life with 0 Ponderance), the other usable"); }
+
 console.log(fails ? `\n${fails} FAILED` : "\nAll Mental engine checks passed");
 if (fails) process.exit(1);

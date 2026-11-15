@@ -65,6 +65,14 @@ function watch() {
   window.addEventListener("error", e => { if (SIM.running) log.errors.push(String(e.error?.stack ?? e.message).slice(0, 600)); });
   window.addEventListener("unhandledrejection", e => { if (SIM.running) log.errors.push(String(e.reason?.stack ?? e.reason).slice(0, 600)); });
   Hooks.on("createChatMessage", m => { if (SIM.running) F?.msgIds?.add(m.id); });
+  // Every HP drop, credited to the creature whose turn it is (else whoever is acting) (Manifests, ticks and Force included, which the cards don't carry).
+  Hooks.on("preUpdateActor", (actor, change) => {
+    if (!SIM.running || !F) return;
+    const hp = foundry.utils.getProperty(change, "system.hp.value");
+    if (hp === undefined) return;
+    const before = actor.system?.hp?.value ?? 0, n = Math.max(0, before) - Math.max(0, Number(hp) || 0);
+    if (n > 0) (F.hpLoss ??= []).push({ victim: actor.name, victimUuid: actor.uuid, by: game.combat?.combatant?.actor?.name ?? SIM.acting ?? null, n });
+  });
   // A window something opened directly (not through prompt/confirm/wait): note it and press its default button.
   Hooks.on("renderDialogV2", (app, el) => {
     if (!SIM.running) return;
@@ -1957,6 +1965,26 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
   }
 };
 
+/**
+ * HP lost per creature, and dealt per creature: each drop credited to the creature acting at the time, when the one losing it is on the other side
+ * (a drop on the actor's own side, a riposte or its own spell, isn't credited). { dealt: { name: n }, taken: { name: n }, unattributed: n }.
+ */
+function hpTally() {
+  const side = new Map();
+  for (const [uuid] of Object.entries(F.hpMax ?? {})) side.set(uuid, F.monsterSide?.has(uuid) ? "monsters" : "party");
+  const nameSide = new Map();
+  for (const a of game.actors) if (/^Sim: /.test(a.folder?.name ?? "")) nameSide.set(a.name, a.folder.name === "Sim: Monsters" ? "monsters" : "party");
+  const dealt = {}, taken = {};
+  let unattributed = 0;
+  for (const e of F.hpLoss ?? []) {
+    taken[e.victim] = (taken[e.victim] ?? 0) + e.n;
+    const vs = side.get(e.victimUuid) ?? nameSide.get(e.victim), bs = e.by ? nameSide.get(e.by) : null;
+    if (e.by && bs && vs && bs !== vs) dealt[e.by] = (dealt[e.by] ?? 0) + e.n;
+    else unattributed += e.n;
+  }
+  return { dealt, taken, unattributed };
+}
+
 /** Read the fight back from its chat cards: per weapon and per creature. */
 function collect(scene, combat, msgs) {
   const weapons = {};
@@ -2056,6 +2084,7 @@ function collect(scene, combat, msgs) {
     creatures: Object.values(per),
     ai: Object.values(F.actors),
     trees: F.trees, gear: F.gear, monsterGear: F.monsterGear, gearState, kiteLog: F.kiteLog, roundLog: F.roundLog, firstAttack: F.firstAttack ?? {},
+    hpLoss: hpTally(),
     painDivisor: game.settings.get("flowstate", "painDivisor"), skips: F.skips ?? [], burn, otherLoss, lostBy, directTaken, creations: F.creations ?? {},
     log: { dialogs: { ...log.dialogs }, notes: [...log.notes], errors: [...log.errors] }
   };

@@ -115,7 +115,8 @@ export async function fluidity(actor) {
 
 /** What the Manifest dialog needs: known Modes grouped by Wonder, the Icon, Far Sight and Aura Sight. */
 export function manifestContext(actor) {
-  const wonders = R.knownWonders(trees(actor)).filter(w => w.modes.length);
+  // A Wonder whose Scaling Stat is under 10 has no Power and can't be Manifested (one a Background gave, say): listed, but not picked.
+  const wonders = R.knownWonders(trees(actor)).filter(w => w.modes.length).map(w => ({ ...w, usable: R.wonderPower(eff(actor, R.KINDS[w.kind].stat)) >= 1 }));
   const flags = actor.getFlag?.("flowstate", "psion") ?? {};
   return { actor, wonders, theory: theory(actor), icon: actor.system.icon ?? null, alignment: alignmentOf(actor), farSight: !!flags.farSight, auraSight: !!flags.auraSight, will: willTier(actor),
     patron: actor.getFlag?.("flowstate", "patron") ?? null, wobs: null, reflex: null, ponder: ponderance.ponderTier(actor) };
@@ -203,7 +204,7 @@ function previewHTML(plan) {
 }
 
 function dialogHTML(ctx, v, plan) {
-  const modes = ctx.wonders.map(w => `<optgroup label="${esc(w.name)} (${R.KINDS[w.kind].label})">${w.modes.map(m => `<option value="${esc(m.id)}" ${v.mode === m.id ? "selected" : ""}>${esc(m.name)}</option>`).join("")}</optgroup>`).join("");
+  const modes = ctx.wonders.map(w => `<optgroup label="${esc(w.name)} (${R.KINDS[w.kind].label})${w.usable === false ? ` — needs ${R.KINDS[w.kind].statLabel} 10` : ""}">${w.modes.map(m => `<option value="${esc(m.id)}" ${v.mode === m.id ? "selected" : ""} ${w.usable === false ? "disabled" : ""}>${esc(m.name)}</option>`).join("")}</optgroup>`).join("");
   const ranges = Object.entries(R.RANGES).filter(([, r]) => !ctx.wobs || r.ap === (ctx.wobs.ap || ctx.wobs.rp)).map(([k, r]) => `<option value="${k}" ${v.range === k ? "selected" : ""}>${r.label} (${r.ap} AP): ${esc(r.text)}</option>`).join("");
   return `<div class="fs-cast">
     ${dialogHead("Mode")}
@@ -221,7 +222,7 @@ function dialogHTML(ctx, v, plan) {
 
 async function manifestDialog(actor, ctx) {
   const firstRange = Object.entries(R.RANGES).find(([k, r]) => !ctx.wobs || r.ap === (ctx.wobs.ap || ctx.wobs.rp))?.[0] ?? "ranged";
-  let v = { mode: ctx.wonders[0]?.modes[0]?.id, range: firstRange, enhance: false, burst: false };
+  let v = { mode: (ctx.wonders.find(w => w.usable !== false) ?? ctx.wonders[0])?.modes[0]?.id, range: firstRange, enhance: false, burst: false };
   const plan0 = manifestPlan(actor, ctx, v);
   return DialogV2().prompt({
     window: { title: `Manifest: ${actor.name}` },

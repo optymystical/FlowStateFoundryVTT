@@ -17,14 +17,18 @@ for (const f of files) {
     const aiBy = new Map((fight.ai ?? []).map(a => [a.name, a]));
     const downs = new Map();
     for (const n of fight.down ?? []) downs.set(n, (downs.get(n) ?? 0) + 1);
-    for (const c of Object.values(fight.creatures ?? {})) {
+    const listed = new Set(Object.values(fight.creatures ?? {}).map(c => c.name));
+    const extra = (fight.ai ?? []).filter(a => !listed.has(a.name)).map(a => ({ name: a.name, dealt: 0, taken: 0, hits: 0, attacks: a.attacks ?? 0 }));
+    for (const c of [...Object.values(fight.creatures ?? {}), ...extra]) {
       if (!/^L\d+ /.test(c.name)) continue;                          // only generated builds (not the Bestiary monsters)
       const ai = aiBy.get(c.name) ?? {};
       const side = ai.side ?? (fight.group === "mirror" ? "?" : "party");
       const r = row(c.name);
       r.fights++;
       if ((side === "party" && fight.winner === "party") || (side === "monsters" && fight.winner === "monsters")) r.wins++;
-      r.dealt += c.dealt ?? 0; r.taken += c.taken ?? 0; r.hits += c.hits ?? 0; r.attacks += c.attacks ?? 0;
+      // Damage: the HP tally when the fight has it (every source, credited to whoever acted), else the cards'.
+      const tally = fight.hpLoss;
+      r.dealt += tally ? tally.dealt?.[c.name] ?? 0 : c.dealt ?? 0; r.taken += tally ? tally.taken?.[c.name] ?? 0 : c.taken ?? 0; r.hits += c.hits ?? 0; r.attacks += c.attacks ?? 0;
       r.turns += ai.turns ?? 0; r.kills += ai.kills ?? 0;
       if (downs.get(c.name)) { r.downs++; downs.set(c.name, downs.get(c.name) - 1); }
       if (fight.id.startsWith("bestiary")) { r.vsBestiary++; if (fight.winner === "party") r.winsBestiary++; }

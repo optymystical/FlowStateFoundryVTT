@@ -1755,8 +1755,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 Hooks.on("createActiveEffect", async effect => {
   if (!game.user.isActiveGM) return;
   const actor = effect.parent;
-  if (!(actor instanceof Actor) || !(effect.statuses?.has("unconscious") || effect.statuses?.has("dead"))) return;
-  // Downed creatures leave initiative.
+  if (!(actor instanceof Actor) || !(effect.statuses?.has("unconscious") || effect.statuses?.has("dead") || effect.statuses?.has("dormant"))) return;
+  // Downed (or Dormant, the Bestiary's) creatures leave initiative.
   for (const combat of game.combats ?? []) {
     const ids = combat.combatants.filter(c => c.actor === actor || c.actor?.uuid === actor.uuid).map(c => c.id);
     if (ids.length) await combat.deleteEmbeddedDocuments("Combatant", ids);

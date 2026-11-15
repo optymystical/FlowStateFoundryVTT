@@ -367,10 +367,7 @@ async function bloom(actor) {
 }
 /** Dormant: out of the fight (off the tracker), for a day of world time; it wakes at full HP (consumables.mjs ends timed statuses, flowstate.mjs wakes it). */
 async function goDormant(actor) {
-  await setStatus(actor, "dormant", true);
-  const combat = game.combat;
-  const mine = combat?.combatants?.filter(c => c.actor?.uuid === actor.uuid).map(c => c.id) ?? [];
-  if (mine.length && game.user.isGM) await combat.deleteEmbeddedDocuments("Combatant", mine);
+  await setStatus(actor, "dormant", true);          // flowstate.mjs takes it off the tracker (as a downed creature)
   const region = auraRegions().filter(r => r.flags.flowstate.auraOf === actor.uuid).map(r => r.id);
   if (region.length && game.user.isGM) await globalThis.canvas.scene.deleteEmbeddedDocuments("Region", region);
 }

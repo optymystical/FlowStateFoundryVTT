@@ -99,22 +99,30 @@ export function build(featured, level, i) {
     const weight = dex ? "light" : "heavy";
     const armor = featured in ARMOR_OF ? ARMOR_OF[featured] : A(dex ? "light" : "medium", "hardLeather");
     const armorTree = armor ? `martial-${armor.weight}-armor` : null;
-    if (armorTree && S.treeById(armorTree)) open(trees, free, armorTree, 3, level, ctx);
+    if (armorTree && S.treeById(armorTree)) open(trees, free, armorTree, level >= 60 ? 5 : 3, level, ctx);
+    if (level >= 60) open(trees, free, dex ? "martial-dexterity-methods" : "martial-strength-methods", 5, level, ctx);
     gear = { armor, weapons: type === "unarmed" ? [] : [W(type, weight, "steel", { primary: true })], grapple: featured === "martial-grappling-methods",
       role: RANGED.has(type) ? "ranged" : dex ? "melee-dex" : "melee-str" };
   } else if (arch === "magic") {
     const cast = i % 2 ? "reach" : "grasp";
     stats = { [cast]: Math.round(statsPts * 0.5), build: Math.round(statsPts * 0.3), con: statsPts - Math.round(statsPts * 0.5) - Math.round(statsPts * 0.3) };
     // A school with no damage of its own gets Slashing beside it, so it has something to cast.
-    if (!["magic-slashing", "magic-piercing", "magic-crushing", "magic-heat", "magic-cold", "magic-radiation", "magic-acid", "magic-arcanomancy"].includes(featured)) open(trees, free, "magic-slashing", 2, level, ctx);
+    if (!["magic-slashing", "magic-piercing", "magic-crushing", "magic-heat", "magic-cold", "magic-radiation", "magic-acid", "magic-arcanomancy"].includes(featured)) open(trees, free, "magic-slashing", level >= 60 ? 5 : 2, level, ctx);
+    else if (level >= 60) open(trees, free, featured === "magic-slashing" ? "magic-heat" : "magic-slashing", 5, level, ctx);
+    if (level >= 60) open(trees, free, "magic-protection-arcana", 3, level, ctx);
     gear = { armor: A("light", "hardLeather"), weapons: [], foci: { type: FOCI[cast] }, shroud: { type: "bastion" }, role: "caster" };
   } else {
     const w = WONDERS.find(x => x.id === featured);
-    const kind = w?.kind ?? (["mental-snappence-arts", "mental-esoteric-arts"].includes(featured) ? "nightmare" : "dream");
+    const kind = w?.kind ?? (featured === "mental-snappence-arts" ? "nightmare" : "dream");
     const main = kind === "dream" ? "pon" : "snap";
     stats = { [main]: Math.round(statsPts * 0.5), will: Math.round(statsPts * 0.35), con: statsPts - Math.round(statsPts * 0.5) - Math.round(statsPts * 0.35) };
     const wonders = w ? [w.id] : [kind === "dream" ? "mental-life-dream" : "mental-death-nightmare"];
-    if (!w) open(trees, free, wonders[0], 3, level, ctx);          // an Arts tree: a T1 Wonder beside it to manifest with
+    if (!w) open(trees, free, wonders[0], level >= 60 ? 5 : 3, level, ctx);          // an Arts tree: a T1 Wonder beside it to manifest with
+    if (w && level >= 60) {
+      const second = kind === "dream" ? (w.id === "mental-life-dream" ? "mental-order-dream" : "mental-life-dream") : (w.id === "mental-death-nightmare" ? "mental-chaos-nightmare" : "mental-death-nightmare");
+      open(trees, free, second, 5, level, ctx);
+      wonders.push(second);
+    }
     const tenet = WONDERS.find(x => x.id === wonders[0])?.tenet?.id ?? "";
     gear = { armor: null, weapons: [], icon: { form: formFor(kind), tenet }, alignment: { kind, level: level >= 60 ? 2 : 1 }, mind: mindFor(wonders, trees), role: "caster" };
   }

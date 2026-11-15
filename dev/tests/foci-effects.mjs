@@ -180,6 +180,10 @@ fresh(); use(rod, { affixes: ["emerald"], lush: true }); target(orc); seq = [20]
 ok2(/Emerald: Advantage/.test(atkText()), "Emerald: Advantage in a Lush biome…");
 fresh(); use(rod, { affixes: ["emerald"], lush: false }); target(orc); seq = [20]; await cast("magic-slashing:cut", {});
 ok2(/Emerald: Disadvantage/.test(atkText()), "…Disadvantage anywhere else");
+{ const was = globalThis.canvas; globalThis.canvas = { ...(was ?? {}), scene: { ...(was?.scene ?? {}), flags: { flowstate: { environment: { type: "lush" } } }, getFlag: () => undefined } };
+  fresh(); use(rod, { affixes: ["emerald"], lush: false }); target(orc); seq = [20]; await cast("magic-slashing:cut", {});
+  ok2(/Emerald: Advantage/.test(atkText()), "…a scene whose Environment is a Lush biome counts (no checkbox needed)");
+  globalThis.canvas = was; }
 fresh(); use(rod, { affixes: ["diamond"] }); target(orc); seq = [20]; await cast("magic-slashing:cut", {}); seq = [12]; await actions.defend(lastAtk4(), 0, "dodge");
 seq = [20]; await cast("magic-slashing:cut", {});
 ok2(/Diamond: Advantage/.test(atkText()), "Diamond: Advantage when the same spell already hit that target this turn");

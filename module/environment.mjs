@@ -9,16 +9,18 @@ import { esc, select, DialogV2 } from "./html.mjs";
 /** The GM sets the scene's environment. */
 export async function configure(scene = globalThis.canvas?.scene) {
   if (!game.user.isGM || !scene) return null;
-  const e = scene.flags?.flowstate?.environment ?? {};
+  // An older scene's "Lush biome" checkbox (flag `lush`) becomes the biome type here; saving clears the old flag.
+  const e = { ...(scene.flags?.flowstate?.environment ?? {}) };
+  if (!e.type && scene.flags?.flowstate?.lush) e.type = "lush";
   const vals = await DialogV2().prompt({ window: { title: `Environment: ${scene.name}` }, rejectClose: false,
-    content: `<p class="hint">Optional (Generic Groups, Endurance). Extreme: Athletics checks have Disadvantage and rest restores half the HP, outside Shelter. A Hazard takes a tenth of Max HP each hour outside Shelter.</p>
+    content: `<p class="hint">Optional (Generic Groups, Endurance). Lush: Emerald Affixes have their bonus here. Extreme: Athletics checks have Disadvantage and rest restores half the HP, outside Shelter. A Hazard takes a tenth of Max HP each hour outside Shelter.</p>
       <div class="form-group"><label>Biome type</label>${select("type", Object.entries(BIOME_TYPES), e.type ?? "")}</div>
       <div class="form-group"><label>Biome (desert, tundra, jungle...)</label><input type="text" name="biome" value="${esc(e.biome ?? "")}"></div>
       <div class="form-group"><label>Hazard</label><input type="checkbox" name="hazard" ${e.hazard ? "checked" : ""}></div>
       <div class="form-group"><label>Hazard name</label><input type="text" name="hazardName" value="${esc(e.hazardName ?? "")}" placeholder="a blizzard, thin air, the Firelands..."></div>`,
     ok: { label: "Save", callback: (event, button) => { const f = button.form.elements; return { type: f.type.value, biome: f.biome.value.trim(), hazard: f.hazard.checked, hazardName: f.hazardName.value.trim() }; } } });
   if (!vals) return null;
-  await scene.update({ "flags.flowstate.environment": { ...vals, hazardTick: game.time?.worldTime ?? 0 } });
+  await scene.update({ "flags.flowstate.environment": { ...vals, hazardTick: game.time?.worldTime ?? 0 }, ...(scene.flags?.flowstate?.lush !== undefined ? { "flags.flowstate.-=lush": null } : {}) });
   ui.notifications.info(`${scene.name}: ${vals.type ? `${BIOME_TYPES[vals.type]}${vals.biome ? ` (${vals.biome})` : ""}` : "no biome rules"}${vals.hazard ? `, Hazard${vals.hazardName ? `: ${vals.hazardName}` : ""}` : ""}.`);
   return vals;
 }

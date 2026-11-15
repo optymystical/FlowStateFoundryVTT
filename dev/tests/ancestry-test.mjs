@@ -92,7 +92,8 @@ ok(anc.hooks.lethal(dusk, -5) === 1, "Lingering Spirit: damage that would drop y
 await new Promise(res => setTimeout(res, 5));
 ok(anc.hooks.lethal(dusk, -5) === -5, "...once per rest");
 const zeal = await anc.hooks.beforeDamage(fl, giant, { type: "physical", stacks: 0 });
-ok(zeal.type === "heat" && zeal.stacks === 1, "Searing Zeal: the hit becomes Heat with a Strengthened stack");
+ok(zeal.type === "heat" && anc.hooks.damageStacks({ attacker: fl, target: giant, o: zeal }).stacks === 1 && anc.hooks.damageStacks({ attacker: fl, target: giant, o: zeal }).parts[0] === "+1 Searing Zeal",
+  "Searing Zeal: the hit becomes Heat with a Strengthened stack (named on the damage card)");
 
 console.log("== Checks");
 const half = mkActor("Half", { "ancestry-halfling-tree": 3 }, { size: 2 }, { ancestry: "halfling" });

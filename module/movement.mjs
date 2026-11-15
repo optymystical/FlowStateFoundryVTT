@@ -180,9 +180,10 @@ function preMove(token, movement, options) {
  */
 function preUpdate(token, changes, options) {
   try {
-    if (options?.flowstateMove && !options.flowstateMove.undo) { const f = token.actor && inFlight.get(token.actor.uuid); if (f) { f.sure = true; f.at = Date.now(); } }
+    const payer = spiritOwner(token) ?? token.actor;
+    if (options?.flowstateMove && !options.flowstateMove.undo) { const f = payer && inFlight.get(payer.uuid); if (f) { f.sure = true; f.at = Date.now(); } }
     if (!options?.isUndo || !Array.isArray(changes._movementHistory)) return;
-    const actor = token.actor;
+    const actor = spiritOwner(token) ?? token.actor;
     if (!actor || movementMode() === "off" || !movementTracked(actor)) return;
     const kept = new Set(changes._movementHistory.map(w => w.movementId));
     const undone = new Set((token._source?._movementHistory ?? []).map(w => w.movementId).filter(id => id && !kept.has(id)));
@@ -198,8 +199,8 @@ function preUpdate(token, changes, options) {
 /** updateToken on the client that made the move: pay the AP and write the ledger in one update. */
 async function afterMove(token, changes, options, userId) {
   const mv = options?.flowstateMove;
-  if (!mv || userId !== game.user.id || !token.actor) return;
-  const actor = token.actor;
+  const actor = spiritOwner(token) ?? token.actor;                                    // a Shadow Spirit's moves are paid by its body
+  if (!mv || userId !== game.user.id || !actor) return;
   try {
     if (mv.key !== turnKey()) return;                                                  // the turn changed while the move was on its way
     const ap = actor.system.ap.value, max = actor.system.ap.max ?? ap;

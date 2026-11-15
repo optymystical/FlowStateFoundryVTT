@@ -8,6 +8,7 @@ import { igniteTotal } from "./rules.mjs";
 import { attunedAffixItems } from "./magic.mjs";
 import { feedExtra, post, requestGM, turnKey, setActorFlag, spendEnergy, giveStacks, registerFoci } from "./actions.mjs";
 import { esc } from "./html.mjs";
+import { lushAt } from "./environment-rules.mjs";
 
 const stamp = () => (globalThis.game ? turnKey() : null) ?? "ooc";
 
@@ -26,11 +27,11 @@ export function fociFx(actor, plan, dark = false) {
     const items = attunedAffixItems(actor, "offensive");
     if (!items.length || plan.option?.fociId || plan.option?.form !== "raw") return null;
     const setting = k => items.find(i => i.system.affix === k)?.system;
-    return { id: null, type: "raw", doubled: null, affixes: [...new Set(items.map(i => i.system.affix))], element: setting("tourmaline")?.element ?? "heat", lush: !!globalThis.canvas?.scene?.getFlag?.("flowstate", "lush"),
+    return { id: null, type: "raw", doubled: null, affixes: [...new Set(items.map(i => i.system.affix))], element: setting("tourmaline")?.element ?? "heat", lush: lushAt(),
       declared: setting("coloredDiamond")?.declared ?? "", opalRange: "targeted", dark: !!dark, scalingMin: Math.floor((plan.scaling ?? 0) / 3) };
   }
   const p = item.system.profile;
-  return { id: item.id, type: p.type ?? item.system.fociType, doubled: p.doubled ?? null, affixes: [...p.affixes], element: item.system.element, lush: !!item.system.lush || !!globalThis.canvas?.scene?.getFlag?.("flowstate", "lush"),
+  return { id: item.id, type: p.type ?? item.system.fociType, doubled: p.doubled ?? null, affixes: [...p.affixes], element: item.system.element, lush: !!item.system.lush || lushAt(),
     declared: item.system.declared || "", opalRange: item.system.opalRange || "targeted", dark: !!dark, scalingMin: Math.floor((plan.scaling ?? 0) / 3) };
 }
 

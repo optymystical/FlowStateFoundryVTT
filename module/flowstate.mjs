@@ -540,6 +540,12 @@ function decorateExchange(message, html) {
         buttons?.querySelector(".fs-distract")?.remove();
         if (status && !defense) status.innerHTML = `<div class="fs-notes">Distracting Fire: ${dist.hit ? `attack re-rolled ${dist.original} → <strong>${dist.total}</strong>, Weakened` : "missed"}</div>`;
       }
+      // Underfoot / Neutral Party (ancestry): once used, drop the button and show the lowered attack.
+      const lowered = game.messages.filter(m => { const f = m.getFlag("flowstate", "lowered"); return f?.attackMessage === message.id && f.index === index; }).map(m => m.getFlag("flowstate", "lowered"));
+      const tried = game.messages.filter(m => { const f = m.getFlag("flowstate", "ancTried"); return f?.attackMessage === message.id && f.index === index; }).map(m => m.getFlag("flowstate", "ancTried"));
+      for (const f of [...lowered, ...tried]) buttons?.querySelector(`[data-choice="anc:${f.by}"]`)?.remove();
+      const low = lowered.at(-1);
+      if (low && status && !defense) status.innerHTML = `<div class="fs-notes">${low.by === "neutralParty" ? "Neutral Party" : "Underfoot"}: attack re-rolled ${low.original} → <strong>${low.total}</strong></div>`;
       if (defense) html.querySelectorAll(`.fs-target[data-index="${index}"] .fs-block-row, .fs-target[data-index="${index}"] .fs-quartz-row`).forEach(r => r.remove());
       for (const q of actions.findQuartz(message.id, index)) {
         const owner = fromUuidSync(q)?.parent;
@@ -650,7 +656,7 @@ Hooks.on("createChatMessage", message => {
   const ref = message.getFlag("flowstate", "defense")?.attackMessage ?? message.getFlag("flowstate", "damage")?.defenseMessage
     ?? message.getFlag("flowstate", "closeQuarters")?.attackMessage ?? message.getFlag("flowstate", "shift")?.attackMessage
     ?? message.getFlag("flowstate", "distract")?.attackMessage ?? message.getFlag("flowstate", "reachOf") ?? message.getFlag("flowstate", "momentumOf")
-    ?? message.getFlag("flowstate", "dash")?.attackMessage ?? message.getFlag("flowstate", "lowered")?.attackMessage ?? message.getFlag("flowstate", "blockFor")?.attackMessage
+    ?? message.getFlag("flowstate", "dash")?.attackMessage ?? message.getFlag("flowstate", "lowered")?.attackMessage ?? message.getFlag("flowstate", "ancTried")?.attackMessage ?? message.getFlag("flowstate", "blockFor")?.attackMessage
     ?? message.getFlag("flowstate", "perfect")?.attackMessage ?? message.getFlag("flowstate", "dipOf") ?? message.getFlag("flowstate", "dashMoveOf")
     ?? message.getFlag("flowstate", "riposteDeclined") ?? message.getFlag("flowstate", "quartzFor")?.attackMessage ?? message.getFlag("flowstate", "adjustFor")?.attackMessage ?? message.getFlag("flowstate", "retortOf") ?? message.getFlag("flowstate", "limberOf")
     ?? message.getFlag("flowstate", "spellCancelled")?.attackMessage ?? message.getFlag("flowstate", "mentalActDone")?.card
@@ -1815,19 +1821,3 @@ Hooks.on("preUpdateItem", (item, changes) => {
 });
 
 
-/* -------------------------------------------- */
-/*  Scene setting: Lush biome (Emerald Affix)   */
-/* -------------------------------------------- */
-
-Hooks.on("renderSceneConfig", (app, html) => {
-  try {
-    const el = html instanceof HTMLElement ? html : html?.[0];
-    if (!el || el.querySelector('[name="flags.flowstate.lush"]')) return;
-    const scene = app.document ?? app.object;
-    const group = document.createElement("div");
-    group.className = "form-group";
-    group.innerHTML = `<label>Lush biome (Flow State)</label><div class="form-fields"><input type="checkbox" name="flags.flowstate.lush" ${scene?.getFlag?.("flowstate", "lush") ? "checked" : ""}></div><p class="hint">Emerald Affixes treat this scene as a Lush biome.</p>`;
-    const tab = el.querySelector('.tab[data-tab="basic"]') ?? el.querySelector(".tab") ?? el.querySelector("form");
-    tab?.appendChild(group);
-  } catch (err) { console.warn("flowstate | Lush biome setting not added", err); }
-});

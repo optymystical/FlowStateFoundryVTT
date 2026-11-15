@@ -67,7 +67,7 @@
     <div class="fs-field"><label>Black Opal: range that gets +50%</label><select name="system.opalRange" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions opalChoices selected=system.opalRange}}</select></div>
     {{/if}}
     {{#if hasEmerald}}
-    <div class="fs-field fs-checks-row"><label><input type="checkbox" name="system.lush" {{checked system.lush}} {{#unless stateEditable}}disabled{{/unless}}> In a Lush biome (Emerald)</label></div>
+    <div class="fs-field fs-checks-row"><label><input type="checkbox" name="system.lush" {{checked system.lush}} {{#unless stateEditable}}disabled{{/unless}}> In a Lush biome (Emerald; a scene set to Lush counts too)</label></div>
     {{/if}}
   </section>
   {{else}}

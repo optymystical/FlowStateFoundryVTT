@@ -88,6 +88,22 @@ const unbashed = await actions.damageOutcome(tank, 25, "heat", { limitSpent: { l
 ok2(bashed1.toHp === 6 + pL && bashed2.toHp === 25 && unbashed.toHp < 25, `A Bash lets the whole woven hit through (${bashed1.toHp} + ${bashed2.toHp})`);
 out = await actions.damageOutcome(hero, 25, "physical", { pierce: 5 });
 ok2(out.toHp === 25 - (10 * mult - 5), "Pierce lowers the Shroud's Limit");
+// Emerald: the Limit is doubled in a Lush biome (the item's checkbox, or the scene's Environment set to Lush), halved anywhere else; once, not twice.
+await sh.update({ "system.affixes": ["emerald"] });
+out = await actions.damageOutcome(hero, 100, "physical", {});
+ok2(sh.system.profile.limit === 5 * mult && 100 - out.toHp === 5 * mult, `Emerald outside a Lush biome: Limit halved once (${sh.system.profile.limit}, soaked ${100 - out.toHp})`);
+const canvasWas = globalThis.canvas;
+globalThis.canvas = { scene: { flags: { flowstate: { environment: { type: "lush" } } } } };
+out = await actions.damageOutcome(hero, 100, "physical", {});
+ok2(100 - out.toHp === 20 * mult, `...a scene whose Environment is Lush doubles it once (soaked ${100 - out.toHp})`);
+globalThis.canvas = { scene: { flags: { flowstate: { lush: true } } } };
+out = await actions.damageOutcome(hero, 100, "physical", {});
+ok2(100 - out.toHp === 20 * mult, "...an older scene's Lush biome checkbox still counts");
+globalThis.canvas = canvasWas;
+await sh.update({ "system.affixes": [], "system.lush": true });
+out = await actions.damageOutcome(hero, 25, "physical", {});
+ok2(25 - out.toHp === 10 * mult, "...and the item's Lush checkbox does nothing without Emerald");
+await sh.update({ "system.lush": false });
 await sh.update({ "system.affixes": ["painite", "jasper"] });
 out = await actions.damageOutcome(hero, 25, "physical", { pierce: 5 });
 ok2(out.toHp === Math.max(0, 25 - sh.system.profile.scaling - 10 * mult) && out.shrouds[0].update["system.negated"]?.includes("physical"), `Bastion holds 2 Affixes: Jasper negates ${sh.system.profile.scaling}, Painite ignores Pierce (toHp ${out.toHp})`);

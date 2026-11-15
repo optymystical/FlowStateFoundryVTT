@@ -283,9 +283,10 @@ console.log("== Phantom Pain and Lush");
 clean6(); const painBefore = orc.system.hp.pain;
 await actions.applySpellEffect(orc, { kind: "mirage", caster: hero.uuid, name: "Mirage", power: 10, max: 10, phantomTotal: 12 });
 ok2(orc.system.hp.pain === painBefore + 12, `Phantom Pain: the illusion damage raises the Pain Threshold (${painBefore} → ${orc.system.hp.pain})`);
-ok2(actions.sceneLush() === false, "A scene is not Lush unless it's marked");
-globalThis.canvas = { scene: { getFlag: (s, k) => k === "lush" } };
-ok2(actions.sceneLush() === true, "…a scene marked Lush counts for Emerald");
+{ const { lushAt } = await import("../../module/environment-rules.mjs");
+  ok2(lushAt() === false, "A scene is not Lush unless it's marked");
+  globalThis.canvas = { scene: { flags: { flowstate: { environment: { type: "lush" } } } } };
+  ok2(lushAt() === true, "…a scene whose Environment is Lush counts for Emerald"); }
 globalThis.canvas = null;
 
 console.log("== Animated weapon");

@@ -19,6 +19,8 @@ export function envOf(scene) {
   const e = scene?.flags?.flowstate?.environment;
   return e && (e.type || e.hazard) ? e : null;
 }
+/** Is the scene a Lush biome? (The Environment's biome type; an older scene's "Lush biome" checkbox, flag `lush`, still counts.) Emerald reads this. */
+export const lushAt = (scene = globalThis.canvas?.scene) => envOf(scene)?.type === "lush" || !!scene?.flags?.flowstate?.lush;
 /** The biomes a creature is Acclimated to (Wusonian T1; two at T4, any number at T5). */
 export function acclimatedTo(actor) {
   const t = tier(actor, "ancestry-wusonian");

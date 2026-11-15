@@ -1,7 +1,7 @@
 import {
   STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS, downwardProne, heightFt } from "./rules.mjs";
 import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, damageCategories, limitFactor, DAMAGE_CATEGORY } from "./martial.mjs";
-import { AFFIXES, shroudBlocks, affixMultOf } from "./magic.mjs";
+import { AFFIXES, shroudBlocks, affixMultOf, emeraldLimit } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import * as ab from "./abilities.mjs";
 import * as fx from "./spellfx.mjs";
@@ -15,7 +15,7 @@ import { pickSpot, candidateSpots } from "./placement.mjs";
 import { notCreature, isLiving, fusedFociOf } from "./kinds.mjs";
 import { esc, DialogV2, dialogHead } from "./html.mjs";
 import { takeEdge } from "./edge.mjs";
-import { envFor } from "./environment-rules.mjs";
+import { envFor, lushAt } from "./environment-rules.mjs";
 import { energyHave } from "./consumables-rules.mjs";
 export { gridFor };
 
@@ -6878,10 +6878,10 @@ function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend =
     lines.push(`${why.join(", ")}: Weakened ${before} → ${remaining}`);
   }
   // Limit: Cinder triples against types already taken this turn; Painite can't be ignored (no Pierce).
-  let L = P.limit;
+  let L = P.preEmerald ?? P.limit;
   if (sh.system.shroudType === "cinder" && (sh.parent?.getFlag?.("flowstate", "takenTypes") ?? []).includes(type)) L = P.baseLimit * 3;
-  // Emerald: doubled in a Lush biome, halved anywhere else.
-  if (hasAffix(sh, "emerald")) L = sh.system.lush || sceneLush() ? L * 2 : Math.floor(L / 2);
+  // Emerald: doubled in a Lush biome (the item's checkbox or the scene's Environment), halved anywhere else; applied once, here.
+  if (hasAffix(sh, "emerald")) L = emeraldLimit(L, sh.system.lush || lushAt(), affixMultOf(P, "emerald"));
   // Weaving: a woven hit's parts share one Limit and the Durability left (a Shroud blocks every category at the same rate).
   const spentLimit = limitSpent?.limit?.[sh.uuid] ?? 0, spentDur = limitSpent?.dur?.[sh.uuid] ?? 0;
   L = Math.max(0, L - spentLimit);
@@ -6920,9 +6920,6 @@ function shroudSoak(sh, actor, type, { remaining, cleaveLeft, pierce = 0, rend =
   }
   return { remaining, cleaveLeft, lines, loss, absorbed, update: Object.keys(update).length ? update : null };
 }
-
-/** Is the current scene a Lush biome? (A scene setting; Emerald also has its own checkbox on the item.) */
-export const sceneLush = () => !!globalThis.canvas?.scene?.getFlag?.("flowstate", "lush");
 
 /** Musgravite (Shroud): Force against you is reduced by your Scaling Stat. */
 export function musgraviteNegate(actor) {

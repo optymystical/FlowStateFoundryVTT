@@ -229,3 +229,6 @@ export function castsTwice(type, lastKey, key) {
   if (type === "tome") return lastKey === key;
   return false;
 }
+
+/** Emerald (Shroud): the Limit doubled in a Lush biome, halved anywhere else (× the affix multiplier). */
+export const emeraldLimit = (limit, lush, mult = 1) => (lush ? limit * 2 * mult : Math.floor(limit / (2 * mult)));

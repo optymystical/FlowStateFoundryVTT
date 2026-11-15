@@ -2,6 +2,12 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.91.1:** Fixes from the live test of the new content.
+- **Emerald** reads the scene's Environment: a Lush biome counts (the old Scene Configuration checkbox is folded into the Environment tool; a scene that had it opens as Lush). Its Shroud side was doubling or halving the Limit twice (×4/÷4); now once.
+- **Shadow Spirit:** the spirit's moves are paid by its body (they were charged to the spirit token, so they cost nothing).
+- **Underfoot / Neutral Party:** the button leaves the attack card once used, and the card shows the re-rolled attack.
+- Searing Zeal and Elemental Mastery are named in the damage card's stacks; Grudgebearer's card says who is Strengthened against whom.
+
 **0.91.0:** ABCs part 2: the ancestry abilities, and Environments.
 - **Action List (Ancestry group):** Shed the Heat, Acclimated, Territorial, Lucky (and Charmed Life), Good Spirits, Duelist, Topple, Overgrowth, Ward of the Hold, Elemental Wings, Mob Rule, Shadow Spirit (a spirit token you move and cast Spells from) and Transference, the Drakenblood breath attack (ranged 15 ft, the gland's element, fists free) and Elemental Diversity. Every other active ancestry ability pays its cost and posts its text.
 - **In the exchange:** Small Target, Home Ground, Mob Rule (attack Advantage); Mindful of Fragility, Awakened Scales, Underdog (dodge Advantage); Underfoot and Neutral Party (buttons on the attack card: the attack is re-rolled, the lower stands); Unlucky (and Jinx) and Indomitable after the dodge; Searing Zeal and Elemental Mastery as damage is rolled; Grudgebearer.

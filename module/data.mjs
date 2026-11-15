@@ -1,11 +1,12 @@
 import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats, statPointsLeft, equipSize, equipStacks, applyStacks, loadFor, encumbrance } from "./rules.mjs";
 import { spentPoints } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
-import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile, affixProfile, affixMultOf, affixSpeedPct, attunedAffixKeys, attunedAffixItems } from "./magic.mjs";
+import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile, affixProfile, affixMultOf, affixSpeedPct, attunedAffixKeys, attunedAffixItems, emeraldLimit } from "./magic.mjs";
 import { penalizedDie } from "./spellfx.mjs";
 import { FORMS, iconProfile, alignmentSpeedPct, alignmentApLoss } from "./mental-rules.mjs";
 import { linkFor, identityFor, isGenerated } from "./catalog.mjs";
 import { fusedFociOf } from "./kinds.mjs";
+import { lushAt } from "./environment-rules.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
@@ -653,8 +654,10 @@ export class FlowStateShroudData extends foundry.abstract.TypeDataModel {
       if (t === "carapace") factor += this.carapace;
       p.limitFactor = factor;
       p.limit = p.baseLimit * factor;
-      // Emerald: doubled in a Lush biome, halved elsewhere (×2 / ÷4 with an upgraded affix).
-      if (p.affixes.includes("emerald")) p.limit = this.lush ? p.limit * 2 * affixMultOf(p, "emerald") : Math.floor(p.limit / (2 * affixMultOf(p, "emerald")));
+      // Emerald: doubled in a Lush biome, halved elsewhere (×4 / ÷4 with an upgraded affix). The soak applies it again from preEmerald
+      // at the moment of the hit (the scene may have changed since this was prepared).
+      p.preEmerald = p.limit;
+      if (p.affixes.includes("emerald")) p.limit = emeraldLimit(p.limit, this.lush || lushAt(), affixMultOf(p, "emerald"));
       p.recovery = t === "cistern" || t === "ember" ? p.limit : p.baseLimit;
     }
     this.profile = p;

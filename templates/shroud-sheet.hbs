@@ -52,7 +52,7 @@
       <select name="system.doubled" {{#unless stateEditable}}disabled{{/unless}}>{{selectOptions doubledChoices selected=p.doubled}}</select></div>
     {{/if}}{{/if}}
     {{#if hasEmerald}}
-    <div class="fs-field fs-checks-row"><label><input type="checkbox" name="system.lush" {{checked system.lush}} {{#unless stateEditable}}disabled{{/unless}}> In a Lush biome (Emerald)</label></div>
+    <div class="fs-field fs-checks-row"><label><input type="checkbox" name="system.lush" {{checked system.lush}} {{#unless stateEditable}}disabled{{/unless}}> In a Lush biome (Emerald; a scene set to Lush counts too)</label></div>
     {{/if}}
   </section>
   {{else}}

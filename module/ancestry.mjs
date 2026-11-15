@@ -416,7 +416,8 @@ async function react(choice, message, index, target, entry, { effectiveEntry, re
     const theirs = await rollKit.evaluate(poolFormula(1, them, rollKit.noAdvantage(attacker, rollKit.net(attacker))));
     const won = mine.total >= theirs.total;
     const head = `${await rollKit.rollBlock(mine, `${esc(target.name)}'s persuasion (d${die})`)}${await rollKit.rollBlock(theirs, `${esc(attacker?.name ?? "")}'s counter check (d${them})`)}`;
-    if (!won) return post(target, { title: `${esc(entry.name)} — Neutral Party`, rolls: [mine, theirs], body: `${head}<div class="fs-result">${esc(attacker?.name ?? "")} isn't persuaded.</div>` });
+    if (!won) return post(target, { title: `${esc(entry.name)} — Neutral Party`, rolls: [mine, theirs], body: `${head}<div class="fs-result">${esc(attacker?.name ?? "")} isn't persuaded.</div>`,
+      flags: { flowstate: { ancTried: { attackMessage: message.id, index, by: key } } } });
     return lower("Neutral Party", `${head}<div class="fs-notes">Persuaded: ${esc(attacker?.name ?? "")} must choose a different target if it can (the GM's call); otherwise the attack is made with Disadvantage.</div>`);
   }
   return null;
@@ -490,7 +491,7 @@ async function beforeDamage(attacker, target, o) {
     if (!used(attacker, "searingZeal", scope) && (await askFor(attacker, { title: `${attacker.name}: Searing Zeal?`, react: "searingZeal", ok: "Searing Zeal",
       html: `<p>You hit ${esc(target.name)}. Make the damage Heat with a Strengthened stack? Once per ${scope}.</p>` }))) {
       await use(attacker, "searingZeal", scope);
-      out = { ...out, type: "heat", stacks: (out.stacks ?? 0) + 1, notes: [...(out.notes ?? []), "Searing Zeal: Heat, +1 Strengthened"] };
+      out = { ...out, type: "heat", ancStacks: [...(out.ancStacks ?? []), "Searing Zeal"], notes: [...(out.notes ?? []), "Searing Zeal: Heat, +1 Strengthened"] };
     }
   }
   if (tier(attacker, "ancestry-draken-elements") >= 3 && elements(attacker).includes(out.type)) {
@@ -498,17 +499,18 @@ async function beforeDamage(attacker, target, o) {
     if (!used(attacker, "mastery", scope) && (await askFor(attacker, { title: `${attacker.name}: Elemental Mastery?`, react: "elementalMastery", ok: "Strengthen it",
       html: `<p>Give this ${esc(GLAND_ELEMENTS[out.type] ?? out.type)} damage to ${esc(target.name)} a Strengthened stack? Once per ${scope}.</p>` }))) {
       await use(attacker, "mastery", scope);
-      out = { ...out, stacks: (out.stacks ?? 0) + 1, notes: [...(out.notes ?? []), "Elemental Mastery: +1 Strengthened"] };
+      out = { ...out, ancStacks: [...(out.ancStacks ?? []), "Elemental Mastery"], notes: [...(out.notes ?? []), "Elemental Mastery: +1 Strengthened"] };
     }
   }
   return out;
 }
 
-/** Strengthened/Weakened stacks for one hit: Grudgebearer (+1 against your Grudge). */
-function damageStacks({ attacker, target }) {
+/** Strengthened/Weakened stacks for one hit: Searing Zeal and Elemental Mastery (chosen as damage is rolled), Grudgebearer (+1 against your Grudge). */
+function damageStacks({ attacker, target, o }) {
+  const parts = (o?.ancStacks ?? []).map(n => `+1 ${n}`);
   const g = attacker?.getFlag?.("flowstate", "grudge");
-  if (g && g.uuid === target?.uuid && g.combat === combatKey()) return { stacks: 1, parts: ["+1 Grudgebearer"] };
-  return { stacks: 0, parts: [] };
+  if (g && g.uuid === target?.uuid && g.combat === combatKey()) parts.push("+1 Grudgebearer");
+  return { stacks: parts.length, parts };
 }
 
 /**
@@ -546,7 +548,7 @@ async function afterDamage(actor, amount, type, { attacker = null } = {}) {
     if (await askFor(actor, { title: `${actor.name}: Grudgebearer?`, react: "grudge", ok: "Mark them", html: `<p>${esc(att.name)} hurt you. Mark them as your Grudge for this combat (your attacks against them are Strengthened)? Once per combat.</p>` })) {
       await use(actor, "grudge", "combat");
       await setActorFlag(actor, "grudge", { uuid: att.uuid, name: att.name, combat: combatKey() });
-      await card(actor, "Grudgebearer", `<div class="fs-result">${esc(att.name)} is ${esc(actor.name)}'s Grudge: their attacks against them are Strengthened for the rest of the combat.</div>`);
+      await card(actor, "Grudgebearer", `<div class="fs-result">${esc(att.name)} is ${esc(actor.name)}'s Grudge: ${esc(actor.name)}'s attacks against ${esc(att.name)} are Strengthened for the rest of the combat.</div>`);
     }
   }
   if (tier(actor, "ancestry-draken-elements") >= 4 && elements(actor).includes(type) && !used(actor, "absorb", "combat") && (actor.system.rp?.value ?? 0) >= 2 && !actor.statuses?.has?.("fear")) {

@@ -27,6 +27,12 @@ const near100 = (a, b) => { const ta = attackerToken(a), tb = b ? attackerToken(
 export const fixationOf = actor => (snapTier(actor) >= 3 ? actor.getFlag?.("flowstate", "fixation") ?? null : null);
 export const afterimageReady = actor => snapTier(actor) >= 5 && !usedThisRound(actor, "afterimage");
 export const useAfterimage = actor => markRound(actor, "afterimage");
+/** The least Energy a Reflex can cost this creature: half the Scaling Stat min of a Wonder it can Manifest (null when it can Manifest none). */
+export function reflexEnergy(actor) {
+  const costs = R.knownWonders(actor.system?.trees ?? {}).filter(w => w.modes.length).map(w => R.KINDS[w.kind].stat)
+    .filter(k => R.wonderPower(actor.system?.derived?.effective?.[k]?.value ?? 0) >= 1).map(k => Math.floor(ab.statMinOf(actor, k) / 2));
+  return costs.length ? Math.min(...costs) : null;
+}
 
 /* -------------------------------------------- */
 /*  Reflex                                      */
@@ -56,6 +62,9 @@ export async function offerReflex(attacker, opts) {
     if (a.uuid === attacker.uuid || notCreature(a) || snapTier(a) < 1 || helpless(a) || !near100(a, attacker)) continue;
     const free = afterimageReady(a);
     if (!free && (a.system.rp?.value ?? 0) < 1) continue;
+    // Not offered when it can't be paid for: no Wonder it can Manifest, or (without Afterimage) not enough Energy for the cheapest.
+    const need = reflexEnergy(a);
+    if (need === null || (!free && energyHave(a) < need)) continue;
     const pickable = [attacker, ...defenders];
     const ans = await askFor(a, { react: "reflex", title: "Reflex", ok: "Use Reflex", html: `<p><strong>Reflex</strong>: ${esc(attacker.name)} is about to attack${defenders.length ? ` ${esc(defenders.map(d => d.name).join(", "))}` : ""}. Manifest a Wonder first, its effects ${fixationOf(a) === attacker.uuid ? "not Weakened (your Fixation)" : "Weakened"}.</p>
       <div class="fs-field"><label>Manifest at</label><select name="who">${pickable.map(t => `<option value="${esc(t.uuid)}">${esc(t.name)}${t.uuid === attacker.uuid ? " (attacker)" : " (defender)"}</option>`).join("")}</select></div>

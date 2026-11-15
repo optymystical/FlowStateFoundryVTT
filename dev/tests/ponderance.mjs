@@ -326,7 +326,7 @@ ok2(hero.system.rp.value === pr2.rp && hero.system.energy.value === pr2.e && !SN
 
 // An attack offers Reflex to those who can sense it (and a Reflex isn't itself offered)
 tree("mental-snappence-arts", 0);
-ally.system.trees["mental-snappence-arts"] = 1; ally.system.prepareDerivedData();
+ally.system.trees["mental-snappence-arts"] = 1; ally.system.trees["mental-death-nightmare"] = 1; ally.system.stats.snap = 30; ally.system.prepareDerivedData();          // a Wonder it can Manifest (Reflex isn't offered otherwise)
 const spied = []; const realReflex = W.ACTS.reflex; W.ACTS.reflex = async (x, c) => { spied.push([c.name, x.trigger, x.target]); return true; };
 dialog = () => null; await SN.offerReflex(orc, {});
 ok2(spied.length === 0, "Declining the Reflex offer does nothing");
@@ -336,6 +336,8 @@ spied.length = 0; let popup = ""; dialog = h => { popup = String(h); return { wh
 ok2(spied[0]?.[2] === hero.uuid && popup.includes(`value="${orc.uuid}"`) && popup.includes(`value="${hero.uuid}"`), "…and the Reflex user can pick the attacker or the defender as the target");
 spied.length = 0; dialog = () => ({}); await SN.offerReflex(orc, { mental: { reflex: true } });
 ok2(spied.length === 0, "…but a Reflex Manifest doesn't set off other Reflexes");
+{ const e0 = ally.system.energy.value; ally.system.energy.value = 0; spied.length = 0; dialog = () => ({}); await SN.offerReflex(orc, { targetActors: [hero] });
+  ok2(spied.length === 0, "…nor is it offered to a character without the Energy to pay for it"); ally.system.energy.value = e0; }
 W.ACTS.reflex = realReflex; ally.system.trees["mental-snappence-arts"] = 0; ally.system.prepareDerivedData();
 tree("mental-snappence-arts", 0);
 

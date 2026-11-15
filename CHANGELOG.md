@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.98.5:** Sim-found fix: Reflex (Snappence Arts) was offered on every attack nearby even when the character couldn't pay for it (no Energy left, or no Wonder its stat can Manifest), and a "yes" then failed; it's now only offered when it can be paid for.
+
 **0.98.4:** Sim-found fix: an Area spell's region removed twice in the same moment (a turn start and a broken barrier) logged a "does not exist" error; a region that's already gone is now skipped.
 
 **0.98.3:** Sim-found fix: the Manifest dialog (and Reflex, which opens it) started on the first Wonder you know even when its stat is under 10, so it couldn't be Manifested (a Snappence character with Life from the Novice Background). Such a Wonder is now listed but greyed out ("needs Ponderance 10"), and the dialog starts on one you can use. Dormant creatures leave the tracker the way downed ones do.

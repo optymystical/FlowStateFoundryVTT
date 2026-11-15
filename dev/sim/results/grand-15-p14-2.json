@@ -1,0 +1,1845 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 534,
+  "winner": "unfinished",
+  "pass": "grand-15-p14",
+  "rounds": 16,
+  "partyLeft": 1,
+  "monstersLeft": 5,
+  "followups": 74,
+  "knockbacks": {},
+  "used": {
+   "manifest:Mire+": 18,
+   "defend:dodge": 377,
+   "ward": 33,
+   "manifest:Bloom": 30,
+   "manifest:Flourish": 30,
+   "Parry": 9,
+   "limber": 84,
+   "cast:Force + Cut": 30,
+   "mod:Pinpoint": 1,
+   "mod:Bleed": 16,
+   "manifest:Jinx+": 30,
+   "Brace": 8,
+   "opt:windup=2": 1,
+   "defend:closeQuarters": 4,
+   "perfectRiposte": 1,
+   "riposte": 3,
+   "manifest:Wager+": 6,
+   "recoverEnergy": 17,
+   "Shatter": 4,
+   "Leap": 1,
+   "defend:dash": 48,
+   "opt:twinFang=adv": 28,
+   "opt:heavyTech=kick": 8,
+   "opt:heavyTech=dragon": 7,
+   "opt:whirlwind=blender": 5,
+   "opt:windup=1": 1,
+   "redirect": 3,
+   "opt:thrasherGrapple": 1,
+   "Dip": 6,
+   "breakFree": 4,
+   "Break Free": 4,
+   "combo": 2,
+   "flowLikeWater": 2,
+   "opt:jab": 2,
+   "combo:skipped": 3,
+   "flowLikeWater:skipped": 3,
+   "manifest:Mire": 6,
+   "manifest:Jinx": 15,
+   "limber:skipped": 10,
+   "opt:whirlwind=on": 1,
+   "dipMoveOffered:skipped": 1,
+   "redirect:skipped": 3
+  },
+  "hp": {
+   "L15 Stagnation#371E": "135/279",
+   "L15 Thrasher#XjyB": "120/279",
+   "L15 Esoteric#LGGB": "251/279",
+   "L15 Unarmored#d0yY": "130/279",
+   "L15 Fortune#SeA3": "126/279",
+   "L15 Ruin#tD7i": "279/279",
+   "L15 Brawling B#3YsD": "275/279",
+   "L15 Protection Arcana B#ij1H": "279/279",
+   "L15 Psion B#tbnl": "166/186",
+   "L15 Bladed B#0aGV": "244/279"
+  },
+  "down": [
+   "L15 Stagnation",
+   "L15 Thrasher",
+   "L15 Unarmored",
+   "L15 Fortune"
+  ],
+  "weapons": {
+   "Manifest: Mire (Manifest)": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 12,
+    "crits": 3,
+    "misses": 12,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Stagnation"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 18,
+    "followups": 0,
+    "hits": 13,
+    "crits": 4,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Esoteric",
+     "L15 Fortune"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 11,
+    "crits": 4,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Esoteric"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Esoteric"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 11,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Psion B"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 2,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Psion B"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Psion B"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 50,
+    "followups": 3,
+    "hits": 20,
+    "crits": 4,
+    "misses": 45,
+    "damage": 37,
+    "ap": 106,
+    "kills": 0,
+    "users": [
+     "L15 Bladed B",
+     "L15 Unarmored"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 28,
+    "followups": 75,
+    "hits": 40,
+    "crits": 8,
+    "misses": 63,
+    "damage": 106,
+    "ap": 58,
+    "kills": 0,
+    "users": [
+     "L15 Bladed B",
+     "L15 Unarmored",
+     "L15 Brawling B",
+     "L15 Thrasher"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 15,
+    "crits": 0,
+    "misses": 15,
+    "damage": 253,
+    "ap": 90,
+    "kills": 0,
+    "users": [
+     "L15 Protection Arcana B"
+    ]
+   },
+   "Manifest: Jinx (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 21,
+    "crits": 6,
+    "misses": 24,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Ruin"
+    ]
+   },
+   "Heavy Thrasher": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Thrasher"
+    ]
+   },
+   "Manifest: Wager (Manifest)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Fortune"
+    ]
+   },
+   "Other: Break Free [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Brawling B"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 0,
+    "followups": 4,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 24,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Brawling B"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 4,
+    "users": []
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 12,
+    "absorbed": 42
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 4
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Stagnation",
+    "dealt": 0,
+    "taken": 45,
+    "hits": 12,
+    "attacks": 24
+   },
+   {
+    "name": "L15 Psion B",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 25,
+    "attacks": 45
+   },
+   {
+    "name": "L15 Esoteric",
+    "dealt": 0,
+    "taken": 14,
+    "hits": 26,
+    "attacks": 45
+   },
+   {
+    "name": "L15 Bladed B",
+    "dealt": 104,
+    "taken": 35,
+    "hits": 22,
+    "attacks": 58
+   },
+   {
+    "name": "L15 Thrasher",
+    "dealt": 0,
+    "taken": 119,
+    "hits": 9,
+    "attacks": 13
+   },
+   {
+    "name": "L15 Protection Arcana B",
+    "dealt": 253,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 30
+   },
+   {
+    "name": "L15 Ruin",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 45
+   },
+   {
+    "name": "L15 Fortune",
+    "dealt": 0,
+    "taken": 99,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "L15 Unarmored",
+    "dealt": 39,
+    "taken": 104,
+    "hits": 11,
+    "attacks": 47
+   },
+   {
+    "name": "L15 Brawling B",
+    "dealt": 24,
+    "taken": 4,
+    "hits": 26,
+    "attacks": 50
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Stagnation",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 24,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 24,
+    "used": {
+     "manifest:Mire+": 18,
+     "defend:dodge": 33,
+     "manifest:Mire": 6
+    }
+   },
+   {
+    "name": "L15 Psion B",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 40,
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15
+    },
+    "turnMoved": 0,
+    "manifests": 30
+   },
+   {
+    "name": "L15 Esoteric",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "defend:dodge": 56,
+     "manifest:Flourish": 15
+    },
+    "manifests": 30
+   },
+   {
+    "name": "L15 Bladed B",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 90,
+    "attacks": 55,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Parry": 6,
+     "defend:closeQuarters": 4,
+     "defend:dodge": 84,
+     "perfectRiposte": 1,
+     "riposte": 2,
+     "recoverEnergy": 9
+    },
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "L15 Thrasher",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 13,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 99,
+     "limber": 58,
+     "Brace": 1,
+     "limber:skipped": 4
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "thr": 4,
+    "lastTech": "kick",
+    "shank": 0
+   },
+   {
+    "name": "L15 Protection Arcana B",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Force + Cut": 30,
+     "mod:Pinpoint": 1,
+     "mod:Bleed": 16
+    }
+   },
+   {
+    "name": "L15 Ruin",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 45,
+    "used": {
+     "manifest:Jinx+": 30,
+     "manifest:Jinx": 15
+    }
+   },
+   {
+    "name": "L15 Fortune",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 6,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 3,
+     "manifest:Wager+": 6,
+     "recoverEnergy": 2,
+     "defend:dodge": 6
+    },
+    "manifests": 6
+   },
+   {
+    "name": "L15 Unarmored",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 25,
+    "attacks": 46,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Parry": 3,
+     "Shatter": 4,
+     "Leap": 1,
+     "defend:dash": 48,
+     "defend:dodge": 48,
+     "recoverEnergy": 1
+    },
+    "fist": "Dip",
+    "leapt": true,
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "L15 Brawling B",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 97.62491919323965,
+    "attacks": 41,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Brace": 7,
+     "limber": 26,
+     "defend:dodge": 11,
+     "redirect": 3,
+     "Dip": 6,
+     "breakFree": 4,
+     "Break Free": 4,
+     "combo": 2,
+     "flowLikeWater": 2,
+     "combo:skipped": 3,
+     "flowLikeWater:skipped": 3,
+     "riposte": 1,
+     "dipMoveOffered:skipped": 1,
+     "limber:skipped": 6,
+     "redirect:skipped": 3,
+     "recoverEnergy": 5
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 1
+   }
+  ],
+  "trees": {
+   "L15 Stagnation": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 3,
+    "generic-initiative": 1,
+    "generic-endurance": 1
+   },
+   "L15 Thrasher": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 2
+   },
+   "L15 Esoteric": {
+    "mental-theory": 5,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-esoteric-arts": 2
+   },
+   "L15 Unarmored": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-unarmored": 2
+   },
+   "L15 Fortune": {
+    "mental-theory": 5,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-fortune-dream": 2
+   }
+  },
+  "gear": {
+   "L15 Stagnation": [
+    "Unarmed G1"
+   ],
+   "L15 Thrasher": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Thrasher (Steel) G3"
+   ],
+   "L15 Esoteric": [
+    "Unarmed G1"
+   ],
+   "L15 Unarmored": [
+    "Unarmed G1",
+    "Light Bladed (Steel) G3"
+   ],
+   "L15 Fortune": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L15 Ruin": [
+    "Unarmed"
+   ],
+   "L15 Brawling B": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L15 Protection Arcana B": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Psion B": [
+    "Unarmed"
+   ],
+   "L15 Bladed B": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Bladed (Steel)"
+   ]
+  },
+  "gearState": {
+   "L15 Stagnation": [],
+   "L15 Thrasher": [
+    "Medium Armor (Hard Leather): 16/60",
+    "Heavy Thrasher (Steel): 270/270"
+   ],
+   "L15 Esoteric": [],
+   "L15 Unarmored": [
+    "Light Bladed (Steel): 108/135"
+   ],
+   "L15 Fortune": [],
+   "L15 Ruin": [],
+   "L15 Brawling B": [
+    "Medium Armor (Hard Leather): 54/60"
+   ],
+   "L15 Protection Arcana B": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Psion B": [],
+   "L15 Bladed B": [
+    "Light Armor (Hard Leather): 25/30",
+    "Light Bladed (Steel): 71/135"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 1302,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1324,
+    "monsterHp": 1302,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1241,
+    "monsterHp": 1297,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1208,
+    "monsterHp": 1268,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1124,
+    "monsterHp": 1267,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1124,
+    "monsterHp": 1247,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1050,
+    "monsterHp": 1247,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 918,
+    "monsterHp": 1243,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 872,
+    "monsterHp": 1243,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 790,
+    "monsterHp": 1243,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 790,
+    "monsterHp": 1243,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 790,
+    "monsterHp": 1243,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 790,
+    "monsterHp": 1243,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 790,
+    "monsterHp": 1243,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 762,
+    "monsterHp": 1243,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 762,
+    "monsterHp": 1243,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 762,
+    "monsterHp": 1243,
+    "partyDown": 4,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Bladed B": 104,
+    "L15 Protection Arcana B": 253,
+    "L15 Unarmored": 39,
+    "L15 Fortune": 20,
+    "L15 Brawling B": 24
+   },
+   "taken": {
+    "L15 Thrasher": 159,
+    "L15 Fortune": 153,
+    "L15 Unarmored": 149,
+    "L15 Bladed B": 35,
+    "L15 Psion B": 20,
+    "L15 Stagnation": 144,
+    "L15 Brawling B": 4,
+    "L15 Esoteric": 28
+   },
+   "unattributed": 252
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 213,
+   "monsters": 59
+  },
+  "lostBy": {
+   "party": 633,
+   "monsters": 59
+  },
+  "directTaken": {
+   "party": 420,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Stagnation: Alacrity?": 1,
+    "prompt: L# Protection Arcana B: Alacrity?": 1,
+    "prompt: Sanctum Ward: L# Esoteric": 15,
+    "prompt: Verdant Soul (Tenet)": 23,
+    "prompt: Verdant Soul: give # temp HP to": 23,
+    "prompt: Sanctum Ward: L# Psion B": 15,
+    "prompt: Light Bladed (Steel)": 49,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 46,
+    "prompt: Heavy Thrasher (Steel)": 4,
+    "prompt: Light Bladed (Steel) — Perfect Riposte": 1,
+    "prompt: Light Bladed (Steel) — Riposte": 2,
+    "prompt: Sanctum Ward: L# Fortune": 3,
+    "prompt: Chant": 2,
+    "prompt: Unarmed": 28,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 20,
+    "prompt: Moss (Tenet)": 6,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis) · Whirlwind": 6,
+    "prompt: L# Brawling B — Break Free": 4,
+    "prompt: Unarmed — Combo (Advantage)": 2,
+    "prompt: Unarmed — Flow Like Water": 2,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 2,
+    "prompt: Warden Ward": 21,
+    "prompt: Unarmed — Riposte": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Brawling B can't move through L15 Thrasher's space.",
+     "who": "L15 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Bladed B can't move through L15 Thrasher's space.",
+     "who": "L15 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Brawling B can't move through L15 Stagnation's space.",
+     "who": "L15 Brawling B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Bladed B can't move through L15 Stagnation's space.",
+     "who": "L15 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Brawling B can't move through L15 Stagnation's space.",
+     "who": "L15 Brawling B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Bladed B can't move through L15 Stagnation's space.",
+     "who": "L15 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Brawling B can't move through L15 Stagnation's space.",
+     "who": "L15 Brawling B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Bladed B can't move through L15 Stagnation's space.",
+     "who": "L15 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Brawling B can't move through L15 Stagnation's space.",
+     "who": "L15 Brawling B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Bladed B can't move through L15 Stagnation's space.",
+     "who": "L15 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Brawling B can't move through L15 Stagnation's space.",
+     "who": "L15 Brawling B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Bladed B can't move through L15 Stagnation's space.",
+     "who": "L15 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Brawling B can't move through L15 Stagnation's space.",
+     "who": "L15 Brawling B"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 456,
+  "winner": "unfinished",
+  "pass": "grand-15-p14",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 4,
+  "followups": 33,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 313,
+   "natural:Black Jaws": 36,
+   "manifest:Eclipse": 28,
+   "manifest:Umbral Strike": 23,
+   "limber": 9,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "natural:Budding Gore": 10,
+   "manifest:Bloom": 23,
+   "manifest:Flourish": 23,
+   "manifest:Mire+": 6,
+   "Brace": 1,
+   "opt:windup=2": 1,
+   "opt:windup=1": 1,
+   "ward": 30,
+   "manifest:Wager+": 4,
+   "Parry": 1,
+   "Shatter": 2,
+   "Leap": 1,
+   "opt:thrasherGrapple": 1,
+   "defend:dash": 79,
+   "manifest:Mire": 39,
+   "manifest:Wager": 26,
+   "riposte": 1
+  },
+  "hp": {
+   "L15 Stagnation#uaKi": "279/279",
+   "L15 Thrasher#IWAP": "138/279",
+   "L15 Esoteric#REHL": "279/279",
+   "L15 Unarmored#NayV": "130/279",
+   "L15 Fortune#5MXZ": "149/279",
+   "Sim Bloomrot#uSPM": "446/486",
+   "Sim Bloomrot#KjP1": "333/486",
+   "Sim Gloamhound#maws": "230/486",
+   "Sim Gloamhound#0hEa": "430/486",
+   "Sim Burgeon#71mo": "648/648"
+  },
+  "down": [
+   "L15 Thrasher",
+   "L15 Unarmored",
+   "Sim Gloamhound"
+  ],
+  "weapons": {
+   "Natural: Black Jaws [M]": {
+    "attacks": 36,
+    "followups": 0,
+    "hits": 19,
+    "crits": 1,
+    "misses": 17,
+    "damage": 135,
+    "ap": 72,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 16,
+    "crits": 4,
+    "misses": 12,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 16,
+    "crits": 6,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 66,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 5,
+    "damage": 89,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Mire (Manifest)": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 32,
+    "crits": 6,
+    "misses": 13,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Stagnation"
+    ]
+   },
+   "Heavy Thrasher": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 0,
+    "damage": 49,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Thrasher"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 27,
+    "crits": 11,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Fortune",
+     "L15 Esoteric"
+    ]
+   },
+   "Manifest: Wager (Manifest)": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 19,
+    "crits": 5,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Fortune"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 14,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Esoteric"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Esoteric"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 32,
+    "followups": 1,
+    "hits": 60,
+    "crits": 20,
+    "misses": 17,
+    "damage": 198,
+    "ap": 64,
+    "kills": 0,
+    "users": [
+     "L15 Unarmored"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 33,
+    "hits": 18,
+    "crits": 5,
+    "misses": 15,
+    "damage": 135,
+    "ap": 2,
+    "kills": 1,
+    "users": [
+     "L15 Unarmored"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 8,
+    "absorbed": 32
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 69,
+    "taken": 56,
+    "hits": 32,
+    "attacks": 56
+   },
+   {
+    "name": "L15 Thrasher",
+    "dealt": 49,
+    "taken": 141,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 66,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 74,
+    "taken": 49,
+    "hits": 9,
+    "attacks": 11
+   },
+   {
+    "name": "L15 Stagnation",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 32,
+    "attacks": 45
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 15,
+    "taken": 112,
+    "hits": 7,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 66,
+    "taken": 165,
+    "hits": 19,
+    "attacks": 31
+   },
+   {
+    "name": "L15 Fortune",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 32,
+    "attacks": 45
+   },
+   {
+    "name": "L15 Esoteric",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 19,
+    "attacks": 45
+   },
+   {
+    "name": "L15 Unarmored",
+    "dealt": 333,
+    "taken": 149,
+    "hits": 78,
+    "attacks": 66
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 91.18033988749895,
+    "attacks": 56,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 22,
+     "manifest:Eclipse": 19,
+     "manifest:Umbral Strike": 15,
+     "defend:dodge": 53
+    },
+    "manifests": 34
+   },
+   {
+    "name": "L15 Thrasher",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 26,
+     "limber": 9,
+     "Brace": 1
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "thr": 4
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 85,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 4
+    },
+    "manifests": 4
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.62257748298549,
+    "attacks": 3,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 3,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4,
+     "defend:dodge": 28
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Stagnation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 45,
+    "used": {
+     "manifest:Mire+": 6,
+     "manifest:Mire": 39
+    }
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 102.19544457292889,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 7,
+     "manifest:Bloom": 4,
+     "defend:dodge": 11,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 103.07764064044152,
+    "attacks": 31,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 14,
+     "manifest:Eclipse": 9,
+     "manifest:Umbral Strike": 8,
+     "defend:dodge": 74
+    },
+    "manifests": 17
+   },
+   {
+    "name": "L15 Fortune",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 30,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Wager+": 4,
+     "defend:dodge": 14,
+     "manifest:Wager": 26
+    },
+    "manifests": 30
+   },
+   {
+    "name": "L15 Esoteric",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15,
+     "defend:dodge": 10
+    },
+    "manifests": 30
+   },
+   {
+    "name": "L15 Unarmored",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 15,
+    "attacks": 65,
+    "turns": 11,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Shatter": 2,
+     "Leap": 1,
+     "defend:dash": 79,
+     "defend:dodge": 93,
+     "riposte": 1
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "turnMoved": 0,
+    "shank": 1,
+    "lastTech": "kick"
+   }
+  ],
+  "trees": {
+   "L15 Stagnation": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 3,
+    "generic-initiative": 1,
+    "generic-endurance": 1
+   },
+   "L15 Thrasher": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 2
+   },
+   "L15 Esoteric": {
+    "mental-theory": 5,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-esoteric-arts": 2
+   },
+   "L15 Unarmored": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-unarmored": 2
+   },
+   "L15 Fortune": {
+    "mental-theory": 5,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-fortune-dream": 2
+   }
+  },
+  "gear": {
+   "L15 Stagnation": [
+    "Unarmed G1"
+   ],
+   "L15 Thrasher": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Thrasher (Steel) G3"
+   ],
+   "L15 Esoteric": [
+    "Unarmed G1"
+   ],
+   "L15 Unarmored": [
+    "Unarmed G1",
+    "Light Bladed (Steel) G3"
+   ],
+   "L15 Fortune": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Stagnation": [],
+   "L15 Thrasher": [
+    "Medium Armor (Hard Leather): 28/60",
+    "Heavy Thrasher (Steel): 270/270"
+   ],
+   "L15 Esoteric": [],
+   "L15 Unarmored": [
+    "Light Bladed (Steel): 135/135"
+   ],
+   "L15 Fortune": [],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1321,
+    "monsterHp": 2511,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1240,
+    "monsterHp": 2502,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1172,
+    "monsterHp": 2456,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1143,
+    "monsterHp": 2349,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1134,
+    "monsterHp": 2335,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1119,
+    "monsterHp": 2319,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 1119,
+    "monsterHp": 2300,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 1086,
+    "monsterHp": 2256,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 1080,
+    "monsterHp": 2224,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 1062,
+    "monsterHp": 2195,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 12,
+    "partyHp": 1032,
+    "monsterHp": 2128,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 13,
+    "partyHp": 999,
+    "monsterHp": 2128,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 14,
+    "partyHp": 999,
+    "monsterHp": 2108,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 15,
+    "partyHp": 986,
+    "monsterHp": 2108,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 975,
+    "monsterHp": 2087,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 975,
+    "monsterHp": 2087,
+    "partyDown": 2,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "Sim Gloamhound": 135,
+    "Sim Burgeon": 66,
+    "Sim Bloomrot": 89,
+    "L15 Thrasher": 49,
+    "L15 Fortune": 174,
+    "L15 Unarmored": 333
+   },
+   "taken": {
+    "L15 Thrasher": 141,
+    "Sim Bloomrot": 244,
+    "L15 Fortune": 130,
+    "Sim Gloamhound": 312,
+    "L15 Unarmored": 149
+   },
+   "unattributed": 130
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 505
+  },
+  "lostBy": {
+   "party": 420,
+   "monsters": 505
+  },
+  "directTaken": {
+   "party": 672,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Stagnation: Alacrity?": 1,
+    "prompt: L# Stagnation: Resist Allure (as Fear)": 3,
+    "prompt: L# Thrasher: Resist Allure (as Fear)": 3,
+    "prompt: L# Esoteric: Resist Allure (as Fear)": 3,
+    "prompt: L# Unarmored: Resist Allure (as Fear)": 3,
+    "prompt: L# Fortune: Resist Allure (as Fear)": 3,
+    "prompt: L# Stagnation: Resist Dread (as Fear)": 2,
+    "prompt: L# Thrasher: Resist Dread (as Fear)": 2,
+    "prompt: L# Esoteric: Resist Dread (as Fear)": 2,
+    "prompt: L# Unarmored: Resist Dread (as Fear)": 2,
+    "prompt: L# Fortune: Resist Dread (as Fear)": 2,
+    "prompt: Shadowmark (Tenet)": 19,
+    "prompt: Shadowmark: make one step more obscured": 19,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Verdant Soul (Tenet)": 13,
+    "prompt: Verdant Soul: give # temp HP to": 13,
+    "prompt: Moss (Tenet)": 14,
+    "prompt: Heavy Thrasher (Steel)": 4,
+    "prompt: Umbral Strike": 16,
+    "prompt: Sanctum Ward: L# Fortune": 15,
+    "prompt: Chant": 5,
+    "prompt: Sanctum Ward: L# Esoteric": 15,
+    "prompt: Light Bladed (Steel)": 32,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 32,
+    "prompt: Riposte Ward": 81,
+    "prompt: Unarmed — Riposte": 1,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel) (Dis)": 1,
+    "prompt: Sporing": 2
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [0aGVSZ4edP7oAm86] does not exist in the EmbeddedCollection collection.",
+     "who": "L15 Brawling B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Unarmored is afraid and can't gain Energy.",
+     "who": "L15 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Bloomrot can't move through L15 Thrasher's space.",
+     "who": "L15 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Bloomrot can't move through L15 Thrasher's space.",
+     "who": "L15 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Thrasher's space.",
+     "who": "L15 Esoteric"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Thrasher's space.",
+     "who": "L15 Esoteric"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Thrasher's space.",
+     "who": "L15 Esoteric"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Fortune is afraid and can't gain Energy.",
+     "who": "L15 Fortune"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [0aGVSZ4edP7oAm86] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

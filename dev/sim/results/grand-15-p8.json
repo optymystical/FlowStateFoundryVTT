@@ -1,0 +1,2239 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 359,
+  "winner": "monsters",
+  "pass": "grand-15-p8",
+  "rounds": 10,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 23,
+  "knockbacks": {
+   "down": 2,
+   "into": 7,
+   "away": 1
+  },
+  "used": {
+   "Shatter": 5,
+   "opt:thrust": 10,
+   "defend:shift": 73,
+   "defend:dodge": 216,
+   "cast:Force + Cut": 33,
+   "mod:Pinpoint": 2,
+   "mod:Empower": 14,
+   "opt:dir=down": 2,
+   "manifest:Eclipse+": 12,
+   "manifest:Umbral Strike+": 8,
+   "manifest:Wither+": 4,
+   "opt:through=adv": 2,
+   "opt:letItRip": 3,
+   "opt:through=pierce": 2,
+   "ward": 5,
+   "manifest:Illuminate+": 5,
+   "manifest:Dispersion+": 5,
+   "manifest:Provoke": 4,
+   "manifest:Warzone": 4,
+   "manifest:Bloodbond": 4,
+   "Parry": 1,
+   "Spot Weakness": 1,
+   "recoverEnergy": 5,
+   "cast:Hex": 2,
+   "mod:Unravel": 1,
+   "opt:dir=into": 7,
+   "manifest:Wither": 23,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 1,
+   "opt:shank3=pierce": 1,
+   "twist": 2,
+   "twist:skipped": 3,
+   "manifest:Eclipse": 6,
+   "cast:Charm": 2,
+   "mod:Ingrained": 1,
+   "mod:Convince": 2,
+   "mod:Cloud": 2,
+   "manifest:Umbral Strike": 1,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "L15 War#e39z": "135/279",
+   "L15 Dexterity#ww61": "133/279",
+   "L15 Charm#ggVd": "59/279",
+   "L15 Snappence#uMFh": "127/279",
+   "L15 Reach#q1mC": "132/279",
+   "L15 Witchery#or9N": "77/279",
+   "L15 Light#k28W": "132/279",
+   "L15 Circular#3ojS": "136/279",
+   "L15 Build Arcana#QiwC": "274/279",
+   "L15 Dark#k69K": "175/279"
+  },
+  "down": [
+   "L15 War",
+   "L15 Dexterity",
+   "L15 Charm",
+   "L15 Snappence",
+   "L15 Reach",
+   "L15 Witchery",
+   "L15 Light",
+   "L15 Circular"
+  ],
+  "weapons": {
+   "Manifest: Wither (Manifest)": {
+    "attacks": 64,
+    "followups": 0,
+    "hits": 31,
+    "crits": 9,
+    "misses": 33,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Snappence"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 11,
+    "followups": 11,
+    "hits": 6,
+    "crits": 2,
+    "misses": 16,
+    "damage": 96,
+    "ap": 22,
+    "kills": 1,
+    "users": [
+     "L15 Reach"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 13,
+    "crits": 7,
+    "misses": 10,
+    "damage": 648,
+    "ap": 65,
+    "kills": 0,
+    "users": [
+     "L15 Build Arcana",
+     "L15 Witchery"
+    ],
+    "force": 6
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 18,
+    "followups": 0,
+    "hits": 6,
+    "crits": 5,
+    "misses": 12,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Dark"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Dark"
+    ]
+   },
+   "Light Circular": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 12,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Circular"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 12,
+    "hits": 1,
+    "crits": 0,
+    "misses": 11,
+    "damage": 3,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Circular",
+     "L15 Dexterity"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Light"
+    ]
+   },
+   "Manifest: Illuminate (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Light"
+    ]
+   },
+   "Manifest: Provoke (Manifest)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 War"
+    ]
+   },
+   "Manifest: Warzone (Manifest)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 War"
+    ]
+   },
+   "Manifest: Bloodbond (Manifest)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 War"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 7,
+    "damage": 182,
+    "ap": 30,
+    "kills": 7,
+    "users": [
+     "L15 Charm"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 10,
+    "crits": 5,
+    "misses": 7,
+    "damage": 13,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Dexterity"
+    ]
+   },
+   "Spell: Hex [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L15 Witchery"
+    ]
+   },
+   "Spell: Force + Cut [M] [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Build Arcana",
+     "L15 Witchery"
+    ]
+   },
+   "Manifest: Dispersion [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Light"
+    ]
+   },
+   "Spell: Charm": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L15 Charm"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 14,
+    "absorbed": 26
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Snappence",
+    "dealt": 0,
+    "taken": 127,
+    "hits": 31,
+    "attacks": 64
+   },
+   {
+    "name": "L15 Reach",
+    "dealt": 96,
+    "taken": 110,
+    "hits": 6,
+    "attacks": 22
+   },
+   {
+    "name": "L15 Witchery",
+    "dealt": 63,
+    "taken": 137,
+    "hits": 3,
+    "attacks": 7
+   },
+   {
+    "name": "L15 Build Arcana",
+    "dealt": 585,
+    "taken": 5,
+    "hits": 13,
+    "attacks": 23
+   },
+   {
+    "name": "L15 War",
+    "dealt": 0,
+    "taken": 115,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Dark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 27
+   },
+   {
+    "name": "L15 Circular",
+    "dealt": 12,
+    "taken": 71,
+    "hits": 2,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Light",
+    "dealt": 0,
+    "taken": 81,
+    "hits": 7,
+    "attacks": 14
+   },
+   {
+    "name": "L15 Dexterity",
+    "dealt": 16,
+    "taken": 109,
+    "hits": 11,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Charm",
+    "dealt": 182,
+    "taken": 193,
+    "hits": 7,
+    "attacks": 14
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Reach",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 97.082439194738,
+    "attacks": 22,
+    "turns": 4,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 2,
+     "defend:shift": 33,
+     "defend:dodge": 38,
+     "twist": 2,
+     "twist:skipped": 3
+    },
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "L15 Witchery",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 42,
+     "cast:Hex": 2,
+     "mod:Unravel": 1,
+     "cast:Force + Cut": 4
+    },
+    "turnMoved": 0,
+    "casts": 6,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "L15 Build Arcana",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 19,
+    "used": {
+     "cast:Force + Cut": 19,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 10,
+     "defend:dodge": 20,
+     "recoverEnergy": 3
+    },
+    "knockbacks": {
+     "down": 2,
+     "into": 4,
+     "away": 1
+    }
+   },
+   {
+    "name": "L15 War",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 12,
+     "manifest:Provoke": 4,
+     "manifest:Warzone": 4,
+     "manifest:Bloodbond": 4
+    },
+    "turnMoved": 0,
+    "manifests": 12
+   },
+   {
+    "name": "L15 Dark",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 11.180339887498949,
+    "attacks": 27,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 27,
+    "used": {
+     "manifest:Eclipse+": 12,
+     "manifest:Umbral Strike+": 8,
+     "defend:dodge": 14,
+     "manifest:Eclipse": 6,
+     "manifest:Umbral Strike": 1
+    }
+   },
+   {
+    "name": "L15 Snappence",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 27,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 27,
+    "used": {
+     "manifest:Wither+": 4,
+     "manifest:Wither": 23,
+     "defend:dodge": 19
+    }
+   },
+   {
+    "name": "L15 Circular",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 20.615528128088304,
+    "attacks": 12,
+    "turns": 2,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 1,
+     "defend:shift": 29,
+     "defend:dodge": 32
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 1
+   },
+   {
+    "name": "L15 Light",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 11.180339887498949,
+    "attacks": 10,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 5,
+     "manifest:Illuminate+": 5,
+     "manifest:Dispersion+": 5,
+     "defend:dodge": 9,
+     "recoverEnergy": 1
+    },
+    "manifests": 10
+   },
+   {
+    "name": "L15 Dexterity",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 81.39410298049853,
+    "attacks": 12,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:shift": 11,
+     "defend:dodge": 11,
+     "Parry": 1,
+     "Shatter": 2,
+     "Spot Weakness": 1,
+     "recoverEnergy": 1
+    },
+    "fist": "Shatter",
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "L15 Charm",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Force + Cut": 10,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 4,
+     "defend:dodge": 19,
+     "cast:Charm": 2,
+     "mod:Ingrained": 1,
+     "mod:Convince": 2,
+     "mod:Cloud": 2
+    },
+    "knockbacks": {
+     "into": 2
+    }
+   }
+  ],
+  "trees": {
+   "L15 War": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-war-nightmare": 5
+   },
+   "L15 Dexterity": {
+    "martial-theory": 3,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-dexterity-methods": 4,
+    "martial-light-armor": 1,
+    "generic-composure": 1
+   },
+   "L15 Charm": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-charm": 4,
+    "magic-slashing": 1,
+    "generic-athletics": 1
+   },
+   "L15 Snappence": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-snappence-arts": 4,
+    "mental-death-nightmare": 1,
+    "generic-endurance": 1
+   },
+   "L15 Reach": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-reach-weapons": 4,
+    "martial-light-armor": 1,
+    "generic-athletics": 1
+   }
+  },
+  "gear": {
+   "L15 War": [
+    "Unarmed G1"
+   ],
+   "L15 Dexterity": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Bladed (Steel) G3"
+   ],
+   "L15 Charm": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Snappence": [
+    "Unarmed G1"
+   ],
+   "L15 Reach": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Reach (Steel) G3"
+   ]
+  },
+  "monsterGear": {
+   "L15 Witchery": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Light": [
+    "Unarmed"
+   ],
+   "L15 Circular": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Circular (Steel)"
+   ],
+   "L15 Build Arcana": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Dark": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 War": [],
+   "L15 Dexterity": [
+    "Light Armor (Hard Leather): 20/30",
+    "Light Bladed (Steel): 106/135"
+   ],
+   "L15 Charm": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Snappence": [],
+   "L15 Reach": [
+    "Light Armor (Hard Leather): 26/30",
+    "Light Reach (Steel): 129/135"
+   ],
+   "L15 Witchery": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Light": [],
+   "L15 Circular": [
+    "Light Armor (Hard Leather): 25/30",
+    "Light Circular (Steel): 132/135"
+   ],
+   "L15 Build Arcana": [
+    "Light Armor (Hard Leather): 28/30"
+   ],
+   "L15 Dark": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 1395,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1256,
+    "monsterHp": 1350,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1137,
+    "monsterHp": 1314,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1059,
+    "monsterHp": 1233,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 990,
+    "monsterHp": 958,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 799,
+    "monsterHp": 903,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 7,
+    "partyHp": 741,
+    "monsterHp": 898,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 8,
+    "partyHp": 655,
+    "monsterHp": 898,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 9,
+    "partyHp": 655,
+    "monsterHp": 869,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 637,
+    "monsterHp": 794,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 586,
+    "monsterHp": 794,
+    "partyDown": 5,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Build Arcana": 621,
+    "L15 Circular": 18,
+    "L15 Dexterity": 16,
+    "L15 Snappence": 107,
+    "L15 Witchery": 67,
+    "L15 Reach": 108,
+    "L15 Charm": 292
+   },
+   "taken": {
+    "L15 Reach": 147,
+    "L15 War": 144,
+    "L15 Circular": 143,
+    "L15 Witchery": 202,
+    "L15 Dexterity": 146,
+    "L15 Charm": 220,
+    "L15 Light": 147,
+    "L15 Snappence": 152,
+    "L15 Build Arcana": 5,
+    "L15 Dark": 104
+   },
+   "unattributed": 181
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 601
+  },
+  "lostBy": {
+   "party": 809,
+   "monsters": 601
+  },
+  "directTaken": {
+   "party": 948,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Dark: Alacrity?": 1,
+    "prompt: L# Light: Alacrity?": 1,
+    "prompt: Light Reach (Steel)": 11,
+    "prompt: Reflex": 87,
+    "prompt: Manifest: L# Snappence": 44,
+    "prompt: L# Reach — Shift": 33,
+    "prompt: Mortal Coil (Tenet)": 10,
+    "prompt: Light Reach (Steel) — Solitary follow-up (Dis)": 11,
+    "prompt: Warden Ward": 32,
+    "prompt: Force — L# War": 1,
+    "prompt: Fixation": 9,
+    "prompt: Light Circular (Steel)": 6,
+    "prompt: L# Circular — Shift": 29,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 12,
+    "prompt: Sanctum Ward: L# Light": 5,
+    "prompt: L# Dexterity — Shift": 11,
+    "prompt: Light Bladed (Steel)": 6,
+    "prompt: L# War: Empower": 10,
+    "prompt: L# War: Warmonger": 11,
+    "prompt: Force — L# Dexterity": 2,
+    "prompt: Dispersion": 4,
+    "prompt: Shadowmark (Tenet)": 5,
+    "prompt: Shadowmark: make one step more obscured": 5,
+    "prompt: Dispersion (Enhanced)": 3,
+    "prompt: Umbral Strike": 7,
+    "prompt: Force — L# Charm": 3,
+    "prompt: Force — L# Witchery": 1,
+    "prompt: Force — L# Snappence": 2,
+    "prompt: Force — L# Build Arcana": 1,
+    "confirm: Seep": 2
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [ZBzZGk5o6bGjRqDX] does not exist in the EmbeddedCollection collection.",
+     "who": "L15 Psion B"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Reach"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Reach"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Build Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Dark"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Build Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Dark"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 1.",
+     "who": "L15 Dark"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [ZBzZGk5o6bGjRqDX] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 608,
+  "winner": "unfinished",
+  "pass": "grand-15-p8",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 5,
+  "followups": 17,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 286,
+   "defend:shift": 20,
+   "natural:Budding Gore": 10,
+   "manifest:Bloom": 8,
+   "manifest:Flourish": 8,
+   "natural:Black Jaws": 11,
+   "manifest:Eclipse": 54,
+   "natural:Root Lash": 7,
+   "manifest:Cultivate": 4,
+   "manifest:Umbral Strike": 29,
+   "cast:Charm": 15,
+   "mod:Ingrained": 1,
+   "mod:Convince": 2,
+   "mod:Cloud": 15,
+   "cast:Force + Cut": 15,
+   "mod:Pinpoint": 1,
+   "mod:Empower": 1,
+   "Parry": 1,
+   "Shatter": 2,
+   "Spot Weakness": 1,
+   "opt:thrust": 6,
+   "twist": 3,
+   "manifest:Wither+": 3,
+   "riposte": 3,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 1,
+   "opt:shank3=pierce": 1,
+   "manifest:Provoke": 15,
+   "manifest:Warzone": 15,
+   "manifest:Bloodbond": 15,
+   "manifest:Wither": 42
+  },
+  "hp": {
+   "L15 War#0L01": "279/279",
+   "L15 Dexterity#XYDG": "73/279",
+   "L15 Charm#wioF": "279/279",
+   "L15 Snappence#pq9f": "279/279",
+   "L15 Reach#xJhY": "126/279",
+   "Sim Bloomrot#UhgO": "484/486",
+   "Sim Bloomrot#ZdLn": "432/486",
+   "Sim Gloamhound#9o8k": "373/442",
+   "Sim Gloamhound#om3j": "454/486",
+   "Sim Burgeon#TOHH": "648/648"
+  },
+  "down": [
+   "L15 Dexterity",
+   "L15 Reach"
+  ],
+  "weapons": {
+   "Manifest: Wither (Manifest)": {
+    "attacks": 57,
+    "followups": 0,
+    "hits": 21,
+    "crits": 4,
+    "misses": 36,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Snappence"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 6,
+    "damage": 168,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 8,
+    "crits": 6,
+    "misses": 3,
+    "damage": 130,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 54,
+    "followups": 0,
+    "hits": 46,
+    "crits": 26,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 5,
+    "damage": 51,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 29,
+    "followups": 0,
+    "hits": 25,
+    "crits": 16,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Spell: Charm": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 14,
+    "crits": 12,
+    "misses": 1,
+    "damage": 0,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "L15 Charm"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 14,
+    "damage": 29,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "L15 Charm"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 5,
+    "followups": 3,
+    "hits": 15,
+    "crits": 10,
+    "misses": 6,
+    "damage": 110,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "L15 Dexterity"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 2,
+    "crits": 1,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Dexterity"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 9,
+    "followups": 9,
+    "hits": 6,
+    "crits": 2,
+    "misses": 12,
+    "damage": 34,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L15 Reach"
+    ]
+   },
+   "Manifest: Provoke (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 14,
+    "crits": 12,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 War"
+    ]
+   },
+   "Manifest: Warzone (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 War"
+    ]
+   },
+   "Manifest: Bloodbond (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 War"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 12,
+    "absorbed": 23
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Snappence",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 57
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 132,
+    "taken": 4,
+    "hits": 8,
+    "attacks": 13
+   },
+   {
+    "name": "L15 Dexterity",
+    "dealt": 110,
+    "taken": 196,
+    "hits": 17,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 61,
+    "taken": 73,
+    "hits": 39,
+    "attacks": 46
+   },
+   {
+    "name": "L15 War",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 29,
+    "attacks": 45
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 51,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 69,
+    "taken": 26,
+    "hits": 40,
+    "attacks": 48
+   },
+   {
+    "name": "L15 Charm",
+    "dealt": 29,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 30
+   },
+   {
+    "name": "L15 Reach",
+    "dealt": 34,
+    "taken": 153,
+    "hits": 6,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 36,
+    "taken": 70,
+    "hits": 5,
+    "attacks": 13
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.62257748298549,
+    "attacks": 5,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 12,
+     "natural:Budding Gore": 5,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Dexterity",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 0,
+    "attacks": 13,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:shift": 11,
+     "defend:dodge": 28,
+     "Parry": 1,
+     "Shatter": 1,
+     "Spot Weakness": 1,
+     "riposte": 3
+    },
+    "fist": "Dip",
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 108.1898098926489,
+    "attacks": 46,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 103,
+     "natural:Black Jaws": 6,
+     "manifest:Eclipse": 26,
+     "manifest:Umbral Strike": 14
+    },
+    "manifests": 40
+   },
+   {
+    "name": "L15 War",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 30,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 73,
+     "manifest:Provoke": 15,
+     "manifest:Warzone": 15,
+     "manifest:Bloodbond": 15
+    },
+    "turnMoved": 0,
+    "manifests": 45
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 85,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 11,
+     "natural:Root Lash": 7,
+     "manifest:Cultivate": 4
+    },
+    "manifests": 4
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 48,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 15,
+     "natural:Black Jaws": 5,
+     "manifest:Eclipse": 28,
+     "manifest:Umbral Strike": 15
+    },
+    "manifests": 43
+   },
+   {
+    "name": "L15 Charm",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Charm": 15,
+     "mod:Ingrained": 1,
+     "mod:Convince": 2,
+     "mod:Cloud": 15,
+     "defend:dodge": 14,
+     "cast:Force + Cut": 15,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 1
+    }
+   },
+   {
+    "name": "L15 Reach",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 35,
+    "attacks": 18,
+    "turns": 3,
+    "kills": 0,
+    "fist": "Shatter",
+    "used": {
+     "Shatter": 1,
+     "twist": 3,
+     "defend:shift": 9,
+     "defend:dodge": 14
+    },
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "L15 Snappence",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 45,
+    "used": {
+     "manifest:Wither+": 3,
+     "manifest:Wither": 42
+    }
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 93.40770846134703,
+    "attacks": 5,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 16,
+     "natural:Budding Gore": 5,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   }
+  ],
+  "trees": {
+   "L15 War": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-war-nightmare": 5
+   },
+   "L15 Dexterity": {
+    "martial-theory": 3,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-dexterity-methods": 4,
+    "martial-light-armor": 1,
+    "generic-composure": 1
+   },
+   "L15 Charm": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-charm": 4,
+    "magic-slashing": 1,
+    "generic-athletics": 1
+   },
+   "L15 Snappence": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-snappence-arts": 4,
+    "mental-death-nightmare": 1,
+    "generic-endurance": 1
+   },
+   "L15 Reach": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-reach-weapons": 4,
+    "martial-light-armor": 1,
+    "generic-athletics": 1
+   }
+  },
+  "gear": {
+   "L15 War": [
+    "Unarmed G1"
+   ],
+   "L15 Dexterity": [
+    "Unarmed G1",
+    "Light Bladed (Steel) G3",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Charm": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Snappence": [
+    "Unarmed G1"
+   ],
+   "L15 Reach": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Reach (Steel) G3"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 War": [],
+   "L15 Dexterity": [
+    "Light Bladed (Steel): 25/135",
+    "Light Armor (Hard Leather): 17/30"
+   ],
+   "L15 Charm": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Snappence": [],
+   "L15 Reach": [
+    "Light Armor (Hard Leather): 20/30",
+    "Light Reach (Steel): 135/135"
+   ],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1365,
+    "monsterHp": 2440,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1321,
+    "monsterHp": 2410,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1140,
+    "monsterHp": 2410,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 1036,
+    "monsterHp": 2392,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 1036,
+    "monsterHp": 2391,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 1036,
+    "monsterHp": 2391,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 1036,
+    "monsterHp": 2391,
+    "partyDown": 2,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "Sim Gloamhound": 130,
+    "L15 Charm": 29,
+    "L15 Dexterity": 90,
+    "L15 Reach": 52,
+    "Sim Bloomrot": 178,
+    "Sim Burgeon": 51,
+    "L15 Snappence": 34
+   },
+   "taken": {
+    "Sim Gloamhound": 145,
+    "L15 Dexterity": 206,
+    "Sim Bloomrot": 113,
+    "L15 Reach": 153
+   },
+   "unattributed": 53
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 201
+  },
+  "lostBy": {
+   "party": 359,
+   "monsters": 201
+  },
+  "directTaken": {
+   "party": 522,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Dexterity: Resist Allure (as Fear)": 3,
+    "prompt: L# War: Resist Allure (as Fear)": 3,
+    "prompt: L# Snappence: Resist Allure (as Fear)": 3,
+    "prompt: L# Charm: Resist Allure (as Fear)": 3,
+    "prompt: L# Reach: Resist Allure (as Fear)": 3,
+    "prompt: L# Dexterity: Resist Dread (as Fear)": 2,
+    "prompt: L# War: Resist Dread (as Fear)": 2,
+    "prompt: L# Snappence: Resist Dread (as Fear)": 2,
+    "prompt: L# Charm: Resist Dread (as Fear)": 2,
+    "prompt: L# Reach: Resist Dread (as Fear)": 2,
+    "prompt: Reflex": 200,
+    "prompt: Manifest: L# Snappence": 81,
+    "prompt: L# Dexterity — Shift": 11,
+    "prompt: Verdant Soul (Tenet)": 7,
+    "prompt: Verdant Soul: give # temp HP to": 7,
+    "prompt: L# War: Empower": 11,
+    "prompt: L# War: Warmonger": 15,
+    "prompt: Riposte Ward": 82,
+    "prompt: Mortal Coil (Tenet)": 11,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 3,
+    "prompt: Shadowmark (Tenet)": 29,
+    "prompt: Shadowmark: make one step more obscured": 29,
+    "prompt: Light Bladed (Steel)": 5,
+    "prompt: Umbral Strike": 24,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8,
+    "prompt: Light Reach (Steel)": 9,
+    "prompt: Light Reach (Steel) — Solitary follow-up (Dis)": 9,
+    "prompt: Fixation": 15,
+    "prompt: Light Bladed (Steel) — Riposte": 3,
+    "prompt: L# Reach — Shift": 9,
+    "prompt: Sporing": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Dexterity is afraid and can't gain Energy.",
+     "who": "L15 Dexterity"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Burgeon"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Reach"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Reach"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Reach"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Bloomrot can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Burgeon"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Burgeon can't move through L15 Dexterity's space.",
+     "who": "Sim Burgeon"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "Sim Burgeon"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Bloomrot can't move through L15 Dexterity's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Dexterity's space.",
+     "who": "L15 War"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Snappence needs 4 Energy for Manifesting Wither but has 3.",
+     "who": "L15 War"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

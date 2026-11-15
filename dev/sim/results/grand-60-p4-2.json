@@ -1,0 +1,2034 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 526,
+  "winner": "unfinished",
+  "pass": "grand-60-p4",
+  "rounds": 16,
+  "partyLeft": 1,
+  "monstersLeft": 3,
+  "followups": 44,
+  "knockbacks": {
+   "into": 2,
+   "down": 6
+  },
+  "used": {
+   "opt:ability=shift": 4,
+   "Versatility": 4,
+   "Parry": 6,
+   "Unstoppable": 12,
+   "Brace": 11,
+   "opt:pick=1": 98,
+   "allyHelp:none": 98,
+   "riposte": 28,
+   "defend:shift": 90,
+   "defend:dodge": 292,
+   "noRiposte": 1,
+   "limber": 130,
+   "recoverEnergy": 33,
+   "manifest:Sink": 2,
+   "manifest:Burden": 2,
+   "manifest:Entomb+": 2,
+   "ward": 24,
+   "manifest:Bloom": 16,
+   "manifest:Flourish": 15,
+   "manifest:Herald": 9,
+   "manifest:Redirect": 9,
+   "manifest:Ascend": 9,
+   "cast:Cut + Flame": 30,
+   "mod:Bleed": 13,
+   "mod:Rend": 22,
+   "mod:Ignition": 2,
+   "cast:Force + Cut": 29,
+   "opt:dir=into": 2,
+   "berserk": 1,
+   "Seeing Red": 1,
+   "opt:rend": 12,
+   "Shatter": 1,
+   "limber:skipped": 56,
+   "manifest:Renewal": 14,
+   "cast:Cut": 46,
+   "maintain": 10,
+   "Dip": 13,
+   "defend:perfectBlock": 14,
+   "allyBlock": 45,
+   "opt:heave": 3,
+   "opt:dir=down": 6,
+   "act:momentumNow": 5
+  },
+  "hp": {
+   "L60 Medium Armor#mgby": "528/1134",
+   "L60 Reach Arcana#EgkE": "336/1134",
+   "L60 Beyond#sbVe": "560/1134",
+   "L60 Strength#9o13": "467/1134",
+   "L60 Heat#bFBy": "902/1134",
+   "L60 Below#jOA0": "531/1134",
+   "L60 Striker#oRpi": "-40/1134",
+   "L60 Cold#Wv0W": "1134/1134",
+   "L60 Ponderance#L2Ax": "614/1134",
+   "L60 Defender#z6q2": "1080/1134"
+  },
+  "down": [
+   "L60 Medium Armor",
+   "L60 Reach Arcana",
+   "L60 Beyond",
+   "L60 Strength",
+   "L60 Below",
+   "L60 Striker"
+  ],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 24,
+    "followups": 28,
+    "hits": 29,
+    "crits": 7,
+    "misses": 46,
+    "damage": 320,
+    "ap": 78,
+    "kills": 1,
+    "users": [
+     "L60 Strength",
+     "L60 Medium Armor"
+    ]
+   },
+   "Heavy Defender": {
+    "attacks": 14,
+    "followups": 24,
+    "hits": 12,
+    "crits": 7,
+    "misses": 26,
+    "damage": 365,
+    "ap": 114,
+    "kills": 0,
+    "users": [
+     "L60 Defender"
+    ]
+   },
+   "Manifest: Sink (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Below"
+    ]
+   },
+   "Manifest: Burden (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Below"
+    ]
+   },
+   "Manifest: Entomb (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Below"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 11,
+    "crits": 5,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ponderance"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ponderance"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 11,
+    "crits": 6,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ponderance"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Beyond"
+    ]
+   },
+   "Manifest: Herald (Manifest)": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Beyond"
+    ],
+    "force": 0
+   },
+   "Manifest: Ascend (Manifest)": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Beyond"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 14,
+    "crits": 8,
+    "misses": 16,
+    "damage": 194,
+    "ap": 90,
+    "kills": 1,
+    "users": [
+     "L60 Heat"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 11,
+    "damage": 510,
+    "ap": 34,
+    "kills": 0,
+    "users": [
+     "L60 Cold"
+    ],
+    "force": 0
+   },
+   "Spell: Force + Cut [M] [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Cold"
+    ]
+   },
+   "Heavy Striker": {
+    "attacks": 20,
+    "followups": 18,
+    "hits": 12,
+    "crits": 6,
+    "misses": 26,
+    "damage": 1710,
+    "ap": 60,
+    "kills": 3,
+    "users": [
+     "L60 Striker"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 7,
+    "damage": 418,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Reach Arcana"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Beyond"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 10,
+    "crits": 2,
+    "misses": 18,
+    "damage": 389,
+    "ap": 56,
+    "kills": 0,
+    "users": [
+     "L60 Cold"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 2,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L60 Striker"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 18,
+    "followups": 0,
+    "hits": 7,
+    "crits": 5,
+    "misses": 11,
+    "damage": 160,
+    "ap": 36,
+    "kills": 1,
+    "users": [
+     "L60 Reach Arcana"
+    ]
+   },
+   "Manifest: Renewal (Manifest) [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ponderance"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Beyond"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 23,
+    "absorbed": 392
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 13,
+    "absorbed": 90
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Strength",
+    "dealt": 298,
+    "taken": 667,
+    "hits": 14,
+    "attacks": 26
+   },
+   {
+    "name": "L60 Below",
+    "dealt": 0,
+    "taken": 307,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Ponderance",
+    "dealt": 0,
+    "taken": 226,
+    "hits": 31,
+    "attacks": 54
+   },
+   {
+    "name": "L60 Defender",
+    "dealt": 365,
+    "taken": 54,
+    "hits": 12,
+    "attacks": 38
+   },
+   {
+    "name": "L60 Medium Armor",
+    "dealt": 22,
+    "taken": 606,
+    "hits": 15,
+    "attacks": 26
+   },
+   {
+    "name": "L60 Beyond",
+    "dealt": 0,
+    "taken": 614,
+    "hits": 18,
+    "attacks": 33
+   },
+   {
+    "name": "L60 Heat",
+    "dealt": 194,
+    "taken": 232,
+    "hits": 14,
+    "attacks": 30
+   },
+   {
+    "name": "L60 Cold",
+    "dealt": 899,
+    "taken": 0,
+    "hits": 16,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Reach Arcana",
+    "dealt": 578,
+    "taken": 798,
+    "hits": 13,
+    "attacks": 31
+   },
+   {
+    "name": "L60 Striker",
+    "dealt": 1710,
+    "taken": 562,
+    "hits": 12,
+    "attacks": 40
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Strength",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 82.76472678623423,
+    "attacks": 24,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 2,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "defend:shift": 39,
+     "defend:dodge": 45,
+     "limber": 45,
+     "recoverEnergy": 1,
+     "limber:skipped": 4,
+     "riposte": 2,
+     "Dip": 2
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Defender",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 20,
+    "attacks": 14,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "allyHelp:none": 98,
+     "riposte": 24,
+     "noRiposte": 1,
+     "Versatility": 1,
+     "Unstoppable": 8,
+     "Brace": 8,
+     "Shatter": 1,
+     "defend:perfectBlock": 14,
+     "limber": 27,
+     "allyBlock": 45,
+     "defend:shift": 13,
+     "defend:dodge": 16,
+     "Dip": 7,
+     "recoverEnergy": 28
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Below",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 15,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "manifest:Sink": 2,
+     "manifest:Burden": 2,
+     "manifest:Entomb+": 2
+    },
+    "turnMoved": 15,
+    "manifests": 6
+   },
+   {
+    "name": "L60 Medium Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 70,
+    "attacks": 26,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:shift": 25,
+     "defend:dodge": 28,
+     "limber": 36,
+     "Versatility": 1,
+     "Parry": 4,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "Dip": 3,
+     "limber:skipped": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Ponderance",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "defend:dodge": 20,
+     "manifest:Flourish": 15,
+     "manifest:Renewal": 9
+    },
+    "manifests": 39
+   },
+   {
+    "name": "L60 Beyond",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 9,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 9,
+     "manifest:Herald": 9,
+     "manifest:Redirect": 9,
+     "manifest:Ascend": 9,
+     "defend:dodge": 24,
+     "manifest:Renewal": 5,
+     "act:momentumNow": 5,
+     "manifest:Bloom": 1
+    },
+    "manifests": 33,
+    "knockbacks": {
+     "down": 5
+    }
+   },
+   {
+    "name": "L60 Heat",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Cut + Flame": 30,
+     "mod:Bleed": 11,
+     "mod:Rend": 18,
+     "mod:Ignition": 2,
+     "defend:dodge": 26
+    }
+   },
+   {
+    "name": "L60 Cold",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 45,
+    "used": {
+     "cast:Force + Cut": 17,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Cut": 28
+    },
+    "knockbacks": {
+     "into": 1,
+     "down": 1
+    }
+   },
+   {
+    "name": "L60 Reach Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23,
+     "cast:Force + Cut": 12,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Cut": 18
+    },
+    "turnMoved": 0,
+    "casts": 30,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "L60 Striker",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 160.81138830084188,
+    "attacks": 38,
+    "turns": 11,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Versatility": 1,
+     "Unstoppable": 2,
+     "Seeing Red": 1,
+     "Brace": 1,
+     "defend:shift": 13,
+     "defend:dodge": 100,
+     "limber": 22,
+     "maintain": 10,
+     "Dip": 1,
+     "riposte": 2,
+     "limber:skipped": 51,
+     "recoverEnergy": 3
+    },
+    "fist": "Shatter",
+    "turnMoved": 45
+   }
+  ],
+  "trees": {
+   "L60 Medium Armor": {
+    "martial-theory": 2,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-medium-armor": 5,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-fortitude": 3,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2
+   },
+   "L60 Reach Arcana": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-reach-arcana": 5,
+    "magic-slashing": 5,
+    "generic-initiative": 2,
+    "generic-tempo": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 1,
+    "generic-composure": 1
+   },
+   "L60 Beyond": {
+    "mental-theory": 2,
+    "mental-beyond-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-life-dream": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Strength": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Heat": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-endurance": 3,
+    "generic-stamina": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-punish": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Medium Armor": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Reach Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Beyond": [
+    "Unarmed G1"
+   ],
+   "L60 Strength": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Heat": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Below": [
+    "Unarmed"
+   ],
+   "L60 Striker": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Striker (Steel)"
+   ],
+   "L60 Cold": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Ponderance": [
+    "Unarmed"
+   ],
+   "L60 Defender": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Defender (Steel)"
+   ]
+  },
+  "gearState": {
+   "L60 Medium Armor": [
+    "Medium Armor (Hard Leather): 308/420",
+    "Heavy Balanced (Steel): 1790/1980"
+   ],
+   "L60 Reach Arcana": [
+    "Light Armor (Hard Leather): 64/120"
+   ],
+   "L60 Beyond": [],
+   "L60 Strength": [
+    "Medium Armor (Hard Leather): 252/420",
+    "Heavy Balanced (Steel): 1520/1980"
+   ],
+   "L60 Heat": [
+    "Light Armor (Hard Leather): 70/120"
+   ],
+   "L60 Below": [],
+   "L60 Striker": [
+    "Medium Armor (Hard Leather): 0/420 BROKEN",
+    "Heavy Striker (Steel): 990/990"
+   ],
+   "L60 Cold": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Ponderance": [],
+   "L60 Defender": [
+    "Medium Armor (Hard Leather): 392/420",
+    "Heavy Defender (Steel): 352/2970"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 5670,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5340,
+    "monsterHp": 5350,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5340,
+    "monsterHp": 4885,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 5216,
+    "monsterHp": 4805,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 5116,
+    "monsterHp": 4660,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 4829,
+    "monsterHp": 4660,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 4707,
+    "monsterHp": 4660,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 4195,
+    "monsterHp": 4329,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 4101,
+    "monsterHp": 4329,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 3817,
+    "monsterHp": 4329,
+    "partyDown": 3,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 3393,
+    "monsterHp": 4329,
+    "partyDown": 3,
+    "monstersDown": 1
+   },
+   {
+    "round": 12,
+    "partyHp": 2864,
+    "monsterHp": 4329,
+    "partyDown": 4,
+    "monstersDown": 1
+   },
+   {
+    "round": 13,
+    "partyHp": 2864,
+    "monsterHp": 3611,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 2851,
+    "monsterHp": 3427,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 15,
+    "partyHp": 2851,
+    "monsterHp": 3359,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 2793,
+    "monsterHp": 3359,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 2793,
+    "monsterHp": 3359,
+    "partyDown": 4,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Heat": 1018,
+    "L60 Cold": 899,
+    "L60 Reach Arcana": 682,
+    "L60 Strength": 298,
+    "L60 Medium Armor": 22,
+    "L60 Defender": 164,
+    "L60 Striker": 1710
+   },
+   "taken": {
+    "L60 Below": 603,
+    "L60 Beyond": 614,
+    "L60 Striker": 1134,
+    "L60 Defender": 54,
+    "L60 Strength": 667,
+    "L60 Ponderance": 520,
+    "L60 Heat": 232,
+    "L60 Medium Armor": 606,
+    "L60 Reach Arcana": 798
+   },
+   "unattributed": 435
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 265
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 2046
+  },
+  "lostBy": {
+   "party": 2877,
+   "monsters": 2311
+  },
+  "directTaken": {
+   "party": 4066,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Medium Armor: Alacrity?": 1,
+    "prompt: L# Reach Arcana: Alacrity?": 1,
+    "prompt: L# Beyond: Alacrity?": 1,
+    "prompt: L# Heat: Alacrity?": 1,
+    "prompt: L# Below: Alacrity?": 1,
+    "prompt: L# Striker: Alacrity?": 1,
+    "prompt: L# Cold: Alacrity?": 1,
+    "prompt: L# Strength: Alacrity?": 1,
+    "prompt: L# Ponderance: Alacrity?": 1,
+    "prompt: Versatility": 4,
+    "prompt: Heavy Balanced (Steel)": 24,
+    "prompt: Help L# Below": 2,
+    "prompt: L# Defender — Perfect Block": 112,
+    "prompt: Help L# Ponderance": 29,
+    "prompt: Heavy Defender (Steel) — Riposte": 24,
+    "prompt: L# Strength — Shift": 39,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 26,
+    "prompt: Weight (Tenet)": 1,
+    "prompt: L# Medium Armor — Shift": 25,
+    "prompt: Sanctum Ward: L# Ponderance": 15,
+    "prompt: Verdant Soul (Tenet)": 13,
+    "prompt: Mantra": 13,
+    "prompt: Verdant Soul: give # temp HP to": 13,
+    "prompt: Sanctum Ward: L# Beyond": 9,
+    "prompt: Warden Ward": 12,
+    "prompt: Force — L# Beyond": 1,
+    "prompt: Heavy Striker (Steel)": 20,
+    "prompt: Heavy Striker (Steel) — Solitary follow-up": 18,
+    "prompt: L# Striker — Shift": 13,
+    "prompt: Heavy Defender (Steel)": 14,
+    "prompt: Exploit Opening": 16,
+    "prompt: Help L# Striker": 112,
+    "prompt: Gust (Tenet)": 7,
+    "prompt: Unarmed — Riposte": 2,
+    "prompt: L# Defender — Shift": 13,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Herald — L# Striker": 3,
+    "prompt: Gust — L# Striker": 2,
+    "prompt: Force — L# Striker": 1,
+    "confirm: Stabilize": 1,
+    "prompt: Force — L# Reach Arcana": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [a4ukn81UhNWvnwL9] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Crushing"
+    },
+    {
+     "level": "error",
+     "msg": "undefined id [a4ukn81UhNWvnwL9] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Crushing"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Defender can't move through L60 Strength's space.",
+     "who": "L60 Defender"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Defender can't move through L60 Strength's space.",
+     "who": "L60 Defender"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Defender can't move through L60 Strength's space.",
+     "who": "L60 Defender"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Defender can't move through L60 Strength's space.",
+     "who": "L60 Defender"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Defender can't move through L60 Strength's space.",
+     "who": "L60 Defender"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Defender can't move through L60 Strength's space.",
+     "who": "L60 Defender"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Defender can't move through L60 Strength's space.",
+     "who": "L60 Defender"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Defender can't move through L60 Strength's space.",
+     "who": "L60 Defender"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [a4ukn81UhNWvnwL9] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at async #configureOperation (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/",
+    "Error: undefined id [a4ukn81UhNWvnwL9] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 295,
+  "winner": "party",
+  "pass": "grand-60-p4",
+  "rounds": 12,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 16,
+  "knockbacks": {
+   "down": 5
+  },
+  "used": {
+   "cast:Force + Cut": 3,
+   "mod:Rend": 12,
+   "defend:dodge": 157,
+   "cast:Cut + Flame": 24,
+   "mod:Bleed": 2,
+   "mod:Ignition": 2,
+   "opt:ability=shift": 2,
+   "Versatility": 2,
+   "Parry": 2,
+   "Unstoppable": 2,
+   "Brace": 2,
+   "defend:shift": 12,
+   "limber": 15,
+   "natural:Black Jaws": 21,
+   "manifest:Eclipse": 12,
+   "manifest:Umbral Strike": 11,
+   "natural:Budding Gore": 8,
+   "manifest:Bloom": 9,
+   "manifest:Flourish": 4,
+   "riposte": 2,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "ward": 12,
+   "manifest:Herald": 12,
+   "manifest:Redirect": 11,
+   "manifest:Ascend": 11,
+   "limber:skipped": 16,
+   "cast:Cut": 7,
+   "cast:nothingAffordable": 11,
+   "Dip": 1,
+   "opt:dir=down": 5,
+   "act:momentumNow": 5
+  },
+  "hp": {
+   "L60 Medium Armor#k7BV": "531/1134",
+   "L60 Reach Arcana#YjTv": "1134/1134",
+   "L60 Beyond#0a48": "1134/1134",
+   "L60 Strength#8rfo": "458/1134",
+   "L60 Heat#9i0a": "1134/1134",
+   "Sim Thicket#7NjF": "1522/3240",
+   "Sim Gloamhound#EKPr": "887/1944",
+   "Sim Gloamhound#yPpc": "663/1944",
+   "Sim Burgeon#Yhkg": "743/2592"
+  },
+  "down": [
+   "L60 Medium Armor",
+   "L60 Strength",
+   "Sim Thicket",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Spell: Force + Cut": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 130,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L60 Reach Arcana"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 15,
+    "crits": 5,
+    "misses": 9,
+    "damage": 1192,
+    "ap": 72,
+    "kills": 3,
+    "users": [
+     "L60 Heat"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 17,
+    "crits": 8,
+    "misses": 4,
+    "damage": 807,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 8,
+    "crits": 5,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 10,
+    "crits": 6,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 253,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 14,
+    "followups": 18,
+    "hits": 12,
+    "crits": 6,
+    "misses": 20,
+    "damage": 949,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "L60 Medium Armor",
+     "L60 Strength"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 219,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 11,
+    "crits": 6,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Beyond"
+    ]
+   },
+   "Manifest: Herald (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 10,
+    "crits": 2,
+    "misses": 2,
+    "damage": 210,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Beyond"
+    ],
+    "force": 210
+   },
+   "Manifest: Ascend (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Beyond"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 7,
+    "crits": 5,
+    "misses": 0,
+    "damage": 812,
+    "ap": 14,
+    "kills": 1,
+    "users": [
+     "L60 Reach Arcana"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Beyond"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 16,
+    "absorbed": 448
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Reach Arcana",
+    "dealt": 942,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 10
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 511,
+    "taken": 761,
+    "hits": 13,
+    "attacks": 19
+   },
+   {
+    "name": "L60 Heat",
+    "dealt": 1192,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Medium Armor",
+    "dealt": 71,
+    "taken": 603,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 253,
+    "taken": 734,
+    "hits": 9,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 219,
+    "taken": 877,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Beyond",
+    "dealt": 210,
+    "taken": 0,
+    "hits": 28,
+    "attacks": 40
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 296,
+    "taken": 711,
+    "hits": 22,
+    "attacks": 25
+   },
+   {
+    "name": "L60 Strength",
+    "dealt": 878,
+    "taken": 676,
+    "hits": 7,
+    "attacks": 20
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Reach Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 10,
+    "used": {
+     "cast:Force + Cut": 3,
+     "mod:Rend": 3,
+     "cast:Cut": 7,
+     "cast:nothingAffordable": 11,
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 55.495097567963924,
+    "attacks": 19,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 42,
+     "natural:Black Jaws": 9,
+     "manifest:Eclipse": 5,
+     "manifest:Umbral Strike": 5
+    },
+    "turnMoved": 0,
+    "manifests": 10
+   },
+   {
+    "name": "L60 Heat",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Cut + Flame": 24,
+     "mod:Bleed": 2,
+     "mod:Rend": 9,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "L60 Medium Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 60,
+    "attacks": 10,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "defend:shift": 5,
+     "defend:dodge": 27,
+     "limber": 6,
+     "riposte": 2,
+     "limber:skipped": 8
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Strength",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 61.8465843842649,
+    "attacks": 20,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Dip": 1,
+     "limber": 9,
+     "defend:shift": 7,
+     "defend:dodge": 32,
+     "limber:skipped": 8
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 7.0710678118654755,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4,
+     "defend:dodge": 1
+    },
+    "manifests": 8
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 14,
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4
+    },
+    "manifests": 4
+   },
+   {
+    "name": "L60 Beyond",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 12,
+     "manifest:Herald": 12,
+     "manifest:Redirect": 11,
+     "manifest:Ascend": 11,
+     "defend:dodge": 16,
+     "act:momentumNow": 5,
+     "manifest:Bloom": 5
+    },
+    "manifests": 39,
+    "knockbacks": {
+     "down": 5
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 150.31128874149275,
+    "attacks": 25,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 80,
+    "used": {
+     "natural:Black Jaws": 12,
+     "manifest:Eclipse": 7,
+     "manifest:Umbral Strike": 6,
+     "defend:dodge": 19
+    },
+    "manifests": 13
+   }
+  ],
+  "trees": {
+   "L60 Medium Armor": {
+    "martial-theory": 2,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-medium-armor": 5,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-fortitude": 3,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2
+   },
+   "L60 Reach Arcana": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-reach-arcana": 5,
+    "magic-slashing": 5,
+    "generic-initiative": 2,
+    "generic-tempo": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 1,
+    "generic-composure": 1
+   },
+   "L60 Beyond": {
+    "mental-theory": 2,
+    "mental-beyond-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-life-dream": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Strength": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Heat": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-endurance": 3,
+    "generic-stamina": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-punish": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Medium Armor": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Reach Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Beyond": [
+    "Unarmed G1"
+   ],
+   "L60 Strength": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Heat": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Medium Armor": [
+    "Medium Armor (Hard Leather): 220/420",
+    "Heavy Balanced (Steel): 1903/1980"
+   ],
+   "L60 Reach Arcana": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Beyond": [],
+   "L60 Strength": [
+    "Medium Armor (Hard Leather): 164/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Heat": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5670,
+    "monsterHp": 9590,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5120,
+    "monsterHp": 9342,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 4932,
+    "monsterHp": 9212,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 4832,
+    "monsterHp": 9119,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 4521,
+    "monsterHp": 8541,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 4391,
+    "monsterHp": 8019,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 4391,
+    "monsterHp": 7914,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 4391,
+    "monsterHp": 7075,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 4391,
+    "monsterHp": 6439,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 4391,
+    "monsterHp": 5533,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 4391,
+    "monsterHp": 4768,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 4391,
+    "monsterHp": 3815,
+    "partyDown": 2,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Reach Arcana": 942,
+    "L60 Medium Armor": 71,
+    "L60 Strength": 878,
+    "Sim Gloamhound": 807,
+    "Sim Thicket": 253,
+    "Sim Burgeon": 219,
+    "L60 Heat": 3836,
+    "L60 Beyond": 178
+   },
+   "taken": {
+    "Sim Gloamhound": 2338,
+    "Sim Burgeon": 1849,
+    "L60 Medium Armor": 603,
+    "L60 Strength": 676,
+    "Sim Thicket": 1718
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 5905
+  },
+  "lostBy": {
+   "party": 1279,
+   "monsters": 5905
+  },
+  "directTaken": {
+   "party": 4362,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Medium Armor: Alacrity?": 1,
+    "prompt: L# Beyond: Alacrity?": 1,
+    "prompt: L# Reach Arcana: Alacrity?": 1,
+    "prompt: L# Strength: Alacrity?": 1,
+    "prompt: L# Heat: Alacrity?": 1,
+    "prompt: L# Medium Armor: Resist Dread (as Fear)": 2,
+    "prompt: L# Beyond: Resist Dread (as Fear)": 2,
+    "prompt: Face Your Fear?": 4,
+    "prompt: L# Reach Arcana: Resist Dread (as Fear)": 2,
+    "prompt: L# Strength: Resist Dread (as Fear)": 2,
+    "prompt: L# Heat: Resist Dread (as Fear)": 2,
+    "prompt: L# Medium Armor: Resist Allure (as Fear)": 2,
+    "prompt: L# Beyond: Resist Allure (as Fear)": 2,
+    "prompt: L# Reach Arcana: Resist Allure (as Fear)": 2,
+    "prompt: L# Strength: Resist Allure (as Fear)": 2,
+    "prompt: L# Heat: Resist Allure (as Fear)": 2,
+    "prompt: Exploit Opening": 16,
+    "prompt: Riposte Ward": 46,
+    "prompt: Versatility": 2,
+    "prompt: L# Medium Armor — Shift": 5,
+    "prompt: Verdant Soul (Tenet)": 4,
+    "prompt: Verdant Soul: give # temp HP to": 4,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 16,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Sanctum Ward: L# Beyond": 12,
+    "prompt: Gust (Tenet)": 12,
+    "prompt: Shadowmark (Tenet)": 11,
+    "prompt: Shadowmark: make one step more obscured": 11,
+    "prompt: Heavy Balanced (Steel)": 14,
+    "prompt: Umbral Strike": 9,
+    "prompt: L# Strength — Shift": 7,
+    "prompt: Sporing": 1,
+    "prompt: Herald — Sim Gloamhound": 3,
+    "prompt: Herald — Sim Burgeon": 1,
+    "prompt: Herald — Sim Thicket": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [L2Ax6yjCyhceSxTZ] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Defender"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Medium Armor is afraid and can't gain Energy.",
+     "who": "L60 Medium Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Strength is afraid and can't gain Energy.",
+     "who": "L60 Strength"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L60 Reach Arcana"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [L2Ax6yjCyhceSxTZ] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

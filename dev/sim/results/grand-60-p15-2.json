@@ -1,0 +1,1854 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 206,
+  "winner": "monsters",
+  "pass": "grand-60-p15",
+  "rounds": 7,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 42,
+  "knockbacks": {
+   "into": 7,
+   "down": 1,
+   "away": 1
+  },
+  "used": {
+   "Parry": 2,
+   "Leap": 2,
+   "Spot Weakness": 2,
+   "opt:shank1=adv": 2,
+   "opt:shank2=dodge": 3,
+   "opt:shank3=pierce": 2,
+   "defend:shift": 55,
+   "defend:dodge": 165,
+   "limber": 24,
+   "redirect": 13,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 2,
+   "opt:whirlwind=blender": 4,
+   "defend:closeQuarters": 14,
+   "cast:Force + Cut": 35,
+   "mod:Rend": 19,
+   "opt:dir=into": 7,
+   "ward": 3,
+   "manifest:Bloom": 3,
+   "manifest:Flourish": 3,
+   "mod:Bleed": 14,
+   "mod:Gash": 2,
+   "manifest:Renewal": 1,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 1,
+   "opt:twinFang=adv": 6,
+   "opt:heavyTech=kick": 1,
+   "combo": 2,
+   "flowLikeWater": 2,
+   "limber:skipped": 8,
+   "combo:skipped": 2,
+   "flowLikeWater:skipped": 2,
+   "manifest:Jinx+": 1,
+   "manifest:Forfeit+": 1,
+   "manifest:Calamity+": 1,
+   "opt:whirlwind=on": 2,
+   "redirect:skipped": 4,
+   "cast:Cut": 4,
+   "Dip": 1,
+   "cast:nothingAffordable": 2,
+   "recoverEnergy": 8,
+   "opt:shank1=dodge": 1,
+   "Dash": 1,
+   "opt:dir=down": 1,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "L60 Ruin#ynCX": "533/1134",
+   "L60 Brawling B#LoYx": "481/1134",
+   "L60 Protection Arcana B#UZCI": "497/1134",
+   "L60 Psion B#5Q1W": "375/756",
+   "L60 Bladed B#PCYJ": "453/1134",
+   "L60 Brawling#riDN": "531/1134",
+   "L60 Protection Arcana#UsGJ": "1066/1134",
+   "L60 Psion#Jdqa": "54/756",
+   "L60 Bladed#PpWW": "543/1134",
+   "L60 Gravity#2BkH": "1134/1134"
+  },
+  "down": [
+   "L60 Ruin",
+   "L60 Brawling B",
+   "L60 Protection Arcana B",
+   "L60 Psion B",
+   "L60 Bladed B",
+   "L60 Brawling",
+   "L60 Psion",
+   "L60 Bladed"
+  ],
+  "weapons": {
+   "Light Bladed": {
+    "attacks": 41,
+    "followups": 0,
+    "hits": 21,
+    "crits": 7,
+    "misses": 26,
+    "damage": 666,
+    "ap": 82,
+    "kills": 2,
+    "users": [
+     "L60 Bladed",
+     "L60 Bladed B"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 15,
+    "followups": 44,
+    "hits": 21,
+    "crits": 3,
+    "misses": 38,
+    "damage": 468,
+    "ap": 12,
+    "kills": 1,
+    "users": [
+     "L60 Bladed",
+     "L60 Bladed B",
+     "L60 Brawling"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 9,
+    "crits": 2,
+    "misses": 14,
+    "damage": 1561,
+    "ap": 56,
+    "kills": 0,
+    "users": [
+     "L60 Gravity",
+     "L60 Protection Arcana"
+    ],
+    "force": 0
+   },
+   "Spell: Force + Cut [M] [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Gravity",
+     "L60 Protection Arcana"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Jinx (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ruin"
+    ]
+   },
+   "Manifest: Forfeit (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ruin"
+    ]
+   },
+   "Manifest: Calamity (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ruin"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 9,
+    "crits": 0,
+    "misses": 5,
+    "damage": 861,
+    "ap": 36,
+    "kills": 5,
+    "users": [
+     "L60 Protection Arcana B"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 101,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "L60 Gravity"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 16,
+    "absorbed": 158
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 24,
+    "absorbed": 257
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Bladed",
+    "dealt": 403,
+    "taken": 591,
+    "hits": 10,
+    "attacks": 40
+   },
+   {
+    "name": "L60 Brawling B",
+    "dealt": 0,
+    "taken": 653,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Brawling",
+    "dealt": 12,
+    "taken": 603,
+    "hits": 11,
+    "attacks": 14
+   },
+   {
+    "name": "L60 Bladed B",
+    "dealt": 719,
+    "taken": 517,
+    "hits": 21,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Gravity",
+    "dealt": 1134,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 19
+   },
+   {
+    "name": "L60 Psion B",
+    "dealt": 0,
+    "taken": 153,
+    "hits": 1,
+    "attacks": 7
+   },
+   {
+    "name": "L60 Psion",
+    "dealt": 0,
+    "taken": 342,
+    "hits": 0,
+    "attacks": 3
+   },
+   {
+    "name": "L60 Protection Arcana",
+    "dealt": 528,
+    "taken": 68,
+    "hits": 5,
+    "attacks": 13
+   },
+   {
+    "name": "L60 Protection Arcana B",
+    "dealt": 861,
+    "taken": 495,
+    "hits": 9,
+    "attacks": 14
+   },
+   {
+    "name": "L60 Ruin",
+    "dealt": 0,
+    "taken": 235,
+    "hits": 3,
+    "attacks": 3
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Bladed",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 80,
+    "attacks": 34,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "defend:closeQuarters": 9,
+     "defend:dodge": 24,
+     "defend:shift": 9
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "L60 Brawling B",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:shift": 12,
+     "defend:dodge": 12,
+     "limber": 8,
+     "redirect": 7
+    }
+   },
+   {
+    "name": "L60 Brawling",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:shift": 13,
+     "defend:dodge": 25,
+     "limber": 16,
+     "redirect": 6,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "combo": 2,
+     "flowLikeWater": 2,
+     "limber:skipped": 8,
+     "combo:skipped": 2,
+     "flowLikeWater:skipped": 2,
+     "redirect:skipped": 4,
+     "Dip": 1
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 0
+   },
+   {
+    "name": "L60 Bladed B",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 131.54234499766935,
+    "attacks": 39,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "defend:shift": 21,
+     "defend:dodge": 48,
+     "defend:closeQuarters": 5,
+     "Dash": 1
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "L60 Gravity",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 17,
+    "used": {
+     "cast:Force + Cut": 13,
+     "mod:Rend": 6,
+     "cast:Cut": 4,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 8,
+     "mod:Bleed": 1,
+     "defend:dodge": 2
+    },
+    "knockbacks": {
+     "into": 2,
+     "down": 1,
+     "away": 1
+    }
+   },
+   {
+    "name": "L60 Psion B",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "ward": 2,
+     "manifest:Bloom": 2,
+     "manifest:Flourish": 2,
+     "manifest:Renewal": 1
+    },
+    "turnMoved": 0,
+    "manifests": 5
+   },
+   {
+    "name": "L60 Psion",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 1,
+     "manifest:Bloom": 1,
+     "manifest:Flourish": 1,
+     "defend:dodge": 5
+    },
+    "manifests": 2
+   },
+   {
+    "name": "L60 Protection Arcana",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 10,
+    "used": {
+     "cast:Force + Cut": 10,
+     "mod:Bleed": 6,
+     "mod:Rend": 6,
+     "mod:Gash": 1,
+     "defend:dodge": 14
+    },
+    "knockbacks": {
+     "into": 3
+    }
+   },
+   {
+    "name": "L60 Protection Arcana B",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 11,
+     "cast:Force + Cut": 12,
+     "mod:Bleed": 7,
+     "mod:Rend": 7,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 12,
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "L60 Ruin",
+    "side": "party",
+    "role": "caster",
+    "moved": 15,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14,
+     "manifest:Jinx+": 1,
+     "manifest:Forfeit+": 1,
+     "manifest:Calamity+": 1
+    },
+    "turnMoved": 15,
+    "manifests": 3
+   }
+  ],
+  "trees": {
+   "L60 Ruin": {
+    "mental-theory": 5,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-ruin-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-stealth": 3,
+    "generic-ambush": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2
+   },
+   "L60 Brawling B": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-fortitude": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 1,
+    "generic-composure": 1
+   },
+   "L60 Protection Arcana B": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 5,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "generic-initiative": 2,
+    "generic-tempo": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1
+   },
+   "L60 Psion B": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-psion-arts": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Bladed B": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-bladed-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 2,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Ruin": [
+    "Unarmed G1"
+   ],
+   "L60 Brawling B": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8"
+   ],
+   "L60 Protection Arcana B": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Psion B": [
+    "Unarmed G1"
+   ],
+   "L60 Bladed B": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Bladed (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Brawling": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Protection Arcana": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Psion": [
+    "Unarmed"
+   ],
+   "L60 Bladed": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Bladed (Steel)"
+   ],
+   "L60 Gravity": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Ruin": [],
+   "L60 Brawling B": [
+    "Medium Armor (Hard Leather): 383/420"
+   ],
+   "L60 Protection Arcana B": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Psion B": [],
+   "L60 Bladed B": [
+    "Light Armor (Hard Leather): 85/210",
+    "Light Bladed (Steel): 495/495"
+   ],
+   "L60 Brawling": [
+    "Medium Armor (Hard Leather): 259/420"
+   ],
+   "L60 Protection Arcana": [
+    "Light Armor (Hard Leather): 104/120"
+   ],
+   "L60 Psion": [],
+   "L60 Bladed": [
+    "Light Armor (Hard Leather): 112/210",
+    "Light Bladed (Steel): 495/495"
+   ],
+   "L60 Gravity": [
+    "Light Armor (Hard Leather): 120/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5292,
+    "monsterHp": 5292,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 4078,
+    "monsterHp": 4691,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 4038,
+    "monsterHp": 4119,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 3556,
+    "monsterHp": 3783,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 3380,
+    "monsterHp": 3538,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 3180,
+    "monsterHp": 3464,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 2814,
+    "monsterHp": 3328,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 7,
+    "partyHp": 2339,
+    "monsterHp": 3328,
+    "partyDown": 5,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Bladed": 295,
+    "L60 Bladed B": 635,
+    "L60 Gravity": 1162,
+    "L60 Protection Arcana": 603,
+    "L60 Brawling": 12,
+    "L60 Protection Arcana B": 879
+   },
+   "taken": {
+    "L60 Brawling B": 653,
+    "L60 Brawling": 603,
+    "L60 Ruin": 601,
+    "L60 Psion": 702,
+    "L60 Bladed": 591,
+    "L60 Bladed B": 681,
+    "L60 Psion B": 381,
+    "L60 Protection Arcana B": 637,
+    "L60 Protection Arcana": 68
+   },
+   "unattributed": 1331
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1964
+  },
+  "lostBy": {
+   "party": 2953,
+   "monsters": 1964
+  },
+  "directTaken": {
+   "party": 3657,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Protection Arcana B: Alacrity?": 1,
+    "prompt: L# Brawling B: Alacrity?": 1,
+    "prompt: L# Psion B: Alacrity?": 1,
+    "prompt: L# Brawling: Alacrity?": 1,
+    "prompt: L# Protection Arcana: Alacrity?": 1,
+    "prompt: L# Bladed B: Alacrity?": 1,
+    "prompt: L# Psion: Alacrity?": 1,
+    "prompt: L# Bladed: Alacrity?": 1,
+    "prompt: L# Gravity: Alacrity?": 1,
+    "prompt: Light Bladed (Steel)": 37,
+    "prompt: L# Brawling B — Shift": 12,
+    "prompt: L# Brawling — Shift": 13,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 30,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis) · Whirlwind": 6,
+    "prompt: Exploit Opening": 7,
+    "prompt: Force — L# Brawling B": 1,
+    "prompt: L# Bladed B — Shift": 21,
+    "prompt: Sanctum Ward: L# Psion": 1,
+    "prompt: Warden Ward": 17,
+    "prompt: Force — L# Ruin": 1,
+    "prompt: Sanctum Ward: L# Psion B": 2,
+    "prompt: Versatility": 1,
+    "prompt: Unarmed": 6,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 6,
+    "prompt: Unarmed — Combo (Advantage)": 2,
+    "prompt: Unarmed — Flow Like Water": 2,
+    "prompt: Calamity: which result to store": 1,
+    "prompt: Force — L# Psion": 2,
+    "prompt: Verdant Soul (Tenet)": 1,
+    "prompt: Verdant Soul: give # temp HP to": 1,
+    "prompt: L# Bladed — Shift": 9,
+    "prompt: Force — L# Psion B": 1,
+    "prompt: Force — L# Protection Arcana B": 4
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Brawling needs 68 Energy for that but has 40.",
+     "who": "L60 Brawling"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling needs 68 Energy for that but has 40.",
+     "who": "L60 Brawling"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 340,
+  "winner": "party",
+  "pass": "grand-60-p15",
+  "rounds": 13,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 30,
+  "knockbacks": {
+   "into": 3
+  },
+  "used": {
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 1,
+   "Brace": 1,
+   "Shatter": 1,
+   "defend:dodge": 184,
+   "ward": 13,
+   "manifest:Bloom": 17,
+   "defend:shift": 32,
+   "limber": 11,
+   "manifest:Flourish": 17,
+   "cast:Force + Cut": 26,
+   "mod:Bleed": 2,
+   "mod:Rend": 6,
+   "mod:Gash": 1,
+   "redirect": 1,
+   "natural:Black Jaws": 8,
+   "manifest:Eclipse": 16,
+   "manifest:Umbral Strike": 12,
+   "Parry": 1,
+   "Leap": 1,
+   "Spot Weakness": 1,
+   "Dash": 1,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 2,
+   "opt:shank3=pierce": 1,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 2,
+   "redirect:skipped": 5,
+   "natural:Root Lash": 6,
+   "manifest:Cultivate": 4,
+   "manifest:Jinx+": 2,
+   "manifest:Forfeit+": 2,
+   "manifest:Calamity+": 1,
+   "riposte": 1,
+   "limber:skipped": 8,
+   "natural:Budding Gore": 8,
+   "opt:twinFang=adv": 2,
+   "combo": 2,
+   "flowLikeWater:skipped": 3,
+   "manifest:Calamity": 11,
+   "combo:skipped": 1,
+   "opt:shank1=dodge": 1,
+   "manifest:Jinx": 10,
+   "manifest:Forfeit": 10,
+   "defend:closeQuarters": 5,
+   "opt:dir=into": 3,
+   "opt:whirlwind=on": 1
+  },
+  "hp": {
+   "L60 Ruin#OtJh": "1134/1134",
+   "L60 Brawling B#hypQ": "524/1134",
+   "L60 Protection Arcana B#w39g": "1134/1134",
+   "L60 Psion B#WLOR": "756/756",
+   "L60 Bladed B#xKnn": "994/1134",
+   "Sim Thicket#rXBC": "1599/3240",
+   "Sim Gloamhound#5bDw": "887/1944",
+   "Sim Gloamhound#6rnJ": "854/1944",
+   "Sim Burgeon#3CL8": "1102/2592"
+  },
+  "down": [
+   "L60 Brawling B",
+   "Sim Thicket",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Manifest: Sanctum Ward": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 10,
+    "crits": 8,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 29,
+    "followups": 0,
+    "hits": 21,
+    "crits": 11,
+    "misses": 8,
+    "damage": 3039,
+    "ap": 78,
+    "kills": 3,
+    "users": [
+     "L60 Protection Arcana B"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 4,
+    "damage": 144,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 12,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 10,
+    "crits": 5,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 18,
+    "crits": 9,
+    "misses": 7,
+    "damage": 1144,
+    "ap": 48,
+    "kills": 1,
+    "users": [
+     "L60 Bladed B"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 6,
+    "followups": 33,
+    "hits": 23,
+    "crits": 1,
+    "misses": 16,
+    "damage": 679,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "L60 Bladed B",
+     "L60 Brawling B"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 3,
+    "damage": 203,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Jinx (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ruin"
+    ]
+   },
+   "Manifest: Forfeit (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 8,
+    "crits": 6,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ruin"
+    ]
+   },
+   "Manifest: Calamity (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 7,
+    "crits": 5,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ruin"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 4,
+    "damage": 403,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 10,
+    "absorbed": 280
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 1,
+    "absorbed": 14
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Psion B",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 16,
+    "attacks": 39
+   },
+   {
+    "name": "L60 Brawling B",
+    "dealt": 0,
+    "taken": 610,
+    "hits": 11,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Protection Arcana B",
+    "dealt": 3039,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 29
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 701,
+    "hits": 10,
+    "attacks": 13
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 403,
+    "taken": 1779,
+    "hits": 8,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Bladed B",
+    "dealt": 1823,
+    "taken": 140,
+    "hits": 30,
+    "attacks": 47
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 203,
+    "taken": 1336,
+    "hits": 7,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Ruin",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 19,
+    "attacks": 36
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 144,
+    "taken": 1046,
+    "hits": 17,
+    "attacks": 24
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Brawling B",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 60,
+    "attacks": 13,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "defend:shift": 4,
+     "defend:dodge": 22,
+     "limber": 11,
+     "redirect": 1,
+     "redirect:skipped": 5,
+     "riposte": 1,
+     "limber:skipped": 8,
+     "combo": 2,
+     "flowLikeWater:skipped": 3,
+     "combo:skipped": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "L60 Psion B",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 13,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 33,
+     "ward": 13,
+     "manifest:Bloom": 13,
+     "manifest:Flourish": 13
+    },
+    "manifests": 26
+   },
+   {
+    "name": "L60 Protection Arcana B",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 13,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 26,
+    "used": {
+     "cast:Force + Cut": 26,
+     "mod:Bleed": 2,
+     "mod:Rend": 6,
+     "mod:Gash": 1
+    },
+    "knockbacks": {
+     "into": 3
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 31.622776601683796,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 46,
+     "natural:Black Jaws": 3,
+     "manifest:Eclipse": 5,
+     "manifest:Umbral Strike": 4
+    },
+    "turnMoved": 0,
+    "manifests": 9
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23,
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "L60 Bladed B",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 60.532747850837694,
+    "attacks": 47,
+    "turns": 12,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "defend:closeQuarters": 5,
+     "defend:dodge": 28,
+     "defend:shift": 28
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 18.027756377319946,
+    "attacks": 6,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Root Lash": 6,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 4
+    },
+    "manifests": 4
+   },
+   {
+    "name": "L60 Ruin",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 36,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 36,
+    "used": {
+     "manifest:Jinx+": 2,
+     "manifest:Forfeit+": 2,
+     "manifest:Calamity+": 1,
+     "manifest:Calamity": 11,
+     "manifest:Jinx": 10,
+     "manifest:Forfeit": 10
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 89.10934862167758,
+    "attacks": 24,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 28,
+     "natural:Black Jaws": 5,
+     "manifest:Eclipse": 11,
+     "manifest:Umbral Strike": 8
+    },
+    "manifests": 19
+   }
+  ],
+  "trees": {
+   "L60 Ruin": {
+    "mental-theory": 5,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-ruin-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-stealth": 3,
+    "generic-ambush": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2
+   },
+   "L60 Brawling B": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-fortitude": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 1,
+    "generic-composure": 1
+   },
+   "L60 Protection Arcana B": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 5,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "generic-initiative": 2,
+    "generic-tempo": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1
+   },
+   "L60 Psion B": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-psion-arts": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Bladed B": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-bladed-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 2,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Ruin": [
+    "Unarmed G1"
+   ],
+   "L60 Brawling B": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8"
+   ],
+   "L60 Protection Arcana B": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Psion B": [
+    "Unarmed G1"
+   ],
+   "L60 Bladed B": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Bladed (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Ruin": [],
+   "L60 Brawling B": [
+    "Medium Armor (Hard Leather): 132/420"
+   ],
+   "L60 Protection Arcana B": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Psion B": [],
+   "L60 Bladed B": [
+    "Light Armor (Hard Leather): 196/210",
+    "Light Bladed (Steel): 495/495"
+   ],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5292,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5247,
+    "monsterHp": 8794,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 4966,
+    "monsterHp": 8799,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 4542,
+    "monsterHp": 8799,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 4542,
+    "monsterHp": 8602,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 4542,
+    "monsterHp": 7878,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 4542,
+    "monsterHp": 7560,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 4542,
+    "monsterHp": 6489,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 4542,
+    "monsterHp": 6001,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 4542,
+    "monsterHp": 5778,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 11,
+    "partyHp": 4542,
+    "monsterHp": 5510,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 4542,
+    "monsterHp": 5368,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 13,
+    "partyHp": 4542,
+    "monsterHp": 4894,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 13,
+    "partyHp": 4542,
+    "monsterHp": 4442,
+    "partyDown": 1,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Protection Arcana B": 3206,
+    "L60 Bladed B": 1823,
+    "Sim Thicket": 403,
+    "Sim Burgeon": 203,
+    "Sim Gloamhound": 144
+   },
+   "taken": {
+    "Sim Gloamhound": 2147,
+    "Sim Thicket": 2064,
+    "Sim Burgeon": 1490,
+    "L60 Brawling B": 610,
+    "L60 Bladed B": 140
+   },
+   "unattributed": 672
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 5278
+  },
+  "lostBy": {
+   "party": 750,
+   "monsters": 5278
+  },
+  "directTaken": {
+   "party": 5612,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Protection Arcana B: Alacrity?": 1,
+    "prompt: L# Brawling B: Alacrity?": 1,
+    "prompt: L# Psion B: Alacrity?": 1,
+    "prompt: L# Bladed B: Alacrity?": 1,
+    "prompt: L# Protection Arcana B: Resist Allure (as Fear)": 2,
+    "prompt: L# Brawling B: Resist Allure (as Fear)": 2,
+    "prompt: L# Psion B: Resist Allure (as Fear)": 2,
+    "prompt: Face Your Fear?": 4,
+    "prompt: L# Bladed B: Resist Allure (as Fear)": 2,
+    "prompt: L# Ruin: Resist Allure (as Fear)": 2,
+    "prompt: L# Protection Arcana B: Resist Dread (as Fear)": 2,
+    "prompt: L# Brawling B: Resist Dread (as Fear)": 2,
+    "prompt: L# Psion B: Resist Dread (as Fear)": 2,
+    "prompt: L# Bladed B: Resist Dread (as Fear)": 2,
+    "prompt: L# Ruin: Resist Dread (as Fear)": 2,
+    "prompt: Versatility": 1,
+    "prompt: Sanctum Ward: L# Psion B": 13,
+    "prompt: L# Brawling B — Shift": 4,
+    "prompt: Exploit Opening": 8,
+    "prompt: Riposte Ward": 46,
+    "prompt: Shadowmark (Tenet)": 12,
+    "prompt: Shadowmark: make one step more obscured": 12,
+    "prompt: Light Bladed (Steel)": 24,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 22,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 3,
+    "prompt: Calamity: which result to store": 1,
+    "prompt: Unarmed — Riposte": 1,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 7,
+    "prompt: Verdant Soul (Tenet)": 8,
+    "prompt: Verdant Soul: give # temp HP to": 8,
+    "prompt: Unarmed": 6,
+    "prompt: Unarmed — Combo (Advantage)": 2,
+    "prompt: Umbral Strike": 10,
+    "prompt: Reversal: Sim Gloamhound": 4,
+    "prompt: L# Bladed B — Shift": 28,
+    "prompt: Sporing": 1,
+    "prompt: Force — Sim Gloamhound": 3,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis) · Whirlwind": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [UsGJzcuNW6CxWogW] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Gravity"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling B is afraid and can't gain Energy.",
+     "who": "L60 Brawling B"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L60 Brawling B's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Burgeon can't move through L60 Brawling B's space.",
+     "who": "Sim Thicket"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L60 Brawling B's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L60 Brawling B's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L60 Brawling B's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Bladed B can't move through Sim Gloamhound's space.",
+     "who": "L60 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Bladed B is afraid and can't gain Energy.",
+     "who": "L60 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Bladed B can't move through Sim Gloamhound's space.",
+     "who": "L60 Protection Arcana B"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Bladed B is afraid and can't gain Energy.",
+     "who": "L60 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Bladed B can't move through Sim Gloamhound's space.",
+     "who": "L60 Protection Arcana B"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Bladed B is afraid and can't gain Energy.",
+     "who": "L60 Bladed B"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Bladed B can't move through Sim Gloamhound's space.",
+     "who": "L60 Protection Arcana B"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Bladed B is afraid and can't gain Energy.",
+     "who": "L60 Bladed B"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [UsGJzcuNW6CxWogW] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

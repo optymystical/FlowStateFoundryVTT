@@ -1,0 +1,1861 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 183,
+  "winner": "monsters",
+  "pass": "grand-15-p3",
+  "rounds": 5,
+  "partyLeft": 0,
+  "monstersLeft": 4,
+  "followups": 16,
+  "knockbacks": {
+   "down": 13
+  },
+  "used": {
+   "cast:Stab": 15,
+   "mod:Weakpoint": 3,
+   "defend:shift": 32,
+   "defend:dodge": 124,
+   "limber": 51,
+   "mod:Setup": 1,
+   "cast:Force": 14,
+   "mod:Multicast": 6,
+   "multicast": 6,
+   "opt:shape=radius": 1,
+   "mod:Pinpoint": 3,
+   "mod:Explode": 1,
+   "balance": 2,
+   "opt:b=opp": 2,
+   "ward": 7,
+   "manifest:Decree": 2,
+   "manifest:Mandate": 2,
+   "cast:Slam": 8,
+   "mod:Crush": 8,
+   "mod:Bash": 8,
+   "mod:Beatdown": 4,
+   "Parry": 2,
+   "recoverEnergy": 6,
+   "manifest:Fracture+": 7,
+   "manifest:Larceny+": 4,
+   "Mark": 3,
+   "opt:pepper=1": 10,
+   "opt:spinDown": 7,
+   "riposte": 4,
+   "opt:heave": 2,
+   "markShot": 2,
+   "quickload:speed": 6,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "cast:Flame": 5,
+   "mod:Ignition": 5,
+   "manifest:Herald": 5,
+   "manifest:Redirect": 4,
+   "manifest:Ascend": 4,
+   "Dip": 3,
+   "quickload:pepper": 3,
+   "opt:dir=down": 13,
+   "act:momentumNow": 12,
+   "manifest:Fracture": 1
+  },
+  "hp": {
+   "L15 Piercing#d7vl": "41/186",
+   "L15 Order#69gI": "117/279",
+   "L15 Rapid#LTBS": "133/279",
+   "L15 Crushing#lCZf": "113/279",
+   "L15 Chaos#utH9": "100/279",
+   "L15 Medium#kRZ2": "279/279",
+   "L15 Reach Arcana#jWZN": "279/279",
+   "L15 Beyond#SMGF": "279/279",
+   "L15 Strength#uDGy": "124/279",
+   "L15 Heat#Mu88": "279/279"
+  },
+  "down": [
+   "L15 Piercing",
+   "L15 Order",
+   "L15 Rapid",
+   "L15 Crushing",
+   "L15 Chaos",
+   "L15 Strength"
+  ],
+  "weapons": {
+   "Spell: Stab": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 12,
+    "damage": 1,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "L15 Piercing"
+    ]
+   },
+   "Spell: Force [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 10,
+    "damage": 13,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "L15 Reach Arcana"
+    ],
+    "force": 13
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Order"
+    ]
+   },
+   "Manifest: Decree (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Order"
+    ]
+   },
+   "Manifest: Mandate (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Order"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 6,
+    "damage": 60,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L15 Crushing"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 12,
+    "followups": 20,
+    "hits": 17,
+    "crits": 5,
+    "misses": 15,
+    "damage": 270,
+    "ap": 48,
+    "kills": 1,
+    "users": [
+     "L15 Strength",
+     "L15 Medium"
+    ]
+   },
+   "Manifest: Fracture (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Chaos"
+    ]
+   },
+   "Manifest: Larceny (Manifest)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Chaos"
+    ]
+   },
+   "Light Rapid": {
+    "attacks": 10,
+    "followups": 2,
+    "hits": 9,
+    "crits": 4,
+    "misses": 3,
+    "damage": 94,
+    "ap": 24,
+    "kills": 1,
+    "users": [
+     "L15 Rapid"
+    ]
+   },
+   "Spell: Flame [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 3,
+    "damage": 58,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "L15 Heat"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Beyond"
+    ]
+   },
+   "Manifest: Herald (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 2,
+    "damage": 97,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Beyond"
+    ],
+    "force": 97
+   },
+   "Manifest: Ascend (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Beyond"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 4,
+    "users": []
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 28
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 12,
+    "absorbed": 28
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Piercing",
+    "dealt": 1,
+    "taken": 77,
+    "hits": 3,
+    "attacks": 15
+   },
+   {
+    "name": "L15 Medium",
+    "dealt": 128,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 18
+   },
+   {
+    "name": "L15 Reach Arcana",
+    "dealt": 13,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Rapid",
+    "dealt": 94,
+    "taken": 133,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Crushing",
+    "dealt": 60,
+    "taken": 4,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Order",
+    "dealt": 0,
+    "taken": 98,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Strength",
+    "dealt": 142,
+    "taken": 155,
+    "hits": 7,
+    "attacks": 14
+   },
+   {
+    "name": "L15 Chaos",
+    "dealt": 0,
+    "taken": 16,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Heat",
+    "dealt": 58,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 10
+   },
+   {
+    "name": "L15 Beyond",
+    "dealt": 97,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 14
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Piercing",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Stab": 15,
+     "mod:Weakpoint": 3,
+     "mod:Setup": 1,
+     "defend:dodge": 24
+    }
+   },
+   {
+    "name": "L15 Medium",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 100.14693182963201,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:shift": 32,
+     "defend:dodge": 32,
+     "limber": 39,
+     "Versatility": 1,
+     "recoverEnergy": 1,
+     "Dip": 2,
+     "Parry": 1,
+     "riposte": 2
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Reach Arcana",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 14,
+    "used": {
+     "cast:Force": 14,
+     "mod:Multicast": 1,
+     "multicast": 1,
+     "mod:Pinpoint": 1,
+     "mod:Explode": 1
+    },
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "L15 Rapid",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 10,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 11,
+     "Mark": 3,
+     "markShot": 2
+    },
+    "turnMoved": 0,
+    "shank": 0,
+    "reloads": 2
+   },
+   {
+    "name": "L15 Crushing",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9,
+     "cast:Slam": 8,
+     "mod:Pinpoint": 1,
+     "mod:Crush": 8,
+     "mod:Bash": 8,
+     "mod:Beatdown": 4
+    },
+    "turnMoved": 0,
+    "casts": 8
+   },
+   {
+    "name": "L15 Order",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 2,
+     "manifest:Decree": 2,
+     "manifest:Mandate": 2,
+     "defend:dodge": 17
+    },
+    "manifests": 4
+   },
+   {
+    "name": "L15 Strength",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 96.18033988749895,
+    "attacks": 12,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "recoverEnergy": 1,
+     "defend:dodge": 19,
+     "riposte": 2,
+     "limber": 12,
+     "Dip": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 11.180339887498949
+   },
+   {
+    "name": "L15 Chaos",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Fracture+": 7,
+     "manifest:Larceny+": 4,
+     "defend:dodge": 8,
+     "manifest:Fracture": 1
+    }
+   },
+   {
+    "name": "L15 Heat",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 5,
+    "used": {
+     "cast:Flame": 5,
+     "mod:Pinpoint": 1,
+     "mod:Multicast": 5,
+     "mod:Ignition": 5,
+     "multicast": 5
+    }
+   },
+   {
+    "name": "L15 Beyond",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 35,
+    "attacks": 5,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 5,
+     "manifest:Herald": 5,
+     "manifest:Redirect": 4,
+     "manifest:Ascend": 4,
+     "defend:dodge": 4,
+     "act:momentumNow": 12,
+     "recoverEnergy": 4
+    },
+    "manifests": 13,
+    "knockbacks": {
+     "down": 12
+    }
+   }
+  ],
+  "trees": {
+   "L15 Piercing": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-piercing": 5,
+    "generic-perception": 2,
+    "generic-stealth": 2
+   },
+   "L15 Order": {
+    "mental-theory": 2,
+    "mental-order-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "generic-initiative": 3
+   },
+   "L15 Rapid": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-rapid-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2
+   },
+   "L15 Crushing": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 5,
+    "generic-perception": 2,
+    "generic-athletics": 2
+   },
+   "L15 Chaos": {
+    "mental-theory": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "generic-endurance": 3
+   }
+  },
+  "gear": {
+   "L15 Piercing": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Order": [
+    "Unarmed G1"
+   ],
+   "L15 Rapid": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Rapid (Steel) G3"
+   ],
+   "L15 Crushing": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Chaos": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L15 Medium": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L15 Reach Arcana": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Beyond": [
+    "Unarmed"
+   ],
+   "L15 Strength": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L15 Heat": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Piercing": [
+    "Light Armor (Hard Leather): 4/15"
+   ],
+   "L15 Order": [],
+   "L15 Rapid": [
+    "Light Armor (Hard Leather): 20/30",
+    "Light Rapid (Steel): 135/135"
+   ],
+   "L15 Crushing": [
+    "Light Armor (Hard Leather): 12/30"
+   ],
+   "L15 Chaos": [],
+   "L15 Medium": [
+    "Medium Armor (Hard Leather): 56/60",
+    "Heavy Balanced (Steel): 514/540"
+   ],
+   "L15 Reach Arcana": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Beyond": [],
+   "L15 Strength": [
+    "Medium Armor (Hard Leather): 36/60",
+    "Heavy Balanced (Steel): 442/540"
+   ],
+   "L15 Heat": [
+    "Light Armor (Hard Leather): 30/30"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 1395,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1226,
+    "monsterHp": 1395,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1031,
+    "monsterHp": 1394,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 785,
+    "monsterHp": 1240,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 612,
+    "monsterHp": 1240,
+    "partyDown": 4,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 504,
+    "monsterHp": 1240,
+    "partyDown": 5,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Medium": 84,
+    "L15 Heat": 239,
+    "L15 Strength": 130,
+    "L15 Rapid": 93,
+    "L15 Beyond": 109,
+    "L15 Piercing": 1,
+    "L15 Reach Arcana": 13,
+    "L15 Crushing": 60
+   },
+   "taken": {
+    "L15 Rapid": 146,
+    "L15 Order": 162,
+    "L15 Chaos": 179,
+    "L15 Strength": 155,
+    "L15 Piercing": 145,
+    "L15 Crushing": 166
+   },
+   "unattributed": 224
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 167,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 148,
+   "monsters": 155
+  },
+  "lostBy": {
+   "party": 798,
+   "monsters": 155
+  },
+  "directTaken": {
+   "party": 483,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Order: Alacrity?": 1,
+    "prompt: L# Medium — Shift": 32,
+    "prompt: Gravity Field: shape": 1,
+    "confirm: Gravity Field: place the area": 1,
+    "prompt: Sanctum Ward: L# Order": 2,
+    "prompt: Balance": 2,
+    "prompt: Heavy Balanced (Steel)": 12,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 16,
+    "prompt: Light Rapid (Steel)": 10,
+    "prompt: Heavy Balanced (Steel) — Riposte": 4,
+    "prompt: Light Rapid (Steel) — Mark shot": 2,
+    "wait: Light Rapid (Steel) is empty": 9,
+    "prompt: Versatility": 1,
+    "prompt: Warden Ward": 18,
+    "prompt: Sanctum Ward: L# Beyond": 5,
+    "prompt: Gust (Tenet)": 5,
+    "prompt: Herald — L# Chaos": 1,
+    "prompt: Gust — L# Chaos": 1,
+    "prompt: Force — L# Rapid": 1,
+    "prompt: Unbound (Tenet)": 1,
+    "prompt: Unbound: place a Chaos charge": 1,
+    "prompt: L# Chaos's charges on L# Strength": 5,
+    "prompt: L# Chaos: Entropy on L# Strength": 5,
+    "prompt: Herald — L# Piercing": 2,
+    "prompt: Gust — L# Piercing": 2,
+    "prompt: Momentum — L# Piercing": 6
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 443,
+  "winner": "unfinished",
+  "pass": "grand-15-p3",
+  "rounds": 16,
+  "partyLeft": 4,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 226,
+   "balance": 2,
+   "opt:b=mine": 2,
+   "natural:Budding Gore": 4,
+   "manifest:Bloom": 7,
+   "manifest:Flourish": 7,
+   "ward": 2,
+   "manifest:Decree": 2,
+   "manifest:Mandate": 2,
+   "charge:L15 Order": 4,
+   "opt:replace=fAy3pDPtVE5pAheo": 1,
+   "manifest:Fracture+": 4,
+   "manifest:Larceny+": 2,
+   "opt:m:CT1HwnemmKH2PKsS": 1,
+   "natural:Root Lash": 4,
+   "manifest:Cultivate": 4,
+   "natural:Black Jaws": 4,
+   "manifest:Eclipse": 58,
+   "cast:Stab": 7,
+   "mod:Setup": 4,
+   "charge:L15 Chaos": 39,
+   "opt:replace=pubYRGUxM3cQU8i5": 1,
+   "manifest:Umbral Strike": 29,
+   "cast:Slam": 30,
+   "mod:Pinpoint": 2,
+   "mod:Crush": 30,
+   "mod:Beatdown": 5,
+   "Mark": 2,
+   "opt:pepper=1": 45,
+   "opt:spinDown": 14,
+   "quickload:speed": 9,
+   "markShot": 2,
+   "opt:replace=KmVDzZUvYOGmwuvO": 1,
+   "opt:m:D4tclrbfSpMSVYes": 1,
+   "opt:replace=OdkQUfgY3JdmcRFq": 1,
+   "quickload:pepper": 35,
+   "manifest:Fracture": 26,
+   "manifest:Larceny": 13,
+   "opt:replace=xUf9GhbVLPv81QcE": 1,
+   "cast:nothingAffordable": 13,
+   "opt:replace=snsuz7CjlwmuHmrA": 1,
+   "opt:replace=0jXZbrlNciGoY17j": 1,
+   "opt:replace=FG6Y8pYkmNgf2l2h": 1,
+   "opt:replace=kQqlF81sSXvTAJI4": 1,
+   "opt:replace=S1QQrGnGT1i85oFF": 1,
+   "opt:replace=4FmgGQJEbk19sEUA": 1,
+   "opt:replace=a7zbF8NvFmnuYD91": 1,
+   "opt:replace=h7kxjllKBnOXnU1L": 1,
+   "opt:replace=VU6jkTaIzufdRTaU": 1,
+   "opt:replace=DZssCFBf5ZPIQ2wj": 1,
+   "opt:replace=fOpVeumEza5rvSZx": 1,
+   "opt:replace=Adndu5sVxIGKuvN6": 1,
+   "opt:replace=MFYV1O49TXvNJ6Hu": 1,
+   "opt:replace=AimHstoFhIAbzv5E": 1,
+   "opt:replace=UDDJlqFvzSRqKRbv": 1,
+   "opt:replace=QRZsLoVFuJ0egFCc": 1,
+   "opt:replace=1LPkFs0HQju6f0hZ": 1,
+   "opt:replace=9pPQCvgxfP1jiiNY": 1,
+   "opt:replace=q8LphHyo9iY7jlWy": 1,
+   "opt:replace=gCvRDV6NcP0zFZ8m": 1,
+   "opt:replace=sDuEu9CeJAHrW0rE": 1,
+   "opt:replace=aitTXpoqWCyLNgjt": 1,
+   "opt:replace=RiIWXLTr16S6HA6x": 1,
+   "opt:replace=44rzxp3aM8EZpHTS": 1,
+   "opt:replace=PC4eh9qqU973YSDY": 1,
+   "opt:replace=FYUgXJFQLXe6JnDH": 1,
+   "opt:replace=Iwl44j6w3GS6ZL8F": 1,
+   "opt:replace=O02luhQV9AcPho75": 1,
+   "opt:replace=SoDXniU9Rb0cbly7": 1,
+   "opt:replace=RgpsuoROYSzwZLv4": 1,
+   "opt:replace=nJ1zmwkeoBFZ0kGB": 1,
+   "opt:replace=pcqpTFxBEQwy4UXv": 1,
+   "opt:replace=oMZ2RpAsVnO4EBtm": 1,
+   "opt:replace=ijKdb9MabXyK5bP0": 1,
+   "opt:replace=DLSCVPIILfoGTQyX": 1,
+   "opt:replace=tiWQfFwC3fIjbVJD": 1
+  },
+  "hp": {
+   "L15 Piercing#EAk9": "165/186",
+   "L15 Order#TYUJ": "114/279",
+   "L15 Rapid#zzml": "279/279",
+   "L15 Crushing#KlZs": "279/279",
+   "L15 Chaos#615E": "279/279",
+   "Sim Bloomrot#Xhom": "232/486",
+   "Sim Bloomrot#ASmV": "231/486",
+   "Sim Gloamhound#bid6": "349/486",
+   "Sim Gloamhound#QYHd": "486/486",
+   "Sim Burgeon#xSDd": "648/648"
+  },
+  "down": [
+   "L15 Order",
+   "Sim Bloomrot",
+   "Sim Bloomrot"
+  ],
+  "weapons": {
+   "Natural: Budding Gore [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 43,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 7,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Order"
+    ]
+   },
+   "Manifest: Decree (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Order"
+    ]
+   },
+   "Manifest: Mandate (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Order"
+    ]
+   },
+   "Manifest: Fracture (Manifest)": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 26,
+    "crits": 16,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Chaos"
+    ]
+   },
+   "Manifest: Larceny (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 15,
+    "crits": 9,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Chaos"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 36,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 107,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 58,
+    "followups": 0,
+    "hits": 41,
+    "crits": 25,
+    "misses": 17,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Spell: Stab": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 3,
+    "damage": 26,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "L15 Piercing"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 29,
+    "followups": 0,
+    "hits": 21,
+    "crits": 15,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Spell: Slam": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 21,
+    "crits": 11,
+    "misses": 9,
+    "damage": 166,
+    "ap": 90,
+    "kills": 1,
+    "users": [
+     "L15 Crushing"
+    ]
+   },
+   "Light Rapid": {
+    "attacks": 45,
+    "followups": 2,
+    "hits": 43,
+    "crits": 35,
+    "misses": 4,
+    "damage": 458,
+    "ap": 94,
+    "kills": 1,
+    "users": [
+     "L15 Rapid"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 1,
+    "absorbed": 1
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 43,
+    "taken": 258,
+    "hits": 8,
+    "attacks": 9
+   },
+   {
+    "name": "L15 Order",
+    "dealt": 0,
+    "taken": 165,
+    "hits": 6,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 36,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Chaos",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 41,
+    "attacks": 45
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 61,
+    "taken": 137,
+    "hits": 26,
+    "attacks": 45
+   },
+   {
+    "name": "L15 Piercing",
+    "dealt": 26,
+    "taken": 21,
+    "hits": 4,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 0,
+    "taken": 255,
+    "hits": 6,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 46,
+    "taken": 0,
+    "hits": 40,
+    "attacks": 46
+   },
+   {
+    "name": "L15 Crushing",
+    "dealt": 166,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 30
+   },
+   {
+    "name": "L15 Rapid",
+    "dealt": 458,
+    "taken": 0,
+    "hits": 43,
+    "attacks": 47
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 105.4987562112089,
+    "attacks": 3,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 5,
+    "used": {
+     "natural:Budding Gore": 3,
+     "manifest:Bloom": 3,
+     "defend:dodge": 34,
+     "manifest:Flourish": 3
+    },
+    "manifests": 6
+   },
+   {
+    "name": "L15 Order",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16,
+     "ward": 2,
+     "manifest:Decree": 2,
+     "manifest:Mandate": 2
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 85,
+    "attacks": 4,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "natural:Root Lash": 4,
+     "manifest:Cultivate": 4
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "L15 Chaos",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 45,
+    "used": {
+     "manifest:Fracture+": 4,
+     "manifest:Larceny+": 2,
+     "manifest:Fracture": 26,
+     "manifest:Larceny": 13
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100.4987562112089,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 3,
+     "manifest:Eclipse": 28,
+     "manifest:Umbral Strike": 14,
+     "defend:dodge": 67
+    },
+    "manifests": 42
+   },
+   {
+    "name": "L15 Piercing",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 83,
+     "cast:Stab": 7,
+     "mod:Setup": 4,
+     "cast:nothingAffordable": 13
+    },
+    "turnMoved": 0,
+    "casts": 7
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 91.24143795447327,
+    "attacks": 1,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 1,
+     "manifest:Bloom": 4,
+     "defend:dodge": 18,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 46,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 1,
+     "manifest:Eclipse": 30,
+     "manifest:Umbral Strike": 15
+    },
+    "manifests": 45
+   },
+   {
+    "name": "L15 Crushing",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Slam": 30,
+     "mod:Pinpoint": 2,
+     "mod:Crush": 30,
+     "mod:Beatdown": 5
+    }
+   },
+   {
+    "name": "L15 Rapid",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Mark": 2,
+     "markShot": 2
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "reloads": 2
+   }
+  ],
+  "trees": {
+   "L15 Piercing": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-piercing": 5,
+    "generic-perception": 2,
+    "generic-stealth": 2
+   },
+   "L15 Order": {
+    "mental-theory": 2,
+    "mental-order-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "generic-initiative": 3
+   },
+   "L15 Rapid": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-rapid-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2
+   },
+   "L15 Crushing": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-crushing": 5,
+    "generic-perception": 2,
+    "generic-athletics": 2
+   },
+   "L15 Chaos": {
+    "mental-theory": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "generic-endurance": 3
+   }
+  },
+  "gear": {
+   "L15 Piercing": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Order": [
+    "Unarmed G1"
+   ],
+   "L15 Rapid": [
+    "Unarmed G1",
+    "Light Rapid (Steel) G3",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Crushing": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Chaos": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Piercing": [
+    "Light Armor (Hard Leather): 14/15"
+   ],
+   "L15 Order": [],
+   "L15 Rapid": [
+    "Light Rapid (Steel): 135/135",
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Crushing": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Chaos": [],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1203,
+    "monsterHp": 2401,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1137,
+    "monsterHp": 2390,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1116,
+    "monsterHp": 2338,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 1116,
+    "monsterHp": 2338,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 1116,
+    "monsterHp": 2224,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 1116,
+    "monsterHp": 2128,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 1116,
+    "monsterHp": 2079,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 1116,
+    "monsterHp": 2060,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 1116,
+    "monsterHp": 2037,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 1116,
+    "monsterHp": 2021,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 12,
+    "partyHp": 1116,
+    "monsterHp": 2015,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 13,
+    "partyHp": 1116,
+    "monsterHp": 1985,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 1116,
+    "monsterHp": 1950,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 15,
+    "partyHp": 1116,
+    "monsterHp": 1950,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 1116,
+    "monsterHp": 1946,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 1116,
+    "monsterHp": 1946,
+    "partyDown": 1,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "Sim Bloomrot": 43,
+    "Sim Burgeon": 36,
+    "Sim Gloamhound": 107,
+    "L15 Crushing": 166,
+    "L15 Rapid": 452,
+    "L15 Piercing": 26
+   },
+   "taken": {
+    "L15 Order": 165,
+    "Sim Bloomrot": 513,
+    "L15 Piercing": 21,
+    "Sim Gloamhound": 137
+   },
+   "unattributed": 6
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 646
+  },
+  "lostBy": {
+   "party": 186,
+   "monsters": 646
+  },
+  "directTaken": {
+   "party": 836,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Order: Alacrity?": 1,
+    "prompt: L# Rapid: Resist Allure (as Fear)": 3,
+    "prompt: L# Crushing: Resist Allure (as Fear)": 3,
+    "prompt: L# Piercing: Resist Allure (as Fear)": 3,
+    "prompt: L# Order: Resist Allure (as Fear)": 3,
+    "prompt: L# Chaos: Resist Allure (as Fear)": 3,
+    "prompt: L# Rapid: Resist Dread (as Fear)": 2,
+    "prompt: L# Crushing: Resist Dread (as Fear)": 2,
+    "prompt: L# Piercing: Resist Dread (as Fear)": 2,
+    "prompt: L# Order: Resist Dread (as Fear)": 2,
+    "prompt: L# Chaos: Resist Dread (as Fear)": 2,
+    "prompt: Balance": 2,
+    "prompt: Verdant Soul (Tenet)": 7,
+    "prompt: Verdant Soul: give # temp HP to": 7,
+    "prompt: Sanctum Ward: L# Order": 2,
+    "prompt: L# Order's charges on Sim Burgeon": 4,
+    "prompt: L# Chaos's charges on Sim Bloomrot": 14,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 2,
+    "prompt: Shadowmark (Tenet)": 27,
+    "prompt: Shadowmark: make one step more obscured": 27,
+    "prompt: Light Rapid (Steel)": 45,
+    "wait: Light Rapid (Steel) is empty": 44,
+    "prompt: Light Rapid (Steel) — Mark shot": 2,
+    "prompt: Umbral Strike": 2,
+    "prompt: L# Chaos: Entropy on Sim Bloomrot": 1,
+    "prompt: Unbound (Tenet)": 11,
+    "prompt: Unbound: place a Chaos charge": 11,
+    "prompt: Sporing": 1,
+    "prompt: Riposte Ward": 48,
+    "prompt: L# Chaos's charges on Sim Gloamhound": 48,
+    "prompt: L# Chaos: Entropy on Sim Gloamhound": 8
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Bloomrot can't move through L15 Order's space.",
+     "who": "L15 Order"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Burgeon can't move through L15 Order's space.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Burgeon"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Bloomrot can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Burgeon can't move through L15 Order's space.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Burgeon"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Bloomrot can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Chaos"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Chaos"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Chaos"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Piercing is afraid and can't gain Energy.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Order's space.",
+     "who": "L15 Piercing"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

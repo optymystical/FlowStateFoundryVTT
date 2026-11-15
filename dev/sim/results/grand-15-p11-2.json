@@ -1,0 +1,1833 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 290,
+  "winner": "party",
+  "pass": "grand-15-p11",
+  "rounds": 9,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 40,
+  "knockbacks": {
+   "down": 2,
+   "into": 1
+  },
+  "used": {
+   "manifest:Undertow": 8,
+   "defend:dodge": 200,
+   "manifest:Riptide": 4,
+   "defend:shift": 42,
+   "cast:Force": 3,
+   "mod:Empower": 2,
+   "opt:dir=down": 1,
+   "manifest:Exact+": 17,
+   "manifest:Hone": 8,
+   "Parry": 7,
+   "Shatter": 8,
+   "momentum:adv": 15,
+   "momentum:str": 14,
+   "recoverEnergy": 5,
+   "cast:Restore": 4,
+   "mod:Painless": 4,
+   "manifest:Bloom": 7,
+   "defend:perfectParry": 13,
+   "riposte": 9,
+   "manifest:Flourish": 7,
+   "opt:prepared=str": 2,
+   "opt:fish": 5,
+   "limber": 24,
+   "ward": 6,
+   "manifest:Accretion": 6,
+   "Taunt": 6,
+   "cast:Force + Cut": 7,
+   "Dip": 3,
+   "cast:Cut": 17,
+   "opt:prepared=pierce": 1
+  },
+  "hp": {
+   "L15 Perfection#dCES": "176/186",
+   "L15 Constitution#fBbq": "272/279",
+   "L15 Animation#nJCJ": "241/279",
+   "L15 Willpower#FWps": "241/279",
+   "L15 Curved#U3qW": "259/279",
+   "L15 Restoration Arcana#N2X8": "136/279",
+   "L15 Earth#xZmX": "126/279",
+   "L15 Longshot#sfs8": "132/279",
+   "L15 Geomancy#pcO7": "84/186",
+   "L15 Sea#b4T6": "130/279"
+  },
+  "down": [
+   "L15 Restoration Arcana",
+   "L15 Earth",
+   "L15 Longshot",
+   "L15 Geomancy",
+   "L15 Sea"
+  ],
+  "weapons": {
+   "Manifest: Undertow (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Sea"
+    ]
+   },
+   "Manifest: Riptide (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Sea"
+    ]
+   },
+   "Spell: Force [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 9,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L15 Geomancy"
+    ],
+    "force": 9
+   },
+   "Manifest: Exact (Manifest)": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 10,
+    "crits": 1,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Perfection"
+    ]
+   },
+   "Manifest: Hone (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Perfection"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 23,
+    "followups": 32,
+    "hits": 29,
+    "crits": 12,
+    "misses": 26,
+    "damage": 217,
+    "ap": 56,
+    "kills": 3,
+    "users": [
+     "L15 Curved"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Willpower"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Willpower"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Willpower"
+    ]
+   },
+   "Light Longshot": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 15,
+    "crits": 3,
+    "misses": 9,
+    "damage": 91,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "L15 Longshot"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Earth"
+    ]
+   },
+   "Manifest: Accretion (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Earth"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 11,
+    "followups": 15,
+    "hits": 13,
+    "crits": 4,
+    "misses": 16,
+    "damage": 94,
+    "ap": 39,
+    "kills": 0,
+    "users": [
+     "L15 Constitution"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 3,
+    "damage": 116,
+    "ap": 14,
+    "kills": 1,
+    "users": [
+     "L15 Animation"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 9,
+    "damage": 105,
+    "ap": 34,
+    "kills": 1,
+    "users": [
+     "L15 Animation"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 2,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L15 Constitution"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 22,
+    "absorbed": 17
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Sea",
+    "dealt": 0,
+    "taken": 115,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Constitution",
+    "dealt": 94,
+    "taken": 0,
+    "hits": 13,
+    "attacks": 28
+   },
+   {
+    "name": "L15 Curved",
+    "dealt": 217,
+    "taken": 15,
+    "hits": 29,
+    "attacks": 55
+   },
+   {
+    "name": "L15 Geomancy",
+    "dealt": 9,
+    "taken": 80,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "L15 Willpower",
+    "dealt": 0,
+    "taken": 38,
+    "hits": 10,
+    "attacks": 22
+   },
+   {
+    "name": "L15 Perfection",
+    "dealt": 0,
+    "taken": 10,
+    "hits": 15,
+    "attacks": 25
+   },
+   {
+    "name": "L15 Restoration Arcana",
+    "dealt": 0,
+    "taken": 93,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L15 Longshot",
+    "dealt": 91,
+    "taken": 112,
+    "hits": 15,
+    "attacks": 24
+   },
+   {
+    "name": "L15 Animation",
+    "dealt": 221,
+    "taken": 38,
+    "hits": 12,
+    "attacks": 24
+   },
+   {
+    "name": "L15 Earth",
+    "dealt": 0,
+    "taken": 122,
+    "hits": 7,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Sea",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Undertow": 8,
+     "manifest:Riptide": 4,
+     "defend:dodge": 18
+    },
+    "knockbacks": {
+     "down": 1,
+     "into": 1
+    }
+   },
+   {
+    "name": "L15 Constitution",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 95.15609770940699,
+    "attacks": 24,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 25,
+     "limber": 24,
+     "Parry": 3,
+     "Taunt": 6,
+     "recoverEnergy": 4,
+     "riposte": 4,
+     "Dip": 3
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "L15 Curved",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 117.082439194738,
+    "attacks": 50,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:shift": 10,
+     "defend:dodge": 10,
+     "Parry": 4,
+     "Shatter": 4,
+     "momentum:adv": 15,
+     "momentum:str": 14,
+     "recoverEnergy": 1,
+     "defend:perfectParry": 13,
+     "riposte": 5
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "shank": 1,
+    "disarms": 2,
+    "mom": 1
+   },
+   {
+    "name": "L15 Geomancy",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Force": 3,
+     "mod:Empower": 2,
+     "defend:dodge": 12
+    },
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "L15 Willpower",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "manifest:Bloom": 7,
+     "manifest:Flourish": 7
+    },
+    "turnMoved": 0,
+    "manifests": 14
+   },
+   {
+    "name": "L15 Perfection",
+    "side": "party",
+    "role": "caster",
+    "moved": 35,
+    "attacks": 17,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13,
+     "manifest:Exact+": 17,
+     "manifest:Hone": 8
+    },
+    "turnMoved": 0,
+    "manifests": 25
+   },
+   {
+    "name": "L15 Restoration Arcana",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Restore": 4,
+     "mod:Painless": 4,
+     "defend:dodge": 30
+    },
+    "healed": 16
+   },
+   {
+    "name": "L15 Longshot",
+    "side": "monsters",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 8,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 4,
+     "defend:shift": 32,
+     "defend:dodge": 32
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 24,
+    "prep2": 1
+   },
+   {
+    "name": "L15 Animation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "cast:Force + Cut": 7,
+     "cast:Cut": 17
+    },
+    "turnMoved": 0,
+    "casts": 24
+   },
+   {
+    "name": "L15 Earth",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 6,
+     "manifest:Accretion": 6,
+     "defend:dodge": 46
+    },
+    "manifests": 6
+   }
+  ],
+  "trees": {
+   "L15 Perfection": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-perfection-nightmare": 4,
+    "generic-initiative": 1,
+    "generic-endurance": 1
+   },
+   "L15 Constitution": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-constitution-methods": 3,
+    "generic-composure": 1,
+    "generic-endurance": 1
+   },
+   "L15 Animation": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-animation": 3,
+    "magic-slashing": 1,
+    "generic-athletics": 1
+   },
+   "L15 Willpower": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-willpower-arts": 3,
+    "generic-endurance": 1,
+    "generic-initiative": 1
+   },
+   "L15 Curved": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-curved-weapons": 3,
+    "martial-light-armor": 1,
+    "generic-athletics": 1
+   }
+  },
+  "gear": {
+   "L15 Perfection": [
+    "Unarmed G1"
+   ],
+   "L15 Constitution": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Balanced (Steel) G3"
+   ],
+   "L15 Animation": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Willpower": [
+    "Unarmed G1"
+   ],
+   "L15 Curved": [
+    "Unarmed G1",
+    "Light Curved (Steel) G3",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Restoration Arcana": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Earth": [
+    "Unarmed"
+   ],
+   "L15 Longshot": [
+    "Unarmed",
+    "Light Longshot (Steel)",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Geomancy": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Sea": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Perfection": [],
+   "L15 Constitution": [
+    "Medium Armor (Hard Leather): 50/60",
+    "Heavy Balanced (Steel): 502/540"
+   ],
+   "L15 Animation": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Willpower": [],
+   "L15 Curved": [
+    "Light Curved (Steel): 128/135",
+    "Light Armor (Hard Leather): 28/30"
+   ],
+   "L15 Restoration Arcana": [
+    "Light Armor (Hard Leather): 18/30"
+   ],
+   "L15 Earth": [],
+   "L15 Longshot": [
+    "Light Longshot (Steel): 135/135",
+    "Light Armor (Hard Leather): 12/30"
+   ],
+   "L15 Geomancy": [
+    "Light Armor (Hard Leather): 8/15"
+   ],
+   "L15 Sea": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 1302,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1269,
+    "monsterHp": 1192,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 1269,
+    "monsterHp": 1133,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 1241,
+    "monsterHp": 998,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 1241,
+    "monsterHp": 901,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 6,
+    "partyHp": 1241,
+    "monsterHp": 853,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 7,
+    "partyHp": 1213,
+    "monsterHp": 755,
+    "partyDown": 0,
+    "monstersDown": 4
+   },
+   {
+    "round": 8,
+    "partyHp": 1193,
+    "monsterHp": 687,
+    "partyDown": 0,
+    "monstersDown": 4
+   },
+   {
+    "round": 9,
+    "partyHp": 1189,
+    "monsterHp": 618,
+    "partyDown": 0,
+    "monstersDown": 4
+   },
+   {
+    "round": 9,
+    "partyHp": 1189,
+    "monsterHp": 608,
+    "partyDown": 0,
+    "monstersDown": 5,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Perfection": 188,
+    "L15 Curved": 198,
+    "L15 Longshot": 91,
+    "L15 Constitution": 94,
+    "L15 Animation": 221
+   },
+   "taken": {
+    "L15 Geomancy": 118,
+    "L15 Curved": 20,
+    "L15 Willpower": 38,
+    "L15 Animation": 38,
+    "L15 Perfection": 10,
+    "L15 Constitution": 7,
+    "L15 Restoration Arcana": 143,
+    "L15 Sea": 149,
+    "L15 Earth": 153,
+    "L15 Longshot": 147
+   },
+   "unattributed": 31
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 694
+  },
+  "lostBy": {
+   "party": 113,
+   "monsters": 694
+  },
+  "directTaken": {
+   "party": 623,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Perfection: Alacrity?": 1,
+    "prompt: L# Earth: Alacrity?": 1,
+    "prompt: L# Willpower: Alacrity?": 1,
+    "prompt: L# Sea: Alacrity?": 1,
+    "prompt: Surge (Tenet)": 2,
+    "prompt: Surge — L# Constitution": 2,
+    "prompt: L# Curved — Shift": 10,
+    "prompt: Force — L# Perfection": 1,
+    "prompt: Warden Ward": 23,
+    "prompt: Ego (Tenet)": 3,
+    "prompt: Light Curved (Steel)": 23,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 27,
+    "prompt: Sanctum Ward: L# Willpower": 8,
+    "prompt: L# Curved — Perfect Parry": 13,
+    "prompt: Light Curved (Steel) — Riposte": 5,
+    "prompt: Light Longshot (Steel)": 24,
+    "prompt: Sanctum Ward: L# Earth": 6,
+    "prompt: Taunt": 6,
+    "prompt: Heavy Balanced (Steel)": 11,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 13,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: L# Longshot — Shift": 32,
+    "prompt: Verdant Soul (Tenet)": 5,
+    "prompt: Verdant Soul: give # temp HP to": 5,
+    "prompt: Adamant (Tenet)": 2,
+    "prompt: Adamant: lower the Pain Threshold by #": 2,
+    "prompt: Accretion on L# Earth": 4,
+    "prompt: Unarmed — Riposte": 2
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "The Actor sUGEF53FHM4OQr5w does not exist in actors",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Constitution can't move through L15 Geomancy's space.",
+     "who": "L15 Constitution"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Constitution can't move through L15 Geomancy's space.",
+     "who": "L15 Constitution"
+    }
+   ],
+   "errors": [
+    "Error: The Actor sUGEF53FHM4OQr5w does not exist in actors\n    at Actor.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/database/backend/server-document.mjs:1:10936)\n    at async fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:291)\n    at async #configureOperation (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:231:24)\n    at async #configureDelete (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:198:5)\n    at"
+   ]
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 474,
+  "winner": "unfinished",
+  "pass": "grand-15-p11",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 3,
+  "followups": 51,
+  "knockbacks": {},
+  "used": {
+   "Parry": 3,
+   "Taunt": 1,
+   "defend:dodge": 325,
+   "limber": 39,
+   "manifest:Bloom": 23,
+   "manifest:Flourish": 23,
+   "riposte": 5,
+   "natural:Black Jaws": 26,
+   "manifest:Eclipse": 31,
+   "manifest:Umbral Strike": 24,
+   "natural:Budding Gore": 16,
+   "Shatter": 7,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "manifest:Exact+": 26,
+   "manifest:Hone": 15,
+   "cast:Force + Cut": 5,
+   "momentum:adv": 33,
+   "momentum:str": 33,
+   "cast:Cut": 1,
+   "cast:nothingAffordable": 13,
+   "defend:shift": 64,
+   "defend:perfectParry": 3,
+   "manifest:Exact": 4
+  },
+  "hp": {
+   "L15 Perfection#j0OG": "186/186",
+   "L15 Constitution#XToK": "116/279",
+   "L15 Animation#JusC": "279/279",
+   "L15 Willpower#Amhg": "260/279",
+   "L15 Curved#QU20": "125/279",
+   "Sim Bloomrot#nHvd": "238/486",
+   "Sim Bloomrot#o5zc": "486/486",
+   "Sim Gloamhound#hl4F": "237/486",
+   "Sim Gloamhound#d3VQ": "292/486",
+   "Sim Burgeon#su2a": "495/648"
+  },
+  "down": [
+   "L15 Constitution",
+   "L15 Curved",
+   "Sim Bloomrot",
+   "Sim Gloamhound"
+  ],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 7,
+    "followups": 9,
+    "hits": 22,
+    "crits": 6,
+    "misses": 19,
+    "damage": 112,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L15 Constitution"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Willpower"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Willpower"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Willpower"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 26,
+    "followups": 0,
+    "hits": 17,
+    "crits": 7,
+    "misses": 9,
+    "damage": 185,
+    "ap": 52,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 31,
+    "followups": 0,
+    "hits": 25,
+    "crits": 13,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 20,
+    "crits": 12,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 9,
+    "damage": 62,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 8,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 41,
+    "followups": 45,
+    "hits": 66,
+    "crits": 32,
+    "misses": 20,
+    "damage": 362,
+    "ap": 86,
+    "kills": 1,
+    "users": [
+     "L15 Curved"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 5,
+    "damage": 70,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Exact (Manifest)": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 22,
+    "crits": 12,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Perfection"
+    ]
+   },
+   "Manifest: Hone (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 12,
+    "crits": 4,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Perfection"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "L15 Animation"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "L15 Animation"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 2,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 30,
+    "ap": 4,
+    "kills": 1,
+    "users": [
+     "L15 Curved"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 13,
+    "absorbed": 52
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 9,
+    "absorbed": 17
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Constitution",
+    "dealt": 112,
+    "taken": 163,
+    "hits": 22,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 49,
+    "taken": 113,
+    "hits": 12,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 68,
+    "taken": 77,
+    "hits": 36,
+    "attacks": 51
+   },
+   {
+    "name": "L15 Willpower",
+    "dealt": 0,
+    "taken": 19,
+    "hits": 18,
+    "attacks": 45
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 117,
+    "taken": 113,
+    "hits": 26,
+    "attacks": 30
+   },
+   {
+    "name": "L15 Perfection",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 34,
+    "attacks": 45
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 13,
+    "taken": 29,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Curved",
+    "dealt": 392,
+    "taken": 154,
+    "hits": 67,
+    "attacks": 88
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 70,
+    "taken": 153,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Animation",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Constitution",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 75.16648189186456,
+    "attacks": 15,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Taunt": 1,
+     "limber": 39,
+     "defend:dodge": 42,
+     "riposte": 1
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 18.251407699364425,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 48,
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 7.0710678118654755,
+    "manifests": 8
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 10,
+    "attacks": 51,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 44,
+     "natural:Black Jaws": 14,
+     "manifest:Eclipse": 22,
+     "manifest:Umbral Strike": 15
+    },
+    "turnMoved": 0,
+    "manifests": 37
+   },
+   {
+    "name": "L15 Willpower",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 30,
+    "used": {
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 35.495097567963924,
+    "attacks": 30,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 56,
+     "natural:Black Jaws": 12,
+     "manifest:Eclipse": 9,
+     "manifest:Umbral Strike": 9
+    },
+    "manifests": 18
+   },
+   {
+    "name": "L15 Perfection",
+    "side": "party",
+    "role": "caster",
+    "moved": 15,
+    "attacks": 30,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 53,
+     "manifest:Exact+": 26,
+     "manifest:Hone": 15,
+     "manifest:Exact": 4
+    },
+    "turnMoved": 0,
+    "manifests": 45
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15.811388300841898,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4,
+     "defend:dodge": 6
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Curved",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 87.00609733428362,
+    "attacks": 84,
+    "turns": 14,
+    "kills": 0,
+    "used": {
+     "Parry": 2,
+     "Shatter": 7,
+     "momentum:adv": 33,
+     "momentum:str": 33,
+     "defend:shift": 64,
+     "defend:dodge": 64,
+     "defend:perfectParry": 3,
+     "riposte": 4
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "shank": 1,
+    "disarms": 2,
+    "mom": 0,
+    "lastTech": "kick"
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 21.18033988749895,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 10,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 10
+    },
+    "manifests": 4
+   },
+   {
+    "name": "L15 Animation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Force + Cut": 5,
+     "cast:Cut": 1,
+     "cast:nothingAffordable": 13
+    }
+   }
+  ],
+  "trees": {
+   "L15 Perfection": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-perfection-nightmare": 4,
+    "generic-initiative": 1,
+    "generic-endurance": 1
+   },
+   "L15 Constitution": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-constitution-methods": 3,
+    "generic-composure": 1,
+    "generic-endurance": 1
+   },
+   "L15 Animation": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-animation": 3,
+    "magic-slashing": 1,
+    "generic-athletics": 1
+   },
+   "L15 Willpower": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-willpower-arts": 3,
+    "generic-endurance": 1,
+    "generic-initiative": 1
+   },
+   "L15 Curved": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-curved-weapons": 3,
+    "martial-light-armor": 1,
+    "generic-athletics": 1
+   }
+  },
+  "gear": {
+   "L15 Perfection": [
+    "Unarmed G1"
+   ],
+   "L15 Constitution": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Balanced (Steel) G3"
+   ],
+   "L15 Animation": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Willpower": [
+    "Unarmed G1"
+   ],
+   "L15 Curved": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Curved (Steel) G3"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Perfection": [],
+   "L15 Constitution": [
+    "Medium Armor (Hard Leather): 8/60",
+    "Heavy Balanced (Steel): 462/540"
+   ],
+   "L15 Animation": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Willpower": [],
+   "L15 Curved": [
+    "Light Armor (Hard Leather): 13/30",
+    "Light Curved (Steel): 135/135"
+   ],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1302,
+    "monsterHp": 2541,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1218,
+    "monsterHp": 2513,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1202,
+    "monsterHp": 2500,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1115,
+    "monsterHp": 2473,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1115,
+    "monsterHp": 2473,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1115,
+    "monsterHp": 2293,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 1062,
+    "monsterHp": 2215,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 1028,
+    "monsterHp": 2155,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 1008,
+    "monsterHp": 2107,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 1008,
+    "monsterHp": 2064,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 12,
+    "partyHp": 1008,
+    "monsterHp": 1913,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 13,
+    "partyHp": 990,
+    "monsterHp": 1907,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 990,
+    "monsterHp": 1848,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 15,
+    "partyHp": 990,
+    "monsterHp": 1766,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 966,
+    "monsterHp": 1748,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 966,
+    "monsterHp": 1748,
+    "partyDown": 2,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Constitution": 112,
+    "L15 Perfection": 414,
+    "Sim Gloamhound": 185,
+    "L15 Curved": 326,
+    "Sim Burgeon": 70,
+    "Sim Bloomrot": 62,
+    "L15 Willpower": 17
+   },
+   "taken": {
+    "Sim Bloomrot": 303,
+    "Sim Gloamhound": 443,
+    "L15 Constitution": 163,
+    "Sim Burgeon": 153,
+    "L15 Curved": 154,
+    "L15 Willpower": 19
+   },
+   "unattributed": 49
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 844
+  },
+  "lostBy": {
+   "party": 336,
+   "monsters": 844
+  },
+  "directTaken": {
+   "party": 821,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Perfection: Alacrity?": 1,
+    "prompt: L# Willpower: Alacrity?": 1,
+    "prompt: L# Perfection: Resist Dread (as Fear)": 2,
+    "prompt: L# Animation: Resist Dread (as Fear)": 2,
+    "prompt: L# Willpower: Resist Dread (as Fear)": 2,
+    "prompt: L# Curved: Resist Dread (as Fear)": 2,
+    "prompt: L# Constitution: Resist Dread (as Fear)": 2,
+    "prompt: L# Perfection: Resist Allure (as Fear)": 3,
+    "prompt: L# Animation: Resist Allure (as Fear)": 3,
+    "prompt: L# Willpower: Resist Allure (as Fear)": 3,
+    "prompt: L# Curved: Resist Allure (as Fear)": 3,
+    "prompt: L# Constitution: Resist Allure (as Fear)": 3,
+    "prompt: Taunt": 1,
+    "prompt: Heavy Balanced (Steel)": 7,
+    "prompt: Riposte Ward": 94,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8,
+    "prompt: Sanctum Ward: L# Willpower": 15,
+    "prompt: Verdant Soul (Tenet)": 16,
+    "prompt: Verdant Soul: give # temp HP to": 16,
+    "prompt: Heavy Balanced (Steel) — Riposte": 1,
+    "prompt: Shadowmark (Tenet)": 22,
+    "prompt: Shadowmark: make one step more obscured": 22,
+    "prompt: Light Curved (Steel)": 41,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 43,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Umbral Strike": 19,
+    "prompt: Ego (Tenet)": 9,
+    "prompt: Sporing": 2,
+    "prompt: L# Curved — Shift": 64,
+    "prompt: L# Curved — Perfect Parry": 3,
+    "prompt: Light Curved (Steel) — Riposte": 2,
+    "prompt: Unarmed — Riposte": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Constitution is afraid and can't gain Energy.",
+     "who": "L15 Constitution"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Curved is afraid and can't gain Energy.",
+     "who": "L15 Curved"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Constitution's space.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Constitution's space.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Constitution's space.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Constitution's space.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Constitution's space.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Perfection is afraid and can't gain Energy.",
+     "who": "L15 Perfection"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Constitution's space.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Constitution's space.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Perfection is afraid and can't gain Energy.",
+     "who": "L15 Perfection"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Perfection is afraid and can't gain Energy.",
+     "who": "L15 Perfection"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Perfection is afraid and can't gain Energy.",
+     "who": "L15 Perfection"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Perfection is afraid and can't gain Energy.",
+     "who": "L15 Perfection"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Perfection is afraid and can't gain Energy.",
+     "who": "L15 Perfection"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Animation is afraid and can't gain Energy.",
+     "who": "L15 Animation"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

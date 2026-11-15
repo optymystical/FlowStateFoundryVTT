@@ -1421,5 +1421,5 @@ PASSES["assist-bench-real"] = { ...PASSES["assist-bench"], id: "assist-bench-rea
 PASSES["mental-t1-mix-b"] = { ...PASSES["mental-t1-mix"], id: "mental-t1-mix-b", note: "Mental T1 party against mixed enemy groups, after the Chaos charge AI fix." };
 
 // The grand balance pass (2026-11-15): every combat tree at 15 and 60 Skill Points, mirrors and the Bestiary (grand.mjs).
-import { grandPasses } from "./grand.mjs?v=2";
+import { grandPasses } from "./grand.mjs?v=3";
 Object.assign(PASSES, grandPasses());

@@ -1,0 +1,2124 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 549,
+  "winner": "unfinished",
+  "pass": "grand-60-p13",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 2,
+  "followups": 24,
+  "knockbacks": {
+   "into": 3
+  },
+  "used": {
+   "cast:Force + Cut": 39,
+   "mod:Rend": 24,
+   "defend:dodge": 337,
+   "opt:dir=into": 3,
+   "defend:shift": 105,
+   "limber": 41,
+   "mod:Bleed": 2,
+   "ward": 41,
+   "manifest:Wager+": 8,
+   "manifest:Windfall": 11,
+   "quicken": 13,
+   "Parry": 8,
+   "Shatter": 13,
+   "Leap": 2,
+   "Spot Weakness": 2,
+   "opt:shank1=adv": 3,
+   "opt:shank2=dodge": 6,
+   "opt:shank3=pierce": 3,
+   "manifest:Bloom": 33,
+   "manifest:Flourish": 30,
+   "opt:grapple": 3,
+   "opt:twinFang=adv": 16,
+   "opt:jab": 3,
+   "opt:harden": 1,
+   "Giga Brace": 1,
+   "Bodyslam": 2,
+   "cast:Mirage": 6,
+   "mod:Phantom Pain": 1,
+   "mod:Fidelity": 6,
+   "mod:Pervasive": 1,
+   "mod:Gash": 1,
+   "manifest:Cultivate": 15,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 9,
+   "Brace": 8,
+   "opt:overshield": 1,
+   "recoverEnergy": 65,
+   "manifest:Mire+": 7,
+   "manifest:Wither+": 6,
+   "manifest:Waste+": 4,
+   "cast:Strike": 28,
+   "riposte": 15,
+   "manifest:Renewal": 2,
+   "Dip": 10,
+   "opt:shank1=pierce": 3,
+   "opt:shank2=cleave": 3,
+   "opt:shank3=adv": 6,
+   "opt:shank1=dodge": 3,
+   "Lock Down": 2,
+   "Disrupt": 1,
+   "opt:getOverHere": 2,
+   "breakFree": 6,
+   "Break Free": 6,
+   "dipMoveOffered:skipped": 1,
+   "limber:skipped": 2,
+   "Living Weapon": 8,
+   "manifest:Waste": 3,
+   "manifest:Wither": 1,
+   "manifest:Wager": 3,
+   "manifest:Providence": 1,
+   "Dash": 1
+  },
+  "hp": {
+   "L60 Titanic Armor#5ura": "467/1134",
+   "L60 Illusion#qjj6": "1054/1134",
+   "L60 Growth#twp5": "1134/1134",
+   "L60 Grappling#pn5A": "498/1090",
+   "L60 Arcanomancy#oPo2": "1134/1134",
+   "L60 Stagnation#s5C6": "529/1134",
+   "L60 Thrasher#ZkUP": "1093/1134",
+   "L60 Esoteric#nQ8m": "1134/1134",
+   "L60 Unarmored#fso2": "367/1134",
+   "L60 Fortune#kLca": "555/1134"
+  },
+  "down": [
+   "L60 Titanic Armor",
+   "L60 Grappling",
+   "L60 Stagnation",
+   "L60 Unarmored",
+   "L60 Fortune"
+  ],
+  "weapons": {
+   "Spell: Force + Cut": {
+    "attacks": 42,
+    "followups": 0,
+    "hits": 20,
+    "crits": 3,
+    "misses": 22,
+    "damage": 1419,
+    "ap": 100,
+    "kills": 3,
+    "users": [
+     "L60 Arcanomancy",
+     "L60 Illusion"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 26,
+    "followups": 0,
+    "hits": 19,
+    "crits": 10,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune",
+     "L60 Esoteric"
+    ]
+   },
+   "Manifest: Wager (Manifest) [M]": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune"
+    ]
+   },
+   "Manifest: Windfall (Manifest) [M]": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 16,
+    "followups": 5,
+    "hits": 13,
+    "crits": 8,
+    "misses": 11,
+    "damage": 291,
+    "ap": 36,
+    "kills": 2,
+    "users": [
+     "L60 Unarmored"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 16,
+    "followups": 25,
+    "hits": 15,
+    "crits": 6,
+    "misses": 26,
+    "damage": 182,
+    "ap": 52,
+    "kills": 0,
+    "users": [
+     "L60 Unarmored",
+     "L60 Grappling",
+     "L60 Thrasher"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 18,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 13,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Esoteric",
+     "L60 Fortune"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Esoteric"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 3,
+    "followups": 3,
+    "hits": 1,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "L60 Grappling"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 2,
+    "followups": 5,
+    "hits": 0,
+    "crits": 0,
+    "misses": 7,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L60 Titanic Armor"
+    ]
+   },
+   "Other: Bodyslam": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 173,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Titanic Armor"
+    ]
+   },
+   "Spell: Mirage": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L60 Illusion"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 12,
+    "crits": 4,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Growth"
+    ]
+   },
+   "Manifest: Cultivate (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Growth"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 0,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Growth"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 13,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Growth"
+    ]
+   },
+   "Heavy Thrasher": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 39,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L60 Thrasher"
+    ]
+   },
+   "Manifest: Mire (Manifest) [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation"
+    ]
+   },
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation"
+    ]
+   },
+   "Manifest: Waste (Manifest) [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 13,
+    "crits": 6,
+    "misses": 15,
+    "damage": 190,
+    "ap": 56,
+    "kills": 0,
+    "users": [
+     "L60 Arcanomancy"
+    ]
+   },
+   "Manifest: Renewal (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Esoteric",
+     "L60 Fortune"
+    ]
+   },
+   "Other: Break Free [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Unarmored"
+    ]
+   },
+   "Other: Living Weapon: L60 Unarmored": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Grappling"
+    ]
+   },
+   "Manifest: Providence (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune"
+    ]
+   }
+  },
+  "armor": {
+   "Titanic Armor (Iron)": {
+    "hits": 2,
+    "absorbed": 72
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 10,
+    "absorbed": 114
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 66
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Arcanomancy",
+    "dealt": 837,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Stagnation",
+    "dealt": 0,
+    "taken": 600,
+    "hits": 7,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Thrasher",
+    "dealt": 40,
+    "taken": 41,
+    "hits": 10,
+    "attacks": 17
+   },
+   {
+    "name": "L60 Fortune",
+    "dealt": 0,
+    "taken": 374,
+    "hits": 17,
+    "attacks": 38
+   },
+   {
+    "name": "L60 Titanic Armor",
+    "dealt": 173,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Unarmored",
+    "dealt": 472,
+    "taken": 767,
+    "hits": 18,
+    "attacks": 45
+   },
+   {
+    "name": "L60 Esoteric",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Grappling",
+    "dealt": 0,
+    "taken": 512,
+    "hits": 6,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Illusion",
+    "dealt": 772,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 30
+   },
+   {
+    "name": "L60 Growth",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 25,
+    "attacks": 60
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Arcanomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 45,
+    "used": {
+     "cast:Force + Cut": 17,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Strike": 28,
+     "defend:dodge": 2
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "L60 Stagnation",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 45,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 59,
+     "manifest:Mire+": 7,
+     "manifest:Wither+": 6,
+     "manifest:Waste+": 4,
+     "manifest:Waste": 3,
+     "manifest:Wither": 1
+    },
+    "turnMoved": 0,
+    "manifests": 21
+   },
+   {
+    "name": "L60 Thrasher",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 75,
+    "attacks": 17,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:shift": 40,
+     "defend:dodge": 40,
+     "limber": 41,
+     "Versatility": 1,
+     "Unstoppable": 9,
+     "Brace": 8,
+     "Shatter": 2,
+     "recoverEnergy": 34,
+     "Dip": 7,
+     "limber:skipped": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "thr": 4,
+    "shank": 2,
+    "lastTech": "dragon"
+   },
+   {
+    "name": "L60 Fortune",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 11,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 11,
+     "manifest:Wager+": 8,
+     "manifest:Windfall": 11,
+     "recoverEnergy": 6,
+     "defend:dodge": 35,
+     "manifest:Wager": 3,
+     "manifest:Providence": 1,
+     "manifest:Renewal": 1,
+     "manifest:Bloom": 3
+    },
+    "manifests": 27
+   },
+   {
+    "name": "L60 Titanic Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 7,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 18,
+     "Parry": 2,
+     "Giga Brace": 1,
+     "Bodyslam": 2,
+     "riposte": 2,
+     "Dip": 1
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "slams": 2
+   },
+   {
+    "name": "L60 Unarmored",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 80,
+    "attacks": 34,
+    "turns": 13,
+    "kills": 0,
+    "used": {
+     "quicken": 13,
+     "Parry": 6,
+     "Shatter": 7,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "defend:dodge": 54,
+     "breakFree": 6,
+     "Break Free": 6,
+     "riposte": 6,
+     "Dash": 1,
+     "recoverEnergy": 25,
+     "Dip": 1
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 2,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Esoteric",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15,
+     "manifest:Renewal": 1
+    },
+    "manifests": 31
+   },
+   {
+    "name": "L60 Grappling",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 25,
+    "attacks": 17,
+    "turns": 7,
+    "kills": 0,
+    "fist": "Shatter",
+    "used": {
+     "Shatter": 4,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "defend:shift": 65,
+     "defend:dodge": 85,
+     "Dip": 1,
+     "Lock Down": 2,
+     "Disrupt": 1,
+     "riposte": 7,
+     "dipMoveOffered:skipped": 1,
+     "Living Weapon": 8
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "grapples": 3,
+    "lastTech": "kick",
+    "shank": 2,
+    "living": 8
+   },
+   {
+    "name": "L60 Illusion",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 28,
+    "used": {
+     "cast:Mirage": 6,
+     "mod:Phantom Pain": 1,
+     "mod:Fidelity": 6,
+     "mod:Pervasive": 1,
+     "cast:Force + Cut": 22,
+     "mod:Bleed": 1,
+     "mod:Gash": 1,
+     "mod:Rend": 22,
+     "defend:dodge": 27
+    },
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "L60 Growth",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Cultivate": 15,
+     "defend:dodge": 17,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15
+    },
+    "manifests": 45
+   }
+  ],
+  "trees": {
+   "L60 Titanic Armor": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-titanic-armor": 5,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-fortitude": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 1
+   },
+   "L60 Illusion": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-illusion": 5,
+    "magic-slashing": 5,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 1
+   },
+   "L60 Growth": {
+    "mental-theory": 4,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-growth-dream": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 1,
+    "generic-composure": 1
+   },
+   "L60 Grappling": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-grappling-methods": 5,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 1,
+    "generic-recovery": 1,
+    "generic-initiative": 1
+   },
+   "L60 Arcanomancy": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-arcanomancy": 5,
+    "magic-slashing": 5,
+    "generic-endurance": 3,
+    "generic-stamina": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-resolve": 1
+   }
+  },
+  "gear": {
+   "L60 Titanic Armor": [
+    "Unarmed G1",
+    "Titanic Armor (Iron) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Illusion": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Growth": [
+    "Unarmed G1"
+   ],
+   "L60 Grappling": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8"
+   ],
+   "L60 Arcanomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Stagnation": [
+    "Unarmed"
+   ],
+   "L60 Thrasher": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Thrasher (Steel)"
+   ],
+   "L60 Esoteric": [
+    "Unarmed"
+   ],
+   "L60 Unarmored": [
+    "Unarmed",
+    "Light Bladed (Steel)"
+   ],
+   "L60 Fortune": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Titanic Armor": [
+    "Titanic Armor (Iron): 0/1120 BROKEN",
+    "Heavy Balanced (Steel): 1963/1980"
+   ],
+   "L60 Illusion": [
+    "Light Armor (Hard Leather): 104/120"
+   ],
+   "L60 Growth": [],
+   "L60 Grappling": [
+    "Light Armor (Hard Leather): 17/210"
+   ],
+   "L60 Arcanomancy": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Stagnation": [],
+   "L60 Thrasher": [
+    "Medium Armor (Hard Leather): 322/420",
+    "Heavy Thrasher (Steel): 976/990"
+   ],
+   "L60 Esoteric": [],
+   "L60 Unarmored": [
+    "Light Bladed (Steel): 0/495 BROKEN"
+   ],
+   "L60 Fortune": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 5670,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5670,
+    "monsterHp": 5304,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5003,
+    "monsterHp": 5078,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 4912,
+    "monsterHp": 5078,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 4878,
+    "monsterHp": 5078,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 4867,
+    "monsterHp": 5026,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 4716,
+    "monsterHp": 4983,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 4431,
+    "monsterHp": 4847,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 4318,
+    "monsterHp": 4687,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 4287,
+    "monsterHp": 4544,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 4287,
+    "monsterHp": 4345,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 12,
+    "partyHp": 4287,
+    "monsterHp": 4249,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 13,
+    "partyHp": 4287,
+    "monsterHp": 3988,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 4287,
+    "monsterHp": 3719,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 15,
+    "partyHp": 4287,
+    "monsterHp": 3678,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 4287,
+    "monsterHp": 3678,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 4287,
+    "monsterHp": 3678,
+    "partyDown": 2,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Arcanomancy": 837,
+    "L60 Titanic Armor": 173,
+    "L60 Fortune": 199,
+    "L60 Thrasher": 40,
+    "L60 Unarmored": 472,
+    "L60 Stagnation": 3,
+    "L60 Illusion": 834
+   },
+   "taken": {
+    "L60 Stagnation": 605,
+    "L60 Fortune": 579,
+    "L60 Titanic Armor": 667,
+    "L60 Unarmored": 767,
+    "L60 Illusion": 80,
+    "L60 Grappling": 636,
+    "L60 Thrasher": 41
+   },
+   "unattributed": 817
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1992
+  },
+  "lostBy": {
+   "party": 1383,
+   "monsters": 1992
+  },
+  "directTaken": {
+   "party": 2294,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Titanic Armor: Alacrity?": 1,
+    "prompt: L# Grappling: Alacrity?": 1,
+    "prompt: L# Growth: Alacrity?": 1,
+    "prompt: L# Arcanomancy: Alacrity?": 1,
+    "prompt: L# Illusion: Alacrity?": 1,
+    "prompt: L# Fortune: Alacrity?": 1,
+    "prompt: L# Esoteric: Alacrity?": 1,
+    "prompt: L# Stagnation: Alacrity?": 1,
+    "prompt: L# Unarmored: Alacrity?": 1,
+    "prompt: Warden Ward": 38,
+    "prompt: Force — L# Stagnation": 2,
+    "prompt: L# Thrasher — Shift": 40,
+    "prompt: Sanctum Ward: L# Fortune": 11,
+    "prompt: Chant": 13,
+    "prompt: Light Bladed (Steel)": 16,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 15,
+    "prompt: Sanctum Ward: L# Esoteric": 15,
+    "prompt: Unarmed": 19,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 3,
+    "prompt: Giga Brace": 1,
+    "prompt: Heavy Balanced (Steel)": 2,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 3,
+    "prompt: Bodyslam": 2,
+    "prompt: Sanctum Ward: L# Growth": 15,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Thrasher (Steel)": 4,
+    "prompt: Moss (Tenet)": 5,
+    "prompt: L# Grappling — Shift": 65,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Stasis: L# Titanic Armor": 8,
+    "prompt: Verdant Soul (Tenet)": 8,
+    "prompt: Verdant Soul: give # temp HP to": 8,
+    "prompt: Sapling (Tenet)": 9,
+    "prompt: Growth: L# Growth": 10,
+    "prompt: L# Unarmored — Break Free": 6,
+    "prompt: Unarmed — Riposte": 10,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel) (Dis)": 3,
+    "prompt: Sapling: who gains the Growth stack": 4,
+    "prompt: Living Weapon: L# Unarmored": 8,
+    "prompt: Growth: L# Grappling": 2,
+    "prompt: Growth: L# Illusion": 4,
+    "prompt: Light Bladed (Steel) — Riposte": 2,
+    "prompt: Force — L# Unarmored": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Unarmored can't move through L60 Titanic Armor's space.",
+     "who": "L60 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Thrasher can't move through L60 Titanic Armor's space.",
+     "who": "L60 Thrasher"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Unarmored can't move through L60 Titanic Armor's space.",
+     "who": "L60 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Thrasher can't move through L60 Titanic Armor's space.",
+     "who": "L60 Thrasher"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Unarmored can't move through L60 Titanic Armor's space.",
+     "who": "L60 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Thrasher can't move through L60 Titanic Armor's space.",
+     "who": "L60 Thrasher"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Unarmored can't move through L60 Titanic Armor's space.",
+     "who": "L60 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Thrasher can't move through L60 Titanic Armor's space.",
+     "who": "L60 Thrasher"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Unarmored can't move through L60 Titanic Armor's space.",
+     "who": "L60 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Thrasher can't move through L60 Titanic Armor's space.",
+     "who": "L60 Thrasher"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Unarmored can't move through L60 Titanic Armor's space.",
+     "who": "L60 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "Light Bladed (Steel) is broken.",
+     "who": "L60 Unarmored"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Thrasher can't move through L60 Grappling's space.",
+     "who": "L60 Thrasher"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Thrasher can't move through L60 Grappling's space.",
+     "who": "L60 Thrasher"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Thrasher can't move through L60 Grappling's space.",
+     "who": "L60 Thrasher"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 277,
+  "winner": "party",
+  "pass": "grand-60-p13",
+  "rounds": 10,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 17,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 166,
+   "ward": 10,
+   "manifest:Cultivate": 14,
+   "manifest:Bloom": 14,
+   "manifest:Flourish": 14,
+   "Parry": 1,
+   "opt:harden": 1,
+   "Giga Brace": 2,
+   "Trudge": 1,
+   "natural:Root Lash": 8,
+   "natural:Black Jaws": 16,
+   "manifest:Eclipse": 10,
+   "manifest:Umbral Strike": 10,
+   "riposte": 8,
+   "cast:Mirage": 3,
+   "mod:Phantom Pain": 1,
+   "mod:Fidelity": 1,
+   "mod:Pervasive": 1,
+   "cast:Force + Cut": 19,
+   "mod:Bleed": 2,
+   "mod:Gash": 1,
+   "mod:Rend": 11,
+   "natural:Budding Gore": 8,
+   "Shatter": 5,
+   "Leap": 1,
+   "Spot Weakness": 1,
+   "Dash": 1,
+   "opt:grapple": 2,
+   "opt:twinFang=adv": 7,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 1,
+   "opt:shank3=pierce": 1,
+   "opt:jab": 2,
+   "Dip": 6,
+   "dipMoveOffered:skipped": 2,
+   "cast:nothingAffordable": 8,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 1,
+   "Lock Down": 1,
+   "Disrupt": 1,
+   "Living Weapon": 5,
+   "Bodyslam": 6,
+   "breakFree": 4,
+   "Break Free": 4,
+   "defend:shift": 6
+  },
+  "hp": {
+   "L60 Titanic Armor#LceK": "1134/1134",
+   "L60 Illusion#qwo8": "1134/1134",
+   "L60 Growth#JYM9": "1134/1134",
+   "L60 Grappling#U6rG": "1134/1134",
+   "L60 Arcanomancy#61JR": "1134/1134",
+   "Sim Thicket#tFCs": "1555/3240",
+   "Sim Gloamhound#hJ8E": "870/1944",
+   "Sim Gloamhound#KdBy": "930/1944",
+   "Sim Burgeon#H16l": "1232/2592"
+  },
+  "down": [
+   "Sim Thicket",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Manifest: Sanctum Ward": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 8,
+    "crits": 5,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Growth"
+    ]
+   },
+   "Manifest: Cultivate (Manifest)": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Growth"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Growth"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 8,
+    "crits": 6,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Growth"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 13,
+    "followups": 17,
+    "hits": 20,
+    "crits": 7,
+    "misses": 11,
+    "damage": 1346,
+    "ap": 45,
+    "kills": 1,
+    "users": [
+     "L60 Titanic Armor"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 8,
+    "damage": 0,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Spell: Mirage": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "L60 Illusion"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 11,
+    "crits": 4,
+    "misses": 8,
+    "damage": 1927,
+    "ap": 54,
+    "kills": 2,
+    "users": [
+     "L60 Illusion",
+     "L60 Arcanomancy"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 4,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 2,
+    "followups": 2,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L60 Grappling"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 15,
+    "followups": 6,
+    "hits": 17,
+    "crits": 11,
+    "misses": 4,
+    "damage": 801,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "L60 Titanic Armor",
+     "L60 Grappling"
+    ]
+   },
+   "Other: Living Weapon: Sim Gloamhound": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Grappling"
+    ]
+   },
+   "Other: Bodyslam": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 2,
+    "damage": 970,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Titanic Armor"
+    ]
+   },
+   "Other: Break Free [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   }
+  },
+  "armor": {
+   "Titanic Armor (Iron)": {
+    "hits": 8,
+    "absorbed": 865
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Growth",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 40
+   },
+   {
+    "name": "L60 Titanic Armor",
+    "dealt": 2324,
+    "taken": 0,
+    "hits": 26,
+    "attacks": 42
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 0,
+    "taken": 1360,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 0,
+    "taken": 1685,
+    "hits": 8,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 928,
+    "hits": 9,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Illusion",
+    "dealt": 1559,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 19
+   },
+   {
+    "name": "L60 Arcanomancy",
+    "dealt": 368,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 1071,
+    "hits": 9,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Grappling",
+    "dealt": 793,
+    "taken": 0,
+    "hits": 20,
+    "attacks": 24
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Growth",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 13,
+     "ward": 10,
+     "manifest:Cultivate": 10,
+     "manifest:Bloom": 10,
+     "manifest:Flourish": 10
+    },
+    "manifests": 30
+   },
+   {
+    "name": "L60 Titanic Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 75,
+    "attacks": 34,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Giga Brace": 2,
+     "Trudge": 1,
+     "defend:dodge": 70,
+     "riposte": 8,
+     "Dip": 4,
+     "dipMoveOffered:skipped": 2,
+     "Bodyslam": 6
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "shank": 2,
+    "slams": 6
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9,
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 25,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 8,
+     "manifest:Eclipse": 4,
+     "manifest:Umbral Strike": 4,
+     "defend:dodge": 41
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L60 Illusion",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 19,
+    "used": {
+     "cast:Mirage": 3,
+     "mod:Phantom Pain": 1,
+     "mod:Fidelity": 1,
+     "mod:Pervasive": 1,
+     "cast:Force + Cut": 16,
+     "mod:Bleed": 1,
+     "mod:Gash": 1,
+     "mod:Rend": 9
+    }
+   },
+   {
+    "name": "L60 Arcanomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Force + Cut": 3,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:nothingAffordable": 8
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 15.811388300841898,
+    "attacks": 20,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 8,
+     "manifest:Eclipse": 6,
+     "manifest:Umbral Strike": 6,
+     "defend:dodge": 25,
+     "breakFree": 4,
+     "Break Free": 4
+    },
+    "manifests": 12
+   },
+   {
+    "name": "L60 Grappling",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 95.18153199549616,
+    "attacks": 24,
+    "turns": 9,
+    "kills": 0,
+    "fist": "Shatter",
+    "used": {
+     "Shatter": 5,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "Dip": 2,
+     "Lock Down": 1,
+     "Disrupt": 1,
+     "Living Weapon": 5,
+     "defend:shift": 6,
+     "defend:dodge": 4
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "grapples": 2,
+    "lastTech": "kick",
+    "shank": 1,
+    "living": 5
+   }
+  ],
+  "trees": {
+   "L60 Titanic Armor": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-titanic-armor": 5,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-fortitude": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 1
+   },
+   "L60 Illusion": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-illusion": 5,
+    "magic-slashing": 5,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 1
+   },
+   "L60 Growth": {
+    "mental-theory": 4,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-growth-dream": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 1,
+    "generic-composure": 1
+   },
+   "L60 Grappling": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-grappling-methods": 5,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 1,
+    "generic-recovery": 1,
+    "generic-initiative": 1
+   },
+   "L60 Arcanomancy": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-arcanomancy": 5,
+    "magic-slashing": 5,
+    "generic-endurance": 3,
+    "generic-stamina": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-resolve": 1
+   }
+  },
+  "gear": {
+   "L60 Titanic Armor": [
+    "Unarmed G1",
+    "Titanic Armor (Iron) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Illusion": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Growth": [
+    "Unarmed G1"
+   ],
+   "L60 Grappling": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8"
+   ],
+   "L60 Arcanomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Titanic Armor": [
+    "Titanic Armor (Iron): 247/1120",
+    "Heavy Balanced (Steel): 1930/1980"
+   ],
+   "L60 Illusion": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Growth": [],
+   "L60 Grappling": [
+    "Light Armor (Hard Leather): 210/210"
+   ],
+   "L60 Arcanomancy": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5670,
+    "monsterHp": 9229,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5670,
+    "monsterHp": 9025,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 5670,
+    "monsterHp": 9025,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 5670,
+    "monsterHp": 9014,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 5670,
+    "monsterHp": 8462,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 5670,
+    "monsterHp": 8154,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 5670,
+    "monsterHp": 6793,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 5670,
+    "monsterHp": 5873,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 5670,
+    "monsterHp": 4934,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 5670,
+    "monsterHp": 4587,
+    "partyDown": 0,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Titanic Armor": 2252,
+    "L60 Arcanomancy": 368,
+    "L60 Illusion": 1559,
+    "L60 Grappling": 793
+   },
+   "taken": {
+    "Sim Burgeon": 1360,
+    "Sim Gloamhound": 2088,
+    "Sim Thicket": 1685
+   },
+   "unattributed": 161
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 5133
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 5133
+  },
+  "directTaken": {
+   "party": 5044,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Illusion: Alacrity?": 1,
+    "prompt: L# Grappling: Alacrity?": 1,
+    "prompt: L# Arcanomancy: Alacrity?": 1,
+    "prompt: L# Titanic Armor: Alacrity?": 1,
+    "prompt: L# Growth: Alacrity?": 1,
+    "prompt: L# Illusion: Resist Allure (as Fear)": 2,
+    "prompt: L# Grappling: Resist Allure (as Fear)": 2,
+    "prompt: L# Arcanomancy: Resist Allure (as Fear)": 2,
+    "prompt: L# Titanic Armor: Resist Allure (as Fear)": 2,
+    "prompt: L# Growth: Resist Allure (as Fear)": 2,
+    "prompt: Face Your Fear?": 4,
+    "prompt: L# Illusion: Resist Dread (as Fear)": 2,
+    "prompt: L# Grappling: Resist Dread (as Fear)": 2,
+    "prompt: L# Arcanomancy: Resist Dread (as Fear)": 2,
+    "prompt: L# Titanic Armor: Resist Dread (as Fear)": 2,
+    "prompt: L# Growth: Resist Dread (as Fear)": 2,
+    "prompt: Sanctum Ward: L# Growth": 10,
+    "prompt: Sapling (Tenet)": 13,
+    "prompt: Growth: L# Growth": 5,
+    "prompt: Giga Brace": 2,
+    "prompt: Heavy Balanced (Steel)": 13,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 15,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Shadowmark (Tenet)": 6,
+    "prompt: Shadowmark: make one step more obscured": 6,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Umbral Strike": 6,
+    "prompt: Riposte Ward": 41,
+    "prompt: Unarmed": 17,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 2,
+    "prompt: Unarmed — Riposte": 6,
+    "prompt: Verdant Soul (Tenet)": 3,
+    "prompt: Verdant Soul: give # temp HP to": 3,
+    "prompt: Living Weapon: Sim Gloamhound": 5,
+    "prompt: Sapling: who gains the Growth stack": 6,
+    "prompt: Bodyslam": 6,
+    "prompt: Growth: L# Titanic Armor": 18,
+    "prompt: Break Free": 4,
+    "prompt: L# Grappling — Shift": 6,
+    "prompt: Sporing": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [ZkUP4fwyph1hJIhD] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Thrasher"
+    },
+    {
+     "level": "error",
+     "msg": "undefined id [ZkUP4fwyph1hJIhD] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Thrasher"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L60 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L60 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L60 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L60 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L60 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L60 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L60 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L60 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Illusion is afraid and can't gain Energy.",
+     "who": "L60 Illusion"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [ZkUP4fwyph1hJIhD] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu",
+    "Error: undefined id [ZkUP4fwyph1hJIhD] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

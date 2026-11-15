@@ -1,0 +1,1758 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 202,
+  "winner": "monsters",
+  "pass": "grand-15-p6",
+  "rounds": 5,
+  "partyLeft": 0,
+  "monstersLeft": 4,
+  "followups": 18,
+  "knockbacks": {
+   "down": 3
+  },
+  "used": {
+   "defend:dodge": 110,
+   "ward": 9,
+   "manifest:Consecrate": 4,
+   "Parry": 3,
+   "Trudge": 2,
+   "limber": 18,
+   "recoverEnergy": 13,
+   "manifest:Pacify": 5,
+   "manifest:Guard": 2,
+   "cast:Poison (coat self)": 5,
+   "mod:Potency": 1,
+   "cast:Force + Cut": 6,
+   "opt:who": 2,
+   "passPoison": 2,
+   "properStance": 5,
+   "opt:takeAim=adv": 5,
+   "opt:coolBreath": 10,
+   "opt:takeAim=str": 5,
+   "cast:Glob": 6,
+   "mod:Melt": 4,
+   "mod:Catalyst": 1,
+   "Smashing": 2,
+   "smashing": 2,
+   "opt:wild=str2": 1,
+   "opt:strafe": 2,
+   "opt:wild=bashPlus": 1,
+   "opt:dir=down": 3,
+   "riposte": 3,
+   "cast:Cut + Flame": 6,
+   "mod:Multicast": 5,
+   "mod:Ignition": 6,
+   "multicast": 4,
+   "manifest:Corrode+": 3,
+   "manifest:Immolate+": 3,
+   "manifest:Irradiate+": 3,
+   "cast:Crackle": 7,
+   "mod:Electrify": 7,
+   "mod:Lightning Rod": 5,
+   "mod:Charge": 7,
+   "Dip": 3,
+   "Bodyslam": 2,
+   "opt:launch": 1,
+   "followup:quickload": 2,
+   "opt:wild": 2,
+   "limber:skipped": 2,
+   "manifest:Absolution": 3,
+   "cast:nothingAffordable": 2
+  },
+  "hp": {
+   "L15 Radiation#6LRT": "-36/279",
+   "L15 Creation#jtKk": "65/186",
+   "L15 Weighted#CLoE": "-113/279",
+   "L15 Acid#8yeG": "106/279",
+   "L15 Destruction#7V1c": "11/279",
+   "L15 Assault#FcZT": "279/279",
+   "L15 Grasp Arcana#SmD4": "279/279",
+   "L15 Peace#dt3s": "268/279",
+   "L15 Heavy#L1EI": "243/279",
+   "L15 Venomancy#azZH": "87/186"
+  },
+  "down": [
+   "L15 Radiation",
+   "L15 Creation",
+   "L15 Weighted",
+   "L15 Acid",
+   "L15 Destruction",
+   "L15 Venomancy"
+  ],
+  "weapons": {
+   "Manifest: Sanctum Ward": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Creation"
+    ]
+   },
+   "Manifest: Consecrate (Manifest)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Creation"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 7,
+    "followups": 13,
+    "hits": 8,
+    "crits": 3,
+    "misses": 12,
+    "damage": 65,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "L15 Heavy"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Manifest: Pacify (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Manifest: Guard (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Spell: Force + Poison [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "L15 Venomancy"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 1,
+    "damage": 7,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Venomancy"
+    ]
+   },
+   "Heavy Assault": {
+    "attacks": 10,
+    "followups": 8,
+    "hits": 12,
+    "crits": 3,
+    "misses": 6,
+    "damage": 113,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "L15 Assault"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Acid"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 36,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Weighted"
+    ],
+    "force": 36
+   },
+   "Spell: Cut + Flame [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 1,
+    "damage": 105,
+    "ap": 27,
+    "kills": 0,
+    "users": [
+     "L15 Grasp Arcana"
+    ]
+   },
+   "Manifest: Corrode (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Destruction"
+    ]
+   },
+   "Manifest: Immolate (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Destruction"
+    ]
+   },
+   "Manifest: Irradiate (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Destruction"
+    ]
+   },
+   "Spell: Crackle": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 12,
+    "ap": 24,
+    "kills": 1,
+    "users": [
+     "L15 Radiation"
+    ]
+   },
+   "Other: Bodyslam [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 40,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Heavy"
+    ]
+   },
+   "Other: Bodyslam (Launch) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Heavy"
+    ]
+   },
+   "Manifest: Absolution (Manifest) [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 4,
+    "users": []
+   },
+   "Spell: Force + Cut": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 9,
+    "absorbed": 44
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 22
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Creation",
+    "dealt": 0,
+    "taken": 75,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Heavy",
+    "dealt": 105,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 22
+   },
+   {
+    "name": "L15 Weighted",
+    "dealt": 36,
+    "taken": 132,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Peace",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 15
+   },
+   {
+    "name": "L15 Radiation",
+    "dealt": 12,
+    "taken": 45,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Venomancy",
+    "dealt": 7,
+    "taken": 12,
+    "hits": 10,
+    "attacks": 11
+   },
+   {
+    "name": "L15 Acid",
+    "dealt": 0,
+    "taken": 13,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Assault",
+    "dealt": 113,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 18
+   },
+   {
+    "name": "L15 Grasp Arcana",
+    "dealt": 105,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 9
+   },
+   {
+    "name": "L15 Destruction",
+    "dealt": 0,
+    "taken": 65,
+    "hits": 2,
+    "attacks": 9
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Creation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 12,
+     "ward": 4,
+     "manifest:Consecrate": 4
+    },
+    "manifests": 4
+   },
+   {
+    "name": "L15 Heavy",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 95.16648189186456,
+    "attacks": 19,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Parry": 3,
+     "Trudge": 2,
+     "recoverEnergy": 1,
+     "defend:dodge": 6,
+     "riposte": 3,
+     "Dip": 2,
+     "Bodyslam": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "slams": 2
+   },
+   {
+    "name": "L15 Weighted",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 7.0710678118654755,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 15,
+     "limber": 6,
+     "Smashing": 2,
+     "smashing": 2,
+     "limber:skipped": 2
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "wild": 0,
+    "knockbacks": {
+     "down": 3
+    }
+   },
+   {
+    "name": "L15 Peace",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 5,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 5,
+     "manifest:Pacify": 5,
+     "manifest:Guard": 2,
+     "manifest:Absolution": 3,
+     "recoverEnergy": 1
+    },
+    "manifests": 10
+   },
+   {
+    "name": "L15 Radiation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 30,
+     "cast:Crackle": 7,
+     "mod:Multicast": 1,
+     "mod:Electrify": 7,
+     "mod:Lightning Rod": 5,
+     "mod:Charge": 7,
+     "multicast": 1
+    },
+    "turnMoved": 0,
+    "casts": 7
+   },
+   {
+    "name": "L15 Venomancy",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 11,
+    "used": {
+     "cast:Poison (coat self)": 5,
+     "mod:Potency": 1,
+     "defend:dodge": 34,
+     "cast:Force + Cut": 6,
+     "passPoison": 2,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 8
+    }
+   },
+   {
+    "name": "L15 Acid",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Glob": 6,
+     "mod:Melt": 4,
+     "mod:Catalyst": 1
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "L15 Assault",
+    "side": "monsters",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "properStance": 5,
+     "limber": 12,
+     "Dip": 1,
+     "followup:quickload": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 15
+   },
+   {
+    "name": "L15 Grasp Arcana",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Multicast": 4,
+     "mod:Ignition": 6,
+     "multicast": 3,
+     "recoverEnergy": 3
+    }
+   },
+   {
+    "name": "L15 Destruction",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 9,
+    "used": {
+     "manifest:Corrode+": 3,
+     "manifest:Immolate+": 3,
+     "manifest:Irradiate+": 3,
+     "defend:dodge": 5
+    }
+   }
+  ],
+  "trees": {
+   "L15 Radiation": {
+    "magic-theory": 2,
+    "magic-radiation": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "generic-stealth": 3
+   },
+   "L15 Creation": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-creation-dream": 5
+   },
+   "L15 Weighted": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-weighted-weapons": 5
+   },
+   "L15 Acid": {
+    "magic-theory": 2,
+    "magic-acid": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "generic-athletics": 3
+   },
+   "L15 Destruction": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-destruction-nightmare": 5
+   }
+  },
+  "gear": {
+   "L15 Radiation": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Creation": [
+    "Unarmed G1"
+   ],
+   "L15 Weighted": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Weighted (Steel) G3"
+   ],
+   "L15 Acid": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Destruction": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L15 Assault": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Assault (Steel)"
+   ],
+   "L15 Grasp Arcana": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Peace": [
+    "Unarmed"
+   ],
+   "L15 Heavy": [
+    "Unarmed",
+    "Heavy Armor (Steel)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L15 Venomancy": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Radiation": [
+    "Light Armor (Hard Leather): 12/30"
+   ],
+   "L15 Creation": [],
+   "L15 Weighted": [
+    "Medium Armor (Hard Leather): 16/60",
+    "Heavy Weighted (Steel): 270/270"
+   ],
+   "L15 Acid": [
+    "Light Armor (Hard Leather): 18/30"
+   ],
+   "L15 Destruction": [],
+   "L15 Assault": [
+    "Medium Armor (Hard Leather): 60/60",
+    "Heavy Assault (Steel): 270/270"
+   ],
+   "L15 Grasp Arcana": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Peace": [],
+   "L15 Heavy": [
+    "Heavy Armor (Steel): 48/120",
+    "Heavy Balanced (Steel): 512/540"
+   ],
+   "L15 Venomancy": [
+    "Light Armor (Hard Leather): -36/15 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 1302,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1163,
+    "monsterHp": 1255,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 817,
+    "monsterHp": 1200,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 522,
+    "monsterHp": 1200,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 351,
+    "monsterHp": 1183,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 182,
+    "monsterHp": 1156,
+    "partyDown": 5,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Heavy": 146,
+    "L15 Venomancy": 7,
+    "L15 Assault": 113,
+    "L15 Weighted": 47,
+    "L15 Grasp Arcana": 606,
+    "L15 Destruction": 42,
+    "L15 Radiation": 12,
+    "L15 Acid": 5
+   },
+   "taken": {
+    "L15 Weighted": 279,
+    "L15 Creation": 121,
+    "L15 Acid": 173,
+    "L15 Peace": 11,
+    "L15 Heavy": 36,
+    "L15 Venomancy": 99,
+    "L15 Destruction": 268,
+    "L15 Radiation": 279
+   },
+   "unattributed": 288
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 281,
+   "monsters": 40
+  },
+  "otherLoss": {
+   "party": 497,
+   "monsters": 106
+  },
+  "lostBy": {
+   "party": 1120,
+   "monsters": 146
+  },
+  "directTaken": {
+   "party": 342,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana: Alacrity?": 1,
+    "prompt: Sanctum Ward: L# Creation": 4,
+    "prompt: Heavy Balanced (Steel)": 7,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 10,
+    "prompt: Sanctum Ward: L# Peace": 5,
+    "prompt: The Poison passes from L# Venomancy to": 2,
+    "prompt: Heavy Assault (Steel)": 10,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 8,
+    "prompt: L# Peace: Dampen": 5,
+    "prompt: Infuse (Tenet)": 3,
+    "prompt: Infuse: which Mode?": 3,
+    "prompt: Heavy Weighted (Steel)": 4,
+    "prompt: L# Peace: Serenity": 17,
+    "prompt: L# Peace: Guard": 1,
+    "prompt: Knockback — L# Heavy": 3,
+    "prompt: Heavy Balanced (Steel) — Riposte": 3,
+    "prompt: Bodyslam": 2,
+    "prompt: Warden Ward": 10
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 386,
+  "winner": "unfinished",
+  "pass": "grand-15-p6",
+  "rounds": 16,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {
+   "into": 2
+  },
+  "used": {
+   "defend:dodge": 211,
+   "limber": 6,
+   "natural:Budding Gore": 10,
+   "manifest:Bloom": 8,
+   "manifest:Flourish": 8,
+   "cast:Crackle": 15,
+   "mod:Multicast": 1,
+   "mod:Electrify": 15,
+   "mod:Lightning Rod": 3,
+   "mod:Charge": 4,
+   "multicast": 1,
+   "ward": 5,
+   "manifest:Consecrate": 5,
+   "cast:Glob": 4,
+   "mod:Catalyst": 3,
+   "Smashing": 1,
+   "smashing": 1,
+   "opt:wild=str2": 2,
+   "opt:spin": 2,
+   "opt:dir=into": 2,
+   "opt:wild=bashPlus": 1,
+   "manifest:Corrode+": 2,
+   "manifest:Immolate+": 2,
+   "manifest:Irradiate+": 2,
+   "natural:Black Jaws": 49,
+   "manifest:Eclipse": 28,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "cast:nothingAffordable": 11,
+   "opt:wild=bashStr": 1,
+   "limber:skipped": 4,
+   "manifest:Umbral Strike": 26,
+   "manifest:Corrode": 15,
+   "manifest:Immolate": 15,
+   "manifest:Irradiate": 13,
+   "manifest:Freeze": 2
+  },
+  "hp": {
+   "L15 Radiation#vWcy": "131/279",
+   "L15 Creation#NqnR": "86/186",
+   "L15 Weighted#Wg1V": "137/279",
+   "L15 Acid#x7Be": "135/279",
+   "L15 Destruction#6rax": "184/279",
+   "Sim Bloomrot#88xv": "199/486",
+   "Sim Bloomrot#clRM": "203/486",
+   "Sim Gloamhound#s8VC": "202/486",
+   "Sim Gloamhound#9hbT": "221/486",
+   "Sim Burgeon#tdn8": "648/648"
+  },
+  "down": [
+   "L15 Radiation",
+   "L15 Creation",
+   "L15 Weighted",
+   "L15 Acid",
+   "Sim Bloomrot",
+   "Sim Bloomrot",
+   "Sim Gloamhound",
+   "Sim Gloamhound"
+  ],
+  "weapons": {
+   "Natural: Budding Gore [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 2,
+    "damage": 82,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 8,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Spell: Crackle": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 12,
+    "crits": 9,
+    "misses": 4,
+    "damage": 262,
+    "ap": 48,
+    "kills": 2,
+    "users": [
+     "L15 Radiation"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Creation"
+    ]
+   },
+   "Manifest: Consecrate (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 4,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Creation"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 9,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "L15 Acid"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 10,
+    "damage": 22,
+    "ap": 18,
+    "kills": 1,
+    "users": [
+     "L15 Weighted"
+    ]
+   },
+   "Manifest: Corrode (Manifest)": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 11,
+    "crits": 5,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Destruction"
+    ]
+   },
+   "Manifest: Immolate (Manifest)": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 10,
+    "crits": 5,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Destruction"
+    ]
+   },
+   "Manifest: Irradiate (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 9,
+    "crits": 5,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Destruction"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 49,
+    "followups": 0,
+    "hits": 39,
+    "crits": 22,
+    "misses": 10,
+    "damage": 510,
+    "ap": 98,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 25,
+    "crits": 13,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 37,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 26,
+    "followups": 0,
+    "hits": 23,
+    "crits": 11,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Freeze (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Destruction"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 9,
+    "absorbed": 36
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 21,
+    "absorbed": 42
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 36,
+    "taken": 170,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Weighted",
+    "dealt": 22,
+    "taken": 142,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Radiation",
+    "dealt": 262,
+    "taken": 148,
+    "hits": 12,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 46,
+    "taken": 116,
+    "hits": 11,
+    "attacks": 14
+   },
+   {
+    "name": "L15 Creation",
+    "dealt": 0,
+    "taken": 100,
+    "hits": 7,
+    "attacks": 10
+   },
+   {
+    "name": "L15 Acid",
+    "dealt": 9,
+    "taken": 144,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Destruction",
+    "dealt": 0,
+    "taken": 95,
+    "hits": 31,
+    "attacks": 51
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 198,
+    "taken": 7,
+    "hits": 40,
+    "attacks": 48
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 312,
+    "taken": 0,
+    "hits": 47,
+    "attacks": 55
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 37,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 118.40770846134703,
+    "attacks": 4,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 20,
+    "used": {
+     "natural:Budding Gore": 4,
+     "manifest:Bloom": 4,
+     "defend:dodge": 4,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Weighted",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 17,
+     "limber": 6,
+     "Smashing": 1,
+     "smashing": 1,
+     "limber:skipped": 4
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "wild": 0,
+    "knockbacks": {
+     "into": 2
+    }
+   },
+   {
+    "name": "L15 Radiation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Crackle": 15,
+     "mod:Multicast": 1,
+     "mod:Electrify": 15,
+     "mod:Lightning Rod": 3,
+     "mod:Charge": 4,
+     "multicast": 1,
+     "defend:dodge": 32
+    }
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 113.72430870063721,
+    "attacks": 6,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 45,
+     "natural:Budding Gore": 6,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 28.284271247461902,
+    "manifests": 8
+   },
+   {
+    "name": "L15 Creation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 5,
+     "manifest:Consecrate": 5,
+     "defend:dodge": 24
+    },
+    "manifests": 5
+   },
+   {
+    "name": "L15 Acid",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Glob": 4,
+     "mod:Catalyst": 3,
+     "cast:nothingAffordable": 11,
+     "defend:dodge": 37
+    }
+   },
+   {
+    "name": "L15 Destruction",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 51,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 51,
+    "used": {
+     "manifest:Corrode+": 2,
+     "manifest:Immolate+": 2,
+     "manifest:Irradiate+": 2,
+     "manifest:Corrode": 15,
+     "manifest:Immolate": 15,
+     "manifest:Irradiate": 13,
+     "defend:dodge": 16,
+     "manifest:Freeze": 2
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 147.548401518658,
+    "attacks": 48,
+    "turns": 13,
+    "kills": 0,
+    "turnMoved": 15,
+    "used": {
+     "natural:Black Jaws": 23,
+     "manifest:Eclipse": 13,
+     "defend:dodge": 19,
+     "manifest:Umbral Strike": 12
+    },
+    "manifests": 25
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 174.23237174954735,
+    "attacks": 55,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 26,
+     "manifest:Eclipse": 15,
+     "defend:dodge": 13,
+     "manifest:Umbral Strike": 14
+    },
+    "manifests": 29
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 105,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 4
+    },
+    "manifests": 4
+   }
+  ],
+  "trees": {
+   "L15 Radiation": {
+    "magic-theory": 2,
+    "magic-radiation": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "generic-stealth": 3
+   },
+   "L15 Creation": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-creation-dream": 5
+   },
+   "L15 Weighted": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-weighted-weapons": 5
+   },
+   "L15 Acid": {
+    "magic-theory": 2,
+    "magic-acid": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "generic-athletics": 3
+   },
+   "L15 Destruction": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-destruction-nightmare": 5
+   }
+  },
+  "gear": {
+   "L15 Radiation": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Creation": [
+    "Unarmed G1"
+   ],
+   "L15 Weighted": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Weighted (Steel) G3"
+   ],
+   "L15 Acid": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Destruction": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Radiation": [
+    "Light Armor (Hard Leather): 8/30"
+   ],
+   "L15 Creation": [],
+   "L15 Weighted": [
+    "Medium Armor (Hard Leather): 24/60",
+    "Heavy Weighted (Steel): 270/270"
+   ],
+   "L15 Acid": [
+    "Light Armor (Hard Leather): 10/30"
+   ],
+   "L15 Destruction": [],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1274,
+    "monsterHp": 2557,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1224,
+    "monsterHp": 2550,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1154,
+    "monsterHp": 2550,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1072,
+    "monsterHp": 2550,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1012,
+    "monsterHp": 2484,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 984,
+    "monsterHp": 2283,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 928,
+    "monsterHp": 2124,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 912,
+    "monsterHp": 1959,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 860,
+    "monsterHp": 1926,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 840,
+    "monsterHp": 1918,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 12,
+    "partyHp": 787,
+    "monsterHp": 1849,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 13,
+    "partyHp": 768,
+    "monsterHp": 1820,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 718,
+    "monsterHp": 1757,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 15,
+    "partyHp": 696,
+    "monsterHp": 1711,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 673,
+    "monsterHp": 1511,
+    "partyDown": 4,
+    "monstersDown": 4
+   },
+   {
+    "round": 16,
+    "partyHp": 673,
+    "monsterHp": 1473,
+    "partyDown": 4,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Radiation": 303,
+    "Sim Bloomrot": 82,
+    "L15 Weighted": 22,
+    "Sim Burgeon": 37,
+    "L15 Acid": 9,
+    "Sim Gloamhound": 510,
+    "L15 Destruction": 665
+   },
+   "taken": {
+    "Sim Bloomrot": 582,
+    "L15 Weighted": 142,
+    "Sim Gloamhound": 549,
+    "L15 Radiation": 148,
+    "L15 Creation": 100,
+    "L15 Acid": 144,
+    "L15 Destruction": 95
+   },
+   "unattributed": 132
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 228
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 891
+  },
+  "lostBy": {
+   "party": 629,
+   "monsters": 1119
+  },
+  "directTaken": {
+   "party": 922,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Creation: Resist Allure (as Fear)": 3,
+    "prompt: L# Destruction: Resist Allure (as Fear)": 3,
+    "prompt: L# Acid: Resist Allure (as Fear)": 3,
+    "prompt: L# Weighted: Resist Allure (as Fear)": 3,
+    "prompt: L# Radiation: Resist Allure (as Fear)": 3,
+    "prompt: L# Creation: Resist Dread (as Fear)": 2,
+    "prompt: L# Destruction: Resist Dread (as Fear)": 2,
+    "prompt: L# Acid: Resist Dread (as Fear)": 2,
+    "prompt: L# Weighted: Resist Dread (as Fear)": 2,
+    "prompt: L# Radiation: Resist Dread (as Fear)": 2,
+    "prompt: Verdant Soul (Tenet)": 8,
+    "prompt: Verdant Soul: give # temp HP to": 8,
+    "prompt: Infuse (Tenet)": 15,
+    "prompt: Infuse: which Mode?": 15,
+    "prompt: Sanctum Ward: L# Creation": 5,
+    "prompt: Heavy Weighted (Steel)": 6,
+    "prompt: Knockback — Sim Bloomrot": 1,
+    "prompt: Shadowmark (Tenet)": 28,
+    "prompt: Shadowmark: make one step more obscured": 28,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Riposte Ward": 59,
+    "prompt: Knockback — Sim Gloamhound": 1,
+    "prompt: Umbral Strike": 13,
+    "prompt: Sporing": 2,
+    "prompt: Warden Ward": 10
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Acid is afraid and can't gain Energy.",
+     "who": "L15 Acid"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

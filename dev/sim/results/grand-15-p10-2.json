@@ -1,0 +1,1873 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 134,
+  "winner": "party",
+  "pass": "grand-15-p10",
+  "rounds": 4,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 15,
+  "knockbacks": {
+   "down": 4,
+   "away": 2,
+   "into": 1
+  },
+  "used": {
+   "cast:Force + Cut": 22,
+   "defend:dodge": 89,
+   "defend:shift": 51,
+   "manifest:Bloom": 4,
+   "manifest:Flourish": 4,
+   "manifest:Exact+": 4,
+   "manifest:Hone": 2,
+   "mod:Pinpoint": 1,
+   "mod:Empower": 4,
+   "Parry": 3,
+   "Shatter": 5,
+   "opt:disarm": 1,
+   "Leap": 1,
+   "defend:perfectParry": 9,
+   "riposte": 5,
+   "recoverEnergy": 4,
+   "ward": 1,
+   "manifest:Crescendo": 1,
+   "manifest:Adaptive Skin": 1,
+   "manifest:Second Wind": 1,
+   "Taunt": 2,
+   "opt:punch": 7,
+   "limber": 10,
+   "opt:dir=down": 4,
+   "opt:dir=away": 2,
+   "opt:dir=into": 1,
+   "Dip": 1,
+   "cast:Cut": 10
+  },
+  "hp": {
+   "L15 Blast#b3ID": "236/279",
+   "L15 Summoning#HQrg": "279/279",
+   "L15 Adaptation#P0BU": "132/279",
+   "L15 Light Armor#ka0K": "279/279",
+   "L15 Creation School#oVqy": "279/279",
+   "L15 Perfection#Zdp5": "67/186",
+   "L15 Constitution#yJI4": "119/279",
+   "L15 Animation#6sK6": "128/279",
+   "L15 Willpower#JDhY": "137/279",
+   "L15 Curved#3FbI": "133/279"
+  },
+  "down": [
+   "L15 Adaptation",
+   "L15 Perfection",
+   "L15 Constitution",
+   "L15 Animation",
+   "L15 Willpower",
+   "L15 Curved"
+  ],
+  "weapons": {
+   "Spell: Force + Cut [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 3,
+    "damage": 80,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "L15 Animation"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Willpower"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Willpower"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Willpower"
+    ]
+   },
+   "Manifest: Exact (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Perfection"
+    ]
+   },
+   "Manifest: Hone (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Perfection"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 10,
+    "crits": 7,
+    "misses": 6,
+    "damage": 529,
+    "ap": 38,
+    "kills": 5,
+    "users": [
+     "L15 Creation School",
+     "L15 Summoning"
+    ],
+    "force": 86
+   },
+   "Light Curved": {
+    "attacks": 2,
+    "followups": 8,
+    "hits": 0,
+    "crits": 0,
+    "misses": 10,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "L15 Curved"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 5,
+    "followups": 1,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 9,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Light Armor"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 6,
+    "hits": 0,
+    "crits": 0,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Light Armor"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Manifest: Crescendo (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Manifest: Adaptive Skin (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Manifest: Second Wind (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 3,
+    "followups": 5,
+    "hits": 0,
+    "crits": 0,
+    "misses": 8,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Constitution"
+    ]
+   },
+   "Light Blast": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 4,
+    "damage": 40,
+    "ap": 18,
+    "kills": 1,
+    "users": [
+     "L15 Blast"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 11,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "L15 Animation"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 0,
+    "damage": 144,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "L15 Summoning"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 8,
+    "absorbed": 16
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 1,
+    "absorbed": 4
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Animation",
+    "dealt": 91,
+    "taken": 151,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Adaptation",
+    "dealt": 0,
+    "taken": 80,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Light Armor",
+    "dealt": 9,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Willpower",
+    "dealt": 0,
+    "taken": 142,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Perfection",
+    "dealt": 0,
+    "taken": 100,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Creation School",
+    "dealt": 353,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Summoning",
+    "dealt": 320,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 13
+   },
+   {
+    "name": "L15 Curved",
+    "dealt": 0,
+    "taken": 145,
+    "hits": 0,
+    "attacks": 10
+   },
+   {
+    "name": "L15 Constitution",
+    "dealt": 0,
+    "taken": 98,
+    "hits": 0,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Blast",
+    "dealt": 40,
+    "taken": 11,
+    "hits": 5,
+    "attacks": 9
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Animation",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Force + Cut": 7,
+     "defend:dodge": 11,
+     "cast:Cut": 5
+    }
+   },
+   {
+    "name": "L15 Adaptation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9,
+     "ward": 1,
+     "manifest:Crescendo": 1,
+     "manifest:Adaptive Skin": 1,
+     "manifest:Second Wind": 1
+    },
+    "turnMoved": 0,
+    "manifests": 3
+   },
+   {
+    "name": "L15 Light Armor",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 7.0710678118654755,
+    "attacks": 11,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:shift": 42,
+     "defend:dodge": 25,
+     "Parry": 1,
+     "Shatter": 2,
+     "Leap": 1,
+     "recoverEnergy": 2,
+     "riposte": 1
+    },
+    "fist": "Dip",
+    "leapt": true,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "L15 Willpower",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 8,
+    "used": {
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L15 Perfection",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 11,
+     "manifest:Exact+": 4,
+     "manifest:Hone": 2
+    },
+    "turnMoved": 0,
+    "manifests": 6
+   },
+   {
+    "name": "L15 Creation School",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Force + Cut": 8,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 4,
+     "defend:dodge": 3
+    },
+    "knockbacks": {
+     "down": 3,
+     "away": 2
+    }
+   },
+   {
+    "name": "L15 Summoning",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Force + Cut": 7,
+     "cast:Cut": 5
+    },
+    "knockbacks": {
+     "into": 1,
+     "down": 1
+    }
+   },
+   {
+    "name": "L15 Curved",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 93.40770846134703,
+    "attacks": 7,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Shatter": 1,
+     "defend:perfectParry": 9,
+     "defend:shift": 4,
+     "defend:dodge": 4,
+     "riposte": 3
+    },
+    "fist": "Shatter",
+    "turnMoved": 93.40770846134703,
+    "shank": 1,
+    "disarms": 1
+   },
+   {
+    "name": "L15 Constitution",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 91.92388155425118,
+    "attacks": 7,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Taunt": 2,
+     "recoverEnergy": 1,
+     "defend:dodge": 17,
+     "riposte": 1,
+     "limber": 10,
+     "Dip": 1
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Blast",
+    "side": "party",
+    "role": "ranged",
+    "moved": 100,
+    "attacks": 9,
+    "turns": 4,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 2,
+     "defend:shift": 5,
+     "defend:dodge": 5,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "reloads": 4
+   }
+  ],
+  "trees": {
+   "L15 Blast": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-blast-weapons": 4,
+    "martial-light-armor": 1,
+    "generic-endurance": 1
+   },
+   "L15 Summoning": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-summoning": 3,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Adaptation": {
+    "mental-theory": 3,
+    "mental-light-dream": 2,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-adaptation-dream": 5
+   },
+   "L15 Light Armor": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 4,
+    "generic-endurance": 1,
+    "generic-recovery": 1
+   },
+   "L15 Creation School": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-creation": 3,
+    "magic-slashing": 1,
+    "generic-endurance": 1
+   }
+  },
+  "gear": {
+   "L15 Blast": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Blast (Steel) G3"
+   ],
+   "L15 Summoning": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Adaptation": [
+    "Unarmed G1"
+   ],
+   "L15 Light Armor": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Bladed (Steel) G3"
+   ],
+   "L15 Creation School": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Perfection": [
+    "Unarmed"
+   ],
+   "L15 Constitution": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L15 Animation": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Willpower": [
+    "Unarmed"
+   ],
+   "L15 Curved": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Curved (Steel)"
+   ]
+  },
+  "gearState": {
+   "L15 Blast": [
+    "Light Armor (Hard Leather): 28/30",
+    "Light Blast (Steel): 135/135"
+   ],
+   "L15 Summoning": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Adaptation": [],
+   "L15 Light Armor": [
+    "Light Armor (Hard Leather): 27/30",
+    "Light Bladed (Steel): 109/135"
+   ],
+   "L15 Creation School": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Perfection": [],
+   "L15 Constitution": [
+    "Medium Armor (Hard Leather): 49/60",
+    "Heavy Balanced (Steel): 486/540"
+   ],
+   "L15 Animation": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Willpower": [],
+   "L15 Curved": [
+    "Light Armor (Hard Leather): 22/30",
+    "Light Curved (Steel): 129/135"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 1302,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1267,
+    "monsterHp": 1293,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1216,
+    "monsterHp": 1034,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 1216,
+    "monsterHp": 756,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 4,
+    "partyHp": 1205,
+    "monsterHp": 584,
+    "partyDown": 1,
+    "monstersDown": 5,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Animation": 91,
+    "L15 Perfection": 87,
+    "L15 Light Armor": 9,
+    "L15 Creation School": 348,
+    "L15 Summoning": 321,
+    "L15 Blast": 40
+   },
+   "taken": {
+    "L15 Adaptation": 147,
+    "L15 Curved": 146,
+    "L15 Blast": 43,
+    "L15 Perfection": 119,
+    "L15 Constitution": 160,
+    "L15 Animation": 151,
+    "L15 Willpower": 142
+   },
+   "unattributed": 12
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 718
+  },
+  "lostBy": {
+   "party": 190,
+   "monsters": 718
+  },
+  "directTaken": {
+   "party": 727,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Summoning: Alacrity?": 1,
+    "prompt: L# Perfection: Alacrity?": 1,
+    "prompt: L# Willpower: Alacrity?": 1,
+    "prompt: L# Light Armor — Shift": 42,
+    "prompt: Sanctum Ward: L# Willpower": 4,
+    "prompt: Verdant Soul (Tenet)": 3,
+    "prompt: Verdant Soul: give # temp HP to": 3,
+    "prompt: Ego (Tenet)": 2,
+    "prompt: Warden Ward": 9,
+    "prompt: Light Curved (Steel)": 2,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 5,
+    "prompt: Light Bladed (Steel)": 5,
+    "prompt: L# Curved — Perfect Parry": 9,
+    "prompt: L# Curved — Shift": 4,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 6,
+    "prompt: Light Curved (Steel) — Riposte": 3,
+    "prompt: Sanctum Ward: L# Adaptation": 1,
+    "confirm: Adapt (Tenet)": 1,
+    "prompt: Memory": 1,
+    "prompt: Taunt": 2,
+    "prompt: Heavy Balanced (Steel)": 3,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 4,
+    "prompt: Light Blast (Steel)": 9,
+    "prompt: Heavy Balanced (Steel) — Riposte": 1,
+    "prompt: L# Blast — Shift": 5,
+    "prompt: Light Bladed (Steel) — Riposte": 1,
+    "prompt: L# Adaptation: Adaptive Skin": 1,
+    "prompt: Force — L# Perfection": 2,
+    "prompt: Force — L# Curved": 1,
+    "prompt: Force — L# Constitution": 1,
+    "prompt: Force — L# Animation": 3
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Light Armor can't move through L15 Curved's space.",
+     "who": "L15 Light Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Light Armor can't move through L15 Curved's space.",
+     "who": "L15 Willpower"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 453,
+  "winner": "unfinished",
+  "pass": "grand-15-p10",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 3,
+  "followups": 23,
+  "knockbacks": {
+   "into": 1
+  },
+  "used": {
+   "Shatter": 4,
+   "opt:punch": 3,
+   "defend:dodge": 286,
+   "defend:shift": 98,
+   "natural:Budding Gore": 16,
+   "manifest:Bloom": 8,
+   "manifest:Flourish": 8,
+   "Parry": 1,
+   "Leap": 1,
+   "natural:Black Jaws": 35,
+   "manifest:Eclipse": 21,
+   "manifest:Umbral Strike": 20,
+   "ward": 15,
+   "manifest:Crescendo": 15,
+   "manifest:Adaptive Skin": 15,
+   "riposte": 1,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "cast:Force + Cut": 35,
+   "mod:Pinpoint": 1,
+   "mod:Empower": 1,
+   "manifest:Second Wind": 11,
+   "cast:Cut": 1,
+   "opt:area": 3,
+   "cast:nothingAffordable": 13,
+   "opt:dir=into": 1
+  },
+  "hp": {
+   "L15 Blast#pTtP": "124/279",
+   "L15 Summoning#qre7": "275/279",
+   "L15 Adaptation#e3P8": "142/279",
+   "L15 Light Armor#g5Z0": "113/279",
+   "L15 Creation School#gegk": "279/279",
+   "Sim Bloomrot#776K": "228/486",
+   "Sim Bloomrot#0Y1I": "239/486",
+   "Sim Gloamhound#irpj": "363/486",
+   "Sim Gloamhound#QLS2": "484/486",
+   "Sim Burgeon#wD3d": "648/648"
+  },
+  "down": [
+   "L15 Blast",
+   "L15 Light Armor",
+   "Sim Bloomrot",
+   "Sim Bloomrot"
+  ],
+  "weapons": {
+   "Light Blast": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 9,
+    "damage": 22,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "L15 Blast"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 12,
+    "damage": 41,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 48,
+    "crits": 21,
+    "misses": 22,
+    "damage": 201,
+    "ap": 46,
+    "kills": 0,
+    "users": [
+     "L15 Light Armor"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 24,
+    "hits": 12,
+    "crits": 4,
+    "misses": 12,
+    "damage": 120,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "L15 Light Armor",
+     "L15 Blast"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 35,
+    "followups": 0,
+    "hits": 19,
+    "crits": 5,
+    "misses": 16,
+    "damage": 273,
+    "ap": 70,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 10,
+    "crits": 5,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 11,
+    "crits": 8,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Manifest: Crescendo (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 11,
+    "crits": 5,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Manifest: Adaptive Skin (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 11,
+    "crits": 4,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 7,
+    "damage": 11,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 36,
+    "followups": 0,
+    "hits": 19,
+    "crits": 6,
+    "misses": 17,
+    "damage": 403,
+    "ap": 100,
+    "kills": 2,
+    "users": [
+     "L15 Creation School",
+     "L15 Summoning"
+    ]
+   },
+   "Manifest: Second Wind (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "L15 Summoning"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 20,
+    "absorbed": 40
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Blast",
+    "dealt": 22,
+    "taken": 155,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 32,
+    "taken": 374,
+    "hits": 8,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 9,
+    "taken": 247,
+    "hits": 7,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Light Armor",
+    "dealt": 321,
+    "taken": 166,
+    "hits": 60,
+    "attacks": 46
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 169,
+    "taken": 2,
+    "hits": 31,
+    "attacks": 49
+   },
+   {
+    "name": "L15 Adaptation",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 40,
+    "attacks": 56
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 104,
+    "taken": 123,
+    "hits": 10,
+    "attacks": 27
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 11,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Creation School",
+    "dealt": 333,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 31
+   },
+   {
+    "name": "L15 Summoning",
+    "dealt": 70,
+    "taken": 4,
+    "hits": 2,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Blast",
+    "side": "party",
+    "role": "ranged",
+    "moved": 100,
+    "attacks": 8,
+    "turns": 3,
+    "kills": 0,
+    "fist": "Shatter",
+    "used": {
+     "Shatter": 1,
+     "defend:shift": 29,
+     "defend:dodge": 34,
+     "riposte": 1
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "reloads": 5,
+    "lastTech": "kick",
+    "areaShots": 3,
+    "cones": 3
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 54,
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 18.251407699364425,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 7.0710678118654755,
+    "used": {
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "defend:dodge": 5,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Light Armor",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 89.44271909999159,
+    "attacks": 46,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Shatter": 3,
+     "Leap": 1,
+     "defend:shift": 69,
+     "defend:dodge": 49
+    },
+    "fist": "Dip",
+    "leapt": true,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100,
+    "attacks": 49,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23,
+     "natural:Black Jaws": 20,
+     "manifest:Eclipse": 15,
+     "manifest:Umbral Strike": 14
+    },
+    "turnMoved": 0,
+    "manifests": 29
+   },
+   {
+    "name": "L15 Adaptation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Crescendo": 15,
+     "defend:dodge": 66,
+     "manifest:Adaptive Skin": 15,
+     "manifest:Second Wind": 11
+    },
+    "manifests": 41
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 20.615528128088304,
+    "attacks": 27,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 15,
+     "manifest:Eclipse": 6,
+     "manifest:Umbral Strike": 6,
+     "defend:dodge": 44
+    },
+    "manifests": 12
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 5,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 4
+    },
+    "manifests": 4
+   },
+   {
+    "name": "L15 Creation School",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Force + Cut": 30,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 1
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "L15 Summoning",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Force + Cut": 5,
+     "cast:Cut": 1,
+     "cast:nothingAffordable": 13,
+     "defend:dodge": 7
+    }
+   }
+  ],
+  "trees": {
+   "L15 Blast": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-blast-weapons": 4,
+    "martial-light-armor": 1,
+    "generic-endurance": 1
+   },
+   "L15 Summoning": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-summoning": 3,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Adaptation": {
+    "mental-theory": 3,
+    "mental-light-dream": 2,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-adaptation-dream": 5
+   },
+   "L15 Light Armor": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 4,
+    "generic-endurance": 1,
+    "generic-recovery": 1
+   },
+   "L15 Creation School": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-creation": 3,
+    "magic-slashing": 1,
+    "generic-endurance": 1
+   }
+  },
+  "gear": {
+   "L15 Blast": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Blast (Steel) G3"
+   ],
+   "L15 Summoning": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Adaptation": [
+    "Unarmed G1"
+   ],
+   "L15 Light Armor": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Bladed (Steel) G3"
+   ],
+   "L15 Creation School": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Blast": [
+    "Light Armor (Hard Leather): 10/30",
+    "Light Blast (Steel): 135/135"
+   ],
+   "L15 Summoning": [
+    "Light Armor (Hard Leather): 26/30"
+   ],
+   "L15 Adaptation": [],
+   "L15 Light Armor": [
+    "Light Armor (Hard Leather): 14/30",
+    "Light Bladed (Steel): 135/135"
+   ],
+   "L15 Creation School": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1386,
+    "monsterHp": 2467,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1244,
+    "monsterHp": 2571,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1219,
+    "monsterHp": 2559,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1181,
+    "monsterHp": 2475,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1157,
+    "monsterHp": 2311,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 1089,
+    "monsterHp": 2272,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 1073,
+    "monsterHp": 2061,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 1036,
+    "monsterHp": 2033,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 1023,
+    "monsterHp": 1997,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 1008,
+    "monsterHp": 1986,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 12,
+    "partyHp": 1008,
+    "monsterHp": 1980,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 13,
+    "partyHp": 992,
+    "monsterHp": 1980,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 968,
+    "monsterHp": 1962,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 15,
+    "partyHp": 937,
+    "monsterHp": 1962,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 933,
+    "monsterHp": 1962,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 933,
+    "monsterHp": 1962,
+    "partyDown": 2,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "Sim Bloomrot": 41,
+    "L15 Light Armor": 321,
+    "L15 Creation School": 333,
+    "L15 Summoning": 70,
+    "L15 Blast": 22,
+    "Sim Gloamhound": 273,
+    "Sim Burgeon": 11
+   },
+   "taken": {
+    "L15 Blast": 155,
+    "Sim Bloomrot": 621,
+    "Sim Gloamhound": 125,
+    "L15 Adaptation": 137,
+    "L15 Light Armor": 166,
+    "L15 Summoning": 4
+   },
+   "unattributed": 137
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 630
+  },
+  "lostBy": {
+   "party": 462,
+   "monsters": 630
+  },
+  "directTaken": {
+   "party": 1071,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Summoning: Alacrity?": 1,
+    "prompt: L# Adaptation: Resist Allure (as Fear)": 3,
+    "prompt: L# Blast: Resist Allure (as Fear)": 3,
+    "prompt: L# Creation School: Resist Allure (as Fear)": 3,
+    "prompt: L# Summoning: Resist Allure (as Fear)": 3,
+    "prompt: L# Light Armor: Resist Allure (as Fear)": 3,
+    "prompt: L# Adaptation: Resist Dread (as Fear)": 2,
+    "prompt: L# Blast: Resist Dread (as Fear)": 2,
+    "prompt: L# Creation School: Resist Dread (as Fear)": 2,
+    "prompt: L# Summoning: Resist Dread (as Fear)": 2,
+    "prompt: L# Light Armor: Resist Dread (as Fear)": 2,
+    "prompt: Light Blast (Steel)": 8,
+    "prompt: L# Blast — Shift": 29,
+    "prompt: Verdant Soul (Tenet)": 8,
+    "prompt: Verdant Soul: give # temp HP to": 8,
+    "prompt: Light Bladed (Steel)": 23,
+    "prompt: Riposte Ward": 54,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 23,
+    "prompt: Sanctum Ward: L# Adaptation": 15,
+    "confirm: Adapt (Tenet)": 15,
+    "prompt: Memory": 29,
+    "prompt: Unarmed — Riposte": 1,
+    "prompt: Shadowmark (Tenet)": 15,
+    "prompt: Shadowmark: make one step more obscured": 15,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Umbral Strike": 12,
+    "prompt: L# Light Armor — Shift": 69,
+    "prompt: Sporing": 2,
+    "prompt: Force — Sim Bloomrot": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Light Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Light Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Blast's space.",
+     "who": "L15 Adaptation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Summoning is afraid and can't gain Energy.",
+     "who": "L15 Summoning"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

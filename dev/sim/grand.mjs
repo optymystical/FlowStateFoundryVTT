@@ -128,7 +128,8 @@ export function build(featured, level, i) {
   }
   open(trees, free, RIDERS[i % RIDERS.length], 3, level, ctx);
   for (const r of RIDERS) if (S.spentPoints(trees, free) < level) open(trees, free, r, 2, level, ctx);
-  const short = tree.name.replace(/ (Weapons|Methods|Armor|Arts)$/, "").replace(/ \((Dream|Nightmare)\)$/, "");
+  // Names must be unique: an armor tree keeps "Armor" (Light Armor vs the Light Wonder), the Magic Creation school is "Creation School".
+  const short = tree.id === "magic-creation" ? "Creation School" : tree.name.replace(/ (Weapons|Methods|Arts)$/, "").replace(/ \((Dream|Nightmare)\)$/, "");
   return { id: `${featured}-${level}`, name: `L${level} ${short}`, featured, level, sp: level, size: ABC.ANCESTRIES[ancestry]?.size ?? 3, stats, natural: false,
     loadout: { label: tree.name, trees, abc, freeTrees: free, stats, ...gear } };
 }

@@ -1,0 +1,1830 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 187,
+  "winner": "monsters",
+  "pass": "grand-15-p7",
+  "rounds": 7,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 27,
+  "knockbacks": {
+   "into": 1,
+   "down": 4
+  },
+  "used": {
+   "cast:Cut + Flame": 8,
+   "mod:Multicast": 4,
+   "mod:Ignition": 8,
+   "defend:dodge": 152,
+   "multicast": 4,
+   "ward": 3,
+   "manifest:Pacify": 3,
+   "manifest:Guard": 3,
+   "Parry": 2,
+   "Shatter": 3,
+   "Spot Weakness": 1,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 2,
+   "opt:shank3=pierce": 1,
+   "opt:thrust": 6,
+   "defend:shift": 21,
+   "twist": 3,
+   "manifest:Wither+": 4,
+   "cast:Force + Cut": 16,
+   "mod:Pinpoint": 1,
+   "mod:Empower": 6,
+   "opt:dir=into": 1,
+   "limber": 18,
+   "manifest:Provoke": 1,
+   "manifest:Warzone": 1,
+   "manifest:Bloodbond": 1,
+   "cast:Poison (coat self)": 4,
+   "mod:Potency": 1,
+   "opt:who": 1,
+   "passPoison": 1,
+   "properStance": 6,
+   "opt:takeAim=adv": 5,
+   "opt:coolBreath": 10,
+   "opt:takeAim=str": 5,
+   "manifest:Absolution": 2,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 2,
+   "riposte": 2,
+   "manifest:Wither": 15,
+   "opt:dir=down": 4,
+   "Dip": 1,
+   "followup:quickload": 2,
+   "opt:shank1=dodge": 1,
+   "cast:nothingAffordable": 1,
+   "recoverEnergy": 8
+  },
+  "hp": {
+   "L15 Assault#1xpX": "133/279",
+   "L15 Grasp Arcana#h5Gi": "125/279",
+   "L15 Peace#kIG8": "129/279",
+   "L15 Heavy Armor#o2E5": "130/270",
+   "L15 Venomancy#pmsA": "92/165",
+   "L15 War#Is2N": "98/279",
+   "L15 Dexterity#lEyG": "-79/279",
+   "L15 Charm#gdMA": "137/279",
+   "L15 Snappence#Yswl": "279/279",
+   "L15 Reach#Ldo3": "110/279"
+  },
+  "down": [
+   "L15 Assault",
+   "L15 Grasp Arcana",
+   "L15 Peace",
+   "L15 Heavy Armor",
+   "L15 Venomancy",
+   "L15 War",
+   "L15 Dexterity",
+   "L15 Charm",
+   "L15 Reach"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 7,
+    "damage": 65,
+    "ap": 36,
+    "kills": 2,
+    "users": [
+     "L15 Grasp Arcana"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 46,
+    "followups": 0,
+    "hits": 29,
+    "crits": 8,
+    "misses": 17,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Snappence"
+    ]
+   },
+   "Manifest: Pacify (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Manifest: Guard (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 9,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "L15 Dexterity"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 26,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Dexterity"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 8,
+    "followups": 7,
+    "hits": 10,
+    "crits": 4,
+    "misses": 5,
+    "damage": 19,
+    "ap": 16,
+    "kills": 2,
+    "users": [
+     "L15 Reach"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 5,
+    "damage": 272,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L15 Charm"
+    ],
+    "force": 11
+   },
+   "Spell: Force + Cut [M] [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Charm"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 2,
+    "followups": 6,
+    "hits": 3,
+    "crits": 1,
+    "misses": 7,
+    "damage": 40,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Heavy Armor"
+    ]
+   },
+   "Manifest: Provoke (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 War"
+    ]
+   },
+   "Manifest: Warzone (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 War"
+    ]
+   },
+   "Manifest: Bloodbond (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 War"
+    ]
+   },
+   "Spell: Force + Poison": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "L15 Venomancy"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 10,
+    "ap": 8,
+    "kills": 3,
+    "users": [
+     "L15 Venomancy"
+    ]
+   },
+   "Heavy Assault": {
+    "attacks": 10,
+    "followups": 8,
+    "hits": 12,
+    "crits": 6,
+    "misses": 6,
+    "damage": 215,
+    "ap": 30,
+    "kills": 2,
+    "users": [
+     "L15 Assault"
+    ]
+   },
+   "Manifest: Absolution (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Steel)": {
+    "hits": 7,
+    "absorbed": 81
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 11,
+    "absorbed": 25
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 8
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Grasp Arcana",
+    "dealt": 65,
+    "taken": 90,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "L15 War",
+    "dealt": 0,
+    "taken": 17,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "L15 Peace",
+    "dealt": 0,
+    "taken": 49,
+    "hits": 5,
+    "attacks": 11
+   },
+   {
+    "name": "L15 Snappence",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 29,
+    "attacks": 46
+   },
+   {
+    "name": "L15 Venomancy",
+    "dealt": 10,
+    "taken": 17,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Dexterity",
+    "dealt": 35,
+    "taken": 84,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Heavy Armor",
+    "dealt": 40,
+    "taken": 84,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Reach",
+    "dealt": 19,
+    "taken": 169,
+    "hits": 10,
+    "attacks": 15
+   },
+   {
+    "name": "L15 Charm",
+    "dealt": 272,
+    "taken": 60,
+    "hits": 8,
+    "attacks": 13
+   },
+   {
+    "name": "L15 Assault",
+    "dealt": 215,
+    "taken": 75,
+    "hits": 12,
+    "attacks": 18
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Grasp Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Cut + Flame": 8,
+     "mod:Multicast": 4,
+     "mod:Ignition": 8,
+     "multicast": 4,
+     "defend:dodge": 13
+    }
+   },
+   {
+    "name": "L15 War",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5,
+     "manifest:Provoke": 1,
+     "manifest:Warzone": 1,
+     "manifest:Bloodbond": 1
+    },
+    "turnMoved": 10,
+    "manifests": 3
+   },
+   {
+    "name": "L15 Peace",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 3,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 3,
+     "manifest:Pacify": 3,
+     "defend:dodge": 11,
+     "manifest:Guard": 3,
+     "manifest:Absolution": 2
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Venomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 25,
+     "cast:Poison (coat self)": 4,
+     "mod:Potency": 1,
+     "cast:Force + Cut": 4,
+     "passPoison": 1,
+     "cast:nothingAffordable": 1,
+     "recoverEnergy": 4
+    },
+    "turnMoved": 0,
+    "casts": 8
+   },
+   {
+    "name": "L15 Dexterity",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 108.48857801796106,
+    "attacks": 16,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Shatter": 1,
+     "Spot Weakness": 1,
+     "defend:dodge": 15
+    },
+    "fist": "Shatter",
+    "spotted": true,
+    "turnMoved": 5,
+    "shank": 2
+   },
+   {
+    "name": "L15 Heavy Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 28,
+     "Parry": 1,
+     "riposte": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Reach",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 122.89608618237133,
+    "attacks": 15,
+    "turns": 3,
+    "kills": 0,
+    "fist": "Shatter",
+    "used": {
+     "Shatter": 2,
+     "defend:shift": 21,
+     "defend:dodge": 24,
+     "twist": 3
+    },
+    "turnMoved": 23.027756377319946,
+    "shank": 1
+   },
+   {
+    "name": "L15 Snappence",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 15,
+    "attacks": 19,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 19,
+    "used": {
+     "manifest:Wither+": 4,
+     "manifest:Wither": 15,
+     "defend:dodge": 2,
+     "recoverEnergy": 4
+    }
+   },
+   {
+    "name": "L15 Charm",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Force + Cut": 12,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 6,
+     "defend:dodge": 15
+    },
+    "knockbacks": {
+     "into": 1,
+     "down": 4
+    }
+   },
+   {
+    "name": "L15 Assault",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14,
+     "limber": 18,
+     "properStance": 6,
+     "Dip": 1,
+     "followup:quickload": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 15
+   }
+  ],
+  "trees": {
+   "L15 Assault": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-assault-weapons": 5
+   },
+   "L15 Grasp Arcana": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Peace": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-peace-dream": 5
+   },
+   "L15 Heavy Armor": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-heavy-armor": 5
+   },
+   "L15 Venomancy": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-venomancy": 4,
+    "magic-slashing": 1,
+    "generic-endurance": 1
+   }
+  },
+  "gear": {
+   "L15 Assault": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Assault (Steel) G3"
+   ],
+   "L15 Grasp Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Peace": [
+    "Unarmed G1"
+   ],
+   "L15 Heavy Armor": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G3",
+    "Heavy Armor (Steel) G2"
+   ],
+   "L15 Venomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 War": [
+    "Unarmed"
+   ],
+   "L15 Dexterity": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Bladed (Steel)"
+   ],
+   "L15 Charm": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Snappence": [
+    "Unarmed"
+   ],
+   "L15 Reach": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Reach (Steel)"
+   ]
+  },
+  "gearState": {
+   "L15 Assault": [
+    "Medium Armor (Hard Leather): 48/60",
+    "Heavy Assault (Steel): 270/270"
+   ],
+   "L15 Grasp Arcana": [
+    "Light Armor (Hard Leather): 24/30"
+   ],
+   "L15 Peace": [],
+   "L15 Heavy Armor": [
+    "Heavy Balanced (Steel): 485/540",
+    "Heavy Armor (Steel): 0/120 BROKEN"
+   ],
+   "L15 Venomancy": [
+    "Light Armor (Hard Leather): 14/15"
+   ],
+   "L15 War": [],
+   "L15 Dexterity": [
+    "Light Armor (Hard Leather): 16/30",
+    "Light Bladed (Steel): 108/135"
+   ],
+   "L15 Charm": [
+    "Light Armor (Hard Leather): 24/30"
+   ],
+   "L15 Snappence": [],
+   "L15 Reach": [
+    "Light Armor (Hard Leather): 26/30",
+    "Light Reach (Steel): 135/135"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 1395,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1078,
+    "monsterHp": 1129,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 957,
+    "monsterHp": 1100,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 864,
+    "monsterHp": 1005,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 803,
+    "monsterHp": 762,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 6,
+    "partyHp": 751,
+    "monsterHp": 709,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 7,
+    "partyHp": 637,
+    "monsterHp": 624,
+    "partyDown": 4,
+    "monstersDown": 4
+   },
+   {
+    "round": 7,
+    "partyHp": 609,
+    "monsterHp": 624,
+    "partyDown": 5,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Grasp Arcana": 389,
+    "L15 Reach": 37,
+    "L15 Snappence": 182,
+    "L15 Charm": 333,
+    "L15 Heavy Armor": 28,
+    "L15 Venomancy": 71,
+    "L15 Assault": 267,
+    "L15 Dexterity": 45
+   },
+   "taken": {
+    "L15 War": 181,
+    "L15 Peace": 150,
+    "L15 Heavy Armor": 149,
+    "L15 Venomancy": 94,
+    "L15 Dexterity": 279,
+    "L15 Reach": 169,
+    "L15 Grasp Arcana": 154,
+    "L15 Charm": 142,
+    "L15 Assault": 146
+   },
+   "unattributed": 112
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 113
+  },
+  "otherLoss": {
+   "party": 48,
+   "monsters": 658
+  },
+  "lostBy": {
+   "party": 693,
+   "monsters": 771
+  },
+  "directTaken": {
+   "party": 645,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana: Alacrity?": 1,
+    "prompt: Warden Ward": 13,
+    "prompt: Sanctum Ward: L# Peace": 3,
+    "prompt: Reflex": 70,
+    "prompt: Manifest: L# Snappence": 27,
+    "prompt: L# War: Empower": 7,
+    "prompt: L# War: Warmonger": 8,
+    "prompt: L# Peace: Dampen": 7,
+    "prompt: Mortal Coil (Tenet)": 7,
+    "prompt: Light Bladed (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8,
+    "prompt: Light Reach (Steel)": 8,
+    "prompt: L# Reach — Shift": 21,
+    "prompt: Light Reach (Steel) — Solitary follow-up (Dis)": 7,
+    "prompt: Fixation": 7,
+    "prompt: Force — L# Heavy Armor": 1,
+    "prompt: Heavy Balanced (Steel)": 2,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 4,
+    "prompt: L# Peace: Serenity": 14,
+    "prompt: The Poison passes from L# Venomancy to": 1,
+    "prompt: Heavy Assault (Steel)": 10,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 8,
+    "prompt: L# Peace: Guard": 1,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Force — L# Grasp Arcana": 2,
+    "prompt: Force — L# Venomancy": 1,
+    "prompt: Force — L# Assault": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 346,
+  "winner": "party",
+  "pass": "grand-15-p7",
+  "rounds": 12,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 27,
+  "knockbacks": {
+   "into": 4
+  },
+  "used": {
+   "defend:dodge": 206,
+   "natural:Budding Gore": 14,
+   "manifest:Bloom": 8,
+   "manifest:Flourish": 8,
+   "Parry": 1,
+   "Bodyslam": 16,
+   "properStance": 5,
+   "opt:takeAim=adv": 12,
+   "opt:coolBreath": 24,
+   "limber": 30,
+   "opt:takeAim=str": 12,
+   "riposte": 4,
+   "natural:Black Jaws": 21,
+   "manifest:Eclipse": 19,
+   "ward": 3,
+   "manifest:Pacify": 3,
+   "manifest:Guard": 3,
+   "cast:Poison (coat self)": 2,
+   "mod:Potency": 1,
+   "cast:Force + Cut": 2,
+   "cast:Cut + Flame": 22,
+   "mod:Multicast": 2,
+   "mod:Ignition": 5,
+   "multicast": 2,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "Dip": 4,
+   "opt:launch": 8,
+   "followup:quickload": 6,
+   "manifest:Umbral Strike": 17,
+   "manifest:Absolution": 2,
+   "cast:Cut": 2,
+   "opt:dir=into": 4,
+   "cast:nothingAffordable": 10,
+   "properStance:skipped": 7
+  },
+  "hp": {
+   "L15 Assault#E7tw": "279/279",
+   "L15 Grasp Arcana#UlMd": "279/279",
+   "L15 Peace#HstL": "128/279",
+   "L15 Heavy Armor#f4qj": "279/279",
+   "L15 Venomancy#uW0P": "186/186",
+   "Sim Bloomrot#RLTV": "48/486",
+   "Sim Bloomrot#VzFf": "234/486",
+   "Sim Gloamhound#0x61": "153/486",
+   "Sim Gloamhound#pVWf": "218/486",
+   "Sim Burgeon#99g2": "305/648"
+  },
+  "down": [
+   "L15 Peace",
+   "Sim Bloomrot",
+   "Sim Bloomrot",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Natural: Budding Gore [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 9,
+    "damage": 89,
+    "ap": 28,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 8,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 8,
+    "followups": 10,
+    "hits": 17,
+    "crits": 5,
+    "misses": 12,
+    "damage": 112,
+    "ap": 27,
+    "kills": 0,
+    "users": [
+     "L15 Heavy Armor"
+    ]
+   },
+   "Other: Bodyslam": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 74,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Heavy Armor"
+    ]
+   },
+   "Heavy Assault": {
+    "attacks": 24,
+    "followups": 18,
+    "hits": 30,
+    "crits": 10,
+    "misses": 12,
+    "damage": 377,
+    "ap": 72,
+    "kills": 1,
+    "users": [
+     "L15 Assault"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 16,
+    "crits": 2,
+    "misses": 5,
+    "damage": 55,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 15,
+    "crits": 9,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Manifest: Pacify (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Manifest: Guard (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Spell: Force + Poison": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L15 Venomancy"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L15 Venomancy"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 17,
+    "crits": 9,
+    "misses": 7,
+    "damage": 187,
+    "ap": 72,
+    "kills": 4,
+    "users": [
+     "L15 Grasp Arcana"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 7,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Other: Bodyslam (Launch)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Heavy Armor"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 3,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L15 Heavy Armor"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 16,
+    "crits": 7,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Absolution (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Peace"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L15 Venomancy"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Steel)": {
+    "hits": 7,
+    "absorbed": 87
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 32,
+    "taken": 178,
+    "hits": 7,
+    "attacks": 15
+   },
+   {
+    "name": "L15 Heavy Armor",
+    "dealt": 186,
+    "taken": 0,
+    "hits": 28,
+    "attacks": 41
+   },
+   {
+    "name": "L15 Assault",
+    "dealt": 377,
+    "taken": 0,
+    "hits": 30,
+    "attacks": 42
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 57,
+    "taken": 180,
+    "hits": 10,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 124,
+    "hits": 29,
+    "attacks": 35
+   },
+   {
+    "name": "L15 Venomancy",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Peace",
+    "dealt": 0,
+    "taken": 151,
+    "hits": 10,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 7,
+    "taken": 159,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Grasp Arcana",
+    "dealt": 187,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 55,
+    "taken": 109,
+    "hits": 18,
+    "attacks": 22
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 89.44271909999159,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 7,
+     "manifest:Bloom": 4,
+     "defend:dodge": 43,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Heavy Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 33,
+    "turns": 12,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 26,
+     "Parry": 1,
+     "Bodyslam": 16,
+     "riposte": 4,
+     "Dip": 2
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "slams": 16,
+    "lastTech": "kick",
+    "shank": 2,
+    "knockbacks": {
+     "into": 4
+    }
+   },
+   {
+    "name": "L15 Assault",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 42,
+    "turns": 12,
+    "kills": 0,
+    "used": {
+     "properStance": 5,
+     "limber": 30,
+     "Dip": 2,
+     "followup:quickload": 6,
+     "properStance:skipped": 7
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 36
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100.62305898749054,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 7,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4,
+     "defend:dodge": 3
+    },
+    "manifests": 8
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 87.3212459828649,
+    "attacks": 35,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 36,
+     "natural:Black Jaws": 12,
+     "manifest:Eclipse": 12,
+     "manifest:Umbral Strike": 11
+    },
+    "manifests": 23
+   },
+   {
+    "name": "L15 Venomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 32,
+     "cast:Poison (coat self)": 2,
+     "mod:Potency": 1,
+     "cast:Force + Cut": 2,
+     "cast:Cut": 2,
+     "cast:nothingAffordable": 10
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "L15 Peace",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 3,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 3,
+     "manifest:Pacify": 3,
+     "manifest:Guard": 3,
+     "defend:dodge": 31,
+     "manifest:Absolution": 2
+    },
+    "manifests": 8
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "L15 Grasp Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 22,
+    "used": {
+     "cast:Cut + Flame": 22,
+     "mod:Multicast": 2,
+     "mod:Ignition": 5,
+     "multicast": 2
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 118.07764064044152,
+    "attacks": 22,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 9,
+     "manifest:Eclipse": 7,
+     "manifest:Umbral Strike": 6,
+     "defend:dodge": 27
+    },
+    "manifests": 13
+   }
+  ],
+  "trees": {
+   "L15 Assault": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-assault-weapons": 5
+   },
+   "L15 Grasp Arcana": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Peace": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-peace-dream": 5
+   },
+   "L15 Heavy Armor": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-heavy-armor": 5
+   },
+   "L15 Venomancy": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-venomancy": 4,
+    "magic-slashing": 1,
+    "generic-endurance": 1
+   }
+  },
+  "gear": {
+   "L15 Assault": [
+    "Unarmed G1",
+    "Heavy Assault (Steel) G3",
+    "Medium Armor (Hard Leather) G2"
+   ],
+   "L15 Grasp Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Peace": [
+    "Unarmed G1"
+   ],
+   "L15 Heavy Armor": [
+    "Unarmed G1",
+    "Heavy Armor (Steel) G2",
+    "Heavy Balanced (Steel) G3"
+   ],
+   "L15 Venomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Assault": [
+    "Heavy Assault (Steel): 270/270",
+    "Medium Armor (Hard Leather): 60/60"
+   ],
+   "L15 Grasp Arcana": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Peace": [],
+   "L15 Heavy Armor": [
+    "Heavy Armor (Steel): 33/120",
+    "Heavy Balanced (Steel): 509/540"
+   ],
+   "L15 Venomancy": [
+    "Light Armor (Hard Leather): 15/15"
+   ],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1273,
+    "monsterHp": 2496,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1209,
+    "monsterHp": 2496,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1151,
+    "monsterHp": 2496,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1151,
+    "monsterHp": 2154,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 1151,
+    "monsterHp": 2098,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 1151,
+    "monsterHp": 1935,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 1151,
+    "monsterHp": 1863,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 1151,
+    "monsterHp": 1485,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 1151,
+    "monsterHp": 1207,
+    "partyDown": 1,
+    "monstersDown": 4
+   },
+   {
+    "round": 11,
+    "partyHp": 1151,
+    "monsterHp": 1177,
+    "partyDown": 1,
+    "monstersDown": 4
+   },
+   {
+    "round": 12,
+    "partyHp": 1151,
+    "monsterHp": 1088,
+    "partyDown": 1,
+    "monstersDown": 4
+   },
+   {
+    "round": 12,
+    "partyHp": 1151,
+    "monsterHp": 958,
+    "partyDown": 1,
+    "monstersDown": 5,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Heavy Armor": 478,
+    "L15 Assault": 377,
+    "Sim Gloamhound": 55,
+    "Sim Burgeon": 7,
+    "Sim Bloomrot": 89,
+    "L15 Grasp Arcana": 759,
+    "L15 Venomancy": 36
+   },
+   "taken": {
+    "Sim Bloomrot": 706,
+    "L15 Peace": 151,
+    "Sim Gloamhound": 601,
+    "Sim Burgeon": 343
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 112
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1522
+  },
+  "lostBy": {
+   "party": 151,
+   "monsters": 1634
+  },
+  "directTaken": {
+   "party": 901,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana: Alacrity?": 1,
+    "prompt: L# Assault: Resist Allure (as Fear)": 3,
+    "prompt: L# Grasp Arcana: Resist Allure (as Fear)": 3,
+    "prompt: L# Peace: Resist Allure (as Fear)": 3,
+    "prompt: L# Heavy Armor: Resist Allure (as Fear)": 3,
+    "prompt: L# Venomancy: Resist Allure (as Fear)": 3,
+    "prompt: L# Assault: Resist Dread (as Fear)": 2,
+    "prompt: L# Grasp Arcana: Resist Dread (as Fear)": 2,
+    "prompt: L# Peace: Resist Dread (as Fear)": 2,
+    "prompt: L# Heavy Armor: Resist Dread (as Fear)": 2,
+    "prompt: L# Venomancy: Resist Dread (as Fear)": 2,
+    "prompt: Verdant Soul (Tenet)": 8,
+    "prompt: Verdant Soul: give # temp HP to": 8,
+    "prompt: Heavy Balanced (Steel)": 8,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 9,
+    "prompt: Bodyslam": 16,
+    "prompt: Heavy Assault (Steel)": 24,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 8,
+    "prompt: L# Peace: Dampen": 9,
+    "prompt: Heavy Balanced (Steel) — Riposte": 1,
+    "prompt: Riposte Ward": 61,
+    "prompt: Sanctum Ward: L# Peace": 3,
+    "prompt: L# Peace: Serenity": 41,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Unarmed — Riposte": 3,
+    "prompt: Shadowmark (Tenet)": 16,
+    "prompt: Shadowmark: make one step more obscured": 16,
+    "prompt: Launch — Sim Bloomrot": 2,
+    "prompt: Umbral Strike": 2,
+    "prompt: Sporing": 2,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 10,
+    "prompt: Launch — Sim Gloamhound": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Peace is afraid and can't gain Energy.",
+     "who": "L15 Peace"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Peace needs 4 Energy for Serenity but has 3.",
+     "who": "Sim Bloomrot"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Peace needs 4 Energy for Serenity but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Peace needs 4 Energy for Serenity but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Peace is afraid and can't gain Energy.",
+     "who": "L15 Peace"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Peace needs 4 Energy for Serenity but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Peace needs 4 Energy for Serenity but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Peace needs 4 Energy for Serenity but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Peace needs 4 Energy for Serenity but has 3.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Venomancy is afraid and can't gain Energy.",
+     "who": "L15 Venomancy"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

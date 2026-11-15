@@ -1,0 +1,1688 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 595,
+  "winner": "monsters",
+  "pass": "grand-15-p12",
+  "rounds": 15,
+  "partyLeft": 0,
+  "monstersLeft": 5,
+  "followups": 23,
+  "knockbacks": {
+   "into": 19,
+   "down": 15
+  },
+  "used": {
+   "Shatter": 7,
+   "opt:grapple": 1,
+   "opt:twinFang=adv": 26,
+   "defend:dodge": 315,
+   "opt:jab": 1,
+   "Lock Down": 1,
+   "Disrupt": 8,
+   "cast:Force": 58,
+   "mod:Pinpoint": 8,
+   "mod:Empower": 18,
+   "opt:dir=into": 5,
+   "opt:dir=down": 10,
+   "ward": 22,
+   "manifest:Accretion": 8,
+   "manifest:Cultivate": 14,
+   "manifest:Undertow": 28,
+   "manifest:Riptide": 14,
+   "opt:prepared=str": 2,
+   "opt:fish": 9,
+   "cast:Restore": 8,
+   "mod:Painless": 8,
+   "cast:Strike": 42,
+   "Parry": 8,
+   "recoverEnergy": 1,
+   "Dip": 6,
+   "defend:shift": 44,
+   "opt:prepared=pierce": 1,
+   "opt:prepared=cleave": 1
+  },
+  "hp": {
+   "L15 Restoration Arcana#ZhmV": "113/279",
+   "L15 Earth#EDpQ": "110/279",
+   "L15 Longshot#d1XG": "131/279",
+   "L15 Geomancy#oMhX": "86/186",
+   "L15 Sea#dkLN": "124/279",
+   "L15 Titanic#KeUh": "279/279",
+   "L15 Illusion#AfBC": "155/279",
+   "L15 Growth#iTeZ": "279/279",
+   "L15 Grappling#zxlQ": "177/279",
+   "L15 Arcanomancy#XT91": "279/279"
+  },
+  "down": [
+   "L15 Restoration Arcana",
+   "L15 Earth",
+   "L15 Longshot",
+   "L15 Geomancy",
+   "L15 Sea"
+  ],
+  "weapons": {
+   "Unarmed Heavy": {
+    "attacks": 1,
+    "followups": 1,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "L15 Grappling"
+    ]
+   },
+   "Spell: Force [M]": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 18,
+    "crits": 3,
+    "misses": 10,
+    "damage": 43,
+    "ap": 84,
+    "kills": 0,
+    "users": [
+     "L15 Illusion"
+    ],
+    "force": 43
+   },
+   "Spell: Force [M] [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Illusion"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 31,
+    "followups": 0,
+    "hits": 19,
+    "crits": 7,
+    "misses": 12,
+    "damage": 0,
+    "ap": 60,
+    "kills": 0,
+    "users": [
+     "L15 Geomancy"
+    ],
+    "force": 0
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 5,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Earth"
+    ]
+   },
+   "Manifest: Accretion (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Earth"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 12,
+    "crits": 7,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Growth"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 12,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Growth"
+    ]
+   },
+   "Manifest: Undertow (Manifest)": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 17,
+    "crits": 2,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Sea"
+    ]
+   },
+   "Manifest: Riptide (Manifest)": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Sea"
+    ],
+    "force": 0
+   },
+   "Light Longshot": {
+    "attacks": 36,
+    "followups": 0,
+    "hits": 21,
+    "crits": 6,
+    "misses": 15,
+    "damage": 119,
+    "ap": 72,
+    "kills": 0,
+    "users": [
+     "L15 Longshot"
+    ]
+   },
+   "Spell: Strike [M]": {
+    "attacks": 42,
+    "followups": 0,
+    "hits": 26,
+    "crits": 8,
+    "misses": 16,
+    "damage": 219,
+    "ap": 84,
+    "kills": 0,
+    "users": [
+     "L15 Arcanomancy"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 42,
+    "followups": 0,
+    "hits": 24,
+    "crits": 13,
+    "misses": 18,
+    "damage": 239,
+    "ap": 84,
+    "kills": 3,
+    "users": [
+     "L15 Grappling"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 22,
+    "followups": 22,
+    "hits": 12,
+    "crits": 4,
+    "misses": 32,
+    "damage": 107,
+    "ap": 66,
+    "kills": 1,
+    "users": [
+     "L15 Titanic"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 2
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Grappling",
+    "dealt": 239,
+    "taken": 0,
+    "hits": 25,
+    "attacks": 44
+   },
+   {
+    "name": "L15 Restoration Arcana",
+    "dealt": 0,
+    "taken": 153,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L15 Illusion",
+    "dealt": 43,
+    "taken": 119,
+    "hits": 21,
+    "attacks": 32
+   },
+   {
+    "name": "L15 Earth",
+    "dealt": 0,
+    "taken": 116,
+    "hits": 10,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Geomancy",
+    "dealt": 0,
+    "taken": 60,
+    "hits": 19,
+    "attacks": 31
+   },
+   {
+    "name": "L15 Titanic",
+    "dealt": 107,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 44
+   },
+   {
+    "name": "L15 Growth",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 28
+   },
+   {
+    "name": "L15 Sea",
+    "dealt": 0,
+    "taken": 155,
+    "hits": 23,
+    "attacks": 42
+   },
+   {
+    "name": "L15 Longshot",
+    "dealt": 119,
+    "taken": 81,
+    "hits": 21,
+    "attacks": 36
+   },
+   {
+    "name": "L15 Arcanomancy",
+    "dealt": 219,
+    "taken": 0,
+    "hits": 26,
+    "attacks": 42
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Grappling",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 222.07106781186548,
+    "attacks": 44,
+    "turns": 15,
+    "kills": 0,
+    "fist": "Shatter",
+    "used": {
+     "Shatter": 1,
+     "Lock Down": 1,
+     "Disrupt": 8,
+     "defend:dodge": 28,
+     "Dip": 1
+    },
+    "turnMoved": 7.0710678118654755,
+    "grapples": 1,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "L15 Restoration Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 41,
+     "cast:Restore": 8,
+     "mod:Painless": 8
+    },
+    "turnMoved": 0,
+    "casts": 8,
+    "healed": 32
+   },
+   {
+    "name": "L15 Illusion",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 28,
+    "used": {
+     "cast:Force": 28,
+     "mod:Pinpoint": 8,
+     "mod:Empower": 14,
+     "defend:dodge": 74
+    },
+    "knockbacks": {
+     "into": 4,
+     "down": 6
+    }
+   },
+   {
+    "name": "L15 Earth",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 36,
+     "ward": 8,
+     "manifest:Accretion": 8
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "L15 Geomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 21,
+     "cast:Force": 30,
+     "mod:Empower": 2
+    },
+    "turnMoved": 0,
+    "casts": 30,
+    "knockbacks": {
+     "into": 1,
+     "down": 4
+    }
+   },
+   {
+    "name": "L15 Titanic",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 165,
+    "attacks": 44,
+    "turns": 14,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16,
+     "Parry": 8,
+     "recoverEnergy": 1,
+     "Dip": 5
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Growth",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 14,
+     "manifest:Cultivate": 14,
+     "defend:dodge": 14
+    },
+    "manifests": 14
+   },
+   {
+    "name": "L15 Sea",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 42,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 42,
+    "used": {
+     "manifest:Undertow": 28,
+     "manifest:Riptide": 14,
+     "defend:dodge": 41
+    },
+    "knockbacks": {
+     "down": 5,
+     "into": 14
+    }
+   },
+   {
+    "name": "L15 Longshot",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 36,
+    "turns": 12,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 6,
+     "defend:shift": 44,
+     "defend:dodge": 44
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 36,
+    "prep2": 2
+   },
+   {
+    "name": "L15 Arcanomancy",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 42,
+    "used": {
+     "cast:Strike": 42,
+     "mod:Empower": 2
+    }
+   }
+  ],
+  "trees": {
+   "L15 Restoration Arcana": {
+    "magic-theory": 5,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-restoration-arcana": 2
+   },
+   "L15 Earth": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-earth-dream": 3,
+    "generic-initiative": 1,
+    "generic-endurance": 1
+   },
+   "L15 Longshot": {
+    "martial-theory": 4,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-longshot-weapons": 3,
+    "martial-light-armor": 1,
+    "generic-insight": 1
+   },
+   "L15 Geomancy": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-geomancy": 2
+   },
+   "L15 Sea": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-sea-nightmare": 3,
+    "generic-endurance": 1,
+    "generic-initiative": 1
+   }
+  },
+  "gear": {
+   "L15 Restoration Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Earth": [
+    "Unarmed G1"
+   ],
+   "L15 Longshot": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Longshot (Steel) G3"
+   ],
+   "L15 Geomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Sea": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L15 Titanic": [
+    "Unarmed",
+    "Titanic Armor (Iron)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L15 Illusion": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Growth": [
+    "Unarmed"
+   ],
+   "L15 Grappling": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Arcanomancy": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Restoration Arcana": [
+    "Light Armor (Hard Leather): 28/30"
+   ],
+   "L15 Earth": [],
+   "L15 Longshot": [
+    "Light Armor (Hard Leather): 20/30",
+    "Light Longshot (Steel): 135/135"
+   ],
+   "L15 Geomancy": [
+    "Light Armor (Hard Leather): 12/15"
+   ],
+   "L15 Sea": [],
+   "L15 Titanic": [
+    "Titanic Armor (Iron): 118/160",
+    "Heavy Balanced (Steel): 534/540"
+   ],
+   "L15 Illusion": [
+    "Light Armor (Hard Leather): 28/30"
+   ],
+   "L15 Growth": [],
+   "L15 Grappling": [
+    "Light Armor (Hard Leather): 6/30"
+   ],
+   "L15 Arcanomancy": [
+    "Light Armor (Hard Leather): 30/30"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 1395,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1201,
+    "monsterHp": 1387,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1129,
+    "monsterHp": 1386,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1116,
+    "monsterHp": 1360,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1048,
+    "monsterHp": 1350,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1028,
+    "monsterHp": 1341,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 997,
+    "monsterHp": 1341,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 905,
+    "monsterHp": 1324,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 815,
+    "monsterHp": 1324,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 779,
+    "monsterHp": 1246,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 760,
+    "monsterHp": 1225,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 734,
+    "monsterHp": 1198,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 713,
+    "monsterHp": 1198,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 656,
+    "monsterHp": 1192,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 616,
+    "monsterHp": 1178,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 564,
+    "monsterHp": 1169,
+    "partyDown": 5,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Illusion": 205,
+    "L15 Geomancy": 5,
+    "L15 Longshot": 119,
+    "L15 Arcanomancy": 219,
+    "L15 Grappling": 239,
+    "L15 Titanic": 107
+   },
+   "taken": {
+    "L15 Restoration Arcana": 182,
+    "L15 Earth": 177,
+    "L15 Geomancy": 108,
+    "L15 Illusion": 124,
+    "L15 Longshot": 148,
+    "L15 Sea": 155,
+    "L15 Grappling": 102
+   },
+   "unattributed": 102
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 54,
+   "monsters": 226
+  },
+  "lostBy": {
+   "party": 738,
+   "monsters": 226
+  },
+  "directTaken": {
+   "party": 684,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Sea: Alacrity?": 1,
+    "prompt: L# Earth: Alacrity?": 1,
+    "prompt: L# Titanic: Alacrity?": 1,
+    "prompt: Unarmed": 43,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 1,
+    "prompt: Force — L# Restoration Arcana": 1,
+    "prompt: Force — L# Geomancy": 5,
+    "prompt: Force — L# Titanic": 1,
+    "prompt: Sanctum Ward: L# Earth": 8,
+    "prompt: Sanctum Ward: L# Growth": 14,
+    "prompt: Sapling (Tenet)": 12,
+    "prompt: Surge (Tenet)": 13,
+    "prompt: Riptide — L# Grappling": 5,
+    "prompt: Surge — L# Grappling": 11,
+    "prompt: Light Longshot (Steel)": 36,
+    "prompt: L# Longshot — Shift": 44,
+    "prompt: Force — L# Illusion": 4,
+    "prompt: Heavy Balanced (Steel)": 22,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 22,
+    "prompt: Adamant (Tenet)": 3,
+    "prompt: Adamant: lower the Pain Threshold by #": 3,
+    "prompt: Surge — L# Titanic": 2,
+    "prompt: Accretion on L# Restoration Arcana": 1,
+    "prompt: Force — L# Longshot": 2,
+    "prompt: Force — L# Earth": 2,
+    "prompt: Warden Ward": 33,
+    "prompt: Riptide — L# Titanic": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 395,
+  "winner": "party",
+  "pass": "grand-15-p12",
+  "rounds": 13,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "down": 5,
+   "into": 11
+  },
+  "used": {
+   "cast:Flame": 22,
+   "mod:Empower": 3,
+   "mod:Multicast": 2,
+   "mod:Ignition": 22,
+   "defend:dodge": 173,
+   "multicast": 2,
+   "cast:Force": 3,
+   "natural:Budding Gore": 4,
+   "manifest:Bloom": 4,
+   "manifest:Flourish": 4,
+   "manifest:Undertow": 24,
+   "manifest:Riptide": 12,
+   "natural:Black Jaws": 16,
+   "manifest:Eclipse": 16,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "ward": 12,
+   "manifest:Accretion": 12,
+   "Shatter": 6,
+   "opt:prepared=str": 1,
+   "opt:fish": 10,
+   "cast:Shift": 4,
+   "manifest:Umbral Strike": 14,
+   "cast:nothingAffordable": 10,
+   "cast:Restore": 2,
+   "mod:Painless": 2
+  },
+  "hp": {
+   "L15 Restoration Arcana#VDle": "249/279",
+   "L15 Earth#wIvQ": "279/279",
+   "L15 Longshot#8H0r": "279/279",
+   "L15 Geomancy#kxJV": "186/186",
+   "L15 Sea#gBTY": "279/279",
+   "Sim Bloomrot#zRtX": "194/486",
+   "Sim Bloomrot#p19h": "196/486",
+   "Sim Gloamhound#k3LL": "242/486",
+   "Sim Gloamhound#1Rni": "187/486",
+   "Sim Burgeon#jKtd": "216/648"
+  },
+  "down": [
+   "Sim Bloomrot",
+   "Sim Bloomrot",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Spell: Flame": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 20,
+    "crits": 9,
+    "misses": 4,
+    "damage": 267,
+    "ap": 72,
+    "kills": 4,
+    "users": [
+     "L15 Restoration Arcana"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L15 Geomancy"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Undertow (Manifest)": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 15,
+    "crits": 4,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Sea"
+    ]
+   },
+   "Manifest: Riptide (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Sea"
+    ],
+    "force": 0
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 13,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 14,
+    "crits": 9,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 3,
+    "damage": 38,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 11,
+    "crits": 6,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Earth"
+    ]
+   },
+   "Manifest: Accretion (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Earth"
+    ]
+   },
+   "Light Longshot": {
+    "attacks": 36,
+    "followups": 0,
+    "hits": 23,
+    "crits": 6,
+    "misses": 13,
+    "damage": 83,
+    "ap": 72,
+    "kills": 0,
+    "users": [
+     "L15 Longshot"
+    ]
+   },
+   "Spell: Shift (Shift)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 60,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Geomancy"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 13,
+    "crits": 10,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 6
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Restoration Arcana",
+    "dealt": 267,
+    "taken": 38,
+    "hits": 20,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 0,
+    "taken": 90,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L15 Geomancy",
+    "dealt": 60,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 0,
+    "taken": 75,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Sea",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 36
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 48,
+    "hits": 16,
+    "attacks": 17
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 38,
+    "taken": 161,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 36,
+    "hits": 24,
+    "attacks": 29
+   },
+   {
+    "name": "L15 Earth",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 24
+   },
+   {
+    "name": "L15 Longshot",
+    "dealt": 83,
+    "taken": 0,
+    "hits": 23,
+    "attacks": 36
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Restoration Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 13,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Flame": 22,
+     "mod:Empower": 1,
+     "mod:Multicast": 2,
+     "mod:Ignition": 22,
+     "multicast": 2,
+     "defend:dodge": 38,
+     "cast:Restore": 2,
+     "mod:Painless": 2
+    },
+    "healed": 8
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L15 Geomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 7,
+    "used": {
+     "cast:Force": 3,
+     "mod:Empower": 2,
+     "defend:dodge": 40,
+     "cast:Shift": 4,
+     "cast:nothingAffordable": 10
+    }
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 110,
+    "attacks": 4,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 22,
+     "natural:Budding Gore": 4,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "L15 Sea",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 36,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 36,
+    "used": {
+     "manifest:Undertow": 24,
+     "manifest:Riptide": 12
+    },
+    "knockbacks": {
+     "down": 5,
+     "into": 11
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 120,
+    "attacks": 17,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 6,
+     "manifest:Eclipse": 6,
+     "manifest:Umbral Strike": 5,
+     "defend:dodge": 12
+    },
+    "manifests": 11
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 105,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 9
+    },
+    "manifests": 4
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 110,
+    "attacks": 29,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 10,
+    "used": {
+     "natural:Black Jaws": 10,
+     "manifest:Eclipse": 10,
+     "defend:dodge": 48,
+     "manifest:Umbral Strike": 9
+    },
+    "manifests": 19
+   },
+   {
+    "name": "L15 Earth",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 12,
+     "manifest:Accretion": 12,
+     "defend:dodge": 2
+    },
+    "manifests": 12
+   },
+   {
+    "name": "L15 Longshot",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 36,
+    "turns": 12,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 6
+    },
+    "turnMoved": 0,
+    "shank": 2,
+    "prep": 0,
+    "reloads": 36
+   }
+  ],
+  "trees": {
+   "L15 Restoration Arcana": {
+    "magic-theory": 5,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-restoration-arcana": 2
+   },
+   "L15 Earth": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-earth-dream": 3,
+    "generic-initiative": 1,
+    "generic-endurance": 1
+   },
+   "L15 Longshot": {
+    "martial-theory": 4,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-longshot-weapons": 3,
+    "martial-light-armor": 1,
+    "generic-insight": 1
+   },
+   "L15 Geomancy": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-geomancy": 2
+   },
+   "L15 Sea": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-sea-nightmare": 3,
+    "generic-endurance": 1,
+    "generic-initiative": 1
+   }
+  },
+  "gear": {
+   "L15 Restoration Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Earth": [
+    "Unarmed G1"
+   ],
+   "L15 Longshot": [
+    "Unarmed G1",
+    "Light Longshot (Steel) G3",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Geomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Sea": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Restoration Arcana": [
+    "Light Armor (Hard Leather): 24/30"
+   ],
+   "L15 Earth": [],
+   "L15 Longshot": [
+    "Light Longshot (Steel): 135/135",
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Geomancy": [
+    "Light Armor (Hard Leather): 15/15"
+   ],
+   "L15 Sea": [],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1302,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1302,
+    "monsterHp": 2300,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 1302,
+    "monsterHp": 2177,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 1264,
+    "monsterHp": 2084,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 1272,
+    "monsterHp": 2010,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 1272,
+    "monsterHp": 1990,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 1272,
+    "monsterHp": 1818,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 1272,
+    "monsterHp": 1766,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 9,
+    "partyHp": 1272,
+    "monsterHp": 1766,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 1272,
+    "monsterHp": 1766,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 11,
+    "partyHp": 1272,
+    "monsterHp": 1537,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 1272,
+    "monsterHp": 1435,
+    "partyDown": 0,
+    "monstersDown": 4
+   },
+   {
+    "round": 13,
+    "partyHp": 1272,
+    "monsterHp": 1320,
+    "partyDown": 0,
+    "monstersDown": 4
+   },
+   {
+    "round": 13,
+    "partyHp": 1272,
+    "monsterHp": 1035,
+    "partyDown": 0,
+    "monstersDown": 5,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Restoration Arcana": 1139,
+    "L15 Geomancy": 60,
+    "L15 Sea": 162,
+    "L15 Longshot": 83,
+    "Sim Burgeon": 38,
+    "L15 Earth": 70
+   },
+   "taken": {
+    "Sim Bloomrot": 603,
+    "L15 Restoration Arcana": 38,
+    "Sim Gloamhound": 543,
+    "Sim Burgeon": 432
+   },
+   "unattributed": 64
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 296
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1261
+  },
+  "lostBy": {
+   "party": 30,
+   "monsters": 1557
+  },
+  "directTaken": {
+   "party": 448,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Earth: Alacrity?": 1,
+    "prompt: L# Sea: Alacrity?": 1,
+    "prompt: L# Longshot: Resist Dread (as Fear)": 2,
+    "prompt: L# Geomancy: Resist Dread (as Fear)": 2,
+    "prompt: L# Earth: Resist Dread (as Fear)": 2,
+    "prompt: L# Restoration Arcana: Resist Dread (as Fear)": 2,
+    "prompt: L# Sea: Resist Dread (as Fear)": 2,
+    "prompt: L# Longshot: Resist Allure (as Fear)": 3,
+    "prompt: L# Geomancy: Resist Allure (as Fear)": 3,
+    "prompt: L# Earth: Resist Allure (as Fear)": 3,
+    "prompt: L# Restoration Arcana: Resist Allure (as Fear)": 3,
+    "prompt: L# Sea: Resist Allure (as Fear)": 3,
+    "prompt: Verdant Soul (Tenet)": 4,
+    "prompt: Verdant Soul: give # temp HP to": 4,
+    "prompt: Surge (Tenet)": 10,
+    "prompt: Surge — Sim Bloomrot": 1,
+    "prompt: Shadowmark (Tenet)": 16,
+    "prompt: Shadowmark: make one step more obscured": 16,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Sanctum Ward: L# Earth": 12,
+    "prompt: Adamant (Tenet)": 6,
+    "prompt: Adamant: lower the Pain Threshold by #": 6,
+    "prompt: Light Longshot (Steel)": 36,
+    "prompt: Riposte Ward": 58,
+    "prompt: Umbral Strike": 1,
+    "prompt: Surge — Sim Burgeon": 5,
+    "prompt: Sporing": 1,
+    "prompt: Surge — Sim Gloamhound": 4,
+    "prompt: Riptide — Sim Burgeon": 4,
+    "prompt: Accretion on L# Restoration Arcana": 1,
+    "prompt: Riptide — Sim Gloamhound": 2
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [AfBC1secKYW7IjVM] does not exist in the EmbeddedCollection collection.",
+     "who": "L15 Sea"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Geomancy is afraid and can't gain Energy.",
+     "who": "L15 Geomancy"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [AfBC1secKYW7IjVM] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

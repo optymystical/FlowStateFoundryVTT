@@ -1,0 +1,1857 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 491,
+  "winner": "unfinished",
+  "pass": "grand-15-p13",
+  "rounds": 16,
+  "partyLeft": 4,
+  "monstersLeft": 2,
+  "followups": 36,
+  "knockbacks": {
+   "down": 4,
+   "into": 4
+  },
+  "used": {
+   "defend:dodge": 339,
+   "ward": 35,
+   "manifest:Cultivate": 15,
+   "Parry": 6,
+   "Shatter": 6,
+   "Leap": 1,
+   "defend:dash": 72,
+   "Bodyslam": 12,
+   "manifest:Mire+": 30,
+   "cast:Strike": 45,
+   "mod:Empower": 15,
+   "Brace": 2,
+   "opt:windup=1": 6,
+   "recoverEnergy": 11,
+   "cast:Mirage": 2,
+   "mod:Phantom Pain": 2,
+   "cast:Force": 26,
+   "mod:Pinpoint": 9,
+   "manifest:Wager+": 11,
+   "riposte": 18,
+   "opt:grapple": 1,
+   "opt:twinFang=adv": 5,
+   "opt:jab": 1,
+   "Lock Down": 2,
+   "Disrupt": 4,
+   "manifest:Bloom": 14,
+   "manifest:Flourish": 14,
+   "breakFree": 3,
+   "Break Free": 3,
+   "Dip": 12,
+   "limber": 17,
+   "opt:dir=down": 4,
+   "dipMoveOffered:skipped": 3,
+   "manifest:Mire": 15,
+   "opt:windup=2": 2,
+   "opt:dir=into": 4
+  },
+  "hp": {
+   "L15 Titanic Armor#0uLb": "145/279",
+   "L15 Illusion#U5e3": "279/279",
+   "L15 Growth#qZ0x": "279/279",
+   "L15 Grappling#Hi0Z": "136/279",
+   "L15 Arcanomancy#KsmP": "279/279",
+   "L15 Stagnation#AHFW": "226/279",
+   "L15 Thrasher#EnxE": "249/279",
+   "L15 Esoteric#bFuR": "258/279",
+   "L15 Unarmored#LKTA": "242/279",
+   "L15 Fortune#fpDi": "129/279"
+  },
+  "down": [
+   "L15 Grappling",
+   "L15 Thrasher",
+   "L15 Unarmored",
+   "L15 Fortune"
+  ],
+  "weapons": {
+   "Manifest: Sanctum Ward": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Growth"
+    ]
+   },
+   "Manifest: Cultivate (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 12,
+    "crits": 3,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Growth"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 23,
+    "followups": 4,
+    "hits": 15,
+    "crits": 5,
+    "misses": 18,
+    "damage": 61,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "L15 Unarmored"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 7,
+    "followups": 39,
+    "hits": 21,
+    "crits": 7,
+    "misses": 25,
+    "damage": 67,
+    "ap": 44,
+    "kills": 0,
+    "users": [
+     "L15 Unarmored",
+     "L15 Grappling",
+     "L15 Titanic Armor",
+     "L15 Thrasher"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 6,
+    "followups": 10,
+    "hits": 4,
+    "crits": 0,
+    "misses": 12,
+    "damage": 7,
+    "ap": 24,
+    "kills": 1,
+    "users": [
+     "L15 Titanic Armor"
+    ]
+   },
+   "Other: Bodyslam": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 11,
+    "damage": 22,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Titanic Armor"
+    ]
+   },
+   "Manifest: Mire (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 23,
+    "crits": 9,
+    "misses": 22,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Stagnation"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 24,
+    "crits": 9,
+    "misses": 21,
+    "damage": 150,
+    "ap": 90,
+    "kills": 2,
+    "users": [
+     "L15 Arcanomancy"
+    ]
+   },
+   "Heavy Thrasher": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 4,
+    "damage": 122,
+    "ap": 48,
+    "kills": 1,
+    "users": [
+     "L15 Thrasher"
+    ]
+   },
+   "Spell: Mirage": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L15 Illusion"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 17,
+    "crits": 2,
+    "misses": 13,
+    "damage": 15,
+    "ap": 78,
+    "kills": 0,
+    "users": [
+     "L15 Illusion"
+    ],
+    "force": 15
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 14,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Fortune",
+     "L15 Esoteric"
+    ]
+   },
+   "Manifest: Wager (Manifest) [M]": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Fortune"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 1,
+    "followups": 1,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "L15 Grappling"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Esoteric"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Esoteric"
+    ]
+   },
+   "Other: Break Free [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Unarmored"
+    ]
+   }
+  },
+  "armor": {
+   "Titanic Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 88
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 10,
+    "absorbed": 12
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Growth",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 30
+   },
+   {
+    "name": "L15 Unarmored",
+    "dealt": 121,
+    "taken": 37,
+    "hits": 26,
+    "attacks": 57
+   },
+   {
+    "name": "L15 Titanic Armor",
+    "dealt": 29,
+    "taken": 113,
+    "hits": 9,
+    "attacks": 35
+   },
+   {
+    "name": "L15 Stagnation",
+    "dealt": 0,
+    "taken": 53,
+    "hits": 23,
+    "attacks": 45
+   },
+   {
+    "name": "L15 Arcanomancy",
+    "dealt": 150,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 45
+   },
+   {
+    "name": "L15 Thrasher",
+    "dealt": 122,
+    "taken": 7,
+    "hits": 14,
+    "attacks": 18
+   },
+   {
+    "name": "L15 Illusion",
+    "dealt": 15,
+    "taken": 0,
+    "hits": 19,
+    "attacks": 32
+   },
+   {
+    "name": "L15 Fortune",
+    "dealt": 0,
+    "taken": 89,
+    "hits": 10,
+    "attacks": 17
+   },
+   {
+    "name": "L15 Grappling",
+    "dealt": 7,
+    "taken": 130,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Esoteric",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 26,
+    "attacks": 42
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Growth",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 16,
+     "ward": 15,
+     "manifest:Cultivate": 15
+    },
+    "manifests": 15
+   },
+   {
+    "name": "L15 Unarmored",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 90,
+    "attacks": 50,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "Parry": 2,
+     "Shatter": 5,
+     "Leap": 1,
+     "defend:dash": 72,
+     "defend:dodge": 72,
+     "riposte": 4,
+     "breakFree": 3,
+     "Break Free": 3
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "turnMoved": 10,
+    "shank": 0,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L15 Titanic Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 26,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 99,
+     "Parry": 4,
+     "Bodyslam": 12,
+     "riposte": 9,
+     "Dip": 7,
+     "recoverEnergy": 6
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "slams": 12,
+    "lastTech": "kick",
+    "shank": 2
+   },
+   {
+    "name": "L15 Stagnation",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 45,
+    "used": {
+     "manifest:Mire+": 30,
+     "defend:dodge": 65,
+     "manifest:Mire": 15
+    }
+   },
+   {
+    "name": "L15 Arcanomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 45,
+    "used": {
+     "cast:Strike": 45,
+     "mod:Empower": 2,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L15 Thrasher",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 75,
+    "attacks": 16,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "Brace": 2,
+     "recoverEnergy": 1,
+     "defend:dodge": 13,
+     "Dip": 4,
+     "limber": 17,
+     "riposte": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "thr": 16,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "L15 Illusion",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 28,
+    "used": {
+     "cast:Mirage": 2,
+     "mod:Phantom Pain": 2,
+     "cast:Force": 26,
+     "mod:Pinpoint": 9,
+     "mod:Empower": 13
+    },
+    "knockbacks": {
+     "down": 4,
+     "into": 4
+    }
+   },
+   {
+    "name": "L15 Fortune",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 11,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 6,
+     "manifest:Wager+": 11,
+     "defend:dodge": 29,
+     "recoverEnergy": 4
+    },
+    "manifests": 11
+   },
+   {
+    "name": "L15 Grappling",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 25,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "fist": "Shatter",
+    "used": {
+     "Shatter": 1,
+     "Lock Down": 2,
+     "Disrupt": 4,
+     "defend:dodge": 40,
+     "Dip": 1,
+     "riposte": 3,
+     "dipMoveOffered:skipped": 3
+    },
+    "turnMoved": 0,
+    "grapples": 1,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "L15 Esoteric",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 14,
+     "manifest:Bloom": 14,
+     "manifest:Flourish": 14,
+     "defend:dodge": 3
+    },
+    "manifests": 28
+   }
+  ],
+  "trees": {
+   "L15 Titanic Armor": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-titanic-armor": 3,
+    "generic-endurance": 1,
+    "generic-initiative": 1
+   },
+   "L15 Illusion": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-illusion": 2
+   },
+   "L15 Growth": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-growth-dream": 3,
+    "generic-courage": 1,
+    "generic-endurance": 1
+   },
+   "L15 Grappling": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-grappling-methods": 2
+   },
+   "L15 Arcanomancy": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-arcanomancy": 2
+   }
+  },
+  "gear": {
+   "L15 Titanic Armor": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G3",
+    "Titanic Armor (Iron) G2"
+   ],
+   "L15 Illusion": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Growth": [
+    "Unarmed G1"
+   ],
+   "L15 Grappling": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Arcanomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Stagnation": [
+    "Unarmed"
+   ],
+   "L15 Thrasher": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Thrasher (Steel)"
+   ],
+   "L15 Esoteric": [
+    "Unarmed"
+   ],
+   "L15 Unarmored": [
+    "Unarmed",
+    "Light Bladed (Steel)"
+   ],
+   "L15 Fortune": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Titanic Armor": [
+    "Heavy Balanced (Steel): 435/540",
+    "Titanic Armor (Iron): 0/160 BROKEN"
+   ],
+   "L15 Illusion": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Growth": [],
+   "L15 Grappling": [
+    "Light Armor (Hard Leather): 4/30"
+   ],
+   "L15 Arcanomancy": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Stagnation": [],
+   "L15 Thrasher": [
+    "Medium Armor (Hard Leather): 56/60",
+    "Heavy Thrasher (Steel): 268/270"
+   ],
+   "L15 Esoteric": [],
+   "L15 Unarmored": [
+    "Light Bladed (Steel): 122/135"
+   ],
+   "L15 Fortune": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 1395,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1382,
+    "monsterHp": 1377,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1310,
+    "monsterHp": 1350,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1274,
+    "monsterHp": 1305,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1252,
+    "monsterHp": 1283,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1252,
+    "monsterHp": 1234,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1243,
+    "monsterHp": 1198,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 1192,
+    "monsterHp": 1190,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 1146,
+    "monsterHp": 1167,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 1118,
+    "monsterHp": 1160,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 11,
+    "partyHp": 1118,
+    "monsterHp": 1160,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 1118,
+    "monsterHp": 1160,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 13,
+    "partyHp": 1118,
+    "monsterHp": 1160,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 14,
+    "partyHp": 1118,
+    "monsterHp": 1119,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 15,
+    "partyHp": 1118,
+    "monsterHp": 1104,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 1118,
+    "monsterHp": 1104,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 1118,
+    "monsterHp": 1104,
+    "partyDown": 1,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Arcanomancy": 150,
+    "L15 Unarmored": 84,
+    "L15 Thrasher": 109,
+    "L15 Fortune": 7,
+    "L15 Titanic Armor": 29,
+    "L15 Illusion": 59
+   },
+   "taken": {
+    "L15 Stagnation": 53,
+    "L15 Grappling": 143,
+    "L15 Fortune": 150,
+    "L15 Thrasher": 30,
+    "L15 Unarmored": 37,
+    "L15 Titanic Armor": 134,
+    "L15 Esoteric": 21
+   },
+   "unattributed": 130
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 291
+  },
+  "lostBy": {
+   "party": 277,
+   "monsters": 291
+  },
+  "directTaken": {
+   "party": 429,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Titanic Armor: Alacrity?": 1,
+    "prompt: L# Stagnation: Alacrity?": 1,
+    "prompt: Sanctum Ward: L# Growth": 15,
+    "prompt: Sapling (Tenet)": 12,
+    "prompt: Light Bladed (Steel)": 23,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 24,
+    "prompt: Heavy Balanced (Steel)": 6,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8,
+    "prompt: Bodyslam": 12,
+    "prompt: Moss (Tenet)": 14,
+    "prompt: Warden Ward": 40,
+    "prompt: Heavy Thrasher (Steel)": 16,
+    "prompt: Sanctum Ward: L# Fortune": 6,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Unarmed": 8,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 1,
+    "prompt: Light Bladed (Steel) — Riposte": 1,
+    "prompt: Sanctum Ward: L# Esoteric": 14,
+    "prompt: Verdant Soul (Tenet)": 12,
+    "prompt: Verdant Soul: give # temp HP to": 12,
+    "prompt: L# Unarmored — Break Free": 3,
+    "prompt: Force — L# Stagnation": 6,
+    "prompt: Chant": 5,
+    "prompt: Unarmed — Riposte": 15,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel) (Dis)": 3,
+    "prompt: Force — L# Fortune": 1,
+    "prompt: Force — L# Unarmored": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Titanic Armor can't move through L15 Unarmored's space.",
+     "who": "L15 Titanic Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Titanic Armor can't move through L15 Unarmored's space.",
+     "who": "L15 Titanic Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Titanic Armor can't move through L15 Unarmored's space.",
+     "who": "L15 Titanic Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Titanic Armor can't move through L15 Unarmored's space.",
+     "who": "L15 Titanic Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Titanic Armor can't move through L15 Unarmored's space.",
+     "who": "L15 Titanic Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Titanic Armor can't move through L15 Unarmored's space.",
+     "who": "L15 Titanic Armor"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 341,
+  "winner": "monsters",
+  "pass": "grand-15-p13",
+  "rounds": 15,
+  "partyLeft": 0,
+  "monstersLeft": 5,
+  "followups": 4,
+  "knockbacks": {
+   "into": 1
+  },
+  "used": {
+   "Parry": 1,
+   "defend:dodge": 236,
+   "ward": 12,
+   "manifest:Cultivate": 16,
+   "riposte": 5,
+   "natural:Budding Gore": 15,
+   "manifest:Bloom": 8,
+   "manifest:Flourish": 8,
+   "cast:Mirage": 7,
+   "mod:Phantom Pain": 5,
+   "cast:Force": 13,
+   "mod:Pinpoint": 1,
+   "mod:Empower": 3,
+   "opt:dir=into": 1,
+   "natural:Root Lash": 8,
+   "natural:Black Jaws": 53,
+   "manifest:Eclipse": 31,
+   "manifest:Umbral Strike": 28,
+   "cast:Strike": 7,
+   "Shatter": 1,
+   "opt:grapple": 1,
+   "opt:twinFang=adv": 8,
+   "opt:jab": 1,
+   "Lock Down": 3,
+   "Disrupt": 7,
+   "Dip": 1,
+   "Bodyslam": 3,
+   "breakFree": 4,
+   "Break Free": 4,
+   "cast:nothingAffordable": 12
+  },
+  "hp": {
+   "L15 Titanic Armor#arfz": "117/279",
+   "L15 Illusion#UKRg": "128/279",
+   "L15 Growth#QUFL": "132/279",
+   "L15 Grappling#BTZk": "133/279",
+   "L15 Arcanomancy#sQpi": "103/279",
+   "Sim Bloomrot#LfEF": "486/486",
+   "Sim Bloomrot#oIsR": "456/486",
+   "Sim Gloamhound#BCWi": "408/486",
+   "Sim Gloamhound#97cp": "486/486",
+   "Sim Burgeon#zujU": "625/648"
+  },
+  "down": [
+   "L15 Titanic Armor",
+   "L15 Illusion",
+   "L15 Growth",
+   "L15 Grappling",
+   "L15 Arcanomancy"
+  ],
+  "weapons": {
+   "Manifest: Sanctum Ward": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 11,
+    "crits": 6,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Growth"
+    ]
+   },
+   "Manifest: Cultivate (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Growth"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 11,
+    "crits": 3,
+    "misses": 4,
+    "damage": 96,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 1,
+    "followups": 5,
+    "hits": 8,
+    "crits": 3,
+    "misses": 2,
+    "damage": 53,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "L15 Titanic Armor"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Spell: Mirage": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 21,
+    "kills": 0,
+    "users": [
+     "L15 Illusion"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 6,
+    "damage": 0,
+    "ap": 39,
+    "kills": 0,
+    "users": [
+     "L15 Illusion"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 2,
+    "damage": 43,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 53,
+    "followups": 0,
+    "hits": 48,
+    "crits": 28,
+    "misses": 5,
+    "damage": 643,
+    "ap": 106,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 31,
+    "followups": 0,
+    "hits": 26,
+    "crits": 14,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 22,
+    "crits": 13,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Spell: Strike": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 3,
+    "damage": 0,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "L15 Arcanomancy"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 1,
+    "followups": 1,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 3,
+    "kills": 0,
+    "users": [
+     "L15 Grappling"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 10,
+    "followups": 3,
+    "hits": 9,
+    "crits": 5,
+    "misses": 4,
+    "damage": 2,
+    "ap": 26,
+    "kills": 0,
+    "users": [
+     "L15 Grappling",
+     "L15 Titanic Armor"
+    ]
+   },
+   "Other: Bodyslam": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 76,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Titanic Armor"
+    ]
+   },
+   "Other: Break Free [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   }
+  },
+  "armor": {
+   "Titanic Armor (Iron)": {
+    "hits": 9,
+    "absorbed": 160
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 21,
+    "absorbed": 41
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Growth",
+    "dealt": 0,
+    "taken": 147,
+    "hits": 17,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 29,
+    "taken": 30,
+    "hits": 10,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Titanic Armor",
+    "dealt": 129,
+    "taken": 162,
+    "hits": 11,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Illusion",
+    "dealt": 0,
+    "taken": 151,
+    "hits": 13,
+    "attacks": 21
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 67,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 43,
+    "taken": 23,
+    "hits": 10,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 275,
+    "taken": 78,
+    "hits": 48,
+    "attacks": 57
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 368,
+    "taken": 0,
+    "hits": 52,
+    "attacks": 59
+   },
+   {
+    "name": "L15 Arcanomancy",
+    "dealt": 0,
+    "taken": 176,
+    "hits": 4,
+    "attacks": 7
+   },
+   {
+    "name": "L15 Grappling",
+    "dealt": 2,
+    "taken": 146,
+    "hits": 9,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Titanic Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 60,
+    "attacks": 7,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "defend:dodge": 37,
+     "riposte": 5,
+     "Dip": 1,
+     "Bodyslam": 3
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "slams": 3,
+    "lastTech": "kick",
+    "shank": 2
+   },
+   {
+    "name": "L15 Growth",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 33,
+     "ward": 12,
+     "manifest:Cultivate": 12
+    },
+    "manifests": 12
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 45.8113883008419,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 13,
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Illusion",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 20,
+    "used": {
+     "cast:Mirage": 7,
+     "mod:Phantom Pain": 5,
+     "cast:Force": 13,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 1,
+     "defend:dodge": 45
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 27.68659593995378,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "natural:Budding Gore": 7,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 25,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 11,
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4
+    },
+    "manifests": 4
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 165.6225774829855,
+    "attacks": 53,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 25,
+     "manifest:Eclipse": 15,
+     "manifest:Umbral Strike": 13,
+     "defend:dodge": 48,
+     "breakFree": 4,
+     "Break Free": 4
+    },
+    "manifests": 28
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 141.18033988749895,
+    "attacks": 59,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 28,
+     "manifest:Eclipse": 16,
+     "manifest:Umbral Strike": 15,
+     "defend:dodge": 1
+    },
+    "manifests": 31
+   },
+   {
+    "name": "L15 Arcanomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 7,
+    "used": {
+     "cast:Strike": 7,
+     "mod:Empower": 2,
+     "cast:nothingAffordable": 12,
+     "defend:dodge": 24
+    }
+   },
+   {
+    "name": "L15 Grappling",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 72.11102550927978,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 1,
+     "Lock Down": 3,
+     "Disrupt": 7,
+     "defend:dodge": 22
+    },
+    "turnMoved": 0,
+    "grapples": 1,
+    "lastTech": "dragon",
+    "shank": 0
+   }
+  ],
+  "trees": {
+   "L15 Titanic Armor": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-titanic-armor": 3,
+    "generic-endurance": 1,
+    "generic-initiative": 1
+   },
+   "L15 Illusion": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-illusion": 2
+   },
+   "L15 Growth": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-growth-dream": 3,
+    "generic-courage": 1,
+    "generic-endurance": 1
+   },
+   "L15 Grappling": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-grappling-methods": 2
+   },
+   "L15 Arcanomancy": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-arcanomancy": 2
+   }
+  },
+  "gear": {
+   "L15 Titanic Armor": [
+    "Unarmed G1",
+    "Titanic Armor (Iron) G2",
+    "Heavy Balanced (Steel) G3"
+   ],
+   "L15 Illusion": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Growth": [
+    "Unarmed G1"
+   ],
+   "L15 Grappling": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Arcanomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Titanic Armor": [
+    "Titanic Armor (Iron): 0/160 BROKEN",
+    "Heavy Balanced (Steel): 357/540"
+   ],
+   "L15 Illusion": [
+    "Light Armor (Hard Leather): 15/30"
+   ],
+   "L15 Growth": [],
+   "L15 Grappling": [
+    "Light Armor (Hard Leather): 18/30"
+   ],
+   "L15 Arcanomancy": [
+    "Light Armor (Hard Leather): 16/30"
+   ],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1395,
+    "monsterHp": 2543,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1373,
+    "monsterHp": 2467,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1193,
+    "monsterHp": 2461,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1121,
+    "monsterHp": 2461,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1065,
+    "monsterHp": 2461,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1065,
+    "monsterHp": 2461,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 1047,
+    "monsterHp": 2461,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 1033,
+    "monsterHp": 2461,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 973,
+    "monsterHp": 2461,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 936,
+    "monsterHp": 2461,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 855,
+    "monsterHp": 2461,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 789,
+    "monsterHp": 2461,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 789,
+    "monsterHp": 2461,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 737,
+    "monsterHp": 2461,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 613,
+    "monsterHp": 2461,
+    "partyDown": 5,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Grappling": 2,
+    "L15 Titanic Armor": 82,
+    "Sim Bloomrot": 96,
+    "Sim Gloamhound": 643,
+    "Sim Burgeon": 43
+   },
+   "taken": {
+    "Sim Bloomrot": 30,
+    "Sim Burgeon": 23,
+    "Sim Gloamhound": 78,
+    "L15 Titanic Armor": 162,
+    "L15 Grappling": 146,
+    "L15 Illusion": 151,
+    "L15 Growth": 147,
+    "L15 Arcanomancy": 176
+   },
+   "unattributed": 47
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 131
+  },
+  "lostBy": {
+   "party": 782,
+   "monsters": 131
+  },
+  "directTaken": {
+   "party": 913,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Titanic Armor: Alacrity?": 1,
+    "prompt: L# Grappling: Resist Allure (as Fear)": 3,
+    "prompt: L# Arcanomancy: Resist Allure (as Fear)": 3,
+    "prompt: L# Illusion: Resist Allure (as Fear)": 3,
+    "prompt: L# Titanic Armor: Resist Allure (as Fear)": 3,
+    "prompt: L# Growth: Resist Allure (as Fear)": 3,
+    "prompt: L# Grappling: Resist Dread (as Fear)": 2,
+    "prompt: L# Arcanomancy: Resist Dread (as Fear)": 2,
+    "prompt: L# Illusion: Resist Dread (as Fear)": 2,
+    "prompt: L# Titanic Armor: Resist Dread (as Fear)": 2,
+    "prompt: L# Growth: Resist Dread (as Fear)": 2,
+    "prompt: Sanctum Ward: L# Growth": 12,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 3,
+    "prompt: Verdant Soul (Tenet)": 7,
+    "prompt: Verdant Soul: give # temp HP to": 7,
+    "prompt: Force — Sim Bloomrot": 1,
+    "prompt: Sapling (Tenet)": 10,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Shadowmark (Tenet)": 27,
+    "prompt: Shadowmark: make one step more obscured": 27,
+    "prompt: Unarmed": 11,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 1,
+    "prompt: Riposte Ward": 22,
+    "prompt: Bodyslam": 3,
+    "prompt: Umbral Strike": 12,
+    "prompt: Unarmed — Riposte": 3,
+    "prompt: Break Free": 4,
+    "prompt: Heavy Balanced (Steel)": 1,
+    "prompt: Sporing": 2
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [AHFW6t3kmEnGwm0a] does not exist in the EmbeddedCollection collection.",
+     "who": "L15 Stagnation"
+    },
+    {
+     "level": "error",
+     "msg": "undefined id [LKTAt76pAD16ncRv] does not exist in the EmbeddedCollection collection.",
+     "who": "L15 Stagnation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Titanic Armor is afraid and can't gain Energy.",
+     "who": "L15 Titanic Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Arcanomancy is afraid and can't gain Energy.",
+     "who": "L15 Arcanomancy"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [AHFW6t3kmEnGwm0a] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu",
+    "Error: undefined id [LKTAt76pAD16ncRv] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

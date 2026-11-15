@@ -1,0 +1,1967 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 376,
+  "winner": "unfinished",
+  "pass": "grand-15-p9",
+  "rounds": 16,
+  "partyLeft": 2,
+  "monstersLeft": 1,
+  "followups": 33,
+  "knockbacks": {
+   "into": 4,
+   "away": 4,
+   "down": 7
+  },
+  "used": {
+   "Shatter": 12,
+   "opt:punch": 5,
+   "defend:shift": 156,
+   "defend:dodge": 245,
+   "manifest:Eclipse+": 10,
+   "manifest:Umbral Strike+": 6,
+   "cast:Hex": 6,
+   "mod:Unravel": 1,
+   "cast:Force + Cut": 89,
+   "opt:through=adv": 5,
+   "opt:letItRip": 8,
+   "opt:through=pierce": 4,
+   "Parry": 1,
+   "Leap": 1,
+   "mod:Pinpoint": 2,
+   "mod:Empower": 30,
+   "opt:dir=into": 4,
+   "ward": 3,
+   "manifest:Illuminate+": 1,
+   "manifest:Dispersion+": 1,
+   "manifest:Crescendo": 2,
+   "manifest:Adaptive Skin": 2,
+   "manifest:Second Wind": 2,
+   "opt:dir=away": 4,
+   "cast:Cut": 44,
+   "manifest:Eclipse": 4,
+   "opt:dir=down": 7,
+   "manifest:Umbral Strike": 1,
+   "recoverEnergy": 22,
+   "cast:nothingAffordable": 4,
+   "Dip": 4
+  },
+  "hp": {
+   "L15 Witchery#Zerz": "190/279",
+   "L15 Light#C04f": "125/279",
+   "L15 Circular#re1F": "98/279",
+   "L15 Build Arcana#zSgX": "239/279",
+   "L15 Dark#rGoY": "91/279",
+   "L15 Blast#BaWt": "102/279",
+   "L15 Summoning#VUDP": "123/279",
+   "L15 Adaptation#gSrU": "117/279",
+   "L15 Light#7yfd": "131/279",
+   "L15 Creation#BGXY": "231/279"
+  },
+  "down": [
+   "L15 Light",
+   "L15 Circular",
+   "L15 Dark",
+   "L15 Blast",
+   "L15 Summoning",
+   "L15 Adaptation",
+   "L15 Light"
+  ],
+  "weapons": {
+   "Light Blast": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 3,
+    "damage": 12,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "L15 Blast"
+    ]
+   },
+   "Manifest: Eclipse (Manifest)": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Dark"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Dark"
+    ]
+   },
+   "Spell: Hex": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L15 Witchery"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 54,
+    "followups": 0,
+    "hits": 15,
+    "crits": 3,
+    "misses": 39,
+    "damage": 438,
+    "ap": 134,
+    "kills": 6,
+    "users": [
+     "L15 Witchery",
+     "L15 Build Arcana"
+    ],
+    "force": 0
+   },
+   "Light Circular": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 11,
+    "damage": 68,
+    "ap": 38,
+    "kills": 0,
+    "users": [
+     "L15 Circular"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 33,
+    "hits": 4,
+    "crits": 0,
+    "misses": 29,
+    "damage": 39,
+    "ap": 0,
+    "kills": 1,
+    "users": [
+     "L15 Circular",
+     "L15 Light"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 14,
+    "damage": 0,
+    "ap": 28,
+    "kills": 0,
+    "users": [
+     "L15 Light"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Light"
+    ]
+   },
+   "Manifest: Illuminate (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Light"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 37,
+    "followups": 0,
+    "hits": 15,
+    "crits": 4,
+    "misses": 22,
+    "damage": 511,
+    "ap": 104,
+    "kills": 0,
+    "users": [
+     "L15 Summoning",
+     "L15 Creation"
+    ],
+    "force": 16
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Manifest: Crescendo (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Manifest: Adaptive Skin (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Manifest: Second Wind (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Adaptation"
+    ]
+   },
+   "Spell: Force + Cut [M] [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Creation"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 8,
+    "damage": 7,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L15 Witchery"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 35,
+    "followups": 0,
+    "hits": 10,
+    "crits": 1,
+    "misses": 25,
+    "damage": 91,
+    "ap": 70,
+    "kills": 0,
+    "users": [
+     "L15 Summoning"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 31,
+    "absorbed": 60
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Blast",
+    "dealt": 12,
+    "taken": 159,
+    "hits": 2,
+    "attacks": 5
+   },
+   {
+    "name": "L15 Circular",
+    "dealt": 107,
+    "taken": 165,
+    "hits": 12,
+    "attacks": 38
+   },
+   {
+    "name": "L15 Witchery",
+    "dealt": 151,
+    "taken": 81,
+    "hits": 9,
+    "attacks": 37
+   },
+   {
+    "name": "L15 Dark",
+    "dealt": 0,
+    "taken": 188,
+    "hits": 7,
+    "attacks": 21
+   },
+   {
+    "name": "L15 Light",
+    "dealt": 0,
+    "taken": 71,
+    "hits": 0,
+    "attacks": 28
+   },
+   {
+    "name": "L15 Build Arcana",
+    "dealt": 294,
+    "taken": 40,
+    "hits": 9,
+    "attacks": 32
+   },
+   {
+    "name": "L15 Light",
+    "dealt": 0,
+    "taken": 124,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Summoning",
+    "dealt": 152,
+    "taken": 156,
+    "hits": 14,
+    "attacks": 42
+   },
+   {
+    "name": "L15 Adaptation",
+    "dealt": 0,
+    "taken": 122,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "L15 Creation",
+    "dealt": 450,
+    "taken": 44,
+    "hits": 12,
+    "attacks": 32
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Blast",
+    "side": "monsters",
+    "role": "ranged",
+    "moved": 83.81527307120106,
+    "attacks": 5,
+    "turns": 2,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 1,
+     "defend:shift": 27,
+     "defend:dodge": 30
+    },
+    "turnMoved": 0,
+    "shank": 1,
+    "reloads": 3
+   },
+   {
+    "name": "L15 Circular",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 90.55385138137417,
+    "attacks": 38,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:shift": 65,
+     "defend:dodge": 65,
+     "Shatter": 8,
+     "recoverEnergy": 6,
+     "Dip": 4
+    },
+    "fist": "Shatter",
+    "turnMoved": 90.55385138137417,
+    "shank": 0,
+    "thr": 0
+   },
+   {
+    "name": "L15 Witchery",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 15,
+     "cast:Hex": 6,
+     "mod:Unravel": 1,
+     "cast:Force + Cut": 22,
+     "cast:Cut": 9,
+     "cast:nothingAffordable": 4,
+     "recoverEnergy": 16
+    },
+    "turnMoved": 0,
+    "casts": 37,
+    "knockbacks": {
+     "away": 2
+    }
+   },
+   {
+    "name": "L15 Dark",
+    "side": "party",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 21,
+    "used": {
+     "manifest:Eclipse+": 10,
+     "manifest:Umbral Strike+": 6,
+     "defend:dodge": 8,
+     "manifest:Eclipse": 4,
+     "manifest:Umbral Strike": 1
+    }
+   },
+   {
+    "name": "L15 Light",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 81.39410298049853,
+    "attacks": 28,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Shatter": 3,
+     "Leap": 1,
+     "defend:shift": 64,
+     "defend:dodge": 49
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "L15 Build Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Force + Cut": 30,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 15,
+     "defend:dodge": 20
+    },
+    "knockbacks": {
+     "into": 2,
+     "down": 3
+    }
+   },
+   {
+    "name": "L15 Light",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 1,
+     "manifest:Illuminate+": 1,
+     "manifest:Dispersion+": 1,
+     "defend:dodge": 1
+    },
+    "manifests": 2
+   },
+   {
+    "name": "L15 Summoning",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 42,
+    "used": {
+     "cast:Force + Cut": 7,
+     "defend:dodge": 39,
+     "cast:Cut": 35
+    }
+   },
+   {
+    "name": "L15 Adaptation",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 2,
+     "manifest:Crescendo": 2,
+     "defend:dodge": 10,
+     "manifest:Adaptive Skin": 2,
+     "manifest:Second Wind": 2
+    },
+    "manifests": 6
+   },
+   {
+    "name": "L15 Creation",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Force + Cut": 30,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 15,
+     "defend:dodge": 8
+    },
+    "knockbacks": {
+     "into": 2,
+     "down": 4,
+     "away": 2
+    }
+   }
+  ],
+  "trees": {
+   "L15 Witchery": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-witchery": 4,
+    "magic-slashing": 1,
+    "generic-stealth": 1
+   },
+   "L15 Light": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-light-dream": 4,
+    "generic-initiative": 1,
+    "generic-endurance": 1
+   },
+   "L15 Circular": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-circular-weapons": 4,
+    "martial-light-armor": 1,
+    "generic-insight": 1
+   },
+   "L15 Build Arcana": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-build-arcana": 3,
+    "magic-slashing": 1,
+    "generic-athletics": 1
+   },
+   "L15 Dark": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-dark-nightmare": 4,
+    "generic-endurance": 1,
+    "generic-initiative": 1
+   }
+  },
+  "gear": {
+   "L15 Witchery": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Light": [
+    "Unarmed G1"
+   ],
+   "L15 Circular": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Circular (Steel) G3"
+   ],
+   "L15 Build Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Dark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L15 Blast": [
+    "Unarmed",
+    "Light Blast (Steel)",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Summoning": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Adaptation": [
+    "Unarmed"
+   ],
+   "L15 Light": [
+    "Unarmed",
+    "Light Bladed (Steel)",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Creation": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Witchery": [
+    "Light Armor (Hard Leather): 12/30"
+   ],
+   "L15 Light": [
+    "Light Bladed (Steel): 127/135",
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Circular": [
+    "Light Armor (Hard Leather): 10/30",
+    "Light Circular (Steel): 127/135"
+   ],
+   "L15 Build Arcana": [
+    "Light Armor (Hard Leather): 24/30"
+   ],
+   "L15 Dark": [],
+   "L15 Blast": [
+    "Light Blast (Steel): 135/135",
+    "Light Armor (Hard Leather): 26/30"
+   ],
+   "L15 Summoning": [
+    "Light Armor (Hard Leather): 8/30"
+   ],
+   "L15 Adaptation": [],
+   "L15 Creation": [
+    "Light Armor (Hard Leather): 28/30"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 1395,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1205,
+    "monsterHp": 1296,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1166,
+    "monsterHp": 1143,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 1151,
+    "monsterHp": 1007,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 1122,
+    "monsterHp": 1007,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 1121,
+    "monsterHp": 953,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 1096,
+    "monsterHp": 852,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 8,
+    "partyHp": 945,
+    "monsterHp": 852,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 9,
+    "partyHp": 918,
+    "monsterHp": 840,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 891,
+    "monsterHp": 824,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 11,
+    "partyHp": 891,
+    "monsterHp": 819,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 882,
+    "monsterHp": 791,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 13,
+    "partyHp": 882,
+    "monsterHp": 791,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 14,
+    "partyHp": 882,
+    "monsterHp": 791,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 15,
+    "partyHp": 853,
+    "monsterHp": 786,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 743,
+    "monsterHp": 704,
+    "partyDown": 3,
+    "monstersDown": 4
+   },
+   {
+    "round": 16,
+    "partyHp": 743,
+    "monsterHp": 704,
+    "partyDown": 3,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Blast": 12,
+    "L15 Circular": 149,
+    "L15 Build Arcana": 294,
+    "L15 Summoning": 152,
+    "L15 Creation": 488,
+    "L15 Witchery": 151
+   },
+   "taken": {
+    "L15 Witchery": 89,
+    "L15 Blast": 177,
+    "L15 Circular": 181,
+    "L15 Adaptation": 162,
+    "L15 Light": 302,
+    "L15 Dark": 188,
+    "L15 Summoning": 156,
+    "L15 Build Arcana": 40,
+    "L15 Creation": 48
+   },
+   "unattributed": 97
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 691
+  },
+  "lostBy": {
+   "party": 652,
+   "monsters": 691
+  },
+  "directTaken": {
+   "party": 1150,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Light: Alacrity?": 1,
+    "prompt: L# Dark: Alacrity?": 1,
+    "prompt: L# Summoning: Alacrity?": 1,
+    "prompt: Light Blast (Steel)": 5,
+    "prompt: L# Circular — Shift": 65,
+    "prompt: L# Blast — Shift": 27,
+    "prompt: Light Circular (Steel)": 19,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 33,
+    "prompt: Light Bladed (Steel)": 14,
+    "prompt: Force — L# Blast": 2,
+    "prompt: L# Light — Shift": 64,
+    "prompt: Sanctum Ward: L# Light": 1,
+    "prompt: Beacon (Tenet)": 1,
+    "prompt: Sanctum Ward: L# Adaptation": 2,
+    "confirm: Adapt (Tenet)": 2,
+    "prompt: Memory": 3,
+    "prompt: Force — L# Light": 1,
+    "prompt: Shadowmark (Tenet)": 5,
+    "prompt: Shadowmark: make one step more obscured": 5,
+    "prompt: L# Adaptation: Adaptive Skin": 1,
+    "prompt: Warden Ward": 13,
+    "prompt: Force — L# Adaptation": 1,
+    "prompt: Force — L# Witchery": 1,
+    "prompt: Force — L# Summoning": 3,
+    "prompt: Force — L# Build Arcana": 3,
+    "prompt: Umbral Strike": 2,
+    "prompt: Force — L# Dark": 1,
+    "prompt: Force — L# Creation": 1,
+    "prompt: Force — L# Circular": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Circular can't move through L15 Blast's space.",
+     "who": "L15 Light"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Circular can't move through L15 Blast's space.",
+     "who": "L15 Circular"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Circular can't move through L15 Blast's space.",
+     "who": "L15 Circular"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Circular can't move through L15 Blast's space.",
+     "who": "L15 Circular"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Circular can't move through L15 Blast's space.",
+     "who": "L15 Circular"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Circular can't move through L15 Blast's space.",
+     "who": "L15 Circular"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Circular can't move through L15 Blast's space.",
+     "who": "L15 Circular"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Circular can't move through L15 Blast's space.",
+     "who": "L15 Circular"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Circular can't move through L15 Blast's space.",
+     "who": "L15 Circular"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 392,
+  "winner": "unfinished",
+  "pass": "grand-15-p9",
+  "rounds": 16,
+  "partyLeft": 2,
+  "monstersLeft": 3,
+  "followups": 9,
+  "knockbacks": {
+   "into": 1
+  },
+  "used": {
+   "defend:dodge": 229,
+   "ward": 7,
+   "manifest:Illuminate+": 3,
+   "manifest:Dispersion+": 3,
+   "cast:Force + Cut": 33,
+   "mod:Pinpoint": 1,
+   "mod:Empower": 1,
+   "defend:shift": 38,
+   "natural:Budding Gore": 8,
+   "manifest:Bloom": 6,
+   "manifest:Flourish": 6,
+   "manifest:Eclipse+": 4,
+   "manifest:Umbral Strike+": 2,
+   "natural:Black Jaws": 31,
+   "manifest:Eclipse": 63,
+   "manifest:Umbral Strike": 40,
+   "cast:Hex": 2,
+   "mod:Unravel": 1,
+   "Shatter": 1,
+   "opt:through=adv": 2,
+   "opt:letItRip": 3,
+   "opt:through=pierce": 1,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "cast:Cut": 1,
+   "cast:nothingAffordable": 13,
+   "manifest:Illuminate": 4,
+   "manifest:Dispersion": 4,
+   "opt:dir=into": 1
+  },
+  "hp": {
+   "L15 Witchery#eSKY": "279/279",
+   "L15 Light#7qe5": "109/279",
+   "L15 Circular#DCju": "106/279",
+   "L15 Build Arcana#xAIN": "279/279",
+   "L15 Dark#g78G": "118/279",
+   "Sim Bloomrot#FvX2": "238/486",
+   "Sim Bloomrot#Aoa0": "214/486",
+   "Sim Gloamhound#ZQOG": "486/486",
+   "Sim Gloamhound#npmg": "340/486",
+   "Sim Burgeon#EtUj": "648/648"
+  },
+  "down": [
+   "L15 Light",
+   "L15 Circular",
+   "L15 Dark",
+   "Sim Bloomrot",
+   "Sim Bloomrot"
+  ],
+  "weapons": {
+   "Manifest: Sanctum Ward": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Light"
+    ]
+   },
+   "Manifest: Illuminate (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Light"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 34,
+    "followups": 0,
+    "hits": 23,
+    "crits": 6,
+    "misses": 11,
+    "damage": 649,
+    "ap": 96,
+    "kills": 2,
+    "users": [
+     "L15 Build Arcana",
+     "L15 Witchery"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 57,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 6,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Eclipse (Manifest)": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 16,
+    "crits": 8,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Dark"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 12,
+    "crits": 7,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Dark"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 31,
+    "followups": 0,
+    "hits": 23,
+    "crits": 10,
+    "misses": 8,
+    "damage": 395,
+    "ap": 62,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 43,
+    "followups": 0,
+    "hits": 39,
+    "crits": 24,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 26,
+    "crits": 11,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Spell: Hex": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L15 Witchery"
+    ]
+   },
+   "Light Circular": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 3,
+    "damage": 60,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L15 Circular"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 9,
+    "hits": 3,
+    "crits": 1,
+    "misses": 6,
+    "damage": 27,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Circular"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 52,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Dispersion": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Light"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "L15 Witchery"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 10,
+    "absorbed": 20
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Light",
+    "dealt": 0,
+    "taken": 170,
+    "hits": 14,
+    "attacks": 20
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 51,
+    "taken": 248,
+    "hits": 5,
+    "attacks": 7
+   },
+   {
+    "name": "L15 Build Arcana",
+    "dealt": 649,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 31
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 6,
+    "taken": 345,
+    "hits": 8,
+    "attacks": 13
+   },
+   {
+    "name": "L15 Circular",
+    "dealt": 87,
+    "taken": 173,
+    "hits": 9,
+    "attacks": 18
+   },
+   {
+    "name": "L15 Dark",
+    "dealt": 0,
+    "taken": 161,
+    "hits": 28,
+    "attacks": 36
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 226,
+    "taken": 143,
+    "hits": 44,
+    "attacks": 51
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 169,
+    "taken": 0,
+    "hits": 44,
+    "attacks": 53
+   },
+   {
+    "name": "L15 Witchery",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 52,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Light",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 14,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 24,
+     "ward": 7,
+     "manifest:Illuminate+": 3,
+     "manifest:Dispersion+": 3,
+     "manifest:Illuminate": 4,
+     "manifest:Dispersion": 4
+    },
+    "manifests": 14
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 87.3212459828649,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 37,
+     "natural:Budding Gore": 3,
+     "manifest:Bloom": 2,
+     "manifest:Flourish": 2
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "L15 Build Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Force + Cut": 30,
+     "mod:Pinpoint": 1,
+     "mod:Empower": 1,
+     "defend:dodge": 3
+    },
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 93.40770846134703,
+    "attacks": 5,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 5,
+     "manifest:Bloom": 4,
+     "defend:dodge": 15,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Circular",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 0,
+    "attacks": 18,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:shift": 38,
+     "defend:dodge": 42,
+     "Shatter": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 0
+   },
+   {
+    "name": "L15 Dark",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 36,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 36,
+    "used": {
+     "manifest:Eclipse+": 4,
+     "manifest:Umbral Strike+": 2,
+     "manifest:Eclipse": 20,
+     "manifest:Umbral Strike": 10,
+     "defend:dodge": 36
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 91.39410298049853,
+    "attacks": 51,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 12,
+     "manifest:Eclipse": 24,
+     "manifest:Umbral Strike": 15,
+     "defend:dodge": 40
+    },
+    "manifests": 39
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 135.73105252001005,
+    "attacks": 53,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 19,
+     "manifest:Eclipse": 19,
+     "manifest:Umbral Strike": 15,
+     "defend:dodge": 5
+    },
+    "manifests": 34
+   },
+   {
+    "name": "L15 Witchery",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Hex": 2,
+     "mod:Unravel": 1,
+     "cast:Force + Cut": 3,
+     "cast:Cut": 1,
+     "cast:nothingAffordable": 13,
+     "defend:dodge": 22
+    }
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 95,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 10,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 5
+    },
+    "manifests": 4
+   }
+  ],
+  "trees": {
+   "L15 Witchery": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-witchery": 4,
+    "magic-slashing": 1,
+    "generic-stealth": 1
+   },
+   "L15 Light": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-light-dream": 4,
+    "generic-initiative": 1,
+    "generic-endurance": 1
+   },
+   "L15 Circular": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-circular-weapons": 4,
+    "martial-light-armor": 1,
+    "generic-insight": 1
+   },
+   "L15 Build Arcana": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-build-arcana": 3,
+    "magic-slashing": 1,
+    "generic-athletics": 1
+   },
+   "L15 Dark": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-dark-nightmare": 4,
+    "generic-endurance": 1,
+    "generic-initiative": 1
+   }
+  },
+  "gear": {
+   "L15 Witchery": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Light": [
+    "Unarmed G1"
+   ],
+   "L15 Circular": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Circular (Steel) G3"
+   ],
+   "L15 Build Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Dark": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Witchery": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Light": [],
+   "L15 Circular": [
+    "Light Armor (Hard Leather): 10/30",
+    "Light Circular (Steel): 135/135"
+   ],
+   "L15 Build Arcana": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Dark": [],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1382,
+    "monsterHp": 2518,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1291,
+    "monsterHp": 2425,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1263,
+    "monsterHp": 2288,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 1198,
+    "monsterHp": 2344,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 1142,
+    "monsterHp": 2216,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 1110,
+    "monsterHp": 2149,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 1023,
+    "monsterHp": 2069,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 995,
+    "monsterHp": 2035,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 974,
+    "monsterHp": 2018,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 947,
+    "monsterHp": 1992,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 12,
+    "partyHp": 927,
+    "monsterHp": 1991,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 13,
+    "partyHp": 891,
+    "monsterHp": 1960,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 891,
+    "monsterHp": 1952,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 15,
+    "partyHp": 891,
+    "monsterHp": 1933,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 891,
+    "monsterHp": 1926,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 891,
+    "monsterHp": 1926,
+    "partyDown": 3,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Build Arcana": 667,
+    "Sim Gloamhound": 395,
+    "Sim Bloomrot": 57,
+    "L15 Circular": 87,
+    "Sim Burgeon": 52
+   },
+   "taken": {
+    "Sim Bloomrot": 608,
+    "L15 Circular": 173,
+    "L15 Light": 170,
+    "Sim Gloamhound": 146,
+    "L15 Dark": 161
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 666
+  },
+  "lostBy": {
+   "party": 504,
+   "monsters": 666
+  },
+  "directTaken": {
+   "party": 1240,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Light: Alacrity?": 1,
+    "prompt: L# Dark: Alacrity?": 1,
+    "prompt: L# Circular: Resist Allure (as Fear)": 3,
+    "prompt: L# Witchery: Resist Allure (as Fear)": 3,
+    "prompt: L# Build Arcana: Resist Allure (as Fear)": 3,
+    "prompt: L# Light: Resist Allure (as Fear)": 3,
+    "prompt: L# Dark: Resist Allure (as Fear)": 3,
+    "prompt: L# Circular: Resist Dread (as Fear)": 2,
+    "prompt: L# Witchery: Resist Dread (as Fear)": 2,
+    "prompt: L# Build Arcana: Resist Dread (as Fear)": 2,
+    "prompt: L# Light: Resist Dread (as Fear)": 2,
+    "prompt: L# Dark: Resist Dread (as Fear)": 2,
+    "prompt: Sanctum Ward: L# Light": 7,
+    "prompt: L# Circular — Shift": 38,
+    "prompt: Verdant Soul (Tenet)": 6,
+    "prompt: Verdant Soul: give # temp HP to": 6,
+    "prompt: Shadowmark (Tenet)": 40,
+    "prompt: Shadowmark: make one step more obscured": 40,
+    "prompt: Umbral Strike": 27,
+    "prompt: Light Circular (Steel)": 9,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 9,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Dispersion": 6,
+    "prompt: Dispersion (Enhanced)": 2,
+    "prompt: Beacon (Tenet)": 4,
+    "prompt: Sporing": 1,
+    "prompt: Force — Sim Bloomrot": 1,
+    "prompt: Riposte Ward": 22,
+    "prompt: Warden Ward": 25
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [BGXYysqeKYBUog7r] does not exist in the EmbeddedCollection collection.",
+     "who": "L15 Creation"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Light is afraid and can't gain Energy.",
+     "who": "L15 Light"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Light is afraid and can't gain Energy.",
+     "who": "L15 Light"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Light is afraid and can't gain Energy.",
+     "who": "L15 Light"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Light is afraid and can't gain Energy.",
+     "who": "L15 Light"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "L15 Light"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Light is afraid and can't gain Energy.",
+     "who": "L15 Light"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "L15 Light"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Light is afraid and can't gain Energy.",
+     "who": "L15 Light"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Circular's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Witchery is afraid and can't gain Energy.",
+     "who": "L15 Witchery"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [BGXYysqeKYBUog7r] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

@@ -1,0 +1,1941 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 227,
+  "winner": "monsters",
+  "pass": "grand-60-p6",
+  "rounds": 8,
+  "partyLeft": 0,
+  "monstersLeft": 4,
+  "followups": 23,
+  "knockbacks": {
+   "into": 1
+  },
+  "used": {
+   "defend:dodge": 168,
+   "ward": 11,
+   "manifest:Pacify": 8,
+   "manifest:Guard": 3,
+   "cast:Poison (coat self)": 7,
+   "mod:Potency": 1,
+   "cast:Force + Cut": 2,
+   "mod:Rend": 30,
+   "defend:shift": 13,
+   "limber": 18,
+   "mod:Bleed": 7,
+   "Smashing": 4,
+   "smashing": 4,
+   "opt:ability=shift": 2,
+   "Versatility": 2,
+   "Unstoppable": 2,
+   "Brace": 5,
+   "opt:wild=str2": 1,
+   "opt:strafe": 2,
+   "recoverEnergy": 4,
+   "properStance": 8,
+   "opt:takeAim=adv": 8,
+   "opt:coolBreath": 16,
+   "opt:heave": 1,
+   "limber:skipped": 23,
+   "opt:takeAim=str": 8,
+   "cast:Cut + Crackle": 12,
+   "mod:Electrify": 2,
+   "mod:Charge": 1,
+   "manifest:Corrode+": 1,
+   "manifest:Immolate+": 1,
+   "manifest:Irradiate+": 1,
+   "cast:Cut + Flame": 16,
+   "mod:Ignition": 2,
+   "cast:Cut + Glob": 9,
+   "manifest:Consecrate": 3,
+   "manifest:Bloom": 3,
+   "Parry": 5,
+   "opt:harden": 2,
+   "Trudge": 3,
+   "cast:Cut": 12,
+   "opt:dir=into": 1,
+   "followup:quickload": 4,
+   "cast:Glob": 12,
+   "Dip": 5,
+   "Bodyslam": 2,
+   "manifest:Absolution": 6,
+   "opt:who": 1,
+   "passPoison": 1,
+   "manifest:Renewal": 1,
+   "opt:launch": 1
+  },
+  "hp": {
+   "L60 Radiation#8hTI": "502/1134",
+   "L60 Creation#F96Y": "328/756",
+   "L60 Weighted#AWRT": "284/1134",
+   "L60 Acid#7nwt": "349/1134",
+   "L60 Destruction#e6cV": "515/1134",
+   "L60 Assault#RiVs": "1042/1134",
+   "L60 Grasp Arcana#UwBC": "1134/1134",
+   "L60 Peace#H7ic": "914/1134",
+   "L60 Heavy Armor#XKmK": "1134/1134",
+   "L60 Venomancy#xAFZ": "311/756"
+  },
+  "down": [
+   "L60 Radiation",
+   "L60 Creation",
+   "L60 Weighted",
+   "L60 Acid",
+   "L60 Destruction",
+   "L60 Venomancy"
+  ],
+  "weapons": {
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Manifest: Pacify (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Manifest: Guard (Manifest) [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Spell: Force + Poison [M]": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 7,
+    "crits": 5,
+    "misses": 0,
+    "damage": 0,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "L60 Venomancy"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L60 Venomancy"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 18,
+    "ap": 21,
+    "kills": 0,
+    "users": [
+     "L60 Weighted"
+    ]
+   },
+   "Heavy Assault": {
+    "attacks": 16,
+    "followups": 12,
+    "hits": 15,
+    "crits": 4,
+    "misses": 13,
+    "damage": 558,
+    "ap": 48,
+    "kills": 2,
+    "users": [
+     "L60 Assault"
+    ]
+   },
+   "Spell: Cut + Crackle": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 8,
+    "damage": 294,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L60 Radiation"
+    ]
+   },
+   "Manifest: Corrode (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Destruction"
+    ]
+   },
+   "Manifest: Immolate (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Destruction"
+    ]
+   },
+   "Manifest: Irradiate (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Destruction"
+    ]
+   },
+   "Spell: Cut + Flame [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 10,
+    "damage": 594,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "L60 Grasp Arcana"
+    ]
+   },
+   "Spell: Cut + Glob": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 7,
+    "damage": 70,
+    "ap": 18,
+    "kills": 1,
+    "users": [
+     "L60 Acid"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Creation"
+    ]
+   },
+   "Manifest: Consecrate (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Creation"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Creation"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 11,
+    "followups": 11,
+    "hits": 12,
+    "crits": 5,
+    "misses": 10,
+    "damage": 153,
+    "ap": 33,
+    "kills": 1,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 8,
+    "damage": 139,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Venomancy"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 9,
+    "damage": 62,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Acid"
+    ]
+   },
+   "Other: Bodyslam [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Manifest: Absolution (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Creation"
+    ]
+   },
+   "Other: Bodyslam (Launch) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 2,
+    "users": []
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 70
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 8,
+    "absorbed": 80
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Peace",
+    "dealt": 0,
+    "taken": 64,
+    "hits": 11,
+    "attacks": 25
+   },
+   {
+    "name": "L60 Radiation",
+    "dealt": 294,
+    "taken": 98,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Venomancy",
+    "dealt": 139,
+    "taken": 380,
+    "hits": 11,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Weighted",
+    "dealt": 18,
+    "taken": 454,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "L60 Acid",
+    "dealt": 132,
+    "taken": 393,
+    "hits": 5,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Assault",
+    "dealt": 558,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 28
+   },
+   {
+    "name": "L60 Destruction",
+    "dealt": 0,
+    "taken": 205,
+    "hits": 0,
+    "attacks": 3
+   },
+   {
+    "name": "L60 Grasp Arcana",
+    "dealt": 594,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Creation",
+    "dealt": 0,
+    "taken": 294,
+    "hits": 4,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Heavy Armor",
+    "dealt": 153,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 24
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Peace",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 8,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 11,
+     "ward": 8,
+     "manifest:Pacify": 8,
+     "manifest:Guard": 3,
+     "recoverEnergy": 1,
+     "manifest:Absolution": 6
+    },
+    "manifests": 17
+   },
+   {
+    "name": "L60 Radiation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24,
+     "cast:Cut + Crackle": 12,
+     "mod:Bleed": 2,
+     "mod:Rend": 12,
+     "mod:Electrify": 2,
+     "mod:Charge": 1
+    },
+    "turnMoved": 0,
+    "casts": 12
+   },
+   {
+    "name": "L60 Venomancy",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 51,
+     "cast:Poison (coat self)": 7,
+     "mod:Potency": 1,
+     "cast:Force + Cut": 2,
+     "mod:Rend": 1,
+     "mod:Bleed": 1,
+     "cast:Cut": 12,
+     "passPoison": 1
+    },
+    "turnMoved": 0,
+    "casts": 21
+   },
+   {
+    "name": "L60 Weighted",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 79.33034373659252,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:shift": 13,
+     "defend:dodge": 33,
+     "limber": 11,
+     "Smashing": 4,
+     "smashing": 4,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "limber:skipped": 15
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "wild": 0,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "L60 Acid",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 35,
+     "cast:Cut + Glob": 9,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Glob": 12
+    },
+    "turnMoved": 0,
+    "casts": 21
+   },
+   {
+    "name": "L60 Assault",
+    "side": "monsters",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 28,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "properStance": 8,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 8,
+     "defend:dodge": 1,
+     "followup:quickload": 4,
+     "Dip": 2,
+     "limber": 7
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 24
+   },
+   {
+    "name": "L60 Destruction",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 20,
+    "manifests": 3,
+    "used": {
+     "manifest:Corrode+": 1,
+     "manifest:Immolate+": 1,
+     "manifest:Irradiate+": 1,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L60 Grasp Arcana",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 16,
+    "used": {
+     "cast:Cut + Flame": 16,
+     "mod:Bleed": 3,
+     "mod:Rend": 15,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "L60 Creation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 3,
+     "manifest:Consecrate": 3,
+     "defend:dodge": 9,
+     "manifest:Bloom": 3,
+     "manifest:Renewal": 1
+    },
+    "manifests": 7
+   },
+   {
+    "name": "L60 Heavy Armor",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 115,
+    "attacks": 24,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Parry": 5,
+     "Brace": 3,
+     "Trudge": 3,
+     "Dip": 3,
+     "Bodyslam": 2,
+     "recoverEnergy": 2,
+     "defend:dodge": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "slams": 2
+   }
+  ],
+  "trees": {
+   "L60 Radiation": {
+    "magic-theory": 2,
+    "magic-radiation": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-stealth": 3,
+    "generic-ambush": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Creation": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-creation-dream": 5,
+    "generic-initiative": 3,
+    "generic-delay": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Weighted": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-weighted-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-insight": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Acid": {
+    "magic-theory": 2,
+    "magic-acid": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 1
+   },
+   "L60 Destruction": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-destruction-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2
+   }
+  },
+  "gear": {
+   "L60 Radiation": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Creation": [
+    "Unarmed G1"
+   ],
+   "L60 Weighted": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Weighted (Steel) G11"
+   ],
+   "L60 Acid": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Destruction": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Assault": [
+    "Unarmed",
+    "Heavy Assault (Steel)",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Grasp Arcana": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Peace": [
+    "Unarmed"
+   ],
+   "L60 Heavy Armor": [
+    "Unarmed",
+    "Heavy Balanced (Steel)",
+    "Heavy Armor (Steel)"
+   ],
+   "L60 Venomancy": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Radiation": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Creation": [],
+   "L60 Weighted": [
+    "Medium Armor (Hard Leather): 350/420",
+    "Heavy Weighted (Steel): 990/990"
+   ],
+   "L60 Acid": [
+    "Light Armor (Hard Leather): 96/120"
+   ],
+   "L60 Destruction": [],
+   "L60 Assault": [
+    "Heavy Assault (Steel): 990/990",
+    "Medium Armor (Hard Leather): 392/420"
+   ],
+   "L60 Grasp Arcana": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Peace": [],
+   "L60 Heavy Armor": [
+    "Heavy Balanced (Steel): 1980/1980",
+    "Heavy Armor (Steel): 840/840"
+   ],
+   "L60 Venomancy": [
+    "Light Armor (Hard Leather): 0/60 BROKEN"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5292,
+    "monsterHp": 5292,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 4800,
+    "monsterHp": 5292,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 4460,
+    "monsterHp": 4796,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 4256,
+    "monsterHp": 4796,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3395,
+    "monsterHp": 4796,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2845,
+    "monsterHp": 4716,
+    "partyDown": 3,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2745,
+    "monsterHp": 4716,
+    "partyDown": 4,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 2648,
+    "monsterHp": 4535,
+    "partyDown": 4,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 1978,
+    "monsterHp": 4535,
+    "partyDown": 5,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Assault": 558,
+    "L60 Grasp Arcana": 2192,
+    "L60 Heavy Armor": 220,
+    "L60 Weighted": 266,
+    "L60 Radiation": 294,
+    "L60 Venomancy": 139,
+    "L60 Acid": 164
+   },
+   "taken": {
+    "L60 Weighted": 850,
+    "L60 Destruction": 619,
+    "L60 Creation": 428,
+    "L60 Peace": 220,
+    "L60 Assault": 92,
+    "L60 Venomancy": 445,
+    "L60 Radiation": 632,
+    "L60 Acid": 785
+   },
+   "unattributed": 238
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 293,
+   "monsters": 302
+  },
+  "otherLoss": {
+   "party": 1133,
+   "monsters": 455
+  },
+  "lostBy": {
+   "party": 3314,
+   "monsters": 757
+  },
+  "directTaken": {
+   "party": 1888,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Radiation: Alacrity?": 1,
+    "prompt: L# Creation: Alacrity?": 1,
+    "prompt: L# Weighted: Alacrity?": 1,
+    "prompt: L# Destruction: Alacrity?": 1,
+    "prompt: L# Assault: Alacrity?": 1,
+    "prompt: L# Grasp Arcana: Alacrity?": 1,
+    "prompt: L# Peace: Alacrity?": 1,
+    "prompt: L# Heavy Armor: Alacrity?": 1,
+    "prompt: L# Venomancy: Alacrity?": 1,
+    "prompt: L# Acid: Alacrity?": 1,
+    "prompt: Sanctum Ward: L# Peace": 8,
+    "prompt: L# Peace: Serenity": 28,
+    "prompt: L# Weighted — Shift": 13,
+    "prompt: Versatility": 2,
+    "prompt: Heavy Weighted (Steel)": 7,
+    "prompt: Heavy Assault (Steel)": 16,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 10,
+    "prompt: Warden Ward": 7,
+    "prompt: Sanctum Ward: L# Creation": 3,
+    "prompt: Infuse (Tenet)": 6,
+    "prompt: Infuse: which Mode?": 6,
+    "prompt: Brace": 3,
+    "prompt: Heavy Balanced (Steel)": 11,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 11,
+    "prompt: L# Peace: Dampen": 6,
+    "prompt: Knockback — L# Peace": 1,
+    "prompt: Bodyslam": 2,
+    "prompt: The Poison passes from L# Venomancy to": 1,
+    "prompt: Alter (Tenet)": 1,
+    "prompt: Alter": 1,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Assault needs 68 Energy for Proper Stance but has 65.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Assault needs 68 Energy for Proper Stance but has 65.",
+     "who": "L60 Assault"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 220,
+  "winner": "party",
+  "pass": "grand-60-p6",
+  "rounds": 12,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {
+   "down": 1,
+   "into": 1
+  },
+  "used": {
+   "cast:Cut + Crackle": 24,
+   "mod:Bleed": 3,
+   "mod:Rend": 15,
+   "mod:Electrify": 2,
+   "defend:dodge": 149,
+   "mod:Charge": 1,
+   "defend:shift": 3,
+   "limber": 6,
+   "natural:Budding Gore": 8,
+   "manifest:Bloom": 15,
+   "manifest:Flourish": 12,
+   "natural:Black Jaws": 11,
+   "Smashing": 2,
+   "smashing": 2,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 1,
+   "Brace": 1,
+   "opt:wild=str2": 1,
+   "opt:dir=down": 1,
+   "manifest:Corrode+": 10,
+   "manifest:Immolate+": 2,
+   "manifest:Irradiate+": 2,
+   "ward": 11,
+   "manifest:Consecrate": 11,
+   "cast:Cut + Glob": 3,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "limber:skipped": 3,
+   "manifest:Eclipse": 9,
+   "manifest:Umbral Strike": 9,
+   "opt:dir=into": 1,
+   "opt:crunch": 1,
+   "cast:Glob": 10,
+   "cast:nothingAffordable": 10,
+   "manifest:Immolate": 9,
+   "manifest:Irradiate": 9,
+   "manifest:Corrode": 1
+  },
+  "hp": {
+   "L60 Radiation#wp9I": "1074/1134",
+   "L60 Creation#tg1D": "756/756",
+   "L60 Weighted#5yBs": "464/1134",
+   "L60 Acid#Bian": "1134/1134",
+   "L60 Destruction#qSjj": "1134/1134",
+   "Sim Thicket#2ZGm": "1410/3240",
+   "Sim Gloamhound#gYAs": "942/1944",
+   "Sim Gloamhound#lCyv": "734/1944",
+   "Sim Burgeon#zIly": "1270/2592"
+  },
+  "down": [
+   "L60 Weighted",
+   "Sim Thicket",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Spell: Cut + Crackle": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 15,
+    "crits": 7,
+    "misses": 9,
+    "damage": 1746,
+    "ap": 72,
+    "kills": 4,
+    "users": [
+     "L60 Radiation"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 2,
+    "damage": 464,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 4,
+    "damage": 180,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Heavy Weighted": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 2,
+    "damage": 40,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L60 Weighted"
+    ],
+    "force": 12
+   },
+   "Manifest: Corrode (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 10,
+    "crits": 6,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Destruction"
+    ]
+   },
+   "Manifest: Immolate (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Destruction"
+    ]
+   },
+   "Manifest: Irradiate (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 7,
+    "crits": 3,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Destruction"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 10,
+    "crits": 5,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Creation"
+    ]
+   },
+   "Manifest: Consecrate (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Creation"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Creation"
+    ]
+   },
+   "Spell: Cut + Glob": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L60 Acid"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 4,
+    "damage": 86,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 7,
+    "crits": 5,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 4,
+    "damage": 40,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "L60 Acid"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Creation"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 8,
+    "absorbed": 217
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 32
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Radiation",
+    "dealt": 1746,
+    "taken": 60,
+    "hits": 15,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 104,
+    "taken": 186,
+    "hits": 6,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 464,
+    "taken": 872,
+    "hits": 11,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Weighted",
+    "dealt": 40,
+    "taken": 670,
+    "hits": 3,
+    "attacks": 5
+   },
+   {
+    "name": "L60 Destruction",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 33
+   },
+   {
+    "name": "L60 Creation",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 26,
+    "attacks": 41
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 76,
+    "taken": 6,
+    "hits": 15,
+    "attacks": 22
+   },
+   {
+    "name": "L60 Acid",
+    "dealt": 40,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 13
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 86,
+    "taken": 750,
+    "hits": 8,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Radiation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 12,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Cut + Crackle": 24,
+     "mod:Bleed": 2,
+     "mod:Rend": 13,
+     "mod:Electrify": 2,
+     "mod:Charge": 1,
+     "defend:dodge": 13
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 93.40770846134703,
+    "attacks": 7,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 28,
+     "natural:Black Jaws": 3,
+     "manifest:Eclipse": 2,
+     "manifest:Umbral Strike": 2
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 85,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 20,
+    "used": {
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "defend:dodge": 2,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L60 Weighted",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:shift": 3,
+     "defend:dodge": 17,
+     "limber": 6,
+     "Smashing": 2,
+     "smashing": 2,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 3
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "wild": 0,
+    "knockbacks": {
+     "down": 1,
+     "into": 1
+    }
+   },
+   {
+    "name": "L60 Destruction",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 33,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 33,
+    "used": {
+     "manifest:Corrode+": 10,
+     "manifest:Immolate+": 2,
+     "manifest:Irradiate+": 2,
+     "manifest:Immolate": 9,
+     "manifest:Irradiate": 9,
+     "manifest:Corrode": 1
+    }
+   },
+   {
+    "name": "L60 Creation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 11,
+     "manifest:Consecrate": 11,
+     "defend:dodge": 45,
+     "manifest:Bloom": 11,
+     "manifest:Flourish": 8
+    },
+    "manifests": 30
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 129.4030650891055,
+    "attacks": 22,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 8,
+     "defend:dodge": 40,
+     "manifest:Eclipse": 7,
+     "manifest:Umbral Strike": 7
+    },
+    "manifests": 14
+   },
+   {
+    "name": "L60 Acid",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 13,
+    "used": {
+     "cast:Cut + Glob": 3,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Glob": 10,
+     "cast:nothingAffordable": 10
+    }
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 95,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 4
+    },
+    "manifests": 4
+   }
+  ],
+  "trees": {
+   "L60 Radiation": {
+    "magic-theory": 2,
+    "magic-radiation": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-stealth": 3,
+    "generic-ambush": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Creation": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-creation-dream": 5,
+    "generic-initiative": 3,
+    "generic-delay": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Weighted": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-weighted-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-insight": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Acid": {
+    "magic-theory": 2,
+    "magic-acid": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 1
+   },
+   "L60 Destruction": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-destruction-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2
+   }
+  },
+  "gear": {
+   "L60 Radiation": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Creation": [
+    "Unarmed G1"
+   ],
+   "L60 Weighted": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Weighted (Steel) G11"
+   ],
+   "L60 Acid": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Destruction": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Radiation": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Creation": [],
+   "L60 Weighted": [
+    "Medium Armor (Hard Leather): 197/420",
+    "Heavy Weighted (Steel): 990/990"
+   ],
+   "L60 Acid": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Destruction": [],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5292,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5292,
+    "monsterHp": 9515,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5018,
+    "monsterHp": 9220,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 4562,
+    "monsterHp": 8750,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 4562,
+    "monsterHp": 8712,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 4562,
+    "monsterHp": 8712,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 4562,
+    "monsterHp": 8712,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 4562,
+    "monsterHp": 8141,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 4562,
+    "monsterHp": 7468,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 4562,
+    "monsterHp": 6592,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 4562,
+    "monsterHp": 5825,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 4562,
+    "monsterHp": 4908,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 4562,
+    "monsterHp": 4356,
+    "partyDown": 1,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Radiation": 1989,
+    "L60 Weighted": 28,
+    "L60 Destruction": 2310,
+    "Sim Thicket": 464,
+    "Sim Gloamhound": 180,
+    "Sim Burgeon": 86,
+    "L60 Acid": 957
+   },
+   "taken": {
+    "Sim Gloamhound": 2212,
+    "L60 Weighted": 670,
+    "L60 Radiation": 60,
+    "Sim Burgeon": 1322,
+    "Sim Thicket": 1830
+   },
+   "unattributed": 80
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 1189
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 4175
+  },
+  "lostBy": {
+   "party": 730,
+   "monsters": 5364
+  },
+  "directTaken": {
+   "party": 2544,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Radiation: Alacrity?": 1,
+    "prompt: L# Creation: Alacrity?": 1,
+    "prompt: L# Weighted: Alacrity?": 1,
+    "prompt: L# Acid: Alacrity?": 1,
+    "prompt: L# Destruction: Alacrity?": 1,
+    "prompt: L# Radiation: Resist Allure (as Fear)": 2,
+    "prompt: L# Creation: Resist Allure (as Fear)": 2,
+    "prompt: L# Weighted: Resist Allure (as Fear)": 2,
+    "prompt: L# Acid: Resist Allure (as Fear)": 2,
+    "prompt: L# Destruction: Resist Allure (as Fear)": 2,
+    "prompt: L# Radiation: Resist Dread (as Fear)": 2,
+    "prompt: L# Creation: Resist Dread (as Fear)": 2,
+    "prompt: L# Weighted: Resist Dread (as Fear)": 2,
+    "prompt: L# Acid: Resist Dread (as Fear)": 2,
+    "prompt: L# Destruction: Resist Dread (as Fear)": 2,
+    "prompt: Riposte Ward": 69,
+    "prompt: Infuse (Tenet)": 12,
+    "prompt: Infuse: which Mode?": 12,
+    "prompt: L# Weighted — Shift": 3,
+    "prompt: Verdant Soul (Tenet)": 3,
+    "prompt: Verdant Soul: give # temp HP to": 3,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Weighted (Steel)": 4,
+    "prompt: Knockback — Sim Gloamhound": 2,
+    "prompt: Sanctum Ward: L# Creation": 11,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Shadowmark (Tenet)": 8,
+    "prompt: Shadowmark: make one step more obscured": 8,
+    "prompt: Umbral Strike": 7,
+    "prompt: Alter (Tenet)": 6,
+    "prompt: Alter": 6,
+    "prompt: Sporing": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Weighted needs 68 Energy for Smashing but has 49.",
+     "who": "L60 Weighted"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Acid is afraid and can't gain Energy.",
+     "who": "L60 Acid"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

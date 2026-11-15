@@ -1,0 +1,2196 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 321,
+  "winner": "monsters",
+  "pass": "grand-60-p7",
+  "rounds": 11,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 57,
+  "knockbacks": {
+   "down": 1,
+   "into": 4,
+   "away": 2
+  },
+  "used": {
+   "properStance": 6,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 1,
+   "Brace": 3,
+   "opt:takeAim=adv": 6,
+   "opt:coolBreath": 12,
+   "opt:heave": 1,
+   "defend:dodge": 330,
+   "limber:skipped": 13,
+   "opt:takeAim=str": 6,
+   "Shatter": 8,
+   "Leap": 2,
+   "Spot Weakness": 2,
+   "Dash": 2,
+   "opt:shank1=adv": 4,
+   "opt:shank2=dodge": 6,
+   "opt:shank3=pierce": 4,
+   "opt:thrust": 1,
+   "defend:shift": 114,
+   "twist": 1,
+   "impale": 1,
+   "opt:twinFang=adv": 4,
+   "manifest:Provoke": 3,
+   "manifest:Warzone": 3,
+   "manifest:Bloodbond": 3,
+   "ward": 9,
+   "manifest:Pacify": 9,
+   "manifest:Guard": 5,
+   "Parry": 6,
+   "opt:shank1=pierce": 2,
+   "opt:shank2=cleave": 2,
+   "opt:shank3=adv": 4,
+   "cast:Force + Cut": 21,
+   "mod:Bleed": 6,
+   "mod:Rend": 39,
+   "mod:Gash": 1,
+   "cast:Poison (coat self)": 5,
+   "mod:Potency": 1,
+   "cast:Cut + Flame": 20,
+   "mod:Ignition": 2,
+   "opt:harden": 1,
+   "Bodyslam": 12,
+   "manifest:Wither+": 10,
+   "manifest:Waste+": 7,
+   "manifest:Execute+": 2,
+   "followup:quickload": 3,
+   "riposte": 10,
+   "recoverEnergy": 5,
+   "cast:Cut": 8,
+   "Dip": 6,
+   "opt:launch": 6,
+   "manifest:Absolution": 7,
+   "opt:shank1=dodge": 2,
+   "opt:who": 1,
+   "passPoison": 1,
+   "manifest:Execute": 8,
+   "limber": 4,
+   "opt:dir=down": 1,
+   "manifest:Waste": 3,
+   "opt:dir=into": 4,
+   "manifest:Bloom": 3,
+   "opt:crunch": 1,
+   "cast:Charm": 2,
+   "mod:Convince": 2,
+   "mod:Cloud": 2,
+   "opt:dir=away": 2,
+   "Trudge": 1
+  },
+  "hp": {
+   "L60 Assault#SHj3": "663/1134",
+   "L60 Grasp Arcana#RaUN": "496/1134",
+   "L60 Peace#FBpE": "486/1134",
+   "L60 Heavy Armor#9n7L": "538/1018",
+   "L60 Venomancy#v0NA": "336/673",
+   "L60 War#mSsg": "428/1134",
+   "L60 Dexterity#wtzh": "739/1134",
+   "L60 Charm#ygQ9": "1134/1134",
+   "L60 Snappence#ygeJ": "1123/1134",
+   "L60 Reach#2atm": "321/1134"
+  },
+  "down": [
+   "L60 Assault",
+   "L60 Grasp Arcana",
+   "L60 Peace",
+   "L60 Heavy Armor",
+   "L60 Venomancy",
+   "L60 War",
+   "L60 Reach"
+  ],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 12,
+    "followups": 9,
+    "hits": 10,
+    "crits": 5,
+    "misses": 11,
+    "damage": 670,
+    "ap": 36,
+    "kills": 1,
+    "users": [
+     "L60 Assault"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 57,
+    "followups": 0,
+    "hits": 20,
+    "crits": 13,
+    "misses": 37,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 1,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "L60 Reach"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 10,
+    "followups": 33,
+    "hits": 15,
+    "crits": 5,
+    "misses": 28,
+    "damage": 110,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Reach",
+     "L60 Dexterity"
+    ]
+   },
+   "Manifest: Provoke (Manifest) [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   },
+   "Manifest: Warzone (Manifest) [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   },
+   "Manifest: Bloodbond (Manifest) [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Manifest: Pacify (Manifest)": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Manifest: Guard (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 32,
+    "followups": 2,
+    "hits": 17,
+    "crits": 7,
+    "misses": 17,
+    "damage": 124,
+    "ap": 64,
+    "kills": 1,
+    "users": [
+     "L60 Dexterity"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 7,
+    "damage": 2084,
+    "ap": 57,
+    "kills": 0,
+    "users": [
+     "L60 Charm"
+    ],
+    "force": 0
+   },
+   "Spell: Force + Poison": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 5,
+    "crits": 5,
+    "misses": 0,
+    "damage": 0,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "L60 Venomancy"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 4,
+    "kills": 4,
+    "users": [
+     "L60 Venomancy"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 17,
+    "damage": 218,
+    "ap": 60,
+    "kills": 1,
+    "users": [
+     "L60 Grasp Arcana"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 8,
+    "followups": 23,
+    "hits": 5,
+    "crits": 1,
+    "misses": 27,
+    "damage": 224,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Other: Bodyslam": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 5,
+    "damage": 179,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Manifest: Waste (Manifest) [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Manifest: Execute (Manifest) [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 7,
+    "crits": 6,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 96,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "L60 Venomancy"
+    ]
+   },
+   "Other: Bodyslam (Launch)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Manifest: Absolution (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Spell: Force + Cut [M] [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Charm"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Spell: Charm [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L60 Charm"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Steel)": {
+    "hits": 11,
+    "absorbed": 716
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 56
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 11,
+    "absorbed": 116
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Assault",
+    "dealt": 670,
+    "taken": 243,
+    "hits": 10,
+    "attacks": 21
+   },
+   {
+    "name": "L60 War",
+    "dealt": 0,
+    "taken": 658,
+    "hits": 2,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Snappence",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 36,
+    "attacks": 87
+   },
+   {
+    "name": "L60 Reach",
+    "dealt": 1,
+    "taken": 389,
+    "hits": 8,
+    "attacks": 11
+   },
+   {
+    "name": "L60 Heavy Armor",
+    "dealt": 403,
+    "taken": 416,
+    "hits": 7,
+    "attacks": 44
+   },
+   {
+    "name": "L60 Dexterity",
+    "dealt": 234,
+    "taken": 340,
+    "hits": 25,
+    "attacks": 67
+   },
+   {
+    "name": "L60 Peace",
+    "dealt": 0,
+    "taken": 614,
+    "hits": 17,
+    "attacks": 33
+   },
+   {
+    "name": "L60 Venomancy",
+    "dealt": 96,
+    "taken": 408,
+    "hits": 8,
+    "attacks": 15
+   },
+   {
+    "name": "L60 Charm",
+    "dealt": 2084,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Grasp Arcana",
+    "dealt": 218,
+    "taken": 638,
+    "hits": 3,
+    "attacks": 20
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Assault",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 21,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "properStance": 6,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 13,
+     "defend:dodge": 18,
+     "followup:quickload": 3,
+     "Dip": 1,
+     "defend:shift": 2,
+     "limber": 4
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 18
+   },
+   {
+    "name": "L60 War",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 6,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 30,
+     "manifest:Provoke": 3,
+     "manifest:Warzone": 3,
+     "manifest:Bloodbond": 3
+    },
+    "turnMoved": 0,
+    "manifests": 9
+   },
+   {
+    "name": "L60 Reach",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 93.64245239985216,
+    "attacks": 11,
+    "turns": 4,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 2,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "defend:shift": 19,
+     "defend:dodge": 21,
+     "twist": 1,
+     "impale": 1
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0,
+    "lastTech": "dragon"
+   },
+   {
+    "name": "L60 Heavy Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 36.40054944640259,
+    "attacks": 35,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 92,
+     "Parry": 5,
+     "Brace": 2,
+     "Bodyslam": 12,
+     "riposte": 8,
+     "Dip": 5,
+     "Trudge": 1
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "slams": 12,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "L60 Dexterity",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 206.3158449634384,
+    "attacks": 65,
+    "turns": 11,
+    "kills": 0,
+    "used": {
+     "defend:shift": 93,
+     "defend:dodge": 79,
+     "Parry": 1,
+     "Shatter": 6,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "riposte": 2
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0,
+    "lastTech": "dragon"
+   },
+   {
+    "name": "L60 Peace",
+    "side": "party",
+    "role": "caster",
+    "moved": 60,
+    "attacks": 9,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 60,
+    "used": {
+     "ward": 9,
+     "manifest:Pacify": 9,
+     "manifest:Guard": 5,
+     "defend:dodge": 37,
+     "recoverEnergy": 2,
+     "manifest:Absolution": 7,
+     "manifest:Bloom": 3
+    },
+    "manifests": 24
+   },
+   {
+    "name": "L60 Venomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 28,
+     "cast:Poison (coat self)": 5,
+     "mod:Potency": 1,
+     "cast:Force + Cut": 2,
+     "mod:Rend": 1,
+     "mod:Bleed": 1,
+     "cast:Cut": 8,
+     "passPoison": 1
+    },
+    "turnMoved": 0,
+    "casts": 15
+   },
+   {
+    "name": "L60 Charm",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Force + Cut": 19,
+     "mod:Bleed": 2,
+     "mod:Rend": 19,
+     "defend:dodge": 9,
+     "mod:Gash": 1,
+     "cast:Charm": 2,
+     "mod:Convince": 2,
+     "mod:Cloud": 2,
+     "recoverEnergy": 3
+    },
+    "knockbacks": {
+     "down": 1,
+     "into": 3,
+     "away": 2
+    }
+   },
+   {
+    "name": "L60 Grasp Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 20,
+    "used": {
+     "cast:Cut + Flame": 20,
+     "mod:Bleed": 3,
+     "mod:Rend": 19,
+     "mod:Ignition": 2,
+     "defend:dodge": 14
+    }
+   },
+   {
+    "name": "L60 Snappence",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 15,
+    "attacks": 30,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 30,
+    "used": {
+     "manifest:Wither+": 10,
+     "manifest:Waste+": 7,
+     "manifest:Execute+": 2,
+     "manifest:Execute": 8,
+     "defend:dodge": 2,
+     "manifest:Waste": 3
+    }
+   }
+  ],
+  "trees": {
+   "L60 Assault": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-assault-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-endurance": 2,
+    "generic-fortitude": 3,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Grasp Arcana": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Peace": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-peace-dream": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Heavy Armor": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-heavy-armor": 5,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2
+   },
+   "L60 Venomancy": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-venomancy": 5,
+    "magic-slashing": 5,
+    "generic-endurance": 3,
+    "generic-stamina": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Assault": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Assault (Steel) G11"
+   ],
+   "L60 Grasp Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Peace": [
+    "Unarmed G1"
+   ],
+   "L60 Heavy Armor": [
+    "Unarmed G1",
+    "Heavy Armor (Steel) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Venomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 War": [
+    "Unarmed"
+   ],
+   "L60 Dexterity": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Bladed (Steel)"
+   ],
+   "L60 Charm": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Snappence": [
+    "Unarmed"
+   ],
+   "L60 Reach": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Reach (Steel)"
+   ]
+  },
+  "gearState": {
+   "L60 Assault": [
+    "Medium Armor (Hard Leather): 336/420",
+    "Heavy Assault (Steel): 990/990"
+   ],
+   "L60 Grasp Arcana": [
+    "Light Armor (Hard Leather): 96/120"
+   ],
+   "L60 Peace": [],
+   "L60 Heavy Armor": [
+    "Heavy Armor (Steel): 0/840 BROKEN",
+    "Heavy Balanced (Steel): 1172/1980"
+   ],
+   "L60 Venomancy": [
+    "Light Armor (Hard Leather): 52/60"
+   ],
+   "L60 War": [],
+   "L60 Dexterity": [
+    "Light Armor (Hard Leather): 154/210",
+    "Light Bladed (Steel): 495/495"
+   ],
+   "L60 Charm": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Snappence": [],
+   "L60 Reach": [
+    "Light Armor (Hard Leather): 182/210",
+    "Light Reach (Steel): 495/495"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5292,
+    "monsterHp": 5670,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5240,
+    "monsterHp": 5613,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5050,
+    "monsterHp": 5455,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 4917,
+    "monsterHp": 5038,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 4753,
+    "monsterHp": 4124,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 4463,
+    "monsterHp": 4114,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 3920,
+    "monsterHp": 4089,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 3282,
+    "monsterHp": 4089,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 3196,
+    "monsterHp": 3979,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 3016,
+    "monsterHp": 3979,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 2777,
+    "monsterHp": 3745,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 2519,
+    "monsterHp": 3745,
+    "partyDown": 5,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Assault": 670,
+    "L60 Reach": 52,
+    "L60 Charm": 2113,
+    "L60 Grasp Arcana": 682,
+    "L60 Snappence": 12,
+    "L60 Venomancy": 96,
+    "L60 Heavy Armor": 205,
+    "L60 Dexterity": 359
+   },
+   "taken": {
+    "L60 War": 706,
+    "L60 Snappence": 11,
+    "L60 Heavy Armor": 596,
+    "L60 Assault": 471,
+    "L60 Venomancy": 420,
+    "L60 Reach": 813,
+    "L60 Dexterity": 395,
+    "L60 Peace": 648,
+    "L60 Grasp Arcana": 638
+   },
+   "unattributed": 509
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 8
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1917
+  },
+  "lostBy": {
+   "party": 2773,
+   "monsters": 1925
+  },
+  "directTaken": {
+   "party": 3706,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Assault: Alacrity?": 1,
+    "prompt: L# Grasp Arcana: Alacrity?": 1,
+    "prompt: L# Peace: Alacrity?": 1,
+    "prompt: L# Heavy Armor: Alacrity?": 1,
+    "prompt: L# Venomancy: Alacrity?": 1,
+    "prompt: L# War: Alacrity?": 1,
+    "prompt: L# Dexterity: Alacrity?": 1,
+    "prompt: L# Snappence: Alacrity?": 1,
+    "prompt: L# Charm: Alacrity?": 1,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Assault (Steel)": 12,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 8,
+    "prompt: Warden Ward": 37,
+    "prompt: Light Reach (Steel)": 1,
+    "prompt: Reflex": 175,
+    "prompt: Manifest: L# Snappence": 57,
+    "prompt: L# Reach — Shift": 19,
+    "prompt: L# War: Empower": 11,
+    "prompt: L# War: Warmonger": 12,
+    "prompt: L# Peace: Dampen": 11,
+    "prompt: Unarmed": 10,
+    "prompt: L# Dexterity — Shift": 93,
+    "prompt: Sanctum Ward: L# Peace": 9,
+    "prompt: Light Bladed (Steel)": 32,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 31,
+    "prompt: Mortal Coil (Tenet)": 11,
+    "prompt: L# Peace: Serenity": 98,
+    "prompt: Brace": 2,
+    "prompt: Heavy Balanced (Steel)": 8,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 15,
+    "prompt: Bodyslam": 12,
+    "prompt: Fixation": 10,
+    "prompt: Heavy Balanced (Steel) — Riposte": 8,
+    "prompt: The Poison passes from L# Venomancy to": 1,
+    "prompt: L# Assault — Shift": 2,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 1,
+    "prompt: Force — L# Venomancy": 2,
+    "prompt: Unarmed — Riposte": 2,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel) (Dis)": 2,
+    "prompt: Force — L# Grasp Arcana": 3,
+    "prompt: Launch — L# Dexterity": 1,
+    "prompt: Force — L# Peace": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Assault needs 68 Energy for Proper Stance but has 65.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 11.",
+     "who": "L60 Heavy Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 11.",
+     "who": "L60 Dexterity"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 11.",
+     "who": "L60 Dexterity"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 11.",
+     "who": "L60 Heavy Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 11.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 11.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 11.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 11.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 8.",
+     "who": "L60 Heavy Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 8.",
+     "who": "L60 Heavy Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 13.",
+     "who": "L60 Snappence"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 6.",
+     "who": "L60 Dexterity"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 6.",
+     "who": "L60 Dexterity"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 6.",
+     "who": "L60 Dexterity"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 6.",
+     "who": "L60 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 6.",
+     "who": "L60 Charm"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 175,
+  "winner": "party",
+  "pass": "grand-60-p7",
+  "rounds": 8,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 20,
+  "knockbacks": {
+   "into": 1
+  },
+  "used": {
+   "properStance": 7,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 1,
+   "Brace": 2,
+   "opt:takeAim=adv": 8,
+   "opt:coolBreath": 16,
+   "opt:heave": 1,
+   "defend:dodge": 113,
+   "limber:skipped": 9,
+   "opt:takeAim=str": 8,
+   "natural:Black Jaws": 6,
+   "natural:Budding Gore": 8,
+   "manifest:Bloom": 4,
+   "manifest:Flourish": 4,
+   "cast:Cut + Flame": 14,
+   "mod:Bleed": 3,
+   "mod:Rend": 10,
+   "mod:Ignition": 2,
+   "ward": 7,
+   "manifest:Pacify": 7,
+   "manifest:Guard": 7,
+   "cast:Poison (coat self)": 1,
+   "mod:Potency": 1,
+   "cast:Force + Cut": 2,
+   "Parry": 1,
+   "opt:harden": 1,
+   "Bodyslam": 4,
+   "riposte": 5,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "limber": 13,
+   "followup:quickload": 4,
+   "manifest:Eclipse": 3,
+   "manifest:Umbral Strike": 3,
+   "cast:Cut": 6,
+   "cast:nothingAffordable": 6,
+   "Dip": 3,
+   "opt:launch": 2,
+   "opt:dir=into": 1,
+   "opt:crunch": 1,
+   "properStance:skipped": 1,
+   "manifest:Absolution": 3,
+   "Trudge": 1
+  },
+  "hp": {
+   "L60 Assault#UdJS": "1134/1134",
+   "L60 Grasp Arcana#qZOP": "1134/1134",
+   "L60 Peace#2FbX": "954/1134",
+   "L60 Heavy Armor#kvCd": "1101/1134",
+   "L60 Venomancy#6OHP": "756/756",
+   "Sim Thicket#jkwd": "1455/3240",
+   "Sim Gloamhound#juZ4": "277/1944",
+   "Sim Gloamhound#Dq86": "872/1944",
+   "Sim Burgeon#sL0M": "1274/2592"
+  },
+  "down": [
+   "Sim Thicket",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Heavy Assault": {
+    "attacks": 16,
+    "followups": 12,
+    "hits": 22,
+    "crits": 10,
+    "misses": 6,
+    "damage": 1670,
+    "ap": 48,
+    "kills": 1,
+    "users": [
+     "L60 Assault"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 6,
+    "damage": 33,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 10,
+    "crits": 4,
+    "misses": 4,
+    "damage": 701,
+    "ap": 42,
+    "kills": 2,
+    "users": [
+     "L60 Grasp Arcana"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Manifest: Pacify (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Manifest: Guard (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   },
+   "Spell: Force + Poison": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "L60 Venomancy"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L60 Venomancy"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 6,
+    "followups": 10,
+    "hits": 10,
+    "crits": 2,
+    "misses": 6,
+    "damage": 456,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Other: Bodyslam": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 25,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 0,
+    "damage": 181,
+    "ap": 12,
+    "kills": 1,
+    "users": [
+     "L60 Venomancy"
+    ]
+   },
+   "Other: Bodyslam (Launch)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 3,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 5,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L60 Heavy Armor"
+    ]
+   },
+   "Manifest: Absolution (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Peace"
+    ]
+   }
+  },
+  "armor": {
+   "Heavy Armor (Steel)": {
+    "hits": 9,
+    "absorbed": 753
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Assault",
+    "dealt": 1670,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 28
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 279,
+    "hits": 1,
+    "attacks": 1
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 616,
+    "hits": 9,
+    "attacks": 11
+   },
+   {
+    "name": "L60 Heavy Armor",
+    "dealt": 486,
+    "taken": 33,
+    "hits": 13,
+    "attacks": 24
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 33,
+    "taken": 1121,
+    "hits": 5,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Grasp Arcana",
+    "dealt": 701,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 14
+   },
+   {
+    "name": "L60 Peace",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 16,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Venomancy",
+    "dealt": 181,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 9
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 0,
+    "taken": 1022,
+    "hits": 10,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Assault",
+    "side": "party",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 28,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "properStance": 7,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 9,
+     "limber": 13,
+     "followup:quickload": 4,
+     "properStance:skipped": 1,
+     "Dip": 1
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "aim": 1,
+    "reloads": 24
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100.62305898749054,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "natural:Black Jaws": 1
+    },
+    "turnMoved": 100.62305898749054
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 206.69824550880674,
+    "attacks": 11,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 5,
+     "defend:dodge": 53,
+     "manifest:Eclipse": 3,
+     "manifest:Umbral Strike": 3
+    },
+    "manifests": 6
+   },
+   {
+    "name": "L60 Heavy Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 18,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 30,
+     "Parry": 1,
+     "Brace": 1,
+     "Bodyslam": 4,
+     "riposte": 5,
+     "Dip": 2,
+     "Trudge": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "slams": 4,
+    "shank": 2,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 65.76473218982952,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4,
+     "defend:dodge": 3
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L60 Grasp Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 14,
+    "used": {
+     "cast:Cut + Flame": 14,
+     "mod:Bleed": 2,
+     "mod:Rend": 9,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "L60 Peace",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 7,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 7,
+     "manifest:Pacify": 7,
+     "manifest:Guard": 7,
+     "manifest:Absolution": 3,
+     "defend:dodge": 3
+    },
+    "manifests": 17
+   },
+   {
+    "name": "L60 Venomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Poison (coat self)": 1,
+     "mod:Potency": 1,
+     "defend:dodge": 7,
+     "cast:Force + Cut": 2,
+     "mod:Rend": 1,
+     "mod:Bleed": 1,
+     "cast:Cut": 6,
+     "cast:nothingAffordable": 6
+    }
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 76.48529270389177,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 11,
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4
+    },
+    "manifests": 4
+   }
+  ],
+  "trees": {
+   "L60 Assault": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-assault-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-endurance": 2,
+    "generic-fortitude": 3,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Grasp Arcana": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Peace": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-peace-dream": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Heavy Armor": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-heavy-armor": 5,
+    "martial-strength-methods": 5,
+    "generic-endurance": 3,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2,
+    "generic-composure": 2
+   },
+   "L60 Venomancy": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-venomancy": 5,
+    "magic-slashing": 5,
+    "generic-endurance": 3,
+    "generic-stamina": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Assault": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Assault (Steel) G11"
+   ],
+   "L60 Grasp Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Peace": [
+    "Unarmed G1"
+   ],
+   "L60 Heavy Armor": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G11",
+    "Heavy Armor (Steel) G8"
+   ],
+   "L60 Venomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Assault": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Assault (Steel): 990/990"
+   ],
+   "L60 Grasp Arcana": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Peace": [],
+   "L60 Heavy Armor": [
+    "Heavy Balanced (Steel): 1980/1980",
+    "Heavy Armor (Steel): 83/840"
+   ],
+   "L60 Venomancy": [
+    "Light Armor (Hard Leather): 60/60"
+   ],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5292,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5257,
+    "monsterHp": 7966,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 5184,
+    "monsterHp": 7576,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 5184,
+    "monsterHp": 7390,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 5079,
+    "monsterHp": 7269,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 5079,
+    "monsterHp": 6520,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 5079,
+    "monsterHp": 5312,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 8,
+    "partyHp": 5079,
+    "monsterHp": 4208,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 8,
+    "partyHp": 5079,
+    "monsterHp": 3878,
+    "partyDown": 0,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Assault": 1670,
+    "Sim Thicket": 33,
+    "L60 Grasp Arcana": 2401,
+    "L60 Peace": 908,
+    "L60 Heavy Armor": 419,
+    "L60 Venomancy": 181,
+    "Sim Burgeon": 178
+   },
+   "taken": {
+    "Sim Gloamhound": 2739,
+    "L60 Heavy Armor": 33,
+    "L60 Peace": 180,
+    "Sim Burgeon": 1318,
+    "Sim Thicket": 1785
+   },
+   "unattributed": 265
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 1144
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 4698
+  },
+  "lostBy": {
+   "party": 213,
+   "monsters": 5842
+  },
+  "directTaken": {
+   "party": 3071,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana: Alacrity?": 1,
+    "prompt: L# Peace: Alacrity?": 1,
+    "prompt: L# Heavy Armor: Alacrity?": 1,
+    "prompt: L# Venomancy: Alacrity?": 1,
+    "prompt: L# Assault: Alacrity?": 1,
+    "prompt: L# Grasp Arcana: Resist Allure (as Fear)": 2,
+    "prompt: L# Peace: Resist Allure (as Fear)": 2,
+    "prompt: Face Your Fear?": 4,
+    "prompt: L# Heavy Armor: Resist Allure (as Fear)": 2,
+    "prompt: L# Venomancy: Resist Allure (as Fear)": 2,
+    "prompt: L# Assault: Resist Allure (as Fear)": 2,
+    "prompt: L# Grasp Arcana: Resist Dread (as Fear)": 2,
+    "prompt: L# Peace: Resist Dread (as Fear)": 2,
+    "prompt: L# Heavy Armor: Resist Dread (as Fear)": 2,
+    "prompt: L# Venomancy: Resist Dread (as Fear)": 2,
+    "prompt: L# Assault: Resist Dread (as Fear)": 2,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Assault (Steel)": 16,
+    "prompt: Riposte Ward": 50,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up": 5,
+    "prompt: L# Peace: Dampen": 5,
+    "prompt: Verdant Soul (Tenet)": 2,
+    "prompt: Verdant Soul: give # temp HP to": 2,
+    "prompt: Sanctum Ward: L# Peace": 7,
+    "prompt: L# Peace: Guard": 3,
+    "prompt: Brace": 1,
+    "prompt: Heavy Balanced (Steel)": 6,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8,
+    "prompt: Bodyslam": 4,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Heavy Assault (Steel) — Solitary follow-up (Dis)": 7,
+    "prompt: Shadowmark (Tenet)": 3,
+    "prompt: Shadowmark: make one step more obscured": 3,
+    "prompt: L# Peace: Serenity": 27,
+    "prompt: Umbral Strike": 3,
+    "prompt: Unarmed — Riposte": 3,
+    "prompt: Launch — Sim Gloamhound": 1,
+    "prompt: Sporing": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "The Actor mpGwEst1ZIy2VYLX does not exist in actors",
+     "who": "L60 Charm"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Assault needs 68 Energy for Proper Stance but has 51.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace is afraid and can't gain Energy.",
+     "who": "L60 Peace"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Venomancy is afraid and can't gain Energy.",
+     "who": "L60 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace is afraid and can't gain Energy.",
+     "who": "L60 Peace"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Venomancy is afraid and can't gain Energy.",
+     "who": "L60 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace is afraid and can't gain Energy.",
+     "who": "L60 Peace"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Venomancy is afraid and can't gain Energy.",
+     "who": "L60 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Assault needs 68 Energy for Proper Stance but has 55.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Venomancy is afraid and can't gain Energy.",
+     "who": "L60 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Assault needs 68 Energy for Proper Stance but has 67.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Venomancy is afraid and can't gain Energy.",
+     "who": "L60 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Heavy Armor can't move through Sim Gloamhound's space.",
+     "who": "L60 Heavy Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Heavy Armor is afraid and can't gain Energy.",
+     "who": "L60 Heavy Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Assault needs 68 Energy for Proper Stance but has 67.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 3.",
+     "who": "L60 Grasp Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 3.",
+     "who": "L60 Grasp Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Venomancy is afraid and can't gain Energy.",
+     "who": "L60 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Heavy Armor can't move through Sim Gloamhound's space.",
+     "who": "L60 Venomancy"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Heavy Armor is afraid and can't gain Energy.",
+     "who": "L60 Heavy Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 16.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 16.",
+     "who": "L60 Assault"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Peace needs 17 Energy for Serenity but has 16.",
+     "who": "L60 Assault"
+    }
+   ],
+   "errors": [
+    "Error: The Actor mpGwEst1ZIy2VYLX does not exist in actors\n    at Actor.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/database/backend/server-document.mjs:1:10936)\n    at async fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:291)\n    at async #configureOperation (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:231:24)\n    at async #configureDelete (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:198:5)\n    at"
+   ]
+  }
+ }
+]

@@ -1,0 +1,1916 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 311,
+  "winner": "monsters",
+  "pass": "grand-60-p8",
+  "rounds": 15,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 29,
+  "knockbacks": {
+   "into": 4,
+   "away": 1
+  },
+  "used": {
+   "cast:Hex": 4,
+   "mod:Unravel": 1,
+   "defend:shift": 100,
+   "defend:dodge": 340,
+   "cast:Force + Cut": 53,
+   "mod:Rend": 52,
+   "mod:Bleed": 5,
+   "mod:Gash": 2,
+   "opt:dir=into": 1,
+   "manifest:Provoke": 15,
+   "manifest:Warzone": 15,
+   "manifest:Bloodbond": 13,
+   "ward": 6,
+   "manifest:Illuminate+": 6,
+   "manifest:Dispersion+": 6,
+   "manifest:Bloom": 4,
+   "manifest:Eclipse+": 14,
+   "manifest:Umbral Strike+": 14,
+   "manifest:Wither+": 26,
+   "Shatter": 6,
+   "Leap": 3,
+   "Spot Weakness": 3,
+   "opt:shank1=adv": 3,
+   "opt:shank2=dodge": 4,
+   "opt:shank3=pierce": 3,
+   "opt:thrust": 5,
+   "opt:shank1=pierce": 2,
+   "opt:shank2=cleave": 2,
+   "opt:shank3=adv": 3,
+   "twist": 1,
+   "impale": 1,
+   "opt:through=adv": 1,
+   "opt:letItRip": 2,
+   "opt:through=pierce": 1,
+   "manifest:Waste+": 8,
+   "manifest:Execute+": 2,
+   "Parry": 1,
+   "cast:Cut": 6,
+   "opt:shank1=dodge": 1,
+   "manifest:Execute": 10,
+   "Dash": 1,
+   "recoverEnergy": 5,
+   "manifest:Waste": 4,
+   "manifest:Wither": 2
+  },
+  "hp": {
+   "L60 War#mqjQ": "396/1013",
+   "L60 Dexterity#hGNq": "156/1069",
+   "L60 Charm#KtRC": "423/1134",
+   "L60 Snappence#KgYU": "477/1134",
+   "L60 Reach#Xlci": "535/1046",
+   "L60 Witchery#VRcP": "410/1134",
+   "L60 Light#ESXO": "566/1081",
+   "L60 Circular#fN36": "363/1134",
+   "L60 Build Arcana#aGQr": "873/1134",
+   "L60 Dark#3hSG": "1134/1134"
+  },
+  "down": [
+   "L60 War",
+   "L60 Dexterity",
+   "L60 Charm",
+   "L60 Snappence",
+   "L60 Reach",
+   "L60 Witchery",
+   "L60 Light",
+   "L60 Circular"
+  ],
+  "weapons": {
+   "Spell: Hex [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "L60 Witchery"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 31,
+    "followups": 0,
+    "hits": 13,
+    "crits": 1,
+    "misses": 18,
+    "damage": 2174,
+    "ap": 91,
+    "kills": 0,
+    "users": [
+     "L60 Witchery",
+     "L60 Build Arcana"
+    ],
+    "force": 0
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 59,
+    "followups": 0,
+    "hits": 27,
+    "crits": 9,
+    "misses": 32,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 26,
+    "followups": 0,
+    "hits": 17,
+    "crits": 4,
+    "misses": 9,
+    "damage": 1583,
+    "ap": 66,
+    "kills": 6,
+    "users": [
+     "L60 Charm"
+    ]
+   },
+   "Manifest: Provoke (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 9,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   },
+   "Manifest: Warzone (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   },
+   "Manifest: Bloodbond (Manifest)": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Light"
+    ]
+   },
+   "Manifest: Illuminate (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Light"
+    ]
+   },
+   "Manifest: Dispersion [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Light"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Light"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 10,
+    "crits": 4,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Dark"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Dark"
+    ]
+   },
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Dark"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 5,
+    "followups": 5,
+    "hits": 4,
+    "crits": 1,
+    "misses": 6,
+    "damage": 37,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "L60 Reach"
+    ]
+   },
+   "Light Circular": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 7,
+    "damage": 423,
+    "ap": 26,
+    "kills": 1,
+    "users": [
+     "L60 Circular"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 24,
+    "hits": 6,
+    "crits": 2,
+    "misses": 18,
+    "damage": 567,
+    "ap": 0,
+    "kills": 1,
+    "users": [
+     "L60 Circular",
+     "L60 Dexterity"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 7,
+    "crits": 0,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence",
+     "L60 War"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 5,
+    "crits": 4,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 12,
+    "crits": 4,
+    "misses": 10,
+    "damage": 192,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "L60 Dexterity"
+    ]
+   },
+   "Spell: Cut [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 24,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L60 Witchery"
+    ]
+   },
+   "Manifest: Bloodbond": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 25,
+    "absorbed": 246
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Witchery",
+    "dealt": 24,
+    "taken": 495,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Dexterity",
+    "dealt": 297,
+    "taken": 616,
+    "hits": 14,
+    "attacks": 22
+   },
+   {
+    "name": "L60 Reach",
+    "dealt": 37,
+    "taken": 437,
+    "hits": 4,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Charm",
+    "dealt": 1583,
+    "taken": 711,
+    "hits": 17,
+    "attacks": 26
+   },
+   {
+    "name": "L60 Snappence",
+    "dealt": 0,
+    "taken": 656,
+    "hits": 43,
+    "attacks": 95
+   },
+   {
+    "name": "L60 Light",
+    "dealt": 0,
+    "taken": 442,
+    "hits": 12,
+    "attacks": 22
+   },
+   {
+    "name": "L60 War",
+    "dealt": 0,
+    "taken": 663,
+    "hits": 24,
+    "attacks": 48
+   },
+   {
+    "name": "L60 Build Arcana",
+    "dealt": 2174,
+    "taken": 210,
+    "hits": 13,
+    "attacks": 29
+   },
+   {
+    "name": "L60 Dark",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 42
+   },
+   {
+    "name": "L60 Circular",
+    "dealt": 885,
+    "taken": 770,
+    "hits": 10,
+    "attacks": 26
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Witchery",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 12,
+    "used": {
+     "cast:Hex": 4,
+     "mod:Unravel": 1,
+     "cast:Force + Cut": 2,
+     "mod:Rend": 1,
+     "mod:Bleed": 1,
+     "defend:dodge": 27,
+     "cast:Cut": 6
+    }
+   },
+   {
+    "name": "L60 Dexterity",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 80,
+    "attacks": 22,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:shift": 68,
+     "defend:dodge": 45,
+     "Parry": 1,
+     "Shatter": 2,
+     "Leap": 1,
+     "Spot Weakness": 1
+    },
+    "fist": "Dip",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "L60 Reach",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 89.44271909999159,
+    "attacks": 10,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:shift": 11,
+     "defend:dodge": 16,
+     "Shatter": 1,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "twist": 1,
+     "impale": 1
+    },
+    "fist": "Dip",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "L60 Charm",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 11,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 34,
+     "cast:Force + Cut": 22,
+     "mod:Bleed": 2,
+     "mod:Rend": 22,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 22,
+    "knockbacks": {
+     "into": 4
+    }
+   },
+   {
+    "name": "L60 Light",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16,
+     "ward": 6,
+     "manifest:Illuminate+": 6,
+     "manifest:Dispersion+": 6,
+     "manifest:Bloom": 4
+    },
+    "turnMoved": 0,
+    "manifests": 16
+   },
+   {
+    "name": "L60 War",
+    "side": "party",
+    "role": "caster",
+    "moved": 35,
+    "attacks": 32,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 45,
+    "used": {
+     "manifest:Provoke": 15,
+     "defend:dodge": 62,
+     "manifest:Warzone": 15,
+     "manifest:Bloodbond": 13,
+     "manifest:Wither+": 2
+    }
+   },
+   {
+    "name": "L60 Build Arcana",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 83,
+     "cast:Force + Cut": 29,
+     "mod:Bleed": 2,
+     "mod:Rend": 29,
+     "mod:Gash": 1,
+     "recoverEnergy": 3
+    },
+    "turnMoved": 0,
+    "casts": 29,
+    "knockbacks": {
+     "away": 1
+    }
+   },
+   {
+    "name": "L60 Snappence",
+    "side": "party",
+    "role": "caster",
+    "moved": 35,
+    "attacks": 36,
+    "turns": 12,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13,
+     "manifest:Wither+": 12,
+     "manifest:Waste+": 8,
+     "manifest:Execute+": 2,
+     "manifest:Execute": 10,
+     "manifest:Waste": 4
+    },
+    "turnMoved": 0,
+    "manifests": 36
+   },
+   {
+    "name": "L60 Dark",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 42,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 42,
+    "used": {
+     "manifest:Eclipse+": 14,
+     "manifest:Umbral Strike+": 14,
+     "manifest:Wither+": 12,
+     "defend:dodge": 14,
+     "manifest:Wither": 2
+    }
+   },
+   {
+    "name": "L60 Circular",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 28.284271247461902,
+    "attacks": 26,
+    "turns": 5,
+    "kills": 0,
+    "fist": "Shatter",
+    "used": {
+     "Shatter": 3,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "defend:shift": 21,
+     "defend:dodge": 30,
+     "Dash": 1,
+     "recoverEnergy": 2
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 2,
+    "thr": 1
+   }
+  ],
+  "trees": {
+   "L60 War": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-war-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Dexterity": {
+    "martial-theory": 3,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-dexterity-methods": 5,
+    "martial-light-armor": 5,
+    "generic-composure": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Charm": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-charm": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2
+   },
+   "L60 Snappence": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-snappence-arts": 5,
+    "mental-death-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2
+   },
+   "L60 Reach": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-reach-weapons": 5,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-athletics": 3,
+    "generic-acrobatics": 3
+   }
+  },
+  "gear": {
+   "L60 War": [
+    "Unarmed G1"
+   ],
+   "L60 Dexterity": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Bladed (Steel) G11"
+   ],
+   "L60 Charm": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Snappence": [
+    "Unarmed G1"
+   ],
+   "L60 Reach": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Reach (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Witchery": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Light": [
+    "Unarmed"
+   ],
+   "L60 Circular": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Circular (Steel)"
+   ],
+   "L60 Build Arcana": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Dark": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 War": [],
+   "L60 Dexterity": [
+    "Light Armor (Hard Leather): 153/210",
+    "Light Bladed (Steel): 456/495"
+   ],
+   "L60 Charm": [
+    "Light Armor (Hard Leather): 80/120"
+   ],
+   "L60 Snappence": [],
+   "L60 Reach": [
+    "Light Armor (Hard Leather): 196/210",
+    "Light Reach (Steel): 495/495"
+   ],
+   "L60 Witchery": [
+    "Light Armor (Hard Leather): 72/120"
+   ],
+   "L60 Light": [],
+   "L60 Circular": [
+    "Light Armor (Hard Leather): 43/210",
+    "Light Circular (Steel): 437/495"
+   ],
+   "L60 Build Arcana": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Dark": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 5670,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5366,
+    "monsterHp": 5061,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 4909,
+    "monsterHp": 4959,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 4718,
+    "monsterHp": 4903,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 4596,
+    "monsterHp": 4434,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 4102,
+    "monsterHp": 4194,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 4102,
+    "monsterHp": 3961,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 4016,
+    "monsterHp": 3519,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 9,
+    "partyHp": 3896,
+    "monsterHp": 3512,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 3893,
+    "monsterHp": 3430,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 11,
+    "partyHp": 3893,
+    "monsterHp": 3346,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 3298,
+    "monsterHp": 3346,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 13,
+    "partyHp": 3095,
+    "monsterHp": 3346,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 14,
+    "partyHp": 2381,
+    "monsterHp": 3346,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 15,
+    "partyHp": 2246,
+    "monsterHp": 3346,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 15,
+    "partyHp": 1987,
+    "monsterHp": 3346,
+    "partyDown": 5,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Charm": 1709,
+    "L60 Dark": 72,
+    "L60 Reach": 88,
+    "L60 Circular": 956,
+    "L60 Build Arcana": 2274,
+    "L60 Dexterity": 297,
+    "L60 Witchery": 24
+   },
+   "taken": {
+    "L60 Witchery": 724,
+    "L60 Light": 568,
+    "L60 War": 738,
+    "L60 Build Arcana": 261,
+    "L60 Reach": 599,
+    "L60 Dexterity": 978,
+    "L60 Circular": 771,
+    "L60 Charm": 711,
+    "L60 Snappence": 657
+   },
+   "unattributed": 587
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 2324
+  },
+  "lostBy": {
+   "party": 3683,
+   "monsters": 2324
+  },
+  "directTaken": {
+   "party": 5000,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# War: Alacrity?": 1,
+    "prompt: L# Dexterity: Alacrity?": 1,
+    "prompt: L# Charm: Alacrity?": 1,
+    "prompt: L# Witchery: Alacrity?": 1,
+    "prompt: L# Light: Alacrity?": 1,
+    "prompt: L# Snappence: Alacrity?": 1,
+    "prompt: L# Build Arcana: Alacrity?": 1,
+    "prompt: L# Dark: Alacrity?": 1,
+    "prompt: L# Dexterity — Shift": 12,
+    "prompt: L# Reach — Shift": 11,
+    "prompt: Reflex": 25,
+    "prompt: Manifest: L# Snappence": 9,
+    "prompt: Force — L# Witchery": 1,
+    "prompt: Sanctum Ward: L# Light": 2,
+    "prompt: Beacon (Tenet)": 2,
+    "prompt: Dispersion": 2,
+    "prompt: Shadowmark (Tenet)": 2,
+    "prompt: Shadowmark: make one step more obscured": 2,
+    "prompt: Warden Ward": 4,
+    "prompt: Light Reach (Steel)": 5,
+    "prompt: Light Reach (Steel) — Solitary follow-up (Dis)": 5,
+    "prompt: L# War: Empower": 2,
+    "prompt: L# War: Warmonger": 2,
+    "prompt: Light Circular (Steel)": 3,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 5,
+    "prompt: Fixation": 1,
+    "prompt: Mortal Coil (Tenet)": 2,
+    "prompt: Light Bladed (Steel)": 2,
+    "prompt: L# Circular — Shift": 6,
+    "prompt: Dispersion (Enhanced)": 1,
+    "prompt: Umbral Strike": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Reach needs 68 Energy for Impale but has 55.",
+     "who": "L60 Reach"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Circular can't move through L60 Dexterity's space.",
+     "who": "L60 Circular"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 160,
+  "winner": "party",
+  "pass": "grand-60-p8",
+  "rounds": 7,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 26,
+  "knockbacks": {},
+  "used": {
+   "cast:Force + Cut": 9,
+   "mod:Bleed": 2,
+   "mod:Rend": 7,
+   "defend:dodge": 158,
+   "mod:Gash": 1,
+   "manifest:Provoke": 6,
+   "manifest:Warzone": 6,
+   "manifest:Bloodbond": 6,
+   "defend:shift": 42,
+   "manifest:Eclipse": 5,
+   "Shatter": 3,
+   "Leap": 2,
+   "Spot Weakness": 2,
+   "Dash": 2,
+   "opt:shank1=adv": 2,
+   "opt:shank2=dodge": 2,
+   "opt:shank3=pierce": 2,
+   "opt:thrust": 5,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 1,
+   "twist": 4,
+   "impale": 1,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "Parry": 1,
+   "natural:Black Jaws": 8,
+   "manifest:Umbral Strike": 4,
+   "riposte": 1,
+   "natural:Budding Gore": 8,
+   "manifest:Bloom": 4,
+   "manifest:Flourish": 4,
+   "cast:Charm": 4,
+   "mod:Cloud": 4,
+   "manifest:Wither+": 4,
+   "manifest:Waste+": 2,
+   "manifest:Execute+": 2,
+   "impale:skipped": 22,
+   "twist:skipped": 19,
+   "manifest:Wither": 1,
+   "manifest:Waste": 3,
+   "manifest:Execute": 3
+  },
+  "hp": {
+   "L60 War#Y9Xr": "1134/1134",
+   "L60 Dexterity#EUrD": "126/1134",
+   "L60 Charm#VABJ": "1134/1134",
+   "L60 Snappence#tplG": "1128/1134",
+   "L60 Reach#CYTN": "954/1134",
+   "Sim Thicket#7aSG": "1634/3075",
+   "Sim Gloamhound#1L85": "903/1944",
+   "Sim Gloamhound#8vlH": "684/1944",
+   "Sim Burgeon#jBHN": "1389/2448"
+  },
+  "down": [
+   "L60 Dexterity",
+   "Sim Thicket",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 35,
+    "followups": 0,
+    "hits": 14,
+    "crits": 5,
+    "misses": 21,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 8,
+    "crits": 7,
+    "misses": 1,
+    "damage": 2363,
+    "ap": 27,
+    "kills": 3,
+    "users": [
+     "L60 Charm"
+    ]
+   },
+   "Manifest: Provoke (Manifest)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   },
+   "Manifest: Warzone (Manifest)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   },
+   "Manifest: Bloodbond (Manifest)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 4,
+    "damage": 298,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Light Reach": {
+    "attacks": 17,
+    "followups": 17,
+    "hits": 23,
+    "crits": 10,
+    "misses": 11,
+    "damage": 1347,
+    "ap": 34,
+    "kills": 1,
+    "users": [
+     "L60 Reach"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 8,
+    "damage": 0,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 8,
+    "followups": 1,
+    "hits": 8,
+    "crits": 1,
+    "misses": 5,
+    "damage": 306,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L60 Dexterity"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 9,
+    "hits": 6,
+    "crits": 2,
+    "misses": 3,
+    "damage": 310,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Dexterity"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 632,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Spell: Charm": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 12,
+    "kills": 0,
+    "users": [
+     "L60 Charm"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Snappence"
+    ]
+   },
+   "Manifest: Bloodbond": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 War"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 98
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Snappence",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 23,
+    "attacks": 50
+   },
+   {
+    "name": "L60 Charm",
+    "dealt": 2363,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 13
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 59,
+    "taken": 455,
+    "hits": 1,
+    "attacks": 1
+   },
+   {
+    "name": "L60 War",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 23
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 632,
+    "taken": 1581,
+    "hits": 8,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Dexterity",
+    "dealt": 616,
+    "taken": 750,
+    "hits": 14,
+    "attacks": 18
+   },
+   {
+    "name": "L60 Reach",
+    "dealt": 1347,
+    "taken": 180,
+    "hits": 23,
+    "attacks": 34
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 0,
+    "taken": 1092,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 239,
+    "taken": 1198,
+    "hits": 8,
+    "attacks": 16
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Charm",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 13,
+    "used": {
+     "cast:Force + Cut": 9,
+     "mod:Bleed": 2,
+     "mod:Rend": 7,
+     "defend:dodge": 10,
+     "mod:Gash": 1,
+     "cast:Charm": 4,
+     "mod:Cloud": 4
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90.55385138137417,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "manifest:Eclipse": 1
+    },
+    "turnMoved": 90.55385138137417,
+    "manifests": 1
+   },
+   {
+    "name": "L60 War",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 12,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 18,
+    "used": {
+     "manifest:Provoke": 6,
+     "defend:dodge": 10,
+     "manifest:Warzone": 6,
+     "manifest:Bloodbond": 6
+    }
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "L60 Dexterity",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 80,
+    "attacks": 17,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:shift": 26,
+     "defend:dodge": 32,
+     "Parry": 1,
+     "Shatter": 2,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "riposte": 1
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "L60 Reach",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 89.44271909999159,
+    "attacks": 34,
+    "turns": 6,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 1,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "defend:shift": 16,
+     "defend:dodge": 19,
+     "twist": 4,
+     "impale": 1,
+     "impale:skipped": 22,
+     "twist:skipped": 19
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 31,
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 31.925824035672523,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 5,
+    "used": {
+     "defend:dodge": 46,
+     "natural:Black Jaws": 8,
+     "manifest:Eclipse": 4,
+     "manifest:Umbral Strike": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L60 Snappence",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 15,
+    "used": {
+     "manifest:Wither+": 4,
+     "manifest:Waste+": 2,
+     "manifest:Execute+": 2,
+     "manifest:Wither": 1,
+     "manifest:Waste": 3,
+     "manifest:Execute": 3
+    }
+   }
+  ],
+  "trees": {
+   "L60 War": {
+    "mental-theory": 2,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-war-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Dexterity": {
+    "martial-theory": 3,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-dexterity-methods": 5,
+    "martial-light-armor": 5,
+    "generic-composure": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Charm": {
+    "magic-theory": 3,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-charm": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2
+   },
+   "L60 Snappence": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-snappence-arts": 5,
+    "mental-death-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2
+   },
+   "L60 Reach": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-reach-weapons": 5,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-athletics": 3,
+    "generic-acrobatics": 3
+   }
+  },
+  "gear": {
+   "L60 War": [
+    "Unarmed G1"
+   ],
+   "L60 Dexterity": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Bladed (Steel) G11"
+   ],
+   "L60 Charm": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Snappence": [
+    "Unarmed G1"
+   ],
+   "L60 Reach": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Reach (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 War": [],
+   "L60 Dexterity": [
+    "Light Armor (Hard Leather): 95/210",
+    "Light Bladed (Steel): 428/495"
+   ],
+   "L60 Charm": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Snappence": [],
+   "L60 Reach": [
+    "Light Armor (Hard Leather): 182/210",
+    "Light Reach (Steel): 495/495"
+   ],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5605,
+    "monsterHp": 8373,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 5157,
+    "monsterHp": 7639,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 4914,
+    "monsterHp": 7148,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 4734,
+    "monsterHp": 6803,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 4648,
+    "monsterHp": 6128,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 7,
+    "partyHp": 4562,
+    "monsterHp": 5032,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 7,
+    "partyHp": 4476,
+    "monsterHp": 4610,
+    "partyDown": 1,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Charm": 2363,
+    "L60 Reach": 1447,
+    "L60 Dexterity": 615,
+    "Sim Gloamhound": 245,
+    "L60 Snappence": 62,
+    "Sim Thicket": 632
+   },
+   "taken": {
+    "Sim Gloamhound": 2301,
+    "L60 Dexterity": 1008,
+    "Sim Burgeon": 1203,
+    "Sim Thicket": 1628,
+    "L60 Snappence": 6,
+    "L60 Reach": 180
+   },
+   "unattributed": 962
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 5110
+  },
+  "lostBy": {
+   "party": 1194,
+   "monsters": 5110
+  },
+  "directTaken": {
+   "party": 5256,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# War: Alacrity?": 1,
+    "prompt: L# Snappence: Alacrity?": 1,
+    "prompt: L# Dexterity: Alacrity?": 1,
+    "prompt: L# Charm: Alacrity?": 1,
+    "prompt: L# War: Resist Allure (as Fear)": 2,
+    "prompt: L# Reach: Resist Allure (as Fear)": 2,
+    "prompt: L# Snappence: Resist Allure (as Fear)": 2,
+    "prompt: L# Dexterity: Resist Allure (as Fear)": 2,
+    "prompt: L# Charm: Resist Allure (as Fear)": 2,
+    "prompt: L# War: Resist Dread (as Fear)": 2,
+    "prompt: L# Reach: Resist Dread (as Fear)": 2,
+    "prompt: L# Snappence: Resist Dread (as Fear)": 2,
+    "prompt: L# Dexterity: Resist Dread (as Fear)": 2,
+    "prompt: L# Charm: Resist Dread (as Fear)": 2,
+    "prompt: Reflex": 96,
+    "prompt: Manifest: L# Snappence": 35,
+    "prompt: Riposte Ward": 26,
+    "prompt: Mortal Coil (Tenet)": 7,
+    "prompt: Warden Ward": 7,
+    "prompt: L# Dexterity — Shift": 26,
+    "prompt: Fixation": 6,
+    "prompt: Light Reach (Steel)": 17,
+    "prompt: L# Reach — Shift": 16,
+    "prompt: Light Reach (Steel) — Solitary follow-up (Dis)": 17,
+    "prompt: L# War: Empower": 7,
+    "prompt: L# War: Warmonger": 8,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Light Bladed (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 9,
+    "prompt: Light Bladed (Steel) — Riposte": 1,
+    "prompt: Verdant Soul (Tenet)": 4,
+    "prompt: Verdant Soul: give # temp HP to": 4,
+    "prompt: L# War: Bloodbond": 5,
+    "prompt: Shadowmark (Tenet)": 2,
+    "prompt: Shadowmark: make one step more obscured": 2,
+    "prompt: Sporing": 1,
+    "prompt: Umbral Strike": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't act.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Reach needs 68 Energy for Impale but has 61.",
+     "who": "L60 Reach"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Charm is afraid and can't gain Energy.",
+     "who": "L60 Charm"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

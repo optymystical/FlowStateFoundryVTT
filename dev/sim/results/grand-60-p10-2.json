@@ -1,0 +1,1835 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 236,
+  "winner": "party",
+  "pass": "grand-60-p10",
+  "rounds": 7,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 22,
+  "knockbacks": {
+   "into": 5,
+   "away": 3,
+   "down": 1
+  },
+  "used": {
+   "Parry": 4,
+   "Shatter": 8,
+   "Leap": 3,
+   "Spot Weakness": 3,
+   "opt:shank1=adv": 4,
+   "opt:shank2=dodge": 5,
+   "opt:shank3=pierce": 4,
+   "defend:dodge": 151,
+   "manifest:Exact+": 1,
+   "defend:shift": 88,
+   "manifest:Hone": 1,
+   "manifest:Masterstroke+": 1,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Taunt": 4,
+   "Unstoppable": 1,
+   "manifest:Bloom": 3,
+   "manifest:Flourish": 1,
+   "cast:Force + Cut": 41,
+   "mod:Rend": 16,
+   "mod:Bleed": 9,
+   "ward": 7,
+   "manifest:Crescendo": 7,
+   "manifest:Adaptive Skin": 7,
+   "Dash": 1,
+   "opt:punch": 7,
+   "opt:dir=into": 5,
+   "limber": 23,
+   "opt:shank1=pierce": 3,
+   "opt:shank2=cleave": 3,
+   "opt:shank3=adv": 4,
+   "opt:disarm": 1,
+   "momentum:adv": 5,
+   "momentum:str": 5,
+   "Sheath Weapon": 1,
+   "opt:dir=away": 3,
+   "mod:Gash": 1,
+   "opt:twinFang=adv": 3,
+   "defend:perfectParry": 6,
+   "riposte": 6,
+   "cast:nothingAffordable": 6,
+   "recoverEnergy": 28,
+   "manifest:Second Wind": 5,
+   "opt:shank1=dodge": 1,
+   "Dip": 1,
+   "limber:skipped": 2,
+   "opt:dir=down": 1,
+   "opt:execute": 1
+  },
+  "hp": {
+   "L60 Blast#oyuc": "808/1134",
+   "L60 Summoning#qT1u": "1134/1134",
+   "L60 Adaptation#WEXK": "859/1134",
+   "L60 Light Armor#Q5fS": "542/1134",
+   "L60 Creation School#kXHY": "1032/1134",
+   "L60 Perfection#AmUH": "322/756",
+   "L60 Constitution#124q": "476/1134",
+   "L60 Animation#WNKz": "453/1134",
+   "L60 Willpower#Yecn": "301/1134",
+   "L60 Curved#YSLG": "513/1134"
+  },
+  "down": [
+   "L60 Light Armor",
+   "L60 Perfection",
+   "L60 Constitution",
+   "L60 Animation",
+   "L60 Willpower",
+   "L60 Curved"
+  ],
+  "weapons": {
+   "Light Bladed": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 188,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L60 Light Armor"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 6,
+    "followups": 5,
+    "hits": 2,
+    "crits": 0,
+    "misses": 9,
+    "damage": 142,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L60 Light Armor",
+     "L60 Blast"
+    ]
+   },
+   "Manifest: Exact (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Perfection"
+    ]
+   },
+   "Manifest: Hone (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Perfection"
+    ]
+   },
+   "Manifest: Masterstroke (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Perfection"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 9,
+    "followups": 9,
+    "hits": 7,
+    "crits": 1,
+    "misses": 11,
+    "damage": 316,
+    "ap": 27,
+    "kills": 1,
+    "users": [
+     "L60 Constitution"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 10,
+    "damage": 342,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "L60 Animation"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   },
+   "Manifest: Crescendo (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   },
+   "Manifest: Adaptive Skin (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   },
+   "Light Blast": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 10,
+    "crits": 2,
+    "misses": 11,
+    "damage": 390,
+    "ap": 40,
+    "kills": 0,
+    "users": [
+     "L60 Blast"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 8,
+    "followups": 14,
+    "hits": 10,
+    "crits": 2,
+    "misses": 12,
+    "damage": 397,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "L60 Curved"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 10,
+    "crits": 7,
+    "misses": 20,
+    "damage": 1991,
+    "ap": 64,
+    "kills": 5,
+    "users": [
+     "L60 Summoning",
+     "L60 Creation School"
+    ],
+    "force": 0
+   },
+   "Manifest: Second Wind (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 25,
+    "absorbed": 178
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 56
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Light Armor",
+    "dealt": 330,
+    "taken": 592,
+    "hits": 6,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Perfection",
+    "dealt": 0,
+    "taken": 434,
+    "hits": 0,
+    "attacks": 3
+   },
+   {
+    "name": "L60 Willpower",
+    "dealt": 0,
+    "taken": 475,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "L60 Blast",
+    "dealt": 390,
+    "taken": 240,
+    "hits": 10,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Constitution",
+    "dealt": 316,
+    "taken": 658,
+    "hits": 7,
+    "attacks": 18
+   },
+   {
+    "name": "L60 Animation",
+    "dealt": 342,
+    "taken": 523,
+    "hits": 5,
+    "attacks": 15
+   },
+   {
+    "name": "L60 Creation School",
+    "dealt": 1431,
+    "taken": 90,
+    "hits": 5,
+    "attacks": 15
+   },
+   {
+    "name": "L60 Adaptation",
+    "dealt": 0,
+    "taken": 133,
+    "hits": 10,
+    "attacks": 28
+   },
+   {
+    "name": "L60 Curved",
+    "dealt": 397,
+    "taken": 621,
+    "hits": 10,
+    "attacks": 22
+   },
+   {
+    "name": "L60 Summoning",
+    "dealt": 560,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 15
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Light Armor",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 91.7877987534291,
+    "attacks": 10,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Shatter": 2,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "defend:shift": 30,
+     "defend:dodge": 30
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0,
+    "lastTech": "dragon"
+   },
+   {
+    "name": "L60 Perfection",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "manifest:Exact+": 1,
+     "manifest:Hone": 1,
+     "manifest:Masterstroke+": 1
+    },
+    "turnMoved": 10,
+    "manifests": 3
+   },
+   {
+    "name": "L60 Willpower",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "manifest:Bloom": 1,
+     "manifest:Flourish": 1
+    },
+    "turnMoved": 0,
+    "manifests": 2
+   },
+   {
+    "name": "L60 Blast",
+    "side": "party",
+    "role": "ranged",
+    "moved": 80,
+    "attacks": 20,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:shift": 25,
+     "defend:dodge": 30,
+     "Shatter": 4,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "riposte": 3
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 1,
+    "knockbacks": {
+     "into": 1
+    },
+    "reloads": 10,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Constitution",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 65,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 2,
+     "Taunt": 4,
+     "Unstoppable": 1,
+     "defend:shift": 17,
+     "defend:dodge": 22,
+     "limber": 23,
+     "Dip": 1,
+     "limber:skipped": 2,
+     "recoverEnergy": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 40
+   },
+   {
+    "name": "L60 Animation",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 15,
+    "used": {
+     "cast:Force + Cut": 15,
+     "mod:Rend": 5,
+     "mod:Bleed": 1,
+     "cast:nothingAffordable": 3,
+     "recoverEnergy": 12,
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "L60 Creation School",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "cast:Force + Cut": 12,
+     "mod:Bleed": 7,
+     "mod:Rend": 7,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 12,
+    "knockbacks": {
+     "into": 3,
+     "away": 1,
+     "down": 1
+    }
+   },
+   {
+    "name": "L60 Adaptation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 7,
+     "manifest:Crescendo": 7,
+     "defend:dodge": 16,
+     "manifest:Adaptive Skin": 7,
+     "manifest:Bloom": 2,
+     "manifest:Second Wind": 5
+    },
+    "manifests": 21
+   },
+   {
+    "name": "L60 Curved",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 31.18033988749895,
+    "attacks": 19,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Shatter": 2,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "momentum:adv": 5,
+     "momentum:str": 5,
+     "Sheath Weapon": 1,
+     "defend:shift": 16,
+     "defend:dodge": 15,
+     "defend:perfectParry": 6,
+     "riposte": 3
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 20,
+    "shank": 1,
+    "disarms": 2,
+    "mom": 0
+   },
+   {
+    "name": "L60 Summoning",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 14,
+    "used": {
+     "cast:Force + Cut": 14,
+     "mod:Rend": 4,
+     "mod:Bleed": 1,
+     "cast:nothingAffordable": 3,
+     "recoverEnergy": 14
+    },
+    "knockbacks": {
+     "into": 1,
+     "away": 2
+    }
+   }
+  ],
+  "trees": {
+   "L60 Blast": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-blast-weapons": 5,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 2,
+    "generic-fortitude": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-recovery": 1
+   },
+   "L60 Summoning": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-summoning": 5,
+    "magic-slashing": 5,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2
+   },
+   "L60 Adaptation": {
+    "mental-theory": 3,
+    "mental-light-dream": 2,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-adaptation-dream": 5,
+    "mental-life-dream": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Light Armor": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 3,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Creation School": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-creation": 5,
+    "magic-slashing": 5,
+    "generic-endurance": 3,
+    "generic-stamina": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2
+   }
+  },
+  "gear": {
+   "L60 Blast": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Blast (Steel) G11"
+   ],
+   "L60 Summoning": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Adaptation": [
+    "Unarmed G1"
+   ],
+   "L60 Light Armor": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Bladed (Steel) G11"
+   ],
+   "L60 Creation School": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Perfection": [
+    "Unarmed"
+   ],
+   "L60 Constitution": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Animation": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Willpower": [
+    "Unarmed"
+   ],
+   "L60 Curved": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Curved (Steel)"
+   ]
+  },
+  "gearState": {
+   "L60 Blast": [
+    "Light Armor (Hard Leather): 90/210",
+    "Light Blast (Steel): 495/495"
+   ],
+   "L60 Summoning": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Adaptation": [],
+   "L60 Light Armor": [
+    "Light Armor (Hard Leather): 22/210"
+   ],
+   "L60 Creation School": [
+    "Light Armor (Hard Leather): 96/120"
+   ],
+   "L60 Perfection": [],
+   "L60 Constitution": [
+    "Medium Armor (Hard Leather): 358/420",
+    "Heavy Balanced (Steel): 1851/1980"
+   ],
+   "L60 Animation": [
+    "Light Armor (Hard Leather): 92/120"
+   ],
+   "L60 Willpower": [],
+   "L60 Curved": [
+    "Light Armor (Hard Leather): 196/210",
+    "Light Curved (Steel): 389/495"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 5292,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5419,
+    "monsterHp": 4383,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 4995,
+    "monsterHp": 4025,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 4863,
+    "monsterHp": 3404,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 5,
+    "partyHp": 4609,
+    "monsterHp": 3072,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 6,
+    "partyHp": 4456,
+    "monsterHp": 2746,
+    "partyDown": 1,
+    "monstersDown": 4
+   },
+   {
+    "round": 7,
+    "partyHp": 4456,
+    "monsterHp": 2551,
+    "partyDown": 1,
+    "monstersDown": 4
+   },
+   {
+    "round": 7,
+    "partyHp": 4375,
+    "monsterHp": 2065,
+    "partyDown": 1,
+    "monstersDown": 5,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Light Armor": 330,
+    "L60 Perfection": 86,
+    "L60 Animation": 342,
+    "L60 Blast": 390,
+    "L60 Curved": 204,
+    "L60 Summoning": 560,
+    "L60 Creation School": 1431,
+    "L60 Constitution": 316
+   },
+   "taken": {
+    "L60 Perfection": 434,
+    "L60 Willpower": 833,
+    "L60 Blast": 326,
+    "L60 Creation School": 102,
+    "L60 Light Armor": 592,
+    "L60 Adaptation": 275,
+    "L60 Curved": 621,
+    "L60 Constitution": 658,
+    "L60 Animation": 681
+   },
+   "unattributed": 863
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 3227
+  },
+  "lostBy": {
+   "party": 1295,
+   "monsters": 3227
+  },
+  "directTaken": {
+   "party": 3766,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Blast: Alacrity?": 1,
+    "prompt: L# Adaptation: Alacrity?": 1,
+    "prompt: L# Light Armor: Alacrity?": 1,
+    "prompt: L# Summoning: Alacrity?": 1,
+    "prompt: L# Animation: Alacrity?": 1,
+    "prompt: L# Willpower: Alacrity?": 1,
+    "prompt: L# Perfection: Alacrity?": 1,
+    "prompt: L# Constitution: Alacrity?": 1,
+    "prompt: L# Creation School: Alacrity?": 1,
+    "prompt: Light Bladed (Steel)": 2,
+    "prompt: Exploit Opening": 2,
+    "prompt: Warden Ward": 13,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 2,
+    "prompt: L# Blast — Shift": 25,
+    "prompt: Versatility": 1,
+    "prompt: Taunt": 4,
+    "prompt: Heavy Balanced (Steel)": 9,
+    "prompt: L# Light Armor — Shift": 30,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 9,
+    "prompt: Sanctum Ward: L# Willpower": 1,
+    "prompt: Verdant Soul (Tenet)": 1,
+    "prompt: Verdant Soul: give # temp HP to": 1,
+    "prompt: Sanctum Ward: L# Adaptation": 7,
+    "confirm: Adapt (Tenet)": 7,
+    "prompt: Memory": 13,
+    "prompt: Light Blast (Steel)": 20,
+    "prompt: Knockback — L# Perfection": 1,
+    "prompt: L# Constitution — Shift": 17,
+    "prompt: Light Curved (Steel)": 8,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 11,
+    "confirm: Sheath Weapon": 1,
+    "prompt: Force — L# Perfection": 2,
+    "prompt: Force — L# Willpower": 1,
+    "prompt: L# Curved — Shift": 16,
+    "prompt: Unarmed": 6,
+    "prompt: L# Curved — Perfect Parry": 6,
+    "prompt: Light Curved (Steel) — Riposte": 3,
+    "prompt: Unarmed — Riposte": 3,
+    "prompt: Force — L# Curved": 1,
+    "prompt: Force — L# Constitution": 2,
+    "prompt: Force — L# Animation": 2
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [JsCnnFcDkf0ZTqWf] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Witchery"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Curved needs 68 Energy for Sheath Weapon but has 67.",
+     "who": "L60 Curved"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [JsCnnFcDkf0ZTqWf] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at async #configureOperation (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/"
+   ]
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 260,
+  "winner": "party",
+  "pass": "grand-60-p10",
+  "rounds": 9,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 18,
+  "knockbacks": {},
+  "used": {
+   "cast:Force + Cut": 21,
+   "mod:Bleed": 3,
+   "mod:Rend": 12,
+   "defend:dodge": 180,
+   "mod:Gash": 1,
+   "Shatter": 8,
+   "Leap": 2,
+   "Spot Weakness": 2,
+   "Dash": 2,
+   "opt:shank1=adv": 2,
+   "opt:shank2=dodge": 2,
+   "opt:shank3=pierce": 2,
+   "opt:punch": 7,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 1,
+   "Parry": 3,
+   "defend:shift": 33,
+   "natural:Black Jaws": 10,
+   "manifest:Eclipse": 6,
+   "manifest:Umbral Strike": 6,
+   "natural:Budding Gore": 8,
+   "manifest:Bloom": 5,
+   "manifest:Flourish": 4,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "riposte": 5,
+   "ward": 8,
+   "manifest:Crescendo": 8,
+   "manifest:Adaptive Skin": 8,
+   "opt:area": 9,
+   "cast:Cut": 7,
+   "cast:nothingAffordable": 7,
+   "manifest:Second Wind": 7,
+   "opt:twinFang=adv": 2
+  },
+  "hp": {
+   "L60 Blast#RtsM": "1134/1134",
+   "L60 Summoning#BYH4": "1134/1134",
+   "L60 Adaptation#7aG8": "824/1134",
+   "L60 Light Armor#o2DA": "689/1134",
+   "L60 Creation School#pHE0": "1134/1134",
+   "Sim Thicket#qGbp": "1399/3240",
+   "Sim Gloamhound#03qi": "957/1944",
+   "Sim Gloamhound#8iil": "936/1944",
+   "Sim Burgeon#5R6q": "1278/2592"
+  },
+  "down": [
+   "Sim Thicket",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Spell: Force + Cut": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 15,
+    "crits": 5,
+    "misses": 6,
+    "damage": 1829,
+    "ap": 60,
+    "kills": 2,
+    "users": [
+     "L60 Creation School",
+     "L60 Summoning"
+    ]
+   },
+   "Light Blast": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 17,
+    "crits": 10,
+    "misses": 24,
+    "damage": 882,
+    "ap": 46,
+    "kills": 1,
+    "users": [
+     "L60 Blast"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 14,
+    "followups": 4,
+    "hits": 18,
+    "crits": 8,
+    "misses": 10,
+    "damage": 953,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L60 Light Armor"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 9,
+    "followups": 18,
+    "hits": 12,
+    "crits": 6,
+    "misses": 15,
+    "damage": 794,
+    "ap": 18,
+    "kills": 1,
+    "users": [
+     "L60 Light Armor"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 5,
+    "damage": 129,
+    "ap": 20,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 7,
+    "damage": 146,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 2,
+    "damage": 170,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 5,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   },
+   "Manifest: Crescendo (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   },
+   "Manifest: Adaptive Skin (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 8,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 4,
+    "damage": 236,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "L60 Summoning"
+    ]
+   },
+   "Manifest: Second Wind (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Adaptation"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 90
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Creation School",
+    "dealt": 1784,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 18
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 421,
+    "hits": 0,
+    "attacks": 3
+   },
+   {
+    "name": "L60 Blast",
+    "dealt": 882,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 23
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 170,
+    "taken": 1302,
+    "hits": 10,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Light Armor",
+    "dealt": 1747,
+    "taken": 445,
+    "hits": 30,
+    "attacks": 45
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 146,
+    "taken": 1973,
+    "hits": 6,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 129,
+    "taken": 998,
+    "hits": 11,
+    "attacks": 19
+   },
+   {
+    "name": "L60 Summoning",
+    "dealt": 281,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Adaptation",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 22,
+    "attacks": 32
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Creation School",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 18,
+    "used": {
+     "cast:Force + Cut": 18,
+     "mod:Bleed": 2,
+     "mod:Rend": 10,
+     "mod:Gash": 1
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 21.213203435596427,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "natural:Black Jaws": 1,
+     "manifest:Eclipse": 1,
+     "manifest:Umbral Strike": 1
+    },
+    "turnMoved": 21.213203435596427,
+    "manifests": 2
+   },
+   {
+    "name": "L60 Blast",
+    "side": "party",
+    "role": "ranged",
+    "moved": 80,
+    "attacks": 23,
+    "turns": 8,
+    "kills": 0,
+    "fist": "Dip",
+    "used": {
+     "Shatter": 4,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "defend:shift": 8,
+     "defend:dodge": 5
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 1,
+    "areaShots": 9,
+    "cones": 9,
+    "reloads": 7
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 42,
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "L60 Light Armor",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 83.95107498276425,
+    "attacks": 41,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Parry": 3,
+     "Shatter": 4,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "defend:shift": 25,
+     "defend:dodge": 44,
+     "riposte": 5
+    },
+    "fist": "Dip",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0,
+    "lastTech": "kick"
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 15,
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 32.01562118716424,
+    "attacks": 19,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 9,
+     "manifest:Eclipse": 5,
+     "manifest:Umbral Strike": 5,
+     "defend:dodge": 50
+    },
+    "manifests": 10
+   },
+   {
+    "name": "L60 Summoning",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 10,
+    "used": {
+     "cast:Force + Cut": 3,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Cut": 7,
+     "cast:nothingAffordable": 7
+    }
+   },
+   {
+    "name": "L60 Adaptation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 8,
+     "manifest:Crescendo": 8,
+     "defend:dodge": 16,
+     "manifest:Adaptive Skin": 8,
+     "manifest:Bloom": 1,
+     "manifest:Second Wind": 7
+    },
+    "manifests": 24
+   }
+  ],
+  "trees": {
+   "L60 Blast": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-blast-weapons": 5,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 2,
+    "generic-fortitude": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-recovery": 1
+   },
+   "L60 Summoning": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-summoning": 5,
+    "magic-slashing": 5,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2
+   },
+   "L60 Adaptation": {
+    "mental-theory": 3,
+    "mental-light-dream": 2,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-adaptation-dream": 5,
+    "mental-life-dream": 5,
+    "generic-courage": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Light Armor": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 3,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Creation School": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-creation": 5,
+    "magic-slashing": 5,
+    "generic-endurance": 3,
+    "generic-stamina": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2
+   }
+  },
+  "gear": {
+   "L60 Blast": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Blast (Steel) G11"
+   ],
+   "L60 Summoning": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Adaptation": [
+    "Unarmed G1"
+   ],
+   "L60 Light Armor": [
+    "Unarmed G1",
+    "Light Bladed (Steel) G11",
+    "Light Armor (Hard Leather) G8"
+   ],
+   "L60 Creation School": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Blast": [
+    "Light Armor (Hard Leather): 210/210",
+    "Light Blast (Steel): 495/495"
+   ],
+   "L60 Summoning": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Adaptation": [],
+   "L60 Light Armor": [
+    "Light Bladed (Steel): 0/495 BROKEN",
+    "Light Armor (Hard Leather): 120/210"
+   ],
+   "L60 Creation School": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5670,
+    "monsterHp": 8059,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5292,
+    "monsterHp": 7748,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 5225,
+    "monsterHp": 7483,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 5128,
+    "monsterHp": 7453,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 5035,
+    "monsterHp": 6937,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 5035,
+    "monsterHp": 6686,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 4915,
+    "monsterHp": 5736,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 9,
+    "partyHp": 4915,
+    "monsterHp": 4910,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 9,
+    "partyHp": 4915,
+    "monsterHp": 4570,
+    "partyDown": 0,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Creation School": 1784,
+    "L60 Blast": 882,
+    "L60 Light Armor": 1635,
+    "L60 Summoning": 281,
+    "Sim Thicket": 146,
+    "Sim Gloamhound": 129,
+    "Sim Burgeon": 170
+   },
+   "taken": {
+    "Sim Gloamhound": 1995,
+    "Sim Burgeon": 1314,
+    "Sim Thicket": 2000,
+    "L60 Light Armor": 445,
+    "L60 Adaptation": 310
+   },
+   "unattributed": 1037
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 5150
+  },
+  "lostBy": {
+   "party": 755,
+   "monsters": 5150
+  },
+  "directTaken": {
+   "party": 5139,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Blast: Alacrity?": 1,
+    "prompt: L# Adaptation: Alacrity?": 1,
+    "prompt: L# Summoning: Alacrity?": 1,
+    "prompt: L# Creation School: Alacrity?": 1,
+    "prompt: L# Light Armor: Alacrity?": 1,
+    "prompt: L# Blast: Resist Allure (as Fear)": 2,
+    "prompt: L# Adaptation: Resist Allure (as Fear)": 2,
+    "prompt: Face Your Fear?": 4,
+    "prompt: L# Summoning: Resist Allure (as Fear)": 2,
+    "prompt: L# Creation School: Resist Allure (as Fear)": 2,
+    "prompt: L# Light Armor: Resist Allure (as Fear)": 2,
+    "prompt: L# Blast: Resist Dread (as Fear)": 2,
+    "prompt: L# Adaptation: Resist Dread (as Fear)": 2,
+    "prompt: L# Summoning: Resist Dread (as Fear)": 2,
+    "prompt: L# Creation School: Resist Dread (as Fear)": 2,
+    "prompt: L# Light Armor: Resist Dread (as Fear)": 2,
+    "prompt: Riposte Ward": 47,
+    "prompt: Light Blast (Steel)": 23,
+    "prompt: Light Bladed (Steel)": 14,
+    "prompt: Exploit Opening": 5,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 18,
+    "prompt: L# Light Armor — Shift": 25,
+    "prompt: L# Blast — Shift": 8,
+    "prompt: Verdant Soul (Tenet)": 4,
+    "prompt: Verdant Soul: give # temp HP to": 4,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Light Bladed (Steel) — Riposte": 4,
+    "prompt: Sanctum Ward: L# Adaptation": 8,
+    "confirm: Adapt (Tenet)": 8,
+    "prompt: Memory": 15,
+    "prompt: Shadowmark (Tenet)": 4,
+    "prompt: Shadowmark: make one step more obscured": 4,
+    "prompt: Sporing": 1,
+    "prompt: Umbral Strike": 2,
+    "prompt: Unarmed": 9
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "The Actor sgIeZPKCxCEoxzaA does not exist in actors",
+     "who": "L60 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Summoning is afraid and can't gain Energy.",
+     "who": "L60 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Summoning is afraid and can't gain Energy.",
+     "who": "L60 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Summoning is afraid and can't gain Energy.",
+     "who": "L60 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "Light Bladed (Steel) is broken.",
+     "who": "L60 Light Armor"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Summoning is afraid and can't gain Energy.",
+     "who": "L60 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Summoning is afraid and can't gain Energy.",
+     "who": "L60 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Summoning is afraid and can't gain Energy.",
+     "who": "L60 Summoning"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Summoning is afraid and can't gain Energy.",
+     "who": "L60 Summoning"
+    }
+   ],
+   "errors": [
+    "Error: The Actor sgIeZPKCxCEoxzaA does not exist in actors\n    at Actor.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/database/backend/server-document.mjs:1:10936)\n    at async fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:291)\n    at async #configureOperation (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:231:24)\n    at async #configureDelete (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:198:5)\n    at"
+   ]
+  }
+ }
+]

@@ -1,0 +1,1992 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 292,
+  "winner": "monsters",
+  "pass": "grand-60-p14",
+  "rounds": 10,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 37,
+  "knockbacks": {
+   "into": 2,
+   "down": 2,
+   "away": 1
+  },
+  "used": {
+   "opt:ability=shift": 2,
+   "Versatility": 2,
+   "Unstoppable": 2,
+   "Brace": 2,
+   "Shatter": 5,
+   "opt:overshield": 1,
+   "defend:dodge": 214,
+   "limber:skipped": 18,
+   "opt:dir=into": 2,
+   "defend:shift": 17,
+   "recoverEnergy": 11,
+   "ward": 14,
+   "manifest:Wager+": 4,
+   "manifest:Windfall": 4,
+   "Parry": 2,
+   "Leap": 2,
+   "Spot Weakness": 2,
+   "opt:shank1=adv": 3,
+   "opt:shank2=dodge": 5,
+   "opt:shank3=pierce": 3,
+   "limber": 17,
+   "opt:shank1=pierce": 2,
+   "opt:shank2=cleave": 2,
+   "opt:shank3=adv": 4,
+   "manifest:Bloom": 10,
+   "manifest:Flourish": 10,
+   "manifest:Renewal": 10,
+   "manifest:Mire+": 10,
+   "manifest:Wither+": 9,
+   "manifest:Waste+": 7,
+   "cast:Force + Cut": 19,
+   "mod:Bleed": 8,
+   "mod:Rend": 13,
+   "defend:dash": 1,
+   "mod:Gash": 1,
+   "opt:twinFang=adv": 2,
+   "riposte": 7,
+   "redirect": 2,
+   "noRiposte": 1,
+   "redirect:skipped": 1,
+   "combo:skipped": 2,
+   "flowLikeWater:skipped": 2,
+   "quicken": 6,
+   "defend:closeQuarters": 4,
+   "Dip": 2,
+   "opt:windup=1": 3,
+   "opt:whirlwind=blender": 1,
+   "manifest:Jinx+": 7,
+   "manifest:Forfeit+": 4,
+   "manifest:Calamity+": 2,
+   "opt:thrasherGrapple": 1,
+   "opt:whirlwind=on": 1,
+   "opt:shank1=dodge": 2,
+   "manifest:Forfeit": 4,
+   "manifest:Calamity": 6,
+   "opt:dir=down": 2,
+   "manifest:Jinx": 1,
+   "manifest:Waste": 3,
+   "manifest:Wither": 1,
+   "opt:dir=away": 1
+  },
+  "hp": {
+   "L60 Stagnation#UzDT": "499/1134",
+   "L60 Thrasher#XUCc": "565/1134",
+   "L60 Esoteric#WbRb": "382/1134",
+   "L60 Unarmored#Ex36": "543/1134",
+   "L60 Fortune#uYjP": "522/1134",
+   "L60 Ruin#gIEb": "1134/1134",
+   "L60 Brawling B#9Qf1": "531/1134",
+   "L60 Protection Arcana B#GTuz": "1134/1134",
+   "L60 Psion B#qHTz": "412/700",
+   "L60 Bladed B#gtE1": "565/1134"
+  },
+  "down": [
+   "L60 Stagnation",
+   "L60 Thrasher",
+   "L60 Esoteric",
+   "L60 Unarmored",
+   "L60 Fortune",
+   "L60 Brawling B",
+   "L60 Bladed B"
+  ],
+  "weapons": {
+   "Heavy Thrasher": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 263,
+    "ap": 21,
+    "kills": 0,
+    "users": [
+     "L60 Thrasher"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune",
+     "L60 Esoteric"
+    ]
+   },
+   "Manifest: Wager (Manifest)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune"
+    ]
+   },
+   "Manifest: Windfall (Manifest)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 31,
+    "followups": 2,
+    "hits": 9,
+    "crits": 2,
+    "misses": 26,
+    "damage": 178,
+    "ap": 66,
+    "kills": 1,
+    "users": [
+     "L60 Bladed B",
+     "L60 Unarmored"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 3,
+    "followups": 42,
+    "hits": 12,
+    "crits": 1,
+    "misses": 33,
+    "damage": 190,
+    "ap": 16,
+    "kills": 1,
+    "users": [
+     "L60 Bladed B",
+     "L60 Brawling B",
+     "L60 Thrasher",
+     "L60 Unarmored"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Renewal (Manifest) [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Psion B"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Esoteric"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Esoteric"
+    ]
+   },
+   "Manifest: Mire (Manifest)": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 12,
+    "crits": 2,
+    "misses": 7,
+    "damage": 1849,
+    "ap": 57,
+    "kills": 0,
+    "users": [
+     "L60 Protection Arcana B"
+    ],
+    "force": 72
+   },
+   "Spell: Force + Cut [M] [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Protection Arcana B"
+    ]
+   },
+   "Manifest: Jinx (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ruin"
+    ]
+   },
+   "Manifest: Forfeit (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ruin"
+    ]
+   },
+   "Manifest: Calamity (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Ruin"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 5,
+    "users": []
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 10,
+    "absorbed": 56
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 84
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Thrasher",
+    "dealt": 263,
+    "taken": 68,
+    "hits": 7,
+    "attacks": 11
+   },
+   {
+    "name": "L60 Psion B",
+    "dealt": 0,
+    "taken": 112,
+    "hits": 18,
+    "attacks": 36
+   },
+   {
+    "name": "L60 Bladed B",
+    "dealt": 43,
+    "taken": 476,
+    "hits": 2,
+    "attacks": 38
+   },
+   {
+    "name": "L60 Fortune",
+    "dealt": 0,
+    "taken": 300,
+    "hits": 9,
+    "attacks": 13
+   },
+   {
+    "name": "L60 Stagnation",
+    "dealt": 0,
+    "taken": 557,
+    "hits": 11,
+    "attacks": 30
+   },
+   {
+    "name": "L60 Esoteric",
+    "dealt": 0,
+    "taken": 376,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "L60 Protection Arcana B",
+    "dealt": 1849,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 20
+   },
+   {
+    "name": "L60 Unarmored",
+    "dealt": 325,
+    "taken": 519,
+    "hits": 12,
+    "attacks": 28
+   },
+   {
+    "name": "L60 Brawling B",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Ruin",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 24
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Thrasher",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 65,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber:skipped": 17,
+     "recoverEnergy": 1,
+     "defend:shift": 7,
+     "defend:dodge": 40,
+     "limber": 12,
+     "riposte": 3,
+     "noRiposte": 1,
+     "Dip": 2
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "thr": 7,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "L60 Psion B",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 61,
+     "ward": 9,
+     "manifest:Bloom": 9,
+     "manifest:Flourish": 9,
+     "manifest:Renewal": 9
+    },
+    "turnMoved": 0,
+    "manifests": 27
+   },
+   {
+    "name": "L60 Bladed B",
+    "side": "monsters",
+    "role": "melee-dex",
+    "moved": 25,
+    "attacks": 36,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:shift": 8,
+     "defend:dodge": 41,
+     "Parry": 1,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "defend:closeQuarters": 4,
+     "riposte": 2
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "L60 Fortune",
+    "side": "party",
+    "role": "caster",
+    "moved": 15,
+    "attacks": 4,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 4,
+     "manifest:Wager+": 4,
+     "manifest:Windfall": 4,
+     "recoverEnergy": 2,
+     "defend:dodge": 6,
+     "manifest:Renewal": 1
+    },
+    "manifests": 9
+   },
+   {
+    "name": "L60 Stagnation",
+    "side": "party",
+    "role": "caster",
+    "moved": 15,
+    "attacks": 30,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 27,
+     "manifest:Mire+": 10,
+     "manifest:Wither+": 9,
+     "manifest:Waste+": 7,
+     "manifest:Waste": 3,
+     "manifest:Wither": 1
+    },
+    "turnMoved": 0,
+    "manifests": 30
+   },
+   {
+    "name": "L60 Esoteric",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 1,
+     "manifest:Bloom": 1,
+     "manifest:Flourish": 1,
+     "defend:dodge": 2
+    },
+    "manifests": 2
+   },
+   {
+    "name": "L60 Protection Arcana B",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 19,
+    "used": {
+     "cast:Force + Cut": 19,
+     "mod:Bleed": 8,
+     "mod:Rend": 13,
+     "mod:Gash": 1,
+     "recoverEnergy": 3
+    },
+    "knockbacks": {
+     "into": 1,
+     "down": 2,
+     "away": 1
+    }
+   },
+   {
+    "name": "L60 Unarmored",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 69.6419413859206,
+    "attacks": 28,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dash": 1,
+     "defend:dodge": 34,
+     "quicken": 6,
+     "Parry": 1,
+     "Shatter": 3,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "recoverEnergy": 5
+    },
+    "fist": "Dip",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 2
+   },
+   {
+    "name": "L60 Brawling B",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 26.925824035672523,
+    "attacks": 7,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 5,
+     "defend:shift": 2,
+     "defend:dodge": 3,
+     "riposte": 2,
+     "redirect": 2,
+     "limber:skipped": 1,
+     "redirect:skipped": 1,
+     "combo:skipped": 2,
+     "flowLikeWater:skipped": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 26.925824035672523,
+    "shank": 0
+   },
+   {
+    "name": "L60 Ruin",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 24,
+    "used": {
+     "manifest:Jinx+": 7,
+     "manifest:Forfeit+": 4,
+     "manifest:Calamity+": 2,
+     "manifest:Forfeit": 4,
+     "manifest:Calamity": 6,
+     "manifest:Jinx": 1
+    }
+   }
+  ],
+  "trees": {
+   "L60 Stagnation": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Thrasher": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   },
+   "L60 Esoteric": {
+    "mental-theory": 5,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-esoteric-arts": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Unarmored": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 3,
+    "generic-courage": 2,
+    "martial-unarmored": 5,
+    "martial-dexterity-methods": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-recovery": 1
+   },
+   "L60 Fortune": {
+    "mental-theory": 5,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-fortune-dream": 5,
+    "generic-athletics": 3,
+    "generic-acrobatics": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-courage": 1,
+    "generic-recovery": 1
+   }
+  },
+  "gear": {
+   "L60 Stagnation": [
+    "Unarmed G1"
+   ],
+   "L60 Thrasher": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ],
+   "L60 Esoteric": [
+    "Unarmed G1"
+   ],
+   "L60 Unarmored": [
+    "Unarmed G1",
+    "Light Bladed (Steel) G11"
+   ],
+   "L60 Fortune": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Ruin": [
+    "Unarmed"
+   ],
+   "L60 Brawling B": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Protection Arcana B": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Psion B": [
+    "Unarmed"
+   ],
+   "L60 Bladed B": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Bladed (Steel)"
+   ]
+  },
+  "gearState": {
+   "L60 Stagnation": [],
+   "L60 Thrasher": [
+    "Medium Armor (Hard Leather): 196/420",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Esoteric": [],
+   "L60 Unarmored": [
+    "Light Bladed (Steel): 495/495"
+   ],
+   "L60 Fortune": [],
+   "L60 Ruin": [],
+   "L60 Brawling B": [
+    "Medium Armor (Hard Leather): 168/420"
+   ],
+   "L60 Protection Arcana B": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Psion B": [],
+   "L60 Bladed B": [
+    "Light Armor (Hard Leather): 0/210 BROKEN",
+    "Light Bladed (Steel): 94/495"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 5292,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5099,
+    "monsterHp": 4478,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 4680,
+    "monsterHp": 4250,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 4256,
+    "monsterHp": 4082,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 3972,
+    "monsterHp": 3925,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 3461,
+    "monsterHp": 3784,
+    "partyDown": 3,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 3006,
+    "monsterHp": 3776,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 2870,
+    "monsterHp": 3776,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 2742,
+    "monsterHp": 3776,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 2742,
+    "monsterHp": 3776,
+    "partyDown": 4,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 2511,
+    "monsterHp": 3776,
+    "partyDown": 5,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Thrasher": 256,
+    "L60 Protection Arcana B": 1849,
+    "L60 Brawling B": 130,
+    "L60 Unarmored": 327,
+    "L60 Fortune": 320,
+    "L60 Bladed B": 43
+   },
+   "taken": {
+    "L60 Psion B": 424,
+    "L60 Bladed B": 569,
+    "L60 Fortune": 612,
+    "L60 Esoteric": 752,
+    "L60 Brawling B": 603,
+    "L60 Thrasher": 569,
+    "L60 Stagnation": 635,
+    "L60 Unarmored": 591
+   },
+   "unattributed": 1830
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 751,
+   "monsters": 1516
+  },
+  "lostBy": {
+   "party": 3159,
+   "monsters": 1516
+  },
+  "directTaken": {
+   "party": 2408,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Esoteric: Alacrity?": 1,
+    "prompt: L# Fortune: Alacrity?": 1,
+    "prompt: L# Brawling B: Alacrity?": 1,
+    "prompt: L# Unarmored: Alacrity?": 1,
+    "prompt: L# Protection Arcana B: Alacrity?": 1,
+    "prompt: L# Psion B: Alacrity?": 1,
+    "prompt: L# Bladed B: Alacrity?": 1,
+    "prompt: L# Stagnation: Alacrity?": 1,
+    "prompt: Versatility": 2,
+    "prompt: Heavy Thrasher (Steel)": 7,
+    "prompt: Knockback — L# Psion B": 1,
+    "prompt: L# Bladed B — Shift": 8,
+    "prompt: Sanctum Ward: L# Fortune": 4,
+    "prompt: Chant": 3,
+    "prompt: Light Bladed (Steel)": 31,
+    "prompt: L# Thrasher — Shift": 7,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 31,
+    "prompt: Sanctum Ward: L# Psion B": 9,
+    "prompt: Verdant Soul (Tenet)": 9,
+    "prompt: Verdant Soul: give # temp HP to": 9,
+    "prompt: Sanctum Ward: L# Esoteric": 1,
+    "prompt: Moss (Tenet)": 9,
+    "prompt: Force — L# Esoteric": 1,
+    "prompt: Unarmed": 3,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 4,
+    "prompt: Unarmed — Riposte": 5,
+    "prompt: L# Brawling B — Shift": 2,
+    "prompt: Light Bladed (Steel) — Riposte": 2,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis) · Whirlwind": 2,
+    "prompt: Calamity: which result to store": 2,
+    "prompt: Reversal: L# Thrasher": 4,
+    "prompt: Warden Ward": 17,
+    "prompt: Reversal: L# Fortune": 2,
+    "prompt: Reversal: L# Stagnation": 5,
+    "prompt: Exploit Opening": 2,
+    "prompt: Force — L# Unarmored": 2,
+    "prompt: Force — L# Stagnation": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Unarmored can't move through L60 Bladed B's space.",
+     "who": "L60 Unarmored"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 548,
+  "winner": "unfinished",
+  "pass": "grand-60-p14",
+  "rounds": 16,
+  "partyLeft": 4,
+  "monstersLeft": 3,
+  "followups": 48,
+  "knockbacks": {},
+  "used": {
+   "defend:shift": 16,
+   "defend:dodge": 439,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "limber": 29,
+   "quicken": 15,
+   "Parry": 1,
+   "Shatter": 8,
+   "Leap": 1,
+   "Spot Weakness": 1,
+   "Dash": 1,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 1,
+   "opt:shank3=pierce": 1,
+   "ward": 30,
+   "manifest:Bloom": 19,
+   "manifest:Flourish": 19,
+   "manifest:Wager+": 3,
+   "manifest:Windfall": 15,
+   "riposte": 10,
+   "natural:Black Jaws": 48,
+   "manifest:Mire+": 14,
+   "manifest:Wither+": 2,
+   "manifest:Waste+": 2,
+   "natural:Budding Gore": 8,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 1,
+   "Brace": 1,
+   "opt:getOverHere": 1,
+   "manifest:Eclipse": 28,
+   "manifest:Umbral Strike": 28,
+   "limber:skipped": 9,
+   "Dip": 4,
+   "opt:thrasherGrapple": 3,
+   "breakFree": 5,
+   "Break Free": 5,
+   "manifest:Wither": 13,
+   "manifest:Waste": 13,
+   "opt:twinFang=adv": 5,
+   "manifest:Wager": 12,
+   "manifest:Mire": 1,
+   "manifest:Renewal": 3
+  },
+  "hp": {
+   "L60 Stagnation#ah2l": "1134/1134",
+   "L60 Thrasher#IrKd": "493/1134",
+   "L60 Esoteric#DoZQ": "1134/1134",
+   "L60 Unarmored#zVvx": "590/1134",
+   "L60 Fortune#sNKZ": "692/1134",
+   "Sim Thicket#AKHB": "3240/3240",
+   "Sim Gloamhound#tjbJ": "1334/1944",
+   "Sim Gloamhound#z9hp": "1852/1944",
+   "Sim Burgeon#vvOA": "1287/2592"
+  },
+  "down": [
+   "L60 Thrasher",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 131,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Light Bladed": {
+    "attacks": 44,
+    "followups": 4,
+    "hits": 44,
+    "crits": 17,
+    "misses": 63,
+    "damage": 1190,
+    "ap": 90,
+    "kills": 0,
+    "users": [
+     "L60 Unarmored"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 6,
+    "followups": 54,
+    "hits": 22,
+    "crits": 14,
+    "misses": 38,
+    "damage": 284,
+    "ap": 30,
+    "kills": 1,
+    "users": [
+     "L60 Unarmored",
+     "L60 Thrasher"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 24,
+    "crits": 10,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Esoteric",
+     "L60 Fortune"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 12,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Esoteric"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Esoteric"
+    ]
+   },
+   "Manifest: Wager (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 9,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune"
+    ]
+   },
+   "Manifest: Windfall (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 48,
+    "followups": 0,
+    "hits": 31,
+    "crits": 10,
+    "misses": 17,
+    "damage": 926,
+    "ap": 96,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Mire (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 7,
+    "damage": 128,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Heavy Thrasher": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 8,
+    "crits": 5,
+    "misses": 4,
+    "damage": 221,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L60 Thrasher"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 17,
+    "crits": 8,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 15,
+    "crits": 9,
+    "misses": 13,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Other: Break Free [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 15,
+    "absorbed": 402
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Burgeon",
+    "dealt": 131,
+    "taken": 1305,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Thrasher",
+    "dealt": 221,
+    "taken": 641,
+    "hits": 16,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Unarmored",
+    "dealt": 1474,
+    "taken": 544,
+    "hits": 58,
+    "attacks": 96
+   },
+   {
+    "name": "L60 Esoteric",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 23,
+    "attacks": 45
+   },
+   {
+    "name": "L60 Fortune",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 27,
+    "attacks": 48
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 253,
+    "taken": 300,
+    "hits": 31,
+    "attacks": 54
+   },
+   {
+    "name": "L60 Stagnation",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 45
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 673,
+    "taken": 90,
+    "hits": 35,
+    "attacks": 55
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 128,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 16
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 75,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 15
+    },
+    "manifests": 4
+   },
+   {
+    "name": "L60 Thrasher",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 5,
+    "attacks": 18,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:shift": 16,
+     "defend:dodge": 73,
+     "limber": 29,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 9,
+     "Dip": 4,
+     "riposte": 6
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "thr": 12,
+    "shank": 0
+   },
+   {
+    "name": "L60 Unarmored",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 20.615528128088304,
+    "attacks": 92,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "quicken": 15,
+     "Parry": 1,
+     "Shatter": 8,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "defend:dodge": 89,
+     "riposte": 4
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Esoteric",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15
+    },
+    "manifests": 30
+   },
+   {
+    "name": "L60 Fortune",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Wager+": 3,
+     "manifest:Windfall": 15,
+     "manifest:Wager": 12,
+     "manifest:Renewal": 3,
+     "defend:dodge": 11
+    },
+    "manifests": 33
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 93.60022573334676,
+    "attacks": 49,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 172,
+     "natural:Black Jaws": 21,
+     "manifest:Eclipse": 14,
+     "manifest:Umbral Strike": 14,
+     "breakFree": 5,
+     "Break Free": 5
+    },
+    "turnMoved": 0,
+    "manifests": 28
+   },
+   {
+    "name": "L60 Stagnation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 15,
+     "manifest:Mire+": 14,
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2,
+     "manifest:Wither": 13,
+     "manifest:Waste": 13,
+     "manifest:Mire": 1
+    },
+    "turnMoved": 0,
+    "manifests": 45
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 99.62429422585637,
+    "attacks": 55,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 27,
+     "defend:dodge": 64,
+     "manifest:Eclipse": 14,
+     "manifest:Umbral Strike": 14
+    },
+    "manifests": 28
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 60,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   }
+  ],
+  "trees": {
+   "L60 Stagnation": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Thrasher": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   },
+   "L60 Esoteric": {
+    "mental-theory": 5,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-esoteric-arts": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Unarmored": {
+    "martial-theory": 5,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 3,
+    "generic-courage": 2,
+    "martial-unarmored": 5,
+    "martial-dexterity-methods": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-recovery": 1
+   },
+   "L60 Fortune": {
+    "mental-theory": 5,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-fortune-dream": 5,
+    "generic-athletics": 3,
+    "generic-acrobatics": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-courage": 1,
+    "generic-recovery": 1
+   }
+  },
+  "gear": {
+   "L60 Stagnation": [
+    "Unarmed G1"
+   ],
+   "L60 Thrasher": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ],
+   "L60 Esoteric": [
+    "Unarmed G1"
+   ],
+   "L60 Unarmored": [
+    "Unarmed G1",
+    "Light Bladed (Steel) G11"
+   ],
+   "L60 Fortune": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Stagnation": [],
+   "L60 Thrasher": [
+    "Medium Armor (Hard Leather): 18/420",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Esoteric": [],
+   "L60 Unarmored": [
+    "Light Bladed (Steel): 328/495"
+   ],
+   "L60 Fortune": [],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5487,
+    "monsterHp": 9610,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5366,
+    "monsterHp": 9543,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 5366,
+    "monsterHp": 9406,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 5050,
+    "monsterHp": 8893,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 4985,
+    "monsterHp": 8702,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 4813,
+    "monsterHp": 8537,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 4813,
+    "monsterHp": 8354,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 4773,
+    "monsterHp": 7765,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 4679,
+    "monsterHp": 7765,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 4639,
+    "monsterHp": 7765,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 12,
+    "partyHp": 4592,
+    "monsterHp": 7763,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 13,
+    "partyHp": 4281,
+    "monsterHp": 7714,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 14,
+    "partyHp": 4182,
+    "monsterHp": 7714,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 15,
+    "partyHp": 4083,
+    "monsterHp": 7713,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 4043,
+    "monsterHp": 7713,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 4043,
+    "monsterHp": 7713,
+    "partyDown": 1,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "Sim Burgeon": 131,
+    "L60 Unarmored": 1474,
+    "Sim Gloamhound": 926,
+    "L60 Fortune": 178,
+    "L60 Thrasher": 221,
+    "L60 Stagnation": 128,
+    "Sim Thicket": 128
+   },
+   "taken": {
+    "L60 Thrasher": 641,
+    "Sim Burgeon": 1305,
+    "L60 Fortune": 482,
+    "Sim Gloamhound": 702,
+    "L60 Unarmored": 544,
+    "Sim Thicket": 40
+   },
+   "unattributed": 528
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 2007
+  },
+  "lostBy": {
+   "party": 1627,
+   "monsters": 2007
+  },
+  "directTaken": {
+   "party": 2880,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Fortune: Alacrity?": 1,
+    "prompt: L# Unarmored: Alacrity?": 1,
+    "prompt: L# Stagnation: Alacrity?": 1,
+    "prompt: L# Esoteric: Alacrity?": 1,
+    "prompt: L# Thrasher: Resist Dread (as Fear)": 2,
+    "prompt: L# Fortune: Resist Dread (as Fear)": 2,
+    "prompt: L# Unarmored: Resist Dread (as Fear)": 2,
+    "prompt: L# Stagnation: Resist Dread (as Fear)": 2,
+    "prompt: L# Esoteric: Resist Dread (as Fear)": 2,
+    "prompt: L# Thrasher: Resist Allure (as Fear)": 2,
+    "prompt: L# Fortune: Resist Allure (as Fear)": 2,
+    "prompt: L# Unarmored: Resist Allure (as Fear)": 2,
+    "prompt: L# Stagnation: Resist Allure (as Fear)": 2,
+    "prompt: L# Esoteric: Resist Allure (as Fear)": 2,
+    "prompt: L# Thrasher — Shift": 16,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Light Bladed (Steel)": 44,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 45,
+    "prompt: Sanctum Ward: L# Esoteric": 15,
+    "prompt: Sanctum Ward: L# Fortune": 15,
+    "prompt: Chant": 4,
+    "prompt: Riposte Ward": 132,
+    "prompt: Light Bladed (Steel) — Riposte": 1,
+    "prompt: Moss (Tenet)": 12,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Thrasher (Steel)": 12,
+    "prompt: Shadowmark (Tenet)": 21,
+    "prompt: Shadowmark: make one step more obscured": 21,
+    "prompt: Verdant Soul (Tenet)": 12,
+    "prompt: Verdant Soul: give # temp HP to": 12,
+    "prompt: Break Free": 5,
+    "prompt: Unarmed — Riposte": 9,
+    "prompt: Light Bladed (Steel) — Fast follow-up: Light Bladed (Steel) (Dis)": 3,
+    "prompt: Unarmed": 6,
+    "prompt: Sporing": 1,
+    "prompt: Umbral Strike": 12
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [qHTz8UuHi1X2wDhB] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Protection Arcana B"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Fortune is afraid and can't gain Energy.",
+     "who": "L60 Fortune"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [qHTz8UuHi1X2wDhB] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

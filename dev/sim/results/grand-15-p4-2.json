@@ -1,0 +1,1817 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 279,
+  "winner": "party",
+  "pass": "grand-15-p4",
+  "rounds": 9,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 33,
+  "knockbacks": {
+   "into": 2,
+   "down": 7
+  },
+  "used": {
+   "cast:Force": 24,
+   "mod:Multicast": 9,
+   "opt:pick=1": 13,
+   "allyHelp:none": 13,
+   "riposte": 6,
+   "defend:dodge": 170,
+   "multicast": 9,
+   "opt:shape=radius": 1,
+   "mod:Pinpoint": 2,
+   "mod:Explode": 1,
+   "opt:dir=into": 2,
+   "manifest:Sink": 2,
+   "defend:shift": 32,
+   "manifest:Burden": 2,
+   "limber": 91,
+   "manifest:Entomb+": 2,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Parry": 8,
+   "recoverEnergy": 30,
+   "berserk": 1,
+   "Seeing Red": 1,
+   "opt:rend": 6,
+   "cast:Flame": 8,
+   "mod:Ignition": 8,
+   "ward": 14,
+   "manifest:Herald": 8,
+   "manifest:Redirect": 8,
+   "manifest:Ascend": 8,
+   "cast:Force + Frost": 16,
+   "mod:Chill": 3,
+   "mod:Frostbite": 2,
+   "Brace": 1,
+   "defend:perfectBlock": 27,
+   "Dip": 10,
+   "maintain": 2,
+   "opt:dir=down": 7,
+   "act:momentumNow": 5,
+   "cast:nothingAffordable": 5,
+   "opt:heave": 1
+  },
+  "hp": {
+   "L15 Medium Armor#4bnk": "165/279",
+   "L15 Reach Arcana#foRf": "253/279",
+   "L15 Beyond#0ODL": "144/279",
+   "L15 Strength#DmFU": "271/279",
+   "L15 Heat#hCCU": "279/279",
+   "L15 Below#2O51": "88/279",
+   "L15 Striker#LsqM": "101/279",
+   "L15 Cold#WWxn": "129/279",
+   "L15 Ponderance#NroD": "128/279",
+   "L15 Defender#NNQA": "128/279"
+  },
+  "down": [
+   "L15 Below",
+   "L15 Striker",
+   "L15 Cold",
+   "L15 Ponderance",
+   "L15 Defender"
+  ],
+  "weapons": {
+   "Spell: Force": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 14,
+    "crits": 6,
+    "misses": 15,
+    "damage": 0,
+    "ap": 52,
+    "kills": 0,
+    "users": [
+     "L15 Reach Arcana"
+    ],
+    "force": 0
+   },
+   "Heavy Defender": {
+    "attacks": 8,
+    "followups": 4,
+    "hits": 3,
+    "crits": 1,
+    "misses": 9,
+    "damage": 34,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L15 Defender"
+    ]
+   },
+   "Manifest: Sink (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Below"
+    ]
+   },
+   "Manifest: Burden (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Below"
+    ]
+   },
+   "Manifest: Entomb (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Below"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 26,
+    "followups": 29,
+    "hits": 33,
+    "crits": 12,
+    "misses": 37,
+    "damage": 410,
+    "ap": 84,
+    "kills": 2,
+    "users": [
+     "L15 Medium Armor",
+     "L15 Strength"
+    ]
+   },
+   "Heavy Striker": {
+    "attacks": 6,
+    "followups": 6,
+    "hits": 4,
+    "crits": 0,
+    "misses": 8,
+    "damage": 106,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L15 Striker"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 10,
+    "crits": 1,
+    "misses": 6,
+    "damage": 43,
+    "ap": 48,
+    "kills": 3,
+    "users": [
+     "L15 Heat"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Beyond"
+    ]
+   },
+   "Manifest: Herald (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 56,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Beyond"
+    ],
+    "force": 56
+   },
+   "Manifest: Ascend (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Beyond"
+    ]
+   },
+   "Spell: Force + Frost [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 11,
+    "damage": 55,
+    "ap": 32,
+    "kills": 0,
+    "users": [
+     "L15 Cold"
+    ],
+    "force": 0
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Ponderance"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 22,
+    "absorbed": 104
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 28
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Reach Arcana",
+    "dealt": 0,
+    "taken": 26,
+    "hits": 14,
+    "attacks": 28
+   },
+   {
+    "name": "L15 Below",
+    "dealt": 0,
+    "taken": 88,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Defender",
+    "dealt": 34,
+    "taken": 111,
+    "hits": 3,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Striker",
+    "dealt": 106,
+    "taken": 103,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Medium Armor",
+    "dealt": 246,
+    "taken": 114,
+    "hits": 21,
+    "attacks": 37
+   },
+   {
+    "name": "L15 Ponderance",
+    "dealt": 0,
+    "taken": 105,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Heat",
+    "dealt": 43,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Beyond",
+    "dealt": 56,
+    "taken": 54,
+    "hits": 16,
+    "attacks": 24
+   },
+   {
+    "name": "L15 Cold",
+    "dealt": 55,
+    "taken": 46,
+    "hits": 5,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Strength",
+    "dealt": 164,
+    "taken": 1,
+    "hits": 12,
+    "attacks": 18
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Reach Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Force": 24,
+     "mod:Multicast": 1,
+     "defend:dodge": 5,
+     "multicast": 1,
+     "mod:Pinpoint": 1,
+     "mod:Explode": 1,
+     "cast:nothingAffordable": 1,
+     "recoverEnergy": 4
+    },
+    "knockbacks": {
+     "into": 2,
+     "down": 1
+    }
+   },
+   {
+    "name": "L15 Defender",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 15,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "allyHelp:none": 13,
+     "riposte": 4,
+     "Brace": 1,
+     "limber": 18,
+     "defend:perfectBlock": 27,
+     "defend:dodge": 15,
+     "Dip": 2
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Below",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 17,
+     "manifest:Sink": 2,
+     "manifest:Burden": 2,
+     "manifest:Entomb+": 2
+    },
+    "turnMoved": 10,
+    "manifests": 6
+   },
+   {
+    "name": "L15 Striker",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 10,
+    "attacks": 12,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 21,
+     "berserk": 1,
+     "Seeing Red": 1,
+     "limber": 13,
+     "maintain": 2,
+     "Dip": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Medium Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 95,
+    "attacks": 35,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "defend:shift": 32,
+     "defend:dodge": 32,
+     "limber": 44,
+     "Versatility": 1,
+     "Parry": 4,
+     "recoverEnergy": 1,
+     "riposte": 2,
+     "Dip": 4
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Heat",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Flame": 8,
+     "mod:Pinpoint": 1,
+     "mod:Multicast": 8,
+     "mod:Ignition": 8,
+     "multicast": 8,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L15 Beyond",
+    "side": "party",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 8,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 8,
+     "manifest:Herald": 8,
+     "manifest:Redirect": 8,
+     "manifest:Ascend": 8,
+     "defend:dodge": 13,
+     "act:momentumNow": 5,
+     "recoverEnergy": 3
+    },
+    "manifests": 24,
+    "knockbacks": {
+     "down": 5
+    }
+   },
+   {
+    "name": "L15 Cold",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 16,
+    "used": {
+     "cast:Force + Frost": 16,
+     "mod:Chill": 3,
+     "mod:Frostbite": 2,
+     "cast:nothingAffordable": 4,
+     "recoverEnergy": 16,
+     "defend:dodge": 28
+    },
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "L15 Ponderance",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 6,
+     "defend:dodge": 30
+    }
+   },
+   {
+    "name": "L15 Strength",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 83.26237921249265,
+    "attacks": 18,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Parry": 4,
+     "limber": 16,
+     "recoverEnergy": 6,
+     "Dip": 3,
+     "defend:dodge": 5
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L15 Medium Armor": {
+    "martial-theory": 2,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-medium-armor": 5
+   },
+   "L15 Reach Arcana": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-reach-arcana": 5
+   },
+   "L15 Beyond": {
+    "mental-theory": 2,
+    "mental-beyond-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "generic-courage": 3
+   },
+   "L15 Strength": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5
+   },
+   "L15 Heat": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "generic-endurance": 3
+   }
+  },
+  "gear": {
+   "L15 Medium Armor": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Balanced (Steel) G3"
+   ],
+   "L15 Reach Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Beyond": [
+    "Unarmed G1"
+   ],
+   "L15 Strength": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Balanced (Steel) G3"
+   ],
+   "L15 Heat": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Below": [
+    "Unarmed"
+   ],
+   "L15 Striker": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Striker (Steel)"
+   ],
+   "L15 Cold": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Ponderance": [
+    "Unarmed"
+   ],
+   "L15 Defender": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Defender (Steel)"
+   ]
+  },
+  "gearState": {
+   "L15 Medium Armor": [
+    "Medium Armor (Hard Leather): 36/60",
+    "Heavy Balanced (Steel): 434/540"
+   ],
+   "L15 Reach Arcana": [
+    "Light Armor (Hard Leather): 28/30"
+   ],
+   "L15 Beyond": [],
+   "L15 Strength": [
+    "Medium Armor (Hard Leather): 36/60",
+    "Heavy Balanced (Steel): 540/540"
+   ],
+   "L15 Heat": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Below": [],
+   "L15 Striker": [
+    "Medium Armor (Hard Leather): 0/60 BROKEN",
+    "Heavy Striker (Steel): 270/270"
+   ],
+   "L15 Cold": [
+    "Light Armor (Hard Leather): -26/30 BROKEN"
+   ],
+   "L15 Ponderance": [],
+   "L15 Defender": [
+    "Medium Armor (Hard Leather): 9/60",
+    "Heavy Defender (Steel): 810/810"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 1395,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1260,
+    "monsterHp": 1297,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1252,
+    "monsterHp": 1089,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 1120,
+    "monsterHp": 923,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 1120,
+    "monsterHp": 848,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 6,
+    "partyHp": 1112,
+    "monsterHp": 762,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 7,
+    "partyHp": 1112,
+    "monsterHp": 724,
+    "partyDown": 0,
+    "monstersDown": 4
+   },
+   {
+    "round": 8,
+    "partyHp": 1112,
+    "monsterHp": 714,
+    "partyDown": 0,
+    "monstersDown": 4
+   },
+   {
+    "round": 9,
+    "partyHp": 1112,
+    "monsterHp": 617,
+    "partyDown": 0,
+    "monstersDown": 4
+   },
+   {
+    "round": 9,
+    "partyHp": 1112,
+    "monsterHp": 574,
+    "partyDown": 0,
+    "monstersDown": 5,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Medium Armor": 244,
+    "L15 Heat": 214,
+    "L15 Cold": 143,
+    "L15 Strength": 236,
+    "L15 Beyond": 75,
+    "L15 Defender": 8,
+    "L15 Striker": 106,
+    "L15 Reach Arcana": 43
+   },
+   "taken": {
+    "L15 Below": 191,
+    "L15 Beyond": 135,
+    "L15 Striker": 178,
+    "L15 Defender": 151,
+    "L15 Medium Armor": 114,
+    "L15 Reach Arcana": 26,
+    "L15 Ponderance": 151,
+    "L15 Strength": 8,
+    "L15 Cold": 150
+   },
+   "unattributed": 35
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 119
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 702
+  },
+  "lostBy": {
+   "party": 283,
+   "monsters": 821
+  },
+  "directTaken": {
+   "party": 648,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Below: Alacrity?": 1,
+    "prompt: Help L# Below": 4,
+    "prompt: L# Defender — Perfect Block": 40,
+    "prompt: Heavy Defender (Steel) — Riposte": 4,
+    "prompt: Gravity Field: shape": 1,
+    "confirm: Gravity Field: place the area": 1,
+    "prompt: Force — L# Striker": 1,
+    "prompt: L# Medium Armor — Shift": 32,
+    "prompt: Weight (Tenet)": 2,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Balanced (Steel)": 26,
+    "prompt: Warden Ward": 19,
+    "prompt: Help L# Ponderance": 8,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 27,
+    "prompt: Heavy Striker (Steel)": 6,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Heavy Striker (Steel) — Solitary follow-up": 6,
+    "prompt: Sanctum Ward: L# Beyond": 8,
+    "prompt: Gust (Tenet)": 7,
+    "confirm: Stabilize": 2,
+    "prompt: Sanctum Ward: L# Ponderance": 6,
+    "prompt: Heavy Defender (Steel)": 8,
+    "prompt: L# Beyond falls": 7,
+    "prompt: Herald — L# Striker": 2,
+    "prompt: Gust — L# Striker": 2,
+    "prompt: Force — L# Reach Arcana": 1,
+    "prompt: Help L# Striker": 1,
+    "prompt: Force — L# Defender": 1,
+    "prompt: Herald — L# Ponderance": 1,
+    "prompt: Force — L# Cold": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [L5o0y1D4oWdyweCp] does not exist in the EmbeddedCollection collection.",
+     "who": "L15 Piercing"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Strength can't move through L15 Defender's space.",
+     "who": "L15 Strength"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Strength can't move through L15 Defender's space.",
+     "who": "L15 Strength"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Strength can't move through L15 Defender's space.",
+     "who": "L15 Strength"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [L5o0y1D4oWdyweCp] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 419,
+  "winner": "unfinished",
+  "pass": "grand-15-p4",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 3,
+  "followups": 17,
+  "knockbacks": {
+   "down": 2
+  },
+  "used": {
+   "defend:shift": 36,
+   "defend:dodge": 275,
+   "limber": 76,
+   "natural:Budding Gore": 11,
+   "manifest:Bloom": 8,
+   "manifest:Flourish": 8,
+   "Parry": 2,
+   "ward": 15,
+   "manifest:Herald": 15,
+   "manifest:Redirect": 15,
+   "manifest:Ascend": 15,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "natural:Black Jaws": 17,
+   "manifest:Eclipse": 52,
+   "manifest:Umbral Strike": 30,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "riposte": 2,
+   "cast:Force": 2,
+   "mod:Multicast": 3,
+   "multicast": 3,
+   "opt:shape=radius": 1,
+   "mod:Pinpoint": 2,
+   "mod:Explode": 1,
+   "cast:Flame": 28,
+   "mod:Ignition": 28,
+   "Dip": 3,
+   "cast:nothingAffordable": 14,
+   "opt:dir=down": 2,
+   "act:momentumNow": 2
+  },
+  "hp": {
+   "L15 Medium Armor#orzw": "134/279",
+   "L15 Reach Arcana#wd9W": "279/279",
+   "L15 Beyond#8c9i": "279/279",
+   "L15 Strength#QDHg": "129/279",
+   "L15 Heat#Ku3y": "279/279",
+   "Sim Bloomrot#u62u": "172/486",
+   "Sim Bloomrot#pnsa": "168/486",
+   "Sim Gloamhound#arNj": "440/486",
+   "Sim Gloamhound#6nhu": "437/486",
+   "Sim Burgeon#DZp8": "582/648"
+  },
+  "down": [
+   "L15 Medium Armor",
+   "L15 Strength",
+   "Sim Bloomrot",
+   "Sim Bloomrot"
+  ],
+  "weapons": {
+   "Natural: Budding Gore [M]": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 7,
+    "damage": 23,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 15,
+    "followups": 19,
+    "hits": 50,
+    "crits": 19,
+    "misses": 24,
+    "damage": 404,
+    "ap": 51,
+    "kills": 0,
+    "users": [
+     "L15 Strength",
+     "L15 Medium Armor"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 12,
+    "crits": 8,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Beyond"
+    ]
+   },
+   "Manifest: Herald (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 2,
+    "misses": 7,
+    "damage": 39,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Beyond"
+    ],
+    "force": 39
+   },
+   "Manifest: Ascend (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Beyond"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 17,
+    "followups": 0,
+    "hits": 15,
+    "crits": 4,
+    "misses": 2,
+    "damage": 217,
+    "ap": 34,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 52,
+    "followups": 0,
+    "hits": 43,
+    "crits": 23,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 23,
+    "crits": 13,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 6,
+    "damage": 55,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Spell: Force": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "L15 Reach Arcana"
+    ]
+   },
+   "Spell: Flame": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 18,
+    "crits": 4,
+    "misses": 12,
+    "damage": 66,
+    "ap": 90,
+    "kills": 2,
+    "users": [
+     "L15 Heat"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 18,
+    "absorbed": 72
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 23,
+    "taken": 185,
+    "hits": 9,
+    "attacks": 15
+   },
+   {
+    "name": "L15 Medium Armor",
+    "dealt": 189,
+    "taken": 145,
+    "hits": 20,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Strength",
+    "dealt": 215,
+    "taken": 150,
+    "hits": 30,
+    "attacks": 18
+   },
+   {
+    "name": "L15 Beyond",
+    "dealt": 39,
+    "taken": 0,
+    "hits": 28,
+    "attacks": 45
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 124,
+    "taken": 49,
+    "hits": 38,
+    "attacks": 50
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 55,
+    "taken": 66,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 0,
+    "taken": 130,
+    "hits": 7,
+    "attacks": 12
+   },
+   {
+    "name": "L15 Reach Arcana",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Heat",
+    "dealt": 66,
+    "taken": 0,
+    "hits": 18,
+    "attacks": 30
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 93,
+    "taken": 40,
+    "hits": 43,
+    "attacks": 49
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 97.07106781186548,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 7.0710678118654755,
+    "used": {
+     "natural:Budding Gore": 7,
+     "manifest:Bloom": 4,
+     "defend:dodge": 37,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Medium Armor",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 14,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:shift": 36,
+     "defend:dodge": 37,
+     "limber": 40,
+     "Versatility": 1,
+     "Parry": 1,
+     "riposte": 2,
+     "Dip": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Strength",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 35,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "limber": 36,
+     "Dip": 2,
+     "defend:dodge": 20
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Beyond",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Herald": 15,
+     "manifest:Redirect": 15,
+     "manifest:Ascend": 15,
+     "defend:dodge": 15,
+     "act:momentumNow": 2
+    },
+    "manifests": 45,
+    "knockbacks": {
+     "down": 2
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80,
+    "attacks": 50,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 9,
+     "manifest:Eclipse": 26,
+     "manifest:Umbral Strike": 15,
+     "defend:dodge": 41
+    },
+    "manifests": 41
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 85,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 14
+    },
+    "manifests": 4
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 80.15609770940699,
+    "attacks": 4,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 14,
+     "natural:Budding Gore": 4,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L15 Reach Arcana",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Force": 2,
+     "mod:Multicast": 1,
+     "multicast": 1,
+     "mod:Pinpoint": 1,
+     "mod:Explode": 1,
+     "cast:nothingAffordable": 14,
+     "defend:dodge": 71
+    }
+   },
+   {
+    "name": "L15 Heat",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 28,
+    "used": {
+     "cast:Flame": 28,
+     "mod:Pinpoint": 1,
+     "mod:Multicast": 2,
+     "mod:Ignition": 28,
+     "multicast": 2
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 100.12492197250394,
+    "attacks": 49,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 26,
+     "natural:Black Jaws": 8,
+     "manifest:Eclipse": 26,
+     "manifest:Umbral Strike": 15
+    },
+    "manifests": 41
+   }
+  ],
+  "trees": {
+   "L15 Medium Armor": {
+    "martial-theory": 2,
+    "martial-heavy-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-medium-armor": 5
+   },
+   "L15 Reach Arcana": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-reach-arcana": 5
+   },
+   "L15 Beyond": {
+    "mental-theory": 2,
+    "mental-beyond-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "generic-courage": 3
+   },
+   "L15 Strength": {
+    "martial-theory": 2,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5
+   },
+   "L15 Heat": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "generic-endurance": 3
+   }
+  },
+  "gear": {
+   "L15 Medium Armor": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Balanced (Steel) G3"
+   ],
+   "L15 Reach Arcana": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Beyond": [
+    "Unarmed G1"
+   ],
+   "L15 Strength": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Balanced (Steel) G3"
+   ],
+   "L15 Heat": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Medium Armor": [
+    "Medium Armor (Hard Leather): 20/60",
+    "Heavy Balanced (Steel): 484/540"
+   ],
+   "L15 Reach Arcana": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Beyond": [],
+   "L15 Strength": [
+    "Medium Armor (Hard Leather): 28/60",
+    "Heavy Balanced (Steel): 540/540"
+   ],
+   "L15 Heat": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1395,
+    "monsterHp": 2564,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1347,
+    "monsterHp": 2471,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1250,
+    "monsterHp": 2361,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1166,
+    "monsterHp": 2071,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 1100,
+    "monsterHp": 1805,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 1100,
+    "monsterHp": 1805,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 12,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 13,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 15,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 1100,
+    "monsterHp": 1799,
+    "partyDown": 2,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Strength": 215,
+    "L15 Medium Armor": 181,
+    "Sim Gloamhound": 217,
+    "L15 Heat": 338,
+    "Sim Bloomrot": 23,
+    "Sim Burgeon": 55,
+    "L15 Reach Arcana": 60,
+    "L15 Beyond": 27
+   },
+   "taken": {
+    "Sim Bloomrot": 668,
+    "Sim Gloamhound": 95,
+    "Sim Burgeon": 66,
+    "L15 Medium Armor": 145,
+    "L15 Strength": 150
+   },
+   "unattributed": 8
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 60
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 733
+  },
+  "lostBy": {
+   "party": 295,
+   "monsters": 793
+  },
+  "directTaken": {
+   "party": 765,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Medium Armor: Resist Allure (as Fear)": 3,
+    "prompt: L# Reach Arcana: Resist Allure (as Fear)": 3,
+    "prompt: L# Beyond: Resist Allure (as Fear)": 3,
+    "prompt: Face Your Fear?": 5,
+    "prompt: L# Strength: Resist Allure (as Fear)": 3,
+    "prompt: L# Heat: Resist Allure (as Fear)": 3,
+    "prompt: L# Medium Armor: Resist Dread (as Fear)": 2,
+    "prompt: L# Reach Arcana: Resist Dread (as Fear)": 2,
+    "prompt: L# Beyond: Resist Dread (as Fear)": 2,
+    "prompt: L# Strength: Resist Dread (as Fear)": 2,
+    "prompt: L# Heat: Resist Dread (as Fear)": 2,
+    "prompt: L# Medium Armor — Shift": 36,
+    "prompt: Verdant Soul (Tenet)": 8,
+    "prompt: Verdant Soul: give # temp HP to": 8,
+    "prompt: Heavy Balanced (Steel)": 15,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 17,
+    "prompt: Sanctum Ward: L# Beyond": 15,
+    "prompt: Gust (Tenet)": 13,
+    "prompt: Versatility": 1,
+    "prompt: Shadowmark (Tenet)": 27,
+    "prompt: Shadowmark: make one step more obscured": 27,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2,
+    "prompt: Gravity Field: shape": 1,
+    "confirm: Gravity Field: place the area": 1,
+    "prompt: Riposte Ward": 91,
+    "prompt: Umbral Strike": 2,
+    "prompt: Sporing": 2,
+    "prompt: Herald — Sim Bloomrot": 1,
+    "prompt: Herald — Sim Gloamhound": 1
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Strength is afraid and can't gain Energy.",
+     "who": "L15 Strength"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Bloomrot can't move through L15 Medium Armor's space.",
+     "who": "L15 Strength"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Strength's space.",
+     "who": "L15 Beyond"
+    },
+    {
+     "level": "warn",
+     "msg": "L15 Reach Arcana is afraid and can't gain Energy.",
+     "who": "L15 Reach Arcana"
+    },
+    {
+     "level": "warn",
+     "msg": "Sim Gloamhound can't move through L15 Medium Armor's space.",
+     "who": "Sim Gloamhound"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

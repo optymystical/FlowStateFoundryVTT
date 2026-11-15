@@ -1,0 +1,2085 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 545,
+  "winner": "unfinished",
+  "pass": "grand-60-p11",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 3,
+  "followups": 32,
+  "knockbacks": {
+   "down": 13,
+   "into": 8
+  },
+  "used": {
+   "manifest:Exact+": 15,
+   "defend:dodge": 356,
+   "manifest:Hone": 15,
+   "manifest:Masterstroke+": 14,
+   "manifest:Undertow": 15,
+   "defend:shift": 57,
+   "limber": 30,
+   "manifest:Riptide": 15,
+   "manifest:Drown": 15,
+   "Shatter": 11,
+   "Leap": 2,
+   "Spot Weakness": 2,
+   "opt:shank1=adv": 5,
+   "opt:shank2=dodge": 8,
+   "opt:shank3=pierce": 5,
+   "opt:prepared=headshot": 1,
+   "opt:fish": 9,
+   "opt:snipe": 1,
+   "cast:Restore": 10,
+   "mod:Painless": 10,
+   "cast:Force + Cut": 35,
+   "mod:Rend": 20,
+   "opt:dir=down": 1,
+   "mod:Bleed": 5,
+   "ward": 15,
+   "manifest:Accretion": 15,
+   "manifest:Bloom": 30,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Parry": 3,
+   "Taunt": 5,
+   "Unstoppable": 1,
+   "recoverEnergy": 34,
+   "manifest:Flourish": 21,
+   "Dash": 1,
+   "momentum:adv": 14,
+   "momentum:str": 13,
+   "opt:shank1=pierce": 3,
+   "opt:shank2=cleave": 3,
+   "opt:shank3=adv": 6,
+   "defend:perfectParry": 8,
+   "riposte": 4,
+   "cast:nothingAffordable": 8,
+   "Dip": 3,
+   "manifest:Renewal": 19,
+   "opt:shank1=dodge": 3,
+   "opt:dir=into": 3,
+   "Sheath Weapon": 1,
+   "cast:Cut + Flame": 10,
+   "mod:Ignition": 2,
+   "Pull Aggro": 1,
+   "limber:skipped": 1
+  },
+  "hp": {
+   "L60 Perfection#nyNe": "682/756",
+   "L60 Constitution#SklC": "557/1134",
+   "L60 Animation#ptG0": "1134/1134",
+   "L60 Willpower#VuFX": "717/1134",
+   "L60 Curved#bCLW": "531/1134",
+   "L60 Restoration Arcana#9nta": "451/1134",
+   "L60 Earth#pQ8z": "1134/1134",
+   "L60 Longshot#VYbZ": "656/1134",
+   "L60 Geomancy#AAUY": "246/756",
+   "L60 Sea#bvTc": "1134/1134"
+  },
+  "down": [
+   "L60 Constitution",
+   "L60 Curved",
+   "L60 Restoration Arcana",
+   "L60 Geomancy"
+  ],
+  "weapons": {
+   "Manifest: Exact (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 2,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Perfection"
+    ]
+   },
+   "Manifest: Hone (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 7,
+    "crits": 3,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Perfection"
+    ]
+   },
+   "Manifest: Masterstroke (Manifest)": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 10,
+    "crits": 3,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Perfection"
+    ]
+   },
+   "Manifest: Undertow (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 1,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Sea"
+    ]
+   },
+   "Manifest: Riptide (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Sea"
+    ],
+    "force": 0
+   },
+   "Manifest: Drown (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Sea"
+    ]
+   },
+   "Light Longshot": {
+    "attacks": 44,
+    "followups": 0,
+    "hits": 26,
+    "crits": 11,
+    "misses": 18,
+    "damage": 861,
+    "ap": 88,
+    "kills": 0,
+    "users": [
+     "L60 Longshot"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 34,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 25,
+    "damage": 905,
+    "ap": 62,
+    "kills": 2,
+    "users": [
+     "L60 Animation"
+    ],
+    "force": 0
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 9,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Earth"
+    ]
+   },
+   "Manifest: Accretion (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Earth"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Earth"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 13,
+    "followups": 13,
+    "hits": 11,
+    "crits": 4,
+    "misses": 16,
+    "damage": 62,
+    "ap": 39,
+    "kills": 0,
+    "users": [
+     "L60 Constitution"
+    ]
+   },
+   "Spell: Force + Cut [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 2,
+    "damage": 83,
+    "ap": 8,
+    "kills": 0,
+    "users": [
+     "L60 Geomancy"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Light Curved": {
+    "attacks": 17,
+    "followups": 21,
+    "hits": 27,
+    "crits": 9,
+    "misses": 11,
+    "damage": 129,
+    "ap": 38,
+    "kills": 0,
+    "users": [
+     "L60 Curved"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Earth"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 2,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 60,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L60 Curved"
+    ]
+   },
+   "Manifest: Renewal (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Earth"
+    ]
+   },
+   "Spell: Cut + Flame [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 7,
+    "damage": 147,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "L60 Restoration Arcana"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 2,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 16,
+    "absorbed": 128
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 2,
+    "absorbed": 28
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Perfection",
+    "dealt": 0,
+    "taken": 14,
+    "hits": 25,
+    "attacks": 44
+   },
+   {
+    "name": "L60 Geomancy",
+    "dealt": 83,
+    "taken": 507,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L60 Sea",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 18,
+    "attacks": 45
+   },
+   {
+    "name": "L60 Constitution",
+    "dealt": 62,
+    "taken": 145,
+    "hits": 11,
+    "attacks": 26
+   },
+   {
+    "name": "L60 Longshot",
+    "dealt": 861,
+    "taken": 395,
+    "hits": 26,
+    "attacks": 44
+   },
+   {
+    "name": "L60 Curved",
+    "dealt": 189,
+    "taken": 370,
+    "hits": 28,
+    "attacks": 40
+   },
+   {
+    "name": "L60 Animation",
+    "dealt": 905,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 34
+   },
+   {
+    "name": "L60 Earth",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 23,
+    "attacks": 56
+   },
+   {
+    "name": "L60 Restoration Arcana",
+    "dealt": 147,
+    "taken": 254,
+    "hits": 3,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Willpower",
+    "dealt": 0,
+    "taken": 562,
+    "hits": 30,
+    "attacks": 59
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Perfection",
+    "side": "party",
+    "role": "caster",
+    "moved": 55,
+    "attacks": 29,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 44,
+    "used": {
+     "manifest:Exact+": 15,
+     "manifest:Hone": 15,
+     "defend:dodge": 56,
+     "manifest:Masterstroke+": 14,
+     "recoverEnergy": 1
+    }
+   },
+   {
+    "name": "L60 Geomancy",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 35,
+     "cast:Force + Cut": 4,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:nothingAffordable": 1,
+     "recoverEnergy": 4
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "L60 Sea",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 45,
+    "used": {
+     "manifest:Undertow": 15,
+     "manifest:Riptide": 15,
+     "manifest:Drown": 15,
+     "defend:dodge": 4
+    },
+    "knockbacks": {
+     "into": 5,
+     "down": 12
+    }
+   },
+   {
+    "name": "L60 Constitution",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 80.16648189186456,
+    "attacks": 26,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:shift": 18,
+     "defend:dodge": 25,
+     "limber": 30,
+     "Versatility": 1,
+     "Parry": 2,
+     "Taunt": 5,
+     "Unstoppable": 1,
+     "recoverEnergy": 1,
+     "Dip": 3,
+     "Pull Aggro": 1,
+     "limber:skipped": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Longshot",
+    "side": "monsters",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 44,
+    "turns": 15,
+    "kills": 0,
+    "fist": "Shatter",
+    "used": {
+     "Shatter": 8,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "defend:shift": 21,
+     "defend:dodge": 41
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0,
+    "prep": 0,
+    "reloads": 44
+   },
+   {
+    "name": "L60 Curved",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 112.169905660283,
+    "attacks": 36,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:shift": 18,
+     "defend:dodge": 31,
+     "Parry": 1,
+     "Shatter": 3,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "momentum:adv": 14,
+     "momentum:str": 13,
+     "defend:perfectParry": 8,
+     "riposte": 4,
+     "Sheath Weapon": 1
+    },
+    "fist": "Dip",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 5,
+    "shank": 0,
+    "disarms": 2,
+    "mom": 1,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Restoration Arcana",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 20,
+    "used": {
+     "cast:Restore": 10,
+     "mod:Painless": 10,
+     "defend:dodge": 112,
+     "cast:Cut + Flame": 10,
+     "mod:Bleed": 3,
+     "mod:Rend": 9,
+     "mod:Ignition": 2
+    },
+    "healed": 199
+   },
+   {
+    "name": "L60 Animation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 31,
+    "used": {
+     "cast:Force + Cut": 31,
+     "mod:Rend": 9,
+     "mod:Bleed": 1,
+     "defend:dodge": 13,
+     "cast:nothingAffordable": 7,
+     "recoverEnergy": 28
+    },
+    "knockbacks": {
+     "down": 1,
+     "into": 3
+    }
+   },
+   {
+    "name": "L60 Earth",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Accretion": 15,
+     "manifest:Bloom": 15,
+     "defend:dodge": 7,
+     "manifest:Flourish": 6,
+     "manifest:Renewal": 5
+    },
+    "manifests": 41
+   },
+   {
+    "name": "L60 Willpower",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 32,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15,
+     "manifest:Renewal": 14
+    },
+    "turnMoved": 0,
+    "manifests": 44
+   }
+  ],
+  "trees": {
+   "L60 Perfection": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-perfection-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2
+   },
+   "L60 Constitution": {
+    "martial-theory": 4,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-constitution-methods": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 1,
+    "generic-initiative": 1
+   },
+   "L60 Animation": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-animation": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Willpower": {
+    "mental-theory": 4,
+    "mental-life-dream": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-willpower-arts": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 1
+   },
+   "L60 Curved": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-curved-weapons": 5,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-athletics": 3,
+    "generic-acrobatics": 1,
+    "generic-endurance": 1
+   }
+  },
+  "gear": {
+   "L60 Perfection": [
+    "Unarmed G1"
+   ],
+   "L60 Constitution": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Animation": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Willpower": [
+    "Unarmed G1"
+   ],
+   "L60 Curved": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Curved (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Restoration Arcana": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Earth": [
+    "Unarmed"
+   ],
+   "L60 Longshot": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Longshot (Steel)"
+   ],
+   "L60 Geomancy": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Sea": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Perfection": [],
+   "L60 Constitution": [
+    "Medium Armor (Hard Leather): 305/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Animation": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Willpower": [],
+   "L60 Curved": [
+    "Light Armor (Hard Leather): 140/210",
+    "Light Curved (Steel): 495/495"
+   ],
+   "L60 Restoration Arcana": [
+    "Light Armor (Hard Leather): 53/120"
+   ],
+   "L60 Earth": [],
+   "L60 Longshot": [
+    "Light Armor (Hard Leather): 168/210",
+    "Light Longshot (Steel): 495/495"
+   ],
+   "L60 Geomancy": [
+    "Light Armor (Hard Leather): 32/60"
+   ],
+   "L60 Sea": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5292,
+    "monsterHp": 5292,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5136,
+    "monsterHp": 5150,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5040,
+    "monsterHp": 5167,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 4959,
+    "monsterHp": 4561,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 4879,
+    "monsterHp": 4329,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 4879,
+    "monsterHp": 4329,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 4738,
+    "monsterHp": 4329,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 4057,
+    "monsterHp": 4329,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 3913,
+    "monsterHp": 4329,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 3913,
+    "monsterHp": 4202,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 3695,
+    "monsterHp": 4209,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 12,
+    "partyHp": 3667,
+    "monsterHp": 3699,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 13,
+    "partyHp": 3692,
+    "monsterHp": 3662,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 3621,
+    "monsterHp": 3647,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 15,
+    "partyHp": 3621,
+    "monsterHp": 3621,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 3621,
+    "monsterHp": 3621,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 3621,
+    "monsterHp": 3621,
+    "partyDown": 2,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Perfection": 660,
+    "L60 Longshot": 861,
+    "L60 Animation": 905,
+    "L60 Geomancy": 83,
+    "L60 Curved": 183,
+    "L60 Constitution": 62,
+    "L60 Restoration Arcana": 525,
+    "L60 Sea": 204
+   },
+   "taken": {
+    "L60 Geomancy": 669,
+    "L60 Curved": 603,
+    "L60 Willpower": 562,
+    "L60 Restoration Arcana": 723,
+    "L60 Constitution": 577,
+    "L60 Longshot": 478,
+    "L60 Perfection": 74
+   },
+   "unattributed": 203
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 102,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1671
+  },
+  "lostBy": {
+   "party": 1671,
+   "monsters": 1671
+  },
+  "directTaken": {
+   "party": 2247,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Perfection: Alacrity?": 1,
+    "prompt: L# Constitution: Alacrity?": 1,
+    "prompt: L# Animation: Alacrity?": 1,
+    "prompt: L# Willpower: Alacrity?": 1,
+    "prompt: L# Earth: Alacrity?": 1,
+    "prompt: L# Longshot: Alacrity?": 1,
+    "prompt: L# Sea: Alacrity?": 1,
+    "prompt: L# Geomancy: Alacrity?": 1,
+    "prompt: L# Constitution — Shift": 18,
+    "prompt: Light Longshot (Steel)": 44,
+    "prompt: L# Curved — Shift": 18,
+    "prompt: Force — L# Geomancy": 2,
+    "prompt: Sanctum Ward: L# Earth": 15,
+    "prompt: Adamant (Tenet)": 10,
+    "prompt: Adamant: lower the Pain Threshold by #": 10,
+    "prompt: Versatility": 1,
+    "prompt: Taunt": 5,
+    "prompt: Heavy Balanced (Steel)": 13,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 13,
+    "prompt: Warden Ward": 18,
+    "prompt: Sanctum Ward: L# Willpower": 15,
+    "prompt: Light Curved (Steel)": 17,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 19,
+    "prompt: L# Curved — Perfect Parry": 8,
+    "prompt: Light Curved (Steel) — Riposte": 2,
+    "prompt: Verdant Soul (Tenet)": 12,
+    "prompt: Verdant Soul: give # temp HP to": 12,
+    "prompt: Ego (Tenet)": 4,
+    "prompt: Surge (Tenet)": 11,
+    "prompt: Surge — L# Curved": 4,
+    "confirm: Sheath Weapon": 1,
+    "prompt: Riptide — L# Constitution": 2,
+    "prompt: Unarmed — Riposte": 2,
+    "prompt: L# Longshot — Shift": 21,
+    "prompt: Accretion on L# Restoration Arcana": 2,
+    "prompt: Pull Aggro": 1,
+    "prompt: Surge — L# Constitution": 1,
+    "prompt: Surge — L# Perfection": 6,
+    "prompt: Riptide — L# Perfection": 4,
+    "prompt: Force — L# Restoration Arcana": 1,
+    "prompt: Force — L# Longshot": 1,
+    "prompt: Accretion on L# Longshot": 2
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "The Actor KoU2XpAeTektmHmF does not exist in actors",
+     "who": "L60 Creation School"
+    }
+   ],
+   "errors": [
+    "Error: The Actor KoU2XpAeTektmHmF does not exist in actors\n    at Actor.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/database/backend/server-document.mjs:1:10936)\n    at async fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:291)\n    at async #configureOperation (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:231:24)\n    at async #configureDelete (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/backend.mjs:198:5)\n    at"
+   ]
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 442,
+  "winner": "unfinished",
+  "pass": "grand-60-p11",
+  "rounds": 16,
+  "partyLeft": 4,
+  "monstersLeft": 1,
+  "followups": 57,
+  "knockbacks": {},
+  "used": {
+   "Parry": 2,
+   "Shatter": 5,
+   "Leap": 1,
+   "Spot Weakness": 1,
+   "Dash": 1,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 1,
+   "opt:shank3=pierce": 1,
+   "defend:dodge": 293,
+   "momentum:adv": 18,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 1,
+   "momentum:str": 17,
+   "defend:perfectParry": 10,
+   "defend:shift": 59,
+   "natural:Black Jaws": 23,
+   "manifest:Eclipse": 16,
+   "manifest:Umbral Strike": 16,
+   "manifest:Exact+": 15,
+   "manifest:Hone": 15,
+   "riposte": 7,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "natural:Budding Gore": 8,
+   "manifest:Bloom": 19,
+   "manifest:Flourish": 19,
+   "manifest:Renewal": 8,
+   "cast:Force + Cut": 3,
+   "mod:Rend": 2,
+   "mod:Bleed": 1,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Taunt": 8,
+   "Unstoppable": 1,
+   "Sheath Weapon": 3,
+   "manifest:Masterstroke+": 14,
+   "cast:Cut": 14,
+   "cast:nothingAffordable": 14,
+   "Pull Aggro": 1,
+   "Dip": 5,
+   "limber": 31,
+   "opt:omnislash": 1,
+   "limber:skipped": 2
+  },
+  "hp": {
+   "L60 Perfection#BVZv": "756/756",
+   "L60 Constitution#s96T": "1102/1134",
+   "L60 Animation#kIvE": "1134/1134",
+   "L60 Willpower#mvZU": "1134/1134",
+   "L60 Curved#eVdZ": "554/1134",
+   "Sim Thicket#lnqg": "3114/3240",
+   "Sim Gloamhound#4lH2": "881/1944",
+   "Sim Gloamhound#PwHR": "939/1944",
+   "Sim Burgeon#L8uX": "1247/2592"
+  },
+  "down": [
+   "L60 Curved",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Light Curved": {
+    "attacks": 26,
+    "followups": 30,
+    "hits": 36,
+    "crits": 13,
+    "misses": 20,
+    "damage": 1191,
+    "ap": 56,
+    "kills": 1,
+    "users": [
+     "L60 Curved"
+    ]
+   },
+   "Natural: Black Jaws [M]": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 7,
+    "crits": 3,
+    "misses": 16,
+    "damage": 180,
+    "ap": 46,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Exact (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 9,
+    "crits": 5,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Perfection"
+    ]
+   },
+   "Manifest: Hone (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 12,
+    "crits": 8,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Perfection"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 84,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 4,
+    "damage": 348,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 14,
+    "crits": 7,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 13,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Willpower"
+    ]
+   },
+   "Spell: Force + Cut": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 1,
+    "damage": 78,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L60 Animation"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 29,
+    "followups": 29,
+    "hits": 17,
+    "crits": 5,
+    "misses": 41,
+    "damage": 773,
+    "ap": 87,
+    "kills": 2,
+    "users": [
+     "L60 Constitution"
+    ]
+   },
+   "Manifest: Masterstroke (Manifest)": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Perfection"
+    ]
+   },
+   "Spell: Cut": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 9,
+    "crits": 2,
+    "misses": 5,
+    "damage": 178,
+    "ap": 28,
+    "kills": 0,
+    "users": [
+     "L60 Animation"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 5,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 63,
+    "ap": 10,
+    "kills": 0,
+    "users": [
+     "L60 Curved"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 11,
+    "absorbed": 154
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 1,
+    "absorbed": 28
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Curved",
+    "dealt": 1254,
+    "taken": 580,
+    "hits": 38,
+    "attacks": 61
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 84,
+    "taken": 936,
+    "hits": 8,
+    "attacks": 12
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 180,
+    "taken": 459,
+    "hits": 20,
+    "attacks": 49
+   },
+   {
+    "name": "L60 Perfection",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 30,
+    "attacks": 44
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 0,
+    "taken": 667,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 348,
+    "taken": 221,
+    "hits": 8,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Willpower",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 28,
+    "attacks": 53
+   },
+   {
+    "name": "L60 Animation",
+    "dealt": 256,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 17
+   },
+   {
+    "name": "L60 Constitution",
+    "dealt": 773,
+    "taken": 32,
+    "hits": 17,
+    "attacks": 58
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Curved",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 89.44271909999159,
+    "attacks": 54,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Shatter": 5,
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "momentum:adv": 18,
+     "momentum:str": 17,
+     "defend:perfectParry": 10,
+     "defend:shift": 42,
+     "defend:dodge": 69,
+     "riposte": 7,
+     "Sheath Weapon": 3
+    },
+    "fist": "Shatter",
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 1,
+    "disarms": 1,
+    "mom": 1,
+    "lastTech": "kick"
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 11,
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 44.154759474226495,
+    "attacks": 49,
+    "turns": 14,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 21,
+     "manifest:Eclipse": 14,
+     "manifest:Umbral Strike": 14,
+     "defend:dodge": 135
+    },
+    "manifests": 28
+   },
+   {
+    "name": "L60 Perfection",
+    "side": "party",
+    "role": "caster",
+    "moved": 25,
+    "attacks": 29,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 33,
+     "manifest:Exact+": 15,
+     "manifest:Hone": 15,
+     "manifest:Masterstroke+": 14
+    },
+    "turnMoved": 0,
+    "manifests": 44
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 21.213203435596427,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 23,
+     "natural:Black Jaws": 2,
+     "manifest:Eclipse": 2,
+     "manifest:Umbral Strike": 2
+    },
+    "turnMoved": 0,
+    "manifests": 4
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4,
+     "defend:dodge": 3
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L60 Willpower",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 38,
+    "used": {
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15,
+     "manifest:Renewal": 8
+    }
+   },
+   {
+    "name": "L60 Animation",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 17,
+    "used": {
+     "cast:Force + Cut": 3,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Cut": 14,
+     "cast:nothingAffordable": 14
+    }
+   },
+   {
+    "name": "L60 Constitution",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 75,
+    "attacks": 58,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Taunt": 8,
+     "Unstoppable": 1,
+     "Pull Aggro": 1,
+     "Dip": 5,
+     "limber": 31,
+     "defend:shift": 17,
+     "defend:dodge": 19,
+     "limber:skipped": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L60 Perfection": {
+    "mental-theory": 3,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-perfection-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2
+   },
+   "L60 Constitution": {
+    "martial-theory": 4,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-constitution-methods": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 1,
+    "generic-initiative": 1
+   },
+   "L60 Animation": {
+    "magic-theory": 4,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-animation": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Willpower": {
+    "mental-theory": 4,
+    "mental-life-dream": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-willpower-arts": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 1
+   },
+   "L60 Curved": {
+    "martial-theory": 4,
+    "martial-medium-armor": 2,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-curved-weapons": 5,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-athletics": 3,
+    "generic-acrobatics": 1,
+    "generic-endurance": 1
+   }
+  },
+  "gear": {
+   "L60 Perfection": [
+    "Unarmed G1"
+   ],
+   "L60 Constitution": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Animation": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Willpower": [
+    "Unarmed G1"
+   ],
+   "L60 Curved": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Curved (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Perfection": [],
+   "L60 Constitution": [
+    "Medium Armor (Hard Leather): 392/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Animation": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Willpower": [],
+   "L60 Curved": [
+    "Light Armor (Hard Leather): 56/210",
+    "Light Curved (Steel): 495/495"
+   ],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5292,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5104,
+    "monsterHp": 9330,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 4748,
+    "monsterHp": 8439,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 4748,
+    "monsterHp": 8029,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 4748,
+    "monsterHp": 7725,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 4748,
+    "monsterHp": 7725,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 4748,
+    "monsterHp": 7725,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 4748,
+    "monsterHp": 7725,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 4748,
+    "monsterHp": 7725,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 4712,
+    "monsterHp": 7725,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 4712,
+    "monsterHp": 7650,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 12,
+    "partyHp": 4712,
+    "monsterHp": 7632,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 13,
+    "partyHp": 4712,
+    "monsterHp": 7578,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 14,
+    "partyHp": 4680,
+    "monsterHp": 7467,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 15,
+    "partyHp": 4680,
+    "monsterHp": 6844,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 16,
+    "partyHp": 4680,
+    "monsterHp": 6181,
+    "partyDown": 1,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 4680,
+    "monsterHp": 6181,
+    "partyDown": 1,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Curved": 1111,
+    "Sim Gloamhound": 180,
+    "Sim Burgeon": 84,
+    "L60 Animation": 256,
+    "L60 Perfection": 1239,
+    "Sim Thicket": 348,
+    "L60 Constitution": 773
+   },
+   "taken": {
+    "Sim Burgeon": 1345,
+    "L60 Curved": 580,
+    "Sim Gloamhound": 2068,
+    "Sim Thicket": 250,
+    "L60 Constitution": 32
+   },
+   "unattributed": 284
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 3539
+  },
+  "lostBy": {
+   "party": 612,
+   "monsters": 3539
+  },
+  "directTaken": {
+   "party": 2895,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Perfection: Alacrity?": 1,
+    "prompt: L# Willpower: Alacrity?": 1,
+    "prompt: L# Animation: Alacrity?": 1,
+    "prompt: L# Constitution: Alacrity?": 1,
+    "prompt: L# Perfection: Resist Dread (as Fear)": 2,
+    "prompt: L# Willpower: Resist Dread (as Fear)": 2,
+    "prompt: L# Animation: Resist Dread (as Fear)": 2,
+    "prompt: L# Curved: Resist Dread (as Fear)": 2,
+    "prompt: L# Constitution: Resist Dread (as Fear)": 2,
+    "prompt: L# Perfection: Resist Allure (as Fear)": 2,
+    "prompt: L# Willpower: Resist Allure (as Fear)": 2,
+    "prompt: L# Animation: Resist Allure (as Fear)": 2,
+    "prompt: L# Curved: Resist Allure (as Fear)": 2,
+    "prompt: L# Constitution: Resist Allure (as Fear)": 2,
+    "prompt: Light Curved (Steel)": 26,
+    "prompt: Light Curved (Steel) — Solitary follow-up": 28,
+    "prompt: L# Curved — Perfect Parry": 10,
+    "prompt: L# Curved — Shift": 42,
+    "prompt: Riposte Ward": 99,
+    "prompt: Light Curved (Steel) — Riposte": 2,
+    "prompt: Shadowmark (Tenet)": 10,
+    "prompt: Shadowmark: make one step more obscured": 10,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Verdant Soul (Tenet)": 12,
+    "prompt: Verdant Soul: give # temp HP to": 12,
+    "prompt: Sanctum Ward: L# Willpower": 15,
+    "prompt: Versatility": 1,
+    "prompt: Taunt": 8,
+    "prompt: Heavy Balanced (Steel)": 29,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 29,
+    "confirm: Sheath Weapon": 3,
+    "prompt: Umbral Strike": 8,
+    "prompt: Ego (Tenet)": 9,
+    "prompt: Pull Aggro": 1,
+    "prompt: Unarmed — Riposte": 5,
+    "prompt: Sporing": 1,
+    "prompt: L# Constitution — Shift": 17
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [VYbZcND1wdHNYPuy] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Willpower"
+    },
+    {
+     "level": "error",
+     "msg": "undefined id [VYbZcND1wdHNYPuy] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Willpower"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Curved needs 68 Energy for Sheath Weapon but has 57.",
+     "who": "L60 Curved"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Curved needs 68 Energy for Sheath Weapon but has 45.",
+     "who": "L60 Curved"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Curved needs 68 Energy for Sheath Weapon but has 57.",
+     "who": "L60 Curved"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Perfection is afraid and can't gain Energy.",
+     "who": "L60 Perfection"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Animation is afraid and can't gain Energy.",
+     "who": "L60 Animation"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [VYbZcND1wdHNYPuy] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu",
+    "Error: undefined id [VYbZcND1wdHNYPuy] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

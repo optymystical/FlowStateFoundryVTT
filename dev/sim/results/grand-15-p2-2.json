@@ -1,0 +1,1715 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 147,
+  "winner": "party",
+  "pass": "grand-15-p2",
+  "rounds": 5,
+  "partyLeft": 4,
+  "monstersLeft": 0,
+  "followups": 16,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither+": 5,
+   "defend:dodge": 111,
+   "manifest:Waste+": 5,
+   "manifest:Execute+": 3,
+   "ward": 7,
+   "manifest:Decree": 2,
+   "balance": 2,
+   "opt:b=mine": 2,
+   "manifest:Mandate": 2,
+   "charge:L15 Order": 4,
+   "opt:replace=u1KFoPbnzuWTbSam": 1,
+   "opt:m:4oHYoOfyCCxpVp0I": 1,
+   "manifest:Bloom": 4,
+   "manifest:Flourish": 4,
+   "cast:Stab": 3,
+   "mod:Setup": 3,
+   "opt:pepper=1": 12,
+   "opt:spinDown": 9,
+   "limber": 6,
+   "quickload:speed": 11,
+   "Parry": 1,
+   "opt:slam=both": 4,
+   "recoverEnergy": 8,
+   "cast:Cut + Flame": 9,
+   "mod:Bleed": 3,
+   "mod:Rend": 8,
+   "mod:Ignition": 2,
+   "manifest:Fracture+": 6,
+   "manifest:Larceny+": 3,
+   "charge:L15 Chaos": 7,
+   "opt:replace=UMNu823apK3lvI8e": 1,
+   "opt:replace=fDEshOVsK2TPcU0U": 1,
+   "cast:Slam": 6,
+   "mod:Pinpoint": 1,
+   "mod:Crush": 6,
+   "mod:Bash": 4,
+   "mod:Beatdown": 6,
+   "opt:replace=ZhtMUqZlkkQnbO8k": 1,
+   "riposte": 1,
+   "opt:replace=1Wc8ACqQn7LW7L1m": 1,
+   "deflect": 2,
+   "limber:skipped": 11,
+   "opt:quickStrike": 8,
+   "Eviscerate": 3,
+   "opt:replace=C81g5ETgviiYQhIM": 1,
+   "opt:m:fIaeZJ27JsAbSABE": 1,
+   "Mark": 2,
+   "opt:slam=knockback": 1,
+   "opt:replace=oPI0K2pgXjW7BQGo": 1,
+   "opt:replace=FkRMhLMZ3SPhW4Hp": 1,
+   "opt:replace=n7D8NfxuzDa9e22j": 1,
+   "cutBack": 3,
+   "markShot": 1,
+   "manifest:Execute": 2
+  },
+  "hp": {
+   "L15 Life#30tE": "279/279",
+   "L15 Balanced#asVW": "192/279",
+   "L15 Slashing#a2Cm": "279/279",
+   "L15 Death#6jm6": "279/279",
+   "L15 Swift#fiVR": "108/279",
+   "L15 Piercing#f4Vp": "116/148",
+   "L15 Order#eUm4": "136/279",
+   "L15 Rapid#ePmb": "110/279",
+   "L15 Crushing#rzU8": "162/279",
+   "L15 Chaos#cGJo": "119/276"
+  },
+  "down": [
+   "L15 Swift",
+   "L15 Piercing",
+   "L15 Order",
+   "L15 Rapid",
+   "L15 Crushing",
+   "L15 Chaos"
+  ],
+  "weapons": {
+   "Manifest: Wither (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Death"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Death"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Death"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Order"
+    ]
+   },
+   "Manifest: Decree (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Order"
+    ]
+   },
+   "Manifest: Mandate (Manifest) [M]": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Order"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Life"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Life"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Life"
+    ]
+   },
+   "Spell: Stab [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L15 Piercing"
+    ]
+   },
+   "Light Rapid": {
+    "attacks": 12,
+    "followups": 1,
+    "hits": 8,
+    "crits": 5,
+    "misses": 5,
+    "damage": 214,
+    "ap": 26,
+    "kills": 1,
+    "users": [
+     "L15 Rapid"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 7,
+    "followups": 9,
+    "hits": 7,
+    "crits": 4,
+    "misses": 9,
+    "damage": 51,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L15 Balanced"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 4,
+    "damage": 100,
+    "ap": 27,
+    "kills": 4,
+    "users": [
+     "L15 Slashing"
+    ]
+   },
+   "Manifest: Fracture (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Chaos"
+    ]
+   },
+   "Manifest: Larceny (Manifest) [M]": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Chaos"
+    ]
+   },
+   "Spell: Slam [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 2,
+    "damage": 44,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L15 Crushing"
+    ]
+   },
+   "Spell: Deflect — Slam": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 0,
+    "damage": 14,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L15 Balanced"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 8,
+    "followups": 3,
+    "hits": 7,
+    "crits": 2,
+    "misses": 4,
+    "damage": 44,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "L15 Swift"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 8,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 45,
+    "ap": 0,
+    "kills": 1,
+    "users": [
+     "L15 Swift"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 5,
+    "absorbed": 20
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 13
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Death",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 15
+   },
+   {
+    "name": "L15 Piercing",
+    "dealt": 0,
+    "taken": 2,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "L15 Order",
+    "dealt": 0,
+    "taken": 108,
+    "hits": 6,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Life",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 13
+   },
+   {
+    "name": "L15 Rapid",
+    "dealt": 214,
+    "taken": 50,
+    "hits": 8,
+    "attacks": 13
+   },
+   {
+    "name": "L15 Balanced",
+    "dealt": 65,
+    "taken": 87,
+    "hits": 9,
+    "attacks": 18
+   },
+   {
+    "name": "L15 Slashing",
+    "dealt": 100,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "L15 Chaos",
+    "dealt": 0,
+    "taken": 65,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "L15 Crushing",
+    "dealt": 44,
+    "taken": 29,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Swift",
+    "dealt": 89,
+    "taken": 171,
+    "hits": 11,
+    "attacks": 19
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Death",
+    "side": "party",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 10,
+    "manifests": 15,
+    "used": {
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 5,
+     "manifest:Execute+": 3,
+     "defend:dodge": 3,
+     "manifest:Execute": 2
+    }
+   },
+   {
+    "name": "L15 Piercing",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "cast:Stab": 3,
+     "mod:Setup": 3
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "L15 Order",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 4,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 2,
+     "manifest:Decree": 2,
+     "manifest:Mandate": 2,
+     "defend:dodge": 19
+    },
+    "manifests": 4
+   },
+   {
+    "name": "L15 Life",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 10,
+     "ward": 5,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "L15 Rapid",
+    "side": "monsters",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 2,
+    "used": {
+     "Mark": 2,
+     "markShot": 1,
+     "defend:dodge": 5
+    },
+    "reloads": 1
+   },
+   {
+    "name": "L15 Balanced",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 85.1920240520265,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 25,
+     "limber": 6,
+     "Parry": 1,
+     "recoverEnergy": 4,
+     "riposte": 1,
+     "deflect": 2,
+     "limber:skipped": 11
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Slashing",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Cut + Flame": 9,
+     "mod:Bleed": 3,
+     "mod:Rend": 8,
+     "mod:Ignition": 2,
+     "recoverEnergy": 3
+    }
+   },
+   {
+    "name": "L15 Chaos",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 9,
+    "used": {
+     "manifest:Fracture+": 6,
+     "manifest:Larceny+": 3,
+     "defend:dodge": 19
+    }
+   },
+   {
+    "name": "L15 Crushing",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Slam": 6,
+     "mod:Pinpoint": 1,
+     "mod:Crush": 6,
+     "mod:Bash": 4,
+     "mod:Beatdown": 6,
+     "defend:dodge": 13
+    }
+   },
+   {
+    "name": "L15 Swift",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 109.02246907382427,
+    "attacks": 16,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 20,
+    "shank": 1,
+    "used": {
+     "Eviscerate": 3,
+     "recoverEnergy": 1,
+     "defend:dodge": 7,
+     "cutBack": 3
+    }
+   }
+  ],
+  "trees": {
+   "L15 Life": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "generic-initiative": 2,
+    "generic-punish": 2
+   },
+   "L15 Balanced": {
+    "martial-theory": 2,
+    "martial-medium-armor": 3,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2
+   },
+   "L15 Slashing": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   },
+   "L15 Death": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "generic-discipline": 2
+   },
+   "L15 Swift": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-swift-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2
+   }
+  },
+  "gear": {
+   "L15 Life": [
+    "Unarmed G1"
+   ],
+   "L15 Balanced": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G2",
+    "Heavy Balanced (Steel) G3"
+   ],
+   "L15 Slashing": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Death": [
+    "Unarmed G1"
+   ],
+   "L15 Swift": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Swift (Steel) G3"
+   ]
+  },
+  "monsterGear": {
+   "L15 Piercing": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Order": [
+    "Unarmed"
+   ],
+   "L15 Rapid": [
+    "Unarmed",
+    "Light Armor (Hard Leather)",
+    "Light Rapid (Steel)"
+   ],
+   "L15 Crushing": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Chaos": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Life": [],
+   "L15 Balanced": [
+    "Medium Armor (Hard Leather): 40/60",
+    "Heavy Balanced (Steel): 480/540"
+   ],
+   "L15 Slashing": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Death": [],
+   "L15 Swift": [
+    "Light Armor (Hard Leather): 24/30",
+    "Light Swift (Steel): 135/135"
+   ],
+   "L15 Piercing": [
+    "Light Armor (Hard Leather): 14/15"
+   ],
+   "L15 Order": [],
+   "L15 Rapid": [
+    "Light Armor (Hard Leather): 28/30",
+    "Light Rapid (Steel): 135/135"
+   ],
+   "L15 Crushing": [
+    "Light Armor (Hard Leather): 20/30"
+   ],
+   "L15 Chaos": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 1302,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1376,
+    "monsterHp": 1131,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1376,
+    "monsterHp": 1075,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 1235,
+    "monsterHp": 943,
+    "partyDown": 0,
+    "monstersDown": 3
+   },
+   {
+    "round": 5,
+    "partyHp": 1151,
+    "monsterHp": 812,
+    "partyDown": 1,
+    "monstersDown": 4
+   },
+   {
+    "round": 5,
+    "partyHp": 1137,
+    "monsterHp": 643,
+    "partyDown": 1,
+    "monstersDown": 5,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L15 Death": 45,
+    "L15 Rapid": 209,
+    "L15 Balanced": 38,
+    "L15 Slashing": 386,
+    "L15 Swift": 161,
+    "L15 Chaos": 5,
+    "L15 Crushing": 44
+   },
+   "taken": {
+    "L15 Piercing": 70,
+    "L15 Balanced": 87,
+    "L15 Order": 143,
+    "L15 Crushing": 117,
+    "L15 Swift": 171,
+    "L15 Chaos": 160,
+    "L15 Rapid": 169
+   },
+   "unattributed": 29
+  },
+  "painDivisor": 2,
+  "skips": [
+   "2:3 L15 Piercing: down"
+  ],
+  "burn": {
+   "party": 0,
+   "monsters": 28
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 631
+  },
+  "lostBy": {
+   "party": 258,
+   "monsters": 659
+  },
+  "directTaken": {
+   "party": 512,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Life: Alacrity?": 1,
+    "prompt: L# Order: Alacrity?": 1,
+    "prompt: Mortal Coil (Tenet)": 5,
+    "prompt: Sanctum Ward: L# Order": 2,
+    "prompt: Balance": 2,
+    "prompt: L# Order's charges on L# Life": 4,
+    "prompt: Sanctum Ward: L# Life": 5,
+    "prompt: Verdant Soul (Tenet)": 4,
+    "prompt: Verdant Soul: give # temp HP to": 4,
+    "prompt: Light Rapid (Steel)": 12,
+    "wait: Light Rapid (Steel) is empty": 11,
+    "prompt: Heavy Balanced (Steel)": 7,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8,
+    "prompt: L# Chaos's charges on L# Balanced": 14,
+    "prompt: Unbound (Tenet)": 2,
+    "prompt: Unbound: place a Chaos charge": 2,
+    "prompt: Heavy Balanced (Steel) — Riposte": 1,
+    "prompt: Light Swift (Steel)": 8,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 8,
+    "confirm: Eviscerate": 3,
+    "prompt: L# Chaos: Entropy on L# Balanced": 4,
+    "prompt: L# Chaos: charges on L# Balanced's damage": 1,
+    "prompt: Light Swift (Steel) — Cut Back": 3,
+    "prompt: Light Rapid (Steel) — Mark shot": 1,
+    "prompt: Warden Ward": 12
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L15 Balanced can't move through L15 Crushing's space.",
+     "who": "L15 Balanced"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 322,
+  "winner": "unfinished",
+  "pass": "grand-15-p2",
+  "rounds": 16,
+  "partyLeft": 2,
+  "monstersLeft": 2,
+  "followups": 14,
+  "knockbacks": {},
+  "used": {
+   "defend:dodge": 259,
+   "natural:Black Jaws": 35,
+   "manifest:Eclipse": 21,
+   "manifest:Umbral Strike": 19,
+   "ward": 13,
+   "manifest:Bloom": 18,
+   "manifest:Flourish": 18,
+   "limber": 2,
+   "opt:quickStrike": 5,
+   "cast:Cut + Flame": 30,
+   "mod:Bleed": 2,
+   "mod:Rend": 3,
+   "mod:Ignition": 2,
+   "cutBack": 2,
+   "manifest:Wither+": 2,
+   "manifest:Waste+": 2,
+   "manifest:Execute+": 2,
+   "natural:Budding Gore": 8,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "Parry": 1,
+   "opt:spinCycle": 3,
+   "opt:slam=both": 1,
+   "limber:skipped": 18,
+   "riposte": 1,
+   "deflect": 2,
+   "Eviscerate": 1,
+   "manifest:Wither": 13,
+   "manifest:Waste": 13,
+   "manifest:Execute": 13,
+   "manifest:Renewal": 9
+  },
+  "hp": {
+   "L15 Life#ApbI": "133/279",
+   "L15 Balanced#iqMY": "122/279",
+   "L15 Slashing#LabE": "279/279",
+   "L15 Death#KjnU": "279/279",
+   "L15 Swift#P4T1": "107/279",
+   "Sim Bloomrot#ejDN": "0/486",
+   "Sim Bloomrot#IwCe": "273/486",
+   "Sim Gloamhound#KZOU": "212/474",
+   "Sim Gloamhound#rMkq": "470/486",
+   "Sim Burgeon#WX5U": "648/648"
+  },
+  "down": [
+   "L15 Life",
+   "L15 Balanced",
+   "L15 Swift",
+   "Sim Bloomrot",
+   "Sim Bloomrot",
+   "Sim Gloamhound"
+  ],
+  "weapons": {
+   "Natural: Black Jaws [M]": {
+    "attacks": 35,
+    "followups": 0,
+    "hits": 25,
+    "crits": 10,
+    "misses": 10,
+    "damage": 239,
+    "ap": 70,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 18,
+    "crits": 6,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 16,
+    "crits": 3,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 9,
+    "crits": 7,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Life"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 9,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Life"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 6,
+    "crits": 0,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Life"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 5,
+    "followups": 2,
+    "hits": 6,
+    "crits": 4,
+    "misses": 1,
+    "damage": 46,
+    "ap": 14,
+    "kills": 0,
+    "users": [
+     "L15 Swift"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 7,
+    "hits": 2,
+    "crits": 1,
+    "misses": 5,
+    "damage": 23,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Swift"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 12,
+    "crits": 4,
+    "misses": 18,
+    "damage": 123,
+    "ap": 90,
+    "kills": 3,
+    "users": [
+     "L15 Slashing"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Death"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Death"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 8,
+    "crits": 3,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Death"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 2,
+    "damage": 115,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Bloomrot"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 2,
+    "damage": 139,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 6,
+    "followups": 8,
+    "hits": 10,
+    "crits": 3,
+    "misses": 11,
+    "damage": 91,
+    "ap": 21,
+    "kills": 0,
+    "users": [
+     "L15 Balanced"
+    ]
+   },
+   "Natural: Black Jaws": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 14,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L15 Balanced"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L15 Life"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 9,
+    "absorbed": 36
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 10,
+    "absorbed": 20
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 64,
+    "taken": 127,
+    "hits": 17,
+    "attacks": 19
+   },
+   {
+    "name": "L15 Balanced",
+    "dealt": 105,
+    "taken": 157,
+    "hits": 11,
+    "attacks": 16
+   },
+   {
+    "name": "L15 Life",
+    "dealt": 0,
+    "taken": 196,
+    "hits": 30,
+    "attacks": 48
+   },
+   {
+    "name": "L15 Swift",
+    "dealt": 69,
+    "taken": 172,
+    "hits": 8,
+    "attacks": 14
+   },
+   {
+    "name": "L15 Slashing",
+    "dealt": 123,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 30
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 12,
+    "taken": 42,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 175,
+    "taken": 16,
+    "hits": 42,
+    "attacks": 56
+   },
+   {
+    "name": "L15 Death",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 18,
+    "attacks": 45
+   },
+   {
+    "name": "Sim Bloomrot",
+    "dealt": 103,
+    "taken": 80,
+    "hits": 9,
+    "attacks": 15
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 139,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 120.4987562112089,
+    "attacks": 19,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 20,
+    "used": {
+     "natural:Black Jaws": 8,
+     "manifest:Eclipse": 6,
+     "manifest:Umbral Strike": 5,
+     "defend:dodge": 41
+    },
+    "manifests": 11
+   },
+   {
+    "name": "L15 Balanced",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 13,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 34,
+     "limber": 2,
+     "Parry": 1,
+     "limber:skipped": 18,
+     "riposte": 1,
+     "deflect": 2
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L15 Life",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 13,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 13,
+     "manifest:Bloom": 13,
+     "manifest:Flourish": 13,
+     "defend:dodge": 71,
+     "manifest:Renewal": 9
+    },
+    "manifests": 35
+   },
+   {
+    "name": "L15 Swift",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 45.27692569068709,
+    "attacks": 12,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "shank": 1,
+    "used": {
+     "defend:dodge": 17,
+     "cutBack": 2,
+     "Eviscerate": 1
+    }
+   },
+   {
+    "name": "L15 Slashing",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Cut + Flame": 30,
+     "mod:Bleed": 2,
+     "mod:Rend": 3,
+     "mod:Ignition": 2,
+     "defend:dodge": 10
+    }
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 77.62087348130012,
+    "attacks": 1,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 7,
+     "natural:Budding Gore": 1,
+     "manifest:Bloom": 1,
+     "manifest:Flourish": 1
+    },
+    "turnMoved": 77.62087348130012,
+    "manifests": 2
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 110,
+    "attacks": 56,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 70,
+     "natural:Black Jaws": 27,
+     "manifest:Eclipse": 15,
+     "manifest:Umbral Strike": 14
+    },
+    "manifests": 29
+   },
+   {
+    "name": "L15 Death",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 45,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 45,
+    "used": {
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2,
+     "manifest:Execute+": 2,
+     "manifest:Wither": 13,
+     "manifest:Waste": 13,
+     "manifest:Execute": 13
+    }
+   },
+   {
+    "name": "Sim Bloomrot",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 95.58621384311846,
+    "attacks": 7,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 7,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4,
+     "defend:dodge": 4
+    },
+    "manifests": 8
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 85,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4,
+     "defend:dodge": 5
+    },
+    "manifests": 4
+   }
+  ],
+  "trees": {
+   "L15 Life": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "generic-initiative": 2,
+    "generic-punish": 2
+   },
+   "L15 Balanced": {
+    "martial-theory": 2,
+    "martial-medium-armor": 3,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2
+   },
+   "L15 Slashing": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   },
+   "L15 Death": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "generic-discipline": 2
+   },
+   "L15 Swift": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-swift-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2
+   }
+  },
+  "gear": {
+   "L15 Life": [
+    "Unarmed G1"
+   ],
+   "L15 Balanced": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G3",
+    "Medium Armor (Hard Leather) G2"
+   ],
+   "L15 Slashing": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Death": [
+    "Unarmed G1"
+   ],
+   "L15 Swift": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2",
+    "Light Swift (Steel) G3"
+   ]
+  },
+  "monsterGear": {
+   "Sim Bloomrot": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L15 Life": [],
+   "L15 Balanced": [
+    "Heavy Balanced (Steel): 501/540",
+    "Medium Armor (Hard Leather): 24/60"
+   ],
+   "L15 Slashing": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Death": [],
+   "L15 Swift": [
+    "Light Armor (Hard Leather): 10/30",
+    "Light Swift (Steel): 135/135"
+   ],
+   "Sim Bloomrot": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1395,
+    "monsterHp": 2592,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1303,
+    "monsterHp": 2050,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 1169,
+    "monsterHp": 1939,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 1160,
+    "monsterHp": 1904,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 1034,
+    "monsterHp": 1882,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 961,
+    "monsterHp": 1639,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 977,
+    "monsterHp": 1603,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 8,
+    "partyHp": 961,
+    "monsterHp": 1603,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 9,
+    "partyHp": 952,
+    "monsterHp": 1603,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 10,
+    "partyHp": 949,
+    "monsterHp": 1603,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 11,
+    "partyHp": 944,
+    "monsterHp": 1603,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 930,
+    "monsterHp": 1603,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 13,
+    "partyHp": 930,
+    "monsterHp": 1603,
+    "partyDown": 2,
+    "monstersDown": 3
+   },
+   {
+    "round": 14,
+    "partyHp": 920,
+    "monsterHp": 1603,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 15,
+    "partyHp": 920,
+    "monsterHp": 1603,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 920,
+    "monsterHp": 1603,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 920,
+    "monsterHp": 1603,
+    "partyDown": 3,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "Sim Gloamhound": 239,
+    "L15 Slashing": 405,
+    "L15 Death": 52,
+    "Sim Bloomrot": 115,
+    "Sim Burgeon": 139,
+    "L15 Balanced": 91,
+    "L15 Swift": 35,
+    "L15 Life": 50
+   },
+   "taken": {
+    "L15 Balanced": 157,
+    "Sim Bloomrot": 721,
+    "Sim Gloamhound": 290,
+    "L15 Swift": 172,
+    "L15 Life": 196
+   },
+   "unattributed": 410
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 302
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 687
+  },
+  "lostBy": {
+   "party": 475,
+   "monsters": 989
+  },
+  "directTaken": {
+   "party": 790,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Life: Alacrity?": 1,
+    "prompt: L# Life: Resist Allure (as Fear)": 3,
+    "prompt: L# Balanced: Resist Allure (as Fear)": 3,
+    "prompt: L# Death: Resist Allure (as Fear)": 3,
+    "prompt: L# Swift: Resist Allure (as Fear)": 3,
+    "prompt: L# Slashing: Resist Allure (as Fear)": 3,
+    "prompt: L# Life: Resist Dread (as Fear)": 2,
+    "prompt: L# Balanced: Resist Dread (as Fear)": 2,
+    "prompt: L# Death: Resist Dread (as Fear)": 2,
+    "prompt: L# Swift: Resist Dread (as Fear)": 2,
+    "prompt: L# Slashing: Resist Dread (as Fear)": 2,
+    "prompt: Shadowmark (Tenet)": 20,
+    "prompt: Shadowmark: make one step more obscured": 20,
+    "prompt: Sanctum Ward: L# Life": 13,
+    "prompt: Verdant Soul (Tenet)": 16,
+    "prompt: Verdant Soul: give # temp HP to": 16,
+    "prompt: Light Swift (Steel)": 5,
+    "prompt: Riposte Ward": 60,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 7,
+    "prompt: Light Swift (Steel) — Cut Back": 2,
+    "prompt: Mortal Coil (Tenet)": 10,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Heavy Balanced (Steel)": 6,
+    "prompt: Umbral Strike": 12,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 7,
+    "prompt: Heavy Balanced (Steel) — Riposte": 1,
+    "confirm: Eviscerate": 1,
+    "prompt: Sporing": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [ePmbX6JoNXHk3fan] does not exist in the EmbeddedCollection collection.",
+     "who": "L15 Slashing"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [ePmbX6JoNXHk3fan] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

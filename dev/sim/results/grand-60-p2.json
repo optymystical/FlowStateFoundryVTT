@@ -1,0 +1,1940 @@
+[
+ {
+  "id": "mirror-r1",
+  "group": "mirror",
+  "rotation": 1,
+  "seconds": 413,
+  "winner": "unfinished",
+  "pass": "grand-60-p2",
+  "rounds": 16,
+  "partyLeft": 1,
+  "monstersLeft": 2,
+  "followups": 49,
+  "knockbacks": {},
+  "used": {
+   "manifest:Fracture+": 5,
+   "defend:dodge": 307,
+   "manifest:Larceny+": 5,
+   "charge:L60 Chaos": 11,
+   "opt:replace=B2Rpx1dr5sVXfiRd": 1,
+   "manifest:Wither+": 15,
+   "opt:replace=SkTitnUHC1fAcIZf": 1,
+   "opt:replace=lekRKO3oMQd6G368": 1,
+   "ward": 23,
+   "manifest:Bloom": 9,
+   "manifest:Flourish": 8,
+   "manifest:Decree": 16,
+   "cast:Cut + Flame": 30,
+   "mod:Bleed": 28,
+   "mod:Rend": 35,
+   "mod:Ignition": 2,
+   "balance": 12,
+   "opt:b=mine": 6,
+   "cast:Cut + Slam": 30,
+   "mod:Crush": 2,
+   "defend:shift": 80,
+   "cutBack": 15,
+   "mod:Bash": 1,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Parry": 1,
+   "Unstoppable": 1,
+   "Brace": 1,
+   "opt:slam=knockback": 6,
+   "limber:skipped": 10,
+   "recoverEnergy": 11,
+   "manifest:Mandate": 15,
+   "charge:L60 Order": 17,
+   "opt:replace=FaoT0bwEgSjPTAQG": 1,
+   "limber": 25,
+   "manifest:Waste+": 12,
+   "manifest:Execute+": 11,
+   "Leap": 2,
+   "Spot Weakness": 2,
+   "opt:quickStrike": 20,
+   "opt:shank1=adv": 3,
+   "opt:shank2=dodge": 4,
+   "opt:shank3=pierce": 3,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 2,
+   "Mark": 6,
+   "opt:pepper=1": 21,
+   "opt:spinDown": 10,
+   "opt:pinpoint": 6,
+   "markShot": 6,
+   "quickload:speed": 25,
+   "opt:replace=FoHWg9J2ciTpZOhQ": 1,
+   "opt:replace=maiQ4HxejBGhEDoH": 1,
+   "opt:slam=both": 1,
+   "opt:b=opp": 6,
+   "opt:shank1=dodge": 1,
+   "opt:replace=WHfLsSoYM1SXJNhQ": 1,
+   "opt:replace=VXe0cQwhqSRTYv0L": 1,
+   "manifest:Fracture": 1,
+   "opt:replace=kbBBfpMgLUBMt9H1": 1,
+   "opt:replace=Ms899aGjgIXZlvya": 1,
+   "opt:replace=jspn2qt6L10oKX11": 1,
+   "opt:m:RWK666iDBNUPW88w": 1,
+   "manifest:Wither": 1,
+   "opt:replace=Hkc25uhoQTu4F2Dn": 1,
+   "opt:replace=AM9GrSNCONL6zNRJ": 1,
+   "opt:replace=aFrfRtfhkW8NfAwo": 1,
+   "opt:m:Haxi6LXUqnVmrKCi": 1,
+   "opt:m:H3UkAvvSgss9SPy1": 1,
+   "opt:m:2wcBb2yFbAJqn6hL": 1,
+   "opt:replace=6wGMxDcTuo8yWN7i": 1,
+   "opt:m:UAnbQXCwaPXn34aG": 1,
+   "opt:m:iZhZv8wR6KzeogOM": 1,
+   "manifest:Execute": 1,
+   "opt:m:04X9Ym0qUwF7lCY4": 1,
+   "opt:m:JrDnEM5jpDb8YsF7": 1,
+   "opt:replace=dMsA9OWnzBKfcuVu": 1,
+   "opt:m:NrbztK5ufuWoI3IP": 1,
+   "opt:replace=Qf5IULBrpxsyjujS": 1,
+   "opt:m:vRTTh0FyaV7JSbJI": 1,
+   "opt:replace=YMH3D44Cbw4shVuq": 1,
+   "opt:m:r4irtVPNKEJukoiC": 1
+  },
+  "hp": {
+   "L60 Life#86dq": "524/1010",
+   "L60 Balanced#6FjG": "417/1026",
+   "L60 Slashing#E69p": "1100/1134",
+   "L60 Death#ylVi": "432/1134",
+   "L60 Swift#Kw6l": "301/1134",
+   "L60 Piercing#DFAv": "214/756",
+   "L60 Order#ICzU": "1134/1134",
+   "L60 Rapid#gSrj": "554/1089",
+   "L60 Crushing#xW2c": "568/1134",
+   "L60 Chaos#gpPR": "668/1134"
+  },
+  "down": [
+   "L60 Life",
+   "L60 Balanced",
+   "L60 Death",
+   "L60 Swift",
+   "L60 Piercing",
+   "L60 Rapid",
+   "L60 Chaos"
+  ],
+  "weapons": {
+   "Manifest: Fracture (Manifest) [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Chaos"
+    ]
+   },
+   "Manifest: Larceny (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Chaos"
+    ]
+   },
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Chaos"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life"
+    ]
+   },
+   "Manifest: Decree (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 7,
+    "crits": 2,
+    "misses": 23,
+    "damage": 264,
+    "ap": 90,
+    "kills": 3,
+    "users": [
+     "L60 Slashing"
+    ]
+   },
+   "Spell: Cut + Slam [M]": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 13,
+    "crits": 5,
+    "misses": 17,
+    "damage": 1823,
+    "ap": 90,
+    "kills": 0,
+    "users": [
+     "L60 Crushing"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 23,
+    "followups": 15,
+    "hits": 26,
+    "crits": 12,
+    "misses": 12,
+    "damage": 157,
+    "ap": 76,
+    "kills": 0,
+    "users": [
+     "L60 Swift"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 13,
+    "followups": 13,
+    "hits": 9,
+    "crits": 4,
+    "misses": 17,
+    "damage": 35,
+    "ap": 39,
+    "kills": 0,
+    "users": [
+     "L60 Balanced"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 12,
+    "crits": 8,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Order"
+    ]
+   },
+   "Manifest: Decree (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 8,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Order"
+    ]
+   },
+   "Manifest: Mandate (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 11,
+    "crits": 6,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Order"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 36,
+    "hits": 10,
+    "crits": 5,
+    "misses": 26,
+    "damage": 405,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Swift"
+    ]
+   },
+   "Light Rapid": {
+    "attacks": 21,
+    "followups": 6,
+    "hits": 10,
+    "crits": 5,
+    "misses": 17,
+    "damage": 854,
+    "ap": 54,
+    "kills": 0,
+    "users": [
+     "L60 Rapid"
+    ]
+   },
+   "Manifest: Waste (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Chaos"
+    ]
+   },
+   "Manifest: Execute (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Chaos"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Order"
+    ]
+   },
+   "Spell: Cut + Slam": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 4,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 13,
+    "absorbed": 148
+   },
+   "Medium Armor (Hard Leather)": {
+    "hits": 3,
+    "absorbed": 84
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Chaos",
+    "dealt": 0,
+    "taken": 329,
+    "hits": 12,
+    "attacks": 18
+   },
+   {
+    "name": "L60 Life",
+    "dealt": 0,
+    "taken": 486,
+    "hits": 12,
+    "attacks": 25
+   },
+   {
+    "name": "L60 Order",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 31,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Slashing",
+    "dealt": 264,
+    "taken": 32,
+    "hits": 7,
+    "attacks": 30
+   },
+   {
+    "name": "L60 Piercing",
+    "dealt": 0,
+    "taken": 138,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Crushing",
+    "dealt": 1823,
+    "taken": 176,
+    "hits": 13,
+    "attacks": 30
+   },
+   {
+    "name": "L60 Swift",
+    "dealt": 562,
+    "taken": 833,
+    "hits": 36,
+    "attacks": 74
+   },
+   {
+    "name": "L60 Balanced",
+    "dealt": 35,
+    "taken": 717,
+    "hits": 9,
+    "attacks": 26
+   },
+   {
+    "name": "L60 Death",
+    "dealt": 0,
+    "taken": 609,
+    "hits": 12,
+    "attacks": 33
+   },
+   {
+    "name": "L60 Rapid",
+    "dealt": 854,
+    "taken": 218,
+    "hits": 10,
+    "attacks": 27
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Chaos",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 18,
+    "used": {
+     "manifest:Fracture+": 5,
+     "manifest:Larceny+": 5,
+     "manifest:Wither+": 4,
+     "defend:dodge": 66,
+     "manifest:Waste+": 1,
+     "manifest:Execute+": 1,
+     "manifest:Fracture": 1,
+     "manifest:Wither": 1
+    }
+   },
+   {
+    "name": "L60 Life",
+    "side": "party",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 1,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 15,
+     "ward": 8,
+     "manifest:Bloom": 8,
+     "manifest:Flourish": 8,
+     "manifest:Decree": 1
+    },
+    "turnMoved": 0,
+    "manifests": 17
+   },
+   {
+    "name": "L60 Order",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 30,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "ward": 15,
+     "manifest:Decree": 15,
+     "manifest:Mandate": 15,
+     "manifest:Bloom": 1
+    },
+    "turnMoved": 0,
+    "manifests": 31
+   },
+   {
+    "name": "L60 Slashing",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Cut + Flame": 30,
+     "mod:Bleed": 17,
+     "mod:Rend": 15,
+     "mod:Ignition": 2,
+     "defend:dodge": 33
+    }
+   },
+   {
+    "name": "L60 Piercing",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "L60 Crushing",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Cut + Slam": 30,
+     "mod:Bleed": 11,
+     "mod:Rend": 20,
+     "mod:Crush": 2,
+     "defend:dodge": 60,
+     "mod:Bash": 1
+    }
+   },
+   {
+    "name": "L60 Swift",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 90.62257748298549,
+    "attacks": 59,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:shift": 19,
+     "defend:dodge": 34,
+     "cutBack": 15,
+     "Leap": 1,
+     "Spot Weakness": 1
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0
+   },
+   {
+    "name": "L60 Balanced",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 75,
+    "attacks": 26,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 10,
+     "recoverEnergy": 1,
+     "defend:shift": 16,
+     "defend:dodge": 41,
+     "limber": 25
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Death",
+    "side": "party",
+    "role": "caster",
+    "moved": 30,
+    "attacks": 33,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 33,
+    "used": {
+     "manifest:Wither+": 11,
+     "manifest:Waste+": 11,
+     "manifest:Execute+": 10,
+     "defend:dodge": 13,
+     "manifest:Execute": 1
+    }
+   },
+   {
+    "name": "L60 Rapid",
+    "side": "monsters",
+    "role": "ranged",
+    "moved": 0,
+    "attacks": 21,
+    "turns": 9,
+    "kills": 0,
+    "leapt": true,
+    "used": {
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Mark": 6,
+     "defend:shift": 45,
+     "defend:dodge": 41,
+     "markShot": 6,
+     "recoverEnergy": 10
+    },
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 0,
+    "reloads": 6
+   }
+  ],
+  "trees": {
+   "L60 Life": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Balanced": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Slashing": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Death": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Swift": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-swift-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-athletics": 3,
+    "generic-acrobatics": 3,
+    "generic-endurance": 2
+   }
+  },
+  "gear": {
+   "L60 Life": [
+    "Unarmed G1"
+   ],
+   "L60 Balanced": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Slashing": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Death": [
+    "Unarmed G1"
+   ],
+   "L60 Swift": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Swift (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Piercing": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Order": [
+    "Unarmed"
+   ],
+   "L60 Rapid": [
+    "Unarmed",
+    "Light Rapid (Steel)",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Crushing": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Chaos": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Life": [],
+   "L60 Balanced": [
+    "Medium Armor (Hard Leather): 336/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Slashing": [
+    "Light Armor (Hard Leather): 104/120"
+   ],
+   "L60 Death": [],
+   "L60 Swift": [
+    "Light Armor (Hard Leather): 112/210",
+    "Light Swift (Steel): 495/495"
+   ],
+   "L60 Piercing": [
+    "Light Armor (Hard Leather): 56/60"
+   ],
+   "L60 Order": [],
+   "L60 Rapid": [
+    "Light Rapid (Steel): 495/495",
+    "Light Armor (Hard Leather): 196/210"
+   ],
+   "L60 Crushing": [
+    "Light Armor (Hard Leather): 80/120"
+   ],
+   "L60 Chaos": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 5292,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5546,
+    "monsterHp": 4712,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 5261,
+    "monsterHp": 4618,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 4755,
+    "monsterHp": 4304,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 4560,
+    "monsterHp": 4304,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 4392,
+    "monsterHp": 4205,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 4237,
+    "monsterHp": 4111,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 4237,
+    "monsterHp": 3950,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 3563,
+    "monsterHp": 3887,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 3294,
+    "monsterHp": 3887,
+    "partyDown": 3,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 3294,
+    "monsterHp": 3639,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 12,
+    "partyHp": 3193,
+    "monsterHp": 3578,
+    "partyDown": 3,
+    "monstersDown": 3
+   },
+   {
+    "round": 13,
+    "partyHp": 2778,
+    "monsterHp": 3578,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 14,
+    "partyHp": 2774,
+    "monsterHp": 3578,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 15,
+    "partyHp": 2774,
+    "monsterHp": 3578,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 2774,
+    "monsterHp": 3138,
+    "partyDown": 4,
+    "monstersDown": 3
+   },
+   {
+    "round": 16,
+    "partyHp": 2774,
+    "monsterHp": 3138,
+    "partyDown": 4,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Chaos": 124,
+    "L60 Slashing": 1357,
+    "L60 Balanced": 35,
+    "L60 Swift": 222,
+    "L60 Rapid": 854,
+    "L60 Crushing": 1823,
+    "L60 Death": 151
+   },
+   "taken": {
+    "L60 Life": 610,
+    "L60 Piercing": 542,
+    "L60 Chaos": 466,
+    "L60 Rapid": 580,
+    "L60 Swift": 833,
+    "L60 Slashing": 34,
+    "L60 Death": 702,
+    "L60 Balanced": 717,
+    "L60 Crushing": 566
+   },
+   "unattributed": 484
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 208
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1946
+  },
+  "lostBy": {
+   "party": 2896,
+   "monsters": 2154
+  },
+  "directTaken": {
+   "party": 3538,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Life: Alacrity?": 1,
+    "prompt: L# Balanced: Alacrity?": 1,
+    "prompt: L# Order: Alacrity?": 1,
+    "prompt: L# Slashing: Alacrity?": 1,
+    "prompt: L# Piercing: Alacrity?": 1,
+    "prompt: L# Death: Alacrity?": 1,
+    "prompt: L# Crushing: Alacrity?": 1,
+    "prompt: L# Rapid: Alacrity?": 1,
+    "prompt: L# Chaos: Alacrity?": 1,
+    "prompt: Unbound (Tenet)": 4,
+    "prompt: Unbound: place a Chaos charge": 4,
+    "prompt: L# Chaos's charges on L# Life": 5,
+    "prompt: L# Chaos: Entropy on L# Life": 1,
+    "prompt: Sanctum Ward: L# Life": 8,
+    "prompt: Verdant Soul (Tenet)": 5,
+    "prompt: Verdant Soul: give # temp HP to": 5,
+    "prompt: Balance": 12,
+    "prompt: L# Swift — Shift": 19,
+    "prompt: Light Swift (Steel) — Cut Back": 15,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Balanced (Steel)": 13,
+    "prompt: Stolen roll": 4,
+    "prompt: Warden Ward": 47,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 13,
+    "prompt: Sanctum Ward: L# Order": 15,
+    "prompt: L# Balanced — Shift": 16,
+    "prompt: L# Order's charges on L# Balanced": 3,
+    "prompt: Light Swift (Steel)": 23,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 36,
+    "prompt: Light Rapid (Steel)": 21,
+    "prompt: L# Rapid — Shift": 45,
+    "prompt: Light Rapid (Steel) — Mark shot": 6,
+    "wait: Light Rapid (Steel) is empty": 25,
+    "prompt: Mortal Coil (Tenet)": 6,
+    "prompt: L# Chaos's charges on L# Swift": 6,
+    "prompt: Exploit Opening": 6,
+    "prompt: L# Chaos's charges on L# Balanced": 3,
+    "prompt: L# Order's charges on L# Slashing": 16
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Rapid needs 8 Energy for Speedloader.",
+     "who": "L60 Rapid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Rapid needs 8 Energy for Speedloader.",
+     "who": "L60 Rapid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Rapid needs 8 Energy for Speedloader.",
+     "who": "L60 Rapid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Rapid needs 8 Energy for Speedloader.",
+     "who": "L60 Rapid"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Rapid needs 8 Energy for Speedloader.",
+     "who": "L60 Rapid"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "bestiary-r1",
+  "group": "bestiary",
+  "rotation": 1,
+  "seconds": 249,
+  "winner": "party",
+  "pass": "grand-60-p2",
+  "rounds": 7,
+  "partyLeft": 5,
+  "monstersLeft": 0,
+  "followups": 40,
+  "knockbacks": {},
+  "used": {
+   "defend:shift": 16,
+   "defend:dodge": 182,
+   "natural:Black Jaws": 12,
+   "manifest:Eclipse": 11,
+   "limber": 13,
+   "natural:Budding Gore": 8,
+   "manifest:Bloom": 11,
+   "manifest:Flourish": 11,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Parry": 1,
+   "Unstoppable": 1,
+   "opt:slam=both": 1,
+   "limber:skipped": 13,
+   "ward": 7,
+   "manifest:Wither+": 7,
+   "manifest:Waste+": 2,
+   "manifest:Execute+": 2,
+   "cast:Cut + Flame": 14,
+   "mod:Bleed": 2,
+   "mod:Rend": 9,
+   "mod:Ignition": 2,
+   "riposte": 1,
+   "deflect": 3,
+   "natural:Root Lash": 8,
+   "manifest:Cultivate": 4,
+   "Leap": 1,
+   "Spot Weakness": 1,
+   "Dash": 1,
+   "opt:quickStrike": 10,
+   "opt:shank1=adv": 1,
+   "opt:shank2=dodge": 1,
+   "opt:shank3=pierce": 1,
+   "opt:shank1=pierce": 1,
+   "opt:shank2=cleave": 1,
+   "opt:shank3=adv": 1,
+   "Eviscerate": 1,
+   "manifest:Umbral Strike": 9,
+   "cutBack": 9,
+   "opt:spinCycle": 2,
+   "manifest:Waste": 5,
+   "manifest:Execute": 5,
+   "opt:slam=knockback": 1
+  },
+  "hp": {
+   "L60 Life#Rqtv": "1112/1134",
+   "L60 Balanced#ADoS": "822/1134",
+   "L60 Slashing#xE4A": "1134/1134",
+   "L60 Death#FJjs": "1134/1134",
+   "L60 Swift#ZJ3Q": "757/1134",
+   "Sim Thicket#4JPY": "1270/3240",
+   "Sim Gloamhound#USMv": "1095/1898",
+   "Sim Gloamhound#kGf6": "628/1944",
+   "Sim Burgeon#zxI2": "1254/2592"
+  },
+  "down": [
+   "Sim Thicket",
+   "Sim Gloamhound",
+   "Sim Gloamhound",
+   "Sim Burgeon"
+  ],
+  "weapons": {
+   "Natural: Black Jaws [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 9,
+    "crits": 3,
+    "misses": 3,
+    "damage": 312,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Manifest: Eclipse (Manifest) [M]": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 8,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   },
+   "Natural: Budding Gore [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 5,
+    "damage": 122,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Manifest: Flourish (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Thicket"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 14,
+    "followups": 16,
+    "hits": 17,
+    "crits": 8,
+    "misses": 16,
+    "damage": 390,
+    "ap": 45,
+    "kills": 1,
+    "users": [
+     "L60 Balanced"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 9,
+    "crits": 5,
+    "misses": 5,
+    "damage": 662,
+    "ap": 42,
+    "kills": 2,
+    "users": [
+     "L60 Slashing"
+    ]
+   },
+   "Natural: Black Jaws": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 2,
+    "kills": 0,
+    "users": [
+     "L60 Balanced"
+    ]
+   },
+   "Natural: Root Lash [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 4,
+    "misses": 3,
+    "damage": 255,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Natural: Root Lash": {
+    "attacks": 2,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 0,
+    "damage": 254,
+    "ap": 4,
+    "kills": 0,
+    "users": [
+     "L60 Balanced"
+    ]
+   },
+   "Manifest: Cultivate (Manifest) [M]": {
+    "attacks": 4,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Burgeon"
+    ]
+   },
+   "Light Swift": {
+    "attacks": 17,
+    "followups": 9,
+    "hits": 18,
+    "crits": 9,
+    "misses": 8,
+    "damage": 1001,
+    "ap": 52,
+    "kills": 1,
+    "users": [
+     "L60 Swift"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 25,
+    "hits": 16,
+    "crits": 6,
+    "misses": 9,
+    "damage": 1199,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Swift"
+    ]
+   },
+   "Manifest: Umbral Strike (Manifest) [M]": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "Gloamhound"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 168
+   },
+   "Light Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 84
+   }
+  },
+  "creatures": [
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 255,
+    "taken": 235,
+    "hits": 16,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Balanced",
+    "dealt": 644,
+    "taken": 312,
+    "hits": 19,
+    "attacks": 33
+   },
+   {
+    "name": "Sim Thicket",
+    "dealt": 122,
+    "taken": 1491,
+    "hits": 7,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Life",
+    "dealt": 0,
+    "taken": 22,
+    "hits": 15,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Death",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 14,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Slashing",
+    "dealt": 662,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 14
+   },
+   {
+    "name": "Sim Gloamhound",
+    "dealt": 57,
+    "taken": 466,
+    "hits": 8,
+    "attacks": 11
+   },
+   {
+    "name": "Sim Burgeon",
+    "dealt": 255,
+    "taken": 1292,
+    "hits": 9,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Swift",
+    "dealt": 2200,
+    "taken": 377,
+    "hits": 34,
+    "attacks": 51
+   }
+  ],
+  "ai": [
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 90.55385138137417,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Black Jaws": 8,
+     "manifest:Eclipse": 7,
+     "defend:dodge": 35,
+     "manifest:Umbral Strike": 6
+    },
+    "manifests": 13
+   },
+   {
+    "name": "L60 Balanced",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 29,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:shift": 7,
+     "defend:dodge": 22,
+     "limber": 13,
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "limber:skipped": 13,
+     "riposte": 1,
+     "deflect": 3
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Thicket",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 65,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "natural:Budding Gore": 8,
+     "manifest:Bloom": 4,
+     "manifest:Flourish": 4,
+     "defend:dodge": 3
+    },
+    "manifests": 8
+   },
+   {
+    "name": "L60 Life",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 7,
+     "manifest:Bloom": 7,
+     "manifest:Flourish": 7,
+     "defend:dodge": 3
+    },
+    "manifests": 14
+   },
+   {
+    "name": "L60 Death",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 21,
+    "used": {
+     "manifest:Wither+": 7,
+     "manifest:Waste+": 2,
+     "manifest:Execute+": 2,
+     "manifest:Waste": 5,
+     "manifest:Execute": 5
+    }
+   },
+   {
+    "name": "L60 Slashing",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 14,
+    "used": {
+     "cast:Cut + Flame": 14,
+     "mod:Bleed": 2,
+     "mod:Rend": 9,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "Sim Gloamhound",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 101.11874208078342,
+    "attacks": 11,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 49,
+     "natural:Black Jaws": 4,
+     "manifest:Eclipse": 4,
+     "manifest:Umbral Strike": 3
+    },
+    "manifests": 7
+   },
+   {
+    "name": "Sim Burgeon",
+    "side": "monsters",
+    "role": "monster",
+    "moved": 75,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 30,
+     "natural:Root Lash": 8,
+     "manifest:Cultivate": 4
+    },
+    "manifests": 4
+   },
+   {
+    "name": "L60 Swift",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 46.53567894682632,
+    "attacks": 42,
+    "turns": 6,
+    "kills": 0,
+    "leapt": true,
+    "used": {
+     "Leap": 1,
+     "Spot Weakness": 1,
+     "Dash": 1,
+     "Eviscerate": 1,
+     "defend:shift": 9,
+     "defend:dodge": 40,
+     "cutBack": 9
+    },
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 1
+   }
+  ],
+  "trees": {
+   "L60 Life": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Balanced": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Slashing": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Death": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Swift": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-swift-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-athletics": 3,
+    "generic-acrobatics": 3,
+    "generic-endurance": 2
+   }
+  },
+  "gear": {
+   "L60 Life": [
+    "Unarmed G1"
+   ],
+   "L60 Balanced": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Slashing": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Death": [
+    "Unarmed G1"
+   ],
+   "L60 Swift": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Swift (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Thicket": [
+    "Unarmed"
+   ],
+   "Sim Gloamhound": [
+    "Unarmed"
+   ],
+   "Sim Burgeon": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Life": [],
+   "L60 Balanced": [
+    "Medium Armor (Hard Leather): 252/420",
+    "Heavy Balanced (Steel): 1541/1980"
+   ],
+   "L60 Slashing": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Death": [],
+   "L60 Swift": [
+    "Light Armor (Hard Leather): 118/210",
+    "Light Swift (Steel): 495/495"
+   ],
+   "Sim Thicket": [],
+   "Sim Gloamhound": [],
+   "Sim Burgeon": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 5670,
+    "monsterHp": 9720,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 5649,
+    "monsterHp": 9300,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 5527,
+    "monsterHp": 8809,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 5243,
+    "monsterHp": 8302,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 5054,
+    "monsterHp": 7875,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 5054,
+    "monsterHp": 6602,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 5008,
+    "monsterHp": 5499,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 4959,
+    "monsterHp": 4247,
+    "partyDown": 0,
+    "monstersDown": 4,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "Sim Gloamhound": 312,
+    "L60 Swift": 1654,
+    "Sim Thicket": 122,
+    "L60 Balanced": 570,
+    "L60 Life": 193,
+    "L60 Slashing": 2340,
+    "Sim Burgeon": 255,
+    "L60 Death": 2
+   },
+   "taken": {
+    "L60 Balanced": 312,
+    "Sim Gloamhound": 2165,
+    "Sim Burgeon": 1338,
+    "L60 Swift": 377,
+    "Sim Thicket": 2073,
+    "L60 Life": 22
+   },
+   "unattributed": 839
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 366
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 5107
+  },
+  "lostBy": {
+   "party": 711,
+   "monsters": 5473
+  },
+  "directTaken": {
+   "party": 4195,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced: Alacrity?": 1,
+    "prompt: L# Life: Alacrity?": 1,
+    "prompt: L# Slashing: Alacrity?": 1,
+    "prompt: L# Death: Alacrity?": 1,
+    "prompt: L# Balanced: Resist Allure (as Fear)": 2,
+    "prompt: L# Life: Resist Allure (as Fear)": 2,
+    "prompt: L# Slashing: Resist Allure (as Fear)": 2,
+    "prompt: L# Swift: Resist Allure (as Fear)": 2,
+    "prompt: L# Death: Resist Allure (as Fear)": 2,
+    "prompt: L# Balanced: Resist Dread (as Fear)": 2,
+    "prompt: L# Life: Resist Dread (as Fear)": 2,
+    "prompt: L# Slashing: Resist Dread (as Fear)": 2,
+    "prompt: L# Swift: Resist Dread (as Fear)": 2,
+    "prompt: L# Death: Resist Dread (as Fear)": 2,
+    "prompt: L# Balanced — Shift": 7,
+    "prompt: Shadowmark (Tenet)": 10,
+    "prompt: Shadowmark: make one step more obscured": 10,
+    "prompt: Verdant Soul (Tenet)": 10,
+    "prompt: Verdant Soul: give # temp HP to": 10,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Balanced (Steel)": 14,
+    "prompt: Riposte Ward": 64,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 15,
+    "prompt: Sanctum Ward: L# Life": 7,
+    "prompt: Mortal Coil (Tenet)": 7,
+    "prompt: Heavy Balanced (Steel) — Riposte": 1,
+    "prompt: Sapling (Tenet)": 4,
+    "prompt: Growth: Sim Burgeon": 4,
+    "prompt: Light Swift (Steel)": 17,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 25,
+    "confirm: Eviscerate": 1,
+    "prompt: L# Swift — Shift": 9,
+    "prompt: Light Swift (Steel) — Cut Back": 9,
+    "prompt: Umbral Strike": 7,
+    "prompt: Sporing": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [xW2c33rtKaJNANHp] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Slashing"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [xW2c33rtKaJNANHp] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

@@ -23,6 +23,8 @@ const Mart = await import("/systems/flowstate/module/martial.mjs");
 const Rules = await import("/systems/flowstate/module/rules.mjs");
 const Mn = await import("/systems/flowstate/module/mental.mjs");
 const MRu = await import("/systems/flowstate/module/mental-rules.mjs");
+const BR = await import("/systems/flowstate/module/bestiary-rules.mjs");
+const Anc = await import("/systems/flowstate/module/ancestry.mjs");
 
 const SIM = (window.SIM = window.SIM ?? {});
 SIM.results = SIM.results ?? [];
@@ -270,7 +272,9 @@ async function makeActor(spec, loadout, { party, folder }) {
   const sp = spec.sp ?? 30;
   const a = await Actor.create({
     name: spec.name, type: party ? "character" : "npc", folder: folder.id,
-    system: { stats: R.statBlock(loadout.stats ?? spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {} },
+    system: { stats: R.statBlock(loadout.stats ?? spec.stats), skillPoints: sp, size: spec.size ?? 3, trees: loadout.trees ?? {},
+      // The grand pass: an Ancestry and Background (abc) and the trees they give for free.
+      ...(loadout.abc ? { abc: loadout.abc } : {}), ...(loadout.freeTrees ? { freeTrees: loadout.freeTrees } : {}) },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
     flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null, mind: loadout.mind ?? null, mindChoices: loadout.mindChoices ?? null },
       ...(loadout.alignment ? { alignment: loadout.alignment } : {}) } }
@@ -1383,6 +1387,25 @@ async function mentalTurn(actor, me) {
         continue;
       }
       const [head, who] = entry.split("@");
+      // A Bestiary creature's natural attack (`nat:<name>@<target>`): close to its reach, then the Action List row.
+      if (head.startsWith("nat:")) {
+        const n = BR.naturalAttacks(actor.system.trees ?? {}).find(x => x.name === head.slice(4));
+        const foes = foesOf(me.parent, me);
+        const tgt = who === "weakest" ? [...foes].sort((a, b) => a.actor.system.hp.value - b.actor.system.hp.value)[0] : [...foes].sort((a, b) => dist(me, a) - dist(me, b))[0];
+        if (!n || !tgt || ap < n.ap) { done.add(entry); continue; }
+        const reach = n.range ?? (actor.system.derived?.size?.melee ?? 5);
+        if (dist(me, tgt) > reach + 0.01) {
+          if (!(await approach(actor, me, tgt, reach))) { done.add(entry); continue; }
+          if (dist(me, tgt) > reach + 0.01) { acted = true; break; }
+        }
+        pass.add(entry);
+        setTargets(tgt); SIM.acting = actor.name; SIM.fill = () => ({});
+        const before = actor.system.ap.value;
+        try { await Anc.run(actor, `best:nat:${n.tree}:${n.name}`); } catch (err) { log.errors.push(`natural ${actor.name}: ${err.stack?.slice(0, 300)}`); }
+        await settle();
+        if (actor.system.ap.value < before) { s.attacks++; note(actor, `natural:${n.name}`); acted = true; break; }
+        continue;
+      }
       const enhanceWanted = head.endsWith("+"), modeId = head.replace(/\+$/, "");
       const mode = MRu.modeById(modeId);
       if (!mode || !MRu.knownWonders(actor.system.trees ?? {}).some(w => w.modes.some(m => m.id === modeId))) { done.add(entry); continue; }
@@ -1851,7 +1874,8 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     for (const p of P.party) party.push(await makeActor(p, p.loadouts[enc.rotation], { party: true, folder: pf }));
     const monsterActors = [];
     for (const k of P.monsters[enc.group].kinds) {
-      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons, trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud, focus: k.focus, conj: k.conj, icon: k.icon, alignment: k.alignment, mind: k.mind }, { party: false, folder: mf });
+      const a = await makeActor(k, { armor: k.armor, weapons: k.weapons ?? [], trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud, focus: k.focus, conj: k.conj, icon: k.icon, alignment: k.alignment, mind: k.mind,
+        abc: k.abc, freeTrees: k.freeTrees, role: k.role, stats: k.stats }, { party: false, folder: mf });
       for (let i = 0; i < k.count; i++) monsterActors.push(a);
     }
     await deploy(scene, party, monsterActors, P.deploy, P.party[0].loadouts[enc.rotation]);
@@ -1946,10 +1970,11 @@ function collect(scene, combat, msgs) {
     if (!a || !a.opts) continue;
     // Shift / Toss (Geomancy) attack with no spell data on the card: they're counted under Shift.
     const geo = !a.opts.spell && !a.opts.itemUuid && ["Shift", "Toss"].includes(a.opts.label);
-    let key = F.creations?.[a.attacker] ? F.creations[a.attacker] : a.opts.spell ? `Spell: ${a.opts.label ?? "?"}` : geo ? `Spell: Shift (${a.opts.label})` : a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}` : null;
+    let key = F.creations?.[a.attacker] ? F.creations[a.attacker] : a.opts.spell ? `Spell: ${a.opts.label ?? "?"}` : geo ? `Spell: Shift (${a.opts.label})` : a.opts.knockbackOf && !a.opts.itemUuid ? bySource.get(a.opts.knockbackOf)?.key ?? null : a.opts.itemUuid ? F.items[a.opts.itemUuid] ?? "?" : a.opts.unarmedWeight ? `Unarmed ${a.opts.unarmedWeight === "heavy" ? "Heavy" : "Light"}`
+      : a.opts.mental ? `Manifest: ${a.opts.label ?? "?"}` : a.opts.bestiary ? `Natural: ${a.opts.bestiary.attack}` : a.opts.label ? `Other: ${a.opts.label}` : null;
     if (!key) continue;
     // Spells and creations are shared by both sides: the monsters' get their own rows.
-    if (/^(Spell|Creation): /.test(key) && F.monsterSide?.has(a.attacker)) key += " [M]";
+    if (/^(Spell|Creation|Manifest|Natural|Other): /.test(key) && F.monsterSide?.has(a.attacker)) key += " [M]";
     const attackerName = fromUuidSync(a.attacker)?.name ?? a.attacker;
     const w = W(key);
     w.users.add(attackerName.replace(/^Sim /, ""));

@@ -82,6 +82,12 @@ function showStop(sheet, stop) {
   return target;
 }
 
+/** The popup's width: narrower (down to 340 px) when that lets it sit beside the sheet instead of over it (a laptop screen). */
+export function tourWidth(sheetRect, viewWidth) {
+  const room = Math.floor(Math.max(sheetRect.left, viewWidth - sheetRect.right)) - 16;
+  return room >= 340 ? Math.min(WIDTH, room) : WIDTH;
+}
+
 /** The tour. One at a time per character; closing the sheet ends it. */
 export async function startSheetTour(actor) {
   if (!actor || running.has(actor.id)) return null;
@@ -90,6 +96,9 @@ export async function startSheetTour(actor) {
   try {
     await sheet.render({ force: true });
     sheet.element?.classList.add("fs-touring");
+    // A centred sheet on a laptop screen leaves no side wide enough for the popup: move it to the right edge when that makes room.
+    const vw = globalThis.innerWidth ?? 1280, sr = sheet.element?.getBoundingClientRect?.();
+    if (sr && tourWidth(sr, vw) === WIDTH && Math.max(sr.left, vw - sr.right) < WIDTH + 16 && vw - sr.width - 20 >= 340) sheet.setPosition?.({ left: Math.max(0, Math.round(vw - sr.width - 4)) });
     const stops = sheetStops(tourFacts(actor));
     let i = 0, step = 1;
     while (i >= 0 && i < stops.length) {
@@ -98,13 +107,14 @@ export async function startSheetTour(actor) {
       const target = showStop(sheet, stop);
       if (!target && stop.optional) { i += step; continue; }         // a group this character doesn't have yet
       const view = { width: globalThis.innerWidth ?? 1280, height: globalThis.innerHeight ?? 800 };
-      const place = sheet.element?.getBoundingClientRect ? h => placeNear(sheet.element.getBoundingClientRect(), target?.getBoundingClientRect?.() ?? null, view, WIDTH, h) : null;
+      const width = sheet.element?.getBoundingClientRect ? tourWidth(sheet.element.getBoundingClientRect(), view.width) : WIDTH;
+      const place = sheet.element?.getBoundingClientRect ? h => placeNear(sheet.element.getBoundingClientRect(), target?.getBoundingClientRect?.() ?? null, view, width, h) : null;
       const buttons = [
         i > 0 && { action: "back", label: "Back", icon: "fa-solid fa-arrow-left" },
         { action: "next", label: last ? "Finish" : "Next", icon: last ? "fa-solid fa-check" : "fa-solid fa-arrow-right", default: true },
         !last && { action: "end", label: "End tour", icon: "fa-solid fa-xmark" }
       ].filter(Boolean);
-      const answer = await popup(sheet, { title: stop.title, width: WIDTH, place, buttons,
+      const answer = await popup(sheet, { title: stop.title, width, place, buttons,
         html: `${stop.html}<p class="fs-tour-step">${i + 1} / ${stops.length}</p>` });
       target?.classList.remove(HIGHLIGHT);
       if (answer === "back") { i--; step = -1; }

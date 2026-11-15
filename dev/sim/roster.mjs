@@ -1419,3 +1419,7 @@ PASSES["assist-bench-real"] = { ...PASSES["assist-bench"], id: "assist-bench-rea
   encounters: ["baseline", "order", "death", "below", "beyond"].flatMap(id => [1, 2, 3].map(rep => ({ id: `${id}-${rep}`, group: "target", rotation: AB_CONFIGS.findIndex(c => c.id === id) }))) };
 // Mental T1 against the mixed groups again once Chaos charges are spent (the AI never read Fracture/Larceny reroll options before) and Entropy is answered.
 PASSES["mental-t1-mix-b"] = { ...PASSES["mental-t1-mix"], id: "mental-t1-mix-b", note: "Mental T1 party against mixed enemy groups, after the Chaos charge AI fix." };
+
+// The grand balance pass (2026-11-15): every combat tree at 15 and 60 Skill Points, mirrors and the Bestiary (grand.mjs).
+import { grandPasses } from "./grand.mjs";
+Object.assign(PASSES, grandPasses());

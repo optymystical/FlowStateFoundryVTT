@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.98.1:** Visual audit fix: on a laptop screen (1366×768) the sheet tutorial's popups covered the part they were explaining; now the tour moves the sheet to the screen's edge and narrows the popup to sit beside it. The NPC wizard's Bestiary pick sets the 5:1 start (the form's old Sapience no longer overrides it), and Bestiary natural attacks run from the Action List again. A dev visual-audit script (`dev/sim/audit.mjs`) and the grand balance pass's generator (`dev/sim/grand.mjs`, `grand-report.mjs`).
+
 **0.98.0:** The Bestiary (Flow State - Bestiary): the world's creatures as Ancestries, for the GM.
 - **Wonderborn** Omens and Heralds of **Life** (Bloomrot / Thicket), **Dark** (Gloamhound / Candle-Noon) and **Growth** (Burgeon / Bubble): their trees (Wonderborn, Dreamborn / Nightmareborn, and their own) and the Omen / Herald Backgrounds, with Codex pages.
 - **The NPC wizard** lists them: the Background sets the Size and the trees' tiers (free), adds the Wonderborn's Domain, its own natural Icon and its Patron, and starts it at 5:1.

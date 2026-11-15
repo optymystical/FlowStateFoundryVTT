@@ -196,6 +196,9 @@ ok(TS.placeNear({ left: 0, top: 0, right: 800, width: 800 }, { top: 60, bottom: 
 ok(TS.placeNear({ left: 0, top: 0, right: 800, width: 800 }, { top: 140, bottom: 180, height: 40 }, { width: 800, height: 600 }, 480, 430).top === 162, "A tall popup that doesn't fit below a high outline stays inside the window");
 ok(TS.placeNear({ left: 0, top: 0, right: 800, width: 800 }, { top: 300, bottom: 760, height: 460 }, { width: 800, height: 600 }, 480, 440).top === 8, "...and one under a huge outline goes to the top");
 
+ok(TS.tourWidth({ left: 466, right: 1366 }, 1366) === 450 && TS.tourWidth({ left: 100, right: 1000 }, 1920) === 480 && TS.tourWidth({ left: 62, right: 962 }, 1024) === 480,
+  "On a laptop screen the popup narrows to sit beside the sheet; with no room (or plenty) it keeps its width");
+
 console.log("== The sheet tutorial: the tour");
 { const el = cls => { const c = new Set(); return { classList: { add: x => c.add(x), remove: x => c.delete(x), has: x => c.has(x) }, cls: c, open: false, scrollIntoView() {} }; };
   const parts = new Map();

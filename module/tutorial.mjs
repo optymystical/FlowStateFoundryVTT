@@ -25,15 +25,28 @@ export function register() {
   });
 }
 
-/** A tutorial popup over the wizard: modal (nothing behind it can be clicked), centred on the wizard. Returns the button's action. */
-export async function popup(app, { title, html, buttons = null, width = 580 }) {
+/**
+ * A tutorial popup over the wizard (or sheet): modal (nothing behind it can be clicked), centred on the app. `place(height)` (optional) says where
+ * instead, once the popup has rendered and its height is known. Returns the button's action.
+ */
+export async function popup(app, { title, html, buttons = null, width = 580, place = null }) {
   const el = app?.element, pos = app?.position ?? {};
   el?.classList?.add("fs-tutorial-blocked");
   const left = Math.max(8, Math.round((pos.left ?? 80) + ((pos.width ?? 720) - width) / 2)), top = Math.max(8, Math.round((pos.top ?? 40) + 70));
+  const tag = `fs-tut-${Math.random().toString(36).slice(2, 9)}`;
+  const hook = place ? globalThis.Hooks?.on?.("renderDialogV2", dlg => {
+    if (!dlg.options?.classes?.includes(tag)) return;
+    globalThis.Hooks.off("renderDialogV2", hook);
+    const at = place(dlg.element?.offsetHeight || 360);
+    if (at) dlg.setPosition?.(at);
+  }) : null;
   try {
-    return await DialogV2().wait({ window: { title, icon: "fa-solid fa-graduation-cap" }, classes: ["fs-tutorial-popup"], position: { width, left, top },
+    return await DialogV2().wait({ window: { title, icon: "fa-solid fa-graduation-cap" }, classes: ["fs-tutorial-popup", tag], position: { width, left, top },
       modal: true, rejectClose: false, content: html, buttons: buttons ?? [{ action: "ok", label: "Got it", icon: "fa-solid fa-check", default: true }] });
-  } finally { el?.classList?.remove("fs-tutorial-blocked"); }
+  } finally {
+    el?.classList?.remove("fs-tutorial-blocked");
+    if (hook != null) globalThis.Hooks?.off?.("renderDialogV2", hook);
+  }
 }
 
 /** New Character: ask about the tutorial (if the world offers it), then open the right wizard. */
@@ -235,13 +248,33 @@ export class TutorialWizard extends CharacterWizard {
     const name = this.state.name;
     const errors = creation.validate(this.state, creationRules());
     if (errors.length) return popup(this, { title: "Not yet", html: `<p>${esc(errors[0])}</p>`, width: 440 });
+    const made = waitForActor(name);
     await CharacterWizard.onFinish.call(this);
     const answer = await popup(null, { ...POPUPS.done({ name }), width: 460,
       buttons: [{ action: "sheet", label: "Yes, show me", icon: "fa-solid fa-graduation-cap", default: true }, { action: "skip", label: "No thanks", icon: "fa-solid fa-xmark" }] });
-    if (answer === "sheet") sheetTutorial();
+    if (answer === "sheet") {
+      const actor = await made;
+      if (actor) await sheetTutorial(actor);
+      else ui.notifications.warn(`${name} isn't ready yet: open the sheet and pick Sheet tutorial from its ⋮ menu.`);
+    } else made.cancel?.();
     return answer;
   }
 }
 
-/** The character sheet tutorial: the next part (not written yet). */
-export function sheetTutorial() { return null; }
+/** The character the GM is making for us (the createActor hook on our client), or null after a while. */
+export function waitForActor(name, ms = 30000) {
+  let hook = null, timer = null, done;
+  const out = new Promise(resolve => {
+    done = actor => { if (hook != null) globalThis.Hooks?.off?.("createActor", hook); if (timer) clearTimeout(timer); resolve(actor); };
+    hook = globalThis.Hooks?.on?.("createActor", doc => { if (doc?.name === name && doc.isOwner) done(doc); }) ?? null;
+    timer = setTimeout(() => done(null), ms);
+  });
+  out.cancel = () => done(null);
+  return out;
+}
+
+/** The character sheet tutorial (sheet-tour.mjs imports this file, so it's loaded when used). */
+export async function sheetTutorial(actor) {
+  const { startSheetTour } = await import("./sheet-tour.mjs");
+  return startSheetTour(actor);
+}

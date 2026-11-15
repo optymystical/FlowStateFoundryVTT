@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.96.0:** The character sheet tutorial (tutorial part 2). Saying yes at the end of the character tutorial, or picking **Sheet tutorial** from a character sheet's ⋮ menu, starts a guided tour of the sheet: it switches to each tab, outlines the part it's explaining in gold, and explains it in a popup (Back / Next / End tour; the sheet is locked while it runs). It covers every tab (stats and checks, Energy and HP, Skill Points and trees, equipment, the Action and Reaction Lists, Misc, Notes) and then walks through a first turn: AP and RP, targeting and attacking, the chat cards, being attacked and dodging, moving and ending the turn. It's tailored to the character: Martial characters hear about their weapons and armor, Magic ones about Foci, Shrouds and Cast Spell, Mental ones about Icons and Manifest, with a reminder when a weapon or Foci isn't in hand or armor isn't on.
+
 **0.95.0:** New Character wizard rework.
 - **Background cards** drop the text list of trees (the chips show them) and lay the trees out in labelled rows: the fixed trees, then one row per "Pick one" choice, spaced so the options don't wrap into each other. The picked Background's choices are made right on its card (a circle beside each option or focus; a mark on each row still to pick); the separate "your choices" and "Free trees" section below the cards is gone, and an Outsider's Ancestry points sit inside its card.
 - **Stats:** the "New to Flow State?" box is gone (the tutorial explains it).

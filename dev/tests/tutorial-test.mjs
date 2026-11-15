@@ -1,6 +1,6 @@
-// The character tutorial (tutorial.mjs, tutorial-rules.mjs, tutorial-text.mjs): the New Character prompt and its "ask me again", the railroaded
+// The character tutorial (tutorial.mjs, tutorial-rules.mjs, tutorial-text.mjs): the New Character prompt (Yes/No), the railroaded
 // wizard (popups per step, Next blocked until a step is complete, then locked in; no going back), the archetype and equipment advice (★),
-// and the wizard's "a pick hides the other cards" change.
+// the wizard's "a pick hides the other cards" change, and the sheet tutorial (sheet-tour.mjs, sheet-tour-text.mjs).
 import { createRequire } from "node:module"; const require = createRequire(import.meta.url);
 const H = require("handlebars"), fs = require("fs");
 H.registerHelper("selectOptions", (o, { hash }) => new H.SafeString(Object.entries(o).map(([k, v]) => `<option value="${k}"${k === hash.selected ? " selected" : ""}>${v}</option>`).join("")));
@@ -126,6 +126,72 @@ await T.TutorialWizard.onTutorialFinish.call(w);
 ok(w.closed && titles().at(-1) === "Your character is ready!" && popups.at(-1).buttons.join() === "sheet,skip", "Finish: the character is made, then the character sheet tutorial is offered");
 popups.length = 0; await T.TutorialWizard.onTutorialAgain.call(w);
 await new Promise(r => setTimeout(r, 5));
+
+console.log("== The sheet tutorial: stops tailored to the character");
+const ST = await import("../../module/sheet-tour-text.mjs");
+const facts = over => ({ name: "Tess", has: {}, weapons: [], armor: [], foci: [], shrouds: [], icons: [], affixes: 0, unspentSP: 0, statPoints: 0,
+  energyMax: 150, energyRecover: 15, hpMax: 160, pain: 80, attackDie: 30, dodgeDie: 15, speed: 50, moveCost: "1 AP per move", ancestry: "Dwarf", background: "Recruit", ...over });
+const ids = st => st.map(x => x.id);
+const mart = ST.sheetStops(facts({ has: { martial: true }, weapons: [{ name: "Heavy Bladed (Iron)", held: false }], armor: [{ name: "Heavy Armor", worn: false }] }));
+ok(["weapons", "armor", "gear", "actions", "attack", "exchange", "defend", "move", "done"].every(x => ids(mart).includes(x)) && !["foci", "shroud", "icons", "act-magic", "act-mental"].some(x => ids(mart).includes(x)),
+  "A Martial character: weapons, armor and the first turn; no Foci, Shroud, Icon or casting stops");
+ok(/still packed away/.test(mart.find(x => x.id === "weapons").html) && /isn't on yet/.test(mart.find(x => x.id === "armor").html) && /Foci, Shrouds and Affixes \(Magic\)/.test(mart.find(x => x.id === "gear").html),
+  "...it's told to hold its weapon and put its armor on, and the other Archetypes' sections get one line");
+ok(/Attack: \(weapon\)/.test(mart.find(x => x.id === "attack").html) && !/Cast Spell|Manifest/.test(mart.find(x => x.id === "attack").html), "...and how a Martial attacks (only)");
+const mage = ST.sheetStops(facts({ has: { magic: true }, foci: [{ name: "Igniter Foci", attuned: true, held: false }], shrouds: [{ name: "Shroud", attuned: true }], affixes: 1 }));
+ok(["foci", "shroud", "affixes", "act-magic"].every(x => ids(mage).includes(x)) && !ids(mage).includes("act-mental") && [mage.find(x => x.id === "attack").target].flat()[0] === "[data-section=act-magic]",
+  "A Magic character: Foci, Shroud, Affixes, Cast Spell, and the first-turn stop points at the Magic group");
+ok(/isn't in your hand yet/.test(mage.find(x => x.id === "foci").html), "...told to hold its Foci");
+const mind = ST.sheetStops(facts({ has: { mental: true }, icons: [{ name: "Icon", attuned: true }] }));
+ok(ids(mind).includes("icons") && ids(mind).includes("act-mental") && /Manifest/.test(mind.find(x => x.id === "attack").html), "A Mental character: Icons, Manifest");
+const none = ST.sheetStops(facts({}));
+ok(/Cast Spell/.test(none.find(x => x.id === "attack").html) && /Manifest/.test(none.find(x => x.id === "attack").html), "No Archetype yet: every way to attack is explained");
+const all = [...mart, ...mage, ...mind, ...none];
+ok(all.every(x => x.title && x.html && !/undefined|NaN|\[object/.test(x.title + x.html)), "Every stop has a title and words (nothing undefined)");
+{ const src = ["actor-header", "actor-main", "actor-skills", "actor-actions", "actor-reactions", "actor-equipment", "actor-misc", "actor-notes"]
+    .map(f => fs.readFileSync(new URL(`../../templates/${f}.hbs`, import.meta.url), "utf8")).join("\n") + fs.readFileSync(new URL("../../module/sheets.mjs", import.meta.url), "utf8");
+  const missing = all.filter(x => x.target).flatMap(x => [x.target].flat()).flatMap(t => [...t.matchAll(/\.([a-z][\w-]*)|data-section=([\w-]+)|data-tab=([\w-]+)/g)].map(m => m[1] ?? m[2] ?? m[3]))
+    .filter(k => !src.includes(k));
+  ok(!missing.length, `Every stop's outline points at something the sheet has${missing.length ? ` (missing: ${[...new Set(missing)].join(", ")})` : ""}`); }
+
+console.log("== The sheet tutorial: placing the popup");
+const TS = await import("../../module/sheet-tour.mjs");
+ok(TS.placeNear({ left: 100, top: 50, right: 1000, width: 900 }, null, { width: 1600, height: 900 }).left === 1008, "Room on the right: beside the sheet");
+ok(TS.placeNear({ left: 700, top: 50, right: 1600, width: 900 }, null, { width: 1600, height: 900 }).left === 212, "Room on the left: beside it there");
+ok(TS.placeNear({ left: 0, top: 0, right: 800, width: 800 }, { top: 500, bottom: 560, height: 60 }, { width: 800, height: 600 }, 480, 300).top === 188, "No room: over the sheet, above a low outline");
+ok(TS.placeNear({ left: 0, top: 0, right: 800, width: 800 }, { top: 60, bottom: 120, height: 60 }, { width: 800, height: 600 }, 480, 300).top === 132, "...and below a high one");
+ok(TS.placeNear({ left: 0, top: 0, right: 800, width: 800 }, { top: 140, bottom: 180, height: 40 }, { width: 800, height: 600 }, 480, 430).top === 162, "A tall popup that doesn't fit below a high outline stays inside the window");
+ok(TS.placeNear({ left: 0, top: 0, right: 800, width: 800 }, { top: 300, bottom: 760, height: 460 }, { width: 800, height: 600 }, 480, 440).top === 8, "...and one under a huge outline goes to the top");
+
+console.log("== The sheet tutorial: the tour");
+{ const el = cls => { const c = new Set(); return { classList: { add: x => c.add(x), remove: x => c.delete(x), has: x => c.has(x) }, cls: c, open: false, scrollIntoView() {} }; };
+  const parts = new Map();
+  const root = { ...el(), querySelector: q => { if (!parts.has(q)) parts.set(q, el()); return parts.get(q); }, querySelectorAll: () => [] };
+  const tabs = [];
+  const sheet = { rendered: true, tabGroups: { primary: "main" }, element: root, render: async () => sheet, changeTab(t) { this.tabGroups.primary = t; tabs.push(t); }, position: {} };
+  const actor = { id: "A1", name: "Tess", type: "character", sheet, items: [], system: { stats: { str: 30, con: 15 }, trees: { "martial-theory": 2 }, derived: { attackDie: 30, dodgeDie: 15, energyRecover: 15 },
+    hp: { max: 160, pain: 80 }, energy: { max: 150 }, movement: { speed: 50 }, skills: { unspent: 4 }, unspentStats: 0, abc: {} } };
+  const n = ST.sheetStops(TS.tourFacts(actor)).length;
+  let k = 0; const seen = [];
+  answer = o => { seen.push(o.window.title); k++; return k === 3 ? "back" : "next"; };
+  popups.length = 0;
+  await TS.startSheetTour(actor);
+  ok(popups.length === n + 2 && seen[1] === seen[3] && popups.at(-1).buttons.join() === "back,next", `Next through every stop (${n}), Back goes back one, the last one is Finish`);
+  ok(["main", "skills", "equipment", "actions", "reactions", "misc", "notes"].every(t => tabs.includes(t)), "The tour switches the sheet to each tab");
+  ok(parts.get('details[data-section="weapons"]')?.open === true && ![...parts.values()].some(p => p.cls.has("fs-tour-target")), "It opens the section it explains, and leaves no outline behind");
+  ok(popups[0].buttons.join() === "next,end", "The first stop: Next or End tour");
+  // A group the character doesn't have (no Magic rows yet) is skipped, going forward and back.
+  const mageFacts = { ...actor, id: "A2", system: { ...actor.system, stats: { reach: 30 }, trees: {} } };
+  const gone = new Set(["[data-section=act-magic]"]), q0 = root.querySelector;
+  root.querySelector = q => (gone.has(q) ? null : q0(q));
+  popups.length = 0; seen.length = 0; answer = o => { seen.push(o.window.title); return "next"; };
+  await TS.startSheetTour(mageFacts);
+  ok(!seen.includes("Casting spells") && seen.includes("Checks"), "A stop whose group isn't on the sheet yet (Casting spells with no spells) is skipped");
+  root.querySelector = q0;
+  answer = () => "end"; popups.length = 0;
+  await TS.startSheetTour(actor);
+  ok(popups.length === 1, "End tour stops it");
+  answer = () => "ok"; }
 
 if (fails) { console.log(`${fails} failed`); process.exit(1); }
 console.log("tutorial tests passed");

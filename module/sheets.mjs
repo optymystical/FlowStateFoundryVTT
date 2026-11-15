@@ -929,9 +929,11 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     classes: ["flowstate", "sheet", "actor"],
     position: { width: 900, height: 860 },          // wide enough for the stat rows with their + buttons
     form: { submitOnChange: true },
-    window: { resizable: true, controls: [{ icon: "fa-solid fa-book-open", label: "Codex", action: "openCodex" }] },
+    window: { resizable: true, controls: [{ icon: "fa-solid fa-book-open", label: "Codex", action: "openCodex" },
+      { icon: "fa-solid fa-graduation-cap", label: "Sheet tutorial", action: "sheetTour" }] },
     actions: {
       editImage: pickImage,
+      sheetTour: function () { return import("./sheet-tour.mjs").then(m => m.startSheetTour(this.document)); },
       openCodex: () => openCodex(),
       rollStat: FlowStateActorSheet.onRollStat,
       rollD100: FlowStateActorSheet.onRollD100,
@@ -1033,6 +1035,12 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       initial: "main"
     }
   };
+
+  /** The Sheet tutorial is for characters, and only their owners. */
+  _getHeaderControls() {
+    const controls = super._getHeaderControls();
+    return this.document.type === "character" && this.document.isOwner ? controls : controls.filter(c => c.action !== "sheetTour");
+  }
 
   /** Each tab part gets its own tab state as `tab`. */
   async _preparePartContext(partId, context, options) {

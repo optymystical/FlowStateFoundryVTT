@@ -583,3 +583,7 @@ a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-throug
 .fs-tutorial-popup .fs-tut-head { margin: 10px 0 2px; font-size: 1em; border: none; }
 .fs-tutorial-popup .fs-tut-tip { padding: 6px 8px; border-radius: 4px; background: rgba(224, 176, 64, 0.14); }
 .fs-tutorial-popup .fs-tut-warn { padding: 6px 8px; border-radius: 4px; background: rgba(200, 80, 60, 0.14); }
+
+/* The sheet tutorial: the part a stop explains is outlined in gold; the step counter under the popup's words. */
+.flowstate.sheet .fs-tour-target { outline: 3px solid #e0b040; outline-offset: 3px; border-radius: 6px; box-shadow: 0 0 0 6px rgba(224, 176, 64, 0.25), 0 0 18px rgba(224, 176, 64, 0.55); position: relative; z-index: 1; }
+.fs-tutorial-popup .fs-tour-step { margin: 8px 0 0; text-align: right; font-size: .85em; opacity: .65; }

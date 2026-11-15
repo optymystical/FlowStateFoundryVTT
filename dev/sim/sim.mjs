@@ -331,8 +331,11 @@ async function clearSim() {
   }
 }
 async function clearScene(scene) {
-  for (const c of game.combats.filter(c => c.scene?.id === scene?.id)) await c.delete();
-  // Ending a combat removes its temporary creations on its own: a token can go while this deletes it, so try again on what's left.
+  const ended = game.combats.filter(c => c.scene?.id === scene?.id);
+  for (const c of ended) await c.delete();
+  // Ending a combat removes its temporary creations on its own (summons, Areas, terrain, on timers): let that finish first, or both delete the same
+  // documents ("does not exist" errors). A token can still go while this deletes it, so try again on what's left.
+  if (ended.length) await idle(2500);
   for (let i = 0; i < 4 && scene?.tokens.size; i++) {
     try { await scene.deleteEmbeddedDocuments("Token", scene.tokens.map(t => t.id)); } catch (err) { await idle(600); }
   }

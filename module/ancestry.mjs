@@ -23,6 +23,7 @@ import { levelAt, terrainRegionData } from "./terrain.mjs";
 import { GLAND_ELEMENTS } from "./abc-rules.mjs";
 import { spiritToken } from "./spirit.mjs";
 import { inTerritory } from "./ancestry-net.mjs";
+import * as bestiary from "./bestiary.mjs";
 import { esc, select, DialogV2 } from "./html.mjs";
 
 const tier = (actor, id) => tierOf(actor?.system?.trees, id);
@@ -99,6 +100,8 @@ export function actionRows(actor) {
     row("Breath: Light", `Elemental Gland: a ranged natural attack (15 ft) dealing ${els} damage, both fists free`, "2 AP", "breath:light", "fa-solid fa-wind");
     row("Breath: Heavy", `Elemental Gland: a ranged natural attack (15 ft) dealing ${els} damage, both fists free`, "3 AP", "breath:heavy", "fa-solid fa-wind");
   }
+  // The Bestiary's creatures (bestiary.mjs): natural attacks, Recognition, Allure/Dread, Sustain, Portent, Sporing / Bloom.
+  rows.push(...bestiary.actionRows(actor));
   // Every other active ability: pay its cost, post what it does.
   for (const tree of TREES) {
     if (tree.archetype !== "ancestry" || tree.rulesOnly) continue;
@@ -106,7 +109,7 @@ export function actionRows(actor) {
     for (const t of tree.tiers) {
       if (t.tier > have || t.tier === 0) continue;
       for (const e of t.entries) {
-        if (!e.name || AUTOMATED.has(e.name) || !isActive(e.text)) continue;
+        if (!e.name || AUTOMATED.has(e.name) || (tree.bestiary && bestiary.AUTOMATED.has(e.name)) || !isActive(e.text)) continue;
         const pts = pointsIn(e.text);
         rows.push({ label: e.name, detail: tree.name, cost: [pts.ap ? `${pts.ap} AP` : "", pts.rp ? `${pts.rp} RP` : ""].filter(Boolean).join(" · ") || "Time", action: "ancestry", op: `use:${tree.id}:${e.name}`, icon: "fa-solid fa-circle-play" });
       }
@@ -118,6 +121,7 @@ export function actionRows(actor) {
 /** An Action List click. */
 export async function run(actor, op) {
   if (op?.startsWith("use:")) return useRow(actor, op);
+  if (op?.startsWith("best:")) return bestiary.run(actor, op.slice(5));
   if (op?.startsWith("breath:")) return breath(actor, op.slice(7));
   const f = OPS[op];
   return f ? f(actor) : null;
@@ -357,7 +361,8 @@ async function attackNet(attacker, target, opts) {
       await setActorFlag(target, "mobRule", { ...mob, used: [...(mob.used ?? []), attacker.uuid] });
     }
   }
-  return { net, notes };
+  const best = await bestiary.attackNet(attacker, target, opts);
+  return { net: net + best.net, notes: [...notes, ...best.notes] };
 }
 
 /** Advantage on a dodge: Mindful of Fragility (the first attack each combat), Awakened Scales (the first Spell attack each round), Underdog. */
@@ -594,6 +599,7 @@ export async function turnStart(combat, actor) {
   const w = actor.getFlag?.("flowstate", "wings");
   if (w && w.combat === combat?.id && (combat?.round ?? 0) >= w.round) await endWings(actor);
   if (actor.statuses?.has?.("unconscious") && spiritToken(actor)) await recombine(actor);
+  await bestiary.turnStart(combat, actor);                    // Regrowth, the Choking Green, the Wonderborn's turn count, the ground auras
 }
 async function endWings(actor) {
   const w = actor.getFlag?.("flowstate", "wings");
@@ -633,4 +639,4 @@ GM_ACTIONS.spiritRemove = async function ({ actor: uuid }, senderId = null) {
 
 /** What actions.mjs and the others call. */
 export const hooks = { attackNet, dodgeNet, defendButtons, react, afterDodge, beforeDamage, damageStacks, incoming, afterDamage, lethal, immovable,
-  turnStart };
+  turnStart, onHit: bestiary.onHit, forceHalf: bestiary.forceHalf };

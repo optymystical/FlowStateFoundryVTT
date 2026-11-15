@@ -11,6 +11,7 @@ import {
   post, requestGM, putSpellEffect, performAttack, spendPoints, spendEnergy, setActorFlag, checkRange, attackerToken, inActiveCombat, helpless, rollCheck, turnKey, registerMental, spellEffects, pickSceneTarget, setGrapple, requestDamage, changeEffect, tokenDistance, attackGuard, guardRows, dodgeNetKnown
 } from "./actions.mjs";
 import * as self from "./mental.mjs";
+import * as bestiary from "./bestiary.mjs";
 import * as wonders from "./wonders.mjs";
 import * as charges from "./charges.mjs";
 import * as wondersB from "./wonders-b.mjs";
@@ -781,10 +782,11 @@ async function negate(actor, amount, type, { source = null, attacker = null, mag
     const clear = !!ask.clear && willTier(actor) >= 2;
     if (!(await pay(actor, { rp: 1, energy: (enh ? willMin : 0) + (clear ? willMin : 0) }, `${p.name}'s Ward`))) break;
     // Wards need an attack roll (Rules: "a self attack"): your attack roll against your own dodge roll. A miss spends the RP and negates nothing.
-    const wfx = R.alignmentWard(align, p.align);
+    const wfx = R.alignmentWard(align, p.align), pole = bestiary.wardNet(actor);          // Follow the Pole (Bestiary, Wonderborn T3): Advantage
     const dNet = wfx.dodgeNet + dodgeNetKnown(actor);
     const dd = await new Roll(poolFormula(2, actor.system.derived.dodgeDie, dNet)).evaluate();
-    let atk = await new Roll(poolFormula(1, actor.system.derived.attackDie, wfx.net + (clear ? 1 : 0))).evaluate();
+    let atk = await new Roll(poolFormula(1, actor.system.derived.attackDie, wfx.net + pole.net + (clear ? 1 : 0))).evaluate();
+    if (pole.net) notes.push(pole.note);
     let res = resolveAttack(atk.total, dd.total);
     const rolls = [atk, dd];
     if (!res.hit && clear) { atk = await new Roll(poolFormula(1, actor.system.derived.attackDie, 0)).evaluate(); res = resolveAttack(atk.total, dd.total); rolls.push(atk); }
@@ -827,9 +829,9 @@ async function reflectAttack(actor, kind, amount, type, attackerUuid) {
     if (tokenDistance(a, b) > reach) return post(actor, { title: `${esc(actor.name)} — ${melee ? "Riposte" : "Warden"}`, body: `<div class="fs-notes">${esc(src.name)} isn't within ${reach} ft: no attack is made.</div>` });
   }
   // Alignment shapes the Ward's attack roll (Advantage, half stealth at 3, hits regardless at 4): the reflect roll is the Ward's attack too.
-  const wfx = R.alignmentWard(alignmentOf(actor), actor.system.icon?.system?.profile?.align);
-  await performAttack(actor, { ...baseAttack, label: melee ? "Riposte (Ward)" : "Warden (Ward)", net: (melee ? 1 : 0) + wfx.net, melee, area: false, dodgeNet: wfx.dodgeNet,
-    notes: [`The ${amount} negated ${type} damage goes to ${src.name} on a hit`, ...(wfx.net > 0 ? [`${R.alignmentLabel(alignmentOf(actor))}: Advantage`] : []), ...(wfx.dodgeNet < 0 ? ["Half stealth: the target has Disadvantage on their dodge"] : []), ...(wfx.autoHit ? ["Alignment 4: hits regardless (the roll decides a crit)"] : [])],
+  const wfx = R.alignmentWard(alignmentOf(actor), actor.system.icon?.system?.profile?.align), pole = bestiary.wardNet(actor);
+  await performAttack(actor, { ...baseAttack, label: melee ? "Riposte (Ward)" : "Warden (Ward)", net: (melee ? 1 : 0) + wfx.net + pole.net, melee, area: false, dodgeNet: wfx.dodgeNet,
+    notes: [`The ${amount} negated ${type} damage goes to ${src.name} on a hit`, ...(pole.net ? [pole.note] : []), ...(wfx.net > 0 ? [`${R.alignmentLabel(alignmentOf(actor))}: Advantage`] : []), ...(wfx.dodgeNet < 0 ? ["Half stealth: the target has Disadvantage on their dodge"] : []), ...(wfx.autoHit ? ["Alignment 4: hits regardless (the roll decides a crit)"] : [])],
     mental: { reflect: { amount, type }, caster: actor.uuid, autoHit: wfx.autoHit }, targetActors: [src] });
 }
 

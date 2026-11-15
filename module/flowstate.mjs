@@ -33,6 +33,7 @@ import * as generic from "./generic.mjs";
 import * as surprise from "./surprise.mjs";
 import * as consumables from "./consumables.mjs";
 import * as ancestry from "./ancestry.mjs";
+import * as bestiary from "./bestiary.mjs";
 import * as environment from "./environment.mjs";
 import * as tutorial from "./tutorial.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
@@ -146,10 +147,18 @@ class FlowStateActor extends Actor {
       return;
     }
 
-    // Ch8: 0 HP or below = dead; below Pain Threshold = unconscious.
+    // Ch8: 0 HP or below = dead; below Pain Threshold = unconscious. Bestiary: Deathless keeps an Infected creature from dying (it stays down,
+    // budding), and Unwaking / Unrelenting keep a Wonderborn up through its next turn.
     if (foundry.utils.hasProperty(changed, "system")) {
-      const dead = sys.hp.value <= 0;
-      const unconscious = !dead && sys.hp.value < sys.hp.pain;
+      const budding = sys.hp.value <= 0 ? bestiary.deathless(this) : null;
+      const dead = sys.hp.value <= 0 && !budding;
+      if (budding && !this.getFlag("flowstate", "budding")) {
+        await this.setFlag("flowstate", "budding", budding.uuid);
+        await actions.post(this, { title: `${foundry.utils.escapeHTML(this.name)} — Deathless`, body: `<div class="fs-result">Infected near ${foundry.utils.escapeHTML(budding.name)}, ${foundry.utils.escapeHTML(this.name)} doesn't die: it stays down, budding, and rises as its thrall within a day unless its body is burned.</div>` });
+      }
+      if (sys.hp.value < sys.hp.pain && sys.hp.value > 0) await bestiary.droppedBelow(this);
+      else if (sys.hp.value >= sys.hp.pain && this.getFlag("flowstate", "unwaking")) await this.unsetFlag("flowstate", "unwaking");
+      const unconscious = !dead && sys.hp.value < sys.hp.pain && !bestiary.holdingOn(this);
       if (dead && !this.statuses.has("dead")) await this.setFlag("flowstate", "diedAt", Date.now());          // Resuscitate only reaches the recently dead
       if (dead !== this.statuses.has("dead")) await this.toggleStatusEffect("dead", { active: dead, overlay: true });
       if (unconscious !== this.statuses.has("unconscious")) await this.toggleStatusEffect("unconscious", { active: unconscious });
@@ -227,6 +236,7 @@ class FlowStateCombat extends Combat {
   async _onStartRound(context) {
     await super._onStartRound(context);
     await surprise.roundStart(this);
+    await bestiary.roundStart(this);                              // Allure / Dread as the fight begins
   }
 
   /** Ch8: AP and RP refill at the start of your turn. Runs on the active GM only. */
@@ -289,6 +299,7 @@ class FlowStateCombat extends Combat {
     if (combatant.actor.getFlag?.("flowstate", "tauntedBy")) await actions.shakeTaunt(combatant.actor);
     await actions.endOfTurn(combatant.actor);
     await generic.turnEnd(combatant.actor);
+    await bestiary.turnEnd(this, combatant.actor);                // Allure wears off, Unwaking runs out, the 4th turn's Sporing / Ripen
   }
 }
 
@@ -297,6 +308,7 @@ class FlowStateCombat extends Combat {
 /* -------------------------------------------- */
 
 Hooks.once("init", () => {
+  bestiary.registerHooks();
   // The world's own changes to the game's data go on first, before anything reads the tables.
   registerWorldData();
   registerItemSettings();
@@ -353,7 +365,8 @@ Hooks.once("init", () => {
     { id: "taunted", name: "Taunted", img: "icons/svg/hazard.svg" },
     { id: "quickened", name: "Quickened", img: "icons/svg/wingfoot.svg" },
     { id: "smashing", name: "Smashing", img: "icons/svg/thrust.svg" },
-    { id: "infected", name: "Infected", img: "icons/svg/poison.svg" }      // lasts a day; heat damage clears it (consumables.mjs)
+    { id: "infected", name: "Infected", img: "icons/svg/poison.svg" },     // lasts a day; heat damage clears it (consumables.mjs)
+    { id: "dormant", name: "Dormant", img: "icons/svg/sleep.svg" }         // a Bestiary creature after Sporing / Seed: off the tracker for a day, then full HP (bestiary.mjs)
   ];
 
   // Character creation budgets (used by the New Character wizard and re-checked by the GM).

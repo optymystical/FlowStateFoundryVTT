@@ -8,11 +8,11 @@
  *    are spread across the Ancestry's trees by the player (`alloc`).
  *  - Cultures (Homeland + Circle) are roleplay only.
  */
-import { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES, ABC_RULES } from "./abcs.mjs";
+import { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES, ABC_RULES, BESTIARY_RULES } from "./abcs.mjs";
 import { TREES } from "./trees.mjs";
 import { treeById, isAvailable, spentPoints, ancestryTrees, tierOf, MAX_TIER, requirementText } from "./skills.mjs";
 
-export { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES, ABC_RULES };
+export { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES, ABC_RULES, BESTIARY_RULES };
 /** Free Background points (the doc's 15). */
 export const FREE_POINTS = 15;
 /** Elemental Gland (Drakenblood): the elements it can be. */
@@ -27,12 +27,14 @@ export function treeByName(name) {
   return pool.find(t => t.name.toLowerCase() === n) ?? pool.find(t => t.name.toLowerCase().replace(/\s*\((dream|nightmare)\)$/, "") === n) ?? null;
 }
 
-/** The Backgrounds an Ancestry can take, in its profile's order. */
+/** The Ancestries a player can pick (the Bestiary's creature Ancestries are for the GM's NPCs). */
+export const playerAncestries = () => Object.values(ANCESTRIES).filter(a => !a.hidden && !a.bestiary);
+/** The Backgrounds an Ancestry can take, in its profile's order (a Bestiary Ancestry takes only the Bestiary's Backgrounds, and a player's none of them). */
 export function backgroundsFor(ancestry) {
   const a = ANCESTRIES[ancestry];
   if (!a) return [];
   const listed = (a.backgrounds ?? []).filter(id => BACKGROUNDS[id]);
-  const open = Object.values(BACKGROUNDS).filter(b => !b.hidden && (b.available === "all" || (b.available ?? []).includes(ancestry))).map(b => b.id);
+  const open = Object.values(BACKGROUNDS).filter(b => !b.hidden && !!b.bestiary === !!a.bestiary && (b.available === "all" || (b.available ?? []).includes(ancestry))).map(b => b.id);
   return [...new Set([...listed.filter(id => open.includes(id)), ...open])].map(id => BACKGROUNDS[id]);
 }
 /** The Homelands an Ancestry can pick from (its own, then the Shared ones), and the Circles a Background can (its own, then the Shared ones). */
@@ -89,6 +91,7 @@ export function freeTreesFor(abc = {}) {
   const errors = [], trees = {};
   const a = ANCESTRIES[abc.ancestry];
   if (!a) return { trees, spent: 0, errors: ["Pick an Ancestry."] };
+  if (a.bestiary) return { trees, spent: 0, errors: [`${a.name} is a Bestiary creature, not a player Ancestry.`] };
   const pkg = packageFor(abc.background, abc.ancestry);
   if (!pkg) return { trees, spent: 0, errors: ["Pick a Background."] };
   if (!backgroundsFor(abc.ancestry).some(b => b.id === pkg.id)) errors.push(`${a.name}s can't take the ${pkg.name} Background.`);

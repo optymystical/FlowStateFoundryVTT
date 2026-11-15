@@ -144,7 +144,7 @@ export async function removeImprovised(actor) {
 }
 
 /** Unconscious or dead characters can't act, and attacks against them land as if from full stealth. */
-export const helpless = actor => !!(actor?.statuses?.has("unconscious") || actor?.statuses?.has("dead"));
+export const helpless = actor => !!(actor?.statuses?.has("unconscious") || actor?.statuses?.has("dead") || actor?.statuses?.has("dormant"));
 /** Warn and return true if the actor can't act right now. */
 function cantAct(actor, what = "act") {
   if (!helpless(actor)) return false;
@@ -1526,9 +1526,9 @@ export const GM_ACTIONS = {
     const actor = await fromUuid(target);
     if (actor) await flightForceHook?.(actor, reason);
   },
-  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, arcaneWeak, reply }) {
+  async applyDamage({ target, amount, type, pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, arcaneWeak, crit, reply }) {
     const actor = await fromUuid(target);
-    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, arcaneWeak }) : null;
+    const out = actor ? await applyDamage(actor, amount, type, { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, arcaneWeak, crit: !!crit }) : null;
     if (reply) game.socket.emit("system.flowstate", { action: "damageResult", to: reply.to, reqId: reply.reqId, result: summarizeDamage(out) });
     return out;
   },
@@ -1716,7 +1716,7 @@ export async function pickUp(pile, item) {
 }
 
 /** Options carried through the exchange (serializable into chat message flags). */
-const EXCHANGE_KEYS = ["label", "natural", "growth", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
+const EXCHANGE_KEYS = ["label", "bestiary", "natural", "growth", "type", "damage", "stacks", "physical", "shots", "critStacks", "vsSupernatural",
   "arcaneVsMagic", "sizeStacks", "pierce", "knockback", "knockbackAdd", "push", "stealth", "statusStealth", "melee", "area", "grapple", "grappleOnly",
   "breakFree", "momentum", "thrasherThrown", "mental", "throwGrappled", "throwForce", "itemUuid", "unarmedWeight", "setKind", "flowChain", "dragonLash", "kickOut", "redirectOf", "bash", "deflectOf", "aimItem", "aimName", "knockInto", "knockbackOf", "smashKb", "autoFollowup", "swift", "turnKey", "leadBlind", "net", "rend", "swordBoard", "shieldToss", "bounceOf", "crunch", "launchForce", "harden", "dodgeNet", "letItRip", "pointBlank", "reachItem", "palisadeFrom", "thrasherGrapple", "getOverHere", "disarm", "omnislash", "fishy", "sliceSlow", "snipe", "overshield", "inABarrel", "curved", "momentumItem", "slamGrappled", "cleave", "striker", "shroudCounterOf", "inflict", "attackType", "spell", "swiftLight", "omega", "rider", "muddy", "magicStealth", "apCost", "dieOf", "dieOverride", "woven"];
 
@@ -4070,7 +4070,10 @@ export async function forceCap(actor, type = "physical") {
 }
 
 /** Brace (Fortitude T4): Force applied to you is halved (the user may choose not to; it's taken whenever it applies). */
-export const braced = (target, force) => (ab.treeTier(target, "generic-fortitude") >= 4 ? Math.floor(force / 2) : force);
+export const braced = (target, force) => {
+  const f = ab.treeTier(target, "generic-fortitude") >= 4 ? Math.floor(force / 2) : force;
+  return ancestryHook?.forceHalf ? ancestryHook.forceHalf(target, f) : f;          // Rooted (Bestiary, Growth T4)
+};
 
 /**
  * Feet a Force pushes this creature. Crunch Time (Strength T3) matches the Force against current HP instead of max HP.
@@ -5428,6 +5431,7 @@ async function postDefense(speaker, attackMessage, index, target, result, dodgeR
   if (autoDamage) await rollExchangeDamage(defenseMessage, { auto: true });
   // Mental: other creatures' attacks that hit can be Infused (Destruction Tenet). Asked only now the response is on the card: while the question is open
   // the attack card would still show its response buttons, and a second response would repeat the whole attack.
+  if (result.hit && ancestryHook?.onHit && attacker) await ancestryHook.onHit({ attacker, target, result, o });          // Bestiary: Budding Gore, Drag Into the Dark
   if (result.hit && !o.mental?.ward && !o.mental?.reflect && mentalHook?.anyHit && attacker) await mentalHook.anyHit({ attacker, target, result, o, hitKey: `${attackMessage.id}:${index}` });
   return defenseMessage;
 }
@@ -5747,7 +5751,7 @@ export async function rollExchangeDamage(defenseMessage, { auto = false } = {}) 
   // The outcome (soak, HP lost) goes on this card; the owner (or GM) applies it without a separate card.
   // Arcane vs a non-magical creature: its Weakened stack comes off only what gets past its Shields and Shroud (see damageOutcome).
   const arcaneRatio = (n, deferred) => (deferred ? stackMultiplier(n - 1) / stackMultiplier(n) : 0);
-  const dmgOpts = { arcaneWeak: arcaneRatio(stacks, arcaneWeak), pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: bashNow, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
+  const dmgOpts = { crit: !!defense.result?.crit, arcaneWeak: arcaneRatio(stacks, arcaneWeak), pierce: pierceNow, halfLimit: !!o.spell?.mods?.weakpoint, maxHpLoss: !!o.spell?.mods?.chop, archetype: o.spell ? "magic" : "martial", parryItems: guard.items, bash: bashNow, rend: o.rend ?? (o.spell?.mods?.melt ? { stacks: 1 } : null), cleave, cleaveToCreature: !!o.striker,
     shroudCtx: { source: sourceOf(o), natural: naturalHit(o), attacker: attacker.uuid, extra: findQuartz(defense.attackMessage, defense.index), extraShields: findAdjust(defense.attackMessage, defense.index),
       barriers: barriersFor(attacker, target), ...(accretion ? { accretion } : {}) }, mentalDone: true };
   // Limits apply to each instance on its own.
@@ -5920,8 +5924,8 @@ export async function reachFinisher(damageMessage, kind) {
  * { toHp, armorLoss, reduced } (waits for the GM; for effects that go by the damage dealt, after anything that negated or reduced it).
  */
 export async function requestDamage(target, amount, type, pierce = 0, parryItem = null, { silent = false, bash = 0, bypass = false, rend = null,
-  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null, arcaneWeak = 0, wantResult = false } = {}) {
-  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, arcaneWeak };
+  parryItems = null, cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null, arcaneWeak = 0, crit = false, wantResult = false } = {}) {
+  const o = { pierce, parryItem, parryItems, silent, bash, bypass, rend, cleave, cleaveToCreature, shroudCtx, halfLimit, maxHpLoss, archetype, brandBy, ignoreArmor, fromHex, mentalDone, wardDone, wardReflect, limitSpent, arcaneWeak, crit };
   if (target.isOwner) return applyDamage(target, amount, type, o);
   const payload = { target: target.uuid, amount, type, ...o };
   return wantResult ? askGMDamage(payload) : requestGM("applyDamage", payload);
@@ -6224,7 +6228,7 @@ export function damageOutcomeHTML(actor, amount, type, outcome) {
  * @param {boolean} silent  don't post a card (the caller already shows the outcome on its own card)
  */
 export async function applyDamage(actor, amount, type, { pierce = 0, parryItem = null, parryItems = null, silent = false, bash = 0, bypass = false, rend = null,
-  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null, arcaneWeak = 0 } = {}) {
+  cleave = 0, cleaveToCreature = false, shroudCtx = null, halfLimit = false, maxHpLoss = false, archetype = "martial", brandBy = false, ignoreArmor = false, fromHex = false, mentalDone = false, wardDone = false, wardReflect = null, limitSpent = null, arcaneWeak = 0, crit = false } = {}) {
   if (!actor.isOwner) return ui.notifications.warn(`You don't have permission to modify ${actor.name}.`);
   // Infected (a timed condition, consumables.mjs) is cleared by any heat damage.
   if (type === "heat" && amount > 0 && actor.statuses?.has?.("infected")) {
@@ -6339,7 +6343,8 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   const brand = amount > 0 && elem ? elem.brandExtra(actor, type, brandBy) : 0;
   if (brand) { await post(actor, { title: `${esc(actor.name)} — Brand`, body: `<div class="fs-result">The Brand burns: ${brand} more heat damage.</div>` }); await applyDamage(actor, brand, "heat", { silent: true, brandBy: true }); }
   // Restoration: remember when HP was lost (Restore only heals health lost since the caster's last turn).
-  if (out.toHp > 0 && actor.setFlag) await actor.setFlag("flowstate", "lossLog", [...(actor.getFlag("flowstate", "lossLog") ?? []).slice(-24), { at: Date.now(), n: out.toHp }]);
+  // Its type and whether a critical hit dealt it: Regrowth (Bestiary, Life T2) gives back everything except heat damage and crits.
+  if (out.toHp > 0 && actor.setFlag) await actor.setFlag("flowstate", "lossLog", [...(actor.getFlag("flowstate", "lossLog") ?? []).slice(-24), { at: Date.now(), n: out.toHp, type, ...(crit ? { crit: true } : {}) }]);
   // Hex (Witchery): damage from a source that isn't a Hex triggers a Harm Hex.
   if (aff && !fromHex && amount > 0 && out.toHp > 0) await aff.hexTrigger(actor, "harm");
   out.reduced = reduced;                                                      // what negated or reduced it first (effects "equal to the damage dealt" shrink by it)

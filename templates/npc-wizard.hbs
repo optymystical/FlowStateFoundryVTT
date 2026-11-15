@@ -21,6 +21,8 @@
           </span>
         </label>
         <label>Ancestry <select name="ancestry">{{selectOptions ancestries selected=ancestry}}</select></label>
+        {{#if bestiaryBgs}}<label>Bestiary Background <select name="bestiaryBg" data-tooltip="Omen or Herald: sets its Size and the tier of its Ancestry's trees (free, not counting as Skill Points)">{{selectOptions bestiaryBgs selected=bestiaryBg}}</select></label>
+        <p class="hint">{{bestiaryNote}}</p>{{/if}}
         <label>Sapience <select name="sapience" data-tooltip="Sets the starting ratio of stat points to Skill Points (3:1, 5:1, 10:1)">{{selectOptions sapiences selected=sapience}}</select></label>
         <label>Size <select name="size">{{selectOptions sizes selected=size}}</select></label>
         <label>Token disposition <select name="disposition">{{selectOptions dispositions selected=disposition}}</select></label>

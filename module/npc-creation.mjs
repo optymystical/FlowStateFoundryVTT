@@ -7,6 +7,8 @@ import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, weaponProfile, armorPr
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 import * as creation from "./creation.mjs";
+import { bestiaryBuild, isBestiary as ANCESTRY_IS_BESTIARY } from "./bestiary-rules.mjs";
+import { wonderById } from "./mental-rules.mjs";
 
 export const NPC_DEFAULTS = { statPoints: 90, ratio: 3, skillManual: false, skillPoints: 30, grade: 1, size: 3, disposition: -1, ammo: creation.STARTING_AMMO };
 export const ANY_RARITY = "veryRare";
@@ -16,6 +18,15 @@ export const SAPIENCE = { 3: { label: "High (3:1)", ratio: 3 }, 2: { label: "Mid
 const TOKEN_SQUARES = { 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 };
 
 const int = v => Math.trunc(Number(v) || 0);
+
+/**
+ * A Bestiary creature's build (Flow State - Bestiary): its Background (Omen, Herald) sets its Size and its trees' tiers, free of Skill Points
+ * (bestiary-rules.mjs `bestiaryBuild`). Null for any other NPC.
+ */
+export const bestiaryOf = choice => (choice?.ancestry ? bestiaryBuild(choice.ancestry, choice.bestiaryBg || "omen") : null);
+/** The trees an NPC starts with for free (a Bestiary creature's), and its trees with them. */
+export const freeTreesOf = choice => bestiaryOf(choice)?.free ?? {};
+const withFree = (trees, free) => { const out = { ...(trees ?? {}) }; for (const [id, t] of Object.entries(free)) out[id] = Math.max(Number(out[id]) || 0, t); return out; };
 
 /** Skill Points from stat points at a ratio (stat points per Skill Point), rounded down. */
 export const skillPointsFrom = (statPoints, ratio) => (Number(ratio) > 0 ? Math.floor(Math.max(0, statPoints) / Number(ratio)) : 0);
@@ -103,8 +114,11 @@ export function validate(choice) {
   if (ready("foci") > 1) errors.push("Only one Foci can be attuned at a time.");
   if (ready("shroud") > 1) errors.push("Only one Shroud can be attuned at a time.");
   if (ready("icon") > 1) errors.push("Only one Icon can be attuned at a time.");
+  const best = bestiaryOf(choice);
+  if (choice.ancestry && !best && ANCESTRY_IS_BESTIARY(choice.ancestry)) errors.push("Pick the creature's Bestiary Background (Omen or Herald).");
+  if (best?.form && ready("icon") > 0) errors.push("A Wonderborn is its own Icon: untick Ready on the Icon (or remove it).");
   if (ready("weapon") > 2) errors.push("At most two weapons can be ready (two hands).");
-  errors.push(...creation.validateTrees(choice.trees, b.skillPoints, { ancestry: choice.ancestry || null }));
+  errors.push(...creation.validateTrees(choice.trees, b.skillPoints, { ancestry: choice.ancestry || null, free: freeTreesOf(choice) }));
   return errors;
 }
 
@@ -135,20 +149,31 @@ function npcItems(slots, choice = {}) {
   return out;
 }
 
+/** A Wonderborn's natural Icon: the Form its Wonder's Bestiary tree names, attuned, with its Wonder's Tenet (Pole-Bound: always active). */
+function bestiaryIcon(best) {
+  if (!best?.form || !FORMS[best.form]) return null;
+  return { name: `${FORMS[best.form].name ?? best.form} (natural)`, type: "icon", img: "icons/magic/holy/yin-yang-balance-symbol.webp",
+    system: { form: best.form, grade: 1, attuned: true, natural: true, tenet: wonderById(best.wonder)?.tenet?.id ?? "" } };
+}
+
 /** Actor creation data for a validated NPC choice: an unlinked NPC the GM owns, with a token sized to its Size. */
 export function buildNpcData(choice) {
   const img = String(choice.img || creation.DEFAULT_IMG);
   const name = String(choice.name).trim();
   const b = budget(choice);
+  const best = bestiaryOf(choice), free = freeTreesOf(choice);
   const size = Math.min(5, Math.max(1, int(choice.size) || 3));
   const sq = TOKEN_SQUARES[size];
+  const icon = bestiaryIcon(best);
   return {
     name, img, type: "npc",
     ownership: { default: 0 },
     prototypeToken: { name, actorLink: false, disposition: int(choice.disposition), texture: { src: img }, width: sq, height: sq },
-    system: { stats: { ...creation.emptyStats(), ...choice.stats }, skillPoints: b.skillPoints, unspentStats: Math.max(0, b.remaining), statCarry: 0, creation: false, size, trees: creation.cleanTrees(choice.trees),
-      abc: choice.ancestry ? { ancestry: String(choice.ancestry) } : {}, details: { sapience: String(choice.sapience ?? 3) } },
-    items: npcItems(choice.items ?? [], choice),
-    flags: { flowstate: { npcWizard: true } }
+    system: { stats: { ...creation.emptyStats(), ...choice.stats }, skillPoints: b.skillPoints, unspentStats: Math.max(0, b.remaining), statCarry: 0, creation: false, size,
+      trees: creation.cleanTrees(withFree(choice.trees, free)), freeTrees: free,
+      abc: choice.ancestry ? { ancestry: String(choice.ancestry), ...(best ? { background: best.background } : {}) } : {}, details: { sapience: String(choice.sapience ?? 3) } },
+    items: [...npcItems(choice.items ?? [], choice), ...(icon ? [icon] : [])],
+    // A Wonderborn's Patron is always its own Wonder (its Domain).
+    flags: { flowstate: { npcWizard: true, ...(best?.wonder ? { patron: best.wonder } : {}) } }
   };
 }

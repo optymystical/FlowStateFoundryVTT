@@ -72,14 +72,15 @@ export function levelAt(scene, point, elevation = 0, except = null) {
   return terrainLevel([...(scene?.regions ?? [])].filter(r => kindOf(r) && !(except && except(r)) && contains(r, point, elevation)).map(kindOf));
 }
 /**
- * The terrain regions a creature ignores: its own Overgrowth (Orc T3), and with Wild Heart (Orc T5) natural rough terrain (the GM's, not a spell's).
- * Null when it ignores none.
+ * The terrain regions a creature ignores: its own Overgrowth (Orc T3), with Wild Heart (Orc T5) natural rough terrain (the GM's, not a spell's), and
+ * the ground aura it spreads itself (the Bestiary's Choking Green, Overgrowth). Null when it ignores none.
  */
 export function ignoredTerrain(actor) {
   if (!actor) return null;
   const orc = Number(actor.system?.trees?.["ancestry-orc-tree"]) || 0;
-  if (orc < 3) return null;
-  return r => r.flags?.flowstate?.overgrowthOf === actor.uuid || (orc >= 5 && kindOf(r) === "rough" && !r.flags?.flowstate?.terrainOf);
+  const own = r => r.flags?.flowstate?.auraOf === actor.uuid;
+  if (orc < 3) return own;
+  return r => own(r) || r.flags?.flowstate?.overgrowthOf === actor.uuid || (orc >= 5 && kindOf(r) === "rough" && !r.flags?.flowstate?.terrainOf);
 }
 
 /** Bring every token on the scene's `terrainLevel` flag in line with the terrain regions it stands in. GM only. */

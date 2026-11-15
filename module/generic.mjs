@@ -306,16 +306,16 @@ const OPS = {
  * creature). Brave (Courage T1) has Advantage; Iron Will (Resolve T2) keeps the result from going under a third of your Skill Points (two thirds with
  * Unbreakable, T5); Face Your Fear (Courage T3) rerolls a failure against half the number, for half your Skill Points in Energy.
  */
-export async function resistFear(actor, { need = null } = {}) {
+export async function resistFear(actor, { need = null, net: extra = 0, source = null } = {}) {
   const eff = actor.system.derived.effective;
   const best = ["con", "will", "build"].sort((a, b) => eff[b].value - eff[a].value)[0];
-  const vals = await rollKit.optionsDialog(`${actor.name}: Resist Fear`, `${rollKit.netField()}
+  const vals = await rollKit.optionsDialog(`${actor.name}: Resist ${source ? `${source} (as Fear)` : "Fear"}`, `${rollKit.netField()}
     <div class="form-group"><label>Stat</label>${select("stat", ["con", "will", "build"].map(k => [k, `${STATS[k].label} (d${eff[k].die})`]), best)}</div>
     <div class="form-group"><label>Needed (the source's Skill Points × its Size)</label><input type="number" name="need" value="${need ?? 0}" min="0" step="1"></div>`, "Roll");
   if (!vals) return null;
   const stat = vals.stat || best, die = eff[stat].die, target = Math.max(0, Number(vals.need) || 0);
   const brave = tier(actor, "generic-courage") >= 1 ? 1 : 0;
-  const net = (vals.net ?? 0) + brave + rollKit.net(actor, "stat") + (await takeEdge(actor, "fear"))   // a Festival Token set to resisting Fear, Good Spirits
+  const net = (vals.net ?? 0) + extra + brave + rollKit.net(actor, "stat") + (await takeEdge(actor, "fear"))   // a Festival Token set to resisting Fear, Good Spirits
     + (await takeEdge(actor, "check")) + ancestryNet.fear(actor);                                     // Lucky; Unbowed (Draken Legacy T2)
   const floor = tier(actor, "generic-resolve") >= 5 ? Math.floor(2 * sp(actor) / 3) : tier(actor, "generic-resolve") >= 2 ? Math.floor(sp(actor) / 3) : 0;
   const roll = await rollKit.evaluate(poolFormula(1, die, rollKit.noAdvantage(actor, net)));

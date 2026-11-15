@@ -7,6 +7,7 @@ import { FORMS, iconProfile, alignmentSpeedPct, alignmentApLoss } from "./mental
 import { linkFor, identityFor, isGenerated } from "./catalog.mjs";
 import { fusedFociOf } from "./kinds.mjs";
 import { lushAt } from "./environment-rules.mjs";
+import { tiers as bestiaryTiers } from "./bestiary-rules.mjs";
 
 const f = foundry.data.fields;
 const int = (initial = 0, opts = {}) => new f.NumberField({ required: true, nullable: false, integer: true, initial, ...opts });
@@ -210,7 +211,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     const speedLoss = {
       armor: trudge ? 0 : penalties.speedPct ?? 0,
       affix: affixSpeedPct(attunedAffixCount(this.parent, this.foci, this.shroud), this.foci?.system.profile, this.shroud?.system.profile),
-      alignment: alignmentSpeedPct(this.parent?.getFlag?.("flowstate", "alignment"))
+      // Lucid Depth / Nightmare Depth (Bestiary, Dreamborn / Nightmareborn T2): its Alignment costs it no speed.
+      alignment: (bestiaryTiers(this.parent).dream >= 2 || bestiaryTiers(this.parent).nightmare >= 2) ? 0 : alignmentSpeedPct(this.parent?.getFlag?.("flowstate", "alignment"))
     };
     speedLoss.total = sm ? 0 : speedLoss.armor + speedLoss.affix + speedLoss.alignment;
     // Quick Feet (Smallfolk T2): a Size 2 creature's maximum speed is 40 ft per AP instead of 25.

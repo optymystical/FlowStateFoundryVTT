@@ -41,6 +41,7 @@ import * as skills from "./skills.mjs";
 import { askImage } from "./pictures.mjs";
 import * as ab from "./abilities.mjs";
 import * as mentalRules from "./mental-rules.mjs";
+import * as bestiaryRules from "./bestiary-rules.mjs";
 import { treePower, scaleEntry } from "./tree-scale.mjs";
 import * as mental from "./mental.mjs";
 import * as wonders from "./wonders.mjs";
@@ -1135,6 +1136,12 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       statGroups: Object.values(groups),
       sizeChoices: Object.fromEntries(Object.keys(SIZES).map(k => [k, `Size ${k}`])),
       senseChoices: SENSE_LEVELS,
+      // The poles (Wonders) it serves, for the Bestiary (Recognition, Bounty, Follow the Pole, Pack Hunter, Pole-Bound): its own, its Patron, and the GM's mark.
+      poles: {
+        auto: [...new Set([bestiaryRules.wonderOf(actor), actor.getFlag?.("flowstate", "patron")].filter(Boolean))].map(w => mentalRules.wonderById(w)?.name).filter(Boolean).join(", "),
+        choices: { "": "— None —", ...Object.fromEntries(mentalRules.WONDERS.map(w => [w.id, w.name])) },
+        marked: actor.getFlag?.("flowstate", "servesPole") ?? ""
+      },
       moveNote, speedNote,
       showOptional: game.settings.get("flowstate", "showOptionalFields"),
       hpState: sys.hp.destroyed ? "Body destroyed" : sys.hp.value <= 0 ? "Dead" : sys.hp.value < sys.hp.pain ? "Unconscious" : "",

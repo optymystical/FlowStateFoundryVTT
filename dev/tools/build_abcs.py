@@ -8,7 +8,8 @@ Structure relied on:
   # **<Ancestry>** + **Profile:** -> an Ancestry (its "- **Key:** value" bullets); its ## trees belong to it ("*Requires Commonkin 2.*")
   # **Backgrounds**               -> ## each Background: Available to / Starting Trees (+ focus/path bullets) / Ancestry Differences / Trade Slot / Circle
   # **Cultures**                  -> ## Shared Homelands, ## <Ancestry> Homelands, ## Shared Circles, ## Background Circles ("Name (Background)")
-Usage: build_abcs.py docs/abcs.md ../module/abcs.mjs   (build_trees.py imports parse_trees for the trees)
+Usage: build_abcs.py docs/abcs.md ../module/abcs.mjs [docs/bestiary.md]   (build_trees.py imports parse_trees for the trees; the Bestiary's
+Ancestries and Backgrounds, flagged `bestiary`, are added to the same tables)
 """
 import json, re, sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -225,8 +226,15 @@ def parse_differences(val):
 if __name__ == "__main__":
     md = open(sys.argv[1], encoding='utf-8').read()
     trees, data = parse_trees_and_data(md)
+    if len(sys.argv) > 3:
+        from build_bestiary import parse_bestiary
+        _, best = parse_bestiary(open(sys.argv[3], encoding='utf-8').read())
+        data["ancestries"].update(best["ancestries"])
+        data["backgrounds"].update(best["backgrounds"])
+        data["bestiaryRules"] = best["rules"]
     js = "// Generated from Flow State - ABCs by tools/build_abcs.py. Don't edit by hand; re-run `npm run trees`.\n"
     js += "export const ABC_RULES = " + json.dumps(data["rules"], indent=1, ensure_ascii=False) + ";\n"
+    js += "export const BESTIARY_RULES = " + json.dumps(data.get("bestiaryRules"), indent=1, ensure_ascii=False) + ";\n"
     for k in ("ancestries", "backgrounds", "homelands", "circles"):
         js += f"export const {k.upper()} = " + json.dumps(data[k], indent=1, ensure_ascii=False) + ";\n"
     open(sys.argv[2], 'w', encoding='utf-8', newline='\n').write(js)

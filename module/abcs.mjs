@@ -40,6 +40,47 @@ export const ABC_RULES = {
   }
  ]
 };
+export const BESTIARY_RULES = {
+ "id": "ancestry-bestiary-rules",
+ "name": "Bestiary Rules",
+ "archetype": "ancestry",
+ "rulesOnly": true,
+ "bestiary": true,
+ "requires": 0,
+ "tiers": [
+  {
+   "tier": 0,
+   "free": true,
+   "summary": "You gain the following rules:",
+   "entries": [
+    {
+     "name": "Bestiary",
+     "text": "This document holds the Ancestries of the world's creatures, along with any Background information relevant to them. Creatures have no Cultures; anything that would have one belongs in the player options instead."
+    },
+    {
+     "name": "Ancestry",
+     "text": "A creature's Ancestry works as it does for players: a core tree shared by its wider kind, a lineage tree where one exists, and a tree unique to it."
+    },
+    {
+     "name": "Background",
+     "text": "A creature's Background normally grants a set number of free points in its trees, which count for gating only and not as skill points (no dice, energy, or Stat Bonus). Some kinds set their tree tiers directly instead, such as Omens and Heralds. Either way, a creature's skill points are independent of its trees. Bestiary Backgrounds are usually one note."
+    },
+    {
+     "name": "Natural Attacks",
+     "text": "Attacks granted by Ancestry trees are natural attacks, so creature Size applies to them: Size 4 attacks are Strengthened and Size 5 attacks are doubly Strengthened (Size 2 Weakened, Size 1 doubly Weakened)."
+    },
+    {
+     "name": "Sapience",
+     "text": "See Sapience in Flow State - ABCs for the bands and their stat-to-skill ratios."
+    },
+    {
+     "name": "Agents",
+     "text": "Stage 3 beings holding the entirety of Stage 2 and beyond. They are never given statblocks."
+    }
+   ]
+  }
+ ]
+};
 export const ANCESTRIES = {
  "human": {
   "id": "human",
@@ -534,6 +575,174 @@ export const ANCESTRIES = {
    "ancestry-smallfolk",
    "ancestry-goblin-tree"
   ]
+ },
+ "wonderborn-life": {
+  "id": "wonderborn-life",
+  "name": "Life",
+  "core": "ancestry-wonderborn",
+  "coreName": "Wonderborn",
+  "bestiary": true,
+  "size": 3,
+  "sizes": {
+   "omen": 3,
+   "herald": 5
+  },
+  "form": "sanctum",
+  "wonderName": "Life",
+  "languages": "",
+  "lifespan": "",
+  "backgrounds": [
+   "omen",
+   "herald"
+  ],
+  "profile": [
+   {
+    "name": "Omen",
+    "text": "The Bloomrot, an animal or corpse that won't die, swollen with fungus and buds."
+   },
+   {
+    "name": "Herald",
+    "text": "The Thicket, a walking grove of fused flesh and vine."
+   },
+   {
+    "name": "Size",
+    "text": "Omen 3, Herald 5."
+   },
+   {
+    "name": "Form",
+    "text": "Sanctum."
+   },
+   {
+    "name": "Senses",
+    "text": "Sight (Primary) and Smell (Heightened)."
+   },
+   {
+    "name": "Feeds on",
+    "text": "Flesh, living or dead, to bud on."
+   },
+   {
+    "name": "Propagation trigger",
+    "text": "A creature dies while Infected, and its body is not burned within a day."
+   }
+  ],
+  "trees": [
+   "ancestry-wonderborn",
+   "ancestry-dreamborn",
+   "ancestry-wonderborn-life"
+  ],
+  "lineage": "ancestry-dreamborn"
+ },
+ "wonderborn-dark": {
+  "id": "wonderborn-dark",
+  "name": "Dark",
+  "core": "ancestry-wonderborn",
+  "coreName": "Wonderborn",
+  "bestiary": true,
+  "size": 3,
+  "sizes": {
+   "omen": 3,
+   "herald": 5
+  },
+  "form": "riposte",
+  "wonderName": "Dark",
+  "languages": "",
+  "lifespan": "",
+  "backgrounds": [
+   "omen",
+   "herald"
+  ],
+  "profile": [
+   {
+    "name": "Omen",
+    "text": "The Gloamhound, a calf-sized black dog whose eyes are the only light it gives."
+   },
+   {
+    "name": "Herald",
+    "text": "The Candle-Noon, a dome of midday night over a city."
+   },
+   {
+    "name": "Size",
+    "text": "Omen 3, Herald 5."
+   },
+   {
+    "name": "Form",
+    "text": "Riposte."
+   },
+   {
+    "name": "Senses",
+    "text": "Sight (Primary), Hearing (Primary), and Smell (Heightened)."
+   },
+   {
+    "name": "Feeds on",
+    "text": "Darkness, and the dead left in it."
+   },
+   {
+    "name": "Propagation trigger",
+    "text": "A creature dies in darkness within 100ft of it."
+   }
+  ],
+  "trees": [
+   "ancestry-wonderborn",
+   "ancestry-nightmareborn",
+   "ancestry-wonderborn-dark"
+  ],
+  "lineage": "ancestry-nightmareborn"
+ },
+ "wonderborn-growth": {
+  "id": "wonderborn-growth",
+  "name": "Growth",
+  "core": "ancestry-wonderborn",
+  "coreName": "Wonderborn",
+  "bestiary": true,
+  "size": 4,
+  "sizes": {
+   "omen": 4,
+   "herald": 5
+  },
+  "form": "vigil",
+  "wonderName": "Growth",
+  "languages": "",
+  "lifespan": "",
+  "backgrounds": [
+   "omen",
+   "herald"
+  ],
+  "profile": [
+   {
+    "name": "Omen",
+    "text": "The Burgeon, a bulb-bodied plant crowned with one enormous striped bloom."
+   },
+   {
+    "name": "Herald",
+    "text": "The Bubble, a city swelling past what it can hold."
+   },
+   {
+    "name": "Size",
+    "text": "Omen 4, Herald 5."
+   },
+   {
+    "name": "Form",
+    "text": "Vigil."
+   },
+   {
+    "name": "Senses",
+    "text": "Hearing (Primary, felt through its roots) and Smell (Primary). It has no Sight."
+   },
+   {
+    "name": "Feeds on",
+    "text": "Fertile soil and anything growing."
+   },
+   {
+    "name": "Propagation trigger",
+    "text": "Its blooming (see Seed)."
+   }
+  ],
+  "trees": [
+   "ancestry-wonderborn",
+   "ancestry-dreamborn",
+   "ancestry-wonderborn-growth"
+  ],
+  "lineage": "ancestry-dreamborn"
  }
 };
 export const BACKGROUNDS = {
@@ -1914,6 +2123,56 @@ export const BACKGROUNDS = {
    "Available to": "Goblin.",
    "Starting Trees": "Mental Theory T2, Psion Arts T3, Resolve T2, and Deception T2.",
    "Circle": "Sewer Cult Fringe, or a Shared Circle."
+  }
+ },
+ "omen": {
+  "id": "omen",
+  "name": "Omen",
+  "bestiary": true,
+  "availableCores": [
+   "wonderborn"
+  ],
+  "available": [
+   "wonderborn-life",
+   "wonderborn-dark",
+   "wonderborn-growth"
+  ],
+  "trees": [],
+  "options": [],
+  "differences": [],
+  "tradeSlot": 0,
+  "setTier": 3,
+  "sapience": 2,
+  "ratio": 5,
+  "text": {
+   "Available to": "Wonderborn.",
+   "Ancestry Trees": "Tier 3 in Wonderborn, its lineage tree, and its Wonder's tree, regardless of its skill points. Its domain trees come from Wonderborn.",
+   "Stat-to-skill ratio": "About 5:1 (band 2)."
+  }
+ },
+ "herald": {
+  "id": "herald",
+  "name": "Herald",
+  "bestiary": true,
+  "availableCores": [
+   "wonderborn"
+  ],
+  "available": [
+   "wonderborn-life",
+   "wonderborn-dark",
+   "wonderborn-growth"
+  ],
+  "trees": [],
+  "options": [],
+  "differences": [],
+  "tradeSlot": 0,
+  "setTier": 5,
+  "sapience": 2,
+  "ratio": 5,
+  "text": {
+   "Available to": "Wonderborn.",
+   "Ancestry Trees": "Tier 5 in Wonderborn, its lineage tree, and its Wonder's tree, regardless of its skill points.",
+   "Stat-to-skill ratio": "About 5:1 (band 2)."
   }
  }
 };

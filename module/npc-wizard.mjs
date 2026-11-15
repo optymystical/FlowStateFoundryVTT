@@ -11,6 +11,7 @@ import * as mentalRules from "./mental-rules.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile } from "./magic.mjs";
 import * as skills from "./skills.mjs";
 import { ANCESTRIES } from "./abc-rules.mjs";
+import * as best from "./bestiary-rules.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
@@ -50,7 +51,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
   state = {
     step: 0, name: "", img: creation.DEFAULT_IMG, size: npc.NPC_DEFAULTS.size, disposition: npc.NPC_DEFAULTS.disposition,
-    statPoints: npc.NPC_DEFAULTS.statPoints, ratio: npc.NPC_DEFAULTS.ratio, skillManual: false, skillPoints: npc.NPC_DEFAULTS.skillPoints, ancestry: "", sapience: 3,
+    statPoints: npc.NPC_DEFAULTS.statPoints, ratio: npc.NPC_DEFAULTS.ratio, skillManual: false, skillPoints: npc.NPC_DEFAULTS.skillPoints, ancestry: "", bestiaryBg: "", sapience: 3,
     grade: npc.NPC_DEFAULTS.grade, ammo: npc.NPC_DEFAULTS.ammo,
     stats: creation.emptyStats(), items: [], trees: {}, skillArch: "martial", openTree: null
   };
@@ -114,13 +115,14 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
     // Skill trees: spend the Skill Points (Theory first; it opens that Archetype's other trees).
     const sp = b.skillPoints;
-    const spentSP = skills.spentPoints(st.trees);
+    const free = npc.freeTreesOf(st);
+    const spentSP = skills.spentPoints(st.trees, free);
     const ctx = { ancestry: st.ancestry || null };
     const treeGroups = skills.skillGroups({ ancestry: ctx.ancestry, ancestryName: ANCESTRIES[st.ancestry]?.name ?? "" });
     const arch = treeGroups.find(a => a.id === st.skillArch) ?? treeGroups[0];
     const available = arch.trees.filter(t => skills.isAvailable(st.trees, t, ctx));
     const treeRows = available.map(t => {
-      const tier = skills.tierOf(st.trees, t.id), next = tier + 1;
+      const tier = skills.tierOf(st.trees, t.id), next = tier + 1, freeTier = skills.tierOf(free, t.id);
       const dependents = t.theory ? Object.keys(st.trees).filter(id => {
         const other = skills.treeById(id);
         return other && !other.theory && skills.sameGroup(other, t) && skills.tierOf(st.trees, id) > 0 && skills.requiredTier(other) >= tier;
@@ -128,7 +130,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       return {
         id: t.id, name: t.name, tier, theory: t.theory, open: st.openTree === t.id,
         canRaise: next <= skills.MAX_TIER && spentSP + next <= sp, nextCost: next <= skills.MAX_TIER ? next : null,
-        canLower: tier > 0 && !dependents.length, lowerTip: dependents.length ? "Lower the trees this Theory tier opens first" : `Refund ${tier} SP`,
+        canLower: tier > freeTier && !dependents.length, lowerTip: tier <= freeTier && tier > 0 ? "Free with its Bestiary Background" : dependents.length ? "Lower the trees this Theory tier opens first" : `Refund ${tier} SP`,
         tiers: t.tiers.filter(x => x.tier > 0).map(x => ({ tier: x.tier, summary: x.summary, owned: x.tier <= tier, entries: x.entries.filter(e => e.name || e.text).map(e => ({ ...creation.entryBlurb(e), codex: e.name ? `entry:${t.id}:${String(e.name).replace(/^#\s*/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}` : null })) })),
         // A Wonder's table, worked out for the Power these stats give (the tiers above stay as printed).
         table: t.table?.rows?.length ? { title: t.table.title, rows: t.table.rows.map(([roll, effect, spans]) => ({ roll, effect: mentalRules.scaleSpans(effect, spans, mentalRules.wonderPower(pv.effective[mentalRules.KINDS[mentalRules.wonderById(t.id)?.kind ?? "dream"].stat]?.value ?? 0)) })) } : null
@@ -143,7 +145,10 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       name: st.name, img: st.img, canBrowse: game.user.can?.("FILES_BROWSE") ?? false,
       sizes: Object.fromEntries([1, 2, 3, 4, 5].map(n => [n, `Size ${n}`])), size: st.size,
       dispositions: npc.DISPOSITIONS, disposition: String(st.disposition),
-      ancestries: { "": "None", ...Object.fromEntries(Object.values(ANCESTRIES).filter(a => !a.hidden).map(a => [a.id, `${a.name} (Size ${a.size})`])) }, ancestry: st.ancestry,
+      ancestries: { "": "None", ...Object.fromEntries(Object.values(ANCESTRIES).filter(a => !a.hidden && !a.bestiary).map(a => [a.id, `${a.name} (Size ${a.size})`])),
+        ...Object.fromEntries(best.bestiaryAncestries().map(a => [a.id, `Bestiary: ${best.bestiaryLabel(a)}`])) }, ancestry: st.ancestry,
+      bestiaryBgs: best.isBestiary(st.ancestry) ? Object.fromEntries(best.bestiaryBackgrounds(st.ancestry).map(x => [x.id, `${x.name} (Size ${ANCESTRIES[st.ancestry].sizes?.[x.id] ?? ANCESTRIES[st.ancestry].size}, trees at Tier ${x.setTier})`])) : null,
+      bestiaryBg: st.bestiaryBg, bestiaryNote: npc.bestiaryOf(st) ? `Free: ${Object.entries(free).map(([id, t]) => `${skills.treeById(id)?.name ?? id} ${t}`).join(", ")}; its own natural Icon (${npc.bestiaryOf(st).form ?? "none"})` : "",
       sapiences: Object.fromEntries(Object.entries(npc.SAPIENCE).map(([k, v]) => [k, v.label])), sapience: String(st.sapience),
       statPoints: b.statPoints, ratio: b.ratio, skillManual: st.skillManual, skillPointsField: st.skillManual ? st.skillPoints : b.skillPoints, grade: st.grade, ammo: st.ammo,
       statGroups: Object.values(groups), spent: b.spent, remaining: b.remaining, overspent: b.remaining < 0,
@@ -165,14 +170,25 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     if ("size" in data) st.size = Math.min(5, num(data.size, 3, 1));
     if ("disposition" in data) st.disposition = Math.trunc(Number(data.disposition)) || 0;
     // An Ancestry sets the Size and opens its trees; Sapience sets the starting ratio (Flow State - ABCs).
-    if ("ancestry" in data && data.ancestry !== st.ancestry) {
+    const ancestryChanged = "ancestry" in data && data.ancestry !== st.ancestry;
+    if (ancestryChanged) {
+      const freeBefore = npc.freeTreesOf(st);
       st.ancestry = ANCESTRIES[data.ancestry] ? data.ancestry : "";
       if (st.ancestry) st.size = ANCESTRIES[st.ancestry].size;
-      for (const id of Object.keys(st.trees)) if (skills.treeById(id)?.archetype === "ancestry") delete st.trees[id];
+      for (const id of Object.keys(st.trees)) if (skills.treeById(id)?.archetype === "ancestry" || freeBefore[id]) delete st.trees[id];
+      // A Bestiary creature: its Background (Omen by default) sets its Size, its free trees and its starting ratio.
+      st.bestiaryBg = best.isBestiary(st.ancestry) ? (best.bestiaryBackgrounds(st.ancestry)[0]?.id ?? "") : "";
+      this.applyBestiary(true);
+    } else if ("bestiaryBg" in data && data.bestiaryBg !== st.bestiaryBg) {
+      const freeBefore = npc.freeTreesOf(st);
+      for (const id of Object.keys(freeBefore)) delete st.trees[id];
+      st.bestiaryBg = String(data.bestiaryBg ?? "");
+      this.applyBestiary(false);
     }
-    if ("sapience" in data && String(data.sapience) !== String(st.sapience) && npc.SAPIENCE[data.sapience]) { st.sapience = Number(data.sapience); st.ratio = npc.SAPIENCE[data.sapience].ratio; }
+    // (A new Ancestry may have set the Sapience itself: the form still holds the old value then.)
+    if (!ancestryChanged && "sapience" in data && String(data.sapience) !== String(st.sapience) && npc.SAPIENCE[data.sapience]) { st.sapience = Number(data.sapience); st.ratio = npc.SAPIENCE[data.sapience].ratio; }
     if ("statPoints" in data) st.statPoints = num(data.statPoints, 0);
-    if ("ratio" in data) { const r = Number(data.ratio); st.ratio = r > 0 ? r : st.ratio; }
+    if ("ratio" in data && !ancestryChanged) { const r = Number(data.ratio); st.ratio = r > 0 ? r : st.ratio; }
     if ("skillManual" in data) st.skillManual = data.skillManual === true || data.skillManual === "true" || data.skillManual === "on";
     if (st.skillManual && "skillPoints" in data) st.skillPoints = num(data.skillPoints, 0);
     if ("grade" in data) st.grade = num(data.grade, 1, 1);
@@ -190,6 +206,15 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     }
     // Trees that no longer fit the Skill Points (they were lowered) are trimmed from the top.
     this.render();
+  }
+
+  /** A Bestiary build onto the state: its Size, its free trees (merged into the trees) and, as it's picked, its Sapience band and ratio. */
+  applyBestiary(fresh) {
+    const st = this.state, b = npc.bestiaryOf(st);
+    if (!b) return;
+    st.size = b.size;
+    for (const [id, t] of Object.entries(b.free)) st.trees[id] = Math.max(skills.tierOf(st.trees, id), t);
+    if (fresh && b.sapience && npc.SAPIENCE[b.sapience]) { st.sapience = b.sapience; st.ratio = b.ratio ?? npc.SAPIENCE[b.sapience].ratio; }
   }
 
   static onNext() { this.state.step = Math.min(STEPS.length - 1, this.state.step + 1); this.render(); }
@@ -211,13 +236,14 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const st = this.state, id = target.dataset.tree, tree = skills.treeById(id);
     const sp = npc.budget(st).skillPoints, next = skills.tierOf(st.trees, id) + 1;
     if (!tree || next > skills.MAX_TIER || !skills.isAvailable(st.trees, tree, { ancestry: st.ancestry || null })) return;
-    if (skills.spentPoints(st.trees) + next > sp) return ui.notifications.warn(`Tier ${next} costs ${next} Skill Points; ${sp - skills.spentPoints(st.trees)} are left.`);
+    const free = npc.freeTreesOf(st);
+    if (skills.spentPoints(st.trees, free) + next > sp) return ui.notifications.warn(`Tier ${next} costs ${next} Skill Points; ${sp - skills.spentPoints(st.trees, free)} are left.`);
     st.trees[id] = next;
     this.render();
   }
   static onTreeDown(event, target) {
     const st = this.state, id = target.dataset.tree, tier = skills.tierOf(st.trees, id);
-    if (tier < 1) return;
+    if (tier < 1 || tier <= skills.tierOf(npc.freeTreesOf(st), id)) return;
     if (tier === 1) delete st.trees[id]; else st.trees[id] = tier - 1;
     if (creation.validateTrees(st.trees, Infinity, { ancestry: st.ancestry || null }).length) { st.trees[id] = tier; return ui.notifications.warn("Lower the trees this Theory tier opens first."); }
     this.render();

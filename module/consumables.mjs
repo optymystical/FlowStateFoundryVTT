@@ -10,7 +10,7 @@ import { esc, select, DialogV2 } from "./html.mjs";
 import { codexId } from "./codex.mjs";
 
 /** Conditions that end on their own after a time (seconds of world time). */
-export const TIMED_STATUSES = { infected: 86400 };
+export const TIMED_STATUSES = { infected: 86400, dormant: 86400 };
 
 const potionOf = item => (item?.type === "gear" && item.system?.use === "potion" ? POTIONS[item.system.potion] ?? null : null);
 const isToken = item => item?.type === "gear" && item.system?.use === "token";

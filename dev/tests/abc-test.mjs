@@ -7,7 +7,7 @@ const P = await import("../../module/passage.mjs");
 let fails = 0; const ok = (c, m) => { console.log(`  ${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
 
 console.log("== The tables");
-ok(Object.keys(R.ANCESTRIES).length === 9 && R.ANCESTRIES.halfling.size === 2 && R.ANCESTRIES.goblin.size === 2 && R.ANCESTRIES.orc.size === 3, "Nine Ancestries; Halflings and Goblins are Size 2");
+ok(R.playerAncestries().length === 9 && R.ANCESTRIES.halfling.size === 2 && R.ANCESTRIES.goblin.size === 2 && R.ANCESTRIES.orc.size === 3, "Nine Ancestries; Halflings and Goblins are Size 2");
 ok(Object.keys(R.BACKGROUNDS).length >= 30 && R.HOMELANDS.length >= 30 && R.CIRCLES.length >= 30, "Backgrounds, Homelands and Circles are read from the doc");
 ok(R.ANCESTRIES.human.trees.join() === "ancestry-wusonian,ancestry-commonkin,ancestry-human-tree", "A Human's trees: the Wusonian core, Commonkin, Human");
 ok(R.ANCESTRIES.goblin.trees.includes("ancestry-smallfolk") && R.ANCESTRIES.goblin.trees.includes("ancestry-bestial"), "A Goblin also gets Smallfolk (shared with Halflings)");
@@ -18,7 +18,7 @@ for (const a of Object.values(R.ANCESTRIES)) {
 
 console.log("== Every Background, for every Ancestry and every choice, gives exactly 15 points that meet their requirements");
 let n = 0, bad = [];
-for (const a of Object.keys(R.ANCESTRIES)) for (const b of R.backgroundsFor(a)) {
+for (const a of R.playerAncestries().map(x => x.id)) for (const b of R.backgroundsFor(a)) {
   const pkg = R.packageFor(b.id, a);
   for (const focus of pkg.options.length ? pkg.options.map(o => o.name) : [""]) {
     let combos = [{}];

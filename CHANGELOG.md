@@ -2,6 +2,12 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.98.0:** The Bestiary (Flow State - Bestiary): the world's creatures as Ancestries, for the GM.
+- **Wonderborn** Omens and Heralds of **Life** (Bloomrot / Thicket), **Dark** (Gloamhound / Candle-Noon) and **Growth** (Burgeon / Bubble): their trees (Wonderborn, Dreamborn / Nightmareborn, and their own) and the Omen / Herald Backgrounds, with Codex pages.
+- **The NPC wizard** lists them: the Background sets the Size and the trees' tiers (free), adds the Wonderborn's Domain, its own natural Icon and its Patron, and starts it at 5:1.
+- **Seed and Rend** build an Omen of Life, Dark or Growth from the Bestiary.
+- **Automated:** the natural attacks (Budding Gore Infects), Pole-Bound for every Wonderborn, Recognition, Follow the Pole, Sustain, Portent, Allure / Dread as a fight starts, Bounty, Prey on Fear, Unwaking / Unrelenting, Regrowth, Sporing and Ripen / Seed on the 4th turn (then Dormant), Deathless, the Choking Green and Overgrowth auras, Pack Hunter, Drag Into the Dark (by the scene's lighting) and Rooted. A sheet's Misc tab has a GM field for the pole a creature serves.
+
 **0.97.0:** Tutorials, after a player test.
 - **The sheet tutorial names your own abilities:** your Combat rows, your Core Spells or Wonders, each of your other Action List groups (Generic, Ancestry, Items, a tree's abilities) with its rows and costs, your Checks, what can ask you in the Reaction List, and your trees with their tiers.
 - **Codex links in the tutorial popups:** terms, stats, trees, spells and abilities are underlined links that open their Codex page (on top of the popup). The popups no longer freeze the whole screen: only the wizard or sheet behind them is blocked.

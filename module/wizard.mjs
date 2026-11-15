@@ -247,7 +247,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const freeTrees = free.trees;
     const ctx = { ancestry: abc.ancestry || null };
     const treeName = id => skills.treeById(id)?.name ?? id;
-    const ancestries = Object.values(abcRules.ANCESTRIES).filter(a => !a.hidden).map(a => {
+    const ancestries = abcRules.playerAncestries().map(a => {
       const chips = skills.ancestryTrees(a.id).map(t => chip(`anc-${a.id}`, t.id)).filter(Boolean);
       return { id: a.id, name: a.name, size: a.size, selected: a.id === abc.ancestry, hidden: !!abc.ancestry && a.id !== abc.ancestry, lifespan: a.lifespan, languages: a.languages,
         profile: a.profile.filter(p => !["Size", "Languages", "Lifespan", "Backgrounds", "Homelands", "Homeland"].includes(p.name)),
@@ -415,7 +415,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   /** Pick an Ancestry (a new one clears the Background and Culture picked for the old one). */
   static onPickAncestry(event, target) {
     const st = this.state, id = target.dataset.id;
-    if (!abcRules.ANCESTRIES[id]) return;
+    if (!abcRules.ANCESTRIES[id] || abcRules.ANCESTRIES[id].bestiary) return;
     // Picking your Ancestry again unpicks it: the full list shows again (and what hung on it is cleared).
     st.abc = st.abc.ancestry === id ? blankAbc() : { ...blankAbc(), ancestry: id };
     st.freeTrees = {}; st.trees = {}; st.skillArch = "ancestry";

@@ -9639,5 +9639,529 @@ export const TREES = [
   "note": "Requires Bestial 2.",
   "core": false,
   "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-bestiary-rules",
+  "name": "Bestiary Rules",
+  "archetype": "ancestry",
+  "rulesOnly": true,
+  "bestiary": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Bestiary",
+      "text": "This document holds the Ancestries of the world's creatures, along with any Background information relevant to them. Creatures have no Cultures; anything that would have one belongs in the player options instead."
+     },
+     {
+      "name": "Ancestry",
+      "text": "A creature's Ancestry works as it does for players: a core tree shared by its wider kind, a lineage tree where one exists, and a tree unique to it."
+     },
+     {
+      "name": "Background",
+      "text": "A creature's Background normally grants a set number of free points in its trees, which count for gating only and not as skill points (no dice, energy, or Stat Bonus). Some kinds set their tree tiers directly instead, such as Omens and Heralds. Either way, a creature's skill points are independent of its trees. Bestiary Backgrounds are usually one note."
+     },
+     {
+      "name": "Natural Attacks",
+      "text": "Attacks granted by Ancestry trees are natural attacks, so creature Size applies to them: Size 4 attacks are Strengthened and Size 5 attacks are doubly Strengthened (Size 2 Weakened, Size 1 doubly Weakened)."
+     },
+     {
+      "name": "Sapience",
+      "text": "See Sapience in Flow State - ABCs for the bands and their stat-to-skill ratios."
+     },
+     {
+      "name": "Agents",
+      "text": "Stage 3 beings holding the entirety of Stage 2 and beyond. They are never given statblocks."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ancestry-wonderborn",
+  "name": "Wonderborn",
+  "archetype": "ancestry",
+  "core": true,
+  "bestiary": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Size",
+      "text": "Set by its Wonder's tree. A Herald is at least one Size larger than its Omen."
+     },
+     {
+      "name": "Body",
+      "text": "Real matter of its pole, shaped as its Wonder's tree describes."
+     },
+     {
+      "name": "Domain",
+      "text": "Knows Mental Theory and its own Wonder to Tier 5. These are free and do not count as skill points. Its Patron is always its own Wonder."
+     },
+     {
+      "name": "Pole-Bound",
+      "text": "Manifests only its own Wonder, and that Wonder's Tenet is always active for it. It is its own Icon, using the Form its Wonder's tree names, without needing one. Attacks between it and creatures or effects of its opposite pole are Strengthened, in both directions. It never acts against its pole and never aids the opposite one."
+     },
+     {
+      "name": "Needs",
+      "text": "Does not breathe, eat, drink, or sleep. Heals naturally through rest, but cannot regrow lost Max HP."
+     },
+     {
+      "name": "Senses",
+      "text": "Set by its Wonder's tree."
+     },
+     {
+      "name": "Remains",
+      "text": "When killed, it leaves behind a fragment of its pole."
+     },
+     {
+      "name": "Amalgamation",
+      "text": "About ten Omens of one Wonder gathered together merge into a Herald, and about ten Heralds into an Agent."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Recognition",
+      "text": "You know whether a creature you can sense serves your pole, opposes it, or neither (the GM decides). You do not attack a creature that serves your pole unless it harms you first."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Propagation",
+      "text": "When your Wonder's tree's propagation trigger occurs, a new Omen of your Wonder forms there over the following day."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Follow the Pole",
+      "text": "While within 100ft of a Herald of your Wonder or a creature that serves your pole, your Ward's attack rolls have Advantage."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Sustain",
+      "text": "You can spend 1 hour feeding on your surroundings, in the way your Wonder's tree describes, to restore all of your HP."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Portent",
+      "text": "After a day in an area (up to about 1,000ft across), the area takes on your pole's portents. Within it, Manifests of your Wonder are Strengthened and Manifests of your opposite pole are Weakened."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-life",
+   "wonderborn-dark",
+   "wonderborn-growth"
+  ],
+  "note": "Core tree of every Omen, Herald, and Agent: a piece of a Wonder given matter."
+ },
+ {
+  "id": "ancestry-dreamborn",
+  "name": "Dreamborn",
+  "archetype": "ancestry",
+  "bestiary": true,
+  "requires": 1,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Allure",
+      "text": "Creatures that first see you must resist it as they would Fear, requiring a result of at least your skill points multiplied by your Size. On a failure, until the end of their next turn, their first attack against you each turn has Disadvantage. This is a forced mental effect."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Lucid Depth",
+      "text": "Your Alignment gives you no speed penalty."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Bounty",
+      "text": "Once per round, a Manifest you make on a creature that serves your pole hits automatically."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Unwaking",
+      "text": "When you fall below your Pain Threshold, you do not fall unconscious until the start of your next turn, and act normally on that turn."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Rapture",
+      "text": "Checks to resist your Allure have Disadvantage."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-life",
+   "wonderborn-growth"
+  ],
+  "note": "Requires Wonderborn 1. Lineage tree of every Dream Omen and Herald.",
+  "requiresTree": {
+   "id": "ancestry-wonderborn",
+   "tier": 1
+  },
+  "core": false,
+  "coreId": "ancestry-wonderborn",
+  "lineage": true
+ },
+ {
+  "id": "ancestry-nightmareborn",
+  "name": "Nightmareborn",
+  "archetype": "ancestry",
+  "bestiary": true,
+  "requires": 1,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Dread",
+      "text": "Creatures that first see you must resist Fear, requiring a result of at least your skill points multiplied by your Size."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Nightmare Depth",
+      "text": "Your Alignment gives you no speed penalty."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Prey on Fear",
+      "text": "Your attacks and Manifests against afraid creatures have Advantage."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Unrelenting",
+      "text": "When you fall below your Pain Threshold, you do not fall unconscious until the start of your next turn, and act normally on that turn."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Terror",
+      "text": "Checks to resist your Dread have Disadvantage."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-dark"
+  ],
+  "note": "Requires Wonderborn 1. Lineage tree of every Nightmare Omen and Herald.",
+  "requiresTree": {
+   "id": "ancestry-wonderborn",
+   "tier": 1
+  },
+  "core": false,
+  "coreId": "ancestry-wonderborn",
+  "lineage": true
+ },
+ {
+  "id": "ancestry-wonderborn-life",
+  "name": "Life",
+  "archetype": "ancestry",
+  "bestiary": true,
+  "requires": 1,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following action:",
+    "entries": [
+     {
+      "name": "Budding Gore",
+      "text": "You can spend 2 AP to gore a target within your melee range, dealing 1d10 physical damage. This scales with your Wonder's Power and is a natural attack. On a hit, the target is Infected for a day. Any heat damage an Infected creature takes burns the infection out."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Regrowth",
+      "text": "At the start of each of your turns, you regain all health you lost since the start of your last turn, except health lost to heat damage or to critical hits."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Sporing",
+      "text": "At the end of your 4th turn in combat, or after 1 hour outside of combat, you release your spores. Every creature within 100ft that breathes becomes Infected. You then collapse, dormant, until you regrow over the following day."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Deathless",
+      "text": "Infected creatures within 100ft of you do not die from damage. At 0 HP or below they stay down, budding, and rise as your thralls within a day unless their bodies are burned."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "The Choking Green",
+      "text": "The ground within 100ft of you is difficult terrain, and Infected creatures within it take 1d6 physical damage at the start of each of their turns."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-life"
+  ],
+  "note": "Requires Dreamborn 1.",
+  "requiresTree": {
+   "id": "ancestry-dreamborn",
+   "tier": 1
+  },
+  "core": false,
+  "coreId": "ancestry-wonderborn"
+ },
+ {
+  "id": "ancestry-wonderborn-dark",
+  "name": "Dark",
+  "archetype": "ancestry",
+  "bestiary": true,
+  "requires": 1,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following action:",
+    "entries": [
+     {
+      "name": "Black Jaws",
+      "text": "You can spend 2 AP to bite a target within your melee range, dealing 1d10 physical damage. This scales with your Wonder's Power and is a natural attack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Lightless Sight",
+      "text": "You see normally in darkness, including through obscurement that you or your Wonder created."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Light Eater",
+      "text": "Nonmagical light within 10ft of you goes out, and magical light within 10ft of you reaches only half its normal distance."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Pack Hunter",
+      "text": "Black Jaws has Advantage against a creature that another Gloamhound, or a creature that serves your pole, has attacked since the start of your last turn."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Drag Into the Dark",
+      "text": "When Black Jaws crits a creature standing in darkness, it is grappled, until it breaks free with a counter grapple check of 3 or higher."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-dark"
+  ],
+  "note": "Requires Nightmareborn 1.",
+  "requiresTree": {
+   "id": "ancestry-nightmareborn",
+   "tier": 1
+  },
+  "core": false,
+  "coreId": "ancestry-wonderborn"
+ },
+ {
+  "id": "ancestry-wonderborn-growth",
+  "name": "Growth",
+  "archetype": "ancestry",
+  "bestiary": true,
+  "requires": 1,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following action:",
+    "entries": [
+     {
+      "name": "Root Lash",
+      "text": "You can spend 2 AP to strike a target within 10ft, dealing 1d8 physical damage. This scales with your Wonder's Power and is a natural attack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Ripen",
+      "text": "You bloom at the end of your 4th turn in combat, or after 1 hour outside of combat."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Seed",
+      "text": "When you bloom, you scatter seed within 100ft, and each seed that takes root grows into a new Burgeon within a day. You then wilt back into your bulb, dormant until you regrow."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Rooted",
+      "text": "If you have not moved this turn, Force applied to you is halved."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Overgrowth",
+      "text": "The ground within 20ft of you is difficult terrain."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-growth"
+  ],
+  "note": "Requires Dreamborn 1.",
+  "requiresTree": {
+   "id": "ancestry-dreamborn",
+   "tier": 1
+  },
+  "core": false,
+  "coreId": "ancestry-wonderborn"
  }
 ];

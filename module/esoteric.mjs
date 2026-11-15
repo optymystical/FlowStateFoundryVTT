@@ -23,6 +23,8 @@ import { deriveCharacter } from "./rules.mjs";
 import { allied } from "./sides.mjs";
 import { mental, CHOICE_PROVIDERS, COST_PROVIDERS, TURN_START, kinshipHook, tenetOf } from "./wonders.mjs";
 import { esc, DialogV2, formValues } from "./html.mjs";
+import * as best from "./bestiary-rules.mjs";
+import * as bestiary from "./bestiary.mjs";
 
 export const ESOTERIC = "mental-esoteric-arts";
 const BOND = "omenBond";
@@ -36,14 +38,11 @@ const newId = () => globalThis.foundry?.utils?.randomID?.() ?? String(Math.rando
 const levels = () => globalThis.CONST?.DOCUMENT_OWNERSHIP_LEVELS ?? { NONE: 0, OWNER: 3 };
 const sides = () => globalThis.CONST?.TOKEN_DISPOSITIONS ?? { HOSTILE: -1, FRIENDLY: 1 };
 const statOf = wonderId => R.KINDS[R.wonderById(wonderId)?.kind]?.stat ?? "pon";
+/** A token's squares for a Size (1–5: ¼, ½, 1, 2, 4). */
+const tokenSize = size => { const sq = { 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 }[size] ?? 1; return { width: sq, height: sq }; };
 
-/** The paired Wonder (Life ↔ Death, Order ↔ Chaos...): the neighbour of the other type in the doc's order. */
-export function pairOf(wonderId) {
-  const i = R.WONDERS.findIndex(w => w.id === wonderId), w = R.WONDERS[i];
-  if (!w) return null;
-  const n = R.WONDERS[w.kind === "dream" ? i + 1 : i - 1];
-  return n && n.kind !== w.kind ? n.id : null;
-}
+/** The paired Wonder (Life ↔ Death, Order ↔ Chaos...): the neighbour of the other type in the doc's order (bestiary-rules.mjs). */
+export const pairOf = best.pairOf;
 
 /** Your Omens: bound to you, or fighting at your side after the Concentration was lost (not free or hostile ones). You can have as many as your Concentrations allow. */
 export function omensOf(user) {
@@ -293,23 +292,25 @@ export async function anyHit({ attacker, target, result }) {
 }
 
 /**
- * Pole-Bound: attacks between an Omen and its paired Wonder are Strengthened, both ways: an Omen attacking (or attacked by) an Omen of its paired
- * Wonder, and a Manifest of an Omen's paired Wonder hitting it. Every target has to qualify.
+ * Pole-Bound: attacks between an Omen (or any Wonderborn, the Bestiary's) and its opposite pole are Strengthened, both ways: attacking (or attacked by)
+ * a creature that serves its paired Wonder (an Omen of it, a Mental user whose Patron it is, one the GM marked), and a Manifest of its paired Wonder
+ * hitting it. Every target has to qualify.
  */
 export function poleStacks(actor, opts, targets) {
   if (!targets?.length) return 0;
   const wonder = opts?.mental?.mode && !opts.mental.ward && !opts.mental.reflect ? opts.mental.wonder : null;
-  const ad = omenData(actor);
+  const aw = best.wonderOf(actor);
   const hits = t => {
-    const td = omenData(t);
-    if (ad && td && pairOf(ad.wonder) === td.wonder) return true;
-    return !!(td && wonder && wonder === pairOf(td.wonder));
+    const tw = best.wonderOf(t);
+    if (aw && best.opposes(t, aw)) return true;
+    return !!(tw && (best.opposes(actor, tw) || (wonder && wonder === pairOf(tw))));
   };
   return targets.every(hits) ? 1 : 0;
 }
-export function attackStart(actor, opts, targets) {
-  if (!poleStacks(actor, opts, targets)) return opts;
-  return { ...opts, stacks: (opts.stacks ?? 0) + 1, notes: [...(opts.notes ?? []), "Pole-Bound: Strengthened (its paired Wonder)"] };
+export async function attackStart(actor, opts, targets) {
+  const out = await bestiary.attackStart(actor, opts, targets);          // the Bestiary's Bounty and Portent
+  if (!poleStacks(actor, out, targets)) return out;
+  return { ...out, stacks: (out.stacks ?? 0) + 1, notes: [...(out.notes ?? []), "Pole-Bound: Strengthened (its opposite pole)"] };
 }
 
 /* -------------------------------------------- */
@@ -373,15 +374,18 @@ GM_ACTIONS.omenCreate = async ({ user, wonder, form, depth, flip, full, conc, re
   if (seedProblem(u, { wonder, form, depth })) return null;
   const w = R.wonderById(wonder);
   const b = omenBuild(u, wonder, { flip, full });
-  const size = u.system.size ?? 3;
+  // The Bestiary's Omen of this Wonder, if it has one: its Ancestry's trees at the Omen tier, its Size (the caster's Form and depth still stand).
+  const anc = best.ancestryForWonder(wonder), bb = anc ? best.bestiaryBuild(anc.id, "omen") : null;
+  const size = bb?.size ?? u.system.size ?? 3;
   const d = deriveCharacter({ stats: b.stats, skillPoints: b.skillPoints, size, omen: true });
   const L = levels(), ownership = { default: L.NONE };
   for (const id of playerOwners(u)) ownership[id] = L.OWNER;
   const actor = await Actor.create({ name: `${w.name} Omen`, type: "npc", img: OMEN_IMG, ownership,
-    system: { stats: b.stats, skillPoints: b.skillPoints, size, trees: { "mental-theory": 5, [wonder]: 5 }, hp: { value: d.hpMax, lost: 0 }, energy: { value: d.energyMax } },
-    flags: { flowstate: { omen: { owner: u.uuid, wonder, form, depth, flip: !!flip, bound: !!conc, hostile: false, battle: null, conc: conc ?? null, own: 0, opp: 0, base: b.base, full: !!full, unbound: false, rend: rendId ?? null },
-      alignment: { kind: w.kind, level: depth } } },
-    prototypeToken: { name: `${w.name} Omen`, actorLink: true, disposition: sides().FRIENDLY, displayName: globalThis.CONST?.TOKEN_DISPLAY_MODES?.HOVER } });
+    system: { stats: b.stats, skillPoints: b.skillPoints, size, trees: { ...(bb?.free ?? {}), "mental-theory": 5, [wonder]: 5 }, freeTrees: { ...(bb?.free ?? {}), "mental-theory": 5, [wonder]: 5 },
+      hp: { value: d.hpMax, lost: 0 }, energy: { value: d.energyMax }, ...(bb ? { abc: { ancestry: bb.ancestry, background: "omen" } } : {}) },
+    prototypeToken: { name: `${w.name} Omen`, actorLink: true, disposition: sides().FRIENDLY, displayName: globalThis.CONST?.TOKEN_DISPLAY_MODES?.HOVER, ...tokenSize(size) },
+    flags: { flowstate: { ...(bb ? { patron: wonder } : {}), omen: { owner: u.uuid, wonder, form, depth, flip: !!flip, bound: !!conc, hostile: false, battle: null, conc: conc ?? null, own: 0, opp: 0, base: b.base, full: !!full, unbound: false, rend: rendId ?? null },
+      alignment: { kind: w.kind, level: depth } } } });
   const icon = itemData(`icon.${form}`, { system: { natural: true, attuned: true, tenet: w.tenet?.id ?? "" } });
   if (icon) await actor.createEmbeddedDocuments("Item", [icon], { flowstateAuto: true });
   const scene = sceneId ? globalThis.game.scenes?.get(sceneId) : null;

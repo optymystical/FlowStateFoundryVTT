@@ -17,7 +17,7 @@ import { renderMarkdown, inline, escapeHtml, plainText } from "./codex-md.mjs";
 import { RULE_DOCS } from "./rules-text.mjs";
 import { TREES } from "./trees.mjs";
 import { ARCHETYPES, coreFor, requiredTier, treeById } from "./skills.mjs";
-import { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES, ABC_RULES, packageFor } from "./abc-rules.mjs";
+import { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES, ABC_RULES, BESTIARY_RULES, packageFor } from "./abc-rules.mjs";
 import { STATS, SIZES, DAMAGE_TYPES, OBJECT_DENSITY, STAIN_VARIANTS } from "./rules.mjs";
 import { RARITIES, WEAPON_TAGS, WEAPON_TYPES, WEIGHTS, THROW, RELOAD_RP, DAMAGE_CATEGORY, WEAPON_MATERIALS, ARMOR_WEIGHTS, ARMOR_MATERIALS } from "./martial.mjs";
 import { CASTING_FORMS, FOCI_TYPES, SHROUD_TYPES, AFFIXES } from "./magic.mjs";
@@ -68,7 +68,8 @@ export const STATUS_SOURCES = {
   psychedUp: { entry: "Psych Up" }, calmedDown: { entry: "Calm Down" }, limber: { entry: "Limber" }, carefulSteps: { entry: "Careful Steps" },
   berserk: { entry: "Berserk" }, seeingRed: { entry: "Seeing Red" }, unstoppable: { entry: "Unstoppable" }, properStance: { entry: "Proper Stance" },
   fishy: { entry: "Like Shooting Fish" }, sliced: { entry: "Slice" }, taunted: { entry: "Taunt" }, quickened: { entry: "Quicken" },
-  infected: { text: "Infected: a marker for an infection (a Bloomrot Omen's, for one). It lasts a day of world time, and any heat damage the creature takes clears it. How it spreads is up to the GM." }
+  infected: { text: "Infected: a marker for an infection (a Bloomrot Omen's, for one). It lasts a day of world time, and any heat damage the creature takes clears it. How it spreads is up to the GM." },
+  dormant: { text: "Dormant: a Bestiary creature that has spent itself (a Bloomrot's Sporing, a Burgeon's Seed). It leaves the fight and can't act; after a day of world time (or when the GM removes the status) it regrows, back at full HP." }
 };
 /** The stacking conditions on a character (not token statuses). */
 const CONDITIONS = { ignite: { name: "Ignite", rule: "ignite" }, stain: { name: "Stain", rule: "stain" }, slow: { name: "Slow", rule: "slow" }, haste: { name: "Haste", rule: "haste" } };
@@ -198,18 +199,26 @@ registerSection({ id: "abcs", label: "Ancestries", icon: "fa-solid fa-people-gro
   const rules = ABC_RULES?.tiers?.[0]?.entries ?? [];
   pages.push({ id: "abc:rules", title: "Ancestry, Background and Culture", section: "abcs", group: "Rules", badge: "Rules",
     blocks: [{ kind: "entries", label: "Tier 0 (free)", items: rules.map(e => ({ id: codexId.entry("ancestry-abc-rules", e.name), name: e.name, text: e.text, sub: e.sub ?? [] })) },
-      linksBlock("Ancestries", Object.values(ANCESTRIES).filter(x => !x.hidden).map(x => ({ id: `abc:ancestry:${x.id}`, label: x.name })))] });
+      linksBlock("Ancestries", Object.values(ANCESTRIES).filter(x => !x.hidden && !x.bestiary).map(x => ({ id: `abc:ancestry:${x.id}`, label: x.name })))] });
+  // Flow State - Bestiary: the world's creatures (Omens and Heralds of a Wonder...), for the GM's NPCs.
+  const brules = BESTIARY_RULES?.tiers?.[0]?.entries ?? [];
+  if (brules.length) pages.push({ id: "abc:bestiary", title: "Bestiary", section: "abcs", group: "Bestiary", badge: "Rules",
+    blocks: [{ kind: "entries", label: "Tier 0 (free)", items: brules.map(e => ({ id: codexId.entry("ancestry-bestiary-rules", e.name), name: e.name, text: e.text, sub: e.sub ?? [] })) },
+      linksBlock("Creatures", Object.values(ANCESTRIES).filter(x => !x.hidden && x.bestiary).map(x => ({ id: `abc:ancestry:${x.id}`, label: `${x.name}${x.coreName ? ` (${x.coreName})` : ""}` })))] });
   for (const a of Object.values(ANCESTRIES)) {
-    pages.push({ id: `abc:ancestry:${a.id}`, title: a.name, section: "abcs", group: "Ancestries", badge: "Ancestry", hidden: !!a.hidden, subtitle: `Size ${a.size}`,
+    const wonder = a.bestiary ? TREES.find(t => t.archetype === "mental" && t.name.replace(/\s*\((dream|nightmare)\)$/i, "") === (a.wonderName ?? a.name)) : null;
+    pages.push({ id: `abc:ancestry:${a.id}`, title: a.bestiary && a.coreName ? `${a.name} (${a.coreName})` : a.name, section: "abcs", group: a.bestiary ? "Bestiary" : "Ancestries",
+      badge: a.bestiary ? "Creature" : "Ancestry", hidden: !!a.hidden, subtitle: a.sizes ? Object.entries(a.sizes).map(([k, n]) => `${k[0].toUpperCase()}${k.slice(1)}: Size ${n}`).join(" · ") : `Size ${a.size}`,
       blocks: [fieldsBlock(a.profile.filter(p => !["Backgrounds", "Homelands"].includes(p.name)).map(p => [p.name, p.text])),
         linksBlock("Skill trees", a.trees.map(tree)),
+        wonder ? linksBlock("Its Wonder", [{ id: codexId.tree(wonder.id), label: wonder.name }]) : null,
         linksBlock("Backgrounds", (a.backgrounds ?? []).filter(b => BACKGROUNDS[b]).map(b => ({ id: `abc:background:${b}`, label: BACKGROUNDS[b].name }))),
-        linksBlock("Homelands", HOMELANDS.filter(h => h.ancestry === a.id).map(h => ({ id: `abc:homeland:${h.id}`, label: h.name })))] });
+        linksBlock("Homelands", HOMELANDS.filter(h => h.ancestry === a.id).map(h => ({ id: `abc:homeland:${h.id}`, label: h.name })))].filter(Boolean) });
   }
   for (const b of Object.values(BACKGROUNDS)) {
     const avail = b.available === "all" ? "Every Ancestry" : (b.available ?? []).map(x => ANCESTRIES[x]?.name ?? x).join(", ");
     const pkg = packageFor(b.id, null);
-    pages.push({ id: `abc:background:${b.id}`, title: b.name, section: "abcs", group: "Backgrounds", badge: "Background", hidden: !!b.hidden, subtitle: avail,
+    pages.push({ id: `abc:background:${b.id}`, title: b.name, section: "abcs", group: b.bestiary ? "Bestiary" : "Backgrounds", badge: b.bestiary ? "Bestiary Background" : "Background", hidden: !!b.hidden, subtitle: avail,
       blocks: [fieldsBlock(Object.entries(b.text ?? {}).map(([k, v]) => [k, v])),
         pkg?.items?.length ? linksBlock("Starting trees", pkg.items.filter(i => i.tree).map(i => ({ ...tree(treeByNameSafe(i.tree)), note: `Tier ${i.tier}` }))) : null,
         linksBlock("Circles", CIRCLES.filter(c => c.background === b.id).map(c => ({ id: `abc:circle:${c.id}`, label: c.name })))].filter(Boolean) });

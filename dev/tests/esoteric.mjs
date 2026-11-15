@@ -133,7 +133,7 @@ const death = await Actor.create({ name: "Death Omen", type: "npc", system: { st
 ok2(E.poleStacks(omen, {}, [death]) === 1 && E.poleStacks(death, {}, [omen]) === 1, "Attacks between it and an Omen of its paired Wonder are Strengthened, both ways");
 ok2(E.poleStacks(orc, { mental: { mode: `${DEATH}:wither`, wonder: DEATH } }, [omen]) === 1 && E.poleStacks(orc, { mental: { mode: `${LIFE}:bloom`, wonder: LIFE } }, [omen]) === 0, "…and a Manifest of its paired Wonder at it (its own Wonder isn't)");
 ok2(E.poleStacks(omen, {}, [orc]) === 0, "Anyone else: no change");
-const o2 = E.attackStart(orc, { stacks: 0, notes: [], mental: { mode: `${DEATH}:wither`, wonder: DEATH } }, [omen]);
+const o2 = await E.attackStart(orc, { stacks: 0, notes: [], mental: { mode: `${DEATH}:wither`, wonder: DEATH } }, [omen]);
 ok2(o2.stacks === 1 && o2.notes.some(x => /Pole-Bound/.test(x)), "The attack gets the stack and a note");
 await death.delete();
 

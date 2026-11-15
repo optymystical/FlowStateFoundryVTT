@@ -49,6 +49,12 @@
       <div class="fs-cond"><label>Hearing</label><select name="system.senses.hearing" {{#unless editable}}disabled{{/unless}}>{{selectOptions senseChoices selected=system.senses.hearing}}</select></div>
       <div class="fs-cond"><label>Smell</label><select name="system.senses.smell" {{#unless editable}}disabled{{/unless}}>{{selectOptions senseChoices selected=system.senses.smell}}</select></div>
     </section>
+
+    <section class="fs-poles">
+      <h3>Poles <a class="fs-codex-link fs-codex-icon" data-codex="tree:ancestry-wonderborn" data-tooltip="Serving a pole (the Bestiary's Wonderborn)"><i class="fa-solid fa-book-open"></i></a></h3>
+      {{#if poles.auto}}<p class="hint">Serves {{poles.auto}} (its own Wonder or its Patron).</p>{{/if}}
+      <div class="fs-cond" data-tooltip="Whether it serves a Wonder's pole, as the Wonderborn see it (the GM's call)"><label>Serves</label><select name="flags.flowstate.servesPole" {{#unless isGM}}disabled{{/unless}}>{{selectOptions poles.choices selected=poles.marked}}</select></div>
+    </section>
   </div>
 
   {{#if shieldRows.length}}

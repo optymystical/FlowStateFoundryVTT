@@ -156,6 +156,10 @@ if len(sys.argv) > 6:
     # Flow State - ABCs: the Ancestry trees (build_abcs.py also writes module/abcs.mjs from the same doc).
     from build_abcs import parse_trees_and_data
     out += parse_trees_and_data(open(sys.argv[6], encoding='utf-8').read())[0]
+if len(sys.argv) > 7:
+    # Flow State - Bestiary: the creature Ancestries' trees (build_abcs.py adds their Ancestries and Backgrounds to module/abcs.mjs).
+    from build_bestiary import parse_bestiary
+    out += parse_bestiary(open(sys.argv[7], encoding='utf-8').read())[0]
 js = "// Generated from the Martial and Magic Stage 1 docs, the Mental Stage 1 doc and the Generic Groups doc by tools/build_trees.py. Don't edit by hand; re-run the converter.\n"
 js += "export const TREES = " + json.dumps(out, indent=1, ensure_ascii=False) + ";\n"
 open(sys.argv[4], 'w', encoding='utf-8', newline='\n').write(js)

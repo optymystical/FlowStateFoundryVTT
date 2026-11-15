@@ -34,6 +34,7 @@ import * as surprise from "./surprise.mjs";
 import * as consumables from "./consumables.mjs";
 import * as ancestry from "./ancestry.mjs";
 import * as environment from "./environment.mjs";
+import * as tutorial from "./tutorial.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
 import { notCreature } from "./kinds.mjs";
 import { DialogV2 } from "./html.mjs";
@@ -306,6 +307,7 @@ Hooks.once("init", () => {
   consumables.register();
   actions.registerAncestry(ancestry.hooks);
   environment.register();
+  tutorial.register();
   surprise.registerSurpriseHooks();
   registerShopSettings();
   game.flowstate = { rules, martial, actions, catalog: CatalogApp };
@@ -986,7 +988,7 @@ Hooks.on("renderActorDirectory", (app, html) => {
   btn.type = "button";
   btn.className = "fs-new-character";
   btn.innerHTML = `<i class="fa-solid fa-user-plus"></i> New Character`;
-  btn.addEventListener("click", () => CharacterWizard.open());
+  btn.addEventListener("click", () => tutorial.openNewCharacter());          // asks about the tutorial first (tutorial.mjs)
   const header = root.querySelector(".header-actions") ?? root.querySelector(".directory-header") ?? root;
   header.prepend(btn);
   // The NPC wizard is GM-only: the button isn't even added for anyone else.

@@ -27,7 +27,7 @@ const STEPS = [
 const blankAbc = () => ({ ancestry: "", background: "", focus: "", picks: {}, alloc: {}, homeland: "", circle: "", element: "", element2: "" });
 
 /** World creation rules from settings. */
-function creationRules() {
+export function creationRules() {
   return {
     statPoints: game.settings.get("flowstate", "startingStatPoints"),
     items: game.settings.get("flowstate", "startingItems"),
@@ -59,6 +59,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       treeToggle: CharacterWizard.onTreeToggle,
       pickAncestry: CharacterWizard.onPickAncestry,
       pickBackground: CharacterWizard.onPickBackground,
+      clearCulture: CharacterWizard.onClearCulture,
       allocUp: CharacterWizard.onAllocUp,
       allocDown: CharacterWizard.onAllocDown,
       finish: CharacterWizard.onFinish
@@ -244,7 +245,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const treeName = id => skills.treeById(id)?.name ?? id;
     const ancestries = Object.values(abcRules.ANCESTRIES).filter(a => !a.hidden).map(a => {
       const chips = skills.ancestryTrees(a.id).map(t => chip(`anc-${a.id}`, t.id)).filter(Boolean);
-      return { id: a.id, name: a.name, size: a.size, selected: a.id === abc.ancestry, lifespan: a.lifespan, languages: a.languages,
+      return { id: a.id, name: a.name, size: a.size, selected: a.id === abc.ancestry, hidden: !!abc.ancestry && a.id !== abc.ancestry, lifespan: a.lifespan, languages: a.languages,
         profile: a.profile.filter(p => !["Size", "Languages", "Lifespan", "Backgrounds", "Homelands", "Homeland"].includes(p.name)),
         trees: a.trees.map(treeName).join(", "), chips, openTree: opened(chips) };
     });
@@ -257,7 +258,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       const p = abcRules.packageFor(b.id, abc.ancestry), scope = `bg-${b.id}`;
       const groups = itemChips(scope, p?.items ?? []);
       const focuses = (p?.options ?? []).map(o => ({ name: o.name, groups: itemChips(scope, o.trees ?? []) }));
-      return { id: b.id, name: b.name, selected: b.id === abc.background,
+      return { id: b.id, name: b.name, selected: b.id === abc.background, hidden: !!abc.background && b.id !== abc.background,
         trees: b.text?.["Starting Trees"] ?? "", trade: b.text?.["Trade Slot"] ?? "",
         differences: (b.differences ?? []).filter(d => d.ancestry === abc.ancestry).map(d => d.text).join(" "),
         groups, focuses, openTree: opened([...groups, ...focuses.flatMap(f => f.groups)].map(g => g.chips)) };
@@ -271,8 +272,8 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         canRaise: open && next <= skills.MAX_TIER && (free.allocCost ?? 0) + next <= free.owed, canLower: tier > 0,
         need: open ? "" : `needs ${skills.requirementText(t, ctx)}`, open: st.openTree === key, tiers: st.openTree === key ? tierList(t, tier, 0) : [] };
     }) : [];
-    const homelands = anc ? abcRules.homelandsFor(abc.ancestry).map(h => ({ ...h, selected: h.id === abc.homeland, shared: !h.ancestry })) : [];
-    const circles = pkg ? abcRules.circlesFor(abc.background).map(c => ({ ...c, selected: c.id === abc.circle, shared: !c.background })) : [];
+    const homelands = anc ? abcRules.homelandsFor(abc.ancestry).map(h => ({ ...h, selected: h.id === abc.homeland, hidden: !!abc.homeland && h.id !== abc.homeland, shared: !h.ancestry })) : [];
+    const circles = pkg ? abcRules.circlesFor(abc.background).map(c => ({ ...c, selected: c.id === abc.circle, hidden: !!abc.circle && c.id !== abc.circle, shared: !c.background })) : [];
     const freeList = Object.entries(freeTrees).map(([id, t]) => `${treeName(id)} ${t}`);
 
     // Skill trees: spend the starting Skill Points (Theory first; it opens that Archetype's other trees). The Background's tiers are free.
@@ -304,7 +305,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
     return {
       steps: steps.map((s, i) => ({ ...s, index: i, num: i + 1, active: i === st.step, done: i < st.step })),
-      step, isFirst: st.step === 0, isLast: st.step === steps.length - 1, editing: !!this.editActor,
+      step, isFirst: st.step === 0, isLast: st.step === steps.length - 1, editing: !!this.editActor, backDisabled: st.step === 0, suggest: {}, tutorial: null,
       [`is_${step}`]: true,
       rules, rarityLabel: RARITIES[rules.maxRarity],
       purse: getCurrencies().filter(c => rules.currency?.[c.id] > 0).map(c => `${rules.currency[c.id]} ${c.name}`).join(", "),
@@ -403,19 +404,24 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   /** Pick an Ancestry (a new one clears the Background and Culture picked for the old one). */
   static onPickAncestry(event, target) {
     const st = this.state, id = target.dataset.id;
-    if (!abcRules.ANCESTRIES[id] || st.abc.ancestry === id) return;
-    st.abc = { ...blankAbc(), ancestry: id };
+    if (!abcRules.ANCESTRIES[id]) return;
+    // Picking your Ancestry again unpicks it: the full list shows again (and what hung on it is cleared).
+    st.abc = st.abc.ancestry === id ? blankAbc() : { ...blankAbc(), ancestry: id };
     st.freeTrees = {}; st.trees = {}; st.skillArch = "ancestry";
     this.render();
   }
   /** Pick a Background (its choices start empty; the trees bought for the old one are cleared). */
   static onPickBackground(event, target) {
-    const st = this.state, id = target.dataset.id;
-    if (st.abc.background === id) return;
+    const st = this.state, id = st.abc.background === target.dataset.id ? "" : target.dataset.id;          // again: unpick it (the list shows again)
     Object.assign(st.abc, { background: id, focus: "", picks: {}, alloc: {}, circle: "" });
     st.freeTrees = {}; st.trees = {};
     this.syncFree();
     this.render();
+  }
+  /** Unpick the Homeland or the Circle (its full list shows again). */
+  static onClearCulture(event, target) {
+    const part = target.dataset.part;
+    if (part === "homeland" || part === "circle") { this.state.abc[part] = ""; this.render(); }
   }
   /** The Outsider's points (or a Background's leftovers) on the Ancestry's own trees. */
   static onAllocUp(event, target) {

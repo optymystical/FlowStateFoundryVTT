@@ -2,6 +2,11 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.94.0:** The character tutorial (part 1: character creation).
+- **New Character asks** whether you'd like the tutorial. No (with "Ask me again next time" unticked, the default) stops asking you; your own setting brings it back, and the GM's world setting turns the offer off for everyone.
+- **The tutorial** is the same wizard, railroaded: popups over it explain every step in plain language (Ancestry, Background and its choices, Culture, each stat and the three Archetypes, skill trees, equipment, notes), a bar says what to do next, Next is refused until a step is done and then locks it in, and there's no going back. It suggests one Archetype (the one your Background gives, else where your stats went), opens the skill list on it, and marks the equipment that fits your stats and trees with ★. Finishing offers the character sheet tutorial (coming next).
+- **The wizard:** picking an Ancestry, Background, Homeland or Circle hides the other cards; picking it again (or Change) shows the list again.
+
 **0.93.0:** The wizard's Equipment step: each piece shows its numbers as a grid (damage, AP, scaling, range, Durability, Limit, speed, stealth, casting form and cost, Free Affixes, Ward...), its rarity, Codex links for its type and material, and what its material, type, Form or Affix does (an Affix shows both forms, the attuned one marked). The add buttons are a wrapping grid (Weapon, Armor, Foci, Shroud, Icon, Affix, Named item) instead of a squashed row.
 
 **0.92.0:** The New Character wizard shows every tree before you pick: on the Ancestry and Background steps each tree a card names (Ancestry trees, Generic Groups, Martial/Magic/Mental, "one of" choices and focus trees) is a chip that opens its tiers under the card, like the Skill Trees step (the tiers you'd get are highlighted). The Background's Ancestry-point rows open the same way.

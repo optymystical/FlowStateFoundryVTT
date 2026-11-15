@@ -11,30 +11,33 @@
   <div class="fs-chip-tree-head"><strong>{{openTree.name}}</strong>{{#if openTree.tier}} <span class="fs-tier-badge">Tier {{openTree.tier}} from this</span>{{/if}} <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{openTree.id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a></div>
   {{#with openTree}}{{> fsTreeTiers}}{{/with}}
 </div>{{/if}}{{/inline}}
-<div class="fs-wizard-wrap">
+<div class="fs-wizard-wrap {{#if tutorial}}fs-tutorial-mode{{/if}}">
   <nav class="fs-wizard-steps">
     {{#each steps}}
-    <a class="fs-wizard-step {{#if active}}active{{/if}} {{#if done}}done{{/if}}" data-action="goto" data-step="{{index}}">
+    <a class="fs-wizard-step {{#if active}}active{{/if}} {{#if done}}done{{/if}}" data-action="goto" data-step="{{index}}"{{#if ../tutorial}} data-tooltip="{{#if done}}Locked in{{else}}Coming up{{/if}}"{{/if}}>
       <span class="fs-step-num">{{#if done}}<i class="fa-solid fa-check"></i>{{else}}{{num}}{{/if}}</span> {{label}}
     </a>
     {{/each}}
   </nav>
 
   <div class="fs-wizard-body">
+    {{#if tutorial}}<div class="fs-tut-banner"><i class="fa-solid fa-graduation-cap"></i> <span>{{tutorial.banner}}</span>
+      <button type="button" class="fs-tut-again" data-action="tutorialAgain" data-tooltip="Show this step's explanation again"><i class="fa-solid fa-circle-question"></i></button></div>{{/if}}
     {{#if is_ancestry}}
     <h2>Ancestry</h2>
-    <p class="hint">The people you are born to. It sets your Size and opens your Ancestry's skill trees (its core tree's Tier 0 is free). Then you pick a Background from its list.</p>
+    <p class="hint">The people you are born to. It sets your Size and opens your Ancestry's skill trees (its core tree's Tier 0 is free). Then you pick a Background from its list.{{#if anc}} Click your pick again to see the whole list.{{/if}}</p>
     <div class="fs-abc-list">
-      {{#each ancestries}}
+      {{#each ancestries}}{{#unless hidden}}
       <div class="fs-abc-card {{#if selected}}fs-picked{{/if}}">
-        <header><button type="button" class="fs-abc-pick" data-action="pickAncestry" data-id="{{id}}">{{#if selected}}<i class="fa-solid fa-circle-check"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}} {{name}}</button>
+        <header><button type="button" class="fs-abc-pick" data-action="pickAncestry" data-id="{{id}}" data-tooltip="{{#if selected}}Unpick it (shows every Ancestry again){{else}}Pick {{name}}{{/if}}">{{#if selected}}<i class="fa-solid fa-circle-check"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}} {{name}}</button>
+          {{#if selected}}<button type="button" class="fs-abc-change" data-action="pickAncestry" data-id="{{id}}"><i class="fa-solid fa-rotate-left"></i> Change</button>{{/if}}
           <span class="fs-sub">Size {{size}} · {{lifespan}}</span></header>
         <div class="fs-sub">{{#each profile}}<p><strong>{{name}}:</strong> {{text}}</p>{{/each}}</div>
         <div class="fs-sub"><strong>Languages:</strong> {{languages}}</div>
         <div class="fs-tree-chips"><strong>Trees:</strong> {{#each chips}}{{> fsTreeChip}}{{/each}}</div>
         {{> fsOpenTree}}
       </div>
-      {{/each}}
+      {{/unless}}{{/each}}
     </div>
     {{#if glandChoices}}
     <div class="fs-field"><label>Elemental Gland</label><select name="abc.element"><option value="">— Pick an element —</option>{{#each glandChoices}}<option value="{{k}}" {{#if selected}}selected{{/if}}>{{v}}</option>{{/each}}</select></div>
@@ -46,15 +49,16 @@
     {{#unless anc}}<p class="hint">Pick an Ancestry first.</p>{{else}}
     <p class="hint">How you were raised and what you did before the story began. It gives <strong>15 free points</strong> of starting skill trees: they unlock the trees and count toward requirements, but not toward your Skill Points (dice, the Stat Bonus, Energy).</p>
     <div class="fs-abc-list">
-      {{#each backgrounds}}
+      {{#each backgrounds}}{{#unless hidden}}
       <div class="fs-abc-card {{#if selected}}fs-picked{{/if}}">
-        <header><button type="button" class="fs-abc-pick" data-action="pickBackground" data-id="{{id}}">{{#if selected}}<i class="fa-solid fa-circle-check"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}} {{name}}</button></header>
+        <header><button type="button" class="fs-abc-pick" data-action="pickBackground" data-id="{{id}}" data-tooltip="{{#if selected}}Unpick it (shows every Background again){{else}}Pick {{name}}{{/if}}">{{#if selected}}<i class="fa-solid fa-circle-check"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}} {{name}}</button>
+          {{#if selected}}<button type="button" class="fs-abc-change" data-action="pickBackground" data-id="{{id}}"><i class="fa-solid fa-rotate-left"></i> Change</button>{{/if}}</header>
         <div class="fs-sub">{{trees}}{{#if trade}} <em>Trade slot: {{trade}}</em>{{/if}}{{#if differences}} <strong>For you:</strong> {{differences}}{{/if}}</div>
         <div class="fs-tree-chips">{{#each groups}}{{#if choice}}<span class="fs-chip-choice">one of (T{{tier}}): {{#each chips}}{{> fsTreeChip}}{{/each}}</span>{{else}}{{#each chips}}{{> fsTreeChip}}{{/each}}{{/if}}{{/each}}</div>
         {{#each focuses}}<div class="fs-tree-chips"><strong>{{name}}:</strong> {{#each groups}}{{#if choice}}<span class="fs-chip-choice">one of (T{{tier}}): {{#each chips}}{{> fsTreeChip}}{{/each}}</span>{{else}}{{#each chips}}{{> fsTreeChip}}{{/each}}{{/if}}{{/each}}</div>{{/each}}
         {{> fsOpenTree}}
       </div>
-      {{/each}}
+      {{/unless}}{{/each}}
     </div>
     {{#if pkg}}
     <h3>{{pkg.name}}: your choices</h3>
@@ -89,17 +93,17 @@
     <p class="hint">Purely roleplay: your Homeland is the people and place you come from, your Circle the group you came up in through your Background. They set your values, customs and ties, with no game effect.</p>
     <h3>Homeland</h3>
     <div class="fs-abc-list">
-      {{#each homelands}}
+      {{#each homelands}}{{#unless hidden}}
       <label class="fs-abc-card fs-abc-radio {{#if selected}}fs-picked{{/if}}"><input type="radio" name="abc.homeland" value="{{id}}" {{#if selected}}checked{{/if}}>
-        <strong>{{name}}</strong>{{#if shared}} <span class="fs-sub">(Shared)</span>{{/if}}<span class="fs-sub">{{text}}</span></label>
-      {{/each}}
+        <strong>{{name}}</strong>{{#if shared}} <span class="fs-sub">(Shared)</span>{{/if}}{{#if selected}} <button type="button" class="fs-abc-change" data-action="clearCulture" data-part="homeland"><i class="fa-solid fa-rotate-left"></i> Change</button>{{/if}}<span class="fs-sub">{{text}}</span></label>
+      {{/unless}}{{/each}}
     </div>
     <h3>Circle</h3>
     <div class="fs-abc-list">
-      {{#each circles}}
+      {{#each circles}}{{#unless hidden}}
       <label class="fs-abc-card fs-abc-radio {{#if selected}}fs-picked{{/if}}"><input type="radio" name="abc.circle" value="{{id}}" {{#if selected}}checked{{/if}}>
-        <strong>{{name}}</strong>{{#if shared}} <span class="fs-sub">(Shared)</span>{{/if}}<span class="fs-sub">{{text}}</span></label>
-      {{/each}}
+        <strong>{{name}}</strong>{{#if shared}} <span class="fs-sub">(Shared)</span>{{/if}}{{#if selected}} <button type="button" class="fs-abc-change" data-action="clearCulture" data-part="circle"><i class="fa-solid fa-rotate-left"></i> Change</button>{{/if}}<span class="fs-sub">{{text}}</span></label>
+      {{/unless}}{{/each}}
     </div>
     {{/unless}}
     {{/if}}
@@ -221,12 +225,12 @@
     <div class="fs-wizard-add">
       <span class="fs-wizard-add-label">Add{{#unless slotsLeft}} <span class="hint">(no picks left)</span>{{/unless}}</span>
       <div class="fs-wizard-add-buttons">
-        <button type="button" data-action="addItem" data-kind="weapon" data-tooltip="Martial: a weapon (type, weight, material)" {{#unless canAddWeapon}}disabled{{/unless}}><i class="fa-solid fa-khanda"></i> Weapon</button>
-        <button type="button" data-action="addItem" data-kind="armor" data-tooltip="Martial: armor (at most one)" {{#unless canAddArmor}}disabled{{/unless}}><i class="fa-solid fa-shirt"></i> Armor</button>
-        <button type="button" data-action="addItem" data-kind="foci" data-tooltip="Magic: the item you cast spells through" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-wand-sparkles"></i> Foci</button>
-        <button type="button" data-action="addItem" data-kind="shroud" data-tooltip="Magic: a protective layer that soaks damage before armor" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-ghost"></i> Shroud</button>
-        <button type="button" data-action="addItem" data-kind="icon" data-tooltip="Mental: a Form with a Ward effect" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-hands-praying"></i> Icon</button>
-        <button type="button" data-action="addItem" data-kind="affix" data-tooltip="Magic: a gem attuned on its own, to its Offensive or Defensive form" {{#unless canAddAffix}}disabled{{/unless}}><i class="fa-solid fa-gem"></i> Affix</button>
+        <button type="button" class="{{#if suggest.weapon}}fs-suggested{{/if}}" data-action="addItem" data-kind="weapon" data-tooltip="Martial: a weapon (type, weight, material)" {{#unless canAddWeapon}}disabled{{/unless}}><i class="fa-solid fa-khanda"></i> {{#if suggest.weapon}}★ {{/if}}Weapon</button>
+        <button type="button" class="{{#if suggest.armor}}fs-suggested{{/if}}" data-action="addItem" data-kind="armor" data-tooltip="Martial: armor (at most one)" {{#unless canAddArmor}}disabled{{/unless}}><i class="fa-solid fa-shirt"></i> {{#if suggest.armor}}★ {{/if}}Armor</button>
+        <button type="button" class="{{#if suggest.foci}}fs-suggested{{/if}}" data-action="addItem" data-kind="foci" data-tooltip="Magic: the item you cast spells through" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-wand-sparkles"></i> {{#if suggest.foci}}★ {{/if}}Foci</button>
+        <button type="button" class="{{#if suggest.shroud}}fs-suggested{{/if}}" data-action="addItem" data-kind="shroud" data-tooltip="Magic: a protective layer that soaks damage before armor" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-ghost"></i> {{#if suggest.shroud}}★ {{/if}}Shroud</button>
+        <button type="button" class="{{#if suggest.icon}}fs-suggested{{/if}}" data-action="addItem" data-kind="icon" data-tooltip="Mental: a Form with a Ward effect" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-hands-praying"></i> {{#if suggest.icon}}★ {{/if}}Icon</button>
+        <button type="button" class="{{#if suggest.affix}}fs-suggested{{/if}}" data-action="addItem" data-kind="affix" data-tooltip="Magic: a gem attuned on its own, to its Offensive or Defensive form" {{#unless canAddAffix}}disabled{{/unless}}><i class="fa-solid fa-gem"></i> {{#if suggest.affix}}★ {{/if}}Affix</button>
         {{#if canAddNamed}}<button type="button" data-action="addItem" data-kind="named" data-tooltip="One of the GM's named items from the catalog"><i class="fa-solid fa-star"></i> Named item</button>{{/if}}
       </div>
     </div>
@@ -273,7 +277,7 @@
   </div>
 
   <footer class="fs-wizard-footer">
-    <button type="button" data-action="back" {{#if isFirst}}disabled{{/if}}><i class="fa-solid fa-arrow-left"></i> Back</button>
+    <button type="button" data-action="back" {{#if backDisabled}}disabled{{/if}}{{#if tutorial}} data-tooltip="The tutorial only goes forward"{{/if}}><i class="fa-solid fa-arrow-left"></i> Back</button>
     {{#if isLast}}
     <button type="button" class="fs-primary" data-action="finish" {{#unless ready}}disabled{{/unless}}><i class="fa-solid fa-check"></i> {{#if editing}}Apply{{else}}Create character{{/if}}</button>
     {{else}}

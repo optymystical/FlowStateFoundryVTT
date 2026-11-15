@@ -1,5 +1,5 @@
 import {
-  STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS, downwardProne, heightFt } from "./rules.mjs";
+  STATS, DAMAGE_TYPES, poolFormula, applyStacks, stackMultiplier, resolveAttack, resolveFullStealth, objectCrit, resolveForce, pushForce, forceDamage, statMin, addStacks, tickAmounts, stainTotal, STAIN_VARIANTS, downwardProne, heightFt, setRollTotal } from "./rules.mjs";
 import { THROW, WEAPON_TYPES, WEAPON_MATERIALS, weaponProfile, effectiveLimit, damageCategories, limitFactor, DAMAGE_CATEGORY } from "./martial.mjs";
 import { AFFIXES, shroudBlocks, affixMultOf, emeraldLimit } from "./magic.mjs";
 import * as skills from "./skills.mjs";
@@ -1947,7 +1947,7 @@ async function startExchange(actor, opts, targets) {
     if (!shared && index === 0 && mentalHook?.attackRolled) {
       const jr = await mentalHook.attackRolled(actor, { total: atk.total, die: atkDie });
       if (jr?.lines?.length) chargeNotes.push(...jr.lines);
-      if (jr && jr.total !== atk.total) atk.total = jr.total;
+      if (jr && jr.total !== atk.total) setRollTotal(atk, jr.total);
     }
     if (opts.spell?.singleRoll || opts.singleRoll) { sharedRoll = atk; if (shared) spellNotes.push("Area: the single attack roll above"); }
     entries.push({ uuid: target.uuid, name: target.name, total: atk.total, net: atkNet, die: atkDie, snipe: opts.snipe ? Math.max(0, atkNet) : 0,

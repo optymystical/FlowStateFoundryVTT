@@ -9,7 +9,7 @@ globalThis.foundry = {
   utils: { escapeHTML: s => s, deepClone: o => structuredClone(o), getProperty: (o,k)=>k.split(".").reduce((a,b)=>a?.[b],o) },
   applications: { api: { DialogV2: { prompt: async ({ content }) => content.includes('name="extra"') ? { extra: 1 } : { net: 0 } } } }
 };
-globalThis.Roll = class { constructor(f){ this.formula=f; } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
+globalThis.Roll = class { get total() { return this._total; } constructor(f){ this.formula=f; } async evaluate(){ this._total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
 globalThis.ChatMessage = { getSpeaker: ({actor}) => ({ alias: actor.name }),
   create: async d => { const m = { id: "m"+messages.length, ...d, getFlag: (s,k) => d.flags?.[s]?.[k] }; messages.push(m); return m; } };
 let autoDmg = false;

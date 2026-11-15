@@ -24,7 +24,7 @@ function mkActor(name, extra={}, trees={}) {
 const text = m => m.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 globalThis.CONFIG = {};
 let fails = 0; const ok2 = (c, m) => { console.log(`  ${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
-globalThis.Roll = class { constructor(f){ this.formula=f; } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
+globalThis.Roll = class { get total() { return this._total; } constructor(f){ this.formula=f; } async evaluate(){ this._total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
 
 // Active Effects on mock actors: created, updated and deleted like Foundry's, re-deriving the actor each time.
 function addEffects(a) {

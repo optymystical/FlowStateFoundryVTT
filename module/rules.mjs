@@ -115,6 +115,13 @@ export function speedFt(base, penaltyPct = 0) {
  * Each stack adds one extra die; keep the best (adv) or worst (dis) `keep` dice.
  * net > 0 = advantage stacks, net < 0 = disadvantage stacks.
  */
+/** Overwrite a roll's total (the dice stay as rolled; the card notes say what changed). A Foundry Roll's `total` is a getter, so a plain assignment throws. */
+export function setRollTotal(r, n) {
+  try { r._total = n; } catch (err) { /* read-only */ }
+  if (r.total !== n) Object.defineProperty(r, "total", { value: n, configurable: true });
+  return r;
+}
+
 export function poolFormula(keep, size, net = 0) {
   const extra = Math.abs(Math.trunc(net));
   if (!extra) return `${keep}d${size}`;

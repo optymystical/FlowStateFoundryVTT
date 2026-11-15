@@ -4,7 +4,7 @@ const uuids = new Map();
 globalThis.foundry = { data: { fields: { NumberField: Field, StringField: Field, BooleanField: Field, HTMLField: Field, SchemaField: Field, ObjectField: Field } },
   abstract: { TypeDataModel: class {} }, utils: { escapeHTML: s => s, deepClone: o => structuredClone(o), getProperty: (o,k)=>k.split(".").reduce((a,b)=>a?.[b],o) },
   applications: { api: { DialogV2: { prompt: async () => null } } } };
-globalThis.Roll = class { constructor(f){ this.formula=f; } async evaluate(){ this.total = 10; return this; } async render(){ return ""; } };
+globalThis.Roll = class { get total() { return this._total; } constructor(f){ this.formula=f; } async evaluate(){ this._total = 10; return this; } async render(){ return ""; } };
 globalThis.ChatMessage = { getSpeaker: () => ({}), create: async d => d };
 globalThis.game = { settings: { get: () => false }, messages: [], combat: null, users: { activeGM: {} }, socket: { emit() {} }, user: { targets: new Set() }, actors: [] };
 globalThis.ui = { notifications: { warn() {}, info() {}, error() {} } };

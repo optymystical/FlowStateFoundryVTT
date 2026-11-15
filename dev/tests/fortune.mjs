@@ -25,7 +25,7 @@ const text = m => m.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()
 globalThis.CONFIG = {};
 let fails = 0; const ok2 = (c, m) => { console.log(`  ${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
 const formulas = [];
-globalThis.Roll = class { constructor(f){ this.formula=f; formulas.push(f); } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
+globalThis.Roll = class { get total() { return this._total; } constructor(f){ this.formula=f; formulas.push(f); } async evaluate(){ this._total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
 function addEffects(a) {
   a.effects = [];
   a.effects.get = id => a.effects.find(e => e.id === id);

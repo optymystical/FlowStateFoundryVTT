@@ -36,7 +36,7 @@ const S = await import("../../module/spells.mjs");
 const C = await import("../../module/casting.mjs");
 const FX = await import("../../module/spellfx.mjs");
 const formulas = [];
-globalThis.Roll = class { constructor(f){ this.formula=f; formulas.push(f); } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
+globalThis.Roll = class { get total() { return this._total; } constructor(f){ this.formula=f; formulas.push(f); } async evaluate(){ this._total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
 
 function mkFoci(actor, id, sys) {
   const i = { id, name: id, type: "foci", uuid: `${actor.uuid}.Item.${id}`, parent: actor, actor, isOwner: true };
@@ -97,7 +97,7 @@ const Pp = R.wonderPower(hero.system.derived.effective.pon.value), Ps = R.wonder
 const place = async (mode, extra = {}) => { await hit(mode, extra); };
 const idOf = (html, name) => html.match(new RegExp(`name="${name}:([^"]+)"`))?.[1];
 const optId = html => html.match(/<option value="([^"]+)">(?:Decree|Fracture|Larceny)/)?.[1];
-const synth = (formula, total) => { const r = new Roll(formula); r.total = total; return r; };
+const synth = (formula, total) => { const r = new Roll(formula); r._total = total; return r; };
 
 console.log("== Decree and Mandate on a roll");
 reset();

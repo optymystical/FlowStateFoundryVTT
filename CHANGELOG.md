@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.98.7:** Sim-found fix: when a Ruin Jinx or Reversal changed an attack roll's number, the attack stopped with an error ("Cannot set property total"), since a Foundry roll's total can't be written directly. It now goes through the same helper the Order and Chaos charges use. The test rolls now behave like Foundry's, so this can't slip past the tests again.
+
 **0.98.6:** Sim-found fix: a creature with The Choking Green or Overgrowth (the Bestiary's ground auras) could get two aura regions, or log a "does not exist" error, when it moved twice in quick succession, since each move redrew the aura at the same time. The redraws now run one after another, and a duplicate left over from before is cleared.
 
 **0.98.5:** Sim-found fix: Reflex (Snappence Arts) was offered on every attack nearby even when the character couldn't pay for it (no Energy left, or no Wonder its stat can Manifest), and a "yes" then failed; it's now only offered when it can be paid for.

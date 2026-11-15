@@ -4,7 +4,7 @@ globalThis.foundry = { applications: { api: { DialogV2: { prompt: async ({ conte
   utils: { escapeHTML: s => s } };
 globalThis.game = { settings: { get: (s, k) => (k === "customAdvantage" ? custom : false) }, combat: null, user: { targets: new Set() } };
 const rolls = [];
-globalThis.Roll = class { constructor(f) { this.formula = f; } async evaluate() { this.total = 7; rolls.push(this.formula); return this; } async render() { return ""; } };
+globalThis.Roll = class { get total() { return this._total; } constructor(f) { this.formula = f; } async evaluate() { this._total = 7; rolls.push(this.formula); return this; } async render() { return ""; } };
 globalThis.ChatMessage = { getSpeaker: () => ({}), create: async d => d };
 const actions = await import("../../module/actions.mjs");
 const actor = { name: "A", uuid: "A", statuses: new Set(), system: { exhausted: false, derived: { dodgeDie: 15, attackDie: 30 } } };

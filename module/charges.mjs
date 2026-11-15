@@ -10,7 +10,7 @@
 import { askFor, showChoices } from "./ask.mjs";
 export { askFor, runOnOwner, showChoices, answeringUser, everyActor, actorsInPlay, listen, userLeft } from "./ask.mjs";
 import { post, spellEffects, changeEffect, setActorFlag, turnKey, performAttack } from "./actions.mjs";
-import { poolFormula } from "./rules.mjs";
+import { poolFormula, setRollTotal } from "./rules.mjs";
 import { bold } from "./mental-rules.mjs";
 import * as ab from "./abilities.mjs";
 import { tierOf } from "./skills.mjs";
@@ -32,12 +32,6 @@ const upDown = d => (d?.size === "down" ? -1 : 1);
 /*  Helpers                                     */
 /* -------------------------------------------- */
 
-/** Overwrite a roll's total (the dice stay as rolled; the card notes say what changed). */
-function setRollTotal(r, n) {
-  try { r._total = n; } catch (err) { /* read-only */ }
-  if (r.total !== n) Object.defineProperty(r, "total", { value: n, configurable: true });
-  return r;
-}
 
 /** Charges sitting on a creature: [{ effect, d, caster uuid }]. */
 const chargesOn = (actor, kinds = null) => spellEffects(actor, "charge")

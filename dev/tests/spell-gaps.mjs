@@ -8,7 +8,7 @@ globalThis.foundry = {
   utils: { escapeHTML: s => s, deepClone: o => structuredClone(o), getProperty: (o,k)=>k.split(".").reduce((a,b)=>a?.[b],o), setProperty: (o,k,v)=>{const p=k.split(".");let c=o;for(const x of p.slice(0,-1))c=c[x]??={};c[p.at(-1)]=v;} },
   applications: { api: { DialogV2: { prompt: async ({ content }) => dialog(content), confirm: async () => confirmAnswer } } }
 };
-globalThis.Roll = class { constructor(f){ this.formula=f; } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
+globalThis.Roll = class { get total() { return this._total; } constructor(f){ this.formula=f; } async evaluate(){ this._total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
 globalThis.ChatMessage = { getSpeaker: ({actor}) => ({ alias: actor.name }),
   create: async d => { const m = { id: "m"+messages.length, ...d, getFlag: (s,k) => m.flags?.[s]?.[k], setFlag: async (s,k,v) => { m.flags ??= {}; (m.flags[s] ??= {})[k] = v; }, update: async u => { for (const [k, v] of Object.entries(u)) foundry.utils.setProperty(m, k, v); } }; messages.push(m); return m; } };
 const combat = { id: "C", started: true, round: 1, turn: 0, combatant: null, combatants: [] };
@@ -50,7 +50,7 @@ const S = await import("../../module/spells.mjs");
 const C = await import("../../module/casting.mjs");
 const FX = await import("../../module/spellfx.mjs");
 const formulas = [];
-globalThis.Roll = class { constructor(f){ this.formula=f; formulas.push(f); } async evaluate(){ this.total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
+globalThis.Roll = class { get total() { return this._total; } constructor(f){ this.formula=f; formulas.push(f); } async evaluate(){ this._total = seq.length ? seq.shift() : 10; return this; } async render(){ return `<roll ${this.formula}=${this.total}>`; } };
 
 function mkFoci(actor, id, sys) {
   const i = { id, name: id, type: "foci", uuid: `${actor.uuid}.Item.${id}`, parent: actor, actor, isOwner: true };

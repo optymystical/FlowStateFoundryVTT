@@ -14,7 +14,8 @@ export function installFoundry({ roll, dialog, confirm = () => true, wait = () =
   };
   globalThis.Roll = class {
     constructor(f) { this.formula = f; }
-    async evaluate() { this.total = roll(); return this; }
+    async evaluate() { this._total = roll(); return this; }
+    get total() { return this._total; }                      // as in Foundry: a getter, so code can't assign it (setRollTotal)
     async render() { return `<roll ${this.formula}=${this.total}>`; }
   };
   globalThis.ChatMessage = {

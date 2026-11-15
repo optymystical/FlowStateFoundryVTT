@@ -96,17 +96,19 @@ export function freeTreesFor(abc = {}) {
   const opt = pkg.options.find(o => o.name === abc.focus);
   const slots = Object.fromEntries(choiceSlots(pkg, abc.focus).map(s => [s.key, s]));
   const items = [...pkg.items.map((it, i) => [String(i), it]), ...(opt ? opt.trees.map((it, i) => [`focus:${opt.name}:${i}`, it]) : [])];
+  let unpicked = pkg.options.length && !opt;
   for (const [key, it] of items) {
     if (it.tree) { const t = treeByName(it.tree); if (t) put(trees, t.id, it.tier); else errors.push(`Unknown tree "${it.tree}".`); continue; }
     const slot = slots[key], pick = abc.picks?.[key], c = slot?.choices.find(x => x.id === pick);
-    if (!c) { errors.push(`${slot?.label ?? "A choice"} isn't picked yet.`); continue; }
+    if (!c) { errors.push(`${slot?.label ?? "A choice"} isn't picked yet.`); unpicked = true; continue; }
     put(trees, c.id, c.tier);
   }
-  // The Ancestry points: the Outsider's 15, or whatever a Background couldn't place, spent on the Ancestry's own trees.
+  // The Ancestry points: the Outsider's 15, or whatever a Background couldn't place, spent on the Ancestry's own trees. What it couldn't place is
+  // only known once every choice is made (an unpicked slot isn't "unplaced"); with nothing owed, Ancestry points don't count.
   const placed = spentPoints(trees);
-  const owed = pkg.ancestryPoints || Math.max(0, FREE_POINTS - placed);
+  const owed = pkg.ancestryPoints || (unpicked ? 0 : Math.max(0, FREE_POINTS - placed));
   const own = new Set(ancestryTrees(abc.ancestry).map(t => t.id));
-  const alloc = Object.fromEntries(Object.entries(abc.alloc ?? {}).filter(([id, t]) => own.has(id) && Number(t) > 0).map(([id, t]) => [id, Math.min(MAX_TIER, Math.floor(Number(t)))]));
+  const alloc = owed ? Object.fromEntries(Object.entries(abc.alloc ?? {}).filter(([id, t]) => own.has(id) && Number(t) > 0).map(([id, t]) => [id, Math.min(MAX_TIER, Math.floor(Number(t)))])) : {};
   const allocCost = Object.values(alloc).reduce((n, t) => n + cost(t), 0);
   if (owed && allocCost !== owed) errors.push(`Spend ${owed} points on your Ancestry's trees (${allocCost} so far).`);
   for (const [id, t] of Object.entries(alloc)) put(trees, id, t);

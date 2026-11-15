@@ -44,6 +44,13 @@ ok(fwNovice.trees["mental-theory"] === 3 && fwNovice.trees["mental-light-dream"]
 
 console.log("== Choices and the Outsider");
 ok(R.freeTreesFor({ ancestry: "human", background: "recruit", picks: {} }).errors.some(e => /isn't picked/.test(e)), "An unpicked choice is an error");
+{ // An unpicked slot isn't unplaced: no Ancestry points are owed until the picks are made, and points spent early don't count once none are owed.
+  const anc = S.ancestryTrees("dwarf")[0].id;
+  ok(R.freeTreesFor({ ancestry: "dwarf", background: "recruit", picks: {} }).owed === 0, "No Ancestry points owed while a Background's choices are unpicked");
+  const done = R.freeTreesFor({ ancestry: "dwarf", background: "recruit", picks: { 2: "martial-bladed-weapons", 4: "generic-endurance" }, alloc: { [anc]: 3 } });
+  ok(done.owed === 0 && !done.trees[anc] && !done.errors.length, "Picks that fill the 15 owe nothing, and early Ancestry points are dropped");
+  ok(R.freeTreesFor({ ancestry: "dwarf", background: "outsider", alloc: {} }).owed === 15, "The Outsider still owes its 15");
+}
 ok(R.freeTreesFor({ ancestry: "human", background: "explorer" }).errors.length === 0, "Explorer (no choices) is ready at once");
 ok(R.freeTreesFor({ ancestry: "dwarf", background: "explorer" }).errors.some(e => /can't take/.test(e)), "A Dwarf can't take the Human-only Explorer");
 const out = R.freeTreesFor({ ancestry: "human", background: "outsider", alloc: { "ancestry-wusonian": 3, "ancestry-commonkin": 2, "ancestry-human-tree": 3 } });

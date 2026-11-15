@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.94.1:** Live-test fix (New Character): a Background with choices no longer shows "spend 6 points on your Ancestry's trees" before its choices are picked (an unpicked choice isn't unplaced points), and Ancestry points spent before the picks no longer count as free trees once the picks fill the 15. The tutorial's choices popup no longer mentions those phantom points.
+
 **0.94.0:** The character tutorial (part 1: character creation).
 - **New Character asks** whether you'd like the tutorial. No (with "Ask me again next time" unticked, the default) stops asking you; your own setting brings it back, and the GM's world setting turns the offer off for everyone.
 - **The tutorial** is the same wizard, railroaded: popups over it explain every step in plain language (Ancestry, Background and its choices, Culture, each stat and the three Archetypes, skill trees, equipment, notes), a bar says what to do next, Next is refused until a step is done and then locks it in, and there's no going back. It suggests one Archetype (the one your Background gives, else where your stats went), opens the skill list on it, and marks the equipment that fits your stats and trees with ★. Finishing offers the character sheet tutorial (coming next).

@@ -179,9 +179,11 @@
     <p class="fs-budget">Pick up to <strong>{{rules.items}}</strong> items (<strong>{{slotsLeft}}</strong> left), {{rarityLabel}} or lower, Grade {{rules.grade}}. At most one armor. Each Affix is one pick (a gem attuned to its Offensive or Defensive form; each costs 20% speed past your Free Affixes). Unarmed comes free; each ranged weapon comes with 20 ammunition.</p>
     {{#each items}}
     <div class="fs-wizard-item">
-      <header>
-        <strong>{{name}}</strong>
-        <button type="button" class="fs-inline" data-action="removeItem" data-index="{{index}}" data-tooltip="Remove"><i class="fa-solid fa-xmark"></i></button>
+      <header class="fs-wizard-item-head">
+        <strong class="fs-wizard-item-name">{{name}}</strong>
+        {{#if rarity}}<span class="fs-rarity fs-rarity-{{rarity.key}}">{{rarity.label}}</span>{{/if}}
+        <span class="fs-wizard-item-links">{{#each links}}<a class="fs-codex-link" data-codex="{{codex}}" data-tooltip="Open {{label}} in the Codex"><i class="fa-solid fa-book-open"></i> {{label}}</a>{{/each}}</span>
+        <button type="button" class="fs-wizard-remove" data-action="removeItem" data-index="{{index}}" data-tooltip="Remove this item"><i class="fa-solid fa-xmark"></i></button>
       </header>
       <div class="fs-builder">
         {{#if namedSlot}}
@@ -207,21 +209,26 @@
         {{/if}}
         {{/if}}
       </div>
-      <div class="fs-sub">{{summary}}</div>
+      {{#if facts.length}}<dl class="fs-wizard-facts">{{#each facts}}<div{{#if tip}} data-tooltip="{{tip}}"{{/if}}><dt>{{label}}</dt><dd>{{value}}</dd></div>{{/each}}</dl>
+      {{else}}<div class="fs-sub">{{summary}}</div>{{/if}}
       {{#if tags.length}}<div class="fs-tags">{{#each tags}}<span class="fs-tag" data-tooltip="{{tooltip}}" data-codex="tag:{{key}}">{{label}}</span>{{/each}}</div>{{/if}}
+      {{#each notes}}<p class="fs-wizard-note {{#if on}}fs-on{{/if}}"><strong>{{label}}:</strong> {{text}}</p>{{/each}}
       {{#if effect}}<div class="fs-sub fs-wizard-effect">{{effect}}</div>{{/if}}
     </div>
     {{else}}
     <p class="hint">No items picked yet.</p>
     {{/each}}
-    <div class="fs-inline-row">
-      <button type="button" data-action="addItem" data-kind="weapon" {{#unless canAddWeapon}}disabled{{/unless}}><i class="fa-solid fa-khanda"></i> Add weapon</button>
-      <button type="button" data-action="addItem" data-kind="armor" {{#unless canAddArmor}}disabled{{/unless}}><i class="fa-solid fa-shirt"></i> Add armor</button>
-      <button type="button" data-action="addItem" data-kind="foci" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-wand-sparkles"></i> Add Foci</button>
-      <button type="button" data-action="addItem" data-kind="shroud" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-ghost"></i> Add Shroud</button>
-      <button type="button" data-action="addItem" data-kind="icon" {{#unless canAddMagic}}disabled{{/unless}} data-tooltip="A Mental user's equipment: a Form with a Ward effect"><i class="fa-solid fa-hands-praying"></i> Add Icon</button>
-      {{#if canAddNamed}}<button type="button" data-action="addItem" data-kind="named" data-tooltip="One of the GM's named items from the catalog"><i class="fa-solid fa-star"></i> Add named item</button>{{/if}}
-      <button type="button" data-action="addItem" data-kind="affix" {{#unless canAddAffix}}disabled{{/unless}} data-tooltip="A gem attuned on its own, to its Offensive or Defensive form"><i class="fa-solid fa-gem"></i> Add Affix</button>
+    <div class="fs-wizard-add">
+      <span class="fs-wizard-add-label">Add{{#unless slotsLeft}} <span class="hint">(no picks left)</span>{{/unless}}</span>
+      <div class="fs-wizard-add-buttons">
+        <button type="button" data-action="addItem" data-kind="weapon" data-tooltip="Martial: a weapon (type, weight, material)" {{#unless canAddWeapon}}disabled{{/unless}}><i class="fa-solid fa-khanda"></i> Weapon</button>
+        <button type="button" data-action="addItem" data-kind="armor" data-tooltip="Martial: armor (at most one)" {{#unless canAddArmor}}disabled{{/unless}}><i class="fa-solid fa-shirt"></i> Armor</button>
+        <button type="button" data-action="addItem" data-kind="foci" data-tooltip="Magic: the item you cast spells through" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-wand-sparkles"></i> Foci</button>
+        <button type="button" data-action="addItem" data-kind="shroud" data-tooltip="Magic: a protective layer that soaks damage before armor" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-ghost"></i> Shroud</button>
+        <button type="button" data-action="addItem" data-kind="icon" data-tooltip="Mental: a Form with a Ward effect" {{#unless canAddMagic}}disabled{{/unless}}><i class="fa-solid fa-hands-praying"></i> Icon</button>
+        <button type="button" data-action="addItem" data-kind="affix" data-tooltip="Magic: a gem attuned on its own, to its Offensive or Defensive form" {{#unless canAddAffix}}disabled{{/unless}}><i class="fa-solid fa-gem"></i> Affix</button>
+        {{#if canAddNamed}}<button type="button" data-action="addItem" data-kind="named" data-tooltip="One of the GM's named items from the catalog"><i class="fa-solid fa-star"></i> Named item</button>{{/if}}
+      </div>
     </div>
     {{/if}}
 

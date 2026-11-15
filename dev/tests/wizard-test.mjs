@@ -75,6 +75,22 @@ change({ "items.0.type": "bladed", "items.0.weight": "heavy" });   // hardwood i
 v = await view(); log(v.ctx.items.map(i => `${i.name} [${i.summary}]`).join(" | "));
 log("materials offered for heavy weapons:", Object.values(v.ctx.items[0].materials).join(", "));
 log("can add another armor?", v.ctx.canAddArmor, "| slots left:", v.ctx.slotsLeft);
+// Each piece shows its numbers, rarity, Codex pages and what its material/type does.
+{ const [wpn, arm] = v.ctx.items, f = (it, l) => it.facts.find(x => x.label === l)?.value;
+  if (!f(wpn, "Damage (Physical)") || !f(wpn, "AP") || !f(wpn, "Durability") || !wpn.links.some(l => l.codex === "weaponType:bladed") || !wpn.rarity) throw new Error("FAIL the weapon's details");
+  if (!f(arm, "Limit") || !f(arm, "Speed") || !f(arm, "Stealth") || !arm.links.some(l => l.codex.startsWith("armorMaterial:"))) throw new Error("FAIL the armor's details");
+  log("weapon:", wpn.facts.map(x => `${x.label} ${x.value}`).join(", "), "|", wpn.rarity.label, "|", wpn.notes.map(n => n.label).join(", "));
+  const seen = [];
+  for (const k of ["foci", "shroud", "icon", "affix"]) {
+    CharacterWizard.onAddItem.call(w, null, { dataset: { kind: k } });
+    const v2 = await view(), it = v2.ctx.items[2];
+    if (!it?.facts.length || !it.links.length) throw new Error(`FAIL ${it?.name ?? k} has no details`);
+    if (k === "affix" && !/Offensive \(Foci\)/.test(v2.text)) throw new Error("FAIL the Affix doesn't show both forms");
+    seen.push(`${it.name} [${it.facts.map(x => x.label).join("/")}]`);
+    CharacterWizard.onRemoveItem.call(w, null, { dataset: { index: "2" } });
+  }
+  log("magic/mental:", seen.join(" | "));
+  v = await view(); }
 CharacterWizard.onNext.call(w);
 console.log("== Step 7: Notes"); change({ name: "Kara Voss", img: "", "details.age": "22", "details.backstory": "Ran away from the arms-works." });
 v = await view(); log("errors:", v.ctx.errors.length ? v.ctx.errors : "none", "| Create enabled:", v.ctx.ready);

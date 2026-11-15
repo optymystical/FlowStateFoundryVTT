@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.93.0:** The wizard's Equipment step: each piece shows its numbers as a grid (damage, AP, scaling, range, Durability, Limit, speed, stealth, casting form and cost, Free Affixes, Ward...), its rarity, Codex links for its type and material, and what its material, type, Form or Affix does (an Affix shows both forms, the attuned one marked). The add buttons are a wrapping grid (Weapon, Armor, Foci, Shroud, Icon, Affix, Named item) instead of a squashed row.
+
 **0.92.0:** The New Character wizard shows every tree before you pick: on the Ancestry and Background steps each tree a card names (Ancestry trees, Generic Groups, Martial/Magic/Mental, "one of" choices and focus trees) is a chip that opens its tiers under the card, like the Skill Trees step (the tiers you'd get are highlighted). The Background's Ancestry-point rows open the same way.
 
 **0.91.1:** Fixes from the live test of the new content.

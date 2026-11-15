@@ -193,6 +193,32 @@
 .flowstate .fs-wizard-item { border: 1px solid var(--color-border, #999); border-radius: 6px; padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; }
 .flowstate .fs-wizard-item header { display: flex; justify-content: space-between; align-items: center; }
 .flowstate .fs-wizard-effect { font-style: italic; }
+/* Wizard equipment: each piece's header (rarity, Codex links), its numbers as a grid, its effects; the add buttons wrap in a grid. */
+.fs-wizard .fs-wizard-item { gap: 6px; padding: 8px 10px; }
+.fs-wizard .fs-wizard-item-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; justify-content: flex-start; }
+.fs-wizard .fs-wizard-item-name { font-size: 1.05em; }
+.fs-wizard .fs-wizard-item-links { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: .85em; opacity: .85; }
+.fs-wizard .fs-wizard-item-links a { white-space: nowrap; }
+.fs-wizard .fs-wizard-remove { margin-left: auto; flex: 0 0 26px; width: 26px; height: 26px; min-height: 0; padding: 0; line-height: 1; display: inline-flex; align-items: center; justify-content: center; }
+.fs-wizard .fs-wizard-remove i { margin: 0; }
+.fs-wizard .fs-rarity { font-size: .75em; text-transform: uppercase; letter-spacing: .05em; padding: 0 6px; border-radius: 8px; border: 1px solid currentColor; opacity: .9; }
+.fs-wizard .fs-rarity-common { color: #9a9a9a; }
+.fs-wizard .fs-rarity-uncommon { color: #4caf6a; }
+.fs-wizard .fs-rarity-rare { color: #4a8fd8; }
+.fs-wizard .fs-rarity-epic { color: #a066d8; }
+.fs-wizard .fs-rarity-legendary { color: #e0a030; }
+.fs-wizard .fs-wizard-facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 4px 8px; margin: 0; }
+.fs-wizard .fs-wizard-facts > div { padding: 2px 6px; border-radius: 4px; background: rgba(127, 127, 127, 0.1); min-width: 0; }
+.fs-wizard .fs-wizard-facts > div[data-tooltip] { cursor: help; }
+.fs-wizard .fs-wizard-facts dt { font-size: .72em; text-transform: uppercase; letter-spacing: .04em; opacity: .7; margin: 0; }
+.fs-wizard .fs-wizard-facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.fs-wizard .fs-wizard-note { margin: 0; font-size: .9em; opacity: .8; }
+.fs-wizard .fs-wizard-note.fs-on { opacity: 1; border-left: 3px solid var(--fs-accent, #7a5cc0); padding-left: 6px; }
+.fs-wizard .fs-wizard-add { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.fs-wizard .fs-wizard-add-label { font-weight: 600; }
+.fs-wizard .fs-wizard-add-buttons { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; }
+.fs-wizard .fs-wizard-add-buttons button { margin: 0; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.2; min-height: 30px; }
+.fs-wizard .fs-wizard-add-buttons button i { margin: 0; }
 .flowstate .fs-wizard-errors { padding: 6px 10px; border-radius: 6px; background: rgba(192, 57, 43, .18); }
 .flowstate .fs-wizard-errors ul { margin: 4px 0 0; padding-left: 18px; }
 .flowstate .fs-wizard-footer { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-top: 2px solid var(--color-border, #999); flex-shrink: 0; }

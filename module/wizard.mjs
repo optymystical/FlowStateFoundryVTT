@@ -1,8 +1,8 @@
 import { askImage } from "./pictures.mjs";
 import { getCurrencies } from "./currency.mjs";
 import { startingPurse } from "./currency-rules.mjs";
-import { STATS } from "./rules.mjs";
-import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, RARITIES, weaponProfile, armorProfile, describeTags } from "./martial.mjs";
+import { STATS, DAMAGE_TYPES } from "./rules.mjs";
+import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, RARITIES, THROW, WEAPON_MATERIALS, ARMOR_MATERIALS, weaponProfile, armorProfile, describeTags } from "./martial.mjs";
 import * as creation from "./creation.mjs";
 import { ITEM_CATALOG, ITEM_TYPES, entrySummary } from "./catalog.mjs";
 import * as mentalRules from "./mental-rules.mjs";
@@ -121,12 +121,17 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const eff = { str: pv.effective.str.value, dex: pv.effective.dex.value };
     const weaponTypes = Object.fromEntries(Object.entries(WEAPON_TYPES).filter(([k]) => k !== "unarmed" && k !== "improvised").map(([k, v]) => [k, `${v.label}${v.ranged ? " (ranged)" : ""}`]));
+    // Each piece's details: labeled numbers (facts), what its type/material/form does (notes), its rarity and Codex pages.
+    const fact = (label, value, tip = "") => ({ label, value: String(value), tip });
+    const link = (label, codex) => ({ label, codex });
+    const rar = k => (k ? { key: k, label: RARITIES[k] ?? k } : null);
     const items = st.items.map((slot, index) => {
       if (slot.kind === "named") {
         const e = ITEM_CATALOG[slot.key];
         return { index, ...slot, namedSlot: true, name: creation.slotName(slot), namedChoices: creation.allowedNamed(rules.maxRarity),
           summary: e ? `${ITEM_TYPES[e.type]?.one ?? e.type} · ${entrySummary(e, { CASTING_FORMS })}` : "Pick a named item.",
-          effect: e?.description ? String(e.description).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "" };
+          effect: e?.description ? String(e.description).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "",
+          rarity: rar(e?.rarity), links: e ? [link(e.name, `item:${slot.key}`)] : [], facts: [], notes: [] };
       }
       if (slot.kind === "foci" || slot.kind === "shroud") {
         const foci = slot.kind === "foci";
@@ -141,7 +146,22 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
           summary: !p.valid ? p.error : foci
             ? `${p.formLabel}: ${p.formText} · Durability ${p.durability}, Limit ${p.limit} · Free Affixes: ${t.free}${t.plus ? " · doubles one Affix" : ""}`
             : `Durability ${p.durability}, Limit ${p.limit} (×${p.mult} Build) · Free Affixes: ${t.free}${t.plus ? " · doubles one Affix" : ""}`,
-          effect: t?.effect ?? "" };
+          effect: "",
+          links: [link(t?.label ?? "Type", foci ? `foci:${slot.fociType}` : `shroud:${slot.shroudType}`), ...(foci && p.form ? [link(p.formLabel, `castingForm:${p.form}`)] : [])],
+          facts: !p.valid ? [] : foci ? [
+            fact("Form", p.formLabel, p.formText),
+            fact("Scales with", `${p.form === "multi" ? "Lesser" : STATS[p.scalingStat]?.label ?? p.scalingStat} ${p.scaling}`, `Your ${p.form === "multi" ? "lesser of Reach and Grasp" : STATS[p.scalingStat]?.label ?? p.scalingStat}, capped at ${rules.grade * 10} by the Grade`),
+            fact("Cast", `${p.castAP} AP`), fact("Threshold Red.", p.tr ?? "as Raw Casting", "Threshold Reduction: lowers a spell's Threshold"),
+            fact("Durability", p.durability), fact("Limit", p.limit),
+            fact("Free Affixes", t.free, "Attuned Affixes up to this cost no speed"),
+            ...(p.twoHandCast ? [fact("Hands", "Two to cast")] : []),
+            ...(t.plus ? [fact("Doubles", "one Affix")] : [])
+          ] : [
+            fact("Durability", p.durability), fact("Limit", p.limit, `The listed ${t.limit} × ${p.mult} (your Build, capped by the Grade, per 10)`),
+            fact("Recovers", p.fixedDur ? "fully each turn" : `${p.baseLimit} a turn`), fact("Free Affixes", t.free, "Attuned Affixes up to this cost no speed"),
+            ...(t.plus ? [fact("Doubles", "one Affix")] : [])
+          ],
+          notes: t?.effect ? [{ label: t.label, text: t.effect }] : [] };
       }
       if (slot.kind === "icon") {
         const form = mentalRules.FORMS[slot.iconForm];
@@ -150,14 +170,20 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         const typeChoices = mentalRules.formGroups().map(g => ({ ...g, options: Object.fromEntries(Object.entries(g.options).filter(([k]) => k in allowedForms)) })).filter(g => Object.keys(g.options).length);
         return { index, ...slot, icon: true, name: creation.slotName(slot), typeChoices, selected: slot.iconForm,
           summary: `${mentalRules.KINDS[form?.align]?.label ?? ""} Form · ${form?.rarity ?? ""} · attune to it for 6 AP in combat; pick its Tenet on the item once you know a Wonder`,
-          effect: form ? `Ward: ${form.ward} Enhanced: ${form.enhance}` : "" };
+          effect: "", rarity: rar(form?.rarity),
+          links: form ? [link(form.name, `form:${slot.iconForm}`)] : [],
+          facts: form ? [fact("Alignment", mentalRules.KINDS[form.align]?.label ?? form.align), ...(form.ap ? [fact("Ward", `${form.ap} AP`)] : []), fact("Attune", "6 AP in combat")] : [],
+          notes: form ? [{ label: "Ward", text: form.ward }, { label: "Enhanced", text: form.enhance }] : [] };
       }
       if (slot.kind === "affix") {
         const a = AFFIXES[slot.affix];
         return { index, ...slot, affixSlot: true, name: creation.slotName(slot),
           affixChoices: creation.allowedAffixes(rules.maxRarity), sideChoices: AFFIX_SIDES,
           summary: `Attuned to its ${AFFIX_SIDES[slot.side] ?? "Offensive"} form: ${slot.side === "defensive" ? "your Shroud" : "your Foci and raw casting"}. Costs 20% speed past your Free Affixes`,
-          effect: a ? (slot.side === "defensive" ? a.shroud : a.foci) : "" };
+          effect: "", rarity: rar(a?.rarity),
+          links: a ? [link(a.label, `affix:${slot.affix}`)] : [],
+          facts: a ? [fact("Works through", slot.side === "defensive" ? "your Shroud" : "your Foci and raw casting"), fact("Speed", "−20%", "Past your attuned Foci's and Shroud's Free Affixes")] : [],
+          notes: a ? [{ label: "Offensive (Foci)", text: a.foci, on: slot.side !== "defensive" }, { label: "Defensive (Shroud)", text: a.shroud, on: slot.side === "defensive" }] : [] };
       }
       const armor = slot.kind === "armor";
       const p = armor
@@ -174,7 +200,23 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         tags: !armor && p.valid ? describeTags(p.tags) : [],
         extraChoices: armor || !rules.multiType ? [] : Object.entries(weaponTypes).filter(([k]) => k !== slot.type)
           .map(([k, label]) => ({ key: k, label, on: (slot.extraTypes ?? []).includes(k) })),
-        effect: p.valid ? p.effect : ""
+        effect: "",
+        rarity: rar((armor ? ARMOR_MATERIALS : WEAPON_MATERIALS)[slot.material]?.rarity),
+        links: armor ? [link(`${ARMOR_WEIGHTS[slot.weight]?.label ?? ""} armor`, `armorWeight:${slot.weight}`), link(ARMOR_MATERIALS[slot.material]?.label ?? slot.material, `armorMaterial:${slot.material}`)]
+          : [link(WEAPON_TYPES[slot.type]?.label ?? slot.type, `weaponType:${slot.type}`), link(WEAPON_MATERIALS[slot.material]?.label ?? slot.material, `weaponMaterial:${slot.material}`)],
+        facts: !p.valid ? [] : armor ? [
+          fact("Limit", p.limit), fact("Durability", p.durability), fact("Speed", `−${p.speedPct}%`),
+          fact("Stealth", !p.stealthDis ? "no penalty" : p.stealthDis === Infinity ? "auto-fail" : `Disadvantage ×${p.stealthDis}`), fact("Don", p.don)
+        ] : [
+          fact(`Damage (${DAMAGE_TYPES[p.damageType] ?? p.damageType})`, p.dice ? p.display ?? p.formula : "no dice yet", `One die per full 10 ${STATS[p.scalingStat]?.abbr ?? ""}, capped at ${rules.grade * 10} by the Grade`),
+          fact("AP", p.ap), fact("Scales with", `${STATS[p.scalingStat]?.label ?? p.scalingStat} ${p.capped}${p.stat > p.capped ? ` (of ${p.stat})` : ""}`),
+          fact("Hands", p.hands === 2 ? "Two" : "One"), fact("Range", p.ranged ? `${p.range} ft` : "Melee"),
+          ...(p.throwType ? [fact("Thrown", THROW[p.throwType]?.label ?? p.throwType, `${THROW[p.throwType]?.range ?? "?"} ft`)] : []),
+          fact("Durability", p.durability), fact("Limit", p.limit),
+          ...(p.pierce ? [fact("Pierce", p.pierce)] : []), ...(p.bash ? [fact("Bash", p.bash)] : []),
+          ...(p.knockback ? [fact("Knockback", `${p.knockback} ft`)] : []), ...(p.reloadRP ? [fact("Reload", `${p.reloadRP} RP`)] : [])
+        ],
+        notes: p.valid && p.effect ? [{ label: armor ? ARMOR_MATERIALS[slot.material]?.label ?? "Material" : WEAPON_MATERIALS[slot.material]?.label ?? "Material", text: p.effect }] : []
       };
     });
     // A tree's tiers as the Skill Trees step shows them (entries, costs, Codex links; a Wonder's table worked out for these stats).

@@ -113,5 +113,27 @@ await bestiary.turnStart(combat, thicket);
 ok(thicket.system.hp.value === before + 20, `It regrows what it lost since its last turn's start, but not heat damage or crits (+${thicket.system.hp.value - before})`);
 ok(thicket.getFlag("flowstate", "bestTurns")?.n === 1, "Its turns in the fight are counted (Sporing / Ripen go off on the 4th)");
 
+console.log("== Ground auras (The Choking Green)");
+{
+  const green = mkActor("Green", { "ancestry-wonderborn": 5, "ancestry-dreamborn": 5, "ancestry-wonderborn-life": 5 }, {}, { ancestry: "wonderborn-life" });
+  const regions = new Map(); let n = 0, deletedMissing = 0;
+  const scene = { grid: { size: 100, distance: 5 }, tokens: [{ actor: green, x: 0, y: 0, width: 1, height: 1 }],
+    regions: Object.assign([], { has: id => regions.has(id), [Symbol.iterator]: () => regions.values() }),
+    createEmbeddedDocuments: async (_t, list) => { await null; for (const d of list) { const id = `R${++n}`; regions.set(id, { ...d, id, update: async u => Object.assign(regions.get(id), u) }); } },
+    deleteEmbeddedDocuments: async (_t, ids) => { await null; for (const id of ids) { if (!regions.has(id)) deletedMissing++; regions.delete(id); } } };
+  const was = globalThis.canvas; globalThis.canvas = { scene };
+  const isGM = game.user.isGM; game.user.isGM = true;
+  await Promise.all([bestiary.refreshAuras(), bestiary.refreshAuras(), bestiary.refreshAuras()]);
+  ok(regions.size === 1, `Three refreshes at once (token moves close together) make one aura region, not several (${regions.size})`);
+  const [only] = regions.values();
+  regions.set("dup", { ...only, id: "dup" });
+  await bestiary.refreshAuras();
+  ok(regions.size === 1 && deletedMissing === 0, "A duplicate left by an older race is cleared, and nothing is deleted twice");
+  green.statuses.add("dormant");
+  await Promise.all([bestiary.refreshAuras(), bestiary.refreshAuras()]);
+  ok(regions.size === 0 && deletedMissing === 0, "A dormant creature's aura goes, once");
+  globalThis.canvas = was; game.user.isGM = isGM;
+}
+
 if (fails) { console.log(`${fails} failed`); process.exit(1); }
 console.log("bestiary tests passed");

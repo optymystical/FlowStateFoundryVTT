@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.98.6:** Sim-found fix: a creature with The Choking Green or Overgrowth (the Bestiary's ground auras) could get two aura regions, or log a "does not exist" error, when it moved twice in quick succession, since each move redrew the aura at the same time. The redraws now run one after another, and a duplicate left over from before is cleared.
+
 **0.98.5:** Sim-found fix: Reflex (Snappence Arts) was offered on every attack nearby even when the character couldn't pay for it (no Energy left, or no Wonder its stat can Manifest), and a "yes" then failed; it's now only offered when it can be paid for.
 
 **0.98.4:** Sim-found fix: an Area spell's region removed twice in the same moment (a turn start and a broken barrier) logged a "does not exist" error; a region that's already gone is now skipped.

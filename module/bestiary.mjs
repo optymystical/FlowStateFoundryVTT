@@ -368,8 +368,7 @@ async function bloom(actor) {
 /** Dormant: out of the fight (off the tracker), for a day of world time; it wakes at full HP (consumables.mjs ends timed statuses, flowstate.mjs wakes it). */
 async function goDormant(actor) {
   await setStatus(actor, "dormant", true);          // flowstate.mjs takes it off the tracker (as a downed creature)
-  const region = auraRegions().filter(r => r.flags.flowstate.auraOf === actor.uuid).map(r => r.id);
-  if (region.length && game.user.isGM) await globalThis.canvas.scene.deleteEmbeddedDocuments("Region", region);
+  await refreshAuras();                              // a dormant creature has no aura
 }
 /** It wakes (the Dormant status ended): full HP. */
 export async function wake(actor) {
@@ -383,8 +382,14 @@ export async function wake(actor) {
 /* -------------------------------------------- */
 
 const auraRegions = () => [...(globalThis.canvas?.scene?.regions ?? [])].filter(r => r.flags?.flowstate?.auraOf);
-/** The difficult ground around each creature with The Choking Green (Life T5, 100 ft) or Overgrowth (Growth T5, 20 ft); it doesn't slow the creature itself. */
-export async function refreshAuras() {
+/** The difficult ground around each creature with The Choking Green (Life T5, 100 ft) or Overgrowth (Growth T5, 20 ft); it doesn't slow the creature itself.
+ *  Runs one at a time (every token move asks for one): two at once would both delete the same region or both create one. */
+let auraRun = Promise.resolve();
+export function refreshAuras() {
+  auraRun = auraRun.then(syncAuras).catch(err => console.warn("Flow State | aura regions:", err));
+  return auraRun;
+}
+async function syncAuras() {
   const scene = globalThis.canvas?.scene;
   if (!scene || !game.user.isGM) return;
   const want = new Map();
@@ -395,7 +400,9 @@ export async function refreshAuras() {
     if (ft) want.set(a.uuid, { a, tok, ft, name: T(a).life >= 5 ? "The Choking Green" : "Overgrowth" });
   }
   const have = auraRegions();
-  const gone = have.filter(r => !want.has(r.flags.flowstate.auraOf)).map(r => r.id);
+  const first = new Map();
+  for (const r of have) if (!first.has(r.flags.flowstate.auraOf)) first.set(r.flags.flowstate.auraOf, r);
+  const gone = have.filter(r => (!want.has(r.flags.flowstate.auraOf) || first.get(r.flags.flowstate.auraOf) !== r) && scene.regions.has(r.id)).map(r => r.id);
   if (gone.length) await scene.deleteEmbeddedDocuments("Region", gone);
   const size = scene.grid?.size ?? 100, unit = scene.grid?.distance ?? 5;
   for (const [uuid, w] of want) {
@@ -403,7 +410,7 @@ export async function refreshAuras() {
     const side = ((2 * w.ft) / unit) * size + (d.width ?? 1) * size;
     const at = `${cx},${cy}:${side}`;
     const data = terrainRegionData("difficult", { cx, cy, sidePx: side, name: `${w.name} (${w.a.name})`, flags: { terrainOf: uuid, auraOf: uuid, auraAt: at, ritualOf: `aura:${uuid}` } });
-    const cur = have.find(r => r.flags.flowstate.auraOf === uuid);
+    const cur = first.get(uuid);
     if (!cur) await scene.createEmbeddedDocuments("Region", [data]);
     else if (cur.flags.flowstate.auraAt !== at) await cur.update({ shapes: data.shapes, "flags.flowstate.auraAt": at });
   }

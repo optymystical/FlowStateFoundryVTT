@@ -587,3 +587,7 @@ a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-throug
 /* The sheet tutorial: the part a stop explains is outlined in gold; the step counter under the popup's words. */
 .flowstate.sheet .fs-tour-target { outline: 3px solid #e0b040; outline-offset: 3px; border-radius: 6px; box-shadow: 0 0 0 6px rgba(224, 176, 64, 0.25), 0 0 18px rgba(224, 176, 64, 0.55); position: relative; z-index: 1; }
 .fs-tutorial-popup .fs-tour-step { margin: 8px 0 0; text-align: right; font-size: .85em; opacity: .65; }
+/* While a tutorial popup is up, the wizard or sheet behind it is blocked (its title bar still works); Codex links in the popup are underlined. */
+.application.fs-tutorial-blocked::after, .application.fs-touring::after { content: ""; position: absolute; inset: var(--header-height, 36px) 0 0 0; z-index: 100; cursor: not-allowed; }
+.fs-tutorial-popup a.fs-codex-name { text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 2px; cursor: pointer; }
+.fs-tutorial-popup .fs-tut-cost { font-size: .85em; opacity: .75; white-space: nowrap; }

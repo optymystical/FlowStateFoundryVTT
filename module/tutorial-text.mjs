@@ -1,6 +1,7 @@
 /**
  * The character tutorial's words (pure: no Foundry globals). Each popup is { title, html }; the wizard's banner lines are plain strings.
  * Written for someone who has never played a tabletop RPG. Edit freely: tutorial.mjs only decides when each one shows.
+ * `[[page|label]]` is a Codex link (a page id or a name): the popup turns it into a link, or plain text if there's no such page.
  */
 import { esc } from "./html.mjs";
 import { ARCHETYPES } from "./tutorial-rules.mjs";
@@ -34,7 +35,7 @@ export const POPUPS = {
   ].join("") }),
 
   ancestry: () => ({ title: "Step 1: Ancestry", html: [
-    p("Your <strong>Ancestry</strong> is the people you were born to: Human, Dwarf, Elf, Orc and so on. It sets your <strong>Size</strong> (how big you are) and gives you your Ancestry's own <strong>skill trees</strong>: abilities only your people have."),
+    p("Your <strong>[[archetype:ancestry|Ancestry]]</strong> is the people you were born to: Human, Dwarf, Elf, Orc and so on. It sets your <strong>[[doc:rules/ch7-non-combat-rules/size-categories|Size]]</strong> (how big you are) and gives you your Ancestry's own <strong>skill trees</strong>: abilities only your people have."),
     p("Each card shows what that people is like. The buttons under <strong>Trees</strong> show what their abilities do: click one to read its tiers, and click it again to close it."),
     tip("There's no wrong answer here. Pick whichever people sounds most interesting to play. When you pick one, the other cards hide; click your pick again (or <strong>Change</strong>) to see them all again.")
   ].join("") }),
@@ -44,9 +45,9 @@ export const POPUPS = {
   ].join("") }),
 
   background: c => ({ title: "Step 2: Background", html: [
-    p(`Your <strong>Background</strong> is how you were raised and what you did before the story began. The list shows the Backgrounds open to ${esc(c.ancestry)}.`),
+    p(`Your <strong>[[entry:ancestry-abc-rules:background|Background]]</strong> is how you were raised and what you did before the story began. The list shows the Backgrounds open to ${esc(c.ancestry)}.`),
     p("Each Background gives you <strong>15 free points</strong> of skill trees to start with. They're free: they don't come out of the Skill Points you'll spend later. The buttons on each card show those trees; click one to read it."),
-    tip("Some Backgrounds hand you an <strong>Archetype</strong> (Martial, Magic or Mental) through its Theory tree: Recruit leans Martial, Apprentice Mage leans Magic, Novice leans Mental. If you already know which kind of character you want to play, pick a Background that gives you that one."),
+    tip("Some Backgrounds hand you an <strong>[[doc:rules/ch2-archetypes/what-are-the-archetypes|Archetype]]</strong> ([[archetype:martial|Martial]], [[archetype:magic|Magic]] or [[archetype:mental|Mental]]) through its Theory tree: Recruit leans Martial, Apprentice Mage leans Magic, Novice leans Mental. If you already know which kind of character you want to play, pick a Background that gives you that one."),
     p("Like before, picking one hides the others; click it again (or <strong>Change</strong>) to see the whole list.")
   ].join("") }),
   choices: c => ({ title: `${esc(c.background)}: your choices`, html: [
@@ -56,7 +57,7 @@ export const POPUPS = {
   ].join("") }),
 
   culture: c => ({ title: "Step 3: Culture", html: [
-    p("Your <strong>Culture</strong> is where you come from and who you grew up with. It's made of two picks:"),
+    p("Your <strong>[[entry:ancestry-abc-rules:culture|Culture]]</strong> is where you come from and who you grew up with. It's made of two picks:"),
     ul([`<strong>Homeland:</strong> the people and place you come from. You can pick one of ${esc(c.ancestry)}'s Homelands or a Shared one anyone can have.`,
       `<strong>Circle:</strong> the group you came up in through your Background. You can pick one of ${esc(c.background)}'s Circles or a Shared one.`]),
     p("Together they shape your character's values, customs and ties to the world. Culture is <strong>purely roleplay</strong>: it doesn't change any numbers, so pick what makes your character's story more interesting."),
@@ -64,10 +65,10 @@ export const POPUPS = {
   ].join("") }),
 
   stats: c => ({ title: "Step 4: Stats", html: [
-    p(`You have <strong>${c.points}</strong> stat points to place. There are nine stats, three for each <strong>Archetype</strong>, the three ways to play:`),
-    ...Object.values(ARCHETYPES).map(a => `<h4 class="fs-tut-head">${a.label}: ${a.blurb}</h4>${ul(a.stats.map(k => `<strong>${esc(c.statLabels[k])}:</strong> ${STAT_TEXT[k]}`))}`),
+    p(`You have <strong>${c.points}</strong> stat points to place. There are nine stats, three for each <strong>[[doc:rules/ch2-archetypes/what-are-the-archetypes|Archetype]]</strong>, the three ways to play:`),
+    ...Object.values(ARCHETYPES).map(a => `<h4 class="fs-tut-head">[[archetype:${a.id}|${a.label}]]: ${a.blurb}</h4>${ul(a.stats.map(k => `<strong>[[stat:${k}|${esc(c.statLabels[k])}]]:</strong> ${STAT_TEXT[k]}`))}`),
     p("Some things to know:"),
-    ul(["Your <strong>Health</strong> comes from Constitution, Willpower and Build together, whichever Archetype you play.",
+    ul(["Your <strong>Health</strong> comes from Constitution, Willpower and Build together (drop below half of it, your [[entry:generic-endurance:pain-threshold|Pain Threshold]], and you fall unconscious), whichever Archetype you play.",
       "A weapon rolls one die for every full 10 points of its stat, so under 10 it rolls none. Foci, Shrouds and Icons also get stronger as their stat goes up.",
       `Every stat also gets a free bonus as you earn Skill Points (1 for every 5), so none of them is ever really zero.`])
   ].join("") }),
@@ -83,8 +84,8 @@ export const POPUPS = {
   ].join("") }),
 
   skills: c => ({ title: "Step 5: Skill Trees", html: [
-    p("<strong>Skill trees</strong> are where your abilities come from. Each tree has five tiers; each tier unlocks something new, and you need the tier before it first. A tier costs its number in Skill Points: Tier 1 costs 1, Tier 2 costs 2, and so on (15 for all five)."),
-    c.free.length ? p(`Your Background already gave you these, for free: ${list(c.free.map(f => `<strong>${esc(f)}</strong>`))}.`) : "",
+    p("<strong>[[doc:rules/ch4-skill-trees-groups/what-is-a-skill-tree|Skill trees]]</strong> are where your abilities come from. Each tree has five tiers; each tier unlocks something new, and you need the tier before it first. A tier costs its number in Skill Points: Tier 1 costs 1, Tier 2 costs 2, and so on (15 for all five)."),
+    c.free.length ? p(`Your Background already gave you these, for free: ${list(c.free.map(f => `<strong>${f}</strong>`))}.`) : "",
     p(`Now you have <strong>${c.sp}</strong> Skill Points of your own to spend on anything you like. Points you don't spend are banked for later.`),
     c.archetype
       ? p(c.why === "background"
@@ -149,13 +150,13 @@ export function adviceLine(a, L) {
     case "armor:unarmored": return "You took <strong>Unarmored</strong>, so skip armor: that tree works when you wear none.";
     case "armor:tree": return `<strong>${esc(a.key.split(",").map(L.armorWeight).join(" or "))} armor</strong>, to match your armor tree. Armor gets stronger with your ${L.stat("con")}.`;
     case "armor:con": return `<strong>Light or Medium armor</strong> (★): your ${L.stat("con")} makes it stronger. Heavier armor protects more but slows you down more.`;
-    case "foci:reach": return `A <strong>Channeler</strong> Foci (★ in the Foci type box): it casts with your ${L.stat("reach")}.`;
-    case "foci:grasp": return `An <strong>Igniter</strong> Foci (★): it casts with your ${L.stat("grasp")}.`;
-    case "foci:both": return `A <strong>Multi</strong> Foci (★): with ${L.stat("reach")} and ${L.stat("grasp")} close together, it casts with the lower of the two.`;
+    case "foci:reach": return `A <strong>[[castingForm:channeler|Channeler]]</strong> [[doc:equipment/magic-foci|Foci]] (★ in the Foci type box): it casts with your ${L.stat("reach")}.`;
+    case "foci:grasp": return `An <strong>[[castingForm:igniter|Igniter]]</strong> Foci (★): it casts with your ${L.stat("grasp")}.`;
+    case "foci:both": return `A <strong>[[castingForm:multi|Multi]]</strong> Foci (★): with ${L.stat("reach")} and ${L.stat("grasp")} close together, it casts with the lower of the two.`;
     case "foci:low": return `A Foci casts with ${L.stat("reach")} (Channeler) or ${L.stat("grasp")} (Igniter): put at least 10 into one of them.`;
-    case "shroud:build": return `A <strong>Shroud</strong>: it soaks damage before your armor and gets stronger with your ${L.stat("build")}.`;
-    case "affix:free": return "Some <strong>Affixes</strong>: gems that add an effect to your Foci or Shroud. Each Foci and Shroud lets a few work for free (its <em>Free Affixes</em>); past that, each costs 20% of your speed.";
-    case "icon:align": return `An <strong>Icon</strong> with a ${a.key.split(",").map(k => (k === "dream" ? "Dream" : "Nightmare")).join(" or ")} Form (★ in the Icon Form box) to match your Wonders. Its Ward gets stronger with your ${L.stat("will")}.`;
+    case "shroud:build": return `A <strong>[[doc:equipment/magic-shrouds|Shroud]]</strong>: it soaks damage before your armor and gets stronger with your ${L.stat("build")}.`;
+    case "affix:free": return "Some <strong>[[doc:equipment/magic-affixes|Affixes]]</strong>: gems that add an effect to your Foci or Shroud. Each Foci and Shroud lets a few work for free (its <em>Free Affixes</em>); past that, each costs 20% of your speed.";
+    case "icon:align": return `An <strong>[[doc:equipment/mental-icons|Icon]]</strong> with a ${a.key.split(",").map(k => (k === "dream" ? "Dream" : "Nightmare")).join(" or ")} Form (★ in the Icon Form box) to match your Wonders. Its Ward gets stronger with your ${L.stat("will")}.`;
     default: return "";
   }
 }
@@ -164,7 +165,7 @@ export function adviceLine(a, L) {
 export function choiceLines({ focus = [], slots = [], owed = 0 } = {}) {
   const out = [];
   if (focus.length) out.push(`<strong>Focus:</strong> pick one of ${list(focus.map(f => `<strong>${esc(f)}</strong>`))}. Each gives different trees (the rows under it on the card show which); click the circle beside its name.`);
-  for (const s of slots) out.push(`<strong>${esc(s.label)}:</strong> ${list(s.choices.map(ch => esc(ch.name)))}.`);
+  for (const s of slots) out.push(`<strong>${esc(s.label)}:</strong> ${list(s.choices.map(ch => `[[tree:${ch.id}|${esc(ch.name)}]]`))}.`);
   if (owed) out.push(`<strong>${owed} points</strong> to spend on your Ancestry's own trees, with the + and − buttons.`);
   return out;
 }

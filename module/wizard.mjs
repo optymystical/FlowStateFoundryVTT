@@ -532,6 +532,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     await actions.requestGM("createCharacter", { userId: game.user.id, choice: foundry.utils.deepClone(this.state) });
     ui.notifications.info(`Creating ${this.state.name}…`);
     this.close();
+    return true;                                                // sent (the tutorial goes on only then)
   }
 }
 

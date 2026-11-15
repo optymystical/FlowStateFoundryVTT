@@ -2,6 +2,11 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.97.0:** Tutorials, after a player test.
+- **The sheet tutorial names your own abilities:** your Combat rows, your Core Spells or Wonders, each of your other Action List groups (Generic, Ancestry, Items, a tree's abilities) with its rows and costs, your Checks, what can ask you in the Reaction List, and your trees with their tiers.
+- **Codex links in the tutorial popups:** terms, stats, trees, spells and abilities are underlined links that open their Codex page (on top of the popup). The popups no longer freeze the whole screen: only the wizard or sheet behind them is blocked.
+- **Fix:** finishing the character tutorial with no GM connected said "Your character is ready!" though nothing was made; now the wizard stays open after the "A GM must be connected" warning.
+
 **0.96.0:** The character sheet tutorial (tutorial part 2). Saying yes at the end of the character tutorial, or picking **Sheet tutorial** from a character sheet's ⋮ menu, starts a guided tour of the sheet: it switches to each tab, outlines the part it's explaining in gold, and explains it in a popup (Back / Next / End tour; the sheet is locked while it runs). It covers every tab (stats and checks, Energy and HP, Skill Points and trees, equipment, the Action and Reaction Lists, Misc, Notes) and then walks through a first turn: AP and RP, targeting and attacking, the chat cards, being attacked and dodging, moving and ending the turn. It's tailored to the character: Martial characters hear about their weapons and armor, Magic ones about Foci, Shrouds and Cast Spell, Mental ones about Icons and Manifest, with a reminder when a weapon or Foci isn't in hand or armor isn't on.
 
 **0.95.0:** New Character wizard rework.

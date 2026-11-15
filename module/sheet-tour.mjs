@@ -7,14 +7,25 @@ import { popup } from "./tutorial.mjs";
 import { sheetStops } from "./sheet-tour-text.mjs";
 import { activeArchetypes } from "./tutorial-rules.mjs";
 import * as abcRules from "./abc-rules.mjs";
+import * as skills from "./skills.mjs";
 import * as actions from "./actions.mjs";
 
 const HIGHLIGHT = "fs-tour-target";
 const WIDTH = 480;
 const running = new Set();
 
-/** What the tour's words need to know about this character. */
-export function tourFacts(actor) {
+const text = el => (el?.textContent ?? "").replace(/\s+/g, " ").trim();
+/** The Action or Reaction List's groups as the rendered sheet shows them: [{ key, name, rows: [{ label, detail, cost }] }]. */
+export function readGroups(root, tab) {
+  return [...(root?.querySelectorAll?.(`.fs-tab[data-tab="${tab}"] details[data-section]`) ?? [])].map(d => ({
+    key: d.dataset.section, name: text(d.querySelector("summary")),
+    rows: [...d.querySelectorAll("li.fs-action")].map(li => ({ label: text(li.querySelector(".fs-action-name")), detail: text(li.querySelector(".fs-action-detail")), cost: text(li.querySelector(".fs-action-cost")) }))
+      .filter(r => r.label)
+  }));
+}
+
+/** What the tour's words need to know about this character (`root`: the rendered sheet, for its Action and Reaction Lists). */
+export function tourFacts(actor, root = actor.sheet?.element) {
   const sys = actor.system ?? {}, d = sys.derived ?? {};
   const stats = Object.fromEntries(Object.entries(sys.stats ?? {}).map(([k, v]) => [k, Number(v?.value ?? v) || 0]));
   const archetypes = activeArchetypes({ stats, trees: sys.trees ?? {} });
@@ -34,8 +45,10 @@ export function tourFacts(actor) {
     energyMax: sys.energy?.max ?? 0, energyRecover: d.energyRecover ?? 0,
     hpMax: sys.hp?.max ?? 0, pain: sys.hp?.pain ?? 0, attackDie: d.attackDie ?? 0, dodgeDie: d.dodgeDie ?? 0,
     speed: sys.movement?.speed ?? 0, moveCost,
-    ancestry: abcRules.ANCESTRIES[sys.abc?.ancestry]?.name ?? "",
-    background: sys.abc?.background ? abcRules.packageFor(sys.abc.background, sys.abc.ancestry)?.name ?? "" : ""
+    ancestry: abcRules.ANCESTRIES[sys.abc?.ancestry]?.name ?? "", ancestryId: sys.abc?.ancestry ?? "",
+    background: sys.abc?.background ? abcRules.packageFor(sys.abc.background, sys.abc.ancestry)?.name ?? "" : "", backgroundId: sys.abc?.background ?? "",
+    trees: Object.entries(sys.trees ?? {}).filter(([, t]) => t > 0).map(([id, t]) => ({ id, name: skills.treeById(id)?.name ?? id, tier: t, free: (sys.freeTrees?.[id] ?? 0) >= t })),
+    groups: readGroups(root, "actions"), reacts: readGroups(root, "reactions")
   };
 }
 

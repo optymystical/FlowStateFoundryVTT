@@ -14,6 +14,7 @@ import { STATS } from "./rules.mjs";
 import { WEAPON_TYPES, ARMOR_WEIGHTS, RARITIES } from "./martial.mjs";
 import { CASTING_FORMS } from "./magic.mjs";
 import { DialogV2, esc } from "./html.mjs";
+import { findPage, idForName } from "./codex.mjs";
 import { POPUPS, LOCK, BANNER, adviceLine, choiceLines } from "./tutorial-text.mjs";
 import { presetArchetypes, suggestedArchetype, equipmentAdvice } from "./tutorial-rules.mjs";
 
@@ -25,26 +26,41 @@ export function register() {
   });
 }
 
+/** `[[page|label]]` in a popup's words → a Codex link (a page id or a name), or just the label when there's no such page. */
+export function codexLinks(html, find = key => findPage(key)?.id ?? idForName(key)) {
+  return String(html ?? "").replace(/\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g, (m, key, label) => {
+    const id = find(key.trim()), shown = label ?? esc(key);
+    return id ? `<a class="fs-codex-name" data-codex="${esc(id)}" data-tooltip="Open in the Codex">${shown}</a>` : shown;
+  });
+}
+
 /**
- * A tutorial popup over the wizard (or sheet): modal (nothing behind it can be clicked), centred on the app. `place(height)` (optional) says where
- * instead, once the popup has rendered and its height is known. Returns the button's action.
+ * A tutorial popup over the wizard (or sheet). The app behind it is blocked (an overlay over its contents; its title bar still works), but the
+ * popup isn't modal, so a Codex link in it opens the Codex on top. Centred on the app; `place(height)` (optional) says where instead, once the
+ * popup has rendered and its height is known. Returns the button's action (null if it was closed).
  */
 export async function popup(app, { title, html, buttons = null, width = 580, place = null }) {
   const el = app?.element, pos = app?.position ?? {};
   el?.classList?.add("fs-tutorial-blocked");
   const left = Math.max(8, Math.round((pos.left ?? 80) + ((pos.width ?? 720) - width) / 2)), top = Math.max(8, Math.round((pos.top ?? 40) + 70));
   const tag = `fs-tut-${Math.random().toString(36).slice(2, 9)}`;
-  const hook = place ? globalThis.Hooks?.on?.("renderDialogV2", dlg => {
+  // Clicking the blocked app would raise it over the popup: put the popup back on top.
+  let shown = null;
+  const raise = () => setTimeout(() => shown?.bringToFront?.(), 0);
+  const hook = globalThis.Hooks?.on?.("renderDialogV2", dlg => {
     if (!dlg.options?.classes?.includes(tag)) return;
     globalThis.Hooks.off("renderDialogV2", hook);
-    const at = place(dlg.element?.offsetHeight || 360);
+    shown = dlg;
+    el?.addEventListener?.("pointerdown", raise);
+    const at = place?.(dlg.element?.offsetHeight || 360);
     if (at) dlg.setPosition?.(at);
-  }) : null;
+  }) ?? null;
   try {
     return await DialogV2().wait({ window: { title, icon: "fa-solid fa-graduation-cap" }, classes: ["fs-tutorial-popup", tag], position: { width, left, top },
-      modal: true, rejectClose: false, content: html, buttons: buttons ?? [{ action: "ok", label: "Got it", icon: "fa-solid fa-check", default: true }] });
+      modal: false, rejectClose: false, content: codexLinks(html), buttons: buttons ?? [{ action: "ok", label: "Got it", icon: "fa-solid fa-check", default: true }] });
   } finally {
     el?.classList?.remove("fs-tutorial-blocked");
+    el?.removeEventListener?.("pointerdown", raise);
     if (hook != null) globalThis.Hooks?.off?.("renderDialogV2", hook);
   }
 }
@@ -168,7 +184,7 @@ export class TutorialWizard extends CharacterWizard {
 
   /** The words for the equipment popup. */
   adviceLines() {
-    const L = { stat: k => `<strong>${esc(STATS[k]?.label ?? k)}</strong>`, weaponType: k => WEAPON_TYPES[k]?.label ?? k, armorWeight: k => ARMOR_WEIGHTS[k]?.label ?? k };
+    const L = { stat: k => `<strong>[[stat:${k}|${esc(STATS[k]?.label ?? k)}]]</strong>`, weaponType: k => WEAPON_TYPES[k]?.label ?? k, armorWeight: k => ARMOR_WEIGHTS[k]?.label ?? k };
     return this.advice().advice.map(a => adviceLine(a, L)).filter(Boolean);
   }
 
@@ -212,7 +228,7 @@ export class TutorialWizard extends CharacterWizard {
     }
     if (step === "skills") {
       const s = suggestedArchetype({ stats: f.st.stats, freeTrees: f.free.trees });
-      const free = Object.entries(f.free.trees).filter(([, t]) => t > 0).map(([id, t]) => `${skills.treeById(id)?.name ?? id} ${t}`);
+      const free = Object.entries(f.free.trees).filter(([, t]) => t > 0).map(([id, t]) => `[[tree:${id}|${esc(skills.treeById(id)?.name ?? id)}]] ${t}`);
       await show("skills", POPUPS.skills({ free, sp: f.pv.skillPoints - skills.spentPoints(f.st.trees, f.free.trees), archetype: s.id, why: s.why }));
     }
     if (step === "equipment") await show("equipment", POPUPS.equipment({ items: f.rules.items, rarity: RARITIES[f.rules.maxRarity] ?? f.rules.maxRarity, lines: this.adviceLines() }));
@@ -249,7 +265,7 @@ export class TutorialWizard extends CharacterWizard {
     const errors = creation.validate(this.state, creationRules());
     if (errors.length) return popup(this, { title: "Not yet", html: `<p>${esc(errors[0])}</p>`, width: 440 });
     const made = waitForActor(name);
-    await CharacterWizard.onFinish.call(this);
+    if ((await CharacterWizard.onFinish.call(this)) !== true) { made.cancel(); return null; }    // nothing sent (no GM connected): stay put
     const answer = await popup(null, { ...POPUPS.done({ name }), width: 460,
       buttons: [{ action: "sheet", label: "Yes, show me", icon: "fa-solid fa-graduation-cap", default: true }, { action: "skip", label: "No thanks", icon: "fa-solid fa-xmark" }] });
     if (answer === "sheet") {

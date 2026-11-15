@@ -106,7 +106,7 @@ await T.TutorialWizard.onTutorialNext.call(w);
 ok(step() === "skills", "On to Skill Trees");
 popups.length = 0; await w.coach();
 ctx = await w._prepareContext({});
-ok(titles().join() === "Step 5: Skill Trees" && /Martial Theory 2/.test(popups[0].html) && ctx.archetypes.find(a => a.selected)?.id === "martial",
+ok(titles().join() === "Step 5: Skill Trees" && /Martial Theory(<\/a>)? 2/.test(popups[0].html) && ctx.archetypes.find(a => a.selected)?.id === "martial",
   "Skill Trees: the Background's free trees listed; the list opens on Martial");
 await T.TutorialWizard.onTutorialNext.call(w);
 ok(step() === "equipment", "On to Equipment");
@@ -121,6 +121,10 @@ await T.TutorialWizard.onTutorialNext.call(w);
 popups.length = 0; await w.coach();
 ok(step() === "notes" && titles().join() === "Step 7: Notes", "Notes");
 CharacterWizard.onChange.call(w, null, null, { object: { name: "Tess" } });
+{ const gm = game.users.activeGM; game.users.activeGM = null; popups.length = 0;
+  await T.TutorialWizard.onTutorialFinish.call(w);
+  ok(!w.closed && !titles().includes("Your character is ready!"), "Finish with no GM connected: nothing is sent, the wizard stays open and the tutorial doesn't say it's ready");
+  game.users.activeGM = gm; }
 answer = () => "skip"; popups.length = 0;
 await T.TutorialWizard.onTutorialFinish.call(w);
 ok(w.closed && titles().at(-1) === "Your character is ready!" && popups.at(-1).buttons.join() === "sheet,skip", "Finish: the character is made, then the character sheet tutorial is offered");
@@ -153,6 +157,35 @@ ok(all.every(x => x.title && x.html && !/undefined|NaN|\[object/.test(x.title + 
   const missing = all.filter(x => x.target).flatMap(x => [x.target].flat()).flatMap(t => [...t.matchAll(/\.([a-z][\w-]*)|data-section=([\w-]+)|data-tab=([\w-]+)/g)].map(m => m[1] ?? m[2] ?? m[3]))
     .filter(k => !src.includes(k));
   ok(!missing.length, `Every stop's outline points at something the sheet has${missing.length ? ` (missing: ${[...new Set(missing)].join(", ")})` : ""}`); }
+
+console.log("== The sheet tutorial: the character's own abilities by name");
+{ const groups = [
+    { key: "act-combat", name: "Combat", rows: [{ label: "Attack: Iron Sword", detail: "5d12 Physical", cost: "3 AP" }, { label: "Move", detail: "50 ft", cost: "1 AP" }] },
+    { key: "act-magic", name: "Magic", rows: [{ label: "Cast Spell", detail: "Slash, Pierce", cost: "AP/RP + Energy" }, { label: "Spirit Sense", detail: "Spot check", cost: "Check" }] },
+    { key: "act-generic", name: "Generic", rows: [{ label: "First Aid", detail: "Heal a creature", cost: "2 AP" }] },
+    { key: "act-checks", name: "Checks", rows: [{ label: "Stealth", detail: "", cost: "d30" }, { label: "Perception", detail: "", cost: "d30" }] }];
+  const reacts = [{ key: "react-auto", name: "Automation", rows: [{ label: "Auto-Dodge: off" }] }, { key: "react-popups", name: "Popups", rows: [{ label: "Riposte", detail: "Strike back after a dodge" }] }];
+  const st = ST.sheetStops(facts({ has: { martial: true, magic: true }, groups, reacts, trees: [{ id: "martial-theory", name: "Martial Theory", tier: 2, free: true }],
+    weapons: [{ name: "Iron Sword", held: true }], foci: [{ name: "Igniter Foci", attuned: true, held: true }] }));
+  const html = id => st.find(x => x.id === id)?.html ?? "";
+  ok(/Attack: Iron Sword/.test(html("actions")) && /Move/.test(html("actions")) && /Generic/.test(html("actions")), "The Action List stop names the Combat rows and the other groups");
+  ok(/\[\[Slash\|Slash\]\]/.test(html("act-magic")) && /Spirit Sense/.test(html("act-magic")), "Casting names the Core Spells (linked) and the rest of the Magic group");
+  ok(st.some(x => x.id === "group:act-generic" && /First Aid/.test(x.html) && x.target === "[data-section=act-generic]"), "Every other group gets its own stop naming its rows");
+  ok(/Stealth/.test(html("checks")) && /Riposte/.test(html("reactions")) && !/Auto-Dodge: off/.test(html("reactions").split("These can ask you")[1]?.split("</ul>")[0] ?? ""), "Checks and the Reaction List name the character's own rows");
+  ok(/\[\[tree:martial-theory\|Martial Theory\]\] 2 \(from your Background\)/.test(html("trees").replace(/<\/?strong>/g, "")), "The trees stop names the character's trees");
+  ok(/Attack: Iron Sword/.test(html("attack")) && /Slash/.test(html("attack")), "The first-turn attack stop names the attack rows and the spells"); }
+
+console.log("== Codex links in the popups");
+ok(T.codexLinks("[[stat:str|Strength]] and [[Nope|nope]] and [[Bare]]", k => (k === "stat:str" ? "stat:str" : null))
+  === '<a class="fs-codex-name" data-codex="stat:str" data-tooltip="Open in the Codex">Strength</a> and nope and Bare', "[[page|label]] becomes a Codex link, or just the label when there's no page");
+{ const C = await import("../../module/codex.mjs"), TT = await import("../../module/tutorial-text.mjs");
+  const statLabels = { str: "Strength", dex: "Dexterity", con: "Constitution", pon: "Ponderance", snap: "Snappence", will: "Willpower", reach: "Reach", grasp: "Grasp", build: "Build" };
+  const arg = { ancestry: "Dwarf", background: "Recruit", lines: [], points: 45, statLabels, preset: ["martial"], free: [], sp: 10, items: 3, rarity: "Uncommon", name: "T", archetype: "martial", why: "stats" };
+  const texts = [...Object.values(TT.POPUPS).map(f => { try { return f(arg)?.html ?? ""; } catch { return ""; } }),
+    ...TT.choiceLines({ focus: [], slots: [{ label: "One of these", choices: [{ id: "martial-bladed-weapons", name: "Bladed Weapons" }] }] }), ...all.map(x => x.html)].join("\n");
+  const keys = [...new Set([...texts.matchAll(/\[\[([^\]|]+)/g)].map(m => m[1]).filter(k => k.includes(":")))];
+  const dead = keys.filter(k => !C.findPage(k));
+  ok(keys.length > 20 && !dead.length, `Every page id a popup links to is in the Codex (${keys.length} checked${dead.length ? `; dead: ${dead.join(", ")}` : ""})`); }
 
 console.log("== The sheet tutorial: placing the popup");
 const TS = await import("../../module/sheet-tour.mjs");

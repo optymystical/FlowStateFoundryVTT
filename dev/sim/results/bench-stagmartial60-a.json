@@ -1,0 +1,1434 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 98,
+  "winner": "party",
+  "pass": "bench-stagmartial60-a",
+  "rounds": 6,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 12,
+  "knockbacks": {},
+  "used": {
+   "manifest:Mire+": 16,
+   "defend:shift": 21,
+   "defend:dodge": 75,
+   "limber": 29,
+   "manifest:Wither+": 13,
+   "manifest:Waste+": 9,
+   "opt:ability=shift": 3,
+   "Versatility": 3,
+   "Parry": 4,
+   "Unstoppable": 3,
+   "Brace": 3,
+   "opt:slam=knockback": 8,
+   "limber:skipped": 15,
+   "recoverEnergy": 1,
+   "manifest:Waste": 7,
+   "manifest:Wither": 3
+  },
+  "hp": {
+   "L60 Stagnation #1#oCor": "1134/1134",
+   "L60 Stagnation #2#AZ6B": "1017/1134",
+   "L60 Stagnation #3#Qkpw": "1134/1134",
+   "L60 Balanced #1#eFo5": "-699/1134",
+   "L60 Balanced #2#Axuw": "333/1134",
+   "L60 Balanced #3#FxwE": "41/1084"
+  },
+  "down": [
+   "L60 Balanced #1",
+   "L60 Balanced #2",
+   "L60 Balanced #3"
+  ],
+  "weapons": {
+   "Manifest: Mire (Manifest)": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #2",
+     "L60 Stagnation #1",
+     "L60 Stagnation #3"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 14,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #2",
+     "L60 Stagnation #1",
+     "L60 Stagnation #3"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 6,
+    "crits": 0,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #2",
+     "L60 Stagnation #1",
+     "L60 Stagnation #3"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 15,
+    "followups": 12,
+    "hits": 13,
+    "crits": 0,
+    "misses": 14,
+    "damage": 117,
+    "ap": 45,
+    "kills": 0,
+    "users": [
+     "L60 Balanced #2",
+     "L60 Balanced #1",
+     "L60 Balanced #3"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Stagnation #2",
+    "dealt": 0,
+    "taken": 117,
+    "hits": 7,
+    "attacks": 18
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 37,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 5
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 28,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 52,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 13
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 15
+   },
+   {
+    "name": "L60 Stagnation #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 15
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Stagnation #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 18,
+    "used": {
+     "manifest:Mire+": 6,
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 3,
+     "defend:dodge": 27,
+     "manifest:Waste": 3,
+     "manifest:Wither": 1
+    }
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 85.58621384311846,
+    "attacks": 5,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:shift": 7,
+     "defend:dodge": 12,
+     "limber": 9,
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 4,
+     "recoverEnergy": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 95.13148795220224,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 3,
+     "defend:shift": 3,
+     "defend:dodge": 9,
+     "limber": 4
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Balanced #3",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 106.06601717798215,
+    "attacks": 13,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 2,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "defend:shift": 11,
+     "defend:dodge": 27,
+     "limber": 16,
+     "limber:skipped": 8
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 15,
+    "used": {
+     "manifest:Mire+": 5,
+     "manifest:Wither+": 4,
+     "manifest:Waste+": 3,
+     "manifest:Waste": 2,
+     "manifest:Wither": 1
+    }
+   },
+   {
+    "name": "L60 Stagnation #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 15,
+    "used": {
+     "manifest:Mire+": 5,
+     "manifest:Wither+": 4,
+     "manifest:Waste+": 3,
+     "manifest:Waste": 2,
+     "manifest:Wither": 1
+    }
+   }
+  ],
+  "trees": {
+   "L60 Stagnation #1": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Stagnation #2": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Stagnation #3": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Stagnation #1": [
+    "Unarmed G1"
+   ],
+   "L60 Stagnation #2": [
+    "Unarmed G1"
+   ],
+   "L60 Stagnation #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Balanced #1": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ]
+  },
+  "gearState": {
+   "L60 Stagnation #1": [],
+   "L60 Stagnation #2": [],
+   "L60 Stagnation #3": [],
+   "L60 Balanced #1": [
+    "Medium Armor (Hard Leather): 196/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 196/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #3": [
+    "Medium Armor (Hard Leather): 140/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3402,
+    "monsterHp": 3399,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3365,
+    "monsterHp": 2268,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 3337,
+    "monsterHp": 1467,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 5,
+    "partyHp": 3337,
+    "monsterHp": 1467,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 3293,
+    "monsterHp": 1398,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 3285,
+    "monsterHp": 374,
+    "partyDown": 0,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Stagnation #3": 3,
+    "L60 Balanced #1": 28,
+    "L60 Balanced #3": 60,
+    "L60 Balanced #2": 21,
+    "L60 Stagnation #1": 546,
+    "L60 Stagnation #2": 7
+   },
+   "taken": {
+    "L60 Balanced #1": 1134,
+    "L60 Stagnation #2": 117,
+    "L60 Balanced #2": 801,
+    "L60 Balanced #3": 1093
+   },
+   "unattributed": 2480
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 3028
+  },
+  "lostBy": {
+   "party": 117,
+   "monsters": 3028
+  },
+  "directTaken": {
+   "party": 117,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Stagnation ##: Alacrity?": 3,
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: L# Balanced ## — Shift": 21,
+    "prompt: Versatility": 3,
+    "prompt: Heavy Balanced (Steel)": 15,
+    "prompt: Warden Ward": 28,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 12,
+    "prompt: Moss (Tenet)": 7,
+    "prompt: Stasis: L# Balanced ##": 10
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 133,
+  "winner": "party",
+  "pass": "bench-stagmartial60-a",
+  "rounds": 7,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 20,
+  "knockbacks": {},
+  "used": {
+   "manifest:Mire+": 20,
+   "defend:shift": 36,
+   "defend:dodge": 103,
+   "manifest:Wither+": 17,
+   "manifest:Waste+": 9,
+   "limber": 44,
+   "opt:ability=shift": 3,
+   "Versatility": 3,
+   "Parry": 3,
+   "opt:slam=both": 4,
+   "recoverEnergy": 1,
+   "Unstoppable": 2,
+   "Brace": 2,
+   "opt:slam=knockback": 9,
+   "limber:skipped": 18,
+   "manifest:Waste": 11,
+   "manifest:Wither": 3
+  },
+  "hp": {
+   "L60 Stagnation #1#L0m6": "1134/1134",
+   "L60 Stagnation #2#467j": "761/1134",
+   "L60 Stagnation #3#NFT9": "1134/1134",
+   "L60 Balanced #1#0J6e": "43/924",
+   "L60 Balanced #2#Q9Db": "352/1068",
+   "L60 Balanced #3#Soma": "135/994"
+  },
+  "down": [
+   "L60 Balanced #1",
+   "L60 Balanced #2",
+   "L60 Balanced #3"
+  ],
+  "weapons": {
+   "Manifest: Mire (Manifest)": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 15,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #3",
+     "L60 Stagnation #2",
+     "L60 Stagnation #1"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 14,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #3",
+     "L60 Stagnation #2",
+     "L60 Stagnation #1"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 20,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 18,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #3",
+     "L60 Stagnation #2",
+     "L60 Stagnation #1"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 23,
+    "followups": 20,
+    "hits": 16,
+    "crits": 4,
+    "misses": 27,
+    "damage": 373,
+    "ap": 69,
+    "kills": 0,
+    "users": [
+     "L60 Balanced #1",
+     "L60 Balanced #2",
+     "L60 Balanced #3"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Stagnation #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "dealt": 0,
+    "taken": 373,
+    "hits": 7,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 29,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 13
+   },
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 344,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 18
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Stagnation #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 21,
+    "used": {
+     "manifest:Mire+": 7,
+     "manifest:Wither+": 6,
+     "manifest:Waste+": 3,
+     "manifest:Waste": 4,
+     "manifest:Wither": 1
+    }
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 85.14693182963201,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:shift": 18,
+     "defend:dodge": 24,
+     "limber": 18,
+     "Versatility": 1,
+     "Parry": 1,
+     "recoverEnergy": 1,
+     "limber:skipped": 2
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 21,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 21,
+    "used": {
+     "manifest:Mire+": 7,
+     "manifest:Wither+": 6,
+     "manifest:Waste+": 3,
+     "defend:dodge": 43,
+     "manifest:Waste": 4,
+     "manifest:Wither": 1
+    }
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 95.524865872714,
+    "attacks": 13,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 8,
+     "limber": 9,
+     "defend:shift": 9,
+     "defend:dodge": 18
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Balanced #3",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 106.06601717798215,
+    "attacks": 21,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber": 17,
+     "defend:shift": 9,
+     "defend:dodge": 18,
+     "limber:skipped": 8
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 18,
+    "used": {
+     "manifest:Mire+": 6,
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 3,
+     "manifest:Waste": 3,
+     "manifest:Wither": 1
+    }
+   }
+  ],
+  "trees": {
+   "L60 Stagnation #1": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Stagnation #2": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Stagnation #3": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Stagnation #1": [
+    "Unarmed G1"
+   ],
+   "L60 Stagnation #2": [
+    "Unarmed G1"
+   ],
+   "L60 Stagnation #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Balanced #1": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed",
+    "Heavy Balanced (Steel)",
+    "Medium Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Stagnation #1": [],
+   "L60 Stagnation #2": [],
+   "L60 Stagnation #3": [],
+   "L60 Balanced #1": [
+    "Medium Armor (Hard Leather): 168/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 252/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #3": [
+    "Heavy Balanced (Steel): 1980/1980",
+    "Medium Armor (Hard Leather): 196/420"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3388,
+    "monsterHp": 3136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3237,
+    "monsterHp": 3136,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3163,
+    "monsterHp": 2311,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 3102,
+    "monsterHp": 2245,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 3100,
+    "monsterHp": 1529,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 3074,
+    "monsterHp": 1529,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 3029,
+    "monsterHp": 530,
+    "partyDown": 0,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Stagnation #3": 224,
+    "L60 Balanced #2": 27,
+    "L60 Balanced #3": 346,
+    "L60 Stagnation #2": 202,
+    "L60 Stagnation #1": 265
+   },
+   "taken": {
+    "L60 Balanced #1": 1091,
+    "L60 Stagnation #2": 373,
+    "L60 Balanced #2": 782,
+    "L60 Balanced #3": 999
+   },
+   "unattributed": 2181
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 2872
+  },
+  "lostBy": {
+   "party": 373,
+   "monsters": 2872
+  },
+  "directTaken": {
+   "party": 373,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Stagnation ##: Alacrity?": 3,
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: L# Balanced ## — Shift": 36,
+    "prompt: Moss (Tenet)": 8,
+    "prompt: Versatility": 3,
+    "prompt: Heavy Balanced (Steel)": 23,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 20,
+    "prompt: Warden Ward": 33,
+    "prompt: Stasis: L# Balanced ##": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 120,
+  "winner": "party",
+  "pass": "bench-stagmartial60-a",
+  "rounds": 7,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 18,
+  "knockbacks": {},
+  "used": {
+   "manifest:Mire+": 19,
+   "defend:shift": 32,
+   "defend:dodge": 94,
+   "limber": 33,
+   "manifest:Wither+": 15,
+   "manifest:Waste+": 9,
+   "opt:ability=shift": 3,
+   "Versatility": 3,
+   "Parry": 3,
+   "Unstoppable": 2,
+   "Brace": 2,
+   "opt:slam=knockback": 8,
+   "limber:skipped": 17,
+   "opt:spinCycle": 2,
+   "recoverEnergy": 3,
+   "opt:slam=both": 1,
+   "manifest:Waste": 9,
+   "manifest:Wither": 3
+  },
+  "hp": {
+   "L60 Stagnation #1#TWHK": "815/1134",
+   "L60 Stagnation #2#YBwk": "1134/1134",
+   "L60 Stagnation #3#06GB": "1134/1134",
+   "L60 Balanced #1#QbVJ": "522/1030",
+   "L60 Balanced #2#cTmW": "395/1063",
+   "L60 Balanced #3#YKgW": "188/1004"
+  },
+  "down": [
+   "L60 Balanced #1",
+   "L60 Balanced #2",
+   "L60 Balanced #3"
+  ],
+  "weapons": {
+   "Manifest: Mire (Manifest)": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #3",
+     "L60 Stagnation #2",
+     "L60 Stagnation #1"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 18,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 14,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #3",
+     "L60 Stagnation #2",
+     "L60 Stagnation #1"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 18,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 14,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #3",
+     "L60 Stagnation #2",
+     "L60 Stagnation #1"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 19,
+    "followups": 18,
+    "hits": 13,
+    "crits": 4,
+    "misses": 26,
+    "damage": 319,
+    "ap": 57,
+    "kills": 0,
+    "users": [
+     "L60 Balanced #2",
+     "L60 Balanced #3",
+     "L60 Balanced #1"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Stagnation #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 19
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 122,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 18
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "dealt": 0,
+    "taken": 319,
+    "hits": 6,
+    "attacks": 18
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 63,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 13
+   },
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 134,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 18
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Stagnation #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 19,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 19,
+    "used": {
+     "manifest:Mire+": 7,
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 3,
+     "manifest:Waste": 3,
+     "manifest:Wither": 1,
+     "recoverEnergy": 2
+    }
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 85.14693182963201,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:shift": 18,
+     "defend:dodge": 22,
+     "limber": 15,
+     "Versatility": 1,
+     "Parry": 1,
+     "recoverEnergy": 1,
+     "limber:skipped": 2
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 18,
+    "used": {
+     "manifest:Mire+": 6,
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 3,
+     "defend:dodge": 2,
+     "manifest:Waste": 3,
+     "manifest:Wither": 1
+    }
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 18,
+    "used": {
+     "manifest:Mire+": 6,
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 3,
+     "defend:dodge": 37,
+     "manifest:Waste": 3,
+     "manifest:Wither": 1
+    }
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 95,
+    "attacks": 13,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "defend:shift": 3,
+     "defend:dodge": 14,
+     "limber": 5,
+     "limber:skipped": 7
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Balanced #3",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 105.1189802081432,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 8,
+     "defend:shift": 11,
+     "defend:dodge": 19,
+     "limber": 13
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L60 Stagnation #1": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Stagnation #2": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   },
+   "L60 Stagnation #3": {
+    "mental-theory": 4,
+    "mental-life-dream": 3,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-stagnation-nightmare": 5,
+    "mental-death-nightmare": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Stagnation #1": [
+    "Unarmed G1"
+   ],
+   "L60 Stagnation #2": [
+    "Unarmed G1"
+   ],
+   "L60 Stagnation #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Balanced #1": [
+    "Unarmed",
+    "Heavy Balanced (Steel)",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ]
+  },
+  "gearState": {
+   "L60 Stagnation #1": [],
+   "L60 Stagnation #2": [],
+   "L60 Stagnation #3": [],
+   "L60 Balanced #1": [
+    "Heavy Balanced (Steel): 1980/1980",
+    "Medium Armor (Hard Leather): 280/420"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 252/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #3": [
+    "Medium Armor (Hard Leather): 252/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3388,
+    "monsterHp": 3375,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3266,
+    "monsterHp": 2836,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3222,
+    "monsterHp": 2719,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 3203,
+    "monsterHp": 2051,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 6,
+    "partyHp": 3091,
+    "monsterHp": 2051,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 3083,
+    "monsterHp": 1496,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 3083,
+    "monsterHp": 1105,
+    "partyDown": 0,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Balanced #3": 153,
+    "L60 Stagnation #3": 531,
+    "L60 Stagnation #2": 565,
+    "L60 Stagnation #1": 110,
+    "L60 Balanced #1": 122,
+    "L60 Balanced #2": 44
+   },
+   "taken": {
+    "L60 Stagnation #1": 319,
+    "L60 Balanced #1": 612,
+    "L60 Balanced #2": 739,
+    "L60 Balanced #3": 946
+   },
+   "unattributed": 1091
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 2297
+  },
+  "lostBy": {
+   "party": 319,
+   "monsters": 2297
+  },
+  "directTaken": {
+   "party": 319,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Stagnation ##: Alacrity?": 3,
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: L# Balanced ## — Shift": 32,
+    "prompt: Moss (Tenet)": 12,
+    "prompt: Versatility": 3,
+    "prompt: Heavy Balanced (Steel)": 19,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 18,
+    "prompt: Warden Ward": 25,
+    "prompt: Stasis: L# Balanced ##": 5
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [Soma0AymIHxbcoCa] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Stagnation #2"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [Soma0AymIHxbcoCa] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

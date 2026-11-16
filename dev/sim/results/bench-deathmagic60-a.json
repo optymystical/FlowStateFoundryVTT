@@ -1,0 +1,1261 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 65,
+  "winner": "monsters",
+  "pass": "bench-deathmagic60-a",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither+": 8,
+   "defend:dodge": 45,
+   "manifest:Waste+": 8,
+   "manifest:Execute+": 8,
+   "cast:Cut + Flame": 21,
+   "mod:Bleed": 16,
+   "mod:Rend": 11,
+   "mod:Ignition": 6,
+   "recoverEnergy": 3
+  },
+  "hp": {
+   "L60 Death #1#ppEm": "-21/1134",
+   "L60 Death #2#ijaf": "297/1134",
+   "L60 Death #3#qBcL": "544/1134",
+   "L60 Slashing #1#ia9y": "1098/1098",
+   "L60 Slashing #2#LHd2": "1134/1134",
+   "L60 Slashing #3#Rp1T": "1134/1134"
+  },
+  "down": [
+   "L60 Death #1",
+   "L60 Death #2",
+   "L60 Death #3"
+  ],
+  "weapons": {
+   "Manifest: Wither (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2",
+     "L60 Death #3"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2",
+     "L60 Death #3"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2",
+     "L60 Death #3"
+    ]
+   },
+   "Spell: Cut + Flame [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 9,
+    "crits": 3,
+    "misses": 12,
+    "damage": 547,
+    "ap": 63,
+    "kills": 0,
+    "users": [
+     "L60 Slashing #3",
+     "L60 Slashing #1",
+     "L60 Slashing #2"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 3,
+    "users": []
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Death #1",
+    "dealt": 0,
+    "taken": 143,
+    "hits": 3,
+    "attacks": 3
+   },
+   {
+    "name": "L60 Slashing #1",
+    "dealt": 195,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 7
+   },
+   {
+    "name": "L60 Death #2",
+    "dealt": 0,
+    "taken": 227,
+    "hits": 6,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Death #3",
+    "dealt": 0,
+    "taken": 177,
+    "hits": 5,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Slashing #3",
+    "dealt": 105,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 8
+   },
+   {
+    "name": "L60 Slashing #2",
+    "dealt": 247,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Death #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 10,
+    "manifests": 3,
+    "used": {
+     "manifest:Wither+": 1,
+     "manifest:Waste+": 1,
+     "manifest:Execute+": 1,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L60 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24,
+     "cast:Cut + Flame": 7,
+     "mod:Bleed": 5,
+     "mod:Rend": 4,
+     "mod:Ignition": 2,
+     "recoverEnergy": 3
+    },
+    "turnMoved": 0,
+    "casts": 7
+   },
+   {
+    "name": "L60 Death #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 9,
+    "used": {
+     "manifest:Wither+": 3,
+     "manifest:Waste+": 3,
+     "manifest:Execute+": 3,
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "L60 Death #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Wither+": 4,
+     "manifest:Waste+": 4,
+     "manifest:Execute+": 4,
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "L60 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Cut + Flame": 8,
+     "mod:Bleed": 6,
+     "mod:Rend": 4,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "L60 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 5,
+     "mod:Rend": 3,
+     "mod:Ignition": 2
+    }
+   }
+  ],
+  "trees": {
+   "L60 Death #1": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #2": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #3": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   }
+  },
+  "gear": {
+   "L60 Death #1": [
+    "Unarmed G1"
+   ],
+   "L60 Death #2": [
+    "Unarmed G1"
+   ],
+   "L60 Death #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Death #1": [],
+   "L60 Death #2": [],
+   "L60 Death #3": [],
+   "L60 Slashing #1": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing #2": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2268,
+    "monsterHp": 3366,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1726,
+    "monsterHp": 3366,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1182,
+    "monsterHp": 3366,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 841,
+    "monsterHp": 3366,
+    "partyDown": 3,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Death #1": 36,
+    "L60 Slashing #1": 585,
+    "L60 Slashing #2": 1446,
+    "L60 Slashing #3": 332
+   },
+   "taken": {
+    "L60 Slashing #1": 36,
+    "L60 Death #1": 1134,
+    "L60 Death #3": 590,
+    "L60 Death #2": 837
+   },
+   "unattributed": 198
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 215,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 1799,
+   "monsters": 36
+  },
+  "lostBy": {
+   "party": 2561,
+   "monsters": 36
+  },
+  "directTaken": {
+   "party": 547,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Death ##: Alacrity?": 3,
+    "prompt: L# Slashing ##: Alacrity?": 3,
+    "prompt: Mortal Coil (Tenet)": 7,
+    "prompt: Warden Ward": 32
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 32,
+  "winner": "monsters",
+  "pass": "bench-deathmagic60-a",
+  "rounds": 2,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 12,
+   "mod:Bleed": 12,
+   "mod:Rend": 6,
+   "mod:Ignition": 6,
+   "defend:dodge": 21,
+   "manifest:Wither+": 3,
+   "manifest:Waste+": 3,
+   "manifest:Execute+": 3
+  },
+  "hp": {
+   "L60 Death #1#aApV": "294/1134",
+   "L60 Death #2#EssG": "439/1134",
+   "L60 Death #3#rHWr": "510/1134",
+   "L60 Slashing #1#YgbH": "1134/1134",
+   "L60 Slashing #2#x4RN": "1134/1134",
+   "L60 Slashing #3#rsqg": "1134/1134"
+  },
+  "down": [
+   "L60 Death #1",
+   "L60 Death #2",
+   "L60 Death #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 8,
+    "crits": 4,
+    "misses": 4,
+    "damage": 433,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L60 Slashing #3",
+     "L60 Slashing #1",
+     "L60 Slashing #2"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 3,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 3,
+    "users": []
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Slashing #3",
+    "dealt": 299,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 4
+   },
+   {
+    "name": "L60 Death #3",
+    "dealt": 0,
+    "taken": 156,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Death #1",
+    "dealt": 0,
+    "taken": 103,
+    "hits": 1,
+    "attacks": 3
+   },
+   {
+    "name": "L60 Slashing #1",
+    "dealt": 72,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L60 Death #2",
+    "dealt": 0,
+    "taken": 174,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Slashing #2",
+    "dealt": 62,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 4,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "L60 Death #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L60 Death #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "manifest:Wither+": 1,
+     "manifest:Waste+": 1,
+     "manifest:Execute+": 1
+    },
+    "turnMoved": 10,
+    "manifests": 3
+   },
+   {
+    "name": "L60 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 9,
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 4,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "L60 Death #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 6,
+    "used": {
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2,
+     "manifest:Execute+": 2,
+     "defend:dodge": 8
+    }
+   },
+   {
+    "name": "L60 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 4,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    }
+   }
+  ],
+  "trees": {
+   "L60 Death #1": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #2": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #3": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   }
+  },
+  "gear": {
+   "L60 Death #1": [
+    "Unarmed G1"
+   ],
+   "L60 Death #2": [
+    "Unarmed G1"
+   ],
+   "L60 Death #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Death #1": [],
+   "L60 Death #2": [],
+   "L60 Death #3": [],
+   "L60 Slashing #1": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing #2": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1911,
+    "monsterHp": 3402,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1243,
+    "monsterHp": 3402,
+    "partyDown": 3,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing #3": 897,
+    "L60 Slashing #1": 689,
+    "L60 Slashing #2": 238
+   },
+   "taken": {
+    "L60 Death #3": 624,
+    "L60 Death #1": 840,
+    "L60 Death #2": 695
+   },
+   "unattributed": 335
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 313,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 1413,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 2159,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 433,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Death ##: Alacrity?": 3,
+    "prompt: L# Slashing ##: Alacrity?": 3,
+    "prompt: Warden Ward": 23,
+    "prompt: Mortal Coil (Tenet)": 3
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [ia9yFC1sZ77nmoVU] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Slashing #1"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [ia9yFC1sZ77nmoVU] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 26,
+  "winner": "monsters",
+  "pass": "bench-deathmagic60-a",
+  "rounds": 3,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 12,
+   "mod:Bleed": 12,
+   "mod:Rend": 6,
+   "mod:Ignition": 6,
+   "defend:dodge": 15,
+   "manifest:Wither+": 1,
+   "manifest:Waste+": 1,
+   "manifest:Execute+": 1
+  },
+  "hp": {
+   "L60 Death #1#OJVv": "464/1134",
+   "L60 Death #2#xYqG": "462/1134",
+   "L60 Death #3#klpb": "487/1134",
+   "L60 Slashing #1#WJyQ": "1100/1100",
+   "L60 Slashing #2#ebi8": "1134/1134",
+   "L60 Slashing #3#PfHi": "1134/1134"
+  },
+  "down": [
+   "L60 Death #1",
+   "L60 Death #2",
+   "L60 Death #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 7,
+    "crits": 3,
+    "misses": 5,
+    "damage": 445,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L60 Slashing #1",
+     "L60 Slashing #3",
+     "L60 Slashing #2"
+    ]
+   },
+   "Manifest: Wither (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 1,
+    "followups": 0,
+    "hits": 1,
+    "crits": 1,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 3,
+    "users": []
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Slashing #1",
+    "dealt": 79,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L60 Death #3",
+    "dealt": 0,
+    "taken": 110,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Slashing #3",
+    "dealt": 232,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L60 Death #2",
+    "dealt": 0,
+    "taken": 168,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Slashing #2",
+    "dealt": 134,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "L60 Death #1",
+    "dealt": 0,
+    "taken": 167,
+    "hits": 2,
+    "attacks": 3
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 4,
+     "mod:Rend": 2,
+     "mod:Ignition": 2,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L60 Death #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L60 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 4,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "L60 Death #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L60 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 4,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "L60 Death #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 3,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 7,
+     "manifest:Wither+": 1,
+     "manifest:Waste+": 1,
+     "manifest:Execute+": 1
+    },
+    "turnMoved": 0,
+    "manifests": 3
+   }
+  ],
+  "trees": {
+   "L60 Death #1": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #2": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #3": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   }
+  },
+  "gear": {
+   "L60 Death #1": [
+    "Unarmed G1"
+   ],
+   "L60 Death #2": [
+    "Unarmed G1"
+   ],
+   "L60 Death #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Death #1": [],
+   "L60 Death #2": [],
+   "L60 Death #3": [],
+   "L60 Slashing #1": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing #2": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2009,
+    "monsterHp": 3368,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1413,
+    "monsterHp": 3368,
+    "partyDown": 3,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing #1": 261,
+    "L60 Slashing #3": 1013,
+    "L60 Slashing #2": 402,
+    "L60 Death #1": 34
+   },
+   "taken": {
+    "L60 Death #3": 647,
+    "L60 Death #2": 672,
+    "L60 Death #1": 670,
+    "L60 Slashing #1": 34
+   },
+   "unattributed": 313
+  },
+  "painDivisor": 2,
+  "skips": [
+   "1:4 L60 Death #2: down"
+  ],
+  "burn": {
+   "party": 54,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 1490,
+   "monsters": 34
+  },
+  "lostBy": {
+   "party": 1989,
+   "monsters": 34
+  },
+  "directTaken": {
+   "party": 445,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Death ##: Alacrity?": 3,
+    "prompt: L# Slashing ##: Alacrity?": 3,
+    "prompt: Warden Ward": 18,
+    "prompt: Mortal Coil (Tenet)": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [YgbHcAyj5fYSdSgc] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Death #2"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [YgbHcAyj5fYSdSgc] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

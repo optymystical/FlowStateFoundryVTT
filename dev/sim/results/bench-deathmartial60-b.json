@@ -1,0 +1,1471 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 175,
+  "winner": "party",
+  "pass": "bench-deathmartial60-b",
+  "rounds": 9,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 48,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 3,
+   "Versatility": 3,
+   "Parry": 3,
+   "Unstoppable": 3,
+   "Brace": 3,
+   "opt:slam=knockback": 16,
+   "defend:dodge": 142,
+   "limber:skipped": 23,
+   "recoverEnergy": 3,
+   "manifest:Wither+": 15,
+   "defend:shift": 12,
+   "limber": 52,
+   "manifest:Waste+": 15,
+   "manifest:Execute+": 15,
+   "opt:slam=both": 10
+  },
+  "hp": {
+   "L60 Balanced #1#fPcZ": "676/815",
+   "L60 Balanced #2#UnWt": "1134/1134",
+   "L60 Balanced #3#MU4e": "1134/1134",
+   "L60 Death #1#G6FQ": "530/1134",
+   "L60 Death #2#9Bqm": "526/1134",
+   "L60 Death #3#mxUP": "543/1134"
+  },
+  "down": [
+   "L60 Death #1",
+   "L60 Death #2",
+   "L60 Death #3"
+  ],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 49,
+    "followups": 48,
+    "hits": 47,
+    "crits": 15,
+    "misses": 50,
+    "damage": 1803,
+    "ap": 147,
+    "kills": 3,
+    "users": [
+     "L60 Balanced #1",
+     "L60 Balanced #3",
+     "L60 Balanced #2"
+    ]
+   },
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #2",
+     "L60 Death #3",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Waste (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #2",
+     "L60 Death #3",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Execute (Manifest) [M]": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 9,
+    "crits": 3,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #2",
+     "L60 Death #3",
+     "L60 Death #1"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 737,
+    "taken": 0,
+    "hits": 21,
+    "attacks": 34
+   },
+   {
+    "name": "L60 Death #1",
+    "dealt": 0,
+    "taken": 604,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 648,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 34
+   },
+   {
+    "name": "L60 Death #2",
+    "dealt": 0,
+    "taken": 608,
+    "hits": 5,
+    "attacks": 15
+   },
+   {
+    "name": "L60 Death #3",
+    "dealt": 0,
+    "taken": 591,
+    "hits": 10,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 418,
+    "taken": 0,
+    "hits": 14,
+    "attacks": 29
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Balanced #1",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 95,
+    "attacks": 34,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 16,
+     "recoverEnergy": 1,
+     "defend:shift": 12,
+     "defend:dodge": 45,
+     "limber": 33
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Death #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 26,
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2,
+     "manifest:Execute+": 2
+    },
+    "turnMoved": 0,
+    "manifests": 6
+   },
+   {
+    "name": "L60 Balanced #3",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 97.62087348130012,
+    "attacks": 34,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "limber": 9,
+     "limber:skipped": 3
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Death #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 15,
+    "used": {
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 5,
+     "manifest:Execute+": 5,
+     "defend:dodge": 27
+    }
+   },
+   {
+    "name": "L60 Death #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 24,
+    "used": {
+     "manifest:Wither+": 8,
+     "manifest:Waste+": 8,
+     "manifest:Execute+": 8,
+     "defend:dodge": 44
+    }
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 95.66372975210777,
+    "attacks": 29,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 4,
+     "recoverEnergy": 1,
+     "limber": 10
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L60 Balanced #1": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #2": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #3": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   }
+  },
+  "gear": {
+   "L60 Balanced #1": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Death #1": [
+    "Unarmed"
+   ],
+   "L60 Death #2": [
+    "Unarmed"
+   ],
+   "L60 Death #3": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Balanced #1": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #3": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Death #1": [],
+   "L60 Death #2": [],
+   "L60 Death #3": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3262,
+    "monsterHp": 3382,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3183,
+    "monsterHp": 2919,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3150,
+    "monsterHp": 2798,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 3083,
+    "monsterHp": 2527,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 3017,
+    "monsterHp": 2190,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 2982,
+    "monsterHp": 2190,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 2944,
+    "monsterHp": 2159,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 2944,
+    "monsterHp": 1869,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 2944,
+    "monsterHp": 1599,
+    "partyDown": 0,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Balanced #1": 737,
+    "L60 Death #3": 253,
+    "L60 Death #1": 91,
+    "L60 Balanced #3": 648,
+    "L60 Death #2": 114,
+    "L60 Balanced #2": 418
+   },
+   "taken": {
+    "L60 Death #1": 604,
+    "L60 Balanced #1": 458,
+    "L60 Death #2": 608,
+    "L60 Death #3": 591
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1803
+  },
+  "lostBy": {
+   "party": 458,
+   "monsters": 1803
+  },
+  "directTaken": {
+   "party": 1803,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: L# Death ##: Alacrity?": 3,
+    "prompt: Versatility": 3,
+    "prompt: Heavy Balanced (Steel)": 49,
+    "prompt: Warden Ward": 72,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 48,
+    "prompt: L# Balanced ## — Shift": 12,
+    "prompt: Mortal Coil (Tenet)": 10
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 200,
+  "winner": "monsters",
+  "pass": "bench-deathmartial60-b",
+  "rounds": 11,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 37,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither+": 27,
+   "defend:shift": 27,
+   "defend:dodge": 155,
+   "limber": 64,
+   "manifest:Waste+": 27,
+   "manifest:Execute+": 25,
+   "opt:ability=shift": 3,
+   "Versatility": 3,
+   "Parry": 3,
+   "Unstoppable": 3,
+   "Brace": 2,
+   "opt:slam=knockback": 14,
+   "limber:skipped": 22,
+   "recoverEnergy": 3,
+   "opt:slam=both": 6,
+   "manifest:Execute": 2
+  },
+  "hp": {
+   "L60 Balanced #1#bbgG": "729/862",
+   "L60 Balanced #2#Wsih": "538/749",
+   "L60 Balanced #3#d4aH": "707/818",
+   "L60 Death #1#20zP": "514/1134",
+   "L60 Death #2#tkKa": "575/1134",
+   "L60 Death #3#UPHb": "1134/1134"
+  },
+  "down": [
+   "L60 Balanced #1",
+   "L60 Balanced #2",
+   "L60 Balanced #3",
+   "L60 Death #1"
+  ],
+  "weapons": {
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 27,
+    "followups": 0,
+    "hits": 10,
+    "crits": 5,
+    "misses": 17,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2",
+     "L60 Death #3"
+    ]
+   },
+   "Manifest: Waste (Manifest) [M]": {
+    "attacks": 27,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 18,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2",
+     "L60 Death #3"
+    ]
+   },
+   "Manifest: Execute (Manifest) [M]": {
+    "attacks": 27,
+    "followups": 0,
+    "hits": 16,
+    "crits": 8,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2",
+     "L60 Death #3"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 37,
+    "followups": 37,
+    "hits": 40,
+    "crits": 14,
+    "misses": 34,
+    "damage": 1179,
+    "ap": 111,
+    "kills": 1,
+    "users": [
+     "L60 Balanced #3",
+     "L60 Balanced #1",
+     "L60 Balanced #2"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Death #1",
+    "dealt": 0,
+    "taken": 620,
+    "hits": 6,
+    "attacks": 15
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 295,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 691,
+    "taken": 0,
+    "hits": 27,
+    "attacks": 42
+   },
+   {
+    "name": "L60 Death #2",
+    "dealt": 0,
+    "taken": 559,
+    "hits": 12,
+    "attacks": 33
+   },
+   {
+    "name": "L60 Death #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 33
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 193,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 22
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Death #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 15,
+    "used": {
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 5,
+     "manifest:Execute+": 5,
+     "defend:dodge": 42
+    }
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 75,
+    "attacks": 10,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:shift": 19,
+     "defend:dodge": 27,
+     "limber": 18,
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "recoverEnergy": 1,
+     "limber:skipped": 3
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Balanced #3",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 87.62087348130012,
+    "attacks": 42,
+    "turns": 11,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 8,
+     "recoverEnergy": 1,
+     "limber": 31,
+     "defend:dodge": 25,
+     "defend:shift": 4
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Death #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 33,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 33,
+    "used": {
+     "manifest:Wither+": 11,
+     "manifest:Waste+": 11,
+     "manifest:Execute+": 10,
+     "defend:dodge": 32,
+     "manifest:Execute": 1
+    }
+   },
+   {
+    "name": "L60 Death #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 33,
+    "turns": 11,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 33,
+    "used": {
+     "manifest:Wither+": 11,
+     "manifest:Waste+": 11,
+     "manifest:Execute+": 10,
+     "manifest:Execute": 1
+    }
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 85.66372975210777,
+    "attacks": 22,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 11,
+     "recoverEnergy": 1,
+     "limber": 15,
+     "defend:dodge": 29,
+     "defend:shift": 4
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L60 Balanced #1": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #2": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #3": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   }
+  },
+  "gear": {
+   "L60 Balanced #1": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Death #1": [
+    "Unarmed"
+   ],
+   "L60 Death #2": [
+    "Unarmed"
+   ],
+   "L60 Death #3": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Balanced #1": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #3": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Death #1": [],
+   "L60 Death #2": [],
+   "L60 Death #3": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3311,
+    "monsterHp": 3330,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3095,
+    "monsterHp": 3173,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2997,
+    "monsterHp": 2946,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2756,
+    "monsterHp": 2946,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2650,
+    "monsterHp": 2730,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 2536,
+    "monsterHp": 2609,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 2401,
+    "monsterHp": 2386,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 2247,
+    "monsterHp": 2382,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 2148,
+    "monsterHp": 2382,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 2110,
+    "monsterHp": 2382,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 1974,
+    "monsterHp": 2223,
+    "partyDown": 3,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Death #2": 445,
+    "L60 Death #3": 667,
+    "L60 Balanced #2": 193,
+    "L60 Death #1": 316,
+    "L60 Balanced #3": 691,
+    "L60 Balanced #1": 295
+   },
+   "taken": {
+    "L60 Balanced #1": 405,
+    "L60 Death #1": 620,
+    "L60 Balanced #2": 596,
+    "L60 Death #2": 559,
+    "L60 Balanced #3": 427
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 249,
+   "monsters": 1179
+  },
+  "lostBy": {
+   "party": 1428,
+   "monsters": 1179
+  },
+  "directTaken": {
+   "party": 1179,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: L# Death ##: Alacrity?": 3,
+    "prompt: L# Balanced ## — Shift": 27,
+    "prompt: Versatility": 3,
+    "prompt: Heavy Balanced (Steel)": 37,
+    "prompt: Warden Ward": 75,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 37,
+    "prompt: Mortal Coil (Tenet)": 20
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 184,
+  "winner": "party",
+  "pass": "bench-deathmartial60-b",
+  "rounds": 9,
+  "partyLeft": 2,
+  "monstersLeft": 0,
+  "followups": 39,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither+": 21,
+   "defend:shift": 25,
+   "defend:dodge": 146,
+   "limber": 69,
+   "manifest:Waste+": 21,
+   "manifest:Execute+": 21,
+   "opt:ability=shift": 3,
+   "Versatility": 3,
+   "Parry": 3,
+   "opt:slam=both": 7,
+   "recoverEnergy": 3,
+   "Unstoppable": 2,
+   "Brace": 2,
+   "opt:slam=knockback": 9,
+   "limber:skipped": 19,
+   "opt:spinCycle": 5
+  },
+  "hp": {
+   "L60 Balanced #1#p57B": "774/1010",
+   "L60 Balanced #2#WU6y": "797/837",
+   "L60 Balanced #3#21PQ": "1134/1134",
+   "L60 Death #1#LC4W": "560/1134",
+   "L60 Death #2#0LNt": "558/1134",
+   "L60 Death #3#odYo": "463/1134"
+  },
+  "down": [
+   "L60 Balanced #1",
+   "L60 Death #1",
+   "L60 Death #2",
+   "L60 Death #3"
+  ],
+  "weapons": {
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 15,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2",
+     "L60 Death #3"
+    ]
+   },
+   "Manifest: Waste (Manifest) [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 17,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2",
+     "L60 Death #3"
+    ]
+   },
+   "Manifest: Execute (Manifest) [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 9,
+    "crits": 6,
+    "misses": 12,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #1",
+     "L60 Death #2",
+     "L60 Death #3"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 39,
+    "followups": 39,
+    "hits": 44,
+    "crits": 18,
+    "misses": 39,
+    "damage": 1821,
+    "ap": 117,
+    "kills": 3,
+    "users": [
+     "L60 Balanced #1",
+     "L60 Balanced #3",
+     "L60 Balanced #2"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Death #1",
+    "dealt": 0,
+    "taken": 574,
+    "hits": 1,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 112,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Death #2",
+    "dealt": 0,
+    "taken": 576,
+    "hits": 7,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Death #3",
+    "dealt": 0,
+    "taken": 671,
+    "hits": 11,
+    "attacks": 27
+   },
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 529,
+    "taken": 0,
+    "hits": 16,
+    "attacks": 34
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 1180,
+    "taken": 0,
+    "hits": 23,
+    "attacks": 34
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Death #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Wither+": 4,
+     "manifest:Waste+": 4,
+     "manifest:Execute+": 4,
+     "defend:dodge": 34
+    }
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 75,
+    "attacks": 10,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:shift": 19,
+     "defend:dodge": 36,
+     "limber": 24,
+     "Versatility": 1,
+     "Parry": 1,
+     "recoverEnergy": 1,
+     "limber:skipped": 9
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Death #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 24,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 24,
+    "used": {
+     "manifest:Wither+": 8,
+     "manifest:Waste+": 8,
+     "manifest:Execute+": 8,
+     "defend:dodge": 27
+    }
+   },
+   {
+    "name": "L60 Death #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 11.180339887498949,
+    "attacks": 27,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 27,
+    "used": {
+     "manifest:Wither+": 9,
+     "manifest:Waste+": 9,
+     "manifest:Execute+": 9,
+     "defend:dodge": 22
+    }
+   },
+   {
+    "name": "L60 Balanced #3",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 94.6919412931656,
+    "attacks": 34,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 2,
+     "recoverEnergy": 1,
+     "limber": 14
+    },
+    "turnMoved": 7.0710678118654755
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 85.66372975210777,
+    "attacks": 34,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 8,
+     "recoverEnergy": 1,
+     "limber": 31,
+     "defend:shift": 6,
+     "defend:dodge": 27
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L60 Balanced #1": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #2": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #3": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   }
+  },
+  "gear": {
+   "L60 Balanced #1": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G11",
+    "Medium Armor (Hard Leather) G8"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G11",
+    "Medium Armor (Hard Leather) G8"
+   ]
+  },
+  "monsterGear": {
+   "L60 Death #1": [
+    "Unarmed"
+   ],
+   "L60 Death #2": [
+    "Unarmed"
+   ],
+   "L60 Death #3": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Balanced #1": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #2": [
+    "Heavy Balanced (Steel): 1980/1980",
+    "Medium Armor (Hard Leather): 420/420"
+   ],
+   "L60 Balanced #3": [
+    "Heavy Balanced (Steel): 1980/1980",
+    "Medium Armor (Hard Leather): 420/420"
+   ],
+   "L60 Death #1": [],
+   "L60 Death #2": [],
+   "L60 Death #3": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3305,
+    "monsterHp": 3367,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3305,
+    "monsterHp": 3115,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3188,
+    "monsterHp": 2897,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3042,
+    "monsterHp": 2828,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 3042,
+    "monsterHp": 2714,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 2952,
+    "monsterHp": 2575,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 2821,
+    "monsterHp": 2463,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 2762,
+    "monsterHp": 1821,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 9,
+    "partyHp": 2705,
+    "monsterHp": 1581,
+    "partyDown": 1,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Death #1": 42,
+    "L60 Death #2": 228,
+    "L60 Balanced #3": 529,
+    "L60 Balanced #2": 1180,
+    "L60 Balanced #1": 112,
+    "L60 Death #3": 427
+   },
+   "taken": {
+    "L60 Balanced #1": 360,
+    "L60 Death #1": 574,
+    "L60 Death #2": 576,
+    "L60 Death #3": 671,
+    "L60 Balanced #2": 337
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1821
+  },
+  "lostBy": {
+   "party": 697,
+   "monsters": 1821
+  },
+  "directTaken": {
+   "party": 1821,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: L# Death ##: Alacrity?": 3,
+    "prompt: L# Balanced ## — Shift": 25,
+    "prompt: Mortal Coil (Tenet)": 11,
+    "prompt: Versatility": 3,
+    "prompt: Heavy Balanced (Steel)": 39,
+    "prompt: Warden Ward": 79,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 39
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [tkKaCjqyYSaom0su] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Balanced #3"
+    },
+    {
+     "level": "error",
+     "msg": "undefined id [UPHbKYIXa0nCiTQA] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Balanced #3"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [tkKaCjqyYSaom0su] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu",
+    "Error: undefined id [UPHbKYIXa0nCiTQA] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

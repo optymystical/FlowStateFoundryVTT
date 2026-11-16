@@ -212,7 +212,13 @@ const BENCHES = [
   // The first acid60 run: the AI spent its Threshold on the Slashing kit's Mods and the Cold side cast Cut, so here each side plays its own school.
   { key: "acidown60", level: 60, a: ["Acid", { school: "magic-acid", tag: "plays Acid" }], b: ["Cold", { school: "magic-cold", tag: "plays Cold" }] },
   { key: "fortune60", level: 60, a: "Fortune", b: "Life" },
-  { key: "stagnation60", level: 60, a: "Stagnation", b: "Death" }
+  { key: "stagnation60", level: 60, a: "Stagnation", b: "Death" },
+  // Stagnation after its buff and the Mire fix, away from its best case (a foe that only Manifests): against a Martial and a Magic build, with Death
+  // against the same two as the yardstick.
+  { key: "stagmartial60", level: 60, a: "Stagnation", b: "Balanced" },
+  { key: "stagmagic60", level: 60, a: "Stagnation", b: "Slashing" },
+  { key: "deathmartial60", level: 60, a: "Death", b: "Balanced" },
+  { key: "deathmagic60", level: 60, a: "Death", b: "Slashing" }
 ];
 const FIGHTS_PER_SIDE = 3;
 function benchBuild(level, spec) {

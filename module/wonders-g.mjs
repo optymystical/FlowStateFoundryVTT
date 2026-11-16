@@ -349,7 +349,7 @@ const STASIS_PICKS = { toll: "Toll", silt: "Silt", grind: "Grind", crush: "Crush
 /** The effects of reaching one stack count, at the Stagnation user's tier. `m` = how many times over (Stasis combines two of the same). */
 const EFFECTS = {
   async toll(t, caster, P, bs, m) {
-    const n = bold(bs, 2 * P * m);
+    const n = bold(bs, 3 * P * m);
     const { removed } = await removeEnergy(t, n);
     let html = `Toll: ${esc(t.name)} loses <strong>${removed}</strong> Energy`;
     const over = n - removed;
@@ -369,15 +369,15 @@ const EFFECTS = {
     return `Silt: ${esc(t.name)} gains <strong>${n} Slow</strong> stacks.`;
   },
   async grind(t, caster, P, bs, m, rolls) {
-    const r = await roll(`${P * m}d8`);
+    const r = await roll(`${P * m}d12`);
     rolls.push(r);
     const n = bold(bs, r.total);
     const outcome = await damageOutcome(t, n, "physical");
     await requestDamage(t, n, "physical", 0, null, { silent: true, shroudCtx: { attacker: caster.uuid } });
-    return `Grind: <strong>${n}</strong> physical damage (${P * m}d8 = ${r.total}).${damageOutcomeHTML(t, n, "physical", outcome)}`;
+    return `Grind: <strong>${n}</strong> physical damage (${P * m}d12 = ${r.total}).${damageOutcomeHTML(t, n, "physical", outcome)}`;
   },
   async crush(t, caster, P, bs, m, rolls) {
-    const f = await forceRoll({ stacks: bs, target: t, attacker: caster }, 12 * P * m, 8, "Crush (downward)");
+    const f = await forceRoll({ stacks: bs, target: t, attacker: caster }, 12 * P * m, 10, "Crush (downward)");
     rolls.push(f.r);
     return `${f.html}${f.feet > 0 ? await slamDown(t, f.feet) : ""}`;
   }

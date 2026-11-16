@@ -1915,8 +1915,8 @@ async function startExchange(actor, opts, targets) {
     if (foci && opts.spell?.fociFx) { const fa = foci.attackNet({ attacker: actor, target, o: opts }); if (fa.net) { atkNet += fa.net; spellNotes.push(...fa.notes); } else spellNotes.push(...fa.notes); }
     if (opts.spell && fx.profileFor(opts.spell.cores)?.strike && target.system.magical) { atkNet += 1; spellNotes.push("Strike: Advantage against a fully magical target"); }
     if (sm.convince && aff?.charmedBy(target, actor.uuid)) { atkNet += 1; spellNotes.push("Convince: Advantage (already Charmed by you)"); }
-    // Sticky (Acid T4): Advantage against a target with Stain stacks equal to or above their Pain Threshold.
-    if (opts.spell?.mods?.sticky && stainTotal(target.system.conditions ?? {}) >= (target.system.hp?.pain ?? Infinity)) { atkNet += 1; spellNotes.push("Sticky: Advantage (Stained)"); }
+    // Sticky (Acid T4): Advantage against a target with Stain stacks equal to or above their HP regeneration (an 8 hour rest's heal: the Con, Will and Build minimums).
+    if (opts.spell?.mods?.sticky && stainTotal(target.system.conditions ?? {}) >= (target.system.derived?.restHeal ?? Infinity)) { atkNet += 1; spellNotes.push("Sticky: Advantage (Stained)"); }
     // Exploit (Piercing T2): each stack consumes one Advantage for +4 die size (× Spell Power); stacks with no Advantage left are refunded.
     // A stolen action (Larceny, Enhanced) is rolled with the original attacker's dice.
     const dice = opts.dieOf ? (globalThis.fromUuidSync?.(opts.dieOf)?.system?.derived ?? d) : d;

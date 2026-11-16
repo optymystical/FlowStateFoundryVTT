@@ -2457,7 +2457,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Sticky",
-      "text": "1 Threshold, Spell Mod. This Spell has advantage on its attack rolls against targets with Stain stacks equal to or greater than their Pain Threshold (includes Solid Stains)."
+      "text": "1 Threshold, Spell Mod. This Spell has advantage on its attack rolls against targets with Stain stacks equal to or greater than their HP regeneration (includes Solid Stains)."
      }
     ]
    },
@@ -2468,7 +2468,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Catalyst",
-      "text": "2 Threshold, Spell Mod. After this Spell concludes its other effects, all targets who were hit by this Spell take damage from their Stain stacks that you have applied to them."
+      "text": "1 Threshold, Spell Mod. After this Spell concludes its other effects, all targets who were hit by this Spell take damage from their Stain stacks that you have applied to them."
      }
     ]
    }
@@ -5056,7 +5056,7 @@ export const TREES = [
      },
      {
       "name": "Toll (1 Stack)",
-      "text": "The target loses 2 energy. Energy below 0 becomes Supernatural damage at 1:1."
+      "text": "The target loses 3 energy. Energy below 0 becomes Supernatural damage at 1:1."
      },
      {
       "name": "Silt (2 Stacks)",
@@ -5075,7 +5075,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Grind (3 Stacks)",
-      "text": "The target takes 1d8 physical damage."
+      "text": "The target takes 1d12 physical damage."
      }
     ]
    },
@@ -5097,7 +5097,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Crush (5 Stacks)",
-      "text": "The target is hit with 12d8 downward Force."
+      "text": "The target is hit with 12d10 downward Force."
      }
     ]
    },

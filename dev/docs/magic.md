@@ -297,10 +297,10 @@
 - **Solidify: *2 Threshold, Spell Mod.*** Any Stains applied by this Spell are instead Solid Stains, acting like normal Stains but instead take 6 AP to remove and are removed separately from normal Stains.  
     
   **Tier 4: You unlock the following Spell Mod:**  
-- **Sticky: *1 Threshold, Spell Mod.*** This Spell has advantage on its attack rolls against targets with Stain stacks equal to or greater than their Pain Threshold (includes Solid Stains).  
+- **Sticky: *1 Threshold, Spell Mod.*** This Spell has advantage on its attack rolls against targets with Stain stacks equal to or greater than their HP regeneration (includes Solid Stains).  
     
   **Tier 5: You unlock the following Spell Mod:**  
-- **Catalyst:** ***2 Threshold, Spell Mod.*** After this Spell concludes its other effects, all targets who were hit by this Spell take damage from their Stain stacks that you have applied to them.
+- **Catalyst:** ***1 Threshold, Spell Mod.*** After this Spell concludes its other effects, all targets who were hit by this Spell take damage from their Stain stacks that you have applied to them.
 
 # **Magic T3 Skill Trees** {#magic-t3-skill-trees}
 

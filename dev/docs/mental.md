@@ -637,13 +637,13 @@
 **Tier 1: You gain the following Mode and Tenet:**
 
 - **Mire:** On hit, choose an action type: Martial Attack, Mental Manifest, or Magic Spell. Until the start of your next turn, whenever the target spends AP or RP on an action of a Mired type, it gains one Stagnation stack per point spent. Stagnation stacks are shared between all sources, and all are removed at the start of your next turn. A Manifest that would Mire an action type that is already Mired has no effect. As the target reaches each stack count below, that effect applies. **Enhanced:** Choose two action types.  
-- **Toll (1 Stack):** The target loses **2 energy**. Energy below 0 becomes Supernatural damage at 1:1.  
+- **Toll (1 Stack):** The target loses **3 energy**. Energy below 0 becomes Supernatural damage at 1:1.  
 - **Silt (2 Stacks):** The target gains **12 Slow stacks**.  
 - **Moss:** Only active while this is your selected Tenet. Once per round when you successfully hit a Manifest, the target gains one Stagnation stack.
 
 **Tier 2: Your Stagnation stacks gain the following effect:**
 
-- **Grind (3 Stacks):** The target takes **1d8 physical damage**.
+- **Grind (3 Stacks):** The target takes **1d12 physical damage**.
 
 **Tier 3: Your Stagnation stacks gain the following effect:**
 
@@ -651,7 +651,7 @@
 
 **Tier 4: Your Stagnation stacks gain the following effect:**
 
-- **Crush (5 Stacks):** The target is hit with **12d8 downward Force**.
+- **Crush (5 Stacks):** The target is hit with **12d10 downward Force**.
 
 **Tier 5: Your Stagnation stacks gain the following effect:**
 

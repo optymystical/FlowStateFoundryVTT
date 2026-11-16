@@ -174,7 +174,7 @@ await actions.actionSpent(orc, "martial", 3);
 ok2(!WG.stagnationOf(orc), "Points on an action that isn't Mired give no stacks");
 await WG.actionSpent(orc, { type: "mental", points: 2 });
 ok2(WG.stagnationOf(orc)?.count === 2, "Each point spent on a Mired action: a Stagnation stack");
-ok2(orc.system.energy.value === 100 - 2 * P_S, `Toll (1 stack): it loses ${2 * P_S} Energy`);
+ok2(orc.system.energy.value === 100 - 3 * P_S, `Toll (1 stack): it loses ${3 * P_S} Energy`);
 ok2(orc.system.conditions.slow === 12 * P_S, `Silt (2 stacks): ${12 * P_S} Slow`);
 await WG.actionSpent(orc, { type: "mental", points: 3 });
 ok2(WG.stagnationOf(orc).count === 5 && orc.system.hp.value === 432, "Without the higher tiers, counts 3 and up do nothing");
@@ -184,7 +184,7 @@ await reset(); dialog = () => ({});
 await hit(MIRE, { "choice:mire": "martial" });
 orc.system.energy.value = 1;
 await actions.actionSpent(orc, "martial", 1);
-ok2(orc.system.energy.value === 0 && orc.system.hp.value === 432 - (2 * P_S - 1), `The ${2 * P_S - 1} Energy it doesn't have becomes health loss`);
+ok2(orc.system.energy.value === 0 && orc.system.hp.value === 432 - (3 * P_S - 1), `The ${3 * P_S - 1} Energy it doesn't have becomes health loss`);
 
 console.log("== Grind, Wane, Crush, Stasis (T2–T5)");
 await reset(); tree(STAG, 5); dialog = () => ({});
@@ -193,7 +193,7 @@ ok2(D(fxs(orc, "mire")[0]).types.join() === "mental,magic", "Enhanced: two actio
 hp0 = orc.system.hp.value;
 seq = [7];
 await WG.actionSpent(orc, { type: "magic", points: 3 });
-ok2(hp0 - orc.system.hp.value === 7, "Grind (3 stacks): physical damage");
+ok2(hp0 - orc.system.hp.value === 7 && messages.some(m => /d12 = 7/.test(m.content)), "Grind (3 stacks): physical damage, on d12s");
 ok2(!WG.waneDie(orc, { spell: {} }), "Wane needs 4 or more stacks");
 seq = [400];
 await WG.actionSpent(orc, { type: "magic", points: 2 });
@@ -207,7 +207,7 @@ ok2(/Stasis/.test(asked) && orc.system.conditions.slow === slow0 + 24 * P_S, `St
 console.log("== Moss (Tenet) and clearing");
 await reset();
 await W.ACTS.moss({ mult: 1, bstacks: 0 }, hero, orc);
-ok2(WG.stagnationOf(orc)?.count === 1 && orc.system.energy.value === 98, "Moss: once per round on a Manifest hit, the target gains a Stagnation stack (and its Toll)");
+ok2(WG.stagnationOf(orc)?.count === 1 && orc.system.energy.value === 97, "Moss: once per round on a Manifest hit, the target gains a Stagnation stack (and its Toll)");
 ok2(!(await W.ACTS.moss({ mult: 1, bstacks: 0 }, hero, orc)), "…only once per round");
 await actions.mentalBeforeClear(ally);
 ok2(WG.stagnationOf(orc)?.count === 1, "Another creature's turn starting leaves them");

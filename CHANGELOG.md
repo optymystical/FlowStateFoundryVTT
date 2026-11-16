@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.98.9:** Balance (from the focused sims): Acid's **Sticky** now needs Stain stacks equal to the target's HP regeneration (the Con, Will and Build minimums an 8 hour rest heals) instead of their Pain Threshold, which took hundreds of stacks; **Catalyst** costs 1 Threshold (was 2). Stagnation: **Toll** takes 3 Energy (was 2), **Grind** deals 1d12 (was 1d8), **Crush** is 12d10 downward Force (was 12d8); Stasis doubles the new numbers.
+
 **0.98.8:** The attack dialog's Unarmed attack now defaults to the weight of your better stat: Heavy when Strength is higher, Light when Dexterity is (a tie keeps the fists' own weight). A Strength brawler no longer throws Light punches that roll no dice unless they change the pick.
 
 **0.98.7:** Sim-found fix: when a Ruin Jinx or Reversal changed an attack roll's number, the attack stopped with an error ("Cannot set property total"), since a Foundry roll's total can't be written directly. It now goes through the same helper the Order and Chaos charges use. The test rolls now behave like Foundry's, so this can't slip past the tests again.

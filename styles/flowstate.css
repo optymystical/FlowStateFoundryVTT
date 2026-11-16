@@ -79,6 +79,9 @@
 .flowstate .fs-combat-grid button { display: flex; flex-direction: column; align-items: center; line-height: 1.2; padding: 6px; height: auto; }
 .flowstate .fs-combat-grid small { opacity: .7; }
 .flowstate .fs-facts { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; font-size: .9em; align-items: center; }
+.flowstate .fs-fixed-dodge { display: inline-flex; align-items: center; gap: 6px; }
+.flowstate .fs-fixed-dodge label { display: inline-flex; align-items: center; gap: 4px; margin: 0; }
+.flowstate .fs-fixed-dodge input[type="number"] { width: 4.5em; }
 
 .flowstate .fs-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .flowstate .fs-cond { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }

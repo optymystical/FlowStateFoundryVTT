@@ -39,6 +39,12 @@
       <span><strong>Total stats</strong> {{d.totalStats}}</span>
       <span><strong>Attack</strong> d{{d.attackDie}}</span>
       <span><strong>Dodge</strong> 2d{{d.dodgeDie}}</span>
+      {{#if fixedDodge}}
+      <span class="fs-fixed-dodge" data-tooltip="On: attacks against this NPC don't roll a dodge; they're compared with this number (a hit when the attack is at least it, a crit at double)">
+        <label><input type="checkbox" name="flags.flowstate.fixedDodge.on" {{checked fixedDodge.on}} {{#unless fixedDodge.editable}}disabled{{/unless}}> <strong>Fixed dodge</strong></label>
+        <input type="number" name="flags.flowstate.fixedDodge.value" value="{{fixedDodge.value}}" min="0" step="1" {{#unless fixedDodge.editable}}disabled{{/unless}}>
+      </span>
+      {{/if}}
     </div>
   </section>
 </section>

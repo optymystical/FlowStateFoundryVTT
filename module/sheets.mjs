@@ -1130,6 +1130,8 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       carried: (() => { const c = carried(actor.items); return c.any ? `${c.pounds} lb · ${c.volume} ft³` : ""; })(),
       // Characters are always Size 3 until Ancestry exists; the GM can set NPC sizes.
       sizeEditable: this.isEditable && game.user.isGM && actor.type === "npc",
+      // NPCs: a fixed dodge (on/off and its value) that attacks are compared with instead of a dodge roll; the default value is the 2d roll's average.
+      fixedDodge: actor.type === "npc" ? (f => ({ on: !!f?.on, value: Number.isFinite(Number(f?.value)) && f?.value !== "" && f?.value != null ? Number(f.value) : sys.derived.dodgeDie + 1, editable: this.isEditable }))(actor.getFlag("flowstate", "fixedDodge")) : null,
       canSpendStats: this.isEditable && !sys.creation && sys.unspentStats > 0,
       statPointsLabel: `${sys.unspentStats} stat point${sys.unspentStats === 1 ? "" : "s"}`,
       skillView: this.#skillContext(),

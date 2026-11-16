@@ -2179,6 +2179,14 @@ export async function defend(message, index, choice) {
   if (choice === "dash") return dashReaction(message, index, target, entry);
   if (choice === "shift") return shift(message, index, target, entry);
 
+  // Fixed dodge (an NPC's GM setting): no dodge roll; the attack is compared with the set value (no Advantage or Disadvantage, nothing that changes a dodge roll).
+  const fixed = choice === "dodge" ? fixedDodgeOf(target) : null;
+  if (fixed !== null) {
+    let result = resolveAttack(entry.total, fixed);
+    if ((o.mental?.ward?.autoHit || o.mental?.autoHit) && !result.hit) result = { ...result, hit: true, outcome: "Hit" };
+    return postDefense(target, message, index, target, result, null, `Fixed dodge ${fixed} (no roll) against the attack's ${entry.total}`);
+  }
+
   // Sword and Board (Defender T3): the shield attack is resolved first; if it hit, this dodge has Disadvantage.
   let boardNet = 0;
   if (o.swordBoard) {
@@ -2904,6 +2912,15 @@ function defenseChoices(message, index) {
   return out;
 }
 
+/** An NPC's fixed dodge (flag `fixedDodge` {on, value}, set on its sheet): the number attacks are compared with instead of a dodge roll, or null when it's off. */
+export function fixedDodgeOf(actor) {
+  if (actor?.type !== "npc") return null;
+  const f = actor.getFlag?.("flowstate", "fixedDodge");
+  if (!f?.on) return null;
+  const v = Math.floor(Number(f.value));
+  return Number.isFinite(v) && v >= 0 ? v : null;
+}
+
 const autoDefendInFlight = new Set();
 /**
  * Auto-Dodge (automation): a character with it on answers an attack on its own, on its answering player's client: it tries the reactions picked
@@ -2918,14 +2935,15 @@ export async function autoDefend(message) {
     const target = fromUuidSync(entry.uuid);
     if (!target || !runsHere(target)) continue;
     const settings = auto.automationOf(target);
-    if (!settings.dodge.on) continue;
+    const fixed = fixedDodgeOf(target) !== null;          // a fixed dodge answers every attack at once (no reactions first)
+    if (!settings.dodge.on && !fixed) continue;
     const offered = defenseChoices(message, index);
     if (!offered.has("dodge")) continue;
     autoDefendInFlight.add(key);
     const loud = quietNotifications();
     try {
       const prefix = `${entry.name} — `;
-      for (const choice of auto.dodgeTries(settings)) {
+      for (const choice of fixed ? [] : auto.dodgeTries(settings)) {
         if (findDefense(message.id, index)) break;
         if (offered.has(choice)) await withAutoAnswers(prefix, { mode: settings.dodge.shiftMode }, () => defend(message, index, choice));
       }
@@ -4378,11 +4396,12 @@ async function spellHit(attacker, target, o, result, entry = null, dodgeTotal = 
   }
   // Beatdown (Crushing T4): an extra dodge roll against the initial attack roll, or knocked prone.
   if (m.beatdown && entry) {
-    const die = target.system.derived.dodgeDie;
-    const dodge = await evaluate(poolFormula(2, die, 0));
-    rolls.push(dodge);
-    const down = dodge.total < entry.total;
-    html.push(`<div class="fs-result">Beatdown: ${esc(target.name)} dodges again (${dodge.total} vs ${entry.total}): ${down ? "<strong>knocked prone</strong>" : "stays on their feet"}.</div>`);
+    const die = target.system.derived.dodgeDie, fixed = fixedDodgeOf(target);
+    const dodge = fixed === null ? await evaluate(poolFormula(2, die, 0)) : null;          // a fixed dodge (NPC) is the number, no roll
+    if (dodge) rolls.push(dodge);
+    const dTotal = dodge ? dodge.total : fixed;
+    const down = dTotal < entry.total;
+    html.push(`<div class="fs-result">Beatdown: ${esc(target.name)} dodges again (${dTotal}${dodge ? "" : ", fixed"} vs ${entry.total}): ${down ? "<strong>knocked prone</strong>" : "stays on their feet"}.</div>`);
     if (down && !target.statuses?.has("prone")) await setStatus(target, "prone", true);
   }
   const fd = fx.forceDice(profile, sp.power, { direct: false, crit: !!result.crit });

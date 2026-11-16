@@ -113,6 +113,37 @@ const a4 = messages.at(-1);
 await actions.autoDefend(a4);
 ok(!actions.findDefense(a4.id, 0), "Auto-Dodge off: nothing answers");
 
+console.log("== Fixed dodge (an NPC's sheet setting): no dodge roll, the attack is compared with the number");
+const ogre = mkActor("Ogre"); ogre.type = "npc"; ogre.hasPlayerOwner = false; ogre.testUserPermission = () => false;
+await ogre.setFlag("flowstate", "fixedDodge", { on: true, value: 20 });
+const cudgel = mkWeapon(hero, "Cudgel", { weaponType: "striker", weight: "light" });
+refill(hero); combat.combatant = { actor: hero }; game.user.targets = new Set([{ actor: ogre }]);
+const hOpts = { ...orcOpts, label: "Cudgel", itemUuid: cudgel.uuid };
+const fixedTry = async (atkRoll) => {
+  seq = [atkRoll]; await actions.performAttack(hero, hOpts);
+  const m = messages.at(-1);
+  seq = [1, 1, 1]; game.user.id = "gm"; await actions.autoDefend(m); game.user.id = "p1";
+  return { d: actions.findDefense(m.id, 0), left: seq.length };
+};
+dialog = () => { throw new Error("the fixed dodge showed a dialog"); };
+let fx = await fixedTry(19);
+ok(fx.d && !fx.d.flags.flowstate.defense.result.hit && /Fixed dodge 20/.test(text(fx.d)) && fx.left === 3, "On: answered at once with no dodge roll; 19 against a fixed 20 misses");
+fx = await fixedTry(20);
+ok(fx.d?.flags.flowstate.defense.result.hit && !fx.d.flags.flowstate.defense.result.crit, "20 against 20: a hit");
+fx = await fixedTry(40);
+ok(fx.d?.flags.flowstate.defense.result.crit, "40 against 20: a crit (double the dodge)");
+ok(actions.fixedDodgeOf(ogre) === 20 && actions.fixedDodgeOf(hero) === null, "only NPCs have one (a character's flag is ignored)");
+await ogre.setFlag("flowstate", "fixedDodge", { on: false });
+seq = [25]; await actions.performAttack(hero, hOpts);
+const fOff = messages.at(-1);
+game.user.id = "gm"; await actions.autoDefend(fOff); game.user.id = "p1";
+ok(!actions.findDefense(fOff.id, 0) && actions.fixedDodgeOf(ogre) === null, "Off: nothing answers on its own; the NPC dodges as usual");
+ogre.isOwner = true; dialog = () => ({ net: 0 }); seq = [12, 12];
+await actions.defend(fOff, 0, "dodge");
+ok(actions.findDefense(fOff.id, 0)?.flags.flowstate.defense.result.hit === true && /Dodge \(2d/.test(text(actions.findDefense(fOff.id, 0))), "Off: the dodge is rolled again (24 against 25 hits)");
+
+combat.combatant = { actor: orc }; game.user.targets = new Set([{ actor: hero }]); dialog = () => ({ net: 0 });          // back to the Orc attacking the Hero
+
 console.log("== Auto-Limber");
 refill(hero); hero.statuses.delete("limber");
 await hero.setFlag("flowstate", "automation", { limber: true, dodge: { on: true } });

@@ -10,7 +10,7 @@
  *    Territorial, Unbowed).
  * Uses are tracked in flags: `ancUse` (name → the round/turn/combat it was used in) and `ancRest` (name → true until the next 8 hour rest).
  */
-import { post, spendPoints, requestGM, inActiveCombat, turnKey, setActorFlag, tokenDistance, attackerToken, rollKit, performAttack, GM_ACTIONS,
+import { post, fixedDodgeOf, spendPoints, requestGM, inActiveCombat, turnKey, setActorFlag, tokenDistance, attackerToken, rollKit, performAttack, GM_ACTIONS,
   besideTokenPosition, setStatus, energyRestoreAdjust, dodgeNetKnown } from "./actions.mjs";
 import { askFor } from "./ask.mjs";
 import { allied } from "./sides.mjs";
@@ -305,11 +305,12 @@ async function topple(actor) {
   if (!(await spendPoints(actor, "rp", 2, "Topple"))) return null;
   await use(actor, "topple", "round");
   const atk = await rollKit.evaluate(poolFormula(1, actor.system.derived.attackDie, rollKit.noAdvantage(actor, rollKit.net(actor, "attack"))));
-  const dodge = await rollKit.evaluate(poolFormula(2, t.system.derived.dodgeDie, 0));
-  const res = resolveAttack(atk.total, dodge.total);
+  const fixed = fixedDodgeOf(t);          // a fixed dodge (NPC): compared with, not rolled
+  const dodge = fixed === null ? await rollKit.evaluate(poolFormula(2, t.system.derived.dodgeDie, 0)) : null;
+  const res = resolveAttack(atk.total, dodge ? dodge.total : fixed);
   if (res.hit) await setStatus(t, "prone", true);
-  return post(actor, { title: `${esc(actor.name)} — Topple`, rolls: [atk, dodge],
-    body: `${await rollKit.rollBlock(atk, `Attack (d${actor.system.derived.attackDie})`)}${await rollKit.rollBlock(dodge, `${esc(t.name)}'s dodge (2d${t.system.derived.dodgeDie}, without the Disadvantage)`)}
+  return post(actor, { title: `${esc(actor.name)} — Topple`, rolls: dodge ? [atk, dodge] : [atk],
+    body: `${await rollKit.rollBlock(atk, `Attack (d${actor.system.derived.attackDie})`)}${dodge ? await rollKit.rollBlock(dodge, `${esc(t.name)}'s dodge (2d${t.system.derived.dodgeDie}, without the Disadvantage)`) : `<div class="fs-notes">${esc(t.name)}'s fixed dodge: ${fixed}</div>`}
       <div class="fs-result">${res.hit ? `<strong>${esc(t.name)} is knocked Prone</strong> (no damage).` : `${esc(t.name)} keeps their footing.`}</div>` });
 }
 

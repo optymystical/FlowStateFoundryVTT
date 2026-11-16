@@ -598,10 +598,12 @@ function attackFields(actor, item, base, followup = null, { presetGrapple = fals
   const eff = actor.system.derived.effective;
   const stats = { str: eff.str.value, dex: eff.dex.value };
   const unarmedProfile = weight => weaponProfile({ type: "unarmed", weight }, stats);
+  // The default is the weight of the better stat (Heavy: Strength, Light: Dexterity; a tie keeps the item's), so a Strength brawler doesn't throw diceless Light punches.
+  const defWeight = stats.str > stats.dex ? "heavy" : stats.dex > stats.str ? "light" : w.weight;
   const weightField = unarmed && !followup?.weight
     ? `<div class="form-group"><label>Unarmed attack</label><select name="weight">
-        <option value="light" ${w.weight === "light" ? "selected" : ""}>Light — ${unarmedProfile("light").display}, 2 AP (Dex)</option>
-        <option value="heavy" ${w.weight === "heavy" ? "selected" : ""}>Heavy — ${unarmedProfile("heavy").display}, 3 AP (Str)</option>
+        <option value="light" ${defWeight === "light" ? "selected" : ""}>Light — ${unarmedProfile("light").display}, 2 AP (Dex)</option>
+        <option value="heavy" ${defWeight === "heavy" ? "selected" : ""}>Heavy — ${unarmedProfile("heavy").display}, 3 AP (Str)</option>
        </select></div>` : "";
   // Weight-specific options: hidden unless the matching Light/Heavy is picked (only when the dialog offers the choice).
   const byWeight = (weight, html) => weightField && html ? `<div data-fs-weight="${weight}">${html}</div>` : html;

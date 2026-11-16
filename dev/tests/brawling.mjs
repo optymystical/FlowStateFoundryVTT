@@ -55,6 +55,14 @@ const own = seen.split("fs-dialog-head")[0], fuPart = seen.split("fs-dialog-head
 ok(own.includes("Twin Fang") && !own.includes("Jab") && own.includes("Dragon Lash") && own.includes("Kick Out"), "main attack offers Twin Fang, Dragon Lash, Kick Out (no Jab)");
 ok(/name="fu"/.test(fuPart) && /Solitary follow-up/.test(fuPart) && /name="fu\.\d+\.jab"/.test(fuPart), "…and plans its follow-up in the same dialog (the Heavy Solitary one offers Jab)");
 ok(hero.system.energy.value === 200 - dexMin, `energy −${dexMin} (DEX min)`);
+{ const sel = s => /<option value="(\w+)"\s*selected/.exec(s.split('name="weight"')[1] ?? "")?.[1];
+  ok(sel(own) === "light", "even Str and Dex: the weight select keeps the item's Light");
+  const brute = mkActor("Brute", { stats: { str: 40, dex: 10, con: 30, pon: 10, snap: 10, will: 10, reach: 10, grasp: 10, build: 10 } }, { "martial-theory": 1 });
+  const fistsB = mkWeapon(brute, "Unarmed", { weaponType: "unarmed", weight: "light", material: "", equipped: true, secondHand: true });
+  refill(brute); let bseen = ""; dialog = c => { bseen = c; return null; };
+  await actions.rollWeaponAttack(brute, fistsB);
+  ok(sel(bseen) === "heavy", "a Strength brawler's unarmed attack defaults to Heavy (Light would roll no dice)");
+  combat.combatants.pop(); }
 ok(F().followups.list.some(f => f.kind === "fast" && f.twinFang), "other-fist follow-up carries Twin Fang");
 ok(/1× Advantage/.test(text(tf)), "attack has Advantage");
 orc.isOwner = true; dialog = () => ({ net: 0 }); seq = [5]; await actions.defend(tf, 0, "dodge");

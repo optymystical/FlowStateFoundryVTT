@@ -651,11 +651,11 @@
 
 **Tier 4: Your Stagnation stacks gain the following effect:**
 
-- **Crush (5 Stacks):** The target is hit with **12d10 downward Force**.
+- **Crush (5 Stacks):** The target is hit with **12d8 downward Force**.
 
 **Tier 5: Your Stagnation stacks gain the following effect:**
 
-- **Stasis (6+ Stacks):** Each stack the target gains from 6 onward applies two of Toll, Silt, Grind, and Crush, chosen each time. The same effect can be chosen twice, and the two chosen effects combine into one (two Crushes are a single **24d8 downward Force**, two Grinds are **2d8 physical damage**, and so on).
+- **Stasis (6+ Stacks):** Each stack the target gains from 6 onward applies two of Toll, Silt, Grind, and Crush, chosen each time. The same effect can be chosen twice, and the two chosen effects combine into one (two Crushes are a single **24d8 downward Force**, two Grinds are **2d12 physical damage**, and so on).
 
 # **Mental T5 Skill Trees** {#mental-t5-skill-trees}
 

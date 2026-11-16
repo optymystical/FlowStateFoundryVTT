@@ -5097,7 +5097,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Crush (5 Stacks)",
-      "text": "The target is hit with 12d10 downward Force."
+      "text": "The target is hit with 12d8 downward Force."
      }
     ]
    },
@@ -5108,7 +5108,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Stasis (6+ Stacks)",
-      "text": "Each stack the target gains from 6 onward applies two of Toll, Silt, Grind, and Crush, chosen each time. The same effect can be chosen twice, and the two chosen effects combine into one (two Crushes are a single 24d8 downward Force, two Grinds are 2d8 physical damage, and so on)."
+      "text": "Each stack the target gains from 6 onward applies two of Toll, Silt, Grind, and Crush, chosen each time. The same effect can be chosen twice, and the two chosen effects combine into one (two Crushes are a single 24d8 downward Force, two Grinds are 2d12 physical damage, and so on)."
      }
     ]
    }

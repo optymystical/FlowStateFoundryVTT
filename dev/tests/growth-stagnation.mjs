@@ -199,6 +199,7 @@ seq = [400];
 await WG.actionSpent(orc, { type: "magic", points: 2 });
 ok2(WG.waneDie(orc, { spell: {} })?.pen === P_S && WG.waneDie(orc, { mental: { mode: CULT } })?.pen === P_S && !WG.waneDie(orc, {}), `Wane (4+): attack dice for Mired types are ${P_S} smaller (not a Martial attack)`);
 ok2(messages.some(m => /Crush/.test(m.content)) && orc.statuses.has("prone"), "Crush (5): downward Force (Force damage, prone at its height or more)");
+ok2(messages.some(m => m.content.includes(`Crush (downward): ${12 * P_S}d8 =`)), `Crush is 12 × Power d8 (${12 * P_S}d8; Mental doc, 0.99.2)`);
 const slow0 = orc.system.conditions.slow ?? 0;
 asked = ""; dialog = c => { asked = c; return /Stasis/.test(c) ? { a: "silt", b: "silt" } : {}; };
 await WG.actionSpent(orc, { type: "mental", points: 1 });

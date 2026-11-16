@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.99.2:** Stagnation's **Crush** is 12d8 downward Force again (it was 12d10 since 0.98.9), from the Mental doc; Stasis's two Crushes are 24d8.
+
 **0.99.1:** Thrasher buffs from the Martial doc: **Grapple** (T1) now deals the attack's damage as normal as well as holding the target; **Windup** (T2) costs half the Scaling Stat min (rounded down) in Energy per use instead of the full min.
 
 **0.99.0:** NPCs can have a **fixed dodge**: a switch and a number on the NPC sheet's Main tab, beside the Dodge die. While it's on, attacks against that NPC don't roll a dodge; they're answered at once against the number (a hit at or above it, a crit at double). Beatdown and Topple use it too.

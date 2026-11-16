@@ -377,7 +377,7 @@ const EFFECTS = {
     return `Grind: <strong>${n}</strong> physical damage (${P * m}d12 = ${r.total}).${damageOutcomeHTML(t, n, "physical", outcome)}`;
   },
   async crush(t, caster, P, bs, m, rolls) {
-    const f = await forceRoll({ stacks: bs, target: t, attacker: caster }, 12 * P * m, 10, "Crush (downward)");
+    const f = await forceRoll({ stacks: bs, target: t, attacker: caster }, 12 * P * m, 8, "Crush (downward)");
     rolls.push(f.r);
     return `${f.html}${f.feet > 0 ? await slamDown(t, f.feet) : ""}`;
   }

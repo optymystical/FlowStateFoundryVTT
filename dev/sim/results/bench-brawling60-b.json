@@ -1,0 +1,1767 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 175,
+  "winner": "monsters",
+  "pass": "bench-brawling60-b",
+  "rounds": 5,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 51,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 6,
+   "Versatility": 6,
+   "Parry": 3,
+   "Unstoppable": 5,
+   "Brace": 4,
+   "opt:slam=knockback": 2,
+   "defend:shift": 41,
+   "defend:dodge": 133,
+   "limber": 73,
+   "redirect": 16,
+   "recoverEnergy": 2,
+   "Shatter": 2,
+   "opt:twinFang=adv": 22,
+   "opt:jab": 11,
+   "limber:skipped": 61,
+   "opt:spinCycle": 6,
+   "riposte": 6,
+   "redirect:skipped": 23,
+   "deflect": 3,
+   "deflect:skipped": 1,
+   "opt:heavyTech=kick": 3,
+   "flowLikeWater": 2,
+   "combo:skipped": 1,
+   "flowLikeWater:skipped": 4,
+   "opt:slam=both": 2,
+   "Dip": 6,
+   "redirect:noTarget": 1
+  },
+  "hp": {
+   "L60 Balanced #1#MVCQ": "564/1134",
+   "L60 Balanced #2#2fdf": "485/1134",
+   "L60 Balanced #3#s8ZV": "496/1134",
+   "L60 Brawling #1#OOiK": "618/1134",
+   "L60 Brawling #2#nCVW": "1107/1134",
+   "L60 Brawling #3#d9dY": "1082/1134"
+  },
+  "down": [
+   "L60 Balanced #1",
+   "L60 Balanced #2",
+   "L60 Balanced #3"
+  ],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 35,
+    "followups": 24,
+    "hits": 23,
+    "crits": 8,
+    "misses": 48,
+    "damage": 869,
+    "ap": 99,
+    "kills": 1,
+    "users": [
+     "L60 Balanced #3",
+     "L60 Balanced #2",
+     "L60 Balanced #1"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 26,
+    "followups": 26,
+    "hits": 21,
+    "crits": 7,
+    "misses": 31,
+    "damage": 1446,
+    "ap": 78,
+    "kills": 1,
+    "users": [
+     "L60 Brawling #2",
+     "L60 Brawling #3",
+     "L60 Brawling #1"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 2,
+    "followups": 9,
+    "hits": 7,
+    "crits": 3,
+    "misses": 4,
+    "damage": 0,
+    "ap": 10,
+    "kills": 1,
+    "users": [
+     "L60 Brawling #2",
+     "L60 Balanced #1",
+     "L60 Brawling #1"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 33,
+    "absorbed": 438
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 338,
+    "taken": 638,
+    "hits": 5,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Brawling #1",
+    "dealt": 656,
+    "taken": 516,
+    "hits": 13,
+    "attacks": 18
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 159,
+    "taken": 433,
+    "hits": 9,
+    "attacks": 19
+   },
+   {
+    "name": "L60 Brawling #2",
+    "dealt": 311,
+    "taken": 27,
+    "hits": 9,
+    "attacks": 27
+   },
+   {
+    "name": "L60 Brawling #3",
+    "dealt": 479,
+    "taken": 52,
+    "hits": 4,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 372,
+    "taken": 649,
+    "hits": 11,
+    "attacks": 18
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Balanced #3",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 77.62087348130012,
+    "attacks": 18,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "limber": 10,
+     "defend:dodge": 17,
+     "defend:shift": 3,
+     "limber:skipped": 5
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Brawling #1",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 17,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:shift": 10,
+     "defend:dodge": 36,
+     "limber": 18,
+     "redirect": 11,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "flowLikeWater": 1,
+     "limber:skipped": 22,
+     "combo:skipped": 1,
+     "flowLikeWater:skipped": 3,
+     "redirect:skipped": 16,
+     "Dip": 2
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "lastTech": "kick",
+    "shank": 1
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 9,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:shift": 15,
+     "defend:dodge": 40,
+     "limber": 12,
+     "Versatility": 1,
+     "Parry": 1,
+     "limber:skipped": 19,
+     "riposte": 1,
+     "deflect": 3
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Brawling #2",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 5,
+    "attacks": 23,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "defend:dodge": 10,
+     "riposte": 3,
+     "redirect:skipped": 5,
+     "limber:skipped": 4,
+     "Dip": 2,
+     "limber": 10,
+     "flowLikeWater:skipped": 1,
+     "defend:shift": 3,
+     "redirect": 2,
+     "redirect:noTarget": 1,
+     "flowLikeWater": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "shank": 1,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Brawling #3",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 15.811388300841898,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 7,
+     "defend:shift": 3,
+     "defend:dodge": 6,
+     "redirect": 3,
+     "Dip": 2,
+     "limber:skipped": 2,
+     "redirect:skipped": 2
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "shank": 0,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 75.66372975210777,
+    "attacks": 12,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 9,
+     "recoverEnergy": 1,
+     "defend:shift": 7,
+     "defend:dodge": 24,
+     "riposte": 2,
+     "limber": 16,
+     "deflect:skipped": 1
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L60 Balanced #1": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #2": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #3": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   }
+  },
+  "gear": {
+   "L60 Balanced #1": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G11",
+    "Medium Armor (Hard Leather) G8"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Brawling #1": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Brawling #2": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Brawling #3": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Balanced #1": [
+    "Medium Armor (Hard Leather): 224/420",
+    "Heavy Balanced (Steel): 647/1980"
+   ],
+   "L60 Balanced #2": [
+    "Heavy Balanced (Steel): 1977/1980",
+    "Medium Armor (Hard Leather): 252/420"
+   ],
+   "L60 Balanced #3": [
+    "Medium Armor (Hard Leather): 206/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Brawling #1": [
+    "Medium Armor (Hard Leather): 168/420"
+   ],
+   "L60 Brawling #2": [
+    "Medium Armor (Hard Leather): 364/420"
+   ],
+   "L60 Brawling #3": [
+    "Medium Armor (Hard Leather): 392/420"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3178,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2832,
+    "monsterHp": 3036,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2427,
+    "monsterHp": 2855,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1790,
+    "monsterHp": 2855,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1545,
+    "monsterHp": 2807,
+    "partyDown": 3,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Brawling #3": 479,
+    "L60 Balanced #3": 94,
+    "L60 Balanced #2": 342,
+    "L60 Balanced #1": 159,
+    "L60 Brawling #1": 656,
+    "L60 Brawling #2": 311
+   },
+   "taken": {
+    "L60 Balanced #1": 570,
+    "L60 Brawling #1": 516,
+    "L60 Brawling #2": 27,
+    "L60 Balanced #2": 649,
+    "L60 Brawling #3": 52,
+    "L60 Balanced #3": 638
+   },
+   "unattributed": 411
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 595
+  },
+  "lostBy": {
+   "party": 1857,
+   "monsters": 595
+  },
+  "directTaken": {
+   "party": 2315,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: L# Brawling ##: Alacrity?": 3,
+    "prompt: Versatility": 6,
+    "prompt: Heavy Balanced (Steel)": 18,
+    "prompt: L# Brawling ## — Shift": 16,
+    "prompt: L# Balanced ## — Shift": 25,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 21,
+    "prompt: Unarmed": 26,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 26,
+    "prompt: Unarmed — Riposte": 3,
+    "prompt: Heavy Balanced (Steel) — Riposte": 3,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 4,
+    "prompt: Unarmed — Flow Like Water": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 348,
+  "winner": "unfinished",
+  "pass": "bench-brawling60-b",
+  "rounds": 16,
+  "partyLeft": 1,
+  "monstersLeft": 2,
+  "followups": 75,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 6,
+   "Versatility": 6,
+   "Parry": 2,
+   "Unstoppable": 27,
+   "Brace": 27,
+   "opt:slam=knockback": 4,
+   "defend:shift": 97,
+   "defend:dodge": 167,
+   "limber": 132,
+   "redirect": 5,
+   "recoverEnergy": 63,
+   "Shatter": 5,
+   "opt:twinFang=adv": 30,
+   "opt:jab": 13,
+   "limber:skipped": 37,
+   "redirect:skipped": 22,
+   "opt:spinCycle": 11,
+   "riposte": 7,
+   "combo:skipped": 1,
+   "flowLikeWater:skipped": 3,
+   "opt:slam=both": 4,
+   "Dip": 19,
+   "opt:heavyTech=kick": 4,
+   "flowLikeWater": 3,
+   "redirect:noTarget": 40,
+   "opt:heavyTech=dragon": 1,
+   "dipMoveOffered:skipped": 1
+  },
+  "hp": {
+   "L60 Balanced #1#HKIc": "407/1134",
+   "L60 Balanced #2#fi00": "561/1134",
+   "L60 Balanced #3#EJea": "861/1134",
+   "L60 Brawling #1#fgx8": "850/1134",
+   "L60 Brawling #2#d5yN": "516/1134",
+   "L60 Brawling #3#fxpQ": "1134/1134"
+  },
+  "down": [
+   "L60 Balanced #1",
+   "L60 Balanced #2",
+   "L60 Brawling #2"
+  ],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 37,
+    "followups": 38,
+    "hits": 23,
+    "crits": 7,
+    "misses": 65,
+    "damage": 902,
+    "ap": 114,
+    "kills": 1,
+    "users": [
+     "L60 Balanced #3",
+     "L60 Balanced #2",
+     "L60 Balanced #1"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 34,
+    "followups": 34,
+    "hits": 18,
+    "crits": 6,
+    "misses": 50,
+    "damage": 1573,
+    "ap": 102,
+    "kills": 0,
+    "users": [
+     "L60 Brawling #1",
+     "L60 Brawling #3",
+     "L60 Brawling #2"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 13,
+    "hits": 7,
+    "crits": 2,
+    "misses": 6,
+    "damage": 0,
+    "ap": 10,
+    "kills": 2,
+    "users": [
+     "L60 Brawling #1",
+     "L60 Brawling #2",
+     "L60 Brawling #3"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 42,
+    "absorbed": 545
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 681,
+    "taken": 273,
+    "hits": 15,
+    "attacks": 60
+   },
+   {
+    "name": "L60 Brawling #1",
+    "dealt": 563,
+    "taken": 284,
+    "hits": 11,
+    "attacks": 22
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 0,
+    "taken": 727,
+    "hits": 3,
+    "attacks": 5
+   },
+   {
+    "name": "L60 Brawling #3",
+    "dealt": 398,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 13
+   },
+   {
+    "name": "L60 Brawling #2",
+    "dealt": 612,
+    "taken": 618,
+    "hits": 8,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 221,
+    "taken": 573,
+    "hits": 5,
+    "attacks": 10
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Balanced #3",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 77.62087348130012,
+    "attacks": 58,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "limber": 42,
+     "limber:skipped": 9,
+     "defend:dodge": 38,
+     "defend:shift": 25
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Brawling #1",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:shift": 22,
+     "defend:dodge": 38,
+     "limber": 23,
+     "redirect": 4,
+     "Versatility": 1,
+     "Unstoppable": 12,
+     "Brace": 12,
+     "Shatter": 2,
+     "limber:skipped": 14,
+     "redirect:skipped": 11,
+     "riposte": 5,
+     "combo:skipped": 1,
+     "flowLikeWater:skipped": 3,
+     "Dip": 7,
+     "flowLikeWater": 1,
+     "recoverEnergy": 32,
+     "redirect:noTarget": 16,
+     "dipMoveOffered:skipped": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "shank": 2,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 4,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:shift": 16,
+     "defend:dodge": 30,
+     "limber": 17,
+     "Versatility": 1,
+     "limber:skipped": 4
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Brawling #3",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 15,
+    "attacks": 12,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 12,
+     "Brace": 12,
+     "Shatter": 2,
+     "defend:dodge": 2,
+     "limber:skipped": 3,
+     "redirect:skipped": 2,
+     "Dip": 7,
+     "limber": 5,
+     "flowLikeWater": 1,
+     "recoverEnergy": 29
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "shank": 0,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Brawling #2",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 21.213203435596427,
+    "attacks": 45,
+    "turns": 11,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 36,
+     "defend:shift": 30,
+     "defend:dodge": 45,
+     "redirect": 1,
+     "Dip": 5,
+     "flowLikeWater": 1,
+     "limber:skipped": 6,
+     "redirect:skipped": 9,
+     "redirect:noTarget": 24
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "shank": 2,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 75.66372975210777,
+    "attacks": 8,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "defend:shift": 4,
+     "defend:dodge": 14,
+     "limber": 9,
+     "riposte": 2,
+     "limber:skipped": 1
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L60 Balanced #1": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #2": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #3": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   }
+  },
+  "gear": {
+   "L60 Balanced #1": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Brawling #1": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Brawling #2": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Brawling #3": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Balanced #1": [
+    "Medium Armor (Hard Leather): 146/420",
+    "Heavy Balanced (Steel): 1384/1980"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 240/420",
+    "Heavy Balanced (Steel): 1771/1980"
+   ],
+   "L60 Balanced #3": [
+    "Medium Armor (Hard Leather): 364/420",
+    "Heavy Balanced (Steel): 1445/1980"
+   ],
+   "L60 Brawling #1": [
+    "Medium Armor (Hard Leather): 217/420"
+   ],
+   "L60 Brawling #2": [
+    "Medium Armor (Hard Leather): 112/420"
+   ],
+   "L60 Brawling #3": [
+    "Medium Armor (Hard Leather): 420/420"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3369,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2675,
+    "monsterHp": 3120,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2102,
+    "monsterHp": 3011,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2102,
+    "monsterHp": 2809,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1994,
+    "monsterHp": 2765,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1829,
+    "monsterHp": 2638,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 1829,
+    "monsterHp": 2638,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 1829,
+    "monsterHp": 2638,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 1829,
+    "monsterHp": 2613,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 1829,
+    "monsterHp": 2613,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 1829,
+    "monsterHp": 2613,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 1829,
+    "monsterHp": 2500,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 14,
+    "partyHp": 1829,
+    "monsterHp": 2500,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 15,
+    "partyHp": 1829,
+    "monsterHp": 2500,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 1829,
+    "monsterHp": 2500,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 16,
+    "partyHp": 1829,
+    "monsterHp": 2500,
+    "partyDown": 2,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Brawling #2": 612,
+    "L60 Balanced #3": 681,
+    "L60 Brawling #1": 563,
+    "L60 Brawling #3": 398,
+    "L60 Balanced #2": 58
+   },
+   "taken": {
+    "L60 Balanced #1": 727,
+    "L60 Brawling #1": 284,
+    "L60 Brawling #2": 618,
+    "L60 Balanced #2": 573,
+    "L60 Balanced #3": 273
+   },
+   "unattributed": 163
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 902
+  },
+  "lostBy": {
+   "party": 1573,
+   "monsters": 902
+  },
+  "directTaken": {
+   "party": 2475,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Brawling ##: Alacrity?": 3,
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: Versatility": 6,
+    "prompt: Heavy Balanced (Steel)": 34,
+    "prompt: L# Brawling ## — Shift": 52,
+    "prompt: L# Balanced ## — Shift": 45,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 36,
+    "prompt: Unarmed": 34,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 34,
+    "prompt: Unarmed — Riposte": 5,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 5,
+    "prompt: Unarmed — Flow Like Water": 3,
+    "prompt: Heavy Balanced (Steel) — Riposte": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #3"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 208,
+  "winner": "monsters",
+  "pass": "bench-brawling60-b",
+  "rounds": 7,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 60,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 6,
+   "Versatility": 6,
+   "Parry": 3,
+   "Unstoppable": 10,
+   "Brace": 10,
+   "opt:slam=knockback": 3,
+   "defend:shift": 50,
+   "defend:dodge": 144,
+   "limber": 90,
+   "redirect": 13,
+   "recoverEnergy": 22,
+   "opt:spinCycle": 9,
+   "limber:skipped": 55,
+   "opt:twinFang=adv": 27,
+   "opt:heavyTech=kick": 3,
+   "opt:jab": 11,
+   "riposte": 6,
+   "deflect:skipped": 2,
+   "noRiposte": 1,
+   "Shatter": 3,
+   "flowLikeWater": 4,
+   "redirect:skipped": 21,
+   "Dip": 9,
+   "flowLikeWater:skipped": 2,
+   "opt:slam=both": 2,
+   "redirect:noTarget": 8,
+   "combo:skipped": 1,
+   "opt:heavyTech=dragon": 1,
+   "dipMoveOffered:skipped": 1
+  },
+  "hp": {
+   "L60 Balanced #1#sfOD": "486/1134",
+   "L60 Balanced #2#FP4x": "475/1134",
+   "L60 Balanced #3#WISX": "561/1134",
+   "L60 Brawling #1#B00g": "683/1134",
+   "L60 Brawling #2#0CFo": "920/1134",
+   "L60 Brawling #3#cNe7": "1061/1134"
+  },
+  "down": [
+   "L60 Balanced #1",
+   "L60 Balanced #2",
+   "L60 Balanced #3"
+  ],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 35,
+    "followups": 32,
+    "hits": 30,
+    "crits": 7,
+    "misses": 49,
+    "damage": 808,
+    "ap": 102,
+    "kills": 0,
+    "users": [
+     "L60 Balanced #2",
+     "L60 Balanced #1",
+     "L60 Balanced #3"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 28,
+    "followups": 28,
+    "hits": 26,
+    "crits": 8,
+    "misses": 30,
+    "damage": 1810,
+    "ap": 84,
+    "kills": 2,
+    "users": [
+     "L60 Brawling #1",
+     "L60 Brawling #2",
+     "L60 Brawling #3"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 10,
+    "hits": 5,
+    "crits": 3,
+    "misses": 5,
+    "damage": 0,
+    "ap": 4,
+    "kills": 1,
+    "users": [
+     "L60 Brawling #2",
+     "L60 Brawling #3",
+     "L60 Brawling #1"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 45,
+    "absorbed": 655
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 104,
+    "taken": 659,
+    "hits": 5,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Brawling #1",
+    "dealt": 232,
+    "taken": 451,
+    "hits": 4,
+    "attacks": 17
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 258,
+    "taken": 648,
+    "hits": 11,
+    "attacks": 26
+   },
+   {
+    "name": "L60 Brawling #2",
+    "dealt": 1093,
+    "taken": 214,
+    "hits": 18,
+    "attacks": 35
+   },
+   {
+    "name": "L60 Brawling #3",
+    "dealt": 485,
+    "taken": 73,
+    "hits": 9,
+    "attacks": 14
+   },
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 446,
+    "taken": 573,
+    "hits": 14,
+    "attacks": 25
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Balanced #2",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 75.16648189186456,
+    "attacks": 12,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "defend:shift": 10,
+     "defend:dodge": 36,
+     "limber": 15,
+     "riposte": 2,
+     "noRiposte": 1,
+     "deflect:skipped": 1,
+     "limber:skipped": 8
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Brawling #1",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:shift": 20,
+     "defend:dodge": 42,
+     "limber": 22,
+     "redirect": 10,
+     "Versatility": 1,
+     "Unstoppable": 3,
+     "Brace": 3,
+     "redirect:skipped": 13,
+     "limber:skipped": 12,
+     "Dip": 3,
+     "redirect:noTarget": 8,
+     "recoverEnergy": 9,
+     "riposte": 1,
+     "dipMoveOffered:skipped": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "lastTech": "dragon",
+    "shank": 1
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 18,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:shift": 7,
+     "defend:dodge": 29,
+     "limber": 10,
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 19,
+     "riposte": 2,
+     "deflect:skipped": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Brawling #2",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 16.18033988749895,
+    "attacks": 31,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:shift": 5,
+     "defend:dodge": 17,
+     "limber": 18,
+     "redirect": 3,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "flowLikeWater": 3,
+     "riposte": 1,
+     "redirect:skipped": 7,
+     "limber:skipped": 9,
+     "Dip": 3,
+     "combo:skipped": 1,
+     "flowLikeWater:skipped": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "shank": 0,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Brawling #3",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 16.18033988749895,
+    "attacks": 13,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 3,
+     "Brace": 3,
+     "Shatter": 2,
+     "limber": 9,
+     "flowLikeWater": 1,
+     "defend:dodge": 3,
+     "limber:skipped": 1,
+     "redirect:skipped": 1,
+     "Dip": 3,
+     "flowLikeWater:skipped": 1,
+     "defend:shift": 1,
+     "recoverEnergy": 11
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "shank": 0,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Balanced #3",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 77.62087348130012,
+    "attacks": 22,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 6,
+     "recoverEnergy": 1,
+     "limber": 16,
+     "defend:dodge": 17,
+     "defend:shift": 7
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L60 Balanced #1": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #2": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   },
+   "L60 Balanced #3": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   }
+  },
+  "gear": {
+   "L60 Balanced #1": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G11",
+    "Medium Armor (Hard Leather) G8"
+   ]
+  },
+  "monsterGear": {
+   "L60 Brawling #1": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Brawling #2": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Brawling #3": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Balanced #1": [
+    "Medium Armor (Hard Leather): 196/420",
+    "Heavy Balanced (Steel): 1535/1980"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 208/420",
+    "Heavy Balanced (Steel): 1200/1980"
+   ],
+   "L60 Balanced #3": [
+    "Heavy Balanced (Steel): 1980/1980",
+    "Medium Armor (Hard Leather): 201/420"
+   ],
+   "L60 Brawling #1": [
+    "Medium Armor (Hard Leather): 112/420"
+   ],
+   "L60 Brawling #2": [
+    "Medium Armor (Hard Leather): 224/420"
+   ],
+   "L60 Brawling #3": [
+    "Medium Armor (Hard Leather): 364/420"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3402,
+    "monsterHp": 3374,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2889,
+    "monsterHp": 3308,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2242,
+    "monsterHp": 3021,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2041,
+    "monsterHp": 2712,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 1739,
+    "monsterHp": 2682,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1612,
+    "monsterHp": 2664,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 1522,
+    "monsterHp": 2664,
+    "partyDown": 3,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Balanced #1": 258,
+    "L60 Brawling #1": 232,
+    "L60 Brawling #2": 1093,
+    "L60 Brawling #3": 485,
+    "L60 Balanced #3": 376,
+    "L60 Balanced #2": 104
+   },
+   "taken": {
+    "L60 Brawling #2": 214,
+    "L60 Brawling #1": 451,
+    "L60 Balanced #1": 648,
+    "L60 Balanced #2": 659,
+    "L60 Brawling #3": 73,
+    "L60 Balanced #3": 573
+   },
+   "unattributed": 70
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 738
+  },
+  "lostBy": {
+   "party": 1880,
+   "monsters": 738
+  },
+  "directTaken": {
+   "party": 2618,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: L# Brawling ##: Alacrity?": 3,
+    "prompt: Versatility": 6,
+    "prompt: Heavy Balanced (Steel)": 24,
+    "prompt: L# Brawling ## — Shift": 26,
+    "prompt: L# Balanced ## — Shift": 24,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 28,
+    "prompt: Unarmed": 28,
+    "prompt: Unarmed — Solitary follow-up (Dis)": 28,
+    "prompt: Heavy Balanced (Steel) — Riposte": 4,
+    "prompt: Unarmed — Flow Like Water": 4,
+    "prompt: Unarmed — Fast follow-up: other fist (Dis)": 4,
+    "prompt: Unarmed — Riposte": 2
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #2's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Balanced #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #2's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #3 can't move through L60 Balanced #2's space.",
+     "who": "L60 Brawling #3"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Brawling #1 can't move through L60 Balanced #1's space.",
+     "who": "L60 Brawling #1"
+    }
+   ],
+   "errors": []
+  }
+ }
+]

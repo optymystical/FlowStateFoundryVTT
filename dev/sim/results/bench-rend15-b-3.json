@@ -1,0 +1,1086 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 31,
+  "winner": "party",
+  "pass": "bench-rend15-b",
+  "rounds": 2,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 16,
+   "mod:Bleed": 11,
+   "mod:Ignition": 14,
+   "defend:dodge": 16,
+   "mod:Gash": 3,
+   "mod:Rend": 5
+  },
+  "hp": {
+   "L15 Slashing (no Rend) #1#zNKG": "279/279",
+   "L15 Slashing (no Rend) #2#G1jS": "235/279",
+   "L15 Slashing (no Rend) #3#QwtR": "279/279",
+   "L15 Slashing #1#x7bK": "35/279",
+   "L15 Slashing #2#9BYj": "-41/279",
+   "L15 Slashing #3#V7Ti": "39/279"
+  },
+  "down": [
+   "L15 Slashing #1",
+   "L15 Slashing #2",
+   "L15 Slashing #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 5,
+    "damage": 28,
+    "ap": 30,
+    "kills": 3,
+    "users": [
+     "L15 Slashing (no Rend) #1",
+     "L15 Slashing (no Rend) #3",
+     "L15 Slashing (no Rend) #2"
+    ]
+   },
+   "Spell: Cut + Flame [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 5,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L15 Slashing #3",
+     "L15 Slashing #2"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 20
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Slashing (no Rend) #1",
+    "dealt": 18,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Slashing #1",
+    "dealt": 0,
+    "taken": 6,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L15 Slashing (no Rend) #3",
+    "dealt": 10,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Slashing #3",
+    "dealt": 0,
+    "taken": 10,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Slashing (no Rend) #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Slashing #2",
+    "dealt": 0,
+    "taken": 12,
+    "hits": 0,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Slashing (no Rend) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 2,
+     "mod:Ignition": 4,
+     "mod:Gash": 1,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "L15 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L15 Slashing (no Rend) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 2,
+     "mod:Ignition": 4,
+     "mod:Gash": 1,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L15 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 3,
+     "mod:Rend": 3,
+     "mod:Ignition": 2,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L15 Slashing (no Rend) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Ignition": 2,
+     "mod:Gash": 1,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L15 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    },
+    "turnMoved": 0,
+    "casts": 2
+   }
+  ],
+  "trees": {
+   "L15 Slashing (no Rend) #1": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   },
+   "L15 Slashing (no Rend) #2": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   },
+   "L15 Slashing (no Rend) #3": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   }
+  },
+  "gear": {
+   "L15 Slashing (no Rend) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Slashing (no Rend) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Slashing (no Rend) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Slashing (no Rend) #1": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Slashing (no Rend) #2": [
+    "Light Armor (Hard Leather): 28/30"
+   ],
+   "L15 Slashing (no Rend) #3": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Slashing #1": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Slashing #2": [
+    "Light Armor (Hard Leather): 16/30"
+   ],
+   "L15 Slashing #3": [
+    "Light Armor (Hard Leather): 22/30"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 837,
+    "monsterHp": 837,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 837,
+    "monsterHp": 561,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 2,
+    "partyHp": 793,
+    "monsterHp": 74,
+    "partyDown": 0,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L15 Slashing (no Rend) #1": 309,
+    "L15 Slashing (no Rend) #3": 256,
+    "L15 Slashing (no Rend) #2": 198,
+    "L15 Slashing #3": 44
+   },
+   "taken": {
+    "L15 Slashing #1": 244,
+    "L15 Slashing #2": 279,
+    "L15 Slashing #3": 240,
+    "L15 Slashing (no Rend) #2": 44
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 236
+  },
+  "otherLoss": {
+   "party": 16,
+   "monsters": 527
+  },
+  "lostBy": {
+   "party": 44,
+   "monsters": 763
+  },
+  "directTaken": {
+   "party": 28,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 47,
+  "winner": "party",
+  "pass": "bench-rend15-b",
+  "rounds": 3,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 22,
+   "mod:Bleed": 14,
+   "mod:Rend": 10,
+   "mod:Ignition": 16,
+   "defend:dodge": 22,
+   "mod:Gash": 3
+  },
+  "hp": {
+   "L15 Slashing (no Rend) #1#H4HM": "86/279",
+   "L15 Slashing (no Rend) #2#Nrfl": "279/279",
+   "L15 Slashing (no Rend) #3#W2LG": "119/279",
+   "L15 Slashing #1#mG0c": "97/279",
+   "L15 Slashing #2#xMWE": "63/279",
+   "L15 Slashing #3#VNY3": "129/279"
+  },
+  "down": [
+   "L15 Slashing (no Rend) #1",
+   "L15 Slashing (no Rend) #3",
+   "L15 Slashing #1",
+   "L15 Slashing #2",
+   "L15 Slashing #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 4,
+    "crits": 0,
+    "misses": 8,
+    "damage": 5,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L15 Slashing #2",
+     "L15 Slashing #1",
+     "L15 Slashing #3"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 6,
+    "crits": 1,
+    "misses": 4,
+    "damage": 16,
+    "ap": 30,
+    "kills": 5,
+    "users": [
+     "L15 Slashing (no Rend) #2",
+     "L15 Slashing (no Rend) #1",
+     "L15 Slashing (no Rend) #3"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 5,
+    "absorbed": 22
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Slashing #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Slashing (no Rend) #1",
+    "dealt": 16,
+    "taken": 5,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Slashing (no Rend) #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Slashing #1",
+    "dealt": 0,
+    "taken": 16,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Slashing (no Rend) #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Slashing #3",
+    "dealt": 5,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 3,
+     "mod:Rend": 3,
+     "mod:Ignition": 2,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L15 Slashing (no Rend) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Ignition": 2,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "L15 Slashing (no Rend) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 2,
+     "mod:Ignition": 6,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "L15 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L15 Slashing (no Rend) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Ignition": 2,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "L15 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 3,
+     "mod:Rend": 5,
+     "mod:Ignition": 2,
+     "defend:dodge": 3
+    }
+   }
+  ],
+  "trees": {
+   "L15 Slashing (no Rend) #1": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   },
+   "L15 Slashing (no Rend) #2": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   },
+   "L15 Slashing (no Rend) #3": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   }
+  },
+  "gear": {
+   "L15 Slashing (no Rend) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Slashing (no Rend) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Slashing (no Rend) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Slashing (no Rend) #1": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Slashing (no Rend) #2": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Slashing (no Rend) #3": [
+    "Light Armor (Hard Leather): 24/30"
+   ],
+   "L15 Slashing #1": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Slashing #2": [
+    "Light Armor (Hard Leather): 18/30"
+   ],
+   "L15 Slashing #3": [
+    "Light Armor (Hard Leather): 24/30"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 837,
+    "monsterHp": 837,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 577,
+    "monsterHp": 627,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 484,
+    "monsterHp": 439,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 3,
+    "partyHp": 484,
+    "monsterHp": 289,
+    "partyDown": 2,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L15 Slashing #1": 40,
+    "L15 Slashing #3": 131,
+    "L15 Slashing (no Rend) #1": 182,
+    "L15 Slashing (no Rend) #3": 28,
+    "L15 Slashing #2": 88,
+    "L15 Slashing (no Rend) #2": 280
+   },
+   "taken": {
+    "L15 Slashing (no Rend) #1": 193,
+    "L15 Slashing (no Rend) #3": 160,
+    "L15 Slashing #1": 182,
+    "L15 Slashing #2": 216,
+    "L15 Slashing #3": 150
+   },
+   "unattributed": 152
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 182,
+   "monsters": 58
+  },
+  "otherLoss": {
+   "party": 150,
+   "monsters": 490
+  },
+  "lostBy": {
+   "party": 353,
+   "monsters": 548
+  },
+  "directTaken": {
+   "party": 21,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 27,
+  "winner": "monsters",
+  "pass": "bench-rend15-b",
+  "rounds": 1,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 12,
+   "mod:Bleed": 12,
+   "mod:Rend": 6,
+   "mod:Ignition": 12,
+   "defend:dodge": 12,
+   "mod:Gash": 3
+  },
+  "hp": {
+   "L15 Slashing (no Rend) #1#AFke": "89/279",
+   "L15 Slashing (no Rend) #2#xg28": "-229/279",
+   "L15 Slashing (no Rend) #3#QSAT": "12/279",
+   "L15 Slashing #1#Heaa": "13/279",
+   "L15 Slashing #2#yJP4": "9/279",
+   "L15 Slashing #3#wAXQ": "279/279"
+  },
+  "down": [
+   "L15 Slashing (no Rend) #1",
+   "L15 Slashing (no Rend) #2",
+   "L15 Slashing (no Rend) #3",
+   "L15 Slashing #1",
+   "L15 Slashing #2"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 1,
+    "damage": 39,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L15 Slashing #1",
+     "L15 Slashing #2",
+     "L15 Slashing #3"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 2,
+    "damage": 12,
+    "ap": 18,
+    "kills": 5,
+    "users": [
+     "L15 Slashing (no Rend) #3",
+     "L15 Slashing (no Rend) #1",
+     "L15 Slashing (no Rend) #2"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 10,
+    "absorbed": 36
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Slashing #1",
+    "dealt": 4,
+    "taken": 4,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Slashing (no Rend) #2",
+    "dealt": 8,
+    "taken": 30,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Slashing (no Rend) #1",
+    "dealt": 4,
+    "taken": 4,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Slashing (no Rend) #3",
+    "dealt": 0,
+    "taken": 5,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Slashing #2",
+    "dealt": 5,
+    "taken": 8,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Slashing #3",
+    "dealt": 30,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L15 Slashing (no Rend) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Ignition": 2,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "L15 Slashing (no Rend) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 1,
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Ignition": 2,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "L15 Slashing (no Rend) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Ignition": 2,
+     "mod:Gash": 1,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L15 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L15 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    }
+   }
+  ],
+  "trees": {
+   "L15 Slashing (no Rend) #1": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   },
+   "L15 Slashing (no Rend) #2": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   },
+   "L15 Slashing (no Rend) #3": {
+    "magic-theory": 2,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5
+   }
+  },
+  "gear": {
+   "L15 Slashing (no Rend) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Slashing (no Rend) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Slashing (no Rend) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Slashing (no Rend) #1": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Slashing (no Rend) #2": [
+    "Light Armor (Hard Leather): 20/30"
+   ],
+   "L15 Slashing (no Rend) #3": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Slashing #1": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Slashing #2": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Slashing #3": [
+    "Light Armor (Hard Leather): 30/30"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 837,
+    "monsterHp": 837,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 1,
+    "partyHp": 101,
+    "monsterHp": 301,
+    "partyDown": 3,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L15 Slashing #1": 56,
+    "L15 Slashing (no Rend) #1": 266,
+    "L15 Slashing #2": 397,
+    "L15 Slashing (no Rend) #2": 270,
+    "L15 Slashing #3": 279
+   },
+   "taken": {
+    "L15 Slashing (no Rend) #1": 190,
+    "L15 Slashing #1": 266,
+    "L15 Slashing (no Rend) #3": 267,
+    "L15 Slashing #2": 270,
+    "L15 Slashing (no Rend) #2": 279
+   },
+   "unattributed": 4
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 130,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 555,
+   "monsters": 536
+  },
+  "lostBy": {
+   "party": 736,
+   "monsters": 536
+  },
+  "directTaken": {
+   "party": 51,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {},
+   "notes": [],
+   "errors": []
+  }
+ }
+]

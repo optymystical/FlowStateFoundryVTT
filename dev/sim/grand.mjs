@@ -194,3 +194,46 @@ export function grandPasses() {
   return out;
 }
 export const grandQueue = level => Object.keys(grandPasses()).filter(id => id.startsWith(`grand-${level}-`));
+
+/* ---------------- Focused benches (2026-11-16) ---------------- */
+
+/**
+ * After the grand pass: one build against another (or against itself without one Mod), three of each, so a single difference shows.
+ * Each bench is two passes, `bench-<key>-a` (A as the party) and `-b` (B as the party), so the side doesn't decide it.
+ */
+const BENCHES = [
+  { key: "rend60", level: 60, a: "Slashing", b: ["Slashing", { noMods: ["magic-slashing:rend"], tag: "no Rend" }] },
+  { key: "rend15", level: 15, a: "Slashing", b: ["Slashing", { noMods: ["magic-slashing:rend"], tag: "no Rend" }] },
+  { key: "multicast15", level: 15, a: "Grasp Arcana", b: ["Grasp Arcana", { noMods: ["magic-reach-arcana:multicast"], tag: "no Multicast" }] },
+  { key: "grasp60", level: 60, a: "Grasp Arcana", b: "Slashing" },
+  { key: "thrasher60", level: 60, a: "Thrasher", b: "Balanced" },
+  { key: "brawling60", level: 60, a: "Brawling", b: "Balanced" },
+  { key: "acid60", level: 60, a: "Acid", b: "Cold" },
+  // The first acid60 run: the AI spent its Threshold on the Slashing kit's Mods and the Cold side cast Cut, so here each side plays its own school.
+  { key: "acidown60", level: 60, a: ["Acid", { school: "magic-acid", tag: "plays Acid" }], b: ["Cold", { school: "magic-cold", tag: "plays Cold" }] },
+  { key: "fortune60", level: 60, a: "Fortune", b: "Life" },
+  { key: "stagnation60", level: 60, a: "Stagnation", b: "Death" }
+];
+const FIGHTS_PER_SIDE = 3;
+function benchBuild(level, spec) {
+  const [name, mod] = Array.isArray(spec) ? spec : [spec, null];
+  const b = parties(level).flat().find(x => x.name === `L${level} ${name}`);
+  if (!b) throw new Error(`bench: no build L${level} ${name}`);
+  return mod ? { ...b, id: `${b.id}-${mod.tag.replace(/\W+/g, "")}`, name: `${b.name} (${mod.tag})`, loadout: { ...b.loadout, noMods: mod.noMods, school: mod.school } } : b;
+}
+const trio = b => [1, 2, 3].map(k => ({ ...b, id: `${b.id}-${k}`, name: `${b.name} #${k}` }));
+export function benchPasses() {
+  const out = {};
+  for (const bench of BENCHES) {
+    const A = benchBuild(bench.level, bench.a), B = benchBuild(bench.level, bench.b);
+    for (const [side, mine, theirs] of [["a", A, B], ["b", B, A]]) {
+      const id = `bench-${bench.key}-${side}`;
+      out[id] = { id, note: `Bench ${bench.key}: three ${mine.name} against three ${theirs.name}.`, party: asParty(trio(mine)),
+        monsters: { rival: asGroup(trio(theirs), theirs.name) },
+        encounters: Array.from({ length: FIGHTS_PER_SIDE }, (_, n) => ({ id: `r${n + 1}`, group: "rival", rotation: 0 })),
+        backLine: true, spreadTargets: true, maxRounds: 15, bench: { key: bench.key, a: A.name, b: B.name } };
+    }
+  }
+  return out;
+}
+export const benchQueue = () => Object.keys(benchPasses());

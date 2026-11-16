@@ -1,0 +1,1538 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 163,
+  "winner": "monsters",
+  "pass": "bench-acidown60-b",
+  "rounds": 11,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Frost": 28,
+   "mod:Rend": 10,
+   "defend:dodge": 124,
+   "mod:Bleed": 5,
+   "cast:Cut + Glob": 22,
+   "cast:Glob": 36,
+   "cast:Frost": 38,
+   "cast:nothingAffordable": 7,
+   "recoverEnergy": 28
+  },
+  "hp": {
+   "L60 Cold (plays Cold) #1#rGOG": "360/1134",
+   "L60 Cold (plays Cold) #2#Eqyx": "330/1134",
+   "L60 Cold (plays Cold) #3#rgfw": "493/1134",
+   "L60 Acid (plays Acid) #1#pkn0": "399/1134",
+   "L60 Acid (plays Acid) #2#FcoL": "1086/1134",
+   "L60 Acid (plays Acid) #3#uC8C": "1134/1134"
+  },
+  "down": [
+   "L60 Cold (plays Cold) #1",
+   "L60 Cold (plays Cold) #2",
+   "L60 Cold (plays Cold) #3",
+   "L60 Acid (plays Acid) #1"
+  ],
+  "weapons": {
+   "Spell: Cut + Frost": {
+    "attacks": 28,
+    "followups": 0,
+    "hits": 14,
+    "crits": 5,
+    "misses": 14,
+    "damage": 577,
+    "ap": 56,
+    "kills": 1,
+    "users": [
+     "L60 Cold (plays Cold) #1",
+     "L60 Cold (plays Cold) #3",
+     "L60 Cold (plays Cold) #2"
+    ]
+   },
+   "Spell: Cut + Glob [M]": {
+    "attacks": 22,
+    "followups": 0,
+    "hits": 15,
+    "crits": 5,
+    "misses": 7,
+    "damage": 170,
+    "ap": 44,
+    "kills": 0,
+    "users": [
+     "L60 Acid (plays Acid) #2",
+     "L60 Acid (plays Acid) #3",
+     "L60 Acid (plays Acid) #1"
+    ]
+   },
+   "Spell: Glob [M]": {
+    "attacks": 36,
+    "followups": 0,
+    "hits": 22,
+    "crits": 5,
+    "misses": 14,
+    "damage": 234,
+    "ap": 72,
+    "kills": 0,
+    "users": [
+     "L60 Acid (plays Acid) #1",
+     "L60 Acid (plays Acid) #2",
+     "L60 Acid (plays Acid) #3"
+    ]
+   },
+   "Spell: Frost": {
+    "attacks": 38,
+    "followups": 0,
+    "hits": 18,
+    "crits": 5,
+    "misses": 20,
+    "damage": 52,
+    "ap": 76,
+    "kills": 0,
+    "users": [
+     "L60 Cold (plays Cold) #1",
+     "L60 Cold (plays Cold) #3",
+     "L60 Cold (plays Cold) #2"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 2,
+    "users": []
+   },
+   "Spell: Cut + Glob": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 11,
+    "absorbed": 210
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Cold (plays Cold) #1",
+    "dealt": 185,
+    "taken": 52,
+    "hits": 12,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Acid (plays Acid) #1",
+    "dealt": 0,
+    "taken": 581,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Acid (plays Acid) #2",
+    "dealt": 48,
+    "taken": 48,
+    "hits": 18,
+    "attacks": 22
+   },
+   {
+    "name": "L60 Cold (plays Cold) #3",
+    "dealt": 358,
+    "taken": 284,
+    "hits": 15,
+    "attacks": 30
+   },
+   {
+    "name": "L60 Acid (plays Acid) #3",
+    "dealt": 356,
+    "taken": 0,
+    "hits": 17,
+    "attacks": 30
+   },
+   {
+    "name": "L60 Cold (plays Cold) #2",
+    "dealt": 86,
+    "taken": 68,
+    "hits": 5,
+    "attacks": 12
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Cold (plays Cold) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 24,
+    "used": {
+     "cast:Cut + Frost": 10,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "defend:dodge": 20,
+     "cast:Frost": 14
+    }
+   },
+   {
+    "name": "L60 Acid (plays Acid) #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 40,
+     "cast:Cut + Glob": 1,
+     "cast:Glob": 5,
+     "cast:nothingAffordable": 3,
+     "recoverEnergy": 12
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "L60 Acid (plays Acid) #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 22,
+    "used": {
+     "cast:Cut + Glob": 9,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Glob": 13,
+     "defend:dodge": 26,
+     "cast:nothingAffordable": 4,
+     "recoverEnergy": 16
+    }
+   },
+   {
+    "name": "L60 Cold (plays Cold) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 27,
+     "cast:Cut + Frost": 12,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Frost": 18
+    },
+    "turnMoved": 0,
+    "casts": 30
+   },
+   {
+    "name": "L60 Acid (plays Acid) #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 10,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 30,
+    "used": {
+     "cast:Cut + Glob": 12,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Glob": 18
+    }
+   },
+   {
+    "name": "L60 Cold (plays Cold) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 11,
+     "cast:Cut + Frost": 6,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Frost": 6
+    },
+    "turnMoved": 0,
+    "casts": 12
+   }
+  ],
+  "trees": {
+   "L60 Cold (plays Cold) #1": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-cold": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Cold (plays Cold) #2": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-cold": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Cold (plays Cold) #3": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-cold": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   }
+  },
+  "gear": {
+   "L60 Cold (plays Cold) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Cold (plays Cold) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Cold (plays Cold) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Acid (plays Acid) #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Acid (plays Acid) #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Acid (plays Acid) #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Cold (plays Cold) #1": [
+    "Light Armor (Hard Leather): -1800/120 BROKEN"
+   ],
+   "L60 Cold (plays Cold) #2": [
+    "Light Armor (Hard Leather): -232/120 BROKEN"
+   ],
+   "L60 Cold (plays Cold) #3": [
+    "Light Armor (Hard Leather): -56/120 BROKEN"
+   ],
+   "L60 Acid (plays Acid) #1": [
+    "Light Armor (Hard Leather): 0/120 BROKEN"
+   ],
+   "L60 Acid (plays Acid) #2": [
+    "Light Armor (Hard Leather): 96/120"
+   ],
+   "L60 Acid (plays Acid) #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3266,
+    "monsterHp": 3180,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3172,
+    "monsterHp": 3094,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2897,
+    "monsterHp": 3094,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2578,
+    "monsterHp": 2994,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2475,
+    "monsterHp": 2667,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 2318,
+    "monsterHp": 2667,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 2062,
+    "monsterHp": 2667,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 1772,
+    "monsterHp": 2667,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 1711,
+    "monsterHp": 2619,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 1183,
+    "monsterHp": 2619,
+    "partyDown": 3,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 1183,
+    "monsterHp": 2619,
+    "partyDown": 3,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Acid (plays Acid) #3": 356,
+    "L60 Cold (plays Cold) #3": 358,
+    "L60 Cold (plays Cold) #2": 86,
+    "L60 Cold (plays Cold) #1": 185,
+    "L60 Acid (plays Acid) #2": 1112
+   },
+   "taken": {
+    "L60 Cold (plays Cold) #2": 804,
+    "L60 Acid (plays Acid) #1": 735,
+    "L60 Cold (plays Cold) #1": 774,
+    "L60 Cold (plays Cold) #3": 641,
+    "L60 Acid (plays Acid) #2": 48
+   },
+   "unattributed": 905
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 3831,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 783
+  },
+  "lostBy": {
+   "party": 2219,
+   "monsters": 783
+  },
+  "directTaken": {
+   "party": 1033,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Cold (plays Cold) ##: Alacrity?": 3,
+    "prompt: L# Acid (plays Acid) ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 125,
+  "winner": "monsters",
+  "pass": "bench-acidown60-b",
+  "rounds": 8,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Glob": 21,
+   "mod:Rend": 12,
+   "defend:dodge": 94,
+   "mod:Bleed": 6,
+   "cast:Cut + Frost": 22,
+   "cast:Glob": 25,
+   "cast:nothingAffordable": 5,
+   "recoverEnergy": 22,
+   "cast:Frost": 26
+  },
+  "hp": {
+   "L60 Cold (plays Cold) #1#mnfj": "517/1134",
+   "L60 Cold (plays Cold) #2#NsUp": "400/1134",
+   "L60 Cold (plays Cold) #3#rAFC": "400/1134",
+   "L60 Acid (plays Acid) #1#js1F": "561/1134",
+   "L60 Acid (plays Acid) #2#B0Cz": "946/1134",
+   "L60 Acid (plays Acid) #3#6ZnL": "1134/1134"
+  },
+  "down": [
+   "L60 Cold (plays Cold) #1",
+   "L60 Cold (plays Cold) #2",
+   "L60 Cold (plays Cold) #3",
+   "L60 Acid (plays Acid) #1"
+  ],
+  "weapons": {
+   "Spell: Cut + Glob [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 11,
+    "crits": 6,
+    "misses": 10,
+    "damage": 308,
+    "ap": 42,
+    "kills": 0,
+    "users": [
+     "L60 Acid (plays Acid) #1",
+     "L60 Acid (plays Acid) #2",
+     "L60 Acid (plays Acid) #3"
+    ]
+   },
+   "Spell: Cut + Frost": {
+    "attacks": 22,
+    "followups": 0,
+    "hits": 13,
+    "crits": 4,
+    "misses": 9,
+    "damage": 457,
+    "ap": 44,
+    "kills": 0,
+    "users": [
+     "L60 Cold (plays Cold) #3",
+     "L60 Cold (plays Cold) #2",
+     "L60 Cold (plays Cold) #1"
+    ]
+   },
+   "Spell: Glob [M]": {
+    "attacks": 25,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 13,
+    "damage": 59,
+    "ap": 50,
+    "kills": 0,
+    "users": [
+     "L60 Acid (plays Acid) #1",
+     "L60 Acid (plays Acid) #2",
+     "L60 Acid (plays Acid) #3"
+    ]
+   },
+   "Spell: Frost": {
+    "attacks": 26,
+    "followups": 0,
+    "hits": 16,
+    "crits": 1,
+    "misses": 10,
+    "damage": 188,
+    "ap": 52,
+    "kills": 1,
+    "users": [
+     "L60 Cold (plays Cold) #3",
+     "L60 Cold (plays Cold) #2",
+     "L60 Cold (plays Cold) #1"
+    ]
+   },
+   "Spell: Cut + Glob": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   },
+   "Spell: Glob": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 2,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 13,
+    "absorbed": 266
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Acid (plays Acid) #1",
+    "dealt": 58,
+    "taken": 457,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Cold (plays Cold) #2",
+    "dealt": 239,
+    "taken": 58,
+    "hits": 14,
+    "attacks": 18
+   },
+   {
+    "name": "L60 Cold (plays Cold) #3",
+    "dealt": 0,
+    "taken": 108,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Acid (plays Acid) #2",
+    "dealt": 206,
+    "taken": 188,
+    "hits": 10,
+    "attacks": 19
+   },
+   {
+    "name": "L60 Acid (plays Acid) #3",
+    "dealt": 103,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Cold (plays Cold) #1",
+    "dealt": 406,
+    "taken": 201,
+    "hits": 10,
+    "attacks": 21
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Acid (plays Acid) #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Glob": 3,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "defend:dodge": 32,
+     "cast:Glob": 3,
+     "cast:nothingAffordable": 3,
+     "recoverEnergy": 12
+    }
+   },
+   {
+    "name": "L60 Cold (plays Cold) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 15,
+     "cast:Cut + Frost": 8,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Frost": 10
+    },
+    "turnMoved": 0,
+    "casts": 18
+   },
+   {
+    "name": "L60 Cold (plays Cold) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Cut + Frost": 5,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "defend:dodge": 6,
+     "cast:Frost": 4
+    }
+   },
+   {
+    "name": "L60 Acid (plays Acid) #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 19,
+    "used": {
+     "cast:Cut + Glob": 9,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Glob": 10,
+     "defend:dodge": 16,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 10
+    }
+   },
+   {
+    "name": "L60 Acid (plays Acid) #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 21,
+    "used": {
+     "cast:Cut + Glob": 9,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Glob": 12
+    }
+   },
+   {
+    "name": "L60 Cold (plays Cold) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 25,
+     "cast:Cut + Frost": 9,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Frost": 12
+    },
+    "turnMoved": 0,
+    "casts": 21
+   }
+  ],
+  "trees": {
+   "L60 Cold (plays Cold) #1": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-cold": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Cold (plays Cold) #2": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-cold": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Cold (plays Cold) #3": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-cold": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   }
+  },
+  "gear": {
+   "L60 Cold (plays Cold) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Cold (plays Cold) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Cold (plays Cold) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Acid (plays Acid) #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Acid (plays Acid) #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Acid (plays Acid) #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Cold (plays Cold) #1": [
+    "Light Armor (Hard Leather): -1740/120 BROKEN"
+   ],
+   "L60 Cold (plays Cold) #2": [
+    "Light Armor (Hard Leather): 0/120 BROKEN"
+   ],
+   "L60 Cold (plays Cold) #3": [
+    "Light Armor (Hard Leather): -478/120 BROKEN"
+   ],
+   "L60 Acid (plays Acid) #1": [
+    "Light Armor (Hard Leather): 0/120 BROKEN"
+   ],
+   "L60 Acid (plays Acid) #2": [
+    "Light Armor (Hard Leather): 72/120"
+   ],
+   "L60 Acid (plays Acid) #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3178,
+    "monsterHp": 3170,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2807,
+    "monsterHp": 3129,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2387,
+    "monsterHp": 2922,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2271,
+    "monsterHp": 2829,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 2025,
+    "monsterHp": 2739,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 1750,
+    "monsterHp": 2641,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 1459,
+    "monsterHp": 2641,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 1317,
+    "monsterHp": 2641,
+    "partyDown": 3,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Acid (plays Acid) #1": 58,
+    "L60 Acid (plays Acid) #2": 1248,
+    "L60 Cold (plays Cold) #2": 239,
+    "L60 Acid (plays Acid) #3": 779,
+    "L60 Cold (plays Cold) #1": 406
+   },
+   "taken": {
+    "L60 Cold (plays Cold) #2": 734,
+    "L60 Cold (plays Cold) #3": 734,
+    "L60 Acid (plays Acid) #1": 573,
+    "L60 Cold (plays Cold) #1": 617,
+    "L60 Acid (plays Acid) #2": 188
+   },
+   "unattributed": 116
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 3335,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 761
+  },
+  "lostBy": {
+   "party": 2085,
+   "monsters": 761
+  },
+  "directTaken": {
+   "party": 1012,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Cold (plays Cold) ##: Alacrity?": 3,
+    "prompt: L# Acid (plays Acid) ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 146,
+  "winner": "monsters",
+  "pass": "bench-acidown60-b",
+  "rounds": 9,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Glob": 26,
+   "mod:Rend": 12,
+   "defend:dodge": 111,
+   "mod:Bleed": 6,
+   "cast:Cut + Frost": 24,
+   "cast:Glob": 31,
+   "cast:nothingAffordable": 5,
+   "recoverEnergy": 24,
+   "cast:Frost": 30
+  },
+  "hp": {
+   "L60 Cold (plays Cold) #1#T72q": "456/1134",
+   "L60 Cold (plays Cold) #2#TcZq": "434/1134",
+   "L60 Cold (plays Cold) #3#4v3Z": "533/1134",
+   "L60 Acid (plays Acid) #1#xrVb": "549/1134",
+   "L60 Acid (plays Acid) #2#8D0d": "1048/1134",
+   "L60 Acid (plays Acid) #3#wNrr": "1134/1134"
+  },
+  "down": [
+   "L60 Cold (plays Cold) #1",
+   "L60 Cold (plays Cold) #2",
+   "L60 Cold (plays Cold) #3",
+   "L60 Acid (plays Acid) #1"
+  ],
+  "weapons": {
+   "Spell: Cut + Glob [M]": {
+    "attacks": 26,
+    "followups": 0,
+    "hits": 12,
+    "crits": 5,
+    "misses": 14,
+    "damage": 361,
+    "ap": 52,
+    "kills": 0,
+    "users": [
+     "L60 Acid (plays Acid) #1",
+     "L60 Acid (plays Acid) #2",
+     "L60 Acid (plays Acid) #3"
+    ]
+   },
+   "Spell: Cut + Frost": {
+    "attacks": 24,
+    "followups": 0,
+    "hits": 13,
+    "crits": 2,
+    "misses": 11,
+    "damage": 486,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "L60 Cold (plays Cold) #3",
+     "L60 Cold (plays Cold) #2",
+     "L60 Cold (plays Cold) #1"
+    ]
+   },
+   "Spell: Glob [M]": {
+    "attacks": 31,
+    "followups": 0,
+    "hits": 16,
+    "crits": 7,
+    "misses": 15,
+    "damage": 118,
+    "ap": 62,
+    "kills": 0,
+    "users": [
+     "L60 Acid (plays Acid) #1",
+     "L60 Acid (plays Acid) #2",
+     "L60 Acid (plays Acid) #3"
+    ]
+   },
+   "Spell: Frost": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 17,
+    "crits": 5,
+    "misses": 13,
+    "damage": 185,
+    "ap": 60,
+    "kills": 1,
+    "users": [
+     "L60 Cold (plays Cold) #3",
+     "L60 Cold (plays Cold) #2",
+     "L60 Cold (plays Cold) #1"
+    ]
+   },
+   "Spell: Glob": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 2,
+    "users": []
+   },
+   "Spell: Cut + Glob": {
+    "attacks": 0,
+    "followups": 0,
+    "hits": 0,
+    "crits": 0,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 1,
+    "users": []
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 11,
+    "absorbed": 228
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Acid (plays Acid) #1",
+    "dealt": 113,
+    "taken": 585,
+    "hits": 7,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Cold (plays Cold) #3",
+    "dealt": 213,
+    "taken": 60,
+    "hits": 8,
+    "attacks": 15
+   },
+   {
+    "name": "L60 Cold (plays Cold) #1",
+    "dealt": 90,
+    "taken": 141,
+    "hits": 4,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Cold (plays Cold) #2",
+    "dealt": 368,
+    "taken": 278,
+    "hits": 18,
+    "attacks": 27
+   },
+   {
+    "name": "L60 Acid (plays Acid) #2",
+    "dealt": 208,
+    "taken": 86,
+    "hits": 11,
+    "attacks": 23
+   },
+   {
+    "name": "L60 Acid (plays Acid) #3",
+    "dealt": 158,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 25
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Acid (plays Acid) #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 9,
+    "used": {
+     "cast:Cut + Glob": 4,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "defend:dodge": 42,
+     "cast:Glob": 5,
+     "cast:nothingAffordable": 3,
+     "recoverEnergy": 12
+    }
+   },
+   {
+    "name": "L60 Cold (plays Cold) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13,
+     "cast:Cut + Frost": 7,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Frost": 8
+    },
+    "turnMoved": 0,
+    "casts": 15
+   },
+   {
+    "name": "L60 Cold (plays Cold) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 14,
+     "cast:Cut + Frost": 6,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Frost": 6
+    },
+    "turnMoved": 0,
+    "casts": 12
+   },
+   {
+    "name": "L60 Cold (plays Cold) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 27,
+    "used": {
+     "cast:Cut + Frost": 11,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "defend:dodge": 30,
+     "cast:Frost": 16
+    }
+   },
+   {
+    "name": "L60 Acid (plays Acid) #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 23,
+    "used": {
+     "cast:Cut + Glob": 11,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Glob": 12,
+     "defend:dodge": 12,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 8
+    }
+   },
+   {
+    "name": "L60 Acid (plays Acid) #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 9,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 25,
+    "used": {
+     "cast:Cut + Glob": 11,
+     "mod:Rend": 2,
+     "mod:Bleed": 1,
+     "cast:Glob": 14,
+     "recoverEnergy": 4
+    }
+   }
+  ],
+  "trees": {
+   "L60 Cold (plays Cold) #1": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-cold": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Cold (plays Cold) #2": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-cold": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Cold (plays Cold) #3": {
+    "magic-theory": 2,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-cold": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   }
+  },
+  "gear": {
+   "L60 Cold (plays Cold) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Cold (plays Cold) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Cold (plays Cold) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Acid (plays Acid) #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Acid (plays Acid) #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Acid (plays Acid) #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Cold (plays Cold) #1": [
+    "Light Armor (Hard Leather): -126/120 BROKEN"
+   ],
+   "L60 Cold (plays Cold) #2": [
+    "Light Armor (Hard Leather): -1740/120 BROKEN"
+   ],
+   "L60 Cold (plays Cold) #3": [
+    "Light Armor (Hard Leather): 0/120 BROKEN"
+   ],
+   "L60 Acid (plays Acid) #1": [
+    "Light Armor (Hard Leather): 0/120 BROKEN"
+   ],
+   "L60 Acid (plays Acid) #2": [
+    "Light Armor (Hard Leather): 96/120"
+   ],
+   "L60 Acid (plays Acid) #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3146,
+    "monsterHp": 3252,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2972,
+    "monsterHp": 3252,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2752,
+    "monsterHp": 3252,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2392,
+    "monsterHp": 2957,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2123,
+    "monsterHp": 2817,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 2071,
+    "monsterHp": 2817,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 1997,
+    "monsterHp": 2817,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 1864,
+    "monsterHp": 2731,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 1423,
+    "monsterHp": 2731,
+    "partyDown": 3,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Acid (plays Acid) #1": 113,
+    "L60 Cold (plays Cold) #3": 213,
+    "L60 Acid (plays Acid) #2": 630,
+    "L60 Acid (plays Acid) #3": 695,
+    "L60 Cold (plays Cold) #2": 368,
+    "L60 Cold (plays Cold) #1": 90
+   },
+   "taken": {
+    "L60 Cold (plays Cold) #3": 601,
+    "L60 Acid (plays Acid) #1": 585,
+    "L60 Cold (plays Cold) #1": 678,
+    "L60 Cold (plays Cold) #2": 700,
+    "L60 Acid (plays Acid) #2": 86
+   },
+   "unattributed": 541
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 3413,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 671
+  },
+  "lostBy": {
+   "party": 1979,
+   "monsters": 671
+  },
+  "directTaken": {
+   "party": 1150,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Cold (plays Cold) ##: Alacrity?": 3,
+    "prompt: L# Acid (plays Acid) ##: Alacrity?": 3
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [B0Cz95TFycQmFsnw] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Acid (plays Acid) #2"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [B0Cz95TFycQmFsnw] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

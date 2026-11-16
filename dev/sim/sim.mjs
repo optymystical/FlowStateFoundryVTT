@@ -25,6 +25,7 @@ const Mn = await import("/systems/flowstate/module/mental.mjs");
 const MRu = await import("/systems/flowstate/module/mental-rules.mjs");
 const BR = await import("/systems/flowstate/module/bestiary-rules.mjs");
 const Anc = await import("/systems/flowstate/module/ancestry.mjs");
+const { TREES } = await import("/systems/flowstate/module/trees.mjs");
 
 const SIM = (window.SIM = window.SIM ?? {});
 SIM.results = SIM.results ?? [];
@@ -284,7 +285,7 @@ async function makeActor(spec, loadout, { party, folder }) {
       // The grand pass: an Ancestry and Background (abc) and the trees they give for free.
       ...(loadout.abc ? { abc: loadout.abc } : {}), ...(loadout.freeTrees ? { freeTrees: loadout.freeTrees } : {}) },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
-    flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null, mind: loadout.mind ?? null, mindChoices: loadout.mindChoices ?? null },
+    flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null, mind: loadout.mind ?? null, mindChoices: loadout.mindChoices ?? null, noMods: loadout.noMods ?? null, school: loadout.school ?? null },
       ...(loadout.alignment ? { alignment: loadout.alignment } : {}) } }
   });
   const natural = !party && spec.natural !== false;
@@ -556,9 +557,10 @@ function treeOptions(actor, item, { me = null, target = null, pepper = 0 } = {})
     const far = me && target ? dist(me, target) > reachOf(actor) + 0.01 : false;
     const grabbable = (target?.actor?.system?.size ?? 3) <= (actor.system.size ?? 3);                     // a weapon grapple only takes your size or smaller
     if (far && grabbable && take(2 * min)) o.getOverHere = true;                                      // pull them in from Farstrike reach
-    else if (grabbable && s.thr % 4 === 0) o.thrasherGrapple = true;                                  // every fourth swing holds them instead
-    o.windup = budget >= 2 * min + 10 ? "2" : budget >= min + 10 ? "1" : "0";
-    if (o.windup !== "0") take(Number(o.windup) * min);
+    else if (grabbable && tier(actor, "martial-grappling-methods") >= 1) o.thrasherGrapple = true;          // the hit also holds them (worth it with Lock Down; the weapon then waits until they're free)
+    const w = Math.floor(min / 2);                                                                       // Windup: half the Scaling Stat min each
+    o.windup = String([3, 2, 1].find(k => budget >= k * w + 10) ?? 0);
+    if (o.windup !== "0") take(Number(o.windup) * w);
     if (take(min)) o.overshield = true;
   }
   const types = item?.system?.types ?? [];
@@ -760,10 +762,10 @@ async function answerCard() {
       [".fs-limber", "limber", (who) => energyOf(who) >= 5, (btn) => Act.limber(msg, btn.dataset.actor)],
       [".fs-cut-back", "cutBack", (who) => rpOf(who) >= 2, () => Act.cutBack(msg)],
       [".fs-flurry", "bladeFlurry", (who) => rpOf(who) >= 2 && energyOf(who) >= 10, (btn) => Act.bladeFlurry(msg, btn.dataset.item)],
-      [".fs-brawl-extra[data-kind='combo']", "combo", (who) => energyOf(who) >= 15, () => Act.brawlingExtra(msg, "combo")],
-      [".fs-brawl-extra[data-kind='flow']", "flowLikeWater", (who) => energyOf(who) >= 15, () => Act.brawlingExtra(msg, "flow")],
+      [".fs-brawl-extra[data-kind='combo']", "combo", (who) => energyOf(who) >= ab.BRAWLING_COST.combo(who), () => Act.brawlingExtra(msg, "combo")],
+      [".fs-brawl-extra[data-kind='flow']", "flowLikeWater", (who) => energyOf(who) >= ab.BRAWLING_COST.flow(who, msg.getFlag("flowstate", "brawlingCard")?.flowWeight), () => Act.brawlingExtra(msg, "flow")],
       [".fs-mark-shot", "markShot", (who) => rpOf(who) >= 2 + emptyRapidRP(who), async () => { await reloadRapid(fromUuidSync(msg.getFlag("flowstate", "markCard")?.marker ?? "")); return Act.markShot(msg); }],
-      [".fs-redirect", "redirect", (who) => energyOf(who) >= 10, null],
+      [".fs-redirect", "redirect", (who) => energyOf(who) >= ab.BRAWLING_COST.redirect(who), null],          // the real costs (a Strength brawler's Light ones are near free)
       [".fs-palisade[data-wall='1']", "wall", (who) => energyOf(who) >= 10, () => Act.palisade(msg, true)],
       [".fs-palisade:not([data-wall='1'])", "palisade", (who) => rpOf(who) >= 3, () => Act.palisade(msg, false)],
       [".fs-twist", "twist", (who) => energyOf(who) >= 15, () => Act.reachFinisher(msg, "twist")],
@@ -1172,15 +1174,24 @@ function damageMods(actor, target, plan, me = null) {
   out.push("magic-heat:ignition", "magic-radiation:electrify", ["magic-cold:frostbite", 2], "magic-cold:chill", "magic-cold:freeze");
   if ((t?.system?.energy?.value ?? 1) <= 0) out.push("magic-cold:shatter");
   if (near >= 1) out.push("magic-radiation:charge", "magic-radiation:lightning-rod");
-  if ((t?.system?.conditions?.stain ?? 0) > 0) out.push("magic-acid:catalyst");
-  if ((t?.system?.conditions?.stain ?? 0) >= (t?.system?.hp?.pain ?? Infinity)) out.push("magic-acid:sticky");
+  if (Rules.stainTotal(t?.system?.conditions ?? {}) > 0) out.push("magic-acid:catalyst");
+  if (Rules.stainTotal(t?.system?.conditions ?? {}) >= (t?.system?.derived?.restHeal ?? Infinity)) out.push("magic-acid:sticky");
   if (near >= 2 && plan.attack === "Ranged") out.push("magic-reach-arcana:explode");
   if (actor.system.ap.value >= 2 * Math.max(1, plan.ap)) out.push(["magic-reach-arcana:multicast", 1]);          // AP left to pay for the recast
   out.push("magic-piercing:setup", "magic-crushing:beatdown", "magic-slashing:gash");
   if (big) out.push("magic-slashing:chop");
   if (actor.system.energy.value > 0.6 * actor.system.energy.max) out.push("magic-theory:empower");
   if (actor.system.energy.value > 0.7 * actor.system.energy.max) out.push("magic-theory:pinpoint");
-  return out.map(m => (Array.isArray(m) ? m : [m, true]));
+  const banned = new Set(sim(actor).noMods ?? []);          // a bench's "without this Mod" build
+  let list = out.map(m => (Array.isArray(m) ? m : [m, true])).filter(([id]) => !banned.has(id));
+  // A bench build that plays its own school: that school's Mods first (and all of them, not only the ones the conditions above listed).
+  const school = sim(actor).school;
+  if (school) {
+    const own = Sp.applicableMods(actor.system.trees ?? {}, plan.cores?.map(c => c.id) ?? []).filter(m => m.id.startsWith(school + ":") && !banned.has(m.id) && !(school === "magic-acid" && m.id === "magic-acid:sticky" && !(Rules.stainTotal(t?.system?.conditions ?? {}) >= (t?.system?.derived?.restHeal ?? Infinity))) && !(m.id === "magic-cold:shatter" && (t?.system?.energy?.value ?? 1) > 0));
+    const ownIds = new Set(own.map(m => m.id));
+    list = [...own.map(m => list.find(([id]) => id === m.id) ?? [m.id, m.stackable ? 1 : true]), ...list.filter(([id]) => !ownIds.has(id))];
+  }
+  return list;
 }
 
 /** Pick Mods for a plan, cheapest-first in the AI's order, while they stay within `budget` Energy. */
@@ -1448,7 +1459,7 @@ async function mentalTurn(actor, me) {
       const before = new Set(game.messages.keys());
       let ok = null;
       const foeTarget = !allies.includes(pick);
-      const choices = { "choice:sign": foeTarget ? "minus" : "plus", "choice:size": foeTarget ? "down" : "up", ...(sim(actor).mindChoices ?? {}) };
+      const choices = { "choice:sign": foeTarget ? "minus" : "plus", "choice:size": foeTarget ? "down" : "up", ...(foeTarget ? mireChoices(pick.actor) : {}), ...(sim(actor).mindChoices ?? {}) };
       try { ok = await Mn.manifest(actor, { mode: modeId, range, enhance, burst: false, ...choices }); } catch (err) { log.errors.push(`manifest ${actor.name}: ${err.stack?.slice(0, 400)}`); }
       if (!ok) { note(actor, `manifest:refused(${mode.name})`); continue; }
       s.manifests = (s.manifests ?? 0) + 1;
@@ -1643,7 +1654,8 @@ async function casterTurn(actor, me, { hybrid = false } = {}) {
       if (!fits(r)) continue;
       if (r.plan.attack === "Targeted" && dist(me, target) > 100.01) { tooFar = true; continue; }
       const value = spellValue(r.plan, target, me) / Math.max(1, r.plan.ap);
-      if (value > 0 && (!best || value > best.value)) best = { ids, r, value };
+      const own = !sim(actor).school || ids.some(id => id.startsWith(sim(actor).school + ":"));          // a bench build that plays its own school casts its Core (alone or in a Combo)
+      if (value > 0 && (!best || (own && !best.own) || (own === best.own && value > best.value))) best = { ids, r, value, own };
     }
     // Only Targeted spells (100 ft) and the target past that: step into range first (a caster on the back line starts farther out).
     if (!best && tooFar && !done.has("closeIn")) { done.add("closeIn"); note(actor, "cast:closeIn"); if (await approach(actor, me, target, 95)) continue; }
@@ -1689,6 +1701,12 @@ async function actTurn(actor, me) {
     // (A Rapid weapon with Quickload, Rapid T1, is fired empty instead: Quickload reloads it.)
     const quick = w => w.ranged && ab.rapid(actor, w.item, 1);
     for (const w of weapons.filter(w => w.ranged && !w.loaded && !quick(w) && rp >= w.reloadRP)) { SIM.acting = actor.name; await Act.reloadWeapon(actor, w.item); s.reloads = (s.reloads ?? 0) + 1; }
+    // A Thrasher weapon holding someone can't attack: without Grappling Methods (Lock Down, Disrupt) to use the hold, let go and swing again.
+    if (tier(actor, "martial-grappling-methods") < 1 && Act.grappledBy(actor).some(v => v.getFlag?.("flowstate", "grappleWeapon"))) {
+      SIM.acting = actor.name; note(actor, "releaseHold");
+      await Act.releaseGrapple(actor);
+      await quiet(200, 2000);
+    }
     const ready = actor.items.filter(i => i.type === "weapon" && i.system.held && i.system.weaponType !== "unarmed").map(i => weaponPlan(actor, i)).filter(w => w && (!w.ranged || w.loaded || quick(w)));
     const unarmed = actor.items.find(i => i.type === "weapon" && i.system.weaponType === "unarmed");
     const nearest = foes.sort((a, b) => dist(me, a) - dist(me, b))[0];
@@ -1791,8 +1809,8 @@ async function actTurn(actor, me) {
         if (m) { s.attacks++; await settle(); continue; }
       }
     }
-    // A creation fights Unarmed with its better stat (Heavy: Strength, Light: Dexterity); everyone else keeps the dialog's default.
-    const weight = role === "creation" && melee.item.system.weaponType === "unarmed" ? (effStat(actor, "str") >= effStat(actor, "dex") ? "heavy" : "light") : undefined;
+    // Unarmed: punch with the better stat (Heavy: Strength, Light: Dexterity). The dialog's default is Light, which a Strength brawler rolls no dice with.
+    const weight = melee.item.system.weaponType === "unarmed" ? (effStat(actor, "str") >= effStat(actor, "dex") ? "heavy" : "light") : undefined;
     if (!(await attack(actor, me, melee, target, { weight, weave: weavePlan(actor, me, melee, target) }))) return;
     await holdTight(actor);                                   // a Thrasher Grapple or Get Over Here! may have just grabbed them
   }
@@ -1856,6 +1874,15 @@ function trimChat(keep = 60) {
   }
 }
 
+/** Mire (Stagnation): the action types the target spends its points on, by the tiers it has in each archetype's trees (most first). */
+function mireChoices(target) {
+  const arch = new Map(TREES.map(t => [t.id, t.archetype]));
+  const pts = { martial: 0, mental: 0, magic: 0 };
+  for (const [id, n] of Object.entries(target?.system?.trees ?? {})) { const a = arch.get(id); if (a in pts) pts[a] += Number(n) || 0; }
+  const order = Object.keys(pts).sort((a, b) => pts[b] - pts[a]);
+  return { "choice:mire": order[0], "choice:mire2": pts[order[1]] > 0 ? order[1] : "" };
+}
+
 /** Run one encounter (an id from R.ENCOUNTERS) and add its results to SIM.results. */
 SIM.passId = SIM.passId ?? R.PASS;
 const passOf = () => R.PASSES[SIM.passId] ?? R.PASSES[R.PASS];
@@ -1886,7 +1913,7 @@ SIM.fight = async function fight(id, { maxRounds } = {}) {
     const monsterActors = [];
     for (const k of P.monsters[enc.group].kinds) {
       const a = await makeActor(k, { armor: k.armor, weapons: k.weapons ?? [], trees: k.trees, grapple: k.grapple, foci: k.foci, shroud: k.shroud, focus: k.focus, conj: k.conj, icon: k.icon, alignment: k.alignment, mind: k.mind,
-        abc: k.abc, freeTrees: k.freeTrees, role: k.role, stats: k.stats }, { party: false, folder: mf });
+        abc: k.abc, freeTrees: k.freeTrees, role: k.role, stats: k.stats, noMods: k.noMods, school: k.school }, { party: false, folder: mf });
       for (let i = 0; i < k.count; i++) monsterActors.push(a);
     }
     await deploy(scene, party, monsterActors, P.deploy, P.party[0].loadouts[enc.rotation]);

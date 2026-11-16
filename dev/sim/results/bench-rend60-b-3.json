@@ -1,0 +1,1209 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 50,
+  "winner": "party",
+  "pass": "bench-rend60-b",
+  "rounds": 3,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 27,
+   "mod:Bleed": 21,
+   "mod:Rend": 7,
+   "mod:Ignition": 17,
+   "defend:dodge": 27,
+   "mod:Gash": 3,
+   "recoverEnergy": 3
+  },
+  "hp": {
+   "L60 Slashing (no Rend) #1#NSHq": "1134/1134",
+   "L60 Slashing (no Rend) #2#8J1z": "1134/1134",
+   "L60 Slashing (no Rend) #3#lOmd": "1134/1134",
+   "L60 Slashing #1#Gmrd": "456/1134",
+   "L60 Slashing #2#1FDf": "-76/1134",
+   "L60 Slashing #3#RCxF": "454/1134"
+  },
+  "down": [
+   "L60 Slashing #1",
+   "L60 Slashing #2",
+   "L60 Slashing #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 7,
+    "damage": 0,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L60 Slashing #3",
+     "L60 Slashing #2",
+     "L60 Slashing #1"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 6,
+    "damage": 108,
+    "ap": 45,
+    "kills": 3,
+    "users": [
+     "L60 Slashing (no Rend) #2",
+     "L60 Slashing (no Rend) #1",
+     "L60 Slashing (no Rend) #3"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 104
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Slashing #3",
+    "dealt": 0,
+    "taken": 24,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Slashing (no Rend) #1",
+    "dealt": 54,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 5
+   },
+   {
+    "name": "L60 Slashing (no Rend) #3",
+    "dealt": 54,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L60 Slashing (no Rend) #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Slashing #1",
+    "dealt": 0,
+    "taken": 26,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "L60 Slashing #2",
+    "dealt": 0,
+    "taken": 58,
+    "hits": 2,
+    "attacks": 4
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 5,
+     "mod:Rend": 3,
+     "mod:Ignition": 2,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L60 Slashing (no Rend) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "cast:Cut + Flame": 5,
+     "mod:Bleed": 3,
+     "mod:Ignition": 4,
+     "mod:Gash": 1,
+     "recoverEnergy": 3
+    },
+    "turnMoved": 0,
+    "casts": 5
+   },
+   {
+    "name": "L60 Slashing (no Rend) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5,
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 3,
+     "mod:Ignition": 3,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "L60 Slashing (no Rend) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 4,
+     "mod:Ignition": 4,
+     "mod:Gash": 1,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "L60 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "L60 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 4,
+     "mod:Rend": 2,
+     "mod:Ignition": 2,
+     "defend:dodge": 5
+    }
+   }
+  ],
+  "trees": {
+   "L60 Slashing (no Rend) #1": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Slashing (no Rend) #2": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Slashing (no Rend) #3": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   }
+  },
+  "gear": {
+   "L60 Slashing (no Rend) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Slashing (no Rend) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Slashing (no Rend) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Slashing (no Rend) #1": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing (no Rend) #2": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing (no Rend) #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing #1": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Slashing #2": [
+    "Light Armor (Hard Leather): 56/120"
+   ],
+   "L60 Slashing #3": [
+    "Light Armor (Hard Leather): 40/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3402,
+    "monsterHp": 2724,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 3402,
+    "monsterHp": 1238,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 3,
+    "partyHp": 3402,
+    "monsterHp": 910,
+    "partyDown": 0,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing (no Rend) #1": 834,
+    "L60 Slashing (no Rend) #3": 1094,
+    "L60 Slashing (no Rend) #2": 168
+   },
+   "taken": {
+    "L60 Slashing #1": 678,
+    "L60 Slashing #2": 1134,
+    "L60 Slashing #3": 680
+   },
+   "unattributed": 396
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 770
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1722
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 2492
+  },
+  "directTaken": {
+   "party": 108,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Slashing (no Rend) ##: Alacrity?": 3,
+    "prompt: L# Slashing ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 65,
+  "winner": "monsters",
+  "pass": "bench-rend60-b",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 31,
+   "mod:Bleed": 23,
+   "mod:Rend": 10,
+   "mod:Ignition": 14,
+   "defend:dodge": 31,
+   "mod:Gash": 2,
+   "recoverEnergy": 3
+  },
+  "hp": {
+   "L60 Slashing (no Rend) #1#0tZU": "532/1134",
+   "L60 Slashing (no Rend) #2#vqOs": "-1472/1134",
+   "L60 Slashing (no Rend) #3#s2JU": "288/1134",
+   "L60 Slashing #1#hR9r": "44/1134",
+   "L60 Slashing #2#KdIu": "830/1134",
+   "L60 Slashing #3#zyBx": "1134/1134"
+  },
+  "down": [
+   "L60 Slashing (no Rend) #1",
+   "L60 Slashing (no Rend) #2",
+   "L60 Slashing (no Rend) #3",
+   "L60 Slashing #1"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 19,
+    "followups": 0,
+    "hits": 10,
+    "crits": 6,
+    "misses": 9,
+    "damage": 322,
+    "ap": 57,
+    "kills": 0,
+    "users": [
+     "L60 Slashing #1",
+     "L60 Slashing #3",
+     "L60 Slashing #2"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 7,
+    "damage": 58,
+    "ap": 36,
+    "kills": 4,
+    "users": [
+     "L60 Slashing (no Rend) #1",
+     "L60 Slashing (no Rend) #3"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 10,
+    "absorbed": 112
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Slashing #1",
+    "dealt": 86,
+    "taken": 42,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L60 Slashing (no Rend) #2",
+    "dealt": 0,
+    "taken": 174,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Slashing (no Rend) #1",
+    "dealt": 34,
+    "taken": 42,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Slashing #3",
+    "dealt": 146,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 8
+   },
+   {
+    "name": "L60 Slashing #2",
+    "dealt": 90,
+    "taken": 16,
+    "hits": 1,
+    "attacks": 7
+   },
+   {
+    "name": "L60 Slashing (no Rend) #3",
+    "dealt": 24,
+    "taken": 106,
+    "hits": 2,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 4,
+     "mod:Rend": 2,
+     "mod:Ignition": 2,
+     "defend:dodge": 7
+    }
+   },
+   {
+    "name": "L60 Slashing (no Rend) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L60 Slashing (no Rend) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 13,
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 4,
+     "mod:Ignition": 4,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "L60 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Cut + Flame": 8,
+     "mod:Bleed": 6,
+     "mod:Rend": 4,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "L60 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 7,
+    "used": {
+     "cast:Cut + Flame": 7,
+     "mod:Bleed": 5,
+     "mod:Rend": 4,
+     "mod:Ignition": 2,
+     "defend:dodge": 5,
+     "recoverEnergy": 3
+    }
+   },
+   {
+    "name": "L60 Slashing (no Rend) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 4,
+     "mod:Ignition": 4,
+     "mod:Gash": 1,
+     "defend:dodge": 4
+    }
+   }
+  ],
+  "trees": {
+   "L60 Slashing (no Rend) #1": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Slashing (no Rend) #2": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Slashing (no Rend) #3": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   }
+  },
+  "gear": {
+   "L60 Slashing (no Rend) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Slashing (no Rend) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Slashing (no Rend) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Slashing (no Rend) #1": [
+    "Light Armor (Hard Leather): 112/120"
+   ],
+   "L60 Slashing (no Rend) #2": [
+    "Light Armor (Hard Leather): 80/120"
+   ],
+   "L60 Slashing (no Rend) #3": [
+    "Light Armor (Hard Leather): 56/120"
+   ],
+   "L60 Slashing #1": [
+    "Light Armor (Hard Leather): 80/120"
+   ],
+   "L60 Slashing #2": [
+    "Light Armor (Hard Leather): 112/120"
+   ],
+   "L60 Slashing #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2268,
+    "monsterHp": 3402,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1728,
+    "monsterHp": 2312,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 1728,
+    "monsterHp": 2008,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 820,
+    "monsterHp": 2008,
+    "partyDown": 3,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing #1": 734,
+    "L60 Slashing #3": 1306,
+    "L60 Slashing (no Rend) #1": 358,
+    "L60 Slashing (no Rend) #3": 1036,
+    "L60 Slashing #2": 526
+   },
+   "taken": {
+    "L60 Slashing (no Rend) #2": 1134,
+    "L60 Slashing (no Rend) #1": 602,
+    "L60 Slashing (no Rend) #3": 846,
+    "L60 Slashing #1": 1090,
+    "L60 Slashing #2": 304
+   },
+   "unattributed": 16
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 508,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 1694,
+   "monsters": 1394
+  },
+  "lostBy": {
+   "party": 2582,
+   "monsters": 1394
+  },
+  "directTaken": {
+   "party": 380,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Slashing (no Rend) ##: Alacrity?": 3,
+    "prompt: L# Slashing ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 55,
+  "winner": "party",
+  "pass": "bench-rend60-b",
+  "rounds": 3,
+  "partyLeft": 3,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 26,
+   "mod:Bleed": 20,
+   "mod:Ignition": 15,
+   "defend:dodge": 26,
+   "mod:Gash": 3,
+   "mod:Rend": 5
+  },
+  "hp": {
+   "L60 Slashing (no Rend) #1#M4FF": "1134/1134",
+   "L60 Slashing (no Rend) #2#FVAl": "1134/1134",
+   "L60 Slashing (no Rend) #3#kukk": "1134/1134",
+   "L60 Slashing #1#2BYU": "-404/1134",
+   "L60 Slashing #2#LFIT": "196/1134",
+   "L60 Slashing #3#xjdN": "554/1134"
+  },
+  "down": [
+   "L60 Slashing #1",
+   "L60 Slashing #2",
+   "L60 Slashing #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 8,
+    "crits": 5,
+    "misses": 8,
+    "damage": 50,
+    "ap": 48,
+    "kills": 3,
+    "users": [
+     "L60 Slashing (no Rend) #3",
+     "L60 Slashing (no Rend) #1",
+     "L60 Slashing (no Rend) #2"
+    ]
+   },
+   "Spell: Cut + Flame [M]": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 7,
+    "damage": 0,
+    "ap": 30,
+    "kills": 0,
+    "users": [
+     "L60 Slashing #2",
+     "L60 Slashing #3"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 6,
+    "absorbed": 76
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Slashing (no Rend) #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Slashing #1",
+    "dealt": 0,
+    "taken": 18,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Slashing (no Rend) #1",
+    "dealt": 32,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Slashing #2",
+    "dealt": 0,
+    "taken": 18,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "L60 Slashing #3",
+    "dealt": 0,
+    "taken": 14,
+    "hits": 0,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Slashing (no Rend) #2",
+    "dealt": 18,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing (no Rend) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 4,
+     "mod:Ignition": 4,
+     "mod:Gash": 1,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L60 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L60 Slashing (no Rend) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 4,
+     "mod:Ignition": 4,
+     "mod:Gash": 1,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L60 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 4,
+     "mod:Rend": 2,
+     "mod:Ignition": 2,
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "L60 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 5,
+     "mod:Rend": 3,
+     "mod:Ignition": 2,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L60 Slashing (no Rend) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Cut + Flame": 4,
+     "mod:Bleed": 3,
+     "mod:Ignition": 3,
+     "mod:Gash": 1
+    },
+    "turnMoved": 0,
+    "casts": 4
+   }
+  ],
+  "trees": {
+   "L60 Slashing (no Rend) #1": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Slashing (no Rend) #2": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   },
+   "L60 Slashing (no Rend) #3": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   }
+  },
+  "gear": {
+   "L60 Slashing (no Rend) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Slashing (no Rend) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Slashing (no Rend) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Slashing (no Rend) #1": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing (no Rend) #2": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing (no Rend) #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing #1": [
+    "Light Armor (Hard Leather): 84/120"
+   ],
+   "L60 Slashing #2": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Slashing #3": [
+    "Light Armor (Hard Leather): 88/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3402,
+    "monsterHp": 2268,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 3402,
+    "monsterHp": 1958,
+    "partyDown": 0,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 3402,
+    "monsterHp": 750,
+    "partyDown": 0,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing (no Rend) #1": 1432,
+    "L60 Slashing (no Rend) #2": 592,
+    "L60 Slashing (no Rend) #3": 628
+   },
+   "taken": {
+    "L60 Slashing #1": 1134,
+    "L60 Slashing #2": 938,
+    "L60 Slashing #3": 580
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 426
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 2226
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 2652
+  },
+  "directTaken": {
+   "party": 50,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Slashing (no Rend) ##: Alacrity?": 3,
+    "prompt: L# Slashing ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

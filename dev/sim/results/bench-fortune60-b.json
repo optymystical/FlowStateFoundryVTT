@@ -1,0 +1,1951 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 454,
+  "winner": "unfinished",
+  "pass": "bench-fortune60-b",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {
+   "down": 2,
+   "into": 2
+  },
+  "used": {
+   "defend:dodge": 385,
+   "ward": 90,
+   "manifest:Wager+": 45,
+   "manifest:Windfall": 45,
+   "manifest:Providence": 30,
+   "manifest:Bloom": 66,
+   "manifest:Flourish": 45,
+   "manifest:Decree": 25,
+   "charge:L60 Life #1": 18,
+   "opt:replace=K2dStPdJ2y2EHEul": 1,
+   "charge:L60 Life #3": 1,
+   "opt:replace=kMv05Tay19LDLOZX": 1,
+   "manifest:Renewal": 30,
+   "opt:replace=Vv8lldBe6i796PXW": 1,
+   "opt:replace=UPLvcenzQMurlki2": 1,
+   "opt:replace=LwQs9eTjL30bliLV": 1,
+   "opt:replace=3ODcOJb8PdAQeJPw": 1,
+   "opt:replace=TqWZTMt2FA1ZTEb6": 1,
+   "opt:dir=into": 1,
+   "manifest:Mandate": 8,
+   "opt:replace=L7nFT1i0aniXUUAm": 1,
+   "opt:m:2LUzt0yiEfe6o0rs": 1,
+   "charge:L60 Life #2": 7,
+   "opt:replace=T0V0PaPOsTVcNClV": 1,
+   "opt:replace=O3cInLk7SKj1sInx": 1,
+   "opt:replace=Lg0CiIf2eIpifr7N": 1,
+   "opt:replace=d6RLPJrKxLrCtb3Y": 1,
+   "opt:m:TTvX9l5k1e0lEuGp": 1,
+   "opt:replace=Y5YReTaOHm80und9": 1,
+   "opt:replace=ret7sOe0wVy4wzYa": 1,
+   "opt:replace=rHdmh1twHLEb73K2": 1,
+   "opt:replace=GHCRg4Eaa809TbVi": 1,
+   "opt:m:6Dps3a8Wgvtcs561": 1,
+   "opt:replace=bsdBVanbqHpJzeUu": 1,
+   "opt:replace=Ap4tkNRq4nXCB7Rk": 1,
+   "opt:m:EzgO4IOQit8MCuXO": 1,
+   "opt:replace=wlgKmWmsnJjmPRRV": 1,
+   "opt:replace=coWxWuycIAdS7RUC": 1,
+   "opt:m:hShrIB9laVqIB6Oj": 1,
+   "opt:replace=BEqp41wNn7LPEg49": 1,
+   "opt:replace=rlaBxj710gghSLAX": 1
+  },
+  "hp": {
+   "L60 Life #1#PyMF": "716/1134",
+   "L60 Life #2#j2wK": "1134/1134",
+   "L60 Life #3#HQe2": "1134/1134",
+   "L60 Fortune #1#xG1I": "1084/1134",
+   "L60 Fortune #2#qAly": "918/1134",
+   "L60 Fortune #3#VXPU": "969/1134"
+  },
+  "down": [],
+  "weapons": {
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 34,
+    "crits": 17,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Wager (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 20,
+    "crits": 6,
+    "misses": 25,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Windfall (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 31,
+    "crits": 12,
+    "misses": 14,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Providence (Manifest) [M]": {
+    "attacks": 30,
+    "followups": 0,
+    "hits": 20,
+    "crits": 8,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 21,
+    "followups": 0,
+    "hits": 14,
+    "crits": 7,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 36,
+    "crits": 19,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #1",
+     "L60 Life #3",
+     "L60 Life #2"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 22,
+    "crits": 5,
+    "misses": 23,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #1",
+     "L60 Life #3",
+     "L60 Life #2"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 16,
+    "crits": 4,
+    "misses": 29,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #1",
+     "L60 Life #3",
+     "L60 Life #2"
+    ]
+   },
+   "Manifest: Decree (Manifest)": {
+    "attacks": 25,
+    "followups": 0,
+    "hits": 22,
+    "crits": 9,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #1",
+     "L60 Life #3",
+     "L60 Life #2"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #1"
+    ]
+   },
+   "Manifest: Renewal (Manifest) [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 13,
+    "crits": 8,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3"
+    ]
+   },
+   "Manifest: Mandate (Manifest)": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 4,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #1"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Fortune #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 44,
+    "attacks": 68
+   },
+   {
+    "name": "L60 Life #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 50,
+    "attacks": 82
+   },
+   {
+    "name": "L60 Fortune #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 39,
+    "attacks": 67
+   },
+   {
+    "name": "L60 Fortune #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 49,
+    "attacks": 67
+   },
+   {
+    "name": "L60 Life #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 27,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Life #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 28,
+    "attacks": 54
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Fortune #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 103,
+     "ward": 15,
+     "manifest:Wager+": 15,
+     "manifest:Windfall": 15,
+     "manifest:Providence": 8,
+     "manifest:Bloom": 7,
+     "manifest:Renewal": 8
+    },
+    "manifests": 53,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "L60 Life #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 23,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 167,
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15,
+     "manifest:Decree": 15,
+     "manifest:Renewal": 14,
+     "manifest:Mandate": 8
+    },
+    "turnMoved": 0,
+    "manifests": 67
+   },
+   {
+    "name": "L60 Fortune #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 103,
+     "ward": 15,
+     "manifest:Wager+": 15,
+     "manifest:Windfall": 15,
+     "manifest:Providence": 15,
+     "manifest:Bloom": 7
+    },
+    "turnMoved": 0,
+    "manifests": 52,
+    "knockbacks": {
+     "into": 1
+    }
+   },
+   {
+    "name": "L60 Fortune #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20.615528128088304,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Wager+": 15,
+     "manifest:Windfall": 15,
+     "manifest:Providence": 7,
+     "manifest:Bloom": 7,
+     "defend:dodge": 8,
+     "manifest:Renewal": 8
+    },
+    "manifests": 52,
+    "knockbacks": {
+     "down": 2
+    }
+   },
+   {
+    "name": "L60 Life #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 1,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "defend:dodge": 2,
+     "manifest:Flourish": 15,
+     "manifest:Decree": 1
+    },
+    "manifests": 31
+   },
+   {
+    "name": "L60 Life #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 9,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "defend:dodge": 2,
+     "manifest:Flourish": 15,
+     "manifest:Decree": 9
+    },
+    "manifests": 39
+   }
+  ],
+  "trees": {
+   "L60 Life #1": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Life #2": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Life #3": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   }
+  },
+  "gear": {
+   "L60 Life #1": [
+    "Unarmed G1"
+   ],
+   "L60 Life #2": [
+    "Unarmed G1"
+   ],
+   "L60 Life #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Fortune #1": [
+    "Unarmed"
+   ],
+   "L60 Fortune #2": [
+    "Unarmed"
+   ],
+   "L60 Fortune #3": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Life #1": [],
+   "L60 Life #2": [],
+   "L60 Life #3": [],
+   "L60 Fortune #1": [],
+   "L60 Fortune #2": [],
+   "L60 Fortune #3": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3290,
+    "monsterHp": 3337,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3146,
+    "monsterHp": 3121,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3186,
+    "monsterHp": 3121,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3186,
+    "monsterHp": 3071,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 3186,
+    "monsterHp": 3071,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 3186,
+    "monsterHp": 3071,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 3186,
+    "monsterHp": 3071,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 3186,
+    "monsterHp": 3023,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 3186,
+    "monsterHp": 3023,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 3186,
+    "monsterHp": 3023,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 3186,
+    "monsterHp": 3023,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 3178,
+    "monsterHp": 3023,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 3070,
+    "monsterHp": 2971,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 2984,
+    "monsterHp": 2971,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 2984,
+    "monsterHp": 2971,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 2984,
+    "monsterHp": 2971,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Fortune #1": 120,
+    "L60 Fortune #2": 262,
+    "L60 Fortune #3": 76
+   },
+   "taken": {
+    "L60 Fortune #3": 165,
+    "L60 Life #1": 458,
+    "L60 Fortune #2": 216,
+    "L60 Fortune #1": 50
+   },
+   "unattributed": 431
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 418,
+   "monsters": 431
+  },
+  "lostBy": {
+   "party": 418,
+   "monsters": 431
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Life ##: Alacrity?": 3,
+    "prompt: L# Fortune ##: Alacrity?": 3,
+    "prompt: Sanctum Ward: L# Fortune ##": 45,
+    "prompt: Sanctum Ward: L# Life ##": 45,
+    "prompt: Verdant Soul (Tenet)": 38,
+    "prompt: Verdant Soul: give # temp HP to": 38,
+    "prompt: L# Life ##'s charges on L# Fortune ##": 36,
+    "prompt: Chant": 38,
+    "prompt: Fortune: who else": 1,
+    "prompt: Fortune — L# Fortune ##": 4,
+    "prompt: Fortune: elemental damage type": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 423,
+  "winner": "unfinished",
+  "pass": "bench-fortune60-b",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {
+   "down": 1
+  },
+  "used": {
+   "defend:dodge": 346,
+   "ward": 90,
+   "manifest:Bloom": 90,
+   "manifest:Flourish": 45,
+   "manifest:Decree": 16,
+   "charge:L60 Life #3": 1,
+   "opt:replace=Dw9aczuVm3Ax1RDp": 1,
+   "manifest:Wager+": 45,
+   "manifest:Windfall": 45,
+   "manifest:Providence": 5,
+   "charge:L60 Life #1": 10,
+   "opt:replace=PvBzR8xrRh4CsFxX": 1,
+   "opt:replace=jdOI1TPFii8oo22E": 1,
+   "opt:replace=NXUeZe1VZF0fZxJM": 1,
+   "manifest:Renewal": 10,
+   "opt:replace=XRZbwFWrvzi8XYur": 1,
+   "opt:replace=hukCtbZg1nSe9UU4": 1,
+   "opt:replace=eksh3oAX1FAnNiMG": 1,
+   "opt:replace=n9PeH9ckWbG5L6Pq": 1,
+   "opt:replace=JcXgiTreOBKDRReD": 1,
+   "opt:replace=OHjxy61ojcxAXT4J": 1,
+   "opt:replace=89re4w8SvXPnFxZO": 1
+  },
+  "hp": {
+   "L60 Life #1#2ejz": "650/1134",
+   "L60 Life #2#8AWo": "1134/1134",
+   "L60 Life #3#Xm3G": "1134/1134",
+   "L60 Fortune #1#c8UF": "1134/1134",
+   "L60 Fortune #2#VO3x": "1134/1134",
+   "L60 Fortune #3#1C1H": "1134/1134"
+  },
+  "down": [],
+  "weapons": {
+   "Manifest: Sanctum Ward": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 34,
+    "crits": 12,
+    "misses": 11,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #3",
+     "L60 Life #2",
+     "L60 Life #1"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 21,
+    "crits": 4,
+    "misses": 24,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #3",
+     "L60 Life #2",
+     "L60 Life #1"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 16,
+    "crits": 5,
+    "misses": 29,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #3",
+     "L60 Life #2",
+     "L60 Life #1"
+    ]
+   },
+   "Manifest: Decree (Manifest)": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 11,
+    "crits": 4,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #3",
+     "L60 Life #1"
+    ]
+   },
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 26,
+    "crits": 7,
+    "misses": 19,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Wager (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 25,
+    "crits": 5,
+    "misses": 20,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Windfall (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 21,
+    "crits": 10,
+    "misses": 24,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Providence (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 26,
+    "crits": 9,
+    "misses": 19,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 10,
+    "followups": 0,
+    "hits": 1,
+    "crits": 0,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #1"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Life #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 26,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Fortune #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 33,
+    "attacks": 61
+   },
+   {
+    "name": "L60 Fortune #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 31,
+    "attacks": 62
+   },
+   {
+    "name": "L60 Life #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 33,
+    "attacks": 70
+   },
+   {
+    "name": "L60 Life #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 45
+   },
+   {
+    "name": "L60 Fortune #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 36,
+    "attacks": 62
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Life #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 1,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 3,
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15,
+     "manifest:Decree": 1
+    },
+    "manifests": 31
+   },
+   {
+    "name": "L60 Fortune #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 95,
+     "ward": 15,
+     "manifest:Wager+": 15,
+     "manifest:Windfall": 15,
+     "manifest:Providence": 1,
+     "manifest:Bloom": 15
+    },
+    "turnMoved": 0,
+    "manifests": 46
+   },
+   {
+    "name": "L60 Fortune #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Wager+": 15,
+     "manifest:Windfall": 15,
+     "manifest:Providence": 2,
+     "manifest:Bloom": 15,
+     "defend:dodge": 46
+    },
+    "manifests": 47
+   },
+   {
+    "name": "L60 Life #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 172,
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15,
+     "manifest:Decree": 15,
+     "manifest:Renewal": 10
+    },
+    "turnMoved": 0,
+    "manifests": 55
+   },
+   {
+    "name": "L60 Life #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15
+    },
+    "manifests": 30
+   },
+   {
+    "name": "L60 Fortune #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 30.413812651491092,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Wager+": 15,
+     "manifest:Windfall": 15,
+     "manifest:Providence": 2,
+     "manifest:Bloom": 15,
+     "defend:dodge": 30
+    },
+    "manifests": 47,
+    "knockbacks": {
+     "down": 1
+    }
+   }
+  ],
+  "trees": {
+   "L60 Life #1": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Life #2": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Life #3": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   }
+  },
+  "gear": {
+   "L60 Life #1": [
+    "Unarmed G1"
+   ],
+   "L60 Life #2": [
+    "Unarmed G1"
+   ],
+   "L60 Life #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Fortune #1": [
+    "Unarmed"
+   ],
+   "L60 Fortune #2": [
+    "Unarmed"
+   ],
+   "L60 Fortune #3": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Life #1": [],
+   "L60 Life #2": [],
+   "L60 Life #3": [],
+   "L60 Fortune #1": [],
+   "L60 Fortune #2": [],
+   "L60 Fortune #3": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3286,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3286,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3286,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3286,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 3118,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 3118,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 2938,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 2938,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 2938,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 2938,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 2918,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 2918,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 2918,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 2900,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 2918,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 2918,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Fortune #2": 274,
+    "L60 Fortune #3": 40,
+    "L60 Fortune #1": 188
+   },
+   "taken": {
+    "L60 Life #1": 502
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 484,
+   "monsters": 0
+  },
+  "lostBy": {
+   "party": 484,
+   "monsters": 0
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Life ##: Alacrity?": 3,
+    "prompt: L# Fortune ##: Alacrity?": 3,
+    "prompt: Sanctum Ward: L# Life ##": 45,
+    "prompt: Verdant Soul (Tenet)": 34,
+    "prompt: Verdant Soul: give # temp HP to": 34,
+    "prompt: Sanctum Ward: L# Fortune ##": 45,
+    "prompt: L# Life ##'s charges on L# Fortune ##": 11,
+    "prompt: Chant": 33,
+    "prompt: Fortune — L# Fortune ##": 1
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [xG1IpnyGAMYSMZoq] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Fortune #2"
+    },
+    {
+     "level": "error",
+     "msg": "undefined id [xG1IpnyGAMYSMZoq] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Fortune #2"
+    },
+    {
+     "level": "error",
+     "msg": "undefined id [xG1IpnyGAMYSMZoq] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Fortune #2"
+    },
+    {
+     "level": "error",
+     "msg": "undefined id [qAlyg9ibMz1sU7sy] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Fortune #2"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [xG1IpnyGAMYSMZoq] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu",
+    "Error: undefined id [xG1IpnyGAMYSMZoq] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu",
+    "Error: undefined id [xG1IpnyGAMYSMZoq] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu",
+    "Error: undefined id [qAlyg9ibMz1sU7sy] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 456,
+  "winner": "unfinished",
+  "pass": "bench-fortune60-b",
+  "rounds": 16,
+  "partyLeft": 3,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {
+   "down": 1
+  },
+  "used": {
+   "defend:dodge": 385,
+   "ward": 90,
+   "manifest:Wager+": 42,
+   "manifest:Windfall": 45,
+   "manifest:Providence": 45,
+   "manifest:Bloom": 90,
+   "manifest:Flourish": 45,
+   "manifest:Decree": 16,
+   "charge:L60 Life #3": 1,
+   "opt:replace=i2Mqcqm0C7WP9h6w": 1,
+   "charge:L60 Life #1": 8,
+   "opt:replace=TyOD6aLnHTQw6B49": 1,
+   "opt:replace=lOM8M6p5pGIw73QF": 1,
+   "opt:replace=ipVpE0h30FrLOWha": 1,
+   "opt:replace=N1ufJxreiPV1RC2s": 1,
+   "manifest:Renewal": 9,
+   "opt:replace=HXQYFEBBFa989fhZ": 1,
+   "opt:replace=Hmk2o5pITvLF0X0T": 1,
+   "manifest:Wager": 3,
+   "opt:replace=rQBxyGcbGBp4SyDi": 1,
+   "opt:replace=RxVGawG8fLPj1Zcn": 1
+  },
+  "hp": {
+   "L60 Life #1#87ee": "918/1134",
+   "L60 Life #2#Hon1": "1134/1134",
+   "L60 Life #3#Nmet": "1134/1134",
+   "L60 Fortune #1#D91l": "827/1134",
+   "L60 Fortune #2#aZTz": "770/1134",
+   "L60 Fortune #3#nr2o": "837/1134"
+  },
+  "down": [],
+  "weapons": {
+   "Manifest: Sanctum Ward [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 27,
+    "crits": 9,
+    "misses": 18,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Wager (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 19,
+    "crits": 5,
+    "misses": 26,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Windfall (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 21,
+    "crits": 5,
+    "misses": 24,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Providence (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 27,
+    "crits": 13,
+    "misses": 18,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Bloom (Manifest) [M]": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 28,
+    "crits": 12,
+    "misses": 17,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Fortune #2",
+     "L60 Fortune #3",
+     "L60 Fortune #1"
+    ]
+   },
+   "Manifest: Sanctum Ward": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 35,
+    "crits": 19,
+    "misses": 10,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #3",
+     "L60 Life #1",
+     "L60 Life #2"
+    ]
+   },
+   "Manifest: Bloom (Manifest)": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 17,
+    "crits": 6,
+    "misses": 28,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #3",
+     "L60 Life #1",
+     "L60 Life #2"
+    ]
+   },
+   "Manifest: Flourish (Manifest)": {
+    "attacks": 45,
+    "followups": 0,
+    "hits": 13,
+    "crits": 3,
+    "misses": 32,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #3",
+     "L60 Life #1",
+     "L60 Life #2"
+    ]
+   },
+   "Manifest: Decree (Manifest)": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 9,
+    "crits": 2,
+    "misses": 7,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #3",
+     "L60 Life #1"
+    ]
+   },
+   "Manifest: Renewal (Manifest)": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Life #1"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Fortune #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 44,
+    "attacks": 75
+   },
+   {
+    "name": "L60 Life #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 32,
+    "attacks": 69
+   },
+   {
+    "name": "L60 Fortune #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 34,
+    "attacks": 75
+   },
+   {
+    "name": "L60 Life #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 24,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Fortune #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 44,
+    "attacks": 75
+   },
+   {
+    "name": "L60 Life #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 23,
+    "attacks": 45
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Fortune #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "defend:dodge": 52,
+     "ward": 15,
+     "manifest:Wager+": 15,
+     "manifest:Windfall": 15,
+     "manifest:Providence": 15,
+     "manifest:Bloom": 15
+    },
+    "manifests": 60
+   },
+   {
+    "name": "L60 Life #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 171,
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15,
+     "manifest:Decree": 15,
+     "manifest:Renewal": 9
+    },
+    "turnMoved": 0,
+    "manifests": 54
+   },
+   {
+    "name": "L60 Fortune #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 100,
+     "ward": 15,
+     "manifest:Wager+": 15,
+     "manifest:Windfall": 15,
+     "manifest:Providence": 15,
+     "manifest:Bloom": 15
+    },
+    "turnMoved": 0,
+    "manifests": 60,
+    "knockbacks": {
+     "down": 1
+    }
+   },
+   {
+    "name": "L60 Life #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 1,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "defend:dodge": 2,
+     "manifest:Flourish": 15,
+     "manifest:Decree": 1
+    },
+    "manifests": 31
+   },
+   {
+    "name": "L60 Fortune #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 30.413812651491092,
+    "attacks": 15,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Wager+": 12,
+     "manifest:Windfall": 15,
+     "manifest:Providence": 15,
+     "manifest:Bloom": 15,
+     "defend:dodge": 60,
+     "manifest:Wager": 3
+    },
+    "manifests": 60
+   },
+   {
+    "name": "L60 Life #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 0,
+    "turns": 15,
+    "kills": 0,
+    "turnMoved": 0,
+    "used": {
+     "ward": 15,
+     "manifest:Bloom": 15,
+     "manifest:Flourish": 15
+    },
+    "manifests": 30
+   }
+  ],
+  "trees": {
+   "L60 Life #1": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Life #2": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   },
+   "L60 Life #3": {
+    "mental-theory": 2,
+    "mental-life-dream": 5,
+    "generic-resolve": 2,
+    "generic-persuasion": 2,
+    "mental-order-dream": 5,
+    "generic-initiative": 2,
+    "generic-punish": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-composure": 2,
+    "generic-athletics": 1,
+    "generic-mobility": 1,
+    "generic-stealth": 1
+   }
+  },
+  "gear": {
+   "L60 Life #1": [
+    "Unarmed G1"
+   ],
+   "L60 Life #2": [
+    "Unarmed G1"
+   ],
+   "L60 Life #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Fortune #1": [
+    "Unarmed"
+   ],
+   "L60 Fortune #2": [
+    "Unarmed"
+   ],
+   "L60 Fortune #3": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Life #1": [],
+   "L60 Life #2": [],
+   "L60 Life #3": [],
+   "L60 Fortune #1": [],
+   "L60 Fortune #2": [],
+   "L60 Fortune #3": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3264,
+    "monsterHp": 3176,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3264,
+    "monsterHp": 2929,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3264,
+    "monsterHp": 2929,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3264,
+    "monsterHp": 2929,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 3262,
+    "monsterHp": 2860,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 3262,
+    "monsterHp": 2806,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 3186,
+    "monsterHp": 2856,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 9,
+    "partyHp": 3186,
+    "monsterHp": 2795,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 10,
+    "partyHp": 3186,
+    "monsterHp": 2739,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 11,
+    "partyHp": 3186,
+    "monsterHp": 2667,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 12,
+    "partyHp": 3186,
+    "monsterHp": 2667,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 13,
+    "partyHp": 3186,
+    "monsterHp": 2557,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 14,
+    "partyHp": 3186,
+    "monsterHp": 2557,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 15,
+    "partyHp": 3186,
+    "monsterHp": 2434,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 3186,
+    "monsterHp": 2434,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 16,
+    "partyHp": 3186,
+    "monsterHp": 2434,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Fortune #3": 214,
+    "L60 Fortune #1": 2
+   },
+   "taken": {
+    "L60 Fortune #1": 307,
+    "L60 Life #1": 216,
+    "L60 Fortune #3": 297,
+    "L60 Fortune #2": 414
+   },
+   "unattributed": 1018
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 216,
+   "monsters": 968
+  },
+  "lostBy": {
+   "party": 216,
+   "monsters": 968
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Life ##: Alacrity?": 3,
+    "prompt: L# Fortune ##: Alacrity?": 3,
+    "prompt: Sanctum Ward: L# Fortune ##": 45,
+    "prompt: Chant": 48,
+    "prompt: Sanctum Ward: L# Life ##": 45,
+    "prompt: Verdant Soul (Tenet)": 33,
+    "prompt: Verdant Soul: give # temp HP to": 33,
+    "prompt: L# Life ##'s charges on L# Fortune ##": 10,
+    "prompt: Fortune — L# Fortune ##": 1,
+    "prompt: Fortune: elemental damage type": 2
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [1C1HvLSngg1SMq12] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Fortune #1"
+    },
+    {
+     "level": "error",
+     "msg": "undefined id [c8UFE33kTtD0fuQh] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Fortune #1"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [1C1HvLSngg1SMq12] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu",
+    "Error: undefined id [c8UFE33kTtD0fuQh] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ }
+]

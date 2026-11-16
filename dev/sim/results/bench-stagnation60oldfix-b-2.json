@@ -1,0 +1,1334 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 41,
+  "winner": "monsters",
+  "pass": "bench-stagnation60-b",
+  "rounds": 3,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither+": 11,
+   "defend:dodge": 32,
+   "manifest:Waste+": 11,
+   "manifest:Execute+": 5,
+   "manifest:Mire+": 5
+  },
+  "hp": {
+   "L60 Death #1#MVVQ": "560/1126",
+   "L60 Death #2#lUQf": "514/1040",
+   "L60 Death #3#AvqZ": "220/1134",
+   "L60 Stagnation #1#ajmI": "844/844",
+   "L60 Stagnation #2#nPVM": "1134/1134",
+   "L60 Stagnation #3#o6aE": "1134/1134"
+  },
+  "down": [
+   "L60 Death #1",
+   "L60 Death #2",
+   "L60 Death #3"
+  ],
+  "weapons": {
+   "Manifest: Wither (Manifest)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #3",
+     "L60 Death #2",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #3",
+     "L60 Death #2",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 2,
+    "crits": 2,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #3",
+     "L60 Death #2"
+    ]
+   },
+   "Manifest: Mire (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 5,
+    "crits": 4,
+    "misses": 0,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #1",
+     "L60 Stagnation #2",
+     "L60 Stagnation #3"
+    ]
+   },
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #1",
+     "L60 Stagnation #2",
+     "L60 Stagnation #3"
+    ]
+   },
+   "Manifest: Waste (Manifest) [M]": {
+    "attacks": 5,
+    "followups": 0,
+    "hits": 3,
+    "crits": 3,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #1",
+     "L60 Stagnation #2",
+     "L60 Stagnation #3"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Death #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Death #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "L60 Death #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Stagnation #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 3
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Death #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 9,
+    "used": {
+     "manifest:Wither+": 3,
+     "manifest:Waste+": 3,
+     "manifest:Execute+": 3,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 17,
+     "manifest:Mire+": 2,
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2
+    },
+    "turnMoved": 0,
+    "manifests": 6
+   },
+   {
+    "name": "L60 Death #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 2,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "manifest:Wither+": 1,
+     "manifest:Waste+": 1
+    },
+    "turnMoved": 0,
+    "manifests": 2
+   },
+   {
+    "name": "L60 Death #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 6,
+    "used": {
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2,
+     "manifest:Execute+": 2,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20.615528128088304,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 6,
+    "used": {
+     "manifest:Mire+": 2,
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2
+    }
+   },
+   {
+    "name": "L60 Stagnation #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 20,
+    "manifests": 3,
+    "used": {
+     "manifest:Mire+": 1,
+     "manifest:Wither+": 1,
+     "manifest:Waste+": 1
+    }
+   }
+  ],
+  "trees": {
+   "L60 Death #1": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #2": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #3": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   }
+  },
+  "gear": {
+   "L60 Death #1": [
+    "Unarmed G1"
+   ],
+   "L60 Death #2": [
+    "Unarmed G1"
+   ],
+   "L60 Death #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Stagnation #1": [
+    "Unarmed"
+   ],
+   "L60 Stagnation #2": [
+    "Unarmed"
+   ],
+   "L60 Stagnation #3": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Death #1": [],
+   "L60 Death #2": [],
+   "L60 Death #3": [],
+   "L60 Stagnation #1": [],
+   "L60 Stagnation #2": [],
+   "L60 Stagnation #3": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2828,
+    "monsterHp": 3402,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2208,
+    "monsterHp": 3134,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1294,
+    "monsterHp": 3112,
+    "partyDown": 3,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Stagnation #1": 428,
+    "L60 Death #3": 254,
+    "L60 Death #2": 36,
+    "L60 Stagnation #2": 325
+   },
+   "taken": {
+    "L60 Death #1": 574,
+    "L60 Stagnation #1": 290,
+    "L60 Death #2": 620,
+    "L60 Death #3": 914
+   },
+   "unattributed": 1355
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 2108,
+   "monsters": 290
+  },
+  "lostBy": {
+   "party": 2108,
+   "monsters": 290
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Death ##: Alacrity?": 3,
+    "prompt: L# Stagnation ##: Alacrity?": 3,
+    "prompt: Warden Ward": 58,
+    "prompt: Mortal Coil (Tenet)": 6,
+    "prompt: Moss (Tenet)": 5,
+    "prompt: Stasis: L# Death ##": 6
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 99,
+  "winner": "monsters",
+  "pass": "bench-stagnation60-b",
+  "rounds": 7,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither+": 27,
+   "defend:dodge": 80,
+   "manifest:Waste+": 23,
+   "manifest:Execute+": 12,
+   "manifest:Mire+": 13,
+   "manifest:Waste": 4,
+   "manifest:Wither": 1
+  },
+  "hp": {
+   "L60 Death #1#Usu7": "511/1048",
+   "L60 Death #2#GxYi": "549/1066",
+   "L60 Death #3#zyWp": "366/1022",
+   "L60 Stagnation #1#JE6G": "779/849",
+   "L60 Stagnation #2#ftSQ": "1108/1134",
+   "L60 Stagnation #3#gX9e": "1134/1134"
+  },
+  "down": [
+   "L60 Death #1",
+   "L60 Death #2",
+   "L60 Death #3",
+   "L60 Stagnation #1"
+  ],
+  "weapons": {
+   "Manifest: Wither (Manifest)": {
+    "attacks": 15,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #3",
+     "L60 Death #2",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #3",
+     "L60 Death #2",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 11,
+    "crits": 7,
+    "misses": 1,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #3",
+     "L60 Death #2",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Mire (Manifest) [M]": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 9,
+    "crits": 5,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #2",
+     "L60 Stagnation #3",
+     "L60 Stagnation #1"
+    ]
+   },
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 4,
+    "crits": 2,
+    "misses": 9,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #2",
+     "L60 Stagnation #3",
+     "L60 Stagnation #1"
+    ]
+   },
+   "Manifest: Waste (Manifest) [M]": {
+    "attacks": 13,
+    "followups": 0,
+    "hits": 7,
+    "crits": 1,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #2",
+     "L60 Stagnation #3",
+     "L60 Stagnation #1"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Death #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 20
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 18
+   },
+   {
+    "name": "L60 Death #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "L60 Death #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 13
+   },
+   {
+    "name": "L60 Stagnation #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 15
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Death #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 20,
+    "turns": 7,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 20,
+    "used": {
+     "manifest:Wither+": 7,
+     "manifest:Waste+": 7,
+     "manifest:Execute+": 6,
+     "defend:dodge": 6
+    }
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 32,
+     "manifest:Mire+": 2,
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2
+    },
+    "turnMoved": 0,
+    "manifests": 6
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20,
+    "attacks": 18,
+    "turns": 6,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 18,
+    "used": {
+     "manifest:Mire+": 6,
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 3,
+     "manifest:Waste": 3,
+     "defend:dodge": 9,
+     "manifest:Wither": 1
+    }
+   },
+   {
+    "name": "L60 Death #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 8,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 24,
+     "manifest:Wither+": 3,
+     "manifest:Waste+": 3,
+     "manifest:Execute+": 2
+    },
+    "turnMoved": 0,
+    "manifests": 8
+   },
+   {
+    "name": "L60 Death #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 13,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 13,
+    "used": {
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 4,
+     "manifest:Execute+": 4,
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "L60 Stagnation #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 30.413812651491092,
+    "attacks": 15,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 15,
+    "used": {
+     "manifest:Mire+": 5,
+     "manifest:Wither+": 5,
+     "manifest:Waste+": 4,
+     "manifest:Waste": 1
+    }
+   }
+  ],
+  "trees": {
+   "L60 Death #1": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #2": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #3": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   }
+  },
+  "gear": {
+   "L60 Death #1": [
+    "Unarmed G1"
+   ],
+   "L60 Death #2": [
+    "Unarmed G1"
+   ],
+   "L60 Death #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Stagnation #1": [
+    "Unarmed"
+   ],
+   "L60 Stagnation #2": [
+    "Unarmed"
+   ],
+   "L60 Stagnation #3": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Death #1": [],
+   "L60 Death #2": [],
+   "L60 Death #3": [],
+   "L60 Stagnation #1": [],
+   "L60 Stagnation #2": [],
+   "L60 Stagnation #3": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3038,
+    "monsterHp": 3188,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2860,
+    "monsterHp": 3181,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2779,
+    "monsterHp": 3181,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2238,
+    "monsterHp": 3047,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 2194,
+    "monsterHp": 3047,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 2082,
+    "monsterHp": 3039,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 1426,
+    "monsterHp": 3021,
+    "partyDown": 3,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Death #3": 34,
+    "L60 Death #1": 188,
+    "L60 Stagnation #2": 326,
+    "L60 Death #2": 141,
+    "L60 Stagnation #3": 357
+   },
+   "taken": {
+    "L60 Stagnation #1": 355,
+    "L60 Death #1": 623,
+    "L60 Death #2": 585,
+    "L60 Stagnation #2": 26,
+    "L60 Death #3": 768
+   },
+   "unattributed": 1311
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 1976,
+   "monsters": 381
+  },
+  "lostBy": {
+   "party": 1976,
+   "monsters": 381
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Death ##: Alacrity?": 3,
+    "prompt: L# Stagnation ##: Alacrity?": 3,
+    "prompt: Mortal Coil (Tenet)": 12,
+    "prompt: Warden Ward": 68,
+    "prompt: Moss (Tenet)": 11,
+    "prompt: Stasis: L# Death ##": 7
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 55,
+  "winner": "monsters",
+  "pass": "bench-stagnation60-b",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "manifest:Wither+": 15,
+   "defend:dodge": 44,
+   "manifest:Waste+": 15,
+   "manifest:Execute+": 6,
+   "manifest:Mire+": 8
+  },
+  "hp": {
+   "L60 Death #1#Uqxv": "477/1134",
+   "L60 Death #2#yOUp": "552/1129",
+   "L60 Death #3#PyXH": "213/1134",
+   "L60 Stagnation #1#IYiE": "855/869",
+   "L60 Stagnation #2#sPkJ": "1134/1134",
+   "L60 Stagnation #3#HMTT": "1134/1134"
+  },
+  "down": [
+   "L60 Death #1",
+   "L60 Death #2",
+   "L60 Death #3"
+  ],
+  "weapons": {
+   "Manifest: Wither (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 3,
+    "crits": 2,
+    "misses": 4,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #3",
+     "L60 Death #2",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Waste (Manifest)": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 2,
+    "crits": 1,
+    "misses": 5,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #3",
+     "L60 Death #2",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Execute (Manifest)": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Death #3",
+     "L60 Death #2",
+     "L60 Death #1"
+    ]
+   },
+   "Manifest: Mire (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 5,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #1",
+     "L60 Stagnation #3",
+     "L60 Stagnation #2"
+    ]
+   },
+   "Manifest: Wither (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 2,
+    "crits": 0,
+    "misses": 6,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #1",
+     "L60 Stagnation #3",
+     "L60 Stagnation #2"
+    ]
+   },
+   "Manifest: Waste (Manifest) [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 2,
+    "damage": 0,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Stagnation #1",
+     "L60 Stagnation #3",
+     "L60 Stagnation #2"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Death #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 12
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 9
+   },
+   {
+    "name": "L60 Death #1",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "L60 Death #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 0,
+    "attacks": 5
+   },
+   {
+    "name": "L60 Stagnation #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 9
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Death #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 12,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 12,
+    "used": {
+     "manifest:Wither+": 4,
+     "manifest:Waste+": 4,
+     "manifest:Execute+": 4,
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "L60 Stagnation #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 10,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 20,
+     "manifest:Mire+": 3,
+     "manifest:Wither+": 3,
+     "manifest:Waste+": 3
+    },
+    "turnMoved": 0,
+    "manifests": 9
+   },
+   {
+    "name": "L60 Death #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 3,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "manifest:Wither+": 1,
+     "manifest:Waste+": 1,
+     "manifest:Execute+": 1
+    },
+    "turnMoved": 0,
+    "manifests": 3
+   },
+   {
+    "name": "L60 Death #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 5,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 5,
+    "used": {
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2,
+     "manifest:Execute+": 1,
+     "defend:dodge": 8
+    }
+   },
+   {
+    "name": "L60 Stagnation #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 30.413812651491092,
+    "attacks": 6,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 6,
+    "used": {
+     "manifest:Mire+": 2,
+     "manifest:Wither+": 2,
+     "manifest:Waste+": 2
+    }
+   },
+   {
+    "name": "L60 Stagnation #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 20.615528128088304,
+    "attacks": 9,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "manifests": 9,
+    "used": {
+     "manifest:Mire+": 3,
+     "manifest:Wither+": 3,
+     "manifest:Waste+": 3
+    }
+   }
+  ],
+  "trees": {
+   "L60 Death #1": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #2": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   },
+   "L60 Death #3": {
+    "mental-theory": 2,
+    "mental-death-nightmare": 5,
+    "generic-resolve": 3,
+    "generic-persuasion": 2,
+    "mental-chaos-nightmare": 5,
+    "generic-discipline": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2,
+    "generic-punish": 2
+   }
+  },
+  "gear": {
+   "L60 Death #1": [
+    "Unarmed G1"
+   ],
+   "L60 Death #2": [
+    "Unarmed G1"
+   ],
+   "L60 Death #3": [
+    "Unarmed G1"
+   ]
+  },
+  "monsterGear": {
+   "L60 Stagnation #1": [
+    "Unarmed"
+   ],
+   "L60 Stagnation #2": [
+    "Unarmed"
+   ],
+   "L60 Stagnation #3": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Death #1": [],
+   "L60 Death #2": [],
+   "L60 Death #3": [],
+   "L60 Stagnation #1": [],
+   "L60 Stagnation #2": [],
+   "L60 Stagnation #3": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2741,
+    "monsterHp": 3359,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2163,
+    "monsterHp": 3141,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2151,
+    "monsterHp": 3123,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1242,
+    "monsterHp": 3123,
+    "partyDown": 3,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Death #1": 43,
+    "L60 Stagnation #3": 380,
+    "L60 Death #3": 236,
+    "L60 Stagnation #1": 1
+   },
+   "taken": {
+    "L60 Stagnation #1": 279,
+    "L60 Death #1": 657,
+    "L60 Death #2": 582,
+    "L60 Death #3": 921
+   },
+   "unattributed": 1779
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 2160,
+   "monsters": 279
+  },
+  "lostBy": {
+   "party": 2160,
+   "monsters": 279
+  },
+  "directTaken": {
+   "party": 0,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Death ##: Alacrity?": 3,
+    "prompt: L# Stagnation ##: Alacrity?": 3,
+    "prompt: Mortal Coil (Tenet)": 5,
+    "prompt: Warden Ward": 46,
+    "prompt: Moss (Tenet)": 8,
+    "prompt: Stasis: L# Death ##": 6
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

@@ -1,0 +1,1250 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 45,
+  "winner": "monsters",
+  "pass": "bench-grasp60-a",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 2,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 24,
+   "mod:Bleed": 16,
+   "mod:Rend": 16,
+   "mod:Ignition": 8,
+   "defend:dodge": 24
+  },
+  "hp": {
+   "L60 Grasp Arcana #1#3U83": "534/1134",
+   "L60 Grasp Arcana #2#x4EJ": "510/1134",
+   "L60 Grasp Arcana #3#kVSM": "550/1134",
+   "L60 Slashing #1#0vAA": "106/1134",
+   "L60 Slashing #2#JDsQ": "1134/1134",
+   "L60 Slashing #3#0OIh": "1134/1134"
+  },
+  "down": [
+   "L60 Grasp Arcana #1",
+   "L60 Grasp Arcana #2",
+   "L60 Grasp Arcana #3",
+   "L60 Slashing #1"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 16,
+    "followups": 0,
+    "hits": 4,
+    "crits": 3,
+    "misses": 12,
+    "damage": 264,
+    "ap": 48,
+    "kills": 0,
+    "users": [
+     "L60 Slashing #3",
+     "L60 Slashing #2",
+     "L60 Slashing #1"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 3,
+    "damage": 76,
+    "ap": 24,
+    "kills": 4,
+    "users": [
+     "L60 Grasp Arcana #2"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 4,
+    "absorbed": 32
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Slashing #3",
+    "dealt": 178,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 8
+   },
+   {
+    "name": "L60 Grasp Arcana #1",
+    "dealt": 0,
+    "taken": 86,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Grasp Arcana #3",
+    "dealt": 0,
+    "taken": 82,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Grasp Arcana #2",
+    "dealt": 76,
+    "taken": 96,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "L60 Slashing #1",
+    "dealt": 0,
+    "taken": 76,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "L60 Slashing #2",
+    "dealt": 86,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 6
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Cut + Flame": 8,
+     "mod:Bleed": 6,
+     "mod:Rend": 4,
+     "mod:Ignition": 2
+    }
+   },
+   {
+    "name": "L60 Grasp Arcana #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L60 Grasp Arcana #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Grasp Arcana #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Cut + Flame": 8,
+     "mod:Bleed": 3,
+     "mod:Rend": 7,
+     "mod:Ignition": 2,
+     "defend:dodge": 12
+    }
+   },
+   {
+    "name": "L60 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "L60 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 5,
+     "mod:Rend": 3,
+     "mod:Ignition": 2,
+     "defend:dodge": 6
+    }
+   }
+  ],
+  "trees": {
+   "L60 Grasp Arcana #1": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Grasp Arcana #2": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Grasp Arcana #3": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Grasp Arcana #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Grasp Arcana #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Grasp Arcana #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Grasp Arcana #1": [
+    "Light Armor (Hard Leather): 112/120"
+   ],
+   "L60 Grasp Arcana #2": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Grasp Arcana #3": [
+    "Light Armor (Hard Leather): 112/120"
+   ],
+   "L60 Slashing #1": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Slashing #2": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Slashing #3": [
+    "Light Armor (Hard Leather): 120/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2218,
+    "monsterHp": 2918,
+    "partyDown": 2,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2218,
+    "monsterHp": 2374,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 2218,
+    "monsterHp": 2374,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 4,
+    "partyHp": 1594,
+    "monsterHp": 2374,
+    "partyDown": 3,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing #3": 1046,
+    "L60 Grasp Arcana #2": 952,
+    "L60 Slashing #2": 594
+   },
+   "taken": {
+    "L60 Grasp Arcana #3": 584,
+    "L60 Slashing #1": 1028,
+    "L60 Grasp Arcana #1": 600,
+    "L60 Grasp Arcana #2": 624
+   },
+   "unattributed": 244
+  },
+  "painDivisor": 2,
+  "skips": [
+   "1:4 L60 Grasp Arcana #1: down"
+  ],
+  "burn": {
+   "party": 224,
+   "monsters": 612
+  },
+  "otherLoss": {
+   "party": 1244,
+   "monsters": 416
+  },
+  "lostBy": {
+   "party": 1808,
+   "monsters": 1028
+  },
+  "directTaken": {
+   "party": 340,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana ##: Alacrity?": 3,
+    "prompt: L# Slashing ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 97,
+  "winner": "party",
+  "pass": "bench-grasp60-a",
+  "rounds": 8,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 55,
+   "mod:Bleed": 28,
+   "mod:Rend": 37,
+   "mod:Ignition": 10,
+   "defend:dodge": 55,
+   "recoverEnergy": 3
+  },
+  "hp": {
+   "L60 Grasp Arcana #1#7oJB": "-322/1134",
+   "L60 Grasp Arcana #2#1iR3": "1134/1134",
+   "L60 Grasp Arcana #3#KdCa": "542/1134",
+   "L60 Slashing #1#3wZp": "142/1134",
+   "L60 Slashing #2#KmP2": "534/1134",
+   "L60 Slashing #3#B4vP": "48/1134"
+  },
+  "down": [
+   "L60 Grasp Arcana #1",
+   "L60 Grasp Arcana #3",
+   "L60 Slashing #1",
+   "L60 Slashing #2",
+   "L60 Slashing #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 32,
+    "followups": 0,
+    "hits": 15,
+    "crits": 2,
+    "misses": 17,
+    "damage": 152,
+    "ap": 96,
+    "kills": 0,
+    "users": [
+     "L60 Slashing #1",
+     "L60 Slashing #2",
+     "L60 Slashing #3"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 23,
+    "followups": 0,
+    "hits": 11,
+    "crits": 5,
+    "misses": 12,
+    "damage": 422,
+    "ap": 69,
+    "kills": 5,
+    "users": [
+     "L60 Grasp Arcana #3",
+     "L60 Grasp Arcana #2"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 8,
+    "absorbed": 80
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Slashing #1",
+    "dealt": 64,
+    "taken": 160,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Grasp Arcana #1",
+    "dealt": 0,
+    "taken": 64,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L60 Slashing #2",
+    "dealt": 0,
+    "taken": 90,
+    "hits": 4,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Grasp Arcana #2",
+    "dealt": 250,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 15
+   },
+   {
+    "name": "L60 Slashing #3",
+    "dealt": 88,
+    "taken": 172,
+    "hits": 8,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Grasp Arcana #3",
+    "dealt": 172,
+    "taken": 88,
+    "hits": 3,
+    "attacks": 8
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 5,
+     "mod:Rend": 3,
+     "mod:Ignition": 2,
+     "defend:dodge": 11
+    }
+   },
+   {
+    "name": "L60 Grasp Arcana #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L60 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 5,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 10,
+    "used": {
+     "cast:Cut + Flame": 10,
+     "mod:Bleed": 7,
+     "mod:Rend": 5,
+     "mod:Ignition": 2,
+     "defend:dodge": 5
+    }
+   },
+   {
+    "name": "L60 Grasp Arcana #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 22,
+     "cast:Cut + Flame": 15,
+     "mod:Bleed": 3,
+     "mod:Rend": 14,
+     "mod:Ignition": 2,
+     "recoverEnergy": 3
+    },
+    "turnMoved": 0,
+    "casts": 15
+   },
+   {
+    "name": "L60 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 8,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 16,
+    "used": {
+     "cast:Cut + Flame": 16,
+     "mod:Bleed": 10,
+     "mod:Rend": 8,
+     "mod:Ignition": 2,
+     "defend:dodge": 7
+    }
+   },
+   {
+    "name": "L60 Grasp Arcana #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8,
+     "cast:Cut + Flame": 8,
+     "mod:Bleed": 3,
+     "mod:Rend": 7,
+     "mod:Ignition": 2
+    },
+    "turnMoved": 0,
+    "casts": 8
+   }
+  ],
+  "trees": {
+   "L60 Grasp Arcana #1": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Grasp Arcana #2": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Grasp Arcana #3": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Grasp Arcana #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Grasp Arcana #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Grasp Arcana #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Grasp Arcana #1": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Grasp Arcana #2": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "L60 Grasp Arcana #3": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Slashing #1": [
+    "Light Armor (Hard Leather): 104/120"
+   ],
+   "L60 Slashing #2": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Slashing #3": [
+    "Light Armor (Hard Leather): 80/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2268,
+    "monsterHp": 3402,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2268,
+    "monsterHp": 3402,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2268,
+    "monsterHp": 2410,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 5,
+    "partyHp": 1676,
+    "monsterHp": 1884,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 6,
+    "partyHp": 1676,
+    "monsterHp": 1810,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 7,
+    "partyHp": 1676,
+    "monsterHp": 1810,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 1676,
+    "monsterHp": 1332,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 8,
+    "partyHp": 1676,
+    "monsterHp": 724,
+    "partyDown": 2,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing #1": 1134,
+    "L60 Grasp Arcana #3": 1028,
+    "L60 Grasp Arcana #2": 1576,
+    "L60 Slashing #3": 520
+   },
+   "taken": {
+    "L60 Grasp Arcana #1": 1134,
+    "L60 Slashing #1": 992,
+    "L60 Grasp Arcana #3": 592,
+    "L60 Slashing #2": 600,
+    "L60 Slashing #3": 1086
+   },
+   "unattributed": 146
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 216,
+   "monsters": 420
+  },
+  "otherLoss": {
+   "party": 936,
+   "monsters": 2258
+  },
+  "lostBy": {
+   "party": 1726,
+   "monsters": 2678
+  },
+  "directTaken": {
+   "party": 574,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana ##: Alacrity?": 3,
+    "prompt: L# Slashing ##: Alacrity?": 3
+   },
+   "notes": [
+    {
+     "level": "error",
+     "msg": "undefined id [JDsQTSzyAOeZAHZh] does not exist in the EmbeddedCollection collection.",
+     "who": "L60 Slashing #2"
+    }
+   ],
+   "errors": [
+    "Error: undefined id [JDsQTSzyAOeZAHZh] does not exist in the EmbeddedCollection collection.\n    at EmbeddedCollection.get (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/embedded-collection.mjs:234:36)\n    at Scene.getEmbeddedDocument (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/common/abstract/document.mjs:844:23)\n    at fromUuid (file:///C:/Program%20Files/Foundry%20Virtual%20Tabletop/resources/app/dist/core/utils.mjs:1:386)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #configu"
+   ]
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 49,
+  "winner": "monsters",
+  "pass": "bench-grasp60-a",
+  "rounds": 4,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 26,
+   "mod:Bleed": 18,
+   "mod:Rend": 20,
+   "mod:Ignition": 12,
+   "defend:dodge": 26
+  },
+  "hp": {
+   "L60 Grasp Arcana #1#5H7C": "162/1134",
+   "L60 Grasp Arcana #2#kEee": "370/1134",
+   "L60 Grasp Arcana #3#mIwA": "502/1134",
+   "L60 Slashing #1#hpa3": "-1250/1134",
+   "L60 Slashing #2#MneT": "148/1134",
+   "L60 Slashing #3#hP06": "578/1134"
+  },
+  "down": [
+   "L60 Grasp Arcana #1",
+   "L60 Grasp Arcana #2",
+   "L60 Grasp Arcana #3",
+   "L60 Slashing #1",
+   "L60 Slashing #2"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 12,
+    "followups": 0,
+    "hits": 9,
+    "crits": 4,
+    "misses": 3,
+    "damage": 250,
+    "ap": 36,
+    "kills": 0,
+    "users": [
+     "L60 Slashing #1",
+     "L60 Slashing #3",
+     "L60 Slashing #2"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 6,
+    "crits": 5,
+    "misses": 8,
+    "damage": 410,
+    "ap": 42,
+    "kills": 5,
+    "users": [
+     "L60 Grasp Arcana #1",
+     "L60 Grasp Arcana #3",
+     "L60 Grasp Arcana #2"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 10,
+    "absorbed": 96
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Slashing #1",
+    "dealt": 68,
+    "taken": 152,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "L60 Grasp Arcana #3",
+    "dealt": 176,
+    "taken": 98,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Grasp Arcana #1",
+    "dealt": 58,
+    "taken": 68,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "L60 Slashing #3",
+    "dealt": 182,
+    "taken": 100,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "L60 Grasp Arcana #2",
+    "dealt": 176,
+    "taken": 84,
+    "hits": 2,
+    "attacks": 6
+   },
+   {
+    "name": "L60 Slashing #2",
+    "dealt": 0,
+    "taken": 158,
+    "hits": 2,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L60 Grasp Arcana #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 6,
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 3,
+     "mod:Rend": 5,
+     "mod:Ignition": 2
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "L60 Grasp Arcana #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 1,
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "L60 Slashing #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Cut + Flame": 8,
+     "mod:Bleed": 6,
+     "mod:Rend": 4,
+     "mod:Ignition": 2,
+     "defend:dodge": 7
+    }
+   },
+   {
+    "name": "L60 Grasp Arcana #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 5,
+     "cast:Cut + Flame": 6,
+     "mod:Bleed": 3,
+     "mod:Rend": 5,
+     "mod:Ignition": 2
+    },
+    "turnMoved": 0,
+    "casts": 6
+   },
+   {
+    "name": "L60 Slashing #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Bleed": 2,
+     "mod:Rend": 2,
+     "mod:Ignition": 2,
+     "defend:dodge": 3
+    }
+   }
+  ],
+  "trees": {
+   "L60 Grasp Arcana #1": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Grasp Arcana #2": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   },
+   "L60 Grasp Arcana #3": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 5,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-initiative": 1,
+    "generic-tempo": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Grasp Arcana #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Grasp Arcana #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ],
+   "L60 Grasp Arcana #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "L60 Slashing #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L60 Slashing #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Grasp Arcana #1": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Grasp Arcana #2": [
+    "Light Armor (Hard Leather): 104/120"
+   ],
+   "L60 Grasp Arcana #3": [
+    "Light Armor (Hard Leather): 88/120"
+   ],
+   "L60 Slashing #1": [
+    "Light Armor (Hard Leather): 80/120"
+   ],
+   "L60 Slashing #2": [
+    "Light Armor (Hard Leather): 104/120"
+   ],
+   "L60 Slashing #3": [
+    "Light Armor (Hard Leather): 112/120"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 2430,
+    "monsterHp": 1784,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 3,
+    "partyHp": 2430,
+    "monsterHp": 1282,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 1798,
+    "monsterHp": 726,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 4,
+    "partyHp": 1034,
+    "monsterHp": 726,
+    "partyDown": 3,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing #1": 460,
+    "L60 Grasp Arcana #1": 430,
+    "L60 Slashing #3": 1758,
+    "L60 Grasp Arcana #3": 1206,
+    "L60 Grasp Arcana #2": 1040
+   },
+   "taken": {
+    "L60 Grasp Arcana #1": 972,
+    "L60 Slashing #1": 1134,
+    "L60 Slashing #2": 986,
+    "L60 Grasp Arcana #3": 632,
+    "L60 Slashing #3": 556,
+    "L60 Grasp Arcana #2": 764
+   },
+   "unattributed": 150
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 814,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 894,
+   "monsters": 2676
+  },
+  "lostBy": {
+   "party": 2368,
+   "monsters": 2676
+  },
+  "directTaken": {
+   "party": 660,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana ##: Alacrity?": 3,
+    "prompt: L# Slashing ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

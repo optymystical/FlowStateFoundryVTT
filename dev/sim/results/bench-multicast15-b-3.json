@@ -1,0 +1,1125 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 29,
+  "winner": "party",
+  "pass": "bench-multicast15-b",
+  "rounds": 3,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 18,
+   "mod:Multicast": 3,
+   "mod:Ignition": 18,
+   "defend:dodge": 20,
+   "multicast": 2,
+   "mod:Empower": 6,
+   "mod:Pinpoint": 3
+  },
+  "hp": {
+   "L15 Grasp Arcana (no Multicast) #1#cFzZ": "279/279",
+   "L15 Grasp Arcana (no Multicast) #2#ORqC": "135/279",
+   "L15 Grasp Arcana (no Multicast) #3#hzax": "105/279",
+   "L15 Grasp Arcana #1#wGJL": "-453/279",
+   "L15 Grasp Arcana #2#0JIS": "-229/279",
+   "L15 Grasp Arcana #3#ZNfh": "93/279"
+  },
+  "down": [
+   "L15 Grasp Arcana (no Multicast) #2",
+   "L15 Grasp Arcana (no Multicast) #3",
+   "L15 Grasp Arcana #1",
+   "L15 Grasp Arcana #2",
+   "L15 Grasp Arcana #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 6,
+    "followups": 0,
+    "hits": 3,
+    "crits": 0,
+    "misses": 3,
+    "damage": 0,
+    "ap": 18,
+    "kills": 0,
+    "users": [
+     "L15 Grasp Arcana #3"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 14,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 8,
+    "damage": 116,
+    "ap": 42,
+    "kills": 5,
+    "users": [
+     "L15 Grasp Arcana (no Multicast) #2",
+     "L15 Grasp Arcana (no Multicast) #1",
+     "L15 Grasp Arcana (no Multicast) #3"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 8,
+    "absorbed": 32
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Grasp Arcana #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #2",
+    "dealt": 26,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Grasp Arcana #1",
+    "dealt": 0,
+    "taken": 78,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #1",
+    "dealt": 72,
+    "taken": 0,
+    "hits": 3,
+    "attacks": 6
+   },
+   {
+    "name": "L15 Grasp Arcana #2",
+    "dealt": 0,
+    "taken": 38,
+    "hits": 0,
+    "attacks": 0
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #3",
+    "dealt": 18,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 4
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Grasp Arcana #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Multicast": 3,
+     "mod:Ignition": 4,
+     "multicast": 2,
+     "defend:dodge": 9
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "cast:Cut + Flame": 4,
+     "mod:Empower": 2,
+     "mod:Ignition": 4,
+     "mod:Pinpoint": 1
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "L15 Grasp Arcana #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 3,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 6,
+    "used": {
+     "cast:Cut + Flame": 6,
+     "mod:Empower": 2,
+     "mod:Ignition": 6,
+     "mod:Pinpoint": 1,
+     "defend:dodge": 1
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 4,
+    "used": {
+     "cast:Cut + Flame": 4,
+     "mod:Empower": 2,
+     "mod:Ignition": 4,
+     "mod:Pinpoint": 1,
+     "defend:dodge": 3
+    }
+   }
+  ],
+  "trees": {
+   "L15 Grasp Arcana (no Multicast) #1": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Grasp Arcana (no Multicast) #2": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Grasp Arcana (no Multicast) #3": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   }
+  },
+  "gear": {
+   "L15 Grasp Arcana (no Multicast) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Grasp Arcana (no Multicast) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Grasp Arcana (no Multicast) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Grasp Arcana #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Grasp Arcana #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Grasp Arcana #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Grasp Arcana (no Multicast) #1": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Grasp Arcana (no Multicast) #2": [
+    "Light Armor (Hard Leather): 18/30"
+   ],
+   "L15 Grasp Arcana (no Multicast) #3": [
+    "Light Armor (Hard Leather): 18/30"
+   ],
+   "L15 Grasp Arcana #1": [
+    "Light Armor (Hard Leather): 20/30"
+   ],
+   "L15 Grasp Arcana #2": [
+    "Light Armor (Hard Leather): 20/30"
+   ],
+   "L15 Grasp Arcana #3": [
+    "Light Armor (Hard Leather): 18/30"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 837,
+    "monsterHp": 837,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 751,
+    "monsterHp": 279,
+    "partyDown": 0,
+    "monstersDown": 2
+   },
+   {
+    "round": 3,
+    "partyHp": 615,
+    "monsterHp": 253,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 3,
+    "partyHp": 519,
+    "monsterHp": 93,
+    "partyDown": 2,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L15 Grasp Arcana #3": 202,
+    "L15 Grasp Arcana (no Multicast) #2": 148,
+    "L15 Grasp Arcana (no Multicast) #1": 421,
+    "L15 Grasp Arcana (no Multicast) #3": 175
+   },
+   "taken": {
+    "L15 Grasp Arcana (no Multicast) #2": 144,
+    "L15 Grasp Arcana #1": 279,
+    "L15 Grasp Arcana #2": 279,
+    "L15 Grasp Arcana (no Multicast) #3": 174,
+    "L15 Grasp Arcana #3": 186
+   },
+   "unattributed": 116
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 168,
+   "monsters": 52
+  },
+  "otherLoss": {
+   "party": 34,
+   "monsters": 692
+  },
+  "lostBy": {
+   "party": 318,
+   "monsters": 744
+  },
+  "directTaken": {
+   "party": 116,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana (no Multicast) ##: Alacrity?": 3,
+    "prompt: L# Grasp Arcana ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 29,
+  "winner": "party",
+  "pass": "bench-multicast15-b",
+  "rounds": 2,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 13,
+   "mod:Multicast": 4,
+   "mod:Ignition": 13,
+   "defend:dodge": 17,
+   "multicast": 4,
+   "mod:Empower": 6,
+   "mod:Pinpoint": 3,
+   "recoverEnergy": 3
+  },
+  "hp": {
+   "L15 Grasp Arcana (no Multicast) #1#MCEf": "279/279",
+   "L15 Grasp Arcana (no Multicast) #2#DjYh": "3/279",
+   "L15 Grasp Arcana (no Multicast) #3#LTb3": "121/279",
+   "L15 Grasp Arcana #1#SnhZ": "-23/279",
+   "L15 Grasp Arcana #2#R8Uu": "84/279",
+   "L15 Grasp Arcana #3#MJ2u": "77/279"
+  },
+  "down": [
+   "L15 Grasp Arcana (no Multicast) #2",
+   "L15 Grasp Arcana (no Multicast) #3",
+   "L15 Grasp Arcana #1",
+   "L15 Grasp Arcana #2",
+   "L15 Grasp Arcana #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 3,
+    "crits": 1,
+    "misses": 5,
+    "damage": 14,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L15 Grasp Arcana #1",
+     "L15 Grasp Arcana #2",
+     "L15 Grasp Arcana #3"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 5,
+    "crits": 1,
+    "misses": 4,
+    "damage": 13,
+    "ap": 27,
+    "kills": 5,
+    "users": [
+     "L15 Grasp Arcana (no Multicast) #3",
+     "L15 Grasp Arcana (no Multicast) #2",
+     "L15 Grasp Arcana (no Multicast) #1"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 7,
+    "absorbed": 26
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Grasp Arcana #1",
+    "dealt": 0,
+    "taken": 8,
+    "hits": 0,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #2",
+    "dealt": 0,
+    "taken": 14,
+    "hits": 2,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #3",
+    "dealt": 8,
+    "taken": 0,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Grasp Arcana #2",
+    "dealt": 14,
+    "taken": 5,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #1",
+    "dealt": 5,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 3
+   },
+   {
+    "name": "L15 Grasp Arcana #3",
+    "dealt": 0,
+    "taken": 0,
+    "hits": 2,
+    "attacks": 2
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Grasp Arcana #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 1,
+    "used": {
+     "cast:Cut + Flame": 1,
+     "mod:Multicast": 1,
+     "mod:Ignition": 1,
+     "multicast": 1,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Cut + Flame": 4,
+     "mod:Empower": 2,
+     "mod:Ignition": 4,
+     "mod:Pinpoint": 1
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Empower": 2,
+     "mod:Ignition": 2,
+     "mod:Pinpoint": 1,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 2,
+    "used": {
+     "cast:Cut + Flame": 2,
+     "mod:Multicast": 2,
+     "mod:Ignition": 2,
+     "multicast": 2,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 2,
+     "cast:Cut + Flame": 3,
+     "mod:Empower": 2,
+     "mod:Ignition": 3,
+     "mod:Pinpoint": 1,
+     "recoverEnergy": 3
+    },
+    "turnMoved": 0,
+    "casts": 3
+   },
+   {
+    "name": "L15 Grasp Arcana #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 1,
+    "used": {
+     "cast:Cut + Flame": 1,
+     "mod:Multicast": 1,
+     "mod:Ignition": 1,
+     "multicast": 1,
+     "defend:dodge": 3
+    }
+   }
+  ],
+  "trees": {
+   "L15 Grasp Arcana (no Multicast) #1": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Grasp Arcana (no Multicast) #2": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Grasp Arcana (no Multicast) #3": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   }
+  },
+  "gear": {
+   "L15 Grasp Arcana (no Multicast) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Grasp Arcana (no Multicast) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Grasp Arcana (no Multicast) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Grasp Arcana #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Grasp Arcana #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Grasp Arcana #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Grasp Arcana (no Multicast) #1": [
+    "Light Armor (Hard Leather): 30/30"
+   ],
+   "L15 Grasp Arcana (no Multicast) #2": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Grasp Arcana (no Multicast) #3": [
+    "Light Armor (Hard Leather): 24/30"
+   ],
+   "L15 Grasp Arcana #1": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Grasp Arcana #2": [
+    "Light Armor (Hard Leather): 22/30"
+   ],
+   "L15 Grasp Arcana #3": [
+    "Light Armor (Hard Leather): 22/30"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 837,
+    "monsterHp": 837,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 679,
+    "monsterHp": 499,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 2,
+    "partyHp": 403,
+    "monsterHp": 161,
+    "partyDown": 2,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L15 Grasp Arcana (no Multicast) #3": 68,
+    "L15 Grasp Arcana (no Multicast) #2": 391,
+    "L15 Grasp Arcana (no Multicast) #1": 217,
+    "L15 Grasp Arcana #3": 158,
+    "L15 Grasp Arcana #2": 86
+   },
+   "taken": {
+    "L15 Grasp Arcana #1": 279,
+    "L15 Grasp Arcana #2": 195,
+    "L15 Grasp Arcana (no Multicast) #3": 158,
+    "L15 Grasp Arcana (no Multicast) #2": 276,
+    "L15 Grasp Arcana #3": 202
+   },
+   "unattributed": 190
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 190,
+   "monsters": 136
+  },
+  "otherLoss": {
+   "party": 217,
+   "monsters": 540
+  },
+  "lostBy": {
+   "party": 434,
+   "monsters": 676
+  },
+  "directTaken": {
+   "party": 27,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana (no Multicast) ##: Alacrity?": 3,
+    "prompt: L# Grasp Arcana ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 30,
+  "winner": "party",
+  "pass": "bench-multicast15-b",
+  "rounds": 2,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 14,
+   "mod:Multicast": 4,
+   "mod:Ignition": 14,
+   "defend:dodge": 17,
+   "multicast": 3,
+   "mod:Empower": 6,
+   "mod:Pinpoint": 3,
+   "recoverEnergy": 3
+  },
+  "hp": {
+   "L15 Grasp Arcana (no Multicast) #1#LoDW": "7/279",
+   "L15 Grasp Arcana (no Multicast) #2#Z1mE": "187/279",
+   "L15 Grasp Arcana (no Multicast) #3#0pRW": "-1/279",
+   "L15 Grasp Arcana #1#kckS": "-212/279",
+   "L15 Grasp Arcana #2#O3pF": "-228/279",
+   "L15 Grasp Arcana #3#CDQW": "15/279"
+  },
+  "down": [
+   "L15 Grasp Arcana (no Multicast) #1",
+   "L15 Grasp Arcana (no Multicast) #3",
+   "L15 Grasp Arcana #1",
+   "L15 Grasp Arcana #2",
+   "L15 Grasp Arcana #3"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame [M]": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 3,
+    "misses": 3,
+    "damage": 30,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L15 Grasp Arcana #2",
+     "L15 Grasp Arcana #1",
+     "L15 Grasp Arcana #3"
+    ]
+   },
+   "Spell: Cut + Flame": {
+    "attacks": 9,
+    "followups": 0,
+    "hits": 6,
+    "crits": 3,
+    "misses": 3,
+    "damage": 90,
+    "ap": 27,
+    "kills": 5,
+    "users": [
+     "L15 Grasp Arcana (no Multicast) #1",
+     "L15 Grasp Arcana (no Multicast) #3",
+     "L15 Grasp Arcana (no Multicast) #2"
+    ]
+   }
+  },
+  "armor": {
+   "Light Armor (Hard Leather)": {
+    "hits": 13,
+    "absorbed": 46
+   }
+  },
+  "creatures": [
+   {
+    "name": "L15 Grasp Arcana #2",
+    "dealt": 0,
+    "taken": 45,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #3",
+    "dealt": 0,
+    "taken": 6,
+    "hits": 1,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Grasp Arcana #1",
+    "dealt": 0,
+    "taken": 33,
+    "hits": 1,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #1",
+    "dealt": 33,
+    "taken": 8,
+    "hits": 2,
+    "attacks": 2
+   },
+   {
+    "name": "L15 Grasp Arcana #3",
+    "dealt": 30,
+    "taken": 12,
+    "hits": 3,
+    "attacks": 4
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #2",
+    "dealt": 57,
+    "taken": 16,
+    "hits": 3,
+    "attacks": 3
+   }
+  ],
+  "ai": [
+   {
+    "name": "L15 Grasp Arcana #2",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 1,
+    "used": {
+     "cast:Cut + Flame": 1,
+     "mod:Multicast": 1,
+     "mod:Ignition": 1,
+     "multicast": 1,
+     "defend:dodge": 4
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #3",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 3,
+     "cast:Cut + Flame": 4,
+     "mod:Empower": 2,
+     "mod:Ignition": 4,
+     "mod:Pinpoint": 1
+    },
+    "turnMoved": 0,
+    "casts": 4
+   },
+   {
+    "name": "L15 Grasp Arcana #1",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 1,
+    "used": {
+     "cast:Cut + Flame": 1,
+     "mod:Multicast": 1,
+     "mod:Ignition": 1,
+     "multicast": 1,
+     "defend:dodge": 2
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #1",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 1,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 4,
+     "cast:Cut + Flame": 2,
+     "mod:Empower": 2,
+     "mod:Ignition": 2,
+     "mod:Pinpoint": 1
+    },
+    "turnMoved": 0,
+    "casts": 2
+   },
+   {
+    "name": "L15 Grasp Arcana #3",
+    "side": "monsters",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Flame": 3,
+     "mod:Multicast": 2,
+     "mod:Ignition": 3,
+     "multicast": 1,
+     "defend:dodge": 3
+    }
+   },
+   {
+    "name": "L15 Grasp Arcana (no Multicast) #2",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 2,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 3,
+    "used": {
+     "cast:Cut + Flame": 3,
+     "mod:Empower": 2,
+     "mod:Ignition": 3,
+     "mod:Pinpoint": 1,
+     "defend:dodge": 1,
+     "recoverEnergy": 3
+    }
+   }
+  ],
+  "trees": {
+   "L15 Grasp Arcana (no Multicast) #1": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Grasp Arcana (no Multicast) #2": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   },
+   "L15 Grasp Arcana (no Multicast) #3": {
+    "magic-theory": 3,
+    "magic-heat": 3,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-grasp-arcana": 4,
+    "magic-slashing": 1,
+    "generic-initiative": 1
+   }
+  },
+  "gear": {
+   "L15 Grasp Arcana (no Multicast) #1": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Grasp Arcana (no Multicast) #2": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ],
+   "L15 Grasp Arcana (no Multicast) #3": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G2"
+   ]
+  },
+  "monsterGear": {
+   "L15 Grasp Arcana #1": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Grasp Arcana #2": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ],
+   "L15 Grasp Arcana #3": [
+    "Unarmed",
+    "Light Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L15 Grasp Arcana (no Multicast) #1": [
+    "Light Armor (Hard Leather): 16/30"
+   ],
+   "L15 Grasp Arcana (no Multicast) #2": [
+    "Light Armor (Hard Leather): 28/30"
+   ],
+   "L15 Grasp Arcana (no Multicast) #3": [
+    "Light Armor (Hard Leather): 10/30"
+   ],
+   "L15 Grasp Arcana #1": [
+    "Light Armor (Hard Leather): 20/30"
+   ],
+   "L15 Grasp Arcana #2": [
+    "Light Armor (Hard Leather): 20/30"
+   ],
+   "L15 Grasp Arcana #3": [
+    "Light Armor (Hard Leather): 16/30"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 837,
+    "monsterHp": 837,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 495,
+    "monsterHp": 279,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 2,
+    "partyHp": 194,
+    "monsterHp": 15,
+    "partyDown": 2,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L15 Grasp Arcana #2": 24,
+    "L15 Grasp Arcana #1": 28,
+    "L15 Grasp Arcana (no Multicast) #1": 279,
+    "L15 Grasp Arcana #3": 533,
+    "L15 Grasp Arcana (no Multicast) #2": 519,
+    "L15 Grasp Arcana (no Multicast) #3": 24
+   },
+   "taken": {
+    "L15 Grasp Arcana (no Multicast) #3": 279,
+    "L15 Grasp Arcana (no Multicast) #1": 272,
+    "L15 Grasp Arcana #1": 279,
+    "L15 Grasp Arcana #2": 279,
+    "L15 Grasp Arcana #3": 264,
+    "L15 Grasp Arcana (no Multicast) #2": 92
+   },
+   "unattributed": 58
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 150,
+   "monsters": 46
+  },
+  "otherLoss": {
+   "party": 373,
+   "monsters": 776
+  },
+  "lostBy": {
+   "party": 643,
+   "monsters": 822
+  },
+  "directTaken": {
+   "party": 120,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Grasp Arcana (no Multicast) ##: Alacrity?": 3,
+    "prompt: L# Grasp Arcana ##: Alacrity?": 3
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

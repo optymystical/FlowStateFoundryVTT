@@ -1,0 +1,1580 @@
+[
+ {
+  "id": "r1",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 218,
+  "winner": "monsters",
+  "pass": "bench-thrasher60-a",
+  "rounds": 12,
+  "partyLeft": 0,
+  "monstersLeft": 1,
+  "followups": 53,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 6,
+   "Versatility": 6,
+   "Parry": 3,
+   "Unstoppable": 6,
+   "Brace": 6,
+   "opt:slam=knockback": 13,
+   "defend:shift": 32,
+   "defend:dodge": 160,
+   "limber": 93,
+   "recoverEnergy": 2,
+   "Shatter": 3,
+   "opt:windup=1": 3,
+   "riposte": 6,
+   "limber:skipped": 67,
+   "opt:spinCycle": 4,
+   "opt:slam=both": 10,
+   "Dip": 12,
+   "opt:windup=2": 13,
+   "opt:getOverHere": 3,
+   "opt:windup=3": 5,
+   "releaseHold": 2
+  },
+  "hp": {
+   "L60 Thrasher #1#ygIl": "565/1134",
+   "L60 Thrasher #2#cjEQ": "527/1134",
+   "L60 Thrasher #3#Pbda": "520/1134",
+   "L60 Balanced #1#828a": "545/1134",
+   "L60 Balanced #2#lKvv": "935/1134",
+   "L60 Balanced #3#Cbmz": "561/1134"
+  },
+  "down": [
+   "L60 Thrasher #1",
+   "L60 Thrasher #2",
+   "L60 Thrasher #3",
+   "L60 Balanced #1",
+   "L60 Balanced #3"
+  ],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 49,
+    "followups": 57,
+    "hits": 42,
+    "crits": 12,
+    "misses": 68,
+    "damage": 1790,
+    "ap": 159,
+    "kills": 3,
+    "users": [
+     "L60 Balanced #1",
+     "L60 Balanced #2",
+     "L60 Balanced #3"
+    ]
+   },
+   "Heavy Thrasher": {
+    "attacks": 48,
+    "followups": 0,
+    "hits": 29,
+    "crits": 9,
+    "misses": 19,
+    "damage": 1361,
+    "ap": 144,
+    "kills": 2,
+    "users": [
+     "L60 Thrasher #3",
+     "L60 Thrasher #1",
+     "L60 Thrasher #2"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 0,
+    "followups": 2,
+    "hits": 1,
+    "crits": 0,
+    "misses": 1,
+    "damage": 0,
+    "ap": 6,
+    "kills": 0,
+    "users": [
+     "L60 Thrasher #1"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 63,
+    "absorbed": 1764
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 324,
+    "taken": 589,
+    "hits": 8,
+    "attacks": 22
+   },
+   {
+    "name": "L60 Thrasher #1",
+    "dealt": 219,
+    "taken": 569,
+    "hits": 6,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Thrasher #3",
+    "dealt": 690,
+    "taken": 614,
+    "hits": 14,
+    "attacks": 24
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 687,
+    "taken": 199,
+    "hits": 14,
+    "attacks": 46
+   },
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 779,
+    "taken": 573,
+    "hits": 20,
+    "attacks": 38
+   },
+   {
+    "name": "L60 Thrasher #2",
+    "dealt": 452,
+    "taken": 607,
+    "hits": 10,
+    "attacks": 16
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Balanced #1",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 82.07106781186548,
+    "attacks": 20,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "defend:shift": 11,
+     "defend:dodge": 22,
+     "riposte": 2,
+     "limber": 11,
+     "limber:skipped": 8
+    },
+    "turnMoved": 7.0710678118654755
+   },
+   {
+    "name": "L60 Thrasher #1",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 8,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "defend:shift": 5,
+     "defend:dodge": 49,
+     "limber": 12,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber:skipped": 26,
+     "riposte": 2,
+     "Dip": 2
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "thr": 8
+   },
+   {
+    "name": "L60 Thrasher #3",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 10,
+    "attacks": 24,
+    "turns": 12,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 16,
+     "defend:shift": 2,
+     "defend:dodge": 17,
+     "Dip": 6,
+     "releaseHold": 2,
+     "limber:skipped": 6
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "thr": 24
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 101.32727171713096,
+    "attacks": 46,
+    "turns": 12,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "limber": 11,
+     "limber:skipped": 3,
+     "defend:shift": 2,
+     "defend:dodge": 4
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Balanced #3",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 95.13148795220224,
+    "attacks": 36,
+    "turns": 9,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 6,
+     "defend:dodge": 24,
+     "riposte": 2,
+     "limber": 23,
+     "defend:shift": 6
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Thrasher #2",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:shift": 6,
+     "defend:dodge": 44,
+     "limber": 20,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber:skipped": 18,
+     "Dip": 4
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "thr": 16
+   }
+  ],
+  "trees": {
+   "L60 Thrasher #1": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   },
+   "L60 Thrasher #2": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   },
+   "L60 Thrasher #3": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   }
+  },
+  "gear": {
+   "L60 Thrasher #1": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ],
+   "L60 Thrasher #2": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ],
+   "L60 Thrasher #3": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Balanced #1": [
+    "Unarmed",
+    "Heavy Balanced (Steel)",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ]
+  },
+  "gearState": {
+   "L60 Thrasher #1": [
+    "Medium Armor (Hard Leather): 28/420",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Thrasher #2": [
+    "Medium Armor (Hard Leather): 0/420 BROKEN",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Thrasher #3": [
+    "Medium Armor (Hard Leather): 168/420",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Balanced #1": [
+    "Heavy Balanced (Steel): 1318/1980",
+    "Medium Armor (Hard Leather): 168/420"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 308/420",
+    "Heavy Balanced (Steel): 1770/1980"
+   ],
+   "L60 Balanced #3": [
+    "Medium Armor (Hard Leather): 84/420",
+    "Heavy Balanced (Steel): 1231/1980"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3204,
+    "monsterHp": 3203,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3044,
+    "monsterHp": 3149,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2866,
+    "monsterHp": 2887,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2682,
+    "monsterHp": 2727,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 7,
+    "partyHp": 2526,
+    "monsterHp": 2476,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 2486,
+    "monsterHp": 2444,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 2391,
+    "monsterHp": 2346,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 10,
+    "partyHp": 1916,
+    "monsterHp": 2275,
+    "partyDown": 2,
+    "monstersDown": 1
+   },
+   {
+    "round": 11,
+    "partyHp": 1885,
+    "monsterHp": 2240,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 12,
+    "partyHp": 1742,
+    "monsterHp": 2114,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 12,
+    "partyHp": 1612,
+    "monsterHp": 2041,
+    "partyDown": 3,
+    "monstersDown": 2,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Balanced #1": 324,
+    "L60 Thrasher #1": 219,
+    "L60 Balanced #2": 687,
+    "L60 Balanced #3": 779,
+    "L60 Thrasher #2": 452,
+    "L60 Thrasher #3": 690
+   },
+   "taken": {
+    "L60 Thrasher #1": 569,
+    "L60 Balanced #1": 589,
+    "L60 Balanced #3": 573,
+    "L60 Thrasher #2": 607,
+    "L60 Thrasher #3": 614,
+    "L60 Balanced #2": 199
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1361
+  },
+  "lostBy": {
+   "party": 1790,
+   "monsters": 1361
+  },
+  "directTaken": {
+   "party": 3151,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: Versatility": 6,
+    "prompt: Heavy Balanced (Steel)": 49,
+    "prompt: L# Thrasher ## — Shift": 13,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 53,
+    "prompt: Heavy Thrasher (Steel)": 48,
+    "prompt: L# Balanced ## — Shift": 19,
+    "prompt: Heavy Balanced (Steel) — Riposte": 4,
+    "prompt: Unarmed — Riposte": 2
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 184,
+  "winner": "monsters",
+  "pass": "bench-thrasher60-a",
+  "rounds": 8,
+  "partyLeft": 0,
+  "monstersLeft": 3,
+  "followups": 40,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 6,
+   "Versatility": 6,
+   "Unstoppable": 11,
+   "Brace": 7,
+   "Shatter": 3,
+   "opt:windup=1": 3,
+   "defend:shift": 39,
+   "defend:dodge": 128,
+   "limber": 81,
+   "recoverEnergy": 27,
+   "Parry": 6,
+   "opt:slam=knockback": 11,
+   "limber:skipped": 47,
+   "riposte": 8,
+   "Dip": 7,
+   "opt:windup=2": 9,
+   "opt:windup=3": 3,
+   "opt:slam=both": 4,
+   "opt:getOverHere": 2,
+   "opt:spinCycle": 9,
+   "opt:heave": 1,
+   "deflect": 3
+  },
+  "hp": {
+   "L60 Thrasher #1#ZTCK": "555/1134",
+   "L60 Thrasher #2#7Mdg": "521/1134",
+   "L60 Thrasher #3#bm1S": "539/1134",
+   "L60 Balanced #1#PJiE": "708/1134",
+   "L60 Balanced #2#B6l3": "1134/1134",
+   "L60 Balanced #3#OYrM": "1134/1134"
+  },
+  "down": [
+   "L60 Thrasher #1",
+   "L60 Thrasher #2",
+   "L60 Thrasher #3"
+  ],
+  "weapons": {
+   "Heavy Thrasher": {
+    "attacks": 34,
+    "followups": 0,
+    "hits": 18,
+    "crits": 3,
+    "misses": 16,
+    "damage": 501,
+    "ap": 102,
+    "kills": 0,
+    "users": [
+     "L60 Thrasher #1",
+     "L60 Thrasher #2",
+     "L60 Thrasher #3",
+     "L60 Balanced #1"
+    ]
+   },
+   "Heavy Balanced": {
+    "attacks": 37,
+    "followups": 45,
+    "hits": 40,
+    "crits": 11,
+    "misses": 51,
+    "damage": 1712,
+    "ap": 126,
+    "kills": 3,
+    "users": [
+     "L60 Balanced #2",
+     "L60 Balanced #1",
+     "L60 Balanced #3"
+    ]
+   },
+   "Unarmed Heavy": {
+    "attacks": 0,
+    "followups": 3,
+    "hits": 1,
+    "crits": 0,
+    "misses": 2,
+    "damage": 0,
+    "ap": 9,
+    "kills": 0,
+    "users": [
+     "L60 Thrasher #1"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 48,
+    "absorbed": 1288
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Thrasher #1",
+    "dealt": 77,
+    "taken": 579,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 401,
+    "taken": 426,
+    "hits": 13,
+    "attacks": 22
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 760,
+    "taken": 0,
+    "hits": 15,
+    "attacks": 36
+   },
+   {
+    "name": "L60 Thrasher #2",
+    "dealt": 205,
+    "taken": 613,
+    "hits": 5,
+    "attacks": 13
+   },
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 626,
+    "taken": 0,
+    "hits": 14,
+    "attacks": 27
+   },
+   {
+    "name": "L60 Thrasher #3",
+    "dealt": 144,
+    "taken": 595,
+    "hits": 7,
+    "attacks": 13
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Thrasher #1",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 65,
+    "attacks": 5,
+    "turns": 3,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 13,
+     "recoverEnergy": 1,
+     "defend:shift": 7,
+     "defend:dodge": 41,
+     "riposte": 3,
+     "limber:skipped": 15,
+     "Dip": 1
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "thr": 5,
+    "lastTech": "kick"
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 22.360679774997898,
+    "attacks": 16,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "defend:shift": 19,
+     "defend:dodge": 31,
+     "Versatility": 1,
+     "Parry": 4,
+     "Unstoppable": 4,
+     "Brace": 2,
+     "limber:skipped": 9,
+     "riposte": 3,
+     "limber": 20,
+     "recoverEnergy": 22,
+     "deflect": 3
+    },
+    "turnMoved": 11.180339887498949
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 31.18033988749895,
+    "attacks": 34,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 3,
+     "defend:dodge": 3,
+     "riposte": 2,
+     "limber": 13,
+     "defend:shift": 1
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Thrasher #2",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 55,
+    "attacks": 13,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 2,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 13,
+     "defend:shift": 5,
+     "defend:dodge": 35,
+     "recoverEnergy": 2,
+     "Dip": 3,
+     "limber:skipped": 11
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "thr": 13
+   },
+   {
+    "name": "L60 Balanced #3",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 41.594152538990045,
+    "attacks": 27,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 5,
+     "limber": 9
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Thrasher #3",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 58.52349955359813,
+    "attacks": 13,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 2,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 13,
+     "defend:shift": 7,
+     "defend:dodge": 18,
+     "recoverEnergy": 2,
+     "Dip": 3,
+     "limber:skipped": 4
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "thr": 13
+   }
+  ],
+  "trees": {
+   "L60 Thrasher #1": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   },
+   "L60 Thrasher #2": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   },
+   "L60 Thrasher #3": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   }
+  },
+  "gear": {
+   "L60 Thrasher #1": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ],
+   "L60 Thrasher #2": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ],
+   "L60 Thrasher #3": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Balanced #1": [
+    "Unarmed",
+    "Heavy Balanced (Steel)",
+    "Medium Armor (Hard Leather)"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed",
+    "Heavy Balanced (Steel)",
+    "Medium Armor (Hard Leather)"
+   ]
+  },
+  "gearState": {
+   "L60 Thrasher #1": [
+    "Medium Armor (Hard Leather): 0/420 BROKEN",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Thrasher #2": [
+    "Medium Armor (Hard Leather): 0/420 BROKEN",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Thrasher #3": [
+    "Medium Armor (Hard Leather): 196/420",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Balanced #1": [
+    "Heavy Balanced (Steel): 1124/1980",
+    "Medium Armor (Hard Leather): 196/420"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1120/1980"
+   ],
+   "L60 Balanced #3": [
+    "Heavy Balanced (Steel): 1589/1980",
+    "Medium Armor (Hard Leather): 420/420"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3339,
+    "monsterHp": 3332,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 2985,
+    "monsterHp": 3239,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 2823,
+    "monsterHp": 3181,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 2495,
+    "monsterHp": 3136,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2376,
+    "monsterHp": 2976,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2098,
+    "monsterHp": 2976,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 2030,
+    "monsterHp": 2976,
+    "partyDown": 1,
+    "monstersDown": 0
+   },
+   {
+    "round": 8,
+    "partyHp": 1615,
+    "monsterHp": 2976,
+    "partyDown": 3,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1,
+   "monsters": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Thrasher #1": 77,
+    "L60 Balanced #3": 626,
+    "L60 Balanced #2": 760,
+    "L60 Balanced #1": 326,
+    "L60 Thrasher #3": 144,
+    "L60 Thrasher #2": 205
+   },
+   "taken": {
+    "L60 Balanced #1": 426,
+    "L60 Thrasher #1": 579,
+    "L60 Thrasher #2": 613,
+    "L60 Thrasher #3": 595
+   },
+   "unattributed": 75
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 426
+  },
+  "lostBy": {
+   "party": 1787,
+   "monsters": 426
+  },
+  "directTaken": {
+   "party": 2213,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: Versatility": 6,
+    "prompt: Heavy Thrasher (Steel)": 31,
+    "prompt: L# Balanced ## — Shift": 20,
+    "prompt: Heavy Balanced (Steel)": 37,
+    "prompt: L# Thrasher ## — Shift": 19,
+    "prompt: Unarmed — Riposte": 3,
+    "prompt: Heavy Balanced (Steel) — Riposte": 5,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 40
+   },
+   "notes": [
+    {
+     "level": "warn",
+     "msg": "L60 Balanced #1 can't move through L60 Thrasher #1's space.",
+     "who": "L60 Balanced #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Balanced #1 can't move through L60 Thrasher #1's space.",
+     "who": "L60 Balanced #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Balanced #1 can't move through L60 Thrasher #1's space.",
+     "who": "L60 Balanced #1"
+    },
+    {
+     "level": "warn",
+     "msg": "L60 Balanced #1 can't move through L60 Thrasher #1's space.",
+     "who": "L60 Balanced #1"
+    }
+   ],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "rival",
+  "rotation": 1,
+  "seconds": 219,
+  "winner": "party",
+  "pass": "bench-thrasher60-a",
+  "rounds": 15,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 53,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 6,
+   "Versatility": 6,
+   "Parry": 3,
+   "Unstoppable": 6,
+   "Brace": 6,
+   "opt:slam=knockback": 14,
+   "defend:shift": 41,
+   "defend:dodge": 171,
+   "limber": 107,
+   "recoverEnergy": 5,
+   "Shatter": 2,
+   "opt:windup=1": 2,
+   "riposte": 1,
+   "deflect": 1,
+   "limber:skipped": 64,
+   "opt:spinCycle": 7,
+   "opt:getOverHere": 5,
+   "opt:slam=both": 9,
+   "Dip": 13,
+   "opt:windup=2": 14,
+   "opt:windup=3": 7,
+   "releaseHold": 1
+  },
+  "hp": {
+   "L60 Thrasher #1#hsFh": "521/1134",
+   "L60 Thrasher #2#PApg": "551/1134",
+   "L60 Thrasher #3#D7dB": "571/1134",
+   "L60 Balanced #1#P1Lk": "552/1134",
+   "L60 Balanced #2#uR2s": "479/1134",
+   "L60 Balanced #3#uyBU": "532/1134"
+  },
+  "down": [
+   "L60 Thrasher #1",
+   "L60 Thrasher #2",
+   "L60 Balanced #1",
+   "L60 Balanced #2",
+   "L60 Balanced #3"
+  ],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 53,
+    "followups": 54,
+    "hits": 45,
+    "crits": 11,
+    "misses": 70,
+    "damage": 1759,
+    "ap": 162,
+    "kills": 2,
+    "users": [
+     "L60 Balanced #3",
+     "L60 Balanced #1",
+     "L60 Balanced #2"
+    ]
+   },
+   "Heavy Thrasher": {
+    "attacks": 56,
+    "followups": 0,
+    "hits": 32,
+    "crits": 11,
+    "misses": 24,
+    "damage": 1839,
+    "ap": 168,
+    "kills": 3,
+    "users": [
+     "L60 Thrasher #2",
+     "L60 Balanced #3",
+     "L60 Thrasher #3",
+     "L60 Thrasher #1"
+    ]
+   }
+  },
+  "armor": {
+   "Medium Armor (Hard Leather)": {
+    "hits": 68,
+    "absorbed": 1876
+   }
+  },
+  "creatures": [
+   {
+    "name": "L60 Balanced #3",
+    "dealt": 1074,
+    "taken": 602,
+    "hits": 22,
+    "attacks": 61
+   },
+   {
+    "name": "L60 Thrasher #1",
+    "dealt": 307,
+    "taken": 613,
+    "hits": 6,
+    "attacks": 10
+   },
+   {
+    "name": "L60 Balanced #1",
+    "dealt": 289,
+    "taken": 582,
+    "hits": 9,
+    "attacks": 21
+   },
+   {
+    "name": "L60 Thrasher #2",
+    "dealt": 515,
+    "taken": 583,
+    "hits": 9,
+    "attacks": 16
+   },
+   {
+    "name": "L60 Thrasher #3",
+    "dealt": 1017,
+    "taken": 563,
+    "hits": 17,
+    "attacks": 29
+   },
+   {
+    "name": "L60 Balanced #2",
+    "dealt": 396,
+    "taken": 655,
+    "hits": 14,
+    "attacks": 26
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Balanced #3",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 105,
+    "attacks": 59,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "defend:dodge": 20,
+     "riposte": 1,
+     "deflect": 1,
+     "limber:skipped": 7,
+     "limber": 21,
+     "defend:shift": 5
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "L60 Thrasher #1",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 10,
+    "turns": 5,
+    "kills": 0,
+    "used": {
+     "defend:shift": 10,
+     "defend:dodge": 60,
+     "limber": 18,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 26,
+     "Dip": 2
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "thr": 10
+   },
+   {
+    "name": "L60 Balanced #1",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 85.16648189186456,
+    "attacks": 21,
+    "turns": 6,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "recoverEnergy": 1,
+     "defend:shift": 8,
+     "defend:dodge": 19,
+     "limber": 15,
+     "limber:skipped": 3
+    },
+    "turnMoved": 10
+   },
+   {
+    "name": "L60 Thrasher #2",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 8,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 15,
+     "defend:shift": 4,
+     "defend:dodge": 29,
+     "limber:skipped": 12,
+     "Dip": 4
+    },
+    "fist": "Dip",
+    "turnMoved": 0,
+    "thr": 16
+   },
+   {
+    "name": "L60 Thrasher #3",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 10,
+    "attacks": 29,
+    "turns": 15,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "Shatter": 1,
+     "limber": 18,
+     "Dip": 7,
+     "limber:skipped": 14,
+     "releaseHold": 1,
+     "defend:dodge": 27,
+     "defend:shift": 2,
+     "recoverEnergy": 3
+    },
+    "fist": "Shatter",
+    "turnMoved": 0,
+    "thr": 29
+   },
+   {
+    "name": "L60 Balanced #2",
+    "side": "monsters",
+    "role": "melee-str",
+    "moved": 85.14693182963201,
+    "attacks": 26,
+    "turns": 7,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 2,
+     "recoverEnergy": 1,
+     "defend:shift": 12,
+     "defend:dodge": 16,
+     "limber": 20
+    },
+    "turnMoved": 0
+   }
+  ],
+  "trees": {
+   "L60 Thrasher #1": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   },
+   "L60 Thrasher #2": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   },
+   "L60 Thrasher #3": {
+    "martial-theory": 5,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-thrasher-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3
+   }
+  },
+  "gear": {
+   "L60 Thrasher #1": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ],
+   "L60 Thrasher #2": [
+    "Unarmed G1",
+    "Heavy Thrasher (Steel) G11",
+    "Medium Armor (Hard Leather) G8"
+   ],
+   "L60 Thrasher #3": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Thrasher (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "L60 Balanced #1": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Balanced #2": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ],
+   "L60 Balanced #3": [
+    "Unarmed",
+    "Medium Armor (Hard Leather)",
+    "Heavy Balanced (Steel)"
+   ]
+  },
+  "gearState": {
+   "L60 Thrasher #1": [
+    "Medium Armor (Hard Leather): 0/420 BROKEN",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Thrasher #2": [
+    "Heavy Thrasher (Steel): 884/990",
+    "Medium Armor (Hard Leather): 112/420"
+   ],
+   "L60 Thrasher #3": [
+    "Medium Armor (Hard Leather): 84/420",
+    "Heavy Thrasher (Steel): 990/990"
+   ],
+   "L60 Balanced #1": [
+    "Medium Armor (Hard Leather): 140/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "L60 Balanced #2": [
+    "Medium Armor (Hard Leather): 196/420",
+    "Heavy Balanced (Steel): 1866/1980"
+   ],
+   "L60 Balanced #3": [
+    "Medium Armor (Hard Leather): 112/420",
+    "Heavy Balanced (Steel): 1883/1980"
+   ]
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 3402,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 3359,
+    "monsterHp": 3402,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 3336,
+    "monsterHp": 3284,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 3097,
+    "monsterHp": 3225,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 3050,
+    "monsterHp": 3029,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 6,
+    "partyHp": 2772,
+    "monsterHp": 2815,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 7,
+    "partyHp": 2530,
+    "monsterHp": 2648,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 8,
+    "partyHp": 2415,
+    "monsterHp": 2267,
+    "partyDown": 1,
+    "monstersDown": 1
+   },
+   {
+    "round": 9,
+    "partyHp": 2253,
+    "monsterHp": 2033,
+    "partyDown": 1,
+    "monstersDown": 2
+   },
+   {
+    "round": 10,
+    "partyHp": 2098,
+    "monsterHp": 2033,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 11,
+    "partyHp": 2098,
+    "monsterHp": 1931,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 12,
+    "partyHp": 2022,
+    "monsterHp": 1812,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 13,
+    "partyHp": 1831,
+    "monsterHp": 1710,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 14,
+    "partyHp": 1725,
+    "monsterHp": 1602,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 15,
+    "partyHp": 1686,
+    "monsterHp": 1602,
+    "partyDown": 2,
+    "monstersDown": 2
+   },
+   {
+    "round": 15,
+    "partyHp": 1643,
+    "monsterHp": 1563,
+    "partyDown": 2,
+    "monstersDown": 3,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "monsters": 1,
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Balanced #2": 396,
+    "L60 Balanced #1": 289,
+    "L60 Thrasher #1": 307,
+    "L60 Balanced #3": 1074,
+    "L60 Thrasher #2": 515,
+    "L60 Thrasher #3": 1017
+   },
+   "taken": {
+    "L60 Thrasher #1": 613,
+    "L60 Balanced #1": 582,
+    "L60 Thrasher #2": 583,
+    "L60 Balanced #2": 655,
+    "L60 Thrasher #3": 563,
+    "L60 Balanced #3": 602
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1839
+  },
+  "lostBy": {
+   "party": 1759,
+   "monsters": 1839
+  },
+  "directTaken": {
+   "party": 3598,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced ##: Alacrity?": 3,
+    "prompt: Versatility": 6,
+    "prompt: Heavy Balanced (Steel)": 53,
+    "prompt: L# Thrasher ## — Shift": 16,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 53,
+    "prompt: Heavy Thrasher (Steel)": 55,
+    "prompt: Heavy Balanced (Steel) — Riposte": 1,
+    "prompt: L# Balanced ## — Shift": 25
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

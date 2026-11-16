@@ -556,10 +556,10 @@
 
 **Tier 1: You gain the following action:**
 
-- **Grapple:** Prior to making a Thrasher Weapon attack, you can use this action. On hit, you deal no damage but the target is grappled by your Thrasher Weapon. While they are grappled, you cannot make more attacks with that Thrasher Weapon, and they cannot move outside of your Thrasher Weapon’s range.  
+- **Grapple:** Prior to making a Thrasher Weapon attack, you can use this action. On hit, you deal damage as normal and the target is grappled by your Thrasher Weapon. While they are grappled, you cannot make more attacks with that Thrasher Weapon, and they cannot move outside of your Thrasher Weapon’s range.  
     
   **Tier 2: You gain the following ability:**  
-- **Windup:** **Cost: *Energy equal to your Scaling Stat min.*** Prior to making a Thrasher Weapon attack, you can use this ability. That attack has one extra Advantage on its attack roll. This effect can be used as many times as desired before an attack.  
+- **Windup:** **Cost: *Energy equal to half of your Scaling Stat min, rounded down.*** Prior to making a Thrasher Weapon attack, you can use this ability. That attack has one extra Advantage on its attack roll. This effect can be used as many times as desired before an attack.  
     
   **Tier 3: You gain the following ability:**   
 - **Overshield Strike: Cost: *Energy equal to your Scaling Stat min.*** Prior to making a Thrasher Weapon attack, you can use this ability. That attack ignores half cover and the Parry ability (and all Parry type abilities).  

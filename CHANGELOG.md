@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.99.1:** Thrasher buffs from the Martial doc: **Grapple** (T1) now deals the attack's damage as normal as well as holding the target; **Windup** (T2) costs half the Scaling Stat min (rounded down) in Energy per use instead of the full min.
+
 **0.99.0:** NPCs can have a **fixed dodge**: a switch and a number on the NPC sheet's Main tab, beside the Dodge die. While it's on, attacks against that NPC don't roll a dodge; they're answered at once against the number (a hit at or above it, a crit at double). Beatdown and Topple use it too.
 
 **0.98.9:** Balance (from the focused sims): Acid's **Sticky** now needs Stain stacks equal to the target's HP regeneration (the Con, Will and Build minimums an 8 hour rest heals) instead of their Pain Threshold, which took hundreds of stacks; **Catalyst** costs 1 Threshold (was 2). Stagnation: **Toll** takes 3 Energy (was 2), **Grind** deals 1d12 (was 1d8), **Crush** is 12d10 downward Force (was 12d8); Stasis doubles the new numbers.

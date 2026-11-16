@@ -93,11 +93,20 @@ ok(!orc.statuses.has("fishy"), "cleared at the shooter's next turn");
 
 console.log("== Thrasher: Windup + Whirlygig, Overshield, Grapple, Get Over Here!");
 const whip = mkWeapon(hero, "Whip", { weaponType: "thrasher", weight: "light", material: "hardwood", grade: 3 });
-hero.system.ap.value = 6; seq = [30]; await attack(whip, { windup: 4, overshield: true });
+{ const before = hero.system.energy.value;
+  hero.system.ap.value = 6; seq = [30]; await attack(whip, { windup: 4, overshield: true });
+  ok(before - hero.system.energy.value === 4 * Math.floor(ab.scalingMin(whip) / 2) + ab.THRASHER_COST.overshield(whip), `Windup costs half the Scaling Stat min each (${Math.floor(ab.scalingMin(whip) / 2)} × 4)`); }
 o = last("attack").flags.flowstate.attack.opts;
 ok(o.stacks === whip.system.profile.stacks + 2 && last("attack").flags.flowstate.attack.targets[0].net >= 4, "4 Windups: +4 Adv, +2 Strengthened");
 ok(!last("attack").content.includes('data-choice="parry"') && !last("attack").content.includes("perfectParry"), "Overshield: no Parry-type buttons");
 dialog = () => ({ net: 0 }); seq = [1, 5]; await actions.defend(last("attack"), 0, "dodge");
+{ const hp0 = orc.system.hp.value;
+  hero.system.ap.value = 6; seq = [30]; await attack(whip, { thrasherGrapple: true });
+  ok(last("attack").flags.flowstate.attack.opts.damage && last("attack").flags.flowstate.attack.opts.thrasherGrapple === whip.uuid, "Thrasher Grapple keeps the attack's damage (Martial doc)");
+  dialog = () => ({ net: 0 }); seq = [1, 5]; await actions.defend(last("attack"), 0, "dodge");
+  dialog = () => ({ extra: 0 }); seq = [400, 400, 400, 400, 400]; await actions.rollExchangeDamage(last("defense"));
+  ok(orc.getFlag("flowstate", "grappleWeapon") === whip.uuid && orc.system.hp.value < hp0, `Thrasher Grapple hit: held by the whip and damaged (${hp0} → ${orc.system.hp.value})`);
+  await actions.setGrapple(orc, null); }
 hero.system.ap.value = 6; seq = [30]; await attack(whip, { getOverHere: true });
 dialog = () => ({ net: 0 }); seq = [1, 5]; await actions.defend(last("attack"), 0, "dodge");
 ok(orc.getFlag("flowstate", "grappledBy") === hero.uuid && orc.getFlag("flowstate", "lockedDown") === hero.uuid && orc.statuses.has("prone"), "Get Over Here!: grappled, Locked Down (Grappling T1), prone");

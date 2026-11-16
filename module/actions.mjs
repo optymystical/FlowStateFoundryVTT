@@ -831,7 +831,7 @@ function attackFields(actor, item, base, followup = null, { presetGrapple = fals
     if (ab.longshot(actor, item, 3)) t4Opts += `<div class="form-group"><label>Snipe Hunt <span class="fs-energy-inline">⚡ ${ab.LONGSHOT_COST.snipe(item)}</span>: their dodge gets a Disadvantage per Advantage on this attack</label><input type="checkbox" name="snipe"></div>`;
   }
   if (!unarmed && !base.ranged && ab.thrasher(actor, item, 1) && !followup) {
-    t4Opts += `<div class="form-group"><label>Grapple (Thrasher): no damage; on a hit your weapon holds them</label><input type="checkbox" name="thrasherGrapple"></div>`;
+    t4Opts += `<div class="form-group"><label>Grapple (Thrasher): on a hit your weapon also holds them</label><input type="checkbox" name="thrasherGrapple"></div>`;
     if (ab.thrasher(actor, item, 5)) t4Opts += `<div class="form-group"><label>Get Over Here! <span class="fs-energy-inline">⚡ ${ab.THRASHER_COST.getOverHere(item)}</span>: on a hit, grapple, pull them next to you, and ${ab.grappling(actor, 1) ? "Lock Down" : "knock them prone"}</label><input type="checkbox" name="getOverHere"></div>`;
     if (ab.thrasher(actor, item, 2)) t4Opts += `<div class="form-group"><label>Windup <span class="fs-energy-inline">⚡ ${ab.THRASHER_COST.windup(item)} each</span>: uses (each +1 Advantage${ab.thrasher(actor, item, 4) ? "; every two +1 Strengthened" : ""})</label><input type="number" name="windup" value="0" min="0" step="1"></div>`;
     if (ab.thrasher(actor, item, 3)) t4Opts += `<div class="form-group"><label>Overshield Strike <span class="fs-energy-inline">⚡ ${ab.THRASHER_COST.overshield(item)}</span>: ignores half cover and every Parry-type response</label><input type="checkbox" name="overshield"></div>`;
@@ -1199,7 +1199,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
     const tooBig = (explicitTargets ?? [...game.user.targets].map(t => t.actor)).filter(a => a && (a.system?.size ?? 3) > actor.system.size);
     if (tooBig.length) return ui.notifications.warn(`${tooBig.map(a => a.name).join(", ")} ${tooBig.length === 1 ? "is" : "are"} too large to grapple (your size or smaller).`);
   }
-  if (opts.thrasherGrapple && !opts.getOverHere) notes.push("Grapple (Thrasher, no damage)");
+  if (opts.thrasherGrapple && !opts.getOverHere) notes.push("Grapple (Thrasher)");
   if (opts.getOverHere) { energy += ab.THRASHER_COST.getOverHere(item); notes.push("Get Over Here!"); }
   const windup = Math.max(0, Math.floor(Number(opts.windup) || 0));
   if (windup) {
@@ -1358,7 +1358,7 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
   const result = await performAttack(actor, {
     label: followup ? `${item.name} — ${followup.label}` : unarmed ? `${item.name} (${WEAPON_TYPES.unarmed.label} ${p.scalingStat === "str" ? "Heavy" : "Light"})` : item.name,
     net, stealth: followup?.kind === "return" && ab.circular(actor, item, 5) ? "half" : opts.stealth, melee: opts.mode === "strike", push: false,
-    damage: shieldToss?.mode === "guard" || (opts.thrasherGrapple && !opts.getOverHere) ? "" : damage, type: p.damageType, stacks, ap: 0, apCost: ap || rpPaid,
+    damage: shieldToss?.mode === "guard" ? "" : damage, type: p.damageType, stacks, ap: 0, apCost: ap || rpPaid,
     physical: true, sizeStacks: p.sizeStacks ?? null, shots,
     critStacks: p.critStacks, vsSupernatural: p.vsSupernatural, arcaneVsMagic: p.arcaneVsMagic,
     smashKb, autoFollowup, pierce, knockback, knockbackAdd: knockback ? knockbackAdd : 0, bash, notes, followups, followupOf: followup?.source ?? null,

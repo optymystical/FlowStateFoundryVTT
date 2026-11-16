@@ -405,8 +405,8 @@ One card at the start of each turn collects what happened: the Energy regained, 
 - **T5 Slam:** an Action List entry, used as a Light (2 AP) or Heavy (3 AP) weapon, whichever the creature's body is closer to. Swing a grappled creature at a target: Force 10 × Str at 0 ft, and both take the Force damage (capped at the held creature's HP plus what its protection would soak).
 
 ## Thrasher Weapons (automated)
-- **T1 Grapple:** no damage; on a hit the weapon holds them and can't attack until they're released.
-- **T2 Windup:** any number of uses, +1 Advantage each. **T4 Whirlygig:** every two add +1 Strengthened.
+- **T1 Grapple:** the attack deals its damage as normal, and on a hit the weapon also holds them; it can't attack until they're released.
+- **T2 Windup:** any number of uses, +1 Advantage each, at half the Scaling Stat min (rounded down) in Energy each. **T4 Whirlygig:** every two add +1 Strengthened.
 - **T3 Overshield Strike:** ignores every Parry-type effect: parrying and Blocking weapons, Brace, Dip, Shatter, Slip Off, Harden, and the Perfect rolls.
 - **T5 Get Over Here!:** on a hit the target is grappled, pulled next to you, and knocked prone (Locked Down if you have Grappling T1). The attack still deals damage.
 
@@ -751,7 +751,7 @@ Create a **Weapon** or **Armor** item (the + buttons on the sheet) and build it 
 - **Disarm with several held items:** you pick which one they drop.
 - **Momentum is stored per attacker and target** and ends at the start of the attacker's next turn.
 - **Snipe Hunt counts all of the attack's Advantage** against that target, including stances and In a Barrel.
-- **Get Over Here! keeps its damage**; the plain Thrasher Grapple doesn't deal any.
+- **Get Over Here! and the plain Thrasher Grapple both deal their damage** (Grapple since 0.99.1).
 
 ## Falling, flight, objects and Ignite Spread (0.46.0)
 - **Objects:** a gear item with a **Body** above 0 (and a material: Powder/Liquid, Soft, Hard, Dense, Super Dense) is a Non-Archetypal object with Durability and Limit from the Rules chart. Target a pile on the scene that holds one and attack it: it always hits, the attack roll only decides a crit (at or above its Body), the damage goes straight to its Durability (its Limit doesn't apply) and the card says broken or destroyed. Objects held or worn by a creature aren't targetable this way yet (aim at the archetypal item instead).

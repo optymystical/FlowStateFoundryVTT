@@ -533,7 +533,7 @@ const THRASHER = "martial-thrasher-weapons";
 const thrasherT = weaponTree(THRASHER);
 export const thrasher = thrasherT.can;
 export const THRASHER_COST = {
-  windup: item => scalingMin(item),            // T2 (each)
+  windup: item => Math.floor(scalingMin(item) / 2),   // T2 (each): half the Scaling Stat min, rounded down
   overshield: item => scalingMin(item),        // T3
   getOverHere: item => 2 * scalingMin(item)    // T5
 };

@@ -1,0 +1,647 @@
+[
+ {
+  "id": "r1",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 19,
+  "winner": "unfinished",
+  "pass": "dummy-balanced",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Parry": 1,
+   "Unstoppable": 1,
+   "Brace": 1,
+   "opt:slam=knockback": 3,
+   "defend:dodge": 16,
+   "limber:skipped": 2,
+   "limber": 7,
+   "opt:slam=both": 1
+  },
+  "hp": {
+   "L60 Balanced#4Yo1": "1134/1134",
+   "Sim Dummy#LeiL": "17438/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 9,
+    "crits": 6,
+    "misses": 7,
+    "damage": 886,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Balanced"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Balanced",
+    "dealt": 886,
+    "taken": 0,
+    "hits": 9,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 886,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Balanced",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 2,
+     "limber": 7
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "L60 Balanced": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   }
+  },
+  "gear": {
+   "L60 Balanced": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Balanced": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 18259,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 18009,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 17909,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17438,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17438,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Balanced": 886
+   },
+   "taken": {
+    "Sim Dummy": 886
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 886
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 886
+  },
+  "directTaken": {
+   "party": 886,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced: Alacrity?": 1,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Balanced (Steel)": 8,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "dummy-balanced",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Parry": 1,
+   "Unstoppable": 1,
+   "Brace": 1,
+   "opt:slam=knockback": 3,
+   "defend:dodge": 16,
+   "limber:skipped": 4,
+   "limber": 6,
+   "opt:slam=both": 1
+  },
+  "hp": {
+   "L60 Balanced#6A6j": "1134/1134",
+   "Sim Dummy#zruf": "17329/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 10,
+    "crits": 5,
+    "misses": 6,
+    "damage": 995,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Balanced"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Balanced",
+    "dealt": 995,
+    "taken": 0,
+    "hits": 10,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 995,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Balanced",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 4,
+     "limber": 6
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "L60 Balanced": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   }
+  },
+  "gear": {
+   "L60 Balanced": [
+    "Unarmed G1",
+    "Heavy Balanced (Steel) G11",
+    "Medium Armor (Hard Leather) G8"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Balanced": [
+    "Heavy Balanced (Steel): 1980/1980",
+    "Medium Armor (Hard Leather): 420/420"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 18184,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 17804,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 17552,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17329,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17329,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Balanced": 995
+   },
+   "taken": {
+    "Sim Dummy": 995
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 995
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 995
+  },
+  "directTaken": {
+   "party": 995,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced: Alacrity?": 1,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Balanced (Steel)": 8,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 20,
+  "winner": "unfinished",
+  "pass": "dummy-balanced",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Parry": 1,
+   "Unstoppable": 1,
+   "Brace": 1,
+   "opt:slam=knockback": 3,
+   "defend:dodge": 16,
+   "limber:skipped": 5,
+   "limber": 6,
+   "opt:slam=both": 1
+  },
+  "hp": {
+   "L60 Balanced#LTqL": "1134/1134",
+   "Sim Dummy#raWb": "17215/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Balanced": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 11,
+    "crits": 6,
+    "misses": 5,
+    "damage": 1109,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Balanced"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Balanced",
+    "dealt": 1109,
+    "taken": 0,
+    "hits": 11,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 1109,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Balanced",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Versatility": 1,
+     "Parry": 1,
+     "Unstoppable": 1,
+     "Brace": 1,
+     "limber:skipped": 5,
+     "limber": 6
+    },
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "L60 Balanced": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-balanced-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 2,
+    "generic-tempo": 2,
+    "generic-recovery": 2
+   }
+  },
+  "gear": {
+   "L60 Balanced": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Balanced (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Balanced": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Balanced (Steel): 1980/1980"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 17998,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 17713,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 17519,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17215,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17215,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Balanced": 1109
+   },
+   "taken": {
+    "Sim Dummy": 1109
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1109
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 1109
+  },
+  "directTaken": {
+   "party": 1109,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Balanced: Alacrity?": 1,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Balanced (Steel)": 8,
+    "prompt: Heavy Balanced (Steel) — Solitary follow-up (Dis)": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

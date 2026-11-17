@@ -1,0 +1,617 @@
+[
+ {
+  "id": "r1",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 13,
+  "winner": "party",
+  "pass": "dummy-cutflame-norend",
+  "rounds": 4,
+  "partyLeft": 1,
+  "monstersLeft": 0,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 7,
+   "mod:Bleed": 4,
+   "mod:Ignition": 5,
+   "defend:dodge": 7,
+   "mod:Gash": 1,
+   "recoverEnergy": 3
+  },
+  "hp": {
+   "L60 Slashing (no Rend)#XVOf": "1134/1134",
+   "Sim Dummy#9mUq": "8930/18324"
+  },
+  "down": [
+   "Sim Dummy"
+  ],
+  "weapons": {
+   "Spell: Cut + Flame": {
+    "attacks": 7,
+    "followups": 0,
+    "hits": 6,
+    "crits": 4,
+    "misses": 1,
+    "damage": 742,
+    "ap": 21,
+    "kills": 1,
+    "users": [
+     "L60 Slashing (no Rend)"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Slashing (no Rend)",
+    "dealt": 742,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 7
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 742,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing (no Rend)",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 7,
+    "used": {
+     "cast:Cut + Flame": 7,
+     "mod:Bleed": 4,
+     "mod:Ignition": 5,
+     "mod:Gash": 1,
+     "recoverEnergy": 3
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 7
+    }
+   }
+  ],
+  "trees": {
+   "L60 Slashing (no Rend)": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   }
+  },
+  "gear": {
+   "L60 Slashing (no Rend)": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Slashing (no Rend)": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 16100,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 14464,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 11086,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 8930,
+    "partyDown": 0,
+    "monstersDown": 1,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing (no Rend)": 8862
+   },
+   "taken": {
+    "Sim Dummy": 9394
+   },
+   "unattributed": 532
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 3108
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 6286
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 9394
+  },
+  "directTaken": {
+   "party": 742,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Slashing (no Rend): Alacrity?": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 13,
+  "winner": "unfinished",
+  "pass": "dummy-cutflame-norend",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 8,
+   "mod:Bleed": 5,
+   "mod:Ignition": 5,
+   "defend:dodge": 8,
+   "mod:Gash": 1
+  },
+  "hp": {
+   "L60 Slashing (no Rend)#8v6e": "1134/1134",
+   "Sim Dummy#SIJ0": "9392/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Spell: Cut + Flame": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 4,
+    "crits": 1,
+    "misses": 4,
+    "damage": 378,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Slashing (no Rend)"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Slashing (no Rend)",
+    "dealt": 378,
+    "taken": 0,
+    "hits": 4,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 378,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing (no Rend)",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Cut + Flame": 8,
+     "mod:Bleed": 5,
+     "mod:Ignition": 5,
+     "mod:Gash": 1
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "L60 Slashing (no Rend)": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   }
+  },
+  "gear": {
+   "L60 Slashing (no Rend)": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Slashing (no Rend)": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 16704,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 13814,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 10796,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 9392,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 9392,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing (no Rend)": 8694
+   },
+   "taken": {
+    "Sim Dummy": 8932
+   },
+   "unattributed": 238
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 5044
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 3888
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 8932
+  },
+  "directTaken": {
+   "party": 378,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Slashing (no Rend): Alacrity?": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 14,
+  "winner": "unfinished",
+  "pass": "dummy-cutflame-norend",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Cut + Flame": 8,
+   "mod:Bleed": 5,
+   "mod:Ignition": 5,
+   "defend:dodge": 8,
+   "mod:Gash": 1
+  },
+  "hp": {
+   "L60 Slashing (no Rend)#DaMy": "1134/1134",
+   "Sim Dummy#A9mA": "9742/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Spell: Cut + Flame": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 7,
+    "crits": 4,
+    "misses": 1,
+    "damage": 801,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Slashing (no Rend)"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Slashing (no Rend)",
+    "dealt": 801,
+    "taken": 0,
+    "hits": 7,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 801,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Slashing (no Rend)",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Cut + Flame": 8,
+     "mod:Bleed": 5,
+     "mod:Ignition": 5,
+     "mod:Gash": 1
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "L60 Slashing (no Rend)": {
+    "magic-theory": 2,
+    "magic-heat": 5,
+    "magic-reach-arcana": 2,
+    "generic-perception": 2,
+    "magic-slashing": 5,
+    "magic-protection-arcana": 3,
+    "generic-athletics": 1,
+    "generic-mobility": 3,
+    "generic-endurance": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 2,
+    "generic-recovery": 2,
+    "generic-stamina": 2
+   }
+  },
+  "gear": {
+   "L60 Slashing (no Rend)": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Slashing (no Rend)": [
+    "Light Armor (Hard Leather): 120/120"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 18036,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 16456,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 13672,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 9742,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 9742,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Slashing (no Rend)": 8167
+   },
+   "taken": {
+    "Sim Dummy": 8582
+   },
+   "unattributed": 415
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 2496
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 6086
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 8582
+  },
+  "directTaken": {
+   "party": 801,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Slashing (no Rend): Alacrity?": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

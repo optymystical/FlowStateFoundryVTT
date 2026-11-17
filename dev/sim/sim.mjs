@@ -286,7 +286,9 @@ async function makeActor(spec, loadout, { party, folder }) {
       ...(loadout.abc ? { abc: loadout.abc } : {}), ...(loadout.freeTrees ? { freeTrees: loadout.freeTrees } : {}) },
     prototypeToken: { name: spec.name, actorLink: !!party, disposition: party ? 1 : -1, displayBars: 40, bar1: { attribute: "hp" } },
     flags: { flowstate: { sim: { id: spec.id, role: loadout.role ?? spec.role ?? "monster", party: !!party, grapple: !!loadout.grapple, stances: loadout.stances !== false, quickload: spec.quickload ?? null, noPepper: !!loadout.noPepper, conj: loadout.conj ?? null, mind: loadout.mind ?? null, mindChoices: loadout.mindChoices ?? null, noMods: loadout.noMods ?? null, school: loadout.school ?? null },
-      ...(loadout.alignment ? { alignment: loadout.alignment } : {}) } }
+      ...(loadout.alignment ? { alignment: loadout.alignment } : {}),
+      // A bench dummy with a fixed dodge (an NPC): attacks against it are compared with the number, no dodge roll.
+      ...(Number.isFinite(spec.fixedDodge) ? { fixedDodge: { on: true, value: spec.fixedDodge } } : {}) } }
   });
   const natural = !party && spec.natural !== false;
   const slots = loadout.weapons.filter(w => w.type !== "unarmed");

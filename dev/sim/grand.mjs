@@ -243,3 +243,41 @@ export function benchPasses() {
   return out;
 }
 export const benchQueue = () => Object.keys(benchPasses());
+
+/* ---------------- Dummy benches (2026-11-16) ---------------- */
+
+/**
+ * One level 60 build at a time against a still dummy (it never acts) with a fixed dodge, so hit chance is the same for everyone and no dodge luck
+ * mixes in: 16 is the average dodge roll at 60 Skill Points (a d30). The dummy is unarmored with Con 2000 so it stays up all 4 rounds. Measured: the
+ * HP it loses per round (every source, ticks on its own turn included). Casters and Mental builds stand 15 ft off, melee beside it.
+ * Cut + Flame (the level 60 Magic kit's main spell, from the Slashing build with Heat) with each of its Mods left out in turn; Martial and Mental
+ * yardsticks; Fortune; Geomancy playing its own school and freely.
+ */
+export const DUMMY_DODGE = 16;
+const DUMMY_GROUP = { dummy: { label: "Dummy", note: `A still dummy: 60 Skill Points, Con 2000, no armor, fixed dodge ${DUMMY_DODGE}.`,
+  kinds: [{ id: "dummy", name: "Sim Dummy", count: 1, size: 3, sp: 60, natural: false, role: "dummy", stats: { con: 2000 }, armor: null, weapons: [], fixedDodge: DUMMY_DODGE }] } };
+const CF = ["magic-slashing:bleed", "magic-heat:ignition", "magic-slashing:rend"];
+const DUMMY_RUNS = [
+  { key: "cutflame", build: "Slashing" },
+  { key: "cutflame-nobleed", build: "Slashing", mod: { noMods: [CF[0]], tag: "no Bleed" } },
+  { key: "cutflame-noignition", build: "Slashing", mod: { noMods: [CF[1]], tag: "no Ignition" } },
+  { key: "cutflame-norend", build: "Slashing", mod: { noMods: [CF[2]], tag: "no Rend" } },
+  { key: "cutflame-none", build: "Slashing", mod: { noMods: CF, tag: "no Bleed, Ignition or Rend" } },
+  { key: "striker", build: "Striker" }, { key: "bladed", build: "Bladed" }, { key: "balanced", build: "Balanced" },
+  { key: "destruction", build: "Destruction" }, { key: "death", build: "Death" }, { key: "fortune", build: "Fortune" },
+  { key: "geomancy", build: "Geomancy", mod: { school: "magic-geomancy", tag: "plays Geomancy" } },
+  { key: "geomancy-any", build: "Geomancy" }
+];
+export function dummyPasses() {
+  const out = {};
+  for (const run of DUMMY_RUNS) {
+    const b = benchBuild(60, run.mod ? [run.build, run.mod] : run.build);
+    const melee = /^melee/.test(b.loadout.role ?? "");
+    const tester = { ...b, loadout: { ...b.loadout, ranged: !melee } };
+    const id = `dummy-${run.key}`;
+    out[id] = { id, note: `Dummy bench: ${b.name} against a still dummy (fixed dodge ${DUMMY_DODGE}), 4 rounds.`, party: asParty([tester]), monsters: DUMMY_GROUP,
+      deploy: "bench", maxRounds: 4, encounters: [1, 2, 3].map(n => ({ id: `r${n}`, group: "dummy", rotation: 0 })), dummy: { key: run.key, build: b.name } };
+  }
+  return out;
+}
+export const dummyQueue = () => Object.keys(dummyPasses());

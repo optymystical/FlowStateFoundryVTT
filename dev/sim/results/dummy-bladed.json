@@ -1,0 +1,689 @@
+[
+ {
+  "id": "r1",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 23,
+  "winner": "unfinished",
+  "pass": "dummy-bladed",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 11,
+  "knockbacks": {},
+  "used": {
+   "Parry": 1,
+   "Leap": 1,
+   "Spot Weakness": 1,
+   "opt:shank1=adv": 2,
+   "opt:shank2=dodge": 3,
+   "opt:shank3=pierce": 2,
+   "defend:dodge": 22,
+   "opt:shank1=pierce": 2,
+   "opt:shank2=cleave": 2,
+   "opt:shank3=adv": 3,
+   "opt:shank1=dodge": 1
+  },
+  "hp": {
+   "L60 Bladed#4o3H": "1134/1134",
+   "Sim Dummy#KZLt": "17291/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Light Bladed": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 8,
+    "crits": 5,
+    "misses": 3,
+    "damage": 607,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "L60 Bladed"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 11,
+    "hits": 6,
+    "crits": 2,
+    "misses": 5,
+    "damage": 426,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Bladed"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Bladed",
+    "dealt": 1033,
+    "taken": 0,
+    "hits": 14,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 1033,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Bladed",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 0,
+    "attacks": 22,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Leap": 1,
+     "Spot Weakness": 1
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 22
+    }
+   }
+  ],
+  "trees": {
+   "L60 Bladed": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-bladed-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 2,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Bladed": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Bladed (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Bladed": [
+    "Light Armor (Hard Leather): 210/210",
+    "Light Bladed (Steel): 495/495"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 18104,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 17786,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 17456,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17291,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17291,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Bladed": 1033
+   },
+   "taken": {
+    "Sim Dummy": 1033
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1033
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 1033
+  },
+  "directTaken": {
+   "party": 1033,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Bladed: Alacrity?": 1,
+    "prompt: Light Bladed (Steel)": 11,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 11
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 22,
+  "winner": "unfinished",
+  "pass": "dummy-bladed",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 11,
+  "knockbacks": {},
+  "used": {
+   "Parry": 1,
+   "Leap": 1,
+   "Spot Weakness": 1,
+   "opt:shank1=adv": 2,
+   "opt:shank2=dodge": 3,
+   "opt:shank3=pierce": 2,
+   "defend:dodge": 22,
+   "opt:shank1=pierce": 2,
+   "opt:shank2=cleave": 2,
+   "opt:shank3=adv": 3,
+   "opt:shank1=dodge": 1
+  },
+  "hp": {
+   "L60 Bladed#EZDu": "1134/1134",
+   "Sim Dummy#5aOw": "17486/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Light Bladed": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 8,
+    "crits": 5,
+    "misses": 3,
+    "damage": 600,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "L60 Bladed"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 11,
+    "hits": 4,
+    "crits": 1,
+    "misses": 7,
+    "damage": 238,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Bladed"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Bladed",
+    "dealt": 838,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 838,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Bladed",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 0,
+    "attacks": 22,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Leap": 1,
+     "Spot Weakness": 1
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 22
+    }
+   }
+  ],
+  "trees": {
+   "L60 Bladed": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-bladed-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 2,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Bladed": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Bladed (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Bladed": [
+    "Light Armor (Hard Leather): 210/210",
+    "Light Bladed (Steel): 495/495"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 18210,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 17871,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 17685,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17486,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 17486,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Bladed": 838
+   },
+   "taken": {
+    "Sim Dummy": 838
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 838
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 838
+  },
+  "directTaken": {
+   "party": 838,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Bladed: Alacrity?": 1,
+    "prompt: Light Bladed (Steel)": 11,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 11
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 23,
+  "winner": "unfinished",
+  "pass": "dummy-bladed",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 11,
+  "knockbacks": {},
+  "used": {
+   "Parry": 1,
+   "Leap": 1,
+   "Spot Weakness": 1,
+   "opt:shank1=adv": 2,
+   "opt:shank2=dodge": 3,
+   "opt:shank3=pierce": 2,
+   "defend:dodge": 22,
+   "opt:shank1=pierce": 2,
+   "opt:shank2=cleave": 2,
+   "opt:shank3=adv": 3,
+   "opt:shank1=dodge": 1
+  },
+  "hp": {
+   "L60 Bladed#SbMN": "1134/1134",
+   "Sim Dummy#3ztN": "16868/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Light Bladed": {
+    "attacks": 11,
+    "followups": 0,
+    "hits": 10,
+    "crits": 5,
+    "misses": 1,
+    "damage": 690,
+    "ap": 22,
+    "kills": 0,
+    "users": [
+     "L60 Bladed"
+    ]
+   },
+   "Unarmed Light": {
+    "attacks": 0,
+    "followups": 11,
+    "hits": 8,
+    "crits": 5,
+    "misses": 3,
+    "damage": 766,
+    "ap": 0,
+    "kills": 0,
+    "users": [
+     "L60 Bladed"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Bladed",
+    "dealt": 1456,
+    "taken": 0,
+    "hits": 18,
+    "attacks": 22
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 1456,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Bladed",
+    "side": "party",
+    "role": "melee-dex",
+    "moved": 0,
+    "attacks": 22,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "Parry": 1,
+     "Leap": 1,
+     "Spot Weakness": 1
+    },
+    "leapt": true,
+    "spotted": true,
+    "turnMoved": 0,
+    "shank": 1
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 22
+    }
+   }
+  ],
+  "trees": {
+   "L60 Bladed": {
+    "martial-theory": 3,
+    "martial-medium-armor": 2,
+    "martial-bladed-weapons": 5,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-light-armor": 5,
+    "martial-dexterity-methods": 5,
+    "generic-endurance": 2,
+    "generic-recovery": 3,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 1,
+    "generic-composure": 1
+   }
+  },
+  "gear": {
+   "L60 Bladed": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G8",
+    "Light Bladed (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Bladed": [
+    "Light Armor (Hard Leather): 210/210",
+    "Light Bladed (Steel): 495/495"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 18057,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 17485,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 17129,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 16868,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 16868,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Bladed": 1456
+   },
+   "taken": {
+    "Sim Dummy": 1456
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1456
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 1456
+  },
+  "directTaken": {
+   "party": 1456,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Bladed: Alacrity?": 1,
+    "prompt: Light Bladed (Steel)": 11,
+    "prompt: Unarmed — Fast follow-up: Unarmed (Dis)": 11
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

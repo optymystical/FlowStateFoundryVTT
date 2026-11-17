@@ -1,0 +1,671 @@
+[
+ {
+  "id": "r1",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 21,
+  "winner": "unfinished",
+  "pass": "dummy-striker",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "berserk": 1,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 1,
+   "Seeing Red": 1,
+   "Brace": 1,
+   "opt:rend": 5,
+   "defend:dodge": 16,
+   "limber": 8,
+   "maintain": 3,
+   "Dip": 1,
+   "limber:skipped": 5
+  },
+  "hp": {
+   "L60 Striker#MmNQ": "1134/1134",
+   "Sim Dummy#bavQ": "15310/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Striker": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 13,
+    "crits": 11,
+    "misses": 3,
+    "damage": 3014,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Striker"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Striker",
+    "dealt": 3014,
+    "taken": 0,
+    "hits": 13,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 3014,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Striker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Seeing Red": 1,
+     "Brace": 1,
+     "limber": 8,
+     "maintain": 3,
+     "Dip": 1,
+     "limber:skipped": 5
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "L60 Striker": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-striker-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-recovery": 1,
+    "generic-athletics": 1
+   }
+  },
+  "gear": {
+   "L60 Striker": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Striker (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Striker": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Striker (Steel): 990/990"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 17681,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 16747,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 15985,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 15310,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 15310,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Striker": 3014
+   },
+   "taken": {
+    "Sim Dummy": 3014
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 3014
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 3014
+  },
+  "directTaken": {
+   "party": 3014,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Striker: Alacrity?": 1,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Striker (Steel)": 8,
+    "prompt: Heavy Striker (Steel) — Solitary follow-up": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 21,
+  "winner": "unfinished",
+  "pass": "dummy-striker",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "berserk": 1,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 1,
+   "Seeing Red": 1,
+   "Brace": 1,
+   "opt:rend": 5,
+   "defend:dodge": 16,
+   "limber": 8,
+   "maintain": 3,
+   "Dip": 1,
+   "limber:skipped": 6
+  },
+  "hp": {
+   "L60 Striker#64A4": "1134/1134",
+   "Sim Dummy#7vLR": "15561/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Striker": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 14,
+    "crits": 9,
+    "misses": 2,
+    "damage": 2763,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Striker"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Striker",
+    "dealt": 2763,
+    "taken": 0,
+    "hits": 14,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 2763,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Striker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Seeing Red": 1,
+     "Brace": 1,
+     "limber": 8,
+     "maintain": 3,
+     "Dip": 1,
+     "limber:skipped": 6
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "L60 Striker": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-striker-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-recovery": 1,
+    "generic-athletics": 1
+   }
+  },
+  "gear": {
+   "L60 Striker": [
+    "Unarmed G1",
+    "Medium Armor (Hard Leather) G8",
+    "Heavy Striker (Steel) G11"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Striker": [
+    "Medium Armor (Hard Leather): 420/420",
+    "Heavy Striker (Steel): 990/990"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 17796,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 16916,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 16123,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 15561,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 15561,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Striker": 2763
+   },
+   "taken": {
+    "Sim Dummy": 2763
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 2763
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 2763
+  },
+  "directTaken": {
+   "party": 2763,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Striker: Alacrity?": 1,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Striker (Steel)": 8,
+    "prompt: Heavy Striker (Steel) — Solitary follow-up": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 21,
+  "winner": "unfinished",
+  "pass": "dummy-striker",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 8,
+  "knockbacks": {},
+  "used": {
+   "berserk": 1,
+   "opt:ability=shift": 1,
+   "Versatility": 1,
+   "Unstoppable": 1,
+   "Seeing Red": 1,
+   "Brace": 1,
+   "opt:rend": 5,
+   "defend:dodge": 16,
+   "limber": 8,
+   "maintain": 3,
+   "Dip": 1,
+   "limber:skipped": 4
+  },
+  "hp": {
+   "L60 Striker#ikIB": "1134/1134",
+   "Sim Dummy#cLVA": "15776/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Heavy Striker": {
+    "attacks": 8,
+    "followups": 8,
+    "hits": 12,
+    "crits": 8,
+    "misses": 4,
+    "damage": 2548,
+    "ap": 24,
+    "kills": 0,
+    "users": [
+     "L60 Striker"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Striker",
+    "dealt": 2548,
+    "taken": 0,
+    "hits": 12,
+    "attacks": 16
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 2548,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Striker",
+    "side": "party",
+    "role": "melee-str",
+    "moved": 0,
+    "attacks": 16,
+    "turns": 4,
+    "kills": 0,
+    "used": {
+     "berserk": 1,
+     "Versatility": 1,
+     "Unstoppable": 1,
+     "Seeing Red": 1,
+     "Brace": 1,
+     "limber": 8,
+     "maintain": 3,
+     "Dip": 1,
+     "limber:skipped": 4
+    },
+    "fist": "Dip",
+    "turnMoved": 0
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 16
+    }
+   }
+  ],
+  "trees": {
+   "L60 Striker": {
+    "martial-theory": 2,
+    "martial-medium-armor": 5,
+    "martial-brawling-methods": 2,
+    "generic-resolve": 2,
+    "generic-courage": 2,
+    "martial-striker-weapons": 5,
+    "martial-strength-methods": 5,
+    "generic-composure": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-recovery": 1,
+    "generic-athletics": 1
+   }
+  },
+  "gear": {
+   "L60 Striker": [
+    "Unarmed G1",
+    "Heavy Striker (Steel) G11",
+    "Medium Armor (Hard Leather) G8"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Striker": [
+    "Heavy Striker (Steel): 990/990",
+    "Medium Armor (Hard Leather): 420/420"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 1134,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 1134,
+    "monsterHp": 17563,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 1134,
+    "monsterHp": 17140,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 1134,
+    "monsterHp": 16160,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 15776,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 1134,
+    "monsterHp": 15776,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {
+   "party": 1
+  },
+  "hpLoss": {
+   "dealt": {
+    "L60 Striker": 2548
+   },
+   "taken": {
+    "Sim Dummy": 2548
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 2548
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 2548
+  },
+  "directTaken": {
+   "party": 2548,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Striker: Alacrity?": 1,
+    "prompt: Versatility": 1,
+    "prompt: Heavy Striker (Steel)": 8,
+    "prompt: Heavy Striker (Steel) — Solitary follow-up": 8
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

@@ -1,0 +1,617 @@
+[
+ {
+  "id": "r1",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 15,
+  "winner": "unfinished",
+  "pass": "dummy-geomancy-any",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Force + Cut": 8,
+   "mod:Rend": 3,
+   "defend:dodge": 8,
+   "mod:Bleed": 1,
+   "cast:nothingAffordable": 2,
+   "recoverEnergy": 8
+  },
+  "hp": {
+   "L60 Geomancy#H2Iu": "756/756",
+   "Sim Dummy#3Bi6": "16652/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Spell: Force + Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 8,
+    "crits": 6,
+    "misses": 0,
+    "damage": 1485,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "L60 Geomancy"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Geomancy",
+    "dealt": 1485,
+    "taken": 0,
+    "hits": 8,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 1485,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Geomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Force + Cut": 8,
+     "mod:Rend": 3,
+     "mod:Bleed": 1,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 8
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "L60 Geomancy": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-geomancy": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 1
+   }
+  },
+  "gear": {
+   "L60 Geomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Geomancy": [
+    "Light Armor (Hard Leather): 60/60"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 756,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 756,
+    "monsterHp": 17433,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 756,
+    "monsterHp": 17234,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 756,
+    "monsterHp": 16717,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 756,
+    "monsterHp": 16652,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 756,
+    "monsterHp": 16652,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Geomancy": 1485
+   },
+   "taken": {
+    "Sim Dummy": 1672
+   },
+   "unattributed": 187
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 1672
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 1672
+  },
+  "directTaken": {
+   "party": 1485,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Geomancy: Alacrity?": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r2",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 15,
+  "winner": "unfinished",
+  "pass": "dummy-geomancy-any",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Force + Cut": 8,
+   "mod:Rend": 3,
+   "defend:dodge": 8,
+   "mod:Bleed": 1,
+   "cast:nothingAffordable": 2,
+   "recoverEnergy": 8
+  },
+  "hp": {
+   "L60 Geomancy#Y5wn": "756/756",
+   "Sim Dummy#JxCr": "17556/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Spell: Force + Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 6,
+    "crits": 2,
+    "misses": 2,
+    "damage": 697,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "L60 Geomancy"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Geomancy",
+    "dealt": 697,
+    "taken": 0,
+    "hits": 6,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 697,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Geomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Force + Cut": 8,
+     "mod:Rend": 3,
+     "mod:Bleed": 1,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 8
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "L60 Geomancy": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-geomancy": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 1
+   }
+  },
+  "gear": {
+   "L60 Geomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Geomancy": [
+    "Light Armor (Hard Leather): 60/60"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 756,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 756,
+    "monsterHp": 18107,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 756,
+    "monsterHp": 17912,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 756,
+    "monsterHp": 17782,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 756,
+    "monsterHp": 17556,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 756,
+    "monsterHp": 17556,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Geomancy": 697
+   },
+   "taken": {
+    "Sim Dummy": 768
+   },
+   "unattributed": 71
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 768
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 768
+  },
+  "directTaken": {
+   "party": 697,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Geomancy: Alacrity?": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ },
+ {
+  "id": "r3",
+  "group": "dummy",
+  "rotation": 1,
+  "seconds": 15,
+  "winner": "unfinished",
+  "pass": "dummy-geomancy-any",
+  "rounds": 5,
+  "partyLeft": 1,
+  "monstersLeft": 1,
+  "followups": 0,
+  "knockbacks": {},
+  "used": {
+   "cast:Force + Cut": 8,
+   "mod:Rend": 3,
+   "defend:dodge": 8,
+   "mod:Bleed": 1,
+   "cast:nothingAffordable": 2,
+   "recoverEnergy": 8
+  },
+  "hp": {
+   "L60 Geomancy#M4S2": "756/756",
+   "Sim Dummy#2oda": "17618/18324"
+  },
+  "down": [],
+  "weapons": {
+   "Spell: Force + Cut": {
+    "attacks": 8,
+    "followups": 0,
+    "hits": 5,
+    "crits": 2,
+    "misses": 3,
+    "damage": 706,
+    "ap": 16,
+    "kills": 0,
+    "users": [
+     "L60 Geomancy"
+    ]
+   }
+  },
+  "armor": {},
+  "creatures": [
+   {
+    "name": "L60 Geomancy",
+    "dealt": 706,
+    "taken": 0,
+    "hits": 5,
+    "attacks": 8
+   },
+   {
+    "name": "Sim Dummy",
+    "dealt": 0,
+    "taken": 706,
+    "hits": 0,
+    "attacks": 0
+   }
+  ],
+  "ai": [
+   {
+    "name": "L60 Geomancy",
+    "side": "party",
+    "role": "caster",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 4,
+    "kills": 0,
+    "turnMoved": 0,
+    "casts": 8,
+    "used": {
+     "cast:Force + Cut": 8,
+     "mod:Rend": 3,
+     "mod:Bleed": 1,
+     "cast:nothingAffordable": 2,
+     "recoverEnergy": 8
+    }
+   },
+   {
+    "name": "Sim Dummy",
+    "side": "monsters",
+    "role": "dummy",
+    "moved": 0,
+    "attacks": 0,
+    "turns": 0,
+    "kills": 0,
+    "used": {
+     "defend:dodge": 8
+    }
+   }
+  ],
+  "trees": {
+   "L60 Geomancy": {
+    "magic-theory": 5,
+    "magic-protection-arcana": 3,
+    "magic-gravity": 2,
+    "generic-perception": 2,
+    "magic-geomancy": 5,
+    "magic-slashing": 5,
+    "generic-athletics": 3,
+    "generic-endurance": 2,
+    "generic-fortitude": 2,
+    "generic-initiative": 1,
+    "generic-tempo": 2,
+    "generic-resolve": 1,
+    "generic-courage": 1
+   }
+  },
+  "gear": {
+   "L60 Geomancy": [
+    "Unarmed G1",
+    "Light Armor (Hard Leather) G5"
+   ]
+  },
+  "monsterGear": {
+   "Sim Dummy": [
+    "Unarmed"
+   ]
+  },
+  "gearState": {
+   "L60 Geomancy": [
+    "Light Armor (Hard Leather): 60/60"
+   ],
+   "Sim Dummy": []
+  },
+  "roundLog": [
+   {
+    "round": 1,
+    "partyHp": 756,
+    "monsterHp": 18324,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 2,
+    "partyHp": 756,
+    "monsterHp": 17988,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 3,
+    "partyHp": 756,
+    "monsterHp": 17771,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 4,
+    "partyHp": 756,
+    "monsterHp": 17618,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 756,
+    "monsterHp": 17618,
+    "partyDown": 0,
+    "monstersDown": 0
+   },
+   {
+    "round": 5,
+    "partyHp": 756,
+    "monsterHp": 17618,
+    "partyDown": 0,
+    "monstersDown": 0,
+    "end": true
+   }
+  ],
+  "firstAttack": {},
+  "hpLoss": {
+   "dealt": {
+    "L60 Geomancy": 706
+   },
+   "taken": {
+    "Sim Dummy": 706
+   },
+   "unattributed": 0
+  },
+  "painDivisor": 2,
+  "skips": [],
+  "burn": {
+   "party": 0,
+   "monsters": 0
+  },
+  "otherLoss": {
+   "party": 0,
+   "monsters": 706
+  },
+  "lostBy": {
+   "party": 0,
+   "monsters": 706
+  },
+  "directTaken": {
+   "party": 706,
+   "monsters": 0
+  },
+  "creations": {},
+  "log": {
+   "dialogs": {
+    "prompt: L# Geomancy: Alacrity?": 1
+   },
+   "notes": [],
+   "errors": []
+  }
+ }
+]

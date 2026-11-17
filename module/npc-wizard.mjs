@@ -10,7 +10,7 @@ import * as npc from "./npc-creation.mjs";
 import * as mentalRules from "./mental-rules.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, CASTING_FORMS, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile } from "./magic.mjs";
 import * as skills from "./skills.mjs";
-import { ANCESTRIES } from "./abc-rules.mjs";
+import { ANCESTRIES, backgroundsFor, packageFor, choiceSlots, homelandsFor, circlesFor, GLAND_ELEMENTS } from "./abc-rules.mjs";
 import * as best from "./bestiary-rules.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
@@ -52,6 +52,8 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   state = {
     step: 0, name: "", img: creation.DEFAULT_IMG, size: npc.NPC_DEFAULTS.size, disposition: npc.NPC_DEFAULTS.disposition,
     statPoints: npc.NPC_DEFAULTS.statPoints, ratio: npc.NPC_DEFAULTS.ratio, skillManual: false, skillPoints: npc.NPC_DEFAULTS.skillPoints, ancestry: "", bestiaryBg: "", sapience: 3,
+    // A people's Ancestry, Background and Culture (npc-creation.mjs `npcAbc`): the Wasteling tick, Background, focus, choices, Homeland, Circle, gland.
+    wasteling: false, background: "", focus: "", picks: {}, homeland: "", circle: "", element: "",
     grade: npc.NPC_DEFAULTS.grade, ammo: npc.NPC_DEFAULTS.ammo,
     stats: creation.emptyStats(), items: [], trees: {}, skillArch: "martial", openTree: null
   };
@@ -117,8 +119,9 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const sp = b.skillPoints;
     const free = npc.freeTreesOf(st);
     const spentSP = skills.spentPoints(st.trees, free);
-    const ctx = { ancestry: st.ancestry || null };
-    const treeGroups = skills.skillGroups({ ancestry: ctx.ancestry, ancestryName: ANCESTRIES[st.ancestry]?.name ?? "" });
+    const req = npc.npcAbc(st);
+    const ctx = { ancestry: st.ancestry || null, wasteling: !!req?.people && !!st.wasteling };
+    const treeGroups = skills.skillGroups({ ancestry: ctx.ancestry, ancestryName: ANCESTRIES[st.ancestry]?.name ?? "", wasteling: ctx.wasteling });
     const arch = treeGroups.find(a => a.id === st.skillArch) ?? treeGroups[0];
     const available = arch.trees.filter(t => skills.isAvailable(st.trees, t, ctx));
     const treeRows = available.map(t => {
@@ -145,8 +148,9 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       name: st.name, img: st.img, canBrowse: game.user.can?.("FILES_BROWSE") ?? false,
       sizes: Object.fromEntries([1, 2, 3, 4, 5].map(n => [n, `Size ${n}`])), size: st.size,
       dispositions: npc.DISPOSITIONS, disposition: String(st.disposition),
-      ancestries: { "": "None", ...Object.fromEntries(Object.values(ANCESTRIES).filter(a => !a.hidden && !a.bestiary && !a.variant).map(a => [a.id, `${a.name} (Size ${a.size})`])),
-        ...Object.fromEntries(best.bestiaryAncestries().map(a => [a.id, `Bestiary: ${best.bestiaryLabel(a)}`])) }, ancestry: st.ancestry,
+      ancestries: { "": "— Pick an Ancestry —", ...Object.fromEntries(npc.npcAncestries().map(a => [a.id, a.bestiary ? `Bestiary: ${best.bestiaryLabel(a)}` : `${a.name} (Size ${a.size})`])) }, ancestry: st.ancestry,
+      abcNeeds: req ? [req.people ? "Background and Culture (a people: high sapience)" : req.background ? "a Bestiary Background (mid sapience)" : "its Ancestry only (low sapience)"][0] : "",
+      people: req?.people ? this.peopleContext() : null,
       bestiaryBgs: best.isBestiary(st.ancestry) ? Object.fromEntries(best.bestiaryBackgrounds(st.ancestry).map(x => [x.id, `${x.name} (Size ${ANCESTRIES[st.ancestry].sizes?.[x.id] ?? ANCESTRIES[st.ancestry].size}, trees at Tier ${x.setTier})`])) : null,
       bestiaryBg: st.bestiaryBg, bestiaryNote: npc.bestiaryOf(st) ? `Free: ${Object.entries(free).map(([id, t]) => `${skills.treeById(id)?.name ?? id} ${t}`).join(", ")}; its own natural Icon (${npc.bestiaryOf(st).form ?? "none"})` : "",
       sapiences: Object.fromEntries(Object.entries(npc.SAPIENCE).map(([k, v]) => [k, v.label])), sapience: String(st.sapience),
@@ -173,8 +177,11 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const ancestryChanged = "ancestry" in data && data.ancestry !== st.ancestry;
     if (ancestryChanged) {
       const freeBefore = npc.freeTreesOf(st);
-      st.ancestry = ANCESTRIES[data.ancestry] ? data.ancestry : "";
+      st.ancestry = npc.npcAncestries().some(a => a.id === data.ancestry) ? data.ancestry : "";
       if (st.ancestry) st.size = ANCESTRIES[st.ancestry].size;
+      Object.assign(st, { wasteling: false, background: "", focus: "", picks: {}, homeland: "", circle: "", element: "" });
+      // A people is high sapience (3:1).
+      if (npc.npcAbc(st)?.people) { st.sapience = 3; st.ratio = npc.SAPIENCE[3].ratio; }
       for (const id of Object.keys(st.trees)) if (skills.treeById(id)?.archetype === "ancestry" || freeBefore[id]) delete st.trees[id];
       // A Bestiary creature: its Background (Omen by default) sets its Size, its free trees and its starting ratio.
       st.bestiaryBg = best.isBestiary(st.ancestry) ? (best.bestiaryBackgrounds(st.ancestry)[0]?.id ?? "") : "";
@@ -184,6 +191,22 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       for (const id of Object.keys(freeBefore)) delete st.trees[id];
       st.bestiaryBg = String(data.bestiaryBg ?? "");
       this.applyBestiary(false);
+    }
+    // A people's Background, focus, choices, Culture and Wasteling tick (the Background's free trees follow them).
+    if (!ancestryChanged && npc.npcAbc(st)?.people) {
+      const before = npc.freeTreesOf(st);
+      if ("wasteling" in data) {
+        const w = data.wasteling === true || data.wasteling === "on" || data.wasteling === "true";
+        if (w !== !!st.wasteling) { st.wasteling = w; for (const id of Object.keys(st.trees)) if (skills.treeById(id)?.archetype === "ancestry") delete st.trees[id]; }
+      }
+      if ("background" in data && data.background !== st.background) Object.assign(st, { background: String(data.background ?? ""), focus: "", picks: {}, circle: "" });
+      else {
+        if ("focus" in data && data.focus !== st.focus) { st.focus = String(data.focus ?? ""); st.picks = Object.fromEntries(Object.entries(st.picks ?? {}).filter(([k]) => !k.startsWith("focus:"))); }
+        if (data.picks) st.picks = { ...st.picks, ...Object.fromEntries(Object.entries(data.picks).map(([k, v]) => [k, String(v ?? "")])) };
+        if ("circle" in data) st.circle = String(data.circle ?? "");
+      }
+      for (const k of ["homeland", "element"]) if (k in data) st[k] = String(data[k] ?? "");
+      this.syncPeopleFree(before);
     }
     // (A new Ancestry may have set the Sapience itself: the form still holds the old value then.)
     if (!ancestryChanged && "sapience" in data && String(data.sapience) !== String(st.sapience) && npc.SAPIENCE[data.sapience]) { st.sapience = Number(data.sapience); st.ratio = npc.SAPIENCE[data.sapience].ratio; }
@@ -206,6 +229,30 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     }
     // Trees that no longer fit the Skill Points (they were lowered) are trimmed from the top.
     this.render();
+  }
+
+  /** A people's Background, its choices and its Culture, as the Identity step's pickers. */
+  peopleContext() {
+    const st = this.state, pkg = st.background ? packageFor(st.background, st.ancestry) : null;
+    const opt = (list, blank) => ({ "": blank, ...Object.fromEntries(list) });
+    const free = npc.freeTreesOf(st);
+    return {
+      wasteling: !!st.wasteling,
+      backgrounds: opt(backgroundsFor(st.ancestry).map(b => [b.id, b.name]), "— Pick a Background —"), background: st.background,
+      focuses: pkg?.options?.length ? opt(pkg.options.map(o => [o.name, o.name]), "— Pick a focus —") : null, focus: st.focus,
+      slots: pkg ? choiceSlots(pkg, st.focus).map(s => ({ key: s.key, label: s.label, choices: opt(s.choices.map(c => [c.id, c.name]), "— Pick one —"), picked: st.picks?.[s.key] ?? "" })) : [],
+      freeNote: Object.keys(free).length ? `Free with the Background: ${Object.entries(free).map(([id, t]) => `${skills.treeById(id)?.name ?? id} ${t}`).join(", ")}${pkg?.anyPoints || pkg?.ancestryPoints ? ". The points it leaves for the player to place aren't given to an NPC: buy those trees with Skill Points." : ""}` : "",
+      homelands: opt(homelandsFor(st.ancestry).map(h => [h.id, `${h.name}${h.ancestry ? "" : " (Shared)"}`]), "— Pick a Homeland —"), homeland: st.homeland,
+      circles: st.background ? opt(circlesFor(st.background).map(c => [c.id, `${c.name}${c.background ? "" : " (Shared)"}`]), "— Pick a Circle —") : null, circle: st.circle,
+      glands: st.ancestry === "drakenblood" ? opt(Object.entries(GLAND_ELEMENTS), "— Pick an element —") : null, element: st.element
+    };
+  }
+
+  /** A people's free trees after a change to its Background or choices: the old free tiers go (unless raised past them), the new ones come in. */
+  syncPeopleFree(before) {
+    const st = this.state, after = npc.freeTreesOf(st);
+    for (const [id, t] of Object.entries(before)) if (skills.tierOf(st.trees, id) <= t) delete st.trees[id];
+    for (const [id, t] of Object.entries(after)) st.trees[id] = Math.max(skills.tierOf(st.trees, id), t);
   }
 
   /** A Bestiary build onto the state: its Size, its free trees (merged into the trees) and, as it's picked, its Sapience band and ratio. */
@@ -235,7 +282,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   static onTreeUp(event, target) {
     const st = this.state, id = target.dataset.tree, tree = skills.treeById(id);
     const sp = npc.budget(st).skillPoints, next = skills.tierOf(st.trees, id) + 1;
-    if (!tree || next > skills.MAX_TIER || !skills.isAvailable(st.trees, tree, { ancestry: st.ancestry || null })) return;
+    if (!tree || next > skills.MAX_TIER || !skills.isAvailable(st.trees, tree, { ancestry: st.ancestry || null, wasteling: !!npc.npcAbc(st)?.people && !!st.wasteling })) return;
     const free = npc.freeTreesOf(st);
     if (skills.spentPoints(st.trees, free) + next > sp) return ui.notifications.warn(`Tier ${next} costs ${next} Skill Points; ${sp - skills.spentPoints(st.trees, free)} are left.`);
     st.trees[id] = next;
@@ -245,7 +292,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const st = this.state, id = target.dataset.tree, tier = skills.tierOf(st.trees, id);
     if (tier < 1 || tier <= skills.tierOf(npc.freeTreesOf(st), id)) return;
     if (tier === 1) delete st.trees[id]; else st.trees[id] = tier - 1;
-    if (creation.validateTrees(st.trees, Infinity, { ancestry: st.ancestry || null }).length) { st.trees[id] = tier; return ui.notifications.warn("Lower the trees this Theory tier opens first."); }
+    if (creation.validateTrees(st.trees, Infinity, { ancestry: st.ancestry || null, wasteling: !!npc.npcAbc(st)?.people && !!st.wasteling }).length) { st.trees[id] = tier; return ui.notifications.warn("Lower the trees this Theory tier opens first."); }
     this.render();
   }
   static onTreeToggle(event, target) { this.state.openTree = this.state.openTree === target.dataset.tree ? null : target.dataset.tree; this.render(); }

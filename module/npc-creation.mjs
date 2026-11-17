@@ -1,13 +1,19 @@
 /**
  * NPC creation rules for the GM's NPC wizard: the GM sets the stat points, Skill Points and their ratio, picks any gear (any rarity and grade),
  * and gets an unlinked NPC. Pure functions (no Foundry globals) so they're unit-tested; the wizard and the final check use the same logic.
+ *
+ * Every NPC has an Ancestry (`npcAbc`): a Bestiary creature, or one of the ABCs' peoples (they're moving into the Bestiary). What else it needs
+ * follows its sapience (ABC Rules): a people (high) picks a Background and a Culture (Homeland and Circle), and gets the Background's free trees
+ * (the points a Background can't place aren't given: an NPC buys those trees with its Skill Points); a Bestiary creature with Backgrounds (mid)
+ * picks one (its build); one with none (low) has its Ancestry only.
  */
 import { STATS, deriveCharacter } from "./rules.mjs";
 import { WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_MATERIALS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES } from "./magic.mjs";
 import { FORMS } from "./mental-rules.mjs";
 import * as creation from "./creation.mjs";
-import { bestiaryBuild, isBestiary as ANCESTRY_IS_BESTIARY } from "./bestiary-rules.mjs";
+import { bestiaryBuild, bestiaryBackgrounds, isBestiary as ANCESTRY_IS_BESTIARY } from "./bestiary-rules.mjs";
+import { ANCESTRIES, BACKGROUNDS, backgroundsFor, homelandsFor, circlesFor, freeTreesFor, GLAND_ELEMENTS } from "./abc-rules.mjs";
 import { wonderById } from "./mental-rules.mjs";
 
 export const NPC_DEFAULTS = { statPoints: 90, ratio: 3, skillManual: false, skillPoints: 30, grade: 1, size: 3, disposition: -1, ammo: creation.STARTING_AMMO };
@@ -24,8 +30,44 @@ const int = v => Math.trunc(Number(v) || 0);
  * (bestiary-rules.mjs `bestiaryBuild`). Null for any other NPC.
  */
 export const bestiaryOf = choice => (choice?.ancestry ? bestiaryBuild(choice.ancestry, choice.bestiaryBg || "omen") : null);
-/** The trees an NPC starts with for free (a Bestiary creature's), and its trees with them. */
-export const freeTreesOf = choice => bestiaryOf(choice)?.free ?? {};
+
+/** The Ancestries an NPC can have: the Bestiary's creatures, then the ABCs' peoples (the Wasteling is a tick on a people). */
+export const npcAncestries = () => [...Object.values(ANCESTRIES).filter(a => a.bestiary && !a.hidden), ...Object.values(ANCESTRIES).filter(a => !a.bestiary && !a.hidden && !a.variant)];
+/**
+ * What an NPC's Ancestry asks for: { people, band (3 high, 2 mid, 1 low), background, culture }. A people is high sapience (Background and Culture);
+ * a Bestiary creature is mid when it has Backgrounds (its build's band) and low when it has none (its Ancestry only).
+ */
+export function npcAbc(choice) {
+  const a = ANCESTRIES[choice?.ancestry];
+  if (!a) return null;
+  if (!a.bestiary) return { people: true, band: 3, background: true, culture: true };
+  const bgs = bestiaryBackgrounds(a.id);
+  return { people: false, band: bgs.length ? Number(bestiaryOf(choice)?.sapience) || 2 : 1, background: bgs.length > 0, culture: false };
+}
+/** A people's ABC choice (abc-rules shape) from the wizard's state. */
+const peopleAbc = choice => ({ ancestry: choice.ancestry, wasteling: !!choice.wasteling, background: choice.background || "", focus: choice.focus || "", picks: choice.picks ?? {}, alloc: {},
+  homeland: choice.homeland || "", circle: choice.circle || "", element: choice.element || "" });
+/** A people's Background: its free trees and the problems with its choices (the unplaced points aren't owed by an NPC). */
+export function peopleBackground(choice) {
+  if (!npcAbc(choice)?.people || !BACKGROUNDS[choice.background]) return { trees: {}, errors: [] };
+  const r = freeTreesFor(peopleAbc(choice));
+  return { trees: r.trees, errors: r.errors.filter(e => !/^Spend \d+ points/.test(e)) };
+}
+/** The trees an NPC starts with for free (a Bestiary creature's, or a people's Background's), and its trees with them. */
+export const freeTreesOf = choice => (npcAbc(choice)?.people ? peopleBackground(choice).trees : bestiaryOf(choice)?.free ?? {});
+/** The problems with an NPC's Ancestry, Background and Culture. */
+export function abcErrors(choice) {
+  const req = npcAbc(choice), errors = [];
+  if (!req) return ["Pick the NPC's Ancestry."];
+  if (req.people) {
+    if (!backgroundsFor(choice.ancestry).some(b => b.id === choice.background)) errors.push("Pick the NPC's Background.");
+    else errors.push(...peopleBackground(choice).errors);
+    if (!homelandsFor(choice.ancestry).some(h => h.id === choice.homeland)) errors.push("Pick the NPC's Homeland.");
+    if (!circlesFor(choice.background).some(c => c.id === choice.circle)) errors.push("Pick the NPC's Circle.");
+    if (choice.ancestry === "drakenblood" && !GLAND_ELEMENTS[choice.element]) errors.push("Pick the NPC's Elemental Gland element.");
+  } else if (req.background && !bestiaryOf(choice)) errors.push("Pick the creature's Bestiary Background (Omen or Herald).");
+  return errors;
+}
 const withFree = (trees, free) => { const out = { ...(trees ?? {}) }; for (const [id, t] of Object.entries(free)) out[id] = Math.max(Number(out[id]) || 0, t); return out; };
 
 /** Skill Points from stat points at a ratio (stat points per Skill Point), rounded down. */
@@ -115,10 +157,10 @@ export function validate(choice) {
   if (ready("shroud") > 1) errors.push("Only one Shroud can be attuned at a time.");
   if (ready("icon") > 1) errors.push("Only one Icon can be attuned at a time.");
   const best = bestiaryOf(choice);
-  if (choice.ancestry && !best && ANCESTRY_IS_BESTIARY(choice.ancestry)) errors.push("Pick the creature's Bestiary Background (Omen or Herald).");
+  errors.push(...abcErrors(choice));
   if (best?.form && ready("icon") > 0) errors.push("A Wonderborn is its own Icon: untick Ready on the Icon (or remove it).");
   if (ready("weapon") > 2) errors.push("At most two weapons can be ready (two hands).");
-  errors.push(...creation.validateTrees(choice.trees, b.skillPoints, { ancestry: choice.ancestry || null, free: freeTreesOf(choice) }));
+  errors.push(...creation.validateTrees(choice.trees, b.skillPoints, { ancestry: choice.ancestry || null, wasteling: !!choice.wasteling && !ANCESTRY_IS_BESTIARY(choice.ancestry), free: freeTreesOf(choice) }));
   return errors;
 }
 
@@ -171,7 +213,8 @@ export function buildNpcData(choice) {
     prototypeToken: { name, actorLink: false, disposition: int(choice.disposition), texture: { src: img }, width: sq, height: sq },
     system: { stats: { ...creation.emptyStats(), ...choice.stats }, skillPoints: b.skillPoints, unspentStats: Math.max(0, b.remaining), statCarry: 0, creation: false, size,
       trees: creation.cleanTrees(withFree(choice.trees, free)), freeTrees: free,
-      abc: choice.ancestry ? { ancestry: String(choice.ancestry), ...(best ? { background: best.background } : {}) } : {}, details: { sapience: String(choice.sapience ?? 3) } },
+      abc: npcAbc(choice)?.people ? creation.cleanAbc(peopleAbc(choice)) : choice.ancestry ? { ancestry: String(choice.ancestry), ...(best ? { background: best.background } : {}) } : {},
+      details: { sapience: String(choice.sapience ?? 3) } },
     items: [...npcItems(choice.items ?? [], choice), ...(icon ? [icon] : [])],
     // A Wonderborn's Patron is always its own Wonder (its Domain).
     flags: { flowstate: { npcWizard: true, ...(best?.wonder ? { patron: best.wonder } : {}) } }

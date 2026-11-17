@@ -33,6 +33,27 @@ NpcWizard.onEvenStats.call(w); check(Object.values(w.state.stats).reduce((a, b) 
 change({ "stats.str": 200 }); v = await view(); check(v.ctx.overspent && v.ctx.errors.some(e => /stat points are spent/.test(e)), "overspending is an error");
 NpcWizard.onEvenStats.call(w);
 
+console.log("== Ancestry, Background and Culture");
+v = await view(); check(v.ctx.errors.includes("Pick the NPC's Ancestry."), "An NPC needs an Ancestry");
+check(npc.npcAncestries()[0].bestiary && npc.npcAncestries().some(a => a.id === "human") && !npc.npcAncestries().some(a => a.variant), "The list: the Bestiary's creatures, then the peoples (the Wasteling is a tick)");
+change({ ancestry: "human" }); v = await view();
+check(v.ctx.people && ["Pick the NPC's Background.", "Pick the NPC's Homeland.", "Pick the NPC's Circle."].every(e => v.ctx.errors.includes(e)), "A people (high sapience) needs a Background and a Culture");
+change({ background: "recruit" }); v = await view();
+check(v.ctx.people.slots.length === 1 && v.ctx.errors.some(e => /isn't picked/.test(e)), "...the Background's choices are pickers");
+change({ "picks.1": "martial-bladed-weapons" }); v = await view();
+check(w.state.trees["martial-bladed-weapons"] === 3 && w.state.trees["martial-theory"] === 2 && !v.ctx.errors.some(e => /picked/.test(e)), "...and its free trees come in (Bladed 3, Martial Theory 2)");
+change({ background: "explorer" }); v = await view();
+check(!w.state.trees["martial-bladed-weapons"] && w.state.trees["generic-perception"] === 3, "A new Background swaps its free trees");
+const home = Object.keys(v.ctx.people.homelands).find(Boolean), circ = Object.keys(v.ctx.people.circles).find(Boolean);
+change({ homeland: home, circle: circ }); v = await view();
+check(!v.ctx.errors.some(e => /Ancestry|Background|Homeland|Circle/.test(e)), "With a Homeland and a Circle, the ABCs are complete");
+const life = npc.npcAncestries().find(a => a.bestiary);
+check(npc.npcAbc({ ancestry: life.id }).background && !npc.npcAbc({ ancestry: life.id }).culture, `A Bestiary creature with Backgrounds (${life.name}) needs one, but no Culture (mid sapience)`);
+check(JSON.stringify(npc.buildNpcData({ ...w.state, name: "X" }).system.abc).includes('"background":"explorer"') && npc.buildNpcData({ ...w.state, name: "X" }).system.freeTrees["generic-perception"] === 3, "The NPC keeps its ABCs and free trees");
+
+check(w.state.ratio === 3, "A people starts at the high sapience ratio (3:1)");
+change({ ratio: 4 });                                            // (back to the budget the gear checks below were written for)
+
 console.log("== gear: any rarity, grade, ready");
 change({ name: "Warlord", size: 4 });
 add("weapon"); add("weapon"); add("weapon"); add("armor"); add("armor"); add("gear");

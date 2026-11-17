@@ -62,6 +62,15 @@ class FlowStateTokenDocument extends TokenDocument {
 }
 
 class FlowStateActor extends Actor {
+  /**
+   * Foundry's Create Actor dialog doesn't offer NPCs: every NPC is made with the NPC wizard, which gives it an Ancestry (and a Background and Culture
+   * when its sapience calls for them). Shops and piles are created here as before; system-made NPCs (Summons, Omens...) don't come through this dialog.
+   */
+  static async createDialog(data = {}, createOptions = {}, options = {}, renderOptions = {}) {
+    if (data?.type === "npc") { NpcWizard.open(); return null; }
+    const types = (options?.types ?? this.TYPES).filter(t => t !== "npc" && t !== "base");
+    return super.createDialog(data, createOptions, { ...options, types }, renderOptions);
+  }
   /** Editing the Energy bar edits your own Energy: a drop takes the bonus pool first, a rise stops at the maximum. */
   async modifyTokenAttribute(attribute, value, isDelta = false, isBar = true) {
     const e = this.system?.energy, bonus = e?.bonus ?? 0;

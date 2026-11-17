@@ -21,6 +21,17 @@
           </span>
         </label>
         <label>Ancestry <select name="ancestry">{{selectOptions ancestries selected=ancestry}}</select></label>
+        {{#if abcNeeds}}<p class="hint">Needs {{abcNeeds}}.</p>{{else}}<p class="hint">Every NPC has an Ancestry: a Bestiary creature, or one of the peoples.</p>{{/if}}
+        {{#if people}}
+        <label><input type="checkbox" name="wasteling" {{checked people.wasteling}}> Wasteling <small>(the Wasteling core replaces its core)</small></label>
+        {{#if people.glands}}<label>Elemental Gland <select name="element">{{selectOptions people.glands selected=people.element}}</select></label>{{/if}}
+        <label>Background <select name="background">{{selectOptions people.backgrounds selected=people.background}}</select></label>
+        {{#if people.focuses}}<label>Focus <select name="focus">{{selectOptions people.focuses selected=people.focus}}</select></label>{{/if}}
+        {{#each people.slots}}<label>{{label}} <select name="picks.{{key}}">{{selectOptions choices selected=picked}}</select></label>{{/each}}
+        {{#if people.freeNote}}<p class="hint">{{people.freeNote}}</p>{{/if}}
+        <label>Homeland <select name="homeland">{{selectOptions people.homelands selected=people.homeland}}</select></label>
+        {{#if people.circles}}<label>Circle <select name="circle">{{selectOptions people.circles selected=people.circle}}</select></label>{{/if}}
+        {{/if}}
         {{#if bestiaryBgs}}<label>Bestiary Background <select name="bestiaryBg" data-tooltip="Omen or Herald: sets its Size and the tier of its Ancestry's trees (free, not counting as Skill Points)">{{selectOptions bestiaryBgs selected=bestiaryBg}}</select></label>
         <p class="hint">{{bestiaryNote}}</p>{{/if}}
         <label>Sapience <select name="sapience" data-tooltip="Sets the starting ratio of stat points to Skill Points (3:1, 5:1, 10:1)">{{selectOptions sapiences selected=sapience}}</select></label>

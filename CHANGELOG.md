@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.102.0:** NPCs need an Ancestry. The NPC wizard lists the Bestiary's creatures and (until they move into the Bestiary) the peoples; a people also needs a Background (its choices give its free trees) and a Culture, a Bestiary creature with Backgrounds needs one, and one without needs only its Ancestry. Foundry's Create Actor dialog no longer offers NPCs: they're made with the NPC wizard (shops, piles and characters as before).
+
 **0.101.0:** The ABCs doc's Background rework: most Backgrounds now start with fewer, deeper trees (the Recruit, Novice, Hunter, Trader's Apprentice, Laborer, Urchin, Explorer and the rest); three new Backgrounds: **Hill Warden** (Halfling, Wildibit), **Waste Scavenger** (Drakenblood) and **Escaped Subject** (Smoblin). Every Ancestry has a usual height and weight: the New Character wizard's Notes step shows them beside the Height and (new) Weight fields, with a Random button for each that picks a value in the range (you can still type your own).
 
 **0.100.2:** Ignition (Heat T2), from the Magic doc: when it triggers the Ignite on a target that already had some, the target then loses all of its Ignite stacks (a Searing Stain too), so a Multicast chain no longer triggers an ever-growing pile.

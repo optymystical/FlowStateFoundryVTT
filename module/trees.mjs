@@ -8410,11 +8410,11 @@ export const TREES = [
      },
      {
       "name": "Ancestry",
-      "text": "Your Ancestry is the people you are born to. Each Ancestry is a group, with a core tree shared by the wider kind it belongs to (all Wuson-descended peoples share the Wusonian core) and one or more meat trees unique to it, or shared with closely related Ancestries. You start with the Tier 0 of your Ancestry’s core, and buy its other tiers as normal."
+      "text": "Your Ancestry is the people you are born to. Each Ancestry has a core tree shared by the wider kind it belongs to (all Wuson-descended peoples share the Wusonian core), usually a lineage tree shared by its line (such as Commonkin for the Human line), and one or more meat trees unique to it, or shared with closely related Ancestries. None of these trees require another. You start with the Tier 0 of each of your Ancestry’s trees, and buy their other tiers as normal."
      },
      {
       "name": "Background",
-      "text": "Your Background is how you were raised and what you did before the story began. It grants 15 free points of starting skill trees at normal tier costs, including any Theory or core tiers those trees require. Free points unlock trees and count toward their requirements, but toward nothing else: not dice, not the Stat Bonus, and not Energy. Any points a Background cannot place go into your Ancestry’s trees instead. Some Backgrounds are shared across several Ancestries, with small differences for each."
+      "text": "Your Background is how you were raised and what you did before the story began. It grants 15 free points of starting skill trees at normal tier costs, including any Theory tiers those trees require. Free points unlock trees and count toward their requirements, but toward nothing else: not dice, not the Stat Bonus, and not Energy. Any points a Background cannot place go into your Ancestry’s trees instead. Some Backgrounds are shared across several Ancestries, with small differences for each."
      },
      {
       "name": "Culture",
@@ -8529,21 +8529,27 @@ export const TREES = [
   ],
   "ancestries": [
    "human",
+   "namuh",
    "dwarf",
+   "sworan",
    "halfling",
    "elf",
+   "myrthel",
    "dusken",
+   "dawn-elf",
    "drakenblood",
    "orc",
    "fire-walker",
-   "goblin"
-  ]
+   "goblin",
+   "smoblin"
+  ],
+  "note": "- Size: Wuson-descended peoples are Size 3, unless their Ancestry says otherwise."
  },
  {
   "id": "ancestry-commonkin",
   "name": "Commonkin",
   "archetype": "ancestry",
-  "requires": 1,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -8603,26 +8609,25 @@ export const TREES = [
   ],
   "ancestries": [
    "human",
+   "namuh",
    "dwarf",
    "halfling",
    "elf",
+   "myrthel",
    "dusken",
+   "dawn-elf",
    "drakenblood"
   ],
-  "requiresTree": {
-   "id": "ancestry-wusonian",
-   "tier": 1
-  },
-  "lineage": true,
-  "note": "Requires Wusonian 1. Lineage tree of the Human line: Human, Dwarf, Halfling, Elf, Dusken, and Drakenblood.",
+  "note": "Lineage tree of the Human line: Human, Namuh, Dwarf, Halfling, Elf, Myrthel, Dusken, Dawn Elf, and Drakenblood.",
   "core": false,
+  "lineage": true,
   "coreId": "ancestry-wusonian"
  },
  {
   "id": "ancestry-bestial",
   "name": "Bestial",
   "archetype": "ancestry",
-  "requires": 1,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -8683,15 +8688,13 @@ export const TREES = [
   "ancestries": [
    "orc",
    "fire-walker",
-   "goblin"
+   "minotaur",
+   "goblin",
+   "smoblin"
   ],
-  "requiresTree": {
-   "id": "ancestry-wusonian",
-   "tier": 1
-  },
-  "lineage": true,
-  "note": "Requires Wusonian 1. Lineage tree of the Orc line: Orc, Fire Walker, and Goblin.",
+  "note": "Lineage tree of the Orc line: Orc, Fire Walker, Minotaur, Goblin, and Smoblin.",
   "core": false,
+  "lineage": true,
   "coreId": "ancestry-wusonian"
  },
  {
@@ -8758,17 +8761,415 @@ export const TREES = [
   ],
   "ancestries": [
    "halfling",
-   "goblin"
+   "wildibit",
+   "noctua",
+   "goblin",
+   "smoblin"
   ],
-  "note": "Halfling or Goblin only. Shared ancestry tree of the Size 2 peoples, available without a lineage requirement.",
+  "note": "Halfling, Wildibit, Noctua, Goblin, or Smoblin only. Shared ancestry tree of the Size 2 peoples.",
   "core": false,
   "coreId": "ancestry-wusonian"
+ },
+ {
+  "id": "ancestry-lakeborn",
+  "name": "Lakeborn",
+  "archetype": "ancestry",
+  "core": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Size",
+      "text": "Lakeborn keep the Size of the kind they were before the change, unless their Ancestry says otherwise."
+     },
+     {
+      "name": "Body",
+      "text": "The lake turns each kind of creature into the same new form every time, as its Ancestry describes."
+     },
+     {
+      "name": "Changed Once",
+      "text": "The change is permanent and happens only once. Drinking from or bathing in the lake again does nothing, and Lakeborn breed true."
+     },
+     {
+      "name": "Regeneration",
+      "text": "Heals naturally through rest (see Rest in Flow State - Generic Groups), but cannot regrow lost Max HP or limbs."
+     },
+     {
+      "name": "Needs",
+      "text": "Breathes air (see Swimming in Flow State - Generic Groups), and needs food, water, and sleep, unless its Ancestry says otherwise."
+     },
+     {
+      "name": "Senses",
+      "text": "Sight (Primary), Hearing (Primary), and Smell (Secondary) (see Senses in Flow State - Generic Groups), unless its Ancestry says otherwise."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Lake-Kin",
+      "text": "Low-sapience Lakeborn creatures treat you as one of their own, and do not attack you unless you or your allies harm them first (GM’s call)."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Freshwater Born",
+      "text": "You swim at your full movement speed and can hold your breath twice as long (see Swimming in Flow State - Generic Groups)."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Lake Surge",
+      "text": "Once per combat, you can spend 2 AP to let the lake’s change surge through you. Until the start of your next turn, Stage 1 movement slows do not affect you, and you have Advantage on checks to resist being grappled, moved, or knocked Prone."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Set in Flesh",
+      "text": "You have Advantage on checks to resist effects that would change your body or form against your will."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Endless Tide",
+      "text": "Lake Surge can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "minotaur"
+  ],
+  "note": "Core tree of every creature changed by the Firelands lake."
+ },
+ {
+  "id": "ancestry-strigid",
+  "name": "Strigid",
+  "archetype": "ancestry",
+  "core": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Size",
+      "text": "Strigids are Size 1, unless their Ancestry says otherwise."
+     },
+     {
+      "name": "Body",
+      "text": "Feathered, with two wings and two taloned legs."
+     },
+     {
+      "name": "Wings",
+      "text": "Your wings give you Lift equal to your Current Gravity Force, letting you fly at your full movement speed (see Flight in Flow State - Rules). Your ground movement speed is halved."
+     },
+     {
+      "name": "Regeneration",
+      "text": "Heals naturally through rest (see Rest in Flow State - Generic Groups), but cannot regrow lost Max HP or limbs."
+     },
+     {
+      "name": "Needs",
+      "text": "Breathes air (see Swimming in Flow State - Generic Groups), and needs food, water, and sleep. Carnivorous."
+     },
+     {
+      "name": "Senses",
+      "text": "Sight (Primary) and Hearing (Heightened) (see Senses in Flow State - Generic Groups)."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Night Eyes",
+      "text": "Darkness only lightly obscures your Sight instead of heavily."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Silent Wings",
+      "text": "Your flight makes no sound, and you have Advantage on stealth checks while flying."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Swoop",
+      "text": "Once per combat, when you make a melee attack after flying at least 20ft toward the target this turn, that attack is Strengthened."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Turning Gaze",
+      "text": "You have Advantage on perception checks to Spot creatures, and you cannot be Surprised by creatures you can hear."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Death From Above",
+      "text": "Swoop can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "noctua"
+  ],
+  "note": "Core tree of every owl, and of the peoples descended from them."
+ },
+ {
+  "id": "ancestry-leporid",
+  "name": "Leporid",
+  "archetype": "ancestry",
+  "core": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Size",
+      "text": "Leporids are Size 1, unless their Ancestry says otherwise."
+     },
+     {
+      "name": "Body",
+      "text": "Furred, with long ears and powerful hind legs built for bounding."
+     },
+     {
+      "name": "Bounding",
+      "text": "Your movement speed and your Size’s maximum movement speed are doubled."
+     },
+     {
+      "name": "Regeneration",
+      "text": "Heals naturally through rest (see Rest in Flow State - Generic Groups), but cannot regrow lost Max HP or limbs."
+     },
+     {
+      "name": "Needs",
+      "text": "Breathes air (see Swimming in Flow State - Generic Groups), and needs food, water, and sleep. Herbivorous."
+     },
+     {
+      "name": "Senses",
+      "text": "Sight (Primary), Hearing (Heightened), and Smell (Primary) (see Senses in Flow State - Generic Groups)."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Long Leap",
+      "text": "Your jumps cover twice the normal distance."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Twitching Ears",
+      "text": "You have Advantage on perception checks that rely on Hearing."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Hind Kick",
+      "text": "Once per combat, when you make an Unarmed attack, you can kick with your hind legs instead. The attack is Strengthened and imparts Force as though it had the Knockback tag."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Warning Thump",
+      "text": "When combat starts, you can thump the ground. Allies within 100ft who can hear you cannot be Surprised."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Powerful Legs",
+      "text": "Hind Kick can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wildibit"
+  ],
+  "note": "Core tree of every rabbit and hare, and of the peoples descended from them."
+ },
+ {
+  "id": "ancestry-wasteling",
+  "name": "Wasteling",
+  "archetype": "ancestry",
+  "core": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Size, Body, and Senses",
+      "text": "As your original Ancestry’s core."
+     },
+     {
+      "name": "Undying Decay",
+      "text": "You cannot die of age, disease, or other natural causes. You heal naturally through rest (see Rest in Flow State - Generic Groups), but cannot regrow lost Max HP or limbs."
+     },
+     {
+      "name": "Needs",
+      "text": "Breathes air (see Swimming in Flow State - Generic Groups), and needs food, water, and sleep."
+     },
+     {
+      "name": "Curse-Proof",
+      "text": "You are immune to diseases and curses. The curse of the Wastes that made you is not affected: it was changed by a Rift and is no longer magical, so it cannot be removed except by Stage 3 or higher powers."
+     },
+     {
+      "name": "Fading Mind",
+      "text": "The curse keeps eating at you. Somewhere between 20 and 40 years after your change, you turn feral (GM’s call). This is for roleplay and has no effect in play."
+     },
+     {
+      "name": "Unwelcome",
+      "text": "You have Disadvantage on persuasion checks against creatures that can see you and are not Wastelings."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Acid-Worn",
+      "text": "Acid damage you take gets one Weakened stack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Born of Blight",
+      "text": "You do not lose health to Hazards in blighted or cursed land, such as the Dragon Wastes, and you need only a quarter as much food and water."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Rotting Touch",
+      "text": "Once per combat, when you hit with a melee attack, you can spend 1 RP to make its damage Acid damage with one Strengthened stack."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Numb Flesh",
+      "text": "When you fall below your Pain Threshold, you do not fall unconscious until the end of your next turn."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Spreading Rot",
+      "text": "Rotting Touch can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [],
+  "note": "Core tree of every Wasteling. It replaces the core tree of your original Ancestry.",
+  "replacesCore": true
  },
  {
   "id": "ancestry-human-tree",
   "name": "Human",
   "archetype": "ancestry",
-  "requires": 2,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -8829,19 +9230,93 @@ export const TREES = [
   "ancestries": [
    "human"
   ],
-  "requiresTree": {
-   "id": "ancestry-commonkin",
-   "tier": 2
-  },
-  "note": "Requires Commonkin 2.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
+ },
+ {
+  "id": "ancestry-namuh-tree",
+  "name": "Namuh",
+  "archetype": "ancestry",
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rule:",
+    "entries": [
+     {
+      "name": "Unstable Regeneration",
+      "text": "This replaces the Wusonian Regeneration rule. Your healing from rest is halved, rounded down. In exchange, whenever you complete an 8 hour rest at full HP, you restore lost Max HP, including lost limbs, equal to the HP that rest would have restored."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Stabilized",
+      "text": "Unstable Regeneration no longer halves your healing from rest."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Sealed Wounds",
+      "text": "Whenever you would lose Max HP, you lose half as much, rounded down."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Accelerated Healing",
+      "text": "Once per turn, you can spend 2 AP and Energy equal to your total skill points to regain HP equal to what an 8 hour rest would restore you, up to the HP you have lost since the start of your last turn."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Rapid Regrowth",
+      "text": "Unstable Regeneration now also works when you rest below full HP. After that rest’s healing, it restores lost Max HP equal to the same amount."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Perfect Body",
+      "text": "Accelerated Healing no longer costs Energy."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "namuh"
+  ],
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-dwarf-tree",
   "name": "Dwarf",
   "archetype": "ancestry",
-  "requires": 2,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -8902,19 +9377,101 @@ export const TREES = [
   "ancestries": [
    "dwarf"
   ],
-  "requiresTree": {
-   "id": "ancestry-commonkin",
-   "tier": 2
-  },
-  "note": "Requires Commonkin 2.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
+ },
+ {
+  "id": "ancestry-sworan-tree",
+  "name": "Sworan",
+  "archetype": "ancestry",
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Body-Speech",
+      "text": "Your vocal cords are primitive and cannot form the sounds of other languages. You speak Sworan, a language of clicks, knocks, and guttural noises made with your whole body. You understand other languages as normal, and can still use hand-sign, writing, or gesture."
+     },
+     {
+      "name": "Living Metal Arm",
+      "text": "Your dominant arm is living metal, with no hand. Over 1 minute, you can reshape it into any Foci, any Icon Form, a Weapon of any type and weight, or back into a plain arm. As a Foci or Icon, it counts as Attuned for as long as it holds that shape. As a Weapon, it must be made of a material you have absorbed, starting with Iron. To absorb a Common Weapon material, spend an 8 hour rest merging an item made of it (or enough of the raw material for one) into your arm. The item is used up, but you can use that material from then on without it. As a Weapon it uses its material’s Durability and Limit, and a Heavy-only material uses half of them as a Light Weapon. Its grade is always high enough for all of your Scaling Stat to count, and you cannot be disarmed of it."
+     },
+     {
+      "name": "Deep-Dweller",
+      "text": "Hearing is Heightened for you instead of Primary, and darkness only lightly obscures your Sight instead of heavily."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Mimicry",
+      "text": "Once per round, you can spend 1 AP to mimic a sound you have heard in the past day, such as a voice saying something it said, an animal call, footsteps, or a mechanism. Creatures that hear it take it for the real thing unless they succeed on a perception check of at least your total skill points."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Deepforged",
+      "text": "You can now absorb Uncommon Weapon materials into your Living Metal Arm."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Stone Skin",
+      "text": "Physical damage you take from each attack is reduced by your Constitution Min."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Coreforged",
+      "text": "You can now absorb Rare Weapon materials into your Living Metal Arm."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Quick Reshape",
+      "text": "Once per round, you can spend 1 AP to reshape your Living Metal Arm instead of taking a minute."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "sworan"
+  ],
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-halfling-tree",
   "name": "Halfling",
   "archetype": "ancestry",
-  "requires": 2,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -8975,19 +9532,93 @@ export const TREES = [
   "ancestries": [
    "halfling"
   ],
-  "requiresTree": {
-   "id": "ancestry-commonkin",
-   "tier": 2
-  },
-  "note": "Requires Commonkin 2.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
+ },
+ {
+  "id": "ancestry-wildibit-tree",
+  "name": "Wildibit",
+  "archetype": "ancestry",
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rule:",
+    "entries": [
+     {
+      "name": "Paws",
+      "text": "Your small hands can hold and use Equipment, but you cannot two-hand a Weapon."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Burrower",
+      "text": "You can dig through soil and loose earth at half your movement speed. You can also spend 10 minutes digging a burrow big enough for your group, and you all have Advantage on stealth checks while resting in it."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Skittish",
+      "text": "You have Advantage on your dodge roll against the first attack made against you each round."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Zig-Zag",
+      "text": "Once per combat, after you move at least 20ft in a turn, you can spend 1 RP. Until the start of your next turn, ranged attacks against you have Disadvantage."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Warren Instinct",
+      "text": "While an ally is within 10ft of you, you have Advantage on checks to resist Fear."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Untouchable",
+      "text": "Zig-Zag can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wildibit"
+  ],
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-elf-tree",
   "name": "Elf",
   "archetype": "ancestry",
-  "requires": 3,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -9048,20 +9679,109 @@ export const TREES = [
   "ancestries": [
    "elf"
   ],
-  "requiresTree": {
-   "id": "ancestry-commonkin",
-   "tier": 3
-  },
-  "note": "Requires Commonkin 3.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
+ },
+ {
+  "id": "ancestry-myrthel-tree",
+  "name": "Myrthel",
+  "archetype": "ancestry",
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Glass Body",
+      "text": "Physical damage you take is Strengthened."
+     },
+     {
+      "name": "Steeped in Magic",
+      "text": "Your Spells gain 1 TR."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Shy of Pain",
+      "text": "While you are above your Pain Threshold, each of your dodge dice against physical attacks gains +1 die size for every 10 total skill points you have."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Treasured",
+      "text": "In Elven settlements, you can always find shelter, care, and someone willing to protect you (GM’s call). In addition, you have Advantage on persuasion checks against Elves."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Blood Price",
+      "text": "Once per round, when you cast a Spell, you can lose HP equal to your total skill points to give it +100% Power."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Hardened Glass",
+      "text": "Shy of Pain now gives +2 die size for every 10 total skill points instead of +1."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Overflowing Blood",
+      "text": "Blood Price can now be used once per Spell you cast instead of once per round."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "myrthel"
+  ],
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-dusken-shadow",
   "name": "Dusken Shadow",
   "archetype": "ancestry",
-  "requires": 3,
+  "requires": 0,
   "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rule:",
+    "entries": [
+     {
+      "name": "Loose Tether",
+      "text": "Your spirit is only loosely bound to your body. This has no effect on its own, but it is what the Dusken Shadow and Dusken Spirit trees build on."
+     }
+    ]
+   },
    {
     "tier": 1,
     "free": false,
@@ -9121,19 +9841,14 @@ export const TREES = [
   "ancestries": [
    "dusken"
   ],
-  "requiresTree": {
-   "id": "ancestry-commonkin",
-   "tier": 3
-  },
-  "note": "Requires Commonkin 3.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-dusken-spirit",
   "name": "Dusken Spirit",
   "archetype": "ancestry",
-  "requires": 2,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -9194,20 +9909,105 @@ export const TREES = [
   "ancestries": [
    "dusken"
   ],
-  "requiresTree": {
-   "id": "ancestry-commonkin",
-   "tier": 2
-  },
-  "note": "Requires Commonkin 2.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
+ },
+ {
+  "id": "ancestry-dawn-elf-tree",
+  "name": "Dawn Elf",
+  "archetype": "ancestry",
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rule:",
+    "entries": [
+     {
+      "name": "Fused Shadow",
+      "text": "Your shadow, your spirit, is fused to your body and constantly fights it. You can never separate your spirit from your body, and Arcane damage you take is Strengthened."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Night Watch",
+      "text": "Your shadow never rests. You cannot be Surprised while resting, and you wake instantly when something approaches."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Shadow-Touched",
+      "text": "You gain Spirit Sense (see Grasp Arcana) as a Secondary sense. If you already have it, it counts as one level higher."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Lashing Shadow",
+      "text": "Once per round, when a creature within your melee range hits you, you can spend 1 RP to have your shadow lash out at it, dealing Arcane damage equal to your Build Min."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Uneasy Truce",
+      "text": "Arcane damage you take is no longer Strengthened by Fused Shadow."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Shadow Unleashed",
+      "text": "Lashing Shadow can now be used once per turn instead of once per round, against any creature within 30ft that hits you."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "dawn-elf"
+  ],
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-draken-elements",
   "name": "Draken Elements",
   "archetype": "ancestry",
-  "requires": 2,
+  "requires": 0,
   "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rule:",
+    "entries": [
+     {
+      "name": "Elemental Gland",
+      "text": "When you create a Drakenblood character, choose your gland’s element: Heat, Cold, Acid, or Radiation. You can make Light or Heavy unarmed attacks with your breath instead of your body; these are natural attacks with a range of 15ft that deal your gland’s element instead of Physical damage. The rest of this tree builds on this gland."
+     }
+    ]
+   },
    {
     "tier": 1,
     "free": false,
@@ -9267,19 +10067,14 @@ export const TREES = [
   "ancestries": [
    "drakenblood"
   ],
-  "requiresTree": {
-   "id": "ancestry-commonkin",
-   "tier": 2
-  },
-  "note": "Requires Commonkin 2.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-draken-legacy",
   "name": "Draken Legacy",
   "archetype": "ancestry",
-  "requires": 3,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -9340,19 +10135,14 @@ export const TREES = [
   "ancestries": [
    "drakenblood"
   ],
-  "requiresTree": {
-   "id": "ancestry-commonkin",
-   "tier": 3
-  },
-  "note": "Requires Commonkin 3.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-orc-tree",
   "name": "Orc",
   "archetype": "ancestry",
-  "requires": 2,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -9413,19 +10203,97 @@ export const TREES = [
   "ancestries": [
    "orc"
   ],
-  "requiresTree": {
-   "id": "ancestry-bestial",
-   "tier": 2
-  },
-  "note": "Requires Bestial 2.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
+ },
+ {
+  "id": "ancestry-noctua-tree",
+  "name": "Noctua",
+  "archetype": "ancestry",
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Wing-Hands",
+      "text": "You can hold and use Equipment with the hands at your wing joints. You cannot fly while holding anything in two hands or wielding a Heavy Weapon."
+     },
+     {
+      "name": "Heavy Wings",
+      "text": "You must end each of your turns on the ground or a perch, or you begin falling (see Gravity Force in Flow State - Rules)."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Perched",
+      "text": "While you are at least 10ft above a creature, you have Advantage on perception checks against it."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Feather-Fall",
+      "text": "While you are conscious and your wings are free, falling never deals Force Damage to you."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Shriek",
+      "text": "Once per combat, you can spend 2 AP to let out a piercing shriek. Each creature of your choice within 100ft that can hear you must resist Fear, requiring a result of at least your total skill points."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Strong Wings",
+      "text": "Heavy Wings no longer applies to you, and Wing-Hands no longer stops you from flying."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Night Terror",
+      "text": "Shriek can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "noctua"
+  ],
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-dirtborn",
   "name": "Dirtborn",
   "archetype": "ancestry",
-  "requires": 2,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -9486,19 +10354,14 @@ export const TREES = [
   "ancestries": [
    "fire-walker"
   ],
-  "requiresTree": {
-   "id": "ancestry-bestial",
-   "tier": 2
-  },
-  "note": "Requires Bestial 2.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-firelander",
   "name": "Firelander",
   "archetype": "ancestry",
-  "requires": 3,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -9559,19 +10422,97 @@ export const TREES = [
   "ancestries": [
    "fire-walker"
   ],
-  "requiresTree": {
-   "id": "ancestry-bestial",
-   "tier": 3
-  },
-  "note": "Requires Bestial 3.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
+ },
+ {
+  "id": "ancestry-minotaur-tree",
+  "name": "Minotaur",
+  "archetype": "ancestry",
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Warm-Blooded",
+      "text": "Your body holds its own temperature, so hot or cold biomes that are not Extreme never hinder you, even where they would slow a cold-blooded creature (see Environments in Flow State - Generic Groups)."
+     },
+     {
+      "name": "Thick Hide",
+      "text": "Your hide is natural Armor (see Martial Armor in Flow State - Equipment). Over an 8 hour rest, you can grow it out as Light or Medium Armor, or shed it entirely. It has 15 Durability and 3 Limit as Light, 30 and 6 as Medium, 60 and 12 as Heavy, and 120 and 24 as Titanic, with the normal penalties of its weight. It scales with your Constitution as normal, and its grade is always high enough for all of your Constitution to count. It fully repairs whenever you complete a rest. While it is grown out, you cannot wear other Armor."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Sea Legs",
+      "text": "A ship’s motion never knocks you Prone or makes your footing rough terrain, and storms and rough water do not slow your swimming."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Privateer’s Eye",
+      "text": "You can judge the rough value of any cargo, ship, or loot you can see, and you have Advantage on checks to haggle over plunder or salvage."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Red Tide",
+      "text": "Once per combat, when an attack damages you, you can spend 1 RP to fly into a rage until the end of your next turn. While raging, your melee attacks are Strengthened, and your dodge rolls have Disadvantage."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Toughened Hide",
+      "text": "You can now grow your Thick Hide as Heavy or Titanic Armor."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Unending Rage",
+      "text": "Red Tide can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "minotaur"
+  ],
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-goblin-tree",
   "name": "Goblin",
   "archetype": "ancestry",
-  "requires": 2,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -9632,13 +10573,91 @@ export const TREES = [
   "ancestries": [
    "goblin"
   ],
-  "requiresTree": {
-   "id": "ancestry-bestial",
-   "tier": 2
-  },
-  "note": "Requires Bestial 2.",
-  "core": false,
-  "coreId": "ancestry-wusonian"
+  "note": "",
+  "core": false
+ },
+ {
+  "id": "ancestry-smoblin-tree",
+  "name": "Smoblin",
+  "archetype": "ancestry",
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 0,
+    "free": true,
+    "summary": "You gain the following rules:",
+    "entries": [
+     {
+      "name": "Awakened Mind",
+      "text": "Changing your Alignment takes a 10 minute activity for you instead of 1 hour."
+     },
+     {
+      "name": "Loud Mind",
+      "text": "Your mind is unusually loud. Creatures with a Psion sense can detect you from twice its normal range."
+     }
+    ]
+   },
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Steady Focus",
+      "text": "You have Advantage on Willpower checks to keep Concentration."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Light Step",
+      "text": "Each point of Alignment gives you a 10% speed penalty instead of 20%."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following ability:",
+    "entries": [
+     {
+      "name": "Overclock",
+      "text": "Once per combat, you can spend 1 RP to raise your Alignment by 1, up to the deepest depth you have unlocked, until the end of your next turn. That extra point adds no speed or AP penalty."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Hardened Mind",
+      "text": "You have Advantage on checks to resist forced mental effects."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Redline",
+      "text": "Overclock can now be used once per round instead of once per combat."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "smoblin"
+  ],
+  "note": "",
+  "core": false
  },
  {
   "id": "ancestry-bestiary-rules",

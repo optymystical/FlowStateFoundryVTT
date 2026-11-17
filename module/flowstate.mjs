@@ -300,6 +300,7 @@ class FlowStateCombat extends Combat {
     await actions.endOfTurn(combatant.actor);
     await generic.turnEnd(combatant.actor);
     await bestiary.turnEnd(this, combatant.actor);                // Allure wears off, Unwaking runs out, the 4th turn's Sporing / Ripen
+    await ancestry.turnEnd(this, combatant.actor);                // Red Tide and Overclock end; Heavy Wings
   }
 }
 
@@ -1572,6 +1573,11 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
     twoHanded: changed(changes, "system.twoHanded") ?? item.system.twoHanded,
     weaponType: changed(changes, "system.weaponType") ?? item.system.weaponType
   };
+  // Paws (Wildibit T0): small hands hold and use Equipment, but can't two-hand a Weapon.
+  if (item.type === "weapon" && next.twoHanded && next.equipped && next.weaponType !== "unarmed" && actor.system?.abc?.ancestry === "wildibit") {
+    ui.notifications.warn(`${actor.name}'s paws can't two-hand a weapon.`);
+    return false;
+  }
   // Stowing a held weapon in combat costs 1 AP (dropping it instead is free).
   const stowing = next.weaponType !== "unarmed" && !next.equipped && item.system.equipped;
   if (stowing && !auto && !options?.flowstatePaid && actions.inActiveCombat(actor)) {

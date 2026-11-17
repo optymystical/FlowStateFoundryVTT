@@ -6,19 +6,29 @@
  *    Awakened Scales, Underdog), the defender's buttons (Underfoot, Neutral Party: the attack is re-rolled keeping the lower result), after the dodge
  *    (Unlucky, Indomitable), damage (Elemental Ward, Flamekin, Curse-Hardened, Ward of the Hold, Spirit Shell, Searing Zeal, Elemental Mastery,
  *    Grudgebearer, Elemental Absorption, Lingering Spirit) and Force/prone (Immovable).
- *  - Passives in data.mjs (Keen Instincts, Quick Feet, Big Gear), movement.mjs (Slip Through, Wild Heart, your own Overgrowth) and checks (Unassuming,
- *    Territorial, Unbowed).
+ *  - Passives in data.mjs (Keen Instincts, Quick Feet, Big Gear, Bounding, Wings, the cores' senses, Light Step, Lake Surge's slows), movement.mjs (Slip
+ *    Through, Wild Heart, your own Overgrowth), checks (Unassuming, Territorial, Unbowed and the rest in ancestry-net.mjs), actions.mjs (rest: Unstable
+ *    Regeneration; Sealed Wounds), casting (Steeped in Magic, Blood Price), gravity (Feather-Fall), bestiary (Numb Flesh), surprise (Warning Thump).
+ *  - The new trees (Namuh, Sworan, Wildibit, Myrthel, Dawn Elf, Noctua, Minotaur, Smoblin and the Lakeborn, Strigid, Leporid and Wasteling cores):
+ *    Action List rows (Accelerated Healing, Living Metal Arm and its materials, Thick Hide, Lake Surge, Zig-Zag, Hind Kick, Swoop, Overclock) and the
+ *    exchange (Skittish, Red Tide, Shy of Pain, Zig-Zag, Glass Body, Fused Shadow, Acid-Worn, Stone Skin, Rotting Touch, Lashing Shadow).
  * Uses are tracked in flags: `ancUse` (name → the round/turn/combat it was used in) and `ancRest` (name → true until the next 8 hour rest).
  */
-import { post, fixedDodgeOf, spendPoints, requestGM, inActiveCombat, turnKey, setActorFlag, tokenDistance, attackerToken, rollKit, performAttack, GM_ACTIONS,
+import { post, fixedDodgeOf, spendPoints, spendEnergy, requestGM, requestDamage, inActiveCombat, turnKey, setActorFlag, tokenDistance, attackerToken, rollKit, performAttack, GM_ACTIONS,
   besideTokenPosition, setStatus, energyRestoreAdjust, dodgeNetKnown } from "./actions.mjs";
+import { startFalling } from "./gravity.mjs";
+import { restoreSince, restorable } from "./arcana.mjs";
+import { FOCI_TYPES } from "./magic.mjs";
+import { FORMS, alignmentState, maxAlignment } from "./mental-rules.mjs";
+import { energyHave } from "./consumables-rules.mjs";
+
 import { askFor } from "./ask.mjs";
 import { allied } from "./sides.mjs";
 import { notCreature } from "./kinds.mjs";
-import { tierOf } from "./skills.mjs";
+import { tierOf, hasAncestryTree } from "./skills.mjs";
 import { TREES } from "./trees.mjs";
 import { resolveAttack, poolFormula, applyStacks, gravityForce } from "./rules.mjs";
-import { weaponProfile } from "./martial.mjs";
+import { weaponProfile, WEAPON_TYPES, WEAPON_MATERIALS, ARMOR_WEIGHTS } from "./martial.mjs";
 import { levelAt, terrainRegionData } from "./terrain.mjs";
 import { GLAND_ELEMENTS } from "./abc-rules.mjs";
 import { spiritToken } from "./spirit.mjs";
@@ -58,7 +68,15 @@ export const AUTOMATED = new Set(["Shed the Heat", "Keen Instincts", "Territoria
   "Overflowing Magic", "Shadow Spirit", "Transference", "Mastered Tether", "Curse-Hardened", "Spirit Shell", "Lingering Spirit", "Unbroken Spirit",
   "Elemental Ward", "Elemental Diversity", "Elemental Mastery", "Elemental Absorption", "Elemental Attunement", "Unbowed", "Ward of the Hold",
   "Awakened Scales", "Elemental Wings", "Overgrowth", "Home Ground", "Wild Heart", "Underdog", "Topple", "Duelist", "Proven Strength", "Searing Zeal",
-  "Flamekin", "Unlucky", "Mob Rule", "Jinx", "Acclimated", "Hardy Constitution", "Adaptive Lineage", "Endless Adaptation"]);
+  "Flamekin", "Unlucky", "Mob Rule", "Jinx", "Acclimated", "Hardy Constitution", "Adaptive Lineage", "Endless Adaptation",
+  // The trees added with the Namuh, Sworan, Wildibit, Myrthel, Dawn Elf, Noctua, Minotaur and Smoblin.
+  "Bounding", "Wings", "Silent Wings", "Swoop", "Turning Gaze", "Death From Above", "Lake Surge", "Endless Tide", "Twitching Ears", "Hind Kick", "Warning Thump",
+  "Powerful Legs", "Unwelcome", "Acid-Worn", "Rotting Touch", "Numb Flesh", "Spreading Rot", "Unstable Regeneration", "Stabilized", "Sealed Wounds",
+  "Accelerated Healing", "Rapid Regrowth", "Perfect Body", "Living Metal Arm", "Deep-Dweller", "Deepforged", "Stone Skin", "Coreforged", "Quick Reshape",
+  "Paws", "Skittish", "Zig-Zag", "Warren Instinct", "Untouchable", "Glass Body", "Steeped in Magic", "Shy of Pain", "Treasured", "Blood Price",
+  "Hardened Glass", "Overflowing Blood", "Fused Shadow", "Lashing Shadow", "Uneasy Truce", "Shadow Unleashed", "Wing-Hands", "Heavy Wings", "Perched",
+  "Feather-Fall", "Strong Wings", "Thick Hide", "Red Tide", "Toughened Hide", "Unending Rage", "Steady Focus", "Light Step", "Overclock", "Hardened Mind",
+  "Redline", "Faith of the Flame", "Awakened Mind"]);
 /** An ability with a cost or a duration (its text names AP, RP or Energy, or a time). */
 const isActive = text => /\*\*\d+ (AP|RP)\*\*|\b\d+ (AP|RP)\b|Cost:|\b\d+ minutes?\b|once per (day|rest)/i.test(text ?? "");
 const pointsIn = text => ({ ap: Number(/\b(\d+) AP\b/.exec(text ?? "")?.[1]) || 0, rp: Number(/\b(\d+) RP\b/.exec(text ?? "")?.[1]) || 0 });
@@ -100,6 +118,7 @@ export function actionRows(actor) {
     row("Breath: Light", `Elemental Gland: a ranged natural attack (15 ft) dealing ${els} damage, both fists free`, "2 AP", "breath:light", "fa-solid fa-wind");
     row("Breath: Heavy", `Elemental Gland: a ranged natural attack (15 ft) dealing ${els} damage, both fists free`, "3 AP", "breath:heavy", "fa-solid fa-wind");
   }
+  newRows(actor, row, inCombat);
   // The Bestiary's creatures (bestiary.mjs): natural attacks, Recognition, Allure/Dread, Sustain, Portent, Sporing / Bloom.
   rows.push(...bestiary.actionRows(actor));
   // Every other active ability: pay its cost, post what it does.
@@ -186,6 +205,19 @@ const OPS = {
     return card(actor, "Duelist", `<div class="fs-result">${ap} RP: Advantage on ${esc(actor.name)}'s next attack.</div>`);
   },
   topple: actor => topple(actor),
+  accelHeal: actor => accelHeal(actor),
+  arm: actor => reshapeArm(actor),
+  absorb: actor => absorbMaterial(actor),
+  hide: actor => thickHide(actor),
+  lakeSurge: actor => armed(actor, "lakeSurge", { tree: "ancestry-lakeborn", ap: 2, label: "Lake Surge", flag: true,
+    text: "Until the start of their next turn, Stage 1 movement slows don't affect them, and they have Advantage on checks to resist being grappled, moved or knocked Prone." }),
+  zigzag: actor => armed(actor, "zigzag", { tree: "ancestry-wildibit-tree", rp: 1, label: "Zig-Zag", flag: true, moved: 20,
+    text: "Until the start of their next turn, ranged attacks against them have Disadvantage." }),
+  hindKick: actor => armed(actor, "hindKick", { tree: "ancestry-leporid", label: "Hind Kick", flag: true,
+    text: "Their next Unarmed attack is a kick with the hind legs: Strengthened, and it imparts Force as though it had the Knockback tag." }),
+  swoop: actor => armed(actor, "swoop", { tree: "ancestry-strigid", label: "Swoop", flag: "turn", flying: true, moved: 20,
+    text: "Their next melee attack this turn (after flying at least 20 ft toward the target) is Strengthened." }),
+  overclock: actor => overclock(actor),
   async acclimate(actor) {
     const t = tier(actor, "ancestry-wusonian"), max = t >= 5 ? 20 : t >= 4 ? 2 : 1;
     const cur = (actor.getFlag?.("flowstate", "biomes") ?? []).join(", ");
@@ -340,6 +372,207 @@ async function breath(actor, weight) {
 }
 
 /* -------------------------------------------- */
+/*  The newer trees: rows                       */
+/* -------------------------------------------- */
+
+const scopeOf = (actor, tree, five = "round", base = "combat") => (tier(actor, tree) >= 5 ? five : base);
+/** The extra rows the newer trees bring (row(label, detail, cost, op, icon, extra)). */
+function newRows(actor, row, inCombat) {
+  const t = id => tier(actor, id);
+  if (t("ancestry-namuh-tree") >= 3) row("Accelerated Healing", `Regain the HP an 8 hour rest would (${actor.system.derived?.restHeal ?? 0}), up to what you've lost since the start of your last turn · once per turn`,
+    t("ancestry-namuh-tree") >= 5 ? "2 AP" : `2 AP · ${actor.system.skillPoints ?? 0} Energy`, "accelHeal", "fa-solid fa-heart-pulse", { disabled: used(actor, "accelHeal", "turn") });
+  if (hasAncestryTree(actor.system, "ancestry-sworan-tree")) {
+    const cur = livingArm(actor), t5 = t("ancestry-sworan-tree") >= 5;
+    row("Living Metal Arm", `Now: ${cur ? esc(cur.name) : "a plain arm"}. Reshape it into a Foci, an Icon Form, a Weapon of an absorbed material (${armMaterials(actor).map(m => WEAPON_MATERIALS[m]?.label ?? m).join(", ")}), or a plain arm`,
+      t5 && inCombat ? "1 AP" : "1 minute", "arm", "fa-solid fa-hand-fist", { disabled: inCombat && (!t5 || used(actor, "reshape", "round")) });
+    if (!inCombat) row("Living Metal Arm: absorb a material", `Over an 8 hour rest, merge an item (or the raw material) of a ${t("ancestry-sworan-tree") >= 4 ? "Common, Uncommon or Rare" : t("ancestry-sworan-tree") >= 2 ? "Common or Uncommon" : "Common"} Weapon material into your arm; the item is used up`, "Rest", "absorb", "fa-solid fa-magnet");
+  }
+  if (hasAncestryTree(actor.system, "ancestry-minotaur-tree") && !inCombat) {
+    const hide = actor.items?.find(i => i.getFlag?.("flowstate", "thickHide"));
+    row("Thick Hide", `${hide ? `Grown out: ${esc(hide.name)}` : "Shed"}. Over an 8 hour rest, grow it out as ${t("ancestry-minotaur-tree") >= 4 ? "Light, Medium, Heavy or Titanic" : "Light or Medium"} Armor, or shed it`, "Rest", "hide", "fa-solid fa-shield-cat");
+  }
+  if (t("ancestry-lakeborn") >= 3 && inCombat) row("Lake Surge", `Until the start of your next turn: Stage 1 movement slows don't affect you; Advantage on checks to resist being grappled, moved or knocked Prone · once per ${scopeOf(actor, "ancestry-lakeborn")}`,
+    "2 AP", "lakeSurge", "fa-solid fa-water", { disabled: used(actor, "lakeSurge", scopeOf(actor, "ancestry-lakeborn")) });
+  if (t("ancestry-wildibit-tree") >= 3 && inCombat) row("Zig-Zag", `After moving at least 20 ft this turn: ranged attacks against you have Disadvantage until the start of your next turn · once per ${scopeOf(actor, "ancestry-wildibit-tree")}`,
+    "1 RP", "zigzag", "fa-solid fa-shuffle", { disabled: used(actor, "zigzag", scopeOf(actor, "ancestry-wildibit-tree")) });
+  if (t("ancestry-leporid") >= 3 && inCombat) row("Hind Kick", `Your next Unarmed attack kicks with your hind legs: Strengthened, with Knockback · once per ${scopeOf(actor, "ancestry-leporid")}`,
+    "Free", "hindKick", "fa-solid fa-shoe-prints", { disabled: used(actor, "hindKick", scopeOf(actor, "ancestry-leporid")) || !!actor.getFlag?.("flowstate", "hindKick") });
+  if (t("ancestry-strigid") >= 3 && inCombat) row("Swoop", `After flying at least 20 ft toward the target this turn: your next melee attack is Strengthened · once per ${scopeOf(actor, "ancestry-strigid")}`,
+    "Free", "swoop", "fa-solid fa-feather-pointed", { disabled: used(actor, "swoop", scopeOf(actor, "ancestry-strigid")) || !actor.statuses?.has?.("flying") });
+  if (t("ancestry-smoblin-tree") >= 3) row("Overclock", `Raise your Alignment by 1 (up to your deepest) until the end of your next turn; the extra point costs no speed or AP · once per ${scopeOf(actor, "ancestry-smoblin-tree")}`,
+    "1 RP", "overclock", "fa-solid fa-gauge-high", { disabled: used(actor, "overclock", scopeOf(actor, "ancestry-smoblin-tree")) || !!actor.getFlag?.("flowstate", "overclock") });
+}
+
+/** A row that pays, checks its window and sets a flag (`flag`: true until cleared, "turn": this turn's key). */
+async function armed(actor, key, { tree, ap = 0, rp = 0, label, flag, moved = 0, flying = false, text }) {
+  const scope = scopeOf(actor, tree);
+  if (used(actor, key, scope)) return ui.notifications.warn(`${label} is once per ${scope}.`);
+  if (flying && !actor.statuses?.has?.("flying")) return ui.notifications.warn(`${actor.name} isn't flying.`);
+  if (moved && !((actor.getFlag("flowstate", "moveLedger")?.ft ?? 0) >= moved)) {
+    const ok = await DialogV2().confirm({ window: { title: label }, rejectClose: false, content: `<p>${label} needs ${esc(actor.name)} to have moved at least ${moved} ft this turn${flying ? " (flying toward the target)" : ""}. Have they?</p>` });
+    if (!ok) return null;
+  }
+  if (ap && !(await spendPoints(actor, "ap", ap, label))) return null;
+  if (rp && !(await spendPoints(actor, "rp", rp, label))) return null;
+  await setActorFlag(actor, key, flag === "turn" ? turnKey() : true);
+  await use(actor, key, scope);
+  return card(actor, label, `<div class="fs-result">${esc(text)}</div>`);
+}
+
+/** Accelerated Healing (Namuh T3): 2 AP and Energy equal to your total Skill Points (none with Perfect Body, T5); the 8 hour rest's HP, up to what was lost since the start of your last turn. */
+async function accelHeal(actor) {
+  if (used(actor, "accelHeal", "turn")) return ui.notifications.warn("Accelerated Healing is once per turn.");
+  const since = restoreSince(actor), room = restorable(actor, since), heal = Math.min(actor.system.derived?.restHeal ?? 0, room, actor.system.hp.max - actor.system.hp.value);
+  if (heal <= 0) return ui.notifications.warn(`${actor.name} hasn't lost any health since the start of their last turn.`);
+  const energy = tier(actor, "ancestry-namuh-tree") >= 5 ? 0 : actor.system.skillPoints ?? 0;
+  if (energy && energyHave(actor) < energy) return ui.notifications.warn(`Accelerated Healing costs ${energy} Energy.`);
+  if (!(await spendPoints(actor, "ap", 2, "Accelerated Healing"))) return null;
+  if (energy && !(await spendEnergy(actor, energy, "Accelerated Healing"))) return null;
+  await actor.update({ "system.hp.value": actor.system.hp.value + heal });
+  const log = actor.getFlag("flowstate", "restoreLog") ?? [];
+  await setActorFlag(actor, "restoreLog", [...log.slice(-20), { at: Date.now(), n: heal }]);
+  await use(actor, "accelHeal", "turn");
+  return card(actor, "Accelerated Healing", `<div class="fs-result">+${heal} HP (${actor.system.hp.value}/${actor.system.hp.max})${energy ? ` · ${energy} Energy` : ""}.</div>`);
+}
+
+/* ---- Living Metal Arm (Sworan T0) ---- */
+const livingArm = actor => actor.items?.find(i => i.getFlag?.("flowstate", "livingArm")) ?? null;
+/** The Weapon materials absorbed into the arm (Iron to start). */
+const armMaterials = actor => [...new Set(["iron", ...(actor.getFlag?.("flowstate", "armMaterials") ?? [])])].filter(m => WEAPON_MATERIALS[m]);
+const RARITY_STEP = { common: 0, uncommon: 2, rare: 4 };
+async function absorbMaterial(actor) {
+  const t = tier(actor, "ancestry-sworan-tree"), have = armMaterials(actor);
+  const can = Object.entries(WEAPON_MATERIALS).filter(([k, m]) => !have.includes(k) && RARITY_STEP[m.rarity] !== undefined && t >= RARITY_STEP[m.rarity]);
+  if (!can.length) return ui.notifications.info(`${actor.name} has absorbed every material they can.`);
+  const k = await DialogV2().prompt({ window: { title: "Living Metal Arm: absorb" }, rejectClose: false,
+    content: `<p class="hint">An 8 hour rest merging an item made of it (or enough of the raw material for one) into the arm. The item is used up.</p><div class="form-group"><label>Material</label>${select("m", can.map(([key, m]) => [key, `${m.label} (${m.rarity})`]), can[0][0])}</div>`,
+    ok: { label: "Absorb", callback: (event, button) => button.form.elements.m.value } });
+  if (!WEAPON_MATERIALS[k]) return null;
+  await setActorFlag(actor, "armMaterials", [...have, k]);
+  return card(actor, "Living Metal Arm", `<div class="fs-result">${esc(actor.name)} absorbs ${esc(WEAPON_MATERIALS[k].label)}: the arm can take that material's shape from now on.</div>`);
+}
+async function reshapeArm(actor) {
+  const inCombat = inActiveCombat(actor), t5 = tier(actor, "ancestry-sworan-tree") >= 5;
+  if (inCombat && !t5) return ui.notifications.warn("Reshaping the arm takes a minute (Quick Reshape, Sworan Tier 5, does it for 1 AP).");
+  if (inCombat && used(actor, "reshape", "round")) return ui.notifications.warn("Quick Reshape is once per round.");
+  const mats = armMaterials(actor);
+  const weapons = Object.entries(WEAPON_TYPES).filter(([k]) => !["unarmed", "improvised"].includes(k)).map(([k, v]) => [k, v.label]);
+  const shape = await DialogV2().prompt({ window: { title: "Living Metal Arm" }, rejectClose: false,
+    content: `<div class="form-group"><label>Shape</label>${select("shape", [["plain", "A plain arm"], ["weapon", "A Weapon"], ["foci", "A Foci"], ["icon", "An Icon Form"]], "weapon")}</div>
+      <div class="form-group"><label>Weapon type</label>${select("type", weapons, weapons[0]?.[0])}</div>
+      <div class="form-group"><label>Weight</label>${select("weight", [["light", "Light"], ["heavy", "Heavy"]], "light")}</div>
+      <div class="form-group"><label>Material</label>${select("material", mats.map(m => [m, WEAPON_MATERIALS[m].label]), mats[0])}</div>
+      <p class="hint">A Heavy-only material (Iron, Stone...) as a Light Weapon uses half its Durability and Limit.</p>
+      <div class="form-group"><label>Foci</label>${select("foci", Object.entries(FOCI_TYPES).map(([k, v]) => [k, v.label]), "rod")}</div>
+      <div class="form-group"><label>Icon Form</label>${select("form", Object.entries(FORMS).map(([k, v]) => [k, v.label ?? k]), Object.keys(FORMS)[0])}</div>`,
+    ok: { label: "Reshape", callback: (event, button) => Object.fromEntries(["shape", "type", "weight", "material", "foci", "form"].map(n => [n, button.form.elements[n].value])) } });
+  if (!shape) return null;
+  let data = null;
+  const flags = { flowstate: { livingArm: true } };
+  if (shape.shape === "weapon") {
+    const mat = WEAPON_MATERIALS[shape.material];
+    if (!mat || !mats.includes(shape.material)) return ui.notifications.warn("The arm can only take the shape of a material it has absorbed.");
+    if (!mat.weights[shape.weight] && !(shape.weight === "light" && mat.weights.heavy)) return ui.notifications.warn(`${mat.label} can't be made ${shape.weight === "heavy" ? "Heavy" : "Light"}.`);
+    data = { name: `Living Metal Arm (${WEAPON_TYPES[shape.type]?.label ?? shape.type}, ${mat.label})`, type: "weapon", img: "icons/svg/sword.svg", flags,
+      system: { weaponType: shape.type, weight: shape.weight, material: shape.material, grade: 1, natural: true, equipped: true } };
+  } else if (shape.shape === "foci") data = { name: `Living Metal Arm (${FOCI_TYPES[shape.foci]?.label ?? shape.foci})`, type: "foci", img: "icons/svg/daze.svg", flags,
+    system: { fociType: shape.foci, grade: 1, natural: true, attuned: true, equipped: true } };
+  else if (shape.shape === "icon") data = { name: `Living Metal Arm (${FORMS[shape.form]?.label ?? shape.form})`, type: "icon", img: "icons/svg/aura.svg", flags,
+    system: { form: shape.form, grade: 1, natural: true, attuned: true } };
+  if (inCombat) { if (!(await spendPoints(actor, "ap", 1, "Quick Reshape"))) return null; await use(actor, "reshape", "round"); }
+  const old = livingArm(actor);
+  if (old) await old.delete();
+  // As a Foci or Icon it counts as attuned: another attuned one of that kind steps aside.
+  if (data && (data.type === "foci" || data.type === "icon")) for (const i of actor.items.filter(x => x.type === data.type && x.system.attuned)) await i.update({ "system.attuned": false }, { flowstateSystem: true });
+  if (data?.type === "weapon") for (const i of actor.items.filter(x => x.type === "weapon" && x.system.equipped && x.system.weaponType !== "unarmed" && x.system.twoHanded)) await i.update({ "system.equipped": false });
+  if (data) await actor.createEmbeddedDocuments("Item", [data]);
+  return card(actor, "Living Metal Arm", `<div class="fs-result">${esc(actor.name)}'s arm reshapes into ${data ? esc(data.name.replace(/^Living Metal Arm \(|\)$/g, "")) : "a plain arm"}${inCombat ? " (Quick Reshape, 1 AP)" : " over a minute"}.</div>`);
+}
+
+/* ---- Thick Hide (Minotaur T0) ---- */
+const HIDE = { light: "cloth", medium: "hide", heavy: "titanium", titanic: "copper" };          // 15/3, 30/6, 60/12, 120/24: the hide's own numbers
+async function thickHide(actor) {
+  if (inActiveCombat(actor)) return ui.notifications.warn("Growing or shedding the hide takes an 8 hour rest.");
+  const t4 = tier(actor, "ancestry-minotaur-tree") >= 4;
+  const weights = [["light", "Light (15 Durability, 3 Limit)"], ["medium", "Medium (30, 6)"], ...(t4 ? [["heavy", "Heavy (60, 12)"], ["titanic", "Titanic (120, 24)"]] : []), ["shed", "Shed it"]];
+  const w = await DialogV2().prompt({ window: { title: "Thick Hide" }, rejectClose: false,
+    content: `<p class="hint">Over an 8 hour rest. Natural Armor: scales with all your Constitution, the normal penalties of its weight, fully repairs on every rest; while it's grown out you can't wear other Armor.</p><div class="form-group"><label>Grow it as</label>${select("w", weights, "light")}</div>`,
+    ok: { label: "Done", callback: (event, button) => button.form.elements.w.value } });
+  if (!w) return null;
+  const old = actor.items.find(i => i.getFlag?.("flowstate", "thickHide"));
+  if (old) await old.delete();
+  if (w !== "shed") {
+    for (const i of actor.items.filter(x => x.type === "armor" && x.system.equipped)) await i.update({ "system.equipped": false });
+    await actor.createEmbeddedDocuments("Item", [{ name: `Thick Hide (${ARMOR_WEIGHTS[w].label})`, type: "armor", img: "icons/svg/shield.svg", flags: { flowstate: { thickHide: true } },
+      system: { weight: w, material: HIDE[w], grade: 1, natural: true, equipped: true } }]);
+  }
+  return card(actor, "Thick Hide", `<div class="fs-result">${w === "shed" ? `${esc(actor.name)} sheds the hide.` : `${esc(actor.name)}'s hide grows out as ${ARMOR_WEIGHTS[w].label} Armor.`}</div>`);
+}
+
+/** Overclock (Smoblin T3): 1 RP, Alignment +1 (up to the deepest unlocked) until the end of your next turn; the extra point adds no speed or AP penalty. */
+async function overclock(actor) {
+  const scope = scopeOf(actor, "ancestry-smoblin-tree");
+  if (used(actor, "overclock", scope)) return ui.notifications.warn(`Overclock is once per ${scope}.`);
+  const al = alignmentState(actor.getFlag?.("flowstate", "alignment")), deepest = maxAlignment(tier(actor, "mental-theory"));
+  if (al.level <= 0) return ui.notifications.warn(`${actor.name} is Neutral: Overclock deepens an Alignment you have.`);
+  if (al.level >= deepest) return ui.notifications.warn(`${actor.name}'s Alignment is already at their deepest (${deepest}).`);
+  if (!(await spendPoints(actor, "rp", 1, "Overclock"))) return null;
+  await setActorFlag(actor, "overclock", { extra: 1, prev: al.level, armed: turnKey() });
+  await setActorFlag(actor, "alignment", { kind: al.kind, level: al.level + 1 });
+  await use(actor, "overclock", scope);
+  return card(actor, "Overclock", `<div class="fs-result">${esc(actor.name)}'s Alignment rises to ${al.level + 1} until the end of their next turn (no extra speed or AP cost).</div>`);
+}
+
+/* ---- The newer trees in the exchange ---- */
+
+/** Shy of Pain (Myrthel T1): above the Pain Threshold, dodge dice against physical attacks are +1 size per 10 total Skill Points (Hardened Glass, T4: +2). */
+function dodgeDieUp(target, o) {
+  const t = tier(target, "ancestry-myrthel-tree");
+  if (t < 1 || o?.type !== "physical" || !((target.system.hp?.value ?? 0) > (target.system.hp?.pain ?? 0))) return null;
+  const up = Math.floor(sp(target) / 10) * (t >= 4 ? 2 : 1);
+  return up > 0 ? { up, note: `Shy of Pain (+${up} die size)` } : null;
+}
+/** A weapon attack being made: Hind Kick (an Unarmed attack) and Swoop (a melee attack this turn), armed from the Action List, are used up. */
+async function weaponAttack(actor, { unarmed, melee }) {
+  const out = { stacks: 0, notes: [], knockback: false };
+  if (unarmed && actor.getFlag?.("flowstate", "hindKick")) {
+    await setActorFlag(actor, "hindKick", null);
+    out.stacks += 1; out.knockback = true; out.notes.push("Hind Kick: Strengthened, Knockback");
+  }
+  if (melee && actor.getFlag?.("flowstate", "swoop") === turnKey()) {
+    await setActorFlag(actor, "swoop", null);
+    out.stacks += 1; out.notes.push("Swoop: Strengthened");
+  }
+  return out;
+}
+/** Red Tide (Minotaur T3): an attack damaged you; 1 RP to rage until the end of your next turn (melee attacks Strengthened, dodges with Disadvantage). */
+async function redTide(actor) {
+  if (tier(actor, "ancestry-minotaur-tree") < 3 || actor.getFlag?.("flowstate", "redTide") || (actor.system.rp?.value ?? 0) < 1) return;
+  const scope = scopeOf(actor, "ancestry-minotaur-tree");
+  if (used(actor, "redTide", scope)) return;
+  if (!(await askFor(actor, { title: `${actor.name}: Red Tide?`, react: "redTide", ok: "Rage",
+    html: `<p>You were hurt. Spend 1 RP to fly into a rage until the end of your next turn: your melee attacks are Strengthened, your dodge rolls have Disadvantage. Once per ${scope}.</p>` }))) return;
+  if (!(await spendPoints(actor, "rp", 1, "Red Tide"))) return;
+  await use(actor, "redTide", scope);
+  await setActorFlag(actor, "redTide", { armed: turnKey() });
+  await card(actor, "Red Tide", `<div class="fs-result">${esc(actor.name)} rages: melee attacks Strengthened, dodges with Disadvantage, until the end of their next turn.</div>`);
+}
+/** Lashing Shadow (Dawn Elf T3): a creature in your melee range hit you; 1 RP for Arcane damage equal to your Build Min (Shadow Unleashed, T5: once per turn, within 30 ft). */
+async function lashingShadow(actor, att) {
+  const t = tier(actor, "ancestry-dawn-elf-tree");
+  if (t < 3 || (actor.system.rp?.value ?? 0) < 1 || notCreature(att)) return;
+  const scope = t >= 5 ? "turn" : "round", reach = t >= 5 ? 30 : (actor.system.derived?.size?.melee ?? 5);
+  if (used(actor, "lashing", scope) || (dist(actor, att) ?? Infinity) > reach) return;
+  const dmg = actor.system.derived?.effective?.build?.min ?? 0;
+  if (dmg <= 0 || !(await askFor(actor, { title: `${actor.name}: Lashing Shadow?`, react: "lashingShadow", ok: "Lash out",
+    html: `<p>${esc(att.name)} hit you. Spend 1 RP to have your shadow lash out for <strong>${dmg}</strong> Arcane damage? Once per ${scope}.</p>` }))) return;
+  if (!(await spendPoints(actor, "rp", 1, "Lashing Shadow"))) return;
+  await use(actor, "lashing", scope);
+  await card(actor, "Lashing Shadow", `<div class="fs-result">${esc(actor.name)}'s shadow lashes ${esc(att.name)}: ${dmg} Arcane damage.</div>`);
+  await requestDamage(att, dmg, "arcane", 0, null, { archetype: "magic" });          // no attacker: the lash itself sets off no reactions (no Lashing Shadow back)
+}
+
+/* -------------------------------------------- */
 /*  Exchange hooks                              */
 /* -------------------------------------------- */
 
@@ -354,6 +587,8 @@ async function attackNet(attacker, target, opts) {
     const c = tok ? { x: (tok.document?.x ?? tok.x) + ((tok.document?.width ?? 1) * size) / 2, y: (tok.document?.y ?? tok.y) + ((tok.document?.height ?? 1) * size) / 2 } : null;
     if (c && levelAt(scene, c, tok.document?.elevation ?? 0) > 0) { net += 1; notes.push("Home Ground: Advantage (the target stands in rough or difficult terrain)"); await use(attacker, "homeGround", "turn"); }
   }
+  // Zig-Zag (Wildibit T3): ranged attacks against it have Disadvantage until the start of its next turn.
+  if (target.getFlag?.("flowstate", "zigzag") && !opts?.melee && !opts?.area) { net -= 1; notes.push(`Zig-Zag (${target.name}): Disadvantage`); }
   const mob = target.getFlag?.("flowstate", "mobRule");
   if (mob && mob.by !== attacker.uuid && !(mob.used ?? []).includes(attacker.uuid)) {
     const marker = globalThis.fromUuidSync?.(mob.by);
@@ -372,6 +607,9 @@ async function dodgeNet(target, attacker, o) {
   const notes = [];
   if (tier(target, "ancestry-elf-tree") >= 1 && inActiveCombat(target) && !used(target, "fragility", "combat")) { net += 1; notes.push("Mindful of Fragility"); await use(target, "fragility", "combat"); }
   if (tier(target, "ancestry-draken-legacy") >= 4 && o?.spell && inActiveCombat(target) && !used(target, "scales", "round")) { net += 1; notes.push("Awakened Scales"); await use(target, "scales", "round"); }
+  // Skittish (Wildibit T2): the first attack against it each round. Red Tide (Minotaur T3): a raging creature's dodges have Disadvantage.
+  if (tier(target, "ancestry-wildibit-tree") >= 2 && inActiveCombat(target) && !used(target, "skittish", "round")) { net += 1; notes.push("Skittish"); await use(target, "skittish", "round"); }
+  if (target.getFlag?.("flowstate", "redTide")) { net -= 1; notes.push("Red Tide (raging): Disadvantage"); }
   if (tier(target, "ancestry-dirtborn") >= 2 && inActiveCombat(target) && attacker) {
     const rk = roundKey(), seen = target.getFlag?.("flowstate", "underdog");
     const list = seen?.round === rk ? [...new Set([...(seen.by ?? []), attacker.uuid])] : [attacker.uuid];
@@ -500,6 +738,15 @@ async function beforeDamage(attacker, target, o) {
       out = { ...out, type: "heat", ancStacks: [...(out.ancStacks ?? []), "Searing Zeal"], notes: [...(out.notes ?? []), "Searing Zeal: Heat, +1 Strengthened"] };
     }
   }
+  // Rotting Touch (Wasteling T3): a melee hit's damage becomes Acid with a Strengthened stack, for 1 RP (once per combat; Spreading Rot, T5: per round).
+  if (tier(attacker, "ancestry-wasteling") >= 3 && out.melee && (attacker.system.rp?.value ?? 0) >= 1) {
+    const scope = tier(attacker, "ancestry-wasteling") >= 5 ? "round" : "combat";
+    if (!used(attacker, "rottingTouch", scope) && (await askFor(attacker, { title: `${attacker.name}: Rotting Touch?`, react: "rottingTouch", ok: "Rotting Touch",
+      html: `<p>You hit ${esc(target.name)} in melee. Spend 1 RP to make the damage Acid with a Strengthened stack? Once per ${scope}.</p>` })) && (await spendPoints(attacker, "rp", 1, "Rotting Touch"))) {
+      await use(attacker, "rottingTouch", scope);
+      out = { ...out, type: "acid", ancStacks: [...(out.ancStacks ?? []), "Rotting Touch"], notes: [...(out.notes ?? []), "Rotting Touch: Acid, +1 Strengthened"] };
+    }
+  }
   if (tier(attacker, "ancestry-draken-elements") >= 3 && elements(attacker).includes(out.type)) {
     const scope = tier(attacker, "ancestry-draken-elements") >= 5 ? "round" : "combat";
     if (!used(attacker, "mastery", scope) && (await askFor(attacker, { title: `${attacker.name}: Elemental Mastery?`, react: "elementalMastery", ok: "Strengthen it",
@@ -516,6 +763,7 @@ function damageStacks({ attacker, target, o }) {
   const parts = (o?.ancStacks ?? []).map(n => `+1 ${n}`);
   const g = attacker?.getFlag?.("flowstate", "grudge");
   if (g && g.uuid === target?.uuid && g.combat === combatKey()) parts.push("+1 Grudgebearer");
+  if (attacker?.getFlag?.("flowstate", "redTide") && o?.melee) parts.push("+1 Red Tide");
   return { stacks: parts.length, parts };
 }
 
@@ -526,6 +774,11 @@ function damageStacks({ attacker, target, o }) {
 async function incoming(actor, amount, type, { archetype, attacker = null, natural = false } = {}) {
   let stacks = 0;
   const notes = [];
+  // Glass Body (Myrthel T0): physical damage is Strengthened. Fused Shadow (Dawn Elf T0): Arcane damage is, until Uneasy Truce (T4). Acid-Worn
+  // (Wasteling T1): Acid damage is Weakened.
+  if (type === "physical" && hasAncestryTree(actor.system, "ancestry-myrthel-tree")) { stacks -= 1; notes.push("Glass Body (Strengthened)"); }
+  if (type === "arcane" && hasAncestryTree(actor.system, "ancestry-dawn-elf-tree") && tier(actor, "ancestry-dawn-elf-tree") < 4) { stacks -= 1; notes.push("Fused Shadow (Strengthened)"); }
+  if (type === "acid" && tier(actor, "ancestry-wasteling") >= 1) { stacks += 1; notes.push("Acid-Worn"); }
   if (tier(actor, "ancestry-draken-elements") >= 1 && elements(actor).includes(type)) { stacks += 1; notes.push("Elemental Ward"); }
   if (tier(actor, "ancestry-firelander") >= 5 && type === "heat") { stacks += 1; notes.push("Flamekin"); }
   const att = attacker ? globalThis.fromUuidSync?.(attacker) : null;
@@ -541,7 +794,11 @@ async function incoming(actor, amount, type, { archetype, attacker = null, natur
       }
     }
   }
-  return { amount: stacks ? Math.floor(applyStacks(amount, -stacks)) : amount, notes };
+  let out = stacks ? Math.floor(applyStacks(amount, -stacks)) : amount;
+  // Stone Skin (Sworan T3): physical damage from each attack is reduced by the Constitution Min.
+  const cmin = actor.system.derived?.effective?.con?.min ?? 0;
+  if (type === "physical" && tier(actor, "ancestry-sworan-tree") >= 3 && cmin > 0 && out > 0) { out = Math.max(0, out - cmin); notes.push(`Stone Skin (−${cmin})`); }
+  return { amount: out, notes };
 }
 
 /** After damage landed (it reached HP or not): Grudgebearer marks the attacker; Elemental Absorption turns element damage into Energy. */
@@ -550,6 +807,7 @@ async function afterDamage(actor, amount, type, { attacker = null } = {}) {
   // Neutral Party (Halfling T4) needs to know who has dealt damage this combat.
   if (att && amount > 0 && combatKey() && att.getFlag?.("flowstate", "dealtDamage") !== combatKey()) await setActorFlag(att, "dealtDamage", combatKey());
   if (!(amount > 0) || !inActiveCombat(actor)) return;
+  if (att && att.uuid !== actor.uuid) { await redTide(actor); await lashingShadow(actor, att); }
   if (att && att.uuid !== actor.uuid && tier(actor, "ancestry-dwarf-tree") >= 5 && actor.getFlag?.("flowstate", "grudge")?.combat !== combatKey() && !used(actor, "grudge", "combat")) {
     if (await askFor(actor, { title: `${actor.name}: Grudgebearer?`, react: "grudge", ok: "Mark them", html: `<p>${esc(att.name)} hurt you. Mark them as your Grudge for this combat (your attacks against them are Strengthened)? Once per combat.</p>` })) {
       await use(actor, "grudge", "combat");
@@ -591,6 +849,7 @@ async function immovable(actor, what) {
 export async function turnStart(combat, actor) {
   if (!actor) return;
   if (actor.getFlag?.("flowstate", "wardHold")) await setActorFlag(actor, "wardHold", null);
+  for (const k of ["zigzag", "lakeSurge"]) if (actor.getFlag?.("flowstate", k)) await setActorFlag(actor, k, null);
   for (const t of combat?.combatants ?? []) {
     const a = t.actor, mob = a?.getFlag?.("flowstate", "mobRule");
     if (mob?.by === actor.uuid && (combat.round ?? 0) > (mob.round ?? 0)) await setActorFlag(a, "mobRule", null);
@@ -601,6 +860,31 @@ export async function turnStart(combat, actor) {
   if (w && w.combat === combat?.id && (combat?.round ?? 0) >= w.round) await endWings(actor);
   if (actor.statuses?.has?.("unconscious") && spiritToken(actor)) await recombine(actor);
   await bestiary.turnStart(combat, actor);                    // Regrowth, the Choking Green, the Wonderborn's turn count, the ground auras
+}
+/** The end of a creature's turn: Red Tide and Overclock end (at the end of the turn after the one they began in); Heavy Wings (Noctua T0) pulls it down. */
+export async function turnEnd(combat, actor) {
+  if (!actor) return;
+  const tk = turnKey();
+  const rage = actor.getFlag?.("flowstate", "redTide");
+  if (rage && rage.armed !== tk) { await setActorFlag(actor, "redTide", null); await card(actor, "Red Tide", `<div class="fs-notes">The rage passes.</div>`); }
+  const oc = actor.getFlag?.("flowstate", "overclock");
+  if (oc && oc.armed !== tk) {
+    const al = alignmentState(actor.getFlag?.("flowstate", "alignment"));
+    await setActorFlag(actor, "alignment", al.level > oc.prev ? { kind: al.kind, level: oc.prev } : actor.getFlag?.("flowstate", "alignment") ?? null);
+    await setActorFlag(actor, "overclock", null);
+    await card(actor, "Overclock", `<div class="fs-notes">${esc(actor.name)}'s Alignment settles back to ${oc.prev}.</div>`);
+  }
+  const tok = tokenOf(actor);
+  if (hasAncestryTree(actor.system, "ancestry-noctua-tree") && tier(actor, "ancestry-noctua-tree") < 4 && (tok?.document?.elevation ?? 0) > 0 && !actor.statuses?.has?.("falling")
+    && !actor.statuses?.has?.("unconscious")) {
+    const fall = await askFor(actor, { title: `${actor.name}: Heavy Wings`, react: "heavyWings", ok: "In the air: begin falling",
+      html: `<p>${esc(actor.name)} ends their turn ${tok.document.elevation} ft up. Heavy Wings: unless they're on the ground or a perch, they begin falling. (Close this if they're perched.)</p>` });
+    if (fall) await startFalling(actor, "Heavy Wings");
+  }
+}
+/** A rest: Thick Hide (Minotaur T0) fully repairs. */
+async function rest(actor) {
+  for (const i of actor.items ?? []) if (i.getFlag?.("flowstate", "thickHide") && (i.system.wear ?? 0) > 0) await i.update({ "system.wear": 0 }, { flowstateSystem: true });
 }
 async function endWings(actor) {
   const w = actor.getFlag?.("flowstate", "wings");
@@ -639,5 +923,5 @@ GM_ACTIONS.spiritRemove = async function ({ actor: uuid }, senderId = null) {
 };
 
 /** What actions.mjs and the others call. */
-export const hooks = { attackNet, dodgeNet, defendButtons, react, afterDodge, beforeDamage, damageStacks, incoming, afterDamage, lethal, immovable,
-  turnStart, onHit: bestiary.onHit, forceHalf: bestiary.forceHalf };
+export const hooks = { attackNet, dodgeNet, dodgeDieUp, weaponAttack, defendButtons, react, afterDodge, beforeDamage, damageStacks, incoming, afterDamage, lethal, immovable,
+  turnStart, rest, onHit: bestiary.onHit, forceHalf: bestiary.forceHalf };

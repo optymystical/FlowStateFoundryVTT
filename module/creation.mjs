@@ -44,7 +44,7 @@ export function cleanAbc(abc = {}) {
   const str = v => String(v ?? "").slice(0, 80);
   const picks = Object.fromEntries(Object.entries(abc.picks ?? {}).map(([k, v]) => [str(k), str(v)]));
   const alloc = Object.fromEntries(Object.entries(abc.alloc ?? {}).map(([k, v]) => [str(k), Math.max(0, Math.min(5, Math.trunc(Number(v) || 0)))]).filter(([, v]) => v > 0));
-  return { ancestry: str(abc.ancestry), background: str(abc.background), focus: str(abc.focus), picks, alloc, homeland: str(abc.homeland), circle: str(abc.circle),
+  return { ancestry: str(abc.ancestry), wasteling: !!abc.wasteling, background: str(abc.background), focus: str(abc.focus), picks, alloc, homeland: str(abc.homeland), circle: str(abc.circle),
     element: GLAND_ELEMENTS[abc.element] ? abc.element : "", element2: GLAND_ELEMENTS[abc.element2] ? abc.element2 : "" };
 }
 export const cleanDetails = (details = {}) => Object.fromEntries(Object.keys(DETAIL_FIELDS).map(k => [k, String(details?.[k] ?? "").slice(0, 4000)]).filter(([, v]) => v.trim()));
@@ -195,7 +195,7 @@ export function validate(choice, rules = DEFAULT_RULES) {
     if (slot.kind === "weapon" && slot.type === "unarmed") errors.push(`${label}: Unarmed comes free; pick a different weapon.`);
     if (slot.kind === "weapon" && slot.extraTypes?.length && !rules.multiType) errors.push(`${label}: starting weapons can't have extra types in this world.`);
   }
-  errors.push(...validateTrees(choice.trees, skillPointsFor(rules.statPoints), { free: free.trees, ancestry: abc.ancestry }));
+  errors.push(...validateTrees(choice.trees, skillPointsFor(rules.statPoints), { free: free.trees, ancestry: abc.ancestry, wasteling: !!abc.wasteling }));
   return errors;
 }
 
@@ -216,14 +216,14 @@ export const withFree = (trees, free = {}) => {
   return out;
 };
 /** Problems with the starting skill trees: budget (free tiers cost nothing) and requirements (an ancestry tree needs the character's Ancestry). */
-export function validateTrees(trees, skillPoints, { free = {}, ancestry = null } = {}) {
+export function validateTrees(trees, skillPoints, { free = {}, ancestry = null, wasteling = false } = {}) {
   const errors = [];
   const t = withFree(trees, free);
   const spent = skills.spentPoints(t, free);
   if (spent > skillPoints) errors.push(`Your skill trees cost ${spent} Skill Points, but you only have ${skillPoints}.`);
   for (const id of Object.keys(t)) {
     const tree = skills.treeById(id);
-    if (!skills.isAvailable(t, tree, { ancestry })) errors.push(`${tree.name} needs ${skills.requirementText(tree)}.`);
+    if (!skills.isAvailable(t, tree, { ancestry, wasteling })) errors.push(`${tree.name} needs ${skills.requirementText(tree)}.`);
   }
   return errors;
 }

@@ -17,11 +17,11 @@ export const ABC_RULES = {
     },
     {
      "name": "Ancestry",
-     "text": "Your Ancestry is the people you are born to. Each Ancestry is a group, with a core tree shared by the wider kind it belongs to (all Wuson-descended peoples share the Wusonian core) and one or more meat trees unique to it, or shared with closely related Ancestries. You start with the Tier 0 of your Ancestry’s core, and buy its other tiers as normal."
+     "text": "Your Ancestry is the people you are born to. Each Ancestry has a core tree shared by the wider kind it belongs to (all Wuson-descended peoples share the Wusonian core), usually a lineage tree shared by its line (such as Commonkin for the Human line), and one or more meat trees unique to it, or shared with closely related Ancestries. None of these trees require another. You start with the Tier 0 of each of your Ancestry’s trees, and buy their other tiers as normal."
     },
     {
      "name": "Background",
-     "text": "Your Background is how you were raised and what you did before the story began. It grants 15 free points of starting skill trees at normal tier costs, including any Theory or core tiers those trees require. Free points unlock trees and count toward their requirements, but toward nothing else: not dice, not the Stat Bonus, and not Energy. Any points a Background cannot place go into your Ancestry’s trees instead. Some Backgrounds are shared across several Ancestries, with small differences for each."
+     "text": "Your Background is how you were raised and what you did before the story began. It grants 15 free points of starting skill trees at normal tier costs, including any Theory tiers those trees require. Free points unlock trees and count toward their requirements, but toward nothing else: not dice, not the Stat Bonus, and not Energy. Any points a Background cannot place go into your Ancestry’s trees instead. Some Backgrounds are shared across several Ancestries, with small differences for each."
     },
     {
      "name": "Culture",
@@ -137,6 +137,65 @@ export const ANCESTRIES = {
    "ancestry-human-tree"
   ]
  },
+ "namuh": {
+  "id": "namuh",
+  "name": "Namuh",
+  "core": "ancestry-wusonian",
+  "size": 3,
+  "languages": "Common.",
+  "lifespan": "About 40 years, as their altered bodies break down. Those whose bodies stabilize can live as long as 120.",
+  "backgrounds": [
+   "explorer",
+   "scholar-s-apprentice",
+   "recruit",
+   "apprentice-mage",
+   "novice",
+   "hunter",
+   "trader-s-apprentice",
+   "laborer",
+   "urchin",
+   "outsider"
+  ],
+  "profile": [
+   {
+    "name": "Lineage",
+    "text": "Humans changed by the Goblin research wing for the Super Soldier Program during the Continental War, which used cancer cells to make soldiers who could regenerate on the battlefield. Most mutated horribly instead, healing worse and living shorter lives, but the rare few who learn to control it become what the Humans wanted. None are made anymore, but their genes are dominant, so their numbers are growing fast. Descended from the Wuson through the Humans."
+   },
+   {
+    "name": "Homeland",
+    "text": "Human lands, mostly The United States of Tartan, where they live among Humans and blend in easily."
+   },
+   {
+    "name": "Appearance",
+    "text": "Mostly human, with a few small lumps under the skin, but people tend to sense something slightly off about them that is hard to place. The more a Namuh has mastered their altered body, the harder this is to notice."
+   },
+   {
+    "name": "Size",
+    "text": "3."
+   },
+   {
+    "name": "Languages",
+    "text": "Common."
+   },
+   {
+    "name": "Lifespan",
+    "text": "About 40 years, as their altered bodies break down. Those whose bodies stabilize can live as long as 120."
+   },
+   {
+    "name": "Backgrounds",
+    "text": "Explorer, Scholar’s Apprentice, Recruit, Apprentice Mage, Novice, Hunter, Trader’s Apprentice, Laborer, Urchin, Outsider."
+   },
+   {
+    "name": "Homelands",
+    "text": "Guild-Town, Crownland, Old Pantheon, or a Shared Homeland."
+   }
+  ],
+  "trees": [
+   "ancestry-wusonian",
+   "ancestry-commonkin",
+   "ancestry-namuh-tree"
+  ]
+ },
  "dwarf": {
   "id": "dwarf",
   "name": "Dwarf",
@@ -191,6 +250,62 @@ export const ANCESTRIES = {
    "ancestry-dwarf-tree"
   ]
  },
+ "sworan": {
+  "id": "sworan",
+  "name": "Sworan",
+  "core": "ancestry-wusonian",
+  "size": 3,
+  "languages": "Sworan. They understand Common (Dwarven dialect) but cannot speak it.",
+  "lifespan": "About 80 years.",
+  "backgrounds": [
+   "engineer-s-apprentice",
+   "mine-hand",
+   "recruit",
+   "apprentice-mage",
+   "novice",
+   "hunter",
+   "laborer",
+   "outsider"
+  ],
+  "profile": [
+   {
+    "name": "Lineage",
+    "text": "Descended from the Wuson. The first people of the far west, living in the Rust Caves long before the Dwarves arrived. Much of the Dwarven dialect comes from them. The Dwarves enslaved them on landing to build their settlements, and freed them around 1585, after winning the war against the Orcs. Some older Sworan still hate the Dwarves, but most now feel neutral toward them."
+   },
+   {
+    "name": "Homeland",
+    "text": "The Rust Caves (beneath the Dwarven Republic, south-west of the western continent). Most now live within Dwarven society, though still mostly underground, and few come to the surface unless they need to or have an adventurous streak."
+   },
+   {
+    "name": "Appearance",
+    "text": "Gray, stone-hard skin and pale eyes. The metals in their bodies pool on their dominant side, stiffening that leg and filling that arm, which has no hand and can be reshaped like the metal it is."
+   },
+   {
+    "name": "Size",
+    "text": "3."
+   },
+   {
+    "name": "Languages",
+    "text": "Sworan. They understand Common (Dwarven dialect) but cannot speak it."
+   },
+   {
+    "name": "Lifespan",
+    "text": "About 80 years."
+   },
+   {
+    "name": "Backgrounds",
+    "text": "Engineer’s Apprentice, Mine Hand, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider."
+   },
+   {
+    "name": "Homelands",
+    "text": "Iron Republic, Moon Faithful, Common Folk, or a Shared Homeland."
+   }
+  ],
+  "trees": [
+   "ancestry-wusonian",
+   "ancestry-sworan-tree"
+  ]
+ },
  "halfling": {
   "id": "halfling",
   "name": "Halfling",
@@ -241,8 +356,65 @@ export const ANCESTRIES = {
   "trees": [
    "ancestry-wusonian",
    "ancestry-commonkin",
-   "ancestry-smallfolk",
-   "ancestry-halfling-tree"
+   "ancestry-halfling-tree",
+   "ancestry-smallfolk"
+  ]
+ },
+ "wildibit": {
+  "id": "wildibit",
+  "name": "Wildibit",
+  "core": "ancestry-leporid",
+  "size": 2,
+  "languages": "Common.",
+  "lifespan": "About 30 years. They breed quickly, though with longer pregnancies than true rabbits.",
+  "backgrounds": [
+   "street-performer",
+   "courier",
+   "apprentice-mage",
+   "novice",
+   "trader-s-apprentice",
+   "laborer",
+   "urchin",
+   "outsider"
+  ],
+  "profile": [
+   {
+    "name": "Lineage",
+    "text": "Magic-touched. Rabbits uplifted into people by magic itself, for reasons no one knows. Not descended from the Wuson."
+   },
+   {
+    "name": "Homeland",
+    "text": "The Littlefoot Hills (just south of the Humans), among the Halflings. Long scattered and hidden, they formed small bands in Halfling lands after the Humans conscripted them, along with the Halflings, near the end of the Continental War. They now live alongside the Halflings in near harmony."
+   },
+   {
+    "name": "Appearance",
+    "text": "Furred and rabbit-faced, with long ears, small paw-like hands, and powerful hind legs."
+   },
+   {
+    "name": "Size",
+    "text": "2."
+   },
+   {
+    "name": "Languages",
+    "text": "Common."
+   },
+   {
+    "name": "Lifespan",
+    "text": "About 30 years. They breed quickly, though with longer pregnancies than true rabbits."
+   },
+   {
+    "name": "Backgrounds",
+    "text": "Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider."
+   },
+   {
+    "name": "Homelands",
+    "text": "Hills Revelers, Cargo Families, Council-Town, or a Shared Homeland."
+   }
+  ],
+  "trees": [
+   "ancestry-leporid",
+   "ancestry-wildibit-tree",
+   "ancestry-smallfolk"
   ]
  },
  "elf": {
@@ -299,6 +471,64 @@ export const ANCESTRIES = {
    "ancestry-elf-tree"
   ]
  },
+ "myrthel": {
+  "id": "myrthel",
+  "name": "Myrthel",
+  "core": "ancestry-wusonian",
+  "size": 3,
+  "languages": "Common.",
+  "lifespan": "About 50 years, as their fragile bodies wear out early.",
+  "backgrounds": [
+   "college-student",
+   "court-page",
+   "recruit",
+   "apprentice-mage",
+   "novice",
+   "hunter",
+   "laborer",
+   "urchin",
+   "outsider"
+  ],
+  "profile": [
+   {
+    "name": "Lineage",
+    "text": "Elves reshaped by magic over so many generations that it shows in their bodies. Descended from the Wuson through the Humans and Elves."
+   },
+   {
+    "name": "Homeland",
+    "text": "The Paanlands, living among the Elves, who treasure them while privately seeing them as precious failures."
+   },
+   {
+    "name": "Appearance",
+    "text": "Pure white skin and thin, delicate features."
+   },
+   {
+    "name": "Size",
+    "text": "3."
+   },
+   {
+    "name": "Languages",
+    "text": "Common."
+   },
+   {
+    "name": "Lifespan",
+    "text": "About 50 years, as their fragile bodies wear out early."
+   },
+   {
+    "name": "Backgrounds",
+    "text": "College Student, Court Page, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Urchin, Outsider."
+   },
+   {
+    "name": "Homelands",
+    "text": "Elven Courts, Paan Faithful, Open-City Elves, or a Shared Homeland."
+   }
+  ],
+  "trees": [
+   "ancestry-wusonian",
+   "ancestry-commonkin",
+   "ancestry-myrthel-tree"
+  ]
+ },
  "dusken": {
   "id": "dusken",
   "name": "Dusken",
@@ -337,10 +567,6 @@ export const ANCESTRIES = {
     "text": "About 50 years, as the curse wears on the body; those who master their spirit can live to about 90."
    },
    {
-    "name": "Loose Tether",
-    "text": "Your spirit is only loosely bound to your body. This has no effect on its own, but it is what the Dusken Shadow and Dusken Spirit trees build on."
-   },
-   {
     "name": "Backgrounds",
     "text": "Spirit Hunter Initiate, Spirit Tender, Recruit, Apprentice Mage, Novice, Laborer, Outsider."
    },
@@ -354,6 +580,62 @@ export const ANCESTRIES = {
    "ancestry-commonkin",
    "ancestry-dusken-shadow",
    "ancestry-dusken-spirit"
+  ]
+ },
+ "dawn-elf": {
+  "id": "dawn-elf",
+  "name": "Dawn Elf",
+  "core": "ancestry-wusonian",
+  "size": 3,
+  "languages": "Common.",
+  "lifespan": "About 40 years, as body and shadow wear each other down.",
+  "backgrounds": [
+   "spirit-hunter-initiate",
+   "spirit-tender",
+   "recruit",
+   "apprentice-mage",
+   "novice",
+   "laborer",
+   "outsider"
+  ],
+  "profile": [
+   {
+    "name": "Lineage",
+    "text": "Born of a Dusken and an Elf. Their mixed blood leaves the shadow bound inside the body instead of loosely tethered. Both peoples see them as abominations: having a Dawn child is a crime in the Elven lands, and was in the Dusklands until Umbra, whose fascination with them led to the discovery that the shadow can be given to others. Human line, through the Elves and Dusken."
+   },
+   {
+    "name": "Homeland",
+    "text": "Ostracized outsider communities in and around the Dusklands (southern tip of the eastern continent). Extremely rare, and almost unknown outside the Elves and Dusken."
+   },
+   {
+    "name": "Appearance",
+    "text": "Patchwork skin, gray and white in random areas, with the shadow visibly straining beneath it."
+   },
+   {
+    "name": "Size",
+    "text": "3."
+   },
+   {
+    "name": "Languages",
+    "text": "Common."
+   },
+   {
+    "name": "Lifespan",
+    "text": "About 40 years, as body and shadow wear each other down."
+   },
+   {
+    "name": "Backgrounds",
+    "text": "Spirit Hunter Initiate, Spirit Tender, Recruit, Apprentice Mage, Novice, Laborer, Outsider."
+   },
+   {
+    "name": "Homelands",
+    "text": "Paan Faithful, Tribal Village, Shadow Supremacist, or a Shared Homeland."
+   }
+  ],
+  "trees": [
+   "ancestry-wusonian",
+   "ancestry-commonkin",
+   "ancestry-dawn-elf-tree"
   ]
  },
  "drakenblood": {
@@ -394,10 +676,6 @@ export const ANCESTRIES = {
     "text": "About 50 years, shortened by their transformation."
    },
    {
-    "name": "Elemental Gland",
-    "text": "When you create a Drakenblood character, choose your gland’s element: Heat, Cold, Acid, or Radiation. You can make Light or Heavy unarmed attacks with your breath instead of your body; these are natural attacks with a range of 15ft that deal your gland’s element instead of Physical damage. The Draken Elements tree builds on this gland."
-   },
-   {
     "name": "Backgrounds",
     "text": "Ward Apprentice, Reclaimer Initiate, Recruit, Apprentice Mage, Novice, Laborer, Outsider."
    },
@@ -412,6 +690,49 @@ export const ANCESTRIES = {
    "ancestry-draken-elements",
    "ancestry-draken-legacy"
   ]
+ },
+ "wasteling": {
+  "id": "wasteling",
+  "name": "Wasteling",
+  "core": "ancestry-wasteling",
+  "size": 3,
+  "languages": "",
+  "lifespan": "Cannot die of natural causes. Most turn feral 20 to 40 years after the change, though some find ways to hold it off. A Wasteling can still have children, who are Wastelings of the same Ancestry, for 10 to 20 years after the change, until they begin to turn.",
+  "backgrounds": [],
+  "profile": [
+   {
+    "name": "Lineage",
+    "text": "Any. A person of any Ancestry, decayed beyond recognition by about a decade in the Dragon Wastes. Most are Drakenblood or Humans (the Wastes were once Human land, Silver Springs), with some Dwarves, Fire Walkers, and the very rare Goblin. Most people, the Drakenblood above all, pity them as cursed, sorry creatures. Playable Wastelings have left the cult that worships the spirits sealed in Old Draken Hold, or never joined it."
+   },
+   {
+    "name": "Becoming One",
+    "text": "Pick your original Ancestry as normal, then replace its core tree with the Wasteling tree. You keep its lineage and Ancestry trees."
+   },
+   {
+    "name": "Homeland",
+    "text": "The Dragon Wastes (south of the western continent). Most never leave, held there by the curse and by whatever brought them there in the first place, living in the cults or the Wastes’ settlements. Playable Wastelings are the rare few who left."
+   },
+   {
+    "name": "Appearance",
+    "text": "Your original Ancestry, decayed: sloughing skin, exposed sinew, and clouded eyes."
+   },
+   {
+    "name": "Size and Languages",
+    "text": "As your original Ancestry."
+   },
+   {
+    "name": "Lifespan",
+    "text": "Cannot die of natural causes. Most turn feral 20 to 40 years after the change, though some find ways to hold it off. A Wasteling can still have children, who are Wastelings of the same Ancestry, for 10 to 20 years after the change, until they begin to turn."
+   },
+   {
+    "name": "Backgrounds and Homelands",
+    "text": "Those of your original Ancestry."
+   }
+  ],
+  "trees": [
+   "ancestry-wasteling"
+  ],
+  "variant": "wasteling"
  },
  "orc": {
   "id": "orc",
@@ -464,6 +785,61 @@ export const ANCESTRIES = {
    "ancestry-wusonian",
    "ancestry-bestial",
    "ancestry-orc-tree"
+  ]
+ },
+ "noctua": {
+  "id": "noctua",
+  "name": "Noctua",
+  "core": "ancestry-strigid",
+  "size": 2,
+  "languages": "Bestial (Orcish).",
+  "lifespan": "About 50 years.",
+  "backgrounds": [
+   "wildspeaker-s-apprentice",
+   "apprentice-mage",
+   "novice",
+   "hunter",
+   "laborer",
+   "outsider"
+  ],
+  "profile": [
+   {
+    "name": "Lineage",
+    "text": "Magic-touched. Owls uplifted into people by magic itself, for reasons no one knows. Not descended from the Wuson."
+   },
+   {
+    "name": "Homeland",
+    "text": "The canopy of the Orcish Wildlands (north-west of the western continent), above and among the Orcs’ tree-built villages. They live alongside the Orcs and often serve as their scouts, especially in the war against the Dwarves."
+   },
+   {
+    "name": "Appearance",
+    "text": "Feathered and owl-faced, with large forward-facing eyes and clawed hands at the bend of each wing."
+   },
+   {
+    "name": "Size",
+    "text": "2."
+   },
+   {
+    "name": "Languages",
+    "text": "Bestial (Orcish)."
+   },
+   {
+    "name": "Lifespan",
+    "text": "About 50 years."
+   },
+   {
+    "name": "Backgrounds",
+    "text": "Wildspeaker’s Apprentice, Apprentice Mage, Novice, Hunter, Laborer, Outsider."
+   },
+   {
+    "name": "Homelands",
+    "text": "Great Tribe, Small Tribe, or a Shared Homeland."
+   }
+  ],
+  "trees": [
+   "ancestry-strigid",
+   "ancestry-noctua-tree",
+   "ancestry-smallfolk"
   ]
  },
  "fire-walker": {
@@ -522,6 +898,64 @@ export const ANCESTRIES = {
    "ancestry-firelander"
   ]
  },
+ "minotaur": {
+  "id": "minotaur",
+  "name": "Minotaur",
+  "core": "ancestry-lakeborn",
+  "size": 3,
+  "languages": "Bestial (Orcish).",
+  "lifespan": "About 70 years.",
+  "backgrounds": [
+   "deckhand",
+   "pilgrim",
+   "tiro",
+   "recruit",
+   "apprentice-mage",
+   "novice",
+   "hunter",
+   "laborer",
+   "outsider"
+  ],
+  "profile": [
+   {
+    "name": "Lineage",
+    "text": "Orc line, through the Fire Walkers, Rift-born. Fire Walkers changed by the Firelands lake, who now breed true and call themselves the Red Tusks."
+   },
+   {
+    "name": "Homeland",
+    "text": "The Red Tusk lands (north-east of the Hellspire Expanse), where the Rite of the Minotaur is performed. Most spend their lives at sea, while those on land live nomadic lives much like the Dirt clans, far from the Firelands. Fire Walkers may still take the Rite and become Minotaurs, though few choose to now."
+   },
+   {
+    "name": "Appearance",
+    "text": "Bull-headed, with horns, reddish tusks, and a thick hide over a heavier frame than a Fire Walker’s."
+   },
+   {
+    "name": "Size",
+    "text": "3."
+   },
+   {
+    "name": "Languages",
+    "text": "Bestial (Orcish)."
+   },
+   {
+    "name": "Lifespan",
+    "text": "About 70 years."
+   },
+   {
+    "name": "Backgrounds",
+    "text": "Deckhand, Pilgrim, Tiro, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider."
+   },
+   {
+    "name": "Homelands",
+    "text": "Guiding Flame Faithful, Red Tusk Horde, or a Shared Homeland."
+   }
+  ],
+  "trees": [
+   "ancestry-lakeborn",
+   "ancestry-bestial",
+   "ancestry-minotaur-tree"
+  ]
+ },
  "goblin": {
   "id": "goblin",
   "name": "Goblin",
@@ -572,8 +1006,64 @@ export const ANCESTRIES = {
   "trees": [
    "ancestry-wusonian",
    "ancestry-bestial",
-   "ancestry-smallfolk",
-   "ancestry-goblin-tree"
+   "ancestry-goblin-tree",
+   "ancestry-smallfolk"
+  ]
+ },
+ "smoblin": {
+  "id": "smoblin",
+  "name": "Smoblin",
+  "core": "ancestry-wusonian",
+  "size": 2,
+  "languages": "Common and Bestial (Orcish).",
+  "lifespan": "About 40 years.",
+  "backgrounds": [
+   "latent-psion",
+   "novice",
+   "trader-s-apprentice",
+   "laborer",
+   "urchin",
+   "outsider"
+  ],
+  "profile": [
+   {
+    "name": "Lineage",
+    "text": "Orc line, through the Goblins. Made by the Goblin research wing’s Smart Goblin Initiative during the Continental War, to make Goblins clever enough to build better things. Forced to run such powerful minds, Smoblins tend to be cold, arrogant, and unstable, with sharp swings of mood. Their genes are recessive, so their numbers keep shrinking, but the labs keep making more."
+   },
+   {
+    "name": "Homeland",
+    "text": "Tinksmith’s main research laboratory, the head of the Goblin research institute (south-east tip of the western continent), and the Island Holdings research posts. Very few ever leave, and those who do usually escaped during Green Hood attacks."
+   },
+   {
+    "name": "Appearance",
+    "text": "Goblin, with slightly larger heads and pale eyes that seem to look through you."
+   },
+   {
+    "name": "Size",
+    "text": "2."
+   },
+   {
+    "name": "Languages",
+    "text": "Common and Bestial (Orcish)."
+   },
+   {
+    "name": "Lifespan",
+    "text": "About 40 years."
+   },
+   {
+    "name": "Backgrounds",
+    "text": "Latent Psion, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider."
+   },
+   {
+    "name": "Homelands",
+    "text": "Family Ward, Undercity, Island Holdings, or a Shared Homeland."
+   }
+  ],
+  "trees": [
+   "ancestry-wusonian",
+   "ancestry-bestial",
+   "ancestry-smoblin-tree",
+   "ancestry-smallfolk"
   ]
  },
  "wonderborn-life": {
@@ -756,22 +1246,27 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Every Ancestry.",
-   "Starting Trees": "Spend all 15 points freely across your Ancestry’s trees (your core, lineage, and Ancestry trees), at normal tier costs and requirements.",
-   "Circle": "any Shared Circle (Self-Made or Family Trade)."
+   "Starting Trees": "You build this Background yourself. Give your GM a one-line concept for who your character was before the story began. Once they approve it, spend all 15 free points on any skill trees you could normally take, at normal tier costs and requirements, including any Theory tiers those trees need.",
+   "Circle": "Self-Made, or a Circle your GM approves that fits your concept."
   },
-  "ancestryPoints": 15
+  "anyPoints": 15
  },
  "recruit": {
   "id": "recruit",
   "name": "Recruit",
   "available": [
    "human",
+   "namuh",
    "dwarf",
+   "sworan",
    "elf",
+   "myrthel",
    "dusken",
+   "dawn-elf",
    "drakenblood",
    "orc",
-   "fire-walker"
+   "fire-walker",
+   "minotaur"
   ],
   "trees": [
    {
@@ -818,7 +1313,7 @@ export const BACKGROUNDS = {
   ],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Human, Dwarf, Elf, Dusken, Drakenblood, Orc, and Fire Walker.",
+   "Available to": "Human, Namuh, Dwarf, Sworan, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Fire Walker, and Minotaur.",
    "Starting Trees": "Martial Theory T2, Medium Armor T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Resolve T2, and either Courage T2 or Endurance T2.",
    "Ancestry Differences": "Dwarf: Heavy Armor T2 replaces Medium Armor T2.",
    "Circle": "Barracks-Raised, or a Shared Circle."
@@ -829,13 +1324,20 @@ export const BACKGROUNDS = {
   "name": "Apprentice Mage",
   "available": [
    "human",
+   "namuh",
    "dwarf",
+   "sworan",
    "halfling",
+   "wildibit",
    "elf",
+   "myrthel",
    "dusken",
+   "dawn-elf",
    "drakenblood",
    "orc",
-   "fire-walker"
+   "noctua",
+   "fire-walker",
+   "minotaur"
   ],
   "trees": [
    {
@@ -926,7 +1428,7 @@ export const BACKGROUNDS = {
   ],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Human, Dwarf, Halfling, Elf, Dusken, Drakenblood, Orc, and Fire Walker.",
+   "Available to": "Human, Namuh, Dwarf, Sworan, Halfling, Wildibit, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Noctua, Fire Walker, and Minotaur.",
    "Starting Trees": "Magic Theory T2, plus one focus:",
    "Warder": "Protection Arcana T3, one of Gravity, Slashing, Piercing, or Crushing at T2, and Perception T2.",
    "Elementalist": "one of Heat, Cold, Radiation, or Acid at T3, Reach Arcana T2, and Perception T2.",
@@ -940,13 +1442,21 @@ export const BACKGROUNDS = {
   "name": "Novice",
   "available": [
    "human",
+   "namuh",
    "dwarf",
+   "sworan",
    "halfling",
+   "wildibit",
    "elf",
+   "myrthel",
    "dusken",
+   "dawn-elf",
    "drakenblood",
    "orc",
-   "fire-walker"
+   "noctua",
+   "fire-walker",
+   "minotaur",
+   "smoblin"
   ],
   "trees": [
    {
@@ -1000,7 +1510,7 @@ export const BACKGROUNDS = {
   ],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Human, Dwarf, Halfling, Elf, Dusken, Drakenblood, Orc, and Fire Walker.",
+   "Available to": "Human, Namuh, Dwarf, Sworan, Halfling, Wildibit, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Noctua, Fire Walker, Minotaur, and Smoblin.",
    "Starting Trees": "Mental Theory T2, one of Life, Death, Order, Chaos, Beyond, or Below at T3 (the domain of your faith), Resolve T2, and Persuasion T2.",
    "Ancestry Differences": "Fire Walker: Mental Theory T3, Light T2, Resolve T2, and Persuasion T2.",
    "Circle": "Temple, or a Shared Circle."
@@ -1011,10 +1521,15 @@ export const BACKGROUNDS = {
   "name": "Hunter",
   "available": [
    "human",
+   "namuh",
    "dwarf",
+   "sworan",
    "elf",
+   "myrthel",
    "orc",
-   "fire-walker"
+   "noctua",
+   "fire-walker",
+   "minotaur"
   ],
   "trees": [
    {
@@ -1053,7 +1568,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Human, Dwarf, Elf, Orc, and Fire Walker.",
+   "Available to": "Human, Namuh, Dwarf, Sworan, Elf, Myrthel, Orc, Noctua, Fire Walker, and Minotaur.",
    "Starting Trees": "Martial Theory T1, either Rapid Weapons T2 or Swift Weapons T2, Perception T2, Stealth T2, Concealment T2, Endurance T1, and Athletics T1.",
    "Circle": "Lodge, or a Shared Circle."
   }
@@ -1063,9 +1578,12 @@ export const BACKGROUNDS = {
   "name": "Trader’s Apprentice",
   "available": [
    "human",
+   "namuh",
    "dwarf",
    "halfling",
-   "goblin"
+   "wildibit",
+   "goblin",
+   "smoblin"
   ],
   "trees": [
    {
@@ -1095,7 +1613,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 6,
   "text": {
-   "Available to": "Human, Dwarf, Halfling, and Goblin.",
+   "Available to": "Human, Namuh, Dwarf, Halfling, Wildibit, Goblin, and Smoblin.",
    "Starting Trees": "Persuasion T2, Barter T2, and Perception T2.",
    "Trade Slot": "6 points, held for now by Resolve T2 and Insight T2 as placeholders until trade professions exist.",
    "Circle": "Caravan, or a Shared Circle."
@@ -1144,9 +1662,13 @@ export const BACKGROUNDS = {
   "name": "Urchin",
   "available": [
    "human",
+   "namuh",
    "halfling",
+   "wildibit",
    "elf",
-   "goblin"
+   "myrthel",
+   "goblin",
+   "smoblin"
   ],
   "trees": [
    {
@@ -1182,7 +1704,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Human, Halfling, Elf, and Goblin.",
+   "Available to": "Human, Namuh, Halfling, Wildibit, Elf, Myrthel, Goblin, and Smoblin.",
    "Starting Trees": "Stealth T2, Sleight T2, Deception T2, Perception T2, Athletics T1, Mobility T1, and Initiative T1.",
    "Circle": "Street Crew, or a Shared Circle."
   }
@@ -1191,7 +1713,8 @@ export const BACKGROUNDS = {
   "id": "explorer",
   "name": "Explorer",
   "available": [
-   "human"
+   "human",
+   "namuh"
   ],
   "trees": [
    {
@@ -1227,7 +1750,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Human.",
+   "Available to": "Human and Namuh.",
    "Starting Trees": "Perception T2, Athletics T2, Mobility T2, Endurance T2, Recovery T1, Persuasion T1, and Initiative T1.",
    "Circle": "Expedition Society, or a Shared Circle."
   }
@@ -1236,7 +1759,8 @@ export const BACKGROUNDS = {
   "id": "scholar-s-apprentice",
   "name": "Scholar’s Apprentice",
   "available": [
-   "human"
+   "human",
+   "namuh"
   ],
   "trees": [
    {
@@ -1265,7 +1789,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 3,
   "text": {
-   "Available to": "Human.",
+   "Available to": "Human and Namuh.",
    "Starting Trees": "Perception T2, Resolve T2, Insight T2, and Persuasion T2.",
    "Trade Slot": "3 points, held for now by Composure T2 as a placeholder until trade professions exist.",
    "Circle": "The Stacks, or a Shared Circle."
@@ -1275,7 +1799,8 @@ export const BACKGROUNDS = {
   "id": "engineer-s-apprentice",
   "name": "Engineer’s Apprentice",
   "available": [
-   "dwarf"
+   "dwarf",
+   "sworan"
   ],
   "trees": [
    {
@@ -1305,7 +1830,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 6,
   "text": {
-   "Available to": "Dwarf.",
+   "Available to": "Dwarf and Sworan.",
    "Starting Trees": "Magic Theory T2, Protection Arcana T2, and Perception T2.",
    "Trade Slot": "6 points (gem-tech crafting), held for now by Resolve T2 and Endurance T2 as placeholders until trade professions exist.",
    "Circle": "Construct Works, or a Shared Circle."
@@ -1315,7 +1840,8 @@ export const BACKGROUNDS = {
   "id": "mine-hand",
   "name": "Mine Hand",
   "available": [
-   "dwarf"
+   "dwarf",
+   "sworan"
   ],
   "trees": [
    {
@@ -1344,7 +1870,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 3,
   "text": {
-   "Available to": "Dwarf.",
+   "Available to": "Dwarf and Sworan.",
    "Starting Trees": "Athletics T2, Hauling T2, Endurance T2, and Perception T2.",
    "Trade Slot": "3 points (mining), held for now by Recovery T2 as a placeholder until trade professions exist.",
    "Circle": "Deep Crews, or a Shared Circle."
@@ -1354,7 +1880,8 @@ export const BACKGROUNDS = {
   "id": "street-performer",
   "name": "Street Performer",
   "available": [
-   "halfling"
+   "halfling",
+   "wildibit"
   ],
   "trees": [
    {
@@ -1390,7 +1917,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Halfling.",
+   "Available to": "Halfling and Wildibit.",
    "Starting Trees": "Persuasion T2, Deception T2, Diversion T2, Athletics T2, Diplomacy T1, Mobility T1, and Initiative T1.",
    "Circle": "Traveling Troupe, or a Shared Circle."
   }
@@ -1399,7 +1926,8 @@ export const BACKGROUNDS = {
   "id": "courier",
   "name": "Courier",
   "available": [
-   "halfling"
+   "halfling",
+   "wildibit"
   ],
   "trees": [
    {
@@ -1427,7 +1955,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Halfling.",
+   "Available to": "Halfling and Wildibit.",
    "Starting Trees": "Athletics T2, Mobility T2, Hauling T2, Endurance T2, and Perception T2.",
    "Circle": "The Relay, or a Shared Circle."
   }
@@ -1436,7 +1964,8 @@ export const BACKGROUNDS = {
   "id": "college-student",
   "name": "College Student",
   "available": [
-   "elf"
+   "elf",
+   "myrthel"
   ],
   "trees": [
    {
@@ -1463,7 +1992,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Elf.",
+   "Available to": "Elf and Myrthel.",
    "Starting Trees": "Magic Theory T3, Grasp Arcana T2, one Magic T1 or T2 school of your choice at T2, and Perception T2.",
    "Circle": "The College, or a Shared Circle."
   }
@@ -1472,7 +2001,8 @@ export const BACKGROUNDS = {
   "id": "court-page",
   "name": "Court Page",
   "available": [
-   "elf"
+   "elf",
+   "myrthel"
   ],
   "trees": [
    {
@@ -1508,7 +2038,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Elf.",
+   "Available to": "Elf and Myrthel.",
    "Starting Trees": "Persuasion T2, Diplomacy T2, Resolve T2, Composure T2, Insight T1, Deception T1, and Initiative T1.",
    "Circle": "Household Staff, or a Shared Circle."
   }
@@ -1517,7 +2047,8 @@ export const BACKGROUNDS = {
   "id": "spirit-hunter-initiate",
   "name": "Spirit Hunter Initiate",
   "available": [
-   "dusken"
+   "dusken",
+   "dawn-elf"
   ],
   "trees": [
    {
@@ -1566,7 +2097,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Dusken.",
+   "Available to": "Dusken and Dawn Elf.",
    "Starting Trees": "Perception T2 and Stealth T2, plus one path:",
    "Spellward Path": "Magic Theory T3 and Grasp Arcana T2.",
    "Blade Path": "Martial Theory T2 and one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3.",
@@ -1577,7 +2108,8 @@ export const BACKGROUNDS = {
   "id": "spirit-tender",
   "name": "Spirit Tender",
   "available": [
-   "dusken"
+   "dusken",
+   "dawn-elf"
   ],
   "trees": [
    {
@@ -1601,7 +2133,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Dusken.",
+   "Available to": "Dusken and Dawn Elf.",
    "Starting Trees": "Magic Theory T3, Protection Arcana T2, Grasp Arcana T2, and Resolve T2.",
    "Circle": "The Tending Halls, or a Shared Circle."
   }
@@ -1741,7 +2273,8 @@ export const BACKGROUNDS = {
   "id": "wildspeaker-s-apprentice",
   "name": "Wildspeaker’s Apprentice",
   "available": [
-   "orc"
+   "orc",
+   "noctua"
   ],
   "trees": [
    {
@@ -1773,7 +2306,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Orc.",
+   "Available to": "Orc and Noctua.",
    "Starting Trees": "Mental Theory T2, Life T3, Perception T2, Stealth T1, Endurance T1, and Recovery T1.",
    "Circle": "Grove Circle, or a Shared Circle."
   }
@@ -1819,7 +2352,8 @@ export const BACKGROUNDS = {
   "id": "pilgrim",
   "name": "Pilgrim",
   "available": [
-   "fire-walker"
+   "fire-walker",
+   "minotaur"
   ],
   "trees": [
    {
@@ -1853,7 +2387,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Fire Walker.",
+   "Available to": "Fire Walker and Minotaur.",
    "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Perception T2, Resolve T2, and Courage T2.",
    "Circle": "Pilgrim Band, or a Shared Circle."
   }
@@ -1899,7 +2433,8 @@ export const BACKGROUNDS = {
   "id": "tiro",
   "name": "Tiro",
   "available": [
-   "fire-walker"
+   "fire-walker",
+   "minotaur"
   ],
   "trees": [
    {
@@ -1936,7 +2471,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Fire Walker.",
+   "Available to": "Fire Walker and Minotaur.",
    "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, or Swift Weapons at T3, Medium Armor T1, Athletics T1, Initiative T2, and Tempo T1.",
    "Circle": "Arena Ludus, or a Shared Circle."
   }
@@ -2051,6 +2586,7 @@ export const BACKGROUNDS = {
   "id": "deckhand",
   "name": "Deckhand",
   "available": [
+   "minotaur",
    "goblin"
   ],
   "trees": [
@@ -2087,7 +2623,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Goblin.",
+   "Available to": "Minotaur and Goblin.",
    "Starting Trees": "Athletics T2, Mobility T2, Hauling T2, Endurance T2, Martial Theory T1, Swift Weapons T1, and Initiative T1.",
    "Circle": "Ship’s Crew, or a Shared Circle."
   }
@@ -2096,7 +2632,8 @@ export const BACKGROUNDS = {
   "id": "latent-psion",
   "name": "Latent Psion",
   "available": [
-   "goblin"
+   "goblin",
+   "smoblin"
   ],
   "trees": [
    {
@@ -2120,7 +2657,7 @@ export const BACKGROUNDS = {
   "differences": [],
   "tradeSlot": 0,
   "text": {
-   "Available to": "Goblin.",
+   "Available to": "Goblin and Smoblin.",
    "Starting Trees": "Mental Theory T2, Psion Arts T3, Resolve T2, and Deception T2.",
    "Circle": "Sewer Cult Fringe, or a Shared Circle."
   }
@@ -2344,6 +2881,12 @@ export const HOMELANDS = [
   "name": "Dirt Clans",
   "text": "You come from the nomadic clans of the Dirt, its savannas and deserts. You value honor, strength, and tradition, settle disputes by challenge, and measure others by how they endure hardship. Ties: clan elders, rival clans, and the arenas.",
   "ancestry": "fire-walker"
+ },
+ {
+  "id": "minotaur.red-tusk-horde",
+  "name": "Red Tusk Horde",
+  "text": "You were raised among the Red Tusks, on the north-east coast or aboard their fleet. You value strength, plunder, and the land that made you, keep the old Guiding Flame, and look down on the Great Flame’s Prophets. Ties: ship captains, Red Tusk generals, and crews that answer to no one.",
+  "ancestry": "minotaur"
  },
  {
   "id": "goblin.family-ward",

@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.100.0:** The ABCs doc's new layout and Ancestries. Eight new Ancestries: **Namuh, Sworan, Wildibit, Myrthel, Dawn Elf, Noctua, Minotaur and Smoblin**, with the **Lakeborn, Strigid and Leporid** cores, and the **Wasteling** (a tick on the wizard's Ancestry step: the Wasteling core replaces your Ancestry's core). No ancestry tree requires another any more, and every tree's Tier 0 is free. The **Outsider** now spends its 15 points on any trees you could take. The new trees' abilities are automated: Bounding, Wings and flight, senses, the Living Metal Arm, Thick Hide, Accelerated Healing, Red Tide, Lashing Shadow, Shy of Pain, Blood Price, Overclock and the rest (the list is in AUTOMATION.md).
+
 **0.99.2:** Stagnation's **Crush** is 12d8 downward Force again (it was 12d10 since 0.98.9), from the Mental doc; Stasis's two Crushes are 24d8.
 
 **0.99.1:** Thrasher buffs from the Martial doc: **Grapple** (T1) now deals the attack's damage as normal as well as holding the target; **Windup** (T2) costs half the Scaling Stat min (rounded down) in Energy per use instead of the full min.

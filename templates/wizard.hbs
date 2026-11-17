@@ -41,6 +41,12 @@
       </div>
       {{/unless}}{{/each}}
     </div>
+    {{#if wasteling}}
+    <div class="fs-abc-card {{#if wasteling.on}}fs-picked{{/if}}">
+      <header><button type="button" class="fs-abc-pick" data-action="toggleWasteling" data-tooltip="{{#if wasteling.on}}Undo it: your Ancestry keeps its own core tree{{else}}Your character was decayed by the Dragon Wastes: the Wasteling core replaces your Ancestry's core{{/if}}">{{#if wasteling.on}}<i class="fa-solid fa-square-check"></i>{{else}}<i class="fa-regular fa-square"></i>{{/if}} {{wasteling.name}} (optional)</button></header>
+      <div class="fs-sub">{{#each wasteling.profile}}<p><strong>{{name}}:</strong> {{text}}</p>{{/each}}</div>
+    </div>
+    {{/if}}
     {{#if glandChoices}}
     <div class="fs-field"><label>Elemental Gland</label><select name="abc.element"><option value="">— Pick an element —</option>{{#each glandChoices}}<option value="{{k}}" {{#if selected}}selected{{/if}}>{{v}}</option>{{/each}}</select></div>
     {{/if}}
@@ -68,9 +74,10 @@
         {{> fsOpenTree}}
         {{#if selected}}{{#if ../owed}}
         <div class="fs-bg-alloc">
-          <p class="fs-budget"><strong>{{../allocCost}}</strong> of {{../owed}} points spent on your Ancestry's trees. <span class="hint">Tier N costs N; requirements apply.</span></p>
+          <p class="fs-budget"><strong>{{../allocCost}}</strong> of {{../owed}} points spent on {{#if ../allocAny}}any trees you could take (a Theory's tiers open its trees; your GM approves your concept){{else}}your Ancestry's trees{{/if}}. <span class="hint">Tier N costs N; requirements apply.</span></p>
           <ul class="fs-wizard-trees">
             {{#each ../allocRows}}
+            {{#if group}}<li class="fs-alloc-group"><strong>{{group}}</strong></li>{{/if}}
             <li class="fs-wizard-tree {{#if tier}}fs-picked{{/if}}"><div class="fs-wizard-tree-head">
               <a class="fs-wizard-tree-name" data-action="treeToggle" data-key="{{key}}"><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}}"></i> {{name}}</a> <a class="fs-codex-link fs-codex-icon" data-codex="tree:{{id}}" data-tooltip="Open this tree in the Codex"><i class="fa-solid fa-book-open"></i></a>
               <span class="fs-tier-badge">Tier {{tier}}/5</span>{{#if need}} <span class="hint">{{need}}</span>{{/if}}

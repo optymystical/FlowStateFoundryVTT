@@ -12,7 +12,7 @@ function abcView(actor) {
   const sys = actor.system, abc = sys.abc ?? {}, a = ANCESTRIES[abc.ancestry];
   const name = id => skills.treeById(id)?.name ?? id;
   return {
-    canChange: game.user.isGM, ancestryId: abc.ancestry, ancestry: a?.name ?? "", languages: a?.languages ?? "",
+    canChange: game.user.isGM, ancestryId: abc.ancestry, ancestry: a ? `${abc.wasteling ? "Wasteling " : ""}${a.name}` : "", languages: a?.languages ?? "",
     backgroundId: abc.background, background: BACKGROUNDS[abc.background]?.name ?? "", focus: abc.focus ?? "",
     homeland: HOMELANDS.find(h => h.id === abc.homeland)?.name ?? "", circle: CIRCLES.find(c => c.id === abc.circle)?.name ?? "",
     element: [GLAND_ELEMENTS[abc.element], GLAND_ELEMENTS[abc.element2]].filter(Boolean).join(" / "),
@@ -847,7 +847,7 @@ export function buildReactionList(actor) {
   const sys = actor.system;
   const list = reactionRules.reactionRows(actor, { tenet: wonders.tenetOf(actor)?.id?.split(":")[1] ?? "", iconKind: sys.icon?.system.profile?.kind ?? "",
     hasPremonition: actions.spellEffects(actor, "premonition").length > 0, hasUmbral: actions.spellEffects(actor, "umbralCharge").length > 0, hasGrowth: wondersG.growthCount(actor) > 0,
-    ponderance: skills.tierOf(sys.trees, "mental-ponderance-arts"), snappence: skills.tierOf(sys.trees, "mental-snappence-arts"), tier: w => skills.tierOf(sys.trees, w),
+    ponderance: skills.tierOf(sys.trees, "mental-ponderance-arts"), snappence: skills.tierOf(sys.trees, "mental-snappence-arts"), tier: w => skills.tierOf(sys.trees, w), ancestry: sys.abc?.ancestry ?? "",
     theory: mentalRules.theoryTier(sys.trees), anyWonder: mental.manifestContext(actor).wonders.length > 0 });
   const row = r => ({ label: `${r.label}: ${r.off ? (r.card ? "hidden" : "skipped") : (r.card ? "shown" : "asked")}`,
     detail: `${r.tip} ${r.off ? (r.card ? "The card isn't posted." : "You are not asked: it counts as no.") : (r.card ? "The card is posted when it comes up." : "A popup asks you when it comes up.")}`,
@@ -1170,15 +1170,15 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     const sel = this.skillSelection;
     const inCombat = actions.inActiveCombat(this.document);
     const pinned = this.document.getFlag("flowstate", "pinnedTrees") ?? [];
-    const senses = sys.senses, ancestry = sys.abc?.ancestry || null;
+    const senses = sys.senses, ancestry = sys.abc?.ancestry || null, wasteling = !!sys.abc?.wasteling;
     const free = sys.freeTrees ?? {};
-    const nav = skills.treeNav(state, { pinned, unspent: sys.skills.unspent, inCombat, filter: sel.filter, senses, ancestry, ancestryName: ANCESTRIES[ancestry]?.name ?? "" });
+    const nav = skills.treeNav(state, { pinned, unspent: sys.skills.unspent, inCombat, filter: sel.filter, senses, ancestry, wasteling, ancestryName: ANCESTRIES[ancestry]?.name ?? "" });
     sel.tree ??= lastTree.get(this.document.uuid) ?? null;
     if (!skills.treeById(sel.tree)) sel.tree = nav.first ?? skills.theoryFor("martial")?.id ?? null;
     lastTree.set(this.document.uuid, sel.tree);
     const tree = skills.treeById(sel.tree);
     const current = tree ? skills.tierOf(state, tree.id) : 0;
-    const next = tree ? skills.nextTier(state, tree, sys.skills.unspent, { inCombat, senses, ancestry }) : null;
+    const next = tree ? skills.nextTier(state, tree, sys.skills.unspent, { inCombat, senses, ancestry, wasteling }) : null;
     const freeTier = tree ? skills.tierOf(free, tree.id) : 0;
     const ectx = energyContext(this.document);
     const tp = treePower(this.document, tree);
@@ -1203,7 +1203,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         empty: !nav.pinned.length && !nav.yours.length && !nav.unlock.length },
       weaponNote: weaponTreeNote(tree, state),
       scaleNote: [tp?.power > 1 ? `Numbers are worked out for your ${tp.kind} Power ${tp.power}.` : "", tenetName ? (tenetMult ? `${tenetName} uses your Icon's Tenet multiplier (×${tenetMult}).` : `${tenetName} is shown as printed (it isn't your active Tenet).`) : ""].filter(Boolean).join(" "),
-      lockedNote: tree && !skills.isAvailable(state, tree, { senses, ancestry }) ? `Opens at ${skills.requirementText(tree, { senses })}.` : "",
+      lockedNote: tree && !skills.isAvailable(state, tree, { senses, ancestry, wasteling }) ? `Opens at ${skills.requirementText(tree, { senses })}.` : "",
       freeNote: freeTier ? `Tiers 1–${freeTier} come free with your Background (they aren't Skill Points).` : "",
       tree: tree && {
         id: tree.id, name: tree.name, current, max: skills.MAX_TIER, codex: codexId.tree(tree.id), pinned: pinned.includes(tree.id),

@@ -67,6 +67,11 @@ export async function beginCombat(combat) {
   const home = list.filter(c => marked[c.id] && inTerritory(c.actor));
   for (const c of home) marked[c.id] = false;
   if (home.length) await ChatMessage.create({ content: `<div class="flowstate-card"><header class="fs-card-title">Territorial</header><div class="fs-notes">${home.map(c => esc(c.name)).join(", ")} ${home.length === 1 ? "is" : "are"} in their territory and can't be Surprised.</div></div>` });
+  // Warning Thump (Leporid T4): a creature that isn't Surprised thumps the ground, and its allies within 100 ft who hear it can't be Surprised.
+  const thumpers = list.filter(c => !marked[c.id] && ab.treeTier(c.actor, "ancestry-leporid") >= 4 && !c.actor.statuses?.has?.("unconscious"));
+  const warned = list.filter(c => marked[c.id] && thumpers.some(t => sideOf(t) === sideOf(c) && sideOf(c) !== "0" && near(t, c)));
+  for (const c of warned) marked[c.id] = false;
+  if (warned.length) await ChatMessage.create({ content: `<div class="flowstate-card"><header class="fs-card-title">Warning Thump</header><div class="fs-notes">${thumpers.map(c => esc(c.name)).join(", ")} thump${thumpers.length === 1 ? "s" : ""} the ground: ${warned.map(c => esc(c.name)).join(", ")} can't be Surprised.</div></div>` });
   for (const c of list) await setStatus(c.actor, "surprised", !!marked[c.id]);
 
   // 2. Vigilance (Perception T2): a surprised creature that has it may pay to be aware; Alert (T4) brings its allies within 100 ft along.

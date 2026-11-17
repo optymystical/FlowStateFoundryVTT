@@ -17,7 +17,7 @@ import { castsTwice, attunedAffixKeys } from "./magic.mjs";
 import { STATS, applyStacks } from "./rules.mjs";
 /** An Emplace barrier's health: the Shield's 10 × Power (Emplace applies the Shield's effects as a one-way Shield), scaled by any Strengthened/Weakened on the caster (it has no roll to carry them). */
 const emplaceHealth = (actor, plan) => applyStacks(10 * plan.power, castStacks(actor, plan));
-import { tierOf } from "./skills.mjs";
+import { tierOf, hasAncestryTree } from "./skills.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, DialogV2 } from "./html.mjs";
 import { energyHave } from "./consumables-rules.mjs";
@@ -58,9 +58,13 @@ export function castContext(actor, weave = null) {
   // Offensive Affixes also work with Raw Casting (no Foci): it counts as the pseudo-Foci "raw" below.
   const rawKeys = attunedAffixKeys(actor, "offensive");
   const withAffix = k => [...working.filter(i => i.system.profile.affixes.includes(k)).map(i => i.id), ...(rawKeys.includes(k) ? ["raw"] : [])];
-  return { magicBoost: magicBoostReady(actor), magicBoostScope: (actor.system.trees?.["ancestry-elf-tree"] ?? 0) >= 5 ? "combat" : "rest", fociState: fociFx.castState(actor), targetsAlly, hematiteFoci: withAffix("hematite"), moonstoneFoci: withAffix("moonstone"), taaffeiteFoci: withAffix("taaffeite"),
+  // Myrthel: Steeped in Magic (T0, 1 TR on every Spell) and Blood Price (T3: once per round, or every Spell with Overflowing Blood, T5).
+  const myrthel = hasAncestryTree(actor.system, "ancestry-myrthel-tree"), mt = actor.system.trees?.["ancestry-myrthel-tree"] ?? 0;
+  const bloodKey = globalThis.game?.combat?.started ? `${game.combat.id}:${game.combat.round}` : null;
+  return { bloodPrice: mt >= 3 && (mt >= 5 || !bloodKey || actor.getFlag("flowstate", "ancUse")?.bloodPrice !== bloodKey), bloodCost: actor.system.skillPoints ?? 0,
+    magicBoost: magicBoostReady(actor), magicBoostScope: (actor.system.trees?.["ancestry-elf-tree"] ?? 0) >= 5 ? "combat" : "rest", fociState: fociFx.castState(actor), targetsAlly, hematiteFoci: withAffix("hematite"), moonstoneFoci: withAffix("moonstone"), taaffeiteFoci: withAffix("taaffeite"),
     hematiteDoubled: working.filter(i => i.system.profile.doubled === "hematite").map(i => i.id), taaffeiteDoubled: working.filter(i => i.system.profile.doubled === "taaffeite").map(i => i.id),
-    inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: 0, rituals,
+    inCombat: inActiveCombat(actor), trees: actor.system.trees ?? {}, skillPoints: actor.system.skillPoints ?? 0, options, focused: actor.system.focusedSpell || "", ring, extraTR: myrthel ? 1 : 0, extraTRLabel: myrthel ? "Steeped in Magic" : "", rituals,
     weave: weave ? { ap: weave.ap, keepTR: theory >= 5 } : null };
 }
 
@@ -210,6 +214,7 @@ function dialogHTML(ctx, v) {
     ${(() => { const only = v.core1 && !v.core2 ? fx.profileFor([v.core1]) : null; return only?.hold ? `<label class="fs-cast-mod"><input type="checkbox" name="hold" ${v.hold ? "checked" : ""}> <strong>Hold it</strong> <small>in melee: no damage, but it stays available to use again for the same AP until your next turn</small></label>` : ""; })()}
     ${ctx.rituals?.length ? `<div class="fs-field"><label>Free cast from Ritual</label><select name="useRitual"><option value="">None</option>${ctx.rituals.map(r => `<option value="${r.id}" ${v.useRitual === r.id ? "selected" : ""}>${esc(r.name)} (${r.freeCasts} left)</option>`).join("")}</select></div>` : ""}
     ${ctx.moonstoneFoci?.length ? `<label class="fs-cast-mod"><input type="checkbox" name="dark" ${v.dark ? "checked" : ""}> <strong>Moonstone</strong> <small>you're in darkness or dim light</small></label>` : ""}
+    ${ctx.bloodPrice ? `<label class="fs-cast-mod"><input type="checkbox" name="bloodPrice" ${v.bloodPrice ? "checked" : ""}> <strong>Blood Price</strong> <small>+100% Power; you lose ${ctx.bloodCost} HP (Myrthel)</small></label>` : ""}
     ${ctx.magicBoost ? `<label class="fs-cast-mod"><input type="checkbox" name="magicBoost" ${v.magicBoost ? "checked" : ""}> <strong>Magic Boost</strong> <small>+100% Power to the Core or Combo's bolded effects, no extra Threshold (Elf; once per ${ctx.magicBoostScope})</small></label>` : ""}
     ${ctx.hematiteFoci?.length ? `<label class="fs-cast-mod"><input type="checkbox" name="hematite" ${v.hematite ? "checked" : ""}> <strong>Hematite</strong> <small>double the Power by spending Health equal to it</small></label>` : ""}
     ${theory >= 2 && !ctx.inCombat ? `<label class="fs-cast-mod"><input type="checkbox" name="ritual" ${v.ritual ? "checked" : ""}> <strong>Ritual</strong> <small>takes hours instead of AP, and lowers your max Energy while it lasts (out of combat)</small></label>` : ""}
@@ -399,6 +404,10 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
     if (plan.hematite && plan.hematiteCost) await actor.update({ "system.hp.value": actor.system.hp.value - plan.hematiteCost });
   }
   if (plan.magicBoost) { const u = magicBoostUse(actor); await setActorFlag(actor, u.key, u.value); }
+  if (plan.bloodPrice) {
+    await actor.update({ "system.hp.value": actor.system.hp.value - (actor.system.skillPoints ?? 0) });
+    if (game.combat?.started) await setActorFlag(actor, "ancUse", { bloodPrice: `${game.combat.id}:${game.combat.round}` });
+  }
 
   // A Ritual: Shield lasts until the Ritual ends; the attack spells store two free casts. Free casts used up end the Ritual.
   let ritualOf = null;
@@ -470,7 +479,7 @@ export async function castSpell(actor, preset = null, { weave = null, fire = nul
   const twice = !!type && !plan.ritual && !plan.freeFrom && !fire && castsTwice(type, state.last, coreKey);
   if (type === "gauntlet" && twice) {
     const hi = plan.option.scalingHigh ?? plan.scaling;
-    await run({ ...plan, scaling: hi, power: spells.spellPower(hi) * (1 + (plan.empower ?? 0) + (plan.hematiteBonus ?? (plan.hematite ? 1 : 0)) + (plan.magicBoost ? 1 : 0)) });
+    await run({ ...plan, scaling: hi, power: spells.spellPower(hi) * (1 + (plan.empower ?? 0) + (plan.hematiteBonus ?? (plan.hematite ? 1 : 0)) + (plan.magicBoost ? 1 : 0) + (plan.bloodPrice ? 1 : 0)) });
     await post(actor, { title: `${esc(actor.name)} — Gauntlet`, body: `<div class="fs-result">The Gauntlet duplicates it, using your lower Scaling Stat (${plan.scaling}).</div>` });
     await run(plan);
   } else {

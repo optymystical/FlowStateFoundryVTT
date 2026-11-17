@@ -145,7 +145,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       name: st.name, img: st.img, canBrowse: game.user.can?.("FILES_BROWSE") ?? false,
       sizes: Object.fromEntries([1, 2, 3, 4, 5].map(n => [n, `Size ${n}`])), size: st.size,
       dispositions: npc.DISPOSITIONS, disposition: String(st.disposition),
-      ancestries: { "": "None", ...Object.fromEntries(Object.values(ANCESTRIES).filter(a => !a.hidden && !a.bestiary).map(a => [a.id, `${a.name} (Size ${a.size})`])),
+      ancestries: { "": "None", ...Object.fromEntries(Object.values(ANCESTRIES).filter(a => !a.hidden && !a.bestiary && !a.variant).map(a => [a.id, `${a.name} (Size ${a.size})`])),
         ...Object.fromEntries(best.bestiaryAncestries().map(a => [a.id, `Bestiary: ${best.bestiaryLabel(a)}`])) }, ancestry: st.ancestry,
       bestiaryBgs: best.isBestiary(st.ancestry) ? Object.fromEntries(best.bestiaryBackgrounds(st.ancestry).map(x => [x.id, `${x.name} (Size ${ANCESTRIES[st.ancestry].sizes?.[x.id] ?? ANCESTRIES[st.ancestry].size}, trees at Tier ${x.setTier})`])) : null,
       bestiaryBg: st.bestiaryBg, bestiaryNote: npc.bestiaryOf(st) ? `Free: ${Object.entries(free).map(([id, t]) => `${skills.treeById(id)?.name ?? id} ${t}`).join(", ")}; its own natural Icon (${npc.bestiaryOf(st).form ?? "none"})` : "",

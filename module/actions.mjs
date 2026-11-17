@@ -1355,6 +1355,13 @@ export async function rollWeaponAttack(actor, item, followup = null, { grapple: 
       notes.push(`Woven ${cap.label}${cap.damage ? `: ${cap.damage} ${DAMAGE_TYPES[cap.type] ?? cap.type} joins the hit` : ": its effects ride the hit"}`);
     }
   }
+  // Ancestry: Hind Kick (Leporid T3: an Unarmed attack, Strengthened, with Knockback) and Swoop (Strigid T3: a melee attack after flying at the target),
+  // armed from the Action List.
+  if (ancestryHook?.weaponAttack && !followup) {
+    const an = await ancestryHook.weaponAttack(actor, { unarmed, melee: opts.mode === "strike" || unarmed });
+    if (an.stacks) { stacks += an.stacks; notes.push(...an.notes); }
+    if (an.knockback && !knockback) knockback = 5 * p.capped * p.hands;
+  }
   const result = await performAttack(actor, {
     label: followup ? `${item.name} — ${followup.label}` : unarmed ? `${item.name} (${WEAPON_TYPES.unarmed.label} ${p.scalingStat === "str" ? "Heavy" : "Light"})` : item.name,
     net, stealth: followup?.kind === "return" && ab.circular(actor, item, 5) ? "half" : opts.stealth, melee: opts.mode === "strike", push: false,
@@ -2226,8 +2233,10 @@ export async function defend(message, index, choice) {
   const waste = mentalHook?.dodgeWaste(target) ?? null;
   const burden = mentalHook?.burdenNet(target, "dodgeDis") ?? 0;
   const eclipse = mentalHook?.dodgeDieAgainst?.(await fromUuid(attack.attacker), target) ?? null;          // Eclipse (Dark): an eclipsed attacker's targets dodge with a smaller die
-  const dieNow = Math.max(1, t.derived.dodgeDie - (waste?.pen ?? 0) - (eclipse?.pen ?? 0));
+  const ancDie = ancestryHook?.dodgeDieUp?.(target, o) ?? null;                          // Shy of Pain (Myrthel): bigger dodge dice against physical attacks
+  const dieNow = Math.max(1, t.derived.dodgeDie - (waste?.pen ?? 0) - (eclipse?.pen ?? 0) + (ancDie?.up ?? 0));
   if (eclipse?.pen) reasons.push(eclipse.note);
+  if (ancDie?.up) reasons.push(ancDie.note);
   const ruinDodge = (await mentalHook?.dodgeNext?.(target)) ?? 0;          // Ruin Table: "their next dodge roll has Disadvantage" (used up)
   if (ruinDodge) reasons.push("Ruin: Disadvantage on this dodge");
   const anc = ancestryHook ? await ancestryHook.dodgeNet(target, await fromUuid(attack.attacker), o) : { net: 0, notes: [] };
@@ -6274,7 +6283,7 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   if (ancestryHook && amount > 0 && !bypass) {
     const was = amount, an = await ancestryHook.incoming(actor, amount, type, { archetype, attacker: shroudCtx?.attacker ?? null, natural: !!shroudCtx?.natural });
     amount = an.amount; reduced += Math.max(0, was - amount);
-    if (an.notes.length && !silent) await post(actor, { title: `${esc(actor.name)} — ${an.notes.join(", ")}`, body: `<div class="fs-result">The damage is Weakened (${was} → ${amount}).</div>` });
+    if (an.notes.length && !silent && amount !== was) await post(actor, { title: `${esc(actor.name)} — ${an.notes.join(", ")}`, body: `<div class="fs-result">The damage ${amount < was ? "drops" : "rises"} (${was} → ${amount}).</div>` });
   }
   // Mental: Wonder effects on whoever takes damage that didn't come through an attack's damage roll (those were settled there).
   if (mentalHook?.adjust && amount > 0 && !bypass && !mentalDone) {
@@ -6344,8 +6353,10 @@ export async function applyDamage(actor, amount, type, { pierce = 0, parryItem =
   const update = { "system.hp.value": actor.system.hp.value - out.toHp };
   // Chop (Slashing T5): direct damage is Max HP loss instead of lost HP.
   if (maxHpLoss && out.toHp > 0) {
-    update["system.hp.value"] = Math.min(actor.system.hp.value, actor.system.hp.max - out.toHp);
-    update["system.hp.lost"] = (actor.system.hp.lost ?? 0) + out.toHp;
+    // Sealed Wounds (Namuh T2): Max HP loss is halved (rounded down).
+    const sealed = (Number(actor.system.trees?.["ancestry-namuh-tree"]) || 0) >= 2 ? Math.floor(out.toHp / 2) : out.toHp;
+    update["system.hp.value"] = Math.min(actor.system.hp.value, actor.system.hp.max - sealed);
+    update["system.hp.lost"] = (actor.system.hp.lost ?? 0) + sealed;
   }
   if (ancestryHook) update["system.hp.value"] = ancestryHook.lethal(actor, update["system.hp.value"]);       // Lingering Spirit: 1 HP instead
   if (type === "cold" && actor.system.conditions.ignite > 0) update["system.conditions.ignite"] = 0;
@@ -6491,7 +6502,7 @@ export async function lowerTier(actor, treeId) {
   if (tree.theory) {
     const state = { ...actor.system.trees, [treeId]: next };
     const senses = actor.system.senses;
-    const locked = skills.treesFor(tree.archetype).filter(t => !t.theory && skills.sameGroup(t, tree) && skills.tierOf(state, t.id) > 0 && !skills.isAvailable(state, t, { senses, ancestry: actor.system.abc?.ancestry }));
+    const locked = skills.treesFor(tree.archetype).filter(t => !t.theory && skills.sameGroup(t, tree) && skills.tierOf(state, t.id) > 0 && !skills.isAvailable(state, t, { ...skills.ctxOf(actor.system), senses }));
     if (locked.length) {
       const refund = locked.reduce((n, t) => { const k = skills.tierOf(state, t.id); return n + (k * (k + 1)) / 2; }, 0);
       const ok = await DialogV2().confirm({ window: { title: `Lower ${tree.name}?` }, rejectClose: false,
@@ -6611,26 +6622,37 @@ export async function recoverEnergy(actor) {
   await post(actor, { title: "Recover Energy", body: `<div class="fs-result">+${gain} Energy (${value + gain}/${max})${seep}</div>` });
 }
 
-/** Ch8 8-hour rest: regain Con+Will+Build minimums; clears days without rest. Max HP lost is not healed. */
+/**
+ * Ch8 8-hour rest: regain Con+Will+Build minimums; clears days without rest. Max HP lost is not healed, except by Unstable Regeneration (Namuh T0:
+ * the healing is halved until Stabilized, T1; resting at full HP restores lost Max HP equal to what the rest would heal; Rapid Regrowth, T4: after
+ * any rest's healing, the same amount of lost Max HP comes back).
+ */
 export async function rest(actor) {
   const { value, max } = actor.system.hp;
   // Environments (Generic Groups): an Extreme biome without shelter halves it; Hardy Constitution (Wusonian T2) restores full HP there.
   const env = envFor(actor);
-  const heal = env.restFull ? max : env.restHalf ? Math.floor(actor.system.derived.restHeal / 2) : actor.system.derived.restHeal;
+  const namuh = skills.hasAncestryTree(actor.system, "ancestry-namuh-tree"), nt = ab.treeTier(actor, "ancestry-namuh-tree");
+  const base = namuh && nt < 1 ? Math.floor(actor.system.derived.restHeal / 2) : actor.system.derived.restHeal;
+  const heal = env.restFull ? max : env.restHalf ? Math.floor(base / 2) : base;
   const next = Math.min(max, value + heal);
+  const lostMax = actor.system.hp.lost ?? 0;
+  const regrow = namuh && lostMax > 0 && (value >= max || nt >= 4) ? Math.min(lostMax, value >= max ? heal : next - value) : 0;
   const days = actor.system.daysWithoutRest ?? 0;
   const ok = await DialogV2().confirm({
     window: { title: `8 Hour Rest — ${actor.name}` }, rejectClose: false,
     content: `<div class="flowstate-dialog"><p>${esc(actor.name)} rests for 8 hours:</p>
       <ul class="fs-list">
-        <li>Heals ${heal} HP (CON + WILL + BUILD mins): ${value} → <strong>${next}</strong> / ${max}${next - value < heal ? ` (capped at max)` : ""}</li>
+        <li>Heals ${heal} HP (CON + WILL + BUILD mins${namuh && nt < 1 ? ", halved: Unstable Regeneration" : ""}): ${value} → <strong>${next}</strong> / ${max}${next - value < heal ? ` (capped at max)` : ""}</li>
+        ${regrow ? `<li>${nt >= 4 && value < max ? "Rapid Regrowth" : "Unstable Regeneration"}: restores <strong>${regrow}</strong> lost Max HP (limbs included)</li>` : ""}
         <li>Days without rest reset to 0${days ? ` (now ${days}${actor.system.exhausted ? ", which ends the Disadvantage on all rolls" : ""})` : ""}</li>
       </ul>${inActiveCombat(actor) ? `<p class="fs-warn">${esc(actor.name)} is in an active combat.</p>` : ""}</div>`
   });
   if (!ok) return;
   // A rest makes First Aid (Recovery T1), Overexert (Stamina T5) and the one potion per rest available again.
-  await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0, "flags.flowstate.firstAided": false, "flags.flowstate.overexertUsed": false, "flags.flowstate.potionUsed": false, "flags.flowstate.ancRest": null });
-  await post(actor, { title: "8 Hour Rest", body: `<div class="fs-result">+${next - value} HP (${next}/${max})</div>` });
+  await actor.update({ "system.hp.value": next, "system.daysWithoutRest": 0, "flags.flowstate.firstAided": false, "flags.flowstate.overexertUsed": false, "flags.flowstate.potionUsed": false, "flags.flowstate.ancRest": null,
+    ...(regrow ? { "system.hp.lost": lostMax - regrow } : {}) });
+  await post(actor, { title: "8 Hour Rest", body: `<div class="fs-result">+${next - value} HP (${next}/${actor.system.hp.max})${regrow ? ` · +${regrow} Max HP restored` : ""}</div>` });
+  await ancestryHook?.rest?.(actor);                 // Thick Hide (Minotaur) fully repairs
   await mentalHook?.rest(actor);                     // Preordained (Mental, Order T4) rolls its number after a rest
 }
 

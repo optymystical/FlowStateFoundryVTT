@@ -13,7 +13,7 @@ import { askFor } from "./ask.mjs";
 import { esc, select } from "./html.mjs";
 import { CHECK_KINDS, CHECK_DIFFICULTIES, ATTITUDES, kindOf, actingWins, meetsTarget, underHalf, halfSP, socialCounter, actingNet, alacrityStacks } from "./checks-rules.mjs";
 import { takeEdge } from "./edge.mjs";
-import { ancestryNet } from "./ancestry-net.mjs";
+import { ancestryNet, situationalFields, situationalNet } from "./ancestry-net.mjs";
 import { envFor } from "./environment-rules.mjs";
 import { energyHave } from "./consumables-rules.mjs";
 
@@ -44,7 +44,7 @@ export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = n
     return { result: 0, message: await post(actor, { title: `${esc(title)} (d${die})`, body: `<div class="fs-outcome fs-miss">Automatically fails</div><div class="fs-notes">Titanic armor</div>` }) };
   }
   const target = contest ? null : contestTarget(actor, kind);
-  const fields = [rollKit.netField()];
+  const fields = [rollKit.netField(), situationalFields(actor, kind)];
   if (!contest) {
     const vs = [["", target ? `Contested by ${target.name}` : "No target number"], ...Object.entries(CHECK_DIFFICULTIES).filter(([, d]) => !d.hidden).map(([k, d]) => [k, `${d.label} (${d.target})`])];
     fields.push(`<div class="form-group"><label>Against</label>${select("vs", vs, "")}</div>`);
@@ -63,7 +63,9 @@ export async function rollCheck(actor, kind, { apCost = 0, rpCost = 0, label = n
   const steady = kind === "stealth" && glimpse && ab.treeTier(actor, "generic-stealth") >= 2 ? 1 : 0;
   const edge = (["perception", "athletics", "deception", "persuasion", "stealth"].includes(kind) ? await takeEdge(actor, kind) : 0)   // a Festival Token's use
     + (await takeEdge(actor, "check"))                                                                                         // Lucky (Halfling)
-    + (kind === "perception" ? ancestryNet.perception(actor) : 0) + (kind === "stealth" ? ancestryNet.stealth(actor) : 0)     // Territorial, Unassuming
+    + (kind === "perception" ? ancestryNet.perception(actor) : 0) + (kind === "stealth" ? ancestryNet.stealth(actor) : 0)     // Territorial, Unassuming, Silent Wings
+    + (kind === "persuasion" ? ancestryNet.persuasion(actor, target) : 0)                        // Treasured, Unwelcome
+    + situationalNet(actor, kind, opts)                                                                                       // Twitching Ears, Turning Gaze, Perched
     + (kind === "athletics" ? envFor(actor).athleticsNet : 0);                                                                 // an Extreme biome; Acclimated
   const net = (opts.net ?? 0) + extraNet + rollKit.net(actor) - stealthDis + (kind === "perception" ? senseNet(actor) : 0) + own.net + (contest?.net ?? 0) + (coverStory ? 1 : 0) + steady + edge;
   await rollKit.consumeDisrupt(actor);

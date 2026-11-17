@@ -7,11 +7,14 @@ const P = await import("../../module/passage.mjs");
 let fails = 0; const ok = (c, m) => { console.log(`  ${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
 
 console.log("== The tables");
-ok(R.playerAncestries().length === 9 && R.ANCESTRIES.halfling.size === 2 && R.ANCESTRIES.goblin.size === 2 && R.ANCESTRIES.orc.size === 3, "Nine Ancestries; Halflings and Goblins are Size 2");
+ok(R.playerAncestries().length === 17 && ["halfling", "goblin", "wildibit", "noctua", "smoblin"].every(a => R.ANCESTRIES[a].size === 2) && R.ANCESTRIES.orc.size === 3, "Seventeen Ancestries; the Smallfolk are Size 2");
+ok(R.ANCESTRIES.wildibit.trees.join() === "ancestry-leporid,ancestry-wildibit-tree,ancestry-smallfolk" && R.ANCESTRIES.minotaur.core === "ancestry-lakeborn" && R.ANCESTRIES.noctua.core === "ancestry-strigid", "New cores: Leporid (Wildibit), Lakeborn (Minotaur), Strigid (Noctua)");
+ok(R.ANCESTRIES.sworan.trees.join() === "ancestry-wusonian,ancestry-sworan-tree", "A Sworan has no lineage tree");
+ok(R.ANCESTRIES.wasteling.variant === "wasteling" && !R.playerAncestries().some(a => a.id === "wasteling"), "The Wasteling is a choice on top of an Ancestry, not one of its own");
 ok(Object.keys(R.BACKGROUNDS).length >= 30 && R.HOMELANDS.length >= 30 && R.CIRCLES.length >= 30, "Backgrounds, Homelands and Circles are read from the doc");
 ok(R.ANCESTRIES.human.trees.join() === "ancestry-wusonian,ancestry-commonkin,ancestry-human-tree", "A Human's trees: the Wusonian core, Commonkin, Human");
 ok(R.ANCESTRIES.goblin.trees.includes("ancestry-smallfolk") && R.ANCESTRIES.goblin.trees.includes("ancestry-bestial"), "A Goblin also gets Smallfolk (shared with Halflings)");
-for (const a of Object.values(R.ANCESTRIES)) {
+for (const a of Object.values(R.ANCESTRIES).filter(x => !x.variant)) {
   const listed = new Set(a.backgrounds), open = new Set(R.backgroundsFor(a.id).map(b => b.id));
   ok([...listed].every(b => open.has(b)) && [...open].every(b => listed.has(b)), `${a.name}: its profile's Backgrounds match the Backgrounds' "Available to"`);
 }
@@ -24,7 +27,7 @@ for (const a of R.playerAncestries().map(x => x.id)) for (const b of R.backgroun
     let combos = [{}];
     for (const s of R.choiceSlots(pkg, focus)) combos = combos.flatMap(c => s.choices.map(ch => ({ ...c, [s.key]: ch.id }))).slice(0, 300);
     for (const picks of combos) {
-      const alloc = pkg.ancestryPoints ? { "ancestry-wusonian": 5 } : {};
+      const alloc = pkg.anyPoints || pkg.ancestryPoints ? { [S.ancestryTrees(a)[0].id]: 5 } : {};
       const r = R.freeTreesFor({ ancestry: a, background: b.id, focus, picks, alloc });
       n++;
       if (r.errors.length || r.spent !== 15) bad.push(`${a}/${b.id}/${focus}: ${r.spent} ${r.errors.join("; ")}`);
@@ -55,9 +58,20 @@ ok(R.freeTreesFor({ ancestry: "human", background: "explorer" }).errors.length =
 ok(R.freeTreesFor({ ancestry: "dwarf", background: "explorer" }).errors.some(e => /can't take/.test(e)), "A Dwarf can't take the Human-only Explorer");
 const out = R.freeTreesFor({ ancestry: "human", background: "outsider", alloc: { "ancestry-wusonian": 3, "ancestry-commonkin": 2, "ancestry-human-tree": 3 } });
 ok(!out.errors.length && out.trees["ancestry-human-tree"] === 3 && out.spent === 15, "Outsider: 15 points spread over the Ancestry's trees (Wusonian 3, Commonkin 2, Human 3)");
-ok(R.freeTreesFor({ ancestry: "human", background: "outsider", alloc: { "ancestry-human-tree": 5 } }).errors.some(e => /needs/.test(e)), "...with the trees' requirements (Human needs Commonkin 2)");
+ok(!R.freeTreesFor({ ancestry: "human", background: "outsider", alloc: { "ancestry-human-tree": 5 } }).errors.length, "...no tree needs another (Human 5 alone)");
+const anyOut = R.freeTreesFor({ ancestry: "human", background: "outsider", alloc: { "martial-theory": 2, "martial-bladed-weapons": 1, "generic-resolve": 2, "ancestry-human-tree": 3, "ancestry-commonkin": 1, "ancestry-wusonian": 1 } });
+ok(!anyOut.errors.length && anyOut.trees["martial-bladed-weapons"] === 1, "...or on any trees the character could take, Theory tiers included");
+ok(R.freeTreesFor({ ancestry: "human", background: "outsider", alloc: { "martial-bladed-weapons": 5 } }).errors.some(e => /needs/.test(e)), "...with their requirements (Bladed needs Martial Theory)");
 ok(R.freeTreesFor({ ancestry: "human", background: "outsider", alloc: { "ancestry-wusonian": 3 } }).errors.some(e => /Spend 15/.test(e)), "...and all 15 spent");
-ok(R.freeTreesFor({ ancestry: "elf", background: "outsider", alloc: { "ancestry-smallfolk": 5 } }).errors.length > 0, "...on the Ancestry's own trees only (an Elf has no Smallfolk)");
+ok(R.freeTreesFor({ ancestry: "elf", background: "outsider", alloc: { "ancestry-smallfolk": 5 } }).errors.length > 0, "...never another Ancestry's trees (an Elf has no Smallfolk)");
+{ // A Wasteling: the Wasteling core in place of the Ancestry's core; the lineage and own trees stay.
+  const w = S.ancestryTrees("dwarf", true).map(t => t.id);
+  ok(w.join() === "ancestry-wasteling,ancestry-commonkin,ancestry-dwarf-tree", "A Wasteling Dwarf: Wasteling, Commonkin, Dwarf");
+  ok(!S.isAvailable({}, S.treeById("ancestry-wusonian"), { ancestry: "dwarf", wasteling: true }) && S.isAvailable({}, S.treeById("ancestry-wasteling"), { ancestry: "dwarf", wasteling: true })
+    && !S.isAvailable({}, S.treeById("ancestry-wasteling"), { ancestry: "dwarf" }), "...it can't take Wusonian, and only a Wasteling takes the Wasteling tree");
+  const wo = R.freeTreesFor({ ancestry: "dwarf", wasteling: true, background: "outsider", alloc: { "ancestry-wasteling": 5 } });
+  ok(!wo.errors.length && wo.trees["ancestry-wasteling"] === 5, "...and its Outsider points can go on the Wasteling tree");
+}
 
 console.log("== Culture");
 ok(R.homelandsFor("dusken").some(h => h.id === "dusken.paan-faithful") && R.homelandsFor("dusken").some(h => h.id === "shared.wanderer") && !R.homelandsFor("dusken").some(h => h.id === "elf.elven-courts"), "Homelands: the Ancestry's own and the Shared ones");
@@ -67,7 +81,7 @@ ok(R.cultureErrors({ ancestry: "drakenblood", background: "laborer", homeland: "
 console.log("== Ancestry trees in the skill rules");
 const human = { ancestry: "human" };
 ok(S.isAvailable({}, S.treeById("ancestry-wusonian"), human) && !S.isAvailable({}, S.treeById("ancestry-wusonian"), {}), "The core opens only with an Ancestry");
-ok(!S.isAvailable({ "ancestry-commonkin": 1 }, S.treeById("ancestry-human-tree"), human) && S.isAvailable({ "ancestry-commonkin": 2 }, S.treeById("ancestry-human-tree"), human), "Human needs Commonkin 2");
+ok(S.isAvailable({}, S.treeById("ancestry-human-tree"), human) && S.isAvailable({}, S.treeById("ancestry-commonkin"), human), "Every ancestry tree is open from the start (none needs another)");
 ok(!S.isAvailable({ "ancestry-commonkin": 5 }, S.treeById("ancestry-elf-tree"), human), "...and another Ancestry's tree never opens");
 ok(S.skillGroups({ ancestry: "goblin", ancestryName: "Goblin" })[0].trees.map(t => t.id).includes("ancestry-smallfolk"), "The Skills list's first group is the Ancestry's trees");
 ok(S.spentPoints({ "martial-theory": 3, "generic-resolve": 2 }, { "martial-theory": 2, "generic-resolve": 2 }) === 3, "Free tiers cost nothing: Martial Theory 2 → 3 costs 3");

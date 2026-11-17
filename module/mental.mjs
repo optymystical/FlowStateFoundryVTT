@@ -80,12 +80,15 @@ export async function pay(actor, { ap = 0, rp = 0, energy = 0 }, what) {
  * or Neutral. Going further keeps everything before it.
  */
 export async function setAlignmentActivity(actor) {
-  if (inActiveCombat(actor)) return ui.notifications.warn("Changing your Alignment takes a 1 hour activity, so it can't be done in combat.");
+  // Awakened Mind (Smoblin T0): a 10 minute activity instead of an hour. Light Step (Smoblin T2): 10% speed a point instead of 20%.
+  const smoblin = actor.system?.abc?.ancestry === "smoblin", lightStep = (Number(actor.system?.trees?.["ancestry-smoblin-tree"]) || 0) >= 2;
+  const activity = smoblin ? "10 minute" : "1 hour";
+  if (inActiveCombat(actor)) return ui.notifications.warn(`Changing your Alignment takes a ${activity} activity, so it can't be done in combat.`);
   const cur = alignmentOf(actor);
   const maxDepth = R.maxAlignment(theory(actor));
   const out = await DialogV2().prompt({
     window: { title: `Alignment: ${actor.name}` },
-    content: `<div class="fs-cast"><p class="hint">A 1 hour activity. Each point of Alignment lowers your speed by ${R.ALIGN_SPEED_PCT}%.</p>
+    content: `<div class="fs-cast"><p class="hint">A ${activity} activity${smoblin ? " (Awakened Mind)" : ""}. Each point of Alignment lowers your speed by ${lightStep ? R.ALIGN_SPEED_PCT / 2 : R.ALIGN_SPEED_PCT}%${lightStep ? " (Light Step)" : ""}.</p>
       <div class="fs-field"><label>Alignment</label><select name="kind">${Object.entries(R.ALIGNMENTS).map(([k, l]) => `<option value="${k}" ${cur.kind === k ? "selected" : ""}>${l}</option>`).join("")}</select></div>
       <div class="fs-field"><label>How far (1 to ${maxDepth}${maxDepth < R.MAX_ALIGNMENT ? "; Deepening, Mental Tier 3, unlocks 3 and 4" : ""})</label><input type="number" name="level" min="0" max="${maxDepth}" step="1" value="${Math.min(maxDepth, cur.level || 1)}"></div>
       <p class="hint">1: your Form's Ward has Advantage on its attack rolls. 2: its bolded effect is Strengthened. 3 (Deepening): Ward attacks come from half stealth, 1 AP less each turn. 4 (Deepening): the Ward hits regardless of the roll, 2 AP less each turn.</p></div>`,

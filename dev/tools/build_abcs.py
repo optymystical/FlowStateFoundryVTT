@@ -3,9 +3,11 @@ Backgrounds, Homelands, Circles).
 
 Structure relied on:
   # **ABC Rules**                 -> Tier 0 rules (a rules-only tree)
-  # **<Core>** + Tier 0 (Free)    -> an Ancestry core tree (Wusonian); its ## trees are lineage trees ("*Requires Wusonian 1. Lineage tree of the
-                                     Human line: Human, Dwarf, ...*") or shared trees ("*Halfling or Goblin only. ...*")
-  # **<Ancestry>** + **Profile:** -> an Ancestry (its "- **Key:** value" bullets); its ## trees belong to it ("*Requires Commonkin 2.*")
+  # **Ancestries**                 -> "- **<Ancestry>:** Wusonian, Commonkin, and Human." (each Ancestry's trees; the Wasteling's is "Wasteling in
+                                     place of your original core": a variant, system.abc.wasteling)
+  # **<Ancestry>** + **Profile:** -> an Ancestry (its "- **Key:** value" bullets)
+  # **<Core>** + Tier 0 (Free)    -> a core tree (Wusonian, Lakeborn, Strigid, Leporid, Wasteling); its ## trees are lineage or shared trees
+  # **Ancestry Trees**            -> ## each Ancestry's own trees (one named like its Ancestry gets the id ancestry-<id>-tree). No tree requires another.
   # **Backgrounds**               -> ## each Background: Available to / Starting Trees (+ focus/path bullets) / Ancestry Differences / Trade Slot / Circle
   # **Cultures**                  -> ## Shared Homelands, ## <Ancestry> Homelands, ## Shared Circles, ## Background Circles ("Name (Background)")
 Usage: build_abcs.py docs/abcs.md ../module/abcs.mjs [docs/bestiary.md]   (build_trees.py imports parse_trees for the trees; the Bestiary's
@@ -77,13 +79,18 @@ def name_list(s):
 def parse_trees_and_data(md):
     secs = sections(md)
     trees, ancestries, backgrounds, homelands, circles = [], {}, {}, [], []
-    core, ancestry, mode = None, None, None
+    lists = {}                       # "# Ancestries": Ancestry name -> its trees' names (or the Wasteling's "in place of your original core")
+    core, mode = None, None
     for level, name, lines in secs:
         text = "\n".join(lines)
         if level == 1:
-            ancestry = None
             if name == "Table of Contents": mode = None; continue
             if name in ("Backgrounds", "Cultures"): mode = name; continue
+            if name == "Ancestries":
+                mode = "list"
+                for k, v in bullets(lines): lists[k] = v
+                continue
+            if name == "Ancestry Trees": mode = "own"; core = None; continue
             if name == "ABC Rules":
                 mode = "rules"
                 trees.append(tree_body(lines, {"id": "ancestry-abc-rules", "name": name, "archetype": "ancestry", "rulesOnly": True, "requires": 0, "tiers": []}))
@@ -94,38 +101,31 @@ def parse_trees_and_data(md):
                 prof = bullets(lines)
                 get = lambda k: next((v for kk, v in prof if kk.lower() == k), "")
                 size = re.search(r'(\d)', get("size"))
-                ancestry = {"id": aid, "name": name, "core": core["id"] if core else None, "size": int(size.group(1)) if size else 3,
-                            "languages": get("languages"), "lifespan": get("lifespan"),
-                            "backgrounds": [slug(b) for b in name_list(get("backgrounds"))],
-                            "profile": [{"name": k, "text": v} for k, v in prof], "trees": []}
-                ancestries[aid] = ancestry
+                ancestries[aid] = {"id": aid, "name": name, "core": None, "size": int(size.group(1)) if size else 3,
+                                   "languages": get("languages"), "lifespan": get("lifespan"),
+                                   "backgrounds": [slug(b) for b in name_list(get("backgrounds"))],
+                                   "profile": [{"name": k, "text": v} for k, v in prof], "trees": []}
                 continue
-            # A core tree (Tier 0 free, no Profile).
+            # A core tree (Tier 0 free, no Profile): Wusonian, Lakeborn, Strigid, Leporid, Wasteling. Its first line says what it's the core of.
             mode = "core"
-            core = tree_body(lines, {"id": f"ancestry-{slug(name)}", "name": name, "archetype": "ancestry", "core": True, "requires": 0, "tiers": [], "ancestries": []})
+            note = next((clean(l) for l in lines if l.strip() and not TIER_RE.match(l.strip().replace('\\*', '*'))), "")
+            core = tree_body(lines, {"id": f"ancestry-{slug(name)}", "name": name, "archetype": "ancestry", "core": True, "requires": 0, "tiers": [], "ancestries": [], "note": note})
+            if re.search(r'replaces the core tree', note): core["replacesCore"] = True
             trees.append(core)
             continue
-        # ## headings
-        if mode in ("core", "ancestry"):
-            tree = {"id": f"ancestry-{slug(name)}", "name": name, "archetype": "ancestry", "requires": 0, "tiers": [], "ancestries": []}
-            if mode == "ancestry" and ancestry:
-                tree["id"] = f"ancestry-{slug(name)}" if slug(name) != ancestry["id"] else f"ancestry-{ancestry['id']}-tree"
+        # ## headings: the lineage and shared trees (under a core), and each Ancestry's own trees (under "Ancestry Trees"). No tree requires another.
+        if mode in ("core", "own"):
+            tid = f"ancestry-{slug(name)}"
+            if mode == "own" and slug(name) in ancestries: tid += "-tree"
             note = next((clean(l) for l in lines if l.strip().startswith('*') and not l.strip().startswith('**')), "")
-            req = re.search(r'Requires ([A-Z][\w’\' ]+?) (\d)', note)
-            if req:
-                tree["requiresTree"] = {"id": f"ancestry-{slug(req.group(1))}", "tier": int(req.group(2))}
-                tree["requires"] = int(req.group(2))
-            line = re.search(r'line: ([^.]+)\.', note)
-            only = re.match(r'^(.+?) only\.', note)
-            if line: tree["ancestries"] = [slug(n) for n in name_list(line.group(1))]; tree["lineage"] = True
-            elif only: tree["ancestries"] = [slug(n) for n in name_list(only.group(1))]
-            elif mode == "ancestry" and ancestry: tree["ancestries"] = [ancestry["id"]]
-            tree["note"] = note
-            if core: tree["core"] = False; tree["coreId"] = core["id"]
+            tree = {"id": tid, "name": name, "archetype": "ancestry", "requires": 0, "tiers": [], "ancestries": [], "note": note, "core": False}
+            if re.search(r'Lineage tree', note): tree["lineage"] = True
+            if mode == "core" and core: tree["coreId"] = core["id"]
+            tree["_own"] = mode == "own"
             trees.append(tree_body(lines, tree))
             continue
         if mode == "Backgrounds":
-            backgrounds[slug(name)] = parse_background(name, lines)
+            backgrounds[slug(name)] = parse_background(name, lines, [a["name"] for a in ancestries.values()])
             continue
         if mode == "Cultures":
             items = bullets(lines)
@@ -138,11 +138,26 @@ def parse_trees_and_data(md):
                     nm, bg = (m.group(1), slug(m.group(2))) if m else (k, None)
                     circles.append({"id": f"{bg or 'shared'}.{slug(nm)}", "name": nm, "text": v, "background": bg})
             continue
-    # Ancestry trees: each tree lists its Ancestries; each Ancestry lists its trees (core, lineage, own).
+    # Each Ancestry's trees, from the "# Ancestries" list (its core, its lineage tree, its own trees); each tree lists its Ancestries.
+    def resolve(n):
+        named = [t for t in trees if t["name"] == n and not t.get("rulesOnly")]
+        return next((t for t in named if t.get("_own")), None) or (named[0] if named else None)
     for a in ancestries.values():
-        a["trees"] = [t["id"] for t in trees if t.get("core") and t["id"] == a["core"]] + [t["id"] for t in trees if a["id"] in t.get("ancestries", [])]
-    for t in trees:
-        if t.get("core"): t["ancestries"] = [a["id"] for a in ancestries.values() if a["core"] == t["id"]]
+        listed = lists.get(a["name"], "")
+        if re.search(r'in place of your original core', listed):
+            # The Wasteling: its core replaces the original Ancestry's core (system.abc.wasteling); it isn't an Ancestry of its own.
+            a["variant"] = "wasteling"
+            w = next((t for t in trees if t.get("replacesCore")), None)
+            a["core"] = w["id"] if w else None
+            a["trees"] = [w["id"]] if w else []
+            continue
+        for n in name_list(listed):
+            t = resolve(n)
+            if not t: print(f"WARNING: {a['name']} lists an unknown tree {n!r}"); continue
+            a["trees"].append(t["id"])
+            if a["id"] not in t["ancestries"]: t["ancestries"].append(a["id"])
+            if t.get("core") and not a["core"]: a["core"] = t["id"]
+    for t in trees: t.pop("_own", None)
     return trees, {"ancestries": ancestries, "backgrounds": backgrounds, "homelands": homelands, "circles": circles,
                    "rules": next((t for t in trees if t.get("rulesOnly")), None)}
 
@@ -168,7 +183,7 @@ def parse_list(s):
         else: items.append({"unparsed": part})
     return items
 
-def parse_background(name, lines):
+def parse_background(name, lines, names=()):
     bg = {"id": slug(name), "name": name, "available": [], "trees": [], "options": [], "differences": [], "tradeSlot": 0, "text": {}}
     in_options = False
     for raw in lines:
@@ -185,7 +200,10 @@ def parse_background(name, lines):
             bg["available"] = "all" if val.lower().startswith("every") else [slug(n) for n in name_list(val)]
         elif key == "Starting Trees":
             in_options = bool(re.search(r'plus one (focus|path)', val))
-            if re.search(r'Ancestry’s trees|Ancestry\'s trees', val):
+            if re.search(r'build this Background yourself|any skill trees', val):
+                m2 = re.search(r'(\d+) free points', val)
+                bg["anyPoints"] = int(m2.group(1)) if m2 else 15
+            elif re.search(r'Ancestry’s trees|Ancestry\'s trees', val):
                 m2 = re.search(r'(\d+) points', val)
                 bg["ancestryPoints"] = int(m2.group(1)) if m2 else 15
             else:
@@ -198,17 +216,17 @@ def parse_background(name, lines):
             if held: bg["trees"] += [dict(x, trade=True) for x in parse_list(held.group(1))]
         elif key == "Ancestry Differences":
             in_options = False
-            bg["differences"] = parse_differences(val)
+            bg["differences"] = parse_differences(val, names)
         elif key == "Circle":
             in_options = False
         elif in_options:
             bg["options"].append({"name": key, "trees": parse_list(val)})
     return bg
 
-def parse_differences(val):
+def parse_differences(val, names=()):
     """'Dwarf: Heavy Armor T2 replaces Medium Armor T2.' / 'Fire Walker: Elementalist only, and the school must be Heat. Orc: Warder only.' /
     'Fire Walker: Mental Theory T3, Light T2, Resolve T2, and Persuasion T2.'"""
-    names = ["Fire Walker", "Drakenblood", "Halfling", "Human", "Dwarf", "Elf", "Dusken", "Orc", "Goblin"]
+    names = sorted(names or ["Fire Walker", "Drakenblood", "Halfling", "Human", "Dwarf", "Elf", "Dusken", "Orc", "Goblin"], key=len, reverse=True)
     pat = re.compile(r'(' + '|'.join(re.escape(n) for n in names) + r'):\s*')
     marks = list(pat.finditer(val))
     out = []

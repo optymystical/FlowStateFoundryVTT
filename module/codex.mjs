@@ -182,7 +182,7 @@ registerSection({ id: "trees", label: "Skill trees", icon: "fa-solid fa-sitemap"
         items: tier.entries.map(e => ({ id: codexId.entry(t.id, e.name), name: e.name ?? "", text: e.text ?? "", sub: e.sub ?? [], cost: costOf(e.text), bold: t.archetype === "mental" })) }));
       const anc = t.archetype === "ancestry";
       pages.push({ id: codexId.tree(t.id), title: t.name, section: "trees", group: t.group ? `Generic: ${coreFor(t)?.name}` : a.label, badge: t.rulesOnly ? "Rules" : t.core ? "Core tree" : t.theory ? "Theory" : "Skill tree",
-        subtitle: anc ? `${t.core ? "Ancestry core tree (Tier 0 is free)" : needs(t) ? `Needs ${needs(t)}` : "Ancestry tree"} · ${(t.ancestries ?? []).map(x => ANCESTRIES[x]?.name ?? x).join(", ")}`
+        subtitle: anc ? `${t.core ? "Ancestry core tree (Tier 0 is free)" : t.requiresTree ? `Needs ${needs(t)}` : t.lineage ? "Lineage tree" : "Ancestry tree"} · ${t.replacesCore ? "Every Wasteling (in place of its core)" : (t.ancestries ?? []).map(x => ANCESTRIES[x]?.name ?? x).join(", ")}`
           : t.core ? "Generic Group Core tree (Tier 0 is free)" : t.theory ? `${a.label} Theory` : needs(t) ? `Needs ${needs(t)}` : a.label,
         hidden: !!t.hidden, blocks: [...tierBlocks, t.table?.rows?.length ? { kind: "table", label: t.table.title, head: ["Roll", t.table.title ?? "Effect"], rows: t.table.rows.map(r => [r[0], r[1]]) } : null].filter(Boolean) });
       for (const tier of t.tiers) for (const e of tier.entries) pages.push(entryPage(t, tier, e));

@@ -1,11 +1,11 @@
 /**
  * Ancestry, Background and Culture (Flow State - ABCs). Pure: no Foundry globals. The tables are generated into abcs.mjs from the doc (and are the
  * store's `ancestries`, `backgrounds`, `homelands` and `circles` collections).
- *  - A character's choices live in `system.abc`: { ancestry, background, focus, picks: { slotKey: treeId }, alloc: { treeId: tier }, homeland, circle,
- *    element, element2 }. `system.freeTrees` (tree id → tier) is what the Background gives for free; `freeTreesFor` works it out from the choices.
+ *  - A character's choices live in `system.abc`: { ancestry, wasteling, background, focus, picks: { slotKey: treeId }, alloc: { treeId: tier }, homeland,
+ *    circle, element, element2 }. A Wasteling (the doc's Wasteling Ancestry) keeps its original Ancestry, with the Wasteling core in place of its core. `system.freeTrees` (tree id → tier) is what the Background gives for free; `freeTreesFor` works it out from the choices.
  *  - A Background grants 15 free points of trees at normal tier costs, requirements included. Free points unlock trees and count toward their
- *    requirements, nothing else (not dice, the Stat Bonus or Energy: they aren't Skill Points). Points a Background can't place (the Outsider's 15)
- *    are spread across the Ancestry's trees by the player (`alloc`).
+ *    requirements, nothing else (not dice, the Stat Bonus or Energy: they aren't Skill Points). Points a Background can't place are spread across the
+ *    Ancestry's trees by the player (`alloc`); the Outsider's 15 go on any trees the character could take (Theory tiers included).
  *  - Cultures (Homeland + Circle) are roleplay only.
  */
 import { ANCESTRIES, BACKGROUNDS, HOMELANDS, CIRCLES, ABC_RULES, BESTIARY_RULES } from "./abcs.mjs";
@@ -27,8 +27,12 @@ export function treeByName(name) {
   return pool.find(t => t.name.toLowerCase() === n) ?? pool.find(t => t.name.toLowerCase().replace(/\s*\((dream|nightmare)\)$/, "") === n) ?? null;
 }
 
-/** The Ancestries a player can pick (the Bestiary's creature Ancestries are for the GM's NPCs). */
-export const playerAncestries = () => Object.values(ANCESTRIES).filter(a => !a.hidden && !a.bestiary);
+/** The Ancestries a player can pick (the Bestiary's creature Ancestries are for the GM's NPCs; the Wasteling is a choice on top of another Ancestry). */
+export const playerAncestries = () => Object.values(ANCESTRIES).filter(a => !a.hidden && !a.bestiary && !a.variant);
+/** The Wasteling entry (its profile), if the doc has one. */
+export const wastelingEntry = () => Object.values(ANCESTRIES).find(a => a.variant === "wasteling") ?? null;
+/** The trees a Wasteling's choices give it: its Ancestry's, with the Wasteling core in place of the core. */
+export const abcCtx = abc => ({ ancestry: abc?.ancestry || null, wasteling: !!abc?.wasteling });
 /** The Backgrounds an Ancestry can take, in its profile's order (a Bestiary Ancestry takes only the Bestiary's Backgrounds, and a player's none of them). */
 export function backgroundsFor(ancestry) {
   const a = ANCESTRIES[ancestry];
@@ -57,7 +61,7 @@ export function packageFor(background, ancestry) {
       if (d.mustBe) for (const o of options) o.trees = o.trees.map(i => (i.choose?.includes(d.mustBe) ? { tree: d.mustBe, tier: i.tier } : i));
     } else if (d.trees) { items = structuredClone(d.trees); options = []; }
   }
-  return { id: bg.id, name: bg.name, items, options, ancestryPoints: bg.ancestryPoints ?? 0, tradeSlot: bg.tradeSlot ?? 0 };
+  return { id: bg.id, name: bg.name, items, options, ancestryPoints: bg.ancestryPoints ?? 0, anyPoints: bg.anyPoints ?? 0, tradeSlot: bg.tradeSlot ?? 0 };
 }
 
 /** Every tree a "school" choice can be: the Magic trees opened by Theory tiers min–max ("one Magic T1 or T2 school"). */
@@ -92,6 +96,7 @@ export function freeTreesFor(abc = {}) {
   const a = ANCESTRIES[abc.ancestry];
   if (!a) return { trees, spent: 0, errors: ["Pick an Ancestry."] };
   if (a.bestiary) return { trees, spent: 0, errors: [`${a.name} is a Bestiary creature, not a player Ancestry.`] };
+  if (a.variant) return { trees, spent: 0, errors: [`Pick your original Ancestry (a ${a.name} is one decayed by the Wastes).`] };
   const pkg = packageFor(abc.background, abc.ancestry);
   if (!pkg) return { trees, spent: 0, errors: ["Pick a Background."] };
   if (!backgroundsFor(abc.ancestry).some(b => b.id === pkg.id)) errors.push(`${a.name}s can't take the ${pkg.name} Background.`);
@@ -106,21 +111,23 @@ export function freeTreesFor(abc = {}) {
     if (!c) { errors.push(`${slot?.label ?? "A choice"} isn't picked yet.`); unpicked = true; continue; }
     put(trees, c.id, c.tier);
   }
-  // The Ancestry points: the Outsider's 15, or whatever a Background couldn't place, spent on the Ancestry's own trees. What it couldn't place is
-  // only known once every choice is made (an unpicked slot isn't "unplaced"); with nothing owed, Ancestry points don't count.
+  // The points the player places: the Outsider's 15 (on any trees), or whatever a Background couldn't place (on the Ancestry's own trees). What it
+  // couldn't place is only known once every choice is made (an unpicked slot isn't "unplaced"); with nothing owed, these points don't count.
+  const ctx = abcCtx(abc);
   const placed = spentPoints(trees);
-  const owed = pkg.ancestryPoints || (unpicked ? 0 : Math.max(0, FREE_POINTS - placed));
-  const own = new Set(ancestryTrees(abc.ancestry).map(t => t.id));
-  const alloc = owed ? Object.fromEntries(Object.entries(abc.alloc ?? {}).filter(([id, t]) => own.has(id) && Number(t) > 0).map(([id, t]) => [id, Math.min(MAX_TIER, Math.floor(Number(t)))])) : {};
+  const anyTrees = !!pkg.anyPoints;
+  const owed = pkg.anyPoints || pkg.ancestryPoints || (unpicked ? 0 : Math.max(0, FREE_POINTS - placed));
+  const own = new Set(ancestryTrees(abc.ancestry, ctx.wasteling).map(t => t.id));
+  const allowed = id => (anyTrees ? !!treeById(id) && !treeById(id).rulesOnly && (treeById(id).archetype !== "ancestry" || own.has(id)) : own.has(id));
+  const alloc = owed ? Object.fromEntries(Object.entries(abc.alloc ?? {}).filter(([id, t]) => allowed(id) && Number(t) > 0).map(([id, t]) => [id, Math.min(MAX_TIER, Math.floor(Number(t)))])) : {};
   const allocCost = Object.values(alloc).reduce((n, t) => n + cost(t), 0);
-  if (owed && allocCost !== owed) errors.push(`Spend ${owed} points on your Ancestry's trees (${allocCost} so far).`);
+  if (owed && allocCost !== owed) errors.push(`Spend ${owed} points on ${anyTrees ? "your trees" : "your Ancestry's trees"} (${allocCost} so far).`);
   for (const [id, t] of Object.entries(alloc)) put(trees, id, t);
-  const ctx = { ancestry: abc.ancestry };
   for (const id of Object.keys(trees)) {
     const t = treeById(id);
     if (t && !isAvailable(trees, t, ctx)) errors.push(`${t.name} needs ${requirementText(t, ctx)}.`);
   }
-  return { trees, spent: spentPoints(trees), owed, allocCost, errors };
+  return { trees, spent: spentPoints(trees), owed, allocCost, anyTrees, errors };
 }
 
 /** The roleplay half and the creation choices: every pick is valid for the Ancestry and Background. */

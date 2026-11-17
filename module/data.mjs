@@ -1,5 +1,5 @@
-import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats, statPointsLeft, equipSize, equipStacks, applyStacks, loadFor, encumbrance } from "./rules.mjs";
-import { spentPoints } from "./skills.mjs";
+import { STATS, SENSE_LEVELS, deriveCharacter, tempoModifier, movementCost, speedFt, OBJECT_DENSITY, objectStats, statPointsLeft, equipSize, equipStacks, applyStacks, loadFor, encumbrance, gravityForce } from "./rules.mjs";
+import { spentPoints, hasAncestryTree } from "./skills.mjs";
 import { WEAPON_TYPES, WEIGHTS, ARMOR_WEIGHTS, weaponProfile, armorProfile } from "./martial.mjs";
 import { FOCI_TYPES, SHROUD_TYPES, AFFIXES, AFFIX_SIDES, fociProfile, shroudProfile, affixProfile, affixMultOf, affixSpeedPct, attunedAffixKeys, attunedAffixItems, emeraldLimit } from "./magic.mjs";
 import { penalizedDie } from "./spellfx.mjs";
@@ -53,6 +53,17 @@ function applyCatalog(sys, type) {
   sys.description = id.description;
   sys.pounds = id.pounds; sys.volume = id.volume; sys.price = id.price;
 }
+
+/** Mental Alignment without Overclock's extra point (Smoblin T3: it adds no speed or AP penalty). */
+function alignNoOverclock(actor) {
+  const a = actor?.getFlag?.("flowstate", "alignment"), oc = Number(actor?.getFlag?.("flowstate", "overclock")?.extra) || 0;
+  return a && oc ? { ...a, level: Math.max(0, (Number(a.level) || 0) - oc) } : a;
+}
+/** The world's gravity (G), for Lift from wings. */
+function worldGravity() {
+  try { return Number(game.settings.get("flowstate", "gravity")) || 1; } catch { return 1; }
+}
+const SENSE_ORDER = ["none", "secondary", "primary", "heightened"];
 
 /** Shared data model for characters and NPCs (Flow State has no class split). */
 /** The Pain Threshold divisor (hidden world setting, for testing; the rule is 2, half of max HP). */
@@ -164,7 +175,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     this.energy.max = Math.max(0, d.energyMax - this.ritualLoss);
     this.energy.total = (this.energy.value ?? 0) + (this.energy.bonus ?? 0);
     // Deepening (Mental T3): Alignment past 2 costs 1 AP a turn per point.
-    this.ap.max = Math.max(0, (sm?.ap ?? 6) - alignmentApLoss(this.parent?.getFlag?.("flowstate", "alignment")));
+    this.ap.max = Math.max(0, (sm?.ap ?? 6) - alignmentApLoss(alignNoOverclock(this.parent)));
     this.rp.max = sm?.rp ?? 6;
 
     // Martial equipment scales off this actor's effective stats.
@@ -201,7 +212,8 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     const statuses = this.parent?.statuses ?? new Set();
     // Unfettered (Unarmored T5): immune to all Stage 1 movement slows (the Slow stacks, Like Shooting Fish, Sliced) while wearing no armor.
     const noArmor = !(this.parent?.items ?? []).some?.(i => i.type === "armor" && i.system.equipped);
-    const unfettered = noArmor && (Number(this.trees?.["martial-unarmored"]) || 0) >= 5;
+    // Lake Surge (Lakeborn T3): until the start of its next turn, the same (flag `lakeSurge`).
+    const unfettered = (noArmor && (Number(this.trees?.["martial-unarmored"]) || 0) >= 5) || !!this.parent?.getFlag?.("flowstate", "lakeSurge");
     // Zircon (Shroud): while the melded Shroud is undamaged, ignore Rough Terrain and Slow stacks.
     const zircon = !!this.shroud?.system.profile.affixes?.includes("zircon") && this.shroud.system.wear <= 0;
     const tempo = tempoModifier(zircon || unfettered ? 0 : this.conditions.slow, this.conditions.haste, d.pain);
@@ -212,13 +224,24 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       armor: trudge ? 0 : penalties.speedPct ?? 0,
       affix: affixSpeedPct(attunedAffixCount(this.parent, this.foci, this.shroud), this.foci?.system.profile, this.shroud?.system.profile),
       // Lucid Depth / Nightmare Depth (Bestiary, Dreamborn / Nightmareborn T2): its Alignment costs it no speed.
-      alignment: (bestiaryTiers(this.parent).dream >= 2 || bestiaryTiers(this.parent).nightmare >= 2) ? 0 : alignmentSpeedPct(this.parent?.getFlag?.("flowstate", "alignment"))
+      alignment: (bestiaryTiers(this.parent).dream >= 2 || bestiaryTiers(this.parent).nightmare >= 2) ? 0
+        : Math.floor(alignmentSpeedPct(alignNoOverclock(this.parent)) * ((Number(this.trees?.["ancestry-smoblin-tree"]) || 0) >= 2 ? 0.5 : 1))
     };
     speedLoss.total = sm ? 0 : speedLoss.armor + speedLoss.affix + speedLoss.alignment;
     // Quick Feet (Smallfolk T2): a Size 2 creature's maximum speed is 40 ft per AP instead of 25.
     const anc = id => Number(this.trees?.[id]) || 0;
     if (anc("ancestry-smallfolk") >= 2 && Math.round(this.size) === 2 && !sm) d.move = Math.max(d.move, 40);
-    const walk = speedFt(d.move, speedLoss.total);
+    // Bounding (Leporid T0): the Size's maximum movement speed (and so the speed) is doubled.
+    const has = id => hasAncestryTree(this, id);
+    if (has("ancestry-leporid") && !sm) d.move *= 2;
+    // Wings (Strigid T0): Lift equal to the Gravity Force, to fly at full speed; on the ground the speed is halved. Wing-Hands (Noctua T0): no flying
+    // while holding something in two hands or wielding a Heavy weapon (Strong Wings, Noctua T4, drops that).
+    const wings = has("ancestry-strigid") && !sm;
+    this.wingsGrounded = wings && has("ancestry-noctua-tree") && anc("ancestry-noctua-tree") < 4 && (this.parent?.items ?? []).some(i => i.type === "weapon" && i.system.equipped
+      && i.system.weaponType !== "unarmed" && (i.system.twoHanded || i.system.weight === "heavy"));
+    if (wings && !this.wingsGrounded) this.lift = Math.max(this.lift ?? 0, gravityForce({ gravity: worldGravity(), maxHp: this.hp.max, rounds: 1, size: Math.round(this.size) }));
+    let walk = speedFt(d.move, speedLoss.total);
+    if (wings && !this.parent?.statuses?.has?.("flying")) walk = Math.max(5, Math.floor(walk / 10) * 5);
     // Carrying (Athletics Tier 0): Load by each item's Size against yours. Natural items, Unarmed and Improvised, Icons and Affixes carry nothing.
     const tier = id => Number(this.trees?.[id]) || 0;
     let load = 0;
@@ -241,6 +264,11 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
     }
     // Keen Instincts (Bestial T1): Smell is a Primary sense.
     if (anc("ancestry-bestial") >= 1 && this.senses?.smell === "secondary") this.senses.smell = "primary";
+    // The cores' senses: Strigid (Sight Primary, Hearing Heightened, no Smell), Leporid (Hearing Heightened, Smell Primary); Deep-Dweller (Sworan T0).
+    const senseUp = (k, lvl) => { if (this.senses && SENSE_ORDER.indexOf(this.senses[k]) < SENSE_ORDER.indexOf(lvl)) this.senses[k] = lvl; };
+    if (has("ancestry-strigid")) { senseUp("hearing", "heightened"); if (this.senses && anc("ancestry-bestial") < 1) this.senses.smell = "none"; }
+    if (has("ancestry-leporid")) { senseUp("hearing", "heightened"); senseUp("smell", "primary"); }
+    if (has("ancestry-sworan-tree")) senseUp("hearing", "heightened");
     this.load = { value: load, drag, ...enc };
     // Terrain regions (rough +1, difficult +2; Zircon ignores rough terrain). Sure Footing (Mobility T1): actual rough terrain costs nothing extra;
     // Scramble (Mobility T3, this turn): no terrain costs anything extra.
@@ -378,7 +406,8 @@ export class FlowStateWeaponData extends foundry.abstract.TypeDataModel {
     const { weaponType: type, weight, material, grade, twoHanded, natural } = this;
     const sz = itemSize(this);
     this.sizeValue = sz.size;
-    this.profile = weaponProfile({ type, weight, material, grade, twoHanded, natural }, stats);
+    // A Living Metal Arm (Sworan T0) may be a Light Weapon of a Heavy-only material, at half its Durability and Limit.
+    this.profile = weaponProfile({ type, weight, material, grade, twoHanded, natural, livingArm: !!this.parent?.flags?.flowstate?.livingArm }, stats);
     // Unarmed and Improvised strikes aren't equipment: the creature's Size applies to them (as to natural weapons).
     this.profile = sized(this.profile, sz.stacks, { unsized: type === "unarmed" || type === "improvised" });
     // A natural weapon's attacks take the creature's Size stacks (Rules doc), which also carry a Summon's or Animation's own physical modifier.

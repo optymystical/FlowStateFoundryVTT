@@ -24,7 +24,7 @@ const STEPS = [
   { id: "equipment", label: "Equipment" },
   { id: "notes", label: "Notes" }
 ];
-const blankAbc = () => ({ ancestry: "", background: "", focus: "", picks: {}, alloc: {}, homeland: "", circle: "", element: "", element2: "" });
+const blankAbc = () => ({ ancestry: "", wasteling: false, background: "", focus: "", picks: {}, alloc: {}, homeland: "", circle: "", element: "", element2: "" });
 
 /** World creation rules from settings. */
 export function creationRules() {
@@ -59,6 +59,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       treeDown: CharacterWizard.onTreeDown,
       treeToggle: CharacterWizard.onTreeToggle,
       pickAncestry: CharacterWizard.onPickAncestry,
+      toggleWasteling: CharacterWizard.onToggleWasteling,
       pickBackground: CharacterWizard.onPickBackground,
       pickChoice: CharacterWizard.onPickChoice,
       pickFocus: CharacterWizard.onPickFocus,
@@ -245,14 +246,18 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const abc = st.abc, anc = abcRules.ANCESTRIES[abc.ancestry] ?? null;
     const free = this.free();
     const freeTrees = free.trees;
-    const ctx = { ancestry: abc.ancestry || null };
+    const ctx = abcRules.abcCtx(abc);
     const treeName = id => skills.treeById(id)?.name ?? id;
     const ancestries = abcRules.playerAncestries().map(a => {
-      const chips = skills.ancestryTrees(a.id).map(t => chip(`anc-${a.id}`, t.id)).filter(Boolean);
+      const chips = skills.ancestryTrees(a.id, a.id === abc.ancestry && ctx.wasteling).map(t => chip(`anc-${a.id}`, t.id)).filter(Boolean);
       return { id: a.id, name: a.name, size: a.size, selected: a.id === abc.ancestry, hidden: !!abc.ancestry && a.id !== abc.ancestry, lifespan: a.lifespan, languages: a.languages,
         profile: a.profile.filter(p => !["Size", "Languages", "Lifespan", "Backgrounds", "Homelands", "Homeland"].includes(p.name)),
         trees: a.trees.map(treeName).join(", "), chips, openTree: opened(chips) };
     });
+    // The Wasteling: a choice on top of the picked Ancestry (its core is swapped for the Wasteling core; Backgrounds and Homelands stay the Ancestry's).
+    const wEntry = abcRules.wastelingEntry();
+    const wasteling = anc && wEntry ? { on: ctx.wasteling, name: wEntry.name,
+      profile: wEntry.profile.filter(p => !["Backgrounds and Homelands", "Size and Languages"].includes(p.name)) } : null;
     const pkg = abc.background ? abcRules.packageFor(abc.background, abc.ancestry) : null;
     // A Background's starting trees as chips: its fixed trees in one row, then a row per choice ("one of", a Magic school, either/or). On the picked
     // Background each choice's chips get a pick button (the picks live on the card), and so does each focus.
@@ -278,20 +283,25 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         focusPicked: focuses.some(f => f.picked), openTree: opened(all) };
     }) : [];
     const allocState = { ...(abc.alloc ?? {}) };
-    const allocRows = pkg && free.owed ? skills.ancestryTrees(abc.ancestry).map(t => {
+    // The trees those points can go on: the Ancestry's own, or (the Outsider) every tree open with the points placed so far, grouped as the Skills tab.
+    const allocTrees = !(pkg && free.owed) ? [] : free.anyTrees
+      ? skills.skillGroups({ ancestry: ctx.ancestry, ancestryName: anc?.name ?? "", wasteling: ctx.wasteling })
+        .flatMap(g => g.trees.filter(t => (Number(abc.alloc?.[t.id]) || 0) > 0 || skills.isAvailable(allocState, t, ctx)).map((t, i) => ({ t, group: i === 0 ? g.label : "" })))
+      : skills.ancestryTrees(abc.ancestry, ctx.wasteling).map(t => ({ t, group: "" }));
+    const allocRows = allocTrees.map(({ t, group }) => {
       const tier = Number(abc.alloc?.[t.id]) || 0, next = tier + 1, open = skills.isAvailable(allocState, t, ctx);
       const key = `alloc:${t.id}`;
-      return { id: t.id, key, name: t.name, tier, nextCost: next <= skills.MAX_TIER ? next : null,
+      return { id: t.id, key, name: t.name, tier, group, nextCost: next <= skills.MAX_TIER ? next : null,
         canRaise: open && next <= skills.MAX_TIER && (free.allocCost ?? 0) + next <= free.owed, canLower: tier > 0,
-        need: open ? "" : `needs ${skills.requirementText(t, ctx)}`, open: st.openTree === key, tiers: st.openTree === key ? tierList(t, tier, 0) : [] };
-    }) : [];
+        need: open ? "" : `needs ${skills.requirementText(t, ctx)}`, open: st.openTree === key, tiers: st.openTree === key ? tierList(t, tier, t.archetype === "ancestry" ? 0 : 1) : [] };
+    });
     const homelands = anc ? abcRules.homelandsFor(abc.ancestry).map(h => ({ ...h, selected: h.id === abc.homeland, hidden: !!abc.homeland && h.id !== abc.homeland, shared: !h.ancestry })) : [];
     const circles = pkg ? abcRules.circlesFor(abc.background).map(c => ({ ...c, selected: c.id === abc.circle, hidden: !!abc.circle && c.id !== abc.circle, shared: !c.background })) : [];
 
     // Skill trees: spend the starting Skill Points (Theory first; it opens that Archetype's other trees). The Background's tiers are free.
     const sp = pv.skillPoints;
     const spentSP = skills.spentPoints(st.trees, freeTrees);
-    const treeGroups = skills.skillGroups({ ancestry: ctx.ancestry, ancestryName: anc?.name ?? "" });
+    const treeGroups = skills.skillGroups({ ancestry: ctx.ancestry, ancestryName: anc?.name ?? "", wasteling: ctx.wasteling });
     const arch = treeGroups.find(a => a.id === st.skillArch) ?? treeGroups[0];
     const available = arch.trees.filter(t => skills.isAvailable(st.trees, t, ctx));
     const treeRows = available.map(t => {
@@ -322,8 +332,8 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       rules, rarityLabel: RARITIES[rules.maxRarity],
       purse: getCurrencies().filter(c => rules.currency?.[c.id] > 0).map(c => `${rules.currency[c.id]} ${c.name}`).join(", "),
       name: st.name, img: st.img, canBrowse: game.user.can?.("FILES_BROWSE") ?? false,
-      abc, ancestries, anc, backgrounds, pkg,
-      allocRows, owed: free.owed ?? 0, allocCost: free.allocCost ?? 0,
+      abc, ancestries, anc, wasteling, backgrounds, pkg,
+      allocRows, owed: free.owed ?? 0, allocCost: free.allocCost ?? 0, allocAny: !!free.anyTrees,
       glandChoices: abc.ancestry === "drakenblood" ? Object.entries(abcRules.GLAND_ELEMENTS).map(([k, v]) => ({ k, v, selected: k === abc.element })) : null,
       homelands, circles,
       details: Object.entries(creation.DETAIL_FIELDS).map(([k, label]) => ({ k, label, value: st.details?.[k] ?? "", long: ["appearance", "personality", "goals", "backstory"].includes(k) })),
@@ -390,7 +400,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const tree = skills.treeById(id);
     const sp = creation.preview(st, creationRules()).skillPoints;
     const next = skills.tierOf(st.trees, id) + 1;
-    const free = st.freeTrees ?? {}, ctx = { ancestry: st.abc.ancestry || null };
+    const free = st.freeTrees ?? {}, ctx = abcRules.abcCtx(st.abc);
     if (!tree || next > skills.MAX_TIER || !skills.isAvailable(st.trees, tree, ctx)) return;
     const spent = skills.spentPoints(st.trees, free);
     if (spent + next > sp) return ui.notifications.warn(`Tier ${next} costs ${next} Skill Points; you have ${sp - spent} left.`);
@@ -405,7 +415,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     if (tier <= skills.tierOf(st.freeTrees ?? {}, id)) return ui.notifications.warn("That tier comes free with your Background.");
     if (tier === 1) delete st.trees[id]; else st.trees[id] = tier - 1;
     // Lowering a tree can't strand the trees it opened.
-    if (creation.validateTrees(st.trees, Infinity, { free: st.freeTrees ?? {}, ancestry: st.abc.ancestry || null }).length) {
+    if (creation.validateTrees(st.trees, Infinity, { free: st.freeTrees ?? {}, ...abcRules.abcCtx(st.abc) }).length) {
       st.trees[id] = tier;
       return ui.notifications.warn("Lower the trees this tier opens first.");
     }
@@ -419,6 +429,15 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     // Picking your Ancestry again unpicks it: the full list shows again (and what hung on it is cleared).
     st.abc = st.abc.ancestry === id ? blankAbc() : { ...blankAbc(), ancestry: id };
     st.freeTrees = {}; st.trees = {}; st.skillArch = "ancestry";
+    this.render();
+  }
+  /** The Wasteling on or off (its core replaces the Ancestry's: the trees bought and the Ancestry points placed are cleared). */
+  static onToggleWasteling() {
+    const st = this.state;
+    if (!st.abc.ancestry) return;
+    st.abc.wasteling = !st.abc.wasteling;
+    st.abc.alloc = {}; st.trees = {};
+    this.syncFree();
     this.render();
   }
   /** Pick a Background (its choices start empty; the trees bought for the old one are cleared). */
@@ -460,11 +479,11 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const part = target.dataset.part;
     if (part === "homeland" || part === "circle") { this.state.abc[part] = ""; this.render(); }
   }
-  /** The Outsider's points (or a Background's leftovers) on the Ancestry's own trees. */
+  /** The Outsider's points (on any trees), or a Background's leftovers (on the Ancestry's own trees). */
   static onAllocUp(event, target) {
     const st = this.state, id = target.dataset.tree, t = skills.treeById(id);
     const tier = Number(st.abc.alloc?.[id]) || 0, f = this.free();
-    if (!t || tier >= skills.MAX_TIER || !skills.isAvailable({ ...st.abc.alloc }, t, { ancestry: st.abc.ancestry })) return;
+    if (!t || tier >= skills.MAX_TIER || !skills.isAvailable({ ...st.abc.alloc }, t, abcRules.abcCtx(st.abc))) return;
     if ((f.allocCost ?? 0) + tier + 1 > (f.owed ?? 0)) return ui.notifications.warn(`Tier ${tier + 1} costs ${tier + 1}; ${(f.owed ?? 0) - (f.allocCost ?? 0)} left.`);
     st.abc.alloc = { ...st.abc.alloc, [id]: tier + 1 };
     this.syncFree(); this.render();
@@ -475,7 +494,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     if (tier < 1) return;
     const alloc = { ...st.abc.alloc, [id]: tier - 1 };
     if (!alloc[id]) delete alloc[id];
-    if (Object.keys(alloc).some(x => !skills.isAvailable(alloc, skills.treeById(x), { ancestry: st.abc.ancestry }))) return ui.notifications.warn("Lower the trees this tier opens first.");
+    if (Object.keys(alloc).some(x => !skills.isAvailable(alloc, skills.treeById(x), abcRules.abcCtx(st.abc)))) return ui.notifications.warn("Lower the trees this tier opens first.");
     st.abc.alloc = alloc;
     this.syncFree(); this.render();
   }
@@ -490,7 +509,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const actor = this.editActor, abc = creation.cleanAbc(this.state.abc);
     const free = abcRules.freeTreesFor(abc);
     if (free.errors.length) return ui.notifications.warn(free.errors[0]);
-    const oldFree = actor.system.freeTrees ?? {}, ctx = { ancestry: abc.ancestry };
+    const oldFree = actor.system.freeTrees ?? {}, ctx = abcRules.abcCtx(abc);
     const paid = Object.fromEntries(Object.entries(actor.system.trees ?? {}).filter(([id, t]) => t > (oldFree[id] ?? 0)));
     let trees = creation.withFree(paid, free.trees);
     // Drop trees the new choices don't allow (another Ancestry's trees, or ones whose requirement is gone), until nothing changes.
@@ -501,7 +520,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     }
     const removed = Object.keys(actor.system.trees ?? {}).filter(id => !(id in trees)).map(id => skills.treeById(id)?.name ?? id);
     const ok = await DialogV2().confirm({ window: { title: `Change ${actor.name}'s ABCs?` }, rejectClose: false,
-      content: `<p>${esc(actor.name)} becomes a <strong>${esc(abcRules.ANCESTRIES[abc.ancestry]?.name ?? "")}</strong> ${esc(abcRules.BACKGROUNDS[abc.background]?.name ?? "")}.</p>
+      content: `<p>${esc(actor.name)} becomes a <strong>${abc.wasteling ? "Wasteling " : ""}${esc(abcRules.ANCESTRIES[abc.ancestry]?.name ?? "")}</strong> ${esc(abcRules.BACKGROUNDS[abc.background]?.name ?? "")}.</p>
         <p>Free trees: ${Object.entries(free.trees).map(([id, t]) => `${esc(skills.treeById(id)?.name ?? id)} ${t}`).join(", ") || "none"}.</p>
         ${removed.length ? `<p>These trees go (their Skill Points come back): ${removed.map(esc).join(", ")}.</p>` : ""}` });
     if (!ok) return;

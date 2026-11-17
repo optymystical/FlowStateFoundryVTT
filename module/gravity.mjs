@@ -75,7 +75,9 @@ export async function turnStart(actor) {
   // Landing: the rest of the fall is untraveled distance, which hits as Force damage (3 × feet). Size 1 takes none; slow falls are safe.
   const untraveled = Math.max(0, feet - ground);
   let html = `<div class="fs-result"><i class="fa-solid fa-arrow-down"></i> ${esc(actor.name)} falls ${feet} ft and lands after ${ground} ft.</div>`;
-  if (slow || size <= 1 || untraveled <= 0) html += `<div class="fs-notes">${slow ? "A slow, safe landing" : size <= 1 ? "Size 1 creatures take no fall damage" : "No distance left over"}: no damage.</div>`;
+  // Feather-Fall (Noctua T2): while conscious with its wings free, falling never deals it Force damage.
+  const feather = (Number(actor.system?.trees?.["ancestry-noctua-tree"]) || 0) >= 2 && !actor.statuses?.has?.("unconscious") && !actor.statuses?.has?.("grappled");
+  if (slow || size <= 1 || untraveled <= 0 || feather) html += `<div class="fs-notes">${slow ? "A slow, safe landing" : size <= 1 ? "Size 1 creatures take no fall damage" : feather ? "Feather-Fall" : "No distance left over"}: no damage.</div>`;
   else {
     // Breakfall (Acrobatics T1): Force damage from falling is Weakened.
     const breakfall = (Number(actor.system?.trees?.["generic-acrobatics"]) || 0) >= 1;

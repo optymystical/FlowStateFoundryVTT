@@ -259,7 +259,9 @@ export function weaponProfile(w, stats) {
   const unarmed = w.type === "unarmed";
   const improvised = w.type === "improvised";
   const mat = unarmed || improvised ? null : WEAPON_MATERIALS[w.material];
-  const matStats = mat?.weights[w.weight];
+  // A Living Metal Arm (Sworan) made Light from a Heavy-only material uses half its Durability and Limit.
+  const halfHeavy = !!w.livingArm && w.weight === "light" && !mat?.weights.light && mat?.weights.heavy;
+  const matStats = halfHeavy ? { dur: mat.weights.heavy.dur / 2, limit: mat.weights.heavy.limit / 2 } : mat?.weights[w.weight];
   if (!unarmed && !improvised && !matStats) return { valid: false, error: `${mat?.label ?? "That material"} can't be made ${weight.label}.` };
 
   // Unarmed has no material, so no Grade cap on its scaling; a natural weapon has no Grade either (it scales uncapped).

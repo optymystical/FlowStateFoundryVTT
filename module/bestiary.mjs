@@ -263,10 +263,14 @@ export const alignmentFree = a => T(a).dream >= 2 || T(a).nightmare >= 2;
 /*  Health: Unwaking, Deathless                 */
 /* -------------------------------------------- */
 
-/** Unwaking / Unrelenting (T4): below its Pain Threshold in a fight it stays up through its next turn (flag `unwaking`, set as it drops). */
+/**
+ * Unwaking / Unrelenting (T4), and Numb Flesh (the Wasteling tree, T4): below its Pain Threshold in a fight it stays up through its next turn (flag
+ * `unwaking`, set as it drops).
+ */
+const numbFlesh = actor => (Number(actor?.system?.trees?.["ancestry-wasteling"]) || 0) >= 4;
 export function holdingOn(actor) {
   const t = T(actor);
-  if ((t.dream < 4 && t.nightmare < 4) || !inActiveCombat(actor)) return false;
+  if ((t.dream < 4 && t.nightmare < 4 && !numbFlesh(actor)) || !inActiveCombat(actor)) return false;
   const f = actor.getFlag?.("flowstate", "unwaking");
   return !f || (f.combat === combatKey() && !f.done);
 }
@@ -274,7 +278,7 @@ export function holdingOn(actor) {
 export async function droppedBelow(actor) {
   if (!holdingOn(actor) || actor.getFlag?.("flowstate", "unwaking")) return;
   await actor.setFlag("flowstate", "unwaking", { combat: combatKey(), armed: turnKey(), done: false });
-  const name = T(actor).dream >= 4 ? "Unwaking" : "Unrelenting";
+  const name = T(actor).dream >= 4 ? "Unwaking" : T(actor).nightmare >= 4 ? "Unrelenting" : "Numb Flesh";
   await card(actor, name, `<div class="fs-result">${esc(actor.name)} falls below its Pain Threshold but doesn't go down: it acts normally on its next turn, and falls unconscious after it if it's still below.</div>`);
 }
 /** Deathless (Life T4): an Infected creature within 100 ft of a Life Wonderborn with Deathless doesn't die from damage: it stays down, budding. */

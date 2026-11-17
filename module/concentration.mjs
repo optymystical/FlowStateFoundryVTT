@@ -90,7 +90,8 @@ export async function damageCheck(actor, damage, hpAfter = actor.system?.hp?.val
   if (hpAfter <= 0) return lose(actor, "unconscious");
   const eff = actor.system?.derived?.effective?.will;
   if (!canSpend(actor, "rp", 1) || !(await spendPoints(actor, "rp", 1, "holding Concentration"))) return lose(actor, "no RP to hold it", { oneOnly: ponder(actor) >= 3 });
-  const r = await new Roll(poolFormula(1, eff?.die ?? 10, snapTier(actor) >= 4 ? 1 : 0)).evaluate();          // Nerve (Snappence Arts T4): Advantage
+  // Nerve (Snappence Arts T4) and Steady Focus (Smoblin T1): Advantage.
+  const r = await new Roll(poolFormula(1, eff?.die ?? 10, (snapTier(actor) >= 4 ? 1 : 0) + ((Number(actor.system?.trees?.["ancestry-smoblin-tree"]) || 0) >= 1 ? 1 : 0))).evaluate();
   const held = r.total >= damage;
   await post(actor, { title: `${esc(actor.name)} — Concentration`, rolls: [r], body: `<div class="fs-notes">Willpower check against ${damage} damage: <strong>${r.total}</strong> — ${held ? "the Concentration holds" : "broken"}.</div>` });
   if (!held) await lose(actor, `the damage (${damage}) beat the Willpower check`, { oneOnly: ponder(actor) >= 3 });

@@ -262,7 +262,7 @@ export function planCast(ctx, v) {
   }
   if (focusedCast && !(weave && !weave.keepTR)) trParts.push({ label: "Focus", value: 1 });
   if (!(weave && !weave.keepTR) && option?.fociId && ctx.ring?.[option.fociId] && cores.some(c => c.id === ctx.ring[option.fociId])) trParts.push({ label: "Ring", value: 1 });
-  if (ctx.extraTR && !(weave && !weave.keepTR)) trParts.push({ label: "Other", value: ctx.extraTR });
+  if (ctx.extraTR && !(weave && !weave.keepTR)) trParts.push({ label: ctx.extraTRLabel || "Other", value: ctx.extraTR });
   const tr = trParts.reduce((n, p) => n + p.value, 0);
 
   // Empower: +100% Power to the bolded effects (Power bonuses are additive).
@@ -277,6 +277,8 @@ export function planCast(ctx, v) {
   const empower = applied.filter(a => ["Empower", "Delay"].includes(a.mod.name) || (a.replicates && ["Empower", "Delay"].includes(spellById(a.replicates)?.name))).length;
   // Magic Boost (Elf T4): +100% Power without raising the Threshold; it stacks with Empower.
   const boost = v.magicBoost && ctx.magicBoost ? 1 : 0;
+  // Blood Price (Myrthel T3): +100% Power for HP equal to the caster's total Skill Points.
+  const blood = v.bloodPrice && ctx.bloodPrice ? 1 : 0;
   const cost = castCost({ base, mods: applied, tr, skillPoints: ctx.skillPoints });
   const grossEnergy = Math.floor(cost.gross * ctx.skillPoints / 2);
   // Lob needs an Area spell and Explode a Ranged one; Mold and the rest apply anywhere.
@@ -294,7 +296,7 @@ export function planCast(ctx, v) {
     ritualHours: ritual && !instant ? cost.gross : 0,
     ritualLoss: ritual ? Math.floor(grossEnergy / 2 / taaffeiteDiv) : 0,
     spellPower: option ? spellPower(option.scaling) : 0,
-    power: option ? spellPower(option.scaling) * (1 + empower + hematiteBonus + boost) : 0, magicBoost: !!boost, hematite, hematiteBonus, hematiteCost: hematite && option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
+    power: option ? spellPower(option.scaling) * (1 + empower + hematiteBonus + boost + blood) : 0, magicBoost: !!boost, bloodPrice: !!blood, hematite, hematiteBonus, hematiteCost: hematite && option ? spellPower(option.scaling) * (1 + empower) : 0, empower, weave: !!weave, telegraph: Number(v.telegraph) || null, scaling: option?.scaling ?? 0, scalingStat: option?.scalingStat ?? null,
     attack
   };
 }

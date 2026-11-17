@@ -2,6 +2,44 @@
 
 [**ABC Rules**](#abc-rules)
 
+[**Ancestries**](#ancestries)
+
+[**Human**](#human)
+
+[**Namuh**](#namuh)
+
+[**Dwarf**](#dwarf)
+
+[**Sworan**](#sworan)
+
+[**Halfling**](#halfling)
+
+[**Wildibit**](#wildibit)
+
+[**Elf**](#elf)
+
+[**Myrthel**](#myrthel)
+
+[**Dusken**](#dusken)
+
+[**Dawn Elf**](#dawn-elf)
+
+[**Drakenblood**](#drakenblood)
+
+[**Wasteling**](#wasteling)
+
+[**Orc**](#orc)
+
+[**Noctua**](#noctua)
+
+[**Fire Walker**](#fire-walker)
+
+[**Minotaur**](#minotaur)
+
+[**Goblin**](#goblin)
+
+[**Smoblin**](#smoblin)
+
 [**Wusonian**](#wusonian)
 
 [Commonkin](#commonkin)
@@ -10,47 +48,55 @@
 
 [Smallfolk](#smallfolk)
 
-[**Human**](#human)
+[**Lakeborn**](#lakeborn)
+
+[**Strigid**](#strigid)
+
+[**Leporid**](#leporid)
+
+[**Wasteling**](#wasteling-1)
+
+[**Ancestry Trees**](#ancestry-trees)
 
 [Human](#human-1)
 
-[**Dwarf**](#dwarf)
+[Namuh](#namuh-1)
 
 [Dwarf](#dwarf-1)
 
-[**Halfling**](#halfling)
+[Sworan](#sworan-1)
 
 [Halfling](#halfling-1)
 
-[**Elf**](#elf)
+[Wildibit](#wildibit-1)
 
 [Elf](#elf-1)
 
-[**Dusken**](#dusken)
+[Myrthel](#myrthel-1)
 
 [Dusken Shadow](#dusken-shadow)
 
 [Dusken Spirit](#dusken-spirit)
 
-[**Drakenblood**](#drakenblood)
+[Dawn Elf](#dawn-elf-1)
 
 [Draken Elements](#draken-elements)
 
 [Draken Legacy](#draken-legacy)
 
-[**Orc**](#orc)
-
 [Orc](#orc-1)
 
-[**Fire Walker**](#fire-walker)
+[Noctua](#noctua-1)
 
 [Dirtborn](#dirtborn)
 
 [Firelander](#firelander)
 
-[**Goblin**](#goblin)
+[Minotaur](#minotaur-1)
 
 [Goblin](#goblin-1)
+
+[Smoblin](#smoblin-1)
 
 [**Backgrounds**](#backgrounds)
 
@@ -134,6 +180,8 @@
 
 [Fire Walker Homelands](#fire-walker-homelands)
 
+[Minotaur Homelands](#minotaur-homelands)
+
 [Goblin Homelands](#goblin-homelands)
 
 [Shared Circles](#shared-circles)
@@ -145,13 +193,260 @@
 **Tier 0 (Free): You gain the following rules:**
 
 - **Ancestry, Background, and Culture:** Every character of high sapience is defined by three choices, made in order. You first pick an Ancestry, then a Background from that Ancestry’s list, then your Culture: one Homeland, from your Ancestry’s list or the Shared Homelands, and one Circle, from your Background’s list or the Shared Circles.  
-- **Ancestry:** Your Ancestry is the people you are born to. Each Ancestry is a group, with a core tree shared by the wider kind it belongs to (all Wuson-descended peoples share the Wusonian core) and one or more meat trees unique to it, or shared with closely related Ancestries. You start with the Tier 0 of your Ancestry’s core, and buy its other tiers as normal.  
-- **Background:** Your Background is how you were raised and what you did before the story began. It grants 15 free points of starting skill trees at normal tier costs, including any Theory or core tiers those trees require. Free points unlock trees and count toward their requirements, but toward nothing else: not dice, not the Stat Bonus, and not Energy. Any points a Background cannot place go into your Ancestry’s trees instead. Some Backgrounds are shared across several Ancestries, with small differences for each.  
+- **Ancestry:** Your Ancestry is the people you are born to. Each Ancestry has a core tree shared by the wider kind it belongs to (all Wuson-descended peoples share the Wusonian core), usually a lineage tree shared by its line (such as Commonkin for the Human line), and one or more meat trees unique to it, or shared with closely related Ancestries. None of these trees require another. You start with the Tier 0 of each of your Ancestry’s trees, and buy their other tiers as normal.  
+- **Background:** Your Background is how you were raised and what you did before the story began. It grants 15 free points of starting skill trees at normal tier costs, including any Theory tiers those trees require. Free points unlock trees and count toward their requirements, but toward nothing else: not dice, not the Stat Bonus, and not Energy. Any points a Background cannot place go into your Ancestry’s trees instead. Some Backgrounds are shared across several Ancestries, with small differences for each.  
 - **Culture:** Your Culture has two parts: your Homeland, the people and place you come from, and your Circle, the group you came up in through your Background. Together they set your values, customs, outlook, and ties in the world. Cultures are purely roleplay, and have no mechanical effect.  
 - **Sapience:** Every creature sits in one of three bands of sapience. Sapience sets what a creature can draw on; age and experience set how far it has grown within that, adding stat and skill points over time.  
 * **High sapience (band 3):** Peoples such as Humans and Orcs. They have full access to Ancestry, Background, and Culture, and start at about 3 stat points per skill point.  
 * **Mid sapience (band 2):** Creatures capable of some higher learning, perhaps tool use or social life, but far more limited. They have an Ancestry and a Background but no Culture, meaning no defined cultural roleplay of their own, and they keep the free skill trees their Background grants. Their ratio is about 5:1, sometimes wider.  
 * **Low sapience (band 1):** Creatures with no real intelligence, unable to use tools in any meaningful way and hard-pressed to learn tactics. This covers most animals, such as cats, deer, and most dogs. They have only their Ancestry and get no free trees. Their ratio is about 10:1 or worse, widening the lower their sapience.
+
+# **Ancestries** {#ancestries}
+
+*Every Ancestry is listed below with the trees it uses: its core, its lineage tree if it has one, and its own trees. The profiles come first, followed by every tree, each written once.*
+
+- **Human:** Wusonian, Commonkin, and Human.  
+- **Namuh:** Wusonian, Commonkin, and Namuh.  
+- **Dwarf:** Wusonian, Commonkin, and Dwarf.  
+- **Sworan:** Wusonian and Sworan.  
+- **Halfling:** Wusonian, Commonkin, Halfling, and Smallfolk.  
+- **Wildibit:** Leporid, Wildibit, and Smallfolk.  
+- **Elf:** Wusonian, Commonkin, and Elf.  
+- **Myrthel:** Wusonian, Commonkin, and Myrthel.  
+- **Dusken:** Wusonian, Commonkin, Dusken Shadow, and Dusken Spirit.  
+- **Dawn Elf:** Wusonian, Commonkin, and Dawn Elf.  
+- **Drakenblood:** Wusonian, Commonkin, Draken Elements, and Draken Legacy.  
+- **Wasteling:** Wasteling in place of your original core, plus your original Ancestry’s lineage and Ancestry trees.  
+- **Orc:** Wusonian, Bestial, and Orc.  
+- **Noctua:** Strigid, Noctua, and Smallfolk.  
+- **Fire Walker:** Wusonian, Bestial, Dirtborn, and Firelander.  
+- **Minotaur:** Lakeborn, Bestial, and Minotaur.  
+- **Goblin:** Wusonian, Bestial, Goblin, and Smallfolk.  
+- **Smoblin:** Wusonian, Bestial, Smoblin, and Smallfolk.
+
+# **Human** {#human}
+
+**Profile:**
+
+- **Lineage:** One of the two founding races of the Twin Continents, descended from the Wuson. Ancestors of the Dwarves, Halflings, Elves, Dusken, and Drakenblood.  
+- **Homeland:** The United States of Tartan (north of the eastern continent), though their explorative, inquisitive nature puts them nearly everywhere.  
+- **Size:** 3\.  
+- **Languages:** Common.  
+- **Lifespan:** About 80 years.  
+- **Backgrounds:** Explorer, Scholar’s Apprentice, Recruit, Apprentice Mage, Novice, Hunter, Trader’s Apprentice, Laborer, Urchin, Outsider.  
+- **Homelands:** Guild-Town, Crownland, Old Pantheon, or a Shared Homeland.
+
+# **Namuh** {#namuh}
+
+**Profile:**
+
+- **Lineage:** Humans changed by the Goblin research wing for the Super Soldier Program during the Continental War, which used cancer cells to make soldiers who could regenerate on the battlefield. Most mutated horribly instead, healing worse and living shorter lives, but the rare few who learn to control it become what the Humans wanted. None are made anymore, but their genes are dominant, so their numbers are growing fast. Descended from the Wuson through the Humans.  
+- **Homeland:** Human lands, mostly The United States of Tartan, where they live among Humans and blend in easily.  
+- **Appearance:** Mostly human, with a few small lumps under the skin, but people tend to sense something slightly off about them that is hard to place. The more a Namuh has mastered their altered body, the harder this is to notice.  
+- **Size:** 3\.  
+- **Languages:** Common.  
+- **Lifespan:** About 40 years, as their altered bodies break down. Those whose bodies stabilize can live as long as 120\.  
+- **Backgrounds:** Explorer, Scholar’s Apprentice, Recruit, Apprentice Mage, Novice, Hunter, Trader’s Apprentice, Laborer, Urchin, Outsider.  
+- **Homelands:** Guild-Town, Crownland, Old Pantheon, or a Shared Homeland.
+
+# **Dwarf** {#dwarf}
+
+**Profile:**
+
+- **Lineage:** Human line. Descended from Human colonization ships that landed on the western continent; years at sea left them stockier and disease-resistant.  
+- **Homeland:** The Dwarven Republic (south-west of the western continent).  
+- **Size:** 3\.  
+- **Languages:** Common (Dwarven dialect, shared with Halflings).  
+- **Lifespan:** About 80 years.  
+- **Backgrounds:** Engineer’s Apprentice, Mine Hand, Recruit, Apprentice Mage, Novice, Hunter, Trader’s Apprentice, Laborer, Outsider.  
+- **Homelands:** Iron Republic, Moon Faithful, Common Folk, or a Shared Homeland.
+
+# **Sworan** {#sworan}
+
+**Profile:**
+
+- **Lineage:** Descended from the Wuson. The first people of the far west, living in the Rust Caves long before the Dwarves arrived. Much of the Dwarven dialect comes from them. The Dwarves enslaved them on landing to build their settlements, and freed them around 1585, after winning the war against the Orcs. Some older Sworan still hate the Dwarves, but most now feel neutral toward them.  
+- **Homeland:** The Rust Caves (beneath the Dwarven Republic, south-west of the western continent). Most now live within Dwarven society, though still mostly underground, and few come to the surface unless they need to or have an adventurous streak.  
+- **Appearance:** Gray, stone-hard skin and pale eyes. The metals in their bodies pool on their dominant side, stiffening that leg and filling that arm, which has no hand and can be reshaped like the metal it is.  
+- **Size:** 3\.  
+- **Languages:** Sworan. They understand Common (Dwarven dialect) but cannot speak it.  
+- **Lifespan:** About 80 years.  
+- **Backgrounds:** Engineer’s Apprentice, Mine Hand, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
+- **Homelands:** Iron Republic, Moon Faithful, Common Folk, or a Shared Homeland.
+
+# **Halfling** {#halfling}
+
+**Profile:**
+
+- **Lineage:** Human line, the first Human subspecies.  
+- **Homeland:** Littlefoot Hills (just south of the Humans).  
+- **Size:** 2\.  
+- **Languages:** Common (shared with Dwarves).  
+- **Lifespan:** About 60 years.  
+- **Backgrounds:** Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider.  
+- **Homelands:** Hills Revelers, Cargo Families, Council-Town, or a Shared Homeland.
+
+# **Wildibit** {#wildibit}
+
+**Profile:**
+
+- **Lineage:** Magic-touched. Rabbits uplifted into people by magic itself, for reasons no one knows. Not descended from the Wuson.  
+- **Homeland:** The Littlefoot Hills (just south of the Humans), among the Halflings. Long scattered and hidden, they formed small bands in Halfling lands after the Humans conscripted them, along with the Halflings, near the end of the Continental War. They now live alongside the Halflings in near harmony.  
+- **Appearance:** Furred and rabbit-faced, with long ears, small paw-like hands, and powerful hind legs.  
+- **Size:** 2\.  
+- **Languages:** Common.  
+- **Lifespan:** About 30 years. They breed quickly, though with longer pregnancies than true rabbits.  
+- **Backgrounds:** Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider.  
+- **Homelands:** Hills Revelers, Cargo Families, Council-Town, or a Shared Homeland.
+
+# **Elf** {#elf}
+
+**Profile:**
+
+- **Lineage:** Human line. Transformed by the explosion of magic when the southern Rift opened. They are not Rift-born, a term reserved for peoples made when a Rift was closed. Lighter-skinned, weaker, and far more magically adept than Humans.  
+- **Homeland:** The Paanlands (south of the eastern continent).  
+- **Size:** 3\.  
+- **Languages:** Common.  
+- **Lifespan:** About 60 years.  
+- **Backgrounds:** College Student, Court Page, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Urchin, Outsider.  
+- **Homelands:** Elven Courts, Paan Faithful, Open-City Elves, or a Shared Homeland.
+
+# **Myrthel** {#myrthel}
+
+**Profile:**
+
+- **Lineage:** Elves reshaped by magic over so many generations that it shows in their bodies. Descended from the Wuson through the Humans and Elves.  
+- **Homeland:** The Paanlands, living among the Elves, who treasure them while privately seeing them as precious failures.  
+- **Appearance:** Pure white skin and thin, delicate features.  
+- **Size:** 3\.  
+- **Languages:** Common.  
+- **Lifespan:** About 50 years, as their fragile bodies wear out early.  
+- **Backgrounds:** College Student, Court Page, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Urchin, Outsider.  
+- **Homelands:** Elven Courts, Paan Faithful, Open-City Elves, or a Shared Homeland.
+
+# **Dusken** {#dusken}
+
+**Profile:**
+
+- **Lineage:** Human line, through the Elves, Rift-born. Made when Paan sealed the southern Rift: gray-skinned elves shrouded by the Dusken curse (the shadow veil).  
+- **Homeland:** The Dusklands (southern tip of the eastern continent).  
+- **Size:** 3\.  
+- **Languages:** Common.  
+- **Lifespan:** About 50 years, as the curse wears on the body; those who master their spirit can live to about 90\.  
+- **Backgrounds:** Spirit Hunter Initiate, Spirit Tender, Recruit, Apprentice Mage, Novice, Laborer, Outsider.  
+- **Homelands:** Paan Faithful, Tribal Village, Shadow Supremacist, or a Shared Homeland.
+
+# **Dawn Elf** {#dawn-elf}
+
+**Profile:**
+
+- **Lineage:** Born of a Dusken and an Elf. Their mixed blood leaves the shadow bound inside the body instead of loosely tethered. Both peoples see them as abominations: having a Dawn child is a crime in the Elven lands, and was in the Dusklands until Umbra, whose fascination with them led to the discovery that the shadow can be given to others. Human line, through the Elves and Dusken.  
+- **Homeland:** Ostracized outsider communities in and around the Dusklands (southern tip of the eastern continent). Extremely rare, and almost unknown outside the Elves and Dusken.  
+- **Appearance:** Patchwork skin, gray and white in random areas, with the shadow visibly straining beneath it.  
+- **Size:** 3\.  
+- **Languages:** Common.  
+- **Lifespan:** About 40 years, as body and shadow wear each other down.  
+- **Backgrounds:** Spirit Hunter Initiate, Spirit Tender, Recruit, Apprentice Mage, Novice, Laborer, Outsider.  
+- **Homelands:** Paan Faithful, Tribal Village, Shadow Supremacist, or a Shared Homeland.
+
+# **Drakenblood** {#drakenblood}
+
+**Profile:**
+
+- **Lineage:** Human line, Rift-born. The people of Draken Hold, rewritten by their royals’ great spell into a lizard-like people, each with an elemental gland and a shorter lifespan.  
+- **Homeland:** The Kingdom of Drakenblood (south-central western continent), between the Goblins and the Fire Walkers; their old land is now the Dragon Wastes.  
+- **Size:** 3\.  
+- **Languages:** Common and Bestial.  
+- **Lifespan:** About 50 years, shortened by their transformation.  
+- **Backgrounds:** Ward Apprentice, Reclaimer Initiate, Recruit, Apprentice Mage, Novice, Laborer, Outsider.  
+- **Homelands:** Reclaimers, Wired Cities, Crown-Sworn, or a Shared Homeland.
+
+# **Wasteling** {#wasteling}
+
+**Profile:**
+
+- **Lineage:** Any. A person of any Ancestry, decayed beyond recognition by about a decade in the Dragon Wastes. Most are Drakenblood or Humans (the Wastes were once Human land, Silver Springs), with some Dwarves, Fire Walkers, and the very rare Goblin. Most people, the Drakenblood above all, pity them as cursed, sorry creatures. Playable Wastelings have left the cult that worships the spirits sealed in Old Draken Hold, or never joined it.  
+- **Becoming One:** Pick your original Ancestry as normal, then replace its core tree with the Wasteling tree. You keep its lineage and Ancestry trees.  
+- **Homeland:** The Dragon Wastes (south of the western continent). Most never leave, held there by the curse and by whatever brought them there in the first place, living in the cults or the Wastes’ settlements. Playable Wastelings are the rare few who left.  
+- **Appearance:** Your original Ancestry, decayed: sloughing skin, exposed sinew, and clouded eyes.  
+- **Size and Languages:** As your original Ancestry.  
+- **Lifespan:** Cannot die of natural causes. Most turn feral 20 to 40 years after the change, though some find ways to hold it off. A Wasteling can still have children, who are Wastelings of the same Ancestry, for 10 to 20 years after the change, until they begin to turn.  
+- **Backgrounds and Homelands:** Those of your original Ancestry.
+
+# **Orc** {#orc}
+
+**Profile:**
+
+- **Lineage:** One of the two founding races of the Twin Continents, descended from the Wuson. Ancestors of the Fire Walkers and Goblins.  
+- **Homeland:** The Orcish Wildlands (north-west of the western continent).  
+- **Size:** 3\.  
+- **Languages:** Bestial (Orcish).  
+- **Lifespan:** About 40 years in the hostile jungle; up to about 80 in peaceful conditions.  
+- **Backgrounds:** Untested Warrior, Wildspeaker’s Apprentice, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
+- **Homelands:** Great Tribe, Small Tribe, Borderland, or a Shared Homeland.
+
+# **Noctua** {#noctua}
+
+**Profile:**
+
+- **Lineage:** Magic-touched. Owls uplifted into people by magic itself, for reasons no one knows. Not descended from the Wuson.  
+- **Homeland:** The canopy of the Orcish Wildlands (north-west of the western continent), above and among the Orcs’ tree-built villages. They live alongside the Orcs and often serve as their scouts, especially in the war against the Dwarves.  
+- **Appearance:** Feathered and owl-faced, with large forward-facing eyes and clawed hands at the bend of each wing.  
+- **Size:** 2\.  
+- **Languages:** Bestial (Orcish).  
+- **Lifespan:** About 50 years.  
+- **Backgrounds:** Wildspeaker’s Apprentice, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
+- **Homelands:** Great Tribe, Small Tribe, or a Shared Homeland.
+
+# **Fire Walker** {#fire-walker}
+
+**Profile:**
+
+- **Lineage:** Orc line. Orcs who migrated east into the savannas and deserts; tannish-brown and beefier.  
+- **Homeland:** The Hellspire Expanse (center/east of the western continent).  
+- **Size:** 3\.  
+- **Languages:** Bestial (Orcish).  
+- **Lifespan:** About 50 years in their harsh climate; up to about 80 in ideal conditions.  
+- **Backgrounds:** Nomad, Pilgrim, Inquisition Familiar, Tiro, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
+- **Homelands:** Guiding Flame Faithful, Lake Temple-Cities, Dirt Clans, or a Shared Homeland.
+
+# **Minotaur** {#minotaur}
+
+**Profile:**
+
+- **Lineage:** Orc line, through the Fire Walkers, Rift-born. Fire Walkers changed by the Firelands lake, who now breed true and call themselves the Red Tusks.  
+- **Homeland:** The Red Tusk lands (north-east of the Hellspire Expanse), where the Rite of the Minotaur is performed. Most spend their lives at sea, while those on land live nomadic lives much like the Dirt clans, far from the Firelands. Fire Walkers may still take the Rite and become Minotaurs, though few choose to now.  
+- **Appearance:** Bull-headed, with horns, reddish tusks, and a thick hide over a heavier frame than a Fire Walker’s.  
+- **Size:** 3\.  
+- **Languages:** Bestial (Orcish).  
+- **Lifespan:** About 70 years.  
+- **Backgrounds:** Deckhand, Pilgrim, Tiro, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
+- **Homelands:** Guiding Flame Faithful, Red Tusk Horde, or a Shared Homeland.
+
+# **Goblin** {#goblin}
+
+**Profile:**
+
+- **Lineage:** Orc line. Descended from a long-forgotten Orcish exploratory expedition.  
+- **Homeland:** Tinksmith (south-east tip of the western continent).  
+- **Size:** 2\.  
+- **Languages:** Common and Bestial (Orcish).  
+- **Lifespan:** About 60 years.  
+- **Backgrounds:** Mob Runner, Green Hood Cub, Deckhand, Latent Psion, Trader’s Apprentice, Laborer, Urchin, Outsider.  
+- **Homelands:** Family Ward, Undercity, Island Holdings, or a Shared Homeland.
+
+# **Smoblin** {#smoblin}
+
+**Profile:**
+
+- **Lineage:** Orc line, through the Goblins. Made by the Goblin research wing’s Smart Goblin Initiative during the Continental War, to make Goblins clever enough to build better things. Forced to run such powerful minds, Smoblins tend to be cold, arrogant, and unstable, with sharp swings of mood. Their genes are recessive, so their numbers keep shrinking, but the labs keep making more.  
+- **Homeland:** Tinksmith’s main research laboratory, the head of the Goblin research institute (south-east tip of the western continent), and the Island Holdings research posts. Very few ever leave, and those who do usually escaped during Green Hood attacks.  
+- **Appearance:** Goblin, with slightly larger heads and pale eyes that seem to look through you.  
+- **Size:** 2\.  
+- **Languages:** Common and Bestial (Orcish).  
+- **Lifespan:** About 40 years.  
+- **Backgrounds:** Latent Psion, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider.  
+- **Homelands:** Family Ward, Undercity, Island Holdings, or a Shared Homeland.
 
 # **Wusonian** {#wusonian}
 
@@ -186,7 +481,7 @@
 
 ## **Commonkin** {#commonkin}
 
-*Requires Wusonian 1\. Lineage tree of the Human line: Human, Dwarf, Halfling, Elf, Dusken, and Drakenblood.*  
+*Lineage tree of the Human line: Human, Namuh, Dwarf, Halfling, Elf, Myrthel, Dusken, Dawn Elf, and Drakenblood.*  
 **Tier 1: You unlock the following passive:**
 
 - **Inquisitive:** When you spend at least 10 minutes examining an unfamiliar object, creature, or place, the GM tells you one useful thing your character could reasonably work out about it.
@@ -209,7 +504,7 @@
 
 ## **Bestial** {#bestial}
 
-*Requires Wusonian 1\. Lineage tree of the Orc line: Orc, Fire Walker, and Goblin.*  
+*Lineage tree of the Orc line: Orc, Fire Walker, Minotaur, Goblin, and Smoblin.*  
 **Tier 1: You unlock the following passive:**
 
 - **Keen Instincts:** Smell is a Primary sense for you instead of Secondary.
@@ -232,7 +527,7 @@
 
 ## **Smallfolk** {#smallfolk}
 
-*Halfling or Goblin only. Shared ancestry tree of the Size 2 peoples, available without a lineage requirement.*  
+*Halfling, Wildibit, Noctua, Goblin, or Smoblin only. Shared ancestry tree of the Size 2 peoples.*  
 **Tier 1: You unlock the following passive:**
 
 - **Slip Through:** You can move through the space of any creature at least one Size larger than you.
@@ -253,21 +548,140 @@
 
 - **Small Target:** Attacks against you from creatures two or more Sizes larger than you have Disadvantage. In addition, **Underfoot** can now be used once per turn instead of once per round.
 
-# **Human** {#human}
+# **Lakeborn** {#lakeborn}
 
-**Profile:**
+Core tree of every creature changed by the Firelands lake.  
+**Tier 0 (Free): You gain the following rules:**
 
-- **Lineage:** One of the two founding races of the Twin Continents, descended from the Wuson. Ancestors of the Dwarves, Halflings, Elves, Dusken, and Drakenblood.  
-- **Homeland:** The United States of Tartan (north of the eastern continent), though their explorative, inquisitive nature puts them nearly everywhere.  
-- **Size:** 3\.  
-- **Languages:** Common.  
-- **Lifespan:** About 80 years.  
-- **Backgrounds:** Explorer, Scholar’s Apprentice, Recruit, Apprentice Mage, Novice, Hunter, Trader’s Apprentice, Laborer, Urchin, Outsider.  
-- **Homelands:** Guild-Town, Crownland, Old Pantheon, or a Shared Homeland.
+- **Size:** Lakeborn keep the Size of the kind they were before the change, unless their Ancestry says otherwise.  
+- **Body:** The lake turns each kind of creature into the same new form every time, as its Ancestry describes.  
+- **Changed Once:** The change is permanent and happens only once. Drinking from or bathing in the lake again does nothing, and Lakeborn breed true.  
+- **Regeneration:** Heals naturally through rest (see Rest in Flow State \- Generic Groups), but cannot regrow lost Max HP or limbs.  
+- **Needs:** Breathes air (see Swimming in Flow State \- Generic Groups), and needs food, water, and sleep, unless its Ancestry says otherwise.  
+- **Senses:** Sight (Primary), Hearing (Primary), and Smell (Secondary) (see Senses in Flow State \- Generic Groups), unless its Ancestry says otherwise.
+
+**Tier 1: You unlock the following passive:**
+
+- **Lake-Kin:** Low-sapience Lakeborn creatures treat you as one of their own, and do not attack you unless you or your allies harm them first (GM’s call).
+
+**Tier 2: You unlock the following passive:**
+
+- **Freshwater Born:** You swim at your full movement speed and can hold your breath twice as long (see Swimming in Flow State \- Generic Groups).
+
+**Tier 3: You unlock the following ability:**
+
+- **Lake Surge:** Once per combat, you can spend **2 AP** to let the lake’s change surge through you. Until the start of your next turn, Stage 1 movement slows do not affect you, and you have Advantage on checks to resist being grappled, moved, or knocked Prone.
+
+**Tier 4: You unlock the following passive:**
+
+- **Set in Flesh:** You have Advantage on checks to resist effects that would change your body or form against your will.
+
+**Tier 5: You unlock the following passive:**
+
+- **Endless Tide:** **Lake Surge** can now be used once per round instead of once per combat.
+
+# **Strigid** {#strigid}
+
+Core tree of every owl, and of the peoples descended from them.  
+**Tier 0 (Free): You gain the following rules:**
+
+- **Size:** Strigids are Size 1, unless their Ancestry says otherwise.  
+- **Body:** Feathered, with two wings and two taloned legs.  
+- **Wings:** Your wings give you Lift equal to your Current Gravity Force, letting you fly at your full movement speed (see Flight in Flow State \- Rules). Your ground movement speed is halved.  
+- **Regeneration:** Heals naturally through rest (see Rest in Flow State \- Generic Groups), but cannot regrow lost Max HP or limbs.  
+- **Needs:** Breathes air (see Swimming in Flow State \- Generic Groups), and needs food, water, and sleep. Carnivorous.  
+- **Senses:** Sight (Primary) and Hearing (Heightened) (see Senses in Flow State \- Generic Groups).
+
+**Tier 1: You unlock the following passive:**
+
+- **Night Eyes:** Darkness only lightly obscures your Sight instead of heavily.
+
+**Tier 2: You unlock the following passive:**
+
+- **Silent Wings:** Your flight makes no sound, and you have Advantage on stealth checks while flying.
+
+**Tier 3: You unlock the following ability:**
+
+- **Swoop:** Once per combat, when you make a melee attack after flying at least 20ft toward the target this turn, that attack is Strengthened.
+
+**Tier 4: You unlock the following passive:**
+
+- **Turning Gaze:** You have Advantage on perception checks to Spot creatures, and you cannot be Surprised by creatures you can hear.
+
+**Tier 5: You unlock the following passive:**
+
+- **Death From Above:** **Swoop** can now be used once per round instead of once per combat.
+
+# **Leporid** {#leporid}
+
+Core tree of every rabbit and hare, and of the peoples descended from them.  
+**Tier 0 (Free): You gain the following rules:**
+
+- **Size:** Leporids are Size 1, unless their Ancestry says otherwise.  
+- **Body:** Furred, with long ears and powerful hind legs built for bounding.  
+- **Bounding:** Your movement speed and your Size’s maximum movement speed are doubled.  
+- **Regeneration:** Heals naturally through rest (see Rest in Flow State \- Generic Groups), but cannot regrow lost Max HP or limbs.  
+- **Needs:** Breathes air (see Swimming in Flow State \- Generic Groups), and needs food, water, and sleep. Herbivorous.  
+- **Senses:** Sight (Primary), Hearing (Heightened), and Smell (Primary) (see Senses in Flow State \- Generic Groups).
+
+**Tier 1: You unlock the following passive:**
+
+- **Long Leap:** Your jumps cover twice the normal distance.
+
+**Tier 2: You unlock the following passive:**
+
+- **Twitching Ears:** You have Advantage on perception checks that rely on Hearing.
+
+**Tier 3: You unlock the following ability:**
+
+- **Hind Kick:** Once per combat, when you make an Unarmed attack, you can kick with your hind legs instead. The attack is Strengthened and imparts Force as though it had the Knockback tag.
+
+**Tier 4: You unlock the following passive:**
+
+- **Warning Thump:** When combat starts, you can thump the ground. Allies within 100ft who can hear you cannot be Surprised.
+
+**Tier 5: You unlock the following passive:**
+
+- **Powerful Legs:** **Hind Kick** can now be used once per round instead of once per combat.
+
+# **Wasteling** {#wasteling-1}
+
+Core tree of every Wasteling. It replaces the core tree of your original Ancestry.  
+**Tier 0 (Free): You gain the following rules:**
+
+- **Size, Body, and Senses:** As your original Ancestry’s core.  
+- **Undying Decay:** You cannot die of age, disease, or other natural causes. You heal naturally through rest (see Rest in Flow State \- Generic Groups), but cannot regrow lost Max HP or limbs.  
+- **Needs:** Breathes air (see Swimming in Flow State \- Generic Groups), and needs food, water, and sleep.  
+- **Curse-Proof:** You are immune to diseases and curses. The curse of the Wastes that made you is not affected: it was changed by a Rift and is no longer magical, so it cannot be removed except by Stage 3 or higher powers.  
+- **Fading Mind:** The curse keeps eating at you. Somewhere between 20 and 40 years after your change, you turn feral (GM’s call). This is for roleplay and has no effect in play.  
+- **Unwelcome:** You have Disadvantage on persuasion checks against creatures that can see you and are not Wastelings.
+
+**Tier 1: You unlock the following passive:**
+
+- **Acid-Worn:** Acid damage you take gets one Weakened stack.
+
+**Tier 2: You unlock the following passive:**
+
+- **Born of Blight:** You do not lose health to Hazards in blighted or cursed land, such as the Dragon Wastes, and you need only a quarter as much food and water.
+
+**Tier 3: You unlock the following ability:**
+
+- **Rotting Touch:** Once per combat, when you hit with a melee attack, you can spend **1 RP** to make its damage Acid damage with one Strengthened stack.
+
+**Tier 4: You unlock the following passive:**
+
+- **Numb Flesh:** When you fall below your Pain Threshold, you do not fall unconscious until the end of your next turn.
+
+**Tier 5: You unlock the following passive:**
+
+- **Spreading Rot:** **Rotting Touch** can now be used once per round instead of once per combat.
+
+# **Ancestry Trees** {#ancestry-trees}
+
+*Every core, lineage, and shared tree comes before this point. Below are the trees unique to each Ancestry, in the same order as the profiles.*
 
 ## **Human** {#human-1}
 
-*Requires Commonkin 2\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Determined:** Once per day, when you fail a Non Stat Check, you can try it again even when you normally could not (such as a failed persuasion), as long as you take a different approach (GM’s call).
@@ -288,21 +702,34 @@
 
 - **Indomitable:** Once per round, when you fail an attack roll, dodge roll, or check, you can reroll it. You must take the new result.
 
-# **Dwarf** {#dwarf}
+## **Namuh** {#namuh-1}
 
-**Profile:**
+**Tier 0 (Free): You gain the following rule:**
 
-- **Lineage:** Human line. Descended from Human colonization ships that landed on the western continent; years at sea left them stockier and disease-resistant.  
-- **Homeland:** The Dwarven Republic (south-west of the western continent).  
-- **Size:** 3\.  
-- **Languages:** Common (Dwarven dialect, shared with Halflings).  
-- **Lifespan:** About 80 years.  
-- **Backgrounds:** Engineer’s Apprentice, Mine Hand, Recruit, Apprentice Mage, Novice, Hunter, Trader’s Apprentice, Laborer, Outsider.  
-- **Homelands:** Iron Republic, Moon Faithful, Common Folk, or a Shared Homeland.
+- **Unstable Regeneration:** This replaces the Wusonian **Regeneration** rule. Your healing from rest is halved, rounded down. In exchange, whenever you complete an 8 hour rest at full HP, you restore lost Max HP, including lost limbs, equal to the HP that rest would have restored.
+
+**Tier 1: You unlock the following passive:**
+
+- **Stabilized:** **Unstable Regeneration** no longer halves your healing from rest.
+
+**Tier 2: You unlock the following passive:**
+
+- **Sealed Wounds:** Whenever you would lose Max HP, you lose half as much, rounded down.
+
+**Tier 3: You unlock the following ability:**
+
+- **Accelerated Healing:** Once per turn, you can spend **2 AP** and Energy equal to your total skill points to regain HP equal to what an 8 hour rest would restore you, up to the HP you have lost since the start of your last turn.
+
+**Tier 4: You unlock the following passive:**
+
+- **Rapid Regrowth:** **Unstable Regeneration** now also works when you rest below full HP. After that rest’s healing, it restores lost Max HP equal to the same amount.
+
+**Tier 5: You unlock the following passive:**
+
+- **Perfect Body:** **Accelerated Healing** no longer costs Energy.
 
 ## **Dwarf** {#dwarf-1}
 
-*Requires Commonkin 2\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Compact:** Though you are Size 3, you are short and stocky for it. You can move through spaces built for Size 2 creatures (low tunnels, crawlspaces, narrow passages) as though they were built for you.
@@ -323,21 +750,36 @@
 
 - **Grudgebearer:** Once per combat, when a creature deals damage to you, you can mark it as your Grudge for the rest of the combat. Your attacks against your Grudge gain one Strengthened stack.
 
-# **Halfling** {#halfling}
+## **Sworan** {#sworan-1}
 
-**Profile:**
+**Tier 0 (Free): You gain the following rules:**
 
-- **Lineage:** Human line, the first Human subspecies.  
-- **Homeland:** Littlefoot Hills (just south of the Humans).  
-- **Size:** 2\.  
-- **Languages:** Common (shared with Dwarves).  
-- **Lifespan:** About 60 years.  
-- **Backgrounds:** Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider.  
-- **Homelands:** Hills Revelers, Cargo Families, Council-Town, or a Shared Homeland.
+- **Body-Speech:** Your vocal cords are primitive and cannot form the sounds of other languages. You speak Sworan, a language of clicks, knocks, and guttural noises made with your whole body. You understand other languages as normal, and can still use hand-sign, writing, or gesture.  
+- **Living Metal Arm:** Your dominant arm is living metal, with no hand. Over 1 minute, you can reshape it into any Foci, any Icon Form, a Weapon of any type and weight, or back into a plain arm. As a Foci or Icon, it counts as Attuned for as long as it holds that shape. As a Weapon, it must be made of a material you have absorbed, starting with Iron. To absorb a Common Weapon material, spend an 8 hour rest merging an item made of it (or enough of the raw material for one) into your arm. The item is used up, but you can use that material from then on without it. As a Weapon it uses its material’s Durability and Limit, and a Heavy-only material uses half of them as a Light Weapon. Its grade is always high enough for all of your Scaling Stat to count, and you cannot be disarmed of it.  
+- **Deep-Dweller:** Hearing is Heightened for you instead of Primary, and darkness only lightly obscures your Sight instead of heavily.
+
+**Tier 1: You unlock the following ability:**
+
+- **Mimicry:** Once per round, you can spend **1 AP** to mimic a sound you have heard in the past day, such as a voice saying something it said, an animal call, footsteps, or a mechanism. Creatures that hear it take it for the real thing unless they succeed on a perception check of at least your total skill points.
+
+**Tier 2: You unlock the following passive:**
+
+- **Deepforged:** You can now absorb Uncommon Weapon materials into your **Living Metal Arm**.
+
+**Tier 3: You unlock the following passive:**
+
+- **Stone Skin:** Physical damage you take from each attack is reduced by your Constitution Min.
+
+**Tier 4: You unlock the following passive:**
+
+- **Coreforged:** You can now absorb Rare Weapon materials into your **Living Metal Arm**.
+
+**Tier 5: You unlock the following ability:**
+
+- **Quick Reshape:** Once per round, you can spend **1 AP** to reshape your **Living Metal Arm** instead of taking a minute.
 
 ## **Halfling** {#halfling-1}
 
-*Requires Commonkin 2\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Lucky:** Once per rest, before you roll, you can give yourself Advantage on a check, attack roll, or dodge roll of your choice.
@@ -358,21 +800,34 @@
 
 - **Charmed Life:** **Lucky** can now be used once per combat instead of once per rest. When you use it, you can give the Advantage to an ally within 30ft that you can see instead of yourself.
 
-# **Elf** {#elf}
+## **Wildibit** {#wildibit-1}
 
-**Profile:**
+**Tier 0 (Free): You gain the following rule:**
 
-- **Lineage:** Human line. Transformed by the explosion of magic when the southern Rift opened. They are not Rift-born, a term reserved for peoples made when a Rift was closed. Lighter-skinned, weaker, and far more magically adept than Humans.  
-- **Homeland:** The Paanlands (south of the eastern continent).  
-- **Size:** 3\.  
-- **Languages:** Common.  
-- **Lifespan:** About 60 years.  
-- **Backgrounds:** College Student, Court Page, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Urchin, Outsider.  
-- **Homelands:** Elven Courts, Paan Faithful, Open-City Elves, or a Shared Homeland.
+- **Paws:** Your small hands can hold and use Equipment, but you cannot two-hand a Weapon.
+
+**Tier 1: You unlock the following passive:**
+
+- **Burrower:** You can dig through soil and loose earth at half your movement speed. You can also spend 10 minutes digging a burrow big enough for your group, and you all have Advantage on stealth checks while resting in it.
+
+**Tier 2: You unlock the following passive:**
+
+- **Skittish:** You have Advantage on your dodge roll against the first attack made against you each round.
+
+**Tier 3: You unlock the following ability:**
+
+- **Zig-Zag:** Once per combat, after you move at least 20ft in a turn, you can spend **1 RP**. Until the start of your next turn, ranged attacks against you have Disadvantage.
+
+**Tier 4: You unlock the following passive:**
+
+- **Warren Instinct:** While an ally is within 10ft of you, you have Advantage on checks to resist Fear.
+
+**Tier 5: You unlock the following passive:**
+
+- **Untouchable:** **Zig-Zag** can now be used once per round instead of once per combat.
 
 ## **Elf** {#elf-1}
 
-*Requires Commonkin 3\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Mindful of Fragility:** You have Advantage on your dodge roll against the first attack made against you each combat.
@@ -393,22 +848,39 @@
 
 - **Overflowing Magic:** **Magic Boost** can now be used once per combat instead of once per rest.
 
-# **Dusken** {#dusken}
+## **Myrthel** {#myrthel-1}
 
-**Profile:**
+**Tier 0 (Free): You gain the following rules:**
 
-- **Lineage:** Human line, through the Elves, Rift-born. Made when Paan sealed the southern Rift: gray-skinned elves shrouded by the Dusken curse (the shadow veil).  
-- **Homeland:** The Dusklands (southern tip of the eastern continent).  
-- **Size:** 3\.  
-- **Languages:** Common.  
-- **Lifespan:** About 50 years, as the curse wears on the body; those who master their spirit can live to about 90\.  
-- **Loose Tether:** Your spirit is only loosely bound to your body. This has no effect on its own, but it is what the Dusken Shadow and Dusken Spirit trees build on.  
-- **Backgrounds:** Spirit Hunter Initiate, Spirit Tender, Recruit, Apprentice Mage, Novice, Laborer, Outsider.  
-- **Homelands:** Paan Faithful, Tribal Village, Shadow Supremacist, or a Shared Homeland.
+- **Glass Body:** Physical damage you take is Strengthened.  
+- **Steeped in Magic:** Your Spells gain 1 TR.
+
+**Tier 1: You unlock the following passive:**
+
+- **Shy of Pain:** While you are above your Pain Threshold, each of your dodge dice against physical attacks gains \+1 die size for every 10 total skill points you have.
+
+**Tier 2: You unlock the following passive:**
+
+- **Treasured:** In Elven settlements, you can always find shelter, care, and someone willing to protect you (GM’s call). In addition, you have Advantage on persuasion checks against Elves.
+
+**Tier 3: You unlock the following ability:**
+
+- **Blood Price:** Once per round, when you cast a Spell, you can lose HP equal to your total skill points to give it \+100% Power.
+
+**Tier 4: You unlock the following passive:**
+
+- **Hardened Glass:** **Shy of Pain** now gives \+2 die size for every 10 total skill points instead of \+1.
+
+**Tier 5: You unlock the following passive:**
+
+- **Overflowing Blood:** **Blood Price** can now be used once per Spell you cast instead of once per round.
 
 ## **Dusken Shadow** {#dusken-shadow}
 
-*Requires Commonkin 3\.*  
+**Tier 0 (Free): You gain the following rule:**
+
+- **Loose Tether:** Your spirit is only loosely bound to your body. This has no effect on its own, but it is what the Dusken Shadow and Dusken Spirit trees build on.
+
 **Tier 1: You unlock the following passive:**
 
 - **Veilborn:** Darkness only lightly obscures your Sight instead of heavily.
@@ -431,7 +903,6 @@
 
 ## **Dusken Spirit** {#dusken-spirit}
 
-*Requires Commonkin 2\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Anchored:** You have Advantage on checks to resist effects that would move, bind, or take control of your body.
@@ -452,22 +923,38 @@
 
 - **Unbroken Spirit:** **Spirit Shell** can now be used once per round instead of once per combat.
 
-# **Drakenblood** {#drakenblood}
+## **Dawn Elf** {#dawn-elf-1}
 
-**Profile:**
+**Tier 0 (Free): You gain the following rule:**
 
-- **Lineage:** Human line, Rift-born. The people of Draken Hold, rewritten by their royals’ great spell into a lizard-like people, each with an elemental gland and a shorter lifespan.  
-- **Homeland:** The Kingdom of Drakenblood (south-central western continent), between the Goblins and the Fire Walkers; their old land is now the Dragon Wastes.  
-- **Size:** 3\.  
-- **Languages:** Common and Bestial.  
-- **Lifespan:** About 50 years, shortened by their transformation.  
-- **Elemental Gland:** When you create a Drakenblood character, choose your gland’s element: Heat, Cold, Acid, or Radiation. You can make Light or Heavy unarmed attacks with your breath instead of your body; these are natural attacks with a range of 15ft that deal your gland’s element instead of Physical damage. The Draken Elements tree builds on this gland.  
-- **Backgrounds:** Ward Apprentice, Reclaimer Initiate, Recruit, Apprentice Mage, Novice, Laborer, Outsider.  
-- **Homelands:** Reclaimers, Wired Cities, Crown-Sworn, or a Shared Homeland.
+- **Fused Shadow:** Your shadow, your spirit, is fused to your body and constantly fights it. You can never separate your spirit from your body, and Arcane damage you take is Strengthened.
+
+**Tier 1: You unlock the following passive:**
+
+- **Night Watch:** Your shadow never rests. You cannot be Surprised while resting, and you wake instantly when something approaches.
+
+**Tier 2: You unlock the following passive:**
+
+- **Shadow-Touched:** You gain Spirit Sense (see Grasp Arcana) as a Secondary sense. If you already have it, it counts as one level higher.
+
+**Tier 3: You unlock the following ability:**
+
+- **Lashing Shadow:** Once per round, when a creature within your melee range hits you, you can spend **1 RP** to have your shadow lash out at it, dealing Arcane damage equal to your Build Min.
+
+**Tier 4: You unlock the following passive:**
+
+- **Uneasy Truce:** Arcane damage you take is no longer Strengthened by **Fused Shadow**.
+
+**Tier 5: You unlock the following passive:**
+
+- **Shadow Unleashed:** **Lashing Shadow** can now be used once per turn instead of once per round, against any creature within 30ft that hits you.
 
 ## **Draken Elements** {#draken-elements}
 
-*Requires Commonkin 2\.*  
+**Tier 0 (Free): You gain the following rule:**
+
+- **Elemental Gland:** When you create a Drakenblood character, choose your gland’s element: Heat, Cold, Acid, or Radiation. You can make Light or Heavy unarmed attacks with your breath instead of your body; these are natural attacks with a range of 15ft that deal your gland’s element instead of Physical damage. The rest of this tree builds on this gland.
+
 **Tier 1: You unlock the following passive:**
 
 - **Elemental Ward:** Damage of your Elemental Gland’s element that you take gets one Weakened stack.
@@ -490,7 +977,6 @@
 
 ## **Draken Legacy** {#draken-legacy}
 
-*Requires Commonkin 3\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Trapwise:** You have Advantage on perception checks to notice traps and magical wards.
@@ -511,21 +997,8 @@
 
 - **Elemental Wings:** Once per rest, you can spend **2 AP** to manifest wings of your gland’s element from your back. For 1 minute, or until you dismiss them, they give you Lift equal to your Current Gravity Force, letting you fly at your ground movement speed (see Flight in Flow State \- Rules).
 
-# **Orc** {#orc}
-
-**Profile:**
-
-- **Lineage:** One of the two founding races of the Twin Continents, descended from the Wuson. Ancestors of the Fire Walkers and Goblins.  
-- **Homeland:** The Orcish Wildlands (north-west of the western continent).  
-- **Size:** 3\.  
-- **Languages:** Bestial (Orcish).  
-- **Lifespan:** About 40 years in the hostile jungle; up to about 80 in peaceful conditions.  
-- **Backgrounds:** Untested Warrior, Wildspeaker’s Apprentice, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
-- **Homelands:** Great Tribe, Small Tribe, Borderland, or a Shared Homeland.
-
 ## **Orc** {#orc-1}
 
-*Requires Bestial 2\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Careful Steps:** Traps and other effects that trigger from your movement have Disadvantage on their attacks and checks against you.
@@ -546,21 +1019,35 @@
 
 - **Wild Heart:** **Overgrowth** now creates difficult terrain instead of rough terrain. In addition, natural rough terrain (brush, roots, mud, undergrowth) no longer increases your movement cost.
 
-# **Fire Walker** {#fire-walker}
+## **Noctua** {#noctua-1}
 
-**Profile:**
+**Tier 0 (Free): You gain the following rules:**
 
-- **Lineage:** Orc line. Orcs who migrated east into the savannas and deserts; tannish-brown and beefier.  
-- **Homeland:** The Hellspire Expanse (center/east of the western continent).  
-- **Size:** 3\.  
-- **Languages:** Bestial (Orcish).  
-- **Lifespan:** About 50 years in their harsh climate; up to about 80 in ideal conditions.  
-- **Backgrounds:** Nomad, Pilgrim, Inquisition Familiar, Tiro, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
-- **Homelands:** Guiding Flame Faithful, Lake Temple-Cities, Dirt Clans, or a Shared Homeland.
+- **Wing-Hands:** You can hold and use Equipment with the hands at your wing joints. You cannot fly while holding anything in two hands or wielding a Heavy Weapon.  
+- **Heavy Wings:** You must end each of your turns on the ground or a perch, or you begin falling (see Gravity Force in Flow State \- Rules).
+
+**Tier 1: You unlock the following passive:**
+
+- **Perched:** While you are at least 10ft above a creature, you have Advantage on perception checks against it.
+
+**Tier 2: You unlock the following passive:**
+
+- **Feather-Fall:** While you are conscious and your wings are free, falling never deals Force Damage to you.
+
+**Tier 3: You unlock the following ability:**
+
+- **Shriek:** Once per combat, you can spend **2 AP** to let out a piercing shriek. Each creature of your choice within 100ft that can hear you must resist Fear, requiring a result of at least your total skill points.
+
+**Tier 4: You unlock the following passive:**
+
+- **Strong Wings:** **Heavy Wings** no longer applies to you, and **Wing-Hands** no longer stops you from flying.
+
+**Tier 5: You unlock the following passive:**
+
+- **Night Terror:** **Shriek** can now be used once per round instead of once per combat.
 
 ## **Dirtborn** {#dirtborn}
 
-*Requires Bestial 2\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Desert Born:** While you are in a desert, savanna, or other hot biome, natural rough terrain (sand, scrub, loose rock) does not increase your movement cost, sandstorms and heat haze only lightly obscure your Sight instead of heavily, you cannot become lost while navigating, and you need only half as much water each day.
@@ -583,7 +1070,6 @@
 
 ## **Firelander** {#firelander}
 
-*Requires Bestial 3\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Lakewater Rites:** You can spend 10 minutes purifying water with flame and prayer, making up to a day’s worth of water for your group safe to drink.
@@ -604,21 +1090,35 @@
 
 - **Flamekin:** Heat damage you take gets one Weakened stack, and **Searing Zeal** can now be used once per round instead of once per combat.
 
-# **Goblin** {#goblin}
+## **Minotaur** {#minotaur-1}
 
-**Profile:**
+**Tier 0 (Free): You gain the following rules:**
 
-- **Lineage:** Orc line. Descended from a long-forgotten Orcish exploratory expedition.  
-- **Homeland:** Tinksmith (south-east tip of the western continent).  
-- **Size:** 2\.  
-- **Languages:** Common and Bestial (Orcish).  
-- **Lifespan:** About 60 years.  
-- **Backgrounds:** Mob Runner, Green Hood Cub, Deckhand, Latent Psion, Trader’s Apprentice, Laborer, Urchin, Outsider.  
-- **Homelands:** Family Ward, Undercity, Island Holdings, or a Shared Homeland.
+- **Warm-Blooded:** Your body holds its own temperature, so hot or cold biomes that are not Extreme never hinder you, even where they would slow a cold-blooded creature (see Environments in Flow State \- Generic Groups).  
+- **Thick Hide:** Your hide is natural Armor (see Martial Armor in Flow State \- Equipment). Over an 8 hour rest, you can grow it out as Light or Medium Armor, or shed it entirely. It has 15 Durability and 3 Limit as Light, 30 and 6 as Medium, 60 and 12 as Heavy, and 120 and 24 as Titanic, with the normal penalties of its weight. It scales with your Constitution as normal, and its grade is always high enough for all of your Constitution to count. It fully repairs whenever you complete a rest. While it is grown out, you cannot wear other Armor.
+
+**Tier 1: You unlock the following passive:**
+
+- **Sea Legs:** A ship’s motion never knocks you Prone or makes your footing rough terrain, and storms and rough water do not slow your swimming.
+
+**Tier 2: You unlock the following passive:**
+
+- **Privateer’s Eye:** You can judge the rough value of any cargo, ship, or loot you can see, and you have Advantage on checks to haggle over plunder or salvage.
+
+**Tier 3: You unlock the following ability:**
+
+- **Red Tide:** Once per combat, when an attack damages you, you can spend **1 RP** to fly into a rage until the end of your next turn. While raging, your melee attacks are Strengthened, and your dodge rolls have Disadvantage.
+
+**Tier 4: You unlock the following passive:**
+
+- **Toughened Hide:** You can now grow your **Thick Hide** as Heavy or Titanic Armor.
+
+**Tier 5: You unlock the following passive:**
+
+- **Unending Rage:** **Red Tide** can now be used once per round instead of once per combat.
 
 ## **Goblin** {#goblin-1}
 
-*Requires Bestial 2\.*  
 **Tier 1: You unlock the following passive:**
 
 - **Unlucky:** Once per rest, when a creature would hit you with an attack, you can force it to reroll the attack and use the lower result.
@@ -639,26 +1139,54 @@
 
 - **Jinx:** **Unlucky** can now be used once per combat instead of once per rest, including when a creature would hit an ally within 30ft of you. If the rerolled attack still hits, its damage gets one Weakened stack.
 
+## **Smoblin** {#smoblin-1}
+
+**Tier 0 (Free): You gain the following rules:**
+
+- **Awakened Mind:** Changing your Alignment takes a 10 minute activity for you instead of 1 hour.  
+- **Loud Mind:** Your mind is unusually loud. Creatures with a Psion sense can detect you from twice its normal range.
+
+**Tier 1: You unlock the following passive:**
+
+- **Steady Focus:** You have Advantage on Willpower checks to keep Concentration.
+
+**Tier 2: You unlock the following passive:**
+
+- **Light Step:** Each point of Alignment gives you a 10% speed penalty instead of 20%.
+
+**Tier 3: You unlock the following ability:**
+
+- **Overclock:** Once per combat, you can spend **1 RP** to raise your Alignment by 1, up to the deepest depth you have unlocked, until the end of your next turn. That extra point adds no speed or AP penalty.
+
+**Tier 4: You unlock the following passive:**
+
+- **Hardened Mind:** You have Advantage on checks to resist forced mental effects.
+
+**Tier 5: You unlock the following passive:**
+
+- **Redline:** **Overclock** can now be used once per round instead of once per combat.
+
 # **Backgrounds** {#backgrounds}
 
 *Each Background is written once. Every entry lists the Ancestries that can take it, the trees it starts you with, and any differences per Ancestry. Starting characters are young adults new to the world, so every Background is the first step of its path. Some entries offer a choice of trees or a focus. A Trade Slot marks points set aside for trade professions; until those exist, each slot is held by placeholder Generic Groups trees so it is never wasted.*
 
 ## **Outsider** {#outsider}
 
+- *Recommended for veteran players.*  
 - **Available to:** Every Ancestry.  
-- **Starting Trees:** Spend all 15 points freely across your Ancestry’s trees (your core, lineage, and Ancestry trees), at normal tier costs and requirements.  
-- **Circle:** any Shared Circle (Self-Made or Family Trade).
+- **Starting Trees:** You build this Background yourself. Give your GM a one-line concept for who your character was before the story began. Once they approve it, spend all 15 free points on any skill trees you could normally take, at normal tier costs and requirements, including any Theory tiers those trees need.  
+- **Circle:** Self-Made, or a Circle your GM approves that fits your concept.
 
 ## **Recruit** {#recruit}
 
-- **Available to:** Human, Dwarf, Elf, Dusken, Drakenblood, Orc, and Fire Walker.  
+- **Available to:** Human, Namuh, Dwarf, Sworan, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Fire Walker, and Minotaur.  
 - **Starting Trees:** Martial Theory T2, Medium Armor T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Resolve T2, and either Courage T2 or Endurance T2.  
 - **Ancestry Differences:** Dwarf: Heavy Armor T2 replaces Medium Armor T2.  
 - **Circle:** Barracks-Raised, or a Shared Circle.
 
 ## **Apprentice Mage** {#apprentice-mage}
 
-- **Available to:** Human, Dwarf, Halfling, Elf, Dusken, Drakenblood, Orc, and Fire Walker.  
+- **Available to:** Human, Namuh, Dwarf, Sworan, Halfling, Wildibit, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Noctua, Fire Walker, and Minotaur.  
 - **Starting Trees:** Magic Theory T2, plus one focus:  
 - **Warder:** Protection Arcana T3, one of Gravity, Slashing, Piercing, or Crushing at T2, and Perception T2.  
 - **Elementalist:** one of Heat, Cold, Radiation, or Acid at T3, Reach Arcana T2, and Perception T2.  
@@ -668,20 +1196,20 @@
 
 ## **Novice** {#novice}
 
-- **Available to:** Human, Dwarf, Halfling, Elf, Dusken, Drakenblood, Orc, and Fire Walker.  
+- **Available to:** Human, Namuh, Dwarf, Sworan, Halfling, Wildibit, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Noctua, Fire Walker, Minotaur, and Smoblin.  
 - **Starting Trees:** Mental Theory T2, one of Life, Death, Order, Chaos, Beyond, or Below at T3 (the domain of your faith), Resolve T2, and Persuasion T2.  
 - **Ancestry Differences:** Fire Walker: Mental Theory T3, Light T2, Resolve T2, and Persuasion T2.  
 - **Circle:** Temple, or a Shared Circle.
 
 ## **Hunter** {#hunter}
 
-- **Available to:** Human, Dwarf, Elf, Orc, and Fire Walker.  
+- **Available to:** Human, Namuh, Dwarf, Sworan, Elf, Myrthel, Orc, Noctua, Fire Walker, and Minotaur.  
 - **Starting Trees:** Martial Theory T1, either Rapid Weapons T2 or Swift Weapons T2, Perception T2, Stealth T2, Concealment T2, Endurance T1, and Athletics T1.  
 - **Circle:** Lodge, or a Shared Circle.
 
 ## **Trader’s Apprentice** {#trader’s-apprentice}
 
-- **Available to:** Human, Dwarf, Halfling, and Goblin.  
+- **Available to:** Human, Namuh, Dwarf, Halfling, Wildibit, Goblin, and Smoblin.  
 - **Starting Trees:** Persuasion T2, Barter T2, and Perception T2.  
 - **Trade Slot:** 6 points, held for now by Resolve T2 and Insight T2 as placeholders until trade professions exist.  
 - **Circle:** Caravan, or a Shared Circle.
@@ -695,64 +1223,64 @@
 
 ## **Urchin** {#urchin}
 
-- **Available to:** Human, Halfling, Elf, and Goblin.  
+- **Available to:** Human, Namuh, Halfling, Wildibit, Elf, Myrthel, Goblin, and Smoblin.  
 - **Starting Trees:** Stealth T2, Sleight T2, Deception T2, Perception T2, Athletics T1, Mobility T1, and Initiative T1.  
 - **Circle:** Street Crew, or a Shared Circle.
 
 ## **Explorer** {#explorer}
 
-- **Available to:** Human.  
+- **Available to:** Human and Namuh.  
 - **Starting Trees:** Perception T2, Athletics T2, Mobility T2, Endurance T2, Recovery T1, Persuasion T1, and Initiative T1.  
 - **Circle:** Expedition Society, or a Shared Circle.
 
 ## **Scholar’s Apprentice** {#scholar’s-apprentice}
 
-- **Available to:** Human.  
+- **Available to:** Human and Namuh.  
 - **Starting Trees:** Perception T2, Resolve T2, Insight T2, and Persuasion T2.  
 - **Trade Slot:** 3 points, held for now by Composure T2 as a placeholder until trade professions exist.  
 - **Circle:** The Stacks, or a Shared Circle.
 
 ## **Engineer’s Apprentice** {#engineer’s-apprentice}
 
-- **Available to:** Dwarf.  
+- **Available to:** Dwarf and Sworan.  
 - **Starting Trees:** Magic Theory T2, Protection Arcana T2, and Perception T2.  
 - **Trade Slot:** 6 points (gem-tech crafting), held for now by Resolve T2 and Endurance T2 as placeholders until trade professions exist.  
 - **Circle:** Construct Works, or a Shared Circle.
 
 ## **Mine Hand** {#mine-hand}
 
-- **Available to:** Dwarf.  
+- **Available to:** Dwarf and Sworan.  
 - **Starting Trees:** Athletics T2, Hauling T2, Endurance T2, and Perception T2.  
 - **Trade Slot:** 3 points (mining), held for now by Recovery T2 as a placeholder until trade professions exist.  
 - **Circle:** Deep Crews, or a Shared Circle.
 
 ## **Street Performer** {#street-performer}
 
-- **Available to:** Halfling.  
+- **Available to:** Halfling and Wildibit.  
 - **Starting Trees:** Persuasion T2, Deception T2, Diversion T2, Athletics T2, Diplomacy T1, Mobility T1, and Initiative T1.  
 - **Circle:** Traveling Troupe, or a Shared Circle.
 
 ## **Courier** {#courier}
 
-- **Available to:** Halfling.  
+- **Available to:** Halfling and Wildibit.  
 - **Starting Trees:** Athletics T2, Mobility T2, Hauling T2, Endurance T2, and Perception T2.  
 - **Circle:** The Relay, or a Shared Circle.
 
 ## **College Student** {#college-student}
 
-- **Available to:** Elf.  
+- **Available to:** Elf and Myrthel.  
 - **Starting Trees:** Magic Theory T3, Grasp Arcana T2, one Magic T1 or T2 school of your choice at T2, and Perception T2.  
 - **Circle:** The College, or a Shared Circle.
 
 ## **Court Page** {#court-page}
 
-- **Available to:** Elf.  
+- **Available to:** Elf and Myrthel.  
 - **Starting Trees:** Persuasion T2, Diplomacy T2, Resolve T2, Composure T2, Insight T1, Deception T1, and Initiative T1.  
 - **Circle:** Household Staff, or a Shared Circle.
 
 ## **Spirit Hunter Initiate** {#spirit-hunter-initiate}
 
-- **Available to:** Dusken.  
+- **Available to:** Dusken and Dawn Elf.  
 - **Starting Trees:** Perception T2 and Stealth T2, plus one path:  
 - **Spellward Path:** Magic Theory T3 and Grasp Arcana T2.  
 - **Blade Path:** Martial Theory T2 and one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3.  
@@ -760,7 +1288,7 @@
 
 ## **Spirit Tender** {#spirit-tender}
 
-- **Available to:** Dusken.  
+- **Available to:** Dusken and Dawn Elf.  
 - **Starting Trees:** Magic Theory T3, Protection Arcana T2, Grasp Arcana T2, and Resolve T2.  
 - **Circle:** The Tending Halls, or a Shared Circle.
 
@@ -784,7 +1312,7 @@
 
 ## **Wildspeaker’s Apprentice** {#wildspeaker’s-apprentice}
 
-- **Available to:** Orc.  
+- **Available to:** Orc and Noctua.  
 - **Starting Trees:** Mental Theory T2, Life T3, Perception T2, Stealth T1, Endurance T1, and Recovery T1.  
 - **Circle:** Grove Circle, or a Shared Circle.
 
@@ -796,7 +1324,7 @@
 
 ## **Pilgrim** {#pilgrim}
 
-- **Available to:** Fire Walker.  
+- **Available to:** Fire Walker and Minotaur.  
 - **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Perception T2, Resolve T2, and Courage T2.  
 - **Circle:** Pilgrim Band, or a Shared Circle.
 
@@ -808,7 +1336,7 @@
 
 ## **Tiro** {#tiro}
 
-- **Available to:** Fire Walker.  
+- **Available to:** Fire Walker and Minotaur.  
 - **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, or Swift Weapons at T3, Medium Armor T1, Athletics T1, Initiative T2, and Tempo T1.  
 - **Circle:** Arena Ludus, or a Shared Circle.
 
@@ -826,13 +1354,13 @@
 
 ## **Deckhand** {#deckhand}
 
-- **Available to:** Goblin.  
+- **Available to:** Minotaur and Goblin.  
 - **Starting Trees:** Athletics T2, Mobility T2, Hauling T2, Endurance T2, Martial Theory T1, Swift Weapons T1, and Initiative T1.  
 - **Circle:** Ship’s Crew, or a Shared Circle.
 
 ## **Latent Psion** {#latent-psion}
 
-- **Available to:** Goblin.  
+- **Available to:** Goblin and Smoblin.  
 - **Starting Trees:** Mental Theory T2, Psion Arts T3, Resolve T2, and Deception T2.  
 - **Circle:** Sewer Cult Fringe, or a Shared Circle.
 
@@ -894,6 +1422,10 @@
 - **Guiding Flame Faithful:** Your family keeps the old faith in the Guiding Flame, the lone savior who closed the Fire Walker Rift. You value self-reliance, sacrifice, and helping others, tend small flames as prayers, and see the lake temples as having strayed. Ties: old-faith shrines and wandering faithful.  
 - **Lake Temple-Cities:** You were raised in the cities around the Firelands lake, where religion rules and the lake’s changed creatures are revered. You value faith, purity, and order, purify water with flame and prayer, and are wary of outsiders. Ties: priests, temple guards, and the Inquisition’s eyes.  
 - **Dirt Clans:** You come from the nomadic clans of the Dirt, its savannas and deserts. You value honor, strength, and tradition, settle disputes by challenge, and measure others by how they endure hardship. Ties: clan elders, rival clans, and the arenas.
+
+## **Minotaur Homelands** {#minotaur-homelands}
+
+- **Red Tusk Horde:** You were raised among the Red Tusks, on the north-east coast or aboard their fleet. You value strength, plunder, and the land that made you, keep the old Guiding Flame, and look down on the Great Flame’s Prophets. Ties: ship captains, Red Tusk generals, and crews that answer to no one.
 
 ## **Goblin Homelands** {#goblin-homelands}
 

@@ -18,7 +18,7 @@ import { STATS, poolFormula } from "./rules.mjs";
 import { notCreature } from "./kinds.mjs";
 import { esc, select } from "./html.mjs";
 import { takeEdge } from "./edge.mjs";
-import { ancestryNet } from "./ancestry-net.mjs";
+import { ancestryNet, situationalFields, situationalNet } from "./ancestry-net.mjs";
 import { energyHave } from "./consumables-rules.mjs";
 
 const tier = (actor, id) => ab.treeTier(actor, id);
@@ -311,12 +311,12 @@ export async function resistFear(actor, { need = null, net: extra = 0, source = 
   const best = ["con", "will", "build"].sort((a, b) => eff[b].value - eff[a].value)[0];
   const vals = await rollKit.optionsDialog(`${actor.name}: Resist ${source ? `${source} (as Fear)` : "Fear"}`, `${rollKit.netField()}
     <div class="form-group"><label>Stat</label>${select("stat", ["con", "will", "build"].map(k => [k, `${STATS[k].label} (d${eff[k].die})`]), best)}</div>
-    <div class="form-group"><label>Needed (the source's Skill Points × its Size)</label><input type="number" name="need" value="${need ?? 0}" min="0" step="1"></div>`, "Roll");
+    <div class="form-group"><label>Needed (the source's Skill Points × its Size)</label><input type="number" name="need" value="${need ?? 0}" min="0" step="1"></div>${situationalFields(actor, "fear")}`, "Roll");
   if (!vals) return null;
   const stat = vals.stat || best, die = eff[stat].die, target = Math.max(0, Number(vals.need) || 0);
   const brave = tier(actor, "generic-courage") >= 1 ? 1 : 0;
   const net = (vals.net ?? 0) + extra + brave + rollKit.net(actor, "stat") + (await takeEdge(actor, "fear"))   // a Festival Token set to resisting Fear, Good Spirits
-    + (await takeEdge(actor, "check")) + ancestryNet.fear(actor);                                     // Lucky; Unbowed (Draken Legacy T2)
+    + (await takeEdge(actor, "check")) + ancestryNet.fear(actor) + situationalNet(actor, "fear", vals);   // Lucky; Unbowed, Hardened Mind, Warren Instinct; Faith of the Flame
   const floor = tier(actor, "generic-resolve") >= 5 ? Math.floor(2 * sp(actor) / 3) : tier(actor, "generic-resolve") >= 2 ? Math.floor(sp(actor) / 3) : 0;
   const roll = await rollKit.evaluate(poolFormula(1, die, rollKit.noAdvantage(actor, net)));
   const rolls = [roll];

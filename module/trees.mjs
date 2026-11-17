@@ -2243,7 +2243,7 @@ export const TREES = [
     "entries": [
      {
       "name": "Ignition",
-      "text": "1 Threshold, Spell Mod. If the target has no Ignite stacks on them as this Spell hits, this Spell applies three times as many Ignite stacks (if the Spell applies no Ignite stacks, instead it applies Ignite stacks equal to double the damage dealt). If the target has Ignite stacks on them, instead this Spell triggers them after applying all other effects."
+      "text": "1 Threshold, Spell Mod. If the target has no Ignite stacks on them as this Spell hits, this Spell applies three times as many Ignite stacks (if the Spell applies no Ignite stacks, instead it applies Ignite stacks equal to double the damage dealt). If the target has Ignite stacks on them, instead this Spell triggers them after applying all other effects, then they lose all of their Ignite stacks."
      }
     ]
    },

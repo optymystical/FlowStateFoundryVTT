@@ -236,7 +236,7 @@
 
   **Tier 2: You unlock the following Spell Mod:**
 
-- **Ignition: *1 Threshold, Spell Mod.*** If the target has no Ignite stacks on them as this Spell hits, this Spell applies three times as many Ignite stacks (if the Spell applies no Ignite stacks, instead it applies Ignite stacks equal to double the damage dealt). If the target has Ignite stacks on them, instead this Spell triggers them after applying all other effects.  
+- **Ignition: *1 Threshold, Spell Mod.*** If the target has no Ignite stacks on them as this Spell hits, this Spell applies three times as many Ignite stacks (if the Spell applies no Ignite stacks, instead it applies Ignite stacks equal to double the damage dealt). If the target has Ignite stacks on them, instead this Spell triggers them after applying all other effects, then they lose all of their Ignite stacks.  
     
   **Tier 3: You unlock the following Spell Mod:**  
 - **Brand: *3 Threshold, Spell Mod.*** If this Spell hits, prior to it dealing damage the target gets marked with a Brand until the start of your next turn. While under the effects of a Brand, anytime they take heat damage that isn’t from Brand, they are dealt heat damage equal to the base damage of the Spell this mod is attached to.  

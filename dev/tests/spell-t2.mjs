@@ -109,6 +109,7 @@ ok2(cond("ignite") === 60, `Ignition: three times the Ignite on a target with no
 reset(); orc.system.conditions.ignite = 10; hero.flags = {}; target(orc); seq = [20]; await cast("magic-heat:flame", { [M("magic-heat:ignition")]: true });
 seq = [12]; await actions.defend(lastAtk(), 0, "dodge"); seq = [20]; const hpB = orc.system.hp.value; await actions.rollExchangeDamage(last());
 ok2(/Ignition: 30 Ignite stacks trigger/.test(text(last())) && orc.system.hp.value < hpB - 20 - 25, `…a target already burning has its stacks (10 + 20) triggered (HP ${hpB} → ${orc.system.hp.value})`);
+ok2(cond("ignite") === 0, `…then it loses all of its Ignite stacks (${cond("ignite")} left)`);
 reset(); card = await hit("magic-heat:flame", { [M("magic-heat:brand")]: true });
 ok2(/Brand/.test(text(card)) && orc.effects.some(e => e.flags.flowstate.spellEffect?.kind === "brand" && e.flags.flowstate.spellEffect.amount === 20), "Brand marks the target with the spell's base damage");
 ok2(orc.system.hp.value <= 432 - 20 - 20, `The Flame's own heat damage triggers it (HP ${orc.system.hp.value})`);

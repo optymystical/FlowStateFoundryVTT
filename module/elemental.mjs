@@ -251,10 +251,16 @@ export async function afterDamage(ctx) {
   // Frostbite on a damaging spell whose own effects removed no Energy (Slam + Frost, a Stab + Frost that didn't crit): it removes its extra Energy by itself.
   if (m.frostbite && !frostbiteDone && !sp.hold) await frostbiteAlone({ attacker, target, m, power, stacks: st, html, rolls, chillDmgOpts: { shroudCtx: ctx.dmgOpts?.shroudCtx } });
 
-  // Ignition (Heat T2): a target that already had Ignite has it triggered once everything else is done.
+  // Ignition (Heat T2): a target that already had Ignite has it triggered once everything else is done, then loses all of its Ignite stacks
+  // (Searing Stain counts as Ignite, so it goes too).
   if (m.ignition && ig.trigger) {
     const total = igniteTotal(target.system.conditions);
-    if (total > 0) { html.push(`<div class="fs-notes">Ignition: ${total} Ignite stacks trigger.</div>`); html.push(await dealDamage(target, total, "heat")); }
+    if (total > 0) {
+      html.push(`<div class="fs-notes">Ignition: ${total} Ignite stacks trigger, then burn out.</div>`);
+      html.push(await dealDamage(target, total, "heat"));
+      const clear = { "system.conditions.ignite": 0, ...((target.system.conditions?.searing ?? 0) > 0 ? { "system.conditions.searing": 0 } : {}) };
+      if (target.isOwner) await target.update(clear); else await requestGM("updateActor", { uuid: target.uuid, data: clear });
+    }
   }
   // Catalyst (Acid T5): the Stains you applied to them deal their damage now.
   if (m.catalyst) {

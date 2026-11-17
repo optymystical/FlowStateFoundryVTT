@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.100.2:** Ignition (Heat T2), from the Magic doc: when it triggers the Ignite on a target that already had some, the target then loses all of its Ignite stacks (a Searing Stain too), so a Multicast chain no longer triggers an ever-growing pile.
+
 **0.100.1:** The Wasteling is an Ancestry card in the New Character wizard, with a pick for your original Ancestry. A Sworan's Living Metal Arm takes a hand: besides it they hold one thing, one-handed, and only the arm's Weapon can be two-handed. Thick Hide: no other Armor can be worn while it's grown out (Shrouds can), and it comes off only by shedding it.
 
 **0.100.0:** The ABCs doc's new layout and Ancestries. Eight new Ancestries: **Namuh, Sworan, Wildibit, Myrthel, Dawn Elf, Noctua, Minotaur and Smoblin**, with the **Lakeborn, Strigid and Leporid** cores, and the **Wasteling** (a tick on the wizard's Ancestry step: the Wasteling core replaces your Ancestry's core). No ancestry tree requires another any more, and every tree's Tier 0 is free. The **Outsider** now spends its 15 points on any trees you could take. The new trees' abilities are automated: Bounding, Wings and flight, senses, the Living Metal Arm, Thick Hide, Accelerated Healing, Red Tide, Lashing Shadow, Shy of Pain, Blood Price, Overclock and the rest (the list is in AUTOMATION.md).

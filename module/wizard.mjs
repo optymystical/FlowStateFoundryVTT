@@ -59,7 +59,6 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       treeDown: CharacterWizard.onTreeDown,
       treeToggle: CharacterWizard.onTreeToggle,
       pickAncestry: CharacterWizard.onPickAncestry,
-      toggleWasteling: CharacterWizard.onToggleWasteling,
       pickBackground: CharacterWizard.onPickBackground,
       pickChoice: CharacterWizard.onPickChoice,
       pickFocus: CharacterWizard.onPickFocus,
@@ -248,16 +247,22 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const freeTrees = free.trees;
     const ctx = abcRules.abcCtx(abc);
     const treeName = id => skills.treeById(id)?.name ?? id;
-    const ancestries = abcRules.playerAncestries().map(a => {
-      const chips = skills.ancestryTrees(a.id, a.id === abc.ancestry && ctx.wasteling).map(t => chip(`anc-${a.id}`, t.id)).filter(Boolean);
-      return { id: a.id, name: a.name, size: a.size, selected: a.id === abc.ancestry, hidden: !!abc.ancestry && a.id !== abc.ancestry, lifespan: a.lifespan, languages: a.languages,
+    // Every Ancestry in the doc's order, the Wasteling among them: picking it asks for your original Ancestry (`abc.ancestry`), whose core the Wasteling
+    // core replaces (its Size, Languages, Backgrounds and Homelands stay).
+    const ancestries = Object.values(abcRules.ANCESTRIES).filter(a => !a.hidden && !a.bestiary).map(a => {
+      if (a.variant) {
+        const selected = ctx.wasteling, chips = selected && anc ? skills.ancestryTrees(anc.id, true).map(t => chip("anc-wasteling", t.id)).filter(Boolean) : [];
+        return { id: a.id, name: a.name, variant: true, selected, hidden: !!(abc.ancestry || abc.wasteling) && !selected,
+          size: anc ? anc.size : "as your original Ancestry", lifespan: "undying", languages: anc?.languages ?? "", baseName: anc?.name ?? "",
+          profile: a.profile.filter(p => !["Backgrounds and Homelands", "Lifespan"].includes(p.name) && !(anc && p.name === "Size and Languages")),
+          baseChoices: abcRules.playerAncestries().map(b => ({ id: b.id, name: b.name, selected: b.id === abc.ancestry })), chips, openTree: opened(chips) };
+      }
+      const selected = a.id === abc.ancestry && !ctx.wasteling;
+      const chips = skills.ancestryTrees(a.id).map(t => chip(`anc-${a.id}`, t.id)).filter(Boolean);
+      return { id: a.id, name: a.name, size: a.size, selected, hidden: !!(abc.ancestry || abc.wasteling) && !selected, lifespan: a.lifespan, languages: a.languages,
         profile: a.profile.filter(p => !["Size", "Languages", "Lifespan", "Backgrounds", "Homelands", "Homeland"].includes(p.name)),
         trees: a.trees.map(treeName).join(", "), chips, openTree: opened(chips) };
     });
-    // The Wasteling: a choice on top of the picked Ancestry (its core is swapped for the Wasteling core; Backgrounds and Homelands stay the Ancestry's).
-    const wEntry = abcRules.wastelingEntry();
-    const wasteling = anc && wEntry ? { on: ctx.wasteling, name: wEntry.name,
-      profile: wEntry.profile.filter(p => !["Backgrounds and Homelands", "Size and Languages"].includes(p.name)) } : null;
     const pkg = abc.background ? abcRules.packageFor(abc.background, abc.ancestry) : null;
     // A Background's starting trees as chips: its fixed trees in one row, then a row per choice ("one of", a Magic school, either/or). On the picked
     // Background each choice's chips get a pick button (the picks live on the card), and so does each focus.
@@ -332,7 +337,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       rules, rarityLabel: RARITIES[rules.maxRarity],
       purse: getCurrencies().filter(c => rules.currency?.[c.id] > 0).map(c => `${rules.currency[c.id]} ${c.name}`).join(", "),
       name: st.name, img: st.img, canBrowse: game.user.can?.("FILES_BROWSE") ?? false,
-      abc, ancestries, anc, wasteling, backgrounds, pkg,
+      abc, ancestries, anc, backgrounds, pkg,
       allocRows, owed: free.owed ?? 0, allocCost: free.allocCost ?? 0, allocAny: !!free.anyTrees,
       glandChoices: abc.ancestry === "drakenblood" ? Object.entries(abcRules.GLAND_ELEMENTS).map(([k, v]) => ({ k, v, selected: k === abc.element })) : null,
       homelands, circles,
@@ -366,6 +371,11 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       for (const k of ["focus", "homeland", "circle", "element", "element2"]) if (k in data.abc) a[k] = String(data.abc[k] ?? "");
       if (data.abc.picks) a.picks = { ...a.picks, ...data.abc.picks };
       if (was !== JSON.stringify([a.focus, a.picks])) this.syncFree();
+      // The Wasteling's original Ancestry: a new one starts the Background and Culture over.
+      if ("base" in data.abc && a.wasteling) {
+        const base = abcRules.playerAncestries().some(x => x.id === data.abc.base) ? data.abc.base : "";
+        if (base !== a.ancestry) { st.abc = { ...blankAbc(), wasteling: true, ancestry: base }; st.freeTrees = {}; st.trees = {}; st.skillArch = "ancestry"; }
+      }
     }
     if (data.details) st.details = { ...st.details, ...data.details };
     if (data.stats) for (const k of Object.keys(STATS)) if (k in data.stats) st.stats[k] = Math.max(0, Math.trunc(Number(data.stats[k]) || 0));
@@ -426,18 +436,10 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   static onPickAncestry(event, target) {
     const st = this.state, id = target.dataset.id;
     if (!abcRules.ANCESTRIES[id] || abcRules.ANCESTRIES[id].bestiary) return;
-    // Picking your Ancestry again unpicks it: the full list shows again (and what hung on it is cleared).
-    st.abc = st.abc.ancestry === id ? blankAbc() : { ...blankAbc(), ancestry: id };
+    // Picking your Ancestry again unpicks it: the full list shows again (and what hung on it is cleared). The Wasteling then asks for your original one.
+    if (abcRules.ANCESTRIES[id].variant) st.abc = st.abc.wasteling ? blankAbc() : { ...blankAbc(), wasteling: true };
+    else st.abc = st.abc.ancestry === id && !st.abc.wasteling ? blankAbc() : { ...blankAbc(), ancestry: id };
     st.freeTrees = {}; st.trees = {}; st.skillArch = "ancestry";
-    this.render();
-  }
-  /** The Wasteling on or off (its core replaces the Ancestry's: the trees bought and the Ancestry points placed are cleared). */
-  static onToggleWasteling() {
-    const st = this.state;
-    if (!st.abc.ancestry) return;
-    st.abc.wasteling = !st.abc.wasteling;
-    st.abc.alloc = {}; st.trees = {};
-    this.syncFree();
     this.render();
   }
   /** Pick a Background (its choices start empty; the trees bought for the old one are cleared). */

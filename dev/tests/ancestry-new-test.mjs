@@ -105,6 +105,22 @@ const hide = armorProfile({ weight: "medium", material: "hide", grade: 1, natura
 ok(hide.durability === 90 && hide.limit === 18, "Thick Hide (Medium): 30 Durability, 6 Limit, scaled by all of Constitution (×3 at 30)");
 ok(labels(sworan).includes("Living Metal Arm") && labels(bull).includes("Red Tide") === false, "Rows: the Living Metal Arm (Red Tide is a reaction, no row)");
 
+{ // The Sworan's hands: the arm takes one; one more thing besides it, one-handed; only the arm may be two-handed.
+  const { sworanHoldRefusal } = await import("../../module/kinds.mjs");
+  const sw = { name: "Sw", system: { abc: { ancestry: "sworan" } }, items: [] };
+  const arm = { id: "arm", type: "weapon", flags: { flowstate: { livingArm: true } }, system: { equipped: true, twoHanded: false, weaponType: "balanced" } };
+  const sword = { id: "sword", type: "weapon", flags: {}, system: { equipped: false, twoHanded: false, weaponType: "bladed" } };
+  const axe = { id: "axe", type: "weapon", flags: {}, system: { equipped: false, twoHanded: false, weaponType: "balanced" } };
+  sw.items.push(arm, sword, axe);
+  const hold = (i, o = {}) => sworanHoldRefusal(sw, i, { equipped: true, twoHanded: false, weaponType: i.system.weaponType, ...o });
+  ok(!hold(sword) && !!hold(sword, { twoHanded: true }), "Sworan: one other weapon, never two-handed");
+  sword.system.equipped = true;
+  ok(!!hold(axe) && !!hold(arm, { twoHanded: true }) && !hold(arm), "...a second one is refused, and two-handing the arm needs the other hand free");
+  sword.system.equipped = false; arm.system.twoHanded = true;
+  ok(!hold(arm, { twoHanded: true }) && !!hold(sword), "...the arm two-handed leaves no hand free");
+  ok(!sworanHoldRefusal({ ...sw, system: { abc: { ancestry: "human" } } }, sword, { equipped: true, twoHanded: true, weaponType: "bladed" }), "...nobody else is affected");
+}
+
 console.log("== Casting and checks");
 const ctx = { skillPoints: 30, known: null, trees: {}, options: [], extraTR: 1, extraTRLabel: "Steeped in Magic", bloodPrice: true };
 const plan = spells.planCast({ ...ctx, trees: { "magic-theory": 1, "magic-slashing": 1 }, options: [{ key: "raw", ok: true, ap: [1, 2, 3], scaling: 30, scalingStat: "reach", tr: [1, 2, 3] }] },

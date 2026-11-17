@@ -37,7 +37,7 @@ import * as bestiary from "./bestiary.mjs";
 import * as environment from "./environment.mjs";
 import * as tutorial from "./tutorial.mjs";
 import { FlowStateActorSheet, FlowStateItemSheet, FlowStateWeaponSheet, FlowStateArmorSheet, FlowStateFociSheet, FlowStateShroudSheet, FlowStateIconSheet, FlowStateAffixSheet, FlowStatePileSheet } from "./sheets.mjs";
-import { notCreature } from "./kinds.mjs";
+import { notCreature, sworanHoldRefusal } from "./kinds.mjs";
 import { DialogV2 } from "./html.mjs";
 
 const relayQueue = makeQueue();                 // GM relay: one request at a time per creature
@@ -1495,6 +1495,13 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
   if (item.type === "armor") {
     const equip = changed(changes, "system.equipped");
     if (equip === undefined || equip === item.system.equipped) return;
+    // Thick Hide (Minotaur T0): while it's grown out no other Armor can be worn, and it comes off only by shedding it (the Action List, over a rest).
+    // Shrouds aren't Armor, so they're fine.
+    const hide = actor.items.find(i => i.flags?.flowstate?.thickHide);
+    if (hide && !auto) {
+      if (item.id === hide.id && !equip) return refuse(item, `${actor.name}'s Thick Hide can't be taken off: shed it with the Thick Hide row on the Action List (an 8 hour rest).`);
+      if (item.id !== hide.id && equip) return refuse(item, `${actor.name}'s Thick Hide is grown out: no other Armor can be worn (shed it first). A Shroud is fine.`);
+    }
     const others = equip ? actor.items.filter(i => i.type === "armor" && i.id !== item.id && i.system.equipped) : [];
     if (inCombat) {
       if (item.system.weight !== "light") return refuse(item, `${ARMOR_LABEL(item)} armor takes ${martial.ARMOR_WEIGHTS[item.system.weight].don} to ${equip ? "put on" : "remove"}, so it can't be changed in combat.`);
@@ -1573,6 +1580,8 @@ Hooks.on("preUpdateItem", (item, changes, options) => {
     twoHanded: changed(changes, "system.twoHanded") ?? item.system.twoHanded,
     weaponType: changed(changes, "system.weaponType") ?? item.system.weaponType
   };
+  const sworan = sworanHoldRefusal(actor, item, next);
+  if (sworan) return refuse(item, sworan);
   // Paws (Wildibit T0): small hands hold and use Equipment, but can't two-hand a Weapon.
   if (item.type === "weapon" && next.twoHanded && next.equipped && next.weaponType !== "unarmed" && actor.system?.abc?.ancestry === "wildibit") {
     ui.notifications.warn(`${actor.name}'s paws can't two-hand a weapon.`);
@@ -1721,7 +1730,7 @@ Hooks.on("preCreateItem", (item) => {
   if (!(actor instanceof Actor) || !(item.system?.equipped || item.system?.secondHand)) return;
   const over = item.type === "armor"
     ? actor.items.some(i => i.type === "armor" && i.system.equipped)
-    : HELD_TYPES.has(item.type) && handsUsed(actor) + handsFor(item.system) > 2;
+    : HELD_TYPES.has(item.type) && (handsUsed(actor) + handsFor(item.system) > 2 || !!sworanHoldRefusal(actor, item, { equipped: true, twoHanded: item.system.twoHanded, weaponType: item.system.weaponType }));
   if (over) item.updateSource(item.type === "weapon" ? { "system.equipped": false, "system.secondHand": false } : { "system.equipped": false });
 });
 

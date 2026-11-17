@@ -17,3 +17,18 @@ export function fusedFociOf(weapon) {
   if (!weapon?.id || weapon.type !== "weapon") return null;
   return weapon.actor?.items?.find?.(i => i.type === "foci" && i.system.attuned && i.system.fusedInto === weapon.id) ?? null;
 }
+/**
+ * Living Metal Arm (Sworan T0): the dominant arm has no hand, so a Sworan holds at most one thing besides the arm, one-handed; only the arm's own
+ * Weapon may be two-handed (using the other hand too). Fists aren't affected (the arm still strikes Unarmed). Returns why a hold is refused, or "".
+ */
+export function sworanHoldRefusal(actor, item, next) {
+  if (actor.system?.abc?.ancestry !== "sworan" || !next.equipped || next.weaponType === "unarmed") return "";
+  const armOf = i => !!i?.flags?.flowstate?.livingArm;
+  const isArm = armOf(item), arm = actor.items.find(i => armOf(i) && i.id !== item.id);
+  const others = actor.items.filter(i => ["weapon", "foci"].includes(i.type) && i.id !== item.id && !armOf(i) && i.system.weaponType !== "unarmed" && i.system.equipped);
+  if (isArm) return next.twoHanded && others.length ? `${actor.name} needs their other hand free to two-hand the Living Metal Arm.` : "";
+  if (next.twoHanded) return `${actor.name} can only two-hand the Living Metal Arm (their other arm has no hand).`;
+  if (others.length) return `${actor.name} has one hand besides the Living Metal Arm, and it's holding ${others[0].name}.`;
+  if (arm?.system.equipped && arm.system.twoHanded) return `${actor.name}'s Living Metal Arm is two-handed: no hand is free.`;
+  return "";
+}

@@ -35,18 +35,13 @@
           {{#if selected}}<button type="button" class="fs-abc-change" data-action="pickAncestry" data-id="{{id}}"><i class="fa-solid fa-rotate-left"></i> Change</button>{{/if}}
           <span class="fs-sub">Size {{size}} · {{lifespan}}</span></header>
         <div class="fs-sub">{{#each profile}}<p><strong>{{name}}:</strong> {{text}}</p>{{/each}}</div>
-        <div class="fs-sub"><strong>Languages:</strong> {{languages}}</div>
-        <div class="fs-tree-chips"><strong>Trees:</strong> {{#each chips}}{{> fsTreeChip}}{{/each}}</div>
+        {{#if variant}}{{#if selected}}<div class="fs-field"><label>Your original Ancestry</label><select name="abc.base"><option value="">— Pick one —</option>{{#each baseChoices}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></div>{{/if}}{{/if}}
+        {{#if languages}}<div class="fs-sub"><strong>Languages:</strong> {{languages}}</div>{{/if}}
+        {{#if chips.length}}<div class="fs-tree-chips"><strong>Trees:</strong> {{#each chips}}{{> fsTreeChip}}{{/each}}</div>{{/if}}
         {{> fsOpenTree}}
       </div>
       {{/unless}}{{/each}}
     </div>
-    {{#if wasteling}}
-    <div class="fs-abc-card {{#if wasteling.on}}fs-picked{{/if}}">
-      <header><button type="button" class="fs-abc-pick" data-action="toggleWasteling" data-tooltip="{{#if wasteling.on}}Undo it: your Ancestry keeps its own core tree{{else}}Your character was decayed by the Dragon Wastes: the Wasteling core replaces your Ancestry's core{{/if}}">{{#if wasteling.on}}<i class="fa-solid fa-square-check"></i>{{else}}<i class="fa-regular fa-square"></i>{{/if}} {{wasteling.name}} (optional)</button></header>
-      <div class="fs-sub">{{#each wasteling.profile}}<p><strong>{{name}}:</strong> {{text}}</p>{{/each}}</div>
-    </div>
-    {{/if}}
     {{#if glandChoices}}
     <div class="fs-field"><label>Elemental Gland</label><select name="abc.element"><option value="">— Pick an element —</option>{{#each glandChoices}}<option value="{{k}}" {{#if selected}}selected{{/if}}>{{v}}</option>{{/each}}</select></div>
     {{/if}}

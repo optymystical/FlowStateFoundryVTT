@@ -462,10 +462,11 @@ async function reshapeArm(actor) {
       <div class="form-group"><label>Weapon type</label>${select("type", weapons, weapons[0]?.[0])}</div>
       <div class="form-group"><label>Weight</label>${select("weight", [["light", "Light"], ["heavy", "Heavy"]], "light")}</div>
       <div class="form-group"><label>Material</label>${select("material", mats.map(m => [m, WEAPON_MATERIALS[m].label]), mats[0])}</div>
+      <div class="form-group"><label><input type="checkbox" name="twoHanded"> Two-handed (uses your other hand too)</label></div>
       <p class="hint">A Heavy-only material (Iron, Stone...) as a Light Weapon uses half its Durability and Limit.</p>
       <div class="form-group"><label>Foci</label>${select("foci", Object.entries(FOCI_TYPES).map(([k, v]) => [k, v.label]), "rod")}</div>
       <div class="form-group"><label>Icon Form</label>${select("form", Object.entries(FORMS).map(([k, v]) => [k, v.label ?? k]), Object.keys(FORMS)[0])}</div>`,
-    ok: { label: "Reshape", callback: (event, button) => Object.fromEntries(["shape", "type", "weight", "material", "foci", "form"].map(n => [n, button.form.elements[n].value])) } });
+    ok: { label: "Reshape", callback: (event, button) => ({ ...Object.fromEntries(["shape", "type", "weight", "material", "foci", "form"].map(n => [n, button.form.elements[n].value])), twoHanded: !!button.form.elements.twoHanded?.checked }) } });
   if (!shape) return null;
   let data = null;
   const flags = { flowstate: { livingArm: true } };
@@ -474,7 +475,7 @@ async function reshapeArm(actor) {
     if (!mat || !mats.includes(shape.material)) return ui.notifications.warn("The arm can only take the shape of a material it has absorbed.");
     if (!mat.weights[shape.weight] && !(shape.weight === "light" && mat.weights.heavy)) return ui.notifications.warn(`${mat.label} can't be made ${shape.weight === "heavy" ? "Heavy" : "Light"}.`);
     data = { name: `Living Metal Arm (${WEAPON_TYPES[shape.type]?.label ?? shape.type}, ${mat.label})`, type: "weapon", img: "icons/svg/sword.svg", flags,
-      system: { weaponType: shape.type, weight: shape.weight, material: shape.material, grade: 1, natural: true, equipped: true } };
+      system: { weaponType: shape.type, weight: shape.weight, material: shape.material, grade: 1, natural: true, equipped: true, twoHanded: !!shape.twoHanded } };
   } else if (shape.shape === "foci") data = { name: `Living Metal Arm (${FOCI_TYPES[shape.foci]?.label ?? shape.foci})`, type: "foci", img: "icons/svg/daze.svg", flags,
     system: { fociType: shape.foci, grade: 1, natural: true, attuned: true, equipped: true } };
   else if (shape.shape === "icon") data = { name: `Living Metal Arm (${FORMS[shape.form]?.label ?? shape.form})`, type: "icon", img: "icons/svg/aura.svg", flags,
@@ -484,7 +485,18 @@ async function reshapeArm(actor) {
   if (old) await old.delete();
   // As a Foci or Icon it counts as attuned: another attuned one of that kind steps aside.
   if (data && (data.type === "foci" || data.type === "icon")) for (const i of actor.items.filter(x => x.type === data.type && x.system.attuned)) await i.update({ "system.attuned": false }, { flowstateSystem: true });
-  if (data?.type === "weapon") for (const i of actor.items.filter(x => x.type === "weapon" && x.system.equipped && x.system.weaponType !== "unarmed" && x.system.twoHanded)) await i.update({ "system.equipped": false });
+  // Room for it: a two-handed arm frees the other hand; a one-handed shape leaves it one one-handed thing. Raised fists are lowered as needed.
+  if (data?.type === "weapon" || data?.type === "foci") {
+    const held = actor.items.filter(x => ["weapon", "foci"].includes(x.type) && x.system.equipped && x.system.weaponType !== "unarmed" && !x.getFlag?.("flowstate", "livingArm"));
+    const keep = data.system.twoHanded ? [] : held.filter(x => !x.system.twoHanded).slice(0, 1);
+    for (const i of held.filter(x => !keep.includes(x))) await i.update({ "system.equipped": false }, { flowstatePaid: true });
+    const fists = actor.items.find(x => x.type === "weapon" && x.system.weaponType === "unarmed");
+    const free = 2 - (data.system.twoHanded ? 2 : 1) - keep.length;
+    if (fists) {
+      const up = (fists.system.equipped ? 1 : 0) + (fists.system.secondHand ? 1 : 0);
+      if (up > free) await fists.update(free <= 0 ? { "system.equipped": false, "system.secondHand": false } : { "system.secondHand": false }, { flowstateAuto: true });
+    }
+  }
   if (data) await actor.createEmbeddedDocuments("Item", [data]);
   return card(actor, "Living Metal Arm", `<div class="fs-result">${esc(actor.name)}'s arm reshapes into ${data ? esc(data.name.replace(/^Living Metal Arm \(|\)$/g, "")) : "a plain arm"}${inCombat ? " (Quick Reshape, 1 AP)" : " over a minute"}.</div>`);
 }

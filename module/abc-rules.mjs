@@ -94,7 +94,7 @@ const put = (map, id, tier) => { if (id) map[id] = Math.max(map[id] ?? 0, Math.m
 export function freeTreesFor(abc = {}) {
   const errors = [], trees = {};
   const a = ANCESTRIES[abc.ancestry];
-  if (!a) return { trees, spent: 0, errors: ["Pick an Ancestry."] };
+  if (!a) return { trees, spent: 0, errors: [abc.wasteling ? "Pick your original Ancestry (the one the Wastes decayed)." : "Pick an Ancestry."] };
   if (a.bestiary) return { trees, spent: 0, errors: [`${a.name} is a Bestiary creature, not a player Ancestry.`] };
   if (a.variant) return { trees, spent: 0, errors: [`Pick your original Ancestry (a ${a.name} is one decayed by the Wastes).`] };
   const pkg = packageFor(abc.background, abc.ancestry);

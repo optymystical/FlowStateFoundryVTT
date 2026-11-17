@@ -225,7 +225,7 @@ registerSection({ id: "abcs", label: "Ancestries", icon: "fa-solid fa-people-gro
   }
   for (const h of HOMELANDS) pages.push({ id: `abc:homeland:${h.id}`, title: h.name, section: "abcs", group: h.ancestry ? `Homelands: ${ANCESTRIES[h.ancestry]?.name ?? h.ancestry}` : "Homelands: Shared", badge: "Homeland", hidden: !!h.hidden, blocks: [md(h.text)] });
   for (const c of CIRCLES) pages.push({ id: `abc:circle:${c.id}`, title: c.name, section: "abcs", group: c.background ? "Circles: Backgrounds" : "Circles: Shared", badge: "Circle", hidden: !!c.hidden,
-    subtitle: c.background ? BACKGROUNDS[c.background]?.name ?? "" : "", blocks: [md(c.text)] });
+    subtitle: c.background ? BACKGROUNDS[c.background]?.name ?? "" : "", blocks: [c.text ? md(c.text) : md("*Not described in the doc yet.*")].filter(Boolean) });
   return pages;
 } });
 /** A Background's tree name → its id (the Codex only links trees it knows). */

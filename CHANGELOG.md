@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.101.0:** The ABCs doc's Background rework: most Backgrounds now start with fewer, deeper trees (the Recruit, Novice, Hunter, Trader's Apprentice, Laborer, Urchin, Explorer and the rest); three new Backgrounds: **Hill Warden** (Halfling, Wildibit), **Waste Scavenger** (Drakenblood) and **Escaped Subject** (Smoblin). Every Ancestry has a usual height and weight: the New Character wizard's Notes step shows them beside the Height and (new) Weight fields, with a Random button for each that picks a value in the range (you can still type your own).
+
 **0.100.2:** Ignition (Heat T2), from the Magic doc: when it triggers the Ignite on a target that already had some, the target then loses all of its Ignite stacks (a Searing Stain too), so a Multicast chain no longer triggers an ever-growing pile.
 
 **0.100.1:** The Wasteling is an Ancestry card in the New Character wizard, with a pick for your original Ancestry. A Sworan's Living Metal Arm takes a hand: besides it they hold one thing, one-handed, and only the arm's Weapon can be two-handed. Thick Hide: no other Armor can be worn while it's grown out (Shrouds can), and it comes off only by shedding it.

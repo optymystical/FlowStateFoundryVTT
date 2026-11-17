@@ -53,9 +53,9 @@ CharacterWizard.onPickBackground.call(w, null, { dataset: { id: "recruit" } });
   if (/your choices|Free trees:/.test(v.text)) throw new Error("FAIL the old choices section is still under the cards");
   log("choices:", rec.rows.map(x => `${x.label} [${x.chips.map(c => c.label).join("/")}]`).join(" | "));
   const pick = (slot, id) => CharacterWizard.onPickChoice.call(w, null, { dataset: { slot, id } });
-  pick("2", "martial-swift-weapons"); pick("2", "martial-swift-weapons");
-  if (w.state.abc.picks["2"]) throw new Error("FAIL picking a choice again doesn't unpick it");
-  pick("2", "martial-bladed-weapons"); pick("4", "generic-courage");
+  pick("1", "martial-swift-weapons"); pick("1", "martial-swift-weapons");
+  if (w.state.abc.picks["1"]) throw new Error("FAIL picking a choice again doesn't unpick it");
+  pick("1", "martial-bladed-weapons");
   v = await view(); const done = v.ctx.backgrounds.find(b => b.selected);
   if (!done.rows.every(x => x.picked)) throw new Error("FAIL the picks don't show on the card");
   log("free trees:", Object.entries(w.free().trees).map(([id, t]) => `${id} ${t}`).join(", "), "| errors:", w.free().errors.length ? w.free().errors : "none"); }

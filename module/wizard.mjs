@@ -59,6 +59,7 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       treeDown: CharacterWizard.onTreeDown,
       treeToggle: CharacterWizard.onTreeToggle,
       pickAncestry: CharacterWizard.onPickAncestry,
+      randomDetail: CharacterWizard.onRandomDetail,
       pickBackground: CharacterWizard.onPickBackground,
       pickChoice: CharacterWizard.onPickChoice,
       pickFocus: CharacterWizard.onPickFocus,
@@ -341,7 +342,12 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       allocRows, owed: free.owed ?? 0, allocCost: free.allocCost ?? 0, allocAny: !!free.anyTrees,
       glandChoices: abc.ancestry === "drakenblood" ? Object.entries(abcRules.GLAND_ELEMENTS).map(([k, v]) => ({ k, v, selected: k === abc.element })) : null,
       homelands, circles,
-      details: Object.entries(creation.DETAIL_FIELDS).map(([k, label]) => ({ k, label, value: st.details?.[k] ?? "", long: ["appearance", "personality", "goals", "backstory"].includes(k) })),
+      // Height and weight: the Ancestry's usual range as a hint, and a button that picks a random one in it (nothing is forced).
+      details: Object.entries(creation.DETAIL_FIELDS).map(([k, label]) => {
+        const r = (k === "height" || k === "weight") ? abcRules.bodyRange(abc)[k] : null, f = k === "height" ? abcRules.formatHeight : abcRules.formatWeight;
+        return { k, label, value: st.details?.[k] ?? "", long: ["appearance", "personality", "goals", "backstory"].includes(k),
+          hint: r ? `${f(r[0])} to ${f(r[1])}` : "", hintFor: r ? `${abc.wasteling ? "Wasteling " : ""}${anc?.name ?? ""}` : "" };
+      }),
       homelandName: homelands.find(h => h.selected)?.name ?? "", circleName: circles.find(c => c.selected)?.name ?? "", backgroundName: pkg?.name ?? "",
       statGroups: Object.values(groups), spent, remaining, overspent: remaining < 0,
       preview: pv,
@@ -440,6 +446,14 @@ export class CharacterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     if (abcRules.ANCESTRIES[id].variant) st.abc = st.abc.wasteling ? blankAbc() : { ...blankAbc(), wasteling: true };
     else st.abc = st.abc.ancestry === id && !st.abc.wasteling ? blankAbc() : { ...blankAbc(), ancestry: id };
     st.freeTrees = {}; st.trees = {}; st.skillArch = "ancestry";
+    this.render();
+  }
+  /** A random height or weight in the Ancestry's usual range (the field stays the player's to change). */
+  static onRandomDetail(event, target) {
+    const k = target.dataset.k, r = abcRules.bodyRange(this.state.abc)[k];
+    if (!r) return;
+    const v = abcRules.randomIn(r);
+    this.state.details = { ...this.state.details, [k]: k === "height" ? abcRules.formatHeight(v) : abcRules.formatWeight(v) };
     this.render();
   }
   /** Pick a Background (its choices start empty; the trees bought for the old one are cleared). */

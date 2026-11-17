@@ -50,7 +50,7 @@ ok(R.freeTreesFor({ ancestry: "human", background: "recruit", picks: {} }).error
 { // An unpicked slot isn't unplaced: no Ancestry points are owed until the picks are made, and points spent early don't count once none are owed.
   const anc = S.ancestryTrees("dwarf")[0].id;
   ok(R.freeTreesFor({ ancestry: "dwarf", background: "recruit", picks: {} }).owed === 0, "No Ancestry points owed while a Background's choices are unpicked");
-  const done = R.freeTreesFor({ ancestry: "dwarf", background: "recruit", picks: { 2: "martial-bladed-weapons", 4: "generic-endurance" }, alloc: { [anc]: 3 } });
+  const done = R.freeTreesFor({ ancestry: "dwarf", background: "recruit", picks: { 1: "martial-bladed-weapons" }, alloc: { [anc]: 3 } });
   ok(done.owed === 0 && !done.trees[anc] && !done.errors.length, "Picks that fill the 15 owe nothing, and early Ancestry points are dropped");
   ok(R.freeTreesFor({ ancestry: "dwarf", background: "outsider", alloc: {} }).owed === 15, "The Outsider still owes its 15");
 }
@@ -72,6 +72,13 @@ ok(R.freeTreesFor({ ancestry: "elf", background: "outsider", alloc: { "ancestry-
   const wo = R.freeTreesFor({ ancestry: "dwarf", wasteling: true, background: "outsider", alloc: { "ancestry-wasteling": 5 } });
   ok(!wo.errors.length && wo.trees["ancestry-wasteling"] === 5, "...and its Outsider points can go on the Wasteling tree");
 }
+
+console.log("== Height and weight");
+ok(JSON.stringify(R.bodyRange({ ancestry: "human" })) === JSON.stringify({ height: [60, 76], weight: [100, 250] }) && R.formatHeight(76) === "6 ft 4 in" && R.formatHeight(60) === "5 ft",
+  "A Human: 5 ft to 6 ft 4 in, 100 to 250 lb");
+ok(JSON.stringify(R.bodyRange({ ancestry: "human", wasteling: true })) === JSON.stringify({ height: [58, 76], weight: [80, 225] }), "A Wasteling Human: up to 2 in shorter, 10 to 20% lighter");
+ok(R.randomIn([60, 76], 0) === 60 && R.randomIn([60, 76], 0.9999) === 76, "The randomizer stays in the range, both ends included");
+ok(R.circlesFor("hill-warden").some(c => c.name === "The Hill Wardens"), "A Circle a Background names (not yet described in Cultures) can still be picked");
 
 console.log("== Culture");
 ok(R.homelandsFor("dusken").some(h => h.id === "dusken.paan-faithful") && R.homelandsFor("dusken").some(h => h.id === "shared.wanderer") && !R.homelandsFor("dusken").some(h => h.id === "elf.elven-courts"), "Homelands: the Ancestry's own and the Shared ones");

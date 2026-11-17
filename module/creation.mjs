@@ -38,7 +38,7 @@ import { freeTreesFor, cultureErrors, ancestrySize, GLAND_ELEMENTS } from "./abc
 // 45 stat points (15 Skill Points) plus the Background's 15 free points of trees (Flow State - ABCs).
 export const DEFAULT_RULES = { statPoints: 45, items: 4, maxRarity: "uncommon", grade: 10 };
 /** The Notes step's roleplay details (all optional), kept in `system.details`. */
-export const DETAIL_FIELDS = { age: "Age", pronouns: "Pronouns", height: "Height", appearance: "Appearance", personality: "Personality", goals: "Goals", backstory: "Backstory" };
+export const DETAIL_FIELDS = { age: "Age", pronouns: "Pronouns", height: "Height", weight: "Weight", appearance: "Appearance", personality: "Personality", goals: "Goals", backstory: "Backstory" };
 /** A choice's ABC part made safe: only known keys, as strings (picks and alloc as maps). */
 export function cleanAbc(abc = {}) {
   const str = v => String(v ?? "").slice(0, 80);

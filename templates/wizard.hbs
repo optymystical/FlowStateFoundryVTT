@@ -249,6 +249,7 @@
       {{#each details}}
       <label class="{{#if long}}fs-detail-long{{/if}}">{{label}}
         {{#if long}}<textarea name="details.{{k}}" rows="3">{{value}}</textarea>{{else}}<input type="text" name="details.{{k}}" value="{{value}}">{{/if}}
+        {{#if hint}}<span class="fs-detail-hint">Usual for a {{hintFor}}: {{hint}} <button type="button" class="fs-inline" data-action="randomDetail" data-k="{{k}}" data-tooltip="Pick a random {{label}} in that range (you can still type your own)"><i class="fa-solid fa-dice"></i> Random</button></span>{{/if}}
       </label>
       {{/each}}
     </div>

@@ -572,6 +572,7 @@ a.fs-codex-link.content-link.broken { opacity: 0.6; text-decoration: line-throug
 .flowstate .fs-wizard-details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 10px; }
 .flowstate .fs-wizard-details label { display: flex; flex-direction: column; gap: 2px; }
 .flowstate .fs-wizard-details .fs-detail-long { grid-column: 1 / -1; }
+.flowstate .fs-wizard-details .fs-detail-hint { font-size: 0.85em; opacity: 0.8; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 
 /* The character tutorial: the "what now" banner, locked step tabs, suggested (★) add buttons, the popups over the wizard. */
 .fs-wizard .fs-tut-banner { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; padding: 6px 10px; border-radius: 6px; background: rgba(60, 160, 100, 0.18); border: 1px solid rgba(60, 160, 100, 0.55); font-weight: 600; }

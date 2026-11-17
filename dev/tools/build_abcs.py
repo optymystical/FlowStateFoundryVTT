@@ -70,6 +70,24 @@ def bullets(lines):
         elif out: out[-1][1] += " " + body
     return out
 
+def inches(s):
+    """'5 ft 4 in' / '6 ft' / '10 in' -> inches, or None."""
+    m = re.match(r'\s*(?:(\d+)\s*ft)?\s*(?:(\d+)\s*in)?', s)
+    if not m or (m.group(1) is None and m.group(2) is None): return None
+    return int(m.group(1) or 0) * 12 + int(m.group(2) or 0)
+
+def height_range(s):
+    """'5 ft to 6 ft 4 in.' -> [60, 76]; 'As your original Ancestry...' -> None (the Wasteling's is worked out from the original)."""
+    m = re.match(r'^\s*(.+?)\s+to\s+(.+?)(?:[.,]|$)', s)
+    if not m: return None
+    lo, hi = inches(m.group(1)), inches(m.group(2))
+    return [lo, hi] if lo is not None and hi is not None else None
+
+def weight_range(s):
+    """'100 to 250 lb.' -> [100, 250]."""
+    m = re.match(r'^\s*(\d+)\s+to\s+(\d+)\s*lb', s)
+    return [int(m.group(1)), int(m.group(2))] if m else None
+
 def name_list(s):
     """'Human, Dwarf, and Fire Walker.' -> ['Human', 'Dwarf', 'Fire Walker']"""
     s = re.sub(r'\.$', '', s.strip())
@@ -102,6 +120,7 @@ def parse_trees_and_data(md):
                 get = lambda k: next((v for kk, v in prof if kk.lower() == k), "")
                 size = re.search(r'(\d)', get("size"))
                 ancestries[aid] = {"id": aid, "name": name, "core": None, "size": int(size.group(1)) if size else 3,
+                                   "height": height_range(get("height")), "weight": weight_range(get("weight")),
                                    "languages": get("languages"), "lifespan": get("lifespan"),
                                    "backgrounds": [slug(b) for b in name_list(get("backgrounds"))],
                                    "profile": [{"name": k, "text": v} for k, v in prof], "trees": []}
@@ -158,6 +177,11 @@ def parse_trees_and_data(md):
             if a["id"] not in t["ancestries"]: t["ancestries"].append(a["id"])
             if t.get("core") and not a["core"]: a["core"] = t["id"]
     for t in trees: t.pop("_own", None)
+    for b in backgrounds.values():
+        named = re.match(r'^(.+?),?\s+or a Shared Circle', b["text"].get("Circle", ""))
+        for nm in ([named.group(1).strip()] if named else []):
+            if re.match(r"(a circle|one of)", nm.lower()) or any(c["background"] == b["id"] and c["name"] == nm for c in circles): continue
+            circles.append({"id": f"{b['id']}.{slug(nm)}", "name": nm, "text": "", "background": b["id"]})
     return trees, {"ancestries": ancestries, "backgrounds": backgrounds, "homelands": homelands, "circles": circles,
                    "rules": next((t for t in trees if t.get("rulesOnly")), None)}
 

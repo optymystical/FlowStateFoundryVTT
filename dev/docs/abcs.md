@@ -231,6 +231,8 @@
 - **Lineage:** One of the two founding races of the Twin Continents, descended from the Wuson. Ancestors of the Dwarves, Halflings, Elves, Dusken, and Drakenblood.  
 - **Homeland:** The United States of Tartan (north of the eastern continent), though their explorative, inquisitive nature puts them nearly everywhere.  
 - **Size:** 3\.  
+- **Height:** 5 ft to 6 ft 4 in.  
+- **Weight:** 100 to 250 lb.  
 - **Languages:** Common.  
 - **Lifespan:** About 80 years.  
 - **Backgrounds:** Explorer, Scholar’s Apprentice, Recruit, Apprentice Mage, Novice, Hunter, Trader’s Apprentice, Laborer, Urchin, Outsider.  
@@ -244,6 +246,8 @@
 - **Homeland:** Human lands, mostly The United States of Tartan, where they live among Humans and blend in easily.  
 - **Appearance:** Mostly human, with a few small lumps under the skin, but people tend to sense something slightly off about them that is hard to place. The more a Namuh has mastered their altered body, the harder this is to notice.  
 - **Size:** 3\.  
+- **Height:** 5 ft to 6 ft 6 in.  
+- **Weight:** 110 to 280 lb.  
 - **Languages:** Common.  
 - **Lifespan:** About 40 years, as their altered bodies break down. Those whose bodies stabilize can live as long as 120\.  
 - **Backgrounds:** Explorer, Scholar’s Apprentice, Recruit, Apprentice Mage, Novice, Hunter, Trader’s Apprentice, Laborer, Urchin, Outsider.  
@@ -256,6 +260,8 @@
 - **Lineage:** Human line. Descended from Human colonization ships that landed on the western continent; years at sea left them stockier and disease-resistant.  
 - **Homeland:** The Dwarven Republic (south-west of the western continent).  
 - **Size:** 3\.  
+- **Height:** 4 ft 2 in to 5 ft.  
+- **Weight:** 130 to 220 lb.  
 - **Languages:** Common (Dwarven dialect, shared with Halflings).  
 - **Lifespan:** About 80 years.  
 - **Backgrounds:** Engineer’s Apprentice, Mine Hand, Recruit, Apprentice Mage, Novice, Hunter, Trader’s Apprentice, Laborer, Outsider.  
@@ -269,6 +275,8 @@
 - **Homeland:** The Rust Caves (beneath the Dwarven Republic, south-west of the western continent). Most now live within Dwarven society, though still mostly underground, and few come to the surface unless they need to or have an adventurous streak.  
 - **Appearance:** Gray, stone-hard skin and pale eyes. The metals in their bodies pool on their dominant side, stiffening that leg and filling that arm, which has no hand and can be reshaped like the metal it is.  
 - **Size:** 3\.  
+- **Height: 6 ft 2 in to 7 ft 2 in.**  
+- **Weight:** 300 to 500 lb.  
 - **Languages:** Sworan. They understand Common (Dwarven dialect) but cannot speak it.  
 - **Lifespan:** About 80 years.  
 - **Backgrounds:** Engineer’s Apprentice, Mine Hand, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
@@ -281,9 +289,11 @@
 - **Lineage:** Human line, the first Human subspecies.  
 - **Homeland:** Littlefoot Hills (just south of the Humans).  
 - **Size:** 2\.  
+- **Height:** 2 ft 10 in to 3 ft 6 in.  
+- **Weight:** 35 to 70 lb.  
 - **Languages:** Common (shared with Dwarves).  
 - **Lifespan:** About 60 years.  
-- **Backgrounds:** Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider.  
+- **Backgrounds:** Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Hill Warden, Outsider.  
 - **Homelands:** Hills Revelers, Cargo Families, Council-Town, or a Shared Homeland.
 
 # **Wildibit** {#wildibit}
@@ -294,9 +304,11 @@
 - **Homeland:** The Littlefoot Hills (just south of the Humans), among the Halflings. Long scattered and hidden, they formed small bands in Halfling lands after the Humans conscripted them, along with the Halflings, near the end of the Continental War. They now live alongside the Halflings in near harmony.  
 - **Appearance:** Furred and rabbit-faced, with long ears, small paw-like hands, and powerful hind legs.  
 - **Size:** 2\.  
+- **Height:** 2 ft 6 in to 3 ft 4 in, not counting their ears, which add another 6 to 10 in.  
+- **Weight:** 25 to 55 lb.  
 - **Languages:** Common.  
 - **Lifespan:** About 30 years. They breed quickly, though with longer pregnancies than true rabbits.  
-- **Backgrounds:** Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider.  
+- **Backgrounds:** Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Hill Warden, Outsider.  
 - **Homelands:** Hills Revelers, Cargo Families, Council-Town, or a Shared Homeland.
 
 # **Elf** {#elf}
@@ -306,6 +318,8 @@
 - **Lineage:** Human line. Transformed by the explosion of magic when the southern Rift opened. They are not Rift-born, a term reserved for peoples made when a Rift was closed. Lighter-skinned, weaker, and far more magically adept than Humans.  
 - **Homeland:** The Paanlands (south of the eastern continent).  
 - **Size:** 3\.  
+- **Height:** 5 ft 2 in to 6 ft 2 in.  
+- **Weight:** 90 to 180 lb.  
 - **Languages:** Common.  
 - **Lifespan:** About 60 years.  
 - **Backgrounds:** College Student, Court Page, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Urchin, Outsider.  
@@ -319,6 +333,8 @@
 - **Homeland:** The Paanlands, living among the Elves, who treasure them while privately seeing them as precious failures.  
 - **Appearance:** Pure white skin and thin, delicate features.  
 - **Size:** 3\.  
+- **Height:** 5 ft 4 in to 6 ft 4 in, tall and willowy.  
+- **Weight:** 80 to 150 lb.  
 - **Languages:** Common.  
 - **Lifespan:** About 50 years, as their fragile bodies wear out early.  
 - **Backgrounds:** College Student, Court Page, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Urchin, Outsider.  
@@ -331,6 +347,8 @@
 - **Lineage:** Human line, through the Elves, Rift-born. Made when Paan sealed the southern Rift: gray-skinned elves shrouded by the Dusken curse (the shadow veil).  
 - **Homeland:** The Dusklands (southern tip of the eastern continent).  
 - **Size:** 3\.  
+- **Height:** 5 ft to 6 ft.  
+- **Weight:** 95 to 190 lb.  
 - **Languages:** Common.  
 - **Lifespan:** About 50 years, as the curse wears on the body; those who master their spirit can live to about 90\.  
 - **Backgrounds:** Spirit Hunter Initiate, Spirit Tender, Recruit, Apprentice Mage, Novice, Laborer, Outsider.  
@@ -344,6 +362,8 @@
 - **Homeland:** Ostracized outsider communities in and around the Dusklands (southern tip of the eastern continent). Extremely rare, and almost unknown outside the Elves and Dusken.  
 - **Appearance:** Patchwork skin, gray and white in random areas, with the shadow visibly straining beneath it.  
 - **Size:** 3\.  
+- **Height:** 5 ft to 6 ft.  
+- **Weight:** 90 to 180 lb.  
 - **Languages:** Common.  
 - **Lifespan:** About 40 years, as body and shadow wear each other down.  
 - **Backgrounds:** Spirit Hunter Initiate, Spirit Tender, Recruit, Apprentice Mage, Novice, Laborer, Outsider.  
@@ -356,9 +376,11 @@
 - **Lineage:** Human line, Rift-born. The people of Draken Hold, rewritten by their royals’ great spell into a lizard-like people, each with an elemental gland and a shorter lifespan.  
 - **Homeland:** The Kingdom of Drakenblood (south-central western continent), between the Goblins and the Fire Walkers; their old land is now the Dragon Wastes.  
 - **Size:** 3\.  
+- **Height:** 5 ft 4 in to 6 ft 6 in.  
+- **Weight:** 130 to 260 lb.  
 - **Languages:** Common and Bestial.  
 - **Lifespan:** About 50 years, shortened by their transformation.  
-- **Backgrounds:** Ward Apprentice, Reclaimer Initiate, Recruit, Apprentice Mage, Novice, Laborer, Outsider.  
+- **Backgrounds:** Ward Apprentice, Reclaimer Initiate, Recruit, Apprentice Mage, Novice, Laborer, Waste Scavenger, Outsider.  
 - **Homelands:** Reclaimers, Wired Cities, Crown-Sworn, or a Shared Homeland.
 
 # **Wasteling** {#wasteling}
@@ -370,6 +392,8 @@
 - **Homeland:** The Dragon Wastes (south of the western continent). Most never leave, held there by the curse and by whatever brought them there in the first place, living in the cults or the Wastes’ settlements. Playable Wastelings are the rare few who left.  
 - **Appearance:** Your original Ancestry, decayed: sloughing skin, exposed sinew, and clouded eyes.  
 - **Size and Languages:** As your original Ancestry.  
+- **Height:** As your original Ancestry, often an inch or two less from a stooped, decaying frame.  
+- **Weight:** Your original Ancestry’s, minus 10 to 20% from the decay.  
 - **Lifespan:** Cannot die of natural causes. Most turn feral 20 to 40 years after the change, though some find ways to hold it off. A Wasteling can still have children, who are Wastelings of the same Ancestry, for 10 to 20 years after the change, until they begin to turn.  
 - **Backgrounds and Homelands:** Those of your original Ancestry.
 
@@ -380,6 +404,8 @@
 - **Lineage:** One of the two founding races of the Twin Continents, descended from the Wuson. Ancestors of the Fire Walkers and Goblins.  
 - **Homeland:** The Orcish Wildlands (north-west of the western continent).  
 - **Size:** 3\.  
+- **Height:** 6 ft to 7 ft.  
+- **Weight:** 200 to 350 lb.  
 - **Languages:** Bestial (Orcish).  
 - **Lifespan:** About 40 years in the hostile jungle; up to about 80 in peaceful conditions.  
 - **Backgrounds:** Untested Warrior, Wildspeaker’s Apprentice, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
@@ -393,6 +419,8 @@
 - **Homeland:** The canopy of the Orcish Wildlands (north-west of the western continent), above and among the Orcs’ tree-built villages. They live alongside the Orcs and often serve as their scouts, especially in the war against the Dwarves.  
 - **Appearance:** Feathered and owl-faced, with large forward-facing eyes and clawed hands at the bend of each wing.  
 - **Size:** 2\.  
+- **Height:** 2 ft 4 in to 3 ft 2 in, with a wingspan of about 6 to 8 ft.  
+- **Weight:** 15 to 35 lb.  
 - **Languages:** Bestial (Orcish).  
 - **Lifespan:** About 50 years.  
 - **Backgrounds:** Wildspeaker’s Apprentice, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
@@ -405,6 +433,8 @@
 - **Lineage:** Orc line. Orcs who migrated east into the savannas and deserts; tannish-brown and beefier.  
 - **Homeland:** The Hellspire Expanse (center/east of the western continent).  
 - **Size:** 3\.  
+- **Height:** 6 ft 2 in to 7 ft 2 in.  
+- **Weight:** 230 to 400 lb.  
 - **Languages:** Bestial (Orcish).  
 - **Lifespan:** About 50 years in their harsh climate; up to about 80 in ideal conditions.  
 - **Backgrounds:** Nomad, Pilgrim, Inquisition Familiar, Tiro, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
@@ -418,6 +448,8 @@
 - **Homeland:** The Red Tusk lands (north-east of the Hellspire Expanse), where the Rite of the Minotaur is performed. Most spend their lives at sea, while those on land live nomadic lives much like the Dirt clans, far from the Firelands. Fire Walkers may still take the Rite and become Minotaurs, though few choose to now.  
 - **Appearance:** Bull-headed, with horns, reddish tusks, and a thick hide over a heavier frame than a Fire Walker’s.  
 - **Size:** 3\.  
+- **Height:** 6 ft 8 in to 7 ft 8 in, not counting their horns.  
+- **Weight:** 350 to 600 lb.  
 - **Languages:** Bestial (Orcish).  
 - **Lifespan:** About 70 years.  
 - **Backgrounds:** Deckhand, Pilgrim, Tiro, Recruit, Apprentice Mage, Novice, Hunter, Laborer, Outsider.  
@@ -430,6 +462,8 @@
 - **Lineage:** Orc line. Descended from a long-forgotten Orcish exploratory expedition.  
 - **Homeland:** Tinksmith (south-east tip of the western continent).  
 - **Size:** 2\.  
+- **Height:** 2 ft 8 in to 3 ft 6 in.  
+- **Weight:** 35 to 75 lb.  
 - **Languages:** Common and Bestial (Orcish).  
 - **Lifespan:** About 60 years.  
 - **Backgrounds:** Mob Runner, Green Hood Cub, Deckhand, Latent Psion, Trader’s Apprentice, Laborer, Urchin, Outsider.  
@@ -443,9 +477,11 @@
 - **Homeland:** Tinksmith’s main research laboratory, the head of the Goblin research institute (south-east tip of the western continent), and the Island Holdings research posts. Very few ever leave, and those who do usually escaped during Green Hood attacks.  
 - **Appearance:** Goblin, with slightly larger heads and pale eyes that seem to look through you.  
 - **Size:** 2\.  
+- **Height:** 2 ft 8 in to 3 ft 4 in.  
+- **Weight:** 30 to 60 lb.  
 - **Languages:** Common and Bestial (Orcish).  
 - **Lifespan:** About 40 years.  
-- **Backgrounds:** Latent Psion, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider.  
+- **Backgrounds:** Latent Psion, Novice, Trader’s Apprentice, Laborer, Urchin, Escaped Subject, Outsider.  
 - **Homelands:** Family Ward, Undercity, Island Holdings, or a Shared Homeland.
 
 # **Wusonian** {#wusonian}
@@ -1180,7 +1216,7 @@ Core tree of every Wasteling. It replaces the core tree of your original Ancestr
 ## **Recruit** {#recruit}
 
 - **Available to:** Human, Namuh, Dwarf, Sworan, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Fire Walker, and Minotaur.  
-- **Starting Trees:** Martial Theory T2, Medium Armor T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Resolve T2, and either Courage T2 or Endurance T2.  
+- **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, Medium Armor T2, and Endurance T2.  
 - **Ancestry Differences:** Dwarf: Heavy Armor T2 replaces Medium Armor T2.  
 - **Circle:** Barracks-Raised, or a Shared Circle.
 
@@ -1197,74 +1233,80 @@ Core tree of every Wasteling. It replaces the core tree of your original Ancestr
 ## **Novice** {#novice}
 
 - **Available to:** Human, Namuh, Dwarf, Sworan, Halfling, Wildibit, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Noctua, Fire Walker, Minotaur, and Smoblin.  
-- **Starting Trees:** Mental Theory T2, one of Life, Death, Order, Chaos, Beyond, or Below at T3 (the domain of your faith), Resolve T2, and Persuasion T2.  
-- **Ancestry Differences:** Fire Walker: Mental Theory T3, Light T2, Resolve T2, and Persuasion T2.  
+- **Starting Trees:** Mental Theory T2, one of Life, Death, Order, Chaos, Beyond, or Below at T3 (the domain of your faith), and Persuasion T3.  
+- **Ancestry Differences:** Fire Walker: Mental Theory T3, Light T2, and Persuasion T3.  
 - **Circle:** Temple, or a Shared Circle.
 
 ## **Hunter** {#hunter}
 
 - **Available to:** Human, Namuh, Dwarf, Sworan, Elf, Myrthel, Orc, Noctua, Fire Walker, and Minotaur.  
-- **Starting Trees:** Martial Theory T1, either Rapid Weapons T2 or Swift Weapons T2, Perception T2, Stealth T2, Concealment T2, Endurance T1, and Athletics T1.  
+- **Starting Trees:** Martial Theory T2, either Rapid Weapons T3 or Swift Weapons T3, Stealth T2, and Perception T2.  
 - **Circle:** Lodge, or a Shared Circle.
 
 ## **Trader’s Apprentice** {#trader’s-apprentice}
 
 - **Available to:** Human, Namuh, Dwarf, Halfling, Wildibit, Goblin, and Smoblin.  
-- **Starting Trees:** Persuasion T2, Barter T2, and Perception T2.  
-- **Trade Slot:** 6 points, held for now by Resolve T2 and Insight T2 as placeholders until trade professions exist.  
+- **Starting Trees:** Persuasion T3 and Barter T2.  
+- **Trade Slot:** 6 points, held for now by Perception T3 as a placeholder until trade professions exist.  
 - **Circle:** Caravan, or a Shared Circle.
 
 ## **Laborer** {#laborer}
 
 - **Available to:** Every Ancestry.  
-- **Starting Trees:** Athletics T2, Hauling T2, and Endurance T2.  
-- **Trade Slot:** 6 points, held for now by Recovery T2 and Mobility T2 as placeholders until trade professions exist.  
+- **Starting Trees:** Athletics T3 and Hauling T2.  
+- **Trade Slot:** 6 points, held for now by Endurance T3 as a placeholder until trade professions exist.  
 - **Circle:** Workhouse, or a Shared Circle.
 
 ## **Urchin** {#urchin}
 
 - **Available to:** Human, Namuh, Halfling, Wildibit, Elf, Myrthel, Goblin, and Smoblin.  
-- **Starting Trees:** Stealth T2, Sleight T2, Deception T2, Perception T2, Athletics T1, Mobility T1, and Initiative T1.  
+- **Starting Trees:** Stealth T3, Sleight T3, and Deception T2.  
 - **Circle:** Street Crew, or a Shared Circle.
 
 ## **Explorer** {#explorer}
 
 - **Available to:** Human and Namuh.  
-- **Starting Trees:** Perception T2, Athletics T2, Mobility T2, Endurance T2, Recovery T1, Persuasion T1, and Initiative T1.  
+- **Starting Trees:** Perception T3, Athletics T3, and Persuasion T2.  
 - **Circle:** Expedition Society, or a Shared Circle.
 
 ## **Scholar’s Apprentice** {#scholar’s-apprentice}
 
 - **Available to:** Human and Namuh.  
-- **Starting Trees:** Perception T2, Resolve T2, Insight T2, and Persuasion T2.  
-- **Trade Slot:** 3 points, held for now by Composure T2 as a placeholder until trade professions exist.  
+- **Starting Trees:** Resolve T3 and Insight T3.  
+- **Trade Slot:** 3 points, held for now by Perception T2 as a placeholder until trade professions exist.  
 - **Circle:** The Stacks, or a Shared Circle.
 
 ## **Engineer’s Apprentice** {#engineer’s-apprentice}
 
 - **Available to:** Dwarf and Sworan.  
-- **Starting Trees:** Magic Theory T2, Protection Arcana T2, and Perception T2.  
-- **Trade Slot:** 6 points (gem-tech crafting), held for now by Resolve T2 and Endurance T2 as placeholders until trade professions exist.  
+- **Starting Trees:** Magic Theory T2 and Protection Arcana T3.  
+- **Trade Slot:** 6 points (gem-tech crafting), held for now by Resolve T3 as a placeholder until trade professions exist.  
 - **Circle:** Construct Works, or a Shared Circle.
 
 ## **Mine Hand** {#mine-hand}
 
 - **Available to:** Dwarf and Sworan.  
-- **Starting Trees:** Athletics T2, Hauling T2, Endurance T2, and Perception T2.  
-- **Trade Slot:** 3 points (mining), held for now by Recovery T2 as a placeholder until trade professions exist.  
+- **Starting Trees:** Athletics T3 and Perception T3.  
+- **Trade Slot:** 3 points (mining), held for now by Endurance T2 as a placeholder until trade professions exist.  
 - **Circle:** Deep Crews, or a Shared Circle.
 
 ## **Street Performer** {#street-performer}
 
 - **Available to:** Halfling and Wildibit.  
-- **Starting Trees:** Persuasion T2, Deception T2, Diversion T2, Athletics T2, Diplomacy T1, Mobility T1, and Initiative T1.  
+- **Starting Trees:** Deception T3, Diversion T3, and Persuasion T2.  
 - **Circle:** Traveling Troupe, or a Shared Circle.
 
 ## **Courier** {#courier}
 
 - **Available to:** Halfling and Wildibit.  
-- **Starting Trees:** Athletics T2, Mobility T2, Hauling T2, Endurance T2, and Perception T2.  
+- **Starting Trees:** Athletics T3, Mobility T3, and Endurance T2.  
 - **Circle:** The Relay, or a Shared Circle.
+
+## **Hill Warden**
+
+- **Available to:** Halfling and Wildibit.  
+- **Starting Trees:** Martial Theory T2, either Rapid Weapons T3 or Swift Weapons T3, Athletics T2, and Mobility T2.  
+- **Circle:** The Hill Wardens, or a Shared Circle.
 
 ## **College Student** {#college-student}
 
@@ -1275,7 +1317,7 @@ Core tree of every Wasteling. It replaces the core tree of your original Ancestr
 ## **Court Page** {#court-page}
 
 - **Available to:** Elf and Myrthel.  
-- **Starting Trees:** Persuasion T2, Diplomacy T2, Resolve T2, Composure T2, Insight T1, Deception T1, and Initiative T1.  
+- **Starting Trees:** Persuasion T3, Diplomacy T3, and Resolve T2.  
 - **Circle:** Household Staff, or a Shared Circle.
 
 ## **Spirit Hunter Initiate** {#spirit-hunter-initiate}
@@ -1301,61 +1343,67 @@ Core tree of every Wasteling. It replaces the core tree of your original Ancestr
 ## **Reclaimer Initiate** {#reclaimer-initiate}
 
 - **Available to:** Drakenblood.  
-- **Starting Trees:** Martial Theory T1, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Endurance T2, Fortitude T1, Recovery T1, Perception T2, and Athletics T2.  
+- **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, Endurance T2, and Perception T2.  
 - **Circle:** Waste Camps, or a Shared Circle.
+
+## **Waste Scavenger**
+
+- **Available to:** Drakenblood.  
+- **Starting Trees:** Stealth T3, Concealment T3, and Perception T2.  
+- **Circle:** Scavenger Crews, or a Shared Circle.
 
 ## **Untested Warrior** {#untested-warrior}
 
 - **Available to:** Orc.  
-- **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, Athletics T2, Resolve T1, Courage T1, and Initiative T1.  
+- **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, and Initiative T3.  
 - **Circle:** Warband, or a Shared Circle.
 
 ## **Wildspeaker’s Apprentice** {#wildspeaker’s-apprentice}
 
 - **Available to:** Orc and Noctua.  
-- **Starting Trees:** Mental Theory T2, Life T3, Perception T2, Stealth T1, Endurance T1, and Recovery T1.  
+- **Starting Trees:** Mental Theory T2, Life T3, Perception T2, and Stealth T2.  
 - **Circle:** Grove Circle, or a Shared Circle.
 
 ## **Nomad** {#nomad}
 
 - **Available to:** Fire Walker.  
-- **Starting Trees:** Endurance T2, Recovery T2, Athletics T2, Mobility T2, and Perception T2.  
+- **Starting Trees:** Endurance T3, Recovery T2, and Perception T3.  
 - **Circle:** Caravan Clan, or a Shared Circle.
 
 ## **Pilgrim** {#pilgrim}
 
 - **Available to:** Fire Walker and Minotaur.  
-- **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Perception T2, Resolve T2, and Courage T2.  
+- **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, Resolve T2, and Courage T2.  
 - **Circle:** Pilgrim Band, or a Shared Circle.
 
 ## **Inquisition Familiar** {#inquisition-familiar}
 
 - **Available to:** Fire Walker.  
-- **Starting Trees:** Mental Theory T2, Order T2, Resolve T2, Insight T2, and Perception T2.  
+- **Starting Trees:** Mental Theory T2, Order T3, Resolve T2, and Insight T2.  
 - **Circle:** The Inquisition, or a Shared Circle.
 
 ## **Tiro** {#tiro}
 
 - **Available to:** Fire Walker and Minotaur.  
-- **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, or Swift Weapons at T3, Medium Armor T1, Athletics T1, Initiative T2, and Tempo T1.  
+- **Starting Trees:** Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, or Swift Weapons at T3, Initiative T2, and Tempo T2.  
 - **Circle:** Arena Ludus, or a Shared Circle.
 
 ## **Mob Runner** {#mob-runner}
 
 - **Available to:** Goblin.  
-- **Starting Trees:** Deception T2, Persuasion T2, Perception T2, Barter T1, Stealth T1, Sleight T1, Athletics T1, Mobility T1, and Initiative T1.  
+- **Starting Trees:** Deception T3, Persuasion T3, and Barter T2.  
 - **Circle:** one of the five families: The Mobmen, The Gearspinners, The Spark, The Ledger, or The Iron Collar; or a Shared Circle.
 
 ## **Green Hood Cub** {#green-hood-cub}
 
 - **Available to:** Goblin.  
-- **Starting Trees:** Perception T2, Stealth T2, Persuasion T2, Diplomacy T1, Athletics T1, Mobility T1, Resolve T1, Courage T1, and Initiative T1.  
+- **Starting Trees:** Stealth T3, Perception T2, Resolve T2, and Courage T2.  
 - **Circle:** The Green Hoods, or a Shared Circle.
 
 ## **Deckhand** {#deckhand}
 
 - **Available to:** Minotaur and Goblin.  
-- **Starting Trees:** Athletics T2, Mobility T2, Hauling T2, Endurance T2, Martial Theory T1, Swift Weapons T1, and Initiative T1.  
+- **Starting Trees:** Martial Theory T2, Swift Weapons T2, Athletics T3, and Hauling T2.  
 - **Circle:** Ship’s Crew, or a Shared Circle.
 
 ## **Latent Psion** {#latent-psion}
@@ -1363,6 +1411,12 @@ Core tree of every Wasteling. It replaces the core tree of your original Ancestr
 - **Available to:** Goblin and Smoblin.  
 - **Starting Trees:** Mental Theory T2, Psion Arts T3, Resolve T2, and Deception T2.  
 - **Circle:** Sewer Cult Fringe, or a Shared Circle.
+
+## **Escaped Subject**
+
+- **Available to:** Smoblin.  
+- **Starting Trees:** Stealth T3, Perception T3, and Initiative T2.  
+- **Circle:** Green Hood Safehouse, or a Shared Circle.
 
 # **Cultures** {#cultures}
 

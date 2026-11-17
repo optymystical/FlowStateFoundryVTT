@@ -87,6 +87,14 @@ export const ANCESTRIES = {
   "name": "Human",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   60,
+   76
+  ],
+  "weight": [
+   100,
+   250
+  ],
   "languages": "Common.",
   "lifespan": "About 80 years.",
   "backgrounds": [
@@ -113,6 +121,14 @@ export const ANCESTRIES = {
    {
     "name": "Size",
     "text": "3."
+   },
+   {
+    "name": "Height",
+    "text": "5 ft to 6 ft 4 in."
+   },
+   {
+    "name": "Weight",
+    "text": "100 to 250 lb."
    },
    {
     "name": "Languages",
@@ -142,6 +158,14 @@ export const ANCESTRIES = {
   "name": "Namuh",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   60,
+   78
+  ],
+  "weight": [
+   110,
+   280
+  ],
   "languages": "Common.",
   "lifespan": "About 40 years, as their altered bodies break down. Those whose bodies stabilize can live as long as 120.",
   "backgrounds": [
@@ -174,6 +198,14 @@ export const ANCESTRIES = {
     "text": "3."
    },
    {
+    "name": "Height",
+    "text": "5 ft to 6 ft 6 in."
+   },
+   {
+    "name": "Weight",
+    "text": "110 to 280 lb."
+   },
+   {
     "name": "Languages",
     "text": "Common."
    },
@@ -201,6 +233,14 @@ export const ANCESTRIES = {
   "name": "Dwarf",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   50,
+   60
+  ],
+  "weight": [
+   130,
+   220
+  ],
   "languages": "Common (Dwarven dialect, shared with Halflings).",
   "lifespan": "About 80 years.",
   "backgrounds": [
@@ -226,6 +266,14 @@ export const ANCESTRIES = {
    {
     "name": "Size",
     "text": "3."
+   },
+   {
+    "name": "Height",
+    "text": "4 ft 2 in to 5 ft."
+   },
+   {
+    "name": "Weight",
+    "text": "130 to 220 lb."
    },
    {
     "name": "Languages",
@@ -255,6 +303,14 @@ export const ANCESTRIES = {
   "name": "Sworan",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   74,
+   86
+  ],
+  "weight": [
+   300,
+   500
+  ],
   "languages": "Sworan. They understand Common (Dwarven dialect) but cannot speak it.",
   "lifespan": "About 80 years.",
   "backgrounds": [
@@ -285,6 +341,14 @@ export const ANCESTRIES = {
     "text": "3."
    },
    {
+    "name": "Height",
+    "text": "6 ft 2 in to 7 ft 2 in."
+   },
+   {
+    "name": "Weight",
+    "text": "300 to 500 lb."
+   },
+   {
     "name": "Languages",
     "text": "Sworan. They understand Common (Dwarven dialect) but cannot speak it."
    },
@@ -311,6 +375,14 @@ export const ANCESTRIES = {
   "name": "Halfling",
   "core": "ancestry-wusonian",
   "size": 2,
+  "height": [
+   34,
+   42
+  ],
+  "weight": [
+   35,
+   70
+  ],
   "languages": "Common (shared with Dwarves).",
   "lifespan": "About 60 years.",
   "backgrounds": [
@@ -321,6 +393,7 @@ export const ANCESTRIES = {
    "trader-s-apprentice",
    "laborer",
    "urchin",
+   "hill-warden",
    "outsider"
   ],
   "profile": [
@@ -337,6 +410,14 @@ export const ANCESTRIES = {
     "text": "2."
    },
    {
+    "name": "Height",
+    "text": "2 ft 10 in to 3 ft 6 in."
+   },
+   {
+    "name": "Weight",
+    "text": "35 to 70 lb."
+   },
+   {
     "name": "Languages",
     "text": "Common (shared with Dwarves)."
    },
@@ -346,7 +427,7 @@ export const ANCESTRIES = {
    },
    {
     "name": "Backgrounds",
-    "text": "Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider."
+    "text": "Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Hill Warden, Outsider."
    },
    {
     "name": "Homelands",
@@ -365,6 +446,14 @@ export const ANCESTRIES = {
   "name": "Wildibit",
   "core": "ancestry-leporid",
   "size": 2,
+  "height": [
+   30,
+   40
+  ],
+  "weight": [
+   25,
+   55
+  ],
   "languages": "Common.",
   "lifespan": "About 30 years. They breed quickly, though with longer pregnancies than true rabbits.",
   "backgrounds": [
@@ -375,6 +464,7 @@ export const ANCESTRIES = {
    "trader-s-apprentice",
    "laborer",
    "urchin",
+   "hill-warden",
    "outsider"
   ],
   "profile": [
@@ -395,6 +485,14 @@ export const ANCESTRIES = {
     "text": "2."
    },
    {
+    "name": "Height",
+    "text": "2 ft 6 in to 3 ft 4 in, not counting their ears, which add another 6 to 10 in."
+   },
+   {
+    "name": "Weight",
+    "text": "25 to 55 lb."
+   },
+   {
     "name": "Languages",
     "text": "Common."
    },
@@ -404,7 +502,7 @@ export const ANCESTRIES = {
    },
    {
     "name": "Backgrounds",
-    "text": "Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider."
+    "text": "Street Performer, Courier, Apprentice Mage, Novice, Trader’s Apprentice, Laborer, Urchin, Hill Warden, Outsider."
    },
    {
     "name": "Homelands",
@@ -422,6 +520,14 @@ export const ANCESTRIES = {
   "name": "Elf",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   62,
+   74
+  ],
+  "weight": [
+   90,
+   180
+  ],
   "languages": "Common.",
   "lifespan": "About 60 years.",
   "backgrounds": [
@@ -447,6 +553,14 @@ export const ANCESTRIES = {
    {
     "name": "Size",
     "text": "3."
+   },
+   {
+    "name": "Height",
+    "text": "5 ft 2 in to 6 ft 2 in."
+   },
+   {
+    "name": "Weight",
+    "text": "90 to 180 lb."
    },
    {
     "name": "Languages",
@@ -476,6 +590,14 @@ export const ANCESTRIES = {
   "name": "Myrthel",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   64,
+   76
+  ],
+  "weight": [
+   80,
+   150
+  ],
   "languages": "Common.",
   "lifespan": "About 50 years, as their fragile bodies wear out early.",
   "backgrounds": [
@@ -507,6 +629,14 @@ export const ANCESTRIES = {
     "text": "3."
    },
    {
+    "name": "Height",
+    "text": "5 ft 4 in to 6 ft 4 in, tall and willowy."
+   },
+   {
+    "name": "Weight",
+    "text": "80 to 150 lb."
+   },
+   {
     "name": "Languages",
     "text": "Common."
    },
@@ -534,6 +664,14 @@ export const ANCESTRIES = {
   "name": "Dusken",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   60,
+   72
+  ],
+  "weight": [
+   95,
+   190
+  ],
   "languages": "Common.",
   "lifespan": "About 50 years, as the curse wears on the body; those who master their spirit can live to about 90.",
   "backgrounds": [
@@ -557,6 +695,14 @@ export const ANCESTRIES = {
    {
     "name": "Size",
     "text": "3."
+   },
+   {
+    "name": "Height",
+    "text": "5 ft to 6 ft."
+   },
+   {
+    "name": "Weight",
+    "text": "95 to 190 lb."
    },
    {
     "name": "Languages",
@@ -587,6 +733,14 @@ export const ANCESTRIES = {
   "name": "Dawn Elf",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   60,
+   72
+  ],
+  "weight": [
+   90,
+   180
+  ],
   "languages": "Common.",
   "lifespan": "About 40 years, as body and shadow wear each other down.",
   "backgrounds": [
@@ -616,6 +770,14 @@ export const ANCESTRIES = {
     "text": "3."
    },
    {
+    "name": "Height",
+    "text": "5 ft to 6 ft."
+   },
+   {
+    "name": "Weight",
+    "text": "90 to 180 lb."
+   },
+   {
     "name": "Languages",
     "text": "Common."
    },
@@ -643,6 +805,14 @@ export const ANCESTRIES = {
   "name": "Drakenblood",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   64,
+   78
+  ],
+  "weight": [
+   130,
+   260
+  ],
   "languages": "Common and Bestial.",
   "lifespan": "About 50 years, shortened by their transformation.",
   "backgrounds": [
@@ -652,6 +822,7 @@ export const ANCESTRIES = {
    "apprentice-mage",
    "novice",
    "laborer",
+   "waste-scavenger",
    "outsider"
   ],
   "profile": [
@@ -668,6 +839,14 @@ export const ANCESTRIES = {
     "text": "3."
    },
    {
+    "name": "Height",
+    "text": "5 ft 4 in to 6 ft 6 in."
+   },
+   {
+    "name": "Weight",
+    "text": "130 to 260 lb."
+   },
+   {
     "name": "Languages",
     "text": "Common and Bestial."
    },
@@ -677,7 +856,7 @@ export const ANCESTRIES = {
    },
    {
     "name": "Backgrounds",
-    "text": "Ward Apprentice, Reclaimer Initiate, Recruit, Apprentice Mage, Novice, Laborer, Outsider."
+    "text": "Ward Apprentice, Reclaimer Initiate, Recruit, Apprentice Mage, Novice, Laborer, Waste Scavenger, Outsider."
    },
    {
     "name": "Homelands",
@@ -696,6 +875,8 @@ export const ANCESTRIES = {
   "name": "Wasteling",
   "core": "ancestry-wasteling",
   "size": 3,
+  "height": null,
+  "weight": null,
   "languages": "",
   "lifespan": "Cannot die of natural causes. Most turn feral 20 to 40 years after the change, though some find ways to hold it off. A Wasteling can still have children, who are Wastelings of the same Ancestry, for 10 to 20 years after the change, until they begin to turn.",
   "backgrounds": [],
@@ -721,6 +902,14 @@ export const ANCESTRIES = {
     "text": "As your original Ancestry."
    },
    {
+    "name": "Height",
+    "text": "As your original Ancestry, often an inch or two less from a stooped, decaying frame."
+   },
+   {
+    "name": "Weight",
+    "text": "Your original Ancestry’s, minus 10 to 20% from the decay."
+   },
+   {
     "name": "Lifespan",
     "text": "Cannot die of natural causes. Most turn feral 20 to 40 years after the change, though some find ways to hold it off. A Wasteling can still have children, who are Wastelings of the same Ancestry, for 10 to 20 years after the change, until they begin to turn."
    },
@@ -739,6 +928,14 @@ export const ANCESTRIES = {
   "name": "Orc",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   72,
+   84
+  ],
+  "weight": [
+   200,
+   350
+  ],
   "languages": "Bestial (Orcish).",
   "lifespan": "About 40 years in the hostile jungle; up to about 80 in peaceful conditions.",
   "backgrounds": [
@@ -763,6 +960,14 @@ export const ANCESTRIES = {
    {
     "name": "Size",
     "text": "3."
+   },
+   {
+    "name": "Height",
+    "text": "6 ft to 7 ft."
+   },
+   {
+    "name": "Weight",
+    "text": "200 to 350 lb."
    },
    {
     "name": "Languages",
@@ -792,6 +997,14 @@ export const ANCESTRIES = {
   "name": "Noctua",
   "core": "ancestry-strigid",
   "size": 2,
+  "height": [
+   28,
+   38
+  ],
+  "weight": [
+   15,
+   35
+  ],
   "languages": "Bestial (Orcish).",
   "lifespan": "About 50 years.",
   "backgrounds": [
@@ -818,6 +1031,14 @@ export const ANCESTRIES = {
    {
     "name": "Size",
     "text": "2."
+   },
+   {
+    "name": "Height",
+    "text": "2 ft 4 in to 3 ft 2 in, with a wingspan of about 6 to 8 ft."
+   },
+   {
+    "name": "Weight",
+    "text": "15 to 35 lb."
    },
    {
     "name": "Languages",
@@ -847,6 +1068,14 @@ export const ANCESTRIES = {
   "name": "Fire Walker",
   "core": "ancestry-wusonian",
   "size": 3,
+  "height": [
+   74,
+   86
+  ],
+  "weight": [
+   230,
+   400
+  ],
   "languages": "Bestial (Orcish).",
   "lifespan": "About 50 years in their harsh climate; up to about 80 in ideal conditions.",
   "backgrounds": [
@@ -873,6 +1102,14 @@ export const ANCESTRIES = {
    {
     "name": "Size",
     "text": "3."
+   },
+   {
+    "name": "Height",
+    "text": "6 ft 2 in to 7 ft 2 in."
+   },
+   {
+    "name": "Weight",
+    "text": "230 to 400 lb."
    },
    {
     "name": "Languages",
@@ -903,6 +1140,14 @@ export const ANCESTRIES = {
   "name": "Minotaur",
   "core": "ancestry-lakeborn",
   "size": 3,
+  "height": [
+   80,
+   92
+  ],
+  "weight": [
+   350,
+   600
+  ],
   "languages": "Bestial (Orcish).",
   "lifespan": "About 70 years.",
   "backgrounds": [
@@ -934,6 +1179,14 @@ export const ANCESTRIES = {
     "text": "3."
    },
    {
+    "name": "Height",
+    "text": "6 ft 8 in to 7 ft 8 in, not counting their horns."
+   },
+   {
+    "name": "Weight",
+    "text": "350 to 600 lb."
+   },
+   {
     "name": "Languages",
     "text": "Bestial (Orcish)."
    },
@@ -961,6 +1214,14 @@ export const ANCESTRIES = {
   "name": "Goblin",
   "core": "ancestry-wusonian",
   "size": 2,
+  "height": [
+   32,
+   42
+  ],
+  "weight": [
+   35,
+   75
+  ],
   "languages": "Common and Bestial (Orcish).",
   "lifespan": "About 60 years.",
   "backgrounds": [
@@ -985,6 +1246,14 @@ export const ANCESTRIES = {
    {
     "name": "Size",
     "text": "2."
+   },
+   {
+    "name": "Height",
+    "text": "2 ft 8 in to 3 ft 6 in."
+   },
+   {
+    "name": "Weight",
+    "text": "35 to 75 lb."
    },
    {
     "name": "Languages",
@@ -1015,6 +1284,14 @@ export const ANCESTRIES = {
   "name": "Smoblin",
   "core": "ancestry-wusonian",
   "size": 2,
+  "height": [
+   32,
+   40
+  ],
+  "weight": [
+   30,
+   60
+  ],
   "languages": "Common and Bestial (Orcish).",
   "lifespan": "About 40 years.",
   "backgrounds": [
@@ -1023,6 +1300,7 @@ export const ANCESTRIES = {
    "trader-s-apprentice",
    "laborer",
    "urchin",
+   "escaped-subject",
    "outsider"
   ],
   "profile": [
@@ -1043,6 +1321,14 @@ export const ANCESTRIES = {
     "text": "2."
    },
    {
+    "name": "Height",
+    "text": "2 ft 8 in to 3 ft 4 in."
+   },
+   {
+    "name": "Weight",
+    "text": "30 to 60 lb."
+   },
+   {
     "name": "Languages",
     "text": "Common and Bestial (Orcish)."
    },
@@ -1052,7 +1338,7 @@ export const ANCESTRIES = {
    },
    {
     "name": "Backgrounds",
-    "text": "Latent Psion, Novice, Trader’s Apprentice, Laborer, Urchin, Outsider."
+    "text": "Latent Psion, Novice, Trader’s Apprentice, Laborer, Urchin, Escaped Subject, Outsider."
    },
    {
     "name": "Homelands",
@@ -1274,10 +1560,6 @@ export const BACKGROUNDS = {
     "tier": 2
    },
    {
-    "tree": "Medium Armor",
-    "tier": 2
-   },
-   {
     "choose": [
      "Brawling Methods",
      "Bladed Weapons",
@@ -1285,17 +1567,14 @@ export const BACKGROUNDS = {
      "Swift Weapons",
      "Rapid Weapons"
     ],
+    "tier": 3
+   },
+   {
+    "tree": "Medium Armor",
     "tier": 2
    },
    {
-    "tree": "Resolve",
-    "tier": 2
-   },
-   {
-    "choose": [
-     "Courage",
-     "Endurance"
-    ],
+    "tree": "Endurance",
     "tier": 2
    }
   ],
@@ -1314,7 +1593,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Human, Namuh, Dwarf, Sworan, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Fire Walker, and Minotaur.",
-   "Starting Trees": "Martial Theory T2, Medium Armor T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Resolve T2, and either Courage T2 or Endurance T2.",
+   "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, Medium Armor T2, and Endurance T2.",
    "Ancestry Differences": "Dwarf: Heavy Armor T2 replaces Medium Armor T2.",
    "Circle": "Barracks-Raised, or a Shared Circle."
   }
@@ -1475,19 +1754,15 @@ export const BACKGROUNDS = {
     "tier": 3
    },
    {
-    "tree": "Resolve",
-    "tier": 2
-   },
-   {
     "tree": "Persuasion",
-    "tier": 2
+    "tier": 3
    }
   ],
   "options": [],
   "differences": [
    {
     "ancestry": "fire-walker",
-    "text": "Mental Theory T3, Light T2, Resolve T2, and Persuasion T2.",
+    "text": "Mental Theory T3, Light T2, and Persuasion T3.",
     "trees": [
      {
       "tree": "Mental Theory",
@@ -1498,12 +1773,8 @@ export const BACKGROUNDS = {
       "tier": 2
      },
      {
-      "tree": "Resolve",
-      "tier": 2
-     },
-     {
       "tree": "Persuasion",
-      "tier": 2
+      "tier": 3
      }
     ]
    }
@@ -1511,8 +1782,8 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Human, Namuh, Dwarf, Sworan, Halfling, Wildibit, Elf, Myrthel, Dusken, Dawn Elf, Drakenblood, Orc, Noctua, Fire Walker, Minotaur, and Smoblin.",
-   "Starting Trees": "Mental Theory T2, one of Life, Death, Order, Chaos, Beyond, or Below at T3 (the domain of your faith), Resolve T2, and Persuasion T2.",
-   "Ancestry Differences": "Fire Walker: Mental Theory T3, Light T2, Resolve T2, and Persuasion T2.",
+   "Starting Trees": "Mental Theory T2, one of Life, Death, Order, Chaos, Beyond, or Below at T3 (the domain of your faith), and Persuasion T3.",
+   "Ancestry Differences": "Fire Walker: Mental Theory T3, Light T2, and Persuasion T3.",
    "Circle": "Temple, or a Shared Circle."
   }
  },
@@ -1534,34 +1805,22 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Martial Theory",
-    "tier": 1
+    "tier": 2
    },
    {
     "choose": [
      "Rapid Weapons",
      "Swift Weapons"
     ],
-    "tier": 2
-   },
-   {
-    "tree": "Perception",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Stealth",
     "tier": 2
    },
    {
-    "tree": "Concealment",
+    "tree": "Perception",
     "tier": 2
-   },
-   {
-    "tree": "Endurance",
-    "tier": 1
-   },
-   {
-    "tree": "Athletics",
-    "tier": 1
    }
   ],
   "options": [],
@@ -1569,7 +1828,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Human, Namuh, Dwarf, Sworan, Elf, Myrthel, Orc, Noctua, Fire Walker, and Minotaur.",
-   "Starting Trees": "Martial Theory T1, either Rapid Weapons T2 or Swift Weapons T2, Perception T2, Stealth T2, Concealment T2, Endurance T1, and Athletics T1.",
+   "Starting Trees": "Martial Theory T2, either Rapid Weapons T3 or Swift Weapons T3, Stealth T2, and Perception T2.",
    "Circle": "Lodge, or a Shared Circle."
   }
  },
@@ -1588,7 +1847,7 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Persuasion",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Barter",
@@ -1596,16 +1855,7 @@ export const BACKGROUNDS = {
    },
    {
     "tree": "Perception",
-    "tier": 2
-   },
-   {
-    "tree": "Resolve",
-    "tier": 2,
-    "trade": true
-   },
-   {
-    "tree": "Insight",
-    "tier": 2,
+    "tier": 3,
     "trade": true
    }
   ],
@@ -1614,8 +1864,8 @@ export const BACKGROUNDS = {
   "tradeSlot": 6,
   "text": {
    "Available to": "Human, Namuh, Dwarf, Halfling, Wildibit, Goblin, and Smoblin.",
-   "Starting Trees": "Persuasion T2, Barter T2, and Perception T2.",
-   "Trade Slot": "6 points, held for now by Resolve T2 and Insight T2 as placeholders until trade professions exist.",
+   "Starting Trees": "Persuasion T3 and Barter T2.",
+   "Trade Slot": "6 points, held for now by Perception T3 as a placeholder until trade professions exist.",
    "Circle": "Caravan, or a Shared Circle."
   }
  },
@@ -1626,7 +1876,7 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Athletics",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Hauling",
@@ -1634,16 +1884,7 @@ export const BACKGROUNDS = {
    },
    {
     "tree": "Endurance",
-    "tier": 2
-   },
-   {
-    "tree": "Recovery",
-    "tier": 2,
-    "trade": true
-   },
-   {
-    "tree": "Mobility",
-    "tier": 2,
+    "tier": 3,
     "trade": true
    }
   ],
@@ -1652,8 +1893,8 @@ export const BACKGROUNDS = {
   "tradeSlot": 6,
   "text": {
    "Available to": "Every Ancestry.",
-   "Starting Trees": "Athletics T2, Hauling T2, and Endurance T2.",
-   "Trade Slot": "6 points, held for now by Recovery T2 and Mobility T2 as placeholders until trade professions exist.",
+   "Starting Trees": "Athletics T3 and Hauling T2.",
+   "Trade Slot": "6 points, held for now by Endurance T3 as a placeholder until trade professions exist.",
    "Circle": "Workhouse, or a Shared Circle."
   }
  },
@@ -1673,31 +1914,15 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Stealth",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Sleight",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Deception",
     "tier": 2
-   },
-   {
-    "tree": "Perception",
-    "tier": 2
-   },
-   {
-    "tree": "Athletics",
-    "tier": 1
-   },
-   {
-    "tree": "Mobility",
-    "tier": 1
-   },
-   {
-    "tree": "Initiative",
-    "tier": 1
    }
   ],
   "options": [],
@@ -1705,7 +1930,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Human, Namuh, Halfling, Wildibit, Elf, Myrthel, Goblin, and Smoblin.",
-   "Starting Trees": "Stealth T2, Sleight T2, Deception T2, Perception T2, Athletics T1, Mobility T1, and Initiative T1.",
+   "Starting Trees": "Stealth T3, Sleight T3, and Deception T2.",
    "Circle": "Street Crew, or a Shared Circle."
   }
  },
@@ -1719,31 +1944,15 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Perception",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Athletics",
-    "tier": 2
-   },
-   {
-    "tree": "Mobility",
-    "tier": 2
-   },
-   {
-    "tree": "Endurance",
-    "tier": 2
-   },
-   {
-    "tree": "Recovery",
-    "tier": 1
+    "tier": 3
    },
    {
     "tree": "Persuasion",
-    "tier": 1
-   },
-   {
-    "tree": "Initiative",
-    "tier": 1
+    "tier": 2
    }
   ],
   "options": [],
@@ -1751,7 +1960,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Human and Namuh.",
-   "Starting Trees": "Perception T2, Athletics T2, Mobility T2, Endurance T2, Recovery T1, Persuasion T1, and Initiative T1.",
+   "Starting Trees": "Perception T3, Athletics T3, and Persuasion T2.",
    "Circle": "Expedition Society, or a Shared Circle."
   }
  },
@@ -1764,23 +1973,15 @@ export const BACKGROUNDS = {
   ],
   "trees": [
    {
-    "tree": "Perception",
-    "tier": 2
-   },
-   {
     "tree": "Resolve",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Insight",
-    "tier": 2
+    "tier": 3
    },
    {
-    "tree": "Persuasion",
-    "tier": 2
-   },
-   {
-    "tree": "Composure",
+    "tree": "Perception",
     "tier": 2,
     "trade": true
    }
@@ -1790,8 +1991,8 @@ export const BACKGROUNDS = {
   "tradeSlot": 3,
   "text": {
    "Available to": "Human and Namuh.",
-   "Starting Trees": "Perception T2, Resolve T2, Insight T2, and Persuasion T2.",
-   "Trade Slot": "3 points, held for now by Composure T2 as a placeholder until trade professions exist.",
+   "Starting Trees": "Resolve T3 and Insight T3.",
+   "Trade Slot": "3 points, held for now by Perception T2 as a placeholder until trade professions exist.",
    "Circle": "The Stacks, or a Shared Circle."
   }
  },
@@ -1809,20 +2010,11 @@ export const BACKGROUNDS = {
    },
    {
     "tree": "Protection Arcana",
-    "tier": 2
-   },
-   {
-    "tree": "Perception",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Resolve",
-    "tier": 2,
-    "trade": true
-   },
-   {
-    "tree": "Endurance",
-    "tier": 2,
+    "tier": 3,
     "trade": true
    }
   ],
@@ -1831,8 +2023,8 @@ export const BACKGROUNDS = {
   "tradeSlot": 6,
   "text": {
    "Available to": "Dwarf and Sworan.",
-   "Starting Trees": "Magic Theory T2, Protection Arcana T2, and Perception T2.",
-   "Trade Slot": "6 points (gem-tech crafting), held for now by Resolve T2 and Endurance T2 as placeholders until trade professions exist.",
+   "Starting Trees": "Magic Theory T2 and Protection Arcana T3.",
+   "Trade Slot": "6 points (gem-tech crafting), held for now by Resolve T3 as a placeholder until trade professions exist.",
    "Circle": "Construct Works, or a Shared Circle."
   }
  },
@@ -1846,22 +2038,14 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Athletics",
-    "tier": 2
-   },
-   {
-    "tree": "Hauling",
-    "tier": 2
-   },
-   {
-    "tree": "Endurance",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Perception",
-    "tier": 2
+    "tier": 3
    },
    {
-    "tree": "Recovery",
+    "tree": "Endurance",
     "tier": 2,
     "trade": true
    }
@@ -1871,8 +2055,8 @@ export const BACKGROUNDS = {
   "tradeSlot": 3,
   "text": {
    "Available to": "Dwarf and Sworan.",
-   "Starting Trees": "Athletics T2, Hauling T2, Endurance T2, and Perception T2.",
-   "Trade Slot": "3 points (mining), held for now by Recovery T2 as a placeholder until trade professions exist.",
+   "Starting Trees": "Athletics T3 and Perception T3.",
+   "Trade Slot": "3 points (mining), held for now by Endurance T2 as a placeholder until trade professions exist.",
    "Circle": "Deep Crews, or a Shared Circle."
   }
  },
@@ -1885,32 +2069,16 @@ export const BACKGROUNDS = {
   ],
   "trees": [
    {
-    "tree": "Persuasion",
-    "tier": 2
-   },
-   {
     "tree": "Deception",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Diversion",
+    "tier": 3
+   },
+   {
+    "tree": "Persuasion",
     "tier": 2
-   },
-   {
-    "tree": "Athletics",
-    "tier": 2
-   },
-   {
-    "tree": "Diplomacy",
-    "tier": 1
-   },
-   {
-    "tree": "Mobility",
-    "tier": 1
-   },
-   {
-    "tree": "Initiative",
-    "tier": 1
    }
   ],
   "options": [],
@@ -1918,7 +2086,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Halfling and Wildibit.",
-   "Starting Trees": "Persuasion T2, Deception T2, Diversion T2, Athletics T2, Diplomacy T1, Mobility T1, and Initiative T1.",
+   "Starting Trees": "Deception T3, Diversion T3, and Persuasion T2.",
    "Circle": "Traveling Troupe, or a Shared Circle."
   }
  },
@@ -1932,22 +2100,14 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Athletics",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Mobility",
-    "tier": 2
-   },
-   {
-    "tree": "Hauling",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Endurance",
-    "tier": 2
-   },
-   {
-    "tree": "Perception",
     "tier": 2
    }
   ],
@@ -1956,8 +2116,45 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Halfling and Wildibit.",
-   "Starting Trees": "Athletics T2, Mobility T2, Hauling T2, Endurance T2, and Perception T2.",
+   "Starting Trees": "Athletics T3, Mobility T3, and Endurance T2.",
    "Circle": "The Relay, or a Shared Circle."
+  }
+ },
+ "hill-warden": {
+  "id": "hill-warden",
+  "name": "Hill Warden",
+  "available": [
+   "halfling",
+   "wildibit"
+  ],
+  "trees": [
+   {
+    "tree": "Martial Theory",
+    "tier": 2
+   },
+   {
+    "choose": [
+     "Rapid Weapons",
+     "Swift Weapons"
+    ],
+    "tier": 3
+   },
+   {
+    "tree": "Athletics",
+    "tier": 2
+   },
+   {
+    "tree": "Mobility",
+    "tier": 2
+   }
+  ],
+  "options": [],
+  "differences": [],
+  "tradeSlot": 0,
+  "text": {
+   "Available to": "Halfling and Wildibit.",
+   "Starting Trees": "Martial Theory T2, either Rapid Weapons T3 or Swift Weapons T3, Athletics T2, and Mobility T2.",
+   "Circle": "The Hill Wardens, or a Shared Circle."
   }
  },
  "college-student": {
@@ -2007,31 +2204,15 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Persuasion",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Diplomacy",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Resolve",
     "tier": 2
-   },
-   {
-    "tree": "Composure",
-    "tier": 2
-   },
-   {
-    "tree": "Insight",
-    "tier": 1
-   },
-   {
-    "tree": "Deception",
-    "tier": 1
-   },
-   {
-    "tree": "Initiative",
-    "tier": 1
    }
   ],
   "options": [],
@@ -2039,7 +2220,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Elf and Myrthel.",
-   "Starting Trees": "Persuasion T2, Diplomacy T2, Resolve T2, Composure T2, Insight T1, Deception T1, and Initiative T1.",
+   "Starting Trees": "Persuasion T3, Diplomacy T3, and Resolve T2.",
    "Circle": "Household Staff, or a Shared Circle."
   }
  },
@@ -2180,7 +2361,7 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Martial Theory",
-    "tier": 1
+    "tier": 2
    },
    {
     "choose": [
@@ -2190,26 +2371,14 @@ export const BACKGROUNDS = {
      "Swift Weapons",
      "Rapid Weapons"
     ],
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Endurance",
     "tier": 2
    },
    {
-    "tree": "Fortitude",
-    "tier": 1
-   },
-   {
-    "tree": "Recovery",
-    "tier": 1
-   },
-   {
     "tree": "Perception",
-    "tier": 2
-   },
-   {
-    "tree": "Athletics",
     "tier": 2
    }
   ],
@@ -2218,8 +2387,37 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Drakenblood.",
-   "Starting Trees": "Martial Theory T1, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Endurance T2, Fortitude T1, Recovery T1, Perception T2, and Athletics T2.",
+   "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, Endurance T2, and Perception T2.",
    "Circle": "Waste Camps, or a Shared Circle."
+  }
+ },
+ "waste-scavenger": {
+  "id": "waste-scavenger",
+  "name": "Waste Scavenger",
+  "available": [
+   "drakenblood"
+  ],
+  "trees": [
+   {
+    "tree": "Stealth",
+    "tier": 3
+   },
+   {
+    "tree": "Concealment",
+    "tier": 3
+   },
+   {
+    "tree": "Perception",
+    "tier": 2
+   }
+  ],
+  "options": [],
+  "differences": [],
+  "tradeSlot": 0,
+  "text": {
+   "Available to": "Drakenblood.",
+   "Starting Trees": "Stealth T3, Concealment T3, and Perception T2.",
+   "Circle": "Scavenger Crews, or a Shared Circle."
   }
  },
  "untested-warrior": {
@@ -2244,20 +2442,8 @@ export const BACKGROUNDS = {
     "tier": 3
    },
    {
-    "tree": "Athletics",
-    "tier": 2
-   },
-   {
-    "tree": "Resolve",
-    "tier": 1
-   },
-   {
-    "tree": "Courage",
-    "tier": 1
-   },
-   {
     "tree": "Initiative",
-    "tier": 1
+    "tier": 3
    }
   ],
   "options": [],
@@ -2265,7 +2451,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Orc.",
-   "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, Athletics T2, Resolve T1, Courage T1, and Initiative T1.",
+   "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, and Initiative T3.",
    "Circle": "Warband, or a Shared Circle."
   }
  },
@@ -2291,15 +2477,7 @@ export const BACKGROUNDS = {
    },
    {
     "tree": "Stealth",
-    "tier": 1
-   },
-   {
-    "tree": "Endurance",
-    "tier": 1
-   },
-   {
-    "tree": "Recovery",
-    "tier": 1
+    "tier": 2
    }
   ],
   "options": [],
@@ -2307,7 +2485,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Orc and Noctua.",
-   "Starting Trees": "Mental Theory T2, Life T3, Perception T2, Stealth T1, Endurance T1, and Recovery T1.",
+   "Starting Trees": "Mental Theory T2, Life T3, Perception T2, and Stealth T2.",
    "Circle": "Grove Circle, or a Shared Circle."
   }
  },
@@ -2320,23 +2498,15 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Endurance",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Recovery",
     "tier": 2
    },
    {
-    "tree": "Athletics",
-    "tier": 2
-   },
-   {
-    "tree": "Mobility",
-    "tier": 2
-   },
-   {
     "tree": "Perception",
-    "tier": 2
+    "tier": 3
    }
   ],
   "options": [],
@@ -2344,7 +2514,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Fire Walker.",
-   "Starting Trees": "Endurance T2, Recovery T2, Athletics T2, Mobility T2, and Perception T2.",
+   "Starting Trees": "Endurance T3, Recovery T2, and Perception T3.",
    "Circle": "Caravan Clan, or a Shared Circle."
   }
  },
@@ -2368,11 +2538,7 @@ export const BACKGROUNDS = {
      "Swift Weapons",
      "Rapid Weapons"
     ],
-    "tier": 2
-   },
-   {
-    "tree": "Perception",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Resolve",
@@ -2388,7 +2554,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Fire Walker and Minotaur.",
-   "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T2, Perception T2, Resolve T2, and Courage T2.",
+   "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, Swift Weapons, or Rapid Weapons at T3, Resolve T2, and Courage T2.",
    "Circle": "Pilgrim Band, or a Shared Circle."
   }
  },
@@ -2405,7 +2571,7 @@ export const BACKGROUNDS = {
    },
    {
     "tree": "Order",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Resolve",
@@ -2414,10 +2580,6 @@ export const BACKGROUNDS = {
    {
     "tree": "Insight",
     "tier": 2
-   },
-   {
-    "tree": "Perception",
-    "tier": 2
    }
   ],
   "options": [],
@@ -2425,7 +2587,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Fire Walker.",
-   "Starting Trees": "Mental Theory T2, Order T2, Resolve T2, Insight T2, and Perception T2.",
+   "Starting Trees": "Mental Theory T2, Order T3, Resolve T2, and Insight T2.",
    "Circle": "The Inquisition, or a Shared Circle."
   }
  },
@@ -2451,20 +2613,12 @@ export const BACKGROUNDS = {
     "tier": 3
    },
    {
-    "tree": "Medium Armor",
-    "tier": 1
-   },
-   {
-    "tree": "Athletics",
-    "tier": 1
-   },
-   {
     "tree": "Initiative",
     "tier": 2
    },
    {
     "tree": "Tempo",
-    "tier": 1
+    "tier": 2
    }
   ],
   "options": [],
@@ -2472,7 +2626,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Fire Walker and Minotaur.",
-   "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, or Swift Weapons at T3, Medium Armor T1, Athletics T1, Initiative T2, and Tempo T1.",
+   "Starting Trees": "Martial Theory T2, one of Brawling Methods, Bladed Weapons, Balanced Weapons, or Swift Weapons at T3, Initiative T2, and Tempo T2.",
    "Circle": "Arena Ludus, or a Shared Circle."
   }
  },
@@ -2485,39 +2639,15 @@ export const BACKGROUNDS = {
   "trees": [
    {
     "tree": "Deception",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Persuasion",
-    "tier": 2
-   },
-   {
-    "tree": "Perception",
-    "tier": 2
+    "tier": 3
    },
    {
     "tree": "Barter",
-    "tier": 1
-   },
-   {
-    "tree": "Stealth",
-    "tier": 1
-   },
-   {
-    "tree": "Sleight",
-    "tier": 1
-   },
-   {
-    "tree": "Athletics",
-    "tier": 1
-   },
-   {
-    "tree": "Mobility",
-    "tier": 1
-   },
-   {
-    "tree": "Initiative",
-    "tier": 1
+    "tier": 2
    }
   ],
   "options": [],
@@ -2525,7 +2655,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Goblin.",
-   "Starting Trees": "Deception T2, Persuasion T2, Perception T2, Barter T1, Stealth T1, Sleight T1, Athletics T1, Mobility T1, and Initiative T1.",
+   "Starting Trees": "Deception T3, Persuasion T3, and Barter T2.",
    "Circle": "one of the five families: The Mobmen, The Gearspinners, The Spark, The Ledger, or The Iron Collar; or a Shared Circle."
   }
  },
@@ -2537,40 +2667,20 @@ export const BACKGROUNDS = {
   ],
   "trees": [
    {
+    "tree": "Stealth",
+    "tier": 3
+   },
+   {
     "tree": "Perception",
     "tier": 2
    },
    {
-    "tree": "Stealth",
-    "tier": 2
-   },
-   {
-    "tree": "Persuasion",
-    "tier": 2
-   },
-   {
-    "tree": "Diplomacy",
-    "tier": 1
-   },
-   {
-    "tree": "Athletics",
-    "tier": 1
-   },
-   {
-    "tree": "Mobility",
-    "tier": 1
-   },
-   {
     "tree": "Resolve",
-    "tier": 1
+    "tier": 2
    },
    {
     "tree": "Courage",
-    "tier": 1
-   },
-   {
-    "tree": "Initiative",
-    "tier": 1
+    "tier": 2
    }
   ],
   "options": [],
@@ -2578,7 +2688,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Goblin.",
-   "Starting Trees": "Perception T2, Stealth T2, Persuasion T2, Diplomacy T1, Athletics T1, Mobility T1, Resolve T1, Courage T1, and Initiative T1.",
+   "Starting Trees": "Stealth T3, Perception T2, Resolve T2, and Courage T2.",
    "Circle": "The Green Hoods, or a Shared Circle."
   }
  },
@@ -2591,32 +2701,20 @@ export const BACKGROUNDS = {
   ],
   "trees": [
    {
-    "tree": "Athletics",
+    "tree": "Martial Theory",
     "tier": 2
    },
    {
-    "tree": "Mobility",
+    "tree": "Swift Weapons",
     "tier": 2
+   },
+   {
+    "tree": "Athletics",
+    "tier": 3
    },
    {
     "tree": "Hauling",
     "tier": 2
-   },
-   {
-    "tree": "Endurance",
-    "tier": 2
-   },
-   {
-    "tree": "Martial Theory",
-    "tier": 1
-   },
-   {
-    "tree": "Swift Weapons",
-    "tier": 1
-   },
-   {
-    "tree": "Initiative",
-    "tier": 1
    }
   ],
   "options": [],
@@ -2624,7 +2722,7 @@ export const BACKGROUNDS = {
   "tradeSlot": 0,
   "text": {
    "Available to": "Minotaur and Goblin.",
-   "Starting Trees": "Athletics T2, Mobility T2, Hauling T2, Endurance T2, Martial Theory T1, Swift Weapons T1, and Initiative T1.",
+   "Starting Trees": "Martial Theory T2, Swift Weapons T2, Athletics T3, and Hauling T2.",
    "Circle": "Ship’s Crew, or a Shared Circle."
   }
  },
@@ -2660,6 +2758,35 @@ export const BACKGROUNDS = {
    "Available to": "Goblin and Smoblin.",
    "Starting Trees": "Mental Theory T2, Psion Arts T3, Resolve T2, and Deception T2.",
    "Circle": "Sewer Cult Fringe, or a Shared Circle."
+  }
+ },
+ "escaped-subject": {
+  "id": "escaped-subject",
+  "name": "Escaped Subject",
+  "available": [
+   "smoblin"
+  ],
+  "trees": [
+   {
+    "tree": "Stealth",
+    "tier": 3
+   },
+   {
+    "tree": "Perception",
+    "tier": 3
+   },
+   {
+    "tree": "Initiative",
+    "tier": 2
+   }
+  ],
+  "options": [],
+  "differences": [],
+  "tradeSlot": 0,
+  "text": {
+   "Available to": "Smoblin.",
+   "Starting Trees": "Stealth T3, Perception T3, and Initiative T2.",
+   "Circle": "Green Hood Safehouse, or a Shared Circle."
   }
  },
  "omen": {
@@ -3117,5 +3244,23 @@ export const CIRCLES = [
   "name": "Sewer Cult Fringe",
   "text": "You drifted near one of the cults beneath Tinksmith, and that is where your mind first woke. You value secrets, survival, and what you might become, and keep strange habits you cannot quite explain. Ties: cultists who remember you, and others who heard the same whispers.",
   "background": "latent-psion"
+ },
+ {
+  "id": "hill-warden.the-hill-wardens",
+  "name": "The Hill Wardens",
+  "text": "",
+  "background": "hill-warden"
+ },
+ {
+  "id": "waste-scavenger.scavenger-crews",
+  "name": "Scavenger Crews",
+  "text": "",
+  "background": "waste-scavenger"
+ },
+ {
+  "id": "escaped-subject.green-hood-safehouse",
+  "name": "Green Hood Safehouse",
+  "text": "",
+  "background": "escaped-subject"
  }
 ];

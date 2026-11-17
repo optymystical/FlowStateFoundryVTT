@@ -144,3 +144,20 @@ export const ancestrySize = ancestry => ANCESTRIES[ancestry]?.size ?? 3;
 
 /** The tiers a character paid for in a tree, past what's free (so the free part can never be lowered or refunded). */
 export const paidTiers = (trees, free, id) => Math.max(0, tierOf(trees, id) - tierOf(free, id));
+
+/** "5 ft 9 in" (whole inches); "180 lb". */
+export const formatHeight = inches => { const n = Math.max(0, Math.round(inches)), ft = Math.floor(n / 12), i = n % 12; return ft ? `${ft} ft${i ? ` ${i} in` : ""}` : `${i} in`; };
+export const formatWeight = lb => `${Math.max(0, Math.round(lb))} lb`;
+/**
+ * The usual height (inches) and weight (lb) for an Ancestry, from its profile: { height: [lo, hi], weight: [lo, hi] } (null where the doc gives none).
+ * A Wasteling's are its original Ancestry's, an inch or two shorter at the low end and 10 to 20% lighter (its profile's words).
+ */
+export function bodyRange(abc = {}) {
+  const a = ANCESTRIES[abc.ancestry];
+  if (!a) return { height: null, weight: null };
+  const h = a.height ?? null, w = a.weight ?? null;
+  if (!abc.wasteling) return { height: h, weight: w };
+  return { height: h ? [h[0] - 2, h[1]] : null, weight: w ? [Math.round(w[0] * 0.8), Math.round(w[1] * 0.9)] : null };
+}
+/** A random value in a range (whole numbers, both ends included). `rand` is 0 ≤ x < 1. */
+export const randomIn = ([lo, hi], rand = Math.random()) => lo + Math.floor(rand * (hi - lo + 1));

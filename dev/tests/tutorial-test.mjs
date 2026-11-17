@@ -90,7 +90,7 @@ popups.length = 0; await w.coach();
 ok(titles().join() === "Recruit: your choices" && /One of these/.test(popups[0].html), "A Background with choices: a popup lists them");
 popups.length = 0; await T.TutorialWizard.onTutorialNext.call(w);
 ok(titles().join() === "Not yet" && step() === "background", "Next before the choices are made: \"Not yet\"");
-for (const [slot, id] of [["2", "martial-bladed-weapons"], ["4", "generic-courage"]]) CharacterWizard.onPickChoice.call(w, null, { dataset: { slot, id } });
+for (const [slot, id] of [["1", "martial-bladed-weapons"]]) CharacterWizard.onPickChoice.call(w, null, { dataset: { slot, id } });
 await T.TutorialWizard.onTutorialNext.call(w);
 ok(step() === "culture", "Choices made: locked in, on to Culture");
 popups.length = 0; await w.coach(); ok(titles().join() === "Step 3: Culture" && /Homeland/.test(popups[0].html) && /Circle/.test(popups[0].html), "Culture: Homeland and Circle explained");

@@ -202,6 +202,29 @@ so = await actions.damageOutcome(hero, 100, "physical", { halfLimit: true });
 ok2(so.shields[0].absorbed === 30, "Weakpoint halves it");
 so = await actions.damageOutcome(hero, 100, "physical", { bash: 60 });
 ok2(so.shields[0].absorbed === 0 && so.toHp === 160, "Bash breaks through a Shield whose Limit is at or under it (and adds its Limit as damage)");
+console.log("== Temp HP and Shielding (Rules doc)");
+{
+  const parrier = mkWeapon(hero, "Parrier", { material: "steel" });
+  const po = await actions.damageOutcome(hero, 100, "physical", { parryItems: [parrier.uuid] });
+  const iS = po.lines.findIndex(l => /Shield absorbed/.test(l)), iP = po.lines.findIndex(l => /Parrier \(parry\)/.test(l));
+  ok2(iS > 0 && iP > iS && po.shields[0].absorbed === 60, "Shielding applies first: the Shield soaks before the parrying weapon");
+  hero.items.splice(hero.items.indexOf(parrier), 1);
+  await actions.applySpellEffect(hero, { kind: "shield", stack: true, caster: "Actor.Ally", name: "Aegis (20 shielding)", hp: 20, max: 20, ward: "aegis", order: "default" });
+  let sh = actions.spellEffects(hero, "shield");
+  ok2(sh.length === 1 && sh[0].name === "Shield", "Shielding doesn't stack: a smaller Ward shielding (20) leaves the 60 Shield, and isn't taken");
+  await actions.applySpellEffect(hero, { kind: "shield", stack: true, caster: "Actor.Ally", name: "Aegis (50 shielding)", hp: 50, max: 50, ward: "aegis", order: "default" });
+  await actions.applySpellEffect(hero, { kind: "shield", stack: true, caster: "Actor.Ally", name: "Aegis (40 shielding)", hp: 40, max: 40, ward: "aegis", order: "default" });
+  sh = actions.spellEffects(hero, "shield");
+  ok2(sh.length === 1 && sh[0].name === "Shield", "...nor does a 50 (lower than 60)");
+  await actions.applySpellEffect(hero, { kind: "shield", stack: true, caster: "Actor.Ally", name: "Aegis (80 shielding)", hp: 80, max: 80, ward: "aegis", order: "default" });
+  await actions.applySpellEffect(hero, { kind: "shield", stack: true, caster: "Actor.Ally", name: "Aegis (8 shielding)", hp: 8, max: 8, ward: "aegis", order: "default" });
+  sh = actions.spellEffects(hero, "shield");
+  ok2(sh.length === 2 && sh.every(e => e.flags.flowstate.spellEffect.ward === "aegis"), "A higher one replaces it, and a Form that says it stacks still stacks with itself (80 + 8)");
+  hero.effects.splice(0, hero.effects.length);
+  await actions.applySpellEffect(hero, { kind: "tempHP", caster: "Actor.Ally", name: "Temp HP (10)", hp: 10, max: 10 });
+  await actions.applySpellEffect(hero, { kind: "tempHP", caster: "Actor.Ally", name: "Temp HP (5)", hp: 5, max: 5 });
+  ok2(actions.spellEffects(hero, "tempHP").length === 2, "Temp HP stacks: a second grant from the same source adds to the first");
+}
 hero.effects.splice(0, hero.effects.length);
 
 console.log("== Combo Force + Cut: direct damage applies Force");

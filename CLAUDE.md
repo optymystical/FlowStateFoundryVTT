@@ -22,7 +22,7 @@ export as markdown) whenever a rule matters; snapshots in `dev/docs/` go stale.
 | Flow State - Mental Stage 1 | authoritative (the source for Mental since 25 Oct 2026; it replaced the Mental Rework Test Ground) | `1AYDPICDPXz1TGjQquEX4k-PvXxxbRmncSZc4rkZ2nR4` |
 | Flow State - Generic Groups | authoritative (since 13 Nov 2026; holds the rules that left the Rules doc: senses, stealth, initiative, persuasion, rest/HP/Energy, movement/carrying, fear, environments) | `19gxpTdn18dMof40hXTxEW-kQ13Wwn8yTpEAUWlEuk94` |
 | Flow State - ABCs | authoritative (since 14 Nov 2026: Ancestries and their trees, Backgrounds, Cultures) | `1pvtx5J0yEE4VHIAr4lyUaXIrwHqjlFCU__KaJhLTajc` |
-| Flow State - Bestiary | authoritative (since 14 Nov 2026: the world's creatures as Ancestries: Wonderborn Omens and Heralds of Life, Dark, Growth) | `1odncKJtMBF3GpQZbcliczFjFREGvJ7u_rIdwiS4PNAA` |
+| Flow State - Bestiary | authoritative (since 14 Nov 2026: the world's creatures as Ancestries: Wonderborn Omens and Heralds of Life, Dark, Growth, Death, Light, Order, Chaos) | `1odncKJtMBF3GpQZbcliczFjFREGvJ7u_rIdwiS4PNAA` |
 
 If an ID read fails, search by exact title. "[Discipline] Rework Test Ground" docs are scratchpads; "Stage 1" docs are
 the stable versions. When the user says "I updated the doc", diff the live doc against `dev/docs/*.md`, summarize
@@ -34,7 +34,7 @@ all five Magic groups (T1: Magic Theory, Slashing, Piercing, Crushing, Protectio
 Cold, Radiation, Acid; T3: Grasp Arcana, Venomancy, Charm, Witchery; T4: Build Arcana, Summoning, Creation, Animation; T5:
 Restoration Arcana, Geomancy, Illusion, Arcanomancy, with all their Combos) are automated; "tier" in Magic means the group of
 trees a Magic Theory tier unlocks. Muddy/Harden place terrain regions (rough/difficult/cleared); only Mixed Animations are left to the GM.
-Mental is in progress (built from Flow State - Mental Stage 1): the framework is in (Manifest, Alignment, Icons and Wards, Concentration, Trance, Willpower, Ponderance, Snappence and Psion Arts) and the Wonders' Modes are being added Wonder by Wonder (all twenty written Wonders are in) and Esoteric Arts (Omens, Mental T5) is in. Mental Theory, Forms/Wards and Willpower Arts are complete. Generic Groups are in (all eight Groups' trees; Non Stat Checks, initiative, stealth, Energy outside combat, equipment Size and Load, and the abilities that change a fight; the rest are Action List rows that pay and post). Ancestries (Flow State - ABCs) are in: the ancestry trees, Backgrounds' free points, Cultures, the wizard, and the abilities (the roleplay ones are text). Environments (Generic Groups) are a GM option. The Bestiary (Flow State - Bestiary) is in: Wonderborn Omens and Heralds of Life, Dark and Growth, for the GM's NPC wizard and Seed/Rend.
+Mental is in progress (built from Flow State - Mental Stage 1): the framework is in (Manifest, Alignment, Icons and Wards, Concentration, Trance, Willpower, Ponderance, Snappence and Psion Arts) and the Wonders' Modes are being added Wonder by Wonder (all twenty written Wonders are in) and Esoteric Arts (Omens, Mental T5) is in. Mental Theory, Forms/Wards and Willpower Arts are complete. Generic Groups are in (all eight Groups' trees; Non Stat Checks, initiative, stealth, Energy outside combat, equipment Size and Load, and the abilities that change a fight; the rest are Action List rows that pay and post). Ancestries (Flow State - ABCs) are in: the ancestry trees, Backgrounds' free points, Cultures, the wizard, and the abilities (the roleplay ones are text). Environments (Generic Groups) are a GM option. The Bestiary (Flow State - Bestiary) is in: Wonderborn Omens and Heralds of Life, Dark, Growth, Death, Light, Order and Chaos, for the GM's NPC wizard and Seed/Rend.
 
 ## Layout
 
@@ -106,7 +106,7 @@ Mental is in progress (built from Flow State - Mental Stage 1): the framework is
   Rows tagged `data-role`/`data-owner` show buttons only to the owner; a new chat message re-renders the card it
   answers (see the `createChatMessage` hook's ref chain — add new flag names there).
 - **GM relay:** players can't update others' documents; use `requestGM(action, payload)` with a handler in `GM_ACTIONS` and a field check in `relay-guard.mjs`. The GM client runs relayed requests one at a time per creature (`makeQueue`); a handler must not `await` another relayed request for the same creature, or it waits on itself.
-- **Soak order:** parrying weapons → Shroud(s) → armor. Objects absorb at most their remaining Durability.
+- **Soak order:** Emplace barriers → Shielding (spell Shields, Ward shielding; Adjust can move it) → Accretions → parrying weapons → Shroud(s) → armor → Temp HP. Objects absorb at most their remaining Durability. Shielding keeps the higher (a stacking Form with itself); Temp HP always stacks.
 - **Distance:** `tokenDistance` measures between token borders (touching = 0 ft).
 - **Weapon trees:** `abilities.weaponFits` — a weapon's main type, plus its extra types with Weapon Master (MT T5).
 

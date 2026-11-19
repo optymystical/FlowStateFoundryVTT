@@ -67,7 +67,7 @@ export const BESTIARY_RULES = {
     },
     {
      "name": "Natural Attacks",
-     "text": "Attacks granted by Ancestry trees are natural attacks, so creature Size applies to them: Size 4 attacks are Strengthened and Size 5 attacks are doubly Strengthened (Size 2 Weakened, Size 1 doubly Weakened)."
+     "text": "Attacks granted by Ancestry trees are natural attacks, so creature Size applies to them: Size 4 attacks are Strengthened and Size 5 attacks are doubly Strengthened (Size 2 Weakened, Size 1 doubly Weakened). Each Size above 5 adds one more Strengthen, so Size 6 attacks are triply Strengthened and Size 7 attacks quadruply. Creatures above Size 5 are rare."
     },
     {
      "name": "Sapience",
@@ -1519,6 +1519,230 @@ export const ANCESTRIES = {
    "ancestry-wonderborn-growth"
   ],
   "lineage": "ancestry-dreamborn"
+ },
+ "wonderborn-death": {
+  "id": "wonderborn-death",
+  "name": "Death",
+  "core": "ancestry-wonderborn",
+  "coreName": "Wonderborn",
+  "bestiary": true,
+  "size": 3,
+  "sizes": {
+   "omen": 3,
+   "herald": 5
+  },
+  "form": "warden",
+  "wonderName": "Death",
+  "languages": "",
+  "lifespan": "",
+  "backgrounds": [
+   "omen",
+   "herald"
+  ],
+  "profile": [
+   {
+    "name": "Omen",
+    "text": "The Carrion-Stalker, a gaunt, person-sized hunter with a vulture's skull and a hooked spear. It culls a village by night, strongest first."
+   },
+   {
+    "name": "Herald",
+    "text": "The Culling, a towering stalker trailed by a flock of carrion thralls made from its kills."
+   },
+   {
+    "name": "Size",
+    "text": "Omen 3, Herald 5."
+   },
+   {
+    "name": "Form",
+    "text": "Warden."
+   },
+   {
+    "name": "Senses",
+    "text": "Sight (Primary), Hearing (Primary), and Smell (Heightened)."
+   },
+   {
+    "name": "Feeds on",
+    "text": "Fresh kills."
+   },
+   {
+    "name": "Propagation trigger",
+    "text": "A dozen or more creatures die within a day in one place and are left unburied. A husk of bone and feathers forms there (60 Durability, 0 Limit) and rises as a Carrion-Stalker within minutes, not a day."
+   }
+  ],
+  "trees": [
+   "ancestry-wonderborn",
+   "ancestry-nightmareborn",
+   "ancestry-wonderborn-death"
+  ],
+  "lineage": "ancestry-nightmareborn"
+ },
+ "wonderborn-light": {
+  "id": "wonderborn-light",
+  "name": "Light",
+  "core": "ancestry-wonderborn",
+  "coreName": "Wonderborn",
+  "bestiary": true,
+  "size": 4,
+  "sizes": {
+   "omen": 4,
+   "herald": 5
+  },
+  "form": "prism",
+  "wonderName": "Light",
+  "languages": "",
+  "lifespan": "",
+  "backgrounds": [
+   "omen",
+   "herald"
+  ],
+  "profile": [
+   {
+    "name": "Omen",
+    "text": "The Blazehart, a white stag whose antlers burn like noon. It runs rather than fights, leading hunters on until they drop."
+   },
+   {
+    "name": "Herald",
+    "text": "The White Night, a city where night stops falling, under a sky burning with auroral color."
+   },
+   {
+    "name": "Size",
+    "text": "Omen 4, Herald 5."
+   },
+   {
+    "name": "Form",
+    "text": "Prism."
+   },
+   {
+    "name": "Senses",
+    "text": "Sight (Heightened), Hearing (Primary), and Smell (Primary)."
+   },
+   {
+    "name": "Feeds on",
+    "text": "Daylight, and the sleep of those near it."
+   },
+   {
+    "name": "Propagation trigger",
+    "text": "A creature chases it until it collapses (see Run Them Down). That creature wakes blind, and the light taken from it forms a new Blazehart."
+   }
+  ],
+  "trees": [
+   "ancestry-wonderborn",
+   "ancestry-dreamborn",
+   "ancestry-wonderborn-light"
+  ],
+  "lineage": "ancestry-dreamborn"
+ },
+ "wonderborn-order": {
+  "id": "wonderborn-order",
+  "name": "Order",
+  "core": "ancestry-wonderborn",
+  "coreName": "Wonderborn",
+  "bestiary": true,
+  "size": 3,
+  "sizes": {
+   "omen": 3,
+   "herald": 5
+  },
+  "form": "anchor",
+  "wonderName": "Order",
+  "languages": "",
+  "lifespan": "",
+  "backgrounds": [
+   "omen",
+   "herald"
+  ],
+  "profile": [
+   {
+    "name": "Omen",
+    "text": "The Lawstone, a brass and crystal construct that imposes strange rules on a town (curfews no one set, routines no one can break) and punishes anyone who deviates."
+   },
+   {
+    "name": "Herald",
+    "text": "The Ordinance, a city drilled into lockstep around a central obelisk."
+   },
+   {
+    "name": "Size",
+    "text": "Omen 3, Herald 5."
+   },
+   {
+    "name": "Form",
+    "text": "Anchor."
+   },
+   {
+    "name": "Senses",
+    "text": "Sight (Primary) and Hearing (Heightened)."
+   },
+   {
+    "name": "Feeds on",
+    "text": "Obedience: routines kept and people moving in step around it."
+   },
+   {
+    "name": "Propagation trigger",
+    "text": "A creature keeps all of your Edicts for a full month. Over the following day, it calcifies into a new Lawstone."
+   }
+  ],
+  "trees": [
+   "ancestry-wonderborn",
+   "ancestry-dreamborn",
+   "ancestry-wonderborn-order"
+  ],
+  "lineage": "ancestry-dreamborn"
+ },
+ "wonderborn-chaos": {
+  "id": "wonderborn-chaos",
+  "name": "Chaos",
+  "core": "ancestry-wonderborn",
+  "coreName": "Wonderborn",
+  "bestiary": true,
+  "size": 2,
+  "sizes": {
+   "omen": 2,
+   "herald": 5
+  },
+  "form": "echo",
+  "wonderName": "Chaos",
+  "languages": "",
+  "lifespan": "",
+  "backgrounds": [
+   "omen",
+   "herald"
+  ],
+  "profile": [
+   {
+    "name": "Omen",
+    "text": "The Smear, a small shapeless thing that warps the neighborhood around it. Objects change, doors open onto the wrong rooms, and memories slip."
+   },
+   {
+    "name": "Herald",
+    "text": "The Churn, a city district that won't hold still. Its streets rearrange, and its residents forget who they are."
+   },
+   {
+    "name": "Size",
+    "text": "Omen 2, Herald 5."
+   },
+   {
+    "name": "Form",
+    "text": "Echo."
+   },
+   {
+    "name": "Senses",
+    "text": "Sight (Primary) and Hearing (Primary)."
+   },
+   {
+    "name": "Feeds on",
+    "text": "Disorder: anything moved, forgotten, or no longer where it was."
+   },
+   {
+    "name": "Propagation trigger",
+    "text": "A piece of it survives to become a new Smear (see Split)."
+   }
+  ],
+  "trees": [
+   "ancestry-wonderborn",
+   "ancestry-nightmareborn",
+   "ancestry-wonderborn-chaos"
+  ],
+  "lineage": "ancestry-nightmareborn"
  }
 };
 export const BACKGROUNDS = {
@@ -2799,7 +3023,11 @@ export const BACKGROUNDS = {
   "available": [
    "wonderborn-life",
    "wonderborn-dark",
-   "wonderborn-growth"
+   "wonderborn-growth",
+   "wonderborn-death",
+   "wonderborn-light",
+   "wonderborn-order",
+   "wonderborn-chaos"
   ],
   "trees": [],
   "options": [],
@@ -2824,7 +3052,11 @@ export const BACKGROUNDS = {
   "available": [
    "wonderborn-life",
    "wonderborn-dark",
-   "wonderborn-growth"
+   "wonderborn-growth",
+   "wonderborn-death",
+   "wonderborn-light",
+   "wonderborn-order",
+   "wonderborn-chaos"
   ],
   "trees": [],
   "options": [],

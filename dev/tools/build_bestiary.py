@@ -6,7 +6,9 @@ Structure relied on (every heading is a # heading):
   # **<Core>** + Tier 0 (Free)         -> a core tree (Wonderborn)
   # **<Lineage>** "*Requires <Core> 1. Lineage tree of ...*"   -> a lineage tree (Dreamborn, Nightmareborn)
   # **<Name>** + **Profile:**          -> an Ancestry (Life): "* **Key:** value" bullets (Omen, Herald, Size "Omen 3, Herald 5", Form, Senses...)
-  # **<Name>** "*Requires <Lineage> 1.*" -> that Ancestry's own tree (the heading repeats the Ancestry's name)
+  # **<Name>** (repeated)              -> that Ancestry's own tree (the heading repeats the Ancestry's name). Its lineage is the lineage tree whose note
+                                          names its Wonder's type ("Lineage tree of every Dream Omen"), the type read from Flow State - Mental Stage 1
+                                          (docs/mental.md: "## **Life (Dream)**"); an old "*Requires <Lineage> 1.*" note still works.
   # **Backgrounds** then # **Omen** / # **Herald** -> "* **Available to:** Wonderborn." / "* **Ancestry Trees:** Tier 3 in ..." / "* **Stat-to-skill ratio:** ... (band 2)"
 Usage: build_bestiary.py docs/bestiary.md   (prints what it found; build_trees.py and build_abcs.py import parse_bestiary)
 """
@@ -64,8 +66,16 @@ def keyed(lines):
 def note_of(lines):
     return next((clean(l) for l in lines if l.strip().startswith('*') and not l.strip().startswith('**') and not re.match(r'^\*\s', l.strip())), "")
 
+def wonder_kinds():
+    """Each Wonder's type from the Mental doc's tree headings: {"life": "dream", "death": "nightmare", ...}."""
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'docs', 'mental.md')
+    try: md = open(p, encoding='utf-8').read()
+    except OSError: return {}
+    return {slug(n): k.lower() for n, k in re.findall(r'^##\s+\*\*(\w+) \((Dream|Nightmare)\)\*\*', md.replace(chr(13), ''), re.M)}
+
 def parse_bestiary(md):
     trees, ancestries, backgrounds = [], {}, {}
+    kinds, lineages = wonder_kinds(), {}           # lineages: "dream" -> the Dreamborn tree's id (from its note)
     core, mode, pending = None, None, None          # pending: the Ancestry whose own tree comes next
     for name, lines in sections(md):
         text = "\n".join(lines)
@@ -108,10 +118,12 @@ def parse_bestiary(md):
         if pending and slug(name) == slug(pending["name"]):
             tree["id"] = f"ancestry-{pending['id']}"
             tree["ancestries"] = [pending["id"]]
-            pending["lineage"] = tree.get("requiresTree", {}).get("id")
+            pending["lineage"] = tree.get("requiresTree", {}).get("id") or lineages.get(kinds.get(slug(pending["wonderName"])))
             pending = None
         elif re.search(r'Lineage tree', note):
             tree["lineage"] = True
+            k = re.search(r'every (Dream|Nightmare)', note)
+            if k: lineages[k.group(1).lower()] = tree["id"]
         trees.append(tree_body(lines, tree))
     # Each Ancestry's trees: its core, its lineage, its own; the lineage trees list the Ancestries under them.
     for a in ancestries.values():

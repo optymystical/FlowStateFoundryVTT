@@ -27,7 +27,7 @@ export const RULE_DOCS = [
      {
       "id": "foundry-vtt",
       "title": "Foundry VTT",
-      "md": "The primary way to play this game is the Foundry VTT game system, which can be found below in the links section (soon to be added). If you have issues with the module, let me know on Discord (@chris\\_optymystical)."
+      "md": "The primary way to play this game is the Foundry VTT game system, which can be found below in The Documents section (soon to be added). If you have issues with the module, let me know on Discord (@chris\\_optymystical)."
      },
      {
       "id": "cc-by",
@@ -35,15 +35,33 @@ export const RULE_DOCS = [
       "md": "This document and all documents here fall under this licensing: Flow State © 2019 by Christopher Caplinger is licensed under CC BY 4.0. To view a copy of this license, visit [https\\://creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0)"
      },
      {
-      "id": "links",
-      "title": "Links",
-      "md": "[Equipment](https://docs.google.com/document/d/1bjinhIrPGJr0Ss4M9fjlCRSZrteX5r9yjsSuhYkMuag/edit?tab=t.0#heading=h.bq5thp60inqi)  \n[Martial Skill Trees](https://docs.google.com/document/d/1w5x2zNdUCZMatirMQ-qsNga7XijfzEuzQ7Ad_UgiWbw/edit?tab=t.0#heading=h.z7f5qbem92om)  \n[Mental Skill Trees](https://docs.google.com/document/d/1AYDPICDPXz1TGjQquEX4k-PvXxxbRmncSZc4rkZ2nR4/edit?tab=t.0#heading=h.ows869dkj9ak)  \n[Magic Skill Trees](https://docs.google.com/document/d/10yfXGyX5-dTUYCJzsGw1DOTd7qpGaeD5ZlNF7mMbWI8/edit?tab=t.0#heading=h.mmgrmapgzhbn)"
+      "id": "the-documents",
+      "title": "The Documents",
+      "md": "Flow State is split up across several documents, each one holding a different part of the game. This document is the core, and will point you to the others as they come up, but here they all are in the order you’ll likely need them:\n\n* [Flow State \\- ABCs](https://docs.google.com/document/d/1pvtx5J0yEE4VHIAr4lyUaXIrwHqjlFCU__KaJhLTajc/edit): Every Ancestry, Background, and Culture (Ch2 and Ch5).  \n* [Flow State \\- Martial Stage 1](https://docs.google.com/document/d/1w5x2zNdUCZMatirMQ-qsNga7XijfzEuzQ7Ad_UgiWbw/edit): The Martial Archetype’s skill trees.  \n* [Flow State \\- Mental Stage 1](https://docs.google.com/document/d/1AYDPICDPXz1TGjQquEX4k-PvXxxbRmncSZc4rkZ2nR4/edit): The Mental Archetype’s skill trees.  \n* [Flow State \\- Magic Stage 1](https://docs.google.com/document/d/10yfXGyX5-dTUYCJzsGw1DOTd7qpGaeD5ZlNF7mMbWI8/edit): The Magic Archetype’s skill trees, along with the [Combo Spell List](https://docs.google.com/document/d/1lyNQtEPZWuIpjxqvD3BIa_ZPFD25iTxi3YMp78hVAGY/edit).  \n* [Flow State \\- Generic Groups](https://docs.google.com/document/d/19gxpTdn18dMof40hXTxEW-kQ13Wwn8yTpEAUWlEuk94/edit): The skill trees anyone can use, like Perception and Stealth, as well as the base rules for things like HP, Energy, Movement, and Resting.  \n* [Flow State \\- Equipment](https://docs.google.com/document/d/1bjinhIrPGJr0Ss4M9fjlCRSZrteX5r9yjsSuhYkMuag/edit): Weapons, Armor, Icons, Foci, Shrouds, and Affixes."
      }
     ]
    },
    {
-    "id": "ch2-archetypes",
-    "title": "Ch2 - Archetypes",
+    "id": "part-one-making-your-character",
+    "title": "Part One - Making Your Character",
+    "intro": "",
+    "sections": []
+   },
+   {
+    "id": "ch2-ancestry",
+    "title": "Ch2 - Ancestry",
+    "intro": "The first choice you make for your character is their Ancestry, which is the people they are born to (Humans, Dwarves, Orcs, etc). Your Ancestry decides a lot of the basics about your character before anything else, like their Size, languages, and lifespan, which can be found in that Ancestry’s Profile in Flow State \\- ABCs. Each Ancestry also has its own skill trees that you can put points into like any other, but don’t worry about those yet, as skill trees are explained in Ch4. For now, pick the Ancestry that fits the character you have in mind. The most important thing it sets right now is your Size, which is explained below.",
+    "sections": [
+     {
+      "id": "size-categories",
+      "title": "Size Categories",
+      "md": "All creatures fall into a size category, which affects things such as how much space your character takes up, maximum movement speed, hunger rate, max HP, and melee attack range. All playable characters have a default size of 3 unless stated otherwise. Aside from what is listed below, your size also affects your Max Health, Pain Threshold, Grappling, and Carrying rules (see those sections for more details). Equipment has its own Size, which determines its power in place of yours (see Carrying in Flow State \\- Generic Groups).\n\n| Size | Space | Max Move Speed | Rations/Day | Unarmed & Natural Attacks | Melee Range |\n| :---: | :---: | :---: | :---: | :---: | :---: |\n| 1 | Under 1 ft cube | 10ft/AP | ¼ | Doubly Weakened | 1ft |\n| 2 | 1-3 ft cube | 25ft/AP | ½ | Weakened | 3ft |\n| 3 | 3-5 ft cube | 50ft/AP | 1 | Normal | 5ft |\n| 4 | 5-10 ft cube | 100ft/AP | 2 | Strengthened | 10ft |\n| 5 | 10-20 ft cube | 200ft/AP | 4 | Doubly Strengthened | 20ft |"
+     }
+    ]
+   },
+   {
+    "id": "ch3-archetypes",
+    "title": "Ch3 - Archetypes",
     "intro": "This game has its stats, skill trees, and equipment split into three distinct “Archetypes”, and everything within them is referred to as “Archetypal”. For example, a single dollar bill is not Archetypal equipment as it is used by everyone universally, but a Sword or a Gun is considered Archetypal as it is used by Martial Characters. To give some general context, each Archetype has its own list of skill trees, 3 associated stats, and unique archetypal equipment.",
     "sections": [
      {
@@ -59,7 +77,7 @@ export const RULE_DOCS = [
      {
       "id": "mental-archetype",
       "title": "Mental Archetype",
-      "md": "**Wonders:** Wonders are essentially ideas and emotions that, when focused on, can form into real tangible effects. Wonders are split into two forms: Dreams and Nightmares, which are based on Religious/Spiritual Domains found a lot in fantasy settings, like Life/Death. Using Wonders requires having unlocked its associated Skill Tree, with each Dream having an antithetical Nightmare. Manifesting a Wonder is much more open ended than casting a spell or attacking with a weapon, allowing you to choose custom ranges and enhancements as needed, but they are quite limited in what they can accomplish.\n\n**Icons:** Icons are objects of belief or reverence that take on a named Form, which you Attune to in order to use. A Form grants a defensive Ward, as well as a Tenet: an extra effect tied to a Wonder of your choosing."
+      "md": "**Wonders:** Wonders are essentially ideas and emotions that, when focused on, can form into real tangible effects. Each Wonder is one end of an Axis of Reality, based on Religious/Spiritual Domains found a lot in fantasy settings (like Life/Death), with one end being a Dream and the other its antithetical Nightmare. Using Wonders requires having unlocked its associated Skill Tree, and each Wonder has a handful of Modes, which are the individual effects you Manifest. Manifesting a Wonder is much more open ended than casting a spell or attacking with a weapon, allowing you to choose custom ranges and enhancements as needed, but they are quite limited in what they can accomplish.\n\n**Icons:** Icons are objects of belief or reverence that take on a named Form, which you Attune to in order to use. A Form grants a defensive Ward, as well as a Tenet: an extra effect tied to a Wonder of your choosing."
      },
      {
       "id": "magic-archetype",
@@ -69,56 +87,14 @@ export const RULE_DOCS = [
     ]
    },
    {
-    "id": "ch3-stats",
-    "title": "Ch3 - Stats",
-    "intro": "Each of the three Archetype stat groups have similar ways they are structured. For example: Constitution, Willpower, and Build all influence HP max and regen, and some form of defensive equipment’s power. Stats have no upper limit and no lower limit, and campaigns generally start you with 90 stat points (this can vary) which are spent 1 to 1 for stats (so you can start with 60 strength and 30 constitution if desired). Below is a detailed list of each stat, what it directly influences, and what its general use is within its archetype.",
-    "sections": [
-     {
-      "id": "martial-stats-body",
-      "title": "Martial Stats (Body)",
-      "md": "**Strength** \\- Strength is a measure of how much force a character can put into each action they make as well as their overall focus. Affects Heavy weapon damage and effects.\n\n**Dexterity** \\- Dexterity is a measure of how quickly a character can physically react and act in combat. Affects Light weapon damage and effects.\n\n**Constitution** \\- Constitution is how much punishment a character can take, as well as how long they can last dishing out high power attacks. Affects armor stats and effects."
-     },
-     {
-      "id": "mental-stats-mind",
-      "title": "Mental Stats (Mind)",
-      "md": "**Ponderance** \\- Ponderance is a measure of how focused one can be on long term ideas or thinking. Affects Dream power and effects.\n\n**Snappence** \\- Snappence, inversely, is a measure of how quickly one can react to changes happening directly around them. Affects Nightmare power and effects.\n\n**Willpower** \\- Willpower is simply a measure of how strong one's mind is, and how resilient they are to negative change. Affects your Icon’s defensive Ward and its effects."
-     },
-     {
-      "id": "magic-stats-spirit",
-      "title": "Magic Stats (Spirit)",
-      "md": "**Reach** \\- Reach is a measure of how much energy one’s spirit can manipulate at a time. Reach affects your scaling with the Channeler casting form.\n\n**Grasp** \\- Grasp is a measure of how one understands and interfaces with magic. Grasp affects your scaling with the Igniter casting form.\n\n**Build** \\- Build is how energetic and tough one’s Spirit is, with more Build resulting in a denser Spirit. Build affects how powerful your Shroud is."
-     },
-     {
-      "id": "stat-minimums",
-      "title": "Stat Minimums",
-      "md": "Any time you would roll a stat check out of combat (unless you’re in a time crunch), if your roll total is below your Minimum, it is set to your Minimum. Stat Minimums are also used in various skills and calculations, often read as Stat Min or “Stat Name” Min. More info on stat related checks can be found in Ch7."
-     },
-     {
-      "id": "stat-bonus",
-      "title": "Stat Bonus",
-      "md": "In addition to any points invested in a stat, every stat a character has is increased by 1 for every 5 skill points they have. In other words, a baseline character with 30 skill points effectively has a floor of 6 in every stat."
-     }
-    ]
-   },
-   {
     "id": "ch4-skill-trees-groups",
     "title": "Ch4 - Skill Trees/Groups",
-    "intro": "By this point you should have a character with an Archetype set, Stats put in, and ABC done (not finished don’t worry about it). With all this finished, you may already have an idea of what direction you want your character to go, but have no idea how to actually get there. This section will both explain how skill trees and groups work, and help give you an idea of which ones to focus on.",
+    "intro": "By this point you should have an Ancestry picked, and an idea of which Archetype you want to play. With all this finished, you may already have an idea of what direction you want your character to go, but have no idea how to actually get there. This section will both explain how skill trees and groups work, and help give you an idea of which ones to focus on.",
     "sections": [
      {
       "id": "what-is-a-skill-tree",
       "title": "What is a skill tree?",
       "md": "Skill trees in Flow State are a linear path of unlockable skills/features separated out by tiers. Each tier requires the previous one to obtain, and once unlocked, you permanently gain whatever features that tier gives."
-     },
-     {
-      "id": "how-do-i-get-skill-trees",
-      "title": "How do I get skill trees?",
-      "md": "Skill trees are improved using skill points, which are acquired whenever you would gain stat points. For every 3 stat points a character gains (through character growth), they also gain 1 skill point (known as the 3-1 stat-skill ratio). For most campaigns, players will start with 90 stat points, meaning they also start with 30 skill points."
-     },
-     {
-      "id": "how-do-i-use-skill-points",
-      "title": "How do I use Skill Points?",
-      "md": "Skill points are spent unlocking the various tiers of skill trees. Tiers cost an amount of skill points to unlock equal to their tier. In other words, to go from tier 4 to 5 in a skill tree, you would need to spend 5 skill points. To help visualize this, getting from tier 0 to tier 5 in *any* skill tree requires 15 skill points total. With your 30 starting skill points, this means you could easily pick two trees to put to tier 5 and call it a day. Also, if you don’t want to spend some leftover points, they can be banked away for future use, but still count towards your total skill points."
      },
      {
       "id": "what-is-a-group",
@@ -138,14 +114,106 @@ export const RULE_DOCS = [
     ]
    },
    {
-    "id": "ch5-a-b-c-s",
-    "title": "Ch5 - A.B.C.s",
-    "intro": "Will be completed with 1.0’s release. For now, default to this all being based on flavor with little to no mechanical effect (A.B.C. stands for Ancestry, Background, and Culture).",
+    "id": "ch5-background-and-culture",
+    "title": "Ch5 - Background and Culture",
+    "intro": "",
+    "sections": [
+     {
+      "id": "background",
+      "title": "Background",
+      "md": "Your Background is how your character was raised and what they did before the story began, picked from your Ancestry’s list of Backgrounds. If no Background fits the character you have in mind, the Outsider Background lets you build your own (see Outsider in Flow State \\- ABCs). Since every starting character is a young adult just getting started in life, Backgrounds are the first step of a career (like a Recruit or an Apprentice Mage), not a seasoned veteran. Each Background grants 15 free points of starting skill trees, spent at normal tier costs (see Ch7), including any Theory tiers those trees need. These free points are typically placed for you automatically into a preset list of trees, occasionally with a choice or two along the way (such as picking a focus or filling a Trade Slot), all of which can be found in each Background’s entry in Flow State \\- ABCs. Free points unlock trees and count toward their requirements, but toward nothing else, meaning they don’t increase your dice, your Stat Bonus, or your Energy. If a Background has points it can’t place, they go into your Ancestry’s trees instead."
+     },
+     {
+      "id": "culture",
+      "title": "Culture",
+      "md": "Your Culture is the last part of your ABCs, and is made up of two parts: your Homeland, the people and place you come from (picked from your Ancestry’s list or the Shared Homelands), and your Circle, the group you came up in through your Background (picked from your Background’s list or the Shared Circles). Together, these set your character’s values, customs, outlook, and ties in the world. Cultures are purely roleplay and have no mechanical effect, but they give your GM hooks to pull your character into the world, so they are well worth reading."
+     }
+    ]
+   },
+   {
+    "id": "ch6-stats",
+    "title": "Ch6 - Stats",
+    "intro": "Each of the three Archetype stat groups have similar ways they are structured. For example: Constitution, Willpower, and Build all influence HP max and regen, and some form of defensive equipment’s power. Stats have no upper limit and no lower limit, and campaigns generally start you with 45 stat points (this can vary) which are spent 1 to 1 for stats (so you can start with 30 strength and 15 constitution if desired). Below is a detailed list of each stat, what it directly influences, and what its general use is within its archetype.",
+    "sections": [
+     {
+      "id": "martial-stats-body",
+      "title": "Martial Stats (Body)",
+      "md": "**Strength** \\- Strength is a measure of how much force a character can put into each action they make as well as their overall focus. Affects Heavy weapon damage and effects.\n\n**Dexterity** \\- Dexterity is a measure of how quickly a character can physically react and act in combat. Affects Light weapon damage and effects.\n\n**Constitution** \\- Constitution is how much punishment a character can take, as well as how long they can last dishing out high power attacks. Affects armor stats and effects."
+     },
+     {
+      "id": "mental-stats-mind",
+      "title": "Mental Stats (Mind)",
+      "md": "**Ponderance** \\- Ponderance is a measure of how focused one can be on long term ideas or thinking. Affects Dream power and effects.\n\n**Snappence** \\- Snappence, inversely, is a measure of how quickly one can react to changes happening directly around them. Affects Nightmare power and effects.\n\n**Willpower** \\- Willpower is simply a measure of how strong one's mind is, and how resilient they are to negative change. Affects your Icon’s defensive Ward and its effects."
+     },
+     {
+      "id": "magic-stats-spirit",
+      "title": "Magic Stats (Spirit)",
+      "md": "**Reach** \\- Reach is a measure of how much energy one’s spirit can manipulate at a time. Reach affects your scaling with the Channeler casting form.\n\n**Grasp** \\- Grasp is a measure of how one understands and interfaces with magic. Grasp affects your scaling with the Igniter casting form.\n\n**Build** \\- Build is how energetic and tough one’s Spirit is, with more Build resulting in a denser Spirit. Build affects how powerful your Shroud is."
+     },
+     {
+      "id": "modular-dice",
+      "title": "Modular Dice",
+      "md": "As you’ll see in the below sections, this system does not use standard dice for its rolling mechanisms and instead uses what is referred to as a “Modular Die” system. The reason for this is because it's a lot easier to backwards balance things when you never use modifiers for accuracy/checks, and additionally because Flow State is a digital only system, it can make full use of Modular Dice. Expect non standard dice to be everywhere, and Die Size to be referenced a lot (it simply refers to literally what comes after the “d”, so a die size of 15 is a d15)."
+     },
+     {
+      "id": "stat-checks",
+      "title": "Stat Checks",
+      "md": "Stat checks are rolled in response to various abilities or situations, and their die is a size equal to double your relevant stat. So having 30 Strength means you roll a d60 strength check. Assume you can make one stat check every few seconds to minutes depending on the time needed for the difficulty of the check.\n\n**Stat Minimums:** Your Stat Minimum is 1/3rd of that stat, rounded down. Any time you roll a stat check out of combat (unless you’re in a time crunch), if your roll total is below your Minimum, it is set to your Minimum. Stat Minimums are also used in various skills and calculations, often read as Stat Min or “Stat Name” Min."
+     },
+     {
+      "id": "advantage-disadvantage",
+      "title": "Advantage/Disadvantage",
+      "md": "Advantage and Disadvantage are stacking keywords that affect checks, attack rolls, and dodge rolls. They can stack infinitely, and one stack cancels out one stack of the other. When rolling with Advantage or Disadvantage, roll an extra die per stack, and use the highest (Advantage) or lowest (Disadvantage) for the result."
+     }
+    ]
+   },
+   {
+    "id": "ch7-skill-points",
+    "title": "Ch7 - Skill Points",
+    "intro": "",
+    "sections": [
+     {
+      "id": "how-do-i-get-skill-trees",
+      "title": "How do I get skill trees?",
+      "md": "Skill trees are improved using skill points, which are acquired whenever you would gain stat points. For every 3 stat points a character gains (through character growth), they also gain 1 skill point (known as the 3-1 stat-skill ratio). For most campaigns, players will start with 45 stat points, meaning they also start with 15 skill points."
+     },
+     {
+      "id": "how-do-i-use-skill-points",
+      "title": "How do I use Skill Points?",
+      "md": "Skill points are spent unlocking the various tiers of skill trees. Tiers cost an amount of skill points to unlock equal to their tier. In other words, to go from tier 4 to 5 in a skill tree, you would need to spend 5 skill points. To help visualize this, getting from tier 0 to tier 5 in *any* skill tree requires 15 skill points total. With your 15 starting skill points, this means you could easily pick one tree to put to tier 5 and call it a day. Also, if you don’t want to spend some leftover points, they can be banked away for future use, but still count towards your total skill points."
+     },
+     {
+      "id": "total-skill-points",
+      "title": "Total Skill Points",
+      "md": "Your total skill points is the number of skill points you have earned, including any you have banked but not spent. The free points from your Background do not count toward it. This one number shows up all over the game, so here is everything it sets:\n\n* **Attack Die:** Your attack rolls use a die equal in size to your total skill points (see Attacking/Dodging in Ch11).  \n* **Dodge Dice:** Your dodge rolls use two dice, each equal in size to half your total skill points, rounded down (see Attacking/Dodging in Ch11).  \n* **Non Stat Checks:** Checks like Perception, Stealth, and Persuasion roll the same die as your attacks (see Non Stat Checks below).  \n* **Energy:** Your maximum Energy is based on your total skill points (see Energy in Flow State \\- Generic Groups).  \n* **Stat Bonus:** Every stat gets a bonus based on your total skill points (see Stat Bonus below).\n\nSo a starting character with 15 skill points attacks with a d15, dodges with 2d7, and rolls a d15 for Non Stat Checks."
+     },
+     {
+      "id": "stat-bonus",
+      "title": "Stat Bonus",
+      "md": "In addition to any points invested in a stat, every stat a character has is increased by 1 for every 5 skill points they have. In other words, a baseline character with 15 skill points effectively has a floor of 3 in every stat."
+     },
+     {
+      "id": "non-stat-checks",
+      "title": "Non Stat Checks",
+      "md": "Most checks that are not tied to any stat and are not attack/dodge checks are Non Stat Checks, such as Stealth, Perception, Persuasion, Deception, and Initiative. They are rolled using your plain attack die (a die equal in size to your total skill points), unaffected by effects that modify attack rolls unless those effects state otherwise. When two Non Stat Checks are contested, the acting side (such as the spotter or the persuader) wins ties. The rules for each of these checks are found in the Tier 0 of their group’s namesake tree in Flow State \\- Generic Groups.  \nWhen a Non Stat Check is not contested, the GM instead sets a static target number from the table below, and the check succeeds if its result is equal to or higher than that number.\n\n| Difficulty | Target |\n| :---- | :---: |\n| Easy | 5 |\n| Moderate | 10 |\n| Hard | 15 |\n| Very Hard | 25 |\n| Heroic | 40 |\n| Legendary | 60 |"
+     }
+    ]
+   },
+   {
+    "id": "ch8-finishing-your-character",
+    "title": "Ch8 - Finishing Your Character",
+    "intro": "With your Ancestry, Archetype, Background, Culture, stats, and skill points all set, there are just a few last numbers to work out before you’re ready to play. If you’re using the Foundry VTT system, all of these are calculated for you, but it’s good to know where they come from.\n\n**Health Points:** Health Points (HP) are a measure of how beat up and broken your character is, and are based on your Constitution, Willpower, and Build, as well as your Size. If your HP drops to 0, your character dies, so keep an eye on it (see Health Points in Flow State \\- Generic Groups).\n\n**Pain Threshold:** Your Pain Threshold is the point where your character falls unconscious from their wounds, and is based on your Max HP (see Pain Threshold in Flow State \\- Generic Groups).\n\n**Energy:** Energy is what all three Archetypes spend to use their abilities and actions. In combat it refills a bit each turn and you can spend AP to recover more, while outside of combat it is always full (see Energy in Flow State \\- Generic Groups).\n\n**Movement:** Your movement speed is how far you move for each AP you spend, and starts at your Size’s maximum (see Movement in Flow State \\- Generic Groups).\n\n**Starting Equipment:** Last, you get your starting gear. Most starting characters begin with a few pieces of common or uncommon equipment from their chosen Archetype(s), with the exact specifics being up to the GM (see Ch9 and Flow State \\- Equipment).\n\nOnce that’s done, your character is ready to play\\! Part Two of this document covers the rest of the rules, and is meant to be used as a reference while you play rather than read front to back.",
     "sections": []
    },
    {
-    "id": "ch6-equipment",
-    "title": "Ch6 - Equipment",
+    "id": "part-two-rules-reference",
+    "title": "Part Two - Rules Reference",
+    "intro": "",
+    "sections": []
+   },
+   {
+    "id": "ch9-equipment",
+    "title": "Ch9 - Equipment",
     "intro": "",
     "sections": [
      {
@@ -161,45 +229,40 @@ export const RULE_DOCS = [
     ]
    },
    {
-    "id": "ch7-non-combat-rules",
-    "title": "Ch7 - Non Combat Rules",
+    "id": "ch10-exploration-and-roleplay",
+    "title": "Ch10 - Exploration and Roleplay",
     "intro": "",
     "sections": [
-     {
-      "id": "modular-dice",
-      "title": "Modular Dice",
-      "md": "As you’ll see in the below sections, this system does not use standard dice for its rolling mechanisms and instead uses what is referred to as a “Modular Die” system. The reason for this is because it's a lot easier to backwards balance things when you never use modifiers for accuracy/checks, and additionally because Flow State is a digital only system, it can make full use of Modular Dice. Expect non standard dice to be everywhere, and Die Size to be referenced a lot (it simply refers to literally what comes after the “d”, so a die size of 15 is a d15)."
-     },
-     {
-      "id": "stat-checks",
-      "title": "Stat Checks",
-      "md": "Stat checks are rolled in response to various abilities or situations, and their die is a size equal to double your relevant stat. So having 30 Strength means you roll a d60 strength check. As mentioned in Ch3, your “Stat Minimum” (which is 1/3rd your stat, rounded down) is the absolute minimum you can roll while outside of combat or time intensive moments. Otherwise, assume you can make one stat check every few seconds to minutes depending on the time needed for the difficulty of the check, and if you ever roll below your stat minimum the roll is automatically set to your stat minimum."
-     },
-     {
-      "id": "advantage-disadvantage",
-      "title": "Advantage/Disadvantage",
-      "md": "Advantage and Disadvantage are stacking keywords that affect checks, attack rolls, and dodge rolls. They can stack infinitely, and one stack cancels out one stack of the other. When rolling with Advantage or Disadvantage, roll an extra die per stack, and use the highest (Advantage) or lowest (Disadvantage) for the result."
-     },
-     {
-      "id": "size-categories",
-      "title": "Size Categories",
-      "md": "All creatures fall into a size category, which affects things such as how much space your character takes up, maximum movement speed, hunger rate, max HP, and melee attack range. All playable characters have a default size of 3 unless stated otherwise. Aside from what is listed below, your size also affects your Max Health, Pain Threshold, Grappling, and Carrying rules (see those sections for more details). Equipment has its own Size, which determines its power in place of yours (see Carrying in Flow State \\- Generic Groups).\n\n**Size 1:** Takes up less than a 1 ft cube of space, has a max movespeed of 10ft/AP, eats ¼ of a ration a day, has doubly Weakened unarmed and natural attacks, and has a 1ft melee attack range.  \n**Size 2:** Takes up a 1-3 ft cube of space, has a max movespeed of 25ft/AP, eats ½ of a ration a day, has Weakened unarmed and natural attacks, and has a 3ft melee attack range.  \n**Size 3:** Takes up a 3-5 ft cube of space, has a max movespeed of 50ft/AP, eats 1 ration a day, and has a 5ft melee attack range.  \n**Size 4:** Takes up a 5-10 ft cube of space, has a max movespeed of 100ft/AP, eats 2 rations a day, has Strengthened unarmed and natural attacks, and has a 10ft melee attack range.  \n**Size 5:** Takes up a 10-20 ft cube of space, has a max movespeed of 200ft/AP, eats 4 rations a day, has doubly Strengthened unarmed and natural attacks, and has a 20ft melee attack range."
-     },
-     {
-      "id": "non-stat-checks",
-      "title": "Non Stat Checks",
-      "md": "Most checks that are not tied to any stat and are not attack/dodge checks are Non Stat Checks, such as Stealth, Perception, Persuasion, Deception, and Initiative. They are rolled using your plain attack die (a die equal in size to your total skill points), unaffected by effects that modify attack rolls unless those effects state otherwise. When two Non Stat Checks are contested, the acting side (such as the spotter or the persuader) wins ties. The rules for each of these checks are found in the Tier 0 of their group’s namesake tree in Flow State \\- Generic Groups.  \nWhen a Non Stat Check is not contested, the GM instead sets a static target number from the table below, and the check succeeds if its result is equal to or higher than that number.\n\n| Difficulty | Target |\n| :---- | :---: |\n| Easy | 5 |\n| Moderate | 10 |\n| Hard | 15 |\n| Very Hard | 25 |\n| Heroic | 40 |\n| Legendary | 60 |"
-     },
      {
       "id": "traveling-speeds",
       "title": "Traveling Speeds",
       "md": "When traveling, base party speed equals the slowest member’s speed, halved (rounded down). Using a vehicle grants you the positive effects of slow speed without the speed penalty. Choose one of three travel paces:   \n**Fast:** \\+50% speed, no downtime. 16 hours travel (8 rest).  \n**Normal:** Regular speed, 12 hours travel (4 downtime, 8 rest), party is always aware.  \n**Slow:** Half speed, 8 hours travel (8 downtime, 8 rest), party is always aware and can perform activities during travel."
+     },
+     {
+      "id": "getting-around",
+      "title": "Getting Around",
+      "md": "Moving around the world uses the same Movement rules as combat, with rough and difficult terrain slowing you down. Physical feats like jumping, climbing sheer surfaces, and swimming against strong currents all have their own rules, and most use an Athletics check. How much you can carry before becoming Encumbered is covered by Carrying (see Athletics in Flow State \\- Generic Groups)."
+     },
+     {
+      "id": "resting-and-environments",
+      "title": "Resting and Environments",
+      "md": "Characters must rest each day, and going without it has growing consequences. Resting is also when you recover HP. Harsh biomes like deserts and tundra (Extreme biomes) make travel and rest harder, and severe conditions like blizzards or sandstorms (Hazards) slowly drain your health while you are exposed without shelter (see Endurance in Flow State \\- Generic Groups)."
+     },
+     {
+      "id": "senses-and-stealth",
+      "title": "Senses and Stealth",
+      "md": "Every character perceives the world through their senses (Sight, Hearing, and Smell by default), each of which can be Secondary, Primary, or Heightened, and light, darkness, and noise can all get in the way. To find something hidden, you use the Spot action to make a perception check against its stealth check. On the other side, anyone can begin Stealthing to avoid being noticed, and attacking from stealth gives you a Sneak Attack (see Perception and Stealth in Flow State \\- Generic Groups)."
+     },
+     {
+      "id": "social-checks",
+      "title": "Social Checks",
+      "md": "During roleplay, you can try to Persuade or Deceive a target, making a persuasion or deception check against their counter check, with how friendly or hostile they are toward you changing the odds. A success never forces a target to act against its nature, and how they react is always up to the GM. Resisting persuasion, deception, intimidation, and forced mental effects like Fear and Charm all use counter checks (see Persuasion, Deception, and Resolve in Flow State \\- Generic Groups)."
      }
     ]
    },
    {
-    "id": "ch8-combat-rules",
-    "title": "Ch8 - Combat Rules",
+    "id": "ch11-combat-rules",
+    "title": "Ch11 - Combat Rules",
     "intro": "",
     "sections": [
      {
@@ -218,34 +281,24 @@ export const RULE_DOCS = [
       "md": "Just the same as AP, every character gets 6 RP at the start of their turn, however it only goes away when you would start your turn again. This means that the RP persists beyond your turn, up until it's your turn again in which it goes away. RP are often used for interrupt based abilities that require some kind of condition to be met (like being attacked, being hit, an ally being attacked, etc), but not all Reactions are like this. Some can just be done at any time (such as a spell cast with the React mod for magic), in these cases you must declare the very moment they are occurring. When this happens, other characters may also react with their reactions, which will occur before yours, then once everyone is finished declaring, you follow down the chain of reactions until they're all finished. If a reaction is made invalid for some reason, it's treated as if it never happened, so no resources or RP are lost."
      },
      {
-      "id": "targeting",
-      "title": "Targeting",
-      "md": "Most attacks in this game are made against a single declared target. Unless otherwise stated, any objects or other targets in the way of your attack (such as armor, shrouds, walls, etc) must be broken through by dealing enough damage to get through their individual Limits (see Object rules for more info) before the next thing in line is hit. You can declare anything sensible as a target, from armor, to weapons, to even backpacks. If you would overkill a target, unless specified, any excess damage is lost. “Targeting directly” refers to targeting something that has nothing in the way at the time of the declaration."
+      "id": "strafing",
+      "title": "Strafing",
+      "md": "Strafing refers to moving while performing an action. So long as your Movement coincides with an Action that can be used within that Movement’s AP, that action can be performed using that same AP. In other words, you can strike someone with an attack using 2 AP, then with that same AP move backwards twice your movespeed."
      },
      {
       "id": "attacking-dodging",
       "title": "Attacking/Dodging",
-      "md": "Attack rolls made by any character always have a die size equal to your total skill points, so starter characters would attack using a d30. Meanwhile, dodge rolls are made using two dice, each equal in size to half of your total skill points, rounded down, so a starter character would roll 2d15. Resolving a hit would be as simple as the attacker making an attack roll, the defender making a dodge roll, both roll totals being compared. If the attacker is equal to or higher, they hit and roll damage, otherwise they miss. If an attack is made in a situation where there is no duress (outside of combat for example), then the attack can automatically hit (a roll would be required to Crit)."
+      "md": "Attack rolls made by any character always have a die size equal to your total skill points, so starter characters would attack using a d15. Meanwhile, dodge rolls are made using two dice, each equal in size to half of your total skill points, rounded down, so a starter character would roll 2d7. Resolving a hit would be as simple as the attacker making an attack roll, the defender making a dodge roll, both roll totals being compared. If the attacker is equal to or higher, they hit and roll damage, otherwise they miss. If an attack is made in a situation where there is no duress (outside of combat for example), then the attack can automatically hit (a roll would be required to Crit)."
+     },
+     {
+      "id": "targeting",
+      "title": "Targeting",
+      "md": "Most attacks in this game are made against a single declared target. Unless otherwise stated, any objects or other targets in the way of your attack (such as armor, shrouds, walls, etc) must be broken through by dealing enough damage to get through their individual Limits (see Object rules for more info) before the next thing in line is hit. You can declare anything sensible as a target, from armor, to weapons, to even backpacks. If you would overkill a target, unless specified, any excess damage is lost. “Targeting directly” refers to targeting something that has nothing in the way at the time of the declaration.\n\n**Allies and Yourself:** When you target an ally, willing target, or yourself with an effect, you must still roll your attack roll against that target’s dodge roll. You can still miss the attack as per the standard attack rules, and can still Crit.\n\n**Objects and Empty Space:** An attack against an inanimate object, or against a point in empty space, automatically hits. Against objects, your attack roll is instead rolled to determine a critical hit, with rolls higher than or equal to the target’s Body (or Grade\\*10 if it has no Body) being a crit. An attack against empty space cannot crit. An object being worn or held by a creature uses that creature's dodge roll instead. A projectile fired or launched from a source (such as an arrow from a bow) uses that source's attack roll as its dodge roll. This does not override effects that state their own required result against objects."
      },
      {
       "id": "attack-source",
       "title": "Attack Source",
       "md": "This term comes up a lot in various skill trees, so here it is plainly. Every Archetype has its own “types” for attacking. Martials have Weapons, Mentals have Wonders, and Magics have Spell Schools. Each of these is considered an attack source, and anything within them that enhances those attacks or offers alternatives is considered a part of them. The Unarmed attack source is a catch all for both Unarmed strikes and Grapple attacks."
-     },
-     {
-      "id": "attacking-allies",
-      "title": "Attacking Allies",
-      "md": "When you target an ally, willing target, or yourself with an effect, you must still roll your attack roll against that target’s dodge roll. You can still miss the attack as per the standard attack rules, and can still Crit."
-     },
-     {
-      "id": "attacking-objects-nothing",
-      "title": "Attacking Objects/Nothing",
-      "md": "An attack against an inanimate object, or against a point in empty space, automatically hits. Against objects, your attack roll is instead rolled to determine a critical hit, with rolls higher than or equal to the target’s Body (or Grade\\*10 if it has no Body) being a crit. An attack against empty space cannot crit. An object being worn or held by a creature uses that creature's dodge roll instead. A projectile fired or launched from a source (such as an arrow from a bow) uses that source's attack roll as its dodge roll. This does not override effects that state their own required result against objects."
-     },
-     {
-      "id": "strafing",
-      "title": "Strafing",
-      "md": "Strafing refers to moving while performing an action. So long as your Movement coincides with an Action that can be used within that Movement’s AP, that action can be performed using that same AP. In other words, you can strike someone with an attack using 2 AP, then with that same AP move backwards twice your movespeed."
      },
      {
       "id": "damage-rolls-types",
@@ -263,6 +316,11 @@ export const RULE_DOCS = [
       "md": "To achieve a critical hit (crit), you must be attacking a target and roll double or more the result of the defender’s dodge dice for your attack result. Critical hits are doubly Strengthened (two stacks of Strengthened). Double Crits (happen rarely with abilities, and with Full Stealth later) give four Strengthened Stacks instead."
      },
      {
+      "id": "temp-hp-and-shielding",
+      "title": "Temp HP and Shielding",
+      "md": "Some effects protect you with Temp HP or Shielding, both of which absorb damage before it reaches your health, but they work at opposite ends of the process.\n\n**Shielding:** Shielding applies first, before anything else that would reduce or block damage, even before parrying with a weapon. Shielding is typically damage specific (such as Shielding against Heat damage), only blocking damage of that type, but if no type is listed it blocks damage of any type. Shielding does not stack unless it explicitly states that it does. If you would gain Shielding while you already have some, you keep whichever is higher.\n\n**Temp HP:** Temp HP applies last, after every other reduction or block, right before damage would reach your health. Temp HP stacks, and it blocks everything, no matter the type or source. The only exception is effects that directly say you lose health (such as running out of breath while swimming, or Hazards), which are incredibly rare and skip Temp HP entirely."
+     },
+     {
       "id": "grappling",
       "title": "Grappling",
       "md": "Grappling is an involuntary capturing of one creature by another, typically requiring at least one free hand to maintain, and requiring you to be the same size or larger than the target you are grappling. While Grappled, a creature cannot move outside of the range of whatever is grappling them. The various ways grappling can be achieved are outlined in the Martial, Mental, and Magic documents. Once a creature is grappled, it can spend 2 AP to make a counter grapple check. This involves it making an attack roll against its grappler (who rolls dodge), with a success meaning it breaks free (some rules may vary by archetype, such as Magic’s Hold being rolled against a fixed value). If its grappler is an object, instead it makes that attack roll against the Limit of that object (they can also break the object to free themselves, if possible). Dragging a grappled target costs \\+1 AP per move."
@@ -270,7 +328,7 @@ export const RULE_DOCS = [
      {
       "id": "pushing",
       "title": "Pushing",
-      "md": "Similarly to grappling, you can choose to instead simply push a target. This can only be done with a Martial attack roll, and instead of applying damage you impart an amount of force equal to 5x your Strength stat to the target (see Ch10 for more info on what Force does)."
+      "md": "Similarly to grappling, you can choose to instead simply push a target. This can only be done with a Martial attack roll, and instead of applying damage you impart an amount of force equal to 5x your Strength stat to the target (see Ch13 for more info on what Force does)."
      },
      {
       "id": "cover",
@@ -280,8 +338,8 @@ export const RULE_DOCS = [
     ]
    },
    {
-    "id": "ch9-conditions",
-    "title": "Ch9 - Conditions",
+    "id": "ch12-conditions",
+    "title": "Ch12 - Conditions",
     "intro": "",
     "sections": [
      {
@@ -305,25 +363,25 @@ export const RULE_DOCS = [
       "md": "Stain is a stacking value that applies to an object or creature. At the end of that Creature’s turn (or at the start of the round for objects) it takes Acid damage equal to its Stain stacks. Removing Stains can be done by anyone in melee range (can also be the one who is Stained) who spends 3 AP, which instantly removes all Stains from that target. Stain damage does not ignore armor, barriers, or temp HP."
      },
      {
-      "id": "slow",
-      "title": "Slow",
-      "md": "Slow is a stacking value that applies to a creature. While a creature has at least half their Pain Threshold in Slow stacks, their movement costs are increased by \\+1 AP. This grows to \\+2 AP if their Slow stacks reach or exceed their Pain Threshold. At the end of a creature with Slow stack’s turn, it reduces its Slow stacks by half of its Pain Threshold, rounded down. Haste and Slow stacks cancel each other out equal to their values."
-     },
-     {
-      "id": "haste",
-      "title": "Haste",
-      "md": "Haste is a stacking value that applies to a creature. While a creature has at least half their Pain Threshold in Haste stacks, their movement costs are decreased by 1 AP (if already 1, they move twice as fast). If instead they have Haste stacks greater than or equal to their Pain Threshold, their movement costs are decreased by 2 AP (if already 1, they move three times as fast. If at 2, they cost 1 and they move twice as fast). At the end of a creature with Haste stack’s turn, it reduces its Haste stacks by half of its Pain Threshold, rounded down. Haste and Slow stacks cancel each other out equal to their values."
+      "id": "slow-haste",
+      "title": "Slow/Haste",
+      "md": "Slow and Haste are opposing stacking values that apply to a creature, and cancel each other out equal to their values. At the end of a creature’s turn, it reduces its Slow or Haste stacks by half of its Pain Threshold, rounded down.\n\n**Slow:** While a creature has at least half their Pain Threshold in Slow stacks, their movement costs are increased by \\+1 AP. This grows to \\+2 AP if their Slow stacks reach or exceed their Pain Threshold.\n\n**Haste:** While a creature has at least half their Pain Threshold in Haste stacks, their movement costs are decreased by 1 AP (if already 1, they move twice as fast). If instead they have Haste stacks greater than or equal to their Pain Threshold, their movement costs are decreased by 2 AP (if already 1, they move three times as fast. If at 2, they cost 1 and they move twice as fast)."
      },
      {
       "id": "charges",
       "title": "Charges",
       "md": "A Charge is an effect stored on a creature (or held by yourself, such as with Redirect), named after the effect that created it, such as a Decree charge. Unless stated otherwise, a Charge lasts until the start of its creator's next turn, does nothing until it is consumed, and can only be consumed by its creator when its listed trigger occurs, consuming at most one Charge of that name per trigger. Multiple Charges of the same name can be stored on the same creature, and consuming a Charge removes it."
+     },
+     {
+      "id": "other-conditions",
+      "title": "Other Conditions",
+      "md": "Some conditions are defined in other documents, alongside the rules they belong to. Here is where to find each of them:\n\n* **Surprised:** Initiative, in Flow State \\- Generic Groups.  \n* **Stealthing (Half/Full Stealth):** Stealth, in Flow State \\- Generic Groups.  \n* **Lightly/Heavily Obscured and Deafened:** Perception, in Flow State \\- Generic Groups.  \n* **Encumbered:** Athletics, in Flow State \\- Generic Groups.  \n* **Unconscious:** Pain Threshold, under Endurance in Flow State \\- Generic Groups.  \n* **Fear and Forced Mental Effects (such as Charm and Intimidate):** Resolve, in Flow State \\- Generic Groups.  \n* **Grappled:** Grappling, in Ch11.  \n* **Concentration:** Mental Theory, in Flow State \\- Mental Stage 1\\.\n\nEffects tied to a single skill tree, like Magic’s Poison or Martial’s Mark, are explained in that tree."
      }
     ]
    },
    {
-    "id": "ch10-objects-and-force",
-    "title": "Ch10 - Objects and Force",
+    "id": "ch13-objects-and-force",
+    "title": "Ch13 - Objects and Force",
     "intro": "",
     "sections": [
      {
@@ -354,7 +412,7 @@ export const RULE_DOCS = [
      {
       "id": "force",
       "title": "Force",
-      "md": "Force is a measure of how much kinetic force is being applied at any given time. Forced movement skips steps 1 and 2, instead going directly to Force damage. To resolve Force:\n\n1. If the target is using Lift, subtract their Lift from the total Force. If the remaining Force is zero or lower, this process ends  \n2. Subtract half their Max HP/Durability from the remaining Force unless they are falling via Gravity. Then divide the remaining Force by 10, rounded down. The result is the number of feet the target is pushed in the direction of the Force.\n\nIf Force applied is downward and is an amount of feet equal to or greater to that character’s height the target is knocked prone in addition to the damage dealt."
+      "md": "Force is a measure of how much kinetic force is being applied at any given time. Forced movement skips both steps below, instead going directly to Force damage. To resolve Force:\n\n1. If the target is using Lift, subtract their Lift from the total Force. If the remaining Force is zero or lower, this process ends  \n2. Subtract half their Max HP/Durability from the remaining Force unless they are falling via Gravity. Then divide the remaining Force by 10, rounded down. The result is the number of feet the target is pushed in the direction of the Force.\n\nIf Force applied is downward and is an amount of feet equal to or greater to that character’s height the target is knocked prone in addition to the damage dealt."
      },
      {
       "id": "force-damage",
@@ -463,6 +521,12 @@ export const RULE_DOCS = [
     "id": "magic-affixes",
     "title": "Magic Affixes",
     "intro": "**Affixes:** Affixes are different types of Gems (and other crystalline materials) Attuned separately from Foci/Shrouds (taking the same amount of time). While Attuned, the Affix imparts its effects onto you/your Foci/your Shroud. Every Affix Attuned lowers your speed by 20%. Free Affix slots granted by Foci/Shrouds must be Offensive/Defensive respectively, and do not lower your speed.  \n**Raw Casting:** Your Attuned Affixes also function with Raw Casting.  \n**Rarity:** The rarity denoted in each table only affects the scarcity and cost of those items, usually being the following (note that Affixes are much more expensive and rarer than that of other items due to their innate rarity):   \nCommon \\- 5x cost and scarcity of 0.20 (meaning this is found in 20% of normal stores)  \nUncommon \\- 10x cost and scarcity of 0.05   \nRare \\- 20x cost and scarcity of 0.01  \nVery Rare \\- 40x cost and scarcity of 0.0025  \n**Durability and Limit:** Since Affixes are intended to be held in a bag or hidden on a person, their Durability and Limit are generally unimportant. All Affixes can be treated as having 20 Durability and 4 Limit per Grade (this can be altered by the GM if it makes sense to do so).  \n**Size:** Affixes are unaffected by Size and count as 0 Load.\n\n| Affixes |  |  |  |  |  |\n| :---: | :---: | :---: | ----- | :---: | ----- |\n| **Name** | **Rarity** | **Offensive Effect** |  | **Defensive Effect** |  |\n| Quartz | Common | The range of your Ranged spells is increased by 50%. |  | If a target within your personal melee range would be damaged, you can extend your Shroud to protect them for that instance. |  |\n| Agate | Common | The area of your Area spells is increased by 50%. |  | Negates an amount of damage equal to your Scaling Stat from the first instance of Magical damage you would take. Refreshes when your Shroud Recovers. |  |\n| Jasper | Common | Physical Damage dealt by your spells is Strengthened, and all other damage types are Weakened. |  | Negates an amount of damage equal to your Scaling Stat from the first instance of Physical damage you would take. Refreshes when your Shroud Recovers. |  |\n| Obsidian | Common | Your Ranged spells are silent (if doubled, your Area spells are silent as well). |  | Negates an amount of damage equal to your Scaling Stat from the first instance of Elemental damage you would take. Refreshes when your Shroud Recovers. |  |\n| Hematite | Common | When you cast a spell, you can double its Power by spending Health equal to the Power of that spell. |  | At any time, you can expend Health equal to half of your Skill Points (rounded down) to instantly refill your Shroud’s durability to max. |  |\n| Garnet | Uncommon | Spells you cast at targets with more than half their Pain Threshold in Ignite stacks have advantage on their attack rolls. |  | An amount of Ignite stacks on you equal to your Scaling Stat min are automatically put out at the start of each of your turns. |  |\n| Topaz | Uncommon | Spells you cast at targets that have at least 2 AP of movement slows have advantage on their attack rolls. |  | An amount of Slow stacks on you equal to your Scaling Stat min are automatically removed from you at the start of each of your turns. |  |\n| Moonstone | Uncommon | While in darkness or dim light, all spells you cast are silent (if doubled, they have advantage on their attack rolls too). |  | While in darkness or dim light, you are considered lightly obscured. |  |\n| Tourmaline | Uncommon | Damage dealt by your spells of the specified Elemental damage type is Strengthened, and all other damage types (non-elemental included) are Weakened. The specified element can be changed when you rest. |  | Damage taken by your Shroud of the specified Elemental damage type is Weakened. The specified element can be changed when you rest. |  |\n| Zircon | Uncommon | Damage taken by your Attuned Foci is Weakened, and attacks made that target it directly have disadvantage on their attack rolls. |  | While your Shroud is undamaged, you ignore the penalties of Rough Terrain and Slow stacks. |  |\n| Emerald | Rare | While in a Lush Biome (up to GM), the attack rolls of your spells have advantage. While in any other biome type, they have disadvantage instead. |  | While in a Lush Biome (up to GM), the Limit of your Shroud is doubled. While in any other biome type, it is halved instead. |  |\n| Ruby | Rare | Your spells that target something within your personal melee range can also impart Ignite stacks on that target equal to your Scaling Stat min if they hit. |  | If your Shroud is damaged by a source that is within your personal melee range, make a melee attack against that target for free. On hit, they get Ignite stacks equal to the damage your Shroud took. |  |\n| Black Opal | Rare | The ranges of your Targeted and Ranged spells are swapped (if doubled, choose one to have 50% increased range. Can be changed when you rest). |  | Any attacks made against you within your personal melee range have disadvantage on their attack rolls. |  |\n| Sapphire | Rare | Your spells that target something within your personal melee range also impart Slow stacks on that target equal to your Scaling Stat min if they hit. |  | If your Shroud is damaged by a source that is within your personal melee range, make a melee attack against that target for free. On hit, they get Slow stacks equal to the damage your Shroud took. |  |\n| Diamond | Rare | Whenever you successfully hit with a spell, if you cast that same spell against the same target again this turn, that spell’s attack roll has advantage. |  | If your Shroud would be damaged by a source that already damaged it this turn, that damage is Weakened. Applies to specific source types only, such as Bladed Weapons or Heat Spells. |  |\n| Alexandrite | Very Rare | When you deal damage with a spell, the next time you deal damage with a spell this turn, if the new damage type is the same as the previous one, the new damage is Strengthened. |  | When your Shroud takes damage, the next time it would be damaged, if the new damage type is the same as the previous one, the new damage is Weakened. |  |\n| Painite | Very Rare | Your spells ignore Limit (as Martial Pierce would) equal to your Scaling Stat min. |  | Your Shroud’s Limit cannot be ignored. |  |\n| Musgravite | Very Rare | Force applied by your spells is subtracted by half the target’s current health instead of half of their maximum health. |  | Negates an amount of Force equal to your Scaling Stat from each instance of Force that would affect you. |  |\n| Taaffeite | Very Rare | Rituals you cast take half as much Energy to complete. |  | Whenever a Ritual would be destroyed while you are attuned to your Shroud, you may instead set your Shroud’s Durability to 0 to keep that Ritual alive at 1 health. Your Shroud must have more than 0 Durability to proc this effect. |  |\n| Colored Diamond | Very Rare | At the start of each of your turns, declare a spell name. Any damage you would deal with that spell this turn is Strengthened, and any attack rolls for that spell have advantage. |  | At the start of each of your turns, declare a source type that can deal damage (such as Bladed Weapons or Heat Spells). For that turn, damage your Shroud would take from the named source is Weakened, and attacks from that source against you have disadvantage. |  |",
+    "sections": []
+   },
+   {
+    "id": "consumables",
+    "title": "Consumables",
+    "intro": "**Potion Info:** You can drink one potion per rest, shared between Health and Energy potions. Drinking one takes 1 AP. Energy from an Energy potion goes into a separate pool that lasts 1 minute or until used, and can take you past your Energy cap.\n\n| Potions |  |  |  |\n| :---: | :---: | :---: | :---: |\n| **Name** | **Price** | **Health Potion** | **Energy Potion** |\n| Lesser | 200 | Half a rest’s healing | Half your max Energy |\n| Regular | 500 | A rest’s healing | Your max Energy |\n| Greater | 1,200 | Twice a rest’s healing | Twice your max Energy |",
     "sections": []
    }
   ]

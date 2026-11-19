@@ -430,12 +430,14 @@ export function weaponRows(actor) {
   });
 }
 
+// Shielding soaks first (Rules doc, Temp HP and Shielding); Adjust lets its holder put held and worn items before it. ("first" is the old name of "default".)
 const SHIELD_ORDERS = [
-  { key: "default", label: "after parrying weapons, before the Shroud" }, { key: "afterShroud", label: "after the Shroud, before armor" },
-  { key: "last", label: "after armor (last)" }, { key: "first", label: "before everything" }
+  { key: "default", label: "before everything (Shielding first)" }, { key: "afterParry", label: "after parrying weapons, before the Shroud" },
+  { key: "afterShroud", label: "after the Shroud, before armor" }, { key: "last", label: "after armor (last)" }
 ];
+const orderKey = e => (e.flags.flowstate.spellEffect.order === "first" ? "default" : e.flags.flowstate.spellEffect.order ?? "default");
 const shieldOrderRows = actor => actions.spellEffects(actor, "shield").filter(e => e.flags.flowstate.spellEffect.adjust)
-  .map(e => ({ id: e.id, name: e.name, label: SHIELD_ORDERS.find(o => o.key === (e.flags.flowstate.spellEffect.order ?? "default"))?.label }));
+  .map(e => ({ id: e.id, name: e.name, label: SHIELD_ORDERS.find(o => o.key === orderKey(e))?.label }));
 
 /** { coreId: name } for a select: the Core Spells this character knows (all of them when there is no owner). */
 function coreChoices(trees) {
@@ -1136,7 +1138,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       statPointsLabel: `${sys.unspentStats} stat point${sys.unspentStats === 1 ? "" : "s"}`,
       skillView: this.#skillContext(),
       statGroups: Object.values(groups),
-      sizeChoices: Object.fromEntries(Object.keys(SIZES).map(k => [k, `Size ${k}`])),
+      sizeChoices: Object.fromEntries([...Object.keys(SIZES), ...(actor?.type === "npc" ? ["6", "7"] : [])].map(k => [k, `Size ${k}${Number(k) > 5 ? " (rare)" : ""}`])),
       senseChoices: SENSE_LEVELS,
       // The poles (Wonders) it serves, for the Bestiary (Recognition, Bounty, Follow the Pole, Pack Hunter, Pole-Bound): its own, its Patron, and the GM's mark.
       poles: {
@@ -1280,7 +1282,7 @@ export class FlowStateActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   static async onCycleShieldOrder(event, target) {
     const e = this.document.effects.get(target.dataset.effectId);
     if (!e) return;
-    const i = SHIELD_ORDERS.findIndex(o => o.key === (e.flags.flowstate.spellEffect.order ?? "default"));
+    const i = SHIELD_ORDERS.findIndex(o => o.key === orderKey(e));
     await e.update({ "flags.flowstate.spellEffect.order": SHIELD_ORDERS[(i + 1) % SHIELD_ORDERS.length].key });
   }
   static onPosture(event, target) { return actions.setPosture(this.document, target.dataset.op); }

@@ -84,7 +84,8 @@ export function powerOf(a, wonder = wonderOf(a)) {
 /*  Natural attacks                             */
 /* -------------------------------------------- */
 
-const NATURAL = /^You can spend (\d+) AP to (\w+) a target within (your melee range|(\d+) ?ft), dealing (\d+)d(\d+) (\w+) damage/i;
+// "dealing 1d10 physical damage", or "dealing 1d10 damage of a type rolled at random from the seven damage types" (Unmaking Touch: type "random").
+const NATURAL = /^You can spend (\d+) AP to (\w+) a target within (your melee range|(\d+) ?ft), dealing (\d+)d(\d+) (?:(\w+) )?damage( of a type rolled at random)?/i;
 /**
  * The natural attacks a creature's Bestiary trees give it, read from their words ("You can spend 2 AP to gore a target within your melee range,
  * dealing 1d10 physical damage. This scales with your Wonder's Power..."): [{ tree, name, ap, verb, range (ft, null = melee), dice, die, type, scales }].
@@ -100,7 +101,7 @@ export function naturalAttacks(trees = {}) {
         const m = NATURAL.exec(e.text ?? "");
         if (!m) continue;
         out.push({ tree: t.id, name: e.name, ap: Number(m[1]), verb: m[2].toLowerCase(), range: m[4] ? Number(m[4]) : null, dice: Number(m[5]), die: Number(m[6]),
-          type: m[7].toLowerCase(), scales: /scales with your Wonder'?s Power/i.test(e.text) });
+          type: m[8] || !m[7] ? "random" : m[7].toLowerCase(), scales: /scales with your Wonder'?s Power/i.test(e.text) });
       }
     }
   }
@@ -113,5 +114,31 @@ export const naturalFormula = (n, power = 1) => `${Math.max(1, n.dice * (n.scale
 export const tiers = a => {
   const trees = a?.system?.trees ?? {};
   return { wonderborn: tierOf(trees, WONDERBORN), dream: tierOf(trees, "ancestry-dreamborn"), nightmare: tierOf(trees, "ancestry-nightmareborn"),
-    life: tierOf(trees, "ancestry-wonderborn-life"), dark: tierOf(trees, "ancestry-wonderborn-dark"), growth: tierOf(trees, "ancestry-wonderborn-growth") };
+    life: tierOf(trees, "ancestry-wonderborn-life"), dark: tierOf(trees, "ancestry-wonderborn-dark"), growth: tierOf(trees, "ancestry-wonderborn-growth"),
+    death: tierOf(trees, "ancestry-wonderborn-death"), light: tierOf(trees, "ancestry-wonderborn-light"), order: tierOf(trees, "ancestry-wonderborn-order"),
+    chaos: tierOf(trees, "ancestry-wonderborn-chaos") };
 };
+
+/** Solar Storm (Light T5) heats metal: the materials that are metal (the GM can judge any other). */
+export const METALS = new Set(["iron", "copper", "steel", "bronze", "silver", "coldIron", "grayIron", "titanium", "wyrmMetal", "graySteel", "orichalcum", "mithrite", "adamantine"]);
+/** Unfixed (Chaos T2): weapons of these materials pin a Smear. */
+export const PIN_MATERIALS = new Set(["iron", "coldIron", "grayIron"]);
+/** Split (Chaos T3): the piece's Durability is the damage taken, at most half the Smear's max HP. */
+export const splitDurability = (damage, maxHp) => Math.max(0, Math.min(Math.floor(Number(damage) || 0), Math.floor((Number(maxHp) || 0) / 2)));
+/** Funeral by Funeral (Death T5): healing is doubly Weakened (a quarter, rounded down). */
+export const funeralHeal = gain => Math.floor(Math.max(0, gain) / 4);
+/**
+ * Clockwork (Order T3): the attack log of a creature's own turns ({ cur: {round, keys}, prev }) and whether `key` was made on its last turn. On its own
+ * turn its last turn is the one before this round's; between its turns, its latest.
+ */
+export function madeLastTurn(log, key, round, ownTurn) {
+  const last = ownTurn ? (log?.cur?.round === round ? log?.prev : log?.cur) : log?.cur;
+  return !!key && !!last && (!ownTurn || last.round < round) && (last.keys ?? []).includes(key);
+}
+export function logOwnAttack(log, key, round) {
+  if (!key) return log ?? {};
+  if (log?.cur?.round === round) return { ...log, cur: { round, keys: [...new Set([...(log.cur.keys ?? []), key])] } };
+  return { prev: log?.cur ?? null, cur: { round, keys: [key] } };
+}
+/** What an attack is, for Clockwork: the same weapon attack, spell or Mode. */
+export const attackKey = o => o?.mental?.mode ?? (o?.spell ? `spell:${o.spell.core ?? o.spell.name ?? o.label ?? ""}` : null) ?? (o?.itemUuid ? `item:${o.itemUuid}:${o.mode ?? ""}` : null) ?? (o?.label ? `label:${o.label}` : null);

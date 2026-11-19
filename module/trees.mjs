@@ -10686,7 +10686,7 @@ export const TREES = [
      },
      {
       "name": "Natural Attacks",
-      "text": "Attacks granted by Ancestry trees are natural attacks, so creature Size applies to them: Size 4 attacks are Strengthened and Size 5 attacks are doubly Strengthened (Size 2 Weakened, Size 1 doubly Weakened)."
+      "text": "Attacks granted by Ancestry trees are natural attacks, so creature Size applies to them: Size 4 attacks are Strengthened and Size 5 attacks are doubly Strengthened (Size 2 Weakened, Size 1 doubly Weakened). Each Size above 5 adds one more Strengthen, so Size 6 attacks are triply Strengthened and Size 7 attacks quadruply. Creatures above Size 5 are rare."
      },
      {
       "name": "Sapience",
@@ -10806,7 +10806,11 @@ export const TREES = [
   "ancestries": [
    "wonderborn-life",
    "wonderborn-dark",
-   "wonderborn-growth"
+   "wonderborn-growth",
+   "wonderborn-death",
+   "wonderborn-light",
+   "wonderborn-order",
+   "wonderborn-chaos"
   ],
   "note": "Core tree of every Omen, Herald, and Agent: a piece of a Wonder given matter."
  },
@@ -10815,7 +10819,7 @@ export const TREES = [
   "name": "Dreamborn",
   "archetype": "ancestry",
   "bestiary": true,
-  "requires": 1,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -10875,13 +10879,11 @@ export const TREES = [
   ],
   "ancestries": [
    "wonderborn-life",
-   "wonderborn-growth"
+   "wonderborn-growth",
+   "wonderborn-light",
+   "wonderborn-order"
   ],
-  "note": "Requires Wonderborn 1. Lineage tree of every Dream Omen and Herald.",
-  "requiresTree": {
-   "id": "ancestry-wonderborn",
-   "tier": 1
-  },
+  "note": "Lineage tree of every Dream Omen and Herald.",
   "core": false,
   "coreId": "ancestry-wonderborn",
   "lineage": true
@@ -10891,7 +10893,7 @@ export const TREES = [
   "name": "Nightmareborn",
   "archetype": "ancestry",
   "bestiary": true,
-  "requires": 1,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -10950,13 +10952,11 @@ export const TREES = [
    }
   ],
   "ancestries": [
-   "wonderborn-dark"
+   "wonderborn-dark",
+   "wonderborn-death",
+   "wonderborn-chaos"
   ],
-  "note": "Requires Wonderborn 1. Lineage tree of every Nightmare Omen and Herald.",
-  "requiresTree": {
-   "id": "ancestry-wonderborn",
-   "tier": 1
-  },
+  "note": "Lineage tree of every Nightmare Omen and Herald.",
   "core": false,
   "coreId": "ancestry-wonderborn",
   "lineage": true
@@ -10966,7 +10966,7 @@ export const TREES = [
   "name": "Life",
   "archetype": "ancestry",
   "bestiary": true,
-  "requires": 1,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -11027,11 +11027,7 @@ export const TREES = [
   "ancestries": [
    "wonderborn-life"
   ],
-  "note": "Requires Dreamborn 1.",
-  "requiresTree": {
-   "id": "ancestry-dreamborn",
-   "tier": 1
-  },
+  "note": "",
   "core": false,
   "coreId": "ancestry-wonderborn"
  },
@@ -11040,7 +11036,7 @@ export const TREES = [
   "name": "Dark",
   "archetype": "ancestry",
   "bestiary": true,
-  "requires": 1,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -11101,11 +11097,7 @@ export const TREES = [
   "ancestries": [
    "wonderborn-dark"
   ],
-  "note": "Requires Nightmareborn 1.",
-  "requiresTree": {
-   "id": "ancestry-nightmareborn",
-   "tier": 1
-  },
+  "note": "",
   "core": false,
   "coreId": "ancestry-wonderborn"
  },
@@ -11114,7 +11106,7 @@ export const TREES = [
   "name": "Growth",
   "archetype": "ancestry",
   "bestiary": true,
-  "requires": 1,
+  "requires": 0,
   "tiers": [
    {
     "tier": 1,
@@ -11175,11 +11167,287 @@ export const TREES = [
   "ancestries": [
    "wonderborn-growth"
   ],
-  "note": "Requires Dreamborn 1.",
-  "requiresTree": {
-   "id": "ancestry-dreamborn",
-   "tier": 1
-  },
+  "note": "",
+  "core": false,
+  "coreId": "ancestry-wonderborn"
+ },
+ {
+  "id": "ancestry-wonderborn-death",
+  "name": "Death",
+  "archetype": "ancestry",
+  "bestiary": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following action:",
+    "entries": [
+     {
+      "name": "Culling Hook",
+      "text": "You can spend 2 AP to hook a target within 10ft, dealing 1d10 physical damage. This scales with your Wonder's Power and is a natural attack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Quarry",
+      "text": "At the start of combat, and at nightfall, you mark the strongest creature you can sense; healers and protectors count as strong. Your attacks against your Quarry have Advantage, and you know where it is within a mile. You lose that Advantage while one of its allies is within 5ft of it. When your Quarry dies, you mark the next."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Carrion Feast",
+      "text": "When a creature dies within 30ft of you, you heal by its Pain Threshold."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Carrion Flock",
+      "text": "Creatures you kill rise as your carrion thralls within a minute."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Funeral by Funeral",
+      "text": "Healing on a creature you damaged since the start of your last turn is doubly Weakened."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-death"
+  ],
+  "note": "",
+  "core": false,
+  "coreId": "ancestry-wonderborn"
+ },
+ {
+  "id": "ancestry-wonderborn-light",
+  "name": "Light",
+  "archetype": "ancestry",
+  "bestiary": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following action:",
+    "entries": [
+     {
+      "name": "Burning Antlers",
+      "text": "You can spend 2 AP to gore a target within your melee range, dealing 1d10 heat damage. This scales with your Wonder's Power and is a natural attack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Noonlight",
+      "text": "You shed bright light to 30ft and dim light to 60ft. Nothing within 30ft of you can be obscured, so Stealth there fails. Magical darkness puts out your light where the two overlap."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Run Them Down",
+      "text": "Your movement never provokes reactions. A creature that damaged you since your last turn must spend its first movement each turn moving toward you. This is a forced mental effect, resisted as your Allure. A creature that keeps chasing you at 0 Energy collapses."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Sleepless",
+      "text": "No creature can rest within 1,000ft of you."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Solar Storm",
+      "text": "Creatures within 100ft of you that wear or wield metal take 1d6 heat damage at the start of each of their turns."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-light"
+  ],
+  "note": "",
+  "core": false,
+  "coreId": "ancestry-wonderborn"
+ },
+ {
+  "id": "ancestry-wonderborn-order",
+  "name": "Order",
+  "archetype": "ancestry",
+  "bestiary": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following action:",
+    "entries": [
+     {
+      "name": "Gavel",
+      "text": "You can spend 2 AP to strike a target within your melee range, dealing 1d10 physical damage. This scales with your Wonder's Power and is a natural attack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Edicts",
+      "text": "At the start of combat, and at each dawn, you declare 2 Edicts. Each is a plain rule forbidding one kind of action, such as \"none shall cast spells\", \"none shall run\", or \"none shall leave the square after dusk\". Creatures within 100ft of you that can hear you know them. When a creature within 100ft of you breaks an Edict, it takes 1d10 Supernatural damage, once per round per creature. This scales with your Wonder's Power."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Clockwork",
+      "text": "An attack against you has Disadvantage if its attacker made the same attack (the same weapon attack, spell, or Mode) on its last turn. The first time each creature hits you with an attack it has not used against you this combat, that hit's damage is Strengthened."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Lockstep",
+      "text": "Creatures that keep your Edicts for a full week become your thralls. They move in step with you, fight for you, and cannot break your Edicts. Once per rest, or when something disturbs it (such as taking damage or someone it knows calling to it, as the GM decides), a thrall can try to break free by resisting your Allure with Disadvantage."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "The Unbroken Rule",
+      "text": "A creature within 1,000ft of you must resist your Allure to break one of your Edicts. On a failure, it cannot take that action this turn."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-order"
+  ],
+  "note": "",
+  "core": false,
+  "coreId": "ancestry-wonderborn"
+ },
+ {
+  "id": "ancestry-wonderborn-chaos",
+  "name": "Chaos",
+  "archetype": "ancestry",
+  "bestiary": true,
+  "requires": 0,
+  "tiers": [
+   {
+    "tier": 1,
+    "free": false,
+    "summary": "You unlock the following action:",
+    "entries": [
+     {
+      "name": "Unmaking Touch",
+      "text": "You can spend 2 AP to touch a target within your melee range, dealing 1d10 damage of a type rolled at random from the seven damage types. This scales with your Wonder's Power and is a natural attack."
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Unfixed",
+      "text": "You become Pinned until the end of your next turn when a weapon made of iron, cold iron, or gray iron hits you, when an Order Manifest hits you, when a creature speaks your true name (the GM decides how one is learned), or while you are within 10ft of an Order effigy. While Pinned, you cannot Split. While not Pinned, you cannot be grappled."
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Split",
+      "text": "Once per round, when you take damage while not Pinned, a piece of you breaks away within 30ft. The piece is an object with Durability equal to the damage taken (at most half of your max HP) and 0 Limit. If it is still standing at the end of your next turn, it becomes a new Smear with health equal to its remaining Durability."
+     }
+    ]
+   },
+   {
+    "tier": 4,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Shifting Streets",
+      "text": "Each dawn, everything within 1,000ft of you rearranges. Doors, roads, and rooms lead somewhere other than they did, and every map of the area is wrong."
+     }
+    ]
+   },
+   {
+    "tier": 5,
+    "free": false,
+    "summary": "You unlock the following passive:",
+    "entries": [
+     {
+      "name": "Lost Names",
+      "text": "A creature that starts its turn within 100ft of you must resist your Dread. On a failure, it forgets its name and its allies until the end of its turn, and picks its targets at random."
+     }
+    ]
+   }
+  ],
+  "ancestries": [
+   "wonderborn-chaos"
+  ],
+  "note": "",
   "core": false,
   "coreId": "ancestry-wonderborn"
  }

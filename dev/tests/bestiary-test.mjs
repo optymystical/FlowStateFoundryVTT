@@ -36,7 +36,10 @@ let fails = 0; const ok = (c, m) => { console.log(`  ${c ? "PASS" : "FAIL"} ${m}
 const LIFE = "mental-life-dream", DEATH = "mental-death-nightmare", DARK = "mental-dark-nightmare";
 
 console.log("== The Bestiary's data (Flow State - Bestiary)");
-ok(B.bestiaryAncestries().map(a => a.id).join() === "wonderborn-life,wonderborn-dark,wonderborn-growth", "Three creature Ancestries: Life, Dark, Growth (Wonderborn)");
+ok(B.bestiaryAncestries().map(a => a.id).join() === "wonderborn-life,wonderborn-dark,wonderborn-growth,wonderborn-death,wonderborn-light,wonderborn-order,wonderborn-chaos",
+  "Seven creature Ancestries: Life, Dark, Growth, Death, Light, Order, Chaos (Wonderborn)");
+ok(["death", "chaos"].every(w => R.ANCESTRIES[`wonderborn-${w}`].trees[1] === "ancestry-nightmareborn") && ["light", "order"].every(w => R.ANCESTRIES[`wonderborn-${w}`].trees[1] === "ancestry-dreamborn"),
+  "The new ones find their lineage by their Wonder's type (the trees lost their Requires lines)");
 ok(R.ANCESTRIES["wonderborn-life"].trees.join() === "ancestry-wonderborn,ancestry-dreamborn,ancestry-wonderborn-life" && R.ANCESTRIES["wonderborn-dark"].trees[1] === "ancestry-nightmareborn",
   "Each has its core (Wonderborn), its lineage (Dreamborn / Nightmareborn) and its own tree");
 ok(R.ANCESTRIES["wonderborn-growth"].sizes.omen === 4 && R.ANCESTRIES["wonderborn-life"].sizes.herald === 5 && R.ANCESTRIES["wonderborn-dark"].form === "riposte", "Sizes per Background and the Form, from the profile");
@@ -49,7 +52,7 @@ const omen = B.bestiaryBuild("wonderborn-life", "omen"), herald = B.bestiaryBuil
 ok(omen.size === 3 && omen.free["ancestry-wonderborn"] === 3 && omen.free["ancestry-wonderborn-life"] === 3 && omen.free["mental-theory"] === 5 && omen.free[LIFE] === 5 && omen.form === "sanctum",
   "An Omen of Life: Size 3, its trees at Tier 3, its Domain (Mental Theory and Life at 5), the Sanctum Form");
 ok(herald.size === 5 && herald.free["ancestry-dreamborn"] === 5 && B.bestiaryBuild("wonderborn-growth", "omen").size === 4, "A Herald: Size 5 and Tier 5; a Burgeon (Growth Omen) is Size 4");
-ok(B.wonderFor("wonderborn-dark") === DARK && B.ancestryForWonder(LIFE)?.id === "wonderborn-life" && B.ancestryForWonder("mental-order-dream") === null && B.pairOf(LIFE) === DEATH,
+ok(B.wonderFor("wonderborn-dark") === DARK && B.ancestryForWonder(LIFE)?.id === "wonderborn-life" && B.ancestryForWonder("mental-order-dream")?.id === "wonderborn-order" && B.ancestryForWonder("mental-ruin-nightmare") === null && B.pairOf(LIFE) === DEATH,
   "Its Wonder (by name), the Bestiary Ancestry of a Wonder, and the paired Wonder");
 ok(omen.sapience === 2 && omen.ratio === 5, "Omens and Heralds are band 2 (5:1)");
 
@@ -133,6 +136,45 @@ console.log("== Ground auras (The Choking Green)");
   await Promise.all([bestiary.refreshAuras(), bestiary.refreshAuras()]);
   ok(regions.size === 0 && deletedMissing === 0, "A dormant creature's aura goes, once");
   globalThis.canvas = was; game.user.isGM = isGM;
+}
+
+console.log("== Death, Light, Order and Chaos");
+{
+  const R2 = await import("../../module/rules.mjs");
+  const hook = B.naturalAttacks({ "ancestry-wonderborn-death": 1 })[0], touch = B.naturalAttacks({ "ancestry-wonderborn-chaos": 1 })[0];
+  ok(hook?.name === "Culling Hook" && hook.range === 10 && hook.type === "physical", "Culling Hook: a 10 ft natural attack, 1d10 physical");
+  ok(touch?.name === "Unmaking Touch" && touch.type === "random" && touch.range === null, "Unmaking Touch: melee, its damage type rolled at random");
+  ok(R2.deriveCharacter({ stats: {}, skillPoints: 10, size: 6 }).size.physical === 3 && R2.deriveCharacter({ stats: {}, skillPoints: 10, size: 7 }).size.physical === 4
+    && R2.deriveCharacter({ stats: {}, skillPoints: 10, size: 7 }).size.maxMove === 200, "Size 6 natural attacks are triply Strengthened, Size 7 quadruply (otherwise Size 5's numbers)");
+  const stalker = mkActor("Stalker", { "ancestry-wonderborn": 5, "ancestry-nightmareborn": 5, "ancestry-wonderborn-death": 5 }, {}, { ancestry: "wonderborn-death", background: "herald" });
+  const lawstone = mkActor("Lawstone", { "ancestry-wonderborn": 5, "ancestry-dreamborn": 5, "ancestry-wonderborn-order": 5 }, {}, { ancestry: "wonderborn-order", background: "herald" });
+  const smear = mkActor("Smear", { "ancestry-wonderborn": 3, "ancestry-nightmareborn": 3, "ancestry-wonderborn-chaos": 3 }, { size: 2 }, { ancestry: "wonderborn-chaos", background: "omen" });
+  const labels = a => anc.actionRows(a).map(r => r.label);
+  ok(labels(stalker).some(l => l.startsWith("Quarry")) && labels(lawstone).some(l => l.startsWith("Edicts")) && labels(smear).some(l => l.startsWith("Pinned")),
+    "The Action List: Quarry (Death), Edicts (Order), Pinned (Chaos)");
+  const prey = mkActor("Prey");
+  await stalker.setFlag("flowstate", "quarry", prey.uuid);
+  ok((await anc.hooks.attackNet(stalker, prey, {})).net === 1 && (await anc.hooks.attackNet(stalker, farmer, {})).net === 0, "Quarry (Death T2): Advantage against its Quarry only");
+  ok(B.funeralHeal(20) === 5 && B.splitDurability(80, 100) === 50 && B.splitDurability(30, 100) === 30, "Funeral by Funeral cuts healing to a quarter; a Split piece has the damage as Durability, at most half max HP");
+  // Clockwork: the attacker's own-turn attacks, and the same one again on its next turn.
+  let log = B.logOwnAttack(null, "item:sword:strike", 2);
+  ok(!B.madeLastTurn(log, "item:sword:strike", 2, true) && B.madeLastTurn(log, "item:sword:strike", 2, false), "Clockwork: this turn's attack isn't its last turn's, but between its turns it is");
+  log = B.logOwnAttack(log, "label:Gavel", 3);
+  ok(B.madeLastTurn(log, "item:sword:strike", 3, true) && !B.madeLastTurn(log, "label:Gavel", 3, true) && !B.madeLastTurn(B.logOwnAttack(log, "x", 4), "item:sword:strike", 4, true),
+    "...on its next turn the same attack is the last turn's (Disadvantage); two turns on it isn't");
+  const hitter = mkActor("Hitter");
+  const s1 = anc.hooks.damageStacks({ attacker: hitter, target: lawstone, o: { itemUuid: "sword", mode: "strike" } });
+  await new Promise(r => setTimeout(r, 5));
+  const s2 = anc.hooks.damageStacks({ attacker: hitter, target: lawstone, o: { itemUuid: "sword", mode: "strike" } });
+  const s3 = anc.hooks.damageStacks({ attacker: hitter, target: lawstone, o: { label: "Kick" } });
+  ok(s1.stacks === 1 && s2.stacks === 0 && s3.stacks === 1, "Clockwork: the first hit with an attack new against it is Strengthened, the next with it isn't");
+  await actions.setGrapple(smear, hitter.uuid);
+  ok(!smear.getFlag("flowstate", "grappledBy"), "Unfixed (Chaos T2): an unpinned Smear can't be grappled");
+  smear.statuses.add("pinned");
+  await actions.setGrapple(smear, hitter.uuid);
+  ok(smear.getFlag("flowstate", "grappledBy") === hitter.uuid, "...a Pinned one can");
+  const light = npc.buildNpcData({ name: "Blazehart", ancestry: "wonderborn-light", bestiaryBg: "omen", size: 4, statPoints: 50, ratio: 5, stats: { pon: 30 }, trees: {}, items: [], disposition: -1 });
+  ok(light.prototypeToken.light?.bright === 30 && light.prototypeToken.light?.dim === 60 && light.system.abc.ancestry === "wonderborn-light", "Noonlight (Light T2): a Blazehart's token sheds bright light to 30 ft, dim to 60 ft");
 }
 
 if (fails) { console.log(`${fails} failed`); process.exit(1); }

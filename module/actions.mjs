@@ -204,6 +204,7 @@ export const spottedBy = actor => actor?.getFlag?.("flowstate", "spottedBy") ?? 
  */
 export function stealthValue(actor, targets = []) {
   if (!actor?.statuses?.has?.("stealth") || !targets.length) return null;
+  if (noonlit(actor)) return null;                                     // Noonlight (Bestiary, Light T2): nothing within 30 ft can be obscured
   const seen = new Set(spottedBy(actor));
   if (targets.some(t => seen.has(t.uuid))) return null;
   if (!inActiveCombat(actor)) return "full";
@@ -211,6 +212,13 @@ export function stealthValue(actor, targets = []) {
   const hit = actor.getFlag?.("flowstate", "attackedThisCombat");
   const fresh = blind && targets.every(t => !(hit?.combat === game.combat?.id && hit.uuids?.includes(t.uuid)));
   return fresh ? "full" : "half";
+}
+/** Noonlight (Bestiary, Light T2): within 30 ft of a Blazehart nothing can be obscured, so Stealthing there fails (a GM stealth status still stands). */
+export function noonlit(actor) {
+  const me = attackerToken(actor) ?? actor?.getActiveTokens?.()[0];
+  if (!me || !globalThis.canvas?.grid) return null;
+  return (globalThis.canvas.tokens?.placeables ?? []).find(t => t.actor && t.actor.uuid !== actor.uuid && skills.tierOf(t.actor.system?.trees ?? {}, "ancestry-wonderborn-light") >= 2
+    && !helpless(t.actor) && tokenDistance(me, t) <= 30)?.actor ?? null;
 }
 /** Blindside's memory: whom this creature has attacked in the current combat. */
 async function noteAttacked(actor, targets) {
@@ -3391,6 +3399,7 @@ export async function checkPalisade(token, dest) {
   if (!combat?.started || !globalThis.canvas?.grid || !token?.object) return;
   const mover = token.actor;
   if (!mover || notCreature(mover) || !combat.combatants.some(c => c.actor?.uuid === mover.uuid)) return;
+  if (skills.tierOf(mover.system?.trees ?? {}, "ancestry-wonderborn-light") >= 3) return;          // Run Them Down (Bestiary, Light T3): its movement never provokes reactions
   const gs = canvas.grid.size;
   const w = (token.width ?? 1) * gs, h = (token.height ?? 1) * gs;
   const oldC = { x: token.x + w / 2, y: token.y + h / 2 }, newC = { x: (dest.x ?? token.x) + w / 2, y: (dest.y ?? token.y) + h / 2 };
@@ -3818,6 +3827,11 @@ export async function setStatus(actor, status, active) {
 /** Grapple (grapplerUuid) or release (null) an actor. Routed through the GM when we don't own it. */
 export async function setGrapple(actor, grappler) {
   if (!actor) return;
+  // Unfixed (Bestiary, Chaos T2): a Smear can't be grappled unless it's Pinned.
+  if (grappler && skills.tierOf(actor.system?.trees ?? {}, "ancestry-wonderborn-chaos") >= 2 && !actor.statuses?.has?.("pinned")) {
+    await post(actor, { title: `${esc(actor.name)} — Unfixed`, body: `<div class="fs-result">${esc(actor.name)} slips the grapple: it can't be grappled unless it's Pinned.</div>` });
+    return;
+  }
   if (!actor.isOwner) return requestGM("setGrapple", { target: actor.uuid, grappler: grappler ?? null });
   if (grappler) await actor.setFlag("flowstate", "grappledBy", grappler);
   else {
@@ -4252,7 +4266,26 @@ export const spellEffects = (actor, kind) => Array.from(actor?.effects ?? []).fi
  */
 export async function applySpellEffect(actor, effect) {
   const { name, description, replaceAll, ...fxData } = effect;
-  if (!effect.stack) for (const old of spellEffects(actor, effect.kind)) if (replaceAll || old.flags.flowstate.spellEffect.caster === effect.caster) await old.delete();
+  // Shielding doesn't stack (Rules doc, Temp HP and Shielding): a creature keeps whichever is higher. Shielding that says it stacks (the Ward Forms, `stack`)
+  // stacks with itself only, so each Form is one set; every Shield spell is another. The losing set goes (or the new grant isn't taken).
+  if (effect.kind === "shield") {
+    const setOf = d => (d.ward ? `ward:${d.ward}` : "spell");
+    const mine = setOf(effect), sets = new Map();
+    for (const e of spellEffects(actor, "shield")) {
+      const d = e.flags.flowstate.spellEffect, k = setOf(d);
+      if (!sets.has(k)) sets.set(k, { total: 0, list: [] });
+      sets.get(k).total += Number(d.hp) || 0; sets.get(k).list.push(e);
+    }
+    const own = effect.stack ? (sets.get(mine)?.total ?? 0) : 0, total = own + (Number(effect.hp) || 0);
+    const [bestKey, best] = [...sets].filter(([k]) => k !== mine).sort((x, y) => y[1].total - x[1].total)[0] ?? [];
+    if (best && best.total >= total) {
+      await post(actor, { title: `${esc(actor.name)} — Shielding`, body: `<div class="fs-result">${esc(actor.name)} keeps the higher Shielding it has (${best.total}, ${esc(best.list[0]?.name ?? bestKey)}) rather than ${esc(name ?? "the new")} (${total}): Shielding doesn't stack.</div>` });
+      return null;
+    }
+    for (const [k, v] of sets) if (k !== mine) for (const e of v.list) await e.delete();
+  }
+  // Temp HP always stacks (Rules doc, Temp HP and Shielding): a new grant never replaces what's there.
+  if (!effect.stack && effect.kind !== "tempHP") for (const old of spellEffects(actor, effect.kind)) if (replaceAll || old.flags.flowstate.spellEffect.caster === effect.caster) await old.delete();
   const data = { name, img: SPELL_ICONS[effect.kind] ?? "icons/magic/symbols/runes-star-orange.webp", origin: effect.caster, description: description ?? "",
     flags: { flowstate: { spellEffect: fxData, ...(effect.ritualOf ? { ritualOf: effect.ritualOf } : {}) } } };
   return actor.createEmbeddedDocuments("ActiveEffect", [data]);
@@ -6146,7 +6179,8 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     const extraShields = (shroudCtx?.extraShields ?? []).map(u => syncUuid(u)).filter(Boolean);
     for (const e of [...spellEffects(actor, "shield"), ...extraShields]) {
       const f = e.flags.flowstate.spellEffect;
-      if (((e.parent?.uuid === actor.uuid ? f.order : "default") ?? "default") !== pos || shields.some(x => x.effect === e)) continue;
+      const at = (e.parent?.uuid === actor.uuid ? f.order : "default") ?? "default";
+      if ((at === "first" ? "default" : at) !== pos || shields.some(x => x.effect === e)) continue;
       const hp = Number(f.hp) || 0;
       if (hp <= 0) continue;
       if (f.types?.length && !damageCategories(type, magic).some(c => f.types.includes(c))) continue;      // Prism: only the chosen damage types (spell damage is also Magical)
@@ -6173,6 +6207,9 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     if (!loss && remaining === before) continue;
     barriers.push({ ...b, absorbed: before - remaining, hp: b.hp - loss });
   }
+  // Shielding applies first, before anything else that would block the damage, parrying included (Rules doc, Temp HP and Shielding): spell Shields and
+  // Ward shielding, unless Adjust put items before it.
+  absorbWith("default");
   // Mental (Earth): an Accretion encases the creature, so hits strike it first: an object with a Limit (Reinforce: its whole Durability for this hit)
   // and Durability. Bedrock lets it take what gets past the Limit too, at twice the Durability.
   const accretions = [];
@@ -6193,7 +6230,6 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     if (!loss && remaining === before) continue;
     accretions.push({ effect: a.effect, hp: a.hp - loss, absorbed: before - remaining });
   }
-  absorbWith("first");
   // Parrying weapons (Martial Theory T1 Parry, Defender Block) soak first, in order.
   const uuids = [...new Set([...(parryItems ?? []), ...(parryItem ? [parryItem] : [])])];
   const weapons = [];
@@ -6205,8 +6241,8 @@ export async function damageOutcome(actor, amount, type, { pierce = 0, parryItem
     if (loss) weapons.push({ item: w, loss });
   }
   const afterWeapon = remaining;
-  // Spell Shields (Protection Arcana) absorb by their position (Adjust lets the holder move it); Dampen halves the health they lose to an Archetype.
-  absorbWith("default");
+  // A Shield that Adjust moved after the parrying weapons (Dampen halves the health it loses to an Archetype).
+  absorbWith("afterParry");
   // Magic Shrouds soak next (before armor): the creature's own melded Shroud, Wards/Bonds placed on it, Quartz extensions.
   const shrouds = [];
   for (const sh of shroudsFor(actor, shroudCtx?.extra ?? [])) {
@@ -6628,6 +6664,11 @@ export async function recoverEnergy(actor) {
  * any rest's healing, the same amount of lost Max HP comes back).
  */
 export async function rest(actor) {
+  // Sleepless (Bestiary, Light T4): no creature can rest within 1,000 ft of a Blazehart.
+  const me = attackerToken(actor) ?? actor?.getActiveTokens?.()[0];
+  const stag = me && globalThis.canvas?.grid ? (globalThis.canvas.tokens?.placeables ?? []).find(t => t.actor && t.actor.uuid !== actor.uuid && !helpless(t.actor)
+    && skills.tierOf(t.actor.system?.trees ?? {}, "ancestry-wonderborn-light") >= 4 && tokenDistance(me, t) <= 1000) : null;
+  if (stag) return ui.notifications.warn(`${actor.name} can't rest within 1,000 ft of ${stag.actor.name} (Sleepless).`);
   const { value, max } = actor.system.hp;
   // Environments (Generic Groups): an Extreme biome without shelter halves it; Hardy Constitution (Wusonian T2) restores full HP there.
   const env = envFor(actor);

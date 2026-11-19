@@ -146,7 +146,7 @@ export class NpcWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       steps: STEPS.map((s, i) => ({ ...s, index: i, num: i + 1, active: i === st.step, done: i < st.step })),
       step, isFirst: st.step === 0, isLast: st.step === STEPS.length - 1, [`is_${step}`]: true,
       name: st.name, img: st.img, canBrowse: game.user.can?.("FILES_BROWSE") ?? false,
-      sizes: Object.fromEntries([1, 2, 3, 4, 5].map(n => [n, `Size ${n}`])), size: st.size,
+      sizes: Object.fromEntries([1, 2, 3, 4, 5, 6, 7].map(n => [n, `Size ${n}${n > 5 ? " (rare)" : ""}`])), size: st.size,
       dispositions: npc.DISPOSITIONS, disposition: String(st.disposition),
       ancestries: { "": "— Pick an Ancestry —", ...Object.fromEntries(npc.npcAncestries().map(a => [a.id, a.bestiary ? `Bestiary: ${best.bestiaryLabel(a)}` : `${a.name} (Size ${a.size})`])) }, ancestry: st.ancestry,
       abcNeeds: req ? [req.people ? "Background and Culture (a people: high sapience)" : req.background ? "a Bestiary Background (mid sapience)" : "its Ancestry only (low sapience)"][0] : "",

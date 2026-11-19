@@ -168,7 +168,7 @@ class FlowStateActor extends Actor {
       if (sys.hp.value < sys.hp.pain && sys.hp.value > 0) await bestiary.droppedBelow(this);
       else if (sys.hp.value >= sys.hp.pain && this.getFlag("flowstate", "unwaking")) await this.unsetFlag("flowstate", "unwaking");
       const unconscious = !dead && sys.hp.value < sys.hp.pain && !bestiary.holdingOn(this);
-      if (dead && !this.statuses.has("dead")) await this.setFlag("flowstate", "diedAt", Date.now());          // Resuscitate only reaches the recently dead
+      if (dead && !this.statuses.has("dead")) { await this.setFlag("flowstate", "diedAt", Date.now()); await bestiary.died(this); }   // Resuscitate only reaches the recently dead; Carrion Feast, Quarry
       if (dead !== this.statuses.has("dead")) await this.toggleStatusEffect("dead", { active: dead, overlay: true });
       if (unconscious !== this.statuses.has("unconscious")) await this.toggleStatusEffect("unconscious", { active: unconscious });
       // Falling unconscious (or dying) knocks you prone. Waking up leaves you prone until you stand.
@@ -376,6 +376,7 @@ Hooks.once("init", () => {
     { id: "quickened", name: "Quickened", img: "icons/svg/wingfoot.svg" },
     { id: "smashing", name: "Smashing", img: "icons/svg/thrust.svg" },
     { id: "infected", name: "Infected", img: "icons/svg/poison.svg" },     // lasts a day; heat damage clears it (consumables.mjs)
+    { id: "pinned", name: "Pinned", img: "icons/svg/net.svg" },           // a Smear (Bestiary, Chaos T2): can't Split, can be grappled, until the end of its next turn
     { id: "dormant", name: "Dormant", img: "icons/svg/sleep.svg" }         // a Bestiary creature after Sporing / Seed: off the tracker for a day, then full HP (bestiary.mjs)
   ];
 

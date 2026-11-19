@@ -442,3 +442,14 @@ Very Rare \- 40x cost and scarcity of 0.0025
 | Taaffeite | Very Rare | Rituals you cast take half as much Energy to complete. |  | Whenever a Ritual would be destroyed while you are attuned to your Shroud, you may instead set your Shroud’s Durability to 0 to keep that Ritual alive at 1 health. Your Shroud must have more than 0 Durability to proc this effect. |  |
 | Colored Diamond | Very Rare | At the start of each of your turns, declare a spell name. Any damage you would deal with that spell this turn is Strengthened, and any attack rolls for that spell have advantage. |  | At the start of each of your turns, declare a source type that can deal damage (such as Bladed Weapons or Heat Spells). For that turn, damage your Shroud would take from the named source is Weakened, and attacks from that source against you have disadvantage. |  |
 
+# **Consumables**
+
+**Potion Info:** You can drink one potion per rest, shared between Health and Energy potions. Drinking one takes 1 AP. Energy from an Energy potion goes into a separate pool that lasts 1 minute or until used, and can take you past your Energy cap.
+
+| Potions |  |  |  |
+| :---: | :---: | :---: | :---: |
+| **Name** | **Price** | **Health Potion** | **Energy Potion** |
+| Lesser | 200 | Half a rest’s healing | Half your max Energy |
+| Regular | 500 | A rest’s healing | Your max Energy |
+| Greater | 1,200 | Twice a rest’s healing | Twice your max Energy |
+

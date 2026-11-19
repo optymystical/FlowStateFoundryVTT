@@ -776,7 +776,8 @@ function damageStacks({ attacker, target, o }) {
   const g = attacker?.getFlag?.("flowstate", "grudge");
   if (g && g.uuid === target?.uuid && g.combat === combatKey()) parts.push("+1 Grudgebearer");
   if (attacker?.getFlag?.("flowstate", "redTide") && o?.melee) parts.push("+1 Red Tide");
-  return { stacks: parts.length, parts };
+  const best = bestiary.damageStacks({ attacker, target, o });          // Clockwork (Bestiary, Order T3)
+  return { stacks: parts.length + best.stacks, parts: [...parts, ...best.parts] };
 }
 
 /**
@@ -818,6 +819,7 @@ async function afterDamage(actor, amount, type, { attacker = null } = {}) {
   const att = attacker ? globalThis.fromUuidSync?.(attacker) : null;
   // Neutral Party (Halfling T4) needs to know who has dealt damage this combat.
   if (att && amount > 0 && combatKey() && att.getFlag?.("flowstate", "dealtDamage") !== combatKey()) await setActorFlag(att, "dealtDamage", combatKey());
+  await bestiary.afterDamage(actor, amount, type, att);                 // the Bestiary: who hurt it, Run Them Down, Split
   if (!(amount > 0) || !inActiveCombat(actor)) return;
   if (att && att.uuid !== actor.uuid) { await redTide(actor); await lashingShadow(actor, att); }
   if (att && att.uuid !== actor.uuid && tier(actor, "ancestry-dwarf-tree") >= 5 && actor.getFlag?.("flowstate", "grudge")?.combat !== combatKey() && !used(actor, "grudge", "combat")) {

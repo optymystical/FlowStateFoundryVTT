@@ -35,7 +35,7 @@ Types: `character` and `npc` (the same data model), plus `pile` (dropped items, 
 | `abc` | object | Ancestry, Background and Culture: `{ ancestry, wasteling, background, focus, picks: { slot: treeId }, alloc: { treeId: tier }, homeland, circle, element, element2 }` (`wasteling: true`: the Wasteling core replaces the Ancestry's core) (ids from `module/abcs.mjs`: `human`, `recruit`, `shared.wanderer`, `recruit.barracks-raised`...). |
 | `freeTrees` | object | `{ treeId: tier }`: what the Background gives for free (15 points). Free tiers count for requirements, not toward Skill Points. Set it with the trees; `abc-rules.mjs freeTreesFor(abc)` works it out. |
 | `details` | object | Roleplay notes from the wizard: `age`, `pronouns`, `height`, `appearance`, `personality`, `goals`, `backstory` (all optional text). |
-| `size` | 1–5 | Size 3 is human-sized. Tokens are ¼, ½, 1, 2 or 4 squares. A character's Size comes from its Ancestry (Halfling, Goblin: 2). |
+| `size` | 1–7 | Size 3 is human-sized. Tokens are ¼, ½, 1, 2 or 4 squares. 6 and 7 are rare (Bestiary creatures, NPCs only): Size 5’s numbers with one more Strengthen per Size on natural attacks; 8 and 16 squares. A character's Size comes from its Ancestry (Halfling, Goblin: 2). |
 | `hp.value` | integer | Current HP, which can go negative (Overkill). Leave it out to start at full. |
 | `hp.lost` | integer | Max HP lost (body removed). Usually 0. |
 | `energy.value` | integer | Current Energy. Leave it out to start full. Outside combat Energy is always full, unless the scene is a tense scene. |

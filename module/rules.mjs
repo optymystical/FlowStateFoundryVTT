@@ -42,6 +42,11 @@ export const DAMAGE_TYPES = {
 export const SENSE_LEVELS = { none: "None", secondary: "Secondary", primary: "Primary", heightened: "Heightened" };
 
 const clampSize = size => Math.min(5, Math.max(1, Math.round(size || 3)));
+/** A Size's row: past Size 5 (rare, the Bestiary's) everything stays Size 5's, but each Size above 5 adds one more Strengthen to unarmed and natural attacks. */
+export const sizeRow = size => {
+  const n = Math.round(size || 3);
+  return n > 5 ? { ...SIZES[5], physical: SIZES[5].physical + (n - 5) } : SIZES[clampSize(n)];
+};
 
 /**
  * Equipment Size (Equipment doc; Carrying, Athletics Tier 0): an item has a Size like a creature's (0 for things made for Size 1 creatures). Weapons,
@@ -252,7 +257,7 @@ export function deriveCharacter({ stats, skillPoints, size, hpLost = 0, omen = f
     attackDie: attackDie(skillPoints),
     dodgeDie: dodgeDie(skillPoints),
     move: moveSpeed(size),
-    size: SIZES[clampSize(size)]
+    size: sizeRow(size)
   };
 }
 

@@ -13,11 +13,11 @@ import { post, spendPoints, inActiveCombat, turnKey, setActorFlag, tokenDistance
   moveLedger, setGrapple, applyDamage, rollKit } from "./actions.mjs";
 import { runOnOwner } from "./ask.mjs";
 import { ACTS } from "./wonders.mjs";
-import { opposed } from "./sides.mjs";
+import { opposed, allied } from "./sides.mjs";
 import { notCreature } from "./kinds.mjs";
 import { resistFear } from "./generic.mjs";
 import { terrainRegionData } from "./terrain.mjs";
-import { poolFormula } from "./rules.mjs";
+import { poolFormula, DAMAGE_TYPES } from "./rules.mjs";
 import { wonderById } from "./mental-rules.mjs";
 import * as B from "./bestiary-rules.mjs";
 import { ANCESTRIES } from "./abc-rules.mjs";
@@ -45,7 +45,9 @@ const isWonderborn = a => !!B.wonderOf(a);
 /** The Bestiary abilities that have a row or a hook here (ancestry.mjs's pay-and-post rows leave these out). */
 export const AUTOMATED = new Set(["Pole-Bound", "Recognition", "Follow the Pole", "Sustain", "Portent", "Allure", "Dread", "Lucid Depth", "Nightmare Depth",
   "Bounty", "Prey on Fear", "Unwaking", "Unrelenting", "Rapture", "Terror", "Budding Gore", "Regrowth", "Sporing", "Deathless", "The Choking Green",
-  "Black Jaws", "Pack Hunter", "Drag Into the Dark", "Root Lash", "Ripen", "Seed", "Rooted", "Overgrowth"]);
+  "Black Jaws", "Pack Hunter", "Drag Into the Dark", "Root Lash", "Ripen", "Seed", "Rooted", "Overgrowth",
+  "Culling Hook", "Quarry", "Carrion Feast", "Carrion Flock", "Funeral by Funeral", "Burning Antlers", "Noonlight", "Run Them Down", "Sleepless", "Solar Storm",
+  "Gavel", "Edicts", "Clockwork", "Lockstep", "The Unbroken Rule", "Unmaking Touch", "Unfixed", "Split", "Shifting Streets", "Lost Names"]);
 
 export function actionRows(actor) {
   const rows = [], t = T(actor), inCombat = inActiveCombat(actor);
@@ -64,6 +66,16 @@ export function actionRows(actor) {
     const p = actor.getFlag?.("flowstate", "portent");
     row(p?.scene === globalThis.canvas?.scene?.id ? "Portent: move it here" : "Portent: this area", `After a day here (about 1,000 ft across), Manifests of ${wonderName(w)} are Strengthened and of ${wonderName(B.pairOf(w))} Weakened within it`, "1 day", "portent", "fa-solid fa-cloud-moon");
   }
+  if (t.death >= 2) {
+    const q = quarryOf(actor);
+    row(q ? `Quarry: ${q.name} (mark another)` : "Quarry: mark", "Mark the targeted creature (else the strongest opposed one here) as its Quarry: its attacks against it have Advantage (not while one of its allies is within 5 ft), and it knows where it is within a mile", "—", "quarry", "fa-solid fa-crosshairs");
+  }
+  if (t.order >= 2) {
+    const ed = actor.getFlag?.("flowstate", "edicts")?.list ?? [];
+    row(ed.length ? "Edicts: declare anew" : "Edicts: declare", ed.length ? `Now: ${ed.map(e => `“${esc(e)}”`).join(", ")}` : "Two plain rules, each forbidding one kind of action (at the start of a fight and each dawn)", "—", "edicts", "fa-solid fa-scroll");
+    if (ed.length) row("An Edict is broken", `The targeted creatures within 100 ft broke one: ${t.order >= 5 ? "each resists its Allure first (on a failure it can't take that action this turn); " : ""}1d10 × ${power} Supernatural damage, once per round each`, "—", "edictBroken", "fa-solid fa-gavel");
+  }
+  if (t.chaos >= 2) row(actor.statuses?.has?.("pinned") ? "Pinned (unpin it)" : "Pinned (its true name, an Order effigy)", "Pinned until the end of its next turn: it can't Split, and it can be grappled. Iron weapons and Order Manifests pin it on a hit by themselves", "—", "pin", "fa-solid fa-thumbtack");
   if (!inCombat && (t.life >= 3 || t.growth >= 2)) row(t.life >= 3 ? "Release spores (after 1 hour)" : "Bloom (after 1 hour)", t.life >= 3 ? "Every breathing creature within 100 ft is Infected; then it collapses, dormant for a day" : `It blooms${t.growth >= 3 ? ": seed scatters within 100 ft, and it wilts dormant for a day" : ""}`, "1 hour", "bloom", "fa-solid fa-spa");
   return rows;
 }
@@ -101,7 +113,85 @@ const OPS = {
     const w = B.wonderOf(actor);
     return card(actor, "Portent", `<div class="fs-result">The area around ${esc(actor.name)} takes on ${esc(wonderName(w))}'s portents (about 1,000 ft across, after a day here): Manifests of ${esc(wonderName(w))} are Strengthened within it, and of ${esc(wonderName(B.pairOf(w)))} Weakened.</div>`);
   },
-  bloom: actor => bloom(actor)
+  bloom: actor => bloom(actor),
+  async quarry(actor) {
+    const picked = targetsOf().filter(a => a.uuid !== actor.uuid)[0] ?? strongest(actor);
+    if (!picked) return ui.notifications.warn("Nobody here to mark.");
+    return markQuarry(actor, picked);
+  },
+  async edicts(actor) { return declareEdicts(actor); },
+  async edictBroken(actor) {
+    // The Edicts hurt within 100 ft; the Unbroken Rule (T5) reaches 1,000 ft (beyond 100 ft breaking one costs nothing but the resisted Allure).
+    const reach = T(actor).order >= 5 ? 1000 : 100;
+    const list = targetsOf().filter(a => a.uuid !== actor.uuid && (dist(actor, a) ?? 0) <= reach);
+    if (!list.length) return ui.notifications.warn(`Target the creatures within ${reach} ft that broke an Edict.`);
+    const key = roundKey() ?? "out", hits = actor.getFlag?.("flowstate", "edictHits");
+    const done = new Set(hits?.key === key ? hits.uuids ?? [] : []);
+    const formula = `${B.powerOf(actor)}d10`, need = B.presenceNeed(actor), net = T(actor).dream >= 5 ? -1 : 0, lines = [];
+    for (const a of list) {
+      if (done.has(a.uuid)) { lines.push(`${esc(a.name)} already took the Edict's damage this round`); continue; }
+      done.add(a.uuid);
+      if (T(actor).order >= 5) {                       // The Unbroken Rule: it resists the Allure first (its own client), and pays only if it breaks free
+        await runOnOwner(a, { id: "bestiaryEdict", caster: a.uuid, target: actor.uuid, need, net, formula: (dist(actor, a) ?? 0) <= 100 ? formula : null, by: actor.name });
+        lines.push(`${esc(a.name)} resists the Unbroken Rule (${need} needed${net ? ", with Disadvantage" : ""})`);
+        continue;
+      }
+      await edictDamage(a, actor.name, formula);
+      lines.push(`${esc(a.name)} breaks an Edict`);
+    }
+    await setActorFlag(actor, "edictHits", { key, uuids: [...done] });
+    return card(actor, "Edicts", `<ul class="fs-list">${lines.map(l => `<li>${l}</li>`).join("")}</ul>`);
+  },
+  async pin(actor) {
+    const on = !actor.statuses?.has?.("pinned");
+    await setStatus(actor, "pinned", on);
+    if (on) await actor.setFlag("flowstate", "pinned", { armed: turnKey() ?? "out" });
+    return card(actor, on ? "Pinned" : "Unpinned", `<div class="fs-result">${esc(actor.name)} ${on ? "is Pinned until the end of its next turn: it can't Split, and it can be grappled" : "is no longer Pinned"}.</div>`);
+  }
+};
+
+/* -------------------------------------------- */
+/*  Death: Quarry                               */
+/* -------------------------------------------- */
+
+const quarryOf = actor => { const u = actor.getFlag?.("flowstate", "quarry"); return u ? globalThis.fromUuidSync?.(u) ?? null : null; };
+const alive = a => (a?.system?.hp?.value ?? 0) > 0 && !a?.statuses?.has?.("dead");
+/** The strongest opposed creature it can sense (the most Skill Points; healers and protectors count as strong, so the GM can mark another). */
+function strongest(actor, without = null) {
+  const list = sceneCreatures().filter(a => a.uuid !== actor.uuid && a.uuid !== without && opposed(actor, a) && alive(a) && !isWonderborn(a));
+  return list.sort((x, y) => (Number(y.system?.skillPoints) || 0) - (Number(x.system?.skillPoints) || 0))[0] ?? null;
+}
+async function markQuarry(actor, target) {
+  await setActorFlag(actor, "quarry", target.uuid);
+  return card(actor, "Quarry", `<div class="fs-result">${esc(actor.name)} marks <strong>${esc(target.name)}</strong> as its Quarry: Advantage on its attacks against it (not while one of its allies is within 5 ft of it), and it knows where it is within a mile.</div><div class="fs-notes">Healers and protectors count as strong: the GM can mark another from the Action List.</div>`);
+}
+
+/* -------------------------------------------- */
+/*  Order: Edicts                               */
+/* -------------------------------------------- */
+
+async function declareEdicts(actor) {
+  const cur = actor.getFlag?.("flowstate", "edicts")?.list ?? [];
+  const vals = await DialogV2().prompt({ window: { title: `${actor.name}: Edicts` }, rejectClose: false,
+    content: `<p>Two plain rules, each forbidding one kind of action ("none shall cast spells", "none shall run"...). Creatures within 100 ft that can hear it know them.</p>
+      <div class="form-group"><label>First</label><input type="text" name="e1" value="${esc(cur[0] ?? "")}"></div><div class="form-group"><label>Second</label><input type="text" name="e2" value="${esc(cur[1] ?? "")}"></div>`,
+    ok: { label: "Declare", callback: (event, button) => [button.form.elements.e1?.value, button.form.elements.e2?.value].map(s => String(s ?? "").trim()).filter(Boolean) } });
+  if (!vals?.length) return null;
+  await actor.setFlag("flowstate", "edicts", { list: vals.slice(0, 2), at: Date.now() });
+  return card(actor, "Edicts", `<div class="fs-result">${esc(actor.name)} declares: ${vals.slice(0, 2).map(e => `<strong>“${esc(e)}”</strong>`).join(" and ")}.</div><div class="fs-notes">A creature within 100 ft that breaks one takes 1d10 × its Wonder Power Supernatural damage, once per round${T(actor).order >= 5 ? "; within 1,000 ft it must first resist its Allure to break one (the Unbroken Rule)" : ""}.</div>`);
+}
+async function edictDamage(a, by, formula) {
+  const roll = await rollKit.evaluate(formula);
+  await post(a, { title: `${esc(a.name)} — Edict`, rolls: [roll], body: `<div class="fs-result">${esc(a.name)} breaks ${esc(by)}'s Edict: <strong>${roll.total}</strong> Supernatural damage.</div>` });
+  await applyDamage(a, roll.total, "supernatural", { silent: true });
+}
+/** The Unbroken Rule (Order T5), on the breaker's client: resist the Allure; a failure stops the action, a success breaks the Edict and takes its damage. */
+ACTS.bestiaryEdict = async (x, self) => {
+  const ok = await resistFear(self, { need: x.need, net: x.net ?? 0, source: `${x.by}'s Allure (the Unbroken Rule)` });
+  if (ok === false) return card(self, "The Unbroken Rule", `<div class="fs-result">${esc(self.name)} can't bring itself to break ${esc(x.by)}'s Edict: it can't take that action this turn.</div>`);
+  if (ok === null) return true;
+  if (!x.formula) return card(self, "The Unbroken Rule", `<div class="fs-result">${esc(self.name)} breaks ${esc(x.by)}'s Edict, beyond the 100 ft where it hurts.</div>`);
+  return edictDamage(self, x.by, x.formula);
 };
 
 /** A natural attack from a Bestiary tree: Budding Gore, Black Jaws, Root Lash. */
@@ -115,8 +205,15 @@ async function natural(actor, tree, name) {
   if (far) return ui.notifications.warn(`${far.name} is beyond ${n.name}'s ${reach} ft.`);
   if (!(await spendPoints(actor, "ap", n.ap, n.name))) return null;
   const power = B.powerOf(actor);
-  return performAttack(actor, { label: n.name, net: 0, melee: true, push: false, damage: B.naturalFormula(n, power), type: n.type, stacks: 0, physical: n.type === "physical",
-    natural: true, shots: 1, ap: 0, apCost: n.ap, notes: [`A natural attack${n.scales ? ` (Wonder Power ×${power})` : ""}`], followups: [], turnKey: turnKey(), targetActors: targets,
+  // Unmaking Touch (Chaos T1): its damage type is rolled from the seven (a d7, in DAMAGE_TYPES' order).
+  let type = n.type, rolled = "";
+  if (type === "random") {
+    const keys = Object.keys(DAMAGE_TYPES), r = await rollKit.evaluate("1d7");
+    type = keys[Math.max(0, Math.min(keys.length - 1, r.total - 1))];
+    rolled = `; its damage type rolled: ${DAMAGE_TYPES[type]} (${r.total} on a d7)`;
+  }
+  return performAttack(actor, { label: n.name, net: 0, melee: true, push: false, damage: B.naturalFormula(n, power), type, stacks: 0, physical: type === "physical",
+    natural: true, shots: 1, ap: 0, apCost: n.ap, notes: [`A natural attack${n.scales ? ` (Wonder Power ×${power})` : ""}${rolled}`], followups: [], turnKey: turnKey(), targetActors: targets,
     bestiary: { attack: n.name, tree: n.tree } });
 }
 
@@ -159,6 +256,20 @@ export async function attackNet(attacker, target, opts) {
   if (opts?.bestiary?.attack === "Black Jaws" && T(attacker).dark >= 4 && packMates(attacker, target)) { net += 1; notes.push("Pack Hunter: Advantage"); }
   const al = attacker.getFlag?.("flowstate", "allured");
   if (al?.by === target.uuid && al.used !== turnKey()) { net -= 1; notes.push(`Allure (${target.name}): Disadvantage`); await setActorFlag(attacker, "allured", { ...al, used: turnKey() }); }
+  // Quarry (Death T2): Advantage against its Quarry, unless one of the Quarry's allies is within 5 ft of it.
+  if (T(attacker).death >= 2 && attacker.getFlag?.("flowstate", "quarry") === target.uuid) {
+    const guarded = sceneCreatures().some(a => a.uuid !== target.uuid && a.uuid !== attacker.uuid && alive(a) && allied(target, a) && (dist(target, a) ?? Infinity) <= 5);
+    if (guarded) notes.push("Quarry: an ally of it is within 5 ft (no Advantage)");
+    else { net += 1; notes.push("Quarry: Advantage"); }
+  }
+  // Clockwork (Order T3): Disadvantage on the same attack its attacker made on its last turn. The attacker's own-turn attacks are logged while a
+  // creature with Clockwork is on the scene.
+  if (game.combat?.started && sceneCreatures().some(a => T(a).order >= 3)) {
+    const key = B.attackKey(opts), round = game.combat.round, own = game.combat.combatant?.actor?.uuid === attacker.uuid;
+    const log = attacker.getFlag?.("flowstate", "clockLog");
+    if (T(target).order >= 3 && B.madeLastTurn(log, key, round, own)) { net -= 1; notes.push(`Clockwork (${target.name}): the same attack as last turn, Disadvantage`); }
+    if (own && key) await setActorFlag(attacker, "clockLog", B.logOwnAttack(log, key, round));
+  }
   if (B.polesServed(attacker).size && inActiveCombat(attacker)) {
     const log = (attacker.getFlag?.("flowstate", "lastAttacks") ?? []).filter(e => Date.now() - (e.at ?? 0) < 10 * 60 * 1000).slice(-9);
     await setActorFlag(attacker, "lastAttacks", [...log, { target: target.uuid, at: Date.now() }]);
@@ -175,8 +286,19 @@ function packMates(hound, target) {
 
 /** A hit landed: Budding Gore Infects; a Black Jaws crit on a creature in darkness drags it down (grappled). */
 export async function onHit({ attacker, target, result, o }) {
+  if (!attacker || !target) return;
+  // Unfixed (Chaos T2): an iron weapon (iron, cold iron, gray iron) or an Order Manifest pins it until the end of its next turn.
+  if (T(target).chaos >= 2 && !target.statuses?.has?.("pinned")) {
+    const item = o?.itemUuid ? globalThis.fromUuidSync?.(o.itemUuid) : null;
+    const why = item && B.PIN_MATERIALS.has(item.system?.material) ? item.name : o?.mental?.wonder === "mental-order-dream" ? "an Order Manifest" : null;
+    if (why) {
+      await setStatus(target, "pinned", true);
+      await setActorFlag(target, "pinned", { armed: turnKey() ?? "out" });
+      await card(target, "Pinned", `<div class="fs-result">${esc(why)} pins ${esc(target.name)} until the end of its next turn: it can't Split, and it can be grappled.</div>`);
+    }
+  }
   const b = o?.bestiary;
-  if (!b || !attacker || !target) return;
+  if (!b) return;
   if (b.attack === "Budding Gore" && !target.statuses?.has?.("infected")) {
     await setStatus(target, "infected", true);
     await card(target, "Infected", `<div class="fs-result">${esc(attacker.name)}'s gore buds in ${esc(target.name)}: Infected for a day. Any heat damage burns it out.</div>`);
@@ -241,6 +363,126 @@ function portents() {
   return [...out.values()];
 }
 
+/**
+ * Clockwork (Order T3): the first time each creature hits it with an attack it hasn't used against it this combat, that hit's damage is Strengthened.
+ * Called as the damage is rolled (sync: the new attack is written down after).
+ */
+export function damageStacks({ attacker, target, o }) {
+  if (!attacker || !target || T(target).order < 3 || !game.combat?.started) return { stacks: 0, parts: [] };
+  const key = B.attackKey(o), seen = target.getFlag?.("flowstate", "clockSeen");
+  const mine = seen?.combat === game.combat.id ? seen.by?.[attacker.id ?? attacker.uuid] ?? [] : [];
+  if (!key || mine.includes(key)) return { stacks: 0, parts: [] };
+  const by = seen?.combat === game.combat.id ? { ...(seen.by ?? {}) } : {};
+  by[attacker.id ?? attacker.uuid] = [...mine, key];
+  setTimeout(() => setActorFlag(target, "clockSeen", { combat: game.combat.id, by }), 0);
+  return { stacks: 1, parts: ["+1 Clockwork (a new attack)"] };
+}
+
+/**
+ * Damage landed on a creature (its owner's client, after the HP change): who hurt it (Funeral by Funeral, Carrion Flock), Run Them Down's chase, and
+ * Split (Chaos T3), which breaks a piece away.
+ */
+export async function afterDamage(actor, amount, type, att) {
+  if (!(amount > 0) || !actor) return;
+  if (att && att.uuid !== actor.uuid) {
+    const t = T(att);
+    if (t.death >= 4) {
+      const log = { ...(actor.getFlag?.("flowstate", "damagedBy") ?? {}) };
+      for (const [k, at] of Object.entries(log)) if (Date.now() - at > 30 * 60 * 1000) delete log[k];
+      log[att.id ?? att.uuid] = Date.now();
+      await setActorFlag(actor, "damagedBy", { ...log, last: att.uuid });
+    }
+    // Run Them Down (Light T3): a creature that damaged it must spend its first movement each turn moving toward it (resisted at its turn start).
+    if (T(actor).light >= 3 && inActiveCombat(actor)) await setActorFlag(att, "chasing", { by: actor.uuid, at: Date.now() });
+  }
+  if (T(actor).chaos >= 3 && !actor.statuses?.has?.("pinned") && inActiveCombat(actor) && !used(actor, "split", "round") && game.user?.isGM) {
+    await use(actor, "split", "round");
+    await split(actor, amount);
+  }
+}
+
+/* -------------------------------------------- */
+/*  Chaos: Split                                */
+/* -------------------------------------------- */
+
+/**
+ * Split (Chaos T3): a piece breaks away within 30 ft, an object of Durability = the damage (at most half its max HP) and 0 Limit. It's put on the scene
+ * as a copy of the Smear's token (HP = that Durability, fixed dodge 0 so attacks always hit it, as against an object); still standing at the end of the
+ * Smear's next turn, it becomes a new Smear with that health (the GM adds it to the tracker).
+ */
+async function split(actor, damage) {
+  const tok = tokenOf(actor), scene = globalThis.canvas?.scene;
+  const dur = B.splitDurability(damage, actor.system?.hp?.max);
+  if (!dur) return null;
+  if (!tok?.document || !scene) return card(actor, "Split", `<div class="fs-result">A piece of ${esc(actor.name)} breaks away (${dur} Durability, 0 Limit): if it's still standing at the end of its next turn, it becomes a new Smear with that much health.</div>`);
+  const data = tok.document.toObject();
+  delete data._id;
+  const gs = scene.grid?.size ?? 100;
+  Object.assign(data, { name: `Piece of ${tok.document.name}`, x: data.x + gs * (data.width ?? 1), y: data.y, actorLink: false });
+  foundry.utils.setProperty(data, "delta.system.hp.value", dur);
+  foundry.utils.setProperty(data, "delta.flags.flowstate.fixedDodge", { on: true, value: 0 });
+  foundry.utils.setProperty(data, "delta.flags.flowstate.smearPiece", { of: actor.uuid, armed: turnKey() ?? "out", dur });
+  foundry.utils.setProperty(data, "delta.flags.flowstate.bestUse", {});
+  await scene.createEmbeddedDocuments("Token", [data]);
+  return card(actor, "Split", `<div class="fs-result">A piece of ${esc(actor.name)} breaks away (<strong>${dur}</strong> Durability, 0 Limit; attacks always hit it). Still standing at the end of ${esc(actor.name)}'s next turn, it becomes a new Smear with that much health.</div><div class="fs-notes">Placed beside it: move it anywhere within 30 ft.</div>`);
+}
+/** The end of a Smear's turn: its pieces from before this turn that still stand become Smears. */
+async function ripenPieces(actor) {
+  const scene = globalThis.canvas?.scene;
+  if (!scene || !game.user?.isGM) return;
+  for (const td of scene.tokens ?? []) {
+    const f = td.actor?.getFlag?.("flowstate", "smearPiece");
+    if (!f || f.of !== actor.uuid || f.armed === turnKey()) continue;
+    if ((td.actor.system?.hp?.value ?? 0) <= 0) continue;
+    await td.actor.unsetFlag("flowstate", "smearPiece");
+    await td.actor.setFlag("flowstate", "fixedDodge", { on: false, value: 0 });
+    await td.update({ name: String(td.name).replace(/^Piece of /, "") });
+    await card(td.actor, "A new Smear", `<div class="fs-result">The piece still stands: it's a new Smear with ${td.actor.system.hp.value} health (the GM adds it to the tracker).</div>`);
+  }
+}
+
+/* -------------------------------------------- */
+/*  Death: a creature dies                      */
+/* -------------------------------------------- */
+
+/** A creature died (GM, as its Dead status goes on): Carrion Feast heals the Death Wonderborn near it, Carrion Flock raises it, Quarry moves on. */
+export async function died(actor) {
+  if (!actor || !game.user?.isGM) return;
+  const pain = Number(actor.system?.hp?.pain) || 0;
+  for (const w of sceneCreatures()) {
+    if (w.uuid === actor.uuid || !alive(w)) continue;
+    const t = T(w);
+    if (t.death >= 3 && pain > 0 && (dist(w, actor) ?? Infinity) <= 30) {
+      const hp = w.system.hp, gain = Math.max(0, Math.min(pain, hp.max - hp.value));
+      if (gain) { await w.update({ "system.hp.value": hp.value + gain }); await card(w, "Carrion Feast", `<div class="fs-result">${esc(actor.name)} dies within 30 ft: ${esc(w.name)} heals ${gain} (its Pain Threshold).</div>`); }
+    }
+    if (t.death >= 2 && w.getFlag?.("flowstate", "quarry") === actor.uuid) {
+      const next = strongest(w, actor.uuid);
+      if (next) await markQuarry(w, next); else await w.unsetFlag("flowstate", "quarry");
+    }
+  }
+  const by = globalThis.fromUuidSync?.(actor.getFlag?.("flowstate", "damagedBy")?.last ?? "");
+  if (by && T(by).death >= 4 && !isWonderborn(actor)) await card(by, "Carrion Flock", `<div class="fs-result">${esc(by.name)} killed ${esc(actor.name)}: it rises as its carrion thrall within a minute (the GM makes it).</div>`);
+}
+
+/**
+ * Funeral by Funeral (Death T5): healing on a creature it damaged since the start of its last turn is doubly Weakened. The HP gained in an update is
+ * cut to a quarter (a preUpdateActor hook): its last turn is its previous one on its own turn, else its latest.
+ */
+export function funeralFor(actor) {
+  const log = actor?.getFlag?.("flowstate", "damagedBy");
+  if (!log || !game.combat?.started) return null;
+  for (const w of sceneCreatures()) {
+    if (T(w).death < 5 || !alive(w) || w.uuid === actor.uuid) continue;
+    const at = log[w.id ?? w.uuid];
+    if (!at) continue;
+    const own = game.combat.combatant?.actor?.uuid === w.uuid;
+    const since = Number(w.getFlag?.("flowstate", own ? "prevTurnStartedAt" : "turnStartedAt")) || Number(w.getFlag?.("flowstate", "turnStartedAt")) || 0;
+    if (since && at >= since) return w;
+  }
+  return null;
+}
+
 /** Rooted (Growth T4): Force applied to it is halved while it hasn't moved this turn. */
 export function forceHalf(target, force) {
   if (T(target).growth < 4) return force;
@@ -302,7 +544,26 @@ export async function roundStart(combat) {
     const list = fighters.filter(a => opposed(w, a) && !isWonderborn(a) && !seen.has(a.uuid));
     if (list.length) await presence(w, list);
   }
+  // At the start of combat: Quarry (Death T2) marks the strongest; Edicts (Order T2) are declared (the GM's dialog, last ones filled in).
+  for (const w of fighters) {
+    const t = T(w);
+    if (t.death >= 2 && !alive(quarryOf(w))) { const q = strongest(w); if (q) await markQuarry(w, q); }
+    if (t.order >= 2) await declareEdicts(w);
+  }
 }
+
+/** Resisting a Wonderborn's Allure or Dread for a forced mental effect (on the resisting creature's client): the card says what failing means. */
+ACTS.bestiaryResist = async (x, self) => {
+  const ok = await resistFear(self, { need: x.need, net: x.net ?? 0, source: x.label });
+  if (ok === null) return true;
+  if (ok !== false) return card(self, x.label, `<div class="fs-result">${esc(self.name)} resists.</div>`);
+  if (x.kind === "lostNames") await setActorFlag(self, "lostNames", { armed: turnKey() ?? "out" });
+  return card(self, x.label, `<div class="fs-result">${x.fail}</div>`);
+};
+const resistArgs = (w, allure) => ({ need: B.presenceNeed(w), net: (allure ? T(w).dream : T(w).nightmare) >= 5 ? -1 : 0 });
+/** It wears or wields metal: its worn armor or a held weapon of a metal material (Solar Storm). */
+const wearsMetal = a => [a?.system?.armor, ...(a?.items ?? []).filter(i => i.type === "weapon" && i.system?.equipped)]
+  .some(i => i && !i.system?.natural && B.METALS.has(i.system?.material));
 
 /** The start of a creature's turn: Regrowth, the Choking Green's damage, Unwaking's count, a Wonderborn's turn count, and the ground auras. */
 export async function turnStart(combat, actor) {
@@ -329,6 +590,25 @@ export async function turnStart(combat, actor) {
       await applyDamage(actor, roll.total, "physical", { silent: true });
     }
   }
+  const awake = (a, tier, ft) => a.uuid !== actor.uuid && alive(a) && !a.statuses?.has?.("dormant") && tier(T(a)) && (dist(a, actor) ?? Infinity) <= ft;
+  // Solar Storm (Light T5): within 100 ft, a creature that wears or wields metal takes 1d6 heat damage at the start of its turn.
+  const sun = !isWonderborn(actor) && wearsMetal(actor) ? sceneCreatures().find(a => awake(a, t => t.light >= 5, 100)) : null;
+  if (sun) {
+    const roll = await rollKit.evaluate(poolFormula(1, 6, 0));
+    await post(actor, { title: `${esc(actor.name)} — Solar Storm`, rolls: [roll], body: `<div class="fs-result">${esc(sun.name)}'s storm heats ${esc(actor.name)}'s metal: <strong>${roll.total}</strong> heat damage.</div>` });
+    await applyDamage(actor, roll.total, "heat", { silent: true });
+  }
+  // Lost Names (Chaos T5): starting its turn within 100 ft, it resists the Dread or forgets its name and allies (random targets) until its turn ends.
+  const smear = !isWonderborn(actor) ? sceneCreatures().find(a => awake(a, t => t.chaos >= 5, 100)) : null;
+  if (smear) await runOnOwner(actor, { id: "bestiaryResist", caster: actor.uuid, target: smear.uuid, ...resistArgs(smear, false), kind: "lostNames", label: `${smear.name}'s Dread (Lost Names)`,
+    fail: `${esc(actor.name)} forgets its name and its allies until the end of its turn: it picks its targets at random.` });
+  // Run Them Down (Light T3): it damaged a Blazehart since that one's last turn, so its first movement this turn must go toward it (resisted as Allure).
+  const ch = actor.getFlag?.("flowstate", "chasing"), stag = ch ? globalThis.fromUuidSync?.(ch.by) : null;
+  if (stag && alive(stag) && T(stag).light >= 3 && (ch.at ?? 0) >= (Number(stag.getFlag?.("flowstate", "prevTurnStartedAt")) || 0)) {
+    const spent = (actor.system?.energy?.value ?? 0) <= 0;
+    await runOnOwner(actor, { id: "bestiaryResist", caster: actor.uuid, target: stag.uuid, ...resistArgs(stag, true), label: `${stag.name}'s Allure (Run Them Down)`,
+      fail: `${esc(actor.name)} must spend its first movement this turn moving toward ${esc(stag.name)}.${spent ? " It keeps chasing at 0 Energy: it collapses." : ""}` });
+  } else if (ch) await actor.unsetFlag("flowstate", "chasing");
   await refreshAuras();
 }
 
@@ -342,7 +622,12 @@ export async function turnEnd(combat, actor) {
     await actor.setFlag("flowstate", "unwaking", { ...uw, done: true });
     if (actor.system.hp.value < actor.system.hp.pain && actor.system.hp.value > 0) await actor.toggleStatusEffect("unconscious", { active: true });
   }
+  // Pinned (Chaos T2) lasts until the end of its next turn; Lost Names until the end of this one.
+  const pin = actor.getFlag?.("flowstate", "pinned");
+  if (actor.statuses?.has?.("pinned") && pin?.armed !== turnKey()) { await setStatus(actor, "pinned", false); await actor.unsetFlag("flowstate", "pinned"); }
+  if (actor.getFlag?.("flowstate", "lostNames")) await actor.unsetFlag("flowstate", "lostNames");
   const t = T(actor), n = actor.getFlag?.("flowstate", "bestTurns");
+  if (t.chaos >= 3) await ripenPieces(actor);
   if (n?.combat === combat?.id && n.n === 4 && (t.life >= 3 || t.growth >= 2)) await bloom(actor);
 }
 
@@ -422,6 +707,16 @@ async function syncAuras() {
 
 /** The GM side of a token moving: its aura follows it. */
 export function registerHooks() {
+  // Funeral by Funeral (Death T5): the HP an update would heal is cut to a quarter (doubly Weakened).
+  Hooks.on("preUpdateActor", (actor, changed) => {
+    const next = foundry.utils.getProperty(changed, "system.hp.value"), cur = actor.system?.hp?.value;
+    if (typeof next !== "number" || typeof cur !== "number" || next <= cur || cur <= 0) return;
+    const w = funeralFor(actor);
+    if (!w) return;
+    const cut = cur + B.funeralHeal(next - cur);
+    foundry.utils.setProperty(changed, "system.hp.value", cut);
+    setTimeout(() => card(actor, "Funeral by Funeral", `<div class="fs-result">${esc(w.name)} damaged ${esc(actor.name)} since the start of its last turn: the healing is doubly Weakened (${next - cur} → ${cut - cur}).</div>`), 0);
+  });
   Hooks.on("updateToken", (doc, change) => {
     if (!game.user.isGM || !("x" in change || "y" in change)) return;
     const t = T(doc.actor);

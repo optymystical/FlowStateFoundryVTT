@@ -21,7 +21,7 @@ export const ANY_RARITY = "veryRare";
 export const DISPOSITIONS = { "-1": "Hostile", 0: "Neutral", 1: "Friendly" };
 /** Sapience (Flow State - ABCs): high, mid or low, and the stat points per Skill Point it starts a creature at. */
 export const SAPIENCE = { 3: { label: "High (3:1)", ratio: 3 }, 2: { label: "Mid (5:1)", ratio: 5 }, 1: { label: "Low (10:1)", ratio: 10 } };
-const TOKEN_SQUARES = { 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4 };
+const TOKEN_SQUARES = { 1: 0.25, 2: 0.5, 3: 1, 4: 2, 5: 4, 6: 8, 7: 16 };          // 6 and 7 (rare) keep doubling
 
 const int = v => Math.trunc(Number(v) || 0);
 
@@ -114,7 +114,7 @@ export const slotName = slot => (slot.kind === "gear" ? `${slot.name || "Supplie
 /** Derived numbers for the preview (HP, Pain Threshold, Energy, Move, dice). */
 export function preview(choice) {
   const b = budget(choice);
-  const d = deriveCharacter({ stats: { ...creation.emptyStats(), ...choice.stats }, skillPoints: b.skillPoints, size: Math.min(5, Math.max(1, int(choice.size) || 3)) });
+  const d = deriveCharacter({ stats: { ...creation.emptyStats(), ...choice.stats }, skillPoints: b.skillPoints, size: Math.min(7, Math.max(1, int(choice.size) || 3)) });
   return { skillPoints: b.skillPoints, hp: d.hpMax, pain: d.pain, energy: d.energyMax, move: d.move, attackDie: d.attackDie, dodgeDie: d.dodgeDie, effective: d.effective };
 }
 
@@ -130,7 +130,7 @@ export function validate(choice) {
   if (!(Number(choice.ratio) > 0)) errors.push("The ratio must be above 0.");
   if (b.spent > b.statPoints) errors.push(`${b.spent} stat points are spent, but only ${b.statPoints} are set.`);
   const size = int(choice.size);
-  if (size < 1 || size > 5) errors.push("Size must be from 1 to 5.");
+  if (size < 1 || size > 7) errors.push("Size must be from 1 to 7.");
   const items = choice.items ?? [];
   for (const [n, slot] of items.entries()) {
     const label = `Item ${n + 1}`;
@@ -204,13 +204,15 @@ export function buildNpcData(choice) {
   const name = String(choice.name).trim();
   const b = budget(choice);
   const best = bestiaryOf(choice), free = freeTreesOf(choice);
-  const size = Math.min(5, Math.max(1, int(choice.size) || 3));
+  const size = Math.min(7, Math.max(1, int(choice.size) || 3));
   const sq = TOKEN_SQUARES[size];
+  // Noonlight (Bestiary, Light T2): it sheds bright light to 30 ft and dim to 60 ft.
+  const light = (Number(free["ancestry-wonderborn-light"]) || 0) >= 2 || (Number(choice.trees?.["ancestry-wonderborn-light"]) || 0) >= 2 ? { bright: 30, dim: 60, color: "#fff4d6", alpha: 0.4 } : null;
   const icon = bestiaryIcon(best);
   return {
     name, img, type: "npc",
     ownership: { default: 0 },
-    prototypeToken: { name, actorLink: false, disposition: int(choice.disposition), texture: { src: img }, width: sq, height: sq },
+    prototypeToken: { name, actorLink: false, disposition: int(choice.disposition), texture: { src: img }, width: sq, height: sq, ...(light ? { light } : {}) },
     system: { stats: { ...creation.emptyStats(), ...choice.stats }, skillPoints: b.skillPoints, unspentStats: Math.max(0, b.remaining), statCarry: 0, creation: false, size,
       trees: creation.cleanTrees(withFree(choice.trees, free)), freeTrees: free,
       abc: npcAbc(choice)?.people ? creation.cleanAbc(peopleAbc(choice)) : choice.ancestry ? { ancestry: String(choice.ancestry), ...(best ? { background: best.background } : {}) } : {},

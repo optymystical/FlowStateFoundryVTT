@@ -35,7 +35,7 @@ export const POPUPS = {
   ].join("") }),
 
   ancestry: () => ({ title: "Step 1: Ancestry", html: [
-    p("Your <strong>[[archetype:ancestry|Ancestry]]</strong> is the people you were born to: Human, Dwarf, Elf, Orc and so on. It sets your <strong>[[doc:rules/ch7-non-combat-rules/size-categories|Size]]</strong> (how big you are) and gives you your Ancestry's own <strong>skill trees</strong>: abilities only your people have."),
+    p("Your <strong>[[archetype:ancestry|Ancestry]]</strong> is the people you were born to: Human, Dwarf, Elf, Orc and so on. It sets your <strong>[[doc:rules/ch2-ancestry/size-categories|Size]]</strong> (how big you are) and gives you your Ancestry's own <strong>skill trees</strong>: abilities only your people have."),
     p("Each card shows what that people is like. The buttons under <strong>Trees</strong> show what their abilities do: click one to read its tiers, and click it again to close it."),
     tip("There's no wrong answer here. Pick whichever people sounds most interesting to play. When you pick one, the other cards hide; click your pick again (or <strong>Change</strong>) to see them all again.")
   ].join("") }),
@@ -47,7 +47,7 @@ export const POPUPS = {
   background: c => ({ title: "Step 2: Background", html: [
     p(`Your <strong>[[entry:ancestry-abc-rules:background|Background]]</strong> is how you were raised and what you did before the story began. The list shows the Backgrounds open to ${esc(c.ancestry)}.`),
     p("Each Background gives you <strong>15 free points</strong> of skill trees to start with. They're free: they don't come out of the Skill Points you'll spend later. The buttons on each card show those trees; click one to read it."),
-    tip("Some Backgrounds hand you an <strong>[[doc:rules/ch2-archetypes/what-are-the-archetypes|Archetype]]</strong> ([[archetype:martial|Martial]], [[archetype:magic|Magic]] or [[archetype:mental|Mental]]) through its Theory tree: Recruit leans Martial, Apprentice Mage leans Magic, Novice leans Mental. If you already know which kind of character you want to play, pick a Background that gives you that one."),
+    tip("Some Backgrounds hand you an <strong>[[doc:rules/ch3-archetypes/what-are-the-archetypes|Archetype]]</strong> ([[archetype:martial|Martial]], [[archetype:magic|Magic]] or [[archetype:mental|Mental]]) through its Theory tree: Recruit leans Martial, Apprentice Mage leans Magic, Novice leans Mental. If you already know which kind of character you want to play, pick a Background that gives you that one."),
     p("Like before, picking one hides the others; click it again (or <strong>Change</strong>) to see the whole list.")
   ].join("") }),
   choices: c => ({ title: `${esc(c.background)}: your choices`, html: [
@@ -65,7 +65,7 @@ export const POPUPS = {
   ].join("") }),
 
   stats: c => ({ title: "Step 4: Stats", html: [
-    p(`You have <strong>${c.points}</strong> stat points to place. There are nine stats, three for each <strong>[[doc:rules/ch2-archetypes/what-are-the-archetypes|Archetype]]</strong>, the three ways to play:`),
+    p(`You have <strong>${c.points}</strong> stat points to place. There are nine stats, three for each <strong>[[doc:rules/ch3-archetypes/what-are-the-archetypes|Archetype]]</strong>, the three ways to play:`),
     ...Object.values(ARCHETYPES).map(a => `<h4 class="fs-tut-head">[[archetype:${a.id}|${a.label}]]: ${a.blurb}</h4>${ul(a.stats.map(k => `<strong>[[stat:${k}|${esc(c.statLabels[k])}]]:</strong> ${STAT_TEXT[k]}`))}`),
     p("Some things to know:"),
     ul(["Your <strong>Health</strong> comes from Constitution, Willpower and Build together (drop below half of it, your [[entry:generic-endurance:pain-threshold|Pain Threshold]], and you fall unconscious), whichever Archetype you play.",

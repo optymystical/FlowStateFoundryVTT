@@ -1,7 +1,7 @@
 /**
  * The Codex (pure, no Foundry globals): every element of the game as a page, built from the same tables the engine reads (the store, with the
  * world's changes), so it always shows what this world plays with. Pages have ids like `tree:martial-theory`, `entry:magic-slashing:cut` (the
- * same ids the spell catalog and the Wonders use), `tag:fast`, `weaponMaterial:iron`, `item:named.longsword`, `doc:rules/ch9-conditions/ignite`.
+ * same ids the spell catalog and the Wonders use), `tag:fast`, `weaponMaterial:iron`, `item:named.longsword`, `doc:rules/ch12-conditions/ignite`.
  * Anything can link to a page with `data-codex="<id>"` (the Codex window opens it), and journal text with `@Codex[<id or name>]{label}`.
  *
  * A page is { id, title, section, group, subtitle, hidden, blocks, keywords }: blocks are
@@ -44,12 +44,12 @@ export const codexId = {
 
 /** Where a rule lives in the Rules doc (for links from the conditions and core pages). */
 export const RULE = {
-  stats: ["ch3-stats"], statMinimums: ["ch3-stats", "stat-minimums"], sizes: ["ch7-non-combat-rules", "size-categories"],
-  damage: ["ch8-combat-rules", "damage-rolls-types"], strengthened: ["ch8-combat-rules", "strengthened-weakened"],
-  crouch: ["ch9-conditions", "crouch-prone"], ignite: ["ch9-conditions", "ignite"], stain: ["ch9-conditions", "stain"],
-  slow: ["ch9-conditions", "slow"], haste: ["ch9-conditions", "haste"], grappling: ["ch8-combat-rules", "grappling"],
-  gravity: ["ch10-objects-and-force", "gravity"], flight: ["ch10-objects-and-force", "flight"], objects: ["ch10-objects-and-force", "objects"],
-  archetypes: ["ch2-archetypes"], abcs: ["ch5-a-b-c-s"]
+  stats: ["ch6-stats"], statMinimums: ["ch6-stats", "stat-checks"], sizes: ["ch2-ancestry", "size-categories"],
+  damage: ["ch11-combat-rules", "damage-rolls-types"], strengthened: ["ch11-combat-rules", "strengthened-weakened"],
+  crouch: ["ch12-conditions", "crouch-prone"], ignite: ["ch12-conditions", "ignite"], stain: ["ch12-conditions", "stain"],
+  slow: ["ch12-conditions", "slow-haste"], haste: ["ch12-conditions", "slow-haste"], grappling: ["ch11-combat-rules", "grappling"],
+  gravity: ["ch13-objects-and-force", "gravity"], flight: ["ch13-objects-and-force", "flight"], objects: ["ch13-objects-and-force", "objects"],
+  archetypes: ["ch3-archetypes"], abcs: ["ch2-ancestry"], backgrounds: ["ch5-background-and-culture"], tempHp: ["ch11-combat-rules", "temp-hp-and-shielding"]
 };
 /** Rules that moved to the Generic Groups doc: they live in the Tier 0 of a Group's Core tree. */
 export const RULE_ENTRIES = {
@@ -69,6 +69,7 @@ export const STATUS_SOURCES = {
   berserk: { entry: "Berserk" }, seeingRed: { entry: "Seeing Red" }, unstoppable: { entry: "Unstoppable" }, properStance: { entry: "Proper Stance" },
   fishy: { entry: "Like Shooting Fish" }, sliced: { entry: "Slice" }, taunted: { entry: "Taunt" }, quickened: { entry: "Quicken" },
   infected: { text: "Infected: a marker for an infection (a Bloomrot Omen's, for one). It lasts a day of world time, and any heat damage the creature takes clears it. How it spreads is up to the GM." },
+  pinned: { text: "Pinned: a Smear (Bestiary, Chaos T2) held still by iron, an Order Manifest, its true name or an Order effigy. Until the end of its next turn it can't Split, and it can be grappled (an unpinned one can't be)." },
   dormant: { text: "Dormant: a Bestiary creature that has spent itself (a Bloomrot's Sporing, a Burgeon's Seed). It leaves the fight and can't act; after a day of world time (or when the GM removes the status) it regrows, back at full HP." }
 };
 /** The stacking conditions on a character (not token statuses). */
@@ -137,7 +138,8 @@ registerSection({ id: "rules", label: "Rules", icon: "fa-solid fa-book", order: 
       const chId = codexId.doc(doc.id, ch.id);
       pages.push({ id: chId, title: ch.title, section: "rules", group, chapter: true, blocks: [md(ch.intro),
         ch.sections.length ? linksBlock("Sections", ch.sections.map(s => ({ id: codexId.doc(doc.id, ch.id, s.id), label: s.title }))) : null,
-        ch.id === "ch5-a-b-c-s" ? linksBlock("", [{ id: chId, label: "The A.B.C.s aren't written yet; they'll appear here." }]) : null].filter(Boolean) });
+        // Ch2 (Ancestry) and Ch5 (Background and Culture) point at the Ancestries section, where each Ancestry, Background and Culture has its page.
+        ["ch2-ancestry", "ch5-background-and-culture"].includes(ch.id) ? linksBlock("In the Codex", [{ id: "abc:rules", label: "Ancestry, Background and Culture: every one of them" }]) : null].filter(Boolean) });
       for (const s of ch.sections) pages.push({ id: codexId.doc(doc.id, ch.id, s.id), title: s.title, section: "rules", group, parent: chId, subtitle: ch.title, blocks: [md(s.md)].filter(Boolean) });
     }
   }

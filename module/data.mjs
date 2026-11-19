@@ -93,7 +93,7 @@ export class FlowStateActorData extends foundry.abstract.TypeDataModel {
       details: new f.ObjectField({ initial: {} }),      // the wizard's Notes: age, pronouns, appearance, personality... (roleplay)
       currency: new f.ObjectField({ initial: {} }), // currency id (c0, c1, ...; see currency-rules.mjs) → amount
       creation: new f.BooleanField({ initial: false }), // legacy unlock flag; creation now happens in the New Character wizard
-      size: int(3, { min: 1, max: 5 }),
+      size: int(3, { min: 1, max: 7 }),                 // 6 and 7 are rare (the Bestiary): Size 5's numbers, more Strengthened natural attacks
       hp: new f.SchemaField({
         value: int(0),        // may go negative: below 0 is Overkill
         lost: int(0, { min: 0 }) // Max HP lost (chunks of body removed)

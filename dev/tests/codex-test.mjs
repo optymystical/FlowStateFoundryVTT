@@ -24,7 +24,7 @@ const secs = RULE_DOCS.flatMap(d => d.chapters.flatMap(c => [C.codexId.doc(d.id,
 ok(secs.every(id => ix.pages.has(id)), `Every chapter and section of the Rules and Equipment docs (${secs.length})`);
 ok(["tag:fast", "weaponType:bladed", "weaponMaterial:iron", "armorWeight:titanic", "armorMaterial:chitin", "foci:rod", "shroud:bastion", "affix:quartz", "form:aegis",
   "stat:str", "size:3", "damage:heat", "combo:gravity+slashing", "item:weapon.bladed.heavy.iron", "status:ignite", "archetype:martial"].every(id => ix.pages.has(id)), "Equipment, materials, tags, stats, sizes, damage types, Combos, items and conditions too");
-ok(ix.pages.has(C.codexId.doc("rules", "ch5-a-b-c-s")), "The A.B.C.s chapter is there, waiting for its pages");
+ok(ix.pages.has(C.codexId.doc("rules", "ch2-ancestry")), "The Ancestry chapter is there");
 ok(Object.keys(C.RULE).every(k => ix.pages.has(C.codexId.doc("rules", ...C.RULE[k]))), "Every rule the Codex points at by name exists in the Rules doc (no stale section names)");
 ok(Object.keys(C.RULE_ENTRIES).every(k => ix.pages.has(C.codexId.entry(...C.RULE_ENTRIES[k]))), "Every rule that moved to the Generic Groups doc has its tree entry page");
 
@@ -47,7 +47,7 @@ ok(C.idForName("Whirlwind") === "entry:martial-bladed-weapons:whirlwind-light" &
 ok(C.idForName("Cut") === "entry:magic-slashing:cut" && C.idForName("Bloom") === "entry:mental-life-dream:bloom" && C.idForName("Attack: Fast") === "tag:fast", "…spells and Modes too, and a label's prefix is ignored");
 ok(C.findPage("Psych Up")?.id === "entry:martial-theory:psych-up" && C.findPage("tag:pierce")?.title === "Pierce", "Pages open by id or by name");
 let hits = C.searchCodex("ignite");
-ok(hits[0]?.id === "status:ignite" && hits.some(p => p.id === "doc:rules/ch9-conditions/ignite"), `Search puts the best match first (${hits.slice(0, 3).map(p => p.title).join(", ")})`);
+ok(hits[0]?.id === "status:ignite" && hits.some(p => p.id === "doc:rules/ch12-conditions/ignite"), `Search puts the best match first (${hits.slice(0, 3).map(p => p.title).join(", ")})`);
 ok(C.searchCodex("cold iron").some(p => p.id === "weaponMaterial:coldIron") && !C.searchCodex("x").length, "Several words match together; one letter searches nothing");
 
 console.log("== The world's changes show");

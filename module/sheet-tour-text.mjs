@@ -16,16 +16,16 @@ const list = arr => (arr.length <= 1 ? arr.join("") : `${arr.slice(0, -1).join("
 /** A Codex link to a page id or name, with an (escaped) label. */
 const L = (key, label = key) => `[[${String(key).replace(/[[\]|]/g, "")}|${esc(label)}]]`;
 const names = items => list(items.map(i => `<strong>${L(i.name)}</strong>`));
-const S = { pain: "entry:generic-endurance:pain-threshold", energy: "entry:generic-endurance:energy", ap: "doc:rules/ch8-combat-rules/action-points-ap",
-  rp: "doc:rules/ch8-combat-rules/reaction-points-rp", crit: "doc:rules/ch8-combat-rules/critical-hits", dodge: "doc:rules/ch8-combat-rules/attacking-dodging",
-  limit: "doc:rules/ch10-objects-and-force/limit", durability: "doc:rules/ch10-objects-and-force/durability", statBonus: "doc:rules/ch3-stats/stat-bonus",
-  statChecks: "doc:rules/ch7-non-combat-rules/stat-checks", nonStat: "doc:rules/ch7-non-combat-rules/non-stat-checks", sp: "doc:rules/ch4-skill-trees-groups/how-do-i-use-skill-points",
+const S = { pain: "entry:generic-endurance:pain-threshold", energy: "entry:generic-endurance:energy", ap: "doc:rules/ch11-combat-rules/action-points-ap",
+  rp: "doc:rules/ch11-combat-rules/reaction-points-rp", crit: "doc:rules/ch11-combat-rules/critical-hits", dodge: "doc:rules/ch11-combat-rules/attacking-dodging",
+  limit: "doc:rules/ch13-objects-and-force/limit", durability: "doc:rules/ch13-objects-and-force/durability", statBonus: "doc:rules/ch7-skill-points/stat-bonus",
+  statChecks: "doc:rules/ch6-stats/stat-checks", nonStat: "doc:rules/ch7-skill-points/non-stat-checks", sp: "doc:rules/ch7-skill-points/how-do-i-use-skill-points",
   foci: "doc:equipment/magic-foci", shroud: "doc:equipment/magic-shrouds", affixes: "doc:equipment/magic-affixes", icons: "doc:equipment/mental-icons",
   igniter: "castingForm:igniter", channeler: "castingForm:channeler", multi: "castingForm:multi", raw: "entry:magic-theory:raw-casting",
   cores: "entry:magic-theory:core-spells", mods: "entry:magic-theory:spell-mods", threshold: "entry:magic-theory:spell-threshold",
   manifest: "entry:mental-theory:manifesting", wonders: "entry:mental-theory:wonders-and-modes", alignment: "entry:mental-theory:alignment",
-  initiative: "entry:generic-initiative:initiative", rest: "entry:generic-endurance:rest", unarmed: "weaponType:unarmed", crouch: "doc:rules/ch9-conditions/crouch-prone",
-  targeting: "doc:rules/ch8-combat-rules/targeting", damage: "doc:rules/ch8-combat-rules/damage-rolls-types", grappling: "entry:martial-theory:grappling" };
+  initiative: "entry:generic-initiative:initiative", rest: "entry:generic-endurance:rest", unarmed: "weaponType:unarmed", crouch: "doc:rules/ch12-conditions/crouch-prone",
+  targeting: "doc:rules/ch11-combat-rules/targeting", damage: "doc:rules/ch11-combat-rules/damage-rolls-types", grappling: "entry:martial-theory:grappling" };
 
 /** A group of the character's Action or Reaction List, by key. */
 const group = (c, key) => (c.groups ?? []).find(g => g.key === key) ?? null;

@@ -7,7 +7,7 @@
 * **Bestiary:** This document holds the Ancestries of the world's creatures, along with any Background information relevant to them. Creatures have no Cultures; anything that would have one belongs in the player options instead.  
 * **Ancestry:** A creature's Ancestry works as it does for players: a core tree shared by its wider kind, a lineage tree where one exists, and a tree unique to it.  
 * **Background:** A creature's Background normally grants a set number of free points in its trees, which count for gating only and not as skill points (no dice, energy, or Stat Bonus). Some kinds set their tree tiers directly instead, such as Omens and Heralds. Either way, a creature's skill points are independent of its trees. Bestiary Backgrounds are usually one note.  
-* **Natural Attacks:** Attacks granted by Ancestry trees are natural attacks, so creature Size applies to them: Size 4 attacks are Strengthened and Size 5 attacks are doubly Strengthened (Size 2 Weakened, Size 1 doubly Weakened).  
+* **Natural Attacks:** Attacks granted by Ancestry trees are natural attacks, so creature Size applies to them: Size 4 attacks are Strengthened and Size 5 attacks are doubly Strengthened (Size 2 Weakened, Size 1 doubly Weakened). Each Size above 5 adds one more Strengthen, so Size 6 attacks are triply Strengthened and Size 7 attacks quadruply. Creatures above Size 5 are rare.  
 * **Sapience:** See Sapience in Flow State \- ABCs for the bands and their stat-to-skill ratios.  
 * **Agents:** Stage 3 beings holding the entirety of Stage 2 and beyond. They are never given statblocks.
 
@@ -47,7 +47,7 @@
 
 # **Dreamborn**
 
-*Requires Wonderborn 1\. Lineage tree of every Dream Omen and Herald.*  
+*Lineage tree of every Dream Omen and Herald.*  
 **Tier 1: You unlock the following passive:**
 
 * **Allure:** Creatures that first see you must resist it as they would Fear, requiring a result of at least your skill points multiplied by your Size. On a failure, until the end of their next turn, their first attack against you each turn has Disadvantage. This is a forced mental effect.
@@ -70,7 +70,7 @@
 
 # **Nightmareborn**
 
-*Requires Wonderborn 1\. Lineage tree of every Nightmare Omen and Herald.*  
+*Lineage tree of every Nightmare Omen and Herald.*  
 **Tier 1: You unlock the following passive:**
 
 * **Dread:** Creatures that first see you must resist Fear, requiring a result of at least your skill points multiplied by your Size.
@@ -105,7 +105,6 @@
 
 # **Life**
 
-*Requires Dreamborn 1\.*  
 **Tier 1: You unlock the following action:**
 
 * **Budding Gore:** You can spend **2 AP** to gore a target within your melee range, dealing **1d10 physical damage**. This scales with your Wonder's Power and is a natural attack. On a hit, the target is Infected for a day. Any heat damage an Infected creature takes burns the infection out.
@@ -140,7 +139,6 @@
 
 # **Dark**
 
-*Requires Nightmareborn 1\.*  
 **Tier 1: You unlock the following action:**
 
 * **Black Jaws:** You can spend **2 AP** to bite a target within your melee range, dealing **1d10 physical damage**. This scales with your Wonder's Power and is a natural attack.
@@ -175,7 +173,6 @@
 
 # **Growth**
 
-*Requires Dreamborn 1\.*  
 **Tier 1: You unlock the following action:**
 
 * **Root Lash:** You can spend **2 AP** to strike a target within 10ft, dealing **1d8 physical damage**. This scales with your Wonder's Power and is a natural attack.
@@ -195,6 +192,142 @@
 **Tier 5: You unlock the following passive:**
 
 * **Overgrowth:** The ground within 20ft of you is difficult terrain.
+
+# **Death**
+
+**Profile:**
+
+* **Omen:** The Carrion-Stalker, a gaunt, person-sized hunter with a vulture's skull and a hooked spear. It culls a village by night, strongest first.  
+* **Herald:** The Culling, a towering stalker trailed by a flock of carrion thralls made from its kills.  
+* **Size:** Omen 3, Herald 5\.  
+* **Form:** Warden.  
+* **Senses:** Sight (Primary), Hearing (Primary), and Smell (Heightened).  
+* **Feeds on:** Fresh kills.  
+* **Propagation trigger:** A dozen or more creatures die within a day in one place and are left unburied. A husk of bone and feathers forms there (60 Durability, 0 Limit) and rises as a Carrion-Stalker within minutes, not a day.
+
+# **Death**
+
+**Tier 1: You unlock the following action:**
+
+* **Culling Hook:** You can spend **2 AP** to hook a target within 10ft, dealing **1d10 physical damage**. This scales with your Wonder's Power and is a natural attack.
+
+**Tier 2: You unlock the following passive:**
+
+* **Quarry:** At the start of combat, and at nightfall, you mark the strongest creature you can sense; healers and protectors count as strong. Your attacks against your Quarry have Advantage, and you know where it is within a mile. You lose that Advantage while one of its allies is within 5ft of it. When your Quarry dies, you mark the next.
+
+**Tier 3: You unlock the following passive:**
+
+* **Carrion Feast:** When a creature dies within 30ft of you, you heal by its Pain Threshold.
+
+**Tier 4: You unlock the following passive:**
+
+* **Carrion Flock:** Creatures you kill rise as your carrion thralls within a minute.
+
+**Tier 5: You unlock the following passive:**
+
+* **Funeral by Funeral:** Healing on a creature you damaged since the start of your last turn is doubly Weakened.
+
+# **Light**
+
+**Profile:**
+
+* **Omen:** The Blazehart, a white stag whose antlers burn like noon. It runs rather than fights, leading hunters on until they drop.  
+* **Herald:** The White Night, a city where night stops falling, under a sky burning with auroral color.  
+* **Size:** Omen 4, Herald 5\.  
+* **Form:** Prism.  
+* **Senses:** Sight (Heightened), Hearing (Primary), and Smell (Primary).  
+* **Feeds on:** Daylight, and the sleep of those near it.  
+* **Propagation trigger:** A creature chases it until it collapses (see **Run Them Down**). That creature wakes blind, and the light taken from it forms a new Blazehart.
+
+# **Light**
+
+**Tier 1: You unlock the following action:**
+
+* **Burning Antlers:** You can spend **2 AP** to gore a target within your melee range, dealing **1d10 heat damage**. This scales with your Wonder's Power and is a natural attack.
+
+**Tier 2: You unlock the following passive:**
+
+* **Noonlight:** You shed bright light to 30ft and dim light to 60ft. Nothing within 30ft of you can be obscured, so Stealth there fails. Magical darkness puts out your light where the two overlap.
+
+**Tier 3: You unlock the following passive:**
+
+* **Run Them Down:** Your movement never provokes reactions. A creature that damaged you since your last turn must spend its first movement each turn moving toward you. This is a forced mental effect, resisted as your **Allure**. A creature that keeps chasing you at 0 Energy collapses.
+
+**Tier 4: You unlock the following passive:**
+
+* **Sleepless:** No creature can rest within 1,000ft of you.
+
+**Tier 5: You unlock the following passive:**
+
+* **Solar Storm:** Creatures within 100ft of you that wear or wield metal take **1d6 heat damage** at the start of each of their turns.
+
+# **Order**
+
+**Profile:**
+
+* **Omen:** The Lawstone, a brass and crystal construct that imposes strange rules on a town (curfews no one set, routines no one can break) and punishes anyone who deviates.  
+* **Herald:** The Ordinance, a city drilled into lockstep around a central obelisk.  
+* **Size:** Omen 3, Herald 5\.  
+* **Form:** Anchor.  
+* **Senses:** Sight (Primary) and Hearing (Heightened).  
+* **Feeds on:** Obedience: routines kept and people moving in step around it.  
+* **Propagation trigger:** A creature keeps all of your Edicts for a full month. Over the following day, it calcifies into a new Lawstone.
+
+# **Order**
+
+**Tier 1: You unlock the following action:**
+
+* **Gavel:** You can spend **2 AP** to strike a target within your melee range, dealing **1d10 physical damage**. This scales with your Wonder's Power and is a natural attack.
+
+**Tier 2: You unlock the following passive:**
+
+* **Edicts:** At the start of combat, and at each dawn, you declare 2 Edicts. Each is a plain rule forbidding one kind of action, such as "none shall cast spells", "none shall run", or "none shall leave the square after dusk". Creatures within 100ft of you that can hear you know them. When a creature within 100ft of you breaks an Edict, it takes **1d10 Supernatural damage**, once per round per creature. This scales with your Wonder's Power.
+
+**Tier 3: You unlock the following passive:**
+
+* **Clockwork:** An attack against you has Disadvantage if its attacker made the same attack (the same weapon attack, spell, or Mode) on its last turn. The first time each creature hits you with an attack it has not used against you this combat, that hit's damage is Strengthened.
+
+**Tier 4: You unlock the following passive:**
+
+* **Lockstep:** Creatures that keep your Edicts for a full week become your thralls. They move in step with you, fight for you, and cannot break your Edicts. Once per rest, or when something disturbs it (such as taking damage or someone it knows calling to it, as the GM decides), a thrall can try to break free by resisting your **Allure** with Disadvantage.
+
+**Tier 5: You unlock the following passive:**
+
+* **The Unbroken Rule:** A creature within 1,000ft of you must resist your **Allure** to break one of your Edicts. On a failure, it cannot take that action this turn.
+
+# **Chaos**
+
+**Profile:**
+
+* **Omen:** The Smear, a small shapeless thing that warps the neighborhood around it. Objects change, doors open onto the wrong rooms, and memories slip.  
+* **Herald:** The Churn, a city district that won't hold still. Its streets rearrange, and its residents forget who they are.  
+* **Size:** Omen 2, Herald 5\.  
+* **Form:** Echo.  
+* **Senses:** Sight (Primary) and Hearing (Primary).  
+* **Feeds on:** Disorder: anything moved, forgotten, or no longer where it was.  
+* **Propagation trigger:** A piece of it survives to become a new Smear (see **Split**).
+
+# **Chaos**
+
+**Tier 1: You unlock the following action:**
+
+* **Unmaking Touch:** You can spend **2 AP** to touch a target within your melee range, dealing **1d10 damage** of a type rolled at random from the seven damage types. This scales with your Wonder's Power and is a natural attack.
+
+**Tier 2: You unlock the following passive:**
+
+* **Unfixed:** You become Pinned until the end of your next turn when a weapon made of iron, cold iron, or gray iron hits you, when an Order Manifest hits you, when a creature speaks your true name (the GM decides how one is learned), or while you are within 10ft of an Order effigy. While Pinned, you cannot **Split**. While not Pinned, you cannot be grappled.
+
+**Tier 3: You unlock the following passive:**
+
+* **Split:** Once per round, when you take damage while not Pinned, a piece of you breaks away within 30ft. The piece is an object with Durability equal to the damage taken (at most half of your max HP) and 0 Limit. If it is still standing at the end of your next turn, it becomes a new Smear with health equal to its remaining Durability.
+
+**Tier 4: You unlock the following passive:**
+
+* **Shifting Streets:** Each dawn, everything within 1,000ft of you rearranges. Doors, roads, and rooms lead somewhere other than they did, and every map of the area is wrong.
+
+**Tier 5: You unlock the following passive:**
+
+* **Lost Names:** A creature that starts its turn within 100ft of you must resist your **Dread**. On a failure, it forgets its name and its allies until the end of its turn, and picks its targets at random.
 
 # **Backgrounds**
 

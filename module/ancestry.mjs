@@ -383,7 +383,7 @@ function newRows(actor, row, inCombat) {
     t("ancestry-namuh-tree") >= 5 ? "2 AP" : `2 AP · ${actor.system.skillPoints ?? 0} Energy`, "accelHeal", "fa-solid fa-heart-pulse", { disabled: used(actor, "accelHeal", "turn") });
   if (hasAncestryTree(actor.system, "ancestry-sworan-tree")) {
     const cur = livingArm(actor), t5 = t("ancestry-sworan-tree") >= 5;
-    row("Living Metal Arm", `Now: ${cur ? esc(cur.name) : "a plain arm"}. Reshape it into a Foci, an Icon Form, a Weapon of an absorbed material (${armMaterials(actor).map(m => WEAPON_MATERIALS[m]?.label ?? m).join(", ")}), or a plain arm`,
+    row("Living Metal Arm", `Now: ${cur ? `${esc(cur.name)} (it takes that hand)` : "an open hand (Unarmed)"}. Reshape it into a Foci, an Icon Form, a Weapon of an absorbed material (${armMaterials(actor).map(m => WEAPON_MATERIALS[m]?.label ?? m).join(", ")}), or an open hand, which frees it`,
       t5 && inCombat ? "1 AP" : "1 minute", "arm", "fa-solid fa-hand-fist", { disabled: inCombat && (!t5 || used(actor, "reshape", "round")) });
     if (!inCombat) row("Living Metal Arm: absorb a material", `Over an 8 hour rest, merge an item (or the raw material) of a ${t("ancestry-sworan-tree") >= 4 ? "Common, Uncommon or Rare" : t("ancestry-sworan-tree") >= 2 ? "Common or Uncommon" : "Common"} Weapon material into your arm; the item is used up`, "Rest", "absorb", "fa-solid fa-magnet");
   }
@@ -458,7 +458,7 @@ async function reshapeArm(actor) {
   const mats = armMaterials(actor);
   const weapons = Object.entries(WEAPON_TYPES).filter(([k]) => !["unarmed", "improvised"].includes(k)).map(([k, v]) => [k, v.label]);
   const shape = await DialogV2().prompt({ window: { title: "Living Metal Arm" }, rejectClose: false,
-    content: `<div class="form-group"><label>Shape</label>${select("shape", [["plain", "A plain arm"], ["weapon", "A Weapon"], ["foci", "A Foci"], ["icon", "An Icon Form"]], "weapon")}</div>
+    content: `<div class="form-group"><label>Shape</label>${select("shape", [["plain", "An open hand (Unarmed: holds and strikes like any hand)"], ["weapon", "A Weapon (takes the hand)"], ["foci", "A Foci (takes the hand)"], ["icon", "An Icon Form (takes the hand)"]], "weapon")}</div>
       <div class="form-group"><label>Weapon type</label>${select("type", weapons, weapons[0]?.[0])}</div>
       <div class="form-group"><label>Weight</label>${select("weight", [["light", "Light"], ["heavy", "Heavy"]], "light")}</div>
       <div class="form-group"><label>Material</label>${select("material", mats.map(m => [m, WEAPON_MATERIALS[m].label]), mats[0])}</div>
@@ -485,8 +485,8 @@ async function reshapeArm(actor) {
   if (old) await old.delete();
   // As a Foci or Icon it counts as attuned: another attuned one of that kind steps aside.
   if (data && (data.type === "foci" || data.type === "icon")) for (const i of actor.items.filter(x => x.type === data.type && x.system.attuned)) await i.update({ "system.attuned": false }, { flowstateSystem: true });
-  // Room for it: a two-handed arm frees the other hand; a one-handed shape leaves it one one-handed thing. Raised fists are lowered as needed.
-  if (data?.type === "weapon" || data?.type === "foci") {
+  // Room for it: a two-handed arm takes the other hand too; a one-handed shape (an Icon Form included) leaves one one-handed thing. Raised fists are lowered as needed.
+  if (data) {
     const held = actor.items.filter(x => ["weapon", "foci"].includes(x.type) && x.system.equipped && x.system.weaponType !== "unarmed" && !x.getFlag?.("flowstate", "livingArm"));
     const keep = data.system.twoHanded ? [] : held.filter(x => !x.system.twoHanded).slice(0, 1);
     for (const i of held.filter(x => !keep.includes(x))) await i.update({ "system.equipped": false }, { flowstatePaid: true });
@@ -498,7 +498,7 @@ async function reshapeArm(actor) {
     }
   }
   if (data) await actor.createEmbeddedDocuments("Item", [data]);
-  return card(actor, "Living Metal Arm", `<div class="fs-result">${esc(actor.name)}'s arm reshapes into ${data ? esc(data.name.replace(/^Living Metal Arm \(|\)$/g, "")) : "a plain arm"}${inCombat ? " (Quick Reshape, 1 AP)" : " over a minute"}.</div>`);
+  return card(actor, "Living Metal Arm", `<div class="fs-result">${esc(actor.name)}'s arm reshapes into ${data ? esc(data.name.replace(/^Living Metal Arm \(|\)$/g, "")) : "an open hand (Unarmed), freeing that hand for anything"}${inCombat ? " (Quick Reshape, 1 AP)" : " over a minute"}.</div>`);
 }
 
 /* ---- Thick Hide (Minotaur T0) ---- */

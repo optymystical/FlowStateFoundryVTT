@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.103.2:** Living Metal Arm (Sworan): reshaping it into an open hand (Unarmed) frees that hand, so the Sworan holds things and two-hands weapons like anyone; as a Weapon, Foci or Icon Form it takes the hand (one other thing, one-handed).
+
 **0.103.1:** Bestiary doc distances: Overgrowth (Growth T5) is a 10 ft aura; Quarry (Death T2) is lost while an ally of the Quarry is within 10 ft (and is tracked within 1,000 ft); Carrion Feast reaches 10 ft; a Split piece breaks away within 10 ft; Noonlight stops stealth in the Blazehart's bright light (its token's bright radius).
 
 **0.103.0:** From the docs. **Bestiary:** four new Wonderborn: Death (the Carrion-Stalker: Culling Hook, Quarry, Carrion Feast, Carrion Flock, Funeral by Funeral), Light (the Blazehart: Burning Antlers, Noonlight's light and no stealth near it, Run Them Down, Sleepless, Solar Storm), Order (the Lawstone: Gavel, Edicts, Clockwork, the Unbroken Rule) and Chaos (the Smear: Unmaking Touch with a random damage type, Unfixed and the Pinned status, Split, Lost Names); Size 6 and 7 for rare creatures (one more Strengthen per Size past 5). **Rules doc:** Shielding (Shields, Ward shielding) now soaks first, before parrying weapons, and doesn't stack: you keep the higher; Temp HP always stacks. The Rules doc's new chapter layout is in the Codex.

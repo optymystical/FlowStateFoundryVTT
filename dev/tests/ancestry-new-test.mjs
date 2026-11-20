@@ -119,6 +119,13 @@ ok(labels(sworan).includes("Living Metal Arm") && labels(bull).includes("Red Tid
   sword.system.equipped = false; arm.system.twoHanded = true;
   ok(!hold(arm, { twoHanded: true }) && !!hold(sword), "...the arm two-handed leaves no hand free");
   ok(!sworanHoldRefusal({ ...sw, system: { abc: { ancestry: "human" } } }, sword, { equipped: true, twoHanded: true, weaponType: "bladed" }), "...nobody else is affected");
+  // Shaped as an open hand (Unarmed: no arm item) the arm is a hand like any other: two things, or a two-handed weapon.
+  const open = { name: "Sw", system: { abc: { ancestry: "sworan" } }, items: [{ ...sword, system: { ...sword.system, equipped: true } }, axe] };
+  ok(!sworanHoldRefusal(open, axe, { equipped: true, twoHanded: false, weaponType: "balanced" }) && !sworanHoldRefusal(open, axe, { equipped: true, twoHanded: true, weaponType: "balanced" }),
+    "...an open-hand arm frees that hand: a second weapon, or a two-handed one");
+  const iconArm = { id: "iarm", type: "icon", name: "Living Metal Arm (Aegis)", flags: { flowstate: { livingArm: true } }, system: { attuned: true } };
+  const asIcon = { name: "Sw", system: { abc: { ancestry: "sworan" } }, items: [iconArm, { ...sword, system: { ...sword.system, equipped: true } }, axe] };
+  ok(!!sworanHoldRefusal(asIcon, axe, { equipped: true, twoHanded: false, weaponType: "balanced" }), "...an Icon Form arm still takes the hand");
 }
 
 console.log("== Casting and checks");

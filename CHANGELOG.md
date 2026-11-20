@@ -2,6 +2,8 @@
 
 Newest first. Short notes; the rules as implemented are in `dev/AUTOMATION.md`.
 
+**0.103.1:** Bestiary doc distances: Overgrowth (Growth T5) is a 10 ft aura; Quarry (Death T2) is lost while an ally of the Quarry is within 10 ft (and is tracked within 1,000 ft); Carrion Feast reaches 10 ft; a Split piece breaks away within 10 ft; Noonlight stops stealth in the Blazehart's bright light (its token's bright radius).
+
 **0.103.0:** From the docs. **Bestiary:** four new Wonderborn: Death (the Carrion-Stalker: Culling Hook, Quarry, Carrion Feast, Carrion Flock, Funeral by Funeral), Light (the Blazehart: Burning Antlers, Noonlight's light and no stealth near it, Run Them Down, Sleepless, Solar Storm), Order (the Lawstone: Gavel, Edicts, Clockwork, the Unbroken Rule) and Chaos (the Smear: Unmaking Touch with a random damage type, Unfixed and the Pinned status, Split, Lost Names); Size 6 and 7 for rare creatures (one more Strengthen per Size past 5). **Rules doc:** Shielding (Shields, Ward shielding) now soaks first, before parrying weapons, and doesn't stack: you keep the higher; Temp HP always stacks. The Rules doc's new chapter layout is in the Codex.
 
 **0.102.0:** NPCs need an Ancestry. The NPC wizard lists the Bestiary's creatures and (until they move into the Bestiary) the peoples; a people also needs a Background (its choices give its free trees) and a Culture, a Bestiary creature with Backgrounds needs one, and one without needs only its Ancestry. Foundry's Create Actor dialog no longer offers NPCs: they're made with the NPC wizard (shops, piles and characters as before).

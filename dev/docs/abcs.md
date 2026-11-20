@@ -689,7 +689,7 @@ Core tree of every Wasteling. It replaces the core tree of your original Ancestr
 - **Undying Decay:** You cannot die of age, disease, or other natural causes. You heal naturally through rest (see Rest in Flow State \- Generic Groups), but cannot regrow lost Max HP or limbs.  
 - **Needs:** Breathes air (see Swimming in Flow State \- Generic Groups), and needs food, water, and sleep.  
 - **Curse-Proof:** You are immune to diseases and curses. The curse of the Wastes that made you is not affected: it was changed by a Rift and is no longer magical, so it cannot be removed except by Stage 3 or higher powers.  
-- **Fading Mind:** The curse keeps eating at you. Somewhere between 20 and 40 years after your change, you turn feral (GM’s call). This is for roleplay and has no effect in play.  
+- **Fading Mind:** The curse keeps eating at you. Somewhere between 20 and 40 years after your change, you turn feral (GM’s call).  
 - **Unwelcome:** You have Disadvantage on persuasion checks against creatures that can see you and are not Wastelings.
 
 **Tier 1: You unlock the following passive:**
@@ -791,7 +791,7 @@ Core tree of every Wasteling. It replaces the core tree of your original Ancestr
 **Tier 0 (Free): You gain the following rules:**
 
 - **Body-Speech:** Your vocal cords are primitive and cannot form the sounds of other languages. You speak Sworan, a language of clicks, knocks, and guttural noises made with your whole body. You understand other languages as normal, and can still use hand-sign, writing, or gesture.  
-- **Living Metal Arm:** Your dominant arm is living metal, with no hand. Over 1 minute, you can reshape it into any Foci, any Icon Form, a Weapon of any type and weight, or back into a plain arm. As a Foci or Icon, it counts as Attuned for as long as it holds that shape. As a Weapon, it must be made of a material you have absorbed, starting with Iron. To absorb a Common Weapon material, spend an 8 hour rest merging an item made of it (or enough of the raw material for one) into your arm. The item is used up, but you can use that material from then on without it. As a Weapon it uses its material’s Durability and Limit, and a Heavy-only material uses half of them as a Light Weapon. Its grade is always high enough for all of your Scaling Stat to count, and you cannot be disarmed of it.  
+- **Living Metal Arm:** Your dominant arm is living metal. Over 1 minute, you can reshape it into any Foci, any Icon Form, a Weapon of any type and weight, or back into a plain arm. As a Foci or Icon, it counts as Attuned for as long as it holds that shape. As a Weapon, it must be made of a material you have absorbed, starting with Iron. To absorb a Common Weapon material, spend an 8 hour rest merging an item made of it (or enough of the raw material for one) into your arm. The item is used up, but you can use that material from then on without it. As a Weapon it uses its material’s Durability and Limit, and a Heavy-only material uses half of them as a Light Weapon. Its grade is always high enough for all of your Scaling Stat to count, and you cannot be disarmed of it.  
 - **Deep-Dweller:** Hearing is Heightened for you instead of Primary, and darkness only lightly obscures your Sight instead of heavily.
 
 **Tier 1: You unlock the following ability:**

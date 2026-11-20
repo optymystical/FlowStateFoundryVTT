@@ -68,7 +68,7 @@ export function actionRows(actor) {
   }
   if (t.death >= 2) {
     const q = quarryOf(actor);
-    row(q ? `Quarry: ${q.name} (mark another)` : "Quarry: mark", "Mark the targeted creature (else the strongest opposed one here) as its Quarry: its attacks against it have Advantage (not while one of its allies is within 5 ft), and it knows where it is within a mile", "—", "quarry", "fa-solid fa-crosshairs");
+    row(q ? `Quarry: ${q.name} (mark another)` : "Quarry: mark", "Mark the targeted creature (else the strongest opposed one here) as its Quarry: its attacks against it have Advantage (not while one of its allies is within 10 ft), and it knows where it is within 1,000 ft", "—", "quarry", "fa-solid fa-crosshairs");
   }
   if (t.order >= 2) {
     const ed = actor.getFlag?.("flowstate", "edicts")?.list ?? [];
@@ -163,7 +163,7 @@ function strongest(actor, without = null) {
 }
 async function markQuarry(actor, target) {
   await setActorFlag(actor, "quarry", target.uuid);
-  return card(actor, "Quarry", `<div class="fs-result">${esc(actor.name)} marks <strong>${esc(target.name)}</strong> as its Quarry: Advantage on its attacks against it (not while one of its allies is within 5 ft of it), and it knows where it is within a mile.</div><div class="fs-notes">Healers and protectors count as strong: the GM can mark another from the Action List.</div>`);
+  return card(actor, "Quarry", `<div class="fs-result">${esc(actor.name)} marks <strong>${esc(target.name)}</strong> as its Quarry: Advantage on its attacks against it (not while one of its allies is within 10 ft of it), and it knows where it is within 1,000 ft.</div><div class="fs-notes">Healers and protectors count as strong: the GM can mark another from the Action List.</div>`);
 }
 
 /* -------------------------------------------- */
@@ -256,10 +256,10 @@ export async function attackNet(attacker, target, opts) {
   if (opts?.bestiary?.attack === "Black Jaws" && T(attacker).dark >= 4 && packMates(attacker, target)) { net += 1; notes.push("Pack Hunter: Advantage"); }
   const al = attacker.getFlag?.("flowstate", "allured");
   if (al?.by === target.uuid && al.used !== turnKey()) { net -= 1; notes.push(`Allure (${target.name}): Disadvantage`); await setActorFlag(attacker, "allured", { ...al, used: turnKey() }); }
-  // Quarry (Death T2): Advantage against its Quarry, unless one of the Quarry's allies is within 5 ft of it.
+  // Quarry (Death T2): Advantage against its Quarry, unless one of the Quarry's allies is within 10 ft of it.
   if (T(attacker).death >= 2 && attacker.getFlag?.("flowstate", "quarry") === target.uuid) {
-    const guarded = sceneCreatures().some(a => a.uuid !== target.uuid && a.uuid !== attacker.uuid && alive(a) && allied(target, a) && (dist(target, a) ?? Infinity) <= 5);
-    if (guarded) notes.push("Quarry: an ally of it is within 5 ft (no Advantage)");
+    const guarded = sceneCreatures().some(a => a.uuid !== target.uuid && a.uuid !== attacker.uuid && alive(a) && allied(target, a) && (dist(target, a) ?? Infinity) <= 10);
+    if (guarded) notes.push("Quarry: an ally of it is within 10 ft (no Advantage)");
     else { net += 1; notes.push("Quarry: Advantage"); }
   }
   // Clockwork (Order T3): Disadvantage on the same attack its attacker made on its last turn. The attacker's own-turn attacks are logged while a
@@ -406,7 +406,7 @@ export async function afterDamage(actor, amount, type, att) {
 /* -------------------------------------------- */
 
 /**
- * Split (Chaos T3): a piece breaks away within 30 ft, an object of Durability = the damage (at most half its max HP) and 0 Limit. It's put on the scene
+ * Split (Chaos T3): a piece breaks away within 10 ft, an object of Durability = the damage (at most half its max HP) and 0 Limit. It's put on the scene
  * as a copy of the Smear's token (HP = that Durability, fixed dodge 0 so attacks always hit it, as against an object); still standing at the end of the
  * Smear's next turn, it becomes a new Smear with that health (the GM adds it to the tracker).
  */
@@ -424,7 +424,7 @@ async function split(actor, damage) {
   foundry.utils.setProperty(data, "delta.flags.flowstate.smearPiece", { of: actor.uuid, armed: turnKey() ?? "out", dur });
   foundry.utils.setProperty(data, "delta.flags.flowstate.bestUse", {});
   await scene.createEmbeddedDocuments("Token", [data]);
-  return card(actor, "Split", `<div class="fs-result">A piece of ${esc(actor.name)} breaks away (<strong>${dur}</strong> Durability, 0 Limit; attacks always hit it). Still standing at the end of ${esc(actor.name)}'s next turn, it becomes a new Smear with that much health.</div><div class="fs-notes">Placed beside it: move it anywhere within 30 ft.</div>`);
+  return card(actor, "Split", `<div class="fs-result">A piece of ${esc(actor.name)} breaks away (<strong>${dur}</strong> Durability, 0 Limit; attacks always hit it). Still standing at the end of ${esc(actor.name)}'s next turn, it becomes a new Smear with that much health.</div><div class="fs-notes">Placed beside it: move it anywhere within 10 ft.</div>`);
 }
 /** The end of a Smear's turn: its pieces from before this turn that still stand become Smears. */
 async function ripenPieces(actor) {
@@ -452,9 +452,9 @@ export async function died(actor) {
   for (const w of sceneCreatures()) {
     if (w.uuid === actor.uuid || !alive(w)) continue;
     const t = T(w);
-    if (t.death >= 3 && pain > 0 && (dist(w, actor) ?? Infinity) <= 30) {
+    if (t.death >= 3 && pain > 0 && (dist(w, actor) ?? Infinity) <= 10) {
       const hp = w.system.hp, gain = Math.max(0, Math.min(pain, hp.max - hp.value));
-      if (gain) { await w.update({ "system.hp.value": hp.value + gain }); await card(w, "Carrion Feast", `<div class="fs-result">${esc(actor.name)} dies within 30 ft: ${esc(w.name)} heals ${gain} (its Pain Threshold).</div>`); }
+      if (gain) { await w.update({ "system.hp.value": hp.value + gain }); await card(w, "Carrion Feast", `<div class="fs-result">${esc(actor.name)} dies within 10 ft: ${esc(w.name)} heals ${gain} (its Pain Threshold).</div>`); }
     }
     if (t.death >= 2 && w.getFlag?.("flowstate", "quarry") === actor.uuid) {
       const next = strongest(w, actor.uuid);
@@ -671,7 +671,7 @@ export async function wake(actor) {
 /* -------------------------------------------- */
 
 const auraRegions = () => [...(globalThis.canvas?.scene?.regions ?? [])].filter(r => r.flags?.flowstate?.auraOf);
-/** The difficult ground around each creature with The Choking Green (Life T5, 100 ft) or Overgrowth (Growth T5, 20 ft); it doesn't slow the creature itself.
+/** The difficult ground around each creature with The Choking Green (Life T5, 100 ft) or Overgrowth (Growth T5, 10 ft); it doesn't slow the creature itself.
  *  Runs one at a time (every token move asks for one): two at once would both delete the same region or both create one. */
 let auraRun = Promise.resolve();
 export function refreshAuras() {
@@ -685,7 +685,7 @@ async function syncAuras() {
   for (const tok of scene.tokens ?? []) {
     const a = tok.actor;
     if (!a || a.statuses?.has?.("dormant")) continue;
-    const ft = T(a).life >= 5 ? 100 : T(a).growth >= 5 ? 20 : 0;
+    const ft = T(a).life >= 5 ? 100 : T(a).growth >= 5 ? 10 : 0;
     if (ft) want.set(a.uuid, { a, tok, ft, name: T(a).life >= 5 ? "The Choking Green" : "Overgrowth" });
   }
   const have = auraRegions();

@@ -204,7 +204,7 @@ export const spottedBy = actor => actor?.getFlag?.("flowstate", "spottedBy") ?? 
  */
 export function stealthValue(actor, targets = []) {
   if (!actor?.statuses?.has?.("stealth") || !targets.length) return null;
-  if (noonlit(actor)) return null;                                     // Noonlight (Bestiary, Light T2): nothing within 30 ft can be obscured
+  if (noonlit(actor)) return null;                                     // Noonlight (Bestiary, Light T2): nothing in its bright light can be obscured
   const seen = new Set(spottedBy(actor));
   if (targets.some(t => seen.has(t.uuid))) return null;
   if (!inActiveCombat(actor)) return "full";
@@ -213,12 +213,12 @@ export function stealthValue(actor, targets = []) {
   const fresh = blind && targets.every(t => !(hit?.combat === game.combat?.id && hit.uuids?.includes(t.uuid)));
   return fresh ? "full" : "half";
 }
-/** Noonlight (Bestiary, Light T2): within 30 ft of a Blazehart nothing can be obscured, so Stealthing there fails (a GM stealth status still stands). */
+/** Noonlight (Bestiary, Light T2): nothing in a Blazehart's bright light (its token's bright radius, 30 ft by default) can be obscured, so Stealthing there fails (a GM stealth status still stands). */
 export function noonlit(actor) {
   const me = attackerToken(actor) ?? actor?.getActiveTokens?.()[0];
   if (!me || !globalThis.canvas?.grid) return null;
   return (globalThis.canvas.tokens?.placeables ?? []).find(t => t.actor && t.actor.uuid !== actor.uuid && skills.tierOf(t.actor.system?.trees ?? {}, "ancestry-wonderborn-light") >= 2
-    && !helpless(t.actor) && tokenDistance(me, t) <= 30)?.actor ?? null;
+    && !helpless(t.actor) && tokenDistance(me, t) <= (Number(t.document?.light?.bright) || 30))?.actor ?? null;
 }
 /** Blindside's memory: whom this creature has attacked in the current combat. */
 async function noteAttacked(actor, targets) {

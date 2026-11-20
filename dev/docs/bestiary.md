@@ -191,7 +191,7 @@
 
 **Tier 5: You unlock the following passive:**
 
-* **Overgrowth:** The ground within 20ft of you is difficult terrain.
+* **Overgrowth:** The ground within 10ft of you is difficult terrain.
 
 # **Death**
 
@@ -213,11 +213,11 @@
 
 **Tier 2: You unlock the following passive:**
 
-* **Quarry:** At the start of combat, and at nightfall, you mark the strongest creature you can sense; healers and protectors count as strong. Your attacks against your Quarry have Advantage, and you know where it is within a mile. You lose that Advantage while one of its allies is within 5ft of it. When your Quarry dies, you mark the next.
+* **Quarry:** At the start of combat, and at nightfall, you mark the strongest creature you can sense; healers and protectors count as strong. Your attacks against your Quarry have Advantage, and you know where it is within 1,000ft. You lose that Advantage while one of its allies is within 10ft of it. When your Quarry dies, you mark the next.
 
 **Tier 3: You unlock the following passive:**
 
-* **Carrion Feast:** When a creature dies within 30ft of you, you heal by its Pain Threshold.
+* **Carrion Feast:** When a creature dies within 10ft of you, you heal by its Pain Threshold.
 
 **Tier 4: You unlock the following passive:**
 
@@ -247,7 +247,7 @@
 
 **Tier 2: You unlock the following passive:**
 
-* **Noonlight:** You shed bright light to 30ft and dim light to 60ft. Nothing within 30ft of you can be obscured, so Stealth there fails. Magical darkness puts out your light where the two overlap.
+* **Noonlight:** You shed bright light to 30ft and dim light to 60ft. Nothing in your bright light can be obscured, so Stealth there fails. Magical darkness puts out your light where the two overlap.
 
 **Tier 3: You unlock the following passive:**
 
@@ -319,7 +319,7 @@
 
 **Tier 3: You unlock the following passive:**
 
-* **Split:** Once per round, when you take damage while not Pinned, a piece of you breaks away within 30ft. The piece is an object with Durability equal to the damage taken (at most half of your max HP) and 0 Limit. If it is still standing at the end of your next turn, it becomes a new Smear with health equal to its remaining Durability.
+* **Split:** Once per round, when you take damage while not Pinned, a piece of you breaks away within 10ft. The piece is an object with Durability equal to the damage taken (at most half of your max HP) and 0 Limit. If it is still standing at the end of your next turn, it becomes a new Smear with health equal to its remaining Durability.
 
 **Tier 4: You unlock the following passive:**
 

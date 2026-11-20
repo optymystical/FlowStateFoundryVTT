@@ -18,7 +18,7 @@ export function fusedFociOf(weapon) {
   return weapon.actor?.items?.find?.(i => i.type === "foci" && i.system.attuned && i.system.fusedInto === weapon.id) ?? null;
 }
 /**
- * Living Metal Arm (Sworan T0): the dominant arm has no hand, so a Sworan holds at most one thing besides the arm, one-handed; only the arm's own
+ * Living Metal Arm (Sworan T0): the arm takes the dominant hand (the user's ruling), so a Sworan holds at most one thing besides the arm, one-handed; only the arm's own
  * Weapon may be two-handed (using the other hand too). Fists aren't affected (the arm still strikes Unarmed). Returns why a hold is refused, or "".
  */
 export function sworanHoldRefusal(actor, item, next) {
